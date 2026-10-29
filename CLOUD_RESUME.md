@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v121
+# Cloud continuation — checkpoint v122
 
-Updated: 2026-10-29T14:59:05.943596+00:00
+Updated: 2026-10-29T15:17:03.012348+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Cloud-only checkpoint121: corrected fixed-tail source40892423117 passed all three suites; all22proof2394978bytes are preservedb7862611. Actual off/on route run40894408041 at exact source8e9223b0 is active with five pre-acquisition release reservations and1324protected files; source controls passed again, routing executes on GitHub. Route completion is followed by independent native audits and comparison. Current-width CDR execution unit e7d401 is additive and disabled while failure-publication integrity is repaired. No local checkout, test or CAD execution.
+Cloud-only checkpoint122: current-width CDR execution and complete failure-publication controls passed40899144223 atdf9d187e (1287protected files). Full16proof168877bytes at825ca4bc includes both complete reports and raw logs; publication15cases plus2actual lifecycle-primary cases passed. Numerical worker remains unchanged and native/simulation authority false. Exact future two worker substitutions and original11reservation/1200-7200second/two-parallel policy remain required before actual loaded simulation. Existing routing40894408041 continues on GitHub; local workspace and project temporary/native state remain empty.
 
 Active handles at this snapshot: 40894408041 in_progress
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9030,3 +9031,10 @@ Local project/tmp/native processes verified absent. Inventory347 exact cloud han
 Cloud-only checkpoint121: corrected fixed-tail source40892423117 passed all three suites; all22proof2394978bytes are preservedb7862611. Actual off/on route run40894408041 at exact source8e9223b0 is active with five pre-acquisition release reservations and1324protected files; source controls passed again, routing executes on GitHub. Route completion is followed by independent native audits and comparison. Current-width CDR execution unit e7d401 is additive and disabled while failure-publication integrity is repaired. No local checkout, test or CAD execution.
 
 Local project/tmp/native processes verified absent. Inventory348 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T15:17:03.012348+00:00 — cloud-only checkpoint v122
+
+Cloud-only checkpoint122: current-width CDR execution and complete failure-publication controls passed40899144223 atdf9d187e (1287protected files). Full16proof168877bytes at825ca4bc includes both complete reports and raw logs; publication15cases plus2actual lifecycle-primary cases passed. Numerical worker remains unchanged and native/simulation authority false. Exact future two worker substitutions and original11reservation/1200-7200second/two-parallel policy remain required before actual loaded simulation. Existing routing40894408041 continues on GitHub; local workspace and project temporary/native state remain empty.
+
+Local project/tmp/native processes verified absent. Inventory349 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
