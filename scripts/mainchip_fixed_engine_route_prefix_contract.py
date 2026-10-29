@@ -37,6 +37,8 @@ NEW_FILES=(
  "scripts/mainchip_fixed_engine_route_prefix_driver.py",
  "scripts/mainchip_fixed_engine_route_prefix_native.py",
  "scripts/check_mainchip_fixed_engine_route_prefix.py",
+ "scripts/mainchip_exit_checked_supervision.py",
+ "scripts/check_mainchip_exit_checked_supervision.py",
  ".github/workflows/mainchip-fixed-engine-route-prefix.yml",SOURCE_ADMISSION)
 AUTH_FALSE=("native_routing_authorized","engine_build_authorized","native_probe_authorized",
  "rc_sta_execution_authorized","physical_acceptance","timing_accepted","full_phy_accepted",
@@ -271,4 +273,23 @@ def control_evidence(root,ctx):
     require(old["status"]=="PASS_SHARED_PREFIX_SOURCE_CONTROLS"
       and(old["positive_count"],old["refusal_count"],len(old["sequencing_cases"]),old["lifecycle_count"])==(4,23,6,8)
       and all(old[k]is False for k in ("native_prefix_executed","native_routing_executed","physical_acceptance")),"original prefix controls")
-    return {name:dict(bytes=len(raw),sha256=digest(raw))}
+    extra="exit-supervision-controls.json"
+    eraw=secure_file(root,extra).read_bytes();e=decode(eraw)
+    require(e["status"]=="PASS_EXIT_CHECKED_SUPERVISION_SOURCE_CONTROLS"
+      and e["current_context"]==expected,"exit supervision exact source context/status")
+    require(all(e[k]is False for k in ("native_executed","engine_executed","routing_accepted",
+      "physical_acceptance","actual_failed_prefix_reclassified")),"exit supervision source-only scope")
+    require((e["source"]["positive"],e["source"]["refusals"],e["source"]["authenticated_source_files"])==(2,9,6),
+      "exit supervision source authentication controls")
+    require((e["derivation"]["positive"],e["derivation"]["refusals"])==(7,2),
+      "exit supervision exact source derivation controls")
+    require(e["snapshot"]["positive"]==5,"original snapshot behavior controls")
+    require(e["terminal"]["cases"]==31 and e["terminal"]["old_body_regressions"]==1
+      and len(e["terminal"]["rows"])==31,"actual terminal lifecycle controls")
+    require((e["real_python"]["positive"],e["real_python"]["refusals"],
+      e["real_python"]["real_short_python_children"])==(2,1,3),"real short Python process controls")
+    original=e["original_supervisor"]
+    require(original["status"]=="PASS_RECORD_TELEMETRY_SOURCE_AND_SUPERVISION_CONTROLS_NO_RTL"
+      and len(original["controls"])==13 and all(v is True for v in original["controls"].values())
+      and original["engineering_accepted"]is False,"unchanged original supervision controls")
+    return {name:dict(bytes=len(raw),sha256=digest(raw)),extra:dict(bytes=len(eraw),sha256=digest(eraw))}

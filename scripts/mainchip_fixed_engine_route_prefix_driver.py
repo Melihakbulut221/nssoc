@@ -9,7 +9,7 @@ import sys
 import threading
 sys.path.insert(0,"/work/source/scripts")
 import mainchip_fixed_engine_route_prefix_contract as c
-import cloud_mainchip_original_clock_restoration as old
+import mainchip_exit_checked_supervision as old
 import cloud_mainchip_two_signal_repair as controller
 import mainchip_two_signal_repair as repair
 
