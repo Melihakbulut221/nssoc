@@ -82,8 +82,8 @@ jobs:
           if-no-files-found: error
   audit-only:
     needs: source-controls
-    # Disabled source proposal. Both native method flags and this guard require independent review.
-    if: ${{ false && inputs.execute }}
+    # Native admission requires exact-source repeated controls and both reserved result releases.
+    if: ${{ inputs.execute }}
     strategy:
       fail-fast: false
       max-parallel: 2
