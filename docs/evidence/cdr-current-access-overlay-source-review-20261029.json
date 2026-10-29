@@ -1,0 +1,319 @@
+{
+  "schema": "cdr-current-access-overlay-source-review-v1",
+  "status": "AUTHORED_SOURCE_NOT_YET_HOSTED_QUALIFIED",
+  "branch": "codex/cdr-current-access-overlay",
+  "base": "624b056cacab6da674c8f5947a6f40ae1970e351",
+  "scope": "Read-only existing current geometric access observation; no resistor footprint attribution or geometry change.",
+  "user_authorization": "Existing cloud-only continuation authorization; no new user permission requested. Hosted source checks and exact-source reservation remain execution prerequisites.",
+  "executed": {
+    "local_authored_imports": false,
+    "local_tests": false,
+    "local_native_assets": false,
+    "local_CAD": false,
+    "new_hosted_source_tests": false,
+    "new_native_overlay": false,
+    "dispatch": false
+  },
+  "sources": {
+    "scripts/cloud_cdr_current_access_overlay.py": {
+      "bytes": 14296,
+      "sha256": "d9d08d7b5683dca758ce7bb062a32f736733a51ca472a18bfb06c99d203234eb"
+    },
+    "scripts/cdr_current_access_overlay_native.py": {
+      "bytes": 18573,
+      "sha256": "5e93d54e460fbaab0609d53b822c5ae7cc34000b59c12268fd7c21a46e19ba8e"
+    },
+    "scripts/check_cdr_current_access_overlay.py": {
+      "bytes": 15357,
+      "sha256": "b0105d7f9f2351ffc95a44f1616af9b72f40c35fe581454b96faf25e48993ec4"
+    },
+    "scripts/cdr-current-access-overlay-inputs.json": {
+      "bytes": 4119,
+      "sha256": "f45c693d0d501ceafcd66af44c2fe4a9d4290f1bf945522b297658f3746b3786"
+    }
+  },
+  "frozen_helpers": {
+    "reader": {
+      "path": "scripts/cloud_cdr_current_rc_contacts.py",
+      "sha256": "1a4ece12cb2805aba5fabbebe4e0ffca2cddb272dc70b4610be4ca44339b848e",
+      "delegated_unchanged": [
+        "source_guard",
+        "metadata",
+        "validate_live",
+        "reservation",
+        "acquire",
+        "select_archive",
+        "emit",
+        "native_rows"
+      ]
+    },
+    "runtime": {
+      "path": "scripts/cdr_v59_tail_access_runtime.py",
+      "sha256": "946c08060f099e99f49ac35e559324b1e445d4c3865cfa7be954fa6e75db6176",
+      "delegated_unchanged": [
+        "supervisor",
+        "launcher"
+      ],
+      "supervisor_sha256": "e326e548ebe11550d18a049d639bdf063f03602d4ba08299b00a5747d3281c0b",
+      "sampler_sha256": "55fb9a3ba9a049c509b629e8638a688b5f827316485f9fd89cd5a8888804df07",
+      "appimage": {
+        "sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+        "url": "https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage"
+      },
+      "limits": {
+        "seconds": 1200,
+        "min_available_kib": 2097152,
+        "max_group_rss_kib": 10485760
+      }
+    },
+    "exact_cloned_functions": {
+      "path": "scripts/cdr_v59_tail_saved_identity_native.py",
+      "sha256": "4eab1f31c2414b6061c72096405f9688d8c1f03c6f31cb0fd505c17bd0523510",
+      "functions": {
+        "parse_path": "9f6f6c2688104998dead57ef46bcdeb5c77cf32d77f02326922846200eb3d8d1",
+        "properties": "c721b62e8d202d2607ff8f36ffad89d2aa2c41ddd50727a4f7cbfa270a3a027f",
+        "stable_path": "760c2b517aa74816e3129cdbd01caaf912c0741afc944f05e58178aff020f3e7"
+      },
+      "body_equality_checked": true
+    }
+  },
+  "native_input": {
+    "producer": {
+      "id": 40830441311,
+      "head_sha": "7ddf83d17a3b3fe0efb1eb31594b7d4d3e831b8f",
+      "head_branch": "codex/cdr-selector-width-fresh-rc-stage",
+      "path": ".github/workflows/cdr-selector-width-fresh-rc-cloud.yml",
+      "event": "workflow_dispatch",
+      "run_attempt": 1
+    },
+    "release": 427537846,
+    "complete_members": 6647,
+    "selected": {
+      "canonical-current-view/parent/layout/nssoc_cdr_pd500_resistor_v59.gds": "fb8a0aea5b44627a513db62ed10fe87c66f30697930e1212d3689c7ae981c0c3",
+      "canonical-current-view/parent/physical/lvs_flat/result.lvsdb": "46f7b57763441747cacf5740887fdadd0bfbc75c40549effd86afb7a60dba276",
+      "canonical-current-view/wire/native05/wires.l2n": "4d0dd5ed072b2bd195ac779725100284aeabde99cad53597c2d4a6b2bca0be38",
+      "canonical-current-view/wire/native05/wires.gds": "8b8e1c9cc7eacd1526dea4a69f5a4c7795e142226d01d1b0e45bdac2964f857d",
+      "canonical-current-view/wire/native05/result.json": "eeddbaddc06d413309fafc7b396944ada5fb72aa79f90c8f929f3213c2101adb",
+      "canonical-current-view/wire/device-locations01.json": "11be358288af996c51a18bd7396ecce699ab84c9c5d93737a52d517dd0546a4f",
+      "canonical-current-view/wire/anchors08.json": "966b5465750b6b35cc24cd8e10dca94313061d17692c6c46e99c50bc5d4c6193",
+      "mim/precise/wire/anchors08.json": "853d03f8c167ecf501f7fdef7827767d21a3101c2aff59f4411447603f86078b",
+      "canonical-current-view/wire/source-pins.json": "1d18f591616b6eba928beaca81fee3263942cf031b2ad4fbade9c1d7f35fafab",
+      "canonical-current-view/wire/pcell-inventory01.json": "a4d4adef8f0a3764579b9ce0998da4de6d6bb21dd0e7773e7229ab45306e88d8",
+      "mim/precise/wire/rc03/pump_wires.ext": "fc68906bc8298f6c3b9a1ec5c8d90226af3c4187edfd3dbfebbeb74b87a756bc",
+      "mim/precise/wire/rc03/pump_wires.res.ext": "0e97643edf6181531f56da5c9b896ffad194f9602afaaf0b2057e1376bca9f4c"
+    },
+    "current_GDS": "fb8a0aea5b44627a513db62ed10fe87c66f30697930e1212d3689c7ae981c0c3",
+    "LVS": "46f7b57763441747cacf5740887fdadd0bfbc75c40549effd86afb7a60dba276",
+    "graph_lineage": [
+      40808550817,
+      40815684037
+    ],
+    "counts": {
+      "devices": 500,
+      "R": 24356,
+      "C": 15566,
+      "wire_components": 113,
+      "terminals": 1446,
+      "ports": 25
+    }
+  },
+  "coordinate_proof": {
+    "path": "docs/evidence/cdr-current-rc-coordinate-source-review-20261029.json",
+    "sha256": "d72380d4d888d951567b538979ac244769c128fe852af21e3ee941261165baf8",
+    "incidence": {
+      "path": "docs/evidence/cdr-current-rc-contact-readback-terminal-40939598713/readback/incidence-and-technology.json",
+      "sha256": "c5d764256c577b2fc14dac22de72144c38049f85f20a20038e9a81fa4d8af110"
+    },
+    "scale_nm_per_unit": 5,
+    "layout_nm_per_DBU": 1,
+    "top_frame": true,
+    "child_transform_not_reapplied": true,
+    "raw_type_zero_is_not_layer": true,
+    "point_box_halfwidth_dbu": 2,
+    "search_box_is_not_resistor_footprint": true
+  },
+  "DC_provenance": {
+    "proof_commit": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+    "run": 40945858067,
+    "source": "8dbc4bab41994e03bebf6fca40d13228c6494ada",
+    "attempt": 1,
+    "conclusion": "success",
+    "status": "PASS_CURRENT_DC_CONTACT_SCREEN_NOT_ELECTRICAL_ACCEPTANCE",
+    "documents": {
+      "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/receipt.json": {
+        "bytes": 25125,
+        "sha256": "283dd7e308d6cbe8e29eebf6fe2c034dc7841d569dda874267552e2e91f2b9af",
+        "url": "https://github.com/Melihakbulut221/nssoc/blob/af861a0d40694b6b4737855e7fc3f5c6c34ac43f/docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/receipt.json"
+      },
+      "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/run.json": {
+        "bytes": 14407,
+        "sha256": "0e45078e72d3167a5c3c570d3ca0e2e54f8910e7fe3c2dd4a8e065659c444da8",
+        "url": "https://github.com/Melihakbulut221/nssoc/blob/af861a0d40694b6b4737855e7fc3f5c6c34ac43f/docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/run.json"
+      },
+      "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/screen/input-proof.json": {
+        "bytes": 8418,
+        "sha256": "5681f5394940dec1771f6ab254ad755db1744748ad5da2dd12d7711b804acf11",
+        "url": "https://github.com/Melihakbulut221/nssoc/blob/af861a0d40694b6b4737855e7fc3f5c6c34ac43f/docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/screen/input-proof.json"
+      },
+      "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/screen/network-124.json": {
+        "bytes": 5262935,
+        "sha256": "8c55e19525469ff552f497ddbcf2d2fb19de3eb3e946762867569717520fb5d2",
+        "url": "https://github.com/Melihakbulut221/nssoc/blob/af861a0d40694b6b4737855e7fc3f5c6c34ac43f/docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/screen/network-124.json"
+      },
+      "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/screen/network-28.json": {
+        "bytes": 5247193,
+        "sha256": "98a1d3a1d0f5b077492bf381b8704d0f526b0311f4906dc28478b9c140c4d351",
+        "url": "https://github.com/Melihakbulut221/nssoc/blob/af861a0d40694b6b4737855e7fc3f5c6c34ac43f/docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/screen/network-28.json"
+      },
+      "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/screen/result.json": {
+        "bytes": 10736,
+        "sha256": "64e03086ee5ac7fb2585c135ace72c05de4923e0485d36780855bafabebb972f",
+        "url": "https://github.com/Melihakbulut221/nssoc/blob/af861a0d40694b6b4737855e7fc3f5c6c34ac43f/docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/screen/result.json"
+      }
+    },
+    "outputs_hash_joined_to_result": true,
+    "two_effective_resistance_arrays_exactly_equal": true,
+    "contact_orders": {
+      "28": [
+        "w_T061_E",
+        "w_T062_E",
+        "w_T064_E",
+        "w_T065_E",
+        "w_T003_D",
+        "w_T004_D",
+        "w_T005_D",
+        "w_T006_D"
+      ],
+      "124": [
+        "w_T115_E",
+        "w_T116_E",
+        "w_T118_E",
+        "w_T119_E",
+        "w_T032_D",
+        "w_T033_D",
+        "w_T034_D",
+        "w_T035_D"
+      ]
+    },
+    "rounded_reported_ohm_ranges": {
+      "emitter_emitter": "14.15 to14.77",
+      "emitter_drain": "43.46 to44.36",
+      "drain_drain": "72.07 to72.43"
+    },
+    "selected_actual_ohms": {
+      "network28_T061E_T062E": "14.240729455716122949133548002423638812652605333154205151444394167213627296241709",
+      "network28_T061E_T003D": "44.066435907651381898723270335605521333271616606391602953674825676424438284752941",
+      "network28_T003D_T004D": "72.072301191889966736411253137808085763776856346732214854171309515390324679900786"
+    },
+    "interpretation": "Motivates per-layer terminal-access observation before choosing horizontal bridge widening. Not an identified dominant physical edge, real-transient branch current, causality proof or guaranteed recovery.",
+    "local_solver_execution": false
+  },
+  "geometry_checks": [
+    "All 13 complete flat conductor/via layer unions equal current GDS and saved wire GDS/database.",
+    "All 113 wire IDs and native labels bind exact saved graph; native 500/1446/238/25 census.",
+    "Every metal component is confined to its exact native LVS partition with unchanged saved area/polygon counts.",
+    "Complete selected component 17/61 polygons and all foreign point-overlap polygons are emitted with hulls/holes and exact native polygon strings.",
+    "All raw conductor cell records, properties, multiplicity and instance transforms are emitted. Merged polygon-to-single-raw-shape correspondence is not asserted.",
+    "All 204 distinct native rnode identities retained, even coincident coordinates; original ext scale and full raw rnode/resistor line joins checked.",
+    "All 16 target contacts re-probed in wire/native LVS with current canonical/precise anchors, exact hierarchy transform and original local pin boxes.",
+    "Containment includes boundary; independent \u00b12 DBU square overlap enumerates all polygons, with zero/one/multiple matches preserved. No nearest-shape fallback.",
+    "Full selected bytes rehashed after native observation; no GDS/LVS/wires writes."
+  ],
+  "API_evidence": [
+    {
+      "url": "https://www.klayout.de/doc/code/class_Polygon.html",
+      "members": [
+        "inside (includes boundary)",
+        "each_point_hull",
+        "each_point_hole",
+        "holes"
+      ],
+      "qualification": "Primary API documentation; actual 5 synthetic geometry controls run only under pinned AppImage in future readback."
+    },
+    {
+      "url": "https://www.klayout.de/doc/code/class_LayoutToNetlist.html",
+      "members": [
+        "read",
+        "layer_by_name",
+        "shapes_of_net",
+        "probe_net",
+        "shapes_of_terminal"
+      ],
+      "qualification": "Existing exact current probe01/anchors01 uses these APIs; new composition remains unexecuted."
+    }
+  ],
+  "lifecycle": [
+    "Source manifest and complete immutable original metadata verified before preflight/acquisition.",
+    "Fresh exact-source release receipt and actual current producer run/jobs/release/tag checked before archive download.",
+    "Caller must perform --preflight before AppImage/dependency download, then --readback repeats the same checks.",
+    "Complete archive/member verification delegates unchanged qualified selector; native selected temporary directory is outside output and never an artifact.",
+    "Pinned launcher smoke precedes owned 1200s/10GiB RSS/2GiB available native process. Exact argv, original resource event and full streams checked.",
+    "Cleanup, STOP and heartbeat join attempted independently; original body failure wins over cleanup/save/emission errors.",
+    "Derived intermediate polygon/target files, native terminal errors, zero/binary/malformed streams, complete census and all output chunks preserved.",
+    "No release uploader is included. Root workflow must preserve all emitted chunks/full logs and output artifact, and may publish nonempty derived assets without clobbering."
+  ],
+  "source_controls": {
+    "status": "PASS_CURRENT_ACCESS_OVERLAY_SOURCE_CONTROLS",
+    "counts": {
+      "positive": 11,
+      "refusal": 33,
+      "lifecycle": 11
+    },
+    "inherited_unchanged_counts": {
+      "positive": 14,
+      "refusal": 80,
+      "lifecycle": 5
+    },
+    "native_pya_controls_deferred": {
+      "positive": 5,
+      "synthetic_only": true
+    },
+    "coverage": [
+      "authentic complete capsule/204 rnode points",
+      "coincident distinct-layer, boundary, zero/one/multiple and quantization-only matches",
+      "malformed/duplicate/missing rnodes, token/type/coordinate and context/source/control refusals",
+      "complete zero-byte/binary/malformed output chunk reconstruction",
+      "actual run/finally primary error, emitter/source/final-save failures",
+      "actual independent cleanup/STOP/join failure paths",
+      "actual native_readback path with explicitly synthetic launcher/supervisor/cloud/native I/O, cleanup/save primary preservation and wrong budget event refusal"
+    ],
+    "native_or_cloud_collaborators": "Explicitly synthetic in source tests; no claim of real capsule/native extraction.",
+    "current_context": {
+      "source": "GITHUB_SHA",
+      "run_id": "int(GITHUB_RUN_ID)",
+      "attempt": 1,
+      "source_controls_only": true,
+      "native_executed": false
+    }
+  },
+  "CLI": {
+    "checker": "python -B scripts/check_cdr_current_access_overlay.py --pins-sha256 MANIFEST_SHA --output overlay-controls.json",
+    "preflight": "python -B scripts/cloud_cdr_current_access_overlay.py --preflight --pins-sha256 MANIFEST_SHA --reservation reservation.json --controls-proof overlay-controls.json --output preflight.json",
+    "readback": "python -B scripts/cloud_cdr_current_access_overlay.py --readback --pins-sha256 MANIFEST_SHA --reservation reservation.json --controls-proof overlay-controls.json --appimage ABSOLUTE_PINNED_APPIMAGE --output ABSOLUTE_DERIVED_OUTPUT",
+    "branch": "codex/cdr-current-access-overlay",
+    "group": "cdr-current-access-overlay",
+    "reservation_schema": "Unchanged cloud_cdr_current_rc_contacts.reservation; prerelease, exact tag/commit, empty assets, externally reserved, no overwrite.",
+    "markers": [
+      "CDR_ACCESS_OVERLAY_INDEX",
+      "CDR_ACCESS_OVERLAY_CHUNK",
+      "CDR_ACCESS_OVERLAY_END",
+      "CDR_ACCESS_OVERLAY_FAILURE",
+      "CDR_ACCESS_OVERLAY_UNSAVED_LIFECYCLE"
+    ],
+    "dependencies": "Standard-library source controls. Pinned librelane3.0.5 AppImage runtime; original Ubuntu libfuse2/tcl8.6 prerequisite only after preflight."
+  },
+  "limitations": [
+    "Source unit unexecuted; root must qualify exact hosted source before any readback.",
+    "Whole wire/component/metal ownership checks are observations of existing saved geometry; via ownership comes from authenticated wire extraction, not independent LVS via-layer mapping.",
+    "Neither one point match nor small resistance identifies the resistor footprint/material/contact/access path.",
+    "Full raw GDS conductor hierarchy emitted, but merged polygons may combine multiple raw shapes.",
+    "No transient simulation, width choice, geometry modification, new extraction or PHY/electrical/DRC acceptance."
+  ],
+  "verification": {
+    "AST_parse_only": true,
+    "exact_three_function_derivation": true,
+    "original_files_unchanged": true,
+    "publication_validation": "Author must re-fetch/hash all six new files and compare exact additive-only diff before reporting.",
+    "API_CAS_and_readback_required": true
+  }
+}
