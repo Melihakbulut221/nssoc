@@ -1,0 +1,128 @@
+name: Route recovery evidence source controls
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: route-recovery-evidence-controls-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Require first cloud attempt and exact source checkout
+        run: |
+          python3 -B - <<'PY'
+          import json,os,re,subprocess,sys
+          from pathlib import Path
+          e=os.environ
+          assert e['GITHUB_ACTIONS']=='true' and e['RUNNER_OS']=='Linux'
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_REF']=='refs/heads/codex/mainchip-route-recovery-evidence'
+          assert re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA'])
+          assert re.fullmatch('[1-9][0-9]*',e['GITHUB_RUN_ID'])
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
+          assert sys.version_info[:2]==(3,12)
+          row=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
+            branch=e['GITHUB_REF'],event=e['GITHUB_EVENT_NAME'],python=sys.version,
+            source_controls_only=True,native_authorized=False)
+          Path('recovery-control-context.json').write_text(json.dumps(row,sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Authenticate both complete failed cases and actual refusal controls
+        run: |
+          python3 -B scripts/check_mainchip_route_recovery_evidence.py --output recovery-controls.json > recovery-controls.stdout 2> recovery-controls.stderr
+          python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          r=json.loads(Path('recovery-controls.json').read_bytes())
+          assert r['status']=='PASS_READ_ONLY_RECOVERY_EVIDENCE_SOURCE_CONTROLS'
+          assert (r['positive_count'],r['refusal_count'])==(8,54)
+          assert r['current_source']==os.environ['GITHUB_SHA'] and r['current_run']==os.environ['GITHUB_RUN_ID']
+          assert r['current_attempt']=='1' and r['metadata_only'] is True
+          assert all(r[k] is False for k in ('archive_acquired','runtime_invoked','restore_invoked','reroute_authorized','audit_authorized','observer_equivalence_qualified','physical_acceptance'))
+          PY
+      - name: Always emit complete exact source control records
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          for name in ('recovery-control-context.json','recovery-controls.json','recovery-controls.stdout','recovery-controls.stderr'):
+              p=Path(name);present=p.is_file() and not p.is_symlink();raw=p.read_bytes() if present else b''
+              chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+              print('ROUTE_RECOVERY_CONTROL_INDEX '+json.dumps(dict(path=name,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks))))
+              for i,b in enumerate(chunks):
+                  print('ROUTE_RECOVERY_CONTROL_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode())))
+          PY
+      - name: Preserve complete report and command streams
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: route-recovery-source-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            recovery-control-context.json
+            recovery-controls.json
+            recovery-controls.stdout
+            recovery-controls.stderr
+          if-no-files-found: error
+          retention-days: 90
+  preserve-source-job-log:
+    needs: source-controls
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Preserve the completed source job full raw log and provenance
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          e=os.environ;repo=e['GITHUB_REPOSITORY'];run_id=e['GITHUB_RUN_ID'];attempt=e['GITHUB_RUN_ATTEMPT']
+          assert repo=='Melihakbulut221/nssoc' and e['GITHUB_ACTIONS']=='true'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and attempt=='1'
+          def read(endpoint,name):
+              raw=subprocess.check_output(['gh','api','repos/'+repo+'/'+endpoint])
+              Path(name).write_bytes(raw);return json.loads(raw)
+          run=read('actions/runs/'+run_id,'recovery-run.json')
+          jobs=read('actions/runs/'+run_id+'/attempts/'+attempt+'/jobs?per_page=100','recovery-jobs.json')
+          assert run['id']==int(run_id) and run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
+          matches=[j for j in jobs['jobs'] if j['name']=='source-controls']
+          assert len(matches)==1
+          j=matches[0]
+          assert j['run_id']==int(run_id) and j['head_sha']==e['GITHUB_SHA'] and j['run_attempt']==1 and j['status']=='completed'
+          read('actions/jobs/'+str(j['id']),'recovery-source-job.json')
+          log=subprocess.check_output(['gh','api','repos/'+repo+'/actions/jobs/'+str(j['id'])+'/logs'])
+          assert log
+          Path('recovery-source-job.log').write_bytes(log)
+          names=('recovery-run.json','recovery-jobs.json','recovery-source-job.json','recovery-source-job.log')
+          files={name:dict(bytes=Path(name).stat().st_size,sha256=hashlib.sha256(Path(name).read_bytes()).hexdigest()) for name in names}
+          receipt=dict(source=e['GITHUB_SHA'],run_id=int(run_id),attempt=1,source_job_id=j['id'],
+            source_job_conclusion=j['conclusion'],full_source_job_log=True,files=files,
+            native_authorized=False,metadata_only=True)
+          Path('recovery-source-job-log-receipt.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(receipt,sort_keys=True))
+          PY
+      - name: Preserve full completed source job log
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: route-recovery-full-source-job-log-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            recovery-run.json
+            recovery-jobs.json
+            recovery-source-job.json
+            recovery-source-job.log
+            recovery-source-job-log-receipt.json
+          if-no-files-found: error
+          retention-days: 90
