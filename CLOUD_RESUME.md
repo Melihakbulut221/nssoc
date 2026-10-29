@@ -1,3 +1,20 @@
+# Current cloud-only handoff — 2026-10-29, checkpoint 98
+
+**The user's latest instruction is: “her şeyi bulutta yap, lokalde bir şey bırakma temizle.” This overrides the stale “work locally” wording in the stored long-running goal.**
+
+- Do every checkout, authored test, CAD/simulation, native archive restoration and artifact production in GitHub Actions. Local activity is limited to RAM-only GitHub API/source/derived-JSON orchestration. Never acquire native archives, GDS, ODB, raw waveforms or built executables locally.
+- The local NSSOC workspace is empty. Known retired project copies, project-named temporary files and local native processes were checked absent. Original user-supplied review documents are retained.
+- Read `docs/evidence/cloud-active-checkpoint-20261024.json` at the current root HEAD for the authoritative checkpoint. Inventory version98 preserves307 exact run handles in the authenticated two-shard monitor format. Existing GitHub monitoring remains read-only every8hours.
+- There are **no active native jobs in this snapshot**. Do not restart completed unchanged-source runs.
+- **CDR geometry40796151572 / sourcea1707758a973d78bcd3c786b55810acb4d7d1168 / release427344642 passed generation and serialized reread only.** Actual26 additive raw metal records and52 native ownership/clearance joins passed. Candidate GDS SHA256 `fb8a0aea5b44627a513db62ed10fe87c66f30697930e1212d3689c7ae981c0c3`. Complete377042664-byte native archive stays in GitHub. Proof branch `codex/cdr-v59-selector-column-width-native` is at `20ed1b4f295ce5204fefd2c2240d89cbdc538bb5`.
+- The preceding failed40793128851 is preserved. Actual signed-zero observation `[-0.0,-3.97]` is bound to current metadata SHA256 `fa91ff0ec71a38b84200e57f7316791572c07bbf2b4b13d7e744d2b557bebd87`. Origin-only exact numeric admission passed3positive/27negative regressions; no tolerance or original960-file mutation was introduced.
+- **Mainchip prefix40789053922 / sourcee16c7f46a3b8f61c23507cdab8d60c4d9d4d3d8d / release427309454 passed preparation only.** Four native phases,1691 original clock/fixed nets and104 runtime libraries passed. Full746-file frozen continuation remains in cloud; no router or observer-equivalence run was performed. Proof branch `codex/mainchip-built-engine-route-prefix` is at `70d414c8992e73b3f9ea2ea30cb515df7f0b9395`.
+- Next CDR work: exact cloud restoration of the new candidate, separately inventoried candidate view, fresh native DRC/LVS, full parasitic extraction/binding, and unchanged electrical gates. Preserve original605-file baseline and all original failures.
+- Next routing work: exact cloud extraction/rehash of the complete frozen prefix, then same-ELF observer-off/on tails at identical `/work` paths with original geometry/class/via/protected-net/clock/DRC checks; only then qualified min/max RC and original20/4/8/8ns plus5percent setup/hold.
+- Full serial Gen3 x4 PHY, routed mainchip and final setup/hold remain **unaccepted**. Keep the product goal active; do not call generation, controls or preparation production approval.
+
+## Historical notes below — not current running-job status
+
 ## 2026-10-22: v31 MIM capture follows exact fresh extraction
 
 Corrected extraction39720055542/source462b8a4ac896fc26626787c7c0010e3595a6dae3 passed native planes; wire-inputs is live. New cdr-follower-v31-mim-parent-rc-cloud waits on this exact run and all4successful native stages, binds immutable receipts, then captures actual freshRC with7MIMs/938points and original5fault controls. No old parasitic values or electrical gates changed.
