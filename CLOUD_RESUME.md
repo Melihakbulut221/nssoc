@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v104
+# Cloud continuation — checkpoint v105
 
-Updated: 2026-10-29T04:42:05.082248+00:00
+Updated: 2026-10-29T05:11:11.962126+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Actual width topology40815684037 completed successfully: two full comparisons, nine native fault refusals, twelve acquired-identity positives/refusals, 1469 owner-layer checks and eight permitted changes; all original inputs unchanged. Complete terminal17 proof documents preserved. Fresh RC and original electrical cases remain pending. Route recovery evidence source qualification40818600460 passed8 positives/54 refusals and full log preservation; previous408180 source tests passed but its log-preservation job failure is retained. Both original route40808800489 cases completed native route+freeze but failed only on zero-byte direct stderr upload; no reroute is authorized. Disabled audit-only recovery source work continues in cloud. Local workspace/tmp/native processes freshly verified absent.
+Hosted new widthRC input evidence40819454746 passed4 positives/36 refusals; complete proof9 documents retained. Disabled freshRC adapters8dbfb477 with five unchanged numerical workers were independently reviewed at b56c551; controller/fixtures still pending. Audit recovery source40821032444 passed5 real adapter fixtures,7 lifecycle cases,5 actual pack/publication cases,6 context refusals and original controls; native payloads in fixtures remain explicitly synthetic. Real audit-only recovery40821586610/source4c6c705 dispatched once with off/on reservations427487104/427487132 before downloads. It reuses original complete route handoffs; no reroute, no STA or design acceptance. Local project directory is empty and no native local processes exist.
 
-Active handles at this snapshot: No native run remains active in this snapshot.
+Active handles at this snapshot: 40821586610 in_progress
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -8894,3 +8895,10 @@ Local project/tmp/native processes verified absent. Inventory317 exact cloud han
 Actual width topology40815684037 completed successfully: two full comparisons, nine native fault refusals, twelve acquired-identity positives/refusals, 1469 owner-layer checks and eight permitted changes; all original inputs unchanged. Complete terminal17 proof documents preserved. Fresh RC and original electrical cases remain pending. Route recovery evidence source qualification40818600460 passed8 positives/54 refusals and full log preservation; previous408180 source tests passed but its log-preservation job failure is retained. Both original route40808800489 cases completed native route+freeze but failed only on zero-byte direct stderr upload; no reroute is authorized. Disabled audit-only recovery source work continues in cloud. Local workspace/tmp/native processes freshly verified absent.
 
 Local project/tmp/native processes verified absent. Inventory319 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T05:11:11.962126+00:00 — cloud-only checkpoint v105
+
+Hosted new widthRC input evidence40819454746 passed4 positives/36 refusals; complete proof9 documents retained. Disabled freshRC adapters8dbfb477 with five unchanged numerical workers were independently reviewed at b56c551; controller/fixtures still pending. Audit recovery source40821032444 passed5 real adapter fixtures,7 lifecycle cases,5 actual pack/publication cases,6 context refusals and original controls; native payloads in fixtures remain explicitly synthetic. Real audit-only recovery40821586610/source4c6c705 dispatched once with off/on reservations427487104/427487132 before downloads. It reuses original complete route handoffs; no reroute, no STA or design acceptance. Local project directory is empty and no native local processes exist.
+
+Local project/tmp/native processes verified absent. Inventory322 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
