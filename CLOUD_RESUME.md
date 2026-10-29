@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v116
+# Cloud continuation — checkpoint v117
 
-Updated: 2026-10-29T11:58:18.712960+00:00
+Updated: 2026-10-29T12:39:42.066141+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Cloud-only readback40868093785 PASSED: full67member failedarchive authenticated onGitHub,12selectedtextrecords andcomplete22proof3,067,591B committed271c56d9/receipt92a86435. Ownership actuallycompleted original1691clock/fixedgate,3Shortsremain. All3unavailableRSS attempts hadsamePID18/starttime67784/stateR; SIGTERMcleanup precedesrc0. Rawstatus/flagsnotpreserved, naturalexit raceunproven. PrimaryLinuxsource diagnosis underwaybefore anyadditive supervisionrepair. No currentnative route/prefix accepted; all computation/evidence remainGitHub andlocalprojectisempty.
+Cloud-only checkpoint117: exit-aware supervision integration38959f2a passed hosted source-only run40874307492. All7indexed control records, raw joblogs and17proof files are preserved at4d4a209d. Thirty-one terminal cases, three real Python children and13unchanged supervision controls passed. Native preparation remains disabled while final review checks the command-deadline boundary of the new terminal_complete path. Previous failed prefix40863684870 stays failed; no routing or physical acceptance is claimed.
 
 Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -8990,3 +8991,10 @@ Local project/tmp/native processes verified absent. Inventory340 exact cloud han
 Cloud-only readback40868093785 PASSED: full67member failedarchive authenticated onGitHub,12selectedtextrecords andcomplete22proof3,067,591B committed271c56d9/receipt92a86435. Ownership actuallycompleted original1691clock/fixedgate,3Shortsremain. All3unavailableRSS attempts hadsamePID18/starttime67784/stateR; SIGTERMcleanup precedesrc0. Rawstatus/flagsnotpreserved, naturalexit raceunproven. PrimaryLinuxsource diagnosis underwaybefore anyadditive supervisionrepair. No currentnative route/prefix accepted; all computation/evidence remainGitHub andlocalprojectisempty.
 
 Local project/tmp/native processes verified absent. Inventory340 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T12:39:42.066141+00:00 — cloud-only checkpoint v117
+
+Cloud-only checkpoint117: exit-aware supervision integration38959f2a passed hosted source-only run40874307492. All7indexed control records, raw joblogs and17proof files are preserved at4d4a209d. Thirty-one terminal cases, three real Python children and13unchanged supervision controls passed. Native preparation remains disabled while final review checks the command-deadline boundary of the new terminal_complete path. Previous failed prefix40863684870 stays failed; no routing or physical acceptance is claimed.
+
+Local project/tmp/native processes verified absent. Inventory341 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
