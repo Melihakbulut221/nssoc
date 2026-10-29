@@ -738,10 +738,40 @@ def derivation_controls():
         actual_native_executed=False)
 
 
+def frozen_source_projection_controls():
+    inv=c.saved(ROOT,"frozen-prefix-inventory")
+    method=c.saved(ROOT,"method")
+    native=c.saved(ROOT,"native-prefix-result")
+    original=(copy.deepcopy(inv),copy.deepcopy(method),copy.deepcopy(native))
+    result=c.validate_frozen_source_projection(inv,method,native)
+    assert result==dict(protected_source_files=1208,original_phase_logs=4,
+        exact_phase_stdout_bindings=True,unexpected_source_members=0)
+    assert (inv,method,native)==original
+    log="source/"+c.previous.PHASES[0]+".log"
+    protected="source/"+next(iter(method["protected"]))
+    cases=[
+      ("missing_phase_log",lambda i,m,n:i["files"].pop(log)),
+      ("unexpected_phase_log",lambda i,m,n:i["files"].update({"source/unexpected.log":copy.deepcopy(i["files"][log])})),
+      ("phase_log_size",lambda i,m,n:i["files"][log].update(bytes=i["files"][log]["bytes"]+1)),
+      ("phase_log_hash",lambda i,m,n:i["files"][log].update(sha256="0"*64)),
+      ("command_stdout_size",lambda i,m,n:n["commands"][0].update(stdout_bytes=n["commands"][0]["stdout_bytes"]+1)),
+      ("command_stdout_hash",lambda i,m,n:n["commands"][0].update(stdout_sha256="0"*64)),
+      ("missing_protected_source",lambda i,m,n:i["files"].pop(protected)),
+      ("missing_method",lambda i,m,n:i["files"].pop("source/"+c.PRIOR))]
+    rows=[]
+    for name,edit in cases:
+        i,m,n=copy.deepcopy(original);edit(i,m,n)
+        rows.append(dict(name=name,result=refused(lambda:c.validate_frozen_source_projection(i,m,n),"frozen")))
+    assert len(rows)==8
+    return dict(positive_count=1,refusal_count=8,actual_saved_native_manifest=True,
+        native_executed=False,physical_acceptance=False,positive=result,refusals=rows)
+
+
 def controls(method):
     result=dict(status='PASS_FIXED_ENGINE_ROUTE_TAIL_SOURCE_CONTROLS',protected_count=len(method['protected']),
         source_only=True,native_executed=False,native_routing_executed=False,physical_acceptance=False,
         complete_native_qualification=False,observer_equivalence_qualified=False)
+    result['frozen_source_projection']=frozen_source_projection_controls()
     result['derivation']=derivation_controls()
     result['context_controls']=context_controls()
     result['authority_controls']=authority_controls(ROOT,method)

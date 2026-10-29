@@ -288,6 +288,22 @@ def validate_prefix_commands(native):
         qualifications.append(dict(label=x["label"],command_evidence=proof))
     return qualifications
 
+def validate_frozen_source_projection(inv,method,native):
+    """Authenticate the exact protected sources plus the four original supervised stdout logs."""
+    validate_prefix_commands(native)
+    expected={x["label"]+".log":dict(bytes=x["stdout_bytes"],sha256=x["stdout_sha256"])
+        for x in native["commands"]}
+    require(len(expected)==4 and set(expected)=={p+".log"for p in previous.PHASES},
+        "frozen original phase log census")
+    source={p.removeprefix("source/"):row for p,row in inv["files"].items()if p.startswith("source/")}
+    require(set(source)==set(method["protected"])|{PRIOR}|set(expected),"complete frozen source projection")
+    for name,row in expected.items():
+        require(type(row["bytes"])is int and row["bytes"]>=0
+            and type(row["sha256"])is str and re.fullmatch("[0-9a-f]{64}",row["sha256"])
+            and source[name]==row,"frozen original phase stdout log binding")
+    return dict(protected_source_files=len(method["protected"])+1,original_phase_logs=4,
+        exact_phase_stdout_bindings=True,unexpected_source_members=0)
+
 def validate_prefix_joins(root,host,inner,native,frozen,inv):
     receipt=saved(root,"receipt")
     direct={p[len(PREFIX+"direct/"):]:secure_file(root,p).read_bytes()
@@ -356,8 +372,7 @@ def validate_prefix_joins(root,host,inner,native,frozen,inv):
     require(inv["files"]["engine/openroad"]==ENGINE and inv["files"]["input.odb"]==INPUT,"prefix frozen native identity")
     require(inv["source_inventory_method"]==inv["files"]["source/"+PRIOR]==
         dict(bytes=len(direct["method.json"]),sha256=PRIOR_SHA),"prefix frozen source method")
-    require({p.removeprefix("source/")for p in inv["files"]if p.startswith("source/")}==
-        set(m["protected"])|{PRIOR},"complete frozen source projection")
+    validate_frozen_source_projection(inv,m,native)
     require(all(inv["files"]["source/"+p]["sha256"]==h for p,h in m["protected"].items()),"prefix frozen protected source bytes")
     require(all(inv[k]is False for k in ("native_routing_executed","physical_acceptance","observer_equivalence_qualified"))
         and frozen["native_routing_executed"]is False and frozen["physical_acceptance"]is False,"prefix frozen scope")
@@ -403,6 +418,8 @@ def control_evidence(root,ctx):
         "complete_native_qualification","observer_equivalence_qualified")),"current tail source-only scope")
     for key,positive,refusal in (("context_controls",5,14),("authority_controls",6,79),("command_consumers",5,24)):
         require((r[key]["positive_count"],r[key]["refusal_count"])==(positive,refusal),"current tail "+key)
+    require((r["frozen_source_projection"]["positive_count"],r["frozen_source_projection"]["refusal_count"])==(1,8)
+        and r["frozen_source_projection"]["actual_saved_native_manifest"]is True,"frozen exact source/log projection controls")
     require(r["derivation"]["wrapper_count"]==5 and r["derivation"]["exact_source_count"]==17
         and r["derivation"]["actual_native_executed"]is False
         and r["derivation"]["original_limits_and_comparison_preserved"]is True,"tail exact wrapper derivation")
