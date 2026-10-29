@@ -1,0 +1,1 @@
+Prepared GitHub API orchestration recipe for run40906725656 after all13jobs are terminal. Static AST parsing only; not executed or qualified yet. It acquires derived JSON/text/job logs and metadata only, never native archives or waveforms. Verify current source branch and actual terminal schemas before using; preserve failures honestly.

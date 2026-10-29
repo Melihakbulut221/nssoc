@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v123
+# Cloud continuation — checkpoint v124
 
-Updated: 2026-10-29T16:01:50.118792+00:00
+Updated: 2026-10-29T16:41:40.865083+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Cloud-only checkpoint123: actual current-width loaded matrix40906725656 is running at e1914245 after three current source suites passed again. Source-only qualification40905069113 at2ffb41c8 passed execution/publication/actual52-module3-recipe imports; full21proof539962bytes preservedfe892537. All11exact-source releases were reserved before dependencies; preparation now executes, original10case1200/7200second,maxparallel2 policy unchanged. Mainchip40894408041 both routejobs succeeded and independent audits are running. On-route writer metadata shows remainingnet459/clockMetal5overlap; final original-classDRC and timing still pending. Local project remains empty.
+Cloud-only checkpoint124: local project remains empty. Mainchip run40894408041 completed all7jobs; full271proof38,918,044bytes preserved149f2460 and imported here. Original-class DRC has1Short (downfrom3), all1691clock/fixedrecords pass conservation and observeroff/on outputs match; no timing/physical acceptance. Current-width CDR40906725656 preparation passed; firstnominalearly transistor simulation completed but data/phase/device gates reject, including4HBTactiveVCEbelow0.4V. Other originalcases continue unchanged. Final-marker textreadback is being prepared oncloud before a boundednet459repair; exactdiagnosis and endpointadjacency preserved.
 
-Active handles at this snapshot: 40906725656 in_progress; 40894408041 in_progress
+Active handles at this snapshot: 40906725656 queued
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9044,5 +9045,12 @@ Local project/tmp/native processes verified absent. Inventory349 exact cloud han
 ### 2026-10-29T16:01:50.118792+00:00 — cloud-only checkpoint v123
 
 Cloud-only checkpoint123: actual current-width loaded matrix40906725656 is running at e1914245 after three current source suites passed again. Source-only qualification40905069113 at2ffb41c8 passed execution/publication/actual52-module3-recipe imports; full21proof539962bytes preservedfe892537. All11exact-source releases were reserved before dependencies; preparation now executes, original10case1200/7200second,maxparallel2 policy unchanged. Mainchip40894408041 both routejobs succeeded and independent audits are running. On-route writer metadata shows remainingnet459/clockMetal5overlap; final original-classDRC and timing still pending. Local project remains empty.
+
+Local project/tmp/native processes verified absent. Inventory351 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T16:41:40.865083+00:00 — cloud-only checkpoint v124
+
+Cloud-only checkpoint124: local project remains empty. Mainchip run40894408041 completed all7jobs; full271proof38,918,044bytes preserved149f2460 and imported here. Original-class DRC has1Short (downfrom3), all1691clock/fixedrecords pass conservation and observeroff/on outputs match; no timing/physical acceptance. Current-width CDR40906725656 preparation passed; firstnominalearly transistor simulation completed but data/phase/device gates reject, including4HBTactiveVCEbelow0.4V. Other originalcases continue unchanged. Final-marker textreadback is being prepared oncloud before a boundednet459repair; exactdiagnosis and endpointadjacency preserved.
 
 Local project/tmp/native processes verified absent. Inventory351 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
