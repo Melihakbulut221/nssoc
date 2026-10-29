@@ -1,0 +1,121 @@
+{
+  "cgroup_initial": {
+    "cpu.max": "200000 100000",
+    "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+    "memory.max": "12884901888",
+    "memory.peak": "13316096",
+    "memory.swap.max": "0",
+    "pids.max": "4096"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/work/engine/openroad",
+        "-version"
+      ],
+      "elapsed_seconds": 0.031971702000021196,
+      "label": "lower-access-version",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "ldd",
+        "/work/engine/openroad"
+      ],
+      "elapsed_seconds": 0.01609056999996028,
+      "label": "lower-access-ldd",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "/work/engine/openroad",
+        "-no_init",
+        "-exit",
+        "-python",
+        "/work/tail-source/scripts/mainchip_lower_access_neighborhood_native.py"
+      ],
+      "elapsed_seconds": 618.692166684,
+      "label": "lower-access-neighborhood",
+      "returncode": 0
+    }
+  ],
+  "full_phy_accepted": false,
+  "physical_acceptance": false,
+  "runtime_before": {
+    "count": 104,
+    "exact_paths_sizes_hashes": true
+  },
+  "status": "IN_PROGRESS",
+  "terminal_actions": [
+    {
+      "action": "lower-access-version:stop",
+      "completed": true
+    },
+    {
+      "action": "lower-access-version:wait-after-stop",
+      "completed": true
+    },
+    {
+      "action": "lower-access-version:kill-if-live",
+      "completed": true
+    },
+    {
+      "action": "lower-access-version:wait-after-kill",
+      "completed": true
+    },
+    {
+      "action": "lower-access-version:terminal-child",
+      "completed": true
+    },
+    {
+      "action": "lower-access-version:progress",
+      "completed": true
+    },
+    {
+      "action": "lower-access-ldd:stop",
+      "completed": true
+    },
+    {
+      "action": "lower-access-ldd:wait-after-stop",
+      "completed": true
+    },
+    {
+      "action": "lower-access-ldd:kill-if-live",
+      "completed": true
+    },
+    {
+      "action": "lower-access-ldd:wait-after-kill",
+      "completed": true
+    },
+    {
+      "action": "lower-access-ldd:terminal-child",
+      "completed": true
+    },
+    {
+      "action": "lower-access-ldd:progress",
+      "completed": true
+    },
+    {
+      "action": "lower-access-neighborhood:stop",
+      "completed": true
+    },
+    {
+      "action": "lower-access-neighborhood:wait-after-stop",
+      "completed": true
+    },
+    {
+      "action": "lower-access-neighborhood:kill-if-live",
+      "completed": true
+    },
+    {
+      "action": "lower-access-neighborhood:wait-after-kill",
+      "completed": true
+    },
+    {
+      "action": "lower-access-neighborhood:terminal-child",
+      "completed": true
+    }
+  ],
+  "terminal_errors": [],
+  "timing_accepted": false
+}
