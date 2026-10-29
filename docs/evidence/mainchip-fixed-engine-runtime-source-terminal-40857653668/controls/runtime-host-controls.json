@@ -1,0 +1,204 @@
+{
+  "current_context": {
+    "attempt": 1,
+    "native_executed": false,
+    "run_id": 40857653668,
+    "source": "c017d04d0a88545c73d79991ba2c3a88f571225b",
+    "source_controls_only": true
+  },
+  "derivation": {
+    "fixed_build_publisher_preserved_except_runtime_names": true,
+    "native_executed": false,
+    "original_input94_restoration_unchanged": true,
+    "original_probe_lifecycle_preserved": true,
+    "probe_substitutions": 6,
+    "unchanged_functions": [
+      "owned_work",
+      "restore_input",
+      "publish_asset"
+    ]
+  },
+  "native_executed": false,
+  "physical_acceptance": false,
+  "publication": {
+    "cases": [
+      {
+        "caught_traceback": null,
+        "complete_empty_archive_member": true,
+        "error": null,
+        "missing_id_regression": false,
+        "mode": "empty_terminal",
+        "original_terminal_bytes_unchanged": true,
+        "synthetic_cloud_transport": true,
+        "zero_byte_direct_upload": false
+      },
+      {
+        "caught_traceback": null,
+        "complete_empty_archive_member": true,
+        "error": null,
+        "missing_id_regression": false,
+        "mode": "missing_terminal",
+        "original_terminal_bytes_unchanged": true,
+        "synthetic_cloud_transport": true,
+        "zero_byte_direct_upload": false
+      },
+      {
+        "caught_traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_mainchip_fixed_engine_runtime_host.py\", line 146, in publication_controls\n    try:result=h.publish()\n               ^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_fixed_engine_runtime.py\", line 235, in publish\n    uploaded=[publish_asset(p,ctx,proof[\"release_id\"],reservation.release.api,upload) for p in uploads]\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_fixed_engine_runtime.py\", line 177, in publish_asset\n    upload(tag,path)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_fixed_engine_runtime.py\", line 234, in upload\n    subprocess.run([\"gh\",\"release\",\"upload\",tag,str(path),\"--repo\",c.REPOSITORY],check=True,timeout=1800)\n  File \"/usr/lib/python3.12/unittest/mock.py\", line 1134, in __call__\n    return self._mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/unittest/mock.py\", line 1138, in _mock_call\n    return self._execute_mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/unittest/mock.py\", line 1199, in _execute_mock_call\n    result = effect(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_mainchip_fixed_engine_runtime_host.py\", line 133, in upload\n    if mode in (\"upload_failure\",\"source_and_upload_failure\"):raise failure\n                                                              ^^^^^^^^^^^^^\nOSError: synthetic upload failure\n",
+        "complete_empty_archive_member": true,
+        "error": "OSError('synthetic upload failure')",
+        "missing_id_regression": false,
+        "mode": "upload_failure",
+        "original_terminal_bytes_unchanged": true,
+        "synthetic_cloud_transport": true,
+        "zero_byte_direct_upload": false
+      },
+      {
+        "caught_traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_mainchip_fixed_engine_runtime_host.py\", line 146, in publication_controls\n    try:result=h.publish()\n               ^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_fixed_engine_runtime.py\", line 235, in publish\n    uploaded=[publish_asset(p,ctx,proof[\"release_id\"],reservation.release.api,upload) for p in uploads]\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_fixed_engine_runtime.py\", line 173, in publish_asset\n    c.require(len(same)==1 and same[0][\"size\"]==expected[\"bytes\"]\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_witness_engine_build_contract.py\", line 26, in require\n    raise ValueError(reason)\nValueError: existing asset conflict\n",
+        "complete_empty_archive_member": true,
+        "error": "ValueError('existing asset conflict')",
+        "missing_id_regression": false,
+        "mode": "conflicting_asset",
+        "original_terminal_bytes_unchanged": true,
+        "synthetic_cloud_transport": true,
+        "zero_byte_direct_upload": false
+      },
+      {
+        "caught_traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_mainchip_fixed_engine_runtime_host.py\", line 146, in publication_controls\n    try:result=h.publish()\n               ^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_fixed_engine_runtime.py\", line 260, in publish\n    if source_error is not None:raise source_error\n                                ^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_fixed_engine_runtime.py\", line 190, in publish\n    try:c.method(ROOT)\n        ^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/unittest/mock.py\", line 1134, in __call__\n    return self._mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/unittest/mock.py\", line 1138, in _mock_call\n    return self._execute_mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/unittest/mock.py\", line 1199, in _execute_mock_call\n    result = effect(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_mainchip_fixed_engine_runtime_host.py\", line 116, in checked_method\n    try:return real_method(path)\n               ^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_fixed_engine_runtime_contract.py\", line 141, in method\n    require(isinstance(h,str)and re.fullmatch(\"[0-9a-f]{64}\",h)is not None and\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_witness_engine_build_contract.py\", line 26, in require\n    raise ValueError(reason)\nValueError: protected source: scripts/mainchip_fixed_engine_runtime_contract.py\n",
+        "complete_empty_archive_member": true,
+        "error": "ValueError('protected source: scripts/mainchip_fixed_engine_runtime_contract.py')",
+        "missing_id_regression": false,
+        "mode": "source_corruption",
+        "original_terminal_bytes_unchanged": true,
+        "synthetic_cloud_transport": true,
+        "zero_byte_direct_upload": false
+      },
+      {
+        "caught_traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_fixed_engine_runtime.py\", line 235, in publish\n    uploaded=[publish_asset(p,ctx,proof[\"release_id\"],reservation.release.api,upload) for p in uploads]\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_fixed_engine_runtime.py\", line 177, in publish_asset\n    upload(tag,path)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_fixed_engine_runtime.py\", line 234, in upload\n    subprocess.run([\"gh\",\"release\",\"upload\",tag,str(path),\"--repo\",c.REPOSITORY],check=True,timeout=1800)\n  File \"/usr/lib/python3.12/unittest/mock.py\", line 1134, in __call__\n    return self._mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/unittest/mock.py\", line 1138, in _mock_call\n    return self._execute_mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/unittest/mock.py\", line 1199, in _execute_mock_call\n    result = effect(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_mainchip_fixed_engine_runtime_host.py\", line 133, in upload\n    if mode in (\"upload_failure\",\"source_and_upload_failure\"):raise failure\n                                                              ^^^^^^^^^^^^^\nOSError: synthetic upload failure\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_mainchip_fixed_engine_runtime_host.py\", line 146, in publication_controls\n    try:result=h.publish()\n               ^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_fixed_engine_runtime.py\", line 258, in publish\n    raise source_error\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_fixed_engine_runtime.py\", line 190, in publish\n    try:c.method(ROOT)\n        ^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/unittest/mock.py\", line 1134, in __call__\n    return self._mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/unittest/mock.py\", line 1138, in _mock_call\n    return self._execute_mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/unittest/mock.py\", line 1199, in _execute_mock_call\n    result = effect(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_mainchip_fixed_engine_runtime_host.py\", line 116, in checked_method\n    try:return real_method(path)\n               ^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_fixed_engine_runtime_contract.py\", line 141, in method\n    require(isinstance(h,str)and re.fullmatch(\"[0-9a-f]{64}\",h)is not None and\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_witness_engine_build_contract.py\", line 26, in require\n    raise ValueError(reason)\nValueError: protected source: scripts/mainchip_fixed_engine_runtime_contract.py\n",
+        "complete_empty_archive_member": true,
+        "error": "ValueError('protected source: scripts/mainchip_fixed_engine_runtime_contract.py')",
+        "missing_id_regression": false,
+        "mode": "source_and_upload_failure",
+        "original_terminal_bytes_unchanged": true,
+        "synthetic_cloud_transport": true,
+        "zero_byte_direct_upload": false
+      },
+      {
+        "caught_traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_mainchip_fixed_engine_runtime_host.py\", line 146, in publication_controls\n    try:result=h.publish()\n               ^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_fixed_engine_runtime.py\", line 235, in publish\n    uploaded=[publish_asset(p,ctx,proof[\"release_id\"],reservation.release.api,upload) for p in uploads]\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_fixed_engine_runtime.py\", line 179, in publish_asset\n    info=current();same=[a for a in info[\"assets\"] if a[\"name\"]==path.name]\n         ^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_fixed_engine_runtime.py\", line 167, in current\n    reservation.release.validate_release(info,ref,tag,ctx[\"source\"])\n  File \"/home/runner/work/nssoc/nssoc/scripts/ensure_cloud_tested_source_release.py\", line 28, in validate_release\n    assert len({a['id']for a in assets})==len(assets)\n                ~^^^^^^\nKeyError: 'id'\n",
+        "complete_empty_archive_member": true,
+        "error": "KeyError('id')",
+        "missing_id_regression": true,
+        "mode": "missing_asset_id",
+        "original_terminal_bytes_unchanged": true,
+        "synthetic_cloud_transport": true,
+        "zero_byte_direct_upload": false
+      }
+    ],
+    "count": 7,
+    "status": "PASS_ACTUAL_FAILURE_AND_EMPTY_PUBLICATION_CONTROLS"
+  },
+  "runtime_qualified": false,
+  "source_records": {
+    "actual_runtime_control_record_used": true,
+    "native_executed": false,
+    "positive_count": 1,
+    "refusal_count": 13,
+    "refusals": [
+      {
+        "file": "runtime-probe-controls.json",
+        "path": [
+          "current_context",
+          "source"
+        ],
+        "refused": "ValueError('current control context')"
+      },
+      {
+        "file": "runtime-probe-controls.json",
+        "path": [
+          "current_context",
+          "run_id"
+        ],
+        "refused": "ValueError('current control context')"
+      },
+      {
+        "file": "runtime-probe-controls.json",
+        "path": [
+          "current_context",
+          "attempt"
+        ],
+        "refused": "ValueError('current control context')"
+      },
+      {
+        "file": "runtime-probe-controls.json",
+        "path": [
+          "native_executed"
+        ],
+        "refused": "ValueError('current controls native scope')"
+      },
+      {
+        "file": "runtime-probe-controls.json",
+        "path": [
+          "status"
+        ],
+        "refused": "ValueError('current runtime source controls')"
+      },
+      {
+        "file": "runtime-probe-controls.json",
+        "path": [
+          "original_runtime_controls",
+          "refusal_count"
+        ],
+        "refused": "ValueError('original runtime lifecycle controls')"
+      },
+      {
+        "file": "runtime-probe-controls.json",
+        "path": [
+          "producer_input_controls",
+          "refusal_count"
+        ],
+        "refused": "ValueError('current producer input controls')"
+      },
+      {
+        "file": "runtime-host-controls.json",
+        "path": [
+          "current_context",
+          "source"
+        ],
+        "refused": "ValueError('current control context')"
+      },
+      {
+        "file": "runtime-host-controls.json",
+        "path": [
+          "status"
+        ],
+        "refused": "ValueError('current host controls')"
+      },
+      {
+        "file": "runtime-host-controls.json",
+        "path": [
+          "publication",
+          "count"
+        ],
+        "refused": "ValueError('current host controls')"
+      },
+      {
+        "file": "runtime-host-controls.json",
+        "path": [
+          "native_executed"
+        ],
+        "refused": "ValueError('current controls native scope')"
+      },
+      {
+        "file": "runtime-host-controls.json",
+        "mode": "missing",
+        "refused": "ValueError('missing regular file')"
+      },
+      {
+        "file": "runtime-host-controls.json",
+        "mode": "symlink",
+        "refused": "ValueError('path symlink')"
+      }
+    ],
+    "synthetic_host_control_record": true
+  },
+  "status": "PASS_FIXED_ENGINE_RUNTIME_HOST_SOURCE_CONTROLS"
+}

@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v111
+# Cloud continuation — checkpoint v112
 
-Updated: 2026-10-29T09:41:54.704536+00:00
+Updated: 2026-10-29T10:35:17.378579+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Cloud-only cleanup remains verified: no local NSSOC checkout, outputs, project temporary files or native processes. The eight-hour read-only monitor's main-branch filter defect is repaired: candidate40845545784 and deployed-main40847665085 both passed72 source controls and completed the full331-handle live inventory plus2 latest selectors; the main-only live-inventory check passed. ATTENTION_REQUIRED retains241 historical or unverified rows and is not MONITOR_ERROR. Complete logs/snapshots and the original scheduled failure are preserved. New fixed-engine runtime input admission40850943370 passed5 positive groups and74 refusal controls, including6 explicitly synthetic archive refusals; sourcec902dcc and proof66bb384 are durable with925 protected pins. All computation and test execution took place in GitHub. Next: integrate the qualified input admission into the actual new-ELF/original-ODB runtime probe, then route and original RC/STA. Current-width electrical integration, PLL, full PHY and final timing remain open.
+New fixed-engine runtime source controls40857653668 passed4positive/48refusal/6process/7inner lifecycle and7publication+1positive/13current-record controls after initial40856758871 exposed missing producer-method projection. Complete failed and passed proof retained. Native read-only actual-chip probe40858216637 runs exact1812666 with1022protected files; reserved public prerelease427727176 before acquisition. No routing/timing/PHY acceptance. Additive successor prefix wrappers are prepared separately after identifying stale frozen-module and empty-publication traps.
 
-Active handles at this snapshot: No native run remains active in this snapshot.
+Active handles at this snapshot: 40858216637 in_progress
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -8950,3 +8951,10 @@ Local project/tmp/native processes verified absent. Inventory331 exact cloud han
 Cloud-only cleanup remains verified: no local NSSOC checkout, outputs, project temporary files or native processes. The eight-hour read-only monitor's main-branch filter defect is repaired: candidate40845545784 and deployed-main40847665085 both passed72 source controls and completed the full331-handle live inventory plus2 latest selectors; the main-only live-inventory check passed. ATTENTION_REQUIRED retains241 historical or unverified rows and is not MONITOR_ERROR. Complete logs/snapshots and the original scheduled failure are preserved. New fixed-engine runtime input admission40850943370 passed5 positive groups and74 refusal controls, including6 explicitly synthetic archive refusals; sourcec902dcc and proof66bb384 are durable with925 protected pins. All computation and test execution took place in GitHub. Next: integrate the qualified input admission into the actual new-ELF/original-ODB runtime probe, then route and original RC/STA. Current-width electrical integration, PLL, full PHY and final timing remain open.
 
 Local project/tmp/native processes verified absent. Inventory334 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T10:35:17.378579+00:00 — cloud-only checkpoint v112
+
+New fixed-engine runtime source controls40857653668 passed4positive/48refusal/6process/7inner lifecycle and7publication+1positive/13current-record controls after initial40856758871 exposed missing producer-method projection. Complete failed and passed proof retained. Native read-only actual-chip probe40858216637 runs exact1812666 with1022protected files; reserved public prerelease427727176 before acquisition. No routing/timing/PHY acceptance. Additive successor prefix wrappers are prepared separately after identifying stale frozen-module and empty-publication traps.
+
+Local project/tmp/native processes verified absent. Inventory337 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
