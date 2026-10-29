@@ -1,19 +1,17 @@
-# Current cloud-only handoff — 2026-10-29, checkpoint 98
+# Cloud continuation — checkpoint v99
 
-**The user's latest instruction is: “her şeyi bulutta yap, lokalde bir şey bırakma temizle.” This overrides the stale “work locally” wording in the stored long-running goal.**
+Updated: 2026-10-29T01:28:03.406321+00:00
 
-- Do every checkout, authored test, CAD/simulation, native archive restoration and artifact production in GitHub Actions. Local activity is limited to RAM-only GitHub API/source/derived-JSON orchestration. Never acquire native archives, GDS, ODB, raw waveforms or built executables locally.
-- The local NSSOC workspace is empty. Known retired project copies, project-named temporary files and local native processes were checked absent. Original user-supplied review documents are retained.
-- Read `docs/evidence/cloud-active-checkpoint-20261024.json` at the current root HEAD for the authoritative checkpoint. Inventory version98 preserves307 exact run handles in the authenticated two-shard monitor format. Existing GitHub monitoring remains read-only every8hours.
-- There are **no active native jobs in this snapshot**. Do not restart completed unchanged-source runs.
-- **CDR geometry40796151572 / sourcea1707758a973d78bcd3c786b55810acb4d7d1168 / release427344642 passed generation and serialized reread only.** Actual26 additive raw metal records and52 native ownership/clearance joins passed. Candidate GDS SHA256 `fb8a0aea5b44627a513db62ed10fe87c66f30697930e1212d3689c7ae981c0c3`. Complete377042664-byte native archive stays in GitHub. Proof branch `codex/cdr-v59-selector-column-width-native` is at `20ed1b4f295ce5204fefd2c2240d89cbdc538bb5`.
-- The preceding failed40793128851 is preserved. Actual signed-zero observation `[-0.0,-3.97]` is bound to current metadata SHA256 `fa91ff0ec71a38b84200e57f7316791572c07bbf2b4b13d7e744d2b557bebd87`. Origin-only exact numeric admission passed3positive/27negative regressions; no tolerance or original960-file mutation was introduced.
-- **Mainchip prefix40789053922 / sourcee16c7f46a3b8f61c23507cdab8d60c4d9d4d3d8d / release427309454 passed preparation only.** Four native phases,1691 original clock/fixed nets and104 runtime libraries passed. Full746-file frozen continuation remains in cloud; no router or observer-equivalence run was performed. Proof branch `codex/mainchip-built-engine-route-prefix` is at `70d414c8992e73b3f9ea2ea30cb515df7f0b9395`.
-- Next CDR work: exact cloud restoration of the new candidate, separately inventoried candidate view, fresh native DRC/LVS, full parasitic extraction/binding, and unchanged electrical gates. Preserve original605-file baseline and all original failures.
-- Next routing work: exact cloud extraction/rehash of the complete frozen prefix, then same-ELF observer-off/on tails at identical `/work` paths with original geometry/class/via/protected-net/clock/DRC checks; only then qualified min/max RC and original20/4/8/8ns plus5percent setup/hold.
-- Full serial Gen3 x4 PHY, routed mainchip and final setup/hold remain **unaccepted**. Keep the product goal active; do not call generation, controls or preparation production approval.
+Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
+
+Actual new geometry from40796151572 is now the input of fresh physical run40800207491 at exact source20e4cf92f79b9e2742373dc058a855a979f60db1. Hosted eight new source tests and original physical control step passed. Native verification is separately guarded by the original560-rule DRC, deep/flat500-device LVS and13fault controls; no new physical success is inferred before terminal evidence. Route-tail off/on source work proceeds separately from successful prefix40789053922.
+
+Active handles at this snapshot: 40800207491 in_progress
+
+Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 ## 2026-10-22: v31 MIM capture follows exact fresh extraction
 
@@ -8849,3 +8847,10 @@ Local project/tmp/native processes verified absent. Inventory306 exact cloud han
 Cloud geometry40796151572 at reviewed sourcea1707758 completedSUCCESS. New actual3positive/27negative origin regressions reproduce old JSON signed-zero rejection and preserve all other comparisons; observed current child metadata is exactlyfa91ff0e with[-0.0,-3.97], no tolerance added and no restored byte rewritten. Complete3823 restore605view and pinned runtime passed; native generation produced26 additive raw metal records,52 ownership/clearance joins, preserved original material/text/properties/hierarchy and passed serialized GDS reread. CandidateSHAfb8a0aea5b44627a513db62ed10fe87c66f30697930e1212d3689c7ae981c0c3 and full377,042,664B archive remain in release427344642; none acquired locally. Full12native terminalproofs and13actualcontrolproofs were permanently committed. All dispatched native jobs in this checkpoint are terminal; next physical DRC/LVS/PEX/electrical and mainchip observer-tail/routing/timing work remain unqualified. Local project/temp/native cleanup is preserved.
 
 Local project/tmp/native processes verified absent. Inventory307 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T01:28:03.406321+00:00 — cloud-only checkpoint v99
+
+Actual new geometry from40796151572 is now the input of fresh physical run40800207491 at exact source20e4cf92f79b9e2742373dc058a855a979f60db1. Hosted eight new source tests and original physical control step passed. Native verification is separately guarded by the original560-rule DRC, deep/flat500-device LVS and13fault controls; no new physical success is inferred before terminal evidence. Route-tail off/on source work proceeds separately from successful prefix40789053922.
+
+Local project/tmp/native processes verified absent. Inventory308 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

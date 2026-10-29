@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T00:55:34.617936+00:00",
+  "updated_at": "2026-10-29T01:28:03.406321+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "308ee00a01049ae96884d94970c6ff05b28ac11c",
+  "root_source_before_receipt": "6e5a71df3b2cf04c00d4501bc2b69cf211522449",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 98,
+    "inventory_version": 99,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -21,7 +21,33 @@
     ],
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33"
   },
-  "active_runs": {},
+  "active_runs": {
+    "cdr_selector_fresh_physical": {
+      "run": 40800207491,
+      "head_sha": "20e4cf92f79b9e2742373dc058a855a979f60db1",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123206235955,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123206408396,
+          "name": "physical",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Fresh physical verification with complete streams"
+          ]
+        }
+      ]
+    }
+  },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -2936,15 +2962,23 @@
       "physical_accepted": false,
       "electrical_accepted": false,
       "full_phy_accepted": false
+    },
+    "cdr_selector_fresh_physical": {
+      "run": 40800207491,
+      "source": "20e4cf92f79b9e2742373dc058a855a979f60db1",
+      "controls_job": 123206235955,
+      "source_tests_passed": 8,
+      "original_physical_controls_passed": true,
+      "candidate_gds_sha256": "fb8a0aea5b44627a513db62ed10fe87c66f30697930e1212d3689c7ae981c0c3",
+      "full_phy_accepted": false,
+      "final_setup_hold_accepted": false
     }
   },
   "next_actions": [
-    "Cloud-only continuation: exact-restore the completed geometry40796151572/release427344642 full377042664B capsule and authenticate every member. New candidate GDS fb8a0aea5b44627a513db62ed10fe87c66f30697930e1212d3689c7ae981c0c3 passed generation+serialized reread only,26 raw additions and52 native ownership/clearance joins.",
-    "Next implement and qualify fresh native DRC/LVS for this exact new candidate with unchanged schematic/PDK/model sources. Build a separately inventoried candidate view; do not rewrite authenticated original605-file baseline or inherit its old physical acceptance.",
-    "After actual DRC/LVS, obtain full fresh parasitic extraction/binding and original electrical tests. Selector/gain/CDR/PLL thresholds, timing margins and original rejection evidence remain unchanged; no electrical or full-PHY acceptance yet.",
-    "In parallel the accepted canonical routing prefix40789053922/release427309454 is ready for cloud-only exact extraction of outer archive and746 frozen members. Implement same-ELF observer-off/on routing tails from identical/work paths, retain original geometry/classes/vias/protected-net/clock/DRC gates, then qualified min/max RC and original20/4/8/8ns plus5percent setup/hold.",
-    "Do not restart completed unchanged-source runs. Failed40793128851 is preserved with complete17proofs; signed-zero correction only changed new adapter/checker/workflow and passed actual3positive27negative origin regressions, with immutable960 legacy files.",
-    "All source edits/proofs are committed remotely. Local project workspace, known retired project copies, project-named/tmp and/var/tmp and native processes are empty; original user review documents retained. Existing8h read-only GitHub monitor retained with307 exact historical run handles."
+    "Continue same CDR physical handle40800207491; do not redispatch. Collect full native DRC/LVS and13fault evidence on completion.",
+    "Review independent source-only route-tail off/on continuation from exact frozen746-member prefix; no route-tail native dispatch yet.",
+    "After physical acceptance, regenerate candidate connectivity and RC/MIM before original10electrical cases.",
+    "Preserve cloud-only execution, exact-source releases, original clock/electrical gates and all negative evidence."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -3237,31 +3271,33 @@
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40796151572,
-      "head_sha": "a1707758a973d78bcd3c786b55810acb4d7d1168",
-      "status": "completed",
-      "conclusion": "success",
+      "run": 40800207491,
+      "head_sha": "20e4cf92f79b9e2742373dc058a855a979f60db1",
+      "status": "in_progress",
+      "conclusion": null,
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123193007134,
+          "id": 123206235955,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123193372637,
-          "name": "geometry",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
+          "id": 123206408396,
+          "name": "physical",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Fresh physical verification with complete streams"
+          ]
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T00:55:34.617936+00:00",
+    "observed_at": "2026-10-29T01:28:03.406321+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -3390,7 +3426,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T00:55:34.617936+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T01:28:03.406321+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -26897,6 +26933,74 @@
       "source": "a1707758a973d78bcd3c786b55810acb4d7d1168",
       "release": 427344642,
       "tag": "cloud-results-40796151572-1-cdr-v59-selector-column-width-native"
+    }
+  ],
+  "imported_checkpoint_receipts_v99": [
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-physical-source-review-20261029.json",
+      "source": "20e4cf92f79b9e2742373dc058a855a979f60db1",
+      "git_blob": "1f396ab1500766f1b10cfb41c197075dd5114a15",
+      "bytes": 2372,
+      "sha256": "0e40fee16bc2bf49c7ce25a35ceb7badcaa2fbbd94e5bdbbeeb3c9c3ea81d5a0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-physical-dispatch-controls-20261029.joblog.log",
+      "source": "e2a778120830b3ded2dea65374342a4fd5ec3768",
+      "git_blob": "b37063993d755af647764e08a2a797bd6327e633",
+      "bytes": 36846,
+      "sha256": "297ece9f98e2f599007155f47c25a0b710406d4f02b0178760be5ca3812d8428",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-physical-dispatch-controls-20261029.jobs.json",
+      "source": "e2a778120830b3ded2dea65374342a4fd5ec3768",
+      "git_blob": "09e703912e833cbd5b4463a652522b54fc598073",
+      "bytes": 7479,
+      "sha256": "14e9b0addb33bc7ce32ba4ab758eb5abae6a545f07aca1f5d16299678fe9f24e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-physical-dispatch-controls-20261029.receipt.json",
+      "source": "e2a778120830b3ded2dea65374342a4fd5ec3768",
+      "git_blob": "31141825f269858b54e89ca927c76476b6828506",
+      "bytes": 1786,
+      "sha256": "7c6455b86e367cea8f2516a469324705ef72940f88b6f65e8b2cc4df1da0f198",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-physical-dispatch-controls-20261029.release.json",
+      "source": "e2a778120830b3ded2dea65374342a4fd5ec3768",
+      "git_blob": "35b690c78320636fb337e7dfb1eb32be981ecb78",
+      "bytes": 2505,
+      "sha256": "4b065201739c2377ba183f4688267ac226908256b1523446f7af5688451884d4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-physical-dispatch-controls-20261029.run.json",
+      "source": "e2a778120830b3ded2dea65374342a4fd5ec3768",
+      "git_blob": "5d04e03ee5f622185d61cccbdd9ff4c0f2dbba4f",
+      "bytes": 14432,
+      "sha256": "692fcfebf58b6229a5b74aa9c31f06995b8bf3e0981bc47b839a3aa1b3f2b2a2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-physical-dispatch-controls-20261029.tag.json",
+      "source": "e2a778120830b3ded2dea65374342a4fd5ec3768",
+      "git_blob": "22704313fe457dc752e42485463a3c641eb1922b",
+      "bytes": 585,
+      "sha256": "294d3e4d27e35c2df4d1a12c7a1d205a660dd2c9a07c81eaeb2338c5e3edc758",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v99": [
+    {
+      "run": 40800207491,
+      "source": "20e4cf92f79b9e2742373dc058a855a979f60db1",
+      "release": 427365885,
+      "tag": "cloud-results-40800207491-1-cdr-v59-selector-column-width-physical",
+      "draft": false,
+      "prerelease": true
     }
   ]
 }
