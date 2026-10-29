@@ -1,0 +1,40 @@
+name: Fixed prefix failure text readback
+on:
+  workflow_dispatch:
+    inputs:
+      readback:
+        type: boolean
+        required: true
+        default: false
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mainchip-fixed-prefix-failure-readback-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  readback:
+    if: ${{ inputs.readback && github.ref == 'refs/heads/codex/mainchip-fixed-prefix-failure-readback' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Authenticate complete failed archive and read selected text only in cloud
+        run: python3 -B scripts/cloud_mainchip_fixed_prefix_failure_readback.py
+      - name: Preserve complete diagnostic result on GitHub
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: fixed-prefix-failure-readback-${{ github.run_id }}-${{ github.run_attempt }}
+          path: fixed-prefix-failure-readback/
+          if-no-files-found: error
+          retention-days: 90
