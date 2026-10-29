@@ -1,0 +1,369 @@
+name: Fixed engine observer off on route tails
+on:
+  workflow_dispatch:
+    inputs:
+      native:
+        type: boolean
+        required: true
+        default: false
+        description: Run separately reserved route and audit stages only after source authorization
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: mainchip-fixed-engine-route-tail-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      NSSOC_ROUTE_TAIL_MODE: "off"
+      NSSOC_ROUTE_TAIL_STAGE: route
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Exact current source and three actual control suites
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import mainchip_fixed_engine_route_tail_contract as c
+          e=os.environ;m=c.method(c.ROOT);ctx=c.context(e)
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==ctx['source']
+          assert sys.version_info[:2]==(3,12)
+          c.atomic_record(Path('fixed-tail-control-context.json'),dict(source=ctx['source'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,mode=ctx['mode'],stage=ctx['stage'],method_sha256=hashlib.sha256(Path(c.METHOD).read_bytes()).hexdigest(),source_controls_only=True,native_executed=False))
+          PY
+          python3 -B scripts/check_mainchip_exit_checked_supervision.py --output exit-supervision-controls.json > exit-supervision-controls.stdout 2> exit-supervision-controls.stderr
+          python3 -B scripts/check_mainchip_exit_checked_command_evidence.py --output exit-command-evidence-controls.json > exit-command-evidence-controls.stdout 2> exit-command-evidence-controls.stderr
+          python3 -B scripts/check_mainchip_fixed_engine_route_tail.py --output fixed-route-tail-controls.json > fixed-route-tail-controls.stdout 2> fixed-route-tail-controls.stderr
+          python3 -B - <<'PY'
+          import os,sys
+          sys.path.insert(0,'scripts')
+          import mainchip_fixed_engine_route_tail_contract as c
+          c.control_evidence(c.ROOT,c.context(os.environ))
+          PY
+      - name: Always emit complete exact control records
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          for name in ["fixed-tail-control-context.json","exit-supervision-controls.json","exit-supervision-controls.stdout","exit-supervision-controls.stderr","exit-command-evidence-controls.json","exit-command-evidence-controls.stdout","exit-command-evidence-controls.stderr","fixed-route-tail-controls.json","fixed-route-tail-controls.stdout","fixed-route-tail-controls.stderr"]:
+              p=Path(name);raw=p.read_bytes() if p.is_file() else b""
+              chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+              print("ROUTE_TAIL_RECORD_INDEX "+json.dumps(dict(path=name,present=p.is_file(),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks))))
+              for i,b in enumerate(chunks):
+                  print("ROUTE_TAIL_RECORD_CHUNK "+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode())))
+          PY
+      - name: Preserve source controls
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: route-tail-source-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            fixed-tail-control-context.json
+            exit-supervision-controls.json
+            exit-supervision-controls.stdout
+            exit-supervision-controls.stderr
+            exit-command-evidence-controls.json
+            exit-command-evidence-controls.stdout
+            exit-command-evidence-controls.stderr
+            fixed-route-tail-controls.json
+            fixed-route-tail-controls.stdout
+            fixed-route-tail-controls.stderr
+          if-no-files-found: error
+          retention-days: 90
+  route-only:
+    if: ${{ inputs.native }}
+    needs: [source-controls, preserve-source-job-log]
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        mode: ["off", "on"]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      NSSOC_ROUTE_TAIL_MODE: ${{ matrix.mode }}
+      NSSOC_ROUTE_TAIL_STAGE: route
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Repeat exact controls before transport or native work
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import mainchip_fixed_engine_route_tail_contract as c
+          e=os.environ;m=c.method(c.ROOT);ctx=c.context(e)
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==ctx['source']
+          assert sys.version_info[:2]==(3,12)
+          c.atomic_record(Path('fixed-tail-control-context.json'),dict(source=ctx['source'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,mode=ctx['mode'],stage=ctx['stage'],method_sha256=hashlib.sha256(Path(c.METHOD).read_bytes()).hexdigest(),source_controls_only=True,native_executed=False))
+          PY
+          python3 -B scripts/check_mainchip_exit_checked_supervision.py --output exit-supervision-controls.json > exit-supervision-controls.stdout 2> exit-supervision-controls.stderr
+          python3 -B scripts/check_mainchip_exit_checked_command_evidence.py --output exit-command-evidence-controls.json > exit-command-evidence-controls.stdout 2> exit-command-evidence-controls.stderr
+          python3 -B scripts/check_mainchip_fixed_engine_route_tail.py --output fixed-route-tail-controls.json > fixed-route-tail-controls.stdout 2> fixed-route-tail-controls.stderr
+          python3 -B - <<'PY'
+          import os,sys
+          sys.path.insert(0,'scripts')
+          import mainchip_fixed_engine_route_tail_contract as c
+          c.control_evidence(c.ROOT,c.context(os.environ))
+          PY
+      - name: Require all five independently reserved releases before downloads
+        run: |
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-fixed-engine-route-tail-off-route
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-fixed-engine-route-tail-on-route
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-fixed-engine-route-tail-off-audit
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-fixed-engine-route-tail-on-audit
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-fixed-engine-route-tail-compare
+      - name: Execute one separately owned route stage
+        id: native
+        run: |
+          python3 -B scripts/cloud_mainchip_fixed_engine_route_tail.py probe
+      - name: Freeze the full route workspace after successful owned cleanup
+        if: ${{ success() && steps.native.outcome == 'success' }}
+        run: |
+          python3 -B scripts/cloud_mainchip_fixed_engine_route_tail.py handoff
+      - name: Permanently preserve complete success or failure evidence
+        if: ${{ always() && steps.native.outcome != 'skipped' }}
+        run: |
+          python3 -B scripts/cloud_mainchip_fixed_engine_route_tail.py publish
+      - name: Always emit exact terminal and repeated-control records
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,json,os
+          from pathlib import Path
+          group='mainchip-fixed-engine-route-tail-'+os.environ['NSSOC_ROUTE_TAIL_MODE']+'-'+os.environ['NSSOC_ROUTE_TAIL_STAGE']
+          out=Path(os.environ['RUNNER_TEMP'])/(group+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT'])/'out'
+          paths=[Path(n) for n in ["fixed-tail-control-context.json","exit-supervision-controls.json","exit-supervision-controls.stdout","exit-supervision-controls.stderr","exit-command-evidence-controls.json","exit-command-evidence-controls.stdout","exit-command-evidence-controls.stderr","fixed-route-tail-controls.json","fixed-route-tail-controls.stdout","fixed-route-tail-controls.stderr"]]
+          paths += [out/name for name in ('host-result.json','inner-result.json','case-result.json','observer-diagnosis.json','writer-raw.json','prefix-restoration.json','route-handoff.json','route-handoff-inventory.json','route-source-envelope.json','route-restoration.json','publication.json')]
+          for p in paths:
+              raw=p.read_bytes() if p.is_file() else b'';chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+              print('ROUTE_TAIL_RECORD_INDEX '+json.dumps(dict(path=str(p),present=p.is_file(),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks))))
+              for i,b in enumerate(chunks):
+                  print('ROUTE_TAIL_RECORD_CHUNK '+json.dumps(dict(path=str(p),index=i,base64=base64.b64encode(b).decode())))
+          PY
+      - name: Complete native output artifact fallback
+        if: ${{ always() && steps.native.outcome != 'skipped' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: route-tail-route-${{ matrix.mode }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mainchip-fixed-engine-route-tail-${{ matrix.mode }}-route-${{ github.run_id }}-${{ github.run_attempt }}/out/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 1
+  audit-only:
+    if: ${{ inputs.native }}
+    needs: [source-controls, route-only]
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        mode: ["off", "on"]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      NSSOC_ROUTE_TAIL_MODE: ${{ matrix.mode }}
+      NSSOC_ROUTE_TAIL_STAGE: audit
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Repeat exact controls before transport or native work
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import mainchip_fixed_engine_route_tail_contract as c
+          e=os.environ;m=c.method(c.ROOT);ctx=c.context(e)
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==ctx['source']
+          assert sys.version_info[:2]==(3,12)
+          c.atomic_record(Path('fixed-tail-control-context.json'),dict(source=ctx['source'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,mode=ctx['mode'],stage=ctx['stage'],method_sha256=hashlib.sha256(Path(c.METHOD).read_bytes()).hexdigest(),source_controls_only=True,native_executed=False))
+          PY
+          python3 -B scripts/check_mainchip_exit_checked_supervision.py --output exit-supervision-controls.json > exit-supervision-controls.stdout 2> exit-supervision-controls.stderr
+          python3 -B scripts/check_mainchip_exit_checked_command_evidence.py --output exit-command-evidence-controls.json > exit-command-evidence-controls.stdout 2> exit-command-evidence-controls.stderr
+          python3 -B scripts/check_mainchip_fixed_engine_route_tail.py --output fixed-route-tail-controls.json > fixed-route-tail-controls.stdout 2> fixed-route-tail-controls.stderr
+          python3 -B - <<'PY'
+          import os,sys
+          sys.path.insert(0,'scripts')
+          import mainchip_fixed_engine_route_tail_contract as c
+          c.control_evidence(c.ROOT,c.context(os.environ))
+          PY
+      - name: Require all five independently reserved releases before downloads
+        run: |
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-fixed-engine-route-tail-off-route
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-fixed-engine-route-tail-on-route
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-fixed-engine-route-tail-off-audit
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-fixed-engine-route-tail-on-audit
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-fixed-engine-route-tail-compare
+      - name: Execute one separately owned audit stage
+        id: native
+        run: |
+          python3 -B scripts/cloud_mainchip_fixed_engine_route_tail.py probe
+
+      - name: Permanently preserve complete success or failure evidence
+        if: ${{ always() && steps.native.outcome != 'skipped' }}
+        run: |
+          python3 -B scripts/cloud_mainchip_fixed_engine_route_tail.py publish
+      - name: Always emit exact terminal and repeated-control records
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,json,os
+          from pathlib import Path
+          group='mainchip-fixed-engine-route-tail-'+os.environ['NSSOC_ROUTE_TAIL_MODE']+'-'+os.environ['NSSOC_ROUTE_TAIL_STAGE']
+          out=Path(os.environ['RUNNER_TEMP'])/(group+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT'])/'out'
+          paths=[Path(n) for n in ["fixed-tail-control-context.json","exit-supervision-controls.json","exit-supervision-controls.stdout","exit-supervision-controls.stderr","exit-command-evidence-controls.json","exit-command-evidence-controls.stdout","exit-command-evidence-controls.stderr","fixed-route-tail-controls.json","fixed-route-tail-controls.stdout","fixed-route-tail-controls.stderr"]]
+          paths += [out/name for name in ('host-result.json','inner-result.json','case-result.json','observer-diagnosis.json','writer-raw.json','prefix-restoration.json','route-handoff.json','route-handoff-inventory.json','route-source-envelope.json','route-restoration.json','publication.json')]
+          for p in paths:
+              raw=p.read_bytes() if p.is_file() else b'';chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+              print('ROUTE_TAIL_RECORD_INDEX '+json.dumps(dict(path=str(p),present=p.is_file(),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks))))
+              for i,b in enumerate(chunks):
+                  print('ROUTE_TAIL_RECORD_CHUNK '+json.dumps(dict(path=str(p),index=i,base64=base64.b64encode(b).decode())))
+          PY
+      - name: Complete native output artifact fallback
+        if: ${{ always() && steps.native.outcome != 'skipped' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: route-tail-audit-${{ matrix.mode }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mainchip-fixed-engine-route-tail-${{ matrix.mode }}-audit-${{ github.run_id }}-${{ github.run_attempt }}/out/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 1
+  comparison:
+    if: ${{ inputs.native }}
+    needs: [source-controls, audit-only]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      NSSOC_ROUTE_TAIL_MODE: compare
+      NSSOC_ROUTE_TAIL_STAGE: compare
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Recheck source before comparison
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import mainchip_fixed_engine_route_tail_contract as c
+          e=os.environ;m=c.method(c.ROOT);ctx=c.context(e)
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==ctx['source']
+          assert sys.version_info[:2]==(3,12)
+          c.atomic_record(Path('fixed-tail-control-context.json'),dict(source=ctx['source'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,mode=ctx['mode'],stage=ctx['stage'],method_sha256=hashlib.sha256(Path(c.METHOD).read_bytes()).hexdigest(),source_controls_only=True,native_executed=False))
+          PY
+          python3 -B scripts/check_mainchip_exit_checked_supervision.py --output exit-supervision-controls.json > exit-supervision-controls.stdout 2> exit-supervision-controls.stderr
+          python3 -B scripts/check_mainchip_exit_checked_command_evidence.py --output exit-command-evidence-controls.json > exit-command-evidence-controls.stdout 2> exit-command-evidence-controls.stderr
+          python3 -B scripts/check_mainchip_fixed_engine_route_tail.py --output fixed-route-tail-controls.json > fixed-route-tail-controls.stdout 2> fixed-route-tail-controls.stderr
+          python3 -B - <<'PY'
+          import os,sys
+          sys.path.insert(0,'scripts')
+          import mainchip_fixed_engine_route_tail_contract as c
+          c.control_evidence(c.ROOT,c.context(os.environ))
+          PY
+      - name: Compare complete authenticated audit outputs
+        run: |
+          python3 -B scripts/cloud_mainchip_fixed_engine_route_tail.py compare
+      - name: Always emit comparison control records
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          for name in ["fixed-tail-control-context.json","exit-supervision-controls.json","exit-supervision-controls.stdout","exit-supervision-controls.stderr","exit-command-evidence-controls.json","exit-command-evidence-controls.stdout","exit-command-evidence-controls.stderr","fixed-route-tail-controls.json","fixed-route-tail-controls.stdout","fixed-route-tail-controls.stderr"]:
+              p=Path(name);raw=p.read_bytes() if p.is_file() else b""
+              chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+              print("ROUTE_TAIL_RECORD_INDEX "+json.dumps(dict(path=name,present=p.is_file(),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks))))
+              for i,b in enumerate(chunks):
+                  print("ROUTE_TAIL_RECORD_CHUNK "+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode())))
+          PY
+      - name: Preserve complete comparison evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: route-tail-comparison-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mainchip-fixed-engine-route-tail-compare-${{ github.run_id }}-${{ github.run_attempt }}/
+            fixed-tail-control-context.json
+            exit-supervision-controls.json
+            exit-supervision-controls.stdout
+            exit-supervision-controls.stderr
+            exit-command-evidence-controls.json
+            exit-command-evidence-controls.stdout
+            exit-command-evidence-controls.stderr
+            fixed-route-tail-controls.json
+            fixed-route-tail-controls.stdout
+            fixed-route-tail-controls.stderr
+          if-no-files-found: error
+          retention-days: 90
+  preserve-source-job-log:
+    needs: source-controls
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Preserve full actual source job log and metadata
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          root=Path('job-logs');root.mkdir()
+          e=os.environ
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_RUN_ATTEMPT']=='1'
+          prefix='repos/'+e['GITHUB_REPOSITORY']+'/'
+          def read(path,name):
+              b=subprocess.check_output(['gh','api',prefix+path]);(root/name).write_bytes(b);return json.loads(b)
+          run=read('actions/runs/'+e['GITHUB_RUN_ID'],'run.json')
+          assert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
+          jobs=read('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
+          selected=[j for j in jobs['jobs'] if j['name']=='source-controls'];assert len(selected)==1
+          j=selected[0];assert j['status']=='completed' and j['head_sha']==e['GITHUB_SHA']
+          read('actions/jobs/'+str(j['id']),'job.json')
+          b=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(j['id'])+'/logs'])
+          assert b;(root/'job.log').write_bytes(b)
+          receipt=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
+            job_id=j['id'],job_conclusion=j['conclusion'],full_raw_job_log=True,
+            log_bytes=len(b),log_sha256=hashlib.sha256(b).hexdigest(),native_acquisition=False)
+          (root/'receipt.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(receipt,sort_keys=True))
+          PY
+      - name: Preserve complete actual logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: fixed-route-tail-source-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: job-logs
+          if-no-files-found: error
+          retention-days: 90
