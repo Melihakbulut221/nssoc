@@ -1,0 +1,278 @@
+{
+  "schema": 1,
+  "status": "AUTHENTIC_TERMINAL_FAILURE_PRESERVED",
+  "source": "15fc053d21ddeafd132ecac7bba3835a3a4d48d3",
+  "branch": "codex/cdr-resistor-provenance-build",
+  "run_id": 40973498818,
+  "attempt": 1,
+  "release_id": 428497156,
+  "observed_run_conclusion": "failure",
+  "jobs": {
+    "source-controls": {
+      "id": 123795793091,
+      "conclusion": "success"
+    },
+    "preserve-source-job-log": {
+      "id": 123796000013,
+      "conclusion": "success"
+    },
+    "native-build": {
+      "id": 123796054208,
+      "conclusion": "failure"
+    },
+    "preserve-terminal-job-logs": {
+      "id": 123797942197,
+      "conclusion": "success"
+    }
+  },
+  "source_controls": {
+    "positive": 8,
+    "refusal": 30,
+    "lifecycle": 6,
+    "inherited_positive": 4,
+    "inherited_refusal": 19
+  },
+  "primary_error": {
+    "message": "native record/order/value mismatch: archived",
+    "type": "AssertionError"
+  },
+  "native_commands": [
+    {
+      "label": "baseline-configure",
+      "returncode": 0,
+      "supervision_failure": null
+    },
+    {
+      "label": "baseline-make",
+      "returncode": 0,
+      "supervision_failure": null
+    },
+    {
+      "label": "baseline-dependencies",
+      "returncode": 0,
+      "supervision_failure": null
+    },
+    {
+      "label": "instrumented-configure",
+      "returncode": 0,
+      "supervision_failure": null
+    },
+    {
+      "label": "instrumented-make",
+      "returncode": 0,
+      "supervision_failure": null
+    },
+    {
+      "label": "instrumented-dependencies",
+      "returncode": 0,
+      "supervision_failure": null
+    },
+    {
+      "label": "extract-archived",
+      "returncode": 0,
+      "supervision_failure": null
+    },
+    {
+      "label": "extract-rebuilt_baseline",
+      "returncode": 0,
+      "supervision_failure": null
+    },
+    {
+      "label": "extract-trace_off",
+      "returncode": 0,
+      "supervision_failure": null
+    },
+    {
+      "label": "extract-trace_on",
+      "returncode": 0,
+      "supervision_failure": null
+    }
+  ],
+  "observations": [
+    "All ten actual configure/make/ldd/extraction command events return0 with no supervision failure.",
+    "Complete pump_wires.res.ext raw hashes match current saved input for all four variants, but aggregate record/SPICE comparison still rejected.",
+    "No equivalence or trace acceptance is transferred from command success.",
+    "Full archive is permanent release asset690259850; it was never acquired locally.",
+    "All twelve indexed derived records join exact direct release bytes; four full plain job logs preserved."
+  ],
+  "authority": {
+    "electrical_acceptance": false,
+    "physical_acceptance": false,
+    "full_phy_accepted": false,
+    "reduced_element_ownership_proved": false
+  },
+  "files": {
+    "artifacts.json": {
+      "bytes": 3669,
+      "sha256": "020b60102555dc49b24c3f822c3089f69e6af83e209ea67249a7ef0b78700999"
+    },
+    "assets/admission.json": {
+      "bytes": 75029,
+      "sha256": "db98fe60c4f5a6baad2dafda481ea8d52cbdda8838561c6284f1c1836bdce585"
+    },
+    "assets/builds.json": {
+      "bytes": 28051,
+      "sha256": "a52097d5ae8b59fc0a76d51a30a7fd6db48497542938f7691f66c0dbf8bebac1"
+    },
+    "assets/cdr-resistor-provenance-build-40973498818-1.parts.json": {
+      "bytes": 859,
+      "sha256": "92119a29aa1b4e9173b1b74717f3bea730f8046bd24e8d103c09305780d1a4ce"
+    },
+    "assets/current-full-census.json": {
+      "bytes": 3049282,
+      "sha256": "9735be5a2ba19e94541ab798a036d435878956873d24ba38dd724dc4c41f8b0e"
+    },
+    "assets/current-transport.json": {
+      "bytes": 610,
+      "sha256": "7ee471271feec5fc53e6ec5e6dbfecb60cb144f87d4701362652fa588fb028e0"
+    },
+    "assets/direct-publication-plan.json": {
+      "bytes": 2495,
+      "sha256": "6111fe14880cf3f9be3f5af407a9ff711b69316f54b01770f81345636b646dfd"
+    },
+    "assets/execution-source-census.json": {
+      "bytes": 13219,
+      "sha256": "e77e9fcd26853c8ece45e39a6aac4c1409baa2696e6fb8538eae7b36555d5279"
+    },
+    "assets/lifecycle.json": {
+      "bytes": 790,
+      "sha256": "a37b8a8dbc0e62f878f2bf63e62cef46b4757c87bbac2d3326f9beb9b85b1a49"
+    },
+    "assets/migration-full-census.json": {
+      "bytes": 3165727,
+      "sha256": "a49af3effe77759256f28b9faa7aa93c04056ad14449ae5b80e0e7f79cf96894"
+    },
+    "assets/publication-inventory.json": {
+      "bytes": 2818683,
+      "sha256": "65dd13a131879b2946953829dba9451a1d0d8d8277029d3a121b15f4ae6f9dca"
+    },
+    "assets/qualified-source-snapshots.json": {
+      "bytes": 179619,
+      "sha256": "7c5c55f33178228ddf3477e03504b55548c09187f7c7c6f0dc6b2658787c673b"
+    },
+    "assets/result.json": {
+      "bytes": 1720,
+      "sha256": "f3e8cade4b82a4220b3d686031a48e58efdbf5aaf24535f93d83d90b9cead395"
+    },
+    "assets/source-controls.json": {
+      "bytes": 3544,
+      "sha256": "9cea007aafe2d8c552509c98dd192b0734ec4eeb71fdf795107d9bc98db8d453"
+    },
+    "dispatch-request.json": {
+      "bytes": 148,
+      "sha256": "254b3b044e97e1be1d66d16742d680f26dbd5190066569e557da7246cb37aeb2"
+    },
+    "dispatch-response.txt": {
+      "bytes": 1375,
+      "sha256": "e920a31cd143b3eeb568878e3a71e051537e49db8111b266478e5deff53c7dd5"
+    },
+    "dispatch-stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "initial-reservation-ref.json": {
+      "bytes": 555,
+      "sha256": "6a12f926408f7923ce233d2ed0082673d10bb3d953aa4b64a5f5eac216ebe52e"
+    },
+    "initial-reservation.json": {
+      "bytes": 2556,
+      "sha256": "6dca24ec3f5c9580d2f17f25c3ff510f9061f602a7085efad8e9fea098746a9d"
+    },
+    "jobs.json": {
+      "bytes": 13061,
+      "sha256": "17f0bb45a5dc0b01926c8b3d80972720c4fa4e2125d59685e1c671f22143b91c"
+    },
+    "jobs/123795793091.json": {
+      "bytes": 3288,
+      "sha256": "2875a7322f4654b10e352f5b50ad97bbbee8ba81c4e7840c13b65f8200502932"
+    },
+    "jobs/123795793091.log": {
+      "bytes": 47068,
+      "sha256": "c4cdc760687b9a9a806a2a102031058447e56fb410beeb61ef950dd52d9f194c"
+    },
+    "jobs/123796000013.json": {
+      "bytes": 1987,
+      "sha256": "052f3ea286637edd78e92f5ef234975bb666686524a613eeaeaca81b956fd99e"
+    },
+    "jobs/123796000013.log": {
+      "bytes": 34106,
+      "sha256": "7a373b020f9135b53a121a3a8d493dc24c4044e3f93c330e4563db5253b05080"
+    },
+    "jobs/123796054208.json": {
+      "bytes": 4339,
+      "sha256": "a668183413c12c849b77a2cfb26e6d6fe6a036f506b2c3440c23ca03b1ea53ef"
+    },
+    "jobs/123796054208.log": {
+      "bytes": 3335054,
+      "sha256": "0cadf1207913fb8dcfe9dee05ad6ff0fc024d455d492adeaf01e05d30687abea"
+    },
+    "jobs/123797942197.json": {
+      "bytes": 1996,
+      "sha256": "8610fc3df9f4a6628c55a8e602971a501204e639ea143da764d745c461a44cc4"
+    },
+    "jobs/123797942197.log": {
+      "bytes": 6383,
+      "sha256": "2a07d7830d5c6423c015a9ae678530a6738fb541b699be7fdc43da653db2d96c"
+    },
+    "native-command-events.json": {
+      "bytes": 32700,
+      "sha256": "5471b7ca647091f5c100297651dc988e5de784f3e6cff9d6c7dda87d92dc85ed"
+    },
+    "native-index.json": {
+      "bytes": 1626,
+      "sha256": "c013a6ee0032fc16d47abdf9e01c626e558d86f0df5448601dd26a2ce42600cd"
+    },
+    "registration.json": {
+      "bytes": 792,
+      "sha256": "6aaea81e0388fe23fd67bdd4d57d45a146845e04ec6fcbd6382f4f5a3beebc2b"
+    },
+    "release.json": {
+      "bytes": 30898,
+      "sha256": "96968fa9dbafd6c8f971d6b6dededcda9fe032fe3de074a446286aa4b5899698"
+    },
+    "run.json": {
+      "bytes": 14380,
+      "sha256": "5699d2df4f43a3022907bd56f0e14e133e183ca56b210122f9472967b9d93f69"
+    },
+    "source-commit.json": {
+      "bytes": 1417,
+      "sha256": "22ad068190eddf6d059df76065cb5ad6b3339721c84ab3fbd1bf2dea74fe0de8"
+    },
+    "source-controls/context.json": {
+      "bytes": 172,
+      "sha256": "97a6a81dace2f91d1857204a5554aa33009571d569c99a8f015fc5eb5c47d655"
+    },
+    "source-controls/controls.json": {
+      "bytes": 3544,
+      "sha256": "9cea007aafe2d8c552509c98dd192b0734ec4eeb71fdf795107d9bc98db8d453"
+    },
+    "source-controls/controls.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-controls/controls.stdout": {
+      "bytes": 4556,
+      "sha256": "19dcd13c365c61b8ea65d347c5b0cc19404748699afd8dd302ac8e4654fb6a5b"
+    },
+    "source-controls/returncode.txt": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "source-controls/source-manifest.json": {
+      "bytes": 13376,
+      "sha256": "aae1441afdfe352eaad2c317b5847e6f5a1cce53d1dd3919dcf221991031c227"
+    },
+    "tag-ref.json": {
+      "bytes": 555,
+      "sha256": "6a12f926408f7923ce233d2ed0082673d10bb3d953aa4b64a5f5eac216ebe52e"
+    },
+    "tested-workflow.yml": {
+      "bytes": 12070,
+      "sha256": "23e28ce59fe5321da192e1859939ee166ad07c41a79aca2b316884d6d2a0337f"
+    },
+    "workflow.json": {
+      "bytes": 604,
+      "sha256": "8e9058ca084c3f341a81d7e929b2e076403407ff9c6faa67a8403d85afdd0efe"
+    }
+  }
+}
