@@ -1,4 +1,4 @@
-# Inactive template. All new native authority false until reviewed exact-source qualification.
+# Exact-source native admission follows passed hosted controller qualification; original gates remain unchanged.
 name: CDR current selector width fresh RC execution
 on:
   workflow_dispatch:
@@ -107,8 +107,8 @@ jobs:
           retention-days: 90
           path: hw/soc/out/cdr-selector-width-fresh-rc-execution-controls
   fresh-RC:
-    # Deliberately disabled, including when the manual extract input is true.
-    if: ${{ false && inputs.extract }}
+    # Same-source controls must pass before the separately admitted native extraction.
+    if: ${{ inputs.extract }}
     needs: source-controls
     permissions:
       contents: write
