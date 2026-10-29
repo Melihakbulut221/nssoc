@@ -1,0 +1,92 @@
+name: CDR selector column width fresh graph
+on:
+  workflow_dispatch:
+    inputs:
+      execute:
+        description: Read fresh planes, full wire graph and anchors from the exact physically verified candidate
+        type: boolean
+        default: false
+        required: true
+defaults:
+  run:
+    shell: bash
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cdr-selector-width-graph-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Actual graph admission, metadata provenance, failure preservation and refusal controls
+        run: |
+          mkdir -p hw/soc/out/cdr-selector-graph-controls
+          python scripts/check_cdr_v59_selector_column_width_graph.py 2>&1 | tee hw/soc/out/cdr-selector-graph-controls/controls.log
+      - name: Unchanged original full topology controls
+        run: python scripts/check_cdr_v59_tail_access_topology.py > hw/soc/out/cdr-selector-graph-controls/inherited-topology.json
+      - name: Preserve complete source controls
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-selector-graph-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          path: hw/soc/out/cdr-selector-graph-controls
+  graph:
+    if: ${{ inputs.execute }}
+    needs: source-controls
+    permissions:
+      contents: write
+      actions: read
+    runs-on: ubuntu-22.04
+    timeout-minutes: 240
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact-source reserved prerelease before dependencies
+        run: python scripts/cloud_cdr_v59_selector_column_width_graph.py --preflight
+      - name: Pinned native AppImage
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Fresh native graph readback with complete streams
+        run: |
+          mkdir -p hw/soc/out/cdr-selector-width-graph-driver-logs
+          python scripts/cloud_cdr_v59_selector_column_width_graph.py 2>&1 | tee hw/soc/out/cdr-selector-width-graph-driver-logs/driver.log
+      - name: Permanent complete or partial evidence
+        if: always()
+        run: python scripts/cloud_cdr_v59_selector_column_width_graph.py --publish-only
+      - name: Complete evidence fallback
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-selector-width-graph-full-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          path: |
+            hw/soc/out/cloud-cdr-v59-selector-column-width-graph
+            hw/soc/out/cloud-cdr-v59-selector-column-width-graph-publication
+            hw/soc/out/cdr-selector-width-graph-driver-logs
