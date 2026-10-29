@@ -256,6 +256,7 @@ def lifecycle_case(kind,data):
         else:report=c.decode((work/"out/host-result.json").read_bytes())
         demand(report["new_host_context"]==ctx and report["frozen_native_context"]==saved["old_audit_context"]
           and report["original_audits_succeeded"]is False,"terminal old/new contexts")
+        demand(report["native_audit_completion_validated"]is (kind in ("complete","stop_failure","terminal_save_failure")),"premature audit completion claim")
         if state["created"]:demand(state["removed"]and not state["running"],"owned container cleanup omitted")
         if kind in ("body_stop_failure","stop_failure"):demand("kill"in events and "rm"in events,"stop failure skipped kill/remove")
         demand(report["status"]==("PASS_OWNED_AUDIT_STAGE_DIAGNOSTIC"if kind=="complete"else"FAIL_OWNED_ROUTE_TAIL"),"lifecycle result")

@@ -72,7 +72,7 @@ def cloned_probe(ctx,saved):
               "unexpected current request at frozen execution boundary")
             c.atomic_record(work/"out/current-host-request.json",dict(new_host_context=ctx,
               host_request=value,frozen_native_request=saved["old_audit_context"],
-              newly_executed_audits=True,original_skipped_audits_succeeded=False))
+              audits_requested_as_new_execution=True,original_skipped_audits_succeeded=False))
             c.atomic_record(path,saved["old_audit_context"])
             shutil.copyfile(path,work/"out/frozen-native-request.json")
         else:
@@ -82,7 +82,9 @@ def cloned_probe(ctx,saved):
                 shutil.copyfile(ROOT/a.CONTROLS,path.parent/a.CONTROLS)
     def finish(path,report,failure_status,primary=None):
         report.update(new_host_context=ctx,frozen_native_context=saved["old_audit_context"],
-          audit_execution_is_new=True,original_run_conclusion="failure",original_route_job_conclusion="failure",
+          audit_execution_context_is_new=True,
+          native_audit_completion_validated=any(x["action"]=="actual-tail-terminal"and x["completed"]is True for x in report.get("terminal_actions",[])),
+          original_run_conclusion="failure",original_route_job_conclusion="failure",
           original_audit_jobs_conclusion="skipped",original_audits_succeeded=False,
           rerouting_performed=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
         return c.finish_record(path,report,failure_status,primary)
@@ -155,7 +157,7 @@ def pack(work,out,ctx):
       "publication already prepared")
     c.atomic_record(out/"outputs.json",dict(source=ctx["source"],run_id=ctx["run_id"],mode=ctx["mode"],stage="audit",
       original_source=evidence.SOURCE,original_run=evidence.RUN,files=files,
-      newly_executed_audit_evidence=True,original_jobs_remain_failed=True,physical_acceptance=False))
+      new_audit_execution_evidence=True,original_jobs_remain_failed=True,physical_acceptance=False))
     total=sum(row["bytes"]for row in files.values())
     c.require(shutil.disk_usage(work).free>=2*total+2*1024**3,"recovery publication disk budget")
     archive=work/"audit-recovery-evidence.tar.gz"
