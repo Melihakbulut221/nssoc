@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T20:14:24.288188+00:00",
+  "updated_at": "2026-10-29T20:33:57.397595+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "87a9640269098f6d3d83524d767dc35243b7a242",
+  "root_source_before_receipt": "f1776f0b6fef9f0cd29d78bfd2b5f91a2a23c73f",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 129,
+    "inventory_version": 130,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -40,40 +40,7 @@
       "main_verification_run": 40847665085
     }
   },
-  "active_runs": {
-    "southern_neighborhood_native_readback": {
-      "run": 40944948451,
-      "head_sha": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
-      "status": "in_progress",
-      "conclusion": null,
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123697789958,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123698028416,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123698105286,
-          "name": "readback",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Read actual current ODB and embedded technology on hosted runner"
-          ]
-        }
-      ]
-    }
-  },
+  "active_runs": {},
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -4120,7 +4087,6 @@
     },
     "mainchip_southern_neighborhood": {
       "source": "7b8ce6bd1f70e82852c766f55b760853b6789f87",
-      "workflow_source": "dd9da010cfb908fa678e597221eeca17b240f701",
       "controls_run": 40944146144,
       "controls_proof": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
       "controls_counts": [
@@ -4134,21 +4100,35 @@
       ],
       "native_run": 40944948451,
       "native_source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "terminal": "success",
+      "proof": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "complete_files": 61,
+      "complete_bytes": 2446039,
+      "receipt_sha256": "22106a2c33ae435efc8bbe676b9af0ea5c9ee51978f9750ebf810a5abd5863e9",
       "release_id": 428336131,
-      "tag": "cloud-results-40944948451-1-mainchip-southern-neighborhood",
       "window_dbu": [
         937420,
         1773500,
         957620,
         1800560
       ],
-      "original_input_and_engine_unchanged": true,
+      "record_count": 1024,
+      "full_database_census_and_all_three_sources_equal_prior_readback": true,
+      "declared_track_patterns_observed": true,
+      "track_binding_output_arity": 3,
       "read_only": true,
-      "pending": "Collect actual southern geometry and declared track binding output, then inspect a net459-only detour. No candidate currently accepted.",
-      "collector_path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-southern-neighborhood-terminal-40944948451.py",
+      "direct_contradictions_source": "7631eda4ec49779ef2bf34dc075445b035564b4e",
+      "direct_contradictions": [
+        "Foreign net5514 Metal5 crosses existing lower net459 Metal4 tap; no in-place Via4 lift.",
+        "Straight westward M4 branch crosses two original foreign wires.",
+        "Lower TopVia1EWNS at944420,1776600 leaves10DBU spacing versus210DBU minimum.",
+        "Proposed Top1x944420 is between actual tracks943280/945560; no accepted off-track routing method or full candidate."
+      ],
+      "pending": "Select another access using actual full net459 route and broader corridor geometry. Existing lower M4 source extends from1717700 to1776600 DBU; current window does not qualify that full lower span.",
       "physical_acceptance": false,
       "timing_accepted": false,
-      "full_phy_accepted": false
+      "full_phy_accepted": false,
+      "geometry_changed": false
     },
     "cdr_current_dc_contact_screen": {
       "source": "9517d20eeb3c0159b44457371adf47237469b2b3",
@@ -4184,14 +4164,38 @@
       "electrical_acceptance": false,
       "full_phy_accepted": false
     },
-    "latest_workflow_registry_main": "f34aef6bd52e720ddab6a76feac3382d258d8b5d"
+    "latest_workflow_registry_main": "f34aef6bd52e720ddab6a76feac3382d258d8b5d",
+    "cdr_current_rc_coordinate_review": {
+      "source": "624b056cacab6da674c8f5947a6f40ae1970e351",
+      "paths": [
+        "docs/evidence/cdr-current-rc-coordinate-source-review-20261029.json",
+        "docs/evidence/cdr-current-rc-coordinate-source-review-20261029.md"
+      ],
+      "native_linear_unit_nm": 5,
+      "frame": "Already flattened top-level layout; do not apply child transforms twice.",
+      "anchor_quantization": {
+        "exact": 846,
+        "negative_two_nm_y": 132
+      },
+      "point_mapping_supported": true,
+      "unique_edge_layer_or_footprint_attribution": false,
+      "writer_type_field_hardcoded_zero": true,
+      "observed_DC_scope": "Both networks have identical DC matrices: emitter-emitter about14.15\u201314.77ohm, emitter-drain43.46\u201344.36ohm, drain-drain72.07\u201372.43ohm. Not actual transient currents or causality.",
+      "next": "Cloud-only exact current GDS/wires.l2n selected partition/contact overlay with complete per-layer candidates and explicit ambiguity. If needed, separately qualify extractor resistor type/geometry diagnostics.",
+      "implementation_not_yet_present": true,
+      "existing_user_authorization_for_cloud_continuation": true,
+      "additional_user_permission_required": false,
+      "physical_acceptance": false,
+      "electrical_acceptance": false,
+      "full_phy_accepted": false
+    }
   },
   "next_actions": [
-    "Collect southern native run40944948451 with the saved exact-source collector; retain complete derived JSON/LEF/raw logs and verify full-source and census identity against run40930102746.",
-    "Use actual southern all-layer geometry plus observed track API shapes to assess a net459-only alternative. Preserve original clocks/fixed geometry and net36993; do not waive the last M5 short.",
-    "Use complete DC matrices from run40945858067 to guide target network investigation; obtain authoritative geometry-to-resistor attribution before selecting bridge/via repair. Preserve original transient and HBT gates.",
-    "All authored computation, CAD, native inputs and outputs remain on GitHub. Keep the local project empty; existing eight-hour monitor is read-only and does not start native work.",
-    "Full serial Gen3 x4 PHY, routed serial mainchip and final setup/hold remain unaccepted."
+    "All latest runs40944146144,40944948451,40945858067 are terminal success for their explicitly limited diagnostic scopes. Do not rerun the saved terminal collectors: their proof commits already exist.",
+    "Mainchip: retain exact currentODB47d657f41565f5c379a9152672eac824a5d296043c3726527031452ad2097677 and engine. Six old local candidates and new southern access are rejected. Use actual source net459 lower M4 span1717700..1776600 to select a broader read-only access corridor, then qualify a concrete net459-only detour; preserve all other signals, original1691 clock/fixed geometry and original classes.",
+    "CDR: use af861a0d complete hosted DC matrices and624b056c authoritative5nm/top-level coordinate review. Author/qualify cloud-only per-layer target access readback for partitions28/$131 and124/$680. Preserve ambiguities; point-to-shape containment is not a resistor footprint. Do not blindly widen the long bridge or lift global common-mode.",
+    "Original transient37.5ps/75ps gates, HBT electrical limits and20/4/8/8ns clocks+5% are unchanged. Full serial Gen3x4 PHY, routed mainchip and final setup/hold remain unaccepted.",
+    "Keep all code, CAD, native payloads, logs and evidence in GitHub. Local project/tmp/native processes remain empty. Existing eight-hour monitor remains read-only; no automatic native dispatch."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -4534,45 +4538,16 @@
     "observed_40938778028": 40938778028,
     "observed_40939598713": 40939598713,
     "observed_40944146144": 40944146144,
-    "observed_40945858067": 40945858067
+    "observed_40945858067": 40945858067,
+    "observed_40944948451": 40944948451
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40944146144,
-      "head_sha": "dd9da010cfb908fa678e597221eeca17b240f701",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123694952181,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123695227394,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123695314549,
-          "name": "readback",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
       "run": 40944948451,
       "head_sha": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
@@ -4592,11 +4567,9 @@
         {
           "id": 123698105286,
           "name": "readback",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Read actual current ODB and embedded technology on hosted runner"
-          ]
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
         }
       ]
     },
@@ -4632,7 +4605,7 @@
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T20:14:24.288188+00:00",
+    "observed_at": "2026-10-29T20:33:57.397595+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -4772,7 +4745,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T20:14:24.288188+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T20:33:57.397595+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -44614,6 +44587,528 @@
       "tag": "cloud-results-40944948451-1-mainchip-southern-neighborhood",
       "public_prerelease": true,
       "make_latest": false
+    }
+  ],
+  "imported_checkpoint_receipts_v130": [
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/artifacts.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "de584d096d9ead94f2c6a9a5f03f93dfce5c2cc4",
+      "bytes": 2796,
+      "sha256": "7190a30bcc347dfb53ef9cadacaee08830aa7c033f89c45b182ed8b0539ec70d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/controls/context.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "3624c0b87b6c85c6887beef398223048a8acc11c",
+      "bytes": 1644,
+      "sha256": "1780ce971e15194dfd1a9e41c31356dae99af72ea056ff93d8d48583650a15ab",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/controls/controls.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "b23e6c50c794a9680711d4f6440b88b15b963d3b",
+      "bytes": 3624,
+      "sha256": "eb490b9d3bd96197cbab549bdf64449501a3c60e77cd75a4fa71b0b91e1df140",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/controls/controls.stderr",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/controls/controls.stdout",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "0b304730e4013c6c898ca3b3047c04af9671fc77",
+      "bytes": 3134,
+      "sha256": "a344dfe12a4ec7d70ad79e3d559e02d6cf49b635e4834a2f464566daad5d7a08",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/controls/index.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "31f70a8e8f8edb314dd820ff996b81e4f36e589f",
+      "bytes": 778,
+      "sha256": "d2a5f235874f10c4f80fb4d4fd6a2cbcb5924a2c4d5acb4af100b70bcdbe34b7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/jobs.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "40c6992de061b8aeb8a982817e3b690f6051bfd8",
+      "bytes": 11392,
+      "sha256": "898cfda3d14f349690d6738e949b5b78892beadfc2d400e03599a0864e01d1fd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/jobs/123697789958.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "a50e558b2ffb328a0207f31023920f9bff847db7",
+      "bytes": 3785,
+      "sha256": "da2b503fd3d82b061bdc436deee73eb92fe67101c82a421b83d9850be1aa4d28",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/jobs/123697789958.log",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "5b093a2fc7cd9d81aee56d0e9621d5ca0df59574",
+      "bytes": 42163,
+      "sha256": "38460d0e930da66258822a4c6a2e72e3036c2a57423bc97b7459038d26884b58",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/jobs/123698028416.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "ca97b7edaa5b7f87b2bfddd7b9f0ccb498d9c30c",
+      "bytes": 1985,
+      "sha256": "99ced40411889b3ba61ee29bc18257df45460433513820169683e724820486d9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/jobs/123698028416.log",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "f9aa9f8253b757d58634ca1b6fbc476fe779e16d",
+      "bytes": 7551,
+      "sha256": "58f0863936dbbf425bba779a6c444323210344e7bade0b8622cc288117c997c9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/jobs/123698105286.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "2d6cb9fae7d0100f9b3f6e81827edbaccec12f61",
+      "bytes": 4348,
+      "sha256": "70e07c9c7b7d81afcd07868639badfaa0168fa586be0fec7b27c4b50b81b0e33",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/jobs/123698105286.log",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "8addf40a3bcb1cdd2ca8b9b177d58e6006a02800",
+      "bytes": 301726,
+      "sha256": "e9ba94e4bc469401dffaed76c0458dfab6489a5431a975eafe1d4c912a1e2314",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/prior-current-readback-comparison.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "f0286fc8232ecebbed5de54daa0550a96fb529b0",
+      "bytes": 758,
+      "sha256": "018f9405fbee52eeb178f5290b30623840aab99642fae74ef376398080a495c0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback-index.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "6a632e4db3f668aef8421b398484ca1a6cef4e7b",
+      "bytes": 6037,
+      "sha256": "e584145ab13fe89dd55064093b8f723af60a301b3e68870c08164fa5bde538ad",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/current-input-restoration.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "6b252a0dc4ae191efdfbc948f2d4a5e4ed1f5967",
+      "bytes": 23247,
+      "sha256": "5918da7081ad1776b41201aadc63b436eef02ca70fa5ee49b8a2ac9d6e017bef",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/container-terminal.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "5925f44a0bfadc67aac4b1de3d94c42f286eaa83",
+      "bytes": 6852,
+      "sha256": "ab55358022801630901e3dd21c313c85fa85e1897d4505f4ab7c954d2c11296f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/create-attempt.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "7cbd072edddf3e967d8d823a6165fa423f8e4a29",
+      "bytes": 1227,
+      "sha256": "ff90c2b728858dc0e5cd69285d04b18db3e6ee106a6de314815ac82de52c0778",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/host-progress.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "1ee0b4a8ce75c1f4ef9ad0d93d7bbf86235b44ed",
+      "bytes": 11279,
+      "sha256": "05be33f4aea5ebf4f91f9a32048594bc947eae318560371684083e124b092341",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/image-inspect.stderr",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/image-inspect.stdout",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "b93a5e89120bfd61b218e95e7bf1304c22b40a54",
+      "bytes": 2643,
+      "sha256": "ecc35ca623df4d27d65d233ba5ed559fbb45bc7d2760599f9145899e097601d6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/immutable-image-pull.stderr",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/immutable-image-pull.stdout",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "aad50b344d7cfc5ff1a0daa51dadd531a65466c4",
+      "bytes": 837,
+      "sha256": "879fa53f847ee2ceb691dfe072cabf6d4f5b5e402d149f011bc039aea6efd950",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/names-before-owned-create.stderr",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/names-before-owned-create.stdout",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/owned-container-create.stderr",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/owned-container-create.stdout",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "39e29107c1fba4705f3127e01849334270c5fef2",
+      "bytes": 65,
+      "sha256": "363c4162cbc6441f7a43a190c71f97c899fe33d77387cdfe8d974de4cf212ddb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/owned-container-remove.stderr",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/owned-container-remove.stdout",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "39e29107c1fba4705f3127e01849334270c5fef2",
+      "bytes": 65,
+      "sha256": "363c4162cbc6441f7a43a190c71f97c899fe33d77387cdfe8d974de4cf212ddb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/owned-removal-census.stderr",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/owned-removal-census.stdout",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/prefix-envelope.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "bc75a7ec8ebe4d620ae64c4e45f266b1f11383fa",
+      "bytes": 4270,
+      "sha256": "11281aedb0c83745f8126820b9c3c5421c20ed572e48bda55356f5d68c8313fb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/prefix-restoration.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "8e316db083b1571e763c01308ee1756c172c934c",
+      "bytes": 423478,
+      "sha256": "23f45038bb461360ec38c7a2490ba24c84db2f9dd3a53e8b2e689201d693d177",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-ldd.stderr",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-ldd.stdout",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "14842f40b017331c2097b20f1f191256f595f6ae",
+      "bytes": 10979,
+      "sha256": "9eee087171e4dd1e3f0252009b38fd27b95ae1cc699d21770af70634200a9f28",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-neighborhood.stderr",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-neighborhood.stdout",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "8ab24468e0c4b920dcd20e53c7c60371c7532e64",
+      "bytes": 285,
+      "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-neighborhood/current-tech.lef",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "6c99de1b697f175dfedb99e2f6db943ef2719ae0",
+      "bytes": 23998,
+      "sha256": "45c73321fce9cede4434ef85efb88c6b59259198a2623fa65151647796411de2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-neighborhood/native-api.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "9acb8fd13f01fba98888fd682ebccaa2e4dcf217",
+      "bytes": 5373,
+      "sha256": "54126dd0054c3069536825a254438585cefbef90f821f226188242a395268b23",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-neighborhood/neighborhood.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "ba16563674ab421e7f3ff95741787375e38ee239",
+      "bytes": 1240336,
+      "sha256": "c99dddfd6d7968e87caef77ad2e0e666b085635a5f3fc5ce8232540041210fd3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-neighborhood/result.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "c4c82a56104de9d52dbef22081f72e0fb6707d5f",
+      "bytes": 1003,
+      "sha256": "f5cd61141d44cd625478dfe6742607af0e0acf4910fee37e50499eeff1574de9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-neighborhood/track-grids.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "63299cd9886d75935982830814305cdb21d51cf6",
+      "bytes": 11530,
+      "sha256": "b6e669f3b84c5fd67434e95f76dfd69e9e6abfdc37c76623cf0f8a5fc05566ee",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-owned-container.stderr",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-owned-container.stdout",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-readback-inner-progress.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "a05f54f9daccd1427211fbc1ea4220c5da64d90d",
+      "bytes": 2688,
+      "sha256": "64832742f591bad47d4b76d3428abdda6b62b5b6286a373d6337b26c2f7b5378",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-readback-inner-result.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "3a1ecec0a6edda55e3f2c6c815e1dd61432a80ed",
+      "bytes": 11347,
+      "sha256": "58e1497a1c8d93d24fe8ed2968d108c6338b08a011927dad460e0d2a53b1ab20",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-runtime-observed.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "534b24cdcf542b98ad1ae9c29197ed1e2ad5ccd8",
+      "bytes": 16940,
+      "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-version.stderr",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-version.stdout",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "233850439374365fe2cb6382f30eeb73ca08fca5",
+      "bytes": 42,
+      "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/producer-jobs.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "7700c239ab095b4291e652609b052407112f6178",
+      "bytes": 25026,
+      "sha256": "712b97423fef3b00296fb4192ab578f9a475771ba99b418a93efbd2369a9af40",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/producer-outputs.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "44c9764140047cd1780f528d9413de9d975a271e",
+      "bytes": 21497,
+      "sha256": "07032f779bc1f664fe58da6953287ab7d66f880d8e24adf725b27a00f6f7209a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/producer-parts.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "6904db33c771d26d9095e974c7754051d60021c2",
+      "bytes": 493,
+      "sha256": "e5730258718841c8ad1627e20256e7352535036c0d971064e6d627566a15d787",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/producer-ref.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "1f0dee5385c3e9123356949d39d812cc3cedacf8",
+      "bytes": 595,
+      "sha256": "1893b8c8b356478d2a665f75adebc8cc9854839261ff33a11972c9721b8f444a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/producer-release.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "f7d6b85f0c60e19aa7c66d11d7a2a3a9b57969f4",
+      "bytes": 98063,
+      "sha256": "991bac08fcf17eb6dabf27cb6580a5330a0b1aa5d73b3aa4e48fbc70ca4454fa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/producer-run.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "665cff47b267e4713540ff58522050d9c7ef723d",
+      "bytes": 14422,
+      "sha256": "c8b0d7f9b41b7d7e76a822b17878dbfe4ccb124bb8ac949ea861c7cb568080cc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/reservation.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "dd2c6190a3a5395e35a8d9ac9ccd96a2335629cf",
+      "bytes": 588,
+      "sha256": "b776c6e64a2c1919cdcde6ebae547c28e893fbb7b86baba2f8b22f7d3562c2ff",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/result.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "4e655e9d427f14ac711286d20b52ea19a9664491",
+      "bytes": 28834,
+      "sha256": "114d94c5ed3dfa57615704c946f38bd782a18f774d4cf6d1151d20facba6a298",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/receipt.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "3741cbfdb5f1375cc9e04933aff1476cca13fcfe",
+      "bytes": 48784,
+      "sha256": "22106a2c33ae435efc8bbe676b9af0ea5c9ee51978f9750ebf810a5abd5863e9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/ref.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "08a1419b8585b8df082246adbf8718ef00e0ce71",
+      "bytes": 558,
+      "sha256": "180ef803721d3695052da957ec69168e4eaaec1f4224f6f35cb6aeaafd199e57",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/release.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "c537d32f2f7d91cec157f098429aa98f97bd127e",
+      "bytes": 2522,
+      "sha256": "f3329c5cdedad2c6606f012a36111fd80f09f129f9af4965eda29addf67b0d91",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/run.json",
+      "source": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+      "git_blob": "9586da90d01b1b02986b8b6f543ea364596f0ed3",
+      "bytes": 14452,
+      "sha256": "98d1cdc7651c60fdaa925545db11878ef614b8975f9fd125133f34a949fe761b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-rc-coordinate-source-review-20261029.json",
+      "source": "624b056cacab6da674c8f5947a6f40ae1970e351",
+      "git_blob": "950880ea9cfe3ed7a7da326964fe826937985921",
+      "bytes": 20024,
+      "sha256": "d72380d4d888d951567b538979ac244769c128fe852af21e3ee941261165baf8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-rc-coordinate-source-review-20261029.md",
+      "source": "624b056cacab6da674c8f5947a6f40ae1970e351",
+      "git_blob": "9af561d1cf4e72f7272f3ffa80c19510026e6844",
+      "bytes": 3302,
+      "sha256": "30fb495b28eb5d5b4bdbfa8c8cfce184f445688ba4cdc103ee75e9abf79a4352",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-direct-contradictions-20261029.json",
+      "source": "7631eda4ec49779ef2bf34dc075445b035564b4e",
+      "git_blob": "6068e5b4b4df3c6d88f0e9c8528ba39d38dbdd0e",
+      "bytes": 19850,
+      "sha256": "97d7d1d6ac9e57a9ec4d329312150940a962a2c66763ef095e57ee30eb170540",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-direct-contradictions-20261029.md",
+      "source": "7631eda4ec49779ef2bf34dc075445b035564b4e",
+      "git_blob": "143b739c507d83a303e5c638b47f6c08cc9d2aa1",
+      "bytes": 2673,
+      "sha256": "9dc16cc52690d5bb4408303815f4ad585a83c682d6d02ad83034a14af9fd471a",
+      "existing_identical": false
     }
   ]
 }

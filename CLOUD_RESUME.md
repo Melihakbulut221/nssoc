@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v129
+# Cloud continuation — checkpoint v130
 
-Updated: 2026-10-29T20:14:24.288188+00:00
+Updated: 2026-10-29T20:33:57.397595+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only work is active. Southern neighborhood controls40944146144 passed the original3/17/13 and added9/18 controls; exact-current-ODB readback40944948451 runs under fresh release428336131 to observe the lower net459 tap and declared tracks. Actual DC screen40945858067 succeeded on GitHub: two complete102-node/8-contact/145-resistor networks,7 basis and28 pair injections each, full currents/power and conservation checks. All22 output/log files (14,600,976 B) are preserved at af861a0d40694b6b4737855e7fc3f5c6c34ac43f. These are DC-only observations and do not establish transient recovery or a physical repair. All original physical/electrical gates remain unchanged; no local authored computation or native payloads.
+All new computation and evidence are in GitHub; local workspace, generated project temporary files and native processes remain absent. Southern current-ODB readback40944948451 succeeded: all61files/2,446,039B preserved at9b72743d, full current database/source identities unchanged,1024 all-layer window records and actual three-integer track bindings observed. Review7631eda4 rejects the tentative lower access due to actual foreign M5/M4 conflicts and10vs210DBU landing spacing; no repair accepted. Hosted DC screen40945858067 remains fully preserved ataf861a0d. Coordinate review624b056c authenticates5nm/top-level rnode point mapping while proving the exporter omits resistor-layer/footprint information. Next concrete work is broader mainchip access selection and cloud-only CDR target access overlay; all original timing/electrical/physical gates remain unchanged. No active native run remains in this snapshot.
 
-Active handles at this snapshot: 40944948451 in_progress
+Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9092,5 +9093,12 @@ Local project/tmp/native processes verified absent. Inventory360 exact cloud han
 ### 2026-10-29T20:14:24.288188+00:00 — cloud-only checkpoint v129
 
 Cloud-only work is active. Southern neighborhood controls40944146144 passed the original3/17/13 and added9/18 controls; exact-current-ODB readback40944948451 runs under fresh release428336131 to observe the lower net459 tap and declared tracks. Actual DC screen40945858067 succeeded on GitHub: two complete102-node/8-contact/145-resistor networks,7 basis and28 pair injections each, full currents/power and conservation checks. All22 output/log files (14,600,976 B) are preserved at af861a0d40694b6b4737855e7fc3f5c6c34ac43f. These are DC-only observations and do not establish transient recovery or a physical repair. All original physical/electrical gates remain unchanged; no local authored computation or native payloads.
+
+Local project/tmp/native processes verified absent. Inventory363 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T20:33:57.397595+00:00 — cloud-only checkpoint v130
+
+All new computation and evidence are in GitHub; local workspace, generated project temporary files and native processes remain absent. Southern current-ODB readback40944948451 succeeded: all61files/2,446,039B preserved at9b72743d, full current database/source identities unchanged,1024 all-layer window records and actual three-integer track bindings observed. Review7631eda4 rejects the tentative lower access due to actual foreign M5/M4 conflicts and10vs210DBU landing spacing; no repair accepted. Hosted DC screen40945858067 remains fully preserved ataf861a0d. Coordinate review624b056c authenticates5nm/top-level rnode point mapping while proving the exporter omits resistor-layer/footprint information. Next concrete work is broader mainchip access selection and cloud-only CDR target access overlay; all original timing/electrical/physical gates remain unchanged. No active native run remains in this snapshot.
 
 Local project/tmp/native processes verified absent. Inventory363 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
