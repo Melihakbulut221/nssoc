@@ -16,6 +16,7 @@ VARIANTS={"saved_current":"work/current/mim/precise/wire/rc03",
  "trace_off":"work/trace_off/rc03","trace_on":"work/trace_on/rc03"}
 NAMES=("pump_wires.ext","pump_wires.res.ext","baseline.spice","wires.spice")
 TRACE="work/trace_on/resistor-physical-trace.jsonl"
+EMITTERS=("extract/ExtCouple.c","ext2spice/ext2spice.c","extflat/EFbuild.c","extflat/EFvisit.c")
 PROOFS=("run.json","jobs.json","release.json","tag-ref.json",
  "assets/publication-inventory.json","assets/direct-publication-plan.json",
  "assets/cdr-resistor-provenance-build-40973498818-1.parts.json","assets/result.json")
@@ -89,6 +90,70 @@ def records_diagnosis(directories):
       original_strict_comparator=strict,variants=diagnosis,numerical_normalization_applied=False,
       multiset_is_diagnostic_only=True,**b.FLAGS)
 
+def exact_cap_bijection(reference,current,spice=False,count=1000):
+    """Exact endpoint/value-token multiplicity; only generated coupled-C identities may permute."""
+    import re
+    from decimal import Decimal
+    def parse(rows):
+        caps=[];rest=[];ids=set();allids=set()
+        for row in rows:
+            if spice:
+                match=re.fullmatch(rb"C([0-9]+) ([^ ]+) ([^ ]+) ([^ ]+)",row)
+                if match is None:
+                    b.require(not row.startswith(b"C"),"malformed SPICE capacitor");rest.append(row);continue
+                index=int(match[1])
+                b.require(index not in allids,"duplicate SPICE capacitor identity");allids.add(index)
+                if index>=count:rest.append(row);continue
+                name=match[1];a=match[2];z=match[3];value=match[4];ids.add(index)
+            else:
+                match=re.fullmatch(rb'cap "([^"]+)" "([^"]+)" ([^ ]+)',row)
+                b.require(match is not None,"malformed native coupled capacitor")
+                name=str(len(caps)).encode();a=match[1];z=match[2];value=match[3]
+            number=Decimal(value.decode("ascii"))
+            b.require(number.is_finite()and number>=0,"finite nonnegative capacitor")
+            b.require(a!=z,"coupling self-loop not authorized")
+            caps.append((tuple(sorted((a,z)))+(value,),name))
+        b.require(len(caps)==count,"exact coupling cardinality")
+        if spice:b.require(ids==set(range(count)),"complete generated coupling identities")
+        groups={}
+        for key,name in caps:groups.setdefault(key,[]).append(name)
+        return groups,rest
+    left,lrest=parse(reference);right,rrest=parse(current)
+    b.require(lrest==rrest,"noncoupling records remain exact ordered bytes")
+    b.require(set(left)==set(right)and all(len(left[k])==len(right[k])for k in left),
+      "exact coupling endpoint/value/multiplicity")
+    pairs=[]
+    for key in sorted(left):
+        for old,new in zip(sorted(left[key]),sorted(right[key])):
+            pairs.append(dict(reference_id=old.decode(),observed_id=new.decode(),
+              endpoints=[x.decode("ascii")for x in key[:2]],exact_value_token=key[2].decode("ascii")))
+    return dict(count=count,noncoupling_records=len(lrest),bijection=pairs,
+      no_numeric_tolerance=True,duplicate_multiplicity_preserved=True)
+
+def canonical_diagnosis(directories):
+    rows={name:b.native_records(path)for name,path in directories.items()}
+    b.require(list(rows)==list(VARIANTS),"exact five variants")
+    reference=rows["saved_current"];result={}
+    for name,values in rows.items():
+        categories={}
+        for category,current in values.items():
+            try:
+                if category=="pump_wires.ext:cap":
+                    proof=exact_cap_bijection(reference[category],current)
+                elif category in ("baseline.spice","wires.spice"):
+                    proof=exact_cap_bijection(reference[category],current,spice=True)
+                else:
+                    b.require(current==reference[category],"unchanged exact ordered category")
+                    proof=dict(ordered_bytes_equal=True,count=len(current))
+                categories[category]=dict(equal=True,proof=proof)
+            except (AssertionError,ValueError,ArithmeticError)as exc:
+                categories[category]=dict(equal=False,error=dict(type=type(exc).__name__,message=str(exc)))
+        result[name]=categories
+    return dict(status="EXACT_COMPONENT_BIJECTION_DIAGNOSTIC_ONLY",variants=result,
+      all_exact=all(x["equal"]for v in result.values()for x in v.values()),
+      permitted_format_changes=["Only1000coupled capacitor order/endpoint exchange/generated C0..C999 bijection"],
+      numeric_tolerance=None,original_strict_comparator_unchanged=True,**b.FLAGS)
+
 def perform(ctx,reserved,controls_raw,expected,out,root=ROOT,api_call=b.frozen.api,fetch=b.frozen.download):
     _,_,_,admission=b.preflight(ctx,reserved,controls_raw,expected,root,api_call)
     b.write(out/"admission.json",b.encode(admission));b.write(out/"source-controls.json",controls_raw)
@@ -101,8 +166,8 @@ def perform(ctx,reserved,controls_raw,expected,out,root=ROOT,api_call=b.frozen.a
     for name in ("publication-inventory.json","direct-publication-plan.json"):
         inventory[name]=b.pin(b.frozen.regular(root,PREFIX+"assets/"+name))
     b.require(len(inventory)==14485,"complete failed archive inventory")
-    wanted=[prefix+"/"+name for prefix in VARIANTS.values()for name in NAMES]+[TRACE]
-    b.require(len(set(wanted))==21 and set(wanted)<=set(inventory),"exact selected diagnostics")
+    wanted=[prefix+"/"+name for prefix in VARIANTS.values()for name in NAMES]+[TRACE]+["work/baseline-source/"+n for n in EMITTERS]
+    b.require(len(set(wanted))==25 and set(wanted)<=set(inventory),"exact selected diagnostics")
     work=out/"work";work.mkdir()
     archive,transport=b.frozen.acquire(dict(assets=assets),parts,work,fetch)
     b.write(out/"transport.json",b.encode(transport))
@@ -113,6 +178,16 @@ def perform(ctx,reserved,controls_raw,expected,out,root=ROOT,api_call=b.frozen.a
     b.write(out/"full-census.json",b.encode(census));archive.unlink()
     directories={n:selected/prefix for n,prefix in VARIANTS.items()}
     result=records_diagnosis(directories)
+    component=canonical_diagnosis(directories)
+    b.write(out/"exact-component-bijection.json",b.encode(component))
+    config=b.decode(b.frozen.regular(root,b.CONFIG).read_bytes())
+    emitters={}
+    for name in EMITTERS:
+        path=b.frozen.regular(selected,"work/baseline-source/"+name)
+        identity=b.pin(path)
+        b.require(identity["sha256"]==config["source_producer"]["candidate"][name],"exact qualified emitter source")
+        emitters[name]=dict(identity=identity,text=path.read_text())
+    b.write(out/"qualified-emitter-source.json",b.encode(emitters))
     native=b.native_records(directories["trace_on"])["pump_wires.res.ext:resist"]
     try:trace=b.validate_trace(selected/TRACE,len(native),native)
     except BaseException as exc:trace=dict(accepted=False,error=dict(type=type(exc).__name__,message=str(exc)))
@@ -122,7 +197,8 @@ def perform(ctx,reserved,controls_raw,expected,out,root=ROOT,api_call=b.frozen.a
     b.source_guard(expected,root)
     return dict(status="COMPLETE_READ_ONLY_FAILED_CAPSULE_DIAGNOSIS",current_context=ctx,
       original_run=RUN,original_source=SOURCE,original_conclusion="failure",full_archive_members=len(inventory),
-      selected_members=21,native_build_executed=False,native_extraction_executed=False,
+      selected_members=25,native_build_executed=False,native_extraction_executed=False,
+      component_bijection_exact=component["all_exact"],
       strict_comparator=result["original_strict_comparator"],trace_observation=trace,**b.FLAGS)
 
 def main():

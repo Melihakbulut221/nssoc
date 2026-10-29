@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "status": "SOURCE_AUTHORED_CANONICAL_DIAGNOSIS_NOT_ACCEPTANCE",
+  "parent": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+  "actual_prior_readback": {
+    "run": 40975729131,
+    "source": "2c63b2dfc010c4f8bbfe2065b58fff4ac2304f34",
+    "receipt_sha256": "0fbfaee5f55388de8d56a0016ce6c72fbe4e1018596b7f8ccd48c9f27a5eb676"
+  },
+  "unchanged": [
+    "Original strict compare_outputs and native bodies remain byte-identical.",
+    "All numbers compare exact original token bytes; no float tolerance/rounding/summing.",
+    "Resistors/rnodes and every noncoupling SPICE statement remain ordered-byte exact.",
+    "Original failed job status remains failed."
+  ],
+  "primary_source": {
+    "extract/ExtCouple.c": {
+      "sha256": "e726b14e73dd30fbd8aa3a4d792eb6c0144c51c4e54244eedf746b6c0a0bbe12",
+      "bytes": 71899,
+      "upstream_commit": "fd12c39c37f26a0fe6e04698b1011e31b8bd3229",
+      "qualified_source_sha256": "e726b14e73dd30fbd8aa3a4d792eb6c0144c51c4e54244eedf746b6c0a0bbe12",
+      "link": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/extract/ExtCouple.c"
+    },
+    "ext2spice/ext2spice.c": {
+      "sha256": "c0a23b0f85e4a71ef9997bd7bf5971447d4ce823c92688d34003b1f067ef56ec",
+      "bytes": 125938,
+      "upstream_commit": "fd12c39c37f26a0fe6e04698b1011e31b8bd3229",
+      "qualified_source_sha256": "f7c052cb469036556256984506bdbad4fbdbe84577c7861ce671aef8ef02573e",
+      "link": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/ext2spice/ext2spice.c"
+    },
+    "extflat/EFbuild.c": {
+      "sha256": "bb67614093297196ef08dfcd9d30ba871c9838ee4d8a83aa69762fc4fb7f2fd1",
+      "bytes": 70307,
+      "upstream_commit": "fd12c39c37f26a0fe6e04698b1011e31b8bd3229",
+      "qualified_source_sha256": "bb67614093297196ef08dfcd9d30ba871c9838ee4d8a83aa69762fc4fb7f2fd1",
+      "link": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/extflat/EFbuild.c"
+    },
+    "extflat/EFvisit.c": {
+      "sha256": "1f6e9b317ec8b500e691ea991deb2533e04858fa472a3641e56182dbd1fd4c92",
+      "bytes": 22673,
+      "upstream_commit": "fd12c39c37f26a0fe6e04698b1011e31b8bd3229",
+      "qualified_source_sha256": "1f6e9b317ec8b500e691ea991deb2533e04858fa472a3641e56182dbd1fd4c92",
+      "link": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/extflat/EFvisit.c"
+    }
+  },
+  "evidence": {
+    "extract/ExtCouple.c": "Exact qualified bytes; lines278-289 output coupling hash table entries.",
+    "extflat/EFvisit.c": "Exact qualified bytes; lines638-645 call capacitor formatter in HashNext iteration.",
+    "ext2spice/ext2spice.c": "Upstream lines3884-3887 use esCapNum++ generated C identifiers; actual qualified file differs, so exact actual source will be emitted and authenticated from archived full559 projection before drawing stronger conclusions."
+  },
+  "policy": "Diagnostic exact bijection for all1000coupling components allows only endpoint exchange, record order and generated C0..C999 permutation. Full multiplicities and token bytes remain exact. Three categories use this diagnostic; all other categories retain original strict order/bytes. Repeated observations do not grant electrical acceptance.",
+  "selected_members": 25,
+  "full_archive_members": 14485,
+  "controls": {
+    "positive": 15,
+    "refusal": 47,
+    "lifecycle": 6,
+    "inherited_positive": 4,
+    "inherited_refusal": 19,
+    "unexecuted": true
+  },
+  "native_or_cad_execution": false,
+  "physical_acceptance": false,
+  "electrical_acceptance": false
+}

@@ -99,6 +99,30 @@ def controls(expected):
         (dirs["on"]/"pump_wires.res.ext").write_bytes(b'')
         reject("diagnostic_missing_native_records",lambda:diag.records_diagnosis(five))
         (dirs["on"]/"pump_wires.res.ext").write_bytes(synthetic["pump_wires.res.ext"])
+        capref=[b'cap "a" "b" 1',b'cap "c" "d" 2']
+        capother=[b'cap "d" "c" 2',b'cap "b" "a" 1']
+        capproof=diag.exact_cap_bijection(capref,capother,count=2)
+        assert capproof["count"]==2 and capproof["no_numeric_tolerance"]is True
+        positive.append("exact_cap_endpoint_and_order_bijection")
+        spref=[b".subckt x a b c d",b"C0 a b 1",b"C1 c d 2",b"R0 a d 3",b".ends"]
+        spother=[b".subckt x a b c d",b"C0 d c 2",b"C1 b a 1",b"R0 a d 3",b".ends"]
+        assert diag.exact_cap_bijection(spref,spother,spice=True,count=2)["noncoupling_records"]==3
+        positive.append("generated_C_identity_bijection_only")
+        assert len(diag.exact_cap_bijection([capref[0]]*2,[capother[1]]*2,count=2)["bijection"])==2
+        positive.append("parallel_cap_multiplicity_retained")
+        for label,other in [
+          ("value",[capother[0].replace(b" 2",b" 3"),capother[1]]),
+          ("endpoint",[capother[0].replace(b'"c"',b'"x"'),capother[1]]),
+          ("missing",capother[:1]),
+          ("selfloop",[b'cap "a" "a" 1',capother[0]]),
+          ("nonfinite",[capother[0],capother[1].replace(b" 1",b" NaN")]),
+          ("numeric_token",[capother[0],capother[1].replace(b" 1",b" 1.0")])]:
+            reject("exact_cap:"+label,lambda other=other:diag.exact_cap_bijection(capref,other,count=2))
+        for label,other in [
+          ("duplicate_id",[x.replace(b"C1 ",b"C0 ")for x in spother]),
+          ("gap_id",[x.replace(b"C1 ",b"C2 ")for x in spother]),
+          ("noncap_changed",[x.replace(b"R0 a d 3",b"R0 a d 4")for x in spother])]:
+            reject("exact_SPICE:"+label,lambda other=other:diag.exact_cap_bijection(spref,other,spice=True,count=2))
         rows=[dict(schema=1,event="trace_start",instrumentation="nssoc_resistor_provenance_v1",resistor_footprint_is_not_inferred=True)]
         def add(event,**kw):rows.append(dict(schema=1,event=event,seq=len(rows),epoch=1,**kw))
         add("net_begin",net_name_hex="61",physical_ownership_proved=False)
@@ -205,7 +229,7 @@ def controls(expected):
         alone=root/"helper-only-error";alone.mkdir()
         assert b.finish_owned(None,None,{},None,alone,broken)is secondary
         life.append("actual_cleanup_helper_primary_and_no_primary")
-    assert len(positive)==12 and len(refused)==38 and len(life)==6,(positive,refused,life)
+    assert len(positive)==15 and len(refused)==47 and len(life)==6,(positive,refused,life)
     inherited=prior.controls()
     assert inherited["positive_count"]==4 and inherited["refusal_count"]==19
     return dict(status="PASS_MAGIC_CURRENT500_BUILD_SOURCE_CONTROLS",passed=True,

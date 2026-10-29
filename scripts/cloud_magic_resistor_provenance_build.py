@@ -56,7 +56,7 @@ def controls_binding(raw,ctx):
     require(r.get("current_context")==dict(source=ctx["source"],run_id=ctx["run_id"],attempt=1,
       source_controls_only=True,native_executed=False),"same source controls")
     require(r["inherited_source_controls"]["positive_count"]==4 and r["inherited_source_controls"]["refusal_count"]==19,"historical controls preserved")
-    require(r["counts"]==dict(positive=12,refusal=38,lifecycle=6),"complete build controls")
+    require(r["counts"]==dict(positive=15,refusal=47,lifecycle=6),"complete build controls")
     return frozen.fingerprint(raw)
 
 def preflight(ctx,reserved,controls_raw,expected,root=ROOT,api_call=frozen.api):
