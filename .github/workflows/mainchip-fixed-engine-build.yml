@@ -1,6 +1,12 @@
 name: Fixed NEARDRC full engine build candidate
 on:
   workflow_dispatch:
+    inputs:
+      build:
+        description: Separately reviewed cloud-only engine compilation
+        type: boolean
+        required: true
+        default: false
 permissions:
   contents: read
 jobs:
