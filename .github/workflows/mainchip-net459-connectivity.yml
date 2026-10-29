@@ -31,7 +31,7 @@ jobs:
           assert e['GITHUB_REF']=='refs/heads/codex/mainchip-net459-connectivity' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           raw=Path('scripts/mainchip-net459-connectivity-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='95d6c27a1397be2ce6ba19e31838f4ea18bcb6a9830b70a86eba00b69e31335d'
+          assert hashlib.sha256(raw).hexdigest()=='4ac71688cc00e66bf75b5ca7d44a04feb052eb1ece14340a7ecacd61cbb5f549'
           pins=json.loads(raw)
           for name,pin in pins['files'].items():
               p=Path(name);assert p.is_file() and not p.is_symlink()
