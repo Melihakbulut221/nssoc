@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v124
+# Cloud continuation — checkpoint v125
 
-Updated: 2026-10-29T16:41:40.865083+00:00
+Updated: 2026-10-29T17:14:46.802831+00:00
 
-Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
+Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint124: local project remains empty. Mainchip run40894408041 completed all7jobs; full271proof38,918,044bytes preserved149f2460 and imported here. Original-class DRC has1Short (downfrom3), all1691clock/fixedrecords pass conservation and observeroff/on outputs match; no timing/physical acceptance. Current-width CDR40906725656 preparation passed; firstnominalearly transistor simulation completed but data/phase/device gates reject, including4HBTactiveVCEbelow0.4V. Other originalcases continue unchanged. Final-marker textreadback is being prepared oncloud before a boundednet459repair; exactdiagnosis and endpointadjacency preserved.
+Cloud-only checkpoint125: source controls40915118374 passed5positive/41refusal/5lifecycle cases; realreadback40916056541 repeatedcontrols and passed all3jobs. Runner hashed all145currentauditarchivefiles/5,763,445,029uncompressedbytes without extractingnative members, retaining16derivedtexts/207465bytes. Full42proof1,173,205bytes preservedf555db1d. Serializedmarker confirms unwaivednet459/clknet_5_29__leaf_u_ibex.clk Metal5short atµm[947.420,1789.940,947.620,1790.140]. Next physicalstep is authenticatedcurrentODB technology/neighborhoodclearance forboundednet459repair. CurrentCDR40906725656 remainsactive; nominalearly/late andhotearly rejected. Exactnominal5doc7,087,180byte diagnosis35655923 identifiesfourmasterclockselectors, only3.74–5.31mVwidthimprovement andgain60peak1.575523V; currentcontact measurementsare requiredbeforeanother edit. Originalelectrical/clock/physicalgates unchanged. Localproject/temp/EDAprocesses verifiedempty; originaluserreviewpaths currentlyabsent, withoutanyattachmentdeletionthiscontinuation.
 
 Active handles at this snapshot: 40906725656 queued
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9054,3 +9055,10 @@ Local project/tmp/native processes verified absent. Inventory351 exact cloud han
 Cloud-only checkpoint124: local project remains empty. Mainchip run40894408041 completed all7jobs; full271proof38,918,044bytes preserved149f2460 and imported here. Original-class DRC has1Short (downfrom3), all1691clock/fixedrecords pass conservation and observeroff/on outputs match; no timing/physical acceptance. Current-width CDR40906725656 preparation passed; firstnominalearly transistor simulation completed but data/phase/device gates reject, including4HBTactiveVCEbelow0.4V. Other originalcases continue unchanged. Final-marker textreadback is being prepared oncloud before a boundednet459repair; exactdiagnosis and endpointadjacency preserved.
 
 Local project/tmp/native processes verified absent. Inventory351 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T17:14:46.802831+00:00 — cloud-only checkpoint v125
+
+Cloud-only checkpoint125: source controls40915118374 passed5positive/41refusal/5lifecycle cases; realreadback40916056541 repeatedcontrols and passed all3jobs. Runner hashed all145currentauditarchivefiles/5,763,445,029uncompressedbytes without extractingnative members, retaining16derivedtexts/207465bytes. Full42proof1,173,205bytes preservedf555db1d. Serializedmarker confirms unwaivednet459/clknet_5_29__leaf_u_ibex.clk Metal5short atµm[947.420,1789.940,947.620,1790.140]. Next physicalstep is authenticatedcurrentODB technology/neighborhoodclearance forboundednet459repair. CurrentCDR40906725656 remainsactive; nominalearly/late andhotearly rejected. Exactnominal5doc7,087,180byte diagnosis35655923 identifiesfourmasterclockselectors, only3.74–5.31mVwidthimprovement andgain60peak1.575523V; currentcontact measurementsare requiredbeforeanother edit. Originalelectrical/clock/physicalgates unchanged. Localproject/temp/EDAprocesses verifiedempty; originaluserreviewpaths currentlyabsent, withoutanyattachmentdeletionthiscontinuation.
+
+Local project/tmp/native processes verified absent. Inventory353 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T16:41:40.865083+00:00",
+  "updated_at": "2026-10-29T17:14:46.802831+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "408d4e956617631f8f0c72682e96cff0dafe8cd2",
+  "root_source_before_receipt": "9eb9302ccfe09e51e4aba031f3d5dc4f03384ec3",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 124,
+    "inventory_version": 125,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -72,9 +72,11 @@
         {
           "id": 123570499915,
           "name": "loaded (cold_early)",
-          "status": "queued",
+          "status": "in_progress",
           "conclusion": null,
-          "active_steps": []
+          "active_steps": [
+            "Always emit exact terminal and publication metadata"
+          ]
         },
         {
           "id": 123570500010,
@@ -86,18 +88,18 @@
         {
           "id": 123570500074,
           "name": "loaded (hot_late)",
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        },
+        {
+          "id": 123570500080,
+          "name": "loaded (cold_late)",
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
             "Original OFF operating point and full loaded transient"
           ]
-        },
-        {
-          "id": 123570500080,
-          "name": "loaded (cold_late)",
-          "status": "queued",
-          "conclusion": null,
-          "active_steps": []
         },
         {
           "id": 123570500103,
@@ -137,11 +139,9 @@
         {
           "id": 123570500329,
           "name": "loaded (hot_early)",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Original OFF operating point and full loaded transient"
-          ]
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
         }
       ]
     }
@@ -3907,15 +3907,98 @@
       "all_original_limits_unchanged": true,
       "remaining_cases_continue_no_automatic_retry": true,
       "full_phy_accepted": false
+    },
+    "final_marker_cloud_readback": {
+      "source_control_run": 40915118374,
+      "source_control_source": "1f62c264a7ffab1d9bf92fdcb02946a4c6cdd4a1",
+      "source_control_evidence": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "source_control_receipt_sha256": "d226c6eab71f10d91c7b94af6971e9d362e5401cc4711a972d0c42c454a277ab",
+      "source_control_files": 14,
+      "source_control_bytes": 99828,
+      "positive_controls": 5,
+      "refusal_controls": 41,
+      "lifecycle_controls": 5,
+      "readback_run": 40916056541,
+      "readback_source": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "readback_evidence": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "readback_receipt_sha256": "94c0481304dfb472329763398033727e649e7881f1ca6f2973f58c7193467a97",
+      "files": 42,
+      "bytes": 1173205,
+      "source_controls_repeated_passed": true,
+      "all_three_jobs_passed": true,
+      "release_id": 428147532,
+      "source_group": "mainchip-final-marker-readback",
+      "all_archive_members_hashed_on_runner": 145,
+      "uncompressed_bytes": 5763445029,
+      "selected_derived_text_files": 16,
+      "selected_text_bytes": 207465,
+      "native_members_extracted": false,
+      "local_native_acquisition": false,
+      "serialized_marker_sha256": "03583e7e6d24efc7be21bc7399778e4d463312906476bb87fd0f28a5a948aa1c",
+      "serialized_marker": {
+        "type": "Short",
+        "layer": "Metal5",
+        "waived": false,
+        "signals": [
+          "net459",
+          "clknet_5_29__leaf_u_ibex.clk"
+        ],
+        "bbox_um": [
+          947.42,
+          1789.94,
+          947.62,
+          1790.14
+        ]
+      },
+      "source_gate_fixed_records": 1691,
+      "geometry_changed": false,
+      "physical_acceptance": false,
+      "timing_accepted": false,
+      "full_phy_accepted": false
+    },
+    "cloud_execution_and_cleanup": {
+      "authored_tests_and_CAD": "GitHub Actions only",
+      "source_edits_and_evidence": "GitHub API commits",
+      "workspace_entries": 0,
+      "known_old_project_paths_present": false,
+      "project_temporary_entries": 0,
+      "local_EDA_processes": 0,
+      "original_review_paths_currently_absent": true,
+      "original_attachments_modified_this_continuation": false
+    },
+    "cdr_current_nominal_selector_diagnosis": {
+      "evidence": "356559235d26863535d12bc062d33c6ce915b6a1",
+      "files": 5,
+      "bytes": 7087180,
+      "diagnosis_sha256": "e81f3c595c5066a07202835ff07fb9bd73237c73aa170d2e9b7a9a2fd18222e6",
+      "complete_early_native_sha256": "4ad6acac07a8945f794e42e81c9f97a7aec665c56ae0d36371cde768a14f6a31",
+      "complete_late_native_sha256": "cc8a5db01e59b27ea0f5b5cb126413a97cb5950c991bd293e0ad670947cb8fe8",
+      "failed_HBT_selectors": [
+        "D61",
+        "D62",
+        "C115",
+        "C116"
+      ],
+      "C_current_collector_cluster": 134,
+      "C_current_collector_net": "net$698",
+      "width_improvement_mV_range": [
+        3.74,
+        5.31
+      ],
+      "gain60_peak_VCE_V": 1.575523,
+      "all_original_gates_unchanged": true,
+      "repair_not_yet_validated": true,
+      "full_phy_accepted": false
     }
   },
   "next_actions": [
-    "Existing40906725656 continues its original10case loaded matrix, maxparallel2. Preparation passed; nominal_early native simulator rc0 but original data/phase/device gates reject. Preserve all remaining success/failure cases; do not redispatch.",
-    "Complete native tail40894408041 evidence is preserved149f2460 (271files38,918,044B). Both original-class audits retain1Short; all1691fixed/clock records unchanged and off/on outputs equivalent. This is diagnostic success, not physical/timing acceptance.",
-    "Final marker bodies remain inside authentic on-audit archive. Bounded new read-only cloud text reader is being authored on codex/mainchip-net459-neighborhood-plan. Run hosted source controls before readback; independently reserve exact-source release before native archive acquisition. No local native archives.",
-    "Do not reuse old ownership collector unchanged: it hardcodes3old markers and originalrawtargethashes. New neighborhoodcollector must bind authentic final marker/currentserializedODB and rawcensus; both crossing endpoints areM5bends without existingVia4.",
-    "Prepared API-only final CDR collector is saved in docs/evidence/cloud-collector-recipes-20261029/cdr-width-loaded-native-terminal.py; AST-checked only and notexecuted. Validate actual terminal schemas and preserve failures.",
-    "Keep all implementation/CAD/source tests and artifacts onGitHub. Localworkspace/tmp/nativeprocesses remainempty; originaluserreviewdocs preserved. Existing8hmonitor isreadonly, neverdispatches native."
+    "Continue existing40906725656 original10case loaded matrix only; preparation passed, nominalearly/late and hotearly jobs rejected, remainingcases continue maxparallel2. Do not redispatch. Preserve actualnative electrical failures and allwaveforms onGitHub; apply original37.5ps/75ps/100mV/VCEgates unchanged.",
+    "Current nominal selector diagnosis35655923 preservesbothfullnativeJSONs and exact500device currentmapping. D61/62 andC115/116 activeVCE fail; currentCcollector134/net$698 differsfromhistorical136/$708. Obtain current simultaneouscontact voltages/currents atworsttime from hostedwaveforms before localizedinterconnectedit. Do not blindlyrepeatwidth/commonmode sweep; gain60peak1.575523V leaveslittle1.6Vmargin.",
+    "Final-marker readback40916056541 passed actualfull145member archive verification onrunner; all16selectedtexts andfull42proof are permanentf555db1d. The serialized unwaived1Short confirms net459/clknet_5_29__leaf_u_ibex.clk Metal5 bbox\u00b5m[947.420,1789.940,947.620,1790.140]. Do not rerun archive-only readback.",
+    "Next physical step: implement bounded native neighborhood/technology readback from exact current auditeddrc-observed.odb47d657f4 with same2a343c ELF/104libs. Enumerate rule-expanded all-layer ordinary/special/pin/obstruction material and full dbTech width/spacing/PRL/EOL/cut/enclosure/grid/NDR before choosing net459-only M4bridge; endpoints have no existingVia4.",
+    "Any eventual net459-only DEF replacement must preserve repairednet36993 and every other currentrecord plus alloriginal1691clock/fixedrecords, use pairedimports/native serializedreadback/fulloriginal-classDRC and source20/4/8/8ns+5percent timing. No physical/timing/fullPHYacceptance yet.",
+    "Prepared finalCDRterminalcollector docs/evidence/cloud-collector-recipes-20261029/cdr-width-loaded-native-terminal.py is AST-checkedonly; afteractual13jobterminal verifylive schemas thenpreservefullrawjoblogs/directJSON/maps/partdigests without acquiringarchiveslocally.",
+    "All source/CAD/test work remainscloud. OriginaltwoDownloadsreviewpaths are currentlyabsent; noattachmentmodified/deletedthiscontinuation. Historicalcloudreviewresponses docs86/89 remain withoutclaimingexactrawattachmentbackups. Existing8hmonitor staysreadonly andcannotdispatchnative."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -4246,62 +4329,66 @@
     "observed_40892423117": 40892423117,
     "observed_40899144223": 40899144223,
     "observed_40905069113": 40905069113,
-    "observed_40894408041": 40894408041
+    "observed_40894408041": 40894408041,
+    "observed_40915118374": 40915118374,
+    "observed_40916056541": 40916056541
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40894408041,
-      "head_sha": "8e9223b0be6e644d4c5684b94b13c2888c531e79",
+      "run": 40915118374,
+      "head_sha": "1f62c264a7ffab1d9bf92fdcb02946a4c6cdd4a1",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123519510524,
+          "id": 123593192048,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123520714945,
-          "name": "preserve-source-job-log",
+          "id": 123593828606,
+          "name": "preserve-job-log",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123520805697,
-          "name": "route-only (on)",
+          "id": 123593932903,
+          "name": "readback",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40916056541,
+      "head_sha": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123596480686,
+          "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123520805825,
-          "name": "route-only (off)",
+          "id": 123596749094,
+          "name": "preserve-job-log",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123557468469,
-          "name": "audit-only (off)",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123557468578,
-          "name": "audit-only (on)",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123574151200,
-          "name": "comparison",
+          "id": 123596843565,
+          "name": "readback",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
@@ -4339,9 +4426,11 @@
         {
           "id": 123570499915,
           "name": "loaded (cold_early)",
-          "status": "queued",
+          "status": "in_progress",
           "conclusion": null,
-          "active_steps": []
+          "active_steps": [
+            "Always emit exact terminal and publication metadata"
+          ]
         },
         {
           "id": 123570500010,
@@ -4353,18 +4442,18 @@
         {
           "id": 123570500074,
           "name": "loaded (hot_late)",
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        },
+        {
+          "id": 123570500080,
+          "name": "loaded (cold_late)",
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
             "Original OFF operating point and full loaded transient"
           ]
-        },
-        {
-          "id": 123570500080,
-          "name": "loaded (cold_late)",
-          "status": "queued",
-          "conclusion": null,
-          "active_steps": []
         },
         {
           "id": 123570500103,
@@ -4404,17 +4493,15 @@
         {
           "id": 123570500329,
           "name": "loaded (hot_early)",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Original OFF operating point and full loaded transient"
-          ]
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T16:41:40.865083+00:00",
+    "observed_at": "2026-10-29T17:14:46.802831+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -4427,7 +4514,18 @@
       "/home/hasanmelih/nssoc-run-logs"
     ],
     "independent_read_only_check_at": "2026-10-28T19:59:44+00:00",
-    "independent_check_scope": "Previously recorded project paths and migration services; bounded metadata scans of home, Documents, Downloads, cache, ChatGPT, /tmp and /var/tmp; no whole-disk audit. No residual project/native artifact identified. Unrelated user settings and protected system directories untouched."
+    "independent_check_scope": "Previously recorded project paths and migration services; bounded metadata scans of home, Documents, Downloads, cache, ChatGPT, /tmp and /var/tmp; no whole-disk audit. No residual project/native artifact identified. Unrelated user settings and protected system directories untouched.",
+    "original_review_paths": [
+      {
+        "path": "/home/hasanmelih/Downloads/nssoc-external-review.md",
+        "present": false
+      },
+      {
+        "path": "/home/hasanmelih/Downloads/nssoc-audit-2026-09-20 (2).md",
+        "present": false
+      }
+    ],
+    "original_review_scope": "The originally supplied local paths are currently absent; no original attachment was deleted or modified during this continuation. Existing cloud review-response documents docs/86 and docs/89 remain, without claiming byte-identical raw attachment backups."
   },
   "immutable_continuation_receipts": {
     "mainchip_recovery": {
@@ -4543,7 +4641,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T16:41:40.865083+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T17:14:46.802831+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -39925,6 +40023,522 @@
       "bytes": 7480,
       "sha256": "6f27860d5465aba7e79d2f35ce420d520c64549a3e1f1e70748d3859a9d92b38",
       "existing_identical": false
+    }
+  ],
+  "imported_checkpoint_receipts_v125": [
+    {
+      "path": "docs/evidence/mainchip-net459-neighborhood-plan-20261029/text-reader-source-review.json",
+      "source": "b2bbb92b483d3ed9b8ae0c9b26b1b66c68da1a82",
+      "git_blob": "59a995303790dcd2216d7803a6cbf80b6782fbd2",
+      "bytes": 9274,
+      "sha256": "76ffee146c617d62a9ee8693cff305a0764699b8a2ca44d457d289a4f8fc314b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-neighborhood-plan-20261029/hosted-readback-admission.json",
+      "source": "1f62c264a7ffab1d9bf92fdcb02946a4c6cdd4a1",
+      "git_blob": "32306f21c968ee7c8180fa01d854f6faec337c68",
+      "bytes": 1018,
+      "sha256": "51e1f4a35fa132566150e658d04e75a0a76ce93de075fe94a017a81bdfa244bc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-controls-terminal-40915118374/artifacts.json",
+      "source": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "git_blob": "e6f09c3a4e26d7cab5448ba2a76ea535dfb76170",
+      "bytes": 1856,
+      "sha256": "330af75bd24b9520c52661ce9e55da800f1dd6c0aca0ba22031556272251a109",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-controls-terminal-40915118374/controls/context.json",
+      "source": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "git_blob": "a5cbed9570a96f30b1921d559e64415fcd42a2b1",
+      "bytes": 514,
+      "sha256": "22884b1a7f3bdf0cb05cf6b67a3bf7b1ee1533771fa0af6d96418ff538194a1a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-controls-terminal-40915118374/controls/controls.json",
+      "source": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "git_blob": "bbfc723661440a77ce2452dd0204a081cb767b1a",
+      "bytes": 4958,
+      "sha256": "879307ce17f4a4de277b2acf17c617ba837579b41f1b5dfa085aa0c0d299a7d3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-controls-terminal-40915118374/controls/controls.stderr",
+      "source": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-controls-terminal-40915118374/controls/controls.stdout",
+      "source": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "git_blob": "c297a942bac640f69c1eb389a0e5b321ed929572",
+      "bytes": 3944,
+      "sha256": "28834eaa6d1db55e82438f716198bc338e86c9aae33abaabf74d9d42239a552b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-controls-terminal-40915118374/controls/index.json",
+      "source": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "git_blob": "3552515832e877573fe6356fb4b510d20a451df4",
+      "bytes": 777,
+      "sha256": "c5ea74f2ac933ce8729291fa2418d41fa16fc21e812d13df330d89c2665dae1b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-controls-terminal-40915118374/jobs.json",
+      "source": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "git_blob": "04bf8a6d4e653c71ed9f49b479fe8073562b92e1",
+      "bytes": 7606,
+      "sha256": "fc65b96a40a73bc71e1c43d01441a0451979b44e1a4fa0df72c3023add1b45cd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-controls-terminal-40915118374/jobs/123593192048.json",
+      "source": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "git_blob": "548d05379e279247b7943950e7192e20ae870688",
+      "bytes": 3765,
+      "sha256": "b84551d55ee378b70a4376f80ce06f6d5713c714cfaa869a893684233827556b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-controls-terminal-40915118374/jobs/123593192048.log",
+      "source": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "git_blob": "c32e01ee38565e438a9c02a1a748decc33d65a79",
+      "bytes": 43012,
+      "sha256": "bf8f90f078feeda8129f5bbcc928ccb33bc2243d787897a5ef998f5e04766837",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-controls-terminal-40915118374/jobs/123593828606.json",
+      "source": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "git_blob": "2a1668ddec7350e9733a135ef93fbdad9e422855",
+      "bytes": 1965,
+      "sha256": "45bd93b0b2780299191574ca0aea84e90955a3c60682503ef3dace26c3ca9344",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-controls-terminal-40915118374/jobs/123593828606.log",
+      "source": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "git_blob": "d6fe7f1b48b134c51bf55385cc4a5eeaee6548c7",
+      "bytes": 7521,
+      "sha256": "3ce5ae710cc089ab5fca1c9391c722f649e2b645f700acf103c3461262a22d4c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-controls-terminal-40915118374/jobs/123593932903.json",
+      "source": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "git_blob": "1e5dc5271800c1a94b566abe0f602698289efd6d",
+      "bytes": 1022,
+      "sha256": "185e3cfc8f8c4039bdffabd18482ae988edaa1a2c8a06497023d1b72bf10c0c2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-controls-terminal-40915118374/receipt.json",
+      "source": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "git_blob": "7fe0d4dbbf58fb7bc6a41220a96c2c177c12014b",
+      "bytes": 8485,
+      "sha256": "d226c6eab71f10d91c7b94af6971e9d362e5401cc4711a972d0c42c454a277ab",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-controls-terminal-40915118374/run.json",
+      "source": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "git_blob": "6e95cdb1f709552df58b592a6d05b051b8769d4f",
+      "bytes": 14403,
+      "sha256": "88bc25fd3008b6d0a04764ea09b47b9b40e47c5d124b1610190c6c265757e27f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/artifacts.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "497fad646dc6b9339449dfb55ad21e320778561c",
+      "bytes": 2760,
+      "sha256": "c9df41b66e3319b9be60e621b511e4c2dd9e1147f9515e358c90691628408ba2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/controls/context.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "7656c62b9d73e4668411cd7cfa0c03dce2112855",
+      "bytes": 514,
+      "sha256": "8a12196dc99807046162b9801deedc4f540a964fe8fd809d320a0a06dd73961c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/controls/controls.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "8ca4022f057c931e1c37a7c85b6b5547ff5fcc28",
+      "bytes": 4958,
+      "sha256": "f5d39b912db724afb764c3de6ad6b93abf357000308cf2508490a8e7ef094fd8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/controls/controls.stderr",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/controls/controls.stdout",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "babaa57fc8f47eff287a6565eceb97a09d4be071",
+      "bytes": 3944,
+      "sha256": "baa3f25e3d65b9e99e4c2aafa6f585e5d0f8b281b7e1a4eb2a21459b0ae8e584",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/controls/index.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "0e87a538aa28649201262c454618571e9d9ceb80",
+      "bytes": 777,
+      "sha256": "e9335b883f5d9b3224a5963531b9db975b0432f5887cbce16bded879675377d1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/jobs.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "462d6947434277bf6550d1ffcba2005f2840e94a",
+      "bytes": 10739,
+      "sha256": "9ba462a750a3cb671b8a1d24493864491979ae5f19b8c8226b37884b66ec897d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/jobs/123596480686.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "6a3705b82359acea9747ba132f05aa26c6bbbddf",
+      "bytes": 3765,
+      "sha256": "25724bdd677ed907193d02ae8b08c09962ae9f16b3d9641f983666697f47ac61",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/jobs/123596480686.log",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "d8e59ebecace19b6163ad032165cfe0c67a42818",
+      "bytes": 43018,
+      "sha256": "4934f13c6fab2759e10e0249e6cf5e81eaa97d38c41031c48e48d8c2889d9ff1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/jobs/123596749094.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "a703a3a999e5c91dc2ae7c2237f3d0f54e533d87",
+      "bytes": 1965,
+      "sha256": "6506f6efa37647834ae690911ade1329cc3dbdd92b03e1fbcb57787da6a56f76",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/jobs/123596749094.log",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "f5a9d424e6f903de47bd63c2e32d4ac581c7df3d",
+      "bytes": 7522,
+      "sha256": "20dd6c860ac3d0160af1ff5ecc039bc5a59317f6bd3c8e8ffc15f68ef14d2ab8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/jobs/123596843565.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "282fe719c334bbd7f2a1edd78037b1140a74c2e6",
+      "bytes": 3799,
+      "sha256": "772cfad1c356252aeaa643c6ca6699307790724d30059da164d71b76fc496a44",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/jobs/123596843565.log",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "55b6bbd723adfef420709a38acd96518d5e58128",
+      "bytes": 606097,
+      "sha256": "957068eedce3fa16fe99f1cdc2d84e795afc84722786e9b611de56b3617adf40",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback-index.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "3fa0e7f2a83c1035fa0cf765c3f1899d8c2a192d",
+      "bytes": 3797,
+      "sha256": "0f59c92516a38b4924681e2ef0cf9e9a06d1aee8c0b655f2ce495392616819ed",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/extraction-receipt.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "fa0758d83a2d72de3ab6f575d380958ec7a97832",
+      "bytes": 26399,
+      "sha256": "c4fcceaf0bc1a3c1493ad278ee577f700d11f20389e3586bf82576c8ec899d15",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/producer-binding.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "07b109470dbcfb5c50214307864387ee0d253494",
+      "bytes": 1428,
+      "sha256": "ca6dfd20c3ba81d27eb5b7f63459168a2176000619d8a710947a7830f170b662",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/producer-jobs.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "7700c239ab095b4291e652609b052407112f6178",
+      "bytes": 25026,
+      "sha256": "712b97423fef3b00296fb4192ab578f9a475771ba99b418a93efbd2369a9af40",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/producer-outputs.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "44c9764140047cd1780f528d9413de9d975a271e",
+      "bytes": 21497,
+      "sha256": "07032f779bc1f664fe58da6953287ab7d66f880d8e24adf725b27a00f6f7209a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/producer-parts.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "6904db33c771d26d9095e974c7754051d60021c2",
+      "bytes": 493,
+      "sha256": "e5730258718841c8ad1627e20256e7352535036c0d971064e6d627566a15d787",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/producer-ref.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "1f0dee5385c3e9123356949d39d812cc3cedacf8",
+      "bytes": 595,
+      "sha256": "1893b8c8b356478d2a665f75adebc8cc9854839261ff33a11972c9721b8f444a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/producer-release.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "3229fd81b580bbcfa901212829b2129af3e8e840",
+      "bytes": 98063,
+      "sha256": "df01f319f23052ac8cb5d8da7315efe609a0f95fa7f3e6821bf1c35409bccf80",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/producer-run.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "665cff47b267e4713540ff58522050d9c7ef723d",
+      "bytes": 14422,
+      "sha256": "c8b0d7f9b41b7d7e76a822b17878dbfe4ccb124bb8ac949ea861c7cb568080cc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/readback-result.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "c051f9c46ad7e5846e400792c5cb73d9afd211cb",
+      "bytes": 26437,
+      "sha256": "9f0b56805bdb570f600429d6cc3af0d5f36d7205782de27d703bfd5cda1bf3c1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/release-reservation.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "05dac4b13407ff9339bc9d19aad798227db770f7",
+      "bytes": 588,
+      "sha256": "ca49af2e48698d1466c2159593e495ecef36ade26d09363088a943a91609881d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/selected/case-result.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "78d95bda0ef11d69a9be8af0a00c708b3befee39",
+      "bytes": 135954,
+      "sha256": "b2439801f4635b92c0e9b408a48d1945232faa2c3c397003c33b79773df8fb25",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/selected/supervision/drc-audit.command.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "68194d42c1501054412740ecd7bf2add1d1d8e1a",
+      "bytes": 1275,
+      "sha256": "7f8fc69583d16fe598e86ef9ecfdb083b94ec1f91cec62b6a9cce3d82158b439",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/selected/supervision/drc-audit.stderr",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/selected/supervision/drc-audit.stdout",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "8ab24468e0c4b920dcd20e53c7c60371c7532e64",
+      "bytes": 285,
+      "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/selected/supervision/full-original-class-read-only-DRT.command.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "004b778daa4181aff56f3e23e573c6f8814d3d07",
+      "bytes": 1240,
+      "sha256": "afb20450428cf6d1f5a5937233753a72e60a78b71dfacacd77f701155befd84d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/selected/supervision/full-original-class-read-only-DRT.stderr",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/selected/supervision/full-original-class-read-only-DRT.stdout",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "9fbe211b3816691a001e4c1337ecf9f193414254",
+      "bytes": 4158,
+      "sha256": "4e67e060eb2bd0aaaccac7abafb65b2be38b4ab4b555a9222333a880cc1b848e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/selected/work/drc-audit-result.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "43aa6c813b8bbc6df738b2ae7b47ef5f4f243c91",
+      "bytes": 2771,
+      "sha256": "61ae15342c34e1de16aa6d594886a88a962b9c6e7635e5662f9edffb01075573",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/selected/work/fixed-routing.drc",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "cb1702eaff273c699572a71ced1e04edc989b8d5",
+      "bytes": 143,
+      "sha256": "529f5939d90f251dc00b3733e8c1762450575e8d3278bb3836598de14aaf52b3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/selected/work/initial-drc-markers.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "7b4885d505f9d47ccaca62d80ee7fae6a4fc2d92",
+      "bytes": 1614,
+      "sha256": "03583e7e6d24efc7be21bc7399778e4d463312906476bb87fd0f28a5a948aa1c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/selected/work/initial-drc-reread.rpt",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "cb1702eaff273c699572a71ced1e04edc989b8d5",
+      "bytes": 143,
+      "sha256": "529f5939d90f251dc00b3733e8c1762450575e8d3278bb3836598de14aaf52b3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/selected/work/initial-drc.rpt",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "cb1702eaff273c699572a71ced1e04edc989b8d5",
+      "bytes": 143,
+      "sha256": "529f5939d90f251dc00b3733e8c1762450575e8d3278bb3836598de14aaf52b3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/selected/work/original-gate-after-final-two-net-drc/result.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "e097f4d95886a382cc8a427a6442a354c195603e",
+      "bytes": 627,
+      "sha256": "1f02b809252c7be5856cbd992b5c425d99c8e1daf7188232e0dc58afa6b9eb6e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/selected/work/route-audit-result.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "c4dec3078e38e740a1eb611b81b469f204967dc9",
+      "bytes": 811,
+      "sha256": "b433964de3ed9ce204e11796cf9b892f8a4ff34d724bd169f6e61783335850c8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/selected/work/unfix-audit-result.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "2179c3a530d3c9d7f0136f7536b1383cc517ad79",
+      "bytes": 2507,
+      "sha256": "b6d6125af92c9ff3921305bea8e07520e0d143444daa9f383e93650a02b35a7c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/readback/selected/writer-raw.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "884871026280e5be853a25c86efd2f30f0a11d61",
+      "bytes": 55794,
+      "sha256": "240b5f370a9c2a87850805f4c04b3dfb867f26cf89666bbccdd3356929902d90",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/receipt.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "39eb5c611a477f32b8ec922645f90c07d26623b5",
+      "bytes": 42728,
+      "sha256": "94c0481304dfb472329763398033727e649e7881f1ca6f2973f58c7193467a97",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-final-marker-readback-terminal-40916056541/run.json",
+      "source": "f555db1dc198bef37e7f0051c14564984650a2d7",
+      "git_blob": "77458b3c2cfc13dcb34b726dd099e870e39e30cb",
+      "bytes": 14409,
+      "sha256": "6e035a9fb9763d20d67fff46220fb507c4be32fe5292d5a59be6315a9533db39",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-selector-diagnosis-20261029/README.md",
+      "source": "356559235d26863535d12bc062d33c6ce915b6a1",
+      "git_blob": "dd5cea8da487b3cfe7b2623b78d9c855707c0fc0",
+      "bytes": 1882,
+      "sha256": "25f4ca76f9ac8fce484408e38893df65d48ad016dbd0e5a111f0f44e001671fb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-selector-diagnosis-20261029/diagnosis.json",
+      "source": "356559235d26863535d12bc062d33c6ce915b6a1",
+      "git_blob": "5374a4bf5a44963445b6e881aeaae02fda2b9b71",
+      "bytes": 136085,
+      "sha256": "e81f3c595c5066a07202835ff07fb9bd73237c73aa170d2e9b7a9a2fd18222e6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-selector-diagnosis-20261029/nominal_early.native-result.json",
+      "source": "356559235d26863535d12bc062d33c6ce915b6a1",
+      "git_blob": "251663bfb62022dae61e6b62c352328d68c54672",
+      "bytes": 3457662,
+      "sha256": "4ad6acac07a8945f794e42e81c9f97a7aec665c56ae0d36371cde768a14f6a31",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-selector-diagnosis-20261029/nominal_late.native-result.json",
+      "source": "356559235d26863535d12bc062d33c6ce915b6a1",
+      "git_blob": "a98c29e79adddbd3ae5afedbb80459e01f19400c",
+      "bytes": 3457797,
+      "sha256": "cc8a5db01e59b27ea0f5b5cb126413a97cb5950c991bd293e0ad670947cb8fe8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-selector-diagnosis-20261029/provenance.json",
+      "source": "356559235d26863535d12bc062d33c6ce915b6a1",
+      "git_blob": "27b613d3e23d998db1c3c00dd9bfa20961e55c52",
+      "bytes": 33754,
+      "sha256": "9e474924d1b5f25278ee6962e5811ec1406b87357cb8b75ef8431d4cecbb6728",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v125": [
+    {
+      "run": 40916056541,
+      "source": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "group": "mainchip-final-marker-readback",
+      "tag": "cloud-results-40916056541-1-mainchip-final-marker-readback",
+      "release_id": 428147532,
+      "reserved_before_native_acquisition": true
     }
   ]
 }
