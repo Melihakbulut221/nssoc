@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v100
+# Cloud continuation — checkpoint v101
 
-Updated: 2026-10-29T01:37:23.968627+00:00
+Updated: 2026-10-29T02:01:57.877432+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Fresh CDR candidate physical run40800207491 completed successfully: all560DRC categories, zero markers, hierarchical and flat500-device transistor LVS, all13expected physical/reference faults rejected. Actual restore3854members and native physical167.35seconds completed with clean supervision/finalization. All13terminal proof documents are retained. This closes physical DRC/LVS only for candidateGDSfb8a0aea5b44627a513db62ed10fe87c66f30697930e1212d3689c7ae981c0c3. Fresh graph/RC/MIM and original electrical cases remain mandatory; fullPHY and chip timing remain unaccepted.
+CDR physical40800207491 remains an actual560-rule0-marker / deep+flat500-deviceLVS /13fault PASS. New route-tail source-only run40803424913 also completed successfully, including complete authenticated JSON controls and explicit refusal of native activation before the route/audit split. No route-tail native job was dispatched. Agent pll_handoff is implementing separately preserved route-only and five-audit stages on codex/mainchip-built-engine-route-tail-observer. CDR next-stage source review identifies the independently modified source child reference needed to preserve the original full parent geometry guard. No freshRC/electrical/fullPHY or final chip timing acceptance is inferred.
 
 Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -8862,3 +8863,10 @@ Local project/tmp/native processes verified absent. Inventory308 exact cloud han
 Fresh CDR candidate physical run40800207491 completed successfully: all560DRC categories, zero markers, hierarchical and flat500-device transistor LVS, all13expected physical/reference faults rejected. Actual restore3854members and native physical167.35seconds completed with clean supervision/finalization. All13terminal proof documents are retained. This closes physical DRC/LVS only for candidateGDSfb8a0aea5b44627a513db62ed10fe87c66f30697930e1212d3689c7ae981c0c3. Fresh graph/RC/MIM and original electrical cases remain mandatory; fullPHY and chip timing remain unaccepted.
 
 Local project/tmp/native processes verified absent. Inventory308 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T02:01:57.877432+00:00 — cloud-only checkpoint v101
+
+CDR physical40800207491 remains an actual560-rule0-marker / deep+flat500-deviceLVS /13fault PASS. New route-tail source-only run40803424913 also completed successfully, including complete authenticated JSON controls and explicit refusal of native activation before the route/audit split. No route-tail native job was dispatched. Agent pll_handoff is implementing separately preserved route-only and five-audit stages on codex/mainchip-built-engine-route-tail-observer. CDR next-stage source review identifies the independently modified source child reference needed to preserve the original full parent geometry guard. No freshRC/electrical/fullPHY or final chip timing acceptance is inferred.
+
+Local project/tmp/native processes verified absent. Inventory309 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
