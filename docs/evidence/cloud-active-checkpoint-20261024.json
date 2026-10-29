@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T11:20:12.719713+00:00",
+  "updated_at": "2026-10-29T11:51:30.498210+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "9f7dba7ef2db9a5e4d783d0b1fe1066bf9fd2717",
+  "root_source_before_receipt": "d5e951005dcaaced422d378874265c6a2ab51bca",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 114,
+    "inventory_version": 115,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -40,40 +40,7 @@
       "main_verification_run": 40847665085
     }
   },
-  "active_runs": {
-    "fixed_prefix_actual_chip": {
-      "run": 40863684870,
-      "head_sha": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
-      "status": "in_progress",
-      "conclusion": null,
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123412973909,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123413211875,
-          "name": "preserve-source-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123413288178,
-          "name": "native-prefix",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Restore exact inputs and execute original four native preparation phases"
-          ]
-        }
-      ]
-    }
-  },
+  "active_runs": {},
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -3517,29 +3484,63 @@
     "fixed_engine_route_prefix_preparation": {
       "branch": "codex/mainchip-fixed-engine-route-prefix",
       "source": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
-      "state": "EXACT_SOURCE_NATIVE_PREFIX_DISPATCHED",
+      "evidence_head": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "state": "ACTUAL_PREFIX_FAILED_MEMORY_SAMPLE_UNAVAILABLE",
       "source_controls_run": 40862715889,
-      "source_controls_source": "d0577fbe60a15b5ed6541f27f80fb14b83dc5443",
-      "source_controls_terminal": "success",
-      "source_controls_receipt_sha256": "4c5d4842b281533b6669f09de712582126eae0447114cd8619525defa435fd03",
-      "source_protected_files": 1098,
       "run": 40863684870,
-      "workflow": 400507406,
+      "terminal": "failure",
       "release_id": 427769567,
-      "tag": "cloud-results-40863684870-1-mainchip-fixed-engine-route-prefix",
-      "reserved_empty_before_acquisition": true,
-      "native_dispatched": true,
-      "native_route_authorized": false,
+      "full_proof_files": 45,
+      "receipt_sha256": "ba1c13a40eb4e593b7b12cbc4d42d5f95260b789d76ff3f949c98220551ce2ec",
+      "native_archive_map_members": 67,
+      "native_archive_bytes": 78585139,
+      "native_archive_sha256": "fe08a442a5c59ffc3c1046714617ec55a22d5201517b026ed3b5f2212e1fb54a",
+      "failed_phase": "ownership",
+      "phase_elapsed_seconds": 945.739356226,
+      "process_returncode_after_cleanup": 0,
+      "cleanup_signals": [
+        "SIGTERM"
+      ],
+      "last_successful_group_rss_kib": 1892344,
+      "actual_exit_race_proven": false,
+      "prefix_qualified": false,
+      "native_routing_executed": false,
       "physical_acceptance": false
+    },
+    "fixed_prefix_failure_readback": {
+      "branch": "codex/mainchip-fixed-prefix-failure-readback",
+      "source": "5764b61a0a4123d066af56015484324a0a723233",
+      "run": 40868093785,
+      "workflow": 400543110,
+      "release_id": 427798211,
+      "tag": "cloud-results-40868093785-1-mainchip-fixed-prefix-failure-readback",
+      "reserved_empty_before_acquisition": true,
+      "selected_derived_text_files": 12,
+      "native_executed": false,
+      "physical_acceptance": false
+    },
+    "fixed_engine_route_tail_preparation": {
+      "branch": "codex/mainchip-fixed-engine-route-tail",
+      "head": "db6af63856ff2ce265f84634da64d174a4187292",
+      "wrappers_source": "784878df6e33402befcb08baa4f2354210842506",
+      "draft_contract_sha256": "1faa40b924d5cb3a5074c3b371ba2e2f3620886b70546951112aac84228d735c",
+      "state": "DRAFT_NO_VALID_PREFIX_NO_METHOD_NO_WORKFLOW_NO_AUTHORITY",
+      "checker_branch": "codex/mainchip-fixed-engine-route-tail-controls",
+      "checker_source": "e5e8359f1d7c3acd13ff48d0f85bb4e029def13b",
+      "checker_state": "INCOMPLETE_SOURCE_CHECKPOINT_NOT_READY_FOR_EXECUTION",
+      "checker_sha256": "f8344de1385f8028cd0aa2e3debf6046ef8e8657506591e996eb036a0f85d003",
+      "authored_tests_executed": false,
+      "native_authorized": false
     }
   },
   "next_actions": [
-    "Observe exact native prefix40863684870 attempt1 at8d4b999; do not redispatch. Release427769567 was reserved empty before acquisition. Repeat source controls and then four original phases:ownership,prepare-fixed,paired-all-nontarget-fixed-import,fixed-audit. Preserve complete terminal evidence and fresh frozen map; never reuse old746/407890 identity.",
-    "Source controls40862715889 passed atd0577f. Full14proof atf158bb7f, receipt4c5d4842. Native source8d4b999 pins1098 files and only outer job wallclock changed120to250min; all original sublimits/numerical gates unchanged. Current exact-source controls repeat in source and native jobs.",
-    "pll_handoff owns additive fixed-engine route tail wrappers plus new handoff(contract import only) and derivation review on codex/mainchip-fixed-engine-route-tail from8d4b999. Root owns contract/method/checker/workflow. Actual fresh prefix proof must qualify before tail execution. Distinct names avoid frozen-source import shadowing.",
-    "Preserve execute_tail,route_records,validate_manifest,original five audits,14400sroute/1200saudits and all numerical gates. Replace old zero-byte direct publisher with qualified failure-preserving behavior, archive route-tail-evidence.tar.gz.partNNN. Run off/on split actual route+audits then separate fixed-clock internal conservation. Original0.84um clock movement/threeShorts retained.",
-    "Current-width CDR loaded worker/controller remains after route integration;40841477699 input-controls and40830441311 freshRC are qualified inputs, no waveform acceptance transfer. Full PHY/PLL/route/final timing remain unaccepted.",
-    "All authored files/tests/CAD/native payload stay GitHub. Local project/tmp/nativeprocess checks must remain empty. Preserve original review documents. Existing8h monitor read-only. Do not retry errored agents to evade usage limits."
+    "Observe readback40868093785 at exact5764b61 once; no redispatch. It authenticates full45failureproof/67archive members on GitHub and publishes12selected derivedtext records into reserved release427798211. No archive acquisition on local machine. Preserve full terminal/rawjob/readback-result and selected decodedtext in GitHub.",
+    "Actual prefix40863684870 is FAILED and must never qualify tail. Full45proof1,090,149B atd56a03a592bf4575416b3a751f3f84649b871544; receiptba1c13a4, cloudarchive67members78,585,139B/fe08a442. Ownership945.74s produced resultJSON558394B/9d9669a1, but supervisor failed persistent missingliveVmRSS; rc0 AFTER SIGTERMcleanup does not prove natural exit race. No reusable frozenprefix exists.",
+    "Read counter diagnosis: old restoration.supervisor installs scripts/pcie_live_memory_sampler.py55fb9a3b into frozen telemetry e326e548. Three20ms retries within100ms then CounterError('Persistent unavailable live VmRSS'); supervised catcheserror without final exit/group classification beforeSIGTERM. Do not weaken live unreadable failure,10GiB RSS/2GiB available limits or phase timing.",
+    "After selectedtext evidence, implement minimal additive exit-aware supervision factory only in successor driver injectionpoint. Preserve historical files; instantiate one coherent isolated frozen supervisor module namespace (ACTIVE/STOP/heartbeat/cleanup sameglobals). Only typed exhaustedMissingRSS can classify terminal when leader alreadyexited and completeidentity-aware group has no live/reused/unknown identities BEFORE cleanup signals. Keep error/history; no inventedzero/staleRSS/new sleepbudget. Actualsupervised lifecycle regression plus unchanged13controls and realshortPython0/7 children allonGitHub.",
+    "Tail wrappers784878 unchangedoldbodies/newpublisher and draftcontractdb6af638 are preliminary only. Contract fixedproofconstantszero/pending and control_evidence raises; no method/workflow. Checker e5e8359f separatebranch incomplete: splitpublication oldschema assertions needfix; no actualtests. Freshsuccessfulprefix required before wiring actualFROZEN_COUNT/BYTES/hash/map. Neverreuseold746 or failed408636 asqualified.",
+    "Tail source/native report hashes may differ due temporary-path exceptiontext; validateeach context independently, bind only native reportbytes tohost/direct. Preserve originalroute/audit geometry/numerical functions and limits, sourcefailedrun histories, and futureall5releases reservation before acquisition.",
+    "All NSSOC code/test/CAD/native assets stayGitHub. Workspaceempty,old3projectdirsabsent,tmp/nativeprocessesabsent. Originaluserreviews retained.8hmonitor read-only. delta_review/tx_diagnosis erroredusage do notrespawn; pll_handoff idleaftercounterproposal and canperformboundedindependentfixturework."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -3858,45 +3859,17 @@
     "observed_40856758871": 40856758871,
     "observed_40857653668": 40857653668,
     "observed_40858216637": 40858216637,
-    "observed_40862715889": 40862715889
+    "observed_40862715889": 40862715889,
+    "observed_40863684870": 40863684870,
+    "observed_40868093785": 40868093785
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40862715889,
-      "head_sha": "d0577fbe60a15b5ed6541f27f80fb14b83dc5443",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123409716825,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123410021123,
-          "name": "preserve-source-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123410113760,
-          "name": "native-prefix",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
       "run": 40863684870,
       "head_sha": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "failure",
       "run_attempt": 1,
       "jobs": [
         {
@@ -3916,17 +3889,31 @@
         {
           "id": 123413288178,
           "name": "native-prefix",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Restore exact inputs and execute original four native preparation phases"
-          ]
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40868093785,
+      "head_sha": "5764b61a0a4123d066af56015484324a0a723233",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123427871245,
+          "name": "readback",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T11:20:12.719713+00:00",
+    "observed_at": "2026-10-29T11:51:30.498210+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -4055,7 +4042,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T11:20:12.719713+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T11:51:30.498210+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -33332,6 +33319,401 @@
       "source": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
       "release_id": 427769567,
       "tag": "cloud-results-40863684870-1-mainchip-fixed-engine-route-prefix",
+      "assets_at_reservation": 0
+    }
+  ],
+  "imported_checkpoint_receipts_v115": [
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/123412973909.job.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "2d36eeb05e0d6b3b51a6d396053f450694537a9e",
+      "bytes": 2980,
+      "sha256": "40e1a309cfa35877fba97b4dba1a1adaca9d1f31dce1081bcb9a44bd9ceb2a52",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/123412973909.job.log",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "e83891c6a40ecfb4346e8592334100f80bd5504c",
+      "bytes": 151501,
+      "sha256": "886e591f990e40f60c5d0b4cbe88c5880d846d4a481a361b57b4911a6f50fef2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/123413211875.job.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "6a0ea73178c2cee089d768e8cc34b7957d20f2e4",
+      "bytes": 1999,
+      "sha256": "90cd88ad3a82778cf13876b7e01f879727a56d22a3c61b2c572bd67c0c7b0308",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/123413211875.job.log",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "89b4284ee9a463bdcb33be329d750855bde2e895",
+      "bytes": 9002,
+      "sha256": "d566885e581120e034907c9060c43a897181351c062e58e3bb69c734a20953a2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/123413288178.job.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "d31360a0fe8024f6e491242a1b7b8cfdf407ac65",
+      "bytes": 3747,
+      "sha256": "3bc13401debe536ce826003462c41e3acaa040968268bfb5d68d81bea75cd954",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/123413288178.job.log",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "12b83f7e5f5e7eea4f4bfef22c57359fcf81e549",
+      "bytes": 170611,
+      "sha256": "9635edc6cd98506ba7e865975567ccda8f48832b68388c914672391843af992f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/artifacts.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "9b786f9f324e45ac76aa1620cc37db097709c450",
+      "bytes": 3701,
+      "sha256": "0c1ba699db26aaee8c0519f0bbc508f899aba11731aae75fa8713183c51518eb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/complete-native-restore-map.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "ab394bc07a140e25a46a58a9793d8bb966eeac81",
+      "bytes": 9238,
+      "sha256": "a43a4df346702132e309e7c60c3d860e684839a017fa10e9af1ddd44e19c9a84",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/controls/native-prefix/fixed-prefix-control-context.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "9cda17136a90fce004427892be8c2b74fa684614",
+      "bytes": 247,
+      "sha256": "a4d149728a22e0ccea23b1667337f9d9bc98c4609c43234eec1b74b3ce149b7a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/controls/native-prefix/fixed-route-prefix-controls.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "f8f65af353731a3a8407638c182554b704015751",
+      "bytes": 93258,
+      "sha256": "d0eccd901dc9d204264cd420a35f79c16b1c751c1c52c069760460ba47d7601f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/controls/native-prefix/fixed-route-prefix-controls.stderr",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/controls/native-prefix/fixed-route-prefix-controls.stdout",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/controls/native-prefix/index.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "be58285a89594f096b50f360854b3d920df3d89f",
+      "bytes": 932,
+      "sha256": "33e1c806b927e6352296a6bf34251b14d53e15eaa8fcec3ceca2fac0389989f6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/controls/source-controls/fixed-prefix-control-context.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "9cda17136a90fce004427892be8c2b74fa684614",
+      "bytes": 247,
+      "sha256": "a4d149728a22e0ccea23b1667337f9d9bc98c4609c43234eec1b74b3ce149b7a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/controls/source-controls/fixed-route-prefix-controls.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "f8f65af353731a3a8407638c182554b704015751",
+      "bytes": 93258,
+      "sha256": "d0eccd901dc9d204264cd420a35f79c16b1c751c1c52c069760460ba47d7601f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/controls/source-controls/fixed-route-prefix-controls.stderr",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/controls/source-controls/fixed-route-prefix-controls.stdout",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/controls/source-controls/index.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "be58285a89594f096b50f360854b3d920df3d89f",
+      "bytes": 932,
+      "sha256": "33e1c806b927e6352296a6bf34251b14d53e15eaa8fcec3ceca2fac0389989f6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/container-initial.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "3b5efedc1a371d243c47e8fafad7d9ceecf91f26",
+      "bytes": 6300,
+      "sha256": "ccabcb8a6b8ec5b2276dba5711b28a6277e68f3f24a884c54de29467101fce74",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/container-terminal.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "39361c9082ea4e6a2fe009452bbb6b9defdca207",
+      "bytes": 6861,
+      "sha256": "0eeace4034b081dcb07fcb5f734e4625cb1f48343e52c9a6e18b0bda15f9044e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/current-source-controls.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "b9c11bd96dfaecdfbd7cd51446f61e94e167ba8a",
+      "bytes": 149,
+      "sha256": "916c70d7751b65bdf7bdd2c172dcef2744ad091fe0f9895b2fea9571e7d8138d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/direct-publication-plan.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "61058700a2b0a147b86ba491b09f05c1e9f5f236",
+      "bytes": 5513,
+      "sha256": "8080dada6be9e8a1749f1ba1f1a8417177fd4f6e8e6e96f0dfb8ba877b6500a5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/engine-restoration.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "76ac7fe7041bbe2fe36a3f61ef956a86a99cf9f8",
+      "bytes": 14357,
+      "sha256": "c291f43ffa1cb03b0a1a6a706189bd8ca481b3c36eb88eda216a5ace0d457ee0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/engine-source-envelope.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "68992b54c18373ba67ab11d1bad02748fd43103b",
+      "bytes": 361,
+      "sha256": "80d8df02aa043aca8e8a50ff2b36362646137612428e54fbb5e6ede8f8ca3afd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/fixed-route-prefix-controls.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "f8f65af353731a3a8407638c182554b704015751",
+      "bytes": 93258,
+      "sha256": "d0eccd901dc9d204264cd420a35f79c16b1c751c1c52c069760460ba47d7601f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/host-result.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "dc6737c61b20d0dc376817e5f7d807c42b7b5e03",
+      "bytes": 25987,
+      "sha256": "1ee7057d9bf535ecace5f4aad547d8ce02071fe8d08fb695605079c55e529eb0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/inner-result.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "c25086affb32212645c25161e3341abda8874fa9",
+      "bytes": 14742,
+      "sha256": "16317d33233017bc28852f04bc49b77dee6d50db681c383108daa5142029f76b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/input-restoration.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "254427077c90116147a418fbde66e484b1e26f14",
+      "bytes": 24377,
+      "sha256": "38fd8b7d7280fe5851270c2a4770000b82727dc631a34c36ddf101a1fc22e596",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/method.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "7a62ca2c9077d92031a362e12cf06c1e3e8870b5",
+      "bytes": 172351,
+      "sha256": "0dd3c47a54f421987533ffad16b535b119ddd06757413c5dd1bf0cb7faffd23d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/native-prefix-result.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "f832644d814b9961312121eabd2911e844ff70d3",
+      "bytes": 16673,
+      "sha256": "c232d19c048f0207eafe81bc65e284451b633f23bfba42bdc074b01ef90994bb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/outputs.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "ccf3c2efbe52b197ab705bbecf99cb87c864110c",
+      "bytes": 9746,
+      "sha256": "96aaa3ae70a6b1c8ada1d1028967edb68c930e2b448017f0ec65a83ec66ec2f2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/parts.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "4f4c671f0d655e502245e33e438d72fd2de70286",
+      "bytes": 319,
+      "sha256": "03e8e46f338eca6565fc71951c5644305c988c22b4b6c39667db09098eba3b29",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/prefix-source-admission.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "fc3db18667ce7220b40df2641e077be046bf114f",
+      "bytes": 1329,
+      "sha256": "6deaa4d8c91594743a5576caad69da915ed14ff4e3a83e610c99a66e1a821fcc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/publication-availability.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "5130393c0c0d9fd060157875d3e26ad97177616c",
+      "bytes": 752,
+      "sha256": "59d4ad49fe0ee40291ed9c481bcd644c74c946d6deda7cae89add2976e8035ab",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/release-reservation.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "e892b27ea087945a318900556855bf05106a4f51",
+      "bytes": 336,
+      "sha256": "39223e96ad48c757bc9468c40f25a064752df1023034c1efa4352d1e17c7605d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/routing-source-envelope.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "de0592e3f400aac5348efd822be6dfa61eb1063b",
+      "bytes": 10055,
+      "sha256": "ce3015f6d3914889cef3df1e3d7579471d792d1c22604257039bd9b93f1c0e21",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/runtime-dependencies.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "534b24cdcf542b98ad1ae9c29197ed1e2ad5ccd8",
+      "bytes": 16940,
+      "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/runtime-observed.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "534b24cdcf542b98ad1ae9c29197ed1e2ad5ccd8",
+      "bytes": 16940,
+      "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/runtime-qualification.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "08120b873be7feb04d25b0690583a79257698f0c",
+      "bytes": 698,
+      "sha256": "f507fb8033638fac1e1658ab1fd3373602db50326cb9e15c89391b43fddb032d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/direct/source-admission.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "29231cce105f0a9600232004d0ef9893d472edd1",
+      "bytes": 25643,
+      "sha256": "0a5132913b8c87304a6b662b5b5fc848e206783b50aeef72af154de5be00ddc2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/jobs.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "d2a7677d5a7d77383f8e7aff8bd68fa8e7b4e462",
+      "bytes": 9840,
+      "sha256": "c8fd76919d2c09940e61ae135152063d9e087b3ed3617abb5554b97708d86696",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/receipt.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "f42ff5f1bbe2f6c851afb10f6746697f3b97f2d9",
+      "bytes": 10915,
+      "sha256": "ba1c13a40eb4e593b7b12cbc4d42d5f95260b789d76ff3f949c98220551ce2ec",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/release.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "8223980a3cf39da23826a1e821376bca2a741e5c",
+      "bytes": 49064,
+      "sha256": "f063d476f60a649fef05578fc6c0998d5c5383a86d95c817ab1a2a86564d3f8a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/run.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "8d80b29511c328d7ee0cd02ff29c6d09efe4758f",
+      "bytes": 14418,
+      "sha256": "1a58d93f527b3222c0c8e1d4922b395d7632432af11fc98e38b7610414185ca8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/tag-ref.json",
+      "source": "d56a03a592bf4575416b3a751f3f84649b871544",
+      "git_blob": "6c3200fd1a2af9e539584b4ad089d2ce3501cc1d",
+      "bytes": 572,
+      "sha256": "e5779a15405bf17391d8665c9900f2bed9f905cb3a9f8ce6598f41a4846215f1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-route-tail-wrapper-derivation-review-20261029.json",
+      "source": "784878df6e33402befcb08baa4f2354210842506",
+      "git_blob": "ba752cd1764eb0d661df66f0533bfa1b989ba946",
+      "bytes": 47171,
+      "sha256": "7d410371df149994c37a0d028ab34259050a9a2dfbb5b102d1495c8c38b81869",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-route-tail-integration-draft-20261029.json",
+      "source": "3e4a552377bf6edb74af362841c3603b10215d07",
+      "git_blob": "432019ce382868c70d16df16afe7fbf8f9f4b2c2",
+      "bytes": 1246,
+      "sha256": "4e5e8daf6f164a50855361d9f4f76a98998000627ee303233c093992e1600c74",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-route-tail-controls-draft-review-20261029.json",
+      "source": "e5e8359f1d7c3acd13ff48d0f85bb4e029def13b",
+      "git_blob": "ef87daff4e19f99d1b277a85f68a2883f8f785f9",
+      "bytes": 4902,
+      "sha256": "2db96d87930eb75598944cabd7351913d20390f08368f7b55d815477267f8155",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v115": [
+    {
+      "run": 40868093785,
+      "source": "5764b61a0a4123d066af56015484324a0a723233",
+      "release_id": 427798211,
+      "tag": "cloud-results-40868093785-1-mainchip-fixed-prefix-failure-readback",
       "assets_at_reservation": 0
     }
   ]

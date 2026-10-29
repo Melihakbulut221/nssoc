@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v114
+# Cloud continuation — checkpoint v115
 
-Updated: 2026-10-29T11:20:12.719713+00:00
+Updated: 2026-10-29T11:51:30.498210+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Fresh fixed-engine prefix source controls40862715889 PASSED with full14proof288164B. Context1/11,authority3/54,driver6/8,path3/13,runtime proof1/50/source5,publication7 and original controls all passed. Native exactsource8d4b999 was dispatched once as40863684870; release427769567 reserved empty at exact source before acquisition. Native prefix repeats controls then original four phases.1098 pins, new runtime2a343c proof retained; outer native job250min resolves prior120min envelope shorter than allowed child limits without changing any child/numerical gate. Distinct tail wrappers are being derived independently; actual fresh frozen proof is prerequisite. All native data remain GitHub.
+Actual fresh prefix40863684870 FAILED during ownership supervision after945.74s: persistent unavailable liveVmRSS; processrc0 is afterSIGTERMcleanup and cannot prove a naturalexit race. All45proof1,090,149B committed atd56a03a; full67member78,585,139B archivefe08a442 remainsrelease427769567. No frozenprefix/routing qualification. Cloud-only readback40868093785 at5764b61 authenticates all archivedmembers and12selectedtextrecords into emptyreservedrelease427798211. Tail additivewrappers784878/draftcontractdb6af638 and incompletechecker e5e8359f remain unexecuted/nonauthorized until successfulfreshprefix. Next is evidence-led exit-aware supervisor correction preserving live-counter failure and originalresource/phase gates.
 
-Active handles at this snapshot: 40863684870 in_progress
+Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -8974,3 +8975,10 @@ Local project/tmp/native processes verified absent. Inventory337 exact cloud han
 Fresh fixed-engine prefix source controls40862715889 PASSED with full14proof288164B. Context1/11,authority3/54,driver6/8,path3/13,runtime proof1/50/source5,publication7 and original controls all passed. Native exactsource8d4b999 was dispatched once as40863684870; release427769567 reserved empty at exact source before acquisition. Native prefix repeats controls then original four phases.1098 pins, new runtime2a343c proof retained; outer native job250min resolves prior120min envelope shorter than allowed child limits without changing any child/numerical gate. Distinct tail wrappers are being derived independently; actual fresh frozen proof is prerequisite. All native data remain GitHub.
 
 Local project/tmp/native processes verified absent. Inventory339 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T11:51:30.498210+00:00 — cloud-only checkpoint v115
+
+Actual fresh prefix40863684870 FAILED during ownership supervision after945.74s: persistent unavailable liveVmRSS; processrc0 is afterSIGTERMcleanup and cannot prove a naturalexit race. All45proof1,090,149B committed atd56a03a; full67member78,585,139B archivefe08a442 remainsrelease427769567. No frozenprefix/routing qualification. Cloud-only readback40868093785 at5764b61 authenticates all archivedmembers and12selectedtextrecords into emptyreservedrelease427798211. Tail additivewrappers784878/draftcontractdb6af638 and incompletechecker e5e8359f remain unexecuted/nonauthorized until successfulfreshprefix. Next is evidence-led exit-aware supervisor correction preserving live-counter failure and originalresource/phase gates.
+
+Local project/tmp/native processes verified absent. Inventory340 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
