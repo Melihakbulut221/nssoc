@@ -5,6 +5,7 @@ import os
 import re
 from pathlib import Path
 import mainchip_fixed_engine_route_prefix_contract as previous
+import mainchip_exit_checked_command_evidence as command_evidence
 from mainchip_fixed_engine_route_prefix_contract import (
  require, secure_file, digest, decode, atomic_record, attempt, finish_record, error_record,
  IMAGE, IMAGE_ID, MEMORY, CPUS, PIDS, create_argv, validate_image, validate_container,
@@ -17,23 +18,23 @@ BASE_GROUP="mainchip-fixed-engine-route-tail"
 MODE_ENV="NSSOC_ROUTE_TAIL_MODE"
 STAGE_ENV="NSSOC_ROUTE_TAIL_STAGE"
 MODES=("off","on")
-PREFIX="docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40863684870/"
-PREFIX_RUN=40863684870
-PREFIX_SOURCE="8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0"
-PREFIX_RELEASE=427769567
-PREFIX_TAG="cloud-results-40863684870-1-mainchip-fixed-engine-route-prefix"
-FROZEN_COUNT=0 # Pending actual fresh prefix result; never old746.
-FROZEN_BYTES=0
-PREFIX_REQUIRED={}
-FROZEN_FIXED_SHA="PENDING_ACTUAL_FIXED_ODB"
-FROZEN_REPAIR_SHA="PENDING_ACTUAL_REPAIR_TCL"
-PREFIX_RECEIPT_SHA="PENDING_ACTUAL_PREFIX_TERMINAL"
+PREFIX="docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/"
+PREFIX_RUN=40878295979
+PREFIX_SOURCE="a32414f76992f28c7d43794fac9680296f208eaf"
+PREFIX_RELEASE=427875148
+PREFIX_TAG="cloud-results-40878295979-1-mainchip-fixed-engine-route-prefix"
+FROZEN_COUNT=1308
+FROZEN_BYTES=4127248178
+PREFIX_REQUIRED={'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/123462735615.job.json': {'bytes': 2980, 'sha256': 'aa8fc97950993d6a189d538957e26a708bc2cb5a0dad5fe71fadd4454c8c85c1'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/123462735615.job.log': {'bytes': 817718, 'sha256': '86078340dc69188c7b5a5e8bf188ef312479d7a7164fdb63b0d77277bbdeb515'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/123463296225.job.json': {'bytes': 1999, 'sha256': '912c8f3cc2a53b34d089210821cdd401f20d9b2d27e3715e686a5cdfe33c9700'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/123463296225.job.log': {'bytes': 9001, 'sha256': '39d79892172b9ad21cd337ce1f349578a7721ae7c510c7d9e7d01522b8729e95'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/123463392812.job.json': {'bytes': 3747, 'sha256': '80621737124605ecaf4025f2f1f77e0bd1c9d023204c2228c6a1bd9082c4a032'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/123463392812.job.log': {'bytes': 835803, 'sha256': 'ee484ce280b61c14dd20acd6464d0d53c32b542611d2a1b6d5e7b075acc0ec3c'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/artifacts.json': {'bytes': 3703, 'sha256': '6400b30010279b1af093a72ee7d27f6aeca2883daca4a4ad51071e4fb004ab94'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/complete-native-restore-map.json': {'bytes': 13225, 'sha256': '1666189512a98cf350ebe2348fe3527649e8acee6c3512a279582459727e951a'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/controls/native-prefix/exit-supervision-controls.json': {'bytes': 18907, 'sha256': 'e100df1b145a3df409f2a927e04a127d4c1dbfc0a9e286096cd0153888af6437'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/controls/native-prefix/exit-supervision-controls.stderr': {'bytes': 0, 'sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/controls/native-prefix/exit-supervision-controls.stdout': {'bytes': 472613, 'sha256': 'fa3bf71f898c6ddd2fa2faa8d7a1f28121cc97bfb32079cc1f24b49ca49e397a'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/controls/native-prefix/fixed-prefix-control-context.json': {'bytes': 247, 'sha256': '25e08808d2e1309d74da5a5ae5f02e734b298fda62af78cd768851346847c6ac'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/controls/native-prefix/fixed-route-prefix-controls.json': {'bytes': 93258, 'sha256': '22528bf03ce10c97b9d14a64a2d4c84ef3f7336281978fd982fd8d27acbf81ef'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/controls/native-prefix/fixed-route-prefix-controls.stderr': {'bytes': 0, 'sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/controls/native-prefix/fixed-route-prefix-controls.stdout': {'bytes': 0, 'sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/controls/native-prefix/index.json': {'bytes': 1622, 'sha256': 'e0ecbf64acd45d7c372bef8e25d0a8ceb75e8614e5b6990e9140681069fe62a8'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/controls/source-controls/exit-supervision-controls.json': {'bytes': 18907, 'sha256': 'e100df1b145a3df409f2a927e04a127d4c1dbfc0a9e286096cd0153888af6437'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/controls/source-controls/exit-supervision-controls.stderr': {'bytes': 0, 'sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/controls/source-controls/exit-supervision-controls.stdout': {'bytes': 471754, 'sha256': '4b253e471ba09dfbd778a9cf5c99d2622ca143a8e3d9b0f2765f6ed90b42ce6d'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/controls/source-controls/fixed-prefix-control-context.json': {'bytes': 247, 'sha256': '25e08808d2e1309d74da5a5ae5f02e734b298fda62af78cd768851346847c6ac'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/controls/source-controls/fixed-route-prefix-controls.json': {'bytes': 93258, 'sha256': '22528bf03ce10c97b9d14a64a2d4c84ef3f7336281978fd982fd8d27acbf81ef'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/controls/source-controls/fixed-route-prefix-controls.stderr': {'bytes': 0, 'sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/controls/source-controls/fixed-route-prefix-controls.stdout': {'bytes': 0, 'sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/controls/source-controls/index.json': {'bytes': 1622, 'sha256': 'cf79fd35d75384fd83d3ea8bcd38e2b718a3cf1d423ed41f1fa08e55f45b459b'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/container-initial.json': {'bytes': 6300, 'sha256': '6608fa49abbdbc3da48632c7914b73b6e05081ea754263de204ed61d277e6df4'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/container-terminal.json': {'bytes': 6860, 'sha256': '1c080628422a0c3c87cb580287197651b97fa3b87c09b3be48ac09fb8698f360'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/current-source-controls.json': {'bytes': 293, 'sha256': '500e30519f3983154db70b666cf6d160969eb68d936450d0fb1f0300dba5a49e'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/direct-publication-plan.json': {'bytes': 6001, 'sha256': '324b08a24668a7e1e90ad0455c7d68f9189e47e96204b921e2e6778a4645b82d'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/engine-restoration.json': {'bytes': 14357, 'sha256': 'c291f43ffa1cb03b0a1a6a706189bd8ca481b3c36eb88eda216a5ace0d457ee0'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/engine-source-envelope.json': {'bytes': 361, 'sha256': '80d8df02aa043aca8e8a50ff2b36362646137612428e54fbb5e6ede8f8ca3afd'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/exit-supervision-controls.json': {'bytes': 18907, 'sha256': 'e100df1b145a3df409f2a927e04a127d4c1dbfc0a9e286096cd0153888af6437'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/fixed-route-prefix-controls.json': {'bytes': 93258, 'sha256': '22528bf03ce10c97b9d14a64a2d4c84ef3f7336281978fd982fd8d27acbf81ef'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/frozen-prefix-inventory.json': {'bytes': 270796, 'sha256': '3fb07de59166985e14f9ff9142e8a5072fa0234bbac8e1cf01b23263c60e6b06'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/frozen-prefix.json': {'bytes': 487, 'sha256': '1635885ce07755f7637dcacc7852ebb4b5d57d97738d014952ca70dc541327e5'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/host-result.json': {'bytes': 26941, 'sha256': '4cd9cac55b4a27d82e7c6eb4cb7d5537edb5f98af6266e91afb46129447af16a'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/inner-result.json': {'bytes': 16752, 'sha256': '8a2a3e8c62b40819082549be7a5fe9b03fdb59ba7ad2af5dc217443debfe66fd'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/input-restoration.json': {'bytes': 24377, 'sha256': '38fd8b7d7280fe5851270c2a4770000b82727dc631a34c36ddf101a1fc22e596'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/method.json': {'bytes': 191313, 'sha256': '2b2183f1bb009087a60449723c88b4e4ff9c37639a7da09e04ebca9ff69cb8f0'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/native-prefix-result.json': {'bytes': 682502, 'sha256': '6e92439c17f7704ac164ae87028ebe7ac493110ffd304792ad6ac6928b1e7038'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/outputs.json': {'bytes': 13956, 'sha256': '05982f8f4b0ac88cbc40cde85ba7264db547d4af146587360024756c08c07153'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/parts.json': {'bytes': 497, 'sha256': '2f989bca5cd081c81b0304b06916517adf8e6da80ad1612169bfcbedab405574'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/prefix-source-admission.json': {'bytes': 2251, 'sha256': '56bde8b8c8226e78388a6ffa02ffbfb90a51fc0be7f6e32d14f4620c98c908f4'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/publication-availability.json': {'bytes': 769, 'sha256': '68fbde0ea1fc2e10fa66c3cc11a73cab43826676ec69365c52bb353225a86c28'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/release-reservation.json': {'bytes': 335, 'sha256': 'f794d983bf190021e9b315198bc57251001f8ec5e23216f3645dd4b800bc3742'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/routing-source-envelope.json': {'bytes': 10055, 'sha256': 'b8cf135387c6cb5bdd813db5bf3ac8b75c82644fb23c7357d62dad6db2408c3a'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/runtime-dependencies.json': {'bytes': 16940, 'sha256': '6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/runtime-observed.json': {'bytes': 16940, 'sha256': '6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/runtime-qualification.json': {'bytes': 698, 'sha256': 'f507fb8033638fac1e1658ab1fd3373602db50326cb9e15c89391b43fddb032d'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/direct/source-admission.json': {'bytes': 25643, 'sha256': '0a5132913b8c87304a6b662b5b5fc848e206783b50aeef72af154de5be00ddc2'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/jobs.json': {'bytes': 9840, 'sha256': '6537ba32d47a138ff3708e7ba180fc042fec68c1f66f99562d242a876b692420'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/release.json': {'bytes': 57303, 'sha256': 'f048fb5ffe04f15a713f1a5f9efaeb2454e1ddb2bcd1b334975703ab0a414779'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/run.json': {'bytes': 14421, 'sha256': '61b2404783e03883a6cad56d16ba4d17c548fbd47e3530ef4b95cda535d2d329'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/tag-ref.json': {'bytes': 572, 'sha256': '517ab091e86b73a882de664e5bd76d04da5d28fa66d2be8073fcd39956de1620'}, 'docs/evidence/mainchip-fixed-engine-prefix-native-terminal-40878295979/receipt.json': {'bytes': 14781, 'sha256': 'aa994e691178fb7c56ea857315b373c107ad7339be889097620975f51d921a45'}}
+FROZEN_FIXED_SHA="45dc1b634fafaba4dda8475430ea1a82a69a355dfac6a6b2bbdf63529777e431"
+FROZEN_REPAIR_SHA="ea723ae478c019c45ce79f33c6a4abb65d298c053abd32c35c4376902be02c2d"
+PREFIX_RECEIPT_SHA="aa994e691178fb7c56ea857315b373c107ad7339be889097620975f51d921a45"
 PRIOR=previous.METHOD
-PRIOR_SHA="0dd3c47a54f421987533ffad16b535b119ddd06757413c5dd1bf0cb7faffd23d"
+PRIOR_SHA="2b2183f1bb009087a60449723c88b4e4ff9c37639a7da09e04ebca9ff69cb8f0"
 SOURCE_ADMISSION="docs/evidence/mainchip-fixed-engine-route-tail-source-admission-20261029.json"
 SCHEMA="mainchip-fixed-engine-route-tail-v1"
 ROOT=Path(__file__).resolve().parent.parent
-NEW_FILES=()
+NEW_FILES=('scripts/mainchip_fixed_engine_route_tail_contract.py', 'scripts/mainchip_fixed_engine_route_tail_handoff.py', 'scripts/check_mainchip_fixed_engine_route_tail.py', 'scripts/cloud_mainchip_fixed_engine_route_tail.py', 'scripts/mainchip_fixed_engine_route_tail_driver.py', 'scripts/mainchip_fixed_engine_route_tail_inner.py', 'scripts/mainchip_fixed_engine_route_tail_native.py', 'scripts/mainchip_exit_checked_command_evidence.py', 'scripts/check_mainchip_exit_checked_command_evidence.py')
 AUTH_FALSE=("rc_sta_execution_authorized","physical_acceptance","timing_accepted","full_phy_accepted","observer_equivalence_qualified","automatic_retry_authorized","engine_build_authorized","native_probe_authorized")
 LIMITS=dict(memory_bytes=MEMORY,nano_cpus=CPUS,pids=PIDS,
  route_seconds=14400,phase_seconds=1200,min_free_disk_bytes=32*1024**3,
@@ -49,6 +50,12 @@ COMPARE_FILES=("routed-fixed.odb","routed-fixed.def","routed-audit.def",
  "repaired.odb","expected-original-class.def","repaired-audit.def",
  "drc-before.def","drc-after.def","drc-observed.odb","measured-audit.def")
 WITNESS_ENV="NNSOC_DRT_INTERNAL_WITNESS_DIR"
+PREFIX_CONTROL_FILES=("fixed-prefix-control-context.json","fixed-route-prefix-controls.json",
+ "fixed-route-prefix-controls.stdout","fixed-route-prefix-controls.stderr",
+ "exit-supervision-controls.json","exit-supervision-controls.stdout","exit-supervision-controls.stderr")
+FROZEN_ARCHIVE={'bytes': 609145089, 'sha256': 'c68efaf8bca2d42a12d454f07eec3ba996775a8c2cb8a30ce771b4ea34e3d1c2'}
+FROZEN_INVENTORY={'bytes': 270796, 'sha256': '3fb07de59166985e14f9ff9142e8a5072fa0234bbac8e1cf01b23263c60e6b06'}
+OUTER_ARCHIVE={'bytes': 875578560, 'sha256': 'a3133701299ef9b0ac3269a8dd6502f29699ec0f48d96e60ac6f23a15d109763'}
 
 def mode(env):
     value=env.get(MODE_ENV)
@@ -92,7 +99,7 @@ def validate_method(m,prior):
         "inconsistent stage authorizations")
     require(all(m[k] is False for k in AUTH_FALSE),"no acceptance or continuation")
     require(m["prior_method_sha256"]==PRIOR_SHA and m["protected"].get(PRIOR)==PRIOR_SHA,"actual prefix method binding")
-    require(len(prior["protected"])==1098 and m["inherited_protected_count"]==1098,"prefix pin count")
+    require(len(prior["protected"])==1207 and m["inherited_protected_count"]==1207,"prefix pin count")
     require(all(m["protected"].get(p)==h for p,h in prior["protected"].items()),"prefix pin changed")
     require(set(NEW_FILES)<=set(m["protected"]),"new tail source protection")
     require(m["qualified_prefix"]==dict(run=PREFIX_RUN,source=PREFIX_SOURCE,release_id=PREFIX_RELEASE,
@@ -164,6 +171,7 @@ def prefix_contract(root):
     require(inv["canonical_root"]=="/work" and inv["original_engine"]==ENGINE and inv["original_input"]==INPUT,"frozen identity")
     require(inv["files"]["out/work/fixed.odb"]["sha256"]==FROZEN_FIXED_SHA
         and inv["files"]["out/work/repair.tcl"]["sha256"]==FROZEN_REPAIR_SHA,"frozen prepared identities")
+    require(frozen["archive"]==FROZEN_ARCHIVE and frozen["inventory"]==FROZEN_INVENTORY,"actual frozen archive/inventory identities")
     validate_prefix_joins(root,host,inner,native,frozen,inv)
     return inv
 
@@ -173,7 +181,7 @@ def envelope(root,run,jobs,release,tag):
         and run["head_branch"]==previous.BRANCH and run["event"]=="workflow_dispatch"
         and run["workflow_id"]==400507406
         and run["path"]==".github/workflows/mainchip-fixed-engine-route-prefix.yml","prefix run")
-    expected_jobs={123412973909:"source-controls",123413211875:"preserve-source-job-log",123413288178:"native-prefix"}
+    expected_jobs={123462735615:"source-controls",123463296225:"preserve-source-job-log",123463392812:"native-prefix"}
     require(len(jobs["jobs"])==3 and {j["id"]:j["name"]for j in jobs["jobs"]}==expected_jobs
         and all(j["conclusion"]=="success" and j["status"]=="completed"for j in jobs["jobs"]),"prefix jobs")
     for j in jobs["jobs"]:
@@ -267,6 +275,19 @@ def direct_plan(out,optional):
     return plan
 
 
+def validate_prefix_commands(native):
+    """Command-only seam; prefix_contract authenticates the unchanged enclosing proof bytes."""
+    require([x["label"]for x in native["commands"]]==list(previous.PHASES),"prefix actual phase ordering")
+    qualifications=[]
+    for x in native["commands"]:
+        require(x["returncode"]==0 and type(x["requested_timeout_seconds"])is int
+            and x["requested_timeout_seconds"]==1200
+            and x["argv"]==previous.command(x["label"],"/work/engine/openroad"),"prefix original phase guard")
+        proof=command_evidence.validate(x,1200)
+        require(proof["requested_timeout_bound"]is True,"prefix declared command timeout")
+        qualifications.append(dict(label=x["label"],command_evidence=proof))
+    return qualifications
+
 def validate_prefix_joins(root,host,inner,native,frozen,inv):
     receipt=saved(root,"receipt")
     direct={p[len(PREFIX+"direct/"):]:secure_file(root,p).read_bytes()
@@ -279,13 +300,13 @@ def validate_prefix_joins(root,host,inner,native,frozen,inv):
     require(digest(direct["method.json"])==PRIOR_SHA and direct["method.json"]==secure_file(root,PRIOR).read_bytes(),"prefix actual method bytes")
     m=decode(direct["method.json"])
     require(m["native_prefix_authorized"]is True and m["controller_ready"]is True
-        and len(m["protected"])==1098,"prefix actual native authority")
+        and len(m["protected"])==1207,"prefix actual native authority")
     context=dict(source=PREFIX_SOURCE,token=str(PREFIX_RUN)+"-1")
     bounds={}
     for job in ("source-controls","native-prefix"):
         directory=Path(root)/PREFIX/"controls"/job
         index=decode(secure_file(directory,"index.json").read_bytes())
-        require(len(index)==4,"prefix complete control index")
+        require(set(index)==set(PREFIX_CONTROL_FILES),"prefix complete control index")
         for name,row in index.items():
             raw=secure_file(directory,name).read_bytes()
             require(row["present"]is True and row["path"]==name
@@ -306,11 +327,7 @@ def validate_prefix_joins(root,host,inner,native,frozen,inv):
         require(all(record[k]is False for k in ("physical_acceptance","observer_equivalence_qualified","native_routing_executed")),"prefix terminal scope")
     require(all(x["returncode"]==0 and "error"not in x and not x.get("timed_out",False)for x in host["commands"]),"prefix host commands")
     require([x["label"]for x in inner["commands"]]==["version","ldd","tcl-smoke","shared-prefix"],"prefix actual inner commands")
-    require([x["label"]for x in native["commands"]]==list(previous.PHASES),"prefix actual phase ordering")
-    for x in native["commands"]:
-        require(x["returncode"]==0 and x["requested_timeout_seconds"]==1200
-            and x["supervision_failure"]is None and x["memory_read_error"]is None
-            and not x["process_group_cleanup"]["remaining_live"],"prefix original phase guard")
+    validate_prefix_commands(native)
     runtime=saved(root,"runtime-dependencies")
     require(runtime==saved(root,"runtime-observed")==previous.expected_engine(root)["runtime"]and len(runtime)==104,"prefix actual runtime")
     require(inner["runtime_before"]==inner["runtime_after"]==dict(count=104,exact_paths_sizes_hashes=True),"prefix unchanged runtime")
@@ -366,7 +383,8 @@ def validate_prefix_joins(root,host,inner,native,frozen,inv):
         a=assets[name];require(a["size"]==part["bytes"]and a["digest"]=="sha256:"+part["sha256"]
             and a["state"]=="uploaded","prefix immutable part metadata")
         names.add(name);total+=part["bytes"]
-    require(parts["archive"]["bytes"]==total and set(assets)==set(direct)|names,"prefix complete assets")
+    require(parts["archive"]==OUTER_ARCHIVE and parts["archive"]["bytes"]==total
+        and len(full)==95 and set(assets)==set(direct)|names,"prefix complete assets")
     for key in ("native_routing_executed","observer_equivalence_qualified","physical_acceptance","timing_accepted","full_phy_accepted"):
         require(receipt[key]is False,"prefix cannot accept later stages")
     return dict(run=PREFIX_RUN,source=PREFIX_SOURCE,release_id=PREFIX_RELEASE,
@@ -374,4 +392,87 @@ def validate_prefix_joins(root,host,inner,native,frozen,inv):
         native_routing_executed=False,physical_acceptance=False)
 
 def control_evidence(root,ctx):
-    require(False,"pending actual successor source control binding")
+    name="fixed-route-tail-controls.json"
+    raw=secure_file(root,name).read_bytes();r=decode(raw)
+    common=dict(source=ctx["source"],run_id=int(ctx["token"].split("-")[0]),attempt=1,
+        source_controls_only=True,native_executed=False)
+    expected={**common,"mode":ctx["mode"],"stage":ctx["stage"]}
+    require(r["status"]=="PASS_FIXED_ENGINE_ROUTE_TAIL_SOURCE_CONTROLS"
+        and r["current_context"]==expected and r["source_only"]is True,"current tail source context/status")
+    require(all(r[k]is False for k in ("native_executed","native_routing_executed","physical_acceptance",
+        "complete_native_qualification","observer_equivalence_qualified")),"current tail source-only scope")
+    for key,positive,refusal in (("context_controls",5,14),("authority_controls",6,79),("command_consumers",5,24)):
+        require((r[key]["positive_count"],r[key]["refusal_count"])==(positive,refusal),"current tail "+key)
+    require(r["derivation"]["wrapper_count"]==5 and r["derivation"]["exact_source_count"]==17
+        and r["derivation"]["actual_native_executed"]is False
+        and r["derivation"]["original_limits_and_comparison_preserved"]is True,"tail exact wrapper derivation")
+    require(len(r["envelope"]["refusals"])==10 and r["envelope"]["actual_saved_terminal"]is True
+        and len(r["restore"])==4,"tail actual prefix and synthetic restore controls")
+    require(len(r["sequence"]["stops"])==6 and r["sequence"]["gate_refusals"]==4
+        and r["sequence"]["independent_route_seconds"]==14400
+        and r["sequence"]["independent_audit_seconds"]==[1200]*5,"tail original phase controls")
+    require(r["observer"]["positive"]==3 and len(r["observer"]["refusals"])==3,"tail observer controls")
+    require(r["comparison"]["positive"]==1 and len(r["comparison"]["geometry_mismatches"])==10
+        and r["comparison"]["marker_mismatch"]is True and r["comparison"]["refusals"]==5,"tail comparison controls")
+    life=r["lifecycle"]
+    expected_life={(stage,case)for stage in ("route","audit")for case in
+        ("complete","body","stop","join","body_stop_join","save","body_save","heartbeat_set")}
+    require(len(life)==16 and {(x["stage"],x["case"])for x in life}==expected_life,"tail actual driver lifecycle controls")
+    handoff=r["handoff"]
+    require((len(handoff["positive"]),len(handoff["refusals"]),len(handoff["terminal"]))==(2,12,4)
+        and handoff["actual_new_handoff"]is True and handoff["cardinality"]==FROZEN_COUNT
+        and handoff["synthetic_payloads_only"]is True and handoff["native_engine_executed"]is False,"tail actual handoff controls")
+    consumers=r["command_consumers"]
+    require(consumers["actual_supervised_record_cases"]==4 and consumers["diagnostics_never_cleared"]is True
+        and consumers["actual_prefix_command_consumer"]is True and consumers["actual_route_records"]is True
+        and consumers["native_executed"]is False and consumers["physical_acceptance"]is False,"tail command consumer controls")
+    proof=r["source_projection"]
+    require((proof["positive_count"],proof["proof_file_count"],proof["refusal_count"],proof["source_refusal_count"])
+        ==(1,len(PREFIX_REQUIRED),len(PREFIX_REQUIRED)+2,5)
+        and proof["copied_protected_only"]is True and proof["recursive_prior_methods_validated"]is True
+        and proof["actual_native_archive_acquired"]is False and proof["frozen_files"]==FROZEN_COUNT,"tail full source/proof projection")
+    pub=r["publication"]
+    require(pub["group_count"]==4 and pub["case_count"]==28 and pub["actual_new_publish_and_pack"]is True
+        and {(x["mode"],x["stage"])for x in pub["groups"]}=={(m,s)for m in MODES for s in ("route","audit")}
+        and all(x["result"]["status"]=="PASS_ACTUAL_FAILURE_AND_EMPTY_PUBLICATION_CONTROLS"
+            and x["result"]["count"]==7 for x in pub["groups"]),"tail actual publication controls")
+    require(len(r["split_publication"])==4 and {x["case"]for x in r["split_publication"]}==
+        {"missing_terminal","empty_terminal","malformed_terminal","upload_failure"},"tail partial publication controls")
+    require((r["nested_publication"]["positive_count"],r["nested_publication"]["refusal_count"],
+        r["nested_publication"]["case_count"])==(1,2,3)
+        and (r["asset_publication"]["positive"],r["asset_publication"]["refusals"])==(2,1),"tail direct publication controls")
+    expected=common
+    extra="exit-supervision-controls.json"
+    eraw=secure_file(root,extra).read_bytes();e=decode(eraw)
+    require(e["status"]=="PASS_EXIT_CHECKED_SUPERVISION_SOURCE_CONTROLS"
+      and e["current_context"]==expected,"exit supervision exact source context/status")
+    require(all(e[k]is False for k in ("native_executed","engine_executed","routing_accepted",
+      "physical_acceptance","actual_failed_prefix_reclassified")),"exit supervision source-only scope")
+    require((e["source"]["positive"],e["source"]["refusals"],e["source"]["authenticated_source_files"])==(2,9,6),
+      "exit supervision source authentication controls")
+    require((e["derivation"]["positive"],e["derivation"]["refusals"])==(7,2),
+      "exit supervision exact source derivation controls")
+    require(e["snapshot"]["positive"]==5,"original snapshot behavior controls")
+    require(e["terminal"]["cases"]==41 and e["terminal"]["old_body_regressions"]==1
+      and len(e["terminal"]["rows"])==41 and e["terminal"]["command_budget_boundary_cases"]==6
+      and e["terminal"]["command_budget_error_cases"]==3 and e["terminal"]["pre_fix_command_deadline_regressions"]==1,
+      "actual terminal and independent command deadline controls")
+    require((e["real_python"]["positive"],e["real_python"]["refusals"],
+      e["real_python"]["real_short_python_children"])==(2,1,3),"real short Python process controls")
+    original=e["original_supervisor"]
+    require(original["status"]=="PASS_RECORD_TELEMETRY_SOURCE_AND_SUPERVISION_CONTROLS_NO_RTL"
+      and len(original["controls"])==13 and all(v is True for v in original["controls"].values())
+      and original["engineering_accepted"]is False,"unchanged original supervision controls")
+    command_name="exit-command-evidence-controls.json"
+    craw=secure_file(root,command_name).read_bytes();command=decode(craw)
+    require(command["status"]=="PASS_EXIT_CHECKED_COMMAND_EVIDENCE_SOURCE_CONTROLS"
+        and command["current_context"]==common,"command evidence exact source context/status")
+    require((command["positive"],command["refusal"],command["actual_old_regressions"],
+        command["actual_supervised_record_cases"])==(9,70,2,9)
+        and (len(command["positives"]),len(command["refusals"]),len(command["regressions"]),
+            len(command["producer_records"]))==(9,70,2,7),"command evidence actual producer controls")
+    require(command["source_controls_only"]is True and command["synthetic_process_proc_clock_io"]is True
+        and all(command[k]is False for k in ("native_executed","physical_acceptance","full_phy_accepted")),
+        "command evidence source-only scope")
+    return {name:dict(bytes=len(raw),sha256=digest(raw)),extra:dict(bytes=len(eraw),sha256=digest(eraw)),
+        command_name:dict(bytes=len(craw),sha256=digest(craw))}

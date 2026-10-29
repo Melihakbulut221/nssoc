@@ -9,7 +9,7 @@ import threading
 sys.path.insert(0,"/work/tail-source/scripts")
 sys.path.insert(0,"/work/source/scripts")
 import mainchip_fixed_engine_route_tail_contract as c
-import cloud_mainchip_original_clock_restoration as old
+import mainchip_exit_checked_supervision as old
 import cloud_mainchip_two_signal_repair as controller
 import mainchip_two_signal_internal_witness as witness
 from mainchip_witness_engine_build import fingerprint

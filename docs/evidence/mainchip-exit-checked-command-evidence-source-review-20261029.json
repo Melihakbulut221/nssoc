@@ -1,0 +1,178 @@
+{
+  "schema": "mainchip-exit-checked-command-evidence-source-review-v1",
+  "status": "ADDITIVE_SOURCE_ONLY_HOSTED_QUALIFICATION_PENDING",
+  "branch": "codex/mainchip-exit-command-evidence",
+  "base_commit": "a32414f76992f28c7d43794fac9680296f208eaf",
+  "files": {
+    "scripts/mainchip_exit_checked_command_evidence.py": {
+      "bytes": 14874,
+      "sha256": "059e3e4edde4a63997cc841728f02d5b6a2aaf77335cb7d1b8dba70ed7d2e321"
+    },
+    "scripts/check_mainchip_exit_checked_command_evidence.py": {
+      "bytes": 17650,
+      "sha256": "07d6a89d41f32d295da5d00b2fe1b6c2b6345a90b8ffff339ca4344aa00e9388"
+    }
+  },
+  "scope": "Pure in-memory validation of an already acquired command dictionary. No producer changes, acquisition, source-method authority, workflow, native operation or full run/physical acceptance.",
+  "upstream_source_provenance": {
+    "scripts/mainchip_exit_checked_supervision.py": {
+      "bytes": 18336,
+      "sha256": "1907842d5eb506102a7d7cf9562fcf330e45d9a36e3cffad6658e9c1450b54b5",
+      "ref": "a32414f76992f28c7d43794fac9680296f208eaf"
+    },
+    "scripts/check_mainchip_exit_checked_supervision.py": {
+      "bytes": 31059,
+      "sha256": "91b024d2a8be8bba40ee7e97392a7e4d9bddc2047dee9c42f0fa11c8e60f4001",
+      "ref": "a32414f76992f28c7d43794fac9680296f208eaf"
+    }
+  },
+  "frozen_dependencies": {
+    "supervisor": {
+      "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/cloud_pcie_gen12_training_records_telemetry.py",
+      "sha256": "e326e548ebe11550d18a049d639bdf063f03602d4ba08299b00a5747d3281c0b"
+    },
+    "sampler": {
+      "path": "scripts/pcie_live_memory_sampler.py",
+      "sha256": "55fb9a3ba9a049c509b629e8638a688b5f827316485f9fd89cd5a8888804df07"
+    },
+    "loader": {
+      "path": "scripts/cloud_mainchip_original_clock_restoration.py",
+      "sha256": "7700e04988a916977727b44e880f47ae8d8ae454553c8702eacae5951d743646"
+    }
+  },
+  "api": {
+    "function": "mainchip_exit_checked_command_evidence.validate(record, seconds)",
+    "accepted_seconds": [
+      1200,
+      14400
+    ],
+    "seconds_type": "exact int, not bool",
+    "minimum_available_kib": 2097152,
+    "maximum_group_rss_kib": 10485760,
+    "mutates_record": false,
+    "returns": "JSON-compatible command-only qualification",
+    "pass_status": "PASS_EXIT_CHECKED_COMMAND_EVIDENCE",
+    "ordinary_path": "Requires rc0, no supervision failure, unchanged resource bounds, no cleanup signals/live members, memory_read_error None and memory_terminal_resolution None. A retained last sample is checked against original limits.",
+    "ordinary_deadline_limit": "Total elapsed includes cleanup and is not a separate pre-cleanup deadline timestamp. Ordinary path returns pre_cleanup_command_deadline_proved=False; it does not infer that fact.",
+    "declared_timeout": "Raw supervised .command.json has no requested_timeout_seconds. If present (controller-enriched record), exact int equality to seconds is required. requested_timeout_recorded/requested_timeout_bound report whether the field exists. Caller must require its normal declared timeout/argv gate.",
+    "resolved_path": "Requires the exact typed ExhaustedMissingRSS error and retained original CounterError, terminal_complete before cleanup, no fake fresh RSS or PF_EXITING acceptance, three ordered MissingRSS histories, observed resource-bound replay, and final complete identity scans within the original 100ms snapshot budget.",
+    "error_preservation": "Original record and all diagnostic/error/history fields remain untouched; returned retained_memory_read_error repeats the original error.",
+    "external_authentication": "source_authenticated, event_authenticated and stream_bytes_authenticated always False. These describe caller responsibilities rather than asserting absent authentication."
+  },
+  "semantic_source_map": [
+    {
+      "producer": "pcie_live_memory_sampler.snapshot",
+      "consumer": "histories",
+      "checks": "Exactly attempts1/2/3 with retry_missing_live_counter; all enumerated identities held stable across attempts; observations equal the exact enumeration prefix ending in one missing-live counter. No enumeration disappearances."
+    },
+    {
+      "producer": "pcie_live_memory_sampler.member_observation",
+      "consumer": "histories/status_evidence",
+      "checks": "Expected/before/after pid+pgrp+starttime identity, live/nonrunning dispositions and missing-file/hashed-status shape are replayed. Missing counters cannot carry RSS. Valid preceding measured RSS is summed solely as a lower bound."
+    },
+    {
+      "producer": "mainchip_exit_checked_supervision.resolve_terminal",
+      "consumer": "validate",
+      "checks": "All observed available-memory and partial measured-RSS limits, exact observed_resource_bounds, original error, pre-cleanup flags, parent rc0 and finite original snapshot timestamps/budget."
+    },
+    {
+      "producer": "mainchip_exit_checked_supervision.terminal_census",
+      "consumer": "census/validate",
+      "checks": "Every poll retained. Earlier incomplete censuses may contain anchored known live children, with exact live-list replay and known-identity coverage. Final two scans must be complete, with no live/unknown/reused/unanchored identities."
+    },
+    {
+      "producer": "mainchip_exit_checked_supervision.command_budget_decision",
+      "consumer": "validate",
+      "checks": "Checked time.monotonic decision, finite same-clock values, exact arithmetic, correct1200/14400 limit and strict observation<deadline. Equal/late/unavailable decisions refuse. Command total elapsed must cover the decision; cleanup duration is not used as a replacement deadline."
+    },
+    {
+      "producer": "frozen telemetry.stop_process/supervised",
+      "consumer": "validate",
+      "checks": "rc0, no supervision_failure, unchanged resource constants, no cleanup signals/live members; nonrunning residuals remain visible."
+    }
+  ],
+  "explicit_conservative_restrictions": [
+    "Unknown identity evidence in any recorded terminal census is rejected, even if a later census is clean. Known live intermediate children are allowed.",
+    "A known PID reported gone cannot reappear in a later recorded terminal scan; ambiguous disappearance/reappearance stays rejected.",
+    "Status/disappearance error records must identify FileNotFoundError or ProcessLookupError with actual OS errno2/3. Permission/malformed/system-counter errors cannot become MissingRSS terminal resolution."
+  ],
+  "facts_not_reconstructed_from_missing_bytes": [
+    "The histories contain no per-attempt timestamps. Exactly two20ms sleeps are guaranteed by caller-authenticated producer code and hosted producer controls, not inferred from invented history timestamps.",
+    "A status_sha256 shape is checked, but original raw proc status bytes are not available to this helper.",
+    "Full /proc enumeration and event/command equality require authenticated producer code and actual caller evidence; enumerated_count alone does not independently authenticate the operating system.",
+    "No native prefix success is inferred. Run40878295979/sourcea32414f was running at assignment; failed40863684870 is not a qualified prefix."
+  ],
+  "authored_controls": {
+    "cli": "python -B scripts/check_mainchip_exit_checked_command_evidence.py --output exit-command-evidence-controls.json",
+    "pass_status": "PASS_EXIT_CHECKED_COMMAND_EVIDENCE_SOURCE_CONTROLS",
+    "positive": 9,
+    "refusal": 70,
+    "actual_old_regressions": 2,
+    "actual_supervised_record_cases": 9,
+    "positive_breakdown": {
+      "actual_producer_success_records": 7,
+      "controller_timeout_enrichment_copies": 2
+    },
+    "actual_producer_cases": [
+      "ordinary immediate completion",
+      "ordinary measured fresh sample",
+      "resolved1200",
+      "resolved14400",
+      "final100ms poll",
+      "resolved with retained older sample",
+      "parent finished while known child exits during remaining original window"
+    ],
+    "known_child_fixture": "Calls unchanged synthetic_case and actual returned module.supervised/snapshot/resolve_terminal. Only its existing fake Process is wrapped to expose its fake clock, and its fault selector models an anchored child alive at90ms then gone at95ms. No production function is replaced.",
+    "temporary_directory_retention": "Wraps only the existing fixture's TemporaryDirectory lifetime; reads actual command.json/events.jsonl before owned synthetic directories are cleaned. Actual command and event diagnostic equality is checked in the hosted test.",
+    "regressions": [
+      "Actual frozen old body: third MissingRSS observation triggers SIGTERM; final rc0 still has memory_sample_unavailable and is rejected.",
+      "Authenticated actual pre-amendment body: command finishes after1200 seconds with no strict command_budget_decision; rejected despite its original success return."
+    ],
+    "refusal_scope": [
+      "rc/supervision",
+      "exact resource limits",
+      "declared timeout",
+      "cleanup signals/live members",
+      "error type/history/observed bounds",
+      "identity/PID reuse/unknown members",
+      "partial RSS lower bound",
+      "last retained sample limits",
+      "finite100ms arithmetic",
+      "both strict1200/14400 equality/late boundaries",
+      "missing/unavailable/invalid command clock decision",
+      "unsupported budget types"
+    ],
+    "input_mutation_checked": false,
+    "input_nonmutation_assertions_authored": true,
+    "tests_executed": false,
+    "source_controls_only": true,
+    "synthetic_process_proc_clock_io": true,
+    "native_executed": false,
+    "physical_acceptance": false,
+    "full_phy_accepted": false
+  },
+  "caller_integration_required": [
+    "Root must pin the new helper/checker/review and unchanged producer dependencies in its exact-source method and qualify the authored checker on GitHub.",
+    "Caller must authenticate source/method, raw command record, corresponding event/stream bytes and archive/projection joins. This helper cannot provide those facts.",
+    "Prefix and route consumers retain exact argv/label/requested_timeout_seconds and original phase ordering, engine/input identities and numerical/geometry/audit gates.",
+    "Use1200 for original preparation/audit commands and14400 for the single routing attempt. Do not clear memory_read_error to satisfy historical consumers.",
+    "Actual prefix receipt/frozen inventory/source pins must come from successful new terminal evidence before tail authorization; failed historical prefix remains failed."
+  ],
+  "validation_performed": {
+    "source_AST_only": true,
+    "authored_imports": false,
+    "authored_tests": false,
+    "local_files_created": false,
+    "native_payload_acquired": false,
+    "dispatch": false
+  },
+  "unchanged_existing_files": true,
+  "method_workflow_or_authority_changes": false,
+  "acceptance": {
+    "runtime_qualified": false,
+    "routing_accepted": false,
+    "physical_acceptance": false,
+    "timing_accepted": false,
+    "full_phy_accepted": false
+  }
+}

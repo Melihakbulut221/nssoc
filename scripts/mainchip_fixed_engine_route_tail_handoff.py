@@ -32,8 +32,8 @@ def route_records(host,inner,case,request):
     command=case["commands"][0]
     c.require(command["label"]==c.PHASES[0] and command["argv"]==c.command(c.PHASES[0])
         and command["returncode"]==0 and command["requested_timeout_seconds"]==14400,"route command")
-    c.require(command["supervision_failure"] is None and command["memory_read_error"] is None
-        and command["process_group_cleanup"]["remaining_live"]==[],"route owned process completion")
+    qualification=c.command_evidence.validate(command,14400)
+    c.require(qualification["requested_timeout_bound"]is True,"route declared command timeout")
     c.require(command["maximum_group_rss_kib"]==c.LIMITS["max_group_rss_kib"]
         and command["minimum_available_kib"]==c.LIMITS["min_available_kib"],"route original resource guards")
     c.require(case["route_log"]["single_returned_attempt"] is True
