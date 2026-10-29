@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Owned original ten-case loaded workers on the authenticated current tail RC."""
 import argparse,json,os,shutil,signal,sys,threading,traceback
+import cdr_width_loaded_publication as publication
 from pathlib import Path
 import cdr_width_loaded_execution_admission as a
 import cdr_width_loaded_result as result_gate
@@ -244,61 +245,8 @@ def validate_publication(ctx,result):
       "Loaded publication complete output inventory differs")
     return successful
 
-def publish(ctx,result):
-    a.methods();tag,head=release.context(ctx["group"],os.environ)
-    release.validate_release(release.api("releases/tags/"+tag),release.api("git/ref/tags/"+tag),tag,head)
-    a.require(ctx["output"].is_dir()and not ctx["output"].is_symlink()
-      and not ctx["transport"].exists()and not ctx["transport"].is_symlink(),"Invalid loaded publication roots")
-    a.require(read_json(a.regular(ctx["output"],"result.json"))==result,"Loaded terminal report differs from publication")
-    successful=validate_publication(ctx,result);storage(ctx,"publication")
-    ctx["transport"].mkdir(parents=True)
-    stem=ctx["group"]+"-"+os.environ["GITHUB_RUN_ID"]+"-1"
-    summary=ctx["transport"]/(stem+".summary.json")
-    shutil.copyfile(ctx["output"]/"result.json",summary)
-    a.require(a.sha(summary)==a.sha(ctx["output"]/"result.json"),"Loaded summary bytes changed")
-    manifest=pack(ctx["output"],stem,ctx["transport"],512*1024**2)
-    files=evidence.publication_files(ctx["transport"],summary,ctx["transport"]/(stem+".parts.json"),manifest)
-    bindings=[]
-    direct={"native-result.json":"native/result.json","preparation-summary.json":"preparation-proof/summary.json",
-      "preparation-native-result.json":"preparation-proof/native-result.json"}
-    for suffix,member in direct.items():
-        path=ctx["output"]/member
-        a.require(not path.is_symlink(),"Symlink direct loaded report")
-        if successful and suffix=="native-result.json":a.require(path.exists(),"Successful native direct report missing")
-        if not path.exists():continue
-        path=a.regular(ctx["output"],member);digest=a.sha(path)
-        a.require(result["outputs"].get(member)==digest,"Direct loaded bytes differ from terminal map")
-        if successful:read_json(path)
-        target=ctx["transport"]/(stem+"."+suffix);shutil.copyfile(path,target)
-        a.require(a.sha(target)==digest,"Copied direct loaded bytes changed")
-        files.append(target);bindings.append({"member":member,"asset_suffix":suffix,"sha256":digest,
-          "bytes":path.stat().st_size,"qualified_as_success":successful,"JSON_syntax_checked":successful})
-    a.require(len({path.name for path in files})==len(files),"Duplicate loaded publication asset")
-    proof={"status":"RUNNING_LOADED_PUBLICATION","assets":[],"direct_bindings":bindings,
-      "original_status":result["status"],
-      "all_available_worker_bytes_retained":result.get("native_evidence_preservation",{}).get("complete",False),
-      "waveform_samples_deliberately_removed":False,"accepted":False}
-    a.write(ctx["transport"]/"publication.json",proof)
-    previous=publisher.release;publisher.release=evidence.only_reserved(ctx["group"],os.environ,release.api)
-    primary=None
-    try:
-        for path in files:
-            before=a.sha(path);proof["assets"].append(publisher.publish(path,tag))
-            a.require(a.sha(path)==before,"Loaded asset changed during publication")
-            a.write(ctx["transport"]/"publication.json",proof)
-        proof["status"]="PASS_COMPLETE_ORIGINAL_LOADED_EVIDENCE_PUBLISHED"
-    except BaseException as error:
-        primary=error;proof.update(status="FAIL_LOADED_PUBLICATION",error=repr(error),traceback=traceback.format_exc())
-    finally:
-        publisher.release=previous
-        try:a.write(ctx["transport"]/"publication.json",proof)
-        except BaseException as error:
-            proof["publication_receipt_save_error"]=error_record("publication_receipt",error)
-            try:print(json.dumps({"unsaved_loaded_publication_receipt":proof},sort_keys=True),flush=True)
-            except BaseException:pass
-            if primary is None:primary=error
-    if primary is not None:raise primary
-    return proof
+def publish(ctx,result=None):
+    return publication.publish(sys.modules[__name__],ctx,result)
 
 def run_case(ctx,reservations):
     method=a.authorize(ctx["prepare"]);initial=storage(ctx,"initial")
@@ -335,9 +283,8 @@ def main():
     modes=parser.add_mutually_exclusive_group();modes.add_argument("--preflight",action="store_true")
     modes.add_argument("--publish-only",action="store_true")
     args=parser.parse_args();ctx=context(args.case,args.prepare_only)
-    a.authorize(ctx["prepare"])
     if args.publish_only:
-        result=read_json(a.regular(ctx["output"],"result.json"));print(json.dumps(publish(ctx,result),sort_keys=True));return
+        print(json.dumps(publish(ctx),sort_keys=True));return
     reservations=preflight(ctx)
     if args.preflight:print(json.dumps(reservations,sort_keys=True));return
     run_case(ctx,reservations)
