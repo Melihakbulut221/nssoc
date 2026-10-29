@@ -284,8 +284,10 @@ def control_evidence(root,ctx):
     require((e["derivation"]["positive"],e["derivation"]["refusals"])==(7,2),
       "exit supervision exact source derivation controls")
     require(e["snapshot"]["positive"]==5,"original snapshot behavior controls")
-    require(e["terminal"]["cases"]==31 and e["terminal"]["old_body_regressions"]==1
-      and len(e["terminal"]["rows"])==31,"actual terminal lifecycle controls")
+    require(e["terminal"]["cases"]==41 and e["terminal"]["old_body_regressions"]==1
+      and len(e["terminal"]["rows"])==41 and e["terminal"]["command_budget_boundary_cases"]==6
+      and e["terminal"]["command_budget_error_cases"]==3 and e["terminal"]["pre_fix_command_deadline_regressions"]==1,
+      "actual terminal and independent command deadline controls")
     require((e["real_python"]["positive"],e["real_python"]["refusals"],
       e["real_python"]["real_short_python_children"])==(2,1,3),"real short Python process controls")
     original=e["original_supervisor"]

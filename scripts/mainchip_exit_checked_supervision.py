@@ -9,6 +9,7 @@ import ast
 import copy
 import hashlib
 import importlib
+import math
 import os
 import types
 from pathlib import Path
@@ -23,7 +24,7 @@ INTERVAL=.02
 WINDOW=.10
 TERMINAL_POLL=.005
 SNAPSHOT_REPLACEMENTS=[("if attempt+1==ATTEMPTS:raise CounterError('Persistent unavailable live VmRSS')", 'if attempt+1==ATTEMPTS:raise ExhaustedMissingRSS(pgid,history,began,deadline)')]
-SUPERVISED_REPLACEMENTS=[('began=time.monotonic();reason=None;p=None;memory=None;memory_error=None', 'began=time.monotonic();reason=None;p=None;memory=None;memory_error=None;memory_terminal_resolution=None'), ("                    except Exception as e:reason='memory_sample_unavailable';memory_error=repr(e)", "                    except Exception as e:\n                        reason='memory_sample_unavailable';memory_error=repr(e)\n                        if type(e) is ExhaustedMissingRSS:\n                            memory_terminal_resolution=exit_checked_terminal(p,e,min_available_kib,max_group_rss_kib)\n                            event('memory_terminal_resolution',label=label,\n                                  memory_read_error=memory_error,\n                                  resolution=memory_terminal_resolution)\n                            if memory_terminal_resolution['outcome']=='terminal_complete':\n                                reason=None\n                                break"), ("'last_memory_sentinel_sample':memory,'memory_read_error':memory_error,", "'last_memory_sentinel_sample':memory,'memory_read_error':memory_error,\n          'memory_terminal_resolution':memory_terminal_resolution,")]
+SUPERVISED_REPLACEMENTS=[('began=time.monotonic();reason=None;p=None;memory=None;memory_error=None', 'began=time.monotonic();reason=None;p=None;memory=None;memory_error=None;memory_terminal_resolution=None'), ("                    except Exception as e:reason='memory_sample_unavailable';memory_error=repr(e)", "                    except Exception as e:\n                        reason='memory_sample_unavailable';memory_error=repr(e)\n                        if type(e) is ExhaustedMissingRSS:\n                            memory_terminal_resolution=exit_checked_terminal(p,e,min_available_kib,max_group_rss_kib)\n                            if memory_terminal_resolution['outcome']=='terminal_complete':\n                                try:\n                                    budget=exit_checked_command_deadline(began,seconds)\n                                except Exception as budget_error:\n                                    budget=dict(status='unavailable',clock='time.monotonic',\n                                                within_limit=False,error=repr(budget_error))\n                                memory_terminal_resolution['command_budget_decision']=budget\n                                if budget['status']=='checked':\n                                    reason=None if budget['within_limit'] else 'elapsed_limit'\n                            event('memory_terminal_resolution',label=label,\n                                  memory_read_error=memory_error,\n                                  resolution=memory_terminal_resolution)\n                            if memory_terminal_resolution['outcome']=='terminal_complete':\n                                break"), ("'last_memory_sentinel_sample':memory,'memory_read_error':memory_error,", "'last_memory_sentinel_sample':memory,'memory_read_error':memory_error,\n          'memory_terminal_resolution':memory_terminal_resolution,")]
 
 
 class ExitCheckError(RuntimeError):
@@ -252,6 +253,21 @@ def resolve_terminal(module,p,error,min_available_kib=None,max_group_rss_kib=Non
     return report
 
 
+def command_budget_decision(now,began,seconds):
+    """Fresh same-clock deadline decision; equality and unavailable clocks fail."""
+    values=(now,began,seconds)
+    if any(type(value) not in (int,float) or not math.isfinite(value) for value in values):
+        raise ExitCheckError('nonfinite or invalid command clock/budget')
+    if seconds<=0 or now<began:
+        raise ExitCheckError('invalid command clock ordering or budget')
+    deadline=began+seconds;elapsed=now-began
+    if not math.isfinite(deadline) or not math.isfinite(elapsed):
+        raise ExitCheckError('nonfinite command deadline arithmetic')
+    return dict(status='checked',clock='time.monotonic',began=began,
+        observed_at=now,deadline=deadline,limit_seconds=seconds,elapsed_seconds=elapsed,
+        within_limit=now<deadline and elapsed<seconds)
+
+
 def supervisor():
     """Fresh isolated module, with every telemetry stateful function co-located."""
     derived,proof=derive_sources()
@@ -278,6 +294,7 @@ def supervisor():
     module._memory_counter=counter
     module.terminal_access=lambda check:TerminalAccess(counter,check)
     module.exit_checked_terminal=lambda p,error,minimum,maximum:resolve_terminal(module,p,error,minimum,maximum)
+    module.exit_checked_command_deadline=lambda began,seconds:command_budget_decision(module.time.monotonic(),began,seconds)
     def measured(pgid,meminfo_path='/proc/meminfo'):
         try:
             return counter.snapshot(pgid,meminfo_path,emit=module.event,

@@ -7,6 +7,7 @@ import contextlib
 import copy
 import hashlib
 import json
+import math
 import os
 import re
 import subprocess
@@ -19,6 +20,8 @@ from unittest import mock
 import mainchip_exit_checked_supervision as candidate
 
 STATUS='PASS_EXIT_CHECKED_SUPERVISION_SOURCE_CONTROLS'
+PRIOR_REVIEW='docs/evidence/mainchip-exit-checked-supervision-source-review-20261029.json'
+PRIOR_REVIEW_SHA='525fe820aaf9fde270f2960b23ff960768dd14b51c554a59ae367fb3f4e9b6d8'
 PID=18001
 START=67784
 
@@ -128,7 +131,7 @@ class Clock:
     def monotonic(self):return self.value
     def sleep(self,duration):
         require(duration>=0,'nonnegative synthetic sleep')
-        self.sleeps.append(duration);self.value+=duration
+        self.sleeps.append(duration);self.value=round(self.value+duration,12)
 
 
 def identity(pid=PID,start=START,state='R',pgrp=PID):
@@ -157,7 +160,7 @@ class Process:
 
 
 def synthetic_case(name,*,exit_at=.09,code=0,passed=True,old=False,fault=None,
-                   expected_reason=None,expected_exception=None):
+                   expected_reason=None,expected_exception=None,seconds=1200,start_delay=0,pre_fix=False):
     """Real returned supervised()/snapshot; fake only clock, process and proc I/O."""
     with tempfile.TemporaryDirectory(prefix='exit-checked-'+name+'-') as directory:
         root=Path(directory);module=new_module(root);clock=Clock()
@@ -167,8 +170,11 @@ def synthetic_case(name,*,exit_at=.09,code=0,passed=True,old=False,fault=None,
         module.time=types.SimpleNamespace(monotonic=clock.monotonic,sleep=clock.sleep,
                                           strftime=time.strftime,gmtime=time.gmtime)
         module.sample=lambda *args,**kwargs:None
+        def start(*args,**kwargs):
+            clock.value=start_delay
+            return process
         module.subprocess=types.SimpleNamespace(
-            Popen=lambda *args,**kwargs:process,CompletedProcess=subprocess.CompletedProcess)
+            Popen=start,CompletedProcess=subprocess.CompletedProcess)
         def live():
             rows=[]
             if process.poll() is None:rows.append(dict(pid=PID,state='R'))
@@ -252,6 +258,15 @@ def synthetic_case(name,*,exit_at=.09,code=0,passed=True,old=False,fault=None,
             if fault=='deadline_mutation':error.deadline+=1
             return actual_resolution(p,error,minimum,maximum)
         module.exit_checked_terminal=resolution
+        actual_command_budget=module.exit_checked_command_deadline
+        def command_budget(began,limit):
+            if fault=='command_clock_error':raise OSError('synthetic command clock read failure')
+            if fault=='command_clock_nonfinite':
+                return candidate.command_budget_decision(float('nan'),began,limit)
+            if fault=='command_clock_backwards':
+                return candidate.command_budget_decision(began-.001,began,limit)
+            return actual_command_budget(began,limit)
+        module.exit_checked_command_deadline=command_budget
         original_event=module.event
         def event(kind,**kwargs):
             if fault=='snapshot_event_write' and kind=='memory_counter_resampling':
@@ -267,8 +282,21 @@ def synthetic_case(name,*,exit_at=.09,code=0,passed=True,old=False,fault=None,
             raw=(candidate.ROOT/candidate.SAMPLER_PATH).read_bytes()
             exec(compile(function_text(raw,'snapshot'),str(candidate.ROOT/candidate.SAMPLER_PATH),
                          'exec'),module._memory_counter.__dict__)
+        if pre_fix:
+            proof_raw=(candidate.ROOT/PRIOR_REVIEW).read_bytes()
+            require(hashlib.sha256(proof_raw).hexdigest()==PRIOR_REVIEW_SHA,'exact prior source-review bytes')
+            proof=json.loads(proof_raw)['exact_derivation']['derived_supervisor']
+            derived=(candidate.ROOT/candidate.FROZEN_PATH).read_text()
+            for edit in proof['replacements']:
+                require(derived.count(edit['old'])==1,'prior old seam cardinality')
+                derived=derived.replace(edit['old'],edit['new'],1)
+            require(len(derived.encode())==proof['bytes'] and
+                    hashlib.sha256(derived.encode()).hexdigest()==proof['sha256'],
+                    'exact actual pre-fix supervised body')
+            exec(compile(function_text(derived.encode(),'supervised'),'<authenticated-pre-fix-supervised>',
+                         'exec'),module.__dict__)
         error=None;result=None
-        try:result=module.supervised(['synthetic-process'],name,passed,cwd=root)
+        try:result=module.supervised(['synthetic-process'],name,passed,cwd=root,seconds=seconds)
         except BaseException as caught:error=caught
         record_path=root/(name+'.command.json')
         record=json.loads(record_path.read_text()) if record_path.exists() else None
@@ -309,6 +337,34 @@ def synthetic_case(name,*,exit_at=.09,code=0,passed=True,old=False,fault=None,
                 require(diagnosis['parent_returncode']==code,'exact completed returncode retained')
                 require(diagnosis['observed_resource_bounds_validated'] is True and
                         len(diagnosis['observed_resource_bounds'])==3,'all observed resource gates retained')
+                if pre_fix:
+                    require('command_budget_decision' not in diagnosis and
+                            clock.value>=seconds and record['supervision_failure'] is None and result.returncode==0,
+                            'exact pre-fix body reproduces command-deadline bypass')
+                budget=diagnosis.get('command_budget_decision')
+                events=[json.loads(line) for line in (root/'events.jsonl').read_text().splitlines()]
+                rows=[row for row in events if row['event']=='memory_terminal_resolution']
+                require(len(rows)==1 and rows[0]['resolution']==diagnosis,
+                        'resolution event and command record have the same complete budget decision')
+                if pre_fix:
+                    require(budget is None,'pre-fix body cannot invent new budget proof')
+                elif budget['status']=='checked':
+                    require(budget['clock']=='time.monotonic' and budget['limit_seconds']==seconds,
+                            'original caller command budget retained')
+                    require(all(type(budget[key]) in (int,float) and math.isfinite(budget[key])
+                                for key in ('began','observed_at','deadline','limit_seconds','elapsed_seconds')),
+                            'finite same-clock command decision')
+                    require(budget['began']==0 and budget['observed_at']==clock.value and
+                            budget['elapsed_seconds']==budget['observed_at']-budget['began'] and
+                            budget['deadline']==budget['began']+seconds,'exact command clock arithmetic')
+                    if expected_reason=='elapsed_limit':
+                        require(budget['within_limit'] is False and budget['observed_at']>=budget['deadline'],
+                                'late or equal command completion refuses')
+                    else:require(budget['within_limit'] is True,'successful command strictly before deadline')
+                else:
+                    require(budget['status']=='unavailable' and budget['within_limit'] is False and
+                            expected_reason=='memory_sample_unavailable' and budget['error'],
+                            'unavailable command clock remains fatal')
             elif fault not in ('expired_at_catch','deadline_mutation'):
                 require(diagnosis['finished_at']<=diagnosis['snapshot_deadline']+.000000001,'no budget extension')
         if old:
@@ -316,7 +372,7 @@ def synthetic_case(name,*,exit_at=.09,code=0,passed=True,old=False,fault=None,
                     'actual old body rejects at third sample and cleanup causes rc0')
             require(record['returncode']==0 and record['supervision_failure']=='memory_sample_unavailable',
                     'old zero cleanup returncode is still failed')
-        return dict(name=name,passed=True,synthetic_io=True,original_body=old,
+        return dict(name=name,passed=True,synthetic_io=True,original_body=old,pre_fix_command_deadline_bypass=pre_fix,
                     status_reads=counts['status_reads'],terminal_called=len(terminal_called),
                     supervision_failure=record['supervision_failure'] if record else None,
                     exact_returncode=record['returncode'] if record else None)
@@ -356,8 +412,18 @@ def terminal_controls():
     for fault in ('missing_low_available','partial_over_rss','snapshot_event_write'):
         rows.append(synthetic_case(fault,fault=fault,expected_reason='memory_sample_unavailable'))
     rows.append(synthetic_case('prior-fresh-is-historical',exit_at=.59,fault='prior_fresh'))
-    require(len(rows)==31,'authored terminal control count')
-    return dict(cases=len(rows),old_body_regressions=1,rows=rows,
+    for limit in (1200,14400):
+        for relation,offset in (('before',-.01),('equal',0),('after',.01)):
+            rows.append(synthetic_case('command-'+str(limit)+'-'+relation,
+                seconds=limit,start_delay=limit-.06,exit_at=limit+offset,
+                expected_reason=None if relation=='before' else 'elapsed_limit'))
+    for fault in ('command_clock_error','command_clock_nonfinite','command_clock_backwards'):
+        rows.append(synthetic_case(fault,fault=fault,expected_reason='memory_sample_unavailable'))
+    rows.append(synthetic_case('authenticated-pre-fix-command-bypass',seconds=1200,
+        start_delay=1199.94,exit_at=1200.01,pre_fix=True))
+    require(len(rows)==41,'authored terminal control count')
+    return dict(cases=len(rows),old_body_regressions=1,command_budget_boundary_cases=6,
+                command_budget_error_cases=3,pre_fix_command_deadline_regressions=1,rows=rows,
                 native_execution=False,synthetic_process_proc_clock_io=True)
 
 
