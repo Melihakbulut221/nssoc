@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v126
+# Cloud continuation — checkpoint v127
 
-Updated: 2026-10-29T18:18:17.380488+00:00
+Updated: 2026-10-29T18:47:12.734538+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint126: both current nominal contact readbacks40926701777 succeeded with exact5device scalar replay and6765verified input members per capture. Complete65file47,991,614byte evidence is permanent24f7274d; source controls40926049166 passed16positive/66refusal/5lifecycle cases. The D61 simultaneous witness exposes40–52mV upper contact and76–77mV lower tail-contact differences, supporting a localized candidate study without claiming causality or gate closure. Current mainchip neighborhood source9e43c0fd reads only audited47d657f4 and exports embedded technology using the same engine/runtime. Historical3/17 controls40924689987 passed; new13lifecycle failure-preservation controls40929129332 are pending and no native neighborhood run has been dispatched. The original10case loaded matrix40906725656 continues its final2fault cases after8electrical rejections. All original gates remain intact and local project paths are empty.
+Cloud-only checkpoint127: current serialized-neighborhood run40930102746 passed and all59full proof files/2,168,351bytes are permanent f9d2b1b1. Actual amended controls passed3positive/17refusal/13lifecycle; all145 input archive members and unchanged current ODB47d657f4 verified, full143820net/153130instance material census plus embedded technology exported. This is read-only evidence, not physical closure. Original ten-case CDR matrix40906725656 is terminal failure: preparation and clock_stopped/vi_bias_off passed; eight normal/static-data scenarios failed. All226full proof files/293,967,169bytes are permanent a1e0cbe5. Current-contact repair plan4f3f87b9 identifies lower-tail existing bridges/access landings for quantitative RC inspection without selecting speculative widths or asserting causality. Full PHY, final route and original setup/hold remain unaccepted; local project data and EDA processes remain absent.
 
-Active handles at this snapshot: 40906725656 in_progress
+Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9070,3 +9071,10 @@ Local project/tmp/native processes verified absent. Inventory353 exact cloud han
 Cloud-only checkpoint126: both current nominal contact readbacks40926701777 succeeded with exact5device scalar replay and6765verified input members per capture. Complete65file47,991,614byte evidence is permanent24f7274d; source controls40926049166 passed16positive/66refusal/5lifecycle cases. The D61 simultaneous witness exposes40–52mV upper contact and76–77mV lower tail-contact differences, supporting a localized candidate study without claiming causality or gate closure. Current mainchip neighborhood source9e43c0fd reads only audited47d657f4 and exports embedded technology using the same engine/runtime. Historical3/17 controls40924689987 passed; new13lifecycle failure-preservation controls40929129332 are pending and no native neighborhood run has been dispatched. The original10case loaded matrix40906725656 continues its final2fault cases after8electrical rejections. All original gates remain intact and local project paths are empty.
 
 Local project/tmp/native processes verified absent. Inventory357 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T18:47:12.734538+00:00 — cloud-only checkpoint v127
+
+Cloud-only checkpoint127: current serialized-neighborhood run40930102746 passed and all59full proof files/2,168,351bytes are permanent f9d2b1b1. Actual amended controls passed3positive/17refusal/13lifecycle; all145 input archive members and unchanged current ODB47d657f4 verified, full143820net/153130instance material census plus embedded technology exported. This is read-only evidence, not physical closure. Original ten-case CDR matrix40906725656 is terminal failure: preparation and clock_stopped/vi_bias_off passed; eight normal/static-data scenarios failed. All226full proof files/293,967,169bytes are permanent a1e0cbe5. Current-contact repair plan4f3f87b9 identifies lower-tail existing bridges/access landings for quantitative RC inspection without selecting speculative widths or asserting causality. Full PHY, final route and original setup/hold remain unaccepted; local project data and EDA processes remain absent.
+
+Local project/tmp/native processes verified absent. Inventory358 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
