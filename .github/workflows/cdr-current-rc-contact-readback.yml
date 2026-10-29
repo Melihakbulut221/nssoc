@@ -1,0 +1,224 @@
+name: Current CDR RC contact and technology cloud readback
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Source controls or authenticated existing MIM-aware RC network readback
+        type: choice
+        required: true
+        default: controls
+        options: [controls, readback]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cdr-rc-contact-readback-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Bind exact source without acquiring native payloads
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          e=os.environ
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr-current-rc-contact-readback'
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
+          pins={"scripts/cloud_cdr_current_rc_contacts.py":"1a4ece12cb2805aba5fabbebe4e0ffca2cddb272dc70b4610be4ca44339b848e","scripts/check_cdr_current_rc_contacts.py":"0224da283504601aa0d2ab17ded09cc16a36ad1f40e08ef9114e84ae67ad18cc","scripts/cdr-current-rc-contact-inputs.json":"8f67918556ffea7b8bf9914c770268a1dcc56e2accedb791dfb40f4f2ade2715"}
+          for name,digest in pins.items():
+              p=Path(name);assert p.is_file() and not p.is_symlink()
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==digest
+          out=Path('cdr-rc-contact-controls');out.mkdir(exist_ok=True)
+          (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run=int(e['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_acquisition=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,sha256=pins),sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Exercise archive refusal and failure preservation controls
+        run: python3 -B scripts/check_cdr_current_rc_contacts.py --output cdr-rc-contact-controls/controls.json > cdr-rc-contact-controls/controls.stdout 2> cdr-rc-contact-controls/controls.stderr
+      - name: Require actual complete control results
+        run: |
+          python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          r=json.loads(Path('cdr-rc-contact-controls/controls.json').read_bytes())
+          assert r['status']=='PASS_CURRENT_RC_CONTACT_SOURCE_CONTROLS'
+          assert r['counts']==dict(positive=14,refusal=80,lifecycle=5)
+          assert r['current_context']['source']==os.environ['GITHUB_SHA']
+          assert r['current_context']['run_id']==int(os.environ['GITHUB_RUN_ID']) and r['current_context']['attempt']==1
+          assert r['current_context']['source_controls_only'] is True
+          assert r['synthetic_native_formats_and_archives'] is True
+          assert r['actual_source_metadata_authenticated'] is True
+          assert all(r[k] is False for k in ('actual_native_archive_extracted','actual_RC_readback_qualified','native_executed','physical_acceptance'))
+          PY
+      - name: Always emit full source control records
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          for name in ('context.json','controls.json','controls.stdout','controls.stderr'):
+              p=Path('cdr-rc-contact-controls')/name;assert not p.is_symlink()
+              raw=p.read_bytes() if p.is_file() else b''
+              chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
+              print('CDR_RC_CONTACT_CONTROL_INDEX '+json.dumps(dict(path=name,present=p.is_file(),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):
+                  print('CDR_RC_CONTACT_CONTROL_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          PY
+      - name: Preserve complete control records
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-rc-contact-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: cdr-rc-contact-controls
+          if-no-files-found: error
+          retention-days: 90
+  preserve-job-log:
+    needs: source-controls
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Preserve full actual source job log and metadata
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          root=Path('job-logs');root.mkdir()
+          e=os.environ
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_RUN_ATTEMPT']=='1'
+          prefix='repos/'+e['GITHUB_REPOSITORY']+'/'
+          def read(path,name):
+              b=subprocess.check_output(['gh','api',prefix+path]);(root/name).write_bytes(b);return json.loads(b)
+          run=read('actions/runs/'+e['GITHUB_RUN_ID'],'run.json')
+          assert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
+          jobs=read('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
+          selected=[j for j in jobs['jobs'] if j['name']=='source-controls'];assert len(selected)==1
+          j=selected[0];assert j['status']=='completed' and j['head_sha']==e['GITHUB_SHA']
+          read('actions/jobs/'+str(j['id']),'job.json')
+          b=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(j['id'])+'/logs'])
+          assert b;(root/'job.log').write_bytes(b)
+          receipt=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
+            job_id=j['id'],job_conclusion=j['conclusion'],full_raw_job_log=True,
+            log_bytes=len(b),log_sha256=hashlib.sha256(b).hexdigest(),native_acquisition=False)
+          (root/'receipt.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(receipt,sort_keys=True))
+          PY
+      - name: Preserve complete actual logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-rc-contact-source-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: job-logs
+          if-no-files-found: error
+          retention-days: 90
+
+  readback:
+    needs: [source-controls, preserve-job-log]
+    if: ${{ inputs.mode == 'readback' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Recheck exact selected source before acquisition
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          e=os.environ
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr-current-rc-contact-readback'
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
+          pins={"scripts/cloud_cdr_current_rc_contacts.py":"1a4ece12cb2805aba5fabbebe4e0ffca2cddb272dc70b4610be4ca44339b848e","scripts/check_cdr_current_rc_contacts.py":"0224da283504601aa0d2ab17ded09cc16a36ad1f40e08ef9114e84ae67ad18cc","scripts/cdr-current-rc-contact-inputs.json":"8f67918556ffea7b8bf9914c770268a1dcc56e2accedb791dfb40f4f2ade2715"}
+          for name,digest in pins.items():
+              p=Path(name);assert p.is_file() and not p.is_symlink()
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==digest
+          out=Path('cdr-rc-contact-controls');out.mkdir(exist_ok=True)
+          (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run=int(e['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_acquisition=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,sha256=pins),sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Require independently created exact-source release
+        run: |
+          python3 -B - <<'PY'
+          import json,os,subprocess,time
+          from pathlib import Path
+          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-cdr-current-rc-contact-readback'
+          prefix='repos/Melihakbulut221/nssoc/'
+          for attempt in range(120):
+              p=subprocess.run(['gh','api',prefix+'releases/tags/'+tag],capture_output=True,text=True)
+              if p.returncode==0:
+                  d=json.loads(p.stdout);break
+              assert 'HTTP 404' in p.stderr,p.stderr
+              time.sleep(2)
+          else:raise RuntimeError('Exact-source release reservation was not created; no archive acquisition')
+          r=json.loads(subprocess.check_output(['gh','api',prefix+'git/ref/tags/'+tag]))
+          assert d['tag_name']==tag and d['target_commitish']==e['GITHUB_SHA']
+          assert d['draft'] is False and d['prerelease'] is True and d['assets']==[]
+          assert r['object']['type']=='commit' and r['object']['sha']==e['GITHUB_SHA']
+          receipt=dict(tag=tag,tested_source=e['GITHUB_SHA'],release_id=d['id'],existing_assets=[],target_verified=True,assets_overwritten=False,externally_reserved=True,creation_attempted=False,read_attempts=attempt+1)
+          Path('release-reservation.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Recheck actual same-source controls before acquisition
+        run: python3 -B scripts/check_cdr_current_rc_contacts.py --output cdr-rc-contact-controls/controls.json > cdr-rc-contact-controls/controls.stdout 2> cdr-rc-contact-controls/controls.stderr
+      - name: Read exact existing MIM-aware RC incidence and technology on hosted runner
+        run: python3 -B scripts/cloud_cdr_current_rc_contacts.py --readback --output cloud-cdr-rc-contact-readback --reservation release-reservation.json --controls-proof cdr-rc-contact-controls/controls.json > cdr-rc-contact-readback.stdout 2> cdr-rc-contact-readback.stderr
+      - name: Always emit repeated source control records
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          for name in ('context.json','controls.json','controls.stdout','controls.stderr'):
+              p=Path('cdr-rc-contact-controls')/name;assert not p.is_symlink()
+              raw=p.read_bytes() if p.is_file() else b''
+              chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
+              print('CDR_RC_CONTACT_CONTROL_INDEX '+json.dumps(dict(path=name,present=p.is_file(),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):
+                  print('CDR_RC_CONTACT_CONTROL_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          PY
+      - name: Always emit complete contact readback and failure output
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import sys
+          from pathlib import Path
+          for name in ('cdr-rc-contact-readback.stdout','cdr-rc-contact-readback.stderr'):
+              p=Path(name)
+              if p.is_file():
+                  sys.stdout.buffer.write(p.read_bytes());sys.stdout.buffer.write(b'\n')
+          PY
+      - name: Preserve complete derived evidence and readback logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-rc-contact-readback-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          path: |
+            cloud-cdr-rc-contact-readback
+            release-reservation.json
+            cdr-rc-contact-readback.stdout
+            cdr-rc-contact-readback.stderr
+            cdr-rc-contact-controls
