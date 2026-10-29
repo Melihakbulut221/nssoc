@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Hosted-only admission, terminal preservation and exact source controls."""
-import copy,json,os,tempfile,unittest
+import copy,io,json,os,tarfile,tempfile,threading,unittest
+from contextlib import ExitStack
 from pathlib import Path
 from unittest.mock import patch
 import cdr_selector_width_topology_stage as s
@@ -167,6 +168,98 @@ class Controls(unittest.TestCase):
                 (root/"extra.txt").write_text("unlisted")
                 with self.assertRaisesRegex(AssertionError,"Publication inventory changed"):
                     d.validate_publication(result)
+
+    def test_main_run_preserves_body_failure_when_terminal_cleanup_also_fails(self):
+        with tempfile.TemporaryDirectory()as temp:
+            root=Path(temp);out=root/"out";transport=root/"publication"
+            class Supervisor:
+                TRACE=out/"supervision";ACTIVE=None
+                STOP=threading.Event()
+                def heartbeat(self):self.STOP.wait(20)
+                def interrupted(self,*args):raise RuntimeError("unexpected signal")
+                def stop_process(self,p):raise RuntimeError("cleanup-extra")
+                def sample(self,label):return {"fixture":True}
+            method={"protected_sha256":{d.runtime.SAMPLER:"fixture"}}
+            with patch.object(d,"OUT",out),patch.object(d,"TRANSPORT",transport),\
+              patch.object(d,"storage",return_value={}),patch.object(s,"authorize",return_value=method),\
+              patch.object(s,"methods",return_value=method),\
+              patch.object(d.runtime,"supervisor",return_value=Supervisor()),\
+              patch.object(d,"run",side_effect=RuntimeError("body-original")):
+                with self.assertRaisesRegex(RuntimeError,"body-original"):
+                    d.main_run({"fixture":True})
+            report=s.read(out/"result.json")
+            self.assertEqual(report["status"],"FAIL_TERMINAL")
+            self.assertIn("body-original",report["error"]["error"])
+            self.assertTrue(any("cleanup-extra"in e["error"]for e in report["terminal_errors"]))
+            self.assertFalse(report["native_width_comparison_passed"])
+            self.assertTrue(Supervisor.STOP.is_set())
+
+    def test_actual_pack_and_publish_preserve_integrity_failure_and_empty_files(self):
+        # Actual production publish() and pack(); only remote uploader/reservation
+        # and resource availability are fixtures. All work executes on the host.
+        for fail_upload in (False,True):
+            with tempfile.TemporaryDirectory()as temp:
+                root=Path(temp);out=root/"out";out.mkdir();transport=root/"publication"
+                external=root/"driver.log";external.write_bytes(b"")
+                (out/"native-controls.json").write_bytes(b"")
+                (out/"native-synthetic.json").write_bytes(b"{partial original")
+                raw=b"{malformed original terminal";(out/"result.json").write_bytes(raw)
+                captured=[];old_hook=d.publisher.release
+                def uploader(path,tag):
+                    self.assertGreater(path.stat().st_size,0)
+                    captured.append((path.name,path.read_bytes(),tag))
+                    if fail_upload:raise RuntimeError("upload-original")
+                    return {"name":path.name,"bytes":path.stat().st_size,"sha256":s.sha(path)}
+                with ExitStack()as stack:
+                    for obj,name,value in ((d,"OUT",out),(d,"TRANSPORT",transport),(d,"DRIVER_LOG",external)):
+                        stack.enter_context(patch.object(obj,name,value))
+                    stack.enter_context(patch.object(d,"storage",return_value={}))
+                    stack.enter_context(patch.object(s,"publication_authorize",return_value={}))
+                    stack.enter_context(patch.object(s,"methods",side_effect=AssertionError("protected proof changed")))
+                    stack.enter_context(patch.object(s.evidence,"source_guard",side_effect=AssertionError("protected proof changed")))
+                    stack.enter_context(patch.object(d.publisher,"publish",side_effect=uploader))
+                    # Keep actual helper factory and publication_files()/pack().
+                    # Only the reservation's eventual network call is never used
+                    # because this test uploader records data without networking.
+                    result=d.publication_result({"fixture":True})
+                    if fail_upload:
+                        with self.assertRaisesRegex(RuntimeError,"upload-original"):d.publish(result)
+                    else:
+                        self.assertEqual(d.publish(result)["status"],
+                          "PASS_COMPLETE_WIDTH_TOPOLOGY_EVIDENCE_PUBLICATION_ONLY")
+                    self.assertIs(d.publisher.release,old_hook)
+                    with self.assertRaisesRegex(AssertionError,"Publication already attempted"):
+                        d.publish(result)
+                self.assertEqual((out/"result.json").read_bytes(),raw)
+                self.assertEqual((out/"native-controls.json").read_bytes(),b"")
+                self.assertEqual(external.read_bytes(),b"")
+                self.assertTrue(captured)
+                self.assertEqual(result["status"],"FAIL_PROTECTED_SOURCE_AT_PUBLICATION")
+                self.assertIn("protected proof changed",result["publication_source_error"]["error"])
+                manifests=list(transport.glob("*.parts.json"));self.assertEqual(len(manifests),1)
+                manifest=s.read(manifests[0])
+                joined=b"".join((transport/r["name"]).read_bytes()for r in manifest["parts"])
+                with tarfile.open(fileobj=io.BytesIO(joined),mode="r:gz")as archive:
+                    self.assertEqual(archive.extractfile("out/result.json").read(),raw)
+                    self.assertEqual(archive.extractfile("out/native-controls.json").read(),b"")
+                    self.assertEqual(archive.extractfile("out/publication-driver.log").read(),b"")
+                    self.assertEqual(archive.extractfile("out/native-synthetic.json").read(),b"{partial original")
+                plan=s.read(next(transport.glob("*.direct-publication-plan.json")))
+                rows={r["suffix"]:r for r in plan["files"]}
+                for suffix in ("native-controls.json","driver.log"):
+                    row=rows[suffix]
+                    self.assertEqual(row["bytes"],0);self.assertEqual(row["disposition"],"archive_only_empty")
+                    self.assertEqual(row["sha256"],"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+                    self.assertFalse(any(n.endswith("."+suffix)for n,_,_ in captured))
+                    self.assertEqual(result["outputs"][row["member"]],row["sha256"])
+                self.assertEqual(rows["native-synthetic.json"]["disposition"],"direct_and_archive")
+                final=s.read(transport/"publication.json")
+                self.assertEqual(final["status"],"FAIL_PUBLICATION"if fail_upload else
+                  "PASS_COMPLETE_WIDTH_TOPOLOGY_EVIDENCE_PUBLICATION_ONLY")
+                if fail_upload:self.assertIn("upload-original",final["error"]["error"])
+                else:
+                    self.assertTrue(any(n.endswith(".native-synthetic.json")for n,_,_ in captured))
+                    self.assertTrue(any(n.endswith(".direct-publication-plan.json")for n,_,_ in captured))
 
 if __name__=="__main__":
     assert os.environ.get("GITHUB_ACTIONS")=="true" and os.environ.get("RUNNER_ENVIRONMENT")=="github-hosted"

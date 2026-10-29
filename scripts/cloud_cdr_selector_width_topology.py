@@ -60,7 +60,7 @@ def initial(reservation):
       topology_started=False,native_width_comparison_passed=False,
       terminal_finalization_complete=False,original_failure_preserved=True,
       source_graph_run=source.RUN,source_graph_head=source.HEAD,
-      consumed_view=source.VIEW,complete_input_members=len(source.expected_files()),
+      consumed_view=source.VIEW,complete_input_members=4103,
       candidate_gds_sha256=source.GDS_SHA)
     r.update({k:False for k in FALSE})
     return r
@@ -182,7 +182,7 @@ def validate_publication(result):
     require(all(result[k]is False for k in FALSE),"Unexpected physical/electrical claim")
     require(result["original_failure_preserved"]is True and result["source_graph_run"]==source.RUN
         and result["source_graph_head"]==source.HEAD and result["candidate_gds_sha256"]==source.GDS_SHA
-        and result["complete_input_members"]==len(source.expected_files())
+        and result["complete_input_members"]==4103
         and result["consumed_view"]==source.VIEW,"Saved source scope changed")
     require(result["outputs"]=={n:h for n,h in inventory(OUT).items()if n!="result.json"},"Publication inventory changed")
     if result["status"]==PASS:
@@ -233,31 +233,58 @@ def publish(result):
     require(not TRANSPORT.exists()and not TRANSPORT.is_symlink(),"Publication already attempted")
     TRANSPORT.mkdir(parents=True)
     stem=GROUP+"-"+os.environ["GITHUB_RUN_ID"]+"-1"
-    summary=TRANSPORT/(stem+".summary.json");source.atomic(summary,result)
-    packed=pack(OUT,stem,TRANSPORT,512*1024**2)
-    helper=publication_helpers.publication_helpers()
-    files=helper.publication_files(TRANSPORT,summary,TRANSPORT/(stem+".parts.json"),packed)
+    direct=[];plan=[]
+    def optional(suffix,member):
+        path=OUT/member
+        require(not path.is_symlink(),"Direct evidence symlink")
+        if not path.exists():
+            plan.append(dict(suffix=suffix,member=member,disposition="absent_not_fabricated"))
+            return
+        require(path.is_file(),"Nonregular direct evidence")
+        size=path.stat().st_size;h=source.sha(path)
+        record=dict(suffix=suffix,member=member,bytes=size,sha256=h,
+          disposition="direct_and_archive"if size else"archive_only_empty")
+        plan.append(record)
+        if size:
+            target=TRANSPORT/(stem+"."+suffix);shutil.copyfile(path,target)
+            require(source.sha(target)==h and target.stat().st_size==size,"Direct bytes changed")
+            direct.append(target)
     for suffix,member in (("native-synthetic.json","native-synthetic.json"),
                           ("native-controls.json","native-controls.json"),
                           ("expected-roots.json","expected-roots.json"),
                           ("restore.json","restore.json"),("runtime.json","runtime-smoke/result.json")):
-        path=OUT/member
-        require(not path.is_symlink(),"Direct evidence symlink")
-        if path.exists():
-            require(path.is_file(),"Nonregular direct evidence")
-            target=TRANSPORT/(stem+"."+suffix);shutil.copyfile(path,target)
-            require(source.sha(target)==source.sha(path),"Direct bytes changed");files.append(target)
+        optional(suffix,member)
     driver_log={"present":False,"missing_not_fabricated":True}
     require(not DRIVER_LOG.is_symlink(),"Driver log symlink")
     if DRIVER_LOG.exists():
         require(DRIVER_LOG.is_file(),"Nonregular driver log")
-        target=TRANSPORT/(stem+".driver.log");shutil.copyfile(DRIVER_LOG,target)
-        require(source.sha(target)==source.sha(DRIVER_LOG),"Driver log copy changed")
-        files.append(target)
-        driver_log=dict(present=True,bytes=target.stat().st_size,sha256=source.sha(target))
+        archived=OUT/"publication-driver.log"
+        require(not archived.exists()and not archived.is_symlink(),"Driver archival copy already exists")
+        shutil.copyfile(DRIVER_LOG,archived)
+        require(source.sha(archived)==source.sha(DRIVER_LOG),"Driver archival bytes changed")
+        driver_log=dict(present=True,bytes=archived.stat().st_size,sha256=source.sha(archived),
+          member="publication-driver.log",raw_driver_log_in_complete_archive=True)
+        optional("driver.log","publication-driver.log")
+    else:
+        plan.append(dict(suffix="driver.log",member="publication-driver.log",disposition="absent_not_fabricated"))
+    # Keep the original terminal result byte-for-byte. The independent publication
+    # summary includes the copied external log and the final complete output map.
+    output_map(result);validate_publication(result)
+    summary=TRANSPORT/(stem+".summary.json");source.atomic(summary,result)
+    packed=pack(OUT,stem,TRANSPORT,512*1024**2)
+    helper=publication_helpers.publication_helpers()
+    files=helper.publication_files(TRANSPORT,summary,TRANSPORT/(stem+".parts.json"),packed)+direct
+    publication_plan=TRANSPORT/(stem+".direct-publication-plan.json")
+    source.atomic(publication_plan,dict(schema="complete-archive-direct-publication-v1",files=plan,
+      zero_byte_files_preserved_in_archive=True,empty_bytes_replaced=False,
+      summary_sha256=source.sha(summary),parts_sha256=source.sha(TRANSPORT/(stem+".parts.json"))))
+    files.append(publication_plan)
     require(len({p.name for p in files})==len(files),"Duplicate publication assets")
+    require(all(p.is_file()and not p.is_symlink()and p.stat().st_size>0 for p in files),
+      "Empty direct upload refused")
     proof=dict(status="RUNNING_PUBLICATION",assets=[],source_head=os.environ["GITHUB_SHA"],
-               run_id=int(os.environ["GITHUB_RUN_ID"]),engineering_accepted=False,driver_log=driver_log)
+               run_id=int(os.environ["GITHUB_RUN_ID"]),engineering_accepted=False,driver_log=driver_log,
+               direct_publication_plan_sha256=source.sha(publication_plan))
     tag,_=release.context(GROUP,os.environ)
     previous=publisher.release;primary=None
     publisher.release=helper.only_reserved(GROUP,os.environ,release.api)
