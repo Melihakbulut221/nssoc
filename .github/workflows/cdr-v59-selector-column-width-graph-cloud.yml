@@ -34,7 +34,7 @@ jobs:
           mkdir -p hw/soc/out/cdr-selector-graph-controls
           python scripts/check_cdr_v59_selector_column_width_graph.py 2>&1 | tee hw/soc/out/cdr-selector-graph-controls/controls.log
       - name: Unchanged original full topology controls
-        run: python scripts/check_cdr_v59_tail_access_topology.py > hw/soc/out/cdr-selector-graph-controls/inherited-topology.json
+        run: python scripts/check_cdr_v59_tail_access_topology.py | tee hw/soc/out/cdr-selector-graph-controls/inherited-topology.json
       - name: Preserve complete source controls
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
