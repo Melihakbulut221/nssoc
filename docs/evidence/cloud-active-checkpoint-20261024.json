@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T06:44:02.200271+00:00",
+  "updated_at": "2026-10-29T07:52:51.545846+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "7485803d47031ce11cad687db44471c5bdb877ff",
+  "root_source_before_receipt": "4724543484e90059062de925848d12afb66e9bc8",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 108,
+    "inventory_version": 109,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -22,27 +22,34 @@
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33"
   },
   "active_runs": {
-    "cdr-width-fresh-RC-native": {
-      "run": 40830441311,
-      "head_sha": "7ddf83d17a3b3fe0efb1eb31594b7d4d3e831b8f",
+    "fixed-guard-native-engine-build": {
+      "run": 40837855489,
+      "head_sha": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
       "status": "in_progress",
       "conclusion": null,
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123303176370,
+          "id": 123326797726,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123304520684,
-          "name": "fresh-RC",
+          "id": 123327073555,
+          "name": "preserve-source-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123327074155,
+          "name": "engine-build",
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
-            "Four original supervised phases with full current75 projection"
+            "New reserved-source build only"
           ]
         }
       ]
@@ -3300,16 +3307,75 @@
       "qualified_pex": false,
       "electrical_accepted": false,
       "full_phy_accepted": false
+    },
+    "current_width_RC_native_40830441311": {
+      "source": "7ddf83d17a3b3fe0efb1eb31594b7d4d3e831b8f",
+      "terminal": "success",
+      "full_proof_commit": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "proof_files": 54,
+      "proof_bytes": 146866421,
+      "receipt": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/receipt.json",
+      "receipt_sha256": "a551d56a0b1c8cad68b6305dab262cf02eddbd5fb8df5bcf96477d504568ef5c",
+      "raw_terminal_result_sha256": "9d128f021278fc2a3fa0be68db8f8c0b73824fa24939341802ba3ba6bfe1a820",
+      "independent_publication_summary_sha256": "c5695d1cde81f3aac997f461ba6e663eed7e5dfb827600d84e1ec768d84f6a23",
+      "complete_restore_members": 6647,
+      "outputs_in_direct_summary": 6646,
+      "raw_result_outputs": 6645,
+      "model_counts": {
+        "devices": 500,
+        "R": 24356,
+        "C": 15566
+      },
+      "archive_bytes": 822671612,
+      "archive_bytes_acquired_locally": false,
+      "release": 427537846,
+      "geometry_regenerated": false,
+      "simulation_executed": false,
+      "qualified_pex": false,
+      "electrical_accepted": false,
+      "full_phy_accepted": false
+    },
+    "fixed_engine_build_controller_current": {
+      "branch": "codex/mainchip-fixed-engine-build",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "prior_fixture_failure_run": 40834365048,
+      "failure_full_proof": "2fe34f04bc8b3b2be5188ccf269f411cd28ddb75",
+      "corrected_controls_run": 40835411152,
+      "corrected_source": "7a53434f55bc1dfc160eddd880d61030782a95ba",
+      "corrected_controls_proof": "859762c91b61461e6f06688f613ccfb3892fe267",
+      "actual_refusals": 28,
+      "derivation_refusals": 7,
+      "lifecycle_cases": 10,
+      "publication_cases": 7,
+      "control_provenance_refusals": 4,
+      "native_run": 40837855489,
+      "release": 427584078,
+      "protected_files": 920,
+      "native_build_only": true,
+      "original_inner_unchanged": true,
+      "qualified_engine": null,
+      "runtime_qualified": false,
+      "routing_qualified": false,
+      "original_failed_route_shorts": 3,
+      "old_elf_acceptance_transferred": false
+    },
+    "next_width_loaded_admission_source_candidate": {
+      "branch": "codex/cdr-width-loaded-admission",
+      "base": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "scope": "Separate disabled exact current6647 input admission and source controls; original loaded numerical workers and ten-case gates remain frozen.",
+      "source_unit_in_progress": true,
+      "native_execution_authorized": false,
+      "source_controls_passed": false
     }
   },
   "next_actions": [
-    "Cloud-only is authoritative. Local workspace is empty and old project clones/log paths absent. Do not checkout/import/test/CAD/simulate locally or acquire native archives/GDS/ODB/ELF/waves even into RAM. GitHub API source and full derived JSON/text may be processed in RAM. Preserve original user review documents.",
-    "Follow native freshRC run40830441311 exact7ddf83d. Source controls must pass in this same run before fresh-RC. Exact-source empty prerelease427537846 and lightweight tag were reserved before dependencies; do not create a duplicate or retry. Restore complete4103 graph and current75, original four1200s phases, sevenMIM twoorders. Keep numerical/physical/electrical gates unchanged.",
-    "Preserve full native success/failure capsule only in GitHub, including empties and original raw result. Inspect derived reports and both actual job logs. A new RC result cannot stand in for original10 electrical cases or PLL/CDR/fullPHY acceptance.",
-    "Mainchip audit recovery40821586610 is fully success as an audit execution;110 full proof files imported. Its authentic off/on comparator now passed under source run40830215344 with separate new-audit/frozen-old-route contexts. Original route40808800489 remains failure; its original audit jobs remain skipped. Three Short markers and zero target-signal geometry delta remain, so RC/STA admission remainsfalse.",
-    "Exact guard cf48ce2c to9f377806 in initRipUpNetsFromMarkers passed6 compiled actual-body synthetic-API cases and21source+30comparison+2mismatch controls. Full newengine build/runtime/sameinputroute and five original audits are still needed; source controls do not establish actual runtime root cause or physical closure.",
-    "A disabled separate build unit is being authored on codex/mainchip-fixed-engine-build from6f881; root owns RC and guard branches. Preserve old engine/inner/contract/method bytes. Fresh candidate ELF must get actual build/run/release/hash and new runtime probe; old ELF1e79/run407562 and runtime407769 acceptance may not be transferred.",
-    "After actual routing clears markers and preserves1691 original clocks/full invariants, run current trustworthy RC/STA at original20/4/8/8ns+5%. Do not relabel old-layout STA or relax clocks. Full serial PHY, routedchip/final setuphold and production acceptance remain open. Existing8h cloud monitor is read-only."
+    "All NSSOC development remains cloud-only: GitHub source/API JSON/text RAM orchestration; no local checkout, source tests, CAD, native archive, layout or waveform download.",
+    "Follow new exact bfb75d24515a566262bfb8b2e8b681dd2774cec6 native engine build40837855489. Authenticate actual complete success/failure terminal bytes, source/config/compiler/library/ELF/resource/cleanup evidence and exact reserved release427584078. Never re-dispatch this source or substitute old407562 ELF qualification.",
+    "If new engine build succeeds, separately qualify the NEW ELF with the unchanged original actual444f ODB read/create/destroy runtime test and104 shared-library bindings before another repaired routing attempt. Routing, RC/STA and physical acceptance remain disabled until that proof.",
+    "Review disabled current-width loaded-input admission candidate on codex/cdr-width-loaded-admission. Use full6647 archive map = direct summary outputs plus authentic RAW result.json9d128f, never direct summaryc569 as raw. Restore exactcurrent500/R24356/C15566 and bb10 planes/471242 model; historical nested planes must not win suffix selection.",
+    "After separately passed source qualification and exact reserved releases, adapt only current input/method/output bindings of original ten-case loaded electrical matrix. Preserve all six numerical blocks, validator0fb77fb9, original gates, per-case7200s, prepare1200s,max_parallel2; standalone loaded CDR is not closed-loop/fullPHY.",
+    "Preserve unresolved PLL readback/phase margin failures and full serial PHY/protocol completeness, routed main-chip/final original-clock setup/hold, padframe/DFT/SRAM/qualifiedPEX and production signoff gaps. No acceptance by gate relaxation or old-layout evidence.",
+    "Keep the existing eight-hour GitHub monitor read-only and its complete cloud handle inventory current. It cannot authorize or dispatch native jobs."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -3615,98 +3681,18 @@
     "observed_40822481317": 40822481317,
     "observed_40821586610": 40821586610,
     "observed_40828314616": 40828314616,
-    "observed_40830215344": 40830215344
+    "observed_40830215344": 40830215344,
+    "observed_40830441311": 40830441311,
+    "observed_40834365048": 40834365048,
+    "observed_40835411152": 40835411152
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40821586610,
-      "head_sha": "4c6c705642da5883ae42fbeac539782cfdb94413",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123275062656,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123275294416,
-          "name": "audit-only (on)",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123275294417,
-          "name": "audit-only (off)",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40828314616,
-      "head_sha": "a3f1033419ef3310a39eb83b5ca3eb9c98d86f9a",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123296398944,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123298859191,
-          "name": "preserve-job-logs",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123298860780,
-          "name": "fresh-RC",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40830215344,
-      "head_sha": "6f881b3c197f70d40190ca455b6e3bf3bdab8aaa",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123302453817,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123302654496,
-          "name": "preserve-source-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
       "run": 40830441311,
       "head_sha": "7ddf83d17a3b3fe0efb1eb31594b7d4d3e831b8f",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
@@ -3719,17 +3705,114 @@
         {
           "id": 123304520684,
           "name": "fresh-RC",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123320365070,
+          "name": "preserve-job-logs",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40834365048,
+      "head_sha": "dc2c5577d2ac0ab32e4fa0d3b5cc7776a711f8a4",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123315588963,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        },
+        {
+          "id": 123315750491,
+          "name": "preserve-source-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123315752680,
+          "name": "engine-build",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40835411152,
+      "head_sha": "7a53434f55bc1dfc160eddd880d61030782a95ba",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123318919989,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123319100969,
+          "name": "preserve-source-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123319102881,
+          "name": "engine-build",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40837855489,
+      "head_sha": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123326797726,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123327073555,
+          "name": "preserve-source-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123327074155,
+          "name": "engine-build",
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
-            "Four original supervised phases with full current75 projection"
+            "New reserved-source build only"
           ]
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T06:44:02.200271+00:00",
+    "observed_at": "2026-10-29T07:52:51.545846+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -3858,7 +3941,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T06:44:02.200271+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T07:52:51.545846+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -30655,6 +30738,906 @@
       "release_id": 427537846,
       "tag": "cloud-results-40830441311-1-cdr-selector-width-fresh-rc",
       "empty_before_dependencies": true
+    }
+  ],
+  "imported_checkpoint_receipts_v109": [
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-build-source-review-20261029.json",
+      "source": "f63f1fd1079a1e6e540e6f88c229deccd819a311",
+      "git_blob": "2e998f99fb0e9c4abf080ec5abb73de84e9d700b",
+      "bytes": 26576,
+      "sha256": "ff9aabc815b959d3db75997977baed5bc4a0e1927fa3fff1d3315080b81c908b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-build-root-review-20261029.json",
+      "source": "dc2c5577d2ac0ab32e4fa0d3b5cc7776a711f8a4",
+      "git_blob": "2a6050f31f2c094d970d1c610181efb746b3d553",
+      "bytes": 2722,
+      "sha256": "fe40ea55ac4f3d89d891f3b72efe7c834c094bf75fb0df14de1160de71ebb4b8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-failure-20261029/123315588963.job.json",
+      "source": "2fe34f04bc8b3b2be5188ccf269f411cd28ddb75",
+      "git_blob": "2de9f5b09d7b49b97c152559e59c1e1157cf0fd8",
+      "bytes": 2971,
+      "sha256": "13f0c63d7bfbfa3efaa461ddb778831e18c60a2434e7f1af2d6457b6f83150a9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-failure-20261029/123315588963.job.log",
+      "source": "2fe34f04bc8b3b2be5188ccf269f411cd28ddb75",
+      "git_blob": "8f9589946d10ab483ca29a1918548d9eda91dd84",
+      "bytes": 28443,
+      "sha256": "f4be5cbf5fc7c35bcdb17d0457fcc276639337bbcedf79f051a9e5496c761d82",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-failure-20261029/123315750491.job.json",
+      "source": "2fe34f04bc8b3b2be5188ccf269f411cd28ddb75",
+      "git_blob": "b697a5e88de38b39c14379af41c44c12de834477",
+      "bytes": 1987,
+      "sha256": "13a7d51ae9471533896a2a4dba1cad0d449e7e4cbf4a811e58903873f63261fa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-failure-20261029/123315750491.job.log",
+      "source": "2fe34f04bc8b3b2be5188ccf269f411cd28ddb75",
+      "git_blob": "4db1ff3f7326a9e247c8f27f5b1213f6ab2051af",
+      "bytes": 9003,
+      "sha256": "67fe6d0cd2590e88313fa25203d9cf05a4d0121812554513d4fcd784fb77a462",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-failure-20261029/123315752680.job.json",
+      "source": "2fe34f04bc8b3b2be5188ccf269f411cd28ddb75",
+      "git_blob": "26f46f9f9f94e07386b142f39ac119796b248ca1",
+      "bytes": 1019,
+      "sha256": "2ca086b06de1c93d76659a7278d726c6b541480284569b09a24d81f40af27e7f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-failure-20261029/artifacts.json",
+      "source": "2fe34f04bc8b3b2be5188ccf269f411cd28ddb75",
+      "git_blob": "da32eecced1477029c103acd8c9843752f161462",
+      "bytes": 1855,
+      "sha256": "cb3f8c948e56965981a13dae44315f0b08bfa280aadbc675e07c554aba297821",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-failure-20261029/control-index.json",
+      "source": "2fe34f04bc8b3b2be5188ccf269f411cd28ddb75",
+      "git_blob": "960a7429f640d9404c62830f1632d2b0f11b00f8",
+      "bytes": 1105,
+      "sha256": "9436a93b17cefb0b04ffd03afb8929db4f3902a3b2cbfaa7dad59871963fca8d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-failure-20261029/controls/fixed-engine-controls.json",
+      "source": "2fe34f04bc8b3b2be5188ccf269f411cd28ddb75",
+      "git_blob": "5a17c95df20e9207d0c7aaf992a2de15aeaaa0f5",
+      "bytes": 834,
+      "sha256": "46ebcab7d2fc9d872141a3dd2533a922caf91e237d8f1ba37004f6af55bc1778",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-failure-20261029/controls/fixed-engine-controls.stderr",
+      "source": "2fe34f04bc8b3b2be5188ccf269f411cd28ddb75",
+      "git_blob": "04b5a370ff2280c3f75dc814c21ff9cc949d20f5",
+      "bytes": 999,
+      "sha256": "617210d06298c970d461a744eb5f1b4a900834475ac2aed1ef0c11e857b97aa1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-failure-20261029/controls/fixed-engine-controls.stdout",
+      "source": "2fe34f04bc8b3b2be5188ccf269f411cd28ddb75",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-failure-20261029/jobs.json",
+      "source": "2fe34f04bc8b3b2be5188ccf269f411cd28ddb75",
+      "git_blob": "34d510d6d6e1e55db3b2f467d064232f0cb95aac",
+      "bytes": 6735,
+      "sha256": "f190e2180d52b48c181840619b747725c2cfca897476898daf5e316a596e43d7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-failure-20261029/receipt.json",
+      "source": "2fe34f04bc8b3b2be5188ccf269f411cd28ddb75",
+      "git_blob": "52bc1d60bac2d0806dfae3d9aa32583a443b2ec2",
+      "bytes": 3857,
+      "sha256": "d3e95d6f834edfcc0d94ba64a5a95eacbfd41f747fd57a7967bb4a77f3765d11",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-failure-20261029/run.json",
+      "source": "2fe34f04bc8b3b2be5188ccf269f411cd28ddb75",
+      "git_blob": "220af12c6233b25b56aa5b59c6b399e5d830cdfe",
+      "bytes": 14405,
+      "sha256": "95231d9eb3bd53baf08fea5b015f8f76d7a695166750ce5cb8a48529efd2f26d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-publication-fixture-correction-20261029.json",
+      "source": "7a53434f55bc1dfc160eddd880d61030782a95ba",
+      "git_blob": "5880124fa1f880fb017414e13558668987c80ee1",
+      "bytes": 1502,
+      "sha256": "c7b4f1da0677db8beef7c26b821a8367271fd50b0264525afc04dce15218c590",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-terminal-20261029/123318919989.job.json",
+      "source": "859762c91b61461e6f06688f613ccfb3892fe267",
+      "git_blob": "7037ba141f5f56f982ae83e64bfa6523209591c0",
+      "bytes": 2971,
+      "sha256": "2cc94dd34303ab33e1456b3fd07d42402a66442766b3b46cdbebf019fb26f0c6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-terminal-20261029/123318919989.job.log",
+      "source": "859762c91b61461e6f06688f613ccfb3892fe267",
+      "git_blob": "db936ea663bd7b8db1acc36f523dc6c117f7d26e",
+      "bytes": 93101,
+      "sha256": "1994c21a023c303136515cf84b451eb988585d2c320ab7d9494d62af10b57b6a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-terminal-20261029/123319100969.job.json",
+      "source": "859762c91b61461e6f06688f613ccfb3892fe267",
+      "git_blob": "89eb0b9f0ae37001eed9f1dd4b1a8fae32323954",
+      "bytes": 1987,
+      "sha256": "d9e2c6ce50c3ed5dd79fb4e21f1c853f0efd3d8b4f1d7d79f7c8f335ba5d9921",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-terminal-20261029/123319100969.job.log",
+      "source": "859762c91b61461e6f06688f613ccfb3892fe267",
+      "git_blob": "77bf91598ad32c70b310fe82c5c1814c8219c3a7",
+      "bytes": 9000,
+      "sha256": "d8a04d88ac2acd57db78e706b4824ca602725b73fb2015d40b23615a8a67c280",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-terminal-20261029/123319102881.job.json",
+      "source": "859762c91b61461e6f06688f613ccfb3892fe267",
+      "git_blob": "81a48e92f55239c171599a1a05a65d053bff402f",
+      "bytes": 1019,
+      "sha256": "be906a3cfb9600360caa4e31e32bd16a1f31ed09ccc0da0116cc70aa3ed604dd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-terminal-20261029/artifacts.json",
+      "source": "859762c91b61461e6f06688f613ccfb3892fe267",
+      "git_blob": "6a65af16b0f23802105b76685ebb830f1725c5e4",
+      "bytes": 1856,
+      "sha256": "42d2b51ace297ca0fc3082175859f8fbcb4ea4532ad17bfb20141604c4735def",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-terminal-20261029/control-index.json",
+      "source": "859762c91b61461e6f06688f613ccfb3892fe267",
+      "git_blob": "f39c415e312b56b971b311d99cf566a55b1512c1",
+      "bytes": 1113,
+      "sha256": "5dddcaefb359b92be6a296bf56a8259a7040256728b328f999be599d58bf6a16",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-terminal-20261029/controls/engine-build-controls.json",
+      "source": "859762c91b61461e6f06688f613ccfb3892fe267",
+      "git_blob": "ee03d3d2c2c6edeff6be5309ef8da7c7300223fa",
+      "bytes": 3045,
+      "sha256": "40d871dacd6103f0da1407d2a6e8ce9ee2c97a390a23519d19a758f8d6a66319",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-terminal-20261029/controls/fixed-engine-controls.json",
+      "source": "859762c91b61461e6f06688f613ccfb3892fe267",
+      "git_blob": "520175a16f8c8dc51a8fe1b83bcf06dbd28eca69",
+      "bytes": 24407,
+      "sha256": "fe812a63c99ad85b70a3e735c943978ecd0d36829370cd444200b20c0edd603c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-terminal-20261029/controls/fixed-engine-controls.stderr",
+      "source": "859762c91b61461e6f06688f613ccfb3892fe267",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-terminal-20261029/controls/fixed-engine-controls.stdout",
+      "source": "859762c91b61461e6f06688f613ccfb3892fe267",
+      "git_blob": "43c31890c23900b379c867369c379b837dfef63a",
+      "bytes": 20949,
+      "sha256": "fb5ae4354695eb5f40f42238cb8177e263698da55441775cbb3c1373544114d0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-terminal-20261029/controls/internal-witness-controls.json",
+      "source": "859762c91b61461e6f06688f613ccfb3892fe267",
+      "git_blob": "7558fbe248f3278f1f78b9ef29c218c6a3602403",
+      "bytes": 1133,
+      "sha256": "a5685ad91793240a318f79785f64df6c7979c062430bd63cf9aaae0bb362bc3b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-terminal-20261029/jobs.json",
+      "source": "859762c91b61461e6f06688f613ccfb3892fe267",
+      "git_blob": "c1c38147f9ef5459c5a51739998d5265ba958a52",
+      "bytes": 6735,
+      "sha256": "7451a1b2ad6bd6819c5d8c2a58d08e45b86ebf817a453dd8002a056fbbf40fa3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-terminal-20261029/receipt.json",
+      "source": "859762c91b61461e6f06688f613ccfb3892fe267",
+      "git_blob": "8a28a3fc4ba56a759a73824604664855555235c1",
+      "bytes": 3622,
+      "sha256": "533714f2cf6ebd930d3d7f07f32a63b1cd2041afa33a008b3ae3e3e37123a2a5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-controls-terminal-20261029/run.json",
+      "source": "859762c91b61461e6f06688f613ccfb3892fe267",
+      "git_blob": "e33ba17fbccd4684da6c5224b024d27b09f40699",
+      "bytes": 14416,
+      "sha256": "724296d53bf378826a03622352ebdc258498c1a9ba9fdd6cd0151751a841935c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-native-admission-20261029.json",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "09645c1891bb13e6ef022454d3a11bfee1ad0158",
+      "bytes": 3223,
+      "sha256": "adf1a3e7e9c6f40baa22fa564641aac961f3955ae720813ddb60be3b23544bd6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/123302453817.job.json",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "c8f004b43b68e9f05c8c7173168795c977f4ca3b",
+      "bytes": 3012,
+      "sha256": "1f795e790ece97a831a7d77ce2f8af62c7970c608051deba76474cb67cae809e",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/123302453817.job.log",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "0f8914c325282147760bdc645ca1456cc8108957",
+      "bytes": 172866,
+      "sha256": "854c3b53b7fcfa5ee4391b6533f319959c3f6d0acdd7fde2ed030a9f3125ec19",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/123302654496.job.json",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "e7d04216ccf51f3024c4fa95643e3933759fdc1b",
+      "bytes": 1984,
+      "sha256": "fb2dbe89b3ebacae84ffcd217f38005753bcb2219483e45f303b4bbd0a764ed8",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/123302654496.job.log",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "c5c7485289cf8907225b9575cc33bd02e7a1f632",
+      "bytes": 9023,
+      "sha256": "f5b71d781640bd1b52f852f3004851e1a9ef0b803563d3e5bb21df30b2d8e08e",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/artifacts.json",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "0886617b72aa3a1ea00e5ba305cc91e562bc4854",
+      "bytes": 1862,
+      "sha256": "59e3143bec89b86bce600d32058471d549afa8d32692ec39a828d4694ed94af0",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-context.json",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "cb9c939f5a0989698b615a32083166438ede7b36",
+      "bytes": 392,
+      "sha256": "c56e98d6c7463b758c3192656bc0c3e19452551323e0757be995c663f7bc6407",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-controls.stderr",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-controls.stdout",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "50f103a2b5c492fa27686a7e54c549bbab79cea6",
+      "bytes": 135,
+      "sha256": "14dbdc686dde2f86c31578c4c77df74462838b6c7dc4f325b0838faaa960fdfd",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-controls/actual-function-harness.cpp",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "e84a1b8de2c87d72439f77f7f71c4e528880fef1",
+      "bytes": 5955,
+      "sha256": "13458adabe711b16b88cb849d1358f1cc3473398ba0ade2d762963539bda0163",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-controls/comparison-controls.json",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "80a737378c2f61ccce315218de867d636435574e",
+      "bytes": 40637,
+      "sha256": "459084e69aa4b29441858de5cc475cafa49cf98288270dd9fb77230d36b19c57",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-controls/compile.command.json",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "f750d0e059a1f8d8fccdd4888bf6fc80e439c6ea",
+      "bytes": 592,
+      "sha256": "20689dd844d1dbd265062a208ee49f02b2668a98a64a2b5f92da383888668bf0",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-controls/compile.stderr",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-controls/compile.stdout",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-controls/compiled-controls.json",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "172469068a53ba30920b2ff53a8c67f7e6bec4cc",
+      "bytes": 2168,
+      "sha256": "e510057fd9eb78e4f831a902a5f0359f4b548391fe3d23790b991164b0e340e7",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-controls/compiler-version.command.json",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "3639dcfdc44829f8923ab02806608504e9ed1d18",
+      "bytes": 356,
+      "sha256": "017b0ab577f8d7fac70f7ba7b0357dec1c4aedf7d4e227f1581357afe8aadc00",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-controls/compiler-version.stderr",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-controls/compiler-version.stdout",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "61e01606106ef2f453947f9aa6dc3e8b163509ea",
+      "bytes": 246,
+      "sha256": "59d1cbef41d4ae78d5063d525b7aa13d18dc0493ea00537efc19b2ee398cb5a8",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-controls/harness.command.json",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "57950584db9025dbe7cd8d4cc01306dd78431761",
+      "bytes": 403,
+      "sha256": "11521747fea26b2262b6dc469ea4771871650947e0b41492fe5f2b58c7622a56",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-controls/harness.stderr",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-controls/harness.stdout",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "b36796436e3d559ece56e662308abe7df18ccb32",
+      "bytes": 961,
+      "sha256": "c9da884d8c9f94860178f20ebd1ea89312df4b0737a8c293527226b67fdb413f",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-controls/result.json",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "7054c48447c9efca8bc3bab1165b5e7824b9daee",
+      "bytes": 49287,
+      "sha256": "b4906531711074e3f7bfb9a48221fbaf7ea06b8e430781687fa6a18cea3aa3ac",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/controls/fixed-neardrc-controls/source-controls.json",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "e59082a286c598da3076eb54d9a535e78041a76c",
+      "bytes": 3506,
+      "sha256": "22d4f4e74cef136d193c677ea48df24e4b815bf29a12677376f6fa75a53a7728",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/jobs.json",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "4bd1dbf48dc4b56336622dae4afe6416e68e888a",
+      "bytes": 5645,
+      "sha256": "3b90b43f2173223c3083566cff7d0932e22a96f4483b51a3c000a45597755106",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/receipt.json",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "b5209155d9504bad42ec17c54cfc0dfabf39ceee",
+      "bytes": 6554,
+      "sha256": "d0b90729ef033b6d5e542fe106829839640cdc7b01f865e4ab031d68849ec5b1",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-neardrc-controls-terminal-20261029/run.json",
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "git_blob": "22561e6542a14a8287aa47c00531b3fb9faf5b3d",
+      "bytes": 14402,
+      "sha256": "342b7c526900b11d4ae72f2529a55b22f01c6d820f633f5fed0646dd4f9f9c39",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/123303176370.job.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "8ebf7fc6f50ad21680733182b50c8094ebc84a51",
+      "bytes": 4529,
+      "sha256": "8df4d80940b1242385bce71b586bb23e3f987a0c666b3d6d08829e468746b9bb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/123304520684.job.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "154f17703a0f420112a92ccf0ec875807d9a42d6",
+      "bytes": 4080,
+      "sha256": "8a441e3347e53283c936ace256f9688de8a25083fc2881721c3430be5d692f7c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/123320365070.job.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "482275940362ae19a76dc4de25355178ad282179",
+      "bytes": 2020,
+      "sha256": "4b5d094cb761f69de247fb91ff4bf545e371ee250702848bb643b8ee014b0dca",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/artifacts.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "fbca8465746f67ae35e4f3933debb444497b7204",
+      "bytes": 2772,
+      "sha256": "09e2e5afcb8a3685f092fa2a9242a213398d921ecfe8551daf42a4de904dcbed",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/complete-native-restore-map.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "d7dda0ef61936d30210f18451a690f2bb3206a18",
+      "bytes": 1210084,
+      "sha256": "073e3f34e10f4f7b8d8ab039d6b084f7c7861696f23dc564abbf3aae0d8bf65a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/controls-index.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "df6d301cfc47019baa8f86894a758215fe6098ad",
+      "bytes": 1940,
+      "sha256": "5b4abf9d665d4eb5be6b3cc960f1812006885e9d9a6b9e3e6af972d084182120",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/controls/adapters.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "4e226afc678fa05f4231f75b5159231354cc35ce",
+      "bytes": 8891,
+      "sha256": "eb3e8cb5b740dcb53e22ce09b219c6140dce8627ca27c7a35ef8cba1be5c246b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/controls/adapters.stderr",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "4b1fbe76665293e1530b3929eace624a1d665a4d",
+      "bytes": 1022,
+      "sha256": "8ad7010e003bec41e9831055337c264486c306bb4452eb9b8d004fd2f08ce1ba",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/controls/adapters.stdout",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/controls/context.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "8bb8781b92a5de8f1b92bbdfff892937c8b8e3bc",
+      "bytes": 233,
+      "sha256": "d5940fb7a99471341de5ebaf2c665ed39cd4d0765213b488ca8a96addb07749b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/controls/execution.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "6a0d7300e191c09752e9d72ef936adadfa68193f",
+      "bytes": 20478,
+      "sha256": "93fe6a852bee401d394313f7c01162f53c5e4fc666f2aeed406ce06971096b22",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/controls/execution.stderr",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "1e4112ac96fd2efbb9da7bda3475f91a95747361",
+      "bytes": 5491,
+      "sha256": "b66834ff4be471e58a6d42e809ef6d715fdcf7f9eea81c82fe5e0bc91629c181",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/controls/execution.stdout",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "50a0294cf25e732714e8621200e9a70d5e803915",
+      "bytes": 229882,
+      "sha256": "c73884aeeb2ba3e818a4fc2e5a717f7b6dfa2a9f9140c42c83b68ee4b6764ff1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/controls/input.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "3cf450602b3ede0707ad73ccd32b263a714139bb",
+      "bytes": 4819,
+      "sha256": "0349cced73836c6d2cb5835e12979f28ac075cc0050b21fb03940ff8de07082f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/controls/input.stderr",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/controls/input.stdout",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "3cf450602b3ede0707ad73ccd32b263a714139bb",
+      "bytes": 4819,
+      "sha256": "0349cced73836c6d2cb5835e12979f28ac075cc0050b21fb03940ff8de07082f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/MIM-precision-result.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "2d666fbb0158d2ad4aad126447167fe616b8730b",
+      "bytes": 25020377,
+      "sha256": "a97d30fd66c020c3be36bee2e44c2f7032f09f954ead82bdc23d0a79c2aaf6c5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/binding-result.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "7bbed91279fceec64b7dbafb03fc123f88192099",
+      "bytes": 4471125,
+      "sha256": "519c03e1b3e14ae44dbc973773afdc10922ed7450cef3a26d032e482916e9806",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/binding.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "6628a35c03531086b674759a8fe625b9c24347ea",
+      "bytes": 351751,
+      "sha256": "eec8d5f065b6da3d57c83c53c63d62b3fd3b1765c5c53b2d02a7b76a5ee4556a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/canonical-candidate.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "dc8559901c4e78ca650906360b816f30b7e72cec",
+      "bytes": 9244,
+      "sha256": "2c0e68e56918bcfb01bd7393b256e3341ffcd44ab394d6479b6668fc3f9d94d1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/composition.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "e9d5cc09a513167c274820d6ca57e94362c29a82",
+      "bytes": 969974,
+      "sha256": "e13d954369f1a4eb4161d709a6e46524714fe8ceb98e7a7d31e978f5e817d6d3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/direct-publication-plan.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "8797ee9fa69b7c890c5b5a3a662da4da00829f85",
+      "bytes": 4051,
+      "sha256": "e99b5ed8a9a92c4a47ebc3df2adc9584587e826d73c3eafb78244fdae0354ec1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/driver.log",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "91418742e23b6372749a54e92944eb0b5b847e65",
+      "bytes": 112291,
+      "sha256": "704f93a52832b1db4821218ee91e0d70a1c872ca4ad9f433f39db82e274b106f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/graph-restore.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "e8322fee5371d6fedf44a8acfca7784b3a266b2a",
+      "bytes": 2028458,
+      "sha256": "ac8326f3bb897e6469b01f848c257c37ca4d09ee40a6ff9d3c51dec14b92d67e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/joint-admission.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "70c3fd06f4e227dea33c1c968431b67f90d217f6",
+      "bytes": 1952278,
+      "sha256": "4bbfd0e7ae314a85e49912b077a30deebbb72698c48f0e4c1f2f1866d46017aa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/live-width-and-graph.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "2e43cfd00305c57cab83b8dd96df4badbacb2f22",
+      "bytes": 879595,
+      "sha256": "23d6ac0fb047b7b9e57f00d31724c46b17d7c88c12ae8b264151c5af51c3ce06",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/parts.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "15f7dbd1087a9b83dca017b9ef2a08d06436a9aa",
+      "bytes": 1085,
+      "sha256": "137962dd65b118cc24652f9ceb4eb6a8b38a0a8232ec8144c87a3e3d9d73a9fb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/precise-audit.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "e884a727c703d9a96fbb9c66a9b5d4f14904096f",
+      "bytes": 2265435,
+      "sha256": "ddeafef8c0d0f4a307d69dcf01c297068209eb64ed3d66f98e18e7bc364e7d74",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/precise-capture.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "1700926222f1e8efc92726d0deda0c3a992defed",
+      "bytes": 2176171,
+      "sha256": "77cbef03d79b7929f29c2221648a234dc13d644a6c66034927281c3d405fa4b9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/reversed-audit.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "e86291ea5e0edfcbd8b7467333cecb2c1383a4ca",
+      "bytes": 2265656,
+      "sha256": "d1f200c97ec6a0e26d50dfacd0df0f0b382c1ae41ca36672f67a07b5d8d5b762",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/reversed-capture.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "ef131791f7b81b0924789aa54cccac774a762631",
+      "bytes": 2177407,
+      "sha256": "18b5fef411f45885edf5536f456b21f0de4e8986b1cdea4b4edbdaf858bedb08",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/runtime-smoke.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "cadf31f601b57bcc20be3ef262e24dfeb0560e7a",
+      "bytes": 3557,
+      "sha256": "43fb7572d963075f5211e2e9de943a26b7809f1205c6b354383983aa48108a2c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/summary.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "4ff2080674bc3b12ead5df7f30675353a6c0f97d",
+      "bytes": 3271162,
+      "sha256": "c5695d1cde81f3aac997f461ba6e663eed7e5dfb827600d84e1ec768d84f6a23",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/direct/wire-RC-result.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "8b14499d761676db4cc276858fc296d82e52d8e3",
+      "bytes": 4385753,
+      "sha256": "e5cc28e2dc41f8453f2f8e8aca630e4e0c4c3b01097cc381e3ed7dd7329df8a8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/full-job-log-parts.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "aa5e8d48bbf9120668e5f48ba156038eb53f2859",
+      "bytes": 2124,
+      "sha256": "e1147f6758b555642675154774d366e65488bb68c8f726b4733008eb4ebfa918",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/jobs.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "3252efead83517082578d516995f41d0c0e10246",
+      "bytes": 11967,
+      "sha256": "4c885675c17273d851d91414162aa6db30ab9deb7ad06829dace3dbb5b3fe5eb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/logs/123303176370.job.log.part0000",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "bb30a8591ef97c05cbe3a6669efc7b6aa2c44242",
+      "bytes": 409680,
+      "sha256": "15dd46cb0ffb213acc9da451ca74b5efb529d299fb7c9a56a91a53f5e94a4319",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/logs/123304520684.job.log.part0000",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "4d2f355cd0d980474595de0a0f926fbcad519fe1",
+      "bytes": 16777216,
+      "sha256": "10a21665c7615b95ff4ace824e44f3a59a8df9301bf5868dd574df8347eac166",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/logs/123304520684.job.log.part0001",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "9844278fa7ad00ca6b9144dfc2f4fd5880e57a97",
+      "bytes": 16777216,
+      "sha256": "f6fcc249d466f452e06a507ca051461b49790e633ac4f1a90f241928ac47cad4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/logs/123304520684.job.log.part0002",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "cd7b77204e5a6dd78ae4a1e6afe2b51fa0c5f3bb",
+      "bytes": 16777216,
+      "sha256": "e7e53c5353a581b6a716129a27dd18571151e2b58c80e455eebb2afd52c66329",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/logs/123304520684.job.log.part0003",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "79e9f20398428abf039e5ade1306d42d4663d684",
+      "bytes": 3060433,
+      "sha256": "3b7fa046e1302c80e4ec6f3552ecbe90f5b2abe8d4acc3d4802799a0c7b74aed",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/logs/123320365070.job.log.part0000",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "6255c65e8960d8cb447b0ecb4ef7a06624ecde19",
+      "bytes": 7607,
+      "sha256": "6a8920ce03dd54aa1f95d34bbfe4f0a3446d77f0050475afdd4d3e1255ef8716",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/receipt.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "449a59ccbee5b28413dec0dcacead59619ba834a",
+      "bytes": 16359,
+      "sha256": "a551d56a0b1c8cad68b6305dab262cf02eddbd5fb8df5bcf96477d504568ef5c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/release.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "aa3caf13ff35455381c9198e388bffa541b4d667",
+      "bytes": 44415,
+      "sha256": "2204f51d462fdf440bf8c05136852e48ea49de7c11b13efbfc6fc16485fe5ced",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/run.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "5f22fe3d908cb38b7274df2f5aecd5fd5c0c6f1a",
+      "bytes": 14425,
+      "sha256": "5a417eeee03f6819962ff33db2b71643a197a282f39e1b8843a5965e209735d9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/tag-ref.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "21b379c14f46263245d9e81435c1da4397379165",
+      "bytes": 548,
+      "sha256": "a8a096b0c9b602f455d3e4ab2d9b8d6f653fae099b2dfcfdbdfae943248a432e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/terminal-index.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "8be42d41ac299e221e6178d72e1da8e02255e265",
+      "bytes": 2139,
+      "sha256": "226643ad9e89c3bfd621b3d044d73a2ff2e6f17f59576e8f772929baa993a396",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/terminal/hw/soc/out/cloud-cdr-selector-width-fresh-rc-publication/publication.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "5cb30c0a820abd05484f5ab9b4be8440bbc297da",
+      "bytes": 8805,
+      "sha256": "4c4cf7a89b0ae6a24b07b09c2702987f6a3580fd05dd7698b9df4ed6fb0cb341",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/terminal/hw/soc/out/cloud-cdr-selector-width-fresh-rc/binding/result.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "7bbed91279fceec64b7dbafb03fc123f88192099",
+      "bytes": 4471125,
+      "sha256": "519c03e1b3e14ae44dbc973773afdc10922ed7450cef3a26d032e482916e9806",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/terminal/hw/soc/out/cloud-cdr-selector-width-fresh-rc/mim/result.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "2d666fbb0158d2ad4aad126447167fe616b8730b",
+      "bytes": 25020377,
+      "sha256": "a97d30fd66c020c3be36bee2e44c2f7032f09f954ead82bdc23d0a79c2aaf6c5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/terminal/hw/soc/out/cloud-cdr-selector-width-fresh-rc/restore/canonical-candidate.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "dc8559901c4e78ca650906360b816f30b7e72cec",
+      "bytes": 9244,
+      "sha256": "2c0e68e56918bcfb01bd7393b256e3341ffcd44ab394d6479b6668fc3f9d94d1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/terminal/hw/soc/out/cloud-cdr-selector-width-fresh-rc/restore/joint-admission.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "70c3fd06f4e227dea33c1c968431b67f90d217f6",
+      "bytes": 1952278,
+      "sha256": "4bbfd0e7ae314a85e49912b077a30deebbb72698c48f0e4c1f2f1866d46017aa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/terminal/hw/soc/out/cloud-cdr-selector-width-fresh-rc/result.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "e7b2d5b96975303ba1a7911bedbc3a59b3c98928",
+      "bytes": 3271064,
+      "sha256": "9d128f021278fc2a3fa0be68db8f8c0b73824fa24939341802ba3ba6bfe1a820",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/terminal/hw/soc/out/cloud-cdr-selector-width-fresh-rc/wire-stage/result.json",
+      "source": "b43991e8b1b171f2add04c5b6c64d4811bed8c41",
+      "git_blob": "8b14499d761676db4cc276858fc296d82e52d8e3",
+      "bytes": 4385753,
+      "sha256": "e5cc28e2dc41f8453f2f8e8aca630e4e0c4c3b01097cc381e3ed7dd7329df8a8",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v109": [
+    {
+      "run": 40837855489,
+      "source": "bfb75d24515a566262bfb8b2e8b681dd2774cec6",
+      "tag": "cloud-results-40837855489-1-mainchip-fixed-neardrc-engine-build",
+      "release_id": 427584078,
+      "externally_reserved": true,
+      "empty_before_native_acquisition": true
     }
   ]
 }

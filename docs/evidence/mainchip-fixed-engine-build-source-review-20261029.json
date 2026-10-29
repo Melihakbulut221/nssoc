@@ -1,0 +1,301 @@
+{
+  "schema": "mainchip-fixed-engine-build-source-review-v1",
+  "base": "6f881b3c197f70d40190ca455b6e3bf3bdab8aaa",
+  "branch": "codex/mainchip-fixed-engine-build",
+  "status": "DISABLED_AUTHORED_BUILD_UNIT_NOT_EXECUTED",
+  "scope": "Compile one new complete OpenROAD ELF with the same observer and exact three-line FIXED NEARDRC guard. No runtime/route qualification or transferred old ELF acceptance.",
+  "owned_files": [
+    "scripts/mainchip_fixed_engine_build.py",
+    "scripts/mainchip_fixed_engine_build_contract.py",
+    "scripts/check_mainchip_fixed_engine_build.py",
+    "scripts/mainchip-fixed-engine-build-methods.json",
+    ".github/workflow-templates/mainchip-fixed-engine-build.yml",
+    "docs/evidence/mainchip-fixed-engine-build-source-review-20261029.json"
+  ],
+  "historical_method": {
+    "path": "scripts/mainchip-fixed-neardrc-repair-methods.json",
+    "bytes": 132231,
+    "sha256": "381818adb4005c15ac2a5ff4c0d400b82c0467f16ca63b0a00d5aed5f2e0a526",
+    "protected_count": 857
+  },
+  "old_build_method": {
+    "path": "scripts/mainchip-internal-witness-engine-build-methods.json",
+    "bytes": 85283,
+    "sha256": "d4e9b849aaa9559784972a3d6f401ff7f4f9b4165bcb91480559df92cd270303",
+    "protected_count": 556,
+    "old_authorization_does_not_authorize_new_build": true
+  },
+  "immutable_reuse": {
+    "scripts/mainchip-fixed-neardrc-repair-methods.json": {
+      "bytes": 132231,
+      "sha256": "381818adb4005c15ac2a5ff4c0d400b82c0467f16ca63b0a00d5aed5f2e0a526"
+    },
+    "scripts/mainchip_fixed_neardrc_repair.py": {
+      "bytes": 14777,
+      "sha256": "3639ba0263e5bae6c36d37af58c898a4fbbe029d3b78f576c162fda6a5147883"
+    },
+    "scripts/mainchip-internal-witness-engine-build-methods.json": {
+      "bytes": 85283,
+      "sha256": "d4e9b849aaa9559784972a3d6f401ff7f4f9b4165bcb91480559df92cd270303"
+    },
+    "scripts/mainchip_witness_engine_build.py": {
+      "bytes": 18499,
+      "sha256": "21413f8b299db53a1d3abfc789316bc782be7d9c9cb71bddfb418dc789034de3"
+    },
+    "scripts/mainchip_witness_engine_build_contract.py": {
+      "bytes": 12817,
+      "sha256": "fff2cf22b44cf39680c1fdeb4884b86e03a3b6d0d8c6683a61d82163121340cb"
+    },
+    "scripts/mainchip_witness_engine_build_inner.py": {
+      "bytes": 9033,
+      "sha256": "2e46ee1770261ab31689148b0b45c1c7a8b180141c55d7d717f832ce93e31caa"
+    },
+    "scripts/check_mainchip_witness_engine_build.py": {
+      "bytes": 27505,
+      "sha256": "3d9c1d27397b01adbbe3701a23df6e8a2f52e3ea312a5d66eb34728fb6520e69"
+    },
+    "scripts/mainchip_two_signal_internal_witness.py": {
+      "bytes": 18383,
+      "sha256": "52b8b7e3a0c763c4a219f93d80f3568348eddc1b69ac3cbbd27411c05abc95a3"
+    }
+  },
+  "host_derivation": {
+    "original": "scripts/mainchip_witness_engine_build.py",
+    "original_sha256": "21413f8b299db53a1d3abfc789316bc782be7d9c9cb71bddfb418dc789034de3",
+    "changed_original_functions": [
+      "build",
+      "publish"
+    ],
+    "unchanged_original_functions": [
+      "write",
+      "fingerprint",
+      "owned_work",
+      "snapshot",
+      "execute_command",
+      "create_owned",
+      "cleanup_owned",
+      "terminal_availability",
+      "publish_asset"
+    ],
+    "added_functions": [
+      "derive_sources",
+      "project_inner"
+    ],
+    "import_namespace": "Explicit new contract import; no monkeypatch or global rebinding in production.",
+    "full_diff": "--- scripts/mainchip_witness_engine_build.py\n+++ scripts/mainchip_fixed_engine_build.py\n@@ -13,7 +13,8 @@\n import tarfile\n import time\n import traceback\n-import mainchip_witness_engine_build_contract as c\n+import mainchip_fixed_engine_build_contract as c\n+import mainchip_fixed_neardrc_repair as repair\n import mainchip_two_signal_internal_witness as observer\n import wait_cloud_tested_source_release as reservation\n \n@@ -149,13 +150,40 @@\n     c.attempt(report, \"owned-removal-confirmation\", absent)\n \n \n+\n+def derive_sources(source,out,m):\n+    # The two immutable derivations are applied independently to a fresh pinned checkout.\n+    upstream=snapshot(source);write(out/\"source-upstream.json\",upstream)\n+    original=(source/c.ROUTER).read_bytes();modified=observer.derive(original)\n+    c.require(c.digest(modified)==c.DERIVED_ROUTER,\"observer derivative changed\")\n+    oldflex=(source/c.FLEX).read_bytes();newflex=repair.derive(oldflex)\n+    c.require(newflex.replace(repair.AFTER,repair.BEFORE)==oldflex,\"FIXED guard byte reversal\")\n+    (source/c.ROUTER).write_bytes(modified);(source/c.FLEX).write_bytes(newflex)\n+    shutil.copyfile(ROOT/observer.HEADER,source/\"src/drt/src/MainchipInternalWitness.h\")\n+    c.require(fingerprint(source/\"src/drt/src/MainchipInternalWitness.h\")[\"sha256\"]==c.HEADER_SHA\n+      ==m[\"protected\"][observer.HEADER],\"unchanged observer header\")\n+    before=snapshot(source);proof=c.source_delta(upstream,before)\n+    proof.update(fixed_guard_reverse_byte_exact=True,upstream_commit=c.UPSTREAM,\n+      original_observer_derivation_unchanged=True)\n+    write(out/\"source-derivation.json\",proof);write(out/\"source-before.json\",before)\n+    return before\n+\n+def project_inner(work):\n+    for destination,(source,expected)in c.PROJECTION.items():\n+        raw=c.secure_file(ROOT,source).read_bytes()\n+        c.require(c.digest(raw)==expected,\"original inner helper changed\")\n+        (work/destination).write_bytes(raw)\n+    return c.validate_projection(work)\n+\n def build():\n     ctx = c.context(os.environ); m = c.method(ROOT)\n-    c.require(m[\"source_controls_authorized\"] is True and m[\"engine_build_authorized\"] is True, \"build not authorized\")\n+    c.authorize(m)\n     work = owned_work(ctx, True); out = work/\"out\"; out.mkdir()\n     report = dict(schema=\"mainchip-witness-engine-host-v1\", source=ctx[\"source\"],\n         status=\"IN_PROGRESS\", commands=[], terminal_errors=[], creation_attempted=False,\n-        physical_acceptance=False, observer_equivalence_qualified=False, native_routing_executed=False)\n+        physical_acceptance=False, observer_equivalence_qualified=False, native_routing_executed=False,\n+        runtime_qualified=False,qualified_engine=None,new_fixed_guard_sha256=repair.PATCHED_SHA,\n+        historical_build_acceptance_reused=False)\n     started=time.monotonic(); container_id=None; before=None; primary=None; handlers={}\n     def command(label, argv, timeout=120):\n         return execute_command(report, out, label, argv, timeout)\n@@ -168,6 +196,7 @@\n         c.require(after == before, \"compiled tracked source changed\")\n         header=work/\"source/src/drt/src/MainchipInternalWitness.h\"\n         c.require(fingerprint(header)[\"sha256\"] == m[\"protected\"][observer.HEADER], \"observer header changed\")\n+        c.validate_projection(work)\n         c.method(ROOT)\n     def terminal_engine():\n         info=report[\"container_terminal\"]\n@@ -178,10 +207,12 @@\n         for sig in (signal.SIGTERM, signal.SIGINT):\n             handlers[sig]=signal.signal(sig,interrupted)\n         proof=reservation.wait(c.GROUP,os.environ)\n-        c.require(not proof[\"existing_assets\"],\"release is not empty before build\")\n+        c.validate_reservation(proof,ctx,True)\n         write(out/\"release-reservation.json\",proof)\n         shutil.copyfile(ROOT/c.METHOD,out/\"method.json\")\n-        for filename in (\"engine-build-controls.json\",\"internal-witness-controls.json\"):\n+        report[\"current_source_controls\"]=c.control_evidence(ROOT,ctx)\n+        write(out/\"current-source-controls.json\",report[\"current_source_controls\"])\n+        for filename in (\"engine-build-controls.json\",\"internal-witness-controls.json\",\"fixed-engine-controls.json\"):\n             c.require((ROOT/filename).is_file(),\"source controls evidence missing\")\n             shutil.copyfile(ROOT/filename,out/filename)\n         c.require(shutil.disk_usage(work).free >= m[\"limits\"][\"min_free_disk_bytes\"],\"free disk budget\")\n@@ -213,15 +244,8 @@\n             c.require(not any(line.startswith(\"160000 \")for line in nested.splitlines()),\"unbound nested gitlink\")\n         for relative,expected in m[\"upstream_primary\"].items():\n             c.require(fingerprint(source/relative)[\"sha256\"]==expected,\"upstream primary identity: \"+relative)\n-        original=(source/\"src/drt/src/TritonRoute.cpp\").read_bytes()\n-        modified=observer.derive(original)\n-        c.require(c.digest(modified)==m[\"derived_router_sha256\"],\"derived router identity\")\n-        (source/\"src/drt/src/TritonRoute.cpp\").write_bytes(modified)\n-        shutil.copyfile(ROOT/observer.HEADER,source/\"src/drt/src/MainchipInternalWitness.h\")\n-        before=snapshot(source); write(out/\"source-before.json\",before)\n-        for local,destination in ((\"scripts/mainchip_witness_engine_build_inner.py\",\"inner.py\"),\n-                                   (\"scripts/mainchip_witness_engine_build_contract.py\",\"mainchip_witness_engine_build_contract.py\")):\n-            shutil.copyfile(ROOT/local,work/destination)\n+        before=derive_sources(source,out,m)\n+        project_inner(work)\n         create=c.create_argv(ctx,work,os.getuid(),os.getgid())\n         container_id=create_owned(ctx,work,report,command,create)\n         info=inspect_one(container_id); c.validate_container(info,ctx,work); write(out/\"container-initial.json\",info)\n@@ -291,55 +315,80 @@\n     return dict(name=path.name,**expected,reused_identical=reused)\n \n def publish():\n-    ctx=c.context(os.environ); c.method(ROOT)\n+    ctx=c.context(os.environ)\n     work=owned_work(ctx); out=work/\"out\"; out.mkdir(exist_ok=True)\n-    proof=reservation.wait(c.GROUP,os.environ)\n-    write(out/\"publication-availability.json\",terminal_availability(out))\n-    files={}\n-    for p in sorted(out.rglob(\"*\")):\n-        c.require(not p.is_symlink(),\"output symlink\")\n-        if p.is_file():files[p.relative_to(out).as_posix()]=fingerprint(p)\n-    write(out/\"outputs.json\",dict(source=ctx[\"source\"],files=files,physical_acceptance=False))\n-    archive=work/\"engine-evidence.tar.gz\"\n-    with tarfile.open(archive,\"w:gz\")as tar:\n-        for p in sorted(out.iterdir()):\n-            c.require(not p.is_symlink(),\"archive symlink\")\n-            tar.add(p,arcname=p.name,recursive=True)\n-    archive_receipt=fingerprint(archive)\n-    parts=[]\n-    with archive.open(\"rb\")as stream:\n-        i=0\n-        while True:\n-            raw=stream.read(512*1024**2)\n-            if not raw:break\n-            p=work/(\"engine-evidence.tar.gz.part%03d\"%i);p.write_bytes(raw)\n-            parts.append(dict(name=p.name,**fingerprint(p)));i+=1\n-    write(out/\"parts.json\",dict(archive=archive_receipt,parts=parts))\n-    tag=\"cloud-results-\"+ctx[\"token\"]+\"-\"+c.GROUP\n-    uploads=[out/x for x in (\"host-result.json\",\"inner-result.json\",\"method.json\",\n-        \"engine-build-controls.json\",\"internal-witness-controls.json\",\"release-reservation.json\",\n-        \"outputs.json\",\"parts.json\",\"container-initial.json\",\"container-terminal.json\",\n-        \"runtime-dependencies.json\",\"build-configuration.json\",\"publication-availability.json\") if (out/x).is_file()]\n-    uploads.extend(work/p[\"name\"]for p in parts)\n-    planned={p.name for p in uploads}\n-    c.require(len(planned)==len(uploads),\"duplicate publication filename\")\n-    c.require({x[\"name\"] for x in proof[\"existing_assets\"]} <= planned,\"unexpected reserved asset\")\n-    def upload(tag,path):\n-        subprocess.run([\"gh\",\"release\",\"upload\",tag,str(path),\"--repo\",c.REPOSITORY],check=True,timeout=1800)\n-    uploaded=[publish_asset(p,ctx,proof[\"release_id\"],reservation.release.api,upload) for p in uploads]\n-    info=reservation.release.api(\"releases/tags/\"+tag)\n-    ref=reservation.release.api(\"git/ref/tags/\"+tag)\n-    reservation.release.validate_release(info,ref,tag,ctx[\"source\"])\n-    byname={a[\"name\"]:a for a in info[\"assets\"]}\n-    c.require(set(byname)=={x[\"name\"]for x in uploaded},\"release asset census\")\n-    for row in uploaded:\n-        actual=byname[row[\"name\"]]\n-        c.require(actual[\"size\"]==row[\"bytes\"] and actual[\"digest\"]==\"sha256:\"+row[\"sha256\"],\n-                  \"published asset mismatch\")\n-    write(out/\"publication.json\",dict(status=\"PASS_PERMANENT_RELEASE_PUBLICATION\",\n-        release_id=info[\"id\"],tag=tag,source=ctx[\"source\"],assets=uploaded,\n-        native_archives_stay_in_cloud=True))\n-    print(json.dumps(dict(release_id=info[\"id\"],tag=tag,assets=len(uploaded)),sort_keys=True))\n+    source_error=None\n+    try:c.method(ROOT)\n+    except BaseException as exc:source_error=exc\n+    # Preservation is separately authorized by the exact current context, owned\n+    # workspace and reserved source/tag. Source failure never becomes build PASS.\n+    try:\n+        proof=reservation.wait(c.GROUP,os.environ);c.validate_reservation(proof,ctx,False)\n+        availability=terminal_availability(out)\n+        availability.update(source_integrity_validated=source_error is None,native_accepted=False,\n+          source_integrity_error=None if source_error is None else c.error_record(\"publication-source-integrity\",source_error))\n+        write(out/\"publication-availability.json\",availability)\n+        optional=(\"host-result.json\",\"inner-result.json\",\"method.json\",\"engine-build-controls.json\",\n+          \"internal-witness-controls.json\",\"fixed-engine-controls.json\",\"release-reservation.json\",\n+          \"container-initial.json\",\"container-terminal.json\",\"runtime-dependencies.json\",\"current-source-controls.json\",\n+          \"build-configuration.json\",\"publication-availability.json\",\"source-upstream.json\",\n+          \"source-before.json\",\"source-after.json\",\"source-derivation.json\")\n+        plan=c.direct_plan(out,optional);write(out/\"direct-publication-plan.json\",plan)\n+        files={}\n+        for p in sorted(out.rglob(\"*\")):\n+            c.require(not p.is_symlink(),\"output symlink\")\n+            if p.is_file():files[p.relative_to(out).as_posix()]=fingerprint(p)\n+        write(out/\"outputs.json\",dict(source=ctx[\"source\"],files=files,physical_acceptance=False))\n+        archive=work/\"engine-evidence.tar.gz\"\n+        with tarfile.open(archive,\"w:gz\")as tar:\n+            for p in sorted(out.iterdir()):\n+                c.require(not p.is_symlink(),\"archive symlink\")\n+                tar.add(p,arcname=p.name,recursive=True)\n+        archive_receipt=fingerprint(archive)\n+        parts=[]\n+        with archive.open(\"rb\")as stream:\n+            i=0\n+            while True:\n+                raw=stream.read(512*1024**2)\n+                if not raw:break\n+                p=work/(\"engine-evidence.tar.gz.part%03d\"%i);p.write_bytes(raw)\n+                parts.append(dict(name=p.name,**fingerprint(p)));i+=1\n+        write(out/\"parts.json\",dict(archive=archive_receipt,parts=parts))\n+        tag=\"cloud-results-\"+ctx[\"token\"]+\"-\"+c.GROUP\n+        uploads=[out/r[\"name\"]for r in plan[\"files\"]if r[\"disposition\"]==\"direct\"]\n+        uploads.extend(out/x for x in (\"outputs.json\",\"parts.json\",\"direct-publication-plan.json\"))\n+        uploads.extend(work/p[\"name\"]for p in parts)\n+        planned={p.name for p in uploads}\n+        c.require(len(planned)==len(uploads),\"duplicate publication filename\")\n+        c.require({x[\"name\"] for x in proof[\"existing_assets\"]} <= planned,\"unexpected reserved asset\")\n+        def upload(tag,path):\n+            subprocess.run([\"gh\",\"release\",\"upload\",tag,str(path),\"--repo\",c.REPOSITORY],check=True,timeout=1800)\n+        uploaded=[publish_asset(p,ctx,proof[\"release_id\"],reservation.release.api,upload) for p in uploads]\n+        info=reservation.release.api(\"releases/tags/\"+tag)\n+        ref=reservation.release.api(\"git/ref/tags/\"+tag)\n+        reservation.release.validate_release(info,ref,tag,ctx[\"source\"])\n+        byname={a[\"name\"]:a for a in info[\"assets\"]}\n+        c.require(set(byname)=={x[\"name\"]for x in uploaded},\"release asset census\")\n+        for row in uploaded:\n+            actual=byname[row[\"name\"]]\n+            c.require(actual[\"size\"]==row[\"bytes\"] and actual[\"digest\"]==\"sha256:\"+row[\"sha256\"],\n+                      \"published asset mismatch\")\n+        write(out/\"publication.json\",dict(status=\"PASS_PERMANENT_RELEASE_PUBLICATION\"if source_error is None else\"PASS_PERMANENT_FAILURE_EVIDENCE_ONLY\",\n+            source_integrity_validated=source_error is None,native_accepted=False,\n+            release_id=info[\"id\"],tag=tag,source=ctx[\"source\"],assets=uploaded,\n+            native_archives_stay_in_cloud=True))\n+        print(json.dumps(dict(release_id=info[\"id\"],tag=tag,assets=len(uploaded)),sort_keys=True))\n+    except BaseException as publication_error:\n+        if source_error is not None:\n+            record=dict(status=\"FAIL_SOURCE_INTEGRITY_AND_PUBLICATION\",native_accepted=False,\n+              source_error=c.error_record(\"source\",source_error),publication_error=c.error_record(\"publication\",publication_error))\n+            try:write(out/\"publication-failure.json\",record)\n+            except BaseException:\n+                try:print(\"FIXED_ENGINE_PUBLICATION_FALLBACK \"+json.dumps(record,sort_keys=True),flush=True)\n+                except BaseException:pass\n+            raise source_error\n+        raise\n+    if source_error is not None:raise source_error\n     return 0\n \n if __name__==\"__main__\":\n"
+  },
+  "source_derivations": {
+    "upstream": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+    "gitlinks": {
+      "src/sta": "857316ff001b2a8dbbdc5996944d08a6d38c87ab",
+      "third-party/abc": "4c756ffb8dff7c583e80c7970d117abd3dfddb5c"
+    },
+    "observer": {
+      "original": "fa5c6c23a992648c5282ed99ecb03a92bee9187dd55b9630809a5da41f18a3f5",
+      "derived": "385e2d9f681c0039c8caa7c49a4b8bf72570c97d6be808533475486f102be7fd",
+      "header": "8107a009d7db32e56a355b3c40c9f3e94dc2cd40df2afc575a8e7c652e63ff62",
+      "unchanged": true
+    },
+    "fixed": {
+      "original": "cf48ce2c745723c9c73a3431938f26eb9b87ee4c663a0ad8b7d6e185eb511723",
+      "derived": "9f3778069d8678fdf733086aa83b37fb746437e883a80ac5a8e94c343d8ffc22",
+      "helper": "scripts/mainchip_fixed_neardrc_repair.py",
+      "helper_sha256": "3639ba0263e5bae6c36d37af58c898a4fbbe029d3b78f576c162fda6a5147883",
+      "exact_three_added_lines": true,
+      "reverse_byte_equality": true
+    },
+    "full_original_and_derived_source_inventories": true,
+    "exactly_two_changed_tracked_paths": true,
+    "separately_hashed_untracked_observer_header": true,
+    "source_after_equal_to_derived_before_required": true
+  },
+  "inner_projection": {
+    "original_inner": {
+      "path": "scripts/mainchip_witness_engine_build_inner.py",
+      "sha256": "2e46ee1770261ab31689148b0b45c1c7a8b180141c55d7d717f832ce93e31caa"
+    },
+    "original_contract": {
+      "path": "scripts/mainchip_witness_engine_build_contract.py",
+      "sha256": "fff2cf22b44cf39680c1fdeb4884b86e03a3b6d0d8c6683a61d82163121340cb"
+    },
+    "destination_names": [
+      "inner.py",
+      "mainchip_witness_engine_build_contract.py"
+    ],
+    "copied_byte_exact_and_checked_again_after_execution": true,
+    "old_inner_calls_only_pure_build_lifecycle_resource_helpers": true,
+    "old_inner_does_not_call_old_method_or_old_context": true,
+    "new_host_is_sole_build_authority": true
+  },
+  "resources": {
+    "image": "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a",
+    "image_id": "sha256:a958d3bee9c5261b26e221e1c1461c92f830f14293bc5050848653bd7ec8d185",
+    "limits": {
+      "build_seconds": 10800,
+      "memory_bytes": 12884901888,
+      "min_free_disk_bytes": 34359738368,
+      "nano_cpus": 2000000000,
+      "pids": 4096
+    },
+    "readonly_root": true,
+    "network_none": true,
+    "cap_drop_all": true,
+    "unprivileged_user": true,
+    "exact_owned_create_recovery_independent_stop_kill_inspect_remove": true,
+    "old_inner_command_cgroup_and_primary_error_preservation_unchanged": true,
+    "original_release_python_on_gui_tests_lto_off": true
+  },
+  "publication": {
+    "new_unique_group": "mainchip-fixed-neardrc-engine-build",
+    "exact_source_release_before_docker_or_git_acquisition": true,
+    "separately_validated_old_inner_projection": true,
+    "full_available_output_archive_on_success_or_failure": true,
+    "direct_plan_records_missing_and_empty_files": true,
+    "empty_streams_retained_inside_archive": true,
+    "zero_byte_direct_uploads_omitted": true,
+    "no_clobber_and_exact_live_source_tag_checks": true,
+    "unchanged_terminal_availability": true,
+    "workflow_full_archive_fallback": true,
+    "source_integrity_failure_still_preserves_available_bytes": true,
+    "source_failure_publication_requires_new_context_owned_work_and_exact_reservation": true,
+    "original_source_error_rethrown_after_preservation": true,
+    "secondary_upload_or_fallback_error_cannot_mask_source_primary": true,
+    "actual_current_control_report_hashes_bound_and_published": true
+  },
+  "controls_authored": {
+    "executed": false,
+    "unchanged_build_controls": "7positive/45refusal/25lifecycle",
+    "new_authority_refusals": 28,
+    "new_derivation_refusals": 7,
+    "new_actual_build_lifecycle_cases": 10,
+    "new_actual_publication_cases": 6,
+    "full_new_build_main_and_finally_exercised": true,
+    "real_exact_observer_and_guard_source_bytes": true,
+    "native_transport": "Synthetic Git acquisition list/HEAD and dependency fixture files, Docker/image/container/native subprocess and upload; real local fixture files, hashes, source/authority validators, original/repaired source derivations, main/finally, atomic record and full archive packing execute only in the future hosted source job.",
+    "synthetic_ELF_is_explicit_and_never_called": true,
+    "lifecycle_cases": [
+      "success",
+      "body_failure",
+      "create_progress_failure",
+      "stop_failure",
+      "body_and_stop",
+      "source_mutation",
+      "projection_mutation",
+      "save_failure",
+      "body_and_save",
+      "wrong_reservation"
+    ],
+    "publication_cases": [
+      "empty_terminal",
+      "missing_terminal",
+      "upload_failure",
+      "conflicting_asset",
+      "source_corruption",
+      "source_and_upload_failure"
+    ],
+    "both_disabled_and_enabled_authority_baselines_explicit": true,
+    "source_job_has_no_docker_build_native_execution": true,
+    "actual_control_record_provenance_refusals": 4,
+    "source_corruption_publication_uses_real_failed_method_guard": true,
+    "new_source_unit_pin_omission_refusal": true
+  },
+  "old_acceptance_not_carried": {
+    "old_build_run": 40756287268,
+    "old_build_source": "3f389a05b6d2630eb6f0db80df2c191be8fd9e91",
+    "old_elf": "1e79e2f0e77eb1a9153ec2c4040a0420e66d77777843a211da2cfd9b59b0238a",
+    "old_runtime_run": 40776999659,
+    "new_binary_hash": null,
+    "new_build_receipt": null,
+    "actual_runtime_probe_required_after_future_new_build": true,
+    "new_complete_capsule_count_not_invented": true,
+    "no_old_expected_engine_or_engine_envelope_reuse": true,
+    "later_checks": [
+      "fresh exact complete build capsule/source/run/tag/member manifest",
+      "actual new ELF version/Tcl and Python interface smoke, complete 104-library identities",
+      "new ELF actual original444f ODB create/read/census143820nets153130instances/destroy/input unchanged",
+      "separate same-ELF off/on routing/audits and original clock/material/DRC gates"
+    ]
+  },
+  "workflow": {
+    "inactive_path": ".github/workflow-templates/mainchip-fixed-engine-build.yml",
+    "manual_only": true,
+    "native_job_literal_false": true,
+    "source_permissions": "contents/read, actions/read",
+    "native_permissions": "contents/write only on disabled build job",
+    "embedded_programs": [
+      {
+        "job": "source-controls",
+        "step": 1,
+        "bytes": 344,
+        "sha256": "683c01a977f8e51a726e836fe4cb1ec66403a46e487476381637f6841820eb2c"
+      },
+      {
+        "job": "source-controls",
+        "step": 2,
+        "bytes": 905,
+        "sha256": "08d786ba0ed27b9c4dce75e316ae1c3de8eff19bbecfb4b31075ad157e1e68f4"
+      },
+      {
+        "job": "source-controls",
+        "step": 3,
+        "bytes": 686,
+        "sha256": "c1e0cb436f6a834c4d1aeb9bc2014b034c91df99b3ca84300189bc3163dc43db"
+      },
+      {
+        "job": "engine-build",
+        "step": 1,
+        "bytes": 440,
+        "sha256": "8cada7e2f5ff16908b32351cb187999df5514a5663792a6494d354378fe09d25"
+      },
+      {
+        "job": "preserve-source-job-log",
+        "step": 0,
+        "bytes": 1781,
+        "sha256": "3937556795cd71cd03c772c596297e75d0e05f24a561494c1b2eb2fc52d400e3"
+      }
+    ]
+  },
+  "files": {
+    "scripts/mainchip_fixed_engine_build.py": {
+      "bytes": 21481,
+      "sha256": "05a21c7baf8c3a91e6bd4c3fc70731cd4e66cc5fe864f600c396740fc0ed16d1"
+    },
+    "scripts/mainchip_fixed_engine_build_contract.py": {
+      "bytes": 9057,
+      "sha256": "b065245c7782651dd5716eea1442c41228c3dff60ddcaecffa94fd20d0740e04"
+    },
+    "scripts/check_mainchip_fixed_engine_build.py": {
+      "bytes": 25531,
+      "sha256": "fe6398bace426c9159c82f7134eab77779adcc308a1f64d0acb058f7e0e9c306"
+    },
+    ".github/workflow-templates/mainchip-fixed-engine-build.yml": {
+      "bytes": 8966,
+      "sha256": "94b0e6310232fe17a9e00afc86682232b5abb4952991bbec56ed1d4439da168b"
+    }
+  },
+  "validation_here": [
+    "RAM Git API source reads",
+    "Python AST parsing only",
+    "AST exact unchanged host function comparison",
+    "YAML utility parse and embedded Python AST parsing"
+  ],
+  "not_executed": [
+    "No authored imports/tests/compile",
+    "No native assets/archives/ODB/ELF acquisition",
+    "No Docker/CAD/routing",
+    "No workflow registration or dispatch"
+  ],
+  "source_controls_authorized": false,
+  "engine_build_authorized": false,
+  "controller_ready": false,
+  "runtime_qualified": false,
+  "routing_qualified": false,
+  "physical_acceptance": false,
+  "full_phy_accepted": false,
+  "remaining_requirements": [
+    "Independent source review",
+    "Fresh exact-source hosted source controls after separate authorization",
+    "Separately reserved and authorized full real new engine build",
+    "Actual new ELF/runtime and routing qualification; no acceptance assumed"
+  ]
+}
