@@ -1,0 +1,244 @@
+{
+  "schema": 1,
+  "upstream": {
+    "repository": "RTimothyEdwards/magic",
+    "tag": "8.3.623",
+    "tag_object": "1be3fd2486393e90ece61edc06718d8b30e78e73",
+    "commit": "fd12c39c37f26a0fe6e04698b1011e31b8bd3229"
+  },
+  "rules": [
+    {
+      "path": "resis/resis.h",
+      "anchor": "/* Macros */",
+      "position": "before",
+      "insertion": "/* Optional diagnostic sidecar; native resistor structures are unchanged. */\nextern void ResPhysicalTraceBegin(const char *, const char *);\nextern void ResPhysicalTraceEnd(void);\nextern void ResPhysicalTraceTile(const resResistor *, const Tile *,\n        const Breakpoint *, const Breakpoint *, const char *);\nextern void ResPhysicalTraceContact(const resResistor *, const ResContactPoint *,\n        int, int, int, int, int, int, int, int);\nextern void ResPhysicalTraceSnapshot(const char *, const resResistor *);\nextern void ResPhysicalTraceOutput(const resResistor *, const char *);\nextern void ResPhysicalTraceOrphan(const char *, const char *);\n\n"
+    },
+    {
+      "path": "resis/ResPrint.c",
+      "anchor": "#define KV_TO_mV\t\t1000000\n",
+      "position": "after",
+      "payload": "scripts/magic_resistor_provenance_trace.inc"
+    },
+    {
+      "path": "resis/ResMain.c",
+      "anchor": "    ResNodeAtOrigin = NULL;\n",
+      "position": "after",
+      "insertion": "    ResPhysicalTraceBegin(node->name, cellname);\n"
+    },
+    {
+      "path": "resis/ResMain.c",
+      "anchor": "    /* Check integrity of internal database. Free up lists. */",
+      "position": "before",
+      "insertion": "    ResPhysicalTraceEnd();\n\n"
+    },
+    {
+      "path": "resis/ResMakeRes.c",
+      "anchor": "\t    resistor->rr_float.rr_area = 0;\n\n\t    freeMagic((char *)p1);",
+      "position": "before",
+      "insertion": "\t    ResPhysicalTraceTile(resistor, tile, p1, p2, \"east_west\");\n"
+    },
+    {
+      "path": "resis/ResMakeRes.c",
+      "anchor": "\t    resistor->rr_float.rr_area = 0;\n\t    freeMagic((char *)p1);",
+      "position": "before",
+      "insertion": "\t    ResPhysicalTraceTile(resistor, tile, p1, p2, \"north_south\");\n"
+    },
+    {
+      "path": "resis/ResMakeRes.c",
+      "anchor": "\t\tresistor->rr_status = 0;\n",
+      "position": "after",
+      "insertion": "\t\tResPhysicalTraceContact(resistor, contact, tilenum, minside,\n\t\t        viawidth, spacing, border, cscale, squaresx, squaresy);\n"
+    },
+    {
+      "path": "resis/ResRex.c",
+      "anchor": "\t    ResDoSimplify(ftolerance, resisdata);\n",
+      "position": "before",
+      "insertion": "\t    ResPhysicalTraceSnapshot(\"before_simplify\", ResResList);\n"
+    },
+    {
+      "path": "resis/ResRex.c",
+      "anchor": "\t    ResDoSimplify(ftolerance, resisdata);\n",
+      "position": "after",
+      "insertion": "\t    ResPhysicalTraceSnapshot(\"after_simplify\", ResResList);\n"
+    },
+    {
+      "path": "resis/ResPrint.c",
+      "anchor": "\t\t    resistors->rr_value / (float)ExtCurStyle->exts_resistScale);\n",
+      "position": "after",
+      "insertion": "\t    ResPhysicalTraceOutput(resistors, nodename);\n"
+    },
+    {
+      "path": "resis/ResPrint.c",
+      "anchor": "\tfprintf(outextfile, \"resist \\\"%s\\\" \\\"%s\\\" 0.0\\n\",\n\t\tnode->name, nodelist->rn_name);\n",
+      "position": "after",
+      "insertion": "\tResPhysicalTraceOrphan(node->name, nodelist->rn_name);\n"
+    }
+  ],
+  "files": {
+    "resis/resis.h": {
+      "before": {
+        "bytes": 19361,
+        "sha256": "c676aa5ff52aa53717e684c61f205ddd2acad3cd390f0be1b7a21787055a6797"
+      },
+      "after": {
+        "bytes": 20011,
+        "sha256": "e0617eb5f09a856fd35b5b8064a4e0d86422767c686d8e04264dede98ef53eaf"
+      },
+      "snapshot": "docs/evidence/cdr-resistor-physical-provenance-source-20261030/qualified-before/resis/resis.h"
+    },
+    "resis/ResMakeRes.c": {
+      "before": {
+        "bytes": 25397,
+        "sha256": "c455e2845bb93cc6d67129294ec161eecc03be380be25c453fc7d62ab008b739"
+      },
+      "after": {
+        "bytes": 25656,
+        "sha256": "f3dcac082f4895740e1110f16686c678801bf3fefe26389cbd651e4b864954bc"
+      },
+      "snapshot": "docs/evidence/cdr-resistor-physical-provenance-source-20261030/qualified-before/resis/ResMakeRes.c"
+    },
+    "resis/ResMain.c": {
+      "before": {
+        "bytes": 49392,
+        "sha256": "198f44f48bd33689289e1b0e8057c11fc4ee5fffce9fad784fa28ee57cc81bed"
+      },
+      "after": {
+        "bytes": 49469,
+        "sha256": "c4376f67cddffc127c435224d7811f77a41c2124593a23181667f3008d379854"
+      },
+      "snapshot": "docs/evidence/cdr-resistor-physical-provenance-source-20261030/qualified-before/resis/ResMain.c"
+    },
+    "resis/ResPrint.c": {
+      "before": {
+        "bytes": 22212,
+        "sha256": "2c06e554e6b0b4bf20a62d9e390c31fc05a9a71c0ac8e31756f79588d6f1c2b0"
+      },
+      "after": {
+        "bytes": 31852,
+        "sha256": "747c45cfa2596aae49514940106120a4a064e788e02d8c067562bd11632435f0"
+      },
+      "snapshot": "docs/evidence/cdr-resistor-physical-provenance-source-20261030/qualified-before/resis/ResPrint.c"
+    },
+    "resis/ResRex.c": {
+      "before": {
+        "bytes": 49577,
+        "sha256": "97169b59e409d68834d37b7f8c85e5dfce74f901e1445006d3bb864f7bd16ee1"
+      },
+      "after": {
+        "bytes": 49700,
+        "sha256": "6fe2a43fea7463558bc2299d034e75ec2ec92477fd62eb6f8c010f0a0bda1874"
+      },
+      "snapshot": "docs/evidence/cdr-resistor-physical-provenance-source-20261030/qualified-before/resis/ResRex.c"
+    }
+  },
+  "native_output_equivalence_executed": false,
+  "source_controls_executed": false,
+  "native_build_executed": false,
+  "environment": "NSSOC_MAGIC_RESISTOR_TRACE",
+  "diagnostic_file_policy": "exclusive new file; diagnostic failures never silently qualify; no native acceptance",
+  "native_statements_replaced": false,
+  "primary_source_references": {
+    "resis/ResBasic.c": {
+      "bytes": 13523,
+      "sha256": "587ee7637cbb1d87dbfc97c7b4fdce4c0c75cc38d7082c3bd096a49a84bc7bc7"
+    },
+    "resis/ResChecks.c": {
+      "bytes": 4249,
+      "sha256": "5983570b932c40740616c74433ff4c9e32d7562f169546d601530c21843677ea"
+    },
+    "resis/ResDebug.c": {
+      "bytes": 3342,
+      "sha256": "4241bb16c51a4aa3cadadebed8eaa0c5b1e8cadabf362f77d9b519be4dded9d1"
+    },
+    "resis/ResFract.c": {
+      "bytes": 11183,
+      "sha256": "0630c41bdbe9dd9d987d37daae185b350ee9ad01674c3084c5015188e9d982e0"
+    },
+    "resis/ResJunct.c": {
+      "bytes": 6036,
+      "sha256": "43bd57eddcd544f948530db44a6988c7fe43ff1924e4ff71cd4c6eab7dfd000a"
+    },
+    "resis/ResMain.c": {
+      "bytes": 49392,
+      "sha256": "198f44f48bd33689289e1b0e8057c11fc4ee5fffce9fad784fa28ee57cc81bed"
+    },
+    "resis/ResMakeRes.c": {
+      "bytes": 25397,
+      "sha256": "c455e2845bb93cc6d67129294ec161eecc03be380be25c453fc7d62ab008b739"
+    },
+    "resis/ResMerge.c": {
+      "bytes": 27023,
+      "sha256": "b5c0c7bd0356dad829d195085b718c01d0b8a12ce4e31d4128dae75523315443"
+    },
+    "resis/ResPrint.c": {
+      "bytes": 22212,
+      "sha256": "2c06e554e6b0b4bf20a62d9e390c31fc05a9a71c0ac8e31756f79588d6f1c2b0"
+    },
+    "resis/ResReadExt.c": {
+      "bytes": 17811,
+      "sha256": "30d2e85324d33b7f20074697518e37eeaf1398f921ad5854ea683323bc5497ae"
+    },
+    "resis/ResRex.c": {
+      "bytes": 49577,
+      "sha256": "97169b59e409d68834d37b7f8c85e5dfce74f901e1445006d3bb864f7bd16ee1"
+    },
+    "resis/ResSimple.c": {
+      "bytes": 32564,
+      "sha256": "d2c33f04269609d5483add1c1c5714321bf09a55037a1c2e441954e9ae5e671f"
+    },
+    "resis/ResUtils.c": {
+      "bytes": 22558,
+      "sha256": "332d1e116c33bdf2578c11f16c3f33fa554f3f8de01344249de44a6ff222659b"
+    },
+    "resis/ResWrite.c": {
+      "bytes": 5160,
+      "sha256": "474bb2cbb92d4453d379b52d54934cfabb110021837951736cb0d0482bde07c4"
+    },
+    "resis/resis.h": {
+      "bytes": 19361,
+      "sha256": "c676aa5ff52aa53717e684c61f205ddd2acad3cd390f0be1b7a21787055a6797"
+    },
+    "database/database.h.in": {
+      "bytes": 47960,
+      "sha256": "130c5daf76a29beba4d64eb6d591801faaa2cc88a78a1bb4ae6f4ca29a50b344"
+    },
+    "extract/extractInt.h": {
+      "bytes": 41181,
+      "sha256": "81cc464e6c1e5435be0c0b50810e07ee2298e6dc790f0fa10249a56d850b5288"
+    },
+    "cif/cif.h": {
+      "bytes": 3804,
+      "sha256": "b568b89e69a77ab9eb2934a7b21da7b312e76dc7219da91d9ca8067ac60d9fa0"
+    },
+    "utils/geometry.h": {
+      "bytes": 8814,
+      "sha256": "ddea8112505631568b9de4adafab1d6bf4374acdad02df4907177b47da821e5d"
+    },
+    "tiles/tile.h": {
+      "bytes": 12814,
+      "sha256": "909ef23ac2e12276dfa0f31bdbe11802a80147b698cbf72eaa119341b3da8ee4"
+    }
+  },
+  "required_native_sources": {
+    "resis/resis.h": {
+      "bytes": 19361,
+      "sha256": "c676aa5ff52aa53717e684c61f205ddd2acad3cd390f0be1b7a21787055a6797"
+    },
+    "resis/ResMakeRes.c": {
+      "bytes": 25397,
+      "sha256": "c455e2845bb93cc6d67129294ec161eecc03be380be25c453fc7d62ab008b739"
+    },
+    "resis/ResMain.c": {
+      "bytes": 49392,
+      "sha256": "198f44f48bd33689289e1b0e8057c11fc4ee5fffce9fad784fa28ee57cc81bed"
+    },
+    "resis/ResPrint.c": {
+      "bytes": 22212,
+      "sha256": "2c06e554e6b0b4bf20a62d9e390c31fc05a9a71c0ac8e31756f79588d6f1c2b0"
+    },
+    "resis/ResRex.c": {
+      "bytes": 49577,
+      "sha256": "97169b59e409d68834d37b7f8c85e5dfce74f901e1445006d3bb864f7bd16ee1"
+    }
+  }
+}

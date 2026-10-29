@@ -1,0 +1,410 @@
+{
+  "schema": 1,
+  "status": "SOURCE_ONLY_DIAGNOSTIC_CANDIDATE_NOT_COMPILED_OR_EXTRACTED",
+  "base": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+  "branch": "codex/cdr-resistor-physical-provenance",
+  "user_cloud_authorization": "Existing cloud-only continuation is authorized; no new permission step. This source has not been runtime-qualified.",
+  "scope": "Additive diagnostic source derivation for the exact qualified Magic 8.3.623 resistor pipeline; no current RC/geometry/electrical modifications or dispatch.",
+  "actual_context": {
+    "overlay": {
+      "run": 40962418343,
+      "source": "4e4db7a12f14477729157611ac54d5429be5844c",
+      "proof": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39"
+    },
+    "incidence": {
+      "run": 40939598713,
+      "proof": "6bcdb6ffc0caf5b4dfdac44f02bde208e804452d",
+      "sha256": "c5d764256c577b2fc14dac22de72144c38049f85f20a20038e9a81fa4d8af110"
+    },
+    "dc": {
+      "run": 40945858067,
+      "proof": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "observations_ohm": {
+        "emitter_emitter": "14.15..14.77",
+        "emitter_drain": "43.46..44.36"
+      },
+      "interpretation": "Rationale for actual per-edge material/access evidence only; no transient causality or guaranteed voltage recovery."
+    },
+    "targets": [
+      {
+        "partition": 28,
+        "net": "net$131",
+        "component": 17
+      },
+      {
+        "partition": 124,
+        "net": "net$680",
+        "component": 61
+      }
+    ]
+  },
+  "qualified_input_source": {
+    "upstream_repository": "RTimothyEdwards/magic",
+    "tag": "8.3.623",
+    "tag_object": "1be3fd2486393e90ece61edc06718d8b30e78e73",
+    "commit": "fd12c39c37f26a0fe6e04698b1011e31b8bd3229",
+    "upstream_files": {
+      "resis/ResPrint.c": {
+        "bytes": 21578,
+        "sha256": "16c67f5e32919d23399bb04d5ae1c85a85c5e536c1b596fbcd5dc6de77a7f26f",
+        "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResPrint.c"
+      },
+      "resis/ResRex.c": {
+        "bytes": 49477,
+        "sha256": "d0bb591eddc40a3df7e4cb4f7990b0819f9f68d2388523d9fdca4f6e62f3832c",
+        "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResRex.c"
+      }
+    },
+    "producer": {
+      "run": 39486998309,
+      "source": "4036318ae68455de556bcb60e14d3b17520c4288",
+      "summary_asset": 660351383,
+      "summary_bytes": 5512459,
+      "summary_sha256": "bdcbddedf70af7e4bc9a1d6b3ec4ac334a619e2fe208244b83a6e8b74cc09a38",
+      "current_library_sha256": "1a44bd5c70af3800213419c2e3b2213285523a74fcc4b92bc9cf7314d93a592c"
+    },
+    "ResPrint_literal_derivation": {
+      "intermediate_sha256": "1d26d2db3c5e23899a573c62129a802fcf3c1670364e16c3e43816aed5465067",
+      "final_bytes": 22212,
+      "final_sha256": "2c06e554e6b0b4bf20a62d9e390c31fc05a9a71c0ac8e31756f79588d6f1c2b0",
+      "matches_actual_producer_baseline_and_candidate": true,
+      "method": "AST literal replacements/text hashes only; no patch function import/execution or compilation."
+    },
+    "ResRex_literal_derivation": {
+      "final_sha256": "97169b59e409d68834d37b7f8c85e5dfce74f901e1445006d3bb864f7bd16ee1",
+      "matches_actual_producer": true,
+      "scale_writer_unchanged": true
+    },
+    "findings": [
+      {
+        "function": "ResPrintExtNode",
+        "path": "resis/ResPrint.c",
+        "upstream_lines": [
+          213,
+          258,
+          278,
+          279,
+          282,
+          283,
+          284,
+          285,
+          286
+        ],
+        "finding": "rnode writes stored rn_loc x/y; final type field is literally0. Patches add intrinsic-C retirement and extra C digits without changing x/y/type."
+      },
+      {
+        "function": "ResPrintExtRes",
+        "path": "resis/ResPrint.c",
+        "upstream_lines": [
+          49,
+          87,
+          88,
+          89
+        ],
+        "finding": "resist writes endpoint names/value, omitting rr_tt, width, via identity and path polygon."
+      },
+      {
+        "path": "resis/ResRex.c",
+        "upstream_lines": [
+          1208,
+          1213,
+          1214,
+          1215,
+          1216
+        ],
+        "finding": "Writes current extraction r/c/l scales."
+      }
+    ]
+  },
+  "primary_sources": {
+    "resis/ResBasic.c": {
+      "bytes": 13523,
+      "sha256": "587ee7637cbb1d87dbfc97c7b4fdce4c0c75cc38d7082c3bd096a49a84bc7bc7",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResBasic.c"
+    },
+    "resis/ResChecks.c": {
+      "bytes": 4249,
+      "sha256": "5983570b932c40740616c74433ff4c9e32d7562f169546d601530c21843677ea",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResChecks.c"
+    },
+    "resis/ResDebug.c": {
+      "bytes": 3342,
+      "sha256": "4241bb16c51a4aa3cadadebed8eaa0c5b1e8cadabf362f77d9b519be4dded9d1",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResDebug.c"
+    },
+    "resis/ResFract.c": {
+      "bytes": 11183,
+      "sha256": "0630c41bdbe9dd9d987d37daae185b350ee9ad01674c3084c5015188e9d982e0",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResFract.c"
+    },
+    "resis/ResJunct.c": {
+      "bytes": 6036,
+      "sha256": "43bd57eddcd544f948530db44a6988c7fe43ff1924e4ff71cd4c6eab7dfd000a",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResJunct.c"
+    },
+    "resis/ResMain.c": {
+      "bytes": 49392,
+      "sha256": "198f44f48bd33689289e1b0e8057c11fc4ee5fffce9fad784fa28ee57cc81bed",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResMain.c"
+    },
+    "resis/ResMakeRes.c": {
+      "bytes": 25397,
+      "sha256": "c455e2845bb93cc6d67129294ec161eecc03be380be25c453fc7d62ab008b739",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResMakeRes.c"
+    },
+    "resis/ResMerge.c": {
+      "bytes": 27023,
+      "sha256": "b5c0c7bd0356dad829d195085b718c01d0b8a12ce4e31d4128dae75523315443",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResMerge.c"
+    },
+    "resis/ResPrint.c": {
+      "bytes": 21578,
+      "sha256": "16c67f5e32919d23399bb04d5ae1c85a85c5e536c1b596fbcd5dc6de77a7f26f",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResPrint.c"
+    },
+    "resis/ResReadExt.c": {
+      "bytes": 17811,
+      "sha256": "30d2e85324d33b7f20074697518e37eeaf1398f921ad5854ea683323bc5497ae",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResReadExt.c"
+    },
+    "resis/ResRex.c": {
+      "bytes": 49477,
+      "sha256": "d0bb591eddc40a3df7e4cb4f7990b0819f9f68d2388523d9fdca4f6e62f3832c",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResRex.c"
+    },
+    "resis/ResSimple.c": {
+      "bytes": 32564,
+      "sha256": "d2c33f04269609d5483add1c1c5714321bf09a55037a1c2e441954e9ae5e671f",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResSimple.c"
+    },
+    "resis/ResUtils.c": {
+      "bytes": 22558,
+      "sha256": "332d1e116c33bdf2578c11f16c3f33fa554f3f8de01344249de44a6ff222659b",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResUtils.c"
+    },
+    "resis/ResWrite.c": {
+      "bytes": 5160,
+      "sha256": "474bb2cbb92d4453d379b52d54934cfabb110021837951736cb0d0482bde07c4",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/ResWrite.c"
+    },
+    "resis/resis.h": {
+      "bytes": 19361,
+      "sha256": "c676aa5ff52aa53717e684c61f205ddd2acad3cd390f0be1b7a21787055a6797",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/resis/resis.h"
+    },
+    "database/database.h.in": {
+      "bytes": 47960,
+      "sha256": "130c5daf76a29beba4d64eb6d591801faaa2cc88a78a1bb4ae6f4ca29a50b344",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/database/database.h.in"
+    },
+    "extract/extractInt.h": {
+      "bytes": 41181,
+      "sha256": "81cc464e6c1e5435be0c0b50810e07ee2298e6dc790f0fa10249a56d850b5288",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/extract/extractInt.h"
+    },
+    "cif/cif.h": {
+      "bytes": 3804,
+      "sha256": "b568b89e69a77ab9eb2934a7b21da7b312e76dc7219da91d9ca8067ac60d9fa0",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/cif/cif.h"
+    },
+    "utils/geometry.h": {
+      "bytes": 8814,
+      "sha256": "ddea8112505631568b9de4adafab1d6bf4374acdad02df4907177b47da821e5d",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/utils/geometry.h"
+    },
+    "tiles/tile.h": {
+      "bytes": 12814,
+      "sha256": "909ef23ac2e12276dfa0f31bdbe11802a80147b698cbf72eaa119341b3da8ee4",
+      "url": "https://github.com/RTimothyEdwards/magic/blob/fd12c39c37f26a0fe6e04698b1011e31b8bd3229/tiles/tile.h"
+    }
+  },
+  "findings": [
+    {
+      "source": "resis/resis.h",
+      "lines": "resResistor declaration and ResContactPoint/Breakpoint declarations",
+      "fact": "resResistor stores rr_value, rr_node[2], rr_status, rr_tt, rr_cl, rr_width and rr_area/rr_i union, but no footprint polygon/rectangle. Struct/ABI remains unchanged."
+    },
+    {
+      "source": "resis/ResMakeRes.c",
+      "lines": "237-275; 411-447",
+      "fact": "The two conductor constructors derive R from actual sheet resistance, breakpoint interval and tile height/width. Sidecar observes tile bbox, split direction/types, both breakpoint coordinates/contact rectangles, and raw initialized resistor fields. The tile is a fractured extraction tile, not an assertion about one GDS polygon."
+    },
+    {
+      "source": "resis/ResMakeRes.c",
+      "lines": "879-913",
+      "fact": "Contact constructor uses rr_cl=squares_y and rr_width=squares_x. Sidecar records actual cp_rect/center/dimensions/layer-pair tiles and all current integer constructor inputs. Contact region is not individual via-cut polygons."
+    },
+    {
+      "source": "resis/ResPrint.c",
+      "lines": "605 upstream",
+      "fact": "FastHenry comment says x/y opposite to the constructor. This patch preserves raw values and constructor squares_x/squares_y explicitly and does not borrow the misleading comment."
+    },
+    {
+      "source": "resis/ResMerge.c",
+      "lines": "140-168; 186-205; 507-571",
+      "fact": "Series/parallel/triangle rewrites change rr_value/endpoints without recomputing complete material/width/centerline provenance. Final stored type/width cannot establish unique physical footprint."
+    },
+    {
+      "source": "resis/ResSimple.c",
+      "lines": "267; 510; 882-896; 991-997",
+      "fact": "Simplification also mutates/reuses/eliminates resistor objects. The patch records full before_simplify/after_simplify snapshots without altering or disabling simplification."
+    },
+    {
+      "source": "resis/ResPrint.c",
+      "lines": "49-93 upstream; 300-316 qualified source",
+      "fact": "Original resist writer omits material/width geometry. Instrumentation follows the unchanged actual fprintf; orphan zero-resistor output is observed separately with no invented native resistor address/material."
+    },
+    {
+      "source": "resis/ResPrint.c",
+      "lines": "qualified rnode writer 295-296",
+      "fact": "Original rnode type remains literal zero. This patch does not reinterpret or rewrite it."
+    },
+    {
+      "source": "resis/ResMain.c",
+      "lines": "1004-1011; 1214-1259",
+      "fact": "Each real extraction has a diagnostic epoch and cleanup-end marker. No native object field is assigned by the new C helper."
+    },
+    {
+      "source": "database/database.h.in; extract/extractInt.h; cif/cif.h",
+      "lines": "1097/1172; 660/667/955;69",
+      "fact": "DBNumTypes, DBTypeLongNameTbl, exts_sheetResist, exts_viaResist, exts_resistScale and CIFGetOutputScale are verified declarations. Runtime material names and coefficients are observed directly, not guessed from endpoint coordinates."
+    }
+  ],
+  "patch": {
+    "changed_native_source_files": [
+      "resis/resis.h",
+      "resis/ResMakeRes.c",
+      "resis/ResMain.c",
+      "resis/ResPrint.c",
+      "resis/ResRex.c"
+    ],
+    "insertion_count": 11,
+    "removed_native_lines": 0,
+    "modified_native_statements": 0,
+    "exact_reverse_bytes": true,
+    "struct_abi_changed": false,
+    "source_files": {
+      "resis/resis.h": {
+        "before": "c676aa5ff52aa53717e684c61f205ddd2acad3cd390f0be1b7a21787055a6797",
+        "after": "e0617eb5f09a856fd35b5b8064a4e0d86422767c686d8e04264dede98ef53eaf",
+        "before_bytes": 19361,
+        "after_bytes": 20011
+      },
+      "resis/ResMakeRes.c": {
+        "before": "c455e2845bb93cc6d67129294ec161eecc03be380be25c453fc7d62ab008b739",
+        "after": "f3dcac082f4895740e1110f16686c678801bf3fefe26389cbd651e4b864954bc",
+        "before_bytes": 25397,
+        "after_bytes": 25656
+      },
+      "resis/ResMain.c": {
+        "before": "198f44f48bd33689289e1b0e8057c11fc4ee5fffce9fad784fa28ee57cc81bed",
+        "after": "c4376f67cddffc127c435224d7811f77a41c2124593a23181667f3008d379854",
+        "before_bytes": 49392,
+        "after_bytes": 49469
+      },
+      "resis/ResPrint.c": {
+        "before": "2c06e554e6b0b4bf20a62d9e390c31fc05a9a71c0ac8e31756f79588d6f1c2b0",
+        "after": "747c45cfa2596aae49514940106120a4a064e788e02d8c067562bd11632435f0",
+        "before_bytes": 22212,
+        "after_bytes": 31852
+      },
+      "resis/ResRex.c": {
+        "before": "97169b59e409d68834d37b7f8c85e5dfce74f901e1445006d3bb864f7bd16ee1",
+        "after": "6fe2a43fea7463558bc2299d034e75ec2ec92477fd62eb6f8c010f0a0bda1874",
+        "before_bytes": 49577,
+        "after_bytes": 49700
+      }
+    },
+    "original_numeric_writers": "All existing native source bytes and numerical/output statements remain, in original order. Actual stdout/ext/res.ext/SPICE/capacitance identity has NOT been executed or established.",
+    "source_tree_boundary": "CLI authenticates the five exact touched source files; twenty pinned primary-source hashes are review evidence. The future full-build controller must separately bind the entire fd12c39c upstream source and all inherited qualified patches/configuration. Five-file verification alone is not a full-build admission."
+  },
+  "sidecar": {
+    "environment": "NSSOC_MAGIC_RESISTOR_TRACE",
+    "file_open": "fopen(path,\"wx\"), Linux/glibc exclusive creation; one new process-owned file; no replacement.",
+    "events": [
+      "trace_start",
+      "net_begin",
+      "create_tile",
+      "create_contact",
+      "snapshot_begin",
+      "snapshot_resistor",
+      "snapshot_end",
+      "emitted_resistor",
+      "emitted_orphan_zero",
+      "net_end",
+      "trace_end"
+    ],
+    "naming": "Exact original string bytes hex-encoded; raw pointers scoped only to this ordered process/epoch. Match a final pointer only to the latest preceding creation at that address in that epoch; never across runs, never infer physical ownership from pointer equality.",
+    "field_semantics": "All milliohm floats preserved as %a hex text; final ext_value_token repeats original float division and %g formatting. Integer scale/type/width/centerline/contact parameters retained. Runtime output unit is observed with CIFGetOutputScale(1000); previous 5 nm inference is not silently forced on another run.",
+    "failure": "Write/flush/open/close/atexit/nested-epoch failures emit NSSOC_RESISTOR_TRACE_ERROR and mark diagnostic state failed. The original numerical extractor is not short-circuited. Consumer must reject any such error, absent/truncated footer, open epoch or malformed/nonfinite observations; success of Magic alone never qualifies the sidecar.",
+    "ownership": "Creation geometry is exact observed constructor input. Reduction provenance is not a complete merge DAG: no final equivalent resistor footprint/material ownership is asserted even when final pointer/value/coordinates resemble a birth record. Sidecar retains all birth events and snapshots rather than silently collapsing duplicates."
+  },
+  "hosted_source_controls": {
+    "entrypoint": "python scripts/check_magic_resistor_provenance.py --output resistor-provenance-source-controls.json",
+    "expected_status": "PASS_RESISTOR_PROVENANCE_SOURCE_CONTROLS",
+    "authored_positive_count": 4,
+    "authored_refusal_count": 19,
+    "authentic_inputs": "Exact qualified five-source snapshots and actual production transform/inspect/source_guard functions.",
+    "no_fake_native_proof": "No C compile, mock C runtime, full Magic build, extraction, or actual trace validation is claimed. Tests are authored and have not been executed locally or in GitHub."
+  },
+  "hosted_derivation": {
+    "entrypoint": "python scripts/patch_magic_resistor_provenance.py --magic-source QUALIFIED_MAGIC_SOURCE --output NEW_DERIVED_DIRECTORY",
+    "outputs": "Five source files under resis plus derivation-receipt.json; input tree remains untouched; no download/build/extraction code.",
+    "next_actions": [
+      "Root review and hosted source controls.",
+      "Compile the actual derived Magic from its complete qualified source/config in a separate owned cloud build; keep old binary immutable and do not carry its qualification to the new binary.",
+      "Run controlled trace-off/on extraction against exact restored current input with unchanged tech, extraction/simplification flags and deadlines; compare every original numerical/native output byte/hash before consuming trace.",
+      "Preserve complete stdout/stderr, trace, input/output full inventories and partial failures in a separately reserved exact-source cloud release.",
+      "Validate full emitted resistor multiset/order including orphan zeros against actual .res.ext; reconcile constructor/snapshot records, allow explicit unresolved reduction ownership; do not choose geometry until observed material/access evidence supports it."
+    ]
+  },
+  "acceptance": {
+    "source_controls_qualified": false,
+    "native_build_qualified": false,
+    "native_output_equivalence_qualified": false,
+    "extraction_qualified": false,
+    "physical_ownership_proved": false,
+    "electrical_acceptance": false,
+    "physical_acceptance": false,
+    "full_phy_accepted": false
+  },
+  "local_verification": "Source/metadata fetched into RAM only; literal insertion/reversal hashes and Python AST parse only. No local files/imports/authored tests/compiler/native archives/CAD/simulation.",
+  "files": {
+    "scripts/patch_magic_resistor_provenance.py": {
+      "bytes": 6699,
+      "sha256": "625c9ed7cc711f7ccd0fbe4bbbc800602f5d90266a2eba3ea2b845b5ebcc8d2e"
+    },
+    "scripts/check_magic_resistor_provenance.py": {
+      "bytes": 5451,
+      "sha256": "c8d3e00b93562e35341181d1e16998af2982a22c652961f52d3b9b5e6f999e45"
+    },
+    "scripts/magic_resistor_provenance_trace.inc": {
+      "bytes": 9534,
+      "sha256": "58c6ae5da8240f63131efcf25850a197b3195c78f4993c8703e556459ff58268"
+    },
+    "scripts/magic-resistor-physical-provenance-patch.json": {
+      "bytes": 9318,
+      "sha256": "ba61c401dfaddd092c1b7e3d4a628309fd989f60c037f9fd88d2ae0f88297813"
+    },
+    "docs/evidence/cdr-resistor-physical-provenance-source-20261030/qualified-before/resis/resis.h": {
+      "bytes": 19361,
+      "sha256": "c676aa5ff52aa53717e684c61f205ddd2acad3cd390f0be1b7a21787055a6797"
+    },
+    "docs/evidence/cdr-resistor-physical-provenance-source-20261030/qualified-before/resis/ResMakeRes.c": {
+      "bytes": 25397,
+      "sha256": "c455e2845bb93cc6d67129294ec161eecc03be380be25c453fc7d62ab008b739"
+    },
+    "docs/evidence/cdr-resistor-physical-provenance-source-20261030/qualified-before/resis/ResMain.c": {
+      "bytes": 49392,
+      "sha256": "198f44f48bd33689289e1b0e8057c11fc4ee5fffce9fad784fa28ee57cc81bed"
+    },
+    "docs/evidence/cdr-resistor-physical-provenance-source-20261030/qualified-before/resis/ResPrint.c": {
+      "bytes": 22212,
+      "sha256": "2c06e554e6b0b4bf20a62d9e390c31fc05a9a71c0ac8e31756f79588d6f1c2b0"
+    },
+    "docs/evidence/cdr-resistor-physical-provenance-source-20261030/qualified-before/resis/ResRex.c": {
+      "bytes": 49577,
+      "sha256": "97169b59e409d68834d37b7f8c85e5dfce74f901e1445006d3bb864f7bd16ee1"
+    }
+  }
+}
