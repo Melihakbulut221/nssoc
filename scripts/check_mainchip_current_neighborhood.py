@@ -92,7 +92,7 @@ def lifecycle_controls(ctx,proof,rel,ref):
                 if mode=="success":
                     owner=(work/"owner.json").read_bytes();(work/"owner.json").write_bytes(b"{}")
                     try:w.cleanup_preserved_workspace(ctx,evidence)
-                    except ValueError:pass
+                    except AssertionError:pass
                     else:raise AssertionError("foreign workspace removed")
                     assert work.is_dir();(work/"owner.json").write_bytes(owner)
                     assert w.cleanup_preserved_workspace(ctx,evidence)["absent"]and not work.exists()

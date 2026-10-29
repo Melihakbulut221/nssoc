@@ -39,7 +39,7 @@ jobs:
           assert e['GITHUB_REF']=='refs/heads/codex/mainchip-current-neighborhood-readback'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           manifest=Path("scripts/mainchip-current-neighborhood-pins.json").read_bytes()
-          assert hashlib.sha256(manifest).hexdigest()=="c83fe8dcd12e7c088de1c5a946a45647bd0591de8a9f0c91f43bfae141afa1f7"
+          assert hashlib.sha256(manifest).hexdigest()=="30e1a813c241de081a31ab6401f9306a5d97e2095bdf11e4c63eb6189292e12e"
           pins={k:v["sha256"]for k,v in json.loads(manifest)["files"].items()}
           for name,digest in pins.items():
               p=Path(name);assert p.is_file() and not p.is_symlink()
@@ -153,7 +153,7 @@ jobs:
           assert e['GITHUB_REF']=='refs/heads/codex/mainchip-current-neighborhood-readback'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           manifest=Path("scripts/mainchip-current-neighborhood-pins.json").read_bytes()
-          assert hashlib.sha256(manifest).hexdigest()=="c83fe8dcd12e7c088de1c5a946a45647bd0591de8a9f0c91f43bfae141afa1f7"
+          assert hashlib.sha256(manifest).hexdigest()=="30e1a813c241de081a31ab6401f9306a5d97e2095bdf11e4c63eb6189292e12e"
           pins={k:v["sha256"]for k,v in json.loads(manifest)["files"].items()}
           for name,digest in pins.items():
               p=Path(name);assert p.is_file() and not p.is_symlink()
@@ -233,7 +233,7 @@ jobs:
           import hashlib,json,os,sys
           from pathlib import Path
           raw=Path('scripts/mainchip-current-neighborhood-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='c83fe8dcd12e7c088de1c5a946a45647bd0591de8a9f0c91f43bfae141afa1f7'
+          assert hashlib.sha256(raw).hexdigest()=='30e1a813c241de081a31ab6401f9306a5d97e2095bdf11e4c63eb6189292e12e'
           for name,pin in json.loads(raw)['files'].items():
               p=Path(name);assert p.is_file() and not p.is_symlink()
               b=p.read_bytes();assert len(b)==pin['bytes'] and hashlib.sha256(b).hexdigest()==pin['sha256']
