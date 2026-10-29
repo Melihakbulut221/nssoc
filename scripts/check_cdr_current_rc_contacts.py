@@ -53,7 +53,7 @@ def synthetic():
         elif name.endswith("pd500-mim-wire.spice"):raw=model.encode()
         elif name.endswith("anchors08.json"):raw=r.encode(aa)
         elif name.endswith("pump_wires.res.ext"):raw=rep.encode()
-        elif name.endswith("pump_wires.ext"):raw=b"scale 1000 1 0.5\n"
+        elif name.endswith("pump_wires.ext"):raw=b'scale 1000 1 0.5\nstyle "ngspice()"\n'
         elif name.endswith("verified-wire-projection.spice"):raw=wire.encode()
         elif name.endswith("wires.spice"):raw=(precise if name.startswith("mim/")else wire).encode()
         elif name.endswith("extract.tech"):raw=(tech if name.startswith("canonical")else tech.replace(removed[0],"").replace(removed[1],"")).encode()
@@ -111,9 +111,17 @@ def controls():
         assert all(body(original,n)==body(current,n)for n in names)
         assert body(original,"acquire").replace("def acquire(","def acquire_parts(",1)==body(current,"acquire_parts")
         assert body(original,"emit").replace("CDR_CONTACT_","CDR_RC_CONTACT_")==body(current,"emit")
-        return dict(unchanged_helpers=names)
+        native=(r.ROOT/'docs/evidence/cdr-v59-tail-fresh-RC-qualified-raw-parser-20261027.py').read_text()
+        assert body(native,"number").replace("def number(text):","def native_number(text):",1)==body(current,"native_number")
+        return dict(unchanged_helpers=names,native_number_renamed_only=True)
     good("actual frozen selector and transport derivation",derivation)
     good("exact decimal SPICE scaling",lambda:check_numbers())
+    good("authentic component and raw parser protocol",lambda:check_actual_protocol(d))
+    good("quoted slash native/export identity",lambda:check_native_names())
+    for token in (".","1..2","1x2","1e","1e+","ddd","d.d","NaN","Inf","1kk","0x10","1 2"):
+        bad("malformed decimal "+token,lambda token=token:r.number(token),"unsupported numeric literal")
+    for token in (".5","1meg"):
+        bad("original native numeric grammar "+token,lambda token=token:r.native_number(token),"Unsupported native number")
     for key,val in [("GITHUB_ACTIONS","false"),("GITHUB_EVENT_NAME","push"),("GITHUB_REPOSITORY","wrong/repo"),
       ("GITHUB_REF","refs/heads/main"),("GITHUB_RUN_ATTEMPT","2"),("GITHUB_RUN_ID","0"),("GITHUB_SHA","f"*39)]:
         bad("context "+key,lambda key=key,val=val:r.context(dict(env,**{key:val})))
@@ -179,6 +187,10 @@ def controls():
           ("loaded device parameter","mim/composition/pd500-mim-wire.spice",lambda b:b.replace(b"p=1",b"p=2",1)),
           ("private technology","mim/precise/ngspice-mim-tech/ihp-sg13g2-extract.tech",lambda b:b+b"\n"),
           ("native resistor","mim/precise/wire/rc03/pump_wires.res.ext",lambda b:b.replace(b"resist T061_E n17 1",b"resist T061_E n17 2",1)),
+          ("source scale","mim/precise/wire/rc03/pump_wires.ext",lambda b:b.replace(b"scale 1000 1 0.5",b"scale 1 1 0.5",1)),
+          ("replacement scale","mim/precise/wire/rc03/pump_wires.res.ext",lambda b:b.replace(b"scale 1000 1 0.5",b"scale 1 1 0.5",1)),
+          ("native endpoint renamed","mim/precise/wire/rc03/pump_wires.res.ext",lambda b:b.replace(b"resist T061_E n17 1",b"resist T061_E renamed/n17 1",1)),
+          ("native unknown rnode","mim/precise/wire/rc03/pump_wires.res.ext",lambda b:b+b'rnode "unknown/native" 0 0 1 2 metal7\n'),
           ("extra MIM","mim/precise/wire/rc03/wires.spice",lambda b:b.replace(b".ends",b"X99 T061_E T115_E cap_cmim l=1u w=1u\n.ends",1)),
           ("anchor alias","mim/precise/wire/anchors08.json",lambda b:r.encode(mutated(r.decode(b),lambda x:x["logical_anchor_aliases"].update(T061_E="T062_E"))))]:
             old=files[path];changed=mutator(old);assert changed!=old,name
@@ -279,10 +291,31 @@ def controls():
     return result
 
 def check_numbers():
-    assert str(r.number("1k"))=="1E+3"and r.number("1M")==r.Decimal(".001")and r.number("1meg")==r.Decimal("1000000")
-    assert r.number("1.25e-3")==r.Decimal(".00125")
-    return True
+    cases={"0":"0","17":"17","-3":"-3","+12.5":"12.5",".125":".125","1.":"1","-.5":"-.5",
+      "1.25e-3":".00125","2E+3":"2000",".5e2":"50","1k":"1000","1M":".001","1meg":"1000000",
+      "2t":"2e12","3g":"3e9","4u":"4e-6","5n":"5e-9","6p":"6e-12","7f":"7e-15","-2.5e+2m":"-.25"}
+    assert all(r.number(token)==r.Decimal(value)for token,value in cases.items())
+    return dict(accepted_literals=len(cases))
 
+
+def check_actual_protocol(d):
+    for name in ("precise_audit","wire_audit"):
+        rows=d[name]["audit"]["components"]
+        assert len(rows)==113 and all(set(row)=={"component","nodes","probes"}for row in rows)
+        assert [(row["component"],row["nodes"],len(row["probes"]))for row in sorted(rows,key=lambda x:x["component"])if row["component"]in(17,61)]==[(17,102,8),(61,102,8)]
+    pins=d["precise_audit"]["audit"]["inputs"]
+    raw=[v for k,v in pins.items()if k.endswith("/audit_pilot.py")]
+    assert raw==[dict(bytes=8291,sha256="f8132c8498cd32c4e27e6a8c054a7b35a72129bbf15ab8cc1ee9d6d65610e667")]
+    return dict(full_components=113,target_nodes=[102,102],target_probes=[8,8])
+
+
+def check_native_names():
+    projection=r.statements(".subckt x contact/A contact/B\nR1 contact/A internal/path.n1 1.25e-3\nR2 internal/path.n1 contact/B 2k\n.ends x\n")
+    original=r.native_rows('scale 1000 1 0.5\nstyle "ngspice()"\n')
+    replacement=r.native_rows('scale 1000 1 0.5\nresist "contact/A" "internal/path.n1" 0.00125\nresist "internal/path.n1" "contact/B" 2000\nrnode "internal/path.n1" 0 1 1 2 metal7\n')
+    result=r.native_export_identity(original,replacement,projection,{"contact/A":17,"contact/B":17,"internal/path.n1":17})
+    assert result["resistor_records"]==2 and result["rnode_records"]==1 and result["generic_Magic_units_inferred"]is False
+    return result
 def check_absent_tech():
     result=r.technology("# no coefficient supplied\n")
     assert result["numeric_directives"]==[]and result["absent_coefficients_remain_unproved"]is True

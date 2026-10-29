@@ -10,11 +10,11 @@ REPOSITORY="Melihakbulut221/nssoc"
 BRANCH="codex/cdr-current-rc-contact-readback"
 GROUP="cdr-current-rc-contact-readback"
 CONFIG="scripts/cdr-current-rc-contact-inputs.json"
-CONFIG_SHA="80eb41c38c827df4e1628859ebe843e60ecdccad2671127eaae41237ad1608f7"
+CONFIG_SHA="8f67918556ffea7b8bf9914c770268a1dcc56e2accedb791dfb40f4f2ade2715"
 FLAGS=dict(accepted=False,physical_acceptance=False,electrical_acceptance=False,
  full_phy_accepted=False,causality_proven=False,dominant_path_proven=False,
  new_simulation=False,geometry_changed=False,native_CAD_executed=False)
-SOURCE_COUNTS=dict(positive=12,refusal=62,lifecycle=5)
+SOURCE_COUNTS=dict(positive=14,refusal=80,lifecycle=5)
 SELECTED=('mim/composition/pd500-mim-wire.spice', 'mim/composition/verified-wire-projection.spice', 'mim/composition/composition.json', 'mim/precise/wire/anchors08.json', 'mim/precise/wire/rc03/pump_wires.ext', 'mim/precise/wire/rc03/pump_wires.res.ext', 'mim/precise/wire/rc03/wires.spice', 'mim/precise/ngspice-mim-tech/ihp-sg13g2-extract.tech', 'mim/precise/ngspice-mim-tech/ihp-sg13g2-via.tcl', 'mim/precise/ngspice-mim-tech/ihp-sg13g2-res.tcl', 'canonical-current-view/magic-cloud/tech/ihp-sg13g2-extract.tech', 'canonical-current-view/wire/anchors08.json', 'canonical-current-view/wire/rc03/wires.spice', 'canonical-current-view/wire/rc03/pump_wires.ext', 'canonical-current-view/wire/rc03/pump_wires.res.ext')
 def require(ok,message):
     if not ok:raise AssertionError(message)
@@ -270,13 +270,22 @@ def acquire_parts(c,case,parts,tmp,fetch=download):
 
 
 def number(token):
-    m=re.fullmatch(r"([+-]?(?:d+(?:.d*)?|.d+)(?:[eE][+-]?d+)?)(meg|[tgkmunpf])?",token,re.I)
+    m=re.fullmatch('([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][+-]?\\d+)?)(meg|[tgkmunpf])?',token,re.I)
     require(m is not None,"unsupported numeric literal: "+token)
     value=Decimal(m[1])*{"":Decimal(1),"t":Decimal("1e12"),"g":Decimal("1e9"),
       "meg":Decimal("1e6"),"k":Decimal("1e3"),"m":Decimal("1e-3"),"u":Decimal("1e-6"),
       "n":Decimal("1e-9"),"p":Decimal("1e-12"),"f":Decimal("1e-15")}[m[2].lower()if m[2]else""]
     require(value.is_finite(),"nonfinite number")
     return value
+
+def native_number(text):
+    match = re.fullmatch(r'([-+]?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)([numkpf]?)', text.lower())
+    require(match is not None, 'Unsupported native number')
+    value = Decimal(match[1]) * dict(n=Decimal('1e-9'), u=Decimal('1e-6'), m=Decimal('1e-3'),
+                                    k=Decimal('1e3'), p=Decimal('1e-12'), f=Decimal('1e-15'), **{'': Decimal(1)})[match[2]]
+    require(value.is_finite(), 'Nonfinite number')
+    return value
+
 
 def statements(text):
     rows=[]
@@ -304,6 +313,27 @@ def statements(text):
 
 def native_rows(text):
     return [dict(line=i,raw=line,tokens=shlex.split(line))for i,line in enumerate(text.splitlines(),1)if line.strip()]
+
+def native_export_identity(source_rows,replacement_rows,projection,owners):
+    """Replay the pinned audit protocol; no generic Magic unit/name conversion."""
+    for label,rows in (("source",source_rows),("replacement",replacement_rows)):
+        require([r["tokens"][1:]for r in rows if r["tokens"][0]=="scale"]==[["1000","1","0.5"]],label+" extraction scale")
+    require([r["tokens"][1:]for r in source_rows if r["tokens"][0]=="style"]==[["ngspice()"]],"source extraction style")
+    rs=[r for r in replacement_rows if r["tokens"][0]=="resist"]
+    require(all(len(r["tokens"])==4 for r in rs),"native resistor shape")
+    nr=collections.Counter((tuple(sorted(r["tokens"][1:3])),native_number(r["tokens"][3]))for r in rs)
+    rr=collections.Counter((tuple(sorted((e["a"],e["b"]))),Decimal(e["value"]))for e in projection["edges"]if e["kind"]=="R")
+    require(nr==rr,"native/export exact resistor incidence")
+    points=[r for r in replacement_rows if r["tokens"][0]=="rnode"]
+    for row in points:
+        tokens=row["tokens"];require(len(tokens)>=4 and tokens[1]in owners,"native rnode identity/value")
+        legacy_r=Decimal(tokens[2]);cap_literal=Decimal(tokens[3])
+        require(legacy_r.is_finite()and cap_literal.is_finite()and legacy_r==0 and cap_literal>=0,"native rnode identity/value")
+    return dict(native_export_R_multiset_exact=True,source_and_replacement_scale=["1000","1","0.5"],
+      source_style="ngspice()",native_number_source_sha256="f8132c8498cd32c4e27e6a8c054a7b35a72129bbf15ab8cc1ee9d6d65610e667",
+      value_rule="Exact qualified Decimal token comparison; no additional scale multiplier.",
+      endpoint_rule="shlex native quote removal then exact exported endpoint identity; no slash rewriting or aliases.",
+      resistor_records=len(rs),rnode_records=len(points),generic_Magic_units_inferred=False)
 
 def incidence(parsed,anchors,geometry,expected_counts):
     aa=anchors["anchors"];by={a["label"]:a for a in aa}
@@ -378,9 +408,7 @@ def analyze(saved,c,d):
     owners,components,by=incidence(projection,anchors,geometry,c["counts"])
     require(components==sorted(d["precise_audit"]["audit"]["components"],key=lambda x:x["component"]),"actual component report replay")
     rows=native_rows(txt(base+"rc03/pump_wires.res.ext"))
-    nr=collections.Counter((tuple(sorted(r["tokens"][1:3])),number(r["tokens"][3]))for r in rows if r["tokens"][0]=="resist")
-    rr=collections.Counter((tuple(sorted((e["a"],e["b"]))),Decimal(e["value"]))for e in projection["edges"]if e["kind"]=="R")
-    require(nr==rr,"native/export exact resistor incidence")
+    native_proof=native_export_identity(native_rows(txt(base+"rc03/pump_wires.ext")),rows,projection,owners)
     model=statements(txt("mim/composition/pd500-mim-wire.spice"));mapping=composition["wire_node_map"]
     require(len(model["devices"])==c["counts"]["devices"]and model["ports"]==composition["interface"],"actual loaded model interface/devices")
     require(len(set(v.lower()for v in mapping.values()))==len(mapping),"node mapping collision")
@@ -430,7 +458,7 @@ def analyze(saved,c,d):
     tech={n:dict(pin=file_pin(regular(saved,n)),**technology(txt(n)))for n in c["selected"]if n.endswith((".tech","-via.tcl","-res.tcl"))}
     return dict(status="CURRENT_RC_CONTACT_INCIDENCE_READBACK_ONLY",targets=out,technology=tech,
       full_current_counts=dict(devices=len(devices),R=sum(e["kind"]=="R"for e in projection["edges"]),C=sum(e["kind"]=="C"for e in projection["edges"]),components=len(components),anchors=len(by)),
-      native_export_R_multiset_exact=True,loaded_model_R_C_tokens_exact=True,complete_device_mapping_exact=True,
+      native_export_R_multiset_exact=True,native_export_identity=native_proof,loaded_model_R_C_tokens_exact=True,complete_device_mapping_exact=True,
       private_MIM_technology_derivation=private,all_full_component_rows=components,
       missing=["dynamic branch currents","internal-node voltages at contact witness times","full dynamic KCL",
         "qualified per-edge physical bridge/via assignment","units not explicitly established by retained technology source"],
