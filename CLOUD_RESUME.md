@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v102
+# Cloud continuation — checkpoint v103
 
-Updated: 2026-10-29T03:03:49.485546+00:00
+Updated: 2026-10-29T04:08:39.889981+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Actual CDR graph40808550817 completed successfully: immutable fb8a0aea parentGDS and46f7b577flatLVS, independent26box source reference,9leaf/16placement/5fault checks,160planes/19faults,500devices/1446terminals/113components and978anchors freshly acquired. The original comparator actualport-order rejection remains; width-specific topology/RC/electrical acceptance is still pending. Route/audit split controls40807637800 passed actual synthetic handoff/lifecycle/publication paths. Native diagnostic40808800489 now runs separately owned off/on route jobs, with five subsequent audit phases separated and all5source-bound releases reserved. No gate or original routing budget was relaxed. Agent pll_handoff prepares disabled exact width-topology source while routing proceeds.
+Width-specific source controls passed3positive/12refusal (40812129129), then assembled admission/lifecycle controls passed11 (40813858696). Independent review found two publication preservation gaps; corrected source62d6619 passed13 actualhosted tests including production main_run/pack/publish failure and empty-file fixtures plus unchanged3/12coordinatecontrols (40814989046). Separate exact-source native width comparison40815684037/source214ec651/release427455233 is now active;1085pins,complete4103savedgraph,old605/fresh75. Native result remains pending. Route40808800489 is terminalfailure: both actualroute and fullfreeze succeeded, both direct zero-byte stderr uploads failedHTTP400, audits/comparison skipped. Complete native archives and fallback artifacts retained; failureproofs imported. Continue with audit recovery on the saved routes, not a new routing attempt. Root local project remains empty.
 
-Active handles at this snapshot: 40808800489 in_progress
+Active handles at this snapshot: 40815684037 in_progress
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -8878,3 +8879,10 @@ Local project/tmp/native processes verified absent. Inventory309 exact cloud han
 Actual CDR graph40808550817 completed successfully: immutable fb8a0aea parentGDS and46f7b577flatLVS, independent26box source reference,9leaf/16placement/5fault checks,160planes/19faults,500devices/1446terminals/113components and978anchors freshly acquired. The original comparator actualport-order rejection remains; width-specific topology/RC/electrical acceptance is still pending. Route/audit split controls40807637800 passed actual synthetic handoff/lifecycle/publication paths. Native diagnostic40808800489 now runs separately owned off/on route jobs, with five subsequent audit phases separated and all5source-bound releases reserved. No gate or original routing budget was relaxed. Agent pll_handoff prepares disabled exact width-topology source while routing proceeds.
 
 Local project/tmp/native processes verified absent. Inventory313 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T04:08:39.889981+00:00 — cloud-only checkpoint v103
+
+Width-specific source controls passed3positive/12refusal (40812129129), then assembled admission/lifecycle controls passed11 (40813858696). Independent review found two publication preservation gaps; corrected source62d6619 passed13 actualhosted tests including production main_run/pack/publish failure and empty-file fixtures plus unchanged3/12coordinatecontrols (40814989046). Separate exact-source native width comparison40815684037/source214ec651/release427455233 is now active;1085pins,complete4103savedgraph,old605/fresh75. Native result remains pending. Route40808800489 is terminalfailure: both actualroute and fullfreeze succeeded, both direct zero-byte stderr uploads failedHTTP400, audits/comparison skipped. Complete native archives and fallback artifacts retained; failureproofs imported. Continue with audit recovery on the saved routes, not a new routing attempt. Root local project remains empty.
+
+Local project/tmp/native processes verified absent. Inventory317 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

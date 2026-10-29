@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T03:03:49.485546+00:00",
+  "updated_at": "2026-10-29T04:08:39.889981+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "b3bf71576b89fac551e2333ef1791205e77d5db2",
+  "root_source_before_receipt": "e16fccc5d9c20fe9a3706aafeac66952543dc376",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 102,
+    "inventory_version": 103,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -22,36 +22,27 @@
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33"
   },
   "active_runs": {
-    "mainchip_route_audit_split_native": {
-      "run": 40808800489,
-      "head_sha": "dd2115212b8ccd1176a2e67995d3e54b0a4248dc",
+    "cdr-width-specific-native-topology": {
+      "run": 40815684037,
+      "head_sha": "214ec651fd501de7e2f49a38509b184a1fd66f8d",
       "status": "in_progress",
       "conclusion": null,
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123233983394,
+          "id": 123256070161,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123234175740,
-          "name": "route-only (on)",
+          "id": 123256248814,
+          "name": "topology",
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
-            "Execute one separately owned route stage"
-          ]
-        },
-        {
-          "id": 123234175763,
-          "name": "route-only (off)",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Execute one separately owned route stage"
+            "Actual native width comparison with complete streams"
           ]
         }
       ]
@@ -3016,7 +3007,8 @@
       "independent_source_child26box_projection_required": true,
       "original_parent_geometry_guard_must_not_be_waived": true,
       "current_candidate_physical_run": 40800207491,
-      "fresh_graph_executed": false
+      "fresh_graph_executed": true,
+      "next": "Native width-specific full geometry/identity/ownership run40815684037; no freshRC/electrical acceptance yet"
     },
     "cdr_selector_fresh_graph": {
       "run": 40808550817,
@@ -3067,17 +3059,57 @@
       "native_outcome_pending": true,
       "physical_accepted": false,
       "timing_accepted": false,
-      "observer_equivalence_qualified": false
+      "observer_equivalence_qualified": false,
+      "workflow_terminal": "failure",
+      "both_route_and_freeze_steps_passed": true,
+      "publication_failure": "HTTP400 Bad Content-Length on direct zero-byte stderr asset in both route jobs",
+      "audit_executed": false,
+      "comparison_executed": false,
+      "recovery_without_rerouting_required": true,
+      "failure_proofs": [
+        "bfc27a015d38dae66fbd833f27d8d9fe1357b5bc",
+        "a9ebb04af479fd1bc78949625710cc5c232fbaec"
+      ],
+      "on_fallback_artifact": 12871465943,
+      "off_fallback_artifact": 12870903600
+    },
+    "cdr_selector_width_topology": {
+      "source_unit": "600d19de94d6a2a095ded2243b4d94094fd54e76",
+      "evidence_unit": "ed023be49990a21c4b6ec7403e4472e1d76e741a",
+      "original_source_controls_run": 40812129129,
+      "initial_stage_controls_run": 40813858696,
+      "corrected_stage_source": "62d6619fb7d819c174b57275e25fda3f06ec04b4",
+      "corrected_controls_run": 40814989046,
+      "actual_source_tests": 13,
+      "coordinate_positive_cases": 3,
+      "coordinate_refusals": 12,
+      "actual_publication_pack_empty_failure_controls_passed": true,
+      "independent_corrected_source_review_clear": true,
+      "native_run": 40815684037,
+      "native_source": "214ec651fd501de7e2f49a38509b184a1fd66f8d",
+      "native_release": 427455233,
+      "protected_files": 1085,
+      "inherited_protected_files": 1039,
+      "complete_graph_members": 4103,
+      "old_members": 605,
+      "fresh_members": 75,
+      "native_outcome_pending": true,
+      "width_specific_topology_accepted": false,
+      "fresh_RC_executed": false,
+      "electrical_accepted": false,
+      "qualified_pex": false,
+      "full_phy_accepted": false,
+      "final_setup_hold_accepted": false
     }
   },
   "next_actions": [
-    "Observe exact native routing run40808800489; do not duplicate/retry. Both off/on route jobs use original14400s budget, five subsequent1200s audits run in separate jobs after complete authenticated route handoff. All5releases already reserved for dd211521.",
-    "Record all route/audit/comparison results including failures. Current monitor production names contain source-controls and route-only off/on; when future audit/comparison jobs are created, extend this handle with those exact names without changing source/run identity.",
-    "Fresh CDR graph40808550817 is terminalsuccess; do not rerun. Whole capsule4103members and all18derived evidence records are imported; native archive stayscloudonly.",
-    "Agent pll_handoff is implementing disabled width-specific topology helper on codex/cdr-selector-width-topology-source based70bd0e39. Inspect its durable checkpoint before use; no admission/driver/dispatch exists yet.",
-    "Next CDR native stage must acquire both complete identity witnesses and prove exact four-partition Metal4/TopMetal1 union for26boxes at two placements. Original topology comparator material policy targets priorTM2tailbus and is diagnostic only; actualline107native_ports order rejection preserved.",
-    "Only after width-specific identity/material/ownership proof run fresh wireRC/MIM and original10electricalcases. Old CDR electrical failures and PLL timing/headroom defects remain open; fullPHY, routedchip and finalSTA are unaccepted.",
-    "All source/test/native work remainsGitHub; localworkspace empty. Existing8h monitor readonly, no localautomation/nativeassets."
+    "Observe exact native width topology run40815684037/source214ec651; do not duplicate. Exact-source prerelease427455233 was reserved before dependencies; record complete result/failure and actual13 repeated source controls.",
+    "Native width proof requires independent full500device1446terminal identity, 26exactraw additions, 52placed boxes, all113components by13layers and only8declared owner-layer additions. Original historical tail comparator stays diagnostic; no relaxed clocks/electrical gates.",
+    "After genuine width native proof, generate fresh wireRC/MIM and run original10electricalcases. Current CDR/PLL electrical timing/headroom defects remain open.",
+    "Run40808800489 is terminal FAILURE solely at zero-byte direct publication in both routejobs; route+freeze steps passed and complete nativeparts/fallbacks are cloud-retained. Audits/comparison skipped. Do not reroute or relabel whole job successful.",
+    "Agent pll_handoff implements DISABLED read-only mainchip_route_recovery_evidence.py on codex/mainchip-route-recovery-evidence froma9ebb04. Inspect exact durable source before use.",
+    "Implement separately reserved new audit recovery envelope distinguishing originaldd211 frozen687source/run context from new recovery execution context; unchangedfiveaudits on full originalroute handoffs. Keep all old failures,1691clocks,original3short gates and nativeinputmaps.",
+    "All authored/native work staysGitHub. Localworkspace/tmp/nativeprocesses verifiedempty. Existing8h GitHub monitor readonly; no native dispatch or localautomation. FullPHY/routedchip/finalSTA remainunaccepted."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -3370,27 +3402,47 @@
     "observed_40803424913": 40803424913,
     "observed_40807527305": 40807527305,
     "observed_40807637800": 40807637800,
-    "observed_40808550817": 40808550817
+    "observed_40808550817": 40808550817,
+    "observed_40812129129": 40812129129,
+    "observed_40813858696": 40813858696,
+    "observed_40814989046": 40814989046,
+    "observed_40808800489": 40808800489
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40807527305,
-      "head_sha": "70bd0e3935e5ac9ff57db6fa43ff6336705e312b",
+      "run": 40812129129,
+      "head_sha": "3eb59678d07917f2e3f64d7cb486d488d758676a",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123229933367,
+          "id": 123244659541,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40813858696,
+      "head_sha": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123250246065,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123230120261,
-          "name": "graph",
+          "id": 123250427265,
+          "name": "topology",
           "status": "completed",
           "conclusion": "skipped",
           "active_steps": []
@@ -3398,49 +3450,58 @@
       ]
     },
     {
-      "run": 40807637800,
-      "head_sha": "3a0b148ecf43c17c3d00cda4cfeb324594c885dc",
+      "run": 40814989046,
+      "head_sha": "62d6619fb7d819c174b57275e25fda3f06ec04b4",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123230284833,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40808550817,
-      "head_sha": "97705f184239c0c522582b9d8e82c542bd902b65",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123233190376,
+          "id": 123253858619,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123233387760,
-          "name": "graph",
+          "id": 123254015142,
+          "name": "topology",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40815684037,
+      "head_sha": "214ec651fd501de7e2f49a38509b184a1fd66f8d",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123256070161,
+          "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
+        },
+        {
+          "id": 123256248814,
+          "name": "topology",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Actual native width comparison with complete streams"
+          ]
         }
       ]
     },
     {
       "run": 40808800489,
       "head_sha": "dd2115212b8ccd1176a2e67995d3e54b0a4248dc",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "failure",
       "run_attempt": 1,
       "jobs": [
         {
@@ -3453,26 +3514,36 @@
         {
           "id": 123234175740,
           "name": "route-only (on)",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Execute one separately owned route stage"
-          ]
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
         },
         {
           "id": 123234175763,
           "name": "route-only (off)",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Execute one separately owned route stage"
-          ]
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        },
+        {
+          "id": 123250210123,
+          "name": "audit-only",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        },
+        {
+          "id": 123250210166,
+          "name": "comparison",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T03:03:49.485546+00:00",
+    "observed_at": "2026-10-29T04:08:39.889981+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -3601,7 +3672,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T03:03:49.485546+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T04:08:39.889981+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -27889,6 +27960,520 @@
       "source": "97705f184239c0c522582b9d8e82c542bd902b65",
       "release": 427412807,
       "tag": "cloud-results-40808550817-1-cdr-v59-selector-column-width-graph"
+    }
+  ],
+  "imported_checkpoint_receipts_v103": [
+    {
+      "path": "docs/evidence/cdr-selector-width-topology-source-review-20261029.json",
+      "source": "600d19de94d6a2a095ded2243b4d94094fd54e76",
+      "git_blob": "980669477e2c6890c0edff832660b6cc199129a0",
+      "bytes": 7433,
+      "sha256": "f70da4ce273b7d185430552efe04f5858244101dc7242dd88c8689b4994ab40c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-graph-evidence-source-review-20261029.json",
+      "source": "ed023be49990a21c4b6ec7403e4472e1d76e741a",
+      "git_blob": "2dcd96148ba74f1cb922b148e60a7568be091d8c",
+      "bytes": 9916,
+      "sha256": "104d096b7a2c3b539daa4e6701781148496cfa61723dff0a1de0955735d8c6e0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-topology-source-controls-admission-20261029.json",
+      "source": "3eb59678d07917f2e3f64d7cb486d488d758676a",
+      "git_blob": "97541dda8fb607fb4e9fba85578c23ae54263ca1",
+      "bytes": 797,
+      "sha256": "0b14176ac5e660c057a4222a8d281534dddca581a0f7ddb59001eec833aec463",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-topology-actual-source-controls-20261029.job.log",
+      "source": "fb54bc53a9e044263f66713b0cd46e1b751358e9",
+      "git_blob": "774ab1e1c9a18fee98bac8c286f64c34fb6ad5c9",
+      "bytes": 32111,
+      "sha256": "153ff8226d208f0d0f1f7129cd94d8c9ac0d43d5ec44beab7271c84d1db9fb11",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-topology-actual-source-controls-20261029.jobs.json",
+      "source": "fb54bc53a9e044263f66713b0cd46e1b751358e9",
+      "git_blob": "15b11262768038f4ea82132feed65d979f64a74c",
+      "bytes": 3726,
+      "sha256": "3cd1ac1eace8d515b969224b1135f7e7e3c351a73c9cb33cbce82b5dbaec89b7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-topology-actual-source-controls-20261029.receipt.json",
+      "source": "fb54bc53a9e044263f66713b0cd46e1b751358e9",
+      "git_blob": "d4652d3696ae957a5e90915ee523f4e12196e6dc",
+      "bytes": 1229,
+      "sha256": "cf1c6b7ba270928e8d24882026a3605077c56e20ae33385a3182425b74ac0476",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-topology-actual-source-controls-20261029.result.json",
+      "source": "fb54bc53a9e044263f66713b0cd46e1b751358e9",
+      "git_blob": "3447e43d431fea6d5f4d346fd6d628c68bc07768",
+      "bytes": 1854,
+      "sha256": "14841d512f996f552047b4c04c3fc4aa2b13eee34348ccfad2c7d5b70bef8667",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-topology-actual-source-controls-20261029.run.json",
+      "source": "fb54bc53a9e044263f66713b0cd46e1b751358e9",
+      "git_blob": "e762d2962edfcd281706e247b38d0b62ac4cdc8b",
+      "bytes": 14411,
+      "sha256": "b1e9ad47dd838f47213759e2618c74c814a05636103a431950adc1930614c388",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.anchors.json",
+      "source": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "git_blob": "23b024f378defd4819f29e32cec464625a00f43d",
+      "bytes": 1650535,
+      "sha256": "966b5465750b6b35cc24cd8e10dca94313061d17692c6c46e99c50bc5d4c6193",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.graph.json",
+      "source": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "git_blob": "7c5e4b86a1ac1b099cacf7a4825b657390246111",
+      "bytes": 290711,
+      "sha256": "eeddbaddc06d413309fafc7b396944ada5fb72aa79f90c8f929f3213c2101adb",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.jobs.json",
+      "source": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "git_blob": "fc381028acda24fd62712c56b43099cf988a891a",
+      "bytes": 7918,
+      "sha256": "23b4236481a050f77786b8dbfa3e3da20dfb4035f7b7f5d5657cc34041bdaa10",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.legacy-topology.json",
+      "source": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "git_blob": "d1bf1842c8b595557c2017a390cda65ff0333710",
+      "bytes": 1603,
+      "sha256": "5aae742ed599257b215dd34ec5179cd83117652fc791a70cc49b4f817b891412",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.locations.json",
+      "source": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "git_blob": "5dec4e7e856232a8277d83ae3fb89f3b6bed13d0",
+      "bytes": 686544,
+      "sha256": "11be358288af996c51a18bd7396ecce699ab84c9c5d93737a52d517dd0546a4f",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.parts.json",
+      "source": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "git_blob": "685ceee4f594fc58eca10a16cb8f7d34b1af6135",
+      "bytes": 1117,
+      "sha256": "2a32d90bd33b8ed354777c6383c04090da00ffa90ead113f5eb620f33acdaa99",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.planes.json",
+      "source": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "git_blob": "d30475343c95e49116fb49b51e8177fabfd9cff4",
+      "bytes": 244802,
+      "sha256": "bb10a385e76e014c17d229919728e16085f06396becdf47f15ee53bb4c6b3dfe",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.reference.json",
+      "source": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "git_blob": "c487110ace8798f49d2ca276d9fe6f27589d8a32",
+      "bytes": 24580,
+      "sha256": "851a4a6b04648ad487456572242ced064f804817429545daeac0a17f5d7747b3",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.release.json",
+      "source": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "git_blob": "6ae8fcda91d260b2e63241c0fd24c44e5c87e4e8",
+      "bytes": 31974,
+      "sha256": "eb9c2006e774a854a60f744906c73708a5f7aeb0449eed394e72ed43426d4f84",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.restore.json",
+      "source": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "git_blob": "df2c44055b3fa4ba184193a8beeed1eca5317e22",
+      "bytes": 922280,
+      "sha256": "8a9a0f3a6fc31eb46429a5bee6f4c39047b813968210c636ac600bab1c4648fb",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.run.json",
+      "source": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "git_blob": "6a9a868456662435a12e5d760885f874ba4c8509",
+      "bytes": 14436,
+      "sha256": "ca4e8d9026989e1a7acf019cef3b608a3b0b47baa0e8e24849b232badb2ae6e9",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.runtime.json",
+      "source": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "git_blob": "4e670adf880ec0ee3c64ca33b120577806a4eb65",
+      "bytes": 3557,
+      "sha256": "3404e6dc1d6c0a0ecead9614b43a8131b4b1bb2b268f9dd1fd9c5c9f72a31467",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.source-pins.json",
+      "source": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "git_blob": "51294a8014ccf39055e37dfbd3538a77cb0a423f",
+      "bytes": 39228,
+      "sha256": "1d18f591616b6eba928beaca81fee3263942cf031b2ad4fbade9c1d7f35fafab",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.summary.json",
+      "source": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "git_blob": "7a74e8464fe054833b557a2eace4f5444d11a06c",
+      "bytes": 1764262,
+      "sha256": "62825d1992f63c4475e4f73cb16e5fccaf21a6228b157eb971fd4a7808d58d74",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.tag.json",
+      "source": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "git_blob": "9cbebf0c12e46fd3fba9e38f7c503029a6e3963b",
+      "bytes": 575,
+      "sha256": "6ded1c5231bbd06ee1c402d95a21c60ddf22b6977daf69356065aa0f6a4ab10c",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-width-native-topology-disabled-source-review-20261029.json",
+      "source": "b35820cd30bf31dc202c3f0331669523b8f2251a",
+      "git_blob": "9c1cb45142f24aa189d04f278045d66b03d609ce",
+      "bytes": 1608,
+      "sha256": "ec040fa2da76284f9bc78c79dff0fe8f8d80754be19579ddc0d90caafeb49acf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-stage-actual-controls-20261029.job.log",
+      "source": "058a691a8e6cdfbc04009619f385018ad7aac7a6",
+      "git_blob": "e78d767bd092000fca9313fc7cbcbbfac681a694",
+      "bytes": 31967,
+      "sha256": "3613263999fffb8192f79ed740f1dad858d0a7dd6dd508be9d41981685354495",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-stage-actual-controls-20261029.jobs.json",
+      "source": "058a691a8e6cdfbc04009619f385018ad7aac7a6",
+      "git_blob": "4c10bbd8b544184a1c8de69290267930fb335617",
+      "bytes": 4827,
+      "sha256": "b9b340d8c7191781dd371774f0f14397efa10bc9ee5980e670465f09778edcee",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-stage-actual-controls-20261029.receipt.json",
+      "source": "058a691a8e6cdfbc04009619f385018ad7aac7a6",
+      "git_blob": "0c3f1adcd5945537110a72bbe5bc769b9acf4519",
+      "bytes": 1219,
+      "sha256": "c6b90855f6dd265ca2944a355c91a8dc9dcf7c4247668f9ba213ce9c9f2df913",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-stage-actual-controls-20261029.result.json",
+      "source": "058a691a8e6cdfbc04009619f385018ad7aac7a6",
+      "git_blob": "5381e8dfc54bedcf2f068627741e080795b9f0ec",
+      "bytes": 233,
+      "sha256": "01ca017114559f0d7da7fec18848e86df2433e3919d3838db68cf6f924a4cbd2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-stage-actual-controls-20261029.run.json",
+      "source": "058a691a8e6cdfbc04009619f385018ad7aac7a6",
+      "git_blob": "f4f2c89dced5166611ea4ab947aad4e99ed5527f",
+      "bytes": 14383,
+      "sha256": "bbaef46899c360c509e2b4c192258af47e6386409fd18d5d2c7640de704120eb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-failure-publication-correction-20261029.json",
+      "source": "62d6619fb7d819c174b57275e25fda3f06ec04b4",
+      "git_blob": "7fe23dfe2e09718a13a87303414e512b6f9dae4a",
+      "bytes": 1455,
+      "sha256": "b93b12e9476d7188479bdda5dae300f3430ab11df4a1ec82e3fde7584cecbd51",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-publication-fixed-controls-20261029.coordinate-result.json",
+      "source": "83950d5864442d96456c1888b5b028d5730d6623",
+      "git_blob": "3447e43d431fea6d5f4d346fd6d628c68bc07768",
+      "bytes": 1854,
+      "sha256": "14841d512f996f552047b4c04c3fc4aa2b13eee34348ccfad2c7d5b70bef8667",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-publication-fixed-controls-20261029.job.log",
+      "source": "83950d5864442d96456c1888b5b028d5730d6623",
+      "git_blob": "84519c27dd90261f708e8f93b25a69aab449cdb4",
+      "bytes": 32189,
+      "sha256": "16e817c63c2232a2756235368a9683e17eb4e75a814f4f6275589b4845aa3a69",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-publication-fixed-controls-20261029.jobs.json",
+      "source": "83950d5864442d96456c1888b5b028d5730d6623",
+      "git_blob": "aaf8af1da56843d5e7ebfd01613cfb0915fcaa9a",
+      "bytes": 4827,
+      "sha256": "211968dccb23c54b3aa4273d3cea54a2cba758eda0ce0ca9fbde916424acdcf3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-publication-fixed-controls-20261029.receipt.json",
+      "source": "83950d5864442d96456c1888b5b028d5730d6623",
+      "git_blob": "511d596580aea831719c0cb359afdc4ea7fa93c7",
+      "bytes": 1451,
+      "sha256": "5fb2ccb3e058e0d4ed45c9fc631f87715c5ae02fca47aeedc55fe2877dfa77a3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-publication-fixed-controls-20261029.result.json",
+      "source": "83950d5864442d96456c1888b5b028d5730d6623",
+      "git_blob": "6fa968fd60f820da642ef5428ad2a259f5bbc728",
+      "bytes": 233,
+      "sha256": "b4e949ad0834565008d81b7c8c00e450adcaea0144fc69296a5d0de02cbec075",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-publication-fixed-controls-20261029.run.json",
+      "source": "83950d5864442d96456c1888b5b028d5730d6623",
+      "git_blob": "b109abeb21dbba6c3911a10b6261a9cffa17b1eb",
+      "bytes": 14398,
+      "sha256": "657c31b54c03f8c633721a9e8d3d5b8adb1f282a8a909cc4b1582c73dc2cff10",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-admission-20261029.json",
+      "source": "214ec651fd501de7e2f49a38509b184a1fd66f8d",
+      "git_blob": "696a8341f9ae15fd754993f33a8bdaf46b967b88",
+      "bytes": 1492,
+      "sha256": "f56b6f4ef95185cec8c7835751b20950f468eafcabff2ddf1956fa24af794f19",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-on-publication-failure-20261029.case-result.json",
+      "source": "bfc27a015d38dae66fbd833f27d8d9fe1357b5bc",
+      "git_blob": "ba63927207c6ed3737e2165496b1a3b0ea3a2c73",
+      "bytes": 14736,
+      "sha256": "561bf9960e3c4acdfcdfa48e8c71603ea454298700a0170993eca9b49375885f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-on-publication-failure-20261029.host-result.json",
+      "source": "bfc27a015d38dae66fbd833f27d8d9fe1357b5bc",
+      "git_blob": "369788a0f4145acc26bde115196dae1ad99c3bd2",
+      "bytes": 23642,
+      "sha256": "d1f41b9e936b3cd787717bc7b699d5ec77becc65629c0ef63a3fe36cd2f82ba7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-on-publication-failure-20261029.inner-result.json",
+      "source": "bfc27a015d38dae66fbd833f27d8d9fe1357b5bc",
+      "git_blob": "666a68fe021068ad6dcbe033c1b616ce68903242",
+      "bytes": 15486,
+      "sha256": "e1242b94596a05037861efb39ef06218946bb226116060ad864013efff64e261",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-on-publication-failure-20261029.job.json",
+      "source": "bfc27a015d38dae66fbd833f27d8d9fe1357b5bc",
+      "git_blob": "21a584d21caf693f4a40c01a146114abf76f61f4",
+      "bytes": 3787,
+      "sha256": "edc14fcf5c2242878adbea651640a06fd7a68d9a0619af1d299435b9a2777323",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-on-publication-failure-20261029.job.log",
+      "source": "bfc27a015d38dae66fbd833f27d8d9fe1357b5bc",
+      "git_blob": "c36857a53c0cf0ab8199e7baef5e78f29c333b8c",
+      "bytes": 917658,
+      "sha256": "713215bec497f53a172f3a4d63226bcd2c680b5397cdab53eb14f704fae1575f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-on-publication-failure-20261029.outputs.json",
+      "source": "bfc27a015d38dae66fbd833f27d8d9fe1357b5bc",
+      "git_blob": "e2021abf47ee5238864fe4721d65c1ed24653418",
+      "bytes": 12829,
+      "sha256": "624e442921dbb7ee3e868a959eb67370228039bad3c693d71b084c1f7579994c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-on-publication-failure-20261029.parts.json",
+      "source": "bfc27a015d38dae66fbd833f27d8d9fe1357b5bc",
+      "git_blob": "625941d8a2335313583b25b28dced81fc433bbcc",
+      "bytes": 494,
+      "sha256": "4752f8ac18adf7fe1c61b5d9e9f3816d6ee3988cb29deb2d604c8f2b5763592e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-on-publication-failure-20261029.receipt.json",
+      "source": "bfc27a015d38dae66fbd833f27d8d9fe1357b5bc",
+      "git_blob": "f25f934d9c857c6e313811b456fc2d678323c3ba",
+      "bytes": 4354,
+      "sha256": "a45eb03568ae835b5bbbffab589d28495dbdd43e76360af25b2be8a99d5818d4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-on-publication-failure-20261029.release-snapshot.json",
+      "source": "bfc27a015d38dae66fbd833f27d8d9fe1357b5bc",
+      "git_blob": "19fba7489ea310ace3510932df284bf0364a72ad",
+      "bytes": 45151,
+      "sha256": "7efe50c613dbb5ffbee3678fe16a49faa73cd6f754b2ba2cd068f646158b9d82",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-on-publication-failure-20261029.route-handoff-inventory.json",
+      "source": "bfc27a015d38dae66fbd833f27d8d9fe1357b5bc",
+      "git_blob": "ff0d458212683319967f40a2becd2ac1ebe500bf",
+      "bytes": 300418,
+      "sha256": "d665d3d65564fb531db6355c5c9b64df01c46a657080b726a07fd3312f378b48",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-on-publication-failure-20261029.route-handoff.json",
+      "source": "bfc27a015d38dae66fbd833f27d8d9fe1357b5bc",
+      "git_blob": "1be121781dbe4260c85b429e302d2ca9b7f33fa2",
+      "bytes": 597,
+      "sha256": "aade770ad6b51c77ac3594f7efe4d6723b90a99c5acda83515b4b0bcccce7111",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-on-publication-failure-20261029.run-snapshot.json",
+      "source": "bfc27a015d38dae66fbd833f27d8d9fe1357b5bc",
+      "git_blob": "f95bbe1f9032db2cd70498a6b5ab841eac29b9eb",
+      "bytes": 14446,
+      "sha256": "2069101c9740c927e0a42d4921edc61afa3c6ed960c1a2c43beda2f8a9fabc32",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-on-publication-failure-20261029.tag.json",
+      "source": "bfc27a015d38dae66fbd833f27d8d9fe1357b5bc",
+      "git_blob": "062183ebe353bdaa352f42ec2435c35529eeb8f9",
+      "bytes": 595,
+      "sha256": "9bfa197a3d0bb3bf2d94237b45b33a08067ce65ff9cd30f0ce80841e30b7262e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-off-publication-failure-20261029.case-result.json",
+      "source": "a9ebb04af479fd1bc78949625710cc5c232fbaec",
+      "git_blob": "76d8804d5811378219e39265d31fcc66f63f115e",
+      "bytes": 13454,
+      "sha256": "a2d765a96f8ec23f9275db9041bba275ff259331b338d7dd25a2237625541bc1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-off-publication-failure-20261029.host-result.json",
+      "source": "a9ebb04af479fd1bc78949625710cc5c232fbaec",
+      "git_blob": "12966541b6fb83ac4b3ec9cc1248853c2e249f99",
+      "bytes": 23055,
+      "sha256": "a683b83b9da77b9155a659b50fa9146efacd2af13ee49be4b6faf075f32114f2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-off-publication-failure-20261029.inner-result.json",
+      "source": "a9ebb04af479fd1bc78949625710cc5c232fbaec",
+      "git_blob": "b579edf85e7f5ec6ec7e01c78419edb13f17f8c4",
+      "bytes": 14900,
+      "sha256": "302a7fc7d4278c87dc6d47a880307872aee2ac962ba3ebe2c077e7fa3b2fa17f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-off-publication-failure-20261029.job.json",
+      "source": "a9ebb04af479fd1bc78949625710cc5c232fbaec",
+      "git_blob": "0249bab7f606b2846a3c59f40d3ab2b9beb4f459",
+      "bytes": 3788,
+      "sha256": "3f65630fd625426ad2ab6b51c90ae4df3247afe101b0cf7485da3c4712aafe9a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-off-publication-failure-20261029.job.log",
+      "source": "a9ebb04af479fd1bc78949625710cc5c232fbaec",
+      "git_blob": "2e1b212a1d562a9c6fe3b6153fc8c5b3f9a88a25",
+      "bytes": 914630,
+      "sha256": "079ded87be003cc0f2612d96a2da5d6ad65228b483fcfb80c3d5e5c13858d611",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-off-publication-failure-20261029.outputs.json",
+      "source": "a9ebb04af479fd1bc78949625710cc5c232fbaec",
+      "git_blob": "f95d6f27b70a4e4bced242f19b606e98502d5a9e",
+      "bytes": 12246,
+      "sha256": "65ed426d12a10eff1107a8d8076e23953b89a5ac5aaae79b322979bf89f631f8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-off-publication-failure-20261029.parts.json",
+      "source": "a9ebb04af479fd1bc78949625710cc5c232fbaec",
+      "git_blob": "0ddf7643029c0aed9dac196215739a19161695cc",
+      "bytes": 494,
+      "sha256": "d83b329d9b36dfdfc651c245697b0a9017c4988daf0cf1b49bc29f5f13955683",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-off-publication-failure-20261029.receipt.json",
+      "source": "a9ebb04af479fd1bc78949625710cc5c232fbaec",
+      "git_blob": "8593c10bbc1af8aaaffd39a821d088eb066867df",
+      "bytes": 4332,
+      "sha256": "459c868ff1572fbf78c106164cbb8ab6b7a63a8913c5730541e2bcbecc2c6fbf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-off-publication-failure-20261029.release-snapshot.json",
+      "source": "a9ebb04af479fd1bc78949625710cc5c232fbaec",
+      "git_blob": "8e175c480737a59a01522fc125b2d86cb014bcc6",
+      "bytes": 45177,
+      "sha256": "d7be374c3d7727d6deda870562161b6f766f600afb2a3e651a1512eca6a2e704",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-off-publication-failure-20261029.route-handoff-inventory.json",
+      "source": "a9ebb04af479fd1bc78949625710cc5c232fbaec",
+      "git_blob": "c75aa3c7f6f8e1107b81daea06a190e7542aac5c",
+      "bytes": 299819,
+      "sha256": "7067da200583ee0930e739a783f469d43dcfc2acc1595ed48e06dca6f56bdaa0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-off-publication-failure-20261029.route-handoff.json",
+      "source": "a9ebb04af479fd1bc78949625710cc5c232fbaec",
+      "git_blob": "51f8a61d94a31f83141988703233c90b333ad6f2",
+      "bytes": 598,
+      "sha256": "b418235c99e1a19ad8e0e6494840ccc536e71385d561cc488170a88b96bb5588",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-off-publication-failure-20261029.run-snapshot.json",
+      "source": "a9ebb04af479fd1bc78949625710cc5c232fbaec",
+      "git_blob": "f95bbe1f9032db2cd70498a6b5ab841eac29b9eb",
+      "bytes": 14446,
+      "sha256": "2069101c9740c927e0a42d4921edc61afa3c6ed960c1a2c43beda2f8a9fabc32",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-off-publication-failure-20261029.tag.json",
+      "source": "a9ebb04af479fd1bc78949625710cc5c232fbaec",
+      "git_blob": "c58341e4b5ea1bc33a3490f8d180e15d3c33ee40",
+      "bytes": 598,
+      "sha256": "380228e7b27bcfc20958830ea399a13bd0ebb99211117788e8154bb62c37e7fb",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v103": [
+    {
+      "run": 40815684037,
+      "source": "214ec651fd501de7e2f49a38509b184a1fd66f8d",
+      "release_id": 427455233,
+      "tag": "cloud-results-40815684037-1-cdr-selector-width-topology"
     }
   ]
 }
