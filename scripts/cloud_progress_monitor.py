@@ -17,6 +17,8 @@ import zipfile
 
 REPO = "Melihakbulut221/nssoc"
 WORKFLOW = ".github/workflows/cloud-progress-monitor.yml"
+WORKFLOW_ID = 394905294
+MONITOR_JOBS = frozenset(("controls", "observe"))
 ARTIFACT = "cloud-progress-snapshot"
 LIMIT = 8 * 1024 * 1024
 TERMINAL_BAD = {"failure", "cancelled", "timed_out", "action_required", "startup_failure", "stale"}
@@ -102,7 +104,7 @@ def check_config(config):
         assert type(item["run"]) is int and item["run"] > 0 and item["run"] not in seen
         seen.add(item["run"])
         assert item["label"] and re.fullmatch(r"[0-9a-f]{40}", item["head_sha"])
-        assert item["branch"].startswith("codex/")
+        assert type(item["branch"]) is str and (item["branch"].startswith("codex/") or item["branch"] == "main"), "Unapproved inventory branch: " + repr(item.get("branch"))
     for item in config["latest_workflows"]:
         assert re.fullmatch(r"[a-z0-9-]+\.yml", item["workflow"])
         assert item["branch"] == config["target_branch"]
@@ -360,6 +362,29 @@ def progress_signature(item):
                json.dumps(r.get("metadata_skipped", {}), sort_keys=True)) for r in item["reports"]),
     )
 
+def main_monitor_refusal(item, run, jobs):
+    """Only this repository's actual read-only monitor may be observed on main.
+
+    Other historical main handles remain visible as rejected rows. They are not
+    native results and must never trigger release or artifact acquisition.
+    """
+    required = item.get("production_jobs")
+    if not (type(required) is list and len(required) == 2
+            and all(type(name) is str for name in required)
+            and set(required) == MONITOR_JOBS):
+        return "Main observation requires exactly controls/observe inventory jobs"
+    if type(run.get("workflow_id")) is not int or run["workflow_id"] != WORKFLOW_ID or run.get("path") != WORKFLOW:
+        return "Main run is not the pinned read-only cloud-progress-monitor workflow"
+    if run.get("event") not in ("schedule", "workflow_dispatch"):
+        return "Main monitor event is not scheduled or manually dispatched observation"
+    names = [j.get("name") for j in jobs]
+    if any(type(name) is not str or name not in MONITOR_JOBS for name in names) or len(names) != len(set(names)):
+        return "Main monitor contains an unrelated or duplicate job name"
+    if run["status"] == "completed" and set(names) != MONITOR_JOBS:
+        return "Completed main monitor lacks its controls/observe jobs"
+    return None
+
+
 def collect(api, config, now, previous=None, configuration_source=None):
     check_config(config)
     branch = config["target_branch"]
@@ -380,14 +405,23 @@ def collect(api, config, now, previous=None, configuration_source=None):
     }
     for item in selected:
         run = api.get("actions/runs/" + str(item["run"]))
-        assert run["id"] == item["run"] and run["head_sha"] == item["head_sha"] and run["head_branch"] == item["branch"]
+        assert run["id"] == item["run"] and run["head_sha"] == item["head_sha"] and run["head_branch"] == item["branch"], "Observed run ID/source/branch differs from pinned inventory: " + str(item["run"])
         jobs = api.pages("actions/runs/" + str(run["id"]) + "/attempts/" + str(run["run_attempt"]) + "/jobs", "jobs")
         category, reason = classify(run, jobs, now, config["stall_seconds"])
-        required_jobs = item.get("production_jobs", [])
+        main_observation = item["branch"] == "main"
+        refusal = main_monitor_refusal(item, run, jobs) if main_observation else None
+        required_jobs = [] if refusal else item.get("production_jobs", [])
         production = [j for j in jobs if j["name"] in required_jobs and j.get("conclusion") != "skipped"]
         if required_jobs and not production and category == "COMPLETED_ACTIONS":
             category, reason = "NOT_EXECUTED", "Production job absent or skipped; control-job success is not native completion"
-        reports = terminal_reports(api, run) if run["status"] == "completed" else []
+        if refusal:
+            category, reason = "UNVERIFIED_REF", refusal
+        elif main_observation and category == "COMPLETED_ACTIONS":
+            if all(j.get("status") == "completed" and j.get("conclusion") == "success" for j in jobs):
+                category, reason = "COMPLETED_MONITOR", "Read-only monitor jobs succeeded; no native or product acceptance"
+            else:
+                category, reason = "NOT_EXECUTED", "Monitor controls/observe did not both complete successfully"
+        reports = terminal_reports(api, run) if run["status"] == "completed" and not main_observation else []
         statuses = [r.get("native_status") or "" for r in reports]
         if any(s.startswith(("FAIL", "ERROR", "REJECT")) for s in statuses):
             category, reason = "FAILED_NATIVE_REPORT", "A terminal native report explicitly failed"
@@ -454,13 +488,14 @@ def main():
         previous = previous_snapshot(api, int(os.environ["GITHUB_RUN_ID"]))
         result = collect(api, config, utc_now(), previous, configuration_source)
     except Exception as exc:
+        detail = type(exc).__name__ + ": " + (str(exc) or repr(exc))
         result = {"schema": 1, "repository": REPO, "target_branch": config["target_branch"],
                   "target_head": (configuration_source or {}).get("head_sha"), "configuration_source": configuration_source,
                   "runs": [], "observed_at": utc_now().isoformat(),
-                  "status": "MONITOR_ERROR", "error": str(exc), "automatic_native_dispatch": False,
+                  "status": "MONITOR_ERROR", "error": detail, "automatic_native_dispatch": False,
                   "full_phy_accepted": False, "problem_runs": []}
         (args.out / "result.json").write_text(json.dumps(result, indent=2) + "\n")
-        Path(os.environ["GITHUB_STEP_SUMMARY"]).write_text("Cloud observation failed: " + str(exc) + "\nNo native work was changed.\n")
+        Path(os.environ["GITHUB_STEP_SUMMARY"]).write_text("Cloud observation failed: " + detail + "\nNo native work was changed.\n")
         raise
     (args.out / "result.json").write_text(json.dumps(result, indent=2) + "\n")
     Path(os.environ["GITHUB_STEP_SUMMARY"]).write_text(markdown(result))
