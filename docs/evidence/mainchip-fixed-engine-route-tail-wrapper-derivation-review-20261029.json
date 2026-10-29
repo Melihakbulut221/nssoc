@@ -1,0 +1,587 @@
+{
+  "schema": "mainchip-fixed-engine-route-tail-wrapper-source-derivation-v1",
+  "status": "ADDITIVE_WRAPPERS_DISABLED_PENDING_ACTUAL_FRESH_PREFIX_CONTRACT_AND_HOSTED_CONTROLS",
+  "repository": "Melihakbulut221/nssoc",
+  "branch": "codex/mainchip-fixed-engine-route-tail",
+  "base_source": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
+  "scope": "Five additive production wrappers (host, driver, native, inner, handoff) and this derivation review only. No new tail contract/method/workflow/authority/dispatch.",
+  "inherited_prefix_method": {
+    "path": "scripts/mainchip-fixed-engine-route-prefix-methods.json",
+    "bytes": 172351,
+    "sha256": "0dd3c47a54f421987533ffad16b535b119ddd06757413c5dd1bf0cb7faffd23d",
+    "protected_entries": 1098,
+    "unchanged": true,
+    "authority_note": "Existing prefix preparation authority is preserved exactly. No tail authority exists in this unit and the absent new tail contract prevents execution. Existing prefix authorization is not tail authorization."
+  },
+  "inputs": {
+    "scripts/cloud_mainchip_built_engine_route_tail.py": {
+      "source": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
+      "bytes": 19116,
+      "sha256": "6a88f0da614a727e8255a89b6379b03f064b92425dd9651cba3d2f1d9dbdc21c"
+    },
+    "scripts/mainchip_built_engine_route_tail_driver.py": {
+      "source": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
+      "bytes": 9162,
+      "sha256": "72ae99009eeedf52d3c7edc109044d39446d18751298b8dae34de67f8fc06f8f"
+    },
+    "scripts/mainchip_built_engine_route_tail_native.py": {
+      "source": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
+      "bytes": 2244,
+      "sha256": "cb9bed6aa19765a61109354e9ebe787c6be1682f7232f8eb06bfc4c50c71d20e"
+    },
+    "scripts/mainchip_built_engine_route_tail_inner.py": {
+      "source": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
+      "bytes": 8187,
+      "sha256": "0cc8512cf09d25a43795553efee89d178f1ed7e29386881985a4b06c492984df"
+    },
+    "scripts/mainchip_built_engine_route_tail_handoff.py": {
+      "source": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
+      "bytes": 16860,
+      "sha256": "89cf916a172f3fb099f2716f1e47f2948e08ce679e969cb4e4d34cb3f3e04066"
+    },
+    "scripts/mainchip_built_engine_route_tail_contract.py": {
+      "source": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
+      "bytes": 11931,
+      "sha256": "4e254ade05e9f1dc4787a0e15191caae08f3db7708d2995e6a77dd4fd7ea4f2c"
+    },
+    "scripts/cloud_mainchip_fixed_engine_route_prefix.py": {
+      "source": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
+      "bytes": 20322,
+      "sha256": "f7b43c87dc5b90f52a96009ba390b0b6d6b96645c8d856664956fd4c169b9988"
+    },
+    "scripts/mainchip_fixed_engine_build_contract.py": {
+      "source": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
+      "bytes": 9057,
+      "sha256": "b065245c7782651dd5716eea1442c41228c3dff60ddcaecffa94fd20d0740e04"
+    }
+  },
+  "outputs": {
+    "scripts/cloud_mainchip_fixed_engine_route_tail.py": {
+      "bytes": 22331,
+      "sha256": "868eb6c24157768f38336d3f68c78184266d04c727f56fe45768d22dae316715"
+    },
+    "scripts/mainchip_fixed_engine_route_tail_driver.py": {
+      "bytes": 9122,
+      "sha256": "940dbe53df8dfd31476eb0e4edf1e8799c85cc7d5d3a6953c09c79e2d2cf5f08"
+    },
+    "scripts/mainchip_fixed_engine_route_tail_native.py": {
+      "bytes": 2271,
+      "sha256": "2457356cf87b8ca6c14387900b8880a72a24ec60bb9cc25cd47d79f5b3d7c558"
+    },
+    "scripts/mainchip_fixed_engine_route_tail_inner.py": {
+      "bytes": 8234,
+      "sha256": "486219cc47edc2b77e9efcd0ff62dfdff594746c7d81541afd3074d5de2d4615"
+    },
+    "scripts/mainchip_fixed_engine_route_tail_handoff.py": {
+      "bytes": 16860,
+      "sha256": "880fd64923a3910da48a52bd07bdcf3dd33cafb44e90e15ba4f0e566e48617c1"
+    }
+  },
+  "static_review": {
+    "all_five_python_sources_ast_parsed": true,
+    "all_declared_edits_reversed_byte_exact": true,
+    "publisher_reversed_byte_exact_to_fixed_prefix_publish": true,
+    "function_asts": {
+      "host": {
+        "unchanged_function_asts": [
+          "write",
+          "owned_work",
+          "terminal_contract",
+          "publish_asset",
+          "comparison_body",
+          "comparison"
+        ],
+        "changed_functions": [
+          "restore_prefix",
+          "probe",
+          "freeze_route",
+          "publish"
+        ]
+      },
+      "driver": {
+        "unchanged_function_asts": [
+          "execute_tail",
+          "observer_result"
+        ],
+        "changed_functions": [
+          "main"
+        ]
+      },
+      "native": {
+        "unchanged_function_asts": [
+          "raw_pairs"
+        ],
+        "changed_functions": [
+          "main"
+        ]
+      },
+      "inner": {
+        "unchanged_function_asts": [
+          "write",
+          "cgroup",
+          "stop_child",
+          "run",
+          "finish_cgroup",
+          "dependencies"
+        ],
+        "changed_functions": [
+          "main"
+        ]
+      },
+      "handoff": {
+        "unchanged_function_asts": [
+          "route_records",
+          "route_projection",
+          "validate_manifest",
+          "freeze",
+          "live_route",
+          "part_manifest",
+          "restore"
+        ],
+        "changed_functions": []
+      }
+    },
+    "actual_authored_imports_tests_native_execution": false
+  },
+  "byte_exact_bodies": {
+    "host": [
+      "write",
+      "owned_work",
+      "terminal_contract",
+      "publish_asset",
+      "comparison_body",
+      "comparison"
+    ],
+    "driver": [
+      "execute_tail",
+      "observer_result"
+    ],
+    "native": [
+      "raw_pairs"
+    ],
+    "inner": [
+      "write",
+      "cgroup",
+      "stop_child",
+      "run",
+      "finish_cgroup",
+      "dependencies"
+    ],
+    "handoff": [
+      "route_records",
+      "route_projection",
+      "validate_manifest",
+      "freeze",
+      "live_route",
+      "part_manifest",
+      "restore"
+    ]
+  },
+  "handoff_derivation": "Only import mainchip_built_engine_route_tail_contract as c changes to mainchip_fixed_engine_route_tail_contract as c. All other bytes unchanged, including original canonical path helper, exact route/freeze/restore gates, full archives and immutable current-source projection.",
+  "preserved_contract_bodies_required": {
+    "command": "Original byte-exact command with only new native wrapper path /work/tail-source/scripts/mainchip_fixed_engine_route_tail_native.py.",
+    "complete": "Original full three-result/five-audit gate and repair.require_complete unchanged.",
+    "compare_cases": "Original complete off/on geometry and DRC comparison unchanged; no added fixed-clock internal conservation acceptance.",
+    "stage_limits": "Original route driver14700/inner15000/container15180 and audit driver6300/inner6600/container6780 seconds unchanged.",
+    "original_route_seconds": 14400,
+    "original_each_audit_seconds": 1200,
+    "clock_gate": 1691,
+    "mutable_targets": [
+      "net36993",
+      "net459"
+    ],
+    "timing": "Original20/4/8/8ns +5% unchanged; no timing or physical acceptance."
+  },
+  "new_contract_interface": {
+    "module": "mainchip_fixed_engine_route_tail_contract",
+    "previous": "mainchip_fixed_engine_route_prefix_contract from the immutable frozen prefix source; never the old built-engine prefix contract.",
+    "METHOD": "scripts/mainchip-fixed-engine-route-tail-methods.json",
+    "BRANCH": "codex/mainchip-fixed-engine-route-tail",
+    "group": "Distinct per mode/stage reserved release groups; existing off/on route/audit and comparison semantics.",
+    "old_shared_api": [
+      "context",
+      "method",
+      "group",
+      "mode",
+      "stage",
+      "stage_limits",
+      "prefix_contract",
+      "envelope",
+      "saved",
+      "frozen_unchanged",
+      "command",
+      "complete",
+      "compare_cases",
+      "engine_extract",
+      "runtime_match",
+      "atomic_record",
+      "attempt",
+      "finish_record",
+      "error_record",
+      "secure_file",
+      "decode",
+      "require",
+      "create_argv",
+      "validate_image",
+      "validate_container"
+    ],
+    "new_hooks": {
+      "saved_path(name)": "Protected relative path to actual fresh prefix record; used for outputs and frozen-prefix-inventory exact byte fingerprints. Avoid old dot-suffix storage layout.",
+      "saved(root,name)": "Authentic current prefix JSON, retaining immutable original bytes; no old receipt substitution.",
+      "authorize_stage(method,stage)": "Typed current source/controller and exact route/audit authority; no native allowance inherited from prefix. Called before host work/download and before each driver/inner/audit native execution.",
+      "control_evidence(root,ctx)": "Authenticate exact current source/run/mode/stage controls; return basename ending -controls.json -> {bytes,sha256}. Copies rehashed before any acquisition.",
+      "SOURCE_ADMISSION": "Protected new source admission document, copied into output.",
+      "validate_reservation(proof,ctx,empty)": "Exact new source/run/attempt/group/stage/mode/tag/release binding; empty before acquisition.",
+      "direct_plan(out,names)": "Unchanged qualified empty-file plan; names may be safe root files or generated supervision/witness relative members. Publisher adds explicit basename asset_name and rejects duplicate upload names."
+    },
+    "actual_prefix_fields_pending": [
+      "PREFIX_RUN",
+      "PREFIX_SOURCE",
+      "PREFIX_RELEASE",
+      "PREFIX_TAG",
+      "FROZEN_BYTES",
+      "complete frozen file map and count",
+      "exact current fixed.odb and repair.tcl receipts",
+      "actual complete source/method/outputs/parts/jobs/report joins"
+    ],
+    "must_not_reuse": [
+      "old746 member count",
+      "old4096412802 byte count",
+      "old1e79 ELF acceptance",
+      "old45dc fixed.odb acceptance",
+      "old e16c prefix source/run/release",
+      "inferred actual new prefix success"
+    ],
+    "source_projection": "Pin/copy the complete new tail map plus its method and every recursively read prior method/proof document. Preserve the exact full actual prefix source projection independently in /work/source and new tail projection in /work/tail-source."
+  },
+  "module_resolution": {
+    "preserved_order": [
+      "/work/source/scripts",
+      "/work/tail-source/scripts"
+    ],
+    "distinct_new_tail_names_absent_from_prefix_source": true,
+    "reason": "Frozen prefix deliberately wins for original native helpers. Distinct fixed-engine tail modules prevent historical tail modules already in frozen source from shadowing current code.",
+    "native_renderer": "Use mainchip_fixed_engine_route_prefix_native, whose canonical renderer is unchanged; original mainchip_two_signal_repair_native and mainchip_original_clock_restoration_native must still resolve under /work/source/scripts.",
+    "do_not_flip_global_sys_path": true
+  },
+  "restore_changes": {
+    "prefix_jobs_endpoint": "actions/runs/<actual fresh PREFIX_RUN>/attempts/1/jobs?per_page=100",
+    "metadata_paths": "Only two old c.PREFIX dot-suffix assumptions replaced with saved_path.",
+    "complete_restore_unchanged": "Full outer and nested archives, exact all-member extractor, no collisions/symlinks, immutable full projected file hashes and actual FROZEN_BYTES retained.",
+    "new_report_fields": {
+      "complete_native_projection_verified": true,
+      "native_projection_files": "len(authenticated actual inv.files)"
+    },
+    "literal_746_report_claim_removed": true
+  },
+  "publication": {
+    "qualified_basis": {
+      "path": "scripts/cloud_mainchip_fixed_engine_route_prefix.py",
+      "source": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
+      "sha256": "f7b43c87dc5b90f52a96009ba390b0b6d6b96645c8d856664956fd4c169b9988"
+    },
+    "preserves_source_primary_on_secondary_publication_save_or_fallback_failure": true,
+    "full_partial_and_empty_outputs_retained": true,
+    "direct_zero_byte_uploads_omitted": true,
+    "full_archive": "route-tail-evidence.tar.gz",
+    "ordered_parts": "route-tail-evidence.tar.gz.part%03d",
+    "part_manifest_body_unchanged": true,
+    "outputs_lineage": [
+      "source",
+      "mode",
+      "stage",
+      "files",
+      "physical_acceptance:false"
+    ],
+    "direct_plan": "Every selected root/native stream records original relative archive_member, SHA/bytes/disposition and release asset_name basename; all duplicate upload basenames refused.",
+    "directory_guards": "Do not follow supervision/witness symlinks before plan reads. Original full-tree special-entry guard and complete publication disk guard retained.",
+    "separate_exact_reservation_for_each_stage": true,
+    "publication_success_not_routing_or_physical_acceptance": true
+  },
+  "native_and_acceptance": {
+    "actual_new_prefix_result_assumed": false,
+    "actual_route_tail_executed": false,
+    "source_controls_executed": false,
+    "new_native_authorizations_added": false,
+    "automatic_dispatch_or_retry": false,
+    "routing_accepted": false,
+    "observer_equivalence_qualified": false,
+    "timing_accepted": false,
+    "physical_acceptance": false,
+    "historical_failure": "Three shorts and zero two-target geometry delta remain original failure evidence. The prior selected fixed-clock0.84um internal change is not erased or presumed repaired; any conservation diagnostic is separate future work."
+  },
+  "next_bounded_steps": [
+    "Root completes and authenticates actual new prefix run; source/run status alone is not input admission.",
+    "Root supplies strict actual-prefix-bound contract, new disabled method/flags and exact current source controls; keep actual full source projection and recursive method pins.",
+    "Hosted tests must exercise actual new helper calls, complete synthetic route handoff/refusals and source/authority/publication/lifecycle failures; no native qualification can come from those synthetic controls.",
+    "Use independent route/audit reservations, unchanged14400s route and five1200s audits, and hosted job wall-clock envelopes that also retain restore/freeze/publication under360min.",
+    "Root alone may authorize exact-source native work after review and actual controls. No dispatch is performed by this source unit."
+  ],
+  "derivations": {
+    "host": [
+      {
+        "label": "contract namespace",
+        "before_bytes": 53,
+        "before_sha256": "9d61ebcc518262a7997b329ca83a2e7300e2a0fd39f0b84b318e87f362ca6fb4",
+        "after_bytes": 53,
+        "after_sha256": "f4d7cde31734fc06bf048948d036e5c910d6eac8eb95b57d312337898bf34188"
+      },
+      {
+        "label": "handoff namespace",
+        "before_bytes": 58,
+        "before_sha256": "ae8888a8996513ad67920a0e42b0de298fc36aaa6d9fc65263e4c7b2a95f2325",
+        "after_bytes": 58,
+        "after_sha256": "c52086938ccbaaf5624677001f8b02218eac75439ef3b6cf2de38a6517e92e5c"
+      },
+      {
+        "label": "attempt-specific prefix jobs",
+        "before_bytes": 60,
+        "before_sha256": "4998292825eebb6f85fa413d106e5313c855bd825c9a6df1e1a5d6d855bf1e6b",
+        "after_bytes": 71,
+        "after_sha256": "74bf37848779c02fb57d6697d83d6543e6a930f029609a6c085ee7d6a17c16c8"
+      },
+      {
+        "label": "current output proof path",
+        "before_bytes": 24,
+        "before_sha256": "c8ed3942450db2f24e9d627e1f8428fdc63b37b02e799d1f32869cd1f88f519e",
+        "after_bytes": 23,
+        "after_sha256": "d38c679df6356a6e041aa7daf071a21fec424237b51b9ede35b7ca63cf5913c9"
+      },
+      {
+        "label": "current frozen inventory proof path",
+        "before_bytes": 40,
+        "before_sha256": "73a3e883e53585d8df6a376ad9110fd24d2c8a8b51545a4c58b5456118228104",
+        "after_bytes": 39,
+        "after_sha256": "a7ce459d16a436fbc04aa1ba56010b24e4875a54a0d28265c532ff2a6b0e7b33"
+      },
+      {
+        "label": "actual full member count report",
+        "before_bytes": 82,
+        "before_sha256": "7dde42b6ae90c300c049994f9f6d26dcc848a6b20da210d98b767037ac7893db",
+        "after_bytes": 129,
+        "after_sha256": "e06e88e2b208668d4e9d1dc58b9e49fa516d041802af3dc5cf2c39affd2580a8"
+      },
+      {
+        "label": "typed stage authorization",
+        "before_bytes": 157,
+        "before_sha256": "e3e891f9c34ea0520008fa22ef93c90ff86875c6f456ecacbabbd413fd247a5f",
+        "after_bytes": 134,
+        "after_sha256": "6a7fb081a415d5fc2e011834bcbfc66f0b5c0bb3bdeddbf350f7d63df1a33a0e"
+      },
+      {
+        "label": "host schema",
+        "before_bytes": 40,
+        "before_sha256": "7235c85fc341be901c2a9cac3e848849f5ce9c9e60b85fcfe1c7f59e5402cd4f",
+        "after_bytes": 40,
+        "after_sha256": "fa06e85517f5d30dec59bc061d246aec0e3a6265ac7cfac4b182a596db7e0618"
+      },
+      {
+        "label": "stage reservation",
+        "before_bytes": 64,
+        "before_sha256": "d23d8070934df204fbb66ded38b404c6a98e1fff742fdb9a95cc9ff746415b97",
+        "after_bytes": 38,
+        "after_sha256": "e9a6753b6ca8e1077eae768ac6db2ba6f11ee1ed94a6277bcca634043e024c15"
+      },
+      {
+        "label": "current source control admission",
+        "before_bytes": 87,
+        "before_sha256": "9f6f661c1d7d765e3ffd4052adb8ce336a61934f60e0082788213362e13ccb5d",
+        "after_bytes": 576,
+        "after_sha256": "7395e1566d16eb27a6c2d269bbb8b2857f9d44c938202afbb73be87fe1f8161a"
+      },
+      {
+        "label": "new inner path",
+        "before_bytes": 56,
+        "before_sha256": "a412f319f56db56afd869af299fa95d1274641a494e5956fcce5c7803748fbf6",
+        "after_bytes": 56,
+        "after_sha256": "855d0770d27b5cceffadfca013030fb1407437fd89bed06d7228d3ed14aef2ec"
+      },
+      {
+        "label": "handoff authority",
+        "before_bytes": 136,
+        "before_sha256": "7caac3e0358ff9643750c98a0dcde0dd80edc045a51046037ef2bd4e461fdbdb",
+        "after_bytes": 118,
+        "after_sha256": "c4956afe8baf3cfa10cfabb8e42e5560f450e7e4bde1dd15761bc1f5cbffcea0"
+      },
+      {
+        "label": "failure and empty aware full publication",
+        "before_bytes": 3347,
+        "before_sha256": "bd08e5c29e19d71e2d97eaf44bb0ede58c99856d53c328cb13376693148b4957",
+        "after_bytes": 6084,
+        "after_sha256": "0bf9eca6eb25dba7b9a5e10da6a4799aade440dfdf6ff60dbd352b203b63c05e"
+      }
+    ],
+    "publisher_from_fixed_prefix": [
+      {
+        "label": "mode-stage group wait",
+        "before_bytes": 36,
+        "before_sha256": "0e61f8ed33dddb47bdc681ac0463044fc8846a60089ea1de2464c3618b953fea",
+        "after_bytes": 62,
+        "after_sha256": "948c87fed0dc764865d3df6e77956400eff27641f5d987e4d19f11688111757b"
+      },
+      {
+        "label": "tail direct metadata and optional native streams",
+        "before_bytes": 918,
+        "before_sha256": "ee7927a97d876b0695e0e35101353df4cacf891310401093b9d68ee47183f8d0",
+        "after_bytes": 1340,
+        "after_sha256": "f5693300ccdc7c6caf967b899428bb38d57a95727c5159399e4ef74135cfb53a"
+      },
+      {
+        "label": "explicit archive-path and release-name mapping",
+        "before_bytes": 87,
+        "before_sha256": "7228c622ed9ba548365a552e04b931a6e3188a73326668577345ec0e7afedad1",
+        "after_bytes": 169,
+        "after_sha256": "dc3dc8e16e0db581053edf430e26f2676c8db64a4ee3262a1d2a7155ef5ed6f6"
+      },
+      {
+        "label": "retain full special-entry refusal",
+        "before_bytes": 46,
+        "before_sha256": "56893c1ac46175522f86df00d802d5b7759b8c11f16046fc4e78908e9d63186f",
+        "after_bytes": 84,
+        "after_sha256": "bfdeec3b607e58608dbe99824d76d23d8b3929bd7816574747cfce61b67eed27"
+      },
+      {
+        "label": "tail lineage and original complete disk budget",
+        "before_bytes": 98,
+        "before_sha256": "b81b6598f8aa03317b0286103011ad34f4c488eb0e8d620d795456a529030211",
+        "after_bytes": 294,
+        "after_sha256": "a225f18aeeb2dde6f623fc6a420859d62ba663315344332c5c5b6522068b6370"
+      },
+      {
+        "label": "required outer archive basename",
+        "before_bytes": 43,
+        "before_sha256": "16de132a72c1b1973a796bba8e16e85feadbdc33cdd37654e3b6a7ba53f7aca8",
+        "after_bytes": 41,
+        "after_sha256": "f80b8aed6be220748a03c639be6f18fa0eb744edc53bebf0cba59dac05e08cf5"
+      },
+      {
+        "label": "required ordered part basename",
+        "before_bytes": 50,
+        "before_sha256": "ab37585a4aef157aa7aea4de8b7ae40168c88d8b4d3bb3a7dee710415e433286",
+        "after_bytes": 48,
+        "after_sha256": "d83dd4453e61f4a8170a0cc734dc0be2455c2a4f5bc7ad59472117c2df6c32a1"
+      },
+      {
+        "label": "mode-stage tag",
+        "before_bytes": 45,
+        "before_sha256": "1025016cc0866d13099ebe7c9dfb634c30554355227443129c576b3249b68b26",
+        "after_bytes": 71,
+        "after_sha256": "3e8eea94b0d4287937e6ea5c9d91458ac3c0352532bc09bf0bc60f86fa1b88a9"
+      },
+      {
+        "label": "publication lineage",
+        "before_bytes": 67,
+        "before_sha256": "1d30c1ef6b5e7644cefaf246b003466f09839c64faa4fa19f48eac1b4945b28c",
+        "after_bytes": 103,
+        "after_sha256": "19b0d627415172dcbe52be160461c7a45860a187d87bc6e91963e557b7ce7eab"
+      },
+      {
+        "label": "fallback marker",
+        "before_bytes": 34,
+        "before_sha256": "129fe06f342493bfc0d097fbeaac8fd8a59758a26166b335d8e8ad3f80f92ff4",
+        "after_bytes": 32,
+        "after_sha256": "09b872568156625f1e63c14870c8c529c361a01d3bb8692f5305438e7f067e36"
+      }
+    ],
+    "driver": [
+      {
+        "label": "contract namespace",
+        "before_bytes": 53,
+        "before_sha256": "9d61ebcc518262a7997b329ca83a2e7300e2a0fd39f0b84b318e87f362ca6fb4",
+        "after_bytes": 53,
+        "after_sha256": "f4d7cde31734fc06bf048948d036e5c910d6eac8eb95b57d312337898bf34188"
+      },
+      {
+        "label": "typed stage authorization",
+        "before_bytes": 93,
+        "before_sha256": "542ad01f3d70cbd9cd7b1de4bc241e919518bfbdb3a0d8bb1ffcdd61f9136a5e",
+        "after_bytes": 53,
+        "after_sha256": "c54285a6f6d2c5b03ef1c4c181616c28badb0a0f9b58d1fff9f78ebc424e052e"
+      }
+    ],
+    "native": [
+      {
+        "label": "current frozen prefix renderer",
+        "before_bytes": 60,
+        "before_sha256": "313ad707779f947360072af0f7f5ffd2d3da947d67bfe8080dd4276d89c092ec",
+        "after_bytes": 60,
+        "after_sha256": "f2e9f563bbd5f618a7bc8c04f0cad7dbec0d87e8d027aca824768c8edc450315"
+      },
+      {
+        "label": "contract namespace",
+        "before_bytes": 53,
+        "before_sha256": "9d61ebcc518262a7997b329ca83a2e7300e2a0fd39f0b84b318e87f362ca6fb4",
+        "after_bytes": 53,
+        "after_sha256": "f4d7cde31734fc06bf048948d036e5c910d6eac8eb95b57d312337898bf34188"
+      },
+      {
+        "label": "typed audit authority",
+        "before_bytes": 39,
+        "before_sha256": "60b386c72cd667baa5f8130372a7a58c47e1b321ce2302bb453424d01f07fbc7",
+        "after_bytes": 66,
+        "after_sha256": "19e6858cedea019a7ccf130a194deb7c67e50d6bb9b66bfe25229eb7707df9ac"
+      }
+    ],
+    "inner": [
+      {
+        "label": "contract namespace",
+        "before_bytes": 53,
+        "before_sha256": "9d61ebcc518262a7997b329ca83a2e7300e2a0fd39f0b84b318e87f362ca6fb4",
+        "after_bytes": 53,
+        "after_sha256": "f4d7cde31734fc06bf048948d036e5c910d6eac8eb95b57d312337898bf34188"
+      },
+      {
+        "label": "contract constants",
+        "before_bytes": 73,
+        "before_sha256": "82734ab74fc3024f27f62ed15a562aebe2b391ac4480f3e8d5c7b902064f6c20",
+        "after_bytes": 73,
+        "after_sha256": "9616a0d3601800543d5ac89aa3db9342935cee828c4e671901ec518a7f120c71"
+      },
+      {
+        "label": "inner schema",
+        "before_bytes": 41,
+        "before_sha256": "2684ad9b6b439cbe2abf0356dffc3131600519def382f4e5605ad92f143b930c",
+        "after_bytes": 41,
+        "after_sha256": "aece0e71a287c2965b2dc84d865afe75bd6aec18fe6bf689796695633a82a3f6"
+      },
+      {
+        "label": "retain checked method for stage gate",
+        "before_bytes": 36,
+        "before_sha256": "099ebce14ebfbd59af73f01baf7be4e77b9bb37cbfc1b9f12f83e73c789a5087",
+        "after_bytes": 43,
+        "after_sha256": "5bec86f7cd1d5fac969d1854afb5abb9053aee4f410b9c3489479c208e84c4e1"
+      },
+      {
+        "label": "typed stage authority",
+        "before_bytes": 96,
+        "before_sha256": "30c8eddbad74328fc76d8be814041484518b26e395a285185b148326855ce712",
+        "after_bytes": 136,
+        "after_sha256": "264a0ce9940c016dbe7469e0a01b3ef775bba268408faef523841b6ef62feec3"
+      },
+      {
+        "label": "new driver path",
+        "before_bytes": 68,
+        "before_sha256": "28f6797a115fc993abd20b99828468ecea3eabe312a4348c5b46a021cdf211dc",
+        "after_bytes": 68,
+        "after_sha256": "86e677f874a189a6ed7adfc130db41f7d35965fc92e1736dcb1ae9051e247900"
+      }
+    ],
+    "handoff": [
+      {
+        "label": "contract namespace only",
+        "before_bytes": 53,
+        "before_sha256": "9d61ebcc518262a7997b329ca83a2e7300e2a0fd39f0b84b318e87f362ca6fb4",
+        "after_bytes": 53,
+        "after_sha256": "f4d7cde31734fc06bf048948d036e5c910d6eac8eb95b57d312337898bf34188"
+      }
+    ]
+  },
+  "complete_unified_diffs": {
+    "host": "--- scripts/cloud_mainchip_built_engine_route_tail.py\n+++ scripts/cloud_mainchip_fixed_engine_route_tail.py\n@@ -11,8 +11,8 @@\n import sys\n import tarfile\n import time\n-import mainchip_built_engine_route_tail_contract as c\n-import mainchip_built_engine_route_tail_handoff as handoff\n+import mainchip_fixed_engine_route_tail_contract as c\n+import mainchip_fixed_engine_route_tail_handoff as handoff\n from mainchip_witness_engine_build import (\n  fingerprint, execute_command, create_owned, cleanup_owned, terminal_availability)\n import wait_cloud_tested_source_release as reservation\n@@ -34,7 +34,7 @@\n     from route_cloud_newer_postcts import fetch\n     inv=c.prefix_contract(ROOT);read=reservation.release.api\n     proof=c.envelope(ROOT,read(\"actions/runs/\"+str(c.PREFIX_RUN)),\n-        read(\"actions/runs/\"+str(c.PREFIX_RUN)+\"/jobs?per_page=100\"),\n+        read(\"actions/runs/\"+str(c.PREFIX_RUN)+\"/attempts/1/jobs?per_page=100\"),\n         read(\"releases/\"+str(c.PREFIX_RELEASE)),read(\"git/ref/tags/\"+c.PREFIX_TAG))\n     write(out/\"prefix-envelope.json\",proof)\n     transport=work/\"prefix-transport\";transport.mkdir()\n@@ -50,7 +50,7 @@\n             with (transport/part[\"name\"]).open(\"rb\") as source:shutil.copyfileobj(source,target,4*1024**2)\n     c.require(fingerprint(archive)==manifest[\"archive\"],\"complete outer archive identity\")\n     expected=dict(c.saved(ROOT,\"outputs\")[\"files\"])\n-    expected[\"outputs.json\"]=fingerprint(c.secure_file(ROOT,c.PREFIX+\".outputs.json\"))\n+    expected[\"outputs.json\"]=fingerprint(c.secure_file(ROOT,c.saved_path(\"outputs\")))\n     outer=transport/\"outer\"\n     with archive.open(\"rb\") as stream:\n         full=c.engine_extract(stream,outer,expected,tuple(expected),c.LIMITS[\"archive_expanded_limit\"])\n@@ -72,11 +72,12 @@\n     c.frozen_unchanged(work,inv)\n     c.require(nested[\"all_files\"]==inv[\"files\"] and nested[\"all_regular_members_verified\"] is True\n         and nested[\"unpacked_bytes\"]==c.FROZEN_BYTES,\"frozen census\")\n-    shutil.copyfile(c.secure_file(ROOT,c.PREFIX+\".frozen-prefix-inventory.json\"),work/\"frozen-manifest.json\")\n+    shutil.copyfile(c.secure_file(ROOT,c.saved_path(\"frozen-prefix-inventory\")),work/\"frozen-manifest.json\")\n     (work/\"engine/openroad\").chmod(0o500)\n     write(out/\"prefix-restoration.json\",dict(outer=full,nested=nested,\n         frozen_inventory=fingerprint(work/\"frozen-manifest.json\"),\n-        complete_outer_archive_verified=True,complete_746_native_projection_verified=True,\n+        complete_outer_archive_verified=True,complete_native_projection_verified=True,\n+        native_projection_files=len(inv[\"files\"]),\n         native_archives_remain_in_cloud=True))\n     return inv\n \n@@ -97,11 +98,11 @@\n \n def probe():\n     ctx=c.context(os.environ);m=c.method(ROOT)\n-    c.require(ctx[\"mode\"] in c.MODES and ctx[\"stage\"] in (\"route\",\"audit\")\n-        and m[\"native_\"+ctx[\"stage\"]+\"_authorized\"],\"native stage not authorized\")\n+    c.require(ctx[\"mode\"] in c.MODES and ctx[\"stage\"] in (\"route\",\"audit\"),\"native stage scope\")\n+    c.authorize_stage(m,ctx[\"stage\"])\n     c.require(subprocess.check_output([\"git\",\"rev-parse\",\"HEAD\"],cwd=ROOT,text=True).strip()==ctx[\"source\"],\"checkout identity\")\n     work=owned_work(ctx,True);out=work/\"out\";out.mkdir()\n-    report=dict(schema=\"built-engine-route-tail-host-v1\",source=ctx[\"source\"],mode=ctx[\"mode\"],stage=ctx[\"stage\"],\n+    report=dict(schema=\"fixed-engine-route-tail-host-v1\",source=ctx[\"source\"],mode=ctx[\"mode\"],stage=ctx[\"stage\"],\n         status=\"IN_PROGRESS\",physical_acceptance=False,observer_equivalence_qualified=False,\n         commands=[],terminal_errors=[],creation_attempted=False)\n     primary=None;identity=None;handlers={};projected=False;restored=False;started=time.monotonic()\n@@ -111,10 +112,16 @@\n     try:\n         for sig in (signal.SIGINT,signal.SIGTERM):handlers[sig]=signal.signal(sig,interrupted)\n         proof=reservation.wait(c.group(ctx[\"mode\"],ctx[\"stage\"]),os.environ)\n-        c.require(not proof[\"existing_assets\"],\"tail release not empty\")\n+        c.validate_reservation(proof,ctx,True)\n         write(out/\"release-reservation.json\",proof)\n         shutil.copyfile(ROOT/c.METHOD,out/\"method.json\")\n-        shutil.copyfile(ROOT/\"route-tail-controls.json\",out/\"route-tail-controls.json\")\n+        shutil.copyfile(c.secure_file(ROOT,c.SOURCE_ADMISSION),out/\"source-admission.json\")\n+        report[\"current_source_controls\"]=c.control_evidence(ROOT,ctx)\n+        write(out/\"current-source-controls.json\",report[\"current_source_controls\"])\n+        for name,expected in report[\"current_source_controls\"].items():\n+            c.require(Path(name).name==name and name.endswith(\"-controls.json\"),\"source control output name\")\n+            shutil.copyfile(c.secure_file(ROOT,name),out/name)\n+            c.require(fingerprint(out/name)==expected,\"source control copy changed\")\n         c.require(shutil.disk_usage(work).free>=c.LIMITS[\"min_free_disk_bytes\"],\"scratch disk budget\")\n         if ctx[\"stage\"]==\"route\":restore_prefix(work,out)\n         else:handoff.restore(work,out,ROOT,ctx,os.environ)\n@@ -128,7 +135,7 @@\n         c.method(projection);projected=True\n         write(work/\"request.json\",dict(mode=ctx[\"mode\"],stage=ctx[\"stage\"],source=ctx[\"source\"],\n             run_id=int(os.environ[\"GITHUB_RUN_ID\"]),engine=c.ENGINE))\n-        shutil.copyfile(ROOT/\"scripts/mainchip_built_engine_route_tail_inner.py\",work/\"inner.py\")\n+        shutil.copyfile(ROOT/\"scripts/mainchip_fixed_engine_route_tail_inner.py\",work/\"inner.py\")\n         command(\"immutable-image-pull\",[\"docker\",\"pull\",c.IMAGE],1800)\n         image=c.decode(command(\"image-inspect\",[\"docker\",\"image\",\"inspect\",c.IMAGE]))[0];c.validate_image(image)\n         identity=create_owned(ctx,work,report,command,c.create_argv(ctx,work,os.getuid(),os.getgid()))\n@@ -155,8 +162,8 @@\n \n def freeze_route():\n     ctx=c.context(os.environ);m=c.method(ROOT)\n-    c.require(ctx[\"stage\"]==\"route\" and ctx[\"mode\"] in c.MODES and m[\"native_route_authorized\"],\n-        \"route handoff not authorized\")\n+    c.require(ctx[\"stage\"]==\"route\" and ctx[\"mode\"] in c.MODES,\"route handoff scope\")\n+    c.authorize_stage(m,\"route\")\n     work=owned_work(ctx)\n     return handoff.freeze(work,work/\"out\",ROOT)\n \n@@ -180,52 +187,95 @@\n     return dict(name=path.name,**expected,reused_identical=reused)\n \n def publish():\n-    ctx=c.context(os.environ);c.method(ROOT);work=owned_work(ctx);out=work/\"out\"\n-    proof=reservation.wait(c.group(ctx[\"mode\"],ctx[\"stage\"]),os.environ)\n-    write(out/\"publication-availability.json\",terminal_availability(out))\n-    files={}\n-    for p in sorted(out.rglob(\"*\")):\n-        c.require(not p.is_symlink() and (p.is_file() or p.is_dir()),\"output special entry\")\n-        if p.is_file():files[p.relative_to(out).as_posix()]=fingerprint(p)\n-    write(out/\"outputs.json\",dict(source=ctx[\"source\"],mode=ctx[\"mode\"],stage=ctx[\"stage\"],files=files,physical_acceptance=False))\n-    total=sum(row['bytes'] for row in files.values())\n-    c.require(shutil.disk_usage(work).free>=2*total+2*1024**3,'complete publication disk budget')\n-    archive=work/\"route-tail-evidence.tar.gz\"\n-    with tarfile.open(archive,\"w:gz\") as tar:\n-        for p in sorted(out.iterdir()):tar.add(p,arcname=p.name,recursive=True)\n-    parts=[]\n-    with archive.open(\"rb\") as stream:\n-        i=0\n-        while True:\n-            raw=stream.read(512*1024**2)\n-            if not raw:break\n-            p=work/(\"route-tail-evidence.tar.gz.part%03d\"%i);p.write_bytes(raw)\n-            parts.append(dict(name=p.name,**fingerprint(p)));i+=1\n-    write(out/\"parts.json\",dict(archive=fingerprint(archive),parts=parts))\n-    direct=(\"host-result.json\",\"inner-result.json\",\"case-result.json\",\"observer-diagnosis.json\",\n-        \"writer-raw.json\",\"method.json\",\"route-tail-controls.json\",\"release-reservation.json\",\n-        \"outputs.json\",\"parts.json\",\"container-initial.json\",\"container-terminal.json\",\n-        \"runtime-observed.json\",\"prefix-envelope.json\",\"prefix-restoration.json\",\"publication-availability.json\",\n-        \"route-handoff.json\",\"route-handoff-inventory.json\",\"route-source-envelope.json\",\"route-restoration.json\",\n-        \"route-host-result.json\",\"route-inner-result.json\",\"route-case-result.json\",\"route-route-handoff.json\",\n-        \"route-route-handoff-inventory.json\",\"route-outputs.json\",\"route-parts.json\",\"route-method.json\")\n-    uploads=[out/p for p in direct if (out/p).is_file()]+[work/p[\"name\"] for p in parts]\n-    for directory in (out/\"supervision\",out/\"witness\"):\n-        if directory.is_dir():\n-            uploads.extend(p for p in sorted(directory.iterdir()) if p.is_file()\n-                and p.suffix in (\".json\",\".jsonl\",\".stdout\",\".stderr\"))\n-    uploads.extend(out/p for p in (\"owned-container-start.stdout\",\"owned-container-start.stderr\") if (out/p).is_file())\n-    planned={p.name for p in uploads}\n-    c.require(len(planned)==len(uploads)\n-        and {x[\"name\"] for x in proof[\"existing_assets\"]}<=planned,\"publication census\")\n-    def upload(tag,path):\n-        subprocess.run([\"gh\",\"release\",\"upload\",tag,str(path),\"--repo\",c.REPOSITORY],check=True,timeout=1800)\n-    rows=[publish_asset(p,ctx,proof[\"release_id\"],reservation.release.api,upload) for p in uploads]\n-    live=reservation.release.api(\"releases/\"+str(proof[\"release_id\"]))\n-    c.require({a[\"name\"]:(a[\"size\"],a[\"digest\"]) for a in live[\"assets\"]}==\n-        {r[\"name\"]:(r[\"bytes\"],\"sha256:\"+r[\"sha256\"]) for r in rows},\"full published census\")\n-    write(out/\"publication.json\",dict(status=\"PASS_PERMANENT_DIAGNOSTIC_PUBLICATION\",\n-        source=ctx[\"source\"],mode=ctx[\"mode\"],stage=ctx[\"stage\"],release_id=proof[\"release_id\"],assets=rows,physical_acceptance=False))\n+    ctx=c.context(os.environ)\n+    work=owned_work(ctx); out=work/\"out\"; out.mkdir(exist_ok=True)\n+    source_error=None\n+    try:c.method(ROOT)\n+    except BaseException as exc:source_error=exc\n+    # Preservation is separately authorized by the exact current context, owned\n+    # workspace and reserved source/tag. Source failure never becomes build PASS.\n+    try:\n+        proof=reservation.wait(c.group(ctx[\"mode\"],ctx[\"stage\"]),os.environ);c.validate_reservation(proof,ctx,False)\n+        availability=terminal_availability(out)\n+        availability.update(source_integrity_validated=source_error is None,native_accepted=False,\n+          source_integrity_error=None if source_error is None else c.error_record(\"publication-source-integrity\",source_error))\n+        write(out/\"publication-availability.json\",availability)\n+        optional=(\"host-result.json\",\"inner-result.json\",\"case-result.json\",\"observer-diagnosis.json\",\n+          \"writer-raw.json\",\"method.json\",\"release-reservation.json\",\n+          \"container-initial.json\",\"container-terminal.json\",\"runtime-observed.json\",\n+          \"prefix-envelope.json\",\"prefix-restoration.json\",\"source-admission.json\",\n+          \"current-source-controls.json\",\"publication-availability.json\",\n+          \"route-handoff.json\",\"route-handoff-inventory.json\",\"route-source-envelope.json\",\"route-restoration.json\",\n+          \"route-host-result.json\",\"route-inner-result.json\",\"route-case-result.json\",\"route-route-handoff.json\",\n+          \"route-route-handoff-inventory.json\",\"route-outputs.json\",\"route-parts.json\",\"route-method.json\",\n+          \"owned-container-start.stdout\",\"owned-container-start.stderr\")\n+        optional+=tuple(sorted(p.name for p in out.iterdir()\n+          if p.name.endswith(\"-controls.json\") and p.name not in optional))\n+        for directory in (out/\"supervision\",out/\"witness\"):\n+            c.require(not directory.is_symlink(),\"direct publication directory symlink\")\n+            if directory.is_dir():\n+                optional+=tuple(p.relative_to(out).as_posix() for p in sorted(directory.iterdir())\n+                    if p.is_file() and p.suffix in (\".json\",\".jsonl\",\".stdout\",\".stderr\"))\n+        plan=c.direct_plan(out,optional)\n+        for row in plan[\"files\"]:row[\"asset_name\"]=Path(row[\"name\"]).name\n+        write(out/\"direct-publication-plan.json\",plan)\n+        files={}\n+        for p in sorted(out.rglob(\"*\")):\n+            c.require(not p.is_symlink() and (p.is_file() or p.is_dir()),\"output special entry\")\n+            if p.is_file():files[p.relative_to(out).as_posix()]=fingerprint(p)\n+        write(out/\"outputs.json\",dict(source=ctx[\"source\"],mode=ctx[\"mode\"],stage=ctx[\"stage\"],files=files,physical_acceptance=False))\n+        total=sum(row[\"bytes\"] for row in files.values())\n+        c.require(shutil.disk_usage(work).free>=2*total+2*1024**3,\"complete publication disk budget\")\n+        archive=work/\"route-tail-evidence.tar.gz\"\n+        with tarfile.open(archive,\"w:gz\")as tar:\n+            for p in sorted(out.iterdir()):\n+                c.require(not p.is_symlink(),\"archive symlink\")\n+                tar.add(p,arcname=p.name,recursive=True)\n+        archive_receipt=fingerprint(archive)\n+        parts=[]\n+        with archive.open(\"rb\")as stream:\n+            i=0\n+            while True:\n+                raw=stream.read(512*1024**2)\n+                if not raw:break\n+                p=work/(\"route-tail-evidence.tar.gz.part%03d\"%i);p.write_bytes(raw)\n+                parts.append(dict(name=p.name,**fingerprint(p)));i+=1\n+        write(out/\"parts.json\",dict(archive=archive_receipt,parts=parts))\n+        tag=\"cloud-results-\"+ctx[\"token\"]+\"-\"+c.group(ctx[\"mode\"],ctx[\"stage\"])\n+        uploads=[out/r[\"name\"]for r in plan[\"files\"]if r[\"disposition\"]==\"direct\"]\n+        uploads.extend(out/x for x in (\"outputs.json\",\"parts.json\",\"direct-publication-plan.json\"))\n+        uploads.extend(work/p[\"name\"]for p in parts)\n+        planned={p.name for p in uploads}\n+        c.require(len(planned)==len(uploads),\"duplicate publication filename\")\n+        c.require({x[\"name\"] for x in proof[\"existing_assets\"]} <= planned,\"unexpected reserved asset\")\n+        def upload(tag,path):\n+            subprocess.run([\"gh\",\"release\",\"upload\",tag,str(path),\"--repo\",c.REPOSITORY],check=True,timeout=1800)\n+        uploaded=[publish_asset(p,ctx,proof[\"release_id\"],reservation.release.api,upload) for p in uploads]\n+        info=reservation.release.api(\"releases/tags/\"+tag)\n+        ref=reservation.release.api(\"git/ref/tags/\"+tag)\n+        reservation.release.validate_release(info,ref,tag,ctx[\"source\"])\n+        byname={a[\"name\"]:a for a in info[\"assets\"]}\n+        c.require(set(byname)=={x[\"name\"]for x in uploaded},\"release asset census\")\n+        for row in uploaded:\n+            actual=byname[row[\"name\"]]\n+            c.require(actual[\"size\"]==row[\"bytes\"] and actual[\"digest\"]==\"sha256:\"+row[\"sha256\"],\n+                      \"published asset mismatch\")\n+        write(out/\"publication.json\",dict(status=\"PASS_PERMANENT_RELEASE_PUBLICATION\"if source_error is None else\"PASS_PERMANENT_FAILURE_EVIDENCE_ONLY\",\n+            source_integrity_validated=source_error is None,native_accepted=False,\n+            release_id=info[\"id\"],tag=tag,source=ctx[\"source\"],mode=ctx[\"mode\"],stage=ctx[\"stage\"],assets=uploaded,\n+            native_archives_stay_in_cloud=True))\n+        print(json.dumps(dict(release_id=info[\"id\"],tag=tag,assets=len(uploaded)),sort_keys=True))\n+    except BaseException as publication_error:\n+        if source_error is not None:\n+            record=dict(status=\"FAIL_SOURCE_INTEGRITY_AND_PUBLICATION\",native_accepted=False,\n+              source_error=c.error_record(\"source\",source_error),publication_error=c.error_record(\"publication\",publication_error))\n+            try:write(out/\"publication-failure.json\",record)\n+            except BaseException:\n+                try:print(\"FIXED_TAIL_PUBLICATION_FALLBACK \"+json.dumps(record,sort_keys=True),flush=True)\n+                except BaseException:pass\n+            raise source_error\n+        raise\n+    if source_error is not None:raise source_error\n     return 0\n \n def comparison_body(ctx,work,out):\n",
+    "driver": "--- scripts/mainchip_built_engine_route_tail_driver.py\n+++ scripts/mainchip_fixed_engine_route_tail_driver.py\n@@ -8,7 +8,7 @@\n import threading\n sys.path.insert(0,\"/work/tail-source/scripts\")\n sys.path.insert(0,\"/work/source/scripts\")\n-import mainchip_built_engine_route_tail_contract as c\n+import mainchip_fixed_engine_route_tail_contract as c\n import cloud_mainchip_original_clock_restoration as old\n import cloud_mainchip_two_signal_repair as controller\n import mainchip_two_signal_internal_witness as witness\n@@ -52,7 +52,7 @@\n     try:\n         request=c.decode(c.secure_file(WORK,\"request.json\").read_bytes());stage=request[\"stage\"]\n         c.require(stage in (\"route\",\"audit\"),\"native stage\")\n-        c.require(c.method(WORK/\"tail-source\")[\"native_\"+stage+\"_authorized\"],\"stage not authorized\")\n+        c.authorize_stage(c.method(WORK/\"tail-source\"),stage)\n         c.previous.method(WORK/\"source\")\n         inv=c.decode(c.secure_file(WORK,\"frozen-manifest.json\").read_bytes())\n         report[\"frozen_input\"]=c.frozen_unchanged(WORK,inv)\n",
+    "native": "--- scripts/mainchip_built_engine_route_tail_native.py\n+++ scripts/mainchip_fixed_engine_route_tail_native.py\n@@ -7,9 +7,9 @@\n sys.path.insert(0,\"/work/tail-source/scripts\")\n sys.path.insert(0,\"/work/source/scripts\")\n import odb\n-import mainchip_built_engine_route_prefix_native as original\n+import mainchip_fixed_engine_route_prefix_native as original\n import mainchip_original_clock_restoration_native as n\n-import mainchip_built_engine_route_tail_contract as c\n+import mainchip_fixed_engine_route_tail_contract as c\n import mainchip_two_signal_internal_witness as witness\n from mainchip_witness_engine_build import fingerprint\n \n@@ -23,7 +23,7 @@\n     return rows\n \n def main():\n-    c.method(Path(\"/work/tail-source\"))\n+    c.authorize_stage(c.method(Path(\"/work/tail-source\")),\"audit\")\n     c.require(os.environ.get(\"NSSOC_TWO_SIGNAL_PHASE\") in c.STATUSES,\"only original tail audit phases\")\n     c.require(os.environ.get(\"NSSOC_TWO_SIGNAL_OUT\")==\"/work/out/work\",\"canonical native output\")\n     c.require(not any(k in os.environ for k in (\"GH_TOKEN\",\"GITHUB_TOKEN\",c.WITNESS_ENV)),\"native audit environment\")\n",
+    "inner": "--- scripts/mainchip_built_engine_route_tail_inner.py\n+++ scripts/mainchip_fixed_engine_route_tail_inner.py\n@@ -10,14 +10,14 @@\n import time\n sys.path.insert(0,\"/work/tail-source/scripts\")\n sys.path.insert(0,\"/work/source/scripts\")\n-import mainchip_built_engine_route_tail_contract as c\n-from mainchip_built_engine_route_tail_contract import MEMORY,PIDS,require\n+import mainchip_fixed_engine_route_tail_contract as c\n+from mainchip_fixed_engine_route_tail_contract import MEMORY,PIDS,require\n from mainchip_witness_engine_build import fingerprint\n WORK=Path(\"/work\")\n OUT=WORK/\"out\"\n START=time.monotonic()\n DEADLINE=START+c.stage_limits(\"route\")[\"inner_seconds\"]\n-report=dict(schema=\"built-engine-route-tail-inner-v1\",status=\"IN_PROGRESS\",\n+report=dict(schema=\"fixed-engine-route-tail-inner-v1\",status=\"IN_PROGRESS\",\n             physical_acceptance=False,observer_equivalence_qualified=False,\n             native_tail_requested=False,terminal_errors=[],commands=[])\n def write(name,value):c.atomic_record(OUT/name,value)\n@@ -114,8 +114,9 @@\n     try:\n         require(not any(k in os.environ for k in (\"GH_TOKEN\",\"GITHUB_TOKEN\",\"NNSOC_DRT_INTERNAL_WITNESS_DIR\")),\"native environment scope\")\n         require(not (WORK/\"build\").exists() and not (WORK/\"source/src/Main.cc\").exists(),\"engine build tree must be absent\")\n-        c.method(WORK/\"tail-source\")\n+        method=c.method(WORK/\"tail-source\")\n         request=c.decode(c.secure_file(WORK,\"request.json\").read_bytes());stage=request[\"stage\"]\n+        c.authorize_stage(method,stage)\n         limits=c.stage_limits(stage);DEADLINE=START+limits[\"inner_seconds\"]\n         report[\"stage\"]=stage\n         report[\"cgroup_initial\"]=cgroup()\n@@ -134,7 +135,7 @@\n         require(\"PASS_COMPLETE_OPENROAD_TCL_INTERFACES\" in (OUT/\"tcl-smoke.stdout\").read_text(),\"Tcl smoke marker\")\n         report[\"native_tail_requested\"]=True\n         run(stage+\"-stage\",[\"/usr/bin/python3\",\n-            \"/work/tail-source/scripts/mainchip_built_engine_route_tail_driver.py\"],limits[\"driver_seconds\"])\n+            \"/work/tail-source/scripts/mainchip_fixed_engine_route_tail_driver.py\"],limits[\"driver_seconds\"])\n         native=c.decode((OUT/\"case-result.json\").read_bytes())\n         expected=\"PASS_ROUTE_ONLY_AWAITING_ORIGINAL_AUDITS\" if stage==\"route\" else \"PASS_COMPLETE_ROUTE_TAIL_DIAGNOSTIC\"\n         require(native[\"status\"]==expected and native[\"stage\"]==stage\n",
+    "handoff": "--- scripts/mainchip_built_engine_route_tail_handoff.py\n+++ scripts/mainchip_fixed_engine_route_tail_handoff.py\n@@ -7,7 +7,7 @@\n import re\n import shutil\n import tarfile\n-import mainchip_built_engine_route_tail_contract as c\n+import mainchip_fixed_engine_route_tail_contract as c\n from mainchip_built_engine_runtime_contract import canonical\n from mainchip_witness_engine_build import fingerprint\n import wait_cloud_tested_source_release as reservation\n"
+  },
+  "local_operations": "Only GitHub source/JSON API and Python AST/string/hash review in RAM. No local files, authored module imports/tests/compile, native archives/ELF/ODB or workflow dispatch."
+}
