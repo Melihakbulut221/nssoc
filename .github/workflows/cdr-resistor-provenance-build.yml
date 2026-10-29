@@ -1,0 +1,26 @@
+name: cdr-resistor-provenance-build
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/cdr-resistor-provenance-build.yml]
+  workflow_dispatch:
+    inputs:
+      source:
+        description: Exact candidate source SHA
+        required: true
+        type: string
+      execute:
+        description: Candidate branch only; inert registry never builds
+        required: true
+        default: false
+        type: boolean
+permissions:
+  contents: read
+jobs:
+  register-only:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 2
+    steps:
+      - name: Harmless workflow registration only
+        run: |
+          printf '%s\n' 'Registration only. No checkout, dependency, archive, build or native execution.'
