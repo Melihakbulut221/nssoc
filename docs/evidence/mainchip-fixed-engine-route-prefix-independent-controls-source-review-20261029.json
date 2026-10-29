@@ -1,0 +1,172 @@
+{
+  "schema": "mainchip-fixed-engine-route-prefix-independent-source-controls-review-v1",
+  "status": "AUTHORED_DISABLED_SOURCE_ONLY_CONTROLS_NOT_EXECUTED",
+  "repository": "Melihakbulut221/nssoc",
+  "branch": "codex/mainchip-fixed-engine-route-prefix-controls",
+  "base_source": "f77c7af017cd8ca6873245a9f587bef683017324",
+  "ownership": "Only one additive checker and this review. No wrapper, contract, method, workflow, authority or inherited blob changed.",
+  "checker": {
+    "path": "scripts/check_mainchip_fixed_engine_route_prefix.py",
+    "bytes": 35825,
+    "sha256": "2af4b7a0bc431a8973bfb2726454c8fc6a40ae2b52a47a8c40c9560e9a7a3eb7"
+  },
+  "cli": "python scripts/check_mainchip_fixed_engine_route_prefix.py --output fixed-route-prefix-controls.json",
+  "report": {
+    "status": "PASS_FIXED_ENGINE_ROUTE_PREFIX_SOURCE_CONTROLS",
+    "current_context_fields": [
+      "source",
+      "run_id",
+      "attempt",
+      "source_controls_only",
+      "native_executed"
+    ],
+    "current_context_policy": "Exact actual hosted source/run, attempt1, source_controls_only true, native_executed false. Requires c.context, c.method, source_controls_authorized true and actual Git HEAD match before controls.",
+    "context_controls": {
+      "positive_count": 1,
+      "refusal_count": 11
+    },
+    "authority_controls": {
+      "positive_count": 3,
+      "refusal_count": 54,
+      "typed_modes": [
+        [
+          false,
+          false,
+          false
+        ],
+        [
+          true,
+          false,
+          false
+        ],
+        [
+          true,
+          true,
+          true
+        ]
+      ],
+      "mode_columns": [
+        "source_controls_authorized",
+        "native_prefix_authorized",
+        "controller_ready"
+      ]
+    },
+    "actual_driver_controls": {
+      "sequencing_count": 6,
+      "lifecycle_count": 8,
+      "path_controls": {
+        "positive_paths": 3,
+        "refused_paths": 13
+      }
+    },
+    "runtime_proof_controls": {
+      "positive_count": 1,
+      "proof_file_count": 48,
+      "refusal_count": 50,
+      "source_refusal_count": 5
+    },
+    "publication_controls": {
+      "count": 7
+    },
+    "original_prefix_controls": {
+      "status": "PASS_SHARED_PREFIX_SOURCE_CONTROLS",
+      "positive_count": 4,
+      "refusal_count": 23,
+      "sequencing_count": 6,
+      "lifecycle_count": 8
+    },
+    "always_false": [
+      "native_executed",
+      "native_prefix_executed",
+      "native_routing_executed",
+      "actual_runtime_probe_executed",
+      "prefix_qualified",
+      "observer_equivalence_qualified",
+      "physical_acceptance"
+    ]
+  },
+  "source_references": {
+    "scripts/check_mainchip_built_engine_route_prefix.py": {
+      "source": "f77c7af017cd8ca6873245a9f587bef683017324",
+      "bytes": 20216,
+      "sha256": "9ad562b540dad1653755a7476feef4b75f68630842197db34f31473dcb280f5d"
+    },
+    "scripts/check_mainchip_fixed_engine_runtime_host.py": {
+      "source": "f77c7af017cd8ca6873245a9f587bef683017324",
+      "bytes": 15404,
+      "sha256": "2fdd0a6adf698deb2ebb279985379901de96a05bd4fb371004b63c88d2adcb59"
+    },
+    "scripts/check_mainchip_fixed_engine_runtime_probe.py": {
+      "source": "f77c7af017cd8ca6873245a9f587bef683017324",
+      "bytes": 20322,
+      "sha256": "97f881eac43f6d9d62813e26e6d8f3dc673fd0cf3c6a6ba401b76fc063bf63a1"
+    },
+    "scripts/mainchip_built_engine_route_prefix_contract.py": {
+      "source": "f77c7af017cd8ca6873245a9f587bef683017324",
+      "bytes": 4581,
+      "sha256": "4456ff82190f90b6bc622538ef11d186feb640f15737890f0c72142772a50719"
+    },
+    "scripts/mainchip_fixed_engine_runtime_contract.py": {
+      "source": "f77c7af017cd8ca6873245a9f587bef683017324",
+      "bytes": 12701,
+      "sha256": "f4497294ed2b2874a00c48d277287cc6684d61eb127e5af924d51b0022989274"
+    },
+    "scripts/cloud_mainchip_fixed_engine_runtime.py": {
+      "source": "f77c7af017cd8ca6873245a9f587bef683017324",
+      "bytes": 17152,
+      "sha256": "ef508a573843557739e1f6f81b7acddbb82f8f08d5d4ae7983568f469ed11276"
+    }
+  },
+  "production_wrapper_hashes": {
+    "scripts/cloud_mainchip_fixed_engine_route_prefix.py": "f7b43c87dc5b90f52a96009ba390b0b6d6b96645c8d856664956fd4c169b9988",
+    "scripts/mainchip_fixed_engine_route_prefix_inner.py": "857b0c66dd407089495ebf23e43d9f81b20e87d332da570e210a42fc7359306d",
+    "scripts/mainchip_fixed_engine_route_prefix_driver.py": "e9576ecfd5b636b3819cd0dad60334c02c87e66bd014e3179919f2669089f689",
+    "scripts/mainchip_fixed_engine_route_prefix_native.py": "8bbc8fb7c4f49c5a54d27f206d316e1c2c610ab358e7ca5ee13c6f26f01a119b"
+  },
+  "meaningful_boundaries": {
+    "context": "Reject non-hosted/manual/attempt1/current-branch/source constraints with nonempty actual validation reasons.",
+    "authority": "Explicit disabled baseline prevents future native-enabled repeats from making False-to-True mutations no-ops. Enforce exact bools, all eight forbidden flags, coherent controller/source/native, original identities/limits and protected inheritance/current proof.",
+    "actual_driver": "Call actual new execute_prefix and main. Original fixture code object is reused with only c/driver/ROOT globals substituted, retaining native/thread/signal/ownership collaborators as explicit synthetic seams.",
+    "old_cleanup_regression": "Original frozen31dd6 main reconstructed exactly inside unchanged lifecycle fixture; its old heartbeat-stop failure must skip join while new real main independently attempts join and preserves exact primary.",
+    "canonical_tcl": "Actual new adapter execute_native/canonical_tcl_path invoked by unchanged original fixture except one import-name substitution. Actual original import_tcl function runs on text paths without OpenROAD imports; renderer restored after success and body failure.",
+    "original_controls": "Unmodified original checker.main executes separately and its complete JSON report remains nested, with no claim that old execution qualifies the new wrapper.",
+    "derivation": "All four wrapper bytes and original references hashed; complete declared string derivations replayed and reversed; actual command differs only by new native script filename, prefix_complete byte-exact, original limits/phases/statuses identical.",
+    "copied_source": "Copy only current method protected entries plus method into fresh hosted temporary tree. Call actual new method and runtime_qualification before publication; no old checkout fallback.",
+    "runtime_receipt": "Actual authenticated48-file map. Append a byte to each distinct original report/log in turn; exact runtime proof bytes path refusal required. Missing/symlink receipt plus five current/producer source integrity refusals. Restore exact bytes and revalidate.",
+    "publication": "Actual new host.publish and tar packing, copied source admission preserved. Qualified seven fixtures differ only in expected archive basename: empty/missing terminal, upload failure, conflict, source corruption, source+upload failure, missing asset ID. Remote release/upload is synthetic; archives contain only synthetic control bytes, never acquired native content.",
+    "primary_preservation": "Exact primary identity checked by real lifecycle fixture, source failure remains primary across publication failure, complete partial bytes and zero-byte streams preserved in synthetic archive; no direct zero-byte upload."
+  },
+  "contract_integration_requirements": {
+    "module": "mainchip_fixed_engine_route_prefix_contract",
+    "PRIOR": "scripts/mainchip-fixed-engine-runtime-probe-methods.json",
+    "PRIOR_SHA": "f8609a955031737a851237e44b8f453249aa50fdaa143af2cfdfb4e8e275b33d",
+    "RUNTIME_REQUIRED": "All48 immutable relative paths mapped to exact bytes/sha256 including receipt, protected in root-composed new method.",
+    "RUNTIME_PREFIX": "docs/evidence/mainchip-fixed-engine-runtime-native-terminal-20261029/",
+    "RUNTIME_RUN": 40858216637,
+    "RUNTIME_SOURCE_SHA": "1812666a357bb8aca75bcfc5e1c523106ad7b08e",
+    "runtime_proof_byte_refusal": "runtime proof bytes: <relative path>",
+    "typed_authority": "AUTH_FALSE has8 entries; source/native/controller booleans; controller==native; native requires source controls; validate_method returns validated m.",
+    "unchanged_numerical_boundaries": "command source byte-exact except native renderer filename; prefix_complete byte-exact; PHASES/PASS_STATUSES/LIMITS unchanged.",
+    "prior_method": {
+      "protected_entries": 1022,
+      "unchanged": true
+    },
+    "new_required_source_pin": "Checker and this review must be pinned alongside root contract, current wrappers, all recursive producer methods and48 runtime proof files."
+  },
+  "static_validation": {
+    "ast_parsed": true,
+    "source_mutation_only_in_cloud_branch": true,
+    "authored_python_imports_executed": false,
+    "authored_tests_executed": false,
+    "native_commands_executed": false,
+    "native_archive_or_payload_acquired": false,
+    "local_files_written": false,
+    "workflow_dispatch": false
+  },
+  "limitations": [
+    "The separate controls branch intentionally has no new contract, method or runtime receipt import. Root must combine these two files with authenticated contract/proof integration before any hosted test.",
+    "Expected counts are authored assertions, not observed test outcomes. Actual hosted execution and full result/log preservation are required.",
+    "This checker establishes source/authority/lifecycle/publication behavior only; no current native prefix, routing, clock material conservation, observer equivalence or timing/physical acceptance is established.",
+    "Legacy source fixtures retain explicit synthetic ownership/native/thread/cloud collaborators. No C++/OpenROAD, ELF, ODB or routing is executed by this checker."
+  ]
+}
