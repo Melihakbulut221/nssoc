@@ -106,6 +106,8 @@ def probe():
 
 
 def regular_outputs(out):
+    out=Path(out)
+    c.require(out.is_dir()and not any(p.is_symlink()for p in (out,*out.parents)),"owned output root")
     files={}
     for path in sorted(Path(out).rglob("*")):
         c.require(not path.is_symlink()and(path.is_file()or path.is_dir()),"recovery output special entry")
@@ -144,6 +146,7 @@ def publication_plan(out,ctx):
 
 def pack(work,out,ctx):
     work,out=Path(work),Path(out);a.validate_context(ctx)
+    c.require(out==work/"out"and out.is_dir()and not any(p.is_symlink()for p in (out,*out.parents)),"owned publication root")
     c.atomic_record(out/"publication-availability.json",terminal_availability(out))
     plan=publication_plan(out,ctx);c.atomic_record(out/"direct-publication-plan.json",plan)
     # Do not edit/parse native result bodies to make failure publication succeed.

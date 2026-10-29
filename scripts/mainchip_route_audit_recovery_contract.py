@@ -89,6 +89,7 @@ def authorize(ctx):
     validate_context(ctx);m=source_guard()
     require(m["native_audit_authorized"]is True and m["native_restore_authorized"]is True,
       "new recovery native authority disabled")
+    require(m["source_controls_ready"]is True and m["native_review_ready"]is True,"recovery source unit not reviewed")
     require(subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip()==ctx["source"],
       "recovery checkout identity")
     proof=json.loads(old.secure_file(ROOT,CONTROLS).read_bytes())

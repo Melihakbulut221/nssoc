@@ -1,0 +1,154 @@
+name: Audit only recovery from retained route handoffs
+on:
+  workflow_dispatch:
+    inputs:
+      execute:
+        description: Reserved audit-only recovery after independent source review
+        type: boolean
+        required: true
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: mainchip-audit-recovery-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Exact first cloud source admission
+        run: |
+          python3 -B - <<'PY'
+          import os,subprocess,sys
+          sys.path.insert(0,'scripts')
+          import mainchip_route_audit_recovery_contract as a
+          e=dict(os.environ,NSSOC_RECOVERY_MODE='off')
+          ctx=a.context(e)
+          assert sys.version_info[:2]==(3,12)
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==ctx['source']
+          assert a.source_guard()['source_controls_authorized'] is True
+          PY
+      - name: Preserve original split-tail controls
+        run: |
+          python3 -B scripts/check_mainchip_built_engine_route_tail.py > route-tail-controls.json
+      - name: Complete authentic failed-route evidence controls
+        run: |
+          python3 -B scripts/check_mainchip_route_recovery_evidence.py --output recovery-controls.json > recovery-controls.stdout 2> recovery-controls.stderr
+      - name: Actual recovery adapters lifecycle and publication controls
+        run: |
+          python3 -B scripts/check_mainchip_route_audit_recovery.py --output route-audit-recovery-controls.json > audit-controls.stdout 2> audit-controls.stderr
+          python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          r=json.loads(Path('route-audit-recovery-controls.json').read_bytes())
+          assert r['status']=='PASS_AUDIT_RECOVERY_SOURCE_CONTROLS'
+          assert (len(r['restore_cases']),len(r['lifecycle_cases']),len(r['publication_cases']),len(r['context']['refusals']))==(5,7,5,6)
+          assert r['source']==os.environ['GITHUB_SHA'] and r['run_id']==int(os.environ['GITHUB_RUN_ID']) and r['attempt']==1
+          assert r['engine_executed'] is False and r['routing_executed'] is False and r['physical_acceptance'] is False
+          PY
+      - name: Always emit complete exact source records
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          for name in ('route-tail-controls.json','recovery-controls.json','recovery-controls.stdout','recovery-controls.stderr','route-audit-recovery-controls.json','audit-controls.stdout','audit-controls.stderr'):
+              p=Path(name);present=p.is_file() and not p.is_symlink();raw=p.read_bytes() if present else b''
+              chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+              print('AUDIT_RECOVERY_RECORD_INDEX '+json.dumps(dict(path=name,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks))))
+              for i,b in enumerate(chunks):print('AUDIT_RECOVERY_RECORD_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode())))
+          PY
+      - name: Retain complete source controls
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: audit-recovery-source-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            route-tail-controls.json
+            recovery-controls.json
+            recovery-controls.stdout
+            recovery-controls.stderr
+            route-audit-recovery-controls.json
+            audit-controls.stdout
+            audit-controls.stderr
+          retention-days: 90
+          if-no-files-found: error
+  audit-only:
+    needs: source-controls
+    # Disabled source proposal. Both native method flags and this guard require independent review.
+    if: ${{ false && inputs.execute }}
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        mode: ["off", "on"]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    env:
+      NSSOC_RECOVERY_MODE: ${{ matrix.mode }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Repeat exact current source controls before transport
+        run: |
+          python3 -B scripts/check_mainchip_built_engine_route_tail.py > route-tail-controls.json
+          python3 -B scripts/check_mainchip_route_recovery_evidence.py --output recovery-controls.json > recovery-controls.stdout 2> recovery-controls.stderr
+          python3 -B scripts/check_mainchip_route_audit_recovery.py --output route-audit-recovery-controls.json > audit-controls.stdout 2> audit-controls.stderr
+      - name: Require both new exact-source reservations before any download
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -B - <<'PY'
+          import os,sys
+          sys.path.insert(0,'scripts')
+          import mainchip_route_audit_recovery_contract as a
+          import wait_cloud_tested_source_release as reservation
+          ctx=a.context(os.environ);a.authorize(ctx)
+          for mode in a.MODES:
+              proof=reservation.wait(a.group(mode),os.environ)
+              assert not proof['existing_assets']
+          PY
+      - name: Restore complete historical handoff and execute only original audits
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -B scripts/cloud_mainchip_route_audit_recovery.py probe
+      - name: Permanently preserve available success or failure evidence
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -B scripts/cloud_mainchip_route_audit_recovery.py publish
+      - name: Always emit exact terminal metadata
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json,os
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/('mainchip-route-audit-only-recovery-'+os.environ['NSSOC_RECOVERY_MODE']+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT'])/'out'
+          names=('host-result.json','inner-result.json','case-result.json','observer-diagnosis.json','recovery-admission.json','recovery-restoration.json','current-host-request.json','frozen-native-request.json','route-source-envelope.json','route-restoration.json','outputs.json','parts.json','direct-publication-plan.json','publication.json')
+          for name in names:
+              p=root/name;present=p.is_file() and not p.is_symlink();raw=p.read_bytes() if present else b''
+              chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+              print('AUDIT_RECOVERY_RECORD_INDEX '+json.dumps(dict(path=name,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks))))
+              for i,b in enumerate(chunks):print('AUDIT_RECOVERY_RECORD_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode())))
+          PY
+      - name: Full owned-workspace cloud artifact fallback
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: audit-recovery-${{ matrix.mode }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mainchip-route-audit-only-recovery-${{ matrix.mode }}-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 90
+          if-no-files-found: warn
