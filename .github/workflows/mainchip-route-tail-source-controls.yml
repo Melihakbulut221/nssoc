@@ -1,0 +1,48 @@
+name: Route tail cloud source controls
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: route-tail-source-controls-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Preserve qualified shared-prefix controls
+        run: |
+          python3 -B scripts/check_mainchip_built_engine_route_prefix.py > route-prefix-controls.json
+      - name: Actual tail source admission and synthetic boundary controls
+        run: |
+          python3 -B scripts/check_mainchip_built_engine_route_tail.py > route-tail-controls.json
+      - name: Always emit complete exact control records
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          for name in ("route-prefix-controls.json","route-tail-controls.json"):
+              p=Path(name);raw=p.read_bytes() if p.is_file() else b""
+              chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+              print("ROUTE_TAIL_RECORD_INDEX "+json.dumps(dict(path=name,present=p.is_file(),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks))))
+              for i,b in enumerate(chunks):
+                  print("ROUTE_TAIL_RECORD_CHUNK "+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode())))
+          PY
+      - name: Preserve source controls
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: route-tail-source-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            route-prefix-controls.json
+            route-tail-controls.json
+          if-no-files-found: error
+          retention-days: 90
