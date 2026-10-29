@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-28T23:46:47.297415+00:00",
+  "updated_at": "2026-10-29T00:22:19.675978+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "41a8dc9f66ccbf611f000d1d5df2bf14d2227ed6",
+  "root_source_before_receipt": "c3450505834d89728c8441dc487f52ad814e0012",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 95,
+    "inventory_version": 96,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -22,27 +22,27 @@
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33"
   },
   "active_runs": {
-    "mainchip-built-engine-canonical-prefix": {
-      "run": 40789053922,
-      "head_sha": "e16c7f46a3b8f61c23507cdab8d60c4d9d4d3d8d",
+    "cdr-selector-width-native-generation": {
+      "run": 40793128851,
+      "head_sha": "98fa3a960f08c23d802a7a3e4b356a7a3f128b19",
       "status": "in_progress",
       "conclusion": null,
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123169424619,
+          "id": 123182977558,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123169585175,
-          "name": "native-prefix",
+          "id": 123183334973,
+          "name": "geometry",
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
-            "Restore exact ELF and preserve the prepared native routing prefix"
+            "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262"
           ]
         }
       ]
@@ -2839,14 +2839,67 @@
       "original586_pins_unchanged": true,
       "physical_acceptance": false,
       "proof_source": "f372af375135cbb68da33657531246885614e287"
+    },
+    "built_engine_canonical_prefix_terminal": {
+      "run": 40789053922,
+      "source": "e16c7f46a3b8f61c23507cdab8d60c4d9d4d3d8d",
+      "release": 427309454,
+      "status": "PASS_SHARED_PREFIX_ONLY_ROUTING_NOT_EXECUTED",
+      "four_native_phases_passed": true,
+      "original_clock_fixed_nets": 1691,
+      "runtime_libraries_exact": 104,
+      "peak_cgroup_bytes": 5596909568,
+      "oom": 0,
+      "protected_source_files": 645,
+      "frozen_files": 746,
+      "frozen_unpacked_bytes": 4096412802,
+      "frozen_archive_sha256": "f7196aac14f47c2ff6996132a8d264cd9eb11f66655e17cfc2adcccfa581ad21",
+      "fixed_odb_sha256": "45dc1b634fafaba4dda8475430ea1a82a69a355dfac6a6b2bbdf63529777e431",
+      "all20_direct_jsons_verified": true,
+      "outer_archive_bytes": 869252000,
+      "native_archive_acquired_locally": false,
+      "proof_source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "native_routing_executed": false,
+      "observer_equivalence_qualified": false,
+      "setup_hold_closed": false
+    },
+    "cdr_selector_width_native_controls": {
+      "run": 40791132200,
+      "source": "e2e60db4946c5a62ba7daf9ebdf12a8dd64cd6ab",
+      "source_controls_passed": true,
+      "geometry_job_skipped": true,
+      "proof_source": "0eabbbd5581b2530d21be69570c5eb5f15a5b75e",
+      "actual_native_execution": false,
+      "physical_accepted": false,
+      "electrical_accepted": false
+    },
+    "cdr_selector_width_geometry_dispatch": {
+      "run": 40793128851,
+      "source": "98fa3a960f08c23d802a7a3e4b356a7a3f128b19",
+      "release": 427330176,
+      "tag": "cloud-results-40793128851-1-cdr-v59-selector-column-width-native",
+      "exact_source_controls_passed": true,
+      "independent_activation_delta_clear": true,
+      "protected_files": 984,
+      "scope": "GENERATION_AND_SERIALIZED_REREAD_ONLY",
+      "complete_archive_members": 3823,
+      "current_view_members": 605,
+      "additive_raw_records": 26,
+      "native_ownership_joins": 52,
+      "geometry_result_not_yet_accepted": true,
+      "physical_accepted": false,
+      "electrical_accepted": false,
+      "full_phy_accepted": false,
+      "automatic_retry": false,
+      "proof_source": "0619fef520e7142f388868680bc1da16238c7b67"
     }
   },
   "next_actions": [
-    "Cloud-only: poll exact changed-source canonical prefix40789053922, release427309454. Do not restart unchanged source; authenticate actual full terminal proof before any accepted shared-prefix or routing-tail claim.",
-    "Retain failed40786115875 and all18 authenticated JSONs/161MB native capsule. Its actual ownership passed; prepare-fixed failed solely at legacy Tcl path assertion. The new wrapper restricts Tcl to /work/out/work and /work/routing-inputs/global, retaining original quoting and all physical/clock/resource gates.",
-    "After accepted frozen shared prefix, implement same-ELF observer-off/on routing tails from identical canonical native state, then full original-class DRC, qualified RC and original setup/hold. Source controls never imply those gates passed.",
-    "CDR actual source/synthetic controls40787010885 passed. Geometry-only native stage is being authored separately from a68805a417756b5849e52a2fc3f86d693bdb9329 on codex/cdr-v59-selector-column-width-native; do not assume publication or execution until actual branch/proofs are checked.",
-    "Keep all work/results in GitHub; local project/tmp/native/automation scope empty. Preserve8h read-only cloud monitor and every historical run handle in bounded two-shard inventory."
+    "All work remains cloud-only. Inspect exact generation40793128851/release427330176; do not rerun unchanged source. Authenticate full final success or failure summary, controls, runtime, generation and original input joins before accepting generation/reread only.",
+    "After actual geometry qualification, perform fresh cloud native DRC/LVS and complete parasitic extraction/binding before any electrical rerun; original selector/gain failures and all voltages/timing margins remain open.",
+    "Use accepted canonical shared prefix40789053922/release427309454 only after cloud-only exact-extract and rehash of full outer archive and746 frozen members. Its preparation passed; no router or observer equivalence ran.",
+    "Implement original same-ELF observer-off/on routing tails from identical /work state, retaining original full geometry/classes/vias/protected nets/clock/DRC checks. Then obtain qualified min/max RC and original20/4/8/8ns plus5percent STA.",
+    "Local workspace, known retired project paths, project-named/tmp and/var/tmp files and native processes remain absent. Original user review documents untouched. Existing8h GitHub read-only monitor retained; every historic handle stays in bounded two-shard inventory."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -3130,38 +3183,17 @@
     "observed_40784411137": 40784411137,
     "observed_40787010885": 40787010885,
     "observed_40786525718": 40786525718,
-    "observed_40786115875": 40786115875
+    "observed_40786115875": 40786115875,
+    "observed_40789053922": 40789053922,
+    "observed_40791132200": 40791132200
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40786115875,
-      "head_sha": "22f61f652d12337bd17a5db6f2d766578f425b49",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123159616137,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123159800220,
-          "name": "native-prefix",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        }
-      ]
-    },
-    {
       "run": 40789053922,
       "head_sha": "e16c7f46a3b8f61c23507cdab8d60c4d9d4d3d8d",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
@@ -3174,17 +3206,63 @@
         {
           "id": 123169585175,
           "name": "native-prefix",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40791132200,
+      "head_sha": "e2e60db4946c5a62ba7daf9ebdf12a8dd64cd6ab",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123176356060,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123176637087,
+          "name": "geometry",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40793128851,
+      "head_sha": "98fa3a960f08c23d802a7a3e4b356a7a3f128b19",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123182977558,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123183334973,
+          "name": "geometry",
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
-            "Restore exact ELF and preserve the prepared native routing prefix"
+            "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262"
           ]
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-28T23:46:47.297415+00:00",
+    "observed_at": "2026-10-29T00:22:19.675978+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -3313,7 +3391,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-28T23:46:47.297415+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T00:22:19.675978+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -26062,6 +26140,408 @@
       "source": "e16c7f46a3b8f61c23507cdab8d60c4d9d4d3d8d",
       "release": 427309454,
       "tag": "cloud-results-40789053922-1-mainchip-built-engine-route-prefix"
+    }
+  ],
+  "imported_checkpoint_receipts_v96": [
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.container-initial.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "14b6af139f2d50cfa24003554b5848d736c1fc85",
+      "bytes": 6300,
+      "sha256": "e86eb5673c1623ab32ab14c5e1e693b02f5655f6443ab82344c3ef8b9f8c9923",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.container-terminal.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "8858ce583e143263305402d6077e16c7b1b5ce85",
+      "bytes": 6861,
+      "sha256": "648eef7c55625d1659687fd7b811bd2c7595d6b6692190eb03d4067b1b8e94c6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.engine-restoration.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "e02ee15bed43b9a4b4ee6498c03df803f740a472",
+      "bytes": 13624,
+      "sha256": "5a95809ece4928bac65bb9ee793458f299487f1174afad1712b030e97550a418",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.engine-source-envelope.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "f535afa27883bfb4eab3def6114b936ed8c3d04a",
+      "bytes": 184,
+      "sha256": "6e64efa764029e12a805af28ddb56a1e7b66de860af0f97474967eae86c117bd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.frozen-prefix-inventory.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "04e855b073841a9b8c8b6c8b58f3d92aadbfdba5",
+      "bytes": 148924,
+      "sha256": "c7b68b06075554293262760be383b69046a01a96efe936b6de6b102b5c8bbc09",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.frozen-prefix.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "3a46e2b83b71822115002d8938e6e025e3e69989",
+      "bytes": 486,
+      "sha256": "93ad8b0ca850560d3271683b0988422b3bcc103a7469d7bd8d9a5fac86377dde",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.host-result.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "2feb9decba1dae40531ae8d319643ed4ffa8cd53",
+      "bytes": 25240,
+      "sha256": "6b1e087b91cf1a5e74d5837cd18fdf44c6dc9a78eb8e81913f70f0f775e9fa4b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.independent-review.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "271302e60e3a93038380f0def172f013fdd40881",
+      "bytes": 1155,
+      "sha256": "9c2e1024801ff0883c20d5f5e985a5429aa90a5eda96e564cdb9e2efa81a43e0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.inner-result.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "b281df465525a8e918fd843d033fffe5164c0bd8",
+      "bytes": 16140,
+      "sha256": "da3f9e4e702f00230267ff5caa0b7d1c1e038c61d3e1b9bdd3797b8125b8cd65",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.input-restoration.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "254427077c90116147a418fbde66e484b1e26f14",
+      "bytes": 24377,
+      "sha256": "38fd8b7d7280fe5851270c2a4770000b82727dc631a34c36ddf101a1fc22e596",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.jobs.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "4847b7a32b51f7be59c46bff077996600e137bec",
+      "bytes": 6494,
+      "sha256": "f40475eea465d0b128094c2115c50cd679a395991f2bdbb6770de6841dbc98a4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.method.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "1f5e616914c2fe1c70fb364f5f901106c1fb840e",
+      "bytes": 98055,
+      "sha256": "8cf1931c0a79830e09ef27a55500824e8becfcbf5527c058ea617b47c0253896",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.native-job.log",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "c5bc4cbad5e747271ba65325cbe2d7acc667862e",
+      "bytes": 74103,
+      "sha256": "6ed34fa9af1ea6852a48b70836edf3600b571cbffc6ec44631ea65d90d00a530",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.native-prefix-result.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "d8ee8718ea8603a419cbbbf7a52dc5122c2a1989",
+      "bytes": 680483,
+      "sha256": "7c681d27e0e3ea25c46e24dfa2dc30e76a8b726eca6139751d4bd58faf82ee00",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.outputs.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "f0da5759e46b775af1032780310b1d5c7fae6a17",
+      "bytes": 13206,
+      "sha256": "a3df47385cb3d05c7cd6a1be7bdf7d3cdcff0a83c82dc9e405877c19045f2af4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.parts.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "9a0694f13758cdaabbade5ccc74680c45e7f2f0d",
+      "bytes": 497,
+      "sha256": "f7eb93f54a7bfc7a53509583f4549b080758e3ab079e57d7b29cd5d7f2676c23",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.prefix-source-admission.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "baf99d8fef31742b550ca93b8e61bc2435559ec4",
+      "bytes": 4722,
+      "sha256": "085cec52d047f8118af9867a6a3fa5d33534de185b35cbe62ecf130827ab4a21",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.publication-availability.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "af22fd0e06b929b472e4bb128d57e00b87da5204",
+      "bytes": 669,
+      "sha256": "89953a64ff59aaacf299b2291c769372b344fa80479ff0add6c1fe078eb14ef2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.receipt.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "37fd1326fd4e45a477f8d6fbf1b8743fda0fcf7e",
+      "bytes": 2931,
+      "sha256": "066d17a76d0f365dd8f1d5fc6b82a257e908c6a2f68e48b5d4b6a7f59856e017",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.release-reservation.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "743a248a6246a6180943395b3fabaa814a37b830",
+      "bytes": 335,
+      "sha256": "f6f6c2c151f3da89885300a3ec7819fade1427342ce94223a2aef4e58a0a66f3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.release.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "19a0eb9a3e0ca1e2bd2a203349a98c970d5f51d2",
+      "bytes": 47169,
+      "sha256": "bf1629891e1aad9de383ccbe9a5cba7b2a4a2956587bef5db9db1a6e43785638",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.route-prefix-controls.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "46efc783a96a10d3e8740145b0c9ce84ea63351b",
+      "bytes": 27540,
+      "sha256": "ddb4ab0620973c109ea450f031fc773621de3c67d9599aa6af6dde062e755633",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.routing-source-envelope.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "d70d04d1aebc8b1e22740a27679df989327861b6",
+      "bytes": 10055,
+      "sha256": "e540bbe6b7fa4d0a7cfd93f49663bf490c9b0afab1d1331b98714ad31f344f80",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.run.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "0245038b542cb49b72d4c778fd05fedaa9aac15d",
+      "bytes": 14390,
+      "sha256": "680e99c9e7624c5debd27092909cee76d6b1b03ece95b4c558615cd7cd609785",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.runtime-observed.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "534b24cdcf542b98ad1ae9c29197ed1e2ad5ccd8",
+      "bytes": 16940,
+      "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.source-admission.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "29231cce105f0a9600232004d0ef9893d472edd1",
+      "bytes": 25643,
+      "sha256": "0a5132913b8c87304a6b662b5b5fc848e206783b50aeef72af154de5be00ddc2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-canonical-prefix-terminal-20261029.tag.json",
+      "source": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+      "git_blob": "6225336d1ada9862dcd1cacd13ac106a688130c9",
+      "bytes": 572,
+      "sha256": "99a48805162d680eb7f69148f643d647bda978d46dd5e45dd140b62ab21b5913",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-selector-column-width-native-source-review-20261029.json",
+      "source": "e2e60db4946c5a62ba7daf9ebdf12a8dd64cd6ab",
+      "git_blob": "17cb82bfabfe7ecafa4d68e9c278a8090c53a9d2",
+      "bytes": 27223,
+      "sha256": "1ed880dd443caa40dc1623ea6a9c53419be8aa4461ac716538c50f06bbf62b10",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-native-independent-review-20261029.json",
+      "source": "eebc77b4e8cd02f828755574a161845a08993716",
+      "git_blob": "7322595134a8e7803708dbbf04f9fe98fd635793",
+      "bytes": 1450,
+      "sha256": "6a2cfa79fc78c297a5d1a146913202fe27fdf762ef5d8cf7f03d832deb5dbfbb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-native-hosted-controls-20261029.independent-review.json",
+      "source": "0eabbbd5581b2530d21be69570c5eb5f15a5b75e",
+      "git_blob": "7322595134a8e7803708dbbf04f9fe98fd635793",
+      "bytes": 1450,
+      "sha256": "6a2cfa79fc78c297a5d1a146913202fe27fdf762ef5d8cf7f03d832deb5dbfbb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-native-hosted-controls-20261029.jobs.json",
+      "source": "0eabbbd5581b2530d21be69570c5eb5f15a5b75e",
+      "git_blob": "9b092b70438da95a35177011a82e29bb39be1e0d",
+      "bytes": 6278,
+      "sha256": "85483f039f89c4b1b51d188e4902cf6d5beedf9b85c3445628e2fce164cfe139",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-native-hosted-controls-20261029.receipt.json",
+      "source": "0eabbbd5581b2530d21be69570c5eb5f15a5b75e",
+      "git_blob": "59b64969c65f1d255d3d41f2797535040df6efd3",
+      "bytes": 1523,
+      "sha256": "002416688282e385e3eab3688d64567e6241d848dd22431acbf1105e167d4440",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-native-hosted-controls-20261029.run.json",
+      "source": "0eabbbd5581b2530d21be69570c5eb5f15a5b75e",
+      "git_blob": "812cb72e44a87853af7c79d4cd9877a4821aa252",
+      "bytes": 14436,
+      "sha256": "81527b6beaa65f501fa54b26f35979c31bfab54cd1889f636142953461c702da",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-native-hosted-controls-20261029.runtime.json",
+      "source": "0eabbbd5581b2530d21be69570c5eb5f15a5b75e",
+      "git_blob": "7d045b550d13d05593cf72a434aef80c8939759b",
+      "bytes": 147263,
+      "sha256": "80191e5ae24c1872cf84cd7fc517ec1c71f0df6bdfdd944efbb2a53341925648",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-native-hosted-controls-20261029.source-controls.log",
+      "source": "0eabbbd5581b2530d21be69570c5eb5f15a5b75e",
+      "git_blob": "67e9a8ed26f18326b99cc232a6ce281f582b164c",
+      "bytes": 444425,
+      "sha256": "c3c7aa219640f0f4af444d1e3586262b6e7c19cf3457edaa3ecf13d206fbd066",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-native-hosted-controls-20261029.tested-method.json",
+      "source": "0eabbbd5581b2530d21be69570c5eb5f15a5b75e",
+      "git_blob": "3f5f3d1459728c39ba26ac98434a9992f8202bc5",
+      "bytes": 143987,
+      "sha256": "9826bbd84f634ca645a3a933d4bce9a56c4574cd0813a0ee617dd4dd4a425995",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-native-hosted-controls-20261029.tested-workflow.yml",
+      "source": "0eabbbd5581b2530d21be69570c5eb5f15a5b75e",
+      "git_blob": "7210446fac602134021d2b53ccc929ce1988774f",
+      "bytes": 7896,
+      "sha256": "b453c5a43f58bbc6b53173384ebd909df962fbc206ec158ed072727843bb58c1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-native-hosted-controls-20261029.width.json",
+      "source": "0eabbbd5581b2530d21be69570c5eb5f15a5b75e",
+      "git_blob": "8ddabacfd94e63140a3552bbb4e7071614df1a7a",
+      "bytes": 7923,
+      "sha256": "bd5caaa8622a3828a2541e210c5cb28fefd3579bb62928303fd2d4d0860deee9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-native-hosted-controls-20261029.wrapper.json",
+      "source": "0eabbbd5581b2530d21be69570c5eb5f15a5b75e",
+      "git_blob": "52f12c04171f38925cd4d1ec7f3f9d8a81600548",
+      "bytes": 12250,
+      "sha256": "74b65d6e72e19134c7fe98bfde1b8f2ab824b022d79ae5ea7cebf2fc2c3659b3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-generation-native-admission-20261029.json",
+      "source": "98fa3a960f08c23d802a7a3e4b356a7a3f128b19",
+      "git_blob": "57f93ecac8831384c332c3003a8b1ab9a6e09c44",
+      "bytes": 1479,
+      "sha256": "37270cf330250d2e6f2b8fa158c1ff8c8fd150313a5bde82afd39fddc8901b31",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-generation-dispatch-20261029.independent-review.json",
+      "source": "0619fef520e7142f388868680bc1da16238c7b67",
+      "git_blob": "c40309eb97b77b64c5b69dd7ee482d1dbbae944c",
+      "bytes": 1127,
+      "sha256": "4c3b30b199eb1c5939fb6778ec17fd61194c110049260260c4cda4aae0e5dd39",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-generation-dispatch-20261029.jobs.json",
+      "source": "0619fef520e7142f388868680bc1da16238c7b67",
+      "git_blob": "bbc132b91da7fc896e01cbec8cddd8dd48af7c59",
+      "bytes": 8984,
+      "sha256": "8589f4d1aacb93a529478a7e69d6ffd99ba7a0f679c74e57fa5ef1f2277a5bef",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-generation-dispatch-20261029.receipt.json",
+      "source": "0619fef520e7142f388868680bc1da16238c7b67",
+      "git_blob": "7e9bd278dee84a4bc428a1c1b5cfb86abfcfa366",
+      "bytes": 920,
+      "sha256": "e2d3d4476696d2515eb9d7bf9ac209dc8e1c9a3d658d06f5bef693996a4c36f4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-generation-dispatch-20261029.release.json",
+      "source": "0619fef520e7142f388868680bc1da16238c7b67",
+      "git_blob": "aa1178dd304d2f2ab49434cb89da8c5343809770",
+      "bytes": 2564,
+      "sha256": "caa91e4e79fcb866a8370871edbe089896c5462013ed8d438db2c62ea14c766d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-generation-dispatch-20261029.run.json",
+      "source": "0619fef520e7142f388868680bc1da16238c7b67",
+      "git_blob": "bc28650327c4a53646f17158eaeff8a3380d7f37",
+      "bytes": 14428,
+      "sha256": "78e53cff8c6b3a8bcfda7e9022c0c11867003645fbcba9a0335340eb3f9437bb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-generation-dispatch-20261029.tag.json",
+      "source": "0619fef520e7142f388868680bc1da16238c7b67",
+      "git_blob": "3aa88e53aa3035439fe22fa3dad42d769f70f5b2",
+      "bytes": 578,
+      "sha256": "c0c8ca24a7b80d8b305c3756512e5c9b2e7a07624d3d55932588537609d6e21f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-generation-dispatch-20261029.tested-admission.json",
+      "source": "0619fef520e7142f388868680bc1da16238c7b67",
+      "git_blob": "57f93ecac8831384c332c3003a8b1ab9a6e09c44",
+      "bytes": 1479,
+      "sha256": "37270cf330250d2e6f2b8fa158c1ff8c8fd150313a5bde82afd39fddc8901b31",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-generation-dispatch-20261029.tested-method.json",
+      "source": "0619fef520e7142f388868680bc1da16238c7b67",
+      "git_blob": "4f6d41a5857e7fdfa7bf5566559d27968a122eda",
+      "bytes": 145960,
+      "sha256": "7857a2091053f5fea4db4c66ce50f113b0de12d4a1cccf626ef7ecde723675b6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-generation-dispatch-20261029.tested-workflow.yml",
+      "source": "0619fef520e7142f388868680bc1da16238c7b67",
+      "git_blob": "e5036e4d2c0dd3f1b0fec5141e7b948e7075d3aa",
+      "bytes": 7884,
+      "sha256": "c1b6ac47c8324fca1226b3d16e7df459195aa942d12fe3a90a511026e4ef750d",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v96": [
+    {
+      "run": 40793128851,
+      "source": "98fa3a960f08c23d802a7a3e4b356a7a3f128b19",
+      "release": 427330176,
+      "tag": "cloud-results-40793128851-1-cdr-v59-selector-column-width-native"
     }
   ]
 }
