@@ -20,6 +20,44 @@ def reject(action, reason, function):
         return dict(reason=reason,function=function.__name__)
     raise AssertionError(("Accepted fault",reason))
 
+
+def source_controls():
+    """No pya import, geometry work, or native payload access."""
+    contract=s.source_guard()
+    baseline=dict(origin_translation_um=[0,-3.97],routes=copy.deepcopy(contract["source_routes"]))
+    positives=[]
+    for zero in (0,0.0,-0.0):
+        metadata=copy.deepcopy(baseline);metadata["origin_translation_um"][0]=zero
+        result=s.expected_plan(contract,metadata)
+        assert result==contract["declared_rectangles"]
+        positives.append(dict(origin=metadata["origin_translation_um"],rectangles=len(result)))
+    refusals=[]
+    for mode,reason in (
+      ("origin_x","Changed exact numeric child origin"),("origin_y","Changed exact numeric child origin"),
+      ("origin_bool","Changed exact numeric child origin"),("origin_string","Changed exact numeric child origin"),
+      ("origin_nan","Changed exact numeric child origin"),("origin_infinite","Changed exact numeric child origin"),
+      ("route","Changed source route rows"),("literal","Width literal/formula mismatch"),
+      ("width","Changed width/origin"),("placement","Changed declared placements"),
+      ("endpoint","Changed width endpoints"),("dbu","Changed width coordinate scope")):
+        c=copy.deepcopy(contract);m=copy.deepcopy(baseline)
+        if mode=="origin_x":m["origin_translation_um"][0]=.001
+        elif mode=="origin_y":m["origin_translation_um"][1]=-3.969
+        elif mode=="origin_bool":m["origin_translation_um"][0]=False
+        elif mode=="origin_string":m["origin_translation_um"][0]="0"
+        elif mode=="origin_nan":m["origin_translation_um"][0]=float("nan")
+        elif mode=="origin_infinite":m["origin_translation_um"][0]=float("inf")
+        elif mode=="route":next(r for r in m["routes"]if r["net"]=="M_SE")["escape_lane_um"]+=.005
+        elif mode=="literal":c["declared_rectangles"][0]["new"][0]+=5
+        elif mode=="width":c["width_dbu"]+=5
+        elif mode=="placement":c["placements"]["sc"][0]+=5
+        elif mode=="endpoint":c["width_end_dbu"]["M_TE"]+=5
+        elif mode=="dbu":c["dbu_um"]=.002
+        refusals.append(reject(lambda:s.expected_plan(c,m),reason,s.expected_plan))
+    assert len(positives)==3 and len(refusals)==12
+    return dict(status="PASS_WIDTH_TOPOLOGY_SOURCE_CONTROLS",positive_cases=3,
+      rejected_cases=12,positives=positives,refusals=refusals,pya_imported=False,
+      native_geometry_executed=False,actual_saved_candidate_read=False,**s.FALSE)
+
 def geometry_fixture(pya,contract,plan,mutation=None):
     """Synthetic shared child; not the 500-device candidate or its LVS."""
     layout=pya.Layout();layout.dbu=.001
@@ -200,7 +238,8 @@ def native_controls(pya,old_root,new_root,expected):
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument("--synthetic",action="store_true")
+    p.add_argument("--source-controls",action="store_true")
+    p.add_argument("--native-synthetic","--synthetic",dest="synthetic",action="store_true")
     p.add_argument("--native",action="store_true")
     p.add_argument("--old-root",type=Path)
     p.add_argument("--new-root",type=Path)
@@ -208,12 +247,16 @@ def main():
     p.add_argument("--output",type=Path,required=True)
     args=p.parse_args()
     assert os.environ.get("GITHUB_ACTIONS")=="true" and os.environ.get("RUNNER_ENVIRONMENT")=="github-hosted"
-    assert args.synthetic != args.native,"Select exactly one hosted control mode"
-    import pya
-    if args.synthetic:
+    assert sum((args.source_controls,args.synthetic,args.native))<=1,"Select one hosted control mode"
+    if not(args.synthetic or args.native):
+        assert args.old_root is args.new_root is args.expected is None
+        result=source_controls()
+    elif args.synthetic:
+        import pya
         assert args.old_root is args.new_root is args.expected is None
         result=synthetic_controls(pya)
     else:
+        import pya
         # This entrypoint grants no authority and cannot restore/download any input.
         assert args.old_root and args.new_root and args.expected
         result=native_controls(pya,args.old_root,args.new_root,s.read(args.expected))

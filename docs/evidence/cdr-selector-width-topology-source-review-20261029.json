@@ -9,8 +9,8 @@
       "sha256": "a95469b94fa3cb585df42b9c637af1419eabdb8c15f60a72b4a99618a5a2d061"
     },
     "scripts/check_cdr_selector_width_topology.py": {
-      "bytes": 12201,
-      "sha256": "e95ad6605488ae97f779a18c7bf6116405772b102fa3ff41dbf28a4a35a2d63a"
+      "bytes": 14919,
+      "sha256": "d2b461dcab2d0b586a21ca33c3eda373b919a72a337f7e1b05ced90de0f3190d"
     }
   },
   "inherited_protected_files": 1039,
@@ -66,17 +66,6 @@
   ],
   "legacy_policy": "Original topology.compare remains unchanged and diagnostic. Its previous2partition TM2 material policy and historical rejection-location requirement are not used as width acceptance.",
   "authored_controls": {
-    "synthetic": {
-      "entry": "python3 scripts/check_cdr_selector_width_topology.py --synthetic --output OUTPUT.json",
-      "positive_cases": 3,
-      "refusals": 20,
-      "scope": "Actual pya layouts/regions and actual proof helpers. Two-cell shared-child synthetic geometry; full113 synthetic ownership maps. This is explicitly not an actual500-device LVS qualification.",
-      "groups": [
-        "9 raw/geometry/hierarchy failures",
-        "7 complete ownership failures",
-        "4 source-plan failures"
-      ]
-    },
     "actual_native": {
       "entry": "check_cdr_selector_width_topology.native_controls(pya,old_root,new_root,expected)",
       "complete_comparison_positives": 2,
@@ -88,7 +77,26 @@
       "scope": "Actual restored authenticated layouts/LVS/wires must pass before in-memory raw/region/graph mutations; all original inputs rehashed, pristine full comparison repeated after faults.",
       "requires_separate_authorized_hosted_admission": true
     },
-    "executed": false
+    "executed": false,
+    "native_synthetic": {
+      "entry": "python3 scripts/check_cdr_selector_width_topology.py --native-synthetic --output OUTPUT.json",
+      "positive_cases": 3,
+      "refusals": 20,
+      "scope": "Actual pya layouts/regions and actual proof helpers. Two-cell shared-child synthetic geometry; full113 synthetic ownership maps. This is explicitly not an actual500-device LVS qualification.",
+      "groups": [
+        "9 raw/geometry/hierarchy failures",
+        "7 complete ownership failures",
+        "4 source-plan failures"
+      ]
+    },
+    "plain_source": {
+      "entry": "python3 scripts/check_cdr_selector_width_topology.py --source-controls --output OUTPUT.json",
+      "positive_cases": 3,
+      "refusals": 12,
+      "pya_imported": false,
+      "native_dependencies_imported": false,
+      "scope": "Actual independently reconstructed coordinate-plan helper and exact protected dependency byte guards; not native geometry qualification."
+    }
   },
   "local_validation": {
     "AST_parse_only": true,
@@ -100,7 +108,7 @@
   },
   "remaining_prerequisites": [
     "Independent source review of new native Region/LVS/wires reconciliation and controls.",
-    "Hosted synthetic controls under exact pinned KLayout runtime; no authored controls have run.",
+    "Hosted pya-free source controls, then separately reserved exact-runtime native synthetic/actual-input controls. No authored controls have run.",
     "Future separate admission must authenticate complete actual fresh graph run/release/archive/member tree and protect these new files; existing method and all flags intentionally untouched.",
     "Wrapper owns resource supervision, terminal/failure preservation and permanent publication. Pure comparison exceptions are deliberately not converted to acceptance.",
     "Actual full-input native comparison and native fault controls are still unexecuted; no topology/RC/electrical/PHY result is claimed."
@@ -110,5 +118,9 @@
     "source": "97705f184239c0c522582b9d8e82c542bd902b65",
     "release_id": 427412807,
     "scope": "Actual success reported by parent; release metadata inspected only. No fresh result is fabricated or admitted by this source unit."
+  },
+  "history": {
+    "foundation_commit": "61259d213c0301cfd3e94479eb0ba2514e69638e",
+    "correction": "Qualification modes separated before any execution: default/source-controls is pya-free; synthetic Region/native-input modes are explicit and require a separate reserved native job."
   }
 }
