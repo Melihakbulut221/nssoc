@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v125
+# Cloud continuation — checkpoint v126
 
-Updated: 2026-10-29T17:14:46.802831+00:00
+Updated: 2026-10-29T18:18:17.380488+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint125: source controls40915118374 passed5positive/41refusal/5lifecycle cases; realreadback40916056541 repeatedcontrols and passed all3jobs. Runner hashed all145currentauditarchivefiles/5,763,445,029uncompressedbytes without extractingnative members, retaining16derivedtexts/207465bytes. Full42proof1,173,205bytes preservedf555db1d. Serializedmarker confirms unwaivednet459/clknet_5_29__leaf_u_ibex.clk Metal5short atµm[947.420,1789.940,947.620,1790.140]. Next physicalstep is authenticatedcurrentODB technology/neighborhoodclearance forboundednet459repair. CurrentCDR40906725656 remainsactive; nominalearly/late andhotearly rejected. Exactnominal5doc7,087,180byte diagnosis35655923 identifiesfourmasterclockselectors, only3.74–5.31mVwidthimprovement andgain60peak1.575523V; currentcontact measurementsare requiredbeforeanother edit. Originalelectrical/clock/physicalgates unchanged. Localproject/temp/EDAprocesses verifiedempty; originaluserreviewpaths currentlyabsent, withoutanyattachmentdeletionthiscontinuation.
+Cloud-only checkpoint126: both current nominal contact readbacks40926701777 succeeded with exact5device scalar replay and6765verified input members per capture. Complete65file47,991,614byte evidence is permanent24f7274d; source controls40926049166 passed16positive/66refusal/5lifecycle cases. The D61 simultaneous witness exposes40–52mV upper contact and76–77mV lower tail-contact differences, supporting a localized candidate study without claiming causality or gate closure. Current mainchip neighborhood source9e43c0fd reads only audited47d657f4 and exports embedded technology using the same engine/runtime. Historical3/17 controls40924689987 passed; new13lifecycle failure-preservation controls40929129332 are pending and no native neighborhood run has been dispatched. The original10case loaded matrix40906725656 continues its final2fault cases after8electrical rejections. All original gates remain intact and local project paths are empty.
 
-Active handles at this snapshot: 40906725656 queued
+Active handles at this snapshot: 40906725656 in_progress
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9062,3 +9063,10 @@ Local project/tmp/native processes verified absent. Inventory351 exact cloud han
 Cloud-only checkpoint125: source controls40915118374 passed5positive/41refusal/5lifecycle cases; realreadback40916056541 repeatedcontrols and passed all3jobs. Runner hashed all145currentauditarchivefiles/5,763,445,029uncompressedbytes without extractingnative members, retaining16derivedtexts/207465bytes. Full42proof1,173,205bytes preservedf555db1d. Serializedmarker confirms unwaivednet459/clknet_5_29__leaf_u_ibex.clk Metal5short atµm[947.420,1789.940,947.620,1790.140]. Next physicalstep is authenticatedcurrentODB technology/neighborhoodclearance forboundednet459repair. CurrentCDR40906725656 remainsactive; nominalearly/late andhotearly rejected. Exactnominal5doc7,087,180byte diagnosis35655923 identifiesfourmasterclockselectors, only3.74–5.31mVwidthimprovement andgain60peak1.575523V; currentcontact measurementsare requiredbeforeanother edit. Originalelectrical/clock/physicalgates unchanged. Localproject/temp/EDAprocesses verifiedempty; originaluserreviewpaths currentlyabsent, withoutanyattachmentdeletionthiscontinuation.
 
 Local project/tmp/native processes verified absent. Inventory353 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T18:18:17.380488+00:00 — cloud-only checkpoint v126
+
+Cloud-only checkpoint126: both current nominal contact readbacks40926701777 succeeded with exact5device scalar replay and6765verified input members per capture. Complete65file47,991,614byte evidence is permanent24f7274d; source controls40926049166 passed16positive/66refusal/5lifecycle cases. The D61 simultaneous witness exposes40–52mV upper contact and76–77mV lower tail-contact differences, supporting a localized candidate study without claiming causality or gate closure. Current mainchip neighborhood source9e43c0fd reads only audited47d657f4 and exports embedded technology using the same engine/runtime. Historical3/17 controls40924689987 passed; new13lifecycle failure-preservation controls40929129332 are pending and no native neighborhood run has been dispatched. The original10case loaded matrix40906725656 continues its final2fault cases after8electrical rejections. All original gates remain intact and local project paths are empty.
+
+Local project/tmp/native processes verified absent. Inventory357 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

@@ -1,0 +1,161 @@
+{
+  "schema": "current-neighborhood-preservation-source-review-v1",
+  "base": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+  "branch": "codex/mainchip-current-neighborhood-readback",
+  "scope": "Failure preservation only; unchanged current ODB/ELF/source admission and native geometry observation",
+  "historical_controls": {
+    "run": 40924689987,
+    "proof_commit": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+    "receipt_sha256": "b3d9e2d1d4b031d0871b852390cb0e6a92ec6e8fc6a767a009272ef3d6edf88f",
+    "positive": 3,
+    "refusal": 17,
+    "applies_to": "Pre-amendment source only; does not qualify new lifecycle code"
+  },
+  "changes": {
+    "scripts/cloud_mainchip_current_neighborhood.py": {
+      "before": {
+        "bytes": 12942,
+        "sha256": "3e24e3afb35e8f61760c459174d8afd48a8809b6992faa4b2c93f6983baad3ce"
+      },
+      "after": {
+        "bytes": 15721,
+        "sha256": "be8cd2bd652cade446a9f5b676b7ac326a8ff0a37a487d4671686f92f53776ee"
+      }
+    },
+    "scripts/mainchip_current_neighborhood_inner.py": {
+      "before": {
+        "bytes": 4974,
+        "sha256": "de02b1ddd532abcbd74a6174c4f5aedde1779d6673d3d81ec91d266c12103d46"
+      },
+      "after": {
+        "bytes": 5891,
+        "sha256": "ab0fad9c7020b19ed47541c2ef95abf08b93f70a6bcdadd76a2b46bcbc4a1dee"
+      }
+    },
+    "scripts/check_mainchip_current_neighborhood.py": {
+      "before": {
+        "bytes": 4740,
+        "sha256": "c662c33378af174f6f49c7fdcce6c847107c93d32e0f4ecd2389244033b1e748"
+      },
+      "after": {
+        "bytes": 17183,
+        "sha256": "4c7a775cbd3a09a3ac876ec449cb5ab22c1a9ebd578fb48ee1b39b5845666714"
+      }
+    },
+    "scripts/mainchip-current-neighborhood-pins.json": {
+      "before": {
+        "bytes": 936,
+        "sha256": "f94bf52ade11ff999427bb59a65073c3524c3161ed277be8eb39fb6938ed6ec0"
+      },
+      "after": {
+        "bytes": 937,
+        "sha256": "30e1a813c241de081a31ab6401f9306a5d97e2095bdf11e4c63eb6189292e12e"
+      }
+    },
+    ".github/workflows/mainchip-current-neighborhood.yml": {
+      "before": {
+        "bytes": 11620,
+        "sha256": "ab500ea8538c3583957af9b62dab9aedc3baf8aff43a51809529b08a6b12e192"
+      },
+      "after": {
+        "bytes": 13710,
+        "sha256": "0e4820845452aba1b5f28651caa2b47d7d25524be21d35d043473307994a620a"
+      }
+    }
+  },
+  "preserved": {
+    "original_source_method": "scripts/mainchip-fixed-engine-route-tail-methods.json",
+    "protected_count": 1324,
+    "method_sha256": "04872318510edfd90a9fc2906e819d435cc4de2da0e54c2d3c0fa138a9a0b164",
+    "protected_changed_paths": [],
+    "native_source": {
+      "path": "scripts/mainchip_current_neighborhood_native.py",
+      "bytes": 13112,
+      "sha256": "8e4220fee60e69a95b0be7e3d148cf0316aad2c970877944005f0aa35aa50061"
+    },
+    "byte_exact_host_functions": {
+      "context": "999aef627d1677bfb8319948907e48c5b8e9c90e360fd2255987cd3a84f1dae5",
+      "source_gate": "c64b1108d81e738b7327cefc964923d4b3c74d77b44d4eaa7a48adb452529d16",
+      "reservation": "85eebf494fa783e07ad2cbac8d57321912f402866d348499a77298e5b62520c9",
+      "select_database": "c5a904b453bf8349725cc88d0fc99ad6700395781724ab1e7efe3ae5cab0d76b",
+      "acquire_current": "3e0989d11b60407e0e55a0c1ef6f3eeed42d777ad247bafed251ecbb37c6ada3"
+    },
+    "inner_main_ast": "Exact after removing old nested run function and adding report argument to exactly three unchanged calls; runtime/cgroup/ELF/native census/final finish_record bodies unchanged",
+    "limits": {
+      "version_seconds": 30,
+      "ldd_seconds": 30,
+      "native_readback_seconds": 2400,
+      "owned_container_seconds": 2700,
+      "image_pull_seconds": 1800,
+      "memory_bytes": 10737418240,
+      "cpu_count": 2,
+      "pids": 2048,
+      "outer_minutes": 120
+    },
+    "current_input": {
+      "member": "work/drc-observed.odb",
+      "bytes": 213429713,
+      "sha256": "47d657f41565f5c379a9152672eac824a5d296043c3726527031452ad2097677"
+    }
+  },
+  "production_changes": [
+    "Each eligible derived output is attempted independently, including empty streams and atomic JSON fragments; later outputs survive an earlier copy failure.",
+    "The owned out tree and exact owner receipt remain until the workflow artifact succeeds. Failed/incomplete/missing final preservation records remain retained even after artifact upload. Only a complete PASS preservation record allows exact-owner workspace cleanup.",
+    "Fallback artifact selects derived JSON/JSONL/stdout/stderr/LEF/atomic JSON fragment extensions plus owner; explicitly excludes out/work, out/witness and out/supervision frozen-prefix roots already preserved by their immutable producer.",
+    "Actual host final result and outer failure record delegate to unchanged qualified finish_record: atomic final write, complete stdout fallback envelope, independent fallback encode/emit errors, original primary exception retained.",
+    "Unexpected qualified-container cleanup failure is recorded independently, so input/source checks and evidence copying still run.",
+    "Inner run uses independent stop/wait/kill/reap/progress attempts; original child wait/nonzero/spawn exception remains primary. A progress-only or cleanup-only failure is still fatal.",
+    "Checker now saves a failed JSON envelope with qualified finish_record if a source/control assertion fails; no failure is relabeled successful."
+  ],
+  "authored_controls": {
+    "status": "PASS_CURRENT_NEIGHBORHOOD_SOURCE_CONTROLS",
+    "cli": "python3 -B scripts/check_mainchip_current_neighborhood.py --output current-neighborhood-controls/controls.json",
+    "positive_count": 3,
+    "refusal_count": 17,
+    "lifecycle_count": 13,
+    "executed": false,
+    "lifecycle": [
+      "cleanup refuses wrong owner then removes exact owned workspace",
+      "actual perform success",
+      "actual perform body-and-copy",
+      "actual perform body-and-cleanup",
+      "actual perform final-save",
+      "actual main primary plus save",
+      "actual main primary plus fallback-encode",
+      "actual main primary plus fallback-emit",
+      "actual inner run zero",
+      "actual inner run nonzero",
+      "actual inner run timeout-stop-progress",
+      "actual inner run spawn-progress",
+      "actual inner run progress-only"
+    ],
+    "actual_paths": [
+      "perform",
+      "main",
+      "preserve_outputs",
+      "retained_workspace",
+      "cleanup_preserved_workspace",
+      "inner.run",
+      "unchanged finish_record"
+    ],
+    "synthetic_boundaries": "Explicit fake cloud/Docker/child-process I/O and small synthetic source/input projection; initial real source_gate still authenticates the actual protected repository. Tests do not restore a real ODB, run ELF, acquire an archive, or qualify native geometry."
+  },
+  "source_validation": {
+    "python_ast_parsed": true,
+    "yaml_library_parsed": true,
+    "authored_imports_or_tests_executed": false,
+    "source_only": true,
+    "git_api_ram_only": true,
+    "exception_types": "Actual final-marker require raises AssertionError for ownership; qualified core require raises ValueError for child return/progress failures. Checker uses each exact type."
+  },
+  "remaining": [
+    "New exact-source hosted controls must pass before any readback dispatch.",
+    "Artifact upload can itself fail; owned outputs then remain on the hosted runner and complete stdout fallback is attempted, but neither path fabricates durable success.",
+    "Native function body is unchanged; this amendment does not qualify geometric clearance, routing, physical, timing, or PHY acceptance."
+  ],
+  "native_executed": false,
+  "native_archive_acquired": false,
+  "physical_acceptance": false,
+  "timing_accepted": false,
+  "full_phy_accepted": false
+}

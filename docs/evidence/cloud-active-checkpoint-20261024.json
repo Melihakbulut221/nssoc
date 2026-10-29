@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T17:14:46.802831+00:00",
+  "updated_at": "2026-10-29T18:18:17.380488+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "9eb9302ccfe09e51e4aba031f3d5dc4f03384ec3",
+  "root_source_before_receipt": "fc36621f0729517d56999d89f1e94682daf71231",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 125,
+    "inventory_version": 126,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -44,7 +44,7 @@
     "cdr_current_width_loaded_native": {
       "run": 40906725656,
       "head_sha": "e191424507e67331b2e79800caece4a3f03a1cc0",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": null,
       "run_attempt": 1,
       "jobs": [
@@ -72,11 +72,9 @@
         {
           "id": 123570499915,
           "name": "loaded (cold_early)",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Always emit exact terminal and publication metadata"
-          ]
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
         },
         {
           "id": 123570500010,
@@ -95,32 +93,32 @@
         {
           "id": 123570500080,
           "name": "loaded (cold_late)",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Original OFF operating point and full loaded transient"
-          ]
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
         },
         {
           "id": 123570500103,
           "name": "loaded (constant_zero)",
-          "status": "queued",
-          "conclusion": null,
+          "status": "completed",
+          "conclusion": "failure",
           "active_steps": []
         },
         {
           "id": 123570500125,
           "name": "loaded (constant_one)",
-          "status": "queued",
-          "conclusion": null,
+          "status": "completed",
+          "conclusion": "failure",
           "active_steps": []
         },
         {
           "id": 123570500132,
           "name": "loaded (vi_bias_off)",
-          "status": "queued",
+          "status": "in_progress",
           "conclusion": null,
-          "active_steps": []
+          "active_steps": [
+            "Preserve complete worker output and partial publication"
+          ]
         },
         {
           "id": 123570500143,
@@ -132,9 +130,11 @@
         {
           "id": 123570500242,
           "name": "loaded (clock_stopped)",
-          "status": "queued",
+          "status": "in_progress",
           "conclusion": null,
-          "active_steps": []
+          "active_steps": [
+            "Preserve complete worker output and partial publication"
+          ]
         },
         {
           "id": 123570500329,
@@ -3989,16 +3989,89 @@
       "all_original_gates_unchanged": true,
       "repair_not_yet_validated": true,
       "full_phy_accepted": false
+    },
+    "current_nominal_contact_readback": {
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "source_unit": "89db30b422f6c6abbf481ccb396f60ae2e90d2b2",
+      "run": 40926701777,
+      "status": "PASS_CURRENT_NOMINAL_CONTACT_READBACK_NOT_ACCEPTANCE",
+      "proof": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "files": 65,
+      "bytes": 47991614,
+      "receipt_sha256": "a27e3d8e4577896c40cbb0866b3f8e34a507bc75140bbc1ccc602feb13795b4a",
+      "cases": [
+        "nominal_early",
+        "nominal_late"
+      ],
+      "members_per_capture": 6765,
+      "source_controls": [
+        16,
+        66,
+        5
+      ],
+      "exact_scalar_replay_devices": [
+        61,
+        62,
+        115,
+        116,
+        60
+      ],
+      "original_numerical_gates_unchanged": true,
+      "geometry_changed": false,
+      "causality_proven": false,
+      "full_phy_accepted": false,
+      "early_D61_observed": {
+        "time_s": 2.2438593749999985e-08,
+        "vce_v": 0.3471296904415353,
+        "required_recovery_v": 0.05287030955846472,
+        "upper54_E_to_target_C_v": 0.040152145283401164,
+        "upper56_E_to_target_C_v": 0.051747080902391884,
+        "tail_drain_to_target_E_v": {
+          "3": -0.07691389190550973,
+          "4": -0.07675692577963777,
+          "5": -0.07647853352662637,
+          "6": -0.0762355210464058
+        }
+      }
+    },
+    "current_serialized_neighborhood_unit": {
+      "source": "9e43c0fd3887ae4f32c734cc5c3d266adbed1bfb",
+      "branch": "codex/mainchip-current-neighborhood-readback",
+      "historical_source_controls_run": 40924689987,
+      "historical_source_controls": [
+        3,
+        17
+      ],
+      "proof": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+      "amended_source_controls_run": 40929129332,
+      "expected_amended_controls": [
+        3,
+        17,
+        13
+      ],
+      "native_dispatched": false,
+      "current_input_sha256": "47d657f41565f5c379a9152672eac824a5d296043c3726527031452ad2097677",
+      "exact_prefix_restorer_only_for_engine_runtime_helpers": true,
+      "observation_window_dbu": [
+        937420,
+        1779520,
+        957620,
+        1800560
+      ],
+      "embedded_technology_export": true,
+      "independent_failure_preservation_added": true,
+      "clearance_qualified": false,
+      "physical_acceptance": false
     }
   },
   "next_actions": [
-    "Continue existing40906725656 original10case loaded matrix only; preparation passed, nominalearly/late and hotearly jobs rejected, remainingcases continue maxparallel2. Do not redispatch. Preserve actualnative electrical failures and allwaveforms onGitHub; apply original37.5ps/75ps/100mV/VCEgates unchanged.",
-    "Current nominal selector diagnosis35655923 preservesbothfullnativeJSONs and exact500device currentmapping. D61/62 andC115/116 activeVCE fail; currentCcollector134/net$698 differsfromhistorical136/$708. Obtain current simultaneouscontact voltages/currents atworsttime from hostedwaveforms before localizedinterconnectedit. Do not blindlyrepeatwidth/commonmode sweep; gain60peak1.575523V leaveslittle1.6Vmargin.",
-    "Final-marker readback40916056541 passed actualfull145member archive verification onrunner; all16selectedtexts andfull42proof are permanentf555db1d. The serialized unwaived1Short confirms net459/clknet_5_29__leaf_u_ibex.clk Metal5 bbox\u00b5m[947.420,1789.940,947.620,1790.140]. Do not rerun archive-only readback.",
-    "Next physical step: implement bounded native neighborhood/technology readback from exact current auditeddrc-observed.odb47d657f4 with same2a343c ELF/104libs. Enumerate rule-expanded all-layer ordinary/special/pin/obstruction material and full dbTech width/spacing/PRL/EOL/cut/enclosure/grid/NDR before choosing net459-only M4bridge; endpoints have no existingVia4.",
-    "Any eventual net459-only DEF replacement must preserve repairednet36993 and every other currentrecord plus alloriginal1691clock/fixedrecords, use pairedimports/native serializedreadback/fulloriginal-classDRC and source20/4/8/8ns+5percent timing. No physical/timing/fullPHYacceptance yet.",
-    "Prepared finalCDRterminalcollector docs/evidence/cloud-collector-recipes-20261029/cdr-width-loaded-native-terminal.py is AST-checkedonly; afteractual13jobterminal verifylive schemas thenpreservefullrawjoblogs/directJSON/maps/partdigests without acquiringarchiveslocally.",
-    "All source/CAD/test work remainscloud. OriginaltwoDownloadsreviewpaths are currentlyabsent; noattachmentmodified/deletedthiscontinuation. Historicalcloudreviewresponses docs86/89 remain withoutclaimingexactrawattachmentbackups. Existing8hmonitor staysreadonly andcannotdispatchnative."
+    "Inspect amended physical source-control run40929129332 at9e43c0fd. Preserve its complete logs and3positive/17refusal/13lifecycle actual result. Only after success dispatch one current-neighborhood readback on the immutable proof head and reserve a fresh exact-source release before any native/archive acquisition.",
+    "Current physical unit passes only current audited ODB47d657f4 to the same ELF/runtime. Historical prefix is frozen engine/runtime/helper input only. Native readback enumerates all material and exports embedded technology in cloud. Its10um padded all-layer observation window is not yet rule-qualified clearance; review full technology/spacing/PRL/EOL/cut/enclosure/grid/NDR and enlarge if necessary before a net459-only geometry edit.",
+    "Current nominal contact readbacks40926701777 both passed;65full proof files/47,991,614bytes are permanent24f7274d, including complete6765member maps, original scalar reproduction and raw logs. Never download native archives or waves locally. Use actual contact witness times, currentCcollector134/net$698 andD38/net$149 for a localized residual interconnect candidate; root/pll_handoff is preparing codex/cdr-current-contact-repair-plan separately.",
+    "The observed D61 early upper contact drops40.152/51.747mV and lower tail-contact differences76.236\u201376.914mV support candidate localization only, not causality or promised recovery. Do not lift global clock commonmode: gain60 is already close to original1.6V maximum. Keep37.5ps/75ps/100mV/UI125ps and all HBT/current gates unchanged.",
+    "Continue existing40906725656 without retry. Eight normal/static-data jobs have failed their original electrical gates; vi_bias_off andclock_stopped remain active in the last snapshot. On actual13job terminal, use the prepared original collector recipe after live-schema verification; preserve failures rather than relabel transport as electrical acceptance.",
+    "Any net459 repair must preserve repairednet36993 and all non-target records plus original1691clock/fixed records, use paired DEF imports, serialized native verification/full original-class DRC and original20/4/8/8ns+5percent timing. Full serial PHY, routing and final timing are not accepted.",
+    "All source/tests/CAD/native storage remain on GitHub. Local workspace/old project copies/tmp/native process checks remain mandatory. The originally supplied review paths are absent; historical docs86/89 are responses rather than proven byte-identical original attachments. Existing8hour monitor remains read-only with no automatic native dispatch."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -4331,33 +4404,37 @@
     "observed_40905069113": 40905069113,
     "observed_40894408041": 40894408041,
     "observed_40915118374": 40915118374,
-    "observed_40916056541": 40916056541
+    "observed_40916056541": 40916056541,
+    "observed_40924689987": 40924689987,
+    "observed_40926049166": 40926049166,
+    "observed_40926701777": 40926701777,
+    "observed_40929129332": 40929129332
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40915118374,
-      "head_sha": "1f62c264a7ffab1d9bf92fdcb02946a4c6cdd4a1",
+      "run": 40924689987,
+      "head_sha": "b8e9e3fbaaa3b4a8ab5ecd6aee8ec459d755b4b3",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123593192048,
+          "id": 123626955869,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123593828606,
+          "id": 123627207866,
           "name": "preserve-job-log",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123593932903,
+          "id": 123627327307,
           "name": "readback",
           "status": "completed",
           "conclusion": "skipped",
@@ -4366,29 +4443,66 @@
       ]
     },
     {
-      "run": 40916056541,
-      "head_sha": "dfcf428b261155e8311fd70997755d4b98fba740",
+      "run": 40926049166,
+      "head_sha": "e0554f1aa30439ff0afbad2e5075b990fb0bb227",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123596480686,
+          "id": 123631731507,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123596749094,
+          "id": 123632026026,
           "name": "preserve-job-log",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123596843565,
+          "id": 123632106194,
           "name": "readback",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40926701777,
+      "head_sha": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123634032028,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123634363206,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123634443614,
+          "name": "readback (nominal_late)",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123634443741,
+          "name": "readback (nominal_early)",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
@@ -4396,9 +4510,39 @@
       ]
     },
     {
+      "run": 40929129332,
+      "head_sha": "9e43c0fd3887ae4f32c734cc5c3d266adbed1bfb",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123642562567,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123642819366,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123642901737,
+          "name": "readback",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
       "run": 40906725656,
       "head_sha": "e191424507e67331b2e79800caece4a3f03a1cc0",
-      "status": "queued",
+      "status": "in_progress",
       "conclusion": null,
       "run_attempt": 1,
       "jobs": [
@@ -4426,11 +4570,9 @@
         {
           "id": 123570499915,
           "name": "loaded (cold_early)",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Always emit exact terminal and publication metadata"
-          ]
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
         },
         {
           "id": 123570500010,
@@ -4449,32 +4591,32 @@
         {
           "id": 123570500080,
           "name": "loaded (cold_late)",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Original OFF operating point and full loaded transient"
-          ]
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
         },
         {
           "id": 123570500103,
           "name": "loaded (constant_zero)",
-          "status": "queued",
-          "conclusion": null,
+          "status": "completed",
+          "conclusion": "failure",
           "active_steps": []
         },
         {
           "id": 123570500125,
           "name": "loaded (constant_one)",
-          "status": "queued",
-          "conclusion": null,
+          "status": "completed",
+          "conclusion": "failure",
           "active_steps": []
         },
         {
           "id": 123570500132,
           "name": "loaded (vi_bias_off)",
-          "status": "queued",
+          "status": "in_progress",
           "conclusion": null,
-          "active_steps": []
+          "active_steps": [
+            "Preserve complete worker output and partial publication"
+          ]
         },
         {
           "id": 123570500143,
@@ -4486,9 +4628,11 @@
         {
           "id": 123570500242,
           "name": "loaded (clock_stopped)",
-          "status": "queued",
+          "status": "in_progress",
           "conclusion": null,
-          "active_steps": []
+          "active_steps": [
+            "Preserve complete worker output and partial publication"
+          ]
         },
         {
           "id": 123570500329,
@@ -4501,7 +4645,7 @@
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T17:14:46.802831+00:00",
+    "observed_at": "2026-10-29T18:18:17.380488+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -4641,7 +4785,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T17:14:46.802831+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T18:18:17.380488+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -40538,6 +40682,794 @@
       "group": "mainchip-final-marker-readback",
       "tag": "cloud-results-40916056541-1-mainchip-final-marker-readback",
       "release_id": 428147532,
+      "reserved_before_native_acquisition": true
+    }
+  ],
+  "imported_checkpoint_receipts_v126": [
+    {
+      "path": "docs/evidence/mainchip-current-neighborhood-controls-terminal-40924689987/artifacts.json",
+      "source": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+      "git_blob": "b3db74e58b4353269ac1be5a3563d788ee868ca3",
+      "bytes": 1882,
+      "sha256": "e9a4a87db2acf77429a91d38b9517b96041aaac68e189027d90ffc662163fea4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-current-neighborhood-controls-terminal-40924689987/controls/context.json",
+      "source": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+      "git_blob": "46e32508804cc629788e8d5579185e756c325bda",
+      "bytes": 880,
+      "sha256": "58cbd31ed1741b2c0cf5180c2ff5ecbaf0ad73f059636e84843839a4680f9b80",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-current-neighborhood-controls-terminal-40924689987/controls/controls.json",
+      "source": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+      "git_blob": "7476560566a8c7cd8313ab91dd7922d59d301c40",
+      "bytes": 1189,
+      "sha256": "f10b77a9c521286675cfdad38031e98c90fd2b8079ffcfc247153d2b29cad669",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-current-neighborhood-controls-terminal-40924689987/controls/controls.stderr",
+      "source": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-current-neighborhood-controls-terminal-40924689987/controls/controls.stdout",
+      "source": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+      "git_blob": "cf4b66b01105807d30d794138f77f335543b6b2e",
+      "bytes": 1047,
+      "sha256": "e7c26397fbb976d82353728a07fe35ab48b87b1bcb02a35b75482629ea133d25",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-current-neighborhood-controls-terminal-40924689987/controls/index.json",
+      "source": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+      "git_blob": "8c48aba43644a079b863ddac354349123de4ad23",
+      "bytes": 777,
+      "sha256": "c243d6623fcd428f2d8aa2a5b97cbc369097dbd847bb9bf14c33da9b2b689dd5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-current-neighborhood-controls-terminal-40924689987/jobs.json",
+      "source": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+      "git_blob": "88b7a6c44fa3debca6070c449914b97d168cec5d",
+      "bytes": 7660,
+      "sha256": "3eabfa927ed5d140d1ce545f26a33e4cd0816e6d891308b58b30476721fdd0d1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-current-neighborhood-controls-terminal-40924689987/jobs/123626955869.json",
+      "source": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+      "git_blob": "f4e155e30e18b5f4c127344b744e51f713425b42",
+      "bytes": 3783,
+      "sha256": "ca2aa3b8c03da97c806d5ea8f35c588185d33d5bc5aef9d9c81418722502ff6c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-current-neighborhood-controls-terminal-40924689987/jobs/123626955869.log",
+      "source": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+      "git_blob": "871b440fbd13d78ec1701ef22ec71b7e9ca36a1c",
+      "bytes": 34896,
+      "sha256": "40fa8dbd2f261234c005efdd5f8f7ca56cd87441f1e1472904615a1dba421401",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-current-neighborhood-controls-terminal-40924689987/jobs/123627207866.json",
+      "source": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+      "git_blob": "0895d77f2a80e5bd404460ff0e615bd28bb868b1",
+      "bytes": 1983,
+      "sha256": "41ea3de9f877c2c02471a2ba3f4756bf74e7e3d2e731593889667545a64bc3bb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-current-neighborhood-controls-terminal-40924689987/jobs/123627207866.log",
+      "source": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+      "git_blob": "386f62a2a62bafd41659788e4ba58c314192c6cf",
+      "bytes": 7553,
+      "sha256": "8335adc8c9bdc702be8f5971c8bffbea111958cf34eaf8419f0a76104bc8e0fe",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-current-neighborhood-controls-terminal-40924689987/jobs/123627327307.json",
+      "source": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+      "git_blob": "65486496e225787760003c4c434383617045dfe1",
+      "bytes": 1040,
+      "sha256": "e40841b515f85374c5d065696ac72795f597c1ab6966300571cec75d85354093",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-current-neighborhood-controls-terminal-40924689987/receipt.json",
+      "source": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+      "git_blob": "b599800eec44bf0394c76debef928f49353f7b64",
+      "bytes": 4514,
+      "sha256": "b3d9e2d1d4b031d0871b852390cb0e6a92ec6e8fc6a767a009272ef3d6edf88f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-current-neighborhood-controls-terminal-40924689987/run.json",
+      "source": "e5eb2c2c5b70b1144709f2d871e8407c1e4a61a5",
+      "git_blob": "10b9e2acbe5f1b0a83405fca8c8b2ed1a467b378",
+      "bytes": 14454,
+      "sha256": "34be242cee9773d29f09d57065a3d1f33cf7a8d8149f256c240edcb4eb1687fa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-controls-terminal-40926049166/artifacts.json",
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "git_blob": "c5edb3a6dec64ae5ad3f082c57e2f31e7ef85753",
+      "bytes": 1856,
+      "sha256": "c95d5fa6c16a25efad70dafa2fe6c1465ccf84a66d210642e5effd4eaaf4f64d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-controls-terminal-40926049166/controls/context.json",
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "git_blob": "6ba0da802c056691a1d743ce398cf8330f95a0b5",
+      "bytes": 627,
+      "sha256": "4cdcac3cb4752408155e50a6c340eb674f43f5ae6c7cbe19dbe1f220e534ebca",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-controls-terminal-40926049166/controls/controls.json",
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "git_blob": "f46fd2160f97bc1ef9cae17a5cf8c7a8e93f14fd",
+      "bytes": 10261,
+      "sha256": "a5e4d72473034ce3c8f979bc51ad21cfce9f9663e049c91f38888f24a753a21e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-controls-terminal-40926049166/controls/controls.stderr",
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-controls-terminal-40926049166/controls/controls.stdout",
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "git_blob": "4cab3e43325cde4446d2a6c3c9e6feb25d56eb2d",
+      "bytes": 10262,
+      "sha256": "d40fffc15b83eff6af3c51ff62e6a713370be336f0195d9601bae1149f3a3501",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-controls-terminal-40926049166/controls/index.json",
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "git_blob": "2ffbae3021a02d3fe85142f7ba8acede3865df01",
+      "bytes": 779,
+      "sha256": "8aa60a70937410f469268c6fde2b5132ca38d6d7c9521e37df024a66c33fd865",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-controls-terminal-40926049166/jobs.json",
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "git_blob": "1dd00693d07ccd0bdc288a777bbf88746a98aa46",
+      "bytes": 7926,
+      "sha256": "40f3c2d40bac06343b72e89e8027803dcb1e26348f3abd655762ff983a4b770e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-controls-terminal-40926049166/jobs/123631731507.json",
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "git_blob": "dfce7ac99d0682bca236bd59320248bdd890ad0d",
+      "bytes": 4025,
+      "sha256": "7508bc592f68ac86c22ab94ab97f4ebcc8d791f4c89cc13a3381126f71eca85f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-controls-terminal-40926049166/jobs/123631731507.log",
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "git_blob": "effb1015d45e4e9c6496467d8771d286e8a05c24",
+      "bytes": 60595,
+      "sha256": "1f431451dabeb2f3234e6193515db63035595700ff8e5e9241ff6aa09fc9a97c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-controls-terminal-40926049166/jobs/123632026026.json",
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "git_blob": "bfb0cb9a218a03bbb64e4c4db31fa41166cc610b",
+      "bytes": 1979,
+      "sha256": "3a97afb28685c8038fd846f2583c4ddeaf116a6760d3d0ab40d97c98997405a4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-controls-terminal-40926049166/jobs/123632026026.log",
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "git_blob": "d6d3fa56cdc45dae9e3e89a7123fbebcca2c6c32",
+      "bytes": 7518,
+      "sha256": "ef78cbbb538f3e63469129f0e7cf0c98ff4b579163172990c977c5b99e28fcd7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-controls-terminal-40926049166/jobs/123632106194.json",
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "git_blob": "ba8063cd806644af942ec19a71c4039ef6e960b8",
+      "bytes": 1036,
+      "sha256": "28220f117accfb9f2ce6983012287e68822b37a63b5a6106e651631f07566e3b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-controls-terminal-40926049166/receipt.json",
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "git_blob": "3531c80c0b2a21156d7fb2b515d48e89767c3982",
+      "bytes": 14219,
+      "sha256": "f24ccf734e1501f5526a7367b819bea654a4cd2b524a5f76b1d851cfce4e6446",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-controls-terminal-40926049166/run.json",
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "git_blob": "0517cc04e6d82b0321dff53f09bb6323d81cb8d4",
+      "bytes": 14448,
+      "sha256": "d0daadc4971fdb5b949039c6b014fb734776021397391862d88df1f060a24966",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/artifacts.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "af0286c3b4693bb9af9df58d12ed7c361ab42f28",
+      "bytes": 3694,
+      "sha256": "13b7c66e34d790ff11210b61e9bab9712ec3443e86e4377dd8998cb99eeb2c27",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/jobs.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "3452c0c6979578c9d02d4b39898dacd0203f4005",
+      "bytes": 17102,
+      "sha256": "930df92678d1ce401a8c1ad35cf19aaebfb1ff28313cd6e6401df00c5e22c92b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/jobs/123634032028.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "763f9bd936792908c30c7435ba3acef2d69a9acc",
+      "bytes": 4025,
+      "sha256": "c9140a3f2e4ac6ee3bf26580caf9e0839fea62355fc3e7b600d8e18b4db72fd7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/jobs/123634032028.log",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "76d62824b6a384e53670feafaaf961aac593ec65",
+      "bytes": 60789,
+      "sha256": "928f2ee3b8db58131c714064f7bcd1c3360bbc368f8f5e543ddc1243691aa2b8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/jobs/123634363206.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "da8711036a6311e2ca97cdcfae81052ee9cc0f28",
+      "bytes": 1979,
+      "sha256": "aa4041189959a13746a28965c73167e58f674051069a8319b4685e934822fcdb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/jobs/123634363206.log",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "b10e65cebf1e2b59e10ca9730e13364b0e5ed1a8",
+      "bytes": 7519,
+      "sha256": "97c5f5ea1d5d3c54aefb3d6454405d9e4fda756a5c44e79c4edaf80f60997c42",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/jobs/123634443614.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "7b03bd28036b32778043e66506cfdfeda6d53ba5",
+      "bytes": 4599,
+      "sha256": "69d3d2dec1c91c62df26a4e223fbaa6ca4d53dbba7b4559bd0a425aac27eb895",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/jobs/123634443614.log",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "081d08c50c6b5491cafc23ac7d42d8d96512935c",
+      "bytes": 8591687,
+      "sha256": "5984440cb60c142082c8693424b4a8feaf1ecc6547a69518ef1eb9993a71554e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/jobs/123634443741.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "c9357d41119aa5dc593627ac456575c1ea458278",
+      "bytes": 4600,
+      "sha256": "056096a09a3fc9b35fd620e5dbbbc40bb95ed811fd115bf99e62fdf6c778e5f5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/jobs/123634443741.log",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "9ce0cbfc9ebf22bc085575250c2a596d3eed6823",
+      "bytes": 6581467,
+      "sha256": "1245fc56f4d3976e71e4ea08e7a54db741228ccacd19f48b4c78d5bc36fec6d0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/controls/context.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "b2aa9f47ec6c8a9648679685da161acf703d18db",
+      "bytes": 627,
+      "sha256": "c7302196a1d0f57a4f4fe56501edd855d3438d297fe4f5fd69e3b8dbd75f1333",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/controls/controls.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "4182486c274c1a367d5f35103b2cdd6c76c02e44",
+      "bytes": 10261,
+      "sha256": "23c80fdeb626fe8eb4d9e2524b69e3e520e94bed258240b23bd7890521e24993",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/controls/controls.stderr",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/controls/controls.stdout",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "034d791150b6d1378a03b462a995fd62b4e61960",
+      "bytes": 10262,
+      "sha256": "4ed037c63717b9c82098114cde5e72ddf7bd4ae1a5666e5ef45a2c03b75f5865",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/controls/index.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "8e91d7a1aa955375d87ff43aca5196def76cc186",
+      "bytes": 779,
+      "sha256": "62bfbb55b17e4f5eae7ed8f7fd66e834bdcfbfbd54862dd575615b3ce0ef4930",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback-index.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "47de6af4211e5d504174ac9c00f56ef6104206d4",
+      "bytes": 2134,
+      "sha256": "75b4c8943ea59be1dc760377fcbe99b83d1fa220315ff1ad56c5e2379552d0c0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback/complete-input-census.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "5f73c53b5409c2366abf618e3dd3bd6c34e50b4b",
+      "bytes": 1719168,
+      "sha256": "a2a1a4666a63cb6ead60c9439fffa11416e1116e335f3749fa6e11553918cae2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback/contact-windows.jsonl",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "ff1a4dc8b3946db71c105ce73be073eb5d1dea53",
+      "bytes": 6741541,
+      "sha256": "acfd888b7837be9f731137746be8064cfd31afec1622da05ec9990325b6d2bea",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback/diagnosis.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "f81b390fdb971f5336d0add8a7077501759d2674",
+      "bytes": 1203475,
+      "sha256": "0cca4a31a4fbf11012b9745c76255cb78c4a530a0c69ad8eb50f31bce6c409cd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback/frames.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "217e7459302d63105e51527eb8bea6a27cc160d2",
+      "bytes": 15522,
+      "sha256": "191a1bd33c130927fc6cf8e4d3b2a0dda2a1645ee78cb554afe05ac6f63fade1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback/live-binding.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "9f4b1f2fdda8e5188d421f92690b29b35da669f0",
+      "bytes": 307,
+      "sha256": "598b6e2310ea86507f4b03a02235116419b9e3afd7850beb49503fb25f3dd6af",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback/producer-jobs.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "e8f7f073d0735dccaf8bdca429af1de83c7b88ef",
+      "bytes": 56688,
+      "sha256": "2e578d2e9517d8a992369eef71d7f8a56fe5a6fc26d9a89956b15c7feeb5e424",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback/producer-native-result.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "251663bfb62022dae61e6b62c352328d68c54672",
+      "bytes": 3457662,
+      "sha256": "4ad6acac07a8945f794e42e81c9f97a7aec665c56ae0d36371cde768a14f6a31",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback/producer-parts.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "3c9a6c53433471367eb04ce0fdc23321bc95817b",
+      "bytes": 1762,
+      "sha256": "536bd3160fbd96f9810a093936ee50b4858433ff9ea8663ee340b913d7abec73",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback/producer-ref.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "1f645104b1fa4c49ee3b8b4c82230cd2f76615b8",
+      "bytes": 558,
+      "sha256": "0581fb1f71d51eebaea7a62a152220dc63ddbd2130435efad97aef59b74af75a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback/producer-release.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "d94c9f436a071c75d876391700bb4dfe3ce27efd",
+      "bytes": 27791,
+      "sha256": "68da90434dab48f882053970b45d8b4284417660320dd944e1460f71fbb2408d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback/producer-run.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "126d0a67c039da42ec74caa4f6730641a16b1f97",
+      "bytes": 14410,
+      "sha256": "3bedb40388b0280a4f4042b5b784e3909ccb5338a73b2187ed61f8652ba70903",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback/producer-summary.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "51cc6d78cac7edb4f125d8a17ef8e39996ab8359",
+      "bytes": 1414253,
+      "sha256": "704b8d95d7f798df86cfc5013ee7843307439b5a4a9c52f541dec738a0bbef2d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback/readback-result.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "6d494cf227cfe1e6a932edcb676c39a2004d0c86",
+      "bytes": 52829,
+      "sha256": "ac033a0cdb870a02b718a5ca57e5e7c4a697432ee1cffcb34278c5f2d49e26eb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback/reservation.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "20c6017d908a03ecde553449b6bf1cff901ad3c4",
+      "bytes": 253,
+      "sha256": "66dfd2660976434811897716dca3af9dac6aa742eba0fc72953282e0f54214fc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback/source-controls.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "4182486c274c1a367d5f35103b2cdd6c76c02e44",
+      "bytes": 10261,
+      "sha256": "23c80fdeb626fe8eb4d9e2524b69e3e520e94bed258240b23bd7890521e24993",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/readback/transport-proof.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "90dcd8ac813cae9389e5c27a07c80dc2ed446bfa",
+      "bytes": 1358,
+      "sha256": "4fbac503d271c0bc48696e1921e9e646471299c7a083ba85487e9bccd5da4182",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/ref.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "cae82551bb3febe7cf1e9510381439cbd617287c",
+      "bytes": 618,
+      "sha256": "dd672c9504f33fc3751c049164a768481b271e9f46ca7fe1aeb71d927850ced2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_early/release.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "9c43923c9bde354d1d2fa0a831791754fffd05c7",
+      "bytes": 2572,
+      "sha256": "cdfd3011f1d374419129d1337c183e7a9883a3e327a127df410de3135901a115",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/controls/context.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "b2aa9f47ec6c8a9648679685da161acf703d18db",
+      "bytes": 627,
+      "sha256": "c7302196a1d0f57a4f4fe56501edd855d3438d297fe4f5fd69e3b8dbd75f1333",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/controls/controls.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "9f43a3725acd7028b82b29177a7162abc2a64428",
+      "bytes": 10261,
+      "sha256": "b200133c8c7015d3d2a7e1e5f4ee711feac85ed7ec80a1c4857c0e0b01d5da1e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/controls/controls.stderr",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/controls/controls.stdout",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "63f101c17b0dbb95be6d31ee7b20fc54a4da4a7f",
+      "bytes": 10262,
+      "sha256": "c74c3aa80466b28ed6eec9d39d221fae1ebb596ccb19cd9a450c5709df5866df",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/controls/index.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "7dd6b6fc2fa9e50fa70f3d0217379f9a76a54f1a",
+      "bytes": 779,
+      "sha256": "63c11f8adc58310dc0683e69f7c243e2661b5b219b78449b5b0dcc2637f97598",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback-index.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "1ffa1775be4a8c54c008f41238a553b2520871df",
+      "bytes": 2134,
+      "sha256": "fcc861a6d6a32aeb2f2aa823e1bc4679e807a8ed1abd88cf9ed9736c221e535b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback/complete-input-census.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "03f00195e21e1f61b5285812cd15a08cb147e442",
+      "bytes": 1719165,
+      "sha256": "9a48c6c04b08b0e497c649a94ee6c3fc1f7ced37fc79f7f2d6efec6a53ee6ebf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback/contact-windows.jsonl",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "d55c618d7e1b7f78f4aedece41513da74816c401",
+      "bytes": 9719854,
+      "sha256": "edd7f606cbf4935d33505bf792e644fa9ac90c7ca9551f4a9b8b5774aec0944a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback/diagnosis.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "6db0431ddf4500e89d0545ee562c02e726bc1a59",
+      "bytes": 1211354,
+      "sha256": "8700b787a78d232aa7c735f6214a1b6e55d76df06c60e64f64f28e216f7f3687",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback/frames.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "4165d5c6d4a52ff8f737115936f122bdc0bd5dca",
+      "bytes": 19692,
+      "sha256": "f3f7e0f239f44fb96e8bf99cc505fce98fdd721c82e4562a011353662c8ae434",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback/live-binding.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "b2ca8b6def2b29b86ea20f46c52b593f2c8885c1",
+      "bytes": 306,
+      "sha256": "148e1b5b60b3c119ad77e833dfda91ac8f33c94ffbb88fa384cf656de5fca100",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback/producer-jobs.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "e8f7f073d0735dccaf8bdca429af1de83c7b88ef",
+      "bytes": 56688,
+      "sha256": "2e578d2e9517d8a992369eef71d7f8a56fe5a6fc26d9a89956b15c7feeb5e424",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback/producer-native-result.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "a98c29e79adddbd3ae5afedbb80459e01f19400c",
+      "bytes": 3457797,
+      "sha256": "cc8a5db01e59b27ea0f5b5cb126413a97cb5950c991bd293e0ad670947cb8fe8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback/producer-parts.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "6ef889b472de30a3c2c8d3548c6bda38be07515f",
+      "bytes": 1755,
+      "sha256": "c61c5dd899c5738e8cbb33bd0eb46f65dd8eceaa1ebaf4c7769097db7b494d13",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback/producer-ref.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "2b25f706186f97b2a830297632a675d8e9fd8656",
+      "bytes": 555,
+      "sha256": "5010717800e7e5576ffa58ce594144809bacb0c2e1f98e71118d2b238bbb6619",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback/producer-release.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "03232b214a9fcaa65775d83351e96b117fd11776",
+      "bytes": 27750,
+      "sha256": "e40a97f9501949a8c355b46d843aef6f4e5ecb65daeda5251585c1ea9bdd84c6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback/producer-run.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "126d0a67c039da42ec74caa4f6730641a16b1f97",
+      "bytes": 14410,
+      "sha256": "3bedb40388b0280a4f4042b5b784e3909ccb5338a73b2187ed61f8652ba70903",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback/producer-summary.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "c8fff5e4c4ed25b5232fa930a2f1bbc062dc5d58",
+      "bytes": 1414247,
+      "sha256": "2411cb1c27f2ba8541b0c5096535d3f3f30889238036b8b1f795f6d0fceebcb6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback/readback-result.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "23f26e593a8cde4874cab1167e34b5c86dd32245",
+      "bytes": 57755,
+      "sha256": "f74aa8415e6e2043295d125f9b46bef593cdb793b3b959b4b5993b4264e0507f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback/reservation.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "0928ffa32c82791cfe62df5b9dca95248825de62",
+      "bytes": 252,
+      "sha256": "3738d9965eb4bf7ce1b49cfd5475c25b444bc6dfd21013005da2cd407c7aad63",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback/source-controls.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "9f43a3725acd7028b82b29177a7162abc2a64428",
+      "bytes": 10261,
+      "sha256": "b200133c8c7015d3d2a7e1e5f4ee711feac85ed7ec80a1c4857c0e0b01d5da1e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/readback/transport-proof.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "451ec30dcfcf8f69faa0330efa75e931c53ad2d8",
+      "bytes": 1353,
+      "sha256": "20a82eaa2ccf115c1148d4971b1717fabd0a0072cd507762147784ecb90120a3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/ref.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "43f9ac41c8a197a554c90b5f13523c2ad4b6c533",
+      "bytes": 615,
+      "sha256": "7f7388610787a46b4b73d1d8f8ccf379e0e25e982f5dc9036cd421bbfd0c2a32",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/nominal_late/release.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "73c419bee4912170f7996545cdfca3fad59d8089",
+      "bytes": 2567,
+      "sha256": "6fec8d5938b296db07088c1a6b04d4c26811fdad752fd3e9b93ba03ee1bb1b8d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/receipt.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "9837e5cf808208112d85735d0480bc3685b2862c",
+      "bytes": 192239,
+      "sha256": "a27e3d8e4577896c40cbb0866b3f8e34a507bc75140bbc1ccc602feb13795b4a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/run.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "1f3acaf7809cbdead0aaaf27dc46d531574e3c6c",
+      "bytes": 14455,
+      "sha256": "c2048d9b8d5e7289000aec2ae99bca1acd9f0b1c8ab45245fe43006c27fe05bc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/source/controls/context.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "b2aa9f47ec6c8a9648679685da161acf703d18db",
+      "bytes": 627,
+      "sha256": "c7302196a1d0f57a4f4fe56501edd855d3438d297fe4f5fd69e3b8dbd75f1333",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/source/controls/controls.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "bcd5286eadcdb0da63fda906232d3f0ca165c3ad",
+      "bytes": 10261,
+      "sha256": "f9f4e28a9fcd5206393a0c6ff1c08cb4bdc2b726fa39ec4bf17660dd8cda6cf7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/source/controls/controls.stderr",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/source/controls/controls.stdout",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "940c6717ac27a49519859bf417af9488d2974b35",
+      "bytes": 10262,
+      "sha256": "6114bfee92bc5b765896e17dfa0ee48e239af84d8cf1caeba874b2aaea3ba486",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-terminal-40926701777/source/controls/index.json",
+      "source": "24f7274d2b4e5f3445f36e7afe433b7ee39fb16c",
+      "git_blob": "6c641475ddd46ed0edee6998454f46a97e87942e",
+      "bytes": 779,
+      "sha256": "11395af4c40a989659663eb20632eb48e48301b7d24c446ba1333086a2438561",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-current-neighborhood-source-review-20261029.md",
+      "source": "b8e9e3fbaaa3b4a8ab5ecd6aee8ec459d755b4b3",
+      "git_blob": "9e10e00969e978a739f398eb40af57fd85e2b9c1",
+      "bytes": 3102,
+      "sha256": "4b779ca5c3c4f718bdf0be43b7a63e813593cf94306204a098ba1f4104b109a2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-current-neighborhood-preservation-review-20261029.json",
+      "source": "9e43c0fd3887ae4f32c734cc5c3d266adbed1bfb",
+      "git_blob": "8c8ef2e6a24a91c6147e25efa587c1a57e9d7c47",
+      "bytes": 7701,
+      "sha256": "a5a4bbc02fb2f98dcb44b1866d64c4c2b829df5bf4801be6509f7f4626307418",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-nominal-contact-readback-source-review-20261029.json",
+      "source": "89db30b422f6c6abbf481ccb396f60ae2e90d2b2",
+      "git_blob": "bbfeb1cde172519cbf53620799da0114f0a25519",
+      "bytes": 15331,
+      "sha256": "e648a4e696ef3dcdd8ae5b263f9192620bce2f80793b00b8c49244db374f2070",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v126": [
+    {
+      "run": 40926701777,
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "group": "cdr-width-nominal-contact-readback-nominal_early",
+      "release_id": 428219737,
+      "tag": "cloud-results-40926701777-1-cdr-width-nominal-contact-readback-nominal_early",
+      "reserved_before_native_acquisition": true
+    },
+    {
+      "run": 40926701777,
+      "source": "63fbba9ebfc7bd14f95f7b6de00e3242326c9dc3",
+      "group": "cdr-width-nominal-contact-readback-nominal_late",
+      "release_id": 428219785,
+      "tag": "cloud-results-40926701777-1-cdr-width-nominal-contact-readback-nominal_late",
       "reserved_before_native_acquisition": true
     }
   ]
