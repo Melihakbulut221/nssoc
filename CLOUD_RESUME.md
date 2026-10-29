@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v107
+# Cloud continuation — checkpoint v108
 
-Updated: 2026-10-29T05:38:08.248825+00:00
+Updated: 2026-10-29T06:44:02.200271+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Cloud migration and project cleanup are verified: the local workspace and project temporary output checks are empty; previously recorded clones/log paths are absent and no native EDA process remains. Code, design/test work, artifacts and continuation state stay in GitHub. FreshRC source controls40822481317 passed8tests/5positive43refusals plus4/36;20 full terminal proof files fromf9a16ecf are imported. Native audit recovery40821586610 completed both computation steps; observer-on job succeeded and its authentic result still reports3DRTshorts. Observer-off was publishing at observation; see current run snapshot. No full PHY, physical or final timing acceptance is claimed. FreshRC numerical execution and off/on comparison remain next separately qualified work.
+Cloud-only checkpoint108: actual route audit recovery40821586610 completed successfully and110 complete proofs are imported, but3Short markers and unchanged target signals remain. Exact three-line FIXED guard passed6 compiled actual-function cases plus21source/30comparison/2mismatch controls in40830215344; saved off/on full geometry and original-class DRC equality is now qualified without restamping the old failed route. Full repaired-engine rebuild/runtime/route remains next. FreshRC execution controls40828314616 passed10tests/8positive114refusals plus prior8tests5/43 and4/36. Exact-source native freshRC40830441311 (7ddf83d) is dispatched with mandatory same-source controls and pre-download empty release427537846. No complete PHY or final timing acceptance is claimed. Local workspace remains empty; all work/evidence stays in GitHub.
 
-Active handles at this snapshot: 40821586610 in_progress
+Active handles at this snapshot: 40830441311 in_progress
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -8918,3 +8919,10 @@ Local project/tmp/native processes verified absent. Inventory323 exact cloud han
 Cloud migration and project cleanup are verified: the local workspace and project temporary output checks are empty; previously recorded clones/log paths are absent and no native EDA process remains. Code, design/test work, artifacts and continuation state stay in GitHub. FreshRC source controls40822481317 passed8tests/5positive43refusals plus4/36;20 full terminal proof files fromf9a16ecf are imported. Native audit recovery40821586610 completed both computation steps; observer-on job succeeded and its authentic result still reports3DRTshorts. Observer-off was publishing at observation; see current run snapshot. No full PHY, physical or final timing acceptance is claimed. FreshRC numerical execution and off/on comparison remain next separately qualified work.
 
 Local project/tmp/native processes verified absent. Inventory323 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T06:44:02.200271+00:00 — cloud-only checkpoint v108
+
+Cloud-only checkpoint108: actual route audit recovery40821586610 completed successfully and110 complete proofs are imported, but3Short markers and unchanged target signals remain. Exact three-line FIXED guard passed6 compiled actual-function cases plus21source/30comparison/2mismatch controls in40830215344; saved off/on full geometry and original-class DRC equality is now qualified without restamping the old failed route. Full repaired-engine rebuild/runtime/route remains next. FreshRC execution controls40828314616 passed10tests/8positive114refusals plus prior8tests5/43 and4/36. Exact-source native freshRC40830441311 (7ddf83d) is dispatched with mandatory same-source controls and pre-download empty release427537846. No complete PHY or final timing acceptance is claimed. Local workspace remains empty; all work/evidence stays in GitHub.
+
+Local project/tmp/native processes verified absent. Inventory326 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

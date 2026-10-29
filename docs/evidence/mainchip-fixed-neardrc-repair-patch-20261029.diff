@@ -1,0 +1,12 @@
+--- a/src/drt/src/dr/FlexDR_init.cpp
++++ b/src/drt/src/dr/FlexDR_init.cpp
+@@ -1540,6 +1540,9 @@
+     getRipUpNetsFromMarker(&marker, ripUpNets, bloatDist);
+   }
+   for (const auto& net : ripUpNets) {
++    if (net->getFrNet()->isFixed()) {
++      continue;
++    }
+     for (const auto& fig : net->getRouteConnFigs()) {
+       getWorkerRegionQuery().remove(fig.get());
+     }

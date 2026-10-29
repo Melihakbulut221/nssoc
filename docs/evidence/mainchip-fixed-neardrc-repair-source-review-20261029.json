@@ -1,0 +1,233 @@
+{
+  "schema": "mainchip-fixed-neardrc-repair-source-review-v1",
+  "base": "a4593eb5b34a59d7a7029a0610add554183e2db5",
+  "branch": "codex/mainchip-fixed-neardrc-repair",
+  "status": "DISABLED_AUTHORED_SOURCE_ONLY_UNEXECUTED",
+  "scope": "One fixed-net guard in the exact initRipUpNetsFromMarkers loop; compiled original/repaired actual bodies with API-shaped synthetic collaborators; separate unchanged comparison of authenticated recovered audit records.",
+  "upstream": {
+    "commit": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+    "snapshot": "docs/evidence/mainchip-two-signal-ownership-primary-20261026/src/drt/src/dr/FlexDR_init.cpp",
+    "bytes": 112064,
+    "sha256": "cf48ce2c745723c9c73a3431938f26eb9b87ee4c663a0ad8b7d6e185eb511723"
+  },
+  "patch": {
+    "path": "docs/evidence/mainchip-fixed-neardrc-repair-patch-20261029.diff",
+    "bytes": 374,
+    "sha256": "a183101478894aefa915f46e67aa4367d62952bd68f9e031e18b9e062c03ec0e",
+    "repaired_full_source_sha256": "9f3778069d8678fdf733086aa83b37fb746437e883a80ac5a8e94c343d8ffc22",
+    "original_block": "  for (const auto& net : ripUpNets) {\n    for (const auto& fig : net->getRouteConnFigs()) {\n",
+    "replacement_block": "  for (const auto& net : ripUpNets) {\n    if (net->getFrNet()->isFixed()) {\n      continue;\n    }\n    for (const auto& fig : net->getRouteConnFigs()) {\n",
+    "original_occurrences": 1,
+    "byte_exact_reverse": true,
+    "changed_source_files": 1,
+    "added_lines": 3,
+    "other_source_bytes_unchanged": true
+  },
+  "source_findings": [
+    {
+      "path": "src/drt/src/dr/FlexDR_init.cpp",
+      "lines": [
+        1534,
+        1550
+      ],
+      "finding": "The original marker rip-up loop removes every collected drNet route figure and sets ripup without checking frNet::isFixed."
+    },
+    {
+      "path": "src/drt/src/dr/FlexDR_init.cpp",
+      "lines": [
+        2590,
+        2623
+      ],
+      "finding": "getRipUpNetsFromMarker inserts query-result nets without a fixed-net exclusion."
+    },
+    {
+      "path": "src/drt/src/dr/FlexDR_init.cpp",
+      "lines": [
+        2322,
+        2347
+      ],
+      "finding": "The NEARDRC queue selects isRipup; this path does not apply the separate canRipup fixed guard."
+    },
+    {
+      "path": "src/drt/src/dr/FlexDR_init.cpp",
+      "lines": [
+        2625,
+        2632
+      ],
+      "finding": "canRipup rejects fixed frNets, but that predicate does not protect the marker-init loop."
+    }
+  ],
+  "runtime_evidence": {
+    "receipt": "docs/evidence/mainchip-route-audit-recovery-native-terminal-20261029/receipt.json",
+    "receipt_sha256": "3bcfe35ba886f04e2871d2f575b252f5d50fc623b3683a599563e34bc1f1022e",
+    "full_documents": 110,
+    "full_bytes": 10824107,
+    "actual_audit_run": 40821586610,
+    "actual_audit_source": "4c6c705642da5883ae42fbeac539782cfdb94413",
+    "jobs": {
+      "source-controls": 123275062656,
+      "audit-only (on)": 123275294416,
+      "audit-only (off)": 123275294417
+    },
+    "actual_audit_jobs_all_success": true,
+    "original_route_run": 40808800489,
+    "original_source": "dd2115212b8ccd1176a2e67995d3e54b0a4248dc",
+    "original_route_job_failure_preserved": true,
+    "original_audit_jobs_still_skipped": true,
+    "actual_three_shorts_remain": true,
+    "actual_target_signal_geometry_delta": 0,
+    "observed_clock": "clknet_5_29__leaf_u_ibex.clk",
+    "observed_internal_clock_change": "Metal5 horizontal y1790040 to y1790880; three segments and Via4_YX at x932160 moved internally; protected native writer/ODB records stayed unchanged.",
+    "source_bug_is_real": true,
+    "sampled_runtime_causal_path_proven": false,
+    "immutable_observations": {
+      "before_dr.jsonl": {
+        "bytes": 249452,
+        "sha256": "503fe353231dcc39d3165c3888ced056977ed9861976056a0105e7df9e3ca02c"
+      },
+      "after_dr.jsonl": {
+        "bytes": 249451,
+        "sha256": "5bf760222674cecafd761389e3d490daf70d36c6426d2e947374a7b7b9b8089c"
+      },
+      "after_writer.jsonl": {
+        "bytes": 249455,
+        "sha256": "a16dd80578eff2d22d83ed4bee41e130ebbc9cf6b2abcc9cfee235d0d47295d4"
+      },
+      "imported.jsonl": {
+        "bytes": 249451,
+        "sha256": "9459f149cb3b1cc8f0964be27eeec204e156b0ba5b28c20bca9781a00f01664d"
+      }
+    }
+  },
+  "compiled_body_controls": {
+    "authored_not_run": true,
+    "hosted_only": true,
+    "cases": [
+      "fixed_only",
+      "mixed",
+      "multiple_markers",
+      "dedup",
+      "mutable_only",
+      "routing_empty"
+    ],
+    "original_fixed_mutation_required": true,
+    "actual_source_bodies_extracted_verbatim": true,
+    "synthetic_seams": [
+      "frNet/drNet/route-figure getters",
+      "marker query results",
+      "technology layer width",
+      "region-query removal"
+    ],
+    "actual_std_set_dedup_and_original_marker_loop": true,
+    "compiler_flags": [
+      "-std=c++20",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror"
+    ],
+    "full_openroad_build": false,
+    "native_database_or_geometry": false
+  },
+  "comparison_controls": {
+    "authored_not_run": true,
+    "original_comparator": "scripts/mainchip_built_engine_route_tail_contract.py:compare_cases",
+    "unchanged_function_sha256": "4ead19744f014dffedeefad68a39da07f2d8f04c7e67e278c62447dff914126b",
+    "original_completion": "scripts/mainchip_built_engine_route_tail_contract.py:complete",
+    "source_guard_authenticates_all110_original_bytes": true,
+    "actual_context_validation": "scripts/mainchip_route_audit_recovery_contract.py:validate_context",
+    "historical_vs_new_audit_context_explicit": true,
+    "proof_receipt_and_release_asset_hash_joins": true,
+    "original_five_audits_1200s_and1691_clocks_unchanged": true,
+    "source_refusals_authored": 21,
+    "comparison_refusals_authored": 30,
+    "comparator_mismatch_controls_authored": 2,
+    "future_pass_scope": "Only actual off/on saved-output and complete DRC equality. No physical/timing/repair or causal acceptance."
+  },
+  "preserved_source": {
+    "original_method": "scripts/mainchip-route-audit-recovery-methods.json",
+    "original_method_sha256": "5bef5d2a2541f9d7f27cfa226f577f2907fed293ae81e8beb21fefb4e4b23fa5",
+    "original_protected_count": 739,
+    "all_original_git_objects_unchanged": true,
+    "original_method_flags_unchanged": true,
+    "proof_documents_unchanged": true
+  },
+  "files": {
+    "scripts/mainchip_fixed_neardrc_repair.py": {
+      "bytes": 14777,
+      "sha256": "3639ba0263e5bae6c36d37af58c898a4fbbe029d3b78f576c162fda6a5147883"
+    },
+    "scripts/check_mainchip_fixed_neardrc_repair.py": {
+      "bytes": 18096,
+      "sha256": "a640654e81e9b94836339616a2a74c7dd0a834182e4bca2bea81d6a419e39405"
+    },
+    ".github/workflow-templates/mainchip-fixed-neardrc-repair-controls.yml": {
+      "bytes": 7896,
+      "sha256": "08016627733ad451160ef291488716470556b22a5196245b62f01ee41133ebc9"
+    },
+    "docs/evidence/mainchip-fixed-neardrc-repair-patch-20261029.diff": {
+      "bytes": 374,
+      "sha256": "a183101478894aefa915f46e67aa4367d62952bd68f9e031e18b9e062c03ec0e"
+    }
+  },
+  "validation_performed_here": [
+    "Full source/derived-proof Git API reads into RAM",
+    "110 original full proof byte hashes checked",
+    "One-block forward/reverse byte equality",
+    "Python AST parsing",
+    "Ruby Psych YAML utility parsing and four embedded Python AST parses"
+  ],
+  "validation_not_performed": [
+    "No authored Python imports or tests",
+    "No g++ compilation",
+    "No full engine build",
+    "No native archives, ODB, ELF, waveform or CAD acquisition",
+    "No workflow registration or dispatch"
+  ],
+  "required_next": [
+    "Independent source review",
+    "Root-authorized source-control activation and hosted microfixture/comparison run",
+    "Separate complete OpenROAD rebuild from the pinned source with this exact repair",
+    "Separately authorized same frozen inputs and full original route/audit invariants; actual three-short improvement is not assumed"
+  ],
+  "source_controls_authorized": false,
+  "native_engine_build_authorized": false,
+  "native_routing_authorized": false,
+  "physical_acceptance": false,
+  "timing_accepted": false,
+  "full_phy_accepted": false,
+  "runtime_root_cause_established": false,
+  "workflow": {
+    "path": ".github/workflow-templates/mainchip-fixed-neardrc-repair-controls.yml",
+    "inactive": true,
+    "manual_only": true,
+    "read_only_permissions": true,
+    "native_job": false,
+    "embedded_programs": [
+      {
+        "job": "source-controls",
+        "step": 1,
+        "bytes": 1035,
+        "sha256": "2209ce4a02b6701f97f8916f17f3a1a0aef571dc94ec159b1e8f43367e2cbfff"
+      },
+      {
+        "job": "source-controls",
+        "step": 2,
+        "bytes": 916,
+        "sha256": "0c4ca2126aaecc256ffaa630d1f13eb90c51df67797cdf5357ffc22517368922"
+      },
+      {
+        "job": "source-controls",
+        "step": 3,
+        "bytes": 1020,
+        "sha256": "ff0c97e3bad331101d6534f0c6364b7d53df91122dc9559bdf30ed295344637f"
+      },
+      {
+        "job": "preserve-source-job-log",
+        "step": 0,
+        "bytes": 1790,
+        "sha256": "0454255ca62e42edbc652d60e351e566545113ca5b36bd2bbda27aa45fd659ae"
+      }
+    ]
+  }
+}
