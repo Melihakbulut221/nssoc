@@ -102,7 +102,7 @@ def input_controls(root=ROOT):
             and run["head_branch"]=="codex/mainchip-fixed-engine-runtime-preparation","input-controls workflow")
     require(len(jobs)==2 and {j["id"]:(j["name"],j["status"],j["conclusion"])for j in jobs}==
             {123369954420:("source-controls","completed","success"),
-             123370156446:("preserve-source-job-log","completed","success")},"input-controls full successful jobs")
+             123370156446:("preserve-job-log","completed","success")},"input-controls full successful jobs")
     for job in jobs:
         require(job==docs[str(job["id"])+".job.json"],"input-controls exact job projection")
         require(all(s["status"]=="completed"and s["conclusion"]in ("success","skipped")for s in job["steps"]),

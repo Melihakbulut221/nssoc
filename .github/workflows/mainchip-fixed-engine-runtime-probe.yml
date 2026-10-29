@@ -1,0 +1,204 @@
+name: Fixed engine actual chip runtime probe
+on:
+  workflow_dispatch:
+    inputs:
+      probe:
+        description: Run the reserved read-only native probe after exact-source controls
+        required: true
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: fixed-engine-runtime-probe-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Bind exact first hosted source
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import mainchip_fixed_engine_runtime_contract as c
+          ctx=c.context(os.environ)
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==ctx['source']
+          assert sys.version_info[:2]==(3,12)
+          m=c.method(Path.cwd())
+          assert m['source_controls_authorized'] is True
+          Path('runtime-control-context.json').write_text(json.dumps(dict(source=ctx['source'],
+            run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,method_sha256=hashlib.sha256(Path(c.METHOD).read_bytes()).hexdigest(),
+            source_controls_only=True,native_executed=False),sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Actual source admission lifecycle and publication controls
+        run: |
+          python3 -B scripts/check_mainchip_fixed_engine_runtime_probe.py --output runtime-probe-controls.json > runtime-probe-controls.stdout 2> runtime-probe-controls.stderr
+          python3 -B scripts/check_mainchip_fixed_engine_runtime_host.py --output runtime-host-controls.json > runtime-host-controls.stdout 2> runtime-host-controls.stderr
+      - name: Always emit complete control records
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          for name in ["runtime-control-context.json","runtime-probe-controls.json","runtime-probe-controls.stdout","runtime-probe-controls.stderr","runtime-host-controls.json","runtime-host-controls.stdout","runtime-host-controls.stderr"]:
+              p=Path(name);present=p.is_file() and not p.is_symlink();raw=p.read_bytes() if present else b''
+              chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+              print('FIXED_RUNTIME_CONTROL_INDEX '+json.dumps(dict(path=name,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):
+                  print('FIXED_RUNTIME_CONTROL_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          PY
+      - name: Preserve all source control bytes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: fixed-runtime-controls-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            runtime-control-context.json
+            runtime-probe-controls.json
+            runtime-probe-controls.stdout
+            runtime-probe-controls.stderr
+            runtime-host-controls.json
+            runtime-host-controls.stdout
+            runtime-host-controls.stderr
+          if-no-files-found: error
+          retention-days: 90
+  preserve-source-job-log:
+    needs: source-controls
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Preserve the completed source job full raw log and provenance
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          e=os.environ;repo=e['GITHUB_REPOSITORY'];run_id=e['GITHUB_RUN_ID'];attempt=e['GITHUB_RUN_ATTEMPT']
+          assert repo=='Melihakbulut221/nssoc' and e['GITHUB_ACTIONS']=='true'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and attempt=='1'
+          def read(endpoint,name):
+              raw=subprocess.check_output(['gh','api','repos/'+repo+'/'+endpoint])
+              Path(name).write_bytes(raw);return json.loads(raw)
+          run=read('actions/runs/'+run_id,'fixed-runtime-run.json')
+          jobs=read('actions/runs/'+run_id+'/attempts/'+attempt+'/jobs?per_page=100','fixed-runtime-jobs.json')
+          assert run['id']==int(run_id) and run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
+          matches=[j for j in jobs['jobs'] if j['name']=='source-controls']
+          assert len(matches)==1
+          j=matches[0]
+          assert j['run_id']==int(run_id) and j['head_sha']==e['GITHUB_SHA'] and j['run_attempt']==1 and j['status']=='completed'
+          read('actions/jobs/'+str(j['id']),'fixed-runtime-source-job.json')
+          log=subprocess.check_output(['gh','api','--allow-escape-sequences','repos/'+repo+'/actions/jobs/'+str(j['id'])+'/logs'])
+          assert log
+          Path('fixed-runtime-source-job.log').write_bytes(log)
+          names=('fixed-runtime-run.json','fixed-runtime-jobs.json','fixed-runtime-source-job.json','fixed-runtime-source-job.log')
+          files={name:dict(bytes=Path(name).stat().st_size,sha256=hashlib.sha256(Path(name).read_bytes()).hexdigest()) for name in names}
+          receipt=dict(source=e['GITHUB_SHA'],run_id=int(run_id),attempt=1,source_job_id=j['id'],
+            source_job_conclusion=j['conclusion'],full_source_job_log=True,files=files,
+            native_authorized=False,metadata_only=True)
+          Path('fixed-runtime-source-job-log-receipt.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(receipt,sort_keys=True))
+          PY
+      - name: Preserve full completed source job log
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: fixed-runtime-full-source-job-log-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            fixed-runtime-run.json
+            fixed-runtime-jobs.json
+            fixed-runtime-source-job.json
+            fixed-runtime-source-job.log
+            fixed-runtime-source-job-log-receipt.json
+          if-no-files-found: error
+          retention-days: 90
+
+  native-probe:
+    if: ${{ inputs.probe }}
+    needs: [source-controls, preserve-source-job-log]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Bind exact first hosted source
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import mainchip_fixed_engine_runtime_contract as c
+          ctx=c.context(os.environ)
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==ctx['source']
+          assert sys.version_info[:2]==(3,12)
+          m=c.method(Path.cwd())
+          assert m['source_controls_authorized'] is True
+          Path('runtime-control-context.json').write_text(json.dumps(dict(source=ctx['source'],
+            run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,method_sha256=hashlib.sha256(Path(c.METHOD).read_bytes()).hexdigest(),
+            source_controls_only=True,native_executed=False),sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Actual source admission lifecycle and publication controls
+        run: |
+          python3 -B scripts/check_mainchip_fixed_engine_runtime_probe.py --output runtime-probe-controls.json > runtime-probe-controls.stdout 2> runtime-probe-controls.stderr
+          python3 -B scripts/check_mainchip_fixed_engine_runtime_host.py --output runtime-host-controls.json > runtime-host-controls.stdout 2> runtime-host-controls.stderr
+      - name: Always emit complete control records
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          for name in ["runtime-control-context.json","runtime-probe-controls.json","runtime-probe-controls.stdout","runtime-probe-controls.stderr","runtime-host-controls.json","runtime-host-controls.stdout","runtime-host-controls.stderr"]:
+              p=Path(name);present=p.is_file() and not p.is_symlink();raw=p.read_bytes() if present else b''
+              chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+              print('FIXED_RUNTIME_CONTROL_INDEX '+json.dumps(dict(path=name,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):
+                  print('FIXED_RUNTIME_CONTROL_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          PY
+      - name: Preserve all source control bytes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: fixed-runtime-controls-${{ github.job }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            runtime-control-context.json
+            runtime-probe-controls.json
+            runtime-probe-controls.stdout
+            runtime-probe-controls.stderr
+            runtime-host-controls.json
+            runtime-host-controls.stdout
+            runtime-host-controls.stderr
+          if-no-files-found: error
+          retention-days: 90
+      - name: Restore exact new ELF and original chip then run read-only census
+        id: probe
+        run: python3 -B scripts/cloud_mainchip_fixed_engine_runtime.py probe
+      - name: Permanently preserve complete success or failure evidence
+        if: ${{ always() && (steps.probe.outcome == 'success' || steps.probe.outcome == 'failure') }}
+        run: python3 -B scripts/cloud_mainchip_fixed_engine_runtime.py publish
+      - name: Cloud fallback for complete native evidence
+        if: ${{ always() && (steps.probe.outcome == 'success' || steps.probe.outcome == 'failure') }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: fixed-runtime-native-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mainchip-fixed-engine-runtime-probe-${{ github.run_id }}-${{ github.run_attempt }}/out/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 1
