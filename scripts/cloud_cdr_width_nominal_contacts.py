@@ -243,6 +243,7 @@ def select_archive(archive,expected,selected,directory,out):
       every_member_authenticated=True,selected={n:observed[n]for n in selected},
       extraction_only_on_runner=True,source_archives_modified=False)
 def load_numeric():
+    source_guard(ROOT) # Recheck after archive transport, immediately before any helper import.
     global np
     np=importlib.import_module("numpy")
     require(np.__version__=="2.3.3","exact NumPy version")
