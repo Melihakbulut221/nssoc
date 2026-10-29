@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v119
+# Cloud continuation — checkpoint v120
 
-Updated: 2026-10-29T13:54:00.938252+00:00
+Updated: 2026-10-29T14:39:22.480652+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Cloud-only checkpoint119: actual fixed-engine four-phase prefix40878295979 SUCCESS. Full54proof files/4405117bytes and95member outer archive map preserved at e3d1cba2;1308file frozen workspace is609145089compressed bytes,4127248178unpacked bytes. All1691clock/fixed records preserved, only two signal targets mutable,3originalShorts retained,peak5617455104bytes,no OOM. No routing ran. Current-width CDR worker/result source-controls40884116773 SUCCESS with unchanged6numerical blocks,10historical outcomes,2currentpositive/32refusal tests; full13proof retained at7c98a191. Additive command-evidence validator3a08e8ad is authored/unexecuted. Tail integration in progress. Full PHY/routing/timing acceptance false.
+Cloud-only checkpoint120: standalone command-evidence40887373623 PASS (9positive,70refusal,2old-regressions,9actual supervised records), full13proof439312bytes at49e16be3. Initial assembled fixed-tail source40890525751 failed before any native execution because the complete frozen source map additionally contains four original supervised phase stdout logs. Full12failureproof preserved6763a711. Successor a41a6435 requires exactly those four logs, each byte/hash joined to original command stdout, and adds1positive/8tamper controls. Current source-only40892423117 evaluates the three suites on1302protected files; native authorization remains false. Existing source/current-prefix evidence unchanged. Parallel CDR execution adapter/stage is additive and not authorized.
 
 Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9014,3 +9015,10 @@ Local project/tmp/native processes verified absent. Inventory343 exact cloud han
 Cloud-only checkpoint119: actual fixed-engine four-phase prefix40878295979 SUCCESS. Full54proof files/4405117bytes and95member outer archive map preserved at e3d1cba2;1308file frozen workspace is609145089compressed bytes,4127248178unpacked bytes. All1691clock/fixed records preserved, only two signal targets mutable,3originalShorts retained,peak5617455104bytes,no OOM. No routing ran. Current-width CDR worker/result source-controls40884116773 SUCCESS with unchanged6numerical blocks,10historical outcomes,2currentpositive/32refusal tests; full13proof retained at7c98a191. Additive command-evidence validator3a08e8ad is authored/unexecuted. Tail integration in progress. Full PHY/routing/timing acceptance false.
 
 Local project/tmp/native processes verified absent. Inventory344 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T14:39:22.480652+00:00 — cloud-only checkpoint v120
+
+Cloud-only checkpoint120: standalone command-evidence40887373623 PASS (9positive,70refusal,2old-regressions,9actual supervised records), full13proof439312bytes at49e16be3. Initial assembled fixed-tail source40890525751 failed before any native execution because the complete frozen source map additionally contains four original supervised phase stdout logs. Full12failureproof preserved6763a711. Successor a41a6435 requires exactly those four logs, each byte/hash joined to original command stdout, and adds1positive/8tamper controls. Current source-only40892423117 evaluates the three suites on1302protected files; native authorization remains false. Existing source/current-prefix evidence unchanged. Parallel CDR execution adapter/stage is additive and not authorized.
+
+Local project/tmp/native processes verified absent. Inventory347 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
