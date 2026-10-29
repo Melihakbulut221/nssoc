@@ -11,6 +11,12 @@ on:
         required: true
         default: false
         type: boolean
+      operation:
+        description: Exact operation; diagnose reads the preserved failed capsule without build or CAD
+        required: true
+        default: diagnose
+        type: choice
+        options: [diagnose, build]
 permissions:
   contents: read
 concurrency:
@@ -18,7 +24,7 @@ concurrency:
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
-  PINS_SHA256: aae1441afdfe352eaad2c317b5847e6f5a1cce53d1dd3919dcf221991031c227
+  PINS_SHA256: d1c91b412d6db855655d91ceb524ede3641f4e84dfe2b07bfd352788d8e11de0
 jobs:
   source-controls:
     if: github.run_attempt == 1 && github.ref == 'refs/heads/codex/cdr-resistor-provenance-build'
@@ -147,15 +153,23 @@ jobs:
           PY
           python -B scripts/cloud_magic_resistor_provenance_build.py --mode preflight --pins-sha256 "$PINS_SHA256" --reservation cloud-magic-build-host/reservation.json --controls cloud-magic-build-host/controls.json --output cloud-magic-build >cloud-magic-build-host/preflight.json
       - name: Original build dependencies after reservation
+        if: inputs.operation == 'build'
         run: |
           sudo apt-get update -qq >cloud-magic-build-host/apt-update.stdout 2>cloud-magic-build-host/apt-update.stderr
           sudo apt-get install -y --no-install-recommends tcl8.6 tk8.6 tcl-dev tk-dev build-essential m4 autoconf libreadline-dev libx11-dev libxext-dev libxpm-dev libxt-dev libcairo2-dev libgl1-mesa-dev libglu1-mesa-dev >cloud-magic-build-host/apt-install.stdout 2>cloud-magic-build-host/apt-install.stderr
-      - name: Full two builds and archived baseline plus trace off-on capture
+      - name: Exact reserved operation
         env:
+          OPERATION: '${{ inputs.operation }}'
           GH_TOKEN: '${{ github.token }}'
         run: |
           set +e
-          python -B scripts/cloud_magic_resistor_provenance_build.py --mode native --pins-sha256 "$PINS_SHA256" --reservation cloud-magic-build-host/reservation.json --controls cloud-magic-build-host/controls.json --output cloud-magic-build >cloud-magic-build-host/native.stdout 2>cloud-magic-build-host/native.stderr
+          if [ "$OPERATION" = diagnose ]; then
+            python -B scripts/magic_resistor_equivalence_diagnosis.py --pins-sha256 "$PINS_SHA256" --reservation cloud-magic-build-host/reservation.json --controls cloud-magic-build-host/controls.json --output cloud-magic-build >cloud-magic-build-host/native.stdout 2>cloud-magic-build-host/native.stderr
+          elif [ "$OPERATION" = build ]; then
+            python -B scripts/cloud_magic_resistor_provenance_build.py --mode native --pins-sha256 "$PINS_SHA256" --reservation cloud-magic-build-host/reservation.json --controls cloud-magic-build-host/controls.json --output cloud-magic-build >cloud-magic-build-host/native.stdout 2>cloud-magic-build-host/native.stderr
+          else
+            exit 2
+          fi
           code=$?
           printf '%s\n' "$code" >cloud-magic-build-host/native.returncode.txt
           cat cloud-magic-build-host/native.stdout cloud-magic-build-host/native.stderr

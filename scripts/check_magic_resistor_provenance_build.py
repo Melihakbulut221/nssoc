@@ -59,6 +59,46 @@ def controls(expected):
             (dirs["on"]/file).write_bytes(raw)
             reject("numeric_equivalence:"+label,lambda:b.compare_outputs(dirs))
             (dirs["on"]/file).write_bytes(synthetic[file])
+        import magic_resistor_equivalence_diagnosis as diag
+        p=diag.proof()
+        identities=diag.live_binding(p,p["run.json"],p["jobs.json"],p["release.json"],p["tag-ref.json"])
+        assert len(identities)==14;positive.append("actual_failed_producer_and_all_assets")
+        checks=[
+          ("run_source","run.json",lambda x:x.update(head_sha="f"*40)),
+          ("run_conclusion","run.json",lambda x:x.update(conclusion="success")),
+          ("job_step","jobs.json",lambda x:x["jobs"][2]["steps"][0].update(conclusion="failure")),
+          ("asset_digest","release.json",lambda x:x["assets"][0].update(digest="sha256:"+"0"*64)),
+          ("missing_asset","release.json",lambda x:x["assets"].pop()),
+          ("tag_source","tag-ref.json",lambda x:x["object"].update(sha="f"*40))]
+        for label,key,mutate in checks:
+            wrong=copy.deepcopy(p);mutate(wrong[key])
+            reject("failed_archive_binding:"+label,lambda wrong=wrong:diag.live_binding(p,
+              wrong["run.json"],wrong["jobs.json"],wrong["release.json"],wrong["tag-ref.json"]))
+        five={name:dirs["on"]for name in diag.VARIANTS}
+        five["saved_current"]=dirs["baseline"]
+        report=diag.records_diagnosis(five)
+        assert report["original_strict_comparator"]["accepted"]is True and report["physical_acceptance"]is False
+        positive.append("actual_difference_reader_equal_fixture")
+        reordered=b'\n'.join(reversed(synthetic["pump_wires.res.ext"].splitlines()))+b'\n'
+        (dirs["on"]/"pump_wires.res.ext").write_bytes(reordered)
+        report=diag.records_diagnosis(five)
+        detail=report["variants"]["trace_on"]["categories"]["pump_wires.res.ext:rnode"]
+        assert report["original_strict_comparator"]["accepted"]is False
+        assert detail["multiset_equal"]is True and detail["ordered_equal"]is False and detail["mismatch_count"]==2
+        assert report["multiset_is_diagnostic_only"]is True;positive.append("order_difference_not_accepted")
+        changed=synthetic["pump_wires.res.ext"].replace(b'b" 10',b'b" 11')
+        (dirs["on"]/"pump_wires.res.ext").write_bytes(changed)
+        report=diag.records_diagnosis(five)
+        detail=report["variants"]["trace_on"]["categories"]["pump_wires.res.ext:resist"]
+        assert detail["multiset_equal"]is False and detail["reference_only_count"]==detail["observed_only_count"]==1
+        assert detail["first_five_ordered_mismatches"][0]["observed"].endswith("11")
+        positive.append("value_difference_retained_not_normalized")
+        (dirs["on"]/"pump_wires.res.ext").write_bytes(synthetic["pump_wires.res.ext"])
+        wrong=dict(five);wrong.pop("archived")
+        reject("diagnostic_missing_variant",lambda:diag.records_diagnosis(wrong))
+        (dirs["on"]/"pump_wires.res.ext").write_bytes(b'')
+        reject("diagnostic_missing_native_records",lambda:diag.records_diagnosis(five))
+        (dirs["on"]/"pump_wires.res.ext").write_bytes(synthetic["pump_wires.res.ext"])
         rows=[dict(schema=1,event="trace_start",instrumentation="nssoc_resistor_provenance_v1",resistor_footprint_is_not_inferred=True)]
         def add(event,**kw):rows.append(dict(schema=1,event=event,seq=len(rows),epoch=1,**kw))
         add("net_begin",net_name_hex="61",physical_ownership_proved=False)
@@ -165,7 +205,7 @@ def controls(expected):
         alone=root/"helper-only-error";alone.mkdir()
         assert b.finish_owned(None,None,{},None,alone,broken)is secondary
         life.append("actual_cleanup_helper_primary_and_no_primary")
-    assert len(positive)==8 and len(refused)==30 and len(life)==6,(positive,refused,life)
+    assert len(positive)==12 and len(refused)==38 and len(life)==6,(positive,refused,life)
     inherited=prior.controls()
     assert inherited["positive_count"]==4 and inherited["refusal_count"]==19
     return dict(status="PASS_MAGIC_CURRENT500_BUILD_SOURCE_CONTROLS",passed=True,
