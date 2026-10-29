@@ -40,7 +40,7 @@ jobs:
           assert r['status']=='PASS_FIXED_ENGINE_BUILD_SOURCE_CONTROLS'
           assert r['current_source']==os.environ['GITHUB_SHA'] and r['current_token']==os.environ['GITHUB_RUN_ID']+'-1'
           assert len(r['lifecycle']['current_control_provenance_refusals'])==4
-          assert (len(r['authority']['refusals']),len(r['derivation']['refusals']),r['lifecycle']['count'],r['publication']['count'])==(27,7,10,6)
+          assert (len(r['authority']['refusals']),len(r['derivation']['refusals']),r['lifecycle']['count'],r['publication']['count'])==(28,7,10,6)
           old=r['unchanged_build_controls']
           assert old['status']=='PASS_ENGINE_BUILD_SOURCE_CONTROLS'
           assert (old['positive_count'],old['refusal_count'],old['lifecycle']['count'])==(7,45,25)

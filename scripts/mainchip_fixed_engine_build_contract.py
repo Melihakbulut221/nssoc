@@ -47,6 +47,10 @@ def method(root):
       all(m["protected"].get(p)==h for p,h in prior["protected"].items()),"inherited857 source protection")
     require(m["protected"].get(PRIOR)==PRIOR_SHA and m["protected"].get(OLD_BUILD_METHOD)==OLD_BUILD_SHA,
       "historical authority files unprotected")
+    required=("scripts/mainchip_fixed_engine_build.py","scripts/mainchip_fixed_engine_build_contract.py",
+      "scripts/check_mainchip_fixed_engine_build.py",".github/workflow-templates/mainchip-fixed-engine-build.yml",
+      "docs/evidence/mainchip-fixed-engine-build-source-review-20261029.json")
+    require(all(p in m["protected"]for p in required),"new source unit pin omitted")
     require(digest(secure_file(root,OLD_BUILD_METHOD).read_bytes())==OLD_BUILD_SHA,"old build authority changed")
     expected=decode(secure_file(root,OLD_BUILD_METHOD).read_bytes())["upstream_primary"]
     expected=dict(expected,**{FLEX:repair.ORIGINAL_SHA,ROUTER:observer.ORIGINAL_SHA})

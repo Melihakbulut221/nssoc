@@ -71,6 +71,8 @@ def source_controls(method,root):
     for key in c.FALSE:
         bad=copy.deepcopy(enabled);bad[key]=True;put_method(root,bad)
         refuse("scope "+key,lambda:c.method(root),rows)
+    bad=copy.deepcopy(enabled);del bad["protected"]["scripts/mainchip_fixed_engine_build.py"]
+    put_method(root,bad);refuse("new source unit pin omitted",lambda:c.method(root),rows)
     put_method(root,enabled)
     for key,value in (("GITHUB_REF","refs/heads/old"),("GITHUB_RUN_ATTEMPT","2"),
       ("GITHUB_EVENT_NAME","push"),("GITHUB_SHA","x"),("RUNNER_ENVIRONMENT","self-hosted")):
