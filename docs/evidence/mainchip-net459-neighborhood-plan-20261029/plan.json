@@ -1,0 +1,170 @@
+{
+  "schema": 1,
+  "status": "DISABLED_HOSTED_DIAGNOSTIC_PLAN_NOT_GEOMETRY_ACCEPTANCE",
+  "base": "bcf20a6136fc819fdd6d9e502091b0897b927d45",
+  "actual_producer": {
+    "run": 40894408041,
+    "attempt": 1,
+    "source": "8e9223b0be6e644d4c5684b94b13c2888c531e79",
+    "on_audit_job": 123557468578,
+    "release": 427992502,
+    "tag": "cloud-results-40894408041-1-mainchip-fixed-engine-route-tail-on-audit"
+  },
+  "final_audit_status": {
+    "parent_reports_terminal_success": true,
+    "independently_checked_all_seven_job_statuses": "success",
+    "marker_body_not_yet_acquired": true,
+    "reported_remaining_shorts": 1,
+    "physical_acceptance": false,
+    "timing_accepted": false,
+    "full_phy_accepted": false
+  },
+  "input_metadata": {
+    "outputs": {
+      "asset_id": 689123081,
+      "bytes": 21497,
+      "sha256": "07032f779bc1f664fe58da6953287ab7d66f880d8e24adf725b27a00f6f7209a",
+      "files": 144
+    },
+    "parts": {
+      "asset_id": 689123210,
+      "bytes": 493,
+      "sha256": "e5730258718841c8ad1627e20256e7352535036c0d971064e6d627566a15d787",
+      "archive": {
+        "bytes": 752667956,
+        "sha256": "86232efc223698eee1a52fa55866ba08bd791763967ed6a5fdb2bd11fd55a08f"
+      },
+      "parts": [
+        {
+          "bytes": 536870912,
+          "name": "route-tail-evidence.tar.gz.part000",
+          "sha256": "36912384bebd31427e9d0de8d29a55706e2c8105c420ab6853261dd00c76c5bf"
+        },
+        {
+          "bytes": 215797044,
+          "name": "route-tail-evidence.tar.gz.part001",
+          "sha256": "0037a9862e74a652261d2c6eae510bdf24a89420bbd0364d01a524c545ed92d6"
+        }
+      ]
+    },
+    "complete_archive_files": 145,
+    "uncompressed_member_bytes": 5763445029
+  },
+  "current_observation": {
+    "diagnosis": "docs/evidence/mainchip-net459-final-crossing-diagnosis-20261029/diagnosis.json",
+    "endpoints": "docs/evidence/mainchip-net459-final-crossing-diagnosis-20261029/endpoint-adjacency.json",
+    "intersection_dbu": [
+      947420,
+      1789940,
+      947620,
+      1790140
+    ],
+    "units_per_um": 1000,
+    "crossing_endpoints_dbu": [
+      [
+        947520,
+        1789620
+      ],
+      [
+        947520,
+        1790460
+      ]
+    ],
+    "endpoint_vias_present": false,
+    "selected_clock_material_records": 133,
+    "selected_clock_raw_pairs": 365,
+    "clock_selected_witness_unchanged": true,
+    "qualification": "These are selected in-memory after_writer witnesses, not the missing final serialized marker body."
+  },
+  "next_cloud_text_readback": {
+    "reservation_group": "mainchip-final-marker-readback",
+    "before_acquisition": "Current manual hosted attempt1 exact-source release and tag; new source distinct from immutable old producer source. Full old run/jobs/release/tag binding.",
+    "archive_policy": "Authenticate full two-part compressed archive and all145 regular member hashes; safe normalized paths/no links/no duplicates. Stream native members to hashes only. Persist only explicit derived text selections and complete receipt/chunks. No CAD invocation or ODB/DEF/GDS output."
+  },
+  "later_neighborhood_native": {
+    "input": "Exact audited current work/drc-observed.odb or repaired.odb after full current proof; never original444f for this local diagnosis.",
+    "runtime": "Same actual2a343c7491353a60e7b06aa134d4b67e3ef2e846a8341164dacffe88f5f7ec2f and104 authenticated libraries.",
+    "geometry": "Full net459 terminals/raw wire/vias plus every net ordinary/special material, placed pins/obstructions and all relevant layers in explicit rule-expanded window. Preserve selected clock and net36993 baseline.",
+    "technology": "Exact embedded dbTech rules or authenticated original technology source; width/direction alone insufficient. Full frozen2702 handoff contains no LEF/TLEF. Never use an unpinned fresh PDK.",
+    "required_rules": [
+      "manufacturing grid",
+      "preferred/wrong-way width",
+      "spacing/PRL/EOL",
+      "cut spacing",
+      "via enclosure",
+      "net NDR"
+    ],
+    "unsupported_material": "Refuse unknown block vias/raw opcodes/fills or unsupported obstruction APIs; never silently omit."
+  },
+  "reusable_source": [
+    {
+      "path": "scripts/mainchip_original_clock_restoration.py",
+      "sha256": "fd69f21bae8beed99f1886accec86a9b35bfa7db5437cdb792813a76e60f9194",
+      "functions": [
+        "parse_def",
+        "replace_records",
+        "patch_def",
+        "restore_classes"
+      ]
+    },
+    {
+      "path": "scripts/mainchip_original_clock_restoration_native.py",
+      "sha256": "e48e0071f26309cfebadd051286408c3a229b1a6c54884ec516292d3017bee4c",
+      "functions": [
+        "load",
+        "identity",
+        "encoded",
+        "vias",
+        "import_tcl",
+        "original_gate"
+      ]
+    },
+    {
+      "path": "scripts/mainchip_fixed_clock_signal_repair.py",
+      "sha256": "fefe067abf459cd9827dcd89113eec3a63b948bf7a46146fdfe1f902e69f7c2d",
+      "functions": [
+        "routing_delta",
+        "native_invariants",
+        "timing_contract"
+      ]
+    },
+    {
+      "path": "scripts/mainchip_two_signal_ownership_native.py",
+      "sha256": "b5ac981c99dad7031553330c1cfbcfdfd5523728bf3071b6fdae382123f0d34d",
+      "functions": [
+        "native_wire",
+        "placed_box",
+        "immutable_material"
+      ],
+      "do_not_reuse_collect_unchanged": "Original3markers and old complete raw-census hash are wrong for current routed output; overlap-only collection is not spacing clearance."
+    }
+  ],
+  "source_projection_traps": [
+    "Original geometry.marker_boxes/ownership_decision demand old3markers including net459 x950880, not current1marker.",
+    "Original ownership api_evidence/collect binds original444f and13905578 raw pairs; current two target wires legitimately changed.",
+    "Current tail handoff.restore binds same run and current source/method/projection. New cross-run diagnostic must carry old8e context separately from new hosted request.",
+    "Historical audit recovery demonstrates isolated live_route seam but pins old408088/old ELF/746 inputs/687 sources; cannot reuse its admission.",
+    "Current tail workflow always routes then audits; re-dispatch is not a standalone readback. New manual readback is required; no prefix recomputation.",
+    "Full current audit map includes outputs.json added after inventory; expected complete member set is144 mapped files plus exact outputs.json."
+  ],
+  "conditional_repair_after_clearance": {
+    "mechanism": "Construct only net459 DEF record and use exact replace_records/patch_def plus paired floorplan imports; no existing local bridge builder is qualified.",
+    "preservation": "Additional net459-only routing_delta against current audited DEF preserves already repaired net36993 and every other record; retain original two-target/original1691 clock gate too.",
+    "landing_constraint": "Both crossing endpoints are M5 bends without Via4/M4 landing. A crossing-only M4 edge needs two new legal vias. Existing distant landings require a larger distinct path change.",
+    "gates": [
+      "serialized native reread",
+      "full non-target native/material/identity/placement/pins/vias",
+      "original1691 fixed clocks",
+      "original-class full DRC",
+      "source20/4/8/8ns plus5percent timing"
+    ],
+    "authorization": false
+  },
+  "execution": {
+    "authored_tests_run_locally": false,
+    "native_assets_acquired_locally": false,
+    "native_executed": false,
+    "dispatch": false,
+    "geometry_changed": false
+  }
+}
