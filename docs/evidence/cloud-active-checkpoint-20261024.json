@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T15:17:03.012348+00:00",
+  "updated_at": "2026-10-29T16:01:50.118792+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "9fad4e7b58d08b732d80d106b673627839bbc44f",
+  "root_source_before_receipt": "4b4449c6005c1d1f835f501b3975aaf2ebb55493",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 122,
+    "inventory_version": 123,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -41,6 +41,38 @@
     }
   },
   "active_runs": {
+    "cdr_current_width_loaded_native": {
+      "run": 40906725656,
+      "head_sha": "e191424507e67331b2e79800caece4a3f03a1cc0",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123563439494,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123563948227,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123564045818,
+          "name": "prepare",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Original complete loaded binding without transient"
+          ]
+        }
+      ]
+    },
     "fixed_tail_native_route_audit": {
       "run": 40894408041,
       "head_sha": "8e9223b0be6e644d4c5684b94b13c2888c531e79",
@@ -65,19 +97,33 @@
         {
           "id": 123520805697,
           "name": "route-only (on)",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Execute one separately owned route stage"
-          ]
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
         },
         {
           "id": 123520805825,
           "name": "route-only (off)",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123557468469,
+          "name": "audit-only (off)",
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
-            "Execute one separately owned route stage"
+            "Permanently preserve complete success or failure evidence"
+          ]
+        },
+        {
+          "id": 123557468578,
+          "name": "audit-only (on)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Permanently preserve complete success or failure evidence"
           ]
         }
       ]
@@ -3722,14 +3768,77 @@
       "timing_acceptance": false,
       "physical_acceptance": false,
       "full_phy_acceptance": false
+    },
+    "cdr_current_width_loaded_matrix": {
+      "branch": "codex/cdr-width-loaded-execution-unit",
+      "qualified_source": "2ffb41c84041cd2980ab2c57415ff72b9ebfcc50",
+      "source_run": 40905069113,
+      "source_terminal": "success",
+      "source_evidence": "fe892537a0423defc68e959019b8f25229b8e160",
+      "source_receipt_sha256": "eaeb12fbb8c823d7d4634e26e077b84f977337d3769aa0f0b52d94c4c29633fd",
+      "source_proof_files": 21,
+      "source_proof_bytes": 539962,
+      "import_controls": {
+        "positive": 2,
+        "refusal": 6,
+        "initial_modules": 52,
+        "initial_data": 3,
+        "copied_files": 55,
+        "repository_edges": 115
+      },
+      "actual_worker_sha256": "ebf92a9842280587a437de161425f49f6ce4a82c9d76a0ce2532075d0e309bf5",
+      "literal_worker_substitutions": 2,
+      "numerical_blocks_changed": false,
+      "native_run": 40906725656,
+      "native_source": "e191424507e67331b2e79800caece4a3f03a1cc0",
+      "protected_files": 1329,
+      "native_method_sha256": "119b7a2d35abb1163570d01b8af16d18c6d9401e839a38904863d8b42eecef67",
+      "workflow_id": 400799746,
+      "full_source_controls_repeated_and_passed_before_native": true,
+      "all_eleven_exact_source_releases_reserved": true,
+      "preparation_seconds": 1200,
+      "loaded_case_seconds": 7200,
+      "max_parallel": 2,
+      "automatic_retry": false,
+      "preparation_authorized": true,
+      "simulation_authorized": true,
+      "native_preparation_started": true,
+      "electrical_accepted": false,
+      "physical_accepted": false,
+      "full_phy_accepted": false
+    },
+    "fixed_tail_route_progress": {
+      "run": 40894408041,
+      "source": "8e9223b0be6e644d4c5684b94b13c2888c531e79",
+      "both_route_jobs": "success",
+      "off_audit_job": 123557468469,
+      "on_audit_job": 123557468578,
+      "on_route_command_seconds": 1803.710676491,
+      "on_route_router_report_remaining_short": 1,
+      "router_report_is_not_final_original_class_DRC": true,
+      "selected_writer_overlap": {
+        "signal": "net459",
+        "clock": "clknet_5_29__leaf_u_ibex.clk",
+        "layer": "Metal5",
+        "intersection_dbu": [
+          947420,
+          1789940,
+          947620,
+          1790140
+        ]
+      },
+      "witness_internal_fixed_clock_unchanged": true,
+      "original_class_audit_pending": true,
+      "physical_acceptance": false,
+      "timing_accepted": false
     }
   },
   "next_actions": [
-    "Track existing40894408041 only. Off/on routes must finish before independent audits and comparison. Preserve complete logs/direct JSON/native inventories and part metadata on GitHub; never acquire native payload locally or redispatch blindly.",
-    "CDR execution adapter plus failure-publication source controls passed40899144223 atdf9d187e. Complete16proof168877bytes is preserved825ca4bc. Next integrate separately authorized hosted preparation/ten-case workflow with all11release reservations before dependencies, original1200/7200budgets,maxparallel2,no retry; root still must qualify assembled source before native execution.",
-    "For future CDR activation only two reviewed worker substitutions are permitted: execution admission import and scripts/cdr-width-loaded-execution-methods.json. Preserve1264 inherited pins except exact worker successor ebf92a98; add complete new16proof and final helper/workflow pins. Existing execution/publication checkers must repeat on the actual successor source.",
-    "Failure publication must retain raw outer/native errors, source-integrity errors, complete worker/supervision/waves and primary-error precedence. Use independent unqualified summary, explicit zero-byte direct plan, full artifact fallback. Source-only controls never transfer electrical/CDR/fullPHY acceptance.",
-    "Original1691clock/two-target/3initialShorts and20/4/8/8ns+5pct gates remain unchanged. Local workspace/old project/log/tmp/native processes remain absent; original review documents preserved."
+    "Track40906725656; actual preparation is running on GitHub after all three source suites passed again at native sourcee1914245 and all11releases were reserved. Do not redispatch. On prepare success update monitor production_jobs to observed ten loaded matrix names and preserve native success/failure artifacts.",
+    "Track existing40894408041 only; both off/on route jobs passed and independent original-class audits are active. Complete terminal collector is prepared in orchestration RAM; preserve full joblogs/direct JSON/text, complete native map and part digests on GitHub. Never acquire native archives/ODB/GDS/DEF/waveforms locally.",
+    "Derived on-route witness/writer data indicates net459 crossing preserved clknet_5_29__leaf_u_ibex.clk onMetal5 atDBU[947420,1789940,947620,1790140]; router reports1Short versus3initial. Wait for actual original-class audit before accepting diagnosis or selecting any bounded net459-only detour. All clock records remain protected.",
+    "Current CDR matrix uses exact two reviewed worker substitutions;6numerical blocks and all original ten electrical cases/gates are unchanged. Source transport/import PASS and successful preparation do not imply electrical/CDR/fullPHY acceptance.",
+    "All work remains on GitHub. Local workspace and project temporary/native state remain empty; user source-review documents preserved. Existing8h monitor remains read-only and cannot dispatch native work."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -4058,30 +4167,77 @@
     "observed_40887373623": 40887373623,
     "observed_40890525751": 40890525751,
     "observed_40892423117": 40892423117,
-    "observed_40899144223": 40899144223
+    "observed_40899144223": 40899144223,
+    "observed_40905069113": 40905069113
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40899144223,
-      "head_sha": "df9d187edfec51730f4fdf6baab2e2df81ea8db5",
+      "run": 40905069113,
+      "head_sha": "2ffb41c84041cd2980ab2c57415ff72b9ebfcc50",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123536357123,
+          "id": 123557499900,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123536777053,
+          "id": 123557955167,
           "name": "preserve-job-log",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
+        },
+        {
+          "id": 123558063433,
+          "name": "prepare",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        },
+        {
+          "id": 123558064289,
+          "name": "loaded",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40906725656,
+      "head_sha": "e191424507e67331b2e79800caece4a3f03a1cc0",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123563439494,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123563948227,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123564045818,
+          "name": "prepare",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Original complete loaded binding without transient"
+          ]
         }
       ]
     },
@@ -4109,26 +4265,40 @@
         {
           "id": 123520805697,
           "name": "route-only (on)",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Execute one separately owned route stage"
-          ]
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
         },
         {
           "id": 123520805825,
           "name": "route-only (off)",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123557468469,
+          "name": "audit-only (off)",
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
-            "Execute one separately owned route stage"
+            "Permanently preserve complete success or failure evidence"
+          ]
+        },
+        {
+          "id": 123557468578,
+          "name": "audit-only (on)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Permanently preserve complete success or failure evidence"
           ]
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T15:17:03.012348+00:00",
+    "observed_at": "2026-10-29T16:01:50.118792+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -4257,7 +4427,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T15:17:03.012348+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T16:01:50.118792+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -37089,6 +37259,290 @@
       "bytes": 14437,
       "sha256": "dc8ce7784b2af2a911a38f114743baf917ff7ce9914533fa75008d695c5549bf",
       "existing_identical": false
+    }
+  ],
+  "imported_checkpoint_receipts_v123": [
+    {
+      "path": "docs/evidence/cdr-width-loaded-import-unit-source-review-20261029.json",
+      "source": "5527666f0e14f79f10d28aeb503b8d2cd7b6ed58",
+      "git_blob": "6395c702734e3078ed9c22caa5cacc27240ee785",
+      "bytes": 8584,
+      "sha256": "267cf49496ad8a8d31eb05e368dc11ef3a5efaed82c9ec6ab9283be079497a55",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-assembly-source-review-20261029.json",
+      "source": "2ffb41c84041cd2980ab2c57415ff72b9ebfcc50",
+      "git_blob": "9a7d937c611638b662cb2f79b4376f27808a7d71",
+      "bytes": 2248,
+      "sha256": "04afdd35c0459175400c2d34c26d979e5c52aa50af42d08d059d1b9317f07f20",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/123557499900.job.json",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "dd95562a3b57a198f3ce98e6970cd07bb91aed28",
+      "bytes": 4517,
+      "sha256": "d67e8f2b2c8aebe580fb1e6edabcae63064b756e3ef6e898a764704b75c56eb7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/123557499900.job.log",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "2de3fb335d1c519514606413c4b85ac1b4c52a81",
+      "bytes": 249339,
+      "sha256": "9dc66a44a118bc279275bc7bac68dad23f14a238d8a2e64047f24fc7a17525d2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/123557955167.job.json",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "7775269a11cd17175aae9d5f901ca6fb09edb46d",
+      "bytes": 1968,
+      "sha256": "aede427d73cd6dac1c82ea1adc5c5229cfa30559583f3161e0e5c46375057ffb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/123557955167.job.log",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "7ddd75a19f51b5a20116d7f322fe7b5c9db302bd",
+      "bytes": 7525,
+      "sha256": "a13da304f8481fc6a6a4daab5732c70b58b2874313f69321d9b55f4d4569ce02",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/123558063433.job.json",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "247b48e186f4b0e190bf0a65dc16d39599e29cc1",
+      "bytes": 1024,
+      "sha256": "c97e4f64d9922bf843a2a22770aa20ac610db899131679085d9f519e1a5f1e42",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/123558064289.job.json",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "25803dbfa3f3c3703aa11f3659f5b36ce844c7a4",
+      "bytes": 1023,
+      "sha256": "aba33186dc07efe54c51de67f917605639f73c47666e596fe58056ac542047d9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/artifacts.json",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "7d01f2adb12498d55b691c51a3d6b3141d47744e",
+      "bytes": 1862,
+      "sha256": "362a782a062f6481d1b3b737713845d74c395b8bc0262a7cb2fa5038242e6e49",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/controls/context.json",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "dbdacdc588d3da3d4fe2bac46ca9e492d4aad385",
+      "bytes": 281,
+      "sha256": "1ffce530524d568ed4c9c0aa0e00035b7bdccdd7bd48f44fbda4ae9b4c010f12",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/controls/execution.json",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "2d04a14de629826f6be91ab2bbdc256200370fb4",
+      "bytes": 12214,
+      "sha256": "6e13cadc6b322268691d05789efaa3ef044a42bdf1dc824f538d07ef6f1bbd00",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/controls/execution.stderr",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/controls/execution.stdout",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "2d04a14de629826f6be91ab2bbdc256200370fb4",
+      "bytes": 12214,
+      "sha256": "6e13cadc6b322268691d05789efaa3ef044a42bdf1dc824f538d07ef6f1bbd00",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/controls/imports.json",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "6c79c0e4cfcec92ab07874682f3087fae90d9dbf",
+      "bytes": 61276,
+      "sha256": "66aa54173b1eddc4533185074f4f97bef629ba0e789481f2c45b0b552616c80d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/controls/imports.stderr",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/controls/imports.stdout",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "6c79c0e4cfcec92ab07874682f3087fae90d9dbf",
+      "bytes": 61276,
+      "sha256": "66aa54173b1eddc4533185074f4f97bef629ba0e789481f2c45b0b552616c80d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/controls/index.json",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "1d447153e77cc22914e01acccd2659e24d6c01bc",
+      "bytes": 1969,
+      "sha256": "fbb45ef528d151a507d4cc3610512f9c37c859d71af16f57300ec2de65467d6b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/controls/publication.json",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "40a4acb1428e9db963981e867afed5444a663edb",
+      "bytes": 4548,
+      "sha256": "02f599bdacd6296ad8c856ee72d138e64ee5eaa8269382db81e39a7cff99f57c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/controls/publication.stderr",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/controls/publication.stdout",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "40a4acb1428e9db963981e867afed5444a663edb",
+      "bytes": 4548,
+      "sha256": "02f599bdacd6296ad8c856ee72d138e64ee5eaa8269382db81e39a7cff99f57c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/jobs.json",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "14b23d17c27594e7c267f6a3ab8c5c5c3c0e8230",
+      "bytes": 9591,
+      "sha256": "278cff45a1e5836c4cb7f3f7caf464bf99875a91a50251bc6c444d780c01a998",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/receipt.json",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "ea63d96104de4d4148c07ead99e25d3630780431",
+      "bytes": 90359,
+      "sha256": "eaeb12fbb8c823d7d4634e26e077b84f977337d3769aa0f0b52d94c4c29633fd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-source-terminal-40905069113/run.json",
+      "source": "fe892537a0423defc68e959019b8f25229b8e160",
+      "git_blob": "177a604e17d00650a7dced86733eb2adbc64cd05",
+      "bytes": 14428,
+      "sha256": "0c9fb9d110bb18898bd1f01a7cd8ea806a819acb5b3bd0cbe368d28bc22c9aac",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-matrix-native-admission-20261029.json",
+      "source": "e191424507e67331b2e79800caece4a3f03a1cc0",
+      "git_blob": "f53d6f7cfd13413ae116ef78187c1a3b8b3bf08b",
+      "bytes": 1400,
+      "sha256": "1e0516f605cf44cf101963247edb46f4a246cd0f3b420c250b98ffa8dd6d0f3c",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v123": [
+    {
+      "run": 40906725656,
+      "source": "e191424507e67331b2e79800caece4a3f03a1cc0",
+      "group": "cdr-width-loaded-nominal_early",
+      "tag": "cloud-results-40906725656-1-cdr-width-loaded-nominal_early",
+      "release_id": 428084403,
+      "reserved_before_native_dependencies": true
+    },
+    {
+      "run": 40906725656,
+      "source": "e191424507e67331b2e79800caece4a3f03a1cc0",
+      "group": "cdr-width-loaded-nominal_late",
+      "tag": "cloud-results-40906725656-1-cdr-width-loaded-nominal_late",
+      "release_id": 428084480,
+      "reserved_before_native_dependencies": true
+    },
+    {
+      "run": 40906725656,
+      "source": "e191424507e67331b2e79800caece4a3f03a1cc0",
+      "group": "cdr-width-loaded-hot_early",
+      "tag": "cloud-results-40906725656-1-cdr-width-loaded-hot_early",
+      "release_id": 428084532,
+      "reserved_before_native_dependencies": true
+    },
+    {
+      "run": 40906725656,
+      "source": "e191424507e67331b2e79800caece4a3f03a1cc0",
+      "group": "cdr-width-loaded-hot_late",
+      "tag": "cloud-results-40906725656-1-cdr-width-loaded-hot_late",
+      "release_id": 428084588,
+      "reserved_before_native_dependencies": true
+    },
+    {
+      "run": 40906725656,
+      "source": "e191424507e67331b2e79800caece4a3f03a1cc0",
+      "group": "cdr-width-loaded-cold_early",
+      "tag": "cloud-results-40906725656-1-cdr-width-loaded-cold_early",
+      "release_id": 428084626,
+      "reserved_before_native_dependencies": true
+    },
+    {
+      "run": 40906725656,
+      "source": "e191424507e67331b2e79800caece4a3f03a1cc0",
+      "group": "cdr-width-loaded-cold_late",
+      "tag": "cloud-results-40906725656-1-cdr-width-loaded-cold_late",
+      "release_id": 428084684,
+      "reserved_before_native_dependencies": true
+    },
+    {
+      "run": 40906725656,
+      "source": "e191424507e67331b2e79800caece4a3f03a1cc0",
+      "group": "cdr-width-loaded-constant_zero",
+      "tag": "cloud-results-40906725656-1-cdr-width-loaded-constant_zero",
+      "release_id": 428084741,
+      "reserved_before_native_dependencies": true
+    },
+    {
+      "run": 40906725656,
+      "source": "e191424507e67331b2e79800caece4a3f03a1cc0",
+      "group": "cdr-width-loaded-constant_one",
+      "tag": "cloud-results-40906725656-1-cdr-width-loaded-constant_one",
+      "release_id": 428084787,
+      "reserved_before_native_dependencies": true
+    },
+    {
+      "run": 40906725656,
+      "source": "e191424507e67331b2e79800caece4a3f03a1cc0",
+      "group": "cdr-width-loaded-clock_stopped",
+      "tag": "cloud-results-40906725656-1-cdr-width-loaded-clock_stopped",
+      "release_id": 428084822,
+      "reserved_before_native_dependencies": true
+    },
+    {
+      "run": 40906725656,
+      "source": "e191424507e67331b2e79800caece4a3f03a1cc0",
+      "group": "cdr-width-loaded-vi_bias_off",
+      "tag": "cloud-results-40906725656-1-cdr-width-loaded-vi_bias_off",
+      "release_id": 428084880,
+      "reserved_before_native_dependencies": true
+    },
+    {
+      "run": 40906725656,
+      "source": "e191424507e67331b2e79800caece4a3f03a1cc0",
+      "group": "cdr-width-loaded-preparation",
+      "tag": "cloud-results-40906725656-1-cdr-width-loaded-preparation",
+      "release_id": 428084945,
+      "reserved_before_native_dependencies": true
     }
   ]
 }
