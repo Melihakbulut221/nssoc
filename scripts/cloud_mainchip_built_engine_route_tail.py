@@ -12,6 +12,7 @@ import sys
 import tarfile
 import time
 import mainchip_built_engine_route_tail_contract as c
+import mainchip_built_engine_route_tail_handoff as handoff
 from mainchip_witness_engine_build import (
  fingerprint, execute_command, create_owned, cleanup_owned, terminal_availability)
 import wait_cloud_tested_source_release as reservation
@@ -22,7 +23,7 @@ def write(path,value):c.atomic_record(path,value)
 def owned_work(ctx,create=False):
     base=Path(os.environ["RUNNER_TEMP"])
     c.require(base.is_absolute() and not base.is_symlink(),"runner temp")
-    work=base/(c.group(ctx["mode"])+"-"+ctx["token"])
+    work=base/(c.group(ctx["mode"],ctx["stage"])+"-"+ctx["token"])
     c.require(not work.is_symlink(),"work symlink")
     if create:
         work.mkdir(mode=0o700);write(work/"owner.json",ctx)
@@ -84,18 +85,23 @@ def terminal_contract(out,report):
     c.require(not state["Running"] and not state["OOMKilled"] and state["ExitCode"]==0 and not state["Error"],"container failure")
     inner=c.decode(c.secure_file(out,"inner-result.json").read_bytes())
     case=c.decode(c.secure_file(out,"case-result.json").read_bytes())
-    c.require(inner["status"]=="PASS_BUILT_ELF_ACTUAL_ROUTE_TAIL" and not inner["terminal_errors"],"inner failure")
+    stage=report["stage"]
+    c.require(stage in ("route","audit") and inner["stage"]==stage
+        and inner["status"]=="PASS_BUILT_ELF_ACTUAL_"+stage.upper()+"_STAGE"
+        and not inner["terminal_errors"],"inner failure")
     c.require(all(x["returncode"]==0 and not x["timed_out"] for x in inner["commands"]),"inner command failure")
-    c.require(case["status"]=="PASS_COMPLETE_ROUTE_TAIL_DIAGNOSTIC" and not case["terminal_errors"],"tail failure")
-    c.require(case["source"]==report["source"] and case["mode"]==report["mode"],"tail request join")
+    expected="PASS_ROUTE_ONLY_AWAITING_ORIGINAL_AUDITS" if stage=="route" else "PASS_COMPLETE_ROUTE_TAIL_DIAGNOSTIC"
+    c.require(case["status"]==expected and not case["terminal_errors"],"tail failure")
+    c.require(case["source"]==report["source"] and case["mode"]==report["mode"] and case["stage"]==stage,"tail request join")
     return case
 
 def probe():
     ctx=c.context(os.environ);m=c.method(ROOT)
-    c.require(ctx["mode"] in c.MODES and m["native_tail_authorized"],"native tail not authorized")
+    c.require(ctx["mode"] in c.MODES and ctx["stage"] in ("route","audit")
+        and m["native_"+ctx["stage"]+"_authorized"],"native stage not authorized")
     c.require(subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip()==ctx["source"],"checkout identity")
     work=owned_work(ctx,True);out=work/"out";out.mkdir()
-    report=dict(schema="built-engine-route-tail-host-v1",source=ctx["source"],mode=ctx["mode"],
+    report=dict(schema="built-engine-route-tail-host-v1",source=ctx["source"],mode=ctx["mode"],stage=ctx["stage"],
         status="IN_PROGRESS",physical_acceptance=False,observer_equivalence_qualified=False,
         commands=[],terminal_errors=[],creation_attempted=False)
     primary=None;identity=None;handlers={};projected=False;restored=False;started=time.monotonic()
@@ -104,26 +110,30 @@ def probe():
     def interrupted(sig,frame):raise RuntimeError("owned tail interrupted by signal "+str(sig))
     try:
         for sig in (signal.SIGINT,signal.SIGTERM):handlers[sig]=signal.signal(sig,interrupted)
-        proof=reservation.wait(c.group(ctx["mode"]),os.environ)
+        proof=reservation.wait(c.group(ctx["mode"],ctx["stage"]),os.environ)
         c.require(not proof["existing_assets"],"tail release not empty")
         write(out/"release-reservation.json",proof)
         shutil.copyfile(ROOT/c.METHOD,out/"method.json")
         shutil.copyfile(ROOT/"route-tail-controls.json",out/"route-tail-controls.json")
         c.require(shutil.disk_usage(work).free>=c.LIMITS["min_free_disk_bytes"],"scratch disk budget")
-        restore_prefix(work,out);restored=True
-        projection=work/"tail-source";projection.mkdir()
-        for p in [*m["protected"],c.METHOD]:
-            target=projection/p;target.parent.mkdir(parents=True,exist_ok=True)
-            shutil.copyfile(c.secure_file(ROOT,p),target)
+        if ctx["stage"]=="route":restore_prefix(work,out)
+        else:handoff.restore(work,out,ROOT,ctx,os.environ)
+        restored=True
+        projection=work/"tail-source"
+        if ctx["stage"]=="route":
+            projection.mkdir()
+            for p in [*m["protected"],c.METHOD]:
+                target=projection/p;target.parent.mkdir(parents=True,exist_ok=True)
+                shutil.copyfile(c.secure_file(ROOT,p),target)
         c.method(projection);projected=True
-        write(work/"request.json",dict(mode=ctx["mode"],source=ctx["source"],
+        write(work/"request.json",dict(mode=ctx["mode"],stage=ctx["stage"],source=ctx["source"],
             run_id=int(os.environ["GITHUB_RUN_ID"]),engine=c.ENGINE))
         shutil.copyfile(ROOT/"scripts/mainchip_built_engine_route_tail_inner.py",work/"inner.py")
         command("immutable-image-pull",["docker","pull",c.IMAGE],1800)
         image=c.decode(command("image-inspect",["docker","image","inspect",c.IMAGE]))[0];c.validate_image(image)
         identity=create_owned(ctx,work,report,command,c.create_argv(ctx,work,os.getuid(),os.getgid()))
         info=inspect_one(identity);c.validate_container(info,ctx,work);write(out/"container-initial.json",info)
-        command("owned-container-start",["docker","start","--attach",identity],c.LIMITS["container_seconds"])
+        command("owned-container-start",["docker","start","--attach",identity],c.stage_limits(ctx["stage"])["container_seconds"])
     except BaseException as exc:
         primary=exc;report["failure"]=c.error_record("built-engine-route-tail",exc)
     finally:
@@ -132,17 +142,27 @@ def probe():
         if projected:c.attempt(report,"projected-tail-source-unchanged",lambda:c.method(work/"tail-source"))
         if restored:c.attempt(report,"frozen-prefix-unchanged",lambda:c.frozen_unchanged(work,
             c.decode(c.secure_file(work,"frozen-manifest.json").read_bytes())))
+        if restored and ctx["stage"]=="audit":
+            c.attempt(report,"route-projection-unchanged",lambda:c.frozen_unchanged(work,
+                c.decode(c.secure_file(work,"route-projection.json").read_bytes())))
         if report["creation_attempted"]:c.attempt(report,"actual-tail-terminal",lambda:terminal_contract(out,report))
         for sig,old in handlers.items():c.attempt(report,"restore-signal-"+str(sig),lambda sig=sig,old=old:signal.signal(sig,old))
         report["elapsed_seconds"]=time.monotonic()-started
-        report["status"]=("PASS_OWNED_ROUTE_TAIL_DIAGNOSTIC"
+        report["status"]=("PASS_OWNED_"+ctx["stage"].upper()+"_STAGE_DIAGNOSTIC"
             if identity is not None and primary is None and not report["terminal_errors"] else "FAIL_OWNED_ROUTE_TAIL")
         c.finish_record(out/"host-result.json",report,"FAIL_OWNED_ROUTE_TAIL",primary)
     return 0 if report["status"].startswith("PASS_") else 1
 
+def freeze_route():
+    ctx=c.context(os.environ);m=c.method(ROOT)
+    c.require(ctx["stage"]=="route" and ctx["mode"] in c.MODES and m["native_route_authorized"],
+        "route handoff not authorized")
+    work=owned_work(ctx)
+    return handoff.freeze(work,work/"out",ROOT)
+
 def publish_asset(path,ctx,release_id,read,upload):
     c.require(path.is_file() and not path.is_symlink(),"publication regular file")
-    expected=fingerprint(path);tag="cloud-results-"+ctx["token"]+"-"+c.group(ctx["mode"])
+    expected=fingerprint(path);tag="cloud-results-"+ctx["token"]+"-"+c.group(ctx["mode"],ctx["stage"])
     def current():
         info=read("releases/tags/"+tag);ref=read("git/ref/tags/"+tag)
         reservation.release.validate_release(info,ref,tag,ctx["source"])
@@ -161,13 +181,13 @@ def publish_asset(path,ctx,release_id,read,upload):
 
 def publish():
     ctx=c.context(os.environ);c.method(ROOT);work=owned_work(ctx);out=work/"out"
-    proof=reservation.wait(c.group(ctx["mode"]),os.environ)
+    proof=reservation.wait(c.group(ctx["mode"],ctx["stage"]),os.environ)
     write(out/"publication-availability.json",terminal_availability(out))
     files={}
     for p in sorted(out.rglob("*")):
         c.require(not p.is_symlink() and (p.is_file() or p.is_dir()),"output special entry")
         if p.is_file():files[p.relative_to(out).as_posix()]=fingerprint(p)
-    write(out/"outputs.json",dict(source=ctx["source"],mode=ctx["mode"],files=files,physical_acceptance=False))
+    write(out/"outputs.json",dict(source=ctx["source"],mode=ctx["mode"],stage=ctx["stage"],files=files,physical_acceptance=False))
     archive=work/"route-tail-evidence.tar.gz"
     with tarfile.open(archive,"w:gz") as tar:
         for p in sorted(out.iterdir()):tar.add(p,arcname=p.name,recursive=True)
@@ -183,7 +203,10 @@ def publish():
     direct=("host-result.json","inner-result.json","case-result.json","observer-diagnosis.json",
         "writer-raw.json","method.json","route-tail-controls.json","release-reservation.json",
         "outputs.json","parts.json","container-initial.json","container-terminal.json",
-        "runtime-observed.json","prefix-envelope.json","prefix-restoration.json","publication-availability.json")
+        "runtime-observed.json","prefix-envelope.json","prefix-restoration.json","publication-availability.json",
+        "route-handoff.json","route-handoff-inventory.json","route-source-envelope.json","route-restoration.json",
+        "route-host-result.json","route-inner-result.json","route-case-result.json","route-route-handoff.json",
+        "route-route-handoff-inventory.json","route-outputs.json","route-parts.json","route-method.json")
     uploads=[out/p for p in direct if (out/p).is_file()]+[work/p["name"] for p in parts]
     for directory in (out/"supervision",out/"witness"):
         if directory.is_dir():
@@ -200,15 +223,15 @@ def publish():
     c.require({a["name"]:(a["size"],a["digest"]) for a in live["assets"]}==
         {r["name"]:(r["bytes"],"sha256:"+r["sha256"]) for r in rows},"full published census")
     write(out/"publication.json",dict(status="PASS_PERMANENT_DIAGNOSTIC_PUBLICATION",
-        source=ctx["source"],mode=ctx["mode"],release_id=proof["release_id"],assets=rows,physical_acceptance=False))
+        source=ctx["source"],mode=ctx["mode"],stage=ctx["stage"],release_id=proof["release_id"],assets=rows,physical_acceptance=False))
     return 0
 
 def comparison_body(ctx,work,out):
     from route_cloud_newer_postcts import fetch
-    reservation.wait(c.group("compare"),os.environ)
+    reservation.wait(c.group("compare","compare"),os.environ)
     read=reservation.release.api;cases={};bindings={}
     for mode in c.MODES:
-        tag="cloud-results-"+ctx["token"]+"-"+c.group(mode)
+        tag="cloud-results-"+ctx["token"]+"-"+c.group(mode,"audit")
         release=read("releases/tags/"+tag);ref=read("git/ref/tags/"+tag)
         reservation.release.validate_release(release,ref,tag,ctx["source"])
         assets={a["name"]:a for a in release["assets"]}
@@ -222,7 +245,8 @@ def comparison_body(ctx,work,out):
             records[name]=c.decode(p.read_bytes())
         c.require((directory/"method.json").read_bytes()==c.secure_file(ROOT,c.METHOD).read_bytes(),"case method equality")
         host=records["host-result.json"];case=terminal_contract(directory,host)
-        c.require(host["status"]=="PASS_OWNED_ROUTE_TAIL_DIAGNOSTIC" and not host["terminal_errors"],"case host terminal")
+        c.require(host["status"]=="PASS_OWNED_AUDIT_STAGE_DIAGNOSTIC" and host["stage"]=="audit"
+            and not host["terminal_errors"],"case host terminal")
         output=records["outputs.json"]
         for name in ("host-result.json","inner-result.json","case-result.json","method.json"):
             c.require(output["files"][name]==fingerprint(directory/name),"direct output join")
@@ -252,7 +276,7 @@ def comparison():
         except BaseException as exc:
             if primary is None:primary=exc
         try:
-            proof=reservation.wait(c.group("compare"),os.environ)
+            proof=reservation.wait(c.group("compare","compare"),os.environ)
             def upload(tag,path):
                 subprocess.run(["gh","release","upload",tag,str(path),"--repo",c.REPOSITORY],check=True,timeout=1800)
             for path in sorted(out.glob("*.json")):
@@ -266,6 +290,8 @@ def comparison():
     return 0 if result["observed_equivalence"] and not result["terminal_errors"] else 1
 
 if __name__=="__main__":
-    parser=argparse.ArgumentParser();parser.add_argument("action",choices=("probe","publish","compare"))
+    parser=argparse.ArgumentParser();parser.add_argument("action",choices=("probe","handoff","publish","compare"))
     action=parser.parse_args().action
-    sys.exit({"probe":probe,"publish":publish,"compare":comparison}[action]())
+    if action=="handoff":
+        print(json.dumps(freeze_route(),sort_keys=True))
+    else:sys.exit({"probe":probe,"publish":publish,"compare":comparison}[action]())

@@ -15,9 +15,10 @@ import mainchip_two_signal_internal_witness as witness
 from mainchip_witness_engine_build import fingerprint
 WORK=Path("/work")
 
-def execute_tail(execute,read):
+def execute_tail(execute,read,stage):
     records={}
-    for phase in c.PHASES:
+    c.require(stage in ("route","audit"),"native tail stage")
+    for phase in (c.PHASES[:1] if stage=="route" else c.PHASES[1:]):
         execute(phase,c.command(phase))
         if phase in c.STATUSES:
             row=read(phase)
@@ -47,16 +48,18 @@ def main():
     out=WORK/"out";native=out/"work";report=dict(schema="built-engine-route-tail-case-v1",
        status="IN_PROGRESS",physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,
        observer_equivalence_qualified=False,terminal_errors=[],commands=[])
-    primary=None;sup=None;beat=None;handlers={};oldenv={}
+    primary=None;sup=None;beat=None;handlers={};oldenv={};stage=None
     try:
-        c.require(c.method(WORK/"tail-source")["native_tail_authorized"],"tail not authorized")
+        request=c.decode(c.secure_file(WORK,"request.json").read_bytes());stage=request["stage"]
+        c.require(stage in ("route","audit"),"native stage")
+        c.require(c.method(WORK/"tail-source")["native_"+stage+"_authorized"],"stage not authorized")
         c.previous.method(WORK/"source")
         inv=c.decode(c.secure_file(WORK,"frozen-manifest.json").read_bytes())
         report["frozen_input"]=c.frozen_unchanged(WORK,inv)
         report["frozen_input"]["inventory_sha256"]=fingerprint(WORK/"frozen-manifest.json")["sha256"]
-        request=c.decode(c.secure_file(WORK,"request.json").read_bytes());mode=request["mode"]
+        mode=request["mode"]
         c.require(mode in c.MODES and request["engine"]==c.ENGINE,"case request")
-        report.update(mode=mode,source=request["source"],run_id=request["run_id"],
+        report.update(mode=mode,stage=stage,source=request["source"],run_id=request["run_id"],
             engine=c.ENGINE,prefix_source=c.PREFIX_SOURCE,prefix_run=c.PREFIX_RUN)
         c.require(not any(k in os.environ for k in ("GH_TOKEN","GITHUB_TOKEN",c.WITNESS_ENV)),"native environment scope")
         values=dict(GITHUB_ACTIONS="true",GITHUB_RUN_ATTEMPT="1",GITHUB_REPOSITORY=c.REPOSITORY,
@@ -67,7 +70,15 @@ def main():
         for k in (*values,"NSSOC_TWO_SIGNAL_PHASE",c.WITNESS_ENV):oldenv[k]=os.environ.get(k)
         os.environ.update(values)
         (out/"supervision").mkdir()
-        if mode=="on":(out/"witness").mkdir()
+        if stage=="route" and mode=="on":(out/"witness").mkdir()
+        if stage=="audit":
+            lineage=c.decode(c.secure_file(WORK,"route-lineage.json").read_bytes())
+            c.require(lineage["authenticated_complete_route"] is True and lineage["source"]==request["source"]
+                and lineage["mode"]==mode and lineage["run_id"]==request["run_id"],"route lineage")
+            c.frozen_unchanged(WORK,c.decode(c.secure_file(WORK,"route-projection.json").read_bytes()))
+            report["route_lineage"]=lineage
+            prior=c.decode(c.secure_file(out,"route-case-result.json").read_bytes())
+            report["route_log"]=prior["route_log"];report["route_command"]=prior["commands"][0]
         sup=old.supervisor();sup.OUT=out;sup.TRACE=out/"supervision"
         c.require(sup.SECONDS==1200 and sup.MAX_GROUP_RSS_KIB==c.LIMITS["max_group_rss_kib"]
             and sup.MIN_AVAILABLE_KIB==c.LIMITS["min_available_kib"],"original resource guard")
@@ -87,14 +98,25 @@ def main():
                 report["route_log"]=controller.qualified.s.route_log(
                     c.secure_file(out,"supervision/one-two-signal-routing-attempt.stdout").read_bytes())
             c.atomic_record(out/"tail-progress.json",report)
-        records=execute_tail(execute,lambda phase:c.decode(c.secure_file(native,phase+"-result.json").read_bytes()))
+        records=execute_tail(execute,lambda phase:c.decode(c.secure_file(native,phase+"-result.json").read_bytes()),stage)
         report["phase_results"]=records
-        report["original_audits"]=c.complete(records)
-        report["complete_drc"]=records["drc-audit"]["final_DRT"]
-        report["geometry_files"]={p:fingerprint(c.secure_file(native,p)) for p in c.COMPARE_FILES}
-        report["observer"]=observer_result(WORK,mode)
-        c.atomic_record(out/"observer-diagnosis.json",report["observer"])
-        report["complete_tail"]=True
+        if stage=="route":
+            report["route_outputs"]={p:fingerprint(c.secure_file(native,p))
+                for p in ("routed-fixed.odb","routed-fixed.def","fixed-routing.drc")}
+            report["route_witness"]={}
+            if mode=="on":
+                expected={s+".jsonl" for s in witness.STAGES}
+                c.require(set(p.name for p in (out/"witness").iterdir())==expected,"exact route witness files")
+                report["route_witness"]={p:fingerprint(c.secure_file(out/"witness",p)) for p in sorted(expected)}
+            else:c.require(not (out/"witness").exists(),"off route wrote witness")
+            report["complete_route"]=True
+        else:
+            report["original_audits"]=c.complete(records)
+            report["complete_drc"]=records["drc-audit"]["final_DRT"]
+            report["geometry_files"]={p:fingerprint(c.secure_file(native,p)) for p in c.COMPARE_FILES}
+            report["observer"]=observer_result(WORK,mode)
+            c.atomic_record(out/"observer-diagnosis.json",report["observer"])
+            report["complete_tail"]=True
     except BaseException as exc:
         primary=exc;report["failure"]=c.error_record("actual-tail",exc)
     finally:
@@ -113,8 +135,13 @@ def main():
         c.attempt(report,"tail-source-terminal",lambda:c.method(WORK/"tail-source"))
         c.attempt(report,"frozen-input-terminal",lambda:c.frozen_unchanged(WORK,
             c.decode(c.secure_file(WORK,"frozen-manifest.json").read_bytes())))
-        report["status"]=("PASS_COMPLETE_ROUTE_TAIL_DIAGNOSTIC"
-            if report.get("complete_tail") and primary is None and not report["terminal_errors"]
+        if stage=="audit":
+            c.attempt(report,"route-projection-terminal",lambda:c.frozen_unchanged(WORK,
+                c.decode(c.secure_file(WORK,"route-projection.json").read_bytes())))
+        report["status"]=("PASS_ROUTE_ONLY_AWAITING_ORIGINAL_AUDITS"
+            if stage=="route" and report.get("complete_route") and primary is None and not report["terminal_errors"]
+            else "PASS_COMPLETE_ROUTE_TAIL_DIAGNOSTIC"
+            if stage=="audit" and report.get("complete_tail") and primary is None and not report["terminal_errors"]
             else "FAIL_ROUTE_TAIL_DIAGNOSTIC")
         c.finish_record(out/"case-result.json",report,"FAIL_ROUTE_TAIL_DIAGNOSTIC",primary)
     return 0 if report["status"].startswith("PASS_") else 1

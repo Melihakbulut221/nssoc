@@ -16,7 +16,7 @@ from mainchip_witness_engine_build import fingerprint
 WORK=Path("/work")
 OUT=WORK/"out"
 START=time.monotonic()
-DEADLINE=START+c.LIMITS["inner_seconds"]
+DEADLINE=START+c.stage_limits("route")["inner_seconds"]
 report=dict(schema="built-engine-route-tail-inner-v1",status="IN_PROGRESS",
             physical_acceptance=False,observer_equivalence_qualified=False,
             native_tail_requested=False,terminal_errors=[],commands=[])
@@ -109,11 +109,15 @@ def dependencies():
     return proof
 
 def main():
-    primary=None
+    global DEADLINE
+    primary=None;stage=None
     try:
         require(not any(k in os.environ for k in ("GH_TOKEN","GITHUB_TOKEN","NNSOC_DRT_INTERNAL_WITNESS_DIR")),"native environment scope")
         require(not (WORK/"build").exists() and not (WORK/"source/src/Main.cc").exists(),"engine build tree must be absent")
         c.method(WORK/"tail-source")
+        request=c.decode(c.secure_file(WORK,"request.json").read_bytes());stage=request["stage"]
+        limits=c.stage_limits(stage);DEADLINE=START+limits["inner_seconds"]
+        report["stage"]=stage
         report["cgroup_initial"]=cgroup()
         finish_cgroup()
         executable=str(WORK/"engine/openroad")
@@ -129,11 +133,13 @@ def main():
         run("tcl-smoke",[executable,"-no_init","-exit",str(script)],60)
         require("PASS_COMPLETE_OPENROAD_TCL_INTERFACES" in (OUT/"tcl-smoke.stdout").read_text(),"Tcl smoke marker")
         report["native_tail_requested"]=True
-        run("route-tail",["/usr/bin/python3",
-            "/work/tail-source/scripts/mainchip_built_engine_route_tail_driver.py"],c.LIMITS["driver_seconds"])
+        run(stage+"-stage",["/usr/bin/python3",
+            "/work/tail-source/scripts/mainchip_built_engine_route_tail_driver.py"],limits["driver_seconds"])
         native=c.decode((OUT/"case-result.json").read_bytes())
-        require(native["status"]=="PASS_COMPLETE_ROUTE_TAIL_DIAGNOSTIC"
-                and native["complete_tail"] and not native["terminal_errors"],"actual shared prefix")
+        expected="PASS_ROUTE_ONLY_AWAITING_ORIGINAL_AUDITS" if stage=="route" else "PASS_COMPLETE_ROUTE_TAIL_DIAGNOSTIC"
+        require(native["status"]==expected and native["stage"]==stage
+                and native["complete_route" if stage=="route" else "complete_tail"]
+                and not native["terminal_errors"],"actual stage completion")
         report["complete_actual_native_probe"]=True
     except BaseException as exc:
         primary=exc;report["failure"]=c.error_record("runtime-route-tail",exc)
@@ -144,7 +150,7 @@ def main():
         c.attempt(report,"source-unchanged",lambda:c.method(WORK/"tail-source"))
         if "cgroup_initial"in report:c.attempt(report,"terminal-cgroup",finish_cgroup)
         report["elapsed_seconds"]=time.monotonic()-START
-        report["status"]=("PASS_BUILT_ELF_ACTUAL_ROUTE_TAIL"
+        report["status"]=("PASS_BUILT_ELF_ACTUAL_"+str(stage).upper()+"_STAGE"
             if report.get("complete_actual_native_probe") and primary is None and not report["terminal_errors"]
             else "FAIL_BUILT_ELF_ACTUAL_ROUTE_TAIL")
         c.finish_record(OUT/"inner-result.json",report,"FAIL_BUILT_ELF_ACTUAL_ROUTE_TAIL",primary)

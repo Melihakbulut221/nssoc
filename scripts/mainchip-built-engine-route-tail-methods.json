@@ -1,9 +1,9 @@
 {
   "schema": "mainchip-built-engine-route-tail-v1",
-  "status": "DISABLED_SOURCE_CHECKPOINT_PENDING_ROUTE_AUDIT_HANDOFF_SPLIT",
+  "status": "DISABLED_INCOMPLETE_ROUTE_AUDIT_SPLIT_FOUNDATION",
   "source_controls_authorized": false,
   "native_tail_authorized": false,
-  "native_handoff_split_complete": false,
+  "native_handoff_split_complete": true,
   "rc_sta_execution_authorized": false,
   "physical_acceptance": false,
   "timing_accepted": false,
@@ -27,13 +27,20 @@
     "pids": 4096,
     "route_seconds": 14400,
     "phase_seconds": 1200,
-    "driver_seconds": 20700,
-    "inner_seconds": 21000,
-    "container_seconds": 21180,
     "min_free_disk_bytes": 34359738368,
     "archive_expanded_limit": 8589934592,
     "max_group_rss_kib": 10485760,
-    "min_available_kib": 2097152
+    "min_available_kib": 2097152,
+    "route": {
+      "driver_seconds": 14700,
+      "inner_seconds": 15000,
+      "container_seconds": 15180
+    },
+    "audit": {
+      "driver_seconds": 6300,
+      "inner_seconds": 6600,
+      "container_seconds": 6780
+    }
   },
   "phases": [
     "one-two-signal-routing-attempt",
@@ -612,7 +619,7 @@
     "scripts/cloud_corrpre_banked_postcts.py": "4f5fa7851576768c0df9769dc6550883aee1cf321f62d4b97a09e6c9e14585f4",
     "scripts/cloud_hbt_polarity.py": "5bc7a6ba774bcf81895d6a6a041ac3623d3a5533b0d52c6df1bc1a623ea72a1e",
     "scripts/cloud_mainchip_built_engine_route_prefix.py": "efea3589a92dc9dc1d1b7e4f3570a8d78785b0a5162efc2b4df24bc6fb3e5fba",
-    "scripts/cloud_mainchip_built_engine_route_tail.py": "f3b82b5a02d0c48d1e5768394d51dde082aba2520f353faff40b8c071098c68d",
+    "scripts/cloud_mainchip_built_engine_route_tail.py": "3e86f00a7b4db76c74557c10c3b6500f920715d03cf997c0a79e80d87e42cb4f",
     "scripts/cloud_mainchip_built_engine_runtime.py": "5cfd7b986d9cf646f0d60249be4b4049e2d5830b1dc4c3ea96f57ee70dfd35b5",
     "scripts/cloud_mainchip_clock_diagnostic.py": "3aeb4e25ed64c363f91b154ee4934dabfd627a1b65125cf71b3ff41598fca9ee",
     "scripts/cloud_mainchip_clock_marker_classification.py": "4c15fc9f757fc9924d52bb5443b9410fa8a76a78c26163d55789e1928ade2bc1",
@@ -678,9 +685,9 @@
     "scripts/mainchip_built_engine_route_prefix_driver.py": "1b2e824309c19bc547edfff6152885bc38b4ab40982000f349d3fdc34dbfe488",
     "scripts/mainchip_built_engine_route_prefix_inner.py": "464621a06086557cac09cea4a7f3c19112daba8e5f7f5b5e5413bfcffe27fcb6",
     "scripts/mainchip_built_engine_route_prefix_native.py": "e7750dceb862030ffcb7e1dbd62cee22ee137861763f23884e8d9c06a9adb226",
-    "scripts/mainchip_built_engine_route_tail_contract.py": "fad5e8f3bacef08e2d6b71d43ec708ae551162e5fdd5655e9cd31ce9e18e34bd",
-    "scripts/mainchip_built_engine_route_tail_driver.py": "e3b214d7833c575d5934af31105583b1eaf7afd5ad6aa86a8814f9797900cd85",
-    "scripts/mainchip_built_engine_route_tail_inner.py": "4c4b24731020ff3413bd5e160e9e604cc852f2c3cd485b775ac235fe996cbdb8",
+    "scripts/mainchip_built_engine_route_tail_contract.py": "4e254ade05e9f1dc4787a0e15191caae08f3db7708d2995e6a77dd4fd7ea4f2c",
+    "scripts/mainchip_built_engine_route_tail_driver.py": "72ae99009eeedf52d3c7edc109044d39446d18751298b8dae34de67f8fc06f8f",
+    "scripts/mainchip_built_engine_route_tail_inner.py": "0cc8512cf09d25a43795553efee89d178f1ed7e29386881985a4b06c492984df",
     "scripts/mainchip_built_engine_route_tail_native.py": "cb9bed6aa19765a61109354e9ebe787c6be1682f7232f8eb06bfc4c50c71d20e",
     "scripts/mainchip_built_engine_runtime_contract.py": "cdb0f4d596e0cb9351d20675a07c6f476eddff6a0596cf98365663ef52ab0809",
     "scripts/mainchip_built_engine_runtime_inner.py": "eda9ff604f07c417cebe0cfefac5352d02ea1d52350c91b643aab3a769d53a40",
@@ -728,6 +735,11 @@
     "scripts/run_cloud_tx_mux4.py": "bb7f5c5ef736dd54c5ed560424d97d248894f4aa6fa6119f1e95c5f5c3df4b52",
     "scripts/run_cloud_tx_operating_point.py": "e8c4f4b9c723217bdbb0be17f6c77cfd2e459928e07a7b6ff2c17dfcf1759a1e",
     "scripts/snapshot_cloud_fixed_wires.py": "72e539fc51fcccc16fc025026d210a2f51e311e30f3b241bfcbe35854aa2e6e0",
-    "scripts/wait_cloud_tested_source_release.py": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73"
-  }
+    "scripts/wait_cloud_tested_source_release.py": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73",
+    "scripts/mainchip_built_engine_route_tail_handoff.py": "9f6c0915a4c196713f36194601b332c87674777a64747ff2f44c2c5e49e0f42b",
+    "docs/evidence/mainchip-built-engine-route-tail-split-foundation-20261029.json": "3a979454c2162d937c8ee37d766f6cc4d45b7ed1e9152b6dfa482816b632dff5"
+  },
+  "source_unit_complete": false,
+  "native_route_authorized": false,
+  "native_audit_authorized": false
 }

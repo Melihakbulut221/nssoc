@@ -15,6 +15,7 @@ METHOD="scripts/mainchip-built-engine-route-tail-methods.json"
 BRANCH="codex/mainchip-built-engine-route-tail-observer"
 BASE_GROUP="mainchip-built-engine-route-tail"
 MODE_ENV="NSSOC_ROUTE_TAIL_MODE"
+STAGE_ENV="NSSOC_ROUTE_TAIL_STAGE"
 MODES=("off","on")
 PREFIX="docs/evidence/mainchip-canonical-prefix-terminal-20261029"
 PREFIX_RUN=40789053922
@@ -24,9 +25,10 @@ PREFIX_TAG="cloud-results-40789053922-1-mainchip-built-engine-route-prefix"
 FROZEN_COUNT=746
 FROZEN_BYTES=4096412802
 LIMITS=dict(memory_bytes=MEMORY,nano_cpus=CPUS,pids=PIDS,
- route_seconds=14400,phase_seconds=1200,driver_seconds=20700,
- inner_seconds=21000,container_seconds=21180,min_free_disk_bytes=32*1024**3,
- archive_expanded_limit=8*1024**3,max_group_rss_kib=10485760,min_available_kib=2097152)
+ route_seconds=14400,phase_seconds=1200,min_free_disk_bytes=32*1024**3,
+ archive_expanded_limit=8*1024**3,max_group_rss_kib=10485760,min_available_kib=2097152,
+ route=dict(driver_seconds=14700,inner_seconds=15000,container_seconds=15180),
+ audit=dict(driver_seconds=6300,inner_seconds=6600,container_seconds=6780))
 PHASES=("one-two-signal-routing-attempt","route-audit","paired-original-class-return",
         "unfix-audit","full-original-class-read-only-DRT","drc-audit")
 STATUSES={"route-audit":"PASS_ONLY_TWO_SIGNAL_DELTA_ALL_OTHERS_FIXED",
@@ -42,28 +44,42 @@ def mode(env):
     require(value in (*MODES,"compare"),"tail mode")
     return value
 
-def group(value):
+def stage(env):
+    value=env.get(STAGE_ENV)
+    require(value in ("route","audit","compare"),"tail stage")
+    require((mode(env)=="compare")== (value=="compare"),"mode/stage pair")
+    return value
+
+def group(value,stage):
     require(value in (*MODES,"compare"),"tail group mode")
-    return BASE_GROUP+"-"+value
+    require(stage in ("route","audit","compare") and ((value=="compare")== (stage=="compare")),"tail group stage")
+    return BASE_GROUP+"-compare" if value=="compare" else BASE_GROUP+"-"+value+"-"+stage
+
+def stage_limits(value):
+    require(value in ("route","audit"),"native stage limits")
+    return LIMITS[value]
+
 
 def context(env):
     # Same qualified container name/token syntax; matrix jobs have independent hosts.
     other=dict(env);other["GITHUB_REF"]="refs/heads/"+previous.BRANCH
     require(env.get("GITHUB_REF")=="refs/heads/"+BRANCH,"tail branch")
-    ctx=previous.context(other);ctx["mode"]=mode(env)
+    ctx=previous.context(other);ctx["mode"]=mode(env);ctx["stage"]=stage(env)
     return ctx
 
 def method(root):
     m=decode(secure_file(root,METHOD).read_bytes())
     require(m["schema"]=="mainchip-built-engine-route-tail-v1","tail method schema")
+    require(m["source_unit_complete"] is True,"incomplete split source unit")
     require(m["limits"]==LIMITS and m["engine"]==ENGINE and m["input"]==INPUT
         and m["image"]==IMAGE and m["image_id"]==IMAGE_ID,"tail identities/limits")
     require(m["phases"]==list(PHASES) and m["modes"]==list(MODES),"tail scope")
-    for k in ("source_controls_authorized","native_tail_authorized"):
+    for k in ("source_controls_authorized","native_tail_authorized","native_route_authorized","native_audit_authorized"):
         require(type(m[k]) is bool,"authorization type")
     require(not m["native_tail_authorized"] or m["source_controls_authorized"],"split authorization")
-    require(m["native_handoff_split_complete"] is False and m["native_tail_authorized"] is False,
-        "route/audit handoff split required")
+    require(m["native_handoff_split_complete"] is True,"route/audit handoff split required")
+    require(m["native_tail_authorized"]==m["native_route_authorized"]==m["native_audit_authorized"],
+        "inconsistent stage authorizations")
     for k in ("rc_sta_execution_authorized","physical_acceptance","timing_accepted",
               "full_phy_accepted","observer_equivalence_qualified","automatic_retry_authorized"):
         require(m[k] is False,"no acceptance or continuation")
@@ -146,6 +162,8 @@ def compare_cases(off,on):
     for value,case in (("off",off),("on",on)):
         require(case["schema"]=="built-engine-route-tail-case-v1" and case["mode"]==value
             and case["status"]=="PASS_COMPLETE_ROUTE_TAIL_DIAGNOSTIC" and not case["terminal_errors"],"complete tail case")
+        require(case["stage"]=="audit" and case["route_lineage"]["authenticated_complete_route"] is True,
+            "audited route lineage")
         require(case["engine"]==ENGINE and case["frozen_input"]==off["frozen_input"],"same frozen input and ELF")
         require(case["prefix_source"]==PREFIX_SOURCE and case["prefix_run"]==PREFIX_RUN,"same prefix")
         require(case["original_audits"]["original_audits_complete"] is True,"original audits")
