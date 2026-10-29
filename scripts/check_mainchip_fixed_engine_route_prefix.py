@@ -244,6 +244,14 @@ def copied_projection(root,base,method):
     proof=c.runtime_qualification(target)
     assert c.RUNTIME_RUN==40858216637 and c.RUNTIME_SOURCE_SHA=="1812666a357bb8aca75bcfc5e1c523106ad7b08e"
     assert len(c.RUNTIME_REQUIRED)==48
+    assert {key:proof[key]for key in ("run","source","release_id","receipt_sha256",
+        "runtime_qualified","proof_files","runtime_dependency_files","all_net_count","all_instance_count")}==dict(
+        run=40858216637,source="1812666a357bb8aca75bcfc5e1c523106ad7b08e",release_id=427727176,
+        receipt_sha256="d7a4bccbf2437eaa836955c77cb1013e0ea2e701c01c922e13217ddc701dd10a",
+        runtime_qualified=True,proof_files=48,runtime_dependency_files=104,
+        all_net_count=143820,all_instance_count=153130)
+    assert proof["engine"]==c.ENGINE and proof["input"]==c.INPUT
+    assert all(proof[k]is False for k in ("native_routing_executed","physical_acceptance","observer_equivalence_qualified"))
     cases=[]
     for name in sorted(c.RUNTIME_REQUIRED):
         path=target/name;raw=path.read_bytes()
