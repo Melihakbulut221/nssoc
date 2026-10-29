@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v127
+# Cloud continuation — checkpoint v128
 
-Updated: 2026-10-29T18:47:12.734538+00:00
+Updated: 2026-10-29T19:32:50.579280+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint127: current serialized-neighborhood run40930102746 passed and all59full proof files/2,168,351bytes are permanent f9d2b1b1. Actual amended controls passed3positive/17refusal/13lifecycle; all145 input archive members and unchanged current ODB47d657f4 verified, full143820net/153130instance material census plus embedded technology exported. This is read-only evidence, not physical closure. Original ten-case CDR matrix40906725656 is terminal failure: preparation and clock_stopped/vi_bias_off passed; eight normal/static-data scenarios failed. All226full proof files/293,967,169bytes are permanent a1e0cbe5. Current-contact repair plan4f3f87b9 identifies lower-tail existing bridges/access landings for quantitative RC inspection without selecting speculative widths or asserting causality. Full PHY, final route and original setup/hold remain unaccepted; local project data and EDA processes remain absent.
+Cloud-only checkpoint128: current RC source controls40938778028 passed14positive/80refusal/5lifecycle after independent numeric-parser correction. Actual current RC readback40939598713 passed; all34full proof files/3,376,095bytes are permanent6bcdb6ff. The complete6647member archive and actual MIM-aware500device/24356R/15566C model are bound; both102-node target conductor networks and literal technology coefficients are retained, without asserting physical edge attribution or electrical recovery. Physical review36621d58 documents six blocked local detours against authentic677record SRAM/clock material. The next bounded readback extends only the southern window to1773500 around the real lower net459 tap and records actual track definitions; its independent source is being authored, no native reroute/readback has yet been dispatched. All current runs are terminal, original gates unchanged, local project paths empty.
 
 Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9078,3 +9079,10 @@ Local project/tmp/native processes verified absent. Inventory357 exact cloud han
 Cloud-only checkpoint127: current serialized-neighborhood run40930102746 passed and all59full proof files/2,168,351bytes are permanent f9d2b1b1. Actual amended controls passed3positive/17refusal/13lifecycle; all145 input archive members and unchanged current ODB47d657f4 verified, full143820net/153130instance material census plus embedded technology exported. This is read-only evidence, not physical closure. Original ten-case CDR matrix40906725656 is terminal failure: preparation and clock_stopped/vi_bias_off passed; eight normal/static-data scenarios failed. All226full proof files/293,967,169bytes are permanent a1e0cbe5. Current-contact repair plan4f3f87b9 identifies lower-tail existing bridges/access landings for quantitative RC inspection without selecting speculative widths or asserting causality. Full PHY, final route and original setup/hold remain unaccepted; local project data and EDA processes remain absent.
 
 Local project/tmp/native processes verified absent. Inventory358 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T19:32:50.579280+00:00 — cloud-only checkpoint v128
+
+Cloud-only checkpoint128: current RC source controls40938778028 passed14positive/80refusal/5lifecycle after independent numeric-parser correction. Actual current RC readback40939598713 passed; all34full proof files/3,376,095bytes are permanent6bcdb6ff. The complete6647member archive and actual MIM-aware500device/24356R/15566C model are bound; both102-node target conductor networks and literal technology coefficients are retained, without asserting physical edge attribution or electrical recovery. Physical review36621d58 documents six blocked local detours against authentic677record SRAM/clock material. The next bounded readback extends only the southern window to1773500 around the real lower net459 tap and records actual track definitions; its independent source is being authored, no native reroute/readback has yet been dispatched. All current runs are terminal, original gates unchanged, local project paths empty.
+
+Local project/tmp/native processes verified absent. Inventory360 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

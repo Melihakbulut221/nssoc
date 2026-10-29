@@ -1,0 +1,290 @@
+{
+  "schema": "current-neighborhood-manual-candidate-rejection-v1",
+  "source": "f9d2b1b1378c33f1281f6bd0ca582cac07c1ba2b",
+  "native_run": 40930102746,
+  "current_database": {
+    "bytes": 213429713,
+    "sha256": "47d657f41565f5c379a9152672eac824a5d296043c3726527031452ad2097677"
+  },
+  "neighborhood": {
+    "path": "docs/evidence/mainchip-current-neighborhood-readback-terminal-40930102746/readback/native/current-neighborhood/neighborhood.json",
+    "bytes": 1006244,
+    "sha256": "d46457e27d95e1531b4ac9415aabfe5262f254e2146ebd16d4f9dbe43c4b5821"
+  },
+  "technology": {
+    "path": "docs/evidence/mainchip-current-neighborhood-readback-terminal-40930102746/readback/native/current-neighborhood/current-tech.lef",
+    "bytes": 23998,
+    "sha256": "45c73321fce9cede4434ef85efb88c6b59259198a2623fa65151647796411de2"
+  },
+  "actual_record_count": 677,
+  "observation_window_dbu": [
+    937420,
+    1779520,
+    957620,
+    1800560
+  ],
+  "manufacturing_grid_dbu": 5,
+  "method": "Manual review of authentic full-coordinate derived native records; no custom geometry program, hosted screening test, mutation or new CAD execution performed.",
+  "rejected_proposals": [
+    {
+      "id": "direct_M4_bridge",
+      "proposed_centerline_dbu": [
+        [
+          947520,
+          1789620
+        ],
+        [
+          947520,
+          1790460
+        ]
+      ],
+      "layer": "Metal4",
+      "reason": "The proposed bridge and both Via4 lower metal landings overlap a current transformed SRAM master obstruction.",
+      "witness": {
+        "box": [
+          944640,
+          1787940,
+          948640,
+          2414640
+        ],
+        "instance": "u_ram.g_ram_2048x64_ecc.u_b3",
+        "kind": "master-obstruction",
+        "layer": "Metal4",
+        "master": [
+          "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+          "RM_IHPSG13_1P_2048x64_c2_bm_bist"
+        ],
+        "orientation": "R0",
+        "origin": [
+          944640,
+          1787940
+        ],
+        "original_box": [
+          0,
+          0,
+          4000,
+          626700
+        ],
+        "owner": null,
+        "record_id": "[\"instance\",\"u_ram.g_ram_2048x64_ecc.u_b3\",\"master\",\"RM_IHPSG13_1P_2048x64_c2_bm_bist\",\"RM_IHPSG13_1P_2048x64_c2_bm_bist\",\"obstruction\",2869]",
+        "source_indices": []
+      }
+    },
+    {
+      "id": "right_shift_M4_x949440",
+      "proposed_centerline_dbu": [
+        [
+          949440,
+          1789620
+        ],
+        [
+          949440,
+          1790460
+        ]
+      ],
+      "layer": "Metal4",
+      "reason": "The bridge crosses the current SRAM VPWR terminal polygon.",
+      "witness": {
+        "box": [
+          948900,
+          1787940,
+          951710,
+          1826765
+        ],
+        "instance": "u_ram.g_ram_2048x64_ecc.u_b3",
+        "kind": "iterm-pin",
+        "layer": "Metal4",
+        "master": [
+          "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+          "RM_IHPSG13_1P_2048x64_c2_bm_bist"
+        ],
+        "owner": "VPWR",
+        "record_id": "[\"iterm\",\"u_ram.g_ram_2048x64_ecc.u_b3\",\"VDD!\",\"geometry\",67]",
+        "source_indices": [],
+        "terminal": "VDD!"
+      }
+    },
+    {
+      "id": "right_shift_M4_x952320",
+      "proposed_centerline_dbu": [
+        [
+          952320,
+          1789620
+        ],
+        [
+          952320,
+          1790460
+        ]
+      ],
+      "layer": "Metal4",
+      "reason": "The bridge crosses the next SRAM master-obstruction stripe.",
+      "witness": {
+        "box": [
+          951970,
+          1787940,
+          954260,
+          2414640
+        ],
+        "instance": "u_ram.g_ram_2048x64_ecc.u_b3",
+        "kind": "master-obstruction",
+        "layer": "Metal4",
+        "master": [
+          "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+          "RM_IHPSG13_1P_2048x64_c2_bm_bist"
+        ],
+        "orientation": "R0",
+        "origin": [
+          944640,
+          1787940
+        ],
+        "original_box": [
+          7330,
+          0,
+          9620,
+          626700
+        ],
+        "owner": null,
+        "record_id": "[\"instance\",\"u_ram.g_ram_2048x64_ecc.u_b3\",\"master\",\"RM_IHPSG13_1P_2048x64_c2_bm_bist\",\"RM_IHPSG13_1P_2048x64_c2_bm_bist\",\"obstruction\",2870]",
+        "source_indices": []
+      }
+    },
+    {
+      "id": "direct_TopMetal1_bridge",
+      "proposed_centerline_dbu": [
+        [
+          947520,
+          1788780
+        ],
+        [
+          947520,
+          1791300
+        ]
+      ],
+      "layer": "TopMetal1",
+      "reason": "The original clock-delay route already occupies this upper-metal corridor.",
+      "witness": {
+        "box": [
+          947020,
+          1719980,
+          948660,
+          1800520
+        ],
+        "current_extension": null,
+        "default_extension": 820,
+        "from_xy": [
+          947840,
+          1720800
+        ],
+        "half_width": 820,
+        "kind": "wire",
+        "layer": "TopMetal1",
+        "layer_key": "TopMetal1",
+        "opcode_index": 48,
+        "owner": "delaynet_39_clk_i",
+        "previous_extension": null,
+        "record_id": "[\"net\",\"delaynet_39_clk_i\",\"wire\",\"shape\",9]",
+        "route_class": "ROUTED",
+        "source_indices": [],
+        "to_xy": [
+          947840,
+          1799700
+        ]
+      }
+    },
+    {
+      "id": "east_M5_escape_at1787100",
+      "proposed_centerline_dbu": [
+        [
+          949920,
+          1787100
+        ],
+        [
+          953760,
+          1787100
+        ]
+      ],
+      "layer": "Metal5",
+      "reason": "The proposed lower escape directly crosses another original clock branch.",
+      "witness": {
+        "box": [
+          951740,
+          1787000,
+          964900,
+          1787200
+        ],
+        "current_extension": null,
+        "default_extension": 100,
+        "from_xy": [
+          951840,
+          1787100
+        ],
+        "half_width": 100,
+        "kind": "wire",
+        "layer": "Metal5",
+        "layer_key": "Metal5",
+        "opcode_index": 175,
+        "owner": "clknet_leaf_0_clk_i",
+        "previous_extension": null,
+        "record_id": "[\"net\",\"clknet_leaf_0_clk_i\",\"wire\",\"shape\",34]",
+        "route_class": "ROUTED",
+        "source_indices": [],
+        "to_xy": [
+          964800,
+          1787100
+        ]
+      }
+    },
+    {
+      "id": "east_M4_escape_at1787520",
+      "proposed_centerline_dbu": [
+        [
+          949920,
+          1787520
+        ],
+        [
+          953760,
+          1787520
+        ]
+      ],
+      "layer": "Metal4",
+      "reason": "The lower-layer escape intersects the same protected clock net below its M5 corner.",
+      "witness": {
+        "box": [
+          953180,
+          1779860,
+          953380,
+          1787620
+        ],
+        "current_extension": null,
+        "default_extension": 100,
+        "from_xy": [
+          953280,
+          1779960
+        ],
+        "half_width": 100,
+        "kind": "wire",
+        "layer": "Metal4",
+        "layer_key": "Metal4",
+        "opcode_index": 78,
+        "owner": "clknet_5_29__leaf_u_ibex.clk",
+        "previous_extension": null,
+        "record_id": "[\"net\",\"clknet_5_29__leaf_u_ibex.clk\",\"wire\",\"shape\",15]",
+        "route_class": "ROUTED",
+        "source_indices": [],
+        "to_xy": [
+          953280,
+          1787520
+        ]
+      }
+    }
+  ],
+  "source_net": "net459",
+  "source_nondefault_rule": null,
+  "next_action": "Develop a bounded multilayer route candidate from the current all-layer census with exact technology spacing/enclosure/minimum-area/grid checks. Allow only net459 changes; freeze repaired net36993 and all other current material. If the required route/clearance region exceeds the observed window, acquire an enlarged current native neighborhood on GitHub before admitting it. Then paired DEF imports, serialized native readback, complete original-class DRC, and actual original-clock timing are required.",
+  "direct_M4_proposal_admissible": false,
+  "accepted_alternative_selected": false,
+  "geometry_changed": false,
+  "physical_acceptance": false,
+  "timing_accepted": false,
+  "full_phy_accepted": false
+}
