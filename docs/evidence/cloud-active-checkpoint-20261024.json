@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T02:01:57.877432+00:00",
+  "updated_at": "2026-10-29T03:03:49.485546+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "033125f4e7cf780bab2a77d0ff927e7b15e43073",
+  "root_source_before_receipt": "b3bf71576b89fac551e2333ef1791205e77d5db2",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 101,
+    "inventory_version": 102,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -21,7 +21,42 @@
     ],
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33"
   },
-  "active_runs": {},
+  "active_runs": {
+    "mainchip_route_audit_split_native": {
+      "run": 40808800489,
+      "head_sha": "dd2115212b8ccd1176a2e67995d3e54b0a4248dc",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123233983394,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123234175740,
+          "name": "route-only (on)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Execute one separately owned route stage"
+          ]
+        },
+        {
+          "id": 123234175763,
+          "name": "route-only (off)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Execute one separately owned route stage"
+          ]
+        }
+      ]
+    }
+  },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -2982,14 +3017,67 @@
       "original_parent_geometry_guard_must_not_be_waived": true,
       "current_candidate_physical_run": 40800207491,
       "fresh_graph_executed": false
+    },
+    "cdr_selector_fresh_graph": {
+      "run": 40808550817,
+      "source": "97705f184239c0c522582b9d8e82c542bd902b65",
+      "proof_commit": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "release": 427412807,
+      "terminal": "success",
+      "input_members": 3992,
+      "output_capsule_members": 4103,
+      "independent_source_reference_boxes": 26,
+      "original_parent_gds_unchanged": true,
+      "native_planes": 160,
+      "plane_faults": 19,
+      "leaf_drawings": 9,
+      "placements": 16,
+      "geometry_faults": 5,
+      "devices": 500,
+      "terminals": 1446,
+      "wire_components": 113,
+      "native_nets": 238,
+      "electrical_nets": 114,
+      "logical_and_physical_anchors": 978,
+      "all8supervised_phases_passed": true,
+      "original_legacy_port_order_rejection_preserved": true,
+      "graph_equivalence_accepted": false,
+      "fresh_RC_executed": false,
+      "electrical_accepted": false,
+      "full_phy_accepted": false
+    },
+    "mainchip_route_audit_split": {
+      "source": "dd2115212b8ccd1176a2e67995d3e54b0a4248dc",
+      "source_controls_run": 40807637800,
+      "source_controls_proof": "548515199f6a8c77df3194f35c51d79aa68a3623",
+      "native_run": 40808800489,
+      "admitted_controls_proof": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "full_handoff_restore_positive": 2,
+      "original_members_each": 746,
+      "handoff_refusals": 12,
+      "actual_driver_lifecycle": 14,
+      "failed_freeze_preservation": 4,
+      "partial_publication": 3,
+      "typed_authorization_refusals": 27,
+      "original645pins_unchanged": true,
+      "original1691clocks_preserved": true,
+      "route_seconds": 14400,
+      "audit_seconds_each": 1200,
+      "separate_route_and_audit_jobs": true,
+      "native_outcome_pending": true,
+      "physical_accepted": false,
+      "timing_accepted": false,
+      "observer_equivalence_qualified": false
     }
   },
   "next_actions": [
-    "Continue agent pll_handoff route/audit split on codex/mainchip-built-engine-route-tail-observer; inspect newest durable source after1ca53541. Keep native flags false until route-only full workspace handoff and separately reserved five-audit continuation are implemented and freshly cloud-tested.",
-    "Do not replay source-controls40803424913; it terminally passed. Complete source records and immutable review are imported here.",
-    "Implement next CDR fresh graph stage from actual passed physical40800207491, following independent child-reference26box delta, all9leaf/16placement/5fault checks,160planes/19faults, then fresh recovery/probe/locations/anchors/dedup. Preserve original parentGDS unchanged.",
-    "Only then run candidate-specific wireRC/MIM and original10electricalcases; PLL/completePHY/chiproute/STA remain open.",
-    "All source edits via GitHub API in RAM; every authored test/native operation in GitHub. Local workspace remains empty."
+    "Observe exact native routing run40808800489; do not duplicate/retry. Both off/on route jobs use original14400s budget, five subsequent1200s audits run in separate jobs after complete authenticated route handoff. All5releases already reserved for dd211521.",
+    "Record all route/audit/comparison results including failures. Current monitor production names contain source-controls and route-only off/on; when future audit/comparison jobs are created, extend this handle with those exact names without changing source/run identity.",
+    "Fresh CDR graph40808550817 is terminalsuccess; do not rerun. Whole capsule4103members and all18derived evidence records are imported; native archive stayscloudonly.",
+    "Agent pll_handoff is implementing disabled width-specific topology helper on codex/cdr-selector-width-topology-source based70bd0e39. Inspect its durable checkpoint before use; no admission/driver/dispatch exists yet.",
+    "Next CDR native stage must acquire both complete identity witnesses and prove exact four-partition Metal4/TopMetal1 union for26boxes at two placements. Original topology comparator material policy targets priorTM2tailbus and is diagnostic only; actualline107native_ports order rejection preserved.",
+    "Only after width-specific identity/material/ownership proof run fresh wireRC/MIM and original10electricalcases. Old CDR electrical failures and PLL timing/headroom defects remain open; fullPHY, routedchip and finalSTA are unaccepted.",
+    "All source/test/native work remainsGitHub; localworkspace empty. Existing8h monitor readonly, no localautomation/nativeassets."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -3279,29 +3367,112 @@
     "observed_40793128851": 40793128851,
     "observed_40796151572": 40796151572,
     "observed_40800207491": 40800207491,
-    "observed_40803424913": 40803424913
+    "observed_40803424913": 40803424913,
+    "observed_40807527305": 40807527305,
+    "observed_40807637800": 40807637800,
+    "observed_40808550817": 40808550817
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40803424913,
-      "head_sha": "89ae0d32727b24798e01ec45f94f7ab636bd7c31",
+      "run": 40807527305,
+      "head_sha": "70bd0e3935e5ac9ff57db6fa43ff6336705e312b",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123216634244,
+          "id": 123229933367,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123230120261,
+          "name": "graph",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40807637800,
+      "head_sha": "3a0b148ecf43c17c3d00cda4cfeb324594c885dc",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123230284833,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         }
       ]
+    },
+    {
+      "run": 40808550817,
+      "head_sha": "97705f184239c0c522582b9d8e82c542bd902b65",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123233190376,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123233387760,
+          "name": "graph",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40808800489,
+      "head_sha": "dd2115212b8ccd1176a2e67995d3e54b0a4248dc",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123233983394,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123234175740,
+          "name": "route-only (on)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Execute one separately owned route stage"
+          ]
+        },
+        {
+          "id": 123234175763,
+          "name": "route-only (off)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Execute one separately owned route stage"
+          ]
+        }
+      ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T02:01:57.877432+00:00",
+    "observed_at": "2026-10-29T03:03:49.485546+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -3430,7 +3601,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T02:01:57.877432+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T03:03:49.485546+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -27193,6 +27364,531 @@
       "bytes": 4562,
       "sha256": "02f9503350c52d359272ecf2f5298d861203df8af87e262e36b318052ce1d374",
       "existing_identical": false
+    }
+  ],
+  "imported_checkpoint_receipts_v102": [
+    {
+      "path": "docs/evidence/mainchip-built-engine-route-tail-split-foundation-20261029.json",
+      "source": "722a97e70249741de93183c5de6eb1bfbb0652a3",
+      "git_blob": "260939aec4d1905fcb43bfe86b27eb407da7db95",
+      "bytes": 2230,
+      "sha256": "3a979454c2162d937c8ee37d766f6cc4d45b7ed1e9152b6dfa482816b632dff5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-built-engine-route-tail-split-source-review-20261029.json",
+      "source": "58cb0176b62f357c30040ad586b20c0a3faf749e",
+      "git_blob": "4f78cd33f3880acfb594e209e3bdfbfd5a296d55",
+      "bytes": 10388,
+      "sha256": "0c2a6815db5e6e0ca5eeda4016e518a4896c94b29859b352528ee7c47acbdf7b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-controls-dispatch-plan-20261029.json",
+      "source": "3a0b148ecf43c17c3d00cda4cfeb324594c885dc",
+      "git_blob": "aa960f46aa5960a12fe0f4027cfc76cbee505214",
+      "bytes": 559,
+      "sha256": "ef2377bd97da77d1d51f4563b5c07ee06a1e6f7cce239d9020d88f84e2ff15f5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-actual-controls-20261029.joblog.log",
+      "source": "548515199f6a8c77df3194f35c51d79aa68a3623",
+      "git_blob": "6d456c2ac703b541eb215f5e0c05dc7e70279531",
+      "bytes": 84387,
+      "sha256": "95b833a103cd94ab57274ae4cc1808f7cf657718bf69c5126fa6859198ea9631",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-actual-controls-20261029.jobs.json",
+      "source": "548515199f6a8c77df3194f35c51d79aa68a3623",
+      "git_blob": "5afe64fad6aef5d1fd22c0c190c74bb73f91cc7d",
+      "bytes": 3379,
+      "sha256": "23aee45ce74eb61ca1145bc79e41b284dd89be2bd8aa4d67b7f247c3ad0f0f43",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-actual-controls-20261029.receipt.json",
+      "source": "548515199f6a8c77df3194f35c51d79aa68a3623",
+      "git_blob": "179f8e5d8eaf05ca070483e639af77147af3f9bb",
+      "bytes": 14650,
+      "sha256": "5455d0a7c7794a666473bfc14e5cd544c12ef13752fb70684a829bcd11aa9c9c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-actual-controls-20261029.record-indexes.json",
+      "source": "548515199f6a8c77df3194f35c51d79aa68a3623",
+      "git_blob": "7e483fb3637ba6ae2e6e621d67802bf5f250c16b",
+      "bytes": 439,
+      "sha256": "089a6de58f1ecea82940a44503cfa64e0344ae4d1506cf22aca32a1dbb3b5a9e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-actual-controls-20261029.route-prefix-controls.json",
+      "source": "548515199f6a8c77df3194f35c51d79aa68a3623",
+      "git_blob": "46efc783a96a10d3e8740145b0c9ce84ea63351b",
+      "bytes": 27540,
+      "sha256": "ddb4ab0620973c109ea450f031fc773621de3c67d9599aa6af6dde062e755633",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-actual-controls-20261029.route-tail-controls.json",
+      "source": "548515199f6a8c77df3194f35c51d79aa68a3623",
+      "git_blob": "6f78d99a826db37fefc75d7f28b548d0ead2a8f1",
+      "bytes": 18126,
+      "sha256": "a4b0a883759f37e90fefc3d98f4d9e9abf512ea87d5a21cddb6bb7da45bd7878",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-actual-controls-20261029.run.json",
+      "source": "548515199f6a8c77df3194f35c51d79aa68a3623",
+      "git_blob": "267c93866e398cd30a687aeb4444c04f3c323e76",
+      "bytes": 14394,
+      "sha256": "5ca7789eec4dbd1604213da5cbc8b28e9d2f50d2d9a4391026f70cf1d69ed8b6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-native-admission-20261029.json",
+      "source": "dd2115212b8ccd1176a2e67995d3e54b0a4248dc",
+      "git_blob": "4dd717bf0e34b5e1845234e0a518a10f574d17df",
+      "bytes": 1910,
+      "sha256": "35ffd17d4706240d437a1057fe0a18336e08ee9fb1bdbebfff1103676592a99d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.compare.release.json",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "231b1884a2b7034e051a2e313ce6c48589c98a3b",
+      "bytes": 2582,
+      "sha256": "8c6cd90baa799674e6f6eec9b3d705eb50b77d97cc4d021f176254d4932af55f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.compare.tag.json",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "9af6fbab7ea1f5a6562b14c566084c3baab6efe3",
+      "bytes": 592,
+      "sha256": "bbb79e82c78c07bd0417ade72a08a408d9089d64c7d505b0ca23605e5ddf28e4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.joblog.log",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "3a5006e30071ad451262f77e653c819b8ddaa0a5",
+      "bytes": 84367,
+      "sha256": "76ea621f1abb2094e2db3788d71126249f05c9072229e151bee5832953244d4b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.jobs.json",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "17721084d516512d449c243fc7a27c20214b98fd",
+      "bytes": 10896,
+      "sha256": "3525ca155bbb14c88b7e22d6b80b6acf962477bf3738483c2fb75d0329af3d36",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.off-audit.release.json",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "626ce9d0a742934993fa7ff7e17cd821f301e296",
+      "bytes": 2592,
+      "sha256": "07debcfea70b155769d0c882321cd71ae5cb36d9ab0a9be10a9c829cbbb0cbf9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.off-audit.tag.json",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "55df6aa09dc6a783115a7f25775bc3938cc5c8b5",
+      "bytes": 598,
+      "sha256": "bf9f2a35c2ac991336013dd31c1cd9e9202e8d4638e7b1ca997155e11bd5c43a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.off-route.release.json",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "1f2ea661ed8c3c6e118149760d59f2f88b1fc8bf",
+      "bytes": 2592,
+      "sha256": "ec2a73d5accc95832afb43909b57453ba07817e267762711b3f5f86479d651e7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.off-route.tag.json",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "0c0907619ace4e639c42dd883f9acb356a7725da",
+      "bytes": 598,
+      "sha256": "cee8cb0c32d98f2fd8a11ab82adae24d32be7c864187f13bb7a7eb8e2bd6a762",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.on-audit.release.json",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "1f971c550a54fcdac71194ebbb570f87d5075bbf",
+      "bytes": 2587,
+      "sha256": "f588b631aad7761ff3098ac7a11456a61d3fa494d5b73a7a57a361041b27081e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.on-audit.tag.json",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "70c7ac61ba7282f4dd8ff6d0fca6d7477434a6d3",
+      "bytes": 595,
+      "sha256": "c9a3c922eefb05282fde2170f4b0714263a46e39bd01b3549c86bc3ce756241b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.on-route.release.json",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "3fd00568e86595fb785364cdf24822ecf9d38b55",
+      "bytes": 2587,
+      "sha256": "5fdc4a8e15926a2ef06e0034a4a40e6745504cdaca1e343e62cc16e425e828b6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.on-route.tag.json",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "eb7d58b15edbc2f4270917d5a0a2c7d81debca26",
+      "bytes": 595,
+      "sha256": "2f5251f967736ee8617d20f2bab1e389f24b5d8ff3d80f2fe6cb7fd586be523f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.receipt.json",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "017d57229d903f16b6a2a7d67ab8874956b6ffff",
+      "bytes": 17736,
+      "sha256": "fe7b32b44d021edee36803d77402e0d515e885b30a7b16e536d2d21a466e9311",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.record-indexes.json",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "7e483fb3637ba6ae2e6e621d67802bf5f250c16b",
+      "bytes": 439,
+      "sha256": "089a6de58f1ecea82940a44503cfa64e0344ae4d1506cf22aca32a1dbb3b5a9e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.route-prefix-controls.json",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "46efc783a96a10d3e8740145b0c9ce84ea63351b",
+      "bytes": 27540,
+      "sha256": "ddb4ab0620973c109ea450f031fc773621de3c67d9599aa6af6dde062e755633",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.route-tail-controls.json",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "6f78d99a826db37fefc75d7f28b548d0ead2a8f1",
+      "bytes": 18126,
+      "sha256": "a4b0a883759f37e90fefc3d98f4d9e9abf512ea87d5a21cddb6bb7da45bd7878",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-audit-split-admitted-controls-20261029.run.json",
+      "source": "d99d65a8fd576075fdb539bd43c5f6e32d1f1476",
+      "git_blob": "7958652437b5a796b5ec1654dec750d88b70c6dc",
+      "bytes": 14443,
+      "sha256": "514b056cfbad4fe8fd42f6ef779cde9de7bf5ad4f94aa5431443a699f56bca3c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-source-review-20261029.json",
+      "source": "70bd0e3935e5ac9ff57db6fa43ff6336705e312b",
+      "git_blob": "0f4be7ab883d31723e9d8dbb606954d458040292",
+      "bytes": 2954,
+      "sha256": "2b6b1e885296c5fa5af382a7b8e19855439a418b53da36bb8d146660334055f7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-graph-initial-controls-20261029.controls.json",
+      "source": "87f7f3f3e1b6662fcac6443366633dafac472a7b",
+      "git_blob": "aa5f1b274a4f09c91d082f6ebf1072a0a3b36cfa",
+      "bytes": 226,
+      "sha256": "0d68e47bb05b7016d5e5d75f08b9d19bc58ae983befdadd5cc4c317822f344d5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-graph-initial-controls-20261029.jobs.json",
+      "source": "87f7f3f3e1b6662fcac6443366633dafac472a7b",
+      "git_blob": "e54514fddfb00aedcf7c0dbb0ceae1fdb9845a1f",
+      "bytes": 4859,
+      "sha256": "0ce4a016811d4122b811bc5b46d56bcc631cf27029e0fc2bf5436f7331d9004b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-graph-initial-controls-20261029.receipt.json",
+      "source": "87f7f3f3e1b6662fcac6443366633dafac472a7b",
+      "git_blob": "420e04cd896ee1cad404f83ac9e18390516c420a",
+      "bytes": 2088,
+      "sha256": "5ceb2ec63d1801d0bba15eebadb9c3c5da0a0b6ce8a3de1d9ebbb6f4cb9f9be7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-graph-initial-controls-20261029.run.json",
+      "source": "87f7f3f3e1b6662fcac6443366633dafac472a7b",
+      "git_blob": "71f31158df6a016abfe1010396734bd4c93bf58b",
+      "bytes": 14422,
+      "sha256": "18b20d6b829643f68b05cae79abb1777822053647d939311336396df0bb23017",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-graph-initial-controls-20261029.source-controls.log",
+      "source": "87f7f3f3e1b6662fcac6443366633dafac472a7b",
+      "git_blob": "958f55ba93005bdb6b8ace21a3b3a958d58759a5",
+      "bytes": 25868,
+      "sha256": "08ba6b3885eac458de1fbe9f504a3dcbe1902977837940801495b42107bcb448",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-native-admission-20261029.json",
+      "source": "97705f184239c0c522582b9d8e82c542bd902b65",
+      "git_blob": "605239ab75bb1339eefc3a5384fecb1e4b24cd1b",
+      "bytes": 1657,
+      "sha256": "042ee8c2668cb0220499f99858cc63ac30d316e5c5f57d30a63bb7747d2af9c1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-graph-admitted-controls-20261029.controls.json",
+      "source": "4c7e30941259a782c28692bd8315ebbabfe14825",
+      "git_blob": "abd68bf634c685d19336fd13bc293ae8c237b1fc",
+      "bytes": 4902,
+      "sha256": "965fd8472d1c0633dca2bcedb4b3551f98da3fa9cbf8212c2f3901d5341af7eb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-graph-admitted-controls-20261029.jobs.json",
+      "source": "4c7e30941259a782c28692bd8315ebbabfe14825",
+      "git_blob": "e50a1b9270c4c1fb19b4b57578633f2646b4a786",
+      "bytes": 7503,
+      "sha256": "7e3311f59dd523bc7dd687b66655843563b11efc35c70dd169a3a7680c14c30a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-graph-admitted-controls-20261029.receipt.json",
+      "source": "4c7e30941259a782c28692bd8315ebbabfe14825",
+      "git_blob": "b763c011db4e3d3a55b110cf6a6675a835378fb7",
+      "bytes": 1640,
+      "sha256": "aae13ff448b16e1e092533964df97c7646c6757298b68b28b07348bb5768f0fb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-graph-admitted-controls-20261029.release.json",
+      "source": "4c7e30941259a782c28692bd8315ebbabfe14825",
+      "git_blob": "af965269dfad1331eb14201f8e721fd6a728a197",
+      "bytes": 13029,
+      "sha256": "7e50774079e1301dccf1eb872c703345cb7604b8de8c93a50f0ca51077edbf74",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-graph-admitted-controls-20261029.run.json",
+      "source": "4c7e30941259a782c28692bd8315ebbabfe14825",
+      "git_blob": "c65d104ea9402fe854c8004e8b2f5415d8399f18",
+      "bytes": 14433,
+      "sha256": "ca46ccf73d82e146c4324f4eedb500fd72739c50fb41f7236e244eaeef6d7f62",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-graph-admitted-controls-20261029.source-controls.log",
+      "source": "4c7e30941259a782c28692bd8315ebbabfe14825",
+      "git_blob": "ffeb2d829ad0925021fefaf76a916afd45fe7bf1",
+      "bytes": 29613,
+      "sha256": "024af84daa01aeb434506e254c211fe4170eb3458743d7820d51eebda283aec0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-graph-admitted-controls-20261029.tag.json",
+      "source": "4c7e30941259a782c28692bd8315ebbabfe14825",
+      "git_blob": "9cbebf0c12e46fd3fba9e38f7c503029a6e3963b",
+      "bytes": 575,
+      "sha256": "6ded1c5231bbd06ee1c402d95a21c60ddf22b6977daf69356065aa0f6a4ab10c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.anchors.json",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "23b024f378defd4819f29e32cec464625a00f43d",
+      "bytes": 1650535,
+      "sha256": "966b5465750b6b35cc24cd8e10dca94313061d17692c6c46e99c50bc5d4c6193",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.driver.log",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "504abbf03dbbb783effcc3adf603c694b24faf90",
+      "bytes": 33289,
+      "sha256": "1cbc4588101dc8dbe7762b92918791098e07fedcbbf60ae4df19b2fc84506aff",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.graph.json",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "7c5e4b86a1ac1b099cacf7a4825b657390246111",
+      "bytes": 290711,
+      "sha256": "eeddbaddc06d413309fafc7b396944ada5fb72aa79f90c8f929f3213c2101adb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.jobs.json",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "fc381028acda24fd62712c56b43099cf988a891a",
+      "bytes": 7918,
+      "sha256": "23b4236481a050f77786b8dbfa3e3da20dfb4035f7b7f5d5657cc34041bdaa10",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.legacy-topology.json",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "d1bf1842c8b595557c2017a390cda65ff0333710",
+      "bytes": 1603,
+      "sha256": "5aae742ed599257b215dd34ec5179cd83117652fc791a70cc49b4f817b891412",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.locations.json",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "5dec4e7e856232a8277d83ae3fb89f3b6bed13d0",
+      "bytes": 686544,
+      "sha256": "11be358288af996c51a18bd7396ecce699ab84c9c5d93737a52d517dd0546a4f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.native-job.log",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "8f53f699581dbca4dc564d91999be33eac88bc46",
+      "bytes": 80346,
+      "sha256": "8fde00aeec42410f07905daf700595e2b3733e7c59e38d31adfa47e6973f3c68",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.parts.json",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "685ceee4f594fc58eca10a16cb8f7d34b1af6135",
+      "bytes": 1117,
+      "sha256": "2a32d90bd33b8ed354777c6383c04090da00ffa90ead113f5eb620f33acdaa99",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.planes.json",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "d30475343c95e49116fb49b51e8177fabfd9cff4",
+      "bytes": 244802,
+      "sha256": "bb10a385e76e014c17d229919728e16085f06396becdf47f15ee53bb4c6b3dfe",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.receipt.json",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "0e72bd1bf20e967409eaf63ed81dd786b99fac8b",
+      "bytes": 5023,
+      "sha256": "99d5332d5d6794a0714b0ef13c7474446a861168c34ea5c50e944d48ee44edb9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.reference.json",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "c487110ace8798f49d2ca276d9fe6f27589d8a32",
+      "bytes": 24580,
+      "sha256": "851a4a6b04648ad487456572242ced064f804817429545daeac0a17f5d7747b3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.release.json",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "6ae8fcda91d260b2e63241c0fd24c44e5c87e4e8",
+      "bytes": 31974,
+      "sha256": "eb9c2006e774a854a60f744906c73708a5f7aeb0449eed394e72ed43426d4f84",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.restore.json",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "df2c44055b3fa4ba184193a8beeed1eca5317e22",
+      "bytes": 922280,
+      "sha256": "8a9a0f3a6fc31eb46429a5bee6f4c39047b813968210c636ac600bab1c4648fb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.run.json",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "6a9a868456662435a12e5d760885f874ba4c8509",
+      "bytes": 14436,
+      "sha256": "ca4e8d9026989e1a7acf019cef3b608a3b0b47baa0e8e24849b232badb2ae6e9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.runtime.json",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "4e670adf880ec0ee3c64ca33b120577806a4eb65",
+      "bytes": 3557,
+      "sha256": "3404e6dc1d6c0a0ecead9614b43a8131b4b1bb2b268f9dd1fd9c5c9f72a31467",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.source-pins.json",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "51294a8014ccf39055e37dfbd3538a77cb0a423f",
+      "bytes": 39228,
+      "sha256": "1d18f591616b6eba928beaca81fee3263942cf031b2ad4fbade9c1d7f35fafab",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.summary.json",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "7a74e8464fe054833b557a2eace4f5444d11a06c",
+      "bytes": 1764262,
+      "sha256": "62825d1992f63c4475e4f73cb16e5fccaf21a6228b157eb971fd4a7808d58d74",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-selector-width-fresh-graph-terminal-20261029.tag.json",
+      "source": "75c8f4a4468e364d59506d719f484f09eceb3c7a",
+      "git_blob": "9cbebf0c12e46fd3fba9e38f7c503029a6e3963b",
+      "bytes": 575,
+      "sha256": "6ded1c5231bbd06ee1c402d95a21c60ddf22b6977daf69356065aa0f6a4ab10c",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v102": [
+    {
+      "group": "mainchip-built-engine-route-tail-off-route",
+      "tag": "cloud-results-40808800489-1-mainchip-built-engine-route-tail-off-route",
+      "release": 427414385,
+      "source": "dd2115212b8ccd1176a2e67995d3e54b0a4248dc",
+      "run": 40808800489
+    },
+    {
+      "group": "mainchip-built-engine-route-tail-on-route",
+      "tag": "cloud-results-40808800489-1-mainchip-built-engine-route-tail-on-route",
+      "release": 427414407,
+      "source": "dd2115212b8ccd1176a2e67995d3e54b0a4248dc",
+      "run": 40808800489
+    },
+    {
+      "group": "mainchip-built-engine-route-tail-off-audit",
+      "tag": "cloud-results-40808800489-1-mainchip-built-engine-route-tail-off-audit",
+      "release": 427414424,
+      "source": "dd2115212b8ccd1176a2e67995d3e54b0a4248dc",
+      "run": 40808800489
+    },
+    {
+      "group": "mainchip-built-engine-route-tail-on-audit",
+      "tag": "cloud-results-40808800489-1-mainchip-built-engine-route-tail-on-audit",
+      "release": 427414433,
+      "source": "dd2115212b8ccd1176a2e67995d3e54b0a4248dc",
+      "run": 40808800489
+    },
+    {
+      "group": "mainchip-built-engine-route-tail-compare",
+      "tag": "cloud-results-40808800489-1-mainchip-built-engine-route-tail-compare",
+      "release": 427414455,
+      "source": "dd2115212b8ccd1176a2e67995d3e54b0a4248dc",
+      "run": 40808800489
+    },
+    {
+      "run": 40808550817,
+      "source": "97705f184239c0c522582b9d8e82c542bd902b65",
+      "release": 427412807,
+      "tag": "cloud-results-40808550817-1-cdr-v59-selector-column-width-graph"
     }
   ]
 }
