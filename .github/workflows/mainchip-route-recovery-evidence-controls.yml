@@ -102,7 +102,7 @@ jobs:
           j=matches[0]
           assert j['run_id']==int(run_id) and j['head_sha']==e['GITHUB_SHA'] and j['run_attempt']==1 and j['status']=='completed'
           read('actions/jobs/'+str(j['id']),'recovery-source-job.json')
-          log=subprocess.check_output(['gh','api','repos/'+repo+'/actions/jobs/'+str(j['id'])+'/logs'])
+          log=subprocess.check_output(['gh','api','--allow-escape-sequences','repos/'+repo+'/actions/jobs/'+str(j['id'])+'/logs'])
           assert log
           Path('recovery-source-job.log').write_bytes(log)
           names=('recovery-run.json','recovery-jobs.json','recovery-source-job.json','recovery-source-job.log')
