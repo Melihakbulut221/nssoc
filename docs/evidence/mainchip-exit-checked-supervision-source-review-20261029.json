@@ -1,0 +1,283 @@
+{
+  "schema": 1,
+  "status": "AUTHORED_ADDITIVE_SOURCE_ONLY_NOT_HOSTED_QUALIFIED",
+  "repository": "Melihakbulut221/nssoc",
+  "branch": "codex/mainchip-exit-checked-supervision",
+  "base_source": "271c56d96d330d5381f8d52830ec632d82975955",
+  "files": {
+    "scripts/mainchip_exit_checked_supervision.py": {
+      "bytes": 16685,
+      "sha256": "142349a2269f0e9c94fe732cc69c5a9deab192e6f53d7604fcfbb41b553a2378"
+    },
+    "scripts/check_mainchip_exit_checked_supervision.py": {
+      "bytes": 26110,
+      "sha256": "abb388d000ecccb2fc46687edfc749de1013854fd685113b71b46f5d0f6451e1"
+    }
+  },
+  "previous_analysis": {
+    "source": "aa252a26a562d8b04a86d0cc82c78f265dca398a",
+    "path": "docs/evidence/mainchip-fixed-prefix-memory-exit-primary-source-analysis-20261029.json",
+    "bytes": 18760,
+    "sha256": "80f723b75ec1948603e6fb8fe4f2c133960a4e48dd4aa5e89d30225febabc7a9"
+  },
+  "actual_failure": {
+    "run": 40863684870,
+    "source": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
+    "release_id": 427769567,
+    "status": "FAILURE_RETAINED_NOT_RECLASSIFIED",
+    "readback_run": 40868093785,
+    "readback_asset": 688389954,
+    "readback_bytes": 1719515,
+    "readback_sha256": "d94a50f6f07e2355c570f4747582d744a58bf2c4243662c6d48bd7ba22a06a4c",
+    "observation": "Three missing VmRSS attempts had the same PID/starttime and R state before and after; raw status and flags were not retained. Cleanup sent SIGTERM and the recorded returncode was zero. This does not prove natural completion or that this successor fixes the actual failure."
+  },
+  "entrypoint": {
+    "factory": "mainchip_exit_checked_supervision.supervisor()",
+    "intended_driver_change": "Root-owned future import alias only: import mainchip_exit_checked_supervision as old",
+    "checker": "python -B scripts/check_mainchip_exit_checked_supervision.py --output exit-checked-supervision-controls.json",
+    "activation": "No driver, method, workflow, flags, runtime or dispatch changes in this unit. Historical inherited authority is unchanged and does not qualify this new module."
+  },
+  "exact_derivation": {
+    "authenticated_sources": {
+      "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/cloud_pcie_gen12_training_records_telemetry.py": {
+        "bytes": 22471,
+        "sha256": "e326e548ebe11550d18a049d639bdf063f03602d4ba08299b00a5747d3281c0b"
+      },
+      "scripts/pcie_live_memory_sampler.py": {
+        "bytes": 10879,
+        "sha256": "55fb9a3ba9a049c509b629e8638a688b5f827316485f9fd89cd5a8888804df07"
+      },
+      "scripts/cloud_mainchip_original_clock_restoration.py": {
+        "bytes": 12028,
+        "sha256": "7700e04988a916977727b44e880f47ae8d8ae454553c8702eacae5951d743646"
+      },
+      "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/check_pcie_gen12_training_records.py": {
+        "bytes": 28358,
+        "sha256": "e1bf844ef719b4ad4230aebc58550ee577da72d88958b7724400d1c4c14c8f5a"
+      },
+      "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/check_pcie_gen12_raw32_rx.py": {
+        "bytes": 15431,
+        "sha256": "451667d66bb77df193e56ed60cc82f91738d676316e4b6016f3bc9d119d7c7da"
+      },
+      "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/check_pcie_gen12_tx_raw32.py": {
+        "bytes": 16940,
+        "sha256": "b19d118fc2d2b71a8f74361a5ca315c9b137cdb1916decd9aec0d189d084a577"
+      }
+    },
+    "derived_supervisor": {
+      "bytes": 23160,
+      "sha256": "089da196702b8ff4a366b846c8fb0ac796f521b8e6a34ed39fd498800dc21b4f",
+      "only_changed_named_body": "supervised",
+      "preserved_named_bodies": {
+        "SupervisionFailure": "5e0872378b864fb5e9f17b3cb04ecfe9bd0762841048254ca88b598dbd6cad97",
+        "RunnerInterrupted": "1f1a108b63909944cc201b7ad029aff3d872fb4d167b55140d9d1ee6ced0e4b1",
+        "host": "5635f2bed04602329fe50adec871e19b3a64ac2b4267bc32b5778ede2af079be",
+        "sha": "09d411b3221ce4d8c0bdeb7353f3c5f86554613b331d2dbd18a63dd96265b3a7",
+        "pins": "6ea83793bc6fe7a5a8997eca4aa514e285c480138fc1920b5a0621f789d9c66d",
+        "safe_read": "3dad04ff92a96dcc991b9bdaa6ca55b43649b52deddd2287f828e0c76a7ad650",
+        "resources": "5de2b1bd0d477bebf4882d6b5c98308b853f68c517084823b94aa2e741a5a01c",
+        "console_line": "ed4128981886af0036a6ee094e28aa3e60404a04cf02c9b24daeb614952bc1b2",
+        "event": "d176c53114775f7f6e10efa2d18d59960f66be8cc70bcee053547f4a7ba9ffae",
+        "sample": "a849eaa02dd1013e5331c806843e886dd6be8729b45047dcddf7c74205867ed0",
+        "heartbeat": "db6623f5399eaffca88a1999c8f23773df27c01cdaeb0fee69bdcd540cc44dbc",
+        "group_members": "5216891ea6dbcc77c939950d0fa85cbcf7eb306c9e7b02d70501de11323d5c47",
+        "live_members": "51f5b6dddc585e01ae456ab1c52878b4190df79c755b456e98bf7475c8f45f60",
+        "stop_process": "791ce76f303e8cb8bedeff34566ecf71a752fd3acf2079e180ab5573c6ce7ed1",
+        "memory_snapshot": "d47e90b508a960a10c8171d07ce1df1410647c3fde117587a6b697f9b3c846e4",
+        "stream_tails": "51597736cde604f63d8a506e768df6712e4c503dccd973e75777b786db9944d5",
+        "wrap": "3d899d51e11548dd0c3e787496deb325fef1d3b7dd5b0aaef53544c97c6d551f",
+        "phase_timeout": "b776b3378b3f2c4b436a625dffe86eee3aeb0ec93e6c9098676217b5e0202e87",
+        "interrupted": "afa62fef76d703980a865259a17d7372a99a6420da9e8f3c42a843ba9a261cdc",
+        "controls": "58969f963f1f4ad313f832c82a6192e606a11a2828088a7e9003fe11e54155e8",
+        "main": "aa8c46de2511b6075ad2d12c457fc78ce4d8a67f6bbd520754662d16846246d8"
+      },
+      "replacements": [
+        {
+          "old": "began=time.monotonic();reason=None;p=None;memory=None;memory_error=None",
+          "new": "began=time.monotonic();reason=None;p=None;memory=None;memory_error=None;memory_terminal_resolution=None"
+        },
+        {
+          "old": "                    except Exception as e:reason='memory_sample_unavailable';memory_error=repr(e)",
+          "new": "                    except Exception as e:\n                        reason='memory_sample_unavailable';memory_error=repr(e)\n                        if type(e) is ExhaustedMissingRSS:\n                            memory_terminal_resolution=exit_checked_terminal(p,e,min_available_kib,max_group_rss_kib)\n                            event('memory_terminal_resolution',label=label,\n                                  memory_read_error=memory_error,\n                                  resolution=memory_terminal_resolution)\n                            if memory_terminal_resolution['outcome']=='terminal_complete':\n                                reason=None\n                                break"
+        },
+        {
+          "old": "'last_memory_sentinel_sample':memory,'memory_read_error':memory_error,",
+          "new": "'last_memory_sentinel_sample':memory,'memory_read_error':memory_error,\n          'memory_terminal_resolution':memory_terminal_resolution,"
+        }
+      ]
+    },
+    "derived_sampler": {
+      "bytes": 10878,
+      "sha256": "605a3cfcf16c0f332bb279e1dac8fe59a247946d06e5b4596e70e8c089975fb5",
+      "only_changed_named_body": "snapshot",
+      "preserved_named_bodies": {
+        "CounterError": "7039ca8085764f5f0987f7b5661c3d8dec124685ae3fd15dc972e5690e12c474",
+        "MissingRSS": "951a0986801ff811a4bb6a843ae813d1a5f28bdbcd71a8403f84b06acdfc7b1f",
+        "identity": "1a6725159760e5f6d6dca5a466dbd1c93e92179b7ecf5e007b2c58d16bd60909",
+        "same": "32f3069d394c3292585896f9fa2c1e1da04f694b2d9abf4ea11cb92eae594043",
+        "counter": "f696f95b77ff25f7e13a110fc5682b6ea384fc86df380d96b24c07277015fd80",
+        "one_field": "c1de8ff4f8989d7eac69bacbad1c33b4449a72ea96586a634bb5c3d9fa66d3b2",
+        "ProcAccess": "bd9908c4583638d971398ec4a39b2e47afef1c366e9e79bb89514e3b131e75d9",
+        "member_observation": "e479e32b5d8bf5e55ed1747a33a7184053684bb09c6568c8ea43f4c62f691db8",
+        "install": "1f2b187e1adda7e3c18ab0182a84ebc15e21399ac132c0c18d9570aa0f3dec59"
+      },
+      "replacements": [
+        {
+          "old": "if attempt+1==ATTEMPTS:raise CounterError('Persistent unavailable live VmRSS')",
+          "new": "if attempt+1==ATTEMPTS:raise ExhaustedMissingRSS(pgid,history,began,deadline)"
+        }
+      ]
+    },
+    "reverse": "Each literal old and new seam must occur exactly once; reversing all replacements must reproduce the complete original bytes.",
+    "namespace": "The authenticated complete telemetry source is instantiated in a fresh ModuleType. All stateful telemetry functions share exactly that module.__dict__, ACTIVE, STOP, CURRENT, LOCK and CONSOLE_BROKEN. No FunctionType clone of supervised with a copied globals dictionary.",
+    "bootstrap": "legacy.supervisor() is used only to bootstrap authenticated archived imports and obtain original OUT/TRACE. Its telemetry instance is not the returned instance. The fresh counter module preserves every named body except snapshot and the original install function is not invoked on the fresh supervisor.",
+    "added_hooks": [
+      "ExhaustedMissingRSS",
+      "TerminalAccess",
+      "known_identities",
+      "terminal_census",
+      "resolve_terminal",
+      "measured closure forwards typed exhaustion without wrapping; other exceptions retain SupervisionFailure wrapping",
+      "terminal_access and exit_checked_terminal bound to the returned module; source controls replace only explicit native/process I/O seams"
+    ]
+  },
+  "algorithm": {
+    "attempts": 3,
+    "interval_seconds": 0.02,
+    "total_snapshot_budget_seconds": 0.1,
+    "terminal_poll_maximum_seconds": 0.005,
+    "unchanged_limits": {
+      "command_seconds": 1200,
+      "minimum_available_kib": 2097152,
+      "maximum_group_rss_kib": 10485760
+    },
+    "rules": [
+      "Only the original third exhausted MissingRSS branch creates a typed error containing an independent copy of exact attempt history, pgid, began and deadline.",
+      "All other sampler failures remain fatal. No fourth memory-counter attempt is added.",
+      "Only unused time inside the original snapshot deadline may poll Popen completion and inspect process identities. There is no new deadline, grace period or cleanup signal in resolution.",
+      "All recorded MemAvailable values must retain the caller minimum. The sum of already measured member RSS is checked only as a partial lower bound against the caller maximum; it is never a complete group sample.",
+      "Require the leader identity in the original attempt history and consistent historical PID/pgrp/starttime. Unknown resampling enumeration disappearances refuse resolution.",
+      "After parent completion, two complete held-identity /proc scans require no live, unidentified, reused or unanchored group member, including known PIDs which may have changed groups. Unknown disappearing processes conservatively refuse resolution.",
+      "Permission, malformed identity, PID reuse, census failures or deadline exhaustion leave memory_sample_unavailable in force.",
+      "Only a completed parent and complete terminal census before cleanup may clear the supervision failure. The original passed=True exact returncode gate, final stream gates, orphan check and stop_process remain unchanged.",
+      "Both zero and nonzero process returncodes are preserved. A nonzero passed=True still fails.",
+      "PF_EXITING is not read or used for acceptance. No absent/status/stat RSS value is substituted with zero or a prior sample.",
+      "The final diagnostic time is rechecked against the original deadline before returning terminal_complete."
+    ]
+  },
+  "diagnostics": {
+    "memory_read_error": "Original non-null typed exception repr is retained even on rigorously resolved termination.",
+    "last_memory_sentinel_sample": "Original last successful sample remains unchanged or None; never refreshed by the terminal check.",
+    "memory_terminal_resolution": {
+      "outcome": [
+        "terminal_complete",
+        "rejected"
+      ],
+      "fields": [
+        "original_error",
+        "original_memory_error",
+        "attempts",
+        "snapshot_began",
+        "snapshot_deadline",
+        "total_budget_seconds",
+        "fresh_memory_sample",
+        "minimum_available_kib",
+        "maximum_group_rss_kib",
+        "PF_EXITING_used_for_acceptance",
+        "cleanup_started",
+        "polls",
+        "finished_at",
+        "elapsed_from_snapshot_start_seconds"
+      ],
+      "conditional_fields": [
+        "observed_resource_bounds",
+        "observed_resource_bounds_validated",
+        "parent_returncode",
+        "completed_before_cleanup",
+        "resolution_error"
+      ],
+      "polls": "Each poll retains monotonic time and exact parent returncode; completed-parent polls retain each full census disposition with group before/after identities, known-gone PIDs, live and unknown entries. No process argv or environment is collected.",
+      "false_fields": [
+        "fresh_memory_sample",
+        "PF_EXITING_used_for_acceptance",
+        "cleanup_started"
+      ]
+    },
+    "separate_event": "memory_terminal_resolution is emitted before the original cleanup path. An event write error cannot produce a successful CompletedProcess.",
+    "downstream": "The unchanged route_records requires memory_read_error is None and must therefore reject resolved diagnostics until a separately reviewed successor admission recognizes exact source, bounds, history, terminal census and returncode. Do not clear diagnostics for compatibility."
+  },
+  "authored_checker": {
+    "status": "PASS_EXIT_CHECKED_SUPERVISION_SOURCE_CONTROLS",
+    "top_false": [
+      "native_executed",
+      "engine_executed",
+      "routing_accepted",
+      "physical_acceptance",
+      "actual_failed_prefix_reclassified"
+    ],
+    "current_context": {
+      "source": "exact GITHUB_SHA",
+      "run_id": "integer GITHUB_RUN_ID",
+      "attempt": 1,
+      "source_controls_only": true,
+      "native_executed": false
+    },
+    "counts": {
+      "source": {
+        "positive": 2,
+        "refusals": 9,
+        "authenticated_source_files": 6
+      },
+      "derivation": {
+        "positive": 7,
+        "refusals": 2,
+        "supervisor_seams": 3,
+        "snapshot_seams": 1
+      },
+      "snapshot": {
+        "positive": 5
+      },
+      "terminal": {
+        "cases": 31,
+        "old_body_regressions": 1
+      },
+      "real_python": {
+        "positive": 2,
+        "refusals": 1,
+        "real_short_python_children": 3
+      },
+      "original_supervisor": {
+        "status": "PASS_RECORD_TELEMETRY_SOURCE_AND_SUPERVISION_CONTROLS_NO_RTL",
+        "controls": 13
+      }
+    },
+    "source": "Authentic six-file protected projection, six corruptions, missing path, symlink, and source corruption before any bootstrap import.",
+    "derivation": "Complete reverse bytes; exact AST named-body inventory; unchanged constants, original controls body and coherent state namespaces across two independent factory calls.",
+    "snapshot": "Actual derived snapshot with explicit synthetic proc/time I/O; exact three-attempt typed history and original reject event; already exhausted budget cannot poll.",
+    "terminal": "31 actual returned supervised()/snapshot call paths with explicit synthetic process/proc/time/cleanup I/O: exact old body failure; zero/seven original passed gate; final poll at 100ms; after-budget/live refusal; live child/reused/unknown/permission/duplicate identity; expired/history/deadline tamper; malformed, duplicate, permission, PID and system counters; unchanged memory limits; event/cleanup failure; PF_EXITING set/unset live refusal; missing-RSS low-available/partial-over-RSS refusals; snapshot event failure; preserved earlier fresh sample.",
+    "original_supervisor": "The exact thirteen-control function body executes on the returned successor module, with its historical application-specific pins lookup replaced only after authenticating this unit source guard; real short Python child processes exercise actual supervisor/cleanup/resource behavior. No RTL/engine/CAD process.",
+    "io_boundaries": "Synthetic archive, native engine or restored payload qualification is not attempted. Production source/AST inspection only has been performed locally; no authored source or tests have been imported or executed.",
+    "actual_results": "NOT RUN; all stated counts are authored expectations, not passed evidence."
+  },
+  "limitations": [
+    "No claim that the actual state-R/missing-RSS native failure would naturally finish within 100ms. A repeated hosted/native qualification is root-owned.",
+    "Strict scans may conservatively reject on unrelated disappearing /proc identities or a busy /proc filesystem. Such failures are explicit and do not weaken live-process rejection.",
+    "Only process-group ownership is inherited. No new claim is made about descendants deliberately leaving the original process group.",
+    "Historical finally stop_process and event implementations remain byte-exact. They can still mask an earlier exception if cleanup or event persistence also fails; this unit tests failure rather than acceptance and does not silently broaden into a general lifecycle rewrite.",
+    "No raw status or PF_EXITING flags are newly persisted; original exact structured counter history plus terminal identity census is retained.",
+    "Existing old handoff/collector memory_read_error=None requirements need a separate explicit successor change before downstream route acceptance."
+  ],
+  "validation": {
+    "source_AST_parse_only": true,
+    "local_source_execution": false,
+    "local_tests": false,
+    "native_assets_downloaded": false,
+    "local_files_written": false,
+    "dispatch": false,
+    "old_sources_modified": false,
+    "production_driver_modified": false,
+    "hosted_qualification_pending": true,
+    "routing_accepted": false,
+    "physical_acceptance": false
+  }
+}
