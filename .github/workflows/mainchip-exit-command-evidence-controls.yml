@@ -1,0 +1,126 @@
+name: Exit checked command evidence controls
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: exit-checked-command-evidence-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Bind exact hosted source and disabled native authority
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import mainchip_fixed_engine_route_prefix_contract as prior
+          e=os.environ
+          assert e['GITHUB_ACTIONS']=='true' and e['RUNNER_ENVIRONMENT']=='github-hosted'
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_EVENT_NAME']=='workflow_dispatch'
+          assert e['GITHUB_RUN_ATTEMPT']=='1' and e['GITHUB_REF']=='refs/heads/codex/mainchip-exit-command-evidence'
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
+          assert sys.version_info[:2]==(3,12)
+          original=prior.method(prior.ROOT)
+          method_path=Path('scripts/mainchip-exit-command-evidence-source-methods.json')
+          m=json.loads(method_path.read_bytes())
+          assert m['schema']=='mainchip-exit-command-evidence-source-controls-v1'
+          assert m['branch']=='codex/mainchip-exit-command-evidence'
+          assert m['source_controls_authorized'] is True and m['native_authorized'] is False
+          assert m['controller_ready'] is False
+          assert m['inherited_protected_count']==len(original['protected'])==1207
+          assert all(m['protected'].get(p)==h for p,h in original['protected'].items())
+          assert m['protected'][prior.METHOD]==hashlib.sha256(Path(prior.METHOD).read_bytes()).hexdigest()
+          for p,h in m['protected'].items():
+              f=Path(p);assert f.is_file() and not f.is_symlink()
+              assert hashlib.sha256(f.read_bytes()).hexdigest()==h,p
+          out=Path('exit-command-evidence-source-controls');out.mkdir(exist_ok=False)
+          prior.atomic_record(out/'context.json',dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
+            method_sha256=hashlib.sha256(method_path.read_bytes()).hexdigest(),native_authorized=False,source_controls_only=True))
+          PY
+      - name: Actual producer records and consumer refusal controls
+        run: |
+          python3 -B scripts/check_mainchip_exit_checked_command_evidence.py --output exit-command-evidence-source-controls/result.json > exit-command-evidence-source-controls/stdout.log 2> exit-command-evidence-source-controls/stderr.log
+          python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          r=json.loads(Path('exit-command-evidence-source-controls/result.json').read_bytes())
+          assert r['status']=='PASS_EXIT_CHECKED_COMMAND_EVIDENCE_SOURCE_CONTROLS'
+          assert r['current_context']==dict(source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_executed=False)
+          assert (r['positive'],r['refusal'],r['actual_old_regressions'],r['actual_supervised_record_cases'])==(9,70,2,9)
+          assert r['source_controls_only'] is True and r['synthetic_process_proc_clock_io'] is True
+          assert all(r[k] is False for k in ('native_executed','physical_acceptance','full_phy_accepted'))
+          PY
+      - name: Always emit complete source control records
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          root=Path('exit-command-evidence-source-controls')
+          for n in ('context.json','result.json','stdout.log','stderr.log'):
+              p=root/n;present=p.is_file() and not p.is_symlink();raw=p.read_bytes() if present else b''
+              chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+              print('EXIT_COMMAND_EVIDENCE_INDEX '+json.dumps(dict(path=n,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):
+                  print('EXIT_COMMAND_EVIDENCE_CHUNK '+json.dumps(dict(path=n,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          PY
+      - name: Preserve all source control bytes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: exit-command-evidence-source-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: exit-command-evidence-source-controls
+          if-no-files-found: error
+          retention-days: 90
+  preserve-job-log:
+    needs: source-controls
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Preserve full actual source job log and metadata
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          root=Path('job-logs');root.mkdir()
+          e=os.environ
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_RUN_ATTEMPT']=='1'
+          prefix='repos/'+e['GITHUB_REPOSITORY']+'/'
+          def read(path,name):
+              b=subprocess.check_output(['gh','api',prefix+path]);(root/name).write_bytes(b);return json.loads(b)
+          run=read('actions/runs/'+e['GITHUB_RUN_ID'],'run.json')
+          assert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
+          jobs=read('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
+          selected=[j for j in jobs['jobs'] if j['name']=='source-controls'];assert len(selected)==1
+          j=selected[0];assert j['status']=='completed' and j['head_sha']==e['GITHUB_SHA']
+          read('actions/jobs/'+str(j['id']),'job.json')
+          b=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(j['id'])+'/logs'])
+          assert b;(root/'job.log').write_bytes(b)
+          receipt=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
+            job_id=j['id'],job_conclusion=j['conclusion'],full_raw_job_log=True,
+            log_bytes=len(b),log_sha256=hashlib.sha256(b).hexdigest(),native_acquisition=False)
+          (root/'receipt.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(receipt,sort_keys=True))
+          PY
+      - name: Preserve complete actual logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: exit-command-evidence-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: job-logs
+          if-no-files-found: error
+          retention-days: 90
