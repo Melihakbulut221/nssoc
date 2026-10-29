@@ -1,0 +1,228 @@
+{
+  "schema": 1,
+  "status": "AUTHORED_COMMAND_DEADLINE_AMENDMENT_HOSTED_EXECUTION_PENDING",
+  "repository": "Melihakbulut221/nssoc",
+  "branch": "codex/mainchip-exit-checked-supervision",
+  "parent_source": "a1208c8f310bd3b638c06a1d25649d59a23eb158",
+  "previous_review": {
+    "path": "docs/evidence/mainchip-exit-checked-supervision-source-review-20261029.json",
+    "bytes": 17799,
+    "sha256": "525fe820aaf9fde270f2960b23ff960768dd14b51c554a59ae367fb3f4e9b6d8",
+    "unchanged": true
+  },
+  "previous_sources": {
+    "scripts/mainchip_exit_checked_supervision.py": {
+      "bytes": 16685,
+      "sha256": "142349a2269f0e9c94fe732cc69c5a9deab192e6f53d7604fcfbb41b553a2378"
+    },
+    "scripts/check_mainchip_exit_checked_supervision.py": {
+      "bytes": 26110,
+      "sha256": "abb388d000ecccb2fc46687edfc749de1013854fd685113b71b46f5d0f6451e1"
+    }
+  },
+  "current_sources": {
+    "scripts/mainchip_exit_checked_supervision.py": {
+      "bytes": 18336,
+      "sha256": "1907842d5eb506102a7d7cf9562fcf330e45d9a36e3cffad6658e9c1450b54b5"
+    },
+    "scripts/check_mainchip_exit_checked_supervision.py": {
+      "bytes": 31059,
+      "sha256": "91b024d2a8be8bba40ee7e97392a7e4d9bddc2047dee9c42f0fa11c8e60f4001"
+    }
+  },
+  "actual_historical_source_controls": {
+    "run": 40874307492,
+    "actual_tested_source": "38959f2adf2e5efd57271f260f274f2431814f4c",
+    "attempt": 1,
+    "terminal": "success",
+    "proof_source": "4d4a209de43a9e59a59a6fe24f9c4d074b5b2462",
+    "native_prefix_executed": false,
+    "receipt": {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-source-terminal-40874307492/receipt.json",
+      "bytes": 19356,
+      "sha256": "0cd2bc172f880a0c9e1987daef42de00237661947f8e02ebd9175f697e0e4e47"
+    },
+    "exit_supervision_report": {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-source-terminal-40874307492/controls/exit-supervision-controls.json",
+      "bytes": 13937,
+      "sha256": "8fe74a0ad3983afbaa38165a5bd00139b1aa74920600caf81f8f54c0c950bfa3",
+      "status": "PASS_EXIT_CHECKED_SUPERVISION_SOURCE_CONTROLS",
+      "terminal_cases": 31,
+      "real_python_children": 3,
+      "original_controls": 13
+    },
+    "qualification_scope": "Historical pre-amendment source-only evidence. It does not qualify this changed source or any native prefix."
+  },
+  "concrete_defect": "The pre-amendment terminal_complete branch broke out of the command loop before the unchanged later elapsed_limit test. The 100ms snapshot bound alone did not enforce the separate command seconds budget.",
+  "exact_change": {
+    "existing_named_body_changes": [
+      "supervisor adds only a closure binding exit_checked_command_deadline to the same returned module.time.monotonic"
+    ],
+    "new_named_body": "command_budget_decision",
+    "literal_change": "Only the new terminal-resolution catch replacement is amended: compute a fresh command budget decision before emitting the resolution event; late/equal becomes elapsed_limit, unavailable remains fatal memory_sample_unavailable; then break.",
+    "before_catch": "                    except Exception as e:\n                        reason='memory_sample_unavailable';memory_error=repr(e)\n                        if type(e) is ExhaustedMissingRSS:\n                            memory_terminal_resolution=exit_checked_terminal(p,e,min_available_kib,max_group_rss_kib)\n                            event('memory_terminal_resolution',label=label,\n                                  memory_read_error=memory_error,\n                                  resolution=memory_terminal_resolution)\n                            if memory_terminal_resolution['outcome']=='terminal_complete':\n                                reason=None\n                                break",
+    "after_catch": "                    except Exception as e:\n                        reason='memory_sample_unavailable';memory_error=repr(e)\n                        if type(e) is ExhaustedMissingRSS:\n                            memory_terminal_resolution=exit_checked_terminal(p,e,min_available_kib,max_group_rss_kib)\n                            if memory_terminal_resolution['outcome']=='terminal_complete':\n                                try:\n                                    budget=exit_checked_command_deadline(began,seconds)\n                                except Exception as budget_error:\n                                    budget=dict(status='unavailable',clock='time.monotonic',\n                                                within_limit=False,error=repr(budget_error))\n                                memory_terminal_resolution['command_budget_decision']=budget\n                                if budget['status']=='checked':\n                                    reason=None if budget['within_limit'] else 'elapsed_limit'\n                            event('memory_terminal_resolution',label=label,\n                                  memory_read_error=memory_error,\n                                  resolution=memory_terminal_resolution)\n                            if memory_terminal_resolution['outcome']=='terminal_complete':\n                                break",
+    "math_import": "stdlib math, used only for strict finite scalar/derived arithmetic checks",
+    "original_frozen_supervisor": {
+      "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/cloud_pcie_gen12_training_records_telemetry.py",
+      "bytes": 22471,
+      "sha256": "e326e548ebe11550d18a049d639bdf063f03602d4ba08299b00a5747d3281c0b"
+    },
+    "derived_supervisor": {
+      "bytes": 23836,
+      "sha256": "a2627714a3be7549215c84ff09569aad6aaa07f52c2c6f8b2b1969aac13799b4"
+    },
+    "derived_sampler": {
+      "bytes": 10878,
+      "sha256": "605a3cfcf16c0f332bb279e1dac8fe59a247946d06e5b4596e70e8c089975fb5",
+      "changed_by_amendment": false
+    },
+    "preserved": "All prior factory classes/functions except supervisor are byte-exact. Historical e326 telemetry and55fb counter files are unchanged. The original initialization/record seams, three attempts20ms/100ms, resource limits, cleanup, streams, returncode and phase functions remain unchanged.",
+    "reverse": "The three complete declared supervised replacements still reverse byte-for-byte to e326; sampler replacement remains exactly the pre-amendment literal."
+  },
+  "command_budget_decision": {
+    "success_or_late": {
+      "status": "checked",
+      "clock": "time.monotonic",
+      "fields": [
+        "began",
+        "observed_at",
+        "deadline",
+        "limit_seconds",
+        "elapsed_seconds",
+        "within_limit"
+      ],
+      "finite": "All time/limit input and derived values must be finite exact int/float, never bool.",
+      "same_clock": "Original supervised began and a fresh reading from the same returned module.time.monotonic.",
+      "within_limit": "observed_at < began + seconds AND observed_at - began < seconds; equality is rejected.",
+      "late_result": "supervision_failure='elapsed_limit'",
+      "known_nonzero_result": "The original passed=True returncode assertion remains unchanged."
+    },
+    "unavailable": {
+      "status": "unavailable",
+      "clock": "time.monotonic",
+      "within_limit": false,
+      "error": "Exact exception repr; invalid/nonfinite timestamp values are not serialized.",
+      "result": "Original fatal memory_sample_unavailable remains in force."
+    },
+    "placement": "memory_terminal_resolution.command_budget_decision is populated before the existing resolution event. The same complete resolution dictionary is preserved in the final command record. No subsequent compatibility clearing or diagnostic mutation.",
+    "no_fresh_rss": true,
+    "no_PF_EXITING_waiver": true
+  },
+  "hosted_checker_delta": {
+    "cli": "python -B scripts/check_mainchip_exit_checked_supervision.py --output exit-supervision-controls.json",
+    "status": "PASS_EXIT_CHECKED_SUPERVISION_SOURCE_CONTROLS",
+    "terminal_cases_before": 31,
+    "terminal_cases_after": 41,
+    "added_boundary_cases": [
+      {
+        "limit_seconds": 1200,
+        "relation": "before",
+        "start_delay_seconds": 1199.94,
+        "child_completion_seconds": 1199.99,
+        "expected": "returncode0 with no supervision failure"
+      },
+      {
+        "limit_seconds": 1200,
+        "relation": "equal",
+        "start_delay_seconds": 1199.94,
+        "child_completion_seconds": 1200,
+        "expected": "elapsed_limit"
+      },
+      {
+        "limit_seconds": 1200,
+        "relation": "after",
+        "start_delay_seconds": 1199.94,
+        "child_completion_seconds": 1200.01,
+        "expected": "elapsed_limit"
+      },
+      {
+        "limit_seconds": 14400,
+        "relation": "before",
+        "start_delay_seconds": 14399.94,
+        "child_completion_seconds": 14399.99,
+        "expected": "returncode0 with no supervision failure"
+      },
+      {
+        "limit_seconds": 14400,
+        "relation": "equal",
+        "start_delay_seconds": 14399.94,
+        "child_completion_seconds": 14400,
+        "expected": "elapsed_limit"
+      },
+      {
+        "limit_seconds": 14400,
+        "relation": "after",
+        "start_delay_seconds": 14399.94,
+        "child_completion_seconds": 14400.01,
+        "expected": "elapsed_limit"
+      }
+    ],
+    "added_error_cases": [
+      "command_clock_error",
+      "command_clock_nonfinite",
+      "command_clock_backwards"
+    ],
+    "exact_pre_fix_regression": "Authenticate the unchanged initial source-review JSON, apply its exact literal replacements to the immutable e326 bytes, require exact documented derived byte length/SHA, and execute that actual pre-fix supervised function in the returned module. With parent completing at1200.01 inside the snapshot window, assert the pre-fix body wrongly returns0 without elapsed_limit; the amended body refuses the same deadline relation.",
+    "clock_fixture": "Only synthetic Clock.sleep rounds its controlled clock to12 decimal places to make equality explicit. Popen I/O double advances the fake clock near1200/14400; no real waiting or engine execution.",
+    "event_record_equality": "For every terminal_complete case, parse the actual event JSONL and actual command JSON and require the entire resolution object to be identical. Checked budget timestamps and arithmetic are finite and exact; errors retain no invalid numeric values.",
+    "final_counts": {
+      "source": {
+        "positive": 2,
+        "refusals": 9,
+        "authenticated_source_files": 6
+      },
+      "derivation": {
+        "positive": 7,
+        "refusals": 2
+      },
+      "snapshot": {
+        "positive": 5
+      },
+      "terminal": {
+        "cases": 41,
+        "old_body_regressions": 1,
+        "command_budget_boundary_cases": 6,
+        "command_budget_error_cases": 3,
+        "pre_fix_command_deadline_regressions": 1
+      },
+      "real_python": {
+        "positive": 2,
+        "refusals": 1,
+        "real_short_python_children": 3
+      },
+      "original_supervisor": {
+        "controls": 13
+      }
+    },
+    "current_context_unchanged": [
+      "source",
+      "run_id",
+      "attempt:1",
+      "source_controls_only:true",
+      "native_executed:false"
+    ],
+    "inherited_source_review_is_additionally_authenticated": true,
+    "actual_execution": "NOT RUN for amended source; source AST/literal reconstruction review only."
+  },
+  "integration_requirements": [
+    "Root must import both changed sources plus this amendment and retain the initial source-review JSON, which the exact pre-fix regression authenticates.",
+    "Update current contract terminal case expectation31\u219241 and bind the new6/3/1 deadline count fields before new exact-source hosted execution.",
+    "No native activation before amended-source hosted controls actually pass and root reviews all resulting records.",
+    "Prefix collectors must validate command_budget_decision checked/within_limit alongside the original terminal resolution proof; memory_read_error remains preserved.",
+    "Old tail handoff remains fail-closed until a separate reviewed successor recognizes the qualified preserved diagnostic."
+  ],
+  "scope": {
+    "local_files_written": false,
+    "authored_imports_executed": false,
+    "local_tests_executed": false,
+    "native_payload_acquired": false,
+    "dispatch": false,
+    "production_driver_changed": false,
+    "workflow_changed": false,
+    "historical_sources_changed": false,
+    "previous_review_changed": false,
+    "current_native_authorization_created": false,
+    "native_acceptance": false
+  }
+}

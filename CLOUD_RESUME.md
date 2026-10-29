@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v117
+# Cloud continuation — checkpoint v118
 
-Updated: 2026-10-29T12:39:42.066141+00:00
+Updated: 2026-10-29T13:06:14.040875+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Cloud-only checkpoint117: exit-aware supervision integration38959f2a passed hosted source-only run40874307492. All7indexed control records, raw joblogs and17proof files are preserved at4d4a209d. Thirty-one terminal cases, three real Python children and13unchanged supervision controls passed. Native preparation remains disabled while final review checks the command-deadline boundary of the new terminal_complete path. Previous failed prefix40863684870 stays failed; no routing or physical acceptance is claimed.
+Cloud-only checkpoint118: corrected deadline-aware supervision passed hosted source40877437818 (41terminal cases,6command-boundary cases,3bad-clock cases,authenticated pre-fix regression,3real Python children,13original controls). Full17proof files/1466169bytes retained at2945fe69. Fresh actual four-phase prefix40878295979 now usesa32414f7,1207protected sources, and empty exact-source release427875148 reserved before native acquisition. Original945s failure40863684870 remains failed. Routing and physical/timing/PHY acceptance stay false. Parallel current-width CDR additive worker/result preparation remains source-only.
 
-Active handles at this snapshot: No native run remains active in this snapshot.
+Active handles at this snapshot: 40878295979 in_progress
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -8998,3 +8999,10 @@ Local project/tmp/native processes verified absent. Inventory340 exact cloud han
 Cloud-only checkpoint117: exit-aware supervision integration38959f2a passed hosted source-only run40874307492. All7indexed control records, raw joblogs and17proof files are preserved at4d4a209d. Thirty-one terminal cases, three real Python children and13unchanged supervision controls passed. Native preparation remains disabled while final review checks the command-deadline boundary of the new terminal_complete path. Previous failed prefix40863684870 stays failed; no routing or physical acceptance is claimed.
 
 Local project/tmp/native processes verified absent. Inventory341 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T13:06:14.040875+00:00 — cloud-only checkpoint v118
+
+Cloud-only checkpoint118: corrected deadline-aware supervision passed hosted source40877437818 (41terminal cases,6command-boundary cases,3bad-clock cases,authenticated pre-fix regression,3real Python children,13original controls). Full17proof files/1466169bytes retained at2945fe69. Fresh actual four-phase prefix40878295979 now usesa32414f7,1207protected sources, and empty exact-source release427875148 reserved before native acquisition. Original945s failure40863684870 remains failed. Routing and physical/timing/PHY acceptance stay false. Parallel current-width CDR additive worker/result preparation remains source-only.
+
+Local project/tmp/native processes verified absent. Inventory343 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
