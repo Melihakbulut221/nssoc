@@ -1,0 +1,71 @@
+name: CDR selector width topology source controls
+on:
+  workflow_dispatch:
+defaults:
+  run:
+    shell: bash
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cdr-width-topology-source-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact inherited source closure and disabled native authority
+        run: |
+          python -B - <<'PY'
+          import hashlib,json,os,sys
+          from pathlib import Path
+          assert os.environ["GITHUB_ACTIONS"]=="true" and os.environ["RUNNER_ENVIRONMENT"]=="github-hosted"
+          assert os.environ["GITHUB_REPOSITORY"]=="Melihakbulut221/nssoc" and os.environ["GITHUB_RUN_ATTEMPT"]=="1"
+          sys.path.insert(0,"scripts")
+          import cdr_v59_selector_column_width_graph as inherited
+          m=inherited.methods()
+          assert len(m["protected_sha256"])==1039
+          assert all(m[k] is False for k in inherited.NATIVE+inherited.FALSE)
+          review=json.loads(Path("docs/evidence/cdr-selector-width-topology-source-review-20261029.json").read_text())
+          pins={
+            "scripts/cdr_selector_width_topology.py":(21740,"a95469b94fa3cb585df42b9c637af1419eabdb8c15f60a72b4a99618a5a2d061"),
+            "scripts/check_cdr_selector_width_topology.py":(14919,"d2b461dcab2d0b586a21ca33c3eda373b919a72a337f7e1b05ced90de0f3190d")}
+          for name,(size,h) in pins.items():
+              p=Path(name);assert p.is_file() and not p.is_symlink()
+              b=p.read_bytes();assert len(b)==size and hashlib.sha256(b).hexdigest()==h
+              assert review["source_files"][name]==dict(bytes=size,sha256=h)
+          assert all(v is False for v in review["authorizations"].values())
+          print(json.dumps(dict(status="PASS_PROTECTED_SOURCE_CLOSURE",inherited_files=1039,new_files=pins,native_authorized=False),sort_keys=True))
+          PY
+      - name: Actual pya-free source controls
+        run: |
+          mkdir -p hw/soc/out/cdr-width-topology-source-controls
+          python -B scripts/check_cdr_selector_width_topology.py --source-controls --output hw/soc/out/cdr-width-topology-source-controls/result.json 2>&1 | tee hw/soc/out/cdr-width-topology-source-controls/driver.log
+          python -B - <<'PY'
+          import hashlib
+          from pathlib import Path
+          b=Path("hw/soc/out/cdr-width-topology-source-controls/result.json").read_bytes()
+          print("WIDTH_TOPOLOGY_SOURCE_RESULT_BEGIN")
+          print(b.decode(),end="")
+          print("WIDTH_TOPOLOGY_SOURCE_RESULT_END")
+          print("WIDTH_TOPOLOGY_SOURCE_RESULT_SHA256",hashlib.sha256(b).hexdigest(),"BYTES",len(b))
+          PY
+      - name: Preserve complete controls and failure streams
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-width-topology-source-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          path: hw/soc/out/cdr-width-topology-source-controls
