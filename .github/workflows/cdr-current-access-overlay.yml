@@ -135,7 +135,7 @@ jobs:
   readback:
     needs: [source-controls, preserve-job-log]
     if: ${{ inputs.mode == 'readback' }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 90
     env:
       GH_TOKEN: ${{ github.token }}
