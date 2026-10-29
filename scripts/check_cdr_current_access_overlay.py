@@ -181,7 +181,14 @@ def controls(expected):
                 if mode=="body_and_final_save"and path.name=="native-lifecycle.json":raise OSError("secondary-save")
                 return original_write(path,raw)
             fake_thread=types.SimpleNamespace(start=lambda:events.append("start"),join=lambda **kw:events.append("join"),is_alive=lambda:False)
-            with patch.object(h.runtime,"launcher",return_value=types.SimpleNamespace(probe=lambda *a:{"accepted":True})),patch.object(h.runtime,"supervisor",return_value=Sup()),patch.object(h,"source_guard",return_value=(cfg,None,None)),patch.object(h.threading,"Thread",return_value=fake_thread),patch.object(h.signal,"getsignal",return_value=None),patch.object(h.signal,"signal",return_value=None),patch.object(h,"write",final_write):
+            # Match signal.signal's real contract: it returns the replaced handler.
+            # Both the original handlers and the installed supervisor handler are callable.
+            signal_handlers={sig:(lambda *args:None)for sig in (h.signal.SIGINT,h.signal.SIGTERM)}
+            original_handlers=dict(signal_handlers);returned_handlers=[];lifecycle_stdout=[]
+            def signal_swap(sig,handler):
+                replaced=signal_handlers[sig];signal_handlers[sig]=handler
+                returned_handlers.append(replaced);return replaced
+            with patch.object(h.runtime,"launcher",return_value=types.SimpleNamespace(probe=lambda *a:{"accepted":True})),patch.object(h.runtime,"supervisor",return_value=Sup()),patch.object(h,"source_guard",return_value=(cfg,None,None)),patch.object(h.threading,"Thread",return_value=fake_thread),patch.object(h.signal,"getsignal",side_effect=lambda sig:signal_handlers[sig]),patch.object(h.signal,"signal",side_effect=signal_swap),patch.object(h,"write",final_write),patch("builtins.print",side_effect=lambda line,**kw:lifecycle_stdout.append(line)):
                 try:value=h.native_readback(cfg,base/"selected",dest,expected,app)
                 except BaseException as exc:
                     if mode.startswith("body_"):assert exc is primary
@@ -189,7 +196,22 @@ def controls(expected):
                 else:assert mode=="success"and value==h.pin(dest/"overlay.json")
             assert "stop"in events and "join"in events and "cleanup"in events
             assert(dest/"supervision/access-overlay.stdout").read_bytes()==b"full synthetic stream"
-            lifecycle.append(dict(name="actual_native_readback_"+mode,native_subprocess_and_cloud_explicitly_synthetic=True,complete_stream_retained=True))
+            assert signal_handlers==original_handlers
+            assert len(returned_handlers)==4 and all(callable(handler)for handler in returned_handlers)
+            if mode=="body_and_final_save":
+                assert not(dest/"native-lifecycle.json").exists()
+                assert len(lifecycle_stdout)==1 and lifecycle_stdout[0].startswith("CDR_ACCESS_OVERLAY_UNSAVED_LIFECYCLE ")
+                lifecycle_report=json.loads(lifecycle_stdout[0].split(" ",1)[1])
+                assert lifecycle_report["primary_error"]==repr(primary)
+            else:
+                lifecycle_bytes=(dest/"native-lifecycle.json").read_bytes()
+                lifecycle_report=h.decode(lifecycle_bytes)
+                assert lifecycle_bytes==h.encode(lifecycle_report)
+                assert lifecycle_stdout==[]
+            restoration=[row for row in lifecycle_report["actions"]if row["action"].startswith("restore_signal_")]
+            assert restoration==[dict(action="restore_signal_"+str(sig),completed=True,evidence=dict(signal=int(sig),restored=True))for sig in original_handlers]
+            assert len(lifecycle_report["actions"])==5
+            lifecycle.append(dict(name="actual_native_readback_"+mode,native_subprocess_and_cloud_explicitly_synthetic=True,complete_stream_retained=True,callable_signal_returns_exercised=True,prior_handlers_restored=True,complete_lifecycle_json_verified=True,lifecycle_fallback_verified=mode=="body_and_final_save"))
         finalizer=[]
         for name,has_primary,write_failure,stdout_failure in (
           ("primary_write",True,True,False),("primary_stdout",True,False,True),

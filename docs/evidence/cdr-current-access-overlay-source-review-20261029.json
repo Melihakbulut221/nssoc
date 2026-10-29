@@ -1,6 +1,6 @@
 {
   "schema": "cdr-current-access-overlay-source-review-v1",
-  "status": "AUTHORED_SOURCE_NOT_YET_HOSTED_QUALIFIED",
+  "status": "AUTHORED_LIFECYCLE_SERIALIZATION_FIX_NOT_YET_HOSTED_QUALIFIED",
   "branch": "codex/cdr-current-access-overlay",
   "base": "624b056cacab6da674c8f5947a6f40ae1970e351",
   "scope": "Read-only existing current geometric access observation; no resistor footprint attribution or geometry change.",
@@ -16,16 +16,16 @@
   },
   "sources": {
     "scripts/cloud_cdr_current_access_overlay.py": {
-      "bytes": 14296,
-      "sha256": "d9d08d7b5683dca758ce7bb062a32f736733a51ca472a18bfb06c99d203234eb"
+      "bytes": 14571,
+      "sha256": "4d6a04aa8307a21775c01cf19bb7f96b38f9f17808b4e01aaa0610f12bd217bc"
     },
     "scripts/cdr_current_access_overlay_native.py": {
       "bytes": 18573,
       "sha256": "5e93d54e460fbaab0609d53b822c5ae7cc34000b59c12268fd7c21a46e19ba8e"
     },
     "scripts/check_cdr_current_access_overlay.py": {
-      "bytes": 18430,
-      "sha256": "7bdafbcef98a6ab23b1e10596f655349174262c7c810c88aa175a23318aeaeb0"
+      "bytes": 20400,
+      "sha256": "2adc06a0ac80a1ea30ebf614e00882c596f15bcf0dc8317be06e790da25fc057"
     },
     "scripts/cdr-current-access-overlay-inputs.json": {
       "bytes": 4119,
@@ -277,7 +277,8 @@
       "actual independent cleanup/STOP/join failure paths",
       "actual native_readback path with explicitly synthetic launcher/supervisor/cloud/native I/O, cleanup/save primary preservation and wrong budget event refusal",
       "Real production emission called through saved original reference during three primary-failure fixtures, with exact full three-file hash-map equality.",
-      "Actual finish_report file/stdout/both failure paths preserve primary exception and independently retain the available report channel; five separate cases."
+      "Actual finish_report file/stdout/both failure paths preserve primary exception and independently retain the available report channel; five separate cases.",
+      "The four actual native_readback lifecycle fixtures now return callable handlers from signal.signal, prove restoration of the exact prior handlers, and verify full lifecycle JSON encoding; the injected final-save failure verifies complete fallback JSON and retained primary error."
     ],
     "native_or_cloud_collaborators": "Explicitly synthetic in source tests; no claim of real capsule/native extraction.",
     "current_context": {
@@ -316,9 +317,10 @@
   "verification": {
     "AST_parse_only": true,
     "exact_three_function_derivation": true,
-    "original_files_unchanged": true,
-    "publication_validation": "Author must re-fetch/hash all six new files and compare exact additive-only diff before reporting.",
-    "API_CAS_and_readback_required": true
+    "original_files_unchanged": false,
+    "publication_validation": "Five scoped modifications only: host, checker, review, 43-entry pins manifest, and workflow manifest digest references; require API CAS and exact byte readback.",
+    "API_CAS_and_readback_required": true,
+    "inherited_native_config_helpers_and_gates_unchanged": true
   },
   "static_review_amendment": {
     "parent": "d9cfd12dc18338e66e13612fbecd081a48d4ae98",
@@ -363,6 +365,87 @@
     "local_imports": false,
     "local_native_acquisition": false,
     "local_tests": false,
+    "dispatch": false
+  },
+  "lifecycle_serialization_amendment": {
+    "parent": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+    "date": "2026-10-30",
+    "failure": {
+      "run": 40960276845,
+      "job": 123751450801,
+      "source": "f8d467382abef9a8180f04b233f93b181cdf88a3",
+      "whole_job_conclusion": "failure",
+      "proof_commit": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "receipt_path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/receipt.json",
+      "receipt_sha256": "71af94eab52aa1cb67e3ce18a973a1a8e58b2b43c5481f66ace5a95b7cdcba5b",
+      "full_job_log": {
+        "bytes": 1944043,
+        "sha256": "82b2ac10d7996f8d03dcac6377b3a3e546db402639d3582812cf9f712aa49b0d"
+      },
+      "runtime_smoke": "PASS_PINNED_APPIMAGE_INTERPRETER_AND_PYA_IMPORT",
+      "native_returncode": 0,
+      "native_elapsed_seconds": 49.401240072000064,
+      "native_status": "PASS_CURRENT_ACCESS_GEOMETRIC_OBSERVATION_NOT_EDGE_ATTRIBUTION",
+      "native_record": {
+        "bytes": 4490540,
+        "chunks": 19,
+        "name": "cloud-cdr-access-overlay/overlay.json",
+        "sha256": "909fa767cd9d0cb8108199e0b6a7ecfb91e8856160cd8bedbf5c2451113cea5c"
+      },
+      "primary_failure": "TypeError: Object of type function is not JSON serializable",
+      "unchanged_native_pass_does_not_qualify_amended_host": true
+    },
+    "defect": "finish() stored the return value of signal.signal() in actions[].evidence. Its real return is the replaced Python handler function, so both the file encoder and stdout fallback encoder rejected it after successful native readback. The previous source fixture incorrectly returned None.",
+    "correction": "Only the restore_signal action changes: perform the same signal.signal(sig,handler) call, then return {signal:int(sig),restored:true}. Do not store the returned callable; retain strict JSON encoding and all primary/cleanup error behavior.",
+    "exact_host_block": {
+      "before": "    for sig,handler in previous.items():attempt(\"restore_signal_\"+str(sig),lambda sig=sig,handler=handler:signal.signal(sig,handler))\n",
+      "after": "    for sig,handler in previous.items():\n        def restore_signal(sig=sig,handler=handler):\n            # signal.signal returns the replaced handler, which may be callable.\n            # Record completed restoration without serializing that live object.\n            signal.signal(sig,handler)\n            return dict(signal=int(sig),restored=True)\n        attempt(\"restore_signal_\"+str(sig),restore_signal)\n",
+      "reverse_byte_identity_verified": true
+    },
+    "changed_host_functions": [
+      "finish"
+    ],
+    "all_other_host_function_source_exact": true,
+    "changed_checker_functions": [
+      "controls"
+    ],
+    "other_checker_functions_exact": true,
+    "fixture_contract": {
+      "native_modes": [
+        "success",
+        "body_and_cleanup",
+        "body_and_final_save",
+        "wrong_budget_event"
+      ],
+      "real_API_return_semantics": "stateful explicit synthetic signal table returns the exact callable being replaced",
+      "calls_per_mode": 4,
+      "prior_handlers_restored": true,
+      "full_lifecycle_encode_readback": true,
+      "final_save_failure_stdout_json_and_primary_verified": true
+    },
+    "counts_unchanged": {
+      "positive": 11,
+      "refusal": 33,
+      "lifecycle": 11,
+      "checker_finalization": 5,
+      "inherited": {
+        "positive": 14,
+        "refusal": 80,
+        "lifecycle": 5
+      }
+    },
+    "native_and_configuration_unchanged": true,
+    "qualified_launcher_and_supervisor_unchanged": true,
+    "appimage_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+    "readback_runner_preserved": "ubuntu-22.04",
+    "workflow_change": "Only references to the 43-entry manifest SHA256 change.",
+    "global_default_str_added": false,
+    "authorization_or_numerical_gate_changed": false,
+    "local_authored_execution": false,
+    "local_imports": false,
+    "local_tests": false,
+    "local_native_acquisition": false,
+    "hosted_tests_for_this_amendment": false,
     "dispatch": false
   }
 }

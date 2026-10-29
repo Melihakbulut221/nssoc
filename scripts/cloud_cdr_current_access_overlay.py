@@ -94,7 +94,13 @@ def finish(supervisor,heartbeat,previous):
         def join():
             heartbeat.join(timeout=5);require(not heartbeat.is_alive(),"heartbeat survived")
         attempt("join_heartbeat",join)
-    for sig,handler in previous.items():attempt("restore_signal_"+str(sig),lambda sig=sig,handler=handler:signal.signal(sig,handler))
+    for sig,handler in previous.items():
+        def restore_signal(sig=sig,handler=handler):
+            # signal.signal returns the replaced handler, which may be callable.
+            # Record completed restoration without serializing that live object.
+            signal.signal(sig,handler)
+            return dict(signal=int(sig),restored=True)
+        attempt("restore_signal_"+str(sig),restore_signal)
     return actions,errors
 
 def native_readback(config,selected,out,expected,app,root=ROOT):
