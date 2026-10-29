@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v115
+# Cloud continuation — checkpoint v116
 
-Updated: 2026-10-29T11:51:30.498210+00:00
+Updated: 2026-10-29T11:58:18.712960+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Actual fresh prefix40863684870 FAILED during ownership supervision after945.74s: persistent unavailable liveVmRSS; processrc0 is afterSIGTERMcleanup and cannot prove a naturalexit race. All45proof1,090,149B committed atd56a03a; full67member78,585,139B archivefe08a442 remainsrelease427769567. No frozenprefix/routing qualification. Cloud-only readback40868093785 at5764b61 authenticates all archivedmembers and12selectedtextrecords into emptyreservedrelease427798211. Tail additivewrappers784878/draftcontractdb6af638 and incompletechecker e5e8359f remain unexecuted/nonauthorized until successfulfreshprefix. Next is evidence-led exit-aware supervisor correction preserving live-counter failure and originalresource/phase gates.
+Cloud-only readback40868093785 PASSED: full67member failedarchive authenticated onGitHub,12selectedtextrecords andcomplete22proof3,067,591B committed271c56d9/receipt92a86435. Ownership actuallycompleted original1691clock/fixedgate,3Shortsremain. All3unavailableRSS attempts hadsamePID18/starttime67784/stateR; SIGTERMcleanup precedesrc0. Rawstatus/flagsnotpreserved, naturalexit raceunproven. PrimaryLinuxsource diagnosis underwaybefore anyadditive supervisionrepair. No currentnative route/prefix accepted; all computation/evidence remainGitHub andlocalprojectisempty.
 
 Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -8980,5 +8981,12 @@ Local project/tmp/native processes verified absent. Inventory339 exact cloud han
 ### 2026-10-29T11:51:30.498210+00:00 — cloud-only checkpoint v115
 
 Actual fresh prefix40863684870 FAILED during ownership supervision after945.74s: persistent unavailable liveVmRSS; processrc0 is afterSIGTERMcleanup and cannot prove a naturalexit race. All45proof1,090,149B committed atd56a03a; full67member78,585,139B archivefe08a442 remainsrelease427769567. No frozenprefix/routing qualification. Cloud-only readback40868093785 at5764b61 authenticates all archivedmembers and12selectedtextrecords into emptyreservedrelease427798211. Tail additivewrappers784878/draftcontractdb6af638 and incompletechecker e5e8359f remain unexecuted/nonauthorized until successfulfreshprefix. Next is evidence-led exit-aware supervisor correction preserving live-counter failure and originalresource/phase gates.
+
+Local project/tmp/native processes verified absent. Inventory340 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T11:58:18.712960+00:00 — cloud-only checkpoint v116
+
+Cloud-only readback40868093785 PASSED: full67member failedarchive authenticated onGitHub,12selectedtextrecords andcomplete22proof3,067,591B committed271c56d9/receipt92a86435. Ownership actuallycompleted original1691clock/fixedgate,3Shortsremain. All3unavailableRSS attempts hadsamePID18/starttime67784/stateR; SIGTERMcleanup precedesrc0. Rawstatus/flagsnotpreserved, naturalexit raceunproven. PrimaryLinuxsource diagnosis underwaybefore anyadditive supervisionrepair. No currentnative route/prefix accepted; all computation/evidence remainGitHub andlocalprojectisempty.
 
 Local project/tmp/native processes verified absent. Inventory340 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
