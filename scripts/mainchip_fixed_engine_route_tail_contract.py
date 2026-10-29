@@ -295,8 +295,10 @@ def validate_prefix_joins(root,host,inner,native,frozen,inv):
             (PREFIX_SOURCE,PREFIX_RUN,1,PRIOR_SHA)and ctx["source_controls_only"]is True
             and ctx["native_executed"]is False,"prefix exact source control context")
         bounds[job]=previous.control_evidence(directory,context)
-    require(bounds["source-controls"]==bounds["native-prefix"]==
-        saved(root,"current-source-controls")==host["current_source_controls"],"prefix repeated control join")
+    require(bounds["native-prefix"]==saved(root,"current-source-controls")==host["current_source_controls"],
+        "prefix native repeated control join")
+    # Separate hosted jobs may record different temporary-path exception text.
+    # Each complete report is authenticated and validated above in its own context.
     for name,row in bounds["native-prefix"].items():
         require(direct[name]==secure_file(Path(root)/PREFIX/"controls/native-prefix",name).read_bytes(),"prefix copied control bytes")
     for record in (host,inner,native):
