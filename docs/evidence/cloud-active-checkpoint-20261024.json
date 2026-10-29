@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T04:08:39.889981+00:00",
+  "updated_at": "2026-10-29T04:42:05.082248+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "e16fccc5d9c20fe9a3706aafeac66952543dc376",
+  "root_source_before_receipt": "40aac493a04531bad49759e4efa1a7f35a93e05e",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 103,
+    "inventory_version": 104,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -21,33 +21,7 @@
     ],
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33"
   },
-  "active_runs": {
-    "cdr-width-specific-native-topology": {
-      "run": 40815684037,
-      "head_sha": "214ec651fd501de7e2f49a38509b184a1fd66f8d",
-      "status": "in_progress",
-      "conclusion": null,
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123256070161,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123256248814,
-          "name": "topology",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Actual native width comparison with complete streams"
-          ]
-        }
-      ]
-    }
-  },
+  "active_runs": {},
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -3100,16 +3074,56 @@
       "qualified_pex": false,
       "full_phy_accepted": false,
       "final_setup_hold_accepted": false
+    },
+    "width_native_topology_actual": {
+      "run": 40815684037,
+      "source": "214ec651fd501de7e2f49a38509b184a1fd66f8d",
+      "status": "PASS_WIDTH_TOPOLOGY_REQUIRES_FRESH_RC_AND_ELECTRICAL",
+      "complete_comparisons": 2,
+      "native_refusals": 9,
+      "identity_positive": 12,
+      "identity_refusals": 12,
+      "synthetic_positive": 3,
+      "synthetic_refusals": 20,
+      "complete_graph_members": 4103,
+      "current_members": 75,
+      "original_members": 605,
+      "component_layers": 1469,
+      "changed_owner_layers": 8,
+      "terminal_proof_commit": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "fresh_RC_executed": false,
+      "full_phy_accepted": false
+    },
+    "route_recovery_evidence_actual_controls": {
+      "run": 40818600460,
+      "source": "055a3ece6676c57081a6ac4cf8a008541bcc75ba",
+      "positive": 8,
+      "refused": 54,
+      "full_log_preservation": "success",
+      "proof_commit": "d8c8171ba3b24c123516d0a814fd37af79ed6208",
+      "original_route_run": 40808800489,
+      "original_run_remains_failed": true,
+      "new_native_execution": false
+    },
+    "fresh_RC_current_input_check": {
+      "all_six_binding_inputs_present": true,
+      "current_members": 75,
+      "root_result_absent": true,
+      "do_not_fabricate_current_root_result": true,
+      "metadata_only": true
+    },
+    "route_audit_only_recovery_source": {
+      "branch": "codex/mainchip-route-audit-only-recovery",
+      "disabled_checkpoint": "c8f446c2688c2d88a6639ab0a6e85cffcd40b7c1",
+      "native_enabled": false,
+      "source_controls_still_in_progress": true
     }
   },
   "next_actions": [
-    "Observe exact native width topology run40815684037/source214ec651; do not duplicate. Exact-source prerelease427455233 was reserved before dependencies; record complete result/failure and actual13 repeated source controls.",
-    "Native width proof requires independent full500device1446terminal identity, 26exactraw additions, 52placed boxes, all113components by13layers and only8declared owner-layer additions. Original historical tail comparator stays diagnostic; no relaxed clocks/electrical gates.",
-    "After genuine width native proof, generate fresh wireRC/MIM and run original10electricalcases. Current CDR/PLL electrical timing/headroom defects remain open.",
-    "Run40808800489 is terminal FAILURE solely at zero-byte direct publication in both routejobs; route+freeze steps passed and complete nativeparts/fallbacks are cloud-retained. Audits/comparison skipped. Do not reroute or relabel whole job successful.",
-    "Agent pll_handoff implements DISABLED read-only mainchip_route_recovery_evidence.py on codex/mainchip-route-recovery-evidence froma9ebb04. Inspect exact durable source before use.",
-    "Implement separately reserved new audit recovery envelope distinguishing originaldd211 frozen687source/run context from new recovery execution context; unchangedfiveaudits on full originalroute handoffs. Keep all old failures,1691clocks,original3short gates and nativeinputmaps.",
-    "All authored/native work staysGitHub. Localworkspace/tmp/nativeprocesses verifiedempty. Existing8h GitHub monitor readonly; no native dispatch or localautomation. FullPHY/routedchip/finalSTA remainunaccepted."
+    "Authenticate exact topology40815684037 plus original graph40808550817; restore complete4103 graph capsule and project same75 fresh members at original canonical path. Direct topology summary bytes are not archive raw result.json. All six binding inputs exist; do not fabricate missing current root result.json.",
+    "Prepare and qualify new fresh binding/wireRC/seven-MIM adapter with unchanged numerical workers, exact original geometry/absolute path hashes, source-only controls first, exact-source release reservations before native acquisition. Then original10 electrical cases; all gates unchanged.",
+    "Complete source-only fixtures and review disabled codex/mainchip-route-audit-only-recovery c8f446; original route40808800489 jobs remain failure solely empty direct upload while route/freeze succeeded. Restore complete saved off/on capsules with separate old/new contexts and run only five original audits, never reroute.",
+    "Keep original physical, setup/hold, CDR and PLL electrical limits and all failed evidence. Full serial PHY and final timing remain unaccepted. Existing8h monitor stays read-only. Workspace empty; all native files/cloud jobs remain GitHub-only."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -3406,77 +3420,18 @@
     "observed_40812129129": 40812129129,
     "observed_40813858696": 40813858696,
     "observed_40814989046": 40814989046,
-    "observed_40808800489": 40808800489
+    "observed_40808800489": 40808800489,
+    "observed_40815684037": 40815684037,
+    "observed_40818019350": 40818019350,
+    "observed_40818600460": 40818600460
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40812129129,
-      "head_sha": "3eb59678d07917f2e3f64d7cb486d488d758676a",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123244659541,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40813858696,
-      "head_sha": "b35820cd30bf31dc202c3f0331669523b8f2251a",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123250246065,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123250427265,
-          "name": "topology",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40814989046,
-      "head_sha": "62d6619fb7d819c174b57275e25fda3f06ec04b4",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123253858619,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123254015142,
-          "name": "topology",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
       "run": 40815684037,
       "head_sha": "214ec651fd501de7e2f49a38509b184a1fd66f8d",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
@@ -3489,61 +3444,61 @@
         {
           "id": 123256248814,
           "name": "topology",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Actual native width comparison with complete streams"
-          ]
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
         }
       ]
     },
     {
-      "run": 40808800489,
-      "head_sha": "dd2115212b8ccd1176a2e67995d3e54b0a4248dc",
+      "run": 40818019350,
+      "head_sha": "9a0ce19ea6b03dec7f4bc72385bf4c34fc65aaf1",
       "status": "completed",
       "conclusion": "failure",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123233983394,
+          "id": 123263628476,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123234175740,
-          "name": "route-only (on)",
+          "id": 123263767879,
+          "name": "preserve-source-job-log",
           "status": "completed",
           "conclusion": "failure",
           "active_steps": []
-        },
+        }
+      ]
+    },
+    {
+      "run": 40818600460,
+      "head_sha": "055a3ece6676c57081a6ac4cf8a008541bcc75ba",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
         {
-          "id": 123234175763,
-          "name": "route-only (off)",
+          "id": 123265484822,
+          "name": "source-controls",
           "status": "completed",
-          "conclusion": "failure",
+          "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123250210123,
-          "name": "audit-only",
+          "id": 123265625626,
+          "name": "preserve-source-job-log",
           "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 123250210166,
-          "name": "comparison",
-          "status": "completed",
-          "conclusion": "skipped",
+          "conclusion": "success",
           "active_steps": []
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T04:08:39.889981+00:00",
+    "observed_at": "2026-10-29T04:42:05.082248+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -3672,7 +3627,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T04:08:39.889981+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T04:42:05.082248+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -28474,6 +28429,304 @@
       "source": "214ec651fd501de7e2f49a38509b184a1fd66f8d",
       "release_id": 427455233,
       "tag": "cloud-results-40815684037-1-cdr-selector-width-topology"
+    }
+  ],
+  "imported_checkpoint_receipts_v104": [
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.direct-publication-plan.json",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "3fd2b7a2114b83bbcc8a920d601cc442ced72cbf",
+      "bytes": 1751,
+      "sha256": "bc5e02cb770df7356009c58477c0c6b066f005099ccff9bd166bf0c6fcb96638",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.driver.log",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "87457ca9fe4c2c1579793eb3542a8f24e6a1957b",
+      "bytes": 20001,
+      "sha256": "4f56d2bcd602230323bec585abdf547e0d19ebcd2948341cc53b101676bcfc7d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.expected-roots.json",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "57e8c6e0654e18a891e65345f7c06baeb0521de5",
+      "bytes": 82677,
+      "sha256": "86c005f73da4b59fcfb1c41ba92dd87d91d269a405081ed3fad7756ddac2af5f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.jobs.json",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "7e1ca1fa60fcbb5b495827e7887ce7c2e9dd1672",
+      "bytes": 7889,
+      "sha256": "6612d87c16a6754a9219eb7d6b4450407752d824a003d1326bef79f1c056f6ae",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.native-controls.json",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "5d14f48ea68a43478d75fa0ba441553d201cc60a",
+      "bytes": 14429107,
+      "sha256": "d5bd8b5ba642051a742872afa00c87bcffb4a0b4a836ea3b14d9c817fe2f516d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.native-job.log",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "d82d4a614f4bbcda56cbcf9f599aaa6aae829e87",
+      "bytes": 66905,
+      "sha256": "9b8bd4d5a3ccfbf0d8ac69a5cfb2a7245cdaed1537ff5ef60a8a58d7dab6ebb0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.native-synthetic.json",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "8745c5144929c45421457cb111ab6ccb1036ecfe",
+      "bytes": 2623,
+      "sha256": "fb79a14205bab5e0524b12ed5f796dcd7f869860f8ce28225377de0a46d1863d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.parts.json",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "f6cfe69aeecccf9c693b0e96c9ad2e124f9ba1b0",
+      "bytes": 1085,
+      "sha256": "941d6a1abcae4df1404526920509c5d54f000f69841688c0efd47c6301c00319",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.receipt.json",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "e771d59f075b28f2f815d12fc94e3184234cab49",
+      "bytes": 4864,
+      "sha256": "0fdcd4f01a12b1add058f51a624a02e3fe46c34e79bd76e14b1a59fa22a11c67",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.release.json",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "f2660e1709cb895ff79410f295e026430a47b870",
+      "bytes": 25452,
+      "sha256": "d8f62da4aba6b291f04f11be948bf2609c2288fcb6028011f53e8d4715257ab5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.restore.json",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "e8322fee5371d6fedf44a8acfca7784b3a266b2a",
+      "bytes": 2028458,
+      "sha256": "ac8326f3bb897e6469b01f848c257c37ca4d09ee40a6ff9d3c51dec14b92d67e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.run.json",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "d16017f904c3822a51d55fa0f62f0217b7791c50",
+      "bytes": 14388,
+      "sha256": "abf39bbd2c6cf742711bac208499666466291c6fae0cf29901d3be0186f4803f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.runtime.json",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "de17d6011408b49c71a207011df7089842c0e582",
+      "bytes": 3557,
+      "sha256": "9590ebc3526c24f9bc4bfef7b3eebe555a83606f61e38263b9edc9d42ba1f345",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.source-controls-job.log",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "074deb7df653f17577ac0e62d4ffaac64d565834",
+      "bytes": 32249,
+      "sha256": "c0a3918b9b0608a9a7888c43f80d88d30ee7f8bf8358ccea644597a7e66b6e52",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.source-controls-result.json",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "6fa968fd60f820da642ef5428ad2a259f5bbc728",
+      "bytes": 233,
+      "sha256": "b4e949ad0834565008d81b7c8c00e450adcaea0144fc69296a5d0de02cbec075",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.summary.json",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "fdd4ed5444734df21a6bd4b8db034ef01829104f",
+      "bytes": 5057005,
+      "sha256": "2a049c6489bbd317ec44242411be5f158fefa972048d13d025112c0ab0fc313f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-topology-native-terminal-20261029.tag.json",
+      "source": "2338ac5016f37a483dbbcd63cfbe56408e685785",
+      "git_blob": "58dda33a18ec7cd5a0f3896a464bf0bc8e7fb8e6",
+      "bytes": 548,
+      "sha256": "7fa3625fd60944dc122b16a32a79cccf8398e8f4a365202902679ee92c8868db",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-initial-terminal-20261029.jobs.json",
+      "source": "055a3ece6676c57081a6ac4cf8a008541bcc75ba",
+      "git_blob": "27eca573bef583984bb061a5337511f41c701266",
+      "bytes": 5660,
+      "sha256": "771caaa31703eede1d4bdd3d6b3cda3c809d8d1cedefd5c004c0c9c529c40b0b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-initial-terminal-20261029.preservation-job.log",
+      "source": "055a3ece6676c57081a6ac4cf8a008541bcc75ba",
+      "git_blob": "40972edd52a11f8a7586c8fa0f1a3cd8f0bc71b7",
+      "bytes": 9133,
+      "sha256": "e52963b076e919c95af2771bd0262a41d65b4354c299800742b56733ec06414e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-initial-terminal-20261029.receipt.json",
+      "source": "055a3ece6676c57081a6ac4cf8a008541bcc75ba",
+      "git_blob": "3cba250bef91327725b172fc8002b06f32e9ea67",
+      "bytes": 2107,
+      "sha256": "060703473f2c0553d9b09c4176f14f1462c3834da1033b18160d651f8e64398a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-initial-terminal-20261029.recovery-control-context.json",
+      "source": "055a3ece6676c57081a6ac4cf8a008541bcc75ba",
+      "git_blob": "dd462f4a18e3ff053b67ad539490ced6778b0da3",
+      "bytes": 324,
+      "sha256": "68be21ddd0c7e6e2b4eca7ac1a67c5cc04355c48ece183044b86a25830a43867",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-initial-terminal-20261029.recovery-controls.json",
+      "source": "055a3ece6676c57081a6ac4cf8a008541bcc75ba",
+      "git_blob": "f7d53653c7e2e6d026bb2a7a1f434af9c5d82ca6",
+      "bytes": 13427,
+      "sha256": "a71ad4e5b99ff7451d400719934d6145e63db96fcf04b654c650636a8fd472b4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-initial-terminal-20261029.recovery-controls.stderr",
+      "source": "055a3ece6676c57081a6ac4cf8a008541bcc75ba",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-initial-terminal-20261029.recovery-controls.stdout",
+      "source": "055a3ece6676c57081a6ac4cf8a008541bcc75ba",
+      "git_blob": "f7d53653c7e2e6d026bb2a7a1f434af9c5d82ca6",
+      "bytes": 13427,
+      "sha256": "a71ad4e5b99ff7451d400719934d6145e63db96fcf04b654c650636a8fd472b4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-initial-terminal-20261029.run.json",
+      "source": "055a3ece6676c57081a6ac4cf8a008541bcc75ba",
+      "git_blob": "d8e5251c62f3b0d0aa5abeb484335f8fdc1bb9c9",
+      "bytes": 14407,
+      "sha256": "a0bfd69d831cc613e92d0eb1e26461a6ed4035844dafe1b95e8c1e9ef30e598c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-initial-terminal-20261029.source-job.log",
+      "source": "055a3ece6676c57081a6ac4cf8a008541bcc75ba",
+      "git_blob": "d09709d6384fea4dc956f01a052fd6e434eb4725",
+      "bytes": 62683,
+      "sha256": "dec6f3a94a23abcf40730fb19770030cf68e7a40e7326ee817d395771f819a56",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-fixed-terminal-20261029.jobs.json",
+      "source": "d8c8171ba3b24c123516d0a814fd37af79ed6208",
+      "git_blob": "07da0624387e629251271ecbda9c79d229690e5b",
+      "bytes": 5660,
+      "sha256": "70eef7695cdb9e87eca2dd4f35964f8b7f5b0b5f6d9479820b7548e8e2d3e5c3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-fixed-terminal-20261029.preservation-job.log",
+      "source": "d8c8171ba3b24c123516d0a814fd37af79ed6208",
+      "git_blob": "2b238edf703c5875f42aba5ae64a77800be0d061",
+      "bytes": 8934,
+      "sha256": "4dc8a5475167c95d0b09059062bc83fe93bcd60b1a5e1ae8c53e2832cf20e69d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-fixed-terminal-20261029.receipt.json",
+      "source": "d8c8171ba3b24c123516d0a814fd37af79ed6208",
+      "git_blob": "f11d5ad4c3f0231a6da143eea6066521760f9c56",
+      "bytes": 2002,
+      "sha256": "9744e6cb4dfee1380ed0ce324a255ca6d0006bedc1a4e6bb821c89506fd299a0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-fixed-terminal-20261029.recovery-control-context.json",
+      "source": "d8c8171ba3b24c123516d0a814fd37af79ed6208",
+      "git_blob": "74411da7bc5ec8e8a4c9e64a9f0852d64afe0dde",
+      "bytes": 324,
+      "sha256": "45ec15d90d9c6e3bff8f02699a9ff660f087c1e9e38f35b995ac7e25ca73af04",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-fixed-terminal-20261029.recovery-controls.json",
+      "source": "d8c8171ba3b24c123516d0a814fd37af79ed6208",
+      "git_blob": "abba48f496a1473d022e971e8de380326a3bd2da",
+      "bytes": 13427,
+      "sha256": "189c663f7804bb6e1c3d74577c5f697cd8cac9c1a2337683df029f6c9b383e3d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-fixed-terminal-20261029.recovery-controls.stderr",
+      "source": "d8c8171ba3b24c123516d0a814fd37af79ed6208",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-fixed-terminal-20261029.recovery-controls.stdout",
+      "source": "d8c8171ba3b24c123516d0a814fd37af79ed6208",
+      "git_blob": "abba48f496a1473d022e971e8de380326a3bd2da",
+      "bytes": 13427,
+      "sha256": "189c663f7804bb6e1c3d74577c5f697cd8cac9c1a2337683df029f6c9b383e3d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-fixed-terminal-20261029.run.json",
+      "source": "d8c8171ba3b24c123516d0a814fd37af79ed6208",
+      "git_blob": "b145edb44bf8073e5fc43b534ce08d6d97c53bd5",
+      "bytes": 14417,
+      "sha256": "376e7e3c37d62de0963b87b28a79fedc660a5c630b54e51df686a10a93e02c37",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-controls-fixed-terminal-20261029.source-job.log",
+      "source": "d8c8171ba3b24c123516d0a814fd37af79ed6208",
+      "git_blob": "072076ef48fc3982d7227be85c7d284a1da64614",
+      "bytes": 62693,
+      "sha256": "6216605d0b58f6dc100781adad4189139e268a5596ca46139fd3b5cdf91d4e3e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-evidence-source-review-20261029.json",
+      "source": "9a0ce19ea6b03dec7f4bc72385bf4c34fc65aaf1",
+      "git_blob": "d03f8c02e9c5af52aa8b5e6195175c179613ae02",
+      "bytes": 25054,
+      "sha256": "296f404e50b19cdb9b36ef80600ee4d150110507cf7e6fdf85b798363e4c5bf7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-route-recovery-original-complete-jobs-20261029.json",
+      "source": "9a0ce19ea6b03dec7f4bc72385bf4c34fc65aaf1",
+      "git_blob": "9b31c4f94d5aa419c7b0376eb7039df3aa9bea59",
+      "bytes": 14176,
+      "sha256": "5fc8fefdf83148919ed9efb92e10edde8b1e411040890aa22549ca098b384085",
+      "existing_identical": false
     }
   ]
 }

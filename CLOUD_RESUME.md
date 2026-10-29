@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v103
+# Cloud continuation — checkpoint v104
 
-Updated: 2026-10-29T04:08:39.889981+00:00
+Updated: 2026-10-29T04:42:05.082248+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Width-specific source controls passed3positive/12refusal (40812129129), then assembled admission/lifecycle controls passed11 (40813858696). Independent review found two publication preservation gaps; corrected source62d6619 passed13 actualhosted tests including production main_run/pack/publish failure and empty-file fixtures plus unchanged3/12coordinatecontrols (40814989046). Separate exact-source native width comparison40815684037/source214ec651/release427455233 is now active;1085pins,complete4103savedgraph,old605/fresh75. Native result remains pending. Route40808800489 is terminalfailure: both actualroute and fullfreeze succeeded, both direct zero-byte stderr uploads failedHTTP400, audits/comparison skipped. Complete native archives and fallback artifacts retained; failureproofs imported. Continue with audit recovery on the saved routes, not a new routing attempt. Root local project remains empty.
+Actual width topology40815684037 completed successfully: two full comparisons, nine native fault refusals, twelve acquired-identity positives/refusals, 1469 owner-layer checks and eight permitted changes; all original inputs unchanged. Complete terminal17 proof documents preserved. Fresh RC and original electrical cases remain pending. Route recovery evidence source qualification40818600460 passed8 positives/54 refusals and full log preservation; previous408180 source tests passed but its log-preservation job failure is retained. Both original route40808800489 cases completed native route+freeze but failed only on zero-byte direct stderr upload; no reroute is authorized. Disabled audit-only recovery source work continues in cloud. Local workspace/tmp/native processes freshly verified absent.
 
-Active handles at this snapshot: 40815684037 in_progress
+Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -8886,3 +8887,10 @@ Local project/tmp/native processes verified absent. Inventory313 exact cloud han
 Width-specific source controls passed3positive/12refusal (40812129129), then assembled admission/lifecycle controls passed11 (40813858696). Independent review found two publication preservation gaps; corrected source62d6619 passed13 actualhosted tests including production main_run/pack/publish failure and empty-file fixtures plus unchanged3/12coordinatecontrols (40814989046). Separate exact-source native width comparison40815684037/source214ec651/release427455233 is now active;1085pins,complete4103savedgraph,old605/fresh75. Native result remains pending. Route40808800489 is terminalfailure: both actualroute and fullfreeze succeeded, both direct zero-byte stderr uploads failedHTTP400, audits/comparison skipped. Complete native archives and fallback artifacts retained; failureproofs imported. Continue with audit recovery on the saved routes, not a new routing attempt. Root local project remains empty.
 
 Local project/tmp/native processes verified absent. Inventory317 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T04:42:05.082248+00:00 — cloud-only checkpoint v104
+
+Actual width topology40815684037 completed successfully: two full comparisons, nine native fault refusals, twelve acquired-identity positives/refusals, 1469 owner-layer checks and eight permitted changes; all original inputs unchanged. Complete terminal17 proof documents preserved. Fresh RC and original electrical cases remain pending. Route recovery evidence source qualification40818600460 passed8 positives/54 refusals and full log preservation; previous408180 source tests passed but its log-preservation job failure is retained. Both original route40808800489 cases completed native route+freeze but failed only on zero-byte direct stderr upload; no reroute is authorized. Disabled audit-only recovery source work continues in cloud. Local workspace/tmp/native processes freshly verified absent.
+
+Local project/tmp/native processes verified absent. Inventory319 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
