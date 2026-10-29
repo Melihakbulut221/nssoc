@@ -1,0 +1,305 @@
+{
+  "schema": "cdr-width-loaded-worker-result-source-derivation-v1",
+  "status": "DISABLED_SOURCE_CANDIDATE_HOSTED_CONTROLS_AND_EXECUTION_INTEGRATION_PENDING",
+  "base_commit": "aaa00af36f1eba248f5af41e7263dc1048124003",
+  "branch": "codex/cdr-width-loaded-worker",
+  "scope": "Additive loaded worker and result adapter for authenticated current-width RC; no execution authority, workflow, acquisition, simulation or electrical acceptance created by this unit.",
+  "derivations": {
+    "worker": {
+      "baseline": {
+        "path": "scripts/cloud_cdr_v59_tail_loaded.py",
+        "bytes": 29911,
+        "sha256": "05961e992b1e1c2e0a41062e2fab234b1c11f8044bdb4e50da66308c5c02f96a"
+      },
+      "generated": {
+        "path": "scripts/cloud_cdr_width_loaded.py",
+        "bytes": 29902,
+        "sha256": "aa04bf95d55fb3b26945018278e060488183fdbd94997f971cb8562a9fc95b0c"
+      },
+      "exact_reversible_edits": [
+        {
+          "before": "import cdr_v59_tail_loaded_admission as current_inputs",
+          "after": "import cdr_width_loaded_admission as current_inputs"
+        },
+        {
+          "before": "scripts/cdr-v59-tail-loaded-methods.json",
+          "after": "scripts/cdr-width-loaded-methods.json"
+        },
+        {
+          "before": "cloud-cdr-v59-tail-loaded-",
+          "after": "cloud-cdr-width-loaded-"
+        }
+      ]
+    },
+    "result": {
+      "baseline": {
+        "path": "scripts/cdr_v59_tail_loaded_result.py",
+        "bytes": 5643,
+        "sha256": "690eedee6c28ad0c61386ff1696a179e65e47aa9f22234b3bcd84baca75fb624"
+      },
+      "generated": {
+        "path": "scripts/cdr_width_loaded_result.py",
+        "bytes": 6377,
+        "sha256": "468dd60192add0313bd64bef27a0829e6aa0bc15381e9f81b051048681dbb00f"
+      },
+      "exact_reversible_edits": [
+        {
+          "before": "import cdr_v59_tail_loaded_admission as a",
+          "after": "import cdr_width_loaded_admission as a"
+        },
+        {
+          "before": "dict(files=3823,all_hashes_unchanged=True,exact_inventory=True)",
+          "after": "dict(files=6647,all_hashes_unchanged=True,exact_inventory=True)"
+        },
+        {
+          "before": "::current3823",
+          "after": "::current6647"
+        },
+        {
+          "before": "    c=a.descriptor();p=c[\"actual_fresh_RC\"];proof=report[\"composition_source\"]\n    a.require(proof[\"run\"]==p[\"run\"][\"id\"]and proof[\"source_head\"]==p[\"run\"][\"head_sha\"]\n      and proof[\"summary_sha256\"]==p[\"snapshots\"][\"summary.json\"][\"sha256\"]\n      and proof[\"stage_sha256\"]==p[\"snapshots\"][\"MIM-precision-result.json\"][\"sha256\"],\n      \"Loaded fresh composition source changed\")\n    a.require(proof[\"original_physical_run\"]==40369539200\n      and proof[\"original_physical_status\"]==\"FAIL_ADDITIVE_TAIL_WIRE_PHYSICAL\"\n      and proof[\"original_eight_electrical_rejections_and_two_fault_detections_preserved\"]is True,\n      \"Original physical or electrical failure lost\")\n    a.require(all(proof[k]is False for k in (\"geometry_regenerated\",\"extraction_rerun\",\"simulation_preaccepted\")),\n      \"Loaded preparation scope changed\")\n    archive=proof[\"full_archive\"]\n    a.require(archive[\"regular_members\"]==3823 and archive[\"full_inventory_verified\"]is True\n      and {name:row[\"sha256\"]for name,row in archive[\"complete_member_hashes\"].items()}==p[\"expected_files\"],\n      \"Loaded complete archive proof changed\")\n    plane=report[\"native_plane_source\"]\n    a.require(plane=={\n      \"current_mim_source\":p[\"snapshots\"][\"MIM-precision-result.json\"][\"sha256\"],\n      \"native_planes_sha256\":p[\"expected_files\"][\"mim/precise/source/native-planes.json\"],\n      \"fresh_layout_sha256\":p[\"expected_files\"][\"mim/precise/source/parent/layout/result.json\"],\n      \"native_binding_sha256\":p[\"expected_files\"][\"binding/binding.json\"]},\n      \"Loaded current plane/model binding changed\")\n    external={name:\"0\"if name in (\"avss\",\"sub\",\"wire_cref\")else name for name in p[\"interface\"]}\n    a.require(report[\"binding\"][\"interface\"]==external and report[\"binding\"][\"ports\"]==[external[name]for name in p[\"interface\"]],\n      \"Loaded current ordered interface changed\")\n",
+          "after": "    d=a.source_guard();full=d[\"complete-native-restore-map.json\"]\n    remote=a.validate_live(d[\"run.json\"],d[\"jobs.json\"],d[\"release.json\"],d[\"tag-ref.json\"],d)\n    proof=report[\"composition_source\"]\n    expected={\"run\":a.RUN,\"source_head\":a.HEAD,\"summary_sha256\":a.SUMMARY_SHA,\n      \"raw_result_sha256\":a.RAW_SHA,\"stage_sha256\":a.REQUIRED[\"direct/MIM-precision-result.json\"][\"sha256\"],\n      \"original_graph_run\":40808550817,\"original_width_run\":40815684037,\n      \"complete_graph_members\":4103,\"current_members\":75,\n      \"historical_failed_geometry_and_electrical_reports_retained\":True,\n      \"geometry_regenerated\":False,\"extraction_rerun\":False,\"simulation_preaccepted\":False,\n      \"reservation\":remote[\"reservation\"],\"live_producer\":remote}\n    a.exact({k:v for k,v in proof.items()if k!=\"full_archive\"},expected,\n      \"Loaded current width/graph/RC provenance changed\")\n    # The raw result is a capsule member; the separately authenticated direct\n    # summary adds publication-driver.log and cannot substitute for that member.\n    a.require(a.RAW_SHA!=a.SUMMARY_SHA and full[\"result.json\"]==a.RAW_SHA\n      and full[a.MODEL_MEMBER]==a.MODEL_SHA and full[a.PLANES_MEMBER]==a.PLANES_SHA,\n      \"Loaded exact raw result/model/planes changed\")\n    archive=proof[\"full_archive\"]\n    a.require(type(archive[\"regular_members\"])is int and archive[\"regular_members\"]==6647\n      and archive[\"full_inventory_verified\"]is True,\"Loaded complete archive proof changed\")\n    a.exact({name:row[\"sha256\"]for name,row in archive[\"complete_member_hashes\"].items()},full,\n      \"Loaded complete archive proof changed\")\n    plane=report[\"native_plane_source\"]\n    a.exact(plane,{\n      \"current_mim_source\":a.REQUIRED[\"direct/MIM-precision-result.json\"][\"sha256\"],\n      \"native_planes_sha256\":a.PLANES_SHA,\n      \"fresh_layout_sha256\":full[\"mim/precise/source/parent/layout/result.json\"],\n      \"native_binding_sha256\":a.REQUIRED[\"direct/binding.json\"][\"sha256\"]},\n      \"Loaded current plane/model binding changed\")\n    interface=d[\"direct/composition.json\"][\"interface\"]\n    external={name:\"0\"if name in (\"avss\",\"sub\",\"wire_cref\")else name for name in interface}\n    a.require(report[\"binding\"][\"interface\"]==external and report[\"binding\"][\"ports\"]==[external[name]for name in interface],\n      \"Loaded current ordered interface changed\")\n"
+        },
+        {
+          "before": "and prepared[\"composition_source\"][\"stage_sha256\"]==proof[\"stage_sha256\"]",
+          "after": "and prepared[\"composition_source\"][\"stage_sha256\"]==proof[\"stage_sha256\"]\n          and prepared[\"composition_source\"][\"raw_result_sha256\"]==proof[\"raw_result_sha256\"]"
+        },
+        {
+          "before": "\"complete_current_members\":3823",
+          "after": "\"complete_current_members\":6647"
+        },
+        {
+          "before": "\"fresh_RC_run\":p[\"run\"][\"id\"]",
+          "after": "\"fresh_RC_run\":a.RUN,\"fresh_RC_source\":a.HEAD,\"raw_result_sha256\":a.RAW_SHA,\n      \"publication_summary_sha256\":a.SUMMARY_SHA,\"current_width_run\":40815684037,\"current_graph_run\":40808550817"
+        }
+      ]
+    }
+  },
+  "unchanged_input_admission": {
+    "path": "scripts/cdr_width_loaded_admission.py",
+    "bytes": 26301,
+    "sha256": "45f5beecc013eeeb839214888b427745910b04bed3bb9d111c3ea5d56c32eb63"
+  },
+  "unchanged_input_method": {
+    "path": "scripts/cdr-width-loaded-admission-methods.json",
+    "bytes": 186276,
+    "sha256": "1ae0bc1d2126d6310bbe6f27d7f424b8f8ac51989d9abcb5a99f5dbc968063b4",
+    "protected_entries": 1244,
+    "source_controls_authorized": true,
+    "preparation_authorized": false,
+    "simulation_authorized": false,
+    "controller_readiness": false
+  },
+  "unchanged_terminal_helper": {
+    "path": "scripts/cdr_v59_tail_loaded_terminal.py",
+    "bytes": 5526,
+    "sha256": "b98959e391a614f10969a2430f89d9ee6379e7e0f4a968846ae420c89a210e90"
+  },
+  "frozen_numerical_block_coordinate_source": {
+    "method": "One-based inclusive line coordinates in this exact baseline; each extracted byte block must occur exactly once in both the original v59 loaded source and current-tail derivative.",
+    "path": "scripts/cloud_cdr500_v58_loaded.py",
+    "sha256": "12fffebb23c7478d0994c00bc0e6fc53e4842b09bfca496db59316c923e86ab2"
+  },
+  "unchanged_numerical_blocks": [
+    {
+      "bytes": 7507,
+      "end_line": 127,
+      "name": "native_binding",
+      "sha256": "a7067fdb80569bbabc2d70193e2bf4e28865a0647a1c0789ca0995aeb37deafb",
+      "start_line": 31
+    },
+    {
+      "bytes": 3639,
+      "end_line": 180,
+      "name": "binding_faults",
+      "sha256": "20f3e8acdf034b458eb8c9bc7e3dde43af0a0f5cdf0c863d47f27fe66e4c0222",
+      "start_line": 128
+    },
+    {
+      "bytes": 424,
+      "end_line": 191,
+      "name": "case_corner_oracles",
+      "sha256": "7bb0b9fbd02029addf8024787d91591eb9a4f73869134cffe806828c3e5da6ab",
+      "start_line": 188
+    },
+    {
+      "bytes": 4136,
+      "end_line": 260,
+      "name": "model_runtime_and_bench",
+      "sha256": "37df0c59a36aa6fb9f465ff9f543dfdf8fd428fcc4ae9ee14505298fdc53dd3b",
+      "start_line": 225
+    },
+    {
+      "bytes": 1271,
+      "end_line": 275,
+      "name": "OFF_OP_stream_admission",
+      "sha256": "1a05d71d6f12258dc23fa7437f44574674b4d616df9d4cb18c0132961a1f9717",
+      "start_line": 267
+    },
+    {
+      "bytes": 7156,
+      "end_line": 337,
+      "name": "frozen_measurement",
+      "sha256": "25d8ab3689494cd55f7173b56d25914bb5b41f8bc3fa6f7d38ac20cf430bebfb",
+      "start_line": 276
+    }
+  ],
+  "numerical_preservation": {
+    "exact_blocks": 6,
+    "exact_total_bytes": 24133,
+    "only_changed_worker_function": "main",
+    "bind_native_and_binding_controls_byte_exact": true,
+    "UI_seconds": 1.25e-10,
+    "active_start_seconds": 2e-09,
+    "sample_step_seconds": 3.125e-13,
+    "sampler_settling_seconds": 3.75e-11,
+    "comparator_settling_seconds": 7.5e-11,
+    "minimum_signed_sample_margin_V": 0.1,
+    "minimum_HBT_active_VCE_V": 0.4,
+    "maximum_HBT_alltime_abs_VCE_V": 1.6,
+    "unchanged_measurement_scope": "Original native-grid timing, OFF/OP/stream acquisition, phase/current signs, all 124 HBT/50 MOS/7 MIM and 16 stage-tail gates, ten cases and intentional-fault predicate remain byte-exact.",
+    "no_measured_parent_rephasing_or_threshold_relaxation": true,
+    "counterexample": "62.5 ps is a distinct PLL first-fall gate; it is not the CDR sampler or comparator threshold."
+  },
+  "original_result_predicates": {
+    "source": {
+      "path": "scripts/cloud_cdr_v59_loaded_stage.py",
+      "bytes": 9724,
+      "sha256": "8a73b595e6e84c0e92020edcc62d618c07463b0819f20096f2d6122763e9107b"
+    },
+    "function": "validate_result",
+    "only_function_substitution": {
+      "before": "dict(files=5549,all_hashes_unchanged=True)",
+      "after": "dict(files=6647,all_hashes_unchanged=True,exact_inventory=True)"
+    },
+    "original_function_sha256": "0fb77fb9a943bc428c7813ba64f6817edab2fc711a5cd3beafba4d46b8f1d731",
+    "predicate_meaning": "Normal cases retain original devices/data/VI pass conjunction. Only original clock_stopped and vi_bias_off fault cases use actual_fault_detected; this does not confer CDR/PHY acceptance.",
+    "new_validator_compiled_filename_suffix": "::current6647"
+  },
+  "current_producer": {
+    "run": 40830441311,
+    "source": "7ddf83d17a3b3fe0efb1eb31594b7d4d3e831b8f",
+    "release_id": 427537846,
+    "tag": "cloud-results-40830441311-1-cdr-selector-width-fresh-rc",
+    "receipt": {
+      "path": "docs/evidence/cdr-selector-width-fresh-rc-native-terminal-20261029/receipt.json",
+      "sha256": "a551d56a0b1c8cad68b6305dab262cf02eddbd5fb8df5bcf96477d504568ef5c"
+    },
+    "complete_proof_files": 54,
+    "complete_capsule_members": 6647,
+    "raw_result_member": "result.json",
+    "raw_result_sha256": "9d128f021278fc2a3fa0be68db8f8c0b73824fa24939341802ba3ba6bfe1a820",
+    "direct_summary_sha256": "c5695d1cde81f3aac997f461ba6e663eed7e5dfb827600d84e1ec768d84f6a23",
+    "raw_and_summary_difference": "Direct summary preserves original raw report semantics but adds publication-driver.log to its outputs; raw result SHA is the archive member. Both are separately authenticated, never interchangeable.",
+    "counts": {
+      "devices": 500,
+      "R": 24356,
+      "C": 15566
+    },
+    "model_member": "mim/composition/pd500-mim-wire.spice",
+    "model_sha256": "47124290075ec32734494f3d9a6307c9c9e930aafd7fe5d27a66b9c6f1e909ee",
+    "planes_member": "mim/precise/source/native-planes.json",
+    "planes_sha256": "bb10a385e76e014c17d229919728e16085f06396becdf47f15ee53bb4c6b3dfe",
+    "graph_run": 40808550817,
+    "width_run": 40815684037,
+    "complete_graph_members": 4103,
+    "current_geometry_members": 75,
+    "result_validation": "Calls unchanged input source_guard and validate_live on authenticated saved producer metadata, then requires exact loaded_view provenance, full 6647 map, current model/plane hashes, exact plane/layout/binding joins and ordered 26-port interface.",
+    "no_fresh_runtime_network_access_from_result_validator": true,
+    "historical_failure_meaning": "Historical failed physical/electrical reports remain retained evidence; old FAIL_ADDITIVE_TAIL_WIRE_PHYSICAL status is not relabelled as a current success or required as current producer identity."
+  },
+  "six_tuple_contract": [
+    "MIM-precision-result",
+    "composition_source_proof",
+    "model_Path",
+    "composition_contract",
+    "native_planes",
+    "native_plane_source"
+  ],
+  "terminal_finalizer_compatibility": {
+    "unchanged_call": "loaded_terminal.finalize(out,r,save,current_inputs)",
+    "required_admission_apis": [
+      "methods",
+      "verify_restored",
+      "require",
+      "sha",
+      "write"
+    ],
+    "compatible_verify_restored_result": {
+      "files": 6647,
+      "all_hashes_unchanged": true,
+      "exact_inventory": true
+    },
+    "retained_features": [
+      "independent source/input guards",
+      "full output inventory",
+      "retained atomic result fragments",
+      "primary exception preservation",
+      "full unsaved report fallback"
+    ],
+    "terminal_status_names_retained": "FAIL_TAIL_LOADED_TERMINAL_INTEGRITY and FAIL_TAIL_LOADED_TERMINAL_SAVE are existing helper labels, not authority or producer identity."
+  },
+  "authored_source_controls": {
+    "source": {
+      "path": "scripts/check_cdr_width_loaded_worker.py",
+      "bytes": 15935,
+      "sha256": "b72454cb8c16e418fd92d38ce312bff8d2dfd31326e3aed7a4cf98902d4f55f9"
+    },
+    "cli": "python -B scripts/check_cdr_width_loaded_worker.py --output width-loaded-worker-controls.json",
+    "pass_status": "PASS_WIDTH_LOADED_WORKER_RESULT_SOURCE_CONTROLS",
+    "derivation": {
+      "worker_literal_edits": 3,
+      "result_literal_edits": 7,
+      "numerical_blocks": 6,
+      "numerical_bytes": 24133,
+      "terminal_helper_unchanged": true
+    },
+    "historical": {
+      "actual_original_reports": 10,
+      "original_rejections": 8,
+      "original_fault_detections": 2,
+      "fixture_delta": "Only inventory projection for the original predicate; code zero deliberately reaches the original status predicate; measured values unchanged."
+    },
+    "current": {
+      "positive": 2,
+      "refusal": 32,
+      "complete_metadata_members": 6647,
+      "explicit_synthetic_seam": "Actual loaded_view pure six-tuple constructor and actual result validator receive authentic current full JSON maps and historical clock-stopped measurements with synthetic current terminal/provenance/inventory metadata. No native archive, model, plane payload or current waveform is acquired; no actual current electrical PASS is claimed.",
+      "source_guard_reuse": "Authenticates all required source/report bytes once, then repeated mutation cases reuse that exact in-memory docs object. The production validator and original predicates execute unchanged."
+    },
+    "scope_flags": {
+      "source_controls_only": true,
+      "numerical_worker_imported": false,
+      "numerical_worker_executed": false,
+      "native_acquisition_performed": false,
+      "simulator_executed": false,
+      "electrical_accepted": false,
+      "full_phy_accepted": false
+    },
+    "runtime": "Use the qualified input-admission hosted dependency environment before importing its transitive helpers; this checker never imports cloud_cdr_width_loaded or NumPy directly.",
+    "executed": false
+  },
+  "integration_requirements": [
+    "Root must author and protect scripts/cdr-width-loaded-methods.json, exact current-source controls, stage/result/worker source projection and required historical method files before execution.",
+    "Unchanged cdr_width_loaded_admission.authorize currently requires its admission branch and disabled preparation/simulation/controller flags. This unit does not bypass that gate; root must supply a separately reviewed explicit execution authority/restore seam.",
+    "Root owns actual hosted source qualification, preparation then original ten-case controller, resource supervision, immutable release reservation, complete publication and live source/run context.",
+    "Any future admission adapter must retain restore six-tuple and all terminal-helper APIs, complete 6647 input preservation and exact current 500/R24356/C15566/source/planes/raw-summary joins.",
+    "Synthetic current validator positives qualify control flow only; actual fresh preparation and all original electrical cases remain unexecuted."
+  ],
+  "validation_performed": {
+    "source_text_AST_only": true,
+    "exact_forward_and_reverse_source_derivations": true,
+    "six_original_byte_blocks_rehashed": true,
+    "authored_modules_imported": false,
+    "authored_tests_executed": false,
+    "local_files_created": false,
+    "native_payload_acquired": false,
+    "workflow_dispatched": false
+  },
+  "acceptance": {
+    "native_authorized": false,
+    "simulation_executed": false,
+    "electrical_accepted": false,
+    "cdr_accepted": false,
+    "full_phy_accepted": false
+  }
+}
