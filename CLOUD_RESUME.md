@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v128
+# Cloud continuation — checkpoint v129
 
-Updated: 2026-10-29T19:32:50.579280+00:00
+Updated: 2026-10-29T20:14:24.288188+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint128: current RC source controls40938778028 passed14positive/80refusal/5lifecycle after independent numeric-parser correction. Actual current RC readback40939598713 passed; all34full proof files/3,376,095bytes are permanent6bcdb6ff. The complete6647member archive and actual MIM-aware500device/24356R/15566C model are bound; both102-node target conductor networks and literal technology coefficients are retained, without asserting physical edge attribution or electrical recovery. Physical review36621d58 documents six blocked local detours against authentic677record SRAM/clock material. The next bounded readback extends only the southern window to1773500 around the real lower net459 tap and records actual track definitions; its independent source is being authored, no native reroute/readback has yet been dispatched. All current runs are terminal, original gates unchanged, local project paths empty.
+Cloud-only work is active. Southern neighborhood controls40944146144 passed the original3/17/13 and added9/18 controls; exact-current-ODB readback40944948451 runs under fresh release428336131 to observe the lower net459 tap and declared tracks. Actual DC screen40945858067 succeeded on GitHub: two complete102-node/8-contact/145-resistor networks,7 basis and28 pair injections each, full currents/power and conservation checks. All22 output/log files (14,600,976 B) are preserved at af861a0d40694b6b4737855e7fc3f5c6c34ac43f. These are DC-only observations and do not establish transient recovery or a physical repair. All original physical/electrical gates remain unchanged; no local authored computation or native payloads.
 
-Active handles at this snapshot: No native run remains active in this snapshot.
+Active handles at this snapshot: 40944948451 in_progress
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9086,3 +9087,10 @@ Local project/tmp/native processes verified absent. Inventory358 exact cloud han
 Cloud-only checkpoint128: current RC source controls40938778028 passed14positive/80refusal/5lifecycle after independent numeric-parser correction. Actual current RC readback40939598713 passed; all34full proof files/3,376,095bytes are permanent6bcdb6ff. The complete6647member archive and actual MIM-aware500device/24356R/15566C model are bound; both102-node target conductor networks and literal technology coefficients are retained, without asserting physical edge attribution or electrical recovery. Physical review36621d58 documents six blocked local detours against authentic677record SRAM/clock material. The next bounded readback extends only the southern window to1773500 around the real lower net459 tap and records actual track definitions; its independent source is being authored, no native reroute/readback has yet been dispatched. All current runs are terminal, original gates unchanged, local project paths empty.
 
 Local project/tmp/native processes verified absent. Inventory360 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T20:14:24.288188+00:00 — cloud-only checkpoint v129
+
+Cloud-only work is active. Southern neighborhood controls40944146144 passed the original3/17/13 and added9/18 controls; exact-current-ODB readback40944948451 runs under fresh release428336131 to observe the lower net459 tap and declared tracks. Actual DC screen40945858067 succeeded on GitHub: two complete102-node/8-contact/145-resistor networks,7 basis and28 pair injections each, full currents/power and conservation checks. All22 output/log files (14,600,976 B) are preserved at af861a0d40694b6b4737855e7fc3f5c6c34ac43f. These are DC-only observations and do not establish transient recovery or a physical repair. All original physical/electrical gates remain unchanged; no local authored computation or native payloads.
+
+Local project/tmp/native processes verified absent. Inventory363 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T19:32:50.579280+00:00",
+  "updated_at": "2026-10-29T20:14:24.288188+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "b5888bd49784272909bc773c304fb1d98302521b",
+  "root_source_before_receipt": "87a9640269098f6d3d83524d767dc35243b7a242",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 128,
+    "inventory_version": 129,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -40,7 +40,40 @@
       "main_verification_run": 40847665085
     }
   },
-  "active_runs": {},
+  "active_runs": {
+    "southern_neighborhood_native_readback": {
+      "run": 40944948451,
+      "head_sha": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123697789958,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123698028416,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123698105286,
+          "name": "readback",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Read actual current ODB and embedded technology on hosted runner"
+          ]
+        }
+      ]
+    }
+  },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -4084,16 +4117,81 @@
         "source_being_authored": true,
         "dispatched": false
       }
-    }
+    },
+    "mainchip_southern_neighborhood": {
+      "source": "7b8ce6bd1f70e82852c766f55b760853b6789f87",
+      "workflow_source": "dd9da010cfb908fa678e597221eeca17b240f701",
+      "controls_run": 40944146144,
+      "controls_proof": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "controls_counts": [
+        3,
+        17,
+        13
+      ],
+      "additional_track_controls": [
+        9,
+        18
+      ],
+      "native_run": 40944948451,
+      "native_source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "release_id": 428336131,
+      "tag": "cloud-results-40944948451-1-mainchip-southern-neighborhood",
+      "window_dbu": [
+        937420,
+        1773500,
+        957620,
+        1800560
+      ],
+      "original_input_and_engine_unchanged": true,
+      "read_only": true,
+      "pending": "Collect actual southern geometry and declared track binding output, then inspect a net459-only detour. No candidate currently accepted.",
+      "collector_path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-southern-neighborhood-terminal-40944948451.py",
+      "physical_acceptance": false,
+      "timing_accepted": false,
+      "full_phy_accepted": false
+    },
+    "cdr_current_dc_contact_screen": {
+      "source": "9517d20eeb3c0159b44457371adf47237469b2b3",
+      "workflow_source": "8dbc4bab41994e03bebf6fca40d13228c6494ada",
+      "run": 40945858067,
+      "proof": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "terminal": "success",
+      "source_control_counts": [
+        10,
+        52,
+        5
+      ],
+      "complete_files": 22,
+      "complete_bytes": 14600976,
+      "receipt_sha256": "283dd7e308d6cbe8e29eebf6fe2c034dc7841d569dda874267552e2e91f2b9af",
+      "networks": [
+        "28",
+        "124"
+      ],
+      "per_network": {
+        "nodes": 102,
+        "contacts": 8,
+        "resistors": 145,
+        "capacitors": 114,
+        "basis_responses": 7,
+        "pair_responses": 28
+      },
+      "numerical_method": "80-digit Decimal LDL transpose; full node KCL, contact reciprocity, edge power and pair impedance checks passed on GitHub.",
+      "scope": "Passive DC resistor network only; capacitors retained in evidence and opened only for DC. No original transient recovery, real transistor currents, geometric bridge attribution or electrical/PHY acceptance.",
+      "native_acquisition": false,
+      "local_authored_execution": false,
+      "physical_acceptance": false,
+      "electrical_acceptance": false,
+      "full_phy_accepted": false
+    },
+    "latest_workflow_registry_main": "f34aef6bd52e720ddab6a76feac3382d258d8b5d"
   },
   "next_actions": [
-    "Use6bcdb6ff complete current RC readback proof; do not rerun40939598713. Every6647 archive member was verified on GitHub and15 exact paths selected. Actual MIM-aware500-device network has24356R/15566C/113components/978anchors. Components17/61 each102nodes and8contacts; full incidence/native primitive records and literal technology coefficients are available. Physical edge attribution, dynamic currents/KCL and dominant resistance remain unproved.",
-    "Current RC source c630c9c3 fixed a lost numeric regex before any hosted execution and bound the authentic f8132c84 native parser plus scale/style/name checks. Actual source controls40938778028 and repeated same-source controls in40939598713 passed14positive/80refusal/5lifecycle. Do not restore old57adea47 reader or treat test passes as PHY acceptance.",
-    "Physical candidate review36621d58 rejected six simple local paths using actual SRAM obstruction/power pin and clock witnesses. No geometry changed. Preserve repairednet36993, all other current material and original1691fixed/clock routes; do not silently expand mutable ownership.",
-    "Root/pll_handoff is authoring codex/mainchip-southern-neighborhood-readback fromf9d2b1b1: same actual currentODB47d657f4/sameELF/runtime/allnet/alllayercensus, only window lower edge to1773500 plus proven track-grid readback API. Review exact source/schema, run hosted synthetic controls first, preserve full terminal proof, then one exact-source fresh-reservation native readback. No native dispatch yet.",
-    "The specific next physical target is existing net459 tap(949920,1776600), currently outside recorded foreign-neighborhood loweredge1779520, and potential TopMetal1 trunkx944420/uppervia(944420,1790880). These coordinates are hypotheses, not admitted geometry. Use the additional southern census and actual track patterns before candidate selection, then paired DEF imports/serialized native audit/full original-classDRC/original20/4/8/8ns+5percent timing.",
-    "All eight normal/static CDR cases remain failed; preparation and two fault cases alone passed. Keep CDR37.5ps/comparator75ps/UI125ps/100mV, activeHBTVCE>=.4V/maxabsVCE<=1.6V/maxabsVBE<=1V/emittercurrent<3mA and originalclockgates unchanged. Do not lift global commonmode because gain60 has little remaining VCE margin.",
-    "All authored execution/tests/CAD/native acquisition and outputs stay on GitHub. Local project/tmp/native processes are absent; original review attachment paths are absent and were not modified in this continuation. Eight-hour GitHub monitor remains read-only. Full serialPHY, mainchip route, finalsetup/hold and production remain unaccepted."
+    "Collect southern native run40944948451 with the saved exact-source collector; retain complete derived JSON/LEF/raw logs and verify full-source and census identity against run40930102746.",
+    "Use actual southern all-layer geometry plus observed track API shapes to assess a net459-only alternative. Preserve original clocks/fixed geometry and net36993; do not waive the last M5 short.",
+    "Use complete DC matrices from run40945858067 to guide target network investigation; obtain authoritative geometry-to-resistor attribution before selecting bridge/via repair. Preserve original transient and HBT gates.",
+    "All authored computation, CAD, native inputs and outputs remain on GitHub. Keep the local project empty; existing eight-hour monitor is read-only and does not start native work.",
+    "Full serial Gen3 x4 PHY, routed serial mainchip and final setup/hold remain unaccepted."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -4434,33 +4532,35 @@
     "observed_40930102746": 40930102746,
     "observed_40906725656": 40906725656,
     "observed_40938778028": 40938778028,
-    "observed_40939598713": 40939598713
+    "observed_40939598713": 40939598713,
+    "observed_40944146144": 40944146144,
+    "observed_40945858067": 40945858067
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40938778028,
-      "head_sha": "1a6744d75c585546a864d484c58f347a11d85810",
+      "run": 40944146144,
+      "head_sha": "dd9da010cfb908fa678e597221eeca17b240f701",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123676290537,
+          "id": 123694952181,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123676672928,
+          "id": 123695227394,
           "name": "preserve-job-log",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123676757260,
+          "id": 123695314549,
           "name": "readback",
           "status": "completed",
           "conclusion": "skipped",
@@ -4469,29 +4569,61 @@
       ]
     },
     {
-      "run": 40939598713,
-      "head_sha": "365baa3cd675c89f9c745b34f9e1d9fda1acf47d",
-      "status": "completed",
-      "conclusion": "success",
+      "run": 40944948451,
+      "head_sha": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "status": "in_progress",
+      "conclusion": null,
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123679170414,
+          "id": 123697789958,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123679448634,
+          "id": 123698028416,
           "name": "preserve-job-log",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123679530224,
+          "id": 123698105286,
           "name": "readback",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Read actual current ODB and embedded technology on hosted runner"
+          ]
+        }
+      ]
+    },
+    {
+      "run": 40945858067,
+      "head_sha": "8dbc4bab41994e03bebf6fca40d13228c6494ada",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123700910294,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123701326705,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123701400065,
+          "name": "screen",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
@@ -4500,7 +4632,7 @@
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T19:32:50.579280+00:00",
+    "observed_at": "2026-10-29T20:14:24.288188+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -4640,7 +4772,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T19:32:50.579280+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T20:14:24.288188+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -44166,6 +44298,322 @@
       "tag": "cloud-results-40939598713-1-cdr-current-rc-contact-readback",
       "reserved_before_native_acquisition": true,
       "terminal_proof": "6bcdb6ffc0caf5b4dfdac44f02bde208e804452d"
+    }
+  ],
+  "imported_checkpoint_receipts_v129": [
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-source-review-20261029.json",
+      "source": "7b8ce6bd1f70e82852c766f55b760853b6789f87",
+      "git_blob": "d46d90b6167df5a35a7aec9043334d53f2765ff5",
+      "bytes": 12959,
+      "sha256": "cd291eeb251f647b9bb75fe289b3839121ff4e50fc359da23ab6ed18722bca87",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-controls-terminal-40944146144/artifacts.json",
+      "source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "git_blob": "cd896cc7587e78d07eeb7160b765d3a838ec8ce8",
+      "bytes": 1886,
+      "sha256": "209da40249de5c34e49e01916255b8446f323d1562b328506d90e0906f29f7a1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-controls-terminal-40944146144/controls/context.json",
+      "source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "git_blob": "574a44523d4a170ded99486867d971f876e9d294",
+      "bytes": 1644,
+      "sha256": "09e61bb269b75c560bae90ce33dfde26fae53284f70b1e755c17a28319a5c9e5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-controls-terminal-40944146144/controls/controls.json",
+      "source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "git_blob": "2ccb9b4be7a8256c2795c17331a7a2e7511adccd",
+      "bytes": 3624,
+      "sha256": "c9f3e79febb160dce9526ee833474d6b69cb78d55a33a25f80289025f3840512",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-controls-terminal-40944146144/controls/controls.stderr",
+      "source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-controls-terminal-40944146144/controls/controls.stdout",
+      "source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "git_blob": "c4cfe08da4ae610d410eb6637ccbc154dd782376",
+      "bytes": 3134,
+      "sha256": "944812eca979d1e43db64ba19af1104c112db4abf8e040c2c1290442456fedc0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-controls-terminal-40944146144/controls/index.json",
+      "source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "git_blob": "cc8ea03ad18c7d7ec7d27f1bd424183cf05705ce",
+      "bytes": 778,
+      "sha256": "19a32e28b39efe2a633c1b3eb92bb37ec1f70a67e2d395596da184a8aa54e073",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-controls-terminal-40944146144/jobs.json",
+      "source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "git_blob": "464b605aa0737a37fb8c348ab8f7b428dbcb11c8",
+      "bytes": 7666,
+      "sha256": "a58c6fa527e757ee76c2141893c3ba5d83e8f9778bc44f046c135dd7a985a6c4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-controls-terminal-40944146144/jobs/123694952181.json",
+      "source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "git_blob": "3e1586a9a3246980a43bdc66693109c79384516e",
+      "bytes": 3785,
+      "sha256": "f70fe602a7bd05f33dde3e6dc365af622dfa0641a3495987b7d12b2b86b58906",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-controls-terminal-40944146144/jobs/123694952181.log",
+      "source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "git_blob": "f15664a234cd69b04f1a7e4999298963dd305c03",
+      "bytes": 42466,
+      "sha256": "43574e5708b482249312b5334c21c3f58e9dbc09a125f08318b9015a2b85c7ad",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-controls-terminal-40944146144/jobs/123695227394.json",
+      "source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "git_blob": "7c6566ba9d37f4243fcb0594c97e41c51bd1bdd9",
+      "bytes": 1985,
+      "sha256": "28fc2628535cc6e226aba8e7cfa99f3d6956aa726300721d8dc1d34c9e1ddd7d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-controls-terminal-40944146144/jobs/123695227394.log",
+      "source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "git_blob": "130cca72659bf5dd673de2ee649a11ce96b31446",
+      "bytes": 7549,
+      "sha256": "84c3e7d53d987857eae39f3099f6264f25afe980bc86b06dab70026a72afff89",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-controls-terminal-40944146144/jobs/123695314549.json",
+      "source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "git_blob": "1f2d8d49f8c41ddaebb13960577e37a41ff3e9b2",
+      "bytes": 1042,
+      "sha256": "c35ea0b36fda041f0c446b3e02daf94e149b6354c8c48b5c86bcb09f381d664a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-controls-terminal-40944146144/receipt.json",
+      "source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "git_blob": "2e0691ef673c6c234aa757295f10fd794b99e893",
+      "bytes": 7106,
+      "sha256": "4d46866d59eff9811b3484d871c73681203a02739de7147620d86271979b4d1a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-southern-neighborhood-controls-terminal-40944146144/run.json",
+      "source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "git_blob": "445efbbba76e4afd64968d72c7163dfe888a8f32",
+      "bytes": 14442,
+      "sha256": "c19223e4db349aeb6f0e9e53890b9eac9138ea91184c15b1eceab15a5cf2bf8f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-source-review-20261029.json",
+      "source": "9517d20eeb3c0159b44457371adf47237469b2b3",
+      "git_blob": "420bcf2b31891da83b37b0a5b4ca3c6778cc7389",
+      "bytes": 9141,
+      "sha256": "b8f0127f2ea7fab90ae2e4257deaa73be4f5446d8b16a920f5f817c27a44ad80",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/artifacts.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "c0b18a1d76b131e6c542e3e4675955b804fb0cb7",
+      "bytes": 2741,
+      "sha256": "c227db20ada24f582dbe98b71a129fed24ea749f6c16b1ae315ad1f8f4166699",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/controls/context.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "2694f564f6beccb893da264cdca822c04d1414ff",
+      "bytes": 907,
+      "sha256": "1a6ffc6ab195f92d8c9feaee743be2554a4f3647e4043d577ee3da3c36d1713b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/controls/controls.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "9213ed3257aa39250ec6f91792acda5cda9cd5c1",
+      "bytes": 8427,
+      "sha256": "1fe49a8fdf57742cbb3a207e3a95837e7590ab81a11c540d83911f27c83eb10f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/controls/controls.stderr",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/controls/controls.stdout",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "cad3dd719fd800ecbd97eaf7fa063d6a7c9e5707",
+      "bytes": 6815,
+      "sha256": "04dc96a9a3495cc621687cad8d61e0483dc79d1f8fbc3150858dc3236f4b5296",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/controls/index.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "c203e4cbf8112ba7fbf97c16e17527c32f7ab035",
+      "bytes": 777,
+      "sha256": "b4b9950f68bcf2b93f0881b553381624e4f46beae50e485c3a7b3c2aa8edc3a8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/jobs.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "b0a6125567816358d37c31d053017a7b85c03b58",
+      "bytes": 10676,
+      "sha256": "61c9857678c204a8b6841415026b65e2a849797065edbfbaa47fbd636d0aff9b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/jobs/123700910294.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "cc5a8edf52f76799e8abd3aead3b726eacd14080",
+      "bytes": 3728,
+      "sha256": "20766c7506c766083a792b84ee8fd321e44e7c04c016d6b1a6ac6ac711d2c292",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/jobs/123700910294.log",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "2b8e15e9ba24e6e27333d314bc9ab79436137d1b",
+      "bytes": 52975,
+      "sha256": "f13fb27fec6e03fd2177d3996c3181a95187079c018058f4dd39f5d9f7d1f3a8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/jobs/123701326705.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "ed7d2e74b25a8e9deee2aebb9ead954a30f3e928",
+      "bytes": 1967,
+      "sha256": "c1e1cfbe95d1db3b02d294cf814fd78701a11453367d2ea03e0d8fd828068b29",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/jobs/123701326705.log",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "81c688bdbf32a07541590f464c7e8dcb702a7b83",
+      "bytes": 7515,
+      "sha256": "29ff1c6589397a2fd70fee36244c016c7607139727375f94020663d08f5356b8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/jobs/123701400065.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "e8ab37b816c2fbb8e8ce26d063bd8d23e5a6e38b",
+      "bytes": 3771,
+      "sha256": "93c64215f7ffe7b2f94526d976abd902dea63d6231b9e899f9818002366d5ca9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/jobs/123701400065.log",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "08a9dca77a5945ee020649351b8fad4bc28f014d",
+      "bytes": 2961600,
+      "sha256": "fdab03c3b12f323862b79aaa1b7685eb057d0747cafacdb725509896b029a0c8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/receipt.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "291ea091358132ef5616d78a89f1290d231c65f1",
+      "bytes": 25125,
+      "sha256": "283dd7e308d6cbe8e29eebf6fe2c034dc7841d569dda874267552e2e91f2b9af",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/run.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "b80ecbd1385d5e157f9baa941321c827acd43d9a",
+      "bytes": 14407,
+      "sha256": "0e45078e72d3167a5c3c570d3ca0e2e54f8910e7fe3c2dd4a8e065659c444da8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/screen-index.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "446d36071132c8a725dead7487c70e54519201ea",
+      "bytes": 804,
+      "sha256": "375030884d57a2fe431dcca4f3840d56a6d3352bacbd82d12c1276e0c2a6dae7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/screen/input-proof.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "52cce19893238a55d54531d0c1a7f7e60a92ea84",
+      "bytes": 8418,
+      "sha256": "5681f5394940dec1771f6ab254ad755db1744748ad5da2dd12d7711b804acf11",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/screen/inputs/incidence-and-technology.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "da6adb1995bf15d89d05b34f0b8bba9031932ac7",
+      "bytes": 944875,
+      "sha256": "c5d764256c577b2fc14dac22de72144c38049f85f20a20038e9a81fa4d8af110",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/screen/inputs/receipt.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "87228ac685226c68e75e7073959adb491e7a00d1",
+      "bytes": 24584,
+      "sha256": "dbd561e3eb1082a4b24552c7b72a32ab28fb6830a052e6ee172b7f07e93fa5ba",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/screen/network-124.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "346168bbe6b0ac3bacdf0e88cb5625c3a9a17163",
+      "bytes": 5262935,
+      "sha256": "8c55e19525469ff552f497ddbcf2d2fb19de3eb3e946762867569717520fb5d2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/screen/network-28.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "06c2430772a57edc92a8cbbe79629937fc14e60b",
+      "bytes": 5247193,
+      "sha256": "98a1d3a1d0f5b077492bf381b8704d0f526b0311f4906dc28478b9c140c4d351",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-dc-contact-screen-terminal-40945858067/screen/result.json",
+      "source": "af861a0d40694b6b4737855e7fc3f5c6c34ac43f",
+      "git_blob": "63bc667bd5127d2063c76cd7efd4abbec9c07d25",
+      "bytes": 10736,
+      "sha256": "64e03086ee5ac7fb2585c135ace72c05de4923e0485d36780855bafabebb972f",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v129": [
+    {
+      "run": 40944948451,
+      "source": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "release_id": 428336131,
+      "tag": "cloud-results-40944948451-1-mainchip-southern-neighborhood",
+      "public_prerelease": true,
+      "make_latest": false
     }
   ]
 }
