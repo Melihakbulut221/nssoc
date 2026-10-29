@@ -1,0 +1,296 @@
+{
+  "schema": "cdr-width-loaded-execution-unit-source-review-v1",
+  "branch": "codex/cdr-width-loaded-execution-unit",
+  "base": "7c98a1918861bbca40127f15493f016c6179025b",
+  "scope": "Additive, disabled execution admission and original loaded-stage derivation; no method, workflow, worker edit or native authorization.",
+  "files": {
+    "scripts/cdr_width_loaded_execution_admission.py": {
+      "bytes": 15809,
+      "sha256": "21efaad5ef1a90cfa7de4e9675be1e2d7ebdd550f6dbd88ea59055a87f9d74e8"
+    },
+    "scripts/cloud_cdr_width_loaded_stage.py": {
+      "bytes": 21924,
+      "sha256": "237f7b339c0d33f17e9ddce494e8e521fac5d6a49f7f1f0124a2fe9632a198d4"
+    },
+    "scripts/check_cdr_width_loaded_execution.py": {
+      "bytes": 22492,
+      "sha256": "51b4d60d62826372527fc5dbc6ff3814c9342f7bc1e1e63af83dc371b8c457de"
+    }
+  },
+  "qualified_worker_source": {
+    "run": 40884116773,
+    "source": "c60f70029d57cb46365c54e7f4ccd428acc21d18",
+    "receipt": "docs/evidence/cdr-width-loaded-worker-source-terminal-40884116773/receipt.json",
+    "receipt_sha256": "899dac1bd0a7926be3daaaa43cea50c883ea9b2c0091a72793395e4fa7d30389",
+    "complete_proof_files": 13,
+    "complete_proof_bytes": 129100,
+    "source_only": true,
+    "actual_positive": 2,
+    "actual_refusal": 32,
+    "six_numerical_blocks_bytes": 24133,
+    "historical_eight_rejections_two_fault_detections_retained": true,
+    "native_execution_qualified": false
+  },
+  "input_producer": {
+    "run": 40830441311,
+    "source": "7ddf83d17a3b3fe0efb1eb31594b7d4d3e831b8f",
+    "release": 427537846,
+    "complete_archive_members": 6647,
+    "model": {
+      "path": "mim/composition/pd500-mim-wire.spice",
+      "sha256": "47124290075ec32734494f3d9a6307c9c9e930aafd7fe5d27a66b9c6f1e909ee"
+    },
+    "native_planes": {
+      "path": "mim/precise/source/native-planes.json",
+      "sha256": "bb10a385e76e014c17d229919728e16085f06396becdf47f15ee53bb4c6b3dfe"
+    },
+    "composition": {
+      "devices": 500,
+      "R": 24356,
+      "C": 15566
+    },
+    "original_graph": 40808550817,
+    "complete_graph_members": 4103,
+    "current_members": 75,
+    "original_width_proof": 40815684037,
+    "input_method": {
+      "path": "scripts/cdr-width-loaded-admission-methods.json",
+      "sha256": "1ae0bc1d2126d6310bbe6f27d7f424b8f8ac51989d9abcb5a99f5dbc968063b4",
+      "protected": 1244,
+      "bytes_unchanged": true,
+      "native_authority": false
+    }
+  },
+  "execution_authority": {
+    "method": "scripts/cdr-width-loaded-execution-methods.json",
+    "method_created": false,
+    "schema": "cdr-width-loaded-execution-v1",
+    "branch": "codex/cdr-width-loaded-execution-unit",
+    "fields": [
+      "schema",
+      "branch",
+      "cases",
+      "producer_run",
+      "producer_source",
+      "execution_policy",
+      "qualified_worker_method",
+      "qualified_worker_method_sha256",
+      "qualified_worker_source_run",
+      "qualified_worker_source_receipt_sha256",
+      "protected_sha256",
+      "controller_readiness"
+    ],
+    "typed_authority_fields": [
+      "source_controls_authorized",
+      "workflow_dispatch_authorized",
+      "preparation_authorized",
+      "native_execution_authorized",
+      "simulation_authorized"
+    ],
+    "always_false": [
+      "geometry_generation_authorized",
+      "native_extraction_authorized",
+      "accepted",
+      "electrical_accepted",
+      "physical_accepted",
+      "cdr_accepted",
+      "qualified_pex",
+      "full_phy_accepted",
+      "automatic_retry"
+    ],
+    "controller_relation": "controller_readiness == (preparation_authorized or simulation_authorized); original typed simulator/preparation predicates retained",
+    "prior_worker_source_method": {
+      "path": "scripts/cdr-width-loaded-worker-source-methods.json",
+      "sha256": "c9dd549439b98c69265f36ea419cf9d05fe67dba321ce69d60de73094dab2c3c",
+      "protected": 1264
+    },
+    "protected_extension_rule": "Preserve all 1264 qualified source pins except only the exact two-literal current worker successor; all 1244 input-admission pins unchanged. Pin historical worker-source method, all13 actual source-proof files and all4 new source/review files. Additional root workflow/admission/proof pins may extend the map.",
+    "native_method_requires_exact_worker_successor": true,
+    "missing_or_disabled_method_refuses_execution": true,
+    "old_authorize_monkeypatched": false,
+    "native_authorizations_in_this_commit": false
+  },
+  "future_worker_integration": {
+    "file": "scripts/cloud_cdr_width_loaded.py",
+    "qualified_sha256": "aa04bf95d55fb3b26945018278e060488183fdbd94997f971cb8562a9fc95b0c",
+    "exact_successor_sha256": "ebf92a9842280587a437de161425f49f6ce4a82c9d76a0ce2532075d0e309bf5",
+    "literal_substitutions": [
+      {
+        "before": "import cdr_width_loaded_admission as current_inputs",
+        "after": "import cdr_width_loaded_execution_admission as current_inputs"
+      },
+      {
+        "before": "ROOT/'scripts/cdr-width-loaded-methods.json'",
+        "after": "ROOT/'scripts/cdr-width-loaded-execution-methods.json'"
+      }
+    ],
+    "worker_edited_in_this_commit": false,
+    "numeric_bodies_changed": false,
+    "historical_source_controls_manifest_is_not_native_authority": true,
+    "result_and_terminal_bytes_unchanged": true
+  },
+  "stage_derivation": {
+    "old_path": "scripts/cloud_cdr_v59_tail_loaded_stage.py",
+    "old_sha256": "6e142135ba350c427cf888a409ed44d664ac8c79d6e673ee1afe2e358f71fe2f",
+    "new_path": "scripts/cloud_cdr_width_loaded_stage.py",
+    "literal_rules": [
+      {
+        "before": "import cdr_v59_tail_loaded_admission as a",
+        "after": "import cdr_width_loaded_execution_admission as a",
+        "occurrences": 1
+      },
+      {
+        "before": "import cdr_v59_tail_loaded_result as result_gate",
+        "after": "import cdr_width_loaded_result as result_gate",
+        "occurrences": 1
+      },
+      {
+        "before": "scripts/cloud_cdr_v59_tail_loaded.py",
+        "after": "scripts/cloud_cdr_width_loaded.py",
+        "occurrences": 1
+      },
+      {
+        "before": "cdr-v59-tail-loaded-",
+        "after": "cdr-width-loaded-",
+        "occurrences": 7
+      },
+      {
+        "before": "40576801174",
+        "after": "40830441311",
+        "occurrences": 2
+      },
+      {
+        "before": "\"original_physical_status\":\"FAIL_ADDITIVE_TAIL_WIRE_PHYSICAL\",",
+        "after": "\"original_physical_status\":\"FAIL_ADDITIVE_TAIL_WIRE_PHYSICAL\",\n      \"original_physical_historical_only\":True,\n      \"current_width_run\":40815684037,\"current_width_source\":\"214ec651fd501de7e2f49a38509b184a1fd66f8d\",\n      \"current_graph_run\":40808550817,\"current_graph_source\":\"97705f184239c0c522582b9d8e82c542bd902b65\",",
+        "occurrences": 1
+      },
+      {
+        "before": "and result[\"original_physical_status\"]==\"FAIL_ADDITIVE_TAIL_WIRE_PHYSICAL\"",
+        "after": "and result[\"original_physical_status\"]==\"FAIL_ADDITIVE_TAIL_WIRE_PHYSICAL\"\n      and result[\"original_physical_historical_only\"]is True\n      and (result[\"current_width_run\"],result[\"current_width_source\"])==(40815684037,\"214ec651fd501de7e2f49a38509b184a1fd66f8d\")\n      and (result[\"current_graph_run\"],result[\"current_graph_source\"])==(40808550817,\"97705f184239c0c522582b9d8e82c542bd902b65\")",
+        "occurrences": 1
+      }
+    ],
+    "exact_reverse_verified_as_text": true,
+    "changed_functions": [
+      "context",
+      "preflight",
+      "fetch_preparation",
+      "initial_result",
+      "validate_publication"
+    ],
+    "unchanged_function_bodies": [
+      "read_json",
+      "inventory",
+      "error_record",
+      "storage",
+      "execute",
+      "copy_worker",
+      "qualify_native",
+      "finalize",
+      "publish",
+      "run_case",
+      "main"
+    ],
+    "preparation_seconds": 1200,
+    "each_case_seconds": 7200,
+    "cases": 10,
+    "maximum_parallel": 2,
+    "reservations": 11,
+    "preparation_reservation_last": true,
+    "historical_failed_physical_run": 40369539200,
+    "historical_failure_retained": true,
+    "current_graph_and_width_lineage_explicit": true
+  },
+  "restore_contract": {
+    "signature": "restore(out, prepare_only) -> (mim, proof, model_path, contract, planes, plane_proof)",
+    "delegated_unchanged": [
+      "validate_live",
+      "acquire_and_extract",
+      "verify_bundle",
+      "loaded_view",
+      "expected_files",
+      "verify_restored",
+      "verify_exact_files"
+    ],
+    "restore_body_change": "Exact original input restore sequence plus all-eleven current reservations and current-execution-admission.json write before producer fetch/acquisition. Names resolve to explicit new authorization/source gate and unchanged input helpers.",
+    "historical_producer_proof_unchanged": true,
+    "new_context_receipt_outside_bundle": "current-execution-admission.json",
+    "full_raw_native_archive_and_waveform_paths_preserved": true,
+    "reservation_creation_or_upload": false
+  },
+  "authored_controls": {
+    "executed": false,
+    "CLI": "python -B scripts/check_cdr_width_loaded_execution.py --output width-loaded-execution-controls.json",
+    "CLI_requires": "Root supplies exact-source execution method with source_controls_authorized=true; every native flag may remain false. Branch/manual/hostedLinux/attempt1 validated before controls.",
+    "status": "PASS_WIDTH_LOADED_EXECUTION_SOURCE_CONTROLS",
+    "current_context_keys": [
+      "source",
+      "run_id",
+      "attempt",
+      "source_controls_only",
+      "native_executed"
+    ],
+    "groups": {
+      "proof": {
+        "positive": 1,
+        "refusal": 4
+      },
+      "derivation": {
+        "refusal": 1,
+        "stage_literal_rules": 7,
+        "stage_occurrences": 14,
+        "worker_literal_rules": 2,
+        "delegates": 6
+      },
+      "authority": {
+        "positive": 4,
+        "refusal": 46
+      },
+      "context": {
+        "positive": 1,
+        "refusal": 9
+      },
+      "reservations": {
+        "positive": 1,
+        "refusal": 5,
+        "groups": 11
+      },
+      "restore": {
+        "positive": 2,
+        "refusal": 8,
+        "full_authentic_metadata_members": 6647
+      },
+      "stage": {
+        "positive": 12,
+        "refusal": 4
+      }
+    },
+    "native_boundaries": "No worker/simulator import or execution. Restore fixture invokes actual adapter restore, authorize, live validation and six-tuple loaded_view with authentic full JSON metadata; acquisition and native verify_bundle bytes are explicit synthetic I/O. Current method storage/source guard cache is an explicit fixture seam; the immutable input source_guard executes separately against authentic protected proof.",
+    "unqualified": [
+      "native extraction",
+      "actual native restoration",
+      "electrical simulation",
+      "publication lifecycle under current execution source"
+    ]
+  },
+  "limitations_and_next_steps": [
+    "Root must assemble a new method and source-only workflow with complete transitive projection including historical method files,13 source-proof files and required new files; no method is delivered here.",
+    "Run all authored controls on GitHub against the assembled exact source. No authored code was imported, tested or executed locally.",
+    "Root must install exactly the two worker substitutions before any preparation/simulation authority; do not use the absent legacy cdr-width-loaded-methods.json path or source-only worker manifest as execution authority.",
+    "Root must reserve all11 exact-source release groups before dependencies and maintain1200/7200 limits,10cases,maxparallel2,fail_fast=false,no automatic retry.",
+    "Stage publish() is byte-exact original: methods/source corruption can prevent publication; an existing zero-byte failed direct JSON would be attempted as a direct upload. These inherited failure-publication seams require separate bounded root review/qualification before execution; full fallback artifact/publication must remain available.",
+    "Source control PASS never reclassifies the eight original normal electrical rejections or the two original fault-detection passes; no current-width electrical outcome is known."
+  ],
+  "local_activity": {
+    "source_bytes_via_GitHub_API": true,
+    "JSON_hash_AST_and_literal_analysis_only": true,
+    "local_file_writes": false,
+    "source_imports_or_tests": false,
+    "native_payload_acquisition": false,
+    "workflow_dispatch": false
+  },
+  "readiness": false,
+  "electrical_accepted": false,
+  "physical_accepted": false,
+  "full_phy_accepted": false
+}

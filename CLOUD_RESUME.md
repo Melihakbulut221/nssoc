@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v120
+# Cloud continuation — checkpoint v121
 
-Updated: 2026-10-29T14:39:22.480652+00:00
+Updated: 2026-10-29T14:59:05.943596+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Cloud-only checkpoint120: standalone command-evidence40887373623 PASS (9positive,70refusal,2old-regressions,9actual supervised records), full13proof439312bytes at49e16be3. Initial assembled fixed-tail source40890525751 failed before any native execution because the complete frozen source map additionally contains four original supervised phase stdout logs. Full12failureproof preserved6763a711. Successor a41a6435 requires exactly those four logs, each byte/hash joined to original command stdout, and adds1positive/8tamper controls. Current source-only40892423117 evaluates the three suites on1302protected files; native authorization remains false. Existing source/current-prefix evidence unchanged. Parallel CDR execution adapter/stage is additive and not authorized.
+Cloud-only checkpoint121: corrected fixed-tail source40892423117 passed all three suites; all22proof2394978bytes are preservedb7862611. Actual off/on route run40894408041 at exact source8e9223b0 is active with five pre-acquisition release reservations and1324protected files; source controls passed again, routing executes on GitHub. Route completion is followed by independent native audits and comparison. Current-width CDR execution unit e7d401 is additive and disabled while failure-publication integrity is repaired. No local checkout, test or CAD execution.
 
-Active handles at this snapshot: No native run remains active in this snapshot.
+Active handles at this snapshot: 40894408041 in_progress
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9022,3 +9023,10 @@ Local project/tmp/native processes verified absent. Inventory344 exact cloud han
 Cloud-only checkpoint120: standalone command-evidence40887373623 PASS (9positive,70refusal,2old-regressions,9actual supervised records), full13proof439312bytes at49e16be3. Initial assembled fixed-tail source40890525751 failed before any native execution because the complete frozen source map additionally contains four original supervised phase stdout logs. Full12failureproof preserved6763a711. Successor a41a6435 requires exactly those four logs, each byte/hash joined to original command stdout, and adds1positive/8tamper controls. Current source-only40892423117 evaluates the three suites on1302protected files; native authorization remains false. Existing source/current-prefix evidence unchanged. Parallel CDR execution adapter/stage is additive and not authorized.
 
 Local project/tmp/native processes verified absent. Inventory347 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T14:59:05.943596+00:00 — cloud-only checkpoint v121
+
+Cloud-only checkpoint121: corrected fixed-tail source40892423117 passed all three suites; all22proof2394978bytes are preservedb7862611. Actual off/on route run40894408041 at exact source8e9223b0 is active with five pre-acquisition release reservations and1324protected files; source controls passed again, routing executes on GitHub. Route completion is followed by independent native audits and comparison. Current-width CDR execution unit e7d401 is additive and disabled while failure-publication integrity is repaired. No local checkout, test or CAD execution.
+
+Local project/tmp/native processes verified absent. Inventory348 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

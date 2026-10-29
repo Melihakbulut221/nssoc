@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T14:39:22.480652+00:00",
+  "updated_at": "2026-10-29T14:59:05.943596+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "a8fb56ad157d78eaa0b78ebe324a1efa9501d00e",
+  "root_source_before_receipt": "219f5bcfe715e58765bf0f3e5ad4afbdd82e3ec8",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 120,
+    "inventory_version": 121,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -40,7 +40,49 @@
       "main_verification_run": 40847665085
     }
   },
-  "active_runs": {},
+  "active_runs": {
+    "fixed_tail_native_route_audit": {
+      "run": 40894408041,
+      "head_sha": "8e9223b0be6e644d4c5684b94b13c2888c531e79",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123519510524,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123520714945,
+          "name": "preserve-source-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123520805697,
+          "name": "route-only (on)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Execute one separately owned route stage"
+          ]
+        },
+        {
+          "id": 123520805825,
+          "name": "route-only (off)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Execute one separately owned route stage"
+          ]
+        }
+      ]
+    }
+  },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -3624,43 +3666,57 @@
       "native_executed": false
     },
     "fixed_tail_consumer_integration": {
-      "consumer_source": "7150a5272eb49daf06b876288cda9de3deb8a28f",
-      "initial_source": "162802a7ccaee7abd2119e73c2fc6d002d981829",
-      "initial_run": 40890525751,
-      "initial_terminal": "failure",
-      "initial_evidence_source": "6763a711f182df588444c1794b6560fdf4ca0ed4",
-      "initial_receipt_sha256": "9d96a15779f919cdb8c55c38708a8d4ed6a67241b4638e57a2e37f6f3e0c0984",
-      "initial_failure": "complete frozen source projection: four actual original phase stdout logs absent from expected source set; no protected source missing",
       "current_source": "a41a64358f9f5cf967d05fe52ba81f00443e45a1",
       "current_run": 40892423117,
+      "current_terminal": "success",
+      "evidence_source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "receipt_sha256": "0f78a13ff4adc4c3eb477f84c77eee2f8372ea98852e4179c423067912307db4",
+      "full_files": 22,
+      "full_bytes": 2394978,
       "current_protected": 1302,
       "current_method_sha256": "f901e9ecb0407ed70199736ebfcd5c9e78b88e5accb756acbad2bcd7a6929cea",
-      "projection_rule": "1208 protected-plus-method source entries and exactly four original phase stdout logs, each exact byte count/SHA joined to native command records",
       "new_projection_controls": {
         "positive": 1,
         "refusal": 8,
-        "hosted_qualification_pending": true
+        "hosted_qualified": true
       },
-      "native_tail_authorized": false,
+      "all_three_source_suites_passed": true,
       "physical_acceptance": false
     },
     "cdr_execution_unit_preparation": {
       "branch": "codex/cdr-width-loaded-execution-unit",
+      "source": "e7d401da3874ca41687a99765f4654bb84f9fa69",
       "base": "7c98a1918861bbca40127f15493f016c6179025b",
       "additive_only": true,
       "method_created": false,
       "workflow_created": false,
       "native_authorized": false,
       "worker_import_and_method_path_two_explicit_substitutions_required_later": true,
-      "numerical_blocks_preserved": true
+      "numerical_blocks_preserved": true,
+      "publication_failure_repair_in_progress": true
+    },
+    "fixed_tail_native_route_audit": {
+      "run": 40894408041,
+      "source": "8e9223b0be6e644d4c5684b94b13c2888c531e79",
+      "protected": 1324,
+      "method_sha256": "04872318510edfd90a9fc2906e819d435cc4de2da0e54c2d3c0fa138a9a0b164",
+      "exact_source_release_reservations": 5,
+      "route_seconds": 14400,
+      "audit_seconds_each": 1200,
+      "audit_phases": 5,
+      "automatic_retry": false,
+      "source_controls_repeated_in_all_jobs": true,
+      "timing_acceptance": false,
+      "physical_acceptance": false,
+      "full_phy_acceptance": false
     }
   },
   "next_actions": [
-    "Track source-only40892423117 and preserve all10 indexed control/context/stream records plus complete logs on terminal. No native dispatch before actual three-suite PASS.",
-    "If current tail source passes, add its complete terminal proof pins and enable only separate off/on route+audit modes. Reserve five exact-source releases before any acquisition, run source controls again in all jobs. Original four phase logs remain required and byte-bound; no wildcard source exception.",
-    "Original1691clock/two-target/3initialShorts and20/4/8/8ns+5pct timing gates remain unchanged. Actual prefix40878295979 remains successful but routing/timing/PHY unaccepted.",
-    "CDR additive execution adapter/stage source unit is being prepared on codex/cdr-width-loaded-execution-unit. Qualified current worker remains unchanged; future explicit admission import+method path substitutions required. Newmethod/workflow/hosted controls and failure-publication qualification remain pending.",
-    "All source/tests/native computation and evidence stay on GitHub. Local project/tmp/native processes absent; source review documents retained."
+    "Track existing40894408041 only; off/on routes must finish before independent audits and comparison. Never redispatch this run. Preserve all logs, direct JSON, complete native inventory and part metadata in GitHub; never acquire native payload locally.",
+    "Corrected source-only40892423117 passed all three suites; full22proof2394978bytes preservedb7862611. Native source8e9223 protects1324files including complete source proof and enables only route/audit modes.",
+    "Current CDR execution unit e7d401 is additive and disabled. Repair genuine failure publication before source-only hosted qualification; no native authority or numerical worker substitution yet.",
+    "Original1691clock/two-target/3initialShorts and20/4/8/8ns+5pct timing gates remain unchanged. Source controls and routed artifacts alone cannot establish full PHY or final timing acceptance.",
+    "All source/tests/native computation and evidence remain on GitHub. Local workspace and old project/log directories remain removed; original review documents preserved."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -3993,73 +4049,6 @@
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40887373623,
-      "head_sha": "4c61341d5ac728f1a127a8777f8912b130cc1845",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123494610442,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123494957084,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40890525751,
-      "head_sha": "162802a7ccaee7abd2119e73c2fc6d002d981829",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123505780110,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 123506013376,
-          "name": "preserve-source-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123506097941,
-          "name": "route-only",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 123506098264,
-          "name": "audit-only",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 123506099092,
-          "name": "comparison",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
       "run": 40892423117,
       "head_sha": "a41a64358f9f5cf967d05fe52ba81f00443e45a1",
       "status": "completed",
@@ -4102,10 +4091,51 @@
           "active_steps": []
         }
       ]
+    },
+    {
+      "run": 40894408041,
+      "head_sha": "8e9223b0be6e644d4c5684b94b13c2888c531e79",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123519510524,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123520714945,
+          "name": "preserve-source-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123520805697,
+          "name": "route-only (on)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Execute one separately owned route stage"
+          ]
+        },
+        {
+          "id": 123520805825,
+          "name": "route-only (off)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Execute one separately owned route stage"
+          ]
+        }
+      ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T14:39:22.480652+00:00",
+    "observed_at": "2026-10-29T14:59:05.943596+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -4234,7 +4264,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T14:39:22.480652+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T14:59:05.943596+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -36687,6 +36717,239 @@
       "bytes": 1431,
       "sha256": "144fe41bdd6d8cec8609c9e26d8b67fbc0fbb60d35303f4da8a5648f1c43623e",
       "existing_identical": false
+    }
+  ],
+  "imported_checkpoint_receipts_v121": [
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/123512516355.job.json",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "281859c2adb0af656c949ebf017917b2b43da1cb",
+      "bytes": 2728,
+      "sha256": "9f26184c99783ed31e2e06d88bf3fd9a08221a2a1c5142969032d469ef6b2527",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/123512516355.job.log",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "0319c3da0802a7ddb2333a3aa0bf066b940319f5",
+      "bytes": 1259203,
+      "sha256": "f9400911d2bf0db8b3bd27d092e55d80686335c1e1c2dfd27fd3fbdbb68822ef",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/123513681141.job.json",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "fcc27a5c638e690842cdbbeeb14da6a15c985351",
+      "bytes": 1969,
+      "sha256": "f74480f648623c54da3f4f7f936f592f343d81db9c77a3e384edb47c79aa57ff",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/123513681141.job.log",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "f38597f00136fb8bd525cfa08ca8ba4342940f3e",
+      "bytes": 7578,
+      "sha256": "01dc319c95ffdf43152a3dc6689c0173a673141295408db472174f353ea85e99",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/123513778766.job.json",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "6ee12dbf1a077a7706f9acd24a397a1d279562c5",
+      "bytes": 1021,
+      "sha256": "4a7f062982c7cb795b44c2ae3e20b84901681572c03ba2b3095fd5657a967c33",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/123513780084.job.json",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "ede904bad182a5e93306f0a1ddf9b42ad70e9187",
+      "bytes": 1021,
+      "sha256": "89f9beba32e3921acdd7cb1bd4f729493686120c8e7016b7ebb98af817bab44a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/123513780910.job.json",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "0242f68725fa65e68e186afbd8244863bf54fa07",
+      "bytes": 1021,
+      "sha256": "3a98a530103c7ff903150fd99dd8b36154b24c6cac76700ca266becea7fbdefc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/artifacts.json",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "450487e90e68496ffc6ac852a09b7f01fb0ca2f9",
+      "bytes": 1865,
+      "sha256": "b54f0aa0c8a9a33675ff2e8d4f32100691253d8af698c19db4f4a410c951eebf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/controls/exit-command-evidence-controls.json",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "c582645682093432c0a64484a1b2cd0462965edc",
+      "bytes": 28281,
+      "sha256": "8dbd0f2c9fecefdbe262d31fb6d97e8bafc3b0fcb56279d66b4292851758d0dc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/controls/exit-command-evidence-controls.stderr",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/controls/exit-command-evidence-controls.stdout",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "e71b893a45c169d0ff7b9915c8a9a5f1fa728d4f",
+      "bytes": 117920,
+      "sha256": "5c752e67eaa397f8607888c6df10784e6716018a640972d296c4791c34728c67",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/controls/exit-supervision-controls.json",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "1f2fc6126fe7974083f486d10224ef381f86b0fb",
+      "bytes": 18907,
+      "sha256": "68f06405aa06d4907255a22bbe101c8b392466df3bd2d310781f37c25086bc3a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/controls/exit-supervision-controls.stderr",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/controls/exit-supervision-controls.stdout",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "6e2071864c133e1c42ae3d85201dad0964f3ef61",
+      "bytes": 471753,
+      "sha256": "02d8d03c29e09766e0ca5637bfec4df4685eca90207fd574e02044cfd07ef8d7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/controls/fixed-route-tail-controls.json",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "b4df7dd3693fa535a1d0d1afe5f42c2390262d97",
+      "bytes": 114766,
+      "sha256": "b941317b4974586a6e130aaa9c8a885143e68c003c67b13f967a6df825200800",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/controls/fixed-route-tail-controls.stderr",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/controls/fixed-route-tail-controls.stdout",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "3e14b8640176eb54f411de9cfad3428d659d4319",
+      "bytes": 157702,
+      "sha256": "b1f7a865bbf9097a5ce661824e294ae62fe647211cb5761146d2aadb89d6bcc6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/controls/fixed-tail-control-context.json",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "c9d7ba51ccd925055bb7586704ecc20977e6e537",
+      "bytes": 284,
+      "sha256": "1d01027a5f6435a8da148ed49ce65ac11eff3aba1e2548426c38df25f0371697",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/controls/index.json",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "1adfdee9c3eae56160968134baa3b6f3cf2488a1",
+      "bytes": 2333,
+      "sha256": "3fe936a22a66a9ff04cc75b574c86a3508185e886eded78158fc8fae8ddc17ed",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/jobs.json",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "f79f7a26dfb0e929480c5a6afda99cf13e1c8a09",
+      "bytes": 8704,
+      "sha256": "e39b3e5dd4f85bf0c253415fc5e579d0fae6f77500705ecbcd221e9eb006a89a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/receipt.json",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "c46a50fa72e4c455f561b2c4c277773b3cd21629",
+      "bytes": 183515,
+      "sha256": "0f78a13ff4adc4c3eb477f84c77eee2f8372ea98852e4179c423067912307db4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-tail-source-terminal-40892423117/run.json",
+      "source": "b7862611ce352125b8e92ee1aab9d9260bc1b982",
+      "git_blob": "eb34ce97bc465d64a40a504192657332402887fa",
+      "bytes": 14407,
+      "sha256": "f5778893e484464dcb22ecd0593c0adda30f86759e7fcdfb03ff216f8a0a1cf0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-width-loaded-execution-unit-source-review-20261029.json",
+      "source": "e7d401da3874ca41687a99765f4654bb84f9fa69",
+      "git_blob": "e41be425158f9dd55705f64f4bf6a1826a1d5db1",
+      "bytes": 12534,
+      "sha256": "a1ff9a907d8c3b986bb58f1663a391db36c252c3154aa96fcee0f79924b1b3a2",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v121": [
+    {
+      "run": 40894408041,
+      "source": "8e9223b0be6e644d4c5684b94b13c2888c531e79",
+      "release_id": 427992134,
+      "tag": "cloud-results-40894408041-1-mainchip-fixed-engine-route-tail-off-route",
+      "group": "mainchip-fixed-engine-route-tail-off-route",
+      "assets": 0,
+      "reserved_before_native_acquisition": true
+    },
+    {
+      "run": 40894408041,
+      "source": "8e9223b0be6e644d4c5684b94b13c2888c531e79",
+      "release_id": 427992288,
+      "tag": "cloud-results-40894408041-1-mainchip-fixed-engine-route-tail-on-route",
+      "group": "mainchip-fixed-engine-route-tail-on-route",
+      "assets": 0,
+      "reserved_before_native_acquisition": true
+    },
+    {
+      "run": 40894408041,
+      "source": "8e9223b0be6e644d4c5684b94b13c2888c531e79",
+      "release_id": 427992398,
+      "tag": "cloud-results-40894408041-1-mainchip-fixed-engine-route-tail-off-audit",
+      "group": "mainchip-fixed-engine-route-tail-off-audit",
+      "assets": 0,
+      "reserved_before_native_acquisition": true
+    },
+    {
+      "run": 40894408041,
+      "source": "8e9223b0be6e644d4c5684b94b13c2888c531e79",
+      "release_id": 427992502,
+      "tag": "cloud-results-40894408041-1-mainchip-fixed-engine-route-tail-on-audit",
+      "group": "mainchip-fixed-engine-route-tail-on-audit",
+      "assets": 0,
+      "reserved_before_native_acquisition": true
+    },
+    {
+      "run": 40894408041,
+      "source": "8e9223b0be6e644d4c5684b94b13c2888c531e79",
+      "release_id": 427992604,
+      "tag": "cloud-results-40894408041-1-mainchip-fixed-engine-route-tail-compare",
+      "group": "mainchip-fixed-engine-route-tail-compare",
+      "assets": 0,
+      "reserved_before_native_acquisition": true
     }
   ]
 }
