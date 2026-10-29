@@ -275,7 +275,7 @@ def derivation_controls(root,base,enabled):
 
 def publication_controls(root,base):
     cases=[]
-    for index,mode in enumerate(("empty_terminal","missing_terminal","upload_failure","conflicting_asset","source_corruption","source_and_upload_failure")):
+    for index,mode in enumerate(("empty_terminal","missing_terminal","upload_failure","conflicting_asset","source_corruption","source_and_upload_failure","missing_asset_id")):
         env=environment(str(900+index));env["RUNNER_TEMP"]=str(base);ctx=c.context(env)
         capture=io.StringIO();uploads=[];assets=[];failure=OSError("synthetic upload failure")
         source_errors=[];real_method=c.method;changed=root/c.repair.SNAPSHOT;original=changed.read_bytes()
@@ -298,24 +298,27 @@ def publication_controls(root,base):
                 assert argv[:3]==["gh","release","upload"];p=Path(argv[4]);raw=p.read_bytes()
                 assert raw,"zero-byte direct upload"
                 if mode in ("upload_failure","source_and_upload_failure"):raise failure
-                uploads.append(p.name);assets.append(dict(name=p.name,size=len(raw),digest="sha256:"+c.digest(raw)))
+                uploads.append(p.name);item=dict(id=100+len(assets),name=p.name,size=len(raw),digest="sha256:"+c.digest(raw))
+                if mode=="missing_asset_id":item.pop("id")
+                assets.append(item)
                 return SimpleNamespace(returncode=0)
             if mode=="conflicting_asset":
-                assets.append(dict(name="inner-result.json",size=1,digest="sha256:"+"0"*64))
+                assets.append(dict(id=1,name="inner-result.json",size=1,digest="sha256:"+"0"*64))
                 proof["existing_assets"]=copy.deepcopy(assets)
-            caught=None
+            caught=None;caught_traceback=None
             if mode in ("source_corruption","source_and_upload_failure"):
                 changed.unlink();changed.write_bytes(original+b"\n")
             try:
                 with patch.object(c,"method",side_effect=checked_method),patch.object(h.reservation,"wait",return_value=proof),patch.object(h.reservation.release,"api",side_effect=read),patch.object(h.subprocess,"run",side_effect=upload),contextlib.redirect_stdout(capture):
                     try:result=h.publish()
-                    except BaseException as exc:caught=exc
+                    except BaseException as exc:caught=exc;caught_traceback=traceback.format_exc()
             finally:
                 if mode in ("source_corruption","source_and_upload_failure"):
                     changed.write_bytes(original)
             plan=c.decode((out/"direct-publication-plan.json").read_bytes())
             if mode=="upload_failure":assert caught is failure
-            elif mode=="conflicting_asset":assert isinstance(caught,ValueError)
+            elif mode=="conflicting_asset":assert isinstance(caught,ValueError)and str(caught)=="existing asset conflict"
+            elif mode=="missing_asset_id":assert isinstance(caught,KeyError)and caught.args==("id",)
             elif mode in ("source_corruption","source_and_upload_failure"):
                 assert len(source_errors)==1 and caught is source_errors[0]
                 availability=c.decode((out/"publication-availability.json").read_bytes())
@@ -327,7 +330,7 @@ def publication_controls(root,base):
                 else:
                     saved=c.decode((out/"publication-failure.json").read_bytes())
                     assert saved["source_error"]["error"]==repr(caught)and saved["publication_error"]["error"]==repr(failure)
-            else:assert caught is None and result==0
+            else:assert caught is None and result==0,(mode,repr(caught),caught_traceback,capture.getvalue())
             assert "host-result.json"not in uploads
             with tarfile.open(work/"engine-evidence.tar.gz","r:gz")as archive:
                 assert archive.extractfile("empty.stderr").read()==b""
@@ -336,7 +339,8 @@ def publication_controls(root,base):
             row=next(x for x in plan["files"]if x["name"]=="host-result.json")
             assert row["disposition"]==("absent"if mode=="missing_terminal"else"archive_only_empty")
             cases.append(dict(mode=mode,complete_empty_archive_member=True,original_terminal_bytes_unchanged=True,
-              zero_byte_direct_upload=False,synthetic_cloud_transport=True,error=None if caught is None else repr(caught)))
+              zero_byte_direct_upload=False,synthetic_cloud_transport=True,error=None if caught is None else repr(caught),
+              caught_traceback=caught_traceback,missing_id_regression=mode=="missing_asset_id"))
     return dict(status="PASS_ACTUAL_FAILURE_AND_EMPTY_PUBLICATION_CONTROLS",cases=cases,count=len(cases))
 
 def controls():
