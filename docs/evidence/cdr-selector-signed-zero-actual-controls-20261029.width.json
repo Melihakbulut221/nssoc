@@ -1,0 +1,301 @@
+{
+  "component": {
+    "cases": [
+      {
+        "case": "wrong_net",
+        "error": "AssertionError('Wrong actual native owner')",
+        "rejected": true
+      },
+      {
+        "case": "unknown_net",
+        "error": "AssertionError('Wrong actual native owner')",
+        "rejected": true
+      },
+      {
+        "case": "missing_component",
+        "error": "AssertionError('Missing unique old component')",
+        "rejected": true
+      },
+      {
+        "case": "foreign_clearance",
+        "error": "AssertionError('Foreign metal clearance')",
+        "rejected": true
+      },
+      {
+        "case": "no_width",
+        "error": "AssertionError('No added width')",
+        "rejected": true
+      },
+      {
+        "case": "new_via_contact",
+        "error": "AssertionError('New adjacent-via contact')",
+        "rejected": true
+      }
+    ],
+    "positive": 1,
+    "refusals": 6
+  },
+  "disabled_native": {
+    "case": "disabled_native",
+    "error": "AssertionError('Disabled geometry candidate')",
+    "rejected": true
+  },
+  "electrical_accepted": false,
+  "geometry": {
+    "cases": [
+      {
+        "case": "native_wrong_owner",
+        "error": "AssertionError('Wrong actual native owner')",
+        "rejected": true
+      },
+      {
+        "case": "wrong_original_rectangle",
+        "error": "AssertionError(('Original exact rectangle absent or ambiguous', {'device': 'M_DP', 'net': 'M_SE', 'layer': 50, 'old': [767910, 15820, 769110, 146230], 'new': [766910, 15820, 770110, 146230], 'probe': [768510, 17020]}))",
+        "rejected": true
+      },
+      {
+        "case": "lower_metal_removed",
+        "error": "AssertionError(('Changed material layer census', {(30, 0)}))",
+        "rejected": true
+      },
+      {
+        "case": "extra_text",
+        "error": "AssertionError('Raw shape/text/property changed')",
+        "rejected": true
+      },
+      {
+        "case": "extra_cell",
+        "error": "AssertionError('Cell census changed')",
+        "rejected": true
+      },
+      {
+        "case": "extra_instance",
+        "error": "AssertionError('Hierarchy changed')",
+        "rejected": true
+      },
+      {
+        "case": "extra_allowed_layer_box",
+        "error": "AssertionError(('Changed material', (126, 0)))",
+        "rejected": true
+      }
+    ],
+    "geometry": "Explicit synthetic geometry, full native extraction substituted; no actual current GDS admission or DRC/LVS",
+    "positive": 3,
+    "refusals": 7
+  },
+  "lifecycle": {
+    "actual_run_and_atomic_writer": true,
+    "cases": [
+      {
+        "case": "success",
+        "complete_existing_outputs": true,
+        "expected_primary_preserved": true
+      },
+      {
+        "case": "body",
+        "complete_existing_outputs": true,
+        "expected_primary_preserved": true
+      },
+      {
+        "case": "save",
+        "complete_existing_outputs": true,
+        "expected_primary_preserved": true
+      },
+      {
+        "case": "body_and_save",
+        "complete_existing_outputs": true,
+        "expected_primary_preserved": true
+      }
+    ],
+    "count": 4,
+    "synthetic_admission_and_generation": true
+  },
+  "native_input_qualified": false,
+  "physical_accepted": false,
+  "source": {
+    "cases": [
+      {
+        "case": "wrong_width",
+        "error": "AssertionError()",
+        "rejected": true
+      },
+      {
+        "case": "declared_box_shift",
+        "error": "AssertionError('Declared coordinate plan differs')",
+        "rejected": true
+      },
+      {
+        "case": "boolean_width",
+        "error": "AssertionError()",
+        "rejected": true
+      },
+      {
+        "case": "wrong_origin",
+        "error": "AssertionError('Changed normalization')",
+        "rejected": true
+      },
+      {
+        "case": "shift_old_bus",
+        "error": "AssertionError('Changed old buses')",
+        "rejected": true
+      },
+      {
+        "case": "extend_new_endpoint",
+        "error": "AssertionError('Changed width endpoints')",
+        "rejected": true
+      },
+      {
+        "case": "relaxed_clearance",
+        "error": "AssertionError('Changed clearance')",
+        "rejected": true
+      },
+      {
+        "case": "missing_selected",
+        "error": "AssertionError('Changed selected source routes')",
+        "rejected": true
+      },
+      {
+        "case": "duplicate_selected",
+        "error": "AssertionError('Changed selected source routes')",
+        "rejected": true
+      },
+      {
+        "case": "shift_route",
+        "error": "AssertionError('Changed selected source routes')",
+        "rejected": true
+      },
+      {
+        "case": "foreign_column",
+        "error": "AssertionError('Source column clearance')",
+        "rejected": true
+      },
+      {
+        "case": "wrong_owner",
+        "error": "AssertionError('Changed complete native owner partition')",
+        "rejected": true
+      },
+      {
+        "case": "missing_terminal",
+        "error": "AssertionError('Changed complete native owner partition')",
+        "rejected": true
+      },
+      {
+        "case": "changed_terminal",
+        "error": "AssertionError('Changed complete native owner partition')",
+        "rejected": true
+      },
+      {
+        "case": "changed_net_name",
+        "error": "AssertionError('Changed complete native owner partition')",
+        "rejected": true
+      }
+    ],
+    "positive": 3,
+    "refusals": 15,
+    "screen": {
+      "checks": 2916,
+      "full_geometry_clearance": false,
+      "limiting": [
+        {
+          "device": "M_DP",
+          "foreign_device": "S_CS1",
+          "foreign_net": "S_SE",
+          "gap_dbu": 2580,
+          "layer": 126,
+          "net": "M_SE"
+        },
+        {
+          "device": "M_DN",
+          "foreign_device": "M_T3",
+          "foreign_net": "AVSS",
+          "gap_dbu": 2580,
+          "layer": 126,
+          "net": "M_SE"
+        },
+        {
+          "device": "M_CS1",
+          "foreign_device": "S_RN",
+          "foreign_net": "QN",
+          "gap_dbu": 2580,
+          "layer": 126,
+          "net": "M_SE"
+        },
+        {
+          "device": "M_DP",
+          "foreign_device": "S_CS1",
+          "foreign_net": "S_SE",
+          "gap_dbu": 2800,
+          "layer": 50,
+          "net": "M_SE"
+        },
+        {
+          "device": "M_DN",
+          "foreign_device": "M_T3",
+          "foreign_net": "AVSS",
+          "gap_dbu": 2800,
+          "layer": 50,
+          "net": "M_SE"
+        },
+        {
+          "device": "M_CS1",
+          "foreign_device": "S_RN",
+          "foreign_net": "QN",
+          "gap_dbu": 2800,
+          "layer": 50,
+          "net": "M_SE"
+        },
+        {
+          "device": "M_DP",
+          "foreign_device": "M_DP",
+          "foreign_net": "LP",
+          "gap_dbu": 3580,
+          "layer": 126,
+          "net": "M_SE"
+        },
+        {
+          "device": "M_DN",
+          "foreign_device": "M_DN",
+          "foreign_net": "LN",
+          "gap_dbu": 3580,
+          "layer": 126,
+          "net": "M_SE"
+        },
+        {
+          "device": "M_BS",
+          "foreign_device": "M_BS",
+          "foreign_net": "AVSS",
+          "gap_dbu": 3580,
+          "layer": 126,
+          "net": "M_SE"
+        },
+        {
+          "device": "M_CS0",
+          "foreign_device": "M_CS0",
+          "foreign_net": "CLKN",
+          "gap_dbu": 3580,
+          "layer": 126,
+          "net": "M_SE"
+        },
+        {
+          "device": "M_CS0",
+          "foreign_device": "M_CS0",
+          "foreign_net": "CLKN",
+          "gap_dbu": 3580,
+          "layer": 126,
+          "net": "M_TE"
+        },
+        {
+          "device": "M_CS1",
+          "foreign_device": "M_CS1",
+          "foreign_net": "CLKN",
+          "gap_dbu": 3580,
+          "layer": 126,
+          "net": "M_SE"
+        }
+      ],
+      "minimum_gap_dbu": 2580,
+      "via_clearance": false
+    }
+  },
+  "status": "PASS_SOURCE_CONTROLS_ONLY"
+}
