@@ -1,0 +1,16 @@
+name: Fixed engine original chip routing preparation
+on:
+  workflow_dispatch:
+    inputs:
+      prepare:
+        description: Reserved four-phase preparation on reviewed topic source only
+        required: true
+        type: boolean
+        default: false
+permissions: {}
+jobs:
+  registered-only:
+    if: ${{ false }}
+    runs-on: ubuntu-24.04
+    steps:
+      - run: exit 1
