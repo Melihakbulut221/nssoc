@@ -245,3 +245,30 @@ def prefix_complete(records,ownership):
                 original_clock_count=1691,only_mutable=list(repair.TARGETS),
                 native_routing_executed=False,physical_acceptance=False,observer_equivalence_qualified=False)
 
+
+def control_evidence(root,ctx):
+    name="fixed-route-prefix-controls.json"
+    raw=secure_file(root,name).read_bytes();r=decode(raw)
+    expected=dict(source=ctx["source"],run_id=int(ctx["token"].split("-")[0]),attempt=1,
+      source_controls_only=True,native_executed=False)
+    require(r["status"]=="PASS_FIXED_ENGINE_ROUTE_PREFIX_SOURCE_CONTROLS"
+      and r["current_context"]==expected,"current prefix source context/status")
+    require(all(r[k]is False for k in ("native_executed","native_prefix_executed","native_routing_executed",
+      "actual_runtime_probe_executed","prefix_qualified","observer_equivalence_qualified","physical_acceptance")),"current prefix control scope")
+    for key,positive,refusal in (("context_controls",1,11),("authority_controls",3,54)):
+        require(r[key]["positive_count"]==positive and r[key]["refusal_count"]==refusal,"current prefix "+key)
+    driver=r["actual_driver_controls"]
+    require(driver["sequencing_count"]==6 and driver["lifecycle_count"]==8
+      and driver["path_controls"]["positive_paths"]==3 and driver["path_controls"]["refused_paths"]==13
+      and driver["path_controls"]["actual_native_executed"]is False and driver["native_executed"]is False,"current actual driver controls")
+    proof=r["runtime_proof_controls"]
+    require((proof["positive_count"],proof["proof_file_count"],proof["refusal_count"],proof["source_refusal_count"])==(1,48,50,5)
+      and proof["actual_native_archive_acquired"]is False,"current runtime proof controls")
+    publication=r["publication_controls"]
+    require(publication["status"]=="PASS_ACTUAL_FAILURE_AND_EMPTY_PUBLICATION_CONTROLS"
+      and publication["count"]==7 and publication["actual_new_prefix_publish_and_pack"]is True,"current prefix publication controls")
+    old=r["original_prefix_controls"]
+    require(old["status"]=="PASS_SHARED_PREFIX_SOURCE_CONTROLS"
+      and(old["positive_count"],old["refusal_count"],len(old["sequencing_cases"]),old["lifecycle_count"])==(4,23,6,8)
+      and all(old[k]is False for k in ("native_prefix_executed","native_routing_executed","physical_acceptance")),"original prefix controls")
+    return {name:dict(bytes=len(raw),sha256=digest(raw))}
