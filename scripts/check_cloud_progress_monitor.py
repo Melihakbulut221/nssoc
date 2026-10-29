@@ -666,5 +666,180 @@ class ShardedInventoryControls(unittest.TestCase):
             self.assertTrue(all(path.startswith(("contents/","git/ref/heads/")) for _,path in api.calls))
 
 
+
+# Exact compact projections of root109's mixed inventory and observed API metadata.
+# Source-only fixtures: no live/cloud/native I/O is performed by these controls.
+MAIN_OBSERVATION_FIXTURE = json.loads('{\n  "source_commit": "958d59820e2f24e69cbb158d1c9d6dd7f962a081",\n  "rows": [\n    {\n      "label": "Mainchip detailed routing",\n      "run": 40095811631,\n      "branch": "codex/complete-open-work",\n      "head_sha": "4d85722e05fbda8440c6577d7d7baa18a642485b",\n      "production_jobs": [\n        "continuation"\n      ]\n    },\n    {\n      "label": "monitor-live-sharded-inventory",\n      "run": 40783413345,\n      "branch": "main",\n      "head_sha": "5259d3decb710c850a7695940fdc4a7eba9f5154",\n      "production_jobs": [\n        "controls",\n        "observe"\n      ]\n    },\n    {\n      "label": "cdr-selector-width-default-harmless-diagnostic",\n      "run": 40786525718,\n      "branch": "main",\n      "head_sha": "e4b8d914659934617e93c7a99121d4d65d7f3401",\n      "production_jobs": [\n        "register-only"\n      ]\n    }\n  ],\n  "observed": {\n    "40783413345": {\n      "run": {\n        "id": 40783413345,\n        "name": "cloud-progress-monitor",\n        "head_sha": "5259d3decb710c850a7695940fdc4a7eba9f5154",\n        "head_branch": "main",\n        "run_attempt": 1,\n        "path": ".github/workflows/cloud-progress-monitor.yml",\n        "workflow_id": 394905294,\n        "status": "completed",\n        "conclusion": "failure",\n        "event": "workflow_dispatch",\n        "created_at": "2026-10-28T22:53:53Z",\n        "run_started_at": "2026-10-28T22:53:53Z",\n        "updated_at": "2026-10-28T23:01:55Z",\n        "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/40783413345"\n      },\n      "jobs": [\n        {\n          "id": 123150507461,\n          "name": "controls",\n          "status": "completed",\n          "started_at": "2026-10-28T22:53:57Z",\n          "completed_at": "2026-10-28T22:54:04Z",\n          "conclusion": "success",\n          "steps": [\n            {\n              "name": "Set up job",\n              "status": "completed",\n              "conclusion": "success",\n              "number": 1,\n              "started_at": "2026-10-28T22:53:58Z",\n              "completed_at": "2026-10-28T22:53:59Z"\n            },\n            {\n              "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",\n              "status": "completed",\n              "conclusion": "success",\n              "number": 2,\n              "started_at": "2026-10-28T22:53:59Z",\n              "completed_at": "2026-10-28T22:54:01Z"\n            },\n            {\n              "name": "Mock API controls including duplicates, active work, failures and source corruption",\n              "status": "completed",\n              "conclusion": "success",\n              "number": 3,\n              "started_at": "2026-10-28T22:54:01Z",\n              "completed_at": "2026-10-28T22:54:01Z"\n            },\n            {\n              "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",\n              "status": "completed",\n              "conclusion": "success",\n              "number": 6,\n              "started_at": "2026-10-28T22:54:01Z",\n              "completed_at": "2026-10-28T22:54:01Z"\n            },\n            {\n              "name": "Complete job",\n              "status": "completed",\n              "conclusion": "success",\n              "number": 7,\n              "started_at": "2026-10-28T22:54:01Z",\n              "completed_at": "2026-10-28T22:54:01Z"\n            }\n          ]\n        },\n        {\n          "id": 123150570369,\n          "name": "observe",\n          "status": "completed",\n          "started_at": "2026-10-28T22:54:07Z",\n          "completed_at": "2026-10-28T23:01:54Z",\n          "conclusion": "failure",\n          "steps": [\n            {\n              "name": "Set up job",\n              "status": "completed",\n              "conclusion": "success",\n              "number": 1,\n              "started_at": "2026-10-28T22:54:08Z",\n              "completed_at": "2026-10-28T22:54:09Z"\n            },\n            {\n              "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",\n              "status": "completed",\n              "conclusion": "success",\n              "number": 2,\n              "started_at": "2026-10-28T22:54:09Z",\n              "completed_at": "2026-10-28T22:54:10Z"\n            },\n            {\n              "name": "Observe authoritative cloud work without native dispatch",\n              "status": "completed",\n              "conclusion": "failure",\n              "number": 3,\n              "started_at": "2026-10-28T22:54:10Z",\n              "completed_at": "2026-10-28T23:01:50Z"\n            },\n            {\n              "name": "Require the live working-branch inventory on main",\n              "status": "completed",\n              "conclusion": "success",\n              "number": 4,\n              "started_at": "2026-10-28T23:01:50Z",\n              "completed_at": "2026-10-28T23:01:50Z"\n            },\n            {\n              "name": "Persist the bounded cloud snapshot",\n              "status": "completed",\n              "conclusion": "success",\n              "number": 5,\n              "started_at": "2026-10-28T23:01:50Z",\n              "completed_at": "2026-10-28T23:01:51Z"\n            },\n            {\n              "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",\n              "status": "completed",\n              "conclusion": "success",\n              "number": 10,\n              "started_at": "2026-10-28T23:01:51Z",\n              "completed_at": "2026-10-28T23:01:52Z"\n            },\n            {\n              "name": "Complete job",\n              "status": "completed",\n              "conclusion": "success",\n              "number": 11,\n              "started_at": "2026-10-28T23:01:52Z",\n              "completed_at": "2026-10-28T23:01:52Z"\n            }\n          ]\n        }\n      ]\n    },\n    "40786525718": {\n      "run": {\n        "id": 40786525718,\n        "name": "CDR selector column width source controls",\n        "head_sha": "e4b8d914659934617e93c7a99121d4d65d7f3401",\n        "head_branch": "main",\n        "run_attempt": 1,\n        "path": ".github/workflows/cdr-v59-selector-column-width-cloud.yml",\n        "workflow_id": 399990996,\n        "status": "completed",\n        "conclusion": "success",\n        "event": "workflow_dispatch",\n        "created_at": "2026-10-28T23:19:23Z",\n        "run_started_at": "2026-10-28T23:19:23Z",\n        "updated_at": "2026-10-28T23:19:31Z",\n        "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/40786525718"\n      },\n      "jobs": [\n        {\n          "id": 123160997909,\n          "name": "register-only",\n          "status": "completed",\n          "started_at": "2026-10-28T23:19:27Z",\n          "completed_at": "2026-10-28T23:19:30Z",\n          "conclusion": "success",\n          "steps": [\n            {\n              "name": "Set up job",\n              "status": "completed",\n              "conclusion": "success",\n              "number": 1,\n              "started_at": "2026-10-28T23:19:27Z",\n              "completed_at": "2026-10-28T23:19:27Z"\n            },\n            {\n              "name": "Run printf \'%s\\\\n\' \'Workflow registration only; no checkout, tests, archive retrieval or native execution.\'",\n              "status": "completed",\n              "conclusion": "success",\n              "number": 2,\n              "started_at": "2026-10-28T23:19:27Z",\n              "completed_at": "2026-10-28T23:19:28Z"\n            },\n            {\n              "name": "Complete job",\n              "status": "completed",\n              "conclusion": "success",\n              "number": 3,\n              "started_at": "2026-10-28T23:19:28Z",\n              "completed_at": "2026-10-28T23:19:28Z"\n            }\n          ]\n        }\n      ]\n    }\n  }\n}\n')
+FROZEN_CONFIG = 'def check_config(config):\n    assert config["schema"] == 1 and config["repository"] == REPO\n    assert type(config.get("inventory_version")) is int and config["inventory_version"] > 0\n    assert config.get("inventory_updated_at") and time_value(config["inventory_updated_at"])\n    assert config["target_branch"] == "codex/complete-open-work"\n    assert config["stall_seconds"] == 21600\n    seen = set()\n    for item in config["runs"]:\n        assert type(item["run"]) is int and item["run"] > 0 and item["run"] not in seen\n        seen.add(item["run"])\n        assert item["label"] and re.fullmatch(r"[0-9a-f]{40}", item["head_sha"])\n        assert item["branch"].startswith("codex/")\n    for item in config["latest_workflows"]:\n        assert re.fullmatch(r"[a-z0-9-]+\\.yml", item["workflow"])\n        assert item["branch"] == config["target_branch"]\n        assert isinstance(item["optional"], bool)\n        assert item.get("event") in (None, "push", "workflow_dispatch")\n        assert isinstance(item.get("production_jobs", []), list)\n    assert config["automatic_native_dispatch"] is False\n'
+FROZEN_CONFIG_SHA256 = "529e02a8e3920de88a0d74dc9b7a6bdd8e7e7b2df627bee0876dee7bf87a9119"
+
+
+def mixed_main_config():
+    value = config()
+    value["runs"] = copy.deepcopy(MAIN_OBSERVATION_FIXTURE["rows"])
+    return value
+
+
+class MainObservationAPI(FullRunAPI):
+    """Actual collect path; exact main metadata plus one synthetic active codex row."""
+    def __init__(self, value=None):
+        super().__init__(value or mixed_main_config())
+        self.observed = copy.deepcopy(MAIN_OBSERVATION_FIXTURE["observed"])
+
+    def get(self, path):
+        if path.startswith("actions/runs/"):
+            key = path.rsplit("/", 1)[1]
+            if key in self.observed:
+                self.calls.append(("get", path))
+                return copy.deepcopy(self.observed[key]["run"])
+        return super().get(path)
+
+    def pages(self, path, key, maximum=1000):
+        rid = path.split("/")[2]
+        if rid in self.observed:
+            self.calls.append(("pages", path))
+            assert path == "actions/runs/" + rid + "/attempts/1/jobs" and key == "jobs"
+            return copy.deepcopy(self.observed[rid]["jobs"])
+        return super().pages(path, key, maximum)
+
+    def maybe(self, path):
+        raise AssertionError("No release/artifact/native request allowed by mixed fixture: " + path)
+
+
+class MainObservationControls(unittest.TestCase):
+    monitor_id = 40783413345
+    other_id = 40786525718
+
+    def observed(self, api, value=None):
+        result = m.collect(api, value or mixed_main_config(), NOW)
+        self.assertEqual([r["id"] for r in result["runs"]], [r["run"] for r in (value or mixed_main_config())["runs"]])
+        self.assertFalse(result["automatic_native_dispatch"])
+        self.assertFalse(result["full_phy_accepted"])
+        self.assertFalse(result["final_timing_accepted"])
+        self.assertTrue(all(path.startswith(("git/ref/heads/", "actions/runs/")) for _, path in api.calls))
+        return result
+
+    def test_exact_old_main_assertion_and_actual_mixed_rows_retained(self):
+        self.assertEqual(hashlib.sha256(FROZEN_CONFIG.encode()).hexdigest(), FROZEN_CONFIG_SHA256)
+        namespace = dict(vars(m))
+        exec(compile(FROZEN_CONFIG, "frozen-monitor-check-config-46df418b.py", "exec"), namespace)
+        value = mixed_main_config()
+        with self.assertRaises(AssertionError) as caught:
+            namespace["check_config"](value)
+        self.assertEqual(str(caught.exception), "")
+        m.check_config(value)
+        result = self.observed(MainObservationAPI(), value)
+        self.assertEqual([r["classification"] for r in result["runs"]], ["RUNNING", "FAILED", "UNVERIFIED_REF"])
+        self.assertEqual(result["problem_runs"], [self.monitor_id, self.other_id])
+        self.assertEqual(result["status"], "ATTENTION_REQUIRED")
+        self.assertEqual(result["runs"][1]["conclusion"], "failure")
+        self.assertEqual(result["runs"][2]["conclusion"], "success")
+        self.assertIn("exactly controls/observe", result["runs"][2]["reason"])
+        self.assertEqual(result["runs"][1]["reports"], [])
+        self.assertEqual(result["runs"][2]["reports"], [])
+
+    def test_actual_schema2_assembly_preserves_all_mixed_handles(self):
+        value = mixed_main_config()
+        _, bodies = shard_bundle(value)
+        loaded, proof = m.load_config(InventoryAPI(bodies), config())
+        self.assertEqual(loaded, value)
+        self.assertFalse(proof["bootstrap"])
+        self.assertEqual(self.observed(MainObservationAPI(loaded), loaded)["runs"][2]["classification"], "UNVERIFIED_REF")
+
+    def test_successful_monitor_is_read_only_not_native_publication(self):
+        api = MainObservationAPI()
+        record = api.observed[str(self.monitor_id)]
+        record["run"]["conclusion"] = "success"
+        for j in record["jobs"]: j["conclusion"] = "success"
+        result = self.observed(api)
+        row = result["runs"][1]
+        self.assertEqual(row["classification"], "COMPLETED_MONITOR")
+        self.assertFalse(row["publication_verified"])
+        self.assertEqual(row["reports"], [])
+        self.assertEqual(result["problem_runs"], [self.other_id])
+
+    def test_exact_workflow_event_and_job_identity_refusals(self):
+        cases = (
+            ("workflow-id", lambda i, r, j: r.update(workflow_id=399990996)),
+            ("workflow-id-type", lambda i, r, j: r.update(workflow_id=str(m.WORKFLOW_ID))),
+            ("workflow-path", lambda i, r, j: r.update(path=".github/workflows/native.yml")),
+            ("event", lambda i, r, j: r.update(event="push")),
+            ("required-empty", lambda i, r, j: i.update(production_jobs=[])),
+            ("required-null", lambda i, r, j: i.update(production_jobs=None)),
+            ("required-string", lambda i, r, j: i.update(production_jobs="controls observe")),
+            ("required-native", lambda i, r, j: i.update(production_jobs=["controls", "native"])),
+            ("required-duplicate", lambda i, r, j: i.update(production_jobs=["controls", "controls"])),
+            ("actual-job", lambda i, r, j: j[1].update(name="native")),
+            ("actual-duplicate", lambda i, r, j: j[1].update(name="controls")),
+            ("completed-missing-job", lambda i, r, j: j.pop()),
+        )
+        for name, change in cases:
+            with self.subTest(name=name):
+                value = mixed_main_config(); api = MainObservationAPI(value)
+                record = api.observed[str(self.monitor_id)]
+                change(value["runs"][1], record["run"], record["jobs"])
+                result = self.observed(api, value)
+                self.assertEqual(result["runs"][1]["classification"], "UNVERIFIED_REF")
+                self.assertTrue(result["runs"][1]["reason"])
+                self.assertIn(self.monitor_id, result["problem_runs"])
+
+    def test_unrelated_main_cannot_impersonate_monitor_with_job_names(self):
+        value = mixed_main_config(); value["runs"][2]["production_jobs"] = ["controls", "observe"]
+        api = MainObservationAPI(value)
+        actual = api.observed[str(self.other_id)]
+        actual["jobs"] = copy.deepcopy(api.observed[str(self.monitor_id)]["jobs"])
+        result = self.observed(api, value)
+        self.assertEqual(result["runs"][2]["classification"], "UNVERIFIED_REF")
+        self.assertIn("pinned read-only", result["runs"][2]["reason"])
+
+    def test_main_source_branch_and_run_id_mismatch_still_refused(self):
+        for key, changed in (("head_sha", "b" * 40), ("head_branch", "codex/other"), ("id", 999)):
+            with self.subTest(key=key):
+                api = MainObservationAPI(); api.observed[str(self.monitor_id)]["run"][key] = changed
+                with self.assertRaisesRegex(AssertionError, "ID/source/branch differs"):
+                    m.collect(api, mixed_main_config(), NOW)
+                self.assertTrue(all(path.startswith(("git/ref/heads/", "actions/runs/")) for _, path in api.calls))
+
+    def test_other_branch_refs_still_rejected(self):
+        for branch in ("master", "refs/heads/main", "release/stable", "", None):
+            with self.subTest(branch=branch):
+                value = mixed_main_config(); value["runs"][1]["branch"] = branch
+                with self.assertRaisesRegex(AssertionError, "Unapproved inventory branch"):
+                    m.check_config(value)
+
+    def test_partial_active_and_skipped_monitor_are_not_success(self):
+        api = MainObservationAPI(); record = api.observed[str(self.monitor_id)]
+        record["run"].update(status="in_progress", conclusion=None)
+        record["jobs"] = record["jobs"][:1]
+        self.assertEqual(self.observed(api)["runs"][1]["classification"], "RUNNING")
+        for skipped in ("observe", "controls"):
+            with self.subTest(skipped=skipped):
+                api = MainObservationAPI(); record = api.observed[str(self.monitor_id)]
+                record["run"]["conclusion"] = "success"
+                for j in record["jobs"]: j["conclusion"] = "skipped" if j["name"] == skipped else "success"
+                self.assertEqual(self.observed(api)["runs"][1]["classification"], "NOT_EXECUTED")
+
+    def test_actual_main_empty_assertion_has_durable_diagnostic_and_same_error(self):
+        import os
+        import tempfile
+        from unittest.mock import patch
+        failure = AssertionError()
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp); bootstrap = base / "bootstrap.json"
+            bootstrap.write_bytes(inventory_json(config()))
+            output = base / "result"; summary = base / "summary.md"
+            with patch.object(m, "API", return_value=object()), patch.object(m, "load_config", side_effect=failure), patch.object(m, "collect") as collect:
+                with patch.dict(os.environ, dict(GITHUB_ACTIONS="true", RUNNER_ENVIRONMENT="github-hosted",
+                    GITHUB_REPOSITORY=m.REPO, GH_TOKEN="fixture", GITHUB_RUN_ID="999", GITHUB_STEP_SUMMARY=str(summary))):
+                    with patch.object(sys, "argv", ["monitor", "--config", str(bootstrap), "--out", str(output)]):
+                        with self.assertRaises(AssertionError) as caught: m.main()
+                self.assertIs(caught.exception, failure); collect.assert_not_called()
+            saved = json.loads((output / "result.json").read_text())
+            self.assertEqual(saved["status"], "MONITOR_ERROR")
+            self.assertEqual(saved["error"], "AssertionError: AssertionError()")
+            self.assertIn(saved["error"], summary.read_text())
+            self.assertFalse(saved["automatic_native_dispatch"])
+            self.assertFalse(saved["full_phy_accepted"])
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

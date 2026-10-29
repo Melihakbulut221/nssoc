@@ -1,0 +1,402 @@
+{
+  "schema": "cloud-monitor-main-observation-source-review-v1",
+  "repository": "Melihakbulut221/nssoc",
+  "base_commit": "46df418b937535e1b28fa5c05cc83972f21cbf44",
+  "candidate_branch": "codex/cloud-monitor-main-observation",
+  "scope": "Bounded read-only main monitor observation and per-row refusal; no deployment, execution or native authority.",
+  "original_failure": {
+    "run_id": 40826302954,
+    "job_id": 123290054612,
+    "source": "2fbb767eadb9f5b7f8061268dc84a7866e9cb112",
+    "log_bytes": 16286,
+    "log_sha256": "330186b0488e6c4034acec344300d16eea80b125ccb97fde1df6e118d22baae7",
+    "line": 105,
+    "function": "check_config",
+    "assertion": "assert item[\"branch\"].startswith(\"codex/\")",
+    "exception": "AssertionError with empty message"
+  },
+  "authentic_inventory": {
+    "source_commit": "958d59820e2f24e69cbb158d1c9d6dd7f962a081",
+    "manifest": {
+      "path": ".github/cloud-progress-monitor.json",
+      "bytes": 1216,
+      "sha256": "178f3bc977c7cd1ab40dd39f0c56151865a7013c1400e5a1cf78ca38e545635f"
+    },
+    "shards": [
+      {
+        "path": ".github/cloud-progress-monitor-runs-000.json",
+        "blob_sha": "39526505d2aff2067748220cd8b93018d319aab8",
+        "sha256": "bd5dc5b0ad47cefa20b1bb07a3cd8dc92461ded516239b68851619d53f6e7335",
+        "bytes": 35671,
+        "run_count": 164
+      },
+      {
+        "path": ".github/cloud-progress-monitor-runs-001.json",
+        "blob_sha": "5d2d41207c67b099b3c110f98afeaef83198e5d8",
+        "sha256": "7baf4ad79cc158460a178ddc0a806486832ec5271cf8c136e916c2808a545a41",
+        "bytes": 36533,
+        "run_count": 165
+      }
+    ],
+    "run_count": 329,
+    "runs_sha256": "c784a6d6827bf4f600c8207f6879d0aced9b72ef0137550e993670505c1521d7",
+    "main_rows": [
+      {
+        "label": "monitor-live-sharded-inventory",
+        "run": 40783413345,
+        "branch": "main",
+        "head_sha": "5259d3decb710c850a7695940fdc4a7eba9f5154",
+        "production_jobs": [
+          "controls",
+          "observe"
+        ]
+      },
+      {
+        "label": "cdr-selector-width-default-harmless-diagnostic",
+        "run": 40786525718,
+        "branch": "main",
+        "head_sha": "e4b8d914659934617e93c7a99121d4d65d7f3401",
+        "production_jobs": [
+          "register-only"
+        ]
+      }
+    ],
+    "rows_deleted_or_modified": false
+  },
+  "main_workflow": {
+    "id": 394905294,
+    "path": ".github/workflows/cloud-progress-monitor.yml",
+    "jobs": [
+      "controls",
+      "observe"
+    ],
+    "events": [
+      "schedule",
+      "workflow_dispatch"
+    ],
+    "api_metadata_sha256": "4bbef65ae6ef46f11a248022553474f978bc883d02f0142dff6dfa41ecfdcc2f"
+  },
+  "actual_main_metadata_projections": {
+    "source_commit": "958d59820e2f24e69cbb158d1c9d6dd7f962a081",
+    "rows": [
+      {
+        "label": "Mainchip detailed routing",
+        "run": 40095811631,
+        "branch": "codex/complete-open-work",
+        "head_sha": "4d85722e05fbda8440c6577d7d7baa18a642485b",
+        "production_jobs": [
+          "continuation"
+        ]
+      },
+      {
+        "label": "monitor-live-sharded-inventory",
+        "run": 40783413345,
+        "branch": "main",
+        "head_sha": "5259d3decb710c850a7695940fdc4a7eba9f5154",
+        "production_jobs": [
+          "controls",
+          "observe"
+        ]
+      },
+      {
+        "label": "cdr-selector-width-default-harmless-diagnostic",
+        "run": 40786525718,
+        "branch": "main",
+        "head_sha": "e4b8d914659934617e93c7a99121d4d65d7f3401",
+        "production_jobs": [
+          "register-only"
+        ]
+      }
+    ],
+    "observed": {
+      "40783413345": {
+        "run": {
+          "id": 40783413345,
+          "name": "cloud-progress-monitor",
+          "head_sha": "5259d3decb710c850a7695940fdc4a7eba9f5154",
+          "head_branch": "main",
+          "run_attempt": 1,
+          "path": ".github/workflows/cloud-progress-monitor.yml",
+          "workflow_id": 394905294,
+          "status": "completed",
+          "conclusion": "failure",
+          "event": "workflow_dispatch",
+          "created_at": "2026-10-28T22:53:53Z",
+          "run_started_at": "2026-10-28T22:53:53Z",
+          "updated_at": "2026-10-28T23:01:55Z",
+          "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/40783413345"
+        },
+        "jobs": [
+          {
+            "id": 123150507461,
+            "name": "controls",
+            "status": "completed",
+            "started_at": "2026-10-28T22:53:57Z",
+            "completed_at": "2026-10-28T22:54:04Z",
+            "conclusion": "success",
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1,
+                "started_at": "2026-10-28T22:53:58Z",
+                "completed_at": "2026-10-28T22:53:59Z"
+              },
+              {
+                "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2,
+                "started_at": "2026-10-28T22:53:59Z",
+                "completed_at": "2026-10-28T22:54:01Z"
+              },
+              {
+                "name": "Mock API controls including duplicates, active work, failures and source corruption",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3,
+                "started_at": "2026-10-28T22:54:01Z",
+                "completed_at": "2026-10-28T22:54:01Z"
+              },
+              {
+                "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 6,
+                "started_at": "2026-10-28T22:54:01Z",
+                "completed_at": "2026-10-28T22:54:01Z"
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 7,
+                "started_at": "2026-10-28T22:54:01Z",
+                "completed_at": "2026-10-28T22:54:01Z"
+              }
+            ]
+          },
+          {
+            "id": 123150570369,
+            "name": "observe",
+            "status": "completed",
+            "started_at": "2026-10-28T22:54:07Z",
+            "completed_at": "2026-10-28T23:01:54Z",
+            "conclusion": "failure",
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1,
+                "started_at": "2026-10-28T22:54:08Z",
+                "completed_at": "2026-10-28T22:54:09Z"
+              },
+              {
+                "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2,
+                "started_at": "2026-10-28T22:54:09Z",
+                "completed_at": "2026-10-28T22:54:10Z"
+              },
+              {
+                "name": "Observe authoritative cloud work without native dispatch",
+                "status": "completed",
+                "conclusion": "failure",
+                "number": 3,
+                "started_at": "2026-10-28T22:54:10Z",
+                "completed_at": "2026-10-28T23:01:50Z"
+              },
+              {
+                "name": "Require the live working-branch inventory on main",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 4,
+                "started_at": "2026-10-28T23:01:50Z",
+                "completed_at": "2026-10-28T23:01:50Z"
+              },
+              {
+                "name": "Persist the bounded cloud snapshot",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 5,
+                "started_at": "2026-10-28T23:01:50Z",
+                "completed_at": "2026-10-28T23:01:51Z"
+              },
+              {
+                "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 10,
+                "started_at": "2026-10-28T23:01:51Z",
+                "completed_at": "2026-10-28T23:01:52Z"
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 11,
+                "started_at": "2026-10-28T23:01:52Z",
+                "completed_at": "2026-10-28T23:01:52Z"
+              }
+            ]
+          }
+        ]
+      },
+      "40786525718": {
+        "run": {
+          "id": 40786525718,
+          "name": "CDR selector column width source controls",
+          "head_sha": "e4b8d914659934617e93c7a99121d4d65d7f3401",
+          "head_branch": "main",
+          "run_attempt": 1,
+          "path": ".github/workflows/cdr-v59-selector-column-width-cloud.yml",
+          "workflow_id": 399990996,
+          "status": "completed",
+          "conclusion": "success",
+          "event": "workflow_dispatch",
+          "created_at": "2026-10-28T23:19:23Z",
+          "run_started_at": "2026-10-28T23:19:23Z",
+          "updated_at": "2026-10-28T23:19:31Z",
+          "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/40786525718"
+        },
+        "jobs": [
+          {
+            "id": 123160997909,
+            "name": "register-only",
+            "status": "completed",
+            "started_at": "2026-10-28T23:19:27Z",
+            "completed_at": "2026-10-28T23:19:30Z",
+            "conclusion": "success",
+            "steps": [
+              {
+                "name": "Set up job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 1,
+                "started_at": "2026-10-28T23:19:27Z",
+                "completed_at": "2026-10-28T23:19:27Z"
+              },
+              {
+                "name": "Run printf '%s\\n' 'Workflow registration only; no checkout, tests, archive retrieval or native execution.'",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 2,
+                "started_at": "2026-10-28T23:19:27Z",
+                "completed_at": "2026-10-28T23:19:28Z"
+              },
+              {
+                "name": "Complete job",
+                "status": "completed",
+                "conclusion": "success",
+                "number": 3,
+                "started_at": "2026-10-28T23:19:28Z",
+                "completed_at": "2026-10-28T23:19:28Z"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "behavior": {
+    "existing_codex_collect_classify_and_publication_semantics": "unchanged",
+    "main_scope": "All main candidates retain source/head/branch checks. Only exact actual read-only monitor workflow and job identity accepted. Other main rows UNVERIFIED_REF with reason and no release/artifact/native reads.",
+    "failed_monitor": "Original Actions/job failure preserved as FAILED/FAILED_JOB.",
+    "successful_monitor": "COMPLETED_MONITOR only if both controls/observe jobs completed successfully; publication_verified remains false and no product acceptance.",
+    "skipped_monitor": "NOT_EXECUTED; never successful monitor observation.",
+    "unrelated_refs": "Still rejected in check_config with explicit reason.",
+    "empty_assertion": "Durable MONITOR_ERROR now includes exception type and repr fallback; original exception re-raised.",
+    "full_inventory": "No source inventory edit or dropped row. Invalid retained main record remains problem_runs/ATTENTION_REQUIRED."
+  },
+  "unchanged_boundaries": {
+    "API": "GET-only repository-scoped, redirect and auth removal rules unchanged",
+    "inventory_document_limit": 65536,
+    "snapshot_limit": 8388608,
+    "schedule": "17 */8 * * * unchanged",
+    "permissions": [
+      "contents:read",
+      "actions:read"
+    ],
+    "workflow_sha256": "b2dc03dc440b462fe493b76bc08e4e217dc28aa4566a6e0e3f81569312870d71",
+    "protected_296_fixture_sha256": "ce008b7e97abf71705706c0c9bed0d20eb6d6cbec813bf3dcb74e834b712dd37",
+    "production_definitions": [
+      "time_value",
+      "utc_now",
+      "SafeRedirect",
+      "API",
+      "inventory_document",
+      "assembled_inventory",
+      "load_config",
+      "classify",
+      "job_record",
+      "terminal_reports",
+      "select_runs",
+      "previous_snapshot",
+      "progress_signature",
+      "markdown"
+    ],
+    "changed_definitions": [
+      "check_config",
+      "collect",
+      "main"
+    ],
+    "new_definition": "main_monitor_refusal"
+  },
+  "authored_controls": {
+    "new_test_method_count": 9,
+    "new_test_methods": [
+      "test_exact_old_main_assertion_and_actual_mixed_rows_retained",
+      "test_actual_schema2_assembly_preserves_all_mixed_handles",
+      "test_successful_monitor_is_read_only_not_native_publication",
+      "test_exact_workflow_event_and_job_identity_refusals",
+      "test_unrelated_main_cannot_impersonate_monitor_with_job_names",
+      "test_main_source_branch_and_run_id_mismatch_still_refused",
+      "test_other_branch_refs_still_rejected",
+      "test_partial_active_and_skipped_monitor_are_not_success",
+      "test_actual_main_empty_assertion_has_durable_diagnostic_and_same_error"
+    ],
+    "unchanged_prior_test_count": 63,
+    "exact_old_check_config_sha256": "529e02a8e3920de88a0d74dc9b7a6bdd8e7e7b2df627bee0876dee7bf87a9119",
+    "compact_fixture_scope": "Exact root109 two main rows plus first codex row; main run/jobs fields are acquired API projections, active codex transport is explicitly synthetic. Actual 329-row document hashes and all rows authenticated during source review; new tests do not claim live329 execution.",
+    "targeted_mutations": {
+      "workflow_event_required_and_actual_jobs": 12,
+      "unrelated_main_spoof": 1,
+      "pinned_source_branch_run": 3,
+      "other_branch_refs": 5
+    },
+    "command": "python3 scripts/check_cloud_progress_monitor.py",
+    "execution_status": "Authored only, no imports/tests run locally or remotely in this task"
+  },
+  "source_files": {
+    "scripts/cloud_progress_monitor.py": {
+      "bytes": 29137,
+      "sha256": "96021bbdd7a55bb953cc89687bee9c633d5747bbe589fcf7c6bebaed67fdc66d",
+      "old_sha256": "c1c182a88212c54c745450316fe501a295c73115f1aa4f8ba377117499018607"
+    },
+    "scripts/check_cloud_progress_monitor.py": {
+      "bytes": 56014,
+      "sha256": "363c3f7e359d96f552653cd6a753102a68e5b6185eff17d489597ead68a40570",
+      "old_sha256": "1565cb3d7913f0625500b7a207c2d8300d965add9af16e3b1a79654373681f63"
+    }
+  },
+  "source_diffs": {
+    "scripts/cloud_progress_monitor.py": "--- base\n+++ candidate\n@@ -17,6 +17,8 @@\n \n REPO = \"Melihakbulut221/nssoc\"\n WORKFLOW = \".github/workflows/cloud-progress-monitor.yml\"\n+WORKFLOW_ID = 394905294\n+MONITOR_JOBS = frozenset((\"controls\", \"observe\"))\n ARTIFACT = \"cloud-progress-snapshot\"\n LIMIT = 8 * 1024 * 1024\n TERMINAL_BAD = {\"failure\", \"cancelled\", \"timed_out\", \"action_required\", \"startup_failure\", \"stale\"}\n@@ -102,7 +104,7 @@\n         assert type(item[\"run\"]) is int and item[\"run\"] > 0 and item[\"run\"] not in seen\n         seen.add(item[\"run\"])\n         assert item[\"label\"] and re.fullmatch(r\"[0-9a-f]{40}\", item[\"head_sha\"])\n-        assert item[\"branch\"].startswith(\"codex/\")\n+        assert type(item[\"branch\"]) is str and (item[\"branch\"].startswith(\"codex/\") or item[\"branch\"] == \"main\"), \"Unapproved inventory branch: \" + repr(item.get(\"branch\"))\n     for item in config[\"latest_workflows\"]:\n         assert re.fullmatch(r\"[a-z0-9-]+\\.yml\", item[\"workflow\"])\n         assert item[\"branch\"] == config[\"target_branch\"]\n@@ -360,6 +362,29 @@\n                json.dumps(r.get(\"metadata_skipped\", {}), sort_keys=True)) for r in item[\"reports\"]),\n     )\n \n+def main_monitor_refusal(item, run, jobs):\n+    \"\"\"Only this repository's actual read-only monitor may be observed on main.\n+\n+    Other historical main handles remain visible as rejected rows. They are not\n+    native results and must never trigger release or artifact acquisition.\n+    \"\"\"\n+    required = item.get(\"production_jobs\")\n+    if not (type(required) is list and len(required) == 2\n+            and all(type(name) is str for name in required)\n+            and set(required) == MONITOR_JOBS):\n+        return \"Main observation requires exactly controls/observe inventory jobs\"\n+    if type(run.get(\"workflow_id\")) is not int or run[\"workflow_id\"] != WORKFLOW_ID or run.get(\"path\") != WORKFLOW:\n+        return \"Main run is not the pinned read-only cloud-progress-monitor workflow\"\n+    if run.get(\"event\") not in (\"schedule\", \"workflow_dispatch\"):\n+        return \"Main monitor event is not scheduled or manually dispatched observation\"\n+    names = [j.get(\"name\") for j in jobs]\n+    if any(type(name) is not str or name not in MONITOR_JOBS for name in names) or len(names) != len(set(names)):\n+        return \"Main monitor contains an unrelated or duplicate job name\"\n+    if run[\"status\"] == \"completed\" and set(names) != MONITOR_JOBS:\n+        return \"Completed main monitor lacks its controls/observe jobs\"\n+    return None\n+\n+\n def collect(api, config, now, previous=None, configuration_source=None):\n     check_config(config)\n     branch = config[\"target_branch\"]\n@@ -380,14 +405,23 @@\n     }\n     for item in selected:\n         run = api.get(\"actions/runs/\" + str(item[\"run\"]))\n-        assert run[\"id\"] == item[\"run\"] and run[\"head_sha\"] == item[\"head_sha\"] and run[\"head_branch\"] == item[\"branch\"]\n+        assert run[\"id\"] == item[\"run\"] and run[\"head_sha\"] == item[\"head_sha\"] and run[\"head_branch\"] == item[\"branch\"], \"Observed run ID/source/branch differs from pinned inventory: \" + str(item[\"run\"])\n         jobs = api.pages(\"actions/runs/\" + str(run[\"id\"]) + \"/attempts/\" + str(run[\"run_attempt\"]) + \"/jobs\", \"jobs\")\n         category, reason = classify(run, jobs, now, config[\"stall_seconds\"])\n-        required_jobs = item.get(\"production_jobs\", [])\n+        main_observation = item[\"branch\"] == \"main\"\n+        refusal = main_monitor_refusal(item, run, jobs) if main_observation else None\n+        required_jobs = [] if refusal else item.get(\"production_jobs\", [])\n         production = [j for j in jobs if j[\"name\"] in required_jobs and j.get(\"conclusion\") != \"skipped\"]\n         if required_jobs and not production and category == \"COMPLETED_ACTIONS\":\n             category, reason = \"NOT_EXECUTED\", \"Production job absent or skipped; control-job success is not native completion\"\n-        reports = terminal_reports(api, run) if run[\"status\"] == \"completed\" else []\n+        if refusal:\n+            category, reason = \"UNVERIFIED_REF\", refusal\n+        elif main_observation and category == \"COMPLETED_ACTIONS\":\n+            if all(j.get(\"status\") == \"completed\" and j.get(\"conclusion\") == \"success\" for j in jobs):\n+                category, reason = \"COMPLETED_MONITOR\", \"Read-only monitor jobs succeeded; no native or product acceptance\"\n+            else:\n+                category, reason = \"NOT_EXECUTED\", \"Monitor controls/observe did not both complete successfully\"\n+        reports = terminal_reports(api, run) if run[\"status\"] == \"completed\" and not main_observation else []\n         statuses = [r.get(\"native_status\") or \"\" for r in reports]\n         if any(s.startswith((\"FAIL\", \"ERROR\", \"REJECT\")) for s in statuses):\n             category, reason = \"FAILED_NATIVE_REPORT\", \"A terminal native report explicitly failed\"\n@@ -454,13 +488,14 @@\n         previous = previous_snapshot(api, int(os.environ[\"GITHUB_RUN_ID\"]))\n         result = collect(api, config, utc_now(), previous, configuration_source)\n     except Exception as exc:\n+        detail = type(exc).__name__ + \": \" + (str(exc) or repr(exc))\n         result = {\"schema\": 1, \"repository\": REPO, \"target_branch\": config[\"target_branch\"],\n                   \"target_head\": (configuration_source or {}).get(\"head_sha\"), \"configuration_source\": configuration_source,\n                   \"runs\": [], \"observed_at\": utc_now().isoformat(),\n-                  \"status\": \"MONITOR_ERROR\", \"error\": str(exc), \"automatic_native_dispatch\": False,\n+                  \"status\": \"MONITOR_ERROR\", \"error\": detail, \"automatic_native_dispatch\": False,\n                   \"full_phy_accepted\": False, \"problem_runs\": []}\n         (args.out / \"result.json\").write_text(json.dumps(result, indent=2) + \"\\n\")\n-        Path(os.environ[\"GITHUB_STEP_SUMMARY\"]).write_text(\"Cloud observation failed: \" + str(exc) + \"\\nNo native work was changed.\\n\")\n+        Path(os.environ[\"GITHUB_STEP_SUMMARY\"]).write_text(\"Cloud observation failed: \" + detail + \"\\nNo native work was changed.\\n\")\n         raise\n     (args.out / \"result.json\").write_text(json.dumps(result, indent=2) + \"\\n\")\n     Path(os.environ[\"GITHUB_STEP_SUMMARY\"]).write_text(markdown(result))\n"
+  },
+  "execution": {
+    "source_AST_only": true,
+    "authored_imports_or_tests": false,
+    "local_files_created": false,
+    "native_assets_acquired": false,
+    "native_execution": false,
+    "workflow_dispatch": false,
+    "main_or_root_modified": false
+  },
+  "remaining_qualification": [
+    "Hosted source controls",
+    "Live monitor validation before deployment",
+    "Historical register-only main row intentionally remains an explicit warning; no native or timing acceptance"
+  ]
+}
