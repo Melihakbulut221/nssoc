@@ -23,8 +23,9 @@ class Region:
         return types.SimpleNamespace(is_empty=lambda:max(a,e)>=min(c,g)or max(b,f)>=min(d,i))
 FAKE=types.SimpleNamespace(Point=Point,Box=Box,Region=Region)
 
-def emitted(out):
-    lines=[];index=h.emit(out,lambda line,**kw:lines.append(line));parts=collections.defaultdict(list);ends={}
+def emitted(out,emit_impl=None):
+    if emit_impl is None:emit_impl=h.emit
+    lines=[];index=emit_impl(out,lambda line,**kw:lines.append(line));parts=collections.defaultdict(list);ends={}
     for line in lines:
         marker,raw=line.split(" ",1);obj=h.decode(raw)
         if marker=="CDR_ACCESS_OVERLAY_CHUNK":parts[obj["name"]].append(obj)
@@ -108,6 +109,8 @@ def controls(expected):
             (out/name).write_bytes(raw)
         yes("complete_zero_binary_malformed_emission",lambda:emitted(out))
         no("output_no_overwrite",lambda:h.run(ctx,{},b"",out,expected,base/"app"),"output no overwrite")
+        # Save the real production emitter before patching h.emit; avoid recursive mocks.
+        actual_emit=h.emit
         # Exercise actual run/finally publication paths, with native/cloud body explicitly synthetic.
         for mode in ("body","body_plus_emit","source_guard","terminal_save"):
             dest=base/mode;primary=RuntimeError("primary-"+mode);captured=[]
@@ -121,14 +124,20 @@ def controls(expected):
                 return original_write(path,raw)
             def emit(path,*args):
                 if mode=="body_plus_emit":raise OSError("secondary-emitter")
-                captured.append(emitted(path))
+                captured.append(emitted(path,actual_emit))
             with patch.object(h,"perform",body),patch.object(h,"source_guard",side_effect=primary if mode=="source_guard"else None),patch.object(h,"write",write),patch.object(h,"emit",emit):
                 try:h.run(ctx,{},b"",dest,expected,base/"app")
                 except RuntimeError as exc:assert exc is primary
                 else:raise AssertionError("primary failure lost")
             assert(dest/"empty.stderr").read_bytes()==b""and(dest/"native-raw.stdout").read_bytes()==b"raw\x00\xff"
             assert h.decode((dest/"readback-failure.json").read_bytes())["error"]["message"]==str(primary)
-            lifecycle.append(dict(name=mode,actual_run_and_finally=True,primary_preserved=True,output_retained=True))
+            expected_files={"empty.stderr","native-raw.stdout","readback-failure.json"}
+            assert {p.name for p in dest.iterdir()}==expected_files
+            if mode=="body_plus_emit":assert captured==[]
+            else:
+                assert len(captured)==1 and captured[0]=={name:h.pin(dest/name)for name in expected_files}
+            lifecycle.append(dict(name=mode,actual_run_and_finally=True,primary_preserved=True,output_retained=True,
+              complete_production_emission_verified=mode!="body_plus_emit",emission_injected_failure=mode=="body_plus_emit"))
         for broken in ("cleanup","stop","join"):
             events=[]
             def fail(which):
@@ -181,29 +190,69 @@ def controls(expected):
             assert "stop"in events and "join"in events and "cleanup"in events
             assert(dest/"supervision/access-overlay.stdout").read_bytes()==b"full synthetic stream"
             lifecycle.append(dict(name="actual_native_readback_"+mode,native_subprocess_and_cloud_explicitly_synthetic=True,complete_stream_retained=True))
+        finalizer=[]
+        for name,has_primary,write_failure,stdout_failure in (
+          ("primary_write",True,True,False),("primary_stdout",True,False,True),
+          ("primary_dual",True,True,True),("write_only",False,True,False),("stdout_only",False,False,True)):
+            path=base/("finalizer_"+name)/"report.json";lines=[]
+            primary=RuntimeError("original-controls-error")if has_primary else None
+            write_error=OSError("injected-final-report-write");stdout_error=BrokenPipeError("injected-final-report-stdout")
+            report=dict(status="FAIL_SYNTHETIC_FINALIZER_FIXTURE",native_executed=False,error="original-controls-error")
+            original_write=h.write
+            def save(target,raw):
+                if write_failure:raise write_error
+                return original_write(target,raw)
+            def writer(text,**kwargs):
+                if stdout_failure:raise stdout_error
+                lines.append(text)
+            with patch.object(h,"write",save):
+                try:finish_report(path,report,primary,writer)
+                except BaseException as exc:assert exc is (primary if has_primary else write_error if write_failure else stdout_error)
+                else:raise AssertionError("finalization error lost")
+            if not write_failure:assert path.read_bytes()==h.encode(report)
+            if not stdout_failure:assert lines==[h.encode(report).decode()]
+            finalizer.append(dict(name=name,actual_finish_report=True,primary_preserved=has_primary,
+              file_complete=not write_failure,stdout_complete=not stdout_failure))
+        assert len(finalizer)==5
     inherited_result=inherited.controls()
     assert inherited_result["counts"]==dict(positive=14,refusal=80,lifecycle=5)
     result=dict(status="PASS_CURRENT_ACCESS_OVERLAY_SOURCE_CONTROLS",passed=True,
       counts=dict(positive=len(positives),refusal=len(refusals),lifecycle=len(lifecycle)),
       positives=positives,refusals=refusals,lifecycle=lifecycle,original_archive_controls=inherited_result,
       synthetic_geometry_collaborators=True,actual_pya_geometry_tests_deferred_to_reserved_readback=True,
+      checker_finalization_cases=finalizer,checker_finalization_count=5,
       native_executed=False,physical_acceptance=False)
     assert result["counts"]==h.COUNTS,result["counts"]
     return result
 
+def finish_report(output,report,primary=None,writer=print):
+    """Try file and stdout independently; neither may replace an original error."""
+    errors=[];raw=None
+    try:raw=h.encode(report)
+    except BaseException as exc:errors.append(exc)
+    if raw is not None:
+        try:
+            output.parent.mkdir(parents=True,exist_ok=True);h.write(output,raw)
+        except BaseException as exc:errors.append(exc)
+        try:writer(raw.decode(),end="",flush=True)
+        except BaseException as exc:errors.append(exc)
+    else:
+        try:writer("CDR_ACCESS_OVERLAY_CONTROL_ENCODING_FAILURE "+repr(dict(
+          primary_error=None if primary is None else repr(primary),report=report,
+          errors=[repr(e)for e in errors])),flush=True)
+        except BaseException as exc:errors.append(exc)
+    if primary is not None:raise primary
+    if errors:raise errors[0]
+
 def main():
     parser=argparse.ArgumentParser();parser.add_argument("--pins-sha256",required=True);parser.add_argument("--output",type=Path,required=True)
-    args=parser.parse_args();ctx=h.context(os.environ);report=None
+    args=parser.parse_args();ctx=h.context(os.environ);primary=None
     current=dict(source=ctx["source"],run_id=ctx["run_id"],attempt=1,source_controls_only=True,native_executed=False)
     try:
         report=controls(args.pins_sha256);report["current_context"]=current
     except BaseException as exc:
+        primary=exc
         report=dict(status="FAIL_CURRENT_ACCESS_OVERLAY_SOURCE_CONTROLS",passed=False,error=repr(exc),
           traceback=traceback.format_exc(),current_context=current,native_executed=False,physical_acceptance=False)
-        raise
-    finally:
-        if report is not None:
-            raw=h.encode(report);args.output.parent.mkdir(parents=True,exist_ok=True)
-            try:h.write(args.output,raw)
-            finally:print(raw.decode(),end="",flush=True)
+    finish_report(args.output,report,primary)
 if __name__=="__main__":main()

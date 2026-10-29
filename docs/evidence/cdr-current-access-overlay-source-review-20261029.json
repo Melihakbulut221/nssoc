@@ -24,8 +24,8 @@
       "sha256": "5e93d54e460fbaab0609d53b822c5ae7cc34000b59c12268fd7c21a46e19ba8e"
     },
     "scripts/check_cdr_current_access_overlay.py": {
-      "bytes": 15357,
-      "sha256": "b0105d7f9f2351ffc95a44f1616af9b72f40c35fe581454b96faf25e48993ec4"
+      "bytes": 18430,
+      "sha256": "7bdafbcef98a6ab23b1e10596f655349174262c7c810c88aa175a23318aeaeb0"
     },
     "scripts/cdr-current-access-overlay-inputs.json": {
       "bytes": 4119,
@@ -275,7 +275,9 @@
       "complete zero-byte/binary/malformed output chunk reconstruction",
       "actual run/finally primary error, emitter/source/final-save failures",
       "actual independent cleanup/STOP/join failure paths",
-      "actual native_readback path with explicitly synthetic launcher/supervisor/cloud/native I/O, cleanup/save primary preservation and wrong budget event refusal"
+      "actual native_readback path with explicitly synthetic launcher/supervisor/cloud/native I/O, cleanup/save primary preservation and wrong budget event refusal",
+      "Real production emission called through saved original reference during three primary-failure fixtures, with exact full three-file hash-map equality.",
+      "Actual finish_report file/stdout/both failure paths preserve primary exception and independently retain the available report channel; five separate cases."
     ],
     "native_or_cloud_collaborators": "Explicitly synthetic in source tests; no claim of real capsule/native extraction.",
     "current_context": {
@@ -284,7 +286,9 @@
       "attempt": 1,
       "source_controls_only": true,
       "native_executed": false
-    }
+    },
+    "checker_finalization_count": 5,
+    "checker_finalization_field": "checker_finalization_cases"
   },
   "CLI": {
     "checker": "python -B scripts/check_cdr_current_access_overlay.py --pins-sha256 MANIFEST_SHA --output overlay-controls.json",
@@ -315,5 +319,50 @@
     "original_files_unchanged": true,
     "publication_validation": "Author must re-fetch/hash all six new files and compare exact additive-only diff before reporting.",
     "API_CAS_and_readback_required": true
+  },
+  "static_review_amendment": {
+    "parent": "d9cfd12dc18338e66e13612fbecd081a48d4ae98",
+    "date": "2026-10-30",
+    "original_checker": {
+      "bytes": 15357,
+      "sha256": "b0105d7f9f2351ffc95a44f1616af9b72f40c35fe581454b96faf25e48993ec4"
+    },
+    "amended_checker": {
+      "bytes": 18430,
+      "sha256": "7bdafbcef98a6ab23b1e10596f655349174262c7c810c88aa175a23318aeaeb0"
+    },
+    "findings": [
+      {
+        "kind": "test harness recursion",
+        "cause": "Patched h.emit called emitted(), which called patched h.emit recursively; active primary errors could suppress RecursionError and captured was unchecked.",
+        "correction": "emitted accepts an emitter implementation; fixtures retain actual production h.emit before patching and assert complete captured file map for body/source_guard/terminal_save. Intentional body_plus_emit failure remains explicit."
+      },
+      {
+        "kind": "checker primary preservation",
+        "cause": "Main finally file/stdout errors could replace an original controls failure.",
+        "correction": "finish_report independently attempts exact file and stdout output and raises the original error first. Five authored helper-path fault cases cover file/stdout/dual failures."
+      }
+    ],
+    "production_host_and_native_unchanged": true,
+    "configuration_and_scope_unchanged": true,
+    "count_schema": {
+      "existing": {
+        "positive": 11,
+        "refusal": 33,
+        "lifecycle": 11
+      },
+      "additional_checker_finalization_count": 5,
+      "inherited": {
+        "positive": 14,
+        "refusal": 80,
+        "lifecycle": 5
+      }
+    },
+    "geometric_review": "No concrete false physical/edge-attribution acceptance found in the bounded static second pass. Existing full input hashes, full conductor unions, target native bindings and explicit point ambiguity remain unchanged. Actual pinned runtime observation still unexecuted.",
+    "local_authored_execution": false,
+    "local_imports": false,
+    "local_native_acquisition": false,
+    "local_tests": false,
+    "dispatch": false
   }
 }
