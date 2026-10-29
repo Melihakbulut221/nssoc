@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v112
+# Cloud continuation — checkpoint v113
 
-Updated: 2026-10-29T10:35:17.378579+00:00
+Updated: 2026-10-29T10:46:14.549059+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-New fixed-engine runtime source controls40857653668 passed4positive/48refusal/6process/7inner lifecycle and7publication+1positive/13current-record controls after initial40856758871 exposed missing producer-method projection. Complete failed and passed proof retained. Native read-only actual-chip probe40858216637 runs exact1812666 with1022protected files; reserved public prerelease427727176 before acquisition. No routing/timing/PHY acceptance. Additive successor prefix wrappers are prepared separately after identifying stale frozen-module and empty-publication traps.
+Actual NEW2a343c ELF runtime40858216637 PASSED on original444f full chip:143820nets/153130instances,13,905,578raw opcode/data pairs,104exact runtime dependencies,100engine members/94original input members,unchanged source/ELF/input andzero OOM. Peak1,012,510,720B;125.50s host/46.22s inner. Complete48proof792,364B at6d8fb011,receipt d7a4bccb; native45-member archive stays release427727176. This qualifies read-only runtime only. Additive fresh-prefix wrappers f77c7af0 preserve original restoration and four-phase bodies; contract/proof integration and hosted controls are next. Full serial PHY, actual repaired routing and final timing remain open.
 
-Active handles at this snapshot: 40858216637 in_progress
+Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -8956,5 +8957,12 @@ Local project/tmp/native processes verified absent. Inventory334 exact cloud han
 ### 2026-10-29T10:35:17.378579+00:00 — cloud-only checkpoint v112
 
 New fixed-engine runtime source controls40857653668 passed4positive/48refusal/6process/7inner lifecycle and7publication+1positive/13current-record controls after initial40856758871 exposed missing producer-method projection. Complete failed and passed proof retained. Native read-only actual-chip probe40858216637 runs exact1812666 with1022protected files; reserved public prerelease427727176 before acquisition. No routing/timing/PHY acceptance. Additive successor prefix wrappers are prepared separately after identifying stale frozen-module and empty-publication traps.
+
+Local project/tmp/native processes verified absent. Inventory337 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T10:46:14.549059+00:00 — cloud-only checkpoint v113
+
+Actual NEW2a343c ELF runtime40858216637 PASSED on original444f full chip:143820nets/153130instances,13,905,578raw opcode/data pairs,104exact runtime dependencies,100engine members/94original input members,unchanged source/ELF/input andzero OOM. Peak1,012,510,720B;125.50s host/46.22s inner. Complete48proof792,364B at6d8fb011,receipt d7a4bccb; native45-member archive stays release427727176. This qualifies read-only runtime only. Additive fresh-prefix wrappers f77c7af0 preserve original restoration and four-phase bodies; contract/proof integration and hosted controls are next. Full serial PHY, actual repaired routing and final timing remain open.
 
 Local project/tmp/native processes verified absent. Inventory337 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
