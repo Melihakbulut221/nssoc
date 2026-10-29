@@ -200,7 +200,7 @@ def inspect():
     baseline=all(c["original"]["all_pins_share_one_wire_component"]for c in cases.values())
     after=[c["exclude_short_rectangle"]["all_pins_share_one_wire_component"]for c in cases.values()]
     status="BASELINE_CONNECTIVITY_UNQUALIFIED"if not baseline else(
-      "OBSERVED_RECTANGLE_EXCLUSION_DISCONNECTS_PINS_IN_BOTH_MODELS"if not any(after)else(
+      "NO_SINGLE_SHARED_WIRE_COMPONENT_AFTER_EXCLUSION_IN_BOTH_MODELS"if not any(after)else(
       "OBSERVED_PIN_CONNECTIVITY_SURVIVES_RECTANGLE_EXCLUSION_NOT_REPAIR"if all(after)else
       "MODE_DEPENDENT_CONNECTIVITY_UNQUALIFIED"))
     return dict(status="PASS_NET459_DERIVED_CONNECTIVITY_OBSERVATION_ONLY",finding=status,input_proof=proof,cases=cases,
@@ -223,6 +223,8 @@ def main():
         emit(a.output)
     except BaseException:
         if primary is None:raise
-        print("NET459_CONNECTIVITY_FALLBACK "+json.dumps(report,sort_keys=True),flush=True)
+        try:
+            print("NET459_CONNECTIVITY_FALLBACK "+json.dumps(report,sort_keys=True),flush=True)
+        except BaseException:pass
     if primary is not None:raise primary
 if __name__=="__main__":main()
