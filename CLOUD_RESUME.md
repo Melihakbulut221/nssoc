@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v110
+# Cloud continuation — checkpoint v111
 
-Updated: 2026-10-29T08:44:05.298871+00:00
+Updated: 2026-10-29T09:41:54.704536+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Cloud-only computation finished two more real stages: repaired FIXED-guard OpenROAD build40837855489 passed, newELF2a343c/108939848B,100-member native archive,104 library hashes,3.71GB peak and zeroOOM;39 full proof files preserved at1c26b1. This is full build/interface smoke only: new actual ODB runtime and repaired routing are still required. Current-width loaded-input source controls40841477699 passed5positive45refusal5syntheticrestore,13fullproofs ataaa00af; native restore and numerical worker/controller integration remain disabled. Latest scheduled monitor40826302954 failed because old config rejects retained main rows; complete failure is preserved and minimal read-only fix is being authored on codex/cloud-monitor-main-observation. The8h schedule remains enabled; do not mistake its triggered runs for working observation until the repair passes. No active native job remains in this snapshot; local workspace/tmp/native processes verified empty.
+Cloud-only cleanup remains verified: no local NSSOC checkout, outputs, project temporary files or native processes. The eight-hour read-only monitor's main-branch filter defect is repaired: candidate40845545784 and deployed-main40847665085 both passed72 source controls and completed the full331-handle live inventory plus2 latest selectors; the main-only live-inventory check passed. ATTENTION_REQUIRED retains241 historical or unverified rows and is not MONITOR_ERROR. Complete logs/snapshots and the original scheduled failure are preserved. New fixed-engine runtime input admission40850943370 passed5 positive groups and74 refusal controls, including6 explicitly synthetic archive refusals; sourcec902dcc and proof66bb384 are durable with925 protected pins. All computation and test execution took place in GitHub. Next: integrate the qualified input admission into the actual new-ELF/original-ODB runtime probe, then route and original RC/STA. Current-width electrical integration, PLL, full PHY and final timing remain open.
 
 Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -8942,3 +8943,10 @@ Local project/tmp/native processes verified absent. Inventory329 exact cloud han
 Cloud-only computation finished two more real stages: repaired FIXED-guard OpenROAD build40837855489 passed, newELF2a343c/108939848B,100-member native archive,104 library hashes,3.71GB peak and zeroOOM;39 full proof files preserved at1c26b1. This is full build/interface smoke only: new actual ODB runtime and repaired routing are still required. Current-width loaded-input source controls40841477699 passed5positive45refusal5syntheticrestore,13fullproofs ataaa00af; native restore and numerical worker/controller integration remain disabled. Latest scheduled monitor40826302954 failed because old config rejects retained main rows; complete failure is preserved and minimal read-only fix is being authored on codex/cloud-monitor-main-observation. The8h schedule remains enabled; do not mistake its triggered runs for working observation until the repair passes. No active native job remains in this snapshot; local workspace/tmp/native processes verified empty.
 
 Local project/tmp/native processes verified absent. Inventory331 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T09:41:54.704536+00:00 — cloud-only checkpoint v111
+
+Cloud-only cleanup remains verified: no local NSSOC checkout, outputs, project temporary files or native processes. The eight-hour read-only monitor's main-branch filter defect is repaired: candidate40845545784 and deployed-main40847665085 both passed72 source controls and completed the full331-handle live inventory plus2 latest selectors; the main-only live-inventory check passed. ATTENTION_REQUIRED retains241 historical or unverified rows and is not MONITOR_ERROR. Complete logs/snapshots and the original scheduled failure are preserved. New fixed-engine runtime input admission40850943370 passed5 positive groups and74 refusal controls, including6 explicitly synthetic archive refusals; sourcec902dcc and proof66bb384 are durable with925 protected pins. All computation and test execution took place in GitHub. Next: integrate the qualified input admission into the actual new-ELF/original-ODB runtime probe, then route and original RC/STA. Current-width electrical integration, PLL, full PHY and final timing remain open.
+
+Local project/tmp/native processes verified absent. Inventory334 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
