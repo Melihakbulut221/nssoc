@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v113
+# Cloud continuation — checkpoint v114
 
-Updated: 2026-10-29T10:46:14.549059+00:00
+Updated: 2026-10-29T11:20:12.719713+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Actual NEW2a343c ELF runtime40858216637 PASSED on original444f full chip:143820nets/153130instances,13,905,578raw opcode/data pairs,104exact runtime dependencies,100engine members/94original input members,unchanged source/ELF/input andzero OOM. Peak1,012,510,720B;125.50s host/46.22s inner. Complete48proof792,364B at6d8fb011,receipt d7a4bccb; native45-member archive stays release427727176. This qualifies read-only runtime only. Additive fresh-prefix wrappers f77c7af0 preserve original restoration and four-phase bodies; contract/proof integration and hosted controls are next. Full serial PHY, actual repaired routing and final timing remain open.
+Fresh fixed-engine prefix source controls40862715889 PASSED with full14proof288164B. Context1/11,authority3/54,driver6/8,path3/13,runtime proof1/50/source5,publication7 and original controls all passed. Native exactsource8d4b999 was dispatched once as40863684870; release427769567 reserved empty at exact source before acquisition. Native prefix repeats controls then original four phases.1098 pins, new runtime2a343c proof retained; outer native job250min resolves prior120min envelope shorter than allowed child limits without changing any child/numerical gate. Distinct tail wrappers are being derived independently; actual fresh frozen proof is prerequisite. All native data remain GitHub.
 
-Active handles at this snapshot: No native run remains active in this snapshot.
+Active handles at this snapshot: 40863684870 in_progress
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -8966,3 +8967,10 @@ Local project/tmp/native processes verified absent. Inventory337 exact cloud han
 Actual NEW2a343c ELF runtime40858216637 PASSED on original444f full chip:143820nets/153130instances,13,905,578raw opcode/data pairs,104exact runtime dependencies,100engine members/94original input members,unchanged source/ELF/input andzero OOM. Peak1,012,510,720B;125.50s host/46.22s inner. Complete48proof792,364B at6d8fb011,receipt d7a4bccb; native45-member archive stays release427727176. This qualifies read-only runtime only. Additive fresh-prefix wrappers f77c7af0 preserve original restoration and four-phase bodies; contract/proof integration and hosted controls are next. Full serial PHY, actual repaired routing and final timing remain open.
 
 Local project/tmp/native processes verified absent. Inventory337 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T11:20:12.719713+00:00 — cloud-only checkpoint v114
+
+Fresh fixed-engine prefix source controls40862715889 PASSED with full14proof288164B. Context1/11,authority3/54,driver6/8,path3/13,runtime proof1/50/source5,publication7 and original controls all passed. Native exactsource8d4b999 was dispatched once as40863684870; release427769567 reserved empty at exact source before acquisition. Native prefix repeats controls then original four phases.1098 pins, new runtime2a343c proof retained; outer native job250min resolves prior120min envelope shorter than allowed child limits without changing any child/numerical gate. Distinct tail wrappers are being derived independently; actual fresh frozen proof is prerequisite. All native data remain GitHub.
+
+Local project/tmp/native processes verified absent. Inventory339 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

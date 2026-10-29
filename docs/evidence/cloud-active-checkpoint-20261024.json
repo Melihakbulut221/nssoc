@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T10:46:14.549059+00:00",
+  "updated_at": "2026-10-29T11:20:12.719713+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "c69c8d905eb5f8bbfe10c3982ee08c14b5a1f70c",
+  "root_source_before_receipt": "9f7dba7ef2db9a5e4d783d0b1fe1066bf9fd2717",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 113,
+    "inventory_version": 114,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -40,7 +40,40 @@
       "main_verification_run": 40847665085
     }
   },
-  "active_runs": {},
+  "active_runs": {
+    "fixed_prefix_actual_chip": {
+      "run": 40863684870,
+      "head_sha": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123412973909,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123413211875,
+          "name": "preserve-source-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123413288178,
+          "name": "native-prefix",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Restore exact inputs and execute original four native preparation phases"
+          ]
+        }
+      ]
+    }
+  },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -3483,23 +3516,30 @@
     },
     "fixed_engine_route_prefix_preparation": {
       "branch": "codex/mainchip-fixed-engine-route-prefix",
-      "head": "f77c7af017cd8ca6873245a9f587bef683017324",
-      "parent": "1812666a357bb8aca75bcfc5e1c523106ad7b08e",
-      "state": "ADDITIVE_WRAPPERS_COMPLETE_CONTRACT_AND_HOSTED_CONTROLS_PENDING",
-      "files_added": 5,
-      "all_inherited_git_blobs_unchanged": 31224,
-      "all_inherited_runtime_pins_unchanged": 1022,
-      "native_dispatched": false,
+      "source": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
+      "state": "EXACT_SOURCE_NATIVE_PREFIX_DISPATCHED",
+      "source_controls_run": 40862715889,
+      "source_controls_source": "d0577fbe60a15b5ed6541f27f80fb14b83dc5443",
+      "source_controls_terminal": "success",
+      "source_controls_receipt_sha256": "4c5d4842b281533b6669f09de712582126eae0447114cd8619525defa435fd03",
+      "source_protected_files": 1098,
+      "run": 40863684870,
+      "workflow": 400507406,
+      "release_id": 427769567,
+      "tag": "cloud-results-40863684870-1-mainchip-fixed-engine-route-prefix",
+      "reserved_empty_before_acquisition": true,
+      "native_dispatched": true,
+      "native_route_authorized": false,
       "physical_acceptance": false
     }
   },
   "next_actions": [
-    "Resume from codex/mainchip-fixed-engine-route-prefix at f77c7af017cd8ca6873245a9f587bef683017324; root owns branch. Four additive prefix wrappers plus35,745B derivation review exist. Original restore_input/restore_routes/freeze_native and four phase/driver/canonical native bodies preserved. No new contract/method/workflow/authority yet.",
-    "Implement mainchip_fixed_engine_route_prefix_contract: retain original phase/clock/target/numerical/limit bodies; import current fixed-runtime delegates; context exact first manual hosted source. Provide authorize_prefix(m), runtime_qualification(ROOT), control_evidence(ROOT,ctx) filename map, SOURCE_ADMISSION, RUNTIME_SOURCE, validate_reservation and direct_plan. Authenticate actual40858216637 PASS from48 full proof files at6d8fb011; runtime receipt d7a4bccb. Pin/copy all new proof and previous runtime method f8609a95 as well as1022 inherited entries. Never omit recursively read method files.",
-    "Add actual new prefix source controls that exercise current wrappers and unchanged ordering/path/lifecycle tests; register inert main workflow; run exact new source-only first attempt. Only after pass authorize one fresh four-phase prefix, repeat same-source controls and reserve exact-source public prerelease before native acquisition. New frozen count/bytes/hashes must come from actual execution; do not reuse old746/407890 frozen identity.",
-    "After fresh prefix success, implement distinct fixed-engine tail names (old frozen /work/source/scripts shadows live tail source). Preserve execute_tail/route_records/validate_manifest/original five audits,14400s route and1200s audit limits. Replace old tail zero-byte direct upload publisher with qualified failure-preserving one. Run off/on split actual route+audits, compare geometry/DRC and separately selected-clock internal before_dr/after_dr conservation; old0.84um movement/threeShorts remain historical.",
-    "Continue current-width CDR loaded-worker/controller integration from40841477699 input-controls and40830441311 current-width fresh RC; keep all electrical limits and all failures. No full serial PHY, routed chip or final setup/hold acceptance.",
-    "All NSSOC authored files/tests/CAD/native assets remain GitHub; local orchestration may use source/derivedJSON/text in RAM only. Root inventory337 handles and8h read-only monitor retained. Do not retry errored delta_review/tx_diagnosis agents to evade usage limits. pll_handoff available for bounded useful independent work."
+    "Observe exact native prefix40863684870 attempt1 at8d4b999; do not redispatch. Release427769567 was reserved empty before acquisition. Repeat source controls and then four original phases:ownership,prepare-fixed,paired-all-nontarget-fixed-import,fixed-audit. Preserve complete terminal evidence and fresh frozen map; never reuse old746/407890 identity.",
+    "Source controls40862715889 passed atd0577f. Full14proof atf158bb7f, receipt4c5d4842. Native source8d4b999 pins1098 files and only outer job wallclock changed120to250min; all original sublimits/numerical gates unchanged. Current exact-source controls repeat in source and native jobs.",
+    "pll_handoff owns additive fixed-engine route tail wrappers plus new handoff(contract import only) and derivation review on codex/mainchip-fixed-engine-route-tail from8d4b999. Root owns contract/method/checker/workflow. Actual fresh prefix proof must qualify before tail execution. Distinct names avoid frozen-source import shadowing.",
+    "Preserve execute_tail,route_records,validate_manifest,original five audits,14400sroute/1200saudits and all numerical gates. Replace old zero-byte direct publisher with qualified failure-preserving behavior, archive route-tail-evidence.tar.gz.partNNN. Run off/on split actual route+audits then separate fixed-clock internal conservation. Original0.84um clock movement/threeShorts retained.",
+    "Current-width CDR loaded worker/controller remains after route integration;40841477699 input-controls and40830441311 freshRC are qualified inputs, no waveform acceptance transfer. Full PHY/PLL/route/final timing remain unaccepted.",
+    "All authored files/tests/CAD/native payload stay GitHub. Local project/tmp/nativeprocess checks must remain empty. Preserve original review documents. Existing8h monitor read-only. Do not retry errored agents to evade usage limits."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -3817,43 +3857,76 @@
     "observed_40850943370": 40850943370,
     "observed_40856758871": 40856758871,
     "observed_40857653668": 40857653668,
-    "observed_40858216637": 40858216637
+    "observed_40858216637": 40858216637,
+    "observed_40862715889": 40862715889
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40858216637,
-      "head_sha": "1812666a357bb8aca75bcfc5e1c523106ad7b08e",
+      "run": 40862715889,
+      "head_sha": "d0577fbe60a15b5ed6541f27f80fb14b83dc5443",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123394514595,
+          "id": 123409716825,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123394742379,
+          "id": 123410021123,
           "name": "preserve-source-job-log",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123394818085,
-          "name": "native-probe",
+          "id": 123410113760,
+          "name": "native-prefix",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40863684870,
+      "head_sha": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123412973909,
+          "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
+        },
+        {
+          "id": 123413211875,
+          "name": "preserve-source-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123413288178,
+          "name": "native-prefix",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Restore exact inputs and execute original four native preparation phases"
+          ]
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T10:46:14.549059+00:00",
+    "observed_at": "2026-10-29T11:20:12.719713+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -3982,7 +4055,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T10:46:14.549059+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T11:20:12.719713+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -33105,6 +33178,161 @@
       "bytes": 35745,
       "sha256": "90992bc496ce7758f26dd58fef842e047ec460a29961f50b70bb13454e48a162",
       "existing_identical": false
+    }
+  ],
+  "imported_checkpoint_receipts_v114": [
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-route-prefix-independent-controls-source-review-20261029.json",
+      "source": "d0577fbe60a15b5ed6541f27f80fb14b83dc5443",
+      "git_blob": "a2ec1a401c8ed7c1ddc4b18256c3dd1c026946cd",
+      "bytes": 10389,
+      "sha256": "ea28d20a77e756f8899ac423aa0fda9c20b6cccd26dc337efcfe8516a5f6b4b2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-route-prefix-root-integration-review-20261029.json",
+      "source": "d0577fbe60a15b5ed6541f27f80fb14b83dc5443",
+      "git_blob": "7ed2088d059e107b76c0435ad9dcd6533bf70e3c",
+      "bytes": 2004,
+      "sha256": "1acbaa3d89e1b3bfadbbf185e8c51c78cf1402f40c5df45a98d60e1ffa9d6b39",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-route-prefix-source-admission-20261029.json",
+      "source": "d0577fbe60a15b5ed6541f27f80fb14b83dc5443",
+      "git_blob": "5d092a4c66e2eda9c03dfd747f28b84dc5a298fa",
+      "bytes": 889,
+      "sha256": "27d5d9fa96568ada8b8ae45cec762219831e1ccbd8e5c49b0885a421b3addf5a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-source-terminal-40862715889/123409716825.job.json",
+      "source": "f158bb7f7f2d73109a150e196d151bab7fbb9908",
+      "git_blob": "3dbf4a6222030555dd4a108ee4d07e5cc3daec50",
+      "bytes": 2980,
+      "sha256": "c561afef9a1fc05b47ed9a02e6e98a7d6e481dfd3711ff253fbf0cbd3493bad8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-source-terminal-40862715889/123409716825.job.log",
+      "source": "f158bb7f7f2d73109a150e196d151bab7fbb9908",
+      "git_blob": "a630581f50bfc02fdf3b0ecbb06da64918314d43",
+      "bytes": 151836,
+      "sha256": "13c59b5b71ecf66c451e68f14a892428691362cdff2d3a1524e776cad74ed30f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-source-terminal-40862715889/123410021123.job.json",
+      "source": "f158bb7f7f2d73109a150e196d151bab7fbb9908",
+      "git_blob": "1211c2ee1c61d8eacf0e397ecd52ebf089082e86",
+      "bytes": 1999,
+      "sha256": "7132a9036e2079dffe7dd71e5cb0a5164173c33351eab3e4b36d7341225e35e3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-source-terminal-40862715889/123410021123.job.log",
+      "source": "f158bb7f7f2d73109a150e196d151bab7fbb9908",
+      "git_blob": "3b3a53eb83c1f83c56ba4a26ff90442ac4acef98",
+      "bytes": 9001,
+      "sha256": "72e843462a767e591f19837f2b19637ef0f1e932fe534a0798cc0524c0ccffd8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-source-terminal-40862715889/123410113760.job.json",
+      "source": "f158bb7f7f2d73109a150e196d151bab7fbb9908",
+      "git_blob": "1e6b1333bbfa073c8503d1de7cd700eb0796b309",
+      "bytes": 1032,
+      "sha256": "428e7a80cdf7266bbd6db7602435791b421a42a369fe35b73d5dca1210003a38",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-source-terminal-40862715889/artifacts.json",
+      "source": "f158bb7f7f2d73109a150e196d151bab7fbb9908",
+      "git_blob": "75199d8b4d80032c013f149801cc615652ea894c",
+      "bytes": 1878,
+      "sha256": "b1f4a92c28d8201a6efe3d659927a65238604a36e08388496ba0d5b732fe087f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-source-terminal-40862715889/controls/fixed-prefix-control-context.json",
+      "source": "f158bb7f7f2d73109a150e196d151bab7fbb9908",
+      "git_blob": "2c5b18ff2ffbd9bdbee74c1eb7fc4cf9cc9bc0e9",
+      "bytes": 247,
+      "sha256": "b2374e6b97f5097ce407878a198e3a3b6761d359685bc4294efdf115eddd3273",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-source-terminal-40862715889/controls/fixed-route-prefix-controls.json",
+      "source": "f158bb7f7f2d73109a150e196d151bab7fbb9908",
+      "git_blob": "14fd43efe46f49f7f266261c3aa0c9d4cc56e04d",
+      "bytes": 93258,
+      "sha256": "55180a4640c48a79449c7834bf9823326bb862dddb53d59852bfaa5a4951ea64",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-source-terminal-40862715889/controls/fixed-route-prefix-controls.stderr",
+      "source": "f158bb7f7f2d73109a150e196d151bab7fbb9908",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-source-terminal-40862715889/controls/fixed-route-prefix-controls.stdout",
+      "source": "f158bb7f7f2d73109a150e196d151bab7fbb9908",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-source-terminal-40862715889/index.json",
+      "source": "f158bb7f7f2d73109a150e196d151bab7fbb9908",
+      "git_blob": "355b338f53a5d08c8608c447a08d41f9a380ae7a",
+      "bytes": 932,
+      "sha256": "d9ef6fdcc4da531337d49e584eaca4e12ad19ec6d8ecc4cdcb27c430c6e0539c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-source-terminal-40862715889/jobs.json",
+      "source": "f158bb7f7f2d73109a150e196d151bab7fbb9908",
+      "git_blob": "ab974b55a6c0192662263d5ce431327652b4b790",
+      "bytes": 6769,
+      "sha256": "4d0c6494988224f98c6ca38860e5eb82fe728aafd73a572218426f888a86ad9b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-source-terminal-40862715889/receipt.json",
+      "source": "f158bb7f7f2d73109a150e196d151bab7fbb9908",
+      "git_blob": "3135584ad92bd47f7fda0054370ebf34e89aeded",
+      "bytes": 3797,
+      "sha256": "4c5d4842b281533b6669f09de712582126eae0447114cd8619525defa435fd03",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-prefix-source-terminal-40862715889/run.json",
+      "source": "f158bb7f7f2d73109a150e196d151bab7fbb9908",
+      "git_blob": "5f0db6abaa01dc1b002f523023406b021159ce4b",
+      "bytes": 14435,
+      "sha256": "5707a458918a6268fed8d1e4b8dacc08b4915c3062a1fd2e7c7a8ba92399127c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-engine-route-prefix-native-admission-20261029.json",
+      "source": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
+      "git_blob": "fc9101b5c1c74dbb1a001822484c181948f06a73",
+      "bytes": 1302,
+      "sha256": "752f3583cd7bd551b3f57452bc92df2ec671ab7f6743d3391ba082114dac348d",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v114": [
+    {
+      "run": 40863684870,
+      "source": "8d4b99992e0fbce6a0d4a53b33cbb053e2a7f6e0",
+      "release_id": 427769567,
+      "tag": "cloud-results-40863684870-1-mainchip-fixed-engine-route-prefix",
+      "assets_at_reservation": 0
     }
   ]
 }
