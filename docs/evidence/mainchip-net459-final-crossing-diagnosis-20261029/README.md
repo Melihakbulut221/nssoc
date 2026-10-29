@@ -21,3 +21,5 @@ The [structured diagnosis](diagnosis.json) contains exact IDs, byte counts, full
 | [before_dr.jsonl](raw/before_dr.jsonl) | 689010602 | 249452 | `503fe353231dcc39d3165c3888ced056977ed9861976056a0105e7df9e3ca02c` |
 | [after_dr.jsonl](raw/after_dr.jsonl) | 689010427 | 254312 | `0b7f08b1d1c181fdc907596d6217506e7a95c6164c8e026a949ec6615a671d76` |
 | [after_writer.jsonl](raw/after_writer.jsonl) | 689010514 | 262286 | `9caf4db65ed179882c5d4825a4abc2fbbbb68baf894f6e975d7f18a4d54a183e` |
+
+The [endpoint adjacency addendum](endpoint-adjacency.json) confirms **neither crossing endpoint has an existing Via4 or Metal4 wire landing**. Both are Metal5 bends. Existing Via4_YX landings are at (919.680,1790.460)µm and (949.920,1787.520)µm, farther along the chain; the latter is part of a Via2/Via3/Via4 stack continuing onto Metal2. Moving only the crossing edge to Metal4 would therefore require new, separately cleared landings.
