@@ -1,0 +1,164 @@
+{
+  "schema": "cdr-width-loaded-publication-repair-source-review-v1",
+  "branch": "codex/cdr-width-loaded-publication-repair",
+  "base": "e7d401da3874ca41687a99765f4654bb84f9fa69",
+  "scope": "Bounded complete failure-publication repair. No numerical worker, input admission, execution method, workflow, authority or native dispatch changes.",
+  "files": {
+    "scripts/cdr_width_loaded_publication.py": {
+      "bytes": 12475,
+      "sha256": "49cf14ad46b418fe44f8044f510ad0c9fa5e75e42b96db053554e5880bfcac74"
+    },
+    "scripts/cloud_cdr_width_loaded_stage.py": {
+      "bytes": 18242,
+      "sha256": "958256378226ec8d64453e72fb7d52b1d00df16d28c9fe4c656644a8aa6847c0"
+    },
+    "scripts/check_cdr_width_loaded_execution.py": {
+      "bytes": 28549,
+      "sha256": "488c4ab7c30a904959dd943b81f726f7a6e57a7072aebf07a13165e095e59b49"
+    },
+    "scripts/check_cdr_width_loaded_publication.py": {
+      "bytes": 17814,
+      "sha256": "1a3f9e0bc62901ea577f8236bbb47713d2d2ec4d7ca8621e8e91e7784291b497"
+    }
+  },
+  "unchanged_authority": {
+    "execution_adapter": "scripts/cdr_width_loaded_execution_admission.py",
+    "sha256": "21efaad5ef1a90cfa7de4e9675be1e2d7ebdd550f6dbd88ea59055a87f9d74e8",
+    "branch": "codex/cdr-width-loaded-execution-unit",
+    "execution_method_absent": true,
+    "source_native_simulation_authorizations_added": false,
+    "all_1264_qualified_worker_source_pins_unchanged": true
+  },
+  "stage_delta": {
+    "prior_sha256": "237f7b339c0d33f17e9ddce494e8e521fac5d6a49f7f1f0124a2fe9632a198d4",
+    "prior_commit": "e7d401da3874ca41687a99765f4654bb84f9fa69",
+    "new_sha256": "958256378226ec8d64453e72fb7d52b1d00df16d28c9fe4c656644a8aa6847c0",
+    "new_import": "cdr_width_loaded_publication as publication",
+    "changed_functions": [
+      "publish",
+      "main"
+    ],
+    "publish": "Delegates only to new evidence publisher. Original validate_publication remains unchanged and is called against the original raw terminal/inventory before any publication-only metadata.",
+    "main": "--publish-only now delegates without pre-reading terminal JSON or requiring native execution authority. Strict hosted/current branch/attempt1/source context plus existing exact-source reservation is validated by the publisher. Every native execution path still reaches unchanged preflight/authorize/run_case gates.",
+    "byte_exact_functions": [
+      "context",
+      "read_json",
+      "inventory",
+      "error_record",
+      "storage",
+      "preflight",
+      "fetch_preparation",
+      "execute",
+      "copy_worker",
+      "qualify_native",
+      "finalize",
+      "initial_result",
+      "validate_publication",
+      "run_case"
+    ],
+    "run_case_primary_precedence_unchanged": true,
+    "finalize_cleanup_and_native_qualification_unchanged": true
+  },
+  "existing_checker_delta": {
+    "path": "scripts/check_cdr_width_loaded_execution.py",
+    "prior_sha256": "51b4d60d62826372527fc5dbc6ff3814c9342f7bc1e1e63af83dc371b8c457de",
+    "only_function_changed": "derivation_controls",
+    "new_literal_table": "STAGE_REPAIR_EDITS",
+    "proof": "Reconstruct original width stage exactly at237f7b339c0d33f17e9ddce494e8e521fac5d6a49f7f1f0124a2fe9632a198d4, apply three exact publication changes, reverse all changes byte-for-byte to original frozen stage. All existing authority/restore/source/reservation tests preserved."
+  },
+  "source_failure_behavior": {
+    "reserved_current_source_required": true,
+    "source_failure_can_never_qualify": true,
+    "guard_error_full_type_repr_traceback_retained": true,
+    "raw_current_method_retained": "publication-source/execution-method.raw",
+    "changed_regular_source_bytes_retained": "publication-source/files/<original-path>",
+    "changed_expected_actual_SHA_and_size_retained": true,
+    "missing_nonregular_symlink_errors_recorded_without_following": true,
+    "invalid_method_is_evidence_only": true,
+    "no_native_execution_in_publisher": true,
+    "publication_source_guard_report": "publication-source-check.json"
+  },
+  "terminal_and_archive_behavior": {
+    "original_outer_and_native_terminal_bytes_rewritten": false,
+    "missing_empty_malformed_or_in_memory_mismatch": "Independent summary FAIL_UNQUALIFIED_CURRENT_WIDTH_LOADED_EVIDENCE; raw available files stay exact in full archive.",
+    "original_pass_predicate": "Unchanged stage.validate_publication plus source/authority qualification and parseable required direct native terminal; no replacement numerical gate.",
+    "zero_direct_policy": "Only omit zero-byte direct uploads. The exact empty file remains in the full archive and the nonempty direct-publication-plan.json identifies archive_only_empty,0bytes,originalSHA.",
+    "all_available_regular_worker_supervision_and_waveforms_preserved": true,
+    "recovery_copy": "Unchanged copy_worker is attempted when worker exists but native preservation has not started; any errors retained. Existing partial native trees are never overwritten.",
+    "summary": "Independent transport summary binds complete current archive tree including raw result.json and publication metadata; it never rewrites the original terminal inventory.",
+    "original_archive_format_and_part_size": true,
+    "source_reservation_noclobber": "Existing ensure_cloud_tested_source_release.validate_release + evidence.only_reserved + unchanged migrate_outputs_to_cloud.publish; no create/delete/move/overwrite calls.",
+    "publisher_hook_restored": true,
+    "upload_primary_preserved_even_if_final_receipt_and_stdout_fallback_fail": true
+  },
+  "authored_controls": {
+    "executed": false,
+    "CLI": "python -B scripts/check_cdr_width_loaded_publication.py --output width-loaded-publication-controls.json",
+    "status": "PASS_WIDTH_LOADED_FAILURE_PUBLICATION_SOURCE_CONTROLS",
+    "publication_cases": 15,
+    "actual_lifecycle_cases": 2,
+    "cases": [
+      "positive synthetic qualified envelope",
+      "existing failed case",
+      "changed source bytes",
+      "malformed execution method",
+      "missing outer terminal",
+      "empty outer terminal",
+      "malformed outer terminal",
+      "missing native terminal",
+      "empty native terminal",
+      "malformed native terminal",
+      "in-memory/raw mismatch",
+      "upload failure",
+      "existing asset conflict no-clobber",
+      "wrong exact-source reservation before pack",
+      "upload plus final save and fallback emission failure",
+      "actual run_case body+cleanup+upload failures",
+      "actual run_case cleanup+upload failures"
+    ],
+    "actual_production_paths": [
+      "stage.publish",
+      "publication.source_check",
+      "publication.publish",
+      "stage.validate_publication",
+      "cloud_chunked_results.pack",
+      "evidence.publication_files",
+      "evidence.only_reserved",
+      "migrate_outputs_to_cloud.publish",
+      "stage.run_case",
+      "stage.execute",
+      "stage.finalize",
+      "stage.copy_worker",
+      "terminal.finalize"
+    ],
+    "synthetic_boundaries": [
+      "small source-method/authorization fixture with actual file hash comparisons, not full current authority",
+      "child supervisor, thread and signal operations in the two lifecycle tests",
+      "storage free-space probe",
+      "GitHub release metadata and gh upload transport"
+    ],
+    "actual_synthetic_archive_check": "Read every regular member from the actual packed tar.gz and compare exactSHA/full map to disk and independent summary. Payloads originate only from explicit synthetic fixture bytes; no real native archive is acquired.",
+    "native_data_or_electrical_acceptance_claimed": false,
+    "existing_execution_checker_remains_required": true
+  },
+  "source_review": {
+    "AST_only_locally": true,
+    "exact_only_stage_publish_main_changes": true,
+    "existing_checker_only_derivation_controls_changed": true,
+    "all_measurement_numerical_and_original_terminal_helper_sources_unchanged": true,
+    "native_assets_acquired": false,
+    "authored_code_imported_or_executed_locally": false,
+    "local_file_writes": false
+  },
+  "remaining_integration": [
+    "Root must pin new helper/checker/review and updated current stage/execution checker in the separate future execution method. No method is created here.",
+    "Run both hosted source suites on the exact assembled source; these tests are authored and unexecuted.",
+    "Workflow must always invoke --publish-only after failure as appropriate and retain full output/transport fallback artifacts and job streams when pack, disk writes or network publication itself fails.",
+    "A publication failure receipt or PASS_COMPLETE_LOADED_EVIDENCE_PUBLICATION_ONLY is evidence transport only, never electrical/physical/CDR/PHY acceptance.",
+    "All existing native/execution/source authorities remain absent/disabled; original1200/7200 budgets,ten-case numerical gates and two later worker substitutions are unchanged."
+  ],
+  "readiness": false,
+  "electrical_accepted": false,
+  "physical_accepted": false,
+  "full_phy_accepted": false
+}
