@@ -1,0 +1,200 @@
+{
+  "schema": "current-dc-contact-screen-source-review-v1",
+  "status": "AUTHORED_STATIC_REVIEW_ONLY_NOT_HOSTED_EXECUTED",
+  "branch": "codex/cdr-current-dc-contact-screen",
+  "parent": "6bcdb6ffc0caf5b4dfdac44f02bde208e804452d",
+  "files": {
+    "scripts/cdr_current_dc_contacts.py": {
+      "bytes": 19906,
+      "sha256": "b22629a354544fd810a14dc0b11749d76fdc3fbeb0552f090fc925779f4a086f"
+    },
+    "scripts/check_cdr_current_dc_contacts.py": {
+      "bytes": 15992,
+      "sha256": "d9e2dfd92468142063b5f7db25d737045adce881d14feb33e644f5504e033c8b"
+    },
+    "scripts/cdr-current-dc-contact-inputs.json": {
+      "bytes": 9148,
+      "sha256": "990d9d58c8a1d8060ce02b6f0da6354c7b57cbe29244c8e5e6c63267368604da"
+    }
+  },
+  "input": {
+    "path": "docs/evidence/cdr-current-rc-contact-readback-terminal-40939598713/readback/incidence-and-technology.json",
+    "bytes": 944875,
+    "sha256": "c5d764256c577b2fc14dac22de72144c38049f85f20a20038e9a81fa4d8af110",
+    "receipt_path": "docs/evidence/cdr-current-rc-contact-readback-terminal-40939598713/receipt.json",
+    "receipt_sha256": "dbd561e3eb1082a4b24552c7b72a32ab28fb6830a052e6ee172b7f07e93fa5ba",
+    "receipt_file_count": 33,
+    "protected_file_count_including_receipt": 34,
+    "readback_run": 40939598713,
+    "readback_source": "365baa3cd675c89f9c745b34f9e1d9fda1acf47d",
+    "readback_release": 428302115,
+    "complete_original_native_member_count": 6647,
+    "current_counts": {
+      "C": 15566,
+      "R": 24356,
+      "anchors": 978,
+      "components": 113,
+      "devices": 500
+    },
+    "original_rc_producer": {
+      "attempt": 1,
+      "electrical_acceptance": false,
+      "release_id": 427537846,
+      "run_id": 40830441311,
+      "source": "7ddf83d17a3b3fe0efb1eb31594b7d4d3e831b8f",
+      "successful_RC_production_only": true
+    },
+    "current_target_specs": {
+      "124": {
+        "native_cluster": 124,
+        "component": 61,
+        "native_net": "$680",
+        "nodes": 102,
+        "resistors": 145,
+        "capacitors": 114,
+        "contacts": 8,
+        "loaded_contacts": [
+          "w_T115_E",
+          "w_T116_E",
+          "w_T118_E",
+          "w_T119_E",
+          "w_T032_D",
+          "w_T033_D",
+          "w_T034_D",
+          "w_T035_D"
+        ]
+      },
+      "28": {
+        "native_cluster": 28,
+        "component": 17,
+        "native_net": "$131",
+        "nodes": 102,
+        "resistors": 145,
+        "capacitors": 114,
+        "contacts": 8,
+        "loaded_contacts": [
+          "w_T061_E",
+          "w_T062_E",
+          "w_T064_E",
+          "w_T065_E",
+          "w_T003_D",
+          "w_T004_D",
+          "w_T005_D",
+          "w_T006_D"
+        ]
+      }
+    }
+  },
+  "implementation": {
+    "numeric_dependency": "Python standard-library decimal only; no NumPy or EDA dependency",
+    "precision": 80,
+    "rounding": "ROUND_HALF_EVEN",
+    "algorithm": "Connected positive resistor graph -> grounded symmetric Laplacian -> Decimal LDL transpose factorization with strictly positive pivots -> triangular solves.",
+    "reference": "The first contact in the authenticated original contact list is a voltage gauge only; other non-injected contacts have zero external current and are not clamped.",
+    "injections": "For each network, 7 complete reference-contact unit injections plus all 28 unordered contact-pair +1 A/-1 A injections.",
+    "complete_results": "Every solved case emits all 102 node voltages and all 145 original resistor rows with signed a-to-b current, a-minus-b voltage and nonnegative edge power. Full 8x8 contact impedance and effective resistance matrices and original target/114 capacitor rows are preserved.",
+    "checks": [
+      "Complete R-connectivity; unique exact native-to-loaded node/element/contact identities and component joins",
+      "Each node's current balance versus the explicit injected current",
+      "Sum of all I^2R dissipation equals injected terminal power",
+      "Symmetry of independently solved multi-terminal contact impedance",
+      "Each directly solved pair agrees with Zii+Zjj-Zij-Zji",
+      "Finite Decimal values, strictly positive R/pivots and positive effective pair resistance"
+    ],
+    "numerical_residual_policy": "Absolute 1e-40 plus relative 1e-40 at Decimal precision 80. This is only a numerical consistency criterion; no original electrical gate or device limit is changed.",
+    "capacitors": "All original capacitor rows retained. They are omitted from the conductance matrix only for the DC open-circuit model; this does not justify omission from the actual transient.",
+    "no_electrical_circuit_modification": true,
+    "no_transistor_or_supply_model": true,
+    "no_geometry_edge_assignment": true
+  },
+  "source_integrity": {
+    "configuration_hash_embedded_in_reader": true,
+    "all_34_existing_proof_files_rehashed_before_analysis": true,
+    "full_receipt_inventory_exact": true,
+    "original_raw_incidence_bytes_copied_to_output": true,
+    "previous_sources_methods_and_proof_bytes_unchanged": true,
+    "new_source_pin_requirement": "Root workflow must externally pin exact reader/checker/config bytes and current source before running."
+  },
+  "hosted_controls": {
+    "cli": "python scripts/check_cdr_current_dc_contacts.py --output <controls.json>",
+    "status": "PASS_CURRENT_DC_CONTACT_SOURCE_CONTROLS",
+    "counts": {
+      "positive": 10,
+      "refusal": 52,
+      "lifecycle": 5
+    },
+    "analytic_cases": [
+      "2+3 ohm series with all edge currents and power",
+      "2||3 ohm parallel",
+      "Full three-contact resistance matrix",
+      "Balanced bridge zero cross-edge current",
+      "Unbalanced bridge analytic delta-star R=155/74 ohm and cross-edge current=1/37 A",
+      "Reversed original edge orientation",
+      "DC capacitor omission with full row retention",
+      "Node/edge order invariance"
+    ],
+    "refusals": [
+      "Malformed/nonfinite/out-of-range decimals; zero/negative R",
+      "Duplicate/unknown/aliased nodes/contacts/elements; wrong partition and disconnected graph",
+      "Negative/unrelated capacitors; corrupted/missing/nonfinite voltages; KCL/gauge/injection failures",
+      "Wrong authentic composition/net/acceptance and context/path/evidence/configuration bytes",
+      "No-clobber output directory"
+    ],
+    "lifecycle": "Actual run/finalization/encoder paths with explicit small synthetic networks only: complete byte-chunk roundtrip, partial results, primary plus final-save error, source plus emit error, output collision.",
+    "authentic_input_guards_executed_only_in_future_hosted_controls": true,
+    "actual_current_network_solve_in_source_controls": false,
+    "all_computed_control_networks_synthetic": true,
+    "local_authored_execution": false,
+    "hosted_execution_completed": false
+  },
+  "caller": {
+    "branch": "codex/cdr-current-dc-contact-screen",
+    "strict_environment": "GitHub Actions hosted Linux, manual workflow_dispatch, attempt 1, exact repository/branch/current SHA",
+    "reader_cli": "python scripts/cdr_current_dc_contacts.py --output <new-output-directory>",
+    "checker_cli": "python scripts/check_cdr_current_dc_contacts.py --output <new-controls.json>",
+    "external_dependencies": [],
+    "workflow_added": false,
+    "dispatch_performed": false,
+    "native_authority_added": false,
+    "network_or_download_code_present": false,
+    "output_files": [
+      "input-proof.json",
+      "inputs/incidence-and-technology.json",
+      "inputs/receipt.json",
+      "network-28.json",
+      "network-124.json",
+      "result.json"
+    ],
+    "success_status": "PASS_CURRENT_DC_CONTACT_SCREEN_NOT_ELECTRICAL_ACCEPTANCE",
+    "emission": [
+      "CURRENT_DC_CONTACT_INDEX",
+      "CURRENT_DC_CONTACT_CHUNK",
+      "CURRENT_DC_CONTACT_FALLBACK"
+    ],
+    "publication": "Preserve the full output directory plus complete stdout/stderr and job log; chunks contain every output byte. No direct empty asset upload is required.",
+    "reservation": "No archive/native acquisition occurs in this unit. Root owns any exact-source output release reservation/publication policy."
+  },
+  "static_review": {
+    "AST_parse_only": true,
+    "regular_expression_literals_inspected": true,
+    "source_readback_hashes_required": true,
+    "no_local_authored_imports_or_tests": true,
+    "no_native_payloads_acquired": true,
+    "no_actual_DC_results_claimed": true
+  },
+  "limitations": [
+    "DC unit responses are a linear passive-network characterization, not actual transistor currents or transient contact voltages.",
+    "No geometric bridge/access/via resistance attribution follows merely from high edge power or effective contact resistance.",
+    "No guaranteed VCE recovery, causal repair, timing, physical or full-PHY acceptance.",
+    "Numerical correctness and actual current results still require hosted execution of the authored controls and reader."
+  ],
+  "acceptance": {
+    "physical_acceptance": false,
+    "electrical_acceptance": false,
+    "full_phy_accepted": false,
+    "geometry_changed": false,
+    "dominant_path_proven": false,
+    "causality_proven": false,
+    "transient_recovery_proven": false
+  }
+}
