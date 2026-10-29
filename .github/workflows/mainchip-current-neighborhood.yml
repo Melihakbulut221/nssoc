@@ -39,7 +39,7 @@ jobs:
           assert e['GITHUB_REF']=='refs/heads/codex/mainchip-current-neighborhood-readback'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           manifest=Path("scripts/mainchip-current-neighborhood-pins.json").read_bytes()
-          assert hashlib.sha256(manifest).hexdigest()=="f94bf52ade11ff999427bb59a65073c3524c3161ed277be8eb39fb6938ed6ec0"
+          assert hashlib.sha256(manifest).hexdigest()=="c83fe8dcd12e7c088de1c5a946a45647bd0591de8a9f0c91f43bfae141afa1f7"
           pins={k:v["sha256"]for k,v in json.loads(manifest)["files"].items()}
           for name,digest in pins.items():
               p=Path(name);assert p.is_file() and not p.is_symlink()
@@ -56,7 +56,8 @@ jobs:
           from pathlib import Path
           r=json.loads(Path('current-neighborhood-controls/controls.json').read_bytes())
           assert r['status']=='PASS_CURRENT_NEIGHBORHOOD_SOURCE_CONTROLS'
-          assert (r['positive_count'],r['refusal_count'])==(3,17)
+          assert (r['positive_count'],r['refusal_count'],r['lifecycle_count'])==(3,17,13)
+          assert r['lifecycle_native_and_cloud_io_synthetic'] is True
           assert r['current_context']['source']==os.environ['GITHUB_SHA']
           assert r['current_context']['run_id']==int(os.environ['GITHUB_RUN_ID']) and r['current_context']['attempt']==1
           assert r['all_archives_synthetic'] is True
@@ -152,7 +153,7 @@ jobs:
           assert e['GITHUB_REF']=='refs/heads/codex/mainchip-current-neighborhood-readback'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           manifest=Path("scripts/mainchip-current-neighborhood-pins.json").read_bytes()
-          assert hashlib.sha256(manifest).hexdigest()=="f94bf52ade11ff999427bb59a65073c3524c3161ed277be8eb39fb6938ed6ec0"
+          assert hashlib.sha256(manifest).hexdigest()=="c83fe8dcd12e7c088de1c5a946a45647bd0591de8a9f0c91f43bfae141afa1f7"
           pins={k:v["sha256"]for k,v in json.loads(manifest)["files"].items()}
           for name,digest in pins.items():
               p=Path(name);assert p.is_file() and not p.is_symlink()
@@ -200,7 +201,8 @@ jobs:
               if p.is_file():
                   sys.stdout.buffer.write(p.read_bytes());sys.stdout.buffer.write(b'\n')
           PY
-      - name: Preserve complete derived evidence and readback logs
+      - name: Preserve complete derived evidence and retained output fallback
+        id: preserved_artifact
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -214,3 +216,28 @@ jobs:
             current-neighborhood.stdout
             current-neighborhood.stderr
             current-neighborhood-controls
+            ${{ runner.temp }}/mainchip-current-neighborhood-${{ github.run_id }}-1/owner.json
+            ${{ runner.temp }}/mainchip-current-neighborhood-${{ github.run_id }}-1/out/**/*.json
+            ${{ runner.temp }}/mainchip-current-neighborhood-${{ github.run_id }}-1/out/**/*.jsonl
+            ${{ runner.temp }}/mainchip-current-neighborhood-${{ github.run_id }}-1/out/**/*.stdout
+            ${{ runner.temp }}/mainchip-current-neighborhood-${{ github.run_id }}-1/out/**/*.stderr
+            ${{ runner.temp }}/mainchip-current-neighborhood-${{ github.run_id }}-1/out/**/*.lef
+            ${{ runner.temp }}/mainchip-current-neighborhood-${{ github.run_id }}-1/out/**/*.json.*.tmp
+            !${{ runner.temp }}/mainchip-current-neighborhood-${{ github.run_id }}-1/out/work/**
+            !${{ runner.temp }}/mainchip-current-neighborhood-${{ github.run_id }}-1/out/witness/**
+            !${{ runner.temp }}/mainchip-current-neighborhood-${{ github.run_id }}-1/out/supervision/**
+      - name: Clean exact owned workspace only after complete artifact preservation
+        if: ${{ always() && steps.preserved_artifact.outcome == 'success' }}
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,sys
+          from pathlib import Path
+          raw=Path('scripts/mainchip-current-neighborhood-pins.json').read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='c83fe8dcd12e7c088de1c5a946a45647bd0591de8a9f0c91f43bfae141afa1f7'
+          for name,pin in json.loads(raw)['files'].items():
+              p=Path(name);assert p.is_file() and not p.is_symlink()
+              b=p.read_bytes();assert len(b)==pin['bytes'] and hashlib.sha256(b).hexdigest()==pin['sha256']
+          sys.path.insert(0,'scripts')
+          import cloud_mainchip_current_neighborhood as w
+          print(json.dumps(w.cleanup_preserved_workspace(w.context(os.environ),Path("current-neighborhood-evidence")),sort_keys=True))
+          PY

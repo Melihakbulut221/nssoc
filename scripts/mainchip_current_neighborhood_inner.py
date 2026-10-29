@@ -8,26 +8,41 @@ import mainchip_fixed_engine_route_tail_contract as c
 from mainchip_witness_engine_build import fingerprint
 OUT=Path("/work/out")
 def write(name,value):c.atomic_record(OUT/name,value)
+def run(report,label,argv,timeout):
+    """Actual child lifecycle; cleanup and progress errors cannot replace the primary."""
+    row=dict(label=label,argv=argv,returncode=None);report["commands"].append(row)
+    before=time.monotonic();first_error=len(report["terminal_errors"]);p=None;primary=None
+    try:
+        with (OUT/(label+".stdout")).open("xb")as so,(OUT/(label+".stderr")).open("xb")as se:
+            p=subprocess.Popen(argv,stdout=so,stderr=se,start_new_session=True,
+              env={**os.environ,"LC_ALL":"C.UTF-8","PYTHONDONTWRITEBYTECODE":"1"})
+            p.wait(timeout=timeout);row["returncode"]=p.returncode
+            c.require(p.returncode==0,label+" failed")
+    except BaseException as exc:
+        primary=exc;row["error"]=c.error_record(label,exc)
+    finally:
+        if p is not None:
+            def signal_if_live(sig):
+                if p.poll()is None:os.killpg(p.pid,sig)
+            def wait_if_live():
+                if p.poll()is None:p.wait(timeout=10)
+            # A failed stop cannot suppress the independent wait/kill/reap attempts.
+            c.attempt(report,label+":stop",lambda:signal_if_live(signal.SIGTERM))
+            c.attempt(report,label+":wait-after-stop",wait_if_live)
+            c.attempt(report,label+":kill-if-live",lambda:signal_if_live(signal.SIGKILL))
+            c.attempt(report,label+":wait-after-kill",wait_if_live)
+            def terminal():
+                row["returncode"]=p.poll();c.require(row["returncode"]is not None,"child remains live")
+            c.attempt(report,label+":terminal-child",terminal)
+        row["elapsed_seconds"]=time.monotonic()-before
+        c.attempt(report,label+":progress",lambda:write("current-readback-inner-progress.json",report))
+    if primary is not None:raise primary
+    c.require(len(report["terminal_errors"])==first_error,label+" terminal errors")
+
 def main():
     report=dict(status="IN_PROGRESS",commands=[],terminal_errors=[],
       physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
     primary=None;started=time.monotonic()
-    def run(label,argv,timeout):
-        row=dict(label=label,argv=argv,returncode=None);report["commands"].append(row)
-        before=time.monotonic()
-        with (OUT/(label+".stdout")).open("xb")as so,(OUT/(label+".stderr")).open("xb")as se:
-            p=subprocess.Popen(argv,stdout=so,stderr=se,start_new_session=True,
-              env={**os.environ,"LC_ALL":"C.UTF-8","PYTHONDONTWRITEBYTECODE":"1"})
-            try:
-                p.wait(timeout=timeout);row["returncode"]=p.returncode
-                c.require(p.returncode==0,label+" failed")
-            finally:
-                if p.poll()is None:
-                    os.killpg(p.pid,signal.SIGTERM)
-                    try:p.wait(timeout=10)
-                    except subprocess.TimeoutExpired:os.killpg(p.pid,signal.SIGKILL);p.wait(timeout=10)
-                row["returncode"]=p.returncode;row["elapsed_seconds"]=time.monotonic()-before
-                write("current-readback-inner-progress.json",report)
     def runtime():
         paths=set()
         for line in (OUT/"current-ldd.stdout").read_text().splitlines():
@@ -49,10 +64,10 @@ def main():
         c.require(not any(k in os.environ for k in ("GH_TOKEN","GITHUB_TOKEN")),"credential-free native process")
         report["cgroup_initial"]=usage();check_usage(report["cgroup_initial"])
         c.require(fingerprint(Path("/work/engine/openroad"))==c.ENGINE,"ELF identity")
-        run("current-version",["/work/engine/openroad","-version"],30)
-        run("current-ldd",["ldd","/work/engine/openroad"],30)
+        run(report,"current-version",["/work/engine/openroad","-version"],30)
+        run(report,"current-ldd",["ldd","/work/engine/openroad"],30)
         report["runtime_before"]=runtime()
-        run("current-neighborhood",["/work/engine/openroad","-no_init","-exit","-python",
+        run(report,"current-neighborhood",["/work/engine/openroad","-no_init","-exit","-python",
            "/work/tail-source/scripts/mainchip_current_neighborhood_native.py"],2400)
         r=c.decode((OUT/"current-neighborhood/result.json").read_bytes())
         c.require(r["status"]=="PASS_CURRENT_SERIALIZED_NEIGHBORHOOD_OBSERVATION_ONLY"

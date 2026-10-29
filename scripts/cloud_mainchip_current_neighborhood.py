@@ -92,12 +92,67 @@ def acquire_current(work,evidence):
         f.write_new(evidence/("producer-"+name),(transport/name).read_bytes())
     shutil.rmtree(transport)
 
+def derived_path(path):
+    return path.suffix in (".json",".jsonl",".stdout",".stderr",".lef") or bool(
+        re.fullmatch(r".+\.json\.[A-Za-z0-9_-]+\.tmp",path.name))
+
+def preserve_outputs(out,evidence,report):
+    """Copy each derived output independently; retain the complete owned tree."""
+    result=dict(copied={},excluded_roots=[],complete=False,owned_outputs_retained=True,
+                retained_output_path=str(out),artifact_required=True)
+    report["output_preservation"]=result;before=len(report["terminal_errors"])
+    def visit(directory):
+        entries=c.attempt(report,"enumerate:"+str(directory.relative_to(out)),
+                          lambda:sorted(directory.iterdir()))
+        if entries is None:return
+        for path in entries:
+            relative=path.relative_to(out)
+            def one():
+                f.require(not path.is_symlink(),"evidence symlink")
+                if path.is_dir():
+                    if len(relative.parts)==1 and relative.parts[0]in ("work","witness","supervision"):
+                        result["excluded_roots"].append(relative.as_posix());return
+                    visit(path);return
+                f.require(path.is_file()and derived_path(path),"unexpected output")
+                pin=f.file_digest(path);dest=evidence/"native"/relative
+                dest.parent.mkdir(parents=True,exist_ok=True)
+                f.write_new(dest,path.read_bytes())
+                f.require(f.file_digest(dest)==pin,"preserved output bytes")
+                result["copied"][relative.as_posix()]=pin
+            c.attempt(report,"preserve:"+relative.as_posix(),one)
+    visit(out)
+    result["complete"]=len(report["terminal_errors"])==before
+    return result
+
+def retained_workspace(ctx,work,out,report):
+    f.require(not work.is_symlink()and not out.is_symlink()and out.is_dir(),"owned retained output")
+    f.require(f.decode((work/"owner.json").read_bytes())==ctx,"retained output owner")
+    report["workspace_retained"]=dict(path=str(work),output_path=str(out),
+        reason="Retained until complete workflow artifact upload succeeds",cleanup_after_artifact=True)
+
+def cleanup_preserved_workspace(ctx,evidence):
+    """Called only after successful workflow artifact upload, never by perform()."""
+    work=Path(os.environ["RUNNER_TEMP"])/(GROUP+"-"+ctx["token"])
+    if not work.exists()and not work.is_symlink():return dict(absent=True)
+    f.require(not work.is_symlink()and work.is_dir(),"cleanup workspace type")
+    f.require(not (work/"owner.json").is_symlink()and f.decode((work/"owner.json").read_bytes())==ctx,"cleanup owner")
+    try:
+        report=f.decode((Path(evidence)/"result.json").read_bytes())
+        complete=report.get("status")=="PASS_CURRENT_SERIALIZED_NEIGHBORHOOD_READBACK_ONLY" and report.get(
+            "output_preservation",{}).get("complete")is True and report.get(
+            "workspace_retained",{}).get("path")==str(work)
+    except BaseException as exc:
+        return dict(absent=False,retained=True,reason="Missing or unreadable terminal preservation record",error=repr(exc))
+    if not complete:return dict(absent=False,retained=True,reason="Failed or incomplete preservation remains owned")
+    shutil.rmtree(work);f.require(not work.exists(),"cleanup incomplete")
+    return dict(absent=True,removed_owned_workspace=True)
+
 def emit(evidence):
     rows={}
     for path in sorted(evidence.rglob("*")):
         f.require(not path.is_symlink()and(path.is_dir()or path.is_file()),"evidence path")
         if path.is_file():
-            f.require(path.suffix in (".json",".jsonl",".stdout",".stderr",".lef"),"derived evidence only")
+            f.require(derived_path(path),"derived evidence only")
             rows[path.relative_to(evidence).as_posix()]=f.file_digest(path)
     print("CURRENT_NEIGHBORHOOD_INDEX "+json.dumps(rows,sort_keys=True),flush=True)
     for name,pin in rows.items():
@@ -152,7 +207,8 @@ def perform(ctx,proof,evidence):
         report["native_readback_complete"]=True
     except BaseException as exc:primary=exc;report["error"]=c.error_record("current-neighborhood",exc)
     finally:
-        build.cleanup_owned(ctx,work,report,identity,report["creation_attempted"],inspect,command)
+        c.attempt(report,"owned-container-cleanup",lambda:build.cleanup_owned(
+            ctx,work,report,identity,report["creation_attempted"],inspect,command))
         c.attempt(report,"current-input-unchanged",lambda:f.require(f.file_digest(work/"current-input.odb")==CURRENT,"current input changed"))
         c.attempt(report,"source-unchanged",source_gate)
         if restored:c.attempt(report,"frozen-prefix-unchanged",lambda:c.frozen_unchanged(work,f.decode((work/"frozen-manifest.json").read_bytes())))
@@ -165,23 +221,10 @@ def perform(ctx,proof,evidence):
             state=report.get("container_terminal",{}).get("State",{})
             c.attempt(report,"container-terminal",lambda:f.require(not state.get("Running",True)
               and state.get("ExitCode")==0 and state.get("OOMKilled")is False and not state.get("Error"),"container failed"))
-        def preserve():
-            for path in sorted(out.rglob("*")):
-                if not path.is_file():continue
-                relative=path.relative_to(out)
-                if relative.parts[0]in ("work","witness","supervision"):continue
-                f.require(not path.is_symlink(),"evidence symlink")
-                f.require(path.suffix in (".json",".jsonl",".stdout",".stderr",".lef"),"unexpected output")
-                dest=evidence/"native"/relative;dest.parent.mkdir(parents=True,exist_ok=True)
-                f.write_new(dest,path.read_bytes())
-        c.attempt(report,"preserve-complete-derived-output",preserve)
-        def cleanup():
-            f.require(f.decode((work/"owner.json").read_bytes())==ctx,"cleanup owner")
-            shutil.rmtree(work)
-            f.require(not work.exists(),"cleanup incomplete")
-        c.attempt(report,"owned-cloud-workspace-cleanup",cleanup)
+        c.attempt(report,"preserve-derived-outputs",lambda:preserve_outputs(out,evidence,report))
+        c.attempt(report,"retain-owned-output-for-artifact",lambda:retained_workspace(ctx,work,out,report))
         report["status"]="PASS_CURRENT_SERIALIZED_NEIGHBORHOOD_READBACK_ONLY"if primary is None and not report["terminal_errors"]and report.get("native_readback_complete")else"FAIL_CURRENT_SERIALIZED_NEIGHBORHOOD_READBACK"
-        f.write_new(evidence/"result.json",f.encode(report))
+        c.finish_record(evidence/"result.json",report,"FAIL_CURRENT_SERIALIZED_NEIGHBORHOOD_READBACK",primary)
     if primary is not None:raise primary
     f.require(not report["terminal_errors"],"readback terminal errors")
     return report
@@ -196,9 +239,10 @@ def main():
     try:return perform(ctx,f.decode(args.reservation.read_bytes()),args.output)
     except BaseException as exc:
         primary=exc
-        f.write_new(args.output/"failure.json",f.encode(dict(status="FAIL_CURRENT_NEIGHBORHOOD",
-          error=str(exc),type=type(exc).__name__,context=ctx,physical_acceptance=False,
-          timing_accepted=False,full_phy_accepted=False)))
+        failure=dict(status="FAIL_CURRENT_NEIGHBORHOOD",terminal_errors=[],
+          error=c.error_record("primary",exc),context=ctx,physical_acceptance=False,
+          timing_accepted=False,full_phy_accepted=False)
+        c.finish_record(args.output/"failure.json",failure,"FAIL_CURRENT_NEIGHBORHOOD",primary)
         raise
     finally:
         try:emit(args.output)
