@@ -56,7 +56,7 @@ def controls_binding(raw,ctx):
     require(r.get("current_context")==dict(source=ctx["source"],run_id=ctx["run_id"],attempt=1,
       source_controls_only=True,native_executed=False),"same source controls")
     require(r["inherited_source_controls"]["positive_count"]==4 and r["inherited_source_controls"]["refusal_count"]==19,"historical controls preserved")
-    require(r["counts"]==dict(positive=8,refusal=30,lifecycle=5),"complete build controls")
+    require(r["counts"]==dict(positive=8,refusal=30,lifecycle=6),"complete build controls")
     return frozen.fingerprint(raw)
 
 def preflight(ctx,reserved,controls_raw,expected,root=ROOT,api_call=frozen.api):
@@ -352,6 +352,19 @@ def extraction(selected,variant,library,out,supervisor,gate,trace=False):
     require(pin(target)==pin(library),"runtime library unchanged")
     write(base/"command-proof.json",encode(record));return native
 
+def finish_owned(supervisor,heartbeat,previous,primary,out,finish_fn=lifecycle.finish):
+    actions=[];errors=[]
+    try:actions,errors=finish_fn(supervisor,heartbeat,previous)
+    except BaseException as exc:
+        errors.append(exc);actions.append(dict(action="finish_owned_helper",completed=False,error=repr(exc)))
+    payload=dict(primary_error=None if primary is None else repr(primary),actions=actions)
+    try:write(out/"lifecycle.json",encode(payload))
+    except BaseException as exc:
+        errors.append(exc)
+        try:print("MAGIC_BUILD_LIFECYCLE_FALLBACK "+encode(payload).decode(),flush=True)
+        except BaseException:pass
+    return primary if primary is not None else(errors[0]if errors else None)
+
 def perform(ctx,reserved,controls_raw,expected,out,root=ROOT,api_call=frozen.api,fetch=frozen.download):
     c,old,data,admission=preflight(ctx,reserved,controls_raw,expected,root,api_call)
     write(out/"admission.json",encode(admission));write(out/"source-controls.json",controls_raw)
@@ -406,13 +419,7 @@ def perform(ctx,reserved,controls_raw,expected,out,root=ROOT,api_call=frozen.api
           native_build_executed=True,native_extraction_executed=True,**FLAGS)
     except BaseException as exc:primary=exc
     finally:
-        actions,errors=lifecycle.finish(supervisor,heartbeat,previous)
-        try:write(out/"lifecycle.json",encode(dict(primary_error=None if primary is None else repr(primary),actions=actions)))
-        except BaseException as exc:
-            errors.append(exc)
-            try:print("MAGIC_BUILD_LIFECYCLE_FALLBACK "+encode(dict(primary_error=None if primary is None else repr(primary),actions=actions)).decode(),flush=True)
-            except BaseException:pass
-        if primary is None and errors:primary=errors[0]
+        primary=finish_owned(supervisor,heartbeat,previous,primary,out)
     if primary is not None:raise primary
     return result
 

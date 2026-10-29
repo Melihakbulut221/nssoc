@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Hosted-only actual source/controller controls. All archive/native-I/O fixtures are synthetic."""
-import argparse,copy,hashlib,io,json,os,tarfile,tempfile,traceback
+import argparse,copy,hashlib,io,json,os,tarfile,tempfile,traceback,types
 from pathlib import Path
 from unittest.mock import patch
 import cloud_magic_resistor_provenance_build as b
@@ -147,8 +147,25 @@ def controls(expected):
             except RuntimeError as exc:assert exc is primary
             else:raise AssertionError("primary error was lost")
         assert (root/"primary/available.stderr").read_bytes()==b"original partial"
-        # Kept within lifecycle count: the upload failure case also verifies primary-finalizer isolation.
-    assert len(positive)==8 and len(refused)==30 and len(life)==5,(positive,refused,life)
+        cleanup=root/"cleanup";cleanup.mkdir();cleanup_calls=[]
+        def badstop():
+            cleanup_calls.append("stop");raise OSError("secondary heartbeat stop")
+        def badjoin(**kwargs):
+            cleanup_calls.append("join");raise OSError("secondary heartbeat join")
+        fake=types.SimpleNamespace(ACTIVE=None,stop_process=lambda p:cleanup_calls.append("owned_cleanup"),
+          STOP=types.SimpleNamespace(set=badstop))
+        heartbeat=types.SimpleNamespace(join=badjoin,is_alive=lambda:False)
+        assert b.finish_owned(fake,heartbeat,{},primary,cleanup)is primary
+        assert cleanup_calls==["owned_cleanup","stop","join"]
+        assert b.decode((cleanup/"lifecycle.json").read_bytes())["primary_error"]==repr(primary)
+        secondary=OSError("unexpected cleanup helper failure")
+        def broken(*args):raise secondary
+        another=root/"helper-error";another.mkdir()
+        assert b.finish_owned(None,None,{},primary,another,broken)is primary
+        alone=root/"helper-only-error";alone.mkdir()
+        assert b.finish_owned(None,None,{},None,alone,broken)is secondary
+        life.append("actual_cleanup_helper_primary_and_no_primary")
+    assert len(positive)==8 and len(refused)==30 and len(life)==6,(positive,refused,life)
     inherited=prior.controls()
     assert inherited["positive_count"]==4 and inherited["refusal_count"]==19
     return dict(status="PASS_MAGIC_CURRENT500_BUILD_SOURCE_CONTROLS",passed=True,
