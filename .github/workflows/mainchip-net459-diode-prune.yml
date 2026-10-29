@@ -1,0 +1,23 @@
+name: Exact net459 branch and two-diode physical candidate
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/mainchip-net459-diode-prune.yml]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Select the qualified candidate branch for physical execution
+        type: choice
+        required: true
+        default: controls
+        options: [controls, candidate]
+permissions:
+  contents: read
+jobs:
+  register-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Harmless workflow registration only
+        run: |
+          printf '%s\n' 'Registration only. No checkout, dependency, archive, build or native execution.'
