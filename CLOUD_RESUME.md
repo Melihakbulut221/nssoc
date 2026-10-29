@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v105
+# Cloud continuation — checkpoint v106
 
-Updated: 2026-10-29T05:11:11.962126+00:00
+Updated: 2026-10-29T05:23:58.930441+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Hosted new widthRC input evidence40819454746 passed4 positives/36 refusals; complete proof9 documents retained. Disabled freshRC adapters8dbfb477 with five unchanged numerical workers were independently reviewed at b56c551; controller/fixtures still pending. Audit recovery source40821032444 passed5 real adapter fixtures,7 lifecycle cases,5 actual pack/publication cases,6 context refusals and original controls; native payloads in fixtures remain explicitly synthetic. Real audit-only recovery40821586610/source4c6c705 dispatched once with off/on reservations427487104/427487132 before downloads. It reuses original complete route handoffs; no reroute, no STA or design acceptance. Local project directory is empty and no native local processes exist.
+Cloud-only continuation now includes real mainchip audit recovery40821586610 and source-only freshRC adapter qualification40822481317. Native audits reuse complete saved off/on route archives and leave the original publication-failed run unchanged. The freshRC source suite exercises actual clone/admission/current75 copies and both-order handoff using explicit synthetic native I/O; expected8groups/5positive43refusals are not yet a claimed pass. Production RC controller/workflow/native authorization remains absent/false. Source and reviews are committed through05ad508 on the freshRC branch. Localworkspace, projecttmp and nativeprocesses remain empty; complete code/evidence/resume state is GitHub-hosted.
 
 Active handles at this snapshot: 40821586610 in_progress
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -8902,3 +8903,10 @@ Local project/tmp/native processes verified absent. Inventory319 exact cloud han
 Hosted new widthRC input evidence40819454746 passed4 positives/36 refusals; complete proof9 documents retained. Disabled freshRC adapters8dbfb477 with five unchanged numerical workers were independently reviewed at b56c551; controller/fixtures still pending. Audit recovery source40821032444 passed5 real adapter fixtures,7 lifecycle cases,5 actual pack/publication cases,6 context refusals and original controls; native payloads in fixtures remain explicitly synthetic. Real audit-only recovery40821586610/source4c6c705 dispatched once with off/on reservations427487104/427487132 before downloads. It reuses original complete route handoffs; no reroute, no STA or design acceptance. Local project directory is empty and no native local processes exist.
 
 Local project/tmp/native processes verified absent. Inventory322 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T05:23:58.930441+00:00 — cloud-only checkpoint v106
+
+Cloud-only continuation now includes real mainchip audit recovery40821586610 and source-only freshRC adapter qualification40822481317. Native audits reuse complete saved off/on route archives and leave the original publication-failed run unchanged. The freshRC source suite exercises actual clone/admission/current75 copies and both-order handoff using explicit synthetic native I/O; expected8groups/5positive43refusals are not yet a claimed pass. Production RC controller/workflow/native authorization remains absent/false. Source and reviews are committed through05ad508 on the freshRC branch. Localworkspace, projecttmp and nativeprocesses remain empty; complete code/evidence/resume state is GitHub-hosted.
+
+Local project/tmp/native processes verified absent. Inventory323 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
