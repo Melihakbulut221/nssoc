@@ -1,0 +1,140 @@
+name: Fixed NEARDRC source repair controls
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: fixed-neardrc-source-controls-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Authenticate first hosted manual source checkout
+        run: |
+          python3 -B - <<'PY'
+          import json,os,re,subprocess,sys
+          from pathlib import Path
+          e=os.environ
+          assert e['GITHUB_ACTIONS']=='true' and e['RUNNER_ENVIRONMENT']=='github-hosted'
+          assert e['RUNNER_OS']=='Linux' and e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_REF']=='refs/heads/codex/mainchip-fixed-neardrc-repair'
+          assert re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA'])
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
+          assert sys.version_info[:2]==(3,12)
+          sys.path.insert(0,'scripts')
+          import mainchip_fixed_neardrc_repair as p
+          m=p.source_context()
+          assert all(m[k] is False for k in p.FALSE)
+          row=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
+            source_controls_only=True,full_engine_build=False,native_routing_authorized=False,
+            original_method_sha256=p.LEGACY_SHA,original_source_sha256=p.ORIGINAL_SHA)
+          Path('fixed-neardrc-context.json').write_text(json.dumps(row,sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Exercise actual C++ bodies and authentic unchanged off-on comparator
+        run: |
+          python3 -B scripts/check_mainchip_fixed_neardrc_repair.py --output fixed-neardrc-controls > fixed-neardrc-controls.stdout 2> fixed-neardrc-controls.stderr
+          python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          r=json.loads(Path('fixed-neardrc-controls/result.json').read_bytes())
+          assert r['status']=='PASS_FIXED_NEARDRC_SOURCE_CONTROLS'
+          assert r['current_source']==os.environ['GITHUB_SHA'] and r['current_run']==int(os.environ['GITHUB_RUN_ID'])
+          assert r['current_attempt']==1
+          assert len(r['source']['refusals'])==21 and len(r['compiled']['cases'])==6
+          assert len(r['comparison']['refusals'])==30 and len(r['comparison']['mismatch_refusals'])==2
+          assert r['compiled']['original_fixed_mutation_reproduced'] is True
+          assert r['compiled']['full_engine_compiled'] is False and r['compiled']['actual_database_loaded'] is False
+          assert r['comparison']['actual_comparison']['comparison']['status']=='PASS_OBSERVER_OFF_ON_OUTPUT_EQUIVALENCE_ONLY'
+          assert all(r[k] is False for k in ('physical_acceptance','timing_accepted','full_phy_accepted','runtime_root_cause_established','new_native_execution'))
+          PY
+      - name: Always emit complete indexed reports and compiler streams
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          names=['fixed-neardrc-context.json','fixed-neardrc-controls.stdout','fixed-neardrc-controls.stderr']
+          names+=['fixed-neardrc-controls/'+name for name in (
+            'result.json','source-controls.json','compiled-controls.json','comparison-controls.json','actual-function-harness.cpp',
+            'compiler-version.command.json','compiler-version.stdout','compiler-version.stderr',
+            'compile.command.json','compile.stdout','compile.stderr','harness.command.json','harness.stdout','harness.stderr')]
+          for name in names:
+              p=Path(name);present=p.is_file() and not p.is_symlink();raw=p.read_bytes() if present else b''
+              chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+              print('FIXED_NEARDRC_CONTROL_INDEX '+json.dumps(dict(path=name,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks))))
+              for i,b in enumerate(chunks):
+                  print('FIXED_NEARDRC_CONTROL_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode())))
+          PY
+      - name: Preserve all source controls evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: fixed-neardrc-source-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            fixed-neardrc-context.json
+            fixed-neardrc-controls.stdout
+            fixed-neardrc-controls.stderr
+            fixed-neardrc-controls/
+          if-no-files-found: error
+          retention-days: 90
+  preserve-source-job-log:
+    needs: source-controls
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Preserve the completed source job full raw log and provenance
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          e=os.environ;repo=e['GITHUB_REPOSITORY'];run_id=e['GITHUB_RUN_ID'];attempt=e['GITHUB_RUN_ATTEMPT']
+          assert repo=='Melihakbulut221/nssoc' and e['GITHUB_ACTIONS']=='true'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and attempt=='1'
+          def read(endpoint,name):
+              raw=subprocess.check_output(['gh','api','repos/'+repo+'/'+endpoint])
+              Path(name).write_bytes(raw);return json.loads(raw)
+          run=read('actions/runs/'+run_id,'fixed-neardrc-run.json')
+          jobs=read('actions/runs/'+run_id+'/attempts/'+attempt+'/jobs?per_page=100','fixed-neardrc-jobs.json')
+          assert run['id']==int(run_id) and run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
+          matches=[j for j in jobs['jobs'] if j['name']=='source-controls']
+          assert len(matches)==1
+          j=matches[0]
+          assert j['run_id']==int(run_id) and j['head_sha']==e['GITHUB_SHA'] and j['run_attempt']==1 and j['status']=='completed'
+          read('actions/jobs/'+str(j['id']),'fixed-neardrc-source-job.json')
+          log=subprocess.check_output(['gh','api','--allow-escape-sequences','repos/'+repo+'/actions/jobs/'+str(j['id'])+'/logs'])
+          assert log
+          Path('fixed-neardrc-source-job.log').write_bytes(log)
+          names=('fixed-neardrc-run.json','fixed-neardrc-jobs.json','fixed-neardrc-source-job.json','fixed-neardrc-source-job.log')
+          files={name:dict(bytes=Path(name).stat().st_size,sha256=hashlib.sha256(Path(name).read_bytes()).hexdigest()) for name in names}
+          receipt=dict(source=e['GITHUB_SHA'],run_id=int(run_id),attempt=1,source_job_id=j['id'],
+            source_job_conclusion=j['conclusion'],full_source_job_log=True,files=files,
+            native_authorized=False,metadata_only=True)
+          Path('fixed-neardrc-source-job-log-receipt.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(receipt,sort_keys=True))
+          PY
+      - name: Preserve full completed source job log
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: fixed-neardrc-full-source-job-log-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            fixed-neardrc-run.json
+            fixed-neardrc-jobs.json
+            fixed-neardrc-source-job.json
+            fixed-neardrc-source-job.log
+            fixed-neardrc-source-job-log-receipt.json
+          if-no-files-found: error
+          retention-days: 90
