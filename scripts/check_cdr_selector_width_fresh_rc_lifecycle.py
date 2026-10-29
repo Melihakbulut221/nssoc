@@ -47,6 +47,9 @@ class Controls(unittest.TestCase):
         e.methods();record("actual complete new and historical source guards","positive")
         for on in (False,True):
             m=enabled(self.method)if on else copy.deepcopy(self.method)
+            if not on:
+                for name in e.NATIVE:m[name]=False
+                m["controller_readiness"]=False
             e.validate_authorizations(m)
             for key in e.NATIVE+e.FALSE+("source_controls_authorized","controller_readiness"):
                 bad=copy.deepcopy(m);bad[key]=1
