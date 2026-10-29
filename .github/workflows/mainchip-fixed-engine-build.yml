@@ -1,6 +1,12 @@
 name: Fixed NEARDRC full engine build candidate
 on:
   workflow_dispatch:
+    inputs:
+      build:
+        description: Build the separately qualified FIXED-guard engine in GitHub only
+        type: boolean
+        required: true
+        default: false
 permissions:
   contents: read
   actions: read
@@ -74,8 +80,8 @@ jobs:
           if-no-files-found: error
           retention-days: 90
   engine-build:
-    # Disabled pending independent review and actual exact-source controls.
-    if: ${{ false }}
+    # Passed hosted source controls and exact empty release precede native acquisition.
+    if: ${{ inputs.build }}
     needs: source-controls
     runs-on: ubuntu-24.04
     timeout-minutes: 250
