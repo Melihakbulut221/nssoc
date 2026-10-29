@@ -18,6 +18,7 @@ from unittest.mock import patch
 import mainchip_built_engine_route_tail_contract as c
 import mainchip_built_engine_route_tail_driver as driver
 import cloud_mainchip_built_engine_route_tail as host
+import check_mainchip_built_engine_route_tail_handoff as handoff_fixture
 import mainchip_two_signal_repair as repair
 import mainchip_two_signal_internal_witness as witness
 import check_mainchip_two_signal_internal_witness as witness_fixture
@@ -129,29 +130,33 @@ def gate_records():
     return rows
 
 def sequence_controls():
-    rows=gate_records();events=[]
-    got=driver.execute_tail(lambda p,a:events.append((p,a)),lambda p:copy.deepcopy(rows[p]))
+    rows=gate_records();events=[];got={}
+    for stage in ('route','audit'):
+        got.update(driver.execute_tail(lambda p,a:events.append((p,a)),lambda p:copy.deepcopy(rows[p]),stage))
     assert [p for p,a in events]==list(c.PHASES) and got==rows
     assert [a for p,a in events]==[c.command(p) for p in c.PHASES]
-    gate=c.complete(got);assert gate["original_gate"]["DRT_markers"]==3
-    assert gate["original_gate"]["eligible_for_separately_reviewed_RC_STA"] is False
+    gate=c.complete(got);assert gate['original_gate']['DRT_markers']==3
+    assert gate['original_gate']['eligible_for_separately_reviewed_RC_STA'] is False
     failures=[]
     for phase in c.PHASES:
-        seen=[];sentinel=RuntimeError("phase sentinel")
+        stage='route' if phase==c.PHASES[0] else 'audit'
+        phases=c.PHASES[:1] if stage=='route' else c.PHASES[1:]
+        seen=[];sentinel=RuntimeError('phase sentinel')
         def execute(p,a):
             seen.append(p)
             if p==phase:raise sentinel
-        try:driver.execute_tail(execute,lambda p:copy.deepcopy(rows[p]))
+        try:driver.execute_tail(execute,lambda p:copy.deepcopy(rows[p]),stage)
         except RuntimeError as exc:assert exc is sentinel
-        else:raise AssertionError("lost primary")
-        assert seen==list(c.PHASES[:c.PHASES.index(phase)+1]);failures.append(phase)
-    refused(lambda:c.command("ownership"),"unapproved tail phase")
-    for key in ("original1691_clock_gate_passed","native_invariants_passed"):
-        changed=copy.deepcopy(rows);changed["drc-audit"][key]=False
-        refused(lambda:c.complete(changed),"")
-    changed=copy.deepcopy(rows);changed["drc-audit"]["routing_delta"]["changed_signal_names"]=["clock"]
-    refused(lambda:c.complete(changed),"")
-    return dict(original_three_shorts_retained=True,sequence=events,stops=failures,gate_refusals=4)
+        else:raise AssertionError('lost primary')
+        assert seen==list(phases[:phases.index(phase)+1]);failures.append(phase)
+    refused(lambda:c.command('ownership'),'unapproved tail phase')
+    for key in ('original1691_clock_gate_passed','native_invariants_passed'):
+        changed=copy.deepcopy(rows);changed['drc-audit'][key]=False
+        refused(lambda:c.complete(changed),'')
+    changed=copy.deepcopy(rows);changed['drc-audit']['routing_delta']['changed_signal_names']=['clock']
+    refused(lambda:c.complete(changed),'')
+    return dict(original_three_shorts_retained=True,sequence=events,stops=failures,gate_refusals=4,
+        independent_route_seconds=14400,independent_audit_seconds=[1200]*5)
 
 def observer_controls():
     baseline=witness_fixture.fixture();results=[]
@@ -189,7 +194,8 @@ def observer_controls():
     return dict(positive=3,refusals=results,synthetic_only=True)
 
 def fixture_case(mode):
-    row=dict(schema="built-engine-route-tail-case-v1",mode=mode,status="PASS_COMPLETE_ROUTE_TAIL_DIAGNOSTIC",
+    row=dict(schema="built-engine-route-tail-case-v1",mode=mode,stage="audit",
+        route_lineage=dict(authenticated_complete_route=True),status="PASS_COMPLETE_ROUTE_TAIL_DIAGNOSTIC",
         terminal_errors=[],source="a"*40,run_id=1,engine=c.ENGINE,frozen_input={"sha256":"f"*64},
         prefix_source=c.PREFIX_SOURCE,prefix_run=c.PREFIX_RUN,
         original_audits={"original_audits_complete":True},physical_acceptance=False,
@@ -214,7 +220,7 @@ def comparison_controls():
         bad=copy.deepcopy(on);bad[field]=value;refused(lambda:c.compare_cases(off,bad),reason)
     return dict(positive=1,geometry_mismatches=changes,marker_mismatch=True,refusals=5)
 
-def lifecycle_controls():
+def lifecycle_controls(stage="audit"):
     outputs=[]
     for mode in ("complete","body","stop","join","body_stop_join","save","body_save"):
         with tempfile.TemporaryDirectory() as d:
@@ -222,7 +228,10 @@ def lifecycle_controls():
             (work/"source").mkdir();(work/"input.txt").write_bytes(b"frozen")
             inv=dict(files={"input.txt":fingerprint(work/"input.txt")})
             c.atomic_record(work/"frozen-manifest.json",inv)
-            c.atomic_record(work/"request.json",dict(mode="off",source="a"*40,run_id=1,engine=c.ENGINE))
+            c.atomic_record(work/"request.json",dict(mode="off",stage=stage,source="a"*40,run_id=1,engine=c.ENGINE))
+            c.atomic_record(work/'route-projection.json',inv)
+            c.atomic_record(work/'route-lineage.json',dict(authenticated_complete_route=True,source='a'*40,mode='off',run_id=1))
+            c.atomic_record(work/'out/route-case-result.json',dict(route_log={'synthetic':True},commands=[{'synthetic':True}]))
             rows=gate_records()
             body=RuntimeError("body sentinel");stop=RuntimeError("stop sentinel");join=RuntimeError("join sentinel")
             save=OSError("atomic replace sentinel");events=[];actual_atomic=c.atomic_record
@@ -243,14 +252,14 @@ def lifecycle_controls():
             def command(s,argv,phase):
                 events.append(phase)
                 assert c.WITNESS_ENV not in os.environ
-                if phase==c.PHASES[0] and "body" in mode:raise body
+                if phase==(c.PHASES[0] if stage=="route" else c.PHASES[1]) and "body" in mode:raise body
                 if phase==c.PHASES[0]:
                     (work/"out/supervision/one-two-signal-routing-attempt.stdout").write_bytes(
                         b"NSSOC_FIXED_CLOCK_SIGNAL_REPAIR_BEGIN\nNSSOC_FIXED_CLOCK_SIGNAL_REPAIR_RETURNED\n")
                 if phase in rows:actual_atomic(work/"out/work"/(phase+"-result.json"),rows[phase])
                 return dict(label=phase,returncode=0,requested_timeout_seconds=14400 if phase==c.PHASES[0] else 1200)
             def observer(w,m):return dict(enabled=False,witness_files=0)
-            for name in c.COMPARE_FILES:(work/"out/work"/name).write_bytes(b"synthetic")
+            for name in (*c.COMPARE_FILES,"fixed-routing.drc"):(work/"out/work"/name).write_bytes(b"synthetic")
             def replace(a,b):
                 if "save" in mode and Path(b).name=="case-result.json":raise save
                 return original_replace(a,b)
@@ -258,7 +267,7 @@ def lifecycle_controls():
             capture=io.StringIO()
             with ExitStack() as stack:
                 stack.enter_context(patch.object(driver,"WORK",work))
-                stack.enter_context(patch.object(c,"method",return_value={"native_tail_authorized":True}))
+                stack.enter_context(patch.object(c,"method",return_value={"native_route_authorized":True,"native_audit_authorized":True}))
                 stack.enter_context(patch.object(c.previous,"method",return_value={}))
                 stack.enter_context(patch.object(driver.old,"supervisor",return_value=sup))
                 stack.enter_context(patch.object(driver.threading,"Thread",Beat))
@@ -281,14 +290,14 @@ def lifecycle_controls():
                 assert result["status"]=="FAIL_ROUTE_TAIL_DIAGNOSTIC"
             else:
                 result=c.decode((work/"out/case-result.json").read_bytes())
-                assert result["status"]==("PASS_COMPLETE_ROUTE_TAIL_DIAGNOSTIC" if mode=="complete" else "FAIL_ROUTE_TAIL_DIAGNOSTIC")
+                assert result["status"]==("PASS_ROUTE_ONLY_AWAITING_ORIGINAL_AUDITS" if mode=="complete" and stage=="route" else "PASS_COMPLETE_ROUTE_TAIL_DIAGNOSTIC" if mode=="complete" else "FAIL_ROUTE_TAIL_DIAGNOSTIC")
             assert c.frozen_unchanged(work,inv)["files"]==1
             assert any(x["action"]=="frozen-input-terminal" for x in result["terminal_actions"])
-            outputs.append(dict(case=mode,events=events,status=result["status"],same_primary=("body" in mode)))
+            outputs.append(dict(case=mode,stage=stage,events=events,status=result["status"],same_primary=("body" in mode)))
     return outputs
 
 def publication_controls():
-    ctx=dict(source="a"*40,token="1-1",mode="off");tag="cloud-results-1-1-"+c.group("off")
+    ctx=dict(source="a"*40,token="1-1",mode="off",stage="audit");tag="cloud-results-1-1-"+c.group("off","audit")
     with tempfile.TemporaryDirectory() as d:
         path=Path(d)/"case-result.json";path.write_bytes(b"synthetic")
         receipt=fingerprint(path)
@@ -304,36 +313,92 @@ def publication_controls():
         refused(lambda:host.publish_asset(path,ctx,1,read,upload),"existing asset conflict")
     return dict(positive=2,refusals=1)
 
+def split_publication_controls():
+    results=[]
+    for mode in ('missing_terminal','malformed_terminal','upload_failure'):
+        with tempfile.TemporaryDirectory() as d:
+            work=Path(d);out=work/'out';out.mkdir();(out/'work').mkdir()
+            (out/'work/partial-route.txt').write_bytes(b'complete synthetic partial route evidence')
+            (out/'route-handoff.tar.gz').write_bytes(b'opaque incomplete synthetic archive; never accepted')
+            if mode=='malformed_terminal':(out/'host-result.json').write_bytes(b'{"status":')
+            original_bytes={p.relative_to(out).as_posix():p.read_bytes() for p in out.rglob('*') if p.is_file()}
+            ctx=dict(source='a'*40,token='123-1',mode='off',stage='route')
+            tag='cloud-results-123-1-'+c.group('off','route')
+            release=dict(id=3,tag_name=tag,target_commitish=ctx['source'],draft=False,prerelease=True,assets=[])
+            ref=dict(ref='refs/tags/'+tag,object=dict(type='commit',sha=ctx['source']))
+            uploaded={};sentinel=OSError('upload sentinel')
+            def read(endpoint):
+                if endpoint.startswith('git/'):return copy.deepcopy(ref)
+                assert endpoint in ('releases/tags/'+tag,'releases/3');return copy.deepcopy(release)
+            def upload(argv,**kwargs):
+                assert argv[:3]==['gh','release','upload'] and argv[3]==tag and argv[-2:]==['--repo',c.REPOSITORY]
+                path=Path(argv[4])
+                if mode=='upload_failure':raise sentinel
+                uploaded[path.name]=path.read_bytes()
+                receipt=fingerprint(path)
+                release['assets'].append(dict(id=len(release['assets'])+1,name=path.name,size=receipt['bytes'],digest='sha256:'+receipt['sha256']))
+            caught=None
+            with ExitStack() as stack:
+                stack.enter_context(patch.object(c,'context',return_value=ctx));stack.enter_context(patch.object(c,'method',return_value={}))
+                stack.enter_context(patch.object(host,'owned_work',return_value=work))
+                stack.enter_context(patch.object(host.reservation,'wait',return_value=dict(release_id=3,existing_assets=[])))
+                stack.enter_context(patch.object(host.reservation.release,'api',side_effect=read))
+                stack.enter_context(patch.object(host.subprocess,'run',side_effect=upload))
+                stack.enter_context(patch.object(host.shutil,'disk_usage',return_value=types.SimpleNamespace(free=64*1024**3)))
+                try:assert host.publish()==0
+                except BaseException as exc:caught=exc
+            if mode=='upload_failure':assert caught is sentinel and not (out/'publication.json').exists()
+            else:assert caught is None and c.decode((out/'publication.json').read_bytes())['physical_acceptance'] is False
+            available=c.decode((out/'publication-availability.json').read_bytes())
+            assert available['source_records']['inner-result.json']['present'] is False
+            if mode=='malformed_terminal':assert 'parse_error' in available['source_records']['host-result.json']
+            else:assert available['source_records']['host-result.json']['present'] is False
+            output=c.decode((out/'outputs.json').read_bytes());parts=c.decode((out/'parts.json').read_bytes())
+            archive=b''.join((work/p['name']).read_bytes() for p in parts['parts'])
+            assert dict(bytes=len(archive),sha256=c.digest(archive))==parts['archive']
+            with tarfile.open(fileobj=io.BytesIO(archive),mode='r:gz') as tar:
+                saved={m.name:tar.extractfile(m).read() for m in tar if m.isfile()}
+            assert set(saved)==set(output['files'])|{'outputs.json'}
+            for p,row in output['files'].items():assert dict(bytes=len(saved[p]),sha256=c.digest(saved[p]))==row
+            for p,raw in original_bytes.items():assert saved[p]==raw and (out/p).read_bytes()==raw
+            if caught is None:assert uploaded['outputs.json']==(out/'outputs.json').read_bytes()
+            results.append(dict(case=mode,full_partial_output_archive=True,missing_terminal_not_accepted=True,same_upload_exception=mode=='upload_failure'))
+    return results
+
+
 def isolated_controls(m):
     with tempfile.TemporaryDirectory() as d:
         root=Path(d)
-        for p in [*m["protected"],c.METHOD]:
+        for p in [*m['protected'],c.METHOD]:
             q=root/p;q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(c.secure_file(ROOT,p),q)
-        names=("mainchip_built_engine_route_tail_contract","mainchip_built_engine_route_tail_driver",
-            "mainchip_built_engine_route_tail_inner","cloud_mainchip_built_engine_route_tail")
+        names=('mainchip_built_engine_route_tail_contract','mainchip_built_engine_route_tail_driver',
+            'mainchip_built_engine_route_tail_inner','mainchip_built_engine_route_tail_handoff','cloud_mainchip_built_engine_route_tail',
+            'check_mainchip_built_engine_route_tail_handoff','check_mainchip_built_engine_route_tail')
         auth=[]
-        for enabled in (False,True):
-            baseline=copy.deepcopy(m);baseline["source_controls_authorized"]=enabled;baseline["native_tail_authorized"]=False
+        # Both legitimate control modes and both legitimate native states use the real method validator.
+        for label,controls,native in (('disabled',False,False),('controls',True,False),('native',True,True)):
+            baseline=copy.deepcopy(m);baseline['source_controls_authorized']=controls
+            for key in ('native_tail_authorized','native_route_authorized','native_audit_authorized'):baseline[key]=native
             c.atomic_record(root/c.METHOD,baseline);assert c.method(root)==baseline
-            for label,key,value,reason in (
-                ("native type","native_tail_authorized",1,"authorization type"),
-                ("control type","source_controls_authorized","true","authorization type"),
-                ("physical claim","physical_acceptance",True,"no acceptance"),
-                ("retry","automatic_retry_authorized",True,"no acceptance"),
-                ("false equivalence","observer_equivalence_qualified",True,"no acceptance")):
+            mutations=[('native type','native_tail_authorized',1,'authorization type'),
+                ('control type','source_controls_authorized','true','authorization type'),
+                ('physical claim','physical_acceptance',True,'no acceptance'),
+                ('retry','automatic_retry_authorized',True,'no acceptance'),
+                ('false equivalence','observer_equivalence_qualified',True,'no acceptance'),
+                ('split route','native_route_authorized',not native,'inconsistent stage authorizations'),
+                ('split audit','native_audit_authorized',not native,'inconsistent stage authorizations'),
+                ('incomplete source','source_unit_complete',False,'incomplete split source unit'),
+                ('unsplit','native_handoff_split_complete',False,'route/audit handoff split required')]
+            for name,key,value,reason in mutations:
                 changed=copy.deepcopy(baseline);changed[key]=value
                 assert json.dumps(changed,sort_keys=True)!=json.dumps(baseline,sort_keys=True)
                 c.atomic_record(root/c.METHOD,changed)
-                auth.append(dict(mode=enabled,label=label,error=refused(lambda:c.method(root),reason)))
-        pending=copy.deepcopy(m);pending["source_controls_authorized"]=True;pending["native_tail_authorized"]=True
-        c.atomic_record(root/c.METHOD,pending)
-        auth.append(dict(mode="native-pending-split",error=refused(lambda:c.method(root),"route/audit handoff split required")))
+                auth.append(dict(mode=label,label=name,error=refused(lambda:c.method(root),reason)))
         c.atomic_record(root/c.METHOD,m)
-        code="import sys;sys.path.insert(0,sys.argv[1]);"+ ";".join("import "+x for x in names)+";print('TAIL_IMPORT_PASS')"
-        p=subprocess.run([sys.executable,"-I","-B","-c",code,str(root/"scripts")],
-            capture_output=True,text=True,timeout=120)
-        assert p.returncode==0 and p.stdout.strip()=="TAIL_IMPORT_PASS",(p.stdout,p.stderr)
-    return dict(actual_isolated_imports=list(names),native_odb_module_imported=False,actual_source_control_modes=2,native_enable_refused_until_split=True,authorization_refusals=auth)
+        code='import sys;sys.path.insert(0,sys.argv[1]);'+ ';'.join('import '+x for x in names)+";print('TAIL_IMPORT_PASS')"
+        p=subprocess.run([sys.executable,'-I','-B','-c',code,str(root/'scripts')],capture_output=True,text=True,timeout=120)
+        assert p.returncode==0 and p.stdout.strip()=='TAIL_IMPORT_PASS',(p.stdout,p.stderr)
+    return dict(actual_isolated_imports=list(names),native_odb_module_imported=False,actual_authorization_modes=3,authorization_refusals=auth)
 
 def main():
     m=c.method(ROOT)
@@ -345,10 +410,13 @@ def main():
     result["sequence"]=sequence_controls()
     result["observer"]=observer_controls()
     result["comparison"]=comparison_controls()
-    result["lifecycle"]=lifecycle_controls()
+    result["lifecycle"]=lifecycle_controls("audit")+lifecycle_controls("route")
+    result["handoff"]=handoff_fixture.controls()
     result["publication"]=publication_controls()
+    result["split_publication"]=split_publication_controls()
     result["isolated_imports"]=isolated_controls(m)
     assert len(result["envelope"]["refusals"])==10 and len(result["restore"])==4
-    assert len(result["lifecycle"])==7 and len(result["comparison"]["geometry_mismatches"])==10
+    assert len(result["lifecycle"])==14 and len(result["comparison"]["geometry_mismatches"])==10
+    assert len(result["split_publication"])==3 and len(result["isolated_imports"]["authorization_refusals"])==27
     print(json.dumps(result,sort_keys=True,indent=2,allow_nan=False))
 if __name__=="__main__":main()

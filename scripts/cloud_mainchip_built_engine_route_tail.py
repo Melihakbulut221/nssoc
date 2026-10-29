@@ -188,6 +188,8 @@ def publish():
         c.require(not p.is_symlink() and (p.is_file() or p.is_dir()),"output special entry")
         if p.is_file():files[p.relative_to(out).as_posix()]=fingerprint(p)
     write(out/"outputs.json",dict(source=ctx["source"],mode=ctx["mode"],stage=ctx["stage"],files=files,physical_acceptance=False))
+    total=sum(row['bytes'] for row in files.values())
+    c.require(shutil.disk_usage(work).free>=2*total+2*1024**3,'complete publication disk budget')
     archive=work/"route-tail-evidence.tar.gz"
     with tarfile.open(archive,"w:gz") as tar:
         for p in sorted(out.iterdir()):tar.add(p,arcname=p.name,recursive=True)
@@ -230,7 +232,14 @@ def comparison_body(ctx,work,out):
     from route_cloud_newer_postcts import fetch
     reservation.wait(c.group("compare","compare"),os.environ)
     read=reservation.release.api;cases={};bindings={}
+    run=read('actions/runs/'+os.environ['GITHUB_RUN_ID'])
+    jobs=read('actions/runs/'+os.environ['GITHUB_RUN_ID']+'/jobs?per_page=100')
+    c.require(run['id']==int(os.environ['GITHUB_RUN_ID']) and run['head_sha']==ctx['source']
+        and run['run_attempt']==1,'same workflow audit run')
     for mode in c.MODES:
+        candidates=[j for j in jobs['jobs'] if j['name']=='audit-only ('+mode+')']
+        c.require(len(candidates)==1 and candidates[0]['status']=='completed'
+            and candidates[0]['conclusion']=='success','complete audit job required')
         tag="cloud-results-"+ctx["token"]+"-"+c.group(mode,"audit")
         release=read("releases/tags/"+tag);ref=read("git/ref/tags/"+tag)
         reservation.release.validate_release(release,ref,tag,ctx["source"])
@@ -254,7 +263,7 @@ def comparison_body(ctx,work,out):
             and case["run_id"]==int(os.environ["GITHUB_RUN_ID"]),"case current source/run/mode")
         cases[mode]=case
         write(out/("case-"+mode+".json"),case)
-        bindings[mode]=dict(release_id=release["id"],tag=tag,
+        bindings[mode]=dict(release_id=release["id"],tag=tag,audit_job=candidates[0],
             direct_files={name:fingerprint(directory/name) for name in records})
     result=c.compare_cases(cases["off"],cases["on"]);result["authenticated_cases"]=bindings
     return result

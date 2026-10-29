@@ -168,6 +168,7 @@ def restore(work,out,root,ctx,env,read=None,fetch=None):
     release,lineage=live_route(read,ctx,env)
     c.atomic_record(out/"route-source-envelope.json",lineage)
     assets={a["name"]:a for a in release["assets"]}
+    c.require(len(assets)==len(release["assets"]),"duplicate route asset")
     transport=work/"route-transport";transport.mkdir()
     records_dir=transport/"records";records_dir.mkdir()
     records={}
@@ -194,6 +195,13 @@ def restore(work,out,root,ctx,env,read=None,fetch=None):
             c.require(outputs["files"][name]==fingerprint(records_dir/name),"route record output join")
     c.require(outputs["files"]["route-handoff.tar.gz"]==proof["archive"],"handoff archive output join")
     manifest=part_manifest(records["parts.json"],assets)
+    # Account for parts + joined outer, complete outer extraction, complete nested
+    # extraction and the independent canonical copy before any archive download.
+    disk_required=(2*manifest['archive']['bytes']+sum(r['bytes'] for r in outputs['files'].values())
+        +sum(r['bytes'] for r in expected_nested.values())
+        +sum(r['bytes'] for r in route_projection(expected_nested).values())+2*1024**3)
+    c.require(shutil.disk_usage(work).free>=disk_required,'route restore complete disk budget')
+    lineage['restoration_disk_required_bytes']=disk_required
     for row in manifest["parts"]:
         fetch(assets[row["name"]]["browser_download_url"],row["sha256"],transport/row["name"])
         c.require(fingerprint(transport/row["name"])=={k:row[k] for k in ("bytes","sha256")},"route part bytes")

@@ -6,7 +6,7 @@ on:
         type: boolean
         required: true
         default: false
-        description: Run two separately restored tails only after independent authorization
+        description: Run separately reserved route and audit stages only after source authorization
 permissions:
   contents: read
 concurrency:
@@ -52,8 +52,8 @@ jobs:
             route-tail-controls.json
           if-no-files-found: error
           retention-days: 90
-  route-tail:
-    # A later reviewed source must activate both this condition and the new method.
+  route-only:
+    # Disabled until root reviews this exact split source and its hosted controls.
     if: ${{ false && inputs.native }}
     needs: source-controls
     strategy:
@@ -68,55 +68,130 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       NSSOC_ROUTE_TAIL_MODE: ${{ matrix.mode }}
+      NSSOC_ROUTE_TAIL_STAGE: route
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-      - name: Repeat exact source controls before dependencies or native work
+      - name: Repeat exact controls before transport or native work
         run: |
           python3 -B scripts/check_mainchip_built_engine_route_prefix.py > route-prefix-controls.json
           python3 -B scripts/check_mainchip_built_engine_route_tail.py > route-tail-controls.json
-      - name: Require all three externally reserved releases before downloads
+      - name: Require all five independently reserved releases before downloads
         run: |
-          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-built-engine-route-tail-off
-          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-built-engine-route-tail-on
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-built-engine-route-tail-off-route
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-built-engine-route-tail-on-route
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-built-engine-route-tail-off-audit
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-built-engine-route-tail-on-audit
           python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-built-engine-route-tail-compare
-      - name: Execute one owned route tail from the complete frozen prefix
-        id: tail
+      - name: Execute one separately owned route stage
+        id: native
         run: |
           python3 -B scripts/cloud_mainchip_built_engine_route_tail.py probe
+      - name: Freeze the full route workspace after successful owned cleanup
+        if: ${{ success() && steps.native.outcome == 'success' }}
+        run: |
+          python3 -B scripts/cloud_mainchip_built_engine_route_tail.py handoff
       - name: Permanently preserve complete success or failure evidence
-        if: ${{ always() && steps.tail.outcome != 'skipped' }}
+        if: ${{ always() && steps.native.outcome != 'skipped' }}
         run: |
           python3 -B scripts/cloud_mainchip_built_engine_route_tail.py publish
-      - name: Always emit complete terminal and repeated-control records
+      - name: Always emit exact terminal and repeated-control records
         if: always()
         run: |
           python3 - <<'PY'
           import base64,hashlib,json,os
           from pathlib import Path
-          out=Path(os.environ["RUNNER_TEMP"])/("mainchip-built-engine-route-tail-"+os.environ["NSSOC_ROUTE_TAIL_MODE"]+"-"+os.environ["GITHUB_RUN_ID"]+"-"+os.environ["GITHUB_RUN_ATTEMPT"])/"out"
-          paths=[Path("route-prefix-controls.json"),Path("route-tail-controls.json")]
-          paths += [out/name for name in ("host-result.json","inner-result.json","case-result.json","observer-diagnosis.json","writer-raw.json","prefix-restoration.json","publication.json")]
+          group='mainchip-built-engine-route-tail-'+os.environ['NSSOC_ROUTE_TAIL_MODE']+'-'+os.environ['NSSOC_ROUTE_TAIL_STAGE']
+          out=Path(os.environ['RUNNER_TEMP'])/(group+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT'])/'out'
+          paths=[Path('route-prefix-controls.json'),Path('route-tail-controls.json')]
+          paths += [out/name for name in ('host-result.json','inner-result.json','case-result.json','observer-diagnosis.json','writer-raw.json','prefix-restoration.json','route-handoff.json','route-handoff-inventory.json','route-source-envelope.json','route-restoration.json','publication.json')]
           for p in paths:
-              raw=p.read_bytes() if p.is_file() else b"";chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
-              print("ROUTE_TAIL_RECORD_INDEX "+json.dumps(dict(path=str(p),present=p.is_file(),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks))))
+              raw=p.read_bytes() if p.is_file() else b'';chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+              print('ROUTE_TAIL_RECORD_INDEX '+json.dumps(dict(path=str(p),present=p.is_file(),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks))))
               for i,b in enumerate(chunks):
-                  print("ROUTE_TAIL_RECORD_CHUNK "+json.dumps(dict(path=str(p),index=i,base64=base64.b64encode(b).decode())))
+                  print('ROUTE_TAIL_RECORD_CHUNK '+json.dumps(dict(path=str(p),index=i,base64=base64.b64encode(b).decode())))
           PY
       - name: Complete native output artifact fallback
-        if: ${{ always() && steps.tail.outcome != 'skipped' }}
+        if: ${{ always() && steps.native.outcome != 'skipped' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: route-tail-${{ matrix.mode }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/mainchip-built-engine-route-tail-${{ matrix.mode }}-${{ github.run_id }}-${{ github.run_attempt }}/out/
+          name: route-tail-route-${{ matrix.mode }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mainchip-built-engine-route-tail-${{ matrix.mode }}-route-${{ github.run_id }}-${{ github.run_attempt }}/out/
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 1
+  audit-only:
+    # Disabled until root reviews this exact split source and its hosted controls.
+    if: ${{ false && inputs.native }}
+    needs: [source-controls, route-only]
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        mode: ["off", "on"]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      NSSOC_ROUTE_TAIL_MODE: ${{ matrix.mode }}
+      NSSOC_ROUTE_TAIL_STAGE: audit
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Repeat exact controls before transport or native work
+        run: |
+          python3 -B scripts/check_mainchip_built_engine_route_prefix.py > route-prefix-controls.json
+          python3 -B scripts/check_mainchip_built_engine_route_tail.py > route-tail-controls.json
+      - name: Require all five independently reserved releases before downloads
+        run: |
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-built-engine-route-tail-off-route
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-built-engine-route-tail-on-route
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-built-engine-route-tail-off-audit
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-built-engine-route-tail-on-audit
+          python3 -B scripts/wait_cloud_tested_source_release.py --group mainchip-built-engine-route-tail-compare
+      - name: Execute one separately owned audit stage
+        id: native
+        run: |
+          python3 -B scripts/cloud_mainchip_built_engine_route_tail.py probe
+
+      - name: Permanently preserve complete success or failure evidence
+        if: ${{ always() && steps.native.outcome != 'skipped' }}
+        run: |
+          python3 -B scripts/cloud_mainchip_built_engine_route_tail.py publish
+      - name: Always emit exact terminal and repeated-control records
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,json,os
+          from pathlib import Path
+          group='mainchip-built-engine-route-tail-'+os.environ['NSSOC_ROUTE_TAIL_MODE']+'-'+os.environ['NSSOC_ROUTE_TAIL_STAGE']
+          out=Path(os.environ['RUNNER_TEMP'])/(group+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT'])/'out'
+          paths=[Path('route-prefix-controls.json'),Path('route-tail-controls.json')]
+          paths += [out/name for name in ('host-result.json','inner-result.json','case-result.json','observer-diagnosis.json','writer-raw.json','prefix-restoration.json','route-handoff.json','route-handoff-inventory.json','route-source-envelope.json','route-restoration.json','publication.json')]
+          for p in paths:
+              raw=p.read_bytes() if p.is_file() else b'';chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+              print('ROUTE_TAIL_RECORD_INDEX '+json.dumps(dict(path=str(p),present=p.is_file(),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks))))
+              for i,b in enumerate(chunks):
+                  print('ROUTE_TAIL_RECORD_CHUNK '+json.dumps(dict(path=str(p),index=i,base64=base64.b64encode(b).decode())))
+          PY
+      - name: Complete native output artifact fallback
+        if: ${{ always() && steps.native.outcome != 'skipped' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: route-tail-audit-${{ matrix.mode }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mainchip-built-engine-route-tail-${{ matrix.mode }}-audit-${{ github.run_id }}-${{ github.run_attempt }}/out/
           if-no-files-found: error
           retention-days: 90
           compression-level: 1
   comparison:
     if: ${{ false && inputs.native }}
-    needs: [source-controls, route-tail]
+    needs: [source-controls, audit-only]
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:
@@ -124,12 +199,16 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       NSSOC_ROUTE_TAIL_MODE: compare
+      NSSOC_ROUTE_TAIL_STAGE: compare
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-      - name: Compare complete authenticated off and on outputs
+      - name: Recheck source before comparison
+        run: |
+          python3 -B scripts/check_mainchip_built_engine_route_tail.py > route-tail-controls.json
+      - name: Compare complete authenticated audit outputs
         run: |
           python3 -B scripts/cloud_mainchip_built_engine_route_tail.py compare
       - name: Preserve complete comparison evidence

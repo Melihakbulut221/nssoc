@@ -1,0 +1,238 @@
+{
+  "schema": "mainchip-route-audit-split-source-review-v1",
+  "status": "AUTHORED_DISABLED_SPLIT_REQUIRES_NEW_HOSTED_CONTROLS",
+  "branch": "codex/mainchip-built-engine-route-tail-observer",
+  "prior_draft": "1ca53541653cd3fea02ae6f9fc1b01a3b5703c1f",
+  "disabled_foundation": "722a97e70249741de93183c5de6eb1bfbb0652a3",
+  "scope": "Complete route-only handoff, separate unchanged five-audit continuation and diagnostic off/on comparison; source-only implementation.",
+  "original_prefix": {
+    "run": 40789053922,
+    "source": "e16c7f46a3b8f61c23507cdab8d60c4d9d4d3d8d",
+    "proof_head": "70d414c8992e73b3f9ea2ea30cb515df7f0b9395",
+    "release": 427309454,
+    "frozen_files": 746,
+    "frozen_bytes": 4096412802,
+    "fixed_odb_sha256": "45dc1b634fafaba4dda8475430ea1a82a69a355dfac6a6b2bbdf63529777e431",
+    "repair_tcl_sha256": "ea723ae478c019c45ce79f33c6a4abb65d298c053abd32c35c4376902be02c2d"
+  },
+  "historical_controls_parent_report": {
+    "source": "89ae0d32727b24798e01ec45f94f7ab636bd7c31",
+    "run": 40803424913,
+    "job": 123216634244,
+    "proof": "c25533912d32146766fcc18abee664f53961c3da",
+    "passed": true,
+    "qualifies_changed_split_source": false
+  },
+  "source_only_checks": {
+    "all_changed_python_ast_parsed": true,
+    "workflow_yaml_parsed": true,
+    "embedded_python_programs": [
+      {
+        "job": "source-controls",
+        "name": "Always emit complete exact control records",
+        "sha256": "25c331606f603c39803271f4acfb99f41944679d1cfa1549da59374b77ab65d6",
+        "bytes": 549
+      },
+      {
+        "job": "route-only",
+        "name": "Always emit exact terminal and repeated-control records",
+        "sha256": "f992a7d91893905e6b9ac5eb322fcbc8825584daf56725498037a21b469b16e8",
+        "bytes": 1085
+      },
+      {
+        "job": "audit-only",
+        "name": "Always emit exact terminal and repeated-control records",
+        "sha256": "f992a7d91893905e6b9ac5eb322fcbc8825584daf56725498037a21b469b16e8",
+        "bytes": 1085
+      }
+    ],
+    "authored_code_imported_or_executed": false,
+    "tests_run_locally": false,
+    "native_payload_acquired": false,
+    "native_dispatched": false
+  },
+  "stages": {
+    "route": {
+      "original_routing_seconds": 14400,
+      "driver_seconds": 14700,
+      "inner_seconds": 15000,
+      "container_seconds": 15180,
+      "job_minutes": 360,
+      "commands": [
+        "one-two-signal-routing-attempt"
+      ],
+      "audit_work_in_job": false
+    },
+    "audit": {
+      "original_seconds_each": 1200,
+      "commands": [
+        "route-audit",
+        "paired-original-class-return",
+        "unfix-audit",
+        "full-original-class-read-only-DRT",
+        "drc-audit"
+      ],
+      "driver_seconds": 6300,
+      "inner_seconds": 6600,
+      "container_seconds": 6780,
+      "job_minutes": 240,
+      "new_routing_attempt": false
+    },
+    "comparison": {
+      "job_minutes": 30,
+      "requires_both_completed_audit_jobs": true,
+      "physical_acceptance": false
+    }
+  },
+  "reservation_groups": [
+    "mainchip-built-engine-route-tail-off-route",
+    "mainchip-built-engine-route-tail-on-route",
+    "mainchip-built-engine-route-tail-off-audit",
+    "mainchip-built-engine-route-tail-on-audit",
+    "mainchip-built-engine-route-tail-compare"
+  ],
+  "handoff_contract": [
+    "Freeze only after route host/inner/body complete and owned container cleanup; all original 746 inputs must still match.",
+    "Archive every regular file under the frozen input roots, complete current source projection and all available native/host output; inventory, proof and the archive itself are independently outside its precomputed member list.",
+    "Record actual route command argv, 14400s budget, original memory guards, exit and process cleanup, exact returned stdout hash, three route output identities and four on-mode witness identities (none in off).",
+    "Audit authenticates same workflow source/run/attempt, completed matching route-only job and its exact reserved lightweight release tag before download.",
+    "Full outer parts and every outer/nested member are hashed; the independent old 746-member map and the current full source projection are checked separately.",
+    "Preserve complete extracted route evidence; copy only native-consumed roots and out/work plus out/witness into the original canonical /work paths. The audit output directory separately carries route historical records.",
+    "Required scratch counts both outer part/join copies, full outer and nested extraction, canonical copy and two GiB reserve from declared complete maps.",
+    "Audit starts and ends with canonical route projection integrity; unchanged original audits write distinct new files and keep the route outputs immutable.",
+    "Independent publication retains available output even if terminal records are absent/malformed or handoff construction failed. Missing/failing records cannot satisfy route job completion or audit admission."
+  ],
+  "preserved_invariants": {
+    "old_645_protected_values_unchanged": true,
+    "old_645_git_objects_unchanged": true,
+    "same_elf": {
+      "bytes": 108939848,
+      "sha256": "1e79e2f0e77eb1a9153ec2c4040a0420e66d77777843a211da2cfd9b59b0238a"
+    },
+    "same_input": {
+      "bytes": 213740873,
+      "sha256": "444f75328e4065ae1fd1fdf1b872980931fcbae8ec8a62182a833e48230bf9b1"
+    },
+    "same_image": "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a",
+    "clocks": 1691,
+    "mutable_nets": [
+      "net36993",
+      "net459"
+    ],
+    "original_short_markers": 3,
+    "clock_periods_ns": [
+      20,
+      4,
+      8,
+      8
+    ],
+    "derating_percent": 5,
+    "original_native_audit_source_unchanged": true,
+    "no_old_AppImage_identity_claim_for_built_ELF": true
+  },
+  "hosted_controls_authored_not_executed": {
+    "entrypoints": [
+      "python3 -B scripts/check_mainchip_built_engine_route_prefix.py",
+      "python3 -B scripts/check_mainchip_built_engine_route_tail.py"
+    ],
+    "main_checker": "scripts/check_mainchip_built_engine_route_tail.py",
+    "handoff_checker": "scripts/check_mainchip_built_engine_route_tail_handoff.py",
+    "original_envelope_refusals": 10,
+    "original_complete_prefix_restore_cases": 4,
+    "original_six_phase_split_sequence_and_each_failure": 6,
+    "actual_driver_main_cases": 14,
+    "route_cases": 7,
+    "audit_cases": 7,
+    "actual_handoff_pack_restore_positives": 2,
+    "synthetic_old_input_members_each": 746,
+    "actual_handoff_refusals": 12,
+    "actual_freeze_failure_preservation_cases": 4,
+    "actual_full_partial_publication_cases": 3,
+    "actual_reserved_asset_cases": {
+      "positive": 2,
+      "refusals": 1
+    },
+    "real_method_authorization_baselines": 3,
+    "genuine_typed_authorization_mutations": 27,
+    "isolated_import_entrypoints": 7,
+    "observer_synthetic_only": true,
+    "off_on_exact_geometry_mismatch_cases": 10,
+    "transport_and_native_process_collaborators_are_explicit_synthetic": true,
+    "limits": "Synthetic files prove source paths/ownership/transport and failure behavior only; they do not qualify engine geometry, actual witness equivalence, DRC, timing or full PHY."
+  },
+  "reviewed_field_contract": {
+    "saved_original_command_path": "docs/evidence/mainchip-signal-repair-saved-readback-native-terminal-20261026.diagnostics/saved/supervision/drc-audit.command.json",
+    "saved_original_command_sha256": "21461e644cff9ccb6c651aee138109828a65cb25852e851fa2ce77bf0f8f113c",
+    "command_keys": [
+      "label",
+      "argv",
+      "pid",
+      "returncode",
+      "elapsed_seconds",
+      "supervision_failure",
+      "last_memory_sentinel_sample",
+      "memory_read_error",
+      "minimum_available_kib",
+      "maximum_group_rss_kib",
+      "stdout_bytes",
+      "stderr_bytes",
+      "stdout_sha256",
+      "stderr_sha256",
+      "process_group_cleanup"
+    ],
+    "route_log_source": "scripts/mainchip_fixed_clock_signal_repair.py",
+    "route_log_source_sha256": "fefe067abf459cd9827dcd89113eec3a63b948bf7a46146fdfe1f902e69f7c2d"
+  },
+  "remaining_qualification": [
+    "Independent root source review.",
+    "New exact-source hosted controls including real synthetic archive/lifecycle/publication paths.",
+    "Root-only registration, exact five release reservations and explicit native flag activation if approved.",
+    "Actual restored off/on route stages, separate original audits and authenticated comparison; no such execution has occurred."
+  ],
+  "source_changes": {
+    "scripts/mainchip_built_engine_route_tail_contract.py": {
+      "bytes": 11931,
+      "sha256": "4e254ade05e9f1dc4787a0e15191caae08f3db7708d2995e6a77dd4fd7ea4f2c"
+    },
+    "scripts/mainchip_built_engine_route_tail_driver.py": {
+      "bytes": 9162,
+      "sha256": "72ae99009eeedf52d3c7edc109044d39446d18751298b8dae34de67f8fc06f8f"
+    },
+    "scripts/mainchip_built_engine_route_tail_native.py": {
+      "bytes": 2244,
+      "sha256": "cb9bed6aa19765a61109354e9ebe787c6be1682f7232f8eb06bfc4c50c71d20e"
+    },
+    "scripts/mainchip_built_engine_route_tail_inner.py": {
+      "bytes": 8187,
+      "sha256": "0cc8512cf09d25a43795553efee89d178f1ed7e29386881985a4b06c492984df"
+    },
+    "scripts/cloud_mainchip_built_engine_route_tail.py": {
+      "bytes": 19116,
+      "sha256": "6a88f0da614a727e8255a89b6379b03f064b92425dd9651cba3d2f1d9dbdc21c"
+    },
+    "scripts/check_mainchip_built_engine_route_tail.py": {
+      "bytes": 28192,
+      "sha256": "500bb2596a8a8188191053088a294a0bf384ca19e95c4eb974f0f60a7d95da31"
+    },
+    ".github/workflow-templates/mainchip-built-engine-route-tail.yml": {
+      "bytes": 11458,
+      "sha256": "3df65275e95d69a66674626c0e61f61d409220a46f4fd07dfa0469bf0280b841"
+    },
+    "scripts/mainchip_built_engine_route_tail_handoff.py": {
+      "bytes": 16860,
+      "sha256": "89cf916a172f3fb099f2716f1e47f2948e08ce679e969cb4e4d34cb3f3e04066"
+    },
+    "scripts/check_mainchip_built_engine_route_tail_handoff.py": {
+      "bytes": 16020,
+      "sha256": "d9f6bca6f5c29b71ac6343e1b82d66711c8ad276814265bb4e127e0beabc1c26"
+    }
+  },
+  "method_protected_count": 685,
+  "all_authorizations_false": true,
+  "source_unit_complete_means_authored_only": true,
+  "native_handoff_split_complete_means_source_design_only": true,
+  "physical_acceptance": false,
+  "timing_accepted": false,
+  "full_phy_accepted": false,
+  "observer_equivalence_qualified": false
+}
