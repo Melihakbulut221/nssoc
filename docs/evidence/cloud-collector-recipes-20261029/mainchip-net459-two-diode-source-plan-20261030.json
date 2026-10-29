@@ -1,0 +1,188 @@
+{
+  "schema": "net459-two-diode-candidate-source-plan-v1",
+  "status": "SOURCE_REVIEW_AND_HOSTED_OBSERVATION_PLAN_ONLY_NOT_IMPLEMENTED_OR_ACCEPTED",
+  "current_input": {
+    "bytes": 213429713,
+    "sha256": "47d657f41565f5c379a9152672eac824a5d296043c3726527031452ad2097677",
+    "archive_member": "work/drc-observed.odb"
+  },
+  "native_engine": {
+    "bytes": 108939848,
+    "sha256": "2a343c7491353a60e7b06aa134d4b67e3ef2e846a8341164dacffe88f5f7ec2f",
+    "source": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+  },
+  "actual_connectivity": {
+    "run": 40956367145,
+    "source": "b5fac41b5ae845af095b47c79195a209f1bd23d1",
+    "proof": "7207dcb28bee4c764ec1ef3fb887d5f970e11434",
+    "observation": "docs/evidence/mainchip-net459-connectivity-terminal-40956367145/observation/observation.json",
+    "bytes": 559354,
+    "sha256": "88844f3c2ca1b55cf895e0944cf8cd42ba0e5af51dad71f9c26764aeb012da9a",
+    "net": "net459",
+    "full_shapes": 139,
+    "raw_pairs": 375,
+    "terminals": 5,
+    "bridge": {
+      "shape_index": 21,
+      "opcode_index": 108,
+      "bbox_dbu": [
+        947420,
+        1789520,
+        947620,
+        1790560
+      ],
+      "layer_description": "M5 short marker; authenticate exact native layer name during candidate admission"
+    },
+    "partition_after_bridge_exclusion": {
+      "models": [
+        "positive-area",
+        "closed-boundary"
+      ],
+      "retained": {
+        "conductor_shapes": 64,
+        "pins": [
+          "fanout459/X",
+          "fanout36386/A",
+          "ANTENNA_1573/A"
+        ]
+      },
+      "other": {
+        "conductor_shapes": 40,
+        "pins": [
+          "ANTENNA_1574/A",
+          "ANTENNA_1575/A"
+        ]
+      }
+    },
+    "retained_conductor_shape_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      16,
+      18,
+      19,
+      20,
+      25,
+      27,
+      29,
+      30,
+      32,
+      33,
+      35,
+      36,
+      38,
+      39,
+      41,
+      42,
+      44,
+      45,
+      47,
+      48,
+      50,
+      51,
+      53,
+      54,
+      56,
+      57,
+      59,
+      60,
+      62,
+      63,
+      65,
+      66,
+      68,
+      69,
+      71,
+      72,
+      74,
+      75,
+      77,
+      99,
+      101,
+      105,
+      107,
+      108,
+      110,
+      111,
+      113,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134
+    ],
+    "interpretation": "Plain removal of shape21 leaves two pins disconnected. A two-diode removal is a new physical candidate, not an accepted reroute."
+  },
+  "primary_sources": {
+    "src/odb/src/defout/defout_impl.cpp": {
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/defout/defout_impl.cpp",
+      "bytes": 53139,
+      "sha256": "a81f028054a03466ff67755b8bc203adb0ea97b89136efebb92f690ace7eae7d"
+    },
+    "src/odb/src/db/dbInst.cpp": {
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/db/dbInst.cpp",
+      "bytes": 40009,
+      "sha256": "7a662e319dc015a2cd0aa16311ce51364870bb4c0c706c26e3666f8935f9c18f"
+    },
+    "src/ant/src/AntennaChecker.tcl": {
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/ant/src/AntennaChecker.tcl",
+      "bytes": 1220,
+      "sha256": "c02859f97679db44a1b6f83d8d3c7e13e99230fde88d470a7f53bfe27a1bc0be"
+    },
+    "src/ant/test/ant_check.tcl": {
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/ant/test/ant_check.tcl",
+      "bytes": 351,
+      "sha256": "59e14b84b90d3b020cccf3b1c01ed3ed523f5fddf28748665a90d9ed57322a82"
+    }
+  },
+  "source_findings": [
+    {
+      "path": "src/odb/src/defout/defout_impl.cpp",
+      "lines": "1467-1493,1496-1548,1550-1599,1602-1644",
+      "finding": "PATH/SHORT/VWIRE/JUNCTION produce route path separators in decoder order. First or changed wire type uses '+ TYPE', subsequent same-type paths use NEW. Points, extensions, vias, taper rules and RECT are independently emitted; ITerm/BTerm do not appear in the wire text. Candidate must admit only authentic independent PATH blocks and preserve exported bytes, all widths/endcaps/via definitions/RECTs."
+    },
+    {
+      "path": "src/odb/src/db/dbInst.cpp",
+      "lines": "1435-1558",
+      "finding": "dbInst::destroy refuses dont_touch/scan-owned instances, disconnects every ITerm and removes instance identity/placement/membership. Snapshot all terminals including supply connections before considering this mutation; do not treat it as merely removing A."
+    },
+    {
+      "path": "src/ant/src/AntennaChecker.tcl",
+      "lines": "1-40",
+      "finding": "check_antennas supports -verbose, -report_file and -net and returns ant::check_antennas. Separate exact-net and full-design calls with distinct report paths are required; process returncode alone is not a zero-violation proof."
+    },
+    {
+      "path": "src/ant/test/ant_check.tcl",
+      "lines": "1-12",
+      "finding": "Pinned native tests query ant::antenna_violation_count and ant::check_net_violation explicitly after check_antennas. Preserve actual count values/full verbose reports in candidate qualification."
+    }
+  ],
+  "implementation_sequence": [
+    "Use base24cfcd885c43458cebdbfba0362aefa48f27a064 qualified acquisition/runtime helpers, importing correct net459 connectivity source from b5fac41b and actual observation7207dcb. Do not use stale RAM680source or old444f ODB.",
+    "On hosted runner only, restore full authenticated current145-member archive and exact built ELF/runtime. Read complete ODB, authenticate all raw375 pairs/projection139 shapes and real net/instance/pin inventories.",
+    "Admit only independently encoded PATH primitive blocks with no junction/short/crossreference/unsupported terminal or rule semantics. Correlate actual complete exported DEF route path order with raw projection. Retain entire path groups for component0, including all via cut components. Do not blindly remove opcode108.",
+    "Provisional retained census is16wire segments+21complete vias+6wire rectangles=85shapes and43independent path groups/227raw pairs. This is a plan, not a measured accepted output; require actual hosted proof before mutation. Preserve Metal1..5 and TopMetal1/2 widths/endcaps exactly.",
+    "Record ANTENNA_1574 and ANTENNA_1575 exact master sg13g2_stdcell/sg13g2_antennanp, placement/orientation, every master terminal and connection including supplies. Refuse all other functional/extra-terminal/ownership/dont_touch/scan differences. Remove exactly these two instances, with a separately recorded netlist delta.",
+    "Filter complete original DEF path bytes, keep all retained geometry and route types. Use qualified patch_def connection omission and two native read_def -floorplan_initialize imports; quote actual container paths explicitly rather than weakening existing runner-path assertion.",
+    "Reread serialized candidate ODB. Demand full retained shape multiplicity/geometry/via equality, exactly three remaining net459 pins in one connected component with no ambiguous/missing accesses. Verify every other signal wire, every1691 original clock/fixed record and all remaining placements/pins. Explicit two-instance/two-A-terminal plus actual supply delta proof replaces only the153130-to153128 census; do not weaken old gate globally.",
+    "Run complete actual DRC, exact net459 and full-design antenna checks, preserve verbose counts/reports and connectivity. Compare against exact current input. Failed candidate remains a failure. Zero local short alone cannot accept new antenna/connectivity violations.",
+    "Store candidate native ODB/DEF and full input/output manifests in cloud-only capsule/release before cleanup. Source controls plus independent exact-source release are prerequisites for native acquisition/dispatch. Then original full final timing/LVS gates remain required."
+  ],
+  "acceptance": {
+    "candidate_implemented": false,
+    "native_candidate_executed": false,
+    "physical_acceptance": false,
+    "timing_acceptance": false,
+    "full_phy_accepted": false
+  },
+  "local_policy": "All native input/output and authored scientific/test execution are cloud-only. Local API/source/derived-text handling may be RAM only; no local file/native archive is created."
+}

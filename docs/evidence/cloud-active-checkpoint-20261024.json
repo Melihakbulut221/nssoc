@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T22:14:26.197953+00:00",
+  "updated_at": "2026-10-29T22:53:49.629511+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "c4843ea832ce7d066590c8995387b9d306db5eb7",
+  "root_source_before_receipt": "415778d4340067da4eda76f06ebb33820d04fbbc",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 132,
+    "inventory_version": 133,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -4431,14 +4431,111 @@
         "bytes": 746,
         "sha256": "a61ebd14a67bc67c1de5a48b9d2d5b04f0cfe78b59ce5e52f3f61ef8d04ebc32"
       }
+    },
+    "cdr_resistor_physical_provenance_source_controls": {
+      "run": 40968367706,
+      "source": "f79294f0dd944bceac786543021501bd810860e3",
+      "candidate_source": "682def396c4b00ac893f9990efdf309877da3cfd",
+      "proof": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "receipt": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/receipt.json",
+      "receipt_sha256": "884744b9ce4bb876e003baf6dadf5e9500b43f2a3cb1ba3ec8ef98ae4185e224",
+      "terminal": "success",
+      "job": "source-controls",
+      "job_id": 123778555321,
+      "source_manifest": {
+        "entries": 54,
+        "path": "scripts/cdr-resistor-physical-provenance-pins.json",
+        "sha256": "18c5bdcc4ad50a144fbe387f0abf1ff2791c23259cefcd4f037d64501c8593d4"
+      },
+      "actual_results": {
+        "new_source": {
+          "positive": 4,
+          "refusal": 19,
+          "status": "PASS_RESISTOR_PROVENANCE_SOURCE_CONTROLS"
+        },
+        "inherited_overlay": {
+          "positive": 11,
+          "refusal": 33,
+          "lifecycle": 11,
+          "finalizers": 5,
+          "status": "PASS_CURRENT_ACCESS_OVERLAY_SOURCE_CONTROLS"
+        },
+        "inherited_archive": {
+          "positive": 14,
+          "refusal": 80,
+          "lifecycle": 5,
+          "status": "PASS_CURRENT_RC_CONTACT_SOURCE_CONTROLS"
+        }
+      },
+      "qualification": {
+        "source_byte_derivation_controls": true,
+        "source_refusal_controls": true,
+        "inherited_synthetic_preservation_controls": true,
+        "C_compilation": false,
+        "native_acquisition": false,
+        "native_build": false,
+        "Magic_extraction": false,
+        "native_output_equivalence": false,
+        "physical_ownership": false,
+        "electrical_acceptance": false,
+        "physical_acceptance": false,
+        "full_phy_acceptance": false
+      },
+      "preservation": {
+        "indexed_records": 8,
+        "all_records_present": true,
+        "all_index_byte_hashes_verified": true,
+        "empty_stdout_stderr_preserved": true,
+        "complete_raw_job_log": true,
+        "job_log_bytes": 59498,
+        "job_log_sha256": "0bdd7c3619c835b72de12e9367c9ef0f12185f6bd6901cd85e47a34a37112ec8",
+        "artifact_metadata_preserved": true,
+        "artifact_zip_not_acquired": true
+      },
+      "registration": {
+        "previous_main": "7eb77c12e6955ef5c3bac39bdf989139c4e42000",
+        "commit": "c27da511389c6426f3409f9bbbc04be3a9c0a61e",
+        "only_added_path": ".github/workflows/cdr-resistor-physical-provenance-controls.yml",
+        "stub_sha256": "3543a530306724976da39f8a5f999ec189f42117b758b60fa6a84a8579b4235d",
+        "harmless": true,
+        "no_registration_run_dispatched": true
+      },
+      "next": "Hosted full Magic build and trace-off/on output equivalence using current exact extraction inputs remain required. Source controls alone do not qualify native struct interpretation, physical resistor ownership or electrical recovery."
+    },
+    "mainchip_net459_two_diode_candidate_plan": {
+      "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-net459-two-diode-source-plan-20261030.json",
+      "implemented": false,
+      "native_executed": false,
+      "accepted": false,
+      "current_odb_sha256": "47d657f41565f5c379a9152672eac824a5d296043c3726527031452ad2097677",
+      "exact_openroad_source": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+      "reviewed": [
+        "DEF path serialization/source order, endcaps, RECT and via preservation",
+        "dbInst destroy disconnects every terminal and changes memberships",
+        "net-specific and full-design antenna checker interfaces"
+      ],
+      "next": "Implement and execute a narrowly bounded actual net459 branch+ANTENNA_1574/1575 candidate with complete other-net/1691clock immutability and explicit two-instance terminal/supply delta proof; all DRC, antenna and connectivity checks required."
+    },
+    "cloud_only_cleanup_reverification_20261030": {
+      "workspace_entries": 0,
+      "old_project_paths_present": 0,
+      "project_temporary_entries": 0,
+      "visualization_entries": 0,
+      "native_cad_processes": 0,
+      "matching_local_automation_files": 0,
+      "scope": "Existing project workspace, previously recorded project paths, project-named /tmp entries, thread visualization directory and actual process names. No whole-disk erasure/audit claim; unrelated user files untouched.",
+      "local_native_acquisition": false,
+      "local_authored_test_execution": false,
+      "latest_main": "c27da511389c6426f3409f9bbbc04be3a9c0a61e"
     }
   },
   "next_actions": [
-    "All three overlay attempts must remain preserved as distinct evidence. Do not rerun completed attempts40957923170/40960276845/40962418343. Use the final successful exact-source proof recorded below.",
-    "Next physical repair: net459's short shape21 is the bridge only to ANTENNA1574/1575. Consider explicitly bounded branch+two-diode removal/relocation, or a qualified detour. Plain rectangle deletion leaves disconnected pins. Rebuild complete routing with exact serialization/replay; do not delete raw opcode108 blindly. Preserve net36993, all other signal material and all1691 original clock/fixed records. Any153130\u2192153128instance delta requires new explicit two-instance/pin/supply comparison, actual full DRC and net459+whole-design antenna checks.",
-    "Use successful current CDR overlay to inspect actual terminal-access layers with previous authenticated DC matrices. Existing observations: eight HBT emitter anchors overlap GDS layers10/30; two also overlap foreign shapes on GDS layers50/126; eight MOS drain anchors point-match only target GDS layer8. Preserve [0,-2]nm emitter quantization offsets. None of these point matches attributes individual resistor footprints or proves transient recovery.",
-    "Native input and code/model bytes stay on GitHub. Local source editing/API/derived text inspection may be memory-only; no checkout/native/test/archive acquisition locally. Workspace/tmp/native processes must remain empty.",
-    "Full serial PHY, routed main chip and final setup/hold remain unaccepted. All original electrical/physical/clock gates remain unchanged; existing eight-hour GitHub monitor remains read-only with no automatic native dispatch."
+    "Completed source-only run40968367706 exact f79294f0 is preserved at d4fada16. Do not dispatch again. New4positive/19refusal and inherited11/33/11+5finalizer plus14/80/5 passed. This does not compile Magic or qualify native output equivalence/physical ownership.",
+    "Next actual physical mutation is net459 branch plus exactly ANTENNA_1574/1575 candidate. Follow docs/evidence/cloud-collector-recipes-20261029/mainchip-net459-two-diode-source-plan-20261030.json. Authenticate current ODB47d657f4, independent whole primitive path mapping and every actual terminal/supply before deletion. Preserve complete via cut/enclosure material, all other signals and1691 original clocks; exact153130-to153128 delta needs a new narrow invariant, no global gate weakening. Reread serialization, full DRC and net459/full-design antenna checks mandatory; plain shape21/op108 deletion is invalid.",
+    "Next CDR work: qualify the five-file/11-insertion Magic sidecar from682def39 on hosted runner only, with full build and exact trace-off/on native resist/rnode/cap output equivalence. Use current actual500-device extraction and successful overlay40962418343. Constructor geometry and before/after-simplify snapshots do not automatically attribute reduced resistor footprints; do not infer material from final rr_tt/width alone.",
+    "Preserve all three overlay attempts40957923170/40960276845/40962418343 and final successful proof86e09a96. Use actual contact overlays and authenticated DC matrix as diagnosis only; eight emitter anchors/layer10/30 point matches, two foreign overlaps and8MOS drain layer8 matches are not individual resistor footprints or transient recovery.",
+    "Native inputs, binaries, models, archives, scientific calculations, authored controls and CAD remain in GitHub. Local API/source/derived-text handling may be RAM only. Workspace/known project paths/tmp/native processes must remain empty. Do not download native assets locally.",
+    "Full serial PHY, routed main chip and original setup/hold remain unaccepted. Keep every original electrical/physical/clock gate and eight-hour read-only GitHub monitor; no automatic native dispatch from monitor."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -4787,94 +4884,21 @@
     "observed_40956367145": 40956367145,
     "observed_40957923170": 40957923170,
     "observed_40960276845": 40960276845,
-    "observed_40962418343": 40962418343
+    "observed_40962418343": 40962418343,
+    "observed_40968367706": 40968367706
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40957923170,
-      "head_sha": "398cc0137a59b3ca9399eaa19cabf9cdf2bd1a3d",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123742805099,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123743044338,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123743121348,
-          "name": "readback",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40960276845,
-      "head_sha": "f8d467382abef9a8180f04b233f93b181cdf88a3",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123750950280,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123751370093,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123751450801,
-          "name": "readback",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40962418343,
-      "head_sha": "4e4db7a12f14477729157611ac54d5429be5844c",
+      "run": 40968367706,
+      "head_sha": "f79294f0dd944bceac786543021501bd810860e3",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123758371481,
+          "id": 123778555321,
           "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123758648563,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123758724628,
-          "name": "readback",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
@@ -4883,7 +4907,7 @@
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T22:14:26.197953+00:00",
+    "observed_at": "2026-10-29T22:53:49.629511+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -5023,7 +5047,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T22:14:26.197953+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T22:53:49.629511+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -47131,6 +47155,208 @@
       "source": "4e4db7a12f14477729157611ac54d5429be5844c",
       "release_id": 428441518,
       "tag": "cloud-results-40962418343-1-cdr-current-access-overlay"
+    }
+  ],
+  "imported_checkpoint_receipts_v133": [
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-review-20261030.json",
+      "source": "682def396c4b00ac893f9990efdf309877da3cfd",
+      "git_blob": "2800142690950c5fb6968a9b7f75e354bbb7d317",
+      "bytes": 20737,
+      "sha256": "1fd14fc34a7e845ca8433c6e931988b66df6d7f04430b1495d10170d60a66c7d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-controls-source-review-20261030.json",
+      "source": "f79294f0dd944bceac786543021501bd810860e3",
+      "git_blob": "c2871d3bcf55f60ad82962a2d9448617dfca0969",
+      "bytes": 2574,
+      "sha256": "2559961be2d9df252c374a13c4819e64fd79d03324f80f459baa991beef5e547",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/artifacts.json",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "d9c006b9e064fee6fa7054967091d1e562175d0f",
+      "bytes": 779,
+      "sha256": "374c27fe3e84d62add93901943a9115633fcb198e544b66e82110b8077a736e0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/controls/context.json",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "7a7c075663a22d26bd49760146586bdd5f5e8cdd",
+      "bytes": 11025,
+      "sha256": "14c8a3662f255890cea60b92a392f81499534ea830ecefdbc15174a1fd2167d3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/controls/controls.json",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "0395a365936c838787a31cd0ce673581886a0fcd",
+      "bytes": 1506,
+      "sha256": "ef4bc1107f7e9a3780712f7d910615c2a23144a4ec0c29f515c235c49b5c9bb6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/controls/controls.stderr",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/controls/controls.stdout",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "0395a365936c838787a31cd0ce673581886a0fcd",
+      "bytes": 1506,
+      "sha256": "ef4bc1107f7e9a3780712f7d910615c2a23144a4ec0c29f515c235c49b5c9bb6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/controls/inherited.json",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "3815e7731299a4c4f10690d72087b4ee5d59d750",
+      "bytes": 24944,
+      "sha256": "32f3556118aaf737b40c9fa1197729947010a0eed4c50ce53b616c24c58daf53",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/controls/inherited.json.stderr",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/controls/inherited.json.stdout",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "3815e7731299a4c4f10690d72087b4ee5d59d750",
+      "bytes": 24944,
+      "sha256": "32f3556118aaf737b40c9fa1197729947010a0eed4c50ce53b616c24c58daf53",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/controls/source-manifest.json",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "9376e951f45675eb24ecae2f76aeb97e42e8eb13",
+      "bytes": 10993,
+      "sha256": "18c5bdcc4ad50a144fbe387f0abf1ff2791c23259cefcd4f037d64501c8593d4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/dispatch-response.txt",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "5f1b784cd6f8e258591597ca8d1d0899b881eda9",
+      "bytes": 1377,
+      "sha256": "1b0d796c9da8076004b2457bbb82d4ec26fc190b121d29fbfc2c3a8a72add50c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/dispatch.json",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "68efbc157ca4178e59bef6a66b3687d1a191cd98",
+      "bytes": 296,
+      "sha256": "623f452e418909892be9af9154c322493be32d7dac1403020f03cdb6aac42a05",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/dispatch.stderr",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/job.json",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "4925bf97edd174f46d706de8b0c9cf3ff0f144c5",
+      "bytes": 3266,
+      "sha256": "39236a6cc07f43096217a0830dc2be9594a8a1538a31ed3cbc9b6ff93ea731f7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/job.log",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "fab7015123954144bf82bbac36b694d523452c40",
+      "bytes": 59498,
+      "sha256": "0bdd7c3619c835b72de12e9367c9ef0f12185f6bd6901cd85e47a34a37112ec8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/jobs.json",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "701050e986ba7808d5d0b7e43790da1d49183274",
+      "bytes": 3293,
+      "sha256": "f5309e0d41fec5014e6bb821972dc82836c517cf4bd26b4495fbd04bcb9510a7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/receipt.json",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "0743be0c9e3e5433370f9aa7e97844cd029f9c7c",
+      "bytes": 7637,
+      "sha256": "884744b9ce4bb876e003baf6dadf5e9500b43f2a3cb1ba3ec8ef98ae4185e224",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/record-index.json",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "572efc534997cb8c9bd9b6bde8473bf0de6871d6",
+      "bytes": 2079,
+      "sha256": "8a0d2be57e30fc1294925e5db18a190519c29b4217de2150ea80768e2ff13525",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/registration-commit.json",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "9ac2f786db44bd4ac1251ed52156116a3ea074ed",
+      "bytes": 1244,
+      "sha256": "2d4b4f8772cb515e4b66a57f772e56b375459d9c0b8b2f886b50605694331cad",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/registration-workflow.yml",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "9f9e8bcc84c4add8c8a0b0f9f2025715e44a0c7c",
+      "bytes": 495,
+      "sha256": "3543a530306724976da39f8a5f999ec189f42117b758b60fa6a84a8579b4235d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/run.json",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "ff4321bfdc96fb835ceab5758e05a8a0a496ffd0",
+      "bytes": 13107,
+      "sha256": "bc2e6b13fe68587fb9d5dab79c880de4be6d156035588e280a15731977a69494",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/source-commit.json",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "79e0a3a70ce2801568e4e9b90af95a842f3efbba",
+      "bytes": 1247,
+      "sha256": "33f2ea33cfc347fbc2812187949783968bda8d2d1763931edbad1cf607254295",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/tested-workflow.yml",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "ebb3554e41728e254b041a43fcece660056dee46",
+      "bytes": 7665,
+      "sha256": "4cc1f0c0265cb3e59f563cf2c7beb8cea4928634d974f97cb42fd4dcd8f40620",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-physical-provenance-source-controls-terminal-40968367706/workflow.json",
+      "source": "d4fada16f1f78b285acb8b33d8773bf054fed765",
+      "git_blob": "3526eddf5730927501991ace40e8f6ee8864065c",
+      "bytes": 638,
+      "sha256": "06c4c42101e844bf83ec163b79def6d88112e9d7b52050d7c30388c09e0b5ba2",
+      "existing_identical": false
     }
   ]
 }

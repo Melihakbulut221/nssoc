@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "status": "SOURCE_ONLY_WORKFLOW_AUTHORED_NOT_YET_RUN",
+  "parent": "682def396c4b00ac893f9990efdf309877da3cfd",
+  "branch": "codex/cdr-resistor-physical-provenance",
+  "workflow": {
+    "path": ".github/workflows/cdr-resistor-physical-provenance-controls.yml",
+    "bytes": 7665,
+    "sha256": "4cc1f0c0265cb3e59f563cf2c7beb8cea4928634d974f97cb42fd4dcd8f40620",
+    "jobs": [
+      "source-controls"
+    ],
+    "event": "workflow_dispatch",
+    "attempt": 1,
+    "exact_source_input": true,
+    "permissions": {
+      "contents": "read",
+      "actions": "read"
+    },
+    "actions": {
+      "actions/checkout": {
+        "sha": "11bd71901bbe5b1630ceea73d27597364c9af683",
+        "url": "https://github.com/actions/checkout/commit/11bd71901bbe5b1630ceea73d27597364c9af683"
+      },
+      "actions/setup-python": {
+        "sha": "a26af69be951a213d495a4c3e4e4022e16d87065",
+        "url": "https://github.com/actions/setup-python/commit/a26af69be951a213d495a4c3e4e4022e16d87065"
+      },
+      "actions/upload-artifact": {
+        "sha": "ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "url": "https://github.com/actions/upload-artifact/commit/ea165f8d65b6e75b540449e92b4886f43607fa02"
+      }
+    }
+  },
+  "manifest": {
+    "path": "scripts/cdr-resistor-physical-provenance-pins.json",
+    "sha256": "18c5bdcc4ad50a144fbe387f0abf1ff2791c23259cefcd4f037d64501c8593d4",
+    "entries": 54
+  },
+  "expected": {
+    "new_source": {
+      "positive": 4,
+      "refusal": 19
+    },
+    "inherited_overlay": {
+      "positive": 11,
+      "refusal": 33,
+      "lifecycle": 11,
+      "checker_finalizers": 5
+    },
+    "inherited_archive": {
+      "positive": 14,
+      "refusal": 80,
+      "lifecycle": 5
+    }
+  },
+  "inherited_invocation": "Unchanged controls() function is invoked directly. Its original CLI branch gate is not invoked or restamped. The new workflow authenticates current exact branch/SHA/attempt; function fixtures use their own explicit synthetic contexts.",
+  "preservation": {
+    "complete_indexed_records": 8,
+    "compression": "zlib+base64",
+    "empty_streams_retained": true,
+    "artifact": true,
+    "full_job_log_to_be_collected_via_API": true
+  },
+  "nonnative": {
+    "no_build": true,
+    "no_C_compilation": true,
+    "no_CAD": true,
+    "no_native_acquisition": true,
+    "no_electrical_acceptance": true,
+    "no_physical_acceptance": true
+  },
+  "verification": "Only YAML parsing and embedded Python AST checks in RAM; no authored imports/tests executed locally. Original 54 source pins and candidate code unchanged."
+}

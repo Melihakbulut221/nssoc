@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v132
+# Cloud continuation — checkpoint v133
 
-Updated: 2026-10-29T22:14:26.197953+00:00
+Updated: 2026-10-29T22:53:49.629511+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint v132: current CDR native access overlay40962418343 completed successfully on exact source4e4db7a1; full50-file/11,099,053-byte evidence is preserved at86e09a96. All6647 archived members were authenticated, with500 devices/1446 terminals/113 wire components/238 native nets/25 ports observed and204 rnodes/16 contacts fully overlaid. The earlier Ubuntu24 AppImage launch failure40957923170 and the Ubuntu22 successful-native/failed-lifecycle attempt40960276845 remain fully preserved at e3bd2fb5 and87a5c5d8. The final fix records primitive signal-restoration evidence and strengthens real-callable lifecycle fixtures; all actual source controls and native cleanup passed. All code, logs, evidence and workflow changes are on GitHub (main registration7eb77c12). Local project/tmp/native processes remain absent. This geometric observation is not electrical/PHY/route/setuphold acceptance; next work is actual net459 repair and CDR access resistance attribution/recovery.
+Cloud-only checkpoint v133: hosted source controls40968367706 on exact f79294f0 passed, with full23-file/177,539-byte evidence preserved at d4fada16. The new Magic resistor provenance helper passed4positive/19refusal controls; unchanged inherited controls also passed. This is source qualification only: no C build, extraction, native output equivalence, physical ownership or electrical acceptance. Its candidate source682def39 and harmless single-workflow main registrationc27da511 are on GitHub. The precise net459 branch/two-diode candidate plan now records authentic graph evidence, pinned DEF/destroy/antenna APIs, full serialization and exact two-instance safeguards. Candidate mutation is not yet implemented. Local workspace, old project directories, project temporary entries, visualization outputs and native processes are absent; no matching local automation remains. All calculation/tests/native data stay cloud-only. Full serial PHY, routed main chip and final setup/hold remain open.
 
 Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9118,3 +9119,10 @@ Local project/tmp/native processes verified absent. Inventory366 exact cloud han
 Cloud-only checkpoint v132: current CDR native access overlay40962418343 completed successfully on exact source4e4db7a1; full50-file/11,099,053-byte evidence is preserved at86e09a96. All6647 archived members were authenticated, with500 devices/1446 terminals/113 wire components/238 native nets/25 ports observed and204 rnodes/16 contacts fully overlaid. The earlier Ubuntu24 AppImage launch failure40957923170 and the Ubuntu22 successful-native/failed-lifecycle attempt40960276845 remain fully preserved at e3bd2fb5 and87a5c5d8. The final fix records primitive signal-restoration evidence and strengthens real-callable lifecycle fixtures; all actual source controls and native cleanup passed. All code, logs, evidence and workflow changes are on GitHub (main registration7eb77c12). Local project/tmp/native processes remain absent. This geometric observation is not electrical/PHY/route/setuphold acceptance; next work is actual net459 repair and CDR access resistance attribution/recovery.
 
 Local project/tmp/native processes verified absent. Inventory368 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T22:53:49.629511+00:00 — cloud-only checkpoint v133
+
+Cloud-only checkpoint v133: hosted source controls40968367706 on exact f79294f0 passed, with full23-file/177,539-byte evidence preserved at d4fada16. The new Magic resistor provenance helper passed4positive/19refusal controls; unchanged inherited controls also passed. This is source qualification only: no C build, extraction, native output equivalence, physical ownership or electrical acceptance. Its candidate source682def39 and harmless single-workflow main registrationc27da511 are on GitHub. The precise net459 branch/two-diode candidate plan now records authentic graph evidence, pinned DEF/destroy/antenna APIs, full serialization and exact two-instance safeguards. Candidate mutation is not yet implemented. Local workspace, old project directories, project temporary entries, visualization outputs and native processes are absent; no matching local automation remains. All calculation/tests/native data stay cloud-only. Full serial PHY, routed main chip and final setup/hold remain open.
+
+Local project/tmp/native processes verified absent. Inventory369 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
