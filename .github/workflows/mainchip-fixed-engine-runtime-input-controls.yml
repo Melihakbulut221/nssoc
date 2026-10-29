@@ -1,0 +1,119 @@
+name: Fixed engine runtime input admission controls
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: fixed-engine-runtime-input-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Bind exact hosted source and disabled native authority
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import mainchip_fixed_engine_runtime_admission as a
+          e=os.environ
+          assert e['GITHUB_ACTIONS']=='true' and e['RUNNER_ENVIRONMENT']=='github-hosted'
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_EVENT_NAME']=='workflow_dispatch'
+          assert e['GITHUB_RUN_ATTEMPT']=='1' and e['GITHUB_REF']=='refs/heads/'+a.BRANCH
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
+          assert sys.version_info[:2]==(3,12)
+          m=a.methods()
+          assert m['source_controls_authorized'] is True
+          assert all(m[k] is False for k in a.AUTH_FALSE)
+          assert m['controller_ready'] is False
+          out=Path('fixed-engine-runtime-input-controls');out.mkdir(exist_ok=False)
+          (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
+            method_sha256=hashlib.sha256(Path(a.METHOD).read_bytes()).hexdigest(),
+            native_authorized=False,source_controls_only=True),sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Actual admission, lineage and refusal controls without native acquisition
+        run: |
+          python3 -B scripts/check_mainchip_fixed_engine_runtime_admission.py --output fixed-engine-runtime-input-controls/result.json > fixed-engine-runtime-input-controls/stdout.log 2> fixed-engine-runtime-input-controls/stderr.log
+          python3 -B - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('fixed-engine-runtime-input-controls/result.json').read_bytes())
+          assert r['status']=='PASS_FIXED_ENGINE_RUNTIME_INPUT_SOURCE_CONTROLS'
+          assert (r['positive_count'],r['refusal_count'],r['synthetic_archive']['refusal_count'])==(5,74,6)
+          assert all(r[k] is False for k in ('actual_native_archive_restored','actual_runtime_probe_executed','new_ELF_executed',
+            'native_payload_acquired','runtime_qualified','physical_acceptance'))
+          assert r['synthetic_archive']['synthetic_only'] is True
+          assert r['synthetic_archive']['actual_engine_archive_acquired'] is False
+          PY
+      - name: Always emit complete source control records
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          root=Path('fixed-engine-runtime-input-controls')
+          for n in ('context.json','result.json','stdout.log','stderr.log'):
+              p=root/n;present=p.is_file() and not p.is_symlink();raw=p.read_bytes() if present else b''
+              chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+              print('FIXED_ENGINE_RUNTIME_INPUT_INDEX '+json.dumps(dict(path=n,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):
+                  print('FIXED_ENGINE_RUNTIME_INPUT_CHUNK '+json.dumps(dict(path=n,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          PY
+      - name: Preserve all source control bytes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: fixed-engine-runtime-input-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: fixed-engine-runtime-input-controls
+          if-no-files-found: error
+          retention-days: 90
+  preserve-job-log:
+    needs: source-controls
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Preserve full actual source job log and metadata
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          root=Path('job-logs');root.mkdir()
+          e=os.environ
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_RUN_ATTEMPT']=='1'
+          prefix='repos/'+e['GITHUB_REPOSITORY']+'/'
+          def read(path,name):
+              b=subprocess.check_output(['gh','api',prefix+path]);(root/name).write_bytes(b);return json.loads(b)
+          run=read('actions/runs/'+e['GITHUB_RUN_ID'],'run.json')
+          assert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
+          jobs=read('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
+          selected=[j for j in jobs['jobs'] if j['name']=='source-controls'];assert len(selected)==1
+          j=selected[0];assert j['status']=='completed' and j['head_sha']==e['GITHUB_SHA']
+          read('actions/jobs/'+str(j['id']),'job.json')
+          b=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(j['id'])+'/logs'])
+          assert b;(root/'job.log').write_bytes(b)
+          receipt=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
+            job_id=j['id'],job_conclusion=j['conclusion'],full_raw_job_log=True,
+            log_bytes=len(b),log_sha256=hashlib.sha256(b).hexdigest(),native_acquisition=False)
+          (root/'receipt.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(receipt,sort_keys=True))
+          PY
+      - name: Preserve complete actual logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: fixed-engine-runtime-input-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: job-logs
+          if-no-files-found: error
+          retention-days: 90
