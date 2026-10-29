@@ -44,14 +44,153 @@ def auth_controls(method):
         rows.append(reject("retry",a.authorize,"First attempt required"))
     return dict(positive=positive,refusals=rows)
 
+def origin_controls():
+    g=a.generator;contract=a.width_contract()
+    witness_path="docs/evidence/cdr-v59-tail-original-leaf-layout-20261026.json"
+    witness=(a.ROOT/witness_path).read_bytes()
+    assert hashlib.sha256(witness).hexdigest()=="5519863b12a9e0c86514daa78fb958199929e5b07fe0be95e07da8b882c2aa90"
+    original_metadata=json.loads(witness)
+    assert g.canonical(original_metadata["origin_translation_um"])=="[-0.0,-3.97]"
+    assert contract["baseline_inventory"]["parent/inputs/sampler_cd/layout/pre-v59-result-cd_shunt.json"]==hashlib.sha256(witness).hexdigest()
+    graph_raw=(a.ROOT/contract["qualified_graph_path"]).read_bytes()
+    assert hashlib.sha256(graph_raw).hexdigest()==contract["qualified_graph_sha256"]
+    generator_name="scripts/generate_cdr_v59_selector_column_width.py"
+    generator_raw=(a.ROOT/generator_name).read_bytes()
+    assert hashlib.sha256(generator_raw).hexdigest()=="30ccd03dac9a3054cce09e97517aa13b1c9ff97fd057bfe3c1d4efe4ae0433de"
+    original_admitted=g.admitted;original_exact=g.exact
+    positive=[];refusals=[];observed=None
+    with tempfile.TemporaryDirectory()as tmp:
+        root=Path(tmp);out=root/"hw/soc/out/origin-fixture";view=out/a.VIEW
+        contract_path=root/"scripts/width-fixture.json";method_path=root/"scripts/method-fixture.json"
+        graph_path=root/contract["qualified_graph_path"]
+        graph_path.parent.mkdir(parents=True);(root/generator_name).parent.mkdir(parents=True,exist_ok=True)
+        payloads={n:("EXPLICIT_SYNTHETIC_MEMBER_NOT_NATIVE:"+n).encode()for n in contract["baseline_inventory"]}
+        payloads[g.CHILD_META]=witness
+        assert len(payloads)==605
+        def prepare(metadata=None,graph=None):
+            for n,raw in payloads.items():
+                p=view/n;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(raw)
+            if metadata is not None:
+                (view/g.CHILD_META).write_text(json.dumps(metadata,indent=2,allow_nan=True)+"\n")
+            (root/generator_name).write_bytes(generator_raw)
+            graph_path.write_bytes(graph_raw if graph is None else (json.dumps(graph,indent=2)+"\n").encode())
+            c=copy.deepcopy(contract);c["baseline_inventory"]=g.frozen.files(view)
+            c["qualified_graph_sha256"]=a.sha(graph_path)
+            a.atomic(contract_path,c)
+            m=dict(geometry_generation_authorized=True,native_execution_authorized=True,
+                   simulation_authorized=False,electrical_accepted=False,
+                   protected_sha256={generator_name:hashlib.sha256(generator_raw).hexdigest()})
+            a.atomic(method_path,m)
+            return c,m
+        with contextlib.ExitStack()as stack:
+            for obj,name,value in ((a,"ROOT",root),(a,"METHOD",method_path),(g,"ROOT",root),
+                                   (g,"METHOD",method_path),(g,"CONTRACT",contract_path)):
+                stack.enter_context(mock.patch.object(obj,name,value))
+            stack.enter_context(mock.patch.dict(os.environ,ENV))
+            c,m=prepare()
+            # Exact frozen code, real 605-file hashing, real qualified graph, and
+            # actual authenticated leaf JSON reproduce the pre-native failure.
+            try:original_admitted(view)
+            except AssertionError as error:
+                assert error.args==("Changed child origin",)
+                frames=[f.tb_frame.f_code for f in traceback_nodes(error)]
+                assert original_admitted.__code__ in frames and original_exact.__code__ in frames
+                regression=dict(error=repr(error),actual_admitted_and_exact_frames=True,
+                                authenticated_metadata_sha256=hashlib.sha256(witness).hexdigest())
+            else:raise AssertionError("Frozen origin rejection did not reproduce")
+            fn=a.admitted_function()
+            assert fn.__code__ is original_admitted.__code__ and fn.__defaults__ is original_admitted.__defaults__
+            assert fn.__closure__ is original_admitted.__closure__ and fn.__kwdefaults__ is original_admitted.__kwdefaults__
+            assert set(fn.__globals__)==set(original_admitted.__globals__)
+            assert all(fn.__globals__[k]is v for k,v in original_admitted.__globals__.items()if k not in ("METHOD","exact"))
+            assert fn.__globals__["METHOD"]==method_path and fn.__globals__["exact"]is a.origin_exact
+            assert g.admitted is original_admitted and g.exact is original_exact
+            def denied(label,kind,args,extra_frame=None):
+                try:fn(view)
+                except BaseException as error:
+                    assert type(error)is kind and error.args==args,(label,type(error),error.args)
+                    frames=[f.tb_frame.f_code for f in traceback_nodes(error)]
+                    assert original_admitted.__code__ in frames,label
+                    if extra_frame is not None:assert extra_frame in frames,label
+                    refusals.append(dict(mode=label,error=repr(error),actual_admitted_frame=True))
+                else:raise AssertionError("Accepted origin/admission negative: "+label)
+            for label,x in (("signed_zero",-0.0),("float_zero",0.0),("integer_zero",0)):
+                meta=copy.deepcopy(original_metadata);meta["origin_translation_um"]=[x,-3.97]
+                c,m=prepare(meta)
+                result=fn(view)
+                assert result[0]==c and result[1]==contract["declared_rectangles"]
+                assert result[2]["checks"]>0 and len(result[1])==26
+                positive.append(dict(mode=label,actual_admitted_code=True,complete_synthetic_members=605,
+                  real_qualified_graph=True,original_proposal_unchanged=True))
+                if label=="signed_zero":
+                    observed=a.origin_observation(out)
+                    assert observed["child_metadata_sha256"]==a.sha(view/g.CHILD_META)
+                    assert g.canonical(observed["origin_translation_um"])=="[-0.0,-3.97]"
+                    assert observed["generator_sha256"]==hashlib.sha256(generator_raw).hexdigest()
+                    assert observed["admitted_code_unchanged"]is True
+                    (view/g.CHILD_META).write_bytes((view/g.CHILD_META).read_bytes()+b" ")
+                    observation_refusal=reject("observed_metadata_hash",lambda:a.origin_observation(out),"Changed child metadata")
+            bad_values=[("x_shift", [.005,-3.97]),("x_negative",[-.005,-3.97]),
+              ("y_shift",[0,-3.975]),("y_sign",[0,3.97]),("x_bool",[False,-3.97]),
+              ("y_bool",[0,True]),("x_string",["0",-3.97]),("y_string",[0,"-3.97"]),
+              ("x_nan",[float("nan"),-3.97]),("y_inf",[0,float("inf")]),
+              ("x_neg_inf",[float("-inf"),-3.97]),("x_null",[None,-3.97]),
+              ("short",[0]),("extra",[0,-3.97,0]),("object",{"x":0,"y":-3.97}),
+              ("huge_integer",[10**400,-3.97])]
+            for label,value in bad_values:
+                meta=copy.deepcopy(original_metadata);meta["origin_translation_um"]=value
+                prepare(meta);denied(label,AssertionError,("Changed child origin",),a.origin_exact.__code__)
+            prepare()
+            with mock.patch.dict(os.environ,{"GITHUB_ACTIONS":"false"}):
+                denied("hosted_gate",AssertionError,("Hosted-only generation",))
+            c,m=prepare();m["geometry_generation_authorized"]=m["native_execution_authorized"]=False
+            a.atomic(method_path,m);denied("method_gate",AssertionError,("Disabled geometry candidate",))
+            prepare();(root/generator_name).write_bytes(generator_raw+b"\n# deliberate source mutant\n")
+            denied("protected_source",AssertionError,(("Changed protected source",generator_name),))
+            prepare();victim=next(n for n in payloads if n!=g.CHILD_META);(view/victim).unlink()
+            denied("complete_inventory",AssertionError,("Incomplete current 605-file baseline",),original_exact.__code__)
+            prepare();graph_path.write_bytes(graph_raw+b" ")
+            denied("graph_hash",AssertionError,())
+            graph=json.loads(graph_raw);graph["geometry"]["native_device_count"]=499
+            prepare(graph=graph);denied("graph_census",AssertionError,(),g.validate_graph.__code__)
+            graph=json.loads(graph_raw);cluster=contract["owner_partitions"]["sd"]["M_SE"]["native_cluster"]
+            matches=[r for r in graph["geometry"]["native_net_coverage"]if r["native_cluster"]==cluster]
+            assert len(matches)==1;matches[0]["native_cluster"]=-1
+            prepare(graph=graph)
+            denied("graph_partition",AssertionError,("Changed complete native owner partition",),original_exact.__code__)
+            meta=copy.deepcopy(original_metadata);del meta["origin_translation_um"]
+            prepare(meta);denied("missing_metadata_field",KeyError,("origin_translation_um",))
+            meta=copy.deepcopy(original_metadata);row=next(r for r in meta["routes"]if r["net"]=="M_SE")
+            row["escape_lane_um"]+=.005;prepare(meta)
+            denied("selected_route",AssertionError,("Changed selected source routes",),g.boxes.__code__)
+            # Numeric relaxation must not escape into any other frozen comparator.
+            for label,value,expected in (("other_int_float",0,0.0),("other_boolean",False,0)):
+                reason="Unrelated exact comparison"
+                try:a.origin_exact(value,expected,reason)
+                except AssertionError as error:
+                    assert error.args==(reason,)
+                    assert original_exact.__code__ in [f.tb_frame.f_code for f in traceback_nodes(error)]
+                    refusals.append(dict(mode=label,error=repr(error),original_exact_frame=True))
+                else:raise AssertionError("General canonical comparison was relaxed")
+            prepare();assert fn(view)[1]==contract["declared_rectangles"]
+    assert g.admitted is original_admitted and g.exact is original_exact
+    assert len(positive)==3 and len(refusals)==27
+    return dict(positive=positive,refusals=refusals,old_rejection=regression,
+                observation=observed,observation_refusal=observation_refusal,
+                synthetic_inventory_not_actual_GDS=True,native_executed=False)
+
 def binding_controls():
     rows=[]
     for fail in (False,True):
         primary=RuntimeError("actual generator adapter collaborator");seen=[]
-        previous=a.generator.METHOD
+        previous=(a.generator.METHOD,a.generator.admitted,a.generator.exact)
         def run(source,out):
             seen.append((source,out,a.generator.METHOD))
             assert a.generator.METHOD==a.METHOD
+            assert a.generator.admitted is not previous[1]
+            assert a.generator.admitted.__code__ is previous[1].__code__
+            assert a.generator.admitted.__globals__["exact"] is a.origin_exact
+            assert a.generator.exact is previous[2]
             if fail:raise primary
             return {"explicit_synthetic_generation":True}
         with tempfile.TemporaryDirectory()as tmp, mock.patch.object(a,"authorize",return_value={}),\
@@ -60,13 +199,13 @@ def binding_controls():
             try:r=a.generate(root)
             except BaseException as e:caught=e
             assert len(seen)==1 and seen[0][:2]==(root/a.VIEW,root/"candidate")
-            assert a.generator.METHOD==previous
+            assert (a.generator.METHOD,a.generator.admitted,a.generator.exact)==previous
             if fail:assert caught is primary
             else:assert caught is None and r=={"explicit_synthetic_generation":True}
-        rows.append(dict(failed_body=fail,method_global_restored=True))
+        rows.append(dict(failed_body=fail,method_global_restored=True,admitted_global_restored=True,original_exact_unchanged=True))
     return rows
 
-def restore_controls():
+def restore_controls(observation):
     actual=a.loaded.descriptor();a.loaded.snapshots()
     original={n:a.regular(a.ROOT,s["path"]).read_bytes()for n,s in actual["actual_fresh_RC"]["snapshots"].items()}
     results=[]
@@ -83,6 +222,7 @@ def restore_controls():
                 raw=payloads[url];assert hashlib.sha256(raw).hexdigest()==digest;path.write_bytes(raw)
             def gate():gates.append(True);return {}
             with mock.patch.object(a,"authorize",side_effect=gate),mock.patch.object(a,"width_contract",return_value=wc),\
+                 mock.patch.object(a,"origin_observation",return_value=observation),\
                  mock.patch.object(a.loaded,"ROOT",repo),mock.patch.object(a.loaded,"descriptor",return_value=c),\
                  mock.patch.object(a.loaded,"snapshots",return_value=s),mock.patch.object(a.loaded,"fetch",side_effect=fetch),\
                  mock.patch.object(a.loaded.release,"api",side_effect=api),\
@@ -98,9 +238,10 @@ def restore_controls():
                 assert caught is None,repr(caught)
                 assert r["view"]["full_capsule_members"]==3823 and r["view"]["view"]["files"]==605
                 assert r["inherited_restore_code_unchanged"]is True and r["historical_authorization_borrowed"]is False
-                assert a.read(out/"restore.json")==r
+                assert a.read(out/"restore.json")==r and r["origin_admission"]==observation
             results.append(dict(mode=mode,full3823_synthetic_archive=True,view605=True,
-                                actual_restore_and_extract=True,historical_gate_called=False))
+                                actual_restore_and_extract=True,historical_gate_called=False,
+                                synthetic_origin_observation_collaborator=True))
     return results
 
 def traceback_nodes(error):
@@ -239,9 +380,9 @@ def command_controls():
             rows.append(dict(mode=mode,actual_execute=True))
     return rows
 
-def publication_controls():
+def publication_controls(observation):
     rows=[]
-    for mode in ("synthetic_success","missing","malformed","nonobject","false_success","source_failure","upload","upload_save","save_encode","save_emit"):
+    for mode in ("synthetic_success","origin_join","missing","malformed","nonobject","false_success","source_failure","upload","upload_save","save_encode","save_emit"):
         with tempfile.TemporaryDirectory()as tmp:
             root=Path(tmp);out=root/"out";out.mkdir();transport=root/"transport"
             (out/"partial.raw").write_bytes(b"EXACT PARTIAL BYTES")
@@ -250,7 +391,7 @@ def publication_controls():
             if mode=="nonobject":(out/"result.json").write_text("[]")
             if mode=="false_success":a.atomic(out/"result.json",{"status":w.PASS})
             synthetic_candidate={"explicit_synthetic_native_validation":True}
-            if mode=="synthetic_success":
+            if mode in ("synthetic_success","origin_join"):
                 with mock.patch.dict(os.environ,ENV):r=w.initial({})
                 r.update(status=w.PASS,generation_started=True,
                   generation_and_serialized_reread_complete=True,terminal_finalization_complete=True,
@@ -258,7 +399,12 @@ def publication_controls():
                   process_group_cleanup={"remaining_live":[]})for label in w.BUDGETS])
                 smoke=dict(accepted=True,**{k:a.APP_SHA for k in ("expected_appimage_sha256","appimage_before_sha256","appimage_after_sha256")})
                 a.atomic(out/"runtime-smoke/result.json",smoke);r["runtime_smoke"]=smoke
-                a.atomic(out/"restore.json",{"explicit_synthetic_restore":True});r["restore"]=a.read(out/"restore.json")
+                a.atomic(out/"restore.json",{"explicit_synthetic_restore":True,"origin_admission":observation})
+                r["restore"]=a.read(out/"restore.json")
+                if mode=="origin_join":
+                    changed=copy.deepcopy(r["restore"])
+                    changed["origin_admission"]["origin_translation_um"][0]=.005
+                    a.atomic(out/"restore.json",changed)
                 a.atomic(out/"candidate/result.json",{"explicit_synthetic_generator":True})
                 r["outputs"]={n:h for n,h in w.inventory(out).items()if n!="result.json"}
                 a.atomic(out/"result.json",r)
@@ -303,6 +449,9 @@ def publication_controls():
                 if mode=="save_emit":stack.enter_context(mock.patch("builtins.print",side_effect=OSError("fallback-emit")))
                 result=w.publication_result({})
                 assert result["generation_and_serialized_reread_complete"]is (mode=="synthetic_success")
+                if mode=="origin_join":
+                    assert result["status"]=="FAIL_MISSING_OR_INVALID_TERMINAL_REPORT"
+                    assert "Restore result changed" in str(result["terminal_report_error"])
                 caught=None
                 try:proof=w.publish(result)
                 except BaseException as e:caught=e
@@ -313,11 +462,18 @@ def publication_controls():
             else:
                 assert caught is None,(mode,caught)
                 assert proof["status"]=="PASS_COMPLETE_GEOMETRY_EVIDENCE_PUBLICATION_ONLY"
-                expected_assets=7 if mode=="synthetic_success"else 4
+                expected_assets=7 if mode in ("synthetic_success","origin_join")else 4
                 assert len(info["assets"])==expected_assets and len(uploads)==expected_assets
                 if mode=="source_failure":assert result["status"]=="FAIL_PROTECTED_SOURCE_AT_PUBLICATION"
                 summary=next(transport.glob("*.summary.json"))
                 assert a.read(summary)==result
+                if mode in ("synthetic_success","origin_join"):
+                    published_restore=next(transport.glob("*.restore.json"))
+                    assert published_restore.read_bytes()==(out/"restore.json").read_bytes()
+                    assert any(x["name"]==published_restore.name and x["digest"]=="sha256:"+a.sha(published_restore)for x in info["assets"])
+                    if mode=="synthetic_success":
+                        assert a.read(summary)["restore"]["origin_admission"]==observation
+                        assert a.read(published_restore)["origin_admission"]==observation
                 assert proof["driver_log"]["sha256"]==a.sha(driver_log)
                 assert next(transport.glob("*.driver.log")).read_bytes()==driver_log.read_bytes()
             rows.append(dict(mode=mode,actual_pack_and_reserved_publisher=True,raw_terminal_preserved=True,
@@ -391,10 +547,10 @@ def candidate_controls():
     return rows
 
 def controls():
-    method=a.methods()
+    method=a.methods();origin=origin_controls()
     return dict(status="PASS_GEOMETRY_WRAPPER_SOURCE_CONTROLS_ONLY",
-      authorization=auth_controls(method),adapter=binding_controls(),restore=restore_controls(),candidate=candidate_controls(),
-      lifecycle=lifecycle_controls(method),commands=command_controls(),publication=publication_controls(),
+      authorization=auth_controls(method),origin=origin,adapter=binding_controls(),restore=restore_controls(origin["observation"]),candidate=candidate_controls(),
+      lifecycle=lifecycle_controls(method),commands=command_controls(),publication=publication_controls(origin["observation"]),
       isolated=isolated_controls(method),native_archive_acquired=False,native_geometry_executed=False,
       physical_accepted=False,electrical_accepted=False)
 

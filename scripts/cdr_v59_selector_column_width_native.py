@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Separate, disabled geometry admission over unchanged qualified restore/generator code."""
-import argparse, hashlib, json, os, re, secrets, types
+import argparse, hashlib, json, math, os, re, secrets, types
 from pathlib import Path
 import cdr_v59_tail_loaded_admission as loaded
 import generate_cdr_v59_selector_column_width as generator
@@ -89,6 +89,49 @@ def validate_view(out):
     return dict(full_capsule_members=3823,consumed_view=VIEW,view=proof,
       original_graph_reference_only=True,candidate_graph_qualified=False)
 
+def origin_exact(value,expected,reason):
+    # The original metadata producer serializes a negated zero boundary as -0.0.
+    # This one physical-coordinate comparison is numeric; every other exact
+    # comparator, including graph, route, material and source hashes, is frozen.
+    if reason!="Changed child origin":
+        return generator.exact(value,expected,reason)
+    generator.exact(expected,[0,-3.97],"Changed origin comparator contract")
+    require(type(value)is list and len(value)==2,reason)
+    require(all(type(v)in (int,float)for v in value),reason)
+    require(all(type(v)is int or math.isfinite(v)for v in value),reason)
+    require(value[0]==0 and value[1]==-3.97,reason)
+
+def admitted_function():
+    original=generator.admitted
+    scope=dict(original.__globals__)
+    scope.update(METHOD=METHOD,exact=origin_exact)
+    fn=types.FunctionType(original.__code__,scope,original.__name__,
+                          original.__defaults__,original.__closure__)
+    fn.__kwdefaults__=original.__kwdefaults__
+    require(fn.__code__ is original.__code__,"Admission algorithm changed")
+    return fn
+
+def origin_observation(out):
+    # Observation of the authenticated restored file, before actual admission;
+    # no restored byte is rewritten and no geometry/acceptance is inferred.
+    c=width_contract();path=regular(Path(out)/VIEW,generator.CHILD_META)
+    digest=sha(path)
+    require(digest==c["baseline_inventory"][generator.CHILD_META],"Changed child metadata")
+    value=read(path)["origin_translation_um"]
+    fn=admitted_function()
+    return dict(status="AUTHENTICATED_ORIGIN_OBSERVATION_BEFORE_GENERATION",
+      child_metadata=generator.CHILD_META,child_metadata_sha256=digest,
+      origin_translation_um=value,expected_origin_translation_um=[0,-3.97],
+      policy=dict(exact_numeric_equality=True,finite_only=True,boolean_allowed=False,
+                  numeric_types=["int","float"],tolerance=0,negative_zero_equivalent_to_zero=True),
+      generator_source="scripts/generate_cdr_v59_selector_column_width.py",
+      generator_sha256=sha(ROOT/"scripts/generate_cdr_v59_selector_column_width.py"),
+      inherited_width_method=OLD_METHOD,inherited_width_method_sha256=OLD_METHOD_SHA,
+      admitted_code_unchanged=fn.__code__ is generator.admitted.__code__,
+      admitted_namespace_changes=["METHOD","exact"],
+      other_exact_comparisons_unchanged=True,
+      native_geometry_executed=False,physical_accepted=False,electrical_accepted=False)
+
 def restore(out):
     authorize()
     # A fresh function namespace replaces only the authority callback. Original
@@ -104,6 +147,7 @@ def restore(out):
     report,proof,model,composition,planes,plane_proof=fn(Path(out),True)
     view=validate_view(out)
     result=dict(saved_input=proof,view=view,plane_proof=plane_proof,
+      origin_admission=origin_observation(out),
       inherited_restore_code_unchanged=True,historical_authorization_borrowed=False,
       baseline_model_sha256=sha(model),original_reports_retained=True)
     atomic(Path(out)/"restore.json",result)
@@ -111,12 +155,14 @@ def restore(out):
 
 def generate(out):
     authorize();out=Path(out);validate_view(out)
-    previous=generator.METHOD
+    previous=(generator.METHOD,generator.admitted)
+    fn=admitted_function()
     try:
         generator.METHOD=METHOD
+        generator.admitted=fn
         result=generator.run(out/VIEW,out/"candidate")
     finally:
-        generator.METHOD=previous
+        generator.METHOD,generator.admitted=previous
     validate_view(out)
     return result
 

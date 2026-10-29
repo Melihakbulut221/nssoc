@@ -58,7 +58,13 @@ jobs:
           assert r["status"]=="PASS_GEOMETRY_WRAPPER_SOURCE_CONTROLS_ONLY"
           assert len(r["authorization"]["positive"])==2 and len(r["authorization"]["refusals"])==28
           assert len(r["adapter"])==2 and len(r["restore"])==2 and len(r["candidate"])==10
-          assert len(r["lifecycle"])==12 and len(r["commands"])==6 and len(r["publication"])==10
+          assert len(r["origin"]["positive"])==3 and len(r["origin"]["refusals"])==27
+          assert r["origin"]["old_rejection"]["actual_admitted_and_exact_frames"] is True
+          assert r["origin"]["observation_refusal"]["reason"]=="Changed child metadata"
+          assert r["origin"]["observation"]["admitted_code_unchanged"] is True
+          assert r["origin"]["synthetic_inventory_not_actual_GDS"] is True and r["origin"]["native_executed"] is False
+          assert all(x["admitted_global_restored"] and x["original_exact_unchanged"] for x in r["adapter"])
+          assert len(r["lifecycle"])==12 and len(r["commands"])==6 and len(r["publication"])==11
           assert len(r["isolated"]["rows"])==4 and r["isolated"]["actual_isolated_subprocess"] is True
           assert all(r[k] is False for k in ("native_archive_acquired","native_geometry_executed","physical_accepted","electrical_accepted"))
           r=json.loads((root/"runtime.json").read_bytes())
