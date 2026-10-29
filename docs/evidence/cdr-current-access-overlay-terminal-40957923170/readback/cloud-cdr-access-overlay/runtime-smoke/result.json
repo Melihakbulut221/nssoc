@@ -1,0 +1,42 @@
+{
+  "status": "FAIL_RUNTIME_LAUNCH",
+  "accepted": false,
+  "launcher_started": true,
+  "timed_out": false,
+  "command": [
+    "/home/runner/work/_temp/cdr-access-runtime-40957923170/librelane.AppImage",
+    "python",
+    "-c",
+    "import hashlib,json,platform,sys\nfrom pathlib import Path\nimport pya\nassert hasattr(pya,'Layout')\ndef digest(path):\n    h=hashlib.sha256()\n    with open(path,'rb')as stream:\n        for b in iter(lambda:stream.read(1024*1024),b''):h.update(b)\n    return h.hexdigest()\nr=dict(schema='cdr-v59-mim-interpreter-v1',executable=sys.executable,\n    executable_sha256=digest(sys.executable),version=sys.version,\n    version_info=list(sys.version_info[:3]),implementation=sys.implementation.name,\n    platform=sys.platform,pya_imported=True,pya_file=pya.__file__,\n    pya_file_sha256=digest(pya.__file__),pya_version=getattr(pya,'__version__',None))\nprint('CDR_V59_MIM_INTERPRETER '+json.dumps(r,sort_keys=True),flush=True)\n"
+  ],
+  "expected_appimage_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "simulation_executed": false,
+  "geometry_executed": false,
+  "cleanup_helper_sha256": "e326e548ebe11550d18a049d639bdf063f03602d4ba08299b00a5747d3281c0b",
+  "appimage_before_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "pid": 2821,
+  "live_after_leader_exit": [],
+  "cleanup": {
+    "signals": [],
+    "remaining_live": [],
+    "remaining_nonrunning": []
+  },
+  "returncode": 127,
+  "appimage_after_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "error": "AssertionError(('launcher_return', 127, False))",
+  "terminal_group_verified_before_stream_collection": true,
+  "stdout": {
+    "bytes": 0,
+    "path": "stdout.bin",
+    "complete": true,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "base64": ""
+  },
+  "stderr": {
+    "bytes": 121,
+    "path": "stderr.bin",
+    "complete": true,
+    "sha256": "e3e14ff3ab93d7e465fa5a9e032cc3ae2c4ac551c07b53b89414659a7b61655d",
+    "base64": "L2hvbWUvcnVubmVyL3dvcmsvX3RlbXAvY2RyLWFjY2Vzcy1ydW50aW1lLTQwOTU3OTIzMTcwL2xpYnJlbGFuZS5BcHBJbWFnZTogY2Fubm90IHdyaXRlIHVpZF9tYXA6IE9wZXJhdGlvbiBub3QgcGVybWl0dGVkCg=="
+  }
+}

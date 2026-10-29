@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_access_overlay.py", line 214, in <module>
+    if __name__=="__main__":main()
+                            ^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_access_overlay.py", line 213, in main
+    run(ctx,reserved,controls,args.output.resolve(),args.pins_sha256,args.appimage)
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_access_overlay.py", line 182, in run
+    result=perform(ctx,reserved,controls_raw,out,expected,app,root,api_call,fetch)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_access_overlay.py", line 160, in perform
+    observed=native_readback(config,work/"selected",out,expected,app,root)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_access_overlay.py", line 145, in native_readback
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_access_overlay.py", line 108, in native_readback
+    require(smoke["accepted"]is True,"pinned runtime smoke")
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_rc_contacts.py", line 20, in require
+    if not ok:raise AssertionError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: pinned runtime smoke

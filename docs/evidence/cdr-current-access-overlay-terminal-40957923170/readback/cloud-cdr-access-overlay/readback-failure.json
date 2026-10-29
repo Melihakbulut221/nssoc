@@ -1,0 +1,23 @@
+{
+  "current_context": {
+    "attempt": 1,
+    "group": "cdr-current-access-overlay",
+    "run_id": 40957923170,
+    "source": "398cc0137a59b3ca9399eaa19cabf9cdf2bd1a3d",
+    "token": "40957923170-1"
+  },
+  "error": {
+    "message": "pinned runtime smoke",
+    "type": "AssertionError"
+  },
+  "scope": {
+    "electrical_acceptance": false,
+    "full_phy_accepted": false,
+    "geometry_changed": false,
+    "physical_acceptance": false,
+    "resistor_footprint_assignment": false,
+    "simulation_executed": false
+  },
+  "status": "FAIL_CURRENT_ACCESS_OVERLAY_READBACK",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_access_overlay.py\", line 182, in run\n    result=perform(ctx,reserved,controls_raw,out,expected,app,root,api_call,fetch)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_access_overlay.py\", line 160, in perform\n    observed=native_readback(config,work/\"selected\",out,expected,app,root)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_access_overlay.py\", line 145, in native_readback\n    if primary is not None:raise primary\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_access_overlay.py\", line 108, in native_readback\n    require(smoke[\"accepted\"]is True,\"pinned runtime smoke\")\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_rc_contacts.py\", line 20, in require\n    if not ok:raise AssertionError(message)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: pinned runtime smoke\n"
+}

@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v131
+# Cloud continuation — checkpoint v132
 
-Updated: 2026-10-29T21:32:45.919004+00:00
+Updated: 2026-10-29T22:14:26.197953+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint v131: full lower-corridor readback40952276370 succeeded (3689 records, 61 complete proof files) and is preserved at24cfcd88. Hosted net459 graph inspection40956367145 succeeded and is preserved at7207dcb2: excluding short shape21 separates ANTENNA1574/1575 from the driver/load component in both contact models, so deleting the rectangle alone is not a repair. CDR current access overlay40957923170 uses source398cc013, independently reserved release428414983 and a corrected43-pin source manifest. Exact hosted source controls11/33/11, inherited14/80/5 and five checker-finalization cases passed; native geometry observation is tracked by the live snapshot. Full collector recipe is saved for terminal preservation. All new work ran on GitHub; local checkout, project tmp and native processes remain absent. No PHY/routing/timing acceptance is claimed.
+Cloud-only checkpoint v132: current CDR native access overlay40962418343 completed successfully on exact source4e4db7a1; full50-file/11,099,053-byte evidence is preserved at86e09a96. All6647 archived members were authenticated, with500 devices/1446 terminals/113 wire components/238 native nets/25 ports observed and204 rnodes/16 contacts fully overlaid. The earlier Ubuntu24 AppImage launch failure40957923170 and the Ubuntu22 successful-native/failed-lifecycle attempt40960276845 remain fully preserved at e3bd2fb5 and87a5c5d8. The final fix records primitive signal-restoration evidence and strengthens real-callable lifecycle fixtures; all actual source controls and native cleanup passed. All code, logs, evidence and workflow changes are on GitHub (main registration7eb77c12). Local project/tmp/native processes remain absent. This geometric observation is not electrical/PHY/route/setuphold acceptance; next work is actual net459 repair and CDR access resistance attribution/recovery.
 
 Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9110,3 +9111,10 @@ Local project/tmp/native processes verified absent. Inventory363 exact cloud han
 Cloud-only checkpoint v131: full lower-corridor readback40952276370 succeeded (3689 records, 61 complete proof files) and is preserved at24cfcd88. Hosted net459 graph inspection40956367145 succeeded and is preserved at7207dcb2: excluding short shape21 separates ANTENNA1574/1575 from the driver/load component in both contact models, so deleting the rectangle alone is not a repair. CDR current access overlay40957923170 uses source398cc013, independently reserved release428414983 and a corrected43-pin source manifest. Exact hosted source controls11/33/11, inherited14/80/5 and five checker-finalization cases passed; native geometry observation is tracked by the live snapshot. Full collector recipe is saved for terminal preservation. All new work ran on GitHub; local checkout, project tmp and native processes remain absent. No PHY/routing/timing acceptance is claimed.
 
 Local project/tmp/native processes verified absent. Inventory366 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T22:14:26.197953+00:00 — cloud-only checkpoint v132
+
+Cloud-only checkpoint v132: current CDR native access overlay40962418343 completed successfully on exact source4e4db7a1; full50-file/11,099,053-byte evidence is preserved at86e09a96. All6647 archived members were authenticated, with500 devices/1446 terminals/113 wire components/238 native nets/25 ports observed and204 rnodes/16 contacts fully overlaid. The earlier Ubuntu24 AppImage launch failure40957923170 and the Ubuntu22 successful-native/failed-lifecycle attempt40960276845 remain fully preserved at e3bd2fb5 and87a5c5d8. The final fix records primitive signal-restoration evidence and strengthens real-callable lifecycle fixtures; all actual source controls and native cleanup passed. All code, logs, evidence and workflow changes are on GitHub (main registration7eb77c12). Local project/tmp/native processes remain absent. This geometric observation is not electrical/PHY/route/setuphold acceptance; next work is actual net459 repair and CDR access resistance attribution/recovery.
+
+Local project/tmp/native processes verified absent. Inventory368 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

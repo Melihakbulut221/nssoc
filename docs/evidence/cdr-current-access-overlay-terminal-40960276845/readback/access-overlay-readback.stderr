@@ -1,0 +1,41 @@
+Traceback (most recent call last):
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_access_overlay.py", line 214, in <module>
+    if __name__=="__main__":main()
+                            ^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_access_overlay.py", line 213, in main
+    run(ctx,reserved,controls,args.output.resolve(),args.pins_sha256,args.appimage)
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_access_overlay.py", line 182, in run
+    result=perform(ctx,reserved,controls_raw,out,expected,app,root,api_call,fetch)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_access_overlay.py", line 160, in perform
+    observed=native_readback(config,work/"selected",out,expected,app,root)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_access_overlay.py", line 146, in native_readback
+    if errors:raise errors[0]
+              ^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_access_overlay.py", line 140, in native_readback
+    try:write(out/"native-lifecycle.json",encode(dict(actions=actions,errors=[repr(e)for e in errors],primary_error=None if primary is None else repr(primary))))
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_rc_contacts.py", line 24, in encode
+    return (json.dumps(obj,sort_keys=True,indent=2,allow_nan=False)+"\n").encode()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/encoder.py", line 202, in encode
+    chunks = list(chunks)
+             ^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/encoder.py", line 432, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/encoder.py", line 326, in _iterencode_list
+    yield from chunks
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type function is not JSON serializable

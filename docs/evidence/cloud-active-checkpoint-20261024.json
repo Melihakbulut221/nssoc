@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T21:32:45.919004+00:00",
+  "updated_at": "2026-10-29T22:14:26.197953+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "3e013ca9453272650044d9296d6d4557e66dee7e",
+  "root_source_before_receipt": "c4843ea832ce7d066590c8995387b9d306db5eb7",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 131,
+    "inventory_version": 132,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -4278,14 +4278,167 @@
       "scope": "Full authenticated 6647-member capsule, current 500-device geometry; 204 rnodes, 16 contact probes and full target/overlap conductor polygons. Point overlay does not assign resistor physical footprints or prove transient causality.",
       "known_fixes": "Removed recursive failure-emission mock, require full captured byte map, protect checker primary errors; source controls passed on exact hosted run.",
       "collector_recipe": "docs/evidence/cloud-collector-recipes-20261029/cdr-current-access-overlay-terminal-40957923170.py"
+    },
+    "current_cdr_access_overlay_runtime_failure": {
+      "run": 40957923170,
+      "source": "398cc0137a59b3ca9399eaa19cabf9cdf2bd1a3d",
+      "proof": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "files": 38,
+      "bytes": 3568420,
+      "receipt_sha256": "9254d73635da6e32d997553e3e324eee1d9d22877c2d930fda943e7cdcff0dc7",
+      "source_controls_qualified": true,
+      "complete_input_members": 6647,
+      "selected_files": 12,
+      "smoke_result": "FAIL_RUNTIME_LAUNCH",
+      "returncode": 127,
+      "stderr": "cannot write uid_map: Operation not permitted",
+      "runtime_appimage_unchanged": true,
+      "native_overlay_body_started": false,
+      "timeout": false,
+      "live_processes_after_cleanup": 0,
+      "physical_acceptance": false
+    },
+    "current_cdr_access_overlay_cloud_continuation": {
+      "run": 40960276845,
+      "source": "f8d467382abef9a8180f04b233f93b181cdf88a3",
+      "branch": "codex/cdr-current-access-overlay",
+      "workflow_id": 401118236,
+      "change": "Only readback.runs-on changed ubuntu-24.04 to ubuntu-22.04. Source-controls and log preservation stay ubuntu-24.04.",
+      "host_native_checker_config_and_43_pins_unchanged": true,
+      "manifest_sha256": "7ea9306c6037396140c2994efc127cfc58192befd6e79f72fb6a56dd04bf4522",
+      "workflow_sha256": "4a652026e09fef3c2a8b0a649dc134e93cf719aed0fdb200045be4b5f04c8a68",
+      "main_registration": "0536bba152848fb26c6be3a5c03a7bfa3e5197eb",
+      "prior_actual_runtime_evidence": {
+        "run": 40830441311,
+        "source": "7ddf83d17a3b3fe0efb1eb31594b7d4d3e831b8f",
+        "conclusion": "success",
+        "native_job": "fresh-RC",
+        "actual_runner_labels": [
+          "ubuntu-22.04"
+        ]
+      },
+      "independent_release_id": 428427733,
+      "acceptance_gates_unchanged": true,
+      "local_native_acquisition": false,
+      "physical_acceptance": false,
+      "collector_recipe": "docs/evidence/cloud-collector-recipes-20261029/cdr-current-access-overlay-terminal-40960276845.py"
+    },
+    "current_cdr_access_overlay_native_observation_before_lifecycle_fix": {
+      "run": 40960276845,
+      "source": "f8d467382abef9a8180f04b233f93b181cdf88a3",
+      "proof": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "files": 48,
+      "bytes": 11089002,
+      "receipt_sha256": "71af94eab52aa1cb67e3ce18a973a1a8e58b2b43c5481f66ace5a95b7cdcba5b",
+      "native_returncode": 0,
+      "native_seconds": 49.401,
+      "runtime_smoke_passed": true,
+      "native_observation_status": "PASS_CURRENT_ACCESS_GEOMETRIC_OBSERVATION_NOT_EDGE_ATTRIBUTION",
+      "overlay": {
+        "bytes": 4490540,
+        "sha256": "909fa767cd9d0cb8108199e0b6a7ecfb91e8856160cd8bedbf5c2451113cea5c"
+      },
+      "native_counts": {
+        "devices": 500,
+        "terminals": 1446,
+        "wire_components": 113,
+        "native_nets": 238,
+        "ports": 25
+      },
+      "points": 204,
+      "contacts": 16,
+      "host_terminal_failure": "TypeError: signal.signal() returned previous callable handler, stored as evidence in native-lifecycle JSON",
+      "electrical_acceptance": false,
+      "physical_acceptance": false
+    },
+    "current_cdr_access_overlay_lifecycle_fix": {
+      "source": "4e4db7a12f14477729157611ac54d5429be5844c",
+      "branch": "codex/cdr-current-access-overlay",
+      "run": 40962418343,
+      "workflow_id": 401118236,
+      "manifest_sha256": "eceffabefffa8aab22b9ba5b5a7de13bc5a83fff42a79387fbd766ed6820f141",
+      "workflow_sha256": "491756bfc6f765e117de8e2bb6537bc6dc4aaa333c5ac7bef3df69dff21bff70",
+      "main": "7eb77c12e6955ef5c3bac39bdf989139c4e42000",
+      "release_id": 428441518,
+      "fix": "Signal restoration records only serializable signal/restored values; real callable-return contract and complete lifecycle JSON/fallback strengthened in four existing hosted fixture cases.",
+      "source_counts": {
+        "positive": 11,
+        "refusal": 33,
+        "lifecycle": 11,
+        "checker_finalization": 5
+      },
+      "inherited_counts": {
+        "positive": 14,
+        "refusal": 80,
+        "lifecycle": 5
+      },
+      "native_config_other_40_pins_and_all_acceptance_gates_unchanged": true,
+      "physical_acceptance": false
+    },
+    "current_cdr_access_overlay_final": {
+      "run": 40962418343,
+      "source": "4e4db7a12f14477729157611ac54d5429be5844c",
+      "proof": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "terminal": "success",
+      "status": "PASS_CURRENT_ACCESS_OVERLAY_READBACK_NOT_ACCEPTANCE",
+      "files": 50,
+      "bytes": 11099053,
+      "receipt_sha256": "4e423eda33cf1410ca32c8fdcf3f8f6020c72d2a3e0e359b006e22eee933f001",
+      "complete_input_members": 6647,
+      "native_counts": {
+        "devices": 500,
+        "terminals": 1446,
+        "wire_components": 113,
+        "native_nets": 238,
+        "ports": 25
+      },
+      "targets": {
+        "28": {
+          "points": 102,
+          "contacts": 8,
+          "component": 17,
+          "native_name": "$131"
+        },
+        "124": {
+          "points": 102,
+          "contacts": 8,
+          "component": 61,
+          "native_name": "$680"
+        }
+      },
+      "source_controls_qualified": true,
+      "complete_lifecycle_preserved": true,
+      "all_cleanup_actions_completed": true,
+      "scope": {
+        "electrical_acceptance": false,
+        "full_phy_accepted": false,
+        "geometry_changed": false,
+        "physical_acceptance": false,
+        "resistor_footprint_assignment": false,
+        "simulation_executed": false
+      },
+      "remaining_attribution_work": [
+        "per-resistor physical footprint/material generation record",
+        "per-resistor authoritative layer/type and contact/access ownership",
+        "transient currents and causality"
+      ],
+      "overlay": {
+        "bytes": 4490540,
+        "sha256": "909fa767cd9d0cb8108199e0b6a7ecfb91e8856160cd8bedbf5c2451113cea5c",
+        "byte_identical_to_prior_successful_native_observation": true
+      },
+      "native_lifecycle": {
+        "bytes": 746,
+        "sha256": "a61ebd14a67bc67c1de5a48b9d2d5b04f0cfe78b59ce5e52f3f61ef8d04ebc32"
+      }
     }
   },
   "next_actions": [
-    "Observe existing exact run40957923170 attempt1 only; do not redispatch. If terminal, execute the saved derived-only collector after verifying branch still398cc0137a59b3ca9399eaa19cabf9cdf2bd1a3d. Preserve every raw job log, control output, outer CDR_ACCESS_COMPLETE chunk, failure record and zero-byte stream; no native downloads locally.",
-    "Inspect new lower corridor 3689 records and full net459 topology. The short-bearing shape21 is a bridge only to ANTENNA1574/1575; plain deletion disconnects pins. Next physical mutation must explicitly qualify any exact diode delta or preserve all five pins by rerouting. Keep all1691 original clock/fixed wires and other nets unchanged, and require actual native DRC and antenna checks before acceptance.",
-    "Use actual CDR access overlay with the existing DC contact matrices to locate terminal-access geometry; do not infer per-resistor material from zero rnode type or nearest-point heuristics. Do not change analog bias globally; previous max VCE headroom is narrow.",
-    "All calculation, code execution, tests, CAD, archives, AppImage/models/GDS/ODB and native waveforms stay in GitHub. Local workspace must remain empty; only API orchestration/source/derived text in memory. Keep current original acceptance gates unchanged.",
-    "Full serial PHY, routed main chip and final setup/hold remain unaccepted. Existing eight-hour GitHub monitor remains read-only with no automatic native dispatch."
+    "All three overlay attempts must remain preserved as distinct evidence. Do not rerun completed attempts40957923170/40960276845/40962418343. Use the final successful exact-source proof recorded below.",
+    "Next physical repair: net459's short shape21 is the bridge only to ANTENNA1574/1575. Consider explicitly bounded branch+two-diode removal/relocation, or a qualified detour. Plain rectangle deletion leaves disconnected pins. Rebuild complete routing with exact serialization/replay; do not delete raw opcode108 blindly. Preserve net36993, all other signal material and all1691 original clock/fixed records. Any153130\u2192153128instance delta requires new explicit two-instance/pin/supply comparison, actual full DRC and net459+whole-design antenna checks.",
+    "Use successful current CDR overlay to inspect actual terminal-access layers with previous authenticated DC matrices. Existing observations: eight HBT emitter anchors overlap GDS layers10/30; two also overlap foreign shapes on GDS layers50/126; eight MOS drain anchors point-match only target GDS layer8. Preserve [0,-2]nm emitter quantization offsets. None of these point matches attributes individual resistor footprints or proves transient recovery.",
+    "Native input and code/model bytes stay on GitHub. Local source editing/API/derived text inspection may be memory-only; no checkout/native/test/archive acquisition locally. Workspace/tmp/native processes must remain empty.",
+    "Full serial PHY, routed main chip and final setup/hold remain unaccepted. All original electrical/physical/clock gates remain unchanged; existing eight-hour GitHub monitor remains read-only with no automatic native dispatch."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -4632,56 +4785,12 @@
     "observed_40944948451": 40944948451,
     "observed_40952276370": 40952276370,
     "observed_40956367145": 40956367145,
-    "observed_40957923170": 40957923170
+    "observed_40957923170": 40957923170,
+    "observed_40960276845": 40960276845,
+    "observed_40962418343": 40962418343
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
-    {
-      "run": 40952276370,
-      "head_sha": "f85b2a8d8c21ec4cce35bb25bd5780ebe646022f",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123723221691,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123723469349,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123723543433,
-          "name": "readback",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40956367145,
-      "head_sha": "b5fac41b5ae845af095b47c79195a209f1bd23d1",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123737424852,
-          "name": "observe",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
     {
       "run": 40957923170,
       "head_sha": "398cc0137a59b3ca9399eaa19cabf9cdf2bd1a3d",
@@ -4711,10 +4820,70 @@
           "active_steps": []
         }
       ]
+    },
+    {
+      "run": 40960276845,
+      "head_sha": "f8d467382abef9a8180f04b233f93b181cdf88a3",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123750950280,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123751370093,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123751450801,
+          "name": "readback",
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40962418343,
+      "head_sha": "4e4db7a12f14477729157611ac54d5429be5844c",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123758371481,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123758648563,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123758724628,
+          "name": "readback",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T21:32:45.919004+00:00",
+    "observed_at": "2026-10-29T22:14:26.197953+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -4854,7 +5023,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T21:32:45.919004+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T22:14:26.197953+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -45858,6 +46027,1110 @@
       "source": "398cc0137a59b3ca9399eaa19cabf9cdf2bd1a3d",
       "release_id": 428414983,
       "tag": "cloud-results-40957923170-1-cdr-current-access-overlay"
+    }
+  ],
+  "imported_checkpoint_receipts_v132": [
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/artifacts.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "4cfadb3a316690152167e83da66561e8d4455fac",
+      "bytes": 2758,
+      "sha256": "6de4a2b87d8b21414e1ab636472a674960931e5ab41c63099830efe0a405838c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/complete-readback-index.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "466d985f4d56eca9787b6b3a7193bac862188e64",
+      "bytes": 4499,
+      "sha256": "6aa10880aa5454700493a75da6fe67fbb2d61941e1de5e6873ba3b85f71afa58",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/controls/context.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "3373afdd67a920b7d4631a4ebf6518cac068321d",
+      "bytes": 8463,
+      "sha256": "e6600f117bae18bd59970abe1ead031bdcebe8a8b478836a7b155558276e005f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/controls/controls.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "15ae643e1bd17fd2ea68a8319c2a201f7062c288",
+      "bytes": 24005,
+      "sha256": "ac533348065e0a2274383b5292ebbbb030d044ec77005e6ad93c785fc4c46409",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/controls/controls.stderr",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/controls/controls.stdout",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "43430f3b06ba1b515181dcca7bcd4d0f2b5546ca",
+      "bytes": 24500,
+      "sha256": "c062937fe54a5d9296a763669f408dc71e49290b1954c3123b869d935f1ab7ac",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/controls/index.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "091d082176cff3f58d06d720394cbecd81ec8828",
+      "bytes": 780,
+      "sha256": "a3dfdfcf4be034860bd836ee80e5336c3e95acb7b5144707b58da064f6a1ee5e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/jobs.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "9207cf20e989f439d82e42b1ee7ec49ca0350d27",
+      "bytes": 11931,
+      "sha256": "6a1da153c43c0c63c286052f90ac220438d00295b23dbbfddbbe45f814bba357",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/jobs/123742805099.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "d7e6cd90a93c002191dc035921759d51b0c849b8",
+      "bytes": 3775,
+      "sha256": "2db627f27e4e2993e6c5893c67a41bc3295639f311ff957e1ddc2c05495b4d15",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/jobs/123742805099.log",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "2f99eee8afa97ad8fcb28db1da4e6b55a4cd4816",
+      "bytes": 108284,
+      "sha256": "d8599c7dce6f0eb1dfa30575f9c4fc89ee27952546fda19b01b9af6096fcaee5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/jobs/123743044338.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "388f7a2e83e671ad967011a00f9ff5c16d91fea4",
+      "bytes": 1975,
+      "sha256": "b43ad550f7f4ba6da404291e9b6084e8cd87ef4cbd4b979d6017b12c4c27953e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/jobs/123743044338.log",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "11ec814bed801ad9f4c6986fa23823f9d9a48ccc",
+      "bytes": 7541,
+      "sha256": "9534c78e415a746f7378b8cbf123edfa3a4ec43e7d2a01f1d3021fce859a08be",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/jobs/123743121348.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "3346a44480e59c2cf4966029c7184b2083f031b0",
+      "bytes": 4843,
+      "sha256": "711bae6682e431c92309b16747b1fc96b4395949e0ff233f4e0a954e808820cc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/jobs/123743121348.log",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "5e0258c164223c9722f788f325d7cd845e553dec",
+      "bytes": 1021042,
+      "sha256": "90698a2d8a0255c76ba2d7bc8d3dfbce1c306da9c4b3dd54cf52d1387cad29d9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/access-overlay-preflight.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "027cf585bba2787c9ed52feb8325a45ad78ab09c",
+      "bytes": 75031,
+      "sha256": "60710cdafb561cb137e6a6a5525d221f029108730f90afde42a937b0de663390",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/access-overlay-preflight.stderr",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/access-overlay-preflight.stdout",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "ba9ac69ff5cf2279f9b7965e794f1031c8a033d0",
+      "bytes": 63269,
+      "sha256": "f4bbb4bf1e061af7e3617d28035f570fa578a76893ba5b61393d78b546e50a3a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/access-overlay-readback.stderr",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "0d970f99f98f9b775881f07e1950ee55cedf3475",
+      "bytes": 1514,
+      "sha256": "1ec6636b88e0ebd8ac8326e00519224ffb8b3df61d7b0ad4f2ee4873a20b0e95",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/access-overlay-readback.stdout",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "3ab5ce1e818175290a9035c65855771272355216",
+      "bytes": 464245,
+      "sha256": "ffea49a14cbba5d211bc9c74356649faf5eec91581886194cddf64ae03190b3b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/access-runtime-receipt.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "04ba4dd85c0fa3b23ca93141bcb99d6a2b068777",
+      "bytes": 343,
+      "sha256": "d59c9b2c9c113020c119c9458db0452cac8e71ab81eeac211d01782b2dae95a1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/cdr-access-overlay-controls/context.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "3373afdd67a920b7d4631a4ebf6518cac068321d",
+      "bytes": 8463,
+      "sha256": "e6600f117bae18bd59970abe1ead031bdcebe8a8b478836a7b155558276e005f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/cdr-access-overlay-controls/controls.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "15ae643e1bd17fd2ea68a8319c2a201f7062c288",
+      "bytes": 24005,
+      "sha256": "ac533348065e0a2274383b5292ebbbb030d044ec77005e6ad93c785fc4c46409",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/cdr-access-overlay-controls/controls.stderr",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/cdr-access-overlay-controls/controls.stdout",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "43430f3b06ba1b515181dcca7bcd4d0f2b5546ca",
+      "bytes": 24500,
+      "sha256": "c062937fe54a5d9296a763669f408dc71e49290b1954c3123b869d935f1ab7ac",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/cloud-cdr-access-overlay/complete-input-census.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "fcc167b425ddc91171955238613567f1fede2a38",
+      "bytes": 1526797,
+      "sha256": "ce66d531f3b0915a3a25fa7439a5c197d4a768920f09a4e47f96dd358ad5a4f4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/cloud-cdr-access-overlay/native-lifecycle.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "d5f5fd22ed4895f668c15c5f5e74a24683c389a1",
+      "bytes": 97,
+      "sha256": "e2abef1f47d6cfa2676e061a327cc4782a2e3d72c4b95a46fe5ec9f600101683",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/cloud-cdr-access-overlay/preflight.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "027cf585bba2787c9ed52feb8325a45ad78ab09c",
+      "bytes": 75031,
+      "sha256": "60710cdafb561cb137e6a6a5525d221f029108730f90afde42a937b0de663390",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/cloud-cdr-access-overlay/readback-failure.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "f0a9926d9783c0b601ba269a202a01df078f7565",
+      "bytes": 1775,
+      "sha256": "1842fa1846f9c93c1c4cb1b0a01c9c75b6fd059fb58c0c14fd6c5578fc42fe34",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/cloud-cdr-access-overlay/runtime-smoke/result.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "d8e48c19740fc4fbf591b929fe53d41436514be9",
+      "bytes": 2233,
+      "sha256": "3e3b0faf040b4afccdcc91c6ae4bd04278d92acc399a91537d1a90e252a940fb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/cloud-cdr-access-overlay/runtime-smoke/stderr.bin",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "5b552ededa06e8624fabd8ca0e02feae97558a8d",
+      "bytes": 121,
+      "sha256": "e3e14ff3ab93d7e465fa5a9e032cc3ae2c4ac551c07b53b89414659a7b61655d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/cloud-cdr-access-overlay/runtime-smoke/stdout.bin",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/cloud-cdr-access-overlay/source-controls.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "15ae643e1bd17fd2ea68a8319c2a201f7062c288",
+      "bytes": 24005,
+      "sha256": "ac533348065e0a2274383b5292ebbbb030d044ec77005e6ad93c785fc4c46409",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/cloud-cdr-access-overlay/transport-proof.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "50d7dd831b86e62bd91761b0cd348e283e6dbb1b",
+      "bytes": 610,
+      "sha256": "7ee471271feec5fc53e6ec5e6dbfecb60cb144f87d4701362652fa588fb028e0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/readback/release-reservation.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "40b6b26555d7ef1a5b405e1c13f88bf7835db6d4",
+      "bytes": 328,
+      "sha256": "c76aa469bad1877fe9866369bf541fbf05ee7ae74ac158d7ce3b702d30be82fd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/receipt.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "63cb829180f2ee79e47e969c43639c4692a5893f",
+      "bytes": 34221,
+      "sha256": "9254d73635da6e32d997553e3e324eee1d9d22877c2d930fda943e7cdcff0dc7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/ref.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "3d2a8ae1525379078d6b9198c7e184f9f95352be",
+      "bytes": 545,
+      "sha256": "00181b16b887bc4ccd6a3363d86ccad71b8ca920a58ae8554752b1a89455fb9b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/release.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "2c1243963fa3529973c92ba703e32ec51cd7a8a2",
+      "bytes": 2454,
+      "sha256": "dc0269c77654a2aa34c0195dd4c2dc49563c688f351e90787e06df40937d3ab6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40957923170/run.json",
+      "source": "e3bd2fb5338234b131f3d2d70a097869420d4835",
+      "git_blob": "0d69aa5db821f83cf3ed885563e9a9f4f473995a",
+      "bytes": 14437,
+      "sha256": "595549fa7edfdd470f2f1f910e39c8a250f89f75ba4f8e85681054953c84edb4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/artifacts.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "21ea08ef0a33777d3c87b890fa13299a309e362f",
+      "bytes": 2759,
+      "sha256": "4a8856182ddd3fffbcc0eaed513cb6c415c2a202b3b236f6b166cc1c3c901f4b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/complete-readback-index.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "cbc841e6701bb23cd2307a392afbee4b8feadd51",
+      "bytes": 6947,
+      "sha256": "c2957afc3129a5ce8436d63551711ee3636c973fbbaf3d15e17c3972722173d4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/controls/context.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "7210e84cd30ebb62a5a1cbb3b72f92cfda2990a3",
+      "bytes": 8463,
+      "sha256": "b2920cb38eb46d8ff2a402826886a5b3f6a429c8b1049518173b94c6a212e0f3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/controls/controls.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "af3757efb5a8109796adfd959b3f0bc7c85cd460",
+      "bytes": 24005,
+      "sha256": "06d679b4f9a5ea7c36d8a9f79eb7c8a7791688bacf497fcdf8ee0236b9d7de02",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/controls/controls.stderr",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/controls/controls.stdout",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "d715ecbf160420ac47cf075760ea5880d0850856",
+      "bytes": 24500,
+      "sha256": "f467e2271a978bb00ceb5279e6444681e8f6215dfd3e8a6600cc6cb4d33c726b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/controls/index.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "7ddb440cf3a840c18089b8c98b94c0482e4c33c4",
+      "bytes": 780,
+      "sha256": "c7ecb6ca93a7e7c8b8dcb159491a3a401c80e41eeed08e79daf920bbf18260d4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/jobs.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "6d41812d160c34564e3cd0b719a334cc5186e8a3",
+      "bytes": 11931,
+      "sha256": "a617e79224b1c889b7cc05d103aa4cc70815fb0f16b5c54d730708388888d98f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/jobs/123750950280.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "58425c6018966c96e1c971936300a894f1f74721",
+      "bytes": 3775,
+      "sha256": "3d6ae128a958738830373b60b40aa694537ac39f6dfcdf3924eaeacaee51eb28",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/jobs/123750950280.log",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "d52ee5953b7ef408f82097f2eb40b3bc5acd8d40",
+      "bytes": 108400,
+      "sha256": "4b7b42b2d92072317e7853559dfbc712a3a4149df9172819897d0c9b84475ce5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/jobs/123751370093.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "7bc469a4d2dcc2e31778e3ad25c0011e3aedfad2",
+      "bytes": 1975,
+      "sha256": "7166b5202cfa5633c571de60dec9c9a44d17e6eca36fbc39ab310337606f3394",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/jobs/123751370093.log",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "6394290015c057da2219914668af200c61ea10d7",
+      "bytes": 7541,
+      "sha256": "5d160278ff9912e3b9b985181dea42359c0c0295b75d3a5acb00f78ba19beb2b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/jobs/123751450801.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "c139a7e3547ed32c32649b945de77dbebba3188d",
+      "bytes": 4843,
+      "sha256": "b312cac58e38a83a3d9f61e9dc295869726557ef01ec57cb1065cebd9234b566",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/jobs/123751450801.log",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "8ba6c4a71a56647b83bb74101b435436bc595a6b",
+      "bytes": 1944043,
+      "sha256": "82b2ac10d7996f8d03dcac6377b3a3e546db402639d3582812cf9f712aa49b0d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/access-overlay-preflight.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "1e985b9392622938c29eb6a37924fb3118ca46cc",
+      "bytes": 75031,
+      "sha256": "1ebd377cf422d9dbd1992810897545bd09dc2a90e47cd6783180e0f498ca0afb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/access-overlay-preflight.stderr",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/access-overlay-preflight.stdout",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "d2e48b28e692f65ac58fe6ab7c88871f9a3f27a0",
+      "bytes": 63269,
+      "sha256": "849a59d2f223fe05a6d545803666c22d833f069c626fad89bfe5541338c04389",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/access-overlay-readback.stderr",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "b51649eaebd5a4e8634cb7684c07f8a22e8c4aac",
+      "bytes": 3010,
+      "sha256": "9b75b1314b1a6903385c734754ed0239d4a3f50b3a1706ae18375a4129d532b0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/access-overlay-readback.stdout",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "8c3585d52326e46fb8e3ad87fe9cf30ddbc7bb08",
+      "bytes": 946050,
+      "sha256": "cab34f208d4c026fcd6d1c1ebd850763f09cff4a9953104d55cbf48a908e4c38",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/access-runtime-receipt.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "75f4bd03746ca514a730cca323adff000bc771c9",
+      "bytes": 343,
+      "sha256": "0d75dbca0a71a2034f8b9c51052b8520081e1df1476f5f950ffc76ce32cfc3a6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cdr-access-overlay-controls/context.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "7210e84cd30ebb62a5a1cbb3b72f92cfda2990a3",
+      "bytes": 8463,
+      "sha256": "b2920cb38eb46d8ff2a402826886a5b3f6a429c8b1049518173b94c6a212e0f3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cdr-access-overlay-controls/controls.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "af3757efb5a8109796adfd959b3f0bc7c85cd460",
+      "bytes": 24005,
+      "sha256": "06d679b4f9a5ea7c36d8a9f79eb7c8a7791688bacf497fcdf8ee0236b9d7de02",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cdr-access-overlay-controls/controls.stderr",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cdr-access-overlay-controls/controls.stdout",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "d715ecbf160420ac47cf075760ea5880d0850856",
+      "bytes": 24500,
+      "sha256": "f467e2271a978bb00ceb5279e6444681e8f6215dfd3e8a6600cc6cb4d33c726b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/access-overlay.log",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/complete-input-census.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "fcc167b425ddc91171955238613567f1fede2a38",
+      "bytes": 1526797,
+      "sha256": "ce66d531f3b0915a3a25fa7439a5c197d4a768920f09a4e47f96dd358ad5a4f4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/native-api-controls.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "35dfef37a713f3956c08c4fe3cfc9118eec2321d",
+      "bytes": 149,
+      "sha256": "ace4047c4bcf311b74fb238dab49b1a03ab694a5c157470c482ff53d302c2385",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/overlay.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "0569c49756097214c9b3b5c3f8e586bb9ea2be17",
+      "bytes": 4490540,
+      "sha256": "909fa767cd9d0cb8108199e0b6a7ecfb91e8856160cd8bedbf5c2451113cea5c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/preflight.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "1e985b9392622938c29eb6a37924fb3118ca46cc",
+      "bytes": 75031,
+      "sha256": "1ebd377cf422d9dbd1992810897545bd09dc2a90e47cd6783180e0f498ca0afb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/readback-failure.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "8329e9bc6587f1e230edc25bb793b1e805c67e68",
+      "bytes": 3331,
+      "sha256": "c62ffdd950000edd0d5a60bb97342355cf6b4460ecde670bb07001e1642ab75a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/runtime-smoke/result.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "fe5b9dce9175acf775a4f7cc0436caa5e8c3bb02",
+      "bytes": 3588,
+      "sha256": "1440eea6082ca1e5cf389444ddb2ac586d8d34ca10ef0623856cd16331529947",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/runtime-smoke/stderr.bin",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/runtime-smoke/stdout.bin",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "65cac5edceb584c7373fdd712f6729e09e574d1a",
+      "bytes": 638,
+      "sha256": "f113961f733dab26492afda3ea31ded55a95b64a237a0a7d190bdc39beb35577",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/source-controls.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "af3757efb5a8109796adfd959b3f0bc7c85cd460",
+      "bytes": 24005,
+      "sha256": "06d679b4f9a5ea7c36d8a9f79eb7c8a7791688bacf497fcdf8ee0236b9d7de02",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/supervision/access-overlay.command.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "352ccadb5623dd9c7be536bd6e6c5f991e3d54d4",
+      "bytes": 1425,
+      "sha256": "8072b7bdd52019277641b34bddd0c5df8b77387ecd2bc1e93936581f9f3c1bcd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/supervision/access-overlay.stderr",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/supervision/access-overlay.stdout",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/supervision/events.jsonl",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "2736b91c3845c2edd488f2bc4f87587fb38ee200",
+      "bytes": 6167,
+      "sha256": "0964ada26714773067fd6f7cac33306e267e8a7a974c8fe83c76694b61ca0c19",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/supervision/latest.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "7ffa7f1a835cfbe60c85a832d485f32a4a25e60c",
+      "bytes": 1601,
+      "sha256": "493fd39b3e6a4508eb15a34c83134854ff1f72f347508eca4be32570631df5f2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/target-124.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "aad83a5ac7adfebfe75c03e262d4043f506dc8fa",
+      "bytes": 575911,
+      "sha256": "defc910c1ddf4c300ca797f3fff3e6c0ad2e648a4262177d79ae6949f138c6eb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/target-28.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "4886ed488ac29fb18149878e1c63d859eb626e57",
+      "bytes": 460534,
+      "sha256": "68706fc88d5333fb935fc652581113bd34d883c4e270f0cd565e34bcd61398f8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/transport-proof.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "50d7dd831b86e62bd91761b0cd348e283e6dbb1b",
+      "bytes": 610,
+      "sha256": "7ee471271feec5fc53e6ec5e6dbfecb60cb144f87d4701362652fa588fb028e0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/cloud-cdr-access-overlay/verified-target-polygons.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "d8d796ebb8c0522d1669204000c72090bc5dbbe1",
+      "bytes": 569647,
+      "sha256": "c5c219520f3c5f341c2b99e52345767f8575d891f317284a8121d389f367de08",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/readback/release-reservation.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "17cad16acb78ae05eb33e7c5982aa58d8a64c9b5",
+      "bytes": 327,
+      "sha256": "c132a1a15cf0954ea8f5c107993cfe5b2a166638d6e32e6a614d24d0741f20ec",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/receipt.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "6bbbc8ba0285b93c46549da2f4d892899dddee5a",
+      "bytes": 36635,
+      "sha256": "71af94eab52aa1cb67e3ce18a973a1a8e58b2b43c5481f66ace5a95b7cdcba5b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/ref.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "8d68054d8e208639a8a7d5564eeae9431b1e94f4",
+      "bytes": 545,
+      "sha256": "76f0d1b7bda5da2b2335fd93a6024405ca0f5324caf4a6c41c2385935c441259",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/release.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "b16ccb153d15e60c0fd5503d59bf96822452b9d0",
+      "bytes": 2454,
+      "sha256": "3436b7a39085ea60a0fd4beb9135e5f935f66ac560055d0dd75b988cd8fa8591",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40960276845/run.json",
+      "source": "87a5c5d82deed5f0bc651e30b83362dbd38ced98",
+      "git_blob": "eb26c642f75cef1ada57e539bc7febd727caa83d",
+      "bytes": 14434,
+      "sha256": "65deaaf36a7b74771ab03a7e0d41e36a7bda22db11df1619168178218f1255fb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/artifacts.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "5ad86d9560d38d5c11779fc761aa8cb5675f3d30",
+      "bytes": 2759,
+      "sha256": "bfeedfe13876624121b19b4caf3b8e026a6865f6e8292cf97cb0e249b2d5cb2f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/complete-readback-index.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "66447e8a049bb9a94214ab653ff7899dc3dff2df",
+      "bytes": 7179,
+      "sha256": "91c589d6028860148755f3ac8f3444dc5d4bbfe2d6ac256dff49dc0704c02987",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/controls/context.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "ae7ba829b070dce0e310d25473b1c4c3be144162",
+      "bytes": 8463,
+      "sha256": "544aa11db6bba5df105e38e225e20062ec716cbf48a00fbd411b664bb60fa0f3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/controls/controls.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "7b36ac6983a0a05aba9a3d41365e027a47410820",
+      "bytes": 24724,
+      "sha256": "7c3127bb0c18b6fdfbbeb4d29bd9a373bf646a80c0019601971ee0bbc8f77479",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/controls/controls.stderr",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/controls/controls.stdout",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "7b36ac6983a0a05aba9a3d41365e027a47410820",
+      "bytes": 24724,
+      "sha256": "7c3127bb0c18b6fdfbbeb4d29bd9a373bf646a80c0019601971ee0bbc8f77479",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/controls/index.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "a092d40fa6fca58b274caf2979e4fd926fa059f4",
+      "bytes": 780,
+      "sha256": "c5e40d2403e57a456c6b2523eaef655c1c0441369d880f1761fc8e523abf1d48",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/jobs.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "10845345eeab1e5744b25867774dffabb73108e2",
+      "bytes": 11931,
+      "sha256": "ba2f45f1b5d462ed062134b2e3f713f8613553f87058d92a1572a186c0a3478c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/jobs/123758371481.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "a63fce535265aaa1523ab1a4dda09d7a8ed31da0",
+      "bytes": 3775,
+      "sha256": "ae3526a14537be954986fd0c7a5a5c73e328fe72999e977afd57d8ec198b4d77",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/jobs/123758371481.log",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "1cdf0aff08c8b33afd02a0e43b44189c39a45f53",
+      "bytes": 109716,
+      "sha256": "2ee8dffb084b11c03a7679ff7ae359b405e98d752495536f7fdbfe82eafa14fa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/jobs/123758648563.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "f3b1da187f3163a5eb909c1154732e6c11768384",
+      "bytes": 1975,
+      "sha256": "9a30b69de57193081a2ed4c6578ca9a47d9fe452d3bcf10e648815d1bc0531c0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/jobs/123758648563.log",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "66941e60fc55156415fe2bc38292bde3496ab7ad",
+      "bytes": 7543,
+      "sha256": "c195e4fa8e6356fcbca1acfd270ef26e490e4cb80985aa5a8e7616a9f16ffb70",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/jobs/123758724628.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "dfe26c94446a3eb58480e9acfbd077eec7d706b2",
+      "bytes": 4843,
+      "sha256": "df1a96d6db3271a8f08d285ef2295c03dd2d3fa2329a7fd4adc980a1eaa71bdd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/jobs/123758724628.log",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "130c569c5c6917694e0c2c6fb71223eb0b00ffc8",
+      "bytes": 1945852,
+      "sha256": "c00b7a869db5aabac033b67f9ba2e3a4bf196c3993dc6798c0eaf176a00f8c30",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/access-overlay-preflight.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "af695db2cf110254dd901b1bb4ad5bfdc4d80c5b",
+      "bytes": 75031,
+      "sha256": "5ee46bc6721fbb4b80f10c8bde41acc195e6d1377cb0612dd2675584d0642baf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/access-overlay-preflight.stderr",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/access-overlay-preflight.stdout",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "d2371ff96041a8a8adaf3d8603532199b9edafcf",
+      "bytes": 63269,
+      "sha256": "56dc611f14efc7e10f694228be910cc95290c8207548c3362b3cd0b80d203576",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/access-overlay-readback.stderr",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/access-overlay-readback.stdout",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "e3da595035c43ee2fba749dcc9ef4c02eaf82771",
+      "bytes": 948401,
+      "sha256": "e99a1cc74056a5b6038d1ea83ffb0311a60c3b3f7bb387f4a221e6024301904d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/access-runtime-receipt.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "f100bb67d7e68a14c9f848c9e914f755ecbb8f09",
+      "bytes": 343,
+      "sha256": "7a552c34aa97f7a1932c6ef9583a762c4ccc88e6e34b54065975f5cc64b53fe5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cdr-access-overlay-controls/context.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "ae7ba829b070dce0e310d25473b1c4c3be144162",
+      "bytes": 8463,
+      "sha256": "544aa11db6bba5df105e38e225e20062ec716cbf48a00fbd411b664bb60fa0f3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cdr-access-overlay-controls/controls.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "7b36ac6983a0a05aba9a3d41365e027a47410820",
+      "bytes": 24724,
+      "sha256": "7c3127bb0c18b6fdfbbeb4d29bd9a373bf646a80c0019601971ee0bbc8f77479",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cdr-access-overlay-controls/controls.stderr",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cdr-access-overlay-controls/controls.stdout",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "7b36ac6983a0a05aba9a3d41365e027a47410820",
+      "bytes": 24724,
+      "sha256": "7c3127bb0c18b6fdfbbeb4d29bd9a373bf646a80c0019601971ee0bbc8f77479",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/access-overlay.log",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/complete-input-census.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "fcc167b425ddc91171955238613567f1fede2a38",
+      "bytes": 1526797,
+      "sha256": "ce66d531f3b0915a3a25fa7439a5c197d4a768920f09a4e47f96dd358ad5a4f4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/native-api-controls.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "35dfef37a713f3956c08c4fe3cfc9118eec2321d",
+      "bytes": 149,
+      "sha256": "ace4047c4bcf311b74fb238dab49b1a03ab694a5c157470c482ff53d302c2385",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/native-lifecycle.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "928657bfd1e092f2ac3bdb2d7680e56d0b66861a",
+      "bytes": 746,
+      "sha256": "a61ebd14a67bc67c1de5a48b9d2d5b04f0cfe78b59ce5e52f3f61ef8d04ebc32",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/overlay.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "0569c49756097214c9b3b5c3f8e586bb9ea2be17",
+      "bytes": 4490540,
+      "sha256": "909fa767cd9d0cb8108199e0b6a7ecfb91e8856160cd8bedbf5c2451113cea5c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/preflight.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "af695db2cf110254dd901b1bb4ad5bfdc4d80c5b",
+      "bytes": 75031,
+      "sha256": "5ee46bc6721fbb4b80f10c8bde41acc195e6d1377cb0612dd2675584d0642baf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/readback-result.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "2d4a9e28b1b33fa9c5da44a820cdb1c88d2c443d",
+      "bytes": 2818,
+      "sha256": "c34d58b195a8464b939c97efd8a61ed17db173d1544241bcc767ff37a76d4c8f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/runtime-smoke/result.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "f0ea7f9dbe7a0b5fae536c73ee7d58a61c2f396c",
+      "bytes": 3588,
+      "sha256": "a668cf0d9b2650db3690d0e775bb54268eb741bbb631015d5e8f2178bbca84ab",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/runtime-smoke/stderr.bin",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/runtime-smoke/stdout.bin",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "65cac5edceb584c7373fdd712f6729e09e574d1a",
+      "bytes": 638,
+      "sha256": "f113961f733dab26492afda3ea31ded55a95b64a237a0a7d190bdc39beb35577",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/source-controls.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "7b36ac6983a0a05aba9a3d41365e027a47410820",
+      "bytes": 24724,
+      "sha256": "7c3127bb0c18b6fdfbbeb4d29bd9a373bf646a80c0019601971ee0bbc8f77479",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/supervision/access-overlay.command.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "bedfea6f61d3fe49a38ed3003e07f84b7a85c25f",
+      "bytes": 1548,
+      "sha256": "fecf4717bae88fa33a23f2c54e39a49b8c62373d0138b2dfcd924b600d177c66",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/supervision/access-overlay.stderr",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/supervision/access-overlay.stdout",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/supervision/events.jsonl",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "c5ebec579ac42732668bbd5af2ef60249d31dbe1",
+      "bytes": 7218,
+      "sha256": "d1d446a464b46330dcff73e2219904115e4cb8974e2e9693c6791ae37b3477d9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/supervision/latest.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "636ce0e157590ee29240650184354e2460b4a1a8",
+      "bytes": 1724,
+      "sha256": "d730b5ba3957a6d860a3fb3783b83d080b3fd1c7e11f324345ccf5687759ed75",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/target-124.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "aad83a5ac7adfebfe75c03e262d4043f506dc8fa",
+      "bytes": 575911,
+      "sha256": "defc910c1ddf4c300ca797f3fff3e6c0ad2e648a4262177d79ae6949f138c6eb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/target-28.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "4886ed488ac29fb18149878e1c63d859eb626e57",
+      "bytes": 460534,
+      "sha256": "68706fc88d5333fb935fc652581113bd34d883c4e270f0cd565e34bcd61398f8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/transport-proof.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "50d7dd831b86e62bd91761b0cd348e283e6dbb1b",
+      "bytes": 610,
+      "sha256": "7ee471271feec5fc53e6ec5e6dbfecb60cb144f87d4701362652fa588fb028e0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/cloud-cdr-access-overlay/verified-target-polygons.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "d8d796ebb8c0522d1669204000c72090bc5dbbe1",
+      "bytes": 569647,
+      "sha256": "c5c219520f3c5f341c2b99e52345767f8575d891f317284a8121d389f367de08",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/readback/release-reservation.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "518e016761831c55507cb37f60eaf0b16bf8e7a8",
+      "bytes": 328,
+      "sha256": "bfecd81d63475c2b6555cb5175b37d5f7149710430b5abbfb326ebdf703e530c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/receipt.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "42d372091505b660e032d8dda88294bac36df3f3",
+      "bytes": 38871,
+      "sha256": "4e423eda33cf1410ca32c8fdcf3f8f6020c72d2a3e0e359b006e22eee933f001",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/ref.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "2fbfb21cb10c442b2ebfcf3e815ce54c0bf9bae6",
+      "bytes": 545,
+      "sha256": "0706c7e2159a4e51d4a3043d85789c2df64ca333bb6b5e534b3698106307604f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/release.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "d325bebd7034eb4bfddf35f3e341d4c8207c3e0b",
+      "bytes": 2454,
+      "sha256": "17461d3e57fd8cf28f8e8d4ee932c15d7e72e02106ffe8b16044cb0b906747fd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/run.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "7c560dd5c18e48fb49e9e4e58c949c77cec7ab01",
+      "bytes": 14428,
+      "sha256": "96dafe4cb4792d1cf2ee344aed4dd8ad20ffcded7a949d39f4a22392e900be53",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-terminal-40962418343/summary.json",
+      "source": "86e09a966e04e0ed38bd44d5e265c0b6b92e3d39",
+      "git_blob": "2f0bf3683a90ef73feb95c3e86f3132cf3a7708b",
+      "bytes": 985,
+      "sha256": "d36930ace14969993fb6da4c4183bbf88e7ccd0247dcb7b09b759f2e659570de",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v132": [
+    {
+      "run": 40960276845,
+      "source": "f8d467382abef9a8180f04b233f93b181cdf88a3",
+      "release_id": 428427733,
+      "tag": "cloud-results-40960276845-1-cdr-current-access-overlay"
+    },
+    {
+      "run": 40962418343,
+      "source": "4e4db7a12f14477729157611ac54d5429be5844c",
+      "release_id": 428441518,
+      "tag": "cloud-results-40962418343-1-cdr-current-access-overlay"
     }
   ]
 }
