@@ -1,0 +1,247 @@
+{
+  "run": 40803424913,
+  "job": 123216634244,
+  "source_head": "89ae0d32727b24798e01ec45f94f7ab636bd7c31",
+  "draft_source": "1ca53541653cd3fea02ae6f9fc1b01a3b5703c1f",
+  "status": "PASS_HOSTED_SOURCE_CONTROLS_ONLY_NATIVE_SPLIT_STILL_REQUIRED",
+  "protected_count": 683,
+  "full_control_records_sha256": {
+    "route-prefix-controls.json": "ddb4ab0620973c109ea450f031fc773621de3c67d9599aa6af6dde062e755633",
+    "route-tail-controls.json": "ac6d1335065def1c4c0f303318d425768c8ca9756901a04ed55d3a5328317eb9"
+  },
+  "original_prefix": {
+    "positive_count": 4,
+    "refusal_count": 23,
+    "sequencing": 6,
+    "lifecycle": 8
+  },
+  "tail": {
+    "envelope_refusals": 10,
+    "restore_cases": 4,
+    "lifecycle_cases": 7,
+    "geometry_mismatch_refusals": 10,
+    "observer": {
+      "positive": 3,
+      "refusals": [
+        {
+          "error": "off case wrote witness",
+          "type": "ValueError"
+        },
+        {
+          "error": "after-writer raw opcodes differ from serialized ODB",
+          "type": "ValueError"
+        },
+        {
+          "error": "exact four witness files",
+          "type": "ValueError"
+        }
+      ],
+      "synthetic_only": true
+    },
+    "sequence": {
+      "gate_refusals": 4,
+      "original_three_shorts_retained": true,
+      "sequence": [
+        [
+          "one-two-signal-routing-attempt",
+          [
+            "/work/engine/openroad",
+            "-no_init",
+            "-exit",
+            "/work/out/work/repair.tcl"
+          ]
+        ],
+        [
+          "route-audit",
+          [
+            "/work/engine/openroad",
+            "-no_init",
+            "-exit",
+            "-python",
+            "/work/tail-source/scripts/mainchip_built_engine_route_tail_native.py"
+          ]
+        ],
+        [
+          "paired-original-class-return",
+          [
+            "/work/engine/openroad",
+            "-no_init",
+            "-exit",
+            "/work/out/work/unfix.tcl"
+          ]
+        ],
+        [
+          "unfix-audit",
+          [
+            "/work/engine/openroad",
+            "-no_init",
+            "-exit",
+            "-python",
+            "/work/tail-source/scripts/mainchip_built_engine_route_tail_native.py"
+          ]
+        ],
+        [
+          "full-original-class-read-only-DRT",
+          [
+            "/work/engine/openroad",
+            "-no_init",
+            "-exit",
+            "/work/out/work/final-drc.tcl"
+          ]
+        ],
+        [
+          "drc-audit",
+          [
+            "/work/engine/openroad",
+            "-no_init",
+            "-exit",
+            "-python",
+            "/work/tail-source/scripts/mainchip_built_engine_route_tail_native.py"
+          ]
+        ]
+      ],
+      "stops": [
+        "one-two-signal-routing-attempt",
+        "route-audit",
+        "paired-original-class-return",
+        "unfix-audit",
+        "full-original-class-read-only-DRT",
+        "drc-audit"
+      ]
+    },
+    "publication": {
+      "positive": 2,
+      "refusals": 1
+    },
+    "isolated_imports": {
+      "actual_isolated_imports": [
+        "mainchip_built_engine_route_tail_contract",
+        "mainchip_built_engine_route_tail_driver",
+        "mainchip_built_engine_route_tail_inner",
+        "cloud_mainchip_built_engine_route_tail"
+      ],
+      "actual_source_control_modes": 2,
+      "authorization_refusals": [
+        {
+          "error": {
+            "error": "authorization type",
+            "type": "ValueError"
+          },
+          "label": "native type",
+          "mode": false
+        },
+        {
+          "error": {
+            "error": "authorization type",
+            "type": "ValueError"
+          },
+          "label": "control type",
+          "mode": false
+        },
+        {
+          "error": {
+            "error": "no acceptance or continuation",
+            "type": "ValueError"
+          },
+          "label": "physical claim",
+          "mode": false
+        },
+        {
+          "error": {
+            "error": "no acceptance or continuation",
+            "type": "ValueError"
+          },
+          "label": "retry",
+          "mode": false
+        },
+        {
+          "error": {
+            "error": "no acceptance or continuation",
+            "type": "ValueError"
+          },
+          "label": "false equivalence",
+          "mode": false
+        },
+        {
+          "error": {
+            "error": "authorization type",
+            "type": "ValueError"
+          },
+          "label": "native type",
+          "mode": true
+        },
+        {
+          "error": {
+            "error": "authorization type",
+            "type": "ValueError"
+          },
+          "label": "control type",
+          "mode": true
+        },
+        {
+          "error": {
+            "error": "no acceptance or continuation",
+            "type": "ValueError"
+          },
+          "label": "physical claim",
+          "mode": true
+        },
+        {
+          "error": {
+            "error": "no acceptance or continuation",
+            "type": "ValueError"
+          },
+          "label": "retry",
+          "mode": true
+        },
+        {
+          "error": {
+            "error": "no acceptance or continuation",
+            "type": "ValueError"
+          },
+          "label": "false equivalence",
+          "mode": true
+        },
+        {
+          "error": {
+            "error": "route/audit handoff split required",
+            "type": "ValueError"
+          },
+          "mode": "native-pending-split"
+        }
+      ],
+      "native_enable_refused_until_split": true,
+      "native_odb_module_imported": false
+    }
+  },
+  "native_routing_executed": false,
+  "native_qualification": false,
+  "physical_acceptance": false,
+  "full_phy_accepted": false,
+  "files": {
+    "docs/evidence/mainchip-route-tail-actual-source-controls-20261029.joblog.log": {
+      "bytes": 72081,
+      "sha256": "52dc0d4df6745124b883071f8e7c5c515760a50db9f52750f6aff5375c35fc83"
+    },
+    "docs/evidence/mainchip-route-tail-actual-source-controls-20261029.route-prefix-controls.json": {
+      "bytes": 27540,
+      "sha256": "ddb4ab0620973c109ea450f031fc773621de3c67d9599aa6af6dde062e755633"
+    },
+    "docs/evidence/mainchip-route-tail-actual-source-controls-20261029.route-tail-controls.json": {
+      "bytes": 9055,
+      "sha256": "ac6d1335065def1c4c0f303318d425768c8ca9756901a04ed55d3a5328317eb9"
+    },
+    "docs/evidence/mainchip-route-tail-actual-source-controls-20261029.run.json": {
+      "bytes": 14411,
+      "sha256": "292a829fd7af7379185ab50cf4902b36b625a8312d2c8e5aa0947d2753aba518"
+    },
+    "docs/evidence/mainchip-route-tail-actual-source-controls-20261029.jobs.json": {
+      "bytes": 3379,
+      "sha256": "9d1a62a82aad769e4e3e4a3956ecdc51287e26829deead92977a9014c7435e25"
+    },
+    "docs/evidence/mainchip-route-tail-actual-source-controls-20261029.record-indexes.json": {
+      "bytes": 438,
+      "sha256": "3257a3d7ff03936466b58f2fc5b62683ebd7bfdca4164590d974c47121973626"
+    }
+  }
+}
