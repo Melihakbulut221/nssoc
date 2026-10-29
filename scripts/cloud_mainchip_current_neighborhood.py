@@ -1,0 +1,207 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+"""Cloud-only current ODB acquisition and read-only pinned-engine neighborhood."""
+import argparse,base64,hashlib,json,os,re,shutil,subprocess,sys,tarfile,tempfile,zlib
+from pathlib import Path,PurePosixPath
+import cloud_mainchip_final_marker_readback as f
+import mainchip_fixed_engine_route_tail_contract as c
+import cloud_mainchip_fixed_engine_route_tail as tail
+import mainchip_witness_engine_build as build
+ROOT=Path(__file__).resolve().parent.parent
+BRANCH="codex/mainchip-current-neighborhood-readback"
+GROUP="mainchip-current-neighborhood"
+MANIFEST="scripts/mainchip-current-neighborhood-pins.json"
+CURRENT_MEMBER="work/drc-observed.odb"
+CURRENT=dict(bytes=213429713,sha256="47d657f41565f5c379a9152672eac824a5d296043c3726527031452ad2097677")
+
+def context(env):
+    f.require(env.get("GITHUB_ACTIONS")=="true"and env.get("RUNNER_OS")=="Linux","hosted Linux")
+    f.require(env.get("GITHUB_REPOSITORY")==f.REPOSITORY and env.get("GITHUB_EVENT_NAME")=="workflow_dispatch","manual repository")
+    f.require(env.get("GITHUB_REF")=="refs/heads/"+BRANCH and env.get("GITHUB_RUN_ATTEMPT")=="1","branch/attempt")
+    run=env["GITHUB_RUN_ID"];source=env["GITHUB_SHA"]
+    f.require(re.fullmatch(r"[1-9][0-9]*",run)and re.fullmatch(r"[0-9a-f]{40}",source),"run/source")
+    return dict(source=source,run_id=int(run),attempt=1,token=run+"-1",name="nssoc-witness-build-"+run+"-1",group=GROUP)
+
+def source_gate():
+    manifest=f.decode((ROOT/MANIFEST).read_bytes())
+    f.require(manifest["schema"]=="current-neighborhood-pins-v1","manifest schema")
+    for path,pin in manifest["files"].items():
+        f.require(f.file_digest(c.secure_file(ROOT,path))==pin,"source pin: "+path)
+    c.method(ROOT)
+    return manifest
+
+def reservation(ctx,proof,info,ref):
+    tag="cloud-results-"+ctx["token"]+"-"+GROUP
+    assets=f.release_binding(info,ref,tag,ctx["source"])
+    f.require(proof.get("tag")==tag and proof.get("tested_source")==ctx["source"]
+       and proof.get("release_id")==info["id"],"reservation identity")
+    f.require(proof.get("target_verified")is True and proof.get("assets_overwritten")is False
+       and proof.get("externally_reserved")is True and proof.get("creation_attempted")is False,
+       "external exact source reservation")
+    f.require(proof.get("existing_assets")==[]and not assets,"fresh release")
+    return dict(tag=tag,source=ctx["source"],release_id=info["id"],verified_before_acquisition=True)
+
+def select_database(archive,expected,out):
+    """Verify every archive member; stream only the exact current input to disk."""
+    f.validate_map(expected);f.require(expected.get(CURRENT_MEMBER)==CURRENT,"current member identity")
+    f.require(not out.exists()and not out.is_symlink(),"input no overwrite")
+    directories={str(p)for name in expected for p in PurePosixPath(name).parents if str(p)!="."}
+    seen=set();observed={}
+    with tarfile.open(archive,"r|gz")as tar:
+        for member in tar:
+            name=member.name;f.checked_path(name)
+            f.require(name not in seen,"duplicate member");seen.add(name)
+            if member.isdir():
+                f.require(name in directories,"unexpected directory");continue
+            f.require(member.isfile()and not member.issparse()and name in expected,"special/unexpected member")
+            row=expected[name];f.require(member.size==row["bytes"],"declared size")
+            stream=tar.extractfile(member);f.require(stream is not None,"missing stream")
+            target=out.open("xb")if name==CURRENT_MEMBER else None
+            h=hashlib.sha256();size=0
+            try:
+                with stream:
+                    for raw in iter(lambda:stream.read(1024*1024),b""):
+                        size+=len(raw);f.require(size<=row["bytes"],"member overrun");h.update(raw)
+                        if target is not None:target.write(raw)
+            finally:
+                if target is not None:target.close()
+            found=dict(bytes=size,sha256=h.hexdigest())
+            f.require(found==row,"member digest: "+name);observed[name]=found
+    f.require(observed==expected and f.file_digest(out)==CURRENT,"complete current archive")
+    return dict(full_members=observed,current_input=CURRENT,full_archive_verified=True,
+       native_bytes_remain_in_cloud=True)
+
+def acquire_current(work,evidence):
+    read=f.api
+    inputs=dict(run=read("actions/runs/"+str(f.PRODUCER_RUN)),
+      jobs=read("actions/runs/"+str(f.PRODUCER_RUN)+"/attempts/1/jobs?per_page=100"),
+      release=read("releases/"+str(f.PRODUCER_RELEASE)),ref=read("git/ref/tags/"+f.PRODUCER_TAG))
+    binding=f.validate_live(**inputs)
+    for name,value in inputs.items():f.write_new(evidence/("producer-"+name+".json"),f.encode(value))
+    transport=work/"current-transport";transport.mkdir()
+    for name in ("outputs.json","parts.json"):f.download(f.ASSETS[name],transport/name)
+    files,parts=f.metadata((transport/"outputs.json").read_bytes(),(transport/"parts.json").read_bytes())
+    f.require(files[CURRENT_MEMBER]==CURRENT,"current input map")
+    paths=[]
+    for row in parts["parts"]:
+        path=transport/row["name"];f.download(f.ASSETS[row["name"]],path);paths.append(path)
+    archive=transport/"current.tar.gz";f.combine_parts(paths,parts,archive)
+    proof=select_database(archive,files,work/"current-input.odb")
+    f.write_new(evidence/"current-input-restoration.json",f.encode(dict(proof,producer=binding)))
+    for name in ("outputs.json","parts.json"):
+        f.write_new(evidence/("producer-"+name),(transport/name).read_bytes())
+    shutil.rmtree(transport)
+
+def emit(evidence):
+    rows={}
+    for path in sorted(evidence.rglob("*")):
+        f.require(not path.is_symlink()and(path.is_dir()or path.is_file()),"evidence path")
+        if path.is_file():
+            f.require(path.suffix in (".json",".jsonl",".stdout",".stderr",".lef"),"derived evidence only")
+            rows[path.relative_to(evidence).as_posix()]=f.file_digest(path)
+    print("CURRENT_NEIGHBORHOOD_INDEX "+json.dumps(rows,sort_keys=True),flush=True)
+    for name,pin in rows.items():
+        raw=(evidence/name).read_bytes();packed=zlib.compress(raw,9)
+        pieces=[packed[i:i+12000]for i in range(0,len(packed),12000)]or[b""]
+        for index,piece in enumerate(pieces):
+            print("CURRENT_NEIGHBORHOOD_CHUNK "+json.dumps(dict(name=name,index=index,
+              chunks=len(pieces),**pin,encoding="zlib-base64",base64=base64.b64encode(piece).decode()),
+              sort_keys=True),flush=True)
+
+def perform(ctx,proof,evidence):
+    source_gate()
+    f.require(subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip()==ctx["source"],"checkout")
+    reserved=reservation(ctx,proof,f.api("releases/"+str(proof["release_id"])),
+        f.api("git/ref/tags/"+proof["tag"]))
+    f.write_new(evidence/"reservation.json",f.encode(dict(proof=proof,validated=reserved)))
+    work=Path(os.environ["RUNNER_TEMP"])/(GROUP+"-"+ctx["token"])
+    f.require(not work.exists()and not work.is_symlink(),"owned work collision")
+    work.mkdir(mode=0o700);(work/"owner.json").write_bytes(f.encode(ctx))
+    out=work/"out";out.mkdir()
+    report=dict(status="IN_PROGRESS",source=ctx["source"],run_id=ctx["run_id"],
+      physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,
+      commands=[],terminal_errors=[],creation_attempted=False)
+    identity=None;primary=None;restored=False;projected=False
+    def command(label,argv,timeout=120):return build.execute_command(report,out,label,argv,timeout)
+    def inspect(value):return f.decode(subprocess.check_output(["docker","inspect",value],timeout=30))[0]
+    try:
+        f.require(shutil.disk_usage(work).free>=24*1024**3,"cloud disk budget")
+        acquire_current(work,evidence)
+        # Historical prefix is used solely for the exact built ELF, runtime and
+        # immutable source helpers. Native diagnosis receives the CURRENT ODB.
+        tail.restore_prefix(work,out);restored=True
+        projection=work/"tail-source";projection.mkdir()
+        method=c.method(ROOT)
+        for path in [*method["protected"],c.METHOD]:
+            target=projection/path;target.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copyfile(c.secure_file(ROOT,path),target)
+        manifest=source_gate()
+        for path in manifest["files"]:
+            target=projection/path;target.parent.mkdir(parents=True,exist_ok=True)
+            if target.exists():f.require(f.file_digest(target)==manifest["files"][path],"projection conflict")
+            else:shutil.copyfile(c.secure_file(ROOT,path),target)
+        c.method(projection);projected=True
+        shutil.copyfile(ROOT/"scripts/mainchip_current_neighborhood_inner.py",work/"inner.py")
+        command("immutable-image-pull",["docker","pull",c.IMAGE],1800)
+        c.validate_image(f.decode(command("image-inspect",["docker","image","inspect",c.IMAGE]))[0])
+        identity=build.create_owned(ctx,work,report,command,c.create_argv(ctx,work,os.getuid(),os.getgid()))
+        c.validate_container(inspect(identity),ctx,work)
+        command("current-owned-container",["docker","start","--attach",identity],2700)
+        result=f.decode((out/"current-readback-inner-result.json").read_bytes())
+        f.require(result["status"]=="PASS_CURRENT_NEIGHBORHOOD_ENGINE_READBACK"and not result["terminal_errors"],"inner terminal")
+        report["native_readback_complete"]=True
+    except BaseException as exc:primary=exc;report["error"]=c.error_record("current-neighborhood",exc)
+    finally:
+        build.cleanup_owned(ctx,work,report,identity,report["creation_attempted"],inspect,command)
+        c.attempt(report,"current-input-unchanged",lambda:f.require(f.file_digest(work/"current-input.odb")==CURRENT,"current input changed"))
+        c.attempt(report,"source-unchanged",source_gate)
+        if restored:c.attempt(report,"frozen-prefix-unchanged",lambda:c.frozen_unchanged(work,f.decode((work/"frozen-manifest.json").read_bytes())))
+        if projected:c.attempt(report,"projected-original-source-unchanged",lambda:c.method(work/"tail-source"))
+        if projected:
+            for path,pin in manifest["files"].items():
+                c.attempt(report,"projected-source:"+path,lambda path=path,pin=pin:f.require(
+                    f.file_digest(work/"tail-source"/path)==pin,"current source changed"))
+        if identity is not None:
+            state=report.get("container_terminal",{}).get("State",{})
+            c.attempt(report,"container-terminal",lambda:f.require(not state.get("Running",True)
+              and state.get("ExitCode")==0 and state.get("OOMKilled")is False and not state.get("Error"),"container failed"))
+        def preserve():
+            for path in sorted(out.rglob("*")):
+                if not path.is_file():continue
+                relative=path.relative_to(out)
+                if relative.parts[0]in ("work","witness","supervision"):continue
+                f.require(not path.is_symlink(),"evidence symlink")
+                f.require(path.suffix in (".json",".jsonl",".stdout",".stderr",".lef"),"unexpected output")
+                dest=evidence/"native"/relative;dest.parent.mkdir(parents=True,exist_ok=True)
+                f.write_new(dest,path.read_bytes())
+        c.attempt(report,"preserve-complete-derived-output",preserve)
+        def cleanup():
+            f.require(f.decode((work/"owner.json").read_bytes())==ctx,"cleanup owner")
+            shutil.rmtree(work)
+            f.require(not work.exists(),"cleanup incomplete")
+        c.attempt(report,"owned-cloud-workspace-cleanup",cleanup)
+        report["status"]="PASS_CURRENT_SERIALIZED_NEIGHBORHOOD_READBACK_ONLY"if primary is None and not report["terminal_errors"]and report.get("native_readback_complete")else"FAIL_CURRENT_SERIALIZED_NEIGHBORHOOD_READBACK"
+        f.write_new(evidence/"result.json",f.encode(report))
+    if primary is not None:raise primary
+    f.require(not report["terminal_errors"],"readback terminal errors")
+    return report
+
+def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument("--output",type=Path,required=True)
+    parser.add_argument("--reservation",type=Path,required=True)
+    args=parser.parse_args();ctx=context(os.environ)
+    f.require(not args.output.exists()and not args.output.is_symlink(),"new evidence directory")
+    args.output.mkdir(parents=True);primary=None
+    try:return perform(ctx,f.decode(args.reservation.read_bytes()),args.output)
+    except BaseException as exc:
+        primary=exc
+        f.write_new(args.output/"failure.json",f.encode(dict(status="FAIL_CURRENT_NEIGHBORHOOD",
+          error=str(exc),type=type(exc).__name__,context=ctx,physical_acceptance=False,
+          timing_accepted=False,full_phy_accepted=False)))
+        raise
+    finally:
+        try:emit(args.output)
+        except BaseException:
+            if primary is None:raise
+if __name__=="__main__":main()
