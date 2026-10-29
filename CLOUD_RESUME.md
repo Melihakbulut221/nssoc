@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v130
+# Cloud continuation — checkpoint v131
 
-Updated: 2026-10-29T20:33:57.397595+00:00
+Updated: 2026-10-29T21:32:45.919004+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-All new computation and evidence are in GitHub; local workspace, generated project temporary files and native processes remain absent. Southern current-ODB readback40944948451 succeeded: all61files/2,446,039B preserved at9b72743d, full current database/source identities unchanged,1024 all-layer window records and actual three-integer track bindings observed. Review7631eda4 rejects the tentative lower access due to actual foreign M5/M4 conflicts and10vs210DBU landing spacing; no repair accepted. Hosted DC screen40945858067 remains fully preserved ataf861a0d. Coordinate review624b056c authenticates5nm/top-level rnode point mapping while proving the exporter omits resistor-layer/footprint information. Next concrete work is broader mainchip access selection and cloud-only CDR target access overlay; all original timing/electrical/physical gates remain unchanged. No active native run remains in this snapshot.
+Cloud-only checkpoint v131: full lower-corridor readback40952276370 succeeded (3689 records, 61 complete proof files) and is preserved at24cfcd88. Hosted net459 graph inspection40956367145 succeeded and is preserved at7207dcb2: excluding short shape21 separates ANTENNA1574/1575 from the driver/load component in both contact models, so deleting the rectangle alone is not a repair. CDR current access overlay40957923170 uses source398cc013, independently reserved release428414983 and a corrected43-pin source manifest. Exact hosted source controls11/33/11, inherited14/80/5 and five checker-finalization cases passed; native geometry observation is tracked by the live snapshot. Full collector recipe is saved for terminal preservation. All new work ran on GitHub; local checkout, project tmp and native processes remain absent. No PHY/routing/timing acceptance is claimed.
 
 Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9102,3 +9103,10 @@ Local project/tmp/native processes verified absent. Inventory363 exact cloud han
 All new computation and evidence are in GitHub; local workspace, generated project temporary files and native processes remain absent. Southern current-ODB readback40944948451 succeeded: all61files/2,446,039B preserved at9b72743d, full current database/source identities unchanged,1024 all-layer window records and actual three-integer track bindings observed. Review7631eda4 rejects the tentative lower access due to actual foreign M5/M4 conflicts and10vs210DBU landing spacing; no repair accepted. Hosted DC screen40945858067 remains fully preserved ataf861a0d. Coordinate review624b056c authenticates5nm/top-level rnode point mapping while proving the exporter omits resistor-layer/footprint information. Next concrete work is broader mainchip access selection and cloud-only CDR target access overlay; all original timing/electrical/physical gates remain unchanged. No active native run remains in this snapshot.
 
 Local project/tmp/native processes verified absent. Inventory363 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T21:32:45.919004+00:00 — cloud-only checkpoint v131
+
+Cloud-only checkpoint v131: full lower-corridor readback40952276370 succeeded (3689 records, 61 complete proof files) and is preserved at24cfcd88. Hosted net459 graph inspection40956367145 succeeded and is preserved at7207dcb2: excluding short shape21 separates ANTENNA1574/1575 from the driver/load component in both contact models, so deleting the rectangle alone is not a repair. CDR current access overlay40957923170 uses source398cc013, independently reserved release428414983 and a corrected43-pin source manifest. Exact hosted source controls11/33/11, inherited14/80/5 and five checker-finalization cases passed; native geometry observation is tracked by the live snapshot. Full collector recipe is saved for terminal preservation. All new work ran on GitHub; local checkout, project tmp and native processes remain absent. No PHY/routing/timing acceptance is claimed.
+
+Local project/tmp/native processes verified absent. Inventory366 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

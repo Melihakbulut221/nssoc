@@ -1,0 +1,88 @@
+{
+  "schema": "net459-connectivity-source-review-v1",
+  "status": "AUTHORED_NOT_HOSTED_EXECUTED",
+  "branch": "codex/mainchip-net459-connectivity",
+  "parent": "9b72743dd39765beb3ed887b6d5712febc6dfd94",
+  "created_at": "2026-10-29T21:00:17.743212+00:00",
+  "script": {
+    "path": "scripts/mainchip_net459_connectivity.py",
+    "bytes": 16104,
+    "sha256": "bb7bd69687272f10b188030c0d78004377ab9de83145d8c2314070e014478b6b"
+  },
+  "input": {
+    "path": "docs/evidence/mainchip-southern-neighborhood-readback-terminal-40944948451/readback/native/southern-neighborhood/neighborhood.json",
+    "bytes": 1240336,
+    "sha256": "c99dddfd6d7968e87caef77ad2e0e666b085635a5f3fc5ce8232540041210fd3",
+    "producer_run": 40944948451,
+    "proof": "9b72743dd39765beb3ed887b6d5712febc6dfd94"
+  },
+  "projector": {
+    "path": "scripts/mainchip_two_signal_geometry.py",
+    "bytes": 14214,
+    "sha256": "5f044322e06af04ebb9590e7011dc8ed7e31969e226153ba6e829c1d69940072",
+    "source_algorithm": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+  },
+  "scope": "Derived-only complete net459 raw wire replay and conductor-component connectivity. No new geometry, native archive, native API or physical repair.",
+  "full_source": {
+    "shape_count": 139,
+    "raw_opcode_pairs": 375,
+    "iterm_count": 5
+  },
+  "candidate": {
+    "excluded_shape_index": 21,
+    "opcode_index": 108,
+    "layer": "Metal5",
+    "box": [
+      947420,
+      1789520,
+      947620,
+      1790560
+    ],
+    "meaning": "Exclude this complete existing wire rectangle from each graph model only. Native wire removal and its exact endpoint/cap effects are not implemented or accepted."
+  },
+  "method": [
+    "Replay every raw opcode with the already pinned pure projector and compare every original projection field before analysis.",
+    "Build full conductor rectangle overlap graph; join conductor components sharing the same original native via opcode, key, origin and complete component ordinals.",
+    "Keep positive-area and closed-boundary intersections separate; cut-layer rectangles never act as planar conductors.",
+    "Pins only observe wire components; no logical pin is allowed to bridge separate wire islands. Multiple accessed components or absent access remain explicit.",
+    "Compare complete original graph to exclusion of shape21 in both models, retaining all shapes, edge reasons, components and per-pin geometry matches.",
+    "A surviving graph is not physical/ECO acceptance; loss or mode disagreement only changes the next repair investigation."
+  ],
+  "controls": {
+    "positive": 11,
+    "refusal": 10,
+    "computed_networks_synthetic": true,
+    "authentic_source_replay_only": true,
+    "hosted_execution_completed": false,
+    "local_authored_execution": false,
+    "cases": [
+      "series bridge",
+      "redundant route",
+      "touching distinction",
+      "separate layers",
+      "same native via",
+      "cut exclusion",
+      "pin ambiguity without logical bridging",
+      "missing pin access",
+      "iteration order",
+      "source raw replay",
+      "bad removal/box/via/pin identities"
+    ]
+  },
+  "permissions": {
+    "existing_user_cloud_only_continuation": true,
+    "additional_user_permission_required": false
+  },
+  "physical_acceptance": false,
+  "timing_accepted": false,
+  "full_phy_accepted": false,
+  "native_acquisition": false,
+  "geometry_changed": false,
+  "review_amendment": {
+    "parent": "6804429c6e9eba44b85e57d40781e13cceb52482",
+    "semantics": "No single shared wire component includes missing/ambiguous pin access; it is not alone proof of disconnection.",
+    "failure_preservation": "Shield fallback emission to preserve the primary error even on a broken output stream.",
+    "authored_execution": false,
+    "created_at": "2026-10-29T21:14:13.507542+00:00"
+  }
+}

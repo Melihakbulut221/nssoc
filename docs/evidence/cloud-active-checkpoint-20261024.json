@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T20:33:57.397595+00:00",
+  "updated_at": "2026-10-29T21:32:45.919004+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "f1776f0b6fef9f0cd29d78bfd2b5f91a2a23c73f",
+  "root_source_before_receipt": "3e013ca9453272650044d9296d6d4557e66dee7e",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 130,
+    "inventory_version": 131,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -4188,14 +4188,104 @@
       "physical_acceptance": false,
       "electrical_acceptance": false,
       "full_phy_accepted": false
+    },
+    "full_lower_access_cloud_observation": {
+      "run": 40952276370,
+      "source": "f85b2a8d8c21ec4cce35bb25bd5780ebe646022f",
+      "proof": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "status": "PASS_LOWER_ACCESS_SERIALIZED_NEIGHBORHOOD_READBACK_ONLY",
+      "files": 61,
+      "bytes": 4371231,
+      "receipt_sha256": "5d3670ac89574796abc6095abc9831edb827261ff908d9c97164b1cd684fd872",
+      "window_dbu": [
+        937420,
+        1713500,
+        957620,
+        1800560
+      ],
+      "records": 3689,
+      "neighborhood": {
+        "bytes": 3069475,
+        "sha256": "6a731215f488129d3da679ad6b8675189dc8b57b96e37b905fd619db660b9674"
+      },
+      "same_full_current_ODB_census_technology_and_three_source_nets": true,
+      "geometry_changed": false,
+      "physical_acceptance": false
+    },
+    "net459_complete_connectivity_cloud_observation": {
+      "run": 40956367145,
+      "source": "b5fac41b5ae845af095b47c79195a209f1bd23d1",
+      "proof": "7207dcb28bee4c764ec1ef3fb887d5f970e11434",
+      "files": 14,
+      "bytes": 728181,
+      "receipt_sha256": "069acce98e6bca7cd62230bc47a0ad770957df50653ab08ae31c4037587d2188",
+      "source_controls": {
+        "positive": 11,
+        "refusal": 10
+      },
+      "original": {
+        "components": 1,
+        "conductor_shapes": 105,
+        "pins": 5
+      },
+      "after_excluding_shape21": {
+        "models_agree": true,
+        "components": 2,
+        "missing_or_ambiguous_pin_access": false,
+        "component0": {
+          "conductor_shapes": 64,
+          "pins": [
+            "fanout459/X",
+            "fanout36386/A",
+            "ANTENNA_1573/A"
+          ]
+        },
+        "component1": {
+          "conductor_shapes": 40,
+          "pins": [
+            "ANTENNA_1574/A",
+            "ANTENNA_1575/A"
+          ]
+        }
+      },
+      "interpretation": "Deleting the short-bearing rectangle disconnects two antenna diode pins. Plain branch deletion is not an accepted repair. Investigate a new route or an explicitly bounded two-diode relocation/removal with full structural/antenna/DRC checks.",
+      "geometry_changed": false,
+      "physical_acceptance": false
+    },
+    "current_cdr_access_overlay": {
+      "source_review": "f75cdf4acd10f416302fbcae7889e2015df39b36",
+      "source": "398cc0137a59b3ca9399eaa19cabf9cdf2bd1a3d",
+      "branch": "codex/cdr-current-access-overlay",
+      "workflow_id": 401118236,
+      "run": 40957923170,
+      "manifest_sha256": "7ea9306c6037396140c2994efc127cfc58192befd6e79f72fb6a56dd04bf4522",
+      "source_controls_qualified": true,
+      "source_counts": {
+        "positive": 11,
+        "refusal": 33,
+        "lifecycle": 11,
+        "checker_finalization": 5
+      },
+      "inherited_archive_counts": {
+        "positive": 14,
+        "refusal": 80,
+        "lifecycle": 5
+      },
+      "independent_release_id": 428414983,
+      "geometry_changed": false,
+      "electrical_acceptance": false,
+      "physical_acceptance": false,
+      "scope": "Full authenticated 6647-member capsule, current 500-device geometry; 204 rnodes, 16 contact probes and full target/overlap conductor polygons. Point overlay does not assign resistor physical footprints or prove transient causality.",
+      "known_fixes": "Removed recursive failure-emission mock, require full captured byte map, protect checker primary errors; source controls passed on exact hosted run.",
+      "collector_recipe": "docs/evidence/cloud-collector-recipes-20261029/cdr-current-access-overlay-terminal-40957923170.py"
     }
   },
   "next_actions": [
-    "All latest runs40944146144,40944948451,40945858067 are terminal success for their explicitly limited diagnostic scopes. Do not rerun the saved terminal collectors: their proof commits already exist.",
-    "Mainchip: retain exact currentODB47d657f41565f5c379a9152672eac824a5d296043c3726527031452ad2097677 and engine. Six old local candidates and new southern access are rejected. Use actual source net459 lower M4 span1717700..1776600 to select a broader read-only access corridor, then qualify a concrete net459-only detour; preserve all other signals, original1691 clock/fixed geometry and original classes.",
-    "CDR: use af861a0d complete hosted DC matrices and624b056c authoritative5nm/top-level coordinate review. Author/qualify cloud-only per-layer target access readback for partitions28/$131 and124/$680. Preserve ambiguities; point-to-shape containment is not a resistor footprint. Do not blindly widen the long bridge or lift global common-mode.",
-    "Original transient37.5ps/75ps gates, HBT electrical limits and20/4/8/8ns clocks+5% are unchanged. Full serial Gen3x4 PHY, routed mainchip and final setup/hold remain unaccepted.",
-    "Keep all code, CAD, native payloads, logs and evidence in GitHub. Local project/tmp/native processes remain empty. Existing eight-hour monitor remains read-only; no automatic native dispatch."
+    "Observe existing exact run40957923170 attempt1 only; do not redispatch. If terminal, execute the saved derived-only collector after verifying branch still398cc0137a59b3ca9399eaa19cabf9cdf2bd1a3d. Preserve every raw job log, control output, outer CDR_ACCESS_COMPLETE chunk, failure record and zero-byte stream; no native downloads locally.",
+    "Inspect new lower corridor 3689 records and full net459 topology. The short-bearing shape21 is a bridge only to ANTENNA1574/1575; plain deletion disconnects pins. Next physical mutation must explicitly qualify any exact diode delta or preserve all five pins by rerouting. Keep all1691 original clock/fixed wires and other nets unchanged, and require actual native DRC and antenna checks before acceptance.",
+    "Use actual CDR access overlay with the existing DC contact matrices to locate terminal-access geometry; do not infer per-resistor material from zero rnode type or nearest-point heuristics. Do not change analog bias globally; previous max VCE headroom is narrow.",
+    "All calculation, code execution, tests, CAD, archives, AppImage/models/GDS/ODB and native waveforms stay in GitHub. Local workspace must remain empty; only API orchestration/source/derived text in memory. Keep current original acceptance gates unchanged.",
+    "Full serial PHY, routed main chip and final setup/hold remain unaccepted. Existing eight-hour GitHub monitor remains read-only with no automatic native dispatch."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -4539,33 +4629,36 @@
     "observed_40939598713": 40939598713,
     "observed_40944146144": 40944146144,
     "observed_40945858067": 40945858067,
-    "observed_40944948451": 40944948451
+    "observed_40944948451": 40944948451,
+    "observed_40952276370": 40952276370,
+    "observed_40956367145": 40956367145,
+    "observed_40957923170": 40957923170
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40944948451,
-      "head_sha": "46c8d354c372f2b52e1e1208d40ea1ee3f13c048",
+      "run": 40952276370,
+      "head_sha": "f85b2a8d8c21ec4cce35bb25bd5780ebe646022f",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123697789958,
+          "id": 123723221691,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123698028416,
+          "id": 123723469349,
           "name": "preserve-job-log",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123698105286,
+          "id": 123723543433,
           "name": "readback",
           "status": "completed",
           "conclusion": "success",
@@ -4574,38 +4667,54 @@
       ]
     },
     {
-      "run": 40945858067,
-      "head_sha": "8dbc4bab41994e03bebf6fca40d13228c6494ada",
+      "run": 40956367145,
+      "head_sha": "b5fac41b5ae845af095b47c79195a209f1bd23d1",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123700910294,
+          "id": 123737424852,
+          "name": "observe",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40957923170,
+      "head_sha": "398cc0137a59b3ca9399eaa19cabf9cdf2bd1a3d",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123742805099,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123701326705,
+          "id": 123743044338,
           "name": "preserve-job-log",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123701400065,
-          "name": "screen",
+          "id": 123743121348,
+          "name": "readback",
           "status": "completed",
-          "conclusion": "success",
+          "conclusion": "failure",
           "active_steps": []
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T20:33:57.397595+00:00",
+    "observed_at": "2026-10-29T21:32:45.919004+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -4745,7 +4854,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T20:33:57.397595+00:00",
+  "local_workspace_verified_empty_at": "2026-10-29T21:32:45.919004+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -45109,6 +45218,646 @@
       "bytes": 2673,
       "sha256": "9dc16cc52690d5bb4408303815f4ad585a83c682d6d02ad83034a14af9fd471a",
       "existing_identical": false
+    }
+  ],
+  "imported_checkpoint_receipts_v131": [
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-source-review-20261029.json",
+      "source": "4d6c4ed8908b3451b7abe9b631988dc99007a2a2",
+      "git_blob": "21b90ce048103a0d5f59749f3d6f1d335b781a75",
+      "bytes": 15392,
+      "sha256": "feef7e95dd4aa587c8e48a8fc1987cbf6644ee40a23bd1eaeea8844750a7155b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/artifacts.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "73491e5aa2668b61ac9b9fe0654a41b34ac49b0c",
+      "bytes": 2820,
+      "sha256": "4da6f4d7cadbec2221ccc784d15c3568280f0fd3500b22ec3aa7f4b8e94cdc5f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/controls/context.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "2300e5dae2d292d1a69133dc8a3d39242b0d1271",
+      "bytes": 1664,
+      "sha256": "6283b02e5e974c19eb5b4a3a0d8a2f5af9fd8b8bf1d509566618d5b4ab3989ba",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/controls/controls.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "e6f94cb23bdf6972c60bb3c6b47cafde4ba65d9b",
+      "bytes": 3636,
+      "sha256": "2e28870dea1a314e316c2ea9b498d93991a5ae16e96f6d04ff86cff6e2862503",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/controls/controls.stderr",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/controls/controls.stdout",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "234624fcceee576be40910f0fb4b40908cd499b5",
+      "bytes": 3146,
+      "sha256": "976aece20700e7b571553dede39bf8eb26e7d87338cc6b37b01ae73e70681d47",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/controls/index.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "6990270ff9e522d3e3a91a7920783d813eb7d010",
+      "bytes": 778,
+      "sha256": "3a66ec9853cb60abcf1e9e5a1377e226c1171416609d5e941d1449fc08eec7d3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/jobs.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "21c8ab42e48fa0592b5e65ed511b6de61b81b26b",
+      "bytes": 11386,
+      "sha256": "65b350a330d1008cbc1045a5af2bbc11fa9cb48bd6bfc42872b14e9bab1b4a8f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/jobs/123723221691.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "814b583cfd6022e44e5ead5b7b50ffb5b47096f5",
+      "bytes": 3783,
+      "sha256": "ff83ca7fbf0a413d44eb5ab5a81683ff63f9480a0137c90a7295da36ff65037b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/jobs/123723221691.log",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "9e630f0412089cdbb364f68617d122c5e99d9463",
+      "bytes": 42634,
+      "sha256": "df2c3f70e9164f1c1148c763804994e73a7145bf712c7d112be5e090485554f8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/jobs/123723469349.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "769747b74c0d9a95880d3bacd15d7b4d69216f2c",
+      "bytes": 1983,
+      "sha256": "55bb098c4018aab81ff79385e2ba7e865583516a1783fb4970d58919d467488c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/jobs/123723469349.log",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "ec6d4e33073b9c0bd7a40c4f51a8809556da1b14",
+      "bytes": 7561,
+      "sha256": "c82686908f4b5c6c16fcd130ce2ea79b8b19efb8ef402ef2c3974fdeed5a4c46",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/jobs/123723543433.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "b6fa3c9a272248b0247820c24da6b03b5a9ff5db",
+      "bytes": 4346,
+      "sha256": "76ca24eae52bed211d7053f42fee67751e0f6a0640d48a83d9504ec5c8666171",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/jobs/123723543433.log",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "22dc322d4294ab52d76d420820ed58830f33ff55",
+      "bytes": 396073,
+      "sha256": "00ec554dc910641a747cb1d8520a8a437a0c4819c151013c6559eb50798fc05a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/prior-current-readback-comparison.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "a8da36350c1132720d49d7693af4d1130a4050c6",
+      "bytes": 758,
+      "sha256": "55942414398896c5e410c0e4686276d56e125cf6061de0167d03adaa5f98a031",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback-index.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "7d0617fe4bef571d8f5729e2c166258b997116a4",
+      "bytes": 6101,
+      "sha256": "887004e2b0081a1bc105037631604675445a75200d87007c640cb00eec975870",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/current-input-restoration.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "6b252a0dc4ae191efdfbc948f2d4a5e4ed1f5967",
+      "bytes": 23247,
+      "sha256": "5918da7081ad1776b41201aadc63b436eef02ca70fa5ee49b8a2ac9d6e017bef",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/container-terminal.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "9919afb12510b45921849219f454257186d69125",
+      "bytes": 6861,
+      "sha256": "29a8f8e16c6abac2638ffd0d3332f560ca0d9135826c78ec0f5f934ead24b834",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/create-attempt.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "1fb068a367fd3cb6222b0ada5b4698bf58581c36",
+      "bytes": 1235,
+      "sha256": "1afd557f572f2a5c74f0204119338cd80a897be42bacde919a6d52ef3d8597af",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/host-progress.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "a9b9a9c7348d494e089323ec20bce1f098131b05",
+      "bytes": 11289,
+      "sha256": "cb086b590347f91a41abbfec192882e164f8d3de4220bb69f2aa9cd5a2e7539d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/image-inspect.stderr",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/image-inspect.stdout",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "783d8763379cd8867c1c3b609446c253f02845b9",
+      "bytes": 2643,
+      "sha256": "85a8301105b2c07091d06df9aaaf215d3f26542e85756a2cb5777b23156fcc15",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/immutable-image-pull.stderr",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/immutable-image-pull.stdout",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "920aedc1e2571ad6b4dc0dcaa7390051b0f2a557",
+      "bytes": 837,
+      "sha256": "f2e858bdd0164b89c06da570b7d63e234534590a4872d84ac5f27f07d033fbe4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/lower-access-ldd.stderr",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/lower-access-ldd.stdout",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "687a20ba0b99f89b4e174c3679c302e982611acd",
+      "bytes": 10979,
+      "sha256": "272ab61c89046e253de0a1b65a462b381debd1494702a804ca26985690197510",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/lower-access-neighborhood.stderr",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/lower-access-neighborhood.stdout",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "8ab24468e0c4b920dcd20e53c7c60371c7532e64",
+      "bytes": 285,
+      "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/lower-access-neighborhood/current-tech.lef",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "6c99de1b697f175dfedb99e2f6db943ef2719ae0",
+      "bytes": 23998,
+      "sha256": "45c73321fce9cede4434ef85efb88c6b59259198a2623fa65151647796411de2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/lower-access-neighborhood/native-api.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "9acb8fd13f01fba98888fd682ebccaa2e4dcf217",
+      "bytes": 5373,
+      "sha256": "54126dd0054c3069536825a254438585cefbef90f821f226188242a395268b23",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/lower-access-neighborhood/neighborhood.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "0368e18567a5256adcdbfb303280913d62a64477",
+      "bytes": 3069475,
+      "sha256": "6a731215f488129d3da679ad6b8675189dc8b57b96e37b905fd619db660b9674",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/lower-access-neighborhood/result.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "104b32f885cf8167e888c9ffeb49c6a34d96d175",
+      "bytes": 1007,
+      "sha256": "b78177962b5c59a45c954d437b08626c50e4af7faae4377a86821ac2166dbe1a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/lower-access-neighborhood/track-grids.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "caf40279ca75106a787863664e4d696eb438d933",
+      "bytes": 11534,
+      "sha256": "b131e6ffb5326ef137d10deceacfb8f5d9a75e7c12fdd20e8d327970b6636276",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/lower-access-owned-container.stderr",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/lower-access-owned-container.stdout",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/lower-access-readback-inner-progress.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "e13ab622bfc63acde916380090e7d0593be6ac19",
+      "bytes": 2772,
+      "sha256": "af994b4d178dd354e83832fb5a66795685825e4c32575bc235d977accb765d0c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/lower-access-readback-inner-result.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "27475b2306be679bcfe9f92cfe08138b9501e3eb",
+      "bytes": 11499,
+      "sha256": "922490a821a2af3dcf666c367de4320ff8538aa7140d14a5691b6ab4861afd32",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/lower-access-runtime-observed.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "534b24cdcf542b98ad1ae9c29197ed1e2ad5ccd8",
+      "bytes": 16940,
+      "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/lower-access-version.stderr",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/lower-access-version.stdout",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "233850439374365fe2cb6382f30eeb73ca08fca5",
+      "bytes": 42,
+      "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/names-before-owned-create.stderr",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/names-before-owned-create.stdout",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/owned-container-create.stderr",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/owned-container-create.stdout",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "2898f04f0e3f40a9d742c264ae20514c26dde3b2",
+      "bytes": 65,
+      "sha256": "cf8b9565d96e718154f97e58fc3d74dbb68db19e914db114ba6d049482393e55",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/owned-container-remove.stderr",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/owned-container-remove.stdout",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "2898f04f0e3f40a9d742c264ae20514c26dde3b2",
+      "bytes": 65,
+      "sha256": "cf8b9565d96e718154f97e58fc3d74dbb68db19e914db114ba6d049482393e55",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/owned-removal-census.stderr",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/owned-removal-census.stdout",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/prefix-envelope.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "bc75a7ec8ebe4d620ae64c4e45f266b1f11383fa",
+      "bytes": 4270,
+      "sha256": "11281aedb0c83745f8126820b9c3c5421c20ed572e48bda55356f5d68c8313fb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/native/prefix-restoration.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "8e316db083b1571e763c01308ee1756c172c934c",
+      "bytes": 423478,
+      "sha256": "23f45038bb461360ec38c7a2490ba24c84db2f9dd3a53e8b2e689201d693d177",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/producer-jobs.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "7700c239ab095b4291e652609b052407112f6178",
+      "bytes": 25026,
+      "sha256": "712b97423fef3b00296fb4192ab578f9a475771ba99b418a93efbd2369a9af40",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/producer-outputs.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "44c9764140047cd1780f528d9413de9d975a271e",
+      "bytes": 21497,
+      "sha256": "07032f779bc1f664fe58da6953287ab7d66f880d8e24adf725b27a00f6f7209a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/producer-parts.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "6904db33c771d26d9095e974c7754051d60021c2",
+      "bytes": 493,
+      "sha256": "e5730258718841c8ad1627e20256e7352535036c0d971064e6d627566a15d787",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/producer-ref.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "1f0dee5385c3e9123356949d39d812cc3cedacf8",
+      "bytes": 595,
+      "sha256": "1893b8c8b356478d2a665f75adebc8cc9854839261ff33a11972c9721b8f444a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/producer-release.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "91049c3e3f4fe991e9e2f1bce1f0ac95b54d7902",
+      "bytes": 98063,
+      "sha256": "080ab7e376a5af3de9f351a0bdfa3484bfc20e7bbcdb9e7b06546722346d2d45",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/producer-run.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "665cff47b267e4713540ff58522050d9c7ef723d",
+      "bytes": 14422,
+      "sha256": "c8b0d7f9b41b7d7e76a822b17878dbfe4ccb124bb8ac949ea861c7cb568080cc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/reservation.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "6038b8d315193e90abe7a6f9f1b6e30ba874a724",
+      "bytes": 596,
+      "sha256": "3ffdef46a9c7dc789be491ddeb2abb21c323d464029205e08e276f13fbf87337",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/readback/result.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "3300fddcc36d3ebbc753335b9253764afc73df8e",
+      "bytes": 29080,
+      "sha256": "783864d883c363e15b6c9fb7d6986a8260dadb29f0505d755ecdf31d493522db",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/receipt.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "53267983973b6a21b926c5f99943c3e15671b9e2",
+      "bytes": 49350,
+      "sha256": "5d3670ac89574796abc6095abc9831edb827261ff908d9c97164b1cd684fd872",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/ref.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "ad165a3de6152cced7ca84be4bc44c62c876e4a7",
+      "bytes": 572,
+      "sha256": "dd89886ec1379f1c1cb6744e5da6e737a2ca82ab0dd732ed00d5a3910a5c0f70",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/release.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "62269632258622b80439825cacbe2e00ee6cdd42",
+      "bytes": 2542,
+      "sha256": "d30802a5975c0c3876b0578829ecc091d2c81948f2913b964af3d33e859a8972",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-lower-access-neighborhood-readback-terminal-40952276370/run.json",
+      "source": "24cfcd885c43458cebdbfba0362aefa48f27a064",
+      "git_blob": "10ca7711ad92f74ab5450443640e20910e5e9ff7",
+      "bytes": 14432,
+      "sha256": "3ddbe4681d58f13673a89bc55071e483f03161770efe06a41612bb949f7e72b6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-connectivity-source-review-20261029.json",
+      "source": "b5fac41b5ae845af095b47c79195a209f1bd23d1",
+      "git_blob": "3c4db37731cdd5062b5c452dba78f8abb5761c1a",
+      "bytes": 3802,
+      "sha256": "9791e49ae1f013fee14babd9bc560d525e535f1e4154132762c19a7d736f53c2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-connectivity-terminal-40956367145/artifacts.json",
+      "source": "7207dcb28bee4c764ec1ef3fb887d5f970e11434",
+      "git_blob": "163b0da2567d6939774928b95f832b15452edfae",
+      "bytes": 940,
+      "sha256": "3480d0acd84b5f982e6a0a65279b52ece05d26b9eb26f0365be28a524523d402",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-connectivity-terminal-40956367145/complete-output-index.json",
+      "source": "7207dcb28bee4c764ec1ef3fb887d5f970e11434",
+      "git_blob": "9218de753783fb51695c4ea1e1ce24b35e6846be",
+      "bytes": 1236,
+      "sha256": "916ef5a9f310fbbf2b7d70d83ac5a293aa0ab34b205c824c1410c1b63ecbb0dc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-connectivity-terminal-40956367145/job.log",
+      "source": "7207dcb28bee4c764ec1ef3fb887d5f970e11434",
+      "git_blob": "68e75d396e7719c5ad0a3a8469fa52f65c8e1b6d",
+      "bytes": 100097,
+      "sha256": "1081e2e755b47cc3547cbf7ada7858a1fada6e0ebb0b89af761f377b7bbaacaf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-connectivity-terminal-40956367145/jobs.json",
+      "source": "7207dcb28bee4c764ec1ef3fb887d5f970e11434",
+      "git_blob": "d5c89298deb37d7846df4541fa5a09d69b6f6567",
+      "bytes": 4871,
+      "sha256": "60603e6ea67985943d1aff6fa92e2ebda14186f8e0298fee8fc16d7c8c9fe49e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-connectivity-terminal-40956367145/observation/context.json",
+      "source": "7207dcb28bee4c764ec1ef3fb887d5f970e11434",
+      "git_blob": "8cad3317bdf06e47a3340d03f0f2b747f6c9b3c5",
+      "bytes": 1009,
+      "sha256": "dd500546d7fd5e8af7bea9146e7fa5f606e07cf1fe329ae6debf7743d3bc6913",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-connectivity-terminal-40956367145/observation/controls.json",
+      "source": "7207dcb28bee4c764ec1ef3fb887d5f970e11434",
+      "git_blob": "dab67e18742d8fa9b10963acb98726e2143d47b0",
+      "bytes": 1503,
+      "sha256": "c6096ca225ef039934ceabfec6995c55cc285f661b20b8c52f257e2e087da29f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-connectivity-terminal-40956367145/observation/controls.stderr",
+      "source": "7207dcb28bee4c764ec1ef3fb887d5f970e11434",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-connectivity-terminal-40956367145/observation/controls.stdout",
+      "source": "7207dcb28bee4c764ec1ef3fb887d5f970e11434",
+      "git_blob": "51eaadea77635b25c4c34bc0f530f234873f8b3c",
+      "bytes": 1353,
+      "sha256": "73973386da8e6992bcb21ba29a2027d0c12d6a4474e96b8e1d011af3d6955cbd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-connectivity-terminal-40956367145/observation/observation.json",
+      "source": "7207dcb28bee4c764ec1ef3fb887d5f970e11434",
+      "git_blob": "7e282d46b7331b6b0ff2e2a875e09abbff052dfd",
+      "bytes": 559354,
+      "sha256": "88844f3c2ca1b55cf895e0944cf8cd42ba0e5af51dad71f9c26764aeb012da9a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-connectivity-terminal-40956367145/observation/observation.stderr",
+      "source": "7207dcb28bee4c764ec1ef3fb887d5f970e11434",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-connectivity-terminal-40956367145/observation/observation.stdout",
+      "source": "7207dcb28bee4c764ec1ef3fb887d5f970e11434",
+      "git_blob": "01000ae0a69115ccb5ebaa6764517ea532ab1b39",
+      "bytes": 33607,
+      "sha256": "230567b7d7d83afe47fa1b2cf17cd988fd50dd1db1cb3d166b2128dc168c6b48",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-connectivity-terminal-40956367145/receipt.json",
+      "source": "7207dcb28bee4c764ec1ef3fb887d5f970e11434",
+      "git_blob": "f1ba9be455ef80fb44224e4295cd04e5cc8c13b7",
+      "bytes": 3063,
+      "sha256": "069acce98e6bca7cd62230bc47a0ad770957df50653ab08ae31c4037587d2188",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-connectivity-terminal-40956367145/run.json",
+      "source": "7207dcb28bee4c764ec1ef3fb887d5f970e11434",
+      "git_blob": "340bc4123f0925c43e2ccbb9082627f6e2c51c89",
+      "bytes": 14414,
+      "sha256": "60e6c3e0bbdb4559fb88807832f60b51ccbfcc03640978e4787d6e4f7296a98b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-connectivity-terminal-40956367145/summary.json",
+      "source": "7207dcb28bee4c764ec1ef3fb887d5f970e11434",
+      "git_blob": "81411306d7c59b51508622597010e03c09ccd2b5",
+      "bytes": 6734,
+      "sha256": "80a9e61e5c762bbb493e19985244efb94b6f0d2c699e9933ac1368f616d96bc7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-current-access-overlay-source-review-20261029.json",
+      "source": "f75cdf4acd10f416302fbcae7889e2015df39b36",
+      "git_blob": "66a45f7eadf53f0052d71feb3fdc3b92cc947711",
+      "bytes": 19301,
+      "sha256": "72a3a2b823c26e6cf147b0bfe2a5e932e079219186858c37ed8b0d55c6880b89",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v131": [
+    {
+      "run": 40952276370,
+      "source": "f85b2a8d8c21ec4cce35bb25bd5780ebe646022f",
+      "release_id": 428379831,
+      "tag": "cloud-results-40952276370-1-mainchip-lower-access-neighborhood"
+    },
+    {
+      "run": 40957923170,
+      "source": "398cc0137a59b3ca9399eaa19cabf9cdf2bd1a3d",
+      "release_id": 428414983,
+      "tag": "cloud-results-40957923170-1-cdr-current-access-overlay"
     }
   ]
 }
