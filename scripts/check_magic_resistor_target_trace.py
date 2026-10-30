@@ -24,6 +24,23 @@ def fixture():
       effective_resistance_ohm="1",edge_responses=[dict(name="R1",power_W="1")])])
     return rows,target,dc
 
+def archive_source_controls():
+    spec,_,_,inventory,_=t.source_archive_spec();passed=t.validate_source_selection(spec,inventory)
+    refused=[]
+    for label in ("missing_member","changed_member","added_selector","wrong_selected_hash","wrong_cardinality"):
+        s=copy.deepcopy(spec);i=copy.deepcopy(inventory);name=next(iter(s["selected"]))
+        if label=="missing_member":i.pop(name)
+        elif label=="changed_member":i[name]["bytes"]+=1
+        elif label=="added_selector":s["selected"]["work/native.elf"]=dict(bytes=1,sha256="0"*64)
+        elif label=="wrong_selected_hash":s["selected"][name]["sha256"]="0"*64
+        else:s["full_archive_members"]-=1
+        try:t.validate_source_selection(s,i)
+        except AssertionError:refused.append(label)
+        else:raise AssertionError("accepted source-map corruption: "+label)
+    return dict(counts=dict(positive=1,refusal=5),full_authentic_map=passed,refusals=refused,
+      native_archive_acquired=False,authored_archive_extraction_executed=False)
+
+
 def controls(expected):
     ctx=b.context(os.environ);b.source_guard(expected)
     c,p,inc,dc=t.proof();positive=["authentic_current500_trace_source_and_DC_proof"];refused=[];life=[]
@@ -100,7 +117,7 @@ def controls(expected):
     return dict(status="PASS_MAGIC_TARGET_TRACE_SOURCE_CONTROLS",passed=True,
       counts=dict(positive=len(positive),refusal=len(refused),lifecycle=len(life)),
       positive=positive,refusals=refused,lifecycle=life,native_executed=False,physical_acceptance=False,
-      synthetic_trace_only=True,current_context=dict(source=ctx["source"],run_id=ctx["run_id"],attempt=1,
+      archive_source_controls=archive_source_controls(),synthetic_trace_only=True,current_context=dict(source=ctx["source"],run_id=ctx["run_id"],attempt=1,
       source_controls_only=True,native_executed=False))
 
 def main():

@@ -206,12 +206,78 @@ def perform(ctx,reserved,controls_raw,expected,out,trace_controls,root=ROOT,api_
       native_archive_acquired=False,native_build_executed=False,native_extraction_executed=False,
       new_numerical_solve=False,**FLAGS)
 
+def source_archive_spec(root=ROOT):
+    raw=b.frozen.regular(root,"scripts/magic-resistor-trace-source-inputs.json").read_bytes()
+    spec=b.decode(raw);c,p,_,_=proof(root)
+    b.require(spec["schema"]=="magic-qualified-trace-source-readback-v1"and
+      (spec["producer_run"],spec["producer_source"])==(c["run"],c["source"]),"source archive identity")
+    extra={n:load_pinned(root,v)for n,v in spec["archive_proofs"].items()}
+    inventory=dict(extra["assets/publication-inventory.json"])
+    for n in ("publication-inventory.json","direct-publication-plan.json"):
+        v=spec["archive_proofs"]["assets/"+n]
+        inventory[n]={k:v[k]for k in ("bytes","sha256")}
+    validate_source_selection(spec,inventory)
+    old=b.decode(b.frozen.regular(root,b.CONFIG).read_bytes())["source_producer"]["candidate"]
+    for n in ("extract/extract.h","extract/extractInt.h"):
+        b.require(inventory["work/baseline-source/"+n]["sha256"]==old[n],"qualified header source")
+    b.require(inventory["work/baseline-source/extract/extractInt.h"]==
+      inventory["work/trace-source/extract/extractInt.h"],"trace header unchanged")
+    return spec,c,p,inventory,extra["assets/cdr-resistor-provenance-build-40978039972-1.parts.json"]
+
+def validate_source_selection(spec,inventory):
+    b.require(spec["full_archive_members"]==14508 and len(inventory)==14508,"complete successful archive census")
+    names={"work/baseline-source/extract/extract.h","work/baseline-source/extract/extractInt.h",
+      "work/trace-source/extract/extractInt.h","work/trace-source/resis/ResPrint.c"}
+    names|={"supervision/"+v+"-make."+s for v in ("baseline","instrumented")for s in ("command.json","stdout","stderr")}
+    b.require(set(spec["selected"])==names,"exact ten textual source/log selectors")
+    b.require(all(inventory.get(n)==v for n,v in spec["selected"].items()),"selected full inventory identities")
+    b.require(all(type(v["bytes"])is int and v["bytes"]>0 and isinstance(v["sha256"],str)and
+      len(v["sha256"])==64 for v in spec["selected"].values()),"selected identity types")
+    return dict(full_members=len(inventory),selected_members=len(names))
+
+def perform_sources(ctx,reserved,controls_raw,expected,out,trace_controls,root=ROOT,
+                    api_call=b.frozen.api,fetch=b.frozen.download):
+    _,_,_,admission=b.preflight(ctx,reserved,controls_raw,expected,root,api_call)
+    tests=controls_binding(trace_controls,ctx)
+    b.require(tests["archive_source_controls"]["counts"]==dict(positive=1,refusal=5),
+      "current archive source controls")
+    spec,c,p,inventory,parts=source_archive_spec(root)
+    live=live_binding(c,p,api_call("actions/runs/"+str(c["run"])),
+      api_call("actions/runs/"+str(c["run"])+"/attempts/1/jobs?per_page=100"),
+      api_call("releases/"+str(c["release"])),api_call("git/ref/tags/"+c["tag"]))
+    assets={a["name"]:dict(id=a["id"],bytes=a["size"],sha256=a["digest"].removeprefix("sha256:"))
+      for a in p["release.json"]["assets"]}
+    b.write(out/"admission.json",b.encode(dict(current=admission,qualified_producer=live)))
+    b.write(out/"target-source-controls.json",trace_controls)
+    work=out/"work";work.mkdir()
+    archive,transport=b.frozen.acquire(dict(assets=assets),parts,work,fetch)
+    b.write(out/"transport.json",b.encode(transport))
+    selected=work/"selected"
+    census=b.frozen.select_archive(archive,{n:v["sha256"]for n,v in inventory.items()},
+      sorted(spec["selected"]),parts["source_directory"],selected)
+    b.require(census["full_members"]==inventory,"complete native capsule member size/hash identities")
+    b.write(out/"full-census.json",b.encode(census))
+    result={}
+    for name,identity in spec["selected"].items():
+        path=b.frozen.regular(selected,name)
+        b.require(b.pin(path)==identity,"retained source/log bytes: "+name)
+        result[name]=dict(identity=identity,text=path.read_bytes().decode("utf-8"))
+    b.write(out/"qualified-build-text.json",b.encode(result))
+    archive.unlink()
+    b.source_guard(expected,root)
+    return dict(status="COMPLETE_QUALIFIED_BUILD_SOURCE_READBACK_NOT_NEW_BUILD",
+      current_context=ctx,producer=live,full_archive_members=len(inventory),selected_text_members=len(result),
+      native_archive_acquired_on_runner=True,native_build_executed=False,native_extraction_executed=False,
+      coefficient_types_or_values_not_reinterpreted=True,**FLAGS)
+
+
 def main():
     p=argparse.ArgumentParser()
     for n in ("pins-sha256","reservation","controls","trace-controls","output"):p.add_argument("--"+n,required=True)
+    p.add_argument("--operation",choices=("target-trace","trace-source"),default="target-trace")
     a=p.parse_args();ctx=b.context(os.environ)
     b.require(subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip()==ctx["source"],"checkout source")
     raw=Path(a.trace_controls).read_bytes()
     b.run(ctx,b.decode(Path(a.reservation).read_bytes()),Path(a.controls).read_bytes(),a.pins_sha256,
-      Path(a.output).resolve(),lambda *args:perform(*args,trace_controls=raw))
+      Path(a.output).resolve(),lambda *args:(perform_sources if a.operation=="trace-source"else perform)(*args,trace_controls=raw))
 if __name__=="__main__":main()

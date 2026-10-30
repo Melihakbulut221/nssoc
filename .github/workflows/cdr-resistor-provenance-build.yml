@@ -16,7 +16,7 @@ on:
         required: true
         default: diagnose
         type: choice
-        options: [diagnose, build, target-trace]
+        options: [diagnose, build, target-trace, trace-source]
 permissions:
   contents: read
 concurrency:
@@ -24,7 +24,7 @@ concurrency:
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
-  PINS_SHA256: 3f72c2e6fd1e457f71319ee50298a9c0c47a712918709dcc663e21df50b914dd
+  PINS_SHA256: d4fe5de49dc041d59b8be873cb621da1e7408b7881c5fae36cce5cfeb9853fa2
 jobs:
   source-controls:
     if: github.run_attempt == 1 && github.ref == 'refs/heads/codex/cdr-resistor-provenance-build'
@@ -172,8 +172,8 @@ jobs:
           set +e
           if [ "$OPERATION" = diagnose ]; then
             python -B scripts/magic_resistor_equivalence_diagnosis.py --pins-sha256 "$PINS_SHA256" --reservation cloud-magic-build-host/reservation.json --controls cloud-magic-build-host/controls.json --output cloud-magic-build >cloud-magic-build-host/native.stdout 2>cloud-magic-build-host/native.stderr
-          elif [ "$OPERATION" = target-trace ]; then
-            python -B scripts/magic_resistor_target_trace.py --pins-sha256 "$PINS_SHA256" --reservation cloud-magic-build-host/reservation.json --controls cloud-magic-build-host/controls.json --trace-controls cloud-magic-build-host/target-controls.json --output cloud-magic-build >cloud-magic-build-host/native.stdout 2>cloud-magic-build-host/native.stderr
+          elif [ "$OPERATION" = target-trace ] || [ "$OPERATION" = trace-source ]; then
+            python -B scripts/magic_resistor_target_trace.py --operation "$OPERATION" --pins-sha256 "$PINS_SHA256" --reservation cloud-magic-build-host/reservation.json --controls cloud-magic-build-host/controls.json --trace-controls cloud-magic-build-host/target-controls.json --output cloud-magic-build >cloud-magic-build-host/native.stdout 2>cloud-magic-build-host/native.stderr
           elif [ "$OPERATION" = build ]; then
             python -B scripts/cloud_magic_resistor_provenance_build.py --mode native --pins-sha256 "$PINS_SHA256" --reservation cloud-magic-build-host/reservation.json --controls cloud-magic-build-host/controls.json --output cloud-magic-build >cloud-magic-build-host/native.stdout 2>cloud-magic-build-host/native.stderr
           else
