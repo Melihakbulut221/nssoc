@@ -1,0 +1,818 @@
+{
+  "acceptance": {
+    "electrical": false,
+    "full_phy": false,
+    "native_acquisition": false,
+    "physical": false,
+    "simulation": false,
+    "source_controls_executed": false
+  },
+  "base": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+  "branch": "codex/cdr-drain-m1-loaded-electrical",
+  "derivations": {
+    "result": {
+      "baseline": {
+        "bytes": 6377,
+        "path": "scripts/cdr_width_loaded_result.py",
+        "sha256": "468dd60192add0313bd64bef27a0829e6aa0bc15381e9f81b051048681dbb00f",
+        "source": "e191424507e67331b2e79800caece4a3f03a1cc0"
+      },
+      "edits": [
+        {
+          "after": "import cdr_drain_m1_loaded_admission as a",
+          "before": "import cdr_width_loaded_admission as a",
+          "occurrences": 1
+        },
+        {
+          "after": "2680",
+          "before": "6647",
+          "occurrences": 4
+        },
+        {
+          "after": "a.full_map(d)",
+          "before": "d[\"complete-native-restore-map.json\"]",
+          "occurrences": 1
+        },
+        {
+          "after": "expected={k:v for k,v in a.composition_proof(d,None,remote).items()if k!=\"full_archive\"}",
+          "before": "expected={\"run\":a.RUN,\"source_head\":a.HEAD,\"summary_sha256\":a.SUMMARY_SHA,\n      \"raw_result_sha256\":a.RAW_SHA,\"stage_sha256\":a.REQUIRED[\"direct/MIM-precision-result.json\"][\"sha256\"],\n      \"original_graph_run\":40808550817,\"original_width_run\":40815684037,\n      \"complete_graph_members\":4103,\"current_members\":75,\n      \"historical_failed_geometry_and_electrical_reports_retained\":True,\n      \"geometry_regenerated\":False,\"extraction_rerun\":False,\"simulation_preaccepted\":False,\n      \"reservation\":remote[\"reservation\"],\"live_producer\":remote}",
+          "occurrences": 1
+        },
+        {
+          "after": "a.exact(plane,a.plane_proof(d),",
+          "before": "a.exact(plane,{\n      \"current_mim_source\":a.REQUIRED[\"direct/MIM-precision-result.json\"][\"sha256\"],\n      \"native_planes_sha256\":a.PLANES_SHA,\n      \"fresh_layout_sha256\":full[\"mim/precise/source/parent/layout/result.json\"],\n      \"native_binding_sha256\":a.REQUIRED[\"direct/binding.json\"][\"sha256\"]},",
+          "occurrences": 1
+        },
+        {
+          "after": "\"current_width_run\":41000358737,\"current_graph_run\":41003747027",
+          "before": "\"current_width_run\":40815684037,\"current_graph_run\":40808550817",
+          "occurrences": 1
+        }
+      ],
+      "generated": {
+        "bytes": 5629,
+        "path": "scripts/cdr_drain_m1_loaded_result.py",
+        "sha256": "3dbc05566951dd79d6d1eb869ee83e898a54b4ef0ba0c9b14cae440a4608f266"
+      }
+    },
+    "stage": {
+      "baseline": {
+        "bytes": 18242,
+        "path": "scripts/cloud_cdr_width_loaded_stage.py",
+        "sha256": "958256378226ec8d64453e72fb7d52b1d00df16d28c9fe4c656644a8aa6847c0",
+        "source": "e191424507e67331b2e79800caece4a3f03a1cc0"
+      },
+      "edits": [
+        {
+          "after": "import cdr_drain_m1_loaded_admission as a",
+          "before": "import cdr_width_loaded_execution_admission as a",
+          "occurrences": 1
+        },
+        {
+          "after": "import cdr_drain_m1_loaded_result as result_gate",
+          "before": "import cdr_width_loaded_result as result_gate",
+          "occurrences": 1
+        },
+        {
+          "after": "\"scripts/cloud_cdr_drain_m1_loaded.py\"",
+          "before": "\"scripts/cloud_cdr_width_loaded.py\"",
+          "occurrences": 1
+        },
+        {
+          "after": "cdr-drain-m1-loaded-",
+          "before": "cdr-width-loaded-",
+          "occurrences": 7
+        },
+        {
+          "after": "41007572323",
+          "before": "40830441311",
+          "occurrences": 2
+        },
+        {
+          "after": "41000358737",
+          "before": "40815684037",
+          "occurrences": 2
+        },
+        {
+          "after": "37b5b75738b5bbe5eafcfb5e94101c08503c995a",
+          "before": "214ec651fd501de7e2f49a38509b184a1fd66f8d",
+          "occurrences": 2
+        },
+        {
+          "after": "41003747027",
+          "before": "40808550817",
+          "occurrences": 2
+        },
+        {
+          "after": "474045b9821069cbe42a71752c3c53267e5493fd",
+          "before": "97705f184239c0c522582b9d8e82c542bd902b65",
+          "occurrences": 2
+        }
+      ],
+      "generated": {
+        "bytes": 18262,
+        "path": "scripts/cloud_cdr_drain_m1_loaded_stage.py",
+        "sha256": "828d2e4c9af4dfaa37ef87b0fab571b9c8fb804955acb6d55a019184cc994e72"
+      }
+    },
+    "worker": {
+      "baseline": {
+        "bytes": 29922,
+        "path": "scripts/cloud_cdr_width_loaded.py",
+        "sha256": "ebf92a9842280587a437de161425f49f6ce4a82c9d76a0ce2532075d0e309bf5",
+        "source": "e191424507e67331b2e79800caece4a3f03a1cc0"
+      },
+      "edits": [
+        {
+          "after": "import cdr_drain_m1_loaded_admission as current_inputs",
+          "before": "import cdr_width_loaded_execution_admission as current_inputs",
+          "occurrences": 1
+        },
+        {
+          "after": "ROOT/'scripts/cdr-drain-m1-loaded-methods.json'",
+          "before": "ROOT/'scripts/cdr-width-loaded-execution-methods.json'",
+          "occurrences": 1
+        },
+        {
+          "after": "cloud-cdr-drain-m1-loaded-",
+          "before": "cloud-cdr-width-loaded-",
+          "occurrences": 1
+        }
+      ],
+      "generated": {
+        "bytes": 29911,
+        "path": "scripts/cloud_cdr_drain_m1_loaded.py",
+        "sha256": "a280107ba16a1c69651eac61b1709c78b0ce6245fb34cc79c28a3e5b590593d2"
+      }
+    }
+  },
+  "execution_policy": {
+    "automatic_retry": false,
+    "create_preparation_reservation_last": true,
+    "each_loaded_case_seconds": 7200,
+    "fail_fast": false,
+    "groups": [
+      "cdr-drain-m1-loaded-nominal_early",
+      "cdr-drain-m1-loaded-nominal_late",
+      "cdr-drain-m1-loaded-hot_early",
+      "cdr-drain-m1-loaded-hot_late",
+      "cdr-drain-m1-loaded-cold_early",
+      "cdr-drain-m1-loaded-cold_late",
+      "cdr-drain-m1-loaded-constant_zero",
+      "cdr-drain-m1-loaded-constant_one",
+      "cdr-drain-m1-loaded-clock_stopped",
+      "cdr-drain-m1-loaded-vi_bias_off",
+      "cdr-drain-m1-loaded-preparation"
+    ],
+    "max_parallel": 2,
+    "preparation_seconds": 1200,
+    "reserve_all_eleven_before_any_native_dependencies": true
+  },
+  "fresh_model": {
+    "member": "mim/composition/pd500-mim-wire.spice",
+    "sha256": "5d4de0f4c9fcd6d6aa18d6e1f007a8dab68f1c72efc925d9c4064ca1e4209fed"
+  },
+  "fresh_planes": {
+    "member": "mim/precise/source/native-planes.json",
+    "sha256": "f32720bd478ef3f97b8a68fc16d60c07cc804d0ec04f05c32a0e48e2abbc340e"
+  },
+  "frozen_numerical_block_coordinate_source": {
+    "method": "One-based inclusive line coordinates in this exact baseline; each extracted byte block must occur exactly once in both the original v59 loaded source and current-tail derivative.",
+    "path": "scripts/cloud_cdr500_v58_loaded.py",
+    "sha256": "12fffebb23c7478d0994c00bc0e6fc53e4842b09bfca496db59316c923e86ab2"
+  },
+  "full_target_terminal_bindings": {
+    "T003_D": {
+      "component": 17,
+      "graph_full_partition": {
+        "ports": [],
+        "terminals": [
+          [
+            3,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            4,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            5,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            6,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            61,
+            "npn13G2",
+            "E"
+          ],
+          [
+            62,
+            "npn13G2",
+            "E"
+          ],
+          [
+            64,
+            "npn13G2",
+            "E"
+          ],
+          [
+            65,
+            "npn13G2",
+            "E"
+          ]
+        ]
+      },
+      "native_cluster": 28,
+      "native_net": "$131",
+      "source": "fresh graph full terminal identities joined to fresh composition; no reduced R IDs or old values",
+      "terminals": [
+        {
+          "anchor": "T003_D",
+          "instance": "XD0003",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 3,
+          "native_net": "$131",
+          "node": "w_T003_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T004_D",
+          "instance": "XD0004",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 4,
+          "native_net": "$131",
+          "node": "w_T004_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T005_D",
+          "instance": "XD0005",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 5,
+          "native_net": "$131",
+          "node": "w_T005_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T006_D",
+          "instance": "XD0006",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 6,
+          "native_net": "$131",
+          "node": "w_T006_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T061_E",
+          "instance": "XD0061",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 61,
+          "native_net": "$131",
+          "node": "w_T061_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T062_E",
+          "instance": "XD0062",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 62,
+          "native_net": "$131",
+          "node": "w_T062_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T064_E",
+          "instance": "XD0064",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 64,
+          "native_net": "$131",
+          "node": "w_T064_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T065_E",
+          "instance": "XD0065",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 65,
+          "native_net": "$131",
+          "node": "w_T065_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        }
+      ]
+    },
+    "T032_D": {
+      "component": 61,
+      "graph_full_partition": {
+        "ports": [],
+        "terminals": [
+          [
+            32,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            33,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            34,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            35,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            115,
+            "npn13G2",
+            "E"
+          ],
+          [
+            116,
+            "npn13G2",
+            "E"
+          ],
+          [
+            118,
+            "npn13G2",
+            "E"
+          ],
+          [
+            119,
+            "npn13G2",
+            "E"
+          ]
+        ]
+      },
+      "native_cluster": 124,
+      "native_net": "$680",
+      "source": "fresh graph full terminal identities joined to fresh composition; no reduced R IDs or old values",
+      "terminals": [
+        {
+          "anchor": "T032_D",
+          "instance": "XD0032",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 124,
+          "native_id": 32,
+          "native_net": "$680",
+          "node": "w_T032_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T033_D",
+          "instance": "XD0033",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 124,
+          "native_id": 33,
+          "native_net": "$680",
+          "node": "w_T033_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T034_D",
+          "instance": "XD0034",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 124,
+          "native_id": 34,
+          "native_net": "$680",
+          "node": "w_T034_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T035_D",
+          "instance": "XD0035",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 124,
+          "native_id": 35,
+          "native_net": "$680",
+          "node": "w_T035_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T115_E",
+          "instance": "XD0115",
+          "model": "npn13g2",
+          "native_cluster": 124,
+          "native_id": 115,
+          "native_net": "$680",
+          "node": "w_T115_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T116_E",
+          "instance": "XD0116",
+          "model": "npn13g2",
+          "native_cluster": 124,
+          "native_id": 116,
+          "native_net": "$680",
+          "node": "w_T116_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T118_E",
+          "instance": "XD0118",
+          "model": "npn13g2",
+          "native_cluster": 124,
+          "native_id": 118,
+          "native_net": "$680",
+          "node": "w_T118_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T119_E",
+          "instance": "XD0119",
+          "model": "npn13g2",
+          "native_cluster": 124,
+          "native_id": 119,
+          "native_net": "$680",
+          "node": "w_T119_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        }
+      ]
+    }
+  },
+  "inherited_source_projection": {
+    "additional_existing_protected_files_API_rehashed": 120,
+    "all_existing_objects_unchanged": true,
+    "combined_before_new_unit": 1691,
+    "conflicting_pins": 0,
+    "original_RC_pins": 1502,
+    "original_electrical_pins": 1329
+  },
+  "limitations": [
+    "No workflow or native reservation/dispatch in this source unit.",
+    "New native payload remains in producer release; no archive/model/wave data was acquired locally.",
+    "Historical clock-stopped measurements used in result fixtures carry explicit synthetic current metadata and never become a claimed current simulation.",
+    "No ideal alias or changed load/bias/commonmode; original device, phase, transient and safety rejection gates remain."
+  ],
+  "new_input": {
+    "canonical_members": 496,
+    "current_members": 75,
+    "graph_members": 138,
+    "members": 2680,
+    "proof_commit": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+    "receipt": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/receipt.json",
+    "receipt_sha256": "b8d62dc571089f55db76e1729297bcb6d6115638a2da1ef4759cefc04c025040",
+    "release_id": 428678026,
+    "run": 41007572323,
+    "source": "593c0c056d3eedc69a90269cc7fbc376227a4983",
+    "tag": "cloud-results-41007572323-1-cdr-drain-m1-fresh-rc"
+  },
+  "new_source_files": [
+    {
+      "bytes": 32533,
+      "path": "scripts/cdr_drain_m1_loaded_admission.py",
+      "sha256": "c517374338ae18e20b3acfca40a07766b97fd0fff50d8e4c0e62b630e348020b"
+    },
+    {
+      "bytes": 29911,
+      "path": "scripts/cloud_cdr_drain_m1_loaded.py",
+      "sha256": "a280107ba16a1c69651eac61b1709c78b0ce6245fb34cc79c28a3e5b590593d2"
+    },
+    {
+      "bytes": 5629,
+      "path": "scripts/cdr_drain_m1_loaded_result.py",
+      "sha256": "3dbc05566951dd79d6d1eb869ee83e898a54b4ef0ba0c9b14cae440a4608f266"
+    },
+    {
+      "bytes": 18262,
+      "path": "scripts/cloud_cdr_drain_m1_loaded_stage.py",
+      "sha256": "828d2e4c9af4dfaa37ef87b0fab571b9c8fb804955acb6d55a019184cc994e72"
+    },
+    {
+      "bytes": 19994,
+      "path": "scripts/check_cdr_drain_m1_loaded.py",
+      "sha256": "6a24a66f822e43c5360b947518c65f9cd7d75d13c92ba87cf3d6cca7abae5f28"
+    }
+  ],
+  "next_steps": [
+    "Root independent source review; enable source_controls_authorized only and qualify hosted checker/import closure on exact source.",
+    "Assemble separate manual first-attempt workflow with unchanged ten cases, source-only dependency and complete source logs; native remains disabled until review.",
+    "Before future native acquisition reserve eleven distinct empty public exact-source releases (preparation last); preserve entire raw/waveform/supervision outputs and permanent failure evidence.",
+    "New exact-source simulation execution must establish outcomes; no fresh T003_D/T032_D reduced-path resistance or electrical improvement has yet been measured."
+  ],
+  "numerical_settings": {
+    "all_other_measurement_predicates": "entire frozen numerical blocks and original result validator retained",
+    "bit_count": 256,
+    "hbt_maximum_alltime_abs_vbe_v": 1,
+    "hbt_maximum_alltime_abs_vce_v": 1.6,
+    "hbt_minimum_active_vce_v": 0.4,
+    "native_options": "reltol=1e-4 abstol=1e-12 klu; num_threads=1",
+    "ngspice_sha256": "103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509",
+    "sampler_clock_to_valid_ps": 37.5,
+    "stage_tail_current_a": 0.0005,
+    "start_seconds": 2e-09,
+    "step_seconds": 3.125e-13,
+    "transient_stop_expression": "START+258*UI",
+    "ui_seconds": 1.25e-10,
+    "xor_clock_to_valid_ps": 75
+  },
+  "original_simulation": {
+    "complete_terminal_proof_commit": "a1e0cbe514f536a50edbcb27bf8d98f2b69a3c46",
+    "method": "scripts/cdr-width-loaded-execution-methods.json",
+    "method_sha256": "119b7a2d35abb1163570d01b8af16d18c6d9401e839a38904863d8b42eecef67",
+    "numerical_result": "Eight original normal/static cases rejected; two intentional faults detected. Source reuse is not electrical acceptance.",
+    "run": 40906725656,
+    "run_conclusion": "failure",
+    "source": "e191424507e67331b2e79800caece4a3f03a1cc0",
+    "source_qualification": {
+      "qualified_execution_source": "2ffb41c84041cd2980ab2c57415ff72b9ebfcc50",
+      "qualified_execution_source_receipt_sha256": "eaeb12fbb8c823d7d4634e26e077b84f977337d3769aa0f0b52d94c4c29633fd",
+      "qualified_execution_source_run": 40905069113,
+      "qualified_worker_method": "scripts/cdr-width-loaded-worker-source-methods.json",
+      "qualified_worker_method_sha256": "c9dd549439b98c69265f36ea419cf9d05fe67dba321ce69d60de73094dab2c3c",
+      "qualified_worker_source_receipt_sha256": "899dac1bd0a7926be3daaaa43cea50c883ea9b2c0091a72793395e4fa7d30389",
+      "qualified_worker_source_run": 40884116773
+    },
+    "worker_sha256": "ebf92a9842280587a437de161425f49f6ce4a82c9d76a0ce2532075d0e309bf5",
+    "workflow_id": 400799746
+  },
+  "provenance_contract": {
+    "all_other_proof_including_full_logs_byte_checked": true,
+    "canonical_RC_view": 496,
+    "current_inputs": 75,
+    "direct_summary_sha256": "8f03d88186919d434793cd3bafcfefa713311d2fe1314e4f227bfa0497d0edd3",
+    "full_archive_members": 2680,
+    "graph_members": 138,
+    "old_reduced_R_identifiers_or_resistances_used": false,
+    "raw_outputs": 2678,
+    "raw_result_sha256": "5595b9551a089d44ba451cf2bbf01efdb71849c466a7fdae2d26c0f5c4ac7f19",
+    "required_parsed_JSON": 24,
+    "summary_outputs": 2679,
+    "typed_context": "Saved producer593c/run410075 is separate from future execution source/run/reservations.",
+    "whole_producer_proof_files": 56
+  },
+  "runtime_limits": {
+    "max_group_RSS_kib": 10485760,
+    "min_available_kib": 2097152,
+    "sampler_sha256": "55fb9a3ba9a049c509b629e8638a688b5f827316485f9fd89cd5a8888804df07",
+    "sampler_source": "docs/evidence/cdr-v59-tail-qualified-memory-sampler-20261026.py",
+    "supervisor_and_sampler_unchanged": true,
+    "supervisor_sha256": "e326e548ebe11550d18a049d639bdf063f03602d4ba08299b00a5747d3281c0b",
+    "supervisor_source": "docs/evidence/cdr-v59-mim-qualified-process-supervisor-20261025.py"
+  },
+  "schema": "cdr-drain-m1-loaded-source-review-v1",
+  "source_controls": {
+    "cli": "python scripts/check_cdr_drain_m1_loaded.py --output drain-loaded-controls.json",
+    "expected": {
+      "authority": {
+        "positive": 5,
+        "refusal": 56
+      },
+      "derivation": {
+        "numerical_blocks": 6,
+        "numerical_bytes": 24133
+      },
+      "live": {
+        "positive": 1,
+        "refusal": 12
+      },
+      "publication": {
+        "actual_lifecycle_cases": 2,
+        "publication_cases": 15
+      },
+      "reports": {
+        "positive": 2,
+        "refusal": 29
+      },
+      "restore": {
+        "positive": 3,
+        "refusal": 12
+      },
+      "result": {
+        "positive": 2,
+        "refusal": 12
+      },
+      "total_pure_positive": 13,
+      "total_refusal_including_restore_failures": 121
+    },
+    "native_or_simulation_executed_locally": false,
+    "scope": "Authored only. Real source/proof/method and restore orchestration; native file/network/child boundaries synthetic. Historical loaded result gates retained. Production publisher/pack exercised with inherited unchanged fixture code rebound only to new stage/admission/test environment.",
+    "status": "PASS_DRAIN_M1_LOADED_SOURCE_CONTROLS"
+  },
+  "status": "AUTHORED_UNEXECUTED_NATIVE_DISABLED",
+  "unchanged_helpers": [
+    {
+      "path": "scripts/cdr_width_loaded_publication.py",
+      "sha256": "49cf14ad46b418fe44f8044f510ad0c9fa5e75e42b96db053554e5880bfcac74"
+    },
+    {
+      "path": "scripts/cdr_v59_tail_loaded_terminal.py",
+      "sha256": "b98959e391a614f10969a2430f89d9ee6379e7e0f4a968846ae420c89a210e90"
+    },
+    {
+      "path": "scripts/cdr_v59_tail_loaded_admission.py",
+      "sha256": "b81a711cb1ee261f4aad22e3920438b3dcd30bd71733e058f75c1fb78a62692e"
+    }
+  ],
+  "unchanged_numerical_blocks": [
+    {
+      "bytes": 7507,
+      "end_line": 127,
+      "name": "native_binding",
+      "sha256": "a7067fdb80569bbabc2d70193e2bf4e28865a0647a1c0789ca0995aeb37deafb",
+      "start_line": 31
+    },
+    {
+      "bytes": 3639,
+      "end_line": 180,
+      "name": "binding_faults",
+      "sha256": "20f3e8acdf034b458eb8c9bc7e3dde43af0a0f5cdf0c863d47f27fe66e4c0222",
+      "start_line": 128
+    },
+    {
+      "bytes": 424,
+      "end_line": 191,
+      "name": "case_corner_oracles",
+      "sha256": "7bb0b9fbd02029addf8024787d91591eb9a4f73869134cffe806828c3e5da6ab",
+      "start_line": 188
+    },
+    {
+      "bytes": 4136,
+      "end_line": 260,
+      "name": "model_runtime_and_bench",
+      "sha256": "37df0c59a36aa6fb9f465ff9f543dfdf8fd428fcc4ae9ee14505298fdc53dd3b",
+      "start_line": 225
+    },
+    {
+      "bytes": 1271,
+      "end_line": 275,
+      "name": "OFF_OP_stream_admission",
+      "sha256": "1a05d71d6f12258dc23fa7437f44574674b4d616df9d4cb18c0132961a1f9717",
+      "start_line": 267
+    },
+    {
+      "bytes": 7156,
+      "end_line": 337,
+      "name": "frozen_measurement",
+      "sha256": "25d8ab3689494cd55f7173b56d25914bb5b41f8bc3fa6f7d38ac20cf430bebfb",
+      "start_line": 276
+    }
+  ],
+  "unchanged_stage_functions": [
+    "read_json",
+    "inventory",
+    "error_record",
+    "storage",
+    "execute",
+    "copy_worker",
+    "qualify_native",
+    "finalize",
+    "publish",
+    "run_case",
+    "main"
+  ],
+  "validation_performed": [
+    "Static Python AST parse only; no authored imports/tests or native data",
+    "Exact forward/reverse source text derivation",
+    "Six original blocks24133bytes exact against authenticated coordinate source",
+    "120additional existing source/proof files rehashed through Git API to avoid missing or stale inherited projection",
+    "Publication requires Git API CAS/nonforce and byte readback"
+  ]
+}
