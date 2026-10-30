@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30T04:54:10.402248+00:00",
+  "updated_at": "2026-10-30T05:52:11.101151+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "7209b27dc6a01e403d255a7f5fb34c4896d5172a",
+  "root_source_before_receipt": "b17e02f1b798099e82987b13f18ea73cbc7b84ab",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 140,
+    "inventory_version": 141,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -42,7 +42,68 @@
     "latest_observed_monitor_error": false,
     "latest_observed_evidence": "docs/evidence/cloud-collector-recipes-20261029/monitor-live-audit-40955824450/evidence.json"
   },
-  "active_runs": {},
+  "active_runs": {
+    "mainchip-antenna-escape-window": {
+      "run": 41009878507,
+      "head_sha": "bf0aff5864426372775cadc0fdf16118cae19d68",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123913133540,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123913421167,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123913463680,
+          "name": "window",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Read complete all-layer escape window without changing geometry"
+          ]
+        },
+        {
+          "id": 123913465066,
+          "name": "ownership",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        },
+        {
+          "id": 123913465086,
+          "name": "antenna-readback",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        },
+        {
+          "id": 123913465660,
+          "name": "trial",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        },
+        {
+          "id": 123913465760,
+          "name": "candidate",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    }
+  },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -5388,21 +5449,358 @@
     },
     "mainchip_next_escape_recipe": "docs/evidence/cloud-collector-recipes-20261029/mainchip-upper-layer-antenna-escape-v140-20261030.json",
     "cdr_fresh_RC_next": {
+      "fresh_RC_complete": true,
+      "next": "Fresh exact-composed-RC electrical matrix handoff preparation",
       "agent": "pll_handoff",
-      "new_source_not_yet_published": true,
-      "new_native_run_not_yet_dispatched": true,
-      "required_input_graph_run": 41003747027,
-      "required_gds_sha256": "34f06505f3ff2fdb06257d6202931aa12d2d0176d482a2a7916561eeb9646034",
+      "new_electrical_source_not_yet_published": true,
+      "new_electrical_native_run_not_yet_dispatched": true,
+      "required_input_run": 41007572323,
+      "required_complete_members": 2680,
+      "required_canonical_current_files": 496,
       "requires_unchanged_qualified_solver_and_electrical_limits": true
+    },
+    "cdr_drain_m1_fresh_RC": {
+      "run": 41007572323,
+      "source": "593c0c056d3eedc69a90269cc7fbc376227a4983",
+      "release": 428678026,
+      "proof": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "prefix": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/",
+      "proof_files": 56,
+      "proof_bytes": 36412540,
+      "receipt_sha256": "b8d62dc571089f55db76e1729297bcb6d6115638a2da1ef4759cefc04c025040",
+      "status": "PASS_BOUNDED_FRESH_RC_NOT_ELECTRICAL_ACCEPTANCE",
+      "all_four_jobs_success": true,
+      "source_controls": {
+        "actual_new_controller_fixture_methods": 6,
+        "full_indexed_records": 13,
+        "new_positive": 8,
+        "new_refusal": 110,
+        "old_adapter_positive": 5,
+        "old_adapter_refusal": 43,
+        "old_adapter_tests": 8,
+        "old_execution_tests": 10,
+        "old_input_positive": 4,
+        "old_input_refusal": 36,
+        "synthetic_archive_test_not_actual_restore": true
+      },
+      "actual_binding": {
+        "census": {
+          "cap_cmim": 7,
+          "npn13G2": 124,
+          "ptap1": 221,
+          "rppd": 98,
+          "sg13_lv_nmos": 50
+        },
+        "compact_model_faults": 3,
+        "contact_oracles": 221,
+        "devices": 500,
+        "full_target_faults": 14,
+        "geometry_faults": 3,
+        "public_ports": 25,
+        "target_length_faults": 6
+      },
+      "wire_stage": {
+        "anchors": 978,
+        "capacitors": 15559,
+        "complete_collapsed_capacitance_conserved": true,
+        "exact_native_r_edge_value_multiset": true,
+        "physical_components": 113,
+        "raw_corruption_controls": 13,
+        "resistors": 24341
+      },
+      "final_MIM": {
+        "all_raw_wire_tokens_preserved": true,
+        "both_orders_equal": true,
+        "composition_controls": 21,
+        "final_counts": {
+          "C": 15566,
+          "R": 24356,
+          "devices": 500
+        },
+        "intrinsic_MIM_models": 7,
+        "native_orders": [
+          "precise",
+          "precise_reversed"
+        ],
+        "raw_control_cases_per_order": 22
+      },
+      "input": {
+        "actual_complete_graph_members": 138,
+        "canonical_current_final_members": 496,
+        "gds_sha256": "34f06505f3ff2fdb06257d6202931aa12d2d0176d482a2a7916561eeb9646034",
+        "graph_receipt_sha256": "060ff52a3d27eb2745a709eba2cf721dc7744034bc6bec309386f7363bc98241",
+        "graph_run": 41003747027,
+        "graph_source": "474045b9821069cbe42a71752c3c53267e5493fd",
+        "lvs_sha256": "db740e4439e43e67bb9ddce5e69d784e1adb1b18b07cac893fe0db3128a1ec43",
+        "newly_proved_full_terminal_identity_join": {
+          "T003_D": {
+            "full_partition": {
+              "ports": [],
+              "terminals": [
+                [
+                  3,
+                  "sg13_lv_nmos",
+                  "D"
+                ],
+                [
+                  4,
+                  "sg13_lv_nmos",
+                  "D"
+                ],
+                [
+                  5,
+                  "sg13_lv_nmos",
+                  "D"
+                ],
+                [
+                  6,
+                  "sg13_lv_nmos",
+                  "D"
+                ],
+                [
+                  61,
+                  "npn13G2",
+                  "E"
+                ],
+                [
+                  62,
+                  "npn13G2",
+                  "E"
+                ],
+                [
+                  64,
+                  "npn13G2",
+                  "E"
+                ],
+                [
+                  65,
+                  "npn13G2",
+                  "E"
+                ]
+              ]
+            },
+            "new_component": 17,
+            "new_native_cluster": 28,
+            "new_native_name": "$131",
+            "old_component": 17,
+            "old_native_cluster": 28,
+            "old_native_name": "$131",
+            "same_numbers_are_observed_after_full_terminal_identity_proof": true
+          },
+          "T032_D": {
+            "full_partition": {
+              "ports": [],
+              "terminals": [
+                [
+                  32,
+                  "sg13_lv_nmos",
+                  "D"
+                ],
+                [
+                  33,
+                  "sg13_lv_nmos",
+                  "D"
+                ],
+                [
+                  34,
+                  "sg13_lv_nmos",
+                  "D"
+                ],
+                [
+                  35,
+                  "sg13_lv_nmos",
+                  "D"
+                ],
+                [
+                  115,
+                  "npn13G2",
+                  "E"
+                ],
+                [
+                  116,
+                  "npn13G2",
+                  "E"
+                ],
+                [
+                  118,
+                  "npn13G2",
+                  "E"
+                ],
+                [
+                  119,
+                  "npn13G2",
+                  "E"
+                ]
+              ]
+            },
+            "new_component": 61,
+            "new_native_cluster": 124,
+            "new_native_name": "$680",
+            "old_component": 61,
+            "old_native_cluster": 124,
+            "old_native_name": "$680",
+            "same_numbers_are_observed_after_full_terminal_identity_proof": true
+          }
+        },
+        "physical_receipt_sha256": "7100d5aacfbe79631ec09edd38e0819c8cc6e4cedfe2d117217afe7481942702",
+        "physical_run": 41000358737,
+        "physical_source": "37b5b75738b5bbe5eafcfb5e94101c08503c995a",
+        "unchanged_current_members": 75
+      },
+      "permanence": {
+        "direct_summary_sha256": "8f03d88186919d434793cd3bafcfefa713311d2fe1314e4f227bfa0497d0edd3",
+        "full_direct_derived_assets": 18,
+        "full_job_logs": 4,
+        "full_native_members": 2680,
+        "native_archive": {
+          "bytes": 59924645,
+          "format": "ordered-tar-gzip-parts-v1",
+          "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+          "part_limit_bytes": 536870912,
+          "parts": [
+            {
+              "bytes": 59924645,
+              "index": 0,
+              "name": "cdr-drain-m1-fresh-rc-41007572323-1.tar.gz.part0000",
+              "sha256": "c35e126127cd9217b5448f6dba0362079310a3ca4ae48ba8c145fc6921735aa3"
+            }
+          ],
+          "sha256": "c35e126127cd9217b5448f6dba0362079310a3ca4ae48ba8c145fc6921735aa3",
+          "source_directory": "cloud-cdr-drain-m1-fresh-rc",
+          "stem": "cdr-drain-m1-fresh-rc-41007572323-1",
+          "verification": {
+            "all_parts_and_combined_bytes_verified": true,
+            "bytes": 59924645,
+            "parts": 1,
+            "sha256": "c35e126127cd9217b5448f6dba0362079310a3ca4ae48ba8c145fc6921735aa3"
+          }
+        },
+        "only_publication_output_addition": "publication-driver.log",
+        "raw_result_distinct_and_unchanged": true,
+        "raw_result_sha256": "5595b9551a089d44ba451cf2bbf01efdb71849c466a7fdae2d26c0f5c4ac7f19",
+        "release_assets": 19
+      },
+      "native_archive_asset": 691067144,
+      "native_archive_acquired_locally": false,
+      "simulation_executed": false,
+      "qualified_pex": false,
+      "electrical_accepted": false,
+      "full_phy_accepted": false
+    },
+    "mainchip_antenna_escape_window": {
+      "run": 41009878507,
+      "source": "bf0aff5864426372775cadc0fdf16118cae19d68",
+      "release": 428690818,
+      "tag": "cloud-results-41009878507-1-mainchip-antenna-escape-window",
+      "emptyBeforeNative": true,
+      "branch": "codex/mainchip-net459-diode-prune",
+      "source_controls": {
+        "run": 41009878507,
+        "source": "bf0aff5864426372775cadc0fdf16118cae19d68",
+        "source_controls_job": 123913133540,
+        "full_log_bytes": 222717,
+        "full_log_sha256": "a5f0449df45d9f6fccdc2e9f5fd36ff706554080338a6b313d43c2205b0355fd",
+        "report_bytes": 5647,
+        "report_sha256": "dc680a842af35d4f33c65e777538c3e98c6359d6de7053ca9304a4972297b74c",
+        "positive": 7,
+        "refusal": 20,
+        "current_context": {
+          "attempt": 1,
+          "group": "mainchip-antenna-escape-window",
+          "name": "nssoc-witness-build-41009878507-1",
+          "run_id": 41009878507,
+          "source": "bf0aff5864426372775cadc0fdf16118cae19d68",
+          "token": "41009878507-1"
+        },
+        "native_executed": false,
+        "jobs": [
+          {
+            "id": 123913133540,
+            "name": "source-controls",
+            "status": "completed",
+            "conclusion": "success",
+            "active": []
+          },
+          {
+            "id": 123913421167,
+            "name": "preserve-job-log",
+            "status": "completed",
+            "conclusion": "success",
+            "active": []
+          },
+          {
+            "id": 123913463680,
+            "name": "window",
+            "status": "in_progress",
+            "conclusion": null,
+            "active": [
+              "Read complete all-layer escape window without changing geometry"
+            ]
+          },
+          {
+            "id": 123913465066,
+            "name": "ownership",
+            "status": "completed",
+            "conclusion": "skipped",
+            "active": []
+          },
+          {
+            "id": 123913465086,
+            "name": "antenna-readback",
+            "status": "completed",
+            "conclusion": "skipped",
+            "active": []
+          },
+          {
+            "id": 123913465660,
+            "name": "trial",
+            "status": "completed",
+            "conclusion": "skipped",
+            "active": []
+          },
+          {
+            "id": 123913465760,
+            "name": "candidate",
+            "status": "completed",
+            "conclusion": "skipped",
+            "active": []
+          }
+        ]
+      },
+      "input": {
+        "scope": "One legal diode inserted before any new branch; diagnostic only, not an accepted production ODB",
+        "member": "work/single-antenna-trial/inserted.odb",
+        "bytes": 213428829,
+        "sha256": "72d382ab18e905d13fef8145b70944e681a7a50c16bad0848616652fa93fc0ee",
+        "release": 428643939,
+        "archive_asset": 690926007,
+        "archive_bytes": 367635548,
+        "archive_sha256": "5eaf970597f1c739c5ea36626f847b620c30c2e6a3c46f0a8fcaae1e7e75eb4f"
+      },
+      "window_DBU": [
+        95000,
+        501000,
+        102000,
+        512500
+      ],
+      "scope": "Complete native all-layer unclipped closed-boundary geometry window; read-only inserted diode database before any branch; no clearance or physical acceptance claim.",
+      "superseded_unexecuted_source": "eddb5aee28a24aa25cb85c16a940744b6fbea85b",
+      "source_review": "docs/evidence/mainchip-antenna-escape-window-source-review-20261030.json",
+      "source_pin_count": 58,
+      "independently_reviewed": true,
+      "complete_native_evidence_pending": true,
+      "physical_acceptance": false,
+      "timing_accepted": false,
+      "full_phy_accepted": false
     }
   },
   "next_actions": [
-    "Continue cloud-only; newest user instruction overrides older local-goal wording. Every authored test/CAD/design calculation/native payload remains on GitHub, never local even in RAM. Source/API/derived-text orchestration only in RAM. Workspace/generated project/tmp/native processes stay empty.",
-    "Both newly recorded native runs are terminal; do not rerun them. Run41001185417 workflowSUCCESS is an explicitly rejected physical candidate: target antenna1\u21920 and fullnet609\u2192608 but6native Metal1 Short markers. All other915antenna violations and original1691clock/fullremaining-chip invariants unchanged. Complete100-file proofc1c734e3 and367,635,548-byte native archive on428643939 preserved. Zero-DRT gate remains mandatory.",
-    "Fix the diode escape from actual native ownership. All six shorts involve target with net36953 or fanout36953 in Metal1. The original target already has M2 atx97440/y504420..511140 and M3 y511140/x97440..108000. Exact inserted.odb72d382ab (one diode/no branch) is preserved in rejected run capsule, suitable only for read-only diagnostic geometry. Follow the new v140 upper-layer escape recipe: complete window ownership/obstructions/vias first, then explicit upper-layer branch; no guess that upper layers are clear.",
-    "Run41003747027 fresh graph474045b9 completedSUCCESS; full116-file proofa61ee868 independently authenticated. Old6647/newphysical154member inputs verified; fresh75file graph bound to34f065GDS/db740LVS. All500devices/1446terminals/25ports/978anchors,160planes19faults,9leafkinds16placements5faults,12witnessfaults and113\u00d713 exact material comparisons passed. Actual terminal join independently reestablishedT003_D component17/cluster28/$131 andT032_D component61/cluster124/$680.",
-    "Agent pll_handoff is preparing new changed-GDS/current-graph RC admission/controller using the original qualified numerical worker/settings. No new RC native run exists in this snapshot. Review source boundary then source-controls/fresh exact-source release/one attempt1 dispatch. Derive fresh R/C values and bind reduced nodes to actual terminal identities; do not transfer old32.5083ohm or prior analog acceptance.",
-    "Preserve full originalfailures and6shortrejection. Original20/4/8/8ns+5% clocks, CDR37.5ps/comparator75ps/UI125ps/100mV, HBT VCE/VBE/current limits andPLL62.5ps unchanged. Full serial PHY/mainchipphysicalintegration/currentRC/finalsetuphold remain unaccepted. Existing8h GitHubmonitor read-only, no automatic native dispatch."
+    "Continue cloud-only. Latest user instruction overrides older local goal wording. No local checkout, authored tests/imports, CAD/model calculations, native payloads or waveforms even in RAM. Only source/API/derived-text orchestration in RAM. All computation and durable evidence stay in GitHub; generated local workspace/tmp/native processes remain empty.",
+    "Observe the SINGLE attempt1 window run41009878507 at exact sourcebf0aff5864426372775cadc0fdf16118cae19d68, release428690818. New hosted source controls7positive/20refusal and inherited suites passed; full source log222717bytes/a5f0449d... authenticated. It restores complete original trial capsule while selecting only pre-branch inserted.odb72d382ab. Do not duplicate dispatch. Preserve complete native/failure archive and all actual job logs before interpreting results.",
+    "Use the new actual complete window to choose the diode upper-layer escape. Require whole-chip non-target/clocks/material invariants, exact existing40target shapes plus explicit new branch/vias, native target antenna0, full uncapped DRT0 and unchanged other antenna semantics. Rejected run41001185417 remains rejected despite target antenna0; six actual Metal1 shorts prohibit production promotion.",
+    "Fresh RC run41007572323/source593c0c05 is terminalSUCCESS with full56-file proof380b37d8 and2680-member native archive. Root independently checked exact receipt and diagnosis; agent fully byte-readback verified all56. Wire-only24341R/15559C differs from final24356R/15566C over500devices. Count equality with old candidate is NOT resistance improvement. Raw originalresult5595b955 and directsummary8f03d881 preserved separately.",
+    "Agent pll_handoff now prepares a separate source-bound handoff from fresh composedRC to original unchanged ten-test electrical matrix. No electrical native run/reservation exists yet. Identify actual original qualified simulation authority first; independently join terminal identities/reduced node names. Never transfer old32.5083ohm or assume unchanged partition/reduced IDs. Review and hosted source controls must precede one exact-source native dispatch.",
+    "Retain all original electrical/physical failures and thresholds:20/4/8/8ns+5% clocks, CDR37.5ps/comparator75ps/UI125ps/100mV, HBT activeVCE0.4/maxVCE1.6/maxVBE1.0/current3mA, PLL62.5ps. Full serial PHY, routed serial mainchip, fresh fullchipRC and finalsetuphold remain unaccepted. Existing8h GitHub monitor remains read-only with no automatic native dispatch."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -5771,62 +6169,42 @@
     "observed_40998946185": 40998946185,
     "observed_41000358737": 41000358737,
     "observed_41001185417": 41001185417,
-    "observed_41003747027": 41003747027
+    "observed_41003747027": 41003747027,
+    "observed_41007572323": 41007572323
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 41001185417,
-      "head_sha": "30c8f7412d439692f3445d9b41937a3ffc8a0e9f",
+      "run": 41007572323,
+      "head_sha": "593c0c056d3eedc69a90269cc7fbc376227a4983",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123885712511,
+          "id": 123905840912,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123886001193,
+          "id": 123907825068,
           "name": "preserve-job-log",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123886055812,
-          "name": "trial",
+          "id": 123907879463,
+          "name": "fresh-RC",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123886057466,
-          "name": "ownership",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 123886057840,
-          "name": "antenna-readback",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 123886057878,
-          "name": "candidate",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 123892860890,
-          "name": "preserve-antenna-job-logs",
+          "id": 123913027891,
+          "name": "preserve-job-logs",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
@@ -5834,38 +6212,68 @@
       ]
     },
     {
-      "run": 41003747027,
-      "head_sha": "474045b9821069cbe42a71752c3c53267e5493fd",
-      "status": "completed",
-      "conclusion": "success",
+      "run": 41009878507,
+      "head_sha": "bf0aff5864426372775cadc0fdf16118cae19d68",
+      "status": "in_progress",
+      "conclusion": null,
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123893833607,
+          "id": 123913133540,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123894062177,
+          "id": 123913421167,
           "name": "preserve-job-log",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123894116000,
-          "name": "readback",
+          "id": 123913463680,
+          "name": "window",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Read complete all-layer escape window without changing geometry"
+          ]
+        },
+        {
+          "id": 123913465066,
+          "name": "ownership",
           "status": "completed",
-          "conclusion": "success",
+          "conclusion": "skipped",
+          "active_steps": []
+        },
+        {
+          "id": 123913465086,
+          "name": "antenna-readback",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        },
+        {
+          "id": 123913465660,
+          "name": "trial",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        },
+        {
+          "id": 123913465760,
+          "name": "candidate",
+          "status": "completed",
+          "conclusion": "skipped",
           "active_steps": []
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-30T04:54:10.402248+00:00",
+    "observed_at": "2026-10-30T05:52:11.101151+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -6005,7 +6413,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-30T04:54:10.402248+00:00",
+  "local_workspace_verified_empty_at": "2026-10-30T05:52:11.101151+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -57493,6 +57901,492 @@
       "tag": "cloud-results-41003747027-1-cdr-drain-m1-fresh-graph",
       "exact_source": true,
       "empty": true,
+      "independently_reserved_before_acquisition": true
+    }
+  ],
+  "imported_checkpoint_receipts_v141": [
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-source-review-20261030.json",
+      "source": "593c0c056d3eedc69a90269cc7fbc376227a4983",
+      "git_blob": "63c2c2d2e7e6ad2342bbfcc8a76eef30b1509518",
+      "bytes": 10327,
+      "sha256": "4f1f473dadd5dc41544a6dd6fa5837d4a7b0b4fe324016e3cef6897e43ff8036",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/complete-native-members.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "e43ffc6e43b4cc91ba82d0fd65ac7b303f19e125",
+      "bytes": 387475,
+      "sha256": "1b6bb754923c07e29bee0f363b50c3cf95e3314b510e06c8e41184c6f9e26526",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/diagnosis.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "c8c5784e8303d4f2b4f8cc939dcd878bab387334",
+      "bytes": 9810,
+      "sha256": "bf2c67ba042420f7e3d7b5391d35879aa0ef3dfe7ca4683b1d31a19a4e80742e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.MIM-precision-result.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "1ac3b6a9ce6c23745a4ce2bdce359924c4484b39",
+      "bytes": 6140403,
+      "sha256": "f1acfac67dbe9675dfe61288cc58ed905335f5709182648ac9bcb16bb511b3b7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.binding-result.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "105bbc5f22350005353cbcb8f8fa4eed34ddb780",
+      "bytes": 501144,
+      "sha256": "898da739f79dbd46d542ebe5d8fd71e794fb480254eb089bd8c2f1198f015a17",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.binding.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "6628a35c03531086b674759a8fe625b9c24347ea",
+      "bytes": 351751,
+      "sha256": "eec8d5f065b6da3d57c83c53c63d62b3fd3b1765c5c53b2d02a7b76a5ee4556a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.canonical-candidate.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "a0a65101424a2f8a9d9db91c8af03cc06d6b7031",
+      "bytes": 9186,
+      "sha256": "0c4e5625ec489736573c39067b3830695d5c59e2fb8de19d46d87263c7ccde5c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.composition.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "d33d01bec4611f3ebb2a1badb2eacafab1c4f18d",
+      "bytes": 969974,
+      "sha256": "c8c2f8f3def3746abd57be49a830c34306bffeb44a2cd7d7bee64fb2fd2725dd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.direct-publication-plan.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "24791ef4c0781a2795f82abf0ed35a37919bea85",
+      "bytes": 4043,
+      "sha256": "1a0bbefd134a4710ebc601f59133fda7cb78986d6904030833d216adaa2fe158",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.driver.log",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "6b23aaa6da9cc4e1c6c6e616c46bde816f0d40ed",
+      "bytes": 57839,
+      "sha256": "2dde006e54fc6c5d9fd5b5717f4c095c26870aa5bb3d785bb6d8489b098c1ae7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.graph-restore.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "0927d7a99e952150ee45ca8a978e87d5b44dca06",
+      "bytes": 58749,
+      "sha256": "3c96093b5ec9938abb8f41fa9f9a351a288cc89a2f3949bf4edd325ab0533170",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.joint-admission.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "d03a7f6df017cca94243acb8c71f4ef8be0f73ea",
+      "bytes": 33887,
+      "sha256": "15f4420e7835a9e0c3f73696448c1ddeddbdc1d7d29b77b6a78b828c93801ab6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.live-graph-and-physical.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "8d63822e6d896b929bb1d601ed79c30b18adb4b8",
+      "bytes": 200,
+      "sha256": "77b024853da6f9778d7a0c4dc3aafa0c07ff1737b6f2bcbde5bcc09419305736",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.parts.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "cd9f62feccaa9fec9d77db1522f6c9ac6884beba",
+      "bytes": 849,
+      "sha256": "558e90e0ed576181bcd4d5f4c1939f20558647b69605268bed1498aa114f6590",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.precise-audit.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "d5ad9d2f3b4c337aad0aa7a2c1d7c32d294fc357",
+      "bytes": 258919,
+      "sha256": "e9bcaa473501af5978a8ae4d5651c392bb2c7697d8973c6a7848b00b2bd15ae4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.precise-capture.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "8bf8c1b25e248c9d54f496a1a8c9485ff9251867",
+      "bytes": 169365,
+      "sha256": "7f7f456e77fafe692e33b87d997ce2187c51a0dce6d765b69df3c640a9d32d3a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.reversed-audit.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "a4f97e50c1b9bb33717fce395587911edccf0125",
+      "bytes": 259017,
+      "sha256": "d58422888490e169c12dc127f97028c2f11370fdbf49dace82dfbd2d6233d7b4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.reversed-capture.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "991a432a636f4bc5647bee95313aeec5fa7f9051",
+      "bytes": 170594,
+      "sha256": "8349f9dcc1e2833dddf8275295346badec97a77ee6841743ac9155e06eb84735",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.runtime-smoke.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "948b9c5f5a4e113b9123bb141bf3baa287069226",
+      "bytes": 3557,
+      "sha256": "281731990c6093cbad8814cef4ad3f874a1d0c7e7308f4e6b574f84f8295a17d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.summary.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "4934ff34de6e5dcbd9af79d00866f890b72545c6",
+      "bytes": 427668,
+      "sha256": "8f03d88186919d434793cd3bafcfefa713311d2fe1314e4f227bfa0497d0edd3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/direct/cdr-drain-m1-fresh-rc-41007572323-1.wire-RC-result.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "60abe61f84d14d5ac04d4e70ef85e42d8e01aa3d",
+      "bytes": 2421610,
+      "sha256": "d7fa4f384f1ab7174d7c1f3a053325bd9b572bb4bed6bddb315900b66c5b7966",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/job-logs/123905840912.log",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "16c0278b097262e96c91923b4762d633182f9501",
+      "bytes": 838146,
+      "sha256": "8de02b5fb7593b127be60705260ba15aac4c28a27efd016ec08ca96926e5be4a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/job-logs/123907825068.log",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "d9db0a2be565990423b5c28c9dbf5118f104c214",
+      "bytes": 7543,
+      "sha256": "a7d48a412bc1a1268a82e4c10e2e265c354bd508e078d4ab2e21c36ce3017250",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/job-logs/123907879463.log",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "9ab1d072acb1d646b01b3c504ed7e46e572ce672",
+      "bytes": 13089102,
+      "sha256": "a7d4259b4167c0d9c2465a3b452c97dabdc47ac36c31a63db8f276c6865ec61c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/job-logs/123913027891.log",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "98e651843337495a46875a9ae69090f5f2ca217e",
+      "bytes": 7927,
+      "sha256": "c30d4d0ccd8a11f89c957beb8f6fce9a8bb833c8f5180e7077fdddabfe3224a8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/jobs.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "2efde2bfdbbdf54f96e8b3d9d725e75310cebd7e",
+      "bytes": 14701,
+      "sha256": "05f6ce6afba79d4d565b6dae6c43746da06ad5cbf5c336234e8bb9fe5ba81eb0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/jobs/123905840912.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "2bee21582089d557815c07245451d5eee4aacf28",
+      "bytes": 4781,
+      "sha256": "321b7d5f4826f138749770735c8827e61cc9ed1863619e211d33eb2ba2be8cab",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/jobs/123907825068.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "866a57c7adbfdcbc968f9b863913d3db26e73292",
+      "bytes": 1951,
+      "sha256": "1dbaaa5df20e8998fce52102355a393d4febd8b1415ab7f24f91ccb015d2a18a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/jobs/123907879463.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "6a73ef36ada8ac3cb7788f6fae201d3e77b65956",
+      "bytes": 4323,
+      "sha256": "0354350501c7cd0ab891ba6aa6f80cc7c9ac95815e41afd6b5f147367d6b664b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/jobs/123913027891.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "9c6a6c9cfeb4a27b8bfe2997515291282f5f2548",
+      "bytes": 2003,
+      "sha256": "6f4d6b009cd1ec92fc7ef652231dbdf63a38707a19aaf735ea18ea10a4667f64",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-rc-publication/publication.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "eddf98341b4074c41c0a82fda22f76081c4052e0",
+      "bytes": 8042,
+      "sha256": "af183b1047ee75405d2a23b8530d0a36e8e54e89d93adc626db5bf6d0ce18b01",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-rc/binding/result.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "105bbc5f22350005353cbcb8f8fa4eed34ddb780",
+      "bytes": 501144,
+      "sha256": "898da739f79dbd46d542ebe5d8fd71e794fb480254eb089bd8c2f1198f015a17",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-rc/mim/result.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "1ac3b6a9ce6c23745a4ce2bdce359924c4484b39",
+      "bytes": 6140403,
+      "sha256": "f1acfac67dbe9675dfe61288cc58ed905335f5709182648ac9bcb16bb511b3b7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-rc/restore/canonical-candidate.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "a0a65101424a2f8a9d9db91c8af03cc06d6b7031",
+      "bytes": 9186,
+      "sha256": "0c4e5625ec489736573c39067b3830695d5c59e2fb8de19d46d87263c7ccde5c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-rc/restore/joint-admission.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "d03a7f6df017cca94243acb8c71f4ef8be0f73ea",
+      "bytes": 33887,
+      "sha256": "15f4420e7835a9e0c3f73696448c1ddeddbdc1d7d29b77b6a78b828c93801ab6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-rc/result.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "ecb34dd3285d0429a31765753eaff6f3fa976890",
+      "bytes": 427570,
+      "sha256": "5595b9551a089d44ba451cf2bbf01efdb71849c466a7fdae2d26c0f5c4ac7f19",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-rc/wire-stage/result.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "60abe61f84d14d5ac04d4e70ef85e42d8e01aa3d",
+      "bytes": 2421610,
+      "sha256": "d7fa4f384f1ab7174d7c1f3a053325bd9b572bb4bed6bddb315900b66c5b7966",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/receipt.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "9f2a36bf53ec5598708d25e55f8eb405862bdb12",
+      "bytes": 9588,
+      "sha256": "b8d62dc571089f55db76e1729297bcb6d6115638a2da1ef4759cefc04c025040",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/release.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "787628a014e1e7da464081b2f134d664c8dbcff3",
+      "bytes": 41895,
+      "sha256": "ebc8f61541d563b74197568a87ae9a93cae87e5abb1671512079abde9bb421da",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/run.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "2f5a6b6ceecbcce6bb6369c3e95f1f2f78b95ee7",
+      "bytes": 14416,
+      "sha256": "65c6e4080205f23588b854e78252952ffd27f901114ab50e6915ce3cfa2dce66",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/source-binding.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "eb3c7ce158f359b41123dceee420836c0431ac36",
+      "bytes": 2823,
+      "sha256": "c389dbbac30d3447d3c3dd7372a9047203ae9f25875cee7046b71ede94aeb463",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/source-controls-index.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "224b78aff7b581c627f67edfe90618e94426e42f",
+      "bytes": 2525,
+      "sha256": "9ab0e10aa9e4c16621c36b233fbce331b6b863e3ec4d56b447d582e3751b006f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/source-controls/adapters.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "5a5fbe9d738dec8993dd4a6f95ce0479d7728ad9",
+      "bytes": 8891,
+      "sha256": "424eb4941538f75be60bf26740ac2c220757fd01edc2a462094720eb9126b59d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/source-controls/adapters.stderr",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "0a0d37fe27ddf115f627c0e44657e30ade0c73d3",
+      "bytes": 1022,
+      "sha256": "9df45ab0da3e3e846da40ed053e9af7b31aca40e81bf7b4dba760ab75c95d5dc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/source-controls/adapters.stdout",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/source-controls/context.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "5b00ab70409296dead59270a26e5f0922aecd4e6",
+      "bytes": 233,
+      "sha256": "d723d8b3b70ecdc34c364e93e908aa26d1b61866057fce830efd87936bf66dfd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/source-controls/current.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "f5ffe1e09afb6dde6e0e876ae57315e0314170ab",
+      "bytes": 22279,
+      "sha256": "46a76730dc99f874e90a8a8725cbfeb7f7625098ed58b6a92169eff80ab1dbdf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/source-controls/current.stderr",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "d7ccc8c3830f102ce66772df6f84ad820b7a76fd",
+      "bytes": 4025,
+      "sha256": "ddec242f4354d2b704b3a0846d3ed090f6cf3cae19608c329ee3ae27823ae7fa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/source-controls/current.stdout",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "36af39e2c125e61a9dfe587965a5858ea1bae725",
+      "bytes": 291440,
+      "sha256": "eacbb5c523aeea5d3b4e5d2c910243b360595843ca3f685d327583cd5815d7f4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/source-controls/execution.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "40f25ba19971a0e8f4fa397777685d02282f612e",
+      "bytes": 20478,
+      "sha256": "651f76d8d463f9b9a5e3143503233a69547138188563721587fbb85441d33cb2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/source-controls/execution.stderr",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "77c83b8b1e680adbdfb496dedd4703cc85a1edac",
+      "bytes": 5491,
+      "sha256": "4c64dff44ec1bb00853393ef3442e057b282eb2fad8d02f9266829a26ba27047",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/source-controls/execution.stdout",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "3949f6603b269eed563122c7425204f457d48b4e",
+      "bytes": 226863,
+      "sha256": "53902e2a210a536876bb86d58a71ff3e0bb5de7c1c21f678207dcf2ba2161b65",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/source-controls/input.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "b44f4fa6da0ac57b3fde8545cf5aca55217b5435",
+      "bytes": 4819,
+      "sha256": "09f0a0b6dee4413b62b7944477ac1be8151759c01a923492a9c8ae6092a147cc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/source-controls/input.stderr",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/source-controls/input.stdout",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "b44f4fa6da0ac57b3fde8545cf5aca55217b5435",
+      "bytes": 4819,
+      "sha256": "09f0a0b6dee4413b62b7944477ac1be8151759c01a923492a9c8ae6092a147cc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/tag-ref.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "36eab9cd38e418386ac905f8e0cd8dc8861f3306",
+      "bytes": 528,
+      "sha256": "b4f3b86af8a8ed86e18b3e1bb5e9cdc13727dc014de43eacec52a79f14cafc05",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-rc-terminal-41007572323/terminal-index.json",
+      "source": "380b37d8fad0dc9d7197663ed4cefffe68e31d27",
+      "git_blob": "4150daee2683a9022e2ddabe7849a987d45a0527",
+      "bytes": 2046,
+      "sha256": "bcb2be252483ffdc5c558969844fc32da034c0e99a73be63744351efa297c7a7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-source-review-20261030.json",
+      "source": "bf0aff5864426372775cadc0fdf16118cae19d68",
+      "git_blob": "0eac1a8f71fb3127a5e5030ea8db345d17eb909a",
+      "bytes": 3750,
+      "sha256": "8277c600f1b276011fb29842ebbc38304d50b566a701bfde4c9703f14c8df296",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v141": [
+    {
+      "run": 41007572323,
+      "source": "593c0c056d3eedc69a90269cc7fbc376227a4983",
+      "release_id": 428678026,
+      "tag": "cloud-results-41007572323-1-cdr-drain-m1-fresh-rc",
+      "exact_source": true,
+      "empty_before_acquisition": true,
+      "independently_reserved_before_acquisition": true
+    },
+    {
+      "run": 41009878507,
+      "source": "bf0aff5864426372775cadc0fdf16118cae19d68",
+      "release_id": 428690818,
+      "tag": "cloud-results-41009878507-1-mainchip-antenna-escape-window",
+      "exact_source": true,
+      "empty_before_acquisition": true,
       "independently_reserved_before_acquisition": true
     }
   ]

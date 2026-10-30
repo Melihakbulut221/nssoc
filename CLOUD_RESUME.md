@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v140
+# Cloud continuation — checkpoint v141
 
-Updated: 2026-10-30T04:54:10.402248+00:00
+Updated: 2026-10-30T05:52:11.101151+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint v140: the one-diode trial41001185417 completed all measurements but is rejected: target antenna1→0/fullviolatingnets609→608 accompanied by6native Metal1 Short markers against net36953/fanout36953. Complete100-file proofc1c734e3 and permanent native capsule remain; no production promotion. A bounded upper-layer escape collection plan records exact inserted.odb and observed original M2/M3 access. Separately fresh CDR graph41003747027 passed complete500device/1446terminal/25port/978anchor identities and all113×13 material comparisons, with exactly the two declared M1 unions. Complete116-file proofa61ee868 verified. Agent is preparing fresh candidate-bound RC; no RC/electrical recovery claimed. All original limits remain unchanged. Local workspace/generated paths/native processes are empty; all computation and artifacts remain on GitHub.
+Cloud-only checkpoint v141: fresh candidate-bound CDR RC41007572323 passed all four jobs and complete current500-device binding/wire/MIM checks. Final model has24356R/15566C; no electrical waveform or resistance improvement is claimed. Complete56-file proof380b37d8 and2680-member59,924,645-byte native capsule are permanent in GitHub. Read-only mainchip escape-window41009878507 is dispatched once at sourcebf0aff58 with an independent empty exact-source release; hosted7/20 source controls passed and actual database readback is underway. It uses the pre-branch inserted diode ODB, not the rejected shorted candidate. Local project paths and native processes remain empty; original gates unchanged.
 
-Active handles at this snapshot: No native run remains active in this snapshot.
+Active handles at this snapshot: 41009878507 in_progress
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9182,3 +9183,10 @@ Local project/tmp/native processes verified absent. Inventory387 exact cloud han
 Cloud-only checkpoint v140: the one-diode trial41001185417 completed all measurements but is rejected: target antenna1→0/fullviolatingnets609→608 accompanied by6native Metal1 Short markers against net36953/fanout36953. Complete100-file proofc1c734e3 and permanent native capsule remain; no production promotion. A bounded upper-layer escape collection plan records exact inserted.odb and observed original M2/M3 access. Separately fresh CDR graph41003747027 passed complete500device/1446terminal/25port/978anchor identities and all113×13 material comparisons, with exactly the two declared M1 unions. Complete116-file proofa61ee868 verified. Agent is preparing fresh candidate-bound RC; no RC/electrical recovery claimed. All original limits remain unchanged. Local workspace/generated paths/native processes are empty; all computation and artifacts remain on GitHub.
 
 Local project/tmp/native processes verified absent. Inventory388 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-30T05:52:11.101151+00:00 — cloud-only checkpoint v141
+
+Cloud-only checkpoint v141: fresh candidate-bound CDR RC41007572323 passed all four jobs and complete current500-device binding/wire/MIM checks. Final model has24356R/15566C; no electrical waveform or resistance improvement is claimed. Complete56-file proof380b37d8 and2680-member59,924,645-byte native capsule are permanent in GitHub. Read-only mainchip escape-window41009878507 is dispatched once at sourcebf0aff58 with an independent empty exact-source release; hosted7/20 source controls passed and actual database readback is underway. It uses the pre-branch inserted diode ODB, not the rejected shorted candidate. Local project paths and native processes remain empty; original gates unchanged.
+
+Local project/tmp/native processes verified absent. Inventory390 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
