@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 import sys
 import unittest
+from types import SimpleNamespace
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import cloud_progress_monitor as m
 
@@ -648,6 +649,7 @@ class ShardedInventoryControls(unittest.TestCase):
         from unittest.mock import patch
         _,bodies=shard_bundle(small_inventory());del bodies[m.RUN_FILE_PATHS[1]]
         api=InventoryAPI(bodies)
+        api.retry_history=[];api.extra_attempts=0
         with tempfile.TemporaryDirectory() as temp:
             base=Path(temp);bootstrap=base/"bootstrap.json";bootstrap.write_bytes(inventory_json(config()))
             output=base/"result";summary=base/"summary.md"
@@ -828,7 +830,7 @@ class MainObservationControls(unittest.TestCase):
             base = Path(temp); bootstrap = base / "bootstrap.json"
             bootstrap.write_bytes(inventory_json(config()))
             output = base / "result"; summary = base / "summary.md"
-            with patch.object(m, "API", return_value=object()), patch.object(m, "load_config", side_effect=failure), patch.object(m, "collect") as collect:
+            with patch.object(m, "API", return_value=SimpleNamespace(retry_history=[], extra_attempts=0)), patch.object(m, "load_config", side_effect=failure), patch.object(m, "collect") as collect:
                 with patch.dict(os.environ, dict(GITHUB_ACTIONS="true", RUNNER_ENVIRONMENT="github-hosted",
                     GITHUB_REPOSITORY=m.REPO, GH_TOKEN="fixture", GITHUB_RUN_ID="999", GITHUB_STEP_SUMMARY=str(summary))):
                     with patch.object(sys, "argv", ["monitor", "--config", str(bootstrap), "--out", str(output)]):
@@ -840,6 +842,314 @@ class MainObservationControls(unittest.TestCase):
             self.assertIn(saved["error"], summary.read_text())
             self.assertFalse(saved["automatic_native_dispatch"])
             self.assertFalse(saved["full_phy_accepted"])
+
+
+class ScriptedTransportOpener:
+    """Synthetic HTTP I/O only; production API.raw and SafeRedirect execute."""
+    def __init__(self, outcomes):
+        self.outcomes = list(outcomes)
+        self.requests = []
+
+    def open(self, request, timeout):
+        self.requests.append((request, timeout))
+        if not self.outcomes:
+            raise AssertionError("Unexpected extra HTTP request")
+        outcome = self.outcomes.pop(0)
+        if isinstance(outcome, BaseException):
+            raise outcome
+        if callable(outcome):
+            return outcome(request)
+        return outcome
+
+
+def transient_error(code):
+    body = io.BytesIO(b"synthetic HTTP response; not fetched from a service")
+    error = m.urllib.error.HTTPError(
+        "https://api.github.com/repos/" + m.REPO + "/actions/runs/123",
+        code, "synthetic-secret-message", {"Authorization": "synthetic-secret-header"}, body)
+    error.fixture_body = body
+    return error
+
+
+class TransientGETControls(unittest.TestCase):
+    def api(self, outcomes):
+        api = m.API("synthetic-secret-token")
+        api.opener = ScriptedTransportOpener(outcomes)
+        return api
+
+    def assert_requests(self, api, path, count, binary=False):
+        self.assertEqual(len(api.opener.requests), count)
+        self.assertEqual(len({id(req) for req, _ in api.opener.requests}), count)
+        for request, timeout in api.opener.requests:
+            self.assertEqual(request.get_method(), "GET")
+            self.assertEqual(request.full_url, "https://api.github.com/repos/" + m.REPO + "/" + path)
+            self.assertEqual(timeout, 60)
+            self.assertEqual(request.get_header("Accept"),
+                "application/octet-stream" if binary else "application/vnd.github+json")
+        history = json.dumps(api.retry_history, allow_nan=False)
+        for secret in ("synthetic-secret-token", "synthetic-secret-message", "synthetic-secret-header", "Authorization"):
+            self.assertNotIn(secret, history)
+
+    def test_real_raw_recovers_502_503_and_504_with_identical_gets(self):
+        from unittest.mock import patch
+        errors = [transient_error(502), transient_error(503)]
+        api = self.api([*errors, SmallResponse(b'{"ok":true}', 11)])
+        with patch.object(m.time, "sleep") as sleep:
+            self.assertEqual(api.get("actions/runs/123"), {"ok": True})
+        self.assertEqual([x.args[0] for x in sleep.call_args_list], [1, 2])
+        self.assertEqual(api.extra_attempts, 2)
+        self.assertEqual([x["event"] for x in api.retry_history], ["http_error", "http_error", "recovered"])
+        self.assertEqual([x["http_status"] for x in api.retry_history[:2]], [502, 503])
+        self.assertTrue(all(e.fixture_body.closed for e in errors))
+        self.assert_requests(api, "actions/runs/123", 3)
+        api = self.api([transient_error(504), SmallResponse(b"{}")])
+        with patch.object(m.time, "sleep") as sleep:
+            self.assertEqual(api.get("actions/runs/123"), {})
+        sleep.assert_called_once_with(1)
+        self.assertEqual(api.retry_history[-1]["event"], "recovered")
+        self.assert_requests(api, "actions/runs/123", 2)
+
+    def test_three_attempt_exhaustion_preserves_final_exception(self):
+        from unittest.mock import patch
+        errors = [transient_error(code) for code in (502, 503, 504)]
+        api = self.api(errors)
+        with patch.object(m.time, "sleep") as sleep:
+            with self.assertRaises(m.urllib.error.HTTPError) as caught:
+                api.raw("actions/runs/123")
+        self.assertIs(caught.exception, errors[-1])
+        self.assertEqual([x.args[0] for x in sleep.call_args_list], [1, 2])
+        self.assertEqual(api.extra_attempts, 2)
+        self.assertEqual(api.retry_history[-1]["reason"], "per_request_limit")
+        self.assertFalse(api.retry_history[-1]["retry_scheduled"])
+        self.assertTrue(all(e.fixture_body.closed for e in errors))
+        self.assert_requests(api, "actions/runs/123", 3)
+
+    def test_four_extra_attempt_budget_is_shared_across_requests(self):
+        from unittest.mock import patch
+        outcomes = []
+        for _ in range(4):
+            outcomes.extend([transient_error(502), SmallResponse(b"{}")])
+        final = transient_error(502)
+        outcomes.append(final)
+        api = self.api(outcomes)
+        with patch.object(m.time, "sleep") as sleep:
+            for _ in range(4):
+                self.assertEqual(api.get("actions/runs/123"), {})
+            with self.assertRaises(m.urllib.error.HTTPError) as caught:
+                api.get("actions/runs/123")
+        self.assertIs(caught.exception, final)
+        self.assertEqual(api.extra_attempts, 4)
+        self.assertEqual([x.args[0] for x in sleep.call_args_list], [1, 1, 1, 1])
+        self.assertEqual(api.retry_history[-1]["attempt"], 1)
+        self.assertEqual(api.retry_history[-1]["reason"], "run_retry_limit")
+        self.assertEqual(len(api.opener.outcomes), 0)
+        self.assert_requests(api, "actions/runs/123", 9)
+
+    def test_retry_budget_is_per_api_instance(self):
+        from unittest.mock import patch
+        first = self.api([transient_error(502)])
+        first.extra_attempts = 4
+        second = self.api([transient_error(502), SmallResponse(b"{}")])
+        with patch.object(m.time, "sleep") as sleep:
+            with self.assertRaises(m.urllib.error.HTTPError):
+                first.get("actions/runs/123")
+            self.assertEqual(second.get("actions/runs/123"), {})
+        sleep.assert_called_once_with(1)
+        self.assertEqual(first.extra_attempts, 4)
+        self.assertEqual(second.extra_attempts, 1)
+
+    def test_other_http_statuses_never_retry_and_maybe_404_is_unchanged(self):
+        from unittest.mock import patch
+        for code in (400, 401, 403, 404, 409, 422, 429, 500, 501):
+            with self.subTest(code=code):
+                failure = transient_error(code)
+                api = self.api([failure])
+                with patch.object(m.time, "sleep") as sleep:
+                    with self.assertRaises(m.urllib.error.HTTPError) as caught:
+                        api.get("actions/runs/123")
+                self.assertIs(caught.exception, failure)
+                sleep.assert_not_called()
+                self.assertEqual(api.extra_attempts, 0)
+                self.assertEqual(api.retry_history[-1]["reason"], "not_retryable")
+                self.assert_requests(api, "actions/runs/123", 1)
+        api = self.api([transient_error(404)])
+        with patch.object(m.time, "sleep") as sleep:
+            self.assertIsNone(api.maybe("actions/runs/123"))
+        sleep.assert_not_called()
+        self.assert_requests(api, "actions/runs/123", 1)
+
+    def test_non_http_transport_errors_are_not_retried(self):
+        from unittest.mock import patch
+        for failure in (m.urllib.error.URLError("synthetic network failure"),
+                        TimeoutError("synthetic timeout"), PermissionError("synthetic permission")):
+            with self.subTest(error=type(failure).__name__):
+                api = self.api([failure])
+                with patch.object(m.time, "sleep") as sleep:
+                    with self.assertRaises(type(failure)) as caught:
+                        api.raw("actions/runs/123")
+                self.assertIs(caught.exception, failure)
+                sleep.assert_not_called()
+                self.assertEqual(api.extra_attempts, 0)
+                self.assertEqual(api.retry_history, [])
+                self.assert_requests(api, "actions/runs/123", 1)
+
+    def test_recovered_http_does_not_retry_invalid_json(self):
+        from unittest.mock import patch
+        api = self.api([transient_error(502), SmallResponse(b"{invalid")])
+        with patch.object(m.time, "sleep") as sleep:
+            with self.assertRaises(json.JSONDecodeError):
+                api.get("actions/runs/123")
+        sleep.assert_called_once_with(1)
+        self.assertEqual(api.extra_attempts, 1)
+        self.assert_requests(api, "actions/runs/123", 2)
+        # Recovery is transport-only; get() still rejects invalid JSON.
+        self.assertEqual(api.retry_history[-1]["event"], "recovered")
+
+    def test_body_bounds_remain_fatal_after_a_transient_response(self):
+        from unittest.mock import patch
+        for response in (SmallResponse(b"x", 5), SmallResponse(b"12345")):
+            api = self.api([transient_error(502), response])
+            with patch.object(m.time, "sleep") as sleep:
+                with self.assertRaisesRegex(ValueError, "bounded monitor size"):
+                    api.raw("actions/runs/123", limit=4)
+            sleep.assert_called_once_with(1)
+            self.assertEqual(api.extra_attempts, 1)
+            self.assertEqual([x["event"] for x in api.retry_history], ["http_error"])
+            self.assert_requests(api, "actions/runs/123", 2)
+
+    def test_unsafe_path_and_redirect_are_not_retried(self):
+        from unittest.mock import patch
+        api = self.api([])
+        with patch.object(m.time, "sleep") as sleep:
+            with self.assertRaises(AssertionError):
+                api.raw("../other")
+        sleep.assert_not_called()
+        self.assertEqual(api.opener.requests, [])
+        for target in ("http://release-assets.githubusercontent.com/a", "https://attacker.invalid/a"):
+            def redirect(request, target=target):
+                m.SafeRedirect().redirect_request(request, None, 302, "", {}, target)
+                raise AssertionError("Unsafe redirect was accepted")
+            api = self.api([transient_error(502), redirect])
+            with patch.object(m.time, "sleep") as sleep:
+                with self.assertRaisesRegex(ValueError, "Unexpected GitHub download redirect"):
+                    api.raw("actions/runs/123")
+            sleep.assert_called_once_with(1)
+            self.assert_requests(api, "actions/runs/123", 2)
+
+    def test_retry_keeps_binary_header_and_redirect_credential_stripping(self):
+        from unittest.mock import patch
+        redirected = []
+        def follow(request):
+            next_request = m.SafeRedirect().redirect_request(request, None, 302, "", {},
+                "https://release-assets.githubusercontent.com/synthetic")
+            redirected.append(next_request)
+            return SmallResponse(b"fixture", 7)
+        api = self.api([transient_error(502), follow])
+        with patch.object(m.time, "sleep") as sleep:
+            self.assertEqual(api.raw("releases/assets/123", binary=True), b"fixture")
+        sleep.assert_called_once_with(1)
+        self.assertIsNone(redirected[0].get_header("Authorization"))
+        self.assert_requests(api, "releases/assets/123", 2, binary=True)
+
+    def test_response_close_error_cannot_replace_terminal_http_failure(self):
+        from unittest.mock import patch
+        class BrokenCloseHTTPError(m.urllib.error.HTTPError):
+            def close(self):
+                raise RuntimeError("synthetic-secret-close")
+        failure = BrokenCloseHTTPError("https://api.github.com/synthetic", 502, "synthetic", {}, None)
+        api = self.api([failure])
+        api.extra_attempts = 4
+        with patch.object(m.time, "sleep") as sleep:
+            with self.assertRaises(m.urllib.error.HTTPError) as caught:
+                api.raw("actions/runs/123")
+        self.assertIs(caught.exception, failure)
+        sleep.assert_not_called()
+        self.assertFalse(api.retry_history[-1]["response_closed"])
+        self.assertEqual(api.retry_history[-1]["response_close_error_type"], "RuntimeError")
+        self.assertNotIn("synthetic-secret-close", json.dumps(api.retry_history))
+
+    def test_failed_retry_wait_preserves_http_failure_without_extra_request(self):
+        from unittest.mock import patch
+        failure = transient_error(502)
+        api = self.api([failure])
+        with patch.object(m.time, "sleep", side_effect=RuntimeError("synthetic-secret-wait")):
+            with self.assertRaises(m.urllib.error.HTTPError) as caught:
+                api.raw("actions/runs/123")
+        self.assertIs(caught.exception, failure)
+        self.assertEqual(api.extra_attempts, 0)
+        self.assertEqual(api.retry_history[-1]["retry_wait_error_type"], "RuntimeError")
+        self.assertNotIn("synthetic-secret-wait", json.dumps(api.retry_history))
+        self.assert_requests(api, "actions/runs/123", 1)
+
+    def main_fixture(self, api, loader, expected_failure=None):
+        import os
+        import tempfile
+        from unittest.mock import patch
+        baseline = dict(status="QUIET", problem_runs=[], runs=[],
+                        automatic_native_dispatch=False, full_phy_accepted=False)
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); bootstrap = root / "bootstrap.json"
+            bootstrap.write_bytes(inventory_json(config()))
+            output = root / "result"; summary = root / "summary.md"
+            with patch.object(m, "API", return_value=api), \
+                 patch.object(m, "load_config", side_effect=loader), \
+                 patch.object(m, "previous_snapshot", return_value=None) as previous, \
+                 patch.object(m, "collect", return_value=baseline) as collect, \
+                 patch.object(m, "markdown", return_value="Synthetic source-control display") as markdown, \
+                 patch.object(m.time, "sleep") as sleep:
+                with patch.dict(os.environ, dict(GITHUB_ACTIONS="true", RUNNER_ENVIRONMENT="github-hosted",
+                    GITHUB_REPOSITORY=m.REPO, GH_TOKEN="synthetic-secret-token",
+                    GITHUB_RUN_ID="999", GITHUB_STEP_SUMMARY=str(summary))):
+                    with patch.object(sys, "argv", ["monitor", "--config", str(bootstrap), "--out", str(output)]):
+                        if expected_failure is None:
+                            self.assertEqual(m.main(), 0)
+                        else:
+                            with self.assertRaises(type(expected_failure)) as caught:
+                                m.main()
+                            self.assertIs(caught.exception, expected_failure)
+                if expected_failure is not None:
+                    previous.assert_not_called(); collect.assert_not_called(); markdown.assert_not_called()
+                saved = json.loads((output / "result.json").read_text())
+                return saved, summary.read_text(), [x.args[0] for x in sleep.call_args_list]
+
+    def test_actual_main_preserves_exhausted_http_history_and_primary_failure(self):
+        errors = [transient_error(502) for _ in range(3)]
+        api = self.api(errors)
+        def load(current, bootstrap):
+            current.get("actions/runs/123")
+            raise AssertionError("Exhausted request must not return")
+        saved, summary, waits = self.main_fixture(api, load, errors[-1])
+        self.assertEqual(saved["status"], "MONITOR_ERROR")
+        self.assertEqual(saved["transport_retry_history"], api.retry_history)
+        self.assertEqual(saved["transport_extra_attempts"], 2)
+        self.assertEqual(waits, [1, 2])
+        self.assertIn("HTTPError", saved["error"])
+        self.assertIn(saved["error"], summary)
+        self.assertFalse(saved["automatic_native_dispatch"])
+        self.assertFalse(saved["full_phy_accepted"])
+
+    def test_actual_main_retains_recovery_without_changing_observation_status(self):
+        api = self.api([transient_error(502), SmallResponse(b"{}")])
+        def load(current, bootstrap):
+            self.assertEqual(current.get("actions/runs/123"), {})
+            return config(), dict(head_sha=HEAD, bootstrap=False)
+        saved, summary, waits = self.main_fixture(api, load)
+        self.assertEqual(saved["status"], "QUIET")
+        self.assertEqual(saved["transport_retry_history"], api.retry_history)
+        self.assertEqual(saved["transport_extra_attempts"], 1)
+        self.assertEqual(waits, [1])
+        self.assertFalse(saved["automatic_native_dispatch"])
+        self.assertFalse(saved["full_phy_accepted"])
+        self.assertEqual(summary, "Synthetic source-control display")
+
+    def test_retry_diagnostics_do_not_change_engineering_progress_signature(self):
+        observed = m.collect(Mock(), config(), NOW)
+        before = copy.deepcopy(observed["runs"][0])
+        after = copy.deepcopy(before)
+        after["transport_retry_history"] = [dict(event="recovered", attempt=2)]
+        after["transport_extra_attempts"] = 1
+        self.assertEqual(m.progress_signature(before), m.progress_signature(after))
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

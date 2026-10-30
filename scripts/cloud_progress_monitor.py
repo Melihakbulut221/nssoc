@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path
 import re
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -23,6 +24,10 @@ ARTIFACT = "cloud-progress-snapshot"
 LIMIT = 8 * 1024 * 1024
 TERMINAL_BAD = {"failure", "cancelled", "timed_out", "action_required", "startup_failure", "stale"}
 UTC = dt.timezone.utc
+GET_MAX_ATTEMPTS = 3
+RUN_MAX_EXTRA_ATTEMPTS = 4
+TRANSIENT_HTTP_STATUSES = frozenset((502, 503, 504))
+GET_RETRY_DELAYS = (1, 2)
 
 def time_value(value):
     return dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
@@ -49,6 +54,8 @@ class API:
     def __init__(self, token):
         self.token = token
         self.opener = urllib.request.build_opener(SafeRedirect())
+        self.extra_attempts = 0
+        self.retry_history = []
 
     def raw(self, path, limit=LIMIT, binary=False):
         assert path and not path.startswith("/") and ".." not in path and "://" not in path
@@ -59,15 +66,56 @@ class API:
             "X-GitHub-Api-Version": "2022-11-28",
             "User-Agent": "nssoc-cloud-progress-monitor",
         }
-        request = urllib.request.Request(url, headers=headers, method="GET")
-        with self.opener.open(request, timeout=60) as stream:
-            size = stream.headers.get("Content-Length")
-            if size and int(size) > limit:
-                raise ValueError("Metadata exceeds bounded monitor size")
-            raw = stream.read(limit + 1)
-        if len(raw) > limit:
-            raise ValueError("Metadata exceeds bounded monitor size")
-        return raw
+        for attempt in range(1, GET_MAX_ATTEMPTS + 1):
+            if attempt > 1:
+                self.extra_attempts += 1
+            # Every retry starts a fresh GET at the same repository endpoint.
+            # SafeRedirect and the original response bounds still apply.
+            request = urllib.request.Request(url, headers=headers, method="GET")
+            try:
+                with self.opener.open(request, timeout=60) as stream:
+                    size = stream.headers.get("Content-Length")
+                    if size and int(size) > limit:
+                        raise ValueError("Metadata exceeds bounded monitor size")
+                    raw = stream.read(limit + 1)
+                if len(raw) > limit:
+                    raise ValueError("Metadata exceeds bounded monitor size")
+            except urllib.error.HTTPError as exc:
+                retryable = exc.code in TRANSIENT_HTTP_STATUSES
+                retry = (retryable and attempt < GET_MAX_ATTEMPTS
+                         and self.extra_attempts < RUN_MAX_EXTRA_ATTEMPTS)
+                reason = ("retry_scheduled" if retry else
+                          "not_retryable" if not retryable else
+                          "per_request_limit" if attempt == GET_MAX_ATTEMPTS else
+                          "run_retry_limit")
+                delay = GET_RETRY_DELAYS[attempt - 1] if retry else 0
+                event = dict(event="http_error", method="GET", path=path,
+                             attempt=attempt, http_status=exc.code,
+                             retryable=retryable, retry_scheduled=retry,
+                             reason=reason, delay_seconds=delay,
+                             extra_attempts_used=self.extra_attempts)
+                self.retry_history.append(event)
+                # Preserve the original HTTP failure if disposing its response
+                # also fails. Never copy auth headers, signed URLs or body bytes.
+                try:
+                    exc.close()
+                    event["response_closed"] = True
+                except Exception as close_error:
+                    event["response_closed"] = False
+                    event["response_close_error_type"] = type(close_error).__name__
+                if not retry:
+                    raise
+                try:
+                    time.sleep(delay)
+                except Exception as wait_error:
+                    event["retry_wait_error_type"] = type(wait_error).__name__
+                    raise exc
+                continue
+            if attempt > 1:
+                self.retry_history.append(dict(event="recovered", method="GET",
+                    path=path, attempt=attempt, extra_attempts_used=self.extra_attempts))
+            return raw
+        raise AssertionError("Bounded GET loop exhausted without a result")
 
     def get(self, path):
         return json.loads(self.raw(path))
@@ -493,10 +541,14 @@ def main():
                   "target_head": (configuration_source or {}).get("head_sha"), "configuration_source": configuration_source,
                   "runs": [], "observed_at": utc_now().isoformat(),
                   "status": "MONITOR_ERROR", "error": detail, "automatic_native_dispatch": False,
-                  "full_phy_accepted": False, "problem_runs": []}
+                  "full_phy_accepted": False, "problem_runs": [],
+                  "transport_retry_history": api.retry_history,
+                  "transport_extra_attempts": api.extra_attempts}
         (args.out / "result.json").write_text(json.dumps(result, indent=2) + "\n")
         Path(os.environ["GITHUB_STEP_SUMMARY"]).write_text("Cloud observation failed: " + detail + "\nNo native work was changed.\n")
         raise
+    result["transport_retry_history"] = api.retry_history
+    result["transport_extra_attempts"] = api.extra_attempts
     (args.out / "result.json").write_text(json.dumps(result, indent=2) + "\n")
     Path(os.environ["GITHUB_STEP_SUMMARY"]).write_text(markdown(result))
     print(json.dumps({"status": result["status"], "problem_runs": result["problem_runs"], "automatic_native_dispatch": False}))
