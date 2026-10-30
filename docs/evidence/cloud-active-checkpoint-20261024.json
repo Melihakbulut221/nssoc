@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30T18:31:18.834704+00:00",
+  "updated_at": "2026-10-30T19:06:55.275049+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "d459883e8d86f4564c424854f3b5f995e6ec3184",
+  "root_source_before_receipt": "40a31d9bf1865d5c334042c6e327e65c9b2c444d",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 143,
+    "inventory_version": 144,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -25,7 +25,7 @@
     "repair_candidate_branch": "codex/cloud-monitor-main-observation",
     "code_deployed_head": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a",
     "latest_observed_run": 41077552127,
-    "repair_state": "TRANSIENT_GET_RETRY_FIX_REQUIRED",
+    "repair_state": "RETRY_CONTROLS_PASSED_LIVE_MONITOR_ERROR_RETAINED_NOT_DEPLOYED",
     "candidate_qualification_run": 40845545784,
     "live_inventory_check_passed": true,
     "hosted_controls_passed": 72,
@@ -56,40 +56,27 @@
       "sha256": "e1ee2a53f47cb41637480c1e210b66d46fa5a0bcb97db17cfd4fd3e3952eda11",
       "deployed": false,
       "tests_executed": false
-    }
+    },
+    "candidate_qualification": {
+      "source": "aa1bf25d56fbcf526f1c633886f39852507df96d",
+      "run": 41108174342,
+      "proof": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "prefix": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/",
+      "files": 18,
+      "bytes": 184965,
+      "receipt_sha256": "e8e86177f2f70753b4a0c5073a6a73212397fec973eff39b5d03b066b39089a1",
+      "source_controls_tests": 87,
+      "source_controls_passed": true,
+      "full_live_observation": false,
+      "status": "MONITOR_ERROR_HTTP_502",
+      "retry_recovered_one_endpoint": true,
+      "terminal_endpoint_exhausted_three_attempts": true,
+      "run_extra_attempts": 3,
+      "main_deployed": false
+    },
+    "candidate_endpoint_followup": "Read-only exactendpoint later200, conditionalETagGET502, primaryrate4814/5000; intermittentservicefailure rootcauseunproven. Never infer jobendpoint immutability fromrunupdated_at; safe cachingrequiresauthenticatedpreviouscompletejobs plus explicitlyhistoricalageandlivecurrentrunbinding."
   },
-  "active_runs": {
-    "mainchip-multilayer-antenna-trial": {
-      "run": 41106623617,
-      "head_sha": "8bc13f792ef3bc1f02a88f0340180adff72f38cd",
-      "status": "in_progress",
-      "conclusion": null,
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 124238052728,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 124238695237,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 124238773955,
-          "name": "trial",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": []
-        }
-      ]
-    }
-  },
+  "active_runs": {},
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -4818,20 +4805,30 @@
       "last_successful_inventory_version": 141,
       "last_successful_inventory_rows": 390,
       "automatic_native_dispatch": false,
-      "repair_state": "TRANSIENT_GET_RETRY_FIX_REQUIRED",
+      "repair_state": "RETRY_CONTROLS_PASSED_LIVE_MONITOR_ERROR_RETAINED_NOT_DEPLOYED",
       "latest_full_observe_log": {
         "path": "docs/evidence/cloud-collector-recipes-20261029/monitor-41077552127-full-observe.log",
         "bytes": 17956,
         "sha256": "1f03978fff5c4bbda1fccb210f4fc505038c677f774f20a0318f314f39686b70"
       },
-      "repair_draft": {
-        "commit": "8482c9012245b4c95da732522a1980d0f3679234",
-        "path": "docs/evidence/cloud-monitor-transient-get-retry-draft-20261030.json",
-        "bytes": 120538,
-        "sha256": "e1ee2a53f47cb41637480c1e210b66d46fa5a0bcb97db17cfd4fd3e3952eda11",
-        "deployed": false,
-        "tests_executed": false
-      }
+      "candidate_qualification": {
+        "source": "aa1bf25d56fbcf526f1c633886f39852507df96d",
+        "run": 41108174342,
+        "proof": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+        "prefix": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/",
+        "files": 18,
+        "bytes": 184965,
+        "receipt_sha256": "e8e86177f2f70753b4a0c5073a6a73212397fec973eff39b5d03b066b39089a1",
+        "source_controls_tests": 87,
+        "source_controls_passed": true,
+        "full_live_observation": false,
+        "status": "MONITOR_ERROR_HTTP_502",
+        "retry_recovered_one_endpoint": true,
+        "terminal_endpoint_exhausted_three_attempts": true,
+        "run_extra_attempts": 3,
+        "main_deployed": false
+      },
+      "candidate_endpoint_followup": "Read-only exactendpoint later200, conditionalETagGET502, primaryrate4814/5000; intermittentservicefailure rootcauseunproven. Never infer jobendpoint immutability fromrunupdated_at; safe cachingrequiresauthenticatedpreviouscompletejobs plus explicitlyhistoricalageandlivecurrentrunbinding."
     },
     "mainchip_full_antenna_complete_diagnosis": {
       "proof": "9f66fe1c496e209c7fc9b133e597ba78e26d19c1",
@@ -6196,19 +6193,81 @@
       "same_source_log_preserver_job": 124238695237,
       "same_source_log_preserver_success_observed": true,
       "native_job": 124238773955,
-      "status": "in_progress",
+      "status": "completed",
       "scope": "Reuse one existing diode; append3wire paths and3vias across M1/M2/M3; preserve all40original shapes, all othernets1691clocks, fullrawsuccess/failure evidence. FulluncappedDRC0 and targetantenna0 required, noRC/STA/PHYacceptance.",
-      "all_original_numerical_gates_unchanged": true
+      "all_original_numerical_gates_unchanged": true,
+      "workflow_conclusion": "failure",
+      "terminal": {
+        "proof": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+        "prefix": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/",
+        "files": 96,
+        "receipt_sha256": "aa00a9f06f8852e9e026483bcdac925daa9d9a15efc474c94c4261ec5419d05f",
+        "collection_errors": [],
+        "raw_job_logs": 4,
+        "source_records": 19,
+        "native_records": 61,
+        "capsule": {
+          "bytes": 188049577,
+          "sha256": "d06588d9d0770aecc6ad507302224820b18b9e3eaa0128b17430da8e7c5ac104",
+          "members": 38
+        },
+        "independent_archive_reextraction": false,
+        "local_native_acquisition": false,
+        "workflow_conclusion": "failure",
+        "bounded_trial_passed": null,
+        "failure": "audit-import: idempotent actual DEF import",
+        "candidate_DRC_executed": false
+      },
+      "terminal_recipe": {
+        "proof": "d1f0754a132f7acabedddf6f15d4fa5b86a4546e",
+        "path": "docs/evidence/mainchip-multilayer-native-terminal-recipe-41106623617.json",
+        "bytes": 13282,
+        "sha256": "6db1b09204ada44638ceca73e5b740577a55079981b751b616e80accbd0ca620",
+        "script_executed": false,
+        "AST_parsed_only": true
+      },
+      "actual_blocker": "audit-import: candidate-single.def and candidate-double.def differ; fullremainingchip snapshot and exactroute delta passed before this assertion; candidateDRC and measuredantenna were not run.",
+      "candidate_DRC_executed": false,
+      "next": "Observe hosted completearchive DEFdifference41112136960; do not remove exactgate before diagnosticproof."
+    },
+    "mainchip_multilayer_def_diff": {
+      "run": 41112136960,
+      "source": "6a74bb82dbe1ba2421341612899f14940a65e8e1",
+      "attempt": 1,
+      "workflow": 401215446,
+      "branch": "codex/mainchip-net459-diode-prune",
+      "release": 429390680,
+      "tag": "cloud-results-41112136960-1-mainchip-multilayer-def-diff",
+      "empty_before_acquisition": true,
+      "independently_reserved_before_acquisition": true,
+      "physical_acceptance": false,
+      "timing_accepted": false,
+      "full_phy_accepted": false,
+      "source_binding": {
+        "source": "6a74bb82dbe1ba2421341612899f14940a65e8e1",
+        "branch": "codex/mainchip-net459-diode-prune",
+        "workflow": 401215446,
+        "script_sha256": "dfeb3ffdc8aa82a92c5e004655728ce051dfe3f0eaa4548abdc7f2ceb7c194ab",
+        "manifest_sha256": "3449e53b60095b58f56c39c3031a513755380323594349164e0563e74d2a55aa",
+        "protected_files": 100
+      },
+      "independent_source_review": true,
+      "archive_scan_unchanged_from_qualified_source": true,
+      "full_members": 38,
+      "full_expanded_bytes": 1756004573,
+      "local_native_acquisition": false,
+      "scope": "Read-only full native archive stream verification on GitHub, then compare everyline of both nativeDEFs withoutnormalizing. Explicit4MiBoutputbound andfullstreamdifferencehash; no physical or semantic equivalence claim.",
+      "original_idempotence_gate_unchanged": true
     }
   },
   "next_actions": [
-    "All authored tests, native computation/CAD/models/archives/waveforms stay on GitHub runners. Local source/API/static parsing/derived JSON/text only in RAM. Workspace/generated project data and nativeprocesses verifiedabsent; do not acquire nativepayload locally even inRAM.",
-    "Observe one native multilayer run41106623617 exact8bc13f attempt1, workflow401215446, independently pre-reservedpublicrelease429356704. Same-source controls124238052728 and logcollector124238695237 succeeded; trial124238773955 runs. Do not duplicate dispatch. Preserve allcomplete rawlogs/nativecapsule before conclusions.",
-    "Multilayer sourcequalification41105527404 passed10positive46refusal4lifecycle plus alloldsuites; firstcollector failure41103186892 remainspreserved. Source uses existingdiode with3wire/3via additions preserving40oldtargetshapes, allothernets1691clocks. FulluncappedDRC0,targetantenna0 and unchanged otherantenna semantics required; this does not establish finaltiming or fullPHY.",
-    "Electrical41017290646 completed: all8activecasesfailed, bothintentionalfaultsdetected. Full240fileproof0613cae4 preserves original11collectionjoinerrors; corrected36filejoins4980df51 allpass; gate diagnosisd54f9f35 corrects empty-HBT-failure projection. ConstantoneVImean-0.0038218048727381667V failsabs0.002V; nominalearly4selectors minactiveVCE<0.4 and sampler/phasegates fail. Never promote datacorrectness or intentionalfaultsuccess to electricalacceptance.",
-    "Nextanalog: hosted existingcapture diagnostics, exactfreshnode mapping, fourselector simultaneousC/B/E/currentatminimumVCE and constantoneVI167/168/171/172collector/filtersettling. Unsavednodes explicitlyunobserved. Preserve alloriginalgates and completearchiveadmission, no blindidenticalmatrixrerun.",
-    "Monitor scheduled41077552127 MONITOR_ERROR_HTTP_502 retained full17956byteobserve log. Lastusableobservation41011360597 inventory141. Inertretrydraft8482c901 notexecuted/deployed yet; rootreview then cloud87checks beforemain deployment, keep8h/read-only/noautonative.",
-    "ProductionODB remainsa3c6aa0b with609antenna nets697pins916checks; no currentRC/STA. Exactclocks20/4/8/8ns+5%, CDR37.5ps,comparator75ps,UI125ps,100mV,HBTactiveVCE0.4/maxabsVCE1.6/maxabsVBE1/current3mA,PLL62.5ps unchanged. FullserialPHY/routedserialmainchip/finalsetuphold remainunaccepted."
+    "Keep all computation/authored tests/CAD/model/nativearchive/waveform operations onGitHub runners. Local API/source/derivedtext inRAM only; no localfiles ornativeprocesses. Latest direct cloud instruction overridesoldgoalwording.",
+    "Observe ONE exact6a74bb82 readonly archive/DEFdiagnostic run41112136960 attempt1 workflow401215446. Independently reservedempty publicrelease429390680 beforeacquisition. Source100pins, unchangedqualifiedstreamscanner1positive10refusal plusnew7positive2refusal. All38members hashverifiedonrunner beforecompare; no nativepayloadacquisitionlocally.",
+    "Multilayernative41106623617 failedexactbyteidempotence beforecandidateDRC. Complete96fileproofd1ab3745,19source61native records,4fullrawlogs,38member188049577byte capsule d06588d9 allpreserved; collectionerrors0. Do not call this DRCfailure or validphysicalrepair. Originalallothernets1691clocks snapshot andexact40+12targetshapedelta passed before assertion, connectivitycheckwasnot reached.",
+    "AftercompleteDEFdiagnostic, classifyactualdifferences usingfullreport. Ifserialorderonly, prove exactmaterial/connectivity/orderinsensitiveidentity onhost beforeanygatechange. Ifrealroutechange, repairpatchimport. No blindrepeatedexpensivenativerun or removedguard.",
+    "Electrical41017290646 all8activecasesfailed,2intentionalfaultsdetected; fullraw240fileterminal0613cae4+36filecorrectjoins4980df51+diagnosisd54f9f35 preserved inrootv143. Nextanaloghostedcapturediagnosis fourselectorVCEminima andconstantoneVIbranch/filtersettling; originalnumericlimitsunchanged.",
+    "Monitorretrycandidate41108174342 exactaa1bf25d has87/87controlsPASS; actualretryrecoveredone502 thenanotherendpointreturned502threeattempts. Complete18fileproof93a71f04 preserved, fullsnapshotnotqualified, notdeployedtomain. Main8hcode2b79be1a remains; lastschedule410775MONITOR_ERROR. Cachingorboundedtransportimprovement needsindependentdesign/tests; do not hideunobservedrows ashealthy.",
+    "ProductionmainchipODB a3c6aa0b still609antennanets/697pins/916checks andnocurrentRC/STA. Clocks20/4/8/8ns+5%, CDR37.5ps, comparator75ps, UI125ps,100mV,HBTactiveVCE>=.4/maxabsVCE<=1.6/maxabsVBE<=1/emitter<3mA,PLL62.5ps unchanged. FullserialPHY/routedserialmainchip/finalsetuphold remainunaccepted. Existing8h monitorreadonly/noautonativedispatch."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -6586,174 +6645,18 @@
     "observed_41015676075": 41015676075,
     "observed_41017290646": 41017290646,
     "observed_41103186892": 41103186892,
-    "observed_41105527404": 41105527404
+    "observed_41105527404": 41105527404,
+    "observed_41106623617": 41106623617,
+    "observed_41108174342": 41108174342,
+    "observed_41112136960": 41112136960
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 41017290646,
-      "head_sha": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123936417461,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123936771439,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123936822541,
-          "name": "prepare",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123937936473,
-          "name": "loaded (nominal_late)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 123937936500,
-          "name": "loaded (clock_stopped)",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123937936501,
-          "name": "loaded (nominal_early)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 123937936512,
-          "name": "loaded (cold_early)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 123937936515,
-          "name": "loaded (hot_early)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 123937936528,
-          "name": "loaded (hot_late)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 123937936541,
-          "name": "loaded (constant_one)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 123937936586,
-          "name": "loaded (cold_late)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 123937936626,
-          "name": "loaded (constant_zero)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 123937936681,
-          "name": "loaded (vi_bias_off)",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123973115234,
-          "name": "preserve-native-job-logs",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 41103186892,
-      "head_sha": "38584509145daad944a97bd5e73136bbc2ca7504",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 124225146424,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": [
-            "Set up job",
-            "Bind exact source without acquiring native payloads"
-          ]
-        },
-        {
-          "id": 124226323212,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": [
-            "Set up job",
-            "Preserve complete actual logs"
-          ]
-        }
-      ]
-    },
-    {
-      "run": 41105527404,
-      "head_sha": "cc1a1c11a5c8079f064f00a6a7286eae4e94f977",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 124234198806,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 124235036138,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
       "run": 41106623617,
       "head_sha": "8bc13f792ef3bc1f02a88f0340180adff72f38cd",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "failure",
       "run_attempt": 1,
       "jobs": [
         {
@@ -6773,15 +6676,77 @@
         {
           "id": 124238773955,
           "name": "trial",
-          "status": "in_progress",
-          "conclusion": null,
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        },
+        {
+          "id": 124244360494,
+          "name": "preserve-antenna-job-logs",
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 41108174342,
+      "head_sha": "aa1bf25d56fbcf526f1c633886f39852507df96d",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 124243388975,
+          "name": "controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 124243509372,
+          "name": "observe",
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 41112136960,
+      "head_sha": "6a74bb82dbe1ba2421341612899f14940a65e8e1",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 124256726470,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": [
+            "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683"
+          ]
+        },
+        {
+          "id": 124256972416,
+          "name": "readback",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 124257936527,
+          "name": "preserve-job-logs",
+          "status": "completed",
+          "conclusion": "success",
           "active_steps": []
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-30T18:31:18.834704+00:00",
+    "observed_at": "2026-10-30T19:06:55.275049+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -6921,7 +6886,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-30T18:31:18.834704+00:00",
+  "local_workspace_verified_empty_at": "2026-10-30T19:06:55.275049+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -63094,6 +63059,961 @@
       "timing_accepted": false,
       "full_phy_accepted": false,
       "release_id": 429356704
+    }
+  ],
+  "imported_checkpoint_receipts_v144": [
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-recipe-41106623617.json",
+      "source": "d1f0754a132f7acabedddf6f15d4fa5b86a4546e",
+      "git_blob": "d2005587d9ab0206863493da1aafdd2969642963",
+      "bytes": 13282,
+      "sha256": "6db1b09204ada44638ceca73e5b740577a55079981b751b616e80accbd0ca620",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/jobs.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "9af88015ac87c8fe3a9eefc1639c627557f57e60",
+      "bytes": 3947,
+      "sha256": "a2f56df315709f43b48a5e07506088aba4e98b2dc32ab08b6183f36c856c9a14",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/jobs/124238052728.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "548e18c4dae3dd44f31111938f08934985ae74b0",
+      "bytes": 979,
+      "sha256": "491dfa7568fe1b5c8e03bebe30a26e33cc3396007c49ccd0d0704fd89ed04a44",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/jobs/124238695237.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "2cdf9ebe78dd457036f379245c2beb2d00896255",
+      "bytes": 980,
+      "sha256": "0f0eef972196a0b6d2b72985608d606b0509e3186964000b638f44fd38e55107",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/jobs/124238773955.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "bf6124fd4c4744ae7c38ffa3c45019ee8be90d0e",
+      "bytes": 969,
+      "sha256": "14f7102f55ef3f2393559f15f2cb1a55ec4005d30786309b95e65d9275594faa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/jobs/124244360494.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "11aa338582364c7d03665eb457a548aa4c56b901",
+      "bytes": 989,
+      "sha256": "f4d250cabf5291cfd8f5dfe52dd133cf18868dc996c370dc41ffc015900eb465",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/logs/124238052728.log",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e977168a16d861c5f61fa19e188b269171eca05c",
+      "bytes": 235595,
+      "sha256": "2443c9e339fe21839820815b121fa6bd2837fc1ed2dd06799144e3a7bce663d3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/logs/124238695237.log",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "87f6779b182b869a20e08c92cf815851ed167a03",
+      "bytes": 7738,
+      "sha256": "0cd0ebef9ef6f5af584c158d49ddd991294f3fe5ed4649bec94f72e14dbcca9c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/logs/124238773955.log",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "924f9981e0aca72f322ca6d64ac7c5caa3a7c1a1",
+      "bytes": 262550,
+      "sha256": "8ae1bd8d2dd8b58e95cf7e82c1ed6ce1ba0f6b733d61f4b482a88d8c7ee545b2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/logs/124244360494.log",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "95bfc770b93f3427a266438345bbc0e8a809a28e",
+      "bytes": 7322,
+      "sha256": "c8178d93126ae4fb4302e3597cf1d4f450d88b5fc48e3dbe4fe3ab96e0fb24b5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-record-index.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "8382067b38e08d9e443365e59d3b4f7222022fd9",
+      "bytes": 8979,
+      "sha256": "cc22991e53f6e8543354edadc4ef6b239b097ab379fdf72f47dc9c875e4d40aa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/current-input-restoration.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "cee29b0e640f6b1a4cec4b5b1def8156c7da5606",
+      "bytes": 10331,
+      "sha256": "413829c5e2d5c505f8d1dce1edaa250e8aa5ad688c9731012ac018a89ee9008d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/download-candidate-native.tar.gz.part000.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/download-candidate-outputs.json.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/download-candidate-parts.json.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/failure.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "b54993bfa588049b24b54fe694aa345a177dd6a4",
+      "bytes": 13599,
+      "sha256": "efa873a939f11356b8270fb5e99d8957490ebfb89867198a7416bc938e5a791d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native-capsule-publication.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "df75860ce3b04a028532fa4c8dec6d5e0bc02070",
+      "bytes": 7238,
+      "sha256": "4d7b82437006e2e603b0071f427f096cb2be2b0b30c8963313de441bcc6dc749",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/antenna-owned-container.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "54db56321976400d02a5b096abf06264360ddcf9",
+      "bytes": 1027,
+      "sha256": "8e7d1e572a571c2e421080147ffe65145094ca588187f4c29030e222dd27b6a6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/antenna-owned-container.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/container-terminal.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "73041ff96b7da570955e59822db5a169703e89f5",
+      "bytes": 6859,
+      "sha256": "ae2f73ebc382c7977be4d1e39b00c12af6f3697d11195f3f92ccd9cd56b2d7a5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/create-attempt.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "c39fae4b967a3c6dc84dd2a224435d5a89b2c8bd",
+      "bytes": 1233,
+      "sha256": "47cc70989d46302f5e096610f179ef647fb98b33099665ed05576e0e7f208fb2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/host-progress.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "6f5d6eab215a42a120c44b7762ad3d5a7872e8c6",
+      "bytes": 13121,
+      "sha256": "57394c9ee297d01779aa5e5022c4367bdfab1f094df0040be9d7fad04c66eea0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/image-inspect.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/image-inspect.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "5f14467c13bded4f3f23b621ad0daad05ad6c340",
+      "bytes": 2643,
+      "sha256": "c9dc178105a2cd1673524406e20065e1b14caecd9195c7a6f528837d2461690e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/immutable-image-pull.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/immutable-image-pull.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "aad50b344d7cfc5ff1a0daa51dadd531a65466c4",
+      "bytes": 837,
+      "sha256": "879fa53f847ee2ceb691dfe072cabf6d4f5b5e402d149f011bc039aea6efd950",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-antenna-trial/actual-branch-via-catalog.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "d2a0edae849a75589bf9354324442e5479aea35e",
+      "bytes": 3929,
+      "sha256": "e7da75d4275b0701d65713bd2f5c5d75c07f9bb72daf9a0d813e8551cbaa3e70",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-antenna-trial/audit-import-failure.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "54bd1ed8314e1965bcf92b2ce1a58e32e3e7a6fa",
+      "bytes": 898,
+      "sha256": "17840cf45de18734c2526041217a455c83993bde8bb652555041fc0830302e9e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-antenna-trial/audit-import-terminal.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "14fe6a51c961b153b49c92f49aac8f192edc4a93",
+      "bytes": 227,
+      "sha256": "de7a605a2663dfdf54dfdd8ea2c0457a671c34d0880c92794d61ed69d25195ec",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-antenna-trial/baseline-connectivity.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "a7435c87dcc92350914c78f7bc872da5383cf077",
+      "bytes": 68813,
+      "sha256": "822000ca2295e418e5293ef889828bccb8fa7033f98b42be9c88d27b6f9622aa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-antenna-trial/baseline-snapshot.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "c69176b7918b7f37e89ab9f4e22abcb8c001722f",
+      "bytes": 58679,
+      "sha256": "0112745f1c3f5eae6195daf5794d13443a5a8ddb0f1cdf56ce478b8ec9d97f77",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-antenna-trial/baseline-target.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "ac9744f426a8dadab54eac9b95b2ba2070c968f4",
+      "bytes": 43042,
+      "sha256": "25ab9a38e624dbd03386c9b34b2fd396863ef6497f188ae6e79a4af534fe8e4e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-antenna-trial/plan.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "0590dd92743dd830107a8acc46cfc0eee2992efa",
+      "bytes": 8792,
+      "sha256": "56378e21a3e988e5767564d2df58e9bc69041904f11c9d457c3cbfd065ad8db8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-antenna-trial/prepare-result.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "3ce838c3736a2bd0c85ee6c0e4ee7b5a73222797",
+      "bytes": 10045,
+      "sha256": "95ae5bb1d5fe8cd203799db7ef9726b58a4a9fa75f107dba9cf797ef9269f53f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-antenna-trial/prepare-terminal.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "fcdb73ed27b17d13f5b816dd8dd91c1d65b4b1cf",
+      "bytes": 177,
+      "sha256": "e1f61e85bbaf1c61d03bca18d0e0fd4045a288d298f6d8817d5cd8905cd6b008",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-audit-import.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "6f495084b7138f56229c597c962fabea63de5e1b",
+      "bytes": 1299,
+      "sha256": "bb1ade43c8f3d11f16152aedf546409e7f00fe78ebdf3d53a06642139f679d15",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-audit-import.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "8ab24468e0c4b920dcd20e53c7c60371c7532e64",
+      "bytes": 285,
+      "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-baseline-ant.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-import.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-import.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "8daf4ee72fd971682a75059bee9bcecf18eb1083",
+      "bytes": 823,
+      "sha256": "378bd90b691a33f91106097c45005c72e0160a2b6fe095e5e62ee74c91f31c63",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-inner-progress.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "8e9a25108aba5797f7f4c21fb10fbf7f20da6a4c",
+      "bytes": 5689,
+      "sha256": "0c37f407dbf60ed85d5f77d781c616e0ad0cf97a6592744b267ec4f900982480",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-inner-result.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "75a553e052699d02eacc053d44233956af0341c0",
+      "bytes": 19942,
+      "sha256": "26446c94fd32caa06686535eeb26de3a2801780394345e19bfe3548781d1a360",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-ldd.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-ldd.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "7a0cff48c501ebe8c6738f97bc2667f82e9f70b4",
+      "bytes": 10979,
+      "sha256": "4c5b92782bb2d53bed6cba8d0c52e0c0f1028198744df60fb5734b1fc8d5664a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-prepare.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-prepare.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "8ab24468e0c4b920dcd20e53c7c60371c7532e64",
+      "bytes": 285,
+      "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-runtime-observed.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "534b24cdcf542b98ad1ae9c29197ed1e2ad5ccd8",
+      "bytes": 16940,
+      "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-version.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-version.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "233850439374365fe2cb6382f30eeb73ca08fca5",
+      "bytes": 42,
+      "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/names-before-owned-create.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/names-before-owned-create.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/owned-container-create.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/owned-container-create.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "eb9d3a83bb652fa49ab729ec68738086628f4eee",
+      "bytes": 65,
+      "sha256": "30d60fd9a3af420aaf3107ff10f8678c7bff5fc25bc0ab698b8db1b104d3c5e7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/owned-container-remove.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/owned-container-remove.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "eb9d3a83bb652fa49ab729ec68738086628f4eee",
+      "bytes": 65,
+      "sha256": "30d60fd9a3af420aaf3107ff10f8678c7bff5fc25bc0ab698b8db1b104d3c5e7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/owned-removal-census.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/owned-removal-census.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/prefix-envelope.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "bc75a7ec8ebe4d620ae64c4e45f266b1f11383fa",
+      "bytes": 4270,
+      "sha256": "11281aedb0c83745f8126820b9c3c5421c20ed572e48bda55356f5d68c8313fb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/prefix-restoration.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "8e316db083b1571e763c01308ee1756c172c934c",
+      "bytes": 423478,
+      "sha256": "23f45038bb461360ec38c7a2490ba24c84db2f9dd3a53e8b2e689201d693d177",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/producer-binding.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "8c192e929909c920e86e66d46c4a83f4d0327af9",
+      "bytes": 454,
+      "sha256": "689e67bfca5475168d4562bff451ae779ce31d2244e4bf47c3be8b7c3f2237bf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/producer-jobs.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "b8669ed64ced53e2704aaded3c7c37cbfe7c0646",
+      "bytes": 17887,
+      "sha256": "c3ce060ef9055a4fd4b1c278a556e44d9e4efd0d98154c56ceab5394993bb897",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/producer-ref.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "f1859a8827be43e0b0457964c16924f2690bd46e",
+      "bytes": 555,
+      "sha256": "057692967f6413281dd5bb610ef325b39c05781c9cc532d9cdb945aa6e6d9b14",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/producer-release.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "69c0d48f71b09b43eacb05a1a5e08b6dd1198ac5",
+      "bytes": 8567,
+      "sha256": "abb343819c8ba59c78f042f0694e721bdf1431c55f5a80e758dc3d629539ed07",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/producer-run.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "f643177aee76437eea1585b4fe48296154e6a339",
+      "bytes": 14435,
+      "sha256": "5894926c7a786ebfbce506a360c805c6d959e936a40265ac5c2903b1f532ac82",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/publication-candidate-native.tar.gz.part000.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/publication-candidate-native.tar.gz.part000.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/publication-candidate-outputs.json.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/publication-candidate-outputs.json.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/publication-candidate-parts.json.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/publication-candidate-parts.json.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/reservation.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "929005ebb7ccf20994262123514237f71c8c47a0",
+      "bytes": 594,
+      "sha256": "66611055793ff675d7dc511ba3419898b12a788a5198b269162925ed63107cfe",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/result.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "eb065de10be710b5cfc90457ce2bc0b7d6a87abc",
+      "bytes": 62830,
+      "sha256": "8c9114ae4144329852a8b48a1bdf65fd44b1834abaddcd0ecaaa322e094234ea",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/receipt.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "694dce4a533a6964171b4f000e57a84b17619c24",
+      "bytes": 41372,
+      "sha256": "aa00a9f06f8852e9e026483bcdac925daa9d9a15efc474c94c4261ec5419d05f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/release-derived/candidate-outputs.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "88782640275a54d4984a8a248046f42260ac2057",
+      "bytes": 6451,
+      "sha256": "43559ba03173c45e924919e3ed64e1972d2567c2f68d203a7913b59996fc903b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/release-derived/candidate-parts.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "025a9abe81c6c3fbefb7b5a9f5c5c74184fa42c0",
+      "bytes": 316,
+      "sha256": "a157203b7727b008a386485ac45b9d74c8b3e17fdaf91b98dca1fa939684bfe5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/release-ref.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "df44bf927dee48c0772173a504451ca8789717de",
+      "bytes": 529,
+      "sha256": "16acec0e05f93d5ebe533e7a57246db4fd2596d955ddee65b4dbafabb3513592",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/release.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "2cfc241ff29901e99f1a4c7437591ba64a90a88f",
+      "bytes": 7377,
+      "sha256": "5dba51facc6fe76a7e5212c50fdbdafde26d0a351eeb8a15c96999f9978c654a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/run.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "eba774f852bd12fad57b8830329279e8a8f49403",
+      "bytes": 13125,
+      "sha256": "b875e549bf801ff6e20836c92d1baaf98629ceaba0bdf673d5200b4c6b582602",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/antenna-controls.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "3ff404a2596ed2c268ca8ffd750d53b337919302",
+      "bytes": 2244,
+      "sha256": "bde809b59940a3026993740a1cb09a43d197ca4b0aa0a2720b14dd6cc8e3de75",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/antenna-controls.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/antenna-controls.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "a3b5fb0ec6d2e1694f143fb52bfd46f5898c63af",
+      "bytes": 1958,
+      "sha256": "e9f4fe084da5a06b367745dd04af5fe71ab2f8b9fb164b2fdc644134778f8bc2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/context.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "7eb399d3e4353092206f9af08552035894a6c2ab",
+      "bytes": 3408,
+      "sha256": "ba3f2687f89ca35c05746289b6669243be2c089dfcba016362d8f5cb5233301a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/controls.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "a49f7e03bdadcab8a998dca561b87085e4b8d809",
+      "bytes": 74835,
+      "sha256": "6ae78faf0c2bb93580b6fcc99f53dd960b1414539ba848dca32e7f4d8183ad6f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/controls.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/controls.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "f6ef5e51453d2d03553ebaf65d524544625a1197",
+      "bytes": 38643,
+      "sha256": "628bd19436ffa10a8ebf4bb5d9f2f82f8a9a05a9bc262f4a4a8b5da334acfd09",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/multilayer-controls.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "a81b795660bdea7cdc7cdca6c14d06cf9b250c70",
+      "bytes": 2346,
+      "sha256": "79915003f23b25901703f529396aa232ab7618bf8a85fdeaaa9361eab284bcde",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/multilayer-controls.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/multilayer-controls.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "7849581c3dd3bd3cf02e8eb3c5babde3bc8a2de7",
+      "bytes": 2347,
+      "sha256": "552b4f4f003d79d5b37464713a23233406971485c02c91bf1fa52c83c964de7f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/ownership-controls.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "dce3f26fb7b5e535dbfa601c573a1f42074e7351",
+      "bytes": 1035,
+      "sha256": "1b1327adc59e7bbd088f9c37293e58323a0e2cc2e1f0f96ec5f23cc2cae64aa3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/ownership-controls.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/ownership-controls.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "0c6522c4544932fc5797c4859b8aea7fc1e16d81",
+      "bytes": 899,
+      "sha256": "c60c7c348f47b65ff3ffbc0208f036ea940a2369774bcb9d4df3bf30096232ce",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/trial-controls.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "195facc91e19a782bec7c351b4379bb914ce8164",
+      "bytes": 2191,
+      "sha256": "1ac6fbead71ad3aff8b179e330d698a49347695ee607364955fc1c4e1330112b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/trial-controls.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/trial-controls.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e083c7e5d650c1749a29b9fc19564b74b202590c",
+      "bytes": 1933,
+      "sha256": "8c2c8292e5d6852f3c3741b305e821f11cfe1c5bbf2901ad28013309bbbbbfd6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/window-controls.json",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "c18acc83a5ac03cdb806bbb7d6705685f2a4098a",
+      "bytes": 5647,
+      "sha256": "a2883d78e88d3722c970698f51f512a5c73b047543d7451ed4a70e1cb8543a52",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/window-controls.stderr",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41106623617/source-records/window-controls.stdout",
+      "source": "d1ab37458c75a8ebb4fb3823fbc46dace7e529c9",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-def-diff-source-draft-20261030.json",
+      "source": "8769dea8355a92af8e5463024edbda5c42783ef2",
+      "git_blob": "83c25e2bcd5fc0cc1dbbe513ed097d643af1f880",
+      "bytes": 37590,
+      "sha256": "80d187008d869183a8ce9d2cb5ff409205c81c00e8a5b2afa2df4cadb7352e14",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-def-diff-activation-review-20261030.json",
+      "source": "6a74bb82dbe1ba2421341612899f14940a65e8e1",
+      "git_blob": "d84a550ffc6ba81aae84c5e0b3dd04591c134efb",
+      "bytes": 760,
+      "sha256": "b76ebf1103b9f92a1ddd6842b7ddea1f0ba088b1f457faa6e4cb293b54033a15",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/artifacts.json",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "ac1dfbd5cf98deefb21b08f301285e4d6774cfa1",
+      "bytes": 934,
+      "sha256": "38270017508a9954d7a7bcd9d78b6f669afe89e277b011f4c2eb1045c764686b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/candidate-ref.json",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "0b78ebdcac683697d5a8ae870f3daf807330c7be",
+      "bytes": 498,
+      "sha256": "b2b1e25852afa468bb2eef8695938e62a905067e0065f54d6ebf164251e9be8c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/controls.json",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "a5b6f639f689f081e7118efc9ad7c274a7f78555",
+      "bytes": 15900,
+      "sha256": "ec852f85bd5ec01798df03f381f0b822b6b0df105ddb0e9ce58e80db5df75d9e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/inventory/cloud-progress-monitor-runs-000.json",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "7c8ed93571da29b6a9b39ef7d6021e27771143a3",
+      "bytes": 43550,
+      "sha256": "de290d2b44557dd2ae7c84621b5aa64be5e6477e910f98426705a30a1caf1eb5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/inventory/cloud-progress-monitor-runs-001.json",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "c30c2206c8ca4208df71dd9b0a64a5e5c3560c01",
+      "bytes": 45117,
+      "sha256": "102ba16f5ca77662b56797b7e41bf182accd25a301015d10bd95de75325f3737",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/inventory/cloud-progress-monitor.json",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "c88d7e6cf017969a7bf127f2b3773de6b80c42f7",
+      "bytes": 1216,
+      "sha256": "52cd081ab1cb7a1e3bf34161c7661265453d9c1021731516032b86819847a600",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/job-controls.json",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "3203e7cafbab5776f829ce694cce81ae9d24c38e",
+      "bytes": 1040,
+      "sha256": "6ce6e598b0e0c8b5016f266fe3e49367c31ca04f39ba435d4df403a9083bf944",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/job-observe.json",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "f54df85e0129b5c5843b799de86c0f8839aa0a5d",
+      "bytes": 1039,
+      "sha256": "2d39fefb1bd795dbf513bc12ddabd31140edfe1527545b69c50c1b29e1ca59c2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/jobs.json",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "dc81fdfd2e617fd8b66d66d4ba4f766b5f34f465",
+      "bytes": 2336,
+      "sha256": "407e8210b8b1bf20116a82753ccb138de2217ccfa510f1fb1d2dba68315684e9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/logs/controls.log",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "5a5ca1522fa88187a8948f349a4b930493dadc45",
+      "bytes": 25342,
+      "sha256": "182c30611f2dccf35028ce358268415b1cfffde8b78d59472c911add65143435",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/logs/observe.log",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "b3ab23e206211b80a9d9c2e8c259ae3935c7e42b",
+      "bytes": 16961,
+      "sha256": "151b7f821fd153b12c0f120d0b9b20a14f4eb6819cc25657742e164b2e865f56",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/receipt.json",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "ad7f8c837968a3114fe4d775641a0d22976eeeef",
+      "bytes": 4734,
+      "sha256": "e8e86177f2f70753b4a0c5073a6a73212397fec973eff39b5d03b066b39089a1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/result.json",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "b2837958b8ee7a68e7e96693f5a5bdeea4717907",
+      "bytes": 3435,
+      "sha256": "fd024317f11600dc4f64120cfe561905dc953cf22a2d5cc632817b2991d0c0ad",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/run.json",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "a192cfa4e68fe5d5b7e0f6be8f92191082641d99",
+      "bytes": 14358,
+      "sha256": "d63c038f2bac47bfee94a6a95f14093bd69a43111c02e3d00414ffa946bc6549",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/snapshot-artifact-readback.json",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "86469bc023023a17380b364659c76741ba705f17",
+      "bytes": 1953,
+      "sha256": "78cfd7ef74b1277608b59e51633bfad4a16071e781f25b8d26c007961614950d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/source-binding.json",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "81446b6221c626b74a52bee71658fd7fab8f3b84",
+      "bytes": 1410,
+      "sha256": "c63bc396d16b8fbfcf4f00db09c882c37a7c81365331e2d976882f8689b68cc9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/verification.json",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "34c5a0c20dd6f5a0e451dbb330aec5b3c62a86d4",
+      "bytes": 4566,
+      "sha256": "14df83184f56934a1fb26ca2d53896d14b3fa337cf29a2e5e62c0c21bc25f827",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-transient-get-retry-terminal-41108174342/workflow.json",
+      "source": "93a71f0461eac373b0afface2059a6b4bf1e798d",
+      "git_blob": "a86403fa650f0f11ced6e10245a04803dbc13c5e",
+      "bytes": 576,
+      "sha256": "4bb55b6ba16def9752013e0b3ab5b1ecb2f99789a1656886b2ee4adce2dce64f",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v144": [
+    {
+      "run": 41112136960,
+      "source": "6a74bb82dbe1ba2421341612899f14940a65e8e1",
+      "attempt": 1,
+      "workflow": 401215446,
+      "branch": "codex/mainchip-net459-diode-prune",
+      "release": 429390680,
+      "tag": "cloud-results-41112136960-1-mainchip-multilayer-def-diff",
+      "empty_before_acquisition": true,
+      "independently_reserved_before_acquisition": true,
+      "physical_acceptance": false,
+      "timing_accepted": false,
+      "full_phy_accepted": false,
+      "release_id": 429390680
     }
   ]
 }

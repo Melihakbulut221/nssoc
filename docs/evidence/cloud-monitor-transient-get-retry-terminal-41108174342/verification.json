@@ -1,0 +1,125 @@
+{
+  "attempt": 1,
+  "automatic_native_dispatch": false,
+  "controls_conclusion": "success",
+  "full_phy_accepted": false,
+  "limitations": [
+    "This is a real HTTP 502 MONITOR_ERROR, not the expected ATTENTION_REQUIRED exit for retained failed engineering runs.",
+    "The unchanged main failure envelope records runs=[]; it does not preserve partial rows already visited inside collect. Full 398-row inventory authentication is input binding, not proof those 398 runs were observed.",
+    "Full raw failure log, retry history, metadata and raw result are preserved without reclassification as success.",
+    "No retry limit was raised, no missing historical run was deleted, and no native/physical/timing acceptance is inferred."
+  ],
+  "observe_conclusion": "failure",
+  "physical_acceptance": false,
+  "qualification": {
+    "deployment_ready": false,
+    "full_live_snapshot_qualified": false,
+    "main_deployed": false,
+    "new_dispatch_performed_after_failure": false,
+    "one_live_transient_recovery_observed": true,
+    "source_controls_qualified": true
+  },
+  "root_inventory": {
+    "all_shard_and_combined_count_hash_joins_verified": true,
+    "all_three_document_bytes_and_git_blob_sha_verified": true,
+    "bootstrap": false,
+    "head": "40a31d9bf1865d5c334042c6e327e65c9b2c444d",
+    "inventory_schema": 2,
+    "inventory_version": 143,
+    "run_count": 398,
+    "runs_sha256": "4fd1a56f84e114705a4de443a9fcbf76a259424299aa02dd232f637c19cd777b"
+  },
+  "run": 41108174342,
+  "schema": 1,
+  "snapshot": {
+    "bytes": 3435,
+    "complete_live_observation": false,
+    "error": "HTTPError: HTTP Error 502: Bad Gateway",
+    "observed_run_rows": 0,
+    "path": "result.json",
+    "sha256": "fd024317f11600dc4f64120cfe561905dc953cf22a2d5cc632817b2991d0c0ad",
+    "source_run_binding": "Actual raw failure envelope lacks monitor_source/monitor_run fields. Exact source/run is established externally by immutable run/job metadata, checkout hash in both full logs and artifact workflow_run metadata; no fields were inserted into raw result.json.",
+    "status": "MONITOR_ERROR"
+  },
+  "source": "aa1bf25d56fbcf526f1c633886f39852507df96d",
+  "source_controls": {
+    "actual_tests": 87,
+    "log_sha256": "182c30611f2dccf35028ce358268415b1cfffde8b78d59472c911add65143435",
+    "new": 15,
+    "old": 72,
+    "passed": true
+  },
+  "status": "SOURCE_CONTROLS_PASSED_LIVE_OBSERVATION_FAILED_CLOSED",
+  "timing_accepted": false,
+  "transport": {
+    "bounds_unchanged": true,
+    "extra_attempts": 3,
+    "first_endpoint_recovered": true,
+    "history": [
+      {
+        "attempt": 1,
+        "delay_seconds": 1,
+        "event": "http_error",
+        "extra_attempts_used": 0,
+        "http_status": 502,
+        "method": "GET",
+        "path": "actions/runs/40182500368/attempts/1/jobs?per_page=100&page=1",
+        "reason": "retry_scheduled",
+        "response_closed": true,
+        "retry_scheduled": true,
+        "retryable": true
+      },
+      {
+        "attempt": 2,
+        "event": "recovered",
+        "extra_attempts_used": 1,
+        "method": "GET",
+        "path": "actions/runs/40182500368/attempts/1/jobs?per_page=100&page=1"
+      },
+      {
+        "attempt": 1,
+        "delay_seconds": 1,
+        "event": "http_error",
+        "extra_attempts_used": 1,
+        "http_status": 502,
+        "method": "GET",
+        "path": "actions/runs/40185260899/attempts/1/jobs?per_page=100&page=1",
+        "reason": "retry_scheduled",
+        "response_closed": true,
+        "retry_scheduled": true,
+        "retryable": true
+      },
+      {
+        "attempt": 2,
+        "delay_seconds": 2,
+        "event": "http_error",
+        "extra_attempts_used": 2,
+        "http_status": 502,
+        "method": "GET",
+        "path": "actions/runs/40185260899/attempts/1/jobs?per_page=100&page=1",
+        "reason": "retry_scheduled",
+        "response_closed": true,
+        "retry_scheduled": true,
+        "retryable": true
+      },
+      {
+        "attempt": 3,
+        "delay_seconds": 0,
+        "event": "http_error",
+        "extra_attempts_used": 3,
+        "http_status": 502,
+        "method": "GET",
+        "path": "actions/runs/40185260899/attempts/1/jobs?per_page=100&page=1",
+        "reason": "per_request_limit",
+        "response_closed": true,
+        "retry_scheduled": false,
+        "retryable": true
+      }
+    ],
+    "last_endpoint_exhausted_per_request_limit": true,
+    "maximum_attempts_per_GET": 3,
+    "maximum_extra_attempts": 4,
+    "run_budget_not_exhausted": true
+  },
+  "workflow_conclusion_preserved": "failure"
+}

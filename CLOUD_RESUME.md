@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v143
+# Cloud continuation — checkpoint v144
 
-Updated: 2026-10-30T18:31:18.834704+00:00
+Updated: 2026-10-30T19:06:55.275049+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint v143: the fresh-RC ten-case electrical matrix41017290646 completed and all full evidence is permanently preserved. Eight active cases failed genuine electrical gates; two intentional faults were detected. Corrected collection joins and detailed HBT/VI diagnosis are additive and retain original failed collection evidence. The multilayer existing-diode successor passed source qualification41105527404; one native trial41106623617 at exact8bc13f is running after independently reserving release429356704. Same-source controls and full log preservation passed. Latest8h monitor41077552127 hitHTTP502; complete failurelog and inert retrydraft are preserved, not yet deployed. Local project data remain absent; no physical/finaltiming/fullPHY acceptance claimed.
+Cloud-only checkpoint v144: multilayer trial41106623617 stopped at exact DEF double-import idempotence before candidateDRC. All96files/4rawlogs/61native records and complete38member capsule are permanently preserved. One hosted read-only completearchive/DEFdifference41112136960 at exact6a74bb82 is now dispatched with independentemptyrelease429390680 and100sourcepins; all originalacceptancegates unchanged. Monitorretry candidate41108174342 passed87controls but fullobservation hitpersistentHTTP502 after genuine retries;18filefailureproofpreserved andmainnotchanged. Localprojectworkingdata/processes remainabsent.
 
-Active handles at this snapshot: 41106623617 in_progress
+Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9206,3 +9207,10 @@ Local project/tmp/native processes verified absent. Inventory395 exact cloud han
 Cloud-only checkpoint v143: the fresh-RC ten-case electrical matrix41017290646 completed and all full evidence is permanently preserved. Eight active cases failed genuine electrical gates; two intentional faults were detected. Corrected collection joins and detailed HBT/VI diagnosis are additive and retain original failed collection evidence. The multilayer existing-diode successor passed source qualification41105527404; one native trial41106623617 at exact8bc13f is running after independently reserving release429356704. Same-source controls and full log preservation passed. Latest8h monitor41077552127 hitHTTP502; complete failurelog and inert retrydraft are preserved, not yet deployed. Local project data remain absent; no physical/finaltiming/fullPHY acceptance claimed.
 
 Local project/tmp/native processes verified absent. Inventory398 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-30T19:06:55.275049+00:00 — cloud-only checkpoint v144
+
+Cloud-only checkpoint v144: multilayer trial41106623617 stopped at exact DEF double-import idempotence before candidateDRC. All96files/4rawlogs/61native records and complete38member capsule are permanently preserved. One hosted read-only completearchive/DEFdifference41112136960 at exact6a74bb82 is now dispatched with independentemptyrelease429390680 and100sourcepins; all originalacceptancegates unchanged. Monitorretry candidate41108174342 passed87controls but fullobservation hitpersistentHTTP502 after genuine retries;18filefailureproofpreserved andmainnotchanged. Localprojectworkingdata/processes remainabsent.
+
+Local project/tmp/native processes verified absent. Inventory400 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
