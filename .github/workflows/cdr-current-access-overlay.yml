@@ -40,7 +40,7 @@ jobs:
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           p=Path('scripts/cdr-drain-m1-fresh-graph-pins.json')
           assert p.is_file() and not p.is_symlink()
-          raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()=='e41a24934684a6be50956b534446e06e7dae737dd82b33299fcf7db3a7e480e7'
+          raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()=='667a795dc4ad5ce07055c23fc8da15dbeb3fb2e1c7ecaac1a69cb03866f89ccd'
           manifest=json.loads(raw);assert len(manifest['protected_sha256'])==1213
           pins=manifest['protected_sha256']
           for name,digest in pins.items():
@@ -50,7 +50,7 @@ jobs:
           (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run=int(e['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_acquisition=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,sha256=pins),sort_keys=True,indent=2)+'\n')
           PY
       - name: Exercise archive refusal and failure preservation controls
-        run: python3 -B scripts/check_cdr_drain_m1_fresh_graph.py --pins-sha256 e41a24934684a6be50956b534446e06e7dae737dd82b33299fcf7db3a7e480e7 --output cdr-access-overlay-controls/controls.json > cdr-access-overlay-controls/controls.stdout 2> cdr-access-overlay-controls/controls.stderr
+        run: python3 -B scripts/check_cdr_drain_m1_fresh_graph.py --pins-sha256 667a795dc4ad5ce07055c23fc8da15dbeb3fb2e1c7ecaac1a69cb03866f89ccd --output cdr-access-overlay-controls/controls.json > cdr-access-overlay-controls/controls.stdout 2> cdr-access-overlay-controls/controls.stderr
       - name: Require actual complete control results
         run: |
           python3 -B - <<'PY'
@@ -155,7 +155,7 @@ jobs:
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           p=Path('scripts/cdr-drain-m1-fresh-graph-pins.json')
           assert p.is_file() and not p.is_symlink()
-          raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()=='e41a24934684a6be50956b534446e06e7dae737dd82b33299fcf7db3a7e480e7'
+          raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()=='667a795dc4ad5ce07055c23fc8da15dbeb3fb2e1c7ecaac1a69cb03866f89ccd'
           manifest=json.loads(raw);assert len(manifest['protected_sha256'])==1213
           pins=manifest['protected_sha256']
           for name,digest in pins.items():
@@ -186,9 +186,9 @@ jobs:
           Path('release-reservation.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
           PY
       - name: Recheck actual same-source controls before acquisition
-        run: python3 -B scripts/check_cdr_drain_m1_fresh_graph.py --pins-sha256 e41a24934684a6be50956b534446e06e7dae737dd82b33299fcf7db3a7e480e7 --output cdr-access-overlay-controls/controls.json > cdr-access-overlay-controls/controls.stdout 2> cdr-access-overlay-controls/controls.stderr
+        run: python3 -B scripts/check_cdr_drain_m1_fresh_graph.py --pins-sha256 667a795dc4ad5ce07055c23fc8da15dbeb3fb2e1c7ecaac1a69cb03866f89ccd --output cdr-access-overlay-controls/controls.json > cdr-access-overlay-controls/controls.stdout 2> cdr-access-overlay-controls/controls.stderr
       - name: Verify current producer and independent reservation before acquisition
-        run: python3 -B scripts/cloud_cdr_drain_m1_fresh_graph.py --preflight --pins-sha256 e41a24934684a6be50956b534446e06e7dae737dd82b33299fcf7db3a7e480e7 --reservation release-reservation.json --controls-proof cdr-access-overlay-controls/controls.json --output access-overlay-preflight.json > access-overlay-preflight.stdout 2> access-overlay-preflight.stderr
+        run: python3 -B scripts/cloud_cdr_drain_m1_fresh_graph.py --preflight --pins-sha256 667a795dc4ad5ce07055c23fc8da15dbeb3fb2e1c7ecaac1a69cb03866f89ccd --reservation release-reservation.json --controls-proof cdr-access-overlay-controls/controls.json --output access-overlay-preflight.json > access-overlay-preflight.stdout 2> access-overlay-preflight.stderr
       - name: Acquire pinned native runtime only after authenticated preflight
         run: |
           sudo apt-get update
@@ -199,7 +199,7 @@ jobs:
           proof=json.loads(Path('access-overlay-preflight.json').read_bytes())
           assert proof['current_context']['source']==os.environ['GITHUB_SHA']
           assert proof['current_context']['run_id']==int(os.environ['GITHUB_RUN_ID'])
-          assert proof['source_manifest_sha256']=='e41a24934684a6be50956b534446e06e7dae737dd82b33299fcf7db3a7e480e7'
+          assert proof['source_manifest_sha256']=='667a795dc4ad5ce07055c23fc8da15dbeb3fb2e1c7ecaac1a69cb03866f89ccd'
           config=json.loads(Path('scripts/cdr-drain-m1-fresh-graph-inputs.json').read_bytes())
           dest=Path(os.environ['RUNNER_TEMP'])/('cdr-access-runtime-'+os.environ['GITHUB_RUN_ID'])
           assert not dest.exists();dest.mkdir()
@@ -216,7 +216,7 @@ jobs:
           Path('access-runtime-receipt.json').write_text(json.dumps(dict(url=url,sha256=digest,bytes=path.stat().st_size,source=os.environ['GITHUB_SHA'],run=int(os.environ['GITHUB_RUN_ID']),preflight_verified_before_acquisition=True),sort_keys=True,indent=2)+'\n')
           PY
       - name: Extract fresh graph and prove complete terminal and per-partition material identity
-        run: python3 -B scripts/cloud_cdr_drain_m1_fresh_graph.py --readback --pins-sha256 e41a24934684a6be50956b534446e06e7dae737dd82b33299fcf7db3a7e480e7 --reservation release-reservation.json --controls-proof cdr-access-overlay-controls/controls.json --appimage "$RUNNER_TEMP/cdr-access-runtime-$GITHUB_RUN_ID/librelane.AppImage" --output "$GITHUB_WORKSPACE/hw/soc/out/cloud-cdr-drain-m1-fresh-graph" > access-overlay-readback.stdout 2> access-overlay-readback.stderr
+        run: python3 -B scripts/cloud_cdr_drain_m1_fresh_graph.py --readback --pins-sha256 667a795dc4ad5ce07055c23fc8da15dbeb3fb2e1c7ecaac1a69cb03866f89ccd --reservation release-reservation.json --controls-proof cdr-access-overlay-controls/controls.json --appimage "$RUNNER_TEMP/cdr-access-runtime-$GITHUB_RUN_ID/librelane.AppImage" --output "$GITHUB_WORKSPACE/hw/soc/out/cloud-cdr-drain-m1-fresh-graph" > access-overlay-readback.stdout 2> access-overlay-readback.stderr
       - name: Preserve complete derived evidence in independently reserved release
         if: always()
         env:

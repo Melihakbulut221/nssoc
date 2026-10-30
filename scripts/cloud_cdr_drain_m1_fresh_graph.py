@@ -82,6 +82,10 @@ def preflight(ctx,reserved,controls_raw,expected,root=ROOT,api_call=frozen.api):
     physical_live=frozen.validate_live(p,api_call("actions/runs/"+str(p["producer"]["id"])),
       api_call("actions/runs/"+str(p["producer"]["id"])+"/attempts/1/jobs?per_page=100"),
       api_call("releases/"+str(p["release_id"])),api_call("git/ref/tags/"+p["tag"]))
+    # The shared exact live-binding validator labels its historical producer RC-only.
+    # Preserve its checks; report this producer's actual physical-trial scope truthfully.
+    require(physical_live.pop("successful_RC_production_only")is True,"shared live-binding result")
+    physical_live["successful_physical_trial_only"]=True
     return config,old,data,dict(current_context=ctx,reservation=receipt,current_source_controls=controls,
       source_manifest_sha256=expected,physical_producer=physical_live,producer=live,producer_run=run,producer_jobs=jobs,producer_release=release,producer_ref=ref)
 
