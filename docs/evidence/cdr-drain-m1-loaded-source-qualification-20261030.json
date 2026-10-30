@@ -1,0 +1,152 @@
+{
+  "acceptance": {
+    "electrical": false,
+    "full_phy": false,
+    "native_acquisition": false,
+    "physical": false,
+    "simulation": false,
+    "source_controls_passed": false
+  },
+  "all_native_simulation_controller_and_dispatch_authorizations_remain_false": true,
+  "artifact_and_log_contract": {
+    "always_preserve_failure": true,
+    "chunk_marker": "DRAIN_LOADED_SOURCE_CHUNK",
+    "full_source_job_log": true,
+    "full_stdout_stderr": true,
+    "index_marker": "DRAIN_LOADED_SOURCE_INDEX",
+    "native_archive_acquired": false,
+    "records": [
+      "context.json",
+      "historical.json",
+      "historical.stdout",
+      "historical.stderr",
+      "execution.json",
+      "execution.stdout",
+      "execution.stderr",
+      "publication.json",
+      "publication.stdout",
+      "publication.stderr",
+      "imports.json",
+      "imports.stdout",
+      "imports.stderr",
+      "current.json",
+      "current.stdout",
+      "current.stderr"
+    ],
+    "records_count": 16,
+    "root": "hw/soc/out/cdr-drain-m1-loaded-controls",
+    "source_job_log_collector": "Unchanged qualified collector; artifact namespace only substituted."
+  },
+  "authority_change": {
+    "source_controls_authorized": {
+      "after": true,
+      "before": false
+    }
+  },
+  "branch": "codex/cdr-drain-m1-loaded-electrical",
+  "current_suite": {
+    "cli": "python -B scripts/check_cdr_drain_m1_loaded.py --output hw/soc/out/cdr-drain-m1-loaded-controls/current.json",
+    "expected": {
+      "authority": {
+        "positive": 5,
+        "refusal": 56
+      },
+      "derivation": {
+        "numerical_blocks": 6,
+        "numerical_bytes": 24133
+      },
+      "live": {
+        "positive": 1,
+        "refusal": 12
+      },
+      "publication": {
+        "actual_lifecycle_cases": 2,
+        "publication_cases": 15
+      },
+      "reports": {
+        "positive": 2,
+        "refusal": 29
+      },
+      "restore": {
+        "positive": 3,
+        "refusal": 12
+      },
+      "result": {
+        "positive": 2,
+        "refusal": 12
+      },
+      "total_pure_positive": 13,
+      "total_refusal_including_restore_failures": 121
+    },
+    "path": "scripts/check_cdr_drain_m1_loaded.py",
+    "sha256": "6a24a66f822e43c5360b947518c65f9cd7d75d13c92ba87cf3d6cca7abae5f28"
+  },
+  "immutable_source": {
+    "all_original_protected_hashes_unchanged": true,
+    "old1502_RC_and1329_electrical_source_maps_unchanged": true,
+    "original_candidate_protected_files": 1698,
+    "production_modules_unchanged": true
+  },
+  "original_suite_context": "The unchanged controls() bodies run under independently validated current source-only context. Historical CLI branch checks are not used as authority for this new branch; no historical native flag transfers.",
+  "original_suites": [
+    {
+      "entrypoint": "controls",
+      "expected_status": "PASS_WIDTH_LOADED_WORKER_RESULT_SOURCE_CONTROLS",
+      "module": "check_cdr_width_loaded_worker",
+      "name": "historical",
+      "sha256": "b72454cb8c16e418fd92d38ce312bff8d2dfd31326e3aed7a4cf98902d4f55f9"
+    },
+    {
+      "entrypoint": "controls",
+      "expected_status": "PASS_WIDTH_LOADED_EXECUTION_SOURCE_CONTROLS",
+      "module": "check_cdr_width_loaded_execution",
+      "name": "execution",
+      "sha256": "488c4ab7c30a904959dd943b81f726f7a6e57a7072aebf07a13165e095e59b49"
+    },
+    {
+      "entrypoint": "controls",
+      "expected_status": "PASS_WIDTH_LOADED_FAILURE_PUBLICATION_SOURCE_CONTROLS",
+      "module": "check_cdr_width_loaded_publication",
+      "name": "publication",
+      "sha256": "1a3f9e0bc62901ea577f8236bbb47713d2d2ec4d7ca8621e8e91e7784291b497"
+    },
+    {
+      "entrypoint": "controls",
+      "expected_status": "PASS_WIDTH_LOADED_ACTUAL_IMPORT_SOURCE_CONTROLS",
+      "module": "check_cdr_width_loaded_imports",
+      "name": "imports",
+      "sha256": "f9e294c993bc5a6076bf7ffad9e454cc4edfff6b1de3d2cb6ff3e015caf8e080"
+    }
+  ],
+  "parent": "03d5d1bc762265161af1db76fd1bdd560216a547",
+  "pending": [
+    "Root independent review of03d5 admission/checker",
+    "Root approval before one exact-source controls dispatch",
+    "Actual hosted controls and complete terminal proof"
+  ],
+  "schema": "cdr-drain-m1-loaded-source-qualification-v1",
+  "status": "SOURCE_ONLY_AUTHORED_NOT_YET_DISPATCHED",
+  "validation": [
+    "YAML parsed in RAM",
+    "Eight embedded Python blocks AST-parsed; none executed",
+    "No source module imported/tested locally",
+    "API CAS and exact byte readback required"
+  ],
+  "workflow": {
+    "attempt": 1,
+    "event": "workflow_dispatch",
+    "id": 401118236,
+    "jobs": [
+      "source-controls",
+      "preserve-job-log"
+    ],
+    "mode": "controls",
+    "native_jobs": [],
+    "path": ".github/workflows/cdr-current-access-overlay.yml",
+    "permissions": {
+      "actions": "read",
+      "contents": "read"
+    },
+    "sha256": "993ffbba78f41f09a45c729d59b57251d2718091922cf283aa8d4b206a2e7f9c"
+  }
+}

@@ -1,26 +1,26 @@
-# Exact-source native admission follows passed hosted controller qualification; original gates remain unchanged.
-name: Current CDR two-M1 widened rail fresh RC
+# Source qualification only. No native jobs or execution authority.
+name: Two-M1 current RC original electrical source qualification
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Source controls or actual fresh RC for the qualified two-M1 candidate
+        description: Hosted source controls only
         type: choice
         required: true
         default: controls
-        options: [controls, readback]
+        options: [controls]
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-drain-m1-fresh-rc-${{ github.ref }}
+  group: cdr-drain-m1-loaded-source-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
 jobs:
   source-controls:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 45
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -29,95 +29,249 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Verify exact source and separate source-control authority
+      - name: Bind exact source and source-only authority before dependencies
+        id: binding
+        env:
+          REQUESTED_MODE: ${{ inputs.mode }}
         run: |
           python -B - <<'PY'
-          import hashlib,json,os,re,subprocess
+          import hashlib,json,os,re,subprocess,sys
           from pathlib import Path
           e=os.environ
-          assert e['GITHUB_ACTIONS']=='true' and e['RUNNER_ENVIRONMENT']=='github-hosted'
+          assert e['GITHUB_ACTIONS']=='true' and e['RUNNER_ENVIRONMENT']=='github-hosted' and e['RUNNER_OS']=='Linux'
           assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr-drain-m1-loaded-electrical'
+          assert e['REQUESTED_MODE']=='controls' and sys.version_info[:2]==(3,12)
+          assert re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA']) and re.fullmatch('[1-9][0-9]*',e['GITHUB_RUN_ID'])
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
-          assert re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA'])
-          p=Path('scripts/cdr-drain-m1-fresh-rc-methods.json')
-          assert hashlib.sha256(p.read_bytes()).hexdigest()=='b84c987866ba84f2e67de967b82a15269558a19fb9760816fbefd71604c487a1'
-          assert e['GITHUB_REF']=='refs/heads/codex/cdr-drain-m1-fresh-rc'
-          m=json.loads(p.read_bytes())
-          assert len(m['protected_sha256'])==1502
+          p=Path('scripts/cdr-drain-m1-loaded-methods.json')
+          assert p.is_file() and not p.is_symlink()
+          raw=p.read_bytes();m=json.loads(raw)
+          assert m['schema']=='cdr-drain-m1-loaded-execution-v1' and m['branch']=='codex/cdr-drain-m1-loaded-electrical'
           assert m['source_controls_authorized'] is True
-          for n,h in m['protected_sha256'].items():
-              path=Path(n)
-              assert not path.is_symlink() and path.is_file()
-              with path.open('rb') as f: assert hashlib.file_digest(f,'sha256').hexdigest()==h,n
-          out=Path('hw/soc/out/cdr-drain-m1-fresh-rc-controls')
-          out.mkdir(parents=True,exist_ok=False)
-          (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run=e['GITHUB_RUN_ID'],
-              attempt=1,method_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),
-              source_controls_only=True,native_execution=False),sort_keys=True)+'\n')
+          for name in ('workflow_dispatch_authorized','preparation_authorized','native_execution_authorized','simulation_authorized','controller_readiness',
+              'geometry_generation_authorized','native_extraction_authorized','accepted','electrical_accepted','physical_accepted','cdr_accepted','qualified_pex','full_phy_accepted','automatic_retry'):
+              assert m[name] is False,name
+          assert len(m['protected_sha256'])==1700
+          for name,digest in m['protected_sha256'].items():
+              path=Path(name);assert path.is_file() and not path.is_symlink(),name
+              with path.open('rb') as stream:assert hashlib.file_digest(stream,'sha256').hexdigest()==digest,name
+          assert m['protected_sha256']['scripts/cdr_drain_m1_loaded_admission.py']=='c517374338ae18e20b3acfca40a07766b97fd0fff50d8e4c0e62b630e348020b'
+          out=Path('hw/soc/out/cdr-drain-m1-loaded-controls');out.mkdir(parents=True,exist_ok=False)
+          (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),
+              attempt=1,branch=m['branch'],method_sha256=hashlib.sha256(raw).hexdigest(),protected_files=len(m['protected_sha256']),
+              source_controls_only=True,native_executed=False,native_authorized=False,requested_mode='controls'),sort_keys=True,indent=2)+'\n')
           PY
-      - name: Original pinned parser dependency
-        run: python -m pip install networkx==3.4.2
-      - name: Actual current width and graph evidence controls
+      - name: Original pinned source import dependencies
         run: |
-          python -B scripts/check_cdr_width_rc_input_evidence.py --output hw/soc/out/cdr-drain-m1-fresh-rc-controls/input.json > hw/soc/out/cdr-drain-m1-fresh-rc-controls/input.stdout 2> hw/soc/out/cdr-drain-m1-fresh-rc-controls/input.stderr
-      - name: Unchanged current75 admission and numerical adapter controls
+          python -m pip install numpy==2.3.3 networkx==3.4.2
+      - name: Unchanged historical source suite
+        if: ${{ !cancelled() && steps.binding.outcome == 'success' }}
         run: |
-          python -B scripts/check_cdr_selector_width_fresh_rc_source.py --output hw/soc/out/cdr-drain-m1-fresh-rc-controls/adapters.json > hw/soc/out/cdr-drain-m1-fresh-rc-controls/adapters.stdout 2> hw/soc/out/cdr-drain-m1-fresh-rc-controls/adapters.stderr
-      - name: Actual separate authority lifecycle and complete publication controls
+          python -B - <<'PY' > hw/soc/out/cdr-drain-m1-loaded-controls/historical.stdout 2> hw/soc/out/cdr-drain-m1-loaded-controls/historical.stderr
+          import hashlib,importlib,json,sys,traceback
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import cdr_drain_m1_loaded_admission as current
+          report={'status':'FAIL_INHERITED_SOURCE_CONTROLS','source_controls_only':True,'native_executed':False}
+          primary=None
+          try:
+              ctx=current.context();method=current.methods()
+              assert method['source_controls_authorized'] is True
+              assert all(method[k] is False for k in current.AUTH if k!='source_controls_authorized')
+              assert method['controller_readiness'] is False and all(method[k] is False for k in current.ALWAYS_FALSE)
+              module=importlib.import_module('check_cdr_width_loaded_worker')
+              path=Path(module.__file__);relative=str(path.relative_to(current.ROOT))
+              assert current.sha(path)==method['protected_sha256'][relative]
+              report=module.controls()
+              assert report['status']=='PASS_WIDTH_LOADED_WORKER_RESULT_SOURCE_CONTROLS'
+              report['current_context']={**ctx,'source_controls_only':True,'native_executed':False}
+              report['unchanged_suite_source']={'path':relative,'sha256':current.sha(path),'entrypoint':'controls',
+                  'CLI_historical_branch_gate_reused':False,'current_authority_module':'cdr_drain_m1_loaded_admission',
+                  'historical_native_authority_transferred':False}
+          except BaseException as error:
+              primary=error;report.update(error=repr(error),traceback=traceback.format_exc())
+          finally:
+              raw=(json.dumps(report,sort_keys=True,indent=2,allow_nan=False)+'\n').encode()
+              try:Path('hw/soc/out/cdr-drain-m1-loaded-controls/historical.json').write_bytes(raw)
+              except BaseException as error:
+                  if primary is None:primary=error
+              try:print(raw.decode(),end='',flush=True)
+              except BaseException as error:
+                  if primary is None:primary=error
+          if primary is not None:raise primary
+          PY
+      - name: Unchanged execution source suite
+        if: ${{ !cancelled() && steps.binding.outcome == 'success' }}
         run: |
-          python -B scripts/check_cdr_selector_width_fresh_rc_lifecycle.py --output hw/soc/out/cdr-drain-m1-fresh-rc-controls/execution.json > hw/soc/out/cdr-drain-m1-fresh-rc-controls/execution.stdout 2> hw/soc/out/cdr-drain-m1-fresh-rc-controls/execution.stderr
-      - name: Actual new graph138 current75 restore and current controller controls
+          python -B - <<'PY' > hw/soc/out/cdr-drain-m1-loaded-controls/execution.stdout 2> hw/soc/out/cdr-drain-m1-loaded-controls/execution.stderr
+          import hashlib,importlib,json,sys,traceback
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import cdr_drain_m1_loaded_admission as current
+          report={'status':'FAIL_INHERITED_SOURCE_CONTROLS','source_controls_only':True,'native_executed':False}
+          primary=None
+          try:
+              ctx=current.context();method=current.methods()
+              assert method['source_controls_authorized'] is True
+              assert all(method[k] is False for k in current.AUTH if k!='source_controls_authorized')
+              assert method['controller_readiness'] is False and all(method[k] is False for k in current.ALWAYS_FALSE)
+              module=importlib.import_module('check_cdr_width_loaded_execution')
+              path=Path(module.__file__);relative=str(path.relative_to(current.ROOT))
+              assert current.sha(path)==method['protected_sha256'][relative]
+              report=module.controls()
+              assert report['status']=='PASS_WIDTH_LOADED_EXECUTION_SOURCE_CONTROLS'
+              report['current_context']={**ctx,'source_controls_only':True,'native_executed':False}
+              report['unchanged_suite_source']={'path':relative,'sha256':current.sha(path),'entrypoint':'controls',
+                  'CLI_historical_branch_gate_reused':False,'current_authority_module':'cdr_drain_m1_loaded_admission',
+                  'historical_native_authority_transferred':False}
+          except BaseException as error:
+              primary=error;report.update(error=repr(error),traceback=traceback.format_exc())
+          finally:
+              raw=(json.dumps(report,sort_keys=True,indent=2,allow_nan=False)+'\n').encode()
+              try:Path('hw/soc/out/cdr-drain-m1-loaded-controls/execution.json').write_bytes(raw)
+              except BaseException as error:
+                  if primary is None:primary=error
+              try:print(raw.decode(),end='',flush=True)
+              except BaseException as error:
+                  if primary is None:primary=error
+          if primary is not None:raise primary
+          PY
+      - name: Unchanged publication source suite
+        if: ${{ !cancelled() && steps.binding.outcome == 'success' }}
         run: |
-          python -B scripts/check_cdr_drain_m1_fresh_rc.py --output hw/soc/out/cdr-drain-m1-fresh-rc-controls/current.json > hw/soc/out/cdr-drain-m1-fresh-rc-controls/current.stdout 2> hw/soc/out/cdr-drain-m1-fresh-rc-controls/current.stderr
-      - name: Require complete source control reports
+          python -B - <<'PY' > hw/soc/out/cdr-drain-m1-loaded-controls/publication.stdout 2> hw/soc/out/cdr-drain-m1-loaded-controls/publication.stderr
+          import hashlib,importlib,json,sys,traceback
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import cdr_drain_m1_loaded_admission as current
+          report={'status':'FAIL_INHERITED_SOURCE_CONTROLS','source_controls_only':True,'native_executed':False}
+          primary=None
+          try:
+              ctx=current.context();method=current.methods()
+              assert method['source_controls_authorized'] is True
+              assert all(method[k] is False for k in current.AUTH if k!='source_controls_authorized')
+              assert method['controller_readiness'] is False and all(method[k] is False for k in current.ALWAYS_FALSE)
+              module=importlib.import_module('check_cdr_width_loaded_publication')
+              path=Path(module.__file__);relative=str(path.relative_to(current.ROOT))
+              assert current.sha(path)==method['protected_sha256'][relative]
+              report=module.controls()
+              assert report['status']=='PASS_WIDTH_LOADED_FAILURE_PUBLICATION_SOURCE_CONTROLS'
+              report['current_context']={**ctx,'source_controls_only':True,'native_executed':False}
+              report['unchanged_suite_source']={'path':relative,'sha256':current.sha(path),'entrypoint':'controls',
+                  'CLI_historical_branch_gate_reused':False,'current_authority_module':'cdr_drain_m1_loaded_admission',
+                  'historical_native_authority_transferred':False}
+          except BaseException as error:
+              primary=error;report.update(error=repr(error),traceback=traceback.format_exc())
+          finally:
+              raw=(json.dumps(report,sort_keys=True,indent=2,allow_nan=False)+'\n').encode()
+              try:Path('hw/soc/out/cdr-drain-m1-loaded-controls/publication.json').write_bytes(raw)
+              except BaseException as error:
+                  if primary is None:primary=error
+              try:print(raw.decode(),end='',flush=True)
+              except BaseException as error:
+                  if primary is None:primary=error
+          if primary is not None:raise primary
+          PY
+      - name: Unchanged imports source suite
+        if: ${{ !cancelled() && steps.binding.outcome == 'success' }}
+        run: |
+          python -B - <<'PY' > hw/soc/out/cdr-drain-m1-loaded-controls/imports.stdout 2> hw/soc/out/cdr-drain-m1-loaded-controls/imports.stderr
+          import hashlib,importlib,json,sys,traceback
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import cdr_drain_m1_loaded_admission as current
+          report={'status':'FAIL_INHERITED_SOURCE_CONTROLS','source_controls_only':True,'native_executed':False}
+          primary=None
+          try:
+              ctx=current.context();method=current.methods()
+              assert method['source_controls_authorized'] is True
+              assert all(method[k] is False for k in current.AUTH if k!='source_controls_authorized')
+              assert method['controller_readiness'] is False and all(method[k] is False for k in current.ALWAYS_FALSE)
+              module=importlib.import_module('check_cdr_width_loaded_imports')
+              path=Path(module.__file__);relative=str(path.relative_to(current.ROOT))
+              assert current.sha(path)==method['protected_sha256'][relative]
+              report=module.controls()
+              assert report['status']=='PASS_WIDTH_LOADED_ACTUAL_IMPORT_SOURCE_CONTROLS'
+              report['current_context']={**ctx,'source_controls_only':True,'native_executed':False}
+              report['unchanged_suite_source']={'path':relative,'sha256':current.sha(path),'entrypoint':'controls',
+                  'CLI_historical_branch_gate_reused':False,'current_authority_module':'cdr_drain_m1_loaded_admission',
+                  'historical_native_authority_transferred':False}
+          except BaseException as error:
+              primary=error;report.update(error=repr(error),traceback=traceback.format_exc())
+          finally:
+              raw=(json.dumps(report,sort_keys=True,indent=2,allow_nan=False)+'\n').encode()
+              try:Path('hw/soc/out/cdr-drain-m1-loaded-controls/imports.json').write_bytes(raw)
+              except BaseException as error:
+                  if primary is None:primary=error
+              try:print(raw.decode(),end='',flush=True)
+              except BaseException as error:
+                  if primary is None:primary=error
+          if primary is not None:raise primary
+          PY
+      - name: Actual new RC admission result restore and production publication controls
+        if: ${{ !cancelled() && steps.binding.outcome == 'success' }}
+        run: |
+          python -B scripts/check_cdr_drain_m1_loaded.py --output hw/soc/out/cdr-drain-m1-loaded-controls/current.json > hw/soc/out/cdr-drain-m1-loaded-controls/current.stdout 2> hw/soc/out/cdr-drain-m1-loaded-controls/current.stderr
+      - name: Require all full source reports without native acceptance
+        if: ${{ !cancelled() && steps.binding.outcome == 'success' }}
         run: |
           python -B - <<'PY'
-          import hashlib,json,os
+          import json,os
           from pathlib import Path
-          root=Path('hw/soc/out/cdr-drain-m1-fresh-rc-controls')
-          a=json.loads((root/'input.json').read_bytes())
-          assert a['status']=='PASS_READ_ONLY_WIDTH_RC_INPUT_EVIDENCE_CONTROLS'
-          assert (a['positive_count'],a['refusal_count'])==(4,36)
-          a=json.loads((root/'adapters.json').read_bytes())
-          assert a['status']=='PASS_FRESH_WIDTH_RC_ADMISSION_ADAPTER_SOURCE_CONTROLS_ONLY'
-          assert (a['tests'],a['failures'],a['errors'],a['positive_records'],a['refusal_records'])==(8,0,0,5,43)
-          a=json.loads((root/'execution.json').read_bytes())
-          assert a['status']=='PASS_FRESH_WIDTH_RC_EXECUTION_SOURCE_CONTROLS_ONLY'
-          assert (a['tests'],a['failures'],a['errors'])==(10,0,0)
-          assert (a['source_head'],a['run_id'],a['run_attempt'])==(os.environ['GITHUB_SHA'],int(os.environ['GITHUB_RUN_ID']),1)
-          assert a['method_sha256']==hashlib.sha256(Path('scripts/cdr-selector-width-fresh-rc-execution-methods.json').read_bytes()).hexdigest()
-          assert all(a[k] is False for k in ('native_execution','native_payload_acquired','native_archive_restoration_qualified',
-              'fresh_RC_passed','qualified_pex','electrical_accepted','full_phy_accepted'))
-          a=json.loads((root/'current.json').read_bytes())
-          assert a['status']=='PASS_DRAIN_M1_FRESH_RC_SOURCE_CONTROLS' and a['passed'] is True
-          assert (a['positive'],a['refusal'])==(8,110)
-          assert a['current_context']==dict(source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_executed=False)
-          assert a['native_executed'] is a['electrical_acceptance'] is a['physical_acceptance'] is False
+          root=Path('hw/soc/out/cdr-drain-m1-loaded-controls')
+          ctx=dict(source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_executed=False)
+          reports={n:json.loads((root/(n+'.json')).read_bytes()) for n in ('historical','execution','publication','imports','current')}
+          for name,r in reports.items():
+              assert r['current_context']==ctx,name
+              assert r['source_controls_only'] is True,name
+              for key in ('native_executed','native_acquisition_performed','native_restore_qualified','real_native_archive_restored','numerical_worker_imported','numerical_worker_executed','native_worker_executed','simulator_executed','electrical_accepted','physical_accepted','full_phy_accepted'):
+                  if key in r:assert r[key] is False,(name,key)
+          r=reports['historical']
+          assert r['status']=='PASS_WIDTH_LOADED_WORKER_RESULT_SOURCE_CONTROLS'
+          assert (r['derivation']['numerical_blocks'],r['derivation']['numerical_bytes'])==(6,24133)
+          assert (r['current']['positive'],r['current']['refusal'])==(2,32)
+          assert len(r['historical']['cases'])==10 and r['historical']['eight_rejections_and_two_fault_detections_retained'] is True
+          assert reports['execution']['status']=='PASS_WIDTH_LOADED_EXECUTION_SOURCE_CONTROLS'
+          r=reports['publication'];assert r['status']=='PASS_WIDTH_LOADED_FAILURE_PUBLICATION_SOURCE_CONTROLS'
+          assert (r['publication_cases'],r['actual_lifecycle_cases'])==(15,2)
+          r=reports['imports'];assert r['status']=='PASS_WIDTH_LOADED_ACTUAL_IMPORT_SOURCE_CONTROLS'
+          assert (r['positive'],r['refusal'],r['initial_modules'],r['initial_data'],r['copied_files'])==(2,6,52,3,55)
+          assert r['worker_sha256']=='ebf92a9842280587a437de161425f49f6ce4a82c9d76a0ce2532075d0e309bf5'
+          r=reports['current'];assert r['status']=='PASS_DRAIN_M1_LOADED_SOURCE_CONTROLS'
+          assert (r['derivation']['numerical_blocks'],r['derivation']['numerical_bytes'])==(6,24133)
+          expected={'authority':(5,56),'reports':(2,29),'live':(1,12),'restore':(3,12),'result':(2,12)}
+          for name,counts in expected.items():assert (r[name]['positive'],r[name]['refusal'])==counts,name
+          assert sum(r[name]['positive']for name in expected)==13 and sum(r[name]['refusal']for name in expected)==121
+          assert (r['publication']['publication_cases'],r['publication']['actual_lifecycle_cases'])==(15,2)
+          assert r['restore']['authentic_metadata_members']==2680 and r['restore']['native_restore_qualified'] is False
+          assert r['result']['synthetic_current_report'] is True and r['result']['actual_current_simulation_claimed'] is False
           PY
-      - name: Always emit full exact source control records
+      - name: Always emit full source metadata and streams
         if: always()
         run: |
           python -B - <<'PY'
           import base64,hashlib,json
           from pathlib import Path
-          root=Path('hw/soc/out/cdr-drain-m1-fresh-rc-controls')
-          for n in ('context.json','input.json','input.stdout','input.stderr','adapters.json','adapters.stdout','adapters.stderr','execution.json','execution.stdout','execution.stderr','current.json','current.stdout','current.stderr'):
-              p=root/n;present=p.is_file() and not p.is_symlink();raw=p.read_bytes() if present else b''
-              chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
-              print('WIDTH_RC_EXECUTION_INDEX '+json.dumps(dict(path=n,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
-              for i,b in enumerate(chunks):
-                  print('WIDTH_RC_EXECUTION_CHUNK '+json.dumps(dict(path=n,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          root=Path('hw/soc/out/cdr-drain-m1-loaded-controls')
+          names=['context.json']+[n+s for n in ('historical','execution','publication','imports','current')for s in('.json','.stdout','.stderr')]
+          for name in names:
+              p=root/name;present=p.is_file()and not p.is_symlink();raw=p.read_bytes()if present else b''
+              chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
+              print('DRAIN_LOADED_SOURCE_INDEX '+json.dumps(dict(path=name,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,chunk in enumerate(chunks):
+                  print('DRAIN_LOADED_SOURCE_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(chunk).decode()),sort_keys=True))
           PY
-      - name: Retain all source control bytes
+      - name: Retain all source success or failure bytes
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: width-fresh-rc-execution-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          name: drain-m1-loaded-source-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: hw/soc/out/cdr-drain-m1-loaded-controls
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 90
-          path: hw/soc/out/cdr-drain-m1-fresh-rc-controls
   preserve-job-log:
     needs: source-controls
     if: always()
@@ -155,175 +309,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: cdr-access-overlay-source-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          name: cdr-drain-m1-loaded-source-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
           path: job-logs
           if-no-files-found: error
           retention-days: 90
-
-  fresh-RC:
-    # Same-source controls must pass before the separately admitted native extraction.
-    if: ${{ inputs.mode == 'readback' }}
-    needs: [source-controls, preserve-job-log]
-    permissions:
-      contents: write
-      actions: read
-    runs-on: ubuntu-22.04
-    timeout-minutes: 180
-    env:
-      GH_TOKEN: ${{ github.token }}
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
-      - name: Recover full same-source source controls before dependencies
-        run: |
-          python -B - <<'PY'
-          import base64,hashlib,json,os,subprocess
-          from pathlib import Path
-          e=os.environ;repo='repos/'+e['GITHUB_REPOSITORY']+'/'
-          assert e['GITHUB_ACTIONS']=='true' and e['RUNNER_ENVIRONMENT']=='github-hosted'
-          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
-          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
-          assert e['GITHUB_REF']=='refs/heads/codex/cdr-drain-m1-fresh-rc'
-          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
-          p=Path('scripts/cdr-drain-m1-fresh-rc-methods.json');raw=p.read_bytes()
-          assert not p.is_symlink() and hashlib.sha256(raw).hexdigest()=='b84c987866ba84f2e67de967b82a15269558a19fb9760816fbefd71604c487a1'
-          method=json.loads(raw);assert len(method['protected_sha256'])==1502 and method['source_controls_authorized'] is True
-          for name,digest in method['protected_sha256'].items():
-              path=Path(name);assert path.is_file() and not path.is_symlink()
-              with path.open('rb') as stream:assert hashlib.file_digest(stream,'sha256').hexdigest()==digest,name
-          out=Path('hw/soc/out/cdr-drain-m1-fresh-rc-controls');out.mkdir(parents=True,exist_ok=False)
-          def fetch(path):return subprocess.check_output(['gh','api','--allow-escape-sequences',repo+path])
-          runraw=fetch('actions/runs/'+e['GITHUB_RUN_ID']);run=json.loads(runraw)
-          assert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
-          jobsraw=fetch('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100');jobs=json.loads(jobsraw)
-          chosen=[j for j in jobs['jobs'] if j['name']=='source-controls'];assert len(chosen)==1
-          job=chosen[0];assert job['status']=='completed' and job['conclusion']=='success' and job['head_sha']==e['GITHUB_SHA']
-          assert all(s['conclusion']=='success' for s in job['steps'])
-          log=fetch('actions/jobs/'+str(job['id'])+'/logs');assert log
-          for name,raw in (('source-run.json',runraw),('source-jobs.json',jobsraw),('source-job.log',log)):(out/name).write_bytes(raw)
-          indexes={};chunks={}
-          for line in log.decode().splitlines():
-              for marker,kind in (('WIDTH_RC_EXECUTION_INDEX ','index'),('WIDTH_RC_EXECUTION_CHUNK ','chunk')):
-                  start=line.find(marker)
-                  if start<0 or not line[start+len(marker):].startswith('{'):continue
-                  row=json.loads(line[start+len(marker):]);name=row['path']
-                  if kind=='index':
-                      assert name not in indexes;indexes[name]=row
-                  else:
-                      assert row['index'] not in chunks.setdefault(name,{})
-                      chunks[name][row['index']]=row
-          names=('context.json','input.json','input.stdout','input.stderr','adapters.json','adapters.stdout','adapters.stderr','execution.json','execution.stdout','execution.stderr','current.json','current.stdout','current.stderr')
-          assert set(indexes)==set(names)
-          for name in names:
-              pin=indexes[name];assert pin['present'] is True
-              rows=chunks.get(name,{})
-              assert set(rows)==set(range(pin['chunks']))
-              raw=b''.join(base64.b64decode(rows[i]['base64'],validate=True)for i in range(pin['chunks']))
-              assert len(raw)==pin['bytes'] and hashlib.sha256(raw).hexdigest()==pin['sha256']
-              (out/name).write_bytes(raw)
-          current=json.loads((out/'current.json').read_bytes())
-          assert current['status']=='PASS_DRAIN_M1_FRESH_RC_SOURCE_CONTROLS' and current['passed'] is True
-          assert (current['positive'],current['refusal'])==(8,110)
-          assert current['current_context']==dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_executed=False)
-          assert current['native_executed'] is current['electrical_acceptance'] is current['physical_acceptance'] is False
-          PY
-      - name: Read-only exact source reservation before dependencies
-        run: |
-          mkdir -p hw/soc/out/cdr-drain-m1-fresh-rc-driver-logs
-          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          python -B scripts/cloud_cdr_drain_m1_fresh_rc.py --preflight > hw/soc/out/cdr-drain-m1-fresh-rc-driver-logs/preflight.json
-          python -B - <<'PY'
-          import json,os
-          from pathlib import Path
-          r=json.loads(Path('hw/soc/out/cdr-drain-m1-fresh-rc-driver-logs/preflight.json').read_bytes())
-          with open(os.environ['GITHUB_ENV'],'a') as f:f.write('CDR_DRAIN_M1_RC_RESERVATION_SHA256='+r['sha256']+'\n')
-          PY
-      - name: Original qualified native runtime and extraction dependencies
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6 tk8.6 tcl-dev tk-dev build-essential m4 autoconf libreadline-dev libx11-dev libxext-dev libxpm-dev libxt-dev libcairo2-dev libgl1-mesa-dev libglu1-mesa-dev
-          python -m pip install networkx==3.4.2
-          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
-          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
-          chmod +x "$RUNNER_TEMP/librelane.AppImage"
-          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
-      - name: Four original supervised phases with full current75 projection
-        run: |
-          set -o pipefail
-          python -B scripts/cloud_cdr_drain_m1_fresh_rc.py 2>&1 | tee hw/soc/out/cdr-drain-m1-fresh-rc-driver-logs/driver.log
-      - name: Publish complete success or failure bytes to exact reserved release
-        if: always()
-        run: python -B scripts/cloud_cdr_drain_m1_fresh_rc.py --publish-only
-      - name: Always emit terminal metadata without native binaries
-        if: always()
-        run: |
-          python -B - <<'PY'
-          import base64,hashlib,json
-          from pathlib import Path
-          roots=(Path('hw/soc/out/cloud-cdr-drain-m1-fresh-rc'),Path('hw/soc/out/cloud-cdr-drain-m1-fresh-rc-publication'))
-          names=(('result.json','restore/joint-admission.json','restore/canonical-candidate.json','binding/result.json','wire-stage/result.json','mim/result.json'),('publication.json',))
-          for root,members in zip(roots,names):
-              for name in members:
-                  p=root/name;present=p.is_file() and not p.is_symlink();raw=p.read_bytes() if present else b''
-                  chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
-                  print('WIDTH_FRESH_RC_TERMINAL_INDEX '+json.dumps(dict(path=str(p),present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
-                  for i,b in enumerate(chunks):
-                      print('WIDTH_FRESH_RC_TERMINAL_CHUNK '+json.dumps(dict(path=str(p),index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
-          PY
-      - name: Complete native success or failure fallback
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: width-fresh-rc-full-${{ github.run_id }}-${{ github.run_attempt }}
-          include-hidden-files: true
-          if-no-files-found: error
-          retention-days: 90
-          path: |
-            hw/soc/out/cloud-cdr-drain-m1-fresh-rc
-            hw/soc/out/cloud-cdr-drain-m1-fresh-rc-publication
-            hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate
-            hw/soc/out/cdr-drain-m1-fresh-rc-preflight
-            hw/soc/out/cdr-drain-m1-fresh-rc-driver-logs
-            hw/soc/out/cdr-drain-m1-fresh-rc-controls
-  preserve-job-logs:
-    if: always()
-    needs: [source-controls, preserve-job-log, fresh-RC]
-    permissions:
-      contents: read
-      actions: read
-    runs-on: ubuntu-24.04
-    timeout-minutes: 15
-    env:
-      GH_TOKEN: ${{ github.token }}
-    steps:
-      - name: Preserve full actual source and native job logs and metadata
-        run: |
-          mkdir job-logs
-          gh api --allow-escape-sequences "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" > job-logs/run.json
-          gh api --allow-escape-sequences "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/attempts/1/jobs?per_page=100" > job-logs/jobs.json
-          python3 -B - <<'PY'
-          import hashlib,json,os,subprocess
-          from pathlib import Path
-          root=Path('job-logs');data=json.loads((root/'jobs.json').read_bytes());records=[]
-          for job in data['jobs']:
-              if job['name'] not in ('source-controls','preserve-job-log','fresh-RC') or job['conclusion']=='skipped':continue
-              assert job['status']=='completed'
-              raw=subprocess.check_output(['gh','api','--allow-escape-sequences','repos/'+os.environ['GITHUB_REPOSITORY']+'/actions/jobs/'+str(job['id'])+'/logs'])
-              p=root/(str(job['id'])+'.log');p.write_bytes(raw)
-              records.append(dict(job_id=job['id'],name=job['name'],bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()))
-          (root/'receipt.json').write_text(json.dumps(dict(logs=records,zip_acquired=False),sort_keys=True,indent=2)+'\n')
-          print((root/'receipt.json').read_text())
-          PY
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: width-fresh-rc-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
-          include-hidden-files: true
-          if-no-files-found: error
-          retention-days: 90
-          path: job-logs
