@@ -107,6 +107,13 @@ def controls():
     delta=p.validate_route_delta(base,candidate)
     assert delta["original_shapes"]==40 and delta["added_wires"]==3 and delta["added_via_components"]==9
     positive.append("actual_route_delta_preserves_multiplicity_and_all_pins")
+    transported=json.loads(json.dumps(base))
+    restored=p.restore_target_catalog(transported)
+    same(p.validate_route_delta(restored,candidate),delta)
+    positive.append("actual_JSON_baseline_layer_OID_roundtrip")
+    for name,keys in (("zero_oid",{"0":"Metal2"}),("noncanonical_oid",{"01":"Metal2"}),("already_integer_oid",{1:"Metal2"})):
+        bad=json.loads(json.dumps(base));bad["projection"]["catalog"]["path_layers"]=keys
+        reject(name,lambda bad=bad:p.restore_target_catalog(bad))
     connectivity=p.validate_connectivity(candidate)
     assert set(connectivity)=={"positive_area","closed_boundary"}
     for mode in connectivity:
@@ -198,7 +205,7 @@ def controls():
         else:raise AssertionError("save failure accepted")
     assert json.loads(stream.getvalue())["terminal_errors"][0]["label"]=="terminal-record"
     lifecycle.append("unchanged_actual_save_failure")
-    assert (len(positive),len(refused),len(lifecycle))==(9,43,4),"complete authored source suite"
+    assert (len(positive),len(refused),len(lifecycle))==(10,46,4),"complete authored source suite"
     return dict(status="PASS_MULTILAYER_ANTENNA_TRIAL_SOURCE_CONTROLS",current_context=ctx,
       positive=positive,positive_count=len(positive),refusals=refused,refusal_count=len(refused),
       lifecycle=lifecycle,lifecycle_count=len(lifecycle),synthetic_geometry=True,native_executed=False,

@@ -258,7 +258,7 @@ def perform(ctx,proof,evidence):
         c.validate_image(f.decode(command("image-inspect",["docker","image","inspect",c.IMAGE]))[0])
         identity=build.create_owned(ctx,work,report,command,c.create_argv(ctx,work,os.getuid(),os.getgid()))
         c.validate_container(inspect(identity),ctx,work)
-        command("antenna-owned-container",["docker","start","--attach",identity],14400)
+        command("antenna-owned-container",["docker","start","--attach",identity],18000)
         result=f.decode((out/"multilayer-inner-result.json").read_bytes())
         f.require(result["status"]=="COMPLETE_MULTILAYER_ANTENNA_TRIAL_ENGINE"and not result["terminal_errors"],"inner terminal")
         report["native_candidate_checks_complete"]=True

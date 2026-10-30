@@ -136,6 +136,14 @@ def material(shapes):
         result.append({k:v for k,v in row.items()if k!="opcode_index"})
     return result
 
+def restore_target_catalog(record):
+    """Restore native integer OIDs after the authenticated JSON evidence transport."""
+    keys=record["projection"]["catalog"]["path_layers"]
+    assert all(type(k)is str and k==str(int(k))and int(k)>0 for k in keys),"serialized native layer OID"
+    record["projection"]["catalog"]["path_layers"]={int(k):v for k,v in keys.items()}
+    geometry.validate_catalog(record["projection"]["catalog"])
+    return record
+
 def validate_route_delta(before,after):
     for key in("scoped_identity","wire_identity","metadata_class","sigtype"):
         exact(before[key],after[key],"target identity: "+key)

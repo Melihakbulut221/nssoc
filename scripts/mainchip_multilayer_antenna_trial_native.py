@@ -168,10 +168,7 @@ def prepare():
       source_input_unchanged=True,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False))
 def audit(measured):
     plan=json.loads((D/"plan.json").read_bytes());base=json.loads((D/"baseline-snapshot.json").read_bytes())
-    old=json.loads((D/"baseline-target.json").read_bytes())
-    serialized=old["projection"]["catalog"]["path_layers"]
-    assert all(type(k)is str and k==str(int(k))and int(k)>0 for k in serialized),"serialized native layer OID"
-    old["projection"]["catalog"]["path_layers"]={int(k):v for k,v in serialized.items()}
+    old=p.restore_target_catalog(json.loads((D/"baseline-target.json").read_bytes()))
     name="candidate-measured.odb"if measured else"candidate.odb"
     db,b=n.load(W/name)
     try:

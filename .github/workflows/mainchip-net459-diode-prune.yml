@@ -39,9 +39,9 @@ jobs:
           assert e['GITHUB_REF']=='refs/heads/codex/mainchip-net459-diode-prune'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           new_manifest=Path("scripts/mainchip-multilayer-antenna-trial-pins.json").read_bytes()
-          assert hashlib.sha256(new_manifest).hexdigest()=='fadbf2cb3035fea48300bbf5e38dd4a3bfabe594b4d4178001a626ebc106acca'
+          assert hashlib.sha256(new_manifest).hexdigest()=='83c9e64123931776fcb3c59de1c92ecdf711ed428cd5f1482fadf454e160b8e1'
           current=json.loads(new_manifest)
-          assert current['native_execution_enabled'] is False and len(current['files'])==67
+          assert current['native_execution_enabled'] is False and len(current['files'])==68
           for name,pin in current['files'].items():
               p=Path(name);assert p.is_file() and not p.is_symlink()
               raw=p.read_bytes();assert len(raw)==pin['bytes'] and hashlib.sha256(raw).hexdigest()==pin['sha256']
@@ -148,7 +148,7 @@ jobs:
           from pathlib import Path
           r=json.loads(Path('net459-diode-prune-controls/multilayer-controls.json').read_bytes())
           assert r['status']=='PASS_MULTILAYER_ANTENNA_TRIAL_SOURCE_CONTROLS'
-          assert (r['positive_count'],r['refusal_count'],r['lifecycle_count'])==(9,43,4)
+          assert (r['positive_count'],r['refusal_count'],r['lifecycle_count'])==(10,46,4)
           assert r['current_context']['source']==os.environ['GITHUB_SHA']
           assert r['current_context']['run_id']==int(os.environ['GITHUB_RUN_ID'])
           assert all(r[k] is False for k in ('native_executed','physical_acceptance','timing_accepted','full_phy_accepted'))
