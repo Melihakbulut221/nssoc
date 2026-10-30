@@ -1,0 +1,612 @@
+{
+  "active_logs_or_assets_collected_by_this_recipe": false,
+  "attempt": 1,
+  "branch": "codex/cdr-drain-m1-loaded-electrical",
+  "collection_policy": {
+    "begin_only_after_run_completed": true,
+    "collect_success_failure_cancelled_and_skipped_states_without_reclassification": true,
+    "local_allowlist": [
+      "GitHub run/jobs/job/artifact/release/tag metadata",
+      "complete raw job logs as text bytes",
+      "explicit known direct JSON records, retaining malformed or empty bytes as evidence",
+      "complete indexed source and native JSON/text bytes from job logs"
+    ],
+    "local_forbidden": [
+      "native tar/gzip parts or ZIP artifacts",
+      "raw waveform/model/runtime/native binary acquisition",
+      "local authored source imports/tests/simulation or numerical analysis"
+    ],
+    "no_active_workflow_method_or_source_changes": true,
+    "no_new_dispatch_or_reservation": true,
+    "no_release_upload_overwrite_or_mutation": true
+  },
+  "durable_layout": {
+    "git": "Append via CAS/nonforce [skip ci] to the current cloud branch after checking live head; preserve immutable execution_source4a2ff regardless of later proof commit. Do not modify source/method/workflow.",
+    "logs": "job-logs/{id}.log for every obtainable actual terminal job, including both collectors",
+    "metadata": [
+      "run.json",
+      "jobs.json",
+      "jobs/{id}.json",
+      "artifacts.json",
+      "source-binding.json",
+      "reservation-map.json",
+      "collection-errors.json"
+    ],
+    "per_group": [
+      "groups/{suffix}/release.json",
+      "groups/{suffix}/tag-ref.json",
+      "groups/{suffix}/native-index.json",
+      "groups/{suffix}/readback/{exact indexed relative paths}",
+      "groups/{suffix}/direct/{exact permitted asset names}",
+      "groups/{suffix}/complete-publication-output-map.json",
+      "groups/{suffix}/joins.json"
+    ],
+    "prefix": "docs/evidence/cdr-drain-m1-loaded-native-terminal-41017290646/",
+    "receipt": "receipt.json enumerates every preserved file bytes/SHA256, complete input source/run/proof bindings, native metadata-only limit, missing evidence/errors, no local native acquisition; re-fetch/hash all committed files and verify additive-only Git diff.",
+    "source": "source-controls/{all16 exact paths} plus source-controls/index.json",
+    "summary": "diagnosis.json with per-case run/job/raw/publication conclusions separately; never aggregate to PHY acceptance"
+  },
+  "execution_source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+  "failure_and_fallback": {
+    "continue_collection_independently": "A parse/hash/download failure for one derived record must not prevent preserving other groups, final metadata or raw logs. Save collection errors with exact endpoint/asset/index and traceback.",
+    "fallback_artifacts": "Record the declared per-case artifact metadata, source-control artifact, source-job-log artifact and all-job-logs artifact. Do not download ZIPs locally. Artifact absence is an explicit evidence gap, not proof there was no output.",
+    "finalizer_failure": "Retain unsaved_loaded_publication_receipt from stdout and all primary/secondary errors without replacing raw records.",
+    "native_job_failure": "Preserve full native index metadata and raw files emitted after failure, all direct assets already uploaded and complete artifact metadata. Do not delete or rewrite prior reports.",
+    "upload_failure": "Keep partial publication receipt and all existing asset IDs/digests. Never retry an upload blindly, clobber or change original release. Native payload fallback artifact remains cloud-only."
+  },
+  "groups": [
+    {
+      "case": "nominal_early",
+      "expected_native_index_paths": [
+        "cloud-cdr-drain-m1-loaded-evidence-nominal_early/result.json",
+        "cloud-cdr-drain-m1-loaded-evidence-nominal_early/publication-source-check.json",
+        "cloud-cdr-drain-m1-loaded-evidence-nominal_early/direct-publication-plan.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-nominal_early-publication/publication.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-nominal_early-publication/cdr-drain-m1-loaded-nominal_early-41017290646-1.summary.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-nominal_early-publication/cdr-drain-m1-loaded-nominal_early-41017290646-1.parts.json"
+      ],
+      "fallback_artifact": "drain-m1-loaded-nominal_early-full-41017290646-1",
+      "group": "cdr-drain-m1-loaded-nominal_early",
+      "job_name": "loaded (nominal_early)",
+      "native_part_name_pattern": "cdr-drain-m1-loaded-nominal_early-41017290646-1.tar.gz.partNNNN",
+      "permitted_direct_asset_names": [
+        "cdr-drain-m1-loaded-nominal_early-41017290646-1.summary.json",
+        "cdr-drain-m1-loaded-nominal_early-41017290646-1.parts.json",
+        "cdr-drain-m1-loaded-nominal_early-41017290646-1.direct-publication-plan.json",
+        "cdr-drain-m1-loaded-nominal_early-41017290646-1.publication-source-check.json",
+        "cdr-drain-m1-loaded-nominal_early-41017290646-1.native-result.json",
+        "cdr-drain-m1-loaded-nominal_early-41017290646-1.preparation-summary.json",
+        "cdr-drain-m1-loaded-nominal_early-41017290646-1.preparation-native-result.json"
+      ],
+      "preparation_only": false,
+      "release_id": 428733758,
+      "stem": "cdr-drain-m1-loaded-nominal_early-41017290646-1",
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-nominal_early"
+    },
+    {
+      "case": "nominal_late",
+      "expected_native_index_paths": [
+        "cloud-cdr-drain-m1-loaded-evidence-nominal_late/result.json",
+        "cloud-cdr-drain-m1-loaded-evidence-nominal_late/publication-source-check.json",
+        "cloud-cdr-drain-m1-loaded-evidence-nominal_late/direct-publication-plan.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-nominal_late-publication/publication.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-nominal_late-publication/cdr-drain-m1-loaded-nominal_late-41017290646-1.summary.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-nominal_late-publication/cdr-drain-m1-loaded-nominal_late-41017290646-1.parts.json"
+      ],
+      "fallback_artifact": "drain-m1-loaded-nominal_late-full-41017290646-1",
+      "group": "cdr-drain-m1-loaded-nominal_late",
+      "job_name": "loaded (nominal_late)",
+      "native_part_name_pattern": "cdr-drain-m1-loaded-nominal_late-41017290646-1.tar.gz.partNNNN",
+      "permitted_direct_asset_names": [
+        "cdr-drain-m1-loaded-nominal_late-41017290646-1.summary.json",
+        "cdr-drain-m1-loaded-nominal_late-41017290646-1.parts.json",
+        "cdr-drain-m1-loaded-nominal_late-41017290646-1.direct-publication-plan.json",
+        "cdr-drain-m1-loaded-nominal_late-41017290646-1.publication-source-check.json",
+        "cdr-drain-m1-loaded-nominal_late-41017290646-1.native-result.json",
+        "cdr-drain-m1-loaded-nominal_late-41017290646-1.preparation-summary.json",
+        "cdr-drain-m1-loaded-nominal_late-41017290646-1.preparation-native-result.json"
+      ],
+      "preparation_only": false,
+      "release_id": 428733851,
+      "stem": "cdr-drain-m1-loaded-nominal_late-41017290646-1",
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-nominal_late"
+    },
+    {
+      "case": "hot_early",
+      "expected_native_index_paths": [
+        "cloud-cdr-drain-m1-loaded-evidence-hot_early/result.json",
+        "cloud-cdr-drain-m1-loaded-evidence-hot_early/publication-source-check.json",
+        "cloud-cdr-drain-m1-loaded-evidence-hot_early/direct-publication-plan.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-hot_early-publication/publication.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-hot_early-publication/cdr-drain-m1-loaded-hot_early-41017290646-1.summary.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-hot_early-publication/cdr-drain-m1-loaded-hot_early-41017290646-1.parts.json"
+      ],
+      "fallback_artifact": "drain-m1-loaded-hot_early-full-41017290646-1",
+      "group": "cdr-drain-m1-loaded-hot_early",
+      "job_name": "loaded (hot_early)",
+      "native_part_name_pattern": "cdr-drain-m1-loaded-hot_early-41017290646-1.tar.gz.partNNNN",
+      "permitted_direct_asset_names": [
+        "cdr-drain-m1-loaded-hot_early-41017290646-1.summary.json",
+        "cdr-drain-m1-loaded-hot_early-41017290646-1.parts.json",
+        "cdr-drain-m1-loaded-hot_early-41017290646-1.direct-publication-plan.json",
+        "cdr-drain-m1-loaded-hot_early-41017290646-1.publication-source-check.json",
+        "cdr-drain-m1-loaded-hot_early-41017290646-1.native-result.json",
+        "cdr-drain-m1-loaded-hot_early-41017290646-1.preparation-summary.json",
+        "cdr-drain-m1-loaded-hot_early-41017290646-1.preparation-native-result.json"
+      ],
+      "preparation_only": false,
+      "release_id": 428733882,
+      "stem": "cdr-drain-m1-loaded-hot_early-41017290646-1",
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-hot_early"
+    },
+    {
+      "case": "hot_late",
+      "expected_native_index_paths": [
+        "cloud-cdr-drain-m1-loaded-evidence-hot_late/result.json",
+        "cloud-cdr-drain-m1-loaded-evidence-hot_late/publication-source-check.json",
+        "cloud-cdr-drain-m1-loaded-evidence-hot_late/direct-publication-plan.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-hot_late-publication/publication.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-hot_late-publication/cdr-drain-m1-loaded-hot_late-41017290646-1.summary.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-hot_late-publication/cdr-drain-m1-loaded-hot_late-41017290646-1.parts.json"
+      ],
+      "fallback_artifact": "drain-m1-loaded-hot_late-full-41017290646-1",
+      "group": "cdr-drain-m1-loaded-hot_late",
+      "job_name": "loaded (hot_late)",
+      "native_part_name_pattern": "cdr-drain-m1-loaded-hot_late-41017290646-1.tar.gz.partNNNN",
+      "permitted_direct_asset_names": [
+        "cdr-drain-m1-loaded-hot_late-41017290646-1.summary.json",
+        "cdr-drain-m1-loaded-hot_late-41017290646-1.parts.json",
+        "cdr-drain-m1-loaded-hot_late-41017290646-1.direct-publication-plan.json",
+        "cdr-drain-m1-loaded-hot_late-41017290646-1.publication-source-check.json",
+        "cdr-drain-m1-loaded-hot_late-41017290646-1.native-result.json",
+        "cdr-drain-m1-loaded-hot_late-41017290646-1.preparation-summary.json",
+        "cdr-drain-m1-loaded-hot_late-41017290646-1.preparation-native-result.json"
+      ],
+      "preparation_only": false,
+      "release_id": 428733904,
+      "stem": "cdr-drain-m1-loaded-hot_late-41017290646-1",
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-hot_late"
+    },
+    {
+      "case": "cold_early",
+      "expected_native_index_paths": [
+        "cloud-cdr-drain-m1-loaded-evidence-cold_early/result.json",
+        "cloud-cdr-drain-m1-loaded-evidence-cold_early/publication-source-check.json",
+        "cloud-cdr-drain-m1-loaded-evidence-cold_early/direct-publication-plan.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-cold_early-publication/publication.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-cold_early-publication/cdr-drain-m1-loaded-cold_early-41017290646-1.summary.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-cold_early-publication/cdr-drain-m1-loaded-cold_early-41017290646-1.parts.json"
+      ],
+      "fallback_artifact": "drain-m1-loaded-cold_early-full-41017290646-1",
+      "group": "cdr-drain-m1-loaded-cold_early",
+      "job_name": "loaded (cold_early)",
+      "native_part_name_pattern": "cdr-drain-m1-loaded-cold_early-41017290646-1.tar.gz.partNNNN",
+      "permitted_direct_asset_names": [
+        "cdr-drain-m1-loaded-cold_early-41017290646-1.summary.json",
+        "cdr-drain-m1-loaded-cold_early-41017290646-1.parts.json",
+        "cdr-drain-m1-loaded-cold_early-41017290646-1.direct-publication-plan.json",
+        "cdr-drain-m1-loaded-cold_early-41017290646-1.publication-source-check.json",
+        "cdr-drain-m1-loaded-cold_early-41017290646-1.native-result.json",
+        "cdr-drain-m1-loaded-cold_early-41017290646-1.preparation-summary.json",
+        "cdr-drain-m1-loaded-cold_early-41017290646-1.preparation-native-result.json"
+      ],
+      "preparation_only": false,
+      "release_id": 428733954,
+      "stem": "cdr-drain-m1-loaded-cold_early-41017290646-1",
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-cold_early"
+    },
+    {
+      "case": "cold_late",
+      "expected_native_index_paths": [
+        "cloud-cdr-drain-m1-loaded-evidence-cold_late/result.json",
+        "cloud-cdr-drain-m1-loaded-evidence-cold_late/publication-source-check.json",
+        "cloud-cdr-drain-m1-loaded-evidence-cold_late/direct-publication-plan.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-cold_late-publication/publication.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-cold_late-publication/cdr-drain-m1-loaded-cold_late-41017290646-1.summary.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-cold_late-publication/cdr-drain-m1-loaded-cold_late-41017290646-1.parts.json"
+      ],
+      "fallback_artifact": "drain-m1-loaded-cold_late-full-41017290646-1",
+      "group": "cdr-drain-m1-loaded-cold_late",
+      "job_name": "loaded (cold_late)",
+      "native_part_name_pattern": "cdr-drain-m1-loaded-cold_late-41017290646-1.tar.gz.partNNNN",
+      "permitted_direct_asset_names": [
+        "cdr-drain-m1-loaded-cold_late-41017290646-1.summary.json",
+        "cdr-drain-m1-loaded-cold_late-41017290646-1.parts.json",
+        "cdr-drain-m1-loaded-cold_late-41017290646-1.direct-publication-plan.json",
+        "cdr-drain-m1-loaded-cold_late-41017290646-1.publication-source-check.json",
+        "cdr-drain-m1-loaded-cold_late-41017290646-1.native-result.json",
+        "cdr-drain-m1-loaded-cold_late-41017290646-1.preparation-summary.json",
+        "cdr-drain-m1-loaded-cold_late-41017290646-1.preparation-native-result.json"
+      ],
+      "preparation_only": false,
+      "release_id": 428733979,
+      "stem": "cdr-drain-m1-loaded-cold_late-41017290646-1",
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-cold_late"
+    },
+    {
+      "case": "constant_zero",
+      "expected_native_index_paths": [
+        "cloud-cdr-drain-m1-loaded-evidence-constant_zero/result.json",
+        "cloud-cdr-drain-m1-loaded-evidence-constant_zero/publication-source-check.json",
+        "cloud-cdr-drain-m1-loaded-evidence-constant_zero/direct-publication-plan.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-constant_zero-publication/publication.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-constant_zero-publication/cdr-drain-m1-loaded-constant_zero-41017290646-1.summary.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-constant_zero-publication/cdr-drain-m1-loaded-constant_zero-41017290646-1.parts.json"
+      ],
+      "fallback_artifact": "drain-m1-loaded-constant_zero-full-41017290646-1",
+      "group": "cdr-drain-m1-loaded-constant_zero",
+      "job_name": "loaded (constant_zero)",
+      "native_part_name_pattern": "cdr-drain-m1-loaded-constant_zero-41017290646-1.tar.gz.partNNNN",
+      "permitted_direct_asset_names": [
+        "cdr-drain-m1-loaded-constant_zero-41017290646-1.summary.json",
+        "cdr-drain-m1-loaded-constant_zero-41017290646-1.parts.json",
+        "cdr-drain-m1-loaded-constant_zero-41017290646-1.direct-publication-plan.json",
+        "cdr-drain-m1-loaded-constant_zero-41017290646-1.publication-source-check.json",
+        "cdr-drain-m1-loaded-constant_zero-41017290646-1.native-result.json",
+        "cdr-drain-m1-loaded-constant_zero-41017290646-1.preparation-summary.json",
+        "cdr-drain-m1-loaded-constant_zero-41017290646-1.preparation-native-result.json"
+      ],
+      "preparation_only": false,
+      "release_id": 428734008,
+      "stem": "cdr-drain-m1-loaded-constant_zero-41017290646-1",
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-constant_zero"
+    },
+    {
+      "case": "constant_one",
+      "expected_native_index_paths": [
+        "cloud-cdr-drain-m1-loaded-evidence-constant_one/result.json",
+        "cloud-cdr-drain-m1-loaded-evidence-constant_one/publication-source-check.json",
+        "cloud-cdr-drain-m1-loaded-evidence-constant_one/direct-publication-plan.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-constant_one-publication/publication.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-constant_one-publication/cdr-drain-m1-loaded-constant_one-41017290646-1.summary.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-constant_one-publication/cdr-drain-m1-loaded-constant_one-41017290646-1.parts.json"
+      ],
+      "fallback_artifact": "drain-m1-loaded-constant_one-full-41017290646-1",
+      "group": "cdr-drain-m1-loaded-constant_one",
+      "job_name": "loaded (constant_one)",
+      "native_part_name_pattern": "cdr-drain-m1-loaded-constant_one-41017290646-1.tar.gz.partNNNN",
+      "permitted_direct_asset_names": [
+        "cdr-drain-m1-loaded-constant_one-41017290646-1.summary.json",
+        "cdr-drain-m1-loaded-constant_one-41017290646-1.parts.json",
+        "cdr-drain-m1-loaded-constant_one-41017290646-1.direct-publication-plan.json",
+        "cdr-drain-m1-loaded-constant_one-41017290646-1.publication-source-check.json",
+        "cdr-drain-m1-loaded-constant_one-41017290646-1.native-result.json",
+        "cdr-drain-m1-loaded-constant_one-41017290646-1.preparation-summary.json",
+        "cdr-drain-m1-loaded-constant_one-41017290646-1.preparation-native-result.json"
+      ],
+      "preparation_only": false,
+      "release_id": 428734039,
+      "stem": "cdr-drain-m1-loaded-constant_one-41017290646-1",
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-constant_one"
+    },
+    {
+      "case": "clock_stopped",
+      "expected_native_index_paths": [
+        "cloud-cdr-drain-m1-loaded-evidence-clock_stopped/result.json",
+        "cloud-cdr-drain-m1-loaded-evidence-clock_stopped/publication-source-check.json",
+        "cloud-cdr-drain-m1-loaded-evidence-clock_stopped/direct-publication-plan.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-clock_stopped-publication/publication.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-clock_stopped-publication/cdr-drain-m1-loaded-clock_stopped-41017290646-1.summary.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-clock_stopped-publication/cdr-drain-m1-loaded-clock_stopped-41017290646-1.parts.json"
+      ],
+      "fallback_artifact": "drain-m1-loaded-clock_stopped-full-41017290646-1",
+      "group": "cdr-drain-m1-loaded-clock_stopped",
+      "job_name": "loaded (clock_stopped)",
+      "native_part_name_pattern": "cdr-drain-m1-loaded-clock_stopped-41017290646-1.tar.gz.partNNNN",
+      "permitted_direct_asset_names": [
+        "cdr-drain-m1-loaded-clock_stopped-41017290646-1.summary.json",
+        "cdr-drain-m1-loaded-clock_stopped-41017290646-1.parts.json",
+        "cdr-drain-m1-loaded-clock_stopped-41017290646-1.direct-publication-plan.json",
+        "cdr-drain-m1-loaded-clock_stopped-41017290646-1.publication-source-check.json",
+        "cdr-drain-m1-loaded-clock_stopped-41017290646-1.native-result.json",
+        "cdr-drain-m1-loaded-clock_stopped-41017290646-1.preparation-summary.json",
+        "cdr-drain-m1-loaded-clock_stopped-41017290646-1.preparation-native-result.json"
+      ],
+      "preparation_only": false,
+      "release_id": 428734068,
+      "stem": "cdr-drain-m1-loaded-clock_stopped-41017290646-1",
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-clock_stopped"
+    },
+    {
+      "case": "vi_bias_off",
+      "expected_native_index_paths": [
+        "cloud-cdr-drain-m1-loaded-evidence-vi_bias_off/result.json",
+        "cloud-cdr-drain-m1-loaded-evidence-vi_bias_off/publication-source-check.json",
+        "cloud-cdr-drain-m1-loaded-evidence-vi_bias_off/direct-publication-plan.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-vi_bias_off-publication/publication.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-vi_bias_off-publication/cdr-drain-m1-loaded-vi_bias_off-41017290646-1.summary.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-vi_bias_off-publication/cdr-drain-m1-loaded-vi_bias_off-41017290646-1.parts.json"
+      ],
+      "fallback_artifact": "drain-m1-loaded-vi_bias_off-full-41017290646-1",
+      "group": "cdr-drain-m1-loaded-vi_bias_off",
+      "job_name": "loaded (vi_bias_off)",
+      "native_part_name_pattern": "cdr-drain-m1-loaded-vi_bias_off-41017290646-1.tar.gz.partNNNN",
+      "permitted_direct_asset_names": [
+        "cdr-drain-m1-loaded-vi_bias_off-41017290646-1.summary.json",
+        "cdr-drain-m1-loaded-vi_bias_off-41017290646-1.parts.json",
+        "cdr-drain-m1-loaded-vi_bias_off-41017290646-1.direct-publication-plan.json",
+        "cdr-drain-m1-loaded-vi_bias_off-41017290646-1.publication-source-check.json",
+        "cdr-drain-m1-loaded-vi_bias_off-41017290646-1.native-result.json",
+        "cdr-drain-m1-loaded-vi_bias_off-41017290646-1.preparation-summary.json",
+        "cdr-drain-m1-loaded-vi_bias_off-41017290646-1.preparation-native-result.json"
+      ],
+      "preparation_only": false,
+      "release_id": 428734100,
+      "stem": "cdr-drain-m1-loaded-vi_bias_off-41017290646-1",
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-vi_bias_off"
+    },
+    {
+      "case": "nominal_early",
+      "expected_native_index_paths": [
+        "cloud-cdr-drain-m1-loaded-evidence-preparation/result.json",
+        "cloud-cdr-drain-m1-loaded-evidence-preparation/publication-source-check.json",
+        "cloud-cdr-drain-m1-loaded-evidence-preparation/direct-publication-plan.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-preparation-publication/publication.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-preparation-publication/cdr-drain-m1-loaded-preparation-41017290646-1.summary.json",
+        "hw/soc/out/cloud-cdr-drain-m1-loaded-preparation-publication/cdr-drain-m1-loaded-preparation-41017290646-1.parts.json"
+      ],
+      "fallback_artifact": "drain-m1-loaded-preparation-full-41017290646-1",
+      "group": "cdr-drain-m1-loaded-preparation",
+      "job_name": "prepare",
+      "native_part_name_pattern": "cdr-drain-m1-loaded-preparation-41017290646-1.tar.gz.partNNNN",
+      "permitted_direct_asset_names": [
+        "cdr-drain-m1-loaded-preparation-41017290646-1.summary.json",
+        "cdr-drain-m1-loaded-preparation-41017290646-1.parts.json",
+        "cdr-drain-m1-loaded-preparation-41017290646-1.direct-publication-plan.json",
+        "cdr-drain-m1-loaded-preparation-41017290646-1.publication-source-check.json",
+        "cdr-drain-m1-loaded-preparation-41017290646-1.native-result.json",
+        "cdr-drain-m1-loaded-preparation-41017290646-1.preparation-summary.json",
+        "cdr-drain-m1-loaded-preparation-41017290646-1.preparation-native-result.json"
+      ],
+      "preparation_only": true,
+      "release_id": 428734133,
+      "stem": "cdr-drain-m1-loaded-preparation-41017290646-1",
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-preparation"
+    }
+  ],
+  "historical_proof_references": {
+    "original_loaded_matrix": {
+      "full_proof": "a1e0cbe514f536a50edbcb27bf8d98f2b69a3c46",
+      "historical_failure_preserved": true,
+      "method_sha256": "119b7a2d35abb1163570d01b8af16d18c6d9401e839a38904863d8b42eecef67",
+      "run": 40906725656,
+      "source": "e191424507e67331b2e79800caece4a3f03a1cc0"
+    },
+    "preflight_failure_41015111194": {
+      "commit": "534840fdf29f4cedd0e8f1d64f817f435b4f1bc1",
+      "receipt_sha256": "35f3c0a8fc307aff8106dea95eb899141152de673c2f318fa5d4790494094bf7"
+    },
+    "source_failure_41013887814": {
+      "commit": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "receipt_sha256": "b977645d71fc9d348e8686171be012e20b313839087a6219587e2a6c012ad443"
+    },
+    "source_success_41015676075": {
+      "commit": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "receipt_sha256": "7e45d72a34168ac25199a7ae7a155d4c0fa53d5808a524c65bfb7a7e1a3fe43e",
+      "source": "6e309f009f95c45dbcbde38ac301be2989cb682d"
+    }
+  },
+  "local_authored_tests_or_native_execution": false,
+  "method": {
+    "bytes": 280854,
+    "path": "scripts/cdr-drain-m1-loaded-methods.json",
+    "protected_count": 1775,
+    "sha256": "ac7eda2de4e6eeaa6eb0d6217487bd83ede4ca1430203c1ccce7e1bc66e3fa11"
+  },
+  "mode": "loaded",
+  "native_index_decoder": {
+    "chunk_marker": "WIDTH_CURRENT_NATIVE_CHUNK",
+    "decode": "Strip only the job-log transport prefix before each exact marker. Reject duplicate indices or chunks. Require every integer chunk index0..chunks-1 exactly once; strict base64 decode; concatenate in index order; verify full bytes and SHA256 against the index. No partial excerpts.",
+    "expected_paths": "Exactly the six paths declared separately for each native job/group above.",
+    "index_marker": "WIDTH_CURRENT_NATIVE_INDEX",
+    "parsing": "Hash/preserve raw bytes before parsing. Malformed JSON and unexpected object shapes become explicit collection diagnostics; continue preserving remaining jobs/files. Do not default-coerce invalid/nonfinite values.",
+    "presence": "present:false means absent, not a real empty file. Keep the complete index, preserve absence reason and do not synthesize report bytes. present:true with bytes0 is a real empty file; preserve it byte-exact. Missing emitter entirely is incomplete evidence, never success.",
+    "scope": "Six indexed records per native job if the emitter ran; up to66 records for full preparation+ten cases. Index completeness is not numerical acceptance."
+  },
+  "native_payload_acquired_locally": false,
+  "new_dispatch_or_reservation": false,
+  "pack": {
+    "native_parts_only_cloud": true,
+    "path": "scripts/cloud_chunked_results.py",
+    "sha256": "fe414dcd92c233554a82a2151232bab8803e6ec7863df3872fbde009d3905816"
+  },
+  "publication_source": {
+    "path": "scripts/cdr_width_loaded_publication.py",
+    "sha256": "49cf14ad46b418fe44f8044f510ad0c9fa5e75e42b96db053554e5880bfcac74"
+  },
+  "recipe_execution_performed": false,
+  "release_and_asset_validation": {
+    "direct_fetch": "Fetch only the seven exact derived JSON asset names allowed for that group, if present. Verify API asset size and complete SHA256 before interpretation. Retain malformed JSON bytes, source corruption reports and zero/missing records honestly.",
+    "do_not_fetch_parts": "Record all native part asset IDs/names/bytes/digests/URLs without acquiring them locally. Native archive content remains on the independent release.",
+    "final_endpoints": [
+      "releases/{declared release_id}",
+      "git/ref/tags/{declared tag}"
+    ],
+    "partial_publication": "Do not require missing parts/direct files to exist on a failed publication or manufacture a complete asset census. Preserve available metadata, per-asset receipts, first failure, artifact fallback references and any still-unpublished member identities.",
+    "parts_join": [
+      "parts.format=ordered-tar-gzip-parts-v1, exact stem and source_directory for the group",
+      "parts indices contiguous from0 and exact stem.tar.gz.partNNNN unique names",
+      "every part row bytes/sha256 equals the matching final release asset metadata",
+      "manifest bytes equals sum of ordered part byte counts; preserve combined SHA256",
+      "manifest.verification records the producer's exact parts/bytes/sha256 and all_parts_and_combined_bytes_verified=true"
+    ],
+    "require": [
+      "release.id equals the declared independent reservation",
+      "tag_name and target_commitish equal the exact declared tag/source",
+      "draft=false and prerelease=true",
+      "tag ref is lightweight commit with object.sha=execution_source",
+      "unique positive asset IDs and unique names; state uploaded; integer nonnegative size and sha256 digest syntax",
+      "preserve every final asset metadata row and complete release/tag documents, including unexpected rows; flag conflicts"
+    ],
+    "verification_limit": "Producer verify_parts hashes compressed parts and combined bytes; it does not independently extract and compare the full tar member census. Preserve this distinction. A future member-level archive readback, if needed, must run on GitHub under separate authorization/reservation, never locally."
+  },
+  "repository": "Melihakbulut221/nssoc",
+  "reservation_origin": {
+    "coordinator_confirmed_run_and_all_eleven_empty_exact_source_prereleases": true,
+    "created_preparation_last": true,
+    "final_API_metadata_must_be_verified_at_collection": true,
+    "recipe_did_not_query_active_releases_or_start_collection": true
+  },
+  "run_and_jobs": {
+    "collector_caveat": "preserve-native-job-logs intentionally excludes its own running job and skipped jobs. Its run/jobs snapshot predates final completion. Independently fetch final metadata and its full log after terminal completion.",
+    "endpoints": [
+      "actions/runs/41017290646",
+      "actions/runs/41017290646/attempts/1/jobs?per_page=100",
+      "actions/runs/41017290646/artifacts?per_page=100",
+      "actions/jobs/{id}",
+      "actions/jobs/{id}/logs"
+    ],
+    "expected_full_matrix_job_count": 14,
+    "failure_before_matrix_expansion": "Preserve actual API job census and skipped group representation; do not invent missing expanded jobs or logs. Mark any missing expected native evidence explicitly.",
+    "full_matrix_expected_job_names": [
+      "source-controls",
+      "preserve-job-log",
+      "prepare",
+      "loaded (nominal_early)",
+      "loaded (nominal_late)",
+      "loaded (hot_early)",
+      "loaded (hot_late)",
+      "loaded (cold_early)",
+      "loaded (cold_late)",
+      "loaded (constant_zero)",
+      "loaded (constant_one)",
+      "loaded (clock_stopped)",
+      "loaded (vi_bias_off)",
+      "preserve-native-job-logs"
+    ],
+    "metadata": "Save final run/jobs and each complete job document verbatim or deterministic JSON; preserve final conclusions and individual step conclusions. Follow pagination if necessary; no truncation.",
+    "raw_logs": "Fetch and preserve complete raw bytes for every completed non-skipped job, including both log collectors. Do not strip ANSI, timestamps or line endings. Use gh --allow-escape-sequences where required. Record bytes and SHA256. Record unavailable logs as collection errors rather than fabricated empty files.",
+    "required_identity": {
+      "event": "workflow_dispatch",
+      "head_branch": "codex/cdr-drain-m1-loaded-electrical",
+      "head_sha": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "run_attempt": 1,
+      "workflow_id": 401118236
+    }
+  },
+  "run_id": 41017290646,
+  "schema": "cdr-drain-m1-loaded-terminal-collection-recipe-v1",
+  "semantic_joins": {
+    "acceptance": "Original eight normal/static failures and two intentional fault detections are historical outcomes, not current predictions. Intentional fault detection is not successful normal operation. Physical/timing/full-PHY acceptance remains false.",
+    "fresh_native_model_bindings": {
+      "composed_spice_member": "mim/composition/pd500-mim-wire.spice",
+      "composed_spice_sha256": "5d4de0f4c9fcd6d6aa18d6e1f007a8dab68f1c72efc925d9c4064ca1e4209fed",
+      "native_planes_member": "mim/precise/source/native-planes.json",
+      "native_planes_sha256": "f32720bd478ef3f97b8a68fc16d60c07cc804d0ec04f05c32a0e48e2abbc340e",
+      "no_local_model_acquisition": true
+    },
+    "fresh_target_identity": "Retain complete T003_D and T032_D terminal/parameter/port/node binding records. Do not assume old reduced resistor IDs or old32.5083ohm values identify the new target edges.",
+    "historical_physical_failure": {
+      "do_not_restamp_as_current_physical_qualification": true,
+      "original_physical_historical_only": true,
+      "original_physical_run": 40369539200,
+      "original_physical_status": "FAIL_ADDITIVE_TAIL_WIRE_PHYSICAL"
+    },
+    "input_lineage": {
+      "canonical_members": 496,
+      "complete_input_members": 2680,
+      "fresh_RC_receipt_sha256": "b8d62dc571089f55db76e1729297bcb6d6115638a2da1ef4759cefc04c025040",
+      "fresh_RC_run": 41007572323,
+      "fresh_RC_source": "593c0c056d3eedc69a90269cc7fbc376227a4983",
+      "fresh_graph_members": 138,
+      "graph_run": 41003747027,
+      "graph_source": "474045b9821069cbe42a71752c3c53267e5493fd",
+      "original_current75_retained": true,
+      "physical_run": 41000358737,
+      "physical_source": "37b5b75738b5bbe5eafcfb5e94101c08503c995a"
+    },
+    "numerical_scope": "No local execution of authored validators or numerical analysis. Read the authenticated hosted verdicts and complete measurements. Any new comparison/calculation runs on GitHub with original numeric gates unchanged.",
+    "preserve_failures": "Keep raw original status, primary/terminal/cleanup/publication errors, simulator return code, measured failed predicates and all gate outputs. Publication-only PASS does not imply case PASS; simulator rc0 does not imply electrical PASS.",
+    "raw_RC_vs_summary": {
+      "direct_summary_sha256": "8f03d88186919d434793cd3bafcfefa713311d2fe1314e4f227bfa0497d0edd3",
+      "raw_result_sha256": "5595b9551a089d44ba451cf2bbf01efdb71849c466a7fdae2d26c0f5c4ac7f19",
+      "substitution_forbidden": true
+    },
+    "same_execution": "outer raw/summary/reservation/publication current_context source/run/attempt/group/case/preparation_mode must bind the exact current execution, not historical source proofs.",
+    "same_run_preparation": "For each executed case, preparation-summary.json and preparation-native-result.json must hash-equal the actual preparation release direct files in this same source/run/attempt; verify native_case_passed, complete terminal flags and exact native/result.json join. Historical preparation is not admissible.",
+    "terminal_statuses": {
+      "case": "PASS_CURRENT_TAIL_ORIGINAL_LOADED_CASE_NOT_PHY_ACCEPTANCE",
+      "complete_publication_only": "PASS_COMPLETE_LOADED_EVIDENCE_PUBLICATION_ONLY",
+      "preparation": "PASS_CURRENT_TAIL_LOADED_PREPARATION_ORIGINAL_BINDING_GATES"
+    }
+  },
+  "source_or_authority_modified": false,
+  "source_records": {
+    "actual_counts_to_verify": {
+      "current_lifecycle": 2,
+      "current_positive": 13,
+      "current_publication": 15,
+      "current_refusal": 121,
+      "historical_cases": 10,
+      "historical_original_fault_detections": 2,
+      "historical_original_rejections": 8,
+      "import_data": 3,
+      "import_files": 55,
+      "import_modules": 52,
+      "import_positive": 2,
+      "import_refusal": 6,
+      "numerical_blocks": 6,
+      "numerical_bytes": 24133
+    },
+    "chunk_marker": "DRAIN_LOADED_SOURCE_CHUNK",
+    "expected_count": 16,
+    "historical_report_join": "historical.historical must exactly equal current.result.historical; this is historical source coverage only, not actual current simulation acceptance.",
+    "index_marker": "DRAIN_LOADED_SOURCE_INDEX",
+    "job_name": "source-controls",
+    "paths": [
+      "context.json",
+      "historical.json",
+      "historical.stdout",
+      "historical.stderr",
+      "execution.json",
+      "execution.stdout",
+      "execution.stderr",
+      "publication.json",
+      "publication.stdout",
+      "publication.stderr",
+      "imports.json",
+      "imports.stdout",
+      "imports.stderr",
+      "current.json",
+      "current.stdout",
+      "current.stderr"
+    ],
+    "required_context": {
+      "attempt": 1,
+      "native_executed": false,
+      "run_id": 41017290646,
+      "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "source_controls_only": true
+    },
+    "source_context_method_sha256": "ac7eda2de4e6eeaa6eb0d6217487bd83ede4ca1430203c1ccce7e1bc66e3fa11",
+    "source_context_protected_files": 1775,
+    "status_bindings": {
+      "current": "PASS_DRAIN_M1_LOADED_SOURCE_CONTROLS",
+      "execution": "PASS_WIDTH_LOADED_EXECUTION_SOURCE_CONTROLS",
+      "historical": "PASS_WIDTH_LOADED_HISTORICAL_CASE_SOURCE_CONTROLS",
+      "imports": "PASS_WIDTH_LOADED_ACTUAL_IMPORT_SOURCE_CONTROLS",
+      "publication": "PASS_WIDTH_LOADED_FAILURE_PUBLICATION_SOURCE_CONTROLS"
+    }
+  },
+  "stage": {
+    "path": "scripts/cloud_cdr_drain_m1_loaded_stage.py",
+    "production_bytes_unchanged": true,
+    "sha256": "828d2e4c9af4dfaa37ef87b0fab571b9c8fb804955acb6d55a019184cc994e72"
+  },
+  "status": "INERT_COLLECTION_RECIPE_NOT_EXECUTED",
+  "three_distinct_result_layers": {
+    "empty_records": "Keep empty raw records/waveform streams inside the native archive. archive_only_empty must be explicit in direct-publication-plan; omitted zero-byte direct upload is not data deletion.",
+    "full_member_map": "Preserve the entire summary.outputs and publication.complete_outputs maps without truncation. On complete publication they must match exactly. summary.outputs['result.json'] must equal the indexed outer raw bytes when raw_terminal is present; every direct plan record binds its exact archive member/hash/size. Do not add result.json twice or assume the2680 input count is the output count.",
+    "independent_summary": "The direct/indexed stem.summary.json is independently constructed by publication. summary.raw_terminal binds the outer raw result when present. summary.outputs is the complete publication-time output map including result.json and publication metadata; it is not byte-identical to the raw outer terminal.",
+    "native_raw": "The direct stem.native-result.json corresponds to member native/result.json, the actual numerical worker report. It is a different file from the outer terminal. Verify its SHA against summary.outputs['native/result.json'] and native_controller_result_sha256 when available.",
+    "outer_raw": "The indexed cloud-cdr-drain-m1-loaded-evidence-{suffix}/result.json is the immutable outer controller terminal. Preserve its exact bytes and original status/errors.",
+    "raw_map_boundary": "The outer raw result's pre-publication outputs excludes its own result.json and publication-only files. Keep the raw map unchanged and report the separately explained publication additions.",
+    "source_corruption": "publication-source-check qualified=false or changed bytes remain unqualified failure evidence. Preserve full source diagnostic and publication-source member map; never reinterpret preserved publication as successful execution."
+  },
+  "workflow": {
+    "bytes": 42602,
+    "id": 401118236,
+    "path": ".github/workflows/cdr-current-access-overlay.yml",
+    "sha256": "d3f01c5fb80b85ab06dd267bab3132f855a68b26b9690aa43ac7612c832421bf"
+  }
+}
