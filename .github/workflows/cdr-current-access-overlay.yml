@@ -53,7 +53,7 @@ jobs:
           for name in ('workflow_dispatch_authorized','preparation_authorized','native_execution_authorized','simulation_authorized','controller_readiness',
               'geometry_generation_authorized','native_extraction_authorized','accepted','electrical_accepted','physical_accepted','cdr_accepted','qualified_pex','full_phy_accepted','automatic_retry'):
               assert m[name] is False,name
-          assert len(m['protected_sha256'])==1700
+          assert len(m['protected_sha256'])==1744
           for name,digest in m['protected_sha256'].items():
               path=Path(name);assert path.is_file() and not path.is_symlink(),name
               with path.open('rb') as stream:assert hashlib.file_digest(stream,'sha256').hexdigest()==digest,name
