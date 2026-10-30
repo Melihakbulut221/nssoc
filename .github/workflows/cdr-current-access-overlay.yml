@@ -1,9 +1,10 @@
-name: Current CDR fresh two-M1 graph and terminal binding
+# Exact-source native admission follows passed hosted controller qualification; original gates remain unchanged.
+name: Current CDR two-M1 widened rail fresh RC
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Source controls or fresh graph of physically qualified two-M1 candidate
+        description: Source controls or actual fresh RC for the qualified two-M1 candidate
         type: choice
         required: true
         default: controls
@@ -12,14 +13,14 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-access-overlay-${{ github.ref }}
+  group: cdr-drain-m1-fresh-rc-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
 jobs:
   source-controls:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -28,63 +29,95 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Bind exact source without acquiring native payloads
+      - name: Verify exact source and separate source-control authority
         run: |
-          python3 -B - <<'PY'
-          import hashlib,json,os,subprocess
+          python -B - <<'PY'
+          import hashlib,json,os,re,subprocess
           from pathlib import Path
           e=os.environ
+          assert e['GITHUB_ACTIONS']=='true' and e['RUNNER_ENVIRONMENT']=='github-hosted'
           assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
-          assert e['GITHUB_REF']=='refs/heads/codex/cdr-drain-m1-fresh-graph'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
-          p=Path('scripts/cdr-drain-m1-fresh-graph-pins.json')
-          assert p.is_file() and not p.is_symlink()
-          raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()=='667a795dc4ad5ce07055c23fc8da15dbeb3fb2e1c7ecaac1a69cb03866f89ccd'
-          manifest=json.loads(raw);assert len(manifest['protected_sha256'])==1213
-          pins=manifest['protected_sha256']
-          for name,digest in pins.items():
-              p=Path(name);assert p.is_file() and not p.is_symlink()
-              b=p.read_bytes();assert hashlib.sha256(b).hexdigest()==digest
-          out=Path('cdr-access-overlay-controls');out.mkdir(exist_ok=True)
-          (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run=int(e['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_acquisition=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,sha256=pins),sort_keys=True,indent=2)+'\n')
+          assert re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA'])
+          p=Path('scripts/cdr-drain-m1-fresh-rc-methods.json')
+          assert hashlib.sha256(p.read_bytes()).hexdigest()=='b84c987866ba84f2e67de967b82a15269558a19fb9760816fbefd71604c487a1'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr-drain-m1-fresh-rc'
+          m=json.loads(p.read_bytes())
+          assert len(m['protected_sha256'])==1502
+          assert m['source_controls_authorized'] is True
+          for n,h in m['protected_sha256'].items():
+              path=Path(n)
+              assert not path.is_symlink() and path.is_file()
+              with path.open('rb') as f: assert hashlib.file_digest(f,'sha256').hexdigest()==h,n
+          out=Path('hw/soc/out/cdr-drain-m1-fresh-rc-controls')
+          out.mkdir(parents=True,exist_ok=False)
+          (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run=e['GITHUB_RUN_ID'],
+              attempt=1,method_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),
+              source_controls_only=True,native_execution=False),sort_keys=True)+'\n')
           PY
-      - name: Exercise archive refusal and failure preservation controls
-        run: python3 -B scripts/check_cdr_drain_m1_fresh_graph.py --pins-sha256 667a795dc4ad5ce07055c23fc8da15dbeb3fb2e1c7ecaac1a69cb03866f89ccd --output cdr-access-overlay-controls/controls.json > cdr-access-overlay-controls/controls.stdout 2> cdr-access-overlay-controls/controls.stderr
-      - name: Require actual complete control results
+      - name: Original pinned parser dependency
+        run: python -m pip install networkx==3.4.2
+      - name: Actual current width and graph evidence controls
         run: |
-          python3 -B - <<'PY'
-          import json,os
+          python -B scripts/check_cdr_width_rc_input_evidence.py --output hw/soc/out/cdr-drain-m1-fresh-rc-controls/input.json > hw/soc/out/cdr-drain-m1-fresh-rc-controls/input.stdout 2> hw/soc/out/cdr-drain-m1-fresh-rc-controls/input.stderr
+      - name: Unchanged current75 admission and numerical adapter controls
+        run: |
+          python -B scripts/check_cdr_selector_width_fresh_rc_source.py --output hw/soc/out/cdr-drain-m1-fresh-rc-controls/adapters.json > hw/soc/out/cdr-drain-m1-fresh-rc-controls/adapters.stdout 2> hw/soc/out/cdr-drain-m1-fresh-rc-controls/adapters.stderr
+      - name: Actual separate authority lifecycle and complete publication controls
+        run: |
+          python -B scripts/check_cdr_selector_width_fresh_rc_lifecycle.py --output hw/soc/out/cdr-drain-m1-fresh-rc-controls/execution.json > hw/soc/out/cdr-drain-m1-fresh-rc-controls/execution.stdout 2> hw/soc/out/cdr-drain-m1-fresh-rc-controls/execution.stderr
+      - name: Actual new graph138 current75 restore and current controller controls
+        run: |
+          python -B scripts/check_cdr_drain_m1_fresh_rc.py --output hw/soc/out/cdr-drain-m1-fresh-rc-controls/current.json > hw/soc/out/cdr-drain-m1-fresh-rc-controls/current.stdout 2> hw/soc/out/cdr-drain-m1-fresh-rc-controls/current.stderr
+      - name: Require complete source control reports
+        run: |
+          python -B - <<'PY'
+          import hashlib,json,os
           from pathlib import Path
-          r=json.loads(Path('cdr-access-overlay-controls/controls.json').read_bytes())
-          assert r['status']=='PASS_DRAIN_M1_FRESH_GRAPH_SOURCE_CONTROLS' and r['passed'] is True
-          assert r['counts']==dict(positive=5,refusal=12,lifecycle=5)
-          assert r['current_context']==dict(source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_executed=False)
-          assert r['native_executed'] is False and r['physical_acceptance'] is False
-          assert r['inherited']['counts']==dict(positive=5,refusal=10,lifecycle=4)
+          root=Path('hw/soc/out/cdr-drain-m1-fresh-rc-controls')
+          a=json.loads((root/'input.json').read_bytes())
+          assert a['status']=='PASS_READ_ONLY_WIDTH_RC_INPUT_EVIDENCE_CONTROLS'
+          assert (a['positive_count'],a['refusal_count'])==(4,36)
+          a=json.loads((root/'adapters.json').read_bytes())
+          assert a['status']=='PASS_FRESH_WIDTH_RC_ADMISSION_ADAPTER_SOURCE_CONTROLS_ONLY'
+          assert (a['tests'],a['failures'],a['errors'],a['positive_records'],a['refusal_records'])==(8,0,0,5,43)
+          a=json.loads((root/'execution.json').read_bytes())
+          assert a['status']=='PASS_FRESH_WIDTH_RC_EXECUTION_SOURCE_CONTROLS_ONLY'
+          assert (a['tests'],a['failures'],a['errors'])==(10,0,0)
+          assert (a['source_head'],a['run_id'],a['run_attempt'])==(os.environ['GITHUB_SHA'],int(os.environ['GITHUB_RUN_ID']),1)
+          assert a['method_sha256']==hashlib.sha256(Path('scripts/cdr-selector-width-fresh-rc-execution-methods.json').read_bytes()).hexdigest()
+          assert all(a[k] is False for k in ('native_execution','native_payload_acquired','native_archive_restoration_qualified',
+              'fresh_RC_passed','qualified_pex','electrical_accepted','full_phy_accepted'))
+          a=json.loads((root/'current.json').read_bytes())
+          assert a['status']=='PASS_DRAIN_M1_FRESH_RC_SOURCE_CONTROLS' and a['passed'] is True
+          assert (a['positive'],a['refusal'])==(8,110)
+          assert a['current_context']==dict(source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_executed=False)
+          assert a['native_executed'] is a['electrical_acceptance'] is a['physical_acceptance'] is False
           PY
-      - name: Always emit full source control records
+      - name: Always emit full exact source control records
         if: always()
         run: |
-          python3 -B - <<'PY'
+          python -B - <<'PY'
           import base64,hashlib,json
           from pathlib import Path
-          for name in ('context.json','controls.json','controls.stdout','controls.stderr'):
-              p=Path('cdr-access-overlay-controls')/name;assert not p.is_symlink()
-              raw=p.read_bytes() if p.is_file() else b''
-              chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
-              print('CDR_ACCESS_OVERLAY_CONTROL_INDEX '+json.dumps(dict(path=name,present=p.is_file(),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+          root=Path('hw/soc/out/cdr-drain-m1-fresh-rc-controls')
+          for n in ('context.json','input.json','input.stdout','input.stderr','adapters.json','adapters.stdout','adapters.stderr','execution.json','execution.stdout','execution.stderr','current.json','current.stdout','current.stderr'):
+              p=root/n;present=p.is_file() and not p.is_symlink();raw=p.read_bytes() if present else b''
+              chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+              print('WIDTH_RC_EXECUTION_INDEX '+json.dumps(dict(path=n,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
               for i,b in enumerate(chunks):
-                  print('CDR_ACCESS_OVERLAY_CONTROL_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+                  print('WIDTH_RC_EXECUTION_CHUNK '+json.dumps(dict(path=n,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
           PY
-      - name: Preserve complete control records
+      - name: Retain all source control bytes
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: cdr-access-overlay-controls-${{ github.run_id }}-${{ github.run_attempt }}
-          path: cdr-access-overlay-controls
+          name: width-fresh-rc-execution-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 90
+          path: hw/soc/out/cdr-drain-m1-fresh-rc-controls
   preserve-job-log:
     needs: source-controls
     if: always()
@@ -127,12 +160,15 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-  readback:
-    permissions: {contents: write, actions: read}
-    needs: [source-controls, preserve-job-log]
+  fresh-RC:
+    # Same-source controls must pass before the separately admitted native extraction.
     if: ${{ inputs.mode == 'readback' }}
+    needs: [source-controls, preserve-job-log]
+    permissions:
+      contents: write
+      actions: read
     runs-on: ubuntu-22.04
-    timeout-minutes: 250
+    timeout-minutes: 180
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -143,182 +179,151 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Recheck exact selected source before acquisition
+      - name: Recover full same-source source controls before dependencies
         run: |
-          python3 -B - <<'PY'
-          import hashlib,json,os,subprocess
+          python -B - <<'PY'
+          import base64,hashlib,json,os,subprocess
           from pathlib import Path
-          e=os.environ
+          e=os.environ;repo='repos/'+e['GITHUB_REPOSITORY']+'/'
+          assert e['GITHUB_ACTIONS']=='true' and e['RUNNER_ENVIRONMENT']=='github-hosted'
           assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
-          assert e['GITHUB_REF']=='refs/heads/codex/cdr-drain-m1-fresh-graph'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr-drain-m1-fresh-rc'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
-          p=Path('scripts/cdr-drain-m1-fresh-graph-pins.json')
-          assert p.is_file() and not p.is_symlink()
-          raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()=='667a795dc4ad5ce07055c23fc8da15dbeb3fb2e1c7ecaac1a69cb03866f89ccd'
-          manifest=json.loads(raw);assert len(manifest['protected_sha256'])==1213
-          pins=manifest['protected_sha256']
-          for name,digest in pins.items():
-              p=Path(name);assert p.is_file() and not p.is_symlink()
-              b=p.read_bytes();assert hashlib.sha256(b).hexdigest()==digest
-          out=Path('cdr-access-overlay-controls');out.mkdir(exist_ok=True)
-          (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run=int(e['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_acquisition=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,sha256=pins),sort_keys=True,indent=2)+'\n')
+          p=Path('scripts/cdr-drain-m1-fresh-rc-methods.json');raw=p.read_bytes()
+          assert not p.is_symlink() and hashlib.sha256(raw).hexdigest()=='b84c987866ba84f2e67de967b82a15269558a19fb9760816fbefd71604c487a1'
+          method=json.loads(raw);assert len(method['protected_sha256'])==1502 and method['source_controls_authorized'] is True
+          for name,digest in method['protected_sha256'].items():
+              path=Path(name);assert path.is_file() and not path.is_symlink()
+              with path.open('rb') as stream:assert hashlib.file_digest(stream,'sha256').hexdigest()==digest,name
+          out=Path('hw/soc/out/cdr-drain-m1-fresh-rc-controls');out.mkdir(parents=True,exist_ok=False)
+          def fetch(path):return subprocess.check_output(['gh','api','--allow-escape-sequences',repo+path])
+          runraw=fetch('actions/runs/'+e['GITHUB_RUN_ID']);run=json.loads(runraw)
+          assert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
+          jobsraw=fetch('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100');jobs=json.loads(jobsraw)
+          chosen=[j for j in jobs['jobs'] if j['name']=='source-controls'];assert len(chosen)==1
+          job=chosen[0];assert job['status']=='completed' and job['conclusion']=='success' and job['head_sha']==e['GITHUB_SHA']
+          assert all(s['conclusion']=='success' for s in job['steps'])
+          log=fetch('actions/jobs/'+str(job['id'])+'/logs');assert log
+          for name,raw in (('source-run.json',runraw),('source-jobs.json',jobsraw),('source-job.log',log)):(out/name).write_bytes(raw)
+          indexes={};chunks={}
+          for line in log.decode().splitlines():
+              for marker,kind in (('WIDTH_RC_EXECUTION_INDEX ','index'),('WIDTH_RC_EXECUTION_CHUNK ','chunk')):
+                  start=line.find(marker)
+                  if start<0 or not line[start+len(marker):].startswith('{'):continue
+                  row=json.loads(line[start+len(marker):]);name=row['path']
+                  if kind=='index':
+                      assert name not in indexes;indexes[name]=row
+                  else:
+                      assert row['index'] not in chunks.setdefault(name,{})
+                      chunks[name][row['index']]=row
+          names=('context.json','input.json','input.stdout','input.stderr','adapters.json','adapters.stdout','adapters.stderr','execution.json','execution.stdout','execution.stderr','current.json','current.stdout','current.stderr')
+          assert set(indexes)==set(names)
+          for name in names:
+              pin=indexes[name];assert pin['present'] is True
+              rows=chunks.get(name,{})
+              assert set(rows)==set(range(pin['chunks']))
+              raw=b''.join(base64.b64decode(rows[i]['base64'],validate=True)for i in range(pin['chunks']))
+              assert len(raw)==pin['bytes'] and hashlib.sha256(raw).hexdigest()==pin['sha256']
+              (out/name).write_bytes(raw)
+          current=json.loads((out/'current.json').read_bytes())
+          assert current['status']=='PASS_DRAIN_M1_FRESH_RC_SOURCE_CONTROLS' and current['passed'] is True
+          assert (current['positive'],current['refusal'])==(8,110)
+          assert current['current_context']==dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_executed=False)
+          assert current['native_executed'] is current['electrical_acceptance'] is current['physical_acceptance'] is False
           PY
-      - name: Require independently created exact-source release
+      - name: Read-only exact source reservation before dependencies
         run: |
-          python3 -B - <<'PY'
-          import json,os,subprocess,time
+          mkdir -p hw/soc/out/cdr-drain-m1-fresh-rc-driver-logs
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python -B scripts/cloud_cdr_drain_m1_fresh_rc.py --preflight > hw/soc/out/cdr-drain-m1-fresh-rc-driver-logs/preflight.json
+          python -B - <<'PY'
+          import json,os
           from pathlib import Path
-          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-cdr-drain-m1-fresh-graph'
-          prefix='repos/Melihakbulut221/nssoc/'
-          for attempt in range(120):
-              p=subprocess.run(['gh','api',prefix+'releases/tags/'+tag],capture_output=True,text=True)
-              if p.returncode==0:
-                  d=json.loads(p.stdout);break
-              assert 'HTTP 404' in p.stderr,p.stderr
-              time.sleep(2)
-          else:raise RuntimeError('Exact-source release reservation was not created; no archive acquisition')
-          r=json.loads(subprocess.check_output(['gh','api',prefix+'git/ref/tags/'+tag]))
-          assert d['tag_name']==tag and d['target_commitish']==e['GITHUB_SHA']
-          assert d['draft'] is False and d['prerelease'] is True and d['assets']==[]
-          assert r['object']['type']=='commit' and r['object']['sha']==e['GITHUB_SHA']
-          receipt=dict(tag=tag,tested_source=e['GITHUB_SHA'],release_id=d['id'],existing_assets=[],target_verified=True,assets_overwritten=False,externally_reserved=True,creation_attempted=False,read_attempts=attempt+1)
-          Path('release-reservation.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          r=json.loads(Path('hw/soc/out/cdr-drain-m1-fresh-rc-driver-logs/preflight.json').read_bytes())
+          with open(os.environ['GITHUB_ENV'],'a') as f:f.write('CDR_DRAIN_M1_RC_RESERVATION_SHA256='+r['sha256']+'\n')
           PY
-      - name: Recheck actual same-source controls before acquisition
-        run: python3 -B scripts/check_cdr_drain_m1_fresh_graph.py --pins-sha256 667a795dc4ad5ce07055c23fc8da15dbeb3fb2e1c7ecaac1a69cb03866f89ccd --output cdr-access-overlay-controls/controls.json > cdr-access-overlay-controls/controls.stdout 2> cdr-access-overlay-controls/controls.stderr
-      - name: Verify current producer and independent reservation before acquisition
-        run: python3 -B scripts/cloud_cdr_drain_m1_fresh_graph.py --preflight --pins-sha256 667a795dc4ad5ce07055c23fc8da15dbeb3fb2e1c7ecaac1a69cb03866f89ccd --reservation release-reservation.json --controls-proof cdr-access-overlay-controls/controls.json --output access-overlay-preflight.json > access-overlay-preflight.stdout 2> access-overlay-preflight.stderr
-      - name: Acquire pinned native runtime only after authenticated preflight
+      - name: Original qualified native runtime and extraction dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y libfuse2 tcl8.6
-          python3 -B - <<'PY'
-          import hashlib,json,os,subprocess,urllib.request
-          from pathlib import Path
-          proof=json.loads(Path('access-overlay-preflight.json').read_bytes())
-          assert proof['current_context']['source']==os.environ['GITHUB_SHA']
-          assert proof['current_context']['run_id']==int(os.environ['GITHUB_RUN_ID'])
-          assert proof['source_manifest_sha256']=='667a795dc4ad5ce07055c23fc8da15dbeb3fb2e1c7ecaac1a69cb03866f89ccd'
-          config=json.loads(Path('scripts/cdr-drain-m1-fresh-graph-inputs.json').read_bytes())
-          dest=Path(os.environ['RUNNER_TEMP'])/('cdr-access-runtime-'+os.environ['GITHUB_RUN_ID'])
-          assert not dest.exists();dest.mkdir()
-          path=dest/'librelane.AppImage';url=config['appimage']['url']
-          assert url=='https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage'
-          with urllib.request.urlopen(url,timeout=120) as source,path.open('xb') as output:
-              while True:
-                  part=source.read(1024*1024)
-                  if not part:break
-                  output.write(part)
-          with path.open('rb') as stream:digest=hashlib.file_digest(stream,'sha256').hexdigest()
-          assert digest==config['appimage']['sha256']=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
-          path.chmod(0o700)
-          Path('access-runtime-receipt.json').write_text(json.dumps(dict(url=url,sha256=digest,bytes=path.stat().st_size,source=os.environ['GITHUB_SHA'],run=int(os.environ['GITHUB_RUN_ID']),preflight_verified_before_acquisition=True),sort_keys=True,indent=2)+'\n')
-          PY
-      - name: Extract fresh graph and prove complete terminal and per-partition material identity
-        run: python3 -B scripts/cloud_cdr_drain_m1_fresh_graph.py --readback --pins-sha256 667a795dc4ad5ce07055c23fc8da15dbeb3fb2e1c7ecaac1a69cb03866f89ccd --reservation release-reservation.json --controls-proof cdr-access-overlay-controls/controls.json --appimage "$RUNNER_TEMP/cdr-access-runtime-$GITHUB_RUN_ID/librelane.AppImage" --output "$GITHUB_WORKSPACE/hw/soc/out/cloud-cdr-drain-m1-fresh-graph" > access-overlay-readback.stdout 2> access-overlay-readback.stderr
-      - name: Preserve complete derived evidence in independently reserved release
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6 tk8.6 tcl-dev tk-dev build-essential m4 autoconf libreadline-dev libx11-dev libxext-dev libxpm-dev libxt-dev libcairo2-dev libgl1-mesa-dev libglu1-mesa-dev
+          python -m pip install networkx==3.4.2
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Four original supervised phases with full current75 projection
+        run: |
+          set -o pipefail
+          python -B scripts/cloud_cdr_drain_m1_fresh_rc.py 2>&1 | tee hw/soc/out/cdr-drain-m1-fresh-rc-driver-logs/driver.log
+      - name: Publish complete success or failure bytes to exact reserved release
         if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          python3 -B - <<'PY'
-          import hashlib,json,os,pathlib,subprocess,tarfile,urllib.parse
-          root=pathlib.Path('.');dest=root/'hw/soc/out/cloud-cdr-drain-m1-fresh-graph'
-          if not pathlib.Path('release-reservation.json').is_file():
-              print('No reservation receipt; no acquisition/publication authority. Existing logs/artifacts remain available.')
-              raise SystemExit(0)
-          dest.mkdir(parents=True,exist_ok=True)
-          def api(path):
-              return json.loads(subprocess.check_output(['gh','api','repos/'+os.environ['GITHUB_REPOSITORY']+'/'+path]))
-          receipt=json.loads(pathlib.Path('release-reservation.json').read_text())
-          tag='cloud-results-'+os.environ['GITHUB_RUN_ID']+'-1-cdr-drain-m1-fresh-graph'
-          release=api('releases/tags/'+tag);ref=api('git/ref/tags/'+tag)
-          assert receipt['release_id']==release['id'] and receipt['tested_source']==os.environ['GITHUB_SHA']
-          assert release['draft'] is False and release['prerelease'] is True and not release['assets']
-          assert release['target_commitish']==os.environ['GITHUB_SHA'] and ref['object']==dict(type='commit',sha=os.environ['GITHUB_SHA'],url=ref['object']['url'])
-          paths=[]
-          for directory in ('hw/soc/out/cloud-cdr-drain-m1-fresh-graph','cdr-access-overlay-controls'):
-              folder=root/directory
-              if folder.is_dir():paths.extend(p for p in folder.rglob('*')if p.is_file())
-          for name in ('release-reservation.json','access-overlay-preflight.json','access-runtime-receipt.json','access-overlay-preflight.stdout','access-overlay-preflight.stderr','access-overlay-readback.stdout','access-overlay-readback.stderr'):
-              if (root/name).is_file():paths.append(root/name)
-          paths=sorted(set(paths))
-          assert all(not p.is_symlink() and p.is_file() for p in paths)
-          inventory={str(p):dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest())for p in paths}
-          plan=dict(schema=1,source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,
-            release_id=release['id'],group='cdr-drain-m1-fresh-graph',native_inputs_acquired_locally=False,
-            complete_available_derived_files=inventory,empty_streams_retained_in_archive=True,
-            native_geometry_modified=False,physical_acceptance=False)
-          inv=dest/'permanent-output-inventory.json';inv.write_text(json.dumps(plan,sort_keys=True,indent=2)+'\n')
-          archive=root/'cdr-drain-m1-fresh-graph-evidence.tar.gz'
-          assert not archive.exists()
-          with tarfile.open(archive,'w:gz')as tar:
-              for p in paths+[inv]:tar.add(p,arcname='cdr-drain-m1-fresh-graph-evidence/'+str(p),recursive=False)
-          publication=dict(archive=dict(bytes=archive.stat().st_size,sha256=hashlib.sha256(archive.read_bytes()).hexdigest()),
-            members=len(paths)+1,release_id=release['id'],tag=tag,source=os.environ['GITHUB_SHA'],overwrite=False)
-          meta=dest/'permanent-archive.json';meta.write_text(json.dumps(publication,sort_keys=True,indent=2)+'\n')
-          outcomes=[];errors=[]
-          for p in (archive,inv,meta):
-              try:
-                  assert not any(a['name']==p.name for a in api('releases/'+str(release['id']))['assets'])
-                  url='https://uploads.github.com/repos/'+os.environ['GITHUB_REPOSITORY']+'/releases/'+str(release['id'])+'/assets?name='+urllib.parse.quote(p.name)
-                  raw=subprocess.check_output(['gh','api','--method','POST',url,'-H','Content-Type: application/octet-stream','--input',str(p)])
-                  asset=json.loads(raw);digest='sha256:'+hashlib.sha256(p.read_bytes()).hexdigest()
-                  assert asset['size']==p.stat().st_size and asset['digest']==digest
-                  outcomes.append(dict(name=p.name,asset=asset))
-              except BaseException as exc:
-                  errors.append(repr(exc));outcomes.append(dict(name=p.name,error=repr(exc)))
-          (dest/'permanent-publication.json').write_text(json.dumps(dict(outcomes=outcomes,errors=errors),sort_keys=True,indent=2)+'\n')
-          if errors:raise RuntimeError(errors)
-          PY
-      - name: Always emit every derived output and complete command stream
+        run: python -B scripts/cloud_cdr_drain_m1_fresh_rc.py --publish-only
+      - name: Always emit terminal metadata without native binaries
         if: always()
         run: |
-          python3 -B - <<'PY'
-          import base64,hashlib,json,zlib
+          python -B - <<'PY'
+          import base64,hashlib,json
           from pathlib import Path
-          roots=[Path('hw/soc/out/cloud-cdr-drain-m1-fresh-graph'),Path('cdr-access-overlay-controls')]
-          paths=[p for root in roots for p in root.rglob('*') if p.is_file() and p.suffix.lower() in ('.json','.jsonl','.log','.stdout','.stderr','.txt','.py')]
-          paths += [Path(n) for n in ('release-reservation.json','access-overlay-preflight.json','access-overlay-preflight.stdout','access-overlay-preflight.stderr','access-runtime-receipt.json','access-overlay-readback.stdout','access-overlay-readback.stderr') if Path(n).is_file()]
-          assert len(paths)==len(set(paths))
-          for p in sorted(paths):
-              assert not p.is_symlink() and p.suffix.lower() not in ('.gds','.odb','.def','.lvsdb','.l2n','.gz','.zip','.appimage','.raw','.vcd')
-              raw=p.read_bytes();name=p.as_posix();packed=zlib.compress(raw,9)
-              chunks=[packed[i:i+12000]for i in range(0,len(packed),12000)]
-              pin=dict(name=name,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks))
-              print('CDR_ACCESS_COMPLETE_INDEX '+json.dumps(pin,sort_keys=True))
-              for i,b in enumerate(chunks):
-                  print('CDR_ACCESS_COMPLETE_CHUNK '+json.dumps(dict(**pin,index=i,encoding='zlib-base64',base64=base64.b64encode(b).decode()),sort_keys=True))
+          roots=(Path('hw/soc/out/cloud-cdr-drain-m1-fresh-rc'),Path('hw/soc/out/cloud-cdr-drain-m1-fresh-rc-publication'))
+          names=(('result.json','restore/joint-admission.json','restore/canonical-candidate.json','binding/result.json','wire-stage/result.json','mim/result.json'),('publication.json',))
+          for root,members in zip(roots,names):
+              for name in members:
+                  p=root/name;present=p.is_file() and not p.is_symlink();raw=p.read_bytes() if present else b''
+                  chunks=[raw[i:i+6000] for i in range(0,len(raw),6000)]
+                  print('WIDTH_FRESH_RC_TERMINAL_INDEX '+json.dumps(dict(path=str(p),present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+                  for i,b in enumerate(chunks):
+                      print('WIDTH_FRESH_RC_TERMINAL_CHUNK '+json.dumps(dict(path=str(p),index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
           PY
-      - name: Preserve complete derived evidence and failure logs
-        id: preserve
+      - name: Complete native success or failure fallback
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: cdr-access-overlay-readback-${{ github.run_id }}-${{ github.run_attempt }}
+          name: width-fresh-rc-full-${{ github.run_id }}-${{ github.run_attempt }}
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 90
           path: |
-            hw/soc/out/cloud-cdr-drain-m1-fresh-graph
-            cdr-access-overlay-controls
-            release-reservation.json
-            access-overlay-preflight.json
-            access-overlay-preflight.stdout
-            access-overlay-preflight.stderr
-            access-runtime-receipt.json
-            access-overlay-readback.stdout
-            access-overlay-readback.stderr
-      - name: Clean exact owned runtime after preservation
-        if: ${{ always() && steps.preserve.outcome == 'success' }}
+            hw/soc/out/cloud-cdr-drain-m1-fresh-rc
+            hw/soc/out/cloud-cdr-drain-m1-fresh-rc-publication
+            hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate
+            hw/soc/out/cdr-drain-m1-fresh-rc-preflight
+            hw/soc/out/cdr-drain-m1-fresh-rc-driver-logs
+            hw/soc/out/cdr-drain-m1-fresh-rc-controls
+  preserve-job-logs:
+    if: always()
+    needs: [source-controls, preserve-job-log, fresh-RC]
+    permissions:
+      contents: read
+      actions: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Preserve full actual source and native job logs and metadata
         run: |
+          mkdir job-logs
+          gh api --allow-escape-sequences "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" > job-logs/run.json
+          gh api --allow-escape-sequences "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/attempts/1/jobs?per_page=100" > job-logs/jobs.json
           python3 -B - <<'PY'
-          import os,shutil
+          import hashlib,json,os,subprocess
           from pathlib import Path
-          root=Path(os.environ['RUNNER_TEMP']).resolve()
-          p=root/('cdr-access-runtime-'+os.environ['GITHUB_RUN_ID'])
-          assert p.parent==root and not p.is_symlink()
-          if p.exists():shutil.rmtree(p)
-          print('Owned runtime removed; native input temporary directory managed by readback lifecycle.')
+          root=Path('job-logs');data=json.loads((root/'jobs.json').read_bytes());records=[]
+          for job in data['jobs']:
+              if job['name'] not in ('source-controls','preserve-job-log','fresh-RC') or job['conclusion']=='skipped':continue
+              assert job['status']=='completed'
+              raw=subprocess.check_output(['gh','api','--allow-escape-sequences','repos/'+os.environ['GITHUB_REPOSITORY']+'/actions/jobs/'+str(job['id'])+'/logs'])
+              p=root/(str(job['id'])+'.log');p.write_bytes(raw)
+              records.append(dict(job_id=job['id'],name=job['name'],bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()))
+          (root/'receipt.json').write_text(json.dumps(dict(logs=records,zip_acquired=False),sort_keys=True,indent=2)+'\n')
+          print((root/'receipt.json').read_text())
           PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: width-fresh-rc-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          path: job-logs
