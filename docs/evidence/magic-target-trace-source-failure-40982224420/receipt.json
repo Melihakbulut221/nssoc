@@ -1,0 +1,134 @@
+{
+  "diagnosis": "Synthetic fixture incorrectly wrote pretty multi-line JSON as JSONL; actual production reader correctly rejected it. Reader/native not executed; only fixture serialization needs correction.",
+  "files": {
+    "dispatch-request.json": {
+      "bytes": 181,
+      "sha256": "9d5aa40f0c967f9a2dbfe90689a3b45930260f607585d2c3d2e16665cd53642f"
+    },
+    "dispatch-response.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dispatch-stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "initial-reservation.json": {
+      "bytes": 2489,
+      "sha256": "fb9d5ea6ba5a932485ec42a6bc301e43caa39e5394a1d2d170dbbf1acf871a80"
+    },
+    "jobs.json": {
+      "bytes": 9311,
+      "sha256": "e8a9627d49202ca0949e9e43ed86e112e573871db9ccc3f304f92b4439f335fd"
+    },
+    "jobs/123824767741.log": {
+      "bytes": 61725,
+      "sha256": "83383b5caee7849b117ef1d0b066133f3ef121b7626a710fdb746f6690e80034"
+    },
+    "jobs/123824959387.log": {
+      "bytes": 41917,
+      "sha256": "7b11fdc4a246c945cd5178b08858dcbcdf3f0c3d32f6f31c7c49c02ff05c626a"
+    },
+    "jobs/123825012074.log": {
+      "bytes": 6378,
+      "sha256": "4ba8d80ba44994bf2f471616853cc9a0425584201c81677c2f4074d2aa40c911"
+    },
+    "run.json": {
+      "bytes": 14393,
+      "sha256": "d00e7a17c2a5a825b43e5f1b8b13e134a4f534fbbd7a0d29f25a9235abc78733"
+    },
+    "source-controls/context.json": {
+      "bytes": 172,
+      "sha256": "5568067cb4435b6251c5b59d53f166dd68294ca352b253d725c9b1c51137360c"
+    },
+    "source-controls/controls.json": {
+      "bytes": 4860,
+      "sha256": "962501614b2cd4c8e6031b39dc5d29be84a89a739fa0e6db1af4990896b9a1ca"
+    },
+    "source-controls/controls.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-controls/controls.stdout": {
+      "bytes": 5872,
+      "sha256": "168ca82b4e61adbb6e50ab77e8477f4fb6a4cce2a9dc6d4381601635ddbedad5"
+    },
+    "source-controls/returncode.txt": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "source-controls/source-manifest.json": {
+      "bytes": 19586,
+      "sha256": "9ea63ea4043a899b453ce6994a1ed505a6ae2469280ae9d9528882158995dce1"
+    },
+    "source-controls/target-controls.json": {
+      "bytes": 1702,
+      "sha256": "d86a6f511cd642d98ebcef9e01888d8f43bd5870ccd76a1be56361898c361455"
+    },
+    "source-controls/target-controls.stderr": {
+      "bytes": 1779,
+      "sha256": "809fe580c79848e70329ff0834e3b033c9ff0202da3a2836b413f2f2026a0e1a"
+    },
+    "source-controls/target-controls.stdout": {
+      "bytes": 1702,
+      "sha256": "d86a6f511cd642d98ebcef9e01888d8f43bd5870ccd76a1be56361898c361455"
+    },
+    "source-controls/target-returncode.txt": {
+      "bytes": 2,
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    "source-index.json": {
+      "bytes": 1298,
+      "sha256": "9b477946b4ee05e5259a2d21746416d2c18352f1f8cc4c1863de8918fda93fbc"
+    },
+    "tag-ref.json": {
+      "bytes": 555,
+      "sha256": "ca0f0a0904acaecf418641f7efe44a7b8728d29d87995c483cea658de0b0ed31"
+    },
+    "tested-workflow.yml": {
+      "bytes": 14085,
+      "sha256": "33adc6769237bac60f83b99a88662299091b1a383d5d621a6955decf57422aed"
+    }
+  },
+  "jobs": [
+    {
+      "conclusion": "failure",
+      "id": 123824767741,
+      "name": "source-controls"
+    },
+    {
+      "conclusion": "success",
+      "id": 123824959387,
+      "name": "preserve-source-job-log"
+    },
+    {
+      "conclusion": "success",
+      "id": 123825012074,
+      "name": "preserve-terminal-job-logs"
+    },
+    {
+      "conclusion": "skipped",
+      "id": 123825012786,
+      "name": "native-build"
+    }
+  ],
+  "native_executed": false,
+  "new_controls": {
+    "error": "JSONDecodeError('Expecting property name enclosed in double quotes: line 2 column 1 (char 2)')",
+    "native_executed": false,
+    "physical_acceptance": false,
+    "status": "FAIL_MAGIC_TARGET_TRACE_SOURCE_CONTROLS",
+    "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_target_trace.py\", line 109, in main\n    try:r=controls(a.pins_sha256)\n          ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_target_trace.py\", line 79, in controls\n    got=t.select_epochs(trace,{\"28\":target},out)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/magic_resistor_target_trace.py\", line 158, in select_epochs\n    r=b.decode(raw)\n      ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_rc_contacts.py\", line 33, in decode\n    return json.loads(raw,object_pairs_hook=pairs,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/__init__.py\", line 359, in loads\n    return cls(**kw).decode(s)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/decoder.py\", line 338, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/decoder.py\", line 354, in raw_decode\n    obj, end = self.scan_once(s, idx)\n               ^^^^^^^^^^^^^^^^^^^^^^\njson.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 1 (char 2)\n"
+  },
+  "original_controls": {
+    "lifecycle": 6,
+    "positive": 17,
+    "refusal": 54
+  },
+  "physical_acceptance": false,
+  "release_id": 428541759,
+  "run_id": 40982224420,
+  "schema": 1,
+  "source": "d5acce72d186c661650fc17e2fd069cbf526899e",
+  "status": "TERMINAL_SOURCE_FAILURE_NO_NATIVE_ACQUISITION"
+}

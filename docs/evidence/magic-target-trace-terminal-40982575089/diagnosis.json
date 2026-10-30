@@ -1,0 +1,107 @@
+{
+  "observed_contact_examples": [
+    {
+      "DC_pair": [
+        "w_T061_E",
+        "w_T003_D"
+      ],
+      "component": 17,
+      "creation_breaks": [
+        [
+          377049,
+          81206
+        ],
+        [
+          377049,
+          84697
+        ]
+      ],
+      "creation_material": "metal1",
+      "creation_seq": 133464,
+      "creation_tile": [
+        377033,
+        77606,
+        377065,
+        84697
+      ],
+      "edge": "R2997",
+      "edge_current_magnitude_A": "1",
+      "edge_power_W": "32.5083",
+      "effective_resistance_ohm": "44.066435907651381898723270335605521333271616606391602953674825676424438284752941",
+      "native_net": "$131",
+      "nodes": [
+        "T003_D",
+        "T065_E.n53"
+      ],
+      "qualification": "Final resistor value differs from constructor. Series/parallels can retain this residual label. It identifies a terminal-access investigation, not full edge footprint.",
+      "raw_width": 32,
+      "resistance_ohm": "32.5083"
+    },
+    {
+      "component": 17,
+      "creation_material": "metal2",
+      "creation_seq": 133305,
+      "creation_tile": [
+        273935,
+        77449,
+        274675,
+        77760
+      ],
+      "edge": "R2966",
+      "nodes": [
+        "T061_E",
+        "T065_E.n74"
+      ],
+      "qualification": "Final value differs from constructor; do not assign all resistance to this metal2 tile.",
+      "resistance_ohm": "3.35172"
+    }
+  ],
+  "producer": 40978039972,
+  "run": 40982575089,
+  "schema": 1,
+  "scope": {
+    "electrical_acceptance": false,
+    "full_phy_accepted": false,
+    "geometry_changed": false,
+    "physical_acceptance": false,
+    "reduced_element_ownership_proved": false
+  },
+  "smallest_next_observation": "Read actual qualified extract/extractInt.h and compiler stderr from the already-built full capsule on runner; then add only necessary generation/deletion/merge lineage observations if required. No blind TM2 width or bias adjustment.",
+  "source": "767fb06e9f54d615616bddfe8d74d723e39c02d1",
+  "source_findings": [
+    "Qualified ResMerge.c ResDoneWithNode46-121 performs construction-time reductions independent of simplify flag; ResMain.c618 invokes it.",
+    "ResFixRes151 changes surviving value without updating rr_tt/width/cl. ResTriangleCheck517-536 changes values and assigns synthetic node an arbitrary existing location.",
+    "ResMakeRes.c905-906 uses rr_width/rr_cl for contact square counts; tile constructors use width/centerline.",
+    "The sampled before/after signature difference for R2992 is endpoint reversal with unchanged value and material; aggregate changed signature counts do not prove resistance change.",
+    "Observer sheet_resist_raw reports zero at a nonzero creation. Actual qualified extractInt.h6a448fd1 differs from pinned upstream81cc464e. Coefficient format/type must be authenticated before those raw fields are interpreted."
+  ],
+  "status": "ACTUAL_TARGET_CONSTRUCTION_OBSERVATIONS_WITH_REDUCTION_OWNERSHIP_UNPROVED",
+  "targets": {
+    "124": {
+      "counts": {
+        "changed_from_every_observed_constructor": 136,
+        "constructors": 747,
+        "emitted": 145,
+        "events": 1188,
+        "missing_constructor": 0,
+        "repeated_constructor_address": 66,
+        "unchanged_emission": 145,
+        "unchanged_snapshot": 96
+      },
+      "epoch": 61
+    },
+    "28": {
+      "counts": {
+        "changed_from_every_observed_constructor": 136,
+        "constructors": 747,
+        "emitted": 145,
+        "events": 1188,
+        "missing_constructor": 0,
+        "repeated_constructor_address": 66,
+        "unchanged_emission": 145,
+        "unchanged_snapshot": 96
+      },
+      "epoch": 103
+    }
+  }
+}

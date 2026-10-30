@@ -1,0 +1,79 @@
+{
+  "compiler": {
+    "actual_mrpResistor_body_used": true,
+    "full_Magic_build": false,
+    "new_argv": [
+      "gcc",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-Werror=format",
+      "/tmp/magic-format-fixture-lz0_34bv/new.c",
+      "-o",
+      "/tmp/magic-format-fixture-lz0_34bv/new"
+    ],
+    "new_fixture": {
+      "bytes": 2028,
+      "sha256": "9abeaae420062e6cd86311b06f346fed09c6dd12b94f023b0ed9655f47ec6b11"
+    },
+    "new_returncode": 0,
+    "new_stderr": "",
+    "new_stdout": "",
+    "numerical_extraction_executed": false,
+    "old_argv": [
+      "gcc",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Wformat=2",
+      "-Werror=format",
+      "/tmp/magic-format-fixture-lz0_34bv/old.c",
+      "-o",
+      "/tmp/magic-format-fixture-lz0_34bv/old"
+    ],
+    "old_fixture": {
+      "bytes": 2007,
+      "sha256": "92074773332f3fc8b1e87bfa59979b57d52224d8f711551b918722a44514aaab"
+    },
+    "old_returncode": 1,
+    "old_stderr": "/tmp/magic-format-fixture-lz0_34bv/old.c: In function \u2018mrpResistor\u2019:\n/tmp/magic-format-fixture-lz0_34bv/old.c:28:68: error: format \u2018%d\u2019 expects argument of type \u2018int\u2019, but argument 4 has type \u2018double\u2019 [-Werror=format=]\n   28 |         fprintf(mrpFile, \",\\\"is_contact\\\":%s,\\\"sheet_resist_raw\\\":%d,\"\n      |                                                                   ~^\n      |                                                                    |\n      |                                                                    int\n      |                                                                   %f\n......\n   31 |                 ExtCurStyle->exts_sheetResist[resistor->rr_tt],\n      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~      \n      |                                              |\n      |                                              double\ncc1: some warnings being treated as errors\n",
+    "old_stdout": "",
+    "run_returncode": 0,
+    "run_stderr": "",
+    "run_stdout": "{\"fixture\":true,\"resistor_address\":\"0x7ffff397ae40\",\"rr_value_milliohms_hex\":\"0x1.8p+0\",\"rr_status\":0,\"rr_tt\":0,\"rr_width_raw\":32,\"rr_cl_raw\":4,\"type_index_valid\":true,\"material_name_hex\":\"fixture\",\"is_contact\":false,\"sheet_resist_raw_hex\":\"0x1.14p+4\",\"via_resist_raw\":7,\"resist_scale\":1,\"node1\":null,\"node2\":null}\n"
+  },
+  "counts": {
+    "compiler": 2,
+    "positive": 5,
+    "refusal": 5
+  },
+  "current_context": {
+    "attempt": 1,
+    "native_executed": false,
+    "run_id": 40985242991,
+    "source": "53af0b8497c19b8590c8eca7879860a8fd1b4690",
+    "source_controls_only": true
+  },
+  "native_CAD_executed": false,
+  "native_executed": false,
+  "passed": true,
+  "physical_acceptance": false,
+  "positive": [
+    "actual_qualified_header_and_warning_join",
+    "exact_five_seam_versioned_reverse_payload",
+    "typed_finite_double_and_integer",
+    "invalid_material_retains_absent_coefficients",
+    "actual_body_corrected_typed_output"
+  ],
+  "reduced_element_ownership_proved": false,
+  "refusals": [
+    "v1_payload_corruption",
+    "old_sheet",
+    "bad_via_bool",
+    "nonfinite_sheet",
+    "nonstr_sheet"
+  ],
+  "source_fixture_c_compilation_executed": true,
+  "status": "PASS_MAGIC_COEFFICIENT_SOURCE_CONTROLS"
+}

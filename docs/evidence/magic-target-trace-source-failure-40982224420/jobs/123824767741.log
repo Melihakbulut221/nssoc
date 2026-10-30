@@ -1,0 +1,570 @@
+﻿2026-10-30T00:50:51.7175075Z Current runner version: '2.338.0'
+2026-10-30T00:50:51.7203064Z ##[group]Runner Image Provisioner
+2026-10-30T00:50:51.7204327Z Hosted Compute Agent
+2026-10-30T00:50:51.7204981Z Version: 20261021.618
+2026-10-30T00:50:51.7205659Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-30T00:50:51.7206519Z Build Date: 2026-10-21T00:45:21Z
+2026-10-30T00:50:51.7207257Z Worker ID: {a4e02e53-f9f9-4774-8f01-6157e1eb900e}
+2026-10-30T00:50:51.7208027Z Region: eastus2
+2026-10-30T00:50:51.7208643Z Cloud: Azure
+2026-10-30T00:50:51.7209203Z ##[endgroup]
+2026-10-30T00:50:51.7210814Z ##[group]Operating System
+2026-10-30T00:50:51.7211565Z Ubuntu
+2026-10-30T00:50:51.7212119Z 22.04.5
+2026-10-30T00:50:51.7212803Z LTS
+2026-10-30T00:50:51.7213534Z ##[endgroup]
+2026-10-30T00:50:51.7214270Z ##[group]Runner Image
+2026-10-30T00:50:51.7214917Z Image: ubuntu-22.04
+2026-10-30T00:50:51.7215490Z Version: 20261025.340.1
+2026-10-30T00:50:51.7216912Z Included Software: https://github.com/actions/runner-images/blob/ubuntu22/20261025.340/images/ubuntu/Ubuntu2204-Readme.md
+2026-10-30T00:50:51.7218605Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu22%2F20261025.340
+2026-10-30T00:50:51.7219631Z ##[endgroup]
+2026-10-30T00:50:51.7221310Z ##[group]GITHUB_TOKEN Permissions
+2026-10-30T00:50:51.7223964Z Contents: read
+2026-10-30T00:50:51.7224602Z Metadata: read
+2026-10-30T00:50:51.7225332Z ##[endgroup]
+2026-10-30T00:50:51.7227654Z Secret source: Actions
+2026-10-30T00:50:51.7228876Z Cache mode: write
+2026-10-30T00:50:51.7229894Z Prepare workflow directory
+2026-10-30T00:50:51.7817045Z Prepare all required actions
+2026-10-30T00:50:51.7891742Z Getting action download info
+2026-10-30T00:50:52.0153544Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-10-30T00:50:52.2007829Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-30T00:50:52.2899755Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-30T00:50:52.5217987Z Complete job name: source-controls
+2026-10-30T00:50:52.6182858Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-10-30T00:50:52.6184247Z with:
+2026-10-30T00:50:52.6184736Z   ref: d5acce72d186c661650fc17e2fd069cbf526899e
+2026-10-30T00:50:52.6185358Z   persist-credentials: false
+2026-10-30T00:50:52.6185886Z   repository: Melihakbulut221/nssoc
+2026-10-30T00:50:52.6189615Z   token: ***
+2026-10-30T00:50:52.6190038Z   ssh-strict: true
+2026-10-30T00:50:52.6190477Z   ssh-user: git
+2026-10-30T00:50:52.6190888Z   clean: true
+2026-10-30T00:50:52.6191318Z   sparse-checkout-cone-mode: true
+2026-10-30T00:50:52.6191844Z   fetch-depth: 1
+2026-10-30T00:50:52.6192263Z   fetch-tags: false
+2026-10-30T00:50:52.6192701Z   show-progress: true
+2026-10-30T00:50:52.6193140Z   lfs: false
+2026-10-30T00:50:52.6193931Z   submodules: false
+2026-10-30T00:50:52.6194414Z   set-safe-directory: true
+2026-10-30T00:50:52.6195194Z env:
+2026-10-30T00:50:52.6195624Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-30T00:50:52.6196399Z   PINS_SHA256: 9ea63ea4043a899b453ce6994a1ed505a6ae2469280ae9d9528882158995dce1
+2026-10-30T00:50:52.6197218Z ##[endgroup]
+2026-10-30T00:50:52.8663413Z Syncing repository: Melihakbulut221/nssoc
+2026-10-30T00:50:52.8665915Z ##[group]Getting Git version info
+2026-10-30T00:50:52.8666834Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-30T00:50:52.8668058Z [command]/usr/bin/git version
+2026-10-30T00:50:52.8767793Z git version 2.56.0
+2026-10-30T00:50:52.8794313Z ##[endgroup]
+2026-10-30T00:50:52.8811641Z Temporarily overriding HOME='/home/runner/work/_temp/592a0b22-2f04-4978-a4e0-3ade84e581dd' before making global git config changes
+2026-10-30T00:50:52.8819133Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-30T00:50:52.8820397Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-30T00:50:52.8879926Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-30T00:50:52.8892187Z ##[group]Initializing the repository
+2026-10-30T00:50:52.8893924Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-30T00:50:52.8999785Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-30T00:50:52.9001710Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-30T00:50:52.9003532Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-30T00:50:52.9004711Z hint: call:
+2026-10-30T00:50:52.9005122Z hint:
+2026-10-30T00:50:52.9005633Z hint: 	git config --global init.defaultBranch <name>
+2026-10-30T00:50:52.9006590Z hint:
+2026-10-30T00:50:52.9007493Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-30T00:50:52.9008463Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-30T00:50:52.9009184Z hint:
+2026-10-30T00:50:52.9009642Z hint: 	git branch -m <name>
+2026-10-30T00:50:52.9010121Z hint:
+2026-10-30T00:50:52.9010906Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-30T00:50:52.9012858Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-30T00:50:52.9019299Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-30T00:50:52.9065679Z ##[endgroup]
+2026-10-30T00:50:52.9066494Z ##[group]Disabling automatic garbage collection
+2026-10-30T00:50:52.9071036Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-30T00:50:52.9128240Z ##[endgroup]
+2026-10-30T00:50:52.9129070Z ##[group]Setting up auth
+2026-10-30T00:50:52.9129872Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-30T00:50:52.9168699Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-30T00:50:52.9587660Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-30T00:50:52.9637123Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-30T00:50:52.9911750Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-30T00:50:52.9971102Z ##[endgroup]
+2026-10-30T00:50:52.9971945Z ##[group]Fetching the repository
+2026-10-30T00:50:52.9980341Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin d5acce72d186c661650fc17e2fd069cbf526899e
+2026-10-30T00:51:09.2226316Z From https://github.com/Melihakbulut221/nssoc
+2026-10-30T00:51:09.2228181Z  * branch              d5acce72d186c661650fc17e2fd069cbf526899e -> FETCH_HEAD
+2026-10-30T00:51:09.2233046Z ##[endgroup]
+2026-10-30T00:51:09.2234485Z ##[group]Determining the checkout info
+2026-10-30T00:51:09.2237125Z ##[endgroup]
+2026-10-30T00:51:09.2246531Z [command]/usr/bin/git sparse-checkout disable
+2026-10-30T00:51:09.2306091Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-30T00:51:09.2345856Z ##[group]Checking out the ref
+2026-10-30T00:51:09.2350697Z [command]/usr/bin/git checkout --progress --force d5acce72d186c661650fc17e2fd069cbf526899e
+2026-10-30T00:51:10.7563683Z Updating files:   9% (2862/31424)
+2026-10-30T00:51:10.9205168Z Updating files:  10% (3143/31424)
+2026-10-30T00:51:11.0498096Z Updating files:  11% (3457/31424)
+2026-10-30T00:51:11.1449834Z Updating files:  12% (3771/31424)
+2026-10-30T00:51:11.2667808Z Updating files:  13% (4086/31424)
+2026-10-30T00:51:11.2703186Z Updating files:  13% (4359/31424)
+2026-10-30T00:51:11.6622578Z Updating files:  14% (4400/31424)
+2026-10-30T00:51:11.7227190Z Updating files:  15% (4714/31424)
+2026-10-30T00:51:11.8366804Z Updating files:  16% (5028/31424)
+2026-10-30T00:51:11.9995538Z Updating files:  17% (5343/31424)
+2026-10-30T00:51:12.0880642Z Updating files:  18% (5657/31424)
+2026-10-30T00:51:12.2163971Z Updating files:  19% (5971/31424)
+2026-10-30T00:51:12.2982720Z Updating files:  20% (6285/31424)
+2026-10-30T00:51:12.9427152Z Updating files:  20% (6335/31424)
+2026-10-30T00:51:13.1515156Z Updating files:  21% (6600/31424)
+2026-10-30T00:51:13.1685091Z Updating files:  22% (6914/31424)
+2026-10-30T00:51:13.1957422Z Updating files:  23% (7228/31424)
+2026-10-30T00:51:13.2192046Z Updating files:  24% (7542/31424)
+2026-10-30T00:51:13.2669609Z Updating files:  25% (7856/31424)
+2026-10-30T00:51:13.3576424Z Updating files:  25% (7891/31424)
+2026-10-30T00:51:13.4224051Z Updating files:  26% (8171/31424)
+2026-10-30T00:51:13.4421159Z Updating files:  27% (8485/31424)
+2026-10-30T00:51:13.4756551Z Updating files:  28% (8799/31424)
+2026-10-30T00:51:13.4982831Z Updating files:  29% (9113/31424)
+2026-10-30T00:51:13.5152317Z Updating files:  30% (9428/31424)
+2026-10-30T00:51:13.5369478Z Updating files:  31% (9742/31424)
+2026-10-30T00:51:13.5594858Z Updating files:  32% (10056/31424)
+2026-10-30T00:51:13.5741528Z Updating files:  33% (10370/31424)
+2026-10-30T00:51:13.5926749Z Updating files:  34% (10685/31424)
+2026-10-30T00:51:13.6106188Z Updating files:  35% (10999/31424)
+2026-10-30T00:51:13.6311219Z Updating files:  36% (11313/31424)
+2026-10-30T00:51:13.6502409Z Updating files:  37% (11627/31424)
+2026-10-30T00:51:13.6902967Z Updating files:  38% (11942/31424)
+2026-10-30T00:51:13.7239098Z Updating files:  39% (12256/31424)
+2026-10-30T00:51:13.7557124Z Updating files:  40% (12570/31424)
+2026-10-30T00:51:13.7752058Z Updating files:  41% (12884/31424)
+2026-10-30T00:51:13.7973089Z Updating files:  42% (13199/31424)
+2026-10-30T00:51:13.8165521Z Updating files:  43% (13513/31424)
+2026-10-30T00:51:13.8343880Z Updating files:  44% (13827/31424)
+2026-10-30T00:51:13.8481288Z Updating files:  45% (14141/31424)
+2026-10-30T00:51:13.8656729Z Updating files:  46% (14456/31424)
+2026-10-30T00:51:13.8857204Z Updating files:  47% (14770/31424)
+2026-10-30T00:51:13.9058592Z Updating files:  48% (15084/31424)
+2026-10-30T00:51:13.9293022Z Updating files:  49% (15398/31424)
+2026-10-30T00:51:13.9475313Z Updating files:  50% (15712/31424)
+2026-10-30T00:51:13.9661963Z Updating files:  51% (16027/31424)
+2026-10-30T00:51:13.9808468Z Updating files:  52% (16341/31424)
+2026-10-30T00:51:13.9980993Z Updating files:  53% (16655/31424)
+2026-10-30T00:51:14.0183489Z Updating files:  54% (16969/31424)
+2026-10-30T00:51:14.0382483Z Updating files:  55% (17284/31424)
+2026-10-30T00:51:14.0669986Z Updating files:  56% (17598/31424)
+2026-10-30T00:51:14.0848155Z Updating files:  57% (17912/31424)
+2026-10-30T00:51:14.1119477Z Updating files:  58% (18226/31424)
+2026-10-30T00:51:14.1244715Z Updating files:  59% (18541/31424)
+2026-10-30T00:51:14.1424461Z Updating files:  60% (18855/31424)
+2026-10-30T00:51:14.1616366Z Updating files:  61% (19169/31424)
+2026-10-30T00:51:14.1810464Z Updating files:  62% (19483/31424)
+2026-10-30T00:51:14.1951750Z Updating files:  63% (19798/31424)
+2026-10-30T00:51:14.2090560Z Updating files:  64% (20112/31424)
+2026-10-30T00:51:14.2247522Z Updating files:  65% (20426/31424)
+2026-10-30T00:51:14.2491652Z Updating files:  66% (20740/31424)
+2026-10-30T00:51:14.2685921Z Updating files:  67% (21055/31424)
+2026-10-30T00:51:14.2842314Z Updating files:  67% (21114/31424)
+2026-10-30T00:51:14.3169541Z Updating files:  68% (21369/31424)
+2026-10-30T00:51:14.3388655Z Updating files:  69% (21683/31424)
+2026-10-30T00:51:14.3569949Z Updating files:  70% (21997/31424)
+2026-10-30T00:51:14.3749469Z Updating files:  71% (22312/31424)
+2026-10-30T00:51:14.3922973Z Updating files:  72% (22626/31424)
+2026-10-30T00:51:14.4073892Z Updating files:  73% (22940/31424)
+2026-10-30T00:51:14.4233054Z Updating files:  74% (23254/31424)
+2026-10-30T00:51:14.4378353Z Updating files:  75% (23568/31424)
+2026-10-30T00:51:14.4548944Z Updating files:  76% (23883/31424)
+2026-10-30T00:51:14.5341333Z Updating files:  77% (24197/31424)
+2026-10-30T00:51:14.5855744Z Updating files:  78% (24511/31424)
+2026-10-30T00:51:14.6208387Z Updating files:  79% (24825/31424)
+2026-10-30T00:51:14.6639736Z Updating files:  80% (25140/31424)
+2026-10-30T00:51:14.6841193Z Updating files:  81% (25454/31424)
+2026-10-30T00:51:14.7067527Z Updating files:  82% (25768/31424)
+2026-10-30T00:51:14.7311182Z Updating files:  83% (26082/31424)
+2026-10-30T00:51:14.7649848Z Updating files:  84% (26397/31424)
+2026-10-30T00:51:14.7857334Z Updating files:  85% (26711/31424)
+2026-10-30T00:51:14.8119700Z Updating files:  86% (27025/31424)
+2026-10-30T00:51:14.8392383Z Updating files:  87% (27339/31424)
+2026-10-30T00:51:14.8586139Z Updating files:  88% (27654/31424)
+2026-10-30T00:51:14.8769744Z Updating files:  89% (27968/31424)
+2026-10-30T00:51:14.8949587Z Updating files:  90% (28282/31424)
+2026-10-30T00:51:14.9114277Z Updating files:  91% (28596/31424)
+2026-10-30T00:51:14.9298021Z Updating files:  92% (28911/31424)
+2026-10-30T00:51:14.9534470Z Updating files:  93% (29225/31424)
+2026-10-30T00:51:14.9748399Z Updating files:  94% (29539/31424)
+2026-10-30T00:51:14.9963870Z Updating files:  95% (29853/31424)
+2026-10-30T00:51:15.0243774Z Updating files:  96% (30168/31424)
+2026-10-30T00:51:15.0431082Z Updating files:  97% (30482/31424)
+2026-10-30T00:51:15.0640763Z Updating files:  98% (30796/31424)
+2026-10-30T00:51:15.0984449Z Updating files:  99% (31110/31424)
+2026-10-30T00:51:15.0985451Z Updating files: 100% (31424/31424)
+2026-10-30T00:51:15.0986023Z Updating files: 100% (31424/31424), done.
+2026-10-30T00:51:15.1388355Z Note: switching to 'd5acce72d186c661650fc17e2fd069cbf526899e'.
+2026-10-30T00:51:15.1388846Z 
+2026-10-30T00:51:15.1389129Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-30T00:51:15.1389812Z changes and commit them, and you can discard any commits you make in this
+2026-10-30T00:51:15.1390480Z state without impacting any branches by switching back to a branch.
+2026-10-30T00:51:15.1390861Z 
+2026-10-30T00:51:15.1391117Z If you want to create a new branch to retain commits you create, you may
+2026-10-30T00:51:15.1391759Z do so (now or later) by using -c with the switch command. Example:
+2026-10-30T00:51:15.1392107Z 
+2026-10-30T00:51:15.1392533Z   git switch -c <new-branch-name>
+2026-10-30T00:51:15.1392739Z 
+2026-10-30T00:51:15.1392846Z Or undo this operation with:
+2026-10-30T00:51:15.1393026Z 
+2026-10-30T00:51:15.1393115Z   git switch -
+2026-10-30T00:51:15.1393594Z 
+2026-10-30T00:51:15.1393866Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-30T00:51:15.1394212Z 
+2026-10-30T00:51:15.1394584Z HEAD is now at d5acce72 Observe qualified target resistor construction and retained reduction ambiguity [skip ci]
+2026-10-30T00:51:15.1731396Z ##[endgroup]
+2026-10-30T00:51:15.1781471Z [command]/usr/bin/git log -1 --format=%H
+2026-10-30T00:51:15.1815493Z d5acce72d186c661650fc17e2fd069cbf526899e
+2026-10-30T00:51:15.1828055Z ##[group]Removing auth
+2026-10-30T00:51:15.1832667Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-30T00:51:15.1879755Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-30T00:51:15.2227819Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-30T00:51:15.2266147Z http.https://github.com/.extraheader
+2026-10-30T00:51:15.2276051Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-30T00:51:15.2322987Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-30T00:51:15.2675340Z ##[endgroup]
+2026-10-30T00:51:15.2947455Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-30T00:51:15.2947899Z with:
+2026-10-30T00:51:15.2948105Z   python-version: 3.12
+2026-10-30T00:51:15.2948552Z   check-latest: false
+2026-10-30T00:51:15.2950857Z   token: ***
+2026-10-30T00:51:15.2951070Z   update-environment: true
+2026-10-30T00:51:15.2951311Z   allow-prereleases: false
+2026-10-30T00:51:15.2951548Z   freethreaded: false
+2026-10-30T00:51:15.2951766Z env:
+2026-10-30T00:51:15.2951966Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-30T00:51:15.2952340Z   PINS_SHA256: 9ea63ea4043a899b453ce6994a1ed505a6ae2469280ae9d9528882158995dce1
+2026-10-30T00:51:15.2952740Z ##[endgroup]
+2026-10-30T00:51:15.4484535Z ##[group]Installed versions
+2026-10-30T00:51:15.4617209Z (node:2086) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-30T00:51:15.4618494Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-30T00:51:15.4619366Z Successfully set up CPython (3.12.15)
+2026-10-30T00:51:15.4620238Z ##[endgroup]
+2026-10-30T00:51:15.4780991Z ##[group]Run test "$GITHUB_SHA" = "$EXPECTED_SOURCE"
+2026-10-30T00:51:15.4781519Z [36;1mtest "$GITHUB_SHA" = "$EXPECTED_SOURCE"[0m
+2026-10-30T00:51:15.4781904Z [36;1mtest "$(git rev-parse HEAD)" = "$EXPECTED_SOURCE"[0m
+2026-10-30T00:51:15.4782291Z [36;1mmkdir cloud-magic-build-controls[0m
+2026-10-30T00:51:15.4782852Z [36;1mcp scripts/cdr-resistor-provenance-build-pins.json cloud-magic-build-controls/source-manifest.json[0m
+2026-10-30T00:51:15.4783724Z [36;1mpython -B - <<'PY'[0m
+2026-10-30T00:51:15.4783976Z [36;1mimport os,sys[0m
+2026-10-30T00:51:15.4784214Z [36;1mfrom pathlib import Path[0m
+2026-10-30T00:51:15.4784486Z [36;1msys.path.insert(0,"scripts")[0m
+2026-10-30T00:51:15.4784815Z [36;1mimport cloud_magic_resistor_provenance_build as b[0m
+2026-10-30T00:51:15.4785246Z [36;1mc=b.context(os.environ);b.source_guard(os.environ["PINS_SHA256"])[0m
+2026-10-30T00:51:15.4785754Z [36;1mb.write(Path("cloud-magic-build-controls/context.json"),b.encode(c))[0m
+2026-10-30T00:51:15.4786172Z [36;1mPY[0m
+2026-10-30T00:51:15.4786373Z [36;1mset +e[0m
+2026-10-30T00:51:15.4787288Z [36;1mpython -B scripts/check_magic_resistor_provenance_build.py --pins-sha256 "$PINS_SHA256" --output cloud-magic-build-controls/controls.json >cloud-magic-build-controls/controls.stdout 2>cloud-magic-build-controls/controls.stderr[0m
+2026-10-30T00:51:15.4788539Z [36;1mcode=$?[0m
+2026-10-30T00:51:15.4788857Z [36;1mprintf '%s\n' "$code" >cloud-magic-build-controls/returncode.txt[0m
+2026-10-30T00:51:15.4789438Z [36;1mcat cloud-magic-build-controls/controls.stdout cloud-magic-build-controls/controls.stderr[0m
+2026-10-30T00:51:15.4789951Z [36;1mif [ "$code" -ne 0 ]; then exit "$code"; fi[0m
+2026-10-30T00:51:15.4790996Z [36;1mpython -B scripts/check_magic_resistor_target_trace.py --pins-sha256 "$PINS_SHA256" --output cloud-magic-build-controls/target-controls.json >cloud-magic-build-controls/target-controls.stdout 2>cloud-magic-build-controls/target-controls.stderr[0m
+2026-10-30T00:51:15.4792007Z [36;1mcode=$?[0m
+2026-10-30T00:51:15.4792328Z [36;1mprintf '%s\n' "$code" >cloud-magic-build-controls/target-returncode.txt[0m
+2026-10-30T00:51:15.4792979Z [36;1mcat cloud-magic-build-controls/target-controls.stdout cloud-magic-build-controls/target-controls.stderr[0m
+2026-10-30T00:51:15.4793789Z [36;1mexit "$code"[0m
+2026-10-30T00:51:15.4947197Z shell: /usr/bin/bash -e {0}
+2026-10-30T00:51:15.4947655Z env:
+2026-10-30T00:51:15.4948035Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-30T00:51:15.4948713Z   PINS_SHA256: 9ea63ea4043a899b453ce6994a1ed505a6ae2469280ae9d9528882158995dce1
+2026-10-30T00:51:15.4949565Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T00:51:15.4950344Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-30T00:51:15.4951129Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T00:51:15.4951839Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T00:51:15.4952574Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T00:51:15.4953498Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-30T00:51:15.4954521Z   EXPECTED_SOURCE: d5acce72d186c661650fc17e2fd069cbf526899e
+2026-10-30T00:51:15.4954870Z ##[endgroup]
+2026-10-30T00:51:19.0047616Z MAGIC_BUILD_RESULT_FALLBACK {
+2026-10-30T00:51:19.0048086Z   "current_context": {
+2026-10-30T00:51:19.0048438Z     "attempt": 1,
+2026-10-30T00:51:19.0048839Z     "group": "cdr-resistor-provenance-build",
+2026-10-30T00:51:19.0049302Z     "run_id": 40982224420,
+2026-10-30T00:51:19.0049724Z     "source": "d5acce72d186c661650fc17e2fd069cbf526899e",
+2026-10-30T00:51:19.0050216Z     "token": "40982224420-1"
+2026-10-30T00:51:19.0050551Z   },
+2026-10-30T00:51:19.0050873Z   "electrical_acceptance": false,
+2026-10-30T00:51:19.0051172Z   "error": {
+2026-10-30T00:51:19.0051398Z     "message": "primary source corruption",
+2026-10-30T00:51:19.0051687Z     "type": "RuntimeError"
+2026-10-30T00:51:19.0051902Z   },
+2026-10-30T00:51:19.0052432Z   "full_phy_accepted": false,
+2026-10-30T00:51:19.0052706Z   "geometry_changed": false,
+2026-10-30T00:51:19.0052971Z   "physical_acceptance": false,
+2026-10-30T00:51:19.0053593Z   "reduced_element_ownership_proved": false,
+2026-10-30T00:51:19.0053939Z   "status": "FAIL_MAGIC_BUILD_OR_TRACE_EQUIVALENCE",
+2026-10-30T00:51:19.0055526Z   "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_magic_resistor_provenance_build.py\", line 464, in run\n    result=perform_fn(ctx,reserved,controls_raw,expected,out)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_provenance_build.py\", line 240, in failed\n    raise primary\nRuntimeError: primary source corruption\n"
+2026-10-30T00:51:19.0057106Z }
+2026-10-30T00:51:19.0057207Z 
+2026-10-30T00:51:19.0057285Z {
+2026-10-30T00:51:19.0057482Z   "c_compilation_executed": false,
+2026-10-30T00:51:19.0057740Z   "counts": {
+2026-10-30T00:51:19.0057943Z     "lifecycle": 6,
+2026-10-30T00:51:19.0058205Z     "positive": 17,
+2026-10-30T00:51:19.0058408Z     "refusal": 54
+2026-10-30T00:51:19.0058606Z   },
+2026-10-30T00:51:19.0058792Z   "current_context": {
+2026-10-30T00:51:19.0059006Z     "attempt": 1,
+2026-10-30T00:51:19.0059229Z     "native_executed": false,
+2026-10-30T00:51:19.0059468Z     "run_id": 40982224420,
+2026-10-30T00:51:19.0059750Z     "source": "d5acce72d186c661650fc17e2fd069cbf526899e",
+2026-10-30T00:51:19.0060076Z     "source_controls_only": true
+2026-10-30T00:51:19.0060314Z   },
+2026-10-30T00:51:19.0060541Z   "inherited_source_controls": {
+2026-10-30T00:51:19.0060794Z     "c_compilation_executed": false,
+2026-10-30T00:51:19.0061069Z     "electrical_acceptance": false,
+2026-10-30T00:51:19.0061331Z     "full_phy_accepted": false,
+2026-10-30T00:51:19.0061572Z     "native_executed": false,
+2026-10-30T00:51:19.0061841Z     "native_output_equivalence_qualified": false,
+2026-10-30T00:51:19.0062530Z     "note": "Authentic source-byte controls only; no runtime struct, native trace, numerical output equivalence, build, or extraction qualification.",
+2026-10-30T00:51:19.0063422Z     "physical_acceptance": false,
+2026-10-30T00:51:19.0063796Z     "physical_ownership_proved": false,
+2026-10-30T00:51:19.0064062Z     "positive": [
+2026-10-30T00:51:19.0064271Z       "authentic_source_guard",
+2026-10-30T00:51:19.0064539Z       "actual_five_file_forward_reverse_bytes",
+2026-10-30T00:51:19.0064850Z       "actual_five_file_source_inspection",
+2026-10-30T00:51:19.0065146Z       "complete_source_projection"
+2026-10-30T00:51:19.0065384Z     ],
+2026-10-30T00:51:19.0065572Z     "positive_count": 4,
+2026-10-30T00:51:19.0065800Z     "refusal_count": 19,
+2026-10-30T00:51:19.0066012Z     "refusals": [
+2026-10-30T00:51:19.0066239Z       "missing:resis/resis.h",
+2026-10-30T00:51:19.0066482Z       "changed_byte:resis/resis.h",
+2026-10-30T00:51:19.0066748Z       "wrong_direction:resis/resis.h",
+2026-10-30T00:51:19.0067011Z       "missing:resis/ResMakeRes.c",
+2026-10-30T00:51:19.0067273Z       "changed_byte:resis/ResMakeRes.c",
+2026-10-30T00:51:19.0067555Z       "wrong_direction:resis/ResMakeRes.c",
+2026-10-30T00:51:19.0068092Z       "missing:resis/ResMain.c",
+2026-10-30T00:51:19.0068344Z       "changed_byte:resis/ResMain.c",
+2026-10-30T00:51:19.0068605Z       "wrong_direction:resis/ResMain.c",
+2026-10-30T00:51:19.0068872Z       "missing:resis/ResPrint.c",
+2026-10-30T00:51:19.0069123Z       "changed_byte:resis/ResPrint.c",
+2026-10-30T00:51:19.0069388Z       "wrong_direction:resis/ResPrint.c",
+2026-10-30T00:51:19.0069659Z       "missing:resis/ResRex.c",
+2026-10-30T00:51:19.0069921Z       "changed_byte:resis/ResRex.c",
+2026-10-30T00:51:19.0070268Z       "wrong_direction:resis/ResRex.c",
+2026-10-30T00:51:19.0070529Z       "symlink_native_source",
+2026-10-30T00:51:19.0070767Z       "missing_native_source",
+2026-10-30T00:51:19.0071187Z       "protected_payload_corruption:scripts/magic-resistor-physical-provenance-patch.json",
+2026-10-30T00:51:19.0071957Z       "protected_payload_corruption:scripts/magic_resistor_provenance_trace.inc"
+2026-10-30T00:51:19.0072350Z     ],
+2026-10-30T00:51:19.0072526Z     "schema": 1,
+2026-10-30T00:51:19.0072793Z     "status": "PASS_RESISTOR_PROVENANCE_SOURCE_CONTROLS",
+2026-10-30T00:51:19.0073117Z     "synthetic_native_execution": false
+2026-10-30T00:51:19.0073680Z   },
+2026-10-30T00:51:19.0073861Z   "lifecycle": [
+2026-10-30T00:51:19.0074063Z     "empty_terminal",
+2026-10-30T00:51:19.0074280Z     "malformed_terminal",
+2026-10-30T00:51:19.0074501Z     "missing_terminal",
+2026-10-30T00:51:19.0075018Z     "upload_failure",
+2026-10-30T00:51:19.0075352Z     "no_clobber",
+2026-10-30T00:51:19.0075756Z     "actual_cleanup_helper_primary_and_no_primary"
+2026-10-30T00:51:19.0076238Z   ],
+2026-10-30T00:51:19.0076544Z   "native_executed": false,
+2026-10-30T00:51:19.0076928Z   "passed": true,
+2026-10-30T00:51:19.0077288Z   "physical_acceptance": false,
+2026-10-30T00:51:19.0077624Z   "positive": [
+2026-10-30T00:51:19.0077842Z     "actual_full_protected_source",
+2026-10-30T00:51:19.0078109Z     "actual_hosted_context",
+2026-10-30T00:51:19.0078396Z     "real_literal_insertions_reverse_historical_fixture",
+2026-10-30T00:51:19.0078741Z     "actual_Tcl_reversible_path_seams",
+2026-10-30T00:51:19.0079044Z     "three_actual_baseline_mismatches_explicit",
+2026-10-30T00:51:19.0079369Z     "actual_output_comparator_synthetic_records",
+2026-10-30T00:51:19.0079677Z     "actual_failed_producer_and_all_assets",
+2026-10-30T00:51:19.0079974Z     "actual_difference_reader_equal_fixture",
+2026-10-30T00:51:19.0080262Z     "order_difference_not_accepted",
+2026-10-30T00:51:19.0080543Z     "value_difference_retained_not_normalized",
+2026-10-30T00:51:19.0080846Z     "exact_cap_endpoint_and_order_bijection",
+2026-10-30T00:51:19.0081137Z     "generated_C_identity_bijection_only",
+2026-10-30T00:51:19.0081425Z     "parallel_cap_multiplicity_retained",
+2026-10-30T00:51:19.0081737Z     "actual_production_component_comparator_exact",
+2026-10-30T00:51:19.0082117Z     "actual_production_format_bijection_strict_failure_visible",
+2026-10-30T00:51:19.0082503Z     "actual_trace_complete_footer_and_native_line_join",
+2026-10-30T00:51:19.0082837Z     "actual_full_archive_selector_synthetic_only"
+2026-10-30T00:51:19.0083110Z   ],
+2026-10-30T00:51:19.0083749Z   "refusals": [
+2026-10-30T00:51:19.0083988Z     "context:GITHUB_REF",
+2026-10-30T00:51:19.0084217Z     "context:GITHUB_EVENT_NAME",
+2026-10-30T00:51:19.0084466Z     "context:GITHUB_RUN_ATTEMPT",
+2026-10-30T00:51:19.0084709Z     "context:GITHUB_SHA",
+2026-10-30T00:51:19.0084931Z     "context:GITHUB_RUN_ID",
+2026-10-30T00:51:19.0085171Z     "context:GITHUB_ACTIONS",
+2026-10-30T00:51:19.0085408Z     "changed_source_manifest",
+2026-10-30T00:51:19.0085642Z     "missing_patch_input",
+2026-10-30T00:51:19.0085866Z     "changed_patch_input",
+2026-10-30T00:51:19.0086136Z     "old_upstream_snapshots_cannot_be_native_baseline",
+2026-10-30T00:51:19.0086444Z     "missing_literal_seam",
+2026-10-30T00:51:19.0086691Z     "numeric_replacement_not_authorized",
+2026-10-30T00:51:19.0086958Z     "Tcl:missing",
+2026-10-30T00:51:19.0087151Z     "Tcl:gate",
+2026-10-30T00:51:19.0087345Z     "Tcl:duplicate",
+2026-10-30T00:51:19.0087794Z     "numeric_equivalence:R",
+2026-10-30T00:51:19.0088044Z     "numeric_equivalence:rnode",
+2026-10-30T00:51:19.0088291Z     "numeric_equivalence:cap",
+2026-10-30T00:51:19.0088532Z     "numeric_equivalence:spice",
+2026-10-30T00:51:19.0088780Z     "numeric_equivalence:ordered",
+2026-10-30T00:51:19.0089040Z     "failed_archive_binding:run_source",
+2026-10-30T00:51:19.0089323Z     "failed_archive_binding:run_conclusion",
+2026-10-30T00:51:19.0089614Z     "failed_archive_binding:job_step",
+2026-10-30T00:51:19.0089889Z     "failed_archive_binding:asset_digest",
+2026-10-30T00:51:19.0090167Z     "failed_archive_binding:missing_asset",
+2026-10-30T00:51:19.0090454Z     "failed_archive_binding:tag_source",
+2026-10-30T00:51:19.0090734Z     "diagnostic_missing_variant",
+2026-10-30T00:51:19.0090989Z     "diagnostic_missing_native_records",
+2026-10-30T00:51:19.0091249Z     "exact_cap:value",
+2026-10-30T00:51:19.0091788Z     "exact_cap:endpoint",
+2026-10-30T00:51:19.0092225Z     "exact_cap:missing",
+2026-10-30T00:51:19.0092618Z     "exact_cap:selfloop",
+2026-10-30T00:51:19.0093006Z     "exact_cap:nonfinite",
+2026-10-30T00:51:19.0093641Z     "exact_cap:numeric_token",
+2026-10-30T00:51:19.0094070Z     "exact_SPICE:duplicate_id",
+2026-10-30T00:51:19.0094490Z     "exact_SPICE:gap_id",
+2026-10-30T00:51:19.0094874Z     "exact_SPICE:noncap_changed",
+2026-10-30T00:51:19.0095143Z     "production_exact_component:value",
+2026-10-30T00:51:19.0095432Z     "production_exact_component:endpoint",
+2026-10-30T00:51:19.0095731Z     "production_exact_component:duplicate_C",
+2026-10-30T00:51:19.0096040Z     "production_exact_component:noncanonical_C",
+2026-10-30T00:51:19.0096348Z     "production_exact_component:noncoupling",
+2026-10-30T00:51:19.0096632Z     "production_exact_component:rnode",
+2026-10-30T00:51:19.0096912Z     "production_exact_component:raw_res_header",
+2026-10-30T00:51:19.0097186Z     "trace:footer",
+2026-10-30T00:51:19.0097388Z     "trace:seq",
+2026-10-30T00:51:19.0097576Z     "trace:nan",
+2026-10-30T00:51:19.0097771Z     "trace:ownership",
+2026-10-30T00:51:19.0097985Z     "trace:emitted_count",
+2026-10-30T00:51:19.0098206Z     "trace:epoch",
+2026-10-30T00:51:19.0098418Z     "trace_native_join:endpoint",
+2026-10-30T00:51:19.0098665Z     "trace_native_join:value",
+2026-10-30T00:51:19.0098893Z     "archive_link",
+2026-10-30T00:51:19.0099101Z     "archive_incomplete_manifest"
+2026-10-30T00:51:19.0099331Z   ],
+2026-10-30T00:51:19.0099576Z   "status": "PASS_MAGIC_CURRENT500_BUILD_SOURCE_CONTROLS",
+2026-10-30T00:51:19.0099910Z   "synthetic_archives_only": true
+2026-10-30T00:51:19.0100153Z }
+2026-10-30T00:51:19.7613942Z {
+2026-10-30T00:51:19.7614749Z   "error": "JSONDecodeError('Expecting property name enclosed in double quotes: line 2 column 1 (char 2)')",
+2026-10-30T00:51:19.7615581Z   "native_executed": false,
+2026-10-30T00:51:19.7615975Z   "physical_acceptance": false,
+2026-10-30T00:51:19.7616465Z   "status": "FAIL_MAGIC_TARGET_TRACE_SOURCE_CONTROLS",
+2026-10-30T00:51:19.7621034Z   "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_target_trace.py\", line 109, in main\n    try:r=controls(a.pins_sha256)\n          ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_target_trace.py\", line 79, in controls\n    got=t.select_epochs(trace,{\"28\":target},out)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/magic_resistor_target_trace.py\", line 158, in select_epochs\n    r=b.decode(raw)\n      ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_rc_contacts.py\", line 33, in decode\n    return json.loads(raw,object_pairs_hook=pairs,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/__init__.py\", line 359, in loads\n    return cls(**kw).decode(s)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/decoder.py\", line 338, in decode\n    obj, end = self.raw_decode(s, idx=_w(s, 0).end())\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/decoder.py\", line 354, in raw_decode\n    obj, end = self.scan_once(s, idx)\n               ^^^^^^^^^^^^^^^^^^^^^^\njson.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 1 (char 2)\n"
+2026-10-30T00:51:19.7626124Z }
+2026-10-30T00:51:19.7626363Z Traceback (most recent call last):
+2026-10-30T00:51:19.7632348Z   File "/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_target_trace.py", line 118, in <module>
+2026-10-30T00:51:19.7632950Z     if __name__=="__main__":main()
+2026-10-30T00:51:19.7633527Z                             ^^^^^^
+2026-10-30T00:51:19.7634106Z   File "/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_target_trace.py", line 117, in main
+2026-10-30T00:51:19.7634981Z     if primary is not None:raise primary
+2026-10-30T00:51:19.7635290Z                            ^^^^^^^^^^^^^
+2026-10-30T00:51:19.7635820Z   File "/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_target_trace.py", line 109, in main
+2026-10-30T00:51:19.7636333Z     try:r=controls(a.pins_sha256)
+2026-10-30T00:51:19.7636584Z           ^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-30T00:51:19.7637072Z   File "/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_target_trace.py", line 79, in controls
+2026-10-30T00:51:19.7637595Z     got=t.select_epochs(trace,{"28":target},out)
+2026-10-30T00:51:19.7637888Z         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-30T00:51:19.7638405Z   File "/home/runner/work/nssoc/nssoc/scripts/magic_resistor_target_trace.py", line 158, in select_epochs
+2026-10-30T00:51:19.7638892Z     r=b.decode(raw)
+2026-10-30T00:51:19.7639088Z       ^^^^^^^^^^^^^
+2026-10-30T00:51:19.7639538Z   File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_rc_contacts.py", line 33, in decode
+2026-10-30T00:51:19.7640099Z     return json.loads(raw,object_pairs_hook=pairs,
+2026-10-30T00:51:19.7640425Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-30T00:51:19.7640916Z   File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/__init__.py", line 359, in loads
+2026-10-30T00:51:19.7641390Z     return cls(**kw).decode(s)
+2026-10-30T00:51:19.7641624Z            ^^^^^^^^^^^^^^^^^^^
+2026-10-30T00:51:19.7642050Z   File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/decoder.py", line 338, in decode
+2026-10-30T00:51:19.7642546Z     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+2026-10-30T00:51:19.7642845Z                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-30T00:51:19.7643784Z   File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/decoder.py", line 354, in raw_decode
+2026-10-30T00:51:19.7644626Z     obj, end = self.scan_once(s, idx)
+2026-10-30T00:51:19.7645068Z                ^^^^^^^^^^^^^^^^^^^^^^
+2026-10-30T00:51:19.7645893Z json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 2 column 1 (char 2)
+2026-10-30T00:51:19.7662101Z ##[error]Process completed with exit code 1.
+2026-10-30T00:51:19.7721101Z ##[group]Run python -B - <<'PY'
+2026-10-30T00:51:19.7721441Z [36;1mpython -B - <<'PY'[0m
+2026-10-30T00:51:19.7721696Z [36;1mimport sys[0m
+2026-10-30T00:51:19.7721928Z [36;1mfrom pathlib import Path[0m
+2026-10-30T00:51:19.7722211Z [36;1msys.path.insert(0,"scripts")[0m
+2026-10-30T00:51:19.7722575Z [36;1mimport cloud_cdr_current_rc_contacts as f[0m
+2026-10-30T00:51:19.7722926Z [36;1mf.emit(Path("cloud-magic-build-controls"))[0m
+2026-10-30T00:51:19.7723602Z [36;1mPY[0m
+2026-10-30T00:51:19.7789999Z shell: /usr/bin/bash -e {0}
+2026-10-30T00:51:19.7790256Z env:
+2026-10-30T00:51:19.7790467Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-30T00:51:19.7790862Z   PINS_SHA256: 9ea63ea4043a899b453ce6994a1ed505a6ae2469280ae9d9528882158995dce1
+2026-10-30T00:51:19.7791338Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T00:51:19.7791767Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-30T00:51:19.7792472Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T00:51:19.7792857Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T00:51:19.7793549Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T00:51:19.7793968Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-30T00:51:19.7794293Z ##[endgroup]
+2026-10-30T00:51:19.8545665Z CDR_RC_CONTACT_INDEX {"context.json": {"bytes": 172, "sha256": "5568067cb4435b6251c5b59d53f166dd68294ca352b253d725c9b1c51137360c"}, "controls.json": {"bytes": 4860, "sha256": "962501614b2cd4c8e6031b39dc5d29be84a89a739fa0e6db1af4990896b9a1ca"}, "controls.stderr": {"bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}, "controls.stdout": {"bytes": 5872, "sha256": "168ca82b4e61adbb6e50ab77e8477f4fb6a4cce2a9dc6d4381601635ddbedad5"}, "returncode.txt": {"bytes": 2, "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"}, "source-manifest.json": {"bytes": 19586, "sha256": "9ea63ea4043a899b453ce6994a1ed505a6ae2469280ae9d9528882158995dce1"}, "target-controls.json": {"bytes": 1702, "sha256": "d86a6f511cd642d98ebcef9e01888d8f43bd5870ccd76a1be56361898c361455"}, "target-controls.stderr": {"bytes": 1779, "sha256": "809fe580c79848e70329ff0834e3b033c9ff0202da3a2836b413f2f2026a0e1a"}, "target-controls.stdout": {"bytes": 1702, "sha256": "d86a6f511cd642d98ebcef9e01888d8f43bd5870ccd76a1be56361898c361455"}, "target-returncode.txt": {"bytes": 2, "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"}}
+2026-10-30T00:51:19.8555865Z CDR_RC_CONTACT_CHUNK {"data": "eJxNjEEOwiAQRfc9BWEtCUxaWrxMQ4fBNCo0U3BjvLulbly+/PffuxNC+lLouRV5FebS+Ma5bgdJDKyY9nUvmdXG+UXJJyS11PUR5OlyTfMaDrnXbgKAvgd9DnuujNQqYfCINEIwk0VrjR10RDMSxKCtwyUOYCfn6Bcs+U6p3f6Cysju030B7bcvGQ==", "encoding": "zlib+base64", "index": 0, "name": "context.json"}
+2026-10-30T00:51:19.8558995Z CDR_RC_CONTACT_END {"bytes": 172, "chunks": 1, "name": "context.json", "sha256": "5568067cb4435b6251c5b59d53f166dd68294ca352b253d725c9b1c51137360c"}
+2026-10-30T00:51:19.8579772Z CDR_RC_CONTACT_CHUNK {"data": "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", "encoding": "zlib+base64", "index": 0, "name": "controls.json"}
+2026-10-30T00:51:19.8601304Z CDR_RC_CONTACT_END {"bytes": 4860, "chunks": 1, "name": "controls.json", "sha256": "962501614b2cd4c8e6031b39dc5d29be84a89a739fa0e6db1af4990896b9a1ca"}
+2026-10-30T00:51:19.8602620Z CDR_RC_CONTACT_CHUNK {"data": "eJwDAAAAAAE=", "encoding": "zlib+base64", "index": 0, "name": "controls.stderr"}
+2026-10-30T00:51:19.8604382Z CDR_RC_CONTACT_END {"bytes": 0, "chunks": 1, "name": "controls.stderr", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
+2026-10-30T00:51:19.8627591Z CDR_RC_CONTACT_CHUNK {"data": "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", "encoding": "zlib+base64", "index": 0, "name": "controls.stdout"}
+2026-10-30T00:51:19.8651245Z CDR_RC_CONTACT_END {"bytes": 5872, "chunks": 1, "name": "controls.stdout", "sha256": "168ca82b4e61adbb6e50ab77e8477f4fb6a4cce2a9dc6d4381601635ddbedad5"}
+2026-10-30T00:51:19.8652569Z CDR_RC_CONTACT_CHUNK {"data": "eJwz4AIAAGwAOw==", "encoding": "zlib+base64", "index": 0, "name": "returncode.txt"}
+2026-10-30T00:51:19.8654130Z CDR_RC_CONTACT_END {"bytes": 2, "chunks": 1, "name": "returncode.txt", "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"}
+2026-10-30T00:51:19.8704401Z CDR_RC_CONTACT_CHUNK {"data": "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", "encoding": "zlib+base64", "index": 0, "name": "source-manifest.json"}
+2026-10-30T00:51:19.8743974Z CDR_RC_CONTACT_END {"bytes": 19586, "chunks": 1, "name": "source-manifest.json", "sha256": "9ea63ea4043a899b453ce6994a1ed505a6ae2469280ae9d9528882158995dce1"}
+2026-10-30T00:51:19.8748632Z CDR_RC_CONTACT_CHUNK {"data": "eJy1lV9P2zAUxd/5FFZeSKYooYUyVqkPFSuIidGpdG/VLPfm0pi6vpntrK0Q331OQrd2Y1olIA+J4z+5v3N0Yj8cMBagMWSCLgs+3Q5vPiJQhoOqKzwcrAoEJ/WMFYYKNG7NtFggQw2KLGZMapZROVXIvpfk0HaZkhpZmwGpcqFZi4WQC8Pa0WEUxFUxLZz8gRxXCKXDzJe9E8piPVbkaytBKC4AsHBCA+6MWydcaSvSi/7VNf/cv7w65+P+6HIw5uNR/3zAb4dfR/5xPrwZj4bXt01JZwTgVMC8WjnevLBwQdYxg4DaMV9VMSWsi7oTzdiF9JImQZrTAlNTao0mXZKZp9pagqe7BSMLZ1PIEeZ8IWYSuEErrSPDnTAzdLyunRTrSRA31rSOPsSVbQshdVWJMWfWXdMD0s6QsqFICqktt7lod06jZkpzfXv+elve9w3uBq/hmZHrucSi8ungWBDkNqxXxg+ToH02CbrN5x5jKt2Whn8oeLmkfc3vnNVqdsgbPNObJlmd/dCI5S/mFzqtqMw4ZIZDaYzPGTfAKysFOLsNdnxcczUAT0DoSqPZvSWdKBKZrbhimt5X5IWQxvKcaN6rm/F2Tva1eVsOFc5Lsv6PdEQKhM9I+mXtctLpcdJqJ61Oujo9SZWcpkXdXfWmFVzKudTScb6jp9PEpgbf0QM+4u/ezZfRxm0b/Y/9lTibembX9rO/fPcOx36Dy1ivisld4l3nG1Q/OVv1+LJqHUWJnxVGu/j72/+Gqjontarf5M8rsyA0J7/JPgnbV8lE16HcVP7j1OiyVzw1Jjo4eDz4CY12Oqw=", "encoding": "zlib+base64", "index": 0, "name": "target-controls.json"}
+2026-10-30T00:51:19.8753028Z CDR_RC_CONTACT_END {"bytes": 1702, "chunks": 1, "name": "target-controls.json", "sha256": "d86a6f511cd642d98ebcef9e01888d8f43bd5870ccd76a1be56361898c361455"}
+2026-10-30T00:51:19.8757494Z CDR_RC_CONTACT_CHUNK {"data": "eJy9lUFv1DAQhe/9FaM9JVWUdLfdtkSEE+XAoSDBuSOv427cdTxh7Gi7Qvx3HIeoW2ihqJQ5JJbjeL739OJ8ZiHVSsgNJC05D6yksh6kMAaMcD4tDwDeaaNgVjTUqoJ7axUXW+JNYZ0j+ePqJOvOu0I2Sm6wFWstkZXTzhOjF7xWHv3QLO92swyMtgrm8/MMtIXXLdW9UW9CKwB9DYhWtAqxqmYYttIWcVYO9ySNSx6rq1gvCnwWgQeWCbZj3QregXZgycMlWVWy0E5NT36HfLVfLwl+9Oo+uOddyZUk65mMS0TeaevQNWKxPN03+erhekHUs5F0Qossa/KVz50ySnpUHcnGJfG97OtscT4rx62+ZdT7O/hH0J+r5YmGL8do32OOaFyt8lpJqlXCYjvhPstdQ32NsmaUPXP4fJElDv4J6d0e0/FxRBqbjyzK92zhxpHNDYnaDUgZrW4G5k5odtgQbao4zPaD/NfeUueDGudV7YmMFCESxcedb8gWx/l8kc+Xxe3pSWH0quji9DBbDGQForbaI+5LWY4pidD7UmQI8+HhZptOHrv0D9j/BHFsxvfMPv/Z7eBrBsrWUA2xuM6D1zhRhrX1bYXbYXSU5mFVkv5y2P1Hzx8QtDyJgu6oHxTlpLBIVk6anijiIGZw6vr+04fLt3F8wUxcwsVtFyKp7TocqtQp9jsYfhGhcQi/U3V0mvpVkP2lJ69cOUIvwjli+tbCHBLZCIZFevAd+xJHqg==", "encoding": "zlib+base64", "index": 0, "name": "target-controls.stderr"}
+2026-10-30T00:51:19.8761641Z CDR_RC_CONTACT_END {"bytes": 1779, "chunks": 1, "name": "target-controls.stderr", "sha256": "809fe580c79848e70329ff0834e3b033c9ff0202da3a2836b413f2f2026a0e1a"}
+2026-10-30T00:51:19.8766340Z CDR_RC_CONTACT_CHUNK {"data": "eJy1lV9P2zAUxd/5FFZeSKYooYUyVqkPFSuIidGpdG/VLPfm0pi6vpntrK0Q331OQrd2Y1olIA+J4z+5v3N0Yj8cMBagMWSCLgs+3Q5vPiJQhoOqKzwcrAoEJ/WMFYYKNG7NtFggQw2KLGZMapZROVXIvpfk0HaZkhpZmwGpcqFZi4WQC8Pa0WEUxFUxLZz8gRxXCKXDzJe9E8piPVbkaytBKC4AsHBCA+6MWydcaSvSi/7VNf/cv7w65+P+6HIw5uNR/3zAb4dfR/5xPrwZj4bXt01JZwTgVMC8WjnevLBwQdYxg4DaMV9VMSWsi7oTzdiF9JImQZrTAlNTao0mXZKZp9pagqe7BSMLZ1PIEeZ8IWYSuEErrSPDnTAzdLyunRTrSRA31rSOPsSVbQshdVWJMWfWXdMD0s6QsqFICqktt7lod06jZkpzfXv+elve9w3uBq/hmZHrucSi8ungWBDkNqxXxg+ToH02CbrN5x5jKt2Whn8oeLmkfc3vnNVqdsgbPNObJlmd/dCI5S/mFzqtqMw4ZIZDaYzPGTfAKysFOLsNdnxcczUAT0DoSqPZvSWdKBKZrbhimt5X5IWQxvKcaN6rm/F2Tva1eVsOFc5Lsv6PdEQKhM9I+mXtctLpcdJqJ61Oujo9SZWcpkXdXfWmFVzKudTScb6jp9PEpgbf0QM+4u/ezZfRxm0b/Y/9lTibembX9rO/fPcOx36Dy1ivisld4l3nG1Q/OVv1+LJqHUWJnxVGu/j72/+Gqjontarf5M8rsyA0J7/JPgnbV8lE16HcVP7j1OiyVzw1Jjo4eDz4CY12Oqw=", "encoding": "zlib+base64", "index": 0, "name": "target-controls.stdout"}
+2026-10-30T00:51:19.8770749Z CDR_RC_CONTACT_END {"bytes": 1702, "chunks": 1, "name": "target-controls.stdout", "sha256": "d86a6f511cd642d98ebcef9e01888d8f43bd5870ccd76a1be56361898c361455"}
+2026-10-30T00:51:19.8771622Z CDR_RC_CONTACT_CHUNK {"data": "eJwz5AIAAG4APA==", "encoding": "zlib+base64", "index": 0, "name": "target-returncode.txt"}
+2026-10-30T00:51:19.8772477Z CDR_RC_CONTACT_END {"bytes": 2, "chunks": 1, "name": "target-returncode.txt", "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"}
+2026-10-30T00:51:19.8879434Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-30T00:51:19.8879878Z with:
+2026-10-30T00:51:19.8880134Z   name: magic-build-source-controls-40982224420
+2026-10-30T00:51:19.8880459Z   path: cloud-magic-build-controls/
+2026-10-30T00:51:19.8880978Z   if-no-files-found: error
+2026-10-30T00:51:19.8881217Z   retention-days: 30
+2026-10-30T00:51:19.8881443Z   compression-level: 6
+2026-10-30T00:51:19.8881662Z   overwrite: false
+2026-10-30T00:51:19.8881881Z   include-hidden-files: false
+2026-10-30T00:51:19.8882136Z env:
+2026-10-30T00:51:19.8882334Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-30T00:51:19.8882715Z   PINS_SHA256: 9ea63ea4043a899b453ce6994a1ed505a6ae2469280ae9d9528882158995dce1
+2026-10-30T00:51:19.8883425Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T00:51:19.8883860Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-30T00:51:19.8884340Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T00:51:19.8884722Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T00:51:19.8885119Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T00:51:19.8885501Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-30T00:51:19.8885827Z ##[endgroup]
+2026-10-30T00:51:20.0868500Z (node:2117) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-30T00:51:20.0870000Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-30T00:51:20.1042578Z With the provided path, there will be 10 files uploaded
+2026-10-30T00:51:20.1048977Z Artifact name is valid!
+2026-10-30T00:51:20.1049925Z Root directory input is valid!
+2026-10-30T00:51:20.6954057Z Beginning upload of artifact content to blob storage
+2026-10-30T00:51:20.7396630Z (node:2117) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-30T00:51:20.7832721Z Uploaded bytes 12438
+2026-10-30T00:51:20.8038556Z Finished uploading artifact content to blob storage!
+2026-10-30T00:51:20.8040178Z SHA256 digest of uploaded artifact zip is 182e105e770060d1bb6f3a1fde7afb57cce0c5f8a306329e3f7322eff4ef8fa9
+2026-10-30T00:51:20.8041564Z Finalizing artifact upload
+2026-10-30T00:51:21.3094515Z Artifact magic-build-source-controls-40982224420.zip successfully finalized. Artifact ID 12944823991
+2026-10-30T00:51:21.3096077Z Artifact magic-build-source-controls-40982224420 has been successfully uploaded! Final size is 12438 bytes. Artifact ID is 12944823991
+2026-10-30T00:51:21.3102372Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/40982224420/artifacts/12944823991
+2026-10-30T00:51:21.3480506Z Post job cleanup.
+2026-10-30T00:51:21.4410996Z [command]/usr/bin/git version
+2026-10-30T00:51:21.4460315Z git version 2.56.0
+2026-10-30T00:51:21.4508439Z Temporarily overriding HOME='/home/runner/work/_temp/a07d8288-c8e1-48f9-8591-0b05867c05da' before making global git config changes
+2026-10-30T00:51:21.4509869Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-30T00:51:21.4514925Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-30T00:51:21.4606753Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-30T00:51:21.4677549Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-30T00:51:21.5095392Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-30T00:51:21.5141238Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-30T00:51:21.6600582Z Cleaning up orphan processes
+2026-10-30T00:51:21.7004250Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

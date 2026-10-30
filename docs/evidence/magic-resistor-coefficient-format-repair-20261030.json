@@ -1,0 +1,98 @@
+{
+  "actual_defect": {
+    "actual_header": {
+      "bytes": 41177,
+      "sha256": "6a448fd1f72e4abcf3d1ff404613927428395ea6db10e82f2014f4c7e16f68d5"
+    },
+    "compiler": {
+      "bytes": 6655,
+      "sha256": "c3428c6087ec8ea684425267b50b8a5700d4dfba3de01e85f9eba2e3bbb787cc"
+    },
+    "header_facts": {
+      "ResValue": "int",
+      "exts_resistScale": "int",
+      "exts_sheetResist": "double[NT]",
+      "exts_viaResist": "ResValue[NT] = int[NT]"
+    },
+    "native_output_equivalence_remains_historical": true,
+    "old_fields_unqualified": [
+      "sheet_resist_raw",
+      "via_resist_raw"
+    ],
+    "planned_narrow_fix": "Versioned payload, sheet hex double and explicit via int; scoped -Wformat error plus full native output equality gate",
+    "schema": 1,
+    "scope": "Observer diagnostic fault; no changed numerical extraction, no physical footprint attribution",
+    "status": "CONFIRMED_TYPED_COEFFICIENT_PRINTF_MISMATCH",
+    "warning": "ResPrint.c:149: %d expects int; argument4 is double"
+  },
+  "actual_proof": {
+    "commit": "d6c53d2a34b763668bdea3dff8897e0abd6104ad",
+    "receipt_sha256": "661b78ff78d69df9758401fbdad20613babc6796762d825845ac03d788768600",
+    "run": 40984220615,
+    "source": "1f13e025e83f167093ef7343fcd6d17490fe5687"
+  },
+  "controller": {
+    "all_native_outputs_compared": "Original saved current, archived runtime, rebuilt baseline, trace-off, trace-on via unchanged compare_component_outputs",
+    "instrument_source_delta": "Only versioned payload substitution plus provenance receipt",
+    "limits_unchanged": true,
+    "old_host_sha256": "0908bd94c6730af90913220be73f09e8308b45b2387d996f5dd9cc1c7dc133e5",
+    "only_substituted_globals": [
+      "instrument_source",
+      "source_guard",
+      "validate_trace"
+    ],
+    "owned_lifecycle_and_publication": "Unchanged qualified original functions",
+    "perform_code_identical": true,
+    "trace_validator_delta": "Versioned identity plus finite typed coefficient fields; complete native endpoint/value/order/epoch/footer gates retained"
+  },
+  "parent": "d6c53d2a34b763668bdea3dff8897e0abd6104ad",
+  "patch": {
+    "literal_rules": [
+      [
+        "/* NSSOC resistor provenance v1.",
+        "/* NSSOC resistor provenance v2."
+      ],
+      [
+        "nssoc_resistor_provenance_v1",
+        "nssoc_resistor_provenance_v2"
+      ],
+      [
+        "\\\"sheet_resist_raw\\\":%d,",
+        "\\\"sheet_resist_raw_hex\\\":\\\"%a\\\","
+      ],
+      [
+        "                ExtCurStyle->exts_sheetResist[resistor->rr_tt],",
+        "                (double)ExtCurStyle->exts_sheetResist[resistor->rr_tt],"
+      ],
+      [
+        "                ExtCurStyle->exts_viaResist[resistor->rr_tt]);",
+        "                (int)ExtCurStyle->exts_viaResist[resistor->rr_tt]);"
+      ]
+    ],
+    "new_payload_sha256": "dd820db2b963f4da3dde2cd7e28a627a37b644e16148309ee85f556dfff7a07b",
+    "old_payload_sha256": "58c6ae5da8240f63131efcf25850a197b3195c78f4993c8703e556459ff58268",
+    "original_payload_unchanged": true,
+    "scoped_compiler_diagnostics": [
+      "#pragma GCC diagnostic push\n#pragma GCC diagnostic error \"-Wformat\"\n",
+      "#pragma GCC diagnostic pop\n"
+    ]
+  },
+  "remaining": "Native extraction result and corrected coefficient trace remain unqualified until hosted execution and exact gates pass. Residual fields still do not assign reduced resistance to constructor footprint.",
+  "schema": 1,
+  "scope": "Typed observer coefficient correction only; unchanged full current500 extraction and component equivalence",
+  "scope_flags": {
+    "electrical_acceptance": false,
+    "full_phy_accepted": false,
+    "geometry_changed": false,
+    "physical_acceptance": false,
+    "reduced_element_ownership_proved": false
+  },
+  "source_controls": {
+    "actual_body_fixture": "Original warning must fail under -Wformat=2 -Werror=format; corrected function must compile and emit exact synthetic17.25/7",
+    "compiler": 2,
+    "full_Magic_build": false,
+    "positive": 5,
+    "refusal": 5,
+    "unexecuted": true
+  }
+}
