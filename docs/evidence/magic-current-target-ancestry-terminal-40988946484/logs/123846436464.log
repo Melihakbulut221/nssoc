@@ -1,0 +1,807 @@
+﻿2026-10-30T01:58:33.3010246Z Current runner version: '2.338.0'
+2026-10-30T01:58:33.3035744Z ##[group]Runner Image Provisioner
+2026-10-30T01:58:33.3036644Z Hosted Compute Agent
+2026-10-30T01:58:33.3037419Z Version: 20261021.618
+2026-10-30T01:58:33.3038079Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-30T01:58:33.3039054Z Build Date: 2026-10-21T00:45:21Z
+2026-10-30T01:58:33.3039889Z Worker ID: {5f4b95d8-6b6d-4ec1-821e-2355d65c12f1}
+2026-10-30T01:58:33.3040620Z Region: westus
+2026-10-30T01:58:33.3041262Z Cloud: Azure
+2026-10-30T01:58:33.3041837Z ##[endgroup]
+2026-10-30T01:58:33.3043350Z ##[group]Operating System
+2026-10-30T01:58:33.3044133Z Ubuntu
+2026-10-30T01:58:33.3044675Z 22.04.5
+2026-10-30T01:58:33.3045311Z LTS
+2026-10-30T01:58:33.3045867Z ##[endgroup]
+2026-10-30T01:58:33.3046458Z ##[group]Runner Image
+2026-10-30T01:58:33.3047151Z Image: ubuntu-22.04
+2026-10-30T01:58:33.3047730Z Version: 20261025.340.1
+2026-10-30T01:58:33.3049521Z Included Software: https://github.com/actions/runner-images/blob/ubuntu22/20261025.340/images/ubuntu/Ubuntu2204-Readme.md
+2026-10-30T01:58:33.3051178Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu22%2F20261025.340
+2026-10-30T01:58:33.3052248Z ##[endgroup]
+2026-10-30T01:58:33.3053409Z ##[group]GITHUB_TOKEN Permissions
+2026-10-30T01:58:33.3055981Z Contents: read
+2026-10-30T01:58:33.3056601Z Metadata: read
+2026-10-30T01:58:33.3057267Z ##[endgroup]
+2026-10-30T01:58:33.3059696Z Secret source: Actions
+2026-10-30T01:58:33.3060656Z Cache mode: write
+2026-10-30T01:58:33.3061523Z Prepare workflow directory
+2026-10-30T01:58:33.3526117Z Prepare all required actions
+2026-10-30T01:58:33.3575825Z Getting action download info
+2026-10-30T01:58:33.7051737Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-10-30T01:58:33.8745352Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-30T01:58:33.9647399Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-30T01:58:34.1920069Z Complete job name: source-controls
+2026-10-30T01:58:34.2875646Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-10-30T01:58:34.2876778Z with:
+2026-10-30T01:58:34.2877250Z   ref: 2adbc74a348c6f04227a9507a9ccc556d4eda430
+2026-10-30T01:58:34.2877865Z   persist-credentials: false
+2026-10-30T01:58:34.2878695Z   repository: Melihakbulut221/nssoc
+2026-10-30T01:58:34.2882553Z   token: ***
+2026-10-30T01:58:34.2882977Z   ssh-strict: true
+2026-10-30T01:58:34.2883413Z   ssh-user: git
+2026-10-30T01:58:34.2883826Z   clean: true
+2026-10-30T01:58:34.2884267Z   sparse-checkout-cone-mode: true
+2026-10-30T01:58:34.2884787Z   fetch-depth: 1
+2026-10-30T01:58:34.2885207Z   fetch-tags: false
+2026-10-30T01:58:34.2885645Z   show-progress: true
+2026-10-30T01:58:34.2886083Z   lfs: false
+2026-10-30T01:58:34.2886485Z   submodules: false
+2026-10-30T01:58:34.2886944Z   set-safe-directory: true
+2026-10-30T01:58:34.2887715Z env:
+2026-10-30T01:58:34.2888137Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-30T01:58:34.2889421Z   PINS_SHA256: 3668b8630a010c0ab07a20f39528fd6a54ee4af1d7c0bc85c68d0676a5b2e8fd
+2026-10-30T01:58:34.2890246Z ##[endgroup]
+2026-10-30T01:58:34.5706139Z Syncing repository: Melihakbulut221/nssoc
+2026-10-30T01:58:34.5708114Z ##[group]Getting Git version info
+2026-10-30T01:58:34.5709478Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-30T01:58:34.5710490Z [command]/usr/bin/git version
+2026-10-30T01:58:34.5807132Z git version 2.56.0
+2026-10-30T01:58:34.5842888Z ##[endgroup]
+2026-10-30T01:58:34.5854638Z Temporarily overriding HOME='/home/runner/work/_temp/ada9af92-1a91-4444-89ef-fc207ac6e55b' before making global git config changes
+2026-10-30T01:58:34.5857002Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-30T01:58:34.5859058Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-30T01:58:34.5918691Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-30T01:58:34.5924350Z ##[group]Initializing the repository
+2026-10-30T01:58:34.5930234Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-30T01:58:34.6053206Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-30T01:58:34.6055171Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-30T01:58:34.6057023Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-30T01:58:34.6058687Z hint: call:
+2026-10-30T01:58:34.6059781Z hint:
+2026-10-30T01:58:34.6061075Z hint: 	git config --global init.defaultBranch <name>
+2026-10-30T01:58:34.6062358Z hint:
+2026-10-30T01:58:34.6063607Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-30T01:58:34.6065429Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-30T01:58:34.6066919Z hint:
+2026-10-30T01:58:34.6068046Z hint: 	git branch -m <name>
+2026-10-30T01:58:34.6069390Z hint:
+2026-10-30T01:58:34.6070737Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-30T01:58:34.6072606Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-30T01:58:34.6076082Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-30T01:58:34.6121908Z ##[endgroup]
+2026-10-30T01:58:34.6126808Z ##[group]Disabling automatic garbage collection
+2026-10-30T01:58:34.6129547Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-30T01:58:34.6175490Z ##[endgroup]
+2026-10-30T01:58:34.6177801Z ##[group]Setting up auth
+2026-10-30T01:58:34.6185720Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-30T01:58:34.6246155Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-30T01:58:34.6655812Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-30T01:58:34.6698131Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-30T01:58:34.6972798Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-30T01:58:34.7024879Z ##[endgroup]
+2026-10-30T01:58:34.7026323Z ##[group]Fetching the repository
+2026-10-30T01:58:34.7036921Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 2adbc74a348c6f04227a9507a9ccc556d4eda430
+2026-10-30T01:59:01.8266697Z From https://github.com/Melihakbulut221/nssoc
+2026-10-30T01:59:01.8267914Z  * branch              2adbc74a348c6f04227a9507a9ccc556d4eda430 -> FETCH_HEAD
+2026-10-30T01:59:01.8272606Z ##[endgroup]
+2026-10-30T01:59:01.8273477Z ##[group]Determining the checkout info
+2026-10-30T01:59:01.8275741Z ##[endgroup]
+2026-10-30T01:59:01.8281954Z [command]/usr/bin/git sparse-checkout disable
+2026-10-30T01:59:01.8339479Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-30T01:59:01.8378003Z ##[group]Checking out the ref
+2026-10-30T01:59:01.8383133Z [command]/usr/bin/git checkout --progress --force 2adbc74a348c6f04227a9507a9ccc556d4eda430
+2026-10-30T01:59:03.3750496Z Updating files:   9% (2864/31571)
+2026-10-30T01:59:03.5279183Z Updating files:  10% (3158/31571)
+2026-10-30T01:59:03.6588902Z Updating files:  11% (3473/31571)
+2026-10-30T01:59:03.7606049Z Updating files:  12% (3789/31571)
+2026-10-30T01:59:03.8693599Z Updating files:  13% (4105/31571)
+2026-10-30T01:59:03.8757259Z Updating files:  13% (4354/31571)
+2026-10-30T01:59:04.2653962Z Updating files:  14% (4420/31571)
+2026-10-30T01:59:04.3271884Z Updating files:  15% (4736/31571)
+2026-10-30T01:59:04.4424130Z Updating files:  16% (5052/31571)
+2026-10-30T01:59:04.6811166Z Updating files:  17% (5368/31571)
+2026-10-30T01:59:04.7806496Z Updating files:  18% (5683/31571)
+2026-10-30T01:59:04.8693047Z Updating files:  19% (5999/31571)
+2026-10-30T01:59:04.9517643Z Updating files:  19% (6154/31571)
+2026-10-30T01:59:05.6220045Z Updating files:  20% (6315/31571)
+2026-10-30T01:59:05.8210096Z Updating files:  21% (6630/31571)
+2026-10-30T01:59:05.8688738Z Updating files:  22% (6946/31571)
+2026-10-30T01:59:05.9056638Z Updating files:  22% (7010/31571)
+2026-10-30T01:59:05.9304661Z Updating files:  23% (7262/31571)
+2026-10-30T01:59:05.9560384Z Updating files:  24% (7578/31571)
+2026-10-30T01:59:06.0840503Z Updating files:  25% (7893/31571)
+2026-10-30T01:59:06.1590324Z Updating files:  26% (8209/31571)
+2026-10-30T01:59:06.1763083Z Updating files:  27% (8525/31571)
+2026-10-30T01:59:06.2123572Z Updating files:  28% (8840/31571)
+2026-10-30T01:59:06.2330308Z Updating files:  29% (9156/31571)
+2026-10-30T01:59:06.2559311Z Updating files:  30% (9472/31571)
+2026-10-30T01:59:06.2720425Z Updating files:  31% (9788/31571)
+2026-10-30T01:59:06.2950965Z Updating files:  32% (10103/31571)
+2026-10-30T01:59:06.3134929Z Updating files:  33% (10419/31571)
+2026-10-30T01:59:06.3292943Z Updating files:  34% (10735/31571)
+2026-10-30T01:59:06.3499889Z Updating files:  35% (11050/31571)
+2026-10-30T01:59:06.3704736Z Updating files:  36% (11366/31571)
+2026-10-30T01:59:06.3893489Z Updating files:  37% (11682/31571)
+2026-10-30T01:59:06.4256776Z Updating files:  38% (11997/31571)
+2026-10-30T01:59:06.4588549Z Updating files:  39% (12313/31571)
+2026-10-30T01:59:06.4974947Z Updating files:  40% (12629/31571)
+2026-10-30T01:59:06.5164773Z Updating files:  41% (12945/31571)
+2026-10-30T01:59:06.6660289Z Updating files:  42% (13260/31571)
+2026-10-30T01:59:06.6864878Z Updating files:  43% (13576/31571)
+2026-10-30T01:59:06.7036667Z Updating files:  44% (13892/31571)
+2026-10-30T01:59:06.7213425Z Updating files:  45% (14207/31571)
+2026-10-30T01:59:06.7385827Z Updating files:  46% (14523/31571)
+2026-10-30T01:59:06.7595404Z Updating files:  47% (14839/31571)
+2026-10-30T01:59:06.7791156Z Updating files:  48% (15155/31571)
+2026-10-30T01:59:06.7988094Z Updating files:  49% (15470/31571)
+2026-10-30T01:59:06.8238552Z Updating files:  50% (15786/31571)
+2026-10-30T01:59:06.8477138Z Updating files:  51% (16102/31571)
+2026-10-30T01:59:06.8647468Z Updating files:  52% (16417/31571)
+2026-10-30T01:59:06.8681987Z Updating files:  53% (16733/31571)
+2026-10-30T01:59:06.8809829Z Updating files:  53% (16806/31571)
+2026-10-30T01:59:06.9021710Z Updating files:  54% (17049/31571)
+2026-10-30T01:59:06.9201213Z Updating files:  55% (17365/31571)
+2026-10-30T01:59:06.9520811Z Updating files:  56% (17680/31571)
+2026-10-30T01:59:06.9694051Z Updating files:  57% (17996/31571)
+2026-10-30T01:59:06.9874090Z Updating files:  58% (18312/31571)
+2026-10-30T01:59:07.0038097Z Updating files:  59% (18627/31571)
+2026-10-30T01:59:07.0217171Z Updating files:  60% (18943/31571)
+2026-10-30T01:59:07.0403771Z Updating files:  61% (19259/31571)
+2026-10-30T01:59:07.0620142Z Updating files:  62% (19575/31571)
+2026-10-30T01:59:07.0753442Z Updating files:  63% (19890/31571)
+2026-10-30T01:59:07.0889159Z Updating files:  64% (20206/31571)
+2026-10-30T01:59:07.1050054Z Updating files:  65% (20522/31571)
+2026-10-30T01:59:07.1262429Z Updating files:  66% (20837/31571)
+2026-10-30T01:59:07.1626995Z Updating files:  67% (21153/31571)
+2026-10-30T01:59:07.1928864Z Updating files:  68% (21469/31571)
+2026-10-30T01:59:07.2163548Z Updating files:  69% (21784/31571)
+2026-10-30T01:59:07.2371050Z Updating files:  70% (22100/31571)
+2026-10-30T01:59:07.2564026Z Updating files:  71% (22416/31571)
+2026-10-30T01:59:07.2737750Z Updating files:  72% (22732/31571)
+2026-10-30T01:59:07.2889987Z Updating files:  73% (23047/31571)
+2026-10-30T01:59:07.3081359Z Updating files:  74% (23363/31571)
+2026-10-30T01:59:07.3228894Z Updating files:  75% (23679/31571)
+2026-10-30T01:59:07.3403608Z Updating files:  76% (23994/31571)
+2026-10-30T01:59:07.4231428Z Updating files:  77% (24310/31571)
+2026-10-30T01:59:07.4397131Z Updating files:  78% (24626/31571)
+2026-10-30T01:59:07.5193660Z Updating files:  79% (24942/31571)
+2026-10-30T01:59:07.5632221Z Updating files:  80% (25257/31571)
+2026-10-30T01:59:07.5813379Z Updating files:  81% (25573/31571)
+2026-10-30T01:59:07.5997886Z Updating files:  82% (25889/31571)
+2026-10-30T01:59:07.6223219Z Updating files:  83% (26204/31571)
+2026-10-30T01:59:07.6566930Z Updating files:  84% (26520/31571)
+2026-10-30T01:59:07.6779905Z Updating files:  85% (26836/31571)
+2026-10-30T01:59:07.7056443Z Updating files:  86% (27152/31571)
+2026-10-30T01:59:07.7324120Z Updating files:  87% (27467/31571)
+2026-10-30T01:59:07.7524052Z Updating files:  88% (27783/31571)
+2026-10-30T01:59:07.7713223Z Updating files:  89% (28099/31571)
+2026-10-30T01:59:07.7892050Z Updating files:  90% (28414/31571)
+2026-10-30T01:59:07.8062630Z Updating files:  91% (28730/31571)
+2026-10-30T01:59:07.8245629Z Updating files:  92% (29046/31571)
+2026-10-30T01:59:07.8482916Z Updating files:  93% (29362/31571)
+2026-10-30T01:59:07.8683788Z Updating files:  94% (29677/31571)
+2026-10-30T01:59:07.8701871Z Updating files:  94% (29963/31571)
+2026-10-30T01:59:07.8915251Z Updating files:  95% (29993/31571)
+2026-10-30T01:59:07.9204282Z Updating files:  96% (30309/31571)
+2026-10-30T01:59:07.9390179Z Updating files:  97% (30624/31571)
+2026-10-30T01:59:07.9606744Z Updating files:  98% (30940/31571)
+2026-10-30T01:59:07.9953242Z Updating files:  99% (31256/31571)
+2026-10-30T01:59:07.9954176Z Updating files: 100% (31571/31571)
+2026-10-30T01:59:07.9954878Z Updating files: 100% (31571/31571), done.
+2026-10-30T01:59:08.0479088Z Note: switching to '2adbc74a348c6f04227a9507a9ccc556d4eda430'.
+2026-10-30T01:59:08.0479687Z 
+2026-10-30T01:59:08.0480058Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-30T01:59:08.0480689Z changes and commit them, and you can discard any commits you make in this
+2026-10-30T01:59:08.0481257Z state without impacting any branches by switching back to a branch.
+2026-10-30T01:59:08.0481588Z 
+2026-10-30T01:59:08.0481820Z If you want to create a new branch to retain commits you create, you may
+2026-10-30T01:59:08.0482310Z do so (now or later) by using -c with the switch command. Example:
+2026-10-30T01:59:08.0482861Z 
+2026-10-30T01:59:08.0482979Z   git switch -c <new-branch-name>
+2026-10-30T01:59:08.0483163Z 
+2026-10-30T01:59:08.0483263Z Or undo this operation with:
+2026-10-30T01:59:08.0483432Z 
+2026-10-30T01:59:08.0483516Z   git switch -
+2026-10-30T01:59:08.0483645Z 
+2026-10-30T01:59:08.0483869Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-30T01:59:08.0484192Z 
+2026-10-30T01:59:08.0484545Z HEAD is now at 2adbc74a Observe exact reduction transitions and lifetime-aware current target ancestry [skip ci]
+2026-10-30T01:59:08.0870089Z ##[endgroup]
+2026-10-30T01:59:08.0919988Z [command]/usr/bin/git log -1 --format=%H
+2026-10-30T01:59:08.0960467Z 2adbc74a348c6f04227a9507a9ccc556d4eda430
+2026-10-30T01:59:08.0979570Z ##[group]Removing auth
+2026-10-30T01:59:08.0980322Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-30T01:59:08.1047324Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-30T01:59:08.1382153Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-30T01:59:08.1430659Z http.https://github.com/.extraheader
+2026-10-30T01:59:08.1439507Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-30T01:59:08.2045051Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-30T01:59:08.2381869Z ##[endgroup]
+2026-10-30T01:59:08.3012834Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-30T01:59:08.3013705Z with:
+2026-10-30T01:59:08.3014018Z   python-version: 3.12
+2026-10-30T01:59:08.3014360Z   check-latest: false
+2026-10-30T01:59:08.3019126Z   token: ***
+2026-10-30T01:59:08.3019484Z   update-environment: true
+2026-10-30T01:59:08.3019896Z   allow-prereleases: false
+2026-10-30T01:59:08.3020288Z   freethreaded: false
+2026-10-30T01:59:08.3020633Z env:
+2026-10-30T01:59:08.3020957Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-30T01:59:08.3021596Z   PINS_SHA256: 3668b8630a010c0ab07a20f39528fd6a54ee4af1d7c0bc85c68d0676a5b2e8fd
+2026-10-30T01:59:08.3022282Z ##[endgroup]
+2026-10-30T01:59:08.7062327Z ##[group]Installed versions
+2026-10-30T01:59:08.7613637Z (node:2059) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-30T01:59:08.7614554Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-30T01:59:08.7615297Z Successfully set up CPython (3.12.15)
+2026-10-30T01:59:08.7616057Z ##[endgroup]
+2026-10-30T01:59:08.8041461Z ##[group]Run test "$GITHUB_SHA" = "$EXPECTED_SOURCE"
+2026-10-30T01:59:08.8042249Z [36;1mtest "$GITHUB_SHA" = "$EXPECTED_SOURCE"[0m
+2026-10-30T01:59:08.8042876Z [36;1mtest "$(git rev-parse HEAD)" = "$EXPECTED_SOURCE"[0m
+2026-10-30T01:59:08.8043512Z [36;1mmkdir cloud-magic-build-controls[0m
+2026-10-30T01:59:08.8044467Z [36;1mcp scripts/cdr-resistor-provenance-build-pins.json cloud-magic-build-controls/source-manifest.json[0m
+2026-10-30T01:59:08.8045403Z [36;1mpython -B - <<'PY'[0m
+2026-10-30T01:59:08.8045812Z [36;1mimport os,sys[0m
+2026-10-30T01:59:08.8046206Z [36;1mfrom pathlib import Path[0m
+2026-10-30T01:59:08.8046663Z [36;1msys.path.insert(0,"scripts")[0m
+2026-10-30T01:59:08.8047224Z [36;1mimport cloud_magic_resistor_provenance_build as b[0m
+2026-10-30T01:59:08.8047959Z [36;1mc=b.context(os.environ);b.source_guard(os.environ["PINS_SHA256"])[0m
+2026-10-30T01:59:08.8049125Z [36;1mb.write(Path("cloud-magic-build-controls/context.json"),b.encode(c))[0m
+2026-10-30T01:59:08.8049845Z [36;1mPY[0m
+2026-10-30T01:59:08.8050166Z [36;1mset +e[0m
+2026-10-30T01:59:08.8051856Z [36;1mpython -B scripts/check_magic_resistor_provenance_build.py --pins-sha256 "$PINS_SHA256" --output cloud-magic-build-controls/controls.json >cloud-magic-build-controls/controls.stdout 2>cloud-magic-build-controls/controls.stderr[0m
+2026-10-30T01:59:08.8053772Z [36;1mcode=$?[0m
+2026-10-30T01:59:08.8054461Z [36;1mprintf '%s\n' "$code" >cloud-magic-build-controls/returncode.txt[0m
+2026-10-30T01:59:08.8055664Z [36;1mcat cloud-magic-build-controls/controls.stdout cloud-magic-build-controls/controls.stderr[0m
+2026-10-30T01:59:08.8056575Z [36;1mif [ "$code" -ne 0 ]; then exit "$code"; fi[0m
+2026-10-30T01:59:08.8058766Z [36;1mpython -B scripts/check_magic_resistor_target_trace.py --pins-sha256 "$PINS_SHA256" --output cloud-magic-build-controls/target-controls.json >cloud-magic-build-controls/target-controls.stdout 2>cloud-magic-build-controls/target-controls.stderr[0m
+2026-10-30T01:59:08.8060614Z [36;1mcode=$?[0m
+2026-10-30T01:59:08.8061176Z [36;1mprintf '%s\n' "$code" >cloud-magic-build-controls/target-returncode.txt[0m
+2026-10-30T01:59:08.8062291Z [36;1mcat cloud-magic-build-controls/target-controls.stdout cloud-magic-build-controls/target-controls.stderr[0m
+2026-10-30T01:59:08.8063268Z [36;1mif [ "$code" -ne 0 ]; then exit "$code"; fi[0m
+2026-10-30T01:59:08.8065208Z [36;1mpython -B scripts/check_magic_resistor_coefficients.py --pins-sha256 "$PINS_SHA256" --output cloud-magic-build-controls/coefficient-controls.json >cloud-magic-build-controls/coefficient-controls.stdout 2>cloud-magic-build-controls/coefficient-controls.stderr[0m
+2026-10-30T01:59:08.8067285Z [36;1mcode=$?[0m
+2026-10-30T01:59:08.8067850Z [36;1mprintf '%s\n' "$code" >cloud-magic-build-controls/coefficient-returncode.txt[0m
+2026-10-30T01:59:08.8069304Z [36;1mcat cloud-magic-build-controls/coefficient-controls.stdout cloud-magic-build-controls/coefficient-controls.stderr[0m
+2026-10-30T01:59:08.8070314Z [36;1mif [ "$code" -ne 0 ]; then exit "$code"; fi[0m
+2026-10-30T01:59:08.8071644Z [36;1mpython -B scripts/check_magic_resistor_ancestry.py --pins-sha256 "$PINS_SHA256" --output cloud-magic-build-controls/ancestry-controls.json >cloud-magic-build-controls/ancestry-controls.stdout 2>cloud-magic-build-controls/ancestry-controls.stderr[0m
+2026-10-30T01:59:08.8072711Z [36;1mcode=$?[0m
+2026-10-30T01:59:08.8073046Z [36;1mprintf '%s\n' "$code" >cloud-magic-build-controls/ancestry-returncode.txt[0m
+2026-10-30T01:59:08.8073719Z [36;1mcat cloud-magic-build-controls/ancestry-controls.stdout cloud-magic-build-controls/ancestry-controls.stderr[0m
+2026-10-30T01:59:08.8074264Z [36;1mexit "$code"[0m
+2026-10-30T01:59:08.8468970Z shell: /usr/bin/bash -e {0}
+2026-10-30T01:59:08.8469275Z env:
+2026-10-30T01:59:08.8469515Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-30T01:59:08.8469959Z   PINS_SHA256: 3668b8630a010c0ab07a20f39528fd6a54ee4af1d7c0bc85c68d0676a5b2e8fd
+2026-10-30T01:59:08.8470792Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T01:59:08.8471294Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-30T01:59:08.8471771Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T01:59:08.8472194Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T01:59:08.8472617Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T01:59:08.8473050Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-30T01:59:08.8473490Z   EXPECTED_SOURCE: 2adbc74a348c6f04227a9507a9ccc556d4eda430
+2026-10-30T01:59:08.8473847Z ##[endgroup]
+2026-10-30T01:59:12.7319539Z MAGIC_BUILD_RESULT_FALLBACK {
+2026-10-30T01:59:12.7320285Z   "current_context": {
+2026-10-30T01:59:12.7320793Z     "attempt": 1,
+2026-10-30T01:59:12.7321248Z     "group": "cdr-resistor-provenance-build",
+2026-10-30T01:59:12.7321789Z     "run_id": 40988946484,
+2026-10-30T01:59:12.7322344Z     "source": "2adbc74a348c6f04227a9507a9ccc556d4eda430",
+2026-10-30T01:59:12.7322744Z     "token": "40988946484-1"
+2026-10-30T01:59:12.7323012Z   },
+2026-10-30T01:59:12.7323211Z   "electrical_acceptance": false,
+2026-10-30T01:59:12.7323466Z   "error": {
+2026-10-30T01:59:12.7323684Z     "message": "primary source corruption",
+2026-10-30T01:59:12.7323980Z     "type": "RuntimeError"
+2026-10-30T01:59:12.7324199Z   },
+2026-10-30T01:59:12.7324395Z   "full_phy_accepted": false,
+2026-10-30T01:59:12.7324640Z   "geometry_changed": false,
+2026-10-30T01:59:12.7324881Z   "physical_acceptance": false,
+2026-10-30T01:59:12.7325152Z   "reduced_element_ownership_proved": false,
+2026-10-30T01:59:12.7325470Z   "status": "FAIL_MAGIC_BUILD_OR_TRACE_EQUIVALENCE",
+2026-10-30T01:59:12.7327034Z   "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_magic_resistor_provenance_build.py\", line 464, in run\n    result=perform_fn(ctx,reserved,controls_raw,expected,out)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_provenance_build.py\", line 240, in failed\n    raise primary\nRuntimeError: primary source corruption\n"
+2026-10-30T01:59:12.7328862Z }
+2026-10-30T01:59:12.7328973Z 
+2026-10-30T01:59:12.7329043Z {
+2026-10-30T01:59:12.7329232Z   "c_compilation_executed": false,
+2026-10-30T01:59:12.7329482Z   "counts": {
+2026-10-30T01:59:12.7329670Z     "lifecycle": 6,
+2026-10-30T01:59:12.7329872Z     "positive": 17,
+2026-10-30T01:59:12.7330077Z     "refusal": 54
+2026-10-30T01:59:12.7330261Z   },
+2026-10-30T01:59:12.7330440Z   "current_context": {
+2026-10-30T01:59:12.7330644Z     "attempt": 1,
+2026-10-30T01:59:12.7330849Z     "native_executed": false,
+2026-10-30T01:59:12.7331080Z     "run_id": 40988946484,
+2026-10-30T01:59:12.7331352Z     "source": "2adbc74a348c6f04227a9507a9ccc556d4eda430",
+2026-10-30T01:59:12.7331692Z     "source_controls_only": true
+2026-10-30T01:59:12.7331919Z   },
+2026-10-30T01:59:12.7332103Z   "inherited_source_controls": {
+2026-10-30T01:59:12.7332351Z     "c_compilation_executed": false,
+2026-10-30T01:59:12.7332622Z     "electrical_acceptance": false,
+2026-10-30T01:59:12.7333209Z     "full_phy_accepted": false,
+2026-10-30T01:59:12.7333454Z     "native_executed": false,
+2026-10-30T01:59:12.7333720Z     "native_output_equivalence_qualified": false,
+2026-10-30T01:59:12.7334394Z     "note": "Authentic source-byte controls only; no runtime struct, native trace, numerical output equivalence, build, or extraction qualification.",
+2026-10-30T01:59:12.7335049Z     "physical_acceptance": false,
+2026-10-30T01:59:12.7335317Z     "physical_ownership_proved": false,
+2026-10-30T01:59:12.7335576Z     "positive": [
+2026-10-30T01:59:12.7335778Z       "authentic_source_guard",
+2026-10-30T01:59:12.7336035Z       "actual_five_file_forward_reverse_bytes",
+2026-10-30T01:59:12.7336331Z       "actual_five_file_source_inspection",
+2026-10-30T01:59:12.7336608Z       "complete_source_projection"
+2026-10-30T01:59:12.7336845Z     ],
+2026-10-30T01:59:12.7337039Z     "positive_count": 4,
+2026-10-30T01:59:12.7337429Z     "refusal_count": 19,
+2026-10-30T01:59:12.7337652Z     "refusals": [
+2026-10-30T01:59:12.7337855Z       "missing:resis/resis.h",
+2026-10-30T01:59:12.7338098Z       "changed_byte:resis/resis.h",
+2026-10-30T01:59:12.7338695Z       "wrong_direction:resis/resis.h",
+2026-10-30T01:59:12.7338998Z       "missing:resis/ResMakeRes.c",
+2026-10-30T01:59:12.7339272Z       "changed_byte:resis/ResMakeRes.c",
+2026-10-30T01:59:12.7339558Z       "wrong_direction:resis/ResMakeRes.c",
+2026-10-30T01:59:12.7339839Z       "missing:resis/ResMain.c",
+2026-10-30T01:59:12.7340100Z       "changed_byte:resis/ResMain.c",
+2026-10-30T01:59:12.7340377Z       "wrong_direction:resis/ResMain.c",
+2026-10-30T01:59:12.7340647Z       "missing:resis/ResPrint.c",
+2026-10-30T01:59:12.7340901Z       "changed_byte:resis/ResPrint.c",
+2026-10-30T01:59:12.7341170Z       "wrong_direction:resis/ResPrint.c",
+2026-10-30T01:59:12.7341440Z       "missing:resis/ResRex.c",
+2026-10-30T01:59:12.7341708Z       "changed_byte:resis/ResRex.c",
+2026-10-30T01:59:12.7342081Z       "wrong_direction:resis/ResRex.c",
+2026-10-30T01:59:12.7342360Z       "symlink_native_source",
+2026-10-30T01:59:12.7342599Z       "missing_native_source",
+2026-10-30T01:59:12.7343020Z       "protected_payload_corruption:scripts/magic-resistor-physical-provenance-patch.json",
+2026-10-30T01:59:12.7343605Z       "protected_payload_corruption:scripts/magic_resistor_provenance_trace.inc"
+2026-10-30T01:59:12.7343987Z     ],
+2026-10-30T01:59:12.7344165Z     "schema": 1,
+2026-10-30T01:59:12.7344428Z     "status": "PASS_RESISTOR_PROVENANCE_SOURCE_CONTROLS",
+2026-10-30T01:59:12.7344758Z     "synthetic_native_execution": false
+2026-10-30T01:59:12.7345016Z   },
+2026-10-30T01:59:12.7345193Z   "lifecycle": [
+2026-10-30T01:59:12.7345403Z     "empty_terminal",
+2026-10-30T01:59:12.7345615Z     "malformed_terminal",
+2026-10-30T01:59:12.7345836Z     "missing_terminal",
+2026-10-30T01:59:12.7346067Z     "upload_failure",
+2026-10-30T01:59:12.7346269Z     "no_clobber",
+2026-10-30T01:59:12.7346509Z     "actual_cleanup_helper_primary_and_no_primary"
+2026-10-30T01:59:12.7346794Z   ],
+2026-10-30T01:59:12.7346972Z   "native_executed": false,
+2026-10-30T01:59:12.7347193Z   "passed": true,
+2026-10-30T01:59:12.7347400Z   "physical_acceptance": false,
+2026-10-30T01:59:12.7347633Z   "positive": [
+2026-10-30T01:59:12.7347844Z     "actual_full_protected_source",
+2026-10-30T01:59:12.7348101Z     "actual_hosted_context",
+2026-10-30T01:59:12.7348530Z     "real_literal_insertions_reverse_historical_fixture",
+2026-10-30T01:59:12.7348857Z     "actual_Tcl_reversible_path_seams",
+2026-10-30T01:59:12.7349147Z     "three_actual_baseline_mismatches_explicit",
+2026-10-30T01:59:12.7349464Z     "actual_output_comparator_synthetic_records",
+2026-10-30T01:59:12.7349770Z     "actual_failed_producer_and_all_assets",
+2026-10-30T01:59:12.7350062Z     "actual_difference_reader_equal_fixture",
+2026-10-30T01:59:12.7350346Z     "order_difference_not_accepted",
+2026-10-30T01:59:12.7350625Z     "value_difference_retained_not_normalized",
+2026-10-30T01:59:12.7350939Z     "exact_cap_endpoint_and_order_bijection",
+2026-10-30T01:59:12.7351394Z     "generated_C_identity_bijection_only",
+2026-10-30T01:59:12.7351678Z     "parallel_cap_multiplicity_retained",
+2026-10-30T01:59:12.7351983Z     "actual_production_component_comparator_exact",
+2026-10-30T01:59:12.7352355Z     "actual_production_format_bijection_strict_failure_visible",
+2026-10-30T01:59:12.7352734Z     "actual_trace_complete_footer_and_native_line_join",
+2026-10-30T01:59:12.7353064Z     "actual_full_archive_selector_synthetic_only"
+2026-10-30T01:59:12.7353337Z   ],
+2026-10-30T01:59:12.7353508Z   "refusals": [
+2026-10-30T01:59:12.7353712Z     "context:GITHUB_REF",
+2026-10-30T01:59:12.7353945Z     "context:GITHUB_EVENT_NAME",
+2026-10-30T01:59:12.7354194Z     "context:GITHUB_RUN_ATTEMPT",
+2026-10-30T01:59:12.7354439Z     "context:GITHUB_SHA",
+2026-10-30T01:59:12.7354665Z     "context:GITHUB_RUN_ID",
+2026-10-30T01:59:12.7354899Z     "context:GITHUB_ACTIONS",
+2026-10-30T01:59:12.7355137Z     "changed_source_manifest",
+2026-10-30T01:59:12.7355505Z     "missing_patch_input",
+2026-10-30T01:59:12.7355744Z     "changed_patch_input",
+2026-10-30T01:59:12.7356013Z     "old_upstream_snapshots_cannot_be_native_baseline",
+2026-10-30T01:59:12.7356318Z     "missing_literal_seam",
+2026-10-30T01:59:12.7356572Z     "numeric_replacement_not_authorized",
+2026-10-30T01:59:12.7356833Z     "Tcl:missing",
+2026-10-30T01:59:12.7357025Z     "Tcl:gate",
+2026-10-30T01:59:12.7357216Z     "Tcl:duplicate",
+2026-10-30T01:59:12.7357430Z     "numeric_equivalence:R",
+2026-10-30T01:59:12.7357670Z     "numeric_equivalence:rnode",
+2026-10-30T01:59:12.7357917Z     "numeric_equivalence:cap",
+2026-10-30T01:59:12.7358160Z     "numeric_equivalence:spice",
+2026-10-30T01:59:12.7358635Z     "numeric_equivalence:ordered",
+2026-10-30T01:59:12.7358901Z     "failed_archive_binding:run_source",
+2026-10-30T01:59:12.7359187Z     "failed_archive_binding:run_conclusion",
+2026-10-30T01:59:12.7359472Z     "failed_archive_binding:job_step",
+2026-10-30T01:59:12.7359745Z     "failed_archive_binding:asset_digest",
+2026-10-30T01:59:12.7360028Z     "failed_archive_binding:missing_asset",
+2026-10-30T01:59:12.7360335Z     "failed_archive_binding:tag_source",
+2026-10-30T01:59:12.7360606Z     "diagnostic_missing_variant",
+2026-10-30T01:59:12.7360859Z     "diagnostic_missing_native_records",
+2026-10-30T01:59:12.7361115Z     "exact_cap:value",
+2026-10-30T01:59:12.7361328Z     "exact_cap:endpoint",
+2026-10-30T01:59:12.7361550Z     "exact_cap:missing",
+2026-10-30T01:59:12.7361770Z     "exact_cap:selfloop",
+2026-10-30T01:59:12.7361997Z     "exact_cap:nonfinite",
+2026-10-30T01:59:12.7362222Z     "exact_cap:numeric_token",
+2026-10-30T01:59:12.7362462Z     "exact_SPICE:duplicate_id",
+2026-10-30T01:59:12.7362697Z     "exact_SPICE:gap_id",
+2026-10-30T01:59:12.7362925Z     "exact_SPICE:noncap_changed",
+2026-10-30T01:59:12.7363183Z     "production_exact_component:value",
+2026-10-30T01:59:12.7363460Z     "production_exact_component:endpoint",
+2026-10-30T01:59:12.7363756Z     "production_exact_component:duplicate_C",
+2026-10-30T01:59:12.7364065Z     "production_exact_component:noncanonical_C",
+2026-10-30T01:59:12.7364382Z     "production_exact_component:noncoupling",
+2026-10-30T01:59:12.7364680Z     "production_exact_component:rnode",
+2026-10-30T01:59:12.7364966Z     "production_exact_component:raw_res_header",
+2026-10-30T01:59:12.7365242Z     "trace:footer",
+2026-10-30T01:59:12.7365439Z     "trace:seq",
+2026-10-30T01:59:12.7365629Z     "trace:nan",
+2026-10-30T01:59:12.7365819Z     "trace:ownership",
+2026-10-30T01:59:12.7366030Z     "trace:emitted_count",
+2026-10-30T01:59:12.7366248Z     "trace:epoch",
+2026-10-30T01:59:12.7366458Z     "trace_native_join:endpoint",
+2026-10-30T01:59:12.7366707Z     "trace_native_join:value",
+2026-10-30T01:59:12.7366941Z     "archive_link",
+2026-10-30T01:59:12.7367151Z     "archive_incomplete_manifest"
+2026-10-30T01:59:12.7367383Z   ],
+2026-10-30T01:59:12.7367620Z   "status": "PASS_MAGIC_CURRENT500_BUILD_SOURCE_CONTROLS",
+2026-10-30T01:59:12.7367948Z   "synthetic_archives_only": true
+2026-10-30T01:59:12.7368186Z }
+2026-10-30T01:59:13.7791876Z MAGIC_BUILD_RESULT_FALLBACK {
+2026-10-30T01:59:13.7792372Z   "current_context": {
+2026-10-30T01:59:13.7792719Z     "attempt": 1,
+2026-10-30T01:59:13.7792973Z     "group": "cdr-resistor-provenance-build",
+2026-10-30T01:59:13.7793274Z     "run_id": 40988946484,
+2026-10-30T01:59:13.7793554Z     "source": "2adbc74a348c6f04227a9507a9ccc556d4eda430",
+2026-10-30T01:59:13.7793879Z     "token": "40988946484-1"
+2026-10-30T01:59:13.7794101Z   },
+2026-10-30T01:59:13.7794297Z   "electrical_acceptance": false,
+2026-10-30T01:59:13.7794549Z   "error": {
+2026-10-30T01:59:13.7794765Z     "message": "synthetic transport failure",
+2026-10-30T01:59:13.7795047Z     "type": "OSError"
+2026-10-30T01:59:13.7795242Z   },
+2026-10-30T01:59:13.7795435Z   "full_phy_accepted": false,
+2026-10-30T01:59:13.7795680Z   "geometry_changed": false,
+2026-10-30T01:59:13.7795920Z   "physical_acceptance": false,
+2026-10-30T01:59:13.7796190Z   "reduced_element_ownership_proved": false,
+2026-10-30T01:59:13.7796747Z   "status": "FAIL_MAGIC_BUILD_OR_TRACE_EQUIVALENCE",
+2026-10-30T01:59:13.7801683Z   "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_magic_resistor_provenance_build.py\", line 464, in run\n    result=perform_fn(ctx,reserved,controls_raw,expected,out)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_target_trace.py\", line 112, in <lambda>\n    try:b.run(ctx,{},b\"\",expected,root/\"dual\",lambda *a:(_ for _ in ()).throw(primary))\n                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_target_trace.py\", line 112, in <genexpr>\n    try:b.run(ctx,{},b\"\",expected,root/\"dual\",lambda *a:(_ for _ in ()).throw(primary))\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_target_trace.py\", line 104, in controls\n    try:b.run(ctx,{},b\"\",expected,root/\"failure\",fail)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_magic_resistor_provenance_build.py\", line 473, in run\n    if primary is not None:raise primary\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_magic_resistor_provenance_build.py\", line 464, in run\n    result=perform_fn(ctx,reserved,controls_raw,expected,out)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_target_trace.py\", line 102, in fail\n    raise primary\nOSError: synthetic transport failure\n"
+2026-10-30T01:59:13.7806475Z }
+2026-10-30T01:59:13.7806580Z 
+2026-10-30T01:59:13.7806650Z {
+2026-10-30T01:59:13.7806836Z   "archive_source_controls": {
+2026-10-30T01:59:13.7807115Z     "authored_archive_extraction_executed": false,
+2026-10-30T01:59:13.7807406Z     "counts": {
+2026-10-30T01:59:13.7807601Z       "positive": 1,
+2026-10-30T01:59:13.7807813Z       "refusal": 5
+2026-10-30T01:59:13.7807999Z     },
+2026-10-30T01:59:13.7808210Z     "full_authentic_map": {
+2026-10-30T01:59:13.7808653Z       "full_members": 14508,
+2026-10-30T01:59:13.7808885Z       "selected_members": 10
+2026-10-30T01:59:13.7809100Z     },
+2026-10-30T01:59:13.7809300Z     "native_archive_acquired": false,
+2026-10-30T01:59:13.7809547Z     "refusals": [
+2026-10-30T01:59:13.7809743Z       "missing_member",
+2026-10-30T01:59:13.7809957Z       "changed_member",
+2026-10-30T01:59:13.7810163Z       "added_selector",
+2026-10-30T01:59:13.7810375Z       "wrong_selected_hash",
+2026-10-30T01:59:13.7810600Z       "wrong_cardinality"
+2026-10-30T01:59:13.7810810Z     ]
+2026-10-30T01:59:13.7810975Z   },
+2026-10-30T01:59:13.7811140Z   "counts": {
+2026-10-30T01:59:13.7811326Z     "lifecycle": 3,
+2026-10-30T01:59:13.7811521Z     "positive": 6,
+2026-10-30T01:59:13.7811712Z     "refusal": 18
+2026-10-30T01:59:13.7811890Z   },
+2026-10-30T01:59:13.7812060Z   "current_context": {
+2026-10-30T01:59:13.7812268Z     "attempt": 1,
+2026-10-30T01:59:13.7812648Z     "native_executed": false,
+2026-10-30T01:59:13.7812876Z     "run_id": 40988946484,
+2026-10-30T01:59:13.7813140Z     "source": "2adbc74a348c6f04227a9507a9ccc556d4eda430",
+2026-10-30T01:59:13.7813458Z     "source_controls_only": true
+2026-10-30T01:59:13.7813683Z   },
+2026-10-30T01:59:13.7813852Z   "lifecycle": [
+2026-10-30T01:59:13.7814093Z     "actual_complete_selected_epoch_bytes_preserved",
+2026-10-30T01:59:13.7814450Z     "real_result_wrapper_preserves_transport_and_partial",
+2026-10-30T01:59:13.7814841Z     "real_result_wrapper_secondary_save_does_not_replace_primary"
+2026-10-30T01:59:13.7815165Z   ],
+2026-10-30T01:59:13.7815348Z   "native_executed": false,
+2026-10-30T01:59:13.7815574Z   "passed": true,
+2026-10-30T01:59:13.7815785Z   "physical_acceptance": false,
+2026-10-30T01:59:13.7816027Z   "positive": [
+2026-10-30T01:59:13.7816267Z     "authentic_current500_trace_source_and_DC_proof",
+2026-10-30T01:59:13.7816765Z     "authentic_successful_four_job_seventeen_asset_projection",
+2026-10-30T01:59:13.7817144Z     "complete_synthetic_epoch_and_existing_DC_join",
+2026-10-30T01:59:13.7817481Z     "surviving_address_changed_value_is_not_ownership",
+2026-10-30T01:59:13.7817814Z     "same_address_recreation_explicitly_ambiguous",
+2026-10-30T01:59:13.7818137Z     "unobserved_constructor_retained_as_unknown"
+2026-10-30T01:59:13.7818718Z   ],
+2026-10-30T01:59:13.7818901Z   "refusals": [
+2026-10-30T01:59:13.7819115Z     "live_run_head_sha",
+2026-10-30T01:59:13.7819345Z     "live_run_conclusion",
+2026-10-30T01:59:13.7819565Z     "live_run_id",
+2026-10-30T01:59:13.7819754Z     "live_job",
+2026-10-30T01:59:13.7819938Z     "live_step",
+2026-10-30T01:59:13.7820125Z     "live_asset",
+2026-10-30T01:59:13.7820317Z     "live_digest",
+2026-10-30T01:59:13.7820507Z     "live_tag",
+2026-10-30T01:59:13.7820696Z     "emission_token",
+2026-10-30T01:59:13.7820895Z     "missing_end",
+2026-10-30T01:59:13.7821080Z     "wrong_epoch",
+2026-10-30T01:59:13.7821268Z     "snapshot_count",
+2026-10-30T01:59:13.7821468Z     "snapshot_index",
+2026-10-30T01:59:13.7821698Z     "emission_name",
+2026-10-30T01:59:13.7821905Z     "snapshot_missing",
+2026-10-30T01:59:13.7822118Z     "duplicated_snapshot",
+2026-10-30T01:59:13.7822340Z     "nonfinite_incidence",
+2026-10-30T01:59:13.7822554Z     "missing_DC_edge"
+2026-10-30T01:59:13.7822741Z   ],
+2026-10-30T01:59:13.7822961Z   "status": "PASS_MAGIC_TARGET_TRACE_SOURCE_CONTROLS",
+2026-10-30T01:59:13.7823268Z   "synthetic_trace_only": true
+2026-10-30T01:59:13.7823491Z }
+2026-10-30T01:59:14.6113135Z {
+2026-10-30T01:59:14.6113585Z   "compiler": {
+2026-10-30T01:59:14.6114031Z     "actual_mrpResistor_body_used": true,
+2026-10-30T01:59:14.6114513Z     "full_Magic_build": false,
+2026-10-30T01:59:14.6114799Z     "new_argv": [
+2026-10-30T01:59:14.6115034Z       "gcc",
+2026-10-30T01:59:14.6115258Z       "-std=c11",
+2026-10-30T01:59:14.6115489Z       "-Wall",
+2026-10-30T01:59:14.6115717Z       "-Wextra",
+2026-10-30T01:59:14.6115951Z       "-Wformat=2",
+2026-10-30T01:59:14.6116218Z       "-Werror=format",
+2026-10-30T01:59:14.6116539Z       "/tmp/magic-format-fixture-bmh4zie5/new.c",
+2026-10-30T01:59:14.6116887Z       "-o",
+2026-10-30T01:59:14.6117151Z       "/tmp/magic-format-fixture-bmh4zie5/new"
+2026-10-30T01:59:14.6117492Z     ],
+2026-10-30T01:59:14.6117708Z     "new_fixture": {
+2026-10-30T01:59:14.6117951Z       "bytes": 2028,
+2026-10-30T01:59:14.6118674Z       "sha256": "9abeaae420062e6cd86311b06f346fed09c6dd12b94f023b0ed9655f47ec6b11"
+2026-10-30T01:59:14.6119171Z     },
+2026-10-30T01:59:14.6119393Z     "new_returncode": 0,
+2026-10-30T01:59:14.6119662Z     "new_stderr": "",
+2026-10-30T01:59:14.6119912Z     "new_stdout": "",
+2026-10-30T01:59:14.6120182Z     "numerical_extraction_executed": false,
+2026-10-30T01:59:14.6120505Z     "old_argv": [
+2026-10-30T01:59:14.6120730Z       "gcc",
+2026-10-30T01:59:14.6120943Z       "-std=c11",
+2026-10-30T01:59:14.6121167Z       "-Wall",
+2026-10-30T01:59:14.6121383Z       "-Wextra",
+2026-10-30T01:59:14.6121609Z       "-Wformat=2",
+2026-10-30T01:59:14.6121860Z       "-Werror=format",
+2026-10-30T01:59:14.6122414Z       "/tmp/magic-format-fixture-bmh4zie5/old.c",
+2026-10-30T01:59:14.6122754Z       "-o",
+2026-10-30T01:59:14.6123007Z       "/tmp/magic-format-fixture-bmh4zie5/old"
+2026-10-30T01:59:14.6123334Z     ],
+2026-10-30T01:59:14.6123547Z     "old_fixture": {
+2026-10-30T01:59:14.6123787Z       "bytes": 2007,
+2026-10-30T01:59:14.6124174Z       "sha256": "92074773332f3fc8b1e87bfa59979b57d52224d8f711551b918722a44514aaab"
+2026-10-30T01:59:14.6124627Z     },
+2026-10-30T01:59:14.6124844Z     "old_returncode": 1,
+2026-10-30T01:59:14.6127793Z     "old_stderr": "/tmp/magic-format-fixture-bmh4zie5/old.c: In function \u2018mrpResistor\u2019:\n/tmp/magic-format-fixture-bmh4zie5/old.c:28:68: error: format \u2018%d\u2019 expects argument of type \u2018int\u2019, but argument 4 has type \u2018double\u2019 [-Werror=format=]\n   28 |         fprintf(mrpFile, \",\\\"is_contact\\\":%s,\\\"sheet_resist_raw\\\":%d,\"\n      |                                                                   ~^\n      |                                                                    |\n      |                                                                    int\n      |                                                                   %f\n......\n   31 |                 ExtCurStyle->exts_sheetResist[resistor->rr_tt],\n      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~      \n      |                                              |\n      |                                              double\ncc1: some warnings being treated as errors\n",
+2026-10-30T01:59:14.6132038Z     "old_stdout": "",
+2026-10-30T01:59:14.6132423Z     "run_returncode": 0,
+2026-10-30T01:59:14.6132805Z     "run_stderr": "",
+2026-10-30T01:59:14.6134716Z     "run_stdout": "{\"fixture\":true,\"resistor_address\":\"0x7ffc135dea90\",\"rr_value_milliohms_hex\":\"0x1.8p+0\",\"rr_status\":0,\"rr_tt\":0,\"rr_width_raw\":32,\"rr_cl_raw\":4,\"type_index_valid\":true,\"material_name_hex\":\"fixture\",\"is_contact\":false,\"sheet_resist_raw_hex\":\"0x1.14p+4\",\"via_resist_raw\":7,\"resist_scale\":1,\"node1\":null,\"node2\":null}\n"
+2026-10-30T01:59:14.6136802Z   },
+2026-10-30T01:59:14.6137126Z   "counts": {
+2026-10-30T01:59:14.6137490Z     "compiler": 2,
+2026-10-30T01:59:14.6137852Z     "positive": 5,
+2026-10-30T01:59:14.6138197Z     "refusal": 5
+2026-10-30T01:59:14.6138828Z   },
+2026-10-30T01:59:14.6139158Z   "current_context": {
+2026-10-30T01:59:14.6139541Z     "attempt": 1,
+2026-10-30T01:59:14.6139924Z     "native_executed": false,
+2026-10-30T01:59:14.6140259Z     "run_id": 40988946484,
+2026-10-30T01:59:14.6140538Z     "source": "2adbc74a348c6f04227a9507a9ccc556d4eda430",
+2026-10-30T01:59:14.6140870Z     "source_controls_only": true
+2026-10-30T01:59:14.6141097Z   },
+2026-10-30T01:59:14.6141286Z   "native_CAD_executed": false,
+2026-10-30T01:59:14.6141527Z   "native_executed": false,
+2026-10-30T01:59:14.6141746Z   "passed": true,
+2026-10-30T01:59:14.6141956Z   "physical_acceptance": false,
+2026-10-30T01:59:14.6142199Z   "positive": [
+2026-10-30T01:59:14.6142429Z     "actual_qualified_header_and_warning_join",
+2026-10-30T01:59:14.6142752Z     "exact_five_seam_versioned_reverse_payload",
+2026-10-30T01:59:14.6143054Z     "typed_finite_double_and_integer",
+2026-10-30T01:59:14.6143349Z     "invalid_material_retains_absent_coefficients",
+2026-10-30T01:59:14.6143671Z     "actual_body_corrected_typed_output"
+2026-10-30T01:59:14.6143935Z   ],
+2026-10-30T01:59:14.6144139Z   "reduced_element_ownership_proved": false,
+2026-10-30T01:59:14.6144416Z   "refusals": [
+2026-10-30T01:59:14.6144625Z     "v1_payload_corruption",
+2026-10-30T01:59:14.6144853Z     "old_sheet",
+2026-10-30T01:59:14.6145046Z     "bad_via_bool",
+2026-10-30T01:59:14.6145245Z     "nonfinite_sheet",
+2026-10-30T01:59:14.6145449Z     "nonstr_sheet"
+2026-10-30T01:59:14.6145634Z   ],
+2026-10-30T01:59:14.6145845Z   "source_fixture_c_compilation_executed": true,
+2026-10-30T01:59:14.6146180Z   "status": "PASS_MAGIC_COEFFICIENT_SOURCE_CONTROLS"
+2026-10-30T01:59:14.6146476Z }
+2026-10-30T01:59:15.2629174Z MAGIC_BUILD_RESULT_FALLBACK {
+2026-10-30T01:59:15.2629935Z   "current_context": {
+2026-10-30T01:59:15.2630219Z     "attempt": 1,
+2026-10-30T01:59:15.2630536Z     "group": "cdr-resistor-provenance-build",
+2026-10-30T01:59:15.2630917Z     "run_id": 40988946484,
+2026-10-30T01:59:15.2631270Z     "source": "2adbc74a348c6f04227a9507a9ccc556d4eda430",
+2026-10-30T01:59:15.2631674Z     "token": "40988946484-1"
+2026-10-30T01:59:15.2631950Z   },
+2026-10-30T01:59:15.2632201Z   "electrical_acceptance": false,
+2026-10-30T01:59:15.2632629Z   "error": {
+2026-10-30T01:59:15.2633094Z     "message": "synthetic ancestry failure",
+2026-10-30T01:59:15.2633663Z     "type": "OSError"
+2026-10-30T01:59:15.2652013Z   },
+2026-10-30T01:59:15.2652345Z   "full_phy_accepted": false,
+2026-10-30T01:59:15.2652782Z   "geometry_changed": false,
+2026-10-30T01:59:15.2653157Z   "physical_acceptance": false,
+2026-10-30T01:59:15.2653575Z   "reduced_element_ownership_proved": false,
+2026-10-30T01:59:15.2654313Z   "status": "FAIL_MAGIC_BUILD_OR_TRACE_EQUIVALENCE",
+2026-10-30T01:59:15.2664439Z   "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_magic_resistor_provenance_build.py\", line 464, in run\n    result=perform_fn(ctx,reserved,controls_raw,expected,out)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_ancestry.py\", line 112, in <lambda>\n    try:b.run(ctx,{},b\"\",expected,root/\"double\",lambda *x:(_ for _ in ()).throw(primary))\n                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_ancestry.py\", line 112, in <genexpr>\n    try:b.run(ctx,{},b\"\",expected,root/\"double\",lambda *x:(_ for _ in ()).throw(primary))\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_ancestry.py\", line 105, in controls\n    try:b.run(ctx,{},b\"\",expected,root/\"refusal\",\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_magic_resistor_provenance_build.py\", line 473, in run\n    if primary is not None:raise primary\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_magic_resistor_provenance_build.py\", line 464, in run\n    result=perform_fn(ctx,reserved,controls_raw,expected,out)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_ancestry.py\", line 106, in <lambda>\n    lambda *x:a.perform(*x,ancestry_controls=b\"\",coefficient_controls=b\"\"))\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_magic_resistor_ancestry.py\", line 218, in perform\n    source_guard(expected,root);current_controls(ancestry_controls,ctx)\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1139, in __call__\n    return self._mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1143, in _mock_call\n    return self._execute_mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1198, in _execute_mock_call\n    raise effect\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_ancestry.py\", line 99, in controls\n    try:b.run(ctx,{},b\"\",expected,root/\"partial\",failed)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_magic_resistor_provenance_build.py\", line 473, in run\n    if primary is not None:raise primary\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_magic_resistor_provenance_build.py\", line 464, in run\n    result=perform_fn(ctx,reserved,controls_raw,expected,out)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_magic_resistor_ancestry.py\", line 97, in failed\n    raise primary\nOSError: synthetic ancestry failure\n"
+2026-10-30T01:59:15.2678825Z }
+2026-10-30T01:59:15.2678974Z 
+2026-10-30T01:59:15.2679047Z {
+2026-10-30T01:59:15.2679226Z   "counts": {
+2026-10-30T01:59:15.2679425Z     "lifecycle": 3,
+2026-10-30T01:59:15.2679634Z     "positive": 6,
+2026-10-30T01:59:15.2679831Z     "refusal": 18
+2026-10-30T01:59:15.2680016Z   },
+2026-10-30T01:59:15.2680198Z   "current_context": {
+2026-10-30T01:59:15.2680409Z     "attempt": 1,
+2026-10-30T01:59:15.2680613Z     "native_executed": false,
+2026-10-30T01:59:15.2680853Z     "run_id": 40988946484,
+2026-10-30T01:59:15.2681125Z     "source": "2adbc74a348c6f04227a9507a9ccc556d4eda430",
+2026-10-30T01:59:15.2681458Z     "source_controls_only": true
+2026-10-30T01:59:15.2681696Z   },
+2026-10-30T01:59:15.2681867Z   "lifecycle": [
+2026-10-30T01:59:15.2682312Z     "actual_run_preserves_complete_available_events",
+2026-10-30T01:59:15.2682703Z     "actual_production_perform_source_refusal_no_acquisition",
+2026-10-30T01:59:15.2683069Z     "actual_run_secondary_write_preserves_primary"
+2026-10-30T01:59:15.2683348Z   ],
+2026-10-30T01:59:15.2683527Z   "native_executed": false,
+2026-10-30T01:59:15.2683751Z   "passed": true,
+2026-10-30T01:59:15.2683964Z   "physical_acceptance": false,
+2026-10-30T01:59:15.2684202Z   "positive": [
+2026-10-30T01:59:15.2684454Z     "actual_qualified_six_source_reversible_derivation",
+2026-10-30T01:59:15.2684782Z     "actual_replay_synthetic_plain",
+2026-10-30T01:59:15.2685049Z     "actual_replay_synthetic_series",
+2026-10-30T01:59:15.2685321Z     "actual_replay_synthetic_parallel",
+2026-10-30T01:59:15.2685590Z     "actual_replay_synthetic_triangle",
+2026-10-30T01:59:15.2685876Z     "address_reuse_requires_observed_retirement"
+2026-10-30T01:59:15.2686146Z   ],
+2026-10-30T01:59:15.2686313Z   "refusals": [
+2026-10-30T01:59:15.2686513Z     "missing_creator",
+2026-10-30T01:59:15.2686726Z     "stale_operand",
+2026-10-30T01:59:15.2686930Z     "missing_before",
+2026-10-30T01:59:15.2687136Z     "missing_after",
+2026-10-30T01:59:15.2687333Z     "wrong_survivor",
+2026-10-30T01:59:15.2687529Z     "wrong_kind",
+2026-10-30T01:59:15.2687728Z     "duplicate_operand",
+2026-10-30T01:59:15.2687943Z     "wrong_slot",
+2026-10-30T01:59:15.2688137Z     "live_recreation",
+2026-10-30T01:59:15.2688577Z     "retired_emission",
+2026-10-30T01:59:15.2688838Z     "missing_retirement",
+2026-10-30T01:59:15.2689058Z     "sequence_gap",
+2026-10-30T01:59:15.2689257Z     "unobserved_value",
+2026-10-30T01:59:15.2689467Z     "canonical_drift",
+2026-10-30T01:59:15.2689669Z     "missing_source",
+2026-10-30T01:59:15.2689873Z     "changed_source",
+2026-10-30T01:59:15.2690065Z     "extra_source",
+2026-10-30T01:59:15.2690268Z     "changed_expected_output"
+2026-10-30T01:59:15.2690488Z   ],
+2026-10-30T01:59:15.2690701Z   "status": "PASS_MAGIC_ANCESTRY_SOURCE_CONTROLS",
+2026-10-30T01:59:15.2691012Z   "synthetic_ancestry_only": true
+2026-10-30T01:59:15.2691250Z }
+2026-10-30T01:59:15.2727854Z ##[group]Run python -B - <<'PY'
+2026-10-30T01:59:15.2728175Z [36;1mpython -B - <<'PY'[0m
+2026-10-30T01:59:15.2728620Z [36;1mimport sys[0m
+2026-10-30T01:59:15.2728841Z [36;1mfrom pathlib import Path[0m
+2026-10-30T01:59:15.2729121Z [36;1msys.path.insert(0,"scripts")[0m
+2026-10-30T01:59:15.2729434Z [36;1mimport cloud_cdr_current_rc_contacts as f[0m
+2026-10-30T01:59:15.2729789Z [36;1mf.emit(Path("cloud-magic-build-controls"))[0m
+2026-10-30T01:59:15.2730088Z [36;1mPY[0m
+2026-10-30T01:59:15.2795555Z shell: /usr/bin/bash -e {0}
+2026-10-30T01:59:15.2795800Z env:
+2026-10-30T01:59:15.2796000Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-30T01:59:15.2796384Z   PINS_SHA256: 3668b8630a010c0ab07a20f39528fd6a54ee4af1d7c0bc85c68d0676a5b2e8fd
+2026-10-30T01:59:15.2796870Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T01:59:15.2797306Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-30T01:59:15.2797966Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T01:59:15.2798643Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T01:59:15.2799040Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T01:59:15.2799425Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-30T01:59:15.2799746Z ##[endgroup]
+2026-10-30T01:59:15.3527807Z CDR_RC_CONTACT_INDEX {"ancestry-controls.json": {"bytes": 1334, "sha256": "3ceb27215b4638d903fa4a7d42db74150859dfb1c54d2ea65bfb571126ba5960"}, "ancestry-controls.stderr": {"bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}, "ancestry-controls.stdout": {"bytes": 5139, "sha256": "c607205c0fb6e0b862161b5b123f84a1f17c241431390bc54d12e475b90c66dc"}, "ancestry-returncode.txt": {"bytes": 2, "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"}, "coefficient-controls.json": {"bytes": 3337, "sha256": "1e0a2a6f5b27c35dbbb2728eba463400ceb139496649b2e3a1cf03cc47705644"}, "coefficient-controls.stderr": {"bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}, "coefficient-controls.stdout": {"bytes": 3337, "sha256": "1e0a2a6f5b27c35dbbb2728eba463400ceb139496649b2e3a1cf03cc47705644"}, "coefficient-returncode.txt": {"bytes": 2, "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"}, "context.json": {"bytes": 172, "sha256": "d77302484711edf4c4519f5087fd073ef6a3bcda49172cb486993906614f5917"}, "controls.json": {"bytes": 4860, "sha256": "566e5bf972af9b860f2d4b7d8fd8e8c02299c381243d7776eafdd1b6d3410165"}, "controls.stderr": {"bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}, "controls.stdout": {"bytes": 5872, "sha256": "1f87fc95bef947d082124a9de9c822bd48f6abe2b7d5b56831375005b83b692a"}, "returncode.txt": {"bytes": 2, "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"}, "source-manifest.json": {"bytes": 42628, "sha256": "3668b8630a010c0ab07a20f39528fd6a54ee4af1d7c0bc85c68d0676a5b2e8fd"}, "target-controls.json": {"bytes": 1823, "sha256": "bdeb5a319c15e6c350880e73504fac0c0c4ace976993515d3a20b42125194ae4"}, "target-controls.stderr": {"bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}, "target-controls.stdout": {"bytes": 3972, "sha256": "db3d0d44379f65dbd556f44646b68757f22aa78fdcf825bfe24f454b7050c9dc"}, "target-returncode.txt": {"bytes": 2, "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"}}
+2026-10-30T01:59:15.3549994Z CDR_RC_CONTACT_CHUNK {"data": "eJyFVE1v2zAMvfdXFD73kCZumuwWBMUwYGuHpjsMQyEwEp0KUyRVotwERf/7KMeOk3RbLwb0TFLvg/br2fl5IV2yFItP56984rPRFcqtNMjQ6GKHeRc16TpD4xYKWKUIhpHLCSNvF82sFAJaEtJZwg31Q4EI1z4Dl22/hTxQ4AZlIlT8pgITsZuerNAZLAfTyWRajstJ2b6KLgWZmRRDUEt5XcKonMhxNSiHw2uYXg34IaW8uhqrEhWUo0Fx1NmQC85E4azZ8hwKCfcKDtX/arlLSmBEpuQDRgw1Rh6y9gYJBdSgDSwNS6kxG3lx1OWDU0mSdtyMoXJhLVoarYHCOgHyOenssLMn7fnSiMxYQdiKl6D5xp6ED3rNeMEtjw37/5haeIixgbLeHfK0jVryLSAlegLb2HrQ0ad+bMUzP3SlUYmoN72eGkPU2QmFQdfwNznoDWxF3Fp6QtJS8FF/WMRqNZ4a+34UBDAGzUd1FDTYFQfc1SnFhkYuTDGr4Cj4LNyyMVkxQgysOdve5za72Duz1jFquxIyIJAL+5UjYD8cRw9WdWBXu0TeBzxFoSLc978Ex1BModa1O0F/636kSt5wlPTurnaAcdQhJm9IwIboQUI7mUpgw6PHO1oHNnTa2CrknREr8B2W7N63Gkzai5NgnW12TQVd0enw9pvuip84oLxcRyj/TwL8oxI3HiUvvHCJfDoIiv2nlGMqvs8WC/Ft9vnLXMxu5zeLh/ufYnH3435+I+Z3tw/3d18Xxa5lvyn5g4jE393hj+Lt7A86Wq6i", "encoding": "zlib+base64", "index": 0, "name": "ancestry-controls.json"}
+2026-10-30T01:59:15.3558099Z CDR_RC_CONTACT_END {"bytes": 1334, "chunks": 1, "name": "ancestry-controls.json", "sha256": "3ceb27215b4638d903fa4a7d42db74150859dfb1c54d2ea65bfb571126ba5960"}
+2026-10-30T01:59:15.3560011Z CDR_RC_CONTACT_CHUNK {"data": "eJwDAAAAAAE=", "encoding": "zlib+base64", "index": 0, "name": "ancestry-controls.stderr"}
+2026-10-30T01:59:15.3561700Z CDR_RC_CONTACT_END {"bytes": 0, "chunks": 1, "name": "ancestry-controls.stderr", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
+2026-10-30T01:59:15.3579285Z CDR_RC_CONTACT_CHUNK {"data": "eJztWNtuGzcQffdXLPQkGbLWsuWL3KaAoiqBUcVOLbtAUbcExR1JhChyw4suCPzvHe5Vkh0nCuL0IdXDQjvkDOecGQ45+67z9rJLXt9d9n8lN73BXf+WvOn0+6873d+Cj3tBUGFOa5CWMCUtLG3lIhHjALUWZrEXNOupZKyVi/G9wiJ9oMFwY5U+iLWag6SSwcHQcRFVstnaScIjnN46bJ+ft1unrfNWNmSU0wy8pSMaDdlZix63ztnp6LB1dHRG2yeH+GCMnZycRi2IaOv4MDdq1RSkV1wzetCs4OCDn1EBAcxqzqgglDGIrfcL54+oMJDO0FrpEuUMjKHjxBezknYClrPAKxmrV6jGhdNQrL6Kk5nXg15ipVh25IQg8WSVLQrRxpJjUDNAc4RNqBxvDaKWec5fDZFjEBFENvNxUgsJ2kx4TBLiN40ZS60z3sU3ncs+ebcW/OsbcnvT6fZI7/e7yz86/d5Vt5fgqlhNGQwpm3q92/wlqM6UsYEGhqsG6KAIBDW2dnEvg+ANFxDcV8IJAgsx0OhSuFB6GkpjFMuehmkeWxMyoVxEZnTMGcmzhpRZQ5KsacSr+0o9EFxCgFGtB1wGaNgvFqATxgn7KgY9UnpGRrLK7LKOUtDIQN2nrlbCEE0XdVjGmAIoVc7WUvXs98/Ov92hToBNt6Hm2bQOsdk8SiD+LOhsGNFfUkdx0sWwgYsk+D4+1If3FVQpIGmlbHhfiZQbCsCBVDnYX15USYDUBMTbrNZqDTvRalGNNZ9Rvapt8rDj7z+naAwSGdDfg6MXQnJ4kiDJ83QnIBpGzlCBI2UQXzCBd96rZ8ebe5WPgozSgJtAKhtcKQkXmnID+ciz6fi9AfwAxebw9IliU24M2sjAVveX9dwAyYG+SvOSKRiNOOP5XaEcelxedgf/rSP+FA1HzfOEhgxs6nR6FSFjR3VU3dh7tZ/Wr0YebvURN3VMjQz9F0JSsUVYBhexSglGMYjh+5WdKBkeN5pHjeZJuDxthYIPwzgRe2noJMfbmLHhTLHpZpE8biegCPFHNCF5DlunZWBAjBrE6ySj1X2qx6Ye7O9PF/7fbhn7oihaaRUpfX0CByyBOQvfCs93wdVOU+6x7xm+pCrixsK0e7n9325//fETU215cvz4uzBEta84hZ4g+v/D6Ec9jNpnCcI0m9Z3QRGOrLu6CD7dkN3Lyt7D3l7awConrSk7OsFxN62Y8G3Ucda4xcpwy+dedJq3p+m9yre350Uft0MzLKk3mG/sjTbspZrf7Kwqgq6kWKEdqx0UCNbR/5X5zqzD/tK7FGeZY9DILBaAFYnOkVKKd2UCmJZIZH1DC7MV+0/LFSpnSZi5kRFIpMLW9YPjnmElt9T9ogbQ4whDSxaa44qlE1nIfR/9d+L9M6RiJTImEXm8X9Q6r0V9k4oP+OAjjl214csSzxwba+6ZiEDzOX0KDsSCrkiRmARf+WcnIVoO28Q+NkU1ngsgPjfPak7lWBQfJWgUIaFYAsAZjwJDge9EDdMagRKLAv/toOQ5i50pmZlxY7gcE6aB4tYtUs5S5ENh6Kksvuzkc4eA+QDbUjqyUOgvtEKRcXrO52pLOuWlycjFAkNpH62VGRDK5hLhM0RD4uhahFKYEYHEj1Keu7VGQ44NqQJfhsc0zmVOFrzNqXAFOEalkkmuRZqP7LbxbE/nk9PPPFtSrCeafmJmXroJlu7YrQWq/KDzvjMYZB90Olfd3uD25k8yuL676fZI9/rq9ua6P0g/55SZUlxX1wvFw96//g+zNA==", "encoding": "zlib+base64", "index": 0, "name": "ancestry-controls.stdout"}
+2026-10-30T01:59:15.3597794Z CDR_RC_CONTACT_END {"bytes": 5139, "chunks": 1, "name": "ancestry-controls.stdout", "sha256": "c607205c0fb6e0b862161b5b123f84a1f17c241431390bc54d12e475b90c66dc"}
+2026-10-30T01:59:15.3599569Z CDR_RC_CONTACT_CHUNK {"data": "eJwz4AIAAGwAOw==", "encoding": "zlib+base64", "index": 0, "name": "ancestry-returncode.txt"}
+2026-10-30T01:59:15.3601089Z CDR_RC_CONTACT_END {"bytes": 2, "chunks": 1, "name": "ancestry-returncode.txt", "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"}
+2026-10-30T01:59:15.3616667Z CDR_RC_CONTACT_CHUNK {"data": "eJzNVm1v2zYQ/p5fIQgoMKBOK8l6NZACRZYOAdZmaDrsQ9QRFEnFHCRSIynHXl9++44SbUtpWrRdP0wfbPLh8Xi8e4537048zyey7XjDlL/y3sEcEExMjxvUqu4101wbqVAl6Q71mlGQMqpni1Gy7psGvcS3nKCq541drXGj98uC3SGsbjcA3wwIYLeE+Iv95FQbekbCcIL8gZtmOmVbo/AUqKVqsTmLZkJKSXU2rhzxp6btnrbWutNx6bTmW9Mrdlq16/gfzpKnYOGTqT3yW3f7g/jbyYWd1MGdAFc7wzQAURDlB/16jaMkBdQvcMUwZnEUBGnEUkLzdBmGVZDWyzitGQ0KklIaRlUR10G0rAJGizRJ6jhjJK3Ae4PKDxMbFAMTBJHUmhFMFsDf4Ct7qD9HZW9maN8yxQmwYPA/MVwKGDLSG3Y/yrKh//Mog4X/Icqwex5le+EvRjnIHopyFGRxli2Xy6he1iSvQpZnVY2TosiKKsloEkVRTPM6C8MkCasizLMownGchDHGuJpH2dowi3I4WThG+Wuds/IuhVf3Ygi0V/ZREOaT/B+AYlWKr9YX5as0X3lDyIAug6zT+4iO6jy27Rgx2gPyAN2E8WTtmV3HnBwXZhRceFVvjlKxt8Z6KgjkrRrmlN7MeXL2thTglij33nv7r+4U6K5/ggu+gJdv4ZX+oixLn2tEpDDAdjtbPdIDqteMGfC19QRS+G5co4vSHzTDd9T8/d/HP3+kNu/9D9VmI/ED9T2qS/Fk+Aaty/ABrRdbc96ra7Nr2OkzeB00GuIwEvJGOV6ePlMKGfN28XnzPn7TN+75zst+r9MdfwUh4crTsmXeHVaCi1vtVQz+oOIyDO+uB7QfuK1L4c/T/d7zrXrxcA2wC5/WAIc6Je9K3yU1EH0o9qW/dzjClMJYw0rpB9usrkm4TCjDRWCTyIdwbHDTM9TypuFy3Wq0ZlsnHT7Ju8cHOW2w6a2iYJwbcxzfcWrWQ7L5q2U0YqRxQAxzm/2IC8q29jxOj5ZCzkPlgsIlcMsOhx8utJilub8aC9mnWT4zO4y7x/Gwd8Px9CnwV9nBOUhDubQuCwES4PYQxgIaJDeN3PQDBO/EPeTQfPXC6GPrNWnGIhecTmpu+MZGMdnHi9W9xo1Fjpp6peB1HK4G+TLp5oxhbWcmJUJgq+9z5dySgVswDoo8L+I0zmO3pGWviDXEjzCtSBbjZZyTtA7iKMpwkQTwQwhJkpTGjOJ4GfiznYNxSjYaSdHsXCt5uIEz6/z5zw+a9iWz/Q7reXPqd+udHhoYTAjrDBaD4ZMdR7fezNrev+GH15xRoACGTEFYUOQSEv0l+SH12BZ2QCMANmmGW7RhSkP1ZLYw2zFDHd41EtP9Bkta2zkIbhgak35QDs8ru4WYOzEuBkqjA5MhkzEXGuFKjxFmdc0JZ5Y5i5ntQ5tOJDCBgIfQeCCkdQeZfeIaGGAP7QngrGG2niJ5J8DaNe9Qp+TmnmMd1fTRTZtwf6/hpL6zLcPsObKptAcqELNJU0nZHJpLKZwTZqIAa6McdrDWMcclMCJoTBF8vyM9BH58VyxJf3t+fY1ePv/l8hydX128eHF5fnnx6g26vvr99fkFQK/evL769do/+XDyL022vGo=", "encoding": "zlib+base64", "index": 0, "name": "coefficient-controls.json"}
+2026-10-30T01:59:15.3632921Z CDR_RC_CONTACT_END {"bytes": 3337, "chunks": 1, "name": "coefficient-controls.json", "sha256": "1e0a2a6f5b27c35dbbb2728eba463400ceb139496649b2e3a1cf03cc47705644"}
+2026-10-30T01:59:15.3634552Z CDR_RC_CONTACT_CHUNK {"data": "eJwDAAAAAAE=", "encoding": "zlib+base64", "index": 0, "name": "coefficient-controls.stderr"}
+2026-10-30T01:59:15.3636121Z CDR_RC_CONTACT_END {"bytes": 0, "chunks": 1, "name": "coefficient-controls.stderr", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
+2026-10-30T01:59:15.3651275Z CDR_RC_CONTACT_CHUNK {"data": "eJzNVm1v2zYQ/p5fIQgoMKBOK8l6NZACRZYOAdZmaDrsQ9QRFEnFHCRSIynHXl9++44SbUtpWrRdP0wfbPLh8Xi8e4537048zyey7XjDlL/y3sEcEExMjxvUqu4101wbqVAl6Q71mlGQMqpni1Gy7psGvcS3nKCq541drXGj98uC3SGsbjcA3wwIYLeE+Iv95FQbekbCcIL8gZtmOmVbo/AUqKVqsTmLZkJKSXU2rhzxp6btnrbWutNx6bTmW9Mrdlq16/gfzpKnYOGTqT3yW3f7g/jbyYWd1MGdAFc7wzQAURDlB/16jaMkBdQvcMUwZnEUBGnEUkLzdBmGVZDWyzitGQ0KklIaRlUR10G0rAJGizRJ6jhjJK3Ae4PKDxMbFAMTBJHUmhFMFsDf4Ct7qD9HZW9maN8yxQmwYPA/MVwKGDLSG3Y/yrKh//Mog4X/Icqwex5le+EvRjnIHopyFGRxli2Xy6he1iSvQpZnVY2TosiKKsloEkVRTPM6C8MkCasizLMownGchDHGuJpH2dowi3I4WThG+Wuds/IuhVf3Ygi0V/ZREOaT/B+AYlWKr9YX5as0X3lDyIAug6zT+4iO6jy27Rgx2gPyAN2E8WTtmV3HnBwXZhRceFVvjlKxt8Z6KgjkrRrmlN7MeXL2thTglij33nv7r+4U6K5/ggu+gJdv4ZX+oixLn2tEpDDAdjtbPdIDqteMGfC19QRS+G5co4vSHzTDd9T8/d/HP3+kNu/9D9VmI/ED9T2qS/Fk+Aaty/ABrRdbc96ra7Nr2OkzeB00GuIwEvJGOV6ePlMKGfN28XnzPn7TN+75zst+r9MdfwUh4crTsmXeHVaCi1vtVQz+oOIyDO+uB7QfuK1L4c/T/d7zrXrxcA2wC5/WAIc6Je9K3yU1EH0o9qW/dzjClMJYw0rpB9usrkm4TCjDRWCTyIdwbHDTM9TypuFy3Wq0ZlsnHT7Ju8cHOW2w6a2iYJwbcxzfcWrWQ7L5q2U0YqRxQAxzm/2IC8q29jxOj5ZCzkPlgsIlcMsOhx8utJilub8aC9mnWT4zO4y7x/Gwd8Px9CnwV9nBOUhDubQuCwES4PYQxgIaJDeN3PQDBO/EPeTQfPXC6GPrNWnGIhecTmpu+MZGMdnHi9W9xo1Fjpp6peB1HK4G+TLp5oxhbWcmJUJgq+9z5dySgVswDoo8L+I0zmO3pGWviDXEjzCtSBbjZZyTtA7iKMpwkQTwQwhJkpTGjOJ4GfiznYNxSjYaSdHsXCt5uIEz6/z5zw+a9iWz/Q7reXPqd+udHhoYTAjrDBaD4ZMdR7fezNrev+GH15xRoACGTEFYUOQSEv0l+SH12BZ2QCMANmmGW7RhSkP1ZLYw2zFDHd41EtP9Bkta2zkIbhgak35QDs8ru4WYOzEuBkqjA5MhkzEXGuFKjxFmdc0JZ5Y5i5ntQ5tOJDCBgIfQeCCkdQeZfeIaGGAP7QngrGG2niJ5J8DaNe9Qp+TmnmMd1fTRTZtwf6/hpL6zLcPsObKptAcqELNJU0nZHJpLKZwTZqIAa6McdrDWMcclMCJoTBF8vyM9BH58VyxJf3t+fY1ePv/l8hydX128eHF5fnnx6g26vvr99fkFQK/evL769do/+XDyL022vGo=", "encoding": "zlib+base64", "index": 0, "name": "coefficient-controls.stdout"}
+2026-10-30T01:59:15.3665495Z CDR_RC_CONTACT_END {"bytes": 3337, "chunks": 1, "name": "coefficient-controls.stdout", "sha256": "1e0a2a6f5b27c35dbbb2728eba463400ceb139496649b2e3a1cf03cc47705644"}
+2026-10-30T01:59:15.3667095Z CDR_RC_CONTACT_CHUNK {"data": "eJwz4AIAAGwAOw==", "encoding": "zlib+base64", "index": 0, "name": "coefficient-returncode.txt"}
+2026-10-30T01:59:15.3668835Z CDR_RC_CONTACT_END {"bytes": 2, "chunks": 1, "name": "coefficient-returncode.txt", "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"}
+2026-10-30T01:59:15.3670744Z CDR_RC_CONTACT_CHUNK {"data": "eJxNjMEOwiAQRO98RcNZEtouLfVnDF1WQ1RoFvBi/HdpvXiZZDJv3lt0nXSl0HMr8tz1p73fONWtNYmeFVMOuSRWG6cXRReR1FrDw8uD5RovwTcY9GLtAhNYOIacKiPtlsH5FWdwI1icrhqGYXaL0S0Q0ZjJA3kHo/4JS7pT3G9/QtVL8RFf71IvMg==", "encoding": "zlib+base64", "index": 0, "name": "context.json"}
+2026-10-30T01:59:15.3672338Z CDR_RC_CONTACT_END {"bytes": 172, "chunks": 1, "name": "context.json", "sha256": "d77302484711edf4c4519f5087fd073ef6a3bcda49172cb486993906614f5917"}
+2026-10-30T01:59:15.3683044Z CDR_RC_CONTACT_CHUNK {"data": "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", "encoding": "zlib+base64", "index": 0, "name": "controls.json"}
+2026-10-30T01:59:15.3694131Z CDR_RC_CONTACT_END {"bytes": 4860, "chunks": 1, "name": "controls.json", "sha256": "566e5bf972af9b860f2d4b7d8fd8e8c02299c381243d7776eafdd1b6d3410165"}
+2026-10-30T01:59:15.3694946Z CDR_RC_CONTACT_CHUNK {"data": "eJwDAAAAAAE=", "encoding": "zlib+base64", "index": 0, "name": "controls.stderr"}
+2026-10-30T01:59:15.3695749Z CDR_RC_CONTACT_END {"bytes": 0, "chunks": 1, "name": "controls.stderr", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
+2026-10-30T01:59:15.3709343Z CDR_RC_CONTACT_CHUNK {"data": "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", "encoding": "zlib+base64", "index": 0, "name": "controls.stdout"}
+2026-10-30T01:59:15.3722799Z CDR_RC_CONTACT_END {"bytes": 5872, "chunks": 1, "name": "controls.stdout", "sha256": "1f87fc95bef947d082124a9de9c822bd48f6abe2b7d5b56831375005b83b692a"}
+2026-10-30T01:59:15.3723665Z CDR_RC_CONTACT_CHUNK {"data": "eJwz4AIAAGwAOw==", "encoding": "zlib+base64", "index": 0, "name": "returncode.txt"}
+2026-10-30T01:59:15.3724482Z CDR_RC_CONTACT_END {"bytes": 2, "chunks": 1, "name": "returncode.txt", "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"}
+2026-10-30T01:59:15.3799649Z CDR_RC_CONTACT_CHUNK {"data": "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", "encoding": "zlib+base64", "index": 0, "name": "source-manifest.json"}
+2026-10-30T01:59:15.3873945Z CDR_RC_CONTACT_END {"bytes": 42628, "chunks": 1, "name": "source-manifest.json", "sha256": "3668b8630a010c0ab07a20f39528fd6a54ee4af1d7c0bc85c68d0676a5b2e8fd"}
+2026-10-30T01:59:15.3879772Z CDR_RC_CONTACT_CHUNK {"data": "eJx9VEtPGzEQvvMr0J45BNiE0BuiCFVqS5WkpwpZE3uSNXht149AhPjvHe/DuyEqlzy+8TePbx5vJ6enBTheyR0yb6LjyLjRwRnliy+nb2ROD2KojEPB+pf4GhzwII2mn8hjQEGvN6A8nrUUbqIOgwtCrPEyEJmw87MedLiJHhRh0wZ67+ibqBRLYVEHyVkNduyqsdZYr9GlEOfldDLPLj0q5JTQ+MHkwLmGlEcuBvjfKN1RBV1qif+n911L76Xedq6LHJNXoLc55ICDEIS2GZkR/uIMecmZVuCrj0YOTkgNSoZ90VgeT7oKPmpbKLlBvucqSXvZZT9Se3ZYUNJjPviKzpHGTdOpq6Oeh4C1DUO3etn+03AXNZMJLCfX8/l1OSvnZWdq54pMxQWINb8q4bKc89lmUl5cXMH1dEIfnPPpdCZKFFBeTooDZp5IZrTak5/gIuYKxtX/6XLnIYIiWm0VBhyERmt4xdb7gJ5Zhx7djgrJ+hCHwKgCe3FgLbr8yDMaeO2tcYGBFsyCC5K0/ITqkdIW4PbMA8kmDDnRJtAzq4CKsk7WZE3NfWwK+UTfwoL3DZRKb5Fq7yWnsMA52gC6UXjEGAagVyWvU9f06WSSyuJ581NlX28pM2M2fWkDy0eK5D0tH9vQe/Zk1lTkjoyImqUEQ6I+YXMYinwI+ibsNXlKjtoupGD4Kn1IC0VRn4zMJB/dTu6SgTaIdPWs37AdqIhMtlKaF00LXkmbeVBjpjjk1JfuSFkluQxqz6Bey2000fecqM26HYQ0Z54ETrtK7ABSp5vnWdTPmmINrTq6DTSF1Lq0AxUCbXwFvftsIOdcRT+SJpukOIBI2IP/PqA9ABqtDxAht+gPoQDb/j82d4t0COYZc/j+mKHO4dvT0/QnS6rB+sqkC0FX5wiVWuDrURxNfTh62sXrcRFTTyCtZf+kN2mjN1JLGhqpuRSYZvtD0jQwKLY4tMQHCDE1pPh1s1yyHzf3327Z6mZxf7diq8XN7R1bPvxe0Nftw8/V4uH7smhpeSrbTRhfmPeTf228RCo=", "encoding": "zlib+base64", "index": 0, "name": "target-controls.json"}
+2026-10-30T01:59:15.3885590Z CDR_RC_CONTACT_END {"bytes": 1823, "chunks": 1, "name": "target-controls.json", "sha256": "bdeb5a319c15e6c350880e73504fac0c0c4ace976993515d3a20b42125194ae4"}
+2026-10-30T01:59:15.3886452Z CDR_RC_CONTACT_CHUNK {"data": "eJwDAAAAAAE=", "encoding": "zlib+base64", "index": 0, "name": "target-controls.stderr"}
+2026-10-30T01:59:15.3887308Z CDR_RC_CONTACT_END {"bytes": 0, "chunks": 1, "name": "target-controls.stderr", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
+2026-10-30T01:59:15.3896809Z CDR_RC_CONTACT_CHUNK {"data": "eJzlV1tP40YUfudXWH6CKpAACZeorZRlwwo1C20S+rJsR5PxSTwwnvHOBYhW/PeesceOk6hoeaCq1Dwk8Zlz/c5ljj8PPl1dkA+3V6OPZDyc3I6m5HIwGn0YXPwWfd+Jopg5rUFawpS08GzjfkHGA2otZLknHLZKykIrl+NzzBK9r8FwY5Xez7V6BEklg/2Z4yKJA7d2kvAE2bud87Oz8+5J96wbjoxymoHXdESTGTvt0uPuGTuZd7pHR6f0vNfBL8ZYr3eSdCGh3eNOpdSqB5BesKF0/zDGwxfPEYMAZjVnVBDKGOTW+4X8cyoMlBxaK72KMgNj6KLwxSylTcFyFllNpcmVtijHhdNQm1/mBevNZFioqe3OnRAkT5fBKiRrNhegMrB6SVhK5WLjEKXMaw5rSByDhGBomU+UepKgTcpzUiC/rsxYap3xLl4OrkbkcyP7N2MyHQ8uhmT4x+3Vn4PR8PpiWMQVY7gMZpQ9eLlp9RDtZsrYSANDqxE6KCJBjd3r38kouuQCoru4nWJgbcw0utR+UvqhLY1RLHwbpnluTZsJ5RKS0QVnpCobsiobUpTNQb68i1uR4BIiTGsr4jJCxd5YhE4YJ+wvOei50hmZy11mn1tIBY0ItHztaiUM0fSpBc851gBSlbN7pXj4/PXmz9tDTYE9bIZqqV6AJQXMzTAPD4+KMH8WNJsl9NfSWayT/uwADRUxfn9pze5iFKnD0krZ9l2cOCqQXIpGP9H+LokQnIh4jbt7ewc21eppN9c8o3q5t47Emz7/CYgWIBEB/f4YvWMsnbKqq2p9UyhhEOGJ/9fI5nsX9Jt79/R4vXf5PAoAR9xEUtnoWknoa8oNVCevFue/HcD/ZPh0ys7y5RTiXM9IuOP60Sv34p2Md152dopFgmqW8kcg5eVOKlgaC4WzqcLbjFScuG6gV5YriX+BuY1r0y8nykm7UuFvS2W4ReHVWlJckXNnqEBaryC9BPHiVvZm8QZDTDKaN1UVpxlkM7xOvbpur3NWqzTFJoHONhg6a8ol9X7UwVD2zXG9FUFwzct/qXRn3BguF0F1XNsM28EWnSYJUkuPVIP+pBVqqT1NqUk3DxnVCZdUcLuMi5Ov9cqygW0s+BzYkgkP7XHwvoH2yXpAHo+zla4fXyIDbP+Q8HdZGjcqkigplqjHagd1BM3ovwTfmcX7A8WyXICFFdCQK5aS2dKCwUkS5kC99gLKlCODPGma49iomQypO4hQmZCcassRy1dEDaDbCTYkMRRhSxQqwRmKbLnAjiahXX1yvxaBvIJvnFNjCpIP/YeWz0YBVKjU7RSS3ut0yulSdb6P7OOFn7FqXoW2kjIOLRmDzUfmyE/u1QyDxGlsASTxDloveg/FYIjrQVAloRpGIQveGDzjqPMNhVbvFa+FjNOP/NEfYAchrqbav8kjFQ4IL6GsF+pajmZQi+D+i3kJQyoXnHErcM3PZnzhFK7aQcZJNSsLwdeZQYB9r6K0pThtceYZ4uSDRFurVG3NBqxCTJ3vgRQodnxKK/X1ASpnwpkGNPURT9ZICOzas7GQrxEKrNcoCV+AWSdZuqieoZhbiEP5Ehao1TADWZsvR0+RnxpSSXOTKj8hcOpsUblM4HnLjsQ8bLEGexU9cT4n1LdlxVIdSSXnXHIsGi4ZT8DX9obTWDCQ4NtfnZLV+9Pvg8kkvD9NB+NPw2l4e5rc3I7x5+Lmejq+GU3KN6hVVZad0JwwLzt/AxbxDgc=", "encoding": "zlib+base64", "index": 0, "name": "target-controls.stdout"}
+2026-10-30T01:59:15.3906325Z CDR_RC_CONTACT_END {"bytes": 3972, "chunks": 1, "name": "target-controls.stdout", "sha256": "db3d0d44379f65dbd556f44646b68757f22aa78fdcf825bfe24f454b7050c9dc"}
+2026-10-30T01:59:15.3907204Z CDR_RC_CONTACT_CHUNK {"data": "eJwz4AIAAGwAOw==", "encoding": "zlib+base64", "index": 0, "name": "target-returncode.txt"}
+2026-10-30T01:59:15.3908217Z CDR_RC_CONTACT_END {"bytes": 2, "chunks": 1, "name": "target-returncode.txt", "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"}
+2026-10-30T01:59:15.3991438Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-30T01:59:15.3991976Z with:
+2026-10-30T01:59:15.3992317Z   name: magic-build-source-controls-40988946484
+2026-10-30T01:59:15.3992740Z   path: cloud-magic-build-controls/
+2026-10-30T01:59:15.3993120Z   if-no-files-found: error
+2026-10-30T01:59:15.3993464Z   retention-days: 30
+2026-10-30T01:59:15.3993781Z   compression-level: 6
+2026-10-30T01:59:15.3994091Z   overwrite: false
+2026-10-30T01:59:15.3994408Z   include-hidden-files: false
+2026-10-30T01:59:15.3994744Z env:
+2026-10-30T01:59:15.3995040Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-30T01:59:15.3995496Z   PINS_SHA256: 3668b8630a010c0ab07a20f39528fd6a54ee4af1d7c0bc85c68d0676a5b2e8fd
+2026-10-30T01:59:15.3996015Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T01:59:15.3996540Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-30T01:59:15.3997081Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T01:59:15.3997542Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T01:59:15.3997995Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-30T01:59:15.3998597Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-30T01:59:15.3998969Z ##[endgroup]
+2026-10-30T01:59:15.5759378Z (node:2102) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-30T01:59:15.5760706Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-30T01:59:15.5853559Z With the provided path, there will be 18 files uploaded
+2026-10-30T01:59:15.5859467Z Artifact name is valid!
+2026-10-30T01:59:15.5860171Z Root directory input is valid!
+2026-10-30T01:59:16.0026425Z Beginning upload of artifact content to blob storage
+2026-10-30T01:59:16.0450971Z (node:2102) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-30T01:59:16.3815561Z Uploaded bytes 23232
+2026-10-30T01:59:16.5230819Z Finished uploading artifact content to blob storage!
+2026-10-30T01:59:16.5232104Z SHA256 digest of uploaded artifact zip is 8d8e84c05b31656455028914b4b7bccd5c8f751d266e42fdd824d83488228575
+2026-10-30T01:59:16.5233519Z Finalizing artifact upload
+2026-10-30T01:59:17.0163696Z Artifact magic-build-source-controls-40988946484.zip successfully finalized. Artifact ID 12948496460
+2026-10-30T01:59:17.0164910Z Artifact magic-build-source-controls-40988946484 has been successfully uploaded! Final size is 23232 bytes. Artifact ID is 12948496460
+2026-10-30T01:59:17.0171793Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/40988946484/artifacts/12948496460
+2026-10-30T01:59:17.0364176Z Post job cleanup.
+2026-10-30T01:59:17.1696234Z (node:2114) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-30T01:59:17.1697132Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-30T01:59:17.1861460Z Post job cleanup.
+2026-10-30T01:59:17.2845114Z [command]/usr/bin/git version
+2026-10-30T01:59:17.2893550Z git version 2.56.0
+2026-10-30T01:59:17.2939108Z Temporarily overriding HOME='/home/runner/work/_temp/a967e992-32f2-4656-902b-c6b87e8ecc96' before making global git config changes
+2026-10-30T01:59:17.2940896Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-30T01:59:17.2945701Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-30T01:59:17.2996732Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-30T01:59:17.3042688Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-30T01:59:17.3452825Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-30T01:59:17.3525805Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-30T01:59:17.4053786Z Cleaning up orphan processes
+2026-10-30T01:59:17.4444235Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
