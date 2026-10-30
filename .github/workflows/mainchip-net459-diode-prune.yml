@@ -44,7 +44,7 @@ jobs:
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           name='scripts/mainchip-bulk-postdrt-antenna-pins.json'
           raw=Path(name).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='d5cfe53ca43f6ef0971f445e2fb72e4a0a1c9e699e2169062be34c8bf886f4ab'
+          assert hashlib.sha256(raw).hexdigest()=='ccf47186a7951e7a97ee32f5f3c7c9d74cb7d8fc93b23872ea3d27875dc4bcf6'
           m=json.loads(raw)
           assert m['schema']=='bulk-postdrt-antenna-pins-v1' and len(m['files'])==210
           assert all(m[k] is False for k in ('native_executed','physical_acceptance','timing_accepted','full_phy_accepted'))

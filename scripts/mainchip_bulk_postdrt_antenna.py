@@ -224,12 +224,12 @@ def fixed_plan(raw,mutable):
     # Do not silently change classes of a candidate repair net.
     for name in mutable:require(clock.classes(parsed["records"][name])=="ROUTED","mutable original ROUTED")
     expected,original=clock.fixed_overlay(raw,sorted(set(parsed["records"])-set(mutable)))
-    exact(clock.restore_classes(expected,original),raw,"exact reversible DRT overlay")
+    require(type(raw)is bytes and clock.restore_classes(expected,original)==raw,"exact reversible DRT overlay")
     return expected,original
 
 def require_restored(raw,fixed,classes):
     expected=clock.restore_classes(fixed,classes)
-    exact(raw,expected,"complete original-class DEF restoration")
+    require(type(raw)is bytes and type(expected)is bytes and raw==expected,"complete original-class DEF restoration")
     return dict(original_classes=classes,raw_pin=pin(raw),fixed_pin=pin(fixed))
 
 def validate_connectivity(observations,plan):
