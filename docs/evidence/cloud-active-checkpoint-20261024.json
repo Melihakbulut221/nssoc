@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30T04:14:20.330039+00:00",
+  "updated_at": "2026-10-30T04:54:10.402248+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "81ef212db6cd48717cded9d55a9a6b53bf59eaf3",
+  "root_source_before_receipt": "7209b27dc6a01e403d255a7f5fb34c4896d5172a",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 139,
+    "inventory_version": 140,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -42,61 +42,7 @@
     "latest_observed_monitor_error": false,
     "latest_observed_evidence": "docs/evidence/cloud-collector-recipes-20261029/monitor-live-audit-40955824450/evidence.json"
   },
-  "active_runs": {
-    "mainchip-single-antenna-trial-def-grammar": {
-      "run": 41001185417,
-      "head_sha": "30c8f7412d439692f3445d9b41937a3ffc8a0e9f",
-      "status": "in_progress",
-      "conclusion": null,
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123885712511,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123886001193,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123886055812,
-          "name": "trial",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Create exactly one diode and target Metal1 branch; measure complete DRC and antennas"
-          ]
-        },
-        {
-          "id": 123886057466,
-          "name": "ownership",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 123886057840,
-          "name": "antenna-readback",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 123886057878,
-          "name": "candidate",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    }
-  },
+  "active_runs": {},
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -5283,21 +5229,44 @@
       }
     },
     "mainchip_single_antenna_trial": {
+      "proof": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "prefix": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/",
+      "files": 100,
+      "bytes": 2347206,
+      "receipt_sha256": "de7f12ef675d51465bab7840b4b9a039f0b96e0e80b1f79e33fb0ab70cfe8830",
       "source": "30c8f7412d439692f3445d9b41937a3ffc8a0e9f",
-      "base": "297a8201c222f18d1bae7eb78db3d8b1de8fe8e6",
-      "manifest_sha256": "c4d65b0cb4c47fcaffd6ea8bb76847dac0f74e5dd4b0d6836cc99ba2af706adc",
-      "workflow_sha256": "8d00d64b7682ae444ced4c7128177767a3a8bbf18939bd03af88bd859baa5e6f",
-      "branch": "codex/mainchip-net459-diode-prune",
       "run": 41001185417,
       "release": 428643939,
-      "source_controls": {
+      "workflow_conclusion": "success",
+      "controls": {
         "positive": 11,
         "refusal": 33,
-        "lifecycle": 4,
-        "job": 123885712511,
-        "conclusion": "success"
+        "lifecycle": 4
       },
-      "scope": "Same exact one-diode and additive branch physical trial; native/geometry functions unchanged. Reuse exact qualified one-record DEF parser instead of restrictive unindented string prefix. Actual repair result pending.",
+      "native_result": {
+        "bounded_trial_passed": false,
+        "candidate_rejected": true,
+        "DRT_short_markers": 6,
+        "target_antenna_before": 1,
+        "target_antenna_after": 0,
+        "violating_nets_before": 609,
+        "violating_nets_after": 608,
+        "violating_checks_after": 915,
+        "violating_pins_after": 696,
+        "all_1691_original_clocks_preserved": true,
+        "exact_remaining_chip_preserved": true,
+        "other_violation_semantics_unchanged": true
+      },
+      "candidate": {
+        "bytes": 213431774,
+        "sha256": "24c84a9c005d12419319521cb3be1bf374beccf7c220adb5df61b4ce85e80f91"
+      },
+      "native_archive": {
+        "bytes": 367635548,
+        "sha256": "5eaf970597f1c739c5ea36626f847b620c30c2e6a3c46f0a8fcaae1e7e75eb4f",
+        "asset": 690926007
+      },
+      "readback_verified": true,
       "physical_acceptance": false,
       "timing_accepted": false,
       "full_phy_accepted": false
@@ -5362,16 +5331,78 @@
       "physical_acceptance": false,
       "electrical_acceptance": false,
       "full_phy_accepted": false
+    },
+    "cdr_drain_m1_fresh_graph": {
+      "source": "474045b9821069cbe42a71752c3c53267e5493fd",
+      "base": "8d9782e4c43e43c3f16a942ee1420851b015ea65",
+      "branch": "codex/cdr-drain-m1-fresh-graph",
+      "run": 41003747027,
+      "release": 428657373,
+      "manifest_sha256": "667a795dc4ad5ce07055c23fc8da15dbeb3fb2e1c7ecaac1a69cb03866f89ccd",
+      "pins": 1213,
+      "source_controls": {
+        "positive": 5,
+        "refusal": 12,
+        "lifecycle": 5,
+        "bytes": 79681,
+        "sha256": "912d6aa18f8431882d5e44b662261e91de8bf942bdb28fd1b65c7175731f689e",
+        "job": 123893833607,
+        "preserve_job": 123894062177,
+        "conclusion": "success"
+      },
+      "native_job": 123894116000,
+      "scope": "Fresh current graph and exact terminal/component/13layer material binding only; no RC or analog execution.",
+      "fresh_RC_executed": false,
+      "physical_acceptance": false,
+      "electrical_acceptance": false,
+      "full_phy_accepted": false,
+      "proof": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "prefix": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/",
+      "files": 116,
+      "bytes": 23452757,
+      "receipt_sha256": "060ff52a3d27eb2745a709eba2cf721dc7744034bc6bec309386f7363bc98241",
+      "workflow_conclusion": "success",
+      "current_view_files": 75,
+      "old_complete_members": 6647,
+      "physical_complete_members": 154,
+      "full_material_comparison": {
+        "components": 113,
+        "layers": 13,
+        "only_two_declared_M1_unions": true
+      },
+      "identities": {
+        "devices": 500,
+        "terminals": 1446,
+        "ports": 25,
+        "anchors": 978,
+        "planes": 160,
+        "plane_faults": 19,
+        "witness_faults": 12
+      },
+      "native_archive": {
+        "members": 138,
+        "bytes": 2788236,
+        "sha256": "0ff8193df7ea10dabdd76476b46189ce428f175993dc5d361491e4da5e5d72b1"
+      },
+      "readback_verified": true
+    },
+    "mainchip_next_escape_recipe": "docs/evidence/cloud-collector-recipes-20261029/mainchip-upper-layer-antenna-escape-v140-20261030.json",
+    "cdr_fresh_RC_next": {
+      "agent": "pll_handoff",
+      "new_source_not_yet_published": true,
+      "new_native_run_not_yet_dispatched": true,
+      "required_input_graph_run": 41003747027,
+      "required_gds_sha256": "34f06505f3ff2fdb06257d6202931aa12d2d0176d482a2a7916561eeb9646034",
+      "requires_unchanged_qualified_solver_and_electrical_limits": true
     }
   },
   "next_actions": [
-    "Continue cloud-only. Latest direct user instruction overrides the older local-goal wording. Do not acquire native payload locally, including RAM. All authored tests/CAD/calculations and artifacts stay on GitHub. RAM-only API/source/derived-text orchestration; local workspace/generated paths/native processes remain empty.",
-    "First re-query exact live run41001185417 at30c8f7412d439692f3445d9b41937a3ffc8a0e9f on codex/mainchip-net459-diode-prune. Source-controls123885712511 passed11positive/33refusal/4lifecycle and inherited suites. Fresh release428643939 independently reserved before acquisition. No restart while authoritative handle is live.",
-    "Original one-diode run40998946185 failed at redundant DEF string-prefix admission after exact remaining-chip invariants and legal one-diode placement passed. Complete80-file proof297a8201 and86,584,374-byte native archive remain permanent, every failure retained. Fix30c8f741 reuses unchanged qualified parse_def with exact one-record NET identity; all native/geometry functions and acceptance criteria unchanged. Three new whitespace controls and five malformed-record refusals run hosted.",
-    "Target remains $abc$1804206$new_n41321 / fanout36953/A. Exactly one diode and explicit additive Metal1 branch, original153128instances/143820nets/1691clocks/40targetwire shapes and every non-target raw wire protected. Native DRT plus target/fullchip antenna reports decide bounded repair; workflow success is not automatically candidate acceptance. Preserve every native output and failure permanently.",
-    "CDR width trial41000358737 at37b5b757 completed SUCCESS, full126-file proofa14c6668 re-fetched/hash-verified. Two topcell M1 boxes widen only target160DBU rails to320DBU; shared PCell and all other raw material/hierarchy/device parameters/via counts unchanged. Full560DRC zero markers; deep and flat500device LVS plus13faults passed. GDS34f06505 and flatLVSdb740e44 are new candidate authority.",
-    "Continue changed-candidate-bound fresh graph/current-view and RC for the two-rail candidate. Agent pll_handoff is inspecting/adapting the prior qualified pipeline; no new graph/RC native handle yet at this snapshot. Never restamp original geometry hash or claim prior resistor values belong to new GDS. Original electrical gates remain fixed; no voltage/timing recovery claim until real simulation.",
-    "Full serial PHY, routed serial mainchip, full-chip LVS/foundryDRC/currentRC and original20/4/8/8ns+5% setup/hold remain unaccepted. Historical STA39904823953 is not current ODB. Existing8h cloud monitor read-only, no native auto-dispatch."
+    "Continue cloud-only; newest user instruction overrides older local-goal wording. Every authored test/CAD/design calculation/native payload remains on GitHub, never local even in RAM. Source/API/derived-text orchestration only in RAM. Workspace/generated project/tmp/native processes stay empty.",
+    "Both newly recorded native runs are terminal; do not rerun them. Run41001185417 workflowSUCCESS is an explicitly rejected physical candidate: target antenna1\u21920 and fullnet609\u2192608 but6native Metal1 Short markers. All other915antenna violations and original1691clock/fullremaining-chip invariants unchanged. Complete100-file proofc1c734e3 and367,635,548-byte native archive on428643939 preserved. Zero-DRT gate remains mandatory.",
+    "Fix the diode escape from actual native ownership. All six shorts involve target with net36953 or fanout36953 in Metal1. The original target already has M2 atx97440/y504420..511140 and M3 y511140/x97440..108000. Exact inserted.odb72d382ab (one diode/no branch) is preserved in rejected run capsule, suitable only for read-only diagnostic geometry. Follow the new v140 upper-layer escape recipe: complete window ownership/obstructions/vias first, then explicit upper-layer branch; no guess that upper layers are clear.",
+    "Run41003747027 fresh graph474045b9 completedSUCCESS; full116-file proofa61ee868 independently authenticated. Old6647/newphysical154member inputs verified; fresh75file graph bound to34f065GDS/db740LVS. All500devices/1446terminals/25ports/978anchors,160planes19faults,9leafkinds16placements5faults,12witnessfaults and113\u00d713 exact material comparisons passed. Actual terminal join independently reestablishedT003_D component17/cluster28/$131 andT032_D component61/cluster124/$680.",
+    "Agent pll_handoff is preparing new changed-GDS/current-graph RC admission/controller using the original qualified numerical worker/settings. No new RC native run exists in this snapshot. Review source boundary then source-controls/fresh exact-source release/one attempt1 dispatch. Derive fresh R/C values and bind reduced nodes to actual terminal identities; do not transfer old32.5083ohm or prior analog acceptance.",
+    "Preserve full originalfailures and6shortrejection. Original20/4/8/8ns+5% clocks, CDR37.5ps/comparator75ps/UI125ps/100mV, HBT VCE/VBE/current limits andPLL62.5ps unchanged. Full serial PHY/mainchipphysicalintegration/currentRC/finalsetuphold remain unaccepted. Existing8h GitHubmonitor read-only, no automatic native dispatch."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -5738,73 +5769,17 @@
     "observed_40992012920": 40992012920,
     "observed_40996847751": 40996847751,
     "observed_40998946185": 40998946185,
-    "observed_41000358737": 41000358737
+    "observed_41000358737": 41000358737,
+    "observed_41001185417": 41001185417,
+    "observed_41003747027": 41003747027
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40998946185,
-      "head_sha": "bb92043445a2ad175cbc6399a2130a98abbee99b",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123878579411,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123878844931,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123878894324,
-          "name": "trial",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 123878895767,
-          "name": "candidate",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 123878896018,
-          "name": "ownership",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 123878896151,
-          "name": "antenna-readback",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 123881370423,
-          "name": "preserve-antenna-job-logs",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
       "run": 41001185417,
       "head_sha": "30c8f7412d439692f3445d9b41937a3ffc8a0e9f",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
@@ -5824,11 +5799,9 @@
         {
           "id": 123886055812,
           "name": "trial",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Create exactly one diode and target Metal1 branch; measure complete DRC and antennas"
-          ]
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
         },
         {
           "id": 123886057466,
@@ -5850,32 +5823,39 @@
           "status": "completed",
           "conclusion": "skipped",
           "active_steps": []
+        },
+        {
+          "id": 123892860890,
+          "name": "preserve-antenna-job-logs",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
         }
       ]
     },
     {
-      "run": 41000358737,
-      "head_sha": "37b5b75738b5bbe5eafcfb5e94101c08503c995a",
+      "run": 41003747027,
+      "head_sha": "474045b9821069cbe42a71752c3c53267e5493fd",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123883099832,
+          "id": 123893833607,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123883252858,
+          "id": 123894062177,
           "name": "preserve-job-log",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123883299413,
+          "id": 123894116000,
           "name": "readback",
           "status": "completed",
           "conclusion": "success",
@@ -5885,7 +5865,7 @@
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-30T04:14:20.330039+00:00",
+    "observed_at": "2026-10-30T04:54:10.402248+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -6025,7 +6005,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-30T04:14:20.330039+00:00",
+  "local_workspace_verified_empty_at": "2026-10-30T04:54:10.402248+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -55762,6 +55742,1755 @@
       "source": "37b5b75738b5bbe5eafcfb5e94101c08503c995a",
       "release_id": 428639611,
       "tag": "cloud-results-41000358737-1-cdr-drain-m1-width-trial",
+      "exact_source": true,
+      "empty": true,
+      "independently_reserved_before_acquisition": true
+    }
+  ],
+  "imported_checkpoint_receipts_v140": [
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/capsule-index/candidate-outputs.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "93e062352fdd3cc5c86e824cd9d7007c2dab3ee1",
+      "bytes": 10394,
+      "sha256": "fa06886f5819d4758735e2f5ddf77c5ecad75517111799e8180290914ceeea23",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/capsule-index/candidate-parts.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "49b83bf7a0671e484f6d868b381bb5ae06cb02a7",
+      "bytes": 316,
+      "sha256": "20ec5eeb939a0ac55b96753b9c4e88f3f3ded22f9da7b0710a972475f82e765f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/complete-derived-index.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "128aaca9d8d64b47dd4759ec457e6853c4674f35",
+      "bytes": 10829,
+      "sha256": "f08362bed10445281680c601aaa8f764b5c407da2a89a6bbcc794d9fb4535348",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/controls/antenna-controls.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "efe8dac96ceaf26da042ea1ec207b76b6a382de9",
+      "bytes": 2244,
+      "sha256": "eb593c9652a177784aba0aa1ced6778cbfaf27008a28079fda2f82efe90b080a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/controls/antenna-controls.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/controls/antenna-controls.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "c970bd818806b4aa5d372a73fbddaef0eacda418",
+      "bytes": 1958,
+      "sha256": "1690689121982a427773e0dac10e9079888be5f6533ddd800f58154ab9b9dd6e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/controls/context.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "382224e087cf3a28a2595a052320f909e528cfa9",
+      "bytes": 3408,
+      "sha256": "2931f8e5816fd8231b7ae138483a6ea86f7e6f8b2ffa046b68323a17502c8b76",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/controls/controls.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "2d3f6627a76bea81798f8e1a0ef9e2f08642c04b",
+      "bytes": 74835,
+      "sha256": "76e282d11ce69b1cbf10919bf4a1d05b878bd19a337175b3eb39d4605f090e50",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/controls/controls.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/controls/controls.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "f24e417b2ec8eb1169e78ffc96d4f02bb31f370e",
+      "bytes": 38643,
+      "sha256": "9c145e7e280c5498d8bda4c7c78905bcfaafd117ddaea74a0a4cab26db7346cb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/controls/ownership-controls.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "dce3f26fb7b5e535dbfa601c573a1f42074e7351",
+      "bytes": 1035,
+      "sha256": "1b1327adc59e7bbd088f9c37293e58323a0e2cc2e1f0f96ec5f23cc2cae64aa3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/controls/ownership-controls.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/controls/ownership-controls.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "0c6522c4544932fc5797c4859b8aea7fc1e16d81",
+      "bytes": 899,
+      "sha256": "c60c7c348f47b65ff3ffbc0208f036ea940a2369774bcb9d4df3bf30096232ce",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/controls/trial-controls.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "68febd234fe606ae1e0a1175c64f96b8f52a836d",
+      "bytes": 2191,
+      "sha256": "eb7e3b182e077b942a25e5f4e0c7b77adbf37b717e1eda4143b1e11c371b2c33",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/controls/trial-controls.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/controls/trial-controls.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "90cd871b1cc94dd8e00ee0cc8055549588f7df42",
+      "bytes": 1933,
+      "sha256": "2a885da2a9aef871e3543daacda8e5a120025068fa68f374af1c823392a2f038",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/current-input-restoration.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "83a77bad9240c249c37435f170c69cae8a162caa",
+      "bytes": 9899,
+      "sha256": "95ab9b92d62d660af2751069007cbfdf25fabb0da38469fd6d2d348c3da0432a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/download-candidate-native.tar.gz.part000.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/download-candidate-outputs.json.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/download-candidate-parts.json.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native-capsule-publication.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "64f5f2cdfdbf33ff4fd04845c5ea5c71dca3308f",
+      "bytes": 11178,
+      "sha256": "f0e6649277933ead831c0e5bc59e7629c70e44f5a63c0fcbc2c7190c9cd551e7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/antenna-owned-container.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/antenna-owned-container.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/container-terminal.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "6b06beede794d1693ec060055b9872f5a6fd3602",
+      "bytes": 6851,
+      "sha256": "0a08faeac2e191a5a8e45fc954e0da12cdb4f0190fc4f4338aa7a465d8f04588",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/create-attempt.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "2ca3fd6e338e9585e88a4580e08744f20fb32133",
+      "bytes": 1225,
+      "sha256": "638a305ada9eac543f849c8fafc82838dca5dad0810cd7dfbeada1d4c5a88799",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/host-progress.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "323023196149b30342e192d7afa595a43c7deab3",
+      "bytes": 11316,
+      "sha256": "6db085e0a3651b2fb62348a8e071942ee9af615c3ae02010a2bb19e30ca6ab5d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/image-inspect.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/image-inspect.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "48e1039805404a53f6b7c25975111e3b0972566f",
+      "bytes": 2643,
+      "sha256": "2a964842501ce8b3a376ec539a5d451e48a191e4d02056a7fddddad417a55a07",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/immutable-image-pull.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/immutable-image-pull.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "428df35c432d30f777bb5567af38ad9eff7ef70c",
+      "bytes": 837,
+      "sha256": "30e6c4f9b5d20780c4a1d0a90acb9565f74e930e9efd11d8add80f4d8b23b38f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/names-before-owned-create.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/names-before-owned-create.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/owned-container-create.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/owned-container-create.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "210c71eb67693180558c4deaaadfc520b1b04854",
+      "bytes": 65,
+      "sha256": "261ddb50c2c4e54eb2d7441b6d967811d19b8c0495a0e88b327966ec17fc11af",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/owned-container-remove.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/owned-container-remove.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "210c71eb67693180558c4deaaadfc520b1b04854",
+      "bytes": 65,
+      "sha256": "261ddb50c2c4e54eb2d7441b6d967811d19b8c0495a0e88b327966ec17fc11af",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/owned-removal-census.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/owned-removal-census.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/prefix-envelope.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "bc75a7ec8ebe4d620ae64c4e45f266b1f11383fa",
+      "bytes": 4270,
+      "sha256": "11281aedb0c83745f8126820b9c3c5421c20ed572e48bda55356f5d68c8313fb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/prefix-restoration.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "8e316db083b1571e763c01308ee1756c172c934c",
+      "bytes": 423478,
+      "sha256": "23f45038bb461360ec38c7a2490ba24c84db2f9dd3a53e8b2e689201d693d177",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/audit-import-terminal.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "fff127d1285ee49e50ea5f9bed0c46606537e89e",
+      "bytes": 182,
+      "sha256": "064881119d14dbbda5755bfb371a66289aa65cbed9b1c2e0d66909649212eeea",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/audit-measured-terminal.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "fcf7768845809befe4f7f9626232cb8abef92559",
+      "bytes": 184,
+      "sha256": "af25eaa83bb8e6ca7124d2922703e45933ee0dd6f67aada835064cc12aea064a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/baseline-connectivity.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "41cbf4698e3f1875dbb9d14628a25a4f93a4352a",
+      "bytes": 64953,
+      "sha256": "abfd88ac3fe035723172cc218b7c69eb510d961ad0385f5dfaf4d8b22da63cdf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/baseline-snapshot.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "066b6c9983e45fc412ac41395d7129109cfa9251",
+      "bytes": 56812,
+      "sha256": "6d45e067302f4f6b1892788f5d603e8679e43cd12784f2065e25fd9e31d91b6d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/baseline-target.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "2153fafbc64ef3f3ca631315aefb52d983ea202f",
+      "bytes": 42295,
+      "sha256": "189d9caacfcb2e5e8e19f574f7f077de087139fb14bed8f37233f581d4e0d541",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/candidate-antenna-summary.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "584954ff8f3942fe8ef5c72ba6caffcf99bc24dd",
+      "bytes": 20688,
+      "sha256": "7ba61972dfdaac3af2c1fa6264c62a1381df335a025e4bd04c5584e2b7d0f24d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/candidate-antenna-violations.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "a944382851dffec3fed600966beeff36c70797f8",
+      "bytes": 300115,
+      "sha256": "809cbaa58d8db136b8a98b1bc2a81bbc6819c430de437720c16b6b0c66c1e265",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/drc-markers.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "ab993d3a4d6751de6f2a5e8031d7772ac11272e6",
+      "bytes": 7790,
+      "sha256": "97ca4df1b7251c0056c2561db2eefa2f340fa44aebdde14f0d9a22331cd2fbf4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/imported-connectivity.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "3cd1aba32093a3464e57b1390838b415315ba722",
+      "bytes": 70349,
+      "sha256": "1f8145dab093afa9c4916adf2c9f9966cf4c1161bf1d3f628508bd335dae0c2c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/imported-snapshot.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e98c745d8c7882d922908e53d4af756668f9bb8d",
+      "bytes": 56987,
+      "sha256": "596ff810c84a235bb7170e3ffb43278a8987cb5360e3998f19e7099e900b6a40",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/imported-target.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "dfae12df7c111e26c3da36bca63714f48cc958cc",
+      "bytes": 43996,
+      "sha256": "f04c86eaa7297729037089ea10e97b5a64a428a8dfd6226a99d0ae45cafa5a99",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/measured-connectivity.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "3cd1aba32093a3464e57b1390838b415315ba722",
+      "bytes": 70349,
+      "sha256": "1f8145dab093afa9c4916adf2c9f9966cf4c1161bf1d3f628508bd335dae0c2c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/measured-snapshot.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e98c745d8c7882d922908e53d4af756668f9bb8d",
+      "bytes": 56987,
+      "sha256": "596ff810c84a235bb7170e3ffb43278a8987cb5360e3998f19e7099e900b6a40",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/measured-target.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "dfae12df7c111e26c3da36bca63714f48cc958cc",
+      "bytes": 43996,
+      "sha256": "f04c86eaa7297729037089ea10e97b5a64a428a8dfd6226a99d0ae45cafa5a99",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/placement-context.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "cfe1583e2f425b5ad6f7f9b0d067bbaace9bc42d",
+      "bytes": 16799,
+      "sha256": "cf8246fe8d11f8f27790fbe06f14b79061c00724636fede1201a8f4626f181a8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/plan.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "a2cd4bbe1c89cf7a386b7b59bc1649530ec12331",
+      "bytes": 1197,
+      "sha256": "3ca96b8d12afea2410222cd0f8b1e9501193345c0621a3661a83cd39feb5d760",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/prepare-result.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "90ce8458b27c16fb17cdf36ca663c769b5d025ad",
+      "bytes": 1539,
+      "sha256": "30d004fed785e9c706f3127a528f6e5bdd59c9cc43c18821eb497d4f44182a9a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/prepare-terminal.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "fcdb73ed27b17d13f5b816dd8dd91c1d65b4b1cf",
+      "bytes": 177,
+      "sha256": "e1f61e85bbaf1c61d03bca18d0e0fd4045a288d298f6d8817d5cd8905cd6b008",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/single-antenna-trial/result.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "c8105a186192d32ee3cc5cbccfa75ff79c300a6f",
+      "bytes": 24309,
+      "sha256": "ee80e313bc3f0b096711d060a009fe82bf33c4b2a3d7ea9a0e98182e5c7cb9bc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-audit-import.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-audit-import.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "8ab24468e0c4b920dcd20e53c7c60371c7532e64",
+      "bytes": 285,
+      "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-audit-measured.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-audit-measured.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "8ab24468e0c4b920dcd20e53c7c60371c7532e64",
+      "bytes": 285,
+      "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-baseline-ant.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-baseline-ant.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "5951e0340220a8b0ba49d4c65f7eace5f2e901a2",
+      "bytes": 2600,
+      "sha256": "77ce9213c4a07e500ec6310712cae4254aa62d7fbee39502c521c8c49e5b0afa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-candidate-check.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-import.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-import.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "d63499935e3c82bebf04e4573f6c2fa02593ce53",
+      "bytes": 807,
+      "sha256": "1e05721f1c8c25e4f4ca2b5cbee7a0b79cce0040e9ae68a7741f6d403f5e8889",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-inner-progress.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "143536fb76fe794d2436b82b5b6b95c62b0fcfa3",
+      "bytes": 6636,
+      "sha256": "d1ce1b2360919a40c38e37680dc24ff9c8de4929da1ceef42e6a9bec76d303a7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-inner-result.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e82983838686253a6fc8fbb72dba7591700a10bc",
+      "bytes": 23284,
+      "sha256": "0bf1d097116cca6be864aa40e1205844de912c4e3b232e9493b3bb47108cfd16",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-ldd.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-ldd.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "49382b666f1455a33bbec87f0b5e80ff80f421fb",
+      "bytes": 10979,
+      "sha256": "92660f125c8f4beb74fe36a1b07d09ece0285b111fd1e6734981e3bb80e48b83",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-prepare.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-prepare.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "8ab24468e0c4b920dcd20e53c7c60371c7532e64",
+      "bytes": 285,
+      "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-runtime-observed.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "534b24cdcf542b98ad1ae9c29197ed1e2ad5ccd8",
+      "bytes": 16940,
+      "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-version.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/native/trial-version.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "233850439374365fe2cb6382f30eeb73ca08fca5",
+      "bytes": 42,
+      "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/producer-jobs.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "921fa203297a191bbeb23d9eb65e5fe303361065",
+      "bytes": 11344,
+      "sha256": "6f59973a9df6e74f5e99074737d97edcf8be57a9832369d5436a3de759f4afb0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/producer-ref.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "edd7945ead37bc763696aca0bf5d0686e9d0f235",
+      "bytes": 548,
+      "sha256": "c291d45b7c3b20c2cfce207682ca90ea6db3b3c972343eea0210d6de7031031b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/producer-release.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "f78e0e603693d559e560672fe3980c66710a5c1c",
+      "bytes": 8533,
+      "sha256": "51ac4dd35df2fdb583f86b1b4b9828a3d3ecbf4220b9d8534301c17ea64cd880",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/producer-run.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "1d9ad42d4cec0a6ffd2e98cad3263ce7cbbe63c6",
+      "bytes": 14424,
+      "sha256": "cfe99c6e3d0c67bf843afa8e66ca63108e865a4bc12e14134cec241b9cfd6a23",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/publication-candidate-native.tar.gz.part000.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/publication-candidate-native.tar.gz.part000.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/publication-candidate-outputs.json.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/publication-candidate-outputs.json.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/publication-candidate-parts.json.stderr",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/publication-candidate-parts.json.stdout",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/reservation.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "0be379705bc106cf1c85f23e9234406bfaf1ee04",
+      "bytes": 586,
+      "sha256": "295a8455339e8da28c6c15827c9991989ea68274662f3133f9f1bb9187fa2ba0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/derived/result.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "e58ebe95055fc910203281559ad2e553d265a765",
+      "bytes": 57095,
+      "sha256": "65a09cc5510f502b110e4d46b95e64dee25c7c4b9011a278384d313a55a1246c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/job-123885712511.log",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "d591a9c2b36743318657e2949694957e7b5ed7ee",
+      "bytes": 212010,
+      "sha256": "1d43ad978cebb6b709ec6c486d1563556e9eeb5caac1c77dc46b5793910432f5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/job-123886001193.log",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "958bc90e3aa679d9156e3ed3c19af6d525c83348",
+      "bytes": 7543,
+      "sha256": "ad3ebf0114b8ea8ce396cc76d69e4c545f05a5b75b3950bb84829cb3b1c38b9c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/job-123886055812.log",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "2424132553610976d73de12a9cd9dfe4972628d7",
+      "bytes": 328242,
+      "sha256": "7eef2a953ff87e3c67cd45d191724d9de1717aa48f89345b9b45bdbe003e8943",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/job-123892860890.log",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "1d4cc85dc782bd31ec5b74c73922da33cb60d416",
+      "bytes": 6956,
+      "sha256": "0a0aea266f97c356e80c39c06dfdaad6fc74645cdaa624b45089984df3839c72",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/jobs.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "b8669ed64ced53e2704aaded3c7c37cbfe7c0646",
+      "bytes": 17887,
+      "sha256": "c3ce060ef9055a4fd4b1c278a556e44d9e4efd0d98154c56ceab5394993bb897",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/receipt.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "6a62ef66275ac0c692e642fa5948723b1a288ab1",
+      "bytes": 51805,
+      "sha256": "de7f12ef675d51465bab7840b4b9a039f0b96e0e80b1f79e33fb0ab70cfe8830",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/release-ref.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "f1859a8827be43e0b0457964c16924f2690bd46e",
+      "bytes": 555,
+      "sha256": "057692967f6413281dd5bb610ef325b39c05781c9cc532d9cdb945aa6e6d9b14",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/release.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "c87b2c4b702470639c15ee69ebb660d4dd2e5e45",
+      "bytes": 8567,
+      "sha256": "0e472a5143c32ec641a9a17e8bf8f16ee860c6069dee05c51cc67d13dfffc264",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/run.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "f643177aee76437eea1585b4fe48296154e6a339",
+      "bytes": 14435,
+      "sha256": "5894926c7a786ebfbce506a360c805c6d959e936a40265ac5c2903b1f532ac82",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/source/.github__workflows__mainchip-net459-diode-prune.yml",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "c324ad8c6227432d40439fcfcf99b16ad4ff3d2a",
+      "bytes": 35874,
+      "sha256": "8d00d64b7682ae444ced4c7128177767a3a8bbf18939bd03af88bd859baa5e6f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-terminal-41001185417/source/scripts__mainchip-single-antenna-trial-pins.json",
+      "source": "c1c734e33cc0e396a9a220b3ab909645f992b251",
+      "git_blob": "d49c7bed512547fcb8f09c531ea78bb807f0ed0d",
+      "bytes": 8443,
+      "sha256": "c4d65b0cb4c47fcaffd6ea8bb76847dac0f74e5dd4b0d6836cc99ba2af706adc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-source-review-20261030.json",
+      "source": "474045b9821069cbe42a71752c3c53267e5493fd",
+      "git_blob": "a61459c93a2ed490ca5cfbaab1762aea155041c7",
+      "bytes": 4983,
+      "sha256": "8d0936cc7ee721c943717865582ff3e89078d28cb3d7723098836c40af6b489f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/diagnosis.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "18a47eb7bb09c11a4235159c9404cb4f8cf3a94f",
+      "bytes": 7128,
+      "sha256": "615138a1fc8c0beb763a379addd0592d84782efb06a5e6d291e9e304d2a17b06",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/job-123893833607.log",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "f71b864b51920524b792e045adbe28238fd67fc9",
+      "bytes": 496793,
+      "sha256": "0315785913239cda217d9269ecd68101970a93c92f51da65bf67c6ad1efca8ba",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/job-123894062177.log",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "dcedbc237d4bf83baef8b3da2c8551230cbc9920",
+      "bytes": 7543,
+      "sha256": "03874de0cb7b9b4969f42a1f549759444cd6a3014f45ec0bdd3054534625548f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/job-123894116000.log",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "4171071230f34cc102403e68d9d3f57a7dd36523",
+      "bytes": 2166239,
+      "sha256": "46cbeb49a4fb9fe519ec44fcf2914efca9ad97017c74fc4598c0de81e8fe92d4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/jobs.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "b9926e2926848af64cd0ae2212c55d1430a18d52",
+      "bytes": 12229,
+      "sha256": "dcf5c906d600e3d0d76d4e069a6c2a76996a36ce9c6a4a8b20d964932a40f8c5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback-index.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "438bba26c32d247de110f9203d44952e146ad6a3",
+      "bytes": 29074,
+      "sha256": "37c9ab994895768c85e7b9b8170c562523e006a6e9ba51817956b479c0181685",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/access-overlay-preflight.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "5ae2ca36f2a43662e05cd4a97c859dfcad3bc721",
+      "bytes": 75268,
+      "sha256": "a52b78f91c5911f984c2fff3a9e916792b95e8debe91954d94c069c5493fbd27",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/access-overlay-preflight.stderr",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/access-overlay-preflight.stdout",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "01b7f58f55c415bfd73fc7731852a37d9cf20a23",
+      "bytes": 63476,
+      "sha256": "63384458785aec3578a310fe72f8d1e8f04ee3877a94c4025aabc1094102f39e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/access-overlay-readback.stderr",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/access-overlay-readback.stdout",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "7797a1ef31c4b7872b80d42c546e0f10d957f0cf",
+      "bytes": 54960,
+      "sha256": "6d805b20bfeaed12af1730f7ca4dbacd1f2fbb3660bab8053686f220aa1d627e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/access-runtime-receipt.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e7ce387e41a74340329a1287c44b271d86a3d4d2",
+      "bytes": 343,
+      "sha256": "4a6292cb1f4105b13bd6b7eae32637ac4f21761ad2cb10db7a649719385599a9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/cdr-access-overlay-controls/context.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "53888be2ca8d561735ff920669abaa5738d649fa",
+      "bytes": 185152,
+      "sha256": "ea280d8f093827433b20346fbbe4b72360a5dfa0e9c149e5689dc13302b35d2e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/cdr-access-overlay-controls/controls.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "6af528c9486ac012a89de80395f0041af90b8565",
+      "bytes": 79681,
+      "sha256": "0a9ae642f69bb7fdd76ba2414c04366b8072084c4f6058e946462884a66aabde",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/cdr-access-overlay-controls/controls.stderr",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/cdr-access-overlay-controls/controls.stdout",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "6af528c9486ac012a89de80395f0041af90b8565",
+      "bytes": 79681,
+      "sha256": "0a9ae642f69bb7fdd76ba2414c04366b8072084c4f6058e946462884a66aabde",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/actual-witness-faults.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "d14643436d0916fe59f36d5e1e592e088e18a6a7",
+      "bytes": 1864,
+      "sha256": "a754d9df8afe263c397e8337555d7fd13ee94b21d2469aa4513dc1d562859d75",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate-inventory.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "090f4d47f306ea8c1ab505c06957616c84f53498",
+      "bytes": 11784,
+      "sha256": "265b2e5f25411b796e7d44e152b19e8b0dd4fd5d1c5ecfb3b9a4305fe45193d8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/methods/check_width_parent_geometry.py",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e0fe7f791a578a90da50329916fbfae73cdc528b",
+      "bytes": 5061,
+      "sha256": "82fbf5eb57610edcf1126e9e1d82c14be7cf59291d710a20dcb4445efd54b92e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/methods/width_planes.py",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "bf1f9613408602788ffa73160f327192d0a540b6",
+      "bytes": 14880,
+      "sha256": "04459bbf8f1f704fdc3cf53cb59d7fa6c9e4def2d4bafc1715526b4a2e7be580",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/methods/width_source_pins.py",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "2dc502f76c22f05f0dacce7f79da3e055ab8416c",
+      "bytes": 12726,
+      "sha256": "29b92f3ae273b3f5bf6f0f9ae4b144c3257b73bf38307500c27f8853d00d90ea",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/native-planes.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "8778b9aa5aa48776c13bb74305e585b168623cd6",
+      "bytes": 244593,
+      "sha256": "f32720bd478ef3f97b8a68fc16d60c07cc804d0ec04f05c32a0e48e2abbc340e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/children.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "442e11d6055b118f294061f70189bedf214c6f76",
+      "bytes": 5491,
+      "sha256": "eb9d7cd91b0f412615f4be090ca5ced88f1be1cbfd1784b400afe23afa7c6e11",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/data/layout/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "69db96a0c15f68fa94d7f8226d122d32f24d3b62",
+      "bytes": 23855,
+      "sha256": "a5c510d81c055b8b3f63c7203abd0d421cb43a38f0697c2bf4ae4345bb97fcaf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/data/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "930e8cb38a024d72169875c23bb4354524255ee2",
+      "bytes": 104860,
+      "sha256": "48c87be477c04a29619074d0d29f59e194235f9e32ae5a12b1e9573dfb142ba7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/rc_data/layout/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "36cbe4fb272b175047919684a0f915ff1b42f85e",
+      "bytes": 22130,
+      "sha256": "a182f41e45e1dedffd42a39b391d516a4856d3a611c40c6d7afcba58170e2225",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/rc_data/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "daad854c7431dd5b0833250c1a3b6c764d6a16c9",
+      "bytes": 98751,
+      "sha256": "e8d984ae4cf5cd2cfecc496dcaf5a3637870d1d36b9dd550f2af03607ce07e46",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/rc_retime/layout/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "f3801681e14a9225e53723fd6ca68746100f6693",
+      "bytes": 20826,
+      "sha256": "d740a8c82706745b17a1d7be67125f912f0740232f8aa332d61422de45658731",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/rc_select/layout/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "5c259087bbc30026c3e758ea62ebcee5b92d625c",
+      "bytes": 22130,
+      "sha256": "4da06b1122a5c2490e2c095bbd59694b96836b21afe7f890f6315cfefd4f619b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/rc_select/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "03ab7e585fc3907d678bfa525ca8963ebf009209",
+      "bytes": 98983,
+      "sha256": "c0733888a43ba5979d345b3c343807281f5ffcd94cfd1271f4b253249d4601dd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/sampler/layout/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "7fd1aad6bd63ad3fd58755d97d11b831738d602d",
+      "bytes": 208988,
+      "sha256": "fde01a0b0db8c6cf3f6d85b618d4806087c6dd36f7e9d143976f038332c5c09c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/sampler_cd/layout/pre-tail-access-wire-result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "9c30b21368947ee944a4ae1d75d8e640fa423591",
+      "bytes": 250766,
+      "sha256": "c330d250cedbfe16b2aa9b03468135813fd457d5cb8212187553c3cf3d510029",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/sampler_cd/layout/pre-v59-result-cd_shunt.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "8c94c6e429501b09db6193e06a9a829a1a3bfff3",
+      "bytes": 247445,
+      "sha256": "5519863b12a9e0c86514daa78fb958199929e5b07fe0be95e07da8b882c2aa90",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/sampler_cd/layout/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "22300328f24603f2757e27c58faf52210e1d90a5",
+      "bytes": 269242,
+      "sha256": "fa91ff0ec71a38b84200e57f7316791572c07bbf2b4b13d7e744d2b557bebd87",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/select/layout/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "cd4d2428ee17e849087d637f1ecb8ad2972f5f03",
+      "bytes": 25394,
+      "sha256": "d6759bb5d272cc55ed18646aff639f7baab057adb2aabf3091e772637d26b311",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/select/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "a8f66a795838e51da0adeca2c3b7a13fd54ae8e2",
+      "bytes": 111636,
+      "sha256": "23d08dc4ccd4e0718bf3c4e44e1d2404ed60bd17fcbc14449ee68c913c1df7bb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/vi/layout/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "2b36e572efdf657205d3605076b41a9ad6376b78",
+      "bytes": 29760,
+      "sha256": "469352077e991b1a2bbec665e90c4fe9f4f9e0cdc206acde5f6f479a90128139",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/vi/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "7569f47b2a582a91b40e5953c06168e200fc698a",
+      "bytes": 105356,
+      "sha256": "33eaab6fdbdb2399ad7182916c84d8a68f96f4cc0a14bc15d43819ae021b2555",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/xor/layout/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "65654a7414a76d18a23b38caf5f8d2565dc74b0e",
+      "bytes": 51009,
+      "sha256": "459cbaa9b6122cc2c298c84f797ce6dff243538b8f4ff135dd0e1b620a26862f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/inputs/xor/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "7b0a5fbd2863fc0a7faea0d5b5e86448b8ec6bfe",
+      "bytes": 140354,
+      "sha256": "a723a5f717e17faaa438f5ca0064cca06d478c03a724262b5095c51b878d2098",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/layout/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "ad6930ab84d9ff1ac2217d81fcddaf9504f0bb61",
+      "bytes": 19817,
+      "sha256": "3d84248ed82056a35ceb4d0b0ae0313ed597b07631a0e81260695110464c68f1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/physical/lvs_flat/audit.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "8916f51cdf84d541b8c8b880c2a10616d72f8215",
+      "bytes": 875,
+      "sha256": "09477d489edc93db52e5e9637129baaea24b51d3bf4cf4e6bddcce21cd206f2e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/physical/lvs_flat/audit.log",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e951ec5b55c0afcebf1ddbd59562a1152e34c64f",
+      "bytes": 29,
+      "sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/physical/lvs_flat/deck.log",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "48b916d18bcaf7345b2b1bdd2ae815032036f45b",
+      "bytes": 37202,
+      "sha256": "92b011df95b07086f88626079902d0d8560f080156e7cfc19ebf694b194a7091",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/parent/physical/lvs_flat/run.log",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "475b100f0011d54375d2a8b0baae35afce16e241",
+      "bytes": 37135,
+      "sha256": "d221e72bff687757c7a0c87c69f74a0364565ab7d72a2a8d5a166e8400c93def",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/wire/anchors01.py",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "f783edb181df74a9909bc660a4de457280758ae0",
+      "bytes": 5583,
+      "sha256": "d7e42e16f91787003a981c9047cff8b91c1810fcdf05b346d0b1e308f730bc38",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/wire/anchors03.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "73522ccc7934441e89933118163523369ec6724d",
+      "bytes": 903906,
+      "sha256": "8c641d36300ead8fd8869cc90ab81b3d10a6e8f9f013501137b01930bf0fbdaf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/wire/anchors08.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "8b648f25e2c0a00694920be2feef133fdc2b72d6",
+      "bytes": 1650436,
+      "sha256": "fd6b659458a6aa430fea3f2ab4c92829f35e188b3ad4a8883336a38622029706",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/wire/dedup01.py",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "5fe5a0b1c48f950b5dc3c204e56f81f38903c09b",
+      "bytes": 1441,
+      "sha256": "58ec392e70a89e2b4b6175fbef01413e3417b1d5fb1389aabd6fa7b95b743544",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/wire/device-locations01.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "33c8eea5faf6e63132e58d211be13e63eea882b8",
+      "bytes": 686503,
+      "sha256": "87ff729837147729bcff84b410d304f881a52ddff53c21fcad08314baa06bf56",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/wire/locate01.py",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "feaf6ee1061cb9990f6d484e594366ad6f0ec4c1",
+      "bytes": 3329,
+      "sha256": "8b4e377afe7edd1ef3a1d1c59eaa43a79f6ef9af7d7a87f5b99ff51ee727614c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/wire/native05/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "573e8faef5818b0fa82a29ea28d81ae7a9314169",
+      "bytes": 290678,
+      "sha256": "290390716d3fdbad166a4abce3075b9b92aa75ca0c6b2cc042876ebbfb399fae",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/wire/pcell-inventory01.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "59fac37f7718db2e7b4b2887613513021bdcf746",
+      "bytes": 997526,
+      "sha256": "aa19413a368c2066f42f04f3266dab1e4321452167f9ecd0ac447409fca11717",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/wire/probe01.py",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "b79fc27409c07bb54a409b8f7901a30331fee72f",
+      "bytes": 5416,
+      "sha256": "ba22f02f0f7d7ee123f2c79cfc601bf246f59db2338ae68874601187b734555b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/candidate/wire/source-pins.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e92b3e27bd681a6ada139665ed9c5bbe86099c2c",
+      "bytes": 38436,
+      "sha256": "208c6e3f3faed97644b4aaa809dac9f2e7aeb3e4d01ead3dc3c2c72fb54f1ce9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/complete-input-census.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "9ffc1f5a71572bf39e2cab7cb6fcc64ce65186d2",
+      "bytes": 1537032,
+      "sha256": "f16e41b1f0cfb4c4adc1018926feb343ede7109c63e1d5eda8f64e6799211197",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/complete-physical-census.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "28e1877cb7a56311fbc8a497970b1b8ce186e983",
+      "bytes": 31297,
+      "sha256": "ea7c611b1ff5a66f0bca5170fcf702c04d1dfb6cc00aecdfcec7285ce2bf20ba",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/derived-methods.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "3e8ee023d3eb858021653d7277509be984100f6c",
+      "bytes": 1549,
+      "sha256": "ea3f5221a6a42ec9162a82d0bc9f6faa4aa36b347ccf90e0e674222ac61f8869",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/full-partition-material.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "1fcef4f6671a0f7f4c5e4bcc3e1fa3497dc8a4b2",
+      "bytes": 1515714,
+      "sha256": "d13898832391680af152147259fbbcd2709a707ec996e2de6c65bc89e595cc8f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/graph-qualification.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "141dc6eda59bfc1a7331b1d927d9b2f9130f1e54",
+      "bytes": 24702,
+      "sha256": "83cc11f05ba5be4077966a30b0ae95377e5c9ca2531a47657098547b3c7db490",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/native-identity-comparison.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "a1dfc0dbf2f6e2ba6e3d100991ab95236d816058",
+      "bytes": 1111,
+      "sha256": "386ab8bdbb78f353aebee9ff8f3e3e6db547a5b2e07df382cabdb1605ba028bd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/native-lifecycle.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e8660e4c94a67155354428314b647df3b1621730",
+      "bytes": 17157,
+      "sha256": "17d86296e7bab55bec73ee6dd81deee973615fea3bcec91869debd988b24c5a7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/native-material-controls.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "d5c84d95bea78d7906f7bb5b71c6da25675e133d",
+      "bytes": 641,
+      "sha256": "9aac81ed84e34ee2ea51d720853c7f7aa3553fd52cf0ad6d883577fa8dcf587a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/new-native-identity.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "52b2ee387f6930c9d51f5ab1940e5959d336036b",
+      "bytes": 4761584,
+      "sha256": "4395532e55504e1aac6c25e76549ed0e25d95c6891f4c73b92e8ff5188692769",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/old-native-identity.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "568fcb5b5d0ab6ef917abfa4c6c2663e7c7a74a4",
+      "bytes": 4761406,
+      "sha256": "81a4bfecb58f414444d238d1908cc491c6aaf01046ed6482e53b5452874769f2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/original-parent-metadata.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "56caa006170190816ea58e6004084678653bd1de",
+      "bytes": 19863,
+      "sha256": "d85d5d2882dd5c3e96bee3e1ec61db7b2e19814b6eca3441bf93a8c75da89b03",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/permanent-archive.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "7f25004e2c2af1c06bbc825274c0eda1f5767085",
+      "bytes": 314,
+      "sha256": "501042a3635ea122b73ef3de986bf25cb182593e7b650a05e0f12693afa5105f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/permanent-output-inventory.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "7508e793a84929dce8fc6e0626a25422d48574bc",
+      "bytes": 28209,
+      "sha256": "1468521ea0c4c39c720eb061fa42a4f7d78c7ebe982e3331e7a8757119d6cde0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/permanent-publication.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "907e19f4c0e5ba90dbe01c01dc8d9eb856817a75",
+      "bytes": 6573,
+      "sha256": "d8472e510c00e3f627931c163c03f2c428fa915770480c3c4330f7756aae4188",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/preflight.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "5ae2ca36f2a43662e05cd4a97c859dfcad3bc721",
+      "bytes": 75268,
+      "sha256": "a52b78f91c5911f984c2fff3a9e916792b95e8debe91954d94c069c5493fbd27",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/projection.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "eb0a97236fe9ff8a87a56dfc5201edc208aad569",
+      "bytes": 21957,
+      "sha256": "fd2e20ce7754aae5248744cfe09c171f2c1465263e16e9f26b97f51f90389e80",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/readback-result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "39edc20d21ed199bfe36adce388f996547c4e076",
+      "bytes": 13042,
+      "sha256": "1790fdede8f42a4290c3545b5eec1058cdc0c926e4e6bc16b51b786d0bcd1561",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/runtime-smoke/result.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "fb4edbc8ef7f2b32282ae95a3f2a6753c45bba96",
+      "bytes": 3588,
+      "sha256": "9db1d74e796dc521f920c39bb88a171ed2e5498ebf28d6a4b481f3c39b00ecfc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/runtime-source-manifest.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e0b360fa8efcd3af43a9d9df135ed5640c011d84",
+      "bytes": 40209,
+      "sha256": "fd44dccbb9f82681b5c9bec01ef766afffc65d1c46b882372c7780d10b69da42",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/source-controls.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "6af528c9486ac012a89de80395f0041af90b8565",
+      "bytes": 79681,
+      "sha256": "0a9ae642f69bb7fdd76ba2414c04366b8072084c4f6058e946462884a66aabde",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/events.jsonl",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "745f923bcf981a174e01f33a8b59d15112e501ab",
+      "bytes": 36284,
+      "sha256": "b3ec9937da4b078481a044c06660b2cd652695a1902945937075c0760b59386b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-anchors01.command.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "486ef1c6c6b2466b10b6459104ec9a1232259ab7",
+      "bytes": 1299,
+      "sha256": "b931bf127f93d34ae18e4e88632be97e5f6506b17742cf62400d25b6797a3b66",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-anchors01.stderr",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-anchors01.stdout",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "18a3cedb5ade55f88d6b28b7e8c7092da8e41102",
+      "bytes": 169,
+      "sha256": "d8a30a976b094f3974f50424fcc5c33db52acca5c957c63e16f98851f1822bcb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-complete-identity-and-material.command.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "66b8391a918537f6923b12f26e816a573506e678",
+      "bytes": 2812,
+      "sha256": "40617671ac7289f6cded32712a52c92a7cb49064d8834c3e9e144a1b854ca904",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-complete-identity-and-material.stderr",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-complete-identity-and-material.stdout",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-dedup01.command.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "82c9085cf98152087001a6781ecd8267da99d115",
+      "bytes": 1290,
+      "sha256": "e9f04b7cf2473720ea3341bed4f6e5dcd4ac3f41220f40b1bfc3799d3f5f6b4d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-dedup01.stderr",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-dedup01.stdout",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "2104acd5c4156445cd7361949b365f7c34f70b56",
+      "bytes": 54,
+      "sha256": "29222772cc29c3b94246123690b0309861b3df247b82bd9bf876ed0e374801dd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-locate01.command.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "05e3194831f764b0a7a6a3bd3faf224589d67438",
+      "bytes": 1297,
+      "sha256": "0a7e9ff3b7b1117ce8f07b8d56237b60ed3895d7a3a7418512e4ff0cbb7c62e6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-locate01.stderr",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-locate01.stdout",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "3bbb3c0545dee00aac4b1a20bbcc208c239bc6c9",
+      "bytes": 154,
+      "sha256": "688ef9bb7e15e0496c2d3cb62879c57dc6d7383e17f37ed137e8653ccf11f3b2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-planes.command.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "19c2dc1068008eed970ab9739fe92b527c79a00e",
+      "bytes": 1689,
+      "sha256": "05dc755387ced0e3a64dc80dfcd58f0e892b3530456ce6644ee4b561a8b2411c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-planes.stderr",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-planes.stdout",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-prepare.command.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "33b263eedb934a41f0b8e00ddd7f047dbfbd7869",
+      "bytes": 1690,
+      "sha256": "61c07066d47c50d5a9f0af6b18c71e4bc37ce4fc92ba4102139ebc0181f1f307",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-prepare.stderr",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-prepare.stdout",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-probe01.command.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "cb052308149c1b279cdfed8ef2c5811eaaa2f2dc",
+      "bytes": 1295,
+      "sha256": "00d57ca1d8748a7cf1b575319d9c43488935c17ddec3cdbddee7c0dc3c57dbf7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-probe01.stderr",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-probe01.stdout",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "f8642e48ae8e11a8463a39d9cc97dd078a981f8e",
+      "bytes": 62,
+      "sha256": "a1c347554cb0180523e9e07bf33f3a1d66fcd38410848c02ad8a0647978c912a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-recover.command.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "dac418e5db4d99a45d3a80b0a4f4d46d3dfc6bef",
+      "bytes": 1691,
+      "sha256": "be5fb2f261f953791dc161b9ddf3703ed9f5cbf65e30e08279821ce0b8a7488b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-recover.stderr",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/fresh-recover.stdout",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/frozen-runtime.command.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "b33f4dbb87d2065c426fff31438034df5a660914",
+      "bytes": 1435,
+      "sha256": "5a06def7c7a6aeae6295f737955279d6f4fe73f2d09ecefcf3293eb6231553d0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/frozen-runtime.stderr",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/frozen-runtime.stdout",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/supervision/latest.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e5514af6f87aa20ac221f6718f8a6cfbe8df145f",
+      "bytes": 3010,
+      "sha256": "a7f699ebb36cab40b877e505562f9ca45073cf73bf91aafe84aacaf005885400",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/hw/soc/out/cloud-cdr-drain-m1-fresh-graph/transport-proof.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "50d7dd831b86e62bd91761b0cd348e283e6dbb1b",
+      "bytes": 610,
+      "sha256": "7ee471271feec5fc53e6ec5e6dbfecb60cb144f87d4701362652fa588fb028e0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/readback/release-reservation.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e18d729c7bb6e672a4223761fedf35cd75e990e5",
+      "bytes": 325,
+      "sha256": "96140848a6519d454fcfa4640bafe2f793b83ce9a7fdd219d0d6f8488a0c2f81",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/receipt.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "51e022dc1657be245f9ee24a8a4948b8dc130cc9",
+      "bytes": 22973,
+      "sha256": "060ff52a3d27eb2745a709eba2cf721dc7744034bc6bec309386f7363bc98241",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/release.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e242c1ecddf98c623fb06bd999939054ea8e9b41",
+      "bytes": 8567,
+      "sha256": "9eb9fd064ea996d95e8db83c9ec1c6e6554c97651a12beabe240c1e5f8397d63",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/run.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "4588b6be8c129f24682a94194a8795a75bd90bd3",
+      "bytes": 14430,
+      "sha256": "692a9baf12279dae9888ec1f0885808605c556e305364de0fba70210b1187356",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/source-control-index.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "61a5a91d6cd8dcc9c07e8b9fd9156669457e0db5",
+      "bytes": 785,
+      "sha256": "9a445d12da1de1389db0cd65c6a4b65fd91ad8c79fd7d5d5dc538b9d788430bb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/source-controls/context.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "53888be2ca8d561735ff920669abaa5738d649fa",
+      "bytes": 185152,
+      "sha256": "ea280d8f093827433b20346fbbe4b72360a5dfa0e9c149e5689dc13302b35d2e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/source-controls/controls.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "aa9a6c5aeeae114041e538a1311a77aab2a26737",
+      "bytes": 79681,
+      "sha256": "912d6aa18f8431882d5e44b662261e91de8bf942bdb28fd1b65c7175731f689e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/source-controls/controls.stderr",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/source-controls/controls.stdout",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "aa9a6c5aeeae114041e538a1311a77aab2a26737",
+      "bytes": 79681,
+      "sha256": "912d6aa18f8431882d5e44b662261e91de8bf942bdb28fd1b65c7175731f689e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/source-files.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "6d22b443d2d6ebe511228704fb32cc89fc0576bb",
+      "bytes": 1124,
+      "sha256": "e52532e8a29bc9d98bf4e753a6a992e9c0f27c7b338b820f632ee20d704389ac",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-fresh-graph-terminal-41003747027/tag-ref.json",
+      "source": "a61ee868a7a4eea5e72d6c8f82e236ee1ab21925",
+      "git_blob": "3ffdb232070853af186cd23700f4848ea103c83f",
+      "bytes": 538,
+      "sha256": "a860fb6998454e053903c6b7d2aa3be98d9a63a7cc676780d68f2fd3e9d5bf68",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v140": [
+    {
+      "run": 41003747027,
+      "source": "474045b9821069cbe42a71752c3c53267e5493fd",
+      "release_id": 428657373,
+      "tag": "cloud-results-41003747027-1-cdr-drain-m1-fresh-graph",
       "exact_source": true,
       "empty": true,
       "independently_reserved_before_acquisition": true
