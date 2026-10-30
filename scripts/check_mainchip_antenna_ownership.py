@@ -67,7 +67,7 @@ def controls():
             payload={"candidate-outputs.json":p.encoded(metadata),"candidate-parts.json":p.encoded(parts),"candidate-native.tar.gz.part000":raw}
             def download(n,w,e):
                 q=w/n;q.write_bytes(payload[n]);return q
-            with patch.object(reader,"producer",lambda e:None),patch.object(reader,"download",download),patch.object(h,"CURRENT",p.pin(b"abc")):
+            with patch.object(reader,"producer",lambda e:None),patch.object(reader,"download",download),patch.object(reader,"ASSETS",{n:dict(id=0,**p.pin(b))for n,b in payload.items()}),patch.object(h,"CURRENT",p.pin(b"abc")):
                 h.acquire_current(work,ev)
             assert (work/"current-input.odb").read_bytes()==b"abc"and not(work/"current-transport").exists()
             record=json.loads((ev/"current-input-restoration.json").read_bytes());assert record["full_members"]==inventory
