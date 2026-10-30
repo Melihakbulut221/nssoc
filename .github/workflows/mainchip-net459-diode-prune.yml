@@ -71,7 +71,7 @@ jobs:
           import hashlib
           from pathlib import Path
           raw=Path('scripts/mainchip-full-antenna-readback-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='b10a18d8af64910bb4b29dc1278be3c6560f615af41fdba83af7ce7c1f1dd513'
+          assert hashlib.sha256(raw).hexdigest()=='70813988537889e2800e4da79fb45c221fc3067bb8270873c3eb654d1c08c0d1'
           PY
           python3 -B scripts/check_mainchip_full_antenna_readback.py --output net459-diode-prune-controls/antenna-controls.json > net459-diode-prune-controls/antenna-controls.stdout 2> net459-diode-prune-controls/antenna-controls.stderr
           python3 -B - <<'PY'
@@ -79,7 +79,7 @@ jobs:
           from pathlib import Path
           r=json.loads(Path('net459-diode-prune-controls/antenna-controls.json').read_bytes())
           assert r['status']=='PASS_FULL_ANTENNA_READBACK_SOURCE_CONTROLS'
-          assert (r['positive_count'],r['refusal_count'])==(15,41)
+          assert (r['positive_count'],r['refusal_count'])==(17,42)
           assert r['native_executed'] is False
           PY
       - name: Always emit full source control records
@@ -285,7 +285,7 @@ jobs:
           import hashlib,json,os,subprocess
           from pathlib import Path
           raw=Path('scripts/mainchip-full-antenna-readback-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='b10a18d8af64910bb4b29dc1278be3c6560f615af41fdba83af7ce7c1f1dd513'
+          assert hashlib.sha256(raw).hexdigest()=='70813988537889e2800e4da79fb45c221fc3067bb8270873c3eb654d1c08c0d1'
           for name,pin in json.loads(raw)['files'].items():
               p=Path(name);assert p.is_file() and not p.is_symlink()
               b=p.read_bytes();assert len(b)==pin['bytes'] and hashlib.sha256(b).hexdigest()==pin['sha256']

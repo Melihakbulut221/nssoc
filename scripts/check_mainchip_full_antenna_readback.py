@@ -80,6 +80,7 @@ def controls():
         with tempfile.TemporaryDirectory()as td:
             out=Path(td);(out/"result.json").write_text("{}\n")
             assets=[];reserved=dict(release_id=7)
+            if mode in("empty","empty_uncertain","empty_changed"):(out/"blank.stderr").write_bytes(b"")
             if mode=="symlink":(out/"bad.json").symlink_to(out/"result.json")
             if mode=="native_suffix":(out/"bad.odb").write_bytes(b"synthetic")
             if mode=="unexpected":assets.append(dict(id=99,name="unexpected",size=0,digest="sha256:"+"0"*64))
@@ -89,16 +90,21 @@ def controls():
                 return dict(ref="refs/tags/"+ctx["tag"],object=dict(type="commit",sha=ctx["source"]))
             def upload(argv,**kw):
                 assert argv[:3]==["gh","release","upload"]and argv[3]==ctx["tag"]
-                path=Path(argv[4]);row=h.pin(path)
+                path=Path(argv[4]);row=h.pin(path);assert row["bytes"]>0
                 assets.append(dict(id=len(assets)+1,name=path.name,size=row["bytes"],digest="sha256:"+("0"*64 if mode=="digest"else row["sha256"])))
                 if mode=="changed":path.write_text("changed")
-                return subprocess.CompletedProcess(argv,1 if mode=="uncertain"else 0,stdout=b"full stdout",stderr=b"full stderr")
+                if mode=="empty_changed":(out/"blank.stderr").write_bytes(b"x")
+                return subprocess.CompletedProcess(argv,1 if mode in("uncertain","empty_uncertain")else 0,stdout=b"full stdout",stderr=b"full stderr")
             with patch.object(h,"api",get),patch.object(h.subprocess,"run",upload):r=h.publish(ctx,reserved,out)
             assert r["status"]=="COMPLETE_PERMANENT_DERIVED_PUBLICATION"and len(r["assets"])==2
-            assert all(bool(x["reconciled_error"])==(mode=="uncertain")for x in r["assets"])
-    for mode in("complete","uncertain"):publish_case(mode);positive.append("publication_"+mode)
-    for mode in("symlink","native_suffix","unexpected","digest","changed"):reject("publication_"+mode,lambda mode=mode:publish_case(mode))
-    assert len(positive)==15 and len(refused)==41
+            assert all(bool(x["reconciled_error"])==(mode in("uncertain","empty_uncertain"))for x in r["assets"])
+            if mode in("empty","empty_uncertain"):
+                plan=json.loads((out/"publication-plan.json").read_bytes());assert plan["empty_outputs"]==r["empty_outputs"]
+                assert plan["empty_outputs"]=={"blank.stderr":dict(bytes=0,sha256=h.hashlib.sha256(b"").hexdigest(),base64="")}
+                assert r["empty_outputs_storage"]=="publication-plan.json" and all(x["name"]!="blank.stderr"for x in r["assets"])
+    for mode in("complete","uncertain","empty","empty_uncertain"):publish_case(mode);positive.append("publication_"+mode)
+    for mode in("symlink","native_suffix","unexpected","digest","changed","empty_changed"):reject("publication_"+mode,lambda mode=mode:publish_case(mode))
+    assert len(positive)==17 and len(refused)==42
     return dict(status="PASS_FULL_ANTENNA_READBACK_SOURCE_CONTROLS",context=ctx,positive=positive,refusal=refused,
       positive_count=len(positive),refusal_count=len(refused),native_executed=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
 def main():

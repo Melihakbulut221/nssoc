@@ -156,11 +156,16 @@ def publish(ctx,reserved,out):
     files={p.name:pin(p)for p in sorted(out.iterdir())if p.is_file()and not p.is_symlink()}
     require(len(files)==len(list(out.iterdir())),"regular flat output only")
     require(all(Path(n).suffix in(".json",".stdout",".stderr")for n in files),"derived output suffix")
-    report.save(out/"publication-plan.json",dict(context=ctx,files=files,native_acquisition_local=False,all_outputs_derived=True))
+    empty={n:dict(**row,base64="")for n,row in files.items()if row["bytes"]==0}
+    require(all(row["sha256"]==hashlib.sha256(b"").hexdigest()for row in empty.values()),"empty output digest")
+    # GitHub rejects zero-byte release uploads. Preserve their exact bytes and
+    # identities explicitly in the nonempty permanent plan instead.
+    report.save(out/"publication-plan.json",dict(context=ctx,files=files,empty_outputs=empty,native_acquisition_local=False,all_outputs_derived=True))
     files["publication-plan.json"]=pin(out/"publication-plan.json")
-    require(set(live())<=set(files),"unexpected publication asset")
+    uploads={n:row for n,row in files.items()if row["bytes"]>0}
+    require(set(live())<=set(uploads),"unexpected publication asset")
     rows=[]
-    for name,row in files.items():
+    for name,row in uploads.items():
         seen=live();error=None;stdout=b"";stderr=b""
         if name not in seen:
             try:
@@ -173,8 +178,9 @@ def publish(ctx,reserved,out):
         seen=live();require(name in seen and seen[name]["size"]==row["bytes"]and seen[name].get("digest")=="sha256:"+row["sha256"],"permanent publication "+name+" "+str(error))
         require(pin(out/name)==row,"published output changed")
         rows.append(dict(name=name,id=seen[name]["id"],**row,reconciled_error=error,upload_stdout_base64=base64.b64encode(stdout).decode(),upload_stderr_base64=base64.b64encode(stderr).decode()))
-    require(set(live())==set(files),"complete published census")
-    return dict(status="COMPLETE_PERMANENT_DERIVED_PUBLICATION",context=ctx,release_id=reserved["release_id"],assets=rows)
+    require(set(live())==set(uploads),"complete published census")
+    require(all(pin(out/n)==row for n,row in files.items()),"complete published output mutation")
+    return dict(status="COMPLETE_PERMANENT_DERIVED_PUBLICATION",context=ctx,release_id=reserved["release_id"],assets=rows,empty_outputs=empty,empty_outputs_storage="publication-plan.json")
 def emit(out):
     index={p.name:pin(p)for p in sorted(out.iterdir())if p.is_file()}
     print("FULL_ANTENNA_INDEX "+json.dumps(index,sort_keys=True),flush=True)
