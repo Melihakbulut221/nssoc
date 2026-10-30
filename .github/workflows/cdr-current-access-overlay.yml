@@ -1,4 +1,4 @@
-name: Existing CDR capture replay source qualification
+name: Existing CDR replay complete publication source qualification
 on:
   workflow_dispatch:
     inputs:
@@ -39,14 +39,14 @@ jobs:
           assert e['GITHUB_REF']=='refs/heads/codex/cdr-drain-m1-loaded-electrical'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           raw=Path('scripts/cdr-drain-m1-wave-replay-source-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='bd4c1f289ce9cd83754628eba7dfe3e4665225cb43aad5b7a8204a38ea4618c2'
-          m=json.loads(raw);assert len(m['files'])==30 and m['readback_authorized'] is False
+          assert hashlib.sha256(raw).hexdigest()=='de26052fb341f16b472b68bda7cbab15fc1b9da248b84a7012c1190f3c757ee5'
+          m=json.loads(raw);assert len(m['files'])==50 and m['readback_authorized'] is False
           for name,pin in m['files'].items():
               p=Path(name);assert p.is_file() and not p.is_symlink()
               b=p.read_bytes();assert len(b)==pin['bytes'] and hashlib.sha256(b).hexdigest()==pin['sha256']
           c=json.loads(Path('scripts/cdr-drain-m1-wave-replay-inputs.json').read_bytes())
           assert c['source_controls_authorized'] is True and c['readback_authorized'] is False
-          for name in ('scripts/cloud_cdr_drain_m1_wave_replay.py','scripts/check_cdr_drain_m1_wave_replay.py'):ast.parse(Path(name).read_text())
+          for name in ('scripts/cloud_cdr_drain_m1_wave_replay.py','scripts/check_cdr_drain_m1_wave_replay.py','scripts/publish_cdr_drain_wave_replay.py','scripts/check_cdr_drain_wave_publication.py'):ast.parse(Path(name).read_text())
           out=Path('cdr-drain-wave-source-controls');out.mkdir()
           (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,native_acquisition=False,readback_authorized=False,pins=m['files']),sort_keys=True,indent=2)+'\n')
           PY
@@ -66,13 +66,28 @@ jobs:
           assert r['current_context']==dict(source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_executed=False)
           assert r['actual_capture_replayed'] is False and r['native_executed'] is False and r['physical_acceptance'] is False
           PY
+      - name: Exercise complete archive publication and failure retention on synthetic outputs
+        run: python3 -B scripts/check_cdr_drain_wave_publication.py --output cdr-drain-wave-source-controls/publication-controls.json > cdr-drain-wave-source-controls/publication-controls.stdout 2> cdr-drain-wave-source-controls/publication-controls.stderr
+      - name: Require complete publication controls
+        run: |
+          python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          r=json.loads(Path('cdr-drain-wave-source-controls/publication-controls.json').read_bytes())
+          assert r['status']=='PASS_COMPLETE_REPLAY_PUBLICATION_CONTROLS' and r['passed'] is True
+          assert r['counts']==dict(positive=7,refusals=33,lifecycle=4)
+          assert r['current_context']['source']==os.environ['GITHUB_SHA']
+          assert r['current_context']['run']==int(os.environ['GITHUB_RUN_ID']) and r['current_context']['attempt']==1
+          assert r['synthetic_inputs_only'] is True
+          assert all(r[k] is False for k in ('actual_native_capture_acquired','actual_release_mutated','physical_acceptance','timing_accepted','full_phy_accepted'))
+          PY
       - name: Always preserve complete source records
         if: always()
         run: |
           python3 -B - <<'PY'
           import base64,hashlib,json
           from pathlib import Path
-          for name in ('context.json','controls.json','controls.stdout','controls.stderr'):
+          for name in ('context.json','controls.json','controls.stdout','controls.stderr','publication-controls.json','publication-controls.stdout','publication-controls.stderr'):
               p=Path('cdr-drain-wave-source-controls')/name
               assert not p.is_symlink()
               raw=p.read_bytes() if p.is_file() else b''
