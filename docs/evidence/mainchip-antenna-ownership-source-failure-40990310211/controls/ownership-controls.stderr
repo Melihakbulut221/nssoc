@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "/home/runner/work/nssoc/nssoc/scripts/check_mainchip_antenna_ownership.py", line 85, in <module>
+    if __name__=="__main__":main()
+                            ^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_mainchip_antenna_ownership.py", line 84, in main
+    if error is not None:raise error
+                         ^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_mainchip_antenna_ownership.py", line 81, in main
+    try:result=controls()
+               ^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_mainchip_antenna_ownership.py", line 74, in controls
+    acquisition("complete");positive.append("actual_acquisition_authenticates_unselected_members")
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_mainchip_antenna_ownership.py", line 71, in acquisition
+    h.acquire_current(work,ev)
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_antenna_ownership.py", line 52, in acquire_current
+    f.require(parts==dict(archive=ar,parts=[dict(name="candidate-native.tar.gz.part000",**ar)]),"single complete capsule")
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_final_marker_readback.py", line 38, in require
+    raise AssertionError(reason)
+AssertionError: single complete capsule

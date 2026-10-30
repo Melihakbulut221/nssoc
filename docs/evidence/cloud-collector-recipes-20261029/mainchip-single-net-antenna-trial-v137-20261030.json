@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "kind": "reviewed_cloud_only_single_net_trial",
+  "date": "2026-10-30",
+  "source_proof": "1ae7656548a074fe8967b7fbfd920beb5cedd5b0",
+  "candidate_ODB": {
+    "bytes": 213428597,
+    "sha256": "a3c6aa0b946d01850fd4956b3fe359c34da120550caffdbbce113072cb381c76"
+  },
+  "target": {
+    "net": "$abc$1804206$new_n41321",
+    "sink": "fanout36953/A",
+    "master": "sg13g2_buf_1",
+    "layer": "Metal4",
+    "rule": "Cumulative area",
+    "reported_value": "216.77",
+    "reported_limit": "200.00",
+    "wire_shapes": 40,
+    "connected_diodes": 0,
+    "sink_gate_area": 0.1807,
+    "whole_net_diffusion_area": 0.6772
+  },
+  "selection": "Literal small example from existing native-derived JSON, not a computed optimum.",
+  "diode": {
+    "master": "sg13g2_antennanp",
+    "terminal": "A",
+    "native_diffusion_area": 2.0154
+  },
+  "source": {
+    "checker": "scripts/source-snapshots/openroad-dcf36133-AntennaChecker.cc",
+    "sha256": "ab842999d3ccaf9de34347fa1f3b723e0a4a7d0b19a42271dfb4c8dede2c9ca7",
+    "OpenROAD_ref": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+  },
+  "limits": [
+    "AntennaChecker saveGates progressively establishes layer connectivity; whole-net diffusion is not physical per-layer protection.",
+    "CAR sizing code passes non-antenna gates and count1; RepairAntennas inserts one per supplied gate. Comment does not impose one diode per net.",
+    "GlobalRouter repairAntennas initializes all block nets and invokes placement/incremental global routing; public Tcl has no net selector and does not finish detailed route."
+  ],
+  "steps": [
+    "Restore exact current ODB and qualified ELF/runtime on hosted runner after fresh independent exact-source release reservation.",
+    "Reproduce target violation and identify sink low-layer physical component, legal row/site and nearby obstructions.",
+    "Admit exactly one authentic diode only if legal placement and protection connection below violating Metal4 exist.",
+    "Route only selected net with explicit new insertion/target contract; preserve all existing instances/non-target wires and1691original clocks.",
+    "Reuse snapshot/equal_snapshot, serialized reread, antenna_tcl and audit from mainchip_net459_diode_prune_native.py; modify only explicit insertion/target contract and keep original gates.",
+    "Require zero native/serialized DRT markers, target antenna clearance, full609-net recheck and unchanged non-target projections. Preserve full failure and stop candidate admission on any invariant violation.",
+    "Recheck actual changed-chip RC/LVS/DRC/setup/hold before accepting a physical result."
+  ],
+  "physical_feasibility_established": false,
+  "executed": false,
+  "physical_acceptance": false,
+  "timing_accepted": false,
+  "full_phy_accepted": false,
+  "all_native_execution_cloud_only": true
+}

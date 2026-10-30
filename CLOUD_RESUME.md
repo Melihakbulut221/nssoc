@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v136
+# Cloud continuation — checkpoint v137
 
-Updated: 2026-10-30T01:40:18.992209+00:00
+Updated: 2026-10-30T02:53:41.522435+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint v136: corrected full antenna readback40985634146 completed successfully onbd415ce0. All4 executed jobs passed;17positive/42refusal source controls passed and native candidate execution was intentionally skipped. Complete40-file proof1c670413,18 permanent derived release assets and3 exact empty outputs were verified; both full net censuses remain permanent27MB assets. The full424622132-byte baseline/candidate reports were parsed on the runner and all declared capsule members authenticated. Existing609net/697pin/916cumulative-area violations are unchanged, so this is diagnosis/publication completion, not a physical repair or timing acceptance. The original40983327823 publication failure is retained. Prior v135 imports include completed CDR v2 full build/component qualification03dde6e0. No native job remains active in this snapshot. All source, computation, native archives and results remain on GitHub; local project/generated paths and CAD processes remain empty. Next work is cloud-only physical antenna ownership/repair and CDR reduced-resistor ancestry followed by original electrical and current-chip timing gates.
+Cloud-only checkpoint v137: real CDR ancestry run40988946484 and full antenna ownership run40992012920 completed successfully. CDR proofc3560bd retains complete native trace/capsule and establishes five-root/four-series value ancestry for the two32.5083ohm targets, with exact component equivalence and original strict order mismatch retained. Mainchip proof1ae76565 retains all75derived files and permanent47MBnative capsule; all609nets/697pins/916cumulative-area violations join actual ODB. There are9143diodes in the chip,517violating nets without a connected diode and92with diodes. Complete original DEF and1691clocks remain byte-identical; this is diagnosis, not repair. Source-fixture failure40990310211 was preserved before correcting only its mock pin and successfully running4positive/23refusal controls. All original electrical, physical and timing gates stay unchanged. Next work uses the newly proved CDR rail/via ancestry and actual antenna rule/gate/diffusion/wire data for bounded cloud physical changes. No native run remains active. Local project/generated directories, temporary/visualization outputs, native processes and matching local automations verified absent; all evidence and continuation remain on GitHub.
 
 Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9150,3 +9151,10 @@ Local project/tmp/native processes verified absent. Inventory380 exact cloud han
 Cloud-only checkpoint v136: corrected full antenna readback40985634146 completed successfully onbd415ce0. All4 executed jobs passed;17positive/42refusal source controls passed and native candidate execution was intentionally skipped. Complete40-file proof1c670413,18 permanent derived release assets and3 exact empty outputs were verified; both full net censuses remain permanent27MB assets. The full424622132-byte baseline/candidate reports were parsed on the runner and all declared capsule members authenticated. Existing609net/697pin/916cumulative-area violations are unchanged, so this is diagnosis/publication completion, not a physical repair or timing acceptance. The original40983327823 publication failure is retained. Prior v135 imports include completed CDR v2 full build/component qualification03dde6e0. No native job remains active in this snapshot. All source, computation, native archives and results remain on GitHub; local project/generated paths and CAD processes remain empty. Next work is cloud-only physical antenna ownership/repair and CDR reduced-resistor ancestry followed by original electrical and current-chip timing gates.
 
 Local project/tmp/native processes verified absent. Inventory380 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-30T02:53:41.522435+00:00 — cloud-only checkpoint v137
+
+Cloud-only checkpoint v137: real CDR ancestry run40988946484 and full antenna ownership run40992012920 completed successfully. CDR proofc3560bd retains complete native trace/capsule and establishes five-root/four-series value ancestry for the two32.5083ohm targets, with exact component equivalence and original strict order mismatch retained. Mainchip proof1ae76565 retains all75derived files and permanent47MBnative capsule; all609nets/697pins/916cumulative-area violations join actual ODB. There are9143diodes in the chip,517violating nets without a connected diode and92with diodes. Complete original DEF and1691clocks remain byte-identical; this is diagnosis, not repair. Source-fixture failure40990310211 was preserved before correcting only its mock pin and successfully running4positive/23refusal controls. All original electrical, physical and timing gates stay unchanged. Next work uses the newly proved CDR rail/via ancestry and actual antenna rule/gate/diffusion/wire data for bounded cloud physical changes. No native run remains active. Local project/generated directories, temporary/visualization outputs, native processes and matching local automations verified absent; all evidence and continuation remain on GitHub.
+
+Local project/tmp/native processes verified absent. Inventory383 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
