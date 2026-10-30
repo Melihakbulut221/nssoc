@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30T20:09:27.762453+00:00",
+  "updated_at": "2026-10-30T20:43:46.725898+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "86d3cb03d46ad1a291b148c6f28948d5fb294f3a",
+  "root_source_before_receipt": "f1e71b295101a690833cb04ef4af17b02036bfee",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 146,
+    "inventory_version": 147,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -77,45 +77,7 @@
     "candidate_endpoint_followup": "Read-only exactendpoint later200, conditionalETagGET502, primaryrate4814/5000; intermittentservicefailure rootcauseunproven. Never infer jobendpoint immutability fromrunupdated_at; safe cachingrequiresauthenticatedpreviouscompletejobs plus explicitlyhistoricalageandlivecurrentrunbinding.",
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed."
   },
-  "active_runs": {
-    "mainchip-multilayer-strict-order-trial": {
-      "run": 41118688730,
-      "head_sha": "fa863489c783be96d567f5309891e013532378c4",
-      "status": "queued",
-      "conclusion": null,
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 124279518504,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 124280131310,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 124280204542,
-          "name": "trial",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": []
-        },
-        {
-          "id": 124287089895,
-          "name": "preserve-antenna-job-logs",
-          "status": "queued",
-          "conclusion": null,
-          "active_steps": []
-        }
-      ]
-    }
-  },
+  "active_runs": {},
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -5885,7 +5847,7 @@
       "full_phy_accepted": false
     },
     "mainchip_upper_layer_escape_seed": {
-      "status": "NATIVE_SUCCESSOR_EXECUTING",
+      "status": "BOUNDED_NATIVE_REPAIR_PASSED",
       "scope": "Multilayer successor using exact already inserted diode, never insert a second diode.",
       "input": {
         "source_run": 41001185417,
@@ -5969,14 +5931,15 @@
         }
       ],
       "required_next": [
-        "Collect run41118688730 exactsource fa863489 once terminal using full-derived collector in this checkpoint. No duplicate or blind retry. Native job124280204542 passed all six same-source controls and is executing the physical trial.",
-        "Require native connectivity, unchanged wholechip/1691clocks/materials, exact40+12shape delta, full uncapped DRC0 and target antenna0 with unchanged other-net semantics. Original failure remains preserved; order-only exception covers authenticated three target ITerms only.",
-        "Electrical existing-wave replay contract05cf41 binds two archived captures and current500 maps. Reader/checker implementation is underway; review code and fresh imports before hosted source qualification, reserve exactsource release before any native acquisition.",
-        "Final RC/STA and complete serial PHY remain open. All engineering and authored tests execute on GitHub; local API/source/derived JSON text in RAM only."
+        "Current bounded native trial41118688730 PASSED; do not rerun unchanged source. Whole114file proof1dd7a4e is byte-verified:4rawlogs,19source records,79derived native records. DRT0,targetantenna1to0,fullnets609to608,pins696,checks915. Candidate3f422f7c is experimental, finalRC/STA/PHY unaccepted.",
+        "Native next: one bulk post-DRT repair iteration + one detailed-routing pass, using exact current candidate/capsule and qualified runtime; inert contract/native/checker implementation by pll_handoff in progress on nativebranch6d2dddf. Review/adapt current input admission/outer lifecycle, qualify source tests then independently reserve one exactsource release before acquisition. Avoid manual single-net repetition across608 nets.",
+        "Analog next: source qualification41124091090 PASSED8groups47refusals4lifecycle. Three reader/checker/config bodies are materialized at8d920fcc, complete17file proofaf7966d6. Readback remains disabled. Integrate reserved-only permanent complete output publication/fallback/fullrawlogs, update config flags+reader CONFIG_SHA and manifest with this proof, repeat current-source controls, reserve both case releases independently and execute existing capture replay onGitHub.",
+        "Existing-wave native replay must fully authenticate each2797member archive and original1151vector capture, exactly reproduce alloriginal scalars, and preserve complete selected rows (indexed gzip) plus diagnostics. No new electrical simulation or acceptance. Analyze selector61/62/115/116 VCE minima and constantone VI settling before any circuit successor.",
+        "Final currentRC/STA chain86015346 is disabled and bound to an older repair schema; current input admission and real newmeasurements remain required. Original20/4/8/8ns plus5percent and allanalog gates unchanged."
       ],
       "local_computation": false,
       "route_generated": true,
-      "clearance_qualified": false,
+      "clearance_qualified": true,
       "physical_acceptance": false,
       "timing_accepted": false,
       "full_phy_accepted": false,
@@ -5986,7 +5949,14 @@
       "failed_native_run": 41106623617,
       "read_only_difference_proof": 41112136960,
       "qualified_source_run": 41115331787,
-      "qualified_source": "71fda75b328b63996c07b0cbb46a9fae2c595ebd"
+      "qualified_source": "71fda75b328b63996c07b0cbb46a9fae2c595ebd",
+      "bounded_trial_passed": true,
+      "clearance_scope": "Complete actual DRT0 only; not foundry signoff",
+      "candidate": {
+        "bytes": 213429050,
+        "sha256": "3f422f7c92b9395f3678e1bf065fe790478b1c424c5b7bae39060095b23c3d53"
+      },
+      "remaining_antenna_nets": 608
     },
     "cdr_drain_m1_loaded_source_qualification": {
       "run": 41015676075,
@@ -6276,7 +6246,7 @@
       },
       "actual_blocker": "audit-import: candidate-single.def and candidate-double.def differ; fullremainingchip snapshot and exactroute delta passed before this assertion; candidateDRC and measuredantenna were not run.",
       "candidate_DRC_executed": false,
-      "next": "Strict three-ITerm order-only successor is source-qualified by41115331787. Native successor has NOT been dispatched; activate exactqualified3bodies withsourceproof, freshreservation and originalfullDRC/antenna/connectivity/clockgates."
+      "next": "Original41106623617 failure remains preserved. Its strict order successor41118688730 now passed actual bounded repair; see mainchip_multilayer_def_order_successor. Do not reactivate the failed original."
     },
     "mainchip_multilayer_def_diff": {
       "run": 41112136960,
@@ -6419,10 +6389,11 @@
       },
       "invariant": "Exact three known unique authenticated baseline ITerms on target net may permute within its canonical first SIGNAL header line only. All bytes before/after remain exact. Both original rawDEF hashes and false originalbyteequality remain visible; physical/material/pin/connectivity/DRC/antenna/numerical gates unchanged.",
       "next_steps": [
-        "Collect run41118688730 exactsource fa863489 once terminal using full-derived collector in this checkpoint. No duplicate or blind retry. Native job124280204542 passed all six same-source controls and is executing the physical trial.",
-        "Require native connectivity, unchanged wholechip/1691clocks/materials, exact40+12shape delta, full uncapped DRC0 and target antenna0 with unchanged other-net semantics. Original failure remains preserved; order-only exception covers authenticated three target ITerms only.",
-        "Electrical existing-wave replay contract05cf41 binds two archived captures and current500 maps. Reader/checker implementation is underway; review code and fresh imports before hosted source qualification, reserve exactsource release before any native acquisition.",
-        "Final RC/STA and complete serial PHY remain open. All engineering and authored tests execute on GitHub; local API/source/derived JSON text in RAM only."
+        "Current bounded native trial41118688730 PASSED; do not rerun unchanged source. Whole114file proof1dd7a4e is byte-verified:4rawlogs,19source records,79derived native records. DRT0,targetantenna1to0,fullnets609to608,pins696,checks915. Candidate3f422f7c is experimental, finalRC/STA/PHY unaccepted.",
+        "Native next: one bulk post-DRT repair iteration + one detailed-routing pass, using exact current candidate/capsule and qualified runtime; inert contract/native/checker implementation by pll_handoff in progress on nativebranch6d2dddf. Review/adapt current input admission/outer lifecycle, qualify source tests then independently reserve one exactsource release before acquisition. Avoid manual single-net repetition across608 nets.",
+        "Analog next: source qualification41124091090 PASSED8groups47refusals4lifecycle. Three reader/checker/config bodies are materialized at8d920fcc, complete17file proofaf7966d6. Readback remains disabled. Integrate reserved-only permanent complete output publication/fallback/fullrawlogs, update config flags+reader CONFIG_SHA and manifest with this proof, repeat current-source controls, reserve both case releases independently and execute existing capture replay onGitHub.",
+        "Existing-wave native replay must fully authenticate each2797member archive and original1151vector capture, exactly reproduce alloriginal scalars, and preserve complete selected rows (indexed gzip) plus diagnostics. No new electrical simulation or acceptance. Analyze selector61/62/115/116 VCE minima and constantone VI settling before any circuit successor.",
+        "Final currentRC/STA chain86015346 is disabled and bound to an older repair schema; current input admission and real newmeasurements remain required. Original20/4/8/8ns plus5percent and allanalog gates unchanged."
       ],
       "native_run_dispatched_for_successor": true,
       "physical_acceptance": false,
@@ -6445,15 +6416,553 @@
         "protected_files": 194,
         "qualification_run": 41115331787,
         "native_dispatched": true,
-        "status": "in_progress",
+        "status": "completed",
         "same_source_controls_job": 124279518504,
         "same_source_controls_success_observed": true,
-        "native_job": 124280204542
+        "native_job": 124280204542,
+        "workflow_conclusion": "success",
+        "terminal": {
+          "run": 41118688730,
+          "source": "fa863489c783be96d567f5309891e013532378c4",
+          "proof": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+          "prefix": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/",
+          "files": 114,
+          "bytes": 2818317,
+          "receipt_sha256": "c326c1bcaac3ad76bb90a566157bd97595d3a02f1b6e1d67427000c2bb122975",
+          "raw_jobs": 4,
+          "source_records": 19,
+          "native_records": 79,
+          "collection_errors": [],
+          "all_files_readback_verified": true,
+          "bounded_trial_passed": true,
+          "physical_acceptance": false,
+          "timing_accepted": false,
+          "full_phy_accepted": false
+        },
+        "result": {
+          "added_via_component_count": 9,
+          "added_wire_count": 3,
+          "all_1691_original_clocks_preserved": true,
+          "antenna": {
+            "baseline": {
+              "full_count": 609,
+              "target_count": 1,
+              "target_violation": 1
+            },
+            "candidate": {
+              "full_count": 608,
+              "target_count": 0,
+              "target_violation": 0
+            }
+          },
+          "baseline_target_count": 1,
+          "bounded_trial_passed": true,
+          "candidate": {
+            "bytes": 213429050,
+            "sha256": "3f422f7c92b9395f3678e1bf065fe790478b1c424c5b7bae39060095b23c3d53"
+          },
+          "candidate_rejected": false,
+          "def_import_order": {
+            "all_other_bytes_identical": true,
+            "authenticated_baseline_iterms": [
+              [
+                "$abc$1804206$auto$blifparse.cc:397:parse_blif$1814872",
+                "Y"
+              ],
+              [
+                "fanout36953",
+                "A"
+              ],
+              [
+                "NSSOC_ANT_TRIAL_fanout36953",
+                "A"
+              ]
+            ],
+            "double": {
+              "bytes": 185377344,
+              "sha256": "1dfd2cc3b07900c6264ae0b7828d9bdc83535cd535169ddb8d4f59880cf5e89a"
+            },
+            "double_connection_order": [
+              [
+                "NSSOC_ANT_TRIAL_fanout36953",
+                "A"
+              ],
+              [
+                "fanout36953",
+                "A"
+              ],
+              [
+                "$abc$1804206$auto$blifparse.cc:397:parse_blif$1814872",
+                "Y"
+              ]
+            ],
+            "double_header": {
+              "bytes": 155,
+              "sha256": "06586e6af81e124417177080754fe94a833f4bba46469b4edeb97466a37302de"
+            },
+            "exception_scope": "Only the order of three exact authenticated ITerm tuples on the target first connection line; every other byte must match.",
+            "full_phy_accepted": false,
+            "header_byte_span": [
+              50691761,
+              50691916
+            ],
+            "historical_failed_producer": 41106623617,
+            "historical_order_diagnosis_proof": "4292dfb3c89cafcc6a7dfd449f95b297cae678c5",
+            "line": 707752,
+            "order_only_exception_applied": true,
+            "original_whole_def_byte_equality": false,
+            "physical_acceptance": false,
+            "single": {
+              "bytes": 185377344,
+              "sha256": "1bc3b986a81d7601126053bae1ed8dadb67ac592370ec4d110b2c8a8b133a775"
+            },
+            "single_connection_order": [
+              [
+                "$abc$1804206$auto$blifparse.cc:397:parse_blif$1814872",
+                "Y"
+              ],
+              [
+                "fanout36953",
+                "A"
+              ],
+              [
+                "NSSOC_ANT_TRIAL_fanout36953",
+                "A"
+              ]
+            ],
+            "single_header": {
+              "bytes": 155,
+              "sha256": "16a3fc9358360546845d67f9e3958a70bcd5d600a3a276e0033d0d0289e63499"
+            },
+            "status": "STRICT_TARGET_ITERM_ORDER_INVARIANT",
+            "target": "$abc$1804206$new_n41321",
+            "timing_accepted": false,
+            "unchanged_signal_property": true
+          },
+          "exact_remaining_chip_preserved": true,
+          "expected_added_shapes": [
+            {
+              "box": [
+                99520,
+                505600,
+                101360,
+                505760
+              ],
+              "current_extension": null,
+              "default_extension": 80,
+              "from_xy": [
+                99600,
+                505680
+              ],
+              "half_width": 80,
+              "kind": "wire",
+              "layer": "Metal1",
+              "layer_key": "Metal1",
+              "previous_extension": null,
+              "to_xy": [
+                101280,
+                505680
+              ]
+            },
+            {
+              "box": [
+                101135,
+                505575,
+                101425,
+                505785
+              ],
+              "component_identity": [
+                "tech:3",
+                0
+              ],
+              "component_ordinal": 0,
+              "definition_bbox": [
+                -145,
+                -145,
+                145,
+                145
+              ],
+              "definition_box": [
+                -145,
+                -105,
+                145,
+                105
+              ],
+              "kind": "via",
+              "layer": "Metal1",
+              "layer_key": "Metal1",
+              "origin_xy": [
+                101280,
+                505680
+              ],
+              "via_key": "tech:3",
+              "via_name": "Via1_XY"
+            },
+            {
+              "box": [
+                101185,
+                505585,
+                101375,
+                505775
+              ],
+              "component_identity": [
+                "tech:3",
+                1
+              ],
+              "component_ordinal": 1,
+              "definition_bbox": [
+                -145,
+                -145,
+                145,
+                145
+              ],
+              "definition_box": [
+                -95,
+                -95,
+                95,
+                95
+              ],
+              "kind": "via",
+              "layer": "Via1",
+              "layer_key": "Via1",
+              "origin_xy": [
+                101280,
+                505680
+              ],
+              "via_key": "tech:3",
+              "via_name": "Via1_XY"
+            },
+            {
+              "box": [
+                101180,
+                505535,
+                101380,
+                505825
+              ],
+              "component_identity": [
+                "tech:3",
+                2
+              ],
+              "component_ordinal": 2,
+              "definition_bbox": [
+                -145,
+                -145,
+                145,
+                145
+              ],
+              "definition_box": [
+                -100,
+                -145,
+                100,
+                145
+              ],
+              "kind": "via",
+              "layer": "Metal2",
+              "layer_key": "Metal2",
+              "origin_xy": [
+                101280,
+                505680
+              ],
+              "via_key": "tech:3",
+              "via_name": "Via1_XY"
+            },
+            {
+              "box": [
+                101180,
+                505580,
+                101380,
+                506620
+              ],
+              "current_extension": null,
+              "default_extension": 100,
+              "from_xy": [
+                101280,
+                505680
+              ],
+              "half_width": 100,
+              "kind": "wire",
+              "layer": "Metal2",
+              "layer_key": "Metal2",
+              "previous_extension": null,
+              "to_xy": [
+                101280,
+                506520
+              ]
+            },
+            {
+              "box": [
+                101175,
+                506375,
+                101385,
+                506665
+              ],
+              "component_identity": [
+                "tech:22",
+                0
+              ],
+              "component_ordinal": 0,
+              "definition_bbox": [
+                -145,
+                -145,
+                145,
+                145
+              ],
+              "definition_box": [
+                -105,
+                -145,
+                105,
+                145
+              ],
+              "kind": "via",
+              "layer": "Metal2",
+              "layer_key": "Metal2",
+              "origin_xy": [
+                101280,
+                506520
+              ],
+              "via_key": "tech:22",
+              "via_name": "Via2_YX"
+            },
+            {
+              "box": [
+                101185,
+                506425,
+                101375,
+                506615
+              ],
+              "component_identity": [
+                "tech:22",
+                1
+              ],
+              "component_ordinal": 1,
+              "definition_bbox": [
+                -145,
+                -145,
+                145,
+                145
+              ],
+              "definition_box": [
+                -95,
+                -95,
+                95,
+                95
+              ],
+              "kind": "via",
+              "layer": "Via2",
+              "layer_key": "Via2",
+              "origin_xy": [
+                101280,
+                506520
+              ],
+              "via_key": "tech:22",
+              "via_name": "Via2_YX"
+            },
+            {
+              "box": [
+                101135,
+                506420,
+                101425,
+                506620
+              ],
+              "component_identity": [
+                "tech:22",
+                2
+              ],
+              "component_ordinal": 2,
+              "definition_bbox": [
+                -145,
+                -145,
+                145,
+                145
+              ],
+              "definition_box": [
+                -145,
+                -100,
+                145,
+                100
+              ],
+              "kind": "via",
+              "layer": "Metal3",
+              "layer_key": "Metal3",
+              "origin_xy": [
+                101280,
+                506520
+              ],
+              "via_key": "tech:22",
+              "via_name": "Via2_YX"
+            },
+            {
+              "box": [
+                97340,
+                506420,
+                101380,
+                506620
+              ],
+              "current_extension": null,
+              "default_extension": 100,
+              "from_xy": [
+                101280,
+                506520
+              ],
+              "half_width": 100,
+              "kind": "wire",
+              "layer": "Metal3",
+              "layer_key": "Metal3",
+              "previous_extension": null,
+              "to_xy": [
+                97440,
+                506520
+              ]
+            },
+            {
+              "box": [
+                97335,
+                506375,
+                97545,
+                506665
+              ],
+              "component_identity": [
+                "tech:22",
+                0
+              ],
+              "component_ordinal": 0,
+              "definition_bbox": [
+                -145,
+                -145,
+                145,
+                145
+              ],
+              "definition_box": [
+                -105,
+                -145,
+                105,
+                145
+              ],
+              "kind": "via",
+              "layer": "Metal2",
+              "layer_key": "Metal2",
+              "origin_xy": [
+                97440,
+                506520
+              ],
+              "via_key": "tech:22",
+              "via_name": "Via2_YX"
+            },
+            {
+              "box": [
+                97345,
+                506425,
+                97535,
+                506615
+              ],
+              "component_identity": [
+                "tech:22",
+                1
+              ],
+              "component_ordinal": 1,
+              "definition_bbox": [
+                -145,
+                -145,
+                145,
+                145
+              ],
+              "definition_box": [
+                -95,
+                -95,
+                95,
+                95
+              ],
+              "kind": "via",
+              "layer": "Via2",
+              "layer_key": "Via2",
+              "origin_xy": [
+                97440,
+                506520
+              ],
+              "via_key": "tech:22",
+              "via_name": "Via2_YX"
+            },
+            {
+              "box": [
+                97295,
+                506420,
+                97585,
+                506620
+              ],
+              "component_identity": [
+                "tech:22",
+                2
+              ],
+              "component_ordinal": 2,
+              "definition_bbox": [
+                -145,
+                -145,
+                145,
+                145
+              ],
+              "definition_box": [
+                -145,
+                -100,
+                145,
+                100
+              ],
+              "kind": "via",
+              "layer": "Metal3",
+              "layer_key": "Metal3",
+              "origin_xy": [
+                97440,
+                506520
+              ],
+              "via_key": "tech:22",
+              "via_name": "Via2_YX"
+            }
+          ],
+          "full_phy_accepted": false,
+          "input": {
+            "bytes": 213428829,
+            "sha256": "72d382ab18e905d13fef8145b70944e681a7a50c16bad0848616652fa93fc0ee"
+          },
+          "measurement": {
+            "all_categories_below_native_cap": true,
+            "categories": [
+              {
+                "direct_markers": 0,
+                "maximum_markers": 10000,
+                "path": [
+                  "NSSOC_MULTILAYER_ANTENNA_TRIAL_DRC"
+                ],
+                "source": "DRT"
+              }
+            ],
+            "full_signoff_DRC": false,
+            "marker_count": 0,
+            "report_bytes": 0,
+            "report_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "serialized_markers": {
+              "bytes": 137,
+              "category_count": 1,
+              "complete_native_category_census_equal": true,
+              "marker_count": 0,
+              "scope": "Exact named category paths, direct counts, positive caps, DRT source and total count; full marker bodies preserved, not an independent shape-semantic interpretation.",
+              "sha256": "fd8e4851bb48c18678b22e2b9c75aa9ac64b2e7ec77a65b17863cd6edcf53ff0"
+            },
+            "zero_reported_DRT_markers": true
+          },
+          "new_instances": 0,
+          "new_signal_connections": 0,
+          "original_target_wire_shapes_preserved": 40,
+          "other_violation_semantics_unchanged": true,
+          "physical_acceptance": false,
+          "scope": "Existing-diode physical repair trial only; full-chip LVS/foundry DRC/RC and original setup/hold remain required.",
+          "status": "COMPLETE_MULTILAYER_ANTENNA_TRIAL_CHECKS",
+          "timing_accepted": false
+        },
+        "native_elapsed_seconds": 458.23713747799997
       },
-      "status": "NATIVE_SUCCESSOR_EXECUTING"
+      "status": "BOUNDED_NATIVE_REPAIR_PASSED"
     },
     "cdr_drain_m1_existing_wave_replay": {
-      "status": "INERT_CONTRACT_PUBLISHED_READER_IMPLEMENTATION_IN_PROGRESS",
+      "status": "SOURCE_QUALIFIED_NATIVE_READBACK_NOT_ACTIVATED",
       "contract": {
         "source": "05cf41e6de858d02054f9112334365a392436a12",
         "path": "docs/evidence/cdr-drain-m1-loaded-wave-replay-contract-41017290646.json",
@@ -6468,15 +6977,87 @@
       "native_dispatched": false,
       "local_native_acquisition": false,
       "electrical_accepted": false,
-      "full_phy_accepted": false
+      "full_phy_accepted": false,
+      "inert_source_draft": {
+        "source": "a52462ae4033ee27bcc050c1ba69cd6b390893ec",
+        "path": "docs/evidence/cdr-drain-m1-loaded-wave-replay-source-draft-20261030.json",
+        "bytes": 150466,
+        "sha256": "b84d2f1e8ed0dca683eae130eb55b6df7bb6c10fd25f6256002a2694a266a259"
+      },
+      "activation": {
+        "source": "8d920fcc3ab8b826b68454e793a0036b3b9d70b3",
+        "branch": "codex/cdr-drain-m1-loaded-electrical",
+        "workflow": 401118236,
+        "protected_files": 30,
+        "manifest_sha256": "bd4c1f289ce9cd83754628eba7dfe3e4665225cb43aad5b7a8204a38ea4618c2",
+        "config_sha256": "98258d652c2e1bc4af48219cd3f20c8ce2fdb1f4f48b63640aa448745feca2d6",
+        "reader_sha256": "a9b4d349186dc7e00f40ac17cd1f59a671e7c7d9f87561547c8890b3322f964d",
+        "checker_sha256": "06423550f9f4154a66dcb0efdac70578fbee73b3cddbaffb8d1b81cba955a34f",
+        "native_readback_authorized": false
+      },
+      "qualification": {
+        "proof": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+        "prefix": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/",
+        "files": 17,
+        "bytes": 250863,
+        "receipt_sha256": "8d626e7a224b2bb6412fa19cbf43c277d4607fd066acf1ecdbea4e0e7f008571",
+        "run": 41124091090,
+        "source": "8d920fcc3ab8b826b68454e793a0036b3b9d70b3",
+        "workflow_conclusion": "success",
+        "source_controls_passed": true,
+        "counts": {
+          "groups": 8,
+          "refusals": 47,
+          "lifecycle": 4
+        },
+        "errors": [],
+        "all_files_verified": true
+      },
+      "next": "Analog next: source qualification41124091090 PASSED8groups47refusals4lifecycle. Three reader/checker/config bodies are materialized at8d920fcc, complete17file proofaf7966d6. Readback remains disabled. Integrate reserved-only permanent complete output publication/fallback/fullrawlogs, update config flags+reader CONFIG_SHA and manifest with this proof, repeat current-source controls, reserve both case releases independently and execute existing capture replay onGitHub.",
+      "native_readback_authorized": false,
+      "actual_capture_replayed": false
+    },
+    "mainchip_bulk_antenna_successor": {
+      "status": "EXACT_RUNTIME_AND_HISTORY_AUDITED_INERT_SOURCE_IMPLEMENTATION_IN_PROGRESS",
+      "research": {
+        "proof": "6d2dddf40c686b44e8468c00e5d81507fb8b2a22",
+        "path": "docs/evidence/mainchip-multilayer-pass-bulk-successor-research-20261030.json",
+        "bytes": 7716,
+        "sha256": "1e14acd599912a75c40ede51c1e114f5437b92c25821d8947934785f3cc2fec2"
+      },
+      "source_branch": "codex/mainchip-net459-diode-prune",
+      "expected_head": "6d2dddf40c686b44e8468c00e5d81507fb8b2a22",
+      "candidate": {
+        "bytes": 213429050,
+        "sha256": "3f422f7c92b9395f3678e1bf065fe790478b1c424c5b7bae39060095b23c3d53"
+      },
+      "input_run": 41118688730,
+      "input_release": 429431405,
+      "input_members": 69,
+      "archive": {
+        "bytes": 323829386,
+        "sha256": "db1e18d7147877457c92e79a1baf4ee44c12c5f0d2dd841454f6ad1897f89f43"
+      },
+      "independent_archive_reextraction": false,
+      "native_bulk_dispatched": false,
+      "all_original_gates_unchanged": true,
+      "upstream_runtime": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+      "history": {
+        "prior_native_success": 39115222502,
+        "prior_fixed_metadata_failure": 39369450310,
+        "corrected_native": 39373842033,
+        "independent_topology_clock_audit": 39382009151
+      },
+      "required_distinction": "ExistingFIXED metadata-only antenna shim must restore onfailure; separate reversible encodedFIXED DRT overlay protects1691clock/originalnonmutable routes. Current input has original wireclasses restored; never assume allsignals fixed."
     }
   },
   "next_actions": [
     "Latest direct user instruction: ALL computation/authoredtests/CAD/models/nativearchives/waves stayonGitHub runners. Local source/API/derivedJSONtext inRAMonly, no localfiles. Workspace/oldworkingroots/projecttmp/nativeprocesses freshlyverifiedabsent; no unrelateddataremoved.",
-    "Collect run41118688730 exactsource fa863489 once terminal using full-derived collector in this checkpoint. No duplicate or blind retry. Native job124280204542 passed all six same-source controls and is executing the physical trial.",
-    "Require native connectivity, unchanged wholechip/1691clocks/materials, exact40+12shape delta, full uncapped DRC0 and target antenna0 with unchanged other-net semantics. Original failure remains preserved; order-only exception covers authenticated three target ITerms only.",
-    "Electrical existing-wave replay contract05cf41 binds two archived captures and current500 maps. Reader/checker implementation is underway; review code and fresh imports before hosted source qualification, reserve exactsource release before any native acquisition.",
-    "Final RC/STA and complete serial PHY remain open. All engineering and authored tests execute on GitHub; local API/source/derived JSON text in RAM only.",
+    "Current bounded native trial41118688730 PASSED; do not rerun unchanged source. Whole114file proof1dd7a4e is byte-verified:4rawlogs,19source records,79derived native records. DRT0,targetantenna1to0,fullnets609to608,pins696,checks915. Candidate3f422f7c is experimental, finalRC/STA/PHY unaccepted.",
+    "Native next: one bulk post-DRT repair iteration + one detailed-routing pass, using exact current candidate/capsule and qualified runtime; inert contract/native/checker implementation by pll_handoff in progress on nativebranch6d2dddf. Review/adapt current input admission/outer lifecycle, qualify source tests then independently reserve one exactsource release before acquisition. Avoid manual single-net repetition across608 nets.",
+    "Analog next: source qualification41124091090 PASSED8groups47refusals4lifecycle. Three reader/checker/config bodies are materialized at8d920fcc, complete17file proofaf7966d6. Readback remains disabled. Integrate reserved-only permanent complete output publication/fallback/fullrawlogs, update config flags+reader CONFIG_SHA and manifest with this proof, repeat current-source controls, reserve both case releases independently and execute existing capture replay onGitHub.",
+    "Existing-wave native replay must fully authenticate each2797member archive and original1151vector capture, exactly reproduce alloriginal scalars, and preserve complete selected rows (indexed gzip) plus diagnostics. No new electrical simulation or acceptance. Analyze selector61/62/115/116 VCE minima and constantone VI settling before any circuit successor.",
+    "Final currentRC/STA chain86015346 is disabled and bound to an older repair schema; current input admission and real newmeasurements remain required. Original20/4/8/8ns plus5percent and allanalog gates unchanged.",
     "Eight-hourmonitor main2b79be1a remainsreadonly/noautonativedispatch. Latest scheduled41077552127 HTTP502failure; candidate41108174342 passed87controls butliveobservationexhausted3attemptsatoneendpoint, notdeployed. All18files93a71f04 preserved. Further transport/cacheimprovements mustlabelhistoricalreuses andunobservedrows honestly; do not infercrossendpointimmutablejobsfromrunupdated_at.",
     "ProductionODB a3c6aa0b stillhistorical609antennanets/697pins/916checks, no currentRC/STA. Originalclocks20/4/8/8ns+5%, CDR37.5ps,comparator75ps,UI125ps,100mV,HBTactiveVCE>=.4/maxabsVCE<=1.6/maxabsVBE<=1/emitter<3mA,PLL62.5ps unchanged. FullserialPHY/routedserialmainchip/finalsetuphold remainunaccepted."
   ],
@@ -6860,15 +7441,17 @@
     "observed_41106623617": 41106623617,
     "observed_41108174342": 41108174342,
     "observed_41112136960": 41112136960,
-    "observed_41115331787": 41115331787
+    "observed_41115331787": 41115331787,
+    "observed_41118688730": 41118688730,
+    "observed_41124091090": 41124091090
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
       "run": 41118688730,
       "head_sha": "fa863489c783be96d567f5309891e013532378c4",
-      "status": "queued",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
@@ -6888,22 +7471,45 @@
         {
           "id": 124280204542,
           "name": "trial",
-          "status": "in_progress",
-          "conclusion": null,
+          "status": "completed",
+          "conclusion": "success",
           "active_steps": []
         },
         {
           "id": 124287089895,
           "name": "preserve-antenna-job-logs",
-          "status": "queued",
-          "conclusion": null,
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 41124091090,
+      "head_sha": "8d920fcc3ab8b826b68454e793a0036b3b9d70b3",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 124297996174,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 124298320840,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
           "active_steps": []
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-30T20:09:27.762453+00:00",
+    "observed_at": "2026-10-30T20:43:46.725898+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -7043,7 +7649,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-30T20:09:27.762453+00:00",
+  "local_workspace_verified_empty_at": "2026-10-30T20:43:46.725898+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -64751,6 +65357,1080 @@
       "physical_acceptance": false,
       "timing_accepted": false,
       "full_phy_accepted": false
+    }
+  ],
+  "imported_checkpoint_receipts_v147": [
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/jobs.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "d3380fe9897d86a20fde9a78432d3293dfcf4b01",
+      "bytes": 11010,
+      "sha256": "1a510fdcf2f424a834feb2cacd4bd653ab4fb0702a2bf3c1cdccd12ac8c65dbf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/jobs/124279518504.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "9497052281188e978804b6ada554bcad0424a189",
+      "bytes": 4025,
+      "sha256": "7515ece94467064f3203107953c47e49e7ece018d3bdd8cc2f28130d7a7a3559",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/jobs/124280131310.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "280bf5bf7d990edd1098d3b7f08a8a4e8c116cff",
+      "bytes": 1623,
+      "sha256": "b9ba25800a986f4a21b6b05a4d872a3f896996de2cc7de226eccc54f4b87023e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/jobs/124280204542.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "5d5e9b6693cb2b756902243c7b0829ca8cdb43fd",
+      "bytes": 3690,
+      "sha256": "301686417a10180a62baa108e6040e2c751be0513056d45ac8e0739e0eb7c303",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/jobs/124287089895.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "51cd6fcaa8159fbd5c926193131b4695c6c79ccf",
+      "bytes": 1642,
+      "sha256": "8dc4e24da810dfa94bfcdeef1579ec882815dd3a960eb586064542454f86f506",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/logs/124279518504.log",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "012091ead7a1f07e971f2a0280f6cd9ce783fa1c",
+      "bytes": 244478,
+      "sha256": "6373d605f075a2fe0771fb8cf5607b6dfee97965fcfffc346b11997efbd1a56b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/logs/124280131310.log",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "a7d41fca78e81612b3c13f5e810be010bcaf8acd",
+      "bytes": 7923,
+      "sha256": "c93e4283dab2939e8860eeb92108c2aadf312d493364c284a5fe65127ddf4529",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/logs/124280204542.log",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "f8360a85889890efebe41b198b4607592d9b55bb",
+      "bytes": 378745,
+      "sha256": "b899284ad0a74a41c5e45c23124d1a002ee63f7e4b5fa3acb937ecc88388298e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/logs/124287089895.log",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "c5eac15b11a8fda66a2c2367c8878585aab777aa",
+      "bytes": 7150,
+      "sha256": "32030b901a8fd7700843400fecf58d8207fa76f396c161b975491c0f68b0c12b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-record-index.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "565b582d72272775f6a11f8a680165b4c5fc9e96",
+      "bytes": 12028,
+      "sha256": "b9f785ef5db127bcb512c23945bfff9e0b58a8c3fc2f13cd76a5ee305559b882",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/current-input-restoration.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "cee29b0e640f6b1a4cec4b5b1def8156c7da5606",
+      "bytes": 10331,
+      "sha256": "413829c5e2d5c505f8d1dce1edaa250e8aa5ad688c9731012ac018a89ee9008d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/download-candidate-native.tar.gz.part000.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/download-candidate-outputs.json.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/download-candidate-parts.json.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native-capsule-publication.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "3143fb50e9afd16da0bacb45b9ea8406b5c0682f",
+      "bytes": 12534,
+      "sha256": "78b4dac1fbfc7904f88b61d9119d3e0ca34236858f3cff275094c8149da5aaaa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/antenna-owned-container.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/antenna-owned-container.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/container-terminal.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "a57cc434e931d394657737066ef27ce985258b87",
+      "bytes": 6858,
+      "sha256": "f48064ba31c90cc8ea1ea376ccc8a04231b00ac5b4d7ac8d8996d0fc05af37eb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/create-attempt.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "295a3b1901f6d0e8166f920782b664d886d573ac",
+      "bytes": 1233,
+      "sha256": "9e368c9018cd9901c4a186e863fff77e15523bc1cc6b75751e7cfd2e3e94d637",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/host-progress.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "4c8c7660ac89edf188333e31b6589b2911e4e0d4",
+      "bytes": 11319,
+      "sha256": "f36f340dd99fa4778122e950ca3aff3c68172fb2847af89747957242e02a4aa1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/image-inspect.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/image-inspect.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "bd916f29586cac17ac2713fddea444ee12cd46b5",
+      "bytes": 2643,
+      "sha256": "dfaa74320b13e88349f239affb3fd57c21bcbaa4025d7355688e1d403aed1113",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/immutable-image-pull.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/immutable-image-pull.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "aad50b344d7cfc5ff1a0daa51dadd531a65466c4",
+      "bytes": 837,
+      "sha256": "879fa53f847ee2ceb691dfe072cabf6d4f5b5e402d149f011bc039aea6efd950",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/actual-branch-via-catalog.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "d2a0edae849a75589bf9354324442e5479aea35e",
+      "bytes": 3929,
+      "sha256": "e7da75d4275b0701d65713bd2f5c5d75c07f9bb72daf9a0d813e8551cbaa3e70",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/audit-import-terminal.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "fff127d1285ee49e50ea5f9bed0c46606537e89e",
+      "bytes": 182,
+      "sha256": "064881119d14dbbda5755bfb371a66289aa65cbed9b1c2e0d66909649212eeea",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/audit-measured-terminal.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "fcf7768845809befe4f7f9626232cb8abef92559",
+      "bytes": 184,
+      "sha256": "af25eaa83bb8e6ca7124d2922703e45933ee0dd6f67aada835064cc12aea064a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/baseline-antenna-summary.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "8b66c11f0f83617191839d2d5cd31242f4efd0f9",
+      "bytes": 20719,
+      "sha256": "c55588b234ec80266bdba9c148fd020339e1b97f2945e72af497e6c733a80841",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/baseline-antenna-violations.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "6731d42bc09a21be14ef81cb8ebd3f0aef6f2ca4",
+      "bytes": 300408,
+      "sha256": "cd40e466571adfa89e4c820fa24786b3e09d92327fec6a4b28790e7e1618e575",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/baseline-connectivity.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "a7435c87dcc92350914c78f7bc872da5383cf077",
+      "bytes": 68813,
+      "sha256": "822000ca2295e418e5293ef889828bccb8fa7033f98b42be9c88d27b6f9622aa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/baseline-snapshot.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "c69176b7918b7f37e89ab9f4e22abcb8c001722f",
+      "bytes": 58679,
+      "sha256": "0112745f1c3f5eae6195daf5794d13443a5a8ddb0f1cdf56ce478b8ec9d97f77",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/baseline-target.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "ac9744f426a8dadab54eac9b95b2ba2070c968f4",
+      "bytes": 43042,
+      "sha256": "25ab9a38e624dbd03386c9b34b2fd396863ef6497f188ae6e79a4af534fe8e4e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/candidate-antenna-summary.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "ad44333f9951e59e43d6e0f908ffb21c940e4cad",
+      "bytes": 20688,
+      "sha256": "89d4ac3956d06b92747585f6b1b1ba9a4418e361c86674aa681608bfde36c4d2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/candidate-antenna-violations.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "de19bb4a4c95f1084a4cc9c8f5134352ddef3e23",
+      "bytes": 300115,
+      "sha256": "9dba194c5ed4dd34fd111add06d490d44b257d06fa30f68ccf52047445db8be1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/drc-markers.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "8c3cb5228f7b0916175120139befcb13efc82336",
+      "bytes": 137,
+      "sha256": "fd8e4851bb48c18678b22e2b9c75aa9ac64b2e7ec77a65b17863cd6edcf53ff0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/imported-connectivity.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "513c5ee8546c650674ee35585f28f7b891db6854",
+      "bytes": 86179,
+      "sha256": "c66b0e5db3624deb0f21b720efee775462bd34476326f6b5120b82b4a5f22524",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/imported-def-import-order.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "1837285d9841c08dad64e6ee9c0fd3d286d7c7fd",
+      "bytes": 1869,
+      "sha256": "886130fb19eebec84ee02b7ed983f8c2478da44e16be6a0d118d1311130ff1ba",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/imported-route-delta.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "f2a9192092dc23919ddf072a343f235ca989366a",
+      "bytes": 297,
+      "sha256": "dd90a404348397caa1d1149aa59b94dfbf8b9cc7ceabd85b347510e7eb5983f9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/imported-snapshot.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "5f3694aff99e3cb67560223ceaa278b7fc3d4b6a",
+      "bytes": 58679,
+      "sha256": "d59049038c1725954cf705e83415776555ec45d6844e8281361d64d26986013e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/imported-target.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "91ef89b00bdfe015b34e789d46e4708de4f4269d",
+      "bytes": 52099,
+      "sha256": "017477f9f71a235e18fd8d49b95997d8db7082285261a94dbadca7d1e2905af6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/measured-connectivity.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "513c5ee8546c650674ee35585f28f7b891db6854",
+      "bytes": 86179,
+      "sha256": "c66b0e5db3624deb0f21b720efee775462bd34476326f6b5120b82b4a5f22524",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/measured-def-import-order.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "1837285d9841c08dad64e6ee9c0fd3d286d7c7fd",
+      "bytes": 1869,
+      "sha256": "886130fb19eebec84ee02b7ed983f8c2478da44e16be6a0d118d1311130ff1ba",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/measured-route-delta.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "f2a9192092dc23919ddf072a343f235ca989366a",
+      "bytes": 297,
+      "sha256": "dd90a404348397caa1d1149aa59b94dfbf8b9cc7ceabd85b347510e7eb5983f9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/measured-snapshot.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "5f3694aff99e3cb67560223ceaa278b7fc3d4b6a",
+      "bytes": 58679,
+      "sha256": "d59049038c1725954cf705e83415776555ec45d6844e8281361d64d26986013e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/measured-target.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "91ef89b00bdfe015b34e789d46e4708de4f4269d",
+      "bytes": 52099,
+      "sha256": "017477f9f71a235e18fd8d49b95997d8db7082285261a94dbadca7d1e2905af6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/plan.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "0590dd92743dd830107a8acc46cfc0eee2992efa",
+      "bytes": 8792,
+      "sha256": "56378e21a3e988e5767564d2df58e9bc69041904f11c9d457c3cbfd065ad8db8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/prepare-result.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "3ce838c3736a2bd0c85ee6c0e4ee7b5a73222797",
+      "bytes": 10045,
+      "sha256": "95ae5bb1d5fe8cd203799db7ef9726b58a4a9fa75f107dba9cf797ef9269f53f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/prepare-terminal.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "fcdb73ed27b17d13f5b816dd8dd91c1d65b4b1cf",
+      "bytes": 177,
+      "sha256": "e1f61e85bbaf1c61d03bca18d0e0fd4045a288d298f6d8817d5cd8905cd6b008",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-antenna-trial/result.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "05e18b5d4d05981dd3d623cec7b4019a2e0c49e4",
+      "bytes": 10425,
+      "sha256": "c3b4f30b2ad5d844f4a09323c3df60460c1cf117169fb9b42519bb525868ee64",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-audit-import.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-audit-import.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "8ab24468e0c4b920dcd20e53c7c60371c7532e64",
+      "bytes": 285,
+      "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-audit-measured.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-audit-measured.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "8ab24468e0c4b920dcd20e53c7c60371c7532e64",
+      "bytes": 285,
+      "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-baseline-ant.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-candidate-check.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-import.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-import.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "8daf4ee72fd971682a75059bee9bcecf18eb1083",
+      "bytes": 823,
+      "sha256": "378bd90b691a33f91106097c45005c72e0160a2b6fe095e5e62ee74c91f31c63",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-inner-progress.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "2dd59e3a77dba5171e8e86a3317e2c8b42322abc",
+      "bytes": 6939,
+      "sha256": "4658339086e5f80c98dd8cca1d812aebdb1efa82fda5402e6acc3d1c81e8eb31",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-inner-result.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "9aee79002efd64384d3ecfda63c6da79b2a31bf7",
+      "bytes": 24943,
+      "sha256": "ce25d3546529e7fc4ff69d025452d8cccf2c27360517ff63ab72206baea21211",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-ldd.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-ldd.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "1302d832748b77fadf85f74ecf1e403993d3390c",
+      "bytes": 10979,
+      "sha256": "0d231bbb976cc71c0b57aa1edc02697bdb8d1c49a2b5d51ffce1cc9ed9a54926",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-prepare.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-prepare.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "8ab24468e0c4b920dcd20e53c7c60371c7532e64",
+      "bytes": 285,
+      "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-runtime-observed.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "534b24cdcf542b98ad1ae9c29197ed1e2ad5ccd8",
+      "bytes": 16940,
+      "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-version.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/multilayer-version.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "233850439374365fe2cb6382f30eeb73ca08fca5",
+      "bytes": 42,
+      "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/names-before-owned-create.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/names-before-owned-create.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/owned-container-create.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/owned-container-create.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "6cee3529cbe22089115f737ad636a9428158a1b5",
+      "bytes": 65,
+      "sha256": "eb5eafaead15f0a186d1de87a9e1c85d1a2dc177b43425cae91c160059390829",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/owned-container-remove.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/owned-container-remove.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "6cee3529cbe22089115f737ad636a9428158a1b5",
+      "bytes": 65,
+      "sha256": "eb5eafaead15f0a186d1de87a9e1c85d1a2dc177b43425cae91c160059390829",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/owned-removal-census.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/owned-removal-census.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/prefix-envelope.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "bc75a7ec8ebe4d620ae64c4e45f266b1f11383fa",
+      "bytes": 4270,
+      "sha256": "11281aedb0c83745f8126820b9c3c5421c20ed572e48bda55356f5d68c8313fb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/native/prefix-restoration.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "8e316db083b1571e763c01308ee1756c172c934c",
+      "bytes": 423478,
+      "sha256": "23f45038bb461360ec38c7a2490ba24c84db2f9dd3a53e8b2e689201d693d177",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/producer-binding.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "8c192e929909c920e86e66d46c4a83f4d0327af9",
+      "bytes": 454,
+      "sha256": "689e67bfca5475168d4562bff451ae779ce31d2244e4bf47c3be8b7c3f2237bf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/producer-jobs.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "b8669ed64ced53e2704aaded3c7c37cbfe7c0646",
+      "bytes": 17887,
+      "sha256": "c3ce060ef9055a4fd4b1c278a556e44d9e4efd0d98154c56ceab5394993bb897",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/producer-ref.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "f1859a8827be43e0b0457964c16924f2690bd46e",
+      "bytes": 555,
+      "sha256": "057692967f6413281dd5bb610ef325b39c05781c9cc532d9cdb945aa6e6d9b14",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/producer-release.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e4e5dac3eb0f64ddb49cf17d93a0af29caa0aa52",
+      "bytes": 8567,
+      "sha256": "c8cffdf5b03972f3a1101bda33c05f80b4a15d9b8a4533149a206139ac4ef8eb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/producer-run.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "f643177aee76437eea1585b4fe48296154e6a339",
+      "bytes": 14435,
+      "sha256": "5894926c7a786ebfbce506a360c805c6d959e936a40265ac5c2903b1f532ac82",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/publication-candidate-native.tar.gz.part000.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/publication-candidate-native.tar.gz.part000.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/publication-candidate-outputs.json.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/publication-candidate-outputs.json.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/publication-candidate-parts.json.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/publication-candidate-parts.json.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/reservation.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e6cf6404222a71f3d6e409a313e022b31d22ec3e",
+      "bytes": 594,
+      "sha256": "2c19bddd1c7e5ca28e49f1769a36d986c2e0752dd7d20fea3cf3ab44795bc2aa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/native-records/result.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "5616ad6dfa1c59ba5d74613bebd6b637c4e62c7c",
+      "bytes": 85838,
+      "sha256": "a9a26ed6ccf1cd186ce10b3f9290d0344f5c170757706e0b3432dc65ae06b682",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/receipt.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "33451c07b28a5ea929fde327e6d48d1a8bd0655a",
+      "bytes": 60978,
+      "sha256": "c326c1bcaac3ad76bb90a566157bd97595d3a02f1b6e1d67427000c2bb122975",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/release-derived/candidate-outputs.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "b24acf48483c75128727473182930f76e9f6794d",
+      "bytes": 11746,
+      "sha256": "4e3918b00d2aa39c8e6cdcc9448765ef12d79f7af38a4e736b67b72ca52e96a6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/release-derived/candidate-parts.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "a3318b31a45eb847ebd1659e6d700ed7a41d533a",
+      "bytes": 316,
+      "sha256": "e8e749b137e0036704a6dba4198c32eb92ab329ae00bf3704f3d2d81fd52c75d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/release-ref.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "a0ce8408634a93e82c5b32fe2f19d251d73dbaa4",
+      "bytes": 529,
+      "sha256": "d6b3ed8950e8570fcf639f9488665af5f42577a0dcf57695b13d4f7242a1099e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/release.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "456498cc1c7cf63eea0d15d9f64295cd8b83f447",
+      "bytes": 7378,
+      "sha256": "2200e759c906a1d311aa831535c0a5b18826834725d9b3b6ee35dce813086607",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/run.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "2ab14c8e6431c4151603d0d290f5d2b0d98962f2",
+      "bytes": 13089,
+      "sha256": "282c5a869c19cab3cce88b22bd48e236d0362ae043d2b628dc08cb4608f08255",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/antenna-controls.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "765d5cd3d5b3d19d813d6e5d56ffd032c1d72e39",
+      "bytes": 2244,
+      "sha256": "200011e3ca79d519f923e14d35d33d07e0deb22e790829e990c8e5bb3b3a0cde",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/antenna-controls.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/antenna-controls.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "1dfb1d39a70ba5aef9349507c2c9bb6c18f5d264",
+      "bytes": 1958,
+      "sha256": "61820c2c6dc6f02c2840e383cc1d46eedb0b176ef566cf8b590bedba595776aa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/context.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "1751e9413f79a3a4b923466f8629be83c86baf8c",
+      "bytes": 3408,
+      "sha256": "ee1d60d12a509af63972e1d81c1869b335e396c3918cdf4d749c4e7df445bd20",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/controls.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "8655e5b6d3869b70330a0fb1c9fedd56a724c6e4",
+      "bytes": 74835,
+      "sha256": "2f4703299c76009ae536191f38538e8176ee15db5fec9d89bb16f647b0018a56",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/controls.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/controls.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "b64966d58ec8f050503d24d9d9d3d1189bfadb77",
+      "bytes": 38643,
+      "sha256": "0457445f68d8576d41c959d0cae3f2041a938bf6c71cae61f8e245090b69cf35",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/multilayer-controls.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "05fc699f6d4590bfc3760d1c314015a983468e9b",
+      "bytes": 5554,
+      "sha256": "c7c60dbd8f75aeaafeba554efda724c3fab6ad498671be42675297e0ade82787",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/multilayer-controls.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/multilayer-controls.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "a55dcf0e1ca2780037bb38e654786d4c6b03c141",
+      "bytes": 5555,
+      "sha256": "31e936eb5d0ee08faf66aacd0f5262882d770b13737ed26a47a8398b266fbe39",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/ownership-controls.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "dce3f26fb7b5e535dbfa601c573a1f42074e7351",
+      "bytes": 1035,
+      "sha256": "1b1327adc59e7bbd088f9c37293e58323a0e2cc2e1f0f96ec5f23cc2cae64aa3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/ownership-controls.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/ownership-controls.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "0c6522c4544932fc5797c4859b8aea7fc1e16d81",
+      "bytes": 899,
+      "sha256": "c60c7c348f47b65ff3ffbc0208f036ea940a2369774bcb9d4df3bf30096232ce",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/trial-controls.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "85241f937960fff4f04a944610da3950335da921",
+      "bytes": 2191,
+      "sha256": "c84fafade2e081cb31c1d61e620c853be98c5ccd839a84d0bb19da58bbb204e8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/trial-controls.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/trial-controls.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "694295944299028607d0027e508df6416ba68158",
+      "bytes": 1933,
+      "sha256": "8f6d01a4e71b0ee90e0b23a4b52ef7f2a012a337b9da8c76532f2984a5649c07",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/window-controls.json",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "afdce7867acf13c304e8c51edb09e5e914d8470f",
+      "bytes": 5647,
+      "sha256": "eb896bda49898ff137cf70b1e29af732fe9e25a7d4ec5a77136a157dcfce026c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/window-controls.stderr",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-native-terminal-41118688730/source-records/window-controls.stdout",
+      "source": "1dd7a4e8e9ad3ee6746afc149eb50774a9d47666",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-multilayer-pass-bulk-successor-research-20261030.json",
+      "source": "6d2dddf40c686b44e8468c00e5d81507fb8b2a22",
+      "git_blob": "e0c06f1e57095c763e7d0f844eb194bc16bc01f3",
+      "bytes": 7716,
+      "sha256": "1e14acd599912a75c40ede51c1e114f5437b92c25821d8947934785f3cc2fec2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-wave-replay-source-draft-20261030.json",
+      "source": "a52462ae4033ee27bcc050c1ba69cd6b390893ec",
+      "git_blob": "581bbaafcfd1f5c8b96e014bb50745946e6bb641",
+      "bytes": 150466,
+      "sha256": "b84d2f1e8ed0dca683eae130eb55b6df7bb6c10fd25f6256002a2694a266a259",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-activation-20261030.json",
+      "source": "8d920fcc3ab8b826b68454e793a0036b3b9d70b3",
+      "git_blob": "1af774b3af21795a9f2b84b473e9ce6955499d69",
+      "bytes": 1867,
+      "sha256": "c62cefb5d6b013c381e7b958be9209a88c2560880e7dcf073e107accb97e66fb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/jobs.json",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "c174fb9a7de2551ab655bc8c9814d47d42861efb",
+      "bytes": 4945,
+      "sha256": "627c6a2eb56cc8193232486846a15762d0544ce49d3279cda725cbf7d8ef636d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/jobs/124297996174.json",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "168218972c9e2c14ee04d85bb501002015f104be",
+      "bytes": 3286,
+      "sha256": "42067b2c376bcb4e823513a37536f09158d9aee2f96cfba848ea8c9edd638a14",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/jobs/124298320840.json",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "5179bafa633ed4840968bf846755d1be4194dc6c",
+      "bytes": 1631,
+      "sha256": "4df01583470c6d206dfdd6fa7026769ce79f88d90f3d475cc311d4a07fffd735",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/logs/124297996174.log",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "9e19b81302a92e683f28d160c3469d624d497a12",
+      "bytes": 59938,
+      "sha256": "67e6a0c9e989de49dddda5943bbade83ddf73e1935009bf9ed6090932ce614b6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/logs/124298320840.log",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "6ad59a1fc4a05260e6eb890102dcc805af23b7bd",
+      "bytes": 7912,
+      "sha256": "7a6010cbd7ee501410484b782c6dfd99701cf1d3ad1ed7bf4351cc93d6d56c66",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/receipt.json",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "03bbb7fe0569275a2e35a59728eab2eba3163313",
+      "bytes": 3128,
+      "sha256": "8d626e7a224b2bb6412fa19cbf43c277d4607fd066acf1ecdbea4e0e7f008571",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/records/context.json",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "dcdb2dd6cdc81f46452dda6e930c4fce1dc6e3c5",
+      "bytes": 6621,
+      "sha256": "8504357ff807c4c72722beb3398ab173995fcbaf3f3649ae0bb453d25fce798e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/records/controls.json",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "88b5b4e0db52278e444e4bd5483afc13cdb1df2c",
+      "bytes": 6742,
+      "sha256": "63bd34e786cd77fac383ff503c1c9265d4fa19191a886d4dfe36540824417c6f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/records/controls.stderr",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/records/controls.stdout",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "9e0c4c43e7db473bf1fccfb6b9b89f2e09b0a0d2",
+      "bytes": 6743,
+      "sha256": "e8c2f3c9f1037e1a2c4cf6a72ec007ebf956a5278f28e9527a85543078d3267c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/run.json",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "7858eb74ad3d7c3dca3737b18dfeeca0df1de7d9",
+      "bytes": 13106,
+      "sha256": "1c83442194fd1878c45b68ce5a7bdbf7a1ca9c9245245f41a3f8203ceddbbab2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/source-bindings.json",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "9ae7b83f8b8c220f1b561196a005d66ba98c11bc",
+      "bytes": 6205,
+      "sha256": "368022d333c47064650e0aabc974a56a789b341729c51e8d595f9a794cbc6f9a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/tested-source/.github/workflows/cdr-current-access-overlay.yml",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "77f0481a7a4f4600a0f389ca92287c2f90fd6765",
+      "bytes": 7560,
+      "sha256": "ed1142bf83af33d4e60c38af170840584fb2bef6fba7e7cad50374e16dc6f33e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/tested-source/scripts/cdr-drain-m1-wave-replay-inputs.json",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "2b7d4733fd3b62d92bdcb6943e8148ac519153d6",
+      "bytes": 54526,
+      "sha256": "98258d652c2e1bc4af48219cd3f20c8ce2fdb1f4f48b63640aa448745feca2d6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/tested-source/scripts/cdr-drain-m1-wave-replay-source-pins.json",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "8e6304f82664467456d87cb489d89340357ac3f1",
+      "bytes": 6642,
+      "sha256": "bd4c1f289ce9cd83754628eba7dfe3e4665225cb43aad5b7a8204a38ea4618c2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/tested-source/scripts/check_cdr_drain_m1_wave_replay.py",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "ca6a897d15233fe903663b7d2f10460ff7e7d399",
+      "bytes": 20716,
+      "sha256": "06423550f9f4154a66dcb0efdac70578fbee73b3cddbaffb8d1b81cba955a34f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-wave-replay-source-terminal-41124091090/tested-source/scripts/cloud_cdr_drain_m1_wave_replay.py",
+      "source": "af7966d6dc0ee8c4b8a1fa89f8a2b30580f19404",
+      "git_blob": "0628c2e1bd2faf7b8f0cf6208335bdf545b41152",
+      "bytes": 41162,
+      "sha256": "a9b4d349186dc7e00f40ac17cd1f59a671e7c7d9f87561547c8890b3322f964d",
+      "existing_identical": false
     }
   ]
 }
