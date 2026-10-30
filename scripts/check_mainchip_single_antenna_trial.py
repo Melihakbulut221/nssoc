@@ -89,6 +89,22 @@ def controls():
     append=p.append_branch(rec,points)
     assert append.startswith(rec[:rec.index(b";")])and append.count(b"NEW Metal1")==1
     positive.append("only_additive_Metal1_path")
+    for name,rr in [
+      ("leading_spaces",b"    "+rec),
+      ("leading_tab",b"\t"+rec),
+      ("identifier_newline",rec.replace((p.NET+" ").encode(),(p.NET+"\n").encode(),1))]:
+        patched=p.append_branch(rr,points)
+        assert patched.startswith(rr[:rr.index(b";")])and patched.count(b"NEW Metal1")==1
+        parsed=c.parse_def(b"NETS 1 ;\n"+patched+b"END NETS\n")
+        assert list(parsed["records"])==[p.NET]and parsed["records"][p.NET]==patched
+        positive.append("exact_DEF_record_"+name)
+    for name,rr in [
+      ("leading_unowned_blank",b"\n"+rec),
+      ("duplicate_target",rec+rec),
+      ("identifier_suffix",rec.replace(p.NET.encode(),(p.NET+"_other").encode(),1)),
+      ("invalid_dash_separator",rec.replace(b"- ",b"-\t",1)),
+      ("carriage_return",rec.replace(b"\n",b"\r\n",1))]:
+        reject("DEF_record_"+name,lambda rr=rr:p.append_branch(rr,points))
     for name,rr,pts in[
       ("other_net",rec.replace(p.NET.encode(),b"other"),points),
       ("diagonal",rec,[[4100,300],[6100,700]]),
@@ -162,7 +178,7 @@ def controls():
     assert json.loads(stream.getvalue())["terminal_errors"][0]["label"]=="terminal-record"
     lifecycle.append("actual_terminal_failure_still_reported")
     assert len(lifecycle)==4
-    assert len(positive)==8 and len(refused)==28
+    assert len(positive)==11 and len(refused)==33
     return dict(status="PASS_SINGLE_ANTENNA_TRIAL_SOURCE_CONTROLS",current_context=ctx,positive=positive,refusals=refused,
       positive_count=len(positive),refusal_count=len(refused),lifecycle=lifecycle,lifecycle_count=len(lifecycle),native_executed=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
 def main():

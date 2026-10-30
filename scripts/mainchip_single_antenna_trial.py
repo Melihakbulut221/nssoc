@@ -62,7 +62,10 @@ def branch_boxes(points,width):
     assert width==160
     return [[min(a[0],b[0])-80,min(a[1],b[1])-80,max(a[0],b[0])+80,max(a[1],b[1])+80]for a,b in zip(points,points[1:])]
 def append_branch(record,points):
-    assert record.startswith(("- "+NET+"\n").encode())or record.startswith(("- "+NET+" ").encode())
+    # Use the same exact record grammar as the qualified full DEF parser.
+    # Native exports may indent NETS records; keep those bytes verbatim.
+    parsed=c.parse_def(b"NETS 1 ;\n"+record+b"END NETS\n")
+    assert list(parsed["records"])==[NET]and parsed["records"][NET]==record,"exact single target record"
     assert len(points)in(2,3)
     for q in points:assert len(q)==2 and all(type(v)is int and v%5==0 for v in q)
     for a,b in zip(points,points[1:]):assert (a[0]==b[0])!=(a[1]==b[1])

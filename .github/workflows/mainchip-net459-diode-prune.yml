@@ -103,7 +103,7 @@ jobs:
           python3 -B - <<'PY'
           import hashlib
           from pathlib import Path
-          assert hashlib.sha256(Path('scripts/mainchip-single-antenna-trial-pins.json').read_bytes()).hexdigest()=='5111d4afd4e7b77c08a2913aafc35397a05a4ae01aeead472e7ee50b19ac3a13'
+          assert hashlib.sha256(Path('scripts/mainchip-single-antenna-trial-pins.json').read_bytes()).hexdigest()=='c4d65b0cb4c47fcaffd6ea8bb76847dac0f74e5dd4b0d6836cc99ba2af706adc'
           PY
           python3 -B scripts/check_mainchip_single_antenna_trial.py --output net459-diode-prune-controls/trial-controls.json > net459-diode-prune-controls/trial-controls.stdout 2> net459-diode-prune-controls/trial-controls.stderr
           python3 -B - <<'PY'
@@ -111,7 +111,7 @@ jobs:
           from pathlib import Path
           r=json.loads(Path('net459-diode-prune-controls/trial-controls.json').read_bytes())
           assert r['status']=='PASS_SINGLE_ANTENNA_TRIAL_SOURCE_CONTROLS'
-          assert (r['positive_count'],r['refusal_count'])==(8,28)
+          assert (r['positive_count'],r['refusal_count'])==(11,33)
           assert r['lifecycle_count']==4
           assert r['native_executed'] is False
           PY
@@ -438,7 +438,7 @@ jobs:
           assert e['GITHUB_REF']=='refs/heads/codex/mainchip-net459-diode-prune'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           manifest=Path("scripts/mainchip-single-antenna-trial-pins.json").read_bytes()
-          assert hashlib.sha256(manifest).hexdigest()=="5111d4afd4e7b77c08a2913aafc35397a05a4ae01aeead472e7ee50b19ac3a13"
+          assert hashlib.sha256(manifest).hexdigest()=="c4d65b0cb4c47fcaffd6ea8bb76847dac0f74e5dd4b0d6836cc99ba2af706adc"
           pins={k:v["sha256"]for k,v in json.loads(manifest)["files"].items()}
           for name,digest in pins.items():
               p=Path(name);assert p.is_file() and not p.is_symlink()
@@ -515,7 +515,7 @@ jobs:
           import hashlib,json,os,sys
           from pathlib import Path
           raw=Path('scripts/mainchip-single-antenna-trial-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='5111d4afd4e7b77c08a2913aafc35397a05a4ae01aeead472e7ee50b19ac3a13'
+          assert hashlib.sha256(raw).hexdigest()=='c4d65b0cb4c47fcaffd6ea8bb76847dac0f74e5dd4b0d6836cc99ba2af706adc'
           for name,pin in json.loads(raw)['files'].items():
               p=Path(name);assert p.is_file() and not p.is_symlink()
               b=p.read_bytes();assert len(b)==pin['bytes'] and hashlib.sha256(b).hexdigest()==pin['sha256']
