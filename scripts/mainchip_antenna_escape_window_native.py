@@ -66,7 +66,7 @@ def collect(db,block):
         wire=net.getWire()
         if name in source_names:
             assert not net.isSpecial()and not list(net.getSWires()),'Source net has special material'
-            if name in source_names:
+            if name == p.NET:
                 assert str(net.getSigType())=='SIGNAL'and str(net.getWireType())=='ROUTED'
                 assert wire is not None
                 kinds=[wire.getOpcode(i)&224 for i in range(wire.length())if wire.getOpcode(i)&31 in (0,1,2,13)]
