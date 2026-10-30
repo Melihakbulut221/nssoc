@@ -39,9 +39,9 @@ jobs:
           assert e['GITHUB_REF']=='refs/heads/codex/mainchip-net459-diode-prune'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           new_manifest=Path("scripts/mainchip-multilayer-antenna-trial-pins.json").read_bytes()
-          assert hashlib.sha256(new_manifest).hexdigest()=='83c9e64123931776fcb3c59de1c92ecdf711ed428cd5f1482fadf454e160b8e1'
+          assert hashlib.sha256(new_manifest).hexdigest()=='de7a0ed9fddb3af1d7a681ab4dd89dfa48701c43fc46827ae05fe0bb329b60b0'
           current=json.loads(new_manifest)
-          assert current['native_execution_enabled'] is False and len(current['files'])==68
+          assert current['native_execution_enabled'] is False and len(current['files'])==97
           for name,pin in current['files'].items():
               p=Path(name);assert p.is_file() and not p.is_symlink()
               raw=p.read_bytes();assert len(raw)==pin['bytes'] and hashlib.sha256(raw).hexdigest()==pin['sha256']
@@ -216,8 +216,10 @@ jobs:
           assert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
           jobs=read('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
           selected=[j for j in jobs['jobs'] if j['name']=='source-controls'];assert len(selected)==1
-          j=selected[0];assert j['status']=='completed' and j['head_sha']==e['GITHUB_SHA']
-          read('actions/jobs/'+str(j['id']),'job.json')
+          listed=selected[0]
+          j=read('actions/jobs/'+str(listed['id']),'job.json')
+          assert j['id']==listed['id'] and j['name']=='source-controls'
+          assert j['status']=='completed' and j['head_sha']==e['GITHUB_SHA'] and j['run_id']==int(e['GITHUB_RUN_ID'])
           b=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(j['id'])+'/logs'])
           assert b;(root/'job.log').write_bytes(b)
           receipt=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
