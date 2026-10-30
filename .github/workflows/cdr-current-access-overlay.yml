@@ -66,7 +66,7 @@ jobs:
       - name: Original pinned source import dependencies
         run: |
           python -m pip install numpy==2.3.3 networkx==3.4.2
-      - name: Unchanged historical source suite
+      - name: Unchanged historical ten-case function with current numerical derivation
         if: ${{ !cancelled() && steps.binding.outcome == 'success' }}
         run: |
           python -B - <<'PY' > hw/soc/out/cdr-drain-m1-loaded-controls/historical.stdout 2> hw/soc/out/cdr-drain-m1-loaded-controls/historical.stderr
@@ -84,10 +84,17 @@ jobs:
               module=importlib.import_module('check_cdr_width_loaded_worker')
               path=Path(module.__file__);relative=str(path.relative_to(current.ROOT))
               assert current.sha(path)==method['protected_sha256'][relative]
-              report=module.controls()
-              assert report['status']=='PASS_WIDTH_LOADED_WORKER_RESULT_SOURCE_CONTROLS'
+              import cdr_width_loaded_admission as prior_admission
+              import cdr_width_loaded_result as prior_result
+              historical,fault=module.historical_controls(prior_admission,prior_result)
+              assert len(historical['cases'])==10 and sum(row['original_passed'] for row in historical['cases'])==2
+              assert historical['eight_rejections_and_two_fault_detections_retained'] is True
+              assert all(row['all_measured_values_unchanged'] is True for row in historical['cases'])
+              report={'status':'PASS_WIDTH_LOADED_HISTORICAL_CASE_SOURCE_CONTROLS','historical':historical,
+                  'source_controls_only':True,'native_executed':False,'electrical_accepted':False,
+                  'pre_execution_worker_derivation_claimed':False}
               report['current_context']={**ctx,'source_controls_only':True,'native_executed':False}
-              report['unchanged_suite_source']={'path':relative,'sha256':current.sha(path),'entrypoint':'controls',
+              report['unchanged_suite_source']={'path':relative,'sha256':current.sha(path),'entrypoint':'historical_controls(cdr_width_loaded_admission,cdr_width_loaded_result)',
                   'CLI_historical_branch_gate_reused':False,'current_authority_module':'cdr_drain_m1_loaded_admission',
                   'historical_native_authority_transferred':False}
           except BaseException as error:
@@ -229,9 +236,11 @@ jobs:
               for key in ('native_executed','native_acquisition_performed','native_restore_qualified','real_native_archive_restored','numerical_worker_imported','numerical_worker_executed','native_worker_executed','simulator_executed','electrical_accepted','physical_accepted','full_phy_accepted'):
                   if key in r:assert r[key] is False,(name,key)
           r=reports['historical']
-          assert r['status']=='PASS_WIDTH_LOADED_WORKER_RESULT_SOURCE_CONTROLS'
-          assert (r['derivation']['numerical_blocks'],r['derivation']['numerical_bytes'])==(6,24133)
-          assert (r['current']['positive'],r['current']['refusal'])==(2,32)
+          assert r['status']=='PASS_WIDTH_LOADED_HISTORICAL_CASE_SOURCE_CONTROLS'
+          assert r['pre_execution_worker_derivation_claimed'] is False
+          assert sum(row['original_passed'] for row in r['historical']['cases'])==2
+          assert all(row['all_measured_values_unchanged'] is True for row in r['historical']['cases'])
+          assert r['historical']==reports['current']['result']['historical']
           assert len(r['historical']['cases'])==10 and r['historical']['eight_rejections_and_two_fault_detections_retained'] is True
           assert reports['execution']['status']=='PASS_WIDTH_LOADED_EXECUTION_SOURCE_CONTROLS'
           r=reports['publication'];assert r['status']=='PASS_WIDTH_LOADED_FAILURE_PUBLICATION_SOURCE_CONTROLS'
