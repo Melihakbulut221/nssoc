@@ -1,0 +1,20 @@
+{"phase": "audit-import", "primary": "AssertionError('idempotent actual DEF import')", "terminal_errors": []}
+Traceback (most recent call last):
+  File "/work/tail-source/scripts/mainchip_multilayer_antenna_trial_native.py", line 217, in <module>
+    if __name__=="__main__":main()
+                            ^^^^^^
+  File "/work/tail-source/scripts/mainchip_multilayer_antenna_trial_native.py", line 216, in main
+    p.run_phase(phase,action,unchanged,save)
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 148, in run_phase
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 135, in run_phase
+    try:action()
+        ^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_multilayer_antenna_trial_native.py", line 214, in action
+    else:audit(phase=="audit-measured")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_multilayer_antenna_trial_native.py", line 178, in audit
+    assert (W/"candidate-single.def").read_bytes()==(W/"candidate-double.def").read_bytes(),"idempotent actual DEF import"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: idempotent actual DEF import
