@@ -7,7 +7,7 @@ on:
         type: choice
         required: true
         default: controls
-        options: [controls, candidate, antenna, ownership]
+        options: [controls, candidate, antenna, ownership, trial]
 permissions:
   contents: read
   actions: read
@@ -98,13 +98,29 @@ jobs:
           assert (r['positive_count'],r['refusal_count'])==(4,23)
           assert r['native_executed'] is False
           PY
+      - name: Bind and exercise one-diode physical trial source controls
+        run: |
+          python3 -B - <<'PY'
+          import hashlib
+          from pathlib import Path
+          assert hashlib.sha256(Path('scripts/mainchip-single-antenna-trial-pins.json').read_bytes()).hexdigest()=='950d995ec1f01cfcbec4fa7e05853d53e79d1c84480a7a5a2d8f7257d9925954'
+          PY
+          python3 -B scripts/check_mainchip_single_antenna_trial.py --output net459-diode-prune-controls/trial-controls.json > net459-diode-prune-controls/trial-controls.stdout 2> net459-diode-prune-controls/trial-controls.stderr
+          python3 -B - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('net459-diode-prune-controls/trial-controls.json').read_bytes())
+          assert r['status']=='PASS_SINGLE_ANTENNA_TRIAL_SOURCE_CONTROLS'
+          assert (r['positive_count'],r['refusal_count'])==(8,28)
+          assert r['native_executed'] is False
+          PY
       - name: Always emit full source control records
         if: always()
         run: |
           python3 -B - <<'PY'
           import base64,hashlib,json
           from pathlib import Path
-          for name in ('context.json','controls.json','controls.stdout','controls.stderr','antenna-controls.json','antenna-controls.stdout','antenna-controls.stderr','ownership-controls.json','ownership-controls.stdout','ownership-controls.stderr'):
+          for name in ('context.json','controls.json','controls.stdout','controls.stderr','antenna-controls.json','antenna-controls.stdout','antenna-controls.stderr','ownership-controls.json','ownership-controls.stdout','ownership-controls.stderr','trial-controls.json','trial-controls.stdout','trial-controls.stderr'):
               p=Path('net459-diode-prune-controls')/name;assert not p.is_symlink()
               raw=p.read_bytes() if p.is_file() else b''
               chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
@@ -392,6 +408,121 @@ jobs:
           print(json.dumps(w.cleanup_preserved_workspace(w.context(os.environ),Path("antenna-ownership-evidence")),sort_keys=True))
           PY
 
+  trial:
+    needs: [source-controls, preserve-job-log]
+    if: ${{ inputs.mode == 'trial' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Recheck exact selected source before acquisition
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          e=os.environ
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_REF']=='refs/heads/codex/mainchip-net459-diode-prune'
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
+          manifest=Path("scripts/mainchip-single-antenna-trial-pins.json").read_bytes()
+          assert hashlib.sha256(manifest).hexdigest()=="950d995ec1f01cfcbec4fa7e05853d53e79d1c84480a7a5a2d8f7257d9925954"
+          pins={k:v["sha256"]for k,v in json.loads(manifest)["files"].items()}
+          for name,digest in pins.items():
+              p=Path(name);assert p.is_file() and not p.is_symlink()
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==digest
+          out=Path('single-antenna-trial-controls');out.mkdir(exist_ok=True)
+          (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run=int(e['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_acquisition=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,sha256=pins),sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Reclaim only disposable hosted SDK storage
+        run: |
+          test "$GITHUB_ACTIONS" = true
+          test "$RUNNER_OS" = Linux
+          sudo rm -rf /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h .
+      - name: Require independently created exact-source release
+        run: |
+          python3 -B - <<'PY'
+          import json,os,subprocess,time
+          from pathlib import Path
+          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-mainchip-single-antenna-trial'
+          prefix='repos/Melihakbulut221/nssoc/'
+          for attempt in range(120):
+              p=subprocess.run(['gh','api',prefix+'releases/tags/'+tag],capture_output=True,text=True)
+              if p.returncode==0:
+                  d=json.loads(p.stdout);break
+              assert 'HTTP 404' in p.stderr,p.stderr
+              time.sleep(2)
+          else:raise RuntimeError('Exact-source release reservation was not created; no archive acquisition')
+          r=json.loads(subprocess.check_output(['gh','api',prefix+'git/ref/tags/'+tag]))
+          assert d['tag_name']==tag and d['target_commitish']==e['GITHUB_SHA']
+          assert d['draft'] is False and d['prerelease'] is True and d['assets']==[]
+          assert r['object']['type']=='commit' and r['object']['sha']==e['GITHUB_SHA']
+          receipt=dict(tag=tag,tested_source=e['GITHUB_SHA'],release_id=d['id'],existing_assets=[],target_verified=True,assets_overwritten=False,externally_reserved=True,creation_attempted=False,read_attempts=attempt+1)
+          Path('release-reservation.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Create exactly one diode and target Metal1 branch; measure complete DRC and antennas
+        run: python3 -B scripts/cloud_mainchip_single_antenna_trial.py --output single-antenna-trial-evidence --reservation release-reservation.json > single-antenna-trial.stdout 2> single-antenna-trial.stderr
+      - name: Always emit full bounded evidence and failure output
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import sys
+          from pathlib import Path
+          for name in ('single-antenna-trial.stdout','single-antenna-trial.stderr'):
+              p=Path(name)
+              if p.is_file():
+                  sys.stdout.buffer.write(p.read_bytes());sys.stdout.buffer.write(b'\n')
+          PY
+      - name: Preserve complete derived evidence and retained output fallback
+        id: preserved_artifact
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: single-antenna-trial-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          path: |
+            single-antenna-trial-evidence
+            release-reservation.json
+            single-antenna-trial.stdout
+            single-antenna-trial.stderr
+            single-antenna-trial-controls
+            ${{ runner.temp }}/mainchip-single-antenna-trial-${{ github.run_id }}-1/owner.json
+            ${{ runner.temp }}/mainchip-single-antenna-trial-${{ github.run_id }}-1/candidate-outputs.json
+            ${{ runner.temp }}/mainchip-single-antenna-trial-${{ github.run_id }}-1/candidate-parts.json
+            ${{ runner.temp }}/mainchip-single-antenna-trial-${{ github.run_id }}-1/candidate-native.tar.gz.part*
+            ${{ runner.temp }}/mainchip-single-antenna-trial-${{ github.run_id }}-1/out/trial-*
+            ${{ runner.temp }}/mainchip-single-antenna-trial-${{ github.run_id }}-1/out/single-antenna-trial
+            ${{ runner.temp }}/mainchip-single-antenna-trial-${{ github.run_id }}-1/out/work/single-antenna-trial
+      - name: Clean exact owned workspace only after complete artifact preservation
+        if: ${{ always() && steps.preserved_artifact.outcome == 'success' }}
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,sys
+          from pathlib import Path
+          raw=Path('scripts/mainchip-single-antenna-trial-pins.json').read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='950d995ec1f01cfcbec4fa7e05853d53e79d1c84480a7a5a2d8f7257d9925954'
+          for name,pin in json.loads(raw)['files'].items():
+              p=Path(name);assert p.is_file() and not p.is_symlink()
+              b=p.read_bytes();assert len(b)==pin['bytes'] and hashlib.sha256(b).hexdigest()==pin['sha256']
+          sys.path.insert(0,'scripts')
+          import cloud_mainchip_single_antenna_trial as w
+          print(json.dumps(w.cleanup_preserved_workspace(w.context(os.environ),Path("single-antenna-trial-evidence")),sort_keys=True))
+          PY
+
   antenna-readback:
     needs: [source-controls, preserve-job-log]
     if: ${{ inputs.mode == 'antenna' }}
@@ -467,8 +598,8 @@ jobs:
           PY
 
   preserve-antenna-job-logs:
-    needs: [source-controls, preserve-job-log, antenna-readback, ownership]
-    if: ${{ always() && (inputs.mode == 'antenna' || inputs.mode == 'ownership') }}
+    needs: [source-controls, preserve-job-log, antenna-readback, ownership, trial]
+    if: ${{ always() && (inputs.mode == 'antenna' || inputs.mode == 'ownership' || inputs.mode == 'trial') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
@@ -488,7 +619,7 @@ jobs:
           jobs=get('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
           rows={}
           for j in jobs['jobs']:
-              if j['name'] not in ('source-controls','preserve-job-log','antenna-readback','ownership'):continue
+              if j['name'] not in ('source-controls','preserve-job-log','antenna-readback','ownership','trial'):continue
               assert j['status']=='completed' and j['head_sha']==e['GITHUB_SHA']
               if j['conclusion']=='skipped':continue
               raw=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(j['id'])+'/logs'])
