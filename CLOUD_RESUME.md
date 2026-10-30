@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v133
+# Cloud continuation — checkpoint v134
 
-Updated: 2026-10-29T22:53:49.629511+00:00
+Updated: 2026-10-30T00:29:19.284523+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint v133: hosted source controls40968367706 on exact f79294f0 passed, with full23-file/177,539-byte evidence preserved at d4fada16. The new Magic resistor provenance helper passed4positive/19refusal controls; unchanged inherited controls also passed. This is source qualification only: no C build, extraction, native output equivalence, physical ownership or electrical acceptance. Its candidate source682def39 and harmless single-workflow main registrationc27da511 are on GitHub. The precise net459 branch/two-diode candidate plan now records authentic graph evidence, pinned DEF/destroy/antenna APIs, full serialization and exact two-instance safeguards. Candidate mutation is not yet implemented. Local workspace, old project directories, project temporary entries, visualization outputs and native processes are absent; no matching local automation remains. All calculation/tests/native data stay cloud-only. Full serial PHY, routed main chip and final setup/hold remain open.
+Cloud-only checkpoint v134: actual net459 two-diode candidate40976029940 on1a3b654c completed and is preserved at1ee7bdeb. It removed the final reported DRT short (zero uncapped native and serialized markers), retained all1691 original clock/fixed records and all remaining-chip invariants, and kept net459 antenna count0. Full-design antenna violations remain609 before and609 after, so the candidate is explicitly rejected by the unchanged full gate; it is not final physical/timing signoff. Candidate ODBa3c6aa0b and every native/partial output remain in permanent cloud release428511278. CDR corrected full build40978039972 on16bef3d6 passed exact component/trace equivalence, preserved at6d6bbd4e: both Magic builds, four extraction variants, all5 raw res.ext and149788 sidecar records qualified. The sole earlier comparison failure was coupling hash order/generated capacitor labels; exact endpoint/value-token/multiplicity bijection is proven, while the original strict mismatch and failed job stay recorded. Reduced-element physical ownership and electrical/PHY acceptance remain open. Local project files, old working directories, temporary/visualization outputs, native processes and matching local automations are absent. All authored execution and native payloads stay on GitHub.
 
 Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9126,3 +9127,10 @@ Local project/tmp/native processes verified absent. Inventory368 exact cloud han
 Cloud-only checkpoint v133: hosted source controls40968367706 on exact f79294f0 passed, with full23-file/177,539-byte evidence preserved at d4fada16. The new Magic resistor provenance helper passed4positive/19refusal controls; unchanged inherited controls also passed. This is source qualification only: no C build, extraction, native output equivalence, physical ownership or electrical acceptance. Its candidate source682def39 and harmless single-workflow main registrationc27da511 are on GitHub. The precise net459 branch/two-diode candidate plan now records authentic graph evidence, pinned DEF/destroy/antenna APIs, full serialization and exact two-instance safeguards. Candidate mutation is not yet implemented. Local workspace, old project directories, project temporary entries, visualization outputs and native processes are absent; no matching local automation remains. All calculation/tests/native data stay cloud-only. Full serial PHY, routed main chip and final setup/hold remain open.
 
 Local project/tmp/native processes verified absent. Inventory369 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-30T00:29:19.284523+00:00 — cloud-only checkpoint v134
+
+Cloud-only checkpoint v134: actual net459 two-diode candidate40976029940 on1a3b654c completed and is preserved at1ee7bdeb. It removed the final reported DRT short (zero uncapped native and serialized markers), retained all1691 original clock/fixed records and all remaining-chip invariants, and kept net459 antenna count0. Full-design antenna violations remain609 before and609 after, so the candidate is explicitly rejected by the unchanged full gate; it is not final physical/timing signoff. Candidate ODBa3c6aa0b and every native/partial output remain in permanent cloud release428511278. CDR corrected full build40978039972 on16bef3d6 passed exact component/trace equivalence, preserved at6d6bbd4e: both Magic builds, four extraction variants, all5 raw res.ext and149788 sidecar records qualified. The sole earlier comparison failure was coupling hash order/generated capacitor labels; exact endpoint/value-token/multiplicity bijection is proven, while the original strict mismatch and failed job stay recorded. Reduced-element physical ownership and electrical/PHY acceptance remain open. Local project files, old working directories, temporary/visualization outputs, native processes and matching local automations are absent. All authored execution and native payloads stay on GitHub.
+
+Local project/tmp/native processes verified absent. Inventory374 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

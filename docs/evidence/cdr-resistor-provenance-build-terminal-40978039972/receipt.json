@@ -1,0 +1,433 @@
+{
+  "schema": 1,
+  "status": "PASS_FULL_MAGIC_BUILD_CURRENT500_COMPONENT_TRACE_EQUIVALENCE_NOT_RC_OR_PHYSICAL_ACCEPTANCE",
+  "source": "16bef3d6a021a0e30ef795be82c72e9c42dd100f",
+  "branch": "codex/cdr-resistor-provenance-build",
+  "run_id": 40978039972,
+  "attempt": 1,
+  "release_id": 428520553,
+  "tag": "cloud-results-40978039972-1-cdr-resistor-provenance-build",
+  "workflow_id": 401201193,
+  "conclusion": "success",
+  "jobs": {
+    "source-controls": {
+      "id": 123810840301,
+      "conclusion": "success"
+    },
+    "preserve-source-job-log": {
+      "id": 123811092500,
+      "conclusion": "success"
+    },
+    "native-build": {
+      "id": 123811155783,
+      "conclusion": "success"
+    },
+    "preserve-terminal-job-logs": {
+      "id": 123813130858,
+      "conclusion": "success"
+    }
+  },
+  "actual_source_controls": {
+    "positive": 17,
+    "refusal": 54,
+    "lifecycle": 6,
+    "inherited_positive": 4,
+    "inherited_refusal": 19,
+    "indexed_source_records": 6,
+    "indexed_native_records": 14
+  },
+  "input_joins": {
+    "full_current_members": 6647,
+    "full_migration_members": 14454,
+    "selected_archived_source_members": 2057,
+    "qualified_C_H_sources": 559,
+    "current_devices": 500,
+    "current_resistors": 24356,
+    "current_capacitors": 15566
+  },
+  "actual_build_libraries": {
+    "baseline": {
+      "bytes": 7779808,
+      "sha256": "8cd145cc2cf56768a46792dd4c2abfef9cec7a46267d092cb5d68a22b9dcbaa1"
+    },
+    "instrumented": {
+      "bytes": 7792216,
+      "sha256": "86b00cdaa02a64b8d80f5c3c2288d7f77b970f6d78eefd52001b2dfcdbcae5fc"
+    }
+  },
+  "native_commands": [
+    {
+      "label": "baseline-configure",
+      "returncode": 0,
+      "elapsed_seconds": 3.4362934259999918,
+      "supervision_failure": null,
+      "memory_read_error": null,
+      "stream_hashes_joined_to_full_output_map": true
+    },
+    {
+      "label": "baseline-make",
+      "returncode": 0,
+      "elapsed_seconds": 15.809162189000006,
+      "supervision_failure": null,
+      "memory_read_error": null,
+      "stream_hashes_joined_to_full_output_map": true
+    },
+    {
+      "label": "baseline-dependencies",
+      "returncode": 0,
+      "elapsed_seconds": 0.04658575400000586,
+      "supervision_failure": null,
+      "memory_read_error": null,
+      "stream_hashes_joined_to_full_output_map": true
+    },
+    {
+      "label": "instrumented-configure",
+      "returncode": 0,
+      "elapsed_seconds": 3.240590359999999,
+      "supervision_failure": null,
+      "memory_read_error": null,
+      "stream_hashes_joined_to_full_output_map": true
+    },
+    {
+      "label": "instrumented-make",
+      "returncode": 0,
+      "elapsed_seconds": 15.147010918999996,
+      "supervision_failure": null,
+      "memory_read_error": null,
+      "stream_hashes_joined_to_full_output_map": true
+    },
+    {
+      "label": "instrumented-dependencies",
+      "returncode": 0,
+      "elapsed_seconds": 0.047300355999993826,
+      "supervision_failure": null,
+      "memory_read_error": null,
+      "stream_hashes_joined_to_full_output_map": true
+    },
+    {
+      "label": "extract-archived",
+      "returncode": 0,
+      "elapsed_seconds": 9.622081234000007,
+      "supervision_failure": null,
+      "memory_read_error": null,
+      "stream_hashes_joined_to_full_output_map": true
+    },
+    {
+      "label": "extract-rebuilt_baseline",
+      "returncode": 0,
+      "elapsed_seconds": 9.274841650000013,
+      "supervision_failure": null,
+      "memory_read_error": null,
+      "stream_hashes_joined_to_full_output_map": true
+    },
+    {
+      "label": "extract-trace_off",
+      "returncode": 0,
+      "elapsed_seconds": 9.181171304999992,
+      "supervision_failure": null,
+      "memory_read_error": null,
+      "stream_hashes_joined_to_full_output_map": true
+    },
+    {
+      "label": "extract-trace_on",
+      "returncode": 0,
+      "elapsed_seconds": 10.078779005000001,
+      "supervision_failure": null,
+      "memory_read_error": null,
+      "stream_hashes_joined_to_full_output_map": true
+    }
+  ],
+  "equivalence": {
+    "status": "EXACT_COMPONENT_EQUIVALENCE_WITH_GENERATED_CAPACITOR_BIJECTION",
+    "variants": [
+      "saved_current",
+      "archived",
+      "rebuilt_baseline",
+      "trace_off",
+      "trace_on"
+    ],
+    "raw_resistor_rnode_file": {
+      "bytes": 1975271,
+      "sha256": "0e97643edf6181531f56da5c9b896ffad194f9602afaaf0b2057e1376bca9f4c"
+    },
+    "resistor_records": 24356,
+    "rnode_records": 15486,
+    "exact_coupled_components": 1000,
+    "all_other_statements_exact_ordered_bytes": true,
+    "numeric_tolerance": null,
+    "original_strict_ordered_comparison": {
+      "error": {
+        "message": "native record/order/value mismatch: archived",
+        "type": "AssertionError"
+      },
+      "passed": false
+    },
+    "output_bytes_rewritten": false
+  },
+  "trace": {
+    "counts": {
+      "create_contact": 33223,
+      "create_tile": 42819,
+      "emitted_resistor": 24356,
+      "net_begin": 113,
+      "net_end": 113,
+      "snapshot_begin": 226,
+      "snapshot_end": 226,
+      "snapshot_resistor": 48712,
+      "trace_end": 1,
+      "trace_start": 1
+    },
+    "epochs": 113,
+    "records": 149788,
+    "reduced_element_ownership_proved": false,
+    "status": "PASS_COMPLETE_ACTUAL_RESISTOR_TRACE_NOT_REDUCED_OWNERSHIP",
+    "trace": {
+      "bytes": 123532517,
+      "sha256": "b748531396a25d0ea1a8acd5e139736d9797495e8bb1146a6f6dc45aa41512ff"
+    }
+  },
+  "permanence": {
+    "release_assets": 17,
+    "output_inventory_members": 14506,
+    "expected_archive_members_including_two_publication_records": 14508,
+    "archive": {
+      "format": "ordered-tar-gzip-parts-v1",
+      "stem": "cdr-resistor-provenance-build-40978039972-1",
+      "source_directory": "cloud-magic-build",
+      "bytes": 928982929,
+      "sha256": "421f3dff0a945c9e112619f6e42961f222be293a6c497c398ee08bd76df10990",
+      "parts": [
+        {
+          "index": 0,
+          "name": "cdr-resistor-provenance-build-40978039972-1.tar.gz.part0000",
+          "bytes": 928982929,
+          "sha256": "421f3dff0a945c9e112619f6e42961f222be293a6c497c398ee08bd76df10990"
+        }
+      ],
+      "part_limit_bytes": 1073741824,
+      "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+      "verification": {
+        "parts": 1,
+        "bytes": 928982929,
+        "sha256": "421f3dff0a945c9e112619f6e42961f222be293a6c497c398ee08bd76df10990",
+        "all_parts_and_combined_bytes_verified": true
+      }
+    },
+    "trace_asset": {
+      "id": 690355038,
+      "bytes": 123532517,
+      "sha256": "b748531396a25d0ea1a8acd5e139736d9797495e8bb1146a6f6dc45aa41512ff"
+    },
+    "native_archive_and_trace_acquired_locally": false,
+    "all_direct_JSON_and_four_plain_joblogs_preserved": true,
+    "all_direct_JSON_asset_digests_and_indexed_emission_bytes_joined": true
+  },
+  "historical": {
+    "failed_run": 40973498818,
+    "failed_source": "15fc053d21ddeafd132ecac7bba3835a3a4d48d3",
+    "failure_receipt": "f7cbab012614d01c0309f340e83dcc9c7eae0777c52a790d2ea7a9d07f78cad3",
+    "first_readback": {
+      "run": 40975729131,
+      "commit": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "receipt_sha256": "0fbfaee5f55388de8d56a0016ce6c72fbe4e1018596b7f8ccd48c9f27a5eb676"
+    },
+    "exact_bijection_readback": {
+      "run": 40976806801,
+      "commit": "593a1655320592fc5010c1b64f0605369795460a",
+      "receipt_sha256": "679aeebd4d947ebfd974f514964848404b993fa80db03b577319d9c48ed7eb42"
+    },
+    "original_failure_not_reclassified": true
+  },
+  "scope": {
+    "geometry_changed": false,
+    "electrical_acceptance": false,
+    "physical_acceptance": false,
+    "full_phy_accepted": false,
+    "reduced_element_ownership_proved": false
+  },
+  "limitations": [
+    "This qualifies instrumentation/build and exact component-output equivalence only.",
+    "Strict serialization ordering still differs because coupled-cap hash traversal/generated names are process-dependent; that failed diagnostic remains explicit.",
+    "Constructor/snapshot metadata does not prove final reduced-element physical footprint ownership.",
+    "Current CDR device/timing/electrical failures remain unresolved; no new transistor simulation was performed.",
+    "No new dispatch after this completed proof, per root checkpoint handoff."
+  ],
+  "files": {
+    "artifacts.json": {
+      "bytes": 3669,
+      "sha256": "c6cc34f80c36884065209b26b46e6488b29c1542f6cb305be59f3a573af0a637"
+    },
+    "assets/admission.json": {
+      "bytes": 75029,
+      "sha256": "f15f6bccf9640bfc457185f780d8c7976c81dedc8979383b07d4409077b02a3b"
+    },
+    "assets/builds.json": {
+      "bytes": 11068,
+      "sha256": "597d5f13edf5444e4957877e775cc958d0ba60bdec0992ed1ded59e8b65fc43d"
+    },
+    "assets/cdr-resistor-provenance-build-40978039972-1.parts.json": {
+      "bytes": 859,
+      "sha256": "e9187fb6141e96ad96499d49867b68bba5997c2a038e94f84da8425da8d0dcde"
+    },
+    "assets/current-full-census.json": {
+      "bytes": 3049282,
+      "sha256": "9735be5a2ba19e94541ab798a036d435878956873d24ba38dd724dc4c41f8b0e"
+    },
+    "assets/current-transport.json": {
+      "bytes": 610,
+      "sha256": "7ee471271feec5fc53e6ec5e6dbfecb60cb144f87d4701362652fa588fb028e0"
+    },
+    "assets/direct-publication-plan.json": {
+      "bytes": 3225,
+      "sha256": "ce731f88c67d6ebf5f6c3cd290e6c96052f1c203d8ce2a79f9436816edcfe9a4"
+    },
+    "assets/equivalence.json": {
+      "bytes": 4130797,
+      "sha256": "69476449127ff704f0f91a691f034605bc448057ef554e1ab530bba5b39cf34d"
+    },
+    "assets/execution-source-census.json": {
+      "bytes": 17358,
+      "sha256": "ca35f112421a0a0807eaec869fcb4a8165fd4d15c18f400ccac5d720cbd02794"
+    },
+    "assets/lifecycle.json": {
+      "bytes": 730,
+      "sha256": "c2db71de9b5254a750e3858011032d82445b87759122f5e544fb4402d28f46cb"
+    },
+    "assets/migration-full-census.json": {
+      "bytes": 3165727,
+      "sha256": "a49af3effe77759256f28b9faa7aa93c04056ad14449ae5b80e0e7f79cf96894"
+    },
+    "assets/publication-inventory.json": {
+      "bytes": 2823410,
+      "sha256": "e923455ba92b4424d1085c50eae87825ae7d09ea263813dfa3504c733c166921"
+    },
+    "assets/qualified-source-snapshots.json": {
+      "bytes": 179619,
+      "sha256": "7c5c55f33178228ddf3477e03504b55548c09187f7c7c6f0dc6b2658787c673b"
+    },
+    "assets/result.json": {
+      "bytes": 4414753,
+      "sha256": "94899ec4259e06df4520775d32bda4d03dcfbcbabc146f57b886f7588c7e826b"
+    },
+    "assets/source-controls.json": {
+      "bytes": 4860,
+      "sha256": "a9ab7a7d71c1dec76cef94f5c4a29eba127cc47c066f2e88782a7f15de6037b8"
+    },
+    "assets/trace-summary.json": {
+      "bytes": 554,
+      "sha256": "cb76d19232e8b685d4e2e4a0e1490c05b72302c90d13371d591306926d122da7"
+    },
+    "dispatch-request.json": {
+      "bytes": 174,
+      "sha256": "bd1966c5ba2cab4705cb1c78d29d6aeab340e5ec0db3e3e707ef7ece9c3da6bc"
+    },
+    "dispatch-response.txt": {
+      "bytes": 1377,
+      "sha256": "6b367fc9313517342902e914243d9d925a2fb56c9e0493a4fb6acefad07016bc"
+    },
+    "dispatch-stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "initial-reservation-ref.json": {
+      "bytes": 555,
+      "sha256": "576d2ed43eeb59a2565f60aeb3a23af1ef87f0e75a4b4c17e4f6a7d03aadfe11"
+    },
+    "initial-reservation.json": {
+      "bytes": 2691,
+      "sha256": "89bb86e9b0900a0dbbb4e1234e3453dca955fc6dc27377391f9f7ac34f20bfdc"
+    },
+    "jobs.json": {
+      "bytes": 13022,
+      "sha256": "a6b1891c4a02af833e243bdc4939fef035def6294f494bbb32ccb1727f623563"
+    },
+    "jobs/123810840301.json": {
+      "bytes": 3288,
+      "sha256": "9fd2662e904132dd1da4ae70bfa0c9e935e637c012063dd1789d2ce2a57072ce"
+    },
+    "jobs/123810840301.log": {
+      "bytes": 51806,
+      "sha256": "fce6e401a9c2dab9c1b73c5faf94a5974771bc18b3367f4a9f89f9c96abb5681"
+    },
+    "jobs/123811092500.json": {
+      "bytes": 1987,
+      "sha256": "aee8fefbcf99ef2b08b09add1047631bde80010d16a9bb8d666a55011c180eb5"
+    },
+    "jobs/123811092500.log": {
+      "bytes": 37714,
+      "sha256": "588cef9679100b36f842dd28d70fd889b07f5339dd68e72dfa5e80d15d86d8b8"
+    },
+    "jobs/123811155783.json": {
+      "bytes": 4300,
+      "sha256": "413ad3614bc20e79b93f63a149192821c2e6620be1d95ee7f165097da72630d7"
+    },
+    "jobs/123811155783.log": {
+      "bytes": 4015558,
+      "sha256": "dcd64921ec89f90d9b14982c2532d97ef71d71b5df88bc9527adca2684ed795b"
+    },
+    "jobs/123813130858.json": {
+      "bytes": 1996,
+      "sha256": "a8c291d03fb1292b0f74849b50fdb099b1cc540b9b7408b843ea709ec3a69680"
+    },
+    "jobs/123813130858.log": {
+      "bytes": 6380,
+      "sha256": "8d88f2b55edc01b81956a997a8b381d2c88e9affcb056f5e3bd0b867dca13a7e"
+    },
+    "native-command-events.json": {
+      "bytes": 17767,
+      "sha256": "5c72b4143f44c7238514599891f5fd4b5f39f291afc733fdb1e745ffb89dd03c"
+    },
+    "native-index.json": {
+      "bytes": 1891,
+      "sha256": "54e9e85de97009cf62d57dc5d37c0d3d7dfb12b9f8b4dea9f92c03db4cad0cc8"
+    },
+    "release.json": {
+      "bytes": 37087,
+      "sha256": "01c8fb38b2db2b005b64d9f42cd1fa80ca71ae634115afd378cff2b59f47a3a3"
+    },
+    "run.json": {
+      "bytes": 14384,
+      "sha256": "8266810368795de9d53f6755803e0ad5fd6cfb6fd5cd3f1f7524ad7cd0902215"
+    },
+    "source-commit.json": {
+      "bytes": 1421,
+      "sha256": "50ddb056cb4183809094cceb584eb8a635b5753c4ebbf1f0a6402454797f9ed1"
+    },
+    "source-controls/context.json": {
+      "bytes": 172,
+      "sha256": "998fbae2a0d3bf1e6d40c66f1179f30fc034833773389de52f902121c014eb5a"
+    },
+    "source-controls/controls.json": {
+      "bytes": 4860,
+      "sha256": "a9ab7a7d71c1dec76cef94f5c4a29eba127cc47c066f2e88782a7f15de6037b8"
+    },
+    "source-controls/controls.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-controls/controls.stdout": {
+      "bytes": 5872,
+      "sha256": "c5bc099015a9ebd4380fff8d4c5780605da5ff4f2780fef264b7f9eb3f742bce"
+    },
+    "source-controls/returncode.txt": {
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "source-controls/source-manifest.json": {
+      "bytes": 17515,
+      "sha256": "6e567894136fbfc74196f2799b58ce8e9fbb7327c15c5dbb6c43b367e9bbf485"
+    },
+    "tag-ref.json": {
+      "bytes": 555,
+      "sha256": "576d2ed43eeb59a2565f60aeb3a23af1ef87f0e75a4b4c17e4f6a7d03aadfe11"
+    },
+    "tested-workflow.yml": {
+      "bytes": 12790,
+      "sha256": "07cf913b6bf182cac681f588eac19687750a564bbc28aa39d6cbaa1912edfff3"
+    },
+    "workflow.json": {
+      "bytes": 604,
+      "sha256": "8e9058ca084c3f341a81d7e929b2e076403407ff9c6faa67a8403d85afdd0efe"
+    }
+  }
+}

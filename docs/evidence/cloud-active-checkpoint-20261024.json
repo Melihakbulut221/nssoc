@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-29T22:53:49.629511+00:00",
+  "updated_at": "2026-10-30T00:29:19.284523+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "415778d4340067da4eda76f06ebb33820d04fbbc",
+  "root_source_before_receipt": "6e294753c8b1e5465bc4a5cf9ad184b44dcd4a3b",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 133,
+    "inventory_version": 134,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -24,21 +24,23 @@
     "latest_observed_status": "ATTENTION_REQUIRED",
     "repair_candidate_branch": "codex/cloud-monitor-main-observation",
     "code_deployed_head": "61a6a02d7cfb954c5cefff6f9f4f0676e5d0e692",
-    "latest_observed_run": 40847665085,
+    "latest_observed_run": 40955824450,
     "repair_state": "MAIN_LIVE_INVENTORY_VERIFIED",
     "candidate_qualification_run": 40845545784,
     "live_inventory_check_passed": true,
     "hosted_controls_passed": 72,
-    "latest_observed_inventory_version": 110,
-    "latest_observed_inventory_rows": 331,
-    "latest_observed_selected_rows": 333,
+    "latest_observed_inventory_version": 130,
+    "latest_observed_inventory_rows": 363,
+    "latest_observed_selected_rows": null,
     "historical_scheduled_error": {
       "run": 40826302954,
       "status": "MONITOR_ERROR_BRANCH_FILTER",
       "preserved": true,
       "code_repaired_in": "61a6a02d7cfb954c5cefff6f9f4f0676e5d0e692",
       "main_verification_run": 40847665085
-    }
+    },
+    "latest_observed_monitor_error": false,
+    "latest_observed_evidence": "docs/evidence/cloud-collector-recipes-20261029/monitor-live-audit-40955824450/evidence.json"
   },
   "active_runs": {},
   "isolated_durable_sources": {
@@ -2366,17 +2368,37 @@
       "new_bytes_verified": 70493038
     },
     "mainchip_current_timing_identity": {
-      "current_routed_producer": 40572767703,
-      "current_ODB_sha256": "13eda10135ad036c7e2e6b9ba0559210c8bee8008ad42e9da81c53301837342a",
+      "current_routed_producer": 40976029940,
+      "current_ODB_sha256": "a3c6aa0b946d01850fd4956b3fe359c34da120550caffdbbce113072cb381c76",
       "current_RC_or_STA_complete": false,
-      "current_three_shorts_open": true,
+      "current_three_shorts_open": false,
       "latest_complete_historical_STA": 39904823953,
       "historical_STA_not_current_design": true,
       "latest_native_postroute_failure": 40209284989,
       "historical_failure": "all-source-clocks count 1",
       "audit_commit": "c1be9570d13e54365afe78a4ac60f021a148163a",
       "disabled_successor_branch": "codex/mainchip-postroute-current-successor",
-      "eventual_terminal_binding": null
+      "eventual_terminal_binding": {
+        "run": 40976029940,
+        "source": "1a3b654cabaa4decc6201ad6efdac86dff80c5af",
+        "proof": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+        "receipt": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/receipt.json",
+        "receipt_sha256": "923b724d06faf889fcf63f29e023b31dcf27b975b4e284205defb010904f5ca1",
+        "release_id": 428511278
+      },
+      "preceding_current_routed_producer": 40572767703,
+      "preceding_current_ODB_sha256": "13eda10135ad036c7e2e6b9ba0559210c8bee8008ad42e9da81c53301837342a",
+      "current_ODB_bytes": 213428597,
+      "current_DRT_marker_count": 0,
+      "current_full_antenna_violation_count": 609,
+      "current_candidate_physical_accepted": false,
+      "current_candidate_rejected_by_full_antenna_gate": true,
+      "all_1691_original_clock_records_preserved": true,
+      "explicit_removed_instances": [
+        "ANTENNA_1574",
+        "ANTENNA_1575"
+      ],
+      "next": "Classify the complete baseline/candidate609 full-design antenna violations on a hosted runner using the permanent exact candidate capsule. Preserve zero-DRT candidate evidence without declaring final physical/STA acceptance. Current RC/STA must be regenerated and original20/4/8/8ns+5% gates retained."
     },
     "goal_continuation_20261028": {
       "previous_turn_classification": "progress",
@@ -4504,17 +4526,12 @@
     },
     "mainchip_net459_two_diode_candidate_plan": {
       "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-net459-two-diode-source-plan-20261030.json",
-      "implemented": false,
-      "native_executed": false,
+      "implemented": true,
+      "native_executed": true,
       "accepted": false,
-      "current_odb_sha256": "47d657f41565f5c379a9152672eac824a5d296043c3726527031452ad2097677",
-      "exact_openroad_source": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
-      "reviewed": [
-        "DEF path serialization/source order, endcaps, RECT and via preservation",
-        "dbInst destroy disconnects every terminal and changes memberships",
-        "net-specific and full-design antenna checker interfaces"
-      ],
-      "next": "Implement and execute a narrowly bounded actual net459 branch+ANTENNA_1574/1575 candidate with complete other-net/1691clock immutability and explicit two-instance terminal/supply delta proof; all DRC, antenna and connectivity checks required."
+      "terminal_run": 40976029940,
+      "terminal_proof": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "next_plan": "docs/evidence/cloud-collector-recipes-20261029/mainchip-zero-drt-next-antenna-plan-20261030.json"
     },
     "cloud_only_cleanup_reverification_20261030": {
       "workspace_entries": 0,
@@ -4523,19 +4540,244 @@
       "visualization_entries": 0,
       "native_cad_processes": 0,
       "matching_local_automation_files": 0,
-      "scope": "Existing project workspace, previously recorded project paths, project-named /tmp entries, thread visualization directory and actual process names. No whole-disk erasure/audit claim; unrelated user files untouched.",
+      "scope": "Existing project workspace, known prior project directories, project-named temporary outputs, this task's visualization directory, native process names and matching local automation files. No whole-disk erasure claim.",
       "local_native_acquisition": false,
       "local_authored_test_execution": false,
-      "latest_main": "c27da511389c6426f3409f9bbbc04be3a9c0a61e"
+      "latest_main": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a"
+    },
+    "mainchip_net459_two_diode_candidate_source_controls": {
+      "proof": "990ec579b096bbc48f188450e157fe6f8114a5af",
+      "prefix": "docs/evidence/mainchip-net459-diode-prune-source-controls-terminal-40976029940/",
+      "receipt_sha256": "0915eb0a7e8bae1ba6757bc78339dd4eb012ea1bcd2d55b9a260b15635f1ebcd",
+      "files": 10,
+      "bytes": 339218,
+      "source": "1a3b654cabaa4decc6201ad6efdac86dff80c5af",
+      "run": 40976029940,
+      "positive": 8,
+      "refusal": 25,
+      "full_job_log": {
+        "bytes": 188821,
+        "sha256": "592c5d0bb9c0afbd16f107c2c13731338f957b2c6a69cd76e832e2eafac582f1"
+      },
+      "readback_verified": true
+    },
+    "mainchip_net459_two_diode_candidate_terminal": {
+      "proof": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "prefix": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/",
+      "receipt_sha256": "923b724d06faf889fcf63f29e023b31dcf27b975b4e284205defb010904f5ca1",
+      "files": 79,
+      "bytes": 1870353,
+      "source": "1a3b654cabaa4decc6201ad6efdac86dff80c5af",
+      "run": 40976029940,
+      "records": 67,
+      "native_result": {
+        "status": "COMPLETE_BOUNDED_CANDIDATE_CHECKS",
+        "bounded_candidate_checks_passed": false,
+        "candidate_rejected": true,
+        "candidate": {
+          "bytes": 213428597,
+          "sha256": "a3c6aa0b946d01850fd4956b3fe359c34da120550caffdbbce113072cb381c76"
+        },
+        "input": {
+          "bytes": 213429713,
+          "sha256": "47d657f41565f5c379a9152672eac824a5d296043c3726527031452ad2097677"
+        },
+        "antenna": {
+          "baseline": {
+            "full_count": 609,
+            "net459_count": 0,
+            "net459_violation": 0
+          },
+          "candidate": {
+            "full_count": 609,
+            "net459_count": 0,
+            "net459_violation": 0
+          }
+        },
+        "drt_marker_count": 0,
+        "serialized_marker_count": 0,
+        "report_bytes": 0,
+        "full_signoff_DRC": false,
+        "exact_remaining_chip_preserved": true,
+        "all_1691_original_clocks_preserved": true,
+        "explicit_two_instance_delta": true,
+        "remaining_target_pins": 3,
+        "retained_wire_shapes": 85,
+        "physical_acceptance": false,
+        "timing_accepted": false,
+        "full_phy_accepted": false
+      },
+      "readback_verified": true,
+      "release": {
+        "id": 428511278,
+        "archive_asset": 690336646,
+        "archive_bytes": 404651112,
+        "archive_sha256": "105c240da970283e3537da700c5a324ac1c8bdb30cd1307d8fb84c0eaa0a6902",
+        "outputs_asset": 690336463,
+        "outputs_bytes": 9995,
+        "outputs_sha256": "e124cdf0c9e93350803d5a0a62c46355b07f18be300eabf346e4745706ee6ae9",
+        "parts_asset": 690336558,
+        "parts_bytes": 316,
+        "parts_sha256": "89ddce47439d028ee432fc80cfeb827f5dafa068127a893ec22ca83dc320d800"
+      }
+    },
+    "cdr_resistor_provenance_ordering_diagnostics": {
+      "original_failure": {
+        "run": 40973498818,
+        "source": "15fc053d21ddeafd132ecac7bba3835a3a4d48d3",
+        "proof": "7e0d5bcf0f258005d138939819d074f2fed31508",
+        "receipt": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/receipt.json",
+        "receipt_sha256": "f7cbab012614d01c0309f340e83dcc9c7eae0777c52a790d2ea7a9d07f78cad3",
+        "status": "failure",
+        "ten_native_commands_returned_zero": true,
+        "error": "native record/order/value mismatch: archived",
+        "not_restamped": true
+      },
+      "first_readback": {
+        "run": 40975729131,
+        "source": "2c63b2dfc010c4f8bbfe2065b58fff4ac2304f34",
+        "proof": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+        "receipt": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/receipt.json",
+        "receipt_sha256": "0fbfaee5f55388de8d56a0016ce6c72fbe4e1018596b7f8ccd48c9f27a5eb676",
+        "status": "success",
+        "full_archive_members": 14485,
+        "build_or_CAD_executed": false
+      },
+      "exact_bijection_readback": {
+        "run": 40976806801,
+        "source": "576a5ecad8d0618c492ef7942ee80b52085346f6",
+        "proof": "593a1655320592fc5010c1b64f0605369795460a",
+        "receipt": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/receipt.json",
+        "receipt_sha256": "679aeebd4d947ebfd974f514964848404b993fa80db03b577319d9c48ed7eb42",
+        "status": "success",
+        "all_five_captures_exact_component_bijection": true,
+        "build_or_CAD_executed": false
+      },
+      "electrical_acceptance": false,
+      "physical_acceptance": false,
+      "full_phy_accepted": false
+    },
+    "cdr_resistor_provenance_native_qualification": {
+      "run": 40978039972,
+      "source": "16bef3d6a021a0e30ef795be82c72e9c42dd100f",
+      "proof": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "receipt": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/receipt.json",
+      "receipt_sha256": "97b3a23f7a899996f90a70851249ef8a81079a437c6f6be49e9863fe02f5b2fe",
+      "files": 45,
+      "bytes": 22152107,
+      "release_id": 428520553,
+      "archive": {
+        "asset": 690352803,
+        "bytes": 928982929,
+        "sha256": "421f3dff0a945c9e112619f6e42961f222be293a6c497c398ee08bd76df10990"
+      },
+      "trace": {
+        "asset": 690355038,
+        "bytes": 123532517,
+        "sha256": "b748531396a25d0ea1a8acd5e139736d9797495e8bb1146a6f6dc45aa41512ff",
+        "records": 149788,
+        "epochs": 113,
+        "emitted_resistors": 24356
+      },
+      "status": "PASS_FULL_MAGIC_BUILD_CURRENT500_COMPONENT_TRACE_EQUIVALENCE_NOT_RC_OR_PHYSICAL_ACCEPTANCE",
+      "controls": {
+        "positive": 17,
+        "refusal": 54,
+        "lifecycle": 6,
+        "inherited_positive": 4,
+        "inherited_refusal": 19
+      },
+      "native_commands": 10,
+      "all_returncode_zero": true,
+      "full_current_members": 6647,
+      "full_migration_members": 14454,
+      "qualified_C_H_files": 559,
+      "full_baseline_and_instrumented_builds": true,
+      "all_five_raw_res_ext_identical": true,
+      "ordered_resistors": 24356,
+      "ordered_rnodes": 15486,
+      "exact_coupled_capacitor_bijection": 1000,
+      "noncoupling_statements_ordered_byte_exact": true,
+      "strict_serialized_order_comparison_passed": false,
+      "ordering_difference": "Qualified coupling hash iteration order and generated capacitor labels only; complete endpoints, exact value-token bytes and multiplicities agree. Original strict comparator and original failed status are preserved.",
+      "native_output_component_equivalence": true,
+      "trace_constructor_and_snapshot_structure_qualified": true,
+      "reduced_element_ownership_proved": false,
+      "electrical_acceptance": false,
+      "physical_acceptance": false,
+      "full_phy_accepted": false,
+      "local_native_acquisition": false,
+      "full_indexed_records": 14,
+      "full_job_logs": 4,
+      "next": "Use the qualified actual resistor sidecar with current overlay/DC evidence for hosted physical path attribution. Constructor footprints and final resistor fields do not by themselves establish reduced-element ownership. No electrical recovery is yet accepted."
+    },
+    "cloud_monitor_live_observation_20261030": {
+      "path": ".github/workflows/cloud-progress-monitor.yml",
+      "sha256": "b2dc03dc440b462fe493b76bc08e4e217dc28aa4566a6e0e3f81569312870d71",
+      "schedule_lines": [
+        "  schedule:",
+        "    - cron: '17 */8 * * *'",
+        "  cancel-in-progress: false"
+      ],
+      "workflow": 394905294,
+      "state": "active",
+      "recent": [
+        {
+          "id": 40955824450,
+          "status": "completed",
+          "conclusion": "failure",
+          "event": "schedule",
+          "created": "2026-10-29T21:12:45Z"
+        },
+        {
+          "id": 40899936360,
+          "status": "completed",
+          "conclusion": "failure",
+          "event": "schedule",
+          "created": "2026-10-29T15:16:49Z"
+        },
+        {
+          "id": 40847665085,
+          "status": "completed",
+          "conclusion": "failure",
+          "event": "workflow_dispatch",
+          "created": "2026-10-29T09:11:16Z"
+        }
+      ],
+      "latest_result": {
+        "run": 40955824450,
+        "status": "ATTENTION_REQUIRED",
+        "controls_job": 123735545001,
+        "observe_job": 123735625951,
+        "monitor_error": false,
+        "inventory_head": "3e013ca9453272650044d9296d6d4557e66dee7e",
+        "inventory_resolved_rows": 363,
+        "interpretation": "The observation completed and reported retained failed experiment handles. Workflow failure here is an ATTENTION_REQUIRED alert, not a monitor crash."
+      }
+    },
+    "workflow_registration_net459": {
+      "main": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a",
+      "previous": "86edd5d4dcd5f24ff859afce5aa1a0ecc3cb5746",
+      "registration_only": true
+    },
+    "cloud_monitor_verified_latest": {
+      "latest_observed_run": 40955824450,
+      "latest_observed_status": "ATTENTION_REQUIRED",
+      "latest_observed_inventory_version": 130,
+      "latest_observed_inventory_rows": 363,
+      "latest_observed_selected_rows": null,
+      "latest_observed_monitor_error": false,
+      "automatic_native_dispatch": false,
+      "latest_observed_evidence": "docs/evidence/cloud-collector-recipes-20261029/monitor-live-audit-40955824450/evidence.json"
     }
   },
   "next_actions": [
-    "Completed source-only run40968367706 exact f79294f0 is preserved at d4fada16. Do not dispatch again. New4positive/19refusal and inherited11/33/11+5finalizer plus14/80/5 passed. This does not compile Magic or qualify native output equivalence/physical ownership.",
-    "Next actual physical mutation is net459 branch plus exactly ANTENNA_1574/1575 candidate. Follow docs/evidence/cloud-collector-recipes-20261029/mainchip-net459-two-diode-source-plan-20261030.json. Authenticate current ODB47d657f4, independent whole primitive path mapping and every actual terminal/supply before deletion. Preserve complete via cut/enclosure material, all other signals and1691 original clocks; exact153130-to153128 delta needs a new narrow invariant, no global gate weakening. Reread serialization, full DRC and net459/full-design antenna checks mandatory; plain shape21/op108 deletion is invalid.",
-    "Next CDR work: qualify the five-file/11-insertion Magic sidecar from682def39 on hosted runner only, with full build and exact trace-off/on native resist/rnode/cap output equivalence. Use current actual500-device extraction and successful overlay40962418343. Constructor geometry and before/after-simplify snapshots do not automatically attribute reduced resistor footprints; do not infer material from final rr_tt/width alone.",
-    "Preserve all three overlay attempts40957923170/40960276845/40962418343 and final successful proof86e09a96. Use actual contact overlays and authenticated DC matrix as diagnosis only; eight emitter anchors/layer10/30 point matches, two foreign overlaps and8MOS drain layer8 matches are not individual resistor footprints or transient recovery.",
-    "Native inputs, binaries, models, archives, scientific calculations, authored controls and CAD remain in GitHub. Local API/source/derived-text handling may be RAM only. Workspace/known project paths/tmp/native processes must remain empty. Do not download native assets locally.",
-    "Full serial PHY, routed main chip and original setup/hold remain unaccepted. Keep every original electrical/physical/clock gate and eight-hour read-only GitHub monitor; no automatic native dispatch from monitor."
+    "Do not rerun completed native net459 candidate40976029940. Full79-file proof1ee7bdeb and full source control proof990ec579 are preserved. Exact saved candidate a3c6aa0b has zero uncapped native/serialized DRT markers and exact1691clock/remaining-chip invariants, but full-design antenna609 persists and candidate_rejected=true. Never call this final signoff.",
+    "Next mainchip action is hosted readback of both complete424622132-byte antenna reports from release428511278, authenticating the entire404651112-byte candidate capsule and complete declared member inventory. Follow docs/evidence/cloud-collector-recipes-20261029/mainchip-zero-drt-next-antenna-plan-20261030.json. Reconcile609native count with report semantics; compare full violation identities, ratios, rules, gate areas, layers and diode ownership before choosing an actual repair. No native download or calculation locally.",
+    "CDR full source/native qualification40978039972 is terminal SUCCESS with proof6d6bbd4e. Both actual Magic builds and archived/rebuilt/trace-off/trace-on extractions passed exact component equivalence. Original strict ordering comparator remains failed diagnostically and original40973498818 remains failed. Preserve all3 earlier failure/readback proofs. No repeated dispatch is needed.",
+    "Use the qualified CDR149788-event sidecar and authenticated current contact/DC overlays for hosted attribution of the emitter/drain resistance and physical geometry. Do not infer reduced-resistor ownership from final rr_tt/width/cl or from constructor coordinates alone. All HBT bias,37.5ps CDR/75ps comparator/UI125ps/100mV gates remain unchanged and electrically unaccepted.",
+    "Native inputs/outputs, models, archives, authored controls, simulation/CAD and calculations stay entirely in GitHub. Local API/source/derived-text handling is RAM only. Project workspace/old directories/tmp/visualization/native processes and local matching automations were reverified empty. Keep prior review-response documents without claiming original raw attachment backups.",
+    "Full serial PHY, full-chip LVS/foundryDRC/currentRC and original20/4/8/8ns+5% final setup/hold remain open. Historical STA39904823953 is not this candidate. Retain existing eight-hour cloud monitor as read-only; do not let monitor dispatch native work."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -4885,20 +5127,187 @@
     "observed_40957923170": 40957923170,
     "observed_40960276845": 40960276845,
     "observed_40962418343": 40962418343,
-    "observed_40968367706": 40968367706
+    "observed_40968367706": 40968367706,
+    "observed_40976029940": 40976029940,
+    "observed_40973498818": 40973498818,
+    "observed_40975729131": 40975729131,
+    "observed_40976806801": 40976806801,
+    "observed_40978039972": 40978039972
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40968367706,
-      "head_sha": "f79294f0dd944bceac786543021501bd810860e3",
+      "run": 40976029940,
+      "head_sha": "1a3b654cabaa4decc6201ad6efdac86dff80c5af",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123778555321,
+          "id": 123804166637,
           "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123804418803,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123804469112,
+          "name": "candidate",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40973498818,
+      "head_sha": "15fc053d21ddeafd132ecac7bba3835a3a4d48d3",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123795793091,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123796000013,
+          "name": "preserve-source-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123796054208,
+          "name": "native-build",
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        },
+        {
+          "id": 123797942197,
+          "name": "preserve-terminal-job-logs",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40975729131,
+      "head_sha": "2c63b2dfc010c4f8bbfe2065b58fff4ac2304f34",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123803169824,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123803351296,
+          "name": "preserve-source-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123803401037,
+          "name": "native-build",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123804008447,
+          "name": "preserve-terminal-job-logs",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40976806801,
+      "head_sha": "576a5ecad8d0618c492ef7942ee80b52085346f6",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123806775623,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123806984932,
+          "name": "preserve-source-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123807047836,
+          "name": "native-build",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123807529685,
+          "name": "preserve-terminal-job-logs",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40978039972,
+      "head_sha": "16bef3d6a021a0e30ef795be82c72e9c42dd100f",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123810840301,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123811092500,
+          "name": "preserve-source-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123811155783,
+          "name": "native-build",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123813130858,
+          "name": "preserve-terminal-job-logs",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
@@ -4907,7 +5316,7 @@
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-29T22:53:49.629511+00:00",
+    "observed_at": "2026-10-30T00:29:19.284523+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -5047,7 +5456,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-29T22:53:49.629511+00:00",
+  "local_workspace_verified_empty_at": "2026-10-30T00:29:19.284523+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -47357,6 +47766,2119 @@
       "bytes": 638,
       "sha256": "06c4c42101e844bf83ec163b79def6d88112e9d7b52050d7c30388c09e0b5ba2",
       "existing_identical": false
+    }
+  ],
+  "imported_checkpoint_receipts_v134": [
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-source-review-20261030.json",
+      "source": "1a3b654cabaa4decc6201ad6efdac86dff80c5af",
+      "git_blob": "32c2e1e78fde8b8ca0cc2bd81c564039caf62a1f",
+      "bytes": 3296,
+      "sha256": "c8928c527afaade5703c114cf8f080708717e8756e745bddb6431adcec1dd74e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-source-controls-terminal-40976029940/artifacts.json",
+      "source": "990ec579b096bbc48f188450e157fe6f8114a5af",
+      "git_blob": "27499f22cc97a4ea40e75c96da1678dac06a1250",
+      "bytes": 1857,
+      "sha256": "75b1869d2f2826d3bb54996f8873b0e7ce776212488130ea2f737a6e56e65a82",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-source-controls-terminal-40976029940/job.json",
+      "source": "990ec579b096bbc48f188450e157fe6f8114a5af",
+      "git_blob": "2dbc614de7dad0e937e761fae4ce0869b7b8f61e",
+      "bytes": 3779,
+      "sha256": "6a0fc2ff2d0cb70f4b44d9c3f2d29bdf92543a74b862e966cedd1b0578ea34e0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-source-controls-terminal-40976029940/job.log",
+      "source": "990ec579b096bbc48f188450e157fe6f8114a5af",
+      "git_blob": "844883b331a74c4ae320ddc83e6576b087f4582c",
+      "bytes": 188821,
+      "sha256": "592c5d0bb9c0afbd16f107c2c13731338f957b2c6a69cd76e832e2eafac582f1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-source-controls-terminal-40976029940/jobs.json",
+      "source": "990ec579b096bbc48f188450e157fe6f8114a5af",
+      "git_blob": "6d811ec7dc5c88c8e3a3d1bcbcd8aa05921536c6",
+      "bytes": 10843,
+      "sha256": "f07f627f117d637fef8ac669ac3611610f06f8628f41ff245fd345fa9f999a66",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-source-controls-terminal-40976029940/receipt.json",
+      "source": "990ec579b096bbc48f188450e157fe6f8114a5af",
+      "git_blob": "54676b897ee291e48feeed54649a5cb2c44077f3",
+      "bytes": 2611,
+      "sha256": "0915eb0a7e8bae1ba6757bc78339dd4eb012ea1bcd2d55b9a260b15635f1ebcd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-source-controls-terminal-40976029940/records/context.json",
+      "source": "990ec579b096bbc48f188450e157fe6f8114a5af",
+      "git_blob": "a07b3770633b9fa4660df2d6f56506d4c7e67a55",
+      "bytes": 3408,
+      "sha256": "e03b0a9353b9f8f1bb3fcc0780866de53ea9fd3028bc3c484c56dee936b6425f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-source-controls-terminal-40976029940/records/controls.json",
+      "source": "990ec579b096bbc48f188450e157fe6f8114a5af",
+      "git_blob": "4953952ce365f92712fdbbfee6a90cd32f8dc416",
+      "bytes": 74835,
+      "sha256": "e0eee2f7bbfdf0299304e30326af796dbe15607b196985da75e4d05c6c25f2a9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-source-controls-terminal-40976029940/records/controls.stderr",
+      "source": "990ec579b096bbc48f188450e157fe6f8114a5af",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-source-controls-terminal-40976029940/records/controls.stdout",
+      "source": "990ec579b096bbc48f188450e157fe6f8114a5af",
+      "git_blob": "41a03855e71d3491c28f87597939bb0e50e2eb7d",
+      "bytes": 38643,
+      "sha256": "b52712484ea7ff498850737665c4d06cac803c1d1d8b1fb8cb5d1bd40a05728e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-source-controls-terminal-40976029940/run.json",
+      "source": "990ec579b096bbc48f188450e157fe6f8114a5af",
+      "git_blob": "57e6fb3e7f1f707900838ef2bcf8ed39a870021c",
+      "bytes": 14421,
+      "sha256": "bb82ccfc5eb508b1494040bce47325b7256bf7c78a7d0b3dd11dcc729df85524",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/artifacts.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "eb991aece637061f531607464a60420d0fea2d4f",
+      "bytes": 2755,
+      "sha256": "7b07fd45df978fa7e46c86a2aacc99e1cbeb90e83447ddd1f956d30876720fa6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/capsule/candidate-outputs.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "a23a62b0233a66f2a93c3690e89b5014ee3f2a6b",
+      "bytes": 9995,
+      "sha256": "e124cdf0c9e93350803d5a0a62c46355b07f18be300eabf346e4745706ee6ae9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/capsule/candidate-parts.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "4c9a3b7d3833365b25342885aed42efc3827a0fd",
+      "bytes": 316,
+      "sha256": "89ddce47439d028ee432fc80cfeb827f5dafa068127a893ec22ca83dc320d800",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/jobs.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "921fa203297a191bbeb23d9eb65e5fe303361065",
+      "bytes": 11344,
+      "sha256": "6f59973a9df6e74f5e99074737d97edcf8be57a9832369d5436a3de759f4afb0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/jobs/123804166637.log",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "844883b331a74c4ae320ddc83e6576b087f4582c",
+      "bytes": 188821,
+      "sha256": "592c5d0bb9c0afbd16f107c2c13731338f957b2c6a69cd76e832e2eafac582f1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/jobs/123804418803.log",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "b354fa84e7b4bd7e266c00af459345d562e07e4f",
+      "bytes": 7548,
+      "sha256": "cc8539043fb7f0490603a50beae57e52c4adffe5b13de2366799b0ee05840b89",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/jobs/123804469112.log",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "7a0870a4145483897d1efac406bbb685ec085d52",
+      "bytes": 301293,
+      "sha256": "376ae0f99e7c30a33de8d3d36b7a3aa2ab1c92959b694798c48c8833cecc2739",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/receipt.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "b927264bde0bc5faafc385b7c80479ef2abdfea0",
+      "bytes": 21575,
+      "sha256": "923b724d06faf889fcf63f29e023b31dcf27b975b4e284205defb010904f5ca1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/record-index.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "17404051bfdd4d521674bd8d1e2fc666f66e15c7",
+      "bytes": 9805,
+      "sha256": "d8a6b64371df5859d0f665806c75694d04efc0bc2abb02dede91e152aaeab01f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/current-input-restoration.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "6b252a0dc4ae191efdfbc948f2d4a5e4ed1f5967",
+      "bytes": 23247,
+      "sha256": "5918da7081ad1776b41201aadc63b436eef02ca70fa5ee49b8a2ac9d6e017bef",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native-capsule-publication.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "c62f77f8f5c25c7cc94172c725b55ad818a89f46",
+      "bytes": 10776,
+      "sha256": "440c3dabf09de63def8397909f70c5a265c6f77a61f67202448aeca0e2f8dd29",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/container-terminal.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "8389139f571c0d9dd1ad14ddeaf9b6c2db382cc4",
+      "bytes": 6847,
+      "sha256": "5d3bfe1e45885548f4f058ea6f94574015a5f81d28aa50ab2a0df359ce8ec615",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/create-attempt.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "fb876a622a9da85262a16d2a3bfa013f6d8a794e",
+      "bytes": 1221,
+      "sha256": "5c511319ca49d2f52e7467486746704557c7135e17fbd6492bd7405181045ccb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/host-progress.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e4393461b121dc88dbfcd314267dc1fe6be8deca",
+      "bytes": 11308,
+      "sha256": "7343fc60caffd702e86cfddacd69eea49a152598198c186d977eca2040ce27b9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/image-inspect.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/image-inspect.stdout",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "3a3e3716eebca1c75d355e7d864e0e54a726b83c",
+      "bytes": 2643,
+      "sha256": "001053670304e516315e0155c7fb70f3aa9992989d8671304e5b41406f568a61",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/immutable-image-pull.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/immutable-image-pull.stdout",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "9714457f7a6ceb1e2f641bb52956c0ed21c70522",
+      "bytes": 804,
+      "sha256": "6efd973a722afb029aac7c2cac02267a987154186fb9731a7023d85df0877d44",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/names-before-owned-create.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/names-before-owned-create.stdout",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/net459-diode-prune/audit-import-terminal.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "9c74880607e199e44d695eef0d676189dec2917d",
+      "bytes": 191,
+      "sha256": "73760f0bc3d50a89cf82446288af9d93badedf54c2d97173c5b077af0a858e58",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/net459-diode-prune/audit-measured-terminal.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "b36ce8db13dc1204253cb8262927ff14ef1a2614",
+      "bytes": 193,
+      "sha256": "d10cc5b7da40a22dab289129e2f4297a8378af26ea54016626b474443e8db9a3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/net459-diode-prune/baseline-net459-antenna.rpt",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "911d8a82127bf0cce64410cd724a42c0e6d69ae7",
+      "bytes": 3253,
+      "sha256": "5b58d6f9298084c0e487012499d700d0c3336faf093cfec4de499903ac72ba75",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/net459-diode-prune/baseline-snapshot.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "87491ba7e8abcecf1450ba098675992601f54098",
+      "bytes": 57034,
+      "sha256": "90996e1d989395e6c62c78a976b32c2645a4b8232b174a7f26cb6e7d2c62678e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/net459-diode-prune/candidate-net459-antenna.rpt",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "56daf0c9fb42e06b45159924d8673ab730d494ef",
+      "bytes": 3253,
+      "sha256": "08c05490b4631bb2c5c856241ad9fa41c76fb0579a5285ebdcfccbff5091d189",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/net459-diode-prune/deleted-instance-inventory.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "f4b4fc879c09a6c73b1cce89bc339ffbb583ba1a",
+      "bytes": 4014,
+      "sha256": "f12866e6bd90d9387adaf37ac84a26022e499b9f9504803c3acce2d3b0cb727a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/net459-diode-prune/drc-markers.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "bab3a91ff5915a5a9e5cb4c3748d00d77c33d81d",
+      "bytes": 135,
+      "sha256": "b5dfc5805e67838ac422c5611a23de68a0d4e4832c5ac8776a4022a8d6683457",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/net459-diode-prune/imported-snapshot.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "3bedb25326c60cff21528b4246a92401773807e5",
+      "bytes": 56986,
+      "sha256": "af1bb7c9d12aef379beb117878ff81e3f955e7370e7d7b79f2bd0057c9779902",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/net459-diode-prune/imported-target.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "cd89af6471e0ee6b2ed5ea399d4b0ff5726a3bff",
+      "bytes": 144593,
+      "sha256": "0778fcfc781c85ccf46138ec076df7cfb667b579402264126e916879a7b2c0fd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/net459-diode-prune/measured-snapshot.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "3bedb25326c60cff21528b4246a92401773807e5",
+      "bytes": 56986,
+      "sha256": "af1bb7c9d12aef379beb117878ff81e3f955e7370e7d7b79f2bd0057c9779902",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/net459-diode-prune/measured-target.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "cd89af6471e0ee6b2ed5ea399d4b0ff5726a3bff",
+      "bytes": 144593,
+      "sha256": "0778fcfc781c85ccf46138ec076df7cfb667b579402264126e916879a7b2c0fd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/net459-diode-prune/plan.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "068bd379b538ccf2f8eaad3a6b7017753904be9b",
+      "bytes": 59325,
+      "sha256": "1d29c44085833702e006aff1a052dc14890be0c845c6910d25bbd48a18906c61",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/net459-diode-prune/prepare-result.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "003ecfdb92da4032f31de4630bad181ea79ec775",
+      "bytes": 4489,
+      "sha256": "ad646c629d96ec993d3f15ab17d84e41d14f0e920624f7da20a21266d134cddd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/net459-diode-prune/prepare-terminal.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "cbfbbfb22dfebda666941f3155417081505c21a9",
+      "bytes": 186,
+      "sha256": "3ed9b93fdd78ff59e96c8838a1b3f04f48146f9f2b31a41923f1cbc58c20cfde",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/net459-diode-prune/result.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "bb8cd383de88428ed7774d8577488d48014abc93",
+      "bytes": 1915,
+      "sha256": "8b52b83b7dfb175fce3cb5f5055e139b8c5cfe353dbd8d3c963630571f8911f2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/owned-container-create.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/owned-container-create.stdout",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "454292e79a1ce70dcd8998435ea8f8a70dda149a",
+      "bytes": 65,
+      "sha256": "127c4695992baeb4b94973b4d9cda195761765057bc52dd9a5493430d05c1121",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/owned-container-remove.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/owned-container-remove.stdout",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "454292e79a1ce70dcd8998435ea8f8a70dda149a",
+      "bytes": 65,
+      "sha256": "127c4695992baeb4b94973b4d9cda195761765057bc52dd9a5493430d05c1121",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/owned-removal-census.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/owned-removal-census.stdout",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prefix-envelope.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "bc75a7ec8ebe4d620ae64c4e45f266b1f11383fa",
+      "bytes": 4270,
+      "sha256": "11281aedb0c83745f8126820b9c3c5421c20ed572e48bda55356f5d68c8313fb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prefix-restoration.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "8e316db083b1571e763c01308ee1756c172c934c",
+      "bytes": 423478,
+      "sha256": "23f45038bb461360ec38c7a2490ba24c84db2f9dd3a53e8b2e689201d693d177",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-audit-import.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-audit-import.stdout",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "8ab24468e0c4b920dcd20e53c7c60371c7532e64",
+      "bytes": 285,
+      "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-audit-measured.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-audit-measured.stdout",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "8ab24468e0c4b920dcd20e53c7c60371c7532e64",
+      "bytes": 285,
+      "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-baseline-ant.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-candidate-check.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-import.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-import.stdout",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "660bf6ac7ea15464503e1c5751617f3299ef1abc",
+      "bytes": 799,
+      "sha256": "0a0e5d0bc3c5c6d36903c0855a5770195c30f6d038a34e81eacf8268fb6f13df",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-inner-progress.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "16cae54eb2141660bb2913bbfa466276fb3aeacc",
+      "bytes": 6621,
+      "sha256": "3bc5f618a1aa53b4ac8dfd00506e92169d4c20d81ee2642bdad76516c816080d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-inner-result.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "3fd32caeaed2e140989a53b3e38a43fd4b017c24",
+      "bytes": 22871,
+      "sha256": "3b87f83cb19eab380cc0df98b348bd095f6ba87282e3b6cb85651419c4540808",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-ldd.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-ldd.stdout",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "6e1b9a0f966e74f6d438db19138043ed961f2533",
+      "bytes": 10979,
+      "sha256": "889002331cf4c22592c1c8e5c0b492e4100e0ad20c1ba0551afcb0d97fbc702d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-prepare.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-prepare.stdout",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "8ab24468e0c4b920dcd20e53c7c60371c7532e64",
+      "bytes": 285,
+      "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-runtime-observed.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "534b24cdcf542b98ad1ae9c29197ed1e2ad5ccd8",
+      "bytes": 16940,
+      "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-version.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/prune-version.stdout",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "233850439374365fe2cb6382f30eeb73ca08fca5",
+      "bytes": 42,
+      "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/southern-owned-container.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/native/southern-owned-container.stdout",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/producer-jobs.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "7700c239ab095b4291e652609b052407112f6178",
+      "bytes": 25026,
+      "sha256": "712b97423fef3b00296fb4192ab578f9a475771ba99b418a93efbd2369a9af40",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/producer-outputs.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "44c9764140047cd1780f528d9413de9d975a271e",
+      "bytes": 21497,
+      "sha256": "07032f779bc1f664fe58da6953287ab7d66f880d8e24adf725b27a00f6f7209a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/producer-parts.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "6904db33c771d26d9095e974c7754051d60021c2",
+      "bytes": 493,
+      "sha256": "e5730258718841c8ad1627e20256e7352535036c0d971064e6d627566a15d787",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/producer-ref.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "1f0dee5385c3e9123356949d39d812cc3cedacf8",
+      "bytes": 595,
+      "sha256": "1893b8c8b356478d2a665f75adebc8cc9854839261ff33a11972c9721b8f444a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/producer-release.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "654f581cdf7e807644f6f9822c05730359b12e07",
+      "bytes": 98063,
+      "sha256": "25b73d36ced7fc38de5d4fefe732baa88d70222a0c84df7b0a2186a61095d10d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/producer-run.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "665cff47b267e4713540ff58522050d9c7ef723d",
+      "bytes": 14422,
+      "sha256": "c8b0d7f9b41b7d7e76a822b17878dbfe4ccb124bb8ac949ea861c7cb568080cc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/publication-candidate-native.tar.gz.part000.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/publication-candidate-native.tar.gz.part000.stdout",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/publication-candidate-outputs.json.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/publication-candidate-outputs.json.stdout",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/publication-candidate-parts.json.stderr",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/publication-candidate-parts.json.stdout",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/reservation.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "418d63be71e3d164314d39fe99bdf980aaad6135",
+      "bytes": 582,
+      "sha256": "840579b25c2777077045e6f28bad74239bf483f30dd54cbfbc3c06a1c42fe2b4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/records/result.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "bee1adfcb444a027a6394d51162169d93ba583f9",
+      "bytes": 51741,
+      "sha256": "92cd1462cf8bc3be7f8cc14fb78fa2af2d6bd8084558fe9e0fcba482661c5f34",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/release.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "d6899d9bd73b1e3ccdbaf0b4f566f1148cce3b84",
+      "bytes": 8533,
+      "sha256": "ca9f4f5dfd1f3b2c049775e792cd6e31d6047a4f81a423e12207c93bf549e5a2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/run.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "1d9ad42d4cec0a6ffd2e98cad3263ce7cbbe63c6",
+      "bytes": 14424,
+      "sha256": "cfe99c6e3d0c67bf843afa8e66ca63108e865a4bc12e14134cec241b9cfd6a23",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-net459-diode-prune-terminal-40976029940/tag-ref.json",
+      "source": "1ee7bdeb2e127a95ef83afad09551554cfda1b64",
+      "git_blob": "edd7945ead37bc763696aca0bf5d0686e9d0f235",
+      "bytes": 548,
+      "sha256": "c291d45b7c3b20c2cfce207682ca90ea6db3b3c972343eea0210d6de7031031b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/artifacts.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "0274d74bc8ca2dd6355f7e0e92c56aa0e2fed904",
+      "bytes": 3669,
+      "sha256": "020b60102555dc49b24c3f822c3089f69e6af83e209ea67249a7ef0b78700999",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/assets/admission.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "492aa71856622a114f92cbf1fe8ca9cc0eef6e5b",
+      "bytes": 75029,
+      "sha256": "db98fe60c4f5a6baad2dafda481ea8d52cbdda8838561c6284f1c1836bdce585",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/assets/builds.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "2809c5e04bed274685cae66005046e049124f974",
+      "bytes": 28051,
+      "sha256": "a52097d5ae8b59fc0a76d51a30a7fd6db48497542938f7691f66c0dbf8bebac1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/assets/cdr-resistor-provenance-build-40973498818-1.parts.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "691dff4699ff40020be76f26c021c17edea3b2a6",
+      "bytes": 859,
+      "sha256": "92119a29aa1b4e9173b1b74717f3bea730f8046bd24e8d103c09305780d1a4ce",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/assets/current-full-census.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "613beab215fe493d53bc27bca14da2e3844d5124",
+      "bytes": 3049282,
+      "sha256": "9735be5a2ba19e94541ab798a036d435878956873d24ba38dd724dc4c41f8b0e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/assets/current-transport.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "50d7dd831b86e62bd91761b0cd348e283e6dbb1b",
+      "bytes": 610,
+      "sha256": "7ee471271feec5fc53e6ec5e6dbfecb60cb144f87d4701362652fa588fb028e0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/assets/direct-publication-plan.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "0133c1d87b55ae64094feee9e625e0299be4fe03",
+      "bytes": 2495,
+      "sha256": "6111fe14880cf3f9be3f5af407a9ff711b69316f54b01770f81345636b646dfd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/assets/execution-source-census.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "5085018fc39b61a76070f4a01e36057a2ef7cbc5",
+      "bytes": 13219,
+      "sha256": "e77e9fcd26853c8ece45e39a6aac4c1409baa2696e6fb8538eae7b36555d5279",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/assets/lifecycle.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "24589264382ec387b38ce3f879d682b050c57f71",
+      "bytes": 790,
+      "sha256": "a37b8a8dbc0e62f878f2bf63e62cef46b4757c87bbac2d3326f9beb9b85b1a49",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/assets/migration-full-census.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "6c3e30f7cfca09492f343e7711069283c1556111",
+      "bytes": 3165727,
+      "sha256": "a49af3effe77759256f28b9faa7aa93c04056ad14449ae5b80e0e7f79cf96894",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/assets/publication-inventory.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "86dc290ca98f911d0e33475f832e0aba1df1e529",
+      "bytes": 2818683,
+      "sha256": "65dd13a131879b2946953829dba9451a1d0d8d8277029d3a121b15f4ae6f9dca",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/assets/qualified-source-snapshots.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "a0dc36692a8f0af5366ebdff1030f3a83f6949d4",
+      "bytes": 179619,
+      "sha256": "7c5c55f33178228ddf3477e03504b55548c09187f7c7c6f0dc6b2658787c673b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/assets/result.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "583ac6b44824ae18e4b99398314d1b856a7d8316",
+      "bytes": 1720,
+      "sha256": "f3e8cade4b82a4220b3d686031a48e58efdbf5aaf24535f93d83d90b9cead395",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/assets/source-controls.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "04d5750ca7fa87c617c8e05a6e7fe9b7efae81de",
+      "bytes": 3544,
+      "sha256": "9cea007aafe2d8c552509c98dd192b0734ec4eeb71fdf795107d9bc98db8d453",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/dispatch-request.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "2c8c38befc5b1eccd06cc6a47fa1d04bf962e1ab",
+      "bytes": 148,
+      "sha256": "254b3b044e97e1be1d66d16742d680f26dbd5190066569e557da7246cb37aeb2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/dispatch-response.txt",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "9927d6d51ab66b9de414b111ea546d4cc2a4b00d",
+      "bytes": 1375,
+      "sha256": "e920a31cd143b3eeb568878e3a71e051537e49db8111b266478e5deff53c7dd5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/dispatch-stderr.txt",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/initial-reservation-ref.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "8f925817cefd0c920fd646d4535a019d169747ec",
+      "bytes": 555,
+      "sha256": "6a12f926408f7923ce233d2ed0082673d10bb3d953aa4b64a5f5eac216ebe52e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/initial-reservation.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "2f6972c0a407a69e53fc5ffeab0dd7091461f5b8",
+      "bytes": 2556,
+      "sha256": "6dca24ec3f5c9580d2f17f25c3ff510f9061f602a7085efad8e9fea098746a9d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/jobs.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "6b4be2b58dbf4a4e74e99b642636f2320b5c734e",
+      "bytes": 13061,
+      "sha256": "17f0bb45a5dc0b01926c8b3d80972720c4fa4e2125d59685e1c671f22143b91c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/jobs/123795793091.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "88287fa7e5dd18f25cc4a303ddb72521fc51ad6e",
+      "bytes": 3288,
+      "sha256": "2875a7322f4654b10e352f5b50ad97bbbee8ba81c4e7840c13b65f8200502932",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/jobs/123795793091.log",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "3ff399cb6447bc08de70b37c9a6818c1fff5db49",
+      "bytes": 47068,
+      "sha256": "c4cdc760687b9a9a806a2a102031058447e56fb410beeb61ef950dd52d9f194c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/jobs/123796000013.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "27b65f7f212c9879d9c0895651d32a906a571238",
+      "bytes": 1987,
+      "sha256": "052f3ea286637edd78e92f5ef234975bb666686524a613eeaeaca81b956fd99e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/jobs/123796000013.log",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "d0b869f973e904db1f6b697181d0e90a945e1a6b",
+      "bytes": 34106,
+      "sha256": "7a373b020f9135b53a121a3a8d493dc24c4044e3f93c330e4563db5253b05080",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/jobs/123796054208.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "7badc341e3b90994d1fde3de8cedeb53f32a4142",
+      "bytes": 4339,
+      "sha256": "a668183413c12c849b77a2cfb26e6d6fe6a036f506b2c3440c23ca03b1ea53ef",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/jobs/123796054208.log",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "efd0477a6e2347e704e5fc12abf7f427abc6fef3",
+      "bytes": 3335054,
+      "sha256": "0cadf1207913fb8dcfe9dee05ad6ff0fc024d455d492adeaf01e05d30687abea",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/jobs/123797942197.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "8eff2a91db1d7fdc7274a31fe2e83c8af2663092",
+      "bytes": 1996,
+      "sha256": "8610fc3df9f4a6628c55a8e602971a501204e639ea143da764d745c461a44cc4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/jobs/123797942197.log",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "3470f3a4ff67af2b90e9e20ef07dedb3edd83942",
+      "bytes": 6383,
+      "sha256": "2a07d7830d5c6423c015a9ae678530a6738fb541b699be7fdc43da653db2d96c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/native-command-events.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "dc22bc1d5b94c548ba469f75836eaa2c4023649a",
+      "bytes": 32700,
+      "sha256": "5471b7ca647091f5c100297651dc988e5de784f3e6cff9d6c7dda87d92dc85ed",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/native-index.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "64d39b7727dad8e560c3d0281f52e131dc50d1cd",
+      "bytes": 1626,
+      "sha256": "c013a6ee0032fc16d47abdf9e01c626e558d86f0df5448601dd26a2ce42600cd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/receipt.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "1fb4c9e1663157007a57447d518e034a71a7f7ae",
+      "bytes": 9023,
+      "sha256": "f7cbab012614d01c0309f340e83dcc9c7eae0777c52a790d2ea7a9d07f78cad3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/registration.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "331ed8496a74646432328ddd388fbc5ceb7c8b99",
+      "bytes": 792,
+      "sha256": "6aaea81e0388fe23fd67bdd4d57d45a146845e04ec6fcbd6382f4f5a3beebc2b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/release.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "5b11297ffbff5adbe8f8ce0e7a8a61047bbf00e3",
+      "bytes": 30898,
+      "sha256": "96968fa9dbafd6c8f971d6b6dededcda9fe032fe3de074a446286aa4b5899698",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/run.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "b4fee436b0ecf4b1b41de987b1f5e2b14aba8ea8",
+      "bytes": 14380,
+      "sha256": "5699d2df4f43a3022907bd56f0e14e133e183ca56b210122f9472967b9d93f69",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/source-commit.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "f5ffbcc811c0950a0749bf7d74aceb40818efc40",
+      "bytes": 1417,
+      "sha256": "22ad068190eddf6d059df76065cb5ad6b3339721c84ab3fbd1bf2dea74fe0de8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/source-controls/context.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "558aaa3b501ffcaecf5c9eb8edeab487c37429d6",
+      "bytes": 172,
+      "sha256": "97a6a81dace2f91d1857204a5554aa33009571d569c99a8f015fc5eb5c47d655",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/source-controls/controls.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "04d5750ca7fa87c617c8e05a6e7fe9b7efae81de",
+      "bytes": 3544,
+      "sha256": "9cea007aafe2d8c552509c98dd192b0734ec4eeb71fdf795107d9bc98db8d453",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/source-controls/controls.stderr",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/source-controls/controls.stdout",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "1566a87796db57eb6fbfe736057f6db92c657e2d",
+      "bytes": 4556,
+      "sha256": "19dcd13c365c61b8ea65d347c5b0cc19404748699afd8dd302ac8e4654fb6a5b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/source-controls/returncode.txt",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/source-controls/source-manifest.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "bff8131bccdb19613b60fd875f6fe5a296e5c01e",
+      "bytes": 13376,
+      "sha256": "aae1441afdfe352eaad2c317b5847e6f5a1cce53d1dd3919dcf221991031c227",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/tag-ref.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "8f925817cefd0c920fd646d4535a019d169747ec",
+      "bytes": 555,
+      "sha256": "6a12f926408f7923ce233d2ed0082673d10bb3d953aa4b64a5f5eac216ebe52e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/tested-workflow.yml",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "4920534cac5b742282ac7ad277f7a202001ba9ea",
+      "bytes": 12070,
+      "sha256": "23e28ce59fe5321da192e1859939ee166ad07c41a79aca2b316884d6d2a0337f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-failure-40973498818/workflow.json",
+      "source": "7e0d5bcf0f258005d138939819d074f2fed31508",
+      "git_blob": "746b6cac3869cb8a1dcc88d1dc8e7d2ac69e0337",
+      "bytes": 604,
+      "sha256": "8e9058ca084c3f341a81d7e929b2e076403407ff9c6faa67a8403d85afdd0efe",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-failed-equivalence-readback-source-20261030.json",
+      "source": "2c63b2dfc010c4f8bbfe2065b58fff4ac2304f34",
+      "git_blob": "2abc854c78de2b8e34797805957a6b36e24208f0",
+      "bytes": 2756,
+      "sha256": "56673ed4a5b8aeeeb01b881c8277eb057957c472dc5fd3b1dd7a55372a53f75f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/artifacts.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "14dcd3796cd5d854cc269dbe74e4ae4e6ce93452",
+      "bytes": 3667,
+      "sha256": "96bfe4df95f5f976f40a48791824f4b9e7927d1edaff61ccc5c3bc94b971d36c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/assets/admission.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "4acd86e506b0f3a8acebcd30180503a314645dd3",
+      "bytes": 75029,
+      "sha256": "edae2a7bfb45350e03967ca145c963f242a26a99dae738705015530f4aec06c3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/assets/cdr-resistor-provenance-build-40975729131-1.parts.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "854ed1587822151f747bd3e3262def7afc8bb778",
+      "bytes": 856,
+      "sha256": "8928915eb932b25adbd1abcddc9c5294fd468a7942adfbebfc02b7bedfda5940",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/assets/difference-diagnosis.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "7abe2688c349e31e279e75f10830e04c5791087b",
+      "bytes": 64738,
+      "sha256": "0a6325e22d99bf4d7d132371def1405ecc76ebc396daf8e457e28032e41ee457",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/assets/direct-publication-plan.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "82043094d8267efe2be21259e59ef5804c369b11",
+      "bytes": 1992,
+      "sha256": "481d5cabec4eff0e395573c939ec58e20ae3fe9894823ad2fa21db6e134b3c4b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/assets/execution-source-census.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "f84b44d92bb592ead5935cc2ee9f41ae8c07c191",
+      "bytes": 15266,
+      "sha256": "4d803992e4dec1fed3c45da28642d6115555ef56167f235097046c6761c13483",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/assets/full-census.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "1bd37e83b00848b65527984a98c2faef0970219d",
+      "bytes": 2938467,
+      "sha256": "650ac263ce23a3df71e7a8e51c570862bbaae525e3b5f33d0017e521bec1c2d8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/assets/publication-inventory.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "b42edcac5d7491aae0d70ed5bd15c22d7b4e2864",
+      "bytes": 21569,
+      "sha256": "4f32564da8f70b794c7685f3508ff8dce6b6ff79b76557d13f73586d0445d0ce",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/assets/result.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "23cb1d0d683050961f042187746508c0266bda28",
+      "bytes": 1576,
+      "sha256": "2042815cba0f2e6c66a8524950ef9d6e40db67955ea2843c76e9c5631a286fb4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/assets/source-controls.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "62666461cbdedc3c5c59f8ce16db17eba9b46cad",
+      "bytes": 4049,
+      "sha256": "b54a3d98c2d6c86b5f5543ebac644282a396cff503e032dced5d4ecbe7dd9243",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/assets/trace-observation.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "1bc18eff8e4092d6af029cd5051a523d51279e04",
+      "bytes": 632,
+      "sha256": "c770bb4064727e1db3c7676e6e891c32fcecb08ddf453bc0faa765cb4e601c7b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/assets/transport.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "0f33b074498572ebbe61d004db81fd7d129e395e",
+      "bytes": 368,
+      "sha256": "af1d9c0e0592ab767e67b39349954aefa35124df38872decba030e8b00d4c67c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/dispatch-request.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "769d0cc893ce2457a47c9f20adfaeb3c6da2d47e",
+      "bytes": 177,
+      "sha256": "bface247683cefabb8c9f7cbbc65d91dd102df02de2469199e4abbecc2ac4d39",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/dispatch-response.txt",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "86c5012be9d9c5d2768759af745ad72bfb70801c",
+      "bytes": 1378,
+      "sha256": "d2b38c9c70ae1eec1707c0e4781691d8bc3c986bdf1198ea8a5eb28bc67b58b7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/dispatch-stderr.txt",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/initial-reservation-ref.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "cb389f0e28e1a7038409f5379d8d136f14ff8c63",
+      "bytes": 555,
+      "sha256": "f08622cc42e075d76d0fe421df2531f8ee0bae81d70a74d157daf76714693043",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/initial-reservation.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "e268a28a3df4fd577277a70fd8c8e3222cefc084",
+      "bytes": 2546,
+      "sha256": "025a1ed773669930f116af02736ca9e710fbb43550f04c09143955bac01e6cf3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/jobs.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "a4f371521d0013748c62d9618108d54ed4653365",
+      "bytes": 13022,
+      "sha256": "c3988debdda7fead8af5dc9f3a16c6fb1411c16b3b37d0b178d7846821b0e53e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/jobs/123803169824.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "0fa341e3f8d3c23cbf63a15e37016bd484d3d1e9",
+      "bytes": 3288,
+      "sha256": "2776c0d05e5b3170ce1f3bbc238d4e70b7832032cc507a735969d2c8b3553263",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/jobs/123803169824.log",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "f443d938d02365e3ae622791bd8ff304dd7008b5",
+      "bytes": 49060,
+      "sha256": "91940fa0308a316a8e56cf644234668aebf239e6138eedb2f143716229b7c5ef",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/jobs/123803351296.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "7f60f395cb6ccfe01f46aeb133d9a80b3dde4513",
+      "bytes": 1987,
+      "sha256": "11ae5a7600189b9a336358def9b596d10238d3dbc3a6abb1203b536d4356b5d4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/jobs/123803351296.log",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "17ddc811ec7c68f688feca260676785a633ef067",
+      "bytes": 35713,
+      "sha256": "30cbe10dba931015cdc5af61a395663ed1472b319aa07594d7729d5e3d8d7317",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/jobs/123803401037.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "e6a78e106beb762db74b17d36570a876d1a3b2c3",
+      "bytes": 4300,
+      "sha256": "f8bbecbb7d1d53e314d9a0050b4b542c0c6ec98aefa592911440352c22fb3ef5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/jobs/123803401037.log",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "6a5f309f2090e419906aa0d36cde58369773248b",
+      "bytes": 1069696,
+      "sha256": "ff7f28c7126dc120eb5611268681fc6c0c7258a478496cf8ed46aa3bb712e33a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/jobs/123804008447.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "f689da41d9bf8cac5a24b986284b0dca27619068",
+      "bytes": 1996,
+      "sha256": "a2a88213c1e0668ff36a2bbcfdd2a8ef244bf9a52de7c298c05e3ada3a0a56bd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/jobs/123804008447.log",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "a196f6ebd3ef5b055ab71204cbe5e67c9f814e09",
+      "bytes": 6380,
+      "sha256": "c4c1821a472f1481b8ba5df8bf10161979a58fd9009f08bacd1f4808dd133479",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/native-index.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "7d582673937ea3c3f6e0c51fee6c5dc70beb3932",
+      "bytes": 1342,
+      "sha256": "a90323c79982c7a2e5b64125be7018b62e7f025cbc2513b619ba89cd7e581a6a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/receipt.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "12d0eae6e90223f22ff6be9926058c5aa9e32244",
+      "bytes": 7000,
+      "sha256": "0fbfaee5f55388de8d56a0016ce6c72fbe4e1018596b7f8ccd48c9f27a5eb676",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/release.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "1354d90a5b3d069010ad500099ec17cde990d9e6",
+      "bytes": 26838,
+      "sha256": "0f9486e70021437f49dd96b0eb49d4e9d3dce95fdad33bf472ddc75c1eadd65f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/run.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "20a8ff1f392d3dfa42623366872a4886e38ac92c",
+      "bytes": 14369,
+      "sha256": "f6befe052dbf1e65193836583c71616ddde6130639e45ea77d9a685a7baeec52",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/source-controls/context.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "a2c951ddf154709046eb67f34d9b11851a7f60d8",
+      "bytes": 172,
+      "sha256": "2fbdf32f7440e726e4e0619c2e3233f1f0d205a7903ad4832738bd84c91d3464",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/source-controls/controls.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "62666461cbdedc3c5c59f8ce16db17eba9b46cad",
+      "bytes": 4049,
+      "sha256": "b54a3d98c2d6c86b5f5543ebac644282a396cff503e032dced5d4ecbe7dd9243",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/source-controls/controls.stderr",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/source-controls/controls.stdout",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "971731c338676ed0c8f027e147ba1763f12d764a",
+      "bytes": 5061,
+      "sha256": "2449e5d35b61796ff9658ed90f08991e7cff662b0f2dde8113f9013c18da554c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/source-controls/returncode.txt",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/source-controls/source-manifest.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "3b779a2481f223bc6ddd1ae0e8b1e409597dc32c",
+      "bytes": 15423,
+      "sha256": "d1c91b412d6db855655d91ceb524ede3641f4e84dfe2b07bfd352788d8e11de0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/tag-ref.json",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "cb389f0e28e1a7038409f5379d8d136f14ff8c63",
+      "bytes": 555,
+      "sha256": "f08622cc42e075d76d0fe421df2531f8ee0bae81d70a74d157daf76714693043",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-equivalence-readback-terminal-40975729131/tested-workflow.yml",
+      "source": "325fe213d9ef73f27a7791d8a08970e0d67739a5",
+      "git_blob": "d8c5b52809faa991706bbe22464e246c7f8235d4",
+      "bytes": 12790,
+      "sha256": "529bfbadc81ddb7aaeb21fd2033735d4cf7fbfe87e6474f694a43ead063efebb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-diagnostic-source-20261030.json",
+      "source": "576a5ecad8d0618c492ef7942ee80b52085346f6",
+      "git_blob": "e307553921d469642737f74b1958450cf758e70b",
+      "bytes": 3606,
+      "sha256": "6e7c1752a9e6906fabaeabab78b34770984039b68a3dc23f2216ebbc43f8b5d1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/artifacts.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "52be6b27b67c702fe28a07028522889ca394084d",
+      "bytes": 3669,
+      "sha256": "71b3c035ba1a5c1176e89489b13f682d5d39514ba0b4a730d219d89a9aa700e7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/assets/admission.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "c0cc4b2852b3688b542ccde59fce29b2e0465967",
+      "bytes": 75029,
+      "sha256": "d90215ceb2908296a39b28de6cfe8dfce4fa474460b6552a8aa379211f8fb708",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/assets/cdr-resistor-provenance-build-40976806801-1.parts.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "428d0697213d3f81f6405011d002c773d63576a3",
+      "bytes": 856,
+      "sha256": "9c22df95cc556d5cd2baa13b2f42abb1dc4aa0d9ea4cf9899eb934f0082af200",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/assets/difference-diagnosis.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "7abe2688c349e31e279e75f10830e04c5791087b",
+      "bytes": 64738,
+      "sha256": "0a6325e22d99bf4d7d132371def1405ecc76ebc396daf8e457e28032e41ee457",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/assets/direct-publication-plan.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "449d9ffae34d21267e882ffa77b0a5dffaa4e9a1",
+      "bytes": 2511,
+      "sha256": "04caa1a7781d20667c2ad0fe2e5a40e7502e6146ecef91da68ad1c16afe711c2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/assets/exact-component-bijection.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "7f9ca09a43970acb149a342583a1ec0dfeb0e9e2",
+      "bytes": 3858049,
+      "sha256": "c1112d44bc00901176d3bc59f11f26766ff6ed746bc5d55e4d7da4e2a983f187",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/assets/execution-source-census.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "018d7835a222f909239621719cf69784b95a3d6a",
+      "bytes": 15466,
+      "sha256": "e87d4a51ae6d092f8f70176f5b53016ab2944c283862796a41f880b84dce956d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/assets/full-census.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "01345346f2d0a7f1cda44adc1cc635c07f31adc2",
+      "bytes": 2939114,
+      "sha256": "17391577f41ece342ce2fa125682e67162b68c76bb59641d392ddb0be7014b40",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/assets/publication-inventory.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "4aaa0ff794f11e3d40025fb5af3807b917838b4b",
+      "bytes": 22739,
+      "sha256": "1655b449b375f93180d8adccd23e056db80f1657b93f235f477cb7a67a3caf67",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/assets/qualified-emitter-source.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "79ea15c9b21072d0465bf5053b1731fb53ce1ef7",
+      "bytes": 311602,
+      "sha256": "6cb4fd05d669728b320cbcfb669847b1761603546cc61486cf89a7c6f54f0ecb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/assets/result.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "884e2257f575481f7db5274cea0beee5e310a774",
+      "bytes": 1613,
+      "sha256": "84eb15a98f0563585a3885254b3bed97d39800a565ddc5d6234277047f30a9fe",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/assets/source-controls.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "3edf4133f58cdcae6779f94739a49da8e811de3f",
+      "bytes": 4430,
+      "sha256": "dbf319724d4de5073a8cf71191061be780930eed36855f9e28d9c7470e3f76ac",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/assets/trace-observation.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "1bc18eff8e4092d6af029cd5051a523d51279e04",
+      "bytes": 632,
+      "sha256": "c770bb4064727e1db3c7676e6e891c32fcecb08ddf453bc0faa765cb4e601c7b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/assets/transport.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "0f33b074498572ebbe61d004db81fd7d129e395e",
+      "bytes": 368,
+      "sha256": "af1d9c0e0592ab767e67b39349954aefa35124df38872decba030e8b00d4c67c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/dispatch-request.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "b8c15315c63acb238430ed93c02f8fb22b13cba8",
+      "bytes": 177,
+      "sha256": "8341813759179afd9dbd8412c4c012fdcee16254fb101a0667e0da9f044c3be3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/dispatch-response.txt",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "98596de017feeef62afe64321431fd6304ccb6c2",
+      "bytes": 1376,
+      "sha256": "f563905bdd522a6ae359b4622a425de58d122538ad5e6597a5e4a398d6b19242",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/dispatch-stderr.txt",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/initial-reservation-ref.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "18d7671c2fed7405d6e3cc11b2b72b91836a0da9",
+      "bytes": 555,
+      "sha256": "acafd64d5d472dce0c5ba4bd2cdec216a390f5b854c956a0a9948e95cb6a7a83",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/initial-reservation.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "6468207f91b37426b8eb66bb0c56c29579d4f7ec",
+      "bytes": 2573,
+      "sha256": "42ff209fb083b843ebbc6cb62b7d3da1ac8afb97d8e4ef03edca115b00ff6009",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/jobs.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "9809a129444fa150e2b366728452e90adabc91ae",
+      "bytes": 13022,
+      "sha256": "1a03a6698709f5154e350cc9ea2a211573f866e7a1766c1037f148f3df5bc954",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/jobs/123806775623.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "01d411e76b9074315deae49d5575daafedb610c3",
+      "bytes": 3288,
+      "sha256": "b3aabb23ef474a9e7620342946b91399037e0d3edcd476f4862e1902ac84acbd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/jobs/123806775623.log",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "aa2a536a0c1be3e1fc019a7026b2ad96f9bea43f",
+      "bytes": 50199,
+      "sha256": "c55968611846c60af5408db0a9d5f577a00d990edeb80026226417544062a409",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/jobs/123806984932.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "b87c4a0ec243e6076595f73bb162c7711ac9ccfc",
+      "bytes": 1987,
+      "sha256": "fff6005af58c97896438e9594e2867f206bf7900621112cad6eac1955c92de7d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/jobs/123806984932.log",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "fd3145f08c5d9935c560f5a6c0893a07beabb554",
+      "bytes": 36482,
+      "sha256": "d5b8826dcfbf76ce85292314d5ee885f571e84dfabf7dbad5fac6bd9ae6cbef1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/jobs/123807047836.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "a2c6042cf1c6b2169a2b23790030c7a5424b5aa7",
+      "bytes": 4300,
+      "sha256": "f25a47b099f508d20bebad38e597b1cbe7049fe0b7a92114606effecf2076f37",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/jobs/123807047836.log",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "59a8c0e88c73568b6cb3db186b9bcf279e11881c",
+      "bytes": 1500223,
+      "sha256": "8a00202bd2baf3c607422539766af21e59e3f02594cd7b1da9b20ac8460a0d2f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/jobs/123807529685.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "236067e638d232c0c73edf4bf6992ac233552d5e",
+      "bytes": 1996,
+      "sha256": "1c820f8a28da4b7835fc60125c1d70512339b28739e7b1d061dec94dd4cebf7a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/jobs/123807529685.log",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "d237fabe9114f2dc690bd8d127dc8e8d6ea13be9",
+      "bytes": 6382,
+      "sha256": "e2cdec7df75ade876868641f6ef90456e16e1438493ad24ad236850b739e2a60",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/native-index.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "d23c834bcddadc138f19bbe41f63428989946414",
+      "bytes": 1632,
+      "sha256": "db14d027fe93408b05dd0cfd638d5185d014bea6a60861d65067385749fad149",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/receipt.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "363b7981919a7f4ceccc76c3233d53dc331c4096",
+      "bytes": 8437,
+      "sha256": "679aeebd4d947ebfd974f514964848404b993fa80db03b577319d9c48ed7eb42",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/release.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "36a90179a000245d0d5b49b4e80ad1a98b90887d",
+      "bytes": 30928,
+      "sha256": "5a8f41788c06b0a020e9b516a821d579491e07888a3bdca773fa5f9b844abfab",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/run.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "3523d570935ef195767598dd12d58f630678b754",
+      "bytes": 14380,
+      "sha256": "368f5eaeb9cbc6a65135c7f2ed7d0f989afed1355cf972b9fe61e2293ef779ba",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/source-controls/context.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "93b4f7ae24113f8a5c91d772e36acda328f0e7c4",
+      "bytes": 172,
+      "sha256": "f34c346e5ee206f27ce4069c0c8f11df860c15f25a2d155a1e11fdcfdf08ba54",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/source-controls/controls.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "3edf4133f58cdcae6779f94739a49da8e811de3f",
+      "bytes": 4430,
+      "sha256": "dbf319724d4de5073a8cf71191061be780930eed36855f9e28d9c7470e3f76ac",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/source-controls/controls.stderr",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/source-controls/controls.stdout",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "45e8132b0be941747f87c3ddd7dcaba1545e47d1",
+      "bytes": 5442,
+      "sha256": "944e351c96cf851b99862193efff688dab92207a278f91b55db0bcaf4884419a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/source-controls/returncode.txt",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/source-controls/source-manifest.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "6afa413a1b9400c19ee68d760ee72a6953d3be80",
+      "bytes": 15623,
+      "sha256": "ecfad414b66e870fb2ac3aacf6c61bc82479e05a9bfa6e2d0f0494b1d083bc05",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/tag-ref.json",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "18d7671c2fed7405d6e3cc11b2b72b91836a0da9",
+      "bytes": 555,
+      "sha256": "acafd64d5d472dce0c5ba4bd2cdec216a390f5b854c956a0a9948e95cb6a7a83",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-capacitor-bijection-terminal-40976806801/tested-workflow.yml",
+      "source": "593a1655320592fc5010c1b64f0605369795460a",
+      "git_blob": "d5926c7f6add2e17004db53d642435ded99d64ed",
+      "bytes": 12790,
+      "sha256": "ac48ca8351c75bc8df111feb406b4334ea1d1b9fb2a6cd35ccf171ccd4ad9753",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-exact-component-build-correction-source-20261030.json",
+      "source": "16bef3d6a021a0e30ef795be82c72e9c42dd100f",
+      "git_blob": "e85036536cd9064af95013a9fea6bd066ef642b8",
+      "bytes": 2710,
+      "sha256": "ea6a4fae2c865f770c9481af3f10a7afdbeacd932a98b1f643b546e59834d56a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/artifacts.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "2de706a7b2a10c4c797977a43d195f5a54588838",
+      "bytes": 3669,
+      "sha256": "c6cc34f80c36884065209b26b46e6488b29c1542f6cb305be59f3a573af0a637",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/assets/admission.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "590fdb4a172bb42b52c7d52985d630ac83f86b68",
+      "bytes": 75029,
+      "sha256": "f15f6bccf9640bfc457185f780d8c7976c81dedc8979383b07d4409077b02a3b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/assets/builds.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "766756d957bd3955ab46380073b273d1832190b2",
+      "bytes": 11068,
+      "sha256": "597d5f13edf5444e4957877e775cc958d0ba60bdec0992ed1ded59e8b65fc43d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/assets/cdr-resistor-provenance-build-40978039972-1.parts.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "669a9b461fa91433c4ade160ad8500ec280dff83",
+      "bytes": 859,
+      "sha256": "e9187fb6141e96ad96499d49867b68bba5997c2a038e94f84da8425da8d0dcde",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/assets/current-full-census.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "613beab215fe493d53bc27bca14da2e3844d5124",
+      "bytes": 3049282,
+      "sha256": "9735be5a2ba19e94541ab798a036d435878956873d24ba38dd724dc4c41f8b0e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/assets/current-transport.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "50d7dd831b86e62bd91761b0cd348e283e6dbb1b",
+      "bytes": 610,
+      "sha256": "7ee471271feec5fc53e6ec5e6dbfecb60cb144f87d4701362652fa588fb028e0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/assets/direct-publication-plan.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "dc0741e31407f0c764db9876ed1ca37b10b7ef31",
+      "bytes": 3225,
+      "sha256": "ce731f88c67d6ebf5f6c3cd290e6c96052f1c203d8ce2a79f9436816edcfe9a4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/assets/equivalence.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "aee08355d77eaf4562bd85586e56dcbdd15717cd",
+      "bytes": 4130797,
+      "sha256": "69476449127ff704f0f91a691f034605bc448057ef554e1ab530bba5b39cf34d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/assets/execution-source-census.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "4703e8342eac3d06123df4fc1594bc2132389bc3",
+      "bytes": 17358,
+      "sha256": "ca35f112421a0a0807eaec869fcb4a8165fd4d15c18f400ccac5d720cbd02794",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/assets/lifecycle.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "04f662f6f35ca402354e65a7a5fc3233ce7e481c",
+      "bytes": 730,
+      "sha256": "c2db71de9b5254a750e3858011032d82445b87759122f5e544fb4402d28f46cb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/assets/migration-full-census.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "6c3e30f7cfca09492f343e7711069283c1556111",
+      "bytes": 3165727,
+      "sha256": "a49af3effe77759256f28b9faa7aa93c04056ad14449ae5b80e0e7f79cf96894",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/assets/publication-inventory.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "1e4642f2ea3b93fc75d918c829f20010ec170b10",
+      "bytes": 2823410,
+      "sha256": "e923455ba92b4424d1085c50eae87825ae7d09ea263813dfa3504c733c166921",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/assets/qualified-source-snapshots.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "a0dc36692a8f0af5366ebdff1030f3a83f6949d4",
+      "bytes": 179619,
+      "sha256": "7c5c55f33178228ddf3477e03504b55548c09187f7c7c6f0dc6b2658787c673b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/assets/result.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "24730ac7d0100e5a848876c6db52c8b7413b2933",
+      "bytes": 4414753,
+      "sha256": "94899ec4259e06df4520775d32bda4d03dcfbcbabc146f57b886f7588c7e826b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/assets/source-controls.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "af03e8c423d3fc7556e74cb4a37864826d98ef62",
+      "bytes": 4860,
+      "sha256": "a9ab7a7d71c1dec76cef94f5c4a29eba127cc47c066f2e88782a7f15de6037b8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/assets/trace-summary.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "ac65b3f71953aecfcdba1f5bc655766848427d7b",
+      "bytes": 554,
+      "sha256": "cb76d19232e8b685d4e2e4a0e1490c05b72302c90d13371d591306926d122da7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/dispatch-request.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "0f71cd5b7938a495a96d171bf2fa637e3683da61",
+      "bytes": 174,
+      "sha256": "bd1966c5ba2cab4705cb1c78d29d6aeab340e5ec0db3e3e707ef7ece9c3da6bc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/dispatch-response.txt",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "1f62c172177921d1a88cdc2ba6755b67e21dc94c",
+      "bytes": 1377,
+      "sha256": "6b367fc9313517342902e914243d9d925a2fb56c9e0493a4fb6acefad07016bc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/dispatch-stderr.txt",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/initial-reservation-ref.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "e5505339beeed4a338d34032df260496ff6a3de4",
+      "bytes": 555,
+      "sha256": "576d2ed43eeb59a2565f60aeb3a23af1ef87f0e75a4b4c17e4f6a7d03aadfe11",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/initial-reservation.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "7c6a6593791208e1fca0714c7074ba81fbfcdbf3",
+      "bytes": 2691,
+      "sha256": "89bb86e9b0900a0dbbb4e1234e3453dca955fc6dc27377391f9f7ac34f20bfdc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/jobs.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "12b10700136391b89e06542fb57289985cac2f11",
+      "bytes": 13022,
+      "sha256": "a6b1891c4a02af833e243bdc4939fef035def6294f494bbb32ccb1727f623563",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/jobs/123810840301.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "4f14acf4578326bcc655e106b2a2eb336d461002",
+      "bytes": 3288,
+      "sha256": "9fd2662e904132dd1da4ae70bfa0c9e935e637c012063dd1789d2ce2a57072ce",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/jobs/123810840301.log",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "d47101f64cd9ab0efd04e1eac09540cbe4a96112",
+      "bytes": 51806,
+      "sha256": "fce6e401a9c2dab9c1b73c5faf94a5974771bc18b3367f4a9f89f9c96abb5681",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/jobs/123811092500.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "446612e85dc2abb8ec06b3e9b31abb1a2eb91b63",
+      "bytes": 1987,
+      "sha256": "aee8fefbcf99ef2b08b09add1047631bde80010d16a9bb8d666a55011c180eb5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/jobs/123811092500.log",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "b6e0da11aeca0e9343327674804f3bf2ecb40bc9",
+      "bytes": 37714,
+      "sha256": "588cef9679100b36f842dd28d70fd889b07f5339dd68e72dfa5e80d15d86d8b8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/jobs/123811155783.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "1c8b9c4e476f18d2b84c3b1f901cb187b749b4ba",
+      "bytes": 4300,
+      "sha256": "413ad3614bc20e79b93f63a149192821c2e6620be1d95ee7f165097da72630d7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/jobs/123811155783.log",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "7bd0e95ed4194d2ccea0314ebcd51b83d2f0f354",
+      "bytes": 4015558,
+      "sha256": "dcd64921ec89f90d9b14982c2532d97ef71d71b5df88bc9527adca2684ed795b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/jobs/123813130858.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "6a5453816e95e572abc9cabdb809f90a3c6afa77",
+      "bytes": 1996,
+      "sha256": "a8c291d03fb1292b0f74849b50fdb099b1cc540b9b7408b843ea709ec3a69680",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/jobs/123813130858.log",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "e7bf19263f9391b068104dad2744697eba983df6",
+      "bytes": 6380,
+      "sha256": "8d88f2b55edc01b81956a997a8b381d2c88e9affcb056f5e3bd0b867dca13a7e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/native-command-events.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "7ed86cda9fc6de2cf2ba5a6c85bf6d95184ca643",
+      "bytes": 17767,
+      "sha256": "5c72b4143f44c7238514599891f5fd4b5f39f291afc733fdb1e745ffb89dd03c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/native-index.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "08392f54e8fd827e31c3090ec907d73aceba869a",
+      "bytes": 1891,
+      "sha256": "54e9e85de97009cf62d57dc5d37c0d3d7dfb12b9f8b4dea9f92c03db4cad0cc8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/receipt.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "d53fada7f2ceb9c68409642fde3620368127c2bf",
+      "bytes": 14789,
+      "sha256": "97b3a23f7a899996f90a70851249ef8a81079a437c6f6be49e9863fe02f5b2fe",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/release.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "17b0052ffc9edc59d2920d35a0adbd4ca16aeed6",
+      "bytes": 37087,
+      "sha256": "01c8fb38b2db2b005b64d9f42cd1fa80ca71ae634115afd378cff2b59f47a3a3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/run.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "c186e7e5fdab3b643c5a4221b0cf97efd13b492a",
+      "bytes": 14384,
+      "sha256": "8266810368795de9d53f6755803e0ad5fd6cfb6fd5cd3f1f7524ad7cd0902215",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/source-commit.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "10d8e3588f225cf3a3e3f35055a9f9a0c6e1c19e",
+      "bytes": 1421,
+      "sha256": "50ddb056cb4183809094cceb584eb8a635b5753c4ebbf1f0a6402454797f9ed1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/source-controls/context.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "2e704ba0b59ad9a4627aec005937dfa6544554a1",
+      "bytes": 172,
+      "sha256": "998fbae2a0d3bf1e6d40c66f1179f30fc034833773389de52f902121c014eb5a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/source-controls/controls.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "af03e8c423d3fc7556e74cb4a37864826d98ef62",
+      "bytes": 4860,
+      "sha256": "a9ab7a7d71c1dec76cef94f5c4a29eba127cc47c066f2e88782a7f15de6037b8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/source-controls/controls.stderr",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/source-controls/controls.stdout",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "6b18df0bf4814fba1175756f15abbfb50bb8a048",
+      "bytes": 5872,
+      "sha256": "c5bc099015a9ebd4380fff8d4c5780605da5ff4f2780fef264b7f9eb3f742bce",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/source-controls/returncode.txt",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "573541ac9702dd3969c9bc859d2b91ec1f7e6e56",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/source-controls/source-manifest.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "70f7366c6788d6b60122d163803564f1ecd2fe89",
+      "bytes": 17515,
+      "sha256": "6e567894136fbfc74196f2799b58ce8e9fbb7327c15c5dbb6c43b367e9bbf485",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/tag-ref.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "e5505339beeed4a338d34032df260496ff6a3de4",
+      "bytes": 555,
+      "sha256": "576d2ed43eeb59a2565f60aeb3a23af1ef87f0e75a4b4c17e4f6a7d03aadfe11",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/tested-workflow.yml",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "1a093f947eea00cff2fd89e4652549d0540520d6",
+      "bytes": 12790,
+      "sha256": "07cf913b6bf182cac681f588eac19687750a564bbc28aa39d6cbaa1912edfff3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-resistor-provenance-build-terminal-40978039972/workflow.json",
+      "source": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+      "git_blob": "746b6cac3869cb8a1dcc88d1dc8e7d2ac69e0337",
+      "bytes": 604,
+      "sha256": "8e9058ca084c3f341a81d7e929b2e076403407ff9c6faa67a8403d85afdd0efe",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v134": [
+    {
+      "run": 40976029940,
+      "source": "1a3b654cabaa4decc6201ad6efdac86dff80c5af",
+      "tag": "cloud-results-40976029940-1-mainchip-net459-diode-prune",
+      "release_id": 428511278,
+      "empty": true,
+      "exact_source_verified": true,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/tag/cloud-results-40976029940-1-mainchip-net459-diode-prune"
+    },
+    {
+      "run": 40973498818,
+      "release_id": 428497156,
+      "source": "15fc053d21ddeafd132ecac7bba3835a3a4d48d3"
+    },
+    {
+      "run": 40975729131,
+      "release_id": 428508127,
+      "source": "2c63b2dfc010c4f8bbfe2065b58fff4ac2304f34"
+    },
+    {
+      "run": 40976806801,
+      "release_id": 428513964,
+      "source": "576a5ecad8d0618c492ef7942ee80b52085346f6"
+    },
+    {
+      "run": 40978039972,
+      "release_id": 428520553,
+      "source": "16bef3d6a021a0e30ef795be82c72e9c42dd100f"
     }
   ]
 }
