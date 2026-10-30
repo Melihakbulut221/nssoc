@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30T19:34:00.890363+00:00",
+  "updated_at": "2026-10-30T20:09:27.762453+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "6db2d5fb0248910fa489a63d70770a6f4d660293",
+  "root_source_before_receipt": "86d3cb03d46ad1a291b148c6f28948d5fb294f3a",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 145,
+    "inventory_version": 146,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -26,9 +26,9 @@
     "code_deployed_head": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a",
     "latest_observed_run": 41077552127,
     "repair_state": "RETRY_CONTROLS_PASSED_LIVE_MONITOR_ERROR_RETAINED_NOT_DEPLOYED",
-    "candidate_qualification_run": 40845545784,
-    "live_inventory_check_passed": true,
-    "hosted_controls_passed": 72,
+    "candidate_qualification_run": 41108174342,
+    "live_inventory_check_passed": false,
+    "hosted_controls_passed": 87,
     "latest_observed_inventory_version": null,
     "latest_observed_inventory_rows": null,
     "latest_observed_selected_rows": null,
@@ -74,9 +74,48 @@
       "run_extra_attempts": 3,
       "main_deployed": false
     },
-    "candidate_endpoint_followup": "Read-only exactendpoint later200, conditionalETagGET502, primaryrate4814/5000; intermittentservicefailure rootcauseunproven. Never infer jobendpoint immutability fromrunupdated_at; safe cachingrequiresauthenticatedpreviouscompletejobs plus explicitlyhistoricalageandlivecurrentrunbinding."
+    "candidate_endpoint_followup": "Read-only exactendpoint later200, conditionalETagGET502, primaryrate4814/5000; intermittentservicefailure rootcauseunproven. Never infer jobendpoint immutability fromrunupdated_at; safe cachingrequiresauthenticatedpreviouscompletejobs plus explicitlyhistoricalageandlivecurrentrunbinding.",
+    "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed."
   },
-  "active_runs": {},
+  "active_runs": {
+    "mainchip-multilayer-strict-order-trial": {
+      "run": 41118688730,
+      "head_sha": "fa863489c783be96d567f5309891e013532378c4",
+      "status": "queued",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 124279518504,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 124280131310,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 124280204542,
+          "name": "trial",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 124287089895,
+          "name": "preserve-antenna-job-logs",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        }
+      ]
+    }
+  },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -4828,7 +4867,11 @@
         "run_extra_attempts": 3,
         "main_deployed": false
       },
-      "candidate_endpoint_followup": "Read-only exactendpoint later200, conditionalETagGET502, primaryrate4814/5000; intermittentservicefailure rootcauseunproven. Never infer jobendpoint immutability fromrunupdated_at; safe cachingrequiresauthenticatedpreviouscompletejobs plus explicitlyhistoricalageandlivecurrentrunbinding."
+      "candidate_endpoint_followup": "Read-only exactendpoint later200, conditionalETagGET502, primaryrate4814/5000; intermittentservicefailure rootcauseunproven. Never infer jobendpoint immutability fromrunupdated_at; safe cachingrequiresauthenticatedpreviouscompletejobs plus explicitlyhistoricalageandlivecurrentrunbinding.",
+      "live_inventory_check_passed": false,
+      "candidate_qualification_run": 41108174342,
+      "hosted_controls_passed": 87,
+      "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed."
     },
     "mainchip_full_antenna_complete_diagnosis": {
       "proof": "9f66fe1c496e209c7fc9b133e597ba78e26d19c1",
@@ -5842,7 +5885,7 @@
       "full_phy_accepted": false
     },
     "mainchip_upper_layer_escape_seed": {
-      "status": "NATIVE_SUCCESSOR_SOURCE_QUALIFIED",
+      "status": "NATIVE_SUCCESSOR_EXECUTING",
       "scope": "Multilayer successor using exact already inserted diode, never insert a second diode.",
       "input": {
         "source_run": 41001185417,
@@ -5926,10 +5969,10 @@
         }
       ],
       "required_next": [
-        "Sourcequalification41115331787 completedSUCCESS at71fda75b. Complete39fileproofeb696cb0 retainsall19records/2rawlogs; allsixsuites passed andnewaggregate13/68/4 plusnested3/22. Nativeexecutiondisabled. Preserveproofinactivationmanifest andkeepallthreequalifiedsourcebodies unchanged.",
-        "Ifqualified, activate newnativeworkflow from8bc13f shape whilekeeping3successorbodies unchanged. Expandmanifestwithqualificationproof andupdateexpectedcontrols; adaptjoblogcollectortoretainstaleAPIstatuswhilepreservingfullactualrawlogs. Do not mistakeasynchronousjobmetadata for nativefailure.",
-        "Nativeexecutionrequiresonefresh exactsource dispatch attempt1 andindependently reservedemptypublic prereleasebeforeacquisition. Keepactualinput213428829B72d382..., existingdiode, all40+12shapes, all1691clocks andallothernets preserved. RunfulluncappedDRC, completebaseline/candidateantenna withothersemanticsunchanged.",
-        "Only boundedrepair canpassDRC0,targetantenna0 withnativeconnectivity proof. Historical production fullchip has609totalantennanets/697pins/916checks; finalRC/STA/fullPHY remainseparateopenrequirements. Preservecompletefailedcapsules beforeanysuccessor;no localnativepayload."
+        "Collect run41118688730 exactsource fa863489 once terminal using full-derived collector in this checkpoint. No duplicate or blind retry. Native job124280204542 passed all six same-source controls and is executing the physical trial.",
+        "Require native connectivity, unchanged wholechip/1691clocks/materials, exact40+12shape delta, full uncapped DRC0 and target antenna0 with unchanged other-net semantics. Original failure remains preserved; order-only exception covers authenticated three target ITerms only.",
+        "Electrical existing-wave replay contract05cf41 binds two archived captures and current500 maps. Reader/checker implementation is underway; review code and fresh imports before hosted source qualification, reserve exactsource release before any native acquisition.",
+        "Final RC/STA and complete serial PHY remain open. All engineering and authored tests execute on GitHub; local API/source/derived JSON text in RAM only."
       ],
       "local_computation": false,
       "route_generated": true,
@@ -5937,8 +5980,8 @@
       "physical_acceptance": false,
       "timing_accepted": false,
       "full_phy_accepted": false,
-      "successor_run": 41106623617,
-      "successor_source": "8bc13f792ef3bc1f02a88f0340180adff72f38cd",
+      "successor_run": 41118688730,
+      "successor_source": "fa863489c783be96d567f5309891e013532378c4",
       "source_controls_passed": true,
       "failed_native_run": 41106623617,
       "read_only_difference_proof": 41112136960,
@@ -6376,27 +6419,64 @@
       },
       "invariant": "Exact three known unique authenticated baseline ITerms on target net may permute within its canonical first SIGNAL header line only. All bytes before/after remain exact. Both original rawDEF hashes and false originalbyteequality remain visible; physical/material/pin/connectivity/DRC/antenna/numerical gates unchanged.",
       "next_steps": [
-        "Sourcequalification41115331787 completedSUCCESS at71fda75b. Complete39fileproofeb696cb0 retainsall19records/2rawlogs; allsixsuites passed andnewaggregate13/68/4 plusnested3/22. Nativeexecutiondisabled. Preserveproofinactivationmanifest andkeepallthreequalifiedsourcebodies unchanged.",
-        "Ifqualified, activate newnativeworkflow from8bc13f shape whilekeeping3successorbodies unchanged. Expandmanifestwithqualificationproof andupdateexpectedcontrols; adaptjoblogcollectortoretainstaleAPIstatuswhilepreservingfullactualrawlogs. Do not mistakeasynchronousjobmetadata for nativefailure.",
-        "Nativeexecutionrequiresonefresh exactsource dispatch attempt1 andindependently reservedemptypublic prereleasebeforeacquisition. Keepactualinput213428829B72d382..., existingdiode, all40+12shapes, all1691clocks andallothernets preserved. RunfulluncappedDRC, completebaseline/candidateantenna withothersemanticsunchanged.",
-        "Only boundedrepair canpassDRC0,targetantenna0 withnativeconnectivity proof. Historical production fullchip has609totalantennanets/697pins/916checks; finalRC/STA/fullPHY remainseparateopenrequirements. Preservecompletefailedcapsules beforeanysuccessor;no localnativepayload."
+        "Collect run41118688730 exactsource fa863489 once terminal using full-derived collector in this checkpoint. No duplicate or blind retry. Native job124280204542 passed all six same-source controls and is executing the physical trial.",
+        "Require native connectivity, unchanged wholechip/1691clocks/materials, exact40+12shape delta, full uncapped DRC0 and target antenna0 with unchanged other-net semantics. Original failure remains preserved; order-only exception covers authenticated three target ITerms only.",
+        "Electrical existing-wave replay contract05cf41 binds two archived captures and current500 maps. Reader/checker implementation is underway; review code and fresh imports before hosted source qualification, reserve exactsource release before any native acquisition.",
+        "Final RC/STA and complete serial PHY remain open. All engineering and authored tests execute on GitHub; local API/source/derived JSON text in RAM only."
       ],
-      "native_run_dispatched_for_successor": false,
+      "native_run_dispatched_for_successor": true,
       "physical_acceptance": false,
       "timing_accepted": false,
       "full_phy_accepted": false,
-      "status": "SOURCE_QUALIFIED_NATIVE_SUCCESSOR_NOT_DISPATCHED",
-      "original_byte_gate_failed_history_preserved": true,
-      "only_explicit_serialization_exception": true
+      "native": {
+        "run": 41118688730,
+        "source": "fa863489c783be96d567f5309891e013532378c4",
+        "attempt": 1,
+        "workflow": 401215446,
+        "branch": "codex/mainchip-net459-diode-prune",
+        "release": 429431405,
+        "tag": "cloud-results-41118688730-1-mainchip-multilayer-antenna-trial",
+        "empty_before_acquisition": true,
+        "independently_reserved_before_acquisition": true,
+        "physical_acceptance": false,
+        "timing_accepted": false,
+        "full_phy_accepted": false,
+        "manifest_sha256": "6f6951939239cf7d6220db46c0ed11acbd68050671a905608ec8c785e25d6cd9",
+        "protected_files": 194,
+        "qualification_run": 41115331787,
+        "native_dispatched": true,
+        "status": "in_progress",
+        "same_source_controls_job": 124279518504,
+        "same_source_controls_success_observed": true,
+        "native_job": 124280204542
+      },
+      "status": "NATIVE_SUCCESSOR_EXECUTING"
+    },
+    "cdr_drain_m1_existing_wave_replay": {
+      "status": "INERT_CONTRACT_PUBLISHED_READER_IMPLEMENTATION_IN_PROGRESS",
+      "contract": {
+        "source": "05cf41e6de858d02054f9112334365a392436a12",
+        "path": "docs/evidence/cdr-drain-m1-loaded-wave-replay-contract-41017290646.json",
+        "bytes": 115727,
+        "sha256": "0d6d12f4147ebbc5e0a41a8cfbd7b9f0b267b49361b79f5375ff8d0d66e16308"
+      },
+      "producer_run": 41017290646,
+      "cases": [
+        "nominal_early",
+        "constant_one"
+      ],
+      "native_dispatched": false,
+      "local_native_acquisition": false,
+      "electrical_accepted": false,
+      "full_phy_accepted": false
     }
   },
   "next_actions": [
     "Latest direct user instruction: ALL computation/authoredtests/CAD/models/nativearchives/waves stayonGitHub runners. Local source/API/derivedJSONtext inRAMonly, no localfiles. Workspace/oldworkingroots/projecttmp/nativeprocesses freshlyverifiedabsent; no unrelateddataremoved.",
-    "Current native-successor source71fda75b is QUALIFIED byrun41115331787, wholeworkflowSUCCESS. Full39fileproofeb696cb0 has19indexedrecords and2rawlogs, exactsourcebindings; original10/46/4 plus3/22 orderfixtures give13/68/4. All3bodies matchrevieweddraft. Manifest155pins native_execution_enabledFALSE. No native successor dispatchedyet.",
-    "Next concreteaction: activate physicalworkflow withthose3unchangedqualifiedbodies plus39proofpins, updateexpected13/68/4+3/22 andpreservefullrawlogs withtruthfulAPIstatus. Onefresh exactsource nativeattempt1 +independentlyemptyreservedpublicreleasebeforenativeacquisition. ReuseoriginalinsertedODB72d382... andexistingdiode; no arbitrarygateweakening orrepeatoldsource.",
-    "Readback41112136960 SUCCESS verifiedall38membersof188049577bytecapsuled06588d9 onrunner andall3106818linesofbothDEFs. Exactlyonechangedline707752, same3targetITermtuplesreordered; everyotherbyteidentical, nooutputtruncation. Complete27fileproof4292dfb3. Newstrictinvariant onlypermitscanonicalheaderpermutation of3frozen authenticatedbaselinepins andrequiresallbytesbefore/afterexact; rawhashes/originalbytefailurepreserved.",
-    "Originalnative41106623617 remainsFAILED atbyteidempotence, candidateDRCneverexecuted. Its96fileproofd1ab3745 andfull38membercapsulepreserved. Newnative must proveactualwholechip/material/connectivity, fulluncappedDRC0,targetantenna0, unchangedotherantenna semantics, all1691clocks. Readback/sourcecontrols areNOT physicalsuccess.",
-    "Electrical41017290646 all8activecasesfailed;2intentionalfaultsdetected. Allterminal240files0613cae4,corrected36filejoins4980df51 andgatediagnosisd54f9f35 retained. Nextanalog ishostedexistingcapturereplayfor4selectorVCEminima andconstantoneVIbranch/filtersettling; noidenticalblindmatrixrerun, no localnative.",
+    "Collect run41118688730 exactsource fa863489 once terminal using full-derived collector in this checkpoint. No duplicate or blind retry. Native job124280204542 passed all six same-source controls and is executing the physical trial.",
+    "Require native connectivity, unchanged wholechip/1691clocks/materials, exact40+12shape delta, full uncapped DRC0 and target antenna0 with unchanged other-net semantics. Original failure remains preserved; order-only exception covers authenticated three target ITerms only.",
+    "Electrical existing-wave replay contract05cf41 binds two archived captures and current500 maps. Reader/checker implementation is underway; review code and fresh imports before hosted source qualification, reserve exactsource release before any native acquisition.",
+    "Final RC/STA and complete serial PHY remain open. All engineering and authored tests execute on GitHub; local API/source/derived JSON text in RAM only.",
     "Eight-hourmonitor main2b79be1a remainsreadonly/noautonativedispatch. Latest scheduled41077552127 HTTP502failure; candidate41108174342 passed87controls butliveobservationexhausted3attemptsatoneendpoint, notdeployed. All18files93a71f04 preserved. Further transport/cacheimprovements mustlabelhistoricalreuses andunobservedrows honestly; do not infercrossendpointimmutablejobsfromrunupdated_at.",
     "ProductionODB a3c6aa0b stillhistorical609antennanets/697pins/916checks, no currentRC/STA. Originalclocks20/4/8/8ns+5%, CDR37.5ps,comparator75ps,UI125ps,100mV,HBTactiveVCE>=.4/maxabsVCE<=1.6/maxabsVBE<=1/emitter<3mA,PLL62.5ps unchanged. FullserialPHY/routedserialmainchip/finalsetuphold remainunaccepted."
   ],
@@ -6785,61 +6865,45 @@
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 41112136960,
-      "head_sha": "6a74bb82dbe1ba2421341612899f14940a65e8e1",
-      "status": "completed",
-      "conclusion": "success",
+      "run": 41118688730,
+      "head_sha": "fa863489c783be96d567f5309891e013532378c4",
+      "status": "queued",
+      "conclusion": null,
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 124256726470,
+          "id": 124279518504,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 124256972416,
-          "name": "readback",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 124257936527,
-          "name": "preserve-job-logs",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 41115331787,
-      "head_sha": "71fda75b328b63996c07b0cbb46a9fae2c595ebd",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 124267972002,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 124268529646,
+          "id": 124280131310,
           "name": "preserve-job-log",
           "status": "completed",
           "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 124280204542,
+          "name": "trial",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 124287089895,
+          "name": "preserve-antenna-job-logs",
+          "status": "queued",
+          "conclusion": null,
           "active_steps": []
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-30T19:34:00.890363+00:00",
+    "observed_at": "2026-10-30T20:09:27.762453+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -6979,7 +7043,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-30T19:34:00.890363+00:00",
+  "local_workspace_verified_empty_at": "2026-10-30T20:09:27.762453+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -64653,6 +64717,40 @@
       "bytes": 658,
       "sha256": "0d23d24a8d56f048db8a1627f0b2abc7263e721e481c55eeb1db49a44188cde6",
       "existing_identical": false
+    }
+  ],
+  "imported_checkpoint_receipts_v146": [
+    {
+      "path": "docs/evidence/mainchip-multilayer-def-order-native-activation-20261030.json",
+      "source": "fa863489c783be96d567f5309891e013532378c4",
+      "git_blob": "7df26a810e7b0c91814a607ed6b4d41497c2338e",
+      "bytes": 2405,
+      "sha256": "e4ed5f55f0ee7d18a67772415253b95dda99fafda9add41399557c07ad0a878b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-wave-replay-contract-41017290646.json",
+      "source": "05cf41e6de858d02054f9112334365a392436a12",
+      "git_blob": "c01e80902ed7ebacd8a0ff0a6c5f126eabfbcd43",
+      "bytes": 115727,
+      "sha256": "0d6d12f4147ebbc5e0a41a8cfbd7b9f0b267b49361b79f5375ff8d0d66e16308",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v146": [
+    {
+      "run": 41118688730,
+      "source": "fa863489c783be96d567f5309891e013532378c4",
+      "attempt": 1,
+      "workflow": 401215446,
+      "branch": "codex/mainchip-net459-diode-prune",
+      "release": 429431405,
+      "tag": "cloud-results-41118688730-1-mainchip-multilayer-antenna-trial",
+      "empty_before_acquisition": true,
+      "independently_reserved_before_acquisition": true,
+      "physical_acceptance": false,
+      "timing_accepted": false,
+      "full_phy_accepted": false
     }
   ]
 }

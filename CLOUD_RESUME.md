@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v145
+# Cloud continuation — checkpoint v146
 
-Updated: 2026-10-30T19:34:00.890363+00:00
+Updated: 2026-10-30T20:09:27.762453+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint v145: hosted completearchive diagnosis41112136960 proved exactlyone reordered three-pin targetheader among3106818lines; allotherbytes identical. All27proof files preserved. A narrowly scoped strictconnection-order successor then passedallsourcecontrols41115331787 at71fda75b:13positive68refusal4lifecycle, including3/22neworderfixtures. Complete39filequalificationproofeb696cb0 retained. Nativeexecutionremainsdisabled andno newphysicaltrialdispatched; nextactionisoneexactqualifiedsource activation/reservation/run withalloriginalphysical/numericalgates. Original411066failure andelectricalmatrixfailuresremainunchanged. Allprojectworkingdata/CAD/nativepayloadstaycloud; localworkdir/tmp/nativeprocessesabsent.
+Cloud-only checkpoint v146: qualified strict target connection-order successor activated at fa863489 with194protected files; three qualified bodies unchanged. Exactsource run41118688730 attempt1 dispatched once; independent empty public prerelease429431405 verified before acquisition. Allsix same-source controls and source-log preservation passed; native job124280204542 executing. No physical/timing/PHY acceptance yet. Existing-wave replay contract05cf41 published; reader/checker implementation underway. Local workspace/tmp/native processes remain empty.
 
-Active handles at this snapshot: No native run remains active in this snapshot.
+Active handles at this snapshot: 41118688730 queued
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9222,3 +9223,10 @@ Local project/tmp/native processes verified absent. Inventory400 exact cloud han
 Cloud-only checkpoint v145: hosted completearchive diagnosis41112136960 proved exactlyone reordered three-pin targetheader among3106818lines; allotherbytes identical. All27proof files preserved. A narrowly scoped strictconnection-order successor then passedallsourcecontrols41115331787 at71fda75b:13positive68refusal4lifecycle, including3/22neworderfixtures. Complete39filequalificationproofeb696cb0 retained. Nativeexecutionremainsdisabled andno newphysicaltrialdispatched; nextactionisoneexactqualifiedsource activation/reservation/run withalloriginalphysical/numericalgates. Original411066failure andelectricalmatrixfailuresremainunchanged. Allprojectworkingdata/CAD/nativepayloadstaycloud; localworkdir/tmp/nativeprocessesabsent.
 
 Local project/tmp/native processes verified absent. Inventory401 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-30T20:09:27.762453+00:00 — cloud-only checkpoint v146
+
+Cloud-only checkpoint v146: qualified strict target connection-order successor activated at fa863489 with194protected files; three qualified bodies unchanged. Exactsource run41118688730 attempt1 dispatched once; independent empty public prerelease429431405 verified before acquisition. Allsix same-source controls and source-log preservation passed; native job124280204542 executing. No physical/timing/PHY acceptance yet. Existing-wave replay contract05cf41 published; reader/checker implementation underway. Local workspace/tmp/native processes remain empty.
+
+Local project/tmp/native processes verified absent. Inventory402 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
