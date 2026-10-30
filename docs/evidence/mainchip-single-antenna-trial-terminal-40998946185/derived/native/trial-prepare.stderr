@@ -1,0 +1,23 @@
+{"phase": "prepare", "primary": "AssertionError()", "terminal_errors": []}
+Traceback (most recent call last):
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial_native.py", line 233, in <module>
+    if __name__=="__main__":main()
+                            ^^^^^^
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial_native.py", line 232, in main
+    p.run_phase(phase,action,unchanged,save)
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 145, in run_phase
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 132, in run_phase
+    try:action()
+        ^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial_native.py", line 229, in action
+    if phase=="prepare":prepare()
+                        ^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial_native.py", line 171, in prepare
+    patched=p.append_branch(record,plan["points"]);patch,removed=c.patch_def(raw,{p.NET:patched});assert removed==plan["patch_connected_terminals"]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 65, in append_branch
+    assert record.startswith(("- "+NET+"\n").encode())or record.startswith(("- "+NET+" ").encode())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
