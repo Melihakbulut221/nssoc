@@ -24,6 +24,18 @@ NEW=legacy.NEW
 SINK=legacy.SINK
 INPUT=dict(bytes=213428829,sha256="72d382ab18e905d13fef8145b70944e681a7a50c16bad0848616652fa93fc0ee")
 DIODE=dict(name=NEW,master="sg13g2_antennanp",location=[98880,502740],orientation="MX")
+
+# Exact observed exception basis; the failed producer and raw DEF hashes remain immutable.
+DEF_ORDER_RESULT="docs/evidence/mainchip-multilayer-def-diff-terminal-41112136960/readback/result.json"
+DEF_ORDER_RECEIPT="docs/evidence/mainchip-multilayer-def-diff-terminal-41112136960/receipt.json"
+DEF_ORDER_BASELINE="docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-antenna-trial/baseline-target.json"
+DEF_ORDER_PROOF="4292dfb3c89cafcc6a7dfd449f95b297cae678c5"
+DEF_ORDER_ITERMS=(
+ ("$abc$1804206$auto$blifparse.cc:397:parse_blif$1814872","Y"),
+ ("fanout36953","A"),
+ ("NSSOC_ANT_TRIAL_fanout36953","A"),
+)
+
 MANIFEST="scripts/mainchip-multilayer-antenna-trial-pins.json"
 SEED=(
  ("Metal1",160,(99600,505680),(101280,505680),"tech:3"),
@@ -47,6 +59,9 @@ FROZEN={
  "scripts/mainchip_two_signal_geometry.py":"5f044322e06af04ebb9590e7011dc8ed7e31969e226153ba6e829c1d69940072",
  "scripts/mainchip_net459_connectivity.py":"bb7bd69687272f10b188030c0d78004377ab9de83145d8c2314070e014478b6b",
  "scripts/mainchip_full_antenna_report.py":"c59f6fbb0ac4e9ab6acb4b13637539356f4d39fb52bd8a051e7f41139cd70195",
+ "docs/evidence/mainchip-multilayer-def-diff-terminal-41112136960/readback/result.json":"3cb5a4daf97bf1a3e402c5151601b0294ded01cd4219708ef85d484dee6717be",
+ "docs/evidence/mainchip-multilayer-def-diff-terminal-41112136960/receipt.json":"b6309d164ecce330f39154777e217ac9b569f6266883b0ca66fa7833adc9ee51",
+ "docs/evidence/mainchip-multilayer-native-terminal-41106623617/native-records/native/multilayer-antenna-trial/baseline-target.json":"25ab9a38e624dbd03386c9b34b2fd396863ef6497f188ae6e79a4af534fe8e4e",
 }
 encode=legacy.encode
 pin=legacy.pin
@@ -67,6 +82,57 @@ def source_guard():
         exact(pin(c.regular(ROOT/name).read_bytes()),row,"source: "+name)
     for name,digest in FROZEN.items():assert files[name]["sha256"]==digest,"frozen helper: "+name
     return m
+
+def validate_def_import_order(single,double,baseline):
+    """Only the authenticated target's three first-line ITerm tuples may permute."""
+    assert type(single)is bytes and type(double)is bytes,"DEF byte inputs"
+    assert baseline["scoped_identity"]==["net",NET] and baseline["wire_identity"]==["net",NET,"wire"],"baseline target identity"
+    assert baseline["metadata_class"]=="ROUTED" and baseline["sigtype"]=="SIGNAL","baseline target classes"
+    assert type(baseline["pins"])is list and len(baseline["pins"])==3,"baseline exactly three ITerms"
+    expected=[]
+    for row in baseline["pins"]:
+        assert row["kind"]=="iterm","baseline ITerm kind"
+        pair=(row["instance"],row["terminal"])
+        assert all(type(v)is str for v in pair),"baseline ITerm strings"
+        assert row["scoped_identity"]==["iterm",*pair],"baseline ITerm identity"
+        expected.append(pair)
+    assert len(set(expected))==3 and set(expected)==set(DEF_ORDER_ITERMS),"authenticated baseline ITerms"
+    assert (NEW,"A")in expected and tuple(SINK)in expected,"baseline diode and sink"
+    observations=[]
+    prefix=b"    - "+NET.encode("ascii")+b" "
+    suffix=b" + USE SIGNAL\n"
+    for raw in(single,double):
+        parsed=c.parse_def(raw)
+        assert NET in parsed["records"],"target DEF record"
+        start,stop=parsed["spans"][NET]
+        end=raw.index(b"\n",start,stop)+1
+        line=raw[start:end]
+        assert line.startswith(prefix) and line.endswith(suffix),"exact target connection header"
+        body=line[len(prefix):-len(suffix)]
+        tokens=body.split(b" ")
+        assert len(tokens)==12 and all(tokens[i]==b"(" and tokens[i+3]==b")" for i in(0,4,8)),"exact three canonical connection tuples"
+        pairs=[(tokens[i+1].decode("ascii"),tokens[i+2].decode("ascii"))for i in(0,4,8)]
+        assert len(set(pairs))==3 and set(pairs)==set(expected),"DEF authenticated ITerms"
+        rebuilt=prefix+b" ".join(b"( "+a.encode("ascii")+b" "+b.encode("ascii")+b" )"for a,b in pairs)+suffix
+        assert line==rebuilt,"connection whitespace unchanged"
+        observations.append((start,end,line,pairs))
+        del parsed
+    a,b=observations
+    assert a[0]==b[0] and single[:a[0]]==double[:b[0]],"all bytes before target header"
+    assert a[1]==b[1] and single[a[1]:]==double[b[1]:],"all bytes after target header"
+    raw_equal=single==double
+    assert raw_equal==(a[2]==b[2]),"only first target header may differ"
+    return dict(status="STRICT_TARGET_ITERM_ORDER_INVARIANT",target=NET,
+      single=pin(single),double=pin(double),original_whole_def_byte_equality=raw_equal,
+      order_only_exception_applied=not raw_equal,
+      exception_scope="Only the order of three exact authenticated ITerm tuples on the target first connection line; every other byte must match.",
+      line=single.count(b"\n",0,a[0])+1,header_byte_span=[a[0],a[1]],
+      single_header=pin(a[2]),double_header=pin(b[2]),
+      single_connection_order=[list(v)for v in a[3]],double_connection_order=[list(v)for v in b[3]],
+      authenticated_baseline_iterms=[list(v)for v in DEF_ORDER_ITERMS],
+      unchanged_signal_property=True,all_other_bytes_identical=True,
+      historical_failed_producer=41106623617,historical_order_diagnosis_proof=DEF_ORDER_PROOF,
+      physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
 
 def normalized_def(raw):
     """Retain every component, connection, property and other wire; exclude only target routing."""

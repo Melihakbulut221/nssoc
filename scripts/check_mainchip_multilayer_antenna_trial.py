@@ -5,6 +5,86 @@ import argparse,contextlib,copy,hashlib,io,json,os,re,subprocess
 from pathlib import Path
 import mainchip_multilayer_antenna_trial as p
 
+def def_import_order_controls():
+    """Actual saved header bytes in synthetic envelopes; no native DEF replay."""
+    observed=json.loads((p.ROOT/p.DEF_ORDER_RESULT).read_bytes())
+    baseline=json.loads((p.ROOT/p.DEF_ORDER_BASELINE).read_bytes())
+    receipt=json.loads((p.ROOT/p.DEF_ORDER_RECEIPT).read_bytes())
+    assert observed["readback_run"]==receipt["run"]==41112136960
+    assert observed["readback_source"]==receipt["source"]=="6a74bb82dbe1ba2421341612899f14940a65e8e1"
+    assert observed["status"]=="COMPLETE_READ_ONLY_DEF_BYTE_DIFFERENCE_DIAGNOSIS"
+    assert observed["producer"]==41106623617 and observed["original_exact_idempotence_gate_unchanged"]is True
+    assert observed["changed_line_pairs"]==len(observed["difference_rows"])==1 and observed["difference_rows_complete"]is True
+    assert observed["identical_bytes"]is False
+    assert observed["left"]==dict(bytes=185377344,sha256="1bc3b986a81d7601126053bae1ed8dadb67ac592370ec4d110b2c8a8b133a775")
+    assert observed["right"]==dict(bytes=185377344,sha256="1dfd2cc3b07900c6264ae0b7828d9bdc83535cd535169ddb8d4f59880cf5e89a")
+    row=observed["difference_rows"][0];assert row["line"]==707752
+    left=row["left"].encode("ascii");right=row["right"].encode("ascii")
+    prefix=b"VERSION 5.8 ;\nDESIGN synthetic_source_fixture ;\nNETS 2 ;\n"
+    suffix=(b"      + ROUTED Metal1 ( 10 20 ) ( 30 20 ) ;\n"
+      b"    - FOREIGN ( OTHER A ) + USE SIGNAL\n"
+      b"      + ROUTED Metal2 ( 1 1 ) ( 1 5 ) ;\nEND NETS\nEND DESIGN\n")
+    a=prefix+left+suffix;b=prefix+right+suffix
+    positives=[];refusals=[]
+    for name,x,y,equal in(("actual_observed_header_permutation",a,b,False),
+                         ("unchanged_first_order",a,a,True),("unchanged_second_order",b,b,True)):
+        r=p.validate_def_import_order(x,y,baseline)
+        assert r["original_whole_def_byte_equality"]is equal
+        assert r["order_only_exception_applied"]is(not equal)
+        assert r["all_other_bytes_identical"]is True and r["unchanged_signal_property"]is True
+        assert r["single"]==p.pin(x) and r["double"]==p.pin(y)
+        assert r["line"]==4 and r["physical_acceptance"]is False
+        assert json.loads(p.encode(r))==r
+        positives.append(name)
+    def reject(name,x,y,base=baseline):
+        try:p.validate_def_import_order(x,y,base)
+        except(AssertionError,ValueError,KeyError,TypeError):refusals.append(name);return
+        raise AssertionError("order mutation not refused: "+name)
+    diode=("( "+p.NEW+" A )").encode()
+    driver=("( "+p.DEF_ORDER_ITERMS[0][0]+" Y )").encode()
+    for name,q in[
+      ("dropped_pin",prefix+right.replace(diode,b"",1)+suffix),
+      ("duplicate_pin",prefix+right.replace(driver,diode,1)+suffix),
+      ("renamed_pin_instance",prefix+right.replace(b"( fanout36953 A )",b"( fanout36954 A )",1)+suffix),
+      ("renamed_pin_terminal",prefix+right.replace(b" Y )",b" Z )",1)+suffix),
+      ("other_target_net",prefix+right.replace(p.NET.encode(),b"FOREIGN_TARGET",1)+suffix),
+      ("SIGNAL_property_changed",prefix+right.replace(b"+ USE SIGNAL",b"+ USE CLOCK",1)+suffix),
+      ("added_header_property",prefix+right.replace(b"+ USE SIGNAL",b"+ USE SIGNAL + PROPERTY X 1",1)+suffix),
+      ("wire_bytes_changed",b.replace(b"( 10 20 )",b"( 15 20 )",1)),
+      ("other_net_bytes_changed",b.replace(b"( OTHER A )",b"( OTHER B )",1)),
+      ("global_prefix_changed",b.replace(b"VERSION 5.8",b"VERSION 5.7",1)),
+      ("global_suffix_changed",b+b"\n"),
+      ("header_internal_whitespace_changed",prefix+right.replace(b" ) ( ",b" )  ( ",1)+suffix),
+      ("header_indent_changed",prefix+b" "+right+suffix),
+      ("header_newline_changed",prefix+right.replace(b"\n",b"\r\n",1)+suffix),
+      ("connection_moved_to_second_line",prefix+right.replace(b" ) ( ",b" )\n    ( ",1)+suffix)]:
+        reject(name,a,q)
+    bad=prefix+left.replace(diode,b"",1)+suffix
+    reject("unchanged_invalid_pin_membership",bad,bad)
+    bad=copy.deepcopy(baseline);bad["pins"].pop()
+    reject("baseline_missing_pin",a,b,bad)
+    bad=copy.deepcopy(baseline);bad["pins"][0]=copy.deepcopy(bad["pins"][1])
+    reject("baseline_duplicate_pin",a,b,bad)
+    bad=copy.deepcopy(baseline)
+    changed=next(v for v in bad["pins"]if v["terminal"]=="Y")
+    changed["instance"]="RENAMED_DRIVER";changed["scoped_identity"]=["iterm","RENAMED_DRIVER","Y"]
+    reject("baseline_renamed_driver",a,b,bad)
+    bad=copy.deepcopy(baseline);bad["pins"][0]["instance"]="INCONSISTENT"
+    reject("baseline_scoped_identity_mismatch",a,b,bad)
+    bad=copy.deepcopy(baseline);bad["sigtype"]="CLOCK"
+    reject("baseline_wrong_signal_class",a,b,bad)
+    bad=copy.deepcopy(baseline);bad["scoped_identity"]=["net","OTHER"]
+    reject("baseline_wrong_net",a,b,bad)
+    assert(len(positives),len(refusals))==(3,22),"complete order-only controls"
+    return dict(status="PASS_STRICT_TARGET_ITERM_ORDER_SOURCE_CONTROLS",
+      positive=positives,positive_count=len(positives),refusals=refusals,refusal_count=len(refusals),
+      actual_saved_header_bytes=True,actual_saved_baseline_pin_identities=True,
+      synthetic_DEF_envelopes=True,full_native_DEF_replayed=False,source_controls_only=True,
+      original_failed_producer=41106623617,readback_run=41112136960,
+      fixture_proof=p.DEF_ORDER_PROOF,fixture_inputs={name:p.pin((p.ROOT/name).read_bytes())
+        for name in(p.DEF_ORDER_RESULT,p.DEF_ORDER_RECEIPT,p.DEF_ORDER_BASELINE)},
+      native_executed=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
+
 def controls():
     p.source_guard()
     assert os.environ["GITHUB_EVENT_NAME"]=="workflow_dispatch"
@@ -205,10 +285,14 @@ def controls():
         else:raise AssertionError("save failure accepted")
     assert json.loads(stream.getvalue())["terminal_errors"][0]["label"]=="terminal-record"
     lifecycle.append("unchanged_actual_save_failure")
-    assert (len(positive),len(refused),len(lifecycle))==(10,46,4),"complete authored source suite"
+    assert (len(positive),len(refused),len(lifecycle))==(10,46,4),"unchanged original source suite"
+    order_controls=def_import_order_controls()
+    positive.extend("def_order/"+name for name in order_controls["positive"])
+    refused.extend("def_order/"+name for name in order_controls["refusals"])
+    assert (len(positive),len(refused),len(lifecycle))==(13,68,4),"complete authored source suite"
     return dict(status="PASS_MULTILAYER_ANTENNA_TRIAL_SOURCE_CONTROLS",current_context=ctx,
       positive=positive,positive_count=len(positive),refusals=refused,refusal_count=len(refused),
-      lifecycle=lifecycle,lifecycle_count=len(lifecycle),synthetic_geometry=True,native_executed=False,
+      lifecycle=lifecycle,lifecycle_count=len(lifecycle),def_import_order_controls=order_controls,synthetic_geometry=True,native_executed=False,
       physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
 
 def main():

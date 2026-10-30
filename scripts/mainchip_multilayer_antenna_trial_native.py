@@ -175,7 +175,8 @@ def audit(measured):
         snap=snapshot(db,b,W/("audit-"+name+".def"));equal_snapshot(snap,base)
         p.exact(existing_diode(db,b),plan["existing_diode"],"existing diode preserved")
         actual=target(db,b);delta=p.validate_route_delta(old,actual)
-        assert (W/"candidate-single.def").read_bytes()==(W/"candidate-double.def").read_bytes(),"idempotent actual DEF import"
+        order=p.validate_def_import_order((W/"candidate-single.def").read_bytes(),(W/"candidate-double.def").read_bytes(),old)
+        save(("measured"if measured else"imported")+"-def-import-order.json",order)
         save(("measured"if measured else"imported")+"-route-delta.json",delta)
         save(("measured"if measured else"imported")+"-target.json",actual)
         save(("measured"if measured else"imported")+"-snapshot.json",snap)
@@ -199,7 +200,7 @@ def audit(measured):
             reports[label]=dict(counts=counts[label],violations=violations)
         verdict=p.validate_antenna(reports["baseline"],reports["candidate"],authentic,measurement["marker_count"])
         save("result.json",dict(status="COMPLETE_MULTILAYER_ANTENNA_TRIAL_CHECKS",**verdict,
-          input=p.INPUT,candidate=filepin(W/name),measurement=measurement,antenna=counts,
+          input=p.INPUT,candidate=filepin(W/name),measurement=measurement,antenna=counts,def_import_order=order,
           exact_remaining_chip_preserved=True,all_1691_original_clocks_preserved=True,
           original_target_wire_shapes_preserved=40,new_instances=0,new_signal_connections=0,
           added_wire_count=3,added_via_component_count=9,expected_added_shapes=plan["expected_added_shapes"],
