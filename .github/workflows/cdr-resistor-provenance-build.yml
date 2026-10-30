@@ -12,11 +12,11 @@ on:
         default: false
         type: boolean
       operation:
-        description: Exact operation; diagnose reads the preserved failed capsule without build or CAD
+        description: Exact operation; target-trace reads qualified current sidecar without build or CAD
         required: true
         default: diagnose
         type: choice
-        options: [diagnose, build]
+        options: [diagnose, build, target-trace]
 permissions:
   contents: read
 concurrency:
@@ -24,7 +24,7 @@ concurrency:
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
-  PINS_SHA256: 6e567894136fbfc74196f2799b58ce8e9fbb7327c15c5dbb6c43b367e9bbf485
+  PINS_SHA256: 9ea63ea4043a899b453ce6994a1ed505a6ae2469280ae9d9528882158995dce1
 jobs:
   source-controls:
     if: github.run_attempt == 1 && github.ref == 'refs/heads/codex/cdr-resistor-provenance-build'
@@ -59,6 +59,11 @@ jobs:
           code=$?
           printf '%s\n' "$code" >cloud-magic-build-controls/returncode.txt
           cat cloud-magic-build-controls/controls.stdout cloud-magic-build-controls/controls.stderr
+          if [ "$code" -ne 0 ]; then exit "$code"; fi
+          python -B scripts/check_magic_resistor_target_trace.py --pins-sha256 "$PINS_SHA256" --output cloud-magic-build-controls/target-controls.json >cloud-magic-build-controls/target-controls.stdout 2>cloud-magic-build-controls/target-controls.stderr
+          code=$?
+          printf '%s\n' "$code" >cloud-magic-build-controls/target-returncode.txt
+          cat cloud-magic-build-controls/target-controls.stdout cloud-magic-build-controls/target-controls.stderr
           exit "$code"
       - name: Preserve complete indexed source records
         if: always()
@@ -131,6 +136,8 @@ jobs:
           mkdir cloud-magic-build-host
           python -B scripts/check_magic_resistor_provenance_build.py --pins-sha256 "$PINS_SHA256" --output cloud-magic-build-host/controls.json >cloud-magic-build-host/controls.stdout 2>cloud-magic-build-host/controls.stderr
           cat cloud-magic-build-host/controls.stdout cloud-magic-build-host/controls.stderr
+          python -B scripts/check_magic_resistor_target_trace.py --pins-sha256 "$PINS_SHA256" --output cloud-magic-build-host/target-controls.json >cloud-magic-build-host/target-controls.stdout 2>cloud-magic-build-host/target-controls.stderr
+          cat cloud-magic-build-host/target-controls.stdout cloud-magic-build-host/target-controls.stderr
           python -B - <<'PY'
           import os,sys,time
           from pathlib import Path
@@ -165,6 +172,8 @@ jobs:
           set +e
           if [ "$OPERATION" = diagnose ]; then
             python -B scripts/magic_resistor_equivalence_diagnosis.py --pins-sha256 "$PINS_SHA256" --reservation cloud-magic-build-host/reservation.json --controls cloud-magic-build-host/controls.json --output cloud-magic-build >cloud-magic-build-host/native.stdout 2>cloud-magic-build-host/native.stderr
+          elif [ "$OPERATION" = target-trace ]; then
+            python -B scripts/magic_resistor_target_trace.py --pins-sha256 "$PINS_SHA256" --reservation cloud-magic-build-host/reservation.json --controls cloud-magic-build-host/controls.json --trace-controls cloud-magic-build-host/target-controls.json --output cloud-magic-build >cloud-magic-build-host/native.stdout 2>cloud-magic-build-host/native.stderr
           elif [ "$OPERATION" = build ]; then
             python -B scripts/cloud_magic_resistor_provenance_build.py --mode native --pins-sha256 "$PINS_SHA256" --reservation cloud-magic-build-host/reservation.json --controls cloud-magic-build-host/controls.json --output cloud-magic-build >cloud-magic-build-host/native.stdout 2>cloud-magic-build-host/native.stderr
           else

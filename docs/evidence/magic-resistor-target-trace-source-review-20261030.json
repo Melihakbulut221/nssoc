@@ -1,0 +1,59 @@
+{
+  "base": "6d6bbd4ec2d632769d9e4b7af1560c2087f8ece3",
+  "changes": {
+    "checker": "scripts/check_magic_resistor_target_trace.py",
+    "config": "scripts/magic-resistor-target-trace-inputs.json",
+    "new_C_patch": false,
+    "new_native_CAD": false,
+    "original90_pins": "unchanged and extended",
+    "original_build_host_and_checker": "unchanged",
+    "qualified_reduction_source": "docs/evidence/magic-resistor-qualified-reduction-source-20261030.json",
+    "reader": "scripts/magic_resistor_target_trace.py",
+    "workflow_operation": "target-trace"
+  },
+  "controls": {
+    "executed_locally": false,
+    "lifecycle": 3,
+    "original_build_controls": "17/54/6 plus4/19 repeated on same hosted source",
+    "positive": 6,
+    "refusal": 18
+  },
+  "limitations": [
+    "Creation observations do not record elimination/merge DAG; equal signature may still hide transformations.",
+    "Point/material identity cannot alone assign final resistor footprint. Need reduction instrumentation if actual observations remain ambiguous.",
+    "DC unit injections are existing independent linear-network evidence; not loaded transient currents or guaranteed headroom recovery."
+  ],
+  "producer": {
+    "receipt": "97b3a23f7a899996f90a70851249ef8a81079a437c6f6be49e9863fe02f5b2fe",
+    "release": 428520553,
+    "run": 40978039972,
+    "source": "16bef3d6a021a0e30ef795be82c72e9c42dd100f",
+    "trace": {
+      "bytes": 123532517,
+      "id": 690355038,
+      "sha256": "b748531396a25d0ea1a8acd5e139736d9797495e8bb1146a6f6dc45aa41512ff"
+    }
+  },
+  "safety": {
+    "complete_output_archive": true,
+    "exact_source_attempt1": true,
+    "existing_failure_preserving_wrapper": "cloud_magic_resistor_provenance_build.run/publication unchanged",
+    "fresh_external_release_before_acquisition": true,
+    "zero_byte_streams_retained": true
+  },
+  "schema": 1,
+  "scope": {
+    "electrical_acceptance": false,
+    "full_phy_accepted": false,
+    "geometry_changed": false,
+    "physical_acceptance": false,
+    "reduced_element_ownership_proved": false
+  },
+  "source_review": {
+    "ResMain": "Qualified actual6d1ce0d1 ResProcessTiles618 calls ResDoneWithNode during construction before before_simplify snapshot.",
+    "ResMerge": "Pinned upstream b5c0c7bd matches actual qualified559. ResDoneWithNode46-121 checks Geometry only; series151 and parallel192-195 retain residual metadata; triangle517-536 changes values and arbitrarily locates synthetic node.",
+    "ResSimple": "Static literal reconstruction of existing two cap-only source patches; SHA0f3ffb46 matches actual qualified559 map. No authored module imported or executed locally.",
+    "claims": "No pointer continuity, reduced footprint, geometry ownership or transient contribution asserted. All target events retained; whole123532517B trace hash/sequence/footer authenticated. Exact target native lines and canonical SPICE multiplicities required. Existing DC per-edge responses copied by exact edge names; no new solve."
+  },
+  "status": "AUTHORED_UNEXECUTED_TARGET_TRACE_READBACK"
+}
