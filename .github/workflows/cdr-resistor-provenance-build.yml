@@ -16,7 +16,7 @@ on:
         required: true
         default: diagnose
         type: choice
-        options: [diagnose, build, target-trace, trace-source]
+        options: [diagnose, build, target-trace, trace-source, coefficients-v2]
 permissions:
   contents: read
 concurrency:
@@ -24,7 +24,7 @@ concurrency:
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
-  PINS_SHA256: d4fe5de49dc041d59b8be873cb621da1e7408b7881c5fae36cce5cfeb9853fa2
+  PINS_SHA256: 5b59f3a26e9157ddebfe391016630f1dc524c87c43a32d26465bcc88fadc5091
 jobs:
   source-controls:
     if: github.run_attempt == 1 && github.ref == 'refs/heads/codex/cdr-resistor-provenance-build'
@@ -64,6 +64,11 @@ jobs:
           code=$?
           printf '%s\n' "$code" >cloud-magic-build-controls/target-returncode.txt
           cat cloud-magic-build-controls/target-controls.stdout cloud-magic-build-controls/target-controls.stderr
+          if [ "$code" -ne 0 ]; then exit "$code"; fi
+          python -B scripts/check_magic_resistor_coefficients.py --pins-sha256 "$PINS_SHA256" --output cloud-magic-build-controls/coefficient-controls.json >cloud-magic-build-controls/coefficient-controls.stdout 2>cloud-magic-build-controls/coefficient-controls.stderr
+          code=$?
+          printf '%s\n' "$code" >cloud-magic-build-controls/coefficient-returncode.txt
+          cat cloud-magic-build-controls/coefficient-controls.stdout cloud-magic-build-controls/coefficient-controls.stderr
           exit "$code"
       - name: Preserve complete indexed source records
         if: always()
@@ -138,6 +143,8 @@ jobs:
           cat cloud-magic-build-host/controls.stdout cloud-magic-build-host/controls.stderr
           python -B scripts/check_magic_resistor_target_trace.py --pins-sha256 "$PINS_SHA256" --output cloud-magic-build-host/target-controls.json >cloud-magic-build-host/target-controls.stdout 2>cloud-magic-build-host/target-controls.stderr
           cat cloud-magic-build-host/target-controls.stdout cloud-magic-build-host/target-controls.stderr
+          python -B scripts/check_magic_resistor_coefficients.py --pins-sha256 "$PINS_SHA256" --output cloud-magic-build-host/coefficient-controls.json >cloud-magic-build-host/coefficient-controls.stdout 2>cloud-magic-build-host/coefficient-controls.stderr
+          cat cloud-magic-build-host/coefficient-controls.stdout cloud-magic-build-host/coefficient-controls.stderr
           python -B - <<'PY'
           import os,sys,time
           from pathlib import Path
@@ -160,7 +167,7 @@ jobs:
           PY
           python -B scripts/cloud_magic_resistor_provenance_build.py --mode preflight --pins-sha256 "$PINS_SHA256" --reservation cloud-magic-build-host/reservation.json --controls cloud-magic-build-host/controls.json --output cloud-magic-build >cloud-magic-build-host/preflight.json
       - name: Original build dependencies after reservation
-        if: inputs.operation == 'build'
+        if: inputs.operation == 'build' || inputs.operation == 'coefficients-v2'
         run: |
           sudo apt-get update -qq >cloud-magic-build-host/apt-update.stdout 2>cloud-magic-build-host/apt-update.stderr
           sudo apt-get install -y --no-install-recommends tcl8.6 tk8.6 tcl-dev tk-dev build-essential m4 autoconf libreadline-dev libx11-dev libxext-dev libxpm-dev libxt-dev libcairo2-dev libgl1-mesa-dev libglu1-mesa-dev >cloud-magic-build-host/apt-install.stdout 2>cloud-magic-build-host/apt-install.stderr
@@ -174,6 +181,8 @@ jobs:
             python -B scripts/magic_resistor_equivalence_diagnosis.py --pins-sha256 "$PINS_SHA256" --reservation cloud-magic-build-host/reservation.json --controls cloud-magic-build-host/controls.json --output cloud-magic-build >cloud-magic-build-host/native.stdout 2>cloud-magic-build-host/native.stderr
           elif [ "$OPERATION" = target-trace ] || [ "$OPERATION" = trace-source ]; then
             python -B scripts/magic_resistor_target_trace.py --operation "$OPERATION" --pins-sha256 "$PINS_SHA256" --reservation cloud-magic-build-host/reservation.json --controls cloud-magic-build-host/controls.json --trace-controls cloud-magic-build-host/target-controls.json --output cloud-magic-build >cloud-magic-build-host/native.stdout 2>cloud-magic-build-host/native.stderr
+          elif [ "$OPERATION" = coefficients-v2 ]; then
+            python -B scripts/cloud_magic_resistor_coefficients.py --pins-sha256 "$PINS_SHA256" --reservation cloud-magic-build-host/reservation.json --controls cloud-magic-build-host/controls.json --coefficient-controls cloud-magic-build-host/coefficient-controls.json --output cloud-magic-build >cloud-magic-build-host/native.stdout 2>cloud-magic-build-host/native.stderr
           elif [ "$OPERATION" = build ]; then
             python -B scripts/cloud_magic_resistor_provenance_build.py --mode native --pins-sha256 "$PINS_SHA256" --reservation cloud-magic-build-host/reservation.json --controls cloud-magic-build-host/controls.json --output cloud-magic-build >cloud-magic-build-host/native.stdout 2>cloud-magic-build-host/native.stderr
           else
