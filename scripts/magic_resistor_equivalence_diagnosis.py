@@ -102,6 +102,7 @@ def exact_cap_bijection(reference,current,spice=False,count=1000):
                 if match is None:
                     b.require(not row.startswith(b"C"),"malformed SPICE capacitor");rest.append(row);continue
                 index=int(match[1])
+                b.require(match[1]==str(index).encode(),"canonical generated capacitor identity")
                 b.require(index not in allids,"duplicate SPICE capacitor identity");allids.add(index)
                 if index>=count:rest.append(row);continue
                 name=match[1];a=match[2];z=match[3];value=match[4];ids.add(index)
@@ -130,7 +131,7 @@ def exact_cap_bijection(reference,current,spice=False,count=1000):
     return dict(count=count,noncoupling_records=len(lrest),bijection=pairs,
       no_numeric_tolerance=True,duplicate_multiplicity_preserved=True)
 
-def canonical_diagnosis(directories):
+def canonical_diagnosis(directories,cap_count=1000):
     rows={name:b.native_records(path)for name,path in directories.items()}
     b.require(list(rows)==list(VARIANTS),"exact five variants")
     reference=rows["saved_current"];result={}
@@ -139,9 +140,9 @@ def canonical_diagnosis(directories):
         for category,current in values.items():
             try:
                 if category=="pump_wires.ext:cap":
-                    proof=exact_cap_bijection(reference[category],current)
+                    proof=exact_cap_bijection(reference[category],current,count=cap_count)
                 elif category in ("baseline.spice","wires.spice"):
-                    proof=exact_cap_bijection(reference[category],current,spice=True)
+                    proof=exact_cap_bijection(reference[category],current,spice=True,count=cap_count)
                 else:
                     b.require(current==reference[category],"unchanged exact ordered category")
                     proof=dict(ordered_bytes_equal=True,count=len(current))

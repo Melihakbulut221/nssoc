@@ -56,7 +56,7 @@ def controls_binding(raw,ctx):
     require(r.get("current_context")==dict(source=ctx["source"],run_id=ctx["run_id"],attempt=1,
       source_controls_only=True,native_executed=False),"same source controls")
     require(r["inherited_source_controls"]["positive_count"]==4 and r["inherited_source_controls"]["refusal_count"]==19,"historical controls preserved")
-    require(r["counts"]==dict(positive=15,refusal=47,lifecycle=6),"complete build controls")
+    require(r["counts"]==dict(positive=17,refusal=54,lifecycle=6),"complete build controls")
     return frozen.fingerprint(raw)
 
 def preflight(ctx,reserved,controls_raw,expected,root=ROOT,api_call=frozen.api):
@@ -224,6 +224,24 @@ def compare_outputs(directories):
       records={n:dict(count=len(v),sha256=hashlib.sha256(b"\n".join(v)+b"\n").hexdigest())for n,v in first.items()},
       equivalence="Exact ordered resist/rnode/cap bytes and all noncomment SPICE statements; complete raw files retained",
       output_geometry_or_electrical_acceptance=False)
+
+def compare_component_outputs(directories,cap_count=1000):
+    """Qualify exact components; retain process-dependent serialized ordering as a separate diagnostic."""
+    import magic_resistor_equivalence_diagnosis as diagnosis
+    require(type(cap_count)is int and cap_count>0,"exact capacitor fixture/production cardinality")
+    equivalent=diagnosis.canonical_diagnosis(directories,cap_count)
+    require(equivalent["all_exact"]is True,"exact component endpoint/value/multiplicity/other-statement equality")
+    first=next(iter(directories.values()))
+    raw=pin(first/"pump_wires.res.ext")
+    require(all(pin(path/"pump_wires.res.ext")==raw for path in directories.values()),"complete raw resistor/rnode file equality")
+    try:ordered=dict(passed=True,report=compare_outputs(directories))
+    except AssertionError as exc:ordered=dict(passed=False,error=dict(type=type(exc).__name__,message=str(exc)))
+    records=native_records(first)
+    return dict(status="EXACT_COMPONENT_EQUIVALENCE_WITH_GENERATED_CAPACITOR_BIJECTION",
+      variants=list(directories),records={n:dict(count=len(v),sha256=hashlib.sha256(b"\n".join(v)+b"\n").hexdigest())for n,v in records.items()},
+      raw_resistor_rnode_file=raw,component_bijection=equivalent,original_ordered_comparison=ordered,
+      allowed_format_changes_only="Coupling order, symmetric endpoint exchange, generated C0..C999 bijection",
+      numeric_tolerance=None,output_bytes_rewritten=False,**FLAGS)
 
 def validate_trace(path,emitted_count,expected_lines=None):
     counts=collections.Counter();seq=0;epochs=0;active=False;footer=None;snapshot=None;seen_start=False;emitted=[]
@@ -406,14 +424,14 @@ def perform(ctx,reserved,controls_raw,expected,out,root=ROOT,api_call=frozen.api
           ("archived",original,False),("rebuilt_baseline",Path(built["baseline"]["library"]),False),
           ("trace_off",Path(built["instrumented"]["library"]),False),("trace_on",Path(built["instrumented"]["library"]),True)]:
             captures[name]=extraction(selected,name,lib,work,supervisor,gate,traced)
-        equivalent=compare_outputs(captures);write(out/"equivalence.json",encode(equivalent))
+        equivalent=compare_component_outputs(captures);write(out/"equivalence.json",encode(equivalent))
         trace=validate_trace(work/"trace_on/resistor-physical-trace.jsonl",equivalent["records"]["pump_wires.res.ext:resist"]["count"],native_records(captures["trace_on"])["pump_wires.res.ext:resist"])
         write(out/"trace-summary.json",encode(trace))
         shutil.copyfile(work/"trace_on/resistor-physical-trace.jsonl",out/"resistor-physical-trace.jsonl")
         require(all(pin(frozen.regular(selected,n))["sha256"]==h for n,h in data["full"].items()),"entire current input mutation")
         require(source_census(baseline)==c["source_producer"]["candidate"]and source_census(candidate)==after,"source mutation after extraction")
         gate()
-        result=dict(status="PASS_FULL_MAGIC_BUILD_CURRENT500_TRACE_EQUIVALENCE_NOT_RC_OR_PHYSICAL_ACCEPTANCE",
+        result=dict(status="PASS_FULL_MAGIC_BUILD_CURRENT500_COMPONENT_TRACE_EQUIVALENCE_NOT_RC_OR_PHYSICAL_ACCEPTANCE",
           current_context=ctx,builds=built,equivalence=equivalent,trace=trace,complete_current_members=6647,
           complete_migration_members=14454,qualified_source_files=559,original500_lineage=True,
           native_build_executed=True,native_extraction_executed=True,**FLAGS)

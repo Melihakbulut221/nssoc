@@ -123,6 +123,39 @@ def controls(expected):
           ("gap_id",[x.replace(b"C1 ",b"C2 ")for x in spother]),
           ("noncap_changed",[x.replace(b"R0 a d 3",b"R0 a d 4")for x in spother])]:
             reject("exact_SPICE:"+label,lambda other=other:diag.exact_cap_bijection(spref,other,spice=True,count=2))
+        qualified={}
+        fullsynthetic={"pump_wires.ext":b'cap "a" "b" 1\ncap "c" "d" 2\n',
+          "pump_wires.res.ext":synthetic["pump_wires.res.ext"],
+          "baseline.spice":b".subckt x a b c d\nC0 a b 1e-15\nC1 c d 2e-15\nR0 a d 3\n.ends\n",
+          "wires.spice":b".subckt x a b c d\nR0 a d 3\nC0 a b 1e-15\nC1 c d 2e-15\n.ends\n"}
+        for name in diag.VARIANTS:
+            path=root/("production-"+name);path.mkdir();qualified[name]=path
+            for file,raw in fullsynthetic.items():(path/file).write_bytes(raw)
+        got=b.compare_component_outputs(qualified,2)
+        assert got["original_ordered_comparison"]["passed"]is True and got["output_bytes_rewritten"]is False
+        assert got["records"]["pump_wires.res.ext:resist"]["sha256"]==hashlib.sha256(b'resist "a" "b" 10\n').hexdigest()
+        positive.append("actual_production_component_comparator_exact")
+        changed={"pump_wires.ext":b'cap "d" "c" 2\ncap "b" "a" 1\n',
+          "baseline.spice":b".subckt x a b c d\nC0 d c 2e-15\nC1 b a 1e-15\nR0 a d 3\n.ends\n",
+          "wires.spice":b".subckt x a b c d\nR0 a d 3\nC0 d c 2e-15\nC1 b a 1e-15\n.ends\n"}
+        target=qualified["trace_on"]
+        for file,raw in changed.items():(target/file).write_bytes(raw)
+        before={file:b.pin(target/file)for file in fullsynthetic}
+        got=b.compare_component_outputs(qualified,2)
+        assert got["original_ordered_comparison"]["passed"]is False and got["component_bijection"]["all_exact"]is True
+        assert before=={file:b.pin(target/file)for file in fullsynthetic}
+        positive.append("actual_production_format_bijection_strict_failure_visible")
+        for label,file,raw in [
+          ("value","pump_wires.ext",changed["pump_wires.ext"].replace(b" 2\n",b" 3\n")),
+          ("endpoint","pump_wires.ext",changed["pump_wires.ext"].replace(b'"c"',b'"x"')),
+          ("duplicate_C","wires.spice",changed["wires.spice"].replace(b"C1 ",b"C0 ")),
+          ("noncanonical_C","wires.spice",changed["wires.spice"].replace(b"C0 ",b"C00 ")),
+          ("noncoupling","wires.spice",changed["wires.spice"].replace(b"R0 a d 3",b"R0 a d 4")),
+          ("rnode","pump_wires.res.ext",fullsynthetic["pump_wires.res.ext"].replace(b"1 2 0",b"1 3 0")),
+          ("raw_res_header","pump_wires.res.ext",b"# unexpected raw mutation\n"+fullsynthetic["pump_wires.res.ext"])]:
+            original=(target/file).read_bytes();(target/file).write_bytes(raw)
+            reject("production_exact_component:"+label,lambda:b.compare_component_outputs(qualified,2))
+            (target/file).write_bytes(original)
         rows=[dict(schema=1,event="trace_start",instrumentation="nssoc_resistor_provenance_v1",resistor_footprint_is_not_inferred=True)]
         def add(event,**kw):rows.append(dict(schema=1,event=event,seq=len(rows),epoch=1,**kw))
         add("net_begin",net_name_hex="61",physical_ownership_proved=False)
@@ -229,7 +262,7 @@ def controls(expected):
         alone=root/"helper-only-error";alone.mkdir()
         assert b.finish_owned(None,None,{},None,alone,broken)is secondary
         life.append("actual_cleanup_helper_primary_and_no_primary")
-    assert len(positive)==15 and len(refused)==47 and len(life)==6,(positive,refused,life)
+    assert len(positive)==17 and len(refused)==54 and len(life)==6,(positive,refused,life)
     inherited=prior.controls()
     assert inherited["positive_count"]==4 and inherited["refusal_count"]==19
     return dict(status="PASS_MAGIC_CURRENT500_BUILD_SOURCE_CONTROLS",passed=True,
