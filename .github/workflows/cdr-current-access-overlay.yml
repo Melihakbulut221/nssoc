@@ -1,9 +1,9 @@
-name: Current CDR drain access feasibility readback
+name: Current CDR two-M1-rail physical trial
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Source controls or exact native point/contact overlay
+        description: Source controls or exact two-rectangle physical trial
         type: choice
         required: true
         default: controls
@@ -36,38 +36,32 @@ jobs:
           e=os.environ
           assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
-          assert e['GITHUB_REF']=='refs/heads/codex/cdr-drain-access-feasibility'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr-drain-m1-width-trial'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
-          p=Path('scripts/cdr-drain-access-feasibility-pins.json')
+          p=Path('scripts/cdr-drain-m1-width-trial-pins.json')
           assert p.is_file() and not p.is_symlink()
-          raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()=='faaa3d6485c64ec4b2111b2faca3f8cd9b680597239d83136830656887ade1d1'
-          manifest=json.loads(raw);assert len(manifest['files'])==62
-          pins=manifest['files']
+          raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()=='d5d040630ca41d4e8f2815a090a468a96a46a655b9b3c7158013a10692921c2d'
+          manifest=json.loads(raw);assert len(manifest['protected_sha256'])==1080
+          pins=manifest['protected_sha256']
           for name,digest in pins.items():
               p=Path(name);assert p.is_file() and not p.is_symlink()
-              b=p.read_bytes();assert len(b)==digest['bytes'] and hashlib.sha256(b).hexdigest()==digest['sha256']
+              b=p.read_bytes();assert hashlib.sha256(b).hexdigest()==digest
           out=Path('cdr-access-overlay-controls');out.mkdir(exist_ok=True)
           (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run=int(e['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_acquisition=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,sha256=pins),sort_keys=True,indent=2)+'\n')
           PY
       - name: Exercise archive refusal and failure preservation controls
-        run: python3 -B scripts/check_cdr_drain_access_feasibility.py --pins-sha256 faaa3d6485c64ec4b2111b2faca3f8cd9b680597239d83136830656887ade1d1 --output cdr-access-overlay-controls/controls.json > cdr-access-overlay-controls/controls.stdout 2> cdr-access-overlay-controls/controls.stderr
+        run: python3 -B scripts/check_cdr_drain_m1_width_trial.py --pins-sha256 d5d040630ca41d4e8f2815a090a468a96a46a655b9b3c7158013a10692921c2d --output cdr-access-overlay-controls/controls.json > cdr-access-overlay-controls/controls.stdout 2> cdr-access-overlay-controls/controls.stderr
       - name: Require actual complete control results
         run: |
           python3 -B - <<'PY'
           import json,os
           from pathlib import Path
           r=json.loads(Path('cdr-access-overlay-controls/controls.json').read_bytes())
-          assert r['status']=='PASS_CURRENT_ACCESS_OVERLAY_SOURCE_CONTROLS'
-          assert r['counts']==dict(positive=11,refusal=33,lifecycle=11)
-          assert r['current_context']['source']==os.environ['GITHUB_SHA']
-          assert r['current_context']['run_id']==int(os.environ['GITHUB_RUN_ID']) and r['current_context']['attempt']==1
-          assert r['current_context']['source_controls_only'] is True
-          assert r['passed'] is True
-          assert r['checker_finalization_count']==5 and len(r['checker_finalization_cases'])==5
-          assert r['original_archive_controls']['counts']==dict(positive=14,refusal=80,lifecycle=5)
-          assert r['original_archive_controls']['passed'] is True
+          assert r['status']=='PASS_DRAIN_M1_WIDTH_SOURCE_CONTROLS' and r['passed'] is True
+          assert r['counts']==dict(positive=5,refusal=10,lifecycle=4)
+          assert r['current_context']==dict(source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_executed=False)
           assert r['native_executed'] is False and r['physical_acceptance'] is False
-          assert r['feasibility_controls']['counts']==dict(positive=8,refusal=10) and r['feasibility_controls']['native_executed'] is False
+          assert r['inherited']['counts']==dict(positive=11,refusal=33,lifecycle=11)
           PY
       - name: Always emit full source control records
         if: always()
@@ -138,7 +132,7 @@ jobs:
     needs: [source-controls, preserve-job-log]
     if: ${{ inputs.mode == 'readback' }}
     runs-on: ubuntu-22.04
-    timeout-minutes: 90
+    timeout-minutes: 250
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -157,16 +151,16 @@ jobs:
           e=os.environ
           assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
-          assert e['GITHUB_REF']=='refs/heads/codex/cdr-drain-access-feasibility'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr-drain-m1-width-trial'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
-          p=Path('scripts/cdr-drain-access-feasibility-pins.json')
+          p=Path('scripts/cdr-drain-m1-width-trial-pins.json')
           assert p.is_file() and not p.is_symlink()
-          raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()=='faaa3d6485c64ec4b2111b2faca3f8cd9b680597239d83136830656887ade1d1'
-          manifest=json.loads(raw);assert len(manifest['files'])==62
-          pins=manifest['files']
+          raw=p.read_bytes();assert hashlib.sha256(raw).hexdigest()=='d5d040630ca41d4e8f2815a090a468a96a46a655b9b3c7158013a10692921c2d'
+          manifest=json.loads(raw);assert len(manifest['protected_sha256'])==1080
+          pins=manifest['protected_sha256']
           for name,digest in pins.items():
               p=Path(name);assert p.is_file() and not p.is_symlink()
-              b=p.read_bytes();assert len(b)==digest['bytes'] and hashlib.sha256(b).hexdigest()==digest['sha256']
+              b=p.read_bytes();assert hashlib.sha256(b).hexdigest()==digest
           out=Path('cdr-access-overlay-controls');out.mkdir(exist_ok=True)
           (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run=int(e['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_acquisition=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,sha256=pins),sort_keys=True,indent=2)+'\n')
           PY
@@ -175,7 +169,7 @@ jobs:
           python3 -B - <<'PY'
           import json,os,subprocess,time
           from pathlib import Path
-          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-cdr-drain-access-feasibility'
+          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-cdr-drain-m1-width-trial'
           prefix='repos/Melihakbulut221/nssoc/'
           for attempt in range(120):
               p=subprocess.run(['gh','api',prefix+'releases/tags/'+tag],capture_output=True,text=True)
@@ -192,9 +186,9 @@ jobs:
           Path('release-reservation.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
           PY
       - name: Recheck actual same-source controls before acquisition
-        run: python3 -B scripts/check_cdr_drain_access_feasibility.py --pins-sha256 faaa3d6485c64ec4b2111b2faca3f8cd9b680597239d83136830656887ade1d1 --output cdr-access-overlay-controls/controls.json > cdr-access-overlay-controls/controls.stdout 2> cdr-access-overlay-controls/controls.stderr
+        run: python3 -B scripts/check_cdr_drain_m1_width_trial.py --pins-sha256 d5d040630ca41d4e8f2815a090a468a96a46a655b9b3c7158013a10692921c2d --output cdr-access-overlay-controls/controls.json > cdr-access-overlay-controls/controls.stdout 2> cdr-access-overlay-controls/controls.stderr
       - name: Verify current producer and independent reservation before acquisition
-        run: python3 -B scripts/cloud_cdr_drain_access_feasibility.py --preflight --pins-sha256 faaa3d6485c64ec4b2111b2faca3f8cd9b680597239d83136830656887ade1d1 --reservation release-reservation.json --controls-proof cdr-access-overlay-controls/controls.json --output access-overlay-preflight.json > access-overlay-preflight.stdout 2> access-overlay-preflight.stderr
+        run: python3 -B scripts/cloud_cdr_drain_m1_width_trial.py --preflight --pins-sha256 d5d040630ca41d4e8f2815a090a468a96a46a655b9b3c7158013a10692921c2d --reservation release-reservation.json --controls-proof cdr-access-overlay-controls/controls.json --output access-overlay-preflight.json > access-overlay-preflight.stdout 2> access-overlay-preflight.stderr
       - name: Acquire pinned native runtime only after authenticated preflight
         run: |
           sudo apt-get update
@@ -205,8 +199,8 @@ jobs:
           proof=json.loads(Path('access-overlay-preflight.json').read_bytes())
           assert proof['current_context']['source']==os.environ['GITHUB_SHA']
           assert proof['current_context']['run_id']==int(os.environ['GITHUB_RUN_ID'])
-          assert proof['source_manifest_sha256']=='faaa3d6485c64ec4b2111b2faca3f8cd9b680597239d83136830656887ade1d1'
-          config=json.loads(Path('scripts/cdr-drain-access-feasibility-inputs.json').read_bytes())
+          assert proof['source_manifest_sha256']=='d5d040630ca41d4e8f2815a090a468a96a46a655b9b3c7158013a10692921c2d'
+          config=json.loads(Path('scripts/cdr-drain-m1-width-trial-inputs.json').read_bytes())
           dest=Path(os.environ['RUNNER_TEMP'])/('cdr-access-runtime-'+os.environ['GITHUB_RUN_ID'])
           assert not dest.exists();dest.mkdir()
           path=dest/'librelane.AppImage';url=config['appimage']['url']
@@ -221,8 +215,8 @@ jobs:
           path.chmod(0o700)
           Path('access-runtime-receipt.json').write_text(json.dumps(dict(url=url,sha256=digest,bytes=path.stat().st_size,source=os.environ['GITHUB_SHA'],run=int(os.environ['GITHUB_RUN_ID']),preflight_verified_before_acquisition=True),sort_keys=True,indent=2)+'\n')
           PY
-      - name: Read actual pinned native geometry without modifying it
-        run: python3 -B scripts/cloud_cdr_drain_access_feasibility.py --readback --pins-sha256 faaa3d6485c64ec4b2111b2faca3f8cd9b680597239d83136830656887ade1d1 --reservation release-reservation.json --controls-proof cdr-access-overlay-controls/controls.json --appimage "$RUNNER_TEMP/cdr-access-runtime-$GITHUB_RUN_ID/librelane.AppImage" --output "$GITHUB_WORKSPACE/cloud-cdr-access-overlay" > access-overlay-readback.stdout 2> access-overlay-readback.stderr
+      - name: Generate exactly two topcell rectangles and execute original full physical gates
+        run: python3 -B scripts/cloud_cdr_drain_m1_width_trial.py --readback --pins-sha256 d5d040630ca41d4e8f2815a090a468a96a46a655b9b3c7158013a10692921c2d --reservation release-reservation.json --controls-proof cdr-access-overlay-controls/controls.json --appimage "$RUNNER_TEMP/cdr-access-runtime-$GITHUB_RUN_ID/librelane.AppImage" --output "$GITHUB_WORKSPACE/hw/soc/out/cloud-cdr-drain-m1-trial" > access-overlay-readback.stdout 2> access-overlay-readback.stderr
       - name: Preserve complete derived evidence in independently reserved release
         if: always()
         env:
@@ -230,37 +224,37 @@ jobs:
         run: |
           python3 -B - <<'PY'
           import hashlib,json,os,pathlib,subprocess,tarfile,urllib.parse
-          root=pathlib.Path('.');dest=root/'cloud-cdr-access-overlay'
+          root=pathlib.Path('.');dest=root/'hw/soc/out/cloud-cdr-drain-m1-trial'
           if not pathlib.Path('release-reservation.json').is_file():
               print('No reservation receipt; no acquisition/publication authority. Existing logs/artifacts remain available.')
               raise SystemExit(0)
-          dest.mkdir(exist_ok=True)
+          dest.mkdir(parents=True,exist_ok=True)
           def api(path):
               return json.loads(subprocess.check_output(['gh','api','repos/'+os.environ['GITHUB_REPOSITORY']+'/'+path]))
           receipt=json.loads(pathlib.Path('release-reservation.json').read_text())
-          tag='cloud-results-'+os.environ['GITHUB_RUN_ID']+'-1-cdr-drain-access-feasibility'
+          tag='cloud-results-'+os.environ['GITHUB_RUN_ID']+'-1-cdr-drain-m1-width-trial'
           release=api('releases/tags/'+tag);ref=api('git/ref/tags/'+tag)
           assert receipt['release_id']==release['id'] and receipt['tested_source']==os.environ['GITHUB_SHA']
           assert release['draft'] is False and release['prerelease'] is True and not release['assets']
           assert release['target_commitish']==os.environ['GITHUB_SHA'] and ref['object']==dict(type='commit',sha=os.environ['GITHUB_SHA'],url=ref['object']['url'])
           paths=[]
-          for directory in ('cloud-cdr-access-overlay','cdr-access-overlay-controls'):
+          for directory in ('hw/soc/out/cloud-cdr-drain-m1-trial','cdr-access-overlay-controls'):
               folder=root/directory
               if folder.is_dir():paths.extend(p for p in folder.rglob('*')if p.is_file())
-          for name in ('release-reservation.json','access-overlay-preflight.json','runtime-acquisition.json','access-overlay-readback.stdout','access-overlay-readback.stderr'):
+          for name in ('release-reservation.json','access-overlay-preflight.json','access-runtime-receipt.json','access-overlay-preflight.stdout','access-overlay-preflight.stderr','access-overlay-readback.stdout','access-overlay-readback.stderr'):
               if (root/name).is_file():paths.append(root/name)
           paths=sorted(set(paths))
-          assert all(not p.is_symlink() and p.suffix.lower()not in('.gds','.lvsdb','.l2n','.appimage','.raw','.vcd')for p in paths)
+          assert all(not p.is_symlink() and p.is_file() for p in paths)
           inventory={str(p):dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest())for p in paths}
           plan=dict(schema=1,source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,
-            release_id=release['id'],group='cdr-drain-access-feasibility',native_inputs_acquired_locally=False,
+            release_id=release['id'],group='cdr-drain-m1-width-trial',native_inputs_acquired_locally=False,
             complete_available_derived_files=inventory,empty_streams_retained_in_archive=True,
-            native_geometry_modified=False,physical_acceptance=False)
+            native_geometry_modified=True,physical_acceptance=False)
           inv=dest/'permanent-output-inventory.json';inv.write_text(json.dumps(plan,sort_keys=True,indent=2)+'\n')
-          archive=root/'cdr-drain-access-feasibility-evidence.tar.gz'
+          archive=root/'cdr-drain-m1-width-trial-evidence.tar.gz'
           assert not archive.exists()
           with tarfile.open(archive,'w:gz')as tar:
-              for p in paths+[inv]:tar.add(p,arcname='cdr-drain-access-feasibility-evidence/'+str(p),recursive=False)
+              for p in paths+[inv]:tar.add(p,arcname='cdr-drain-m1-width-trial-evidence/'+str(p),recursive=False)
           publication=dict(archive=dict(bytes=archive.stat().st_size,sha256=hashlib.sha256(archive.read_bytes()).hexdigest()),
             members=len(paths)+1,release_id=release['id'],tag=tag,source=os.environ['GITHUB_SHA'],overwrite=False)
           meta=dest/'permanent-archive.json';meta.write_text(json.dumps(publication,sort_keys=True,indent=2)+'\n')
@@ -284,8 +278,8 @@ jobs:
           python3 -B - <<'PY'
           import base64,hashlib,json,zlib
           from pathlib import Path
-          roots=[Path('cloud-cdr-access-overlay'),Path('cdr-access-overlay-controls')]
-          paths=[p for root in roots for p in root.rglob('*') if p.is_file()]
+          roots=[Path('hw/soc/out/cloud-cdr-drain-m1-trial'),Path('cdr-access-overlay-controls')]
+          paths=[p for root in roots for p in root.rglob('*') if p.is_file() and p.suffix.lower() in ('.json','.jsonl','.log','.stdout','.stderr','.txt','.py')]
           paths += [Path(n) for n in ('release-reservation.json','access-overlay-preflight.json','access-overlay-preflight.stdout','access-overlay-preflight.stderr','access-runtime-receipt.json','access-overlay-readback.stdout','access-overlay-readback.stderr') if Path(n).is_file()]
           assert len(paths)==len(set(paths))
           for p in sorted(paths):
@@ -307,7 +301,7 @@ jobs:
           if-no-files-found: error
           retention-days: 90
           path: |
-            cloud-cdr-access-overlay
+            hw/soc/out/cloud-cdr-drain-m1-trial
             cdr-access-overlay-controls
             release-reservation.json
             access-overlay-preflight.json
