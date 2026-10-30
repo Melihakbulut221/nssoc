@@ -74,7 +74,7 @@ def controls(expected):
     reject("missing_DC_edge",lambda:t.analyze_epoch(rows,target,bad_dc))
     with tempfile.TemporaryDirectory()as temp:
         root=Path(temp);trace=root/"synthetic-trace.jsonl"
-        trace.write_bytes(b"".join(b.encode(x)for x in rows))
+        trace.write_bytes(b"".join((json.dumps(x,sort_keys=True)+"\n").encode()for x in rows))
         out=root/"selected";out.mkdir()
         got=t.select_epochs(trace,{"28":target},out)
         assert got=={"28":rows}and b.decode((out/"target-28-events.json").read_bytes())==rows
