@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "kind": "reviewed_cloud_only_next_step",
+  "date": "2026-10-30",
+  "source_ref": "c3560bd06334e92e036bde7150d8d26a7766c8db",
+  "scope": "Read-only drain-access feasibility for two measured CDR resistor paths; no geometry change or native dispatch in this proposal.",
+  "targets": [
+    {
+      "device": "T003",
+      "partition": 28,
+      "partition_name": "$131",
+      "component": 17,
+      "path_suffix": "134_3/120_13",
+      "resistor": "R2997"
+    },
+    {
+      "device": "T032",
+      "partition": 124,
+      "partition_name": "$680",
+      "component": 61,
+      "path_suffix": "134_4/120_13",
+      "resistor": "R12299"
+    }
+  ],
+  "ancestry": {
+    "each_target_constructor_roots": 5,
+    "each_target_series_reductions": 4,
+    "chain": [
+      "Via2",
+      "Metal3 access",
+      "Via1",
+      "short Metal1 landing",
+      "long Metal1 drain access"
+    ],
+    "shared_pcell": "nmos$2$1",
+    "W_um": 36,
+    "L_um": 0.3,
+    "current_instances": 16,
+    "shared_pcell_edit_authorized": false,
+    "ownership_note": "Long Metal1 contributor is native NMOS drain rail; instance-specific overlay requires measured clearance and exact parent/PCell ownership."
+  },
+  "source_paths": [
+    "hw/soc/flow/make_pcie_sampler_active_input_v57.py",
+    "scripts/cloud_cdr_current_access_overlay.py",
+    "scripts/cdr_current_access_overlay_native.py",
+    "scripts/cloud_cdr_v59_selector_column_width_physical.py",
+    "scripts/cloud_cdr_selector_width_fresh_rc.py"
+  ],
+  "renderer_pdk_ref": "564881f65039ab77bab026c01a5b1055a762e4a0",
+  "renderer_source": "ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/ihp/nmos_code.py",
+  "renderer_role": "PCell generator drain M1 rail and pin; via()/escape() parent generator controls one-column top landing.",
+  "signoff_deck_ref_prefix": "5e6d592e",
+  "note_on_prefix": "Resolve complete ref and file SHA from existing lock before source pins or dispatch; renderer and signoff locks differ.",
+  "locked_rules_um": {
+    "Metal1": {
+      "min_width": 0.16,
+      "min_space": 0.18,
+      "wide_space": 0.22,
+      "wide_threshold": 0.3,
+      "parallel_run_threshold": 1
+    },
+    "Metal2": {
+      "min_width": 0.2,
+      "min_space": 0.21
+    },
+    "Metal3": {
+      "min_width": 0.2,
+      "min_space": 0.21
+    },
+    "Via1": {
+      "cut_width": 0.19,
+      "basic_space": 0.22
+    },
+    "Via2": {
+      "cut_width": 0.19,
+      "basic_space": 0.22
+    }
+  },
+  "renderer_via_constraints_um": {
+    "enclosure": 0.05,
+    "array_spacing_at_dimension4": 0.29
+  },
+  "required_measurements": [
+    "Exact raw shape joins for both complete M1 rails and Via1/Via2/M2/M3 landing polygons",
+    "Instance transform, PCell/parent ownership and multiplicity",
+    "Complete neighbouring foreign conductors, contacts, gate/diffusion and fill",
+    "Exact edge spacing and parallel run lengths",
+    "Actual enclosure, via cut-grid and feasible instance-specific additive geometry",
+    "Preserve all witness polygons and unresolved ownership; no width/cut count guessed"
+  ],
+  "reuse_requirements": [
+    "Exact complete6647 input verification",
+    "Current GDS/LVS/wire pins from qualified overlay manifest",
+    "Immutable Ubuntu22 AppImage/runtime",
+    "1200s/10GiB/2GiB limits and complete failure preservation",
+    "New exact-source externally reserved permanent release before native acquisition",
+    "All tests, archives, native tools and payloads stay on GitHub"
+  ],
+  "later_admission": [
+    "New changed-candidate admission must replace fixed historical geometry hashes with explicit independent invariants",
+    "Full560 DRC category checks",
+    "Deep and flat500-device LVS and13 fault controls",
+    "Fresh bound wire RC and seven-MIM/two-order precision",
+    "Original static HBT margins and original loaded transient limits"
+  ],
+  "physical_acceptance": false,
+  "electrical_acceptance": false,
+  "full_phy_accepted": false,
+  "native_run_dispatched": false
+}

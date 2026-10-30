@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v137
+# Cloud continuation — checkpoint v138
 
-Updated: 2026-10-30T02:53:41.522435+00:00
+Updated: 2026-10-30T03:51:10.056784+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint v137: real CDR ancestry run40988946484 and full antenna ownership run40992012920 completed successfully. CDR proofc3560bd retains complete native trace/capsule and establishes five-root/four-series value ancestry for the two32.5083ohm targets, with exact component equivalence and original strict order mismatch retained. Mainchip proof1ae76565 retains all75derived files and permanent47MBnative capsule; all609nets/697pins/916cumulative-area violations join actual ODB. There are9143diodes in the chip,517violating nets without a connected diode and92with diodes. Complete original DEF and1691clocks remain byte-identical; this is diagnosis, not repair. Source-fixture failure40990310211 was preserved before correcting only its mock pin and successfully running4positive/23refusal controls. All original electrical, physical and timing gates stay unchanged. Next work uses the newly proved CDR rail/via ancestry and actual antenna rule/gate/diffusion/wire data for bounded cloud physical changes. No native run remains active. Local project/generated directories, temporary/visualization outputs, native processes and matching local automations verified absent; all evidence and continuation remain on GitHub.
+Cloud-only checkpoint v138: actual CDR drain-access feasibility40996847751 completed SUCCESS and its57-file/13,057,662-byte proof2234c3e6 is verified. Exact rail ownership and complete315shape windows now support a bounded two-rail physical widening trial, whose geometry is not yet dispatched. Mainchip one-diode trial40998946185 is live at exact sourcebb920434 after8positive/28refusal/4actual-finalizer controls and inherited suites passed. Its input is the unchanged a3c6aa0b current ODB; permanent release428631837 was independently reserved before acquisition. Trial code permits exactly one new diode and additive target Metal1 branch, protecting all original instances, clocks and other wires. Actual native DRC/antenna result is pending; no repair/PHY/timing acceptance is claimed. All original failures and source revisions remain preserved. All computation and artifacts stay on GitHub; local project/generated paths and native processes remain empty.
 
-Active handles at this snapshot: No native run remains active in this snapshot.
+Active handles at this snapshot: 40998946185 in_progress
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9158,3 +9159,10 @@ Local project/tmp/native processes verified absent. Inventory380 exact cloud han
 Cloud-only checkpoint v137: real CDR ancestry run40988946484 and full antenna ownership run40992012920 completed successfully. CDR proofc3560bd retains complete native trace/capsule and establishes five-root/four-series value ancestry for the two32.5083ohm targets, with exact component equivalence and original strict order mismatch retained. Mainchip proof1ae76565 retains all75derived files and permanent47MBnative capsule; all609nets/697pins/916cumulative-area violations join actual ODB. There are9143diodes in the chip,517violating nets without a connected diode and92with diodes. Complete original DEF and1691clocks remain byte-identical; this is diagnosis, not repair. Source-fixture failure40990310211 was preserved before correcting only its mock pin and successfully running4positive/23refusal controls. All original electrical, physical and timing gates stay unchanged. Next work uses the newly proved CDR rail/via ancestry and actual antenna rule/gate/diffusion/wire data for bounded cloud physical changes. No native run remains active. Local project/generated directories, temporary/visualization outputs, native processes and matching local automations verified absent; all evidence and continuation remain on GitHub.
 
 Local project/tmp/native processes verified absent. Inventory383 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-30T03:51:10.056784+00:00 — cloud-only checkpoint v138
+
+Cloud-only checkpoint v138: actual CDR drain-access feasibility40996847751 completed SUCCESS and its57-file/13,057,662-byte proof2234c3e6 is verified. Exact rail ownership and complete315shape windows now support a bounded two-rail physical widening trial, whose geometry is not yet dispatched. Mainchip one-diode trial40998946185 is live at exact sourcebb920434 after8positive/28refusal/4actual-finalizer controls and inherited suites passed. Its input is the unchanged a3c6aa0b current ODB; permanent release428631837 was independently reserved before acquisition. Trial code permits exactly one new diode and additive target Metal1 branch, protecting all original instances, clocks and other wires. Actual native DRC/antenna result is pending; no repair/PHY/timing acceptance is claimed. All original failures and source revisions remain preserved. All computation and artifacts stay on GitHub; local project/generated paths and native processes remain empty.
+
+Local project/tmp/native processes verified absent. Inventory385 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

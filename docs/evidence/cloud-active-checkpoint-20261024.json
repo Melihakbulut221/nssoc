@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30T02:53:41.522435+00:00",
+  "updated_at": "2026-10-30T03:51:10.056784+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "5432135bdc3c3758f74dc07c0995e9d0fef2ff63",
+  "root_source_before_receipt": "2156b236f4c15cc196844fcaf4b4014ae67726f6",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 137,
+    "inventory_version": 138,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -42,7 +42,61 @@
     "latest_observed_monitor_error": false,
     "latest_observed_evidence": "docs/evidence/cloud-collector-recipes-20261029/monitor-live-audit-40955824450/evidence.json"
   },
-  "active_runs": {},
+  "active_runs": {
+    "mainchip-single-antenna-trial": {
+      "run": 40998946185,
+      "head_sha": "bb92043445a2ad175cbc6399a2130a98abbee99b",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123878579411,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123878844931,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123878894324,
+          "name": "trial",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Create exactly one diode and target Metal1 branch; measure complete DRC and antennas"
+          ]
+        },
+        {
+          "id": 123878895767,
+          "name": "candidate",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        },
+        {
+          "id": 123878896018,
+          "name": "ownership",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        },
+        {
+          "id": 123878896151,
+          "name": "antenna-readback",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    }
+  },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -5169,16 +5223,160 @@
       },
       "executed": false,
       "physical_feasibility_established": false
+    },
+    "cdr_drain_access_feasibility": {
+      "proof": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "prefix": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/",
+      "source": "b4183870a74e7319e0602b033d894bb7d361bde7",
+      "branch": "codex/cdr-drain-access-feasibility",
+      "run": 40996847751,
+      "release": 428620554,
+      "files": 57,
+      "bytes": 13057662,
+      "receipt_sha256": "9de5913f4cdb837e804066fcfd265f9e9f744d71f81dad5101fcbf2fea9db317",
+      "readback_verified": true,
+      "physical_acceptance": false,
+      "electrical_acceptance": false,
+      "full_phy_accepted": false,
+      "native_archive": {
+        "asset_id": 690781640,
+        "bytes": 1549708,
+        "sha256": "4032c042215696be50dfcd7b48b580ebf93f2d73f4b4237164c9e97b9cd30756"
+      },
+      "all_three_jobs_success": true,
+      "controls": {
+        "positive": 8,
+        "refusal": 10,
+        "native_geometry": 6,
+        "inherited_native_geometry": 5
+      },
+      "observation": {
+        "targets": [
+          "T003",
+          "T032"
+        ],
+        "raw_m1_rail": [
+          750,
+          0,
+          910,
+          36000
+        ],
+        "shared_master": "nmos$2$1",
+        "same_cell_instances": 16,
+        "each_window_raw_shapes": 315,
+        "each_window_occurrences": 12,
+        "each_window_nearby_devices": 2,
+        "each_target_via1_cuts": 1,
+        "each_target_via2_cuts": 1,
+        "cut_size_DBU": [
+          190,
+          190
+        ],
+        "observed_enclosure_square_offset_DBU": 50,
+        "observed_foreign_parallel_M1_gaps_DBU": [
+          455,
+          520,
+          680
+        ],
+        "complete_DRC_clearance_verdict": false,
+        "geometry_changed": false
+      }
+    },
+    "mainchip_single_antenna_trial": {
+      "source": "bb92043445a2ad175cbc6399a2130a98abbee99b",
+      "base": "5ccca04a2e3dfc4eca47c0f78979b5fc8f528635",
+      "branch": "codex/mainchip-net459-diode-prune",
+      "files": 6,
+      "manifest_sha256": "5111d4afd4e7b77c08a2913aafc35397a05a4ae01aeead472e7ee50b19ac3a13",
+      "workflow_sha256": "fc503499d8a1ad4fe3c2984bd9ab2bdf22b02def52c797dc94e6103e798a04d6",
+      "readback_verified": true,
+      "run": 40998946185,
+      "release": 428631837,
+      "live_snapshot": {
+        "run": 40998946185,
+        "source": "bb92043445a2ad175cbc6399a2130a98abbee99b",
+        "status": "in_progress",
+        "conclusion": null,
+        "jobs": [
+          {
+            "id": 123878579411,
+            "name": "source-controls",
+            "status": "completed",
+            "conclusion": "success",
+            "active": []
+          },
+          {
+            "id": 123878844931,
+            "name": "preserve-job-log",
+            "status": "completed",
+            "conclusion": "success",
+            "active": []
+          },
+          {
+            "id": 123878894324,
+            "name": "trial",
+            "status": "in_progress",
+            "conclusion": null,
+            "active": [
+              "Create exactly one diode and target Metal1 branch; measure complete DRC and antennas"
+            ]
+          },
+          {
+            "id": 123878895767,
+            "name": "candidate",
+            "status": "completed",
+            "conclusion": "skipped",
+            "active": []
+          },
+          {
+            "id": 123878896018,
+            "name": "ownership",
+            "status": "completed",
+            "conclusion": "skipped",
+            "active": []
+          },
+          {
+            "id": 123878896151,
+            "name": "antenna-readback",
+            "status": "completed",
+            "conclusion": "skipped",
+            "active": []
+          }
+        ]
+      },
+      "new_controls": {
+        "positive": 8,
+        "refusal": 28,
+        "lifecycle": 4,
+        "source_job": 123878579411,
+        "source_job_conclusion": "success"
+      },
+      "scope": "Exactly one diode plus explicit target Metal1 branch; original153128instances and all1691clocks protected. Current run is not yet a repair result.",
+      "physical_acceptance": false,
+      "timing_accepted": false,
+      "full_phy_accepted": false
+    },
+    "cdr_rail_widening_next": {
+      "planned_width_DBU": [
+        160,
+        320
+      ],
+      "target_count": 2,
+      "original_devices": 500,
+      "shared_PCell_must_not_change": true,
+      "geometry_not_yet_dispatched": true,
+      "requires_full_original_DRC_LVS_fault_gates": true,
+      "requires_fresh_candidate_bound_RC": true
     }
   },
   "next_actions": [
-    "Latest user instruction is cloud-only and clean local. All authored tests, calculations, native tools, models, archives and outputs stay on GitHub runners. Local API/source orchestration and derived text inspection are RAM-only. Never download native payloads locally, including into RAM. Workspace, old project directories, matching tmp/visualization outputs, native processes and matching local automations remain absent.",
-    "Run40992012920 completed SUCCESS, full75-file proof1ae76565 and complete47,329,961-byte native capsule asset690677171 preserved. Do not repeat the ownership collection. All609nets/697pins/916checks join actual current ODB;9143diodes total,517violating nets without diode and92with diode. Complete technology rule clauses, gate/diffusion data and all609wire projections are permanent cloud evidence.",
-    "Use actual diffusion PWL and pinned native cumulative-area physical grouping to design an explicit bounded one-net/one-sink diode placement/reroute trial. Net-level diode presence is not per-layer physical reachability. Preserve zero DRT and1691original clocks/fixed records; original full-chip antenna, LVS, RC and timing gates must be rerun on changed candidate. The CAR TODO comment is not an executable one-diode-per-net limit: checker supplies gates and repair inserts per gate. Global repair_antennas starts from all block nets, changes placement/guides and does not finish detailed route; set_nets_to_route does not bound that initial loop. See docs/evidence/cloud-collector-recipes-20261029/mainchip-single-net-antenna-trial-v137-20261030.json for exact candidate $abc$1804206$new_n41321 / fanout36953/A and native216.77vs200 Metal4 evidence.",
-    "Source-fixture failure40990310211 remains failed and is fully preserved atd3c365; only fixture ASSETS mock was corrected in34725248. Production collector and original acceptance contracts were unchanged. Corrected4positive/23refusal controls and all inherited suites passed.",
-    "CDR ancestry run40988946484 succeeded;54-file proofc3560bd and complete267,322,262-byte trace plus949,094,893-byte native capsule remain permanent. Actual target resistor value ancestry for R2997 andR12299 consists of five roots/four series reductions:Via2,Metal3,Via1,shortMetal1,longMetal1 drain rail. Original exact component equivalence passes; serialized capacitor-order mismatch remains explicitly false. Do not rerun finished build.",
-    "Next CDR cloud task is read-only instance-specific drain-rail/via feasibility, following docs/evidence/cloud-collector-recipes-20261029/cdr-drain-access-feasibility-v137-20261030.json. Shared nmos$2$1 has16instances; no shared PCell edit. Verify complete raw-shape ownership, foreign spacing/enclosure/cut-grid and exact source locks before choosing geometry. Then admit a changed candidate with explicit invariant checks, full DRC/LVS/fresh RC and original HBT/transient gates.",
-    "Full serial PHY, routed serial mainchip, full-chip LVS/foundryDRC/currentRC and original20/4/8/8ns+5% final setup/hold stay unaccepted. Historical STA39904823953 is not the current ODB. No native job is active in this snapshot. Existing8h cloud monitor remains read-only and cannot initiate native work."
+    "Continue cloud-only. Latest direct user instruction overrides older local-goal wording. Never acquire native payload locally, including RAM; all authored execution, tests, calculations and CAD run on GitHub. Local source/API/derived-text orchestration remains RAM-only and generated project directories/processes remain empty.",
+    "First re-query exact live run40998946185 atbb920434 on codex/mainchip-net459-diode-prune. Source-controls123878579411 passed8positive/28refusal/4actual-finalizer controls and all inherited suites; trial123878894324 is executing actual one-diode candidate. Fresh permanent release428631837 was externally reserved before acquisition. Do not restart while authoritative handle is live.",
+    "Run40998946185 targets only $abc$1804206$new_n41321 / fanout36953/A: one authentic diode at nearest same-row untouched site within40um, additive Metal1 path. All original153128instances,143820nets,1691clocks, original40targetwire shapes and every non-target raw wire must remain identical. Full DRT, target antenna and complete candidate antenna checks decide acceptance. Preserve every native output and failure; candidate rejection must remain explicit even if the orchestration workflow succeeds.",
+    "Independent review found primary exception replacement in native finalizers before any dispatch. Commitbb920434 fixes this through production run_phase and four actual injected finalizer controls; geometry/admission functions are AST-identical. Source246d6e and whitespace-only5ccca remain separately documented. Tcl newline suspicion was disproved by exact AST constant inspection, not a real failure.",
+    "CDR feasibility40996847751 is terminal SUCCESS and full57-file proof2234c3e6 verified. Both primitive M1 rails [750,0,910,36000] have actual component ownership. Each window has315raw shapes/12occurrences/two nearby devices. Both Via1/Via2 are single190x190 cuts with50DBU same-net landing coverage; observed455/520/680 parallel M1 gaps are not full clearance approval. Do not repeat completed collector.",
+    "Prepare and execute bounded CDR physical candidate with two instance-specific top-cell Metal1 rectangles widening only these160DBU rails to320DBU; never modify shared nmos$2$1 or transistor/device W/L/gain. Prove original raw geometry plus exactly two declared overlays, full560DRC/deep+flat500deviceLVS/13fault controls, then changed-candidate-bound fresh RC. Agent is authoring this candidate; no new CDR native handle exists in this snapshot.",
+    "Full serial PHY, routed serial mainchip, full-chip LVS/foundryDRC/currentRC and original20/4/8/8ns+5% setup/hold remain unaccepted. Historical STA39904823953 is not current ODB. Existing8h cloud monitor remains read-only; it cannot initiate native work."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -5542,41 +5740,35 @@
     "observed_40985242991": 40985242991,
     "observed_40988946484": 40988946484,
     "observed_40990310211": 40990310211,
-    "observed_40992012920": 40992012920
+    "observed_40992012920": 40992012920,
+    "observed_40996847751": 40996847751
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40988946484,
-      "head_sha": "2adbc74a348c6f04227a9507a9ccc556d4eda430",
+      "run": 40996847751,
+      "head_sha": "b4183870a74e7319e0602b033d894bb7d361bde7",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123846436464,
+          "id": 123871852290,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123846686213,
-          "name": "preserve-source-job-log",
+          "id": 123872087105,
+          "name": "preserve-job-log",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123846732912,
-          "name": "native-build",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123848147778,
-          "name": "preserve-terminal-job-logs",
+          "id": 123872124809,
+          "name": "readback",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
@@ -5584,110 +5776,61 @@
       ]
     },
     {
-      "run": 40990310211,
-      "head_sha": "1f83dce79505f920a6e568bd0c99b1a89f00b24c",
-      "status": "completed",
-      "conclusion": "failure",
+      "run": 40998946185,
+      "head_sha": "bb92043445a2ad175cbc6399a2130a98abbee99b",
+      "status": "in_progress",
+      "conclusion": null,
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123850839675,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 123851067687,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123851123789,
-          "name": "preserve-antenna-job-logs",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123851124868,
-          "name": "ownership",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 123851125188,
-          "name": "antenna-readback",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 123851125859,
-          "name": "candidate",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40992012920,
-      "head_sha": "3472524843ab64efab7009d4be4350407b3d7377",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123856433718,
+          "id": 123878579411,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123856688140,
+          "id": 123878844931,
           "name": "preserve-job-log",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123856741890,
-          "name": "ownership",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
+          "id": 123878894324,
+          "name": "trial",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Create exactly one diode and target Metal1 branch; measure complete DRC and antennas"
+          ]
         },
         {
-          "id": 123856743320,
+          "id": 123878895767,
           "name": "candidate",
           "status": "completed",
           "conclusion": "skipped",
           "active_steps": []
         },
         {
-          "id": 123856744264,
-          "name": "antenna-readback",
+          "id": 123878896018,
+          "name": "ownership",
           "status": "completed",
           "conclusion": "skipped",
           "active_steps": []
         },
         {
-          "id": 123858193087,
-          "name": "preserve-antenna-job-logs",
+          "id": 123878896151,
+          "name": "antenna-readback",
           "status": "completed",
-          "conclusion": "success",
+          "conclusion": "skipped",
           "active_steps": []
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-30T02:53:41.522435+00:00",
+    "observed_at": "2026-10-30T03:51:10.056784+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -5827,7 +5970,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-30T02:53:41.522435+00:00",
+  "local_workspace_verified_empty_at": "2026-10-30T03:51:10.056784+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -53314,6 +53457,573 @@
       "empty": true,
       "independently_reserved_before_acquisition": true,
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/40992012920"
+    }
+  ],
+  "imported_checkpoint_receipts_v138": [
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-source-review-20261030.json",
+      "source": "b4183870a74e7319e0602b033d894bb7d361bde7",
+      "git_blob": "6a1ccd3d1df993193f3308f8218c8b59ccfa2108",
+      "bytes": 6778,
+      "sha256": "103c528a08382b2ec9b70e162b6619fead9ac552880a86ee69e7bd8bcb9f570d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-sources/5_16_metal1.drc",
+      "source": "b4183870a74e7319e0602b033d894bb7d361bde7",
+      "git_blob": "466d14ed0d91dc4986a0705424755f70addb09de",
+      "bytes": 4280,
+      "sha256": "82a0ffa3d6412e88de6caf103c3b1eb1a4cf09b6cfa1857da8c67740f56c5ed0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-sources/5_17_metaln.drc",
+      "source": "b4183870a74e7319e0602b033d894bb7d361bde7",
+      "git_blob": "a8ecedecd341e16fdb2327ef5df043f98c44bf56",
+      "bytes": 4862,
+      "sha256": "0023b4dfc61eb71e14d2d4b3b003078d3f8121c732445ad80a9bca187279fb6e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-sources/5_19_via1.drc",
+      "source": "b4183870a74e7319e0602b033d894bb7d361bde7",
+      "git_blob": "c2bc6e01339ddbe5c60c5a540648147937dab47c",
+      "bytes": 2215,
+      "sha256": "d86d04e1f8cda3c045dc8caafe85cec64bde15413d0ab521765021153a59ec0e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-sources/5_20_vian.drc",
+      "source": "b4183870a74e7319e0602b033d894bb7d361bde7",
+      "git_blob": "67a7773d6ad2de84c58c181739e86d2a2c7e97db",
+      "bytes": 2524,
+      "sha256": "769a1169bf187d88c14e989dd7be8e3e3204cd72edb2a3d70eb45c943a56e2bd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-sources/nmos_code.py",
+      "source": "b4183870a74e7319e0602b033d894bb7d361bde7",
+      "git_blob": "7dedb1e97eec420e1b93ea314caef6d723546446",
+      "bytes": 8683,
+      "sha256": "136e4473f15b583f0dd52600b46450e95a5c00d67d649035ee4f0c86bb0afa9f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-sources/recipe.json",
+      "source": "b4183870a74e7319e0602b033d894bb7d361bde7",
+      "git_blob": "1a7d3c1ecc951fd66a9db3df7f2ad023045a46b6",
+      "bytes": 3961,
+      "sha256": "e1a15732fac924ddfba1d994425f0de8840127f0a0e52683d03a95368135cf6b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-sources/sg13g2_tech_mod.json",
+      "source": "b4183870a74e7319e0602b033d894bb7d361bde7",
+      "git_blob": "7a513d1dd732b7cd5f086c3a3bb074a5292c0e66",
+      "bytes": 27346,
+      "sha256": "229029e23785f3ae58c9645d47acfe326c56f0ec41d940bf9383c7063380f9ff",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/diagnosis.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "f6c49b13f08b409a2b2f0295f677134006acb91a",
+      "bytes": 12193,
+      "sha256": "c4a9411048897f98b69bda5b8be07f355cd0a532e18695e08536f35bb6debc8a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/independent-reservation.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "d10859fc6a9c56e06743ecc8b5805e691f43f5cb",
+      "bytes": 2506,
+      "sha256": "df36f0bf006665650efb1f30b498e20011f05ab78b7b330d725f66e37e102511",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/job-123871852290.log",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "5a798cc4a55b6966369ea89faeb50ded9bad9a87",
+      "bytes": 209337,
+      "sha256": "45eb933d3721589e457535581bc38190ec3c6aab7eb892597bd62dcb5ce4c6f1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/job-123872087105.log",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "1527d3883fb92b83db37b9db2dcd0f3866faa58c",
+      "bytes": 7540,
+      "sha256": "36038101eb9258487b38fd2d3566fd5ae8fd89a90056cb82bc05602aaa60a534",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/job-123872124809.log",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "60493d93846ae0d794772a3722d1124c35b9cdf6",
+      "bytes": 2179045,
+      "sha256": "f72fd661956b759a0eefa7141149455910e1cfbf7eea0dbc0565898e9b3c61dd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/jobs.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "a97f9b1de397120bb267c6f3523285ccbc33d8df",
+      "bytes": 12195,
+      "sha256": "f16728aa518d9b0fc4e5d5bb5b8ce6993c7a301955ede29748d7d4512100c8cf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback-index.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "59f672d24886cce451698d61a11b2be448a4f905",
+      "bytes": 9453,
+      "sha256": "8997f8fda4386b3af06d2b1e60fe0ff5049058b8b420e121e04b25082088b151",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/access-overlay-preflight.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "62bd5ecf3984ec7ebcf543637be5107112b91f47",
+      "bytes": 75035,
+      "sha256": "6e8427c7f48643b2ca12d6940b847515093dd7305527c7e0de2cbf37b7bbd37e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/access-overlay-preflight.stderr",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/access-overlay-preflight.stdout",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "245e268d5676c404e5cdd291c5012092adba2cea",
+      "bytes": 63273,
+      "sha256": "f4fa81fc826d03677c3d99a18a2eadac085eb4a378b68925767e2a0cac5695f9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/access-overlay-readback.stderr",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/access-overlay-readback.stdout",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "e9b57312ad7514da74d7062799a837b406585ee3",
+      "bytes": 1057313,
+      "sha256": "911edaaf990746e98329609f2e3e549fbfccde5588b20d190bc7f18bc824cfcc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/access-runtime-receipt.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "5940c2a5b756bac4c95d15aaf3f7ab99a9d54363",
+      "bytes": 343,
+      "sha256": "e0cd68d0e3d80833875e02703d2c12ca725604937f89adf49ebd340e8d46141e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cdr-access-overlay-controls/context.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "9994d76947fedea494545e3d2990c170edb8a5b0",
+      "bytes": 11837,
+      "sha256": "5dd0d59cda5af2c1d9cf1f95252221488539736989f7b4865a79926e69253f53",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cdr-access-overlay-controls/controls.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "6e8b2543975325be988d5ed822eef5c7354bacfc",
+      "bytes": 59897,
+      "sha256": "3135ff099d16b7c0c75f4fe9fc12a0c0320acd02326b42e4fa48b371e53bf123",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cdr-access-overlay-controls/controls.stderr",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cdr-access-overlay-controls/controls.stdout",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "6e8b2543975325be988d5ed822eef5c7354bacfc",
+      "bytes": 59897,
+      "sha256": "3135ff099d16b7c0c75f4fe9fc12a0c0320acd02326b42e4fa48b371e53bf123",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/access-overlay.log",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/complete-input-census.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "fcc167b425ddc91171955238613567f1fede2a38",
+      "bytes": 1526797,
+      "sha256": "ce66d531f3b0915a3a25fa7439a5c197d4a768920f09a4e47f96dd358ad5a4f4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/drain-124-feasibility.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "86f5a2615bc433f70bf6ad82774e05f995f0a89b",
+      "bytes": 73547,
+      "sha256": "718533b5e9e68964359baac148c5ec51fe47a4bf54a0b25af08aa3dbf4620ad3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/drain-124-raw-neighborhood.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "9406f391ce0f06c2f0157a9397b6c979fe22831d",
+      "bytes": 595444,
+      "sha256": "f25df56845f5b5c7b1b2bdfd4a530214c29abacb559b3dc9315fd3a8770cb77e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/drain-28-feasibility.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "1fc881035af6bc0049dab0ecaeb0c0def497be5f",
+      "bytes": 73355,
+      "sha256": "b262ad48b84c4812f8e66151e298c1025dc6ed66e728970ddc18c51d5fe4c98b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/drain-28-raw-neighborhood.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "830e1c41350c3044c51652af64144e3cee3c7aff",
+      "bytes": 591260,
+      "sha256": "a174b4c5fa57b4d0db104b7928f510e1c1b449a4656d7c9220efb4d2e3da8d9e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/drain-access-feasibility.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "0c1f81b33f2aa5ae784b6cb880fdda7e52d39566",
+      "bytes": 3120,
+      "sha256": "7b1ddebc246ac037e7ecbf86e2e7d2e87df4968f7dc888423fe2a2d91bc2b428",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/feasibility-native-controls.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "f3610b6eb0f5cc7b4044200920c6b1730fa89996",
+      "bytes": 148,
+      "sha256": "27fbecc8622b520bcbed39a703174dd3bf1e53392dbda1fd47705d22d4d2e8b6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/native-api-controls.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "35dfef37a713f3956c08c4fe3cfc9118eec2321d",
+      "bytes": 149,
+      "sha256": "ace4047c4bcf311b74fb238dab49b1a03ab694a5c157470c482ff53d302c2385",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/native-lifecycle.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "928657bfd1e092f2ac3bdb2d7680e56d0b66861a",
+      "bytes": 746,
+      "sha256": "a61ebd14a67bc67c1de5a48b9d2d5b04f0cfe78b59ce5e52f3f61ef8d04ebc32",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/overlay.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "2dff21963b5ddad88de3b7e24ca5bbe278ca2ec4",
+      "bytes": 4490677,
+      "sha256": "1cb9fb5bde3673e270982e129266dddfe7ad285e719ba1ce765fb07b652bc344",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/permanent-archive.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "dc78bf1e1ce4722e3b70e0f0bf85f9950867b28e",
+      "bytes": 317,
+      "sha256": "b7bffc87797aa3634e2dc2f6b6a17951d00f927a7b646c8a3cd37a5ce736f0ee",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/permanent-output-inventory.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "98bb3af9e284ec9d3ba1090f37eb52d65b3f25a5",
+      "bytes": 6064,
+      "sha256": "c29a8105e64bdf50c3ce25e46fff6511a0f9aed33875d051fc89235dd6af52c6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/permanent-publication.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "64d4c11c2c563d682920acd155233cb920dcafd7",
+      "bytes": 6596,
+      "sha256": "ff1e3845d447b5b541b3e68fcf498eb053a7d894a2d09295554dbcca116b0337",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/preflight.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "62bd5ecf3984ec7ebcf543637be5107112b91f47",
+      "bytes": 75035,
+      "sha256": "6e8427c7f48643b2ca12d6940b847515093dd7305527c7e0de2cbf37b7bbd37e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/readback-result.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "76f89b8623e771ffa23bcebaf08e6a457efd617f",
+      "bytes": 2820,
+      "sha256": "5d804d02427fda317d65c84e6760ace7e3aaa83c879704f208ffba127d4258fe",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/runtime-smoke/result.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "df0784c8ae81a6aa866da757f2e6638407997dda",
+      "bytes": 3588,
+      "sha256": "6e93c7ee588f031e42f9df3b1b5ef1728be042c2de664fb7259ecc3fe011fa8a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/runtime-smoke/stderr.bin",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/runtime-smoke/stdout.bin",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "65cac5edceb584c7373fdd712f6729e09e574d1a",
+      "bytes": 638,
+      "sha256": "f113961f733dab26492afda3ea31ded55a95b64a237a0a7d190bdc39beb35577",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/source-controls.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "6e8b2543975325be988d5ed822eef5c7354bacfc",
+      "bytes": 59897,
+      "sha256": "3135ff099d16b7c0c75f4fe9fc12a0c0320acd02326b42e4fa48b371e53bf123",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/supervision/access-overlay.command.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "d6a10d368dd8727d6211df8014201d586542648e",
+      "bytes": 1550,
+      "sha256": "5046d26fd4ddafe09d56a97679d45f547e3202dc6bd3ebdb4fce16da714faef6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/supervision/access-overlay.stderr",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/supervision/access-overlay.stdout",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/supervision/events.jsonl",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "2e7ac465d9f55a161df749aea4fcfaead933bdf4",
+      "bytes": 6246,
+      "sha256": "44b8d381f5f4851157d3d2173dbdd3be1d600ebb0498cee3ddee465efa295a77",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/supervision/latest.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "800a01879a957c41532ec4d6b85250ef82d9467b",
+      "bytes": 1727,
+      "sha256": "9b4a4b75f22a8904dea6eb3ff04e966132b5bdbe1c24a3aa85988f057351b8cd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/target-124.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "3c3b80c68102d3325bc4aa6a61e970e9dde23155",
+      "bytes": 463729,
+      "sha256": "fd95e0491feeb7f54a8430af2c63797aa4bb6d8e90aa6fbf03603debdea5dada",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/target-28.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "4b56e86b61973e79a458462b83eb4d38cdcd349c",
+      "bytes": 574903,
+      "sha256": "8c23b0e57c7ebf9aa35426fcca8f6d187a1f241da28db3e1e67b4e81c7f886c1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/transport-proof.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "50d7dd831b86e62bd91761b0cd348e283e6dbb1b",
+      "bytes": 610,
+      "sha256": "7ee471271feec5fc53e6ec5e6dbfecb60cb144f87d4701362652fa588fb028e0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/cloud-cdr-access-overlay/verified-target-polygons.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "d8d796ebb8c0522d1669204000c72090bc5dbbe1",
+      "bytes": 569647,
+      "sha256": "c5c219520f3c5f341c2b99e52345767f8575d891f317284a8121d389f367de08",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/readback/release-reservation.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "4acb2d854972c4d6fab1eb2948fd71568c38c27b",
+      "bytes": 329,
+      "sha256": "084f9d13ff0262b465a0f5b81ca62d9f7a4bc982aa040df81b535fc9487756ee",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/receipt.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "2827e0e60228febf1d58566d4f3c5ab15600e190",
+      "bytes": 9900,
+      "sha256": "9de5913f4cdb837e804066fcfd265f9e9f744d71f81dad5101fcbf2fea9db317",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/release.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "3b87f7f13854f242aa89c022854d39f47a441ab1",
+      "bytes": 8635,
+      "sha256": "cf889533e87358519f70cb123307b05ed87dbde58c02817882d270faecf75a6d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/run.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "eb8f3470b41d4e4f4f80ffebb59761add8096911",
+      "bytes": 14413,
+      "sha256": "ebcdbcee47d229e8b6987de0ccdca68d3641fa7fc2db8a7a9a7fa9e37814bcc4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/source-control-index.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "9cc47e9414193b26a385b01271e5dcc0cc1794fd",
+      "bytes": 783,
+      "sha256": "29b77bd85e6897923aaf34d04680393240195d68d7fc959637044b4504b7a1e9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/source-controls/context.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "9994d76947fedea494545e3d2990c170edb8a5b0",
+      "bytes": 11837,
+      "sha256": "5dd0d59cda5af2c1d9cf1f95252221488539736989f7b4865a79926e69253f53",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/source-controls/controls.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "6e8b2543975325be988d5ed822eef5c7354bacfc",
+      "bytes": 59897,
+      "sha256": "3135ff099d16b7c0c75f4fe9fc12a0c0320acd02326b42e4fa48b371e53bf123",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/source-controls/controls.stderr",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/source-controls/controls.stdout",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "6e8b2543975325be988d5ed822eef5c7354bacfc",
+      "bytes": 59897,
+      "sha256": "3135ff099d16b7c0c75f4fe9fc12a0c0320acd02326b42e4fa48b371e53bf123",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/source-unit.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "5fe2164fe122efd2859a8ae65eb55ff652f11257",
+      "bytes": 2945,
+      "sha256": "7603ee2192fb885939c0bc5829bfa42cb7182886a967667fcfe67631e6fee211",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-access-feasibility-terminal-40996847751/tag-ref.json",
+      "source": "2234c3e6b46f45a8e5c9f7753896d7a6922602c4",
+      "git_blob": "f27a65e96c0c234da736faa6773a0dfea1927261",
+      "bytes": 552,
+      "sha256": "f6ba1a204cb25366f459195518f1b4939584a07ccf8b3bf0b41f72b157583926",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-source-review-20261030.json",
+      "source": "246d6e546dbd07ee4587265fa01dbd8215220976",
+      "git_blob": "124c89b29aa1fb969dff4ee2dc6c646657351acc",
+      "bytes": 2009,
+      "sha256": "195017ed435161f932ab017153ba4f0c84e874cbda6650ddbc754ebaffc659bd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-lexical-review-20261030.json",
+      "source": "5ccca04a2e3dfc4eca47c0f78979b5fc8f528635",
+      "git_blob": "5bd81f5b7c014f84498505443bf0b244cceb9d83",
+      "bytes": 582,
+      "sha256": "957b768ecccc399c77420a7853568fcb2e447fef089910903c4300f0391a5036",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-single-antenna-trial-finalization-review-20261030.json",
+      "source": "bb92043445a2ad175cbc6399a2130a98abbee99b",
+      "git_blob": "23eb1f26afe17ae0c0030a9bdd98de60796651f5",
+      "bytes": 867,
+      "sha256": "e5c10aa224045c4ba89dc2559e2b554636bf1998019638f0fcf417f6550cf161",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v138": [
+    {
+      "run": 40998946185,
+      "source": "bb92043445a2ad175cbc6399a2130a98abbee99b",
+      "release_id": 428631837,
+      "tag": "cloud-results-40998946185-1-mainchip-single-antenna-trial",
+      "exact_source": true,
+      "empty": true,
+      "independently_reserved_before_acquisition": true,
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/40998946185"
+    },
+    {
+      "run": 40996847751,
+      "source": "b4183870a74e7319e0602b033d894bb7d361bde7",
+      "release_id": 428620554,
+      "tag": "cloud-results-40996847751-1-cdr-drain-access-feasibility",
+      "exact_source": true,
+      "empty": true,
+      "independently_reserved_before_acquisition": true
     }
   ]
 }
