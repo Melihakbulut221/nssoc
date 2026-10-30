@@ -1,0 +1,134 @@
+name: Complete multilayer DEF idempotence diagnosis
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        required: true
+        default: def-diff
+        options: [def-diff]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mainchip-multilayer-def-diff-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Actual complete archive scanner controls without payload acquisition
+        run: python3 -B scripts/mainchip_multilayer_def_diff.py --controls
+      - name: Preserve source controls including failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: escape-def-diff-controls
+          path: cloud-multilayer-def-diff
+          if-no-files-found: error
+          retention-days: 90
+  readback:
+    needs: source-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Wait for independent source reservation then verify all original archive members on hosted runner
+        run: python3 -B scripts/mainchip_multilayer_def_diff.py --readback
+      - name: Preserve complete derived result or failure in exact reserved release
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import mainchip_multilayer_def_diff as r
+          r.guard()
+          p=Path('cloud-multilayer-def-diff/result.json')
+          assert p.is_file() and not p.is_symlink()
+          group=r.GROUP;tag='cloud-results-'+os.environ['GITHUB_RUN_ID']+'-1-'+group
+          rel=r.api('releases/tags/'+tag);ref=r.api('git/ref/tags/'+tag)
+          assert rel['target_commitish']==ref['object']['sha']==os.environ['GITHUB_SHA']
+          assert not rel['draft'] and rel['prerelease'] and not rel['assets']
+          cmd=['gh','release','upload',tag,str(p),'--repo','Melihakbulut221/nssoc']
+          result=subprocess.run(cmd,capture_output=True)
+          Path('cloud-multilayer-def-diff/publication.stdout').write_bytes(result.stdout)
+          Path('cloud-multilayer-def-diff/publication.stderr').write_bytes(result.stderr)
+          updated=r.api('releases/'+str(rel['id']))
+          assert len(updated['assets'])==1
+          a=updated['assets'][0];raw=p.read_bytes()
+          assert a['name']==p.name and a['size']==len(raw) and a['digest']=='sha256:'+r.sha(raw)
+          proof=dict(source=os.environ['GITHUB_SHA'],run=int(os.environ['GITHUB_RUN_ID']),release=rel['id'],
+            asset=a['id'],bytes=len(raw),sha256=r.sha(raw),command_returncode=result.returncode,
+            reconciled_upload_error=result.returncode!=0,source_exact=True,overwritten=False)
+          Path('cloud-multilayer-def-diff/publication.json').write_bytes(r.encoded(proof))
+          r.emit(Path('cloud-multilayer-def-diff/publication.json'))
+          PY
+      - name: Preserve all derived success and failure records
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: escape-def-diff-derived
+          path: cloud-multilayer-def-diff
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+  preserve-job-logs:
+    needs: [source-controls, readback]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Preserve full actual source and readback job logs
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          root=Path('job-logs');root.mkdir()
+          prefix='repos/Melihakbulut221/nssoc/'
+          def read(path):
+              return subprocess.check_output(['gh','api',prefix+path,'--allow-escape-sequences'])
+          run=json.loads(read('actions/runs/'+os.environ['GITHUB_RUN_ID']))
+          assert run['head_sha']==os.environ['GITHUB_SHA'] and run['run_attempt']==1
+          jobs=read('actions/runs/'+os.environ['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100')
+          (root/'run.json').write_text(json.dumps(run));(root/'jobs.json').write_bytes(jobs)
+          selected=[j for j in json.loads(jobs)['jobs'] if j['name'] in ('source-controls','readback')]
+          assert len(selected)==2
+          records=[]
+          for j in selected:
+              metadata=read('actions/jobs/'+str(j['id']))
+              (root/('job-'+str(j['id'])+'.json')).write_bytes(metadata)
+              j=json.loads(metadata)
+              assert j['head_sha']==os.environ['GITHUB_SHA'] and j['run_id']==run['id']
+              if j['conclusion']=='skipped':continue
+              raw=read('actions/jobs/'+str(j['id'])+'/logs');assert raw
+              (root/('job-'+str(j['id'])+'.log')).write_bytes(raw)
+              records.append(dict(id=j['id'],name=j['name'],conclusion=j['conclusion'],api_status=j['status'],api_metadata_claims_terminal=j['status']=='completed',execution_dependency_finished=True,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()))
+          (root/'receipt.json').write_text(json.dumps(dict(source=os.environ['GITHUB_SHA'],run=run['id'],records=records),indent=2)+'\n')
+          print(json.dumps(records))
+          PY
+      - name: Preserve all full raw logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: escape-def-diff-job-logs
+          path: job-logs
+          if-no-files-found: error
+          retention-days: 90
