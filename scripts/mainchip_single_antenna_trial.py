@@ -121,3 +121,27 @@ def normalized_def(raw,removed_pins,expected_removed_instances):
         digest.update(len(token).to_bytes(8,"big"));digest.update(token)
     return dict(sha256=digest.hexdigest(),
       removed_components=sorted(removed),removed_connection_counts=counts)
+
+def run_phase(phase,action,input_check,writer):
+    """Independent finalization attempts; none may replace the original failure."""
+    import sys,traceback
+    primary=None;errors=[]
+    def attempt(label,fn):
+        try:return fn()
+        except BaseException as exc:errors.append(dict(label=label,error=repr(exc)));return None
+    try:action()
+    except BaseException as exc:
+        primary=exc;trace=traceback.format_exc()
+        attempt("failure-record",lambda:writer(phase+"-failure.json",dict(error=repr(primary),traceback=trace,
+          physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)))
+    finally:
+        attempt("input-unchanged",input_check)
+        terminal=dict(phase=phase,complete=primary is None and not errors,error=None if primary is None else repr(primary),
+          terminal_errors=list(errors),physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
+        attempt("terminal-record",lambda:writer(phase+"-terminal.json",terminal))
+        if primary is not None or errors:
+            attempt("stderr-diagnostic",lambda:print(json.dumps(dict(phase=phase,primary=None if primary is None else repr(primary),
+              terminal_errors=errors),sort_keys=True),file=sys.stderr,flush=True))
+    if primary is not None:raise primary
+    if errors:raise RuntimeError("phase finalization failed: "+repr(errors))
+    return terminal

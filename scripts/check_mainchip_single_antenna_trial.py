@@ -124,9 +124,47 @@ def controls():
       ("quoted_connection",after.replace(b"END DESIGN",('PROPERTY "( '+p.NEW+' A )"\nEND DESIGN').encode()))]:
         reject("delta_"+name,lambda bad=bad:same(bad))
     cp,cr=capsule_controls(ctx);positive+=cp;refused+=cr
+
+    import contextlib,io
+    lifecycle=[]
+    calls=[];written={}
+    def okay():calls.append("action")
+    def unchanged():calls.append("input")
+    def writer(name,value):calls.append(name);written[name]=copy.deepcopy(value)
+    result=p.run_phase("test",okay,unchanged,writer)
+    assert calls==["action","input","test-terminal.json"]and result["complete"]and not result["terminal_errors"]
+    lifecycle.append("actual_success_all_finalizers")
+    primary=ValueError("original native failure");calls=[];stream=io.StringIO()
+    def fail():calls.append("action");raise primary
+    def badinput():calls.append("input");raise OSError("input check failure")
+    def badwrite(name,value):calls.append(name);raise OSError("save failure "+name)
+    with contextlib.redirect_stderr(stream):
+        try:p.run_phase("test",fail,badinput,badwrite)
+        except ValueError as exc:assert exc is primary
+        else:raise AssertionError("primary lost")
+    diagnostic=json.loads(stream.getvalue())
+    assert diagnostic["primary"]==repr(primary)and len(diagnostic["terminal_errors"])==3
+    assert calls==["action","test-failure.json","input","test-terminal.json"]
+    lifecycle.append("actual_primary_survives_three_secondary_failures")
+    calls=[];written={};stream=io.StringIO()
+    with contextlib.redirect_stderr(stream):
+        try:p.run_phase("test",okay,badinput,writer)
+        except RuntimeError:pass
+        else:raise AssertionError("missing input failure")
+    assert not written["test-terminal.json"]["complete"]and len(written["test-terminal.json"]["terminal_errors"])==1
+    assert json.loads(stream.getvalue())["terminal_errors"][0]["label"]=="input-unchanged"
+    lifecycle.append("actual_input_failure_still_records_terminal")
+    stream=io.StringIO()
+    with contextlib.redirect_stderr(stream):
+        try:p.run_phase("test",okay,unchanged,badwrite)
+        except RuntimeError:pass
+        else:raise AssertionError("missing terminal save failure")
+    assert json.loads(stream.getvalue())["terminal_errors"][0]["label"]=="terminal-record"
+    lifecycle.append("actual_terminal_failure_still_reported")
+    assert len(lifecycle)==4
     assert len(positive)==8 and len(refused)==28
     return dict(status="PASS_SINGLE_ANTENNA_TRIAL_SOURCE_CONTROLS",current_context=ctx,positive=positive,refusals=refused,
-      positive_count=len(positive),refusal_count=len(refused),native_executed=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
+      positive_count=len(positive),refusal_count=len(refused),lifecycle=lifecycle,lifecycle_count=len(lifecycle),native_executed=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
 def main():
     ap=argparse.ArgumentParser();ap.add_argument("--output",type=Path,required=True);a=ap.parse_args();error=None
     try:r=controls()

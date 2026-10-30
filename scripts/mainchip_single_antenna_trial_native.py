@@ -225,12 +225,9 @@ def main():
     assert not any(k in os.environ for k in("GH_TOKEN","GITHUB_TOKEN"))
     p.source_guard();D.mkdir(exist_ok=True);W.mkdir(parents=True,exist_ok=True);error=None
     phase=os.environ["NSSOC_SINGLE_ANTENNA_PHASE"];assert phase in("prepare","audit-import","audit-measured")
-    try:
+    def action():
         if phase=="prepare":prepare()
         else:audit(phase=="audit-measured")
-    except BaseException as exc:error=exc;save(phase+"-failure.json",dict(error=repr(exc),traceback=traceback.format_exc(),physical_acceptance=False));raise
-    finally:
-        assert filepin(SOURCE)==p.INPUT
-        save(phase+"-terminal.json",dict(phase=phase,complete=error is None,error=None if error is None else repr(error),input_unchanged=True,
-          physical_acceptance=False,timing_accepted=False,full_phy_accepted=False))
+    def unchanged():assert filepin(SOURCE)==p.INPUT,"current input changed"
+    p.run_phase(phase,action,unchanged,save)
 if __name__=="__main__":main()
