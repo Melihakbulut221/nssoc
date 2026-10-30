@@ -1,0 +1,117 @@
+{
+  "after": {
+    "resis/ResMain.c": {
+      "bytes": 49890,
+      "sha256": "01e8280a0c8a1d8ce844c414dfca54dd19844322ed6ed3449c6bd1b3335c091f"
+    },
+    "resis/ResMakeRes.c": {
+      "bytes": 25720,
+      "sha256": "7cabaeb43293b5a2848ac0015db5d1dc7a5ee75a8cd5395564e7d12cd0795c3b"
+    },
+    "resis/ResMerge.c": {
+      "bytes": 27496,
+      "sha256": "e863dfb539961c6223684624bb0a7623894eeb93adbb3737e70fb8779b814706"
+    },
+    "resis/ResPrint.c": {
+      "bytes": 33261,
+      "sha256": "a818ffad0934a6d33c4ed01bf12c5104c458361dc08e808cb103b724c6951d63"
+    },
+    "resis/ResRex.c": {
+      "bytes": 49700,
+      "sha256": "6fe2a43fea7463558bc2299d034e75ec2ec92477fd62eb6f8c010f0a0bda1874"
+    },
+    "resis/resis.h": {
+      "bytes": 20470,
+      "sha256": "2ed89f2620e3589c82f2dd3ec7163f16caf3fb60a3aec9a610fd3513cf3fe9c5"
+    }
+  },
+  "before": {
+    "resis/ResMain.c": {
+      "bytes": 49813,
+      "sha256": "6d1ce0d1bb3750e5863400fc3fcccdcdc9c442c435f35f482064dd1a44110cdb"
+    },
+    "resis/ResMakeRes.c": {
+      "bytes": 25461,
+      "sha256": "aacb0f648aeb7d137cea03e1c8f1b9e9aabb87d04a2cc7d39fd7ec7ddeaa3a31"
+    },
+    "resis/ResMerge.c": {
+      "bytes": 27023,
+      "sha256": "b5c0c7bd0356dad829d195085b718c01d0b8a12ce4e31d4128dae75523315443"
+    },
+    "resis/ResPrint.c": {
+      "bytes": 22212,
+      "sha256": "2c06e554e6b0b4bf20a62d9e390c31fc05a9a71c0ac8e31756f79588d6f1c2b0"
+    },
+    "resis/ResRex.c": {
+      "bytes": 49577,
+      "sha256": "97169b59e409d68834d37b7f8c85e5dfce74f901e1445006d3bb864f7bd16ee1"
+    },
+    "resis/resis.h": {
+      "bytes": 19563,
+      "sha256": "8a0cf597f283decd8dfe2ccc445803c9b9729e537fddba6092446bb9f8c6dc99"
+    }
+  },
+  "extra_payload_text": "\n/* Value ancestry observations only. No topology or resistor object mutation. */\nvoid ResPhysicalTraceReduction(const char *kind, const char *phase,\n        const resResistor *first, const resResistor *second,\n        const resResistor *third)\n{\n    const resResistor *members[3];\n    int i, count = 0;\n    if (mrpEpoch == 0 || !mrpStart(\"reduction\")) return;\n    members[0] = first; members[1] = second; members[2] = third;\n    fprintf(mrpFile, \",\\\"kind\\\":\\\"%s\\\",\\\"phase\\\":\\\"%s\\\",\\\"members\\\":[\",\n            kind, phase);\n    for (i = 0; i < 3; i++)\n    {\n        if (members[i] == NULL) continue;\n        if (count++) fputc(',', mrpFile);\n        fprintf(mrpFile, \"{\\\"slot\\\":%d\", i);\n        mrpResistor(members[i]);\n        fputc('}', mrpFile);\n    }\n    fputs(\"],\\\"physical_ownership_proved\\\":false\", mrpFile);\n    mrpFinish();\n}\nvoid ResPhysicalTraceDelete(const resResistor *resistor)\n{\n    /* Endpoints may already have been cleaned by the native caller.\n     * Observe only scalar fields that are alive until freeMagic below. */\n    if (mrpEpoch == 0 || !mrpStart(\"delete_resistor\")) return;\n    fprintf(mrpFile, \",\\\"resistor_address\\\":\\\"%p\\\",\"\n            \"\\\"deleted_value_milliohms_hex\\\":\\\"%a\\\"\",\n            (const void *)resistor, (double)resistor->rr_value);\n    mrpFinish();\n}\n",
+  "payload": {
+    "bytes": 10943,
+    "path": "scripts/magic_resistor_provenance_trace_v3.inc",
+    "sha256": "458257b05a27ba4c95f26d6f34fca4944d8ec3362cee128b25497524699c7834"
+  },
+  "rules": [
+    {
+      "anchor": "/* Macros */",
+      "insertion": "/* Read-only observed value transitions; no resistor ABI changes. */\nextern void ResPhysicalTraceReduction(const char *, const char *, const resResistor *, const resResistor *, const resResistor *);\nextern void ResPhysicalTraceDelete(const resResistor *);\n\n",
+      "path": "resis/resis.h",
+      "position": "before"
+    },
+    {
+      "anchor": "    newResis->rr_value += elimResis->rr_value;\n",
+      "insertion": "    ResPhysicalTraceReduction(\"series\", \"before\", newResis, elimResis, NULL);\n",
+      "path": "resis/ResMerge.c",
+      "position": "before"
+    },
+    {
+      "anchor": "    newResis->rr_value += elimResis->rr_value;\n",
+      "insertion": "    ResPhysicalTraceReduction(\"series\", \"after\", newResis, NULL, NULL);\n",
+      "path": "resis/ResMerge.c",
+      "position": "after"
+    },
+    {
+      "anchor": "    if ((newResis->rr_value + elimResis->rr_value) != 0)\n",
+      "insertion": "    ResPhysicalTraceReduction(\"parallel\", \"before\", newResis, elimResis, NULL);\n",
+      "path": "resis/ResMerge.c",
+      "position": "before"
+    },
+    {
+      "anchor": "    newResis->rr_float.rr_area += elimResis->rr_float.rr_area;\n    ResDeleteResPointer(elimResis->rr_connection1, elimResis);",
+      "insertion": "    ResPhysicalTraceReduction(\"parallel\", \"after\", newResis, NULL, NULL);\n",
+      "path": "resis/ResMerge.c",
+      "position": "before"
+    },
+    {
+      "anchor": "\t\tstatus = TRIANGLE;\n",
+      "insertion": "\t\tResPhysicalTraceReduction(\"triangle\", \"before\", rr1, rr2, rr3);\n",
+      "path": "resis/ResMerge.c",
+      "position": "before"
+    },
+    {
+      "anchor": "\t\tResDoneWithNode(resptr);\n\t\tif (n1 != NULL) ResDoneWithNode(n1);",
+      "insertion": "\t\tResPhysicalTraceReduction(\"triangle\", \"after\", rr1, rr2, rr3);\n",
+      "path": "resis/ResMerge.c",
+      "position": "before"
+    },
+    {
+      "anchor": "    resResistor *resistor, **homelist;\n\n{\n",
+      "insertion": "    ResPhysicalTraceDelete(resistor);\n",
+      "path": "resis/ResMerge.c",
+      "position": "after"
+    }
+  ],
+  "schema": 1,
+  "scope": "Full observed value ancestry, not reduced physical ownership",
+  "v2_payload": {
+    "bytes": 9650,
+    "path": "scripts/magic_resistor_provenance_trace_v2.inc",
+    "sha256": "dd820db2b963f4da3dde2cd7e28a627a37b644e16148309ee85f556dfff7a07b"
+  }
+}
