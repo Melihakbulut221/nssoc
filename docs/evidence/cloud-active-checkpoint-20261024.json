@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30T05:52:11.101151+00:00",
+  "updated_at": "2026-10-30T07:10:38.629416+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "b17e02f1b798099e82987b13f18ea73cbc7b84ab",
+  "root_source_before_receipt": "b3fb46204666f4fc93f7055b70d9a550e8b58227",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 141,
+    "inventory_version": 142,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -23,14 +23,14 @@
     "latest_observed_scheduled_run": 40826302954,
     "latest_observed_status": "ATTENTION_REQUIRED",
     "repair_candidate_branch": "codex/cloud-monitor-main-observation",
-    "code_deployed_head": "61a6a02d7cfb954c5cefff6f9f4f0676e5d0e692",
-    "latest_observed_run": 40955824450,
+    "code_deployed_head": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a",
+    "latest_observed_run": 41011360597,
     "repair_state": "MAIN_LIVE_INVENTORY_VERIFIED",
     "candidate_qualification_run": 40845545784,
     "live_inventory_check_passed": true,
     "hosted_controls_passed": 72,
-    "latest_observed_inventory_version": 130,
-    "latest_observed_inventory_rows": 363,
+    "latest_observed_inventory_version": 141,
+    "latest_observed_inventory_rows": 390,
     "latest_observed_selected_rows": null,
     "historical_scheduled_error": {
       "run": 40826302954,
@@ -40,65 +40,114 @@
       "main_verification_run": 40847665085
     },
     "latest_observed_monitor_error": false,
-    "latest_observed_evidence": "docs/evidence/cloud-collector-recipes-20261029/monitor-live-audit-40955824450/evidence.json"
+    "latest_observed_evidence": "docs/evidence/cloud-collector-recipes-20261029/monitor-live-audit-40955824450/evidence.json",
+    "latest_full_observe_log": {
+      "bytes": 23708,
+      "sha256": "32ac5f1e40557cff92525da99aa8ca78d849aec785af5f6800db61f4da5abe4f",
+      "path": "docs/evidence/cloud-collector-recipes-20261029/monitor-41011360597-full-observe.log"
+    }
   },
   "active_runs": {
-    "mainchip-antenna-escape-window": {
-      "run": 41009878507,
-      "head_sha": "bf0aff5864426372775cadc0fdf16118cae19d68",
-      "status": "in_progress",
+    "cdr-drain-m1-loaded-original-electrical": {
+      "run": 41017290646,
+      "head_sha": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "status": "queued",
       "conclusion": null,
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123913133540,
+          "id": 123936417461,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123913421167,
+          "id": 123936771439,
           "name": "preserve-job-log",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 123913463680,
-          "name": "window",
+          "id": 123936822541,
+          "name": "prepare",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123937936473,
+          "name": "loaded (nominal_late)",
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
-            "Read complete all-layer escape window without changing geometry"
+            "Original OFF operating point and full loaded transient"
           ]
         },
         {
-          "id": 123913465066,
-          "name": "ownership",
-          "status": "completed",
-          "conclusion": "skipped",
+          "id": 123937936500,
+          "name": "loaded (clock_stopped)",
+          "status": "queued",
+          "conclusion": null,
           "active_steps": []
         },
         {
-          "id": 123913465086,
-          "name": "antenna-readback",
-          "status": "completed",
-          "conclusion": "skipped",
+          "id": 123937936501,
+          "name": "loaded (nominal_early)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Original OFF operating point and full loaded transient"
+          ]
+        },
+        {
+          "id": 123937936512,
+          "name": "loaded (cold_early)",
+          "status": "queued",
+          "conclusion": null,
           "active_steps": []
         },
         {
-          "id": 123913465660,
-          "name": "trial",
-          "status": "completed",
-          "conclusion": "skipped",
+          "id": 123937936515,
+          "name": "loaded (hot_early)",
+          "status": "queued",
+          "conclusion": null,
           "active_steps": []
         },
         {
-          "id": 123913465760,
-          "name": "candidate",
-          "status": "completed",
-          "conclusion": "skipped",
+          "id": 123937936528,
+          "name": "loaded (hot_late)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 123937936541,
+          "name": "loaded (constant_one)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 123937936586,
+          "name": "loaded (cold_late)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 123937936626,
+          "name": "loaded (constant_zero)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 123937936681,
+          "name": "loaded (vi_bias_off)",
+          "status": "queued",
+          "conclusion": null,
           "active_steps": []
         }
       ]
@@ -4822,12 +4871,18 @@
       "registration_only": true
     },
     "cloud_monitor_verified_latest": {
-      "latest_observed_run": 40955824450,
+      "code_deployed_head": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a",
+      "latest_observed_run": 41011360597,
       "latest_observed_status": "ATTENTION_REQUIRED",
-      "latest_observed_inventory_version": 130,
-      "latest_observed_inventory_rows": 363,
+      "latest_observed_inventory_version": 141,
+      "latest_observed_inventory_rows": 390,
       "latest_observed_selected_rows": null,
-      "automatic_native_dispatch": false
+      "automatic_native_dispatch": false,
+      "latest_full_observe_log": {
+        "bytes": 23708,
+        "sha256": "32ac5f1e40557cff92525da99aa8ca78d849aec785af5f6800db61f4da5abe4f",
+        "path": "docs/evidence/cloud-collector-recipes-20261029/monitor-41011360597-full-observe.log"
+      }
     },
     "mainchip_full_antenna_complete_diagnosis": {
       "proof": "9f66fe1c496e209c7fc9b133e597ba78e26d19c1",
@@ -5450,10 +5505,9 @@
     "mainchip_next_escape_recipe": "docs/evidence/cloud-collector-recipes-20261029/mainchip-upper-layer-antenna-escape-v140-20261030.json",
     "cdr_fresh_RC_next": {
       "fresh_RC_complete": true,
-      "next": "Fresh exact-composed-RC electrical matrix handoff preparation",
-      "agent": "pll_handoff",
-      "new_electrical_source_not_yet_published": true,
-      "new_electrical_native_run_not_yet_dispatched": true,
+      "next": "Observe single original ten-test electrical matrix41017290646 at exact4a2ff815; all11reservations done; no duplicate dispatch.",
+      "new_electrical_source_not_yet_published": false,
+      "new_electrical_native_run_not_yet_dispatched": false,
       "required_input_run": 41007572323,
       "required_complete_members": 2680,
       "required_canonical_current_files": 496,
@@ -5788,19 +5842,341 @@
       "source_review": "docs/evidence/mainchip-antenna-escape-window-source-review-20261030.json",
       "source_pin_count": 58,
       "independently_reviewed": true,
-      "complete_native_evidence_pending": true,
+      "complete_native_evidence_pending": false,
+      "physical_acceptance": false,
+      "timing_accepted": false,
+      "full_phy_accepted": false,
+      "proof": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "prefix": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/",
+      "files": 78,
+      "bytes": 1417738,
+      "receipt_sha256": "3e78dc892e308c12afc2054a12a1ead292c399b876ef12d9d8daa10f1f3f7d8b",
+      "workflow_conclusion": "success",
+      "full_job_logs": 4,
+      "native_member_count": 15,
+      "window_rows": 249,
+      "all1691clocks": true,
+      "unchanged_DEF_sha256": "85c2d6f388d202056df1cdb17560921494ebae8716829e22a8faeada4eb12c3d",
+      "window_report": {
+        "bytes": 10307733,
+        "sha256": "e8706c45017025b1b582a23074b836b6f6c6a639b7d0eded0396df8ed607d8f6"
+      },
+      "native_archive": {
+        "id": 691119098,
+        "bytes": 43869939,
+        "sha256": "ea3f02e646e8f1a83b08539d8719b738a032636cf022fbd3504cfdd5afef1db5"
+      },
+      "native_failures": [],
+      "readback_verified": true,
+      "local_native_acquisition": false
+    },
+    "mainchip_escape_window_derived_report": {
+      "proof": "0caa52e5c49e7c8468a4c0388a83e698a91a35b7",
+      "prefix": "docs/evidence/mainchip-escape-window-report-terminal-41015775376/",
+      "files": 11,
+      "bytes": 482903,
+      "receipt_sha256": "fa38dcc0bb3c9e1d79e3c326e1209d73e4fe4bb52e0a2ed3ecb47ee7bb2cca1b",
+      "run": 41015775376,
+      "source": "e01760a8e7348ae358d40be654fd1e39b00754eb",
+      "release": 428724827,
+      "workflow_conclusion": "success",
+      "controls": {
+        "positive": 1,
+        "refusal": 10
+      },
+      "result": {
+        "asset": 691216608,
+        "bytes": 170153,
+        "sha256": "4fc1936c791bb161d9ebf1d84c1c60e36ba6d580180d9705270dc9b4e87afd35"
+      },
+      "all15members_verified": true,
+      "window_rows": 249,
+      "readback_verified": true,
+      "local_native_acquisition": false,
       "physical_acceptance": false,
       "timing_accepted": false,
       "full_phy_accepted": false
+    },
+    "mainchip_upper_layer_escape_seed": {
+      "status": "UNQUALIFIED_HOSTED_SEARCH_SEED_ONLY",
+      "scope": "Multilayer successor using exact already inserted diode, never insert a second diode.",
+      "input": {
+        "source_run": 41001185417,
+        "member": "work/single-antenna-trial/inserted.odb",
+        "bytes": 213428829,
+        "sha256": "72d382ab18e905d13fef8145b70944e681a7a50c16bad0848616652fa93fc0ee"
+      },
+      "evidence": {
+        "native_window_run": 41009878507,
+        "native_window_proof": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+        "projection_run": 41015775376,
+        "projection_proof": "0caa52e5c49e7c8468a4c0388a83e698a91a35b7",
+        "projection": {
+          "asset": 691216608,
+          "bytes": 170153,
+          "sha256": "4fc1936c791bb161d9ebf1d84c1c60e36ba6d580180d9705270dc9b4e87afd35"
+        }
+      },
+      "target": "$abc$1804206$new_n41321",
+      "diode": "NSSOC_ANT_TRIAL_fanout36953",
+      "seed": [
+        {
+          "layer": "Metal1",
+          "width_DBU": 160,
+          "from_pad_box": [
+            99285,
+            505360,
+            99930,
+            505950
+          ],
+          "to_xy": [
+            101280,
+            505680
+          ]
+        },
+        {
+          "via": "tech:3 Via1_XY",
+          "xy": [
+            101280,
+            505680
+          ]
+        },
+        {
+          "layer": "Metal2",
+          "width_DBU": 200,
+          "from_xy": [
+            101280,
+            505680
+          ],
+          "to_xy": [
+            101280,
+            506520
+          ]
+        },
+        {
+          "via": "tech:22 Via2_YX",
+          "xy": [
+            101280,
+            506520
+          ]
+        },
+        {
+          "layer": "Metal3",
+          "width_DBU": 200,
+          "from_xy": [
+            101280,
+            506520
+          ],
+          "to_xy": [
+            97440,
+            506520
+          ]
+        },
+        {
+          "via": "tech:22 Via2_YX",
+          "xy": [
+            97440,
+            506520
+          ],
+          "join_original_target_shape": 3
+        }
+      ],
+      "required_next": [
+        "Cloud-only full footprint/cut/EOL/min-area/spacing halo and track-offset search. Derived report lacks actual track offsets. Reject with precise blocking records; no clearance inference from coarse route centers.",
+        "New explicit multilayer append/audit successor: original append_branch and audit admit only M1. Retain all40 target shapes and exact added segment/via-component proof.",
+        "Reuse whole-chip snapshot/equal_snapshot/connection_checks with all1691 clocks and all other nets unchanged. Full uncapped DRC0 plus target antenna0 and unchanged other antenna semantics; failure output retained.",
+        "Production ODB remains a3c6aa0b; inserted72d382 and old shorted24c84 are diagnostic only. No fresh final RC/STA or physical acceptance."
+      ],
+      "local_computation": false,
+      "route_generated": false,
+      "clearance_qualified": false,
+      "physical_acceptance": false,
+      "timing_accepted": false,
+      "full_phy_accepted": false
+    },
+    "cdr_drain_m1_loaded_source_qualification": {
+      "run": 41015676075,
+      "source": "6e309f009f95c45dbcbde38ac301be2989cb682d",
+      "proof": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "receipt_sha256": "7e45d72a34168ac25199a7ae7a155d4c0fa53d5808a524c65bfb7a7e1a3fe43e",
+      "files": 29,
+      "bytes": 666762,
+      "source_records": 16,
+      "raw_job_logs": 2,
+      "positive": 13,
+      "refusal": 121,
+      "actual_publication": 15,
+      "actual_lifecycle": 2,
+      "historical_cases": 10,
+      "original_numerical_blocks": 6,
+      "original_numerical_bytes": 24133,
+      "preserved_failures": [
+        {
+          "run": 41013887814,
+          "proof": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+          "cause": "Historical complete pre-execution worker suite expected aa04bf95, actual executed successor ebf92a98; unchanged historical_controls retains full10case results with original3suites and new derivation."
+        },
+        {
+          "run": 41015111194,
+          "proof": "534840fdf29f4cedd0e8f1d64f817f435b4f1bc1",
+          "cause": "Workflow exact1700 census was stale after adding proof pins; corrected to real1744 with every source hash retained. No numerical/model change."
+        }
+      ]
+    },
+    "cdr_drain_m1_loaded_original_electrical": {
+      "run": 41017290646,
+      "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "attempt": 1,
+      "mode": "loaded",
+      "all_eleven_reserved": true,
+      "preparation_created_last": true,
+      "reservations": [
+        {
+          "group": "cdr-drain-m1-loaded-nominal_early",
+          "run": 41017290646,
+          "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+          "release_id": 428733758,
+          "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-nominal_early",
+          "empty_before_acquisition": true,
+          "independently_reserved_before_acquisition": true
+        },
+        {
+          "group": "cdr-drain-m1-loaded-nominal_late",
+          "run": 41017290646,
+          "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+          "release_id": 428733851,
+          "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-nominal_late",
+          "empty_before_acquisition": true,
+          "independently_reserved_before_acquisition": true
+        },
+        {
+          "group": "cdr-drain-m1-loaded-hot_early",
+          "run": 41017290646,
+          "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+          "release_id": 428733882,
+          "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-hot_early",
+          "empty_before_acquisition": true,
+          "independently_reserved_before_acquisition": true
+        },
+        {
+          "group": "cdr-drain-m1-loaded-hot_late",
+          "run": 41017290646,
+          "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+          "release_id": 428733904,
+          "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-hot_late",
+          "empty_before_acquisition": true,
+          "independently_reserved_before_acquisition": true
+        },
+        {
+          "group": "cdr-drain-m1-loaded-cold_early",
+          "run": 41017290646,
+          "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+          "release_id": 428733954,
+          "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-cold_early",
+          "empty_before_acquisition": true,
+          "independently_reserved_before_acquisition": true
+        },
+        {
+          "group": "cdr-drain-m1-loaded-cold_late",
+          "run": 41017290646,
+          "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+          "release_id": 428733979,
+          "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-cold_late",
+          "empty_before_acquisition": true,
+          "independently_reserved_before_acquisition": true
+        },
+        {
+          "group": "cdr-drain-m1-loaded-constant_zero",
+          "run": 41017290646,
+          "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+          "release_id": 428734008,
+          "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-constant_zero",
+          "empty_before_acquisition": true,
+          "independently_reserved_before_acquisition": true
+        },
+        {
+          "group": "cdr-drain-m1-loaded-constant_one",
+          "run": 41017290646,
+          "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+          "release_id": 428734039,
+          "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-constant_one",
+          "empty_before_acquisition": true,
+          "independently_reserved_before_acquisition": true
+        },
+        {
+          "group": "cdr-drain-m1-loaded-clock_stopped",
+          "run": 41017290646,
+          "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+          "release_id": 428734068,
+          "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-clock_stopped",
+          "empty_before_acquisition": true,
+          "independently_reserved_before_acquisition": true
+        },
+        {
+          "group": "cdr-drain-m1-loaded-vi_bias_off",
+          "run": 41017290646,
+          "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+          "release_id": 428734100,
+          "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-vi_bias_off",
+          "empty_before_acquisition": true,
+          "independently_reserved_before_acquisition": true
+        },
+        {
+          "group": "cdr-drain-m1-loaded-preparation",
+          "run": 41017290646,
+          "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+          "release_id": 428734133,
+          "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-preparation",
+          "empty_before_acquisition": true,
+          "independently_reserved_before_acquisition": true
+        }
+      ],
+      "branch": "codex/cdr-drain-m1-loaded-electrical",
+      "workflow": 401118236,
+      "active_protected_files": 1775,
+      "production_checker_sources_unchanged": true,
+      "preparation_job": 123936822541,
+      "preparation_job_success_observed": true,
+      "full_waveform_matrix_pending": true,
+      "original_case_seconds": 7200,
+      "original_preparation_seconds": 1200,
+      "max_parallel": 2,
+      "fail_fast": false,
+      "automatic_retry": false,
+      "qualified_pex": false,
+      "electrical_accepted": false,
+      "physical_acceptance": false,
+      "full_phy_accepted": false,
+      "terminal_collection_recipe": {
+        "commit": "65591349dea071990c1b8b67c8b04a2ed4671a6b",
+        "path": "docs/evidence/cdr-drain-m1-loaded-terminal-collection-recipe-41017290646.json",
+        "bytes": 38351,
+        "sha256": "7aa3301c64ddd6634d26258e021fcd561a2819ac953ffcb1ebe0c85a9ea9d564"
+      },
+      "loaded_native_jobs_observed": [
+        {
+          "case": "nominal_early",
+          "job": 123937936501,
+          "status": "in_progress",
+          "step": "Original OFF operating point and full loaded transient"
+        },
+        {
+          "case": "nominal_late",
+          "job": 123937936473,
+          "status": "in_progress",
+          "step": "Original OFF operating point and full loaded transient"
+        }
+      ]
     }
   },
   "next_actions": [
-    "Continue cloud-only. Latest user instruction overrides older local goal wording. No local checkout, authored tests/imports, CAD/model calculations, native payloads or waveforms even in RAM. Only source/API/derived-text orchestration in RAM. All computation and durable evidence stay in GitHub; generated local workspace/tmp/native processes remain empty.",
-    "Observe the SINGLE attempt1 window run41009878507 at exact sourcebf0aff5864426372775cadc0fdf16118cae19d68, release428690818. New hosted source controls7positive/20refusal and inherited suites passed; full source log222717bytes/a5f0449d... authenticated. It restores complete original trial capsule while selecting only pre-branch inserted.odb72d382ab. Do not duplicate dispatch. Preserve complete native/failure archive and all actual job logs before interpreting results.",
-    "Use the new actual complete window to choose the diode upper-layer escape. Require whole-chip non-target/clocks/material invariants, exact existing40target shapes plus explicit new branch/vias, native target antenna0, full uncapped DRT0 and unchanged other antenna semantics. Rejected run41001185417 remains rejected despite target antenna0; six actual Metal1 shorts prohibit production promotion.",
-    "Fresh RC run41007572323/source593c0c05 is terminalSUCCESS with full56-file proof380b37d8 and2680-member native archive. Root independently checked exact receipt and diagnosis; agent fully byte-readback verified all56. Wire-only24341R/15559C differs from final24356R/15566C over500devices. Count equality with old candidate is NOT resistance improvement. Raw originalresult5595b955 and directsummary8f03d881 preserved separately.",
-    "Agent pll_handoff now prepares a separate source-bound handoff from fresh composedRC to original unchanged ten-test electrical matrix. No electrical native run/reservation exists yet. Identify actual original qualified simulation authority first; independently join terminal identities/reduced node names. Never transfer old32.5083ohm or assume unchanged partition/reduced IDs. Review and hosted source controls must precede one exact-source native dispatch.",
-    "Retain all original electrical/physical failures and thresholds:20/4/8/8ns+5% clocks, CDR37.5ps/comparator75ps/UI125ps/100mV, HBT activeVCE0.4/maxVCE1.6/maxVBE1.0/current3mA, PLL62.5ps. Full serial PHY, routed serial mainchip, fresh fullchipRC and finalsetuphold remain unaccepted. Existing8h GitHub monitor remains read-only with no automatic native dispatch."
+    "Continue cloud-only under latest direct user instruction; all computation, tests, CAD/model calculation and native archive/waveform acquisition stay on GitHub runners. Local source/API/static parsing/derived text only in RAM; workspace/tmp/native processes remain empty.",
+    "Observe ONE attempt1 electrical run41017290646 at exact4a2ff815, workflow401118236. All11 independent empty exact-source public prereleases reserved, preparation last. Original ten cases, maxparallel2, failfastfalse, unchanged1200/7200budgets and all original electrical limits. Same-source controls and native preparation succeeded; preserve complete actual outputs/failed cases/all rawlogs before interpreting. Never duplicate dispatch or promote preparation/source PASS to PHY acceptance.",
+    "All antecedent current electrical source evidence and two source workflow failures remain permanent: final29file qualification9648454, old derivation failure961b2c81, census failure534840fd. Active1775pins; original controller/checker and six24133numerical bytes unchanged.",
+    "Read-only mainchip window41009878507 completeSUCCESS; all1691clocks and exact185377178byte DEF85c2d6f3 unchanged. Complete78fileproof83a4527e and15member43,869,939byte nativecapsule retained. Derived readback41015775376 completeSUCCESS with11fileproof0caa52e5: all15members verified onrunner, all249windowrows + tokenizedtechnology layers available in170153byte derivedreport4fc1936c. No local native archive acquired.",
+    "Evaluate the unqualified east M1\u2192M2\u2192M3 diode escape seed stored in the new v142 recipe against complete exact native geometry/track/rule neighborhood on GitHub. Do not assume direct-over-diode M2clear: foreign routes occupy it. No candidate generated yet; preserve original40target shapes/everyothernet1691clocks and require full uncappedDRC0/targetantenna0/unchangedremainingantenna.",
+    "Production remains ODBa3c6aa0b with full609antenna nets/697pins/916checks and no current RC/STA. Old current-postroute source draft860153 remains unqualified; meaningful full admission/restore/actualcontroller controls and source proof are required before diagnostic RC/STA. Original clocks20/4/8/8ns+5% unchanged.",
+    "Full serialPHY/routedserialmainchip/finalsetuphold remain unaccepted. Preserve CDR37.5ps/comparator75ps/UI125ps/100mV,HBT0.4\u2264activeVCE\u22641.6V/maxabsVBE1.0/current3mA,PLL62.5ps. Existing8h GitHub monitor read-only; no automatic native dispatch."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -6170,52 +6546,20 @@
     "observed_41000358737": 41000358737,
     "observed_41001185417": 41001185417,
     "observed_41003747027": 41003747027,
-    "observed_41007572323": 41007572323
+    "observed_41007572323": 41007572323,
+    "observed_41009878507": 41009878507,
+    "observed_41015775376": 41015775376,
+    "observed_41013887814": 41013887814,
+    "observed_41015111194": 41015111194,
+    "observed_41015676075": 41015676075
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 41007572323,
-      "head_sha": "593c0c056d3eedc69a90269cc7fbc376227a4983",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123905840912,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123907825068,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123907879463,
-          "name": "fresh-RC",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123913027891,
-          "name": "preserve-job-logs",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
       "run": 41009878507,
       "head_sha": "bf0aff5864426372775cadc0fdf16118cae19d68",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
@@ -6235,11 +6579,9 @@
         {
           "id": 123913463680,
           "name": "window",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Read complete all-layer escape window without changing geometry"
-          ]
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
         },
         {
           "id": 123913465066,
@@ -6268,12 +6610,222 @@
           "status": "completed",
           "conclusion": "skipped",
           "active_steps": []
+        },
+        {
+          "id": 123918794033,
+          "name": "preserve-antenna-job-logs",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 41015775376,
+      "head_sha": "e01760a8e7348ae358d40be654fd1e39b00754eb",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123931664636,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123931786530,
+          "name": "readback",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123932046231,
+          "name": "preserve-job-logs",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 41013887814,
+      "head_sha": "c0a0602ab15056458cca0208a04c92a4e02ea65d",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123925688796,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        },
+        {
+          "id": 123926185077,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 41015111194,
+      "head_sha": "a379fc2265a51edd192221580c62433731dd52d3",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123929578591,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        },
+        {
+          "id": 123929751194,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 41015676075,
+      "head_sha": "6e309f009f95c45dbcbde38ac301be2989cb682d",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123931354047,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123931869120,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 41017290646,
+      "head_sha": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "status": "queued",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123936417461,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123936771439,
+          "name": "preserve-job-log",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123936822541,
+          "name": "prepare",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123937936473,
+          "name": "loaded (nominal_late)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Original OFF operating point and full loaded transient"
+          ]
+        },
+        {
+          "id": 123937936500,
+          "name": "loaded (clock_stopped)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 123937936501,
+          "name": "loaded (nominal_early)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Original OFF operating point and full loaded transient"
+          ]
+        },
+        {
+          "id": 123937936512,
+          "name": "loaded (cold_early)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 123937936515,
+          "name": "loaded (hot_early)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 123937936528,
+          "name": "loaded (hot_late)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 123937936541,
+          "name": "loaded (constant_one)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 123937936586,
+          "name": "loaded (cold_late)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 123937936626,
+          "name": "loaded (constant_zero)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 123937936681,
+          "name": "loaded (vi_bias_off)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-30T05:52:11.101151+00:00",
+    "observed_at": "2026-10-30T07:10:38.629416+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -6413,7 +6965,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-30T05:52:11.101151+00:00",
+  "local_workspace_verified_empty_at": "2026-10-30T07:10:38.629416+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -58387,6 +58939,1465 @@
       "tag": "cloud-results-41009878507-1-mainchip-antenna-escape-window",
       "exact_source": true,
       "empty_before_acquisition": true,
+      "independently_reserved_before_acquisition": true
+    }
+  ],
+  "imported_checkpoint_receipts_v142": [
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/capsule-index/candidate-outputs.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "fdf0826c2caa6bb5c42a157319fbf2295787f849",
+      "bytes": 2571,
+      "sha256": "59a19d376b6c3e35f35c887b6e8a67433916951d4c2f211ac37a2442d611d2e9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/capsule-index/candidate-parts.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "c976be4322ef0d1d2715803d1021a72c79a1d413",
+      "bytes": 314,
+      "sha256": "d37cf7c3f60deccde8f1f2136c66cd7f8a0e7aaa5c2dbcffd32d06d005f3f39f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/complete-derived-index.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "481e9f61adc43443696c3fb9fb53c5a4dfc87b97",
+      "bytes": 6895,
+      "sha256": "1e561052aec7b471bfcf05a24cb25cf157076d3f329ebbd0d0a41802854c8ce9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/controls/antenna-controls.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "ffe96a394f6dd5c9663286e8f5ddb77d48aa5a27",
+      "bytes": 2244,
+      "sha256": "ae0a6066adab39ef8857fd0f0984197c760e57f1475e7e84cd4fd848672f6ac1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/controls/antenna-controls.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/controls/antenna-controls.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "92eb01bb82efa0a6e5cdca6f3f5af87d2d0c3f2d",
+      "bytes": 1958,
+      "sha256": "68f4b4a3c3d483cdc0dee7b027b033bd55b5f786987dfe46ab2298507bec1060",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/controls/context.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "9fdeffecf2e7c3fab70eb650a1c148ec152fc234",
+      "bytes": 3408,
+      "sha256": "a5744e750fecf6480b3802738a947703ee3da68502c1664232f70edbeed5397c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/controls/controls.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "182c5bb5424c6d193fef37f3965a8972801ae4ea",
+      "bytes": 74835,
+      "sha256": "55ba39bc1c31fdfbfb4eadbb6f4d16875b39f87852c58285efa713c275454868",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/controls/controls.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/controls/controls.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "21fdb60d9a00e400249d1a20c233a3aebdd0596a",
+      "bytes": 38643,
+      "sha256": "17a854e8c19189fc1dfd64f7c01b41f2f5acd5cc2ca175b50c48422c43c8c49f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/controls/ownership-controls.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "dce3f26fb7b5e535dbfa601c573a1f42074e7351",
+      "bytes": 1035,
+      "sha256": "1b1327adc59e7bbd088f9c37293e58323a0e2cc2e1f0f96ec5f23cc2cae64aa3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/controls/ownership-controls.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/controls/ownership-controls.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "0c6522c4544932fc5797c4859b8aea7fc1e16d81",
+      "bytes": 899,
+      "sha256": "c60c7c348f47b65ff3ffbc0208f036ea940a2369774bcb9d4df3bf30096232ce",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/controls/trial-controls.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "07291616a08a334d8ce09ffc87a70ef4e53b6bce",
+      "bytes": 2191,
+      "sha256": "94721f18fb5a1a398c4f66d650827c8f3a637e819cb4e27570015e0abe666f36",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/controls/trial-controls.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/controls/trial-controls.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "40da58940640eb5de233c31a78838ed1b4ba6357",
+      "bytes": 1933,
+      "sha256": "ea145ffb87d8fae7ca7cf0cb60874bee133748f9768b863d643084cc681c9dcd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/controls/window-controls.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "81f9eaaa06bc3bcea634f12494c0240de030f213",
+      "bytes": 5647,
+      "sha256": "dc680a842af35d4f33c65e777538c3e98c6359d6de7053ca9304a4972297b74c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/controls/window-controls.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/controls/window-controls.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/current-input-restoration.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "cee29b0e640f6b1a4cec4b5b1def8156c7da5606",
+      "bytes": 10331,
+      "sha256": "413829c5e2d5c505f8d1dce1edaa250e8aa5ad688c9731012ac018a89ee9008d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/download-candidate-native.tar.gz.part000.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/download-candidate-outputs.json.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/download-candidate-parts.json.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native-capsule-publication.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "759884fd4874e4f7728303b29cc0543c1273fcce",
+      "bytes": 3353,
+      "sha256": "38e41b2fe81a44a405c2173aa0ad23b1b34b991b63734fad0ddbb16e11e354b3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/antenna-escape-window/result.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "9d41726ae12e0f396b1e8bdc10c2ea9b94f0ebd7",
+      "bytes": 56367,
+      "sha256": "90abb1a5297791c46cc9bda1db6f3a6d6ed7718e034acb09d538204760164e24",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/antenna-escape-window/window-terminal.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "c40bfd4b531f30f9f6d4bb862dff44d7d23112f4",
+      "bytes": 176,
+      "sha256": "891652cc9d7f41950f0e50c4d11a500f60065b0d44c73af220af19b6d405fd98",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/antenna-owned-container.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/antenna-owned-container.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/container-terminal.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "a5a0dd2f4cf96bc61ab40b1d29960ca5dfae3c67",
+      "bytes": 6853,
+      "sha256": "aceff3dc9080127f601eef536235a0396463e56e9132e826dc4a642954e389a3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/create-attempt.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "7aff250ee41e7afb993d27d1f73e09c2824b9c0e",
+      "bytes": 1227,
+      "sha256": "0fb9393d8133aa901b5790c5d40ec75ef593cfa00e5f074dc3fb8034a1e59f94",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/host-progress.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "7011d3da8f4ffe8c2d39034b0ac07b9c743e961b",
+      "bytes": 11320,
+      "sha256": "7bca0b05dd2b4ae3836e0e4770bfc5fce78a48ad63e18c446bf2afbef0d26469",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/image-inspect.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/image-inspect.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "152e061e90ece42f0440c8a63d33a402967acdce",
+      "bytes": 2643,
+      "sha256": "3bc176b4129917dc77b62ce54bc855de33ba17cb6a57a632808a4474307073d1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/immutable-image-pull.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/immutable-image-pull.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "ef88118f30988a066d167b3eaf3dca0b04623dd0",
+      "bytes": 804,
+      "sha256": "e8d94bfa47777dc445d2e03cc07cf127faa4998a169895307d9cfa67eb13fdaf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/names-before-owned-create.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/names-before-owned-create.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/owned-container-create.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/owned-container-create.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "42b0b8ce9820e11eeeae8bb27b56240c836597ba",
+      "bytes": 65,
+      "sha256": "bc34f053b23d17bca62ea4cff96c08e23430e3d15e2a12774eb246adf886128d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/owned-container-remove.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/owned-container-remove.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "42b0b8ce9820e11eeeae8bb27b56240c836597ba",
+      "bytes": 65,
+      "sha256": "bc34f053b23d17bca62ea4cff96c08e23430e3d15e2a12774eb246adf886128d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/owned-removal-census.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/owned-removal-census.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/prefix-envelope.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "bc75a7ec8ebe4d620ae64c4e45f266b1f11383fa",
+      "bytes": 4270,
+      "sha256": "11281aedb0c83745f8126820b9c3c5421c20ed572e48bda55356f5d68c8313fb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/prefix-restoration.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "8e316db083b1571e763c01308ee1756c172c934c",
+      "bytes": 423478,
+      "sha256": "23f45038bb461360ec38c7a2490ba24c84db2f9dd3a53e8b2e689201d693d177",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/window-collect.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/window-collect.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "8ab24468e0c4b920dcd20e53c7c60371c7532e64",
+      "bytes": 285,
+      "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/window-inner-progress.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "329a35b41480ab239fcda441d68f59bb8ad10284",
+      "bytes": 2622,
+      "sha256": "62099119947979ec61cc46a26511a5d223eb96afe1fcf71d60aa929625df4767",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/window-inner-result.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "2c447a924ec47e32e94e0c96f223c4707d0d2cee",
+      "bytes": 11446,
+      "sha256": "897b3b9edbe03464b40532ee0016fd991e181f92c9b5334205272b68ef30a100",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/window-ldd.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/window-ldd.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "39d9bfb36a4b5f1bc2f5f7cad80664ecf3de954b",
+      "bytes": 10979,
+      "sha256": "b08b07af7bc53d474bcc11c7f6313344c451139101911f44dc894a774de734a0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/window-runtime-observed.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "534b24cdcf542b98ad1ae9c29197ed1e2ad5ccd8",
+      "bytes": 16940,
+      "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/window-version.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/native/window-version.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "233850439374365fe2cb6382f30eeb73ca08fca5",
+      "bytes": 42,
+      "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/producer-binding.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "8c192e929909c920e86e66d46c4a83f4d0327af9",
+      "bytes": 454,
+      "sha256": "689e67bfca5475168d4562bff451ae779ce31d2244e4bf47c3be8b7c3f2237bf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/producer-jobs.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "b8669ed64ced53e2704aaded3c7c37cbfe7c0646",
+      "bytes": 17887,
+      "sha256": "c3ce060ef9055a4fd4b1c278a556e44d9e4efd0d98154c56ceab5394993bb897",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/producer-ref.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "f1859a8827be43e0b0457964c16924f2690bd46e",
+      "bytes": 555,
+      "sha256": "057692967f6413281dd5bb610ef325b39c05781c9cc532d9cdb945aa6e6d9b14",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/producer-release.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "b637329106ba87fdd42aa2e8ce60078a583b7dfa",
+      "bytes": 8567,
+      "sha256": "5020b152cdb43e2ae77abebede0570ff09ccd2b502566e047edbfca9c0158137",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/producer-run.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "f643177aee76437eea1585b4fe48296154e6a339",
+      "bytes": 14435,
+      "sha256": "5894926c7a786ebfbce506a360c805c6d959e936a40265ac5c2903b1f532ac82",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/publication-candidate-native.tar.gz.part000.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/publication-candidate-native.tar.gz.part000.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/publication-candidate-outputs.json.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/publication-candidate-outputs.json.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/publication-candidate-parts.json.stderr",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/publication-candidate-parts.json.stdout",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/reservation.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "02a06f783844c4fb05229d2f8c5bf9db70b68b91",
+      "bytes": 588,
+      "sha256": "227efaddce1ff73562cdc54185e2f40bf73d48ba3323ac2fbe8a134b72abcf2f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/derived/result.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "9b9ea600b5aa5df2e5190f0151e3b351ef73e799",
+      "bytes": 39105,
+      "sha256": "01d165018fdf4b0794ae335b7d9c01e1f8d4783caec963ce1078848556b9e984",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/job-123913133540.log",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "9ce9ae779248822f939e39208c6cc1b4651d0cc0",
+      "bytes": 222717,
+      "sha256": "a5f0449df45d9f6fccdc2e9f5fd36ff706554080338a6b313d43c2205b0355fd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/job-123913421167.log",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "ed3f466316a175a1dd26dbad2b84a1d5fe65c866",
+      "bytes": 7540,
+      "sha256": "aac3f5e991a9af717cb717b79057cf2c0abf75b8a9a18f3e139e4df5368919d7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/job-123913463680.log",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "d8088092884b7f9430cd70073da5eba620bb116e",
+      "bytes": 216488,
+      "sha256": "1ae4654d879b0760b0b4822ce2eafb5d7b99f5b2ec44f5649315aa3bb0cc1b24",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/job-123918794033.log",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "6cefe356ebe3b70b516fdac1bf9c58df5910fe43",
+      "bytes": 6965,
+      "sha256": "1d3967b8657bd51a5fd7b43c1a5bcd61db74ba6650bd69d6bcfe6b46357d0142",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/jobs.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "b81283dedeb711f3e56c7886f454dc06aff42ae0",
+      "bytes": 19288,
+      "sha256": "5d066650295d81a8fff96f6b066cfa3cae08d6fd0abee127d749ddba2dd75d12",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/receipt.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "201ff3ce8428d8059c39b35ad623e309353db1d5",
+      "bytes": 81372,
+      "sha256": "3e78dc892e308c12afc2054a12a1ead292c399b876ef12d9d8daa10f1f3f7d8b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/release-ref.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "7c095ea312f3252d0e946d811ad4860e3219aa3c",
+      "bytes": 558,
+      "sha256": "c64468e776bcef71faff14d764ec4d980e816d2e53c3a62bce25b623f6e60cdf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/release.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "93c3e2d9a988aceb0874211c865f35371af55990",
+      "bytes": 8504,
+      "sha256": "cef855482ecf7747e9acb158b4a60026c61f9cc3dc4912fd3b4dcf613529e74a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/run.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "2745b8d18d4b9badfd5a9571da339cdee51adba8",
+      "bytes": 14420,
+      "sha256": "336837abee09703a2c4154465fdd9cbaf06737b3ba68af123cec9695bd7d6e28",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/source/.github__workflows__mainchip-net459-diode-prune.yml",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "55ab2a35d2230b0c713af0aa50ff82341a1b1961",
+      "bytes": 43807,
+      "sha256": "25bb633e8d191d3439b9390b3b9b7868f127324846234f29d1e183339fffdadd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-antenna-escape-window-terminal-41009878507/source/scripts__mainchip-antenna-escape-window-pins.json",
+      "source": "83a4527e0494934bdf2401d0ee5bf17798b7d416",
+      "git_blob": "3f7237cbbbcae75258262dcef237a7e59589f590",
+      "bytes": 8649,
+      "sha256": "99df3bca630f20ee059d1d3f1ad17ab42b29b0943fb2fd9e2ec931d500fcc2eb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-escape-window-report-source-review-20261030.json",
+      "source": "e01760a8e7348ae358d40be654fd1e39b00754eb",
+      "git_blob": "a96a036cd7113da2bad7452d2ceceb5cc245f127",
+      "bytes": 1435,
+      "sha256": "44e8051ab2f33bd0fe6eb9ec164ea0ba5ec0ae2ff707cbb33fb679b45383a717",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-escape-window-report-terminal-41015775376/derived/controls.json",
+      "source": "0caa52e5c49e7c8468a4c0388a83e698a91a35b7",
+      "git_blob": "2265031648ccbfa606fe96eba59b943afe2b3656",
+      "bytes": 324,
+      "sha256": "06c384a7d606289f7be2c428bb607826e721edc7334d9804720aec95799dcaf7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-escape-window-report-terminal-41015775376/derived/publication.json",
+      "source": "0caa52e5c49e7c8468a4c0388a83e698a91a35b7",
+      "git_blob": "8fc749d49d61ded495880fcf16247eca1b06a2f1",
+      "bytes": 337,
+      "sha256": "9c3546c5e4b13f078d1f189cf9c67d26ab51bdd4eaab2505599883a746124a3f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-escape-window-report-terminal-41015775376/derived/result.json",
+      "source": "0caa52e5c49e7c8468a4c0388a83e698a91a35b7",
+      "git_blob": "4002a657f965c78c14c5d625ff795565e26389c0",
+      "bytes": 170153,
+      "sha256": "4fc1936c791bb161d9ebf1d84c1c60e36ba6d580180d9705270dc9b4e87afd35",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-escape-window-report-terminal-41015775376/job-123931664636.log",
+      "source": "0caa52e5c49e7c8468a4c0388a83e698a91a35b7",
+      "git_blob": "b343e83f88f62270ebe3d0fd7af01c01de35c877",
+      "bytes": 20865,
+      "sha256": "e96651f1b368beeec4844dc8124923d66471312b90cba34365a36ebdea561a73",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-escape-window-report-terminal-41015775376/job-123931786530.log",
+      "source": "0caa52e5c49e7c8468a4c0388a83e698a91a35b7",
+      "git_blob": "dcc733334427f0f5480103e04599f8c6d805e3b0",
+      "bytes": 253919,
+      "sha256": "50858e39db6f18fee7a4649e8e352e3124ff5cc3af2ee8474aedc77df8091113",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-escape-window-report-terminal-41015775376/job-123932046231.log",
+      "source": "0caa52e5c49e7c8468a4c0388a83e698a91a35b7",
+      "git_blob": "cf196fc155f1815da898b420ef3f093906e6489c",
+      "bytes": 7432,
+      "sha256": "83c7fa03b5ceb4fc1e5d2e9b49130a9ff29f26dc177c3d08bf79f80ccf170d7b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-escape-window-report-terminal-41015775376/jobs.json",
+      "source": "0caa52e5c49e7c8468a4c0388a83e698a91a35b7",
+      "git_blob": "9dc0d4c5a06c5ddf11e61079b9174d6cde81d649",
+      "bytes": 8225,
+      "sha256": "6ecaf033021a1d4d335a9bfdd51033cf1aaf4af53473d3c67a5b1f52b11375e5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-escape-window-report-terminal-41015775376/receipt.json",
+      "source": "0caa52e5c49e7c8468a4c0388a83e698a91a35b7",
+      "git_blob": "18f5cea62debedccefedd393c0871e65931f2f79",
+      "bytes": 2202,
+      "sha256": "fa38dcc0bb3c9e1d79e3c326e1209d73e4fe4bb52e0a2ed3ecb47ee7bb2cca1b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-escape-window-report-terminal-41015775376/release-ref.json",
+      "source": "0caa52e5c49e7c8468a4c0388a83e698a91a35b7",
+      "git_blob": "55f9d8852636b820ede3c4e218f72aa766eedb30",
+      "bytes": 555,
+      "sha256": "58ecf1fb3854885199e743871b46305e8ccf4fa597cec0a31f0d4664959032c5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-escape-window-report-terminal-41015775376/release.json",
+      "source": "0caa52e5c49e7c8468a4c0388a83e698a91a35b7",
+      "git_blob": "0bb494da3d10fbfa0a1764599531e46fb2c9adcf",
+      "bytes": 4483,
+      "sha256": "3daea8e45f96f07a59576d7652d3d78378ab485d45459943135217318f3831b4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-escape-window-report-terminal-41015775376/run.json",
+      "source": "0caa52e5c49e7c8468a4c0388a83e698a91a35b7",
+      "git_blob": "11c1bbf104e06bddcfcb987fb0d692aeb0fa5a66",
+      "bytes": 14408,
+      "sha256": "e1333b484eb3f814c2812a17140a0fbc7af12dafcfa5060114724551a780c4b8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-review-20261030.json",
+      "source": "03d5d1bc762265161af1db76fd1bdd560216a547",
+      "git_blob": "5538cdb33def35e895c5ed7622aa730842bafa48",
+      "bytes": 26202,
+      "sha256": "1b017e76e362e9f8039837d2ce1756510006ef2c8db89c59138c6d4e27322f3d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-qualification-20261030.json",
+      "source": "c0a0602ab15056458cca0208a04c92a4e02ea65d",
+      "git_blob": "1b4c57675163d63fe381ba21868785d8fef6bb32",
+      "bytes": 4916,
+      "sha256": "e99df4bd5efdd92c7ffe6ec21a3f484b77ef164886cf7933dcf469efd4b08948",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/artifacts.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "86cf707d221a983d6777588c13ece6aaa943935c",
+      "bytes": 1868,
+      "sha256": "16761c149b6d21f9c4326685cd8958b92698243e99df6ba00a7836c5b4e160c9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/diagnosis.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "df06dc93b31c5fd626f47a91abf36113fe866578",
+      "bytes": 9425,
+      "sha256": "c42aae373415df519854ca0e8a1446b11306c0f967a55d8a81df12aec9b0f41f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/dispatch.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "81252d4292e3346f74e206c170aab1a44bd28f16",
+      "bytes": 351,
+      "sha256": "beef2524f258afc534f6ca9ba4650518d1bc746ee32d7a362c9c4e1a45b4d688",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/job-logs/123925688796.log",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "f65eb904c8dc60aa9df650e6e5c7591869235c0d",
+      "bytes": 361229,
+      "sha256": "e70cd98fcae1f62db60943e3c36e5f190552fedb47a96a891ff8e7a3884ad800",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/job-logs/123926185077.log",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "80a32231fc280c4e674c1eec7a03ee652a870a6d",
+      "bytes": 7544,
+      "sha256": "6c6707578c3c7e3bb7e45d8d89f4d0069a8661fa82f3ce3c4ba0d1e27cf0bd36",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/jobs.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "a71c21ca51796e48cfe868d324eeed7d06e203d4",
+      "bytes": 7891,
+      "sha256": "dad900286facdb78cde157cb0f0d15da8ff6d2e418597d6c90eb1d40a31e1c6c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/jobs/123925688796.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "7a081716e35e59c593c1cc2f8dec41e166200082",
+      "bytes": 5008,
+      "sha256": "2baaf7143b37508f707e34867110ea3952f562e0026d055aa733dd7c9d4ca0f7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/jobs/123926185077.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "15aa96ff7d6150e25769004cace7f597ee48e2f5",
+      "bytes": 1978,
+      "sha256": "4897f030b1e188ace2b11e1600c3874dcb063b7c4b35d648c911e10a8bd3883b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/receipt.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "12098d8fbf614e342e511a289b1dd2bc7d1a28e8",
+      "bytes": 4481,
+      "sha256": "b977645d71fc9d348e8686171be012e20b313839087a6219587e2a6c012ad443",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/record-index.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "e7c8179b52640a4add5749fe081c20a843434214",
+      "bytes": 3147,
+      "sha256": "1fa7ed71d9f89d0f970a9850a97ea6470a7b4e209c373db90ef5bcc2c57ca19c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/records/context.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "b8512e00e930880ed7e6b89c8470894fbddacf8a",
+      "bytes": 388,
+      "sha256": "d443edb910867a792f09154cf97f271b4d19366901bbb2b0cf9495f5328515ed",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/records/current.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "f0c1c77118bb4e508e4b4aec0a3d6aa8bf754f31",
+      "bytes": 31731,
+      "sha256": "2b47a38583fe1579f8fa0781451022bc73855a04d5b12126f62b17bcb83fcec0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/records/current.stderr",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/records/current.stdout",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "f0c1c77118bb4e508e4b4aec0a3d6aa8bf754f31",
+      "bytes": 31731,
+      "sha256": "2b47a38583fe1579f8fa0781451022bc73855a04d5b12126f62b17bcb83fcec0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/records/execution.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "140b7bf786f382ad7f4548c02891604f80f9734d",
+      "bytes": 12586,
+      "sha256": "7099f84d865b4390c09427ded2991daa2f5ab759b9a6aa617439148c07a02898",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/records/execution.stderr",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/records/execution.stdout",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "140b7bf786f382ad7f4548c02891604f80f9734d",
+      "bytes": 12586,
+      "sha256": "7099f84d865b4390c09427ded2991daa2f5ab759b9a6aa617439148c07a02898",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/records/historical.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "3c8c8bc9446bb7408103f381e8570f5d043d7312",
+      "bytes": 1023,
+      "sha256": "94861faafaa2d29b65a013e0f5892d0488e4bf7a2756a78a40e1882fdf79d356",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/records/historical.stderr",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "352559584efd70c1f540fe381de5eb1b6c32de2c",
+      "bytes": 840,
+      "sha256": "f27b5e76f40f9c91606c9188a4dfa9e4153478c8e083c4dae6f263eb27e6affc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/records/historical.stdout",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "3c8c8bc9446bb7408103f381e8570f5d043d7312",
+      "bytes": 1023,
+      "sha256": "94861faafaa2d29b65a013e0f5892d0488e4bf7a2756a78a40e1882fdf79d356",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/records/imports.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "12db864e49f2e721dd41ce10a08351f3948d6217",
+      "bytes": 61646,
+      "sha256": "95d22177f18ac41d18b51836a3863acf5153bc67fdbf6374a8975784457803ee",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/records/imports.stderr",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/records/imports.stdout",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "12db864e49f2e721dd41ce10a08351f3948d6217",
+      "bytes": 61646,
+      "sha256": "95d22177f18ac41d18b51836a3863acf5153bc67fdbf6374a8975784457803ee",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/records/publication.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "0a2254585b0afdabfc3b52463497bd575824a919",
+      "bytes": 4922,
+      "sha256": "0dbeb7ae9f8e5b7fceb84713c240526cb35dbca07226f45f50640f8e1f303d9d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/records/publication.stderr",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/records/publication.stdout",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "0a2254585b0afdabfc3b52463497bd575824a919",
+      "bytes": 4922,
+      "sha256": "0dbeb7ae9f8e5b7fceb84713c240526cb35dbca07226f45f50640f8e1f303d9d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/run.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "8073678db0296c774a85a9a80d677890b14af2d6",
+      "bytes": 14442,
+      "sha256": "4721842f251d2f190c7977c8d205885e010a44b31be12f010287c2e8ea3af3ac",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/source-binding.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "2d5a9534ce0cfdfe16b120f46ba1fb82cfa3f489",
+      "bytes": 2284,
+      "sha256": "81f04419d0e6c5fd7663bb3ec7e7c5f8ff57126711d00654d61343377e0e7a19",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41013887814/workflow.json",
+      "source": "961b2c81469c4411f35a5dfc0b0b1f73e1f74230",
+      "git_blob": "6353763f4e64cb3bb24622f3dee656c5a95c0d6d",
+      "bytes": 674,
+      "sha256": "ccba4db5c09729ca0aa913c0e90b2c5bfd57b0ff2b0a0804fec2d350c5ee9a96",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-historical-amendment-20261030.json",
+      "source": "a379fc2265a51edd192221580c62433731dd52d3",
+      "git_blob": "99dabe305d3a6bcf74850eff7f91a45fcf0d1ad0",
+      "bytes": 4596,
+      "sha256": "6cfc7cb96f2268edbf2b7afa7b659ce0901b1f83cde73b0eaf207b9953fdea57",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015111194/artifacts.json",
+      "source": "534840fdf29f4cedd0e8f1d64f817f435b4f1bc1",
+      "git_blob": "c44e21d28731bb10c046bd0dcd749fe4b712a2c3",
+      "bytes": 958,
+      "sha256": "5b0ffc572c76bdf9e9bce199f2147a5c4766f05a720a6ab1e94b1f9a99be2896",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015111194/diagnosis.json",
+      "source": "534840fdf29f4cedd0e8f1d64f817f435b4f1bc1",
+      "git_blob": "0fd43c5a0741fe190c43e99dee1fde8eee009efa",
+      "bytes": 1568,
+      "sha256": "ea435545626e2e6400afee3e4a8c6a7281e9feacdc10306a2115b4c98125bad8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015111194/dispatch.json",
+      "source": "534840fdf29f4cedd0e8f1d64f817f435b4f1bc1",
+      "git_blob": "e5fcf5ca17aa3579df50a6e2a94ddf23a771921a",
+      "bytes": 370,
+      "sha256": "6dfc99adc43a2a0214d05c025c862d2e188584c4638e469e628141f5a6549d6f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015111194/job-logs/123929578591.log",
+      "source": "534840fdf29f4cedd0e8f1d64f817f435b4f1bc1",
+      "git_blob": "fd061b5ea45985bb6e79d3cfe866c39394846d07",
+      "bytes": 30388,
+      "sha256": "6608f37af686729305c14b6684b501d8ef43bae5de10a1bbe7d3f9c458d27edd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015111194/job-logs/123929751194.log",
+      "source": "534840fdf29f4cedd0e8f1d64f817f435b4f1bc1",
+      "git_blob": "1ad08d837805fae20246fd06ddb63b4241dfaf58",
+      "bytes": 7545,
+      "sha256": "b357620d2b47fee2141f59c6a1987655c6e91032643ae0c18238e3ada995b83d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015111194/jobs.json",
+      "source": "534840fdf29f4cedd0e8f1d64f817f435b4f1bc1",
+      "git_blob": "f8c8fc1e65baf2fc4f647f0872bc744d36fdb85e",
+      "bytes": 7930,
+      "sha256": "7e4587147c5f38f7c0b0a68d12210f096eb281630977e0d8f616f7123cc32c25",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015111194/jobs/123929578591.json",
+      "source": "534840fdf29f4cedd0e8f1d64f817f435b4f1bc1",
+      "git_blob": "e61077100e0813cb94fd1dd99d9362dd266e071e",
+      "bytes": 5047,
+      "sha256": "59e6270afd832445c81864328932325879b51a78a2f18f6a3fa76f804d0cc6ec",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015111194/jobs/123929751194.json",
+      "source": "534840fdf29f4cedd0e8f1d64f817f435b4f1bc1",
+      "git_blob": "9afd9be804c084bf6579906a8dfd4e5be58ae91b",
+      "bytes": 1978,
+      "sha256": "774f2a552b88860047bd90a9968fef4bc770579d81eca12846b550fecd08a815",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015111194/receipt.json",
+      "source": "534840fdf29f4cedd0e8f1d64f817f435b4f1bc1",
+      "git_blob": "54ed0a9b1fcacf1a57209dd9d49ae2a088321b4e",
+      "bytes": 2213,
+      "sha256": "35f3c0a8fc307aff8106dea95eb899141152de673c2f318fa5d4790494094bf7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015111194/record-index.json",
+      "source": "534840fdf29f4cedd0e8f1d64f817f435b4f1bc1",
+      "git_blob": "39f7bf93fddfa9402c728ecc35a7341a4e4dd225",
+      "bytes": 3121,
+      "sha256": "ecdb39feee2d12aa238118c4bb696a9450ddf2d68a3e607b4b2ccd0f7769fd70",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015111194/run.json",
+      "source": "534840fdf29f4cedd0e8f1d64f817f435b4f1bc1",
+      "git_blob": "27941132cdd2a1131d40f8ce8b8df8b69544c2c8",
+      "bytes": 14446,
+      "sha256": "2a19f754a851f0bfcf6dfe7386ce13d86499dec441c3f5d337e77f215af17356",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015111194/source-binding.json",
+      "source": "534840fdf29f4cedd0e8f1d64f817f435b4f1bc1",
+      "git_blob": "91aa4f5f1303a0aec2a9b392b1900317713fd2c9",
+      "bytes": 1504,
+      "sha256": "e097775f9e60e8772aadb7c5f62a09938e43d95acc7f96f80f7ffa9a0f5c3d83",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015111194/workflow.json",
+      "source": "534840fdf29f4cedd0e8f1d64f817f435b4f1bc1",
+      "git_blob": "6353763f4e64cb3bb24622f3dee656c5a95c0d6d",
+      "bytes": 674,
+      "sha256": "ccba4db5c09729ca0aa913c0e90b2c5bfd57b0ff2b0a0804fec2d350c5ee9a96",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-census-amendment-20261030.json",
+      "source": "6e309f009f95c45dbcbde38ac301be2989cb682d",
+      "git_blob": "ee795bf8d7d13975bd62184fb9b9bb8b10d7ae78",
+      "bytes": 2740,
+      "sha256": "c79af9bcd1aeefd0531b7ef72818377f4713407cb99bcd834f56fa1950f74643",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-native-workflow-draft-20261030.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "df32a15fd2b816f6034d2d24c7e536f30afd1c58",
+      "bytes": 51106,
+      "sha256": "616525d93e99038a53dd11848aeb879c014294a21eac1af21bd66ee9d00619e1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/artifacts.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "dec6ec803ec6fb14a81228b9a6144df6bc4450da",
+      "bytes": 1868,
+      "sha256": "df796a7d2650cced6712c68ccfa0b970a071c23dc8a5627b7e47cd8830227665",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/diagnosis.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "fdf503739204a4cb8170613bc47d19928c60475e",
+      "bytes": 7255,
+      "sha256": "08019eee3a4c84b3a2c611d804efef5ac2c5fff0bfcc10b6cb89efa21ee413fa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/dispatch.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "36d8d1c8f8a78fc257239f3f6a356f8d98840c0b",
+      "bytes": 495,
+      "sha256": "ef153b8eeff7be82c5bffdc62f4c26473edea003f6d8eaea35b464b609d63e80",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/job-logs/123931354047.log",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "aa40960e2d3aca7c70ee9a014be35065cc649033",
+      "bytes": 374943,
+      "sha256": "73e47a8eb080105b6d1e9f335bb1996c916479c8b13a7d252f70820e8eec5693",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/job-logs/123931869120.log",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "f237fe383f49adb173e3ea59743ec1ea795553fb",
+      "bytes": 7543,
+      "sha256": "e8d5885cad1d539a24a3b42b403281bb74c64f58a5dbd66b781612755fd48dda",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/jobs.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "95eb937e6491dbd042354788765c326c207fdf5c",
+      "bytes": 7930,
+      "sha256": "eaa67dda59e80b1ba817477284bfbe7587e832fdc2054e5419a0f353542f6b75",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/jobs/123931354047.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "2e06b0a4f20222ced72da0f932b615084e27aa59",
+      "bytes": 5047,
+      "sha256": "10ce355b3c44fb8e7cda17c7a5c142086cdf9a634ddb5559abfacba47bbc7a26",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/jobs/123931869120.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "e65e5dcb0a166e8ed7281384ee405f43d149eaf8",
+      "bytes": 1978,
+      "sha256": "8973801cfb7b9ea7f077b1dc8eae36076c106b1ee1adcba47d864c75aece545a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/receipt.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "790defe774b4d70210272405fb6e8179a77008f2",
+      "bytes": 4501,
+      "sha256": "7e45d72a34168ac25199a7ae7a155d4c0fa53d5808a524c65bfb7a7e1a3fe43e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/record-index.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "daec6dd38bfb4008849d840af13152bb398ff301",
+      "bytes": 3145,
+      "sha256": "9d580a9b3616dabb4ec6c68c79266a0ff17a0072a4389b39c6d26ac11e7e00dc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/records/context.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "bc52b47bea275126bfeb0b25788e409aefac35e1",
+      "bytes": 388,
+      "sha256": "f7ce6c0cad9046d5cccdd49f59cf39cbd74327be43f183587f3753b2add5e845",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/records/current.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "f7cfed2ddfec393c5b654232ede168a4856b896e",
+      "bytes": 31731,
+      "sha256": "ac9d25ebcc8eb9eecdc0547321e456b55b21ec012225df91aaceda1205573f0f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/records/current.stderr",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/records/current.stdout",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "f7cfed2ddfec393c5b654232ede168a4856b896e",
+      "bytes": 31731,
+      "sha256": "ac9d25ebcc8eb9eecdc0547321e456b55b21ec012225df91aaceda1205573f0f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/records/execution.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "682466c0a41321d7dfdd7a032e79453cbd786ead",
+      "bytes": 12586,
+      "sha256": "4dec41aa3c7c29168ed1560e4b8b29ee812e599775f82a2ee1ccb70ef1c0ae17",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/records/execution.stderr",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/records/execution.stdout",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "682466c0a41321d7dfdd7a032e79453cbd786ead",
+      "bytes": 12586,
+      "sha256": "4dec41aa3c7c29168ed1560e4b8b29ee812e599775f82a2ee1ccb70ef1c0ae17",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/records/historical.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "dd475c4af0402b396e8f6ec47447e72891cfb23a",
+      "bytes": 6097,
+      "sha256": "98c6588d7ed84b4f4cb171661b004d0fe1318821afd273b9e3a86deab2b57e54",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/records/historical.stderr",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/records/historical.stdout",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "dd475c4af0402b396e8f6ec47447e72891cfb23a",
+      "bytes": 6097,
+      "sha256": "98c6588d7ed84b4f4cb171661b004d0fe1318821afd273b9e3a86deab2b57e54",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/records/imports.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "f5bb0124fc5710aded962b3f96a39c63e1342428",
+      "bytes": 61646,
+      "sha256": "9a4e58820a2f6917d34048740824566b9775b2b518e22b5a6997ff6af5f1ee96",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/records/imports.stderr",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/records/imports.stdout",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "f5bb0124fc5710aded962b3f96a39c63e1342428",
+      "bytes": 61646,
+      "sha256": "9a4e58820a2f6917d34048740824566b9775b2b518e22b5a6997ff6af5f1ee96",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/records/publication.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "0d23e7561c190cf88d9d172d4e83058eb6bc0270",
+      "bytes": 4922,
+      "sha256": "82783c46296fdc7a1c91dcf19aeab62dc479db6820c7cfb47d3800cdd502feeb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/records/publication.stderr",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/records/publication.stdout",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "0d23e7561c190cf88d9d172d4e83058eb6bc0270",
+      "bytes": 4922,
+      "sha256": "82783c46296fdc7a1c91dcf19aeab62dc479db6820c7cfb47d3800cdd502feeb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/run.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "be48f9fb4e687c8325db02d0109c9879b2c9831e",
+      "bytes": 14439,
+      "sha256": "d66a4625b0e72fb1328a5bb1e7613b8d71e7c1cd011c74678ca4f4e43b632ee2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/source-binding.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "6981f1a41d1a9c7cf69a15697bd10cbb76eb93d3",
+      "bytes": 2592,
+      "sha256": "b243bc698f6d568ca293556e1d7356793c0b44b84d6bc69f616c142b39dbfd0f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-source-terminal-41015676075/workflow.json",
+      "source": "9648454ee330404408e072b3f99509c74d9cfbb5",
+      "git_blob": "6353763f4e64cb3bb24622f3dee656c5a95c0d6d",
+      "bytes": 674,
+      "sha256": "ccba4db5c09729ca0aa913c0e90b2c5bfd57b0ff2b0a0804fec2d350c5ee9a96",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-native-activation-review-20261030.json",
+      "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "git_blob": "65526f345db6bda191a6e1e0a18e8e3ca60e5e89",
+      "bytes": 2083,
+      "sha256": "1e605c2dcc9cb593f975b092c005f376b3202765c39893cade310ed316ea0c8a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-drain-m1-loaded-terminal-collection-recipe-41017290646.json",
+      "source": "65591349dea071990c1b8b67c8b04a2ed4671a6b",
+      "git_blob": "ee59ed87a3c9de8e41976fd18e622b45003b3337",
+      "bytes": 38351,
+      "sha256": "7aa3301c64ddd6634d26258e021fcd561a2819ac953ffcb1ebe0c85a9ea9d564",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v142": [
+    {
+      "group": "cdr-drain-m1-loaded-nominal_early",
+      "run": 41017290646,
+      "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "release_id": 428733758,
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-nominal_early",
+      "empty_before_acquisition": true,
+      "independently_reserved_before_acquisition": true
+    },
+    {
+      "group": "cdr-drain-m1-loaded-nominal_late",
+      "run": 41017290646,
+      "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "release_id": 428733851,
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-nominal_late",
+      "empty_before_acquisition": true,
+      "independently_reserved_before_acquisition": true
+    },
+    {
+      "group": "cdr-drain-m1-loaded-hot_early",
+      "run": 41017290646,
+      "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "release_id": 428733882,
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-hot_early",
+      "empty_before_acquisition": true,
+      "independently_reserved_before_acquisition": true
+    },
+    {
+      "group": "cdr-drain-m1-loaded-hot_late",
+      "run": 41017290646,
+      "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "release_id": 428733904,
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-hot_late",
+      "empty_before_acquisition": true,
+      "independently_reserved_before_acquisition": true
+    },
+    {
+      "group": "cdr-drain-m1-loaded-cold_early",
+      "run": 41017290646,
+      "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "release_id": 428733954,
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-cold_early",
+      "empty_before_acquisition": true,
+      "independently_reserved_before_acquisition": true
+    },
+    {
+      "group": "cdr-drain-m1-loaded-cold_late",
+      "run": 41017290646,
+      "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "release_id": 428733979,
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-cold_late",
+      "empty_before_acquisition": true,
+      "independently_reserved_before_acquisition": true
+    },
+    {
+      "group": "cdr-drain-m1-loaded-constant_zero",
+      "run": 41017290646,
+      "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "release_id": 428734008,
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-constant_zero",
+      "empty_before_acquisition": true,
+      "independently_reserved_before_acquisition": true
+    },
+    {
+      "group": "cdr-drain-m1-loaded-constant_one",
+      "run": 41017290646,
+      "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "release_id": 428734039,
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-constant_one",
+      "empty_before_acquisition": true,
+      "independently_reserved_before_acquisition": true
+    },
+    {
+      "group": "cdr-drain-m1-loaded-clock_stopped",
+      "run": 41017290646,
+      "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "release_id": 428734068,
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-clock_stopped",
+      "empty_before_acquisition": true,
+      "independently_reserved_before_acquisition": true
+    },
+    {
+      "group": "cdr-drain-m1-loaded-vi_bias_off",
+      "run": 41017290646,
+      "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "release_id": 428734100,
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-vi_bias_off",
+      "empty_before_acquisition": true,
+      "independently_reserved_before_acquisition": true
+    },
+    {
+      "group": "cdr-drain-m1-loaded-preparation",
+      "run": 41017290646,
+      "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+      "release_id": 428734133,
+      "tag": "cloud-results-41017290646-1-cdr-drain-m1-loaded-preparation",
+      "empty_before_acquisition": true,
+      "independently_reserved_before_acquisition": true
+    },
+    {
+      "run": 41015775376,
+      "source": "e01760a8e7348ae358d40be654fd1e39b00754eb",
+      "release": 428724827,
+      "tag": "cloud-results-41015775376-1-mainchip-escape-window-report",
+      "empty_before_acquisition": true,
+      "workflow": 401215446,
+      "attempt": 1,
+      "release_id": 428724827,
+      "exact_source": true,
       "independently_reserved_before_acquisition": true
     }
   ]

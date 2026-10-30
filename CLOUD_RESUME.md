@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v141
+# Cloud continuation — checkpoint v142
 
-Updated: 2026-10-30T05:52:11.101151+00:00
+Updated: 2026-10-30T07:10:38.629416+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint v141: fresh candidate-bound CDR RC41007572323 passed all four jobs and complete current500-device binding/wire/MIM checks. Final model has24356R/15566C; no electrical waveform or resistance improvement is claimed. Complete56-file proof380b37d8 and2680-member59,924,645-byte native capsule are permanent in GitHub. Read-only mainchip escape-window41009878507 is dispatched once at sourcebf0aff58 with an independent empty exact-source release; hosted7/20 source controls passed and actual database readback is underway. It uses the pre-branch inserted diode ODB, not the rejected shorted candidate. Local project paths and native processes remain empty; original gates unchanged.
+Cloud-only checkpoint v142: full mainchip escape-window41009878507 and hosted complete-archive readback41015775376 passed; all249local window geometries are now available as derived JSON while all original native data remain in GitHub. A multilayer east-escape seed is recorded but is not clearance-qualified. New current-RC electrical source qualification41015676075 passed after preserving two source-workflow failures. One original ten-test native matrix41017290646 was dispatched at exact4a2ff815 with all11independent empty source releases; same-source controls and real preparation passed and loaded cases continue. No numerical limits changed. Local project data remain absent.
 
-Active handles at this snapshot: 41009878507 in_progress
+Active handles at this snapshot: 41017290646 queued
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9190,3 +9191,10 @@ Local project/tmp/native processes verified absent. Inventory388 exact cloud han
 Cloud-only checkpoint v141: fresh candidate-bound CDR RC41007572323 passed all four jobs and complete current500-device binding/wire/MIM checks. Final model has24356R/15566C; no electrical waveform or resistance improvement is claimed. Complete56-file proof380b37d8 and2680-member59,924,645-byte native capsule are permanent in GitHub. Read-only mainchip escape-window41009878507 is dispatched once at sourcebf0aff58 with an independent empty exact-source release; hosted7/20 source controls passed and actual database readback is underway. It uses the pre-branch inserted diode ODB, not the rejected shorted candidate. Local project paths and native processes remain empty; original gates unchanged.
 
 Local project/tmp/native processes verified absent. Inventory390 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-30T07:10:38.629416+00:00 — cloud-only checkpoint v142
+
+Cloud-only checkpoint v142: full mainchip escape-window41009878507 and hosted complete-archive readback41015775376 passed; all249local window geometries are now available as derived JSON while all original native data remain in GitHub. A multilayer east-escape seed is recorded but is not clearance-qualified. New current-RC electrical source qualification41015676075 passed after preserving two source-workflow failures. One original ten-test native matrix41017290646 was dispatched at exact4a2ff815 with all11independent empty source releases; same-source controls and real preparation passed and loaded cases continue. No numerical limits changed. Local project data remain absent.
+
+Local project/tmp/native processes verified absent. Inventory395 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
