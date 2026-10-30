@@ -129,7 +129,7 @@ def check_tcl(source,label,work):
     return text
 
 def collect_checks(label,work,out):
-    p.exact((work/(label+"-check-before.def")).read_bytes(),(work/(label+"-check-after.def")).read_bytes(),"read-only checker DEF")
+    p.require((work/(label+"-check-before.def")).read_bytes()==(work/(label+"-check-after.def")).read_bytes(),"read-only checker DEF")
     counts=json.loads(c.regular(work/(label+"-counts.json")).read_bytes())
     p.require(type(counts["full_count"])is int and counts["full_count"]>=0,"native full count")
     p.require(counts["design_is_routed"]in(0,1),"native routed result")
@@ -295,7 +295,7 @@ def phase(args):
     elif args.phase=="fixed-audit":
         base=read("baseline-snapshot.json");inserted=read("insertion-snapshot.json")
         fixed=snapshot(work/"fixed.odb",work/"fixed-actual.def",base["protected"]);save(out/"fixed-snapshot.json",fixed)
-        p.exact((work/"fixed-actual.def").read_bytes(),(work/"fixed-expected.def").read_bytes(),"exact serialized fixed overlay")
+        p.require((work/"fixed-actual.def").read_bytes()==(work/"fixed-expected.def").read_bytes(),"exact serialized fixed overlay")
         p.same_base(inserted,fixed);p.exact(inserted["instances"],fixed["instances"],"fixed overlay instances")
         classes=read("drt-original-classes.json");mutable=read("insertion-plan.json")["mutable_nets"]
         for name,row in fixed["nets"].items():
@@ -308,7 +308,7 @@ def phase(args):
     elif args.phase=="restored-audit":
         base=read("baseline-snapshot.json");plan=read("insertion-plan.json")
         current=snapshot(work/"candidate.odb",work/"restored-actual.def",base["protected"])
-        p.exact((work/"restored-actual.def").read_bytes(),(work/"restored-expected.def").read_bytes(),"restored complete DEF")
+        p.require((work/"restored-actual.def").read_bytes()==(work/"restored-expected.def").read_bytes(),"restored complete DEF")
         save(out/"restored-snapshot.json",current)
         delta=p.route_delta(read("insertion-snapshot.json"),current,plan)
         delta["full_DEF"]=router.routing_delta((work/"insertion.def").read_bytes(),(work/"restored-actual.def").read_bytes(),
@@ -322,7 +322,7 @@ def phase(args):
     elif args.phase=="failure-restored-audit":
         base=read("baseline-snapshot.json")
         current=snapshot(work/"candidate.odb",work/"failure-restored.def",base["protected"])
-        p.exact((work/"failure-restored.def").read_bytes(),(work/"restored-expected.def").read_bytes(),"failed-route restoration bytes")
+        p.require((work/"failure-restored.def").read_bytes()==(work/"restored-expected.def").read_bytes(),"failed-route restoration bytes")
         save(out/"failure-restored-snapshot.json",current)
         save(out/"failure-restored-clock-gate.json",n.original_gate(args.donor,work/"candidate.odb",out,"failure-clock-gate"))
     elif args.phase=="antenna-restore-audit":
