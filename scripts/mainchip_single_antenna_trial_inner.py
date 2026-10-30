@@ -81,7 +81,7 @@ def main():
         r=c.decode((OUT/"single-antenna-trial/result.json").read_bytes())
         c.require(r["status"]=="COMPLETE_SINGLE_ANTENNA_TRIAL_CHECKS"
           and r["exact_remaining_chip_preserved"]and r["all_1691_original_clocks_preserved"]
-          and r["new_instances"]==1and not r["physical_acceptance"],"complete actual candidate checks")
+          and r["new_instances"]==1 and not r["physical_acceptance"],"complete actual candidate checks")
         report["candidate_checks_passed"]=r["bounded_trial_passed"]
         report["native_complete"]=True
     except BaseException as exc:primary=exc;report["error"]=c.error_record("net459-prune",exc)
