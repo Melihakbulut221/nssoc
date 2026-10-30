@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-30T01:33:29.057509+00:00",
+  "updated_at": "2026-10-30T01:40:18.992209+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "5a8caf80d17d7691bb1ff9d9a5c81defdc5e61a9",
+  "root_source_before_receipt": "a919417bfbd6ced7b063b1322771b0b61c26789a",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 135,
+    "inventory_version": 136,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -4830,22 +4830,81 @@
       "readback_verified": true
     },
     "mainchip_full_antenna_corrected_publication": {
-      "run": 40985634146,
+      "proof": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "prefix": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/",
+      "files": 40,
+      "bytes": 1320254,
+      "receipt_sha256": "116a7ac137b3145414fa45cf4a9883dee3913b5e2e9538097287b28192de5860",
       "source": "bd415ce0d3a5edd30f2d7278be7c8318aa297e56",
-      "release_id": 428558843,
-      "tag": "cloud-results-40985634146-1-mainchip-full-antenna-readback",
-      "exact_source": true,
-      "empty": true,
-      "independently_reserved_before_acquisition": true,
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/40985634146",
-      "source_controls_expected": {
-        "positive": 17,
-        "refusal": 42
+      "run": 40985634146,
+      "release": 428558843,
+      "external_assets": {
+        "baseline-net-census.json": {
+          "asset_id": 690527033,
+          "bytes": 27187688,
+          "sha256": "e674191d31598df27ac2a3eb4aff6d3ec360b0ece3c720101093b86ff7092fc9",
+          "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-40985634146-1-mainchip-full-antenna-readback/baseline-net-census.json",
+          "server_digest_verified": true
+        },
+        "candidate-net-census.json": {
+          "asset_id": 690527329,
+          "bytes": 27187688,
+          "sha256": "c2f06bf58e6c646763e104a973a3f797acd0c628880de7f4488a3d654190bc8c",
+          "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-40985634146-1-mainchip-full-antenna-readback/candidate-net-census.json",
+          "server_digest_verified": true
+        }
       },
-      "controls_and_job_completion_pending": false,
-      "source_controls_job": 123835883822,
-      "source_controls_conclusion": "success",
-      "full_readback_completion_pending": true
+      "diagnosis": {
+        "nets": 609,
+        "pins": 697,
+        "checks": 916,
+        "all_rule": "Cumulative area",
+        "layers": {
+          "Metal2": 53,
+          "Metal3": 345,
+          "Metal4": 357,
+          "Metal5": 67,
+          "TopMetal1": 94
+        },
+        "identical_violations": true,
+        "changed_report_nets": [
+          {
+            "after": {
+              "checks": 36,
+              "layers": 12,
+              "pins": 1,
+              "sha256": "1df77fea222c62dc1dc756f34a06ccc703a39782ae3f4fd4027977a752a5ec04",
+              "violations": 0
+            },
+            "before": {
+              "checks": 36,
+              "layers": 12,
+              "pins": 1,
+              "sha256": "0c06f1796e573c95560e2c01df391007eee229717507663e935547864b7b6c0b",
+              "violations": 0
+            },
+            "net": "net459"
+          }
+        ]
+      },
+      "publication_complete": true,
+      "empty_outputs": 3,
+      "permanent_assets": 18,
+      "readback_verified": true,
+      "source_controls": {
+        "job": 123835883822,
+        "positive": 17,
+        "refusal": 42,
+        "conclusion": "success"
+      },
+      "all_four_executed_jobs_success": true,
+      "skipped_native_candidate_expected": true,
+      "native_CAD_executed": false,
+      "all_native_member_hashes_checked": true,
+      "original_candidate_unchanged": true,
+      "physical_acceptance": false,
+      "timing_accepted": false,
+      "full_phy_accepted": false
     },
     "cloud_only_cleanup_reverification_latest": {
       "workspace_entries": [],
@@ -4942,7 +5001,7 @@
   },
   "next_actions": [
     "All authored execution, calculations, CAD, models, native archives and output stay on GitHub. Local source/API orchestration is RAM only. Project workspace, old working directories, project temporary/visualization outputs, native CAD processes and matching local automations are verified empty; do not recreate a checkout.",
-    "Finish current full-antenna corrected readback40985634146/sourcebd415ce0/release428558843; source-controls and log preservation passed. Preserve every final output and all terminal logs. Original40983327823 stays failed for zero-byte GitHub asset upload, with full40-file proof9f66fe1c; diagnosis itself completed. Do not blindly rerun current jobs.",
+    "Corrected full antenna readback40985634146 is terminal SUCCESS, full40-file proof1c670413 and all18permanent nonempty derived assets plus3exact empty outputs verified. Both complete27MB net censuses are permanent release assets690527033/690527329. No run remains active in this checkpoint. Do not repeat the completed readback/native candidate.",
     "Mainchip native candidate40976029940 has zero uncapped native/serialized DRT and exact1691original clock/fixed-record preservation, but609antenna nets remain. Complete baseline/candidate reports prove identical916cumulative-area violations over697pins, and only nonviolatingnet459 report changes. Follow full cumulative-antenna next-step plan to bind all violations to actual gate/diffusion/diode and wire data on a runner before repair.",
     "CDR v2 fullbuild40985242991 completed successfully at03dde6e0. Use its qualified125480929-byte typed trace d7b85faa with currentoverlay/DC evidence for physical resistor ownership. The exact compiled v1 double-%d bug is preserved; v1 coefficient values must not be used. Do not repeat finished builds.",
     "CDR target R2997 carries32.5083ohm of the unit-injection path, but the surviving constructor tile does not prove full reduced-element ownership. Obtain actual merge ancestry before geometry changes; then recheck all original HBT and transient gates. No physical/electrical/PHY acceptance yet.",
@@ -5312,50 +5371,6 @@
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40983327823,
-      "head_sha": "8578c1cdee02a2a64fd15ba89fbecb6fb50ccfc6",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123828377165,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123828652717,
-          "name": "preserve-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123828700781,
-          "name": "antenna-readback",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 123828702983,
-          "name": "candidate",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 123829991283,
-          "name": "preserve-antenna-job-logs",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
       "run": 40985634146,
       "head_sha": "bd415ce0d3a5edd30f2d7278be7c8318aa297e56",
       "status": "completed",
@@ -5398,158 +5413,10 @@
           "active_steps": []
         }
       ]
-    },
-    {
-      "run": 40982224420,
-      "head_sha": "d5acce72d186c661650fc17e2fd069cbf526899e",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123824767741,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 123824959387,
-          "name": "preserve-source-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123825012074,
-          "name": "preserve-terminal-job-logs",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123825012786,
-          "name": "native-build",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40982575089,
-      "head_sha": "767fb06e9f54d615616bddfe8d74d723e39c02d1",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123825909345,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123826104320,
-          "name": "preserve-source-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123826165178,
-          "name": "native-build",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123826582151,
-          "name": "preserve-terminal-job-logs",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40984220615,
-      "head_sha": "1f13e025e83f167093ef7343fcd6d17490fe5687",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123831315587,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123831506019,
-          "name": "preserve-source-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123831566966,
-          "name": "native-build",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123832069813,
-          "name": "preserve-terminal-job-logs",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40985242991,
-      "head_sha": "53af0b8497c19b8590c8eca7879860a8fd1b4690",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123834633637,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123834839722,
-          "name": "preserve-source-job-log",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123834888862,
-          "name": "native-build",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123836373569,
-          "name": "preserve-terminal-job-logs",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-30T01:33:29.057509+00:00",
+    "observed_at": "2026-10-30T01:40:18.992209+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -5689,7 +5556,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-30T01:33:29.057509+00:00",
+  "local_workspace_verified_empty_at": "2026-10-30T01:40:18.992209+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -51610,6 +51477,340 @@
       "run": 40985242991,
       "release_id": 428556940,
       "source": "53af0b8497c19b8590c8eca7879860a8fd1b4690"
+    }
+  ],
+  "imported_checkpoint_receipts_v136": [
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/complete-output-index.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "a79dde3719ac790d805715628a9bf6b2161b41ab",
+      "bytes": 2990,
+      "sha256": "1977206223739b6afe663b1365dfe6127f042f2ef70632878de3756d88da67be",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/controls/antenna-controls.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "fc62c8d98f4f161629c7b82565f446c97ac0381f",
+      "bytes": 2244,
+      "sha256": "b467d95ca7f9242592d1980e17a9caf0c66473a969158aef4272b7da6522655d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/controls/antenna-controls.stderr",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/controls/antenna-controls.stdout",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "e97b17edb97a18e102d8c72202a0e587e2301cd8",
+      "bytes": 1958,
+      "sha256": "b784b5eedb80530ac38261f9617d0fc11b58eaf243c1db2aea7ef3d9a6d530d3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/controls/context.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "8acba90b8587176eada3a676f671cbeeeaeb8e7a",
+      "bytes": 3408,
+      "sha256": "94b3b61fcb62d0d8cb7312e4c011b1e5b71eb26ea0c8bb9abb647515847886e1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/controls/controls.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "05051d77ba0894a8445a4a0b0a753ef29f2a5b43",
+      "bytes": 74835,
+      "sha256": "c031e3395a4e87712591f968fbb35d5ed51bb0f4fc628e44b3b57212971ebccd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/controls/controls.stderr",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/controls/controls.stdout",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "8e9af29debb8b3a023b4594df598f1b4cedd3c47",
+      "bytes": 38643,
+      "sha256": "40431d70fc5d6055dc12550ab571bd5c7d5543b2f61a438e7a32d3cfcba3c23b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/baseline-summary.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "4ba4025c04e24484025df7675f41cc62bb24036a",
+      "bytes": 20937,
+      "sha256": "cfe743778613b7377b17e05dc5656059d8520ca4737d578107c192f2cbb03f9a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/baseline-violations.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "6731d42bc09a21be14ef81cb8ebd3f0aef6f2ca4",
+      "bytes": 300408,
+      "sha256": "cd40e466571adfa89e4c820fa24786b3e09d92327fec6a4b28790e7e1618e575",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/candidate-outputs.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "a23a62b0233a66f2a93c3690e89b5014ee3f2a6b",
+      "bytes": 9995,
+      "sha256": "e124cdf0c9e93350803d5a0a62c46355b07f18be300eabf346e4745706ee6ae9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/candidate-parts.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "4c9a3b7d3833365b25342885aed42efc3827a0fd",
+      "bytes": 316,
+      "sha256": "89ddce47439d028ee432fc80cfeb827f5dafa068127a893ec22ca83dc320d800",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/candidate-summary.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "ddbc37e311711f45aaadaca8fc5cb1adb8fea942",
+      "bytes": 20937,
+      "sha256": "78a254ac238a1d8f9f33c0c7741c96c023d481c0d5764f66ad466e6a65a14131",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/candidate-violations.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "6731d42bc09a21be14ef81cb8ebd3f0aef6f2ca4",
+      "bytes": 300408,
+      "sha256": "cd40e466571adfa89e4c820fa24786b3e09d92327fec6a4b28790e7e1618e575",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/comparison.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "c8d484945d3e130de8a8950e7ce27002c2c91a0c",
+      "bytes": 1065,
+      "sha256": "89c0863f98310a212bc479ad470071d8e77cf559a12b318b1c4948cb5e5ead02",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/download-candidate-native.tar.gz.part000.stderr",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/download-candidate-outputs.json.stderr",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/download-candidate-parts.json.stderr",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/full-native-census.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "503d31e15c35d39e2e5d54a1485df09e7a345050",
+      "bytes": 9183,
+      "sha256": "f091c5446da2286607bc08f3c3b385b2a183d168b09c01a24f8b1c69b9932c1e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/input-binding.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "4ac818136ff0a9e2b221030736819c86c6a4cb05",
+      "bytes": 649,
+      "sha256": "d8a567b6ad86670cbc552a45bca94e0c891a98ff3413342a12ef4dfd9af5588d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/producer-jobs.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "921fa203297a191bbeb23d9eb65e5fe303361065",
+      "bytes": 11344,
+      "sha256": "6f59973a9df6e74f5e99074737d97edcf8be57a9832369d5436a3de759f4afb0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/producer-ref.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "edd7945ead37bc763696aca0bf5d0686e9d0f235",
+      "bytes": 548,
+      "sha256": "c291d45b7c3b20c2cfce207682ca90ea6db3b3c972343eea0210d6de7031031b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/producer-release.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "247769003843697ad7c4a46fadfdd97c275744a3",
+      "bytes": 8533,
+      "sha256": "8731cbae5ff07200c4a6e63378952712a4f216d42c62c731fd9b7575cb2b74cf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/producer-run.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "1d9ad42d4cec0a6ffd2e98cad3263ce7cbbe63c6",
+      "bytes": 14424,
+      "sha256": "cfe99c6e3d0c67bf843afa8e66ca63108e865a4bc12e14134cec241b9cfd6a23",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/publication-plan.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "5ef9fc4d7191cf2ac9e7369aee3f3f5a93261467",
+      "bytes": 3724,
+      "sha256": "86f292d351569a5756fd0f898647ae5b3189dcd63d4279de99acd72657255719",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/publication.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "df49ea3e7a79a49019e26455d95d5e31d152cd01",
+      "bytes": 5923,
+      "sha256": "398db72f3667df36c9f96b75ea10bc70d7a50c1e1bdad336a5986be8f7b70035",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/reservation.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "9955514e59886f81ce60911c9536157629352acd",
+      "bytes": 340,
+      "sha256": "2c4e3a43a8a339cbc5c0bf0fe22bc3585b520e46c6deaa45ee459c587ab8bfdb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/derived/result.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "3b96f29a0945457d2ac23821dc0748dc6698aaa4",
+      "bytes": 45215,
+      "sha256": "9edf70fe6177775a79a3a22053036e567e4c9b159c3fc863e8e3da05c8a523ae",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/job-123835883822.log",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "abc2b4c79a586579e01a90ba9521324ccdb92ff3",
+      "bytes": 197323,
+      "sha256": "68a0cb36dbfe2468226505803c259d3e2213465f36073d75db705c935c59c318",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/job-123837210676.log",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "daf31225ae827f4a26f13e0785f7d36215905001",
+      "bytes": 7548,
+      "sha256": "fe93fc5796e8cc94e7eb84aef040e1582bff207b6eb726fc9e384b8b466d5813",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/job-123837255253.log",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "b27f985405774ea63df92676b68654b536ef7b12",
+      "bytes": 125946,
+      "sha256": "6722b8d80845d8a43dc685a25844beb67d93272a6c048d4ffcd0ae2bd59f75b4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/job-123838411507.log",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "b2541a3008b0174c16120e13652ccab765f7118d",
+      "bytes": 6940,
+      "sha256": "110abac868ee6310cd4b8dbacfeff1f61cc6dccf340e67edf1936490b3a4234f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/jobs.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "2fc83f85c731a7c86bd1c11a6e811cefe71e2ca9",
+      "bytes": 14448,
+      "sha256": "8f3f8c9b5b383cecd5723ad15c1556b162e5fd6d6bcbec9c82635a1e3a1ef362",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/permanent-large-derived-assets.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "cd096682caf310e9c5fc2d8949f05e4dc11a475c",
+      "bytes": 727,
+      "sha256": "9b7517a48c5a5e98c4927467f8b7775131ddd1a1769106b0632762f6faafe97c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/receipt.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "d6b9a59e526327d204476060dd03f08a4e234139",
+      "bytes": 14247,
+      "sha256": "116a7ac137b3145414fa45cf4a9883dee3913b5e2e9538097287b28192de5860",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/release-ref.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "d4b28974caf223cd9f3ee294f755643e2478bddc",
+      "bytes": 558,
+      "sha256": "4e33270574984b129da48912da0e507169b95a9ece91fee7140f85f36145d182",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/release.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "2a2a969494cac6da9d45a61fdc222f359acd030b",
+      "bytes": 38694,
+      "sha256": "24f466b1ca78242602cd20d37f2966d5129714877e941cd7c06d080e68df2455",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/run.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "a10ca72d69827259fd3f8cf99ff2531ffcc6edec",
+      "bytes": 14419,
+      "sha256": "cfacbcc041f8bb0a7a1ed7a1ae8d071d7f753948fa7c0805cc6b6f47cf159aef",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/source/.github__workflows__mainchip-net459-diode-prune.yml",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "63827f4d6f6fa21f739bc44b6c0acee41d7d5f4c",
+      "bytes": 20288,
+      "sha256": "0ba01095832147096dc895926d28266789243201ee09ecf57e758931d7741f3d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-full-antenna-readback-terminal-40985634146/source/scripts__mainchip-full-antenna-readback-pins.json",
+      "source": "1c670413ee36c81993c2f632086e39bc03987a06",
+      "git_blob": "96e2018dc488d8a13c3e201feb9919414d7af6fa",
+      "bytes": 1089,
+      "sha256": "70813988537889e2800e4da79fb45c221fc3067bb8270873c3eb654d1c08c0d1",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v136": [
+    {
+      "run": 40985634146,
+      "source": "bd415ce0d3a5edd30f2d7278be7c8318aa297e56",
+      "release_id": 428558843,
+      "tag": "cloud-results-40985634146-1-mainchip-full-antenna-readback",
+      "exact_source": true,
+      "empty": true,
+      "independently_reserved_before_acquisition": true,
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/40985634146"
     }
   ]
 }

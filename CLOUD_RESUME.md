@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v135
+# Cloud continuation — checkpoint v136
 
-Updated: 2026-10-30T01:33:29.057509+00:00
+Updated: 2026-10-30T01:40:18.992209+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint v135: local project workspace and known project working/generated paths remain empty; no local CAD or native payload was created. All work/evidence is on GitHub. Full antenna diagnosis40983327823 examined4488582 checks across143706 reported nets and306576pins:609 violating nets,697pins,916 checks, all cumulative-area rules. Every violation is identical before/after; only nonviolatingnet459 report semantics change. Its final release publication failed on an empty stderr upload and remains failed, preserved in40files at9f66fe1c plus permanent complete net censuses. Corrected sourcebd415ce0 preserves exact empty outputs inside the permanent plan; fresh run40985634146/release428558843 has passed source controls and is reading the complete reports. CDR target join40982575089 and exact header/compiler readback40984220615 identified an actual double/%d bug in the v1 sheet-resistance observation, not a physical resistance change. Versioned correction40985242991 on53af0b84 passed full build, original component equivalence and149788 typed trace records; complete43-file proof03dde6e0 is imported. Original v1 evidence and strict capacitor-order mismatch remain preserved. Actual reduced-element ownership, electrical/PHY acceptance and final current-chip timing stay open.
+Cloud-only checkpoint v136: corrected full antenna readback40985634146 completed successfully onbd415ce0. All4 executed jobs passed;17positive/42refusal source controls passed and native candidate execution was intentionally skipped. Complete40-file proof1c670413,18 permanent derived release assets and3 exact empty outputs were verified; both full net censuses remain permanent27MB assets. The full424622132-byte baseline/candidate reports were parsed on the runner and all declared capsule members authenticated. Existing609net/697pin/916cumulative-area violations are unchanged, so this is diagnosis/publication completion, not a physical repair or timing acceptance. The original40983327823 publication failure is retained. Prior v135 imports include completed CDR v2 full build/component qualification03dde6e0. No native job remains active in this snapshot. All source, computation, native archives and results remain on GitHub; local project/generated paths and CAD processes remain empty. Next work is cloud-only physical antenna ownership/repair and CDR reduced-resistor ancestry followed by original electrical and current-chip timing gates.
 
 Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9140,5 +9141,12 @@ Local project/tmp/native processes verified absent. Inventory374 exact cloud han
 ### 2026-10-30T01:33:29.057509+00:00 — cloud-only checkpoint v135
 
 Cloud-only checkpoint v135: local project workspace and known project working/generated paths remain empty; no local CAD or native payload was created. All work/evidence is on GitHub. Full antenna diagnosis40983327823 examined4488582 checks across143706 reported nets and306576pins:609 violating nets,697pins,916 checks, all cumulative-area rules. Every violation is identical before/after; only nonviolatingnet459 report semantics change. Its final release publication failed on an empty stderr upload and remains failed, preserved in40files at9f66fe1c plus permanent complete net censuses. Corrected sourcebd415ce0 preserves exact empty outputs inside the permanent plan; fresh run40985634146/release428558843 has passed source controls and is reading the complete reports. CDR target join40982575089 and exact header/compiler readback40984220615 identified an actual double/%d bug in the v1 sheet-resistance observation, not a physical resistance change. Versioned correction40985242991 on53af0b84 passed full build, original component equivalence and149788 typed trace records; complete43-file proof03dde6e0 is imported. Original v1 evidence and strict capacitor-order mismatch remain preserved. Actual reduced-element ownership, electrical/PHY acceptance and final current-chip timing stay open.
+
+Local project/tmp/native processes verified absent. Inventory380 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-30T01:40:18.992209+00:00 — cloud-only checkpoint v136
+
+Cloud-only checkpoint v136: corrected full antenna readback40985634146 completed successfully onbd415ce0. All4 executed jobs passed;17positive/42refusal source controls passed and native candidate execution was intentionally skipped. Complete40-file proof1c670413,18 permanent derived release assets and3 exact empty outputs were verified; both full net censuses remain permanent27MB assets. The full424622132-byte baseline/candidate reports were parsed on the runner and all declared capsule members authenticated. Existing609net/697pin/916cumulative-area violations are unchanged, so this is diagnosis/publication completion, not a physical repair or timing acceptance. The original40983327823 publication failure is retained. Prior v135 imports include completed CDR v2 full build/component qualification03dde6e0. No native job remains active in this snapshot. All source, computation, native archives and results remain on GitHub; local project/generated paths and CAD processes remain empty. Next work is cloud-only physical antenna ownership/repair and CDR reduced-resistor ancestry followed by original electrical and current-chip timing gates.
 
 Local project/tmp/native processes verified absent. Inventory380 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
