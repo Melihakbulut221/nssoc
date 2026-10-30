@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "/work/inner.py", line 102, in <module>
+    if __name__=="__main__":sys.exit(main())
+                                     ^^^^^^
+  File "/work/inner.py", line 100, in main
+    c.finish_record(OUT/"trial-inner-result.json",report,"FAIL_SINGLE_ANTENNA_TRIAL_ENGINE",primary)
+  File "/work/tail-source/scripts/mainchip_witness_engine_build_contract.py", line 205, in finish_record
+    raise primary
+  File "/work/inner.py", line 75, in main
+    native("prepare")
+  File "/work/inner.py", line 74, in native
+    run(report,"trial-"+phase,[engine,"-no_init","-exit","-python",script],2400)
+  File "/work/inner.py", line 39, in run
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/work/inner.py", line 20, in run
+    c.require(p.returncode==0,label+" failed")
+  File "/work/tail-source/scripts/mainchip_witness_engine_build_contract.py", line 26, in require
+    raise ValueError(reason)
+ValueError: trial-prepare failed
