@@ -1,0 +1,944 @@
+{
+  "acceptance": {
+    "electrical_accepted": false,
+    "full_phy_accepted": false,
+    "geometry_change_selected": false,
+    "physical_acceptance": false,
+    "thresholds_changed": false,
+    "timing_accepted": false
+  },
+  "actual_electrical_producer": {
+    "attempt": 1,
+    "native_result_pins": {
+      "constant_one": {
+        "bytes": 1454488,
+        "path": "docs/evidence/cdr-drain-m1-loaded-native-terminal-41017290646/groups/constant_one/direct/cdr-drain-m1-loaded-constant_one-41017290646-1.native-result.json",
+        "proof_commit": "0613cae4b04df2dfe083851a5fa399bc0559716a",
+        "release_id": 428734039,
+        "sha256": "8abd44ebdf5d2263d22207c6adfe3f161cd73eada9fafac50fcc628c0f11fe2f"
+      },
+      "nominal_early": {
+        "bytes": 1472800,
+        "path": "docs/evidence/cdr-drain-m1-loaded-native-terminal-41017290646/groups/nominal_early/direct/cdr-drain-m1-loaded-nominal_early-41017290646-1.native-result.json",
+        "proof_commit": "0613cae4b04df2dfe083851a5fa399bc0559716a",
+        "release_id": 428733758,
+        "sha256": "ecc0d1112b4712ea71eef545c3133bfe80e8fdd2d624ebaf230f8033c1e71057"
+      }
+    },
+    "proof_commit": "0613cae4b04df2dfe083851a5fa399bc0559716a",
+    "run": 41017290646,
+    "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5"
+  },
+  "diagnosis": {
+    "constant_one": {
+      "failing_predicate": "abs(mean_output) <= 0.002 in the constant branch of vi_phase_ok (worker line 317)",
+      "meaning": "The reported mean VI output difference -0.0038218048727381667 V exceeds the unchanged absolute 0.002 V bound. Mean VI current -9.962987650624932e-7 A satisfies the independent absolute 5e-6 A bound; VI bias passes. data_passed, comparator phase_passed and devices_passed are true, but vi.passed is false, so the normal final conjunction rejects.",
+      "not_an_unknown_interface_gate": "Top-level phase_passed is comparator phase only. interface_observations at line 322 is diagnostic, with no additional acceptance predicate. The accepted field starts false and is not assigned true by this worker; it does not identify an additional hidden rejection."
+    },
+    "nominal_early": {
+      "VI": "Mean current -3.4077891515582365e-5 A has the early sign but does not reach 50e-6 A. Mean output -0.01145021331185478 V has the required early sign and exceeds the 0.005 V magnitude bound. VI bias passes; VI phase and combined VI fail.",
+      "comparator_phase": "Mean -0.011006617565119083 V has the early sign but does not reach the required direction-signed 0.03 V.",
+      "data_and_timing": "All four sampler checks and both XOR checks report passed=false. The complete scalar projections above preserve the observed margins, wrong-sign counts, below-100mV counts and maximum delays; full per-bit arrays remain in the pinned raw native results.",
+      "hbt_interpretation": "These four raw minimum_active_vce_v values are below 0.4 V. The other reported HBT voltage/current maxima remain within the source gates; gain device xpd.xd0060 already reports maximum absolute VCE 1.575436926419237 V against 1.6 V. This does not justify a global common-mode change.",
+      "hbt_minimum_vce_failures": [
+        "xpd.xd0061",
+        "xpd.xd0062",
+        "xpd.xd0115",
+        "xpd.xd0116"
+      ],
+      "other_device_gates": "The prior full read-only inspection found all 50 MOS rows passing, all 42 individual MOS tail currents positive, all 16 stage-current minima above 0.0005 A, both HBT-tail minima above 0.0005 A and all seven capacitor maxima below 1.6 V. No waveform or threshold computation was performed locally."
+    }
+  },
+  "document_parent": "4980df51002ed4a7f85b5e967ab0acf8abb84bf3",
+  "execution_and_changes": {
+    "local_authored_execution": false,
+    "local_native_acquisition": false,
+    "new_dispatch": false,
+    "new_hosted_execution": false,
+    "new_reservation": false,
+    "only_added_inert_document": "docs/evidence/cdr-drain-m1-loaded-gate-diagnosis-41017290646.json",
+    "production_or_method_or_workflow_changes": false,
+    "read_only_source_and_derived_JSON_inspection": true
+  },
+  "fresh_RC_archive_metadata_only": {
+    "all_parts_and_combined_bytes_verified": true,
+    "bytes": 59924645,
+    "parts": 1,
+    "sha256": "c35e126127cd9217b5448f6dba0362079310a3ca4ae48ba8c145fc6921735aa3"
+  },
+  "fresh_composed_RC_lineage": {
+    "canonical_members": 496,
+    "complete_graph_members": 138,
+    "current_graph_run": 41003747027,
+    "current_members": 75,
+    "current_physical_run": 41000358737,
+    "fresh_target_terminal_bindings": {
+      "T003_D": {
+        "component": 17,
+        "native_cluster": 28,
+        "native_net": "$131",
+        "reduced_resistor_identity_assumed": false,
+        "terminals": [
+          {
+            "anchor": "T003_D",
+            "instance": "XD0003",
+            "model": "sg13_lv_nmos",
+            "native_cluster": 28,
+            "native_id": 3,
+            "native_net": "$131",
+            "node": "w_T003_D",
+            "parameters": {
+              "ad": "12.24p",
+              "as": "12.24p",
+              "l": "0.3u",
+              "m": "1",
+              "ng": "1",
+              "pd": "72.68u",
+              "ps": "72.68u",
+              "rfmode": "0",
+              "w": "36u"
+            },
+            "terminal": "D"
+          },
+          {
+            "anchor": "T004_D",
+            "instance": "XD0004",
+            "model": "sg13_lv_nmos",
+            "native_cluster": 28,
+            "native_id": 4,
+            "native_net": "$131",
+            "node": "w_T004_D",
+            "parameters": {
+              "ad": "12.24p",
+              "as": "12.24p",
+              "l": "0.3u",
+              "m": "1",
+              "ng": "1",
+              "pd": "72.68u",
+              "ps": "72.68u",
+              "rfmode": "0",
+              "w": "36u"
+            },
+            "terminal": "D"
+          },
+          {
+            "anchor": "T005_D",
+            "instance": "XD0005",
+            "model": "sg13_lv_nmos",
+            "native_cluster": 28,
+            "native_id": 5,
+            "native_net": "$131",
+            "node": "w_T005_D",
+            "parameters": {
+              "ad": "12.24p",
+              "as": "12.24p",
+              "l": "0.3u",
+              "m": "1",
+              "ng": "1",
+              "pd": "72.68u",
+              "ps": "72.68u",
+              "rfmode": "0",
+              "w": "36u"
+            },
+            "terminal": "D"
+          },
+          {
+            "anchor": "T006_D",
+            "instance": "XD0006",
+            "model": "sg13_lv_nmos",
+            "native_cluster": 28,
+            "native_id": 6,
+            "native_net": "$131",
+            "node": "w_T006_D",
+            "parameters": {
+              "ad": "12.24p",
+              "as": "12.24p",
+              "l": "0.3u",
+              "m": "1",
+              "ng": "1",
+              "pd": "72.68u",
+              "ps": "72.68u",
+              "rfmode": "0",
+              "w": "36u"
+            },
+            "terminal": "D"
+          },
+          {
+            "anchor": "T061_E",
+            "instance": "XD0061",
+            "model": "npn13g2",
+            "native_cluster": 28,
+            "native_id": 61,
+            "native_net": "$131",
+            "node": "w_T061_E",
+            "parameters": {
+              "le": "0.900u",
+              "nx": "2",
+              "we": "0.070u"
+            },
+            "terminal": "E"
+          },
+          {
+            "anchor": "T062_E",
+            "instance": "XD0062",
+            "model": "npn13g2",
+            "native_cluster": 28,
+            "native_id": 62,
+            "native_net": "$131",
+            "node": "w_T062_E",
+            "parameters": {
+              "le": "0.900u",
+              "nx": "2",
+              "we": "0.070u"
+            },
+            "terminal": "E"
+          },
+          {
+            "anchor": "T064_E",
+            "instance": "XD0064",
+            "model": "npn13g2",
+            "native_cluster": 28,
+            "native_id": 64,
+            "native_net": "$131",
+            "node": "w_T064_E",
+            "parameters": {
+              "le": "0.900u",
+              "nx": "2",
+              "we": "0.070u"
+            },
+            "terminal": "E"
+          },
+          {
+            "anchor": "T065_E",
+            "instance": "XD0065",
+            "model": "npn13g2",
+            "native_cluster": 28,
+            "native_id": 65,
+            "native_net": "$131",
+            "node": "w_T065_E",
+            "parameters": {
+              "le": "0.900u",
+              "nx": "2",
+              "we": "0.070u"
+            },
+            "terminal": "E"
+          }
+        ]
+      },
+      "T032_D": {
+        "component": 61,
+        "native_cluster": 124,
+        "native_net": "$680",
+        "reduced_resistor_identity_assumed": false,
+        "terminals": [
+          {
+            "anchor": "T032_D",
+            "instance": "XD0032",
+            "model": "sg13_lv_nmos",
+            "native_cluster": 124,
+            "native_id": 32,
+            "native_net": "$680",
+            "node": "w_T032_D",
+            "parameters": {
+              "ad": "12.24p",
+              "as": "12.24p",
+              "l": "0.3u",
+              "m": "1",
+              "ng": "1",
+              "pd": "72.68u",
+              "ps": "72.68u",
+              "rfmode": "0",
+              "w": "36u"
+            },
+            "terminal": "D"
+          },
+          {
+            "anchor": "T033_D",
+            "instance": "XD0033",
+            "model": "sg13_lv_nmos",
+            "native_cluster": 124,
+            "native_id": 33,
+            "native_net": "$680",
+            "node": "w_T033_D",
+            "parameters": {
+              "ad": "12.24p",
+              "as": "12.24p",
+              "l": "0.3u",
+              "m": "1",
+              "ng": "1",
+              "pd": "72.68u",
+              "ps": "72.68u",
+              "rfmode": "0",
+              "w": "36u"
+            },
+            "terminal": "D"
+          },
+          {
+            "anchor": "T034_D",
+            "instance": "XD0034",
+            "model": "sg13_lv_nmos",
+            "native_cluster": 124,
+            "native_id": 34,
+            "native_net": "$680",
+            "node": "w_T034_D",
+            "parameters": {
+              "ad": "12.24p",
+              "as": "12.24p",
+              "l": "0.3u",
+              "m": "1",
+              "ng": "1",
+              "pd": "72.68u",
+              "ps": "72.68u",
+              "rfmode": "0",
+              "w": "36u"
+            },
+            "terminal": "D"
+          },
+          {
+            "anchor": "T035_D",
+            "instance": "XD0035",
+            "model": "sg13_lv_nmos",
+            "native_cluster": 124,
+            "native_id": 35,
+            "native_net": "$680",
+            "node": "w_T035_D",
+            "parameters": {
+              "ad": "12.24p",
+              "as": "12.24p",
+              "l": "0.3u",
+              "m": "1",
+              "ng": "1",
+              "pd": "72.68u",
+              "ps": "72.68u",
+              "rfmode": "0",
+              "w": "36u"
+            },
+            "terminal": "D"
+          },
+          {
+            "anchor": "T115_E",
+            "instance": "XD0115",
+            "model": "npn13g2",
+            "native_cluster": 124,
+            "native_id": 115,
+            "native_net": "$680",
+            "node": "w_T115_E",
+            "parameters": {
+              "le": "0.900u",
+              "nx": "2",
+              "we": "0.070u"
+            },
+            "terminal": "E"
+          },
+          {
+            "anchor": "T116_E",
+            "instance": "XD0116",
+            "model": "npn13g2",
+            "native_cluster": 124,
+            "native_id": 116,
+            "native_net": "$680",
+            "node": "w_T116_E",
+            "parameters": {
+              "le": "0.900u",
+              "nx": "2",
+              "we": "0.070u"
+            },
+            "terminal": "E"
+          },
+          {
+            "anchor": "T118_E",
+            "instance": "XD0118",
+            "model": "npn13g2",
+            "native_cluster": 124,
+            "native_id": 118,
+            "native_net": "$680",
+            "node": "w_T118_E",
+            "parameters": {
+              "le": "0.900u",
+              "nx": "2",
+              "we": "0.070u"
+            },
+            "terminal": "E"
+          },
+          {
+            "anchor": "T119_E",
+            "instance": "XD0119",
+            "model": "npn13g2",
+            "native_cluster": 124,
+            "native_id": 119,
+            "native_net": "$680",
+            "node": "w_T119_E",
+            "parameters": {
+              "le": "0.900u",
+              "nx": "2",
+              "we": "0.070u"
+            },
+            "terminal": "E"
+          }
+        ]
+      }
+    },
+    "raw_result_sha256": "5595b9551a089d44ba451cf2bbf01efdb71849c466a7fdae2d26c0f5c4ac7f19",
+    "run": 41007572323,
+    "source_head": "593c0c056d3eedc69a90269cc7fbc376227a4983",
+    "summary_sha256": "8f03d88186919d434793cd3bafcfefa713311d2fe1314e4f227bfa0497d0edd3"
+  },
+  "hosted_measurements": {
+    "constant_one": {
+      "comparison_checks_scalar_projection": {
+        "x": {
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "minimum_signed_margin_v": 0.11344291351046822,
+          "passed": true,
+          "samples": 765,
+          "wrong_sign_samples": 0
+        },
+        "y": {
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "minimum_signed_margin_v": 0.11268855518825317,
+          "passed": true,
+          "samples": 765,
+          "wrong_sign_samples": 0
+        }
+      },
+      "interface_observations_diagnostic_only": {
+        "data_a": {
+          "commonmode_v": [
+            1.8153149372794368,
+            1.8327522502857323
+          ],
+          "differential_v": [
+            0.42409240225587874,
+            0.4485526950266414
+          ]
+        },
+        "data_c": {
+          "commonmode_v": [
+            1.8065777102317875,
+            1.8251561812959607
+          ],
+          "differential_v": [
+            0.30956376703723065,
+            0.41199520348344265
+          ]
+        },
+        "select0": {
+          "commonmode_v": [
+            1.1603769174365548,
+            1.1784037302829367
+          ],
+          "differential_v": [
+            0.18680096985396855,
+            0.26889970733442814
+          ]
+        },
+        "select1": {
+          "commonmode_v": [
+            1.1591845645194465,
+            1.1767178058394245
+          ],
+          "differential_v": [
+            0.18656008923929557,
+            0.268404507447884
+          ]
+        }
+      },
+      "native_result": {
+        "bytes": 1454488,
+        "path": "docs/evidence/cdr-drain-m1-loaded-native-terminal-41017290646/groups/constant_one/direct/cdr-drain-m1-loaded-constant_one-41017290646-1.native-result.json",
+        "proof_commit": "0613cae4b04df2dfe083851a5fa399bc0559716a",
+        "release_id": 428734039,
+        "sha256": "8abd44ebdf5d2263d22207c6adfe3f161cd73eada9fafac50fcc628c0f11fe2f"
+      },
+      "native_wave_hash_only": {
+        "acquired_locally": false,
+        "path": "native/wave.raw",
+        "sha256": "bc0b6c360337c15e9f60eaaed19fd4561302aef9f8a86a5b795ecf22be46f614"
+      },
+      "phase_average_v": -0.0008233725258049574,
+      "phase_gate": {
+        "constant_maximum_abs_v": 0.01,
+        "minimum_signed_v": 0.03,
+        "window_s": [
+          3.0000000000000004e-09,
+          3.3875e-08
+        ]
+      },
+      "raw_capture_metadata": {
+        "columns": 1152,
+        "complete_unmodified_rows": true,
+        "end_s": 3.424999999999999e-08,
+        "header_bytes": 37699,
+        "header_rows": 112701,
+        "max_step_s": 3.125000000020087e-13,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation",
+        "raw_bytes": 1038690115,
+        "raw_sha256": "bc0b6c360337c15e9f60eaaed19fd4561302aef9f8a86a5b795ecf22be46f614",
+        "start_s": 0.0
+      },
+      "reported_terminal": {
+        "accepted": false,
+        "case": "constant_one",
+        "cdr_accepted": false,
+        "data_passed": true,
+        "devices_passed": true,
+        "diagnostics": [],
+        "error": "AssertionError('Actual whole-wire retimed sampling, loaded phase/current or device gate failed')",
+        "full_phy_accepted": false,
+        "phase_passed": true,
+        "returncode": 0,
+        "source_head": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+        "sources_unchanged": true,
+        "status": "REJECTED_WHOLE_MIM_PD500_LOADED",
+        "status_before_terminal": "REJECTED_WHOLE_MIM_PD500_LOADED",
+        "terminal_errors": [],
+        "terminal_finalization_complete": true
+      },
+      "sampler_checks_scalar_projection": {
+        "a": {
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "minimum_signed_margin_v": 0.29308055301761216,
+          "passed": true,
+          "samples": 765,
+          "wrong_sign_samples": 0
+        },
+        "b": {
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "minimum_signed_margin_v": 0.2889788725723752,
+          "passed": true,
+          "samples": 765,
+          "wrong_sign_samples": 0
+        },
+        "c": {
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "minimum_signed_margin_v": 0.191761265007559,
+          "passed": true,
+          "samples": 765,
+          "wrong_sign_samples": 0
+        },
+        "d": {
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "minimum_signed_margin_v": 0.19667962731038025,
+          "passed": true,
+          "samples": 765,
+          "wrong_sign_samples": 0
+        }
+      },
+      "selected_raw_hbt_rows": {
+        "xpd.xd0060": {
+          "maximum_alltime_abs_ic_per_emitter_a": 7.16234660003049e-05,
+          "maximum_alltime_abs_vbe_v": 0.7810139755233775,
+          "maximum_alltime_abs_vce_v": 1.550283317531573,
+          "minimum_active_vce_v": 1.512613302645127
+        },
+        "xpd.xd0061": {
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0015241700229787951,
+          "maximum_alltime_abs_vbe_v": 0.9137214229200598,
+          "maximum_alltime_abs_vce_v": 0.6988901089372206,
+          "minimum_active_vce_v": 0.4368313078297723
+        },
+        "xpd.xd0062": {
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0015302631565976318,
+          "maximum_alltime_abs_vbe_v": 0.9140275924789756,
+          "maximum_alltime_abs_vce_v": 0.6990896096479986,
+          "minimum_active_vce_v": 0.43809819413561746
+        },
+        "xpd.xd0115": {
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0015101146170780426,
+          "maximum_alltime_abs_vbe_v": 0.9131092740303544,
+          "maximum_alltime_abs_vce_v": 0.6721066520598753,
+          "minimum_active_vce_v": 0.41170000813759955
+        },
+        "xpd.xd0116": {
+          "maximum_alltime_abs_ic_per_emitter_a": 0.001516121038790823,
+          "maximum_alltime_abs_vbe_v": 0.913412175696841,
+          "maximum_alltime_abs_vce_v": 0.6723177069275057,
+          "minimum_active_vce_v": 0.4129518844785047
+        }
+      },
+      "vi": {
+        "actual_filter_connection": true,
+        "bias_passed": true,
+        "closed_loop": false,
+        "mean_output_difference_v": -0.0038218048727381667,
+        "mean_signed_current_a": -9.962987650624932e-07,
+        "minimum_active_tail_current_a": {
+          "xtx": 0.00025480579738272147,
+          "xty": 0.0002540528847733609
+        },
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "output_commonmode_v": [
+          1.9426501837547698,
+          1.94716991824906
+        ],
+        "passed": false,
+        "phase_limits": {
+          "constant_maximum_abs_current_a": 5e-06,
+          "constant_maximum_abs_voltage_v": 0.002,
+          "minimum_signed_current_a": 5e-05,
+          "minimum_signed_voltage_v": 0.005
+        },
+        "phase_passed": false,
+        "real_input_loading": true
+      }
+    },
+    "nominal_early": {
+      "comparison_checks_scalar_projection": {
+        "x": {
+          "below_100mv_samples": 676,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "minimum_signed_margin_v": -0.009200887526776029,
+          "passed": false,
+          "samples": 765,
+          "wrong_sign_samples": 48
+        },
+        "y": {
+          "below_100mv_samples": 724,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "minimum_signed_margin_v": -0.12376280154383394,
+          "passed": false,
+          "samples": 765,
+          "wrong_sign_samples": 382
+        }
+      },
+      "interface_observations_diagnostic_only": {
+        "data_a": {
+          "commonmode_v": [
+            1.809914376745208,
+            1.8545122759279522
+          ],
+          "differential_v": [
+            -0.4146065561583745,
+            0.43740534232203077
+          ]
+        },
+        "data_c": {
+          "commonmode_v": [
+            1.8012902711755103,
+            1.8429301296969698
+          ],
+          "differential_v": [
+            -0.3669327662178532,
+            0.39738670836905077
+          ]
+        },
+        "select0": {
+          "commonmode_v": [
+            1.158632379143112,
+            1.199054102590742
+          ],
+          "differential_v": [
+            -0.2195136835527216,
+            0.23866018872059303
+          ]
+        },
+        "select1": {
+          "commonmode_v": [
+            1.1591866468611114,
+            1.1957726608271264
+          ],
+          "differential_v": [
+            -0.21909077512642172,
+            0.2382950874977312
+          ]
+        }
+      },
+      "native_result": {
+        "bytes": 1472800,
+        "path": "docs/evidence/cdr-drain-m1-loaded-native-terminal-41017290646/groups/nominal_early/direct/cdr-drain-m1-loaded-nominal_early-41017290646-1.native-result.json",
+        "proof_commit": "0613cae4b04df2dfe083851a5fa399bc0559716a",
+        "release_id": 428733758,
+        "sha256": "ecc0d1112b4712ea71eef545c3133bfe80e8fdd2d624ebaf230f8033c1e71057"
+      },
+      "native_wave_hash_only": {
+        "acquired_locally": false,
+        "path": "native/wave.raw",
+        "sha256": "ca4a347492fbcd22a52d672513fb4523fd8108e89287a92deb26db681aa0e687"
+      },
+      "phase_average_v": -0.011006617565119083,
+      "phase_gate": {
+        "constant_maximum_abs_v": 0.01,
+        "minimum_signed_v": 0.03,
+        "window_s": [
+          3.0000000000000004e-09,
+          3.3875e-08
+        ]
+      },
+      "raw_capture_metadata": {
+        "columns": 1152,
+        "complete_unmodified_rows": true,
+        "end_s": 3.424999999999999e-08,
+        "header_bytes": 37699,
+        "header_rows": 113475,
+        "max_step_s": 3.125000000020087e-13,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation",
+        "raw_bytes": 1045823299,
+        "raw_sha256": "ca4a347492fbcd22a52d672513fb4523fd8108e89287a92deb26db681aa0e687",
+        "start_s": 0.0
+      },
+      "reported_terminal": {
+        "accepted": false,
+        "case": "nominal_early",
+        "cdr_accepted": false,
+        "data_passed": false,
+        "devices_passed": false,
+        "diagnostics": [],
+        "error": "AssertionError('Actual whole-wire retimed sampling, loaded phase/current or device gate failed')",
+        "full_phy_accepted": false,
+        "phase_passed": false,
+        "returncode": 0,
+        "source_head": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5",
+        "sources_unchanged": true,
+        "status": "REJECTED_WHOLE_MIM_PD500_LOADED",
+        "status_before_terminal": "REJECTED_WHOLE_MIM_PD500_LOADED",
+        "terminal_errors": [],
+        "terminal_finalization_complete": true
+      },
+      "sampler_checks_scalar_projection": {
+        "a": {
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 4.546875000000157e-11,
+          "minimum_signed_margin_v": 0.02187495149296281,
+          "passed": false,
+          "samples": 765,
+          "wrong_sign_samples": 0
+        },
+        "b": {
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 4.265624999999218e-11,
+          "minimum_signed_margin_v": 0.03147194608775679,
+          "passed": false,
+          "samples": 765,
+          "wrong_sign_samples": 0
+        },
+        "c": {
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 1.189062500000592e-10,
+          "minimum_signed_margin_v": -0.014001409249192425,
+          "passed": false,
+          "samples": 765,
+          "wrong_sign_samples": 33
+        },
+        "d": {
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 1.0265624999999363e-10,
+          "minimum_signed_margin_v": -0.030801001480912683,
+          "passed": false,
+          "samples": 765,
+          "wrong_sign_samples": 66
+        }
+      },
+      "selected_raw_hbt_rows": {
+        "xpd.xd0060": {
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0018182335234354452,
+          "maximum_alltime_abs_vbe_v": 0.9227092055744713,
+          "maximum_alltime_abs_vce_v": 1.575436926419237,
+          "minimum_active_vce_v": 1.0434077071705519
+        },
+        "xpd.xd0061": {
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0015562772556810475,
+          "maximum_alltime_abs_vbe_v": 0.9157935362359464,
+          "maximum_alltime_abs_vce_v": 0.698039791646348,
+          "minimum_active_vce_v": 0.34696458661649043
+        },
+        "xpd.xd0062": {
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0015624688378303316,
+          "maximum_alltime_abs_vbe_v": 0.9161040778399012,
+          "maximum_alltime_abs_vce_v": 0.6982390379197104,
+          "minimum_active_vce_v": 0.34809631850877
+        },
+        "xpd.xd0115": {
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0015390147432770766,
+          "maximum_alltime_abs_vbe_v": 0.9146153096982422,
+          "maximum_alltime_abs_vce_v": 0.6722532643979728,
+          "minimum_active_vce_v": 0.38113134636143065
+        },
+        "xpd.xd0116": {
+          "maximum_alltime_abs_ic_per_emitter_a": 0.001545191488509062,
+          "maximum_alltime_abs_vbe_v": 0.914921342807479,
+          "maximum_alltime_abs_vce_v": 0.672444671905839,
+          "minimum_active_vce_v": 0.38243268571611144
+        }
+      },
+      "vi": {
+        "actual_filter_connection": true,
+        "bias_passed": true,
+        "closed_loop": false,
+        "mean_output_difference_v": -0.01145021331185478,
+        "mean_signed_current_a": -3.4077891515582365e-05,
+        "minimum_active_tail_current_a": {
+          "xtx": 0.00025160346539408713,
+          "xty": 0.0002512831645117932
+        },
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "output_commonmode_v": [
+          1.9410590131447005,
+          1.9495866717550823
+        ],
+        "passed": false,
+        "phase_limits": {
+          "constant_maximum_abs_current_a": 5e-06,
+          "constant_maximum_abs_voltage_v": 0.002,
+          "minimum_signed_current_a": 5e-05,
+          "minimum_signed_voltage_v": 0.005
+        },
+        "phase_passed": false,
+        "real_input_loading": true
+      }
+    }
+  },
+  "proposed_hosted_existing_wave_diagnostic": {
+    "VI_contact_binding_source": "bind_native, worker lines 120-127; xxp collector vin, xxn collector vip, xyp collector vip, xyn collector vin. vip/vin are macro ports, not interchangeable aliases for every physical contact.",
+    "VI_role_binding": {
+      "xtx": "xpd.xd0169",
+      "xty": "xpd.xd0173",
+      "xxn": "xpd.xd0168",
+      "xxp": "xpd.xd0167",
+      "xyn": "xpd.xd0172",
+      "xyp": "xpd.xd0171"
+    },
+    "causality_proved": false,
+    "input_policy": "Bind the exact current case source/run/releases, full archive/member maps, source controls and independent exact-source reservation before runner-only acquisition. Do not substitute earlier 409067 waveforms, old reduced resistor IDs or old physical evidence.",
+    "native_payloads_local": false,
+    "new_simulation_requested_by_this_document": false,
+    "reduced_element_ownership_proved": false,
+    "status": "PROPOSED_NOT_IMPLEMENTED_OR_EXECUTED_BY_THIS_DOCUMENT",
+    "steps": [
+      "Replay the existing reported scalar gates with the unchanged measurement functions on GitHub, preserving all complete source reports and exact input hash census.",
+      "At each actual minimum-VCE time for xpd.xd0061/62/115/116, retain simultaneous saved C/B/E voltages, device currents, upper-gain contacts and every freshly joined tail-drain contact. Use the T003_D/T032_D full terminal bindings copied above, not an assumed reduced resistor label.",
+      "For constant_one, retain the four recorded VI collector-current contributions xpd.xd0167/0168/0172/0171, macro vip/vin voltages and their actual collector-contact voltages, filter MIM terminals, time-window endpoints and settling behavior. Distinguish persistent offset, access drops and incomplete settling as hypotheses rather than asserting a cause from mean values.",
+      "Explicitly census saved vectors before analysis. Mark any unsaved internal reduced-RC node or unavailable resistor-endpoint voltage as unobserved; do not fabricate branch currents, resistor ownership, KCL or recovery from missing signals. Any later selective-probe simulation would require its own actual source and evidence.",
+      "Retain original timing, HBT/MOS/capacitor, phase and VI predicates unchanged. A diagnostic or improved individual metric is not an electrical or PHY acceptance."
+    ],
+    "voltage_recovery_guaranteed": false
+  },
+  "repository": "Melihakbulut221/nssoc",
+  "schema": 1,
+  "scope": "Inert evidence document only. Static source and already-hosted derived JSON inspection; no new computation, tests, simulation, native acquisition, geometry change or acceptance.",
+  "source_predicate_authority": {
+    "bytes": 29911,
+    "excerpts": [
+      {
+        "end_line": 186,
+        "path": "scripts/cloud_cdr_drain_m1_loaded.py",
+        "start_line": 186,
+        "text": "    assert UI==125e-12 and START==2e-9 and STOP==START+258*UI and STEP==.3125e-12"
+      },
+      {
+        "end_line": 264,
+        "path": "scripts/cloud_cdr_drain_m1_loaded.py",
+        "start_line": 264,
+        "text": "        r['raw_capture']=capture;active=t>=START"
+      },
+      {
+        "end_line": 290,
+        "path": "scripts/cloud_cdr_drain_m1_loaded.py",
+        "start_line": 268,
+        "text": "        def measure(p,n,expected,edges,phases,limit):\n            delta=v(p)-v(n);signed=[];delays=[]\n            for bit,edge in zip(expected,edges,strict=True):\n                sign=2*bit-1\n                for phase in phases:signed.append(float(np.interp(edge+phase*UI,t,delta))*sign)\n                ids=np.flatnonzero((t>=edge)&(t<=edge+.95*UI));bad=ids[delta[ids]*sign<.1]\n                delays.append(0. if not len(bad)else float(t[bad[-1]]-edge+STEP))\n            return dict(samples=len(signed),minimum_signed_margin_v=min(signed),wrong_sign_samples=sum(x<=0 for x in signed),below_100mv_samples=sum(x<.1 for x in signed),maximum_clock_to_valid_s=max(delays),clock_to_valid_by_bit_s=delays,passed=min(signed)>=.1 and max(delays)<=limit*UI)\n        indices=range(1,256);current=[bits[i]for i in indices];previous=[bits[i-1]for i in indices];edge_bits=current if offset<0 else previous\n        rising=[START+(i+.5)*UI for i in indices];falling=[START+i*UI for i in indices]\n        expected=dict(a=current,b=edge_bits,c=previous,d=edge_bits)\n        sampler_checks={tag:measure('xpd.'+tag+'qp','xpd.'+tag+'qn',expected[tag],falling if tag=='b'else rising,(.3,.6,.9),.3)for tag in 'abcd'}\n        xbits=[a^b for a,b in zip(current,edge_bits,strict=True)];ybits=[a^b for a,b in zip(previous,edge_bits,strict=True)]\n        comparisons=dict(x=measure('xp','xn',xbits,rising,(.6,.75,.9),.6),y=measure('yp','yn',ybits,rising,(.6,.75,.9),.6))\n        delta=(v('xp')-v('xn'))-(v('yp')-v('yn'));window=(t>=START+8*UI)&(t<=START+255*UI)\n        area=float(np.trapezoid(delta[window],t[window]));average=area/float(t[window][-1]-t[window][0]);direction=1 if offset>0 else-1\n        phase_ok=abs(average)<=.01 if constant else direction*average>=.03\n        checks={}\n        for name,dev in devices.items():\n            vc,vb,ve,_=map(v,dev['nodes']);ic=d['@q.'+name+'.qnpn13g2[ic]'];checks[name]=dict(minimum_active_vce_v=float((vc-ve)[active].min()),maximum_alltime_abs_vce_v=float(abs(vc-ve).max()),maximum_alltime_abs_vbe_v=float(abs(vb-ve).max()),maximum_alltime_abs_ic_per_emitter_a=float(abs(ic).max()/dev['nx']))\n        safe=all(x['minimum_active_vce_v']>=.4 and x['maximum_alltime_abs_vce_v']<=1.6 and x['maximum_alltime_abs_vbe_v']<=1 and x['maximum_alltime_abs_ic_per_emitter_a']<.003 for x in checks.values())\n        tail_names=bound['tail_names']\n        tails={n:float(d['@q.'+n+'.qnpn13g2[ic]'][active].min())for n in tail_names};safe=safe and min(tails.values())>=.0005"
+      },
+      {
+        "end_line": 309,
+        "path": "scripts/cloud_cdr_drain_m1_loaded.py",
+        "start_line": 291,
+        "text": "        mos_checks={}\n        for name,dev in mos.items():\n            vd,vg,vs,vb=map(v,dev['nodes']);ids=d['@n.'+name+'.nsg13_lv_nmos[ids]']\n            peaks={label:float(abs(value).max())for label,value in [('vds',vd-vs),('vgs',vg-vs),('vgd',vg-vd),('vdb',vd-vb),('vsb',vs-vb)]}\n            mos_checks[name]=dict(peaks_v=peaks,limit_v=1.32,minimum_active_vds_v=float((vd-vs)[active].min()),minimum_active_drain_current_a=float(ids[active].min()),maximum_alltime_abs_drain_current_a=float(abs(ids).max()),passed=max(peaks.values())<=1.32 and float((vd-vs)[active].min())>=0)\n        mos_tails={name:mos_checks[name]['minimum_active_drain_current_a']for name in bound['mos_tail_names']}\n        assert len(mos_checks)==50 and len(mos_tails)==42\n        # Parallel devices are one physical stage tail. Sum their instantaneous\n        # native currents before applying the unchanged 0.5mA stage-current gate.\n        # Every individual MOS still passes the original terminal-voltage gates.\n        stage_tail_currents={key:float(sum((d['@n.'+n+'.nsg13_lv_nmos[ids]']for n in names),np.zeros(len(t)))[active].min())for key,names in bound['mos_tail_groups'].items()}\n        assert len(stage_tail_currents)==16\n        safe=safe and all(x['passed']for x in mos_checks.values())and min(mos_tails.values())>=0 and min(stage_tail_currents.values())>=.0005\n        r['mos_checks']=mos_checks;r['minimum_active_mos_tail_current_a']=mos_tails\n        r['minimum_active_stage_tail_current_a']=stage_tail_currents\n        r['stage_tail_current_gate_a']=.0005\n        cap_checks={name:dict(maximum_alltime_abs_v=float(abs(v(dev['nodes'][0])-v(dev['nodes'][1])).max()),limit_v=1.6)for name,dev in caps.items()};safe=safe and all(x['maximum_alltime_abs_v']<=1.6 for x in cap_checks.values())\n        data_ok=all(x['passed']for x in sampler_checks.values())and all(x['passed']for x in comparisons.values())and phase_ok\n        r.update(expected_samples=expected,expected_comparisons=dict(x=xbits,y=ybits),sampler_checks=sampler_checks,comparisons=comparisons,phase_average_v=average,phase_passed=phase_ok,phase_gate=dict(minimum_signed_v=.03,constant_maximum_abs_v=.01,window_s=[START+8*UI,START+255*UI]),device_checks=checks,minimum_active_tail_current_a=tails,native_cap_voltage_checks=cap_checks,devices_passed=safe,data_passed=data_ok)"
+      },
+      {
+        "end_line": 326,
+        "path": "scripts/cloud_cdr_drain_m1_loaded.py",
+        "start_line": 312,
+        "text": "        def ic(name):return d['@q.'+bound['vi_names'][name]+'.qnpn13g2[ic]']\n        current=(ic('xxp')+ic('xyn'))-(ic('xxn')+ic('xyp'))\n        output_delta=v('vip')-v('vin')\n        def mean(values):return float(np.trapezoid(values[window],t[window])/(t[window][-1]-t[window][0]))\n        mean_current=mean(current);mean_output=mean(output_delta)\n        vi_phase_ok=(abs(mean_current)<=5e-6 and abs(mean_output)<=.002)if constant else(direction*mean_current>=50e-6 and direction*mean_output>=.005)\n        vi_tails={tag:float(ic(tag)[active].min())for tag in ('xtx','xty')}\n        vi_bias_ok=min(vi_tails.values())>=.0001\n        vi_ok=vi_phase_ok and vi_bias_ok\n        r['vi']=dict(mean_signed_current_a=mean_current,mean_output_difference_v=mean_output,minimum_active_tail_current_a=vi_tails,phase_passed=vi_phase_ok,bias_passed=vi_bias_ok,passed=vi_ok,phase_limits=dict(minimum_signed_current_a=50e-6,minimum_signed_voltage_v=.005,constant_maximum_abs_current_a=5e-6,constant_maximum_abs_voltage_v=.002),output_commonmode_v=[float(((v('vip')+v('vin'))/2)[active].min()),float(((v('vip')+v('vin'))/2)[active].max())],native_mim_geometry_um=[40,40],real_input_loading=True,actual_filter_connection=True,closed_loop=False)\n        r['interface_observations']={name:dict(commonmode_v=[float(((v(p)+v(n))/2)[active].min()),float(((v(p)+v(n))/2)[active].max())],differential_v=[float((v(p)-v(n))[active].min()),float((v(p)-v(n))[active].max())])for name,p,n in [('data_a','xpd.adp','xpd.adn'),('data_c','xpd.cdp','xpd.cdn'),('select0','xpd.s0p','xpd.s0n'),('select1','xpd.s1p','xpd.s1n')]}\n        assert all(sha(Path(f))==digest for f,digest in protected.items());r['sources_unchanged']=True;r['actual_fault_detected']=fault and not(data_ok and vi_ok)\n        passed=r['actual_fault_detected']if fault else safe and data_ok and vi_ok\n        r['status']='PASS_WHOLE_MIM_PD500_LOADED_SCREEN_NOT_CLOSED_LOOP_OR_PHY_SIGNOFF'if passed else'REJECTED_WHOLE_MIM_PD500_LOADED'\n        assert passed,'Actual whole-wire retimed sampling, loaded phase/current or device gate failed'"
+      }
+    ],
+    "path": "scripts/cloud_cdr_drain_m1_loaded.py",
+    "sha256": "a280107ba16a1c69651eac61b1709c78b0ce6245fb34cc79c28a3e5b590593d2",
+    "source": "4a2ff81505c2e8e5fa4b2320f6269794eff450e5"
+  },
+  "status": "READ_ONLY_DIAGNOSIS_OF_ACTUAL_REJECTED_ELECTRICAL_CASES",
+  "superseded_compact_projection": {
+    "correct_source": "Worker lines 287-288 explicitly assemble and evaluate the four HBT scalar predicates. The selected raw rows and source excerpts are retained here; the complete raw report is unchanged.",
+    "prior_display": "failed_device_checks = {}",
+    "projection_superseded_not_raw_report": true,
+    "raw_prior_evidence_preserved": true,
+    "reason": "The compact projection guessed a per-HBT passed field. HBT device_checks rows have only four scalar measurements and no passed key; MOS rows do have passed. An empty guessed-field projection is not evidence that HBT checks passed."
+  },
+  "unchanged_limits": {
+    "UI_s": 1.25e-10,
+    "VI": {
+      "constant_maximum_abs_mean_current_a": 5e-06,
+      "constant_maximum_abs_mean_output_v": 0.002,
+      "current": "(ic('xxp') + ic('xyn')) - (ic('xxn') + ic('xyp'))",
+      "minimum_active_tail_current_a": 0.0001,
+      "normal_minimum_direction_signed_mean_current_a": 5e-05,
+      "normal_minimum_direction_signed_mean_output_v": 0.005,
+      "output": "v(vip) - v(vin)"
+    },
+    "active_expression": "t >= START",
+    "comparator_phase": {
+      "constant_maximum_abs_mean_v": 0.01,
+      "early_direction": -1,
+      "late_direction": 1,
+      "normal_minimum_direction_signed_mean_v": 0.03,
+      "window": "[START + 8 * UI, START + 255 * UI]"
+    },
+    "data_ok": "all sampler passed and all comparison passed and phase_ok",
+    "delay_definition": "Last native sample below 0.1 V signed differential in [edge, edge + 0.95 UI], plus STEP; zero only when that interval has no failing sample.",
+    "fault_final_predicate": "actual_fault_detected = fault and not(data_ok and vi_ok); this is not used to accept either case diagnosed here",
+    "hbt": {
+      "maximum_alltime_abs_ic_per_emitter_a_exclusive": 0.003,
+      "maximum_alltime_abs_vbe_v": 1.0,
+      "maximum_alltime_abs_vce_v": 1.6,
+      "minimum_active_tail_current_a": 0.0005,
+      "minimum_active_vce_v": 0.4
+    },
+    "maximum_step_s": 3.125e-13,
+    "mim": {
+      "capacitors": 7,
+      "maximum_alltime_abs_voltage_v": 1.6
+    },
+    "mos": {
+      "devices": 50,
+      "individual_tail_currents": 42,
+      "maximum_abs_terminal_voltage_v": 1.32,
+      "minimum_active_vds_v": 0,
+      "minimum_individual_tail_current_a": 0,
+      "minimum_instantaneous_summed_stage_tail_current_a": 0.0005,
+      "parallel_stage_groups": 16
+    },
+    "normal_final_predicate": "safe and data_ok and vi_ok",
+    "sampler": {
+      "maximum_clock_to_valid_UI": 0.3,
+      "maximum_clock_to_valid_ps": 37.5,
+      "minimum_signed_margin_v": 0.1,
+      "sample_phases_UI": [
+        0.3,
+        0.6,
+        0.9
+      ]
+    },
+    "start_s": 2e-09,
+    "stop_expression": "START + 258 * UI",
+    "vi_ok": "vi_phase_ok and vi_bias_ok",
+    "xor_comparison": {
+      "maximum_clock_to_valid_UI": 0.6,
+      "maximum_clock_to_valid_ps": 75,
+      "minimum_signed_margin_v": 0.1,
+      "sample_phases_UI": [
+        0.6,
+        0.75,
+        0.9
+      ]
+    }
+  }
+}
