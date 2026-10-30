@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/home/runner/work/nssoc/nssoc/scripts/check_mainchip_bulk_postdrt_integration.py", line 328, in <module>
+    if __name__=="__main__":main()
+                            ^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_mainchip_bulk_postdrt_integration.py", line 326, in main
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_mainchip_bulk_postdrt_integration.py", line 312, in main
+    result=controls()
+           ^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_mainchip_bulk_postdrt_integration.py", line 284, in controls
+    projected=projection_controls()
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_mainchip_bulk_postdrt_integration.py", line 232, in projection_controls
+    try:host.source_gate()
+        ^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_bulk_postdrt_antenna.py", line 37, in source_gate
+    f.require(f.file_digest(c.secure_file(ROOT,PRIOR_METHOD))["sha256"]==PRIOR_METHOD_SHA,"unchanged inherited tail method")
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_witness_engine_build_contract.py", line 49, in secure_file
+    require(current.is_file(), "missing regular file")
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_witness_engine_build_contract.py", line 26, in require
+    raise ValueError(reason)
+ValueError: missing regular file
