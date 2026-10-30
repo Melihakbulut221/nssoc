@@ -1,0 +1,322 @@
+{
+  "actual_jobs": {
+    "preserve-job-log": {
+      "conclusion": "success",
+      "id": 123872087105,
+      "status": "completed"
+    },
+    "readback": {
+      "conclusion": "success",
+      "id": 123872124809,
+      "status": "completed"
+    },
+    "source-controls": {
+      "conclusion": "success",
+      "id": 123871852290,
+      "status": "completed"
+    }
+  },
+  "actual_native_controls": {
+    "new_geometry_controls": {
+      "positive": 6,
+      "real_geometry_feasible": false,
+      "status": "PASS_DRAIN_ACCESS_PINNED_PYA_SYNTHETIC_CONTROLS",
+      "synthetic_geometry": true
+    },
+    "original_point_controls": {
+      "positive": 5,
+      "real_target_geometry_qualified": false,
+      "status": "PASS_PINNED_PYA_SYNTHETIC_POINT_CONTROLS",
+      "synthetic_geometry": true
+    }
+  },
+  "actual_source_controls": {
+    "archive": {
+      "lifecycle": 5,
+      "positive": 14,
+      "refusal": 80
+    },
+    "checker_finalizers": 5,
+    "feasibility": {
+      "positive": 8,
+      "refusal": 10
+    },
+    "overlay": {
+      "lifecycle": 11,
+      "positive": 11,
+      "refusal": 33
+    }
+  },
+  "branch": "codex/cdr-drain-access-feasibility",
+  "electrical_acceptance": false,
+  "full_phy_accepted": false,
+  "geometry_mutated": false,
+  "input_census": {
+    "every_member_authenticated": true,
+    "full_count": 6647,
+    "full_map": "cloud-cdr-access-overlay/complete-input-census.json",
+    "selected": {
+      "canonical-current-view/parent/layout/nssoc_cdr_pd500_resistor_v59.gds": {
+        "bytes": 960756,
+        "sha256": "fb8a0aea5b44627a513db62ed10fe87c66f30697930e1212d3689c7ae981c0c3"
+      },
+      "canonical-current-view/parent/physical/lvs_flat/result.lvsdb": {
+        "bytes": 2703128,
+        "sha256": "46f7b57763441747cacf5740887fdadd0bfbc75c40549effd86afb7a60dba276"
+      },
+      "canonical-current-view/wire/anchors08.json": {
+        "bytes": 1650535,
+        "sha256": "966b5465750b6b35cc24cd8e10dca94313061d17692c6c46e99c50bc5d4c6193"
+      },
+      "canonical-current-view/wire/device-locations01.json": {
+        "bytes": 686544,
+        "sha256": "11be358288af996c51a18bd7396ecce699ab84c9c5d93737a52d517dd0546a4f"
+      },
+      "canonical-current-view/wire/native05/result.json": {
+        "bytes": 290711,
+        "sha256": "eeddbaddc06d413309fafc7b396944ada5fb72aa79f90c8f929f3213c2101adb"
+      },
+      "canonical-current-view/wire/native05/wires.gds": {
+        "bytes": 3047888,
+        "sha256": "8b8e1c9cc7eacd1526dea4a69f5a4c7795e142226d01d1b0e45bdac2964f857d"
+      },
+      "canonical-current-view/wire/native05/wires.l2n": {
+        "bytes": 1972910,
+        "sha256": "4d0dd5ed072b2bd195ac779725100284aeabde99cad53597c2d4a6b2bca0be38"
+      },
+      "canonical-current-view/wire/pcell-inventory01.json": {
+        "bytes": 997178,
+        "sha256": "a4d4adef8f0a3764579b9ce0998da4de6d6bb21dd0e7773e7229ab45306e88d8"
+      },
+      "canonical-current-view/wire/source-pins.json": {
+        "bytes": 39228,
+        "sha256": "1d18f591616b6eba928beaca81fee3263942cf031b2ad4fbade9c1d7f35fafab"
+      },
+      "mim/precise/wire/anchors08.json": {
+        "bytes": 1652581,
+        "sha256": "853d03f8c167ecf501f7fdef7827767d21a3101c2aff59f4411447603f86078b"
+      },
+      "mim/precise/wire/rc03/pump_wires.ext": {
+        "bytes": 126027,
+        "sha256": "fc68906bc8298f6c3b9a1ec5c8d90226af3c4187edfd3dbfebbeb74b87a756bc"
+      },
+      "mim/precise/wire/rc03/pump_wires.res.ext": {
+        "bytes": 1975271,
+        "sha256": "0e97643edf6181531f56da5c9b896ffad194f9602afaaf0b2057e1376bca9f4c"
+      }
+    }
+  },
+  "limitations": [
+    "The explicit window is the five-constructor bounding union plus2000DBU, not whole-chip clearance.",
+    "Metal2/Metal3/via raw neighbours and exact ownership are retained; complete rule-based spacing/array legality is not qualified by the square-offset coverage.",
+    "FEOL/fill electrical ownership is not inferred from coordinates.",
+    "Constructor tile overlap and proven raw net ownership do not assign the complete reduced resistance to one physical tile.",
+    "No transient improvement, DRC/LVS/RC/electrical or PHY acceptance follows from this read-only observation."
+  ],
+  "local_native_payloads_imports_tests_calculations": false,
+  "measured_findings": [
+    "Both full raw Metal1 drain rails resolve to nmos$2$1 local box [750,0,910,36000], raw shape ordinal1. Target T003 path134_3/120_13 is wholly component17/$131; T032 path134_4/120_13 is wholly component61/$680.",
+    "Each target window preserves315 raw shapes across every GDS layer/datatype and12 hierarchy occurrences, including gate/diffusion/fill/labels with unproved nonconductor electrical ownership.",
+    "Both landing stacks are parent via-cell111_287 with one actual190-by-190 DBU Via1 cut and one actual190-by-190 DBU Via2 cut. Complete same-net M1/M2/M3 unions cover the cut and the tested5,10,50 DBU square offsets.",
+    "Recorded foreign Metal1 parallel-edge gaps include455,520,680 DBU; ird/irc geometries with no parallel-overlap pair are still preserved. These observations are not full Euclidean/corner clearance or DRC verdicts.",
+    "Shared nmos$2$1 occurs16times; no common PCell or other device is modified. No width, via count, extra contact, bias or transistor change is selected."
+  ],
+  "native_command": {
+    "argv": [
+      "/home/runner/work/_temp/cdr-access-runtime-40996847751/librelane.AppImage",
+      "python",
+      "/home/runner/work/nssoc/nssoc/scripts/cdr_drain_access_feasibility_native.py",
+      "--selected",
+      "/home/runner/work/nssoc/nssoc/cdr-access-overlay-l44z2y5u/selected",
+      "--output",
+      "/home/runner/work/nssoc/nssoc/cloud-cdr-access-overlay/overlay.json",
+      "--pins-sha256",
+      "faaa3d6485c64ec4b2111b2faca3f8cd9b680597239d83136830656887ade1d1"
+    ],
+    "elapsed_seconds": 48.25651553800003,
+    "label": "access-overlay",
+    "last_memory_sentinel_sample": {
+      "available_kib": 14947168,
+      "enumeration_disappearances": [],
+      "excluded_nonrunning": [],
+      "group_rss_kib": 493748,
+      "group_rss_may_double_count_shared_pages": true,
+      "members": [
+        {
+          "pgrp": 3412,
+          "pid": 3412,
+          "rss_kib": 493748,
+          "starttime": 105783
+        }
+      ],
+      "resampling_evidence": [],
+      "sampling_attempts": 1,
+      "sampling_elapsed_seconds": 0.005517650000001595,
+      "total_snapshot_budget_seconds": 0.1
+    },
+    "maximum_group_rss_kib": 10485760,
+    "memory_read_error": null,
+    "minimum_available_kib": 2097152,
+    "pid": 3412,
+    "process_group_cleanup": {
+      "remaining_live": [],
+      "remaining_nonrunning": [],
+      "signals": []
+    },
+    "returncode": 0,
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_bytes": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "supervision_failure": null
+  },
+  "native_lifecycle": {
+    "actions": [
+      {
+        "action": "owned_process_cleanup",
+        "completed": true,
+        "evidence": {
+          "remaining_live": [],
+          "remaining_nonrunning": [],
+          "signals": []
+        }
+      },
+      {
+        "action": "stop_heartbeat",
+        "completed": true,
+        "evidence": null
+      },
+      {
+        "action": "join_heartbeat",
+        "completed": true,
+        "evidence": null
+      },
+      {
+        "action": "restore_signal_2",
+        "completed": true,
+        "evidence": {
+          "restored": true,
+          "signal": 2
+        }
+      },
+      {
+        "action": "restore_signal_15",
+        "completed": true,
+        "evidence": {
+          "restored": true,
+          "signal": 15
+        }
+      }
+    ],
+    "errors": [],
+    "primary_error": null
+  },
+  "permanent_archive": {
+    "asset": {
+      "browser_download_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-40996847751-1-cdr-drain-access-feasibility/cdr-drain-access-feasibility-evidence.tar.gz",
+      "content_type": "application/octet-stream",
+      "created_at": "2026-10-30T03:23:53Z",
+      "digest": "sha256:4032c042215696be50dfcd7b48b580ebf93f2d73f4b4237164c9e97b9cd30756",
+      "download_count": 0,
+      "id": 690781640,
+      "label": "",
+      "name": "cdr-drain-access-feasibility-evidence.tar.gz",
+      "node_id": "RA_kwDOUVf99s4pLH3I",
+      "size": 1549708,
+      "state": "uploaded",
+      "updated_at": "2026-10-30T03:23:53Z",
+      "uploader": {
+        "avatar_url": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "events_url": "https://api.github.com/users/github-actions%5Bbot%5D/events{/privacy}",
+        "followers_url": "https://api.github.com/users/github-actions%5Bbot%5D/followers",
+        "following_url": "https://api.github.com/users/github-actions%5Bbot%5D/following{/other_user}",
+        "gists_url": "https://api.github.com/users/github-actions%5Bbot%5D/gists{/gist_id}",
+        "gravatar_id": "",
+        "html_url": "https://github.com/apps/github-actions",
+        "id": 41898282,
+        "login": "github-actions[bot]",
+        "node_id": "MDM6Qm90NDE4OTgyODI=",
+        "organizations_url": "https://api.github.com/users/github-actions%5Bbot%5D/orgs",
+        "received_events_url": "https://api.github.com/users/github-actions%5Bbot%5D/received_events",
+        "repos_url": "https://api.github.com/users/github-actions%5Bbot%5D/repos",
+        "site_admin": false,
+        "starred_url": "https://api.github.com/users/github-actions%5Bbot%5D/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/github-actions%5Bbot%5D/subscriptions",
+        "type": "Bot",
+        "url": "https://api.github.com/users/github-actions%5Bbot%5D",
+        "user_view_type": "public"
+      },
+      "url": "https://api.github.com/repos/Melihakbulut221/nssoc/releases/assets/690781640"
+    },
+    "metadata": {
+      "archive": {
+        "bytes": 1549708,
+        "sha256": "4032c042215696be50dfcd7b48b580ebf93f2d73f4b4237164c9e97b9cd30756"
+      },
+      "members": 35,
+      "overwrite": false,
+      "release_id": 428620554,
+      "source": "b4183870a74e7319e0602b033d894bb7d361bde7",
+      "tag": "cloud-results-40996847751-1-cdr-drain-access-feasibility"
+    },
+    "verified_metadata_only_locally": true
+  },
+  "physical_acceptance": false,
+  "preservation": {
+    "additional_outer_wrapper_and_publication_records_preserved_in_this_git_proof": true,
+    "all40_indexed_records_verified": true,
+    "all_three_job_logs_retained": true,
+    "archive_contains34_available_readback_files_plus_inventory": true,
+    "empty_streams_retained": true
+  },
+  "release_id": 428620554,
+  "run_id": 40996847751,
+  "schema": 1,
+  "source": "b4183870a74e7319e0602b033d894bb7d361bde7",
+  "status": "COMPLETE_READ_ONLY_DRAIN_ACCESS_OBSERVATION_NOT_GEOMETRY_ACCEPTANCE",
+  "target_summaries": {
+    "124": {
+      "identity": {
+        "device": 32,
+        "path_suffix": "134_4/120_13",
+        "resistor": "R12299"
+      },
+      "neighbour_devices": 2,
+      "rail_id": "nssoc_cdr_pd500_resistor_v59/134_4/120_13|8/0|1",
+      "raw_occurrence_count": 12,
+      "raw_shape_count": 315,
+      "report": "drain-124-feasibility.json",
+      "scope": {
+        "electrical_acceptance": false,
+        "full_phy_accepted": false,
+        "geometry_changed": false,
+        "physical_acceptance": false,
+        "resistor_footprint_assignment": false,
+        "simulation_executed": false
+      },
+      "via_cuts": 2
+    },
+    "28": {
+      "identity": {
+        "device": 3,
+        "path_suffix": "134_3/120_13",
+        "resistor": "R2997"
+      },
+      "neighbour_devices": 2,
+      "rail_id": "nssoc_cdr_pd500_resistor_v59/134_3/120_13|8/0|1",
+      "raw_occurrence_count": 12,
+      "raw_shape_count": 315,
+      "report": "drain-28-feasibility.json",
+      "scope": {
+        "electrical_acceptance": false,
+        "full_phy_accepted": false,
+        "geometry_changed": false,
+        "physical_acceptance": false,
+        "resistor_footprint_assignment": false,
+        "simulation_executed": false
+      },
+      "via_cuts": 2
+    }
+  },
+  "width_or_cut_count_selected": false
+}
