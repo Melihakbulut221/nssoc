@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Hosted transport/lifecycle fixtures plus unchanged complete geometry controls."""
-import contextlib,copy,io,json,os,shutil,subprocess,tempfile,time,types,unittest
+import contextlib,copy,io,json,os,shutil,signal,subprocess,sys,tempfile,time,types,unittest
 from pathlib import Path
 from unittest import mock
 import check_mainchip_drt_obstacle_reduce as base
@@ -132,7 +132,7 @@ class HostControls(unittest.TestCase):
         return execute
     def test_download_exact_stream_sha_and_bounded_child(self):
         inputs=self.root/"inputs";inputs.mkdir();raw=b'{"fixture":"exact"}\n';pin=dict(bytes=len(raw),sha256=q.sha(raw),asset_id=99)
-        with mock.patch.object(h.subprocess,"run",side_effect=self.fake_download(raw)):
+        with h.phase("analysis"),mock.patch.object(h.subprocess,"run",side_effect=self.fake_download(raw)):
             p=h.download("scope.json",pin,inputs)
         self.assertEqual(p.read_bytes(),raw)
         self.assertEqual(self.last_bound,(h.resource.RLIMIT_FSIZE,(1024*1024,1024*1024)))
@@ -140,19 +140,19 @@ class HostControls(unittest.TestCase):
         self.assertEqual(record["received"],{k:pin[k]for k in("bytes","sha256")});self.assertEqual(record["returncode"],0)
     def test_download_mismatch_retains_complete_partial_and_record(self):
         inputs=self.root/"inputs";inputs.mkdir();raw=b'{"extra":"bytes"}\n';pin=dict(bytes=1,sha256=q.sha(b"x"),asset_id=99)
-        with mock.patch.object(h.subprocess,"run",side_effect=self.fake_download(raw)):
+        with h.phase("analysis"),mock.patch.object(h.subprocess,"run",side_effect=self.fake_download(raw)):
             with self.assertRaisesRegex(ValueError,"size/SHA256"):h.download("scope.json",pin,inputs)
         self.assertEqual((inputs/"scope.json").read_bytes(),raw)
         self.assertIn("error",q.decode((self.out/"scope.json.download.json").read_bytes()))
     def test_download_failure_and_timeout_primary_survive_save_failure(self):
         inputs=self.root/"inputs";inputs.mkdir();primary=subprocess.TimeoutExpired(["synthetic"],300)
-        with mock.patch.object(h.subprocess,"run",side_effect=self.fake_download(b"partial",error=primary)),mock.patch.object(h,"write",side_effect=OSError("save")),contextlib.redirect_stdout(io.StringIO())as captured:
+        with h.phase("analysis"),mock.patch.object(h.subprocess,"run",side_effect=self.fake_download(b"partial",error=primary)),mock.patch.object(h,"write",side_effect=OSError("save")),contextlib.redirect_stdout(io.StringIO())as captured:
             with self.assertRaises(subprocess.TimeoutExpired)as raised:h.download("scope.json",dict(bytes=99,sha256="a"*64,asset_id=99),inputs)
         self.assertIs(raised.exception,primary);self.assertEqual((inputs/"scope.json").read_bytes(),b"partial")
         self.assertIn("UNSAVED_DOWNLOAD_RECORD",captured.getvalue());self.assertTrue((self.out/"scope.json.download.stderr.log").read_bytes())
     def test_download_nonzero_cannot_pass_with_exact_payload(self):
         inputs=self.root/"inputs";inputs.mkdir();raw=b"{}";pin=dict(bytes=2,sha256=q.sha(raw),asset_id=99)
-        with mock.patch.object(h.subprocess,"run",side_effect=self.fake_download(raw,returncode=7)):
+        with h.phase("analysis"),mock.patch.object(h.subprocess,"run",side_effect=self.fake_download(raw,returncode=7)):
             with self.assertRaisesRegex(ValueError,"download failed"):h.download("scope.json",pin,inputs)
         self.assertEqual(q.decode((self.out/"scope.json.download.json").read_bytes())["returncode"],7)
     def test_same_source_controls_full_log_and_exact_count(self):
@@ -162,12 +162,13 @@ class HostControls(unittest.TestCase):
         record=dict(source=self.ctx["source"],status="PASS_SOURCE_ONLY_OBSTACLE_REDUCTION_CONTROLS",tests_run=h.EXPECTED_CONTROLS,
           successful=True,failures=0,errors=0,skipped=0,native_acquired=False,native_executed=False,actual_report_acquired=False)
         raw=("2026-10-31T00:00:00.000Z arbitrary retained log\n2026-10-31T00:00:01.000Z MAINCHIP_OBSTACLE_REDUCTION_CONTROLS "+json.dumps(record)+"\n").encode()
-        with mock.patch.object(h.subprocess,"check_output",return_value=raw):
-            self.assertEqual(h.same_source_controls(self.ctx,lambda p:copy.deepcopy(jobs)),record)
+        def fixture_api(path,binary=False):
+            if binary:return raw
+            return copy.deepcopy(jobs)
+        self.assertEqual(h.same_source_controls(self.ctx,fixture_api),record)
         self.assertEqual((self.out/"same-source-controls.log").read_bytes(),raw)
         for bad in(raw+raw,raw.replace(str(h.EXPECTED_CONTROLS).encode(),b"1"),raw.replace(b'"skipped": 0',b'"skipped": 1')):
-            with mock.patch.object(h.subprocess,"check_output",return_value=bad):
-                with self.assertRaises(ValueError):h.same_source_controls(self.ctx,lambda p:copy.deepcopy(jobs))
+            with self.assertRaises(ValueError):h.same_source_controls(self.ctx,lambda path,binary=False:bad if binary else copy.deepcopy(jobs))
     def test_publication_exact_files_receipt_last_and_empty_embedded(self):
         h.write("result.json",dict(status="SYNTHETIC",**h.core.FLAGS))
         (self.out/"scope.json.download.stderr.log").write_bytes(b"");uploaded=[];states=[]
@@ -180,7 +181,7 @@ class HostControls(unittest.TestCase):
         def upload(argv,check,timeout):
             self.assertEqual(argv[:3],["gh","release","upload"]);self.assertTrue(check)
             uploaded.append(Path(argv[4]).name);return types.SimpleNamespace(returncode=0)
-        with mock.patch.object(h,"destination",side_effect=dest),mock.patch.object(h.subprocess,"run",side_effect=upload):h.publication(self.ctx)
+        with h.phase("publication"),mock.patch.object(h,"destination",side_effect=dest),mock.patch.object(h.subprocess,"run",side_effect=upload):h.publication(self.ctx)
         self.assertEqual(uploaded,["result.json","readback-catalog.json","publication-receipt.json"])
         catalog=q.decode((self.out/"readback-catalog.json").read_bytes())
         self.assertTrue(catalog["files"]["scope.json.download.stderr.log"]["embedded_empty"])
@@ -213,16 +214,16 @@ class HostControls(unittest.TestCase):
             self.assertIsNone(h.finish(self.ctx,{},False,None,lambda c:self.fail("unreserved publication")))
         self.assertEqual(events,["save","publish","save"])
     def test_destination_uses_same_code_without_original_namespace_mutation(self):
-        before=q.destination.__globals__["GROUP"];observed={}
+        before=q.destination.__globals__["GROUP"];before_api=q.destination.__globals__["api"];observed={}
         def api(path,raw=False):
             observed.setdefault("paths",[]).append(path)
             tag="cloud-results-"+os.environ["GITHUB_RUN_ID"]+"-"+os.environ["GITHUB_RUN_ATTEMPT"]+"-"+h.GROUP
             if path.startswith("git/ref/"):return dict(object=dict(type="commit",sha=self.ctx["source"]))
             return dict(id=999,tag_name=tag,target_commitish=self.ctx["source"],draft=False,prerelease=True,assets=[])
-        with mock.patch.dict(q.destination.__globals__,{"api":api}):
+        with mock.patch.object(h,"api",side_effect=api):
             tag,release=h.destination(self.ctx,True)
         self.assertTrue(tag.endswith(h.GROUP));self.assertEqual(release["id"],999)
-        self.assertEqual(q.destination.__globals__["GROUP"],before)
+        self.assertEqual(q.destination.__globals__["GROUP"],before);self.assertIs(q.destination.__globals__["api"],before_api)
     def test_full_host_synthetic_pipeline_preserves_every_core_record(self):
         c,values,responses,payload,api=producer_fixture();self.out.rmdir()
         ctx=dict(source="b"*40,run=time.time_ns(),attempt=1)
@@ -269,6 +270,62 @@ class HostControls(unittest.TestCase):
         with self.assertRaises(ValueError):h.small_asset(dict(asset,digest="sha256:"+"f"*64),pin,lambda *a:self.fail("bad asset downloaded"))
         huge=dict(bytes=2*1024*1024+1,sha256="a"*64)
         with self.assertRaises(ValueError):h.small_asset(dict(asset,size=huge["bytes"],digest="sha256:"+huge["sha256"]),huge,lambda *a:self.fail("oversized metadata downloaded"))
+
+    def test_bounded_api_exact_get_argv_and_remaining_timeout(self):
+        def execute(argv,timeout,stdout,stderr,check):
+            self.assertEqual(argv[:3],["gh","api","--allow-escape-sequences"])
+            self.assertTrue(check);self.assertGreater(timeout,0);self.assertLessEqual(timeout,60)
+            if argv[3].endswith("/releases/assets/999"):
+                self.assertEqual(argv[-2:],["-H","Accept: application/octet-stream"]);return types.SimpleNamespace(stdout=b"{}")
+            self.assertEqual(len(argv),4);return types.SimpleNamespace(stdout=b'{"id":999}')
+        with h.phase("preflight"),mock.patch.object(h.subprocess,"run",side_effect=execute):
+            self.assertEqual(h.api("releases/999"),dict(id=999))
+            self.assertEqual(h.api("releases/assets/999",True),b"{}")
+            self.assertEqual(h.api("actions/jobs/999/logs",True),b'{"id":999}')
+    def test_bounded_api_mutation_endpoint_and_type_refusals(self):
+        for path,raw in(("https://evil.invalid",False),("issues/1",False),("releases/1 -X DELETE",False),
+                         ("releases/assets/1",False),("releases/1",True),("actions/runs/1/attempts/2/jobs?per_page=100",False),(1,False),("releases/1",1)):
+            with self.subTest(path=path),mock.patch.object(h.subprocess,"run")as execute:
+                with self.assertRaises(ValueError):h.api(path,raw)
+                execute.assert_not_called()
+    def test_bounded_api_timeout_preserves_original_full_diagnostics(self):
+        error=subprocess.TimeoutExpired(["synthetic-api"],60,output=b"partial stdout",stderr=b"complete stderr")
+        with h.phase("preflight"),mock.patch.object(h.subprocess,"run",side_effect=error),contextlib.redirect_stdout(io.StringIO())as captured:
+            with self.assertRaises(subprocess.TimeoutExpired)as raised:h.api("releases/999")
+        self.assertIs(raised.exception,error);self.assertIn("partial stdout",captured.getvalue());self.assertIn("complete stderr",captured.getvalue())
+    def test_phase_contract_remaining_budget_and_handler_restoration(self):
+        previous=signal.getsignal(signal.SIGALRM)
+        self.assertEqual(h.PHASE_SECONDS,dict(preflight=300,analysis=900,publication=300))
+        with self.assertRaises(ValueError):h.phase_timeout(60)
+        with h.phase("preflight"):
+            h.ACTIVE_PHASE["deadline"]=time.monotonic()+0.25
+            self.assertGreater(h.phase_timeout(60),0);self.assertLessEqual(h.phase_timeout(60),0.25)
+            with self.assertRaises(ValueError):
+                with h.phase("analysis"):self.fail("nested phase admitted")
+            h.ACTIVE_PHASE["deadline"]=time.monotonic()-1
+            with self.assertRaises(TimeoutError):h.phase_timeout(60)
+        self.assertIsNone(h.ACTIVE_PHASE);self.assertEqual(signal.getsignal(signal.SIGALRM),previous)
+        self.assertEqual(signal.getitimer(signal.ITIMER_REAL),(0.0,0.0))
+    def test_real_timeout_child_is_terminated_and_reaped(self):
+        pidfile=self.root/"timeout-child.pid"
+        argv=[sys.executable,"-c","import os,pathlib,time;pathlib.Path("+repr(str(pidfile))+").write_text(str(os.getpid()));time.sleep(30)"]
+        with h.phase("preflight"):
+            with self.assertRaises(subprocess.TimeoutExpired):h.bounded_run(argv,2,stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=True)
+        self.assertTrue(pidfile.is_file());pid=int(pidfile.read_text())
+        with self.assertRaises(ProcessLookupError):os.kill(pid,0)
+        self.assertIsNone(h.ACTIVE_PHASE)
+    def test_real_alarm_interrupt_child_is_terminated_and_reaped(self):
+        pidfile=self.root/"alarm-child.pid"
+        argv=[sys.executable,"-c","import os,pathlib,time;pathlib.Path("+repr(str(pidfile))+").write_text(str(os.getpid()));time.sleep(30)"]
+        previous=signal.getsignal(signal.SIGALRM)
+        with self.assertRaisesRegex(TimeoutError,"preflight"):
+            with h.phase("preflight"):
+                signal.setitimer(signal.ITIMER_REAL,2)
+                h.bounded_run(argv,30,stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=True)
+        self.assertTrue(pidfile.is_file());pid=int(pidfile.read_text())
+        with self.assertRaises(ProcessLookupError):os.kill(pid,0)
+        self.assertIsNone(h.ACTIVE_PHASE);self.assertEqual(signal.getsignal(signal.SIGALRM),previous)
+        self.assertEqual(signal.getitimer(signal.ITIMER_REAL),(0.0,0.0))
 
 def main():
     head=h.source_gate("controls");stream=io.StringIO()

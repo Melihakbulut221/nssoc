@@ -31,8 +31,33 @@ artifact. The result is saved and publication attempted before the original
 failure is re-raised; a secondary save/publication failure never replaces it.
 
 The new combined checker retains all 37 qualified geometry controls unchanged
-and adds 21 transport, source-record, complete synthetic pipeline, resource and
+and adds 27 transport, source-record, complete synthetic pipeline, resource and
 failure-order controls. This source revision does not authorize actual report
 acquisition: both authority flags and the controls-only workflow remain closed.
-The newly authored 58-test result is pending hosted execution, not a claimed
+The newly authored 64-test result is pending hosted execution, not a claimed
 physical, timing or routing result.
+
+
+Source review found that the inherited API helper had no subprocess timeout.
+No actual acquisition or host-control run was dispatched from that unbounded
+candidate. The frozen helper remains unchanged; this adapter now uses its own
+GET-only API transport with a maximum 60-second command timeout bounded by the
+remaining active phase. The cloned destination validator binds that same
+bounded API, without changing the original helper namespace.
+
+The three non-overlapping phases are 300 seconds for preflight (including real
+source admission and the independent reservation), 900 seconds for acquisition
+and complete reduction, and 300 seconds for result preservation/publication.
+Every upload has at most 180 seconds and every asset stream at most 300 seconds,
+also limited by the remaining phase budget. Expiry interrupts the subprocess,
+and the standard subprocess runner kills and reaps its direct child before
+propagating the original exception. The planned actual workflow cap is 40
+minutes, leaving 15 minutes beyond the complete 25-minute phase budget for
+workflow setup and always-retained artifacts/logs; the actual job is still
+absent in this source-only revision.
+
+The additional fixtures exercise real hosted stdlib children for both command
+timeout and alarm interruption, require child termination/reaping, and verify
+the restored handler/cleared timer. They also cover exact API argv/GET-only
+endpoints, full timeout diagnostics, remaining phase budgets, and unchanged
+failure ordering. No test runs native design tools or acquires the real report.

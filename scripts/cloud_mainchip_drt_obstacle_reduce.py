@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """GitHub-only authenticated JSON reduction. No CAD, native archive or route execution."""
-import argparse,hashlib,json,os,re,resource,signal,subprocess,time,traceback,types
+import argparse,contextlib,hashlib,json,os,re,resource,signal,subprocess,time,traceback,types
 from pathlib import Path
 import mainchip_terminal_readback as q
 import mainchip_drt_obstacle_reduce as core
@@ -11,18 +11,59 @@ GROUP="mainchip-drt-obstacle-reduction"
 MANIFEST="scripts/mainchip-drt-obstacle-reduce-source.json"
 CONFIG="scripts/mainchip-drt-obstacle-reduce-inputs.json"
 OUT=ROOT/"obstacle-reduction"
-EXPECTED_CONTROLS=58
+EXPECTED_CONTROLS=64
 MAX_OUTPUT_BYTES=64*1024*1024
 INPUT_NAMES={"native-result.json","scope.json","host-result.json","inner-result.json","progress.json","command.json"}
+PHASE_SECONDS={"preflight":300,"analysis":900,"publication":300}
+ACTIVE_PHASE=None
+@contextlib.contextmanager
+def phase(name):
+    global ACTIVE_PHASE
+    q.require(name in PHASE_SECONDS and ACTIVE_PHASE is None,"single declared bounded phase")
+    previous=signal.getsignal(signal.SIGALRM)
+    q.require(signal.getitimer(signal.ITIMER_REAL)==(0.0,0.0),"do not replace an existing process timer")
+    started=time.monotonic();ACTIVE_PHASE=dict(name=name,deadline=started+PHASE_SECONDS[name])
+    try:
+        signal.signal(signal.SIGALRM,limit);signal.alarm(PHASE_SECONDS[name])
+        print("REDUCTION_PHASE_START "+json.dumps(dict(name=name,seconds=PHASE_SECONDS[name])),flush=True)
+        yield
+    finally:
+        signal.alarm(0);signal.signal(signal.SIGALRM,previous)
+        print("REDUCTION_PHASE_END "+json.dumps(dict(name=name,elapsed_seconds=time.monotonic()-started)),flush=True)
+        ACTIVE_PHASE=None
+def phase_timeout(cap):
+    q.require(type(cap)in(int,float)and cap>0 and ACTIVE_PHASE is not None,"bounded command needs active phase")
+    left=ACTIVE_PHASE["deadline"]-time.monotonic()
+    if left<=0:raise TimeoutError("Expired "+ACTIVE_PHASE["name"]+" phase")
+    return min(cap,left)
+def bounded_run(argv,cap,**kwargs):
+    q.require("timeout"not in kwargs,"one remaining-phase command deadline")
+    return subprocess.run(argv,timeout=phase_timeout(cap),**kwargs)
+def api(path,raw=False):
+    q.require(type(path)is str and type(raw)is bool,"typed read-only API request")
+    metadata=re.fullmatch(r"(?:actions/runs/[0-9]+(?:/attempts/1/jobs\?per_page=100)?|releases/[0-9]+|releases/tags/[A-Za-z0-9_.-]+|git/ref/tags/[A-Za-z0-9_.-]+)",path)
+    asset=re.fullmatch(r"releases/assets/[0-9]+",path)
+    log=re.fullmatch(r"actions/jobs/[0-9]+/logs",path)
+    q.require((not raw and metadata is not None)or(raw and(asset is not None or log is not None)),"exact metadata/asset/log GET endpoint")
+    argv=["gh","api","--allow-escape-sequences","repos/"+q.REPO+"/"+path]
+    if asset is not None:argv+=["-H","Accept: application/octet-stream"]
+    try:done=bounded_run(argv,60,stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=True)
+    except BaseException as error:
+        # The only raw API reads are source metadata and source job logs, never
+        # the large observation report. Preserve complete command diagnostics.
+        print("REDUCTION_API_FAILURE "+json.dumps(dict(argv=argv,error=repr(error),
+          stdout=repr(getattr(error,"stdout",None)),stderr=repr(getattr(error,"stderr",None)))),flush=True)
+        raise
+    return done.stdout if raw else q.decode(done.stdout)
 def source_gate(mode):
     e=os.environ
     q.require(e.get("GITHUB_ACTIONS")=="true"and e.get("RUNNER_ENVIRONMENT")=="github-hosted","GitHub hosted only")
     q.require(e.get("GITHUB_REPOSITORY")==q.REPO and e.get("GITHUB_EVENT_NAME")=="workflow_dispatch"and e.get("GITHUB_REF")=="refs/heads/"+BRANCH,"exact actual manual source branch")
     q.require(mode in("controls","analysis")and e.get("MODE")==mode and e.get("GITHUB_JOB")==("source-controls"if mode=="controls"else"analysis"),"exact job/mode")
     head=e["GITHUB_SHA"];q.require(re.fullmatch("[0-9a-f]{40}",head)is not None and e.get("APPROVED_SOURCE")==head and e.get("GITHUB_RUN_ATTEMPT")=="1","exact approved source and first attempt")
-    q.require(subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip()==head,"actual checkout")
+    q.require(subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True,timeout=30).strip()==head,"actual checkout")
     raw=(ROOT/MANIFEST).read_bytes()
-    q.require(raw==subprocess.check_output(["git","show",head+":"+MANIFEST],cwd=ROOT),"exact committed manifest bytes")
+    q.require(raw==subprocess.check_output(["git","show",head+":"+MANIFEST],cwd=ROOT,timeout=30),"exact committed manifest bytes")
     m=q.decode(raw);q.require(m["schema"]=="mainchip-obstacle-reduction-source-v1"and m["native_execution_authorized"]is False and m["routing_authorized"]is False,"derived-only source scope")
     for name,p in m["files"].items():
         q.valid_name(name);q.filepin(p);path=ROOT/name
@@ -39,11 +80,11 @@ def write(name,value):
     q.valid_name(name);q.require("/"not in name,"flat owned output")
     p=OUT/name;raw=q.encode(value);q.require(len(raw)<=MAX_OUTPUT_BYTES,"bounded complete JSON output")
     with p.open("xb")as stream:stream.write(raw);stream.flush();os.fsync(stream.fileno())
-def small_asset(asset,expected,api=q.api):
+def small_asset(asset,expected,api=api):
     q.require(asset["state"]=="uploaded"and asset["size"]==expected["bytes"]and asset["digest"]=="sha256:"+expected["sha256"],"uploaded exact source asset")
     q.require(expected["bytes"]<=2*1024*1024,"bounded small metadata asset")
     return q.checked(api("releases/assets/"+str(asset["id"]),True),expected)
-def producer(config,api=q.api):
+def producer(config,api=api):
     p=config["producer"];run=api("actions/runs/"+str(p["run_id"]));release=api("releases/"+str(p["release_id"]));ref=api("git/ref/tags/"+p["tag"])
     q.require(run["id"]==p["run_id"]and run["status"]=="completed"and run["conclusion"]=="success"and run["head_sha"]==p["source"]and run["head_branch"]==p["branch"]and run["run_attempt"]==p["attempt"]==1 and run["path"]==p["workflow"],"actual completed source observer")
     q.require(q.immutable_release(release)==p["immutable_release"],"complete original publication immutable identity")
@@ -79,7 +120,7 @@ def producer(config,api=q.api):
         selected.add(pin["member"])
     q.require(len(selected)==len(INPUT_NAMES),"no aliased selected members")
     return dict(run=run,jobs=jobs,release=release,ref=ref,catalog=catalog,receipt=receipt)
-def same_source_controls(ctx,api=q.api):
+def same_source_controls(ctx,api=api):
     jobs=api("actions/runs/"+str(ctx["run"])+"/attempts/1/jobs?per_page=100")
     q.require(jobs["total_count"]==len(jobs["jobs"])==3 and {j["name"]for j in jobs["jobs"]}=={"source-controls","preserve-job-log","analysis"},"exact current three-job workflow")
     for j in jobs["jobs"]:
@@ -87,8 +128,7 @@ def same_source_controls(ctx,api=q.api):
         if j["name"]!="analysis":q.require(j["status"]=="completed"and j["conclusion"]=="success","both successful current prerequisites")
         else:q.require(j["status"]=="in_progress","actual active analysis job")
     job=next(j for j in jobs["jobs"]if j["name"]=="source-controls")
-    cmd=["gh","api","--allow-escape-sequences","repos/"+q.REPO+"/actions/jobs/"+str(job["id"])+"/logs"]
-    raw=subprocess.check_output(cmd,stderr=subprocess.PIPE,timeout=60);raw.decode("utf-8-sig",errors="strict")
+    raw=api("actions/jobs/"+str(job["id"])+"/logs",True);raw.decode("utf-8-sig",errors="strict")
     records=[]
     for line in raw.decode("utf-8-sig").splitlines():
         m=re.fullmatch(r"\ufeff?\d{4}-\d\d-\d\dT[0-9:.]+Z MAINCHIP_OBSTACLE_REDUCTION_CONTROLS (\{.*\})",line)
@@ -108,7 +148,7 @@ def download(name,pin,inputs):
     try:
         def file_bound():resource.setrlimit(resource.RLIMIT_FSIZE,(max(pin["bytes"]+1,1024*1024),max(pin["bytes"]+1,1024*1024)))
         with path.open("xb")as output,stderr.open("xb")as errors:
-            done=subprocess.run(cmd,stdout=output,stderr=errors,timeout=300,check=False,preexec_fn=file_bound)
+            done=bounded_run(cmd,300,stdout=output,stderr=errors,check=False,preexec_fn=file_bound)
         record["returncode"]=done.returncode;q.require(done.returncode==0,"exact derived asset download failed")
         q.require(q.pin(path)==record["expected"],"complete downloaded input size/SHA256")
     except BaseException as error:primary=error;record["error"]=repr(error)
@@ -140,7 +180,7 @@ def validate_selected_inputs(values,config):
     q.require(progress["stage"]=="native-endpoint-census"and progress["observed_endpoint_names"]==progress["required_endpoint_names"]==values["scope.json"]["endpoint_names"],"complete original progress endpoint census")
     core.false_scope(progress)
 def destination(ctx,empty,expected=None):
-    f=types.FunctionType(q.destination.__code__,dict(q.destination.__globals__,GROUP=GROUP),q.destination.__name__,q.destination.__defaults__,q.destination.__closure__)
+    f=types.FunctionType(q.destination.__code__,dict(q.destination.__globals__,GROUP=GROUP,api=api),q.destination.__name__,q.destination.__defaults__,q.destination.__closure__)
     tag,release=f(ctx["source"],empty,expected)
     q.require(release["id"]!=430206503,"original observation release is never a destination")
     return tag,release
@@ -159,70 +199,78 @@ def publication(ctx):
     write("readback-catalog.json",dict(source=ctx["source"],run=ctx["run"],files=catalog,all_large_inputs_retained_at_original_release=True,**core.FLAGS))
     expected["readback-catalog.json"]=q.pin(OUT/"readback-catalog.json")
     tag,_=destination(ctx,True)
-    for name in expected:subprocess.run(["gh","release","upload",tag,str(OUT/name),"--repo",q.REPO],check=True,timeout=180)
+    for name in expected:bounded_run(["gh","release","upload",tag,str(OUT/name),"--repo",q.REPO],180,check=True)
     _,release=destination(ctx,False,expected)
     write("publication-receipt.json",dict(source=ctx["source"],run=ctx["run"],release_id=release["id"],tag=tag,files=dict(expected),receipt_self_not_in_files=True,**core.FLAGS))
-    subprocess.run(["gh","release","upload",tag,str(OUT/"publication-receipt.json"),"--repo",q.REPO],check=True,timeout=180)
+    bounded_run(["gh","release","upload",tag,str(OUT/"publication-receipt.json"),"--repo",q.REPO],180,check=True)
     expected["publication-receipt.json"]=q.pin(OUT/"publication-receipt.json")
     destination(ctx,False,expected)
 def finish(ctx,result,reserved,primary,publish=publication):
-    try:write("result.json",result)
-    except BaseException as error:
-        print("UNSAVED_REDUCTION_RESULT "+json.dumps(dict(result,save_error=repr(error))),flush=True)
-        if primary is None:primary=error
-    if reserved:
-        try:publish(ctx)
+    with phase("publication"):
+        try:write("result.json",result)
         except BaseException as error:
-            print("REDUCTION_PUBLICATION_FAILURE "+repr(error),flush=True)
+            print("UNSAVED_REDUCTION_RESULT "+json.dumps(dict(result,save_error=repr(error))),flush=True)
             if primary is None:primary=error
+        if reserved:
+            try:publish(ctx)
+            except BaseException as error:
+                print("REDUCTION_PUBLICATION_FAILURE "+repr(error),flush=True)
+                if primary is None:primary=error
     return primary
-def limit(signum,frame):raise TimeoutError("Bounded 900-second derived report acquisition/reduction deadline")
+def limit(signum,frame):
+    raise TimeoutError("Bounded "+str(ACTIVE_PHASE["name"]if ACTIVE_PHASE else"unknown")+" phase deadline")
 def run():
-    ctx,c=actual_context();q.require(not OUT.exists(),"exclusive result directory");OUT.mkdir()
-    work=Path(os.environ["RUNNER_TEMP"])/(GROUP+"-"+str(ctx["run"])+"-1")
-    q.require(not work.exists()and not work.is_symlink(),"exclusive cloud input directory")
-    work.mkdir();inputs=work/"inputs";inputs.mkdir()
-    result=dict(status="RUNNING",source=ctx["source"],run=ctx["run"],input_pins=c["inputs"],**core.FLAGS)
-    primary=None;reserved=False;previous_handler=signal.getsignal(signal.SIGALRM)
+    ctx=None;reserved=False;output_owned=False;primary=None
+    result=dict(status="RUNNING",**core.FLAGS)
     try:
-        same_source_controls(ctx)
-        deadline=time.monotonic()+180
-        while True:
-            try:tag,reservation=destination(ctx,True);break
-            except subprocess.CalledProcessError as error:
-                if b"HTTP 404"not in(error.stderr or b"")or time.monotonic()>=deadline:raise
-                time.sleep(2)
-        reserved=True;write("reservation.json",reservation)
-        resource.setrlimit(resource.RLIMIT_AS,(8*1024**3,8*1024**3))
-        signal.signal(signal.SIGALRM,limit);signal.alarm(900)
-        before=producer(c);write("producer-before.json",before)
-        paths={name:download(name,pin,inputs)for name,pin in c["inputs"].items()}
-        values={name:decode_file(path)for name,path in paths.items()}
-        validate_selected_inputs(values,c)
-        emitted=0;output_bytes=0
-        with(OUT/"witnesses.jsonl").open("xb")as stream:
-            def emit(row):
-                nonlocal emitted,output_bytes
-                raw=(json.dumps(row,sort_keys=True,separators=(",",":"),allow_nan=False)+"\n").encode()
-                output_bytes+=len(raw);q.require(output_bytes<=MAX_OUTPUT_BYTES,"complete compact witness stream size bound")
-                stream.write(raw);emitted+=1
-            reduced=core.reduce_report(values["native-result.json"],values["scope.json"],emit)
-            stream.flush();os.fsync(stream.fileno())
-        q.require(emitted==reduced["summary"]["complete_witness_records"],"complete actual emitted witness stream")
-        for name in("endpoints","markers","other_markers"):write(name+".json",reduced[name])
-        for name,path in paths.items():q.require(q.pin(path)=={k:c["inputs"][name][k]for k in("bytes","sha256")},"input bytes unchanged after reduction")
-        after=producer(c);write("producer-after.json",after)
-        q.require(q.immutable_release(before["release"])==q.immutable_release(after["release"]),"original source publication unchanged")
-        source_gate("analysis")
-        result.update(reduced["summary"],source=ctx["source"],run=ctx["run"],complete_input_sha256_verified=True,original_large_result_retained_in_cloud=True)
+        with phase("preflight"):
+            ctx,c=actual_context();q.require(not OUT.exists(),"exclusive result directory");OUT.mkdir();output_owned=True
+            work=Path(os.environ["RUNNER_TEMP"])/(GROUP+"-"+str(ctx["run"])+"-1")
+            q.require(not work.exists()and not work.is_symlink(),"exclusive cloud input directory")
+            work.mkdir();inputs=work/"inputs";inputs.mkdir()
+            result.update(source=ctx["source"],run=ctx["run"],input_pins=c["inputs"])
+            same_source_controls(ctx)
+            deadline=time.monotonic()+180
+            while True:
+                try:tag,reservation=destination(ctx,True);break
+                except subprocess.CalledProcessError as error:
+                    if b"HTTP 404"not in(error.stderr or b"")or time.monotonic()>=deadline:raise
+                    time.sleep(min(2,phase_timeout(2)))
+            reserved=True;write("reservation.json",reservation)
+        with phase("analysis"):
+            resource.setrlimit(resource.RLIMIT_AS,(8*1024**3,8*1024**3))
+            before=producer(c);write("producer-before.json",before)
+            paths={name:download(name,pin,inputs)for name,pin in c["inputs"].items()}
+            values={name:decode_file(path)for name,path in paths.items()}
+            validate_selected_inputs(values,c)
+            emitted=0;output_bytes=0
+            with(OUT/"witnesses.jsonl").open("xb")as stream:
+                def emit(row):
+                    nonlocal emitted,output_bytes
+                    raw=(json.dumps(row,sort_keys=True,separators=(",",":"),allow_nan=False)+"\n").encode()
+                    output_bytes+=len(raw);q.require(output_bytes<=MAX_OUTPUT_BYTES,"complete compact witness stream size bound")
+                    stream.write(raw);emitted+=1
+                reduced=core.reduce_report(values["native-result.json"],values["scope.json"],emit)
+                stream.flush();os.fsync(stream.fileno())
+            q.require(emitted==reduced["summary"]["complete_witness_records"],"complete actual emitted witness stream")
+            for name in("endpoints","markers","other_markers"):write(name+".json",reduced[name])
+            for name,path in paths.items():q.require(q.pin(path)=={k:c["inputs"][name][k]for k in("bytes","sha256")},"input bytes unchanged after reduction")
+            after=producer(c);write("producer-after.json",after)
+            q.require(q.immutable_release(before["release"])==q.immutable_release(after["release"]),"original source publication unchanged")
+            source_gate("analysis")
+            result.update(reduced["summary"],source=ctx["source"],run=ctx["run"],complete_input_sha256_verified=True,original_large_result_retained_in_cloud=True)
     except BaseException as error:
         primary=error;result.update(status="FAIL_READONLY_OBSTACLE_REDUCTION",error=repr(error),traceback=traceback.format_exc())
     finally:
-        signal.alarm(0);signal.signal(signal.SIGALRM,previous_handler)
-        primary=finish(ctx,result,reserved,primary)
+        if output_owned:
+            try:primary=finish(ctx,result,reserved,primary)
+            except BaseException as error:
+                print("REDUCTION_FINALIZER_FAILURE "+repr(error),flush=True)
+                if primary is None:primary=error
+        else:print("UNSAVED_REDUCTION_RESULT "+json.dumps(result),flush=True)
     if primary is not None:raise primary
-    # Authenticated input bytes remain available in the original immutable release;
-    # the runner work directory is only an acquisition copy, never a new result.
+    # The only acquisition copy is runner-owned; full original bytes remain
+    # authenticated in the original immutable release.
     for path in inputs.iterdir():path.unlink()
     inputs.rmdir();work.rmdir()
     print(json.dumps({k:result[k]for k in("status","source","run","selected_markers","endpoints","complete_witness_records")}),flush=True)
