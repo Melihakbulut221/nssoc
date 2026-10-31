@@ -1,13 +1,13 @@
-name: Verify actual diode reconstruction result transfer
+name: Route admitted antenna diodes with original clock and wire guards
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Reconstruct verified diodes from original ODB; antenna repair and routing disabled
+        description: Route admitted saved candidate; no repeated repair or diode creation
         type: choice
         required: true
         default: controls
-        options: [controls, reconstruct]
+        options: [controls, route]
 permissions:
   contents: read
   actions: read
@@ -40,7 +40,7 @@ jobs:
           assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['GITHUB_REF']=='refs/heads/codex/mainchip-net459-diode-prune'
-          assert e['SELECTED_MODE'] in ('controls','reconstruct')
+          assert e['SELECTED_MODE'] in ('controls','route')
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           name='scripts/mainchip-bulk-postdrt-integration-pins.json'
           raw=Path(name).read_bytes()
@@ -59,13 +59,13 @@ jobs:
           sys.path.insert(0,'scripts')
           import cloud_mainchip_bulk_postdrt_antenna as host
           assert host.source_gate()==m
-          import cloud_mainchip_saved_diode_reconstruction as qualification
-          qraw=Path('scripts/mainchip-saved-diode-reconstruction-pins.json').read_bytes()
-          assert hashlib.sha256(qraw).hexdigest()=='54f9e1eb262b8b9637b4a5c43bffd0f5394a5a210b18b363cf63e083c0b10f9e'
+          import cloud_mainchip_saved_diode_routing as qualification
+          qraw=Path('scripts/mainchip-saved-diode-routing-pins.json').read_bytes()
+          assert hashlib.sha256(qraw).hexdigest()=='f63a45eaf94919b6fe22c04d9c9b74385c61d6ee489f16d48e541fdd9afd4725'
           qm=qualification.source_gate()
-          assert qm==json.loads(qraw) and len(qm['files'])==2294
+          assert qm==json.loads(qraw) and len(qm['files'])==2330
           qualification.authorize_native(qm)
-          for path in ('scripts/mainchip_saved_diode_reconstruction_native.py','scripts/mainchip_saved_diode_reconstruction_inner.py','scripts/cloud_mainchip_saved_diode_reconstruction.py'):
+          for path in ('scripts/mainchip_saved_diode_routing_native.py','scripts/mainchip_saved_diode_routing_inner.py','scripts/cloud_mainchip_saved_diode_routing.py'):
               ast.parse(Path(path).read_bytes(),filename=path)
           (out/'qualification-manifest.json').write_bytes(qraw)
           (out/'manifest.json').write_bytes(raw)
@@ -99,7 +99,7 @@ jobs:
       - name: Exercise inherited observer and exact reconstruction refusal controls
         run: |
           set +e
-          python3 -B scripts/check_mainchip_saved_diode_reconstruction.py bulk-postdrt-integration-controls/audit-controls.json > bulk-postdrt-integration-controls/audit-controls.stdout 2> bulk-postdrt-integration-controls/audit-controls.stderr
+          python3 -B scripts/check_mainchip_saved_diode_routing.py bulk-postdrt-integration-controls/audit-controls.json > bulk-postdrt-integration-controls/audit-controls.stdout 2> bulk-postdrt-integration-controls/audit-controls.stderr
           rc=$?
           CONTROL_RC="$rc" python3 -B - <<'PY'
           import json,os
@@ -129,7 +129,7 @@ jobs:
           python3 -B - <<'PY'
           import base64,hashlib,json
           from pathlib import Path
-          for name in ('context.json','manifest.json','bulk-manifest.json','qualification-manifest.json','controls.json','controls.stdout','controls.stderr','execution.json','audit-controls.json','audit-controls.stdout','audit-controls.stderr','audit-execution.json'):
+          for name in ('context.json','manifest.json','bulk-manifest.json','qualification-manifest.json','controls.json','controls.stdout','controls.stderr','execution.json','audit-controls.json','audit-controls.stdout','audit-controls.stderr','audit-execution.json','routing-inherited-controls.json','routing-inherited-controls.stdout','routing-inherited-controls.stderr'):
               p=Path('bulk-postdrt-integration-controls')/name;assert not p.is_symlink()
               present=p.is_file();raw=p.read_bytes() if present else b''
               chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
@@ -190,9 +190,9 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-  diode-reconstruction:
+  diode-routing:
     needs: [source-controls, preserve-job-log]
-    if: ${{ inputs.mode == 'reconstruct' }}
+    if: ${{ inputs.mode == 'route' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     permissions:
@@ -218,13 +218,13 @@ jobs:
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['GITHUB_REF']=='refs/heads/codex/mainchip-net459-diode-prune'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
-          name='scripts/mainchip-saved-diode-reconstruction-pins.json'
+          name='scripts/mainchip-saved-diode-routing-pins.json'
           raw=Path(name).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='54f9e1eb262b8b9637b4a5c43bffd0f5394a5a210b18b363cf63e083c0b10f9e'
+          assert hashlib.sha256(raw).hexdigest()=='f63a45eaf94919b6fe22c04d9c9b74385c61d6ee489f16d48e541fdd9afd4725'
           sys.path.insert(0,'scripts')
-          import cloud_mainchip_saved_diode_reconstruction as host
+          import cloud_mainchip_saved_diode_routing as host
           m=host.source_gate()
-          assert m==json.loads(raw) and len(m['files'])==2294
+          assert m==json.loads(raw) and len(m['files'])==2330
           host.authorize_native(m)
           print('Exact source and qualified adapter projection verified; no native acquisition yet.')
           PY
@@ -248,7 +248,7 @@ jobs:
           raw=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(j['id'])+'/logs'])
           assert raw;(root/'source-controls.log').write_bytes(raw)
           idx={};chunks={}
-          expected={'context.json','manifest.json','bulk-manifest.json','qualification-manifest.json','controls.json','controls.stdout','controls.stderr','execution.json','audit-controls.json','audit-controls.stdout','audit-controls.stderr','audit-execution.json'}
+          expected={'context.json','manifest.json','bulk-manifest.json','qualification-manifest.json','controls.json','controls.stdout','controls.stderr','execution.json','audit-controls.json','audit-controls.stdout','audit-controls.stderr','audit-execution.json','routing-inherited-controls.json','routing-inherited-controls.stdout','routing-inherited-controls.stderr'}
           for line in raw.decode().splitlines():
               for marker,is_index in (('BULK_POSTDRT_CONTROL_INDEX ',True),('BULK_POSTDRT_CONTROL_CHUNK ',False)):
                   if marker not in line:continue
@@ -274,21 +274,21 @@ jobs:
           assert ctx['qualification_only_in_manifest']is True and ctx['native_authorized']is False
           audit=decoded['audit-controls.json'];audit_execution=decoded['audit-execution.json']
           assert audit['source']==e['GITHUB_SHA'] and audit['run_id']==int(e['GITHUB_RUN_ID']) and audit['attempt']==1
-          assert audit['status']=='PASS_SAVED_DIODE_RECONSTRUCTION_SOURCE_CONTROLS' and audit['count']==62 and len(set(audit['passed_cases']))==62
+          assert audit['status']=='PASS_SAVED_DIODE_ROUTING_SOURCE_CONTROLS' and audit['count']==111 and len(set(audit['passed_cases']))==111
           assert audit['native_executed']is False and audit_execution['returncode']==0
           assert audit_execution['source']==e['GITHUB_SHA'] and audit_execution['run_id']==int(e['GITHUB_RUN_ID']) and audit_execution['attempt']==1
-          assert audit['source_pin']==hashlib.sha256(Path('scripts/mainchip_saved_diode_reconstruction_native.py').read_bytes()).hexdigest()
+          assert audit['source_pin']==hashlib.sha256(Path('scripts/mainchip_saved_diode_routing_native.py').read_bytes()).hexdigest()
           assert (root/'manifest.json').read_bytes()==Path('scripts/mainchip-bulk-postdrt-integration-pins.json').read_bytes()
-          assert (root/'qualification-manifest.json').read_bytes()==Path('scripts/mainchip-saved-diode-reconstruction-pins.json').read_bytes()
+          assert (root/'qualification-manifest.json').read_bytes()==Path('scripts/mainchip-saved-diode-routing-pins.json').read_bytes()
           assert (root/'bulk-manifest.json').read_bytes()==Path('scripts/mainchip-bulk-postdrt-antenna-pins.json').read_bytes()
           assert ctx['workflow']['sha256']==hashlib.sha256(Path('.github/workflows/mainchip-net459-diode-prune.yml').read_bytes()).hexdigest()
           execution=decoded['execution.json']
           assert execution==dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,returncode=0,native_executed=False)
           sys.path.insert(0,'scripts')
-          import cloud_mainchip_saved_diode_reconstruction as host
+          import cloud_mainchip_saved_diode_routing as host
           proof=host.control_evidence(host.context(e))
           (root/'index.json').write_text(json.dumps(idx,sort_keys=True,indent=2)+'\n')
-          (root/'admission.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,full_source_records=12,source_job=j['id'],full_log_sha256=hashlib.sha256(raw).hexdigest(),proof=proof,native_acquisition=False),sort_keys=True,indent=2)+'\n')
+          (root/'admission.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,full_source_records=15,source_job=j['id'],full_log_sha256=hashlib.sha256(raw).hexdigest(),proof=proof,native_acquisition=False),sort_keys=True,indent=2)+'\n')
           PY
       - name: Reclaim only disposable hosted SDK storage
         run: |
@@ -317,8 +317,8 @@ jobs:
           receipt=dict(tag=tag,tested_source=e['GITHUB_SHA'],release_id=d['id'],existing_assets=[],target_verified=True,assets_overwritten=False,externally_reserved=True,creation_attempted=False,read_attempts=attempt+1)
           Path('release-reservation.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
           PY
-      - name: Reconstruct actual verified diodes and require all original wire and clock invariants
-        run: python3 -B scripts/cloud_mainchip_saved_diode_reconstruction.py --output bulk-postdrt-antenna-evidence --reservation release-reservation.json > bulk-postdrt-antenna.stdout 2> bulk-postdrt-antenna.stderr
+      - name: Route admitted diodes with scoped native guides and unchanged original physical invariants
+        run: python3 -B scripts/cloud_mainchip_saved_diode_routing.py --output bulk-postdrt-antenna-evidence --reservation release-reservation.json > bulk-postdrt-antenna.stdout 2> bulk-postdrt-antenna.stderr
       - name: Always emit full bounded evidence and failure output
         if: always()
         run: |
@@ -359,18 +359,18 @@ jobs:
           python3 -B - <<'PY'
           import hashlib,json,os,sys
           from pathlib import Path
-          raw=Path('scripts/mainchip-saved-diode-reconstruction-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='54f9e1eb262b8b9637b4a5c43bffd0f5394a5a210b18b363cf63e083c0b10f9e'
+          raw=Path('scripts/mainchip-saved-diode-routing-pins.json').read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='f63a45eaf94919b6fe22c04d9c9b74385c61d6ee489f16d48e541fdd9afd4725'
           sys.path.insert(0,'scripts')
-          import cloud_mainchip_saved_diode_reconstruction as host
+          import cloud_mainchip_saved_diode_routing as host
           host.source_gate()
           print(json.dumps(host.cleanup_preserved_workspace(host.context(os.environ),Path('bulk-postdrt-antenna-evidence')),sort_keys=True))
           PY
 
 
   preserve-antenna-job-logs:
-    needs: [source-controls, preserve-job-log, diode-reconstruction]
-    if: ${{ always() && inputs.mode == 'reconstruct' }}
+    needs: [source-controls, preserve-job-log, diode-routing]
+    if: ${{ always() && inputs.mode == 'route' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
@@ -390,7 +390,7 @@ jobs:
           jobs=get('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
           rows={}
           for j in jobs['jobs']:
-              if j['name'] not in ('source-controls','preserve-job-log','diode-reconstruction'):continue
+              if j['name'] not in ('source-controls','preserve-job-log','diode-routing'):continue
               j=get('actions/jobs/'+str(j['id']),str(j['id'])+'.json')
               assert j['head_sha']==e['GITHUB_SHA'] and j['run_id']==int(e['GITHUB_RUN_ID'])
               if j['conclusion']=='skipped':continue
