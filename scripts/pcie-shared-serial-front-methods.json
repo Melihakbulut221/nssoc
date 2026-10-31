@@ -1,0 +1,109 @@
+{
+  "schema": "pcie-shared-serial-front-v1",
+  "base": "b70200e8415e8403e9e6f63e299828fd45f0e56b",
+  "branch": "codex/pcie-shared-serial-front-v1",
+  "protected": {
+    ".github/workflows/pcie-gen12-record-cdc-root-controls-cloud.yml": "377e24b42583e3be055b17829eab131b728b68230af89c7a9144dfaf912ee150",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v": "9022c0f0479a52fdd928dcad574c11b0b4405412ca9f8f93f015793e7930d735",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v6.v": "276d2869efdefae58072bf819319537834707825f9bcd3e0cbfce615e33a4b85",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_owned_v3.v": "2f7666cbca8c676445676a8cfe2b8bd18198ff54802dcfc961ea78419cede117",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_lane_align_v3.v": "7d8df97bc16c4c1e8dc10de8539dff0de50fefd88d6fe8ec02c20fcf25258cdb",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_record_descrambler_v1.v": "514dc351e8f140635c16cf9bfe4c0ce4066bc9566493a55b55d46820fac7b007",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v2.v": "ee78b371252c9573ec27e21d443f330becbbcfdfff560872f0180024867cbd50",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v3.v": "96149b30b94620dd6fbc6c00e3c6c3336802af9cb9cd195907655d11639de98e",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_front_x4_v1.v": "f3b0172b1025929046bc0b8284672b3f6150e553ba6ffcd0b28e826c3050331c",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_owned_rx_v1.v": "0ca444320dd44eb4f90cf59df4841109dc29879a5d81c772bebf3dbe410fe022",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_owned_rx_v2.v": "6de3d85e1de27dc5ab8b768d93b21b43b995f29ebb4ee7a463b53e83789c4903",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v4.v": "588f2f94e0eab7b7751d21cbe433670c44774a10da15815b983eed3e710be91d",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v5.v": "de5da3658aedb27d0c5685111064b31f92d7c182786e634725c4c12265b1bc8f",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_sds_deskew_v2.v": "bc3120f3f03af9e267449a72ebb77241a90b5fb008e74edfd14e154451a25ac7",
+    "hw/soc/tb/cocotb/Makefile.pcie_shared_serial_front": "14f2058ecccd39283c9f73dd9ff9cdf2e0bcfdf9f39f17ffa5715736b18ea672",
+    "hw/soc/tb/cocotb/test_pcie_shared_serial_front.py": "501277217738a4fa1ca3f8f16fce97eb8ea26b2ecc62facbc5f1bb544d6a142c",
+    "hw/soc/tb/cocotb/test_pcie_shared_serial_front_composition.py": "9aec5b11bde439ad29927923e0701855a2ee40fc4f6b36ea9044f039aca524b5",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v4.py": "eb96c52581e862ca3214b68fb1ce464eb2d86dba9f977d56529e771ffaeaaae9",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_dllp_consumer_v6.py": "0045535806ec603e756c45805b5e6c684042b5268e2302511b98a4403a2e1b66",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_recovered_events_v2.py": "7bf2b4f3b44cfb1ce4053d721e5a32970f37156dc7437e7058d59a8436fe2b96",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_recovered_x4_v3.py": "58280100a30f37b0d99f6a3fad929b01b23a0171c505616014a4aab613eae54d",
+    "hw/soc/tb/pcie_shared_front_events_compare.v": "1419d1ec858d758a1aa75be00a31efe17a60ef27b99cad288b0b36cb07127de3",
+    "scripts/check_pcie_shared_serial_front.py": "06e34afcf4e51bbe008f866db7d3fd19ed44159bfe32b3af54e67c3adb849343",
+    "scripts/cloud_chunked_results.py": "fe414dcd92c233554a82a2151232bab8803e6ec7863df3872fbde009d3905816",
+    "scripts/ensure_cloud_tested_source_release.py": "ff213cb47a28b65207ef280be8ab4a0059622a3daa6a1e2c81f781c81ff2876e",
+    "scripts/pcie-gen12-record-cdc-requirements.txt": "71f8607c76595a1254177a372191a5ed5e17a50367c4248e461ee02cb8f4d070",
+    "scripts/wait_cloud_tested_source_release.py": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73"
+  },
+  "derivation": {
+    "front_baseline_segment": "    genvar lane;\n    generate for (lane=0; lane<4; lane=lane+1) begin: lanes\n        wire aligned, locked, block_valid, skp, eieos, realign, loss;\n        wire [193:0] block_data;\n        wire [2:0] block_length;\n        assign lane_aligned_o[lane]=lane_running_o[lane] && aligned;\n        assign lane_locked_o[lane]=lane_running_o[lane] && locked;\n        soc_pcie_gen3_lane_align_v3 aligner (\n            .clk_i(recovered_clk_i[lane]), .rst_ni(lane_running_o[lane]),\n            .raw_valid_i(raw_valid_i[lane]), .raw_i(raw_i[lane*32 +: 32]),\n            .block_align_control_i(align_control_i[lane]),\n            .force_realign_i(force_realign_i[lane]),\n            .aligned_o(aligned), .block_valid_o(block_valid),\n            .block_o(block_data), .length_code_o(block_length),\n            .skp_o(skp), .eieos_o(eieos), .realign_o(realign), .loss_o(loss),\n            .locked_o(locked), .sds_o()\n        );\n        soc_pcie_gen3_block_cdc_v1 #(.DEPTH(FIFO_DEPTH)) crossing (\n            .por_ni(por_ni), .wr_clk_i(recovered_clk_i[lane]),\n            .rd_clk_i(common_clk_i), .wr_reset_i(reset_i), .rd_reset_i(reset_i),\n            .wr_valid_i(block_valid), .wr_block_i(block_data),\n            .wr_length_code_i(block_length), .wr_skp_i(skp),\n            .wr_eieos_i(eieos), .wr_realign_i(realign), .wr_loss_i(loss),\n            .wr_running_o(lane_running_o[lane]), .wr_accept_o(),\n            .wr_fault_o(lane_fault_o[lane]), .wr_overflow_o(),\n            .rd_running_o(common_running[lane]), .rd_fault_o(common_fault[lane]),\n            .rd_valid_o(raw_valid[lane]), .rd_ready_i(front_ready && raw_ready[lane]),\n            .rd_block_o(raw_block[lane*194 +: 194]),\n            .rd_length_code_o(raw_length[lane*3 +: 3]),\n            .rd_skp_o(raw_skp[lane]), .rd_eieos_o(raw_eieos[lane]),\n            .rd_realign_o(raw_realign[lane])\n        );\n",
+    "front_body_substitutions": [
+      [
+        "common_running[lane]",
+        "common_running_o[lane]"
+      ],
+      [
+        "common_fault[lane]",
+        "common_fault_o[lane]"
+      ],
+      [
+        "front_ready && raw_ready[lane]",
+        "record_ready_i[lane]"
+      ],
+      [
+        "raw_valid[lane]",
+        "record_valid_o[lane]"
+      ],
+      [
+        "raw_block[lane*194 +: 194]",
+        "record_block_o[lane*194 +: 194]"
+      ],
+      [
+        "raw_length[lane*3 +: 3]",
+        "record_length_code_o[lane*3 +: 3]"
+      ],
+      [
+        "raw_skp[lane]",
+        "record_skp_o[lane]"
+      ],
+      [
+        "raw_eieos[lane]",
+        "record_eieos_o[lane]"
+      ],
+      [
+        "raw_realign[lane]",
+        "record_realign_o[lane]"
+      ]
+    ],
+    "v5_replacement": "    soc_pcie_gen3_recovered_front_x4_v1 #(.FIFO_DEPTH(FIFO_DEPTH)) shared_front (\n        .por_ni(por_ni), .reset_i(reset_i), .recovered_clk_i(recovered_clk_i), .common_clk_i(common_clk_i),\n        .raw_valid_i(raw_valid_i), .raw_i(raw_i), .align_control_i(align_control_i), .force_realign_i(force_realign_i),\n        .lane_running_o(lane_running_o), .lane_aligned_o(lane_aligned_o), .lane_locked_o(lane_locked_o), .lane_fault_o(lane_fault_o),\n        .common_running_o(common_running), .common_fault_o(common_fault),\n        .record_valid_o(raw_valid), .record_ready_i(raw_ready & {4{front_ready}}),\n        .record_block_o(raw_block), .record_length_code_o(raw_length),\n        .record_skp_o(raw_skp), .record_eieos_o(raw_eieos), .record_realign_o(raw_realign)\n    );\n    genvar lane;\n    generate for (lane=0; lane<4; lane=lane+1) begin: lanes\n"
+  },
+  "physical_and_protocol_acceptance": {
+    "analog_cdr_pll_accepted": false,
+    "serializer_pma_accepted": false,
+    "complete_ltssm_equalization_accepted": false,
+    "mainchip_serial_integration_accepted": false,
+    "layout_drc_lvs_accepted": false,
+    "final_setup_hold_accepted": false,
+    "full_gen3_x4_phy_accepted": false,
+    "production_signoff_accepted": false
+  },
+  "positive_rtl_named_tests": 50,
+  "compiled_semantic_mutations": 2,
+  "production_hierarchies": 2,
+  "vendor": {
+    "source_ref": "12744433de03b28ba4b0081ad3f49b150327b8fc",
+    "path": "lib/axis/rtl/axis_async_fifo.v",
+    "bytes": 34468,
+    "sha256": "339734a7984d7d540451c92f0831495837c451d170ba60dfbd59f851b28f4250",
+    "git_blob_sha": "b73ae6cd57b98290cc8f46dbac9738a7cf5f65ec"
+  },
+  "original_oracles_unchanged": [
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_recovered_events_v2.py",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_recovered_x4_v3.py",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_dllp_consumer_v6.py",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v4.py"
+  ],
+  "limitations": [
+    "The testbench supplies ideal recovered clocks and raw bits; no serial analog PMA is modeled.",
+    "The raw shared front preserves opaque OS records without declaring TS/EQ semantics or assigning logical lanes.",
+    "All-lane readiness and parser/decode fault ownership remain in the normal consumer.",
+    "No top-level soc_top or physical layout is changed. Training owner, normative TS/EQ oracle and state handoff remain open.",
+    "The comparison harness duplicates original/candidate chains only in verification. Production must elaborate one shared front and four CDC FIFOs."
+  ]
+}

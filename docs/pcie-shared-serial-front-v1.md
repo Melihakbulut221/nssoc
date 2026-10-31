@@ -1,0 +1,19 @@
+# Shared Gen3 receive front v1 candidate
+
+This candidate exposes complete aligned raw records before the normal receive descrambler, and connects the existing normal owned-packet and event consumers through that shared front. It is a digital integration step, not a complete serial PHY.
+
+The production path is recovered_events_v3 -> recovered_owned_rx_v2 -> recovered_x4_v5 -> recovered_front_x4_v1. The original v4/owned-v1/events-v2 modules and original Python oracle files remain byte unchanged. Each physical lane retains one original aligner and one original CDC FIFO. All 194 record bits, length code, SKP, EIEOS and realign are exposed with independent lane valid/ready. Common-clock status and recovered-clock status are explicitly separate. The normal consumer retains its common-domain all-lane barrier, parser fault gate, descrambler, atomic SKP cohorts and epoch ownership.
+
+The hosted-only suite runs an independently generated serial bit-list/complete-record queue oracle across all 32 bit offsets and FIFO depths 4, 8 and 32. It tests independent stalls, loss, overflow, coordinated reset, forced realignment, delayed lane startup and stopped-common-clock status ownership. A verification-only miter compares all public events outputs and all public v4/v5 normal outputs while the frozen 11-test owned/event suite exercises actual bytes, events, normal end, drain and abort. Two extra composition scenarios cover all-lane startup and early-arm fault recovery. Two compiled record-corruption mutations must fail at the queue assertion, rather than fail setup. Yosys checks the production v5 and events-v3 hierarchies each contain exactly one shared front, four aligners, four CDCs and four vendor FIFOs.
+
+All execution is on GitHub. Before tool provisioning, a separate exact-source prerelease reservation is required. Full successful or failed output bytes, compiled images, logs, XML and hierarchy JSON are archived without filtering. Source review by itself is not a simulation pass.
+
+Open work: the clock and raw-bit sources here are explicit testbench drivers, not CDR/PLL/SERDES models. Opaque pre-SDS ordered sets are preserved but this does not implement a normative TS/EQ interpreter, training owner, logical lane map, descrambler state handoff, complete LTSSM, serialized main-chip integration, final physical timing, or production approval. All corresponding acceptance flags remain false.
+
+## Hosted qualification
+
+The exact source 17033684f3dfd0c760ac7cf64d2e1dc1a4b2fdb0 passed [run 41223635170](https://github.com/Melihakbulut221/nssoc/actions/runs/41223635170): 50 positive named RTL tests with no positive skips, two compiled semantic mutation detections, and two production hierarchy checks. All four raw-front tests passed on Icarus and Verilator at FIFO depths 4, 8 and 32; the unchanged 11-test events oracle and both composition tests passed on both simulators. Each production hierarchy contains exactly one shared front, four aligners, four CDCs and four FIFOs.
+
+The two mutation runs select the first raw-record test only; their other six filtered cases are explicitly not executed, not claimed as positive coverage. The first failed attempt stopped before simulation at escaped Yosys identifier normalization. The second passed 37 positive tests and both hierarchies before a missing Verilator timing option stopped miter compilation. Their complete original evidence is retained separately.
+
+The [terminal record](evidence/pcie-shared-serial-front-terminal-41223635170/review.json) binds source, tests, hierarchy counts, full job logs and immutable release asset metadata. Full native outputs remain in the exact-source prerelease. No native payload or simulation was run locally. Full serial PHY, training/equalization, main-chip serial integration and physical/production acceptance flags remain false.
