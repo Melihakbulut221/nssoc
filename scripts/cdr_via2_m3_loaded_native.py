@@ -73,14 +73,22 @@ def execute_engine(plan,out,seconds,limit=16*1024*1024):
                 cleanup.append(repr(error))
                 try:child.kill();child.wait(timeout=5)
                 except BaseException as secondary:cleanup.append(repr(secondary))
-        if child is not None:result['observed_engine_returncode_at_cleanup']=child.returncode
-        if native_log.is_file()and not native_log.is_symlink():result['retained_native_log']=q.file_pin(native_log)
+        observations=[]
+        try:
+            if child is not None:result['observed_engine_returncode_at_cleanup']=child.returncode
+        except BaseException as error:observations.append(error)
+        try:
+            if native_log.is_file()and not native_log.is_symlink():result['retained_native_log']=q.file_pin(native_log)
+        except BaseException as error:observations.append(error)
+        result['observation_errors']=[repr(error)for error in observations]
         result['cleanup_errors']=cleanup
+        if observations and primary is None:result['status']='FAIL_ENGINE_DIAGNOSTICS'
         try:write(out/'engine-result.json',result)
         except BaseException as error:
             try:print(json.dumps(dict(unsaved_engine_result=result,secondary_save_error=repr(error)),sort_keys=True),flush=True)
             except BaseException:pass
             if primary is None:raise
+        if primary is None and observations:raise observations[0]
         if cleanup and primary is None:raise RuntimeError('engine cleanup failed '+repr(cleanup))
 
 def validate_engine_result(out,plan,record,wrapper_returncode=None):
@@ -88,7 +96,7 @@ def validate_engine_result(out,plan,record,wrapper_returncode=None):
     rc=record['actual_engine_returncode'];require(type(rc)is int,'authentic engine return code including negative signals')
     require(record['observed_engine_returncode_at_cleanup']==rc and record['wrapper_returncode']==(0 if rc==0 else 1),'engine and explicit wrapper exit semantics')
     if wrapper_returncode is not None:require(wrapper_returncode==record['wrapper_returncode'],'supervised wrapper result matches actual engine receipt')
-    require(record['engine_process_group']==record['parent_process_group']and not record['cleanup_errors'],'same clean externally supervised process group')
+    require(record['engine_process_group']==record['parent_process_group']and not record['cleanup_errors']and not record['observation_errors'],'same clean externally supervised process group')
     require(record['command']['argv']==plan['argv']and record['command']['cwd']==plan['cwd']and record['command']['engine']==plan['engine'],'exact measured engine command')
     require(record['command']['environment']==plan['environment']and record['command']['removed_environment_keys']==plan['remove_environment_keys']and record['command']['stderr']=='STDOUT'and record['command']['stdout']==plan['stdout'],'exact actual engine environment and merged stream')
     require(q.file_pin(Path(plan['stdout']))==record['native_log']==record['retained_native_log'],'complete original merged native log')
