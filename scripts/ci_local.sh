@@ -76,7 +76,7 @@ export TECTONIC
 pass=0; fail=0; skip=0
 failed_names=""
 # A separate invocation namespace keeps nested CI/test helpers disjoint.
-observation_root="${NSSOC_CI_OBSERVE_ROOT:-hw/soc/out/ci-observe}/$(date -u +%Y%m%dT%H%M%S)-$"
+observation_root="${NSSOC_CI_OBSERVE_ROOT:-hw/soc/out/ci-observe}/$(date -u +%Y%m%dT%H%M%S)-$$"
 gate_number=0
 
 run() {   # run <name> <command...>; original commands and verdicts are retained
