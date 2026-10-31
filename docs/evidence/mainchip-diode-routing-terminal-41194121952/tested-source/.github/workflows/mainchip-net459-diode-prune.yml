@@ -1,0 +1,409 @@
+name: Route admitted antenna diodes with original clock and wire guards
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Route admitted saved candidate; no repeated repair or diode creation
+        type: choice
+        required: true
+        default: controls
+        options: [controls, route]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: net459-diode-prune-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Bind exact source and disabled native scope
+        env:
+          SELECTED_MODE: ${{ inputs.mode }}
+        run: |
+          python3 -B - <<'PY'
+          import ast,hashlib,json,os,subprocess,sys
+          from pathlib import Path
+          out=Path('bulk-postdrt-integration-controls');out.mkdir(exist_ok=True)
+          e=os.environ
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_REF']=='refs/heads/codex/mainchip-net459-diode-prune'
+          assert e['SELECTED_MODE'] in ('controls','route')
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
+          name='scripts/mainchip-bulk-postdrt-integration-pins.json'
+          raw=Path(name).read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='f35728f63c4f9ba20d4b2dfa3759d0731f21540d03ea91f930b19a6a0812e872'
+          m=json.loads(raw)
+          assert m['schema']=='bulk-postdrt-integration-pins-v1' and len(m['files'])==1839
+          assert m['source_controls_authorized'] is True
+          assert all(m[k] is False for k in ('native_execution_enabled','physical_acceptance','timing_accepted','full_phy_accepted'))
+          for path,pin in m['files'].items():
+              p=Path(path);assert p.is_file() and not p.is_symlink()
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==pin,path
+          for path in ('scripts/cloud_mainchip_bulk_postdrt_antenna.py','scripts/mainchip_bulk_postdrt_antenna_inner.py','scripts/mainchip_bulk_postdrt_antenna_native.py','scripts/check_mainchip_bulk_postdrt_integration.py'):
+              ast.parse(Path(path).read_bytes(),filename=path)
+          draft=Path('docs/evidence/mainchip-bulk-postdrt-integration-source-draft-20261031.json').read_bytes()
+          assert hashlib.sha256(draft).hexdigest()=='028fe149ec9942c1e650f1bcec9bcf44afa4efacb6f71ebcf58d7be52be78733'
+          sys.path.insert(0,'scripts')
+          import cloud_mainchip_bulk_postdrt_antenna as host
+          assert host.source_gate()==m
+          import cloud_mainchip_saved_diode_routing as qualification
+          qraw=Path('scripts/mainchip-saved-diode-routing-pins.json').read_bytes()
+          assert hashlib.sha256(qraw).hexdigest()=='f63a45eaf94919b6fe22c04d9c9b74385c61d6ee489f16d48e541fdd9afd4725'
+          qm=qualification.source_gate()
+          assert qm==json.loads(qraw) and len(qm['files'])==2330
+          qualification.authorize_native(qm)
+          for path in ('scripts/mainchip_saved_diode_routing_native.py','scripts/mainchip_saved_diode_routing_inner.py','scripts/cloud_mainchip_saved_diode_routing.py'):
+              ast.parse(Path(path).read_bytes(),filename=path)
+          (out/'qualification-manifest.json').write_bytes(qraw)
+          (out/'manifest.json').write_bytes(raw)
+          bulk=Path('scripts/mainchip-bulk-postdrt-antenna-pins.json').read_bytes()
+          (out/'bulk-manifest.json').write_bytes(bulk)
+          workflow=Path('.github/workflows/mainchip-net459-diode-prune.yml').read_bytes()
+          context=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
+            source_controls_only=True,mode='controls',qualification_only_in_manifest=True,native_authorized=False,native_acquisition=False,native_executed=False,
+            physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,
+            manifest=dict(path=name,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),files=len(m['files'])),
+            bulk_manifest=dict(bytes=len(bulk),sha256=hashlib.sha256(bulk).hexdigest()),
+            workflow=dict(path='.github/workflows/mainchip-net459-diode-prune.yml',bytes=len(workflow),sha256=hashlib.sha256(workflow).hexdigest()),
+            draft=dict(bytes=len(draft),sha256=hashlib.sha256(draft).hexdigest()),
+            synthetic_native_boundaries=['native DB/DRC I/O','cloud transport/upload','tiny synthetic publication capsule'],
+            real_source_processes='short Python rc0/rc7 using actual supervisor; no OpenROAD')
+          (out/'context.json').write_text(json.dumps(context,sort_keys=True,indent=2)+'\n')
+          PY
+          command -v tclsh
+      - name: Exercise actual adapters, supervisor, native audit boundaries and inherited controls
+        run: |
+          set +e
+          python3 -B scripts/check_mainchip_bulk_postdrt_integration.py --output bulk-postdrt-integration-controls/controls.json > bulk-postdrt-integration-controls/controls.stdout 2> bulk-postdrt-integration-controls/controls.stderr
+          rc=$?
+          CONTROL_RC="$rc" python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          result=dict(source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,returncode=int(os.environ['CONTROL_RC']),native_executed=False)
+          Path('bulk-postdrt-integration-controls/execution.json').write_text(json.dumps(result,sort_keys=True,indent=2)+'\n')
+          PY
+          exit "$rc"
+      - name: Exercise inherited observer and exact reconstruction refusal controls
+        run: |
+          set +e
+          python3 -B scripts/check_mainchip_saved_diode_routing.py bulk-postdrt-integration-controls/audit-controls.json > bulk-postdrt-integration-controls/audit-controls.stdout 2> bulk-postdrt-integration-controls/audit-controls.stderr
+          rc=$?
+          CONTROL_RC="$rc" python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          result=dict(source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,returncode=int(os.environ['CONTROL_RC']),native_executed=False)
+          Path('bulk-postdrt-integration-controls/audit-execution.json').write_text(json.dumps(result,sort_keys=True,indent=2)+'\n')
+          PY
+          exit "$rc"
+      - name: Require complete actual source controls
+        run: |
+          python3 -B - <<'PY'
+          import json,os,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import cloud_mainchip_bulk_postdrt_antenna as host
+          ctx=host.context(os.environ)
+          proof=host.control_evidence(ctx)
+          r=json.loads(Path('bulk-postdrt-integration-controls/controls.json').read_bytes())
+          assert r['counts']==dict(inherited=dict(positive=10,refusal=49,lifecycle=20,rendered_tcl=9),namespace=25,projection=3,supervisor=2,shutdown=4,acquisition=4,native_audit=12,bound_cycle=21,publication=3)
+          for key in ('positive','refusal','lifecycle','rendered_tcl'):
+              assert len(r['inherited'][key])==r['counts']['inherited'][key]
+          assert r['native_authorized'] is False and proof['native_acquisition'] is False
+          PY
+      - name: Always emit complete source records including failures
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          for name in ('context.json','manifest.json','bulk-manifest.json','qualification-manifest.json','controls.json','controls.stdout','controls.stderr','execution.json','audit-controls.json','audit-controls.stdout','audit-controls.stderr','audit-execution.json','routing-inherited-controls.json','routing-inherited-controls.stdout','routing-inherited-controls.stderr'):
+              p=Path('bulk-postdrt-integration-controls')/name;assert not p.is_symlink()
+              present=p.is_file();raw=p.read_bytes() if present else b''
+              chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
+              print('BULK_POSTDRT_CONTROL_INDEX '+json.dumps(dict(path=name,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):
+                  print('BULK_POSTDRT_CONTROL_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          PY
+      - name: Preserve all source output bytes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bulk-postdrt-integration-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bulk-postdrt-integration-controls
+          if-no-files-found: error
+          retention-days: 90
+
+  preserve-job-log:
+    needs: source-controls
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Preserve full actual source job log and metadata
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          root=Path('job-logs');root.mkdir()
+          e=os.environ
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_RUN_ATTEMPT']=='1'
+          prefix='repos/'+e['GITHUB_REPOSITORY']+'/'
+          def read(path,name):
+              b=subprocess.check_output(['gh','api',prefix+path]);(root/name).write_bytes(b);return json.loads(b)
+          run=read('actions/runs/'+e['GITHUB_RUN_ID'],'run.json')
+          assert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
+          jobs=read('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
+          selected=[j for j in jobs['jobs'] if j['name']=='source-controls'];assert len(selected)==1
+          listed=selected[0]
+          j=read('actions/jobs/'+str(listed['id']),'job.json')
+          assert j['id']==listed['id'] and j['name']=='source-controls'
+          assert j['head_sha']==e['GITHUB_SHA'] and j['run_id']==int(e['GITHUB_RUN_ID'])
+          b=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(j['id'])+'/logs'])
+          assert b;(root/'job.log').write_bytes(b)
+          receipt=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
+            job_id=j['id'],job_conclusion=j['conclusion'],api_status=j['status'],api_metadata_claims_terminal=j['status']=='completed',execution_dependency_finished=True,full_raw_job_log=True,
+            log_bytes=len(b),log_sha256=hashlib.sha256(b).hexdigest(),native_acquisition=False)
+          (root/'receipt.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(receipt,sort_keys=True))
+          PY
+      - name: Preserve complete actual logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bulk-postdrt-source-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: job-logs
+          if-no-files-found: error
+          retention-days: 90
+
+  diode-routing:
+    needs: [source-controls, preserve-job-log]
+    if: ${{ inputs.mode == 'route' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Recheck exact selected source before acquisition
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess,sys
+          from pathlib import Path
+          e=os.environ
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_REF']=='refs/heads/codex/mainchip-net459-diode-prune'
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
+          name='scripts/mainchip-saved-diode-routing-pins.json'
+          raw=Path(name).read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='f63a45eaf94919b6fe22c04d9c9b74385c61d6ee489f16d48e541fdd9afd4725'
+          sys.path.insert(0,'scripts')
+          import cloud_mainchip_saved_diode_routing as host
+          m=host.source_gate()
+          assert m==json.loads(raw) and len(m['files'])==2330
+          host.authorize_native(m)
+          print('Exact source and qualified adapter projection verified; no native acquisition yet.')
+          PY
+      - name: Require full same-source successful controls before native acquisition
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json,os,subprocess,sys,time
+          from pathlib import Path
+          e=os.environ;root=Path('bulk-postdrt-integration-controls');root.mkdir()
+          prefix='repos/Melihakbulut221/nssoc/'
+          def read(path,name):
+              raw=subprocess.check_output(['gh','api',prefix+path]);(root/name).write_bytes(raw);return json.loads(raw)
+          jobs=read('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
+          found=[j for j in jobs['jobs']if j['name']=='source-controls'];assert len(found)==1
+          for attempt in range(30):
+              j=read('actions/jobs/'+str(found[0]['id']),'job.json')
+              assert j['head_sha']==e['GITHUB_SHA'] and j['run_id']==int(e['GITHUB_RUN_ID'])
+              if j['status']=='completed':break
+              time.sleep(2)
+          assert j['status']=='completed' and j['conclusion']=='success'
+          raw=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(j['id'])+'/logs'])
+          assert raw;(root/'source-controls.log').write_bytes(raw)
+          idx={};chunks={}
+          expected={'context.json','manifest.json','bulk-manifest.json','qualification-manifest.json','controls.json','controls.stdout','controls.stderr','execution.json','audit-controls.json','audit-controls.stdout','audit-controls.stderr','audit-execution.json','routing-inherited-controls.json','routing-inherited-controls.stdout','routing-inherited-controls.stderr'}
+          for line in raw.decode().splitlines():
+              for marker,is_index in (('BULK_POSTDRT_CONTROL_INDEX ',True),('BULK_POSTDRT_CONTROL_CHUNK ',False)):
+                  if marker not in line:continue
+                  text=line.split(marker,1)[1]
+                  if not text.startswith('{'):continue
+                  d=json.loads(text);name=d['path'];assert name in expected
+                  if is_index:assert name not in idx;idx[name]=d
+                  else:
+                      parts=chunks.setdefault(name,{})
+                      assert type(d['index'])is int and d['index']not in parts;parts[d['index']]=d
+          assert set(idx)==expected
+          decoded={}
+          for name,d in idx.items():
+              assert d['present']is True
+              parts=chunks.get(name,{});assert set(parts)==set(range(d['chunks']))
+              data=b''.join(base64.b64decode(parts[i]['base64'],validate=True)for i in range(d['chunks']))
+              assert len(data)==d['bytes'] and hashlib.sha256(data).hexdigest()==d['sha256']
+              (root/name).write_bytes(data)
+              if name.endswith('.json'):decoded[name]=json.loads(data)
+          ctx=decoded['context.json']
+          assert ctx['source']==e['GITHUB_SHA'] and ctx['run_id']==int(e['GITHUB_RUN_ID']) and ctx['attempt']==1
+          assert all(ctx[k]is False for k in ('native_acquisition','native_executed','physical_acceptance','timing_accepted','full_phy_accepted'))
+          assert ctx['qualification_only_in_manifest']is True and ctx['native_authorized']is False
+          audit=decoded['audit-controls.json'];audit_execution=decoded['audit-execution.json']
+          assert audit['source']==e['GITHUB_SHA'] and audit['run_id']==int(e['GITHUB_RUN_ID']) and audit['attempt']==1
+          assert audit['status']=='PASS_SAVED_DIODE_ROUTING_SOURCE_CONTROLS' and audit['count']==111 and len(set(audit['passed_cases']))==111
+          assert audit['native_executed']is False and audit_execution['returncode']==0
+          assert audit_execution['source']==e['GITHUB_SHA'] and audit_execution['run_id']==int(e['GITHUB_RUN_ID']) and audit_execution['attempt']==1
+          assert audit['source_pin']==hashlib.sha256(Path('scripts/mainchip_saved_diode_routing_native.py').read_bytes()).hexdigest()
+          assert (root/'manifest.json').read_bytes()==Path('scripts/mainchip-bulk-postdrt-integration-pins.json').read_bytes()
+          assert (root/'qualification-manifest.json').read_bytes()==Path('scripts/mainchip-saved-diode-routing-pins.json').read_bytes()
+          assert (root/'bulk-manifest.json').read_bytes()==Path('scripts/mainchip-bulk-postdrt-antenna-pins.json').read_bytes()
+          assert ctx['workflow']['sha256']==hashlib.sha256(Path('.github/workflows/mainchip-net459-diode-prune.yml').read_bytes()).hexdigest()
+          execution=decoded['execution.json']
+          assert execution==dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,returncode=0,native_executed=False)
+          sys.path.insert(0,'scripts')
+          import cloud_mainchip_saved_diode_routing as host
+          proof=host.control_evidence(host.context(e))
+          (root/'index.json').write_text(json.dumps(idx,sort_keys=True,indent=2)+'\n')
+          (root/'admission.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,full_source_records=15,source_job=j['id'],full_log_sha256=hashlib.sha256(raw).hexdigest(),proof=proof,native_acquisition=False),sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Reclaim only disposable hosted SDK storage
+        run: |
+          test "$GITHUB_ACTIONS" = true
+          test "$RUNNER_OS" = Linux
+          sudo rm -rf /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h .
+      - name: Require independently created exact-source release
+        run: |
+          python3 -B - <<'PY'
+          import json,os,subprocess,time
+          from pathlib import Path
+          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-mainchip-bulk-postdrt-antenna'
+          prefix='repos/Melihakbulut221/nssoc/'
+          for attempt in range(120):
+              p=subprocess.run(['gh','api',prefix+'releases/tags/'+tag],capture_output=True,text=True)
+              if p.returncode==0:
+                  d=json.loads(p.stdout);break
+              assert 'HTTP 404' in p.stderr,p.stderr
+              time.sleep(2)
+          else:raise RuntimeError('Exact-source release reservation was not created; no archive acquisition')
+          r=json.loads(subprocess.check_output(['gh','api',prefix+'git/ref/tags/'+tag]))
+          assert d['tag_name']==tag and d['target_commitish']==e['GITHUB_SHA']
+          assert d['draft'] is False and d['prerelease'] is True and d['assets']==[]
+          assert r['object']['type']=='commit' and r['object']['sha']==e['GITHUB_SHA']
+          receipt=dict(tag=tag,tested_source=e['GITHUB_SHA'],release_id=d['id'],existing_assets=[],target_verified=True,assets_overwritten=False,externally_reserved=True,creation_attempted=False,read_attempts=attempt+1)
+          Path('release-reservation.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Route admitted diodes with scoped native guides and unchanged original physical invariants
+        run: python3 -B scripts/cloud_mainchip_saved_diode_routing.py --output bulk-postdrt-antenna-evidence --reservation release-reservation.json > bulk-postdrt-antenna.stdout 2> bulk-postdrt-antenna.stderr
+      - name: Always emit full bounded evidence and failure output
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import sys
+          from pathlib import Path
+          for name in ('bulk-postdrt-antenna.stdout','bulk-postdrt-antenna.stderr'):
+              p=Path(name)
+              if p.is_file():
+                  sys.stdout.buffer.write(p.read_bytes());sys.stdout.buffer.write(b'\n')
+          PY
+      - name: Preserve complete derived evidence and retained output fallback
+        id: preserved_artifact
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bulk-postdrt-antenna-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          path: |
+            bulk-postdrt-antenna-evidence
+            release-reservation.json
+            bulk-postdrt-antenna.stdout
+            bulk-postdrt-antenna.stderr
+            bulk-postdrt-antenna-controls
+            bulk-postdrt-integration-controls
+            ${{ runner.temp }}/mainchip-bulk-postdrt-antenna-${{ github.run_id }}-1/owner.json
+            ${{ runner.temp }}/mainchip-bulk-postdrt-antenna-${{ github.run_id }}-1/candidate-outputs.json
+            ${{ runner.temp }}/mainchip-bulk-postdrt-antenna-${{ github.run_id }}-1/candidate-parts.json
+            ${{ runner.temp }}/mainchip-bulk-postdrt-antenna-${{ github.run_id }}-1/candidate-native.tar.gz.part*
+            ${{ runner.temp }}/mainchip-bulk-postdrt-antenna-${{ github.run_id }}-1/out/bulk-postdrt-*
+            ${{ runner.temp }}/mainchip-bulk-postdrt-antenna-${{ github.run_id }}-1/out/bulk-postdrt-antenna
+            ${{ runner.temp }}/mainchip-bulk-postdrt-antenna-${{ github.run_id }}-1/out/work/bulk-postdrt-antenna
+      - name: Clean exact owned workspace only after complete artifact preservation
+        if: ${{ always() && steps.preserved_artifact.outcome == 'success' }}
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,sys
+          from pathlib import Path
+          raw=Path('scripts/mainchip-saved-diode-routing-pins.json').read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='f63a45eaf94919b6fe22c04d9c9b74385c61d6ee489f16d48e541fdd9afd4725'
+          sys.path.insert(0,'scripts')
+          import cloud_mainchip_saved_diode_routing as host
+          host.source_gate()
+          print(json.dumps(host.cleanup_preserved_workspace(host.context(os.environ),Path('bulk-postdrt-antenna-evidence')),sort_keys=True))
+          PY
+
+
+  preserve-antenna-job-logs:
+    needs: [source-controls, preserve-job-log, diode-routing]
+    if: ${{ always() && inputs.mode == 'route' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Preserve all complete terminal execution logs and metadata
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          e=os.environ;out=Path('antenna-job-logs');out.mkdir()
+          prefix='repos/Melihakbulut221/nssoc/'
+          def get(path,name):
+              b=subprocess.check_output(['gh','api',prefix+path]);(out/name).write_bytes(b);return json.loads(b)
+          r=get('actions/runs/'+e['GITHUB_RUN_ID'],'run.json')
+          assert r['head_sha']==e['GITHUB_SHA'] and r['run_attempt']==1
+          jobs=get('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
+          rows={}
+          for j in jobs['jobs']:
+              if j['name'] not in ('source-controls','preserve-job-log','diode-routing'):continue
+              j=get('actions/jobs/'+str(j['id']),str(j['id'])+'.json')
+              assert j['head_sha']==e['GITHUB_SHA'] and j['run_id']==int(e['GITHUB_RUN_ID'])
+              if j['conclusion']=='skipped':continue
+              raw=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(j['id'])+'/logs'])
+              assert raw;(out/(str(j['id'])+'.log')).write_bytes(raw)
+              rows[j['name']]=dict(id=j['id'],conclusion=j['conclusion'],api_status=j['status'],api_metadata_claims_terminal=j['status']=='completed',execution_dependency_finished=True,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+          (out/'receipt.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run=int(e['GITHUB_RUN_ID']),attempt=1,complete_raw_logs=rows),sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Preserve complete actual logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: full-antenna-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: antenna-job-logs
+          if-no-files-found: error
+          retention-days: 90
