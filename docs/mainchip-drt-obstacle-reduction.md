@@ -9,3 +9,30 @@ The reducer preserves every selected marker and witness, validates the full orig
 The saved database contains no iteration10 mutable route geometry. Endpoint observations are not a census of third-party nets, fill or obstructions and do not prove the original route violation cause. Routing, timing, full PHY and physical acceptance remain false.
 
 This first revision contains the pure reducer and independent full-census synthetic controls. The actual acquisition/publication adapter is deliberately disabled and is still being implemented. The manual workflow has only controls and full source-log preservation jobs. No actual report acquisition, CAD, rerouting or native simulation is available from this revision. Source fixtures use 373 independent synthetic endpoint records, all 434 selected markers and all 596 original ordinals, plus negative controls; their results are not a physical result.
+
+
+The separate hosted adapter now validates the complete original 44-asset
+publication and its 54-member catalog, the successful observer jobs, immutable
+source/tag identity and all six selected JSON byte pins. The 689,327,702-byte
+report is acquired only on a GitHub runner. It is never fetched by source-only
+controls and is not copied into compact Git evidence.
+
+The adapter's explicit bounds are an 8 GiB address space, 900 seconds for
+acquisition/reduction, a 300-second timeout for each authenticated asset stream,
+and 64 MiB for each complete derived output. A bound failure rejects the result;
+it does not truncate or accept a partial reduction. Input bytes are rehashed
+after use and the original publication is revalidated. Ordinary metadata
+download counters are excluded from the immutable release projection.
+
+Publication requires a separately reserved exact-source empty public release.
+Only explicit known flat output names with strict UTF-8 are published. Unknown
+or binary partial files remain cloud-only in the always-retained workflow
+artifact. The result is saved and publication attempted before the original
+failure is re-raised; a secondary save/publication failure never replaces it.
+
+The new combined checker retains all 37 qualified geometry controls unchanged
+and adds 21 transport, source-record, complete synthetic pipeline, resource and
+failure-order controls. This source revision does not authorize actual report
+acquisition: both authority flags and the controls-only workflow remain closed.
+The newly authored 58-test result is pending hosted execution, not a claimed
+physical, timing or routing result.
