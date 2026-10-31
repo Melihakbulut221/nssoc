@@ -258,7 +258,7 @@ jobs:
               if job['status']=='completed':break
               time.sleep(2)
           assert job['status']=='completed' and job['conclusion']=='success'
-          raw=subprocess.check_output(['gh','api',prefix+'actions/jobs/'+str(job['id'])+'/logs']);assert raw
+          raw=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(job['id'])+'/logs']);assert raw
           (out/'source-controls.log').write_bytes(raw)
           expected={'context.json','controls.json','controls.stdout','controls.stderr','publication-controls.json','publication-controls.stdout','publication-controls.stderr','ownership-manifest.json','ownership-controls.json','ownership-controls.stdout','ownership-controls.stderr','execution-manifest.json','execution-controls.json','execution-controls.stdout','execution-controls.stderr'}
           idx={};chunks={}
@@ -371,7 +371,7 @@ jobs:
               job=get('actions/jobs/'+str(listed['id']),str(listed['id'])+'.json')
               assert job['head_sha']==e['GITHUB_SHA'] and job['run_id']==int(e['GITHUB_RUN_ID'])
               if job['conclusion']=='skipped':continue
-              raw=subprocess.check_output(['gh','api',prefix+'actions/jobs/'+str(job['id'])+'/logs']);assert raw
+              raw=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(job['id'])+'/logs']);assert raw
               (out/(str(job['id'])+'.log')).write_bytes(raw)
               records[job['name']]=dict(id=job['id'],api_status=job['status'],conclusion=job['conclusion'],execution_dependency_finished=True,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
           (out/'receipt.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run=int(e['GITHUB_RUN_ID']),attempt=1,complete_raw_logs=records),sort_keys=True,indent=2)+'\n')
