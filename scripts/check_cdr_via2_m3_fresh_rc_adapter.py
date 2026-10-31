@@ -146,26 +146,43 @@ def acquisition_failure_controls():
         cases.append('low_disk_measured_once_and_preserved_before_refusal')
     return cases
 
+def qualification_controls(c):
+    value=dict(status=c['core']['qualification_status'],fresh_RC_pipeline_complete=True,qualified_pex=False,electrical_accepted=False,full_phy_accepted=False,loaded_simulation_passed=False)
+    a.require(host.require_qualification(value,c)is value,'same complete qualification object')
+    cases=['complete_qualification_identity_preserved']
+    for name,bad in [('arbitrary',{}),('partial',dict(value,fresh_RC_pipeline_complete=False)),('synthetic',dict(value,status='PASS_SYNTHETIC_PHASE_REPORT_VALIDATION_ONLY'))]+[(name,dict(value,**{name:True}))for name in ('qualified_pex','electrical_accepted','full_phy_accepted','loaded_simulation_passed')]:
+        reject(lambda:host.require_qualification(bad,c));cases.append('refuse_'+name)
+    tree=ast.parse((ROOT/'scripts/cloud_cdr_via2_m3_fresh_rc.py').read_text())
+    body=next(n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name=='perform')
+    statements=[n for n in ast.walk(body)if isinstance(n,ast.Try)][0].body
+    positions=[i for i,n in enumerate(statements)if isinstance(n,ast.Assign)and isinstance(n.value,ast.Call)and isinstance(n.value.func,ast.Name)and n.value.func.id=='pipeline']
+    a.require(len(positions)==1,'one actual pipeline call');following=statements[positions[0]+1]
+    a.require(ast.dump(following,include_attributes=False)==ast.dump(ast.parse('require_qualification(qualification,c)').body[0],include_attributes=False),'outer guard immediately after actual pipeline return')
+    cases.append('actual_perform_ast_requires_gate_before_success')
+    return cases
+
 def main():
     ctx=a.context(os.environ);c,p=a.source_guard(ctx);out=ROOT/'fresh-rc-controls';a.require(not out.exists(),'new integrated source evidence');out.mkdir();primary=None;observations={};counts={}
     try:
         a.require(ctx['job']=='source-controls','source control job only')
         prod=producer_controls.controls(ROOT,p);observations['producer']=prod;counts.update(producer_positive=len(prod['positive_controls']),producer_refusals=len(prod['refusal_controls']))
         rt=runtime_controls.controls(ROOT);observations['runtime']=rt;counts.update(runtime_positive=len(rt['positive_controls']),runtime_refusals=len(rt['refusal_controls']))
-        e=context_controls(c);j=current_run_controls();l=lifecycle_controls()+acquisition_failure_controls();em=emission_controls()
+        e=context_controls(c);j=current_run_controls();l=lifecycle_controls()+acquisition_failure_controls()+qualification_controls(c);em=emission_controls()
         observations.update(context=e,current_jobs=j,lifecycle=l,emission=em);counts.update(context_refusals=len(e),current_job_refusals=len(j),lifecycle_cases=len(l),emission_refusals=em['refusal_count'])
         pub=publication_controls.controls(dict(source=ctx['source'],run_id=ctx['run_id'],attempt=1));a.require(pub['passed']is True,'complete publication controls');observations['publication']=pub
         counts.update(publication_cases=pub['counts']['positive'],publication_refusals=pub['counts']['refusals'])
-        ns=a.q.decode(a.q.regular(ROOT,'scripts/cdr-via2-m3-fresh-rc-namespace-inputs.json').read_bytes());namespace_controls.RECORDS.clear()
+        ns=a.q.decode(a.q.regular(ROOT,'scripts/cdr-via2-m3-fresh-rc-namespace-inputs.json').read_bytes());namespace_controls.RECORDS.clear();observations['namespace']=namespace_controls.RECORDS
         namespace_controls.definition_controls(ns);namespace_controls.real_schema_source_control();namespace_controls.binding_controls(ns)
         observations['namespace']=namespace_controls.RECORDS
         counts.update(namespace_positive=sum(x['kind']!='expected_refusal'for x in namespace_controls.RECORDS),namespace_refusals=sum(x['kind']=='expected_refusal'for x in namespace_controls.RECORDS))
-        core_controls.RECORDS.clear();core_controls.definition_controls()
+        core_controls.RECORDS.clear();observations['core']=core_controls.RECORDS;core_controls.definition_controls()
         with tempfile.TemporaryDirectory(prefix='explicit-core-fixture-',dir=out)as tmp:
-            fixture=Path(tmp);copyroot=fixture/'copy';copyroot.mkdir();core_controls.copy_and_command_controls(copyroot);numeric=fixture/'numerical';numeric.mkdir();observations['full_numerical_fixture']=core_controls.full_numerical_controls(dict(source=ctx['source'],run_id=ctx['run_id'],attempt=1),numeric)
-        observations['core']=core_controls.RECORDS;counts['core_controls']=len(core_controls.RECORDS)
+            copyroot=Path(tmp)/'copy';copyroot.mkdir();core_controls.copy_and_command_controls(copyroot)
         import check_cdr_via2_m3_fresh_rc_native as phase_controls
-        phase=phase_controls.controls(ctx,out/'phase-fixtures');observations['phase']=phase;counts['phase_controls']=len(phase['records'])
+        phase=phase_controls.controls(ctx,out/'phase-fixtures');observations['phase']=phase
+        a.require(phase['status']=='PASS_SOURCE_ONLY_PHASE_CONTROLS'and phase['failed']==0 and phase['native_acquired']is False and phase['native_executed']is False,'complete explicit synthetic phase controls')
+        observations['full_numerical_fixture']=phase['full_numerical_fixture'];observations['core']=core_controls.RECORDS
+        counts.update(core_controls=len(core_controls.RECORDS),phase_controls=len(phase['records']))
         if(out/'phase-fixtures').exists():observations['phase_fixture_files']=host.publisher.inventory(out/'phase-fixtures')
         counts['source_log_refusals']=c['source_control_requirements']['source_log_refusals']
         result=dict(status='PASS_CURRENT_VIA2_M3_FRESH_RC_SOURCE_CONTROLS',passed=True,context=dict(source=ctx['source'],run_id=ctx['run_id'],attempt=1),controls=counts,observations=observations,native_payload_acquired=False,RC_executed=False,simulation_executed=False,layout_regenerated=False,qualified_pex=False,electrical_accepted=False,full_phy_accepted=False)

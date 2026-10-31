@@ -73,6 +73,12 @@ def authenticate_controls(ctx,out,api_call=q.api,fetch_log=a.read_source_log):
     except BaseException as error:
         q.preserve_error(out,'failure.json',error,None);raise
 
+def require_qualification(qualification,c):
+    require(isinstance(qualification,dict),'complete qualification object')
+    require(qualification.get('status')==c['core']['qualification_status'] and qualification.get('fresh_RC_pipeline_complete')is True,'complete frozen numerical qualification')
+    require(all(qualification.get(name)is False for name in ('qualified_pex','electrical_accepted','full_phy_accepted','loaded_simulation_passed')),'fresh RC conveys no electrical or PEX acceptance')
+    return qualification
+
 def native_pipeline(current_view,out,preflight,c,p):
     import cdr_via2_m3_fresh_rc_core as core
     import cdr_via2_m3_fresh_rc_runtime as inputs
@@ -121,7 +127,7 @@ def native_pipeline(current_view,out,preflight,c,p):
         require(plan['native_authority']is False and len(plan['commands'])==13,'original thirteen command argument contract conveys no authority')
         for command in plan['commands']:execute(command['argv'],command['label'],1200)
         qualification=entry.validate_complete(out,ctx)
-        require(qualification['status']==c['core']['qualification_status']and qualification['fresh_RC_pipeline_complete']is True,'complete frozen numerical qualification')
+        require_qualification(qualification,c)
         write(out/'fresh-rc-qualification.json',encode(qualification))
         a.source_guard(ctx);a.native_preflight(preflight,ctx,c,p);require(pin(app)['sha256']==c['appimage']['sha256'],'runtime unchanged')
     except BaseException as error:primary=error
@@ -175,6 +181,7 @@ def perform(ctx,c,reserved,controls_raw,out,api_call=q.api,fetch=q.download,pipe
         preflight=dict(context=ctx,fresh_rc_execution_authorized=True,generation_authorized=False,electrical_simulation_authorized=False,source_controls=controls,current_run_binding=current_binding,producer_binding=binding,reservation_binding=reservation,restore_root=str(restore),current_view_root=producer.CURRENT_ROOT,restore_proof=restored,original_absolute_results_rewritten=False,historical_producer_context_substituted=False,**FLAGS)
         write(out/'preflight.json',encode(preflight));a.native_preflight(out/'preflight.json',ctx,c,p)
         qualification=pipeline(Path(producer.CURRENT_ROOT),out,out/'preflight.json',c,p)
+        require_qualification(qualification,c)
         producer.validate_restored(restore,p,full,original);live('-after');a.source_guard(ctx)
         return dict(status='PASS_CURRENT_VIA2_M3_FRESH_RC_REQUIRES_UNCHANGED_ELECTRICAL_WAVES',context=ctx,complete_view_producer_members=665,current_view_files=78,original_absolute_proofs_retained=True,qualification=qualification,**FLAGS)
     except BaseException as error:primary=error;raise
