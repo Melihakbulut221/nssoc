@@ -1,14 +1,15 @@
-# Cloud continuation — checkpoint v154
+# Cloud continuation — checkpoint v155
 
-Updated: 2026-10-31T09:03:43.143020+00:00
+Updated: 2026-10-31T09:17:56.224099+00:00
 
-Latest user instruction overrides older local goal wording: all computation and native archives/models/GDS/ODB/DEF/waves stay in GitHub. Local project directory, project temporary data and native CAD processes are empty. Only source/API/derived text in RAM locally.
+All computation and nativearchives/models/GDS/ODB/DEF/waves remain onGitHub. Localworkspace andprojecttemp/nativeprocess scans areempty. Latestcloud-onlyuserinstruction overrides olderlocalgoalwording.
 
-Genuine bulk repair41172959321 returned0 and reported1351inserted diodes and9143restoredoriginal names. Insertion-audit then failed master equality, cleanup failed wire equality; route0. All112proof files and65member304,831,102Bnative capsule preserved. Read-only audit41186953778 atc3e8abdf is dispatched with1956pins and18new source controls plus all existing controls; independentlyreservedemptyrelease429826542. Read current run state before continuing. Master-wrapper/encoding explanations remain hypotheses until actual results. No partial candidate promoted.
+Genuine repair41172959321 returned0 with1351diodes butfailedinsertion/cleanup; route0. Read-onlyaudit41186953778 completedfullsnapshotdelta:153129oldcells and1691clockrecords unchanged; only608nets and1351newdiodes differ. Itfailed onunsupported dbLib.getId; all53prooffiles/69derivedrecords/4logs/27membercapsule preserved. Observer-onlypointer correctionb8aa8fb2 isnowdispatched as41187928413 with23newcontrols and2009pins, independentemptyrelease429832753. Read currentjobstate; do notdispatchagain. Exactterminalcollector andnext-stepnote arestoredincloudunder v155.
 
-Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour monitor remains read-only and cannot dispatch native work. Its last recorded live observation failedHTTP502; this checkpoint does not claim it is healthy. Full serial PHY, routed main chip and final setup/hold remain unaccepted. Original electrical and20/4/8/8ns+5% timing gates unchanged.
+Authoritative continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing8hmonitor isread-only/no automaticnative dispatch; lastobserved liveHTTP502failure remainsunresolved. Nativepointer availability and changedwiregeometry arestillunqualified inthis snapshot. FullserialPHY,routedmainchip andfinalsetup/hold remainopen; alloriginalphysical/electrical/timinggates unchanged.
 
 ## Historical notes below — not current running-job status
+
 
 
 

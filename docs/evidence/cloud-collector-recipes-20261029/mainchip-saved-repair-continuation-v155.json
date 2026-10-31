@@ -1,0 +1,100 @@
+{
+  "complete_saved_snapshot_observation": {
+    "clock_record_pins_equal": true,
+    "counts": {
+      "added_instances": 1351,
+      "added_nets": 0,
+      "changed_nets": 608,
+      "changed_original_instances": 0,
+      "changed_wire_nets": 608,
+      "protected_changed_nets": 0,
+      "removed_instances": 0,
+      "removed_nets": 0
+    },
+    "material_equal": {
+      "block": true,
+      "diode_template": true,
+      "immutable": true,
+      "masters": true
+    },
+    "protected_sets_equal": true
+  },
+  "correction": {
+    "all_files_verified": true,
+    "branch": "codex/mainchip-net459-diode-prune",
+    "files": 6,
+    "manifest_sha256": "fb1af06b421fbd2ce0033f7f8d57dea90cf8623b0583a60fd1e95eb74fd7877b",
+    "new_source_controls": 23,
+    "parent": "1998ed72270272b63f80b017f7abfda8e22ead1f",
+    "phase": "readback_verified",
+    "protected_files": 2009,
+    "read_only": true,
+    "repair_authorized": false,
+    "routing_authorized": false,
+    "source": "b8aa8fb2da6cc15a4660f96e8f2115efc5d9379e",
+    "workflow": 401215446
+  },
+  "first_attempt": {
+    "actual_result": null,
+    "all_files_verified": true,
+    "bytes": 7574445,
+    "capsule_archive": {
+      "bytes": 41973119,
+      "sha256": "e5f5bc5814d04cba1c4fe4fd4d75f9bc0becd26cd95ba0a4d6f220fb81a96390"
+    },
+    "capsule_files": 27,
+    "files": 53,
+    "full_native_records": 69,
+    "lossless_record_shards": 3,
+    "native_passed": false,
+    "prefix": "docs/evidence/mainchip-saved-repair-audit-terminal-41186953778/",
+    "proof": "1998ed72270272b63f80b017f7abfda8e22ead1f",
+    "raw_job_logs": 4,
+    "receipt_sha256": "8bf3af60433276231799ed20b04d36d8c3f6287e26b622c503d729f62a710f17",
+    "run": 41186953778,
+    "source": "c3e8abdf78e8ccf83588e3bd20ff24c7668592a0",
+    "source_controls_passed": true,
+    "workflow_conclusion": "failure"
+  },
+  "full_phy_accepted": false,
+  "hypotheses_still_not_proven": [
+    "Original legacy master wrapper equality disagrees with same native master.",
+    "Changed raw wire operands preserve conductor geometry."
+  ],
+  "native_payload_downloaded_locally": false,
+  "new_run": {
+    "attempt": 1,
+    "branch": "codex/mainchip-net459-diode-prune",
+    "empty_before_acquisition": true,
+    "independently_reserved": true,
+    "local_native_acquisition": false,
+    "native_read_only": true,
+    "phase": "reserved_verified",
+    "release_id": 429832753,
+    "repair_authorized": false,
+    "routing_authorized": false,
+    "run": 41187928413,
+    "source": "b8aa8fb2da6cc15a4660f96e8f2115efc5d9379e",
+    "tag": "cloud-results-41187928413-1-mainchip-bulk-postdrt-antenna",
+    "workflow": 401215446
+  },
+  "no_candidate_promoted": true,
+  "no_repair_or_route_in_audits": true,
+  "physical_acceptance": false,
+  "possible_followup_only_if_actual_audit_supports_it": "If wire mutation is confined to admitted diode-bearing nets and all original material/instances remain identical, a controlled candidate built from the accepted original ODB plus precisely verified new diode instances could preserve all original wire bytes before routing. This is only a candidate design idea, not implemented or qualified; do not waive the original exact-wire/clock gates.",
+  "primary_failure": "AttributeError: dbLib object has no attribute getId",
+  "schema": "saved-repair-continuation-v155",
+  "source_research": [
+    {
+      "observation": "dbWire supports create(dbBlock*, bool), append and attach; append asserts same database. Availability and roundtrip semantics in the pinned Python/Tcl runtime have not been qualified for a repair change.",
+      "sha256": "d69448584d7fd0f251ce58bdbe1a08f611465b70682cffc7725c7d122ee8f229",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/db/dbWire.cpp"
+    },
+    {
+      "observation": "Antenna code distinguishes detailed/global routes, adds dirty nets for inserted diodes, and legalizes placement. Source inspection alone does not establish this run's geometry delta.",
+      "sha256": "a1f0abcb18f65cec0902fb8a6fa22f6c728836e12776891a144f2fde317b534f",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/grt/src/RepairAntennas.cpp"
+    }
+  ],
+  "timing_accepted": false
+}

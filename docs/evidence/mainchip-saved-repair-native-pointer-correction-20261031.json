@@ -1,0 +1,62 @@
+{
+  "all_previous_failed_logs_and_native_outputs_preserved": true,
+  "correction": "Replace unsupported getId observer calls with explicit SWIG native pointer identity, scoped to one live database. Compare repeat retrieval and a distinct actual native master before using observations. No physical gate, production adapter or repair code changed.",
+  "files": {
+    ".github/workflows/mainchip-net459-diode-prune.yml": {
+      "bytes": 24963,
+      "sha256": "8602726f6b9867044b0be27c0984529a61b6d35fcb24f47c4ba412b85aea29d3"
+    },
+    "scripts/check_mainchip_saved_repair_audit.py": {
+      "bytes": 5275,
+      "sha256": "b45281b89b8da6ef87846fbb599ead3d4344839eedb3004274de1bf0e6b654cc"
+    },
+    "scripts/cloud_mainchip_saved_repair_audit.py": {
+      "bytes": 14874,
+      "sha256": "97324eb89ee57d5a5b1c39d010861c70138db585fdf20edf416177d8bda31ec8"
+    },
+    "scripts/mainchip-saved-repair-audit-pins.json": {
+      "bytes": 333723,
+      "sha256": "fb1af06b421fbd2ce0033f7f8d57dea90cf8623b0583a60fd1e95eb74fd7877b"
+    },
+    "scripts/mainchip_saved_repair_audit.py": {
+      "bytes": 12772,
+      "sha256": "4481f5497a75e86d7db2aa0d84e9e0f0159eb81ddcc6724ad7ea4a1794100399"
+    }
+  },
+  "full_phy_accepted": false,
+  "independent_empty_exact_source_release_required": true,
+  "manifest_sha256": "fb1af06b421fbd2ce0033f7f8d57dea90cf8623b0583a60fd1e95eb74fd7877b",
+  "native_pointer_API_qualified": false,
+  "native_result_available": false,
+  "parent": "1998ed72270272b63f80b017f7abfda8e22ead1f",
+  "physical_acceptance": false,
+  "previous_error": "AttributeError: dbLib object has no attribute getId",
+  "previous_result": "failure",
+  "previous_run": 41186953778,
+  "primary_sources": [
+    {
+      "fact": "SWIG Python proxies expose the native object pointer in the this attribute.",
+      "url": "https://www.swig.org/Doc4.2/Python.html#Python_nn30"
+    },
+    {
+      "fact": "SwigPyObject_long uses PyLong_FromVoidPtr(v->ptr); nb_int uses that function. Runtime availability is still to be qualified on the actual pinned engine.",
+      "url": "https://github.com/swig/swig/blob/v4.2.0/Lib/python/pyrun.swg#L580"
+    }
+  ],
+  "prior_full_snapshot_delta": {
+    "added_instances": 1351,
+    "block_masters_immutable_template_equal": true,
+    "changed_nets": 608,
+    "changed_protected_nets": 0,
+    "changed_wire_nets": 608,
+    "original_clock_records_unchanged": 1691,
+    "original_instances_unchanged": 153129
+  },
+  "protected_files": 2009,
+  "read_only": true,
+  "repair_authorized": false,
+  "routing_authorized": false,
+  "schema": "saved-repair-native-pointer-observer-correction-v1",
+  "source_controls": 23,
+  "timing_accepted": false
+}
