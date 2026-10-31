@@ -1,0 +1,53 @@
+{
+  "actual_outer_result": null,
+  "case": "vi_bias_off",
+  "classification": "PRE_NATIVE_STORAGE_REFUSAL_NO_SIMULATION",
+  "electrical_accepted": false,
+  "full_phy_accepted": false,
+  "job_conclusion": "failure",
+  "job_id": 124589674997,
+  "native_measurements": null,
+  "native_result_present": false,
+  "no_changed_limits": true,
+  "no_negative_control_pass_inferred_from_job_failure": true,
+  "no_new_simulation": true,
+  "physical_accepted": false,
+  "primary_failure": {
+    "actual_free_bytes": null,
+    "actual_free_bytes_absence_reason": "The original source raises before returning or recording the computed free byte count.",
+    "message": "Insufficient full loaded evidence storage",
+    "native_simulation_started": false,
+    "phase": "initial_storage_before_result_creation_and_before_native_acquisition",
+    "required_bytes": 17179869184,
+    "source_lines": [
+      58,
+      59,
+      60,
+      256
+    ],
+    "source_path": "scripts/cloud_cdr_current_eight_drain_loaded_stage.py",
+    "type": "AssertionError"
+  },
+  "publication_recovery": null,
+  "published_raw_terminal_error": {
+    "action": "raw_terminal_qualification",
+    "error": "AssertionError('Missing protected regular file')",
+    "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_width_loaded_publication.py\", line 98, in publish\n    path=a.regular(out,\"result.json\");raw=path.read_bytes()\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_loaded_admission.py\", line 45, in regular\n    require(p.is_file(),\"Missing protected regular file\")\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_loaded_admission.py\", line 27, in require\n    if not value:raise AssertionError(reason)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Missing protected regular file\n",
+    "type": "AssertionError"
+  },
+  "published_summary_status": "FAIL_UNQUALIFIED_CURRENT_WIDTH_LOADED_EVIDENCE",
+  "run_id": 41218657461,
+  "schema": "current-eight-drain-matrix-case-analysis-v1",
+  "secondary_failure": {
+    "message": "Missing protected regular file",
+    "not_primary": true,
+    "phase": "always_publication_recovery",
+    "raw_error": {
+      "action": "raw_terminal_qualification",
+      "error": "AssertionError('Missing protected regular file')",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_width_loaded_publication.py\", line 98, in publish\n    path=a.regular(out,\"result.json\");raw=path.read_bytes()\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_loaded_admission.py\", line 45, in regular\n    require(p.is_file(),\"Missing protected regular file\")\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_loaded_admission.py\", line 27, in require\n    if not value:raise AssertionError(reason)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Missing protected regular file\n",
+      "type": "AssertionError"
+    }
+  },
+  "source": "84b8b591e10be32716947c8d6b079fd7a21ce18d"
+}
