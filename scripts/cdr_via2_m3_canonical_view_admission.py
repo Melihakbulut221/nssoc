@@ -140,7 +140,7 @@ def bind_controls(raw,ctx):
     require(r['context']==dict(source=ctx['source'],run_id=ctx['run_id'],attempt=1),'same exact source/run controls')
     require(r['producer_refusals']>=24 and r['restore_refusals']>=8 and r['context_refusals']>=8 and r['source_log_refusals']>=14,'complete source admission refusals')
     require(r['lifecycle_cases']==4 and r['publication_cases']==7 and r['publication_refusals']==33,'complete unchanged lifecycle/publication controls')
-    require(r['core_controls_passed']is True and r['core_test_count']>=53 and r['seam_test_count']>=18,'complete hosted core and projection controls')
+    require(r['core_controls_passed']is True and r['core_test_count']>=59 and r['seam_test_count']>=18,'complete hosted core and projection controls')
     require(r['native_payload_acquired']is r['actual_view_executed']is r['RC_executed']is r['simulation_executed']is False,'source controls never native evidence')
     return q.fingerprint(raw)
 
