@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-31T13:55:54.184988+00:00",
+  "updated_at": "2026-10-31T14:14:14.468477+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "65c4515e4ddbf6ad4647ebc844b0c267e69e46d6",
+  "root_source_before_receipt": "7f41bb35d1a5dbb45cfc77abca69033d0789a1aa",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 171,
+    "inventory_version": 172,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -10089,20 +10089,52 @@
       "full_phy_accepted": false,
       "timing_accepted": false,
       "qualified_pex": false
+    },
+    "mainchip_saved_route_readonly_diagnosis": {
+      "status": "ACTUAL_COMPLETE_DIAGNOSIS_NOT_ROUTING_ACCEPTANCE",
+      "proof": {
+        "prefix": "docs/evidence/mainchip-saved-route-diagnosis-terminal-41208696985/",
+        "run": 41208696985,
+        "source": "14a3068dfea56f09cfcbaff4a0315211d9f035e3",
+        "receipt_sha256": "3a80447b74976a71dc31f658aac69cb9034a39b4b1c58d9d1897572c2f7ec808",
+        "files": 14,
+        "bytes": 2059274,
+        "actual": {
+          "status": "DIAGNOSED_IDENTICAL_INSERTION_AND_ROUTED_SNAPSHOTS",
+          "instances": 154480,
+          "nets": 143820,
+          "added_diodes": 1351,
+          "original_instances": 153129,
+          "mutable_nets": 608,
+          "protected_nets": 1691,
+          "mutable_metadata_counts": {
+            "ROUTED": 608
+          },
+          "changed_mutable_nets": [],
+          "full_saved_snapshots_identical": true,
+          "physical_connectivity_tested": false
+        },
+        "complete_bundle_preserved_on_release": true,
+        "native_payload_downloaded_locally": false
+      },
+      "source_branch": "codex/mainchip-net459-diode-prune",
+      "source_head": "14a3068dfea56f09cfcbaff4a0315211d9f035e3",
+      "current_workflow_modes": [
+        "controls",
+        "diagnose"
+      ],
+      "controls_passed": 9,
+      "physical_connectivity_tested": false,
+      "next": "Inspect exact saved candidate ODB for all608 mutable-net physical diode A-pin connectivity, retain all1691 clocks and2702PGcontacts. Investigate unchanged initial wires using the pinned DRT source. Implement scoped stale-wire clearing only with complete ownership/invariance controls; do not weaken original route_delta equality. Repair true hosted container context and audit clock-gate old153130 census against actual154480 before next routing."
     }
   },
   "next_actions": [
-    "Cloud-only tests, CAD, simulation, numerical solving and native payloads. Local workspace/project temporary entries empty; no local CAD process. Never download native archives/payloads locally, including RAM. This overrides older local-work goal wording.",
-    "No new native jobs are currently running. Mainchip41199907663 is terminal FAILURE; CDR graph41206809668 is terminal SUCCESS. Both complete terminal proofs are collected/readback verified. Do not repeat completed collectors or dispatch unchanged producers.",
-    "Mainchip routing command returned0, but restored-audit rejected each new diode requires a changed owned route. Final check/audit/verdict did not run. Cleanup also rejected absent GITHUB_ACTIONS inside actual hosted Docker context. Complete188file121606359B proof08f76aac and741file924882143B native capsule preserved; v165 collector EXECUTED.",
-    "Next mainchip work: read-only diagnosis of exact saved routed candidate and original/current snapshots. Identify changed/unchanged mutable nets and actual diode signal-pin route connections. Preserve all original nonmutable wires,1691clocks,old instances and2702PGcontacts. Do not weaken equality or blindly reroute/recreate1351diodes. Truthfully bind hosted context; audit frozen153130instance assertion against actual bulk census before adapting original-clock verification.",
-    "CDR physical41203881385 remains a physical-only qualification: GDS997620B SHA9d8984fd4852a04618146732c0d473ca80c6bb1d2f441d0da27854ed7ca69bff and flatLVS6b75a97d,574actual additions,560DRC0markers,500device deep/flatLVS13 and5actualserialized geometry faults.",
-    "CDR fresh graph41206809668/source de79f76b SUCCESS: all227same-source controls;9native commands returned0. Preserved500devices/1446terminals/25ports/978anchors/238nets with original witness comparator;12actual acquired-witness mutations rejected. All113components across13layers=1469records match exactly574declared additions across8drains/2partitions;2native union positives and5refusals passed without input mutation.75-file new current view produced; no new RC or electrical simulation yet.",
-    "Complete92-file37003438B proof9cb8738b85a807f302a2e01d77d5b9fbec6c1c50 and330-file6619298B native capsuleb036a962550a271e62de08c9f083c55d78d64ed80bab18c09f042b41664051c6 preserved; all92files byte-readback verified;103native-derived records/4logs. v170 collector EXECUTED; never rerun.",
-    "Implement the exact-source freshRC successor from current branch9cb8738b using the new input proposal. Authenticate all330capsule members; bind exact75-file native/candidate view and original full graph/material proof. Adapt only old two-M1-specific admission to current574shape/8drain material evidence, while keeping frozen500device binding, fullwireRC, seven-MIM both native orders and original22controls/order plus21composition controls.",
-    "After actual freshRC, run original nominal_early/constant_one complete1151vector electrical matrix. Never transplant oldRC or wave replay as new closure. Preserve VCE>=0.4,maxabsVCE<=1.6,maxabsVBE<=1,emitter<3mA,CDR37.5ps/comparator75ps/UI125ps/100mV/PLL62.5ps.",
-    "Only after actual routed candidate qualification, bind finalRC/STA adapter86015346 to exact new source/candidate; keep20/4/8/8ns+5%. FullserialPHY and finalsetup/hold remain open.",
-    "The8hour monitor remains read-only, automatic_native_dispatch=false with432handles. Historical HTTP502 monitor issue is not claimed resolved."
+    "CLOUD ONLY: project workspace and owned temporary directories remain empty, no local CAD or native archive acquisition. Latest policy overrides older local-work goal wording.",
+    "Inspect exact saved candidate ODB for all608 mutable-net physical diode A-pin connectivity, retain all1691 clocks and2702PGcontacts. Investigate unchanged initial wires using the pinned DRT source. Implement scoped stale-wire clearing only with complete ownership/invariance controls; do not weaken original route_delta equality. Repair true hosted container context and audit clock-gate old153130 census against actual154480 before next routing.",
+    "Mainchip workflow on source14a3068d now supports controls/diagnose only; do not dispatch old route mode or rerun completed41208696985. Original source6e421425 and complete failed proof08f76aac remain unchanged. Actual new diagnosis authenticates all741archive members, all608mutable metadata ROUTED,1351added diodes,154480instances,143820nets; four full627376262B snapshots identical.",
+    "CDR graph41206809668 actual success and complete75-file view remain qualified for freshRC only. Implement exact330member source-bound freshRC successor from9cb8738b using docs/evidence/cdr-current-eight-drain-fresh-rc-input-proposal-20261031.json; restore exact original absolute candidate path in fresh_report_bindings, not a renamed path. Preserve500device binding/wireRC, sevenMIM bothorders22controls/order and21composition controls.",
+    "After actualfreshRC, execute original nominal_early/constant_one loaded1151vector matrix and unchanged analoglimits. FullserialPHY and finalsetup/hold remain open;20/4/8/8ns+5% unchanged.",
+    "Eight-hour monitor remains read-only with433runhandles and automatic_native_dispatch=false; historical monitorHTTP502 issue not claimed resolved."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -10515,7 +10547,8 @@
     "observed_41203881385": 41203881385,
     "observed_41199907663": 41199907663,
     "observed_41206019222": 41206019222,
-    "observed_41206809668": 41206809668
+    "observed_41206809668": 41206809668,
+    "observed_41208696985": 41208696985
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
@@ -10584,10 +10617,25 @@
           "conclusion": "success"
         }
       ]
+    },
+    {
+      "run": 41208696985,
+      "source": "14a3068dfea56f09cfcbaff4a0315211d9f035e3",
+      "status": "completed",
+      "conclusion": "success",
+      "attempt": 1,
+      "jobs": [
+        {
+          "id": 124558976562,
+          "name": "saved-route-diagnosis",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
     }
   ],
   "local_cleanup_verification": {
-    "at": "2026-10-31T13:55:54.184988+00:00",
+    "at": "2026-10-31T14:14:14.468477+00:00",
     "workspace_empty": true,
     "owned_project_tmp_empty": true,
     "local_CAD_processes": [],
@@ -10707,7 +10755,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-31T13:55:54.184988+00:00",
+  "local_workspace_verified_empty_at": "2026-10-31T14:14:14.468477+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -86030,5 +86078,10 @@
     "method": "Immutable tree/blob reuse after complete92-file graph proof byte readback",
     "files": 92,
     "native_payload_locally_acquired": false
+  },
+  "continuation_note_v172": {
+    "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-readonly-saved-route-diagnosis-v172.json",
+    "bytes": 3366,
+    "sha256": "ba8132b7ce3b25b20b4adf4dbbeabdbd0d6ab64031ccd81ac2190bfcac60d930"
   }
 }

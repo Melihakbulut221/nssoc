@@ -1,22 +1,19 @@
-# Cloud continuation — checkpoint v171
+# Cloud continuation — checkpoint v172
 
-Updated: 2026-10-31T13:55:54.184988+00:00
+Updated: 2026-10-31T14:14:14.468477+00:00
 
-CLOUD ONLY. Tests, CAD, numerical solving, simulation and native inputs/outputs remain on GitHub. Local workspace and owned project temporary entries are empty; no local CAD process. No native archive/payload may be downloaded locally, including RAM. This overrides older local-work goal wording. No native job is currently running.
+CLOUD ONLY. Project workspace and owned temporary files are empty; no local CAD processes. All CAD/tests/native payloads on GitHub. Native archives must not be downloaded locally, even into RAM. No engineering job is currently running.
 
-Mainchip41199907663/source6e421425 is terminal FAILURE. Routing returned0 and restoration completed, but restored-audit rejected: each new diode requires a changed owned route. Final physical check/audit/verdict did not run. Cleanup clock gate also rejected absent GITHUB_ACTIONS in actual hosted Docker context. Full188-file121,606,359-byte proof08f76aac and741-file924,882,143-byte native capsule retained/readback verified. The v165 collector has EXECUTED; never rerun.
+Mainchip41208696985/source14a3068dfea56f09cfcbaff4a0315211d9f035e3 completed SUCCESS as a read-only diagnosis.9tests passed. All741members of the original924882143B archive authenticated in cloud.1351diodes attach to608mutable nets, all608metadata ROUTED.154480instances/143820nets. Insertion, guide-reloaded, restored and failure-restored full627376262B snapshots are byte-identical: zero mutable wire changes. This is NOT physical connectivity or routing acceptance. Complete diagnosis and logs preserved in release429975030 and docs/evidence/mainchip-saved-route-diagnosis-terminal-41208696985/.
 
-Next mainchip action: read-only diagnosis of exact saved routed candidate/current and original snapshots; identify changed/unchanged mutable nets and actual new diode signal-pin route connectivity. Preserve original invariants and2702PGcontacts. Do not weaken equality or blindly reroute/recreate diodes. Truthfully bind hosted context and inspect frozen153130instance assertion against actual bulk census before adapting clock verification.
+Next mainchip: exact saved-candidate ODB connectivity readback for all608nets; identify why initial routing was retained. Scoped old-wire removal must have complete ownership/invariance checks before rerouting. Preserve1691clocks/allnonmutable routes/2702PGcontacts. Do not relax route_delta equality. Hosted Docker context and frozen clock-gate153130instance assumption require a justified current-census adapter (actual154480). Branch codex/mainchip-net459-diode-prune head14a3068d workflow now supports controls/diagnose, not route. Do not redispatch completed diagnosis. Original6e421425/failed08f76aac preserved.
 
-CDR physical41203881385 remains qualified only as a physical trial: exact GDS9d8984fd,574raw additions,8drains,560DRC0markers,500deep/flatLVS13,5actualserialized geometry faults. No electrical or fullPHY acceptance is implied.
+CDR physical41203881385 and graph41206809668 remain qualified only for their respective stages. Fresh graph preserved500devices/1446terminals/25ports/978anchors/238nets; exact574declared additions across113components/13layers;227source controls;75-file current view. FreshRC not executed. Next use exact330member proposal docs/evidence/cdr-current-eight-drain-fresh-rc-input-proposal-20261031.json on branchhead9cb8738b. Preserve original absolute current-view path from fresh_report_bindings. Execute original500device binding/wireRC/sevenMIM bothorders22controls/order and21composition controls, then original loaded1151vector electrical matrix.
 
-CDR fresh graph41206809668/source de79f76b SUCCESS. All227same-source controls and9actualnative commands passed. Original500device/1446terminal/25port/978anchor/238net identities retained;12actual witness mutations rejected. All113components across13layers (1469records) equal original material plus exactly574declared additions.2native algebra positives and5refusals passed without input mutation. Exact75-file new current view ready. Full92-file37,003,438-byte proof9cb8738b85a807f302a2e01d77d5b9fbec6c1c50 and330-file6,619,298-byte native capsuleb036a962... preserved/readback verified. The v170 collector has EXECUTED; never rerun.
-
-Next CDR action: implement freshRC admission/controller from current branch codex/cdr-drain-m1-loaded-electrical at9cb8738b, using docs/evidence/cdr-current-eight-drain-fresh-rc-input-proposal-20261031.json. Authenticate all330capsule members and exact75-file native/candidate view. Preserve frozen500device binding/wireRC, seven-MIM extraction in both native orders,22controls/order and21composition controls. Adapt only obsolete two-M1-specific producer/material admission to current exact574addition proof. No freshRC or new electrical simulation has yet run.
-
-Then run original nominal_early/constant_one complete1151-vector loaded matrix on exactly the new composed model. FullserialPHY and finalsetup/hold remain open; keep all original analog limits and20/4/8/8ns+5%. FinalRC/STA adapter86015346 remains gated on a truly qualified routed candidate. The8-hour monitor remains read-only with432handles; historical HTTP502 health is not claimed resolved.
+FullserialPHY and finalsetup/hold remain open. Analog limits and20/4/8/8ns+5% unchanged. Eight-hour monitor read-only433handles; HTTP502 health issue not claimed resolved.
 
 ## Historical notes below — not current running-job status
+
 
 
 
