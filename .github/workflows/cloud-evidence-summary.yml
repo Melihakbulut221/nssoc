@@ -1,4 +1,4 @@
-name: Frozen physical checker complete source closure
+name: Existing Via2 M3 physical-only recheck source controls
 on:
   workflow_dispatch:
     inputs:
@@ -13,6 +13,7 @@ concurrency:
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
+  REQUESTED_MODE: controls
   APPROVED_SOURCE: ${{ inputs.approved_source }}
 jobs:
   source-controls:
@@ -26,15 +27,15 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/cdr-via2-m3-physical-closure-pins.json
+            /scripts/cdr-via2-m3-physical-recheck-pins.json
       - name: Materialize exact protected Python analog and lock source closure
         run: |
           python3 -B - <<'PY'
           import json,os,subprocess
           from pathlib import Path
-          name='scripts/cdr-via2-m3-physical-closure-pins.json'
+          name='scripts/cdr-via2-m3-physical-recheck-pins.json'
           manifest=json.loads(Path(name).read_bytes())
-          assert manifest['native_execution_authorized'] is False
+          assert manifest['generation_authorized'] is False
           assert os.environ['APPROVED_SOURCE']==os.environ['GITHUB_SHA']
           names=sorted(set(manifest['files'])|{name})
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
@@ -52,25 +53,28 @@ jobs:
           PY
       - name: Prepare exact immutable98 deck source files no native runtime
         run: |
-          python3 -B scripts/check_cdr_via2_m3_physical_source_closure.py --prepare-decks > physical-closure-preparation.stdout 2> physical-closure-preparation.stderr
+          python3 -B scripts/check_cdr_via2_m3_recheck_source_closure.py --prepare-decks > recheck-decks.stdout 2> recheck-decks.stderr
       - name: Exercise unchanged checker import and first native boundary with real source closure
         env:
           CLOUD_APPIMAGE: ${{ runner.temp }}/physical-source-closure.AppImage
         run: |
-          python3 -B scripts/check_cdr_via2_m3_physical_source_closure.py > physical-closure-controls.stdout 2> physical-closure-controls.stderr
+          python3 -B scripts/check_cdr_via2_m3_recheck_source_closure.py > recheck-source-closure.stdout 2> recheck-source-closure.stderr
+      - name: Verify failed producer reuse absolute paths source transport and full publication lifecycle
+        run: |
+          python3 -B scripts/check_cdr_via2_m3_physical_recheck.py > recheck-controls.stdout 2> recheck-controls.stderr
       - name: Always emit full derived source closure records only
         if: always()
         run: |
           python3 -B - <<'PY'
           import base64,hashlib,json
           from pathlib import Path
-          names=['physical-closure-preparation.stdout','physical-closure-preparation.stderr','physical-closure-controls.stdout','physical-closure-controls.stderr','hw/soc/out/cdr-via2-m3-physical-source-closure-controls/deck-source-preparation.json','hw/soc/out/cdr-via2-m3-physical-source-closure-controls/result.json']
+          names=['recheck-controls.stdout','recheck-controls.stderr','cdr-via2-m3-recheck-controls/result.json','recheck-decks.stdout','recheck-decks.stderr','recheck-source-closure.stdout','recheck-source-closure.stderr','hw/soc/out/cdr-via2-m3-physical-recheck-source-closure-controls/deck-source-preparation.json','hw/soc/out/cdr-via2-m3-physical-recheck-source-closure-controls/result.json']
           for name in names:
               p=Path(name)
               if not p.is_file():continue
               b=p.read_bytes();b.decode('utf-8','strict');chunks=[b[i:i+24000]for i in range(0,len(b),24000)]or[b'']
-              print('PHYSICAL_CLOSURE_CONTROL_INDEX '+json.dumps(dict(path=name,bytes=len(b),sha256=hashlib.sha256(b).hexdigest(),chunks=len(chunks)),sort_keys=True))
-              for i,part in enumerate(chunks):print('PHYSICAL_CLOSURE_CONTROL_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(part).decode()),sort_keys=True))
+              print('VIA2_M3_RECHECK_CONTROL_INDEX '+json.dumps(dict(path=name,bytes=len(b),sha256=hashlib.sha256(b).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,part in enumerate(chunks):print('VIA2_M3_RECHECK_CONTROL_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(part).decode()),sort_keys=True))
           PY
       - name: Preserve full fixture output and failures in cloud
         if: always()
@@ -78,11 +82,14 @@ jobs:
         with:
           name: cdr-physical-source-closure-controls-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            hw/soc/out/cdr-via2-m3-physical-source-closure-controls
-            physical-closure-preparation.stdout
-            physical-closure-preparation.stderr
-            physical-closure-controls.stdout
-            physical-closure-controls.stderr
+            hw/soc/out/cdr-via2-m3-physical-recheck-source-closure-controls
+            recheck-decks.stdout
+            recheck-decks.stderr
+            recheck-source-closure.stdout
+            recheck-source-closure.stderr
+            recheck-controls.stdout
+            recheck-controls.stderr
+            cdr-via2-m3-recheck-controls
           if-no-files-found: error
           retention-days: 90
   preserve-job-log:

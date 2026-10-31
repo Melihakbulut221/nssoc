@@ -1,0 +1,31 @@
+{
+  "all_numerical_and560_13_gates_unchanged": true,
+  "changes": [
+    {
+      "after": "nssoc_cdr_pd500_resistor_v59",
+      "before": "nssoc_cdr_pd500_active_input_v57",
+      "count": 1
+    },
+    {
+      "after": "def reference_fault(text, name):\n    if name=='v59_old_length':\n        lines=text.splitlines(keepends=True);hits=[]\n        for i,line in enumerate(lines):\n            fields=line.split()\n            if fields and fields[0] in ['Rsc_DN', 'Rsc_DP', 'Rsd_DN', 'Rsd_DP']:\n                assert line.count(' l=5u ')==1\n                lines[i]=line.replace(' l=5u ',' l=7.4u ');hits.append(fields[0])\n        assert sorted(hits)==['Rsc_DN', 'Rsc_DP', 'Rsd_DN', 'Rsd_DP']\n        return ''.join(lines)\n",
+      "before": "def reference_fault(text, name):",
+      "count": 1
+    },
+    {
+      "after": "            \"lvs_flat\",\n            \"v59_old_length\",\n",
+      "before": "            \"lvs_flat\",\n",
+      "count": 1
+    },
+    {
+      "after": "if name in (\"v59_old_length\", \"gain_gate_disconnected\",",
+      "before": "if name in (\"gain_gate_disconnected\",",
+      "count": 1
+    }
+  ],
+  "generated": {
+    "bytes": 15411,
+    "sha256": "3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66"
+  },
+  "original": "hw/soc/flow/check_pcie_cdr_sampler_active_input_v57_parent.py",
+  "original_sha256": "46c2673bd3262998639ac47c465f14c24c90a1b494e7fd6dfe852e1af670886b"
+}
