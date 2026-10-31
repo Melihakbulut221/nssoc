@@ -1,16 +1,15 @@
-# Cloud continuation — checkpoint v158
+# Cloud continuation — checkpoint v159
 
-Updated: 2026-10-31T10:01:41.016327+00:00
+Updated: 2026-10-31T10:12:06.513025+00:00
 
-All tests, numerical work, CAD and native payloads stay on GitHub runners. Local workspace, project temp scans and native processes are empty. Latest cloud-only user instruction overrides older local goal wording.
+Cloud-only execution remains required. Local workspace remains empty; all native payloads stay on runners. Existing reconstruction41190910993 atbe2f83b2 is the sole active native trial; source controls52+162 passed. Read current live state before action; never dispatch or reserve the existing run again. Exact terminal collector remains the unexecuted v158 recipe. The v159 snapshot updates status only; no native result is claimed until complete evidence is collected.
 
-Actual diode reconstruction qualification 41190910993 is dispatched at be2f83b2. The exact-source release429853533 was independently reserved empty; do not dispatch or reserve again. The implementation uses the accepted original ODB and only the1351 verified saved new diode rows, with existing template master and PG nets. It never copies the608 altered wires from the failed repair. No repair_antennas or detailed route is authorized in this job.
+New pinned source finding for routing: read_guides clears every net guide set, and text writeGuides omits via-layer, congestion, jumper and terminal-connection flags. A partial guide-file import would erase unrelated guides; a full text roundtrip also loses metadata. See the v159 guide-research note. After successful diode reconstruction, inspect actual native guide records before any necessary overlay; preserve all unowned/protected guides and full physical admission. Source inspection alone does not qualify native guide editing.
 
-Required evidence:52 new/inherited observer source controls plus162 original controls; complete native saved plan; fresh original full snapshot byte identity; actual native creation; native write/reload; original unmodified admission across all143820 wires/nets,153129 original cells and1691 clock records. Candidate creation is experimental, not production acceptance. Any failure retains the full native state and logs.
-
-Exact terminal collector and continuation note are stored as v158; authoritative checkpoint is docs/evidence/cloud-active-checkpoint-20261024.json. After passing full admission, bind constrained routing to the authenticated candidate; otherwise diagnose actual failure without relaxing gates. Full serial PHY, routed main chip and final setup/hold remain open. The existing8h monitor is read-only; last observed HTTP502 remains unresolved.
+Authoritative checkpoint: docs/evidence/cloud-active-checkpoint-20261024.json. Full serial PHY, routed main chip and final setup/hold remain open. Existing8h monitor remains read-only; last observed HTTP502 remains unresolved. No acceptance threshold has changed.
 
 ## Historical notes below — not current running-job status
+
 
 
 
