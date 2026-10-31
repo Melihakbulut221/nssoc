@@ -1,0 +1,64 @@
+{
+  "local_cleanup": {
+    "at": "2026-10-31T14:32:36.857642+00:00",
+    "local_CAD_processes": [],
+    "native_payload_downloaded_locally": false,
+    "owned_project_tmp_empty": true,
+    "workspace_empty": true
+  },
+  "next_actions": [
+    "CLOUD ONLY: project workspace and owned temporary directories remain empty, no local CAD/native archive acquisition. Latest policy overrides older local-work goal wording.",
+    "Implement scoped stale-wire clearing only on608mutable nets before DRT, preserving all1691clocks/allnonmutable wires/allinstances/allguides/2702PGcontacts. Keep original route_delta and physical connectivity/antenna/DRC gates. Fix true hosted GITHUB_ACTIONS propagation and adapt exact clock-gate instance census before donor153130/after candidate154480 without relaxing clock records or placement.",
+    "Native observation41209965584 completed SUCCESS, not routing acceptance: all608nets observed with0errors; bothpositive_area andclosed_boundary report1351newdiodes without signalwireaccess,608disconnectednets,0connectednets. Do not redispatch.",
+    "CDR graph41206809668 remains qualified only for freshRC; current75-file view/exact330member capsule/source9cb8738b. Preserve original absolute candidate path and original500device binding, wireRC, sevenMIM bothorders22controls/order and21composition controls. FreshRC/electrical not executed.",
+    "After actual freshRC run originalnominal_early/constant_one loaded1151vector matrix. FullserialPHY and finalsetup/hold remain open; analoglimits and20/4/8/8ns+5% unchanged.",
+    "Eight-hour monitor read-only434handles automatic_native_dispatch=false; historicalHTTP502 issue not claimed fixed."
+  ],
+  "proof": {
+    "actual": {
+      "all608_observed": true,
+      "census": {
+        "instances": 154480,
+        "nets": 143820
+      },
+      "errors": [],
+      "mode_totals": {
+        "closed_boundary": {
+          "added_diodes_ambiguous": 0,
+          "added_diodes_without_access": 1351,
+          "connected_nets": 0,
+          "disconnected_nets": 608,
+          "observed_nets": 608
+        },
+        "positive_area": {
+          "added_diodes_ambiguous": 0,
+          "added_diodes_without_access": 1351,
+          "connected_nets": 0,
+          "disconnected_nets": 608,
+          "observed_nets": 608
+        }
+      },
+      "physical_connectivity_qualified": false,
+      "source_and_input_unchanged": true,
+      "status": "COMPLETE_NATIVE_DIODE_CONNECTIVITY_OBSERVATION"
+    },
+    "bytes": 2256047,
+    "complete_bundle_preserved_on_release": true,
+    "files": 17,
+    "native_payload_downloaded_locally": false,
+    "prefix": "docs/evidence/mainchip-saved-route-connectivity-terminal-41209965584/",
+    "receipt_sha256": "3ae874285a5db19df0d97e7eb9d6be86d12a0cd3ba6ac310b4493794e214135f",
+    "run": 41209965584,
+    "source": "a74b74ab96fad0a33d5737f9221a7d527e0242c0"
+  },
+  "research": {
+    "files": [
+      "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/io/io.cpp",
+      "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/dr/FlexDR.cpp",
+      "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/dr/FlexDR_init.cpp"
+    ],
+    "finding": "Pinned parser recognizes ROUTED/FIXED wires as initial routing. FlexDR switches ALL to INCR when any fixed net exists; FlexDR_init skips initially routed nets/guides and prevents ripup in INCR. Actual candidate retains initial routed wires on all608mutable nets and has fixed nonmutable nets. This supports scoped removal of stale owned wires; success still requires new native validation.",
+    "pinned_commit": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+  },
+  "schema": "cloud-mainchip-connectivity-v173"
+}

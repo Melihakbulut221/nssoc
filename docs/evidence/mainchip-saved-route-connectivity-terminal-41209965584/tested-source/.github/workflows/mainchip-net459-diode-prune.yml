@@ -1,0 +1,102 @@
+name: Read native diode connectivity without rerouting
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Read-only diagnosis of the exact preserved routed candidate
+        type: choice
+        required: true
+        default: controls
+        options: [controls, connectivity]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mainchip-saved-route-connectivity-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  saved-route-connectivity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Verify exact source and diagnostic code
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          assert os.environ['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
+          assert os.environ['GITHUB_REF']=='refs/heads/codex/mainchip-net459-diode-prune'
+          assert os.environ['GITHUB_RUN_ATTEMPT']=='1'
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==os.environ['GITHUB_SHA']
+          m=Path('scripts/mainchip-saved-route-connectivity-pins.json').read_bytes()
+          assert hashlib.sha256(m).hexdigest()=='9b5ed8920ccc8bcd4b974f9ce2dfaa9896a6d403486b6884aaeb8b17edbdd658'
+          for name,digest in json.loads(m)['files'].items():
+              assert hashlib.sha256(Path(name).read_bytes()).hexdigest()==digest,name
+          PY
+      - name: Verify incidence and strict archive restoration
+        run: |
+          set -o pipefail
+          python3 -B scripts/check_mainchip_saved_route_diagnosis.py 2>&1 | tee connectivity-inherited-controls.log
+          python3 -B scripts/check_mainchip_saved_route_connectivity.py 2>&1 | tee connectivity-controls.log
+      - name: Authenticate all saved members and diagnose without modifying them
+        if: inputs.mode == 'connectivity'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -o pipefail
+          python3 -B scripts/cloud_mainchip_saved_route_connectivity.py --output connectivity-output 2>&1 | tee connectivity-driver.log
+      - name: Permanently preserve complete diagnosis including failures
+        if: always() && inputs.mode == 'connectivity'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,shutil,subprocess,tarfile
+          from pathlib import Path
+          out=Path('connectivity-output');out.mkdir(exist_ok=True)
+          for name in ('connectivity-inherited-controls.log','connectivity-controls.log','connectivity-driver.log'):
+              if Path(name).is_file():shutil.copyfile(name,out/name)
+          pin=out/'reservation.json'
+          assert pin.is_file(),'No reserved publication authority; keep artifact fallback'
+          r=json.loads(pin.read_bytes());tag=r['tag']
+          def api(path):
+              return json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/'+path]))
+          live=api('releases/tags/'+tag);ref=api('git/ref/tags/'+tag)
+          assert live['id']==r['release_id'] and live['target_commitish']==os.environ['GITHUB_SHA']
+          assert not live['draft'] and live['prerelease'] and live['assets']==[]
+          assert ref['object']['sha']==os.environ['GITHUB_SHA']
+          files={str(p.relative_to(out)):{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()}for p in out.rglob('*')if p.is_file()}
+          (out/'complete-output-index.json').write_text(json.dumps(files,indent=2)+'\n')
+          with tarfile.open('connectivity-evidence.tar.gz','w:gz')as archive:
+              archive.add(out,arcname='connectivity-output')
+          assets=['connectivity-evidence.tar.gz',str(out/'complete-output-index.json')]
+          transport=Path('connectivity-publication');transport.mkdir(exist_ok=False)
+          for name,alias in (('result.json','cloud-result.json'),('native/connectivity-inner-result.json','engine-result.json'),('native/connectivity/result.json','native-connectivity-result.json')):
+              if (out/name).is_file():
+                  dest=transport/alias;shutil.copyfile(out/name,dest)
+                  assert dest.read_bytes()==(out/name).read_bytes()
+                  assets.append(str(dest))
+          subprocess.run(['gh','release','upload',tag,*assets,'--repo','Melihakbulut221/nssoc'],check=True)
+          print('CONNECTIVITY_PUBLICATION '+json.dumps({'tag':tag,'files':files,'source':os.environ['GITHUB_SHA']}))
+          PY
+      - name: Preserve output and complete driver/control logs independently
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: saved-route-connectivity-${{ github.run_id }}
+          path: |
+            connectivity-output/
+            connectivity-inherited-controls.log
+            connectivity-controls.log
+            connectivity-driver.log
+          if-no-files-found: error
+          retention-days: 90

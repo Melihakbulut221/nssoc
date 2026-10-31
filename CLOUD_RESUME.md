@@ -1,18 +1,21 @@
-# Cloud continuation — checkpoint v172
+# Cloud continuation — checkpoint v173
 
-Updated: 2026-10-31T14:14:14.468477+00:00
+Updated: 2026-10-31T14:32:36.857642+00:00
 
-CLOUD ONLY. Project workspace and owned temporary files are empty; no local CAD processes. All CAD/tests/native payloads on GitHub. Native archives must not be downloaded locally, even into RAM. No engineering job is currently running.
+CLOUD ONLY. Workspace and owned temporary files empty; no local CAD. Native archives/payloads must remain in GitHub, never downloaded locally even RAM. No current engineering run.
 
-Mainchip41208696985/source14a3068dfea56f09cfcbaff4a0315211d9f035e3 completed SUCCESS as a read-only diagnosis.9tests passed. All741members of the original924882143B archive authenticated in cloud.1351diodes attach to608mutable nets, all608metadata ROUTED.154480instances/143820nets. Insertion, guide-reloaded, restored and failure-restored full627376262B snapshots are byte-identical: zero mutable wire changes. This is NOT physical connectivity or routing acceptance. Complete diagnosis and logs preserved in release429975030 and docs/evidence/mainchip-saved-route-diagnosis-terminal-41208696985/.
+Native saved-route connectivity41209965584/sourcea74b74ab completed SUCCESS as a diagnostic only: all608nets observed,0errors,154480instances/143820nets. BOTH positive_area andclosed_boundary:1351newdiode A pins without any wire access,608disconnectednets,0connectednets. Original candidate/runtime/source unchanged.15source tests passed. Full material/lossless projection records permanently stored release429983566. DirectJSON/log/source proof in docs/evidence/mainchip-saved-route-connectivity-terminal-41209965584/.
 
-Next mainchip: exact saved-candidate ODB connectivity readback for all608nets; identify why initial routing was retained. Scoped old-wire removal must have complete ownership/invariance checks before rerouting. Preserve1691clocks/allnonmutable routes/2702PGcontacts. Do not relax route_delta equality. Hosted Docker context and frozen clock-gate153130instance assumption require a justified current-census adapter (actual154480). Branch codex/mainchip-net459-diode-prune head14a3068d workflow now supports controls/diagnose, not route. Do not redispatch completed diagnosis. Original6e421425/failed08f76aac preserved.
+Implement scoped stale-wire clearing only on608mutable nets before DRT, preserving all1691clocks/allnonmutable wires/allinstances/allguides/2702PGcontacts. Keep original route_delta and physical connectivity/antenna/DRC gates. Fix true hosted GITHUB_ACTIONS propagation and adapt exact clock-gate instance census before donor153130/after candidate154480 without relaxing clock records or placement.
 
-CDR physical41203881385 and graph41206809668 remain qualified only for their respective stages. Fresh graph preserved500devices/1446terminals/25ports/978anchors/238nets; exact574declared additions across113components/13layers;227source controls;75-file current view. FreshRC not executed. Next use exact330member proposal docs/evidence/cdr-current-eight-drain-fresh-rc-input-proposal-20261031.json on branchhead9cb8738b. Preserve original absolute current-view path from fresh_report_bindings. Execute original500device binding/wireRC/sevenMIM bothorders22controls/order and21composition controls, then original loaded1151vector electrical matrix.
+Pinned OpenROAD dcf36133 considers existing wire initial routing; FIXED geometry forces INCR strategy which skips initially routed mutable nets. Previous native snapshots were byte-identical (41208696985), and now actual diode signal pins are proven disconnected. No physical repair yet.
 
-FullserialPHY and finalsetup/hold remain open. Analog limits and20/4/8/8ns+5% unchanged. Eight-hour monitor read-only433handles; HTTP502 health issue not claimed resolved.
+CDR physical41203881385/graph41206809668 remain qualified for their own stages; source9cb8738b. FreshRC not executed. Next exact330members/current75file view retaining original absolute graph-report paths; original500device/wireRC/sevenMIM bothorders controls before1151vector loaded electrical matrix. FullPHY/finaltiming open, limits unchanged.
+
+Monitor8h read-only434runs; automatic_native_dispatch=false. HistoricalHTTP502issue not claimed fixed.
 
 ## Historical notes below — not current running-job status
+
 
 
 
