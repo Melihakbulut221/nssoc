@@ -1,37 +1,37 @@
-# Cloud continuation — checkpoint v177
+# Cloud continuation — checkpoint v178
 
-Updated: 2026-10-31T15:21:49.274547+00:00
+Updated: 2026-10-31T15:54:14.742428+00:00
 
-All engineering runs in GitHub. Do not acquire native payloads or archives locally, even into RAM. Local workspace and owned temporary files are empty; no local CAD processes run. Source authoring and API coordination use memory only.
+All engineering and tests run in GitHub. Do not acquire nativepayloads or archives locally, even into RAM. Localworkspace/projecttemporary directories empty; no localCAD processes. Source authoring/API coordination use memory only.
 
 ## Mainchip
 
-Poll the SAME run 41211382427, source ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9, branch codex/mainchip-net459-diode-prune, release 429993235. All 342 source controls passed. Latest snapshot: in_progress/None. Quiet native logs are not a reason to restart.
+Observe SAME native run41211382427 sourceddc1cbddf68096c5e976bf9acda5c5fb0168c5b9, branchcodex/mainchip-net459-diode-prune, release429993235.342sourcecontrols passed. Current snapshot: in_progress/None. No restart on quietlogs.
 
-Only the old wires of 608 diode-owning nets are removed from a separate ODB. Require every guide, all 1,691 clock nets, all placements, nonmutable wires and PG material to remain equal. Preserve original route delta, both physical contact modes, antenna and DRC gates. The clock census is donor153130/candidate154480; actual clock records and placements still must match.
+Known terminalhost defect: added supervised stale-wire-clear makes17commands; originalhostvalidator expects16. Do not cancelnativework. If actualinner completes every originalrouting/physical/clock/DRC/antenna gate, separately authenticate its wholecapsule and replay correctedread-only admission. A failednativegate staysfailed.
 
-Actual diagnosis 41209965584 found all 1,351 new diode signal pins lack wire access on all 608 nets. Full proof is in docs/evidence/mainchip-saved-route-connectivity-terminal-41209965584/. Failed source-control run41211073897 remains preserved.
+Separate source-only branchcodex/mainchip-stale-wire-admission-controls, head3b4dc2d388984b8e9fcbef4fabc869306be0e04d, run41216711121.342inherited+28newtests required, latest snapshot: in_progress/None. Agent mainchip_next_timing_audit owns this branch until it reports terminalproof. Source-onlyworkflow has no nativejob.
 
-## Current CDR fresh RC
+Failedsource run41215613326 preserved in docs/evidence/mainchip-stale-wire-admission-control-failure-41215613326/:17files/2772596bytes, receipt6de29c2d. It hit typedbytes versusJSONcomparison; source2feb25dd fixes it and adds regression, then3b4 adds fullsyntheticcapsule/end-to-endrefusals. Never mark these tests nativeacceptance.
 
-Poll the SAME corrected run 41213815773, source ebe4ebb3ca2aef7b23cfc68f4b17588c03cd84fb, branch codex/cdr-drain-m1-loaded-electrical, release 430009833. Latest snapshot: in_progress/None. Source controls succeeded; native job graph executes RC, not the already completed graph qualification. Workflow modes: controls / rc.
+## Actual CDR fresh RC success
 
-Initial run41213217899 failed an inherited synthetic branch fixture; native acquisition was skipped. All 35 proof files / 1,271,196 bytes are preserved in docs/evidence/cdr-current-eight-drain-rc-control-failure-41213217899/. The correction changes only the synthetic fixture authority and adds rejection of the legacy branch by the real new context. Native implementation is unchanged.
+Run41213815773 sourceebe4ebb3ca2aef7b23cfc68f4b17588c03cd84fb, release430009833: allfourjobs SUCCESS.500-devicebinding, wireRC, sevenMIMbothorders completed with originalgates. All4nativephases return0. Summary2873outputs; child fullinventories53binding/5wire/1963MIM, canonical496. Modelacb76bac03d1217350e4928124e93e53ad6dbf2abd5b63c9b30f81057916abd5; planes0dff90f1d32496937bc77b055a5a3bed1fd8c132155652d1ff3976a5f9137b07. R24356/C15566 are actualnewcomposition counts. No electricalsimulation orfullPHYacceptance.
 
-Current manifest bd9e67b47630538934b808e803e60fc72b0211bd3382786d4d1f527eb9cc65d6. Controls preserve 227 inherited graph checks, original RC 8 positive / 110 refusal cases, and 16 current adapter tests.
+Raw result/fullnativeinventory/originalpublication receipt need cloud-onlyreadback. Agent fresh_rc_next_audit owns codex/cdr-current-rc-terminal-readback. Initialsource0b9f40ad8914159acf343d8b60d1feff362ebb88: controls41216604962 passed31; readback41216698383/release430028880 is snapshot completed/failure. Agent found metadata tag/ref keyword mismatch; preservefullfailure then correctactualboundary, qualifynewsource and reserve anew exact-sourceemptyrelease beforeacquisition. Do notduplicate or retryuncertainmutation.
 
-Authenticate all330 graph-capsule members from run41206809668 and restore exactly75 current files at the original absolute path:
-/home/runner/work/nssoc/nssoc/hw/soc/out/cdr-current-eight-drain-graph-41206809668-1/native/candidate
+## Loaded electrical successor
 
-Preserve original500-device/1446-terminal binding, wireRC13rawfaults, sevenMIM devices both orders22controls each, and21composition controls. Five numerical workers change only admission imports. Numerical validator, resource limits, runtime hash, executable-scoped AppArmor policy and full failure publication remain unchanged.
+Non-executable source drafts saved in docs/evidence/cdr-current-eight-drain-loaded-source-draft-20261031.json. Worker reverses to originalbyte-for-byte after only3admission/path/prefix substitutions; sixnumericalblocks24133bytes remainunchanged. Result/stage onlyscope/provenance binding is prepared. No newadmission/configuration is assumed complete; no loadedexecution has started.
 
-After actual RC success, run original nominal_early/constant_one loaded electrical matrix with all1151vectors on newly composed model. No oldRC/trace substitution. Graph/RC success alone is not fullPHY or electrical acceptance.
+After collector supplies actualraw/fullmap/planes/publicationproof, build exactinputconfiguration and newadmission/checker/methods. Run original10case matrix,11exact-source reservations (preparationlast), maxparallel2, noautomaticretry. Preserve originalvectoracquisition,analoglimits,fullfailurewaveforms. New8drain partitions differ; never reuse oldcluster/netIDs.
 
 ## Continuation
 
-Observe these exact handles. Preserve full native capsules/logs/failures in GitHub. Full serial Gen3x4 PHY and finalsetuphold remain open. Analog limits and mainchip20/4/8/8ns+5% remain unchanged. Read-only8hmonitor has438runhandles and automatic_native_dispatch=false; historicalHTTP502 issue is not claimed fixed.
+Mainchip route success still needs newtopology/currentnetlist-bound RC/STA: unchanged20/4/8/8ns+5%, original3PVTcorners and allsetup/hold/slew/cap/fanout guards. FullserialGen3x4PHY and finaltiming remainopen.8hmonitor has442handles, read-only automatic_native_dispatch=false.
 
 ## Historical notes below — not current running-job status
+
 
 
 

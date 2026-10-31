@@ -1,0 +1,48 @@
+test_all_acceptance_flags_refused (__main__.Controls.test_all_acceptance_flags_refused) ... ok
+test_all_original_phases_required (__main__.Controls.test_all_original_phases_required) ... ok
+test_any_command_failure_refused (__main__.Controls.test_any_command_failure_refused) ... ok
+test_clear_and_route_invocation_refused (__main__.Controls.test_clear_and_route_invocation_refused) ... ok
+test_clear_missing_duplicate_order_name_extra_refused (__main__.Controls.test_clear_missing_duplicate_order_name_extra_refused) ... ok
+test_clear_terminal_failure_refused (__main__.Controls.test_clear_terminal_failure_refused) ... ok
+test_complete_real_environment_unchanged (__main__.Controls.test_complete_real_environment_unchanged) ... ok
+test_only_inherited_context_global_changes (__main__.Controls.test_only_inherited_context_global_changes) ... ok
+test_original_candidate_pin_refusals (__main__.Controls.test_original_candidate_pin_refusals) ... ok
+test_original_command_missing_or_reordered_refused (__main__.Controls.test_original_command_missing_or_reordered_refused) ... ok
+test_original_engine_or_cleanup_failure_refused (__main__.Controls.test_original_engine_or_cleanup_failure_refused) ... ok
+test_original_physical_verdict_refusals (__main__.Controls.test_original_physical_verdict_refusals) ... ok
+test_original_rejects_added_phase_new_gate_preserves_record (__main__.Controls.test_original_rejects_added_phase_new_gate_preserves_record) ... ERROR
+test_source_gate (__main__.Controls.test_source_gate) ... ok
+test_whole_validator_ast_only_one_statement (__main__.Controls.test_whole_validator_ast_only_one_statement) ... ok
+
+======================================================================
+ERROR: test_original_rejects_added_phase_new_gate_preserves_record (__main__.Controls.test_original_rejects_added_phase_new_gate_preserves_record)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/runner/work/nssoc/nssoc/scripts/check_mainchip_stale_wire_admission.py", line 45, in test_original_rejects_added_phase_new_gate_preserves_record
+    self.assertTrue(a.validate_native_result(inner)["saved_diode_routing_complete"])
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_stale_wire_admission.py", line 99, in validate_native_result
+    p.exact(p.encode(inner),original_bytes,"preserve full historical record")
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_bulk_postdrt_antenna.py", line 40, in exact
+    require(encode(actual)==encode(expected),message)
+            ^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_single_antenna_trial.py", line 16, in encode
+    def encode(v):return(json.dumps(v,sort_keys=True,indent=2,allow_nan=False)+"\n").encode()
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/encoder.py", line 202, in encode
+    chunks = list(chunks)
+             ^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type bytes is not JSON serializable
+
+----------------------------------------------------------------------
+Ran 15 tests in 5.787s
+
+FAILED (errors=1)
