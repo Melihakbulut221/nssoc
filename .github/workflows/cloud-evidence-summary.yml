@@ -1,39 +1,77 @@
-# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
 name: cloud-evidence-summary
 on:
   workflow_dispatch:
     inputs:
-      release:
-        description: Exact release containing the archive
-        default: cloud-migration-20261012-000
+      mode:
+        type: choice
+        options: [controls, readback]
+        default: controls
+        required: true
+      approved_source:
+        description: Exact independently reviewed source SHA for readonly collection
+        type: string
         required: false
-      asset:
-        description: Exact archive asset name
-        default: routed-setup-cloud-38306421942-1.tar.gz
-        required: true
-      member:
-        description: Exact JSON or UTF-8 report member to read
-        default: cloud-routed-setup/result.json
-        required: true
 permissions:
   contents: read
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
 jobs:
-  summarize:
+  source-controls:
     runs-on: ubuntu-24.04
-    permissions:
-      contents: write
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/workflows/cloud-evidence-summary.yml
+            /scripts/mainchip_terminal_readback.py
+            /scripts/check_mainchip_terminal_readback.py
+            /scripts/mainchip-stale-wire-terminal-inputs.json
+            /scripts/mainchip-stale-wire-terminal-source.json
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Read exact report in cloud and publish source binding
-        env:
-          GH_TOKEN: ${{ github.token }}
-          ASSET: ${{ inputs.asset || 'routed-setup-cloud-38306421942-1.tar.gz' }}
-          MEMBER: ${{ inputs.member || 'cloud-routed-setup/result.json' }}
-          RELEASE: ${{ inputs.release || 'cloud-migration-20261012-000' }}
-        run: python3 scripts/summarize_cloud_evidence.py --asset "$ASSET" --member "$MEMBER" --release "$RELEASE"
+      - run: python3 -B scripts/mainchip_terminal_readback.py --controls
+      - run: python3 -B scripts/check_mainchip_terminal_readback.py
+  readback:
+    needs: source-controls
+    if: ${{ inputs.mode == 'readback' && inputs.approved_source == github.sha }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      MODE: ${{ inputs.mode }}
+      APPROVED_SOURCE: ${{ inputs.approved_source }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/workflows/cloud-evidence-summary.yml
+            /scripts/mainchip_terminal_readback.py
+            /scripts/check_mainchip_terminal_readback.py
+            /scripts/mainchip-stale-wire-terminal-inputs.json
+            /scripts/mainchip-stale-wire-terminal-source.json
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Authenticate original failed capsule and read full selected reports in cloud
+        run: python3 -B scripts/mainchip_terminal_readback.py > terminal-readback-worker.stdout 2> terminal-readback-worker.stderr
+      - name: Preserve complete result or failure and worker logs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mainchip-terminal-readback-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            terminal-readback/
+            terminal-readback-worker.stdout
+            terminal-readback-worker.stderr
+          compression-level: 6
+          if-no-files-found: error
+          retention-days: 90
