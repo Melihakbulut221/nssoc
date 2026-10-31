@@ -38,8 +38,9 @@ def keep(name,raw):
  pins[name]=dict(bytes=len(raw),sha256=sha(raw));files[PREFIX+name]=raw
 def encode(v):return(json.dumps(v,sort_keys=True,indent=2)+'\n').encode()
 def raw_api(path,octet=False):
+ extra=['--allow-escape-sequences']if '--allow-escape-sequences'in subprocess.check_output(['gh','api','--help'],text=True)else[]
  for attempt in range(4):
-  cmd=['gh','api','--allow-escape-sequences',R+path]+(['-H','Accept: application/octet-stream']if octet else[])
+  cmd=['gh','api',*extra,R+path]+(['-H','Accept: application/octet-stream']if octet else[])
   r=subprocess.run(cmd,capture_output=True)
   if r.returncode==0:return r.stdout
   error=r.stderr.decode()
