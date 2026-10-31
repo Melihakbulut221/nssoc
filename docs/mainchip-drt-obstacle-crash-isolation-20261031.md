@@ -27,3 +27,28 @@ The complete geometry/witness/hash AST is still compared to the immutable origin
 The native budget remains 3600 seconds, the owned-container deadline 3900 seconds, group RSS 10 GiB, container memory 12 GiB, and host available memory reserve 2 GiB. Full failure publication and all input/source/topology/census gates remain unchanged. Electrical limits, including 20/4/8/8 ns plus 5%, are untouched.
 
 The planned hosted source suite contains 57 methods: all prior archive/parser/physical-scope/resource/publication controls, replacement fatal-handler lifecycle coverage, bounded cursor refusal/partial-write tests, the exact production ITerm loop exercised against independent synthetic pin records, and a separate standard-library child process proving fatal-signal output. That synthetic process disables core files and carries no native project input. A source-control pass is not a native observation result. The source manifest and workflow keep native authority disabled until a separately reviewed activation.
+
+## Reviewed read-only diagnostic activation
+
+Source-only run 41244891115 at `222562d8c0b76eb9ac19d3274f01bbe52a7be396`
+passed all 57 controls with zero failures, errors or skips. Complete proof:
+[`25a27552`](https://github.com/Melihakbulut221/nssoc/tree/25a2755278a90c1467a69ec6ad77ddd8136f416f/docs/evidence/mainchip-drt-obstacle-crash-isolation-controls-41244891115),
+13 files / 95,690 B, receipt SHA256
+`17a2656828013a4c6934b0ca19076ab06975ecb9174969893f7c84669016c66e`.
+The proof retains both complete job logs and the exact stdout/stderr of the
+stdlib-only fatal-handler child control. That synthetic signal test is not a
+reproduction of the OpenROAD crash or a native observation result.
+
+This activation changes only the two explicit read-only authority flags,
+dedicated manual workflow, this note and source pins. Runtime, geometry,
+cursor, fatal-handler, resource, publication and all 57 test bodies remain
+byte-identical to the qualified source. The workflow defaults to controls;
+observation requires an exact approved source, its own successful controls
+and full log-preservation jobs, and an independently reserved empty public
+prerelease bound to the same source and `mainchip-drt-obstacle-crash-isolation`
+result group. The 90-minute job cap, 3600 s observer / 3900 s outer deadlines,
+10 GiB group RSS, 12 GiB container and 2 GiB host reserve remain unchanged.
+
+This source permits only read-only observation of the original saved input.
+Actual dispatch remains a separate reviewed run/reservation step. No routing,
+geometry repair, STA or full PHY acceptance is authorized or claimed.
