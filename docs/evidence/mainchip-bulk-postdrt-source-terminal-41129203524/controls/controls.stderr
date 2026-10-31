@@ -1,0 +1,33 @@
+Traceback (most recent call last):
+  File "/home/runner/work/nssoc/nssoc/scripts/check_mainchip_bulk_postdrt_antenna.py", line 331, in <module>
+    if __name__=="__main__":main()
+                            ^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_mainchip_bulk_postdrt_antenna.py", line 329, in main
+    if error is not None:raise error
+                         ^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_mainchip_bulk_postdrt_antenna.py", line 317, in main
+    try:result=controls()
+               ^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_mainchip_bulk_postdrt_antenna.py", line 224, in controls
+    fixed,classes=p.fixed_plan(raw,["data"]);p.require(classes=={"clock":"ROUTED"},"exact classes")
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_bulk_postdrt_antenna.py", line 227, in fixed_plan
+    exact(clock.restore_classes(expected,original),raw,"exact reversible DRT overlay")
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_bulk_postdrt_antenna.py", line 40, in exact
+    require(encode(actual)==encode(expected),message)
+            ^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_single_antenna_trial.py", line 16, in encode
+    def encode(v):return(json.dumps(v,sort_keys=True,indent=2,allow_nan=False)+"\n").encode()
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/encoder.py", line 202, in encode
+    chunks = list(chunks)
+             ^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type bytes is not JSON serializable

@@ -1,0 +1,56 @@
+{
+  "actual_control_counts": null,
+  "actual_report_status": "FAILED_BULK_POSTDRT_SOURCE_CONTROLS",
+  "all_indexed_records_present": true,
+  "attempt": 1,
+  "collection_errors": [],
+  "complete_raw_job_logs": true,
+  "counts_note": "Checker aborted before controls() returned a counts report. Expected counts are not claimed executed.",
+  "defect": {
+    "additional_static_site": {
+      "function": "require_restored",
+      "line": 232,
+      "operation": "exact(raw,expected,...)"
+    },
+    "cause": "The frozen restore_classes helper returns bytes; exact() serializes its arguments with JSON, which rejects bytes.",
+    "function": "fixed_plan",
+    "line": 227,
+    "operation": "exact(clock.restore_classes(expected,original),raw,...)",
+    "path": "scripts/mainchip_bulk_postdrt_antenna.py",
+    "proposed_narrow_correction": "Use strict direct bytes equality at these two call sites only; do not loosen JSON equality or any physical gates. Add byte-tamper/type controls before a new hosted source qualification."
+  },
+  "expected_control_counts": {
+    "lifecycle": 20,
+    "positive": 10,
+    "refusal": 49,
+    "rendered_tcl": 9
+  },
+  "full_indexed_records": 6,
+  "full_phy_accepted": false,
+  "jobs": [
+    {
+      "conclusion": "failure",
+      "id": 124315500115,
+      "name": "source-controls",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "id": 124315723859,
+      "name": "preserve-job-log",
+      "status": "completed"
+    }
+  ],
+  "native_acquisition": false,
+  "native_authorized": false,
+  "native_executed": false,
+  "next_dispatch_performed": false,
+  "physical_acceptance": false,
+  "primary_error": "TypeError('Object of type bytes is not JSON serializable')",
+  "run_conclusion": "failure",
+  "run_id": 41129203524,
+  "schema": "bulk-postdrt-source-failure-diagnosis-v1",
+  "source": "48596480dbdbb6537f0253264383e53f1c606d11",
+  "timing_accepted": false,
+  "workflow_id": 401215446
+}

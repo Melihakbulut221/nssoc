@@ -1,0 +1,10 @@
+{
+  "error": "ValueError('missing regular file')",
+  "full_phy_accepted": false,
+  "native_authorized": false,
+  "native_executed": false,
+  "physical_acceptance": false,
+  "status": "FAIL_BULK_POSTDRT_INTEGRATION_SOURCE_CONTROLS",
+  "timing_accepted": false,
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_mainchip_bulk_postdrt_integration.py\", line 312, in main\n    result=controls()\n           ^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_mainchip_bulk_postdrt_integration.py\", line 284, in controls\n    projected=projection_controls()\n              ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_mainchip_bulk_postdrt_integration.py\", line 232, in projection_controls\n    try:host.source_gate()\n        ^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_bulk_postdrt_antenna.py\", line 37, in source_gate\n    f.require(f.file_digest(c.secure_file(ROOT,PRIOR_METHOD))[\"sha256\"]==PRIOR_METHOD_SHA,\"unchanged inherited tail method\")\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_witness_engine_build_contract.py\", line 49, in secure_file\n    require(current.is_file(), \"missing regular file\")\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_witness_engine_build_contract.py\", line 26, in require\n    raise ValueError(reason)\nValueError: missing regular file\n"
+}

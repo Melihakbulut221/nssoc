@@ -1,0 +1,62 @@
+{
+  "base": "541cf83c5859db07eeb12dbe2a60fd05f28e6a8a",
+  "changes": [
+    {
+      "after_sha256": "44eb8d17ad4b0d6c1703dea26c42c4c276f007997e22b7b16c6984c745eee41c",
+      "before_sha256": "d6a448ef9b3e7353e0e38bbb21233d60b0756e6eb2c6e62bea40189aba5ca1c0",
+      "description": "Replace two JSON exact() calls on bytes with strict direct byte equality and bytes type checks; leave JSON comparator and all geometry/identity/gates unchanged.",
+      "functions": [
+        "fixed_plan",
+        "require_restored"
+      ],
+      "path": "scripts/mainchip_bulk_postdrt_antenna.py"
+    }
+  ],
+  "checker": {
+    "existing_actual_controls": [
+      "frozen parser class roundtrip",
+      "restoration geometry byte mutation refused",
+      "restoration missing class refused"
+    ],
+    "expected_counts": {
+      "lifecycle": 20,
+      "positive": 10,
+      "refusal": 49,
+      "rendered_tcl": 9
+    },
+    "path": "scripts/check_mainchip_bulk_postdrt_antenna.py",
+    "unchanged_sha256": "741e967baeee5701bc381fbed605d55a36e96172e71882c819b5b2a95b91e41f"
+  },
+  "failure_proof_prefix": "docs/evidence/mainchip-bulk-postdrt-source-terminal-41129203524/",
+  "failure_receipt_sha256": "13fb4c824423c8357afc833fdadb271f4e0585403415239779fcc586d5d575c3",
+  "full_phy_accepted": false,
+  "historical_conclusion": "failure",
+  "historical_run": 41129203524,
+  "historical_source": "48596480dbdbb6537f0253264383e53f1c606d11",
+  "hosted_correction_result": "not yet executed",
+  "local_validation": "Source text comparison and AST only; no authored module execution or tests.",
+  "manifest": {
+    "bytes": 42283,
+    "files": 210,
+    "path": "scripts/mainchip-bulk-postdrt-antenna-pins.json",
+    "sha256": "ccf47186a7951e7a97ee32f5f3c7c9d74cb7d8fc93b23872ea3d27875dc4bcf6"
+  },
+  "native": {
+    "path": "scripts/mainchip_bulk_postdrt_antenna_native.py",
+    "unchanged_sha256": "d8c14beb06f5d2572e3cd75ee6eeb2aa1c699cc0fd2229d8372d064a2a369c59"
+  },
+  "native_authorized": false,
+  "native_executed": false,
+  "physical_acceptance": false,
+  "schema": "bulk-postdrt-byte-comparison-amendment-v1",
+  "timing_accepted": false,
+  "workflow": {
+    "change": "manifest SHA only",
+    "jobs": [
+      "source-controls",
+      "preserve-job-log"
+    ],
+    "path": ".github/workflows/mainchip-net459-diode-prune.yml",
+    "sha256": "849c4a38a11207f779c756c8e5b8f87d1ad1a3856375659840964b5227813159"
+  }
+}
