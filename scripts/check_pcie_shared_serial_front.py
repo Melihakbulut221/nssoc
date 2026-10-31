@@ -189,16 +189,21 @@ def hierarchy(out,env,vendor):
         script='read_verilog -sv '+' '.join(map(str,sources))+'; hierarchy -check -top '+top+'; proc; check -assert; write_json '+str(js)
         row=execute(['yosys','-Q','-p',script],directory,'yosys',env)
         assert row['returncode']==0 and js.is_file(),'Actual production hierarchy failed'
-        modules=json.loads(js.read_text())['modules'];counts={}
+        modules=json.loads(js.read_text())['modules'];counts={};spellings={}
+        allowed={n for path in sources for n in re.findall(r'^\s*module\s+([A-Za-z_][A-Za-z0-9_$]*)',path.read_text(),re.M)}
         def walk(name):
-            module=modules[name];kind=module.get('attributes',{}).get('hdlname',name).split()[0]
+            module=modules[name];raw_kind=module.get('attributes',{}).get('hdlname',name).split()[0]
+            # Yosys JSON hdlname preserves escaped Verilog identifier prefixes.
+            # Match only a pinned source module and retain every original spelling.
+            kind=raw_kind.lstrip(chr(92));assert kind in allowed,('Unknown native module identity',raw_kind)
+            spellings.setdefault(kind,set()).add(raw_kind)
             counts[kind]=counts.get(kind,0)+1
             for cell in module['cells'].values():
                 if cell['type']in modules:walk(cell['type'])
         walk(top)
         for kind,n in [(FRONT,1),('soc_pcie_gen3_lane_align_v3',4),('soc_pcie_gen3_block_cdc_v1',4),('axis_async_fifo',4)]:
             assert counts.get(kind)==n,('Duplicate/missing production front',top,kind,counts)
-        proof.append(dict(top=top,status='PASS',counts=counts,command=row,sha256=sha(js.read_bytes())))
+        proof.append(dict(top=top,status='PASS',counts=counts,hdl_name_spellings={k:sorted(v)for k,v in spellings.items()},command=row,sha256=sha(js.read_bytes())))
     return proof
 
 def run(out):
