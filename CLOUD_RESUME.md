@@ -1,20 +1,19 @@
-# Cloud continuation — checkpoint v164
+# Cloud continuation — checkpoint v165
 
-Updated: 2026-10-31T11:42:43.307355+00:00
+Updated: 2026-10-31T12:14:31.725315+00:00
 
-All CAD, simulations, numerical analysis and native payloads stay on GitHub. The local workspace and project temporary directories are empty; no local CAD processes are running.
+The latest user instruction is CLOUD ONLY. All tests, CAD, simulations, numerical solving and native payloads remain on GitHub. The local project workspace and owned project temp paths are empty, with no local CAD processes. This overrides older local-work wording.
 
-The prior mainchip run 41194121952 failed in make-overlay after 1,200 seconds, before routing started. Guide reload and direct metal contact for 2,702 new diode power terminals passed; this is not full PG or LVS signoff. Its 70-file proof is e21a23444; the 56-member native capsule is permanently preserved. The terminal collector has EXECUTED.
+Mainchip run41197515084 completed with failure: exact DEF normalization now finishes in32.873430577seconds, retaining original token checks. The next operation failed because the frozen Tcl path helper only accepted host checkout paths. Fixed import and route had not started. All183proof files120,450,871bytes atafd62b49 were read back; the674-member353,145,378-byte native capsule remains permanently in the cloud. The v164 collector has EXECUTED.
 
-The normalizer scanned the complete DEF repeatedly for each diode pin. The new implementation uses bounded scans while retaining exact tokens, quote checks, native net ownership and all original physical gates. The sole current mainchip run is 41197515084 at source 0dec961e, release 429897346. All 302 source controls passed (140 routing + 162 original). Latest snapshot: in_progress. Poll this handle; do not redispatch. The v164 mainchip-fast-insertion-route collector is PREPARED_NOT_EXECUTED. Native phase progress is not inferred from the active workflow step.
+Current mainchip run41199907663 uses source6e421425 and independently reserved release429913592. The scoped adapter retains the original Tcl commands and original phase terminal checks for both successful and failed restoration. The original frozen modules are not patched. Expected source controls:327 (165routing plus162original). Snapshot: in_progress. Source pass is not claimed until its complete actual evidence is inspected. The v165 collector is PREPARED_NOT_EXECUTED; execute once after terminal completion. Do not redispatch or reconstruct diodes.
 
-Actual CDR wire ownership run 41197248029 at source 06a7360e succeeded: 165 source controls, 2,797 authenticated original archive members, 36 unchanged selected native inputs, and 34 actual contact pairs. The complete 93-file, 4,285,842-byte proof is 5e1d23a39. The 87-file, 7,786,431-byte native capsule stays in the cloud. Its collector has EXECUTED. Earlier run 41196925810 failed before acquisition because gh rejected ANSI log bytes; its 39-file proof 4991ca25 is retained and the transport is fixed. That collector has also EXECUTED.
+CDR actual wire diagnosis remains at5e1d23a39, with34actual contact pairs and original electrical rejection retained. Analog headac24acc6 preserves the incomplete eight-drain geometry successor underdocs/cloud-drafts/cdr-current-eight-drain-straps-20261031/. The5files57,630bytes include the contract, native draft, unfinished host prefix and explicit remaining steps. No physical candidate from this draft has been generated or accepted. Complete host/config/controls/workflow in the cloud, then run unchanged560DRC and500-device deep/flat LVS plus13faults. FreshRC and original loaded electrical gates remain required afterward.
 
-The wire-only DC results are 14.28–14.97 ohms for upper emitter to selector collector, 37.92–44.37 ohms for tail drain to selector emitter, and 77.26–99.27 ohms for VI collector to filter. Dominant access branches are 26.503/32.5083 ohms at tail drains, 3.75872 ohms at upper emitters, and 26–29 ohms at VI/filter contacts. Next, establish exact physical polygon/contact ownership, edit bounded real geometry, reextract RC, and rerun the original loaded electrical gates. Endpoint paint does not prove a unique layer or straight path. Linear 1 A analysis does not prove operating/transient causality. The original electrical rejection and full PHY closure remain open.
-
-Record pins, results, next actions and collector status are in docs/evidence/cloud-collector-recipes-20261029/current-wire-diagnosis-fast-def-route-v164.json. The final RC/STA adapter 86015346 stays disabled until a genuinely qualified routed candidate is available. Keep 20/4/8/8 ns plus 5% and all original analog limits. The 8-hour monitor remains read-only; its historical HTTP 502 issue is not claimed closed. Inventory v164 contains 426 run handles.
+Full serialPHY, actual routed physical closure and finalsetup/hold remain open. Keep all original analog limits and20/4/8/8ns+5%. FinalRC/STA adapter86015346 stays disabled until a genuinely qualified routed candidate exists. The8-hour monitor remains read-only, now with427run handles; historical HTTP502 health is not claimed fixed.
 
 ## Historical notes below — not current running-job status
+
 
 
 
