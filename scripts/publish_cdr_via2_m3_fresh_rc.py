@@ -54,8 +54,8 @@ def prepare(ctx,root,out,pack):
     require(not out.resolve().is_relative_to(root.resolve()),"publication outside output tree")
     files=inventory(root);out.mkdir()
     stem=ctx["group"]+"-"+str(ctx["run"])+"-1"
-    index=dict(schema="complete-cdr-wave-replay-output-index-v1",context=ctx,files=files,
-      original_capture_replayed_is_not_electrical_acceptance=True,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
+    index=dict(schema="complete-cdr-via2-m3-fresh-rc-output-index-v1",context=ctx,files=files,
+      publication_only=True,fresh_rc_is_not_electrical_acceptance=True,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
     write(out/"complete-output-index.json",index)
     manifest=pack(root,stem,out,256*1024**2)
     require(inventory(root)==files,"output changed during archive")
@@ -86,7 +86,7 @@ def publish(ctx,proof,paths,out,api_call=api,upload_call=upload):
     require(all(re.fullmatch("[A-Za-z0-9_.-]+",p.name) and expected[p.name]["bytes"]>0 for p in paths),"upload filenames/nonempty")
     def state():
         return validate_release(ctx,proof,api_call("releases/tags/"+ctx["tag"]),api_call("git/ref/tags/"+ctx["tag"]))
-    receipt=dict(status="RUNNING_COMPLETE_REPLAY_PUBLICATION",context=ctx,assets=[],overwrites=False,creation_attempted=False,complete=False)
+    receipt=dict(status="RUNNING_COMPLETE_FRESH_RC_PUBLICATION",context=ctx,assets=[],overwrites=False,creation_attempted=False,complete=False)
     primary=None
     try:
         require(state()=={},"release not empty before publication")
@@ -104,9 +104,9 @@ def publish(ctx,proof,paths,out,api_call=api,upload_call=upload):
             a=current[path.name]
             receipt["assets"].append(dict(id=a["id"],name=path.name,**expected[path.name],upload_returncode=result.returncode,uncertain_upload_reconciled=result.returncode!=0))
             write(out/"publication-receipt.json",receipt)
-        receipt.update(status="PASS_COMPLETE_REPLAY_OUTPUT_PUBLICATION_ONLY",complete=True)
+        receipt.update(status="PASS_COMPLETE_FRESH_RC_OUTPUT_PUBLICATION_ONLY",complete=True)
     except BaseException as error:
-        primary=error;receipt.update(status="FAIL_COMPLETE_REPLAY_PUBLICATION",error=repr(error),traceback=traceback.format_exc())
+        primary=error;receipt.update(status="FAIL_COMPLETE_FRESH_RC_PUBLICATION",error=repr(error),traceback=traceback.format_exc())
     finally:
         try:write(out/"publication-receipt.json",receipt)
         except BaseException as error:
@@ -129,7 +129,7 @@ def main():
         source_guard(ctx)
         print(json.dumps(dict(receipt,archive=index["archive"],complete_file_count=len(index["files"]),physical_acceptance=False,timing_accepted=False,full_phy_accepted=False),sort_keys=True),flush=True)
     except BaseException as error:
-        failure=dict(status="FAIL_REPLAY_OUTPUT_PRESERVATION",error=repr(error),traceback=traceback.format_exc(),context=ctx,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
+        failure=dict(status="FAIL_FRESH_RC_OUTPUT_PRESERVATION",error=repr(error),traceback=traceback.format_exc(),context=ctx,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
         print(json.dumps(failure,sort_keys=True),flush=True)
         try:
             if a.publication.is_dir()and not a.publication.is_symlink():write(a.publication/"preservation-failure.json",failure)
