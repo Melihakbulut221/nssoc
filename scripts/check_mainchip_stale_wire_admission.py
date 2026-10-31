@@ -22,6 +22,38 @@ def fixture():
       stale_wire_clear=dict(phase="stale-wire-clear",complete=True,error=None,terminal_errors=[],**p.FLAGS),**p.FLAGS)
 
 class Controls(unittest.TestCase):
+    def test_fixture_phase_scope_and_original_environment_restored(self):
+        actual=dict(os.environ)
+        for existing in (False,True):
+            state={"GITHUB_REF":"synthetic unchanged ref","OTHER":"unchanged"}
+            if existing:state[context.PHASE_KEY]="preexisting-external-value"
+            before=dict(state)
+            def callback():
+                state[context.PHASE_KEY]="final-audit"
+                return "retained return value"
+            self.assertEqual(context.with_fixture_phase(callback,state),"retained return value")
+            self.assertEqual(state,before)
+        self.assertEqual(dict(os.environ),actual)
+    def test_fixture_phase_refuses_arbitrary_environment_changes(self):
+        actual=dict(os.environ);state={"GITHUB_REF":"synthetic expected ref","OTHER":"unchanged"}
+        def callback():
+            state[context.PHASE_KEY]="final-audit"
+            state["GITHUB_REF"]="synthetic changed ref"
+        with self.assertRaisesRegex(AssertionError,"unexpected environment mutation"):
+            context.with_fixture_phase(callback,state)
+        self.assertNotIn(context.PHASE_KEY,state)
+        self.assertEqual(dict(os.environ),actual)
+    def test_fixture_phase_preserves_exception_and_rejects_unknown_phase(self):
+        state={"OTHER":"unchanged"};before=dict(state);original=RuntimeError("original synthetic failure")
+        def failed():
+            state[context.PHASE_KEY]="final-audit"
+            raise original
+        with self.assertRaises(RuntimeError)as raised:context.with_fixture_phase(failed,state)
+        self.assertIs(raised.exception,original);self.assertEqual(state,before)
+        def unknown():state[context.PHASE_KEY]="unrecognized-phase"
+        with self.assertRaisesRegex(AssertionError,"unknown synthetic lifecycle phase"):
+            context.with_fixture_phase(unknown,state)
+        self.assertEqual(state,before)
     def test_exact_bytes_are_typed_and_nonpermissive(self):
         a.exact_bytes(b"preserved",b"preserved","same exact bytes")
         for first,second in ((b"preserved",b"changed"),("preserved",b"preserved"),(b"preserved","preserved"),(bytearray(b"same"),b"same")):
@@ -296,4 +328,4 @@ if __name__=="__main__":
       native_acquisition=False,native_executed=False,physical_acceptance=False,
       timing_accepted=False,full_phy_accepted=False)
     Path("bulk-postdrt-integration-controls/stale-wire-admission-controls.json").write_text(json.dumps(report,sort_keys=True,indent=2)+"\n")
-    sys.exit(0 if result.wasSuccessful()and result.testsRun==28 and not result.skipped else 1)
+    sys.exit(0 if result.wasSuccessful()and result.testsRun==31 and not result.skipped else 1)

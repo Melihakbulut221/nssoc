@@ -92,7 +92,7 @@ jobs:
           sys.path.insert(0,'scripts')
           import mainchip_stale_wire_admission as a
           raw=Path(a.MANIFEST).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='9631d9f99e9a52feddcb5b43b766f17b0b3ef9e134233c7c4a6292ba82e80105'
+          assert hashlib.sha256(raw).hexdigest()=='87782a2295d755d32143f8349e8831ad154abd1eb54726fac540ecd6d6af29b7'
           assert a.source_gate()==json.loads(raw)
           Path('bulk-postdrt-integration-controls/stale-wire-admission-manifest.json').write_bytes(raw)
           for path in a.NEW:ast.parse(Path(path).read_bytes(),filename=path)
@@ -104,7 +104,7 @@ jobs:
           from pathlib import Path
           report=json.loads(Path('bulk-postdrt-integration-controls/stale-wire-admission-controls.json').read_bytes())
           assert report['source']==os.environ['GITHUB_SHA'] and report['run_id']==int(os.environ['GITHUB_RUN_ID']) and report['attempt']==1
-          assert report['status']=='PASS' and report['tests']==28 and report['failures']==report['errors']==report['skipped']==[]
+          assert report['status']=='PASS' and report['tests']==31 and report['failures']==report['errors']==report['skipped']==[]
           assert all(report[k] is False for k in ('native_acquisition','native_executed','physical_acceptance','timing_accepted','full_phy_accepted'))
           fixture=report['synthetic_capsule']
           assert fixture['synthetic_only'] is True and fixture['native_bytes_generated'] is False
