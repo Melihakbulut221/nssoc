@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-"""Publish complete read-only RC outputs to an independently reserved exact-source release."""
+"""Publish complete canonical-view outputs to an independently reserved exact-source release."""
 import argparse,hashlib,importlib,json,os,re,subprocess,sys,traceback
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
