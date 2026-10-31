@@ -1,16 +1,19 @@
-# Cloud continuation — checkpoint v162
+# Cloud continuation — checkpoint v163
 
-Updated: 2026-10-31T10:48:41.387478+00:00
+Updated: 2026-10-31T11:12:34.829820+00:00
 
-All computation and native payloads stay on GitHub; local workspace is empty. Current exact-source continuation: run41194121952 attempt1, source94bdd397a8872926fd16be9aabb34d3657ec1c4d, workingbranch codex/mainchip-net459-diode-prune, reserved release429874359. Check live state; do not dispatch this source again.
+All computation and native payloads remain on GitHub. Local workspace is empty.
 
-This continuation reuses the fully admitted candidate from native producer41190910993:1351diodes,143820original net/wire records,153129old cells and1691clockrecords preserved. The old producer workflow remains failed for its archived host-only KeyError; corrected host handoff passed224source controls without repeating construction.
+Mainchip sole continuation41194121952 at94bdd397, release429874359:273source controls passed. Latest snapshot: in_progress. Inspect live handle; do not redispatch. Native phase/results are not inferred from workflow step. Prepared mainchipcollectorv162 is NOT executed; use it after terminal completion to preserve every result/log/native capsule.
 
-New run first requires273source controls, restores both authenticated archives in cloud, transfers full native guides only for608admitted signal owners, checks exact full physical and guide roundtrip plus2702direct new-diode PG contacts, and performs one original guarded detailed_route. It never repeats repair_antennas or diode creation. All original physical/clock/DRC/antenna/connectivity guards and independent failure preservation stay active. No final timing/fullPHY acceptance is claimed.
+CDR ownership analyzer now exists and passed136hosted source controls in41195513564 at5163554b.26complete proof files303127B atf3e8165c are byte verified. Earlier count-assertion failure41195215888 is retained with25files285811B atb4d84698. Both source collectors v163 have already executed; do not rerun them. No actual CDR model/geometry acquisition or numerical diagnosis has occurred in these source runs.
 
-Prepared terminal collector: docs/evidence/cloud-collector-recipes-20261029/mainchip-saved-diode-routing-collector-v162.py. It has NOT executed. Run only after41194121952 becomes terminal and verify branch remains exact94bdd397; preserve full logs/records/native capsule metadata and all failed results. Inventoryv162 contains421run handles in3bounded shards. The8hour monitor stays read-only; its earlier HTTP502 issue is not claimed fixed. FullPHY and finalRC/STA remain open.
+Next actual CDR task: implement source-qualified read-only cloud adapter with independent exact-source release, complete2797member archive verification and34pinnedinputs. The final composed500device/24356R/15566C model uses MIM precise extraction. Actual precise anchors SHA028cbbb6 differ from canonical SHAfd6b6594: use precise anchors/res.ext/ext/mag/wires. Analyzer checks all raw passive tokens, native conductor ownership and34target pairs using exact old sparse solver. Save per-pair progress and failure evidence, preserve all acceptance limits. Details and adapter design are in docs/evidence/cloud-collector-recipes-20261029/cdr-current-wire-ownership-qualified-v163.json. Wire-only math and endpointpaint do not close electrical/PHY gates.
+
+Full serialPHY, routed-chip physical acceptance and finalsetup/hold remain open. FinalRC/STA adapter86015346 is stilldisabled until a genuine approved routed candidate is available. Monitor remains8hour read-only; historical HTTP502 repair is not claimed complete. Inventoryv163 has423handles.
 
 ## Historical notes below — not current running-job status
+
 
 
 
