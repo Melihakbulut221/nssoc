@@ -1,14 +1,15 @@
-# Cloud continuation — checkpoint v155
+# Cloud continuation — checkpoint v156
 
-Updated: 2026-10-31T09:17:56.224099+00:00
+Updated: 2026-10-31T09:46:13.245442+00:00
 
-All computation and nativearchives/models/GDS/ODB/DEF/waves remain onGitHub. Localworkspace andprojecttemp/nativeprocess scans areempty. Latestcloud-onlyuserinstruction overrides olderlocalgoalwording.
+All tests, numerical work, CAD and native payloads remain on GitHub runners. Local workspace, project temp scans and native processes are empty. The latest cloud-only instruction overrides old local goal wording.
 
-Genuine repair41172959321 returned0 with1351diodes butfailedinsertion/cleanup; route0. Read-onlyaudit41186953778 completedfullsnapshotdelta:153129oldcells and1691clockrecords unchanged; only608nets and1351newdiodes differ. Itfailed onunsupported dbLib.getId; all53prooffiles/69derivedrecords/4logs/27membercapsule preserved. Observer-onlypointer correctionb8aa8fb2 isnowdispatched as41187928413 with23newcontrols and2009pins, independentemptyrelease429832753. Read currentjobstate; do notdispatchagain. Exactterminalcollector andnext-stepnote arestoredincloudunder v155.
+Pointer audit 41187928413 completed all native reads: full delta, master identities, 608 before and 608 after wire projections. The final comparator failed on the real wire-rect kind. All 162 proof files and the 1261-member native capsule are preserved; failure stays failure. Saved-data finalizer 41189662022 at f45f2ba now handles wire-rect and compares both typed and untyped exact rectangles. It performs zero fresh database reads, repairs or routes. Its 30 source controls and original 162 controls must pass. Release 429844778 was independently reserved empty; do not dispatch or reserve again.
 
-Authoritative continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing8hmonitor isread-only/no automaticnative dispatch; lastobserved liveHTTP502failure remainsunresolved. Nativepointer availability and changedwiregeometry arestillunqualified inthis snapshot. FullserialPHY,routedmainchip andfinalsetup/hold remainopen; alloriginalphysical/electrical/timinggates unchanged.
+The exact terminal collector and continuation note are stored as v156. Authoritative checkpoint: docs/evidence/cloud-active-checkpoint-20261024.json. An unchanged diagnostic does not qualify a physical candidate. The existing 8h monitor is read-only; the last observed HTTP502 remains unresolved. Full serial PHY, routed main chip and final setup/hold remain open. All physical/electrical/timing gates remain unchanged.
 
 ## Historical notes below — not current running-job status
+
 
 
 
