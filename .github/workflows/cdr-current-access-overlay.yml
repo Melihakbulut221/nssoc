@@ -1,13 +1,13 @@
-name: Current CDR wire ownership source controls
+name: Current CDR wire ownership with complete native input preservation
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Source-only controls for current CDR wire ownership; no native input acquisition
+        description: Source controls or read-only diagnosis of actual current composed CDR model
         type: choice
         required: true
         default: controls
-        options: [controls]
+        options: [controls, analyze]
 permissions:
   contents: read
   actions: read
@@ -67,6 +67,23 @@ jobs:
               ast.parse(Path(name).read_bytes(),filename=name)
           Path('cdr-drain-wave-source-controls/ownership-manifest.json').write_bytes(raw)
           PY
+      - name: Bind actual ownership execution adapter without acquiring native inputs
+        run: |
+          python3 -B - <<'PY'
+          import ast,hashlib,json,os,sys
+          from pathlib import Path
+          raw=Path('scripts/cdr-current-wire-ownership-execution-pins.json').read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='ab91402b1329d4ceb882377b9e4fe2cba6a187e86f08aa4767fd3d77668d3b62'
+          m=json.loads(raw);assert len(m['files'])==109
+          assert m['schema']=='cdr-current-wire-ownership-execution-pins-v1'
+          sys.path.insert(0,'scripts')
+          import cloud_cdr_current_wire_ownership as host
+          assert host.source_guard(host.context(os.environ))==m
+          host.authorize(m)
+          for p in ('scripts/cloud_cdr_current_wire_ownership.py','scripts/check_cdr_current_wire_ownership_execution.py'):
+              ast.parse(Path(p).read_bytes(),filename=p)
+          Path('cdr-drain-wave-source-controls/execution-manifest.json').write_bytes(raw)
+          PY
       - name: Install exact original numerical runtime for synthetic source controls
         run: python3 -B -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2
       - name: Exercise original parser, measurements, refusals and failure preservation on synthetic inputs
@@ -111,13 +128,26 @@ jobs:
           assert r['synthetic_inputs_only'] is True
           assert all(r[k] is False for k in ('actual_native_inputs_acquired','actual_model_analyzed','physical_acceptance','timing_accepted','full_phy_accepted','electrical_accepted','causality_proven'))
           PY
+      - name: Exercise source-bound acquisition admission, terminal integrity and complete output packing
+        run: python3 -B scripts/check_cdr_current_wire_ownership_execution.py > cdr-drain-wave-source-controls/execution-controls.stdout 2> cdr-drain-wave-source-controls/execution-controls.stderr
+      - name: Require all current execution controls
+        run: |
+          python3 -B - <<'PY'
+          import json,os,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import cloud_cdr_current_wire_ownership as host
+          root=Path('cdr-drain-wave-source-controls')
+          records={key:json.loads((root/name).read_bytes())for key,name in (('controls','controls.json'),('publication','publication-controls.json'),('ownership','ownership-controls.json'),('execution','execution-controls.json'))}
+          host.bind_controls(host.context(os.environ),records)
+          PY
       - name: Always preserve complete source records
         if: always()
         run: |
           python3 -B - <<'PY'
           import base64,hashlib,json
           from pathlib import Path
-          for name in ('context.json','controls.json','controls.stdout','controls.stderr','publication-controls.json','publication-controls.stdout','publication-controls.stderr','ownership-manifest.json','ownership-controls.json','ownership-controls.stdout','ownership-controls.stderr'):
+          for name in ('context.json','controls.json','controls.stdout','controls.stderr','publication-controls.json','publication-controls.stdout','publication-controls.stderr','ownership-manifest.json','ownership-controls.json','ownership-controls.stdout','ownership-controls.stderr','execution-manifest.json','execution-controls.json','execution-controls.stdout','execution-controls.stderr'):
               p=Path('cdr-drain-wave-source-controls')/name
               assert not p.is_symlink()
               raw=p.read_bytes() if p.is_file() else b''
@@ -178,3 +208,179 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
+
+  ownership:
+    needs: [source-controls, preserve-job-log]
+    if: ${{ inputs.mode == 'analyze' }}
+    permissions:
+      contents: write
+      actions: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      GH_TOKEN: ${{ github.token }}
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Bind exact execution source before native acquisition
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,sys
+          from pathlib import Path
+          raw=Path('scripts/cdr-current-wire-ownership-execution-pins.json').read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='ab91402b1329d4ceb882377b9e4fe2cba6a187e86f08aa4767fd3d77668d3b62'
+          sys.path.insert(0,'scripts')
+          import cloud_cdr_current_wire_ownership as host
+          m=host.source_guard(host.context(os.environ));assert len(m['files'])==109
+          host.authorize(m)
+          PY
+      - name: Recover every same-source control record from completed actual job log
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json,os,subprocess,sys,time
+          from pathlib import Path
+          e=os.environ;out=Path('ownership-source-proof');out.mkdir()
+          prefix='repos/Melihakbulut221/nssoc/'
+          def get(path,name):
+              b=subprocess.check_output(['gh','api',prefix+path]);(out/name).write_bytes(b);return json.loads(b)
+          jobs=get('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
+          found=[j for j in jobs['jobs']if j['name']=='source-controls'];assert len(found)==1
+          for _ in range(30):
+              job=get('actions/jobs/'+str(found[0]['id']),'job.json')
+              assert job['head_sha']==e['GITHUB_SHA'] and job['run_id']==int(e['GITHUB_RUN_ID'])
+              if job['status']=='completed':break
+              time.sleep(2)
+          assert job['status']=='completed' and job['conclusion']=='success'
+          raw=subprocess.check_output(['gh','api',prefix+'actions/jobs/'+str(job['id'])+'/logs']);assert raw
+          (out/'source-controls.log').write_bytes(raw)
+          expected={'context.json','controls.json','controls.stdout','controls.stderr','publication-controls.json','publication-controls.stdout','publication-controls.stderr','ownership-manifest.json','ownership-controls.json','ownership-controls.stdout','ownership-controls.stderr','execution-manifest.json','execution-controls.json','execution-controls.stdout','execution-controls.stderr'}
+          idx={};chunks={}
+          for line in raw.decode().splitlines():
+              for marker,is_index in (('CDR_DRAIN_WAVE_SOURCE_INDEX ',True),('CDR_DRAIN_WAVE_SOURCE_CHUNK ',False)):
+                  if marker not in line:continue
+                  text=line.split(marker,1)[1]
+                  if not text.startswith('{'):continue
+                  d=json.loads(text);name=d['path'];assert name in expected
+                  if is_index:assert name not in idx;idx[name]=d
+                  else:
+                      part=chunks.setdefault(name,{})
+                      assert type(d['index'])is int and d['index']not in part;part[d['index']]=d
+          assert set(idx)==expected
+          values={}
+          for name,pin in idx.items():
+              assert pin['present'] is True
+              parts=chunks.get(name,{});assert set(parts)==set(range(pin['chunks']))
+              data=b''.join(base64.b64decode(parts[i]['base64'],validate=True)for i in range(pin['chunks']))
+              assert len(data)==pin['bytes'] and hashlib.sha256(data).hexdigest()==pin['sha256']
+              (out/name).write_bytes(data)
+              if name.endswith('.json'):values[name]=json.loads(data)
+          context=values['context.json']
+          assert context['source']==e['GITHUB_SHA'] and context['run_id']==int(e['GITHUB_RUN_ID']) and context['attempt']==1
+          assert context['native_acquisition'] is False
+          assert (out/'ownership-manifest.json').read_bytes()==Path('scripts/cdr-current-wire-ownership-source-pins.json').read_bytes()
+          assert (out/'execution-manifest.json').read_bytes()==Path('scripts/cdr-current-wire-ownership-execution-pins.json').read_bytes()
+          records={key:values[name]for key,name in (('controls','controls.json'),('publication','publication-controls.json'),('ownership','ownership-controls.json'),('execution','execution-controls.json'))}
+          sys.path.insert(0,'scripts')
+          import cloud_cdr_current_wire_ownership as host
+          proof=host.bind_controls(host.context(e),records)
+          (out/'bound-controls.json').write_text(json.dumps(records,sort_keys=True,indent=2)+'\n')
+          (out/'index.json').write_text(json.dumps(idx,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),source_job=job['id'],full_records=len(idx),proof=proof,native_acquisition=False),sort_keys=True))
+          PY
+      - name: Require independently reserved empty exact-source release
+        run: |
+          python3 -B - <<'PY'
+          import json,os,subprocess,time
+          from pathlib import Path
+          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-cdr-current-wire-ownership-nominal_early'
+          prefix='repos/Melihakbulut221/nssoc/'
+          for attempt in range(120):
+              r=subprocess.run(['gh','api',prefix+'releases/tags/'+tag],capture_output=True,text=True)
+              if r.returncode==0:
+                  info=json.loads(r.stdout);break
+              assert 'HTTP 404' in r.stderr,r.stderr
+              time.sleep(2)
+          else:raise RuntimeError('No independent reservation; native archive acquisition prohibited')
+          ref=json.loads(subprocess.check_output(['gh','api',prefix+'git/ref/tags/'+tag]))
+          assert info['tag_name']==tag and info['target_commitish']==e['GITHUB_SHA']
+          assert info['draft'] is False and info['prerelease'] is True and info['assets']==[]
+          assert ref['object']['type']=='commit' and ref['object']['sha']==e['GITHUB_SHA']
+          proof=dict(tag=tag,tested_source=e['GITHUB_SHA'],release_id=info['id'],existing_assets=[],target_verified=True,assets_overwritten=False,externally_reserved=True,creation_attempted=False,read_attempts=attempt+1)
+          Path('ownership-reservation.json').write_text(json.dumps(proof,sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Install pinned numerical runtime
+        run: python3 -B -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2
+      - name: Analyze actual current composed CDR model and preserve complete native inputs
+        run: python3 -B scripts/cloud_cdr_current_wire_ownership.py --bundle current-cdr-ownership-bundle --publication current-cdr-ownership-publication --reservation ownership-reservation.json --controls ownership-source-proof/bound-controls.json > current-cdr-ownership.stdout 2> current-cdr-ownership.stderr
+      - name: Always emit complete derived records and actual failure output
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import sys
+          from pathlib import Path
+          for name in ('current-cdr-ownership.stdout','current-cdr-ownership.stderr'):
+              p=Path(name)
+              if p.is_file():sys.stdout.buffer.write(p.read_bytes());sys.stdout.buffer.write(b'\n')
+          PY
+      - name: Preserve complete owned native bundle and publication fallback
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: current-cdr-ownership-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          path: |
+            ownership-source-proof
+            ownership-reservation.json
+            current-cdr-ownership-bundle
+            current-cdr-ownership-publication
+            current-cdr-ownership.stdout
+            current-cdr-ownership.stderr
+
+  preserve-ownership-job-logs:
+    needs: [source-controls, preserve-job-log, ownership]
+    if: ${{ always() && inputs.mode == 'analyze' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Preserve complete terminal execution logs and metadata
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          e=os.environ;out=Path('ownership-job-logs');out.mkdir()
+          prefix='repos/Melihakbulut221/nssoc/'
+          def get(path,name):
+              raw=subprocess.check_output(['gh','api',prefix+path]);(out/name).write_bytes(raw);return json.loads(raw)
+          run=get('actions/runs/'+e['GITHUB_RUN_ID'],'run.json')
+          assert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
+          jobs=get('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
+          records={}
+          for listed in jobs['jobs']:
+              if listed['name'] not in ('source-controls','preserve-job-log','ownership'):continue
+              job=get('actions/jobs/'+str(listed['id']),str(listed['id'])+'.json')
+              assert job['head_sha']==e['GITHUB_SHA'] and job['run_id']==int(e['GITHUB_RUN_ID'])
+              if job['conclusion']=='skipped':continue
+              raw=subprocess.check_output(['gh','api',prefix+'actions/jobs/'+str(job['id'])+'/logs']);assert raw
+              (out/(str(job['id'])+'.log')).write_bytes(raw)
+              records[job['name']]=dict(id=job['id'],api_status=job['status'],conclusion=job['conclusion'],execution_dependency_finished=True,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+          (out/'receipt.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run=int(e['GITHUB_RUN_ID']),attempt=1,complete_raw_logs=records),sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Preserve complete actual logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: current-cdr-ownership-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ownership-job-logs
+          if-no-files-found: error
+          retention-days: 90
