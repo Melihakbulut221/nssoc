@@ -11,7 +11,7 @@ GROUP="mainchip-drt-obstacle-reduction"
 MANIFEST="scripts/mainchip-drt-obstacle-reduce-source.json"
 CONFIG="scripts/mainchip-drt-obstacle-reduce-inputs.json"
 OUT=ROOT/"obstacle-reduction"
-EXPECTED_CONTROLS=64
+EXPECTED_CONTROLS=67
 MAX_OUTPUT_BYTES=64*1024*1024
 INPUT_NAMES={"native-result.json","scope.json","host-result.json","inner-result.json","progress.json","command.json"}
 PHASE_SECONDS={"preflight":300,"analysis":900,"publication":300}
@@ -135,7 +135,7 @@ def same_source_controls(ctx,api=api):
         if m:records.append(q.decode(m[1]))
     q.require(len(records)==1,"single actual complete control record");r=records[0]
     q.require(r["source"]==ctx["source"]and r["status"]=="PASS_SOURCE_ONLY_OBSTACLE_REDUCTION_CONTROLS"and r["tests_run"]==EXPECTED_CONTROLS and r["successful"]is True and r["failures"]==r["errors"]==r["skipped"]==0,"all exact current controls")
-    q.require(r["native_acquired"]is r["native_executed"]is r["actual_report_acquired"]is False,"source fixture never claims native/input acquisition")
+    q.require(r["native_acquired"]is r["native_executed"]is r["actual_report_acquired"]is r["actual_large_observation_report_acquired"]is False and r["actual_small_metadata_fixture_inputs"]==5,"source fixture reads five pinned small metadata records, never the large/native report")
     (OUT/"same-source-controls.log").write_bytes(raw);write("same-source-jobs.json",jobs);write("same-source-controls.json",r)
     return r
 def download(name,pin,inputs):
@@ -171,14 +171,25 @@ def decode_file(path):
         return json.load(stream,object_pairs_hook=q.unique,parse_constant=lambda x:(_ for _ in()).throw(ValueError("nonfinite JSON")))
 def validate_selected_inputs(values,config):
     host=values["host-result.json"];inner=values["inner-result.json"];command=values["command.json"];progress=values["progress.json"]
-    q.require(host["status"]=="COMPLETE_READONLY_OBSTACLE_CLOUD_OBSERVATION"and host["primary_error"]is None and host["terminal_errors"]==[]and host["generated_output_preservation_complete"]is True,"complete original host")
-    q.require(inner["status"]=="COMPLETE_READONLY_OBSTACLE_ENGINE"and inner["terminal_errors"]==[],"complete original engine")
+    q.require(host["status"]=="COMPLETE_READONLY_OBSTACLE_CLOUD_OBSERVATION"and host["native_complete"]is True and host["terminal_errors"]==[]and host["generated_output_preservation_complete"]is True and "primary_exception"not in host and "error"not in host and host.get("primary_error")is None,"complete original host")
+    q.require(inner["status"]=="COMPLETE_READONLY_OBSTACLE_ENGINE"and inner["native_complete"]is True and inner["terminal_errors"]==[]and "primary_exception"not in inner and "error"not in inner and inner.get("primary_error")is None,"complete original engine")
     q.require(command["returncode"]==0 and command["supervision_failure"]is None and command["stderr_bytes"]==0 and command["stderr_sha256"]==q.sha(b""),"original successful command and empty stderr")
     q.require(command["argv"]==["/work/engine/openroad","-no_init","-exit","-python","/work/tail-source/scripts/mainchip_drt_obstacle_native.py"],"exact original observed command")
     q.require(command["minimum_available_kib"]==2097152 and command["maximum_group_rss_kib"]==10485760,"unchanged original resource guards")
     q.require(command["process_group_cleanup"]["remaining_live"]==[]and command["process_group_cleanup"]["remaining_nonrunning"]==[],"original process cleanup")
     q.require(progress["stage"]=="native-endpoint-census"and progress["observed_endpoint_names"]==progress["required_endpoint_names"]==values["scope.json"]["endpoint_names"],"complete original progress endpoint census")
     core.false_scope(progress)
+def acquire_selected_inputs(config,inputs):
+    """Admit all five small metadata records before acquiring the large report."""
+    paths={};values={}
+    for name in sorted(INPUT_NAMES-{"native-result.json"}):
+        paths[name]=download(name,config["inputs"][name],inputs)
+        values[name]=decode_file(paths[name])
+    validate_selected_inputs(values,config)
+    name="native-result.json"
+    paths[name]=download(name,config["inputs"][name],inputs)
+    values[name]=decode_file(paths[name])
+    return paths,values
 def destination(ctx,empty,expected=None):
     f=types.FunctionType(q.destination.__code__,dict(q.destination.__globals__,GROUP=GROUP,api=api),q.destination.__name__,q.destination.__defaults__,q.destination.__closure__)
     tag,release=f(ctx["source"],empty,expected)
@@ -240,9 +251,7 @@ def run():
         with phase("analysis"):
             resource.setrlimit(resource.RLIMIT_AS,(8*1024**3,8*1024**3))
             before=producer(c);write("producer-before.json",before)
-            paths={name:download(name,pin,inputs)for name,pin in c["inputs"].items()}
-            values={name:decode_file(path)for name,path in paths.items()}
-            validate_selected_inputs(values,c)
+            paths,values=acquire_selected_inputs(c,inputs)
             emitted=0;output_bytes=0
             with(OUT/"witnesses.jsonl").open("xb")as stream:
                 def emit(row):

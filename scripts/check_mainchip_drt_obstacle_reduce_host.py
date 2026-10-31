@@ -12,8 +12,8 @@ def inputs_fixture():
     report,scope=base.fixture()
     return {
       "native-result.json":report,"scope.json":scope,
-      "host-result.json":dict(status="COMPLETE_READONLY_OBSTACLE_CLOUD_OBSERVATION",primary_error=None,terminal_errors=[],generated_output_preservation_complete=True),
-      "inner-result.json":dict(status="COMPLETE_READONLY_OBSTACLE_ENGINE",terminal_errors=[]),
+      "host-result.json":dict(status="COMPLETE_READONLY_OBSTACLE_CLOUD_OBSERVATION",native_complete=True,terminal_errors=[],generated_output_preservation_complete=True),
+      "inner-result.json":dict(status="COMPLETE_READONLY_OBSTACLE_ENGINE",native_complete=True,terminal_errors=[]),
       "command.json":dict(returncode=0,supervision_failure=None,stderr_bytes=0,stderr_sha256=q.sha(b""),
         argv=["/work/engine/openroad","-no_init","-exit","-python","/work/tail-source/scripts/mainchip_drt_obstacle_native.py"],
         minimum_available_kib=2097152,maximum_group_rss_kib=10485760,
@@ -61,6 +61,18 @@ def producer_fixture():
         if raw:raise AssertionError("unexpected raw metadata")
         return copy.deepcopy(responses[path])
     return config,values,responses,payload,api
+
+ACTUAL_FIXTURES="scripts/fixtures/mainchip-observer-41245373612"
+def actual_small_metadata():
+    config=q.decode((h.ROOT/h.CONFIG).read_bytes());names=h.INPUT_NAMES-{"native-result.json"}
+    root=h.ROOT/ACTUAL_FIXTURES
+    q.require({p.name for p in root.iterdir()}==names,"exact five actual small metadata fixtures")
+    values={}
+    for name in sorted(names):
+        p=root/name;expected={k:config["inputs"][name][k]for k in("bytes","sha256")}
+        q.require(p.is_file()and not p.is_symlink()and q.pin(p)==expected,"original byte-pinned small metadata "+name)
+        values[name]=h.decode_file(p)
+    return config,values
 
 class HostControls(unittest.TestCase):
     def setUp(self):
@@ -160,7 +172,7 @@ class HostControls(unittest.TestCase):
           status="in_progress"if n=="analysis"else"completed",conclusion=None if n=="analysis"else"success")
           for i,n in enumerate(("source-controls","preserve-job-log","analysis"))])
         record=dict(source=self.ctx["source"],status="PASS_SOURCE_ONLY_OBSTACLE_REDUCTION_CONTROLS",tests_run=h.EXPECTED_CONTROLS,
-          successful=True,failures=0,errors=0,skipped=0,native_acquired=False,native_executed=False,actual_report_acquired=False)
+          successful=True,failures=0,errors=0,skipped=0,native_acquired=False,native_executed=False,actual_report_acquired=False,actual_large_observation_report_acquired=False,actual_small_metadata_fixture_inputs=5)
         raw=("2026-10-31T00:00:00.000Z arbitrary retained log\n2026-10-31T00:00:01.000Z MAINCHIP_OBSTACLE_REDUCTION_CONTROLS "+json.dumps(record)+"\n").encode()
         def fixture_api(path,binary=False):
             if binary:return raw
@@ -229,9 +241,9 @@ class HostControls(unittest.TestCase):
         ctx=dict(source="b"*40,run=time.time_ns(),attempt=1)
         work=Path(os.environ["RUNNER_TEMP"])/(h.GROUP+"-"+str(ctx["run"])+"-1")
         self.addCleanup(lambda:shutil.rmtree(work,ignore_errors=True))
-        original_producer=h.producer;published=[]
+        original_producer=h.producer;published=[];downloaded=[]
         def execute(argv,stdout,stderr,timeout,check,preexec_fn):
-            asset_id=int(argv[3].rsplit("/",1)[-1]);stdout.write(payload[asset_id]);return types.SimpleNamespace(returncode=0)
+            asset_id=int(argv[3].rsplit("/",1)[-1]);downloaded.append(asset_id);stdout.write(payload[asset_id]);return types.SimpleNamespace(returncode=0)
         with contextlib.ExitStack()as stack:
             stack.enter_context(mock.patch.object(h,"actual_context",return_value=(ctx,c)))
             stack.enter_context(mock.patch.object(h,"same_source_controls",return_value={"synthetic":True}))
@@ -252,6 +264,7 @@ class HostControls(unittest.TestCase):
         rows=[q.decode(line)for line in(self.out/"witnesses.jsonl").read_bytes().splitlines()]
         self.assertEqual([(w["source_marker_index"],w["source_witness_index"],w["record_id"])for w in rows],expected)
         self.assertEqual(published,[ctx]);self.assertFalse(work.exists())
+        self.assertEqual(downloaded[-1],c["inputs"]["native-result.json"]["asset_id"]);self.assertEqual(len(downloaded),6)
         bound.assert_called_once_with(h.resource.RLIMIT_AS,(8*1024**3,8*1024**3))
         self.assertIn(mock.call(900),alarm.call_args_list);self.assertIn(mock.call(0),alarm.call_args_list)
     def test_actual_authority_still_refused_without_environment_spoofing(self):
@@ -327,6 +340,52 @@ class HostControls(unittest.TestCase):
         self.assertIsNone(h.ACTIVE_PHASE);self.assertEqual(signal.getsignal(signal.SIGALRM),previous)
         self.assertEqual(signal.getitimer(signal.ITIMER_REAL),(0.0,0.0))
 
+    def test_all_five_actual_metadata_records_match_real_writer_schema(self):
+        config,values=actual_small_metadata()
+        before={name:q.pin(h.ROOT/ACTUAL_FIXTURES/name)for name in values}
+        with mock.patch.object(h.core,"reduce_report",side_effect=AssertionError("actual geometry reduction is not a source control")):
+            h.validate_selected_inputs(values,config)
+        for name in("host-result.json","inner-result.json"):
+            self.assertTrue(values[name]["native_complete"]);self.assertNotIn("primary_exception",values[name])
+            self.assertNotIn("primary_error",values[name]);self.assertNotIn("error",values[name])
+        self.assertEqual({name:q.pin(h.ROOT/ACTUAL_FIXTURES/name)for name in values},before)
+        self.assertNotIn("native-result.json",values)
+    def test_actual_metadata_canonical_failure_and_completion_refusals(self):
+        config,values=actual_small_metadata()
+        changes=[
+          lambda v:v["host-result.json"].update(native_complete=False),
+          lambda v:v["inner-result.json"].update(native_complete=False),
+          lambda v:v["host-result.json"].update(primary_exception={"stage":"primary","error":"actual writer failure"}),
+          lambda v:v["inner-result.json"].update(primary_exception={"stage":"primary","error":"actual writer failure"}),
+          lambda v:v["host-result.json"].update(error={"stage":"obstacle-readback","error":"failure"}),
+          lambda v:v["inner-result.json"].update(error={"stage":"obstacle-observation","error":"failure"}),
+          lambda v:v["host-result.json"].update(primary_error="contradictory legacy failure"),
+          lambda v:v["inner-result.json"].update(primary_error="contradictory legacy failure"),
+          lambda v:v["host-result.json"].update(generated_output_preservation_complete=False),
+          lambda v:v["command.json"]["process_group_cleanup"]["remaining_nonrunning"].append(42),
+          lambda v:v["progress.json"].update(required_endpoint_names=[])]
+        for ordinal,change in enumerate(changes):
+            with self.subTest(ordinal=ordinal):
+                v=copy.deepcopy(values);change(v)
+                with self.assertRaises(ValueError):h.validate_selected_inputs(v,config)
+    def test_each_small_input_admission_failure_prevents_large_acquisition(self):
+        config,values=actual_small_metadata()
+        changes={
+          "host-result.json":lambda v:v["host-result.json"].update(native_complete=False),
+          "inner-result.json":lambda v:v["inner-result.json"].update(native_complete=False),
+          "command.json":lambda v:v["command.json"].update(returncode=7),
+          "progress.json":lambda v:v["progress.json"].update(observed_endpoint_names=[]),
+          "scope.json":lambda v:v["scope.json"].update(endpoint_names=[])}
+        for ordinal,(name,change)in enumerate(changes.items()):
+            with self.subTest(input=name):
+                v=copy.deepcopy(values);change(v);inputs=self.root/("admission-"+str(ordinal));inputs.mkdir();seen=[]
+                def download(n,p,root):
+                    self.assertNotEqual(n,"native-result.json","large report acquired before small-input admission")
+                    seen.append(n);path=root/n;path.write_bytes(q.encode(v[n]));return path
+                with mock.patch.object(h,"download",side_effect=download):
+                    with self.assertRaises(ValueError):h.acquire_selected_inputs(config,inputs)
+                self.assertEqual(seen,sorted(h.INPUT_NAMES-{"native-result.json"}))
+
 def main():
     head=h.source_gate("controls");stream=io.StringIO()
     suite=unittest.TestSuite([unittest.defaultTestLoader.loadTestsFromTestCase(base.FullReductionControls),
@@ -334,7 +393,7 @@ def main():
     result=unittest.TextTestRunner(stream=stream,verbosity=2).run(suite);raw=stream.getvalue();print(raw,end="")
     record=dict(status="PASS_SOURCE_ONLY_OBSTACLE_REDUCTION_CONTROLS"if result.wasSuccessful()else"FAIL_SOURCE_CONTROLS",
       source=head,tests_run=result.testsRun,failures=len(result.failures),errors=len(result.errors),skipped=len(result.skipped),
-      successful=result.wasSuccessful(),native_acquired=False,native_executed=False,actual_report_acquired=False,
+      successful=result.wasSuccessful(),native_acquired=False,native_executed=False,actual_report_acquired=False,actual_large_observation_report_acquired=False,actual_small_metadata_fixture_inputs=5,
       full_synthetic_census=dict(markers=434,endpoints=373,original_records=596),log_sha256=q.sha(raw.encode()))
     print("MAINCHIP_OBSTACLE_REDUCTION_CONTROLS "+json.dumps(record,sort_keys=True),flush=True)
     q.require(result.testsRun==h.EXPECTED_CONTROLS and result.wasSuccessful()and not result.skipped,"all exact host/core controls passed without skips")

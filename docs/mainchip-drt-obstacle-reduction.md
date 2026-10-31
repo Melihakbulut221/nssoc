@@ -31,7 +31,7 @@ artifact. The result is saved and publication attempted before the original
 failure is re-raised; a secondary save/publication failure never replaces it.
 
 The new combined checker retains all 37 qualified geometry controls unchanged
-and adds 27 transport, source-record, complete synthetic pipeline, resource and
+and adds 30 transport, source-record, complete synthetic pipeline, resource and
 failure-order controls. The complete disabled adapter at source
 17e4df4b4b5688b554105e56b03c7b0295b19d62 passed all 64 hosted controls in run
 41252769644, with zero failures, errors or skips. Full source-job and log-job
@@ -66,15 +66,51 @@ failure ordering. No test runs native design tools or acquires the real report.
 
 The current manual workflow exposes a separate, explicitly approved
 analysis-only job. It requires this exact source commit, the successful same-run
-64 controls and preserved source log, and an independently reserved empty
+67 controls and preserved source log, and an independently reserved empty
 public release pointing to the exact commit. The source-controls job explicitly
 uses MODE=controls even when the requested operation is analysis; no actual
 GitHub identity or branch environment is substituted.
 
 Only the analysis authority is enabled. Native execution and routing authority
 remain false, as do every physical, timing, full-PHY and root-cause acceptance
-flag. The 64 controls must qualify this activation source before any actual
+flag. The 67 controls must qualify this schema-corrected source before any actual
 analysis is dispatched. The analysis job retains all owned partial acquisitions
 and derived outputs in its always-run cloud artifact; the large original report
 and every native payload remain cloud-only. No actual reduction result is
 claimed by publishing this source.
+
+
+The first actual analysis, run 41253195469 at source
+210fc85c43753e23fb9ecc2e398a48d318d1f330, failed before any geometry
+reduction with KeyError('primary_error'). All six input streams had matched
+their exact original byte pins, including the complete 689,327,702-byte report.
+The failure is in the adapter's recreated host-success schema, not the original
+successful observation. Full failure publication and all three job logs are
+preserved at proof commit 3c9b1461317867d082f1d9213a9ceebbbc1d6d34,
+under docs/evidence/mainchip-drt-obstacle-reduction-terminal-41253195469
+(35 files / 357,747 bytes).
+
+The original writer at source 277f2382b18198e399ddeef1e7ab8f35aaf629c2
+sets native_complete=true for both host and inner successful records.
+scripts/mainchip_witness_engine_build_contract.py:finish_record emits
+primary_exception only on failure; the host/inner wrappers additionally emit
+error on their failed path. Successful records omit those failure fields.
+The adapter now checks those canonical fields explicitly, requires both
+native_complete flags, and refuses contradictory non-null legacy primary_error
+fields. It does not substitute a permissive default for the real failure field.
+
+All five original small metadata inputs (host, inner, command, progress and
+scope) are copied byte-for-byte to
+scripts/fixtures/mainchip-observer-41245373612/. Each file is protected by the
+source manifest and independently matched by the hosted checker to its existing
+immutable original input pin. These are real metadata fixtures, not recreated
+success dictionaries. The regression checks metadata admission only; it
+explicitly blocks the numerical reducer while reading those fixtures. The
+689 MB observation report and all native payloads are excluded.
+
+The five small metadata records are now downloaded, parsed and admitted before
+the large report is requested. Hosted refusal cases for each of the five
+records require zero native-result acquisition when admission fails. The
+unchanged 37 synthetic geometry controls remain independent. All 67 controls
+must pass on this source before a separately authorized actual analysis; no
+successful reduction is claimed from the prior failure or these fixtures.
