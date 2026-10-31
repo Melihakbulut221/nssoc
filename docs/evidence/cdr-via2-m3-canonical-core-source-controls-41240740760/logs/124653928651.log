@@ -1,0 +1,379 @@
+﻿2026-10-31T20:50:10.8426301Z Current runner version: '2.338.2'
+2026-10-31T20:50:10.8451401Z ##[group]Runner Image Provisioner
+2026-10-31T20:50:10.8452323Z Hosted Compute Agent
+2026-10-31T20:50:10.8452958Z Version: 20261021.618
+2026-10-31T20:50:10.8453815Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-31T20:50:10.8454698Z Build Date: 2026-10-21T00:45:21Z
+2026-10-31T20:50:10.8455418Z Worker ID: {2eab626d-ec78-4104-ad7f-09385b65a652}
+2026-10-31T20:50:10.8456133Z Region: eastus2
+2026-10-31T20:50:10.8456768Z Cloud: Azure
+2026-10-31T20:50:10.8457358Z ##[endgroup]
+2026-10-31T20:50:10.8458943Z ##[group]Operating System
+2026-10-31T20:50:10.8459598Z Ubuntu
+2026-10-31T20:50:10.8460109Z 24.04.5
+2026-10-31T20:50:10.8460699Z LTS
+2026-10-31T20:50:10.8461222Z ##[endgroup]
+2026-10-31T20:50:10.8461846Z ##[group]Runner Image
+2026-10-31T20:50:10.8462476Z Image: ubuntu-24.04
+2026-10-31T20:50:10.8463066Z Version: 20261025.353.1
+2026-10-31T20:50:10.8465020Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-31T20:50:10.8466774Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-10-31T20:50:10.8467819Z ##[endgroup]
+2026-10-31T20:50:10.8469457Z ##[group]GITHUB_TOKEN Permissions
+2026-10-31T20:50:10.8471571Z Actions: read
+2026-10-31T20:50:10.8472338Z Contents: read
+2026-10-31T20:50:10.8472942Z Metadata: read
+2026-10-31T20:50:10.8473513Z ##[endgroup]
+2026-10-31T20:50:10.8476335Z Secret source: Actions
+2026-10-31T20:50:10.8477320Z Cache mode: write
+2026-10-31T20:50:10.8478306Z Prepare workflow directory
+2026-10-31T20:50:10.8991424Z Prepare all required actions
+2026-10-31T20:50:10.9041146Z Getting action download info
+2026-10-31T20:50:11.1213002Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-10-31T20:50:11.2648952Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-31T20:50:11.4672801Z Complete job name: source-controls
+2026-10-31T20:50:11.5496029Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-10-31T20:50:11.5497113Z with:
+2026-10-31T20:50:11.5497601Z   ref: 5f483fb3c584a741875b915e12f62c87e8a61f68
+2026-10-31T20:50:11.5498207Z   persist-credentials: false
+2026-10-31T20:50:11.5498748Z   sparse-checkout-cone-mode: false
+2026-10-31T20:50:11.5499460Z   sparse-checkout: /scripts/cdr-via2-m3-canonical-core-pins.json
+
+2026-10-31T20:50:11.5500200Z   repository: Melihakbulut221/nssoc
+2026-10-31T20:50:11.5504205Z   token: ***
+2026-10-31T20:50:11.5504656Z   ssh-strict: true
+2026-10-31T20:50:11.5505096Z   ssh-user: git
+2026-10-31T20:50:11.5505521Z   clean: true
+2026-10-31T20:50:11.5505941Z   fetch-depth: 1
+2026-10-31T20:50:11.5506381Z   fetch-tags: false
+2026-10-31T20:50:11.5506834Z   show-progress: true
+2026-10-31T20:50:11.5507288Z   lfs: false
+2026-10-31T20:50:11.5507707Z   submodules: false
+2026-10-31T20:50:11.5508168Z   set-safe-directory: true
+2026-10-31T20:50:11.5508929Z env:
+2026-10-31T20:50:11.5509409Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T20:50:11.5510033Z   APPROVED_SOURCE: 5f483fb3c584a741875b915e12f62c87e8a61f68
+2026-10-31T20:50:11.5510670Z ##[endgroup]
+2026-10-31T20:50:11.9089624Z Syncing repository: Melihakbulut221/nssoc
+2026-10-31T20:50:11.9092673Z ##[group]Getting Git version info
+2026-10-31T20:50:11.9094198Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-31T20:50:11.9096325Z [command]/usr/bin/git version
+2026-10-31T20:50:11.9221971Z git version 2.56.0
+2026-10-31T20:50:11.9247320Z ##[endgroup]
+2026-10-31T20:50:11.9271935Z Temporarily overriding HOME='/home/runner/work/_temp/1d3c7c7d-3b77-4c12-a3f9-dcb92839437b' before making global git config changes
+2026-10-31T20:50:11.9275515Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-31T20:50:11.9281113Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-31T20:50:11.9369745Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-31T20:50:11.9379229Z ##[group]Initializing the repository
+2026-10-31T20:50:11.9386219Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-31T20:50:11.9539722Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-31T20:50:11.9542378Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-31T20:50:11.9546831Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-31T20:50:11.9549137Z hint: call:
+2026-10-31T20:50:11.9551007Z hint:
+2026-10-31T20:50:11.9552535Z hint: 	git config --global init.defaultBranch <name>
+2026-10-31T20:50:11.9555182Z hint:
+2026-10-31T20:50:11.9556688Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-31T20:50:11.9564056Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-31T20:50:11.9565971Z hint:
+2026-10-31T20:50:11.9567245Z hint: 	git branch -m <name>
+2026-10-31T20:50:11.9568693Z hint:
+2026-10-31T20:50:11.9570263Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-31T20:50:11.9572782Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-31T20:50:11.9578086Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-31T20:50:11.9641831Z ##[endgroup]
+2026-10-31T20:50:11.9642725Z ##[group]Disabling automatic garbage collection
+2026-10-31T20:50:11.9647442Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-31T20:50:11.9684495Z ##[endgroup]
+2026-10-31T20:50:11.9686047Z ##[group]Setting up auth
+2026-10-31T20:50:11.9703715Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T20:50:11.9755816Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T20:50:12.0227213Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T20:50:12.0270915Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T20:50:12.0514146Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-31T20:50:12.0565591Z ##[endgroup]
+2026-10-31T20:50:12.0567314Z ##[group]Fetching the repository
+2026-10-31T20:50:12.0582556Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --filter=blob:none --depth=1 origin 5f483fb3c584a741875b915e12f62c87e8a61f68
+2026-10-31T20:50:12.3306629Z From https://github.com/Melihakbulut221/nssoc
+2026-10-31T20:50:12.3309701Z  * branch            5f483fb3c584a741875b915e12f62c87e8a61f68 -> FETCH_HEAD
+2026-10-31T20:50:12.3316177Z ##[endgroup]
+2026-10-31T20:50:12.3318990Z ##[group]Determining the checkout info
+2026-10-31T20:50:12.3322153Z ##[endgroup]
+2026-10-31T20:50:12.3325155Z ##[group]Setting up sparse checkout
+2026-10-31T20:50:12.3327473Z [command]/usr/bin/git config core.sparseCheckout true
+2026-10-31T20:50:12.3372697Z [command]/usr/bin/git rev-parse --git-path info/sparse-checkout
+2026-10-31T20:50:12.3406472Z .git/info/sparse-checkout
+2026-10-31T20:50:12.3416267Z ##[endgroup]
+2026-10-31T20:50:12.3418737Z ##[group]Checking out the ref
+2026-10-31T20:50:12.3422778Z [command]/usr/bin/git checkout --progress --force 5f483fb3c584a741875b915e12f62c87e8a61f68
+2026-10-31T20:50:12.7868580Z Note: switching to '5f483fb3c584a741875b915e12f62c87e8a61f68'.
+2026-10-31T20:50:12.7870015Z 
+2026-10-31T20:50:12.7870737Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-31T20:50:12.7872543Z changes and commit them, and you can discard any commits you make in this
+2026-10-31T20:50:12.7875076Z state without impacting any branches by switching back to a branch.
+2026-10-31T20:50:12.7876661Z 
+2026-10-31T20:50:12.7877669Z If you want to create a new branch to retain commits you create, you may
+2026-10-31T20:50:12.7880065Z do so (now or later) by using -c with the switch command. Example:
+2026-10-31T20:50:12.7881282Z 
+2026-10-31T20:50:12.7881848Z   git switch -c <new-branch-name>
+2026-10-31T20:50:12.7882721Z 
+2026-10-31T20:50:12.7883281Z Or undo this operation with:
+2026-10-31T20:50:12.7884256Z 
+2026-10-31T20:50:12.7884775Z   git switch -
+2026-10-31T20:50:12.7885421Z 
+2026-10-31T20:50:12.7886651Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-31T20:50:12.7888218Z 
+2026-10-31T20:50:12.7889659Z HEAD is now at 5f483fb Add candidate-bound canonical view core and hosted controls [skip ci]
+2026-10-31T20:50:12.7896105Z ##[endgroup]
+2026-10-31T20:50:12.7950519Z [command]/usr/bin/git log -1 --format=%H
+2026-10-31T20:50:12.7994520Z 5f483fb3c584a741875b915e12f62c87e8a61f68
+2026-10-31T20:50:12.8004924Z ##[group]Removing auth
+2026-10-31T20:50:12.8008585Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T20:50:12.8051093Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T20:50:12.8364845Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T20:50:12.8398837Z http.https://github.com/.extraheader
+2026-10-31T20:50:12.8407227Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-31T20:50:12.8456021Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T20:50:12.8758870Z ##[endgroup]
+2026-10-31T20:50:12.9030045Z ##[group]Run python3 -B - <<'PY'
+2026-10-31T20:50:12.9031400Z [36;1mpython3 -B - <<'PY'[0m
+2026-10-31T20:50:12.9032636Z [36;1mimport json,os,subprocess[0m
+2026-10-31T20:50:12.9034249Z [36;1mfrom pathlib import Path[0m
+2026-10-31T20:50:12.9035879Z [36;1mname='scripts/cdr-via2-m3-canonical-core-pins.json'[0m
+2026-10-31T20:50:12.9037670Z [36;1mmanifest=json.loads(Path(name).read_bytes())[0m
+2026-10-31T20:50:12.9039488Z [36;1massert manifest['native_execution_authorized'] is False[0m
+2026-10-31T20:50:12.9041508Z [36;1massert os.environ['APPROVED_SOURCE']==os.environ['GITHUB_SHA'][0m
+2026-10-31T20:50:12.9043417Z [36;1mnames=sorted(set(manifest['files'])|{name})[0m
+2026-10-31T20:50:12.9046190Z [36;1massert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)[0m
+2026-10-31T20:50:12.9049949Z [36;1msubprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)[0m
+2026-10-31T20:50:12.9052470Z [36;1mPY[0m
+2026-10-31T20:50:12.9078213Z shell: /usr/bin/bash -e {0}
+2026-10-31T20:50:12.9079341Z env:
+2026-10-31T20:50:12.9080239Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T20:50:12.9081629Z   APPROVED_SOURCE: 5f483fb3c584a741875b915e12f62c87e8a61f68
+2026-10-31T20:50:12.9083123Z ##[endgroup]
+2026-10-31T20:50:13.1576888Z ##[group]Run sudo apt-get update
+2026-10-31T20:50:13.1578145Z [36;1msudo apt-get update[0m
+2026-10-31T20:50:13.1579779Z [36;1msudo apt-get install --no-install-recommends -y libfuse2 tcl8.6 uidmap[0m
+2026-10-31T20:50:13.1584138Z [36;1mcurl --fail --location --retry 2 --output "$RUNNER_TEMP/current-tail-physical.AppImage" https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage[0m
+2026-10-31T20:50:13.1587680Z [36;1mpython3 -B - <<'PY'[0m
+2026-10-31T20:50:13.1588796Z [36;1mimport hashlib,os[0m
+2026-10-31T20:50:13.1589919Z [36;1mfrom pathlib import Path[0m
+2026-10-31T20:50:13.1591746Z [36;1mpath=Path(os.environ['RUNNER_TEMP'])/'current-tail-physical.AppImage'[0m
+2026-10-31T20:50:13.1595245Z [36;1mwith path.open('rb')as f:assert hashlib.file_digest(f,'sha256').hexdigest()=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'[0m
+2026-10-31T20:50:13.1598192Z [36;1mpath.chmod(0o755)[0m
+2026-10-31T20:50:13.1599264Z [36;1mPY[0m
+2026-10-31T20:50:13.1620934Z shell: /usr/bin/bash -e {0}
+2026-10-31T20:50:13.1621972Z env:
+2026-10-31T20:50:13.1695006Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T20:50:13.1697336Z   APPROVED_SOURCE: 5f483fb3c584a741875b915e12f62c87e8a61f68
+2026-10-31T20:50:13.1698835Z ##[endgroup]
+2026-10-31T20:50:13.2546116Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-31T20:50:13.2821348Z Get:6 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2026-10-31T20:50:13.3606140Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2026-10-31T20:50:13.3619629Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2026-10-31T20:50:13.3652191Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+2026-10-31T20:50:13.3670833Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2026-10-31T20:50:13.3746737Z Get:7 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [617 kB]
+2026-10-31T20:50:13.4025806Z Get:8 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [682 kB]
+2026-10-31T20:50:13.4883569Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1408 kB]
+2026-10-31T20:50:13.4957007Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [311 kB]
+2026-10-31T20:50:13.4976802Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1707 kB]
+2026-10-31T20:50:13.5070861Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [343 kB]
+2026-10-31T20:50:13.5095519Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1813 kB]
+2026-10-31T20:50:13.5174489Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [412 kB]
+2026-10-31T20:50:13.5198965Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/multiverse Translation-en [14.3 kB]
+2026-10-31T20:50:13.6006397Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1146 kB]
+2026-10-31T20:50:13.6061553Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [231 kB]
+2026-10-31T20:50:13.6077271Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1223 kB]
+2026-10-31T20:50:13.6572228Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [246 kB]
+2026-10-31T20:50:16.6681115Z Fetched 10.5 MB in 1s (9453 kB/s)
+2026-10-31T20:50:17.7444913Z Reading package lists...
+2026-10-31T20:50:17.7828063Z Reading package lists...
+2026-10-31T20:50:18.0029486Z Building dependency tree...
+2026-10-31T20:50:18.0038048Z Reading state information...
+2026-10-31T20:50:18.1746085Z tcl8.6 is already the newest version (8.6.14+dfsg-1build1).
+2026-10-31T20:50:18.1747139Z tcl8.6 set to manually installed.
+2026-10-31T20:50:18.1747968Z uidmap is already the newest version (1:4.13+dfsg1-4ubuntu3.2).
+2026-10-31T20:50:18.1749552Z uidmap set to manually installed.
+2026-10-31T20:50:18.1750246Z The following NEW packages will be installed:
+2026-10-31T20:50:18.1751551Z   libfuse2t64
+2026-10-31T20:50:18.1949283Z 0 upgraded, 1 newly installed, 0 to remove and 6 not upgraded.
+2026-10-31T20:50:18.1949748Z Need to get 89.9 kB of archives.
+2026-10-31T20:50:18.1950116Z After this operation, 326 kB of additional disk space will be used.
+2026-10-31T20:50:18.1950559Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-31T20:50:18.2339921Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 libfuse2t64 amd64 2.9.9-8.1build1 [89.9 kB]
+2026-10-31T20:50:18.5094512Z Fetched 89.9 kB in 0s (1680 kB/s)
+2026-10-31T20:50:18.5351567Z Selecting previously unselected package libfuse2t64:amd64.
+2026-10-31T20:50:18.5714174Z (Reading database ... 
+2026-10-31T20:50:18.5715138Z (Reading database ... 5%
+2026-10-31T20:50:18.5715691Z (Reading database ... 10%
+2026-10-31T20:50:18.5716226Z (Reading database ... 15%
+2026-10-31T20:50:18.5716722Z (Reading database ... 20%
+2026-10-31T20:50:18.5717255Z (Reading database ... 25%
+2026-10-31T20:50:18.5717846Z (Reading database ... 30%
+2026-10-31T20:50:18.5718442Z (Reading database ... 35%
+2026-10-31T20:50:18.5718863Z (Reading database ... 40%
+2026-10-31T20:50:18.5719271Z (Reading database ... 45%
+2026-10-31T20:50:18.5719663Z (Reading database ... 50%
+2026-10-31T20:50:18.5771062Z (Reading database ... 55%
+2026-10-31T20:50:18.7453424Z (Reading database ... 60%
+2026-10-31T20:50:18.9019442Z (Reading database ... 65%
+2026-10-31T20:50:19.1427907Z (Reading database ... 70%
+2026-10-31T20:50:19.3039769Z (Reading database ... 75%
+2026-10-31T20:50:19.4955945Z (Reading database ... 80%
+2026-10-31T20:50:19.6347696Z (Reading database ... 85%
+2026-10-31T20:50:19.7913845Z (Reading database ... 90%
+2026-10-31T20:50:19.9445988Z (Reading database ... 95%
+2026-10-31T20:50:19.9446372Z (Reading database ... 100%
+2026-10-31T20:50:19.9446821Z (Reading database ... 215504 files and directories currently installed.)
+2026-10-31T20:50:19.9499290Z Preparing to unpack .../libfuse2t64_2.9.9-8.1build1_amd64.deb ...
+2026-10-31T20:50:19.9537607Z Unpacking libfuse2t64:amd64 (2.9.9-8.1build1) ...
+2026-10-31T20:50:20.0039941Z Setting up libfuse2t64:amd64 (2.9.9-8.1build1) ...
+2026-10-31T20:50:20.0068442Z Processing triggers for libc-bin (2.39-0ubuntu8.9) ...
+2026-10-31T20:50:20.7760474Z 
+2026-10-31T20:50:20.7761074Z Running kernel seems to be up-to-date.
+2026-10-31T20:50:20.7761378Z 
+2026-10-31T20:50:20.7761515Z No services need to be restarted.
+2026-10-31T20:50:20.7761748Z 
+2026-10-31T20:50:20.7761884Z No containers need to be restarted.
+2026-10-31T20:50:20.7762118Z 
+2026-10-31T20:50:20.7762283Z No user sessions are running outdated binaries.
+2026-10-31T20:50:20.7762575Z 
+2026-10-31T20:50:20.7762832Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-10-31T20:50:21.6686892Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-10-31T20:50:21.6687875Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-10-31T20:50:21.6688389Z 
+2026-10-31T20:50:21.8297240Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-10-31T20:50:21.8298092Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-10-31T20:50:22.1108146Z 
+2026-10-31T20:50:23.1128511Z   5 1333M    5 68.0M    0     0   153M      0  0:00:08 --:--:--  0:00:08  153M
+2026-10-31T20:50:24.1126828Z  18 1333M   18  240M    0     0   166M      0  0:00:08  0:00:01  0:00:07  172M
+2026-10-31T20:50:25.1114384Z  32 1333M   32  436M    0     0   178M      0  0:00:07  0:00:02  0:00:05  184M
+2026-10-31T20:50:26.1107812Z  47 1333M   47  631M    0     0   183M      0  0:00:07  0:00:03  0:00:04  187M
+2026-10-31T20:50:27.1107244Z  60 1333M   60  801M    0     0   180M      0  0:00:07  0:00:04  0:00:03  183M
+2026-10-31T20:50:28.1107842Z  77 1333M   77 1031M    0     0   189M      0  0:00:07  0:00:05  0:00:02  192M
+2026-10-31T20:50:28.5213805Z  93 1333M   93 1248M    0     0   193M      0  0:00:06  0:00:06 --:--:--  201M
+2026-10-31T20:50:28.5214574Z 100 1333M  100 1333M    0     0   194M      0  0:00:06  0:00:06 --:--:--  203M
+2026-10-31T20:50:29.9778271Z ##[group]Run python3 -B - <<'PY'
+2026-10-31T20:50:29.9778642Z [36;1mpython3 -B - <<'PY'[0m
+2026-10-31T20:50:29.9778929Z [36;1mimport hashlib,json,os,re,subprocess[0m
+2026-10-31T20:50:29.9779243Z [36;1mfrom pathlib import Path[0m
+2026-10-31T20:50:29.9779490Z [36;1me=os.environ[0m
+2026-10-31T20:50:29.9779875Z [36;1massert e['GITHUB_ACTIONS']=='true' and e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'[0m
+2026-10-31T20:50:29.9780561Z [36;1massert e['GITHUB_REF']=='refs/heads/codex/cdr-via2-m3-canonical-view-core' and e['GITHUB_RUN_ATTEMPT']=='1'[0m
+2026-10-31T20:50:29.9781311Z [36;1massert re.fullmatch('[1-9][0-9]*',e['GITHUB_RUN_ID']) and re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA'])[0m
+2026-10-31T20:50:29.9782040Z [36;1mapp=Path(e['RUNNER_TEMP'])/'current-tail-physical.AppImage'[0m
+2026-10-31T20:50:29.9782691Z [36;1massert app==Path('/home/runner/work/_temp/current-tail-physical.AppImage') and app.is_file() and not app.is_symlink()[0m
+2026-10-31T20:50:29.9783411Z [36;1mwith app.open('rb')as f:digest=hashlib.file_digest(f,'sha256').hexdigest()[0m
+2026-10-31T20:50:29.9784292Z [36;1massert digest=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'[0m
+2026-10-31T20:50:29.9784864Z [36;1mkey=Path('/proc/sys/kernel/apparmor_restrict_unprivileged_userns')[0m
+2026-10-31T20:50:29.9785261Z [36;1mbefore=key.read_text().strip()[0m
+2026-10-31T20:50:29.9785591Z [36;1mname='nssoc-cdr-runtime-'+e['GITHUB_RUN_ID']+'-1'[0m
+2026-10-31T20:50:29.9785934Z [36;1mtarget=Path('/etc/apparmor.d')/name[0m
+2026-10-31T20:50:29.9786293Z [36;1massert not target.exists() and not target.is_symlink()[0m
+2026-10-31T20:50:29.9786893Z [36;1mpolicy='abi <abi/4.0>,\ninclude <tunables/global>\nprofile '+name+' "'+str(app)+'" flags=(unconfined) {\n  userns,\n}\n'[0m
+2026-10-31T20:50:29.9787664Z [36;1minstalled=subprocess.run(['sudo','tee',str(target)],input=policy.encode(),capture_output=True,check=True)[0m
+2026-10-31T20:50:29.9788302Z [36;1massert installed.stdout==policy.encode() and target.read_text()==policy[0m
+2026-10-31T20:50:29.9788919Z [36;1mloaded=subprocess.run(['sudo','apparmor_parser','-a',str(target)],capture_output=True,check=True)[0m
+2026-10-31T20:50:29.9789665Z [36;1mprofiles=subprocess.check_output(['sudo','cat','/sys/kernel/security/apparmor/profiles'],text=True).splitlines()[0m
+2026-10-31T20:50:29.9790313Z [36;1mactive=[line for line in profiles if line.startswith(name+' (')][0m
+2026-10-31T20:50:29.9790754Z [36;1massert len(active)==1 and key.read_text().strip()==before[0m
+2026-10-31T20:50:29.9791221Z [36;1mproof=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,[0m
+2026-10-31T20:50:29.9791772Z [36;1m  appimage=str(app),appimage_sha256=digest,profile=str(target),profile_text=policy,[0m
+2026-10-31T20:50:29.9792374Z [36;1m  profile_sha256=hashlib.sha256(policy.encode()).hexdigest(),loaded=True,active=active,[0m
+2026-10-31T20:50:29.9793036Z [36;1m  restriction_before=before,restriction_after=key.read_text().strip(),global_policy_changed=False,[0m
+2026-10-31T20:50:29.9793793Z [36;1m  parser_stdout=loaded.stdout.decode(),parser_stderr=loaded.stderr.decode(),[0m
+2026-10-31T20:50:29.9794433Z [36;1m  native_geometry_executed=False,scope='Exact pinned executable on this ephemeral GitHub runner only')[0m
+2026-10-31T20:50:29.9795147Z [36;1mPath('current-cdr-runtime-policy.json').write_text(json.dumps(proof,sort_keys=True,indent=2)+'\n')[0m
+2026-10-31T20:50:29.9795677Z [36;1mprint(json.dumps(proof,sort_keys=True))[0m
+2026-10-31T20:50:29.9795965Z [36;1mPY[0m
+2026-10-31T20:50:29.9819422Z shell: /usr/bin/bash -e {0}
+2026-10-31T20:50:29.9819674Z env:
+2026-10-31T20:50:29.9819878Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T20:50:29.9820198Z   APPROVED_SOURCE: 5f483fb3c584a741875b915e12f62c87e8a61f68
+2026-10-31T20:50:29.9820522Z ##[endgroup]
+2026-10-31T20:50:31.4640898Z {"active": ["nssoc-cdr-runtime-41240740760-1 (unconfined)"], "appimage": "/home/runner/work/_temp/current-tail-physical.AppImage", "appimage_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466", "attempt": 1, "global_policy_changed": false, "loaded": true, "native_geometry_executed": false, "parser_stderr": "", "parser_stdout": "", "profile": "/etc/apparmor.d/nssoc-cdr-runtime-41240740760-1", "profile_sha256": "96678f54df3d8d41dc646a691a3926269361e3e9c3262305589d26e294ba016f", "profile_text": "abi <abi/4.0>,\ninclude <tunables/global>\nprofile nssoc-cdr-runtime-41240740760-1 \"/home/runner/work/_temp/current-tail-physical.AppImage\" flags=(unconfined) {\n  userns,\n}\n", "restriction_after": "1", "restriction_before": "1", "run_id": 41240740760, "scope": "Exact pinned executable on this ephemeral GitHub runner only", "source": "5f483fb3c584a741875b915e12f62c87e8a61f68"}
+2026-10-31T20:50:31.4726282Z ##[group]Run "$RUNNER_TEMP/current-tail-physical.AppImage" python3 -B scripts/check_cdr_via2_m3_canonical_core.py > canonical-core.stdout 2> canonical-core.stderr
+2026-10-31T20:50:31.4727471Z [36;1m"$RUNNER_TEMP/current-tail-physical.AppImage" python3 -B scripts/check_cdr_via2_m3_canonical_core.py > canonical-core.stdout 2> canonical-core.stderr[0m
+2026-10-31T20:50:31.4747746Z shell: /usr/bin/bash -e {0}
+2026-10-31T20:50:31.4748013Z env:
+2026-10-31T20:50:31.4748219Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T20:50:31.4748527Z   APPROVED_SOURCE: 5f483fb3c584a741875b915e12f62c87e8a61f68
+2026-10-31T20:50:31.4748851Z ##[endgroup]
+2026-10-31T20:50:34.4193081Z ##[group]Run python3 -B - <<'PY'
+2026-10-31T20:50:34.4195382Z [36;1mpython3 -B - <<'PY'[0m
+2026-10-31T20:50:34.4195850Z [36;1mimport base64,hashlib,json[0m
+2026-10-31T20:50:34.4196329Z [36;1mfrom pathlib import Path[0m
+2026-10-31T20:50:34.4197131Z [36;1mnames=['canonical-core.stdout','canonical-core.stderr','current-cdr-runtime-policy.json',[0m
+2026-10-31T20:50:34.4198216Z [36;1m  'hw/soc/out/cdr-via2-m3-canonical-core-source/source-context.json',[0m
+2026-10-31T20:50:34.4199177Z [36;1m  'hw/soc/out/cdr-via2-m3-canonical-core-source/source-controls.json',[0m
+2026-10-31T20:50:34.4200073Z [36;1m  'hw/soc/out/cdr-via2-m3-canonical-core-source/source-failure.json'][0m
+2026-10-31T20:50:34.4200876Z [36;1mfor name in names:[0m
+2026-10-31T20:50:34.4201278Z [36;1m    p=Path(name)[0m
+2026-10-31T20:50:34.4201694Z [36;1m    if not p.is_file():continue[0m
+2026-10-31T20:50:34.4202175Z [36;1m    assert not p.is_symlink()[0m
+2026-10-31T20:50:34.4203029Z [36;1m    b=p.read_bytes();b.decode('utf-8','strict');chunks=[b[i:i+24000]for i in range(0,len(b),24000)]or[b''][0m
+2026-10-31T20:50:34.4204713Z [36;1m    print('CANONICAL_CORE_INDEX '+json.dumps(dict(path=name,bytes=len(b),sha256=hashlib.sha256(b).hexdigest(),chunks=len(chunks)),sort_keys=True))[0m
+2026-10-31T20:50:34.4206544Z [36;1m    for i,part in enumerate(chunks):print('CANONICAL_CORE_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(part).decode()),sort_keys=True))[0m
+2026-10-31T20:50:34.4207710Z [36;1mPY[0m
+2026-10-31T20:50:34.4233494Z shell: /usr/bin/bash -e {0}
+2026-10-31T20:50:34.4234112Z env:
+2026-10-31T20:50:34.4234450Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T20:50:34.4234978Z   APPROVED_SOURCE: 5f483fb3c584a741875b915e12f62c87e8a61f68
+2026-10-31T20:50:34.4235534Z ##[endgroup]
+2026-10-31T20:50:34.4546199Z CANONICAL_CORE_INDEX {"bytes": 9323, "chunks": 1, "path": "canonical-core.stdout", "sha256": "d59882cdff23691b2f9635adb4f7b53a450018ff3f33622561bd03f685966719"}
+2026-10-31T20:50:34.5869110Z CANONICAL_CORE_CHUNK {"base64": "eyJjb250ZXh0IjogeyJhdHRlbXB0IjogMSwgImpvYiI6ICJzb3VyY2UtY29udHJvbHMiLCAibWFuaWZlc3Rfc2hhMjU2IjogIjc5YzZkZmIyNmRhYmU3NDJkMDU5M2EzYWMyNTRiYmZkMTZlNjA4YmViMDFmNzZmN2IxZGRiMDFjZjM5Y2E3MWYiLCAicnVuX2lkIjogNDEyNDA3NDA3NjAsICJzb3VyY2UiOiAiNWY0ODNmYjNjNTg0YTc0MTg3NWI5MTVlMTJmNjJjODdlOGE2MWY2OCJ9LCAiY29udHJvbF9jb3VudCI6IDUzLCAiY29udHJvbHMiOiBbeyJjaGVja3NfYmVmb3JlX3JldHVybl9pZGVudGljYWwiOiB0cnVlLCAiaWRlbnRpdHlfZnVuY3Rpb25zIjogNywgIm5hbWUiOiAiZnJvemVuX2lkZW50aXR5X2FuZF9hbmNob3JfZGVmaW5pdGlvbnMiLCAibm9ybWFsaXphdGlvbl9mdW5jdGlvbnMiOiA0LCAic2NvcGUiOiAiZXhhY3Qgc291cmNlL0FTVCBzY29wZSJ9LCB7Im5hbWUiOiAidGhyZWVfaGVscGVyX2Rlcml2YXRpb25zIiwgInJlY29yZHMiOiB7ImNoZWNrX3dpZHRoX3BhcmVudF9nZW9tZXRyeS5weSI6IHsiY2hhbmdlcyI6IFt7ImFmdGVyIjogIm5zc29jX2Nkcl9wZDUwMF9yZXNpc3Rvcl92NTkiLCAiYmVmb3JlIjogIm5zc29jX2Nkcl9wZDUwMF9hY3RpdmVfaW5wdXRfdjU3IiwgImNvdW50IjogMn1dLCAiZXhlY3V0aW9uX3Njb3BlIjogIk9ubHkgZnJvemVuIG5hdGl2ZS9yZWNvdmVyIGRlZmluaXRpb25zOyB1bnVzZWQgaGlzdG9yaWNhbCBtYWluL2FkbWlzc2lvbiBhbmQgaW1wb3J0cyBhcmUgbm90IGV4ZWN1dGVkLiIsICJnZW5lcmF0ZWRfcGluIjogeyJieXRlcyI6IDUwNjEsICJzaGEyNTYiOiAiODJmYmY1ZWI1NzYxMGVkY2YxMTI2ZTllMWQ4MmMxNGJlN2NmNTkyOTFkNzEwYTIwZGNiNDQ0NWVmZDU0YjkyZSJ9LCAic291cmNlIjogInNjcmlwdHMvY2hlY2tfY2RyX3NhbXBsZXJfYWN0aXZlX2lucHV0X3Y1N19wYXJlbnRfZ2VvbWV0cnkucHkiLCAic291cmNlX3BpbiI6IHsiYnl0ZXMiOiA1MDY5LCAic2hhMjU2IjogIjg0YjliYmY1MDdmYTFkNmRmYzJlODU1NzYxOTdjYmZjYTFlY2UwNWVjNTMwYzNlMTc3MDkwYjg4ZmIyNTk1NDIifX0sICJ3aWR0aF9wbGFuZXMucHkiOiB7ImNoYW5nZXMiOiBbeyJhZnRlciI6ICJuc3NvY19jZHJfcGQ1MDBfcmVzaXN0b3JfdjU5IiwgImJlZm9yZSI6ICJuc3NvY19jZHJfcGQ1MDBfYWN0aXZlX2lucHV0X3Y1NyIsICJjb3VudCI6IDJ9LCB7ImFmdGVyIjogImZyb20gY2hlY2tfd2lkdGhfcGFyZW50X2dlb21ldHJ5IGltcG9ydCBjaGVjayIsICJiZWZvcmUiOiAiZnJvbSBjaGVja19jZHJfc2FtcGxlcl9hY3RpdmVfaW5wdXRfdjU3X3BhcmVudF9nZW9tZXRyeSBpbXBvcnQgY2hlY2siLCAiY291bnQiOiAxfV0sICJleGVjdXRpb25fc2NvcGUiOiAiT25seSBmcm96ZW4gbmF0aXZlL3JlY292ZXIgZGVmaW5pdGlvbnM7IHVudXNlZCBoaXN0b3JpY2FsIG1haW4vYWRtaXNzaW9uIGFuZCBpbXBvcnRzIGFyZSBub3QgZXhlY3V0ZWQuIiwgImdlbmVyYXRlZF9waW4iOiB7ImJ5dGVzIjogMTQ4ODAsICJzaGEyNTYiOiAiMDQ0NTliYmY4ZjFmNzA0ZmRjM2NmNTNjYjU5ZDdmYTZjOWU0ZGVmMmQ0YmFmYzE3MTU1MjZiNGEyZTdiZTU4MCJ9LCAic291cmNlIjogInNjcmlwdHMvY2xvdWRfY2RyX3NhbXBsZXJfYWN0aXZlX2lucHV0X3Y1N19wbGFuZXMucHkiLCAic291cmNlX3BpbiI6IHsiYnl0ZXMiOiAxNDkxMSwgInNoYTI1NiI6ICI4MTVjYjE2YjIyYzQ4MDAzZWJiNmYwNjJkY2QzYTg1ZGNhZjVhMmUyMmUyNDk2NDE5OTFhMWZiYTYyMGQ4YzYyIn19LCAid2lkdGhfc291cmNlX3BpbnMucHkiOiB7ImNoYW5nZXMiOiBbeyJhZnRlciI6ICJuc3NvY19jZHJfcGQ1MDBfcmVzaXN0b3JfdjU5IiwgImJlZm9yZSI6ICJuc3NvY19jZHJfcGQ1MDBfYWN0aXZlX2lucHV0X3Y1NyIsICJjb3VudCI6IDF9XSwgImV4ZWN1dGlvbl9zY29wZSI6ICJPbmx5IGZyb3plbiBuYXRpdmUvcmVjb3ZlciBkZWZpbml0aW9uczsgdW51c2VkIGhpc3RvcmljYWwgbWFpbi9hZG1pc3Npb24gYW5kIGltcG9ydHMgYXJlIG5vdCBleGVjdXRlZC4iLCAiZ2VuZXJhdGVkX3BpbiI6IHsiYnl0ZXMiOiAxMjcyNiwgInNoYTI1NiI6ICIyOWI5MmYzYWUyNzNiM2Y1YmY2ZjBmOWFlNGIxNDRjMzI1N2I3M2JmMzgzMDc1MDBjMjdmODg1M2QwMGQ5MGVhIn0sICJzb3VyY2UiOiAic2NyaXB0cy9jbG91ZF9jZHJfc2FtcGxlcl9hY3RpdmVfaW5wdXRfdjU3X3dpcmVfaW5wdXRzLnB5IiwgInNvdXJjZV9waW4iOiB7ImJ5dGVzIjogMTI3MzAsICJzaGEyNTYiOiAiMjI4YTFiZTkxNjQ4ZDVlM2E3YTVkODkzN2IxNDczODM3NzQwM2FlZmJmNjE3MjgwYWY3ZmE2YjQ5NGQzZDMwZiJ9fX0sICJzY29wZSI6ICJleGFjdCBzb3VyY2Ugc3Vic3RpdHV0aW9uIn0sIHsibmFtZSI6ICJkZWZpbml0aW9uX29ubHlfbW9kdWxlX3NpZGVfZWZmZWN0X2V4Y2x1ZGVkIiwgInNjb3BlIjogInN5bnRoZXRpYyBzb3VyY2UifSwgeyJlcnJvciI6ICJleGFjdCBkZWZpbml0aW9uIGNlbnN1cyIsICJuYW1lIjogIm1pc3NpbmdfZGVmaW5pdGlvbiIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7ImVycm9yIjogImV4YWN0IGRlZmluaXRpb24gY2Vuc3VzIiwgIm5hbWUiOiAiZHVwbGljYXRlX2RlZmluaXRpb24iLCAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwifSwgeyJlcnJvciI6ICJubyBkZWZpbml0aW9uLXRpbWUgc2lkZSBlZmZlY3RzIiwgIm5hbWUiOiAiZGVjb3JhdG9yX3NpZGVfZWZmZWN0IiwgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIn0sIHsiZXJyb3IiOiAibm8gZGVmaW5pdGlvbi10aW1lIHNpZGUgZWZmZWN0cyIsICJuYW1lIjogImRlZmF1bHRfc2lkZV9lZmZlY3QiLCAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwifSwgeyJlcnJvciI6ICJubyBldmFsdWF0ZWQgYW5ub3RhdGlvbnMiLCAibmFtZSI6ICJhbm5vdGF0aW9uX3NpZGVfZWZmZWN0IiwgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIn0sIHsiZXJyb3IiOiAiaW1tdXRhYmxlIGNvbXBsZXRlIGRlZmluaXRpb24gc291cmNlOiBzY3JpcHRzL2Nkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eV9uYXRpdmUucHkiLCAibmFtZSI6ICJjaGFuZ2VkX2Zyb3plbl9pZGVudGl0eV9zb3VyY2UiLCAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwifSwgeyJjb21wb25lbnRzIjogOSwgIm5hbWUiOiAiZHluYW1pY19ncmFwaF83XzMiLCAibmF0aXZlX25ldHMiOiAxMiwgInNjb3BlIjogInN5bnRoZXRpYyBjb21wbGV0ZSBncmFwaCJ9LCB7ImNvbXBvbmVudHMiOiAxMTMsICJuYW1lIjogImR5bmFtaWNfZ3JhcGhfMTExXzAiLCAibmF0aXZlX25ldHMiOiAxMTMsICJzY29wZSI6ICJzeW50aGV0aWMgY29tcGxldGUgZ3JhcGgifSwgeyJjb21wb25lbnRzIjogMTE2LCAibmFtZSI6ICJkeW5hbWljX2dyYXBoXzExNF8xMjYiLCAibmF0aXZlX25ldHMiOiAyNDIsICJzY29wZSI6ICJzeW50aGV0aWMgY29tcGxldGUgZ3JhcGgifSwgeyJlcnJvciI6ICJhY3R1YWwgY29uZHVjdG9yLWNvbXBvbmVudCBjZW5zdXMiLCAibmFtZSI6ICJzdGFsZTExM19jb21wb25lbnRzIiwgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIn0sIHsiZXJyb3IiOiAiYWN0dWFsIG5hdGl2ZS1uZXQgY2Vuc3VzIiwgIm5hbWUiOiAic3RhbGUyMzhfbmV0cyIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7ImVycm9yIjogImFjdHVhbCB1bmlxdWUgZWxlY3RyaWNhbCBwYXJ0aXRpb25zIiwgIm5hbWUiOiAic3RhbGUxMTRfZWxlY3RyaWNhbCIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7ImVycm9yIjogImNvbXBsZXRlIHRlcm1pbmFsIGFuZCBwb3J0IGlkZW50aXR5IGNvdmVyYWdlIiwgIm5hbWUiOiAibWlzc2luZ190ZXJtaW5hbCIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7ImVycm9yIjogInRlcm1pbmFsIGluIHR3byBwYXJ0aXRpb25zIiwgIm5hbWUiOiAiZHVwbGljYXRlX3Rlcm1pbmFsIiwgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIn0sIHsiZXJyb3IiOiAidW5pcXVlIG5hdGl2ZSBjbHVzdGVyIiwgIm5hbWUiOiAiZHVwbGljYXRlX2NsdXN0ZXIiLCAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwifSwgeyJlcnJvciI6ICJhY3R1YWwgbmF0aXZlIGNsdXN0ZXIiLCAibmFtZSI6ICJvcnBoYW5fY29tcG9uZW50IiwgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIn0sIHsiZXJyb3IiOiAiY29tcG9uZW50IGlkZW50aXR5IGFuZCBuYXRpdmUgc3BlbGxpbmciLCAibmFtZSI6ICJ3cm9uZ19uYXRpdmVfbmFtZSIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7ImVycm9yIjogImFjdHVhbCBjb25kdWN0b3ItY29tcG9uZW50IGNlbnN1cyIsICJuYW1lIjogIm1pc3NpbmdfY29tcG9uZW50IiwgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIn0sIHsiZXJyb3IiOiAibm8gc3BsaXQgbmF0aXZlIGNvbmR1Y3RvciIsICJuYW1lIjogInNwbGl0X25hdGl2ZV9wYXJ0aXRpb24iLCAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwifSwgeyJlcnJvciI6ICJlbXB0eSBuYXRpdmUgcGFydGl0aW9uIG93bnMgbm8gbWF0ZXJpYWwiLCAibmFtZSI6ICJlbXB0eV9wYXJ0aXRpb25fbWV0YWwiLCAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwifSwgeyJlcnJvciI6ICJwdWJsaWMgcG9ydCBpbiB0d28gcGFydGl0aW9ucyIsICJuYW1lIjogImR1cGxpY2F0ZV9wdWJsaWNfcG9ydCIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7ImVycm9yIjogIm1vZGVsIGFuZCBwdWJsaWMtcG9ydCBjZW5zdXMiLCAibmFtZSI6ICJtaXNzaW5nX3B1YmxpY19wb3J0IiwgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIn0sIHsiZXJyb3IiOiAiZ3JhcGgtb25seSBzY29wZSIsICJuYW1lIjogInJjX3Byb21vdGlvbiIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7ImVycm9yIjogIm5vIGxhYmVsIHVuaW9uIG9yIGdlb21ldHJ5IG11dGF0aW9uIiwgIm5hbWUiOiAibGFiZWxfdW5pb24iLCAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwifSwgeyJlcnJvciI6ICJkZXZpY2UgY2Vuc3VzIiwgIm5hbWUiOiAid3JvbmdfZGV2aWNlX2NlbnN1cyIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7ImVycm9yIjogImV4YWN0IGFsbC1sYXllciBtYXRlcmlhbCB1bmlvbiIsICJuYW1lIjogIm1pc3NpbmdfbWF0ZXJpYWxfbGF5ZXIyOV97XCJwdWJsaWNfcG9ydHNcIjpbXCJQMFwiLFwiUDE4XCIsXCJQOVwiXSxcIiIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7ImVycm9yIjogImV4YWN0IGFsbC1sYXllciBtYXRlcmlhbCB1bmlvbiIsICJuYW1lIjogImZvcmVpZ25fbWF0ZXJpYWxfbGF5ZXIyOV97XCJwdWJsaWNfcG9ydHNcIjpbXCJQMFwiLFwiUDE4XCIsXCJQOVwiXSxcIiIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7ImVycm9yIjogImV4YWN0IGFsbC1sYXllciBtYXRlcmlhbCB1bmlvbiIsICJuYW1lIjogIm1pc3NpbmdfbWF0ZXJpYWxfbGF5ZXIzMF97XCJwdWJsaWNfcG9ydHNcIjpbXCJQMFwiLFwiUDE4XCIsXCJQOVwiXSxcIiIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7ImVycm9yIjogImV4YWN0IGFsbC1sYXllciBtYXRlcmlhbCB1bmlvbiIsICJuYW1lIjogImZvcmVpZ25fbWF0ZXJpYWxfbGF5ZXIzMF97XCJwdWJsaWNfcG9ydHNcIjpbXCJQMFwiLFwiUDE4XCIsXCJQOVwiXSxcIiIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7ImVycm9yIjogImV4YWN0IGFsbC1sYXllciBtYXRlcmlhbCB1bmlvbiIsICJuYW1lIjogIm1pc3NpbmdfbWF0ZXJpYWxfbGF5ZXIyOV97XCJwdWJsaWNfcG9ydHNcIjpbXCJQMVwiLFwiUDEwXCIsXCJQMTlcIl0sIiwgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIn0sIHsiZXJyb3IiOiAiZXhhY3QgYWxsLWxheWVyIG1hdGVyaWFsIHVuaW9uIiwgIm5hbWUiOiAiZm9yZWlnbl9tYXRlcmlhbF9sYXllcjI5X3tcInB1YmxpY19wb3J0c1wiOltcIlAxXCIsXCJQMTBcIixcIlAxOVwiXSwiLCAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwifSwgeyJlcnJvciI6ICJleGFjdCBhbGwtbGF5ZXIgbWF0ZXJpYWwgdW5pb24iLCAibmFtZSI6ICJtaXNzaW5nX21hdGVyaWFsX2xheWVyMzBfe1wicHVibGljX3BvcnRzXCI6W1wiUDFcIixcIlAxMFwiLFwiUDE5XCJdLCIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7ImVycm9yIjogImV4YWN0IGFsbC1sYXllciBtYXRlcmlhbCB1bmlvbiIsICJuYW1lIjogImZvcmVpZ25fbWF0ZXJpYWxfbGF5ZXIzMF97XCJwdWJsaWNfcG9ydHNcIjpbXCJQMVwiLFwiUDEwXCIsXCJQMTlcIl0sIiwgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIn0sIHsibGF5ZXJzIjogWzI5LCAzMF0sICJuYW1lIjogImFsbDE2X2FjdHVhbF9kZWNsYXJhdGlvbl9zaGFwZXNfc3ludGhldGljX3VuaW9uIiwgInBhcnRpdGlvbnMiOiAyLCAic2NvcGUiOiAic3ludGhldGljIG5hdGl2ZSBSZWdpb24gYWxnZWJyYSIsICJzaGFwZXMiOiAxNn0sIHsiZXJyb3IiOiAiZXhhY3QgY29tcGxldGUgMTYgb2JzZXJ2ZWQgYWRkaXRpb25zIiwgIm5hbWUiOiAibWlzc2luZ19hZGRlZF9yZWNvcmQiLCAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwifSwgeyJlcnJvciI6ICJzZXJpYWxpemVkIGNhbmRpZGF0ZSBhbmQgc3RydWN0dXJhbCBwcmVzZXJ2YXRpb24iLCAibmFtZSI6ICJ3cm9uZ19nZW5lcmF0aW9uX2NhbmRpZGF0ZSIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7ImVycm9yIjogInNlcmlhbGl6ZWQgY2FuZGlkYXRlIGFuZCBzdHJ1Y3R1cmFsIHByZXNlcnZhdGlvbiIsICJuYW1lIjogIm5vX3N0cnVjdHVyYWxfcmV2ZXJzYWwiLCAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwifSwgeyJlcnJvciI6ICJleGFjdCBjb21wbGV0ZSAxNiBvYnNlcnZlZCBhZGRpdGlvbnMiLCAibmFtZSI6ICJjaGFuZ2VkX29yaWdpbmFsX293bmVyIiwgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIn0sIHsiZXJyb3IiOiAiZXhhY3QgY29tcGxldGUgMTYgb2JzZXJ2ZWQgYWRkaXRpb25zIiwgIm5hbWUiOiAiY2hhbmdlZF9hZGRlZF9sYXllciIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7ImVycm9yIjogImZvdXItZHJhaW4gb3duZXJzaGlwIiwgIm5hbWUiOiAibW92ZWRfYWN0dWFsX2RyYWluX3BhcnRpdGlvbiIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7ImVycm9yIjogImVtcHR5IG5hdGl2ZSBsYXllciB1bnJlZ2lzdGVyZWQiLCAibmFtZSI6ICJlbXB0eV9sYXllcl9yZWdpc3RlcmVkIiwgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIn0sIHsiZXJyb3IiOiAiY29tcGxldGUgYWN0dWFsIGNvbmR1Y3RvciBsYXllciIsICJuYW1lIjogInByZXNlbnRfbGF5ZXJfbWlzc2luZyIsICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCJ9LCB7Im5hbWUiOiAiaW5kZXBlbmRlbnRfb2xkX25ld19sYXllcl9wcmVzZW5jZSIsICJzY29wZSI6ICJzeW50aGV0aWMgbmF0aXZlIFJlZ2lvbiBhbGdlYnJhIn0sIHsiZXJyb3IiOiAiQ09SRV9IQVNfTk9fTkFUSVZFX0FVVEhPUklUWTogdXNlIGEgc2VwYXJhdGVseSByZXZpZXdlZCBob3N0ZWQgYWRtaXNzaW9uIGFuZCBlbnRyeSIsICJuYW1lIjogInN0YW5kYWxvbmVfbmF0aXZlX2VudHJ5IiwgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIn0sIHsiZXJyb3IiOiAiQ09SRV9IQVNfTk9fTkFUSVZFX0FVVEhPUklUWTogdXNlIGEgc2VwYXJhdGVseSByZXZpZXdlZCBob3N0ZWQgYWRtaXNzaW9uIGFuZCBlbnRyeSIsICJuYW1lIjogImNvcmVfY29uZmlnX2Nhbm5vdF9ncmFudF9uYXRpdmVfZW50cnkiLCAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwifSwgeyJlcnJvciI6ICJjb3JlIGNhbm5vdCBhdXRob3JpemUgbGF0ZXIgc3RhZ2VzIG9yIGFjY2VwdGFuY2UiLCAibmFtZSI6ICJmb3JiaWRkZW5fcmNfZXh0cmFjdGlvbl9hdXRob3JpemVkIiwgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIn0sIHsiZXJyb3IiOiAiY29yZSBjYW5ub3QgYXV0aG9yaXplIGxhdGVyIHN0YWdlcyBvciBhY2NlcHRhbmNlIiwgIm5hbWUiOiAiZm9yYmlkZGVuX2VsZWN0cmljYWxfc2ltdWxhdGlvbl9hdXRob3JpemVkIiwgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIn0sIHsiZXJyb3IiOiAiY29yZSBjYW5ub3QgYXV0aG9yaXplIGxhdGVyIHN0YWdlcyBvciBhY2NlcHRhbmNlIiwgIm5hbWUiOiAiZm9yYmlkZGVuX3BoeXNpY2FsX2FjY2VwdGVkIiwgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIn0sIHsiZXJyb3IiOiAiY29yZSBjYW5ub3QgYXV0aG9yaXplIGxhdGVyIHN0YWdlcyBvciBhY2NlcHRhbmNlIiwgIm5hbWUiOiAiZm9yYmlkZGVuX2VsZWN0cmljYWxfYWNjZXB0ZWQiLCAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwifSwgeyJlcnJvciI6ICJjb3JlIGNhbm5vdCBhdXRob3JpemUgbGF0ZXIgc3RhZ2VzIG9yIGFjY2VwdGFuY2UiLCAibmFtZSI6ICJmb3JiaWRkZW5fZnVsbF9waHlfYWNjZXB0ZWQiLCAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwifV0sICJlbGVjdHJpY2FsX2FjY2VwdGVkIjogZmFsc2UsICJmdWxsX3BoeV9hY2NlcHRlZCI6IGZhbHNlLCAibmF0aXZlX2FjcXVpcmVkIjogZmFsc2UsICJuYXRpdmVfdmlld19leGVjdXRlZCI6IGZhbHNlLCAicGh5c2ljYWxfYWNjZXB0ZWQiOiBmYWxzZSwgInJjX2V4dHJhY3RlZCI6IGZhbHNlLCAic3RhdHVzIjogIlBBU1NfU09VUkNFX0FORF9TWU5USEVUSUNfQ09SRV9DT05UUk9MU19OT1RfTkFUSVZFX1FVQUxJRklDQVRJT04ifQo=", "index": 0, "path": "canonical-core.stdout"}
+2026-10-31T20:50:34.7181891Z CANONICAL_CORE_INDEX {"bytes": 0, "chunks": 1, "path": "canonical-core.stderr", "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
+2026-10-31T20:50:34.7182698Z CANONICAL_CORE_CHUNK {"base64": "", "index": 0, "path": "canonical-core.stderr"}
+2026-10-31T20:50:34.7183514Z CANONICAL_CORE_INDEX {"bytes": 950, "chunks": 1, "path": "current-cdr-runtime-policy.json", "sha256": "276329a245a9ac782db0f68337c9ba7620e3b7fda16ad0e335565ff05dcf1705"}
+2026-10-31T20:50:34.7202828Z CANONICAL_CORE_CHUNK {"base64": "ewogICJhY3RpdmUiOiBbCiAgICAibnNzb2MtY2RyLXJ1bnRpbWUtNDEyNDA3NDA3NjAtMSAodW5jb25maW5lZCkiCiAgXSwKICAiYXBwaW1hZ2UiOiAiL2hvbWUvcnVubmVyL3dvcmsvX3RlbXAvY3VycmVudC10YWlsLXBoeXNpY2FsLkFwcEltYWdlIiwKICAiYXBwaW1hZ2Vfc2hhMjU2IjogImQ2YTM0OWVjNjViZTExNDU2ZTk2YzQ5ODFkMzVmNjNjYTM0ZDNjODVkYWY3OWE1MWUxY2NiOTA3YmI1ZDc0NjYiLAogICJhdHRlbXB0IjogMSwKICAiZ2xvYmFsX3BvbGljeV9jaGFuZ2VkIjogZmFsc2UsCiAgImxvYWRlZCI6IHRydWUsCiAgIm5hdGl2ZV9nZW9tZXRyeV9leGVjdXRlZCI6IGZhbHNlLAogICJwYXJzZXJfc3RkZXJyIjogIiIsCiAgInBhcnNlcl9zdGRvdXQiOiAiIiwKICAicHJvZmlsZSI6ICIvZXRjL2FwcGFybW9yLmQvbnNzb2MtY2RyLXJ1bnRpbWUtNDEyNDA3NDA3NjAtMSIsCiAgInByb2ZpbGVfc2hhMjU2IjogIjk2Njc4ZjU0ZGYzZDhkNDFkYzY0NmE2OTFhMzkyNjI2OTM2MWUzZTljMzI2MjMwNTU4OWQyNmUyOTRiYTAxNmYiLAogICJwcm9maWxlX3RleHQiOiAiYWJpIDxhYmkvNC4wPixcbmluY2x1ZGUgPHR1bmFibGVzL2dsb2JhbD5cbnByb2ZpbGUgbnNzb2MtY2RyLXJ1bnRpbWUtNDEyNDA3NDA3NjAtMSBcIi9ob21lL3J1bm5lci93b3JrL190ZW1wL2N1cnJlbnQtdGFpbC1waHlzaWNhbC5BcHBJbWFnZVwiIGZsYWdzPSh1bmNvbmZpbmVkKSB7XG4gIHVzZXJucyxcbn1cbiIsCiAgInJlc3RyaWN0aW9uX2FmdGVyIjogIjEiLAogICJyZXN0cmljdGlvbl9iZWZvcmUiOiAiMSIsCiAgInJ1bl9pZCI6IDQxMjQwNzQwNzYwLAogICJzY29wZSI6ICJFeGFjdCBwaW5uZWQgZXhlY3V0YWJsZSBvbiB0aGlzIGVwaGVtZXJhbCBHaXRIdWIgcnVubmVyIG9ubHkiLAogICJzb3VyY2UiOiAiNWY0ODNmYjNjNTg0YTc0MTg3NWI5MTVlMTJmNjJjODdlOGE2MWY2OCIKfQo=", "index": 0, "path": "current-cdr-runtime-policy.json"}
+2026-10-31T20:50:34.7222299Z CANONICAL_CORE_INDEX {"bytes": 217, "chunks": 1, "path": "hw/soc/out/cdr-via2-m3-canonical-core-source/source-context.json", "sha256": "7eaddeca06670b9491695dadc8e206ef70f64ba420513e4c976438322df4da2d"}
+2026-10-31T20:50:34.7225218Z CANONICAL_CORE_CHUNK {"base64": "ewogICJhdHRlbXB0IjogMSwKICAiam9iIjogInNvdXJjZS1jb250cm9scyIsCiAgIm1hbmlmZXN0X3NoYTI1NiI6ICI3OWM2ZGZiMjZkYWJlNzQyZDA1OTNhM2FjMjU0YmJmZDE2ZTYwOGJlYjAxZjc2ZjdiMWRkYjAxY2YzOWNhNzFmIiwKICAicnVuX2lkIjogNDEyNDA3NDA3NjAsCiAgInNvdXJjZSI6ICI1ZjQ4M2ZiM2M1ODRhNzQxODc1YjkxNWUxMmY2MmM4N2U4YTYxZjY4Igp9Cg==", "index": 0, "path": "hw/soc/out/cdr-via2-m3-canonical-core-source/source-context.json"}
+2026-10-31T20:50:34.7228013Z CANONICAL_CORE_INDEX {"bytes": 11647, "chunks": 1, "path": "hw/soc/out/cdr-via2-m3-canonical-core-source/source-controls.json", "sha256": "6194b4a262b7f6952af8f098c71b983478eb7d83e9d53f80db06f8bdf6022a0c"}
+2026-10-31T20:50:34.9326088Z CANONICAL_CORE_CHUNK {"base64": "ewogICJjb250ZXh0IjogewogICAgImF0dGVtcHQiOiAxLAogICAgImpvYiI6ICJzb3VyY2UtY29udHJvbHMiLAogICAgIm1hbmlmZXN0X3NoYTI1NiI6ICI3OWM2ZGZiMjZkYWJlNzQyZDA1OTNhM2FjMjU0YmJmZDE2ZTYwOGJlYjAxZjc2ZjdiMWRkYjAxY2YzOWNhNzFmIiwKICAgICJydW5faWQiOiA0MTI0MDc0MDc2MCwKICAgICJzb3VyY2UiOiAiNWY0ODNmYjNjNTg0YTc0MTg3NWI5MTVlMTJmNjJjODdlOGE2MWY2OCIKICB9LAogICJjb250cm9sX2NvdW50IjogNTMsCiAgImNvbnRyb2xzIjogWwogICAgewogICAgICAiY2hlY2tzX2JlZm9yZV9yZXR1cm5faWRlbnRpY2FsIjogdHJ1ZSwKICAgICAgImlkZW50aXR5X2Z1bmN0aW9ucyI6IDcsCiAgICAgICJuYW1lIjogImZyb3plbl9pZGVudGl0eV9hbmRfYW5jaG9yX2RlZmluaXRpb25zIiwKICAgICAgIm5vcm1hbGl6YXRpb25fZnVuY3Rpb25zIjogNCwKICAgICAgInNjb3BlIjogImV4YWN0IHNvdXJjZS9BU1Qgc2NvcGUiCiAgICB9LAogICAgewogICAgICAibmFtZSI6ICJ0aHJlZV9oZWxwZXJfZGVyaXZhdGlvbnMiLAogICAgICAicmVjb3JkcyI6IHsKICAgICAgICAiY2hlY2tfd2lkdGhfcGFyZW50X2dlb21ldHJ5LnB5IjogewogICAgICAgICAgImNoYW5nZXMiOiBbCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAiYWZ0ZXIiOiAibnNzb2NfY2RyX3BkNTAwX3Jlc2lzdG9yX3Y1OSIsCiAgICAgICAgICAgICAgImJlZm9yZSI6ICJuc3NvY19jZHJfcGQ1MDBfYWN0aXZlX2lucHV0X3Y1NyIsCiAgICAgICAgICAgICAgImNvdW50IjogMgogICAgICAgICAgICB9CiAgICAgICAgICBdLAogICAgICAgICAgImV4ZWN1dGlvbl9zY29wZSI6ICJPbmx5IGZyb3plbiBuYXRpdmUvcmVjb3ZlciBkZWZpbml0aW9uczsgdW51c2VkIGhpc3RvcmljYWwgbWFpbi9hZG1pc3Npb24gYW5kIGltcG9ydHMgYXJlIG5vdCBleGVjdXRlZC4iLAogICAgICAgICAgImdlbmVyYXRlZF9waW4iOiB7CiAgICAgICAgICAgICJieXRlcyI6IDUwNjEsCiAgICAgICAgICAgICJzaGEyNTYiOiAiODJmYmY1ZWI1NzYxMGVkY2YxMTI2ZTllMWQ4MmMxNGJlN2NmNTkyOTFkNzEwYTIwZGNiNDQ0NWVmZDU0YjkyZSIKICAgICAgICAgIH0sCiAgICAgICAgICAic291cmNlIjogInNjcmlwdHMvY2hlY2tfY2RyX3NhbXBsZXJfYWN0aXZlX2lucHV0X3Y1N19wYXJlbnRfZ2VvbWV0cnkucHkiLAogICAgICAgICAgInNvdXJjZV9waW4iOiB7CiAgICAgICAgICAgICJieXRlcyI6IDUwNjksCiAgICAgICAgICAgICJzaGEyNTYiOiAiODRiOWJiZjUwN2ZhMWQ2ZGZjMmU4NTU3NjE5N2NiZmNhMWVjZTA1ZWM1MzBjM2UxNzcwOTBiODhmYjI1OTU0MiIKICAgICAgICAgIH0KICAgICAgICB9LAogICAgICAgICJ3aWR0aF9wbGFuZXMucHkiOiB7CiAgICAgICAgICAiY2hhbmdlcyI6IFsKICAgICAgICAgICAgewogICAgICAgICAgICAgICJhZnRlciI6ICJuc3NvY19jZHJfcGQ1MDBfcmVzaXN0b3JfdjU5IiwKICAgICAgICAgICAgICAiYmVmb3JlIjogIm5zc29jX2Nkcl9wZDUwMF9hY3RpdmVfaW5wdXRfdjU3IiwKICAgICAgICAgICAgICAiY291bnQiOiAyCiAgICAgICAgICAgIH0sCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAiYWZ0ZXIiOiAiZnJvbSBjaGVja193aWR0aF9wYXJlbnRfZ2VvbWV0cnkgaW1wb3J0IGNoZWNrIiwKICAgICAgICAgICAgICAiYmVmb3JlIjogImZyb20gY2hlY2tfY2RyX3NhbXBsZXJfYWN0aXZlX2lucHV0X3Y1N19wYXJlbnRfZ2VvbWV0cnkgaW1wb3J0IGNoZWNrIiwKICAgICAgICAgICAgICAiY291bnQiOiAxCiAgICAgICAgICAgIH0KICAgICAgICAgIF0sCiAgICAgICAgICAiZXhlY3V0aW9uX3Njb3BlIjogIk9ubHkgZnJvemVuIG5hdGl2ZS9yZWNvdmVyIGRlZmluaXRpb25zOyB1bnVzZWQgaGlzdG9yaWNhbCBtYWluL2FkbWlzc2lvbiBhbmQgaW1wb3J0cyBhcmUgbm90IGV4ZWN1dGVkLiIsCiAgICAgICAgICAiZ2VuZXJhdGVkX3BpbiI6IHsKICAgICAgICAgICAgImJ5dGVzIjogMTQ4ODAsCiAgICAgICAgICAgICJzaGEyNTYiOiAiMDQ0NTliYmY4ZjFmNzA0ZmRjM2NmNTNjYjU5ZDdmYTZjOWU0ZGVmMmQ0YmFmYzE3MTU1MjZiNGEyZTdiZTU4MCIKICAgICAgICAgIH0sCiAgICAgICAgICAic291cmNlIjogInNjcmlwdHMvY2xvdWRfY2RyX3NhbXBsZXJfYWN0aXZlX2lucHV0X3Y1N19wbGFuZXMucHkiLAogICAgICAgICAgInNvdXJjZV9waW4iOiB7CiAgICAgICAgICAgICJieXRlcyI6IDE0OTExLAogICAgICAgICAgICAic2hhMjU2IjogIjgxNWNiMTZiMjJjNDgwMDNlYmI2ZjA2MmRjZDNhODVkY2FmNWEyZTIyZTI0OTY0MTk5MWExZmJhNjIwZDhjNjIiCiAgICAgICAgICB9CiAgICAgICAgfSwKICAgICAgICAid2lkdGhfc291cmNlX3BpbnMucHkiOiB7CiAgICAgICAgICAiY2hhbmdlcyI6IFsKICAgICAgICAgICAgewogICAgICAgICAgICAgICJhZnRlciI6ICJuc3NvY19jZHJfcGQ1MDBfcmVzaXN0b3JfdjU5IiwKICAgICAgICAgICAgICAiYmVmb3JlIjogIm5zc29jX2Nkcl9wZDUwMF9hY3RpdmVfaW5wdXRfdjU3IiwKICAgICAgICAgICAgICAiY291bnQiOiAxCiAgICAgICAgICAgIH0KICAgICAgICAgIF0sCiAgICAgICAgICAiZXhlY3V0aW9uX3Njb3BlIjogIk9ubHkgZnJvemVuIG5hdGl2ZS9yZWNvdmVyIGRlZmluaXRpb25zOyB1bnVzZWQgaGlzdG9yaWNhbCBtYWluL2FkbWlzc2lvbiBhbmQgaW1wb3J0cyBhcmUgbm90IGV4ZWN1dGVkLiIsCiAgICAgICAgICAiZ2VuZXJhdGVkX3BpbiI6IHsKICAgICAgICAgICAgImJ5dGVzIjogMTI3MjYsCiAgICAgICAgICAgICJzaGEyNTYiOiAiMjliOTJmM2FlMjczYjNmNWJmNmYwZjlhZTRiMTQ0YzMyNTdiNzNiZjM4MzA3NTAwYzI3Zjg4NTNkMDBkOTBlYSIKICAgICAgICAgIH0sCiAgICAgICAgICAic291cmNlIjogInNjcmlwdHMvY2xvdWRfY2RyX3NhbXBsZXJfYWN0aXZlX2lucHV0X3Y1N193aXJlX2lucHV0cy5weSIsCiAgICAgICAgICAic291cmNlX3BpbiI6IHsKICAgICAgICAgICAgImJ5dGVzIjogMTI3MzAsCiAgICAgICAgICAgICJzaGEyNTYiOiAiMjI4YTFiZTkxNjQ4ZDVlM2E3YTVkODkzN2IxNDczODM3NzQwM2FlZmJmNjE3MjgwYWY3ZmE2YjQ5NGQzZDMwZiIKICAgICAgICAgIH0KICAgICAgICB9CiAgICAgIH0sCiAgICAgICJzY29wZSI6ICJleGFjdCBzb3VyY2Ugc3Vic3RpdHV0aW9uIgogICAgfSwKICAgIHsKICAgICAgIm5hbWUiOiAiZGVmaW5pdGlvbl9vbmx5X21vZHVsZV9zaWRlX2VmZmVjdF9leGNsdWRlZCIsCiAgICAgICJzY29wZSI6ICJzeW50aGV0aWMgc291cmNlIgogICAgfSwKICAgIHsKICAgICAgImVycm9yIjogImV4YWN0IGRlZmluaXRpb24gY2Vuc3VzIiwKICAgICAgIm5hbWUiOiAibWlzc2luZ19kZWZpbml0aW9uIiwKICAgICAgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIgogICAgfSwKICAgIHsKICAgICAgImVycm9yIjogImV4YWN0IGRlZmluaXRpb24gY2Vuc3VzIiwKICAgICAgIm5hbWUiOiAiZHVwbGljYXRlX2RlZmluaXRpb24iLAogICAgICAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwiCiAgICB9LAogICAgewogICAgICAiZXJyb3IiOiAibm8gZGVmaW5pdGlvbi10aW1lIHNpZGUgZWZmZWN0cyIsCiAgICAgICJuYW1lIjogImRlY29yYXRvcl9zaWRlX2VmZmVjdCIsCiAgICAgICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCIKICAgIH0sCiAgICB7CiAgICAgICJlcnJvciI6ICJubyBkZWZpbml0aW9uLXRpbWUgc2lkZSBlZmZlY3RzIiwKICAgICAgIm5hbWUiOiAiZGVmYXVsdF9zaWRlX2VmZmVjdCIsCiAgICAgICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCIKICAgIH0sCiAgICB7CiAgICAgICJlcnJvciI6ICJubyBldmFsdWF0ZWQgYW5ub3RhdGlvbnMiLAogICAgICAibmFtZSI6ICJhbm5vdGF0aW9uX3NpZGVfZWZmZWN0IiwKICAgICAgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIgogICAgfSwKICAgIHsKICAgICAgImVycm9yIjogImltbXV0YWJsZSBjb21wbGV0ZSBkZWZpbml0aW9uIHNvdXJjZTogc2NyaXB0cy9jZHJfdjU5X3RhaWxfc2F2ZWRfaWRlbnRpdHlfbmF0aXZlLnB5IiwKICAgICAgIm5hbWUiOiAiY2hhbmdlZF9mcm96ZW5faWRlbnRpdHlfc291cmNlIiwKICAgICAgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIgogICAgfSwKICAgIHsKICAgICAgImNvbXBvbmVudHMiOiA5LAogICAgICAibmFtZSI6ICJkeW5hbWljX2dyYXBoXzdfMyIsCiAgICAgICJuYXRpdmVfbmV0cyI6IDEyLAogICAgICAic2NvcGUiOiAic3ludGhldGljIGNvbXBsZXRlIGdyYXBoIgogICAgfSwKICAgIHsKICAgICAgImNvbXBvbmVudHMiOiAxMTMsCiAgICAgICJuYW1lIjogImR5bmFtaWNfZ3JhcGhfMTExXzAiLAogICAgICAibmF0aXZlX25ldHMiOiAxMTMsCiAgICAgICJzY29wZSI6ICJzeW50aGV0aWMgY29tcGxldGUgZ3JhcGgiCiAgICB9LAogICAgewogICAgICAiY29tcG9uZW50cyI6IDExNiwKICAgICAgIm5hbWUiOiAiZHluYW1pY19ncmFwaF8xMTRfMTI2IiwKICAgICAgIm5hdGl2ZV9uZXRzIjogMjQyLAogICAgICAic2NvcGUiOiAic3ludGhldGljIGNvbXBsZXRlIGdyYXBoIgogICAgfSwKICAgIHsKICAgICAgImVycm9yIjogImFjdHVhbCBjb25kdWN0b3ItY29tcG9uZW50IGNlbnN1cyIsCiAgICAgICJuYW1lIjogInN0YWxlMTEzX2NvbXBvbmVudHMiLAogICAgICAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwiCiAgICB9LAogICAgewogICAgICAiZXJyb3IiOiAiYWN0dWFsIG5hdGl2ZS1uZXQgY2Vuc3VzIiwKICAgICAgIm5hbWUiOiAic3RhbGUyMzhfbmV0cyIsCiAgICAgICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCIKICAgIH0sCiAgICB7CiAgICAgICJlcnJvciI6ICJhY3R1YWwgdW5pcXVlIGVsZWN0cmljYWwgcGFydGl0aW9ucyIsCiAgICAgICJuYW1lIjogInN0YWxlMTE0X2VsZWN0cmljYWwiLAogICAgICAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwiCiAgICB9LAogICAgewogICAgICAiZXJyb3IiOiAiY29tcGxldGUgdGVybWluYWwgYW5kIHBvcnQgaWRlbnRpdHkgY292ZXJhZ2UiLAogICAgICAibmFtZSI6ICJtaXNzaW5nX3Rlcm1pbmFsIiwKICAgICAgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIgogICAgfSwKICAgIHsKICAgICAgImVycm9yIjogInRlcm1pbmFsIGluIHR3byBwYXJ0aXRpb25zIiwKICAgICAgIm5hbWUiOiAiZHVwbGljYXRlX3Rlcm1pbmFsIiwKICAgICAgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIgogICAgfSwKICAgIHsKICAgICAgImVycm9yIjogInVuaXF1ZSBuYXRpdmUgY2x1c3RlciIsCiAgICAgICJuYW1lIjogImR1cGxpY2F0ZV9jbHVzdGVyIiwKICAgICAgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIgogICAgfSwKICAgIHsKICAgICAgImVycm9yIjogImFjdHVhbCBuYXRpdmUgY2x1c3RlciIsCiAgICAgICJuYW1lIjogIm9ycGhhbl9jb21wb25lbnQiLAogICAgICAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwiCiAgICB9LAogICAgewogICAgICAiZXJyb3IiOiAiY29tcG9uZW50IGlkZW50aXR5IGFuZCBuYXRpdmUgc3BlbGxpbmciLAogICAgICAibmFtZSI6ICJ3cm9uZ19uYXRpdmVfbmFtZSIsCiAgICAgICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCIKICAgIH0sCiAgICB7CiAgICAgICJlcnJvciI6ICJhY3R1YWwgY29uZHVjdG9yLWNvbXBvbmVudCBjZW5zdXMiLAogICAgICAibmFtZSI6ICJtaXNzaW5nX2NvbXBvbmVudCIsCiAgICAgICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCIKICAgIH0sCiAgICB7CiAgICAgICJlcnJvciI6ICJubyBzcGxpdCBuYXRpdmUgY29uZHVjdG9yIiwKICAgICAgIm5hbWUiOiAic3BsaXRfbmF0aXZlX3BhcnRpdGlvbiIsCiAgICAgICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCIKICAgIH0sCiAgICB7CiAgICAgICJlcnJvciI6ICJlbXB0eSBuYXRpdmUgcGFydGl0aW9uIG93bnMgbm8gbWF0ZXJpYWwiLAogICAgICAibmFtZSI6ICJlbXB0eV9wYXJ0aXRpb25fbWV0YWwiLAogICAgICAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwiCiAgICB9LAogICAgewogICAgICAiZXJyb3IiOiAicHVibGljIHBvcnQgaW4gdHdvIHBhcnRpdGlvbnMiLAogICAgICAibmFtZSI6ICJkdXBsaWNhdGVfcHVibGljX3BvcnQiLAogICAgICAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwiCiAgICB9LAogICAgewogICAgICAiZXJyb3IiOiAibW9kZWwgYW5kIHB1YmxpYy1wb3J0IGNlbnN1cyIsCiAgICAgICJuYW1lIjogIm1pc3NpbmdfcHVibGljX3BvcnQiLAogICAgICAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwiCiAgICB9LAogICAgewogICAgICAiZXJyb3IiOiAiZ3JhcGgtb25seSBzY29wZSIsCiAgICAgICJuYW1lIjogInJjX3Byb21vdGlvbiIsCiAgICAgICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCIKICAgIH0sCiAgICB7CiAgICAgICJlcnJvciI6ICJubyBsYWJlbCB1bmlvbiBvciBnZW9tZXRyeSBtdXRhdGlvbiIsCiAgICAgICJuYW1lIjogImxhYmVsX3VuaW9uIiwKICAgICAgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIgogICAgfSwKICAgIHsKICAgICAgImVycm9yIjogImRldmljZSBjZW5zdXMiLAogICAgICAibmFtZSI6ICJ3cm9uZ19kZXZpY2VfY2Vuc3VzIiwKICAgICAgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIgogICAgfSwKICAgIHsKICAgICAgImVycm9yIjogImV4YWN0IGFsbC1sYXllciBtYXRlcmlhbCB1bmlvbiIsCiAgICAgICJuYW1lIjogIm1pc3NpbmdfbWF0ZXJpYWxfbGF5ZXIyOV97XCJwdWJsaWNfcG9ydHNcIjpbXCJQMFwiLFwiUDE4XCIsXCJQOVwiXSxcIiIsCiAgICAgICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCIKICAgIH0sCiAgICB7CiAgICAgICJlcnJvciI6ICJleGFjdCBhbGwtbGF5ZXIgbWF0ZXJpYWwgdW5pb24iLAogICAgICAibmFtZSI6ICJmb3JlaWduX21hdGVyaWFsX2xheWVyMjlfe1wicHVibGljX3BvcnRzXCI6W1wiUDBcIixcIlAxOFwiLFwiUDlcIl0sXCIiLAogICAgICAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwiCiAgICB9LAogICAgewogICAgICAiZXJyb3IiOiAiZXhhY3QgYWxsLWxheWVyIG1hdGVyaWFsIHVuaW9uIiwKICAgICAgIm5hbWUiOiAibWlzc2luZ19tYXRlcmlhbF9sYXllcjMwX3tcInB1YmxpY19wb3J0c1wiOltcIlAwXCIsXCJQMThcIixcIlA5XCJdLFwiIiwKICAgICAgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIgogICAgfSwKICAgIHsKICAgICAgImVycm9yIjogImV4YWN0IGFsbC1sYXllciBtYXRlcmlhbCB1bmlvbiIsCiAgICAgICJuYW1lIjogImZvcmVpZ25fbWF0ZXJpYWxfbGF5ZXIzMF97XCJwdWJsaWNfcG9ydHNcIjpbXCJQMFwiLFwiUDE4XCIsXCJQOVwiXSxcIiIsCiAgICAgICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCIKICAgIH0sCiAgICB7CiAgICAgICJlcnJvciI6ICJleGFjdCBhbGwtbGF5ZXIgbWF0ZXJpYWwgdW5pb24iLAogICAgICAibmFtZSI6ICJtaXNzaW5nX21hdGVyaWFsX2xheWVyMjlfe1wicHVibGljX3BvcnRzXCI6W1wiUDFcIixcIlAxMFwiLFwiUDE5XCJdLCIsCiAgICAgICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCIKICAgIH0sCiAgICB7CiAgICAgICJlcnJvciI6ICJleGFjdCBhbGwtbGF5ZXIgbWF0ZXJpYWwgdW5pb24iLAogICAgICAibmFtZSI6ICJmb3JlaWduX21hdGVyaWFsX2xheWVyMjlfe1wicHVibGljX3BvcnRzXCI6W1wiUDFcIixcIlAxMFwiLFwiUDE5XCJdLCIsCiAgICAgICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCIKICAgIH0sCiAgICB7CiAgICAgICJlcnJvciI6ICJleGFjdCBhbGwtbGF5ZXIgbWF0ZXJpYWwgdW5pb24iLAogICAgICAibmFtZSI6ICJtaXNzaW5nX21hdGVyaWFsX2xheWVyMzBfe1wicHVibGljX3BvcnRzXCI6W1wiUDFcIixcIlAxMFwiLFwiUDE5XCJdLCIsCiAgICAgICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCIKICAgIH0sCiAgICB7CiAgICAgICJlcnJvciI6ICJleGFjdCBhbGwtbGF5ZXIgbWF0ZXJpYWwgdW5pb24iLAogICAgICAibmFtZSI6ICJmb3JlaWduX21hdGVyaWFsX2xheWVyMzBfe1wicHVibGljX3BvcnRzXCI6W1wiUDFcIixcIlAxMFwiLFwiUDE5XCJdLCIsCiAgICAgICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCIKICAgIH0sCiAgICB7CiAgICAgICJsYXllcnMiOiBbCiAgICAgICAgMjksCiAgICAgICAgMzAKICAgICAgXSwKICAgICAgIm5hbWUiOiAiYWxsMTZfYWN0dWFsX2RlY2xhcmF0aW9uX3NoYXBlc19zeW50aGV0aWNfdW5pb24iLAogICAgICAicGFydGl0aW9ucyI6IDIsCiAgICAgICJzY29wZSI6ICJzeW50aGV0aWMgbmF0aXZlIFJlZ2lvbiBhbGdlYnJhIiwKICAgICAgInNoYXBlcyI6IDE2CiAgICB9LAogICAgewogICAgICAiZXJyb3IiOiAiZXhhY3QgY29tcGxldGUgMTYgb2JzZXJ2ZWQgYWRkaXRpb25zIiwKICAgICAgIm5hbWUiOiAibWlzc2luZ19hZGRlZF9yZWNvcmQiLAogICAgICAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwiCiAgICB9LAogICAgewogICAgICAiZXJyb3IiOiAic2VyaWFsaXplZCBjYW5kaWRhdGUgYW5kIHN0cnVjdHVyYWwgcHJlc2VydmF0aW9uIiwKICAgICAgIm5hbWUiOiAid3JvbmdfZ2VuZXJhdGlvbl9jYW5kaWRhdGUiLAogICAgICAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwiCiAgICB9LAogICAgewogICAgICAiZXJyb3IiOiAic2VyaWFsaXplZCBjYW5kaWRhdGUgYW5kIHN0cnVjdHVyYWwgcHJlc2VydmF0aW9uIiwKICAgICAgIm5hbWUiOiAibm9fc3RydWN0dXJhbF9yZXZlcnNhbCIsCiAgICAgICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCIKICAgIH0sCiAgICB7CiAgICAgICJlcnJvciI6ICJleGFjdCBjb21wbGV0ZSAxNiBvYnNlcnZlZCBhZGRpdGlvbnMiLAogICAgICAibmFtZSI6ICJjaGFuZ2VkX29yaWdpbmFsX293bmVyIiwKICAgICAgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIgogICAgfSwKICAgIHsKICAgICAgImVycm9yIjogImV4YWN0IGNvbXBsZXRlIDE2IG9ic2VydmVkIGFkZGl0aW9ucyIsCiAgICAgICJuYW1lIjogImNoYW5nZWRfYWRkZWRfbGF5ZXIiLAogICAgICAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwiCiAgICB9LAogICAgewogICAgICAiZXJyb3IiOiAiZm91ci1kcmFpbiBvd25lcnNoaXAiLAogICAgICAibmFtZSI6ICJtb3ZlZF9hY3R1YWxfZHJhaW5fcGFydGl0aW9uIiwKICAgICAgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIgogICAgfSwKICAgIHsKICAgICAgImVycm9yIjogImVtcHR5IG5hdGl2ZSBsYXllciB1bnJlZ2lzdGVyZWQiLAogICAgICAibmFtZSI6ICJlbXB0eV9sYXllcl9yZWdpc3RlcmVkIiwKICAgICAgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIgogICAgfSwKICAgIHsKICAgICAgImVycm9yIjogImNvbXBsZXRlIGFjdHVhbCBjb25kdWN0b3IgbGF5ZXIiLAogICAgICAibmFtZSI6ICJwcmVzZW50X2xheWVyX21pc3NpbmciLAogICAgICAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwiCiAgICB9LAogICAgewogICAgICAibmFtZSI6ICJpbmRlcGVuZGVudF9vbGRfbmV3X2xheWVyX3ByZXNlbmNlIiwKICAgICAgInNjb3BlIjogInN5bnRoZXRpYyBuYXRpdmUgUmVnaW9uIGFsZ2VicmEiCiAgICB9LAogICAgewogICAgICAiZXJyb3IiOiAiQ09SRV9IQVNfTk9fTkFUSVZFX0FVVEhPUklUWTogdXNlIGEgc2VwYXJhdGVseSByZXZpZXdlZCBob3N0ZWQgYWRtaXNzaW9uIGFuZCBlbnRyeSIsCiAgICAgICJuYW1lIjogInN0YW5kYWxvbmVfbmF0aXZlX2VudHJ5IiwKICAgICAgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIgogICAgfSwKICAgIHsKICAgICAgImVycm9yIjogIkNPUkVfSEFTX05PX05BVElWRV9BVVRIT1JJVFk6IHVzZSBhIHNlcGFyYXRlbHkgcmV2aWV3ZWQgaG9zdGVkIGFkbWlzc2lvbiBhbmQgZW50cnkiLAogICAgICAibmFtZSI6ICJjb3JlX2NvbmZpZ19jYW5ub3RfZ3JhbnRfbmF0aXZlX2VudHJ5IiwKICAgICAgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIgogICAgfSwKICAgIHsKICAgICAgImVycm9yIjogImNvcmUgY2Fubm90IGF1dGhvcml6ZSBsYXRlciBzdGFnZXMgb3IgYWNjZXB0YW5jZSIsCiAgICAgICJuYW1lIjogImZvcmJpZGRlbl9yY19leHRyYWN0aW9uX2F1dGhvcml6ZWQiLAogICAgICAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwiCiAgICB9LAogICAgewogICAgICAiZXJyb3IiOiAiY29yZSBjYW5ub3QgYXV0aG9yaXplIGxhdGVyIHN0YWdlcyBvciBhY2NlcHRhbmNlIiwKICAgICAgIm5hbWUiOiAiZm9yYmlkZGVuX2VsZWN0cmljYWxfc2ltdWxhdGlvbl9hdXRob3JpemVkIiwKICAgICAgInNjb3BlIjogImludGVudGlvbmFsIHN5bnRoZXRpYyByZWZ1c2FsIgogICAgfSwKICAgIHsKICAgICAgImVycm9yIjogImNvcmUgY2Fubm90IGF1dGhvcml6ZSBsYXRlciBzdGFnZXMgb3IgYWNjZXB0YW5jZSIsCiAgICAgICJuYW1lIjogImZvcmJpZGRlbl9waHlzaWNhbF9hY2NlcHRlZCIsCiAgICAgICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCIKICAgIH0sCiAgICB7CiAgICAgICJlcnJvciI6ICJjb3JlIGNhbm5vdCBhdXRob3JpemUgbGF0ZXIgc3RhZ2VzIG9yIGFjY2VwdGFuY2UiLAogICAgICAibmFtZSI6ICJmb3JiaWRkZW5fZWxlY3RyaWNhbF9hY2NlcHRlZCIsCiAgICAgICJzY29wZSI6ICJpbnRlbnRpb25hbCBzeW50aGV0aWMgcmVmdXNhbCIKICAgIH0sCiAgICB7CiAgICAgICJlcnJvciI6ICJjb3JlIGNhbm5vdCBhdXRob3JpemUgbGF0ZXIgc3RhZ2VzIG9yIGFjY2VwdGFuY2UiLAogICAgICAibmFtZSI6ICJmb3JiaWRkZW5fZnVsbF9waHlfYWNjZXB0ZWQiLAogICAgICAic2NvcGUiOiAiaW50ZW50aW9uYWwgc3ludGhldGljIHJlZnVzYWwiCiAgICB9CiAgXSwKICAiZWxlY3RyaWNhbF9hY2NlcHRlZCI6IGZhbHNlLAogICJmdWxsX3BoeV9hY2NlcHRlZCI6IGZhbHNlLAogICJuYXRpdmVfYWNxdWlyZWQiOiBmYWxzZSwKICAibmF0aXZlX3ZpZXdfZXhlY3V0ZWQiOiBmYWxzZSwKICAicGh5c2ljYWxfYWNjZXB0ZWQiOiBmYWxzZSwKICAicmNfZXh0cmFjdGVkIjogZmFsc2UsCiAgInN0YXR1cyI6ICJQQVNTX1NPVVJDRV9BTkRfU1lOVEhFVElDX0NPUkVfQ09OVFJPTFNfTk9UX05BVElWRV9RVUFMSUZJQ0FUSU9OIgp9Cg==", "index": 0, "path": "hw/soc/out/cdr-via2-m3-canonical-core-source/source-controls.json"}
+2026-10-31T20:50:35.1501481Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-31T20:50:35.1501915Z with:
+2026-10-31T20:50:35.1502141Z   name: canonical-core-source-41240740760-1
+2026-10-31T20:50:35.1502764Z   path: canonical-core.stdout
+canonical-core.stderr
+current-cdr-runtime-policy.json
+hw/soc/out/cdr-via2-m3-canonical-core-source
+
+2026-10-31T20:50:35.1503372Z   if-no-files-found: error
+2026-10-31T20:50:35.1503899Z   retention-days: 90
+2026-10-31T20:50:35.1504228Z   compression-level: 6
+2026-10-31T20:50:35.1504450Z   overwrite: false
+2026-10-31T20:50:35.1504671Z   include-hidden-files: false
+2026-10-31T20:50:35.1504901Z env:
+2026-10-31T20:50:35.1505097Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T20:50:35.1505395Z   APPROVED_SOURCE: 5f483fb3c584a741875b915e12f62c87e8a61f68
+2026-10-31T20:50:35.1505710Z ##[endgroup]
+2026-10-31T20:50:35.3255760Z (node:2831) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-31T20:50:35.3257185Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-31T20:50:35.3327346Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-31T20:50:35.3330355Z The least common ancestor is /home/runner/work/nssoc/nssoc. This will be the root directory of the artifact
+2026-10-31T20:50:35.3331280Z With the provided path, there will be 5 files uploaded
+2026-10-31T20:50:35.3337164Z Artifact name is valid!
+2026-10-31T20:50:35.3337742Z Root directory input is valid!
+2026-10-31T20:50:35.5769354Z Beginning upload of artifact content to blob storage
+2026-10-31T20:50:35.6052947Z (node:2831) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-31T20:50:35.6289008Z Uploaded bytes 5872
+2026-10-31T20:50:35.6428403Z Finished uploading artifact content to blob storage!
+2026-10-31T20:50:35.6429496Z SHA256 digest of uploaded artifact zip is 00d8d7c20793045f5d61e3da512a116e113c5f37772f1345da1a8cd75818ac9d
+2026-10-31T20:50:35.6431585Z Finalizing artifact upload
+2026-10-31T20:50:36.0785036Z Artifact canonical-core-source-41240740760-1.zip successfully finalized. Artifact ID 13057790060
+2026-10-31T20:50:36.0786833Z Artifact canonical-core-source-41240740760-1 has been successfully uploaded! Final size is 5872 bytes. Artifact ID is 13057790060
+2026-10-31T20:50:36.0793316Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/41240740760/artifacts/13057790060
+2026-10-31T20:50:36.1045575Z Post job cleanup.
+2026-10-31T20:50:36.1939954Z [command]/usr/bin/git version
+2026-10-31T20:50:36.1987189Z git version 2.56.0
+2026-10-31T20:50:36.2027714Z Temporarily overriding HOME='/home/runner/work/_temp/22b00c4d-4bd1-4a83-83a9-f317e784fee6' before making global git config changes
+2026-10-31T20:50:36.2029257Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-31T20:50:36.2032766Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-31T20:50:36.2074128Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T20:50:36.2111543Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T20:50:36.2441491Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T20:50:36.2481723Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T20:50:36.2979803Z Cleaning up orphan processes
+2026-10-31T20:50:36.3377793Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
