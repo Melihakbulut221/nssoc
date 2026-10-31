@@ -9,7 +9,7 @@ from pathlib import Path,PurePosixPath
 from types import SimpleNamespace
 ROOT=Path(__file__).resolve().parents[1]
 CONFIG='scripts/cdr-current-eight-drain-wave-replay-inputs.json'
-CONFIG_SHA='a7afcfeb195bca218fb44b0c6d2e8803399c964572f3839c0ee45b1e962d6cee'
+CONFIG_SHA='7ce5f20857b29f0f0239d6675d15abcf4c60901004c742d3ed97e745ffdf0498'
 BRANCH='codex/cdr-current-eight-drain-wave-readback'
 REPOSITORY='Melihakbulut221/nssoc'
 GROUP="cdr-current-eight-drain-wave-replay"
