@@ -1,0 +1,28 @@
+{
+  "schema": "fresh-rc-source-only-terminal-findings-v1",
+  "run_id": 41248813683,
+  "source": "a8bedcf068faf27e112a763ee954ef95b9387e12",
+  "actual_failure": "ValueError('explicit current source')",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_adapter.py\", line 182, in main\n    phase=phase_controls.controls(ctx,out/'phase-fixtures');observations['phase']=phase\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_native.py\", line 35, in controls\n    original_records=len(k.RECORDS);full=k.full_numerical_controls(ctx,reference)\n                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_core.py\", line 64, in full_numerical_controls\n    data,dpin,descriptor=packet(context,result);provider,intrinsic=c.current_binding(ROOT,lambda:data,context,dpin)\n                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_via2_m3_fresh_rc_core.py\", line 142, in current_binding\n    cb=binding_namespace.CurrentBinding(packet,context,descriptor_pin)\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_via2_m3_fresh_rc_namespaces.py\", line 89, in __init__\n    require(set(context)=={\"source\",\"run_id\",\"attempt\"}and type(context[\"source\"])is str and re.fullmatch(\"[0-9a-f]{40}\",context[\"source\"]),\"explicit current source\")\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_via2_m3_fresh_rc_namespaces.py\", line 20, in require\n    if not ok:raise ValueError(message)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: explicit current source\n",
+  "passed_groups_before_failure": {
+    "context_refusals": 12,
+    "current_job_refusals": 13,
+    "emission_refusals": 32,
+    "lifecycle_cases": 15,
+    "namespace_positive": 6,
+    "namespace_refusals": 42,
+    "producer_positive": 6,
+    "producer_refusals": 53,
+    "publication_cases": 7,
+    "publication_refusals": 33,
+    "runtime_positive": 6,
+    "runtime_refusals": 32
+  },
+  "source_fixture_context_error": true,
+  "native_payload_acquired": false,
+  "RC_executed": false,
+  "simulation_executed": false,
+  "source_fixture_isolation_finding": "The negative run_phase call could create a failure receipt after authorization refusal; this run failed earlier and never reached that negative. The successor calls authorized directly and asserts no native output root.",
+  "successor_checker_source": "dbf28a45bbdb7290eae7085d0fddeed32e331a17",
+  "all_available_emitted_records_authenticated": true
+}
