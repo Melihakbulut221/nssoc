@@ -86,11 +86,11 @@ class Controls(unittest.TestCase):
     def test_full735_synthetic_transport_and_unselected_corruption(self):
         with tempfile.TemporaryDirectory()as d:self.acquisition_fixture(Path(d))
         with tempfile.TemporaryDirectory()as d:
-            with self.assertRaisesRegex(ValueError,"native member digest"):self.acquisition_fixture(Path(d),True)
+            with self.assertRaisesRegex(AssertionError,"native member digest other/member1"):self.acquisition_fixture(Path(d),True)
     def test_preservation_independent_failure_and_unexpected_native_bytes(self):
         with tempfile.TemporaryDirectory()as d:
             root=Path(d);work=root/"work";out=work/"out";out.mkdir(parents=True);evidence=root/"evidence";evidence.mkdir()
-            for n,b in(("a.json",b"{}\n"),("b.json",b"{}\n"),("unexpected.odb",b"EXPLICIT_SYNTHETIC_NATIVE_BYTES")):(out/n).write_bytes(b)
+            for n,b in(("a.json",b"{}\n"),("b.json",b"{}\n"),("unexpected.odb",b"EXPLICIT_SYNTHETIC_NATIVE_BYTES"),("native.odb.partial",b"\xff\x00"),("native.partial",b"\xfe"),("bad.json",b"\xff"),("events.jsonl.partial",b'{"partial_record":true}\n')):(out/n).write_bytes(b)
             (out/"work").mkdir();(out/"work/frozen.odb").write_bytes(b"EXPLICIT_UNCHANGED_INPUT")
             report=dict(terminal_errors=[]);real=h.shutil.copyfile
             def copyfile(src,dest):
@@ -98,13 +98,15 @@ class Controls(unittest.TestCase):
                 return real(src,dest)
             with patch.object(h.shutil,"copyfile",side_effect=copyfile):h.preserve_outputs(work,out,evidence,report)
             self.assertFalse(report["generated_output_preservation_complete"])
-            self.assertEqual(set(report["generated_output_inventory"]),{"b.json","unexpected.odb"})
+            self.assertEqual(set(report["generated_output_inventory"]),{"b.json","unexpected.odb","native.odb.partial","native.partial","bad.json","events.jsonl.partial"})
             self.assertFalse(report["generated_output_inventory"]["unexpected.odb"]["derived_text"])
+            for name in("native.odb.partial","native.partial","bad.json"):self.assertFalse(report["generated_output_inventory"][name]["derived_text"])
+            self.assertTrue(report["generated_output_inventory"]["events.jsonl.partial"]["derived_text"])
             self.assertFalse((evidence/"native/work").exists());self.assertEqual(len(report["terminal_errors"]),1)
     def test_complete_publication_catalog_and_no_retry_after_upload_failure(self):
         for fail in(False,True):
             with self.subTest(fail=fail),tempfile.TemporaryDirectory()as d:
-                out=Path(d)/"evidence";out.mkdir();(out/"result.json").write_bytes(b"{}\n");(out/"empty.stderr").write_bytes(b"");(out/"unexpected.odb").write_bytes(b"SYNTHETIC")
+                out=Path(d)/"evidence";out.mkdir();(out/"result.json").write_bytes(b"{}\n");(out/"empty.stderr").write_bytes(b"");(out/"unexpected.odb").write_bytes(b"SYNTHETIC");(out/"native.odb.partial").write_bytes(b"\xff");(out/"valid.jsonl.partial").write_bytes(b'{"synthetic":true}\n')
                 ctx=self.ctx();proof=dict(tag="synthetic",release_id=9);published={};calls=[]
                 def destination(ctx,empty,expected=None):
                     if empty:self.assertEqual(published,{})
@@ -121,8 +123,9 @@ class Controls(unittest.TestCase):
                     else:
                         h.publication(ctx,proof,out)
                         catalog=q.decode((out.parent/"obstacle-publication/readback-catalog.json").read_bytes())
-                        self.assertEqual(set(catalog["files"]),{"result.json","empty.stderr","unexpected.odb"})
+                        self.assertEqual(set(catalog["files"]),{"result.json","empty.stderr","unexpected.odb","native.odb.partial","valid.jsonl.partial"})
                         self.assertTrue(catalog["files"]["empty.stderr"]["embedded_empty"]);self.assertFalse(catalog["files"]["unexpected.odb"]["derived_text"])
+                        self.assertFalse(catalog["files"]["native.odb.partial"]["derived_text"]);self.assertTrue(catalog["files"]["valid.jsonl.partial"]["derived_text"])
                         self.assertIn("publication-receipt.json",published)
     def test_source_consumer_refusal_precedes_acquisition_and_primary_survives_cleanup(self):
         with tempfile.TemporaryDirectory()as d:
