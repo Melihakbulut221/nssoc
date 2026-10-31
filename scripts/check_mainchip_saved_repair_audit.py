@@ -5,7 +5,7 @@ import ast,copy,hashlib,json,os,sys
 from pathlib import Path
 def main():
     path=Path(__file__).with_name("mainchip_saved_repair_audit.py")
-    tree=ast.parse(path.read_bytes());names={"digest","compact","difference","geometry"}
+    tree=ast.parse(path.read_bytes());names={"digest","compact","difference","geometry","native_pointer"}
     nodes=[n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name in names]
     assert len(nodes)==len(names)
     scope={"hashlib":hashlib,"json":json}
@@ -59,8 +59,18 @@ def main():
         try:g(bad)
         except ValueError:rows.append(name)
         else:raise AssertionError(name)
-    assert len(rows)==18 and len(set(rows))==18
-    result=dict(status="PASS_SAVED_REPAIR_AUDIT_SOURCE_CONTROLS",passed_cases=rows,count=18,
+    native_pointer=scope["native_pointer"]
+    class Proxy:
+        def __init__(self,address):self.this=address
+    a,b=Proxy(4096),Proxy(4096)
+    check("distinct wrappers same native address",a is not b and native_pointer(a)==native_pointer(b))
+    check("distinct native addresses remain distinct",native_pointer(a)!=native_pointer(Proxy(8192)))
+    for name,value in(("null native address rejected",Proxy(0)),("negative native address rejected",Proxy(-1)),("missing native pointer rejected",object())):
+        try:native_pointer(value)
+        except(ValueError,AttributeError):rows.append(name)
+        else:raise AssertionError(name)
+    assert len(rows)==23 and len(set(rows))==23
+    result=dict(status="PASS_SAVED_REPAIR_AUDIT_SOURCE_CONTROLS",passed_cases=rows,count=23,
       source=os.environ["GITHUB_SHA"],run_id=int(os.environ["GITHUB_RUN_ID"]),attempt=int(os.environ["GITHUB_RUN_ATTEMPT"]),
       source_pin=hashlib.sha256(path.read_bytes()).hexdigest(),native_executed=False,
       physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)

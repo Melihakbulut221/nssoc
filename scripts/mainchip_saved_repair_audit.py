@@ -82,15 +82,22 @@ def snapshots():
       protected_sets_equal=delta["protected_sets_equal"],clock_record_pins_equal=delta["clock_record_pins_equal"],
       material_equal=delta["material_equal"],**p.FLAGS))
 
+def native_pointer(obj):
+    # SWIG .this holds the native C++ address. Scope is one live database;
+    # never compare or persist these values as IDs across loads/processes.
+    address=int(obj.this)
+    if address<=0:raise ValueError("null or invalid native pointer")
+    return address
+
 def master_key(master):
-    return dict(library_id=master.getLib().getId(),library_name=master.getLib().getName(),
-      master_id=master.getId(),master_name=master.getName(),master_type=str(master.getType()),
+    return dict(library_address=native_pointer(master.getLib()),library_name=master.getLib().getName(),
+      master_address=native_pointer(master),master_name=master.getName(),master_type=str(master.getType()),
       width=master.getWidth(),height=master.getHeight(),
-      mterms={m.getName():dict(id=m.getId(),io=str(m.getIoType()),sigtype=str(m.getSigType()))
+      mterms={m.getName():dict(address=native_pointer(m),io=str(m.getIoType()),sigtype=str(m.getSigType()))
               for m in master.getMTerms()})
 
 def net_key(net):
-    return None if net is None else dict(id=net.getId(),name=net.getName(),sigtype=str(net.getSigType()))
+    return None if net is None else dict(address=native_pointer(net),name=net.getName(),sigtype=str(net.getSigType()))
 
 def master_identity():
     before=read("saved-before-fingerprints.json");delta=read("saved-delta.json")
@@ -102,6 +109,14 @@ def master_identity():
         p.exact(sorted(set(before["instances"])-names),delta["removed_instances"],"actual removed names")
         template=b.findInst("ANTENNA_1573");p.require(template is not None,"actual template")
         tm=template.getMaster();key=master_key(tm);rows=[]
+        p.require(native_pointer(template.getMaster())==native_pointer(tm),"repeat native master pointer")
+        p.require(native_pointer(tm.getLib())==native_pointer(template.getMaster().getLib()),"repeat native library pointer")
+        different=next((i.getMaster()for i in b.getInsts()if native_pointer(i.getMaster())!=native_pointer(tm)),None)
+        p.require(different is not None and native_pointer(different)!=native_pointer(template.getMaster()),"distinct native master control")
+        scope=dict(database_address=native_pointer(db),block_address=native_pointer(b),
+          lifetime="This loaded database only; addresses are not persistent IDs.",
+          repeat_master_pointer_equal=True,repeat_library_pointer_equal=True,
+          distinct_master=dict(name=different.getName(),address=native_pointer(different)))
         for name in delta["added_instances"]:
             inst=b.findInst(name);master=inst.getMaster()
             pins={}
@@ -114,7 +129,7 @@ def master_identity():
               stable_scoped_master_equal=master_key(master)==key,
               legacy_master_wrapper_equal=bool(master==tm),
               legacy_repeated_master_wrapper_equal=bool(inst.getMaster()==inst.getMaster()),pins=pins))
-        save("saved-native-master-identity.json",dict(template=key,
+        save("saved-native-master-identity.json",dict(template=key,pointer_scope=scope,
           template_repeated_wrapper_equal=bool(template.getMaster()==template.getMaster()),instances=rows,
           stable_same_master_count=sum(x["stable_scoped_master_equal"]for x in rows),
           legacy_wrapper_equal_count=sum(x["legacy_master_wrapper_equal"]for x in rows),

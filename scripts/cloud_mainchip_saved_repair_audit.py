@@ -104,8 +104,8 @@ def perform(ctx,proof,evidence):
     authorize_native(source_gate())
     controls=control_evidence(ctx)
     audit=f.decode(c.secure_file(ROOT,"bulk-postdrt-integration-controls/audit-controls.json").read_bytes())
-    f.require(audit["status"]=="PASS_SAVED_REPAIR_AUDIT_SOURCE_CONTROLS"and audit["count"]==18
-      and len(set(audit["passed_cases"]))==18 and audit["source"]==ctx["source"]and audit["run_id"]==ctx["run_id"]
+    f.require(audit["status"]=="PASS_SAVED_REPAIR_AUDIT_SOURCE_CONTROLS"and audit["count"]==23
+      and len(set(audit["passed_cases"]))==23 and audit["source"]==ctx["source"]and audit["run_id"]==ctx["run_id"]
       and audit["attempt"]==1 and audit["native_executed"]is False,"same-source saved audit controls")
     f.write_new(evidence/"saved-audit-source-controls.json",f.encode(audit))
     f.write_new(evidence/"same-source-controls.json",f.encode(controls))
