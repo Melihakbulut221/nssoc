@@ -1,0 +1,22 @@
+{
+  "status": "PASS_NATIVE_PDK_CONTACT_EQUATION_EXECUTED_REQUIRES_COMPACT_MODEL_COMPARISON",
+  "function_source": "def CbTapCalc(calc, r, l, w, cell) :\n\n    global techparams\n\n    raspec = Numeric(techparams[cell+'_raspec'])*1.0e12 ;# specific res per sq. [um] (float)\n    rpspec = Numeric(techparams[cell+'_rpspec'])*1.0e6  ;# specific res. per [um] perimeter (float)\n\n    w = w*1.0e6 ;# um (needed for contact calculation)\n    l = l*1.0e6\n    a = l*w\n    p = 2.0*(l+w)\n\n    result = 0\n    if calc == 'R' :\n        result = 1.0/(1.0/(raspec/a) + 1.0/(rpspec/p))\n    elif calc == 'l' :\n        result = (raspec*rpspec- r*raspec*2.0*w)/(r*raspec*2.0+r*rpspec*w)*1.0e-6\n    elif calc == 'w' :\n        result = (raspec*rpspec- r*raspec*2.0*l)/(r*raspec*2.0+r*rpspec*l)*1.0e-6\n    elif calc == 'wl' :\n        result = ((-4.0*r*raspec + sqrt(16.0*r*r*raspec*raspec + 4.0*r*rpspec*rpspec*raspec))/(2.0*r*rpspec))*1.0e-6\n\n    return result\n",
+  "signature": "(calc, r, l, w, cell)",
+  "source_sha256": "131cad3e7c52a5427cbe74a19934b58ed008ab02bc2b3b20bbe060f0c563802e",
+  "cases": [
+    {
+      "w_um": 2,
+      "l_um": 2,
+      "A_um2": 4,
+      "P_um": 8,
+      "resistance_ohm": 81.66666666666666
+    },
+    {
+      "w_um": 2,
+      "l_um": 20,
+      "A_um2": 40,
+      "P_um": 44,
+      "resistance_ohm": 11.666666666666666
+    }
+  ]
+}
