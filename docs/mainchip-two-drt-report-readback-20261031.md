@@ -1,0 +1,5 @@
+# Two rejected mainchip DRT reports
+
+This source-only derivative of collector a472ca9f5955d28d8767b8f51aa34ba553b9b699 authenticates the same failed run 41211382427 and all 735 archived members on GitHub. It exports only the two exact iteration 5 and 10 DRT report paths (239,492 bytes total); arbitrary .rpt paths remain rejected. The previously preserved 77 diagnostic reports are not duplicated. Original report parsing, authenticated transport, failure recording, independent empty exact-source release reservation, and additive publication verification remain unchanged.
+
+The actual native failure was the 10 GiB group RSS guard, not a proven routing success. Iteration 14 retained 527 DRC violations, including 414 Metal2 shorts. These two reports are for localization before choosing a routing repair. No CAD, geometry editing, rerouting, physical acceptance, timing acceptance, or full PHY acceptance is authorized by this collector. The 9 existing controls and 3 new exact-report/refusal methods run only on GitHub.

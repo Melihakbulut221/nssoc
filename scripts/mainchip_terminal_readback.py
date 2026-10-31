@@ -5,11 +5,12 @@ import argparse,hashlib,json,os,re,subprocess,tarfile,time
 from pathlib import Path,PurePosixPath
 ROOT=Path(__file__).resolve().parents[1]
 REPO="Melihakbulut221/nssoc"
-BRANCH="codex/mainchip-stale-wire-terminal-readback"
-GROUP="mainchip-stale-wire-terminal-readback"
+BRANCH="codex/mainchip-drt-report-readback"
+GROUP="mainchip-drt-report-readback"
 CONFIG="scripts/mainchip-stale-wire-terminal-inputs.json"
 MANIFEST="scripts/mainchip-stale-wire-terminal-source.json"
 OUT=ROOT/"terminal-readback"
+DRT_REPORTS=('work/bulk-postdrt-antenna/fixed-routing.drc-5.rpt', 'work/bulk-postdrt-antenna/fixed-routing.drc-10.rpt')
 def require(ok,why):
     if not ok:raise ValueError(why)
 def unique(pairs):
@@ -50,6 +51,8 @@ def source_gate():
     c=decode((ROOT/CONFIG).read_bytes())
     require(c["producer_run"]==41211382427 and c["producer_source"]=="ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9","producer source")
     require(c["read_only"]is True and c["physical_acceptance"]is False,"readonly source")
+    require(c["selected"]==list(DRT_REPORTS),"exact two DRT reports")
+    require(sum(c["members"][n]["bytes"]for n in DRT_REPORTS)==239492,"original DRT report byte total")
     return c,head
 def immutable_release(r):
     return dict(id=r["id"],tag_name=r["tag_name"],target_commitish=r["target_commitish"],
@@ -97,7 +100,7 @@ def scan(archive,index,selected,out):
             require(m.size==index[n]["bytes"],"native member size")
             h=hashlib.sha256();count=0;target=None
             if n in selected:
-                require(n.endswith((".json",".jsonl",".stdout",".stderr",".log",".tcl")),"report whitelist")
+                require(n.endswith((".json",".jsonl",".stdout",".stderr",".log",".tcl"))or n in DRT_REPORTS,"report whitelist")
                 target=out/n;target.parent.mkdir(parents=True,exist_ok=True)
             stream=tf.extractfile(m);require(stream is not None,"regular stream")
             with stream:
@@ -164,7 +167,7 @@ def run():
         (OUT/"producer-after.json").write_bytes(encode(after))
         (OUT/"candidate-outputs.json").write_bytes((work/"candidate-outputs.json").read_bytes())
         (OUT/"candidate-parts.json").write_bytes((work/"candidate-parts.json").read_bytes())
-        result=dict(status="PASS_AUTHENTICATED_REJECTED_ROUTING_REPORT_READBACK",producer_run=c["producer_run"],producer_source=c["producer_source"],source=head,run=int(os.environ["GITHUB_RUN_ID"]),archive=parts["archive"],all_members_authenticated=len(report["all_members"]),selected_reports=len(report["reports"]),report_pins=report["reports"],native_tools_executed=False,reroute_executed=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
+        result=dict(status="PASS_AUTHENTICATED_TWO_REJECTED_DRT_REPORTS_READBACK",producer_run=c["producer_run"],producer_source=c["producer_source"],source=head,run=int(os.environ["GITHUB_RUN_ID"]),archive=parts["archive"],all_members_authenticated=len(report["all_members"]),selected_reports=len(report["reports"]),report_pins=report["reports"],native_tools_executed=False,reroute_executed=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
         (OUT/"result.json").write_bytes(encode(result))
         files=sorted(p for p in OUT.rglob("*")if p.is_file())
         # Preserve relative names in an explicit catalog; release asset names are unique path hashes.

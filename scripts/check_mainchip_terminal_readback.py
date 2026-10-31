@@ -83,6 +83,30 @@ class Controls(unittest.TestCase):
     def test_nonhosted_refusal_precedes_network(self):
         with patch.dict(os.environ,{"GITHUB_ACTIONS":"false"}),patch.object(m,"api",side_effect=AssertionError("network")):
             with self.assertRaisesRegex(ValueError,"hosted only"):m.source_gate()
+
+    def test_only_two_exact_drt_reports_can_be_selected(self):
+        reports={n:("violation type: Short\nsrcs: net_a net_b\nbbox = ( 1.000, 2.000 ) - ( 3.000, 4.000 ) on Layer met2\n"+n+"\n").encode()for n in m.DRT_REPORTS}
+        self.raw.update(reports);self.index={n:dict(bytes=len(b),sha256=m.sha(b))for n,b in self.raw.items()}
+        self.pack();result=self.scan(selected=list(m.DRT_REPORTS))
+        self.assertEqual(set(result["all_members"]),set(self.raw))
+        self.assertEqual(set(result["reports"]),set(m.DRT_REPORTS))
+        for n,b in reports.items():self.assertEqual((self.root/"reports-out"/n).read_bytes(),b)
+        self.assertFalse((self.root/"reports-out/native/design.odb").exists())
+        self.assertFalse((self.root/"reports-out/reports/failure.json").exists())
+    def test_arbitrary_rpt_path_and_case_are_rejected(self):
+        for n in("native/design.rpt","work/bulk-postdrt-antenna/fixed-routing.drc-15.rpt","work/bulk-postdrt-antenna/fixed-routing.drc-5.RPT"):
+            with self.subTest(n=n),tempfile.TemporaryDirectory()as td:
+                raw=b"not an authorized DRT report\n";index={n:dict(bytes=len(raw),sha256=m.sha(raw))}
+                self.pack([(n,raw,tarfile.REGTYPE)])
+                with self.assertRaisesRegex(ValueError,"whitelist"):m.scan(self.archive,index,[n],Path(td)/"out")
+    def test_exact_drt_report_still_requires_digest_and_utf8(self):
+        n=m.DRT_REPORTS[0]
+        for raw,bad_hash in((b"valid text\n",True),(b"\xff\x00",False)):
+            with self.subTest(raw=raw),tempfile.TemporaryDirectory()as td:
+                self.pack([(n,raw,tarfile.REGTYPE)])
+                index={n:dict(bytes=len(raw),sha256=("0"*64 if bad_hash else m.sha(raw)))}
+                with self.assertRaises((ValueError,UnicodeError)):m.scan(self.archive,index,[n],Path(td)/"out")
+
 if __name__=="__main__":
     if os.environ.get("GITHUB_ACTIONS")!="true":raise RuntimeError("Run controls on GitHub only")
     unittest.main(verbosity=2)
