@@ -65,13 +65,13 @@ jobs:
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['APPROVED_SOURCE']==e['GITHUB_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           p=Path('scripts/cdr-eight-drain-vi-bias-off-methods-v1.json');raw=p.read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='6814692d7207bbe1fa10299497650912187e06d3908fd4120ac03e020ea4f9ff'
+          assert hashlib.sha256(raw).hexdigest()=='ff78e6c288dc31ceb7b1dbbc4b7689d2d008056fc560d8fcbbb9b1265d7106a3'
           m=json.loads(raw)
           assert m['branch']=='codex/cdr-eight-drain-storage-preflight-v1'
           assert subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()=='https://github.com/Melihakbulut221/nssoc'
           checkout_free_after_bootstrap=shutil.disk_usage('.').free
           names=sorted(set(m['protected_sha256'])|{'scripts/cdr-eight-drain-vi-bias-off-methods-v1.json','.github/workflows/cloud-evidence-summary.yml'})
-          assert len(names)==1980
+          assert len(names)==1983
           assert all(not any(c in n for c in '*?[]!\\ \n')and '..'not in n.split('/')for n in names)
           patterns=''.join('/'+n+'\n'for n in names)
           # stdin avoids the OS per-string limit hit by a large action input.
@@ -137,6 +137,14 @@ jobs:
               present=p.is_file();raw=p.read_bytes()if present else b'';chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
               print('VI_TRANSPORT_INDEX '+json.dumps(dict(path=name,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
               for i,b in enumerate(chunks):print('VI_TRANSPORT_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          closure=Path('hw/soc/out/cdr-eight-drain-single-vi-source-controls/closure')
+          assert not closure.is_symlink()
+          for name in ('preparation/worker/result.json','vi/worker/result.json','receipt.json'):
+              p=closure/name
+              assert all(not q.is_symlink()for q in (p,*p.parents))
+              present=p.is_file();raw=p.read_bytes()if present else b'';chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
+              print('VI_CLOSURE_INDEX '+json.dumps(dict(path=name,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):print('VI_CLOSURE_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
           PY
       - name: Preserve complete source success or failure
         if: always()
@@ -198,13 +206,13 @@ jobs:
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['APPROVED_SOURCE']==e['GITHUB_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           p=Path('scripts/cdr-eight-drain-vi-bias-off-methods-v1.json');raw=p.read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='6814692d7207bbe1fa10299497650912187e06d3908fd4120ac03e020ea4f9ff'
+          assert hashlib.sha256(raw).hexdigest()=='ff78e6c288dc31ceb7b1dbbc4b7689d2d008056fc560d8fcbbb9b1265d7106a3'
           m=json.loads(raw)
           assert m['branch']=='codex/cdr-eight-drain-storage-preflight-v1'
           assert subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()=='https://github.com/Melihakbulut221/nssoc'
           checkout_free_after_bootstrap=shutil.disk_usage('.').free
           names=sorted(set(m['protected_sha256'])|{'scripts/cdr-eight-drain-vi-bias-off-methods-v1.json','.github/workflows/cloud-evidence-summary.yml'})
-          assert len(names)==1980
+          assert len(names)==1983
           assert all(not any(c in n for c in '*?[]!\\ \n')and '..'not in n.split('/')for n in names)
           patterns=''.join('/'+n+'\n'for n in names)
           # stdin avoids the OS per-string limit hit by a large action input.
@@ -351,13 +359,13 @@ jobs:
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['APPROVED_SOURCE']==e['GITHUB_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           p=Path('scripts/cdr-eight-drain-vi-bias-off-methods-v1.json');raw=p.read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='6814692d7207bbe1fa10299497650912187e06d3908fd4120ac03e020ea4f9ff'
+          assert hashlib.sha256(raw).hexdigest()=='ff78e6c288dc31ceb7b1dbbc4b7689d2d008056fc560d8fcbbb9b1265d7106a3'
           m=json.loads(raw)
           assert m['branch']=='codex/cdr-eight-drain-storage-preflight-v1'
           assert subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()=='https://github.com/Melihakbulut221/nssoc'
           checkout_free_after_bootstrap=shutil.disk_usage('.').free
           names=sorted(set(m['protected_sha256'])|{'scripts/cdr-eight-drain-vi-bias-off-methods-v1.json','.github/workflows/cloud-evidence-summary.yml'})
-          assert len(names)==1980
+          assert len(names)==1983
           assert all(not any(c in n for c in '*?[]!\\ \n')and '..'not in n.split('/')for n in names)
           patterns=''.join('/'+n+'\n'for n in names)
           # stdin avoids the OS per-string limit hit by a large action input.

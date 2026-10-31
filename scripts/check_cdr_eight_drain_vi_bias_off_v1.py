@@ -7,6 +7,7 @@ from unittest.mock import patch
 import cdr_eight_drain_vi_bias_off_admission_v1 as a
 import cloud_cdr_eight_drain_vi_bias_off_stage_v1 as stage
 import check_cdr_eight_drain_storage_v1 as proven
+import check_cdr_eight_drain_vi_source_closure_v1 as closure
 ROOT=a.ROOT
 QUALIFIED=("context","method","reservations","source_prerequisite","derivation","source_integrity","storage_regression")
 def require(v,msg):
@@ -305,7 +306,9 @@ def main():
         for name,fn in(("context",context_controls),("method",lambda:method_controls(m)),("reservations",reservation_controls),
           ("source_prerequisite",prerequisite_controls),("derivation",derivation_controls)):
             report[name]=fn()
-            if name=="source_prerequisite":report[name]["hosted_log_transport"]=transport_controls()
+            if name=="source_prerequisite":
+                report[name]["runtime_source_closure"]=closure.controls(m)
+                report[name]["hosted_log_transport"]=transport_controls()
             report["qualified_controls"][name]=True
         existing=json.loads((ROOT/"hw/soc/out/cdr-eight-drain-storage-source-controls/result.json").read_bytes())
         require(existing["status"]=="PASS_STORAGE_SOURCE_CONTROLS_NOT_NATIVE_OR_ELECTRICAL_ACCEPTANCE"
