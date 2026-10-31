@@ -81,8 +81,9 @@ class Controls(unittest.TestCase):
         raw=(a.ROOT/"scripts/check_mainchip_route12_all_clocks.py").read_bytes()
         before=ast.parse(raw);after=a.gate_tree(raw)
         changed=[]
+        expected=ast.parse("assert len(list(b.getInsts()))=={'before':153130,'after':154480}[label]").body[0]
         for node in ast.walk(after):
-            if isinstance(node,ast.Assert)and isinstance(node.test,ast.Compare)and isinstance(node.test.comparators[0],ast.Subscript):
+            if isinstance(node,ast.Assert)and ast.dump(node)==ast.dump(expected):
                 changed.append(node);node.test.comparators[0]=ast.Constant(value=153130)
         self.assertEqual(len(changed),1);self.assertEqual(ast.dump(before),ast.dump(after))
         with self.assertRaises(AssertionError):a.gate_tree(raw+b"\n")

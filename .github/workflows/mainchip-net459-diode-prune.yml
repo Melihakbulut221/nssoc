@@ -90,7 +90,7 @@ jobs:
           import ast,hashlib,json,sys
           from pathlib import Path
           raw=Path('scripts/mainchip-stale-wire-routing-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='8aed9f4b895fdfaec76b3d365d2c0ca0322018bcf1a3695de4fddc01ba7e51c9'
+          assert hashlib.sha256(raw).hexdigest()=='da69d51c6a6e2a7a991039bf90d2c317eebdb4d7b6bb010af843b7b6aeeb8ee6'
           sys.path.insert(0,'scripts')
           import mainchip_stale_wire_routing as a
           assert a.source_gate()==json.loads(raw)
@@ -242,7 +242,7 @@ jobs:
           host.authorize_native(m)
           import mainchip_stale_wire_routing as a
           newraw=Path(a.MANIFEST).read_bytes()
-          assert hashlib.sha256(newraw).hexdigest()=='8aed9f4b895fdfaec76b3d365d2c0ca0322018bcf1a3695de4fddc01ba7e51c9'
+          assert hashlib.sha256(newraw).hexdigest()=='da69d51c6a6e2a7a991039bf90d2c317eebdb4d7b6bb010af843b7b6aeeb8ee6'
           assert a.source_gate()==json.loads(newraw)
           print('Exact source and qualified adapter projection verified; no native acquisition yet.')
           PY
