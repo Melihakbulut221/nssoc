@@ -9,10 +9,13 @@ def main():
     assert os.environ.get("GITHUB_ACTIONS")=="true"and os.environ["GITHUB_RUN_ATTEMPT"]=="1"
     solver=a.load_solver()
     rows=[]
-    def ok(name,fn):fn();rows.append(name)
+    def record(name):
+        assert name not in rows
+        rows.append(name);print(json.dumps(dict(completed_source_control=name,index=len(rows),synthetic_inputs_only=True)),flush=True)
+    def ok(name,fn):fn();record(name)
     def no(name,fn):
         try:fn()
-        except(AssertionError,ValueError,KeyError):rows.append(name)
+        except(AssertionError,ValueError,KeyError):record(name)
         else:raise AssertionError("accepted invalid fixture: "+name)
     def eq(x,y):assert x==y
     wire=".subckt pump_wires P_a T001_C P_b T001_E\nR1 P_a T001_C 2\nR2 P_b T001_E 3\nC1 T001_C sub 0.5p\n.ends pump_wires\n"
@@ -86,7 +89,7 @@ def main():
     result=solver.solve(edges,"a","w_t001_c")
     ok("actual imported solver exact two terminal value",lambda:eq(result["effective_wire_R_ohm"],2.))
     no("incomplete real model census",lambda:a.analyze(model,wire,contract,anchors,res,ext,mag,solver.solve))
-    assert len(rows)==33 and len(set(rows))==32
+    assert len(rows)==33 and len(set(rows))==33
     result=dict(status="PASS_CURRENT_CDR_WIRE_OWNERSHIP_SOURCE_CONTROLS",count=33,passed_cases=rows,
       source=os.environ["GITHUB_SHA"],run_id=int(os.environ["GITHUB_RUN_ID"]),attempt=1,
       synthetic_inputs_only=True,actual_native_inputs_acquired=False,actual_model_analyzed=False,**a.FLAGS)
