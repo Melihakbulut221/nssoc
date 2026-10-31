@@ -167,6 +167,7 @@ def reduce_report(report,scope,emit_witness):
             base={k:v for k,v in shape.items()if k not in("relation","layer_relation","observation")}
             if pin:q.require(base==pin_lookup[(name,key)],"witness equals actual complete endpoint pin record")
             ep=endpoint_index[name];details={}
+            if pin:details={k:shape[k]for k in("instance","terminal","master","added_diode")if k in shape}
             if shape["kind"]in WIRE_KINDS:
                 encoded=report["endpoint_nets"][name]["encoded"]
                 q.require(encoded["wire_present"]is True and shape["route_metadata"]==encoded["metadata"]and shape["encoded_classes"]==encoded["paths"],"ordinary wire metadata equality")

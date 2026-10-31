@@ -18,7 +18,7 @@ def fixture():
         else:
             pin=dict(owner=name,record_id=["iterm","inst"+str(i),"A","geometry",0],
                      kind="iterm-pin",layer="Metal2",box=b,instance="inst"+str(i),terminal="A",
-                     master=["fixture_lib","fixture_master"],added_diode=False)
+                     master=["fixture_lib","fixture_master"],added_diode=i==3)
         pins[name]=pin;present=membership!="mutable_cleared_manifest"
         counts={pin["kind"]:1}
         if present:counts["wire"]=1
@@ -88,6 +88,8 @@ class FullReductionControls(unittest.TestCase):
         special=next(w for w in rows if w["kind"]=="special-via")
         self.assertEqual(special["evidence_group"],"special-PG")
         self.assertEqual(special["details"]["via"]["component_count"],2)
+        diode=next(w for w in rows if w["owner"]=="n003"and w["kind"]=="iterm-pin")
+        self.assertEqual(diode["details"],dict(instance="inst3",terminal="A",master=["fixture_lib","fixture_master"],added_diode=True))
     def test_empty_witness_marker_is_retained(self):
         self.report["markers"][0]["endpoint_witnesses"]=[]
         result,rows=self.run_fixture()
