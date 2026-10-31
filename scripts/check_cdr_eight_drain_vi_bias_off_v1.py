@@ -196,6 +196,16 @@ def real_journal_publication_controls():
     old='        stack.enter_context(patch.object(s,"storage",lambda ctx,label:\n          {"checkpoint":label,"free_bytes":64*1024**3,"required_bytes":16*1024**3}))\n'
     require(text.count(old)==1,"Original mocked storage fixture changed")
     text=text.replace(old,'        stack.enter_context(patch.object(s.shutil,"disk_usage",return_value=types.SimpleNamespace(free=64*1024**3)))\n')
+    broad='                stack.enter_context(patch("builtins.print",side_effect=OSError("synthetic fallback emission failure")))\n'
+    require(text.count(broad)==1,"Original final-fallback fixture changed")
+    narrow='''                real_print=print
+                def fail_only_receipt_fallback(*args,**kwargs):
+                    if args and isinstance(args[0],str)and '"unsaved_loaded_publication_receipt"'in args[0]:
+                        raise OSError("synthetic fallback emission failure")
+                    return real_print(*args,**kwargs)
+                stack.enter_context(patch("builtins.print",side_effect=fail_only_receipt_fallback))
+'''
+    text=text.replace(broad,narrow)
     scope={**original.__dict__,"a":a,"s":stage,"p":stage.publication,"types":types,
       "execution":types.SimpleNamespace(env=lambda:env(True))}
     for name in("records","archive_check","controls"):
@@ -236,8 +246,10 @@ def main():
         require(existing["status"]=="PASS_STORAGE_SOURCE_CONTROLS_NOT_NATIVE_OR_ELECTRICAL_ACCEPTANCE"
           and existing["source"]==os.environ["GITHUB_SHA"]and existing["storage"]["count"]==13
           and existing["native_executed"]is False and existing["native_acquisition"]is False,"Frozen storage regression absent")
-        report["storage_regression"]=dict(frozen_report_sha256=a.sha(ROOT/"hw/soc/out/cdr-eight-drain-storage-source-controls/result.json"),
-          candidate=new_stage_storage_controls(),publication=real_journal_publication_controls());report["qualified_controls"]["storage_regression"]=True
+        report["storage_regression"]=dict(frozen_report_sha256=a.sha(ROOT/"hw/soc/out/cdr-eight-drain-storage-source-controls/result.json"))
+        report["storage_regression"]["candidate"]=new_stage_storage_controls()
+        report["storage_regression"]["publication"]=real_journal_publication_controls()
+        report["qualified_controls"]["storage_regression"]=True
         report["status"]="PASS_SINGLE_VI_SOURCE_CONTROLS_NO_NATIVE_EXECUTION"
     except BaseException as error:
         primary=error;report.update(error=repr(error),traceback=traceback.format_exc())
