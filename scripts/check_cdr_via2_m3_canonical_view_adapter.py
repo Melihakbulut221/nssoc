@@ -160,9 +160,9 @@ def transport_controls(ctx,result):
 
 def emission_controls():
     positive={'result.json':b'{"explicit_synthetic":true}', 'failure.stderr':b'actual failure mentions x.gds and schematic.spice without redaction', 'worker.stdout':b'explicit synthetic stdout', 'summary.jsonl':b'{"synthetic":true}\n', 'trace.log':b'explicit synthetic log'}
-    suffixes=('.odb','.gds','.gds2','.gdsii','.oas','.oasis','.def','.lef','.spef','.spice','.sp','.cir','.l2n','.lvsdb','.ext','.raw','.wave','.vcd','.fst','.bin','.tar','.gz','.zip','.7z')
+    suffixes=('.odb','.gds','.gds2','.gdsii','.oas','.oasis','.def','.lef','.spef','.spice','.sp','.cir','.l2n','.lvsdb','.lyrdb','.ext','.raw','.wave','.vcd','.fst','.bin','.tar','.gz','.zip','.7z')
     negative={('native/view/payload'+suffix+('.log'if suffix in('.spice','.sp','.cir')else'.json')):b'EXPLICIT_SYNTHETIC_NOT_NATIVE_BYTES'for suffix in suffixes}
-    negative.update({'native/view/UPPER.GDS.JsOn':b'EXPLICIT_SYNTHETIC_NOT_NATIVE_BYTES','native/model.gds/result.json':b'EXPLICIT_SYNTHETIC_NOT_NATIVE_BYTES','inputs/result.json':b'EXPLICIT_SYNTHETIC_NOT_NATIVE_BYTES','unknown.txt':b'EXPLICIT_SYNTHETIC_NOT_NATIVE_BYTES','invalid.json':b'\xff\xfe'})
+    negative.update({'.gds.json':b'EXPLICIT_SYNTHETIC_NOT_NATIVE_BYTES','.gds/result.json':b'EXPLICIT_SYNTHETIC_NOT_NATIVE_BYTES','native/view/UPPER.GDS.JsOn':b'EXPLICIT_SYNTHETIC_NOT_NATIVE_BYTES','native/model.gds/result.json':b'EXPLICIT_SYNTHETIC_NOT_NATIVE_BYTES','inputs/result.json':b'EXPLICIT_SYNTHETIC_NOT_NATIVE_BYTES','unknown.txt':b'EXPLICIT_SYNTHETIC_NOT_NATIVE_BYTES','invalid.json':b'\xff\xfe'})
     with tempfile.TemporaryDirectory(prefix='synthetic-derived-name-boundary-')as temp:
         root=Path(temp);emitted=[]
         for name,raw in{**positive,**negative}.items():
