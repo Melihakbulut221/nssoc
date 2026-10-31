@@ -26,6 +26,7 @@ def controls(root,config):
         ('changed source job',lambda d:d['jobs']['jobs'][0].__setitem__('head_sha','0'*40)),
         ('changed terminal step',lambda d:d['jobs']['jobs'][0]['steps'][0].__setitem__('conclusion','failure')),
         ('wrong release',lambda d:d['release'].__setitem__('id',1)),
+        ('changed release target',lambda d:d['release'].__setitem__('target_commitish','0'*40)),
         ('draft release',lambda d:d['release'].__setitem__('draft',True)),
         ('release no longer prerelease',lambda d:d['release'].__setitem__('prerelease',False)),
         ('missing asset',lambda d:d['release']['assets'].pop()),

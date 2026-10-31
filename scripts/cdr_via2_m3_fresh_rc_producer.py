@@ -88,6 +88,7 @@ def validate_live(p,original,run,jobs,release,tag):
     for job in jobs['jobs']:
         for field in('id','run_id','run_attempt','head_sha','name','status','conclusion','steps'):require(job[field]==old[job['id']][field],'producer terminal job '+field)
         require(job['conclusion']=='success'and all(s['conclusion']in('success','skipped')for s in job['steps']),'successful producer steps')
+    require(release['target_commitish']==SOURCE==original['release']['target_commitish'],'immutable producer release target')
     require(release['id']==p['release_id']==430197123 and release['tag_name']==p['tag']and release['draft']is False and release['prerelease']is True,'exact original public prerelease')
     require(tag['object']['type']=='commit'and tag['object']['sha']==SOURCE and tag['ref']=='refs/tags/'+p['tag'],'exact immutable producer tag')
     assets={a['name']:a for a in release['assets']};require(len(assets)==len(release['assets'])==3 and set(assets)=={a['name']for a in p['assets']},'complete original assets')
