@@ -74,6 +74,10 @@ def execute(args,directory,label,env,seconds=900):
     command=['timeout','--signal=TERM','--kill-after=10s',str(seconds)+'s',*map(str,args)]
     with out.open('xb')as stdout,err.open('xb')as stderr:
         completed=subprocess.run(command,cwd=BENCH,env=env,stdout=stdout,stderr=stderr,check=False)
+    if completed.returncode:
+        print('ACTUAL_FAILED_COMMAND '+label,flush=True)
+        print(out.read_text(errors='replace'),flush=True)
+        print(err.read_text(errors='replace'),flush=True)
     return dict(command=command,returncode=completed.returncode,
       stdout=dict(path=str(out),bytes=out.stat().st_size,sha256=sha(out.read_bytes())),
       stderr=dict(path=str(err),bytes=err.stat().st_size,sha256=sha(err.read_bytes())))
