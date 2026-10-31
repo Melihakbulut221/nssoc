@@ -1,0 +1,7 @@
+{
+  "error": "AssertionError('each new diode requires a changed owned route')",
+  "full_phy_accepted": false,
+  "physical_acceptance": false,
+  "timing_accepted": false,
+  "traceback": "Traceback (most recent call last):\n  File \"/work/tail-source/scripts/mainchip_single_antenna_trial.py\", line 135, in run_phase\n    try:action()\n        ^^^^^^^^\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py\", line 431, in <lambda>\n    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,\"input unchanged\"),\n                                  ^^^^^^^^^^^\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py\", line 386, in phase\n    delta=p.route_delta(read(\"insertion-snapshot.json\"),current,plan)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py\", line 161, in route_delta\n    require(set(changes)==set(plan[\"mutable_nets\"]),\"each new diode requires a changed owned route\")\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py\", line 37, in require\n    if not ok:raise AssertionError(message)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: each new diode requires a changed owned route\n"
+}
