@@ -1,18 +1,19 @@
-# Cloud continuation — checkpoint v167
+# Cloud continuation — checkpoint v168
 
-Updated: 2026-10-31T12:48:20.984653+00:00
+Updated: 2026-10-31T13:06:41.224573+00:00
 
-CLOUD ONLY. All tests, CAD, numerical solving, simulation and native inputs/outputs remain on GitHub. Local project workspace and owned project temporary entries are empty; no local CAD process. This overrides older local-work wording.
+CLOUD ONLY. Tests, CAD, numerical solving, simulation and native inputs/outputs remain on GitHub. Local project workspace and owned project temporary entries are empty; no local CAD process. No native archive/payload may be downloaded locally, including RAM. This overrides older local-work wording.
 
-Mainchip41199907663/source6e421425 remains the only saved-diode routing continuation, with327actualsource controls passed. Snapshot: in_progress. Actual route/restore/original physical outcome not collected. Its v165 collector remains PREPARED_NOT_EXECUTED; do not duplicate dispatch or diode creation.
+Mainchip 41199907663 / source 6e421425 remains the only saved-diode routing continuation; 327 actual source controls passed. Snapshot: in_progress. Actual route/restore/original physical outcome not collected. Its v165 collector remains PREPARED_NOT_EXECUTED; do not duplicate dispatch or diode creation.
 
-CDR41201201045/source1a30ed20 is a preserved failure before geometry. All2797archive members were authenticated,42selected native inputs remained unchanged, and frozen runtime setup completed rc0 in2.506582352seconds. AppImage smoke failed rc127 with cannot write uid_map: Operation not permitted. The complete55file6,467,680-byte proof is6fdb7c42; the77file8,410,993-byte native capsule remains in cloud. The v166 collector has EXECUTED and all proof bytes were read back.
+CDR 41202306107 / source 57510726 passed pinned runtime smoke (Python3.13.9, pya0.30.7) using the scoped AppArmor profile with global restriction unchanged at1. Actual native generator reached geometry and rejected device3 foreign M2 clearance after3.588704025s, before candidate write. Complete60-file6,544,718-byte proof5f8cfa5 and88-file8,420,635-byte native capsule are retained. The v167 collector has EXECUTED and all proof bytes were read back; never rerun it.
 
-Current CDR41202306107/source57510726/release429931132 fixes hosted namespace admission using uidmap and a run-owned AppArmor profile for the exact pinned executable. Global restriction remains unchanged and its receipt is preserved. All187freshsource controls passed;19source records were verified from the complete427,350-byte log. Snapshot: completed. Actual runtime/geometry/physical result is not collected. The preparedv167 collector must run once after terminal completion; the old collector must never be repeated.
+Current CDR 41203881385 / source 39496d03 / release429942553 uses actual native obstacles to derive conservatively spaced segmented M2 straps. Search only1000/600/300nm widths in the original envelope. Keep original240nm M2 clearance,220nm Via1 spacing, >=32new cuts per drain and >=2cuts per segment on all8drains. Original material/hierarchy and560-category DRC/500-device deep-flat LVS13 gates remain unchanged. All195freshsource controls passed; all19records verified from429,105-byte log. Snapshot: in_progress. Actual native result is not collected. The prepared v168 collector must run once after terminal completion.
 
-The eight-drain geometry, serialized mutation controls,560-category DRC and500-device deep/flat LVS with13faults are unchanged. After genuine physical qualification, complete freshRC and original loaded electrical gates on exactly the new GDS remain mandatory. FullserialPHY and finalsetup/hold are not closed. Keep original analog limits and20/4/8/8ns+5%; finalRC/STA adapter86015346 remains gated on an actually qualified routed candidate. The8-hour monitor remains read-only with429handles; historical HTTP502 health is not claimed resolved.
+After genuine physical qualification, complete freshRC and original loaded electrical gates on exactly the new GDS remain mandatory. FullserialPHY and finalsetup/hold are not closed. Keep original analog limits and20/4/8/8ns+5%; finalRC/STA adapter86015346 remains gated on an actually qualified routed candidate. The8-hour monitor remains read-only with430handles; historical HTTP502 health is not claimed resolved.
 
 ## Historical notes below — not current running-job status
+
 
 
 
