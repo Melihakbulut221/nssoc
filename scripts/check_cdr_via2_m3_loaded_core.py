@@ -246,7 +246,12 @@ class LoadedCoreControls(unittest.TestCase):
             self.assertIn(literal,source)
         self.assertEqual(ns['STOP'],ns['START']+258*ns['UI']);self.assertEqual(ns['STEP'],.3125e-12)
     def test_27_active_external_effect_barrier(self):
-        for action in (lambda:os.system('true'),lambda:socket.socket(),lambda:ctypes.CDLL(None)):
+        def fork(pty=False):
+            result=os.forkpty()if pty else os.fork();pid=result[0]if pty else result
+            if pid==0:os._exit(97)
+            if pty:os.close(result[1])
+            os.waitpid(pid,0);raise AssertionError('Process audit barrier allowed fork')
+        for action in (lambda:os.system('true'),lambda:socket.socket(),lambda:ctypes.CDLL(None),lambda:fork(),lambda:fork(True)):
             with self.assertRaisesRegex(RuntimeError,'SOURCE_FIXTURE_EXTERNAL_EFFECT_REFUSED'):action()
     def test_26_production_namespaces_unchanged_after_clones(self):
         self.assertIs(c.prepare_case.__globals__['verify_current_inputs'],c.verify_current_inputs)
@@ -260,15 +265,15 @@ def controls(out):
     # project native archive or engine is loaded; only installed NumPy is used.
     active=[True];denied=[]
     def audit(event,args):
-        if active[0]and(event.startswith('socket.')or event in ('subprocess.Popen','os.system','os.posix_spawn','os.posix_spawnp','os.exec','ctypes.dlopen')):
+        if active[0]and(event.startswith('socket.')or event in ('subprocess.Popen','os.system','os.posix_spawn','os.posix_spawnp','os.exec','os.fork','os.forkpty','ctypes.dlopen')):
             denied.append(event);raise RuntimeError('SOURCE_FIXTURE_EXTERNAL_EFFECT_REFUSED '+event)
     sys.addaudithook(audit)
     stream=io.StringIO();suite=unittest.defaultTestLoader.loadTestsFromTestCase(LoadedCoreControls)
     try:result=unittest.TextTestRunner(stream=stream,verbosity=2).run(suite)
     finally:active[0]=False
-    record=dict(schema='nssoc-current-loaded-core-source-controls-v1',scope='SYNTHETIC_SOURCE_ONLY_NO_NATIVE_ACQUISITION_OR_ENGINE',tests=result.testsRun,failures=len(result.failures),errors=len(result.errors),skips=len(result.skipped),successful=result.wasSuccessful(),stdout=stream.getvalue(),denied_external_effects=denied,python=sys.version,numpy=np.__version__,source=os.environ.get('GITHUB_SHA'),run=os.environ.get('GITHUB_RUN_ID'),native_model_card_validation_executed=False,actual_engine_executed=False,loaded_simulation_executed=False,electrical_accepted=False,qualified_pex=False,full_phy_accepted=False)
+    record=dict(schema='nssoc-current-loaded-core-source-controls-v1',scope='SYNTHETIC_SOURCE_ONLY_NO_NATIVE_ACQUISITION_OR_ENGINE',tests=result.testsRun,failures=len(result.failures),errors=len(result.errors),skips=len(result.skipped),successful=result.wasSuccessful()and result.testsRun==27 and not result.skipped,stdout=stream.getvalue(),denied_external_effects=denied,python=sys.version,numpy=np.__version__,source=os.environ.get('GITHUB_SHA'),run=os.environ.get('GITHUB_RUN_ID'),native_model_card_validation_executed=False,actual_engine_executed=False,loaded_simulation_executed=False,electrical_accepted=False,qualified_pex=False,full_phy_accepted=False)
     c.write_exclusive(out/'result.json',record);print(json.dumps(record,sort_keys=True),flush=True)
-    if not result.wasSuccessful():raise AssertionError('Loaded numerical source controls failed')
+    if not record['successful']:raise AssertionError('Loaded numerical source controls require exactly27 tests and zero failures/errors/skips')
     return record
 
 if __name__=='__main__':
