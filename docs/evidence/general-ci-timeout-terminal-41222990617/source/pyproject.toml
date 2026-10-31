@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+
+[tool.ruff]
+target-version = "py310"
+include = ["sw/**/*.py"]
+
+[tool.ruff.lint]
+# Fatal errors first; do not reformat frozen fixtures or generated files.
+select = ["E9", "F63", "F7", "F82"]
+
+[tool.mypy]
+python_version = "3.10"
+files = ["sw/golden", "sw/pilotlink"]
+check_untyped_defs = true
+warn_unused_ignores = true
+show_error_codes = true
+
+[[tool.mypy.overrides]]
+module = ["sw.golden.lif_core", "sw.golden.network", "sw.golden.secded"]
+disallow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = ["serial", "cocotb.*"]
+ignore_missing_imports = true
