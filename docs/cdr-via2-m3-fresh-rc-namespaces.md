@@ -11,3 +11,9 @@ The exact two definitions from `audit_cdr_v59_mim_intrinsic.py` at ebe4ebb3ca2ae
 Hosted source controls use explicit synthetic descriptor/summary data and seven synthetic MIM records. They test the real frozen validator with two different current bindings, stale source/run, changed summary/descriptor bytes, incomplete census/control records, immutable source/definition tampering, hidden historical-module imports, namespace cross-talk and unconditional native refusal. Synthetic file creation is confined to GitHub ephemeral fixtures; no actual project native payload is acquired. Complete raw job logs and source-control streams are preserved on either outcome.
 
 The recorded binding status is checked as an input contract; a successful synthetic fixture is not evidence that a new physical, RC or electrical stage has run. All numerical thresholds and original intrinsic validation bodies remain unchanged.
+
+## Native versus compact model schema correction
+
+The 43 synthetic controls at c002048efbe5e260bf6f90cb10889f4326633c3c passed, but their HBT rows incorrectly used the native model spelling in the compact model field. That proof remains synthetic-only and did not demonstrate compatibility with the actual binding producer. Before any native use, integration review found that the frozen producer emits `native_model=npn13G2` and `model=npn13g2`.
+
+The successor separately verifies the complete native census, complete compact census, and each native-to-compact pairing. Its independent literal fixture follows the unchanged producer schema; AST inspection binds the spelling and both fields to the exact frozen producer source. It rejects the old uppercase compact spelling, missing native fields, wrong native census, and swapped per-row model pairs even when both aggregate censuses still match. The original 3550-byte intrinsic validator and all numerical limits are unchanged. Standalone native execution remains unconditionally disabled.

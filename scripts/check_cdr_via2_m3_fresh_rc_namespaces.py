@@ -10,6 +10,7 @@ BRANCH="codex/cdr-via2-m3-fresh-rc-namespace-source"
 CONFIG="scripts/cdr-via2-m3-fresh-rc-namespace-inputs.json"
 MANIFEST="scripts/cdr-via2-m3-fresh-rc-namespace-pins.json"
 RECORDS=[]
+FROZEN_BINDING_PIN={"bytes":19381,"sha256":"7b3cb1a93462be997d4379973b623ab57d29b6b6706a13eaa1d864bfefff80df"}
 
 def source_guard():
     env=os.environ
@@ -37,9 +38,9 @@ def reject(name,call):
 
 def packet(source="a"*40,run=12345,width="2",length="3"):
     devices=[];ident=0
-    for model,count in n.CENSUS.items():
+    for native_model,model,count in [("npn13G2","npn13g2",124),("sg13_lv_nmos","sg13_lv_nmos",50),("rppd","rppd",98),("cap_cmim","cap_cmim",7),("ptap1","ptap1",221)]:
         for _ in range(count):
-            ident+=1;row=dict(native_id=ident,model=model)
+            ident+=1;row=dict(native_id=ident,native_model=native_model,model=model)
             if model=="cap_cmim":row["native_parameters"]=dict(w=width,l=length)
             devices.append(row)
     report=dict(source_head=source,status=n.BINDING_PASS,sources_unchanged=True,explicit_synthetic_fixture=True,
@@ -69,6 +70,23 @@ def mim_args(report):
         rows.append(["device","csubckt","cap_cmim",*box,"w="+str(w/n.Decimal(".005")),"l="+str(l/n.Decimal(".005")),"None",plus,"0","0",minus,"0","0"])
         replacement.append(["device","csubckt","cap_cmim",*box,"None",plus,"0","0",minus,"0","0"])
     return rows,replacement,dict(devices=copy.deepcopy(devices)),dict(devices=copy.deepcopy(devices)),mapping.copy(),mapping.copy(),anchors
+
+def real_schema_source_control():
+    # Independent inspection of the unchanged producer, not implementation constants.
+    path=ROOT/"scripts/cloud_cdr_current_eight_drain_fresh_binding.py"
+    raw=path.read_bytes()
+    n.require(n.pin(raw)==FROZEN_BINDING_PIN,"exact frozen binding producer")
+    tree=ast.parse(raw);build=next(x for x in tree.body if isinstance(x,ast.FunctionDef)and x.name=="build")
+    model_assign=[x for x in ast.walk(build)if isinstance(x,ast.Assign)and len(x.targets)==1 and isinstance(x.targets[0],ast.Name)and x.targets[0].id=="model"]
+    expected=ast.parse('model="npn13g2"if kind=="npn13G2"else kind').body[0]
+    n.require(len(model_assign)==1 and ast.dump(model_assign[0],include_attributes=False)==ast.dump(expected,include_attributes=False),"actual frozen producer compact model spelling")
+    rows=[x for x in ast.walk(build)if isinstance(x,ast.Assign)and len(x.targets)==1 and isinstance(x.targets[0],ast.Name)and x.targets[0].id=="row"and isinstance(x.value,ast.Call)and isinstance(x.value.func,ast.Name)and x.value.func.id=="dict"]
+    n.require(len(rows)==1,"actual frozen binding row schema")
+    fields={x.arg:x.value for x in rows[0].value.keywords}
+    n.require(ast.dump(fields["model"])==ast.dump(ast.Name(id="model",ctx=ast.Load()))and ast.dump(fields["native_model"])==ast.dump(ast.Name(id="kind",ctx=ast.Load())),"independent native and compact model fields")
+    value=packet();report=reader(value).stage_report("binding")
+    n.require(sum(d["native_model"]=="npn13G2"and d["model"]=="npn13g2"for d in report["binding"]["devices"])==124,"all actual-schema HBT conversions")
+    record("actual_frozen_producer_schema_124_HBTs","source_bound_schema",producer_pin=FROZEN_BINDING_PIN,native_model="npn13G2",compact_model="npn13g2")
 
 def definition_controls(config):
     scope={};text="raise RuntimeError('module main must not execute')\ndef safe():\n    return 17\n"
@@ -129,6 +147,10 @@ def binding_controls(config):
     cases=[
       ("duplicate_native_id",lambda r:r["binding"]["devices"][-1].update(native_id=1)),
       ("wrong_model_census",lambda r:r["binding"]["devices"][0].update(model="cap_cmim")),
+      ("old_uppercase_compact_HBT",lambda r:r["binding"]["devices"][0].update(model="npn13G2")),
+      ("wrong_native_model_census",lambda r:r["binding"]["devices"][0].update(native_model="cap_cmim")),
+      ("missing_native_model_field",lambda r:r["binding"]["devices"][0].pop("native_model")),
+      ("same_censuses_wrong_row_pairing",lambda r:(r["binding"]["devices"][0].update(model="rppd"),r["binding"]["devices"][174].update(model="npn13g2"))),
       ("missing_port",lambda r:r["binding"]["native_ports"].pop()),
       ("missing_fault_control",lambda r:r["controls"].pop()),
       ("accepted_fault_control",lambda r:r["controls"][0].update(rejected=False)),
@@ -158,7 +180,7 @@ def binding_controls(config):
 def main():
     out=ROOT/"namespace-source-controls";out.mkdir(exist_ok=False);primary=None
     try:
-        context,config=source_guard();definition_controls(config);binding_controls(config);source_guard()
+        context,config=source_guard();definition_controls(config);real_schema_source_control();binding_controls(config);source_guard()
         result=dict(status="PASS_CURRENT_BINDING_NAMESPACE_SOURCE_ONLY",context=context,passed=True,tests=len(RECORDS),
           records=RECORDS,source_only=True,native_acquisition=False,native_execution=False,RC_executed=False,electrical_simulation=False,
           actual_view_binding=None,full_phy_accepted=False,actual_production_binding_qualified=False)

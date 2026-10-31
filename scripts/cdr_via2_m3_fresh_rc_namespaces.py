@@ -13,6 +13,8 @@ FROZEN_DEFINITIONS={"require":{"bytes":65,"sha256":"b509d6553af67925b691064575cc
 NATIVE_FLAGS=("native_acquisition_authorized","native_execution_authorized","rc_extraction_authorized","electrical_simulation_authorized")
 BINDING_PASS="PASS_PD500_NATIVE_MODEL_BINDING_14_FAULTS_AND_NATIVE_CONTACT_ORACLE_REQUIRES_WIRE_COMPOSITION_AND_WAVES"
 CENSUS=dict(npn13G2=124,sg13_lv_nmos=50,rppd=98,cap_cmim=7,ptap1=221)
+COMPACT_CENSUS=dict(npn13g2=124,sg13_lv_nmos=50,rppd=98,cap_cmim=7,ptap1=221)
+COMPACT_MODELS=dict(npn13G2="npn13g2",sg13_lv_nmos="sg13_lv_nmos",rppd="rppd",cap_cmim="cap_cmim",ptap1="ptap1")
 
 def require(ok,message):
     if not ok:raise ValueError(message)
@@ -103,7 +105,9 @@ class CurrentBinding:
         require(binding["census"]==CENSUS and len(binding["devices"])==500,"complete current 500-device binding")
         devices=binding["devices"];ids=[row["native_id"]for row in devices]
         require(all(type(value)is int for value in ids)and set(ids)==set(range(1,501))and len(set(ids))==500,"complete unique current native IDs")
-        require(Counter(row["model"]for row in devices)==CENSUS,"current model census")
+        require(Counter(row["native_model"]for row in devices)==CENSUS,"current native model census")
+        require(Counter(row["model"]for row in devices)==COMPACT_CENSUS,"current compact model census")
+        require(all(row["model"]==COMPACT_MODELS[row["native_model"]]for row in devices),"current native-to-compact model pairing")
         require(len(binding["native_ports"])==len(set(binding["native_ports"]))==25,"complete current public ports")
         require(len(report["controls"])==14 and all(row["rejected"]is True for row in report["controls"]),"complete current binding fault controls")
         require(report["target_length_controls"]["actual_fresh_binding"]is True and len(report["target_length_controls"]["rejected"])==6,"current target length controls")
