@@ -200,21 +200,23 @@ def capture_finish(root,variant_out,capture,binding):
     return run_block(root,'capture_finish',scope,dict(OUT=Path(variant_out),capture=capture,binding=binding,r={}))['r']
 
 def mim_audit(root,variant_out,capture_result,packet,context,descriptor_pin):
-    out=Path(variant_out);scope=common(root);cb,intrinsic=current_binding(root,packet,context,descriptor_pin)
-    scope['audit_cdr_v59_mim_intrinsic']=SimpleNamespace(__file__=str(source(root,'intrinsic')[0]))
-    bound=cb.stage_report('binding');data=packet();check=binding_namespace.CurrentBinding(lambda:data,context,descriptor_pin);check.stage_report('binding')
-    descriptor=binding_namespace.decode(data['descriptor'])
-    require(capture_result['model_binding_source']['summary_sha256']==descriptor['summary_sha256']and capture_result['model_binding_source']['run']==descriptor['run'],'capture uses exact current binding')
-    require(capture_result['native_order_variant']==out.name and out.name in ('precise','precise_reversed'),'exact native capture variant')
-    r=dict(capture_counts=capture_result['intrinsic_capture_binding'],intrinsic_binding_source=dict(run=descriptor['run'],summary_sha256=descriptor['summary_sha256']));derived=run_block(root,'audit_derive',scope,dict(CAP=out,r=r));wire=derived['B']
-    module=audit_namespace(root,wire,r['adaptations']['new_auditor_sha256'],intrinsic)
-    r['audit']=module.audit(wire/'rc03',json.loads((wire/'anchors08.json').read_text()))
-    (wire/'mim-audit.json').write_bytes(encode(r['audit']))
-    require(r['audit']['status']=='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY','strict MIM wire audit')
-    require(r['audit']['actual_exported_resistors']==capture_result['intrinsic_capture_binding']['R']and r['audit']['actual_exported_capacitors']==capture_result['intrinsic_capture_binding']['C']and r['audit']['native_mim_intrinsic']['devices']==7,'complete measured raw R/C and seven MIM agreement')
-    r['wire_controls']=wire_corruptions(root,wire,module,r['adaptations']['unchanged_wire_mutations_sha256'])
-    try:return run_block(root,'audit_intrinsic_controls',scope,dict(B=wire,P=wire/'rc03',module=module,r=r))['r']
-    finally:(out/'intrinsic-audit-controls.json').write_bytes(encode(r))
+    r={}
+    try:
+        out=Path(variant_out);scope=common(root);cb,intrinsic=current_binding(root,packet,context,descriptor_pin)
+        scope['audit_cdr_v59_mim_intrinsic']=SimpleNamespace(__file__=str(source(root,'intrinsic')[0]))
+        bound=cb.stage_report('binding');data=packet();check=binding_namespace.CurrentBinding(lambda:data,context,descriptor_pin);check.stage_report('binding')
+        descriptor=binding_namespace.decode(data['descriptor'])
+        require(capture_result['model_binding_source']['summary_sha256']==descriptor['summary_sha256']and capture_result['model_binding_source']['run']==descriptor['run'],'capture uses exact current binding')
+        require(capture_result['native_order_variant']==out.name and out.name in ('precise','precise_reversed'),'exact native capture variant')
+        r=dict(capture_counts=capture_result['intrinsic_capture_binding'],intrinsic_binding_source=dict(run=descriptor['run'],summary_sha256=descriptor['summary_sha256']));derived=run_block(root,'audit_derive',scope,dict(CAP=out,r=r));wire=derived['B']
+        module=audit_namespace(root,wire,r['adaptations']['new_auditor_sha256'],intrinsic)
+        r['audit']=module.audit(wire/'rc03',json.loads((wire/'anchors08.json').read_text()))
+        (wire/'mim-audit.json').write_bytes(encode(r['audit']))
+        require(r['audit']['status']=='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY','strict MIM wire audit')
+        require(r['audit']['actual_exported_resistors']==capture_result['intrinsic_capture_binding']['R']and r['audit']['actual_exported_capacitors']==capture_result['intrinsic_capture_binding']['C']and r['audit']['native_mim_intrinsic']['devices']==7,'complete measured raw R/C and seven MIM agreement')
+        r['wire_controls']=wire_corruptions(root,wire,module,r['adaptations']['unchanged_wire_mutations_sha256'])
+        return run_block(root,'audit_intrinsic_controls',scope,dict(B=wire,P=wire/'rc03',module=module,r=r))['r']
+    finally:(Path(variant_out)/'intrinsic-audit-controls.json').write_bytes(encode(r))
 
 def composition_namespace(root,text,nr,nc):
     scope=common(root);d=functions(root,'derivation',['derive','controls'],dict(scope,SOURCE_SHA='c87d213c8676f58d989fc85c91b0408d5c1581cd69f14f96d96ed2e986d299a8',MODEL='nssoc_cdr_pd500_resistor_mim_wire_v59'))
@@ -258,6 +260,16 @@ def compare_and_compose(root,mim_out,packet,context,descriptor_pin,variants):
     result['composition']=compose(variants['precise']['capture'],variants['precise']['audit'])
     require(len(result['composition']['controls'])==21,'all composition controls')
     return result
+
+def composition_and_order_controls(root):
+    scope=common(root)
+    d=functions(root,'derivation',['derive','controls'],dict(scope,SOURCE_SHA='c87d213c8676f58d989fc85c91b0408d5c1581cd69f14f96d96ed2e986d299a8',MODEL='nssoc_cdr_pd500_resistor_mim_wire_v59'))
+    order=functions(root,'cap_order',['rows','capkey','reorder','controls'],scope)
+    reverse=functions(root,'reverse',['reverse'],dict(scope,reorder=order.reorder)).reverse
+    original='node "p" 0 1\nnode "q" 0 2\ncap "p" "q" 3\ncap "q" "p" 4\n'
+    changed,_=reverse(original);again,_=reverse(changed)
+    require(original==again and changed!=original,'frozen reverse-order roundtrip')
+    return dict(count_derivation=d.controls(source(root,'composition')[1]),order_controls=order.controls(),reverse_controls=dict(reversal_roundtrip=True,rejected=order.controls()))
 
 def authorize_native():
     raise ValueError('Standalone native acquisition, RC extraction and electrical execution remain unconditionally disabled; a separately reviewed host is required')
