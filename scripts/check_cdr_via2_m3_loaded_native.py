@@ -42,6 +42,7 @@ def controls(out,gate):
         assert r['actual_engine_returncode']==rc and r['wrapper_returncode']==wrapper
         assert n.validate_engine_result(folder,plan,r,wrapper)==rc
         positive.append(name+'_authentic_engine_receipt')
+        if name=='signal':signal_case=(folder,plan,r)
         refuse(lambda:n.validate_engine_result(folder,plan,r,0),name+'_wrong_wrapper_code',records)
     for mode in('timeout','output-limit'):
         folder=out/mode
@@ -84,6 +85,22 @@ def controls(out,gate):
     command=q.decode((trace/'orphan-fixture.command.json').read_bytes())
     assert command['supervision_failure']=='orphan_descendant_after_leader_exit'
     assert not command['process_group_cleanup']['remaining_live'];positive.append('unchanged_supervisor_removes_orphan_group')
+
+    # Real signed engine result -> exact host handoff -> unchanged measurement
+    # code object, with explicitly synthetic native inputs and transport.
+    import cloud_cdr_via2_m3_loaded as host
+    from check_cdr_via2_m3_loaded_core import Fixture
+    folder,plan,r=signal_case;supervision=folder/'supervision';supervision.mkdir()
+    process=dict(returncode=1,explicitly_synthetic_wrapper_receipt=True)
+    (supervision/'transient.command.json').write_bytes(q.encode(process))
+    context=dict(source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1)
+    handoff=host.bind_engine_handoff(folder,context,plan,q.fingerprint(q.encode(plan)),dict(bytes=1,sha256='0'*64),process)
+    assert handoff['actual_engine_returncode']==-signal.SIGTERM
+    fixture=Fixture(out/'frozen-negative-handoff');fixture.prepare();fixture.setup_measurement()
+    refuse(lambda:fixture.measure(returncode=handoff['actual_engine_returncode']),'signed_engine_handoff_original_measurement_rejection',records)
+    measured=q.decode((fixture.case/'measurement-result.json').read_bytes())
+    assert measured['returncode']==-signal.SIGTERM and measured['status']=='FAIL_OR_ERROR'and fixture.raw_reads==0
+    positive.append('actual_signed_engine_code_survives_host_and_frozen_measurement')
     assert n.execute_engine.__globals__['q']is q and n.execute_engine.__globals__['write']is n.write
     result=dict(schema='cdr-via2-m3-loaded-native-source-controls-v1',scope='REAL_PYTHON_SYNTHETIC_PROCESSES_ONLY_NO_NATIVE_ENGINE_OR_MODEL',positive=len(positive),refusals=len(records),positive_cases=positive,refusal_cases=records,real_original_ngspice_executed=False,native_model_acquired=False,loaded_simulation_executed=False)
     n.write(out/'result.json',result)

@@ -80,6 +80,15 @@ def require_qualification(value,c):
     require(all(value.get(name)is False for name in('accepted','cdr_accepted','full_phy_accepted','qualified_pex','closed_loop')),'one screen does not confer PHY signoff')
     return value
 
+
+def bind_engine_handoff(out,ctx,plan,plan_pin,prepared_pin,process):
+    """Never substitute the wrapper code for the actual engine's signed result."""
+    import cdr_via2_m3_loaded_native as entry
+    engine_path=q.regular(out,'engine-result.json');engine_pin=pin(engine_path);record=decode(engine_path.read_bytes())
+    rc=entry.validate_engine_result(out,plan,record,process['returncode'])
+    write(out/'host-engine-binding.json',encode(dict(context=ctx,engine_result=engine_pin,actual_engine_returncode=rc,wrapper_returncode=process['returncode'],wrapper_receipt=pin(q.regular(out/'supervision','transient.command.json')),plan=plan_pin,prepared_state=prepared_pin)))
+    return dict(engine_pin=engine_pin,actual_engine_returncode=rc)
+
 def native_pipeline(original,out,preflight,c,p):
     import cdr_via2_m3_loaded_runtime as inputs
     import cdr_via2_m3_loaded_native as entry
@@ -119,9 +128,7 @@ def native_pipeline(original,out,preflight,c,p):
         write(out/'host-prepared-binding.json',encode(dict(context=ctx,entry=entry_pin,plan=plan_pin,prepared_state=prepared_pin,exact_plan=plan)))
         args=['--plan-bytes',plan_pin['bytes'],'--plan-sha256',plan_pin['sha256'],'--prepared-bytes',prepared_pin['bytes'],'--prepared-sha256',prepared_pin['sha256']]
         process=execute(base+['--phase','transient']+args,'transient',allow_nonzero=True)
-        engine_path=q.regular(out,'engine-result.json');engine_pin=pin(engine_path);record=decode(engine_path.read_bytes())
-        rc=entry.validate_engine_result(out,plan,record,process['returncode'])
-        write(out/'host-engine-binding.json',encode(dict(context=ctx,engine_result=engine_pin,actual_engine_returncode=rc,wrapper_returncode=process['returncode'],wrapper_receipt=pin(q.regular(supervisor.TRACE,'transient.command.json')),plan=plan_pin,prepared_state=prepared_pin)))
+        handoff=bind_engine_handoff(out,ctx,plan,plan_pin,prepared_pin,process);engine_pin=handoff['engine_pin']
         execute(base+['--phase','measure']+args+['--engine-bytes',engine_pin['bytes'],'--engine-sha256',engine_pin['sha256']],'measure')
         qualification=decode(q.regular(out,'measured-result.json').read_bytes());require_qualification(qualification,c)
         require(qualification==decode(q.regular(case,'measurement-result.json').read_bytes()),'complete original measurement output equality')
