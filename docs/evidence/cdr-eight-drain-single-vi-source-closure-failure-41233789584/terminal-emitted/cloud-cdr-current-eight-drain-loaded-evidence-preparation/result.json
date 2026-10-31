@@ -1,0 +1,307 @@
+{
+  "accepted": false,
+  "active_primary_exception_before_terminal": null,
+  "automatic_retry": false,
+  "body_error": {
+    "action": "loaded_worker",
+    "error": "AssertionError(('original-loaded-preparation', '', 'Traceback (most recent call last):\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_eight_drain_vi_bias_off_worker_v1.py\", line 333, in <module>\\n    if __name__==\\'__main__\\':main()\\n                            ^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_eight_drain_vi_bias_off_worker_v1.py\", line 205, in main\\n    tp=json.loads((ROOT/\\'docs/evidence/cdr-via-rich-stream-transport-pass-20261019.json\\').read_text())\\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py\", line 1027, in read_text\\n    with self.open(mode=\\'r\\', encoding=encoding, errors=errors) as f:\\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py\", line 1013, in open\\n    return io.open(self, mode, buffering, encoding, errors, newline)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nFileNotFoundError: [Errno 2] No such file or directory: \\'/home/runner/work/nssoc/nssoc/docs/evidence/cdr-via-rich-stream-transport-pass-20261019.json\\'\\n'))",
+    "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py\", line 282, in run_case\n    execute(ctx,result,supervisor)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py\", line 144, in execute\n    if primary is not None:raise primary\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py\", line 128, in execute\n    try:supervisor.supervised(argv,ctx[\"label\"],seconds=ctx[\"seconds\"],cwd=ROOT)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/docs/evidence/cdr-v59-mim-qualified-process-supervisor-20261025.py\", line 251, in supervised\n    if passed:assert result.returncode==0,(label,out[-3000:],err[-3000:])\n                     ^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('original-loaded-preparation', '', 'Traceback (most recent call last):\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_eight_drain_vi_bias_off_worker_v1.py\", line 333, in <module>\\n    if __name__==\\'__main__\\':main()\\n                            ^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_eight_drain_vi_bias_off_worker_v1.py\", line 205, in main\\n    tp=json.loads((ROOT/\\'docs/evidence/cdr-via-rich-stream-transport-pass-20261019.json\\').read_text())\\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py\", line 1027, in read_text\\n    with self.open(mode=\\'r\\', encoding=encoding, errors=errors) as f:\\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py\", line 1013, in open\\n    return io.open(self, mode, buffering, encoding, errors, newline)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nFileNotFoundError: [Errno 2] No such file or directory: \\'/home/runner/work/nssoc/nssoc/docs/evidence/cdr-via-rich-stream-transport-pass-20261019.json\\'\\n')\n",
+    "type": "AssertionError"
+  },
+  "case": "nominal_early",
+  "cdr_accepted": false,
+  "command": {
+    "argv": [
+      "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3",
+      "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_eight_drain_vi_bias_off_worker_v1.py",
+      "--case",
+      "nominal_early",
+      "--prepare-only"
+    ],
+    "elapsed_seconds": 1.7821434770000053,
+    "label": "original-loaded-preparation",
+    "last_memory_sentinel_sample": {
+      "available_kib": 15382508,
+      "enumeration_disappearances": [],
+      "excluded_nonrunning": [],
+      "group_rss_kib": 56312,
+      "group_rss_may_double_count_shared_pages": true,
+      "members": [
+        {
+          "pgrp": 2819,
+          "pid": 2819,
+          "rss_kib": 56312,
+          "starttime": 24721
+        }
+      ],
+      "resampling_evidence": [],
+      "sampling_attempts": 1,
+      "sampling_elapsed_seconds": 0.0055927000000224325,
+      "total_snapshot_budget_seconds": 0.1
+    },
+    "maximum_group_rss_kib": 10485760,
+    "memory_read_error": null,
+    "minimum_available_kib": 2097152,
+    "pid": 2819,
+    "process_group_cleanup": {
+      "remaining_live": [],
+      "remaining_nonrunning": [],
+      "signals": []
+    },
+    "returncode": 1,
+    "stderr_bytes": 1156,
+    "stderr_sha256": "bbe561917352fc7e6f08271e5362e452482f673c7d76e37ae6496106c3b83f78",
+    "stdout_bytes": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "supervision_failure": null
+  },
+  "command_evidence_error": {
+    "action": "command_evidence",
+    "error": "AssertionError('Original loaded worker failed')",
+    "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py\", line 139, in execute\n    a.require(record[\"returncode\"]==0 and record[\"supervision_failure\"]is None\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_loaded_admission.py\", line 27, in require\n    if not value:raise AssertionError(reason)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Original loaded worker failed\n",
+    "type": "AssertionError"
+  },
+  "current_graph_run": 41206809668,
+  "current_graph_source": "de79f76bc60b3ef2b06c88736f4f3d0ee3491257",
+  "current_width_run": 41203881385,
+  "current_width_source": "39496d034c4c1f2c9bcc3a9fe70cb3d82823fb53",
+  "fresh_RC_run": 41213815773,
+  "full_phy_accepted": false,
+  "geometry_regenerated": false,
+  "group": "cdr-current-eight-drain-loaded-preparation",
+  "native_case_passed": false,
+  "native_controller_result_sha256": "4068834556f9016b403351f6ddffe4a046bad0780a9f726a60a39d324964768f",
+  "native_evidence_preservation": {
+    "complete": true,
+    "copied_files": {
+      "result.json": "4068834556f9016b403351f6ddffe4a046bad0780a9f726a60a39d324964768f"
+    },
+    "errors": [],
+    "original_directory": "/home/runner/work/nssoc/nssoc/cloud-cdr-current-eight-drain-loaded-nominal_early",
+    "original_metadata_rewritten": false,
+    "retained_directory": "native"
+  },
+  "native_extraction_executed": false,
+  "native_status": "FAIL_OR_ERROR",
+  "original_eight_electrical_rejections_and_two_fault_detections_preserved": true,
+  "original_physical_historical_only": true,
+  "original_physical_run": 40369539200,
+  "original_physical_status": "FAIL_ADDITIVE_TAIL_WIRE_PHYSICAL",
+  "outer_terminal_actions": [
+    {
+      "action": "owned_process_cleanup",
+      "completed": true
+    },
+    {
+      "action": "stop_heartbeat",
+      "completed": true
+    },
+    {
+      "action": "join_heartbeat",
+      "completed": true
+    },
+    {
+      "action": "restore_signal_2",
+      "completed": true
+    },
+    {
+      "action": "restore_signal_15",
+      "completed": true
+    },
+    {
+      "action": "terminal_resource_sample",
+      "completed": true
+    },
+    {
+      "action": "preserve_complete_native_evidence",
+      "completed": true
+    },
+    {
+      "action": "original_native_case_qualification",
+      "completed": false
+    }
+  ],
+  "outer_terminal_errors": [
+    {
+      "action": "original_native_case_qualification",
+      "error": "AssertionError('Loaded owned command did not complete cleanly')",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py\", line 190, in attempt\n    try:call();result[\"outer_terminal_actions\"].append({\"action\":label,\"completed\":True})\n        ^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py\", line 210, in <lambda>\n    attempt(\"original_native_case_qualification\",lambda:qualify_native(ctx,result,prepared))\n                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py\", line 177, in qualify_native\n    a.require(not result.get(\"body_error\")and not result.get(\"command_evidence_error\"),\"Loaded owned command did not complete cleanly\")\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_loaded_admission.py\", line 27, in require\n    if not value:raise AssertionError(reason)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Loaded owned command did not complete cleanly\n",
+      "type": "AssertionError"
+    }
+  ],
+  "outer_terminal_finalization_complete": false,
+  "outputs": {
+    "native/result.json": "4068834556f9016b403351f6ddffe4a046bad0780a9f726a60a39d324964768f",
+    "storage-checks/copy.json": "714f45ab84758f01370370f81e11d3d1b0e616808a929be59d0d4c25f46e5039",
+    "storage-checks/initial.json": "ab9078daaa56a0546a5228ca27823634a65d161e013aebc5bc1a8db7b5bc1a0c",
+    "supervision/events.jsonl": "2994da54c55e82798da302330b9a488483ab9afa1ed72041f12824a2432ac0c9",
+    "supervision/latest.json": "a4b579ded927365770d8fedac1d088463762ee40a1e58318c08f91eaa8d4b0be",
+    "supervision/original-loaded-preparation.command.json": "cf9fcda9a7b16735c5312031d4f4b42c27c8ff0107de6f534e45fd1b917b4035",
+    "supervision/original-loaded-preparation.stderr": "bbe561917352fc7e6f08271e5362e452482f673c7d76e37ae6496106c3b83f78",
+    "supervision/original-loaded-preparation.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "owned_cleanup": {
+    "remaining_live": [],
+    "remaining_nonrunning": [],
+    "signals": []
+  },
+  "physical_accepted": false,
+  "preparation_only": true,
+  "qualified_pex": false,
+  "reservations": {
+    "automatic_retry": false,
+    "both_reserved_before_acquisition": true,
+    "current_context": {
+      "attempt": 1,
+      "run_id": 41233789584,
+      "source": "f116a0de18db3db6f2028c2521c0684b379babbd"
+    },
+    "groups": {
+      "cdr-current-eight-drain-loaded-preparation": {
+        "assets_overwritten": false,
+        "creation_attempted": false,
+        "existing_assets": [],
+        "externally_reserved": true,
+        "read_attempts": 1,
+        "release_id": 430136252,
+        "tag": "cloud-results-41233789584-1-cdr-current-eight-drain-loaded-preparation",
+        "target_verified": true,
+        "tested_source": "f116a0de18db3db6f2028c2521c0684b379babbd"
+      },
+      "cdr-current-eight-drain-loaded-vi_bias_off": {
+        "assets_overwritten": false,
+        "creation_attempted": false,
+        "existing_assets": [],
+        "externally_reserved": true,
+        "read_attempts": 1,
+        "release_id": 430136217,
+        "tag": "cloud-results-41233789584-1-cdr-current-eight-drain-loaded-vi_bias_off",
+        "target_verified": true,
+        "tested_source": "f116a0de18db3db6f2028c2521c0684b379babbd"
+      }
+    },
+    "own_empty_release": "cdr-current-eight-drain-loaded-preparation",
+    "source_controls": {
+      "complete_source_controls_authenticated": true,
+      "current_context": {
+        "attempt": 1,
+        "run_id": 41233789584,
+        "source": "f116a0de18db3db6f2028c2521c0684b379babbd"
+      },
+      "full_prerequisite_records": {
+        "hw/soc/out/cdr-eight-drain-vi-prerequisites/prepare-1/jobs.json": "80f9f0fd2102502f9d85666d0ae485da801addd35ec1dd5458e9a8dc420a9572",
+        "hw/soc/out/cdr-eight-drain-vi-prerequisites/prepare-1/run.json": "9de5b94bab643c767342006119095ae6c6447703d05f83bd5475b594c8eebe62",
+        "hw/soc/out/cdr-eight-drain-vi-prerequisites/prepare-1/source-controls.log": "3f6b6523dafcb3d5c67ef81db3acbc2ea779651154303ae91802a2f85b95c50b"
+      },
+      "job_id": 124633208289,
+      "job_log_sha256": "3f6b6523dafcb3d5c67ef81db3acbc2ea779651154303ae91802a2f85b95c50b",
+      "native_execution_performed": false,
+      "records": {
+        "before-checkout.json": {
+          "bytes": 61,
+          "chunks": 1,
+          "path": "before-checkout.json",
+          "present": true,
+          "sha256": "6c2023f5cc58602af05fac1beff2e2cee746c0c7edf78c28b55cea80aff00089"
+        },
+        "checkout.json": {
+          "bytes": 398,
+          "chunks": 1,
+          "path": "checkout.json",
+          "present": true,
+          "sha256": "74b8d0e5a96aade6a242577547d777ac640f1a0c2b9aa14aad7be426b06fe090"
+        },
+        "storage.json": {
+          "bytes": 42010,
+          "chunks": 8,
+          "path": "storage.json",
+          "present": true,
+          "sha256": "b8bcc4bda0a71bb0550a26609da3c2d4885515e04f455b6d7317de2843ee5d70"
+        },
+        "storage.stderr": {
+          "bytes": 0,
+          "chunks": 0,
+          "path": "storage.stderr",
+          "present": true,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "storage.stdout": {
+          "bytes": 44220,
+          "chunks": 8,
+          "path": "storage.stdout",
+          "present": true,
+          "sha256": "a18853ea432af8cab3946beeed617092d4efecaaf778459827fd2d8c398ab6eb"
+        },
+        "vi.json": {
+          "bytes": 16802,
+          "chunks": 3,
+          "path": "vi.json",
+          "present": true,
+          "sha256": "7e86227d2b029a88bcc870c4cdc4217814db50da65a7ca9045e4bbee55975cb5"
+        },
+        "vi.stderr": {
+          "bytes": 0,
+          "chunks": 0,
+          "path": "vi.stderr",
+          "present": true,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "vi.stdout": {
+          "bytes": 24695,
+          "chunks": 5,
+          "path": "vi.stdout",
+          "present": true,
+          "sha256": "d9a18cb80760a72b2675804f9c0ced0d19e2c4739ac7cab2cdd48d52b9eac679"
+        }
+      }
+    }
+  },
+  "run_attempt": 1,
+  "run_id": 41233789584,
+  "source_head": "f116a0de18db3db6f2028c2521c0684b379babbd",
+  "status": "FAIL_OR_REJECTED_CURRENT_TAIL_LOADED_CASE",
+  "status_before_terminal": "FAIL_OR_REJECTED_CURRENT_TAIL_LOADED_CASE",
+  "storage": [
+    {
+      "available_source_bytes": 5156,
+      "checkpoint": "initial",
+      "free_bytes": 91122032640,
+      "native_authorization_asserted_by_this_record": false,
+      "required_bytes": 17179869184,
+      "storage_measurement_only": true,
+      "sufficient": true
+    },
+    {
+      "available_source_bytes": 3872,
+      "checkpoint": "copy",
+      "free_bytes": 91121971200,
+      "native_authorization_asserted_by_this_record": false,
+      "required_bytes": 4294967296,
+      "storage_measurement_only": true,
+      "sufficient": true
+    }
+  ],
+  "terminal_actions": [
+    {
+      "action": "protected_sources",
+      "completed": true
+    },
+    {
+      "action": "complete_saved_inputs",
+      "completed": true
+    },
+    {
+      "action": "preserve_preexisting_atomic_fragment",
+      "completed": true
+    },
+    {
+      "action": "complete_output_inventory",
+      "completed": true
+    }
+  ],
+  "terminal_errors": [],
+  "terminal_finalization_complete": true,
+  "terminal_inventory_complete": true,
+  "terminal_resource_sample": null,
+  "terminal_save_attempted": true
+}
