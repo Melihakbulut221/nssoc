@@ -9,11 +9,11 @@ q=h.q;k=h.k
 class Controls(unittest.TestCase):
     def env(self):
         return dict(GITHUB_ACTIONS="true",GITHUB_REPOSITORY="Melihakbulut221/nssoc",GITHUB_EVENT_NAME="workflow_dispatch",
-          GITHUB_REF="refs/heads/codex/mainchip-drt-obstacle-progress-v2",GITHUB_SHA="a"*40,GITHUB_RUN_ID="123",GITHUB_RUN_ATTEMPT="1",
+          GITHUB_REF="refs/heads/codex/mainchip-drt-obstacle-crash-isolation-v1",GITHUB_SHA="a"*40,GITHUB_RUN_ID="123",GITHUB_RUN_ATTEMPT="1",
           RUNNER_ENVIRONMENT="github-hosted",RUNNER_OS="Linux",GITHUB_JOB="observation",MODE="observation",APPROVED_SOURCE="a"*40)
     def ctx(self):return h.context(self.env(),"a"*40)
     def actual(self):
-        ctx=self.ctx();run=dict(id=123,head_sha=ctx["source"],head_branch="codex/mainchip-drt-obstacle-progress-v2",event="workflow_dispatch",
+        ctx=self.ctx();run=dict(id=123,head_sha=ctx["source"],head_branch="codex/mainchip-drt-obstacle-crash-isolation-v1",event="workflow_dispatch",
           run_attempt=1,path=".github/workflows/cloud-evidence-summary.yml",workflow_id=382556685,status="in_progress")
         jobs=dict(total_count=3,jobs=[dict(id=i,head_sha=ctx["source"],run_id=123,run_attempt=1,name=n,status="in_progress"if n=="observation"else"completed",
           conclusion=None if n=="observation"else"success",steps=[dict(status="completed",conclusion="success")])for i,n in enumerate(("source-controls","preserve-job-log","observation"),1)])

@@ -89,16 +89,22 @@ def native_scope(db,block,scope,owners,plan,progress,trace):
             trace.end()
         trace.begin("endpoint-iterm-pins",name)
         for t in net.getITerms():
+            trace.item_begin()
             inst=t.getInst();terminal=t.getMTerm().getName()
+            trace.item_mark("identity-read")
             q.require(t.getNet()is not None and t.getNet().getName()==name,"actual ITerm connection")
+            trace.item_mark("connection-checked")
             key=(inst.getName(),terminal);q.require(key not in seen_iterms,"unique connected endpoint ITerm")
             seen_iterms[key]=name
+            trace.item_mark("before-pin-geometry",instance=key[0],terminal=key[1])
             for i,(layer,rect)in enumerate(all_pin_geometry(t)):
                 feed(dict(owner=name,record_id=["iterm",inst.getName(),terminal,"geometry",i],
                   kind="iterm-pin",layer=layer,box=rect,instance=inst.getName(),
                   terminal=terminal,master=[inst.getMaster().getLib().getName(),inst.getMaster().getName()],
                   added_diode=inst.getName()in actual_new),is_pin=True)
+            trace.item_mark("pin-geometry-fed")
             trace.tick()
+            trace.item_end()
         trace.end()
         trace.begin("endpoint-bterm-pins",name)
         for t in net.getBTerms():
@@ -156,9 +162,13 @@ def main():
     q.require(not OUT.exists(),"exclusive native outputs");OUT.mkdir(parents=True)
     result=dict(status="IN_PROGRESS",**k.FLAGS);db=None;primary=None;terminal_errors=[]
     source=INPUTS/ODB_MEMBER
-    trace=telemetry.Progress(telemetry.emitter(OUT));stacks_started=False
+    trace=telemetry.Progress(telemetry.emitter(OUT),cursor_emit=telemetry.cursor_emitter(OUT));stacks_state=None
     try:
-        telemetry.start_stacks();stacks_started=True
+        stacks_state=telemetry.start_stacks()
+        record("diagnostic-runtime.json",dict(python_version=sys.version,python_version_info=list(sys.version_info),
+          periodic_stack_watchdog=False,fatal_handler=dict(stacks_state),
+          cursor_endpoint=telemetry.CURSOR_ENDPOINT,cursor_window=[telemetry.CURSOR_START,telemetry.CURSOR_STOP],
+          cursor_max_records=telemetry.CURSOR_MAX_ROWS,exact_crash_index_claimed=False,**k.FLAGS))
         for name,pin in config["selected_members"].items():
             q.require(q.pin(INPUTS/name)==pin,"authenticated native input "+name)
         q.require(q.pin(source)==k.INPUT_ODB,"exact stale-wire-cleared input")
@@ -178,12 +188,13 @@ def main():
         def attempt(label,fn):
             try:fn()
             except BaseException as exc:terminal_errors.append(dict(stage=label,error=repr(exc)))
-        if stacks_started:attempt("stop-periodic-stack-diagnostic",telemetry.stop_stacks)
+        if stacks_state is not None:attempt("restore-fatal-diagnostic-handler",lambda:telemetry.stop_stacks(stacks_state))
         if db is not None:attempt("destroy-read-only-database",lambda:odb.dbDatabase.destroy(db))
         def unchanged():
             result["input_odb_unchanged"]=q.pin(source)==k.INPUT_ODB
             q.require(result["input_odb_unchanged"],"input database changed")
         attempt("input-unchanged",unchanged)
+        result["fatal_handler"]=stacks_state
         result["terminal_errors"]=terminal_errors
         if primary is not None or terminal_errors:result["status"]="FAIL_PREROUTE_ENDPOINT_OBSTACLE_OBSERVATION"
         try:record("result.json",result)

@@ -11,12 +11,12 @@ import cloud_mainchip_full_antenna_readback as restore
 import mainchip_witness_engine_build as build
 q=k.q
 ROOT=Path(__file__).resolve().parents[1]
-GROUP="mainchip-drt-obstacle-progress"
+GROUP="mainchip-drt-obstacle-crash-isolation"
 MANIFEST="scripts/mainchip-drt-obstacle-readback-source.json"
 CONFIG="scripts/mainchip-drt-obstacle-readback-inputs.json"
 INNER="scripts/mainchip_drt_obstacle_inner.py"
 OUT=ROOT/"obstacle-readback"
-EXPECTED_TESTS=50
+EXPECTED_TESTS=57
 def context(env,checkout):
     ctx=k.context(env,checkout)
     q.require(env.get("RUNNER_ENVIRONMENT")=="github-hosted"and env.get("RUNNER_OS")=="Linux","hosted Linux")
@@ -25,7 +25,7 @@ def context(env,checkout):
     return dict(ctx,run_id=ctx["run"],token=str(ctx["run"])+"-1",name="nssoc-witness-build-"+str(ctx["run"])+"-1")
 def current_run(ctx,run,jobs):
     q.require((run["id"],run["head_sha"],run["head_branch"],run["event"],run["run_attempt"],run["path"],run["workflow_id"],run["status"])==
-      (ctx["run"],ctx["source"],"codex/mainchip-drt-obstacle-progress-v2","workflow_dispatch",1,".github/workflows/cloud-evidence-summary.yml",382556685,"in_progress"),"actual current observer run")
+      (ctx["run"],ctx["source"],"codex/mainchip-drt-obstacle-crash-isolation-v1","workflow_dispatch",1,".github/workflows/cloud-evidence-summary.yml",382556685,"in_progress"),"actual current observer run")
     q.require(jobs["total_count"]==len(jobs["jobs"])==3 and {j["name"]for j in jobs["jobs"]}=={"source-controls","preserve-job-log","observation"},"complete actual job set")
     for j in jobs["jobs"]:
         q.require(j["head_sha"]==ctx["source"]and j["run_id"]==ctx["run"]and j["run_attempt"]==1,"actual job identity")

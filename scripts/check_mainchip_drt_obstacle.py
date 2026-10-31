@@ -70,7 +70,7 @@ class Controls(unittest.TestCase):
             with self.assertRaises(ValueError):k.census(nn,ii,aa,at)
     def test_actual_context_and_native_authority_refusal(self):
         e=dict(GITHUB_ACTIONS="true",GITHUB_REPOSITORY="Melihakbulut221/nssoc",GITHUB_EVENT_NAME="workflow_dispatch",
-          GITHUB_REF="refs/heads/codex/mainchip-drt-obstacle-progress-v2",GITHUB_SHA="a"*40,GITHUB_RUN_ATTEMPT="1",GITHUB_RUN_ID="123")
+          GITHUB_REF="refs/heads/codex/mainchip-drt-obstacle-crash-isolation-v1",GITHUB_SHA="a"*40,GITHUB_RUN_ATTEMPT="1",GITHUB_RUN_ID="123")
         self.assertEqual(k.context(e,"a"*40),dict(source="a"*40,run=123,attempt=1))
         for key,val in(("GITHUB_ACTIONS","false"),("GITHUB_REPOSITORY","other/repo"),("GITHUB_EVENT_NAME","push"),
           ("GITHUB_REF","refs/heads/main"),("GITHUB_SHA","b"*40),("GITHUB_RUN_ATTEMPT","2"),("GITHUB_RUN_ID","0")):
@@ -157,7 +157,7 @@ class Controls(unittest.TestCase):
             def visit_Expr(self,node):
                 call=node.value
                 if isinstance(call,ast.Call)and isinstance(call.func,ast.Attribute)and isinstance(call.func.value,ast.Name)and call.func.value.id=="trace":
-                    if call.func.attr not in("begin","tick","end"):raise AssertionError("unqualified trace operation")
+                    if call.func.attr not in("begin","tick","end","item_begin","item_mark","item_end"):raise AssertionError("unqualified trace operation")
                     return None
                 return self.generic_visit(node)
         prior=function(old,"native_scope");observed=copy.deepcopy(function(new,"native_scope"))
@@ -166,16 +166,118 @@ class Controls(unittest.TestCase):
         self.assertEqual(ast.dump(observed,include_attributes=False),ast.dump(prior,include_attributes=False))
         for name in("record","all_pin_geometry"):
             self.assertEqual(ast.dump(function(new,name),include_attributes=False),ast.dump(function(old,name),include_attributes=False))
-    def test_periodic_stack_diagnostics_are_nonterminating_and_cancelled(self):
+    def test_fatal_only_handler_owned_installation_and_native_finally(self):
         import mainchip_drt_obstacle_progress as p
-        with patch.object(p.faulthandler,"dump_traceback_later")as start,patch.object(p.faulthandler,"cancel_dump_traceback_later")as stop:
-            p.start_stacks();p.stop_stacks()
-            start.assert_called_once_with(60,repeat=True,file=p.sys.stderr,exit=False);stop.assert_called_once_with()
-        tree=ast.parse(Path(__file__).with_name("mainchip_drt_obstacle_native.py").read_text())
-        main=next(n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name=="main")
+        with patch.object(p.faulthandler,"is_enabled",return_value=False),patch.object(p.faulthandler,"enable")as enable,patch.object(p.faulthandler,"disable")as disable:
+            state=p.start_stacks();self.assertEqual(state,dict(previously_enabled=False,installed=True,restored=False))
+            p.stop_stacks(state);enable.assert_called_once_with(file=p.sys.stderr,all_threads=False);disable.assert_called_once_with()
+            self.assertTrue(state["restored"])
+        tree=ast.parse(Path(p.__file__).read_text())
+        self.assertFalse(any(isinstance(n,ast.Attribute)and n.attr in("dump_traceback_later","cancel_dump_traceback_later")for n in ast.walk(tree)))
+        native=ast.parse(Path(__file__).with_name("mainchip_drt_obstacle_native.py").read_text())
+        main=next(n for n in native.body if isinstance(n,ast.FunctionDef)and n.name=="main")
         outer=next(n for n in main.body if isinstance(n,ast.Try))
         self.assertTrue(any(isinstance(n,ast.Attribute)and isinstance(n.value,ast.Name)and n.value.id=="telemetry"and n.attr=="stop_stacks"for stmt in outer.finalbody for n in ast.walk(stmt)))
-
+    def test_existing_fatal_handler_untouched_and_state_refusals(self):
+        import mainchip_drt_obstacle_progress as p
+        with patch.object(p.faulthandler,"is_enabled",return_value=True),patch.object(p.faulthandler,"enable")as enable,patch.object(p.faulthandler,"disable")as disable:
+            state=p.start_stacks();p.stop_stacks(state);enable.assert_not_called();disable.assert_not_called()
+            self.assertEqual(state,dict(previously_enabled=True,installed=False,restored=True))
+            with self.assertRaises(ValueError):p.stop_stacks(state)
+            for bad in({},dict(previously_enabled=False,installed=False,restored=False),dict(previously_enabled=True,installed=True,restored=False),dict(previously_enabled=0,installed=True,restored=False)):
+                with self.assertRaises(ValueError):p.stop_stacks(bad)
+    def test_fatal_handler_install_and_restore_failures_preserve_first_error(self):
+        import mainchip_drt_obstacle_progress as p
+        primary=OSError("synthetic handler installation failure")
+        for cleanup in(None,RuntimeError("synthetic installation cleanup failure")):
+            with patch.object(p.faulthandler,"is_enabled",side_effect=[False,True]),patch.object(p.faulthandler,"enable",side_effect=primary),patch.object(p.faulthandler,"disable",side_effect=cleanup)as disable:
+                with self.assertRaises(OSError)as caught:p.start_stacks()
+                self.assertIs(caught.exception,primary);disable.assert_called_once()
+        self.assertTrue(any("cleanup failed"in x for x in primary.__notes__))
+        state=dict(previously_enabled=False,installed=True,restored=False);failure=OSError("synthetic restore failure")
+        with patch.object(p.faulthandler,"disable",side_effect=failure):
+            with self.assertRaises(OSError)as caught:p.stop_stacks(state)
+        self.assertIs(caught.exception,failure);self.assertFalse(state["restored"])
+    def cursor_item(self,c,endpoint,ordinal):
+        c.begin(endpoint,ordinal);c.mark("identity-read");c.mark("connection-checked")
+        c.mark("before-pin-geometry",instance="synthetic-instance",terminal="VPWR")
+        c.mark("pin-geometry-fed");c.end()
+    def test_cursor_exact_candidate_window_and_hard_record_bound(self):
+        import mainchip_drt_obstacle_progress as p
+        rows=[];c=p.OperationCursor(rows.append)
+        self.assertEqual((p.CURSOR_ENDPOINT,p.CURSOR_START,p.CURSOR_STOP,p.CURSOR_MAX_ROWS),("VPWR",65536,66560,6144))
+        self.cursor_item(c,"VGND",65536);self.cursor_item(c,"VPWR",65535);self.assertEqual(rows,[])
+        for ordinal in range(p.CURSOR_START,p.CURSOR_STOP):self.cursor_item(c,"VPWR",ordinal)
+        self.cursor_item(c,"VPWR",66560)
+        self.assertEqual(len(rows),6144);self.assertEqual([r["sequence"]for r in rows],list(range(6144)))
+        self.assertEqual([r["zero_based_ordinal"]for r in rows],[i for i in range(65536,66560)for _ in range(6)])
+        self.assertEqual([r["operation"]for r in rows],list(p.CURSOR_OPERATIONS)*1024)
+        self.assertTrue(all(r["exact_crash_index_claimed"]is False and all(r[n]is False for n in k.FLAGS)for r in rows))
+        self.assertEqual(rows[3]["instance"],"synthetic-instance");self.assertEqual(rows[3]["terminal"],"VPWR")
+    def test_cursor_wrong_order_identity_duplicate_and_missing_window_refused(self):
+        import mainchip_drt_obstacle_progress as p
+        for endpoint,ordinal in(("VPWR",True),("VPWR",-1),("",0),("VPWR",65537)):
+            with self.assertRaises(ValueError):p.OperationCursor(lambda row:None).begin(endpoint,ordinal)
+        c=p.OperationCursor(lambda row:None)
+        with self.assertRaises(ValueError):c.mark("identity-read")
+        c.begin("VPWR",65536)
+        with self.assertRaises(ValueError):c.begin("VPWR",65536)
+        with self.assertRaises(ValueError):c.mark("connection-checked")
+        c.mark("identity-read");c.mark("connection-checked")
+        with self.assertRaises(ValueError):c.mark("before-pin-geometry",instance="x")
+        c.mark("before-pin-geometry",instance="x",terminal="y");c.mark("pin-geometry-fed");c.end()
+        with self.assertRaises(ValueError):c.begin("VPWR",65536)
+    def test_cursor_full_journal_partial_latest_and_sink_failure_retained(self):
+        import json,tempfile
+        import mainchip_drt_obstacle_progress as p
+        with tempfile.TemporaryDirectory()as d:
+            root=Path(d);c=p.OperationCursor(p.cursor_emitter(root))
+            c.begin("VPWR",65536);c.mark("identity-read")
+            before=json.loads((root/"iterm-operation-cursor.json").read_bytes())
+            failure=OSError("synthetic cursor latest rename failure")
+            with patch.object(Path,"replace",side_effect=failure):
+                with self.assertRaises(OSError)as caught:c.mark("connection-checked")
+            self.assertIs(caught.exception,failure)
+            rows=[json.loads(line)for line in(root/"iterm-operation-events.jsonl").read_text().splitlines()]
+            self.assertEqual(len(rows),3);self.assertEqual(rows[-1]["operation"],"connection-checked")
+            self.assertEqual(json.loads((root/"iterm-operation-cursor.json").read_bytes()),before)
+            self.assertEqual(json.loads((root/"iterm-operation-cursor.json.partial").read_bytes()),rows[-1])
+    def test_production_iterm_cursor_seam_preserves_all_geometry_records(self):
+        import mainchip_drt_obstacle_progress as p
+        tree=ast.parse(Path(__file__).with_name("mainchip_drt_obstacle_native.py").read_text())
+        scope=next(n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name=="native_scope")
+        loops=[n for n in ast.walk(scope)if isinstance(n,ast.For)and isinstance(n.iter,ast.Call)and isinstance(n.iter.func,ast.Attribute)and n.iter.func.attr=="getITerms"and isinstance(n.iter.func.value,ast.Name)and n.iter.func.value.id=="net"]
+        self.assertEqual(len(loops),1);loop=copy.deepcopy(loops[0])
+        rows=[];records=[];trace=p.Progress(lambda row:None,lambda:0,cursor_emit=rows.append)
+        trace.begin("endpoint-iterm-pins","VPWR");trace.items=p.CURSOR_START
+        terms=[];ns=types.SimpleNamespace
+        for i in range(2):
+            term,actual,boxes=self.pin_fixture();oldinst=term.getInst();oldm=term.getMTerm()
+            lib=ns(getName=lambda:"synthetic-lib");master=ns(getLib=lambda:lib,getName=lambda:"synthetic-master")
+            inst=ns(getName=lambda i=i:"synthetic-"+str(i),getTransform=oldinst.getTransform,getMaster=lambda:master)
+            term.getInst=lambda inst=inst:inst;term.getNet=lambda:ns(getName=lambda:"VPWR")
+            term.getMTerm=lambda oldm=oldm:ns(getName=lambda:"VPWR",getMPins=oldm.getMPins)
+            terms.append(term)
+        namespace=dict(net=ns(getITerms=lambda:terms),trace=trace,q=k.q,name="VPWR",seen_iterms={},actual_new=set(),
+          all_pin_geometry=self.pin_function(),feed=lambda row,is_pin=False:records.append((copy.deepcopy(row),is_pin)))
+        exec(compile(ast.Module(body=[loop],type_ignores=[]),"<exact synthetic ITerm seam>","exec"),namespace);trace.end()
+        self.assertEqual(len(rows),12);self.assertEqual(len(records),6);self.assertEqual(trace.items,p.CURSOR_START+2)
+        self.assertEqual([r["zero_based_ordinal"]for r in rows],[65536]*6+[65537]*6)
+        for index,(row,is_pin)in enumerate(records):
+            self.assertTrue(is_pin);self.assertEqual(row["owner"],"VPWR");self.assertEqual(row["instance"],"synthetic-"+str(index//3))
+            self.assertEqual(row["master"],["synthetic-lib","synthetic-master"]);self.assertFalse(row["added_diode"])
+            self.assertEqual(row["box"],[[-30,40,-10,60],[-70,80,-50,100],[-70,80,-50,100]][index%3])
+        with self.assertRaises(ValueError):p.Progress(lambda row:None).item_begin()
+    def test_fatal_only_source_child_reports_real_synthetic_signal(self):
+        import signal,subprocess,sys
+        script=Path(__file__).resolve().parent
+        code="import os,sys,signal,resource;resource.setrlimit(resource.RLIMIT_CORE,(0,0));sys.path.insert(0,sys.argv[1]);import mainchip_drt_obstacle_progress as p;assert not p.faulthandler.is_enabled();s=p.start_stacks();assert s['installed'];os.kill(os.getpid(),signal.SIGSEGV)"
+        env=dict(os.environ);env.pop("PYTHONFAULTHANDLER",None);env.pop("PYTHONDEVMODE",None)
+        r=subprocess.run([sys.executable,"-B","-c",code,str(script)],capture_output=True,timeout=30,env=env)
+        import base64,hashlib,json
+        print("MAINCHIP_FATAL_ONLY_SYNTHETIC "+json.dumps(dict(returncode=r.returncode,stdout_base64=base64.b64encode(r.stdout).decode(),stderr_base64=base64.b64encode(r.stderr).decode(),stdout_sha256=hashlib.sha256(r.stdout).hexdigest(),stderr_sha256=hashlib.sha256(r.stderr).hexdigest(),native_project_payload=False),sort_keys=True),flush=True)
+        self.assertEqual(r.returncode,-signal.SIGSEGV);self.assertIn(b"Fatal Python error: Segmentation fault",r.stderr)
+        self.assertNotIn(b"Timeout (",r.stderr)
 
     def test_exact_readonly_3600_budget_and_unchanged_resource_refusals(self):
         import mainchip_drt_obstacle_budget as b
