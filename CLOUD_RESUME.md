@@ -1,22 +1,23 @@
-# Cloud continuation — checkpoint v170
+# Cloud continuation — checkpoint v171
 
-Updated: 2026-10-31T13:47:03.745436+00:00
+Updated: 2026-10-31T13:55:54.184988+00:00
 
-CLOUD ONLY. Tests, CAD, numerical solving, simulation and native inputs/outputs remain on GitHub. Local project workspace and owned project temporary entries are empty; no local CAD process. No native archive/payload may be downloaded locally, including RAM. This overrides older local-work goal wording.
+CLOUD ONLY. Tests, CAD, numerical solving, simulation and native inputs/outputs remain on GitHub. Local workspace and owned project temporary entries are empty; no local CAD process. No native archive/payload may be downloaded locally, including RAM. This overrides older local-work goal wording. No native job is currently running.
 
-Mainchip41199907663/source6e421425 is terminal FAILURE and is no longer running. The native routing command returned0 and restore-plan/import completed. Restored-audit rejected: each new diode requires a changed owned route. Final physical check/audit/verdict did not run. Cleanup also found absent GITHUB_ACTIONS in the owned hosted Docker context. This is not a route deadline expiry. Full188-file121,606,359-byte proof08f76aacaf4faf559c8298a0e74ea5774b47798a and741-file924,882,143-byte native capsulec7a64fcb... retained; all proof files readback verified. The v165 collector has EXECUTED; never rerun.
+Mainchip41199907663/source6e421425 is terminal FAILURE. Routing returned0 and restoration completed, but restored-audit rejected: each new diode requires a changed owned route. Final physical check/audit/verdict did not run. Cleanup clock gate also rejected absent GITHUB_ACTIONS in actual hosted Docker context. Full188-file121,606,359-byte proof08f76aac and741-file924,882,143-byte native capsule retained/readback verified. The v165 collector has EXECUTED; never rerun.
 
-Next mainchip action: read-only diagnosis of exact saved routed candidate and original/current snapshots, identifying which mutable nets did not change and whether every new diode signal pin is physically connected. Preserve all original invariants and2702PGcontacts. Do not weaken equality or blindly reroute/recreate diodes. Truthfully propagate validated hosted context; inspect the frozen153130instance assertion against actual bulk census before adapting clock verification.
+Next mainchip action: read-only diagnosis of exact saved routed candidate/current and original snapshots; identify changed/unchanged mutable nets and actual new diode signal-pin route connectivity. Preserve original invariants and2702PGcontacts. Do not weaken equality or blindly reroute/recreate diodes. Truthfully bind hosted context and inspect frozen153130instance assertion against actual bulk census before adapting clock verification.
 
-Physical CDR41203881385/source39496d03 remains qualified as a physical trial: exact GDS9d8984fd,574raw additions,8drains,560DRC0markers,500deep/flatLVS13,5actualserialized geometry faults. No electrical or fullPHY acceptance is implied.
+CDR physical41203881385 remains qualified only as a physical trial: exact GDS9d8984fd,574raw additions,8drains,560DRC0markers,500deep/flatLVS13,5actualserialized geometry faults. No electrical or fullPHY acceptance is implied.
 
-Fresh graph41206019222/source501943b3 passed227source controls, authenticated2797old+339physical members, and completed8of9native commands. Final verification reached material controls but the KLayout Region constructor did not accept another Region. Complete86-file31,416,263-byte proof3b4d57e09a990e5e69a305277ee6ba570b9d1d7a and322-file6,529,298-byte native capsulea548262d... preserved/readback verified. Its collector has EXECUTED; never rerun.
+CDR fresh graph41206809668/source de79f76b SUCCESS. All227same-source controls and9actualnative commands passed. Original500device/1446terminal/25port/978anchor/238net identities retained;12actual witness mutations rejected. All113components across13layers (1469records) equal original material plus exactly574declared additions.2native algebra positives and5refusals passed without input mutation. Exact75-file new current view ready. Full92-file37,003,438-byte proof9cb8738b85a807f302a2e01d77d5b9fbec6c1c50 and330-file6,619,298-byte native capsuleb036a962... preserved/readback verified. The v170 collector has EXECUTED; never rerun.
 
-Current graph41206809668/source de79f76bc60b3ef2b06c88736f4f3d0ee3491257/release429962223 fixes only the native copy API with Region.dup and an input-nonmutation control. All227freshsource controls passed;23records authenticated from718,349-byte log45783719... . Snapshot: completed. All500device/1446terminal/25port/978anchor/238net/113component identities and exact574-shape13-layer material requirements remain. Protected union1329files. Current v170 collector is PREPARED_NOT_EXECUTED; collect once terminal and verify actual full graph qualification.
+Next CDR action: implement freshRC admission/controller from current branch codex/cdr-drain-m1-loaded-electrical at9cb8738b, using docs/evidence/cdr-current-eight-drain-fresh-rc-input-proposal-20261031.json. Authenticate all330capsule members and exact75-file native/candidate view. Preserve frozen500device binding/wireRC, seven-MIM extraction in both native orders,22controls/order and21composition controls. Adapt only obsolete two-M1-specific producer/material admission to current exact574addition proof. No freshRC or new electrical simulation has yet run.
 
-After actual graph qualification, complete fresh500-device binding/wireRC and both-order seven-MIM extraction on exact new75-file current view, then original loaded nominal_early/constant_one gates. FullserialPHY and finalsetup/hold remain open. Keep original analog limits and20/4/8/8ns+5%; finalRC/STA adapter86015346 remains gated on actually qualified routed candidate. The8-hour monitor remains read-only with432handles; historical HTTP502 health is not claimed resolved.
+Then run original nominal_early/constant_one complete1151-vector loaded matrix on exactly the new composed model. FullserialPHY and finalsetup/hold remain open; keep all original analog limits and20/4/8/8ns+5%. FinalRC/STA adapter86015346 remains gated on a truly qualified routed candidate. The8-hour monitor remains read-only with432handles; historical HTTP502 health is not claimed resolved.
 
 ## Historical notes below — not current running-job status
+
 
 
 
