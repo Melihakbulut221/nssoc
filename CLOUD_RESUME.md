@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v150
+# Cloud continuation — checkpoint v151
 
-Updated: 2026-10-31T04:21:42.865806+00:00
+Updated: 2026-10-31T04:44:50.731886+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint v150: real bulk antenna run41163081445 failed SIGSEGV in diode placement, notOOM; repair executed once and route never ran. Full100file proofc9f5cc7a and48membernativecapsule preserved. Current authentic153129-instance name audit41167127706 passed after15hosted source controls, full50fileproof8a4f04df verified. There are9143canonicaldiodes, gaps1574/1575 followedbyoccupied1576; legacyallocator can collide after2insertions. Exact crashing attemptedname remainsunobserved. Next implement/qualify reversible namespace workaround then oneboundedrepair withoriginalclock/geometricgates. Actual analogcaptures still reproduceoriginalelectricalrejections; contactownershipaudit sourceorientation saved butnotimplemented. All nativepayloads stayinGitHub, localworkspace/tmp/nativeprocesses empty; fullPHY/currentroute/finalsetuphold remainopen.
+Cloud-only checkpoint v151: reversible diode namespace workaround committed5256e147. GitHub source controls41169110251 passed all25new namespace rows,49adapter rows and inherited10positive49refusal20lifecycle9renderedTcl. Full25file3,847,906B proof3576fc27 including both rawjoblogs and nine testedsourcefiles is byte-verified. The real repair41163081445 remains a preserved SIGSEGV failure; this source pass does not resolve actualnative crash or qualifyphysicalresults. Next hosted-only native API/current-chip name roundtrip beforeonebounded genuine repair. Current1707pinmanifest/workflow keepnativeexecutiondisabled. Localworkspace/tmp/nativeprocesses remainempty; originalreviewpaths absent and untouched. Exact cloudcontinuation preserves analogoriginalrejections, current608antenna nets andstill-openPHY/finalRCSTA.
 
 Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9262,3 +9263,10 @@ Local project/tmp/native processes verified absent. Inventory410 exact cloud han
 Cloud-only checkpoint v150: real bulk antenna run41163081445 failed SIGSEGV in diode placement, notOOM; repair executed once and route never ran. Full100file proofc9f5cc7a and48membernativecapsule preserved. Current authentic153129-instance name audit41167127706 passed after15hosted source controls, full50fileproof8a4f04df verified. There are9143canonicaldiodes, gaps1574/1575 followedbyoccupied1576; legacyallocator can collide after2insertions. Exact crashing attemptedname remainsunobserved. Next implement/qualify reversible namespace workaround then oneboundedrepair withoriginalclock/geometricgates. Actual analogcaptures still reproduceoriginalelectricalrejections; contactownershipaudit sourceorientation saved butnotimplemented. All nativepayloads stayinGitHub, localworkspace/tmp/nativeprocesses empty; fullPHY/currentroute/finalsetuphold remainopen.
 
 Local project/tmp/native processes verified absent. Inventory412 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-31T04:44:50.731886+00:00 — cloud-only checkpoint v151
+
+Cloud-only checkpoint v151: reversible diode namespace workaround committed5256e147. GitHub source controls41169110251 passed all25new namespace rows,49adapter rows and inherited10positive49refusal20lifecycle9renderedTcl. Full25file3,847,906B proof3576fc27 including both rawjoblogs and nine testedsourcefiles is byte-verified. The real repair41163081445 remains a preserved SIGSEGV failure; this source pass does not resolve actualnative crash or qualifyphysicalresults. Next hosted-only native API/current-chip name roundtrip beforeonebounded genuine repair. Current1707pinmanifest/workflow keepnativeexecutiondisabled. Localworkspace/tmp/nativeprocesses remainempty; originalreviewpaths absent and untouched. Exact cloudcontinuation preserves analogoriginalrejections, current608antenna nets andstill-openPHY/finalRCSTA.
+
+Local project/tmp/native processes verified absent. Inventory413 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
