@@ -1,0 +1,93 @@
+{
+  "schema": "complete-general-ci-timeout-observation-v1",
+  "run": 41222990617,
+  "source": "30f4f49310d7c51e5ea784732518360274ba07ae",
+  "workflow": ".github/workflows/checks.yml",
+  "event": "push",
+  "job": 124601235735,
+  "conclusion": "cancelled",
+  "actual_timeout_annotation": "The job has exceeded the maximum execution time of 6h0m0s",
+  "commands": {
+    "workflow": "scripts/ci_local.sh all",
+    "suite": "python3 -m pytest sw/tests -q -rs"
+  },
+  "timeline": {
+    "job_started": "2026-10-31T17:07:42Z",
+    "driver_started": "2026-10-31T17:11:34.2635656Z",
+    "suite_started": "2026-10-31T17:14:13.4583762Z",
+    "cancellation": "2026-10-31T23:07:55.4770020Z",
+    "job_completed": "2026-10-31T23:07:58Z"
+  },
+  "proven_findings": [
+    "Tool installation completed before the all-checks driver.",
+    "The driver reached the whole pytest suite; no later gate completion was emitted.",
+    "The runner explicitly reports the six-hour maximum execution time.",
+    "Cleanup lists orphan Python, make and vvp processes, establishing live simulator activity at cancellation.",
+    "ci_local.sh:82 captures all child stdout/stderr into shell command substitution and only returns output after completion; pytest uses quiet mode and has no global per-test timeout in preserved configuration.",
+    "The checks job artifact upload lacked always(), so suite diagnostics were not retained on cancellation.",
+    "Earlier license, documentation/publication budget, and paper claim checks had already failed; their full log is preserved."
+  ],
+  "unknowns": [
+    "The exact test name and whether the active simulator was stalled or simply slow are not present in the buffered job log.",
+    "No native artifact or runner filesystem was acquired; no claim about a specific RTL failure, rate limit or memory failure is supported."
+  ],
+  "job_outcomes": [
+    {
+      "id": 124601235471,
+      "name": "memory-parity",
+      "conclusion": "success"
+    },
+    {
+      "id": 124601235646,
+      "name": "rtl",
+      "conclusion": "success"
+    },
+    {
+      "id": 124601235657,
+      "name": "formal-and-boot",
+      "conclusion": "success"
+    },
+    {
+      "id": 124601235672,
+      "name": "formal-sweep (soc)",
+      "conclusion": "success"
+    },
+    {
+      "id": 124601235735,
+      "name": "checks",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 124601235791,
+      "name": "formal-sweep (pilot)",
+      "conclusion": "success"
+    },
+    {
+      "id": 124601235838,
+      "name": "python-quality",
+      "conclusion": "success"
+    },
+    {
+      "id": 124601236902,
+      "name": "native-boot",
+      "conclusion": "skipped"
+    }
+  ],
+  "successor": {
+    "run": 41223192019,
+    "source": "dd320012480c99914c4a198c8236b7190b39ce26",
+    "event": "push",
+    "status_at_readback": "in_progress",
+    "observed_at": "2026-10-31T23:14:54.473Z",
+    "same_workflow": true,
+    "same_driver": true,
+    "action_taken": false
+  },
+  "scope": {
+    "native_analog_run": false,
+    "native_payload_acquired": false,
+    "rerun": false,
+    "cancelled_by_us": false,
+    "source_mutated": false
+  }
+}
