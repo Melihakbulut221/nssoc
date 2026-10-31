@@ -1,51 +1,51 @@
-# Cloud continuation — checkpoint v184
+# Cloud continuation — checkpoint v185
 
-Updated: 2026-10-31T17:53:29.128649+00:00
+Updated: 2026-10-31T18:02:50.720281+00:00
 
-All RTL tests, simulation, CAD and numerical/native processing run on GitHub. Never acquire native archives, models, ODB/GDS, raw waves or native-frame gzip locally, including RAM. Source/API derived text coordination uses RAM only. Workspace and project temporary prefixes are empty; no local CAD process runs.
+The user requires cloud-only work. All tests, simulation, CAD and numerical/native processing run on GitHub. Never acquire native archives, models, ODB/GDS, raw waves or native-frame gzip locally, including RAM. Source/API derived JSON/text coordination uses RAM only. Local workspace and project temporary prefixes are empty; no local CAD process runs.
 
-## Actual qualified RTL integrated
+## Preserve four original/authorized runs
 
-Run [41223635170](https://github.com/Melihakbulut221/nssoc/actions/runs/41223635170), exact source17033684f3dfd0c760ac7cf64d2e1dc1a4b2fdb0:50named positive RTL tests passed,0positive skips; two compiled semantic mutants detected by exact independent assertions; two production top hierarchies each have1sharedfront/4aligners/4CDC/4FIFO.
+1. Mainchip router [41211382427](https://github.com/Melihakbulut221/nssoc/actions/runs/41211382427), source ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9, release429993235. Preserve original job; redirected quiet logs do not justify restart. Packet-interface SoC only.
+2. Original ten-case loaded CDR [41218657461](https://github.com/Melihakbulut221/nssoc/actions/runs/41218657461), source84b8b591e10be32716947c8d6b079fd7a21ce18d. All11case/preparation releases already reserved. Preserve every terminal case and any stillrunning case.
+3. Actual training transport RTL [41227114547](https://github.com/Melihakbulut221/nssoc/actions/runs/41227114547), sourcef2e452405f87aa079f79f604604294138fcfe261. Separate empty exactsource release430096033, tag cloud-results-41227114547-1-pcie-training-epoch-ingress-v1. One dispatch, no retry. Planned110positive tests/6compiled mutants/4hierarchies are NOT yet passed results.
+4. Readonly current CDR RC collector [41227192284](https://github.com/Melihakbulut221/nssoc/actions/runs/41227192284), sourcebf95941c21a19221136c707843e7983648c3ae1b. Separate empty exactsource release430096504, tag cloud-results-41227192284-1-cdr-current-access-rc-readback-nominal_late. One dispatch, existing original nominal_late archive only. No new analog simulation or layout edit.
 
-Complete12file859103byte proof imported from1006eae3d1198e12ed1d3f22e3eaf800be13a788 under docs/evidence/pcie-shared-serial-front-terminal-41223635170/. ReceiptSHA04be01120e1a35be523bead9c5bb4cdd0ec75c25d9c2e51cacde8288e53fcde1.
+Exact job observations are in docs/evidence/cloud-collector-recipes-20261029/actual-training-and-access-rc-dispatch-v185.json; snapshots are not completion claims. Do not recreate reservations, modify original acceptance limits or discard failures.
 
-Ten tested source files plus qualified documentation/provenance are now integrated byte-for-byte. All17existing protected dependencies match. Candidate-specific workflow is intentionally not imported: runner remains bound to its tested execution branch, and root execution acceptance is not inferred. The actual consumer chain is events_v3 -> owned_rx_v2 -> recovered_x4_v5 -> shared front_x4_v1. soc_top still has external packet-interface status, not integrated serial PHY.
+## Genuine shared-front RTL result integrated
 
-## New training transport source
+Run41223635170/source17033684f3dfd0c760ac7cf64d2e1dc1a4b2fdb0 passed50named positive RTL tests,0positive skips; two compiled semantic mutants detected by exact independent assertions; two production top hierarchies each1sharedfront/4aligners/4CDC/4FIFO. Full proof1006eae3d1198e12ed1d3f22e3eaf800be13a788 remains imported.
 
-Branch codex/pcie-training-epoch-ingress-v1, corrected source2a69d010371aff75fb8be204c92ef4c1d384d48e. Run41226031156 passed16source/refusal controls, no failures/errors/skips. Complete proof9fa7ac82df98e32db95d08bb527580fbaf31a1c8 is imported.
+Rootv184 commit19fd799e4afa60f50b9ae6b05d522ddfe9c574cb integrated12qualified source/docs files, with all17existing protected dependencies matching. Candidate-specific workflow was not copied: runner stays on its dedicated execution branch; root runtime acceptance is not inferred. Chain: events_v3 -> owned_rx_v2 -> recovered_x4_v5 -> sharedfront_x4_v1. soc_top serial hookup remains open.
 
-Four-phase bundled command mailboxes, safe modulo epoch reuse and actual Gen12/sharedGen3 transport composition were reviewed by root and peer. A real reset/completion coincidence bug was fixed with direct abort priority and success masking; dedicated same-edge and stopped-lane WAIT_LOW tests added. Test oracles now use valid lane slices and actual ready pin snapshots.
+## Training command and ingress
 
-Planned110positive RTL tests,6compiled mutants and4hierarchies have NOT run. Native execution remains disabled at the tested source. Narrow activation adapter preparation is authorized; exactsource review, own hosted controls and independent empty destination release precede any actual dispatch. No TS/EQ/LTSSM or link-up semantics are invented. Physical composition is8FIFOs,4active for the selected encoding.
+Root+peer reviewed the actual four-phase command mailboxes and Gen12/sharedGen3 ingress. Safe modulo epoch reuse requires all acknowledgments low. Epoch abort flushes old records. Same-edge STARTUP completion/reset false-success was fixed; exact edge and WAIT_LOW stopped-clock tests added. Physical composition8FIFOs,4active for the selected encoding.
 
-## Preserve running native work
+Original corrected source2a69d010 passed16source controls. Activationf2e45240 passed21source controls plus17release/4waiter refusals in41226756847; full proof0f4b9c5fee9ea11ac68a69504a3aac4f48ade5a5 imported. RTL and both oracles remain byte-identical to reviewed2a69d010. Actual dispatch above requires exact approved_source, dedicated job, successful sourcecontrols and separateemptyrelease. No normative TS/EQ/LTSSM or fake link-up implemented; physical CDC and full training handoff remain open.
 
-- Router [41211382427](https://github.com/Melihakbulut221/nssoc/actions/runs/41211382427), source ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9, release429993235. Keep original job; no restart for quiet logs. Packet-interface SoC only.
-- Ten-case loaded CDR [41218657461](https://github.com/Melihakbulut221/nssoc/actions/runs/41218657461), source84b8b591e10be32716947c8d6b079fd7a21ce18d. All11case/preparation releases reserved. No retry/recreation; preserve rejected cases.
+## CDR current evidence and physical next step
 
-Snapshots in docs/evidence/cloud-collector-recipes-20261029/qualified-shared-front-and-cloud-only-v184.json give observed job states, not completion claims.
+Actual existing nominal readback41223527977 authenticated2991archive members and replayed original electrical REJECTED verdicts exactly, including4590queries and1530native settling windows percase. Full116file44,179,088byte proof retained. Native frames remain cloud-only.
 
-## CDR evidence and next physical correction
+Actual gainpulldown l5um is the deliberate v59 cd_shunt nativePCell/reference transform of oldl7.4um; source audit55db15f41be2779ec2e9e9e0b83d95f970f74f0c retained. GainmaxVCE margin25.470mV is below failedselector recovery need58.75mV. Do not blindlyraise gaincommonmode.
 
-Actual existing nominal readback41223527977 succeeded:2991archive members authenticated,4590queries/1530native settling windows percase, original electrical REJECTED verdicts replayed exactly. Full116file44,179,088byte proof remains imported. Wave/frame gzip stays cloud-only.
+Four actual access nets are components17/19/61/63, native28/38/135/136. Current eightdrain straps only alter boundedMOSdrainM1/M2 access. The new readonly collector preserves all current R/C and boundarycaps, exact device/anchor/geometry identities and rawnative nodecoordinates. Its76pairwise1A mathematicalDC evaluations are not real device currents, RF/timing, EM or causality proof. Missing/unknown coordinates remain explicit.
 
-The old v57 leaf l7.4um gain pulldown is intentionally transformed to current native l5um by generate_cdr500_resistor_v59.py arm cd_shunt, exactSHA73d2eb18f3ceb4425668584f86b5e64a4c262af25c638114a4f18fcac36fb81d. Actual native IDs184/185/222/223 and PCell/reference lineage confirmed. Audit55db15f41be2779ec2e9e9e0b83d95f970f74f0c imported.
+First collector sourcefca2396 failed sourcecontrols41226430440 because numpy was imported beforedependencyinstall. No numerical/native input was acquired. Full failure proof imported. Explicit lazyloader402ecb3a preserves exact solverbody5346f0aef7ee3ab8ad6b0d77a0a79ee8e54e7b5ec9585edf09e487d062008993. Corrected controls41226700901 and finalactivated controls41226950039 passed12RCmethods,6samplermethods, inherited10groups/86refusals/4lifecycle and publication7positive/33refusals/4lifecycle. Full proofs81c7cefd... and214af4d9... imported. No algorithm/limit drift during authority activation.
 
-GainmaxVCE margin is only25.470mV while failedselector61 needs about58.75mV recovery. Do not blindly raise gain commonmode. Current8drain additions only shunt bounded MOS M1/M2 access, not selectorcollector paths. Four actual target nets: components17/19/61/63, native28/38/135/136. Real accessR/C and geometry diagnosis is next; V/I differences alone are not causal proof.
+Use the actual collector output to select real geometry changes, then regenerate physical verification and original loaded cases. No new physical correction has yet been accepted. Remaining eight original nonnominal case proofs are being preserved separately by loaded_admission_review on codex/cdr-eight-drain-matrix-terminal-preservation. Missingnative-result/solvererror/expected negativecontrols must be classified from full evidence, not assumedPASS.
 
-Readonly collector branch codex/cdr-current-access-rc-readback sourcefca239618687303bde8dfd18c3f2139c7308ff8d has nativeauthorityfalse. Hosted sourcecontrols41226430440 and source review are underway. Current500device/R24356/C15566 composition and all original electrical limits stay unchanged; no new analog simulation or geometry candidate is yet accepted.
+## Final routed-chip timing
 
-## Routed-chip timing gate
+After actual router terminal authenticate all17commands/full capsule and final-measured.odb. Qualified stale-wire adapterc6132e91884c796bfdb5c38f9b4c1bb015ccc74d only addresses oldhost16-vs17 bookkeeping after genuine physicalsuccess. Never relabel physical failure or reroute just for the count discrepancy.
 
-After actual router terminal authenticate all17commands/full capsule and final-measured.odb. If physical gates pass and only old host16-command expectation fails, use qualified adapterc6132e91884c796bfdb5c38f9b4c1bb015ccc74d; never relabel physical failure. Routed-view source26controls passed but actualexport remains disabled until candidate/engine/LEF/Liberty binding.
+Routed-view26source controls passed but actualexport remains disabled until candidate/engine/LEF/Liberty lineage is bound. Keep153129original+1351diodes=154480instances and143820nets. Fresh RC/STA must retain20/4/8/8ns clocks,5percent uncertainty, threePVT and zero setup/hold/slew/cap/fanout. Oldnetlist/SPEF is inadmissible; nominalRC is not RCmin/max qualification.
 
-Keep153129original instances+1351diodes=154480 and143820nets. Fresh RC/STA retains20/4/8/8ns clocks,5percent uncertainty, threePVT and zero setup/hold/slew/cap/fanout. Old netlist/SPEF is inadmissible; nominalRC is not RCmin/max qualification.
-
-Monitor: 467handles, inventoryv184, every8hours, automatic_native_dispatch=false. EarlierHTTP502 monitor issue not claimed fixed. Allcommits [skip ci], nonforce CAS. Use scoped subtrees; whole-root recursive Git tree truncates.
+Monitor: 472handles, inventoryv185, every8hours, automatic_native_dispatch=false. EarlierHTTP502 issue not claimedfixed. Allcommits [skip ci], nonforceCAS. Use scoped subtrees; whole-rootrecursive tree truncates.
 
 Detailed state: docs/evidence/cloud-active-checkpoint-20261024.json
-Immutable receipt: docs/evidence/cloud-collector-recipes-20261029/qualified-shared-front-and-cloud-only-v184.json
+Immutable receipt: docs/evidence/cloud-collector-recipes-20261029/actual-training-and-access-rc-dispatch-v185.json
 
-Full serial PHY, final routed-chip setup/hold, RCmin/max qualification and production approval remain open.
+Full serial PHY, mainchipserial hookup, final routed-chip setup/hold, RCmin/max qualification and production approval remain open.
