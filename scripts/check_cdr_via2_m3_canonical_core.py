@@ -147,11 +147,69 @@ def scope_controls(config):
     reject('core_config_cannot_grant_native_entry',lambda:c.authorize_native(active))
     for field in('rc_extraction_authorized','electrical_simulation_authorized','physical_accepted','electrical_accepted','full_phy_accepted'):
         bad=copy.deepcopy(config);bad[field]=True;reject('forbidden_'+field,lambda:c.validate_config(bad))
+
+def incremental_preservation_controls(config):
+    """Explicit synthetic globals clone; real exclusive JSON writes, no native input."""
+    import types
+    original_identity=c.identity_namespace
+    phases=('new-read','compare','witness','material','bindings')
+    names=('old-native-identity.json','new-native-identity.json','native-identity-comparison.json',
+        'actual-witness-faults.json','full-partition-material.json')
+    for phase,expected_count in zip(phases,(1,2,3,4,5)):
+        out=RESULT/'lifecycle-fixtures'/phase;out.mkdir(parents=True)
+        def sentinel():
+            raise RuntimeError('EXPLICIT_SYNTHETIC_FAILURE:'+phase)
+        observations={
+            'old':dict(synthetic_fixture=True,side='old'),
+            'new':dict(synthetic_fixture=True,side='new',graph={},locations={},anchors={}),
+            'compare':dict(synthetic_fixture=True,complete_observation='comparison'),
+            'witness':dict(synthetic_fixture=True,complete_observation='witness'),
+            'material':dict(synthetic_fixture=True,complete_observation='material')}
+        def read_side(pya,root,files,producer):
+            if root.name=='new-view'and phase=='new-read':sentinel()
+            return None,observations['new'if root.name=='new-view'else'old']
+        def compare(old,new):
+            if phase=='compare':sentinel()
+            return observations['compare']
+        def witness(old,new):
+            if phase=='witness':sentinel()
+            return observations['witness']
+        def material(*args):
+            if phase=='material':sentinel()
+            return observations['material']
+        def report_inputs(*args):sentinel()
+        def read_json(path):
+            if path.name=='native-planes.json':
+                return dict(status='PASS_PD500_NATIVE160_PLANES_51_NETS_19_FAULTS',anchors=[None]*160,controls=[None]*19,
+                    parent_geometry=dict(controls=[None]*5,actual_placements=[None]*16,checked_layers_by_kind=[None]*9))
+            assert path.name=='source-pins.json'
+            return dict(status='PASS_RECOVERED_SOURCE_PIN_BOXES_ON_IDENTICAL_PRIMITIVE_DRAWING',
+                target_gds_sha256=config['candidate']['gds']['sha256'],target_geometry_edited=False,missing_referenced_primitive_rejected=True)
+        scope=dict(c.verify.__globals__,verify_prepared=lambda *args:None,read_json=read_json,
+            pin=lambda p:config['original_reference_gds'],
+            identity_namespace=lambda *args:types.SimpleNamespace(read_side=read_side,compare_witnesses=compare,witness_controls=witness),
+            prove_material=material,report_inputs=report_inputs)
+        fixture=types.FunctionType(c.verify.__code__,scope,c.verify.__name__)
+        c.require(fixture.__code__ is c.verify.__code__ and fixture.__globals__ is not c.verify.__globals__,'exact verifier body, explicit isolated fixture globals')
+        try:fixture(out/'old-reference',out/'unused-physical',out/'new-view',out,ROOT,config)
+        except RuntimeError as e:c.require(str(e)=='EXPLICIT_SYNTHETIC_FAILURE:'+phase,'original synthetic primary retained')
+        else:raise AssertionError('Fixture did not reach its explicit failure')
+        actual=sorted(p.name for p in out.iterdir()if p.is_file())
+        c.require(actual==sorted(names[:expected_count]),'all completed observations retained and no later fabricated record')
+        saved={p.name:c.read_json(p)for p in out.iterdir()if p.is_file()}
+        values=[observations[n]for n in('old','new','compare','witness','material')[:expected_count]]
+        c.require(saved==dict(zip(names[:expected_count],values)),'actual exclusive output bytes represent completed observations')
+        c.require(c.identity_namespace is original_identity,'production globals unchanged')
+        record('incremental_preservation_'+phase,'explicit source-only failure fixture',native_acquired=False,
+            production_admission_exercised=False,exact_function_code=True,completed_output_records=saved,
+            output_pins={p.name:c.pin(p)for p in out.iterdir()if p.is_file()})
+    reject('production_native_entry_still_disabled_after_lifecycle',lambda:c.authorize_native())
+
 def main():
     config,context=source_guard();RESULT.mkdir(parents=True,exist_ok=False)
     c.projection.write_new(RESULT,'source-context.json',c.encode(context))
     try:
-        source_definition_controls(config);count_controls();material_controls(config);scope_controls(config)
+        source_definition_controls(config);count_controls();material_controls(config);scope_controls(config);incremental_preservation_controls(config)
         result=dict(status='PASS_SOURCE_AND_SYNTHETIC_CORE_CONTROLS_NOT_NATIVE_QUALIFICATION',context=context,
             controls=RECORDS,control_count=len(RECORDS),native_acquired=False,native_view_executed=False,**c.FLAGS)
         c.projection.write_new(RESULT,'source-controls.json',c.encode(result));print(json.dumps(result,sort_keys=True))

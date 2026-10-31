@@ -98,6 +98,13 @@ jobs:
             'hw/soc/out/cdr-via2-m3-canonical-core-source/source-context.json',
             'hw/soc/out/cdr-via2-m3-canonical-core-source/source-controls.json',
             'hw/soc/out/cdr-via2-m3-canonical-core-source/source-failure.json']
+          fixtures=Path('hw/soc/out/cdr-via2-m3-canonical-core-source/lifecycle-fixtures')
+          if fixtures.exists():
+              for p in sorted(fixtures.rglob('*')):
+                  assert not p.is_symlink()and(p.is_dir()or p.is_file())
+                  if p.is_file():
+                      assert p.suffix=='.json'
+                      names.append(p.as_posix())
           for name in names:
               p=Path(name)
               if not p.is_file():continue

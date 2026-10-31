@@ -323,15 +323,18 @@ def verify(reference,physical,view,out,source_root,config):
     identities=identity_namespace(source_root,config)
     producer=source_root/(projection.WIRE_SOURCE+'locate01.py')
     old_layout,old=identities.read_side(pya,reference,selected_files(config['reference_prefix']),producer)
+    projection.write_new(out,'old-native-identity.json',encode(old))
     new_layout,new=identities.read_side(pya,view,selected_files(),producer)
+    projection.write_new(out,'new-native-identity.json',encode(new))
     comparison=identities.compare_witnesses(old,new)
+    projection.write_new(out,'native-identity-comparison.json',encode(comparison))
     faults=identities.witness_controls(old,new)
+    projection.write_new(out,'actual-witness-faults.json',encode(faults))
     material=prove_material(pya,reference,view,old,new,source_root,config)
+    projection.write_new(out,'full-partition-material.json',encode(material))
     reports={'parent-geometry':parent,'planes':planes,'source-pins':recovery,'graph':new['graph'],'locations':new['locations'],'anchors':new['anchors']}
     bindings={n:report_inputs(r,view)for n,r in reports.items()}
-    for name,value in (('old-native-identity.json',old),('new-native-identity.json',new),('native-identity-comparison.json',comparison),
-        ('actual-witness-faults.json',faults),('full-partition-material.json',material),('fresh-report-bindings.json',bindings)):
-        projection.write_new(out,name,encode(value))
+    projection.write_new(out,'fresh-report-bindings.json',encode(bindings))
     files=projection.inventory(view)
     result=dict(status='PASS_CANDIDATE_BOUND_CANONICAL_VIEW_REQUIRES_FRESH_RC',
         candidate_gds=config['candidate']['gds'],candidate_flat_lvs=pin(view/'parent/physical/lvs_flat/result.lvsdb'),
