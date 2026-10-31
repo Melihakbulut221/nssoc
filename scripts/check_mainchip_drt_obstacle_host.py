@@ -36,7 +36,7 @@ class Controls(unittest.TestCase):
         bad=copy.deepcopy(jobs);bad["jobs"].pop()
         with self.assertRaises(ValueError):h.current_run(ctx,run,bad)
     def result(self):
-        return dict(status="PASS_OBSTACLE_ADAPTER_SOURCE_CONTROLS",source="a"*40,run=123,attempt=1,tests_run=40,
+        return dict(status="PASS_OBSTACLE_ADAPTER_SOURCE_CONTROLS",source="a"*40,run=123,attempt=1,tests_run=h.EXPECTED_TESTS,
           failures=0,errors=0,skipped=0,successful=True,test_ids=h.expected_test_ids(),native_acquired=False,native_tools_executed=False,**k.FLAGS)
     def log(self,r):return b"2026-10-31T19:00:00.000Z MAINCHIP_OBSTACLE_CONTROLS "+json.dumps(r,sort_keys=True).encode()+b"\n"
     def test_complete_raw_control_log_source_inventory_and_refusals(self):
@@ -165,14 +165,18 @@ class Controls(unittest.TestCase):
                 out=Path(d);first=ValueError("first native failure")if mode=="primary-and-publication"else None
                 save=OSError("first result save failure");publication=RuntimeError("publication failed")
                 report=dict(status="COMPLETE_READONLY_OBSTACLE_CLOUD_OBSERVATION",terminal_errors=[],**k.FLAGS)
-                real=h.c.atomic_record
+                defining=h.c.finish_record.__globals__;real=defining["atomic_record"]
+                self.assertIs(real,h.c.atomic_record);writes=[]
                 def atomic(*args,**kwargs):
+                    writes.append(args[0])
                     if mode=="save-and-publication":raise save
                     return real(*args,**kwargs)
-                with patch.object(h.c,"atomic_record",side_effect=atomic),patch.object(h,"publication",side_effect=publication)as pub:
+                with patch.dict(defining,{"atomic_record":atomic}),patch.object(h,"publication",side_effect=publication)as pub:
                     with self.assertRaises(BaseException)as caught:h.finish_then_publish(self.ctx(),dict(release_id=9),out,report,first)
                 self.assertIs(caught.exception,first if first is not None else save if mode=="save-and-publication"else publication)
-                self.assertEqual(pub.call_count,1)
+                self.assertEqual(pub.call_count,1);self.assertEqual(len(writes),1)
+                if mode=="save-and-publication":
+                    self.assertTrue(any(e["action"]=="terminal-save"and"first result save failure"in e["error"]for e in report["terminal_errors"]))
                 self.assertIn("publication failed",q.decode((out/"publication-failure.json").read_bytes())["error"]["error"])
     def test_reserved_acquisition_failure_still_publishes_once(self):
         with tempfile.TemporaryDirectory()as d:

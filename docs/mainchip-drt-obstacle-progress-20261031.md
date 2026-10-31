@@ -76,3 +76,11 @@ Initial source-controls run 41240833018 failed the hosted AST parse before test
 execution: two missing spaces joined the budget adapter's __globals__ and is
 tokens. The correction changes only those spaces; its original failure logs
 remain preserved. No native run was dispatched.
+
+Second controls run 41241019298 ran all 50 tests with one error and one failure.
+The synthetic control-result fixture still reported 40. The save-failure fixture
+patched a re-exported atomic_record alias, not finish_record's defining globals,
+so no save error was injected. The corrected fixture guards alias identity,
+patches the actual defining namespace, counts the save call and requires the
+terminal-save evidence plus the exact same original OSError. Production bodies
+and exception expectations remain unchanged; both complete failures are retained.
