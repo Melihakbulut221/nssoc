@@ -65,7 +65,7 @@ jobs:
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['APPROVED_SOURCE']==e['GITHUB_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           p=Path('scripts/cdr-eight-drain-vi-bias-off-methods-v1.json');raw=p.read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='5fc62a0113235f214646ade8aeaf730f7c7e6b5af7c37c1dfab82a6e054d1fbb'
+          assert hashlib.sha256(raw).hexdigest()=='6814692d7207bbe1fa10299497650912187e06d3908fd4120ac03e020ea4f9ff'
           m=json.loads(raw)
           assert m['branch']=='codex/cdr-eight-drain-storage-preflight-v1'
           assert subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()=='https://github.com/Melihakbulut221/nssoc'
@@ -105,6 +105,8 @@ jobs:
           python3 -B scripts/check_cdr_eight_drain_storage_v1.py > hw/soc/out/cdr-storage-streams/stdout.log 2> hw/soc/out/cdr-storage-streams/stderr.log
       - name: Actual single-case adapter source and refusal controls
         if: ${{ !cancelled() && steps.storage.outcome == 'success' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p hw/soc/out/cdr-single-vi-streams
           python3 -B scripts/check_cdr_eight_drain_vi_bias_off_v1.py > hw/soc/out/cdr-single-vi-streams/stdout.log 2> hw/soc/out/cdr-single-vi-streams/stderr.log
@@ -128,6 +130,13 @@ jobs:
               present=p.is_file();raw=p.read_bytes()if present else b'';chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
               print('VI_SOURCE_INDEX '+json.dumps(dict(path=name,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
               for i,b in enumerate(chunks):print('VI_SOURCE_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          transport=Path('hw/soc/out/cdr-eight-drain-single-vi-source-controls/transport')
+          assert not transport.is_symlink()
+          for name in ('run.json','job.json','source-controls.log','receipt.json'):
+              p=transport/name;assert not p.is_symlink()
+              present=p.is_file();raw=p.read_bytes()if present else b'';chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
+              print('VI_TRANSPORT_INDEX '+json.dumps(dict(path=name,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):print('VI_TRANSPORT_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
           PY
       - name: Preserve complete source success or failure
         if: always()
@@ -189,7 +198,7 @@ jobs:
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['APPROVED_SOURCE']==e['GITHUB_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           p=Path('scripts/cdr-eight-drain-vi-bias-off-methods-v1.json');raw=p.read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='5fc62a0113235f214646ade8aeaf730f7c7e6b5af7c37c1dfab82a6e054d1fbb'
+          assert hashlib.sha256(raw).hexdigest()=='6814692d7207bbe1fa10299497650912187e06d3908fd4120ac03e020ea4f9ff'
           m=json.loads(raw)
           assert m['branch']=='codex/cdr-eight-drain-storage-preflight-v1'
           assert subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()=='https://github.com/Melihakbulut221/nssoc'
@@ -342,7 +351,7 @@ jobs:
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['APPROVED_SOURCE']==e['GITHUB_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           p=Path('scripts/cdr-eight-drain-vi-bias-off-methods-v1.json');raw=p.read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='5fc62a0113235f214646ade8aeaf730f7c7e6b5af7c37c1dfab82a6e054d1fbb'
+          assert hashlib.sha256(raw).hexdigest()=='6814692d7207bbe1fa10299497650912187e06d3908fd4120ac03e020ea4f9ff'
           m=json.loads(raw)
           assert m['branch']=='codex/cdr-eight-drain-storage-preflight-v1'
           assert subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()=='https://github.com/Melihakbulut221/nssoc'

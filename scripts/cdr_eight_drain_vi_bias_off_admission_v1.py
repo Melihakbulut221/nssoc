@@ -183,9 +183,16 @@ def validate_source_controls(ctx,run,jobs,log):
     return dict(current_context=ctx,job_id=job["id"],job_log_sha256=hashlib.sha256(log).hexdigest(),records=indexes,
       complete_source_controls_authenticated=True,native_execution_performed=False)
 
+def read_source_api(path):
+    # Hosted-only source/log metadata transport; preserve every response byte.
+    allowed=r"actions/(?:runs/[1-9][0-9]*(?:/attempts/1/jobs[?]per_page=100)?|jobs/[1-9][0-9]*(?:/logs)?)"
+    require(isinstance(path,str)and re.fullmatch(allowed,path),"Unexpected source API path")
+    argv=["gh","api","repos/Melihakbulut221/nssoc/"+path]
+    if re.fullmatch(r"actions/jobs/[1-9][0-9]*/logs",path):argv.append("--allow-escape-sequences")
+    return subprocess.check_output(argv)
+
 def authenticate_source_controls():
-    ctx=context();prefix="repos/Melihakbulut221/nssoc/"
-    def read(path):return subprocess.check_output(["gh","api",prefix+path])
+    ctx=context();read=read_source_api
     runraw=read("actions/runs/"+str(ctx["run_id"]));run=json.loads(runraw)
     jobsraw=read("actions/runs/"+str(ctx["run_id"])+"/attempts/1/jobs?per_page=100");jobs=json.loads(jobsraw)
     selected=[j for j in jobs["jobs"]if j["name"]=="source-controls"];require(len(selected)==1,"Unique source control job")

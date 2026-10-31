@@ -132,6 +132,69 @@ def prerequisite_controls():
     rows.append(refused(lambda:a.validate_source_controls(ctx,run,jobs,corrupt),"bad stream SHA"))
     rows.append(refused(lambda:a.validate_source_controls(ctx,run,jobs,log+log),"duplicate stream"))
     return dict(refusals=rows,full_stream_provenance=True,native_called=False)
+TRANSPORT_SOURCE="8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac"
+TRANSPORT_RUN=41232778446
+TRANSPORT_JOB=124630245713
+TRANSPORT_BYTES=199952
+TRANSPORT_SHA="3ebd67d24cf524369518e5b517d0eee52f4286dfcbc7acb0a85710e26327c9c5"
+def transport_identity(run,job,log):
+    require(run["id"]==TRANSPORT_RUN and run["head_sha"]==TRANSPORT_SOURCE and run["run_attempt"]==1
+      and run["status"]=="completed"and run["conclusion"]=="failure"and run["event"]=="workflow_dispatch"
+      and run["workflow_id"]==382556685 and run["path"]==".github/workflows/cloud-evidence-summary.yml"
+      and run["head_branch"]==a.BRANCH,"Historical transport producer identity changed")
+    require(job["id"]==TRANSPORT_JOB and job["run_id"]==TRANSPORT_RUN and job["run_attempt"]==1
+      and job["head_sha"]==TRANSPORT_SOURCE and job["head_branch"]==a.BRANCH
+      and job["name"]=="source-controls"and job["status"]=="completed"and job["conclusion"]=="success"
+      and len(job["steps"])>0 and all(s["conclusion"]=="success"for s in job["steps"]),"Historical source job identity changed")
+    require(type(log)is bytes and len(log)==TRANSPORT_BYTES and digest(log)==TRANSPORT_SHA
+      and log.count(b"\x1b")==136,"Full unmodified ANSI source log required")
+    return dict(run_id=TRANSPORT_RUN,job_id=TRANSPORT_JOB,source=TRANSPORT_SOURCE,attempt=1,
+      bytes=len(log),sha256=digest(log),escape_bytes=log.count(b"\x1b"),ansi_stripped=False,
+      hosted_actual_gh_transport=True,native_payload_acquired=False)
+
+def transport_controls():
+    raw=b"prefix\x1b[31mANSI\x1b[0m\r\n\xef\xbb\xbftrailer\x00"
+    paths=("actions/runs/12345","actions/runs/12345/attempts/1/jobs?per_page=100",
+      "actions/jobs/777","actions/jobs/777/logs")
+    argv=[]
+    with patch.object(a.subprocess,"check_output",return_value=raw)as call:
+        for path in paths:
+            got=a.read_source_api(path);expected=["gh","api","repos/Melihakbulut221/nssoc/"+path]
+            if path.endswith("/logs"):expected.append("--allow-escape-sequences")
+            require(call.call_args.args==(expected,)and call.call_args.kwargs=={},"Binary source transport argv drift")
+            require(got is raw and digest(got)==digest(raw),"Source API response transformed")
+            argv.append(expected)
+        rows=[]
+        for path in("actions/jobs/0/logs","actions/jobs/777/logs?x=1","actions/runs/12345/attempts/2/jobs?per_page=100",
+          "releases/assets/1","https://example.invalid","actions/jobs/777/logs/../logs"):
+            before=call.call_count;rows.append(refused(lambda:a.read_source_api(path),path))
+            require(call.call_count==before,"Invalid transport path acquired data")
+    # Use the real hosted gh binary on the exact log that caused the original refusal.
+    # This directory contains only API-derived metadata and text, never native payloads.
+    a.context();require(os.environ["GITHUB_JOB"]=="source-controls","Hosted control job required")
+    root=ROOT/"hw/soc/out/cdr-eight-drain-single-vi-source-controls/transport"
+    require(not root.is_symlink(),"Transport proof symlink refused");root.mkdir(parents=True,exist_ok=False)
+    records={}
+    for name,path in(("run.json","actions/runs/"+str(TRANSPORT_RUN)),
+      ("job.json","actions/jobs/"+str(TRANSPORT_JOB)),("source-controls.log","actions/jobs/"+str(TRANSPORT_JOB)+"/logs")):
+        b=a.read_source_api(path);(root/name).write_bytes(b);records[name]=b
+    run=json.loads(records["run.json"]);job=json.loads(records["job.json"]);log=records["source-controls.log"]
+    actual=transport_identity(run,job,log)
+    for key,value in(("id",TRANSPORT_RUN+1),("head_sha","0"*40),("run_attempt",2),("status","in_progress"),
+      ("conclusion","success"),("event","push"),("workflow_id",1),("path","wrong"),("head_branch","main")):
+        rows.append(refused(lambda:transport_identity({**run,key:value},job,log),"run "+key))
+    for key,value in(("id",TRANSPORT_JOB+1),("run_id",TRANSPORT_RUN+1),("run_attempt",2),("head_sha","0"*40),
+      ("head_branch","main"),("name","prepare"),("status","in_progress"),("conclusion","failure"),
+      ("steps",[]),("steps",[dict(conclusion="skipped")])):
+        rows.append(refused(lambda:transport_identity(run,{**job,key:value},log),"job "+key))
+    for label,wrong in(("missing byte",log[:-1]),("extra byte",log+b"x"),
+      ("same length corruption",bytes([log[0]^1])+log[1:]),("ANSI bytes removed",log.replace(b"\x1b",b""))):
+        rows.append(refused(lambda:transport_identity(run,job,wrong),label))
+    result=dict(actual=actual,argv_fixtures=argv,refusals=rows,binary_fixture_sha256=digest(raw),
+      actual_records={n:dict(bytes=len(b),sha256=digest(b))for n,b in records.items()},records_exclude_receipt=True)
+    (root/"receipt.json").write_bytes(encoded(result))
+    return result
+
 def derivation_controls():
     original=(ROOT/"scripts/cloud_cdr_current_eight_drain_loaded.py").read_text()
     expected=original.replace("import cdr_current_eight_drain_loaded_admission as current_inputs",
@@ -241,7 +304,9 @@ def main():
         report["qualified_controls"]["source_integrity"]=True
         for name,fn in(("context",context_controls),("method",lambda:method_controls(m)),("reservations",reservation_controls),
           ("source_prerequisite",prerequisite_controls),("derivation",derivation_controls)):
-            report[name]=fn();report["qualified_controls"][name]=True
+            report[name]=fn()
+            if name=="source_prerequisite":report[name]["hosted_log_transport"]=transport_controls()
+            report["qualified_controls"][name]=True
         existing=json.loads((ROOT/"hw/soc/out/cdr-eight-drain-storage-source-controls/result.json").read_bytes())
         require(existing["status"]=="PASS_STORAGE_SOURCE_CONTROLS_NOT_NATIVE_OR_ELECTRICAL_ACCEPTANCE"
           and existing["source"]==os.environ["GITHUB_SHA"]and existing["storage"]["count"]==13

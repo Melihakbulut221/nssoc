@@ -15,3 +15,11 @@ A discovered publication ordering defect is corrected only in the separately nam
 Pinned checkout bootstraps one manifest, then streams all exact anchored protected paths over stdin with noncone blob:none sparse checkout. This avoids both whole-tree materialization and the previously observed action environment argument limit. No protected source is omitted, no evidence is deleted and no disk limit is reduced. Actual disk bytes are recorded before and after checkout.
 
 Qualification consists of the unchanged storage source suite, strict context/method/two-reservation/same-source-log refusal tests, exact source derivation, native-disabled lifecycle tests and real-journal publication fixtures. Native archives, models and waves stay on hosted runners. Complete derived reports, stdout, stderr and terminal job logs are preserved even on failure. Source checks alone do not change the original electrical rejections or establish full PHY acceptance.
+
+## Hosted log transport follow-up
+
+Actual run 41232778446 at source 8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac stopped in preparation admission before native input acquisition. The hosted gh binary refused ANSI bytes in the successful source-controls job log. VI was skipped. The original releases and full failure proof remain immutable. The missing outer result in failed publication is secondary to this transport refusal.
+
+The source metadata reader now adds `--allow-escape-sequences` only for exact GitHub Actions job-log endpoints and preserves binary bytes without ANSI stripping. Source controls test exact argv, reject unrelated paths, and use the actual hosted gh binary to read the completed historical run/job metadata and its full 199952-byte log (136 ESC bytes; SHA256 `3ebd67d24cf524369518e5b517d0eee52f4286dfcbc7acb0a85710e26327c9c5`). Identity, completion, byte-corruption, truncation, and ANSI-removal refusals remain mandatory. Full probe metadata/log/receipt are emitted and archived even on failure. These are derived API records, with no native payload acquisition.
+
+A new actual run requires successful controls at its own exact source, independent review, explicit dispatch, and two newly reserved empty releases. No existing run or release is retried or overwritten; the numerical/electrical methods, 16 GiB threshold, cases, and runtime budgets are unchanged.
