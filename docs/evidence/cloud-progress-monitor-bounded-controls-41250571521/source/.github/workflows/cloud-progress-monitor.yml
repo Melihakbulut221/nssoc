@@ -1,0 +1,120 @@
+# SPDX-License-Identifier: Apache-2.0
+# Install this workflow on main to activate schedule; the script reads the
+# small run inventory from codex/complete-open-work at an exact immutable commit.
+# Observation only: no native dispatch, cancellation or arbitrary CAD repair.
+name: cloud-progress-monitor
+on:
+  schedule:
+    - cron: '17 */8 * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [controls, observe]
+        default: controls
+        required: true
+      approved_source:
+        description: Exact immutable source commit for this manual run
+        type: string
+        required: true
+  push:
+    branches: [codex/cloud-progress-monitor]
+    paths:
+      - .github/workflows/cloud-progress-monitor.yml
+      - .github/cloud-progress-monitor.json
+      - .github/cloud-progress-monitor-runs-000.json
+      - .github/cloud-progress-monitor-runs-001.json
+      - scripts/cloud_progress_monitor.py
+      - scripts/check_cloud_progress_monitor.py
+      - scripts/fixtures/cloud-progress-monitor-296-v91.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: nssoc-cloud-progress-monitor
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/cloud-progress-monitor.json
+            /.github/workflows/cloud-progress-monitor.yml
+            /scripts/cloud_progress_monitor.py
+            /scripts/check_cloud_progress_monitor.py
+            /scripts/fixtures/cloud-progress-monitor-296-v91.json
+            /scripts/fixtures/cloud-progress-monitor-532-v197.json
+      - name: Bind the exact manually approved source
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          APPROVED_SOURCE: ${{ inputs.approved_source }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$APPROVED_SOURCE" = "$GITHUB_SHA"
+      - name: Mock API controls including durable partial snapshots and bounded reads
+        shell: bash
+        run: |
+          mkdir monitor-source-controls
+          python3 scripts/check_cloud_progress_monitor.py 2>&1 | tee monitor-source-controls/tests.log
+      - name: Preserve complete source-control output
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cloud-progress-source-controls
+          path: monitor-source-controls/tests.log
+          if-no-files-found: error
+          retention-days: 90
+  observe:
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'observe')
+    needs: controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/cloud-progress-monitor.json
+            /.github/workflows/cloud-progress-monitor.yml
+            /scripts/cloud_progress_monitor.py
+            /scripts/check_cloud_progress_monitor.py
+            /scripts/fixtures/cloud-progress-monitor-296-v91.json
+            /scripts/fixtures/cloud-progress-monitor-532-v197.json
+      - name: Observe authoritative cloud work without native dispatch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_progress_monitor.py
+      - name: Require the live working-branch inventory on main
+        if: always() && github.ref_name == 'main'
+        run: |
+          python3 - <<'PYCODE'
+          import json
+          r=json.load(open('cloud-progress-monitor/result.json'))
+          if r['status']=='MONITOR_ERROR': raise RuntimeError(r['error'])
+          p=r['configuration_source']
+          assert p['bootstrap'] is False and p['branch']=='codex/complete-open-work'
+          assert p['head_sha']==r['target_head']
+          print(json.dumps(dict(inventory_source=p,monitor_status=r['status'],problem_runs=r['problem_runs'],automatic_native_dispatch=False)))
+          PYCODE
+      - name: Persist the bounded cloud snapshot
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cloud-progress-snapshot
+          path: cloud-progress-monitor/result.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Persist bounded request progress separately from the snapshot
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cloud-progress-diagnostics
+          path: cloud-progress-monitor/progress.jsonl
+          if-no-files-found: warn
+          retention-days: 90
