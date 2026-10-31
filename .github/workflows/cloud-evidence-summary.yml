@@ -42,7 +42,7 @@ jobs:
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
           PY
-      - name: Run eight bounded archive controls before artifact acquisition
+      - name: Run nine bounded archive and transport controls before artifact acquisition
         run: python3 -B scripts/mainchip_obstacle_failure_readback.py --controls
       - name: Authenticate all68 artifact members and preserve known derived diagnostics only
         run: python3 -B scripts/mainchip_obstacle_failure_readback.py > obstacle-failure-worker.stdout 2> obstacle-failure-worker.stderr
@@ -71,6 +71,7 @@ jobs:
           name: mainchip-obstacle-failure-readback-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             obstacle-failure-evidence/
+            obstacle-failure-cloud-only/
             obstacle-failure-worker.stdout
             obstacle-failure-worker.stderr
           if-no-files-found: error

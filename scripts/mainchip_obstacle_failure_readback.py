@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Bounded cloud-only artifact readback; emits only authenticated strict UTF-8 diagnostics."""
-import argparse,base64,hashlib,io,json,os,re,stat,subprocess,unittest,zipfile
+import argparse,base64,hashlib,io,json,os,re,stat,subprocess,sys,tempfile,unittest,zipfile
 from pathlib import Path,PurePosixPath
 ROOT=Path(__file__).resolve().parents[1]
 BRANCH="codex/mainchip-obstacle-failure-readback"
@@ -17,10 +17,36 @@ def require(value,message):
     if not value:raise AssertionError(message)
 def encode(v):return(json.dumps(v,sort_keys=True,indent=2)+"\n").encode()
 def pin(raw):return dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
-def api(path,binary=False):
+def api_argv(path,binary=False):
     args=["gh","api","--allow-escape-sequences","repos/Melihakbulut221/nssoc/"+path]
-    if binary:args+=["-H","Accept: application/octet-stream"]
-    raw=subprocess.check_output(args,stderr=subprocess.PIPE,timeout=180)
+    if binary:
+        require(path=="actions/artifacts/13056264389/zip","only exact artifact binary endpoint")
+        args+=["-H","Accept: application/vnd.github+json"]
+    return args
+def record_api_failure(exc,out,cloud):
+    out.mkdir(parents=True,exist_ok=True);cloud.mkdir(parents=True,exist_ok=True)
+    record=dict(argv=exc.cmd,returncode=getattr(exc,"returncode",None),timed_out=isinstance(exc,subprocess.TimeoutExpired),streams={})
+    for name,raw in(("stdout",exc.output or b""),("stderr",exc.stderr or b"")):
+        derived=False
+        try:
+            text=raw.decode("utf-8","strict")
+            if name=="stderr":derived=True
+            else:
+                v=json.loads(text)
+                derived=type(v)is dict and type(v.get("message"))is str and set(v)<=set(("message","documentation_url","status"))
+        except(UnicodeError,ValueError):pass
+        root=out if derived else cloud;target=root/("api-failure."+name+(""if derived else".bin"))
+        require(not target.exists(),"exclusive complete API failure stream");target.write_bytes(raw)
+        record["streams"][name]=dict(**pin(raw),derived_text=derived,path=target.name,cloud_only=not derived)
+    path=out/"api-failure.json";require(not path.exists(),"exclusive API failure record");path.write_bytes(encode(record))
+    return record
+def api(path,binary=False):
+    args=api_argv(path,binary)
+    try:raw=subprocess.check_output(args,stderr=subprocess.PIPE,timeout=180)
+    except(subprocess.CalledProcessError,subprocess.TimeoutExpired)as exc:
+        record=record_api_failure(exc,OUT,OUT.parent/"obstacle-failure-cloud-only")
+        print("API_TRANSPORT_FAILURE "+json.dumps(record,sort_keys=True),file=sys.stderr)
+        raise
     return raw if binary else json.loads(raw)
 def safe(name):
     p=PurePosixPath(name)
@@ -150,10 +176,27 @@ class Controls(unittest.TestCase):
             self.assertFalse(selected("nssoc/nssoc/obstacle-readback/native/x"+ext+".json"))
         self.assertFalse(selected("unowned/result.json"))
         self.assertFalse(selected(PREFIXES[1]+"work/frozen-input.json"))
+    def test_transport_and_lossless_error_streams(self):
+        argv=api_argv("actions/artifacts/13056264389/zip",True)
+        self.assertEqual(argv,["gh","api","--allow-escape-sequences","repos/Melihakbulut221/nssoc/actions/artifacts/13056264389/zip","-H","Accept: application/vnd.github+json"])
+        with self.assertRaisesRegex(AssertionError,"exact artifact"):api_argv("releases/assets/1",True)
+        with tempfile.TemporaryDirectory()as td:
+            out=Path(td)/"derived";cloud=Path(td)/"native"
+            error=subprocess.CalledProcessError(1,argv,output=b"PK\x00\xffpartial-native",stderr=b"gh: HTTP 415\n")
+            record=record_api_failure(error,out,cloud)
+            self.assertEqual(record["returncode"],1)
+            self.assertEqual((cloud/"api-failure.stdout.bin").read_bytes(),error.output)
+            self.assertEqual((out/"api-failure.stderr").read_bytes(),error.stderr)
+            self.assertFalse(record["streams"]["stdout"]["derived_text"]);self.assertTrue(record["streams"]["stderr"]["derived_text"])
+        with tempfile.TemporaryDirectory()as td:
+            out=Path(td)/"derived";cloud=Path(td)/"native"
+            raw=b'{"message":"Unsupported Media Type","status":"415"}'
+            record=record_api_failure(subprocess.CalledProcessError(1,argv,output=raw,stderr=b""),out,cloud)
+            self.assertTrue(record["streams"]["stdout"]["derived_text"]);self.assertEqual((out/"api-failure.stdout").read_bytes(),raw)
 if __name__=="__main__":
     parser=argparse.ArgumentParser();parser.add_argument("--controls",action="store_true");args=parser.parse_args()
     if args.controls:
         ctx=context();suite=unittest.defaultTestLoader.loadTestsFromTestCase(Controls);result=unittest.TextTestRunner(verbosity=2).run(suite)
-        require(result.testsRun==8 and result.wasSuccessful()and not result.skipped,"all eight bounded archive controls")
-        print(json.dumps(dict(status="PASS_EIGHT_ARTIFACT_READBACK_CONTROLS",**ctx,tests=8,skips=0,artifact_acquired=False,**FLAGS),sort_keys=True))
+        require(result.testsRun==9 and result.wasSuccessful()and not result.skipped,"all nine bounded archive controls")
+        print(json.dumps(dict(status="PASS_NINE_ARTIFACT_READBACK_CONTROLS",**ctx,tests=9,skips=0,artifact_acquired=False,**FLAGS),sort_keys=True))
     else:main()
