@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v149
+# Cloud continuation — checkpoint v150
 
-Updated: 2026-10-31T03:13:24.230374+00:00
+Updated: 2026-10-31T04:21:42.865806+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint v149: one real bulk antenna repair/DRT run41163081445 was dispatched at exactsourcecb1d9d19 attempt1. All same-source adapter controls passed; source log preservation passed; trial124425029815 is active. Empty public prerelease429687481 was independently reserved for this exact source before acquisition. Qualified production adapters/checker unchanged; activation changes only workflow,1555-pin manifest and activation record. Full success/failure outputs must remain on GitHub. Follow this existing run and do not restart on observation timeout. Analog capture replay remains verified but original electrical rejections remain; continue current-RC/contact ownership diagnosis separately. Local workspace/tmp/native processes are empty. Full serial PHY, final current chipRC/STA and production signoff remain open.
+Cloud-only checkpoint v150: real bulk antenna run41163081445 failed SIGSEGV in diode placement, notOOM; repair executed once and route never ran. Full100file proofc9f5cc7a and48membernativecapsule preserved. Current authentic153129-instance name audit41167127706 passed after15hosted source controls, full50fileproof8a4f04df verified. There are9143canonicaldiodes, gaps1574/1575 followedbyoccupied1576; legacyallocator can collide after2insertions. Exact crashing attemptedname remainsunobserved. Next implement/qualify reversible namespace workaround then oneboundedrepair withoriginalclock/geometricgates. Actual analogcaptures still reproduceoriginalelectricalrejections; contactownershipaudit sourceorientation saved butnotimplemented. All nativepayloads stayinGitHub, localworkspace/tmp/nativeprocesses empty; fullPHY/currentroute/finalsetuphold remainopen.
 
-Active handles at this snapshot: 41163081445 in_progress
+Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9254,3 +9255,10 @@ Local project/tmp/native processes verified absent. Inventory409 exact cloud han
 Cloud-only checkpoint v149: one real bulk antenna repair/DRT run41163081445 was dispatched at exactsourcecb1d9d19 attempt1. All same-source adapter controls passed; source log preservation passed; trial124425029815 is active. Empty public prerelease429687481 was independently reserved for this exact source before acquisition. Qualified production adapters/checker unchanged; activation changes only workflow,1555-pin manifest and activation record. Full success/failure outputs must remain on GitHub. Follow this existing run and do not restart on observation timeout. Analog capture replay remains verified but original electrical rejections remain; continue current-RC/contact ownership diagnosis separately. Local workspace/tmp/native processes are empty. Full serial PHY, final current chipRC/STA and production signoff remain open.
 
 Local project/tmp/native processes verified absent. Inventory410 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-31T04:21:42.865806+00:00 — cloud-only checkpoint v150
+
+Cloud-only checkpoint v150: real bulk antenna run41163081445 failed SIGSEGV in diode placement, notOOM; repair executed once and route never ran. Full100file proofc9f5cc7a and48membernativecapsule preserved. Current authentic153129-instance name audit41167127706 passed after15hosted source controls, full50fileproof8a4f04df verified. There are9143canonicaldiodes, gaps1574/1575 followedbyoccupied1576; legacyallocator can collide after2insertions. Exact crashing attemptedname remainsunobserved. Next implement/qualify reversible namespace workaround then oneboundedrepair withoriginalclock/geometricgates. Actual analogcaptures still reproduceoriginalelectricalrejections; contactownershipaudit sourceorientation saved butnotimplemented. All nativepayloads stayinGitHub, localworkspace/tmp/nativeprocesses empty; fullPHY/currentroute/finalsetuphold remainopen.
+
+Local project/tmp/native processes verified absent. Inventory412 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

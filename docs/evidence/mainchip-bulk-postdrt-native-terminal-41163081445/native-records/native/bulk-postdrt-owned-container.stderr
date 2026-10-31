@@ -1,0 +1,138 @@
+{
+  "errors": [
+    {
+      "error": "AssertionError('repair attempted but preserved restored-metadata ODB absent')",
+      "operation": "restore-antenna-metadata"
+    }
+  ],
+  "full_phy_accepted": false,
+  "phases": [
+    {
+      "phase": "prepare",
+      "result": {
+        "complete": true,
+        "kind": "native",
+        "name": "prepare",
+        "native_terminal": {
+          "bytes": 177,
+          "path": "/work/out/bulk-postdrt-antenna/prepare-terminal.json",
+          "sha256": "e1f61e85bbaf1c61d03bca18d0e0fd4045a288d298f6d8817d5cd8905cd6b008"
+        },
+        "timeout_seconds": 1200
+      },
+      "state": "complete"
+    },
+    {
+      "phase": "baseline-check",
+      "result": {
+        "complete": true,
+        "kind": "tcl",
+        "name": "baseline-check.tcl",
+        "timeout_seconds": 1200
+      },
+      "state": "complete"
+    },
+    {
+      "phase": "baseline-audit",
+      "result": {
+        "complete": true,
+        "kind": "native",
+        "name": "baseline-audit",
+        "native_terminal": {
+          "bytes": 184,
+          "path": "/work/out/bulk-postdrt-antenna/baseline-audit-terminal.json",
+          "sha256": "fe423d4e7df64424d3d63c7866990002ac8f541c238dc2ea0cf74264a4cd9f3d"
+        },
+        "timeout_seconds": 1200
+      },
+      "state": "complete"
+    },
+    {
+      "error": "AssertionError(('bulk-postdrt-repair', 'OpenROAD dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 \\nFeatures included (+) or not (-): +GPU -GUI +Python\\nThis program is licensed under the BSD-3 license. See the LICENSE file for details.\\nComponents of this program may be licensed under more restrictive licenses which must be honored.\\n[INFO ORD-0030] Using 2 thread(s).\\nNSSOC_BULK_REPAIR_BEGIN\\n[WARNING GRT-0300] Timing is not available, setting critical nets percentage to 0.\\n[INFO GRT-0012] Found 608 antenna violations.\\n', 'Signal 11 received\\nStack trace:\\n 0# 0x0000000000F34073 in /work/engine/openroad\\n 1# 0x0000000000045330 in /lib/x86_64-linux-gnu/libc.so.6\\n 2# odb::dbInst::getBBox() in /work/engine/openroad\\n 3# grt::RepairAntennas::setDiodeLoc(odb::dbInst*, odb::dbITerm*, int, bool, boost::geometry::index::rtree<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int>, boost::geometry::index::quadratic<8ul, 4ul>, boost::geometry::index::indexable<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> >, boost::geometry::index::equal_to<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> >, boost::container::new_allocator<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> > >&) in /work/engine/openroad\\n 4# grt::RepairAntennas::insertDiode(odb::dbNet*, odb::dbMTerm*, odb::dbITerm*, int, boost::geometry::index::rtree<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int>, boost::geometry::index::quadratic<8ul, 4ul>, boost::geometry::index::indexable<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> >, boost::geometry::index::equal_to<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> >, boost::container::new_allocator<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> > >&, odb::dbTechLayer*) in /work/engine/openroad\\n 5# grt::RepairAntennas::repairAntennas(odb::dbMTerm*) in /work/engine/openroad\\n 6# grt::GlobalRouter::repairAntennas(odb::dbMTerm*, int, float, bool, bool, int) in /work/engine/openroad\\n 7# 0x000000000179CA9D in /work/engine/openroad\\n 8# TclNRRunCallbacks in /lib/x86_64-linux-gnu/libtcl8.6.so\\n 9# 0x000000000003F6BC in /lib/x86_64-linux-gnu/libtcl8.6.so\\n10# Tcl_EvalEx in /lib/x86_64-linux-gnu/libtcl8.6.so\\n11# Tcl_Eval in /lib/x86_64-linux-gnu/libtcl8.6.so\\n12# sta::sourceTclFile(char const*, bool, bool, Tcl_Interp*) in /work/engine/openroad\\n13# 0x0000000000F3399B in /work/engine/openroad\\n14# Tcl_MainEx in /lib/x86_64-linux-gnu/libtcl8.6.so\\n15# main in /work/engine/openroad\\n16# 0x000000000002A1CA in /lib/x86_64-linux-gnu/libc.so.6\\n17# __libc_start_main in /lib/x86_64-linux-gnu/libc.so.6\\n18# _start in /work/engine/openroad\\n'))",
+      "phase": "repair",
+      "state": "failed"
+    },
+    {
+      "phase": "insertion-audit",
+      "state": "not_started"
+    },
+    {
+      "phase": "fixed-import",
+      "state": "not_started"
+    },
+    {
+      "phase": "fixed-audit",
+      "state": "not_started"
+    },
+    {
+      "phase": "route",
+      "state": "not_started"
+    },
+    {
+      "phase": "restore-plan",
+      "state": "not_started"
+    },
+    {
+      "phase": "restore-import",
+      "state": "not_started"
+    },
+    {
+      "phase": "restored-audit",
+      "state": "not_started"
+    },
+    {
+      "phase": "final-check",
+      "state": "not_started"
+    },
+    {
+      "phase": "final-audit",
+      "state": "not_started"
+    }
+  ],
+  "physical_acceptance": false,
+  "primary": "AssertionError(('bulk-postdrt-repair', 'OpenROAD dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 \\nFeatures included (+) or not (-): +GPU -GUI +Python\\nThis program is licensed under the BSD-3 license. See the LICENSE file for details.\\nComponents of this program may be licensed under more restrictive licenses which must be honored.\\n[INFO ORD-0030] Using 2 thread(s).\\nNSSOC_BULK_REPAIR_BEGIN\\n[WARNING GRT-0300] Timing is not available, setting critical nets percentage to 0.\\n[INFO GRT-0012] Found 608 antenna violations.\\n', 'Signal 11 received\\nStack trace:\\n 0# 0x0000000000F34073 in /work/engine/openroad\\n 1# 0x0000000000045330 in /lib/x86_64-linux-gnu/libc.so.6\\n 2# odb::dbInst::getBBox() in /work/engine/openroad\\n 3# grt::RepairAntennas::setDiodeLoc(odb::dbInst*, odb::dbITerm*, int, bool, boost::geometry::index::rtree<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int>, boost::geometry::index::quadratic<8ul, 4ul>, boost::geometry::index::indexable<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> >, boost::geometry::index::equal_to<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> >, boost::container::new_allocator<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> > >&) in /work/engine/openroad\\n 4# grt::RepairAntennas::insertDiode(odb::dbNet*, odb::dbMTerm*, odb::dbITerm*, int, boost::geometry::index::rtree<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int>, boost::geometry::index::quadratic<8ul, 4ul>, boost::geometry::index::indexable<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> >, boost::geometry::index::equal_to<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> >, boost::container::new_allocator<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> > >&, odb::dbTechLayer*) in /work/engine/openroad\\n 5# grt::RepairAntennas::repairAntennas(odb::dbMTerm*) in /work/engine/openroad\\n 6# grt::GlobalRouter::repairAntennas(odb::dbMTerm*, int, float, bool, bool, int) in /work/engine/openroad\\n 7# 0x000000000179CA9D in /work/engine/openroad\\n 8# TclNRRunCallbacks in /lib/x86_64-linux-gnu/libtcl8.6.so\\n 9# 0x000000000003F6BC in /lib/x86_64-linux-gnu/libtcl8.6.so\\n10# Tcl_EvalEx in /lib/x86_64-linux-gnu/libtcl8.6.so\\n11# Tcl_Eval in /lib/x86_64-linux-gnu/libtcl8.6.so\\n12# sta::sourceTclFile(char const*, bool, bool, Tcl_Interp*) in /work/engine/openroad\\n13# 0x0000000000F3399B in /work/engine/openroad\\n14# Tcl_MainEx in /lib/x86_64-linux-gnu/libtcl8.6.so\\n15# main in /work/engine/openroad\\n16# 0x000000000002A1CA in /lib/x86_64-linux-gnu/libc.so.6\\n17# __libc_start_main in /lib/x86_64-linux-gnu/libc.so.6\\n18# _start in /work/engine/openroad\\n'))",
+  "timing_accepted": false
+}
+Traceback (most recent call last):
+  File "/work/inner.py", line 262, in <module>
+    if __name__=="__main__":sys.exit(main())
+                                     ^^^^^^
+  File "/work/inner.py", line 260, in main
+    c.finish_record(OUT/"bulk-postdrt-inner-result.json",report,"FAIL_BULK_POSTDRT_ENGINE",primary)
+  File "/work/tail-source/scripts/mainchip_witness_engine_build_contract.py", line 205, in finish_record
+    raise primary
+  File "/work/inner.py", line 232, in main
+    report["cycle"]=run_bound_cycle(report,runner=runner,preserver=preserve_after_supervisor_stop)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/inner.py", line 188, in run_bound_cycle
+    return p.run_cycle({name:lambda name=name:action(name)for name in p.PHASES},
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py", line 305, in run_cycle
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py", line 285, in run_cycle
+    value=actions[phase]()
+          ^^^^^^^^^^^^^^^^
+  File "/work/inner.py", line 188, in <lambda>
+    return p.run_cycle({name:lambda name=name:action(name)for name in p.PHASES},
+                                              ^^^^^^^^^^^^
+  File "/work/inner.py", line 154, in action
+    result=invoke(name,*PHASE_COMMANDS[name])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/inner.py", line 150, in invoke
+    return execute_phase(report,label,kind,name,seconds,work,data,runner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/inner.py", line 118, in execute_phase
+    runner(report,"bulk-postdrt-"+label,phase_command(kind,name,work),seconds)
+  File "/work/inner.py", line 227, in <lambda>
+    runner=lambda report,label,argv,seconds:supervised_run(report,label,argv,seconds,sup)
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/inner.py", line 105, in supervised_run
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/work/inner.py", line 90, in supervised_run
+    sup.supervised(argv,label,seconds=seconds,cwd=cwd)
+  File "/work/tail-source/hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/cloud_pcie_gen12_training_records_telemetry.py", line 269, in supervised
+    extra={'vector_sha256':sha(result[0]),'vector_bytes':result[0].stat().st_size,
+             ^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('bulk-postdrt-repair', 'OpenROAD dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 \nFeatures included (+) or not (-): +GPU -GUI +Python\nThis program is licensed under the BSD-3 license. See the LICENSE file for details.\nComponents of this program may be licensed under more restrictive licenses which must be honored.\n[INFO ORD-0030] Using 2 thread(s).\nNSSOC_BULK_REPAIR_BEGIN\n[WARNING GRT-0300] Timing is not available, setting critical nets percentage to 0.\n[INFO GRT-0012] Found 608 antenna violations.\n', 'Signal 11 received\nStack trace:\n 0# 0x0000000000F34073 in /work/engine/openroad\n 1# 0x0000000000045330 in /lib/x86_64-linux-gnu/libc.so.6\n 2# odb::dbInst::getBBox() in /work/engine/openroad\n 3# grt::RepairAntennas::setDiodeLoc(odb::dbInst*, odb::dbITerm*, int, bool, boost::geometry::index::rtree<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int>, boost::geometry::index::quadratic<8ul, 4ul>, boost::geometry::index::indexable<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> >, boost::geometry::index::equal_to<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> >, boost::container::new_allocator<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> > >&) in /work/engine/openroad\n 4# grt::RepairAntennas::insertDiode(odb::dbNet*, odb::dbMTerm*, odb::dbITerm*, int, boost::geometry::index::rtree<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int>, boost::geometry::index::quadratic<8ul, 4ul>, boost::geometry::index::indexable<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> >, boost::geometry::index::equal_to<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> >, boost::container::new_allocator<std::pair<boost::geometry::model::box<boost::geometry::model::point<int, 2ul, boost::geometry::cs::cartesian> >, int> > >&, odb::dbTechLayer*) in /work/engine/openroad\n 5# grt::RepairAntennas::repairAntennas(odb::dbMTerm*) in /work/engine/openroad\n 6# grt::GlobalRouter::repairAntennas(odb::dbMTerm*, int, float, bool, bool, int) in /work/engine/openroad\n 7# 0x000000000179CA9D in /work/engine/openroad\n 8# TclNRRunCallbacks in /lib/x86_64-linux-gnu/libtcl8.6.so\n 9# 0x000000000003F6BC in /lib/x86_64-linux-gnu/libtcl8.6.so\n10# Tcl_EvalEx in /lib/x86_64-linux-gnu/libtcl8.6.so\n11# Tcl_Eval in /lib/x86_64-linux-gnu/libtcl8.6.so\n12# sta::sourceTclFile(char const*, bool, bool, Tcl_Interp*) in /work/engine/openroad\n13# 0x0000000000F3399B in /work/engine/openroad\n14# Tcl_MainEx in /lib/x86_64-linux-gnu/libtcl8.6.so\n15# main in /work/engine/openroad\n16# 0x000000000002A1CA in /lib/x86_64-linux-gnu/libc.so.6\n17# __libc_start_main in /lib/x86_64-linux-gnu/libc.so.6\n18# _start in /work/engine/openroad\n')
