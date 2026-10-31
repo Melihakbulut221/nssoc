@@ -1,18 +1,19 @@
-# Cloud continuation — checkpoint v165
+# Cloud continuation — checkpoint v166
 
-Updated: 2026-10-31T12:14:31.725315+00:00
+Updated: 2026-10-31T12:34:56.292853+00:00
 
-The latest user instruction is CLOUD ONLY. All tests, CAD, simulations, numerical solving and native payloads remain on GitHub. The local project workspace and owned project temp paths are empty, with no local CAD processes. This overrides older local-work wording.
+CLOUD ONLY: all tests, CAD, simulation, numerical analysis and native inputs/outputs remain on GitHub. This supersedes older local-work instructions. Local source/API text coordination creates no project or native artifact files.
 
-Mainchip run41197515084 completed with failure: exact DEF normalization now finishes in32.873430577seconds, retaining original token checks. The next operation failed because the frozen Tcl path helper only accepted host checkout paths. Fixed import and route had not started. All183proof files120,450,871bytes atafd62b49 were read back; the674-member353,145,378-byte native capsule remains permanently in the cloud. The v164 collector has EXECUTED.
+Mainchip run41199907663 at source6e421425 remains the only saved-diode routing continuation. All327source controls passed. Snapshot: in_progress. The actual route/restore/original physical outcome is not collected yet. Use the prepared v165 collector once terminal; never redispatch or recreate diodes. Prior run41197515084 remains a preserved failure after exact normalization completed in32.873430577seconds.
 
-Current mainchip run41199907663 uses source6e421425 and independently reserved release429913592. The scoped adapter retains the original Tcl commands and original phase terminal checks for both successful and failed restoration. The original frozen modules are not patched. Actual source controls passed:327 (165routing plus162original), including all25new container tests. All15source records were reconstructed and verified against the complete2,571,524-byte job log. Snapshot: in_progress. This verifies source controls only; it does not imply a completed native route. The v165 collector supports both hosted and older coordinating gh CLI versions and is PREPARED_NOT_EXECUTED; execute once after terminal completion. Do not redispatch or reconstruct diodes.
+CDR run41201201045 at source1a30ed20 is the real eight-drain physical successor, with independently reserved release429923379. All187source controls passed (165original+22new); all19source records were verified from the complete427,016-byte log. Snapshot: completed. Native physical result has not yet been collected. The implementation acquires42exact current inputs after authenticating all2797producer members, adds bounded M1/M2/Via1 shunts to devices3/4/5/6/32/33/34/35, preserves original shapes/hierarchy/properties, tests five real serialized mutations, and invokes unchanged560-category DRC plus500-device deep/flat LVS and13fault controls. Failure output and native inputs remain preserved in cloud release/artifact. The draft atac24acc6 is superseded by this implemented source.
 
-CDR actual wire diagnosis remains at5e1d23a39, with34actual contact pairs and original electrical rejection retained. Analog headac24acc6 preserves the incomplete eight-drain geometry successor underdocs/cloud-drafts/cdr-current-eight-drain-straps-20261031/. The5files57,630bytes include the contract, native draft, unfinished host prefix and explicit remaining steps. No physical candidate from this draft has been generated or accepted. Complete host/config/controls/workflow in the cloud, then run unchanged560DRC and500-device deep/flat LVS plus13faults. FreshRC and original loaded electrical gates remain required afterward.
+The new v166 CDR terminal collector is PREPARED_NOT_EXECUTED. Observe exact handles without duplicate dispatch. Collect real generation/physical outcomes before a new geometry decision. Even a passing physical trial requires complete freshRC and the original loaded electrical tests on the new layout. Original electrical rejections remain open; source controls do not qualify geometry.
 
-Full serialPHY, actual routed physical closure and finalsetup/hold remain open. Keep all original analog limits and20/4/8/8ns+5%. FinalRC/STA adapter86015346 stays disabled until a genuinely qualified routed candidate exists. The8-hour monitor remains read-only, now with427run handles; historical HTTP502 health is not claimed fixed.
+Full serialPHY, actual final routed physical closure and setup/hold are not complete. Preserve every original analog limit and chip20/4/8/8ns+5%. FinalRC/STA adapter86015346 remains gated on an actually qualified routed candidate. The8-hour monitor is read-only with428handles; historical HTTP502 health is not claimed fixed.
 
 ## Historical notes below — not current running-job status
+
 
 
 
