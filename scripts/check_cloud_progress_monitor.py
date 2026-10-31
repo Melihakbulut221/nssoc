@@ -974,13 +974,14 @@ class BoundedObservationAPI:
         if rid in self.errors:
             raise RuntimeError("synthetic GET failure "+str(rid))
         item = self.items[rid]
-        value = run("in_progress" if rid in self.active else "completed", None if rid in self.active else "success")
-        value.update(id=rid, head_sha=item["head_sha"], head_branch=item["branch"])
+        status = self.active_states.get(rid, "completed")
+        value = run(status, None if rid in self.active else "success")
+        value.update(id=rid, head_sha=item["head_sha"], head_branch=item["branch"], run_attempt=self.attempts.get(rid, 1))
         return value
 
     def pages(self, path, key, maximum=1000):
         rid = int(path.split("/")[2])
-        return [job("in_progress" if rid in self.active else "completed", conclusion=None if rid in self.active else "success")]
+        return [job(self.active_states.get(rid, "completed"), conclusion=None if rid in self.active else "success")]
 
     def maybe(self, path):
         if path.startswith("git/matching-refs/tags/"):
