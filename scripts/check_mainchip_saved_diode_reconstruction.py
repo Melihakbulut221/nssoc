@@ -61,9 +61,52 @@ def main():
         try:scope["same_native"](value,Proxy(4096))
         except(ValueError,AttributeError):rows.append(name)
         else:raise AssertionError(name)
-    assert len(rows)==52 and len(set(rows))==52
-    result=dict(status="PASS_SAVED_DIODE_RECONSTRUCTION_SOURCE_CONTROLS",count=52,passed_cases=rows,
-      inherited_observer_controls=30,reconstruction_controls=22,
+    # Reproduce the actual hosted failure and exercise the actual fixed host
+    # transfer statement using the authentic complete native engine report.
+    evidence=root/"docs/evidence/mainchip-diode-reconstruction-terminal-41190910993"
+    raw_inner=(evidence/"readable-records/native/bulk-postdrt-inner-result.json").read_bytes()
+    assert len(raw_inner)==33323 and hashlib.sha256(raw_inner).hexdigest()=="7fdfb7680e2dd98c53a6d501b65d79f7aaafa9d217663210ccfb924586798f4c"
+    actual=json.loads(raw_inner)
+    failed=json.loads((evidence/"readable-records/failure.json").read_bytes())
+    assert failed["error"]["error"]=="KeyError('saved_audit_result')"
+    old=ast.parse((evidence/"tested-source/scripts/cloud_mainchip_saved_diode_reconstruction.py").read_bytes())
+    transfers=[n for n in ast.walk(old)if isinstance(n,ast.Assign)and any(
+      isinstance(t,ast.Subscript)and isinstance(t.value,ast.Name)and t.value.id=="report"
+      and isinstance(t.slice,ast.Constant)and t.slice.value=="saved_diode_reconstruction_result"for t in n.targets)]
+    assert len(transfers)==1
+    try:exec(compile(ast.Module(body=transfers,type_ignores=[]),"actual prior host transfer","exec"),dict(report={},result=actual))
+    except KeyError as exc:check("authentic prior host transfer reproduces failure",str(exc)=="'saved_audit_result'")
+    else:raise AssertionError("previous genuine failure did not reproduce")
+    current=ast.parse((root/"scripts/cloud_mainchip_saved_diode_reconstruction.py").read_bytes())
+    calls=[n for n in ast.walk(current)if isinstance(n,ast.Expr)and isinstance(n.value,ast.Call)
+      and isinstance(n.value.func,ast.Attribute)and n.value.func.attr=="update"
+      and isinstance(n.value.func.value,ast.Name)and n.value.func.value.id=="report"
+      and len(n.value.args)==1 and isinstance(n.value.args[0],ast.Call)
+      and isinstance(n.value.args[0].func,ast.Attribute)and n.value.args[0].func.attr=="accept_native_result"]
+    assert len(calls)==1
+    scope=dict(report={},result=actual,plan=plan)
+    exec(compile(ast.Module(body=calls,type_ignores=[]),"actual fixed host transfer","exec"),scope)
+    expected=plan.accept_native_result(actual)
+    check("actual fixed host transfer accepts authentic completed native report",
+      scope["report"]==expected and expected["saved_diode_reconstruction_result"]["candidate"]==dict(
+        bytes=213798975,sha256="2675b9465e7e220931b608ecc0aeec4f171355f3b19259024e04c4e0fb079c34"))
+    refusals=[
+      ("incomplete native phase refused",lambda x:x["reconstruction_phase_states"].update(admit="failed")),
+      ("nonzero actual child refused",lambda x:x["commands"][-1].update(returncode=7)),
+      ("changed original wire refused",lambda x:x["saved_diode_reconstruction_result"].update(all_original_wire_bytes_and_metadata_preserved=False)),
+      ("wrong actual diode count refused",lambda x:x["saved_diode_reconstruction_result"].update(added_diodes=1350)),
+      ("malformed candidate identity refused",lambda x:x["saved_diode_reconstruction_result"]["candidate"].update(sha256="bad")),
+      ("false physical acceptance refused",lambda x:x["saved_diode_reconstruction_result"].update(physical_acceptance=True)),
+      ("unexpected routing scope refused",lambda x:x.update(actual_route_calls=1)),
+      ("missing actual native result refused",lambda x:x.pop("saved_diode_reconstruction_result"))]
+    for name,edit in refusals:
+        bad=copy.deepcopy(actual);edit(bad)
+        try:plan.accept_native_result(bad)
+        except(ValueError,AssertionError,KeyError):rows.append(name)
+        else:raise AssertionError(name)
+    assert len(rows)==62 and len(set(rows))==62
+    result=dict(status="PASS_SAVED_DIODE_RECONSTRUCTION_SOURCE_CONTROLS",count=62,passed_cases=rows,
+      inherited_observer_controls=30,reconstruction_controls=22,handoff_controls=10,
       source=os.environ["GITHUB_SHA"],run_id=int(os.environ["GITHUB_RUN_ID"]),attempt=int(os.environ["GITHUB_RUN_ATTEMPT"]),
       source_pin=hashlib.sha256(path.read_bytes()).hexdigest(),native_executed=False,**plan.p.FLAGS)
     target.write_text(json.dumps(result,sort_keys=True,indent=2)+"\n");print(json.dumps(result,sort_keys=True))

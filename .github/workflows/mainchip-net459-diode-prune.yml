@@ -1,4 +1,4 @@
-name: Preserve original wires while reconstructing verified antenna diodes
+name: Verify actual diode reconstruction result transfer
 on:
   workflow_dispatch:
     inputs:
@@ -6,8 +6,8 @@ on:
         description: Reconstruct verified diodes from original ODB; antenna repair and routing disabled
         type: choice
         required: true
-        default: reconstruct
-        options: [reconstruct]
+        default: controls
+        options: [controls, reconstruct]
 permissions:
   contents: read
   actions: read
@@ -40,7 +40,7 @@ jobs:
           assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['GITHUB_REF']=='refs/heads/codex/mainchip-net459-diode-prune'
-          assert e['SELECTED_MODE']=='reconstruct'
+          assert e['SELECTED_MODE'] in ('controls','reconstruct')
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           name='scripts/mainchip-bulk-postdrt-integration-pins.json'
           raw=Path(name).read_bytes()
@@ -61,9 +61,9 @@ jobs:
           assert host.source_gate()==m
           import cloud_mainchip_saved_diode_reconstruction as qualification
           qraw=Path('scripts/mainchip-saved-diode-reconstruction-pins.json').read_bytes()
-          assert hashlib.sha256(qraw).hexdigest()=='a4e7381c09cdd94860100240d43f7061f1b673d9ea090c5fa2d4db7f241a6d94'
+          assert hashlib.sha256(qraw).hexdigest()=='54f9e1eb262b8b9637b4a5c43bffd0f5394a5a210b18b363cf63e083c0b10f9e'
           qm=qualification.source_gate()
-          assert qm==json.loads(qraw) and len(qm['files'])==2231
+          assert qm==json.loads(qraw) and len(qm['files'])==2294
           qualification.authorize_native(qm)
           for path in ('scripts/mainchip_saved_diode_reconstruction_native.py','scripts/mainchip_saved_diode_reconstruction_inner.py','scripts/cloud_mainchip_saved_diode_reconstruction.py'):
               ast.parse(Path(path).read_bytes(),filename=path)
@@ -220,11 +220,11 @@ jobs:
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           name='scripts/mainchip-saved-diode-reconstruction-pins.json'
           raw=Path(name).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='a4e7381c09cdd94860100240d43f7061f1b673d9ea090c5fa2d4db7f241a6d94'
+          assert hashlib.sha256(raw).hexdigest()=='54f9e1eb262b8b9637b4a5c43bffd0f5394a5a210b18b363cf63e083c0b10f9e'
           sys.path.insert(0,'scripts')
           import cloud_mainchip_saved_diode_reconstruction as host
           m=host.source_gate()
-          assert m==json.loads(raw) and len(m['files'])==2231
+          assert m==json.loads(raw) and len(m['files'])==2294
           host.authorize_native(m)
           print('Exact source and qualified adapter projection verified; no native acquisition yet.')
           PY
@@ -274,7 +274,7 @@ jobs:
           assert ctx['qualification_only_in_manifest']is True and ctx['native_authorized']is False
           audit=decoded['audit-controls.json'];audit_execution=decoded['audit-execution.json']
           assert audit['source']==e['GITHUB_SHA'] and audit['run_id']==int(e['GITHUB_RUN_ID']) and audit['attempt']==1
-          assert audit['status']=='PASS_SAVED_DIODE_RECONSTRUCTION_SOURCE_CONTROLS' and audit['count']==52 and len(set(audit['passed_cases']))==52
+          assert audit['status']=='PASS_SAVED_DIODE_RECONSTRUCTION_SOURCE_CONTROLS' and audit['count']==62 and len(set(audit['passed_cases']))==62
           assert audit['native_executed']is False and audit_execution['returncode']==0
           assert audit_execution['source']==e['GITHUB_SHA'] and audit_execution['run_id']==int(e['GITHUB_RUN_ID']) and audit_execution['attempt']==1
           assert audit['source_pin']==hashlib.sha256(Path('scripts/mainchip_saved_diode_reconstruction_native.py').read_bytes()).hexdigest()
@@ -360,7 +360,7 @@ jobs:
           import hashlib,json,os,sys
           from pathlib import Path
           raw=Path('scripts/mainchip-saved-diode-reconstruction-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='a4e7381c09cdd94860100240d43f7061f1b673d9ea090c5fa2d4db7f241a6d94'
+          assert hashlib.sha256(raw).hexdigest()=='54f9e1eb262b8b9637b4a5c43bffd0f5394a5a210b18b363cf63e083c0b10f9e'
           sys.path.insert(0,'scripts')
           import cloud_mainchip_saved_diode_reconstruction as host
           host.source_gate()

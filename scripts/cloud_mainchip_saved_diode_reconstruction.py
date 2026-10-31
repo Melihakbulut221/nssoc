@@ -105,8 +105,8 @@ def perform(ctx,proof,evidence):
     authorize_native(source_gate())
     controls=control_evidence(ctx)
     audit=f.decode(c.secure_file(ROOT,"bulk-postdrt-integration-controls/audit-controls.json").read_bytes())
-    f.require(audit["status"]=="PASS_SAVED_DIODE_RECONSTRUCTION_SOURCE_CONTROLS"and audit["count"]==52
-      and len(set(audit["passed_cases"]))==52 and audit["source"]==ctx["source"]and audit["run_id"]==ctx["run_id"]
+    f.require(audit["status"]=="PASS_SAVED_DIODE_RECONSTRUCTION_SOURCE_CONTROLS"and audit["count"]==62
+      and len(set(audit["passed_cases"]))==62 and audit["source"]==ctx["source"]and audit["run_id"]==ctx["run_id"]
       and audit["attempt"]==1 and audit["native_executed"]is False,"same-source saved audit controls")
     f.write_new(evidence/"saved-audit-source-controls.json",f.encode(audit))
     f.write_new(evidence/"same-source-controls.json",f.encode(controls))
@@ -152,16 +152,7 @@ def perform(ctx,proof,evidence):
         c.validate_container(inspect(identity),ctx,work)
         command("bulk-postdrt-owned-container",["docker","start","--attach",identity],OUTER_SECONDS)
         result=f.decode((out/"bulk-postdrt-inner-result.json").read_bytes())
-        f.require(result["status"]=="COMPLETE_SAVED_DIODE_RECONSTRUCTION_ENGINE"and not result["terminal_errors"],"inner terminal")
-        report["saved_diode_reconstruction_complete"]=True
-        f.require(result["saved_diode_reconstruction_complete"]is True
-          and result["actual_physical_repair_calls"]==result["actual_route_calls"]==0
-          and result["actual_reconstruction_calls"]==1
-          and result["bounded_cycle_qualified"]is False,"read-only actual native result")
-        report["saved_diode_reconstruction_result"]=result["saved_audit_result"]
-        report["actual_physical_repair_calls"]=report["actual_route_calls"]=0
-        report["actual_reconstruction_calls"]=1
-        report["bounded_cycle_qualified"]=False
+        report.update(plan.accept_native_result(result))
     except BaseException as exc:primary=exc;report["error"]=c.error_record("bulk-postdrt-antenna",exc)
     finally:
         c.attempt(report,"owned-container-cleanup",lambda:build.cleanup_owned(

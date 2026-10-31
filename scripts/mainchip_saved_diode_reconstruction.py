@@ -59,3 +59,35 @@ def make_plan(before,after,diagnosis):
       source_failed_run=41172959321,diagnosis_run=41189662022,
       original_instance_count=153129,original_net_count=143820,
       preserve_all_original_wire_bytes=True,no_candidate_promoted=True,**p.FLAGS)
+
+def accept_native_result(inner):
+    """Validate the real native result before transferring it to the host report."""
+    p.require(inner["status"]=="COMPLETE_SAVED_DIODE_RECONSTRUCTION_ENGINE"
+      and inner["native_complete"]is True and inner["terminal_errors"]==[],"complete native engine")
+    p.require(inner["saved_diode_reconstruction_complete"]is True
+      and inner["actual_reconstruction_calls"]==1
+      and inner["actual_physical_repair_calls"]==inner["actual_route_calls"]==0
+      and inner["bounded_cycle_qualified"]is False,"actual reconstruction-only scope")
+    p.exact(inner["reconstruction_phase_states"],{name:"complete"for name in PHASES},"all actual native phases")
+    commands=inner["commands"]
+    p.exact([x["label"]for x in commands],["bulk-postdrt-version","bulk-postdrt-ldd"]+
+      ["bulk-postdrt-reconstruction-"+name for name in PHASES],"complete actual command order")
+    p.require(all(type(x["returncode"])is int and x["returncode"]==0 for x in commands),"all actual native exit codes")
+    result=inner["saved_diode_reconstruction_result"]
+    p.require(result["status"]=="COMPLETE_SAVED_DIODE_RECONSTRUCTION_QUALIFICATION"
+      and result["read_only"]is False and result["reconstruction_calls"]==1
+      and result["repair_antennas_calls"]==result["route_calls"]==0,"native result scope")
+    for key,value in dict(original_instances_preserved=153129,original_nets_preserved=143820,
+      original_clock_records_preserved=1691,added_diodes=1351,mutable_nets=608,
+      original_failed_run=41172959321,diagnosis_run=41189662022).items():
+        p.require(type(result[key])is int and result[key]==value,"native result "+key)
+    for key in("full_original_admission_passed","all_original_wire_bytes_and_metadata_preserved",
+      "original_failure_remains_failure","no_candidate_promoted"):
+        p.require(result[key]is True,"native result "+key)
+    p.require(all(inner[k]is False and result[k]is False for k in p.FLAGS),"native acceptance flags remain false")
+    candidate=result["candidate"]
+    p.require(type(candidate["bytes"])is int and candidate["bytes"]>0
+      and isinstance(candidate["sha256"],str)and len(candidate["sha256"])==64
+      and all(x in"0123456789abcdef"for x in candidate["sha256"]),"actual candidate identity")
+    return dict(saved_diode_reconstruction_complete=True,saved_diode_reconstruction_result=result,
+      actual_physical_repair_calls=0,actual_route_calls=0,actual_reconstruction_calls=1,bounded_cycle_qualified=False)
