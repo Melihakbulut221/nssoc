@@ -54,7 +54,7 @@ def controls_binding(raw,ctx):
     require(r['inherited_counts']==dict(groups=10,refusals=86,lifecycle=4)and r['sampler_test_methods']==6,'qualified reader controls')
     require(r['access_test_methods']==12 and r['access_tests_successful']is True,'original RC controls')
     require(r['geometry_test_methods']==7 and r['geometry_tests_successful']is True,'new geometry controls')
-    require(r['native_fixtures']['status']=='PASS_CURRENT_ACCESS_GEOMETRY_NATIVE_FIXTURES'and r['native_fixtures']['counts']==dict(point=5,ownership=6,units=5),'actual pinned synthetic native fixtures')
+    require(r['native_fixtures']['status']=='PASS_CURRENT_ACCESS_GEOMETRY_NATIVE_FIXTURES'and r['native_fixtures']['counts']==dict(point=5,ownership=6,units=5,full_contract=10),'actual pinned synthetic native fixtures')
     require(r['native_fixtures']['actual_geometry_acquired']is False,'fixtures are not native input evidence')
     return q.fingerprint(raw)
 

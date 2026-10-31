@@ -425,6 +425,52 @@ def observe(pya,selected,config,root,persist=lambda name,value:None):
         "per-resistor authoritative layer/type and access contact ownership","transient currents and causality"])
 
 
+
+def contract_controls(pya):
+    # Exercise complete parsing and actual Region difference gates with synthetic
+    # geometry only. No real input model, archive, or geometry is acquired.
+    import copy,tempfile
+    passed=[]
+    def reject(name,fn):
+        try:fn()
+        except(AssertionError,KeyError):passed.append(name)
+        else:raise AssertionError('invalid contract accepted: '+name)
+    with tempfile.TemporaryDirectory()as folder:
+        selected=Path(folder);layout=pya.Layout();layout.dbu=.001;layout.create_cell(TOP);layout.write(str(selected/'fixture.gds'))
+        contacts=[dict(anchor=dict(label='fixture'+str(i),point_dbu=[i*10+2,i*20+2]))for i in range(26)]
+        incidence=dict(targets={'fixture':dict(contacts=contacts)})
+        ports=['port "'+r['anchor']['label']+'" '+str(i)+' '+str(i*2)+' '+str(i*4)+' '+str(i*2)+' '+str(i*4)+' m1'for i,r in enumerate(contacts)]
+        ext='scale 1000 1 0.5\n'+'\n'.join(ports)+'\n'
+        (selected/'fixture.ext').write_text(ext);(selected/'fixture.res.ext').write_text('scale 1000 1 0.5\n')
+        (selected/'native.tcl').write_text('gds read fixture.gds\nload pump_wires\nextract all\n')
+        (selected/'export.py').write_text('# Synthetic coordinate parser fixture, never executable input.\n')
+        c=dict(paths=dict(gds='fixture.gds',ext='fixture.ext',res_ext='fixture.res.ext',native_tcl='native.tcl',export_source='export.py'))
+        positive=unit_binding(pya,selected,c,incidence)
+        require(len(positive['all26_port_anchor_quantizations_checked'])==26,'actual complete parser positive');passed.append('all26_ports_scale_DBU_positive')
+        (selected/'fixture.res.ext').write_text('scale 1000 1 1\n');reject('wrong_res_scale',lambda:unit_binding(pya,selected,c,incidence));(selected/'fixture.res.ext').write_text('scale 1000 1 0.5\n')
+        for name,changed in [('duplicate_port',ext+ports[0]+'\n'),('missing_port','scale 1000 1 0.5\n'+'\n'.join(ports[1:])+'\n')]:
+            (selected/'fixture.ext').write_text(changed);reject(name,lambda:unit_binding(pya,selected,c,incidence))
+        (selected/'fixture.ext').write_text(ext)
+        moved=copy.deepcopy(incidence);moved['targets']['fixture']['contacts'][0]['anchor']['point_dbu'][0]+=5
+        reject('shifted_anchor',lambda:unit_binding(pya,selected,c,moved))
+        layout.dbu=.002;layout.write(str(selected/'fixture.gds'));reject('wrong_actual_GDS_DBU',lambda:unit_binding(pya,selected,c,incidence))
+    layout=pya.Layout();layout.dbu=.001
+    contacts=[];regions={}
+    for component in(17,61):
+        regions[(component,8)]=pya.Region(pya.Box(670,0,990,36000));regions[(component,10)]=pya.Region(pya.Box(680,200,980,35800))
+    class WireFixture:
+        def shapes_of_net(self,net,layer,recursive):require(recursive is True,'recursive owned geometry');return regions[(net,layer)]
+    for ident in(3,4,5,6,32,33,34,35):
+        component=17 if ident<10 else 61
+        contacts.append(dict(original=dict(device=ident,anchor=dict(wire_component=component,native_cluster=28 if component==17 else 135)),location=dict(pcell=dict(transform=str(pya.DCplxTrans()))),resolved_hierarchy=dict(synthetic=True)))
+    def rail():return full_rail_coverage(pya,layout,WireFixture(),{17:17,61:61},{8:8,10:10},contacts)
+    require(len(rail()['rails'])==8,'eight actual Region positives');passed.append('all8_full_rails_positive')
+    baseline=regions[(61,10)];regions[(61,10)]=baseline-pya.Region(pya.Box(680,1000,980,1001));reject('one_dbu_M2_gap',rail);regions[(61,10)]=baseline
+    baseline=regions[(17,8)];regions[(17,8)]=baseline-pya.Region(pya.Box(670,0,671,36000));reject('one_dbu_M1_missing_edge',rail);regions[(17,8)]=baseline
+    baseline=regions[(61,8)];regions[(61,8)]=pya.Region();reject('foreign_or_absent_M1_owner',rail);regions[(61,8)]=baseline
+    require(len(passed)==10,'ten actual parser/Region controls')
+    return dict(status='PASS_CURRENT_GEOMETRY_FULL_PORT_AND_RAIL_CONTRACT_FIXTURES',count=len(passed),cases=passed,synthetic_only=True,actual_geometry_acquired=False)
+
 def main():
     p=argparse.ArgumentParser();p.add_argument('--selected',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--controls',action='store_true');a=p.parse_args()
     import pya
@@ -432,8 +478,8 @@ def main():
     def save(name,value):host.q.write_new(a.output/name,host.encode(value))
     try:
         if a.controls:
-            values=dict(point=native_controls(pya),ownership=feasibility_native_controls(pya),units=unit_controls())
-            save('controls.json',dict(status='PASS_CURRENT_ACCESS_GEOMETRY_NATIVE_FIXTURES',counts=dict(point=5,ownership=6,units=5),fixtures=values,actual_geometry_acquired=False,**host.FLAGS));return
+            values=dict(point=native_controls(pya),ownership=feasibility_native_controls(pya),units=unit_controls(),contracts=contract_controls(pya))
+            save('controls.json',dict(status='PASS_CURRENT_ACCESS_GEOMETRY_NATIVE_FIXTURES',counts=dict(point=5,ownership=6,units=5,full_contract=10),fixtures=values,actual_geometry_acquired=False,**host.FLAGS));return
         c=host.source_guard();host.checkout_binding(host.context(__import__('os').environ),c)
         require(c['readback_authorized']is True,'native readback disabled')
         incidence=host.decode(host.frozen.regular(host.ROOT,c['incidence']).read_bytes())
