@@ -1,0 +1,508 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: Apache-2.0
+"""Cloud-only progress observation. Never dispatch, restart, cancel or repair CAD jobs."""
+import argparse
+import base64
+import datetime as dt
+import hashlib
+import io
+import json
+import os
+from pathlib import Path
+import re
+import urllib.error
+import urllib.parse
+import urllib.request
+import zipfile
+
+REPO = "Melihakbulut221/nssoc"
+WORKFLOW = ".github/workflows/cloud-progress-monitor.yml"
+WORKFLOW_ID = 394905294
+MONITOR_JOBS = frozenset(("controls", "observe"))
+ARTIFACT = "cloud-progress-snapshot"
+LIMIT = 8 * 1024 * 1024
+TERMINAL_BAD = {"failure", "cancelled", "timed_out", "action_required", "startup_failure", "stale"}
+UTC = dt.timezone.utc
+
+def time_value(value):
+    return dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+
+def utc_now():
+    return dt.datetime.now(UTC)
+
+class SafeRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        parsed = urllib.parse.urlparse(newurl)
+        host = parsed.hostname or ""
+        if parsed.scheme != "https" or not (
+            host == "api.github.com" or host.endswith(".githubusercontent.com")
+            or host.endswith(".blob.core.windows.net")
+        ):
+            raise ValueError("Unexpected GitHub download redirect")
+        result = super().redirect_request(req, fp, code, msg, headers, newurl)
+        if parsed.netloc != urllib.parse.urlparse(req.full_url).netloc:
+            result.remove_header("Authorization")
+        return result
+
+class API:
+    """Only bounded GET requests against this repository."""
+    def __init__(self, token):
+        self.token = token
+        self.opener = urllib.request.build_opener(SafeRedirect())
+
+    def raw(self, path, limit=LIMIT, binary=False):
+        assert path and not path.startswith("/") and ".." not in path and "://" not in path
+        url = "https://api.github.com/repos/" + REPO + "/" + path
+        headers = {
+            "Authorization": "Bearer " + self.token,
+            "Accept": "application/octet-stream" if binary else "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+            "User-Agent": "nssoc-cloud-progress-monitor",
+        }
+        request = urllib.request.Request(url, headers=headers, method="GET")
+        with self.opener.open(request, timeout=60) as stream:
+            size = stream.headers.get("Content-Length")
+            if size and int(size) > limit:
+                raise ValueError("Metadata exceeds bounded monitor size")
+            raw = stream.read(limit + 1)
+        if len(raw) > limit:
+            raise ValueError("Metadata exceeds bounded monitor size")
+        return raw
+
+    def get(self, path):
+        return json.loads(self.raw(path))
+
+    def maybe(self, path):
+        try:
+            return self.get(path)
+        except urllib.error.HTTPError as exc:
+            if exc.code == 404:
+                return None
+            raise
+
+    def pages(self, path, key, maximum=1000):
+        rows = []
+        separator = "&" if "?" in path else "?"
+        for page in range(1, 11):
+            data = self.get(path + separator + "per_page=100&page=" + str(page))
+            batch = data if key is None else data[key]
+            rows.extend(batch)
+            if len(rows) > maximum:
+                raise ValueError("Unexpectedly large metadata inventory")
+            if len(batch) < 100:
+                return rows
+        raise ValueError("Metadata pagination incomplete")
+
+def check_config(config):
+    assert config["schema"] == 1 and config["repository"] == REPO
+    assert type(config.get("inventory_version")) is int and config["inventory_version"] > 0
+    assert config.get("inventory_updated_at") and time_value(config["inventory_updated_at"])
+    assert config["target_branch"] == "codex/complete-open-work"
+    assert config["stall_seconds"] == 21600
+    seen = set()
+    for item in config["runs"]:
+        assert type(item["run"]) is int and item["run"] > 0 and item["run"] not in seen
+        seen.add(item["run"])
+        assert item["label"] and re.fullmatch(r"[0-9a-f]{40}", item["head_sha"])
+        assert type(item["branch"]) is str and (item["branch"].startswith("codex/") or item["branch"] == "main"), "Unapproved inventory branch: " + repr(item.get("branch"))
+    for item in config["latest_workflows"]:
+        assert re.fullmatch(r"[a-z0-9-]+\.yml", item["workflow"])
+        assert item["branch"] == config["target_branch"]
+        assert isinstance(item["optional"], bool)
+        assert item.get("event") in (None, "push", "workflow_dispatch")
+        assert isinstance(item.get("production_jobs", []), list)
+    assert config["automatic_native_dispatch"] is False
+
+INVENTORY_LIMIT = 65536
+MAX_RUN_FILES = 16
+INVENTORY_PATH = ".github/cloud-progress-monitor.json"
+RUN_FILE_PATHS = (
+    ".github/cloud-progress-monitor-runs-000.json",
+    ".github/cloud-progress-monitor-runs-001.json",
+)
+
+
+def inventory_document(api, head, path, optional=False):
+    """Read one bounded document at the already captured commit, never a child ref."""
+    assert re.fullmatch(r"[0-9a-f]{40}", head)
+    assert path == INVENTORY_PATH or path in tuple(".github/cloud-progress-monitor-runs-"+str(i).zfill(3)+".json" for i in range(MAX_RUN_FILES)), "Unapproved inventory path"
+    data = api.maybe("contents/" + path + "?ref=" + head)
+    if data is None:
+        assert optional and path == INVENTORY_PATH, ("Missing inventory shard", path)
+        return None
+    assert data["encoding"] == "base64" and data["size"] <= INVENTORY_LIMIT
+    raw = base64.b64decode(data["content"], validate=False)
+    assert len(raw) == data["size"] <= INVENTORY_LIMIT
+    assert hashlib.sha1(b"blob " + str(len(raw)).encode() + bytes([0]) + raw).hexdigest() == data["sha"]
+    return json.loads(raw), dict(path=path, blob_sha=data["sha"],
+        sha256=hashlib.sha256(raw).hexdigest(), bytes=len(raw))
+
+
+def assembled_inventory(api, head, manifest):
+    """Bounded contiguous shard format; preserve all ordered rows and validate globally."""
+    assert set(manifest) == {
+        "schema", "repository", "target_branch", "stall_seconds", "automatic_native_dispatch",
+        "latest_workflows", "inventory_version", "inventory_updated_at",
+        "run_files", "run_count", "runs_sha256",
+    }, "Inventory manifest fields"
+    assert type(manifest["schema"]) is int and manifest["schema"] == 2
+    assert type(manifest["run_files"]) is list and 1 <= len(manifest["run_files"]) <= MAX_RUN_FILES, "Inventory shard count"
+    assert type(manifest["run_count"]) is int and manifest["run_count"] > 0, "Inventory run count"
+    assert isinstance(manifest["runs_sha256"], str) and re.fullmatch(r"[0-9a-f]{64}", manifest["runs_sha256"])
+    config = {k:manifest[k] for k in (
+        "repository", "target_branch", "stall_seconds", "automatic_native_dispatch",
+        "latest_workflows", "inventory_version", "inventory_updated_at",
+    )}
+    config.update(schema=1, runs=[])
+    check_config(config)
+    # Validate all descriptors before the first child read.
+    paths = tuple(".github/cloud-progress-monitor-runs-"+str(i).zfill(3)+".json" for i in range(len(manifest["run_files"])))
+    for path, item in zip(paths, manifest["run_files"], strict=True):
+        assert type(item) is dict and set(item) == {"path","blob_sha","sha256","bytes","run_count"}, "Inventory descriptor fields"
+        assert item["path"] == path, "Inventory shard order/path"
+        assert type(item["bytes"]) is int and 0 < item["bytes"] <= INVENTORY_LIMIT, "Inventory descriptor size"
+        assert type(item["run_count"]) is int and item["run_count"] > 0, "Inventory descriptor count"
+        assert isinstance(item["blob_sha"], str) and re.fullmatch(r"[0-9a-f]{40}", item["blob_sha"])
+        assert isinstance(item["sha256"], str) and re.fullmatch(r"[0-9a-f]{64}", item["sha256"])
+    documents = []
+    for item in manifest["run_files"]:
+        shard, proof = inventory_document(api, head, item["path"])
+        assert all(proof[k] == item[k] for k in ("path","blob_sha","sha256","bytes")), ("Inventory shard identity", item["path"])
+        assert type(shard) is dict and set(shard) == {"schema","repository","target_branch","runs"}, "Inventory shard fields"
+        assert shard["schema"] == "cloud-progress-monitor-runs-v1", "Inventory shard schema"
+        assert shard["repository"] == config["repository"] and shard["target_branch"] == config["target_branch"], "Inventory shard scope"
+        assert type(shard["runs"]) is list and len(shard["runs"]) == item["run_count"], "Inventory shard run count"
+        config["runs"].extend(shard["runs"])
+        documents.append(dict(proof, run_count=len(shard["runs"])))
+    assert len(config["runs"]) == manifest["run_count"], "Inventory combined run count"
+    raw = json.dumps(config["runs"], sort_keys=True, separators=(",",":"), allow_nan=False).encode()
+    assert hashlib.sha256(raw).hexdigest() == manifest["runs_sha256"], "Inventory combined run digest"
+    # This rejects duplicate IDs across files as well as the original invalid source/policy cases.
+    check_config(config)
+    return config, documents
+
+
+def load_config(api, bootstrap):
+    """Pin schema-1 or explicit sharded inventory to one exact Git commit."""
+    branch = "codex/complete-open-work"
+    head = api.get("git/ref/heads/" + branch)["object"]["sha"]
+    document = inventory_document(api, head, INVENTORY_PATH, optional=True)
+    if document is None:
+        check_config(bootstrap)
+        return bootstrap, dict(branch=branch, head_sha=head, bootstrap=True,
+            note="Working-branch inventory absent; using explicit reviewed bootstrap inventory")
+    manifest, first = document
+    proof = dict(branch=branch, head_sha=head, blob_sha=first["blob_sha"],
+        sha256=first["sha256"], bytes=first["bytes"], bootstrap=False)
+    if manifest["schema"] == 1:
+        check_config(manifest)
+        return manifest, proof
+    assert manifest["schema"] == 2, "Unknown inventory schema"
+    config, documents = assembled_inventory(api, head, manifest)
+    proof.update(inventory_schema=2, documents=[first,*documents],
+        resolved_run_count=len(config["runs"]), runs_sha256=manifest["runs_sha256"])
+    return config, proof
+
+def classify(run, jobs, now, stall_seconds):
+    status = run["status"]
+    conclusion = run.get("conclusion")
+    if status == "completed":
+        if conclusion in TERMINAL_BAD:
+            return "FAILED", "Actions conclusion: " + str(conclusion)
+        if conclusion == "success":
+            bad = [j for j in jobs if j.get("conclusion") in TERMINAL_BAD]
+            if bad:
+                return "FAILED_JOB", "A failed job remains despite overall success: " + ", ".join(j["name"] for j in bad)
+            return "COMPLETED_ACTIONS", "Actions succeeded; native evidence and product gates remain separate"
+        return "NOT_EXECUTED", "Terminal Actions conclusion: " + str(conclusion)
+    bad = [j for j in jobs if j.get("conclusion") in TERMINAL_BAD]
+    if bad:
+        return "FAILED_JOB", "A job already failed: " + ", ".join(j["name"] for j in bad)
+    for job in jobs:
+        if job["status"] == "in_progress" and job.get("started_at"):
+            age = (now - time_value(job["started_at"])).total_seconds()
+            if age > stall_seconds:
+                return "STALLED_OVER_6H", "Running job exceeds six hours: " + job["name"]
+    return ("RUNNING" if status == "in_progress" else "PENDING"), "Native work is not restarted or duplicated"
+
+def job_record(job):
+    return {
+        key: job.get(key) for key in (
+            "id", "name", "status", "conclusion", "started_at", "completed_at", "html_url"
+        )
+    } | {
+        "steps": [
+            {key: step.get(key) for key in ("name", "number", "status", "conclusion", "started_at", "completed_at")}
+            for step in job.get("steps", [])
+        ]
+    }
+
+def terminal_reports(api, run):
+    """Read summary/parts JSON only. Never fetch a native result chunk or archive."""
+    prefix = "cloud-results-" + str(run["id"]) + "-" + str(run["run_attempt"]) + "-"
+    refs = api.maybe("git/matching-refs/tags/" + prefix) or []
+    assert isinstance(refs, list) and len(refs) <= 32
+    reports = []
+    for ref in refs:
+        tag = ref["ref"].removeprefix("refs/tags/")
+        assert tag.startswith(prefix) and re.fullmatch(r"[A-Za-z0-9_.-]+", tag)
+        release = api.get("releases/tags/" + tag)
+        record = {"tag": tag, "url": release["html_url"], "metadata": {}, "complete_descriptor": False}
+        for suffix in (".summary.json", ".parts.json"):
+            matches = [a for a in release["assets"] if a["name"].endswith(suffix)]
+            if not matches:
+                continue
+            # Some publishers retain prerequisite summaries alongside their own result.
+            exact_name = tag.removeprefix(prefix) + "-" + str(run["id"]) + "-" + str(run["run_attempt"]) + suffix
+            exact = [a for a in matches if a["name"] == exact_name]
+            if len(exact) == 1:
+                matches = exact
+            if len(matches) != 1:
+                record.setdefault("metadata_skipped", {})[suffix] = {
+                    "reason": "AMBIGUOUS_DESCRIPTOR", "downloaded": False,
+                    "candidates": [{k: a.get(k) for k in ("id", "name", "size", "digest")} for a in matches],
+                }
+                continue
+            asset = matches[0]
+            assert type(asset["size"]) is int and asset["size"] > 0, "Invalid metadata size"
+            if asset["size"] > LIMIT:
+                record.setdefault("metadata_skipped", {})[suffix] = {
+                    "reason": "OVERSIZED_DESCRIPTOR", "downloaded": False,
+                    "asset": asset["id"], "name": asset["name"], "advertised_bytes": asset["size"],
+                    "advertised_digest": asset.get("digest"), "limit_bytes": LIMIT,
+                }
+                continue
+            raw = api.raw("releases/assets/" + str(asset["id"]), binary=True)
+            digest = hashlib.sha256(raw).hexdigest()
+            assert len(raw) == asset["size"]
+            if asset.get("digest"):
+                assert asset["digest"] == "sha256:" + digest
+            data = json.loads(raw)
+            if suffix == ".summary.json":
+                assert data.get("source_head") in (None, run["head_sha"]), "Summary belongs to another source"
+                record["native_status"] = data.get("status")
+                record["native_error"] = str(data.get("error", ""))[:2000]
+                record["sources_unchanged"] = data.get("sources_unchanged")
+                record["product_acceptance_inferred"] = False
+            else:
+                record["part_count"] = len(data.get("parts", []))
+            record["metadata"][suffix] = {"asset": asset["id"], "bytes": len(raw), "sha256": digest}
+        record["complete_descriptor"] = len(record["metadata"]) == 2
+        if record.get("metadata_skipped"):
+            record["note"] = "Descriptor content remains unverified; bounded observation skipped it without downloading"
+        elif not record["complete_descriptor"]:
+            record["note"] = "Publication is incomplete; partial assets are not completion evidence"
+        reports.append(record)
+    return reports
+
+def select_runs(api, config):
+    selected = {item["run"]: dict(item, selection="pinned") for item in config["runs"]}
+    missing = []
+    for item in config["latest_workflows"]:
+        path = "actions/workflows/" + item["workflow"] + "/runs?branch=" + urllib.parse.quote(item["branch"], safe="") + "&per_page=10"
+        if item.get("event"):
+            path += "&event=" + item["event"]
+        data = api.maybe(path)
+        candidates = [] if data is None else data["workflow_runs"]
+        if not candidates:
+            missing.append({"workflow": item["workflow"], "optional": item["optional"], "reason": "No run exists; no automatic engineering action"})
+            continue
+        if item.get("event"):
+            candidates = [r for r in candidates if r["event"] == item["event"]]
+        if not candidates:
+            missing.append({"workflow": item["workflow"], "optional": item["optional"], "reason": "No production event exists; push controls are not native completion"})
+            continue
+        newest = max(candidates, key=lambda r: (time_value(r["created_at"]), r["id"]))
+        assert newest["head_branch"] == item["branch"]
+        current = selected.get(newest["id"])
+        if current is None:
+            selected[newest["id"]] = {
+                "run": newest["id"], "label": item["label"], "branch": newest["head_branch"],
+                "head_sha": newest["head_sha"], "selection": "latest_workflow",
+                "production_jobs": item.get("production_jobs", []),
+            }
+        else:
+            current.setdefault("also_selected_by", []).append(item["workflow"])
+    return list(selected.values()), missing
+
+def previous_snapshot(api, current_run):
+    artifacts = api.pages("actions/artifacts?name=" + ARTIFACT, "artifacts", maximum=1000)
+    for artifact in sorted(artifacts, key=lambda a: a["created_at"], reverse=True):
+        if artifact["expired"] or artifact["workflow_run"]["id"] == current_run:
+            continue
+        if artifact["name"] != ARTIFACT or artifact["size_in_bytes"] > LIMIT:
+            continue
+        source = api.get("actions/runs/" + str(artifact["workflow_run"]["id"]))
+        if source["path"] != WORKFLOW or source["status"] != "completed":
+            continue
+        if source["head_branch"] not in ("main", "codex/cloud-progress-monitor"):
+            continue
+        # Actions archive endpoint requires the normal GitHub API Accept header;
+        # only release assets use application/octet-stream at the API hop.
+        packed = api.raw("actions/artifacts/" + str(artifact["id"]) + "/zip")
+        packed_sha = hashlib.sha256(packed).hexdigest()
+        if artifact.get("digest"):
+            assert artifact["digest"] == "sha256:" + packed_sha, "Monitor artifact digest changed"
+        with zipfile.ZipFile(io.BytesIO(packed)) as archive:
+            assert archive.namelist() == ["result.json"], "Unexpected monitor artifact contents"
+            item = archive.getinfo("result.json")
+            assert item.file_size <= LIMIT and ((item.external_attr >> 16) & 0o170000) != 0o120000
+            data = json.loads(archive.read(item))
+        assert data["schema"] == 1 and data["repository"] == REPO
+        assert data["target_branch"] == "codex/complete-open-work"
+        if data.get("status") == "MONITOR_ERROR":
+            continue
+        data["_artifact_source"] = dict(id=artifact["id"], run=source["id"], sha256=packed_sha)
+        return data
+    return None
+
+def progress_signature(item):
+    return (
+        item["status"], item.get("conclusion"), item["classification"],
+        tuple((j["id"], j["status"], j["conclusion"], tuple((s["number"], s["status"], s["conclusion"]) for s in j["steps"])) for j in item["jobs"]),
+        tuple((r["tag"], r.get("native_status"), tuple(sorted((k, v["sha256"]) for k, v in r["metadata"].items())),
+               json.dumps(r.get("metadata_skipped", {}), sort_keys=True)) for r in item["reports"]),
+    )
+
+def main_monitor_refusal(item, run, jobs):
+    """Only this repository's actual read-only monitor may be observed on main.
+
+    Other historical main handles remain visible as rejected rows. They are not
+    native results and must never trigger release or artifact acquisition.
+    """
+    required = item.get("production_jobs")
+    if not (type(required) is list and len(required) == 2
+            and all(type(name) is str for name in required)
+            and set(required) == MONITOR_JOBS):
+        return "Main observation requires exactly controls/observe inventory jobs"
+    if type(run.get("workflow_id")) is not int or run["workflow_id"] != WORKFLOW_ID or run.get("path") != WORKFLOW:
+        return "Main run is not the pinned read-only cloud-progress-monitor workflow"
+    if run.get("event") not in ("schedule", "workflow_dispatch"):
+        return "Main monitor event is not scheduled or manually dispatched observation"
+    names = [j.get("name") for j in jobs]
+    if any(type(name) is not str or name not in MONITOR_JOBS for name in names) or len(names) != len(set(names)):
+        return "Main monitor contains an unrelated or duplicate job name"
+    if run["status"] == "completed" and set(names) != MONITOR_JOBS:
+        return "Completed main monitor lacks its controls/observe jobs"
+    return None
+
+
+def collect(api, config, now, previous=None, configuration_source=None):
+    check_config(config)
+    branch = config["target_branch"]
+    head = configuration_source["head_sha"] if configuration_source else api.get("git/ref/heads/" + branch)["object"]["sha"]
+    assert re.fullmatch(r"[0-9a-f]{40}", head)
+    selected, missing = select_runs(api, config)
+    old = {} if previous is None else {r["id"]: r for r in previous["runs"]}
+    result = {
+        "schema": 1, "repository": REPO, "target_branch": branch, "target_head": head,
+        "configuration_source": configuration_source,
+        "previous_snapshot_source": None if previous is None else previous.get("_artifact_source"),
+        "inventory_version": config["inventory_version"],
+        "inventory_updated_at": config["inventory_updated_at"],
+        "observed_at": now.isoformat(), "monitor_source": os.environ.get("GITHUB_SHA"),
+        "monitor_run": os.environ.get("GITHUB_RUN_ID"), "runs": [], "missing_selectors": missing,
+        "automatic_native_dispatch": False, "full_phy_accepted": False, "final_timing_accepted": False,
+        "scope": "Read-only progress and terminal metadata. No native restart, cancellation, dispatch, acceptance or arbitrary engineering repair.",
+    }
+    for item in selected:
+        run = api.get("actions/runs/" + str(item["run"]))
+        assert run["id"] == item["run"] and run["head_sha"] == item["head_sha"] and run["head_branch"] == item["branch"], "Observed run ID/source/branch differs from pinned inventory: " + str(item["run"])
+        jobs = api.pages("actions/runs/" + str(run["id"]) + "/attempts/" + str(run["run_attempt"]) + "/jobs", "jobs")
+        category, reason = classify(run, jobs, now, config["stall_seconds"])
+        main_observation = item["branch"] == "main"
+        refusal = main_monitor_refusal(item, run, jobs) if main_observation else None
+        required_jobs = [] if refusal else item.get("production_jobs", [])
+        production = [j for j in jobs if j["name"] in required_jobs and j.get("conclusion") != "skipped"]
+        if required_jobs and not production and category == "COMPLETED_ACTIONS":
+            category, reason = "NOT_EXECUTED", "Production job absent or skipped; control-job success is not native completion"
+        if refusal:
+            category, reason = "UNVERIFIED_REF", refusal
+        elif main_observation and category == "COMPLETED_ACTIONS":
+            if all(j.get("status") == "completed" and j.get("conclusion") == "success" for j in jobs):
+                category, reason = "COMPLETED_MONITOR", "Read-only monitor jobs succeeded; no native or product acceptance"
+            else:
+                category, reason = "NOT_EXECUTED", "Monitor controls/observe did not both complete successfully"
+        reports = terminal_reports(api, run) if run["status"] == "completed" and not main_observation else []
+        statuses = [r.get("native_status") or "" for r in reports]
+        if any(s.startswith(("FAIL", "ERROR", "REJECT")) for s in statuses):
+            category, reason = "FAILED_NATIVE_REPORT", "A terminal native report explicitly failed"
+        record = {
+            key: run.get(key) for key in (
+                "id", "name", "head_branch", "head_sha", "path", "status", "conclusion",
+                "run_attempt", "run_started_at", "updated_at", "html_url",
+            )
+        } | {
+            "label": item["label"], "selection": item["selection"], "classification": category,
+            "reason": reason, "jobs": [job_record(j) for j in jobs], "reports": reports,
+            "publication_verified": bool(reports) and all(r["complete_descriptor"] for r in reports),
+        }
+        if category == "COMPLETED_ACTIONS" and any(r.get("metadata_skipped") for r in reports):
+            record["classification"] = "UNVERIFIED_TERMINAL_METADATA"
+            record["reason"] = "Terminal descriptor exceeds the bounded reader or is ambiguous; detailed review required"
+        elif category == "COMPLETED_ACTIONS" and not record["publication_verified"]:
+            record["classification"] = "INCOMPLETE_PUBLICATION"
+            record["reason"] = "Actions succeeded without every expected terminal summary/parts pair"
+        record["changed_since_previous"] = run["id"] not in old or progress_signature(record) != progress_signature(old[run["id"]])
+        result["runs"].append(record)
+    problems = [r["id"] for r in result["runs"] if r["classification"].startswith(("FAILED", "STALLED", "INCOMPLETE", "UNVERIFIED"))]
+    absent_required = [m["workflow"] for m in missing if not m["optional"]]
+    result["problem_runs"] = problems
+    result["missing_required_workflows"] = absent_required
+    result["status"] = "ATTENTION_REQUIRED" if problems or absent_required else "OBSERVED_NO_CURRENT_FAILURE"
+    result["routine_unchanged"] = previous is not None and all(not r["changed_since_previous"] for r in result["runs"]) and previous["target_head"] == head
+    return result
+
+def markdown(result):
+    lines = [
+        "# Cloud progress observation", "",
+        "Target branch: `" + result["target_branch"] + "`; HEAD `" + result["target_head"] + "`.",
+        "Observed: " + result["observed_at"],
+        "Inventory version: " + str(result["inventory_version"]) + "; bootstrap: " + str((result.get("configuration_source") or {}).get("bootstrap", "fixture")),
+        "Previous cloud snapshot: " + str((result.get("previous_snapshot_source") or {}).get("id", "none")), "",
+        "| Tracked work | Run | Observed state | Change |",
+        "|---|---|---|---|",
+    ]
+    for row in result["runs"]:
+        lines.append("| " + row["label"].replace("|", "/") + " | [" + str(row["id"]) + "](" + row["html_url"] + ") | " + row["classification"] + " / " + str(row["conclusion"]) + " | " + ("changed" if row["changed_since_previous"] else "unchanged") + " |")
+        for report in row["reports"]:
+            lines.append("| terminal metadata | [" + report["tag"] + "](" + report["url"] + ") | " + str(report.get("native_status", "missing summary")).replace("|", "/") + " | " + ("summary+parts present" if report["complete_descriptor"] else "unverified descriptor" if report.get("metadata_skipped") else "incomplete publication") + " |")
+    lines.extend(["", "Full serial PHY, main-chip integration and final timing are **not accepted by this monitor**.",
+                  "This job observes progress. It cannot perform arbitrary engineering repairs and never dispatches, cancels or restarts native jobs."])
+    if result["missing_selectors"]:
+        lines.extend(["", "Workflows without a run: " + ", ".join(m["workflow"] + (" (optional)" if m["optional"] else " (required)") for m in result["missing_selectors"])])
+    return "\n".join(lines) + "\n"
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=Path, default=Path(".github/cloud-progress-monitor.json"))
+    parser.add_argument("--out", type=Path, default=Path("cloud-progress-monitor"))
+    args = parser.parse_args()
+    assert os.environ.get("GITHUB_ACTIONS") == "true" and os.environ.get("RUNNER_ENVIRONMENT") == "github-hosted"
+    assert os.environ["GITHUB_REPOSITORY"] == REPO
+    config = json.loads(args.config.read_text())
+    check_config(config)
+    api = API(os.environ["GH_TOKEN"])
+    args.out.mkdir(parents=True, exist_ok=True)
+    configuration_source = None
+    try:
+        config, configuration_source = load_config(api, config)
+        previous = previous_snapshot(api, int(os.environ["GITHUB_RUN_ID"]))
+        result = collect(api, config, utc_now(), previous, configuration_source)
+    except Exception as exc:
+        detail = type(exc).__name__ + ": " + (str(exc) or repr(exc))
+        result = {"schema": 1, "repository": REPO, "target_branch": config["target_branch"],
+                  "target_head": (configuration_source or {}).get("head_sha"), "configuration_source": configuration_source,
+                  "runs": [], "observed_at": utc_now().isoformat(),
+                  "status": "MONITOR_ERROR", "error": detail, "automatic_native_dispatch": False,
+                  "full_phy_accepted": False, "problem_runs": []}
+        (args.out / "result.json").write_text(json.dumps(result, indent=2) + "\n")
+        Path(os.environ["GITHUB_STEP_SUMMARY"]).write_text("Cloud observation failed: " + detail + "\nNo native work was changed.\n")
+        raise
+    (args.out / "result.json").write_text(json.dumps(result, indent=2) + "\n")
+    Path(os.environ["GITHUB_STEP_SUMMARY"]).write_text(markdown(result))
+    print(json.dumps({"status": result["status"], "problem_runs": result["problem_runs"], "automatic_native_dispatch": False}))
+    return 1 if result["status"] == "ATTENTION_REQUIRED" else 0
+
+if __name__ == "__main__":
+    raise SystemExit(main())
