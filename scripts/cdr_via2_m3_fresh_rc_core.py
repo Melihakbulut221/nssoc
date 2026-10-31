@@ -35,7 +35,7 @@ def regular(root,relative):
     return path
 
 def stable_ast_dump(node):
-    # Python 3.14 omits empty fields by default; earlier versions include them.
+    # Python 3.13+ can omit empty fields; older runtimes include them by default.
     if 'show_empty'in inspect.signature(ast.dump).parameters:return ast.dump(node,include_attributes=False,show_empty=True)
     return ast.dump(node,include_attributes=False)
 
@@ -179,12 +179,15 @@ def wire_corruptions(root,wire,module,method_pin):
     return scope['r']
 
 def wire_audit(root,wire,method_pins):
-    wire=Path(wire);module=audit_namespace(root,wire,method_pins['audit-rc48.py']['adapted_sha256'])
-    result=module.audit(wire/'rc03',json.loads((wire/'anchors08.json').read_text()))
-    (wire/'audit.json').write_bytes(encode(result))
-    require(result['status']=='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY','full raw wire audit')
-    controls=wire_corruptions(root,wire,module,method_pins['mutations48.py']['adapted_sha256'])
-    return dict(audit=result,controls=controls)
+    wire=Path(wire);observations={}
+    try:
+        module=audit_namespace(root,wire,method_pins['audit-rc48.py']['adapted_sha256'])
+        result=module.audit(wire/'rc03',json.loads((wire/'anchors08.json').read_text()));observations['audit']=result
+        (wire/'audit.json').write_bytes(encode(result))
+        require(result['status']=='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY','full raw wire audit')
+        controls=wire_corruptions(root,wire,module,method_pins['mutations48.py']['adapted_sha256']);observations['controls']=controls
+        return dict(audit=result,controls=controls)
+    finally:(wire/'core-observations.json').write_bytes(encode(observations))
 
 def capture_generate(root,variant_out):
     scope=dict(common(root),ROOT=Path(root),OUT=Path(variant_out),TOP=TOP)
@@ -275,6 +278,105 @@ def composition_and_order_controls(root):
     changed,_=reverse(original);again,_=reverse(changed)
     require(original==again and changed!=original,'frozen reverse-order roundtrip')
     return dict(count_derivation=d.controls(source(root,'composition')[1]),order_controls=order.controls(),reverse_controls=dict(reversal_roundtrip=True,rejected=order.controls()))
+
+def copy_exact_tree(source_root,destination,pins):
+    original=Path(source_root);destination=Path(destination)
+    require(not original.is_symlink()and not destination.is_symlink()and not any(p.is_symlink()for p in destination.parents),'unlinked copy roots')
+    source_root=original.resolve()
+    require(not destination.exists(),'exclusive copied input tree')
+    require(not(destination.resolve()==source_root or source_root in destination.resolve().parents or destination.resolve()in source_root.parents),'disjoint immutable input/output roots')
+    require(type(pins)is dict and pins,'complete copied input manifest')
+    observed={}
+    for path in source_root.rglob('*'):
+        require(not path.is_symlink(),'linked input tree')
+        if path.is_file():observed[path.relative_to(source_root).as_posix()]=dict(bytes=path.stat().st_size,sha256=sha(path))
+        else:require(path.is_dir(),'special input tree member')
+    require(observed==pins,'complete current input bytes/no extra or missing member')
+    destination.mkdir(parents=True,exist_ok=False)
+    for relative,pin in sorted(pins.items()):
+        origin=regular(source_root,relative);target=destination/relative;target.parent.mkdir(parents=True,exist_ok=True)
+        with origin.open('rb')as src,target.open('xb')as dst:shutil.copyfileobj(src,dst)
+        require(dict(bytes=target.stat().st_size,sha256=sha(target))==pin,'copied input bytes')
+        require(dict(bytes=origin.stat().st_size,sha256=sha(origin))==pin,'source changed during copy')
+    return copy.deepcopy(observed)
+
+def current_view_proof(root,current_view):
+    cfg=json.loads(regular(root,CONFIG).read_text());spec=cfg['canonical_view'];current_view=Path(current_view)
+    require(not current_view.is_symlink()and current_view.resolve()==(Path(root)/spec['root']).resolve(),'exact immutable canonical producer root')
+    expected=spec['current_files'];require(len(expected)==78,'full current view census')
+    observed={}
+    for path in current_view.rglob('*'):
+        require(not path.is_symlink(),'canonical member symlink')
+        if path.is_file():observed[path.relative_to(current_view).as_posix()]=dict(bytes=path.stat().st_size,sha256=sha(path))
+        else:require(path.is_dir(),'canonical special member')
+    require(observed==expected,'complete actual current view bytes')
+    graph=json.loads((current_view/'wire/native05/result.json').read_text());anchors=json.loads((current_view/'wire/anchors08.json').read_text())
+    for key,value in dict(native_device_count=500,native_terminal_count=1446,wire_component_count=113,native_net_count=238,native_electrical_net_count=114).items():require(graph[key]==value,'actual qualified graph '+key)
+    require(anchors['logical_anchor_count']==anchors['physical_anchor_count']==978 and anchors['public_ports']==25,'actual point/port census')
+    require(anchors['dispositions']==dict(ACTUAL_TERMINAL_METAL_POINT_REFERENCE=953,RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE=493),'all actual terminal dispositions')
+    return dict(source=spec['source'],run=spec['run'],release=spec['release'],files=observed,current_root=str(current_view.resolve()),native_admission=False)
+
+def prepare_current_view(root,current_view,out):
+    root=Path(root).resolve();out=Path(out);proof=current_view_proof(root,current_view)
+    require(out.resolve()==root/'hw/soc/out/cloud-cdr-via2-m3-fresh-rc','exact owned current RC output root')
+    require(not out.is_symlink(),'unlinked owned output root');out.mkdir(parents=True,exist_ok=True)
+    require(all(not(out/name).exists()and not(out/name).is_symlink()for name in ('binding','wire-stage','mim','preparation.json')),'exclusive new numerical stages')
+    stage=dict(status='RUNNING',current_view=proof,native_executed=False)
+    try:
+        stage['binding_inputs']=copy_exact_tree(current_view,out/'binding/inputs',proof['files'])
+        wire=out/'wire-stage/wire';wire.mkdir(parents=True)
+        for relative in ('wire/anchors08.json','wire/native05/result.json','wire/native05/wires.gds','wire/native05/wires.l2n'):
+            target=out/'wire-stage'/relative;target.parent.mkdir(parents=True,exist_ok=True)
+            with regular(current_view,relative).open('rb')as src,target.open('xb')as dst:shutil.copyfileobj(src,dst)
+            require(dict(bytes=target.stat().st_size,sha256=sha(target))==proof['files'][relative],'exact current wire input copy')
+        stage['wire_methods']=derive_wire_methods(root,out/'wire-stage')
+        stage.update(status='PASS_EXACT_CURRENT_VIEW_COPY_REQUIRES_NATIVE_BINDING_AND_RC',copy_is_not_native_qualification=True)
+        return stage
+    finally:(out/'preparation.json').write_bytes(encode(stage))
+
+def prepare_mim_variant(root,current_view,out,variant,binding_report,wire_report):
+    require(variant in ('precise','precise_reversed'),'exact MIM variant');out=Path(out)
+    require(out.resolve()==Path(root).resolve()/'hw/soc/out/cloud-cdr-via2-m3-fresh-rc'and not out.is_symlink(),'exact owned MIM output root')
+    require(wire_report['audit']['status']=='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY'and len(wire_report['controls']['cases'])==13 and all(x['rejected_by']for x in wire_report['controls']['cases']),'qualified full wire audit and thirteen refusals')
+    proof=current_view_proof(root,current_view);destination=out/'mim'/variant
+    require(not destination.exists(),'exclusive variant root');destination.mkdir(parents=True)
+    r=dict(status='RUNNING',variant=variant,current_view=proof,native_executed=False)
+    try:
+        r['source_files']=copy_exact_tree(current_view,destination/'source',proof['files'])
+        binding=Path(out)/'binding';packet=copy.deepcopy(binding_report)
+        require(packet['binding']==json.loads((binding/'binding.json').read_text()),'current binding file/report equality')
+        require(packet['binding']['native_ports']==json.loads(regular(root,CONFIG).read_text())['canonical_view']['port_order'],'actual current semantic port order')
+        model=destination/'model-binding';model.mkdir();shutil.copyfile(binding/'binding.json',model/'binding.json')
+        require(sha(model/'binding.json')==sha(binding/'binding.json'),'immutable binding copy')
+        for name in ('audit-rc48.py','mutations48.py'):
+            src=out/'wire-stage/wire'/name;target=destination/'source/wire'/name
+            require(sha(src)==wire_report['method_adaptations'][name]['adapted_sha256'],'qualified raw method source')
+            with src.open('rb')as a,target.open('xb')as b:shutil.copyfileobj(a,b)
+            require(sha(src)==sha(target),'raw method exact copy')
+        r.update(status='PASS_EXACT_CURRENT_MIM_INPUT_COPY_REQUIRES_NATIVE_CAPTURE',model_binding_source=packet['identity'])
+        return r
+    finally:(destination/'preparation.json').write_bytes(encode(r))
+
+def command_plan(root,out,appimage,python,host_entry):
+    root=Path(root).resolve();out=Path(out).resolve();host_entry=Path(host_entry).resolve()
+    require(out==root/'hw/soc/out/cloud-cdr-via2-m3-fresh-rc','exact future owned RC output')
+    require(host_entry==root/'scripts/cdr_via2_m3_fresh_rc_native.py','separate reviewed host native entry')
+    require(Path(appimage).is_absolute()and Path(python).is_absolute(),'explicit absolute runtime executables')
+    phases=[]
+    def phase(name,native=False,variant=None):
+        argv=[str(appimage),'python']if native else[str(python),'-B']
+        argv += [str(host_entry),'--phase',name,'--out',str(out)]
+        if variant:argv+=['--variant',variant]
+        phases.append(dict(label=name+('-'+variant if variant else''),argv=argv,phase=name,variant=variant))
+    phase('binding-export',True);phase('binding-validate')
+    phases.append(dict(label='wire-extract',argv=[str(python),'-B',str(out/'wire-stage/wire/run-rc01.py')],expected_report=str(out/'wire-stage/wire/rc03/result.json')))
+    phase('wire-audit')
+    for variant in ('precise','precise_reversed'):
+        phase('mim-generate',True,variant)
+        phases.append(dict(label='mim-extract-'+variant,argv=[str(python),'-B',str(out/'mim'/variant/'wire/run-rc01.py')],expected_report=str(out/'mim'/variant/'wire/rc03/result.json')))
+        phase('mim-finish',False,variant);phase('mim-audit',False,variant)
+    phase('compose')
+    return dict(scope='COMMAND_ARGUMENT_CONTRACT_ONLY_NOT_EXECUTION_AUTHORITY',native_authority=False,cwd=str(root),commands=phases,runtime_requirements=dict(appimage_sha256='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466',wire_magic_sha256='e8f2d96121e704acee41e7a58c23feead887527e3bfc4f51da4d97aa8183970e',precise_magic_sha256='1a44bd5c70af3800213419c2e3b2213285523a74fcc4b92bc9cf7314d93a592c',host_authenticated_inputs_required=True,original_absolute_665_members_retained=True,all_78_current_view_members_retained=True,source_pdk_contact_models_pinned=True),host_obligations=['same-source admission and independently empty destination before any native input acquisition','source guards and tokenless supervised child for every phase','restore wire-stage/magic-cloud/runtime and tech from exact qualified runtime','restore each mim variant source/magic-cloud and producer/precise-source/magic/tclmagic.so before prepare_capture_runtime','prepare_mim_variant before native generate; derive_capture_methods after native generate before extraction','persist binding report and fresh source/run/summary identity before intrinsic namespace use','persist model_binding_source and native_order_variant around capture_finish','preserve all native outputs and primary errors, never promote a source fixture to native evidence'])
 
 def authorize_native():
     raise ValueError('Standalone native acquisition, RC extraction and electrical execution remain unconditionally disabled; a separately reviewed host is required')

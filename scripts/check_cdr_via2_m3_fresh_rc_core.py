@@ -95,11 +95,40 @@ def full_numerical_controls(context,tmp):
     reject('missing_intrinsic_control',lambda:c.compare_and_compose(ROOT,tmp/'never-created',lambda:data,context,dpin,negative))
     return dict(binding=proof,wire=raw,variants=variants,composition=composed)
 
+def copy_and_command_controls(tmp):
+    source=tmp/'copy-source';source.mkdir();(source/'one.txt').write_bytes(b'one\n');(source/'nested').mkdir();(source/'nested/two.json').write_bytes(b'{"fixture":true}\n')
+    pins={p.relative_to(source).as_posix():dict(bytes=p.stat().st_size,sha256=c.sha(p))for p in source.rglob('*')if p.is_file()}
+    observed=c.copy_exact_tree(source,tmp/'copy-destination',pins);c.require(observed==pins,'complete independent copy fixture')
+    record('exclusive_full_input_copy_preserves_all_bytes',files=len(pins))
+    reject('copy_existing_destination',lambda:c.copy_exact_tree(source,tmp/'copy-destination',pins))
+    reject('copy_nested_source_destination',lambda:c.copy_exact_tree(source,source/'child',pins))
+    reject('copy_changed_source',lambda:c.copy_exact_tree(source,tmp/'copy-bad-sha',{**pins,'one.txt':dict(bytes=4,sha256='0'*64)}))
+    reject('copy_missing_manifest_member',lambda:c.copy_exact_tree(source,tmp/'copy-incomplete',{'one.txt':pins['one.txt']}))
+    linked=tmp/'linked-source';linked.symlink_to(source,target_is_directory=True)
+    reject('copy_linked_root',lambda:c.copy_exact_tree(linked,tmp/'copy-linked',pins))
+    (source/'link').symlink_to(source/'one.txt')
+    reject('copy_linked_member',lambda:c.copy_exact_tree(source,tmp/'copy-linked-member',pins));(source/'link').unlink()
+    base=tmp/'command-repo';out=base/'hw/soc/out/cloud-cdr-via2-m3-fresh-rc';entry=base/'scripts/cdr_via2_m3_fresh_rc_native.py'
+    plan=c.command_plan(base,out,'/fixture/verified.AppImage','/usr/bin/python3',entry)
+    c.require(len(plan['commands'])==13 and plan['native_authority']is False,'complete nonexecuting command contract')
+    c.require(plan['commands'][0]['argv']==['/fixture/verified.AppImage','python',str(entry),'--phase','binding-export','--out',str(out)],'independent native-export argv')
+    c.require([x['label']for x in plan['commands']]==['binding-export','binding-validate','wire-extract','wire-audit','mim-generate-precise','mim-extract-precise','mim-finish-precise','mim-audit-precise','mim-generate-precise_reversed','mim-extract-precise_reversed','mim-finish-precise_reversed','mim-audit-precise_reversed','compose'],'complete independent phase order')
+    c.require(all('--native-export'not in x['argv']and '--generate'not in x['argv']for x in plan['commands']),'no historical CLI recursion')
+    record('explicit_13_command_contract_without_execution',plan=plan)
+    reject('wrong_owned_output',lambda:c.command_plan(base,tmp/'wrong','/fixture/app','/usr/bin/python3',entry))
+    reject('historical_entry_rejected',lambda:c.command_plan(base,out,'/fixture/app','/usr/bin/python3',base/'scripts/cloud_cdr_current_eight_drain_fresh_binding.py'))
+    reject('relative_runtime_rejected',lambda:c.command_plan(base,out,'relative','/usr/bin/python3',entry))
+    early=tmp/'early-wire';early.mkdir()
+    reject('raw_audit_early_failure',lambda:c.wire_audit(ROOT,early,{}))
+    c.require(json.loads((early/'core-observations.json').read_text())=={},'actual early scalar failure preserved')
+    record('early_raw_failure_observation_persisted')
+
 def main():
     out=ROOT/'rc-core-source-controls';out.mkdir(exist_ok=False);result=dict(status='RUNNING',scope='SYNTHETIC_SOURCE_NUMERICAL_CONTROLS_ONLY',native_acquired=False,native_executed=False,physical_accepted=False,qualified_pex=False,full_phy_accepted=False,records=RECORDS)
     try:
         result['context']=source_guard();result['python_runtime']=dict(version=sys.version,implementation=sys.implementation.name,ast_empty_fields=c.stable_ast_dump(ast.parse('def f(): pass').body[0]));definition_controls()
-        with tempfile.TemporaryDirectory(prefix='nssoc-source-fixture-')as temporary:result['full_numerical_fixture']=full_numerical_controls(result['context'],Path(temporary))
+        with tempfile.TemporaryDirectory(prefix='nssoc-source-fixture-')as temporary:
+            copy_and_command_controls(Path(temporary));result['full_numerical_fixture']=full_numerical_controls(result['context'],Path(temporary))
         result.update(status='PASS_COMPLETE_SYNTHETIC_NUMERICAL_SOURCE_CONTROLS_ONLY',passed=len(RECORDS),failed=0)
     except BaseException as error:
         result.update(status='FAIL_OR_ERROR',error=repr(error),traceback=traceback.format_exc(),passed=len(RECORDS),failed=1);raise
