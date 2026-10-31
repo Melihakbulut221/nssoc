@@ -157,8 +157,31 @@ def native_pipeline(selected,out,preflight,c):
     return physical
 
 
+
+def authenticate_controls(ctx,out,api_call=q.api,fetch_log=a.read_source_log):
+    c=a.source_guard(ctx);a.authorize_native(ctx,c)
+    require(not out.exists()and not out.is_symlink(),'new owned source proof');out.mkdir(parents=True)
+    try:
+        run=api_call('actions/runs/'+str(ctx['run_id']));write(out/'run.json',encode(run))
+        jobs=api_call('actions/runs/'+str(ctx['run_id'])+'/attempts/1/jobs?per_page=100');write(out/'jobs.json',encode(jobs))
+        binding=a.validate_current_run(ctx,run,jobs);source_job=[j for j in jobs['jobs']if j['name']=='source-controls'][0]
+        detail=api_call('actions/jobs/'+str(source_job['id']));write(out/'source-job.json',encode(detail))
+        require(all(detail[k]==source_job[k]for k in('id','run_id','run_attempt','head_sha','name','status','conclusion','steps')),'exact actual completed source job')
+        log=fetch_log(source_job['id']);write(out/'source-job.log',log)
+        records,proof=a.authenticate_source_log(ctx,log)
+        for name,raw in records.items():
+            path=out/'records'/name;path.parent.mkdir(parents=True,exist_ok=True);write(path,raw)
+        write(out/'receipt.json',encode(dict(proof,current_run_binding=binding,source_job_id=source_job['id'],all_acceptance_false=True)))
+        a.source_guard(ctx)
+        return records['cdr-via2-m3-adapter-controls/result.json']
+    except BaseException as error:
+        q.preserve_error(out,'failure.json',error,None);raise
+
 def perform(ctx,c,reserved,controls_raw,out,api_call=q.api,fetch=q.download,pipeline=native_pipeline):
-    a.authorize_native(ctx,c);a.source_guard(ctx);controls=a.bind_controls(controls_raw,ctx)
+    a.authorize_native(ctx,c);a.source_guard(ctx)
+    actual_controls=authenticate_controls(ctx,out/'source-controls-evidence',api_call=api_call)
+    require(actual_controls==controls_raw,'independently repeated complete actual source proof')
+    controls=a.bind_controls(controls_raw,ctx)
     write(out/'same-source-controls.json',controls_raw)
     write(out/'context.json',encode(ctx));write(out/'reservation-original.json',encode(reserved))
     current_run=api_call('actions/runs/'+str(ctx['run_id']));current_jobs=api_call('actions/runs/'+str(ctx['run_id'])+'/attempts/1/jobs?per_page=100')
@@ -221,9 +244,11 @@ def run(ctx,c,reserved,controls_raw,out,body=perform,emitter=emit_derived):
     return result
 
 def main():
-    p=argparse.ArgumentParser();g=p.add_mutually_exclusive_group(required=True);g.add_argument('--candidate',action='store_true');g.add_argument('--runtime',action='store_true')
+    p=argparse.ArgumentParser();g=p.add_mutually_exclusive_group(required=True);g.add_argument('--candidate',action='store_true');g.add_argument('--runtime',action='store_true');g.add_argument('--authenticate-controls',action='store_true')
     p.add_argument('--output',type=Path,required=True);p.add_argument('--preflight',type=Path);p.add_argument('--selected',type=Path);p.add_argument('--reservation',type=Path);p.add_argument('--controls-proof',type=Path);args=p.parse_args()
     ctx=a.context(os.environ);c=a.source_guard(ctx);a.authorize_native(ctx,c)
+    if args.authenticate_controls:
+        authenticate_controls(ctx,args.output);return
     if args.runtime:
         require(args.preflight is not None and args.selected is not None,'runtime preflight required');runtime_restore(args.output,args.preflight,args.selected);return
     require(args.reservation is not None and args.controls_proof is not None,'independent reservation and actual control proof required')

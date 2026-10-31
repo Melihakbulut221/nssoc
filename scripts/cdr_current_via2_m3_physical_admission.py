@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Independent current-source admission for one Via2/M3 generation and physical trial."""
-import hashlib,json,os,re,subprocess
+import base64,hashlib,json,os,re,subprocess
 from pathlib import Path
 import cloud_cdr_current_eight_drain_wave_replay as q
 import cdr_current_via2_m3_access_candidate as original
@@ -45,6 +45,8 @@ def validate_config(c,plan,geometry,prior):
     require(all(re.fullmatch('[0-9a-f]{64}',h)and type(c['selected_bytes'][n])is int and c['selected_bytes'][n]>0 for n,h in c['selected'].items()),'complete20 byte pins')
     require(c['full_physical']==dict(categories=560,devices=500,fault_controls=13,deep_and_flat=True,reference_variant='cd_shunt'),'unchanged full physical gates')
     require(c['appimage']==geometry['appimage'],'original immutable tool runtime')
+    historical=c['prior_adapter_controls']
+    require(historical['run_id']==41233939886 and historical['source']=='77f23e8cb2627ffb62281dd8bea1c7005db1acf5' and historical['records']==25,'actual reviewed adapter controls')
     return True
 
 def source_guard(ctx=None,root=ROOT):
@@ -63,6 +65,11 @@ def source_guard(ctx=None,root=ROOT):
     require(q.fingerprint(receipt)['sha256']==c['candidate_control_receipt_sha256'],'original hosted source controls proof')
     r=q.decode(receipt);require(r['source']==c['candidate_source']and r['run_id']==c['candidate_control_run']and r['run_conclusion']=='success'and r['counts']==dict(cases=30,positive=9,refusals=21),'original30actual controls')
     validate_config(c,plan,geometry,prior)
+    historical=c['prior_adapter_controls'];receipt_path=q.regular(root,historical['receipt']);historical_raw=receipt_path.read_bytes()
+    require(q.fingerprint(historical_raw)['sha256']==historical['sha256'],'full original adapter controls receipt')
+    h=q.decode(historical_raw);require(h['source']==historical['source']and h['run_id']==historical['run_id']and h['run_conclusion']=='success'and len(h['records'])==historical['records'],'actual prior adapter controls identity')
+    require(h['counts']==dict(original_geometry=dict(cases=30,positive=9,refusals=21),admission_refusals=53,native_preflight_refusals=7,lifecycle_cases=4,publication_positive=7,publication_refusals=33),'original complete actual control counts')
+    for name,pin in h['records'].items():require(q.file_pin(q.regular(receipt_path.parent,name))==pin,'complete historical control proof bytes')
     raw_census=q.regular(root,c['input_census']).read_bytes();require(q.fingerprint(raw_census)['sha256']==c['input_census_sha256'],'actual complete original census proof')
     census=q.decode(raw_census);require(census['every_member_authenticated']is True and census['full_member_count']==2991,'authentic entire original native member proof')
     require({n:census['full_members'][n]for n in c['selected']}=={n:dict(bytes=c['selected_bytes'][n],sha256=h)for n,h in c['selected'].items()},'exact20 input sizes and hashes from actual full member proof')
@@ -112,3 +119,35 @@ def native_preflight(path,ctx,c,selected,root=ROOT):
     proof=q.reservation(ctx,reserved,q.decode(q.regular(evidence,'result-release-empty.json').read_bytes()),q.decode(q.regular(evidence,'result-tag.json').read_bytes()))
     require(proof==p['reservation_binding'],'independent empty exact-source reservation')
     return p
+
+def read_source_log(job):
+    require(type(job)is int and job>0,'source job id')
+    return subprocess.check_output(['gh','api','--allow-escape-sequences','repos/'+q.REPOSITORY+'/actions/jobs/'+str(job)+'/logs'])
+
+def authenticate_source_log(ctx,log):
+    require(type(log)is bytes and len(log)>0,'complete raw source job log')
+    expected={'via2-m3-adapter-controls.stdout','via2-m3-adapter-controls.stderr','current-cdr-runtime-policy.json','cdr-via2-m3-adapter-controls/result.json'}
+    indexes={};chunks={}
+    for line in log.decode('utf-8',errors='strict').splitlines():
+        found=re.search(r'VIA2_M3_ADAPTER_CONTROL_INDEX (\{.*\})\s*$',line)
+        if found:
+            row=q.decode(found[1].encode());name=row['path']
+            require(name in expected and name not in indexes,'unique exact source index')
+            require(type(row['bytes'])is int and row['bytes']>=0 and type(row['chunks'])is int and row['chunks']>0 and re.fullmatch('[0-9a-f]{64}',row['sha256']),'source index fields')
+            indexes[name]=row
+        found=re.search(r'VIA2_M3_ADAPTER_CONTROL_CHUNK (\{.*\})\s*$',line)
+        if found:
+            row=q.decode(found[1].encode());name=row['path'];i=row['index']
+            require(name in expected and type(i)is int and i>=0 and i not in chunks.setdefault(name,{}),'unique exact source chunk')
+            chunks[name][i]=base64.b64decode(row['base64'],validate=True)
+    require(set(indexes)==set(chunks)==expected,'four complete emitted control records')
+    records={}
+    for name,row in indexes.items():
+        require(set(chunks[name])==set(range(row['chunks'])),'all source chunks')
+        raw=b''.join(chunks[name][i]for i in range(row['chunks']))
+        require(q.fingerprint(raw)==dict(bytes=row['bytes'],sha256=row['sha256']),'actual emitted source bytes')
+        records[name]=raw
+    result=records['cdr-via2-m3-adapter-controls/result.json'];proof=bind_controls(result,ctx)
+    policy=q.decode(records['current-cdr-runtime-policy.json'])
+    require(policy['source']==ctx['source']and policy['run_id']==ctx['run_id']and policy['attempt']==1 and policy['native_geometry_executed']is False,'source-only runtime fixture policy binding')
+    return records,dict(source=ctx['source'],run_id=ctx['run_id'],attempt=1,full_raw_log=q.fingerprint(log),records={n:q.fingerprint(b)for n,b in records.items()},controls=proof,native_acquisition=False)

@@ -35,9 +35,10 @@ def admission_controls(c,plan,geometry,prior):
       ('GITHUB_SHA','b'*40),('GITHUB_RUN_ID','0'),('APPROVED_SOURCE','b'*40),('REQUESTED_MODE','readback'),('GITHUB_JOB','prepare')]:
         bad={**e,key:value};refused('context_'+key,lambda:a.context(bad))
     enabled=copy.deepcopy(c);enabled.update(generation_authorized=True,physical_verification_authorized=True);a.authorize_native(ctx,enabled)
-    refused('disabled_authority',lambda:a.authorize_native(ctx,c))
+    disabled=copy.deepcopy(c);disabled.update(generation_authorized=False,physical_verification_authorized=False)
+    refused('disabled_authority',lambda:a.authorize_native(ctx,disabled))
     refused('controls_job_cannot_generate',lambda:a.authorize_native(a.context(env('controls','source-controls')),enabled))
-    for field,value in [('generation_authorized',1),('physical_verification_authorized',True),('fresh_rc_authorized',True),
+    for field,value in [('generation_authorized',1),('physical_verification_authorized',not c['generation_authorized']),('fresh_rc_authorized',True),
       ('electrical_simulation_authorized',True),('expected_native_member_count',2797),('workflow_id',1),('case','nominal_early'),
       ('candidate_source','b'*40),('candidate_control_run',1),('branch','main'),('native_payloads_cloud_only',False)]:
         bad=copy.deepcopy(c);bad[field]=value;refused('method_'+field,lambda:a.validate_config(bad,plan,geometry,prior))
@@ -120,6 +121,51 @@ def native_preflight_controls(c,prior):
         a.native_preflight(root/'preflight.json',ctx,changed,selected)
     return dict(positive=1,refusals=rows,all_twenty_input_bytes_explicitly_synthetic=True,actual_native_archive_acquired=False)
 
+
+def source_log_controls(c):
+    receipt_path=ROOT/c['prior_adapter_controls']['receipt'];historical=a.q.decode(receipt_path.read_bytes())
+    ctx=dict(source=historical['source'],run_id=historical['run_id'],attempt=1)
+    raw=(receipt_path.parent/'logs/124633648879.log').read_bytes()
+    records,proof=a.authenticate_source_log(ctx,raw)
+    a.require(proof['full_raw_log']==historical['records']['logs/124633648879.log'],'actual prior raw log full byte identity')
+    a.require(all(a.q.fingerprint(b)==historical['records']['readback/'+n]for n,b in records.items()),'actual four decoded records unchanged')
+    synthetic=copy.deepcopy(records);rows=[]
+    def emit(values):
+        lines=[]
+        for name,b in values.items():
+            index=dict(path=name,bytes=len(b),sha256=a.q.fingerprint(b)['sha256'],chunks=1)
+            lines+=['VIA2_M3_ADAPTER_CONTROL_INDEX '+json.dumps(index),'VIA2_M3_ADAPTER_CONTROL_CHUNK '+json.dumps(dict(path=name,index=0,base64=base64.b64encode(b).decode()))]
+        return ('SYNTHETIC TRANSPORT FIXTURE\n'+'\n'.join(lines)+'\n').encode()
+    sample=emit(synthetic);a.authenticate_source_log(ctx,sample)
+    def rejected(name,fn):
+        try:fn()
+        except(AssertionError,KeyError,ValueError,TypeError):rows.append(name);return
+        raise AssertionError('Accepted malformed source log '+name)
+    lines=sample.splitlines();index=next(x for x in lines if b'CONTROL_INDEX 'in x);chunk=next(x for x in lines if b'CONTROL_CHUNK 'in x)
+    rejected('duplicate_index',lambda:a.authenticate_source_log(ctx,sample+index+b'\n'))
+    rejected('duplicate_chunk',lambda:a.authenticate_source_log(ctx,sample+chunk+b'\n'))
+    rejected('missing_index',lambda:a.authenticate_source_log(ctx,b'\n'.join(x for x in lines if x!=index)))
+    rejected('missing_chunk',lambda:a.authenticate_source_log(ctx,b'\n'.join(x for x in lines if x!=chunk)))
+    rejected('unknown_record',lambda:a.authenticate_source_log(ctx,sample.replace(b'via2-m3-adapter-controls.stdout',b'foreign.json')))
+    rejected('wrong_byte_count',lambda:a.authenticate_source_log(ctx,sample.replace(index,index.replace(b'"bytes": ',b'"bytes": 1'),1)))
+    bad=json.loads(index.split(b'CONTROL_INDEX ',1)[1]);bad['sha256']='0'*64
+    rejected('wrong_record_hash',lambda:a.authenticate_source_log(ctx,sample.replace(index,b'VIA2_M3_ADAPTER_CONTROL_INDEX '+json.dumps(bad).encode(),1)))
+    bad_chunk=json.loads(chunk.split(b'CONTROL_CHUNK ',1)[1]);bad_chunk['base64']='!'
+    rejected('nonbase64',lambda:a.authenticate_source_log(ctx,sample.replace(chunk,b'VIA2_M3_ADAPTER_CONTROL_CHUNK '+json.dumps(bad_chunk).encode(),1)))
+    rejected('wrong_current_source',lambda:a.authenticate_source_log({**ctx,'source':'b'*40},sample))
+    rejected('wrong_current_run',lambda:a.authenticate_source_log({**ctx,'run_id':ctx['run_id']+1},sample))
+    name='cdr-via2-m3-adapter-controls/result.json';original=a.q.decode(synthetic[name])
+    for key,value in(('passed',False),('native_payload_acquired',True),('actual_candidate_generated',True),('admission_refusals',39)):
+        wrong={**synthetic,name:a.encode(dict(original,**{key:value}))}
+        rejected('result_'+key,lambda:a.authenticate_source_log(ctx,emit(wrong)))
+    policy=a.q.decode(synthetic['current-cdr-runtime-policy.json']);wrong={**synthetic,'current-cdr-runtime-policy.json':a.encode(dict(policy,run_id=ctx['run_id']+1))}
+    rejected('policy_context',lambda:a.authenticate_source_log(ctx,emit(wrong)))
+    with patch.object(a.subprocess,'check_output',return_value=b'unchanged\x1b[31mraw\x00')as call:
+        got=a.read_source_log(123);a.require(got==b'unchanged\x1b[31mraw\x00'and call.call_args.args==(['gh','api','--allow-escape-sequences','repos/Melihakbulut221/nssoc/actions/jobs/123/logs'],),'full raw hosted source transport argv')
+        for wrong in(0,-1,True,'123'):
+            before=call.call_count;rejected('job_id_'+repr(wrong),lambda:a.read_source_log(wrong));a.require(call.call_count==before,'invalid job caused request')
+    return dict(actual_prior_full_log=proof['full_raw_log'],decoded_prior_records=len(records),refusals=rows,synthetic_transport_only=True,native_payload_acquired=False)
+
 def derivation_controls():
     def function(text,name):
         lines=text.splitlines(keepends=True);tree=ast.parse(text);nodes=[n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name==name]
@@ -172,13 +218,13 @@ def main():
     try:
         import pya
         plan=a.q.decode(a.q.regular(ROOT,c['candidate_plan']).read_bytes());geometry=a.q.decode(a.q.regular(ROOT,c['geometry_config']).read_bytes());prior=a.q.source_guard()
-        original=original_controls.controls(pya,plan);admission=admission_controls(c,plan,geometry,prior);native_admission=native_preflight_controls(c,prior);derivation=derivation_controls();lifecycle=lifecycle_controls()
+        original=original_controls.controls(pya,plan);admission=admission_controls(c,plan,geometry,prior);native_admission=native_preflight_controls(c,prior);source_log=source_log_controls(c);derivation=derivation_controls();lifecycle=lifecycle_controls()
         pubctx=publication_controls.p.context(os.environ,'nominal_late');pub=publication_controls.controls(pubctx)
         a.require(pub['counts']==dict(positive=7,refusals=33,lifecycle=4),'complete publication controls')
         counts=dict(cases=len(original['cases']),positive=sum(r.get('passed')is True for r in original['cases']),refusals=sum(r.get('rejected')is True for r in original['cases']))
         result=dict(status='PASS_CURRENT_VIA2_M3_PHYSICAL_ADAPTER_SOURCE_CONTROLS',passed=True,context=dict(source=ctx['source'],run_id=ctx['run_id'],attempt=1),
           original_geometry_controls=counts,admission_refusals=len(admission['refusals']),native_preflight_refusals=len(native_admission['refusals']),lifecycle_cases=len(lifecycle),publication_cases=7,publication_refusals=33,
-          original=original,admission=admission,native_admission=native_admission,derivation=derivation,lifecycle=lifecycle,publication=pub,native_payload_acquired=False,actual_candidate_generated=False,**a.FLAGS)
+          original=original,admission=admission,native_admission=native_admission,source_log=source_log,source_log_refusals=len(source_log['refusals']),derivation=derivation,lifecycle=lifecycle,publication=pub,native_payload_acquired=False,actual_candidate_generated=False,**a.FLAGS)
         a.bind_controls(a.encode(result),ctx);a.source_guard(ctx)
         (out/'result.json').write_bytes(a.encode(result));print('VIA2_M3_ADAPTER_CONTROLS '+a.encode(result).decode(),flush=True)
     except BaseException as error:
