@@ -99,6 +99,8 @@ class CurrentControls(unittest.TestCase):
             with self.subTest(field=field),self.assertRaises(AssertionError):s.validate_authorizations(m)
         m=copy.deepcopy(self.method);m[s.NATIVE[0]]=False
         with self.assertRaises(AssertionError):s.validate_authorizations(m)
+        with patch.dict(os.environ,{"GITHUB_REF":"refs/heads/"+inherited.e.BRANCH}):
+            with self.assertRaises(AssertionError):s.context(self.method)
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument("--output",type=Path,required=True);args=parser.parse_args()
@@ -109,7 +111,16 @@ def main():
                 native_executed=False,electrical_acceptance=False)
     error=None
     try:
-        prior=inherited.controls()
+        original_reservation_controls=inherited.reservation_controls
+        def old_reservation_fixture(method):
+            # Only the historical synthetic reservation fixture sees its old branch.
+            # Its API, wait, receipt and controls are already mocked by the original test.
+            assert os.environ["GITHUB_REF"]=="refs/heads/"+s.BRANCH
+            with patch.dict(os.environ,{"GITHUB_REF":"refs/heads/"+inherited.e.BRANCH}):
+                return original_reservation_controls(method)
+        with patch.object(inherited,"reservation_controls",side_effect=old_reservation_fixture):
+            prior=inherited.controls()
+        assert os.environ["GITHUB_REF"]=="refs/heads/"+s.BRANCH
         assert prior["passed"]is True and (prior["positive"],prior["refusal"])==(8,110)
         report.update(inherited=dict(positive=8,refusal=110),inherited_report=prior)
         suite=unittest.defaultTestLoader.loadTestsFromTestCase(CurrentControls)
@@ -119,7 +130,9 @@ def main():
                       failures=[dict(test=str(t),traceback=v)for t,v in result.failures],skipped=result.skipped)
         assert result.wasSuccessful()and result.testsRun==16 and not result.skipped
         report.update(status="PASS_CURRENT_EIGHT_DRAIN_FRESH_RC_SOURCE_CONTROLS",passed=True)
-    except BaseException as exc:error=exc;report["exception"]=traceback.format_exc()
+    except BaseException as exc:
+        error=exc;report["exception"]=traceback.format_exc()
+        report["inherited_partial_records"]=copy.deepcopy(inherited.RECORDS)
     finally:
         args.output.parent.mkdir(parents=True,exist_ok=True)
         args.output.write_text(json.dumps(report,sort_keys=True,indent=2)+"\n")

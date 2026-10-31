@@ -204,7 +204,7 @@ jobs:
           sys.path.insert(0,'scripts')
           import cdr_current_eight_drain_fresh_rc_admission as s
           raw=Path(s.METHOD).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='d823ddc2c2423874b04bf0dbe96baf7e0fffdd4fef0ad4344919b874a7bcb160'
+          assert hashlib.sha256(raw).hexdigest()=='bd9e67b47630538934b808e803e60fc72b0211bd3382786d4d1f527eb9cc65d6'
           assert s.methods()==json.loads(raw)
           s.contract()
           PY
@@ -391,7 +391,7 @@ jobs:
           from pathlib import Path
           sys.path.insert(0,'scripts')
           import cdr_current_eight_drain_fresh_rc_admission as s
-          assert hashlib.sha256(Path(s.METHOD).read_bytes()).hexdigest()=='d823ddc2c2423874b04bf0dbe96baf7e0fffdd4fef0ad4344919b874a7bcb160'
+          assert hashlib.sha256(Path(s.METHOD).read_bytes()).hexdigest()=='bd9e67b47630538934b808e803e60fc72b0211bd3382786d4d1f527eb9cc65d6'
           proof=s.preflight()
           with open(os.environ['GITHUB_ENV'],'a')as stream:stream.write(s.RESERVATION_ENV+'='+proof['sha256']+'\n')
           print(json.dumps(proof,sort_keys=True))
