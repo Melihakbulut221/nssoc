@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-name: Mainchip observer fatal-handler and ITerm cursor source controls
+name: Mainchip complete preroute obstacle reduction controls
 on:
   workflow_dispatch:
     inputs:
@@ -8,18 +8,24 @@ on:
         options: [controls]
         default: controls
         required: true
+      approved_source:
+        description: Exact reviewed source commit
+        type: string
+        required: true
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: mainchip-drt-obstacle-crash-isolation-controls-${{ github.ref }}
+  group: mainchip-drt-obstacle-reduction-controls-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
+  MODE: ${{ inputs.mode }}
+  APPROVED_SOURCE: ${{ inputs.approved_source }}
 jobs:
   source-controls:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -28,36 +34,24 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/mainchip-drt-obstacle-readback-source.json
-      - name: Materialize complete unchanged native dependency and new source closure
+            /scripts/mainchip-drt-obstacle-reduce-source.json
+      - name: Materialize the exact small derived-only source closure
         run: |
           python3 -B - <<'PY'
           import json,subprocess
           from pathlib import Path
-          manifest='scripts/mainchip-drt-obstacle-readback-source.json'
+          manifest='scripts/mainchip-drt-obstacle-reduce-source.json'
           m=json.loads(Path(manifest).read_bytes())
-          names=sorted(set(m['files'])|set(m['inherited_files'])|{manifest})
+          names=sorted(set(m['files'])|{manifest})
+          assert m['analysis_authorized'] is False and m['native_execution_authorized'] is False and m['routing_authorized'] is False
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
           PY
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Bind exact current source and explicit read-only scope
-        run: |
-          python3 -B scripts/mainchip_drt_obstacle_contract.py
-          python3 -B - <<'PY'
-          import ast,json
-          from pathlib import Path
-          m=json.loads(Path('scripts/mainchip-drt-obstacle-readback-source.json').read_bytes())
-          assert m['native_readonly_authorized'] is False and m['native_routing_authorized'] is False
-          c=json.loads(Path('scripts/mainchip-drt-obstacle-readback-inputs.json').read_bytes())
-          assert c['native_readonly_authorized'] is False and c['native_routing_authorized'] is False
-          for n in m['files']:
-              if n.endswith('.py'):ast.parse(Path(n).read_text())
-          PY
-      - name: Run unchanged archive and parser plus full observer adapter controls
-        run: python3 -B scripts/check_mainchip_drt_obstacle_host.py
+      - name: Complete full-census synthetic reduction and refusal controls
+        run: python3 -B scripts/check_mainchip_drt_obstacle_reduce.py
   preserve-job-log:
     needs: source-controls
     if: always()
@@ -95,8 +89,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: mainchip-drt-obstacle-source-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          name: mainchip-drt-obstacle-reduction-source-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
           path: job-logs
           if-no-files-found: error
           retention-days: 90
-
