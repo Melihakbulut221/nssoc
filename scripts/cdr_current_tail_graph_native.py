@@ -151,7 +151,7 @@ def target_keys(graph):
     return result,clusters
 
 def exact_union(pya,before,after,boxes):
-    expected=pya.Region(before)
+    expected=before.dup()
     for box in boxes:expected+=pya.Region(pya.Box(*box))
     require((expected.merged()^after).is_empty(),"full partition material differs from exact declared additions")
 
@@ -161,6 +161,7 @@ def material_controls(pya):
     after=pya.Region(pya.Box(*box));extra=[500,0,600,100]
     exact_union(pya,before,after,[box])
     exact_union(pya,before,after+pya.Region(pya.Box(*extra)),[box,extra])
+    require((before^pya.Region(pya.Box(0,0,160,36000))).is_empty(),"material algebra must not mutate the input")
     faults=[]
     cases=(("missing_widening",before,[box]),
            ("foreign_extra_rectangle",after+pya.Region(pya.Box(*extra)),[box]),

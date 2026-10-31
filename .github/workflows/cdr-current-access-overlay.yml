@@ -107,7 +107,7 @@ jobs:
           sys.path.insert(0,'scripts')
           import cloud_cdr_current_tail_graph as host
           raw=Path(host.MANIFEST).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='98e308f243652ec34285ee86a5429b8a8a004b3a5bba7aa92b4c2ecba63ac7df'
+          assert hashlib.sha256(raw).hexdigest()=='7318774a4b27685ae8e9c92db7522501c1c9b2bf614fa04909c5967e642d2537'
           m=host.source_guard(host.context(os.environ));assert len(m['files'])==1329
           for name in ('scripts/cdr_current_tail_graph.py','scripts/cdr_current_tail_graph_native.py','scripts/cloud_cdr_current_tail_graph.py','scripts/check_cdr_current_tail_graph.py'):
               ast.parse(Path(name).read_bytes(),filename=name)
@@ -292,7 +292,7 @@ jobs:
           sys.path.insert(0,'scripts')
           import cloud_cdr_current_tail_graph as host
           raw=Path(host.MANIFEST).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='98e308f243652ec34285ee86a5429b8a8a004b3a5bba7aa92b4c2ecba63ac7df'
+          assert hashlib.sha256(raw).hexdigest()=='7318774a4b27685ae8e9c92db7522501c1c9b2bf614fa04909c5967e642d2537'
           m=host.source_guard(host.context(os.environ));assert len(m['files'])==1329
           PY
       - name: Recover every same-source control record from completed actual job log
@@ -420,7 +420,7 @@ jobs:
           print(json.dumps(proof,sort_keys=True))
           PY
       - name: Extract exact admitted eight-drain graph and verify complete native identities and declared material
-        run: python3 -B scripts/cloud_cdr_current_tail_graph.py --bundle "$GITHUB_WORKSPACE/hw/soc/out/cdr-current-eight-drain-graph-${GITHUB_RUN_ID}-1" --publication current-cdr-tail-graph-publication --reservation ownership-reservation.json --controls ownership-source-proof/bound-controls.json --pins-sha256 98e308f243652ec34285ee86a5429b8a8a004b3a5bba7aa92b4c2ecba63ac7df --appimage "$RUNNER_TEMP/current-tail-physical.AppImage" > current-cdr-tail-graph.stdout 2> current-cdr-tail-graph.stderr
+        run: python3 -B scripts/cloud_cdr_current_tail_graph.py --bundle "$GITHUB_WORKSPACE/hw/soc/out/cdr-current-eight-drain-graph-${GITHUB_RUN_ID}-1" --publication current-cdr-tail-graph-publication --reservation ownership-reservation.json --controls ownership-source-proof/bound-controls.json --pins-sha256 7318774a4b27685ae8e9c92db7522501c1c9b2bf614fa04909c5967e642d2537 --appimage "$RUNNER_TEMP/current-tail-physical.AppImage" > current-cdr-tail-graph.stdout 2> current-cdr-tail-graph.stderr
       - name: Always emit complete derived records and actual failure output
         if: always()
         run: |
