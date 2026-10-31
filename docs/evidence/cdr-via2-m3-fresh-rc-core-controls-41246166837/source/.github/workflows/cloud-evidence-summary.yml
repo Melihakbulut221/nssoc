@@ -1,0 +1,68 @@
+name: Current numerical RC core source controls
+on:
+  workflow_dispatch:
+    inputs:
+      approved_source:
+        type: string
+        required: true
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cdr-via2-m3-rc-core-source-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+  APPROVED_SOURCE: ${{ inputs.approved_source }}
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr-via2-m3-fresh-rc-core-pins.json
+      - name: Materialize exact source-only closure
+        run: |
+          python3 -B - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          manifest='scripts/cdr-via2-m3-fresh-rc-core-pins.json'
+          m=json.loads(Path(manifest).read_bytes())
+          paths=sorted(set(m['files'])|{manifest})
+          assert all(not p.startswith('/')and '..'not in Path(p).parts and not any(c in p for c in '*?[!\\\n\r')for p in paths)
+          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+p+'\n'for p in paths),text=True,check=True)
+          PY
+      - name: Install pinned source-fixture graph library
+        run: python3 -m pip install --disable-pip-version-check networkx==3.5
+      - name: Run independent full numerical source controls
+        run: python3 -B scripts/check_cdr_via2_m3_fresh_rc_core.py > rc-core-source.stdout 2> rc-core-source.stderr
+      - name: Always emit complete derived test evidence
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          for name in ('rc-core-source.stdout','rc-core-source.stderr','rc-core-source-controls/result.json'):
+              p=Path(name)
+              if not p.exists():continue
+              assert p.is_file()and not p.is_symlink()
+              raw=p.read_bytes();chunks=[raw[i:i+24000]for i in range(0,len(raw),24000)]or[b'']
+              print('RC_CORE_INDEX '+json.dumps(dict(path=name,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,chunk in enumerate(chunks):print('RC_CORE_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(chunk).decode()),sort_keys=True))
+          PY
+      - name: Preserve complete success or failure output
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-via2-m3-rc-core-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            rc-core-source-controls
+            rc-core-source.stdout
+            rc-core-source.stderr
+          retention-days: 90
+          if-no-files-found: error

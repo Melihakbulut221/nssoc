@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_core.py", line 108, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_core.py", line 101, in main
+    result['context']=source_guard();definition_controls()
+                                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_core.py", line 39, in definition_controls
+    _,nodes=c.checked_nodes(ROOT,key,list(item['definitions']));definitions+=len(nodes)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cdr_via2_m3_fresh_rc_core.py", line 52, in checked_nodes
+    require(hashlib.sha256(ast.dump(node,include_attributes=False).encode()).hexdigest()==pin['ast_sha256'],'frozen definition AST')
+  File "/home/runner/work/nssoc/nssoc/scripts/cdr_via2_m3_fresh_rc_core.py", line 24, in require
+    if not ok:raise ValueError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: frozen definition AST

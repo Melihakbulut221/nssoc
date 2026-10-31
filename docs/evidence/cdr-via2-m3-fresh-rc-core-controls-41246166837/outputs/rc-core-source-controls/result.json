@@ -1,0 +1,19 @@
+{
+  "context": {
+    "attempt": 1,
+    "run_id": 41246166837,
+    "source": "e3d4c25024bd6eb64e38198cd5c94a030277633d"
+  },
+  "error": "ValueError('frozen definition AST')",
+  "failed": 1,
+  "full_phy_accepted": false,
+  "native_acquired": false,
+  "native_executed": false,
+  "passed": 0,
+  "physical_accepted": false,
+  "qualified_pex": false,
+  "records": [],
+  "scope": "SYNTHETIC_SOURCE_NUMERICAL_CONTROLS_ONLY",
+  "status": "FAIL_OR_ERROR",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_core.py\", line 101, in main\n    result['context']=source_guard();definition_controls()\n                                     ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_core.py\", line 39, in definition_controls\n    _,nodes=c.checked_nodes(ROOT,key,list(item['definitions']));definitions+=len(nodes)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_via2_m3_fresh_rc_core.py\", line 52, in checked_nodes\n    require(hashlib.sha256(ast.dump(node,include_attributes=False).encode()).hexdigest()==pin['ast_sha256'],'frozen definition AST')\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_via2_m3_fresh_rc_core.py\", line 24, in require\n    if not ok:raise ValueError(message)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: frozen definition AST\n"
+}
