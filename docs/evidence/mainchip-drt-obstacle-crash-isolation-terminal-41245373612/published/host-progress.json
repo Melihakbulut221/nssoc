@@ -1,0 +1,433 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "docker",
+        "pull",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a"
+      ],
+      "elapsed_seconds": 42.569007192000015,
+      "label": "immutable-image-pull",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "image",
+        "inspect",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a"
+      ],
+      "elapsed_seconds": 0.03215814799995087,
+      "label": "image-inspect",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "container",
+        "ls",
+        "-a",
+        "--format",
+        "{{.Names}}"
+      ],
+      "elapsed_seconds": 0.03208564999999908,
+      "label": "names-before-owned-create",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "create",
+        "--env",
+        "GITHUB_ACTIONS=true",
+        "--env",
+        "GITHUB_REPOSITORY=Melihakbulut221/nssoc",
+        "--env",
+        "GITHUB_EVENT_NAME=workflow_dispatch",
+        "--env",
+        "GITHUB_REF=refs/heads/codex/mainchip-drt-obstacle-crash-isolation-v1",
+        "--env",
+        "GITHUB_SHA=277f2382b18198e399ddeef1e7ab8f35aaf629c2",
+        "--env",
+        "GITHUB_RUN_ID=41245373612",
+        "--env",
+        "GITHUB_RUN_ATTEMPT=1",
+        "--env",
+        "GITHUB_JOB=observation",
+        "--env",
+        "RUNNER_OS=Linux",
+        "--env",
+        "RUNNER_ENVIRONMENT=github-hosted",
+        "--env",
+        "MODE=observation",
+        "--env",
+        "APPROVED_SOURCE=277f2382b18198e399ddeef1e7ab8f35aaf629c2",
+        "--name",
+        "nssoc-witness-build-41245373612-1",
+        "--label",
+        "nssoc.build.source=277f2382b18198e399ddeef1e7ab8f35aaf629c2",
+        "--label",
+        "nssoc.build.token=41245373612-1",
+        "--network",
+        "none",
+        "--read-only",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--memory",
+        "12884901888",
+        "--memory-swap",
+        "12884901888",
+        "--cpus",
+        "2",
+        "--pids-limit",
+        "4096",
+        "--user",
+        "1001:1001",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,size=268435456",
+        "--mount",
+        "type=bind,src=/home/runner/work/_temp/mainchip-drt-obstacle-crash-isolation-41245373612-1,dst=/work",
+        "--workdir",
+        "/work/source",
+        "--env",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "--entrypoint",
+        "/usr/bin/python3",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a",
+        "/work/inner.py"
+      ],
+      "elapsed_seconds": 0.03205098699999098,
+      "label": "owned-container-create",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "start",
+        "--attach",
+        "c798b6e42ecf4a01352cc296f5434c39c780f0a44d093247e1a3063880ace7b6"
+      ],
+      "elapsed_seconds": 3450.0454307729997,
+      "label": "obstacle-owned-container",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "rm",
+        "c798b6e42ecf4a01352cc296f5434c39c780f0a44d093247e1a3063880ace7b6"
+      ],
+      "elapsed_seconds": 0.03235137299998314,
+      "label": "owned-container-remove",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "container",
+        "ls",
+        "-a",
+        "--format",
+        "{{.Names}}"
+      ],
+      "elapsed_seconds": 0.016195914000036282,
+      "label": "owned-removal-census",
+      "returncode": 0
+    }
+  ],
+  "container_terminal": {
+    "AppArmorProfile": "docker-default",
+    "Args": [
+      "/work/inner.py"
+    ],
+    "Config": {
+      "AttachStderr": true,
+      "AttachStdin": false,
+      "AttachStdout": true,
+      "Cmd": [
+        "/work/inner.py"
+      ],
+      "Domainname": "",
+      "Entrypoint": [
+        "/usr/bin/python3"
+      ],
+      "Env": [
+        "GITHUB_ACTIONS=true",
+        "GITHUB_EVENT_NAME=workflow_dispatch",
+        "GITHUB_RUN_ATTEMPT=1",
+        "RUNNER_OS=Linux",
+        "APPROVED_SOURCE=277f2382b18198e399ddeef1e7ab8f35aaf629c2",
+        "GITHUB_REPOSITORY=Melihakbulut221/nssoc",
+        "GITHUB_REF=refs/heads/codex/mainchip-drt-obstacle-crash-isolation-v1",
+        "GITHUB_SHA=277f2382b18198e399ddeef1e7ab8f35aaf629c2",
+        "GITHUB_RUN_ID=41245373612",
+        "GITHUB_JOB=observation",
+        "RUNNER_ENVIRONMENT=github-hosted",
+        "MODE=observation",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "DEBIAN_FRONTEND=noninteractive",
+        "TZ=America/Los_Angeles",
+        "LANG=C.UTF-8",
+        "LC_ALL=C.UTF-8"
+      ],
+      "Hostname": "c798b6e42ecf",
+      "Image": "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a",
+      "Labels": {
+        "nssoc.build.source": "277f2382b18198e399ddeef1e7ab8f35aaf629c2",
+        "nssoc.build.token": "41245373612-1",
+        "org.opencontainers.image.ref.name": "ubuntu",
+        "org.opencontainers.image.version": "24.04"
+      },
+      "OnBuild": null,
+      "OpenStdin": false,
+      "StdinOnce": false,
+      "Tty": false,
+      "User": "1001:1001",
+      "Volumes": null,
+      "WorkingDir": "/work/source"
+    },
+    "Created": "2026-10-31T21:52:22.191944421Z",
+    "Driver": "overlay2",
+    "ExecIDs": null,
+    "GraphDriver": {
+      "Data": {
+        "ID": "c798b6e42ecf4a01352cc296f5434c39c780f0a44d093247e1a3063880ace7b6",
+        "LowerDir": "/var/lib/docker/overlay2/348359e739b6a7d380ab3bb85813805374c9ec4b184a7edc0846c28a7d74cbb8-init/diff:/var/lib/docker/overlay2/4bb1314416df8f866d0b8dfd2de12d0db142f4ffe96d1caa025b9bd6ae2e6185/diff:/var/lib/docker/overlay2/2a02900f322d664334af43d9d8cfd3063269295d32cf70067776aad9e9cb7bae/diff:/var/lib/docker/overlay2/9d32532b1b73d78a67365550727167d18dba818d2182bf62d71edc98fe389483/diff",
+        "MergedDir": "/var/lib/docker/overlay2/348359e739b6a7d380ab3bb85813805374c9ec4b184a7edc0846c28a7d74cbb8/merged",
+        "UpperDir": "/var/lib/docker/overlay2/348359e739b6a7d380ab3bb85813805374c9ec4b184a7edc0846c28a7d74cbb8/diff",
+        "WorkDir": "/var/lib/docker/overlay2/348359e739b6a7d380ab3bb85813805374c9ec4b184a7edc0846c28a7d74cbb8/work"
+      },
+      "Name": "overlay2"
+    },
+    "HostConfig": {
+      "AutoRemove": false,
+      "Binds": null,
+      "BlkioDeviceReadBps": [],
+      "BlkioDeviceReadIOps": [],
+      "BlkioDeviceWriteBps": [],
+      "BlkioDeviceWriteIOps": [],
+      "BlkioWeight": 0,
+      "BlkioWeightDevice": [],
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "Cgroup": "",
+      "CgroupParent": "",
+      "CgroupnsMode": "private",
+      "ConsoleSize": [
+        0,
+        0
+      ],
+      "ContainerIDFile": "",
+      "CpuCount": 0,
+      "CpuPercent": 0,
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuRealtimePeriod": 0,
+      "CpuRealtimeRuntime": 0,
+      "CpuShares": 0,
+      "CpusetCpus": "",
+      "CpusetMems": "",
+      "DeviceCgroupRules": null,
+      "DeviceRequests": null,
+      "Devices": [],
+      "Dns": [],
+      "DnsOptions": [],
+      "DnsSearch": [],
+      "ExtraHosts": null,
+      "GroupAdd": null,
+      "IOMaximumBandwidth": 0,
+      "IOMaximumIOps": 0,
+      "IpcMode": "private",
+      "Isolation": "",
+      "Links": null,
+      "LogConfig": {
+        "Config": {},
+        "Type": "json-file"
+      },
+      "MaskedPaths": [
+        "/proc/asound",
+        "/proc/acpi",
+        "/proc/interrupts",
+        "/proc/kcore",
+        "/proc/keys",
+        "/proc/latency_stats",
+        "/proc/timer_list",
+        "/proc/timer_stats",
+        "/proc/sched_debug",
+        "/proc/scsi",
+        "/sys/firmware",
+        "/sys/devices/virtual/powercap"
+      ],
+      "Memory": 12884901888,
+      "MemoryReservation": 0,
+      "MemorySwap": 12884901888,
+      "MemorySwappiness": null,
+      "Mounts": [
+        {
+          "Source": "/home/runner/work/_temp/mainchip-drt-obstacle-crash-isolation-41245373612-1",
+          "Target": "/work",
+          "Type": "bind"
+        }
+      ],
+      "NanoCpus": 2000000000,
+      "NetworkMode": "none",
+      "OomKillDisable": null,
+      "OomScoreAdj": 0,
+      "PidMode": "",
+      "PidsLimit": 4096,
+      "PortBindings": {},
+      "Privileged": false,
+      "PublishAllPorts": false,
+      "ReadonlyPaths": [
+        "/proc/bus",
+        "/proc/fs",
+        "/proc/irq",
+        "/proc/sys",
+        "/proc/sysrq-trigger"
+      ],
+      "ReadonlyRootfs": true,
+      "RestartPolicy": {
+        "MaximumRetryCount": 0,
+        "Name": "no"
+      },
+      "Runtime": "runc",
+      "SecurityOpt": [
+        "no-new-privileges"
+      ],
+      "ShmSize": 67108864,
+      "Tmpfs": {
+        "/tmp": "rw,nosuid,nodev,size=268435456"
+      },
+      "UTSMode": "",
+      "Ulimits": [],
+      "UsernsMode": "",
+      "VolumeDriver": "",
+      "VolumesFrom": null
+    },
+    "HostnamePath": "/var/lib/docker/containers/c798b6e42ecf4a01352cc296f5434c39c780f0a44d093247e1a3063880ace7b6/hostname",
+    "HostsPath": "/var/lib/docker/containers/c798b6e42ecf4a01352cc296f5434c39c780f0a44d093247e1a3063880ace7b6/hosts",
+    "Id": "c798b6e42ecf4a01352cc296f5434c39c780f0a44d093247e1a3063880ace7b6",
+    "Image": "sha256:a958d3bee9c5261b26e221e1c1461c92f830f14293bc5050848653bd7ec8d185",
+    "LogPath": "/var/lib/docker/containers/c798b6e42ecf4a01352cc296f5434c39c780f0a44d093247e1a3063880ace7b6/c798b6e42ecf4a01352cc296f5434c39c780f0a44d093247e1a3063880ace7b6-json.log",
+    "MountLabel": "",
+    "Mounts": [
+      {
+        "Destination": "/work",
+        "Mode": "",
+        "Propagation": "rprivate",
+        "RW": true,
+        "Source": "/home/runner/work/_temp/mainchip-drt-obstacle-crash-isolation-41245373612-1",
+        "Type": "bind"
+      }
+    ],
+    "Name": "/nssoc-witness-build-41245373612-1",
+    "NetworkSettings": {
+      "Bridge": "",
+      "EndpointID": "",
+      "Gateway": "",
+      "GlobalIPv6Address": "",
+      "GlobalIPv6PrefixLen": 0,
+      "HairpinMode": false,
+      "IPAddress": "",
+      "IPPrefixLen": 0,
+      "IPv6Gateway": "",
+      "LinkLocalIPv6Address": "",
+      "LinkLocalIPv6PrefixLen": 0,
+      "MacAddress": "",
+      "Networks": {
+        "none": {
+          "Aliases": null,
+          "DNSNames": null,
+          "DriverOpts": null,
+          "EndpointID": "",
+          "Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "GwPriority": 0,
+          "IPAMConfig": null,
+          "IPAddress": "",
+          "IPPrefixLen": 0,
+          "IPv6Gateway": "",
+          "Links": null,
+          "MacAddress": "",
+          "NetworkID": "db2021413c20229694a1bb193d11e88c1917d996791603dc252632a6c43231b7"
+        }
+      },
+      "Ports": {},
+      "SandboxID": "",
+      "SandboxKey": "",
+      "SecondaryIPAddresses": null,
+      "SecondaryIPv6Addresses": null
+    },
+    "Path": "/usr/bin/python3",
+    "Platform": "linux",
+    "ProcessLabel": "",
+    "ResolvConfPath": "/var/lib/docker/containers/c798b6e42ecf4a01352cc296f5434c39c780f0a44d093247e1a3063880ace7b6/resolv.conf",
+    "RestartCount": 0,
+    "State": {
+      "Dead": false,
+      "Error": "",
+      "ExitCode": 0,
+      "FinishedAt": "2026-10-31T22:49:50.851283992Z",
+      "OOMKilled": false,
+      "Paused": false,
+      "Pid": 0,
+      "Restarting": false,
+      "Running": false,
+      "StartedAt": "2026-10-31T21:52:22.255071089Z",
+      "Status": "exited"
+    }
+  },
+  "creation_attempted": true,
+  "full_phy_accepted": false,
+  "iteration10_mutable_routes_present": false,
+  "native_complete": true,
+  "owned_container_recovery": {
+    "id": "c798b6e42ecf4a01352cc296f5434c39c780f0a44d093247e1a3063880ace7b6",
+    "name": "/nssoc-witness-build-41245373612-1",
+    "recovered_after_create_client_error": false
+  },
+  "physical_acceptance": false,
+  "physical_cause_proven": false,
+  "routing_executed": false,
+  "run": 41245373612,
+  "source": "277f2382b18198e399ddeef1e7ab8f35aaf629c2",
+  "status": "IN_PROGRESS",
+  "terminal_actions": [
+    {
+      "action": "recover-owned-container",
+      "completed": true
+    },
+    {
+      "action": "owned-stop",
+      "completed": true
+    },
+    {
+      "action": "post-stop-inspect",
+      "completed": true
+    },
+    {
+      "action": "owned-kill-if-running",
+      "completed": true
+    },
+    {
+      "action": "terminal-inspect",
+      "completed": true
+    },
+    {
+      "action": "stopped-container-contract",
+      "completed": true
+    },
+    {
+      "action": "owned-container-removal",
+      "completed": true
+    }
+  ],
+  "terminal_errors": [],
+  "timing_accepted": false
+}
