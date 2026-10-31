@@ -1,0 +1,19 @@
+{
+  "source": "38d9bf389a5b95731a87f4b78c071589aea09417",
+  "run": 41231403918,
+  "status": "ACTUAL_SOURCE_CONTROLS_FAILED_NO_NATIVE",
+  "error": "AssertionError('Upload primary was replaced')",
+  "qualified_controls": {
+    "context": true,
+    "derivation": true,
+    "method": true,
+    "reservations": true,
+    "source_integrity": true,
+    "source_prerequisite": true,
+    "storage_regression": false
+  },
+  "native_jobs_skipped": true,
+  "native_acquired": false,
+  "native_executed": false,
+  "diagnosis": "Original upload_and_receipt_failure fixture replaces every print; actual journal now emits before upload, so fault injection escapes the intended final receipt fallback boundary. Preserve failure and narrow the fixture to that exact fallback."
+}

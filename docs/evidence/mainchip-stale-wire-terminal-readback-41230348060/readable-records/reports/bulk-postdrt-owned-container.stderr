@@ -1,0 +1,72 @@
+{
+  "phases": {
+    "bootstrap": "complete",
+    "final-audit": "not_started",
+    "final-check": "not_started",
+    "fixed-audit": "complete",
+    "fixed-import": "complete",
+    "guide-overlay": "complete",
+    "guide-reload-audit": "complete",
+    "make-overlay": "complete",
+    "power-contact-audit": "complete",
+    "restore-import": "not_started",
+    "restore-plan": "not_started",
+    "restored-audit": "not_started",
+    "route": "failed",
+    "verdict": "not_started"
+  },
+  "primary_error": "SupervisionFailure('{\"argv\": [\"/work/engine/openroad\", \"-no_init\", \"-exit\", \"/work/out/work/bulk-postdrt-antenna/route.tcl\"], \"elapsed_seconds\": 10000.84543569, \"label\": \"bulk-postdrt-route\", \"last_memory_sentinel_sample\": {\"available_kib\": 4418208, \"enumeration_disappearances\": [], \"excluded_nonrunning\": [], \"group_rss_kib\": 10747904, \"group_rss_may_double_count_shared_pages\": true, \"members\": [{\"pgrp\": 24, \"pid\": 24, \"rss_kib\": 10747904, \"starttime\": 148979}], \"resampling_evidence\": [], \"sampling_attempts\": 1, \"sampling_elapsed_seconds\": 0.000738880000426434, \"total_snapshot_budget_seconds\": 0.1}, \"maximum_group_rss_kib\": 10485760, \"memory_read_error\": null, \"memory_terminal_resolution\": null, \"minimum_available_kib\": 2097152, \"pid\": 24, \"process_group_cleanup\": {\"remaining_live\": [], \"remaining_nonrunning\": [{\"pid\": 24, \"state\": \"Z\"}], \"signals\": [\"SIGTERM\"]}, \"returncode\": -15, \"stderr_bytes\": 0, \"stderr_sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\", \"stdout_bytes\": 38533, \"stdout_sha256\": \"6a92eccfab4cbc1ceddffadb48b0878dcc533cb9b7653a9332b420bc317bd74b\", \"supervision_failure\": \"maximum_group_rss\"}')",
+  "terminal_errors": []
+}
+Traceback (most recent call last):
+  File "/work/inner.py", line 36, in <module>
+    if __name__=="__main__":sys.exit(main())
+                                     ^^^^^^
+  File "/work/inner.py", line 34, in main
+    return a.clone(old.main,run_route_cycle=run_route_cycle)()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_saved_diode_routing_inner.py", line 113, in main
+    c.finish_record(OUT/"bulk-postdrt-inner-result.json",report,"FAIL_SAVED_DIODE_ROUTING_ENGINE",primary)
+  File "/work/tail-source/scripts/mainchip_witness_engine_build_contract.py", line 205, in finish_record
+    raise primary
+  File "/work/tail-source/scripts/mainchip_saved_diode_routing_inner.py", line 85, in main
+    report["route_cycle"]=run_route_cycle(report,runner,preserve_after_supervisor_stop)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/inner.py", line 28, in run_route_cycle
+    result=old.run_route_cycle(report,scoped_runner,preserver)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_saved_diode_routing_inner.py", line 42, in run_route_cycle
+    return plan.run_phases({name:lambda name=name:invoke(name)for name in plan.PHASES},restore,preserver,record)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_saved_diode_routing.py", line 82, in run_phases
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_saved_diode_routing.py", line 65, in run_phases
+    value=actions[name]()
+          ^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_saved_diode_routing_inner.py", line 42, in <lambda>
+    return plan.run_phases({name:lambda name=name:invoke(name)for name in plan.PHASES},restore,preserver,record)
+                                                  ^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_saved_diode_routing_inner.py", line 25, in invoke
+    return container.execute_phase(base,report,name,*base.PHASE_COMMANDS[name],runner=runner,script=SCRIPT,engine=ENGINE)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_container_floorplan_import.py", line 51, in execute_phase
+    return base.execute_phase(report,label,kind,name,seconds,runner=runner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_inner.py", line 118, in execute_phase
+    runner(report,"bulk-postdrt-"+label,phase_command(kind,name,work),seconds)
+  File "/work/inner.py", line 27, in scoped_runner
+    return runner(report,label,argv,seconds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_saved_diode_routing_inner.py", line 80, in <lambda>
+    runner=lambda report,label,argv,seconds:supervised_run(report,label,argv,seconds,sup)
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_inner.py", line 105, in supervised_run
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_inner.py", line 90, in supervised_run
+    sup.supervised(argv,label,seconds=seconds,cwd=cwd)
+  File "/work/tail-source/hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/cloud_pcie_gen12_training_records_telemetry.py", line 264, in supervised
+    assert previous_timer==(0.0,0.0),'Unexpected nested phase watchdog'
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_mainchip_exit_checked_telemetry.SupervisionFailure: {"argv": ["/work/engine/openroad", "-no_init", "-exit", "/work/out/work/bulk-postdrt-antenna/route.tcl"], "elapsed_seconds": 10000.84543569, "label": "bulk-postdrt-route", "last_memory_sentinel_sample": {"available_kib": 4418208, "enumeration_disappearances": [], "excluded_nonrunning": [], "group_rss_kib": 10747904, "group_rss_may_double_count_shared_pages": true, "members": [{"pgrp": 24, "pid": 24, "rss_kib": 10747904, "starttime": 148979}], "resampling_evidence": [], "sampling_attempts": 1, "sampling_elapsed_seconds": 0.000738880000426434, "total_snapshot_budget_seconds": 0.1}, "maximum_group_rss_kib": 10485760, "memory_read_error": null, "memory_terminal_resolution": null, "minimum_available_kib": 2097152, "pid": 24, "process_group_cleanup": {"remaining_live": [], "remaining_nonrunning": [{"pid": 24, "state": "Z"}], "signals": ["SIGTERM"]}, "returncode": -15, "stderr_bytes": 0, "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "stdout_bytes": 38533, "stdout_sha256": "6a92eccfab4cbc1ceddffadb48b0878dcc533cb9b7653a9332b420bc317bd74b", "supervision_failure": "maximum_group_rss"}
