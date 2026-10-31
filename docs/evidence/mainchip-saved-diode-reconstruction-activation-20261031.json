@@ -1,0 +1,145 @@
+{
+  "all_original_wire_and_clock_gates_unchanged": true,
+  "diagnosis": {
+    "added_masters_matching": 1351,
+    "geometrically_changed_nets": 608,
+    "legacy_wrapper_matches": 0
+  },
+  "diagnosis_run": 41189662022,
+  "expected_added_diodes": 1351,
+  "expected_mutable_nets": 608,
+  "files": {
+    ".github/workflows/mainchip-net459-diode-prune.yml": {
+      "bytes": 25196,
+      "sha256": "de7b2cec2cb06a2c1bc4a7c44f99dc55e3fa2610c37ee8894bced20acf3d68a0"
+    },
+    "scripts/check_mainchip_saved_diode_reconstruction.py": {
+      "bytes": 4959,
+      "sha256": "cab380fd471a699c4e82036556979ed385c2783da53fb3e55ab276cf93e24bff"
+    },
+    "scripts/cloud_mainchip_saved_diode_reconstruction.py": {
+      "bytes": 15284,
+      "sha256": "2767eb8e2c421c8f700ccf9866659cd5b33a199ae21b1c0321441f29c8f20981"
+    },
+    "scripts/mainchip-saved-diode-reconstruction-pins.json": {
+      "bytes": 371304,
+      "sha256": "a4e7381c09cdd94860100240d43f7061f1b673d9ea090c5fa2d4db7f241a6d94"
+    },
+    "scripts/mainchip_saved_diode_reconstruction.py": {
+      "bytes": 4299,
+      "sha256": "a87682439e57ce006df47c4150250b06f78ede99392f8ae3d7e63f3fbc1b144e"
+    },
+    "scripts/mainchip_saved_diode_reconstruction_inner.py": {
+      "bytes": 7334,
+      "sha256": "595e73ada280569b4e85803f81c88e04d9873c27462e1795e171342dc84b177b"
+    },
+    "scripts/mainchip_saved_diode_reconstruction_native.py": {
+      "bytes": 8958,
+      "sha256": "e8177ca068bc3c330ca7080d33a0a1214d80b6597dbd9ec10ea7c53ee7db847a"
+    }
+  },
+  "full_native_creation_not_yet_executed": true,
+  "full_phy_accepted": false,
+  "independent_empty_exact_source_release_required": true,
+  "local_native_payload": false,
+  "manifest_sha256": "a4e7381c09cdd94860100240d43f7061f1b673d9ea090c5fa2d4db7f241a6d94",
+  "native_api_primary_examples": {
+    "commit": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+    "files": {
+      "src/odb/test/helper.py": {
+        "sha256": "063807d10a77b350d1a82d2152c660231700fb8492d2262dde5604e4ab866455",
+        "windows": [
+          {
+            "line": 56,
+            "text": "    block = odb.dbBlock_create(parent, blockName, \",\")\n    # Creating Master and2 and instance inst\n    and2 = lib.findMaster(\"and2\")\n    inst = odb.dbInst.create(block, and2, \"inst\")\n    # creating our nets\n    n1 = odb.dbNet.create(block, \"n1\")\n    n2 = odb.dbNet.create(block, \"n2\")\n    n3 = odb.dbNet.create(block, \"n3\")\n    IN1 = odb.dbBTerm.create(n1, \"IN1\")\n    IN1.setIoType(\"INPUT\")"
+          },
+          {
+            "line": 69,
+            "text": "    OUT.setIoType(\"OUTPUT\")\n    # connecting nets\n    a = inst.findITerm(\"a\")\n    a.connect(n1)\n    b = inst.findITerm(\"b\")\n    b.connect(n2)\n    o = inst.findITerm(\"o\")\n    o.connect(n3)\n    return block\n"
+          },
+          {
+            "line": 71,
+            "text": "    a = inst.findITerm(\"a\")\n    a.connect(n1)\n    b = inst.findITerm(\"b\")\n    b.connect(n2)\n    o = inst.findITerm(\"o\")\n    o.connect(n3)\n    return block\n\n\n# logical expr OUT = (IN1&IN2) | (IN3&IN4)"
+          },
+          {
+            "line": 73,
+            "text": "    b = inst.findITerm(\"b\")\n    b.connect(n2)\n    o = inst.findITerm(\"o\")\n    o.connect(n3)\n    return block\n\n\n# logical expr OUT = (IN1&IN2) | (IN3&IN4)\n#     (n1)   +-----\n# IN1--------|a    \\    (n5)"
+          },
+          {
+            "line": 96,
+            "text": "    and2 = lib.findMaster(\"and2\")\n    or2 = lib.findMaster(\"or2\")\n    # creating instances\n    i1 = odb.dbInst.create(block, and2, \"i1\")\n    i2 = odb.dbInst.create(block, and2, \"i2\")\n    i3 = odb.dbInst.create(block, or2, \"i3\")\n    # creating nets and block terms\n    n1 = odb.dbNet.create(block, \"n1\")\n    n2 = odb.dbNet.create(block, \"n2\")\n    n3 = odb.dbNet.create(block, \"n3\")"
+          },
+          {
+            "line": 97,
+            "text": "    or2 = lib.findMaster(\"or2\")\n    # creating instances\n    i1 = odb.dbInst.create(block, and2, \"i1\")\n    i2 = odb.dbInst.create(block, and2, \"i2\")\n    i3 = odb.dbInst.create(block, or2, \"i3\")\n    # creating nets and block terms\n    n1 = odb.dbNet.create(block, \"n1\")\n    n2 = odb.dbNet.create(block, \"n2\")\n    n3 = odb.dbNet.create(block, \"n3\")\n    n4 = odb.dbNet.create(block, \"n4\")"
+          },
+          {
+            "line": 98,
+            "text": "    # creating instances\n    i1 = odb.dbInst.create(block, and2, \"i1\")\n    i2 = odb.dbInst.create(block, and2, \"i2\")\n    i3 = odb.dbInst.create(block, or2, \"i3\")\n    # creating nets and block terms\n    n1 = odb.dbNet.create(block, \"n1\")\n    n2 = odb.dbNet.create(block, \"n2\")\n    n3 = odb.dbNet.create(block, \"n3\")\n    n4 = odb.dbNet.create(block, \"n4\")\n    n5 = odb.dbNet.create(block, \"n5\")"
+          },
+          {
+            "line": 120,
+            "text": "    OUT.setIoType(\"OUTPUT\")\n    # connecting nets\n    i1_a = i1.findITerm(\"a\")\n    i1_a.connect(n1)\n    i1_b = i1.findITerm(\"b\")\n    i1_b.connect(n2)\n    i1_o = i1.findITerm(\"o\")\n    i1_o.connect(n5)\n    # connect i2\n    i2_a = i2.findITerm(\"a\")"
+          },
+          {
+            "line": 122,
+            "text": "    i1_a = i1.findITerm(\"a\")\n    i1_a.connect(n1)\n    i1_b = i1.findITerm(\"b\")\n    i1_b.connect(n2)\n    i1_o = i1.findITerm(\"o\")\n    i1_o.connect(n5)\n    # connect i2\n    i2_a = i2.findITerm(\"a\")\n    i2_a.connect(n3)\n    i2_b = i2.findITerm(\"b\")"
+          },
+          {
+            "line": 124,
+            "text": "    i1_b = i1.findITerm(\"b\")\n    i1_b.connect(n2)\n    i1_o = i1.findITerm(\"o\")\n    i1_o.connect(n5)\n    # connect i2\n    i2_a = i2.findITerm(\"a\")\n    i2_a.connect(n3)\n    i2_b = i2.findITerm(\"b\")\n    i2_b.connect(n4)\n    i2_o = i2.findITerm(\"o\")"
+          }
+        ]
+      },
+      "src/odb/test/test_iterm.py": {
+        "sha256": "ef0cdbc6d407614fe2708522a04044912a1de1183bd4585cdb76695cfae6e831",
+        "windows": [
+          {
+            "line": 13,
+            "text": "        blockName = \"1LevelBlock\"\n        self.block = odb.dbBlock_create(self.db.getChip(), blockName)\n        self.and2 = self.lib.findMaster(\"and2\")\n        self.inst = odb.dbInst.create(self.block, self.and2, \"inst\")\n        self.iterm_a = self.inst.findITerm(\"a\")\n\n    def test_idle(self):\n        self.assertIsNone(self.iterm_a.getNet())\n\n    def test_connection_from_iterm(self):"
+          },
+          {
+            "line": 24,
+            "text": "        n = odb.dbNet_create(self.block, \"n1\")\n        self.assertEqual(n.getITermCount(), 0)\n        self.assertEqual(n.getITerms(), [])\n        self.iterm_a.connect(n)\n        self.iterm_a.setConnected()\n        self.assertEqual(self.iterm_a.getNet().getName(), \"n1\")\n        self.assertEqual(n.getITermCount(), 1)\n        self.assertEqual(n.getITerms()[0].getMTerm().getName(), \"a\")\n        self.assertTrue(self.iterm_a.isConnected())\n        # disconnect"
+          },
+          {
+            "line": 43,
+            "text": "        n = odb.dbNet_create(self.block, \"n1\")\n        self.assertEqual(n.getITermCount(), 0)\n        self.assertEqual(n.getITerms(), [])\n        self.iterm_a.connect(n)\n        self.iterm_a.setConnected()\n        self.assertEqual(self.iterm_a.getNet().getName(), \"n1\")\n        self.assertEqual(n.getITermCount(), 1)\n        self.assertEqual(n.getITerms()[0].getMTerm().getName(), \"a\")\n        self.assertTrue(self.iterm_a.isConnected())\n        # disconnect"
+          },
+          {
+            "line": 88,
+            "text": "        geo_box_a_2 = odb.dbBox_create(\n            mpin_a, self.lib.getTech().getLayers()[0], 0, 0, 100, 100\n        )\n        self.inst.setOrient(\"R90\")\n        result, x, y = self.iterm_a.getAvgXY()\n        self.assertTrue(result)\n        self.assertEqual(x, int(((0 + 50) + (0 + 100)) / 4) * -1)\n        self.assertEqual(y, int(((0 + 50) + (0 + 100)) / 4))\n\n"
+          }
+        ]
+      }
+    }
+  },
+  "no_candidate_promoted": true,
+  "original_counts": {
+    "clock_records": 1691,
+    "instances": 153129,
+    "nets": 143820
+  },
+  "original_producer_run": 41172959321,
+  "parent": "82efce43ca3595969b9bcb94e62f4ef28896dfb9",
+  "phases": [
+    "saved-plan",
+    "original-snapshot",
+    "construct",
+    "candidate-snapshot",
+    "admit"
+  ],
+  "physical_acceptance": false,
+  "prior_failure_retained": true,
+  "protected_files": 2231,
+  "schema": "saved-diode-reconstruction-activation-v1",
+  "scope": "Experimental actual candidate reconstruction from original ODB plus precisely verified1351 new diode rows. No copied altered wires, no repair_antennas, no detailed route. Full original admission required after native write/reload.",
+  "source_controls": {
+    "inherited_observer": 30,
+    "inherited_original": 162,
+    "reconstruction": 22,
+    "total": 214
+  },
+  "source_gate_unchanged": true,
+  "timing_accepted": false
+}

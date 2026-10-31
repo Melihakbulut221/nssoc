@@ -1,13 +1,13 @@
-name: Saved native wire RECT comparison finalization
+name: Preserve original wires while reconstructing verified antenna diodes
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Read-only saved failed state; repair and routing disabled
+        description: Reconstruct verified diodes from original ODB; antenna repair and routing disabled
         type: choice
         required: true
-        default: audit
-        options: [audit]
+        default: reconstruct
+        options: [reconstruct]
 permissions:
   contents: read
   actions: read
@@ -40,7 +40,7 @@ jobs:
           assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['GITHUB_REF']=='refs/heads/codex/mainchip-net459-diode-prune'
-          assert e['SELECTED_MODE']=='audit'
+          assert e['SELECTED_MODE']=='reconstruct'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           name='scripts/mainchip-bulk-postdrt-integration-pins.json'
           raw=Path(name).read_bytes()
@@ -59,13 +59,13 @@ jobs:
           sys.path.insert(0,'scripts')
           import cloud_mainchip_bulk_postdrt_antenna as host
           assert host.source_gate()==m
-          import cloud_mainchip_saved_repair_audit as qualification
-          qraw=Path('scripts/mainchip-saved-repair-audit-pins.json').read_bytes()
-          assert hashlib.sha256(qraw).hexdigest()=='0887c74b6978727a56417e54e5b31f2be603be4eea722f8df29381cb231099b2'
+          import cloud_mainchip_saved_diode_reconstruction as qualification
+          qraw=Path('scripts/mainchip-saved-diode-reconstruction-pins.json').read_bytes()
+          assert hashlib.sha256(qraw).hexdigest()=='a4e7381c09cdd94860100240d43f7061f1b673d9ea090c5fa2d4db7f241a6d94'
           qm=qualification.source_gate()
-          assert qm==json.loads(qraw) and len(qm['files'])==2172
+          assert qm==json.loads(qraw) and len(qm['files'])==2231
           qualification.authorize_native(qm)
-          for path in ('scripts/mainchip_saved_repair_audit.py','scripts/mainchip_saved_repair_audit_inner.py','scripts/cloud_mainchip_saved_repair_audit.py'):
+          for path in ('scripts/mainchip_saved_diode_reconstruction_native.py','scripts/mainchip_saved_diode_reconstruction_inner.py','scripts/cloud_mainchip_saved_diode_reconstruction.py'):
               ast.parse(Path(path).read_bytes(),filename=path)
           (out/'qualification-manifest.json').write_bytes(qraw)
           (out/'manifest.json').write_bytes(raw)
@@ -96,10 +96,10 @@ jobs:
           Path('bulk-postdrt-integration-controls/execution.json').write_text(json.dumps(result,sort_keys=True,indent=2)+'\n')
           PY
           exit "$rc"
-      - name: Exercise saved state delta and geometry observer controls
+      - name: Exercise inherited observer and exact reconstruction refusal controls
         run: |
           set +e
-          python3 -B scripts/check_mainchip_saved_repair_audit.py bulk-postdrt-integration-controls/audit-controls.json > bulk-postdrt-integration-controls/audit-controls.stdout 2> bulk-postdrt-integration-controls/audit-controls.stderr
+          python3 -B scripts/check_mainchip_saved_diode_reconstruction.py bulk-postdrt-integration-controls/audit-controls.json > bulk-postdrt-integration-controls/audit-controls.stdout 2> bulk-postdrt-integration-controls/audit-controls.stderr
           rc=$?
           CONTROL_RC="$rc" python3 -B - <<'PY'
           import json,os
@@ -190,9 +190,9 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-  saved-repair-audit:
+  diode-reconstruction:
     needs: [source-controls, preserve-job-log]
-    if: ${{ inputs.mode == 'audit' }}
+    if: ${{ inputs.mode == 'reconstruct' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     permissions:
@@ -218,13 +218,13 @@ jobs:
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['GITHUB_REF']=='refs/heads/codex/mainchip-net459-diode-prune'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
-          name='scripts/mainchip-saved-repair-audit-pins.json'
+          name='scripts/mainchip-saved-diode-reconstruction-pins.json'
           raw=Path(name).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='0887c74b6978727a56417e54e5b31f2be603be4eea722f8df29381cb231099b2'
+          assert hashlib.sha256(raw).hexdigest()=='a4e7381c09cdd94860100240d43f7061f1b673d9ea090c5fa2d4db7f241a6d94'
           sys.path.insert(0,'scripts')
-          import cloud_mainchip_saved_repair_audit as host
+          import cloud_mainchip_saved_diode_reconstruction as host
           m=host.source_gate()
-          assert m==json.loads(raw) and len(m['files'])==2172
+          assert m==json.loads(raw) and len(m['files'])==2231
           host.authorize_native(m)
           print('Exact source and qualified adapter projection verified; no native acquisition yet.')
           PY
@@ -274,18 +274,18 @@ jobs:
           assert ctx['qualification_only_in_manifest']is True and ctx['native_authorized']is False
           audit=decoded['audit-controls.json'];audit_execution=decoded['audit-execution.json']
           assert audit['source']==e['GITHUB_SHA'] and audit['run_id']==int(e['GITHUB_RUN_ID']) and audit['attempt']==1
-          assert audit['status']=='PASS_SAVED_REPAIR_AUDIT_SOURCE_CONTROLS' and audit['count']==30 and len(set(audit['passed_cases']))==30
+          assert audit['status']=='PASS_SAVED_DIODE_RECONSTRUCTION_SOURCE_CONTROLS' and audit['count']==52 and len(set(audit['passed_cases']))==52
           assert audit['native_executed']is False and audit_execution['returncode']==0
           assert audit_execution['source']==e['GITHUB_SHA'] and audit_execution['run_id']==int(e['GITHUB_RUN_ID']) and audit_execution['attempt']==1
-          assert audit['source_pin']==hashlib.sha256(Path('scripts/mainchip_saved_repair_audit.py').read_bytes()).hexdigest()
+          assert audit['source_pin']==hashlib.sha256(Path('scripts/mainchip_saved_diode_reconstruction_native.py').read_bytes()).hexdigest()
           assert (root/'manifest.json').read_bytes()==Path('scripts/mainchip-bulk-postdrt-integration-pins.json').read_bytes()
-          assert (root/'qualification-manifest.json').read_bytes()==Path('scripts/mainchip-saved-repair-audit-pins.json').read_bytes()
+          assert (root/'qualification-manifest.json').read_bytes()==Path('scripts/mainchip-saved-diode-reconstruction-pins.json').read_bytes()
           assert (root/'bulk-manifest.json').read_bytes()==Path('scripts/mainchip-bulk-postdrt-antenna-pins.json').read_bytes()
           assert ctx['workflow']['sha256']==hashlib.sha256(Path('.github/workflows/mainchip-net459-diode-prune.yml').read_bytes()).hexdigest()
           execution=decoded['execution.json']
           assert execution==dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,returncode=0,native_executed=False)
           sys.path.insert(0,'scripts')
-          import cloud_mainchip_saved_repair_audit as host
+          import cloud_mainchip_saved_diode_reconstruction as host
           proof=host.control_evidence(host.context(e))
           (root/'index.json').write_text(json.dumps(idx,sort_keys=True,indent=2)+'\n')
           (root/'admission.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,full_source_records=12,source_job=j['id'],full_log_sha256=hashlib.sha256(raw).hexdigest(),proof=proof,native_acquisition=False),sort_keys=True,indent=2)+'\n')
@@ -317,8 +317,8 @@ jobs:
           receipt=dict(tag=tag,tested_source=e['GITHUB_SHA'],release_id=d['id'],existing_assets=[],target_verified=True,assets_overwritten=False,externally_reserved=True,creation_attempted=False,read_attempts=attempt+1)
           Path('release-reservation.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
           PY
-      - name: Finalize all preserved native wire geometries; no new DB capture or routing
-        run: python3 -B scripts/cloud_mainchip_saved_repair_audit.py --output bulk-postdrt-antenna-evidence --reservation release-reservation.json > bulk-postdrt-antenna.stdout 2> bulk-postdrt-antenna.stderr
+      - name: Reconstruct actual verified diodes and require all original wire and clock invariants
+        run: python3 -B scripts/cloud_mainchip_saved_diode_reconstruction.py --output bulk-postdrt-antenna-evidence --reservation release-reservation.json > bulk-postdrt-antenna.stdout 2> bulk-postdrt-antenna.stderr
       - name: Always emit full bounded evidence and failure output
         if: always()
         run: |
@@ -359,18 +359,18 @@ jobs:
           python3 -B - <<'PY'
           import hashlib,json,os,sys
           from pathlib import Path
-          raw=Path('scripts/mainchip-saved-repair-audit-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='0887c74b6978727a56417e54e5b31f2be603be4eea722f8df29381cb231099b2'
+          raw=Path('scripts/mainchip-saved-diode-reconstruction-pins.json').read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='a4e7381c09cdd94860100240d43f7061f1b673d9ea090c5fa2d4db7f241a6d94'
           sys.path.insert(0,'scripts')
-          import cloud_mainchip_saved_repair_audit as host
+          import cloud_mainchip_saved_diode_reconstruction as host
           host.source_gate()
           print(json.dumps(host.cleanup_preserved_workspace(host.context(os.environ),Path('bulk-postdrt-antenna-evidence')),sort_keys=True))
           PY
 
 
   preserve-antenna-job-logs:
-    needs: [source-controls, preserve-job-log, saved-repair-audit]
-    if: ${{ always() && inputs.mode == 'audit' }}
+    needs: [source-controls, preserve-job-log, diode-reconstruction]
+    if: ${{ always() && inputs.mode == 'reconstruct' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
@@ -390,7 +390,7 @@ jobs:
           jobs=get('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
           rows={}
           for j in jobs['jobs']:
-              if j['name'] not in ('source-controls','preserve-job-log','saved-repair-audit'):continue
+              if j['name'] not in ('source-controls','preserve-job-log','diode-reconstruction'):continue
               j=get('actions/jobs/'+str(j['id']),str(j['id'])+'.json')
               assert j['head_sha']==e['GITHUB_SHA'] and j['run_id']==int(e['GITHUB_RUN_ID'])
               if j['conclusion']=='skipped':continue
