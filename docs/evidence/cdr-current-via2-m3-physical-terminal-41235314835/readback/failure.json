@@ -1,0 +1,23 @@
+{
+  "accepted": false,
+  "causality_proven": false,
+  "context": {
+    "attempt": 1,
+    "case": "nominal_late",
+    "group": "cdr-current-via2-m3-physical-nominal_late",
+    "job": "candidate",
+    "mode": "candidate",
+    "run_id": 41235314835,
+    "source": "db7077a9495229ef444d1155aed687cfe374f9ae",
+    "token": "41235314835-1"
+  },
+  "electrical_accepted": false,
+  "error": "AssertionError(('full560-DRC-deep-flat-LVS13', '', 'Traceback (most recent call last):\\n  File \"/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-cdr-current-via2-m3-physical/native/methods/check_physical.py\", line 21, in <module>\\n    PORTS = build()[\"ports\"]\\n            ^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_retimed_localbus_v12_parent_plan.py\", line 44, in build\\n    raw=(ROOT/\\'hw/soc/analog/pcie\\'/name).read_bytes()\\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/usr/lib/python3.12/pathlib.py\", line 1021, in read_bytes\\n    with self.open(mode=\\'rb\\') as f:\\n         ^^^^^^^^^^^^^^^^^^^^\\n  File \"/usr/lib/python3.12/pathlib.py\", line 1015, in open\\n    return io.open(self, mode, buffering, encoding, errors, newline)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nFileNotFoundError: [Errno 2] No such file or directory: \\'/home/runner/work/nssoc/nssoc/hw/soc/analog/pcie/cdr_select_hybrid_tail_v2.spice\\'\\n'))",
+  "full_phy_accepted": false,
+  "new_simulation": false,
+  "physical_acceptance": false,
+  "qualified_pex": false,
+  "status": "FAIL_CURRENT_VIA2_M3_GENERATION_OR_PHYSICAL",
+  "timing_accepted": false,
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_via2_m3_physical.py\", line 241, in run\n    result=body(ctx,c,reserved,controls_raw,out);write(out/'result.json',encode(result))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_via2_m3_physical.py\", line 224, in perform\n    write(out/'preflight.json',encode(preflight));physical=pipeline(selected,out/'native',out/'preflight.json',c)\n                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_via2_m3_physical.py\", line 162, in native_pipeline\n    if primary is not None:raise primary\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_via2_m3_physical.py\", line 152, in native_pipeline\n    execute([sys.executable,checker,'--layout',out/'layout','--out',out/'physical','--app',app],'full560-DRC-deep-flat-LVS13',7200)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_via2_m3_physical.py\", line 140, in execute\n    if failure is not None:raise failure\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_via2_m3_physical.py\", line 128, in execute\n    with tokenless():supervisor.supervised(argv,label,seconds=seconds,cwd=ROOT)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/docs/evidence/cdr-v59-mim-qualified-process-supervisor-20261025.py\", line 251, in supervised\n    if passed:assert result.returncode==0,(label,out[-3000:],err[-3000:])\n                     ^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('full560-DRC-deep-flat-LVS13', '', 'Traceback (most recent call last):\\n  File \"/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-cdr-current-via2-m3-physical/native/methods/check_physical.py\", line 21, in <module>\\n    PORTS = build()[\"ports\"]\\n            ^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_retimed_localbus_v12_parent_plan.py\", line 44, in build\\n    raw=(ROOT/\\'hw/soc/analog/pcie\\'/name).read_bytes()\\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/usr/lib/python3.12/pathlib.py\", line 1021, in read_bytes\\n    with self.open(mode=\\'rb\\') as f:\\n         ^^^^^^^^^^^^^^^^^^^^\\n  File \"/usr/lib/python3.12/pathlib.py\", line 1015, in open\\n    return io.open(self, mode, buffering, encoding, errors, newline)\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nFileNotFoundError: [Errno 2] No such file or directory: \\'/home/runner/work/nssoc/nssoc/hw/soc/analog/pcie/cdr_select_hybrid_tail_v2.spice\\'\\n')\n"
+}
