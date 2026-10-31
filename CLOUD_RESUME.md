@@ -1,6 +1,6 @@
-# Cloud continuation — checkpoint v179
+# Cloud continuation — checkpoint v180
 
-Updated: 2026-10-31T16:11:32.226271+00:00
+Updated: 2026-10-31T16:16:40.531871+00:00
 
 All engineering and tests run in GitHub. Do not acquire native payloads or archives locally, even into RAM. Source authoring and API derived JSON/text coordination use memory only. Workspace and project temporary directories are empty; no local CAD processes.
 
@@ -18,17 +18,21 @@ OriginalRC41213815773 sourceebe4ebb3ca2aef7b23cfc68f4b17588c03cd84fb/release4300
 
 Actualnativeinventory2874, rawoutputs2872, summaryoutputs2873. Sole publicationadditionpublication-driver.log. RawSHA2136b4d5; originalpublicationSHAc788057a camefromauthenticatedoriginalartifact, neverreconstructed. FullmapSHAf382e31d. Modelacb76bac, planes0dff90f1. Eightdrains map freshly tocomponent17/cluster28/$131 orcomponent61/cluster135/$699. No electricalacceptance/fullPHYacceptance.
 
-## Next loaded matrix
+## Current loaded matrix
 
-Nine newsource/config/review/workflowfiles on codex/cdr-drain-m1-loaded-electrical source8b7a8659d99c879e5564c8f9a59f1949df1c1ed2.1961protectedfiles,method7bc06d8b. All94proofrecords imported and verified. Worker preserves sixnumericalblocks24133bytes; only3name/pathsubstitutions. New8target completeness/refusals; newexactsource/provenance andfull2874inventory.
+Initial source-only run41218330134 / source8b7a8659d99c879e5564c8f9a59f1949df1c1ed2 succeeded: five fullreports,16source records,13positive134refusal in currentunit, three fulljoblogs.39files/1208333B completeproof5a21932ae9f90d258dd2bc374cc3eaea114ac98e imported,receipt2cdcca5a. Independentreadonlyreview found no blocking issue; diagnostictextfull2680 is cosmetic only, actualgateNATIVE_MEMBERS2874.
 
-Workflow401118236 modecontrols run41218330134 snapshot in_progress/None. Nativeauthoritydisabled. Check actualsourcecontrols and independentreview before enabling execution. Preserve fullfailures and successlogs. Subsequentmode=loaded mustproduce its ownsame-runpreparation and use11distinctexternallyreservedemptypublicexactsource releases, preparationlast. Original10casepolicy/maxparallel2/failfastfalse/retryfalse and allanaloglimits unchanged. No localnumericalexecution.
+Separate exactsource84b8b591e10be32716947c8d6b079fd7a21ce18d enables onlyfiveauthoritybooleans plusqualification; originalmethodpins1961/numericalsource/physicalgates unchanged. MethodSHA9b8d59e0642ed1bc7bdbbe6ab1f36056d6a89fca1948d5f47f948aab029b4c40.
+
+Workflow401118236 mode=loaded dispatchedONCE: run41218657461, snapshot in_progress/None. This run must pass its ownsourcecontrols andsame-runpreparation before10cases. Eleven distinctpublicemptyexactsource releases alreadyreserved; preparationcreatedlast: 430041745,430041784,430041808,430041839,430041869,430041903,430041935,430041966,430041999,430042029,430042055. Do notdispatchagain orcreatereservationsagain. Fullrecord in docs/evidence/cloud-collector-recipes-20261029/current-eight-drain-loaded-matrix-v180.json.
+
+Original10casepolicy,maxparallel2,failfastfalse,retryfalse,1200spreparation/7200scases and allanaloglimits unchanged. Originalraw/full2874-memberRC input and8drainbindings authenticated. No case outcome is preaccepted. Preserveallactualnative/case/waveforms/failures onGitHubonly; neverdownloadlocally evenRAM.
 
 ## Remaining work
 
 Actualmainchipfullcapsule/read-onlyadmission then topology-boundfreshRC/STA20/4/8/8ns+5%,3PVTcorners. NominalRC success is notRCmin/maxqualification. FullserialPHY/closedloop/silicon/foundrysignoff andfinalsetup/hold remainopen.
 
-8hmonitor inventoryv179 contains445handles; automatic_native_dispatch=false. Readonlymonitor does notreplace manualnativeadmission or reservation. PriorHTTP502monitorissue notclaimedfixed.
+8hmonitor inventoryv180 contains446handles; automatic_native_dispatch=false. Readonlymonitor does notreplace manualnativeadmission or reservation. PriorHTTP502monitorissue notclaimedfixed.
 
 Latest detailed state: docs/evidence/cloud-active-checkpoint-20261024.json
-New immutable snapshot: docs/evidence/cloud-collector-recipes-20261029/current-native-RC-and-stale-wire-admission-v179.json
+New immutable snapshot: docs/evidence/cloud-collector-recipes-20261029/current-eight-drain-loaded-matrix-v180.json
