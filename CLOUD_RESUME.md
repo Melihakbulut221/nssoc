@@ -1,38 +1,36 @@
-# Cloud continuation — checkpoint v188
+# Cloud continuation — checkpoint v189
 
-Updated: 2026-10-31T19:00:50.054740+00:00
+Updated: 2026-10-31T19:11:29.861731+00:00
 
-Latest user policy is cloud-only. All tests, simulations, CAD and native/numerical processing run on GitHub. Local source/API derived text coordination is RAM only. Never acquire native archives, models, ODB/GDS, raw waves or native-frame gzip locally, even in RAM. Workspace and project temporary prefixes are empty; no local CAD process. Unrelated files and original user review attachments are preserved.
+Latest user instruction: everything in the cloud; clean local project material. All tests, simulations, CAD and native numerical processing run on GitHub. Local source authoring, static review and derived API text coordination are RAM only. Never acquire project native archives, models, ODB/GDS, raw waves or native-frame gzip locally, even in RAM. Workspace and project temporary prefixes are empty and no local CAD process exists. Preserve unrelated files and original user review attachments.
 
-## Concrete current findings
+## Actual single remaining VI case
 
-Original mainchip routing [41211382427](https://github.com/Melihakbulut221/nssoc/actions/runs/41211382427) failed the10GiB process-group RSS guard: observed10747904KiB, hostavailable4418208KiB. Its container hardlimit is12GiB, swap0,2CPUs; hostavailability is not cgroupheadroom. SIGTERM after10000.845s. Iteration14 ended527violations, including414Metal2shorts;iteration15 stopped40percent with524. All1691clock/fixednets remainexact aftercleanup. No route-partial or routed-fixed ODB was saved.
+Run [41232778446](https://github.com/Melihakbulut221/nssoc/actions/runs/41232778446), exact source8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac, is the single authorized vi_bias_off transient. nominal_early is preparation only; do not rerun the nine completed original cases. Root independently reserved empty public exactsource destinations: VI430130384 first, preparation430130432 last. Both tag/readback records are in this checkpoint receipt.
 
-Full97file38,496,343B readonly terminalproof imported from6e0c8999c122fea4306e7c0630f47f4cd351d7ae. Saved stale-wire-cleared.odb is212855093B SHA15dff6b392f043891aff5508709ded3de825d6abc55cc7f7bf24bc7532134fbc; it is prerouteinput, notiteration15progress. A successor reroutesfromstart without repeating provenpreparation wherevalid.
+Corrected source controls41231827950 and activated own controls41232278532 succeeded. Their complete30file proofs each are imported. The initial source failure41231403918 remains visible; it was a broad printfault fixture, not the original native electrical failure. Root reviewed activation changes: five authority flags, method pins and two full derived-prerequisite INDEX/CHUNK emission blocks. Six production Python sources are unchanged. loaded_admission_review owns actual sourcecontrols/preparation/VI completion and permanent full failure/success evidence.
 
-mainchip_next_timing_audit owns narrowly selected iteration5/10DRC reports:239492B total, sourceb2bfc90a090b6b051a087e3c121bd3f8ef9e6d01 on codex/mainchip-drt-report-readback, sourcecontrols41231946798. Root reviewed exacttwo-path whitelist, full735memberverification,9prior+3newfixtures. Oneactualreadonlydispatch is conditional oncontrols/fullproof andindependentempty exactsource publicrelease; root mustreservewhenrunhandle arrives. No reroute yet; localize dominantM2shorts first.
+## Actual routing diagnosis and next narrow analysis
 
-Exactengine dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 supports periteration ODB snapshots through DRTsnapshot1 (FlexDR.cpp1998–2004). Directwrite is non-atomic and omits algorithmsearchstate. Anyfuturecheckpoint needs cloudread_db andoriginalphysical/clock/topologygates. Bound64ODBstorage/publication andbothhost/cgroupmemory; no acceptance relaxation.
+Two original DRT reports [41232060935](https://github.com/Melihakbulut221/nssoc/actions/runs/41232060935) were successfully read from the fully authenticated735member original archive on GitHub. Sourceb2bfc90a090b6b051a087e3c121bd3f8ef9e6d01,release430126417. Selected iteration5/10 reports total239492B; full21file terminal proof and8file sourcecontrols proof imported. Signal-signal shorts occur; PDN cause is not assumed.
 
-CDR actualgeometry [41230358164](https://github.com/Melihakbulut221/nssoc/actions/runs/41230358164) succeeded. Source31a4e84d3733d97977b6f7a11a31504d2e1dc8d7,release430116249;107file21,138,564B terminalproof+5filereservationproof imported. All2991inputmembers authenticated,17selected. Real500devices/1446terminals/113components/238nets/25ports,26anchorframejoins and8existingfullmetalrails verified. Original electricalrejection remains.
+mainchip_next_timing_audit prepared source7ecad63b24ed156a42f7bd1cda24c3326667444a on codex/mainchip-drt-report-analysis, sourcecontrols41232774022. Root reviewed four exact derived assets only: two reports, insertion-plan and stale-wire-mutation. The hosted analysis classifies exact manifest membership and compares raw record multisets; it performs no coordinate arithmetic, layout acquisition or native execution. Own20controls and full8file proof passed. Actualanalysis41232959125 is dispatched with independently reserved empty public exactsource release430131389. Follow its complete terminalproof. No reroute is authorized yet.
 
-fresh_rc_next_audit prepares8Via2+8Metal3 parallelaccess branches atT003..006/T032..035:190nmVia2,400nmM3,17.6umcenter-to-existingupperrail. ExactfullGDSforeignownership/clearance/endpointenclosures will be checked before fullnativeDRC/deep+flatLVS/freshRC/unchangedwavegates. ExistingM1/M2straps remainunchanged. No geometrymutation or expectedR/VCEimprovement has been accepted.
+Original run41211382427 failed the10GiB process-group RSS guard under a12GiB hardcgroup at10000.845s. Iteration14 ended527violations including414M2shorts;iteration15 stopped40percent/524. All1691clock/fixednets are exact. No routed iteration checkpoint exists. Saved stale-wire-cleared.odb212855093B is preroute only; a successor must reroute from that input. Bound both memory and snapshot/publication storage, preserve all physical and timing acceptance gates.
 
-## Single remaining original matrix case
+## Concrete eight-drain physical candidate
 
-VI-only source38d9bf389a5b95731a87f4b78c071589aea09417 passed root/peerproductionreview, but controls41231403918 failed an old globalprintfaultfixture beforeitsintended uploadfailure. Full30filefailureproof isimported. Test-onlycorrectedsource980fac27251290c94d5499f80daf21fd97d8cccc runscontrols41231827950; productionbodies unchanged.
+Sourcef2220e2fed3e21a8138b58f8be3c7a62fdbde1d2, branchcodex/cdr-current-via2-m3-access-candidate, passed [41232355399](https://github.com/Melihakbulut221/nssoc/actions/runs/41232355399):30 hosted controls,9positive/21refusal. Root and peer source reviews found no blocker. Complete21file sourceproof imported. The candidate adds exactly8Via2 cuts and8Metal3 branches and requires serialized full raw/material/hierarchy/property preservation and exact structural reversal. Existing M1/M2 and all primitives remain unchanged.
 
-The newVIpublisher writes storagejournal before inventory; originalfrozenpublisher is untouched. Activation additionallyneeds durablefullprerequisiteJSON/log emission, reviewedexactsource/owncontrols/fullproof. Onlyoneactualvi_bias_off transient isauthorized conditionally; nominal_early ispreparationonly. RealnewSHA/run, VI-firstthenpreparation independentemptyreleases. Never spoof GITHUB_SHA or rerun ninecompletedcases. loaded_admission_review owns thispath.
+Actual generation is still disabled. fresh_rc_next_audit owns a separate source-bound execution adapter using the qualified2991member reader plus current LEF/schematic/result references. No sourceguard spoofing or blind flagflip. Review and own hosted controls precede one future physical run. Original full560DRC/deep-flat500deviceLVS/13fault checks, fresh terminal partition, completeRC and unchanged1151vector electrical gates remain mandatory. Source controls are not actual clearance, DRC, LVS, VCE recovery or timing acceptance.
 
-## Retained qualification and open acceptance
+## Retained open acceptance and monitoring
 
-Rootv187 integrated nineexacttrainingfiles after actual110positiveRTL/6compiledmutants/4hierarchies/28cases;41existingdependencies matched. Candidateworkflow notcopied; no inferredrootruntimequalification. FullnormativeTS/EQ/LTSSM/state/seed/lanehandoff, physicalCDC andsoc_topserialhookup remainopen.
+Actual readonlygeometry41230358164 andRC41227192284 remain preserved; rejected original electrical results are not accepted. Training rootv187 contains nine files from actual110positiveRTL/6mutants/4hierarchies/28cases plus41matching protected dependencies. Full normative TS/EQ/LTSSM/seed/lanehandoff, physicalCDC, actual PLL/SERDES and soc_top serial integration remain open.
 
-PLL existingcompact36pair readback shows clockpathdelay/negativeexcursion failure. Staticcurrentclockdriver/placement inspection is recorded in the immutable receipt; no causalproof or sizingchange. CurrentOP40549236303/release425766455 is a futurecloudreadonly RC/load input, notlocalpayload.
+Full serial PHY, final route/setup/hold, qualified RCmin/max and production approval remain false. Frozen analog limits and STA20/4/8/8ns+5percent,3PVT,zero setup/hold/slew/cap/fanout remain unchanged.
 
-FullserialPHY, serialmainchipintegration, finalroute/setup/hold, RCmin/max andproductionapproval remainfalse. Preservefrozenanaloglimits andSTA20/4/8/8ns+5percent,3PVT,zero setup/hold/slew/cap/fanout. Routedviewexport remainsdisableduntilactualcandidate/engine/LEF/Libertybound.
-
-Monitorv188: 484handles,every8hours,automatic_native_dispatch=false. EarlierHTTP502 issue notclaimedfixed. Allcommits [skip ci],nonforceCAS; scopedGittrees only.
+Monitorv189: 490 runhandles, every8hours, read-only automatic_native_dispatch=false. EarlierHTTP502 issue notclaimedfixed. All commits [skip ci], nonforceCAS; scoped Git trees only.
 
 Detailed state: docs/evidence/cloud-active-checkpoint-20261024.json
-Immutable receipt: docs/evidence/cloud-collector-recipes-20261029/actual-route-rss-and-eight-access-geometry-v188.json
+Immutable receipt: docs/evidence/cloud-collector-recipes-20261029/via2-m3-source-single-vi-actual-and-drt-text-v189.json
