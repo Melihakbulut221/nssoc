@@ -1,0 +1,8 @@
+{
+  "source_controls_success_is_not_physical_acceptance": true,
+  "native_dispatched": false,
+  "known_blocker": "The frozen physical checker resolves its output and requires it under ROOT/hw/soc/out. This source workflow supplies repository-root native output and the host CLI does not resolve it. An actual physical run would be refused before DRC/LVS; source-only controls did not cover this path contract.",
+  "frozen_checker": "hw/soc/flow/check_pcie_cdr_sampler_active_input_v57_parent.py",
+  "frozen_checker_sha256": "46c2673bd3262998639ac47c465f14c24c90a1b494e7fd6dfe852e1af670886b",
+  "required_correction": "Use resolved project hw/soc/out native output and keep publisher/artifact/input hash paths consistent. Frozen physical functions remain unchanged."
+}

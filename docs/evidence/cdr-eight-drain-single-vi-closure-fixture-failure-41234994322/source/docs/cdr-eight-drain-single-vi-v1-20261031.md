@@ -1,0 +1,33 @@
+# Current eight-drain single VI continuation v1
+
+This separately admitted run completes only the storage-blocked vi_bias_off case of original matrix 41218657461 at 84b8b591e10be32716947c8d6b079fd7a21ce18d. Nine cases already produced simulations and are not rerun. The original VI failure remains an initial storage refusal with unknown actual free bytes, followed by a secondary missing-result publication error.
+
+Execution is initially disabled in the new manifest. Source-only controls run first on GitHub. Native activation requires a separately reviewed manifest change, new exact-source controls, explicit approved_source and mode=vi-bias-off, and two independently created empty public releases for the actual new source/run. No old GITHUB_SHA or producer-run environment value is substituted.
+
+The preparation job runs nominal_early --prepare-only without a transient. The only transient job is vi_bias_off. Both release reservations must exist empty before preparation; each job requires its own release empty before acquiring native inputs. The VI job accepts only successful preparation from this same new run and source. Existing releases are neither created by the adapter nor overwritten, and there is no retry matrix.
+
+The worker differs only in admission module, method path and an early exact case/phase authorization. Six original numerical source spans total 24,133 bytes; the entire electrical result validator is unchanged apart from its admission import. Original corner, loads, 256 bits, timestep, engine hash, operating-point and electrical limits remain frozen. The external ideal 8 GHz clock remains a limitation; this is not closed-loop CDR, recovered clock, complete PHY or physical acceptance.
+
+The proven 12a4203 storage source remains byte-identical. This new stage retains the initial 16 GiB threshold and max(4 GiB,2*source_bytes+1 GiB) copy/publication thresholds. An outer result exists before the first storage test. Exclusive fsynced journal records preserve actual free/required bytes and primary failures. Each storage record asserts measurement scope only and never implies execution authority.
+
+A discovered publication ordering defect is corrected only in the separately named VI publisher: the actual publication storage journal is written before the final complete output inventory is computed. Original files are frozen. Hosted tests exercise the real journal with all original publication and terminal lifecycle fixtures; complete packed members, summary and publisher receipt must agree, including the journal. Raw terminal bytes remain unchanged and receipt self-exclusion follows the frozen publisher contract.
+
+Pinned checkout bootstraps one manifest, then streams all exact anchored protected paths over stdin with noncone blob:none sparse checkout. This avoids both whole-tree materialization and the previously observed action environment argument limit. No protected source is omitted, no evidence is deleted and no disk limit is reduced. Actual disk bytes are recorded before and after checkout.
+
+Qualification consists of the unchanged storage source suite, strict context/method/two-reservation/same-source-log refusal tests, exact source derivation, native-disabled lifecycle tests and real-journal publication fixtures. Native archives, models and waves stay on hosted runners. Complete derived reports, stdout, stderr and terminal job logs are preserved even on failure. Source checks alone do not change the original electrical rejections or establish full PHY acceptance.
+
+## Hosted log transport follow-up
+
+Actual run 41232778446 at source 8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac stopped in preparation admission before native input acquisition. The hosted gh binary refused ANSI bytes in the successful source-controls job log. VI was skipped. The original releases and full failure proof remain immutable. The missing outer result in failed publication is secondary to this transport refusal.
+
+The source metadata reader now adds `--allow-escape-sequences` only for exact GitHub Actions job-log endpoints and preserves binary bytes without ANSI stripping. Source controls test exact argv, reject unrelated paths, and use the actual hosted gh binary to read the completed historical run/job metadata and its full 199952-byte log (136 ESC bytes; SHA256 `3ebd67d24cf524369518e5b517d0eee52f4286dfcbc7acb0a85710e26327c9c5`). Identity, completion, byte-corruption, truncation, and ANSI-removal refusals remain mandatory. Full probe metadata/log/receipt are emitted and archived even on failure. These are derived API records, with no native payload acquisition.
+
+A new actual run requires successful controls at its own exact source, independent review, explicit dispatch, and two newly reserved empty releases. No existing run or release is retried or overwritten; the numerical/electrical methods, 16 GiB threshold, cases, and runtime budgets are unchanged.
+
+## Frozen worker source closure
+
+Run 41233789584 passed real source-log admission, both independent empty reservations, and the original 16 GiB disk gate (91,122,032,640 free bytes). Its frozen preparation worker then failed before native acquisition because the sparse checkout lacked the historical transport receipt `docs/evidence/cdr-via-rich-stream-transport-pass-20261019.json`. The complete 65-file failure proof is retained; VI was skipped.
+
+The current method explicitly protects that unchanged 186,206-byte receipt and its SHA256. A source-only closure specification retains the 104-module AST inventory, all 11 worker ROOT expressions, 102 frozen runtime source hashes, and the manual ownership of dynamic method, descriptor, native archive and generated waveform paths. Unused predecessor entrypoints are explicitly distinguished from the actual worker call path.
+
+Hosted controls invoke the unchanged worker main code object through an explicitly synthetic fixture globals proxy. The production admission function must still refuse the real source-controls job; no GITHUB identity is spoofed and the production module is unchanged. Only output paths are redirected into the owned fixture directory. The real import, source hashing, backend readback controls, transport receipt read and terminal finalizer run before an exact restore-boundary exception prevents any native acquisition. Real socket, urllib and process APIs are blocked by an audit hook; two positive entry fixtures and a missing-static-source refusal preserve complete results. This is source closure evidence, not production admission, a transient simulation, or electrical acceptance.
