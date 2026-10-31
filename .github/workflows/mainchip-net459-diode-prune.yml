@@ -61,9 +61,9 @@ jobs:
           assert host.source_gate()==m
           import cloud_mainchip_saved_diode_routing as qualification
           qraw=Path('scripts/mainchip-saved-diode-routing-pins.json').read_bytes()
-          assert hashlib.sha256(qraw).hexdigest()=='f63a45eaf94919b6fe22c04d9c9b74385c61d6ee489f16d48e541fdd9afd4725'
+          assert hashlib.sha256(qraw).hexdigest()=='2f57146abf2475f671dec857c2bb7d32095dd016b82e0ee3586d3171862588ac'
           qm=qualification.source_gate()
-          assert qm==json.loads(qraw) and len(qm['files'])==2330
+          assert qm==json.loads(qraw) and len(qm['files'])==2332
           qualification.authorize_native(qm)
           for path in ('scripts/mainchip_saved_diode_routing_native.py','scripts/mainchip_saved_diode_routing_inner.py','scripts/cloud_mainchip_saved_diode_routing.py'):
               ast.parse(Path(path).read_bytes(),filename=path)
@@ -220,11 +220,11 @@ jobs:
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           name='scripts/mainchip-saved-diode-routing-pins.json'
           raw=Path(name).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='f63a45eaf94919b6fe22c04d9c9b74385c61d6ee489f16d48e541fdd9afd4725'
+          assert hashlib.sha256(raw).hexdigest()=='2f57146abf2475f671dec857c2bb7d32095dd016b82e0ee3586d3171862588ac'
           sys.path.insert(0,'scripts')
           import cloud_mainchip_saved_diode_routing as host
           m=host.source_gate()
-          assert m==json.loads(raw) and len(m['files'])==2330
+          assert m==json.loads(raw) and len(m['files'])==2332
           host.authorize_native(m)
           print('Exact source and qualified adapter projection verified; no native acquisition yet.')
           PY
@@ -274,7 +274,7 @@ jobs:
           assert ctx['qualification_only_in_manifest']is True and ctx['native_authorized']is False
           audit=decoded['audit-controls.json'];audit_execution=decoded['audit-execution.json']
           assert audit['source']==e['GITHUB_SHA'] and audit['run_id']==int(e['GITHUB_RUN_ID']) and audit['attempt']==1
-          assert audit['status']=='PASS_SAVED_DIODE_ROUTING_SOURCE_CONTROLS' and audit['count']==111 and len(set(audit['passed_cases']))==111
+          assert audit['status']=='PASS_SAVED_DIODE_ROUTING_SOURCE_CONTROLS' and audit['count']==140 and len(set(audit['passed_cases']))==140
           assert audit['native_executed']is False and audit_execution['returncode']==0
           assert audit_execution['source']==e['GITHUB_SHA'] and audit_execution['run_id']==int(e['GITHUB_RUN_ID']) and audit_execution['attempt']==1
           assert audit['source_pin']==hashlib.sha256(Path('scripts/mainchip_saved_diode_routing_native.py').read_bytes()).hexdigest()
@@ -360,7 +360,7 @@ jobs:
           import hashlib,json,os,sys
           from pathlib import Path
           raw=Path('scripts/mainchip-saved-diode-routing-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='f63a45eaf94919b6fe22c04d9c9b74385c61d6ee489f16d48e541fdd9afd4725'
+          assert hashlib.sha256(raw).hexdigest()=='2f57146abf2475f671dec857c2bb7d32095dd016b82e0ee3586d3171862588ac'
           sys.path.insert(0,'scripts')
           import cloud_mainchip_saved_diode_routing as host
           host.source_gate()

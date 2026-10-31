@@ -134,6 +134,10 @@ def main():
     assert all(x not in plan.PHASES for x in("repair","insertion-audit","construct"))
     ok("routing source excludes repair and repeated construction phases",lambda:eq(len(plan.PHASES),14))
     assert len(rows)==111 and len(set(rows))==111
+    from check_mainchip_fast_insertion_def import run as fast_controls
+    fast_rows=fast_controls();assert len(fast_rows)==29
+    rows.extend(fast_rows)
+    assert len(rows)==140 and len(set(rows))==140
     result=dict(status="PASS_SAVED_DIODE_ROUTING_SOURCE_CONTROLS",count=len(rows),passed_cases=rows,
       inherited=inherited,source=os.environ["GITHUB_SHA"],run_id=int(os.environ["GITHUB_RUN_ID"]),attempt=1,
       native_executed=False,source_pin=hashlib.sha256(path.read_bytes()).hexdigest(),

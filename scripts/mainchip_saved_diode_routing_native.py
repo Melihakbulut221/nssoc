@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Native scoped guide continuation from the fully admitted saved diode ODB."""
-import gc,json,os,shutil,sys
+import gc,json,os,shutil,sys,time
 from pathlib import Path
 sys.path.insert(0,"/work/tail-source/scripts")
 import odb
 import mainchip_bulk_postdrt_antenna as p
 import mainchip_bulk_postdrt_antenna_native as native
 import mainchip_saved_diode_routing as plan
+import mainchip_fast_insertion_def as fast
 from mainchip_saved_diode_reconstruction_native import native_pointer,same_native
 from mainchip_bulk_postdrt_antenna_native import n,own
 ROOT=Path("/work/reconstruction-inputs")
@@ -164,8 +165,11 @@ def power_contact_audit():
     finally:odb.dbDatabase.destroy(db);save("new-diode-direct-pg-contacts.json",result)
 def make_overlay():
     admission=read("insertion-plan.json");inserted=read("insertion-snapshot.json")
-    delta=p.insertion_def_delta((WORK/"baseline.def").read_bytes(),(WORK/"insertion.def").read_bytes(),admission,inserted,153129)
-    save("insertion-def-delta.json",delta);del inserted,delta;gc.collect()
+    start=time.monotonic();save("insertion-def-normalization-progress.json",dict(status="started"))
+    delta=fast.insertion_def_delta((WORK/"baseline.def").read_bytes(),(WORK/"insertion.def").read_bytes(),admission,inserted,153129)
+    save("insertion-def-delta.json",delta)
+    save("insertion-def-normalization-progress.json",dict(status="complete",seconds=time.monotonic()-start,exact_original_token_hash_preserved=True))
+    del inserted,delta;gc.collect()
     native.preserve_owned_routes(WORK/"insertion-connected.odb",admission,DATA,"insertion")
     native.make_overlay(WORK,DATA)
 def verdict():
