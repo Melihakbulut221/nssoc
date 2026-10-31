@@ -9,6 +9,7 @@ import mainchip_bulk_postdrt_antenna as p
 import mainchip_bulk_postdrt_antenna_native as native
 import mainchip_saved_diode_routing as plan
 import mainchip_fast_insertion_def as fast
+import mainchip_container_floorplan_import as container
 from mainchip_saved_diode_reconstruction_native import native_pointer,same_native
 from mainchip_bulk_postdrt_antenna_native import n,own
 ROOT=Path("/work/reconstruction-inputs")
@@ -171,7 +172,7 @@ def make_overlay():
     save("insertion-def-normalization-progress.json",dict(status="complete",seconds=time.monotonic()-start,exact_original_token_hash_preserved=True))
     del inserted,delta;gc.collect()
     native.preserve_owned_routes(WORK/"insertion-connected.odb",admission,DATA,"insertion")
-    native.make_overlay(WORK,DATA)
+    container.call_native(native,"make_overlay",WORK,DATA)
 def verdict():
     original=read("result.json");power=read("new-diode-direct-pg-contacts.json")
     p.require(power["complete"]is True and len(power["contacts"])==2702,"all direct PG contacts")
@@ -184,10 +185,13 @@ def verdict():
     p.require(result["bounded_cycle_qualified"]is True,"measured DRT/antenna qualification rejected")
 def main():
     phase=os.environ["NSSOC_SAVED_DIODE_ROUTE_PHASE"]
-    p.require(phase in plan.PREPARATION,"owned routing preparation phase")
+    p.require(phase in plan.PREPARATION|container.RESTORATION,"owned routing preparation phase")
     p.require(not any(k in os.environ for k in("GH_TOKEN","GITHUB_TOKEN")),"credential-free native")
     p.source_guard();verify_inputs();DATA.mkdir(parents=True,exist_ok=True);WORK.mkdir(parents=True,exist_ok=True)
     functions={"bootstrap":bootstrap,"guide-overlay":guide_overlay,"guide-reload-audit":guide_reload_audit,
-      "power-contact-audit":power_contact_audit,"make-overlay":make_overlay,"verdict":verdict}
-    p.run_phase("route-continuation-"+phase,functions[phase],verify_inputs,lambda name,value:save(name,value))
+      "power-contact-audit":power_contact_audit,"make-overlay":make_overlay,"verdict":verdict,
+      "restore-plan":lambda:container.call_native(native,"restore_plan",WORK,DATA),
+      "failure-restore-plan":lambda:container.call_native(native,"restore_plan",WORK,DATA,failure=True)}
+    terminal=phase if phase in container.RESTORATION else "route-continuation-"+phase
+    p.run_phase(terminal,functions[phase],verify_inputs,lambda name,value:save(name,value))
 if __name__=="__main__":main()

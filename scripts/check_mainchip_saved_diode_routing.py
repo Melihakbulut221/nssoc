@@ -138,6 +138,10 @@ def main():
     fast_rows=fast_controls();assert len(fast_rows)==29
     rows.extend(fast_rows)
     assert len(rows)==140 and len(set(rows))==140
+    from check_mainchip_container_floorplan_import import run as container_controls
+    container_rows=container_controls();assert len(container_rows)==25
+    rows.extend(container_rows)
+    assert len(rows)==165 and len(set(rows))==165
     result=dict(status="PASS_SAVED_DIODE_ROUTING_SOURCE_CONTROLS",count=len(rows),passed_cases=rows,
       inherited=inherited,source=os.environ["GITHUB_SHA"],run_id=int(os.environ["GITHUB_RUN_ID"]),attempt=1,
       native_executed=False,source_pin=hashlib.sha256(path.read_bytes()).hexdigest(),

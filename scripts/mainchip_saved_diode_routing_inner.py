@@ -7,6 +7,7 @@ sys.path.insert(0,"/work/tail-source/scripts")
 import mainchip_bulk_postdrt_antenna_inner as base
 import cloud_mainchip_saved_diode_routing as qualification_host
 import mainchip_saved_diode_routing as plan
+import mainchip_container_floorplan_import as container
 from mainchip_bulk_postdrt_antenna_inner import (
  c,p,supervision,command_evidence,stream_contract,fingerprint,OUT,write,run,
  ENGINE,WORK,DATA,INPUTS,stop_supervision,supervised_run,preserve_available)
@@ -21,7 +22,7 @@ def run_route_cycle(report,runner,preserver):
               and terminal["error"]is None and terminal["terminal_errors"]==[],"actual preparation terminal")
             p.require(all(terminal[k]is False for k in p.FLAGS),"preparation acceptance scope")
             return dict(complete=True,native_terminal=terminal)
-        return base.execute_phase(report,name,*base.PHASE_COMMANDS[name],runner=runner)
+        return container.execute_phase(base,report,name,*base.PHASE_COMMANDS[name],runner=runner,script=SCRIPT,engine=ENGINE)
     def restore(states):
         if states["fixed-import"]=="not_started":
             return dict(complete=True,applicable=False,reason="fixed overlay import never started")
@@ -32,7 +33,7 @@ def run_route_cycle(report,runner,preserver):
           ("cleanup-class-plan","native","failure-restore-plan"),
           ("cleanup-class-import","tcl","restore.tcl"),
           ("cleanup-class-audit","native","failure-restored-audit")):
-            steps.append(base.execute_phase(report,label,kind,name,1200,runner=runner))
+            steps.append(container.execute_phase(base,report,label,kind,name,1200,runner=runner,script=SCRIPT,engine=ENGINE))
         restoration=c.decode(c.secure_file(DATA,"class-restoration-plan.json").read_bytes())
         p.require(restoration["failure_cleanup"]is True and type(restoration["used_pre_route_fallback"])is bool,"actual failure restoration")
         return dict(complete=True,applicable=True,steps=steps,plan=restoration,restored_failure_not_success=True)

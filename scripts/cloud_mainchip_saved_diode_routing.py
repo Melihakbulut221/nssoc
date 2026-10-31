@@ -20,7 +20,7 @@ def source_gate():
     required=set(inherited["files"])|{predecessor.MANIFEST,
       "scripts/mainchip_saved_diode_routing_native.py","scripts/mainchip_saved_diode_routing_inner.py",
       "scripts/cloud_mainchip_saved_diode_routing.py","scripts/check_mainchip_saved_diode_routing.py",
-      "scripts/mainchip_saved_diode_routing.py","scripts/mainchip_fast_insertion_def.py","scripts/check_mainchip_fast_insertion_def.py"}
+      "scripts/mainchip_saved_diode_routing.py","scripts/mainchip_fast_insertion_def.py","scripts/check_mainchip_fast_insertion_def.py","scripts/mainchip_container_floorplan_import.py","scripts/check_mainchip_container_floorplan_import.py"}
     f.require(required<=set(manifest["files"]),"complete unchanged original and continuation sources")
     for path,digest in manifest["files"].items():
         f.require(f.file_digest(c.secure_file(ROOT,path))["sha256"]==digest,"routing source pin: "+path)
@@ -151,8 +151,8 @@ def perform(ctx,proof,evidence):
     authorize_native(source_gate())
     controls=control_evidence(ctx)
     audit=f.decode(c.secure_file(ROOT,"bulk-postdrt-integration-controls/audit-controls.json").read_bytes())
-    f.require(audit["status"]=="PASS_SAVED_DIODE_ROUTING_SOURCE_CONTROLS"and audit["count"]==140
-      and len(set(audit["passed_cases"]))==140 and audit["source"]==ctx["source"]and audit["run_id"]==ctx["run_id"]
+    f.require(audit["status"]=="PASS_SAVED_DIODE_ROUTING_SOURCE_CONTROLS"and audit["count"]==165
+      and len(set(audit["passed_cases"]))==165 and audit["source"]==ctx["source"]and audit["run_id"]==ctx["run_id"]
       and audit["attempt"]==1 and audit["native_executed"]is False,"same-source saved audit controls")
     f.write_new(evidence/"saved-audit-source-controls.json",f.encode(audit))
     f.write_new(evidence/"same-source-controls.json",f.encode(controls))
