@@ -1,18 +1,19 @@
-# Cloud continuation — checkpoint v166
+# Cloud continuation — checkpoint v167
 
-Updated: 2026-10-31T12:34:56.292853+00:00
+Updated: 2026-10-31T12:48:20.984653+00:00
 
-CLOUD ONLY: all tests, CAD, simulation, numerical analysis and native inputs/outputs remain on GitHub. This supersedes older local-work instructions. Local source/API text coordination creates no project or native artifact files.
+CLOUD ONLY. All tests, CAD, numerical solving, simulation and native inputs/outputs remain on GitHub. Local project workspace and owned project temporary entries are empty; no local CAD process. This overrides older local-work wording.
 
-Mainchip run41199907663 at source6e421425 remains the only saved-diode routing continuation. All327source controls passed. Snapshot: in_progress. The actual route/restore/original physical outcome is not collected yet. Use the prepared v165 collector once terminal; never redispatch or recreate diodes. Prior run41197515084 remains a preserved failure after exact normalization completed in32.873430577seconds.
+Mainchip41199907663/source6e421425 remains the only saved-diode routing continuation, with327actualsource controls passed. Snapshot: in_progress. Actual route/restore/original physical outcome not collected. Its v165 collector remains PREPARED_NOT_EXECUTED; do not duplicate dispatch or diode creation.
 
-CDR run41201201045 at source1a30ed20 is the real eight-drain physical successor, with independently reserved release429923379. All187source controls passed (165original+22new); all19source records were verified from the complete427,016-byte log. Snapshot: completed. Native physical result has not yet been collected. The implementation acquires42exact current inputs after authenticating all2797producer members, adds bounded M1/M2/Via1 shunts to devices3/4/5/6/32/33/34/35, preserves original shapes/hierarchy/properties, tests five real serialized mutations, and invokes unchanged560-category DRC plus500-device deep/flat LVS and13fault controls. Failure output and native inputs remain preserved in cloud release/artifact. The draft atac24acc6 is superseded by this implemented source.
+CDR41201201045/source1a30ed20 is a preserved failure before geometry. All2797archive members were authenticated,42selected native inputs remained unchanged, and frozen runtime setup completed rc0 in2.506582352seconds. AppImage smoke failed rc127 with cannot write uid_map: Operation not permitted. The complete55file6,467,680-byte proof is6fdb7c42; the77file8,410,993-byte native capsule remains in cloud. The v166 collector has EXECUTED and all proof bytes were read back.
 
-The new v166 CDR terminal collector is PREPARED_NOT_EXECUTED. Observe exact handles without duplicate dispatch. Collect real generation/physical outcomes before a new geometry decision. Even a passing physical trial requires complete freshRC and the original loaded electrical tests on the new layout. Original electrical rejections remain open; source controls do not qualify geometry.
+Current CDR41202306107/source57510726/release429931132 fixes hosted namespace admission using uidmap and a run-owned AppArmor profile for the exact pinned executable. Global restriction remains unchanged and its receipt is preserved. All187freshsource controls passed;19source records were verified from the complete427,350-byte log. Snapshot: completed. Actual runtime/geometry/physical result is not collected. The preparedv167 collector must run once after terminal completion; the old collector must never be repeated.
 
-Full serialPHY, actual final routed physical closure and setup/hold are not complete. Preserve every original analog limit and chip20/4/8/8ns+5%. FinalRC/STA adapter86015346 remains gated on an actually qualified routed candidate. The8-hour monitor is read-only with428handles; historical HTTP502 health is not claimed fixed.
+The eight-drain geometry, serialized mutation controls,560-category DRC and500-device deep/flat LVS with13faults are unchanged. After genuine physical qualification, complete freshRC and original loaded electrical gates on exactly the new GDS remain mandatory. FullserialPHY and finalsetup/hold are not closed. Keep original analog limits and20/4/8/8ns+5%; finalRC/STA adapter86015346 remains gated on an actually qualified routed candidate. The8-hour monitor remains read-only with429handles; historical HTTP502 health is not claimed resolved.
 
 ## Historical notes below — not current running-job status
+
 
 
 

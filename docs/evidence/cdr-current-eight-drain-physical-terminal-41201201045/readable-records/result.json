@@ -1,0 +1,50 @@
+{
+  "actual_native_inputs_acquired": true,
+  "context": {
+    "attempt": 1,
+    "case": "nominal_early",
+    "group": "cdr-current-eight-drain-straps",
+    "run_id": 41201201045,
+    "source": "1a30ed20b96777c38cd83fa215cc1338b3b7ffed",
+    "tag": "cloud-results-41201201045-1-cdr-current-eight-drain-straps",
+    "token": "41201201045-1"
+  },
+  "controls": {
+    "controls": {
+      "bytes": 6742,
+      "sha256": "27fabeb9126fbf493eac4a1f7b474a9846f2a3f77f5001b1b6fe66dc24e838f5"
+    },
+    "execution": {
+      "bytes": 1950,
+      "sha256": "3965a2dee41cec1fcaf8b267519d7baa712e7fc97c7254b55b51718c502dbe70"
+    },
+    "ownership": {
+      "bytes": 1723,
+      "sha256": "4e90ee4609282e16107f836215a237705c4fd9e48eec3bcdd86b6758c9ccb8e2"
+    },
+    "publication": {
+      "bytes": 4189,
+      "sha256": "5d012deb887b947f26b9d0af2f9642cff52ff8d1a9fbe4cffc2add522c2d49c4"
+    },
+    "tail": {
+      "bytes": 1506,
+      "sha256": "47c5b67ecfc7a917dd21cc9dbf03a11b817f9b12649a9fe61db4e22ee9cea98c"
+    }
+  },
+  "electrical_acceptance": false,
+  "error": "AssertionError('pinned runtime smoke')",
+  "full_phy_accepted": false,
+  "input_census": {
+    "full_members": 2797,
+    "native_inputs_retained_in_bundle": true,
+    "selected": 42
+  },
+  "new_simulation": false,
+  "physical_acceptance": false,
+  "physical_trial_completed": false,
+  "qualified_pex": false,
+  "status": "FAIL_CURRENT_EIGHT_DRAIN_PHYSICAL_TRIAL",
+  "terminal_errors": [],
+  "timing_accepted": false,
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 174, in terminal_body\n    try:action()\n        ^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 260, in <lambda>\n    terminal_body(lambda:do_work(ctx,proof,controls,a.bundle,evidence,report,a.pins_sha256,a.appimage),\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 163, in do_work\n    physical=native_readback(pins,saved,native,expected,app)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 118, in native_readback\n    if primary is not None:raise primary\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 100, in native_readback\n    require(smoke[\"accepted\"]is True,\"pinned runtime smoke\")\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps.py\", line 18, in require\n    if not value:raise AssertionError(message)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: pinned runtime smoke\n"
+}
