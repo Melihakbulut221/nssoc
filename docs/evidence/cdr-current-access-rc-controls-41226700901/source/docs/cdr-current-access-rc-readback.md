@@ -1,0 +1,15 @@
+# Current four-network RC readback
+
+This isolated source supports one read-only GitHub runner acquisition of the original nominal_late archive. Source preparation authorizes synthetic controls only; native readback remains disabled pending review. No new simulation, geometry, bias, source stimulus or electrical gate changes.
+
+The immutable 2991-member qualified reader retains complete case-terminal producer/source/attempt/publication admission. It authenticates every archive member and extracts only eleven pinned model/metadata files into a runner-owned temporary directory. It does not select wave.raw or a GDS. All native archive parts remain in the original release; no local native byte acquisition is permitted.
+
+All 24356 wire R and 15566 wire C rows are joined between original wire export and composed model by exact IDs, endpoints and numeric values. Seven native MIM export cards are separately matched to the composition projection; all 500 intrinsic model cards remain excluded from the DC wire solve. Actual R connectivity determines the four networks (components17/19/61/63, native28/38/135/136). Every incident capacitance is retained with both endpoints, including cross-network and external-boundary caps; global category counts conserve every R/C and a coupling row appears once globally. Full target partitions, physical anchor points and geometry component identities are rechecked.
+
+Every requested R/C endpoint has a coordinate record or an explicit unresolved entry. Raw Magic node/rnode source lines and scale tokens are preserved. A native node coordinate is a point inside a node; it does not define a routed resistor segment. Magic rnode layer type0 remains unknown, never guessed. See [Magic ext format](https://github.com/RTimothyEdwards/magic/blob/master/doc/man/ext.5) and [native rnode writer](https://github.com/RTimothyEdwards/magic/blob/master/resis/ResPrint.c). No unproved scale conversion into GDS dbu is asserted.
+
+The original sparse solve function from scripts/analyze_cdr_wire_resistance.py is byte-pinned unchanged. All terminal pairs are evaluated using a mathematical unit-current excitation of the existing linear R graph, other terminals floating. KCL, energy, reciprocity and shortest existing resistance-path bounds apply. This is not operating current, transient delay, a sizing recommendation or RF/PEX signoff. All acceptance flags stay false and the original electrical rejection is retained.
+
+Hosted controls run the qualified reader's 10 groups/86 refusals/4 lifecycle controls and six sampler tests plus twelve new RC controls, and the copied complete-publication controls. New native readback requires own-source controls, an externally reserved exact-source empty public prerelease, no retry/overwrite, and producer/source/selected-byte rechecks after collection. Complete failures and empty streams are retained.
+
+Applied resistor v59 lineage and actual gain limits are preserved in [source audit](evidence/cdr-current-eight-drain-access-source-audit-41223527977/receipt.json); original 7.4um leaf pull-downs became physical 5um PCells before the current model. This collector makes no sizing change.
