@@ -20,10 +20,10 @@ def census(v):
         else:required[net]=ends[net]
     return required,excluded,ends
 
-def finite(token):
+def finite(token,nonnegative=True):
     try:value=float(token)
     except (ValueError,TypeError):raise ValueError("invalid SPEF number")
-    a.require(math.isfinite(value)and value>=0,"nonfinite/negative SPEF number")
+    a.require(math.isfinite(value)and(not nonnegative or value>=0),"nonfinite/negative SPEF number")
     return value
 
 def parse_spef(raw):
@@ -88,7 +88,7 @@ def parse_spef(raw):
                 count=2 if flag=="*C"else 1;a.require(len(rest)>=count,"truncated SPEF metadata")
                 vals=rest[:count];del rest[:count]
                 if flag!="*D":
-                    for value in vals:finite(value)
+                    for value in vals:finite(value,nonnegative=flag!="*C")
                 else:a.name(vals[0])
             current["connections"][key]=direction
         elif current is not None and section in("cap","res"):

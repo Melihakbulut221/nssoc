@@ -214,6 +214,12 @@ class InventoryControls(unittest.TestCase):
             with self.assertRaises(ValueError):a.validate_loads(v,bad,{"D":"n"})
 
 class CoverageControls(unittest.TestCase):
+    def test_signed_coordinates_preserve_incidence_but_nonfinite_or_negative_load_refused(self):
+        valid=small_spef().replace(b"*I *3:A I",b"*I *3:A I *C -1.25 2.5 *L 0.1")
+        self.assertEqual(cov.coverage(tiny(),valid)["required_nets"],1)
+        for bad in(valid.replace(b"-1.25",b"nan"),valid.replace(b"*L 0.1",b"*L -0.1")):
+            with self.assertRaises(ValueError):cov.coverage(tiny(),bad)
+
     def test_exact_spef_coverage_with_explicit_non_netcount_exclusions(self):
         result=cov.coverage(tiny(),small_spef())
         self.assertEqual(result["required_nets"],1);self.assertEqual(result["inventory_nets"],5)
@@ -342,7 +348,7 @@ proc puts {args} {
   if {[llength $args] == 2 && [lindex $args 0] eq "fixture-channel"} {append captured [lindex $args 1] "\n"} else {original_puts {*}$args}
 }
 rename exit original_exit
-proc exit {args} {global captured calls;original_puts -nonewline $captured;original_puts "RV_FAKE_CALLS [binary encode hex [join $calls \n]]"}
+proc exit {args} {global captured calls;original_puts -nonewline $captured;original_puts "RV_FAKE_CALLS [binary encode hex [join $calls \n]]";original_exit 0}
 namespace eval ord {proc get_db_block {} {return block}}
 namespace eval sta {
   proc network_leaf_instances {} {return si}
@@ -381,6 +387,7 @@ proc lp {m args} {
         for mode in("candidate","full","timing"):
             proc=subprocess.run(["tclsh"],input=(fixture+native.render(request(),mode,a.CORNERS[0])).encode(),capture_output=True)
             self.assertEqual(proc.returncode,0,proc.stderr.decode());self.assertEqual(proc.stderr,b"")
+            self.assertEqual(proc.stdout.count(b"RV_FAKE_CALLS "),1,"single synthetic Tcl terminal frame")
             raw,marker=proc.stdout.split(b"RV_FAKE_CALLS ",1)
             v,m=native.parse_records(raw)
             self.assertEqual(v["instances"]["D"]["pins"]["A"]["net"],"n")

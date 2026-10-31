@@ -45,7 +45,7 @@ jobs:
           sys.path.insert(0,'scripts')
           import mainchip_routed_view_admission as a
           raw=Path(a.MANIFEST).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='e76021a05dabc5b06c644c74f4f78b7e622b6c028a61b91deba7127597694244'
+          assert hashlib.sha256(raw).hexdigest()=='ffe1bc87a433b55fdcb5c21aeadbffd9d33bab0f5d4582d60a125e6aa49422db'
           manifest=a.source_gate()
           assert manifest==json.loads(raw) and manifest['terminal_binding'] is None
           for path in manifest['new_python']:ast.parse(Path(path).read_bytes(),filename=path)
@@ -72,7 +72,7 @@ jobs:
           from pathlib import Path
           r=json.loads(Path('routed-view-controls/controls.json').read_bytes())
           assert r['source']==os.environ['GITHUB_SHA'] and r['run_id']==int(os.environ['GITHUB_RUN_ID']) and r['attempt']==1
-          assert r['status']=='PASS' and r['tests']==25 and r['failures']==r['errors']==r['skipped']==[]
+          assert r['status']=='PASS' and r['tests']==26 and r['failures']==r['errors']==r['skipped']==[]
           assert r['environment_unchanged'] is True
           assert all(r[k] is False for k in ('native_acquisition','native_executed','physical_acceptance','timing_accepted','full_phy_accepted'))
           s=r['synthetic']

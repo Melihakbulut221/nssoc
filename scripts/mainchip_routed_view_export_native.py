@@ -203,6 +203,7 @@ def execute(request,original,added,runner):
         proof=collect(original,added,records)
         proof["outputs"]={n:a.pin(OUT/n)for n in("completed.def","full.v","timing.v")}
         proof["commands"]=commands
+        proof["native_executed"]=True # only after all nine actual runner commands succeed
         (OUT/"result.json").write_bytes(a.encode(proof));return proof
     finally:
         check_inputs()
