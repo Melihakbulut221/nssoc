@@ -1,18 +1,18 @@
-name: Current CDR wire ownership with complete native input preservation
+name: Current CDR eight-drain physical straps with complete failure preservation
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Source controls or read-only diagnosis of actual current composed CDR model
+        description: Source controls or real current eight-drain geometry and original full physical checks
         type: choice
         required: true
         default: controls
-        options: [controls, analyze]
+        options: [controls, physical]
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-current-wire-ownership-${{ github.ref }}
+  group: cdr-current-eight-drain-straps-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -84,6 +84,21 @@ jobs:
               ast.parse(Path(p).read_bytes(),filename=p)
           Path('cdr-drain-wave-source-controls/execution-manifest.json').write_bytes(raw)
           PY
+      - name: Bind bounded current physical successor and unchanged original physical sources
+        run: |
+          python3 -B - <<'PY'
+          import ast,hashlib,json,os,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import cloud_cdr_current_tail_straps as host
+          raw=Path(host.MANIFEST).read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='fa85e781213def4b6ffb53e70e4a01a7145068b7e6c9d502ea715b305b7e15d9'
+          m=host.source_guard(host.context(os.environ))
+          assert len(m['files'])==1190
+          for name in ('scripts/cdr_current_tail_straps.py','scripts/cdr_current_tail_straps_native.py','scripts/cloud_cdr_current_tail_straps.py','scripts/check_cdr_current_tail_straps.py'):
+              ast.parse(Path(name).read_bytes(),filename=name)
+          Path('cdr-drain-wave-source-controls/tail-manifest.json').write_bytes(raw)
+          PY
       - name: Install exact original numerical runtime for synthetic source controls
         run: python3 -B -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2
       - name: Exercise original parser, measurements, refusals and failure preservation on synthetic inputs
@@ -141,13 +156,26 @@ jobs:
           records={key:json.loads((root/name).read_bytes())for key,name in (('controls','controls.json'),('publication','publication-controls.json'),('ownership','ownership-controls.json'),('execution','execution-controls.json'))}
           host.bind_controls(host.context(os.environ),records)
           PY
+      - name: Exercise current42-input geometry admission and independent failure retention
+        run: python3 -B scripts/check_cdr_current_tail_straps.py > cdr-drain-wave-source-controls/tail-controls.stdout 2> cdr-drain-wave-source-controls/tail-controls.stderr
+      - name: Require all187 actual same-source controls
+        run: |
+          python3 -B - <<'PY'
+          import json,os,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import cloud_cdr_current_tail_straps as host
+          root=Path('cdr-drain-wave-source-controls')
+          records={key:json.loads((root/name).read_bytes())for key,name in (('controls','controls.json'),('publication','publication-controls.json'),('ownership','ownership-controls.json'),('execution','execution-controls.json'),('tail','tail-controls.json'))}
+          host.bind_controls(host.context(os.environ),records)
+          PY
       - name: Always preserve complete source records
         if: always()
         run: |
           python3 -B - <<'PY'
           import base64,hashlib,json
           from pathlib import Path
-          for name in ('context.json','controls.json','controls.stdout','controls.stderr','publication-controls.json','publication-controls.stdout','publication-controls.stderr','ownership-manifest.json','ownership-controls.json','ownership-controls.stdout','ownership-controls.stderr','execution-manifest.json','execution-controls.json','execution-controls.stdout','execution-controls.stderr'):
+          for name in ('context.json','controls.json','controls.stdout','controls.stderr','publication-controls.json','publication-controls.stdout','publication-controls.stderr','ownership-manifest.json','ownership-controls.json','ownership-controls.stdout','ownership-controls.stderr','execution-manifest.json','execution-controls.json','execution-controls.stdout','execution-controls.stderr','tail-manifest.json','tail-controls.json','tail-controls.stdout','tail-controls.stderr'):
               p=Path('cdr-drain-wave-source-controls')/name
               assert not p.is_symlink()
               raw=p.read_bytes() if p.is_file() else b''
@@ -209,14 +237,14 @@ jobs:
           retention-days: 90
 
 
-  ownership:
+  physical:
     needs: [source-controls, preserve-job-log]
-    if: ${{ inputs.mode == 'analyze' }}
+    if: ${{ inputs.mode == 'physical' }}
     permissions:
       contents: write
       actions: read
     runs-on: ubuntu-24.04
-    timeout-minutes: 180
+    timeout-minutes: 300
     env:
       GH_TOKEN: ${{ github.token }}
       OPENBLAS_NUM_THREADS: '1'
@@ -229,17 +257,16 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Bind exact execution source before native acquisition
+      - name: Bind exact physical source before native acquisition
         run: |
           python3 -B - <<'PY'
-          import hashlib,json,os,sys
+          import hashlib,os,sys
           from pathlib import Path
-          raw=Path('scripts/cdr-current-wire-ownership-execution-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='ab91402b1329d4ceb882377b9e4fe2cba6a187e86f08aa4767fd3d77668d3b62'
           sys.path.insert(0,'scripts')
-          import cloud_cdr_current_wire_ownership as host
-          m=host.source_guard(host.context(os.environ));assert len(m['files'])==109
-          host.authorize(m)
+          import cloud_cdr_current_tail_straps as host
+          raw=Path(host.MANIFEST).read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='fa85e781213def4b6ffb53e70e4a01a7145068b7e6c9d502ea715b305b7e15d9'
+          m=host.source_guard(host.context(os.environ));assert len(m['files'])==1190
           PY
       - name: Recover every same-source control record from completed actual job log
         run: |
@@ -260,7 +287,7 @@ jobs:
           assert job['status']=='completed' and job['conclusion']=='success'
           raw=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(job['id'])+'/logs']);assert raw
           (out/'source-controls.log').write_bytes(raw)
-          expected={'context.json','controls.json','controls.stdout','controls.stderr','publication-controls.json','publication-controls.stdout','publication-controls.stderr','ownership-manifest.json','ownership-controls.json','ownership-controls.stdout','ownership-controls.stderr','execution-manifest.json','execution-controls.json','execution-controls.stdout','execution-controls.stderr'}
+          expected={'context.json','controls.json','controls.stdout','controls.stderr','publication-controls.json','publication-controls.stdout','publication-controls.stderr','ownership-manifest.json','ownership-controls.json','ownership-controls.stdout','ownership-controls.stderr','execution-manifest.json','execution-controls.json','execution-controls.stdout','execution-controls.stderr','tail-manifest.json','tail-controls.json','tail-controls.stdout','tail-controls.stderr'}
           idx={};chunks={}
           for line in raw.decode().splitlines():
               for marker,is_index in (('CDR_DRAIN_WAVE_SOURCE_INDEX ',True),('CDR_DRAIN_WAVE_SOURCE_CHUNK ',False)):
@@ -286,9 +313,10 @@ jobs:
           assert context['native_acquisition'] is False
           assert (out/'ownership-manifest.json').read_bytes()==Path('scripts/cdr-current-wire-ownership-source-pins.json').read_bytes()
           assert (out/'execution-manifest.json').read_bytes()==Path('scripts/cdr-current-wire-ownership-execution-pins.json').read_bytes()
-          records={key:values[name]for key,name in (('controls','controls.json'),('publication','publication-controls.json'),('ownership','ownership-controls.json'),('execution','execution-controls.json'))}
+          assert (out/'tail-manifest.json').read_bytes()==Path('scripts/cdr-current-tail-straps-pins.json').read_bytes()
+          records={key:values[name]for key,name in (('controls','controls.json'),('publication','publication-controls.json'),('ownership','ownership-controls.json'),('execution','execution-controls.json'),('tail','tail-controls.json'))}
           sys.path.insert(0,'scripts')
-          import cloud_cdr_current_wire_ownership as host
+          import cloud_cdr_current_tail_straps as host
           proof=host.bind_controls(host.context(e),records)
           (out/'bound-controls.json').write_text(json.dumps(records,sort_keys=True,indent=2)+'\n')
           (out/'index.json').write_text(json.dumps(idx,sort_keys=True,indent=2)+'\n')
@@ -299,7 +327,7 @@ jobs:
           python3 -B - <<'PY'
           import json,os,subprocess,time
           from pathlib import Path
-          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-cdr-current-wire-ownership-nominal_early'
+          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-cdr-current-eight-drain-straps'
           prefix='repos/Melihakbulut221/nssoc/'
           for attempt in range(120):
               r=subprocess.run(['gh','api',prefix+'releases/tags/'+tag],capture_output=True,text=True)
@@ -317,15 +345,27 @@ jobs:
           PY
       - name: Install pinned numerical runtime
         run: python3 -B -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2
-      - name: Analyze actual current composed CDR model and preserve complete native inputs
-        run: python3 -B scripts/cloud_cdr_current_wire_ownership.py --bundle current-cdr-ownership-bundle --publication current-cdr-ownership-publication --reservation ownership-reservation.json --controls ownership-source-proof/bound-controls.json > current-cdr-ownership.stdout 2> current-cdr-ownership.stderr
+      - name: Acquire and verify original immutable native AppImage after independent reservation
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y libfuse2 tcl8.6
+          curl --fail --location --retry 2 --output "$RUNNER_TEMP/current-tail-physical.AppImage" https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
+          python3 -B - <<'PY'
+          import hashlib,os
+          from pathlib import Path
+          path=Path(os.environ['RUNNER_TEMP'])/'current-tail-physical.AppImage'
+          with path.open('rb')as f:assert hashlib.file_digest(f,'sha256').hexdigest()=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
+          path.chmod(0o755)
+          PY
+      - name: Generate actual eight-drain straps and run original full560DRC and500-device LVS13 controls
+        run: python3 -B scripts/cloud_cdr_current_tail_straps.py --bundle "$GITHUB_WORKSPACE/hw/soc/out/cdr-current-eight-drain-straps-${GITHUB_RUN_ID}-1" --publication current-cdr-tail-straps-publication --reservation ownership-reservation.json --controls ownership-source-proof/bound-controls.json --pins-sha256 fa85e781213def4b6ffb53e70e4a01a7145068b7e6c9d502ea715b305b7e15d9 --appimage "$RUNNER_TEMP/current-tail-physical.AppImage" > current-cdr-tail-straps.stdout 2> current-cdr-tail-straps.stderr
       - name: Always emit complete derived records and actual failure output
         if: always()
         run: |
           python3 -B - <<'PY'
           import sys
           from pathlib import Path
-          for name in ('current-cdr-ownership.stdout','current-cdr-ownership.stderr'):
+          for name in ('current-cdr-tail-straps.stdout','current-cdr-tail-straps.stderr'):
               p=Path(name)
               if p.is_file():sys.stdout.buffer.write(p.read_bytes());sys.stdout.buffer.write(b'\n')
           PY
@@ -333,21 +373,21 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: current-cdr-ownership-${{ github.run_id }}-${{ github.run_attempt }}
+          name: current-cdr-tail-straps-${{ github.run_id }}-${{ github.run_attempt }}
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 90
           path: |
             ownership-source-proof
             ownership-reservation.json
-            current-cdr-ownership-bundle
-            current-cdr-ownership-publication
-            current-cdr-ownership.stdout
-            current-cdr-ownership.stderr
+            hw/soc/out/cdr-current-eight-drain-straps-${{ github.run_id }}-1
+            current-cdr-tail-straps-publication
+            current-cdr-tail-straps.stdout
+            current-cdr-tail-straps.stderr
 
-  preserve-ownership-job-logs:
-    needs: [source-controls, preserve-job-log, ownership]
-    if: ${{ always() && inputs.mode == 'analyze' }}
+  preserve-physical-job-logs:
+    needs: [source-controls, preserve-job-log, physical]
+    if: ${{ always() && inputs.mode == 'physical' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
@@ -367,7 +407,7 @@ jobs:
           jobs=get('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
           records={}
           for listed in jobs['jobs']:
-              if listed['name'] not in ('source-controls','preserve-job-log','ownership'):continue
+              if listed['name'] not in ('source-controls','preserve-job-log','physical'):continue
               job=get('actions/jobs/'+str(listed['id']),str(listed['id'])+'.json')
               assert job['head_sha']==e['GITHUB_SHA'] and job['run_id']==int(e['GITHUB_RUN_ID'])
               if job['conclusion']=='skipped':continue
@@ -380,7 +420,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: current-cdr-ownership-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          name: current-cdr-tail-straps-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
           path: ownership-job-logs
           if-no-files-found: error
           retention-days: 90
