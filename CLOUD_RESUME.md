@@ -1,18 +1,21 @@
-# Cloud continuation — checkpoint v168
+# Cloud continuation — checkpoint v169
 
-Updated: 2026-10-31T13:06:41.224573+00:00
+Updated: 2026-10-31T13:19:50.033378+00:00
 
-CLOUD ONLY. Tests, CAD, numerical solving, simulation and native inputs/outputs remain on GitHub. Local project workspace and owned project temporary entries are empty; no local CAD process. No native archive/payload may be downloaded locally, including RAM. This overrides older local-work wording.
+CLOUD ONLY. Tests, CAD, numerical solving, simulation and native inputs/outputs remain on GitHub. Local project workspace and owned project temporary entries are empty; no local CAD process. No native archive/payload may be downloaded locally, including RAM. This overrides older local-work goal wording.
 
-Mainchip 41199907663 / source 6e421425 remains the only saved-diode routing continuation; 327 actual source controls passed. Snapshot: in_progress. Actual route/restore/original physical outcome not collected. Its v165 collector remains PREPARED_NOT_EXECUTED; do not duplicate dispatch or diode creation.
+Mainchip41199907663/source6e421425 remains the only saved-diode routing continuation;327actualsource controls passed. Snapshot: in_progress. Actual route/restore/original physical outcome not collected. Its v165 collector remains PREPARED_NOT_EXECUTED; do not duplicate dispatch or diode creation.
 
-CDR 41202306107 / source 57510726 passed pinned runtime smoke (Python3.13.9, pya0.30.7) using the scoped AppArmor profile with global restriction unchanged at1. Actual native generator reached geometry and rejected device3 foreign M2 clearance after3.588704025s, before candidate write. Complete60-file6,544,718-byte proof5f8cfa5 and88-file8,420,635-byte native capsule are retained. The v167 collector has EXECUTED and all proof bytes were read back; never rerun it.
+CDR41203881385/source39496d03 SUCCESS. All8actualdrains each received70newvias and a300nm M2strap.6new M1overlays+8M2straps+560vias=574raw additions. Exact candidate GDS997620bytes SHA9d8984fd4852a04618146732c0d473ca80c6bb1d2f441d0da27854ed7ca69bff. All195source controls and5actualserialized geometry faults passed; original560-category DRC0markers and500-device deep/flatLVS13 passed. Every original cell/instance/property/material was retained. Runtime policy remained scoped and global restriction unchanged. No electrical or fullPHY acceptance is implied.
 
-Current CDR 41203881385 / source 39496d03 / release429942553 uses actual native obstacles to derive conservatively spaced segmented M2 straps. Search only1000/600/300nm widths in the original envelope. Keep original240nm M2 clearance,220nm Via1 spacing, >=32new cuts per drain and >=2cuts per segment on all8drains. Original material/hierarchy and560-category DRC/500-device deep-flat LVS13 gates remain unchanged. All195freshsource controls passed; all19records verified from429,105-byte log. Snapshot: in_progress. Actual native result is not collected. The prepared v168 collector must run once after terminal completion.
+Full92-file14,698,874-byte proof784784a2c8e51f0219c82aef27b69f7e17d1574a was byte-readback verified;129native-derived records authenticated. Complete339-file15,074,161-byte native capsule SHA19ceeaad24eaabbd223e507eecf27397b2c34a82ef18ea0b56fff1b807f67451 stays in cloud. The v168 collector has EXECUTED; never rerun it.
 
-After genuine physical qualification, complete freshRC and original loaded electrical gates on exactly the new GDS remain mandatory. FullserialPHY and finalsetup/hold are not closed. Keep original analog limits and20/4/8/8ns+5%; finalRC/STA adapter86015346 remains gated on an actually qualified routed candidate. The8-hour monitor remains read-only with430handles; historical HTTP502 health is not claimed resolved.
+Next: implement a new exact-source fresh graph on branch codex/cdr-drain-m1-loaded-electrical currently784784a2. Input/method proposal: docs/evidence/cdr-current-eight-drain-fresh-graph-input-proposal-20261031.json. It identifies64current reference members from41017290646, all2797archive-member hashes, all339new physical-capsule members and39selected native/metadata members. This proposal is not executable and no graph run has started. Preserve original500device/1446terminal/25port/978anchor/238net/113wire witness comparisons; replace only obsolete two-M1 material expectation with exact574declared additions over8drains/2actual partitions and all113component13layer union checks. Preserve scoped pinned runtime and complete failure evidence.
+
+After actual graph qualification, complete freshRC/both-order seven-MIM extraction on exact new75-file current view, then original loaded nominal_early/constant_one gates. FullserialPHY and finalsetup/hold remain open. Keep original analog limits and20/4/8/8ns+5%; finalRC/STA adapter86015346 remains gated on actually qualified routed candidate. The8-hour monitor remains read-only with430handles; historical HTTP502 health is not claimed resolved.
 
 ## Historical notes below — not current running-job status
+
 
 
 
