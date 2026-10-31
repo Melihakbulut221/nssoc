@@ -104,8 +104,15 @@ def runtime_restore(out,preflight,selected):
     write(out/'runtime-source-manifest.json',encode(manifest));packed.unlink()
 
 
+def candidate_output(path,root=ROOT):
+    root=root.resolve();base=root/'hw/soc/out'
+    out=(path if path.is_absolute()else root/path).resolve()
+    require(out!=base and out.is_relative_to(base),'native output must be an absolute descendant of project hw/soc/out')
+    return out
+
 def native_pipeline(selected,out,preflight,c):
     ctx=a.context(os.environ);a.authorize_native(ctx,c);gate=lambda:a.source_guard(ctx)
+    out=candidate_output(out)
     require(not out.exists()and not out.is_symlink(),'new native output');out.mkdir()
     policy=decode(q.regular(ROOT,'current-cdr-runtime-policy.json').read_bytes());app=Path(policy['appimage'])
     require(policy['source']==ctx['source']and policy['run_id']==ctx['run_id']and policy['attempt']==1,'current scoped runtime policy')
@@ -252,5 +259,5 @@ def main():
     if args.runtime:
         require(args.preflight is not None and args.selected is not None,'runtime preflight required');runtime_restore(args.output,args.preflight,args.selected);return
     require(args.reservation is not None and args.controls_proof is not None,'independent reservation and actual control proof required')
-    run(ctx,c,decode(q.regular(args.reservation.parent,args.reservation.name).read_bytes()),q.regular(args.controls_proof.parent,args.controls_proof.name).read_bytes(),args.output)
+    run(ctx,c,decode(q.regular(args.reservation.parent,args.reservation.name).read_bytes()),q.regular(args.controls_proof.parent,args.controls_proof.name).read_bytes(),candidate_output(args.output))
 if __name__=='__main__':main()

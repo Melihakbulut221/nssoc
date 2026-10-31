@@ -166,6 +166,27 @@ def source_log_controls(c):
             before=call.call_count;rejected('job_id_'+repr(wrong),lambda:a.read_source_log(wrong));a.require(call.call_count==before,'invalid job caused request')
     return dict(actual_prior_full_log=proof['full_raw_log'],decoded_prior_records=len(records),refusals=rows,synthetic_transport_only=True,native_payload_acquired=False)
 
+
+def output_path_controls():
+    refusals=[]
+    with tempfile.TemporaryDirectory()as temp:
+        root=Path(temp)/'project';base=root/'hw/soc/out';base.mkdir(parents=True)
+        expected=base/'cloud-cdr-current-via2-m3-physical'
+        a.require(host.candidate_output(Path('hw/soc/out/cloud-cdr-current-via2-m3-physical'),root)==expected.resolve(),'relative CLI path becomes absolute checker path')
+        a.require(host.candidate_output(expected,root)==expected.resolve(),'absolute native path retained')
+        outside=Path(temp)/'outside';outside.mkdir();(base/'escape').symlink_to(outside,target_is_directory=True)
+        for name,path in(('repository_root',Path('cloud-cdr-current-via2-m3-physical')),('output_root_itself',Path('hw/soc/out')),('outside_absolute',outside/'candidate'),('symlink_escape',Path('hw/soc/out/escape/candidate'))):
+            try:host.candidate_output(path,root)
+            except AssertionError:refusals.append(name)
+            else:raise AssertionError('native output path accepted '+name)
+    frozen=(ROOT/'hw/soc/flow/check_pcie_cdr_sampler_active_input_v57_parent.py').read_text()
+    a.require('layout, out, app = layout.resolve(), out.resolve(), app.resolve()'in frozen and 'if out.exists() or not out.is_relative_to(root / "hw/soc/out"):'in frozen,'authentic frozen physical checker path contract')
+    source=(ROOT/'scripts/cloud_cdr_current_via2_m3_physical.py').read_text();tree=ast.parse(source)
+    main=[n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name=='main'][0]
+    calls=[n for n in ast.walk(main)if isinstance(n,ast.Call)and isinstance(n.func,ast.Name)and n.func.id=='run']
+    a.require(len(calls)==1 and ast.dump(calls[0].args[-1])==ast.dump(ast.parse('candidate_output(args.output)',mode='eval').body),'CLI actual output argument must use the checked absolute boundary')
+    return dict(positive=2,refusals=refusals,frozen_checker_contract_unchanged=True,native_design_acquired=False)
+
 def derivation_controls():
     def function(text,name):
         lines=text.splitlines(keepends=True);tree=ast.parse(text);nodes=[n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name==name]
@@ -218,13 +239,13 @@ def main():
     try:
         import pya
         plan=a.q.decode(a.q.regular(ROOT,c['candidate_plan']).read_bytes());geometry=a.q.decode(a.q.regular(ROOT,c['geometry_config']).read_bytes());prior=a.q.source_guard()
-        original=original_controls.controls(pya,plan);admission=admission_controls(c,plan,geometry,prior);native_admission=native_preflight_controls(c,prior);source_log=source_log_controls(c);derivation=derivation_controls();lifecycle=lifecycle_controls()
+        original=original_controls.controls(pya,plan);admission=admission_controls(c,plan,geometry,prior);native_admission=native_preflight_controls(c,prior);source_log=source_log_controls(c);output_path=output_path_controls();derivation=derivation_controls();lifecycle=lifecycle_controls()
         pubctx=publication_controls.p.context(os.environ,'nominal_late');pub=publication_controls.controls(pubctx)
         a.require(pub['counts']==dict(positive=7,refusals=33,lifecycle=4),'complete publication controls')
         counts=dict(cases=len(original['cases']),positive=sum(r.get('passed')is True for r in original['cases']),refusals=sum(r.get('rejected')is True for r in original['cases']))
         result=dict(status='PASS_CURRENT_VIA2_M3_PHYSICAL_ADAPTER_SOURCE_CONTROLS',passed=True,context=dict(source=ctx['source'],run_id=ctx['run_id'],attempt=1),
           original_geometry_controls=counts,admission_refusals=len(admission['refusals']),native_preflight_refusals=len(native_admission['refusals']),lifecycle_cases=len(lifecycle),publication_cases=7,publication_refusals=33,
-          original=original,admission=admission,native_admission=native_admission,source_log=source_log,source_log_refusals=len(source_log['refusals']),derivation=derivation,lifecycle=lifecycle,publication=pub,native_payload_acquired=False,actual_candidate_generated=False,**a.FLAGS)
+          original=original,admission=admission,native_admission=native_admission,source_log=source_log,source_log_refusals=len(source_log['refusals']),output_path=output_path,output_path_refusals=len(output_path['refusals']),derivation=derivation,lifecycle=lifecycle,publication=pub,native_payload_acquired=False,actual_candidate_generated=False,**a.FLAGS)
         a.bind_controls(a.encode(result),ctx);a.source_guard(ctx)
         (out/'result.json').write_bytes(a.encode(result));print('VIA2_M3_ADAPTER_CONTROLS '+a.encode(result).decode(),flush=True)
     except BaseException as error:

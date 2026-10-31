@@ -283,10 +283,10 @@ jobs:
           PY
       - name: Generate exact sixteen shapes and run unchanged full physical gates
         id: native
-        run: python3 -B scripts/cloud_cdr_current_via2_m3_physical.py --candidate --output cloud-cdr-current-via2-m3-physical --reservation release-reservation.json --controls-proof cdr-via2-m3-native-admission/records/cdr-via2-m3-adapter-controls/result.json > via2-m3-physical.stdout 2> via2-m3-physical.stderr
+        run: python3 -B scripts/cloud_cdr_current_via2_m3_physical.py --candidate --output hw/soc/out/cloud-cdr-current-via2-m3-physical --reservation release-reservation.json --controls-proof cdr-via2-m3-native-admission/records/cdr-via2-m3-adapter-controls/result.json > via2-m3-physical.stdout 2> via2-m3-physical.stderr
       - name: Publish all success or failure outputs to independent reserved release
         if: always() && steps.reserve.outcome == 'success'
-        run: python3 -B scripts/publish_cdr_current_via2_m3_physical.py --case nominal_late --output cloud-cdr-current-via2-m3-physical --publication cloud-cdr-current-via2-m3-physical-publication --reservation release-reservation.json > via2-m3-publication.stdout 2> via2-m3-publication.stderr
+        run: python3 -B scripts/publish_cdr_current_via2_m3_physical.py --case nominal_late --output hw/soc/out/cloud-cdr-current-via2-m3-physical --publication hw/soc/out/cloud-cdr-current-via2-m3-physical-publication --reservation release-reservation.json > via2-m3-publication.stdout 2> via2-m3-publication.stderr
       - name: Always emit complete derived admission and native outcome records
         if: always()
         run: |
@@ -311,8 +311,8 @@ jobs:
           if-no-files-found: error
           retention-days: 90
           path: |
-            cloud-cdr-current-via2-m3-physical
-            cloud-cdr-current-via2-m3-physical-publication
+            hw/soc/out/cloud-cdr-current-via2-m3-physical
+            hw/soc/out/cloud-cdr-current-via2-m3-physical-publication
             cdr-via2-m3-native-admission
             via2-m3-physical.stdout
             via2-m3-physical.stderr
