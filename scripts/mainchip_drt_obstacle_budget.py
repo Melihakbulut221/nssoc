@@ -14,13 +14,13 @@ def source(function):
 def validator(original):
     fn=original.validate
     if hashlib.sha256(source(fn).encode()).hexdigest()!=VALIDATOR_SHA:raise ValueError("frozen command validator source")
-    if original.SECONDS!=(1200,14400)or fn.__globals__is not original.__dict__:raise ValueError("frozen validator globals")
+    if original.SECONDS!=(1200,14400)or fn.__globals__ is not original.__dict__:raise ValueError("frozen validator globals")
     ns=dict(original.__dict__,SECONDS=(OBSERVATION_SECONDS,))
     return types.FunctionType(fn.__code__,ns,fn.__name__,fn.__defaults__,fn.__closure__)
 def runner(original):
     fn=original.supervised_run;raw=source(fn)
     if hashlib.sha256(raw.encode()).hexdigest()!=RUNNER_SHA:raise ValueError("frozen supervised runner source")
-    if fn.__globals__is not original.__dict__:raise ValueError("frozen runner globals")
+    if fn.__globals__ is not original.__dict__:raise ValueError("frozen runner globals")
     if raw.count(OLD_GUARD)!=1:raise ValueError("one original budget seam")
     adapted=raw.replace(OLD_GUARD,NEW_GUARD,1)
     if adapted.count(NEW_GUARD)!=1 or adapted.replace(NEW_GUARD,OLD_GUARD,1)!=raw:raise ValueError("exact reverse budget source")

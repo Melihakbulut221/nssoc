@@ -71,3 +71,8 @@ iterator pass; no quadratic Python iterator is inferred:
 [pinned primary source](https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/swig/python/dbtypes.i).
 No speculative geometric optimization, larger memory limit or relaxed electrical,
 DRC, antenna, timing or topology acceptance was introduced.
+
+Initial source-controls run 41240833018 failed the hosted AST parse before test
+execution: two missing spaces joined the budget adapter's __globals__ and is
+tokens. The correction changes only those spaces; its original failure logs
+remain preserved. No native run was dispatched.
