@@ -1,0 +1,139 @@
+name: Fresh RC integrated source controls only
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [controls]
+        default: controls
+        required: true
+      approved_source:
+        type: string
+        required: true
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cdr-via2-m3-fresh-rc-controls-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+  REQUESTED_MODE: ${{ inputs.mode }}
+  APPROVED_SOURCE: ${{ inputs.approved_source }}
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr-via2-m3-fresh-rc-adapter-pins.json
+      - name: Materialize only exact source and derived JSON closure
+        run: |
+          python3 -B - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          manifest='scripts/cdr-via2-m3-fresh-rc-adapter-pins.json'
+          p=json.loads(Path(manifest).read_bytes())
+          names=sorted(set(p['files'])|{manifest})
+          assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
+          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
+          PY
+      - name: Bind exact source and source-only job boundary
+        run: |
+          python3 -B - <<'PY'
+          import ast,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import cdr_via2_m3_fresh_rc_admission as c
+          ctx=c.context(__import__('os').environ);method,producer=c.source_guard(ctx)
+          assert method['fresh_rc_execution_authorized'] is False and method['generation_authorized'] is False and method['electrical_simulation_authorized'] is False
+          for p in ["scripts/cdr_via2_m3_fresh_rc_admission.py","scripts/cdr_via2_m3_fresh_rc_native.py","scripts/cloud_cdr_via2_m3_fresh_rc.py","scripts/check_cdr_via2_m3_fresh_rc_adapter.py"]:ast.parse(Path(p).read_text())
+          PY
+      - name: Install pinned source-fixture graph library
+        run: python3 -m pip install --disable-pip-version-check networkx==3.5
+      - name: Run all integrated source and explicit synthetic controls
+        run: python3 -B scripts/check_cdr_via2_m3_fresh_rc_adapter.py > fresh-rc-controls.stdout 2> fresh-rc-controls.stderr
+      - name: Always emit complete derived source-control records
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json,sys
+          from pathlib import Path
+          def emit(p,prefix):
+              assert p.is_file()and not p.is_symlink()
+              raw=p.read_bytes();raw.decode('utf-8',errors='strict')
+              chunks=[raw[i:i+24000]for i in range(0,len(raw),24000)]or[b'']
+              print(prefix+'_INDEX '+json.dumps(dict(path=str(p),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,chunk in enumerate(chunks):print(prefix+'_CHUNK '+json.dumps(dict(path=str(p),index=i,base64=base64.b64encode(chunk).decode()),sort_keys=True))
+          for name in ('fresh-rc-controls.stdout','fresh-rc-controls.stderr','fresh-rc-controls/result.json'):
+              p=Path(name)
+              if p.exists():emit(p,'VIA2_M3_RC_CONTROL')
+          root=Path('fresh-rc-controls/phase-fixtures')
+          if root.exists():
+              sys.path.insert(0,'scripts')
+              from cloud_cdr_via2_m3_fresh_rc import derived_text_name
+              for p in sorted(root.rglob('*')):
+                  if p.is_file()and derived_text_name(str(p)):
+                      try:p.read_bytes().decode('utf-8',errors='strict')
+                      except UnicodeError:continue
+                      emit(p,'VIA2_M3_RC_FIXTURE')
+          PY
+      - name: Preserve all synthetic results and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-via2-m3-fresh-rc-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            fresh-rc-controls
+            fresh-rc-controls.stdout
+            fresh-rc-controls.stderr
+          if-no-files-found: error
+          retention-days: 90
+  preserve-job-log:
+    needs: source-controls
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Preserve full actual source job log and metadata
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          root=Path('job-logs');root.mkdir()
+          e=os.environ
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_RUN_ATTEMPT']=='1'
+          prefix='repos/'+e['GITHUB_REPOSITORY']+'/'
+          def read(path,name):
+              b=subprocess.check_output(['gh','api',prefix+path]);(root/name).write_bytes(b);return json.loads(b)
+          run=read('actions/runs/'+e['GITHUB_RUN_ID'],'run.json')
+          assert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
+          jobs=read('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
+          selected=[j for j in jobs['jobs'] if j['name']=='source-controls'];assert len(selected)==1
+          j=selected[0];assert j['status']=='completed' and j['head_sha']==e['GITHUB_SHA']
+          read('actions/jobs/'+str(j['id']),'job.json')
+          b=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(j['id'])+'/logs'])
+          assert b;(root/'job.log').write_bytes(b)
+          receipt=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
+            job_id=j['id'],job_conclusion=j['conclusion'],full_raw_job_log=True,
+            log_bytes=len(b),log_sha256=hashlib.sha256(b).hexdigest(),native_acquisition=False)
+          (root/'receipt.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(receipt,sort_keys=True))
+          PY
+      - name: Preserve complete actual logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-via2-m3-fresh-rc-source-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: job-logs
+          if-no-files-found: error
+          retention-days: 90
+

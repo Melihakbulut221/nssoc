@@ -1,0 +1,289 @@
+﻿2026-10-31T22:59:27.9288545Z Current runner version: '2.338.2'
+2026-10-31T22:59:27.9326207Z ##[group]Runner Image Provisioner
+2026-10-31T22:59:27.9328254Z Hosted Compute Agent
+2026-10-31T22:59:27.9329395Z Version: 20261021.618
+2026-10-31T22:59:27.9330472Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-31T22:59:27.9331765Z Build Date: 2026-10-21T00:45:21Z
+2026-10-31T22:59:27.9333371Z Worker ID: {4346d655-aafa-49ac-b118-2ed07fe5d9cd}
+2026-10-31T22:59:27.9334655Z Region: centralus
+2026-10-31T22:59:27.9335768Z Cloud: Azure
+2026-10-31T22:59:27.9337075Z ##[endgroup]
+2026-10-31T22:59:27.9340181Z ##[group]Operating System
+2026-10-31T22:59:27.9341473Z Ubuntu
+2026-10-31T22:59:27.9342361Z 24.04.5
+2026-10-31T22:59:27.9343412Z LTS
+2026-10-31T22:59:27.9344445Z ##[endgroup]
+2026-10-31T22:59:27.9345447Z ##[group]Runner Image
+2026-10-31T22:59:27.9347116Z Image: ubuntu-24.04
+2026-10-31T22:59:27.9348190Z Version: 20261025.353.1
+2026-10-31T22:59:27.9350114Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-31T22:59:27.9351694Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-10-31T22:59:27.9352831Z ##[endgroup]
+2026-10-31T22:59:27.9354027Z ##[group]GITHUB_TOKEN Permissions
+2026-10-31T22:59:27.9356346Z Actions: read
+2026-10-31T22:59:27.9357291Z Contents: read
+2026-10-31T22:59:27.9358318Z Metadata: read
+2026-10-31T22:59:27.9358922Z ##[endgroup]
+2026-10-31T22:59:27.9361092Z Secret source: Actions
+2026-10-31T22:59:27.9362161Z Cache mode: write
+2026-10-31T22:59:27.9363155Z Prepare workflow directory
+2026-10-31T22:59:27.9784222Z Prepare all required actions
+2026-10-31T22:59:27.9856763Z Getting action download info
+2026-10-31T22:59:28.2273767Z Download action repository 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-31T22:59:28.3389772Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-31T22:59:28.5522976Z Complete job name: controls
+2026-10-31T22:59:28.6404131Z ##[group]Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+2026-10-31T22:59:28.6405341Z with:
+2026-10-31T22:59:28.6405806Z   persist-credentials: false
+2026-10-31T22:59:28.6406356Z   sparse-checkout-cone-mode: false
+2026-10-31T22:59:28.6408636Z   sparse-checkout: /.github/cloud-progress-monitor.json
+/.github/workflows/cloud-progress-monitor.yml
+/scripts/cloud_progress_monitor.py
+/scripts/check_cloud_progress_monitor.py
+/scripts/fixtures/cloud-progress-monitor-296-v91.json
+/scripts/fixtures/cloud-progress-monitor-532-v197.json
+
+2026-10-31T22:59:28.6410677Z   repository: Melihakbulut221/nssoc
+2026-10-31T22:59:28.6414497Z   token: ***
+2026-10-31T22:59:28.6414934Z   ssh-strict: true
+2026-10-31T22:59:28.6415367Z   ssh-user: git
+2026-10-31T22:59:28.6415792Z   clean: true
+2026-10-31T22:59:28.6416209Z   fetch-depth: 1
+2026-10-31T22:59:28.6416789Z   fetch-tags: false
+2026-10-31T22:59:28.6417243Z   show-progress: true
+2026-10-31T22:59:28.6417712Z   lfs: false
+2026-10-31T22:59:28.6418154Z   submodules: false
+2026-10-31T22:59:28.6418610Z   set-safe-directory: true
+2026-10-31T22:59:28.6419126Z   allow-unsafe-pr-checkout: false
+2026-10-31T22:59:28.6419987Z ##[endgroup]
+2026-10-31T22:59:28.9875691Z Syncing repository: Melihakbulut221/nssoc
+2026-10-31T22:59:28.9879385Z ##[group]Getting Git version info
+2026-10-31T22:59:28.9880870Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-31T22:59:28.9882968Z [command]/usr/bin/git version
+2026-10-31T22:59:28.9962944Z git version 2.56.0
+2026-10-31T22:59:28.9996022Z ##[endgroup]
+2026-10-31T22:59:29.0038262Z Temporarily overriding HOME='/home/runner/work/_temp/c5a4dc61-f925-45d7-9e8c-f1d7e40cccc2' before making global git config changes
+2026-10-31T22:59:29.0041319Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-31T22:59:29.0048116Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-31T22:59:29.0144419Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-31T22:59:29.0146814Z ##[group]Initializing the repository
+2026-10-31T22:59:29.0150081Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-31T22:59:29.0322833Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-31T22:59:29.0324217Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-31T22:59:29.0325294Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-31T22:59:29.0326151Z hint: call:
+2026-10-31T22:59:29.0326933Z hint:
+2026-10-31T22:59:29.0327538Z hint: 	git config --global init.defaultBranch <name>
+2026-10-31T22:59:29.0328211Z hint:
+2026-10-31T22:59:29.0328861Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-31T22:59:29.0329873Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-31T22:59:29.0330689Z hint:
+2026-10-31T22:59:29.0331159Z hint: 	git branch -m <name>
+2026-10-31T22:59:29.0331759Z hint:
+2026-10-31T22:59:29.0332461Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-31T22:59:29.0347952Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-31T22:59:29.0350859Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-31T22:59:29.0418444Z ##[endgroup]
+2026-10-31T22:59:29.0419875Z ##[group]Disabling automatic garbage collection
+2026-10-31T22:59:29.0422837Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-31T22:59:29.0463905Z ##[endgroup]
+2026-10-31T22:59:29.0465523Z ##[group]Setting up auth
+2026-10-31T22:59:29.0472824Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T22:59:29.0526887Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T22:59:29.0987721Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T22:59:29.1033348Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T22:59:29.1295534Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T22:59:29.1344981Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-31T22:59:29.1596154Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-31T22:59:29.1649913Z ##[endgroup]
+2026-10-31T22:59:29.1651561Z ##[group]Fetching the repository
+2026-10-31T22:59:29.1667030Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --filter=blob:none --depth=1 origin +9523d721d4e5790621df39088f59e23a4e0d395e:refs/remotes/origin/codex/cloud-progress-monitor-bounded-observation
+2026-10-31T22:59:29.4735969Z From https://github.com/Melihakbulut221/nssoc
+2026-10-31T22:59:29.4740491Z  * [new ref]         9523d721d4e5790621df39088f59e23a4e0d395e -> origin/codex/cloud-progress-monitor-bounded-observation
+2026-10-31T22:59:29.4746696Z ##[endgroup]
+2026-10-31T22:59:29.4748063Z ##[group]Determining the checkout info
+2026-10-31T22:59:29.4749363Z ##[endgroup]
+2026-10-31T22:59:29.4750898Z ##[group]Setting up sparse checkout
+2026-10-31T22:59:29.4751876Z [command]/usr/bin/git config core.sparseCheckout true
+2026-10-31T22:59:29.4803739Z [command]/usr/bin/git rev-parse --git-path info/sparse-checkout
+2026-10-31T22:59:29.4837433Z .git/info/sparse-checkout
+2026-10-31T22:59:29.4854638Z ##[endgroup]
+2026-10-31T22:59:29.4856026Z ##[group]Checking out the ref
+2026-10-31T22:59:29.4860109Z [command]/usr/bin/git checkout --progress --force -B codex/cloud-progress-monitor-bounded-observation refs/remotes/origin/codex/cloud-progress-monitor-bounded-observation
+2026-10-31T22:59:29.7907802Z Switched to a new branch 'codex/cloud-progress-monitor-bounded-observation'
+2026-10-31T22:59:29.7914278Z branch 'codex/cloud-progress-monitor-bounded-observation' set up to track 'origin/codex/cloud-progress-monitor-bounded-observation'.
+2026-10-31T22:59:29.7975769Z ##[endgroup]
+2026-10-31T22:59:29.7980381Z [command]/usr/bin/git log -1 --format=%H
+2026-10-31T22:59:29.8015514Z 9523d721d4e5790621df39088f59e23a4e0d395e
+2026-10-31T22:59:29.8028807Z ##[group]Removing auth
+2026-10-31T22:59:29.8033676Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T22:59:29.8078213Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T22:59:29.8330467Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T22:59:29.8367506Z http.https://github.com/.extraheader
+2026-10-31T22:59:29.8377669Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-31T22:59:29.8426755Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T22:59:29.8672373Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T22:59:29.8719076Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-31T22:59:29.8962251Z ##[endgroup]
+2026-10-31T22:59:29.9274256Z ##[group]Run test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+2026-10-31T22:59:29.9276119Z [36;1mtest "$(git rev-parse HEAD)" = "$GITHUB_SHA"[0m
+2026-10-31T22:59:29.9278111Z [36;1mtest "$APPROVED_SOURCE" = "$GITHUB_SHA"[0m
+2026-10-31T22:59:29.9303677Z shell: /usr/bin/bash -e {0}
+2026-10-31T22:59:29.9304834Z env:
+2026-10-31T22:59:29.9305961Z   APPROVED_SOURCE: 9523d721d4e5790621df39088f59e23a4e0d395e
+2026-10-31T22:59:29.9307676Z ##[endgroup]
+2026-10-31T22:59:29.9492344Z ##[group]Run mkdir monitor-source-controls
+2026-10-31T22:59:29.9493846Z [36;1mmkdir monitor-source-controls[0m
+2026-10-31T22:59:29.9496065Z [36;1mpython3 scripts/check_cloud_progress_monitor.py 2>&1 | tee monitor-source-controls/tests.log[0m
+2026-10-31T22:59:29.9521928Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-31T22:59:29.9523458Z ##[endgroup]
+2026-10-31T22:59:30.0675681Z test_actual_three_shards_reproduce_old_failure_then_preserve_all_532_rows (__main__.BoundedManyShardControls.test_actual_three_shards_reproduce_old_failure_then_preserve_all_532_rows) ... ok
+2026-10-31T22:59:30.0743244Z test_all_bounded_counts_keep_one_head_and_complete_order (__main__.BoundedManyShardControls.test_all_bounded_counts_keep_one_head_and_complete_order) ... ok
+2026-10-31T22:59:30.0750210Z test_seventeen_shards_refused_before_child_reads (__main__.BoundedManyShardControls.test_seventeen_shards_refused_before_child_reads) ... ok
+2026-10-31T22:59:30.0796978Z test_third_shard_must_be_contiguous_present_and_byte_exact (__main__.BoundedManyShardControls.test_third_shard_must_be_contiguous_present_and_byte_exact) ... ok
+2026-10-31T22:59:30.0803338Z test_unapproved_child_path_never_reaches_api (__main__.BoundedManyShardControls.test_unapproved_child_path_never_reaches_api) ... ok
+2026-10-31T22:59:30.0807984Z test_absent_remote_config_explicit_bootstrap (__main__.Controls.test_absent_remote_config_explicit_bootstrap) ... ok
+2026-10-31T22:59:30.0811991Z test_active_beyond_six_hours_stalled (__main__.Controls.test_active_beyond_six_hours_stalled) ... ok
+2026-10-31T22:59:30.0815190Z test_active_six_hour_boundary_not_stalled (__main__.Controls.test_active_six_hour_boundary_not_stalled) ... ok
+2026-10-31T22:59:30.0819816Z test_ambiguous_summary_is_unverified_without_fetch (__main__.Controls.test_ambiguous_summary_is_unverified_without_fetch) ... ok
+2026-10-31T22:59:30.0824184Z test_changed_skipped_metadata_is_progress_without_download (__main__.Controls.test_changed_skipped_metadata_is_progress_without_download) ... ok
+2026-10-31T22:59:30.0828759Z test_changed_terminal_metadata_is_progress (__main__.Controls.test_changed_terminal_metadata_is_progress) ... ok
+2026-10-31T22:59:30.0832095Z test_completed_failed_job_in_live_workflow (__main__.Controls.test_completed_failed_job_in_live_workflow) ... ok
+2026-10-31T22:59:30.0835631Z test_completed_step_is_progress (__main__.Controls.test_completed_step_is_progress) ... ok
+2026-10-31T22:59:30.0838655Z test_current_snapshot_never_reused (__main__.Controls.test_current_snapshot_never_reused) ... ok
+2026-10-31T22:59:30.0841433Z test_duplicate_pinned_run_rejected (__main__.Controls.test_duplicate_pinned_run_rejected) ... ok
+2026-10-31T22:59:30.0844846Z test_exact_own_summary_ignores_prerequisite_descriptor (__main__.Controls.test_exact_own_summary_ignores_prerequisite_descriptor) ... ok
+2026-10-31T22:59:30.0849385Z test_failed_missing_or_skipped_production_stays_failed (__main__.Controls.test_failed_missing_or_skipped_production_stays_failed) ... ok
+2026-10-31T22:59:30.0852812Z test_failure_conclusions (__main__.Controls.test_failure_conclusions) ... ok
+2026-10-31T22:59:30.1035183Z test_http_body_limit_even_without_content_length (__main__.Controls.test_http_body_limit_even_without_content_length) ... ok
+2026-10-31T22:59:30.1040948Z test_inventory_version_required (__main__.Controls.test_inventory_version_required) ... ok
+2026-10-31T22:59:30.1046673Z test_live_does_not_read_releases (__main__.Controls.test_live_does_not_read_releases) ... ok
+2026-10-31T22:59:30.1051631Z test_missing_optional_pipeline_not_failure (__main__.Controls.test_missing_optional_pipeline_not_failure) ... ok
+2026-10-31T22:59:30.1057316Z test_missing_required_pipeline_is_attention (__main__.Controls.test_missing_required_pipeline_is_attention) ... ok
+2026-10-31T22:59:30.1062152Z test_native_dispatch_rejected (__main__.Controls.test_native_dispatch_rejected) ... ok
+2026-10-31T22:59:30.1067770Z test_old_workflow_new_running_job_not_stalled (__main__.Controls.test_old_workflow_new_running_job_not_stalled) ... ok
+2026-10-31T22:59:30.1073411Z test_overall_success_does_not_hide_failed_job (__main__.Controls.test_overall_success_does_not_hide_failed_job) ... ok
+2026-10-31T22:59:30.1079322Z test_oversize_parts_preserves_native_failure (__main__.Controls.test_oversize_parts_preserves_native_failure) ... ok
+2026-10-31T22:59:30.1084656Z test_oversize_summary_never_downloaded (__main__.Controls.test_oversize_summary_never_downloaded) ... ok
+2026-10-31T22:59:30.1244832Z test_path_escape_rejected_before_request (__main__.Controls.test_path_escape_rejected_before_request) ... ok
+2026-10-31T22:59:30.1249780Z test_pending_not_failed (__main__.Controls.test_pending_not_failed) ... ok
+2026-10-31T22:59:30.1260317Z test_previous_monitor_error_not_used_as_progress_baseline (__main__.Controls.test_previous_monitor_error_not_used_as_progress_baseline) ... ok
+2026-10-31T22:59:30.1367811Z test_previous_snapshot_corrupt_digest_rejected (__main__.Controls.test_previous_snapshot_corrupt_digest_rejected) ... ok
+2026-10-31T22:59:30.1373938Z test_previous_snapshot_roundtrip_and_digest (__main__.Controls.test_previous_snapshot_roundtrip_and_digest) ... ok
+2026-10-31T22:59:30.1380480Z test_previous_snapshot_unexpected_archive_member_rejected (__main__.Controls.test_previous_snapshot_unexpected_archive_member_rejected) ... ok
+2026-10-31T22:59:30.1386377Z test_push_controls_not_manual_reader (__main__.Controls.test_push_controls_not_manual_reader) ... ok
+2026-10-31T22:59:30.1501038Z test_real_api_request_is_repository_scoped_get (__main__.Controls.test_real_api_request_is_repository_scoped_get) ... ok
+2026-10-31T22:59:30.1505314Z test_real_config (__main__.Controls.test_real_config) ... ok
+2026-10-31T22:59:30.1509023Z test_redirect_rejects_external_or_unencrypted_host (__main__.Controls.test_redirect_rejects_external_or_unencrypted_host) ... ok
+2026-10-31T22:59:30.1513415Z test_redirect_removes_authorization (__main__.Controls.test_redirect_removes_authorization) ... ok
+2026-10-31T22:59:30.1517036Z test_remote_config_corrupt_blob_rejected (__main__.Controls.test_remote_config_corrupt_blob_rejected) ... ok
+2026-10-31T22:59:30.1520569Z test_remote_config_is_commit_and_blob_bound (__main__.Controls.test_remote_config_is_commit_and_blob_bound) ... ok
+2026-10-31T22:59:30.1524980Z test_selector_deduplicates_live_pinned_run (__main__.Controls.test_selector_deduplicates_live_pinned_run) ... ok
+2026-10-31T22:59:30.1529927Z test_short_stall_threshold_rejected (__main__.Controls.test_short_stall_threshold_rejected) ... ok
+2026-10-31T22:59:30.1533102Z test_skipped_production_is_not_native_completion (__main__.Controls.test_skipped_production_is_not_native_completion) ... ok
+2026-10-31T22:59:30.1536090Z test_summary_has_explicit_scope (__main__.Controls.test_summary_has_explicit_scope) ... ok
+2026-10-31T22:59:30.1539070Z test_summary_hash_corruption_rejected (__main__.Controls.test_summary_hash_corruption_rejected) ... ok
+2026-10-31T22:59:30.1541948Z test_summary_size_corruption_rejected (__main__.Controls.test_summary_size_corruption_rejected) ... ok
+2026-10-31T22:59:30.1544506Z test_terminal_native_failure (__main__.Controls.test_terminal_native_failure) ... ok
+2026-10-31T22:59:30.1547437Z test_terminal_no_publication_not_complete (__main__.Controls.test_terminal_no_publication_not_complete) ... ok
+2026-10-31T22:59:30.1550728Z test_terminal_partial_publication_not_complete (__main__.Controls.test_terminal_partial_publication_not_complete) ... ok
+2026-10-31T22:59:30.1553916Z test_terminal_success_is_not_phy_acceptance (__main__.Controls.test_terminal_success_is_not_phy_acceptance) ... ok
+2026-10-31T22:59:30.1556826Z test_unchanged_observation_quiet (__main__.Controls.test_unchanged_observation_quiet) ... ok
+2026-10-31T22:59:30.1559314Z test_wrong_repository_rejected (__main__.Controls.test_wrong_repository_rejected) ... ok
+2026-10-31T22:59:30.1561704Z test_wrong_run_branch_rejected (__main__.Controls.test_wrong_run_branch_rejected) ... ok
+2026-10-31T22:59:30.1564307Z test_wrong_run_source_rejected (__main__.Controls.test_wrong_run_source_rejected) ... ok
+2026-10-31T22:59:30.1566949Z test_wrong_summary_source_rejected (__main__.Controls.test_wrong_summary_source_rejected) ... ok
+2026-10-31T22:59:30.3087897Z test_533_handles_preserved_with_partial_completed_rows (__main__.IncrementalObservationControls.test_533_handles_preserved_with_partial_completed_rows) ... ok
+2026-10-31T22:59:30.4338222Z test_active_cached_work_prioritized_without_starving_history (__main__.IncrementalObservationControls.test_active_cached_work_prioritized_without_starving_history) ... ok
+2026-10-31T22:59:30.4729160Z test_active_pagination_is_bounded_and_partial_if_more_remain (__main__.IncrementalObservationControls.test_active_pagination_is_bounded_and_partial_if_more_remain) ... ok
+2026-10-31T22:59:30.6243912Z test_actual_old_active_outside_newest16_is_first_without_cache (__main__.IncrementalObservationControls.test_actual_old_active_outside_newest16_is_first_without_cache) ... ok
+2026-10-31T22:59:30.7335492Z test_actual_rerun_of_cached_completed_old_run_is_prioritized (__main__.IncrementalObservationControls.test_actual_rerun_of_cached_completed_old_run_is_prioritized) ... ok
+2026-10-31T22:59:30.7650488Z test_all_five_actual_active_filters_prioritize_exact_pinned_identity (__main__.IncrementalObservationControls.test_all_five_actual_active_filters_prioritize_exact_pinned_identity) ... ok
+2026-10-31T22:59:30.8006050Z test_atomic_snapshot_failure_keeps_previous_complete_file (__main__.IncrementalObservationControls.test_atomic_snapshot_failure_keeps_previous_complete_file) ... ok
+2026-10-31T22:59:30.8025937Z test_cache_requires_every_exact_identity_and_selection_policy (__main__.IncrementalObservationControls.test_cache_requires_every_exact_identity_and_selection_policy) ... ok
+2026-10-31T22:59:30.8200241Z test_cache_subbudget_does_not_exhaust_live_get_budget (__main__.IncrementalObservationControls.test_cache_subbudget_does_not_exhaust_live_get_budget) ... ok
+2026-10-31T22:59:30.8234264Z test_cached_failed_refresh_keeps_evidence_and_marks_error (__main__.IncrementalObservationControls.test_cached_failed_refresh_keeps_evidence_and_marks_error) ... ok
+2026-10-31T22:59:30.9538394Z test_cached_terminal_history_has_bounded_refresh_and_explicit_times (__main__.IncrementalObservationControls.test_cached_terminal_history_has_bounded_refresh_and_explicit_times) ... ok
+2026-10-31T22:59:31.0630065Z test_discovery_failure_keeps_prior_known_active_priority (__main__.IncrementalObservationControls.test_discovery_failure_keeps_prior_known_active_priority) ... ok
+2026-10-31T22:59:31.0720215Z test_discovery_identity_conflict_never_promotes_unmatched_source (__main__.IncrementalObservationControls.test_discovery_identity_conflict_never_promotes_unmatched_source) ... ok
+2026-10-31T22:59:31.0742403Z test_failed_row_does_not_discard_prior_rows_or_stop_later_work (__main__.IncrementalObservationControls.test_failed_row_does_not_discard_prior_rows_or_stop_later_work) ... ok
+2026-10-31T22:59:31.0919771Z test_get_budget_stops_before_next_request_and_keeps_60_second_reserve (__main__.IncrementalObservationControls.test_get_budget_stops_before_next_request_and_keeps_60_second_reserve) ... ok
+2026-10-31T22:59:31.2906297Z test_historical_cursor_rotates_across_snapshots (__main__.IncrementalObservationControls.test_historical_cursor_rotates_across_snapshots) ... ok
+2026-10-31T22:59:31.2957673Z test_inventory_read_failure_preserves_early_bootstrap_snapshot (__main__.IncrementalObservationControls.test_inventory_read_failure_preserves_early_bootstrap_snapshot) ... ok
+2026-10-31T22:59:31.2982570Z test_legacy_rows_without_identity_are_observed_again (__main__.IncrementalObservationControls.test_legacy_rows_without_identity_are_observed_again) ... ok
+2026-10-31T22:59:31.3457274Z test_markdown_distinguishes_cached_and_unobserved_from_unchanged (__main__.IncrementalObservationControls.test_markdown_distinguishes_cached_and_unobserved_from_unchanged) ... ok
+2026-10-31T22:59:31.3472951Z test_partial_monitor_error_archive_is_resumable_but_not_accepted (__main__.IncrementalObservationControls.test_partial_monitor_error_archive_is_resumable_but_not_accepted) ... ok
+2026-10-31T22:59:31.6873774Z test_partial_snapshot_resumes_without_dropping_previous_work (__main__.IncrementalObservationControls.test_partial_snapshot_resumes_without_dropping_previous_work) ... ok
+2026-10-31T22:59:31.7112220Z test_previous_artifact_refusal_continues_live_observation_with_partial_provenance (__main__.IncrementalObservationControls.test_previous_artifact_refusal_continues_live_observation_with_partial_provenance) ... {"status": "PARTIAL_OBSERVATION", "problem_runs": [1000, 1001, 1002], "read_budget": {"requests": 0, "maximum_requests": 600, "elapsed_seconds": 0.021494732000000738, "maximum_seconds": 540, "per_request_timeout_seconds": 60, "inflight": null}, "automatic_native_dispatch": false}
+2026-10-31T22:59:31.7120214Z ok
+2026-10-31T22:59:31.7127247Z test_prior_snapshot_source_candidate_cap_prevents_unbounded_lookup (__main__.IncrementalObservationControls.test_prior_snapshot_source_candidate_cap_prevents_unbounded_lookup) ... ok
+2026-10-31T22:59:31.7299852Z test_request_count_limit_and_failed_request_accounting (__main__.IncrementalObservationControls.test_request_count_limit_and_failed_request_accounting) ... ok
+2026-10-31T22:59:31.7304957Z test_signal_during_latest_selector_preserves_inventory_and_first_selection (__main__.IncrementalObservationControls.test_signal_during_latest_selector_preserves_inventory_and_first_selection) ... ok
+2026-10-31T22:59:31.7366126Z test_signal_during_prior_artifact_stops_with_complete_unread_inventory (__main__.IncrementalObservationControls.test_signal_during_prior_artifact_stops_with_complete_unread_inventory) ... {"status": "PARTIAL_OBSERVATION", "problem_runs": [], "read_budget": {"requests": 0, "maximum_requests": 600, "elapsed_seconds": 0.0031222419999998863, "maximum_seconds": 540, "per_request_timeout_seconds": 60, "inflight": null}, "automatic_native_dispatch": false}
+2026-10-31T22:59:31.7373332Z ok
+2026-10-31T22:59:31.7375217Z test_signal_handler_only_raises_checkpoint_boundary (__main__.IncrementalObservationControls.test_signal_handler_only_raises_checkpoint_boundary) ... ok
+2026-10-31T22:59:31.7395523Z test_untracked_active_is_visible_without_jobs_or_native_acquisition (__main__.IncrementalObservationControls.test_untracked_active_is_visible_without_jobs_or_native_acquisition) ... ok
+2026-10-31T22:59:31.7440850Z test_actual_main_empty_assertion_has_durable_diagnostic_and_same_error (__main__.MainObservationControls.test_actual_main_empty_assertion_has_durable_diagnostic_and_same_error) ... ok
+2026-10-31T22:59:31.7448368Z test_actual_schema2_assembly_preserves_all_mixed_handles (__main__.MainObservationControls.test_actual_schema2_assembly_preserves_all_mixed_handles) ... ok
+2026-10-31T22:59:31.7458364Z test_exact_old_main_assertion_and_actual_mixed_rows_retained (__main__.MainObservationControls.test_exact_old_main_assertion_and_actual_mixed_rows_retained) ... ok
+2026-10-31T22:59:31.7494770Z test_exact_workflow_event_and_job_identity_refusals (__main__.MainObservationControls.test_exact_workflow_event_and_job_identity_refusals) ... ok
+2026-10-31T22:59:31.7504197Z test_main_source_branch_and_run_id_mismatch_still_refused (__main__.MainObservationControls.test_main_source_branch_and_run_id_mismatch_still_refused) ... ok
+2026-10-31T22:59:31.7507494Z test_other_branch_refs_still_rejected (__main__.MainObservationControls.test_other_branch_refs_still_rejected) ... ok
+2026-10-31T22:59:31.7519988Z test_partial_active_and_skipped_monitor_are_not_success (__main__.MainObservationControls.test_partial_active_and_skipped_monitor_are_not_success) ... ok
+2026-10-31T22:59:31.7523986Z test_successful_monitor_is_read_only_not_native_publication (__main__.MainObservationControls.test_successful_monitor_is_read_only_not_native_publication) ... ok
+2026-10-31T22:59:31.7531100Z test_unrelated_main_cannot_impersonate_monitor_with_job_names (__main__.MainObservationControls.test_unrelated_main_cannot_impersonate_monitor_with_job_names) ... ok
+2026-10-31T22:59:31.7543431Z test_child_scope_schema_and_no_recursive_fields (__main__.ShardedInventoryControls.test_child_scope_schema_and_no_recursive_fields) ... ok
+2026-10-31T22:59:31.7553254Z test_corrupt_child_git_blob_size_and_digest (__main__.ShardedInventoryControls.test_corrupt_child_git_blob_size_and_digest) ... ok
+2026-10-31T22:59:31.7654904Z test_full_296_fixture_and_complete_collection_equivalence (__main__.ShardedInventoryControls.test_full_296_fixture_and_complete_collection_equivalence) ... ok
+2026-10-31T22:59:31.7657421Z test_global_bad_run_source_refused_after_reassembly (__main__.ShardedInventoryControls.test_global_bad_run_source_refused_after_reassembly) ... ok
+2026-10-31T22:59:31.7663255Z test_global_duplicate_id_refused_even_identical_or_conflicting (__main__.ShardedInventoryControls.test_global_duplicate_id_refused_even_identical_or_conflicting) ... ok
+2026-10-31T22:59:31.7689001Z test_manifest_count_digest_descriptor_and_path_guards (__main__.ShardedInventoryControls.test_manifest_count_digest_descriptor_and_path_guards) ... ok
+2026-10-31T22:59:31.7737910Z test_missing_child_actual_main_preserves_monitor_error_before_collection (__main__.ShardedInventoryControls.test_missing_child_actual_main_preserves_monitor_error_before_collection) ... ok
+2026-10-31T22:59:31.7741585Z test_missing_children_never_use_bootstrap (__main__.ShardedInventoryControls.test_missing_children_never_use_bootstrap) ... ok
+2026-10-31T22:59:31.7743360Z test_new_manifest_is_not_legacy_configuration (__main__.ShardedInventoryControls.test_new_manifest_is_not_legacy_configuration) ... ok
+2026-10-31T22:59:31.7747050Z test_one_captured_head_and_document_proofs (__main__.ShardedInventoryControls.test_one_captured_head_and_document_proofs) ... ok
+2026-10-31T22:59:31.7750148Z test_oversized_child_response_even_with_acceptable_descriptor (__main__.ShardedInventoryControls.test_oversized_child_response_even_with_acceptable_descriptor) ... ok
+2026-10-31T22:59:31.7781676Z test_same64KiB_limit_for_manifest_and_both_children (__main__.ShardedInventoryControls.test_same64KiB_limit_for_manifest_and_both_children) ... ok
+2026-10-31T22:59:31.7782787Z 
+2026-10-31T22:59:31.7783130Z ----------------------------------------------------------------------
+2026-10-31T22:59:31.7783855Z Ran 105 tests in 1.717s
+2026-10-31T22:59:31.7784166Z 
+2026-10-31T22:59:31.7784324Z OK
+2026-10-31T22:59:31.8018972Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-31T22:59:31.8019415Z with:
+2026-10-31T22:59:31.8019640Z   name: cloud-progress-source-controls
+2026-10-31T22:59:31.8019959Z   path: monitor-source-controls/tests.log
+2026-10-31T22:59:31.8020251Z   if-no-files-found: error
+2026-10-31T22:59:31.8020486Z   retention-days: 90
+2026-10-31T22:59:31.8020701Z   compression-level: 6
+2026-10-31T22:59:31.8020923Z   overwrite: false
+2026-10-31T22:59:31.8021149Z   include-hidden-files: false
+2026-10-31T22:59:31.8021399Z ##[endgroup]
+2026-10-31T22:59:31.9778572Z (node:2377) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-31T22:59:31.9779647Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-31T22:59:31.9877508Z With the provided path, there will be 1 file uploaded
+2026-10-31T22:59:31.9879169Z Artifact name is valid!
+2026-10-31T22:59:31.9879946Z Root directory input is valid!
+2026-10-31T22:59:32.2754494Z Beginning upload of artifact content to blob storage
+2026-10-31T22:59:32.2979069Z (node:2377) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-31T22:59:32.4375578Z Uploaded bytes 2977
+2026-10-31T22:59:32.4813242Z Finished uploading artifact content to blob storage!
+2026-10-31T22:59:32.4814253Z SHA256 digest of uploaded artifact zip is 2630d375d76e98e7e3a907d0aea2230b6bf8f5394ccbb521a280ba70c2efed48
+2026-10-31T22:59:32.4815958Z Finalizing artifact upload
+2026-10-31T22:59:32.9457110Z Artifact cloud-progress-source-controls.zip successfully finalized. Artifact ID 13060578571
+2026-10-31T22:59:32.9458793Z Artifact cloud-progress-source-controls has been successfully uploaded! Final size is 2977 bytes. Artifact ID is 13060578571
+2026-10-31T22:59:32.9465530Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/41250571521/artifacts/13060578571
+2026-10-31T22:59:32.9703157Z Post job cleanup.
+2026-10-31T22:59:33.0576087Z [command]/usr/bin/git version
+2026-10-31T22:59:33.0623961Z git version 2.56.0
+2026-10-31T22:59:33.0669082Z Temporarily overriding HOME='/home/runner/work/_temp/4a8cb76c-d885-4395-8b9a-ee00346895fa' before making global git config changes
+2026-10-31T22:59:33.0670903Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-31T22:59:33.0675078Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-31T22:59:33.0722851Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T22:59:33.0789243Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T22:59:33.1054387Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T22:59:33.1097489Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T22:59:33.1390448Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T22:59:33.1439323Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-31T22:59:33.1849746Z Cleaning up orphan processes
+2026-10-31T22:59:33.2237694Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

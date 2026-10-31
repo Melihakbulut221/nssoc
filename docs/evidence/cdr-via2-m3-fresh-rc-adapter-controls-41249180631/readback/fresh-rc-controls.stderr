@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_adapter.py", line 195, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_adapter.py", line 194, in main
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_adapter.py", line 182, in main
+    phase=phase_controls.controls(ctx,out/'phase-fixtures');observations['phase']=phase
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_native.py", line 54, in controls
+    methods=n.core.derive_wire_methods(ROOT,fixture/'wire-stage')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cdr_via2_m3_fresh_rc_core.py", line 132, in derive_wire_methods
+    result=run_block(root,'wire_derive',scope,dict(OUT=Path(wire_parent),methods=methods))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cdr_via2_m3_fresh_rc_core.py", line 91, in run_block
+    return ns['numerical_stage'](**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen-current-wire_derive>", line 72, in numerical_stage
+AssertionError

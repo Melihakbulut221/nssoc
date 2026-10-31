@@ -1,0 +1,76 @@
+{
+  "schema": "fresh-rc-source-only-terminal-findings-v1",
+  "run_id": 41250072558,
+  "source": "5d2c83ebd9b5da323e9f8747df0d8d42cb5974a6",
+  "status": "PASS_CURRENT_VIA2_M3_FRESH_RC_SOURCE_CONTROLS",
+  "controls": {
+    "context_refusals": 12,
+    "core_controls": 28,
+    "current_job_refusals": 13,
+    "emission_refusals": 32,
+    "lifecycle_cases": 15,
+    "namespace_positive": 6,
+    "namespace_refusals": 42,
+    "phase_controls": 33,
+    "producer_positive": 6,
+    "producer_refusals": 53,
+    "publication_cases": 7,
+    "publication_refusals": 33,
+    "runtime_positive": 6,
+    "runtime_refusals": 32,
+    "source_log_refusals": 28
+  },
+  "fixture_transport": {
+    "original_bytes_preserved": true,
+    "positive": [
+      {
+        "bytes": 0,
+        "chunks": 1,
+        "compressed_bytes": 8,
+        "name": "roundtrip_0",
+        "passed": true
+      },
+      {
+        "bytes": 300027,
+        "chunks": 1,
+        "compressed_bytes": 351,
+        "name": "roundtrip_1",
+        "passed": true
+      },
+      {
+        "bytes": 192000,
+        "chunks": 5,
+        "compressed_bytes": 109938,
+        "name": "roundtrip_2",
+        "passed": true
+      }
+    ],
+    "primary_source_transport_unchanged": true,
+    "refusals": [
+      "missing_chunk",
+      "duplicate_chunk",
+      "wrong_chunk_path",
+      "changed_raw_sha",
+      "changed_compressed_sha",
+      "changed_raw_size",
+      "changed_compressed_size",
+      "wrong_schema",
+      "noncanonical_path",
+      "invalid_base64",
+      "truncated_stream",
+      "second_stream"
+    ]
+  },
+  "all_available_emitted_records_authenticated": true,
+  "production_numerical_methods_unchanged": true,
+  "prior_failure": {
+    "run": 41249180631,
+    "source": "c1d49671afad9052f2e1c289d130b63f8809567b",
+    "proof": "a460bf11819a06ab2a82318bbaa82d51bcd40aa2",
+    "actual_error": "frozen wire_derive exclusive method destination AssertionError"
+  },
+  "native_acquired": false,
+  "native_executed": false,
+  "RC_executed": false,
+  "simulation_executed": false
+}
