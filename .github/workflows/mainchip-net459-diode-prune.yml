@@ -1,13 +1,13 @@
-name: Actual chip diode namespace roundtrip qualification
+name: Bulk antenna repair with qualified diode namespace isolation
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Hosted native namespace roundtrip only; genuine repair and routing disabled
+        description: Full source controls or one independently reserved bulk repair and route cycle
         type: choice
         required: true
-        default: qualify
-        options: [qualify]
+        default: controls
+        options: [controls, trial]
 permissions:
   contents: read
   actions: read
@@ -40,15 +40,24 @@ jobs:
           assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['GITHUB_REF']=='refs/heads/codex/mainchip-net459-diode-prune'
-          assert e['SELECTED_MODE']=='qualify'
+          assert e['SELECTED_MODE'] in ('controls','trial')
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           name='scripts/mainchip-bulk-postdrt-integration-pins.json'
           raw=Path(name).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='e041374557fc4738aaec44a4d6d15a23eb7ebd1c2963fd6a7cf8f6f02f4000d2'
+          assert hashlib.sha256(raw).hexdigest()=='b5a2ee1d51a4281a00a821d06e12f139a96083d521a710e5ac0b3f7a909d8231'
           m=json.loads(raw)
-          assert m['schema']=='bulk-postdrt-integration-pins-v1' and len(m['files'])==1707
+          assert m['schema']=='bulk-postdrt-integration-pins-v1' and len(m['files'])==1839
           assert m['source_controls_authorized'] is True
-          assert all(m[k] is False for k in ('native_execution_enabled','physical_acceptance','timing_accepted','full_phy_accepted'))
+          assert m['native_execution_enabled'] is True
+          q=m['namespace_qualification']
+          assert q['actual_native_rename_API_qualified'] is True and q['current_chip_name_roundtrip_qualified'] is True
+          assert q['native_run']==41170992512 and q['native_source']=='8753125c2e0e887e527819a2434b7649c435de60'
+          qr=Path(q['receipt']['path']).read_bytes()
+          assert len(qr)==q['receipt']['bytes'] and hashlib.sha256(qr).hexdigest()==q['receipt']['sha256']
+          qv=json.loads(qr)
+          assert qv['namespace_qualified'] is True and set(qv['cases'])=={'success','primary_error'}
+          assert qv['repair_calls']==qv['route_calls']==0
+          assert all(m[k] is False for k in ('physical_acceptance','timing_accepted','full_phy_accepted'))
           for path,pin in m['files'].items():
               p=Path(path);assert p.is_file() and not p.is_symlink()
               assert hashlib.sha256(p.read_bytes()).hexdigest()==pin,path
@@ -59,21 +68,12 @@ jobs:
           sys.path.insert(0,'scripts')
           import cloud_mainchip_bulk_postdrt_antenna as host
           assert host.source_gate()==m
-          import cloud_mainchip_bulk_diode_namespace_qualification as qualification
-          qraw=Path('scripts/mainchip-bulk-diode-namespace-qualification-pins.json').read_bytes()
-          assert hashlib.sha256(qraw).hexdigest()=='dab7a2c26e32d4aeefa59684ed0165ca0f239c9871679273d26d66640291f7bb'
-          qm=qualification.source_gate()
-          assert qm==json.loads(qraw) and len(qm['files'])==1736
-          qualification.authorize_native(qm)
-          for path in ('scripts/mainchip_bulk_diode_namespace_qualification.py','scripts/mainchip_bulk_diode_namespace_qualification_inner.py','scripts/cloud_mainchip_bulk_diode_namespace_qualification.py'):
-              ast.parse(Path(path).read_bytes(),filename=path)
-          (out/'qualification-manifest.json').write_bytes(qraw)
           (out/'manifest.json').write_bytes(raw)
           bulk=Path('scripts/mainchip-bulk-postdrt-antenna-pins.json').read_bytes()
           (out/'bulk-manifest.json').write_bytes(bulk)
           workflow=Path('.github/workflows/mainchip-net459-diode-prune.yml').read_bytes()
           context=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
-            source_controls_only=True,mode='controls',qualification_only_in_manifest=True,native_authorized=False,native_acquisition=False,native_executed=False,
+            source_controls_only=True,mode=e['SELECTED_MODE'],native_authorized=False,native_enabled_in_manifest=True,native_acquisition=False,native_executed=False,
             physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,
             manifest=dict(path=name,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),files=len(m['files'])),
             bulk_manifest=dict(bytes=len(bulk),sha256=hashlib.sha256(bulk).hexdigest()),
@@ -117,7 +117,7 @@ jobs:
           python3 -B - <<'PY'
           import base64,hashlib,json
           from pathlib import Path
-          for name in ('context.json','manifest.json','bulk-manifest.json','qualification-manifest.json','controls.json','controls.stdout','controls.stderr','execution.json'):
+          for name in ('context.json','manifest.json','bulk-manifest.json','controls.json','controls.stdout','controls.stderr','execution.json'):
               p=Path('bulk-postdrt-integration-controls')/name;assert not p.is_symlink()
               present=p.is_file();raw=p.read_bytes() if present else b''
               chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
@@ -178,9 +178,9 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-  namespace-qualification:
+  trial:
     needs: [source-controls, preserve-job-log]
-    if: ${{ inputs.mode == 'qualify' }}
+    if: ${{ inputs.mode == 'trial' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     permissions:
@@ -206,14 +206,16 @@ jobs:
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['GITHUB_REF']=='refs/heads/codex/mainchip-net459-diode-prune'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
-          name='scripts/mainchip-bulk-diode-namespace-qualification-pins.json'
+          name='scripts/mainchip-bulk-postdrt-integration-pins.json'
           raw=Path(name).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='dab7a2c26e32d4aeefa59684ed0165ca0f239c9871679273d26d66640291f7bb'
+          assert hashlib.sha256(raw).hexdigest()=='b5a2ee1d51a4281a00a821d06e12f139a96083d521a710e5ac0b3f7a909d8231'
           sys.path.insert(0,'scripts')
-          import cloud_mainchip_bulk_diode_namespace_qualification as host
+          import cloud_mainchip_bulk_postdrt_antenna as host
           m=host.source_gate()
-          assert m==json.loads(raw) and len(m['files'])==1736
+          assert m==json.loads(raw) and len(m['files'])==1839
           host.authorize_native(m)
+          q=m['namespace_qualification']
+          assert q['native_run']==41170992512 and q['actual_native_rename_API_qualified'] is True and q['current_chip_name_roundtrip_qualified'] is True
           print('Exact source and qualified adapter projection verified; no native acquisition yet.')
           PY
       - name: Require full same-source successful controls before native acquisition
@@ -236,7 +238,7 @@ jobs:
           raw=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(j['id'])+'/logs'])
           assert raw;(root/'source-controls.log').write_bytes(raw)
           idx={};chunks={}
-          expected={'context.json','manifest.json','bulk-manifest.json','qualification-manifest.json','controls.json','controls.stdout','controls.stderr','execution.json'}
+          expected={'context.json','manifest.json','bulk-manifest.json','controls.json','controls.stdout','controls.stderr','execution.json'}
           for line in raw.decode().splitlines():
               for marker,is_index in (('BULK_POSTDRT_CONTROL_INDEX ',True),('BULK_POSTDRT_CONTROL_CHUNK ',False)):
                   if marker not in line:continue
@@ -259,18 +261,17 @@ jobs:
           ctx=decoded['context.json']
           assert ctx['source']==e['GITHUB_SHA'] and ctx['run_id']==int(e['GITHUB_RUN_ID']) and ctx['attempt']==1
           assert all(ctx[k]is False for k in ('native_acquisition','native_executed','physical_acceptance','timing_accepted','full_phy_accepted'))
-          assert ctx['qualification_only_in_manifest']is True and ctx['native_authorized']is False
+          assert ctx['native_enabled_in_manifest']is True
           assert (root/'manifest.json').read_bytes()==Path('scripts/mainchip-bulk-postdrt-integration-pins.json').read_bytes()
-          assert (root/'qualification-manifest.json').read_bytes()==Path('scripts/mainchip-bulk-diode-namespace-qualification-pins.json').read_bytes()
           assert (root/'bulk-manifest.json').read_bytes()==Path('scripts/mainchip-bulk-postdrt-antenna-pins.json').read_bytes()
           assert ctx['workflow']['sha256']==hashlib.sha256(Path('.github/workflows/mainchip-net459-diode-prune.yml').read_bytes()).hexdigest()
           execution=decoded['execution.json']
           assert execution==dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,returncode=0,native_executed=False)
           sys.path.insert(0,'scripts')
-          import cloud_mainchip_bulk_diode_namespace_qualification as host
+          import cloud_mainchip_bulk_postdrt_antenna as host
           proof=host.control_evidence(host.context(e))
           (root/'index.json').write_text(json.dumps(idx,sort_keys=True,indent=2)+'\n')
-          (root/'admission.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,full_source_records=8,source_job=j['id'],full_log_sha256=hashlib.sha256(raw).hexdigest(),proof=proof,native_acquisition=False),sort_keys=True,indent=2)+'\n')
+          (root/'admission.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,full_source_records=7,source_job=j['id'],full_log_sha256=hashlib.sha256(raw).hexdigest(),proof=proof,native_acquisition=False),sort_keys=True,indent=2)+'\n')
           PY
       - name: Reclaim only disposable hosted SDK storage
         run: |
@@ -299,8 +300,8 @@ jobs:
           receipt=dict(tag=tag,tested_source=e['GITHUB_SHA'],release_id=d['id'],existing_assets=[],target_verified=True,assets_overwritten=False,externally_reserved=True,creation_attempted=False,read_attempts=attempt+1)
           Path('release-reservation.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
           PY
-      - name: Qualify actual native instance naming and full chip roundtrip; no genuine repair or routing
-        run: python3 -B scripts/cloud_mainchip_bulk_diode_namespace_qualification.py --output bulk-postdrt-antenna-evidence --reservation release-reservation.json > bulk-postdrt-antenna.stdout 2> bulk-postdrt-antenna.stderr
+      - name: Run one bulk antenna repair iteration and one detailed-routing pass; measure complete chip DRC and antennas
+        run: python3 -B scripts/cloud_mainchip_bulk_postdrt_antenna.py --output bulk-postdrt-antenna-evidence --reservation release-reservation.json > bulk-postdrt-antenna.stdout 2> bulk-postdrt-antenna.stderr
       - name: Always emit full bounded evidence and failure output
         if: always()
         run: |
@@ -341,18 +342,18 @@ jobs:
           python3 -B - <<'PY'
           import hashlib,json,os,sys
           from pathlib import Path
-          raw=Path('scripts/mainchip-bulk-diode-namespace-qualification-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='dab7a2c26e32d4aeefa59684ed0165ca0f239c9871679273d26d66640291f7bb'
+          raw=Path('scripts/mainchip-bulk-postdrt-integration-pins.json').read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='b5a2ee1d51a4281a00a821d06e12f139a96083d521a710e5ac0b3f7a909d8231'
           sys.path.insert(0,'scripts')
-          import cloud_mainchip_bulk_diode_namespace_qualification as host
+          import cloud_mainchip_bulk_postdrt_antenna as host
           host.source_gate()
           print(json.dumps(host.cleanup_preserved_workspace(host.context(os.environ),Path('bulk-postdrt-antenna-evidence')),sort_keys=True))
           PY
 
 
   preserve-antenna-job-logs:
-    needs: [source-controls, preserve-job-log, namespace-qualification]
-    if: ${{ always() && inputs.mode == 'qualify' }}
+    needs: [source-controls, preserve-job-log, trial]
+    if: ${{ always() && inputs.mode == 'trial' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
@@ -372,7 +373,7 @@ jobs:
           jobs=get('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
           rows={}
           for j in jobs['jobs']:
-              if j['name'] not in ('source-controls','preserve-job-log','namespace-qualification'):continue
+              if j['name'] not in ('source-controls','preserve-job-log','trial'):continue
               j=get('actions/jobs/'+str(j['id']),str(j['id'])+'.json')
               assert j['head_sha']==e['GITHUB_SHA'] and j['run_id']==int(e['GITHUB_RUN_ID'])
               if j['conclusion']=='skipped':continue
