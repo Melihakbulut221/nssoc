@@ -128,6 +128,15 @@ def do_work(ctx,proof,controls,bundle,evidence,report,expected,app):
     source_guard(expected);source_guard(ctx);report["controls"]=bind_controls(ctx,controls)
     require(app.is_absolute()and pin(app)["sha256"]==config()["appimage"]["sha256"],"pinned cloud AppImage")
     r.write_new(evidence/"same-source-controls.json",r.encode(controls))
+    policy=decode(r.regular(ROOT,"current-cdr-runtime-policy.json").read_bytes())
+    require(policy["source"]==ctx["source"]and policy["run_id"]==ctx["run_id"]and policy["attempt"]==1,"same-source runtime policy")
+    require(policy["appimage"]==str(app)and policy["appimage_sha256"]==config()["appimage"]["sha256"],"exact pinned policy executable")
+    require(policy["loaded"]is True and policy["global_policy_changed"]is False
+      and policy["restriction_before"]==policy["restriction_after"],"scoped runtime policy only")
+    require(policy["profile"]=="/etc/apparmor.d/nssoc-cdr-runtime-"+ctx["token"],"run-owned runtime profile")
+    require(hashlib.sha256(policy["profile_text"].encode()).hexdigest()==policy["profile_sha256"],"runtime profile text")
+    write(evidence/"runtime-policy.json",encode(policy))
+
     c=r.source_guard();pins=config()
     reserved=r.reservation(ctx,proof,r.api("releases/tags/"+ctx["tag"]),r.api("git/ref/tags/"+ctx["tag"]))
     r.write_new(evidence/"reservation.json",r.encode(dict(proof=proof,verified=reserved)))

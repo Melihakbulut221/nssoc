@@ -92,7 +92,7 @@ jobs:
           sys.path.insert(0,'scripts')
           import cloud_cdr_current_tail_straps as host
           raw=Path(host.MANIFEST).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='fa85e781213def4b6ffb53e70e4a01a7145068b7e6c9d502ea715b305b7e15d9'
+          assert hashlib.sha256(raw).hexdigest()=='0adaa1b957fefe191c81aaf3b382da9e4d156649541e523b5021ac20d412dde3'
           m=host.source_guard(host.context(os.environ))
           assert len(m['files'])==1190
           for name in ('scripts/cdr_current_tail_straps.py','scripts/cdr_current_tail_straps_native.py','scripts/cloud_cdr_current_tail_straps.py','scripts/check_cdr_current_tail_straps.py'):
@@ -265,7 +265,7 @@ jobs:
           sys.path.insert(0,'scripts')
           import cloud_cdr_current_tail_straps as host
           raw=Path(host.MANIFEST).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='fa85e781213def4b6ffb53e70e4a01a7145068b7e6c9d502ea715b305b7e15d9'
+          assert hashlib.sha256(raw).hexdigest()=='0adaa1b957fefe191c81aaf3b382da9e4d156649541e523b5021ac20d412dde3'
           m=host.source_guard(host.context(os.environ));assert len(m['files'])==1190
           PY
       - name: Recover every same-source control record from completed actual job log
@@ -348,7 +348,7 @@ jobs:
       - name: Acquire and verify original immutable native AppImage after independent reservation
         run: |
           sudo apt-get update
-          sudo apt-get install --no-install-recommends -y libfuse2 tcl8.6
+          sudo apt-get install --no-install-recommends -y libfuse2 tcl8.6 uidmap
           curl --fail --location --retry 2 --output "$RUNNER_TEMP/current-tail-physical.AppImage" https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
           python3 -B - <<'PY'
           import hashlib,os
@@ -357,8 +357,42 @@ jobs:
           with path.open('rb')as f:assert hashlib.file_digest(f,'sha256').hexdigest()=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
           path.chmod(0o755)
           PY
+      - name: Admit only the pinned runtime to hosted AppArmor user namespaces
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,re,subprocess
+          from pathlib import Path
+          e=os.environ
+          assert e['GITHUB_ACTIONS']=='true' and e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr-drain-m1-loaded-electrical' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert re.fullmatch('[1-9][0-9]*',e['GITHUB_RUN_ID']) and re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA'])
+          app=Path(e['RUNNER_TEMP'])/'current-tail-physical.AppImage'
+          assert app==Path('/home/runner/work/_temp/current-tail-physical.AppImage') and app.is_file() and not app.is_symlink()
+          with app.open('rb')as f:digest=hashlib.file_digest(f,'sha256').hexdigest()
+          assert digest=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
+          key=Path('/proc/sys/kernel/apparmor_restrict_unprivileged_userns')
+          before=key.read_text().strip()
+          name='nssoc-cdr-runtime-'+e['GITHUB_RUN_ID']+'-1'
+          target=Path('/etc/apparmor.d')/name
+          assert not target.exists() and not target.is_symlink()
+          policy='abi <abi/4.0>,\ninclude <tunables/global>\nprofile '+name+' "'+str(app)+'" flags=(unconfined) {\n  userns,\n}\n'
+          installed=subprocess.run(['sudo','tee',str(target)],input=policy.encode(),capture_output=True,check=True)
+          assert installed.stdout==policy.encode() and target.read_text()==policy
+          loaded=subprocess.run(['sudo','apparmor_parser','-a',str(target)],capture_output=True,check=True)
+          profiles=subprocess.check_output(['sudo','cat','/sys/kernel/security/apparmor/profiles'],text=True).splitlines()
+          active=[line for line in profiles if line.startswith(name+' (')]
+          assert len(active)==1 and key.read_text().strip()==before
+          proof=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
+            appimage=str(app),appimage_sha256=digest,profile=str(target),profile_text=policy,
+            profile_sha256=hashlib.sha256(policy.encode()).hexdigest(),loaded=True,active=active,
+            restriction_before=before,restriction_after=key.read_text().strip(),global_policy_changed=False,
+            parser_stdout=loaded.stdout.decode(),parser_stderr=loaded.stderr.decode(),
+            native_geometry_executed=False,scope='Exact pinned executable on this ephemeral GitHub runner only')
+          Path('current-cdr-runtime-policy.json').write_text(json.dumps(proof,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(proof,sort_keys=True))
+          PY
       - name: Generate actual eight-drain straps and run original full560DRC and500-device LVS13 controls
-        run: python3 -B scripts/cloud_cdr_current_tail_straps.py --bundle "$GITHUB_WORKSPACE/hw/soc/out/cdr-current-eight-drain-straps-${GITHUB_RUN_ID}-1" --publication current-cdr-tail-straps-publication --reservation ownership-reservation.json --controls ownership-source-proof/bound-controls.json --pins-sha256 fa85e781213def4b6ffb53e70e4a01a7145068b7e6c9d502ea715b305b7e15d9 --appimage "$RUNNER_TEMP/current-tail-physical.AppImage" > current-cdr-tail-straps.stdout 2> current-cdr-tail-straps.stderr
+        run: python3 -B scripts/cloud_cdr_current_tail_straps.py --bundle "$GITHUB_WORKSPACE/hw/soc/out/cdr-current-eight-drain-straps-${GITHUB_RUN_ID}-1" --publication current-cdr-tail-straps-publication --reservation ownership-reservation.json --controls ownership-source-proof/bound-controls.json --pins-sha256 0adaa1b957fefe191c81aaf3b382da9e4d156649541e523b5021ac20d412dde3 --appimage "$RUNNER_TEMP/current-tail-physical.AppImage" > current-cdr-tail-straps.stdout 2> current-cdr-tail-straps.stderr
       - name: Always emit complete derived records and actual failure output
         if: always()
         run: |
@@ -380,6 +414,7 @@ jobs:
           path: |
             ownership-source-proof
             ownership-reservation.json
+            current-cdr-runtime-policy.json
             hw/soc/out/cdr-current-eight-drain-straps-${{ github.run_id }}-1
             current-cdr-tail-straps-publication
             current-cdr-tail-straps.stdout

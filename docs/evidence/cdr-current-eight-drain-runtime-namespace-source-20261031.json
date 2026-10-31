@@ -1,0 +1,43 @@
+{
+  "actual_failure": {
+    "full_archive_members_authenticated": 2797,
+    "geometry_executed": false,
+    "returncode": 127,
+    "runtime_setup_returncode": 0,
+    "selected_inputs_unchanged": 42,
+    "status": "FAIL_RUNTIME_LAUNCH",
+    "stderr": "cannot write uid_map: Operation not permitted",
+    "stderr_bytes": 102,
+    "stderr_sha256": "e74fc221997c30215494b1b234fc986dae3f3c2266b1f0e9675a31e8548d906b"
+  },
+  "change": "Install uidmap and attach userns permission only to the exact SHA-pinned LibreLane executable on the ephemeral runner. Keep global AppArmor restriction unchanged and preserve profile source/load evidence with the native trial.",
+  "failed_run": 41201201045,
+  "files": {
+    ".github/workflows/cdr-current-access-overlay.yml": {
+      "bytes": 29918,
+      "sha256": "02fd81e380a1a0359511b0b927cad249b4970ad533dd2f06227964e68ab4dcc2"
+    },
+    "scripts/cdr-current-tail-straps-pins.json": {
+      "bytes": 178155,
+      "sha256": "0adaa1b957fefe191c81aaf3b382da9e4d156649541e523b5021ac20d412dde3"
+    },
+    "scripts/cloud_cdr_current_tail_straps.py": {
+      "bytes": 20099,
+      "sha256": "081544a85ccd77171fa75e96b3f9bbbf0e712bf0bba82928266b1c5d7238a845"
+    }
+  },
+  "full_phy_accepted": false,
+  "native_executed": false,
+  "original_appimage_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "original_geometry_DRC_LVS_and_electrical_gates_unchanged": true,
+  "parent": "6fdb7c42fa5a6985d399be793a29878015905ca6",
+  "physical_acceptance": false,
+  "references": [
+    "https://librelane.readthedocs.io/en/stable/installation/appimage_installation/installation_linux.html",
+    "https://documentation.ubuntu.com/release-notes/24.04/"
+  ],
+  "schema": "current-cdr-exact-runtime-userns-admission-v1",
+  "source_controls_executed": false,
+  "source_controls_expected": 187,
+  "timing_accepted": false
+}
