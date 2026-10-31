@@ -8,7 +8,7 @@ The reducer preserves every selected marker and witness, validates the full orig
 
 The saved database contains no iteration10 mutable route geometry. Endpoint observations are not a census of third-party nets, fill or obstructions and do not prove the original route violation cause. Routing, timing, full PHY and physical acceptance remain false.
 
-This first revision contains the pure reducer and independent full-census synthetic controls. The actual acquisition/publication adapter is deliberately disabled and is still being implemented. The manual workflow has only controls and full source-log preservation jobs. No actual report acquisition, CAD, rerouting or native simulation is available from this revision. Source fixtures use 373 independent synthetic endpoint records, all 434 selected markers and all 596 original ordinals, plus negative controls; their results are not a physical result.
+The original pure reducer passed all 37 hosted controls in run 41251363994. Source fixtures use 373 independent synthetic endpoint records, all 434 selected markers and all 596 original ordinals, plus negative controls; their results are not a physical result.
 
 
 The separate hosted adapter now validates the complete original 44-asset
@@ -32,10 +32,12 @@ failure is re-raised; a secondary save/publication failure never replaces it.
 
 The new combined checker retains all 37 qualified geometry controls unchanged
 and adds 27 transport, source-record, complete synthetic pipeline, resource and
-failure-order controls. This source revision does not authorize actual report
-acquisition: both authority flags and the controls-only workflow remain closed.
-The newly authored 64-test result is pending hosted execution, not a claimed
-physical, timing or routing result.
+failure-order controls. The complete disabled adapter at source
+17e4df4b4b5688b554105e56b03c7b0295b19d62 passed all 64 hosted controls in run
+41252769644, with zero failures, errors or skips. Full source-job and log-job
+proof is preserved at commit 6e407aea03c30c8d3d9a71deb59dfd4f05c1b1f1,
+under docs/evidence/mainchip-drt-obstacle-reduction-controls-41252769644.
+This is not a physical, timing or routing result.
 
 
 Source review found that the inherited API helper had no subprocess timeout.
@@ -51,13 +53,28 @@ and complete reduction, and 300 seconds for result preservation/publication.
 Every upload has at most 180 seconds and every asset stream at most 300 seconds,
 also limited by the remaining phase budget. Expiry interrupts the subprocess,
 and the standard subprocess runner kills and reaps its direct child before
-propagating the original exception. The planned actual workflow cap is 40
+propagating the original exception. The actual workflow cap is 40
 minutes, leaving 15 minutes beyond the complete 25-minute phase budget for
-workflow setup and always-retained artifacts/logs; the actual job is still
-absent in this source-only revision.
+workflow setup and always-retained artifacts/logs.
 
 The additional fixtures exercise real hosted stdlib children for both command
 timeout and alarm interruption, require child termination/reaping, and verify
 the restored handler/cleared timer. They also cover exact API argv/GET-only
 endpoints, full timeout diagnostics, remaining phase budgets, and unchanged
 failure ordering. No test runs native design tools or acquires the real report.
+
+
+The current manual workflow exposes a separate, explicitly approved
+analysis-only job. It requires this exact source commit, the successful same-run
+64 controls and preserved source log, and an independently reserved empty
+public release pointing to the exact commit. The source-controls job explicitly
+uses MODE=controls even when the requested operation is analysis; no actual
+GitHub identity or branch environment is substituted.
+
+Only the analysis authority is enabled. Native execution and routing authority
+remain false, as do every physical, timing, full-PHY and root-cause acceptance
+flag. The 64 controls must qualify this activation source before any actual
+analysis is dispatched. The analysis job retains all owned partial acquisitions
+and derived outputs in its always-run cloud artifact; the large original report
+and every native payload remain cloud-only. No actual reduction result is
+claimed by publishing this source.

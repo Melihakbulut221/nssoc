@@ -5,7 +5,7 @@ on:
     inputs:
       mode:
         type: choice
-        options: [controls]
+        options: [controls, analysis]
         default: controls
         required: true
       approved_source:
@@ -24,6 +24,8 @@ env:
   APPROVED_SOURCE: ${{ inputs.approved_source }}
 jobs:
   source-controls:
+    env:
+      MODE: controls
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -43,7 +45,7 @@ jobs:
           manifest='scripts/mainchip-drt-obstacle-reduce-source.json'
           m=json.loads(Path(manifest).read_bytes())
           names=sorted(set(m['files'])|{manifest})
-          assert m['analysis_authorized'] is False and m['native_execution_authorized'] is False and m['routing_authorized'] is False
+          assert m['analysis_authorized'] is True and m['native_execution_authorized'] is False and m['routing_authorized'] is False
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
           PY
@@ -91,5 +93,52 @@ jobs:
         with:
           name: mainchip-drt-obstacle-reduction-source-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
           path: job-logs
+          if-no-files-found: error
+          retention-days: 90
+
+  analysis:
+    needs: [source-controls, preserve-job-log]
+    if: needs.source-controls.result == 'success' && needs.preserve-job-log.result == 'success' && inputs.mode == 'analysis' && inputs.approved_source == github.sha
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/mainchip-drt-obstacle-reduce-source.json
+      - name: Materialize exact approved derived-analysis source
+        run: |
+          python3 -B - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          manifest='scripts/mainchip-drt-obstacle-reduce-source.json'
+          m=json.loads(Path(manifest).read_bytes())
+          names=sorted(set(m['files'])|{manifest})
+          assert m['analysis_authorized'] is True and m['native_execution_authorized'] is False and m['routing_authorized'] is False
+          assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
+          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
+          PY
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Authenticated complete preroute obstacle report reduction
+        run: python3 -B scripts/cloud_mainchip_drt_obstacle_reduce.py
+      - name: Preserve complete derived outputs and any partial acquisition
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mainchip-drt-obstacle-reduction-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ github.workspace }}/obstacle-reduction
+            ${{ runner.temp }}/mainchip-drt-obstacle-reduction-${{ github.run_id }}-1
           if-no-files-found: error
           retention-days: 90
