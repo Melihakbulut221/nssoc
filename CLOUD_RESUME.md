@@ -1,20 +1,23 @@
-# Cloud continuation — checkpoint v174
+# Cloud continuation — checkpoint v175
 
-Updated: 2026-10-31T14:40:19.742591+00:00
+Updated: 2026-10-31T14:44:45.388188+00:00
 
-CLOUD ONLY. Workspace and owned temporary files empty; no local CAD. Native archives/payloads must remain in GitHub, never acquired locally even RAM.
+CLOUD ONLY. Workspace andownedtmp empty, no localCAD. Native payloads/archives must staycloud; neverdownloadlocally evenRAM.
 
-LIVE RUN41211073897 SOURCE571c94d54ee9e7ebe8b7f9c007dd84368dc214ec branchcodex/mainchip-net459-diode-prune. Externally reserved release429990936. Current observed status: completed/failure. Poll this same run; do not restart based on quiet logs. Original327controls plus15newsource tests must pass before native acquisition. Physical success not yet claimed.
+CURRENT RUN41211382427 source ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9 branch codex/mainchip-net459-diode-prune. Release429993235 externallyreserved. Observed in_progress/None. New15teststep passed: True. Original327controls precede nativeacquisition. Poll samejob, no rerun/cancel on quiet logs. Physicalrouting notyetaccepted.
 
-New scoped fix clears only608owned initial wires on a separate ODB; full snapshot/allguide equality and original1691clocks/placement/nonmutable material guards. All original route_delta, bothconnectivity modes, antenna/DRC gates retained. Clock gate onlychanges obsolete uniform153130census to exact donor153130/candidate154480. Actual hosted GITHUB_ACTIONS is forwarded into same resource-limited isolated Docker. Same original saved-diodes acquisition, no newdiodes, no repair_antennas rerun. All failures/native outputs preserved.
+Previous41211073897/source571c94d failedonly ASTreversecheck (14of15passed); nativejobs skipped/noacquisition. Full3joblogs+metadata/test/receipt9files1083311B imported in docs/evidence/mainchip-stale-wire-control-failure-41211073897/. Test targeted all comparison subscripts, also selecting snapshotcomparison. Fixed to exact census assertion; nativeimplementation/physicalguards unchanged.
 
-Actual native diagnosis41209965584 proved all1351newdiode A pins without wireaccess inall608nets underbothcontactmodes. Full proof docs/evidence/mainchip-saved-route-connectivity-terminal-41209965584/ inrootv173 andpermanent release429983566. Pinned DRT source explains initial-route skipping in INCR whenfixed geometry exists. No physical closure yet.
+Scopedfix clears ONLY608owned initial wires into separateODB. Native fullsnapshot/allguides equality,1691clock/allplacement/nonmutablematerial guards retained. Originalroute_delta, bothconnectivity modes/antenna/DRC required. Exact clockcensus adapter before153130/after154480; only this assertion changes. Actual hosted GITHUB_ACTIONS forwarded into sameisolated/resource-limitedcontainer. Same saveddiodes/runtime, no repair_antennas ornewdiodecreation.
 
-CDR graph41206809668/source9cb8738b qualified for freshRC; exact330members/current75file view with original absolutegraph-report paths. FreshRC/electrical not executed. Preserve500device binding/wireRC/sevenMIM bothorders controls then1151vector loadedmatrix. FullPHY/finalsetuphold open; all limits unchanged.
+Prior actualnative41209965584 proved1351newdiode A pins disconnected inall608nets underbothcontactmodes. Fullproofv173/release429983566. PinnedDRT initialroute skipping withfixedgeometry motivated scopedclear; repairnotyetqualified.
 
-8hmonitor read-only435handles automatic_native_dispatch=false; HTTP502health issue not claimedfixed.
+CDR graph41206809668/source9cb8738b freshRC-ready. Exact330members/current75fileview, originalabsolutegraphpaths. FreshRC/electricalnotexecuted. Original500device/wireRC/sevenMIMbothorderscontrols then1151loadedvectors. FullPHY/finaltimingopen; all limitsunchanged.
+
+Monitor8h read-only436handles; automatic_native_dispatch=false. HistoricalHTTP502healthnotclaimedfixed.
 
 ## Historical notes below — not current running-job status
+
 
 
 

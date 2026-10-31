@@ -1,5 +1,13 @@
 {
-  "active_runs": {},
+  "active_runs": {
+    "mainchip_scoped_stale_wire_reroute": {
+      "release": 429993235,
+      "run": 41211382427,
+      "source": "ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9",
+      "tag": "cloud-results-41211382427-1-mainchip-bulk-postdrt-antenna",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41211382427"
+    }
+  },
   "cloud_results_release_reservations": {
     "mainchip_artifact_recovery": {
       "exact_tag_target_verified": true,
@@ -1644,6 +1652,11 @@
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-stale-wire-routing-start-v174.json",
     "sha256": "74df8d7dca48508b270b64cad94df92e42bc305f38525b08a21226edfc4dfb2a"
   },
+  "continuation_note_v175": {
+    "bytes": 4308,
+    "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-stale-wire-test-fix-live-v175.json",
+    "sha256": "6be69ba4ad9ce62377e604a36b6449e4618a4f9a70a71a6bde5ea097b7d39f60"
+  },
   "current_run_snapshot": [
     {
       "attempt": 1,
@@ -1773,6 +1786,33 @@
       "run": 41211073897,
       "source": "571c94d54ee9e7ebe8b7f9c007dd84368dc214ec",
       "status": "completed"
+    },
+    {
+      "attempt": 1,
+      "conclusion": null,
+      "jobs": [
+        {
+          "conclusion": "success",
+          "id": 124566939851,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 124567308303,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "conclusion": null,
+          "id": 124567343451,
+          "name": "diode-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41211382427,
+      "source": "ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9",
+      "status": "in_progress"
     }
   ],
   "executed_collector_v163_initial": {
@@ -75996,6 +76036,7 @@
     "observed_41206809668": 41206809668,
     "observed_41208696985": 41208696985,
     "observed_41209965584": 41209965584,
+    "observed_41211073897": 41211073897,
     "phase244_exact_reset_readback_pass": 40102964781,
     "phase244_fast_assert_rejected_fixed_phase_margin": 40098170615,
     "phase244_offset_four_case_intrinsic_pass": 40114254950,
@@ -76048,13 +76089,13 @@
     "tests_and_CAD_on_GitHub": true
   },
   "local_cleanup_verification": {
-    "at": "2026-10-31T14:40:19.742591+00:00",
+    "at": "2026-10-31T14:44:45.388188+00:00",
     "local_CAD_processes": [],
     "native_payload_downloaded_locally": false,
     "owned_project_tmp_empty": true,
     "workspace_empty": true
   },
-  "local_workspace_verified_empty_at": "2026-10-31T14:40:19.742591+00:00",
+  "local_workspace_verified_empty_at": "2026-10-31T14:44:45.388188+00:00",
   "monitor": {
     "automatic_native_dispatch": false,
     "branch": "main",
@@ -76090,7 +76131,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 174,
+    "inventory_version": 175,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -76131,12 +76172,12 @@
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66"
   },
   "next_actions": [
-    "CLOUD ONLY: no local native payloads/tests/CAD or archives, even RAM; workspace and owned tmp empty. Latest direct user request overrides stale goal local-work wording.",
-    "Poll the SAME41211073897 run. Do not cancel or restart on quiet logs. Verify source controls, actual preclear native terminal, routed physical gates, complete output preservation. If failure, preserve full native capsule and all logs before exact diagnosis. Native archives remain cloud-only.",
-    "Source571c94d54ee9e7ebe8b7f9c007dd84368dc214ec oncodex/mainchip-net459-diode-prune is the current scoped rerouting implementation. Original327controls plus15newunittests precede native acquisition. Do not equate source controls to a successful physical route.",
-    "Prior actual native41209965584 observed all608nets and1351unconnected newdiode A pins inbothcontactmodes. Full proofrootv173/sourcea74b74, release429983566. Retain failure evidence.",
-    "CDR freshRC still open: current75file graphview/source9cb8738b/run41206809668, exact330member capsule andoriginal absolutepaths. Original500device binding/wireRC/sevenMIM bothorders22controls/order and21composition controls before1151vector loaded electrical matrix.",
-    "FullPHY/finaltiming remain open; all analoglimits and20/4/8/8ns+5% unchanged. Eight-hourmonitor read-only435handles automatic_native_dispatch=false; historicalHTTP502 issue not claimed fixed."
+    "CLOUD ONLY: all tests/CAD/native payloads/archives remain GitHub, never acquire native archives locally even RAM. Workspace and ownedtmp empty; latest direct request overrides old goal local-work wording.",
+    "Poll SAME41211382427. Original327controls and15newtests gate native acquisition. Check actual608wire removal native terminal, allguide/fullsnapshot equality, route_delta,1691clocks/placement, bothcontactmodes/antenna/DRC; preserve fullnativefailure andalllogs. No rerun/cancel on quiet logs.",
+    "Current mainchip source isddc1cbddf68096c5e976bf9acda5c5fb0168c5b9; predecessor571c94d source-control failure fully preserved inroot docs/evidence/mainchip-stale-wire-control-failure-41211073897/. No native attempt infailed41211073897. Exact ASTtest was corrected, originalnativecode/limits unchanged.",
+    "Prior actual native41209965584 sourcea74b74 proved all1351newdiode Apins lackwirecontact inall608nets bothpositivearea/closedboundary; permanent429983566 andfullrootproofv173. Newactualrouting not yet accepted.",
+    "CDR graph41206809668/source9cb8738b remains freshRC-ready only. Implement exact330member/current75fileview admission withoriginal absolutegraph paths; original500device/wireRC/sevenMIM bothorders22controls/order and21composition, then1151vector nominal_early/constant_one loaded electricalmatrix.",
+    "FullPHY/finalsetuphold open; analoglimits and20/4/8/8ns+5% unchanged.8hmonitor read-only436handles automatic_native_dispatch=false; historicalHTTP502 issue not claimedfixed."
   ],
   "prepared_collector_v155": {
     "bytes": 14498,
@@ -85066,59 +85107,63 @@
       ]
     },
     "mainchip_stale_wire_routing_in_progress": {
-      "adapters": [
-        "clear only608plan-owned wires on a separate copy then native reload/full snapshot/allguide equality",
-        "preserve original route_delta/1691clock/allplacement/connectivity/antenna/DRC gates",
-        "original clock gate AST sole census assertion now exact donor153130 andcandidate154480",
-        "propagate actual hosted GITHUB_ACTIONS=true into original isolated container; retain all limits"
-      ],
-      "all_source_bytes_readback_verified": true,
       "branch": "codex/mainchip-net459-diode-prune",
-      "files_published": 8,
       "full_phy_accepted": false,
-      "manifest_sha256": "8aed9f4b895fdfaec76b3d365d2c0ca0322018bcf1a3695de4fddc01ba7e51c9",
-      "next": "Poll the SAME41211073897 run. Do not cancel or restart on quiet logs. Verify source controls, actual preclear native terminal, routed physical gates, complete output preservation. If failure, preserve full native capsule and all logs before exact diagnosis. Native archives remain cloud-only.",
+      "manifest_sha256": "da69d51c6a6e2a7a991039bf90d2c317eebdb4d7b6bb010af843b7b6aeeb8ee6",
+      "next": "Poll SAME41211382427. Original327controls and15newtests gate native acquisition. Check actual608wire removal native terminal, allguide/fullsnapshot equality, route_delta,1691clocks/placement, bothcontactmodes/antenna/DRC; preserve fullnativefailure andalllogs. No rerun/cancel on quiet logs.",
       "physical_acceptance": false,
       "protected_sources": 2340,
-      "release": 429990936,
-      "run": 41211073897,
+      "release": 429993235,
+      "run": 41211382427,
       "snapshot": {
         "attempt": 1,
-        "conclusion": "failure",
+        "conclusion": null,
         "jobs": [
           {
-            "conclusion": "failure",
-            "id": 124566011076,
+            "conclusion": "success",
+            "id": 124566939851,
             "name": "source-controls",
             "status": "completed"
           },
           {
             "conclusion": "success",
-            "id": 124566278789,
+            "id": 124567308303,
             "name": "preserve-job-log",
             "status": "completed"
           },
           {
-            "conclusion": "success",
-            "id": 124566323177,
-            "name": "preserve-antenna-job-logs",
-            "status": "completed"
-          },
-          {
-            "conclusion": "skipped",
-            "id": 124566324250,
+            "conclusion": null,
+            "id": 124567343451,
             "name": "diode-routing",
-            "status": "completed"
+            "status": "in_progress"
           }
         ],
-        "run": 41211073897,
-        "source": "571c94d54ee9e7ebe8b7f9c007dd84368dc214ec",
-        "status": "completed"
+        "run": 41211382427,
+        "source": "ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9",
+        "status": "in_progress"
       },
-      "source": "571c94d54ee9e7ebe8b7f9c007dd84368dc214ec",
+      "source": "ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9",
+      "source_readback_verified": true,
+      "source_test_step_passed": true,
       "source_tests_authored": 15,
-      "status": "CLOUD_RUN_STARTED_NOT_YET_NATIVE_ACCEPTED",
+      "status": "CLOUD_RUN_IN_PROGRESS_NATIVE_ACCEPTANCE_PENDING",
       "timing_accepted": false
+    },
+    "mainchip_stale_wire_source_control_failure": {
+      "cause": "Only reverse-AST test selection was broad; included original clock-snapshot comparison as second subscript. Native implementation and physical gates were not changed.",
+      "conclusion": "failure",
+      "failed": 1,
+      "native_acquisition": false,
+      "native_job_skipped": true,
+      "passed": 14,
+      "proof_bytes": 1083311,
+      "proof_files": 9,
+      "proof_prefix": "docs/evidence/mainchip-stale-wire-control-failure-41211073897/",
+      "receipt_sha256": "9ad9a2ee08724b245bd04049df709b79f4fadb446558f049f5ac0f11e61410fb",
+      "run": 41211073897,
+      "source": "571c94d54ee9e7ebe8b7f9c007dd84368dc214ec",
+      "source_tests_run": 15,
+      "status": "completed"
     },
     "mainchip_upper_layer_escape_seed": {
       "bounded_trial_passed": true,
@@ -86235,7 +86280,7 @@
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167",
     "source": "2a44527cd4a72a4e118c327eae484386e710b57e"
   },
-  "root_source_before_receipt": "6f67fdf38c9329e40c62451052c8c0bb52c04ec2",
+  "root_source_before_receipt": "4a944aeef29ddf798c8c55f2c61360c8f3cecab4",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -86243,5 +86288,5 @@
     "sha256": "e91938bb7dc9cb4c57c934f1aa3b8fff562efc2e04d1e2726976afcb74d65835"
   },
   "schema_version": 1,
-  "updated_at": "2026-10-31T14:40:19.742591+00:00"
+  "updated_at": "2026-10-31T14:44:45.388188+00:00"
 }
