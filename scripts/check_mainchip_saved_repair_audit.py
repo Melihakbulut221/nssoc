@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Pure source/data controls; no native acquisition or OpenDB import."""
-import ast,copy,hashlib,json,os,sys
+import ast,copy,hashlib,json,os,sys,base64
+import mainchip_saved_geometry_contract as replay
 from pathlib import Path
 def main():
     path=Path(__file__).with_name("mainchip_saved_repair_audit.py")
-    tree=ast.parse(path.read_bytes());names={"digest","compact","difference","geometry","native_pointer"}
+    tree=ast.parse(path.read_bytes());names={"digest","compact","difference","geometry","native_pointer","untyped_geometry"}
     nodes=[n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name in names]
     assert len(nodes)==len(names)
     scope={"hashlib":hashlib,"json":json}
@@ -69,8 +70,38 @@ def main():
         try:native_pointer(value)
         except(ValueError,AttributeError):rows.append(name)
         else:raise AssertionError(name)
-    assert len(rows)==23 and len(set(rows))==23
-    result=dict(status="PASS_SAVED_REPAIR_AUDIT_SOURCE_CONTROLS",passed_cases=rows,count=23,
+    rect=dict(kind="wire-rect",layer="Metal1",box=[0,0,1,4],opcode_index=7)
+    check("wire RECT retained",g([rect])==[["wire-rect","Metal1",[0,0,1,4]]])
+    check("typed RECT differs from wire",g([rect])!=g(shapes[:1]))
+    untyped=scope["untyped_geometry"]
+    check("same copper rectangle ignores encoding kind only",untyped(dict(shapes=[rect]))==untyped(dict(shapes=shapes[:1])))
+    root=Path(__file__).resolve().parents[1];proof=root/replay.PREFIX
+    fixture="native/bulk-postdrt-antenna/saved-before-wire-001f19cbeef062f064a47c80e0f111e65c043cc88ffa32263f3d971b3c19cbff.json"
+    locations=json.loads((proof/"native-record-locations.json").read_bytes())
+    loc=locations[fixture]
+    shard=json.loads((proof/loc["path"]).read_bytes())
+    found=[x for x in shard["records"]if x["name"]==fixture];assert len(found)==1
+    fixture_raw=base64.b64decode(found[0]["base64"],validate=True)
+    assert len(fixture_raw)==149140 and hashlib.sha256(fixture_raw).hexdigest()=="0953f7bbd05c377fb985bff37a8bbe8abb8948a8aefff6db34385b7d385064bc"
+    actual=json.loads(fixture_raw)["projection"]
+    prior=ast.parse((proof/"tested-source/scripts/mainchip_saved_repair_audit.py").read_bytes())
+    prior_geo=[x for x in prior.body if isinstance(x,ast.FunctionDef)and x.name=="geometry"];assert len(prior_geo)==1
+    old_scope={};exec(compile(ast.Module(body=prior_geo,type_ignores=[]),"prior-authentic-geometry","exec"),old_scope)
+    try:old_scope["geometry"](actual)
+    except ValueError as exc:assert str(exc)=="unknown shape"
+    else:raise AssertionError("original comparator must reproduce recorded rejection")
+    check("authentic previously rejected wire RECT projection",len(geometry(actual))==actual["shape_count"]and any(x["kind"]=="wire-rect"for x in actual["shapes"]))
+    metadata=json.loads((proof/"capsule-metadata/candidate-outputs.json").read_bytes())
+    selected=replay.select(metadata["files"])
+    check("complete native replay input selection",len(selected)==1223)
+    for name,missing in(("missing wire refuses replay",next(x for x in sorted(selected)if "-wire-"in x and not x.endswith("-index.json"))),
+      ("missing core record refuses replay","bulk-postdrt-inner-result.json")):
+        bad=dict(metadata["files"]);bad.pop(missing)
+        try:replay.select(bad)
+        except ValueError:rows.append(name)
+        else:raise AssertionError(name)
+    assert len(rows)==30 and len(set(rows))==30
+    result=dict(status="PASS_SAVED_REPAIR_AUDIT_SOURCE_CONTROLS",passed_cases=rows,count=30,
       source=os.environ["GITHUB_SHA"],run_id=int(os.environ["GITHUB_RUN_ID"]),attempt=int(os.environ["GITHUB_RUN_ATTEMPT"]),
       source_pin=hashlib.sha256(path.read_bytes()).hexdigest(),native_executed=False,
       physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)

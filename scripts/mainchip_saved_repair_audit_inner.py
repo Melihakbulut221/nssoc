@@ -10,7 +10,7 @@ from mainchip_bulk_postdrt_antenna_inner import (
  c,p,supervision,command_evidence,stream_contract,fingerprint,OUT,write,run,
  ENGINE,WORK,DATA,INPUTS,stop_supervision,supervised_run,preserve_available)
 SCRIPT="/work/tail-source/scripts/mainchip_saved_repair_audit.py"
-QUALIFICATION_PHASES=("snapshot-delta","master-identity","wire-before","wire-after","wire-compare")
+QUALIFICATION_PHASES=("replay-saved-geometry",)
 
 def run_qualification(report,runner):
     states={name:"not_started"for name in QUALIFICATION_PHASES}

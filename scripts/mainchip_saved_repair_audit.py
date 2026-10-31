@@ -5,6 +5,7 @@ import hashlib,json,os,sys,gc
 from pathlib import Path
 sys.path.insert(0,"/work/tail-source/scripts")
 import odb
+import mainchip_saved_geometry_contract as replay
 import mainchip_bulk_postdrt_antenna as p
 import mainchip_bulk_postdrt_antenna_native as native
 from mainchip_bulk_postdrt_antenna_native import n,own
@@ -14,7 +15,7 @@ WORK=Path("/work/out/work/bulk-postdrt-antenna")
 CURRENT=Path("/work/current-input.odb")
 PARTIAL=ROOT/"work/bulk-postdrt-antenna/insertion-after-shim.odb"
 PINS="docs/evidence/mainchip-bulk-namespace-real-repair-terminal-41172959321/capsule-metadata/candidate-outputs.json"
-PHASES=("snapshot-delta","master-identity","wire-before","wire-after","wire-compare")
+PHASES=("replay-saved-geometry",)
 
 def digest(value):
     return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(",",":"),allow_nan=False).encode()).hexdigest()
@@ -47,7 +48,7 @@ def geometry(projection):
     # Preserve duplicates, kind and layer. Junction/operand ordering is separate.
     rows=[]
     for shape in projection["shapes"]:
-        if shape["kind"]not in("wire","via"):raise ValueError("unknown shape")
+        if shape["kind"]not in("wire","via","wire-rect"):raise ValueError("unknown shape")
         box=shape["box"]
         if len(box)!=4 or any(type(x)is not int for x in box)or box[0]>=box[2]or box[1]>=box[3]:
             raise ValueError("invalid rectangle")
@@ -55,17 +56,21 @@ def geometry(projection):
         rows.append([shape["kind"],shape["layer"],box])
     return sorted(rows)
 
+def untyped_geometry(projection):
+    return sorted([[layer,box]for kind,layer,box in geometry(projection)])
+
+def input_data():
+    return ROOT/"bulk-postdrt-antenna"
+
 def save(name,value):
     native.save(OUT/name,value)
 def read(name):
-    return json.loads((OUT/name).read_bytes())
+    return json.loads((input_data()/name).read_bytes())
 def verify_inputs():
-    pins=json.loads((p.ROOT/PINS).read_bytes())["files"]
-    for name in("bulk-postdrt-antenna/baseline-snapshot.json",
-      "bulk-postdrt-antenna/insertion-before-pg-snapshot.json",
-      "work/bulk-postdrt-antenna/insertion-after-shim.odb"):
-        p.exact(native.fp(ROOT/name),pins[name],"saved input identity "+name)
-    p.exact(native.fp(CURRENT),p.INPUT,"original accepted current input")
+    pins=json.loads((p.ROOT/replay.PREFIX/"capsule-metadata/candidate-outputs.json").read_bytes())["files"]
+    for name in sorted(replay.select(pins)):
+        p.exact(native.fp(ROOT/name),pins[name],"saved native input identity "+name)
+    p.exact(native.fp(CURRENT),p.INPUT,"original accepted input")
 
 def snapshots():
     observations={}
@@ -166,20 +171,30 @@ def compare_wires():
     for name in delta["changed_wire_nets"]:
         raw=[]
         for index in(a,b):
-            path=OUT/index[name]["path"]
+            path=input_data()/index[name]["path"]
             p.exact(native.fp(path),{k:index[name][k]for k in("bytes","sha256")},"wire observation identity")
             raw.append(json.loads(path.read_bytes()))
         old,new=raw
-        ga=None if old["projection"]is None else geometry(old["projection"])
-        gb=None if new["projection"]is None else geometry(new["projection"])
-        rows[name]=dict(rectangle_multiset_equal=ga==gb,encoded_equal=old["encoded"]==new["encoded"],
+        try:
+            ga=None if old["projection"]is None else geometry(old["projection"])
+            gb=None if new["projection"]is None else geometry(new["projection"])
+            ua=None if old["projection"]is None else untyped_geometry(old["projection"])
+            ub=None if new["projection"]is None else untyped_geometry(new["projection"])
+        except BaseException as exc:
+            save("saved-geometry-failure-context.json",dict(net=name,error=repr(exc),
+              before=old["wire_pin"],after=new["wire_pin"],
+              shape_kinds=[[]if x["projection"]is None else sorted({v["kind"]for v in x["projection"]["shapes"]})for x in raw]))
+            raise
+        rows[name]=dict(rectangle_multiset_equal=ga==gb,copper_cut_rectangle_multiset_equal=ua==ub,encoded_equal=old["encoded"]==new["encoded"],
           terminal_identity_equal=old["identity"]==new["identity"],
           shape_counts=[None if x is None else len(x)for x in(ga,gb)],
           before_geometry_sha256=digest(ga),after_geometry_sha256=digest(gb))
     save("saved-wire-comparison.json",dict(nets=rows,
       rectangle_multiset_equal_count=sum(x["rectangle_multiset_equal"]for x in rows.values()),
       rectangle_multiset_changed_count=sum(not x["rectangle_multiset_equal"]for x in rows.values()),
-      total=len(rows),read_only=True,geometry_equality_is_not_connectivity_or_DRC_acceptance=True,**p.FLAGS))
+      total=len(rows),read_only=True,rectangle_multiset_includes_primitive_kind=True,
+      copper_cut_rectangle_multiset_equal_count=sum(x["copper_cut_rectangle_multiset_equal"]for x in rows.values()),
+      geometry_equality_is_not_connectivity_or_DRC_acceptance=True,**p.FLAGS))
     master=read("saved-native-master-identity.json")
     save("saved-audit-result.json",dict(status="COMPLETE_SAVED_BULK_REPAIR_DIAGNOSIS",read_only=True,
       repair_calls=0,route_calls=0,original_failed_run=41172959321,
@@ -190,13 +205,38 @@ def compare_wires():
          template_repeated_wrapper_equal=master["template_repeated_wrapper_equal"]),
       wire=dict(total=len(rows),rectangle_multiset_equal_count=sum(x["rectangle_multiset_equal"]for x in rows.values()),
          rectangle_multiset_changed_count=sum(not x["rectangle_multiset_equal"]for x in rows.values())),
+      native_observations_reused_from=41187928413,fresh_native_db_reads=0,
+      rectangle_multiset_includes_primitive_kind=True,
+      copper_cut_rectangle_multiset_equal_count=sum(x["copper_cut_rectangle_multiset_equal"]for x in rows.values()),
       prior_failure_remains_failure=True,no_candidate_promoted=True,**p.FLAGS))
 
+def replay_saved():
+    inner=json.loads((ROOT/"bulk-postdrt-inner-result.json").read_bytes())
+    p.require(inner["status"]=="FAIL_SAVED_REPAIR_AUDIT_ENGINE","original diagnostic failure retained")
+    expected=["bulk-postdrt-version","bulk-postdrt-ldd","bulk-postdrt-saved-snapshot-delta",
+      "bulk-postdrt-saved-master-identity","bulk-postdrt-saved-wire-before","bulk-postdrt-saved-wire-after",
+      "bulk-postdrt-saved-wire-compare"]
+    p.exact([r["label"]for r in inner["commands"]],expected,"original complete actual command list")
+    p.exact([r["returncode"]for r in inner["commands"]],[0,0,0,0,0,0,1],"original actual command results")
+    p.exact(inner["saved_audit_phase_states"],{"snapshot-delta":"complete","master-identity":"complete",
+      "wire-before":"complete","wire-after":"complete","wire-compare":"failed"},"original phase states")
+    failure=read("saved-wire-compare-failure.json")
+    p.require(failure["error"]=="ValueError('unknown shape')","exact original comparator failure")
+    master=read("saved-native-master-identity.json")
+    p.require(master["observed_added_count"]==1351 and len(master["instances"])==1351,"all actual added masters")
+    p.require(master["pointer_scope"]["repeat_master_pointer_equal"]is True
+      and master["pointer_scope"]["repeat_library_pointer_equal"]is True,"actual native pointer controls")
+    delta=read("saved-delta.json")
+    p.exact(sorted(x["name"]for x in master["instances"]),delta["added_instances"],"same actual added names")
+    save("saved-replay-lineage.json",dict(producer=replay.PRODUCER,
+      original_phase_states=inner["saved_audit_phase_states"],prior_failure=failure["error"],
+      original_command_codes=[r["returncode"]for r in inner["commands"]],
+      native_observations_reused=True,fresh_native_db_reads=0,**p.FLAGS))
+    compare_wires()
+
 def main():
-    phase=os.environ["NSSOC_SAVED_REPAIR_PHASE"];p.require(phase in PHASES,"read-only phase")
-    p.require(not any(x in os.environ for x in("GH_TOKEN","GITHUB_TOKEN")),"credential-free native")
+    phase=os.environ["NSSOC_SAVED_REPAIR_PHASE"];p.require(phase in PHASES,"saved data finalization only")
+    p.require(not any(x in os.environ for x in("GH_TOKEN","GITHUB_TOKEN")),"credential-free worker")
     p.source_guard();verify_inputs();OUT.mkdir(exist_ok=True,parents=True)
-    actions={"snapshot-delta":snapshots,"master-identity":master_identity,
-      "wire-before":lambda:wires("before"),"wire-after":lambda:wires("after"),"wire-compare":compare_wires}
-    p.run_phase("saved-"+phase,actions[phase],verify_inputs,lambda name,value:save(name,value))
+    p.run_phase("saved-"+phase,replay_saved,verify_inputs,lambda name,value:save(name,value))
 if __name__=="__main__":main()

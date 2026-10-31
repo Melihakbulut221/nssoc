@@ -4,6 +4,7 @@
 import argparse,os,json,shutil,subprocess,sys
 from pathlib import Path
 import cloud_mainchip_bulk_postdrt_antenna as base
+import mainchip_saved_geometry_contract as replay
 from cloud_mainchip_bulk_postdrt_antenna import (
  f,c,p,tail,build,ROOT,BRANCH,GROUP,CURRENT,OUTER_SECONDS,context,control_evidence,
  reservation,acquire_current,publish_capsule,preserve_outputs,retained_workspace,emit)
@@ -19,7 +20,7 @@ def source_gate():
     required=set(inherited["files"])|{
       base.MANIFEST,"scripts/mainchip_saved_repair_audit.py",
       "scripts/mainchip_saved_repair_audit_inner.py",
-      "scripts/cloud_mainchip_saved_repair_audit.py","scripts/check_mainchip_saved_repair_audit.py"}
+      "scripts/cloud_mainchip_saved_repair_audit.py","scripts/check_mainchip_saved_repair_audit.py","scripts/mainchip_saved_geometry_contract.py"}
     f.require(required<=set(manifest["files"]),"complete unchanged original and qualification sources")
     for path,digest in manifest["files"].items():
         f.require(f.file_digest(c.secure_file(ROOT,path))["sha256"]==digest,"qualification source pin: "+path)
@@ -53,27 +54,27 @@ def cleanup_preserved_workspace(ctx,evidence):
 def acquire_failed(work,evidence):
     import types
     import cloud_mainchip_full_antenna_readback as reader
-    prefix="docs/evidence/mainchip-bulk-namespace-real-repair-terminal-41172959321/capsule-metadata/"
+    prefix=replay.PREFIX+"capsule-metadata/"
     outputs=f.decode(c.secure_file(ROOT,prefix+"candidate-outputs.json").read_bytes())
     parts=f.decode(c.secure_file(ROOT,prefix+"candidate-parts.json").read_bytes())
-    run=f.api("actions/runs/41172959321")
-    jobs=f.api("actions/runs/41172959321/attempts/1/jobs?per_page=100")
-    release=f.api("releases/429743993")
-    tag="cloud-results-41172959321-1-mainchip-bulk-postdrt-antenna"
+    run=f.api("actions/runs/41187928413")
+    jobs=f.api("actions/runs/41187928413/attempts/1/jobs?per_page=100")
+    release=f.api("releases/429832753")
+    tag="cloud-results-41187928413-1-mainchip-bulk-postdrt-antenna"
     ref=f.api("git/ref/tags/"+tag)
-    expected="4c672914056e61ed6af094d1d46a116f5c07620e"
+    expected="b8aa8fb2da6cc15a4660f96e8f2115efc5d9379e"
     f.require(run["head_sha"]==expected and run["status"]=="completed"and run["conclusion"]=="failure"
       and run["run_attempt"]==1 and run["workflow_id"]==401215446,"failed producer")
-    outcomes={"source-controls":"success","preserve-job-log":"success","trial":"failure","preserve-antenna-job-logs":"success"}
+    outcomes={"source-controls":"success","preserve-job-log":"success","saved-repair-audit":"failure","preserve-antenna-job-logs":"success"}
     f.require(len(jobs["jobs"])==4 and {j["name"]:j["conclusion"]for j in jobs["jobs"]}==outcomes,"complete failed producer jobs")
-    f.require(all(j["head_sha"]==expected and j["run_id"]==41172959321 and j["status"]=="completed"for j in jobs["jobs"]),"producer jobs identity")
-    f.require(release["id"]==429743993 and release["tag_name"]==tag and release["target_commitish"]==expected
+    f.require(all(j["head_sha"]==expected and j["run_id"]==41187928413 and j["status"]=="completed"for j in jobs["jobs"]),"producer jobs identity")
+    f.require(release["id"]==429832753 and release["tag_name"]==tag and release["target_commitish"]==expected
       and release["draft"]is False and release["prerelease"]is True and ref["object"]["type"]=="commit"
       and ref["object"]["sha"]==expected,"failed producer capsule identity")
     p.exact(outputs["input"],CURRENT,"original accepted source")
-    f.require(outputs["source"]==expected and outputs["run"]==41172959321 and outputs["attempt"]==1
-      and len(outputs["files"])==65,"full failed output census")
-    p.exact(parts["archive"],dict(bytes=304831102,sha256="01b48941ab1b6b351ab2a0e6cb18dc6c3f2e5ede34d2d98227eacf12c036d87a"),"failed archive")
+    f.require(outputs["source"]==expected and outputs["run"]==41187928413 and outputs["attempt"]==1
+      and len(outputs["files"])==1261,"full failed output census")
+    p.exact(parts["archive"],replay.PRODUCER["archive"],"failed archive")
     assets={a["name"]:dict(id=a["id"],bytes=a["size"],sha256=a["digest"].removeprefix("sha256:"))for a in release["assets"]}
     f.require(len(assets)==len(release["assets"])==3 and set(assets)==
       {"candidate-outputs.json","candidate-parts.json","candidate-native.tar.gz.part000"},"exact failed assets")
@@ -91,12 +92,10 @@ def acquire_failed(work,evidence):
     p.exact(f.decode(paths["candidate-outputs.json"].read_bytes()),outputs,"full failed received metadata")
     p.exact(f.decode(paths["candidate-parts.json"].read_bytes()),parts,"full failed received parts")
     p.exact(f.file_digest(paths["candidate-native.tar.gz.part000"]),parts["archive"],"full failed archive bytes")
-    selected={"bulk-postdrt-antenna/baseline-snapshot.json",
-      "bulk-postdrt-antenna/insertion-before-pg-snapshot.json",
-      "work/bulk-postdrt-antenna/insertion-after-shim.odb"}
+    selected=replay.select(outputs["files"])
     observed=reader.restore(paths["candidate-native.tar.gz.part000"],outputs["files"],selected,work/"failed-repair-inputs")
     f.write_new(evidence/"failed-input-restoration.json",f.encode(dict(full_members=observed,selected=sorted(selected),
-      full_archive_verified=True,producer_run=41172959321,producer_source=expected,
+      full_archive_verified=True,producer_run=41187928413,producer_source=expected,
       native_bytes_remain_in_cloud=True,read_only=True,production_candidate=False)))
     shutil.rmtree(transport)
 
@@ -104,8 +103,8 @@ def perform(ctx,proof,evidence):
     authorize_native(source_gate())
     controls=control_evidence(ctx)
     audit=f.decode(c.secure_file(ROOT,"bulk-postdrt-integration-controls/audit-controls.json").read_bytes())
-    f.require(audit["status"]=="PASS_SAVED_REPAIR_AUDIT_SOURCE_CONTROLS"and audit["count"]==23
-      and len(set(audit["passed_cases"]))==23 and audit["source"]==ctx["source"]and audit["run_id"]==ctx["run_id"]
+    f.require(audit["status"]=="PASS_SAVED_REPAIR_AUDIT_SOURCE_CONTROLS"and audit["count"]==30
+      and len(set(audit["passed_cases"]))==30 and audit["source"]==ctx["source"]and audit["run_id"]==ctx["run_id"]
       and audit["attempt"]==1 and audit["native_executed"]is False,"same-source saved audit controls")
     f.write_new(evidence/"saved-audit-source-controls.json",f.encode(audit))
     f.write_new(evidence/"same-source-controls.json",f.encode(controls))
