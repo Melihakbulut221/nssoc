@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v161
+# Cloud continuation — checkpoint v162
 
-Updated: 2026-10-31T10:26:31.505485+00:00
+Updated: 2026-10-31T10:48:41.387478+00:00
 
-All computation and native payloads remain on GitHub runners; local workspace is empty. No active native job is recorded here.
+All computation and native payloads stay on GitHub; local workspace is empty. Current exact-source continuation: run41194121952 attempt1, source94bdd397a8872926fd16be9aabb34d3657ec1c4d, workingbranch codex/mainchip-net459-diode-prune, reserved release429874359. Check live state; do not dispatch this source again.
 
-Actual diode reconstruction41190910993 passed all5 native phases/all7 commands and the complete original admission, preserving143820 original wire/net records,153129 original cells and1691 clockrecords while adding1351diodes. Candidate213,798,975B SHA2675b9465e7e220931b608ecc0aeec4f171355f3b19259024e04c4e0fb079c34 is retained in the complete47-member native capsule. The overall producer workflow remains FAILURE due to recorded host KeyError saved_audit_result; this failure is never rewritten.
+This continuation reuses the fully admitted candidate from native producer41190910993:1351diodes,143820original net/wire records,153129old cells and1691clockrecords preserved. The old producer workflow remains failed for its archived host-only KeyError; corrected host handoff passed224source controls without repeating construction.
 
-The corrected host transfer0292d62f passed source-only regression41192394563:62 controls plus162 original controls. The authentic old failure was reproduced and the actual fixed host statement accepted the complete real native result;8 refusal mutations also passed. All30 proof files and2raw logs ated506529 were byte-readback verified. Construction was not repeated. Exact collectors v158 andv160 have both executed; do not rerun them or redispatch unchanged jobs.
+New run first requires273source controls, restores both authenticated archives in cloud, transfers full native guides only for608admitted signal owners, checks exact full physical and guide roundtrip plus2702direct new-diode PG contacts, and performs one original guarded detailed_route. It never repeats repair_antennas or diode creation. All original physical/clock/DRC/antenna/connectivity guards and independent failure preservation stay active. No final timing/fullPHY acceptance is claimed.
 
-Next: restore and verify the complete native capsule on a runner, qualify actual guide ownership and any restricted guide overlay, then run constrained detailed routing on the exact candidate. Read v159 research before using read_guides: it clears all net guides and text roundtrip loses via-layer/flags. Preserve all unowned/protected guide records and original physical invariants. Require full DRC/antenna/connectivity/power/original-clock checks followed by final extraction/STA. Full serial PHY and final setup/hold remain open; no final acceptance is claimed. Authoritative checkpoint: docs/evidence/cloud-active-checkpoint-20261024.json.
+Prepared terminal collector: docs/evidence/cloud-collector-recipes-20261029/mainchip-saved-diode-routing-collector-v162.py. It has NOT executed. Run only after41194121952 becomes terminal and verify branch remains exact94bdd397; preserve full logs/records/native capsule metadata and all failed results. Inventoryv162 contains421run handles in3bounded shards. The8hour monitor stays read-only; its earlier HTTP502 issue is not claimed fixed. FullPHY and finalRC/STA remain open.
 
 ## Historical notes below — not current running-job status
+
 
 
 
