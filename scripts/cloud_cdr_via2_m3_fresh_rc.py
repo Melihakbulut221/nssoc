@@ -73,7 +73,69 @@ def authenticate_controls(ctx,out,api_call=q.api,fetch_log=a.read_source_log):
     except BaseException as error:
         q.preserve_error(out,'failure.json',error,None);raise
 
-def perform(ctx,c,reserved,controls_raw,out,api_call=q.api,fetch=q.download,pipeline=None):
+def native_pipeline(current_view,out,preflight,c,p):
+    import cdr_via2_m3_fresh_rc_core as core
+    import cdr_via2_m3_fresh_rc_runtime as inputs
+    import cdr_via2_m3_fresh_rc_native as entry
+    ctx=a.context(os.environ);a.authorize_native(ctx,c);gate=lambda:a.source_guard(ctx)
+    require(out==a.OUT and current_view==Path(producer.CURRENT_ROOT),'exact separate fresh and original native roots')
+    a.native_preflight(preflight,ctx,c,p)
+    policy=decode(q.regular(ROOT,'current-cdr-runtime-policy.json').read_bytes());app=Path(policy['appimage'])
+    require(policy['source']==ctx['source']and policy['run_id']==ctx['run_id']and policy['attempt']==1,'current scoped runtime policy')
+    require(app.is_absolute()and pin(app)['sha256']==c['appimage']['sha256']==policy['appimage_sha256'],'exact immutable AppImage')
+    require(policy['loaded']is True and policy['global_policy_changed']is False and policy['restriction_before']==policy['restriction_after'],'scoped unchanged namespace restriction')
+    require(policy['profile']=='/etc/apparmor.d/nssoc-cdr-runtime-'+ctx['token']and hashlib.sha256(policy['profile_text'].encode()).hexdigest()==policy['profile_sha256'],'exact run-owned runtime profile')
+    write(out/'runtime-policy.json',encode(policy))
+    inputs.acquire(out,preflight,ctx,c,p)
+    launcher=runtime.launcher(ROOT,gate,'501d4846603abd42b9efeaf515a5ad45f136d58997e37b16329003623b9f33ac')
+    supervisor=None;heartbeat=None;previous={};primary=None;errors=[];commands=[];qualification=None
+    def execute(argv,label,seconds):
+        argv=list(map(str,argv));failure=None
+        a.source_guard(ctx);a.native_preflight(preflight,ctx,c,p)
+        scripts={v:pin(Path(v))for v in argv if v.endswith('.py')and Path(v).is_absolute()}
+        try:
+            with tokenless():supervisor.supervised(argv,label,seconds=seconds,cwd=ROOT)
+        except BaseException as error:failure=error
+        try:
+            record=decode(q.regular(supervisor.TRACE,label+'.command.json').read_bytes());commands.append(record)
+            require(record['argv']==argv and record['minimum_available_kib']==2097152 and record['maximum_group_rss_kib']==10485760,'exact command and original resource limits')
+            for stream in ('stdout','stderr'):require(pin(q.regular(supervisor.TRACE,label+'.'+stream))==dict(bytes=record[stream+'_bytes'],sha256=record[stream+'_sha256']),'complete supervised stream')
+            events=[decode(b)for b in q.regular(supervisor.TRACE,'events.jsonl').read_bytes().splitlines()if b.strip()]
+            starts=[e for e in events if e.get('event')=='command_start'and e.get('label')==label]
+            require(len(starts)==1 and starts[0]['timeout_seconds']==seconds,'unchanged phase timeout')
+            require(record['returncode']==0 and record['supervision_failure']is None and not record['process_group_cleanup']['remaining_live'],'actual native phase failed')
+            require(all(pin(Path(name))==value for name,value in scripts.items()),'actual wrapper and derived numerical script bytes unchanged')
+            a.source_guard(ctx);a.native_preflight(preflight,ctx,c,p)
+        except BaseException as error:
+            if failure is None:failure=error
+        if failure is not None:raise failure
+    try:
+        supervisor=runtime.supervisor(ROOT,out,out/'supervision',gate,runtime.SAMPLER_SHA);supervisor.TRACE.mkdir()
+        for sig in (signal.SIGINT,signal.SIGTERM):previous[sig]=signal.getsignal(sig);signal.signal(sig,supervisor.interrupted)
+        heartbeat=threading.Thread(target=supervisor.heartbeat,daemon=True);heartbeat.start()
+        with tokenless():smoke=launcher.probe(app,c['appimage']['sha256'],out/'runtime-smoke')
+        require(smoke['accepted']is True,'pinned immutable runtime smoke')
+        native_entry=ROOT/'scripts/cdr_via2_m3_fresh_rc_native.py'
+        execute([sys.executable,'-B',native_entry,'--phase','prepare','--out',out],'prepare',1200)
+        plan=core.command_plan(ROOT,out,app,Path(sys.executable).resolve(),native_entry);write(out/'native-command-plan.json',encode(plan))
+        require(plan['native_authority']is False and len(plan['commands'])==13,'original thirteen command argument contract conveys no authority')
+        for command in plan['commands']:execute(command['argv'],command['label'],1200)
+        qualification=entry.validate_complete(out,ctx)
+        require(qualification['status']==c['core']['qualification_status']and qualification['fresh_RC_pipeline_complete']is True,'complete frozen numerical qualification')
+        write(out/'fresh-rc-qualification.json',encode(qualification))
+        a.source_guard(ctx);a.native_preflight(preflight,ctx,c,p);require(pin(app)['sha256']==c['appimage']['sha256'],'runtime unchanged')
+    except BaseException as error:primary=error
+    finally:
+        actions,cleanup=finish(supervisor,heartbeat,previous);errors+=cleanup
+        evidence=dict(actions=actions,errors=[repr(e)for e in errors],primary_error=None if primary is None else repr(primary),commands=commands,**FLAGS)
+        try:write(out/'native-lifecycle.json',encode(evidence))
+        except BaseException as error:
+            errors.append(error);print('UNSAVED_FRESH_RC_NATIVE_LIFECYCLE '+encode(dict(evidence,save_error=repr(error))).decode(),flush=True)
+    if primary is not None:raise primary
+    if errors:raise errors[0]
+    return qualification
+
+def perform(ctx,c,reserved,controls_raw,out,api_call=q.api,fetch=q.download,pipeline=native_pipeline):
     a.authorize_native(ctx,c);actual_c,p=a.source_guard(ctx);require(c==actual_c,'current immutable configuration')
     require(pipeline is not None,'separately qualified fresh RC pipeline required')
     actual=authenticate_controls(ctx,out/'source-controls-evidence',api_call=api_call)
@@ -159,5 +221,12 @@ def run(ctx,c,reserved,controls_raw,out,body=perform,emitter=emit_derived):
     if primary is not None:raise primary
     return result
 
-if __name__=='__main__':
-    raise SystemExit('Incomplete source-only host library; native entry requires separately reviewed integrated adapter')
+def main():
+    parser=argparse.ArgumentParser();group=parser.add_mutually_exclusive_group(required=True);group.add_argument('--rc',action='store_true');group.add_argument('--authenticate-controls',action='store_true')
+    parser.add_argument('--output',type=Path,required=True);parser.add_argument('--reservation',type=Path);parser.add_argument('--controls-proof',type=Path);args=parser.parse_args()
+    ctx=a.context(os.environ);c,p=a.source_guard(ctx);a.authorize_native(ctx,c)
+    if args.authenticate_controls:authenticate_controls(ctx,args.output);return
+    require(args.reservation is not None and args.controls_proof is not None,'independent reservation and actual same-source controls required')
+    out=candidate_output(args.output);require(out==a.OUT,'exact new current fresh RC destination')
+    run(ctx,c,decode(q.regular(args.reservation.parent,args.reservation.name).read_bytes()),q.regular(args.controls_proof.parent,args.controls_proof.name).read_bytes(),out)
+if __name__=='__main__':main()
