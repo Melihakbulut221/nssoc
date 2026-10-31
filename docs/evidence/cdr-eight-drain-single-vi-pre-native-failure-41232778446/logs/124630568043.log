@@ -1,0 +1,428 @@
+﻿2026-10-31T19:09:48.2930810Z Current runner version: '2.338.2'
+2026-10-31T19:09:48.2948915Z ##[group]Runner Image Provisioner
+2026-10-31T19:09:48.2949600Z Hosted Compute Agent
+2026-10-31T19:09:48.2950009Z Version: 20261021.618
+2026-10-31T19:09:48.2950869Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-31T19:09:48.2951449Z Build Date: 2026-10-21T00:45:21Z
+2026-10-31T19:09:48.2951940Z Worker ID: {a3a969d5-4bd3-4bbf-8518-e58ffa15713b}
+2026-10-31T19:09:48.2952502Z Region: centralus
+2026-10-31T19:09:48.2952905Z Cloud: Azure
+2026-10-31T19:09:48.2953304Z ##[endgroup]
+2026-10-31T19:09:48.2954719Z ##[group]Operating System
+2026-10-31T19:09:48.2955172Z Ubuntu
+2026-10-31T19:09:48.2955537Z 24.04.5
+2026-10-31T19:09:48.2955894Z LTS
+2026-10-31T19:09:48.2956266Z ##[endgroup]
+2026-10-31T19:09:48.2956657Z ##[group]Runner Image
+2026-10-31T19:09:48.2957080Z Image: ubuntu-24.04
+2026-10-31T19:09:48.2957465Z Version: 20261025.353.1
+2026-10-31T19:09:48.2958474Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-31T19:09:48.2959663Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-10-31T19:09:48.2960740Z ##[endgroup]
+2026-10-31T19:09:48.2961652Z ##[group]GITHUB_TOKEN Permissions
+2026-10-31T19:09:48.2963525Z Actions: read
+2026-10-31T19:09:48.2963921Z Contents: write
+2026-10-31T19:09:48.2964341Z Metadata: read
+2026-10-31T19:09:48.2964753Z ##[endgroup]
+2026-10-31T19:09:48.2966213Z Secret source: Actions
+2026-10-31T19:09:48.2966844Z Cache mode: write
+2026-10-31T19:09:48.2967532Z Prepare workflow directory
+2026-10-31T19:09:48.3345031Z Prepare all required actions
+2026-10-31T19:09:48.3380896Z Getting action download info
+2026-10-31T19:09:48.6103164Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-10-31T19:09:48.6744060Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-31T19:09:48.7590369Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-31T19:09:48.9433058Z Complete job name: prepare
+2026-10-31T19:09:48.9924702Z ##[group]Run python3 -B - <<'PY'
+2026-10-31T19:09:48.9925276Z [36;1mpython3 -B - <<'PY'[0m
+2026-10-31T19:09:48.9925758Z [36;1mimport json,os,shutil[0m
+2026-10-31T19:09:48.9926207Z [36;1mfrom pathlib import Path[0m
+2026-10-31T19:09:48.9927061Z [36;1mrow=dict(checkpoint='before_checkout',free_bytes=shutil.disk_usage(os.environ['GITHUB_WORKSPACE']).free)[0m
+2026-10-31T19:09:48.9928029Z [36;1mp=Path(os.environ['RUNNER_TEMP'])/'cdr-storage-before-checkout.json'[0m
+2026-10-31T19:09:48.9928729Z [36;1mp.write_text(json.dumps(row,sort_keys=True)+'\n')[0m
+2026-10-31T19:09:48.9929314Z [36;1mprint(json.dumps(row,sort_keys=True))[0m
+2026-10-31T19:09:48.9929815Z [36;1mPY[0m
+2026-10-31T19:09:48.9943345Z shell: /usr/bin/bash -e {0}
+2026-10-31T19:09:48.9944017Z env:
+2026-10-31T19:09:48.9944421Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T19:09:48.9944975Z   APPROVED_SOURCE: 8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac
+2026-10-31T19:09:48.9945571Z   REQUESTED_MODE: vi-bias-off
+2026-10-31T19:09:48.9946071Z   REQUESTED_CASE: vi_bias_off
+2026-10-31T19:09:48.9949313Z   GH_TOKEN: ***
+2026-10-31T19:09:48.9949754Z   LOADED_CASE: nominal_early
+2026-10-31T19:09:48.9950344Z   PREPARE_ONLY: true
+2026-10-31T19:09:48.9950754Z ##[endgroup]
+2026-10-31T19:09:49.0216081Z {"checkpoint": "before_checkout", "free_bytes": 91884429312}
+2026-10-31T19:09:49.0402593Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-10-31T19:09:49.0403214Z with:
+2026-10-31T19:09:49.0403666Z   ref: 8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac
+2026-10-31T19:09:49.0404174Z   persist-credentials: false
+2026-10-31T19:09:49.0404662Z   fetch-depth: 1
+2026-10-31T19:09:49.0405067Z   sparse-checkout-cone-mode: false
+2026-10-31T19:09:49.0405685Z   sparse-checkout: /scripts/cdr-eight-drain-vi-bias-off-methods-v1.json
+
+2026-10-31T19:09:49.0406502Z   repository: Melihakbulut221/nssoc
+2026-10-31T19:09:49.0409707Z   token: ***
+2026-10-31T19:09:49.0410064Z   ssh-strict: true
+2026-10-31T19:09:49.0410625Z   ssh-user: git
+2026-10-31T19:09:49.0410988Z   clean: true
+2026-10-31T19:09:49.0411398Z   fetch-tags: false
+2026-10-31T19:09:49.0411786Z   show-progress: true
+2026-10-31T19:09:49.0412386Z   lfs: false
+2026-10-31T19:09:49.0412819Z   submodules: false
+2026-10-31T19:09:49.0413202Z   set-safe-directory: true
+2026-10-31T19:09:49.0413599Z env:
+2026-10-31T19:09:49.0414044Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T19:09:49.0414560Z   APPROVED_SOURCE: 8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac
+2026-10-31T19:09:49.0415154Z   REQUESTED_MODE: vi-bias-off
+2026-10-31T19:09:49.0415563Z   REQUESTED_CASE: vi_bias_off
+2026-10-31T19:09:49.0418671Z   GH_TOKEN: ***
+2026-10-31T19:09:49.0419087Z   LOADED_CASE: nominal_early
+2026-10-31T19:09:49.0419505Z   PREPARE_ONLY: true
+2026-10-31T19:09:49.0419870Z ##[endgroup]
+2026-10-31T19:09:49.2718041Z Syncing repository: Melihakbulut221/nssoc
+2026-10-31T19:09:49.2719689Z ##[group]Getting Git version info
+2026-10-31T19:09:49.2720606Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-31T19:09:49.2721735Z [command]/usr/bin/git version
+2026-10-31T19:09:49.2822807Z git version 2.56.0
+2026-10-31T19:09:49.2835938Z ##[endgroup]
+2026-10-31T19:09:49.2861844Z Temporarily overriding HOME='/home/runner/work/_temp/879795db-2b7e-456e-b0cb-f3dee8cdd2e4' before making global git config changes
+2026-10-31T19:09:49.2863291Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-31T19:09:49.2864436Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-31T19:09:49.2903098Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-31T19:09:49.2908590Z ##[group]Initializing the repository
+2026-10-31T19:09:49.2911767Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-31T19:09:49.3006640Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-31T19:09:49.3008346Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-31T19:09:49.3009846Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-31T19:09:49.3011145Z hint: call:
+2026-10-31T19:09:49.3012240Z hint:
+2026-10-31T19:09:49.3013193Z hint: 	git config --global init.defaultBranch <name>
+2026-10-31T19:09:49.3014318Z hint:
+2026-10-31T19:09:49.3015397Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-31T19:09:49.3016882Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-31T19:09:49.3018122Z hint:
+2026-10-31T19:09:49.3020346Z hint: 	git branch -m <name>
+2026-10-31T19:09:49.3021273Z hint:
+2026-10-31T19:09:49.3022246Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-31T19:09:49.3026264Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-31T19:09:49.3029532Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-31T19:09:49.3061403Z ##[endgroup]
+2026-10-31T19:09:49.3062291Z ##[group]Disabling automatic garbage collection
+2026-10-31T19:09:49.3064871Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-31T19:09:49.3087772Z ##[endgroup]
+2026-10-31T19:09:49.3088604Z ##[group]Setting up auth
+2026-10-31T19:09:49.3093157Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T19:09:49.3119835Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T19:09:49.3419831Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T19:09:49.3474066Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T19:09:49.3612139Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-31T19:09:49.3642363Z ##[endgroup]
+2026-10-31T19:09:49.3643407Z ##[group]Fetching the repository
+2026-10-31T19:09:49.3652592Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --filter=blob:none --depth=1 origin 8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac
+2026-10-31T19:09:49.7875638Z From https://github.com/Melihakbulut221/nssoc
+2026-10-31T19:09:49.7876488Z  * branch            8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac -> FETCH_HEAD
+2026-10-31T19:09:49.7880528Z ##[endgroup]
+2026-10-31T19:09:49.7881270Z ##[group]Determining the checkout info
+2026-10-31T19:09:49.7882520Z ##[endgroup]
+2026-10-31T19:09:49.7883159Z ##[group]Setting up sparse checkout
+2026-10-31T19:09:49.7888446Z [command]/usr/bin/git config core.sparseCheckout true
+2026-10-31T19:09:49.7967412Z [command]/usr/bin/git rev-parse --git-path info/sparse-checkout
+2026-10-31T19:09:49.7968378Z .git/info/sparse-checkout
+2026-10-31T19:09:49.7970673Z ##[endgroup]
+2026-10-31T19:09:49.7971663Z ##[group]Checking out the ref
+2026-10-31T19:09:49.7972659Z [command]/usr/bin/git checkout --progress --force 8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac
+2026-10-31T19:09:50.4297473Z Note: switching to '8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac'.
+2026-10-31T19:09:50.4298138Z 
+2026-10-31T19:09:50.4298425Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-31T19:09:50.4299040Z changes and commit them, and you can discard any commits you make in this
+2026-10-31T19:09:50.4299579Z state without impacting any branches by switching back to a branch.
+2026-10-31T19:09:50.4299862Z 
+2026-10-31T19:09:50.4300149Z If you want to create a new branch to retain commits you create, you may
+2026-10-31T19:09:50.4300845Z do so (now or later) by using -c with the switch command. Example:
+2026-10-31T19:09:50.4301201Z 
+2026-10-31T19:09:50.4301441Z   git switch -c <new-branch-name>
+2026-10-31T19:09:50.4301730Z 
+2026-10-31T19:09:50.4301879Z Or undo this operation with:
+2026-10-31T19:09:50.4302086Z 
+2026-10-31T19:09:50.4302282Z   git switch -
+2026-10-31T19:09:50.4302459Z 
+2026-10-31T19:09:50.4302716Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-31T19:09:50.4303006Z 
+2026-10-31T19:09:50.4303327Z HEAD is now at 8e5ee1c Admit only VI bias-off after exact-source controls and two external reservations [skip ci]
+2026-10-31T19:09:50.4310905Z ##[endgroup]
+2026-10-31T19:09:50.4353430Z [command]/usr/bin/git log -1 --format=%H
+2026-10-31T19:09:50.4373762Z 8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac
+2026-10-31T19:09:50.4379983Z ##[group]Removing auth
+2026-10-31T19:09:50.4383029Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T19:09:50.4406881Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T19:09:50.4617209Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T19:09:50.4638159Z http.https://github.com/.extraheader
+2026-10-31T19:09:50.4643467Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-31T19:09:50.4668881Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T19:09:50.4863513Z ##[endgroup]
+2026-10-31T19:09:50.4975883Z ##[group]Run python3 -B - <<'PY'
+2026-10-31T19:09:50.4976430Z [36;1mpython3 -B - <<'PY'[0m
+2026-10-31T19:09:50.4976920Z [36;1mimport hashlib,json,os,shutil,subprocess[0m
+2026-10-31T19:09:50.4977430Z [36;1mfrom pathlib import Path[0m
+2026-10-31T19:09:50.4977854Z [36;1me=os.environ[0m
+2026-10-31T19:09:50.4978497Z [36;1massert e['GITHUB_ACTIONS']=='true' and e['RUNNER_ENVIRONMENT']=='github-hosted' and e['RUNNER_OS']=='Linux'[0m
+2026-10-31T19:09:50.4979458Z [36;1massert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_REF']=='refs/heads/codex/cdr-eight-drain-storage-preflight-v1'[0m
+2026-10-31T19:09:50.4980891Z [36;1massert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'[0m
+2026-10-31T19:09:50.4981699Z [36;1massert e['APPROVED_SOURCE']==e['GITHUB_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()[0m
+2026-10-31T19:09:50.4982630Z [36;1mp=Path('scripts/cdr-eight-drain-vi-bias-off-methods-v1.json');raw=p.read_bytes()[0m
+2026-10-31T19:09:50.4983429Z [36;1massert hashlib.sha256(raw).hexdigest()=='5fc62a0113235f214646ade8aeaf730f7c7e6b5af7c37c1dfab82a6e054d1fbb'[0m
+2026-10-31T19:09:50.4984101Z [36;1mm=json.loads(raw)[0m
+2026-10-31T19:09:50.4984650Z [36;1massert m['branch']=='codex/cdr-eight-drain-storage-preflight-v1'[0m
+2026-10-31T19:09:50.4985478Z [36;1massert subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()=='https://github.com/Melihakbulut221/nssoc'[0m
+2026-10-31T19:09:50.4986272Z [36;1mcheckout_free_after_bootstrap=shutil.disk_usage('.').free[0m
+2026-10-31T19:09:50.4987089Z [36;1mnames=sorted(set(m['protected_sha256'])|{'scripts/cdr-eight-drain-vi-bias-off-methods-v1.json','.github/workflows/cloud-evidence-summary.yml'})[0m
+2026-10-31T19:09:50.4987847Z [36;1massert len(names)==1980[0m
+2026-10-31T19:09:50.4988406Z [36;1massert all(not any(c in n for c in '*?[]!\\ \n')and '..'not in n.split('/')for n in names)[0m
+2026-10-31T19:09:50.4989014Z [36;1mpatterns=''.join('/'+n+'\n'for n in names)[0m
+2026-10-31T19:09:50.4989593Z [36;1m# stdin avoids the OS per-string limit hit by a large action input.[0m
+2026-10-31T19:09:50.4990318Z [36;1m# This public repository needs no persisted checkout credentials.[0m
+2026-10-31T19:09:50.4991132Z [36;1msubprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=patterns.encode(),check=True,env={**e,'GIT_TERMINAL_PROMPT':'0'})[0m
+2026-10-31T19:09:50.4991987Z [36;1massert e['REQUESTED_MODE']in ('controls','vi-bias-off')and e['REQUESTED_CASE']=='vi_bias_off'[0m
+2026-10-31T19:09:50.4992902Z [36;1massert e['GITHUB_WORKFLOW_REF']=='Melihakbulut221/nssoc/.github/workflows/cloud-evidence-summary.yml@refs/heads/codex/cdr-eight-drain-storage-preflight-v1'[0m
+2026-10-31T19:09:50.4993937Z [36;1massert m['schema']=='cdr-eight-drain-single-vi-execution-v1'and m['native_cases']==['vi_bias_off']and m['preparation_case']=='nominal_early'[0m
+2026-10-31T19:09:50.4994657Z [36;1massert m['source_controls_authorized']is True[0m
+2026-10-31T19:09:50.4995517Z [36;1mfor k in ('accepted','electrical_accepted','physical_accepted','full_phy_accepted','automatic_retry','geometry_generation_authorized','native_extraction_authorized'):assert m[k]is False[0m
+2026-10-31T19:09:50.4996348Z [36;1mif e['REQUESTED_MODE']=='vi-bias-off':[0m
+2026-10-31T19:09:50.4997117Z [36;1m    for k in ('native_execution_authorized','simulation_authorized','preparation_authorized','workflow_dispatch_authorized','controller_readiness'):assert m[k]is True[0m
+2026-10-31T19:09:50.4997933Z [36;1mfor name,digest in m['protected_sha256'].items():[0m
+2026-10-31T19:09:50.4998452Z [36;1m    q=Path(name);assert q.is_file()and not q.is_symlink(),name[0m
+2026-10-31T19:09:50.4999088Z [36;1m    with q.open('rb')as stream:assert hashlib.file_digest(stream,'sha256').hexdigest()==digest,name[0m
+2026-10-31T19:09:50.4999806Z [36;1mbefore=json.loads((Path(e['RUNNER_TEMP'])/'cdr-storage-before-checkout.json').read_bytes())[0m
+2026-10-31T19:09:50.5001337Z [36;1mrow=dict(source=e['GITHUB_SHA'],before=before,after_bootstrap=dict(free_bytes=checkout_free_after_bootstrap),sparse_paths=len(names),after=dict(checkpoint='after_checkout',free_bytes=shutil.disk_usage('.').free),protected_files=len(m['protected_sha256']),native_acquisition=False,native_execution=False)[0m
+2026-10-31T19:09:50.5002605Z [36;1mout=Path('hw/soc/out/cdr-storage-checkout');out.mkdir(parents=True,exist_ok=False)[0m
+2026-10-31T19:09:50.5003336Z [36;1m(out/'disk.json').write_text(json.dumps(row,sort_keys=True,indent=2)+'\n')[0m
+2026-10-31T19:09:50.5003880Z [36;1mprint(json.dumps(row,sort_keys=True))[0m
+2026-10-31T19:09:50.5004312Z [36;1mPY[0m
+2026-10-31T19:09:50.5016297Z shell: /usr/bin/bash -e {0}
+2026-10-31T19:09:50.5016706Z env:
+2026-10-31T19:09:50.5017079Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T19:09:50.5017556Z   APPROVED_SOURCE: 8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac
+2026-10-31T19:09:50.5018048Z   REQUESTED_MODE: vi-bias-off
+2026-10-31T19:09:50.5018603Z   REQUESTED_CASE: vi_bias_off
+2026-10-31T19:09:50.5021293Z   GH_TOKEN: ***
+2026-10-31T19:09:50.5021733Z   LOADED_CASE: nominal_early
+2026-10-31T19:09:50.5022128Z   PREPARE_ONLY: true
+2026-10-31T19:09:50.5022480Z ##[endgroup]
+2026-10-31T19:10:04.8101945Z {"after": {"checkpoint": "after_checkout", "free_bytes": 91366035456}, "after_bootstrap": {"free_bytes": 91876622336}, "before": {"checkpoint": "before_checkout", "free_bytes": 91884429312}, "native_acquisition": false, "native_execution": false, "protected_files": 1978, "source": "8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac", "sparse_paths": 1980}
+2026-10-31T19:10:04.8249857Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-31T19:10:04.8250511Z with:
+2026-10-31T19:10:04.8250786Z   python-version: 3.12
+2026-10-31T19:10:04.8251077Z   check-latest: false
+2026-10-31T19:10:04.8252982Z   token: ***
+2026-10-31T19:10:04.8253245Z   update-environment: true
+2026-10-31T19:10:04.8253541Z   allow-prereleases: false
+2026-10-31T19:10:04.8253840Z   freethreaded: false
+2026-10-31T19:10:04.8254121Z env:
+2026-10-31T19:10:04.8254374Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T19:10:04.8254693Z   APPROVED_SOURCE: 8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac
+2026-10-31T19:10:04.8255068Z   REQUESTED_MODE: vi-bias-off
+2026-10-31T19:10:04.8255359Z   REQUESTED_CASE: vi_bias_off
+2026-10-31T19:10:04.8257155Z   GH_TOKEN: ***
+2026-10-31T19:10:04.8257443Z   LOADED_CASE: nominal_early
+2026-10-31T19:10:04.8257713Z   PREPARE_ONLY: true
+2026-10-31T19:10:04.8257992Z ##[endgroup]
+2026-10-31T19:10:04.9221963Z ##[group]Installed versions
+2026-10-31T19:10:04.9292836Z (node:2252) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-31T19:10:04.9293614Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-31T19:10:04.9294175Z Successfully set up CPython (3.12.15)
+2026-10-31T19:10:04.9294844Z ##[endgroup]
+2026-10-31T19:10:04.9404080Z ##[group]Run python3 -B scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py --case "$LOADED_CASE" --prepare-only --preflight
+2026-10-31T19:10:04.9404750Z [36;1mpython3 -B scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py --case "$LOADED_CASE" --prepare-only --preflight[0m
+2026-10-31T19:10:04.9427868Z shell: /usr/bin/bash -e {0}
+2026-10-31T19:10:04.9428252Z env:
+2026-10-31T19:10:04.9428534Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T19:10:04.9429006Z   APPROVED_SOURCE: 8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac
+2026-10-31T19:10:04.9429468Z   REQUESTED_MODE: vi-bias-off
+2026-10-31T19:10:04.9429868Z   REQUESTED_CASE: vi_bias_off
+2026-10-31T19:10:04.9432182Z   GH_TOKEN: ***
+2026-10-31T19:10:04.9432458Z   LOADED_CASE: nominal_early
+2026-10-31T19:10:04.9432761Z   PREPARE_ONLY: true
+2026-10-31T19:10:04.9433082Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T19:10:04.9433522Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-31T19:10:04.9434017Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T19:10:04.9434407Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T19:10:04.9434784Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T19:10:04.9435178Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-31T19:10:04.9435510Z ##[endgroup]
+2026-10-31T19:10:07.0371479Z the response contains terminal escape sequences; pass --allow-escape-sequences to output it anyway
+2026-10-31T19:10:07.0387204Z Traceback (most recent call last):
+2026-10-31T19:10:07.0394368Z   File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py", line 309, in <module>
+2026-10-31T19:10:07.0395006Z     if __name__=="__main__":main()
+2026-10-31T19:10:07.0395316Z                             ^^^^^^
+2026-10-31T19:10:07.0395766Z   File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py", line 305, in main
+2026-10-31T19:10:07.0396210Z     reservations=preflight(ctx)
+2026-10-31T19:10:07.0396498Z                  ^^^^^^^^^^^^^^
+2026-10-31T19:10:07.0396921Z   File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py", line 86, in preflight
+2026-10-31T19:10:07.0397324Z     return a.reservation_gate()
+2026-10-31T19:10:07.0397619Z            ^^^^^^^^^^^^^^^^^^^^
+2026-10-31T19:10:07.0398058Z   File "/home/runner/work/nssoc/nssoc/scripts/cdr_eight_drain_vi_bias_off_admission_v1.py", line 207, in reservation_gate
+2026-10-31T19:10:07.0398524Z     controls=authenticate_source_controls()
+2026-10-31T19:10:07.0398794Z              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-31T19:10:07.0399251Z   File "/home/runner/work/nssoc/nssoc/scripts/cdr_eight_drain_vi_bias_off_admission_v1.py", line 192, in authenticate_source_controls
+2026-10-31T19:10:07.0399812Z     log=read("actions/jobs/"+str(selected[0]["id"])+"/logs")
+2026-10-31T19:10:07.0400164Z         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-31T19:10:07.0401009Z   File "/home/runner/work/nssoc/nssoc/scripts/cdr_eight_drain_vi_bias_off_admission_v1.py", line 188, in read
+2026-10-31T19:10:07.0401492Z     def read(path):return subprocess.check_output(["gh","api",prefix+path])
+2026-10-31T19:10:07.0401832Z                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-31T19:10:07.0402289Z   File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/subprocess.py", line 466, in check_output
+2026-10-31T19:10:07.0768602Z     return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+2026-10-31T19:10:07.0769105Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-31T19:10:07.0769851Z   File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/subprocess.py", line 571, in run
+2026-10-31T19:10:07.0770535Z     raise CalledProcessError(retcode, process.args,
+2026-10-31T19:10:07.0771620Z subprocess.CalledProcessError: Command '['gh', 'api', 'repos/Melihakbulut221/nssoc/actions/jobs/124630245713/logs']' returned non-zero exit status 1.
+2026-10-31T19:10:07.0921502Z ##[error]Process completed with exit code 1.
+2026-10-31T19:10:07.0978198Z ##[group]Run python3 -B - <<'PY'
+2026-10-31T19:10:07.0978552Z [36;1mpython3 -B - <<'PY'[0m
+2026-10-31T19:10:07.0978824Z [36;1mimport os,subprocess,sys[0m
+2026-10-31T19:10:07.0979082Z [36;1mfrom pathlib import Path[0m
+2026-10-31T19:10:07.0979429Z [36;1mprepare=os.environ['PREPARE_ONLY']=='true';case=os.environ['LOADED_CASE'][0m
+2026-10-31T19:10:07.0979888Z [36;1massert (prepare and case=='nominal_early')or(not prepare and case=='vi_bias_off')[0m
+2026-10-31T19:10:07.0980592Z [36;1massert not prepare or case=='nominal_early'[0m
+2026-10-31T19:10:07.0980916Z [36;1msuffix='preparation' if prepare else case[0m
+2026-10-31T19:10:07.0981334Z [36;1mtransport=Path('hw/soc/out')/('cloud-cdr-current-eight-drain-loaded-'+suffix+'-publication')[0m
+2026-10-31T19:10:07.0981752Z [36;1massert not transport.is_symlink()[0m
+2026-10-31T19:10:07.0982033Z [36;1mif transport.exists():[0m
+2026-10-31T19:10:07.0982311Z [36;1m    assert transport.is_dir()[0m
+2026-10-31T19:10:07.0982800Z [36;1m    print('Existing publication transport retained; no publication retry or overwrite.')[0m
+2026-10-31T19:10:07.0983163Z [36;1melse:[0m
+2026-10-31T19:10:07.0983578Z [36;1m    argv=[sys.executable,'-B','scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py','--case',case,'--publish-only'][0m
+2026-10-31T19:10:07.0984024Z [36;1m    if prepare:argv.append('--prepare-only')[0m
+2026-10-31T19:10:07.0984457Z [36;1m    subprocess.run(argv,check=True)[0m
+2026-10-31T19:10:07.0984715Z [36;1mPY[0m
+2026-10-31T19:10:07.0996725Z shell: /usr/bin/bash -e {0}
+2026-10-31T19:10:07.0996991Z env:
+2026-10-31T19:10:07.0997251Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T19:10:07.0997551Z   APPROVED_SOURCE: 8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac
+2026-10-31T19:10:07.0997907Z   REQUESTED_MODE: vi-bias-off
+2026-10-31T19:10:07.0998150Z   REQUESTED_CASE: vi_bias_off
+2026-10-31T19:10:07.1000082Z   GH_TOKEN: ***
+2026-10-31T19:10:07.1000560Z   LOADED_CASE: nominal_early
+2026-10-31T19:10:07.1000805Z   PREPARE_ONLY: true
+2026-10-31T19:10:07.1001105Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T19:10:07.1001496Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-31T19:10:07.1001858Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T19:10:07.1002218Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T19:10:07.1002543Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T19:10:07.1002901Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-31T19:10:07.1003193Z ##[endgroup]
+2026-10-31T19:10:08.3450687Z CURRENT_LOADED_STORAGE_CHECK {"available_source_bytes": 923, "checkpoint": "publication", "free_bytes": 91365924864, "native_authorization_asserted_by_this_record": false, "required_bytes": 4294967296, "storage_measurement_only": true, "sufficient": true}
+2026-10-31T19:10:18.7940687Z {"accepted": false, "assets": [{"bytes": 3353, "id": 696242277, "name": "cdr-current-eight-drain-loaded-preparation-41232778446-1.summary.json", "sha256": "c3577e522dfbae10497bb3730a19bcbdd8a465403d12b4389122909335bdf00e", "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-41232778446-1-cdr-current-eight-drain-loaded-preparation/cdr-current-eight-drain-loaded-preparation-41232778446-1.summary.json"}, {"bytes": 906, "id": 696242329, "name": "cdr-current-eight-drain-loaded-preparation-41232778446-1.parts.json", "sha256": "631b56249e1541b0884920a83ea6f15f9b4153f41004458cc2df034152785d66", "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-41232778446-1-cdr-current-eight-drain-loaded-preparation/cdr-current-eight-drain-loaded-preparation-41232778446-1.parts.json"}, {"bytes": 734, "id": 696242410, "name": "cdr-current-eight-drain-loaded-preparation-41232778446-1.tar.gz.part0000", "sha256": "321f099f772567436c1a5c4fcd52c3ede0488abfb03e2aae165edbb7558e597f", "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-41232778446-1-cdr-current-eight-drain-loaded-preparation/cdr-current-eight-drain-loaded-preparation-41232778446-1.tar.gz.part0000"}, {"bytes": 707, "id": 696242457, "name": "cdr-current-eight-drain-loaded-preparation-41232778446-1.direct-publication-plan.json", "sha256": "d8e56c4e44caa1e2f28fbb63664a94bf1ee27602a8f74fe3d35ec7be13f51e24", "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-41232778446-1-cdr-current-eight-drain-loaded-preparation/cdr-current-eight-drain-loaded-preparation-41232778446-1.direct-publication-plan.json"}, {"bytes": 216, "id": 696242500, "name": "cdr-current-eight-drain-loaded-preparation-41232778446-1.publication-source-check.json", "sha256": "155e29e0212574457211acb28651ddb9bbef65d13ad1392ac6fe0ad94efde736", "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-41232778446-1-cdr-current-eight-drain-loaded-preparation/cdr-current-eight-drain-loaded-preparation-41232778446-1.publication-source-check.json"}], "complete_outputs": {"direct-publication-plan.json": "d8e56c4e44caa1e2f28fbb63664a94bf1ee27602a8f74fe3d35ec7be13f51e24", "publication-source-check.json": "155e29e0212574457211acb28651ddb9bbef65d13ad1392ac6fe0ad94efde736", "storage-checks/publication.json": "de81e2d560c1cd0a9008a11c4bea5348eb81ee30c55b1e2043108757ae6847ed"}, "current_context": {"attempt": 1, "run_id": 41232778446, "source": "8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac"}, "direct_plan_sha256": "d8e56c4e44caa1e2f28fbb63664a94bf1ee27602a8f74fe3d35ec7be13f51e24", "original_status": null, "publication_qualified_as_success": false, "raw_terminal_bytes_unchanged": true, "reservation": {"assets_overwritten": false, "existing_assets": [], "release_id": 430130432, "tag": "cloud-results-41232778446-1-cdr-current-eight-drain-loaded-preparation", "target_verified": true, "tested_source": "8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac"}, "source_integrity_qualified": true, "status": "PASS_COMPLETE_LOADED_EVIDENCE_PUBLICATION_ONLY", "waveform_samples_deliberately_removed": false}
+2026-10-31T19:10:18.8153840Z ##[group]Run python3 -B - <<'PY'
+2026-10-31T19:10:18.8154217Z [36;1mpython3 -B - <<'PY'[0m
+2026-10-31T19:10:18.8154483Z [36;1mimport base64,hashlib,json,os[0m
+2026-10-31T19:10:18.8154755Z [36;1mfrom pathlib import Path[0m
+2026-10-31T19:10:18.8155108Z [36;1mprepare=os.environ['PREPARE_ONLY']=='true';case=os.environ['LOADED_CASE'][0m
+2026-10-31T19:10:18.8155476Z [36;1msuffix='preparation' if prepare else case[0m
+2026-10-31T19:10:18.8155859Z [36;1mout=Path('cloud-cdr-current-eight-drain-loaded-evidence-'+suffix)[0m
+2026-10-31T19:10:18.8156349Z [36;1mtransport=Path('hw/soc/out')/('cloud-cdr-current-eight-drain-loaded-'+suffix+'-publication')[0m
+2026-10-31T19:10:18.8156857Z [36;1mstem='cdr-current-eight-drain-loaded-'+suffix+'-'+os.environ['GITHUB_RUN_ID']+'-1'[0m
+2026-10-31T19:10:18.8157361Z [36;1mpaths=[out/'result.json',out/'publication-source-check.json',out/'direct-publication-plan.json',[0m
+2026-10-31T19:10:18.8158035Z [36;1m  transport/'publication.json',transport/(stem+'.summary.json'),transport/(stem+'.parts.json')][0m
+2026-10-31T19:10:18.8158528Z [36;1mprerequisite=Path('hw/soc/out/cdr-eight-drain-vi-prerequisites')[0m
+2026-10-31T19:10:18.8158868Z [36;1massert not prerequisite.is_symlink()[0m
+2026-10-31T19:10:18.8159146Z [36;1mif prerequisite.exists():[0m
+2026-10-31T19:10:18.8159452Z [36;1m    assert prerequisite.is_dir()[0m
+2026-10-31T19:10:18.8159748Z [36;1m    for p in sorted(prerequisite.rglob('*')):[0m
+2026-10-31T19:10:18.8160049Z [36;1m        assert not p.is_symlink()[0m
+2026-10-31T19:10:18.8160436Z [36;1m        if p.is_dir():continue[0m
+2026-10-31T19:10:18.8160846Z [36;1m        assert p.is_file()and p.name in ('run.json','jobs.json','source-controls.log','admission.json')[0m
+2026-10-31T19:10:18.8161263Z [36;1m        paths.append(p)[0m
+2026-10-31T19:10:18.8161937Z [36;1mfor p in paths:[0m
+2026-10-31T19:10:18.8162205Z [36;1m    assert not p.is_symlink()[0m
+2026-10-31T19:10:18.8162492Z [36;1m    present=p.is_file();raw=p.read_bytes() if present else b''[0m
+2026-10-31T19:10:18.8162862Z [36;1m    chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)][0m
+2026-10-31T19:10:18.8163432Z [36;1m    print('WIDTH_CURRENT_NATIVE_INDEX '+json.dumps(dict(path=str(p),present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))[0m
+2026-10-31T19:10:18.8163995Z [36;1m    for i,b in enumerate(chunks):[0m
+2026-10-31T19:10:18.8164446Z [36;1m        print('WIDTH_CURRENT_NATIVE_CHUNK '+json.dumps(dict(path=str(p),index=i,base64=base64.b64encode(b).decode()),sort_keys=True))[0m
+2026-10-31T19:10:18.8164856Z [36;1mPY[0m
+2026-10-31T19:10:18.8176693Z shell: /usr/bin/bash -e {0}
+2026-10-31T19:10:18.8176982Z env:
+2026-10-31T19:10:18.8177231Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T19:10:18.8177515Z   APPROVED_SOURCE: 8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac
+2026-10-31T19:10:18.8177843Z   REQUESTED_MODE: vi-bias-off
+2026-10-31T19:10:18.8178096Z   REQUESTED_CASE: vi_bias_off
+2026-10-31T19:10:18.8180012Z   GH_TOKEN: ***
+2026-10-31T19:10:18.8180520Z   LOADED_CASE: nominal_early
+2026-10-31T19:10:18.8180748Z   PREPARE_ONLY: true
+2026-10-31T19:10:18.8181035Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T19:10:18.8181419Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-31T19:10:18.8181811Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T19:10:18.8182135Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T19:10:18.8182557Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T19:10:18.8182902Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-31T19:10:18.8183182Z ##[endgroup]
+2026-10-31T19:10:18.8403126Z WIDTH_CURRENT_NATIVE_INDEX {"bytes": 0, "chunks": 0, "path": "cloud-cdr-current-eight-drain-loaded-evidence-preparation/result.json", "present": false, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"}
+2026-10-31T19:10:18.8404527Z WIDTH_CURRENT_NATIVE_INDEX {"bytes": 216, "chunks": 1, "path": "cloud-cdr-current-eight-drain-loaded-evidence-preparation/publication-source-check.json", "present": true, "sha256": "155e29e0212574457211acb28651ddb9bbef65d13ad1392ac6fe0ad94efde736"}
+2026-10-31T19:10:18.8406559Z WIDTH_CURRENT_NATIVE_CHUNK {"base64": "ewogICJjaGFuZ2VkX2J5dGVzX2FyZV9ldmlkZW5jZV9ub3RfZXhlY3V0YWJsZV9hdXRob3JpdHkiOiB0cnVlLAogICJlcnJvciI6IG51bGwsCiAgIm9ic2VydmF0aW9ucyI6IFtdLAogICJwcmVzZXJ2YXRpb25fZXJyb3JzIjogW10sCiAgInF1YWxpZmllZCI6IHRydWUsCiAgInNvdXJjZV9oZWFkIjogIjhlNWVlMWM5YTc3M2ZlMTcyYmNjMjdkMjc4M2RmOWM5ZjcwZjA1YWMiCn0K", "index": 0, "path": "cloud-cdr-current-eight-drain-loaded-evidence-preparation/publication-source-check.json"}
+2026-10-31T19:10:18.8408630Z WIDTH_CURRENT_NATIVE_INDEX {"bytes": 707, "chunks": 1, "path": "cloud-cdr-current-eight-drain-loaded-evidence-preparation/direct-publication-plan.json", "present": true, "sha256": "d8e56c4e44caa1e2f28fbb63664a94bf1ee27602a8f74fe3d35ec7be13f51e24"}
+2026-10-31T19:10:18.8416724Z WIDTH_CURRENT_NATIVE_CHUNK {"base64": "ewogICJlbXB0eV9ieXRlc19yZXBsYWNlZCI6IGZhbHNlLAogICJmaWxlcyI6IFsKICAgIHsKICAgICAgImFzc2V0X3N1ZmZpeCI6ICJuYXRpdmUtcmVzdWx0Lmpzb24iLAogICAgICAiZGlzcG9zaXRpb24iOiAibWlzc2luZyIsCiAgICAgICJtZW1iZXIiOiAibmF0aXZlL3Jlc3VsdC5qc29uIiwKICAgICAgInByZXNlbnQiOiBmYWxzZQogICAgfSwKICAgIHsKICAgICAgImFzc2V0X3N1ZmZpeCI6ICJwcmVwYXJhdGlvbi1zdW1tYXJ5Lmpzb24iLAogICAgICAiZGlzcG9zaXRpb24iOiAibWlzc2luZyIsCiAgICAgICJtZW1iZXIiOiAicHJlcGFyYXRpb24tcHJvb2Yvc3VtbWFyeS5qc29uIiwKICAgICAgInByZXNlbnQiOiBmYWxzZQogICAgfSwKICAgIHsKICAgICAgImFzc2V0X3N1ZmZpeCI6ICJwcmVwYXJhdGlvbi1uYXRpdmUtcmVzdWx0Lmpzb24iLAogICAgICAiZGlzcG9zaXRpb24iOiAibWlzc2luZyIsCiAgICAgICJtZW1iZXIiOiAicHJlcGFyYXRpb24tcHJvb2YvbmF0aXZlLXJlc3VsdC5qc29uIiwKICAgICAgInByZXNlbnQiOiBmYWxzZQogICAgfQogIF0sCiAgInB1YmxpY2F0aW9uX3F1YWxpZmllZF9hc19zdWNjZXNzIjogZmFsc2UsCiAgInNjaGVtYSI6ICJjdXJyZW50LXdpZHRoLWxvYWRlZC1kaXJlY3QtcHVibGljYXRpb24tcGxhbi12MSIsCiAgInplcm9fYnl0ZV9maWxlc19wcmVzZXJ2ZWRfaW5fYXJjaGl2ZSI6IHRydWUKfQo=", "index": 0, "path": "cloud-cdr-current-eight-drain-loaded-evidence-preparation/direct-publication-plan.json"}
+2026-10-31T19:10:18.8424970Z WIDTH_CURRENT_NATIVE_INDEX {"bytes": 3440, "chunks": 1, "path": "hw/soc/out/cloud-cdr-current-eight-drain-loaded-preparation-publication/publication.json", "present": true, "sha256": "bcf6b781828781f5e4115ff33ae42a764c6a8e805760f23fb146794f24e2f125"}
+2026-10-31T19:10:18.8549364Z WIDTH_CURRENT_NATIVE_CHUNK {"base64": "ewogICJhY2NlcHRlZCI6IGZhbHNlLAogICJhc3NldHMiOiBbCiAgICB7CiAgICAgICJieXRlcyI6IDMzNTMsCiAgICAgICJpZCI6IDY5NjI0MjI3NywKICAgICAgIm5hbWUiOiAiY2RyLWN1cnJlbnQtZWlnaHQtZHJhaW4tbG9hZGVkLXByZXBhcmF0aW9uLTQxMjMyNzc4NDQ2LTEuc3VtbWFyeS5qc29uIiwKICAgICAgInNoYTI1NiI6ICJjMzU3N2U1MjJkZmJhZTEwNDk3YmIzNzMwYTE5YmNiZGQ4YTQ2NTQwM2QxMmI0Mzg5MTIyOTA5MzM1YmRmMDBlIiwKICAgICAgInVybCI6ICJodHRwczovL2dpdGh1Yi5jb20vTWVsaWhha2J1bHV0MjIxL25zc29jL3JlbGVhc2VzL2Rvd25sb2FkL2Nsb3VkLXJlc3VsdHMtNDEyMzI3Nzg0NDYtMS1jZHItY3VycmVudC1laWdodC1kcmFpbi1sb2FkZWQtcHJlcGFyYXRpb24vY2RyLWN1cnJlbnQtZWlnaHQtZHJhaW4tbG9hZGVkLXByZXBhcmF0aW9uLTQxMjMyNzc4NDQ2LTEuc3VtbWFyeS5qc29uIgogICAgfSwKICAgIHsKICAgICAgImJ5dGVzIjogOTA2LAogICAgICAiaWQiOiA2OTYyNDIzMjksCiAgICAgICJuYW1lIjogImNkci1jdXJyZW50LWVpZ2h0LWRyYWluLWxvYWRlZC1wcmVwYXJhdGlvbi00MTIzMjc3ODQ0Ni0xLnBhcnRzLmpzb24iLAogICAgICAic2hhMjU2IjogIjYzMWI1NjI0OWUxNTQxYjA4ODQ5MjBhODNlYTZmMTVmOWI0MTUzZjQxMDA0NDU4Y2MyZGYwMzQxNTI3ODVkNjYiLAogICAgICAidXJsIjogImh0dHBzOi8vZ2l0aHViLmNvbS9NZWxpaGFrYnVsdXQyMjEvbnNzb2MvcmVsZWFzZXMvZG93bmxvYWQvY2xvdWQtcmVzdWx0cy00MTIzMjc3ODQ0Ni0xLWNkci1jdXJyZW50LWVpZ2h0LWRyYWluLWxvYWRlZC1wcmVwYXJhdGlvbi9jZHItY3VycmVudC1laWdodC1kcmFpbi1sb2FkZWQtcHJlcGFyYXRpb24tNDEyMzI3Nzg0NDYtMS5wYXJ0cy5qc29uIgogICAgfSwKICAgIHsKICAgICAgImJ5dGVzIjogNzM0LAogICAgICAiaWQiOiA2OTYyNDI0MTAsCiAgICAgICJuYW1lIjogImNkci1jdXJyZW50LWVpZ2h0LWRyYWluLWxvYWRlZC1wcmVwYXJhdGlvbi00MTIzMjc3ODQ0Ni0xLnRhci5nei5wYXJ0MDAwMCIsCiAgICAgICJzaGEyNTYiOiAiMzIxZjA5OWY3NzI1Njc0MzZjMWE1YzRmY2Q1MmMzZWRlMDQ4OGFiZmIwM2UyYWFlMTY1ZWRiYjc1NThlNTk3ZiIsCiAgICAgICJ1cmwiOiAiaHR0cHM6Ly9naXRodWIuY29tL01lbGloYWtidWx1dDIyMS9uc3NvYy9yZWxlYXNlcy9kb3dubG9hZC9jbG91ZC1yZXN1bHRzLTQxMjMyNzc4NDQ2LTEtY2RyLWN1cnJlbnQtZWlnaHQtZHJhaW4tbG9hZGVkLXByZXBhcmF0aW9uL2Nkci1jdXJyZW50LWVpZ2h0LWRyYWluLWxvYWRlZC1wcmVwYXJhdGlvbi00MTIzMjc3ODQ0Ni0xLnRhci5nei5wYXJ0MDAwMCIKICAgIH0sCiAgICB7CiAgICAgICJieXRlcyI6IDcwNywKICAgICAgImlkIjogNjk2MjQyNDU3LAogICAgICAibmFtZSI6ICJjZHItY3VycmVudC1laWdodC1kcmFpbi1sb2FkZWQtcHJlcGFyYXRpb24tNDEyMzI3Nzg0NDYtMS5kaXJlY3QtcHVibGljYXRpb24tcGxhbi5qc29uIiwKICAgICAgInNoYTI1NiI6ICJkOGU1NmM0ZTQ0Y2FhMWUyZjI4ZmJiNjM2NjRhOTRiZjFlZTI3NjAyYThmNzRmZTNkMzVlYzdiZTEzZjUxZTI0IiwKICAgICAgInVybCI6ICJodHRwczovL2dpdGh1Yi5jb20vTWVsaWhha2J1bHV0MjIxL25zc29jL3JlbGVhc2VzL2Rvd25sb2FkL2Nsb3VkLXJlc3VsdHMtNDEyMzI3Nzg0NDYtMS1jZHItY3VycmVudC1laWdodC1kcmFpbi1sb2FkZWQtcHJlcGFyYXRpb24vY2RyLWN1cnJlbnQtZWlnaHQtZHJhaW4tbG9hZGVkLXByZXBhcmF0aW9uLTQxMjMyNzc4NDQ2LTEuZGlyZWN0LXB1YmxpY2F0aW9uLXBsYW4uanNvbiIKICAgIH0sCiAgICB7CiAgICAgICJieXRlcyI6IDIxNiwKICAgICAgImlkIjogNjk2MjQyNTAwLAogICAgICAibmFtZSI6ICJjZHItY3VycmVudC1laWdodC1kcmFpbi1sb2FkZWQtcHJlcGFyYXRpb24tNDEyMzI3Nzg0NDYtMS5wdWJsaWNhdGlvbi1zb3VyY2UtY2hlY2suanNvbiIsCiAgICAgICJzaGEyNTYiOiAiMTU1ZTI5ZTAyMTI1NzQ0NTcyMTFhY2IyODY1MWRkYjliYmVmNjVkMTNhZDEzOTJhYzZmZTBhZDk0ZWZkZTczNiIsCiAgICAgICJ1cmwiOiAiaHR0cHM6Ly9naXRodWIuY29tL01lbGloYWtidWx1dDIyMS9uc3NvYy9yZWxlYXNlcy9kb3dubG9hZC9jbG91ZC1yZXN1bHRzLTQxMjMyNzc4NDQ2LTEtY2RyLWN1cnJlbnQtZWlnaHQtZHJhaW4tbG9hZGVkLXByZXBhcmF0aW9uL2Nkci1jdXJyZW50LWVpZ2h0LWRyYWluLWxvYWRlZC1wcmVwYXJhdGlvbi00MTIzMjc3ODQ0Ni0xLnB1YmxpY2F0aW9uLXNvdXJjZS1jaGVjay5qc29uIgogICAgfQogIF0sCiAgImNvbXBsZXRlX291dHB1dHMiOiB7CiAgICAiZGlyZWN0LXB1YmxpY2F0aW9uLXBsYW4uanNvbiI6ICJkOGU1NmM0ZTQ0Y2FhMWUyZjI4ZmJiNjM2NjRhOTRiZjFlZTI3NjAyYThmNzRmZTNkMzVlYzdiZTEzZjUxZTI0IiwKICAgICJwdWJsaWNhdGlvbi1zb3VyY2UtY2hlY2suanNvbiI6ICIxNTVlMjllMDIxMjU3NDQ1NzIxMWFjYjI4NjUxZGRiOWJiZWY2NWQxM2FkMTM5MmFjNmZlMGFkOTRlZmRlNzM2IiwKICAgICJzdG9yYWdlLWNoZWNrcy9wdWJsaWNhdGlvbi5qc29uIjogImRlODFlMmQ1NjBjMWNkMGE5MDA4YTExYzRiZWE1MzQ4ZWI4MWVlMzBjNTViMWUyMDQzMTA4NzU3YWU2ODQ3ZWQiCiAgfSwKICAiY3VycmVudF9jb250ZXh0IjogewogICAgImF0dGVtcHQiOiAxLAogICAgInJ1bl9pZCI6IDQxMjMyNzc4NDQ2LAogICAgInNvdXJjZSI6ICI4ZTVlZTFjOWE3NzNmZTE3MmJjYzI3ZDI3ODNkZjljOWY3MGYwNWFjIgogIH0sCiAgImRpcmVjdF9wbGFuX3NoYTI1NiI6ICJkOGU1NmM0ZTQ0Y2FhMWUyZjI4ZmJiNjM2NjRhOTRiZjFlZTI3NjAyYThmNzRmZTNkMzVlYzdiZTEzZjUxZTI0IiwKICAib3JpZ2luYWxfc3RhdHVzIjogbnVsbCwKICAicHVibGljYXRpb25fcXVhbGlmaWVkX2FzX3N1Y2Nlc3MiOiBmYWxzZSwKICAicmF3X3Rlcm1pbmFsX2J5dGVzX3VuY2hhbmdlZCI6IHRydWUsCiAgInJlc2VydmF0aW9uIjogewogICAgImFzc2V0c19vdmVyd3JpdHRlbiI6IGZhbHNlLAogICAgImV4aXN0aW5nX2Fzc2V0cyI6IFtdLAogICAgInJlbGVhc2VfaWQiOiA0MzAxMzA0MzIsCiAgICAidGFnIjogImNsb3VkLXJlc3VsdHMtNDEyMzI3Nzg0NDYtMS1jZHItY3VycmVudC1laWdodC1kcmFpbi1sb2FkZWQtcHJlcGFyYXRpb24iLAogICAgInRhcmdldF92ZXJpZmllZCI6IHRydWUsCiAgICAidGVzdGVkX3NvdXJjZSI6ICI4ZTVlZTFjOWE3NzNmZTE3MmJjYzI3ZDI3ODNkZjljOWY3MGYwNWFjIgogIH0sCiAgInNvdXJjZV9pbnRlZ3JpdHlfcXVhbGlmaWVkIjogdHJ1ZSwKICAic3RhdHVzIjogIlBBU1NfQ09NUExFVEVfTE9BREVEX0VWSURFTkNFX1BVQkxJQ0FUSU9OX09OTFkiLAogICJ3YXZlZm9ybV9zYW1wbGVzX2RlbGliZXJhdGVseV9yZW1vdmVkIjogZmFsc2UKfQo=", "index": 0, "path": "hw/soc/out/cloud-cdr-current-eight-drain-loaded-preparation-publication/publication.json"}
+2026-10-31T19:10:18.8676294Z WIDTH_CURRENT_NATIVE_INDEX {"bytes": 3353, "chunks": 1, "path": "hw/soc/out/cloud-cdr-current-eight-drain-loaded-preparation-publication/cdr-current-eight-drain-loaded-preparation-41232778446-1.summary.json", "present": true, "sha256": "c3577e522dfbae10497bb3730a19bcbdd8a465403d12b4389122909335bdf00e"}
+2026-10-31T19:10:18.8798059Z WIDTH_CURRENT_NATIVE_CHUNK {"base64": "ewogICJhY2NlcHRlZCI6IGZhbHNlLAogICJhdXRvbWF0aWNfcmV0cnkiOiBmYWxzZSwKICAiY2FzZSI6ICJub21pbmFsX2Vhcmx5IiwKICAiY2RyX2FjY2VwdGVkIjogZmFsc2UsCiAgImN1cnJlbnRfZ3JhcGhfcnVuIjogNDEyMDY4MDk2NjgsCiAgImN1cnJlbnRfZ3JhcGhfc291cmNlIjogImRlNzlmNzZiYzYwYjNlZjJiMDZjODg3MzZmNGYzZDBlZTM0OTEyNTciLAogICJjdXJyZW50X3dpZHRoX3J1biI6IDQxMjAzODgxMzg1LAogICJjdXJyZW50X3dpZHRoX3NvdXJjZSI6ICIzOTQ5NmQwMzRjNGMxZjJjOWJjYzNhOWZlNzBjYjNkODI4MjNmYjUzIiwKICAiZGlyZWN0X3Rlcm1pbmFsX2Vycm9ycyI6IFtdLAogICJmcmVzaF9SQ19ydW4iOiA0MTIxMzgxNTc3MywKICAiZnVsbF9waHlfYWNjZXB0ZWQiOiBmYWxzZSwKICAiZ2VvbWV0cnlfcmVnZW5lcmF0ZWQiOiBmYWxzZSwKICAiZ3JvdXAiOiAiY2RyLWN1cnJlbnQtZWlnaHQtZHJhaW4tbG9hZGVkLXByZXBhcmF0aW9uIiwKICAibmF0aXZlX2Nhc2VfcGFzc2VkIjogZmFsc2UsCiAgIm5hdGl2ZV9leHRyYWN0aW9uX2V4ZWN1dGVkIjogZmFsc2UsCiAgIm9yaWdpbmFsX2VpZ2h0X2VsZWN0cmljYWxfcmVqZWN0aW9uc19hbmRfdHdvX2ZhdWx0X2RldGVjdGlvbnNfcHJlc2VydmVkIjogdHJ1ZSwKICAib3JpZ2luYWxfcGh5c2ljYWxfaGlzdG9yaWNhbF9vbmx5IjogdHJ1ZSwKICAib3JpZ2luYWxfcGh5c2ljYWxfcnVuIjogNDAzNjk1MzkyMDAsCiAgIm9yaWdpbmFsX3BoeXNpY2FsX3N0YXR1cyI6ICJGQUlMX0FERElUSVZFX1RBSUxfV0lSRV9QSFlTSUNBTCIsCiAgIm9yaWdpbmFsX3Rlcm1pbmFsX3N0YXR1cyI6IG51bGwsCiAgIm91dGVyX3Rlcm1pbmFsX2FjdGlvbnMiOiBbXSwKICAib3V0ZXJfdGVybWluYWxfZXJyb3JzIjogW10sCiAgIm91dGVyX3Rlcm1pbmFsX2ZpbmFsaXphdGlvbl9jb21wbGV0ZSI6IGZhbHNlLAogICJvdXRwdXRzIjogewogICAgImRpcmVjdC1wdWJsaWNhdGlvbi1wbGFuLmpzb24iOiAiZDhlNTZjNGU0NGNhYTFlMmYyOGZiYjYzNjY0YTk0YmYxZWUyNzYwMmE4Zjc0ZmUzZDM1ZWM3YmUxM2Y1MWUyNCIsCiAgICAicHVibGljYXRpb24tc291cmNlLWNoZWNrLmpzb24iOiAiMTU1ZTI5ZTAyMTI1NzQ0NTcyMTFhY2IyODY1MWRkYjliYmVmNjVkMTNhZDEzOTJhYzZmZTBhZDk0ZWZkZTczNiIsCiAgICAic3RvcmFnZS1jaGVja3MvcHVibGljYXRpb24uanNvbiI6ICJkZTgxZTJkNTYwYzFjZDBhOTAwOGExMWM0YmVhNTM0OGViODFlZTMwYzU1YjFlMjA0MzEwODc1N2FlNjg0N2VkIgogIH0sCiAgInBoeXNpY2FsX2FjY2VwdGVkIjogZmFsc2UsCiAgInByZXBhcmF0aW9uX29ubHkiOiB0cnVlLAogICJwdWJsaWNhdGlvbl9jb250ZXh0IjogewogICAgImF0dGVtcHQiOiAxLAogICAgInJ1bl9pZCI6IDQxMjMyNzc4NDQ2LAogICAgInNvdXJjZSI6ICI4ZTVlZTFjOWE3NzNmZTE3MmJjYzI3ZDI3ODNkZjljOWY3MGYwNWFjIgogIH0sCiAgInB1YmxpY2F0aW9uX3F1YWxpZmllZF9hc19zdWNjZXNzIjogZmFsc2UsCiAgInB1YmxpY2F0aW9uX3JlY292ZXJ5IjogbnVsbCwKICAicHVibGljYXRpb25fc291cmNlX2NoZWNrIjogewogICAgImNoYW5nZWRfYnl0ZXNfYXJlX2V2aWRlbmNlX25vdF9leGVjdXRhYmxlX2F1dGhvcml0eSI6IHRydWUsCiAgICAiZXJyb3IiOiBudWxsLAogICAgIm9ic2VydmF0aW9ucyI6IFtdLAogICAgInByZXNlcnZhdGlvbl9lcnJvcnMiOiBbXSwKICAgICJxdWFsaWZpZWQiOiB0cnVlLAogICAgInNvdXJjZV9oZWFkIjogIjhlNWVlMWM5YTc3M2ZlMTcyYmNjMjdkMjc4M2RmOWM5ZjcwZjA1YWMiCiAgfSwKICAicXVhbGlmaWVkX3BleCI6IGZhbHNlLAogICJyYXdfdGVybWluYWwiOiBudWxsLAogICJyYXdfdGVybWluYWxfYnl0ZXNfdW5jaGFuZ2VkIjogdHJ1ZSwKICAicmF3X3Rlcm1pbmFsX2Vycm9yIjogewogICAgImFjdGlvbiI6ICJyYXdfdGVybWluYWxfcXVhbGlmaWNhdGlvbiIsCiAgICAiZXJyb3IiOiAiQXNzZXJ0aW9uRXJyb3IoJ01pc3NpbmcgcHJvdGVjdGVkIHJlZ3VsYXIgZmlsZScpIiwKICAgICJ0cmFjZWJhY2siOiAiVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOlxuICBGaWxlIFwiL2hvbWUvcnVubmVyL3dvcmsvbnNzb2MvbnNzb2Mvc2NyaXB0cy9jZHJfZWlnaHRfZHJhaW5fdmlfYmlhc19vZmZfcHVibGljYXRpb25fdjEucHlcIiwgbGluZSA5OCwgaW4gcHVibGlzaFxuICAgIHBhdGg9YS5yZWd1bGFyKG91dCxcInJlc3VsdC5qc29uXCIpO3Jhdz1wYXRoLnJlYWRfYnl0ZXMoKVxuICAgICAgICAgXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXlxuICBGaWxlIFwiL2hvbWUvcnVubmVyL3dvcmsvbnNzb2MvbnNzb2Mvc2NyaXB0cy9jZHJfdjU5X3RhaWxfbG9hZGVkX2FkbWlzc2lvbi5weVwiLCBsaW5lIDQ1LCBpbiByZWd1bGFyXG4gICAgcmVxdWlyZShwLmlzX2ZpbGUoKSxcIk1pc3NpbmcgcHJvdGVjdGVkIHJlZ3VsYXIgZmlsZVwiKVxuICBGaWxlIFwiL2hvbWUvcnVubmVyL3dvcmsvbnNzb2MvbnNzb2Mvc2NyaXB0cy9jZHJfdjU5X3RhaWxfbG9hZGVkX2FkbWlzc2lvbi5weVwiLCBsaW5lIDI3LCBpbiByZXF1aXJlXG4gICAgaWYgbm90IHZhbHVlOnJhaXNlIEFzc2VydGlvbkVycm9yKHJlYXNvbilcbiAgICAgICAgICAgICAgICAgXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXlxuQXNzZXJ0aW9uRXJyb3I6IE1pc3NpbmcgcHJvdGVjdGVkIHJlZ3VsYXIgZmlsZVxuIiwKICAgICJ0eXBlIjogIkFzc2VydGlvbkVycm9yIgogIH0sCiAgInJlc2VydmF0aW9uIjogewogICAgImFzc2V0c19vdmVyd3JpdHRlbiI6IGZhbHNlLAogICAgImV4aXN0aW5nX2Fzc2V0cyI6IFtdLAogICAgInJlbGVhc2VfaWQiOiA0MzAxMzA0MzIsCiAgICAidGFnIjogImNsb3VkLXJlc3VsdHMtNDEyMzI3Nzg0NDYtMS1jZHItY3VycmVudC1laWdodC1kcmFpbi1sb2FkZWQtcHJlcGFyYXRpb24iLAogICAgInRhcmdldF92ZXJpZmllZCI6IHRydWUsCiAgICAidGVzdGVkX3NvdXJjZSI6ICI4ZTVlZTFjOWE3NzNmZTE3MmJjYzI3ZDI3ODNkZjljOWY3MGYwNWFjIgogIH0sCiAgInJlc2VydmF0aW9ucyI6IHt9LAogICJydW5fYXR0ZW1wdCI6IDEsCiAgInJ1bl9pZCI6IDQxMjMyNzc4NDQ2LAogICJzb3VyY2VfaGVhZCI6ICI4ZTVlZTFjOWE3NzNmZTE3MmJjYzI3ZDI3ODNkZjljOWY3MGYwNWFjIiwKICAic3RhdHVzIjogIkZBSUxfVU5RVUFMSUZJRURfQ1VSUkVOVF9XSURUSF9MT0FERURfRVZJREVOQ0UiLAogICJzdG9yYWdlIjogWwogICAgewogICAgICAicHVibGljYXRpb25fcmVjb3ZlcnkiOiB0cnVlCiAgICB9CiAgXSwKICAidGVybWluYWxfZmluYWxpemF0aW9uX2NvbXBsZXRlIjogZmFsc2UKfQo=", "index": 0, "path": "hw/soc/out/cloud-cdr-current-eight-drain-loaded-preparation-publication/cdr-current-eight-drain-loaded-preparation-41232778446-1.summary.json"}
+2026-10-31T19:10:18.8920387Z WIDTH_CURRENT_NATIVE_INDEX {"bytes": 906, "chunks": 1, "path": "hw/soc/out/cloud-cdr-current-eight-drain-loaded-preparation-publication/cdr-current-eight-drain-loaded-preparation-41232778446-1.parts.json", "present": true, "sha256": "631b56249e1541b0884920a83ea6f15f9b4153f41004458cc2df034152785d66"}
+2026-10-31T19:10:18.8932390Z WIDTH_CURRENT_NATIVE_CHUNK {"base64": "ewogICJmb3JtYXQiOiAib3JkZXJlZC10YXItZ3ppcC1wYXJ0cy12MSIsCiAgInN0ZW0iOiAiY2RyLWN1cnJlbnQtZWlnaHQtZHJhaW4tbG9hZGVkLXByZXBhcmF0aW9uLTQxMjMyNzc4NDQ2LTEiLAogICJzb3VyY2VfZGlyZWN0b3J5IjogImNsb3VkLWNkci1jdXJyZW50LWVpZ2h0LWRyYWluLWxvYWRlZC1ldmlkZW5jZS1wcmVwYXJhdGlvbiIsCiAgImJ5dGVzIjogNzM0LAogICJzaGEyNTYiOiAiMzIxZjA5OWY3NzI1Njc0MzZjMWE1YzRmY2Q1MmMzZWRlMDQ4OGFiZmIwM2UyYWFlMTY1ZWRiYjc1NThlNTk3ZiIsCiAgInBhcnRzIjogWwogICAgewogICAgICAiaW5kZXgiOiAwLAogICAgICAibmFtZSI6ICJjZHItY3VycmVudC1laWdodC1kcmFpbi1sb2FkZWQtcHJlcGFyYXRpb24tNDEyMzI3Nzg0NDYtMS50YXIuZ3oucGFydDAwMDAiLAogICAgICAiYnl0ZXMiOiA3MzQsCiAgICAgICJzaGEyNTYiOiAiMzIxZjA5OWY3NzI1Njc0MzZjMWE1YzRmY2Q1MmMzZWRlMDQ4OGFiZmIwM2UyYWFlMTY1ZWRiYjc1NThlNTk3ZiIKICAgIH0KICBdLAogICJwYXJ0X2xpbWl0X2J5dGVzIjogNTM2ODcwOTEyLAogICJtZWFuaW5nIjogIkNvbmNhdGVuYXRlIHN0cmljdGx5IGluIGluZGV4IG9yZGVyOyB2ZXJpZnkgZXZlcnkgcGFydCBhbmQgY29tYmluZWQgU0hBMjU2IGJlZm9yZSBleHRyYWN0aW5nLiBObyBvcmlnaW5hbCB3YXZlZm9ybSBzYW1wbGVzIHJlbW92ZWQuIiwKICAidmVyaWZpY2F0aW9uIjogewogICAgInBhcnRzIjogMSwKICAgICJieXRlcyI6IDczNCwKICAgICJzaGEyNTYiOiAiMzIxZjA5OWY3NzI1Njc0MzZjMWE1YzRmY2Q1MmMzZWRlMDQ4OGFiZmIwM2UyYWFlMTY1ZWRiYjc1NThlNTk3ZiIsCiAgICAiYWxsX3BhcnRzX2FuZF9jb21iaW5lZF9ieXRlc192ZXJpZmllZCI6IHRydWUKICB9Cn0K", "index": 0, "path": "hw/soc/out/cloud-cdr-current-eight-drain-loaded-preparation-publication/cdr-current-eight-drain-loaded-preparation-41232778446-1.parts.json"}
+2026-10-31T19:10:18.9013655Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-31T19:10:18.9014011Z with:
+2026-10-31T19:10:18.9014275Z   name: drain-m1-loaded-preparation-full-41232778446-1
+2026-10-31T19:10:18.9014584Z   include-hidden-files: true
+2026-10-31T19:10:18.9014828Z   if-no-files-found: error
+2026-10-31T19:10:18.9015068Z   retention-days: 90
+2026-10-31T19:10:18.9015304Z   compression-level: 1
+2026-10-31T19:10:18.9016211Z   path: hw/soc/out/cdr-eight-drain-vi-prerequisites
+hw/soc/out/cdr-storage-checkout
+/home/runner/work/_temp/cdr-storage-before-checkout.json
+cloud-cdr-current-eight-drain-loaded-evidence-preparation
+cloud-cdr-current-eight-drain-loaded-nominal_early
+hw/soc/out/cloud-cdr-current-eight-drain-loaded-preparation-publication
+
+2026-10-31T19:10:18.9017206Z   overwrite: false
+2026-10-31T19:10:18.9017468Z env:
+2026-10-31T19:10:18.9017707Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T19:10:18.9018014Z   APPROVED_SOURCE: 8e5ee1c9a773fe172bcc27d2783df9c9f70f05ac
+2026-10-31T19:10:18.9018419Z   REQUESTED_MODE: vi-bias-off
+2026-10-31T19:10:18.9018663Z   REQUESTED_CASE: vi_bias_off
+2026-10-31T19:10:18.9020795Z   GH_TOKEN: ***
+2026-10-31T19:10:18.9021104Z   LOADED_CASE: nominal_early
+2026-10-31T19:10:18.9021344Z   PREPARE_ONLY: true
+2026-10-31T19:10:18.9021627Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T19:10:18.9021988Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-31T19:10:18.9022330Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T19:10:18.9022698Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T19:10:18.9023020Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T19:10:18.9023392Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-31T19:10:18.9023791Z ##[endgroup]
+2026-10-31T19:10:19.0248762Z (node:2479) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-31T19:10:19.0249505Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-31T19:10:19.0339471Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-31T19:10:19.0342677Z The least common ancestor is /home/runner/work. This will be the root directory of the artifact
+2026-10-31T19:10:19.0343443Z With the provided path, there will be 11 files uploaded
+2026-10-31T19:10:19.0344876Z Artifact name is valid!
+2026-10-31T19:10:19.0345426Z Root directory input is valid!
+2026-10-31T19:10:19.3063416Z Beginning upload of artifact content to blob storage
+2026-10-31T19:10:19.3299010Z (node:2479) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-31T19:10:19.4955609Z Uploaded bytes 8455
+2026-10-31T19:10:19.5371483Z Finished uploading artifact content to blob storage!
+2026-10-31T19:10:19.5372140Z SHA256 digest of uploaded artifact zip is f04203100c40422c46e3d778995d2e6efbbc44ed25faafaf83aa3912ced66062
+2026-10-31T19:10:19.5372714Z Finalizing artifact upload
+2026-10-31T19:10:19.9568906Z Artifact drain-m1-loaded-preparation-full-41232778446-1.zip successfully finalized. Artifact ID 13054402409
+2026-10-31T19:10:19.9569794Z Artifact drain-m1-loaded-preparation-full-41232778446-1 has been successfully uploaded! Final size is 8455 bytes. Artifact ID is 13054402409
+2026-10-31T19:10:19.9575568Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/41232778446/artifacts/13054402409
+2026-10-31T19:10:19.9742060Z Post job cleanup.
+2026-10-31T19:10:20.0351910Z [command]/usr/bin/git version
+2026-10-31T19:10:20.0383462Z git version 2.56.0
+2026-10-31T19:10:20.0409089Z Temporarily overriding HOME='/home/runner/work/_temp/4d83b4de-7e73-4e64-9aec-d71553c5d4f7' before making global git config changes
+2026-10-31T19:10:20.0410522Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-31T19:10:20.0412383Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-31T19:10:20.0441627Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T19:10:20.0466576Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T19:10:20.0683331Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T19:10:20.0709033Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T19:10:20.1076669Z Cleaning up orphan processes
+2026-10-31T19:10:20.1328265Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
