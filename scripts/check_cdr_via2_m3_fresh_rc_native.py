@@ -149,7 +149,9 @@ def controls(ctx,out):
     reject('unknown_phase',lambda:n.label('old-main',None));reject('unexpected_variant',lambda:n.label('compose','precise'));reject('missing_variant',lambda:n.label('mim-finish',None))
     # Real current environment must not satisfy actual native entry in either this
     # isolated source branch or the integrated source-controls job. No env edits.
-    reject('actual_source_job_has_no_native_authority',lambda:n.run_phase('prepare',None,n.a.OUT,n.a.context(os.environ)))
+    n.require(not n.a.OUT.exists()and not n.a.OUT.is_symlink(),'source fixture has no actual native output root')
+    reject('actual_source_job_has_no_native_authority',lambda:n.authorized(n.a.OUT,n.a.context(os.environ)))
+    n.require(not n.a.OUT.exists()and not n.a.OUT.is_symlink(),'actual admission refusal must not create native output')
     return dict(status='PASS_SOURCE_ONLY_PHASE_CONTROLS',passed=len(records),failed=0,records=records,native_acquired=False,native_executed=False,numerical_fixture_controls=len(k.RECORDS)-original_records,full_numerical_fixture=full)
 
 def main():
