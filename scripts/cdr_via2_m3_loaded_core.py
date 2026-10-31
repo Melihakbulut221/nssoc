@@ -58,11 +58,22 @@ def extract(record,root=ROOT,dedented=False):
     require(digest_bytes(stable_ast(tree).encode())==record['ast_sha256'],'exact frozen AST')
     return text,tree
 
+def select_definition(tree,name,kind):
+    require(name!='main','historical main excluded')
+    if kind=='Assign':
+        require(tree.body and all(isinstance(n,ast.Assign)and len(n.targets)==1 and isinstance(n.targets[0],ast.Name)for n in tree.body),'assignment-only physical line')
+        names=[n.targets[0].id for n in tree.body]
+    else:
+        require(kind=='FunctionDef'and len(tree.body)==1 and isinstance(tree.body[0],ast.FunctionDef),'single function definition')
+        names=[tree.body[0].name]
+    require(len(names)==len(set(names))and names.count(name)==1,'unique exact named definition')
+    return ast.Module(body=[tree.body[names.index(name)]],type_ignores=[])
+
 def definition(namespace,file,name,root=ROOT):
     record=catalog(root)['definitions'][file+':'+name];text,tree=extract(record,root)
-    require(len(tree.body)==1 and isinstance(tree.body[0],(ast.FunctionDef,ast.Assign)),'definition-only load')
-    require(name!='main','historical main excluded')
-    exec(compile(tree,str(source_path(root,file))+':'+name,'exec'),namespace)
+    require(record['name']==name,'catalog definition name')
+    selected=select_definition(tree,name,record['kind'])
+    exec(compile(selected,str(source_path(root,file))+':'+name,'exec'),namespace)
     return namespace[name]
 
 def block(name,namespace,root=ROOT):

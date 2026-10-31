@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Hosted source-only full loaded-body fixtures; no actual model acquisition or engine execution."""
-import copy,ctypes,hashlib,io,json,os,shutil,socket,sys,traceback,types,unittest
+import ast,copy,ctypes,hashlib,io,json,os,shutil,socket,sys,traceback,types,unittest
 from pathlib import Path
 import numpy as np
 import cdr_via2_m3_loaded_core as c
@@ -103,6 +103,11 @@ class LoadedCoreControls(unittest.TestCase):
         for name in ('main','historical_runtime_reference','restore','native_export'):
             with self.assertRaises(ValueError):c.block(name,{})
     def test_03_independent_helper_namespaces(self):
+        single={};c.definition(single,'scripts/cloud_cdr_pd_vi.py','UI')
+        self.assertEqual(single['UI'],125e-12)
+        self.assertTrue(all(name not in single for name in ('START','STOP','STEP')))
+        for text in ('UI=1;UI=2','START=1','UI=1;import os','UI=START=1'):
+            with self.assertRaises(ValueError):c.select_definition(ast.parse(text),'UI','Assign')
         a=c.numerical_namespace();b=c.numerical_namespace()
         self.assertIsNot(a['bind_native'].__globals__,b['bind_native'].__globals__)
         self.assertEqual(a['legacy'].UI,125e-12);self.assertEqual(b['pump'].CORNERS['nominal']['temperature'],27)
