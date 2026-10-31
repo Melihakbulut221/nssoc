@@ -1,0 +1,122 @@
+{
+  "schema": "candidate-via2-m3-fresh-rc-entry-plan-v1",
+  "status": "PREPARATION_ONLY_ACTUAL_CANONICAL_VIEW_BINDING_ABSENT",
+  "source_only": true,
+  "frozen_source": "ebe4ebb3ca2aef7b23cfc68f4b17588c03cd84fb",
+  "candidate_view_producer": null,
+  "authorizations": {
+    "source_inspection": true,
+    "native_acquisition": false,
+    "native_view_execution": false,
+    "RC_extraction": false,
+    "electrical_simulation": false,
+    "workflow_dispatch": false
+  },
+  "physical_prerequisite": {
+    "run_id": 41238994098,
+    "source": "0b1ec86b35f8cb98928a5687f007a7ccd676f620",
+    "release_id": 430168624,
+    "candidate": {
+      "bytes": 998644,
+      "sha256": "42ed5bcd567518786b718248947771172e9f5cc419d0aaa8fc8c49d8cfa4e876"
+    }
+  },
+  "required_scope": {
+    "devices": 500,
+    "terminals": 1446,
+    "ports": 25,
+    "intrinsic_MIM": 7,
+    "all_actual_new_RC_branches": true,
+    "all_coupling_and_boundary_caps": true
+  },
+  "historical_observations_not_new_acceptance": {
+    "wire_components": 113,
+    "native_nets": 238,
+    "electrical_nets": 114,
+    "anchors": 978,
+    "R": 24356,
+    "C": 15566,
+    "voltage_vectors": 977,
+    "total_vectors": 1151
+  },
+  "actual_new_observations": null,
+  "forbidden_reuse": [
+    "historical producer IDs as new IDs",
+    "rewritten absolute input proof",
+    "old GITHUB_SHA environment",
+    "production module-global or sys.modules admission replacement",
+    "original worker main execution",
+    "historical counts as invented measurements"
+  ],
+  "entry_stages": [
+    {
+      "stage": "native_binding",
+      "source": "scripts/cloud_cdr_current_eight_drain_fresh_binding.py",
+      "definitions": [
+        "native_contact_oracle",
+        "native_export",
+        "geometry_readback_matches",
+        "geometry_readback_controls",
+        "build",
+        "verify",
+        "controls"
+      ],
+      "main_allowed": false
+    },
+    {
+      "stage": "wire_RC",
+      "source": "scripts/cloud_cdr_current_eight_drain_fresh_wire_rc.py",
+      "definitions": [],
+      "main_only_boundary": true,
+      "new_orchestration_required": true
+    },
+    {
+      "stage": "MIM_capture",
+      "source": "scripts/cloud_cdr_current_eight_drain_fresh_mim_capture.py",
+      "definitions": [
+        "generate",
+        "check_capture"
+      ],
+      "main_allowed": false
+    },
+    {
+      "stage": "MIM_raw_audit",
+      "source": "scripts/cloud_cdr_current_eight_drain_fresh_mim_audit.py",
+      "definitions": [],
+      "main_only_boundary": true,
+      "new_orchestration_required": true
+    },
+    {
+      "stage": "MIM_intrinsic",
+      "source": "scripts/audit_cdr_v59_mim_intrinsic.py",
+      "definitions": [
+        "require",
+        "validate_mim"
+      ],
+      "current_binding_stage_provider_required": true,
+      "historical_admission_import_allowed": false
+    },
+    {
+      "stage": "order_and_composition",
+      "source": "scripts/cloud_cdr_current_eight_drain_fresh_mim_precision.py",
+      "definitions": [
+        "records",
+        "compose"
+      ],
+      "compose_requires_current_binding_pin_and_definition_only_composition_loader": true,
+      "main_allowed": false
+    }
+  ],
+  "definition_record": {
+    "path": "docs/evidence/cdr-via2-m3-fresh-rc-entry-definitions.json",
+    "bytes": 62729,
+    "sha256": "7fa4cd3e600ad1dd9d00c6cb3e1adde854ab356b08209b2de2ff6640b40ae0a2"
+  },
+  "no_acceptance": {
+    "physical": false,
+    "electrical": false,
+    "full_PHY": false,
+    "timing": false,
+    "production": false
+  }
+}
