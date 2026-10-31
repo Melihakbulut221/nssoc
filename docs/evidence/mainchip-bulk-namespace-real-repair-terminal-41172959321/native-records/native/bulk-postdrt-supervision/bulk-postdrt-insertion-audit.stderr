@@ -1,0 +1,25 @@
+{"phase": "insertion-audit", "primary": "AssertionError('only exact existing diode master')", "terminal_errors": []}
+Traceback (most recent call last):
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 433, in <module>
+    if __name__=="__main__":main()
+                            ^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 431, in main
+    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,"input unchanged"),
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 148, in run_phase
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 135, in run_phase
+    try:action()
+        ^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 431, in <lambda>
+    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,"input unchanged"),
+                                  ^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 359, in phase
+    pg=connect_new_pg(work/"insertion-after-shim.odb",work/"insertion-connected.odb",base);save(out/"new-diode-pg.json",pg)
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 231, in connect_new_pg
+    p.require(inst.getMaster()==template.getMaster(),"only exact existing diode master")
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py", line 37, in require
+    if not ok:raise AssertionError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: only exact existing diode master

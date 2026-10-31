@@ -1,0 +1,24 @@
+{"phase": "antenna-restore-audit", "primary": "AssertionError('antenna cleanup wire')", "terminal_errors": []}
+Traceback (most recent call last):
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 433, in <module>
+    if __name__=="__main__":main()
+                            ^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 431, in main
+    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,"input unchanged"),
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 148, in run_phase
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 135, in run_phase
+    try:action()
+        ^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 431, in <lambda>
+    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,"input unchanged"),
+                                  ^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 405, in phase
+    p.exact(current["nets"][name]["wire"],row["wire"],"antenna cleanup wire")
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py", line 40, in exact
+    require(encode(actual)==encode(expected),message)
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py", line 37, in require
+    if not ok:raise AssertionError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: antenna cleanup wire

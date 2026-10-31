@@ -1,16 +1,15 @@
-# Cloud continuation — checkpoint v153
+# Cloud continuation — checkpoint v154
 
-Updated: 2026-10-31T05:41:44.671217+00:00
+Updated: 2026-10-31T09:03:43.143020+00:00
 
-Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
+Latest user instruction overrides older local goal wording: all computation and native archives/models/GDS/ODB/DEF/waves stay in GitHub. Local project directory, project temporary data and native CAD processes are empty. Only source/API/derived text in RAM locally.
 
-Cloud-only checkpoint v153: actualnative name roundtrip41170992512 passedbothnormal/expected-primary cases; full107fileproof1cf754fc byte-verified,4rawlogs/8sourcerecords/69native-derivedrecords and56member424,041,297Bcapsule retained. Whole624,649,274B snapshot and185,377,344BDEF matchbaseline;153129instances,9143old canonicalnames,1691clocks restored and3fixturesremoved. Genuinebulk repair41172959321 nowactive at4c672914; exactsameproductionbodies,1839sourcepins, allsame-sourcecontrols passed andemptyrelease429743993 independentlyreserved. Onlyactualnewresult canprovecrashresolved/antennaDRTclosure. Alloriginalclock/numericalgates unchanged. AnalogRCcontact inputs expandedto31authenticatedmembermetadata withcurrentrawEXT/MAG; auditisnotimplemented. Everythingnative remainscloud; localworkspace/tmp/nativeprocesses empty; fullPHY/currentRCSTA remainopen.
+Genuine bulk repair41172959321 returned0 and reported1351inserted diodes and9143restoredoriginal names. Insertion-audit then failed master equality, cleanup failed wire equality; route0. All112proof files and65member304,831,102Bnative capsule preserved. Read-only audit41186953778 atc3e8abdf is dispatched with1956pins and18new source controls plus all existing controls; independentlyreservedemptyrelease429826542. Read current run state before continuing. Master-wrapper/encoding explanations remain hypotheses until actual results. No partial candidate promoted.
 
-Active handles at this snapshot: 41172959321 in_progress
-
-Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
+Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour monitor remains read-only and cannot dispatch native work. Its last recorded live observation failedHTTP502; this checkpoint does not claim it is healthy. Full serial PHY, routed main chip and final setup/hold remain unaccepted. Original electrical and20/4/8/8ns+5% timing gates unchanged.
 
 ## Historical notes below — not current running-job status
+
 
 
 
