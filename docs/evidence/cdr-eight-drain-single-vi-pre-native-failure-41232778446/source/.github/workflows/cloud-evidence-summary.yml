@@ -1,0 +1,500 @@
+name: Single VI bias-off exact-source loaded qualification
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Source controls or the separately admitted single VI case
+        type: choice
+        options: [controls, vi-bias-off]
+        default: controls
+        required: true
+      case:
+        description: Only the original storage-blocked VI case is permitted
+        type: choice
+        options: [vi_bias_off]
+        default: vi_bias_off
+        required: true
+      approved_source:
+        description: Exact current immutable source commit SHA
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cdr-single-vi-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+  APPROVED_SOURCE: ${{ inputs.approved_source }}
+  REQUESTED_MODE: ${{ inputs.mode }}
+  REQUESTED_CASE: ${{ inputs.case }}
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Record actual disk before checkout
+        run: |
+          python3 -B - <<'PY'
+          import json,os,shutil
+          from pathlib import Path
+          row=dict(checkpoint='before_checkout',free_bytes=shutil.disk_usage(os.environ['GITHUB_WORKSPACE']).free)
+          p=Path(os.environ['RUNNER_TEMP'])/'cdr-storage-before-checkout.json'
+          p.write_text(json.dumps(row,sort_keys=True)+'\n')
+          print(json.dumps(row,sort_keys=True))
+          PY
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr-eight-drain-vi-bias-off-methods-v1.json
+      - name: Bind exact source and record actual disk after checkout
+        env:
+          APPROVED_SOURCE: ${{ inputs.approved_source }}
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,shutil,subprocess
+          from pathlib import Path
+          e=os.environ
+          assert e['GITHUB_ACTIONS']=='true' and e['RUNNER_ENVIRONMENT']=='github-hosted' and e['RUNNER_OS']=='Linux'
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_REF']=='refs/heads/codex/cdr-eight-drain-storage-preflight-v1'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['APPROVED_SOURCE']==e['GITHUB_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          p=Path('scripts/cdr-eight-drain-vi-bias-off-methods-v1.json');raw=p.read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='5fc62a0113235f214646ade8aeaf730f7c7e6b5af7c37c1dfab82a6e054d1fbb'
+          m=json.loads(raw)
+          assert m['branch']=='codex/cdr-eight-drain-storage-preflight-v1'
+          assert subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()=='https://github.com/Melihakbulut221/nssoc'
+          checkout_free_after_bootstrap=shutil.disk_usage('.').free
+          names=sorted(set(m['protected_sha256'])|{'scripts/cdr-eight-drain-vi-bias-off-methods-v1.json','.github/workflows/cloud-evidence-summary.yml'})
+          assert len(names)==1980
+          assert all(not any(c in n for c in '*?[]!\\ \n')and '..'not in n.split('/')for n in names)
+          patterns=''.join('/'+n+'\n'for n in names)
+          # stdin avoids the OS per-string limit hit by a large action input.
+          # This public repository needs no persisted checkout credentials.
+          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=patterns.encode(),check=True,env={**e,'GIT_TERMINAL_PROMPT':'0'})
+          assert e['REQUESTED_MODE']in ('controls','vi-bias-off')and e['REQUESTED_CASE']=='vi_bias_off'
+          assert e['GITHUB_WORKFLOW_REF']=='Melihakbulut221/nssoc/.github/workflows/cloud-evidence-summary.yml@refs/heads/codex/cdr-eight-drain-storage-preflight-v1'
+          assert m['schema']=='cdr-eight-drain-single-vi-execution-v1'and m['native_cases']==['vi_bias_off']and m['preparation_case']=='nominal_early'
+          assert m['source_controls_authorized']is True
+          for k in ('accepted','electrical_accepted','physical_accepted','full_phy_accepted','automatic_retry','geometry_generation_authorized','native_extraction_authorized'):assert m[k]is False
+          if e['REQUESTED_MODE']=='vi-bias-off':
+              for k in ('native_execution_authorized','simulation_authorized','preparation_authorized','workflow_dispatch_authorized','controller_readiness'):assert m[k]is True
+          for name,digest in m['protected_sha256'].items():
+              q=Path(name);assert q.is_file()and not q.is_symlink(),name
+              with q.open('rb')as stream:assert hashlib.file_digest(stream,'sha256').hexdigest()==digest,name
+          before=json.loads((Path(e['RUNNER_TEMP'])/'cdr-storage-before-checkout.json').read_bytes())
+          row=dict(source=e['GITHUB_SHA'],before=before,after_bootstrap=dict(free_bytes=checkout_free_after_bootstrap),sparse_paths=len(names),after=dict(checkpoint='after_checkout',free_bytes=shutil.disk_usage('.').free),protected_files=len(m['protected_sha256']),native_acquisition=False,native_execution=False)
+          out=Path('hw/soc/out/cdr-storage-checkout');out.mkdir(parents=True,exist_ok=False)
+          (out/'disk.json').write_text(json.dumps(row,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(row,sort_keys=True))
+          PY
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Source import dependencies only
+        run: python -m pip install numpy==2.3.3 networkx==3.4.2
+      - name: Proven frozen storage and source regression
+        id: storage
+        run: |
+          mkdir -p hw/soc/out/cdr-storage-streams
+          python3 -B scripts/check_cdr_eight_drain_storage_v1.py > hw/soc/out/cdr-storage-streams/stdout.log 2> hw/soc/out/cdr-storage-streams/stderr.log
+      - name: Actual single-case adapter source and refusal controls
+        if: ${{ !cancelled() && steps.storage.outcome == 'success' }}
+        run: |
+          mkdir -p hw/soc/out/cdr-single-vi-streams
+          python3 -B scripts/check_cdr_eight_drain_vi_bias_off_v1.py > hw/soc/out/cdr-single-vi-streams/stdout.log 2> hw/soc/out/cdr-single-vi-streams/stderr.log
+      - name: Always emit every full source stream
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json,os
+          from pathlib import Path
+          names={
+            'vi.json':Path('hw/soc/out/cdr-eight-drain-single-vi-source-controls/result.json'),
+            'vi.stdout':Path('hw/soc/out/cdr-single-vi-streams/stdout.log'),
+            'vi.stderr':Path('hw/soc/out/cdr-single-vi-streams/stderr.log'),
+            'storage.json':Path('hw/soc/out/cdr-eight-drain-storage-source-controls/result.json'),
+            'storage.stdout':Path('hw/soc/out/cdr-storage-streams/stdout.log'),
+            'storage.stderr':Path('hw/soc/out/cdr-storage-streams/stderr.log'),
+            'checkout.json':Path('hw/soc/out/cdr-storage-checkout/disk.json'),
+            'before-checkout.json':Path(os.environ['RUNNER_TEMP'])/'cdr-storage-before-checkout.json'}
+          for name,p in names.items():
+              assert not p.is_symlink()
+              present=p.is_file();raw=p.read_bytes()if present else b'';chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
+              print('VI_SOURCE_INDEX '+json.dumps(dict(path=name,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):print('VI_SOURCE_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          PY
+      - name: Preserve complete source success or failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-single-vi-source-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 90
+          path: |
+            ${{ runner.temp }}/cdr-storage-before-checkout.json
+            hw/soc/out/cdr-storage-checkout
+            hw/soc/out/cdr-eight-drain-storage-source-controls
+            hw/soc/out/cdr-eight-drain-single-vi-source-controls
+            hw/soc/out/cdr-storage-streams
+            hw/soc/out/cdr-single-vi-streams
+
+  prepare:
+    needs: [source-controls]
+    if: ${{ inputs.mode == 'vi-bias-off' && inputs.case == 'vi_bias_off' }}
+    permissions:
+      contents: write
+      actions: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      GH_TOKEN: ${{ github.token }}
+      LOADED_CASE: nominal_early
+      PREPARE_ONLY: 'true'
+    steps:
+      - name: Record actual disk before checkout
+        run: |
+          python3 -B - <<'PY'
+          import json,os,shutil
+          from pathlib import Path
+          row=dict(checkpoint='before_checkout',free_bytes=shutil.disk_usage(os.environ['GITHUB_WORKSPACE']).free)
+          p=Path(os.environ['RUNNER_TEMP'])/'cdr-storage-before-checkout.json'
+          p.write_text(json.dumps(row,sort_keys=True)+'\n')
+          print(json.dumps(row,sort_keys=True))
+          PY
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr-eight-drain-vi-bias-off-methods-v1.json
+      - name: Bind exact source and record actual disk after checkout
+        env:
+          APPROVED_SOURCE: ${{ inputs.approved_source }}
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,shutil,subprocess
+          from pathlib import Path
+          e=os.environ
+          assert e['GITHUB_ACTIONS']=='true' and e['RUNNER_ENVIRONMENT']=='github-hosted' and e['RUNNER_OS']=='Linux'
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_REF']=='refs/heads/codex/cdr-eight-drain-storage-preflight-v1'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['APPROVED_SOURCE']==e['GITHUB_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          p=Path('scripts/cdr-eight-drain-vi-bias-off-methods-v1.json');raw=p.read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='5fc62a0113235f214646ade8aeaf730f7c7e6b5af7c37c1dfab82a6e054d1fbb'
+          m=json.loads(raw)
+          assert m['branch']=='codex/cdr-eight-drain-storage-preflight-v1'
+          assert subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()=='https://github.com/Melihakbulut221/nssoc'
+          checkout_free_after_bootstrap=shutil.disk_usage('.').free
+          names=sorted(set(m['protected_sha256'])|{'scripts/cdr-eight-drain-vi-bias-off-methods-v1.json','.github/workflows/cloud-evidence-summary.yml'})
+          assert len(names)==1980
+          assert all(not any(c in n for c in '*?[]!\\ \n')and '..'not in n.split('/')for n in names)
+          patterns=''.join('/'+n+'\n'for n in names)
+          # stdin avoids the OS per-string limit hit by a large action input.
+          # This public repository needs no persisted checkout credentials.
+          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=patterns.encode(),check=True,env={**e,'GIT_TERMINAL_PROMPT':'0'})
+          assert e['REQUESTED_MODE']in ('controls','vi-bias-off')and e['REQUESTED_CASE']=='vi_bias_off'
+          assert e['GITHUB_WORKFLOW_REF']=='Melihakbulut221/nssoc/.github/workflows/cloud-evidence-summary.yml@refs/heads/codex/cdr-eight-drain-storage-preflight-v1'
+          assert m['schema']=='cdr-eight-drain-single-vi-execution-v1'and m['native_cases']==['vi_bias_off']and m['preparation_case']=='nominal_early'
+          assert m['source_controls_authorized']is True
+          for k in ('accepted','electrical_accepted','physical_accepted','full_phy_accepted','automatic_retry','geometry_generation_authorized','native_extraction_authorized'):assert m[k]is False
+          if e['REQUESTED_MODE']=='vi-bias-off':
+              for k in ('native_execution_authorized','simulation_authorized','preparation_authorized','workflow_dispatch_authorized','controller_readiness'):assert m[k]is True
+          for name,digest in m['protected_sha256'].items():
+              q=Path(name);assert q.is_file()and not q.is_symlink(),name
+              with q.open('rb')as stream:assert hashlib.file_digest(stream,'sha256').hexdigest()==digest,name
+          before=json.loads((Path(e['RUNNER_TEMP'])/'cdr-storage-before-checkout.json').read_bytes())
+          row=dict(source=e['GITHUB_SHA'],before=before,after_bootstrap=dict(free_bytes=checkout_free_after_bootstrap),sparse_paths=len(names),after=dict(checkpoint='after_checkout',free_bytes=shutil.disk_usage('.').free),protected_files=len(m['protected_sha256']),native_acquisition=False,native_execution=False)
+          out=Path('hw/soc/out/cdr-storage-checkout');out.mkdir(parents=True,exist_ok=False)
+          (out/'disk.json').write_text(json.dumps(row,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(row,sort_keys=True))
+          PY
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Authenticate same-source controls and exact two reservations before dependencies
+        run: python3 -B scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py --case "$LOADED_CASE" --prepare-only --preflight
+      - name: Original loaded simulator dependencies
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3 networkx==3.4.2
+      - name: Original complete loaded binding without transient
+        id: native
+        run: python3 -B scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py --case "$LOADED_CASE" --prepare-only
+      - name: Preserve raw failure evidence when publication has not started
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import os,subprocess,sys
+          from pathlib import Path
+          prepare=os.environ['PREPARE_ONLY']=='true';case=os.environ['LOADED_CASE']
+          assert (prepare and case=='nominal_early')or(not prepare and case=='vi_bias_off')
+          assert not prepare or case=='nominal_early'
+          suffix='preparation' if prepare else case
+          transport=Path('hw/soc/out')/('cloud-cdr-current-eight-drain-loaded-'+suffix+'-publication')
+          assert not transport.is_symlink()
+          if transport.exists():
+              assert transport.is_dir()
+              print('Existing publication transport retained; no publication retry or overwrite.')
+          else:
+              argv=[sys.executable,'-B','scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py','--case',case,'--publish-only']
+              if prepare:argv.append('--prepare-only')
+              subprocess.run(argv,check=True)
+          PY
+      - name: Always emit exact terminal and publication metadata
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json,os
+          from pathlib import Path
+          prepare=os.environ['PREPARE_ONLY']=='true';case=os.environ['LOADED_CASE']
+          suffix='preparation' if prepare else case
+          out=Path('cloud-cdr-current-eight-drain-loaded-evidence-'+suffix)
+          transport=Path('hw/soc/out')/('cloud-cdr-current-eight-drain-loaded-'+suffix+'-publication')
+          stem='cdr-current-eight-drain-loaded-'+suffix+'-'+os.environ['GITHUB_RUN_ID']+'-1'
+          paths=[out/'result.json',out/'publication-source-check.json',out/'direct-publication-plan.json',
+            transport/'publication.json',transport/(stem+'.summary.json'),transport/(stem+'.parts.json')]
+          prerequisite=Path('hw/soc/out/cdr-eight-drain-vi-prerequisites')
+          assert not prerequisite.is_symlink()
+          if prerequisite.exists():
+              assert prerequisite.is_dir()
+              for p in sorted(prerequisite.rglob('*')):
+                  assert not p.is_symlink()
+                  if p.is_dir():continue
+                  assert p.is_file()and p.name in ('run.json','jobs.json','source-controls.log','admission.json')
+                  paths.append(p)
+          for p in paths:
+              assert not p.is_symlink()
+              present=p.is_file();raw=p.read_bytes() if present else b''
+              chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
+              print('WIDTH_CURRENT_NATIVE_INDEX '+json.dumps(dict(path=str(p),present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):
+                  print('WIDTH_CURRENT_NATIVE_CHUNK '+json.dumps(dict(path=str(p),index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          PY
+      - name: Preserve complete worker output and partial publication
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: drain-m1-loaded-preparation-full-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 1
+          path: |
+            hw/soc/out/cdr-eight-drain-vi-prerequisites
+            hw/soc/out/cdr-storage-checkout
+            ${{ runner.temp }}/cdr-storage-before-checkout.json
+            cloud-cdr-current-eight-drain-loaded-evidence-preparation
+            cloud-cdr-current-eight-drain-loaded-nominal_early
+            hw/soc/out/cloud-cdr-current-eight-drain-loaded-preparation-publication
+
+  vi-bias-off:
+    needs: [source-controls, prepare]
+    if: ${{ inputs.mode == 'vi-bias-off' && inputs.case == 'vi_bias_off' }}
+    permissions:
+      contents: write
+      actions: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    env:
+      GH_TOKEN: ${{ github.token }}
+      LOADED_CASE: vi_bias_off
+      PREPARE_ONLY: 'false'
+    steps:
+      - name: Record actual disk before checkout
+        run: |
+          python3 -B - <<'PY'
+          import json,os,shutil
+          from pathlib import Path
+          row=dict(checkpoint='before_checkout',free_bytes=shutil.disk_usage(os.environ['GITHUB_WORKSPACE']).free)
+          p=Path(os.environ['RUNNER_TEMP'])/'cdr-storage-before-checkout.json'
+          p.write_text(json.dumps(row,sort_keys=True)+'\n')
+          print(json.dumps(row,sort_keys=True))
+          PY
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 1
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr-eight-drain-vi-bias-off-methods-v1.json
+      - name: Bind exact source and record actual disk after checkout
+        env:
+          APPROVED_SOURCE: ${{ inputs.approved_source }}
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,shutil,subprocess
+          from pathlib import Path
+          e=os.environ
+          assert e['GITHUB_ACTIONS']=='true' and e['RUNNER_ENVIRONMENT']=='github-hosted' and e['RUNNER_OS']=='Linux'
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_REF']=='refs/heads/codex/cdr-eight-drain-storage-preflight-v1'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['APPROVED_SOURCE']==e['GITHUB_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          p=Path('scripts/cdr-eight-drain-vi-bias-off-methods-v1.json');raw=p.read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='5fc62a0113235f214646ade8aeaf730f7c7e6b5af7c37c1dfab82a6e054d1fbb'
+          m=json.loads(raw)
+          assert m['branch']=='codex/cdr-eight-drain-storage-preflight-v1'
+          assert subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()=='https://github.com/Melihakbulut221/nssoc'
+          checkout_free_after_bootstrap=shutil.disk_usage('.').free
+          names=sorted(set(m['protected_sha256'])|{'scripts/cdr-eight-drain-vi-bias-off-methods-v1.json','.github/workflows/cloud-evidence-summary.yml'})
+          assert len(names)==1980
+          assert all(not any(c in n for c in '*?[]!\\ \n')and '..'not in n.split('/')for n in names)
+          patterns=''.join('/'+n+'\n'for n in names)
+          # stdin avoids the OS per-string limit hit by a large action input.
+          # This public repository needs no persisted checkout credentials.
+          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=patterns.encode(),check=True,env={**e,'GIT_TERMINAL_PROMPT':'0'})
+          assert e['REQUESTED_MODE']in ('controls','vi-bias-off')and e['REQUESTED_CASE']=='vi_bias_off'
+          assert e['GITHUB_WORKFLOW_REF']=='Melihakbulut221/nssoc/.github/workflows/cloud-evidence-summary.yml@refs/heads/codex/cdr-eight-drain-storage-preflight-v1'
+          assert m['schema']=='cdr-eight-drain-single-vi-execution-v1'and m['native_cases']==['vi_bias_off']and m['preparation_case']=='nominal_early'
+          assert m['source_controls_authorized']is True
+          for k in ('accepted','electrical_accepted','physical_accepted','full_phy_accepted','automatic_retry','geometry_generation_authorized','native_extraction_authorized'):assert m[k]is False
+          if e['REQUESTED_MODE']=='vi-bias-off':
+              for k in ('native_execution_authorized','simulation_authorized','preparation_authorized','workflow_dispatch_authorized','controller_readiness'):assert m[k]is True
+          for name,digest in m['protected_sha256'].items():
+              q=Path(name);assert q.is_file()and not q.is_symlink(),name
+              with q.open('rb')as stream:assert hashlib.file_digest(stream,'sha256').hexdigest()==digest,name
+          before=json.loads((Path(e['RUNNER_TEMP'])/'cdr-storage-before-checkout.json').read_bytes())
+          row=dict(source=e['GITHUB_SHA'],before=before,after_bootstrap=dict(free_bytes=checkout_free_after_bootstrap),sparse_paths=len(names),after=dict(checkpoint='after_checkout',free_bytes=shutil.disk_usage('.').free),protected_files=len(m['protected_sha256']),native_acquisition=False,native_execution=False)
+          out=Path('hw/soc/out/cdr-storage-checkout');out.mkdir(parents=True,exist_ok=False)
+          (out/'disk.json').write_text(json.dumps(row,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(row,sort_keys=True))
+          PY
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Authenticate same-source controls and exact two reservations before dependencies
+        run: python3 -B scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py --case "$LOADED_CASE" --preflight
+      - name: Original loaded simulator dependencies
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3 networkx==3.4.2
+      - name: Original VI bias-off operating point and full loaded transient
+        id: native
+        run: python3 -B scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py --case "$LOADED_CASE"
+      - name: Preserve raw failure evidence when publication has not started
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import os,subprocess,sys
+          from pathlib import Path
+          prepare=os.environ['PREPARE_ONLY']=='true';case=os.environ['LOADED_CASE']
+          assert (prepare and case=='nominal_early')or(not prepare and case=='vi_bias_off')
+          assert not prepare or case=='nominal_early'
+          suffix='preparation' if prepare else case
+          transport=Path('hw/soc/out')/('cloud-cdr-current-eight-drain-loaded-'+suffix+'-publication')
+          assert not transport.is_symlink()
+          if transport.exists():
+              assert transport.is_dir()
+              print('Existing publication transport retained; no publication retry or overwrite.')
+          else:
+              argv=[sys.executable,'-B','scripts/cloud_cdr_eight_drain_vi_bias_off_stage_v1.py','--case',case,'--publish-only']
+              if prepare:argv.append('--prepare-only')
+              subprocess.run(argv,check=True)
+          PY
+      - name: Always emit exact terminal and publication metadata
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json,os
+          from pathlib import Path
+          prepare=os.environ['PREPARE_ONLY']=='true';case=os.environ['LOADED_CASE']
+          suffix='preparation' if prepare else case
+          out=Path('cloud-cdr-current-eight-drain-loaded-evidence-'+suffix)
+          transport=Path('hw/soc/out')/('cloud-cdr-current-eight-drain-loaded-'+suffix+'-publication')
+          stem='cdr-current-eight-drain-loaded-'+suffix+'-'+os.environ['GITHUB_RUN_ID']+'-1'
+          paths=[out/'result.json',out/'publication-source-check.json',out/'direct-publication-plan.json',
+            transport/'publication.json',transport/(stem+'.summary.json'),transport/(stem+'.parts.json')]
+          prerequisite=Path('hw/soc/out/cdr-eight-drain-vi-prerequisites')
+          assert not prerequisite.is_symlink()
+          if prerequisite.exists():
+              assert prerequisite.is_dir()
+              for p in sorted(prerequisite.rglob('*')):
+                  assert not p.is_symlink()
+                  if p.is_dir():continue
+                  assert p.is_file()and p.name in ('run.json','jobs.json','source-controls.log','admission.json')
+                  paths.append(p)
+          for p in paths:
+              assert not p.is_symlink()
+              present=p.is_file();raw=p.read_bytes() if present else b''
+              chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
+              print('WIDTH_CURRENT_NATIVE_INDEX '+json.dumps(dict(path=str(p),present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):
+                  print('WIDTH_CURRENT_NATIVE_CHUNK '+json.dumps(dict(path=str(p),index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          PY
+      - name: Preserve complete worker output and partial publication
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: single-vi-full-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 1
+          path: |
+            hw/soc/out/cdr-eight-drain-vi-prerequisites
+            hw/soc/out/cdr-storage-checkout
+            ${{ runner.temp }}/cdr-storage-before-checkout.json
+            cloud-cdr-current-eight-drain-loaded-evidence-vi_bias_off
+            cloud-cdr-current-eight-drain-loaded-vi_bias_off
+            hw/soc/out/cloud-cdr-current-eight-drain-loaded-vi_bias_off-publication
+
+  preserve-native-job-logs:
+    needs: [source-controls, prepare, vi-bias-off]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Preserve every terminal actual job log including failed cases
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess,traceback
+          from pathlib import Path
+          root=Path('all-job-logs');root.mkdir()
+          e=os.environ;prefix='repos/'+e['GITHUB_REPOSITORY']+'/'
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_RUN_ATTEMPT']=='1'
+          def read(path):return subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+path])
+          raw=read('actions/runs/'+e['GITHUB_RUN_ID']);run=json.loads(raw);(root/'run.json').write_bytes(raw)
+          assert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
+          raw=read('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100')
+          jobs=json.loads(raw);(root/'jobs.json').write_bytes(raw)
+          assert len(jobs['jobs'])==jobs['total_count']<=20
+          rows=[];errors=[]
+          for j in jobs['jobs']:
+              if j['name']=='preserve-native-job-logs':continue
+              assert j['status']=='completed' and j['head_sha']==e['GITHUB_SHA']
+              if j['conclusion']=='skipped':continue
+              try:
+                  raw=read('actions/jobs/'+str(j['id'])+'/logs');assert raw
+                  (root/('job-'+str(j['id'])+'.log')).write_bytes(raw)
+                  rows.append(dict(id=j['id'],name=j['name'],conclusion=j['conclusion'],bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()))
+              except BaseException as error:
+                  errors.append(dict(id=j['id'],name=j['name'],error=repr(error),traceback=traceback.format_exc()))
+          receipt=dict(source=e['GITHUB_SHA'],run=run['id'],attempt=1,records=rows,errors=errors,full_raw_logs=True,native_acquisition=False)
+          (root/'receipt.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(receipt))
+          assert not errors
+          PY
+      - name: Retain complete actual logs and any collector failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-single-vi-all-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: all-job-logs
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
