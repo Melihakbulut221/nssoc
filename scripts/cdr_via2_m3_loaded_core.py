@@ -109,6 +109,7 @@ def current_configuration(root=ROOT):
     require(c['native_execution_authorized']is False and c['wave_execution_authorized']is False,'core descriptor grants no execution authority')
     require(c['allowed_cases']==['nominal_late'],'single matching declared scenario')
     records={name:pinned_json(source_path(root,pin['path']),pin)for name,pin in c['records'].items()}
+    transport=c['transport_prerequisite'];records['transport_prerequisite']=pinned_json(source_path(root,transport['path']),transport)
     q=records['readback/actual/fresh-rc-qualification.json'];p=c['producer']
     require(q['status']=='PASS_CURRENT_VIA2_M3_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES'and q['fresh_RC_pipeline_complete']is True,'actual complete current RC qualification')
     require(q['context']==dict(source=p['source'],run_id=p['run'],attempt=p['attempt'])and q['execution_scope']=='ACTUAL_AUTHORIZED_NATIVE_PHASE','actual RC producer identity')
@@ -215,6 +216,7 @@ def prepare_case(out,paths,runtime,context,case='nominal_late',root=ROOT):
         block('deck',ns,root);verify_projection(ns,records['derived-loaded-vector-projection.json'])
         extra=[Path(__file__).resolve(),source_path(root,CATALOG),source_path(root,INPUTS),Path(paths['composition']),Path(paths['planes']),Path(runtime['source_pin']),Path(runtime['models_summary']),pinpath,pp]
         extra += [source_path(root,name)for name in catalog(root)['files']]
+        extra.append(source_path(root,c['transport_prerequisite']['path']))
         report['protected_inputs'].update({str(p):sha(p)for p in extra})
         require(all(sha(Path(p))==digest for p,digest in report['protected_inputs'].items()),'complete prepared source/model integrity')
         report.update(status=PREPARED_STATUS,sources_unchanged=True,transient_executed=False)
@@ -239,8 +241,10 @@ def measure_case(out,context,returncode,prepared_pin,root=ROOT):
     require(plan['prepared_state']==prepared_pin,'host-retained preparation pin')
     require(prepared['context']==plan['context']==context and prepared['case']==plan['case']=='nominal_late','exact prepared source/run/scenario')
     c,records,contract,planes=verify_current_inputs(prepared['paths'],root);verify_runtime(prepared['runtime'],root)
+    expected_plan=dict(argv=[prepared['runtime']['engine'],'-n','-b','bench.cir'],cwd=str(out/'native'),remove_environment_keys=['LD_PRELOAD','PYTHONPATH','PYTHONHOME','GH_TOKEN','GITHUB_TOKEN'],environment=dict(SPICE_SCRIPTS=str(out/'native'),OMP_NUM_THREADS='1'),stdout=str(out/'native'/'native.log'),stderr='STDOUT',engine=file_pin(prepared['runtime']['engine']),prepared_state=prepared_pin,case='nominal_late',context=context)
+    require(plan==expected_plan,'exact actual transient command contract')
     report=prepared['report'];require(report['status']==PREPARED_STATUS and report['transient_executed']is False,'actual prepared-only input')
-    primary=None
+    primary=None;report['status']='RUNNING'
     try:
         require(all(sha(Path(p))==digest for p,digest in report['protected_inputs'].items()),'unchanged pre-transient inputs')
         ns=numerical_namespace(root);ns.update(args=SimpleNamespace(case='nominal_late'),out=out)
