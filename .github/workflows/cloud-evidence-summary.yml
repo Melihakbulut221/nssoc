@@ -1,7 +1,17 @@
 # SPDX-License-Identifier: Apache-2.0
-name: Source-only mainchip endpoint obstacle observer controls
+name: Mainchip saved-candidate endpoint obstacle observation
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [controls, observation]
+        default: controls
+        required: true
+      approved_source:
+        description: Exact reviewed source for one read-only OpenDB observation
+        type: string
+        required: false
 permissions:
   contents: read
   actions: read
@@ -37,14 +47,16 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Bind exact current source and disabled native execution
+      - name: Bind exact current source and explicit read-only scope
         run: |
           python3 -B scripts/mainchip_drt_obstacle_contract.py
           python3 -B - <<'PY'
           import ast,json
           from pathlib import Path
           m=json.loads(Path('scripts/mainchip-drt-obstacle-readback-source.json').read_bytes())
-          assert m['native_readonly_authorized'] is False and m['native_routing_authorized'] is False
+          assert m['native_readonly_authorized'] is True and m['native_routing_authorized'] is False
+          c=json.loads(Path('scripts/mainchip-drt-obstacle-readback-inputs.json').read_bytes())
+          assert c['native_readonly_authorized'] is True and c['native_routing_authorized'] is False
           for n in m['files']:
               if n.endswith('.py'):ast.parse(Path(n).read_text())
           PY
@@ -92,3 +104,54 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
+  observation:
+    needs: [source-controls, preserve-job-log]
+    if: ${{ inputs.mode == 'observation' && inputs.approved_source == github.sha }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      MODE: ${{ inputs.mode }}
+      APPROVED_SOURCE: ${{ inputs.approved_source }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/mainchip-drt-obstacle-readback-source.json
+      - name: Materialize complete exact source and derived provenance closure
+        run: |
+          python3 -B - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          manifest='scripts/mainchip-drt-obstacle-readback-source.json'
+          m=json.loads(Path(manifest).read_bytes())
+          names=sorted(set(m['files'])|set(m['inherited_files'])|{manifest})
+          assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
+          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
+          PY
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Authenticate current controls and independent reservation before frozen native acquisition
+        run: python3 -B scripts/cloud_mainchip_drt_obstacle_readback.py > obstacle-worker.stdout 2> obstacle-worker.stderr
+      - name: Preserve complete generated evidence and all available failure outputs in cloud
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mainchip-drt-obstacle-observation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            obstacle-readback/
+            obstacle-worker.stdout
+            obstacle-worker.stderr
+            ${{ runner.temp }}/mainchip-drt-obstacle-readback-${{ github.run_id }}-${{ github.run_attempt }}/out/
+            !${{ runner.temp }}/mainchip-drt-obstacle-readback-${{ github.run_id }}-${{ github.run_attempt }}/out/work/**
+          if-no-files-found: error
+          compression-level: 6
+          retention-days: 90
