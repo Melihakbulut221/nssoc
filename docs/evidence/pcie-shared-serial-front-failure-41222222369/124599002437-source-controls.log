@@ -1,0 +1,341 @@
+﻿2026-10-31T16:58:32.3130424Z Current runner version: '2.338.2'
+2026-10-31T16:58:32.3166607Z ##[group]Runner Image Provisioner
+2026-10-31T16:58:32.3167840Z Hosted Compute Agent
+2026-10-31T16:58:32.3168873Z Version: 20261021.618
+2026-10-31T16:58:32.3169804Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-31T16:58:32.3170893Z Build Date: 2026-10-21T00:45:21Z
+2026-10-31T16:58:32.3171875Z Worker ID: {8e80f23e-86ce-42a2-9301-f87a75b5a7b9}
+2026-10-31T16:58:32.3172881Z Region: eastus
+2026-10-31T16:58:32.3173703Z Cloud: Azure
+2026-10-31T16:58:32.3174514Z ##[endgroup]
+2026-10-31T16:58:32.3176455Z ##[group]Operating System
+2026-10-31T16:58:32.3177310Z Ubuntu
+2026-10-31T16:58:32.3178127Z 24.04.5
+2026-10-31T16:58:32.3179024Z LTS
+2026-10-31T16:58:32.3179765Z ##[endgroup]
+2026-10-31T16:58:32.3180631Z ##[group]Runner Image
+2026-10-31T16:58:32.3181482Z Image: ubuntu-24.04
+2026-10-31T16:58:32.3182323Z Version: 20261025.353.1
+2026-10-31T16:58:32.3184181Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-31T16:58:32.3186393Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-10-31T16:58:32.3188287Z ##[endgroup]
+2026-10-31T16:58:32.3189976Z ##[group]GITHUB_TOKEN Permissions
+2026-10-31T16:58:32.3192727Z Contents: read
+2026-10-31T16:58:32.3193489Z Metadata: read
+2026-10-31T16:58:32.3194187Z ##[endgroup]
+2026-10-31T16:58:32.3196873Z Secret source: Actions
+2026-10-31T16:58:32.3198098Z Cache mode: write
+2026-10-31T16:58:32.3199579Z Prepare workflow directory
+2026-10-31T16:58:32.3722706Z Prepare all required actions
+2026-10-31T16:58:32.3788233Z Getting action download info
+2026-10-31T16:58:32.5422740Z Download action repository 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-31T16:58:32.8697456Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-31T16:58:33.0157410Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-31T16:58:33.3074258Z Complete job name: source-controls
+2026-10-31T16:58:33.3978458Z ##[group]Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+2026-10-31T16:58:33.3980097Z with:
+2026-10-31T16:58:33.3980851Z   persist-credentials: false
+2026-10-31T16:58:33.3981769Z   repository: Melihakbulut221/nssoc
+2026-10-31T16:58:33.3988642Z   token: ***
+2026-10-31T16:58:33.3989406Z   ssh-strict: true
+2026-10-31T16:58:33.3990171Z   ssh-user: git
+2026-10-31T16:58:33.3990905Z   clean: true
+2026-10-31T16:58:33.3991679Z   sparse-checkout-cone-mode: true
+2026-10-31T16:58:33.3992585Z   fetch-depth: 1
+2026-10-31T16:58:33.3993336Z   fetch-tags: false
+2026-10-31T16:58:33.3994113Z   show-progress: true
+2026-10-31T16:58:33.3994896Z   lfs: false
+2026-10-31T16:58:33.3995615Z   submodules: false
+2026-10-31T16:58:33.3996391Z   set-safe-directory: true
+2026-10-31T16:58:33.3997282Z   allow-unsafe-pr-checkout: false
+2026-10-31T16:58:33.3998618Z env:
+2026-10-31T16:58:33.3999360Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T16:58:33.4000225Z ##[endgroup]
+2026-10-31T16:58:33.6758794Z Syncing repository: Melihakbulut221/nssoc
+2026-10-31T16:58:33.6762520Z ##[group]Getting Git version info
+2026-10-31T16:58:33.6764251Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-31T16:58:33.6766902Z [command]/usr/bin/git version
+2026-10-31T16:58:33.6826779Z git version 2.56.0
+2026-10-31T16:58:33.6849901Z ##[endgroup]
+2026-10-31T16:58:33.6866453Z Temporarily overriding HOME='/home/runner/work/_temp/1fc2b6a5-6af8-4f69-86e4-d947de0daf4f' before making global git config changes
+2026-10-31T16:58:33.6870578Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-31T16:58:33.6873230Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-31T16:58:33.6944662Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-31T16:58:33.6947804Z ##[group]Initializing the repository
+2026-10-31T16:58:33.6952690Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-31T16:58:33.7072138Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-31T16:58:33.7074659Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-31T16:58:33.7076864Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-31T16:58:33.7079039Z hint: call:
+2026-10-31T16:58:33.7080360Z hint:
+2026-10-31T16:58:33.7082044Z hint: 	git config --global init.defaultBranch <name>
+2026-10-31T16:58:33.7083979Z hint:
+2026-10-31T16:58:33.7085809Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-31T16:58:33.7088313Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-31T16:58:33.7090333Z hint:
+2026-10-31T16:58:33.7091437Z hint: 	git branch -m <name>
+2026-10-31T16:58:33.7092672Z hint:
+2026-10-31T16:58:33.7094327Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-31T16:58:33.7096617Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-31T16:58:33.7100983Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-31T16:58:33.7165206Z ##[endgroup]
+2026-10-31T16:58:33.7166708Z ##[group]Disabling automatic garbage collection
+2026-10-31T16:58:33.7170049Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-31T16:58:33.7210647Z ##[endgroup]
+2026-10-31T16:58:33.7212499Z ##[group]Setting up auth
+2026-10-31T16:58:33.7218380Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T16:58:33.7256595Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T16:58:33.7856557Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T16:58:33.7901774Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T16:58:33.8147456Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T16:58:33.8192042Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-31T16:58:33.8437858Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-31T16:58:33.8488352Z ##[endgroup]
+2026-10-31T16:58:33.8490239Z ##[group]Fetching the repository
+2026-10-31T16:58:33.8501887Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +64d31863ad2f5cd59483251dbe1dad8e7069c44e:refs/remotes/origin/codex/pcie-shared-serial-front-v1
+2026-10-31T16:58:58.4536918Z From https://github.com/Melihakbulut221/nssoc
+2026-10-31T16:58:58.4538317Z  * [new ref]           64d31863ad2f5cd59483251dbe1dad8e7069c44e -> origin/codex/pcie-shared-serial-front-v1
+2026-10-31T16:58:58.4549330Z ##[endgroup]
+2026-10-31T16:58:58.4550261Z ##[group]Determining the checkout info
+2026-10-31T16:58:58.4550929Z ##[endgroup]
+2026-10-31T16:58:58.4551455Z [command]/usr/bin/git sparse-checkout disable
+2026-10-31T16:58:58.4616987Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-31T16:58:58.4653360Z ##[group]Checking out the ref
+2026-10-31T16:58:58.4665782Z [command]/usr/bin/git checkout --progress --force -B codex/pcie-shared-serial-front-v1 refs/remotes/origin/codex/pcie-shared-serial-front-v1
+2026-10-31T16:58:59.5476992Z Updating files:   9% (3673/38979)
+2026-10-31T16:58:59.8010568Z Updating files:  10% (3898/38979)
+2026-10-31T16:59:00.2803115Z Updating files:  11% (4288/38979)
+2026-10-31T16:59:00.4300502Z Updating files:  12% (4678/38979)
+2026-10-31T16:59:00.4988198Z Updating files:  13% (5068/38979)
+2026-10-31T16:59:00.5619748Z Updating files:  13% (5301/38979)
+2026-10-31T16:59:00.6667925Z Updating files:  14% (5458/38979)
+2026-10-31T16:59:00.9389304Z Updating files:  15% (5847/38979)
+2026-10-31T16:59:01.4818989Z Updating files:  16% (6237/38979)
+2026-10-31T16:59:01.5033688Z Updating files:  17% (6627/38979)
+2026-10-31T16:59:01.5445179Z Updating files:  17% (6754/38979)
+2026-10-31T16:59:01.6318712Z Updating files:  18% (7017/38979)
+2026-10-31T16:59:01.8622852Z Updating files:  19% (7407/38979)
+2026-10-31T16:59:01.9256364Z Updating files:  20% (7796/38979)
+2026-10-31T16:59:01.9811690Z Updating files:  21% (8186/38979)
+2026-10-31T16:59:02.2469182Z Updating files:  22% (8576/38979)
+2026-10-31T16:59:02.3955149Z Updating files:  23% (8966/38979)
+2026-10-31T16:59:02.4394386Z Updating files:  24% (9355/38979)
+2026-10-31T16:59:02.4777008Z Updating files:  25% (9745/38979)
+2026-10-31T16:59:02.4980660Z Updating files:  26% (10135/38979)
+2026-10-31T16:59:02.5016966Z Updating files:  26% (10456/38979)
+2026-10-31T16:59:02.5518424Z Updating files:  27% (10525/38979)
+2026-10-31T16:59:02.7901523Z Updating files:  28% (10915/38979)
+2026-10-31T16:59:02.8343996Z Updating files:  29% (11304/38979)
+2026-10-31T16:59:02.9105496Z Updating files:  30% (11694/38979)
+2026-10-31T16:59:03.0426354Z Updating files:  31% (12084/38979)
+2026-10-31T16:59:03.1551218Z Updating files:  32% (12474/38979)
+2026-10-31T16:59:03.5204342Z Updating files:  33% (12864/38979)
+2026-10-31T16:59:04.4636072Z Updating files:  33% (13116/38979)
+2026-10-31T16:59:04.5099003Z Updating files:  34% (13253/38979)
+2026-10-31T16:59:05.0141970Z Updating files:  34% (13280/38979)
+2026-10-31T16:59:05.4516504Z Updating files:  35% (13643/38979)
+2026-10-31T16:59:05.5066382Z Updating files:  36% (14033/38979)
+2026-10-31T16:59:05.7915874Z Updating files:  36% (14114/38979)
+2026-10-31T16:59:05.8084060Z Updating files:  37% (14423/38979)
+2026-10-31T16:59:05.8551838Z Updating files:  38% (14813/38979)
+2026-10-31T16:59:06.0633666Z Updating files:  39% (15202/38979)
+2026-10-31T16:59:06.2412983Z Updating files:  40% (15592/38979)
+2026-10-31T16:59:06.2589841Z Updating files:  41% (15982/38979)
+2026-10-31T16:59:06.2887041Z Updating files:  42% (16372/38979)
+2026-10-31T16:59:06.3090306Z Updating files:  43% (16761/38979)
+2026-10-31T16:59:06.5047570Z Updating files:  44% (17151/38979)
+2026-10-31T16:59:06.5079538Z Updating files:  44% (17517/38979)
+2026-10-31T16:59:06.5274928Z Updating files:  45% (17541/38979)
+2026-10-31T16:59:06.5399256Z Updating files:  46% (17931/38979)
+2026-10-31T16:59:06.5570872Z Updating files:  47% (18321/38979)
+2026-10-31T16:59:06.5741401Z Updating files:  48% (18710/38979)
+2026-10-31T16:59:06.5902600Z Updating files:  49% (19100/38979)
+2026-10-31T16:59:06.6221675Z Updating files:  50% (19490/38979)
+2026-10-31T16:59:06.6597047Z Updating files:  51% (19880/38979)
+2026-10-31T16:59:06.6754306Z Updating files:  52% (20270/38979)
+2026-10-31T16:59:06.6945247Z Updating files:  53% (20659/38979)
+2026-10-31T16:59:06.7102499Z Updating files:  54% (21049/38979)
+2026-10-31T16:59:06.7254376Z Updating files:  55% (21439/38979)
+2026-10-31T16:59:06.7398790Z Updating files:  56% (21829/38979)
+2026-10-31T16:59:06.7561097Z Updating files:  57% (22219/38979)
+2026-10-31T16:59:06.7728378Z Updating files:  58% (22608/38979)
+2026-10-31T16:59:06.7930266Z Updating files:  59% (22998/38979)
+2026-10-31T16:59:06.8088025Z Updating files:  60% (23388/38979)
+2026-10-31T16:59:06.8230082Z Updating files:  61% (23778/38979)
+2026-10-31T16:59:06.8387597Z Updating files:  62% (24167/38979)
+2026-10-31T16:59:06.8562258Z Updating files:  63% (24557/38979)
+2026-10-31T16:59:06.8834037Z Updating files:  64% (24947/38979)
+2026-10-31T16:59:06.8985006Z Updating files:  65% (25337/38979)
+2026-10-31T16:59:06.9138790Z Updating files:  66% (25727/38979)
+2026-10-31T16:59:06.9289990Z Updating files:  67% (26116/38979)
+2026-10-31T16:59:06.9473608Z Updating files:  68% (26506/38979)
+2026-10-31T16:59:06.9667273Z Updating files:  69% (26896/38979)
+2026-10-31T16:59:06.9785564Z Updating files:  70% (27286/38979)
+2026-10-31T16:59:06.9905259Z Updating files:  71% (27676/38979)
+2026-10-31T16:59:07.0057927Z Updating files:  72% (28065/38979)
+2026-10-31T16:59:07.0357202Z Updating files:  73% (28455/38979)
+2026-10-31T16:59:07.0625297Z Updating files:  74% (28845/38979)
+2026-10-31T16:59:07.1048846Z Updating files:  75% (29235/38979)
+2026-10-31T16:59:07.1227428Z Updating files:  76% (29625/38979)
+2026-10-31T16:59:07.1376761Z Updating files:  77% (30014/38979)
+2026-10-31T16:59:07.3504441Z Updating files:  78% (30404/38979)
+2026-10-31T16:59:07.3643103Z Updating files:  79% (30794/38979)
+2026-10-31T16:59:07.3781599Z Updating files:  80% (31184/38979)
+2026-10-31T16:59:07.4311229Z Updating files:  81% (31573/38979)
+2026-10-31T16:59:07.4452794Z Updating files:  82% (31963/38979)
+2026-10-31T16:59:07.5854241Z Updating files:  83% (32353/38979)
+2026-10-31T16:59:07.6739758Z Updating files:  83% (32365/38979)
+2026-10-31T16:59:07.7427208Z Updating files:  84% (32743/38979)
+2026-10-31T16:59:07.7667341Z Updating files:  85% (33133/38979)
+2026-10-31T16:59:07.8001577Z Updating files:  86% (33522/38979)
+2026-10-31T16:59:07.8673034Z Updating files:  87% (33912/38979)
+2026-10-31T16:59:07.8881464Z Updating files:  88% (34302/38979)
+2026-10-31T16:59:07.9261804Z Updating files:  89% (34692/38979)
+2026-10-31T16:59:07.9435394Z Updating files:  90% (35082/38979)
+2026-10-31T16:59:07.9581655Z Updating files:  91% (35471/38979)
+2026-10-31T16:59:07.9733321Z Updating files:  92% (35861/38979)
+2026-10-31T16:59:07.9997677Z Updating files:  93% (36251/38979)
+2026-10-31T16:59:08.0304269Z Updating files:  94% (36641/38979)
+2026-10-31T16:59:08.0589038Z Updating files:  95% (37031/38979)
+2026-10-31T16:59:08.0804508Z Updating files:  96% (37420/38979)
+2026-10-31T16:59:08.1086166Z Updating files:  97% (37810/38979)
+2026-10-31T16:59:08.1284125Z Updating files:  98% (38200/38979)
+2026-10-31T16:59:08.1634336Z Updating files:  99% (38590/38979)
+2026-10-31T16:59:08.1634695Z Updating files: 100% (38979/38979)
+2026-10-31T16:59:08.1634992Z Updating files: 100% (38979/38979), done.
+2026-10-31T16:59:08.5323967Z Switched to a new branch 'codex/pcie-shared-serial-front-v1'
+2026-10-31T16:59:08.5326085Z branch 'codex/pcie-shared-serial-front-v1' set up to track 'origin/codex/pcie-shared-serial-front-v1'.
+2026-10-31T16:59:08.5547256Z ##[endgroup]
+2026-10-31T16:59:08.5605773Z [command]/usr/bin/git log -1 --format=%H
+2026-10-31T16:59:08.5639939Z 64d31863ad2f5cd59483251dbe1dad8e7069c44e
+2026-10-31T16:59:08.5653438Z ##[group]Removing auth
+2026-10-31T16:59:08.5654879Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T16:59:08.5693239Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T16:59:08.5990657Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T16:59:08.6024740Z http.https://github.com/.extraheader
+2026-10-31T16:59:08.6040207Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-31T16:59:08.8211521Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T16:59:08.8547188Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T16:59:08.8600070Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-31T16:59:08.8931040Z ##[endgroup]
+2026-10-31T16:59:09.0443431Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-31T16:59:09.0443788Z with:
+2026-10-31T16:59:09.0443975Z   python-version: 3.12
+2026-10-31T16:59:09.0444179Z   check-latest: false
+2026-10-31T16:59:09.0446166Z   token: ***
+2026-10-31T16:59:09.0446360Z   update-environment: true
+2026-10-31T16:59:09.0446574Z   allow-prereleases: false
+2026-10-31T16:59:09.0446987Z   freethreaded: false
+2026-10-31T16:59:09.0447177Z env:
+2026-10-31T16:59:09.0447356Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T16:59:09.0447568Z ##[endgroup]
+2026-10-31T16:59:09.1715301Z ##[group]Installed versions
+2026-10-31T16:59:09.1953365Z (node:2182) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-31T16:59:09.1954495Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-31T16:59:09.1955184Z Successfully set up CPython (3.12.15)
+2026-10-31T16:59:09.1955858Z ##[endgroup]
+2026-10-31T16:59:09.2525490Z ##[group]Run set -euo pipefail
+2026-10-31T16:59:09.2525886Z [36;1mset -euo pipefail[0m
+2026-10-31T16:59:09.2526373Z [36;1mpython3 -u scripts/check_pcie_shared_serial_front.py --source-controls | tee shared-front-source-controls.json[0m
+2026-10-31T16:59:09.2565388Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-31T16:59:09.2565705Z env:
+2026-10-31T16:59:09.2565942Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T16:59:09.2566234Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T16:59:09.2566641Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-31T16:59:09.2567052Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T16:59:09.2567404Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T16:59:09.2567742Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T16:59:09.2568082Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-31T16:59:09.2568442Z ##[endgroup]
+2026-10-31T16:59:09.5804970Z {
+2026-10-31T16:59:09.5805358Z   "status": "PASS_SHARED_FRONT_SOURCE_CONTROLS",
+2026-10-31T16:59:09.5805808Z   "source": "64d31863ad2f5cd59483251dbe1dad8e7069c44e",
+2026-10-31T16:59:09.5806080Z   "protected": 27,
+2026-10-31T16:59:09.5806325Z   "normal_consumer_derivation_verified": true,
+2026-10-31T16:59:09.5806607Z   "owned_events_composition_verified": true,
+2026-10-31T16:59:09.5806893Z   "original_oracles_byte_frozen": true,
+2026-10-31T16:59:09.5807118Z   "named_tests": {
+2026-10-31T16:59:09.5807308Z     "test_pcie_shared_serial_front": [
+2026-10-31T16:59:09.5807555Z       "raw_bits_all_offsets_complete_fields",
+2026-10-31T16:59:09.5807826Z       "independent_lane_stalls_preserve_every_record",
+2026-10-31T16:59:09.5808136Z       "loss_overflow_realign_and_reset_exclude_old_records",
+2026-10-31T16:59:09.5808454Z       "independent_startup_and_common_clock_status_ownership"
+2026-10-31T16:59:09.5808933Z     ],
+2026-10-31T16:59:09.5809148Z     "test_pcie_shared_serial_front_composition": [
+2026-10-31T16:59:09.5809427Z       "stopped_lane_keeps_normal_all_lane_barrier",
+2026-10-31T16:59:09.5809725Z       "early_arm_faults_both_compositions_and_reset_recovers"
+2026-10-31T16:59:09.5809976Z     ],
+2026-10-31T16:59:09.5810164Z     "test_soc_pcie_gen3_recovered_events_v2": [
+2026-10-31T16:59:09.5810432Z       "crc_bad_nullified_ack_nak_fc_and_owner_wrap",
+2026-10-31T16:59:09.5810734Z       "complete_dllp_density_exceeds_every_owner_buffer",
+2026-10-31T16:59:09.5811019Z       "independent_tlp_and_event_backpressure",
+2026-10-31T16:59:09.5811279Z       "all_32_raw_phases_preserve_owners_and_events",
+2026-10-31T16:59:09.5811537Z       "eieos_drains_all_owned_outputs",
+2026-10-31T16:59:09.5811820Z       "normal_end_keeps_held_events_during_later_lane_fault",
+2026-10-31T16:59:09.5812107Z       "normal_end_waits_for_events_after_body_drains",
+2026-10-31T16:59:09.5812397Z       "finite_owner_exhaustion_aborts_without_stale_events",
+2026-10-31T16:59:09.5812667Z       "bad_token_aborts_owned_epoch",
+2026-10-31T16:59:09.5812896Z       "missing_eds_aborts_owned_epoch",
+2026-10-31T16:59:09.5813198Z       "explicit_abort_suppresses_held_event_before_edge_and_reset_recovers"
+2026-10-31T16:59:09.5813492Z     ]
+2026-10-31T16:59:09.5813642Z   },
+2026-10-31T16:59:09.5813819Z   "physical_and_protocol_acceptance": {
+2026-10-31T16:59:09.5814049Z     "analog_cdr_pll_accepted": false,
+2026-10-31T16:59:09.5814533Z     "serializer_pma_accepted": false,
+2026-10-31T16:59:09.5814778Z     "complete_ltssm_equalization_accepted": false,
+2026-10-31T16:59:09.5815048Z     "mainchip_serial_integration_accepted": false,
+2026-10-31T16:59:09.5815294Z     "layout_drc_lvs_accepted": false,
+2026-10-31T16:59:09.5815516Z     "final_setup_hold_accepted": false,
+2026-10-31T16:59:09.5815752Z     "full_gen3_x4_phy_accepted": false,
+2026-10-31T16:59:09.5815984Z     "production_signoff_accepted": false
+2026-10-31T16:59:09.5816199Z   }
+2026-10-31T16:59:09.5816351Z }
+2026-10-31T16:59:09.6293627Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-31T16:59:09.6293994Z with:
+2026-10-31T16:59:09.6294220Z   name: shared-front-source-controls-41222222369-1
+2026-10-31T16:59:09.6294521Z   path: shared-front-source-controls.json
+2026-10-31T16:59:09.6294781Z   if-no-files-found: warn
+2026-10-31T16:59:09.6294996Z   retention-days: 90
+2026-10-31T16:59:09.6295211Z   compression-level: 6
+2026-10-31T16:59:09.6295440Z   overwrite: false
+2026-10-31T16:59:09.6295636Z   include-hidden-files: false
+2026-10-31T16:59:09.6295854Z env:
+2026-10-31T16:59:09.6296039Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T16:59:09.6296312Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T16:59:09.6296691Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-31T16:59:09.6297054Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T16:59:09.6297384Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T16:59:09.6297765Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-31T16:59:09.6298105Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-31T16:59:09.6298382Z ##[endgroup]
+2026-10-31T16:59:09.7814076Z (node:2195) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-31T16:59:09.7814731Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-31T16:59:09.7853395Z With the provided path, there will be 1 file uploaded
+2026-10-31T16:59:09.7858382Z Artifact name is valid!
+2026-10-31T16:59:09.7859327Z Root directory input is valid!
+2026-10-31T16:59:10.0001944Z Beginning upload of artifact content to blob storage
+2026-10-31T16:59:10.0256869Z (node:2195) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-31T16:59:10.0535254Z Uploaded bytes 935
+2026-10-31T16:59:10.0684433Z Finished uploading artifact content to blob storage!
+2026-10-31T16:59:10.0685303Z SHA256 digest of uploaded artifact zip is de6fb596bfeda22fc941f922eb5875c39e6fe3067f7aebc0d3e44b1615b8a28b
+2026-10-31T16:59:10.0686053Z Finalizing artifact upload
+2026-10-31T16:59:10.4927512Z Artifact shared-front-source-controls-41222222369-1.zip successfully finalized. Artifact ID 13050790856
+2026-10-31T16:59:10.4928321Z Artifact shared-front-source-controls-41222222369-1 has been successfully uploaded! Final size is 935 bytes. Artifact ID is 13050790856
+2026-10-31T16:59:10.4929188Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/41222222369/artifacts/13050790856
+2026-10-31T16:59:10.5667125Z Post job cleanup.
+2026-10-31T16:59:10.6755697Z (node:2207) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-31T16:59:10.6756315Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-31T16:59:10.7151087Z Post job cleanup.
+2026-10-31T16:59:10.7925149Z [command]/usr/bin/git version
+2026-10-31T16:59:10.7971465Z git version 2.56.0
+2026-10-31T16:59:10.8011013Z Temporarily overriding HOME='/home/runner/work/_temp/6d8cc71b-14cc-40ea-97d9-a735b34db379' before making global git config changes
+2026-10-31T16:59:10.8011873Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-31T16:59:10.8017081Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-31T16:59:10.8139933Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-31T16:59:10.8200174Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-31T16:59:10.8681251Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-31T16:59:10.8764511Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-31T16:59:10.9171121Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-31T16:59:10.9225731Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-31T16:59:10.9769475Z Cleaning up orphan processes
+2026-10-31T16:59:11.0167706Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
