@@ -1,0 +1,144 @@
+{
+  "errors": [
+    {
+      "error": "AssertionError(('bulk-postdrt-cleanup-antenna-metadata', 'OpenROAD dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 \\nFeatures included (+) or not (-): +GPU -GUI +Python\\nThis program is licensed under the BSD-3 license. See the LICENSE file for details.\\nComponents of this program may be licensed under more restrictive licenses which must be honored.\\n', '{\"phase\": \"antenna-restore-audit\", \"primary\": \"AssertionError(\\'antenna cleanup wire\\')\", \"terminal_errors\": []}\\nTraceback (most recent call last):\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py\", line 433, in <module>\\n    if __name__==\"__main__\":main()\\n                            ^^^^^^\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py\", line 431, in main\\n    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,\"input unchanged\"),\\n  File \"/work/tail-source/scripts/mainchip_single_antenna_trial.py\", line 148, in run_phase\\n    if primary is not None:raise primary\\n                           ^^^^^^^^^^^^^\\n  File \"/work/tail-source/scripts/mainchip_single_antenna_trial.py\", line 135, in run_phase\\n    try:action()\\n        ^^^^^^^^\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py\", line 431, in <lambda>\\n    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,\"input unchanged\"),\\n                                  ^^^^^^^^^^^\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py\", line 405, in phase\\n    p.exact(current[\"nets\"][name][\"wire\"],row[\"wire\"],\"antenna cleanup wire\")\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py\", line 40, in exact\\n    require(encode(actual)==encode(expected),message)\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py\", line 37, in require\\n    if not ok:raise AssertionError(message)\\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nAssertionError: antenna cleanup wire\\n'))",
+      "operation": "restore-antenna-metadata"
+    }
+  ],
+  "full_phy_accepted": false,
+  "phases": [
+    {
+      "phase": "prepare",
+      "result": {
+        "complete": true,
+        "kind": "native",
+        "name": "prepare",
+        "native_terminal": {
+          "bytes": 177,
+          "path": "/work/out/bulk-postdrt-antenna/prepare-terminal.json",
+          "sha256": "e1f61e85bbaf1c61d03bca18d0e0fd4045a288d298f6d8817d5cd8905cd6b008"
+        },
+        "timeout_seconds": 1200
+      },
+      "state": "complete"
+    },
+    {
+      "phase": "baseline-check",
+      "result": {
+        "complete": true,
+        "kind": "tcl",
+        "name": "baseline-check.tcl",
+        "timeout_seconds": 1200
+      },
+      "state": "complete"
+    },
+    {
+      "phase": "baseline-audit",
+      "result": {
+        "complete": true,
+        "kind": "native",
+        "name": "baseline-audit",
+        "native_terminal": {
+          "bytes": 184,
+          "path": "/work/out/bulk-postdrt-antenna/baseline-audit-terminal.json",
+          "sha256": "fe423d4e7df64424d3d63c7866990002ac8f541c238dc2ea0cf74264a4cd9f3d"
+        },
+        "timeout_seconds": 1200
+      },
+      "state": "complete"
+    },
+    {
+      "phase": "repair",
+      "result": {
+        "complete": true,
+        "kind": "tcl",
+        "name": "repair.tcl",
+        "timeout_seconds": 1200
+      },
+      "state": "complete"
+    },
+    {
+      "error": "AssertionError(('bulk-postdrt-insertion-audit', 'OpenROAD dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 \\nFeatures included (+) or not (-): +GPU -GUI +Python\\nThis program is licensed under the BSD-3 license. See the LICENSE file for details.\\nComponents of this program may be licensed under more restrictive licenses which must be honored.\\n', '{\"phase\": \"insertion-audit\", \"primary\": \"AssertionError(\\'only exact existing diode master\\')\", \"terminal_errors\": []}\\nTraceback (most recent call last):\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py\", line 433, in <module>\\n    if __name__==\"__main__\":main()\\n                            ^^^^^^\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py\", line 431, in main\\n    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,\"input unchanged\"),\\n  File \"/work/tail-source/scripts/mainchip_single_antenna_trial.py\", line 148, in run_phase\\n    if primary is not None:raise primary\\n                           ^^^^^^^^^^^^^\\n  File \"/work/tail-source/scripts/mainchip_single_antenna_trial.py\", line 135, in run_phase\\n    try:action()\\n        ^^^^^^^^\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py\", line 431, in <lambda>\\n    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,\"input unchanged\"),\\n                                  ^^^^^^^^^^^\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py\", line 359, in phase\\n    pg=connect_new_pg(work/\"insertion-after-shim.odb\",work/\"insertion-connected.odb\",base);save(out/\"new-diode-pg.json\",pg)\\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py\", line 231, in connect_new_pg\\n    p.require(inst.getMaster()==template.getMaster(),\"only exact existing diode master\")\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py\", line 37, in require\\n    if not ok:raise AssertionError(message)\\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nAssertionError: only exact existing diode master\\n'))",
+      "phase": "insertion-audit",
+      "state": "failed"
+    },
+    {
+      "phase": "fixed-import",
+      "state": "not_started"
+    },
+    {
+      "phase": "fixed-audit",
+      "state": "not_started"
+    },
+    {
+      "phase": "route",
+      "state": "not_started"
+    },
+    {
+      "phase": "restore-plan",
+      "state": "not_started"
+    },
+    {
+      "phase": "restore-import",
+      "state": "not_started"
+    },
+    {
+      "phase": "restored-audit",
+      "state": "not_started"
+    },
+    {
+      "phase": "final-check",
+      "state": "not_started"
+    },
+    {
+      "phase": "final-audit",
+      "state": "not_started"
+    }
+  ],
+  "physical_acceptance": false,
+  "primary": "AssertionError(('bulk-postdrt-insertion-audit', 'OpenROAD dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 \\nFeatures included (+) or not (-): +GPU -GUI +Python\\nThis program is licensed under the BSD-3 license. See the LICENSE file for details.\\nComponents of this program may be licensed under more restrictive licenses which must be honored.\\n', '{\"phase\": \"insertion-audit\", \"primary\": \"AssertionError(\\'only exact existing diode master\\')\", \"terminal_errors\": []}\\nTraceback (most recent call last):\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py\", line 433, in <module>\\n    if __name__==\"__main__\":main()\\n                            ^^^^^^\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py\", line 431, in main\\n    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,\"input unchanged\"),\\n  File \"/work/tail-source/scripts/mainchip_single_antenna_trial.py\", line 148, in run_phase\\n    if primary is not None:raise primary\\n                           ^^^^^^^^^^^^^\\n  File \"/work/tail-source/scripts/mainchip_single_antenna_trial.py\", line 135, in run_phase\\n    try:action()\\n        ^^^^^^^^\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py\", line 431, in <lambda>\\n    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,\"input unchanged\"),\\n                                  ^^^^^^^^^^^\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py\", line 359, in phase\\n    pg=connect_new_pg(work/\"insertion-after-shim.odb\",work/\"insertion-connected.odb\",base);save(out/\"new-diode-pg.json\",pg)\\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py\", line 231, in connect_new_pg\\n    p.require(inst.getMaster()==template.getMaster(),\"only exact existing diode master\")\\n  File \"/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py\", line 37, in require\\n    if not ok:raise AssertionError(message)\\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nAssertionError: only exact existing diode master\\n'))",
+  "timing_accepted": false
+}
+Traceback (most recent call last):
+  File "/work/inner.py", line 262, in <module>
+    if __name__=="__main__":sys.exit(main())
+                                     ^^^^^^
+  File "/work/inner.py", line 260, in main
+    c.finish_record(OUT/"bulk-postdrt-inner-result.json",report,"FAIL_BULK_POSTDRT_ENGINE",primary)
+  File "/work/tail-source/scripts/mainchip_witness_engine_build_contract.py", line 205, in finish_record
+    raise primary
+  File "/work/inner.py", line 232, in main
+    report["cycle"]=run_bound_cycle(report,runner=runner,preserver=preserve_after_supervisor_stop)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/inner.py", line 188, in run_bound_cycle
+    return p.run_cycle({name:lambda name=name:action(name)for name in p.PHASES},
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py", line 305, in run_cycle
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py", line 285, in run_cycle
+    value=actions[phase]()
+          ^^^^^^^^^^^^^^^^
+  File "/work/inner.py", line 188, in <lambda>
+    return p.run_cycle({name:lambda name=name:action(name)for name in p.PHASES},
+                                              ^^^^^^^^^^^^
+  File "/work/inner.py", line 154, in action
+    result=invoke(name,*PHASE_COMMANDS[name])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/inner.py", line 150, in invoke
+    return execute_phase(report,label,kind,name,seconds,work,data,runner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/inner.py", line 118, in execute_phase
+    runner(report,"bulk-postdrt-"+label,phase_command(kind,name,work),seconds)
+  File "/work/inner.py", line 227, in <lambda>
+    runner=lambda report,label,argv,seconds:supervised_run(report,label,argv,seconds,sup)
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/inner.py", line 105, in supervised_run
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/work/inner.py", line 90, in supervised_run
+    sup.supervised(argv,label,seconds=seconds,cwd=cwd)
+  File "/work/tail-source/hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/cloud_pcie_gen12_training_records_telemetry.py", line 269, in supervised
+    extra={'vector_sha256':sha(result[0]),'vector_bytes':result[0].stat().st_size,
+             ^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('bulk-postdrt-insertion-audit', 'OpenROAD dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 \nFeatures included (+) or not (-): +GPU -GUI +Python\nThis program is licensed under the BSD-3 license. See the LICENSE file for details.\nComponents of this program may be licensed under more restrictive licenses which must be honored.\n', '{"phase": "insertion-audit", "primary": "AssertionError(\'only exact existing diode master\')", "terminal_errors": []}\nTraceback (most recent call last):\n  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 433, in <module>\n    if __name__=="__main__":main()\n                            ^^^^^^\n  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 431, in main\n    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,"input unchanged"),\n  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 148, in run_phase\n    if primary is not None:raise primary\n                           ^^^^^^^^^^^^^\n  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 135, in run_phase\n    try:action()\n        ^^^^^^^^\n  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 431, in <lambda>\n    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,"input unchanged"),\n                                  ^^^^^^^^^^^\n  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 359, in phase\n    pg=connect_new_pg(work/"insertion-after-shim.odb",work/"insertion-connected.odb",base);save(out/"new-diode-pg.json",pg)\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 231, in connect_new_pg\n    p.require(inst.getMaster()==template.getMaster(),"only exact existing diode master")\n  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py", line 37, in require\n    if not ok:raise AssertionError(message)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: only exact existing diode master\n')

@@ -1,0 +1,94 @@
+﻿2026-10-31T05:33:11.8066944Z Current runner version: '2.338.2'
+2026-10-31T05:33:11.8091639Z ##[group]Runner Image Provisioner
+2026-10-31T05:33:11.8092548Z Hosted Compute Agent
+2026-10-31T05:33:11.8093161Z Version: 20261021.618
+2026-10-31T05:33:11.8093800Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-31T05:33:11.8094491Z Build Date: 2026-10-21T00:45:21Z
+2026-10-31T05:33:11.8095189Z Worker ID: {7bc535f1-be9f-464d-ae53-cf12216e1c87}
+2026-10-31T05:33:11.8095912Z Region: centralus
+2026-10-31T05:33:11.8096441Z Cloud: Azure
+2026-10-31T05:33:11.8097006Z ##[endgroup]
+2026-10-31T05:33:11.8098314Z ##[group]Operating System
+2026-10-31T05:33:11.8098953Z Ubuntu
+2026-10-31T05:33:11.8099458Z 24.04.5
+2026-10-31T05:33:11.8099955Z LTS
+2026-10-31T05:33:11.8100816Z ##[endgroup]
+2026-10-31T05:33:11.8101355Z ##[group]Runner Image
+2026-10-31T05:33:11.8102035Z Image: ubuntu-24.04
+2026-10-31T05:33:11.8102625Z Version: 20261025.353.1
+2026-10-31T05:33:11.8103917Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-31T05:33:11.8105383Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-10-31T05:33:11.8106322Z ##[endgroup]
+2026-10-31T05:33:11.8107574Z ##[group]GITHUB_TOKEN Permissions
+2026-10-31T05:33:11.8109667Z Actions: read
+2026-10-31T05:33:11.8110533Z Contents: read
+2026-10-31T05:33:11.8111086Z Metadata: read
+2026-10-31T05:33:11.8111802Z ##[endgroup]
+2026-10-31T05:33:11.8113829Z Secret source: Actions
+2026-10-31T05:33:11.8114727Z Cache mode: write
+2026-10-31T05:33:11.8115365Z Prepare workflow directory
+2026-10-31T05:33:11.8657950Z Prepare all required actions
+2026-10-31T05:33:11.8708259Z Getting action download info
+2026-10-31T05:33:12.1296341Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-31T05:33:12.4262745Z Complete job name: preserve-job-log
+2026-10-31T05:33:12.4869424Z ##[group]Run python3 -B - <<'PY'
+2026-10-31T05:33:12.4870571Z [36;1mpython3 -B - <<'PY'[0m
+2026-10-31T05:33:12.4871333Z [36;1mimport hashlib,json,os,subprocess[0m
+2026-10-31T05:33:12.4872012Z [36;1mfrom pathlib import Path[0m
+2026-10-31T05:33:12.4872671Z [36;1mroot=Path('job-logs');root.mkdir()[0m
+2026-10-31T05:33:12.4873357Z [36;1me=os.environ[0m
+2026-10-31T05:33:12.4874196Z [36;1massert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_RUN_ATTEMPT']=='1'[0m
+2026-10-31T05:33:12.4875226Z [36;1mprefix='repos/'+e['GITHUB_REPOSITORY']+'/'[0m
+2026-10-31T05:33:12.4875904Z [36;1mdef read(path,name):[0m
+2026-10-31T05:33:12.4876837Z [36;1m    b=subprocess.check_output(['gh','api',prefix+path]);(root/name).write_bytes(b);return json.loads(b)[0m
+2026-10-31T05:33:12.4877938Z [36;1mrun=read('actions/runs/'+e['GITHUB_RUN_ID'],'run.json')[0m
+2026-10-31T05:33:12.4878819Z [36;1massert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1[0m
+2026-10-31T05:33:12.4879978Z [36;1mjobs=read('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')[0m
+2026-10-31T05:33:12.4881312Z [36;1mselected=[j for j in jobs['jobs'] if j['name']=='source-controls'];assert len(selected)==1[0m
+2026-10-31T05:33:12.4882207Z [36;1mlisted=selected[0][0m
+2026-10-31T05:33:12.4882918Z [36;1mj=read('actions/jobs/'+str(listed['id']),'job.json')[0m
+2026-10-31T05:33:12.4883747Z [36;1massert j['id']==listed['id'] and j['name']=='source-controls'[0m
+2026-10-31T05:33:12.4884716Z [36;1massert j['head_sha']==e['GITHUB_SHA'] and j['run_id']==int(e['GITHUB_RUN_ID'])[0m
+2026-10-31T05:33:12.4885963Z [36;1mb=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(j['id'])+'/logs'])[0m
+2026-10-31T05:33:12.4887034Z [36;1massert b;(root/'job.log').write_bytes(b)[0m
+2026-10-31T05:33:12.4887920Z [36;1mreceipt=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,[0m
+2026-10-31T05:33:12.4889516Z [36;1m  job_id=j['id'],job_conclusion=j['conclusion'],api_status=j['status'],api_metadata_claims_terminal=j['status']=='completed',execution_dependency_finished=True,full_raw_job_log=True,[0m
+2026-10-31T05:33:12.4891483Z [36;1m  log_bytes=len(b),log_sha256=hashlib.sha256(b).hexdigest(),native_acquisition=False)[0m
+2026-10-31T05:33:12.4892613Z [36;1m(root/'receipt.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')[0m
+2026-10-31T05:33:12.4893553Z [36;1mprint(json.dumps(receipt,sort_keys=True))[0m
+2026-10-31T05:33:12.4894227Z [36;1mPY[0m
+2026-10-31T05:33:12.4912506Z shell: /usr/bin/bash -e {0}
+2026-10-31T05:33:12.4913320Z env:
+2026-10-31T05:33:12.4913896Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T05:33:12.4918040Z   GH_TOKEN: ***
+2026-10-31T05:33:12.4918529Z ##[endgroup]
+2026-10-31T05:33:14.0516495Z {"api_metadata_claims_terminal": true, "api_status": "completed", "attempt": 1, "execution_dependency_finished": true, "full_raw_job_log": true, "job_conclusion": "success", "job_id": 124454616656, "log_bytes": 1983040, "log_sha256": "4ff02dfce42a3ee4f15a4b4f6cde1170f733fe3302a3623d0ef540ed6cfd8f66", "native_acquisition": false, "run_id": 41172959321, "source": "4c672914056e61ed6af094d1d46a116f5c07620e"}
+2026-10-31T05:33:14.0820421Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-31T05:33:14.0822532Z with:
+2026-10-31T05:33:14.0824170Z   name: bulk-postdrt-source-job-logs-41172959321-1
+2026-10-31T05:33:14.0825791Z   path: job-logs
+2026-10-31T05:33:14.0827019Z   if-no-files-found: error
+2026-10-31T05:33:14.0828344Z   retention-days: 90
+2026-10-31T05:33:14.0829617Z   compression-level: 6
+2026-10-31T05:33:14.0831219Z   overwrite: false
+2026-10-31T05:33:14.0832465Z   include-hidden-files: false
+2026-10-31T05:33:14.0833750Z env:
+2026-10-31T05:33:14.0834837Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T05:33:14.0846486Z   GH_TOKEN: ***
+2026-10-31T05:33:14.0847644Z ##[endgroup]
+2026-10-31T05:33:14.4000251Z (node:2214) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-31T05:33:14.4001345Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-31T05:33:14.4076339Z With the provided path, there will be 5 files uploaded
+2026-10-31T05:33:14.4079839Z Artifact name is valid!
+2026-10-31T05:33:14.4080612Z Root directory input is valid!
+2026-10-31T05:33:14.6887897Z Beginning upload of artifact content to blob storage
+2026-10-31T05:33:14.7447352Z (node:2214) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-31T05:33:15.0248812Z Uploaded bytes 254602
+2026-10-31T05:33:15.0677771Z Finished uploading artifact content to blob storage!
+2026-10-31T05:33:15.0678972Z SHA256 digest of uploaded artifact zip is e552cbe2d9b214e902dd646cf63d28a49ea3c1d849d020f560781d24ae064b0c
+2026-10-31T05:33:15.0680012Z Finalizing artifact upload
+2026-10-31T05:33:15.4700907Z Artifact bulk-postdrt-source-job-logs-41172959321-1.zip successfully finalized. Artifact ID 13032176199
+2026-10-31T05:33:15.4703612Z Artifact bulk-postdrt-source-job-logs-41172959321-1 has been successfully uploaded! Final size is 254602 bytes. Artifact ID is 13032176199
+2026-10-31T05:33:15.4711900Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/41172959321/artifacts/13032176199
+2026-10-31T05:33:15.4885608Z Cleaning up orphan processes
+2026-10-31T05:33:15.5207636Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
