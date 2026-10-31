@@ -11,7 +11,7 @@ export PYTHONPATH := $(BENCH):$(ROOT)/scripts:$(PYTHONPATH)
 ifeq ($(SIM),icarus)
 COMPILE_ARGS += -P$(TOPLEVEL).FIFO_DEPTH=$(DEPTH)
 else ifeq ($(SIM),verilator)
-COMPILE_ARGS += -GFIFO_DEPTH=$(DEPTH) -Wno-fatal
+COMPILE_ARGS += -GFIFO_DEPTH=$(DEPTH) -Wno-fatal --timing
 else
 $(error Only qualified Icarus/Verilator engines)
 endif

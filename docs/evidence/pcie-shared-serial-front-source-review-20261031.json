@@ -2,7 +2,7 @@
   "schema": "pcie-shared-serial-front-source-review-v1",
   "base": "b70200e8415e8403e9e6f63e299828fd45f0e56b",
   "scope": "shared raw32-to-record seam and actual normal owned/event consumers",
-  "method_sha256": "ad69b34103f4c6e0e099b0fe1299f233701ad38a0e17e5a68cf72510b85fea4d",
+  "method_sha256": "6f6065e40e55be6b97e951318a1e37b93d77e42112f923b19b3b3e9187299a78",
   "protected_count": 27,
   "actual_test_execution": "PENDING_GITHUB_ONLY",
   "source_preparation": "RAM_ONLY_NO_LOCAL_FILES",
@@ -39,5 +39,6 @@
     "production_signoff_accepted": false
   },
   "failure_diagnostics": "Every nonzero actual tool command emits its entire stdout/stderr to hosted job logs; original output files remain unfiltered.",
-  "hierarchy_identity": "Canonical source-module identity removes only leading Verilog escape prefixes; original Yosys hdlname spellings are retained. Counts remain 1/4/4/4."
+  "hierarchy_identity": "Canonical source-module identity removes only leading Verilog escape prefixes; original Yosys hdlname spellings are retained. Counts remain 1/4/4/4.",
+  "verilator_miter_delays": "Explicit --timing preserves the verification-only 1ps post-edge public-pin comparison delay. RTL and oracles unchanged."
 }
