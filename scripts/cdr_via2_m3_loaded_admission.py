@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """New exact-source loaded nominal_late admission; no historical producer or environment substitution."""
-import base64,json,os,re,subprocess
+import base64,json,os,re,subprocess,time
 from pathlib import Path
 import cloud_cdr_current_eight_drain_wave_replay as q
 import cdr_via2_m3_loaded_producer as producer
@@ -15,6 +15,27 @@ GROUP='cdr-via2-m3-loaded-nominal_late'
 OUT=ROOT/'hw/soc/out/cloud-cdr-via2-m3-loaded'
 ORIGINAL=ROOT/'hw/soc/out/cloud-cdr-via2-m3-fresh-rc'
 require=q.require;encode=q.encode
+
+class Deadline:
+    """A single monotonic phase deadline shared by all blocking child calls."""
+    def __init__(self,seconds):
+        require(type(seconds)in(int,float)and 0<seconds<=21600,'bounded phase deadline')
+        self.ends=time.monotonic()+seconds
+    def timeout(self,limit):
+        remaining=self.ends-time.monotonic()
+        require(remaining>0,'explicit phase deadline exceeded')
+        return min(float(limit),remaining)
+
+def api(endpoint,budget):
+    require(isinstance(budget,Deadline)and isinstance(endpoint,str)and endpoint and not endpoint.startswith('/'),'explicit bounded repository API')
+    return q.decode(subprocess.check_output(['gh','api','repos/'+q.REPOSITORY+'/'+endpoint],timeout=budget.timeout(60)))
+
+def download(pin,path,budget):
+    require(isinstance(budget,Deadline)and not path.exists()and not path.is_symlink(),'bounded exclusive download')
+    with path.open('xb')as stream:
+        subprocess.run(['gh','api','-H','Accept: application/octet-stream','repos/'+q.REPOSITORY+'/releases/assets/'+str(pin['id'])],stdout=stream,check=True,timeout=budget.timeout(1800))
+    require(q.file_pin(path)=={k:pin[k]for k in('bytes','sha256')},'complete downloaded bytes')
+
 def context(env):
     require(env.get('GITHUB_ACTIONS')=='true'and env.get('RUNNER_ENVIRONMENT')=='github-hosted'and env.get('RUNNER_OS')=='Linux','hosted Linux only')
     require(env.get('GITHUB_REPOSITORY')==q.REPOSITORY and env.get('GITHUB_EVENT_NAME')=='workflow_dispatch','manual exact repository')
@@ -43,10 +64,11 @@ def core_source_closure(root,c):
     for name,pin in c['core']['source_files'].items():require(q.file_pin(q.regular(root,name))==pin,'complete exact numerical core source '+name)
     return True
 
-def source_guard(ctx=None,root=ROOT):
+def source_guard(ctx=None,root=ROOT,budget=None):
+    budget=Deadline(120)if budget is None else budget
     ctx=context(os.environ)if ctx is None else ctx
-    require(subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()==ctx['source'],'actual exact checkout')
-    raw=q.regular(root,MANIFEST).read_bytes();require(raw==subprocess.check_output(['git','show',ctx['source']+':'+MANIFEST],cwd=root),'immutable current manifest')
+    require(subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True,timeout=budget.timeout(30)).strip()==ctx['source'],'actual exact checkout')
+    raw=q.regular(root,MANIFEST).read_bytes();require(raw==subprocess.check_output(['git','show',ctx['source']+':'+MANIFEST],cwd=root,timeout=budget.timeout(30)),'immutable current manifest')
     m=q.decode(raw);require(m['schema']=='cdr-via2-m3-loaded-adapter-pins-v1','exact new source manifest')
     for name,pin in m['files'].items():
         actual=q.file_pin(q.regular(root,name));require(actual['sha256']==pin['sha256']and('bytes'not in pin or actual['bytes']==pin['bytes']),'protected source changed '+name)
@@ -54,7 +76,7 @@ def source_guard(ctx=None,root=ROOT):
     require(m['loaded_execution_authorized']is c['loaded_execution_authorized'],'separate authority consistent with manifest')
     p=q.decode(q.regular(root,PRODUCER).read_bytes());producer.metadata(root,p)
     require(p['native_authorization_asserted_by_this_record']is False,'producer evidence grants no execution authority')
-    core_source_closure(root,c)
+    core_source_closure(root,c);budget.timeout(1)
     return c,p
 
 def authorize_native(ctx,c):
@@ -73,9 +95,9 @@ def validate_current_run(ctx,run,jobs):
     require(by['loaded']['status']=='in_progress'and by['loaded']['conclusion']is None,'single current loaded job')
     return dict(current_source=ctx['source'],run_id=ctx['run_id'],source_job=by['source-controls']['id'],log_job=by['preserve-job-log']['id'],candidate_job=by['loaded']['id'])
 
-def read_source_log(job):
+def read_source_log(job,budget):
     require(type(job)is int and job>0,'source job id')
-    return subprocess.check_output(['gh','api','--allow-escape-sequences','repos/'+q.REPOSITORY+'/actions/jobs/'+str(job)+'/logs'])
+    return subprocess.check_output(['gh','api','--allow-escape-sequences','repos/'+q.REPOSITORY+'/actions/jobs/'+str(job)+'/logs'],timeout=budget.timeout(60))
 
 def bind_controls(raw,ctx,c):
     r=q.decode(raw)
