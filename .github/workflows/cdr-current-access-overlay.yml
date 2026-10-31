@@ -1,25 +1,26 @@
-name: Current eight-drain fresh RC with original500-device and seven-MIM audits
+# Proposed manual same-source qualification then separately admitted original electrical matrix.
+name: Eight-drain current RC original electrical matrix
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Source controls or fresh native graph from the exact physically qualified eight-drain GDS
+        description: Source controls, original preparation, or original ten loaded cases
         type: choice
         required: true
         default: controls
-        options: [controls, rc]
+        options: [controls, preparation, loaded]
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-current-eight-drain-fresh-rc-${{ github.ref }}
+  group: cdr-current-eight-drain-loaded-source-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
 jobs:
   source-controls:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -28,208 +29,263 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Bind complete exact source for hosted replay
+      - name: Bind exact source and source-only authority before dependencies
+        id: binding
+        env:
+          REQUESTED_MODE: ${{ inputs.mode }}
         run: |
-          python3 -B - <<'PY'
-          import ast,hashlib,json,os,subprocess
+          python -B - <<'PY'
+          import hashlib,json,os,re,subprocess,sys
           from pathlib import Path
           e=os.environ
+          assert e['GITHUB_ACTIONS']=='true' and e['RUNNER_ENVIRONMENT']=='github-hosted' and e['RUNNER_OS']=='Linux'
           assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['GITHUB_REF']=='refs/heads/codex/cdr-drain-m1-loaded-electrical'
+          assert e['REQUESTED_MODE']in ('controls','preparation','loaded') and sys.version_info[:2]==(3,12)
+          assert re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA']) and re.fullmatch('[1-9][0-9]*',e['GITHUB_RUN_ID'])
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
-          raw=Path('scripts/cdr-drain-m1-wave-replay-source-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='744e473c9d45fd533a949e0cf95193644685f18fb7206080cc28624cf8c40e38'
-          m=json.loads(raw);assert len(m['files'])==73 and m['readback_authorized'] is True
-          for name,pin in m['files'].items():
-              p=Path(name);assert p.is_file() and not p.is_symlink()
-              b=p.read_bytes();assert len(b)==pin['bytes'] and hashlib.sha256(b).hexdigest()==pin['sha256']
-          c=json.loads(Path('scripts/cdr-drain-m1-wave-replay-inputs.json').read_bytes())
-          assert c['source_controls_authorized'] is True and c['readback_authorized'] is True
-          for name in ('scripts/cloud_cdr_drain_m1_wave_replay.py','scripts/check_cdr_drain_m1_wave_replay.py','scripts/publish_cdr_drain_wave_replay.py','scripts/check_cdr_drain_wave_publication.py'):ast.parse(Path(name).read_text())
-          out=Path('cdr-drain-wave-source-controls');out.mkdir()
-          (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,native_acquisition=False,readback_authorized=True,pins=m['files']),sort_keys=True,indent=2)+'\n')
+          p=Path('scripts/cdr-current-eight-drain-loaded-methods.json')
+          assert p.is_file() and not p.is_symlink()
+          raw=p.read_bytes();m=json.loads(raw)
+          assert m['schema']=='cdr-current-eight-drain-loaded-execution-v1' and m['branch']=='codex/cdr-drain-m1-loaded-electrical'
+          assert m['source_controls_authorized'] is True
+          for name in ('geometry_generation_authorized','native_extraction_authorized','accepted','electrical_accepted','physical_accepted','cdr_accepted','qualified_pex','full_phy_accepted','automatic_retry'):
+              assert m[name] is False,name
+          for name in ('workflow_dispatch_authorized','preparation_authorized','native_execution_authorized','simulation_authorized','controller_readiness'):
+              assert type(m[name])is bool,name
+          assert m['native_execution_authorized']is m['simulation_authorized']
+          assert m['controller_readiness']is(m['preparation_authorized']or m['simulation_authorized'])
+          assert not m['simulation_authorized']or m['preparation_authorized']
+          if e['REQUESTED_MODE']!='controls':
+              assert m['workflow_dispatch_authorized']is True and m['controller_readiness']is True
+              assert m['preparation_authorized'if e['REQUESTED_MODE']=='preparation'else'simulation_authorized']is True
+          assert len(m['protected_sha256'])==1961
+          for name,digest in m['protected_sha256'].items():
+              path=Path(name);assert path.is_file() and not path.is_symlink(),name
+              with path.open('rb') as stream:assert hashlib.file_digest(stream,'sha256').hexdigest()==digest,name
+          assert m['protected_sha256']['scripts/cdr_current_eight_drain_loaded_admission.py']=='99b9458c9e9131a28056067f3e73db250552208363c82a1dc2b136707bc0c2cb'
+          out=Path('hw/soc/out/cdr-current-eight-drain-loaded-controls');out.mkdir(parents=True,exist_ok=False)
+          (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),
+              attempt=1,branch=m['branch'],method_sha256=hashlib.sha256(raw).hexdigest(),protected_files=len(m['protected_sha256']),
+              source_controls_only=True,native_executed=False,native_authorized=m['native_execution_authorized'],requested_mode=e['REQUESTED_MODE']),sort_keys=True,indent=2)+'\n')
           PY
-      - name: Bind current ownership analyzer and actual precise geometry input metadata
+      - name: Original pinned source import dependencies
         run: |
-          python3 -B - <<'PY'
-          import ast,hashlib,json
-          from pathlib import Path
-          raw=Path('scripts/cdr-current-wire-ownership-source-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='56414a109482fa2a219b492510b1952e5da057db4b44d836bf84fa60f618c936'
-          m=json.loads(raw)
-          assert m['schema']=='cdr-current-wire-ownership-source-pins-v1' and m['native_acquisition_authorized'] is False
-          assert len(m['files'])==80
-          for name,pin in m['files'].items():
-              p=Path(name);assert p.is_file() and not p.is_symlink()
-              data=p.read_bytes();assert len(data)==pin['bytes'] and hashlib.sha256(data).hexdigest()==pin['sha256']
-          for name in ('scripts/analyze_cdr_current_wire_ownership.py','scripts/check_cdr_current_wire_ownership.py'):
-              ast.parse(Path(name).read_bytes(),filename=name)
-          Path('cdr-drain-wave-source-controls/ownership-manifest.json').write_bytes(raw)
-          PY
-      - name: Bind actual ownership execution adapter without acquiring native inputs
+          python -m pip install numpy==2.3.3 networkx==3.4.2
+      - name: Unchanged historical ten-case function with current numerical derivation
+        if: ${{ !cancelled() && steps.binding.outcome == 'success' }}
         run: |
-          python3 -B - <<'PY'
-          import ast,hashlib,json,os,sys
-          from pathlib import Path
-          raw=Path('scripts/cdr-current-wire-ownership-execution-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='ab91402b1329d4ceb882377b9e4fe2cba6a187e86f08aa4767fd3d77668d3b62'
-          m=json.loads(raw);assert len(m['files'])==109
-          assert m['schema']=='cdr-current-wire-ownership-execution-pins-v1'
-          sys.path.insert(0,'scripts')
-          import cloud_cdr_current_wire_ownership as host
-          assert host.source_guard(host.context(os.environ))==m
-          host.authorize(m)
-          for p in ('scripts/cloud_cdr_current_wire_ownership.py','scripts/check_cdr_current_wire_ownership_execution.py'):
-              ast.parse(Path(p).read_bytes(),filename=p)
-          Path('cdr-drain-wave-source-controls/execution-manifest.json').write_bytes(raw)
-          PY
-      - name: Bind bounded current physical successor and unchanged original physical sources
-        run: |
-          python3 -B - <<'PY'
-          import ast,hashlib,json,os,sys
+          python -B - <<'PY' > hw/soc/out/cdr-current-eight-drain-loaded-controls/historical.stdout 2> hw/soc/out/cdr-current-eight-drain-loaded-controls/historical.stderr
+          import hashlib,importlib,json,sys,traceback
           from pathlib import Path
           sys.path.insert(0,'scripts')
-          import cloud_cdr_current_tail_straps as host
-          raw=Path(host.MANIFEST).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='c898d3f61c64f9dc621f0ee576c3987ee1f5a189f609b8ba7a7119b910111b43'
-          m=host.source_guard(host.context(os.environ))
-          assert len(m['files'])==1190
-          for name in ('scripts/cdr_current_tail_straps.py','scripts/cdr_current_tail_straps_native.py','scripts/cloud_cdr_current_tail_straps.py','scripts/check_cdr_current_tail_straps.py'):
-              ast.parse(Path(name).read_bytes(),filename=name)
-          Path('cdr-drain-wave-source-controls/tail-manifest.json').write_bytes(raw)
+          import cdr_current_eight_drain_loaded_admission as current
+          report={'status':'FAIL_INHERITED_SOURCE_CONTROLS','source_controls_only':True,'native_executed':False}
+          primary=None
+          try:
+              ctx=current.context();method=current.methods()
+              assert method['source_controls_authorized'] is True
+              current.old.validate_authorizations(method)
+              assert all(method[k] is False for k in current.ALWAYS_FALSE)
+              module=importlib.import_module('check_cdr_width_loaded_worker')
+              path=Path(module.__file__);relative=str(path.relative_to(current.ROOT))
+              assert current.sha(path)==method['protected_sha256'][relative]
+              import cdr_width_loaded_admission as prior_admission
+              import cdr_width_loaded_result as prior_result
+              historical,fault=module.historical_controls(prior_admission,prior_result)
+              assert len(historical['cases'])==10 and sum(row['original_passed'] for row in historical['cases'])==2
+              assert historical['eight_rejections_and_two_fault_detections_retained'] is True
+              assert all(row['all_measured_values_unchanged'] is True for row in historical['cases'])
+              report={'status':'PASS_WIDTH_LOADED_HISTORICAL_CASE_SOURCE_CONTROLS','historical':historical,
+                  'source_controls_only':True,'native_executed':False,'electrical_accepted':False,
+                  'pre_execution_worker_derivation_claimed':False}
+              report['current_context']={**ctx,'source_controls_only':True,'native_executed':False}
+              report['unchanged_suite_source']={'path':relative,'sha256':current.sha(path),'entrypoint':'historical_controls(cdr_width_loaded_admission,cdr_width_loaded_result)',
+                  'CLI_historical_branch_gate_reused':False,'current_authority_module':'cdr_current_eight_drain_loaded_admission',
+                  'historical_native_authority_transferred':False}
+          except BaseException as error:
+              primary=error;report.update(error=repr(error),traceback=traceback.format_exc())
+          finally:
+              raw=(json.dumps(report,sort_keys=True,indent=2,allow_nan=False)+'\n').encode()
+              try:Path('hw/soc/out/cdr-current-eight-drain-loaded-controls/historical.json').write_bytes(raw)
+              except BaseException as error:
+                  if primary is None:primary=error
+              try:print(raw.decode(),end='',flush=True)
+              except BaseException as error:
+                  if primary is None:primary=error
+          if primary is not None:raise primary
           PY
-      - name: Bind new graph successor and all original source manifests
+      - name: Unchanged execution source suite
+        if: ${{ !cancelled() && steps.binding.outcome == 'success' }}
         run: |
-          python3 -B - <<'PY'
-          import ast,hashlib,json,os,sys
+          python -B - <<'PY' > hw/soc/out/cdr-current-eight-drain-loaded-controls/execution.stdout 2> hw/soc/out/cdr-current-eight-drain-loaded-controls/execution.stderr
+          import hashlib,importlib,json,sys,traceback
           from pathlib import Path
           sys.path.insert(0,'scripts')
-          import cloud_cdr_current_tail_graph as host
-          raw=Path(host.MANIFEST).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='7318774a4b27685ae8e9c92db7522501c1c9b2bf614fa04909c5967e642d2537'
-          m=host.source_guard(host.context(os.environ));assert len(m['files'])==1329
-          for name in ('scripts/cdr_current_tail_graph.py','scripts/cdr_current_tail_graph_native.py','scripts/cloud_cdr_current_tail_graph.py','scripts/check_cdr_current_tail_graph.py'):
-              ast.parse(Path(name).read_bytes(),filename=name)
-          Path('cdr-drain-wave-source-controls/graph-manifest.json').write_bytes(raw)
+          import cdr_current_eight_drain_loaded_admission as current
+          report={'status':'FAIL_INHERITED_SOURCE_CONTROLS','source_controls_only':True,'native_executed':False}
+          primary=None
+          try:
+              ctx=current.context();method=current.methods()
+              assert method['source_controls_authorized'] is True
+              current.old.validate_authorizations(method)
+              assert all(method[k] is False for k in current.ALWAYS_FALSE)
+              module=importlib.import_module('check_cdr_width_loaded_execution')
+              path=Path(module.__file__);relative=str(path.relative_to(current.ROOT))
+              assert current.sha(path)==method['protected_sha256'][relative]
+              report=module.controls()
+              assert report['status']=='PASS_WIDTH_LOADED_EXECUTION_SOURCE_CONTROLS'
+              report['current_context']={**ctx,'source_controls_only':True,'native_executed':False}
+              report['unchanged_suite_source']={'path':relative,'sha256':current.sha(path),'entrypoint':'controls',
+                  'CLI_historical_branch_gate_reused':False,'current_authority_module':'cdr_current_eight_drain_loaded_admission',
+                  'historical_native_authority_transferred':False}
+          except BaseException as error:
+              primary=error;report.update(error=repr(error),traceback=traceback.format_exc())
+          finally:
+              raw=(json.dumps(report,sort_keys=True,indent=2,allow_nan=False)+'\n').encode()
+              try:Path('hw/soc/out/cdr-current-eight-drain-loaded-controls/execution.json').write_bytes(raw)
+              except BaseException as error:
+                  if primary is None:primary=error
+              try:print(raw.decode(),end='',flush=True)
+              except BaseException as error:
+                  if primary is None:primary=error
+          if primary is not None:raise primary
           PY
-      - name: Install exact original numerical runtime for synthetic source controls
-        run: python3 -B -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
-      - name: Exercise original parser, measurements, refusals and failure preservation on synthetic inputs
-        run: python3 -B scripts/check_cdr_drain_m1_wave_replay.py --output cdr-drain-wave-source-controls/controls.json > cdr-drain-wave-source-controls/controls.stdout 2> cdr-drain-wave-source-controls/controls.stderr
-      - name: Require complete actual source controls
+      - name: Unchanged publication source suite
+        if: ${{ !cancelled() && steps.binding.outcome == 'success' }}
         run: |
-          python3 -B - <<'PY'
+          python -B - <<'PY' > hw/soc/out/cdr-current-eight-drain-loaded-controls/publication.stdout 2> hw/soc/out/cdr-current-eight-drain-loaded-controls/publication.stderr
+          import hashlib,importlib,json,sys,traceback
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import cdr_current_eight_drain_loaded_admission as current
+          report={'status':'FAIL_INHERITED_SOURCE_CONTROLS','source_controls_only':True,'native_executed':False}
+          primary=None
+          try:
+              ctx=current.context();method=current.methods()
+              assert method['source_controls_authorized'] is True
+              current.old.validate_authorizations(method)
+              assert all(method[k] is False for k in current.ALWAYS_FALSE)
+              module=importlib.import_module('check_cdr_width_loaded_publication')
+              path=Path(module.__file__);relative=str(path.relative_to(current.ROOT))
+              assert current.sha(path)==method['protected_sha256'][relative]
+              report=module.controls()
+              assert report['status']=='PASS_WIDTH_LOADED_FAILURE_PUBLICATION_SOURCE_CONTROLS'
+              report['current_context']={**ctx,'source_controls_only':True,'native_executed':False}
+              report['unchanged_suite_source']={'path':relative,'sha256':current.sha(path),'entrypoint':'controls',
+                  'CLI_historical_branch_gate_reused':False,'current_authority_module':'cdr_current_eight_drain_loaded_admission',
+                  'historical_native_authority_transferred':False}
+          except BaseException as error:
+              primary=error;report.update(error=repr(error),traceback=traceback.format_exc())
+          finally:
+              raw=(json.dumps(report,sort_keys=True,indent=2,allow_nan=False)+'\n').encode()
+              try:Path('hw/soc/out/cdr-current-eight-drain-loaded-controls/publication.json').write_bytes(raw)
+              except BaseException as error:
+                  if primary is None:primary=error
+              try:print(raw.decode(),end='',flush=True)
+              except BaseException as error:
+                  if primary is None:primary=error
+          if primary is not None:raise primary
+          PY
+      - name: Unchanged imports source suite
+        if: ${{ !cancelled() && steps.binding.outcome == 'success' }}
+        run: |
+          python -B - <<'PY' > hw/soc/out/cdr-current-eight-drain-loaded-controls/imports.stdout 2> hw/soc/out/cdr-current-eight-drain-loaded-controls/imports.stderr
+          import hashlib,importlib,json,sys,traceback
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import cdr_current_eight_drain_loaded_admission as current
+          report={'status':'FAIL_INHERITED_SOURCE_CONTROLS','source_controls_only':True,'native_executed':False}
+          primary=None
+          try:
+              ctx=current.context();method=current.methods()
+              assert method['source_controls_authorized'] is True
+              current.old.validate_authorizations(method)
+              assert all(method[k] is False for k in current.ALWAYS_FALSE)
+              module=importlib.import_module('check_cdr_width_loaded_imports')
+              path=Path(module.__file__);relative=str(path.relative_to(current.ROOT))
+              assert current.sha(path)==method['protected_sha256'][relative]
+              report=module.controls()
+              assert report['status']=='PASS_WIDTH_LOADED_ACTUAL_IMPORT_SOURCE_CONTROLS'
+              report['current_context']={**ctx,'source_controls_only':True,'native_executed':False}
+              report['unchanged_suite_source']={'path':relative,'sha256':current.sha(path),'entrypoint':'controls',
+                  'CLI_historical_branch_gate_reused':False,'current_authority_module':'cdr_current_eight_drain_loaded_admission',
+                  'historical_native_authority_transferred':False}
+          except BaseException as error:
+              primary=error;report.update(error=repr(error),traceback=traceback.format_exc())
+          finally:
+              raw=(json.dumps(report,sort_keys=True,indent=2,allow_nan=False)+'\n').encode()
+              try:Path('hw/soc/out/cdr-current-eight-drain-loaded-controls/imports.json').write_bytes(raw)
+              except BaseException as error:
+                  if primary is None:primary=error
+              try:print(raw.decode(),end='',flush=True)
+              except BaseException as error:
+                  if primary is None:primary=error
+          if primary is not None:raise primary
+          PY
+      - name: Actual new RC admission result restore and production publication controls
+        if: ${{ !cancelled() && steps.binding.outcome == 'success' }}
+        run: |
+          python -B scripts/check_cdr_current_eight_drain_loaded.py --output hw/soc/out/cdr-current-eight-drain-loaded-controls/current.json > hw/soc/out/cdr-current-eight-drain-loaded-controls/current.stdout 2> hw/soc/out/cdr-current-eight-drain-loaded-controls/current.stderr
+      - name: Require all full source reports without native acceptance
+        if: ${{ !cancelled() && steps.binding.outcome == 'success' }}
+        run: |
+          python -B - <<'PY'
           import json,os
           from pathlib import Path
-          r=json.loads(Path('cdr-drain-wave-source-controls/controls.json').read_bytes())
-          assert r['status']=='PASS_DRAIN_M1_WAVE_REPLAY_SOURCE_CONTROLS' and r['passed'] is True
-          assert r['counts']==dict(groups=8,refusals=47,lifecycle=4) and r['failures']==[]
-          assert r['completed_groups']==['source','metadata','live','archives','raw','binding_scalar','full_rows','lifecycle']
-          assert r['current_context']==dict(source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_executed=False)
-          assert r['actual_capture_replayed'] is False and r['native_executed'] is False and r['physical_acceptance'] is False
+          root=Path('hw/soc/out/cdr-current-eight-drain-loaded-controls')
+          ctx=dict(source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,source_controls_only=True,native_executed=False)
+          reports={n:json.loads((root/(n+'.json')).read_bytes()) for n in ('historical','execution','publication','imports','current')}
+          for name,r in reports.items():
+              assert r['current_context']==ctx,name
+              assert r['source_controls_only'] is True,name
+              for key in ('native_executed','native_acquisition_performed','native_restore_qualified','real_native_archive_restored','numerical_worker_imported','numerical_worker_executed','native_worker_executed','simulator_executed','electrical_accepted','physical_accepted','full_phy_accepted'):
+                  if key in r:assert r[key] is False,(name,key)
+          r=reports['historical']
+          assert r['status']=='PASS_WIDTH_LOADED_HISTORICAL_CASE_SOURCE_CONTROLS'
+          assert r['pre_execution_worker_derivation_claimed'] is False
+          assert sum(row['original_passed'] for row in r['historical']['cases'])==2
+          assert all(row['all_measured_values_unchanged'] is True for row in r['historical']['cases'])
+          assert r['historical']==reports['current']['result']['historical']
+          assert len(r['historical']['cases'])==10 and r['historical']['eight_rejections_and_two_fault_detections_retained'] is True
+          assert reports['execution']['status']=='PASS_WIDTH_LOADED_EXECUTION_SOURCE_CONTROLS'
+          r=reports['publication'];assert r['status']=='PASS_WIDTH_LOADED_FAILURE_PUBLICATION_SOURCE_CONTROLS'
+          assert (r['publication_cases'],r['actual_lifecycle_cases'])==(15,2)
+          r=reports['imports'];assert r['status']=='PASS_WIDTH_LOADED_ACTUAL_IMPORT_SOURCE_CONTROLS'
+          assert (r['positive'],r['refusal'],r['initial_modules'],r['initial_data'],r['copied_files'])==(2,6,52,3,55)
+          assert r['worker_sha256']=='ebf92a9842280587a437de161425f49f6ce4a82c9d76a0ce2532075d0e309bf5'
+          r=reports['current'];assert r['status']=='PASS_CURRENT_EIGHT_DRAIN_LOADED_SOURCE_CONTROLS'
+          assert (r['derivation']['numerical_blocks'],r['derivation']['numerical_bytes'])==(6,24133)
+          expected={'authority':(5,56),'reports':(2,42),'live':(1,12),'restore':(3,12),'result':(2,12)}
+          for name,counts in expected.items():assert (r[name]['positive'],r[name]['refusal'])==counts,name
+          assert sum(r[name]['positive']for name in expected)==13 and sum(r[name]['refusal']for name in expected)==134
+          assert (r['publication']['publication_cases'],r['publication']['actual_lifecycle_cases'])==(15,2)
+          assert r['restore']['authentic_metadata_members']==2874 and r['restore']['native_restore_qualified'] is False
+          assert r['result']['synthetic_current_report'] is True and r['result']['actual_current_simulation_claimed'] is False
           PY
-      - name: Exercise complete archive publication and failure retention on synthetic outputs
-        run: python3 -B scripts/check_cdr_drain_wave_publication.py --output cdr-drain-wave-source-controls/publication-controls.json > cdr-drain-wave-source-controls/publication-controls.stdout 2> cdr-drain-wave-source-controls/publication-controls.stderr
-      - name: Require complete publication controls
-        run: |
-          python3 -B - <<'PY'
-          import json,os
-          from pathlib import Path
-          r=json.loads(Path('cdr-drain-wave-source-controls/publication-controls.json').read_bytes())
-          assert r['status']=='PASS_COMPLETE_REPLAY_PUBLICATION_CONTROLS' and r['passed'] is True
-          assert r['counts']==dict(positive=7,refusals=33,lifecycle=4)
-          assert r['current_context']['source']==os.environ['GITHUB_SHA']
-          assert r['current_context']['run']==int(os.environ['GITHUB_RUN_ID']) and r['current_context']['attempt']==1
-          assert r['synthetic_inputs_only'] is True
-          assert all(r[k] is False for k in ('actual_native_capture_acquired','actual_release_mutated','physical_acceptance','timing_accepted','full_phy_accepted'))
-          PY
-      - name: Verify current-model projection, raw native geometry joins and original sparse solver
-        run: |
-          python3 -B scripts/check_cdr_current_wire_ownership.py cdr-drain-wave-source-controls/ownership-controls.json > cdr-drain-wave-source-controls/ownership-controls.stdout 2> cdr-drain-wave-source-controls/ownership-controls.stderr
-          python3 -B - <<'PY'
-          import json,os,numpy,scipy
-          from pathlib import Path
-          assert numpy.__version__=='2.3.3' and scipy.__version__=='1.16.2'
-          r=json.loads(Path('cdr-drain-wave-source-controls/ownership-controls.json').read_bytes())
-          assert r['status']=='PASS_CURRENT_CDR_WIRE_OWNERSHIP_SOURCE_CONTROLS' and r['count']==33 and len(set(r['passed_cases']))==33
-          assert r['source']==os.environ['GITHUB_SHA'] and r['run_id']==int(os.environ['GITHUB_RUN_ID']) and r['attempt']==1
-          assert r['synthetic_inputs_only'] is True
-          assert all(r[k] is False for k in ('actual_native_inputs_acquired','actual_model_analyzed','physical_acceptance','timing_accepted','full_phy_accepted','electrical_accepted','causality_proven'))
-          PY
-      - name: Exercise source-bound acquisition admission, terminal integrity and complete output packing
-        run: python3 -B scripts/check_cdr_current_wire_ownership_execution.py > cdr-drain-wave-source-controls/execution-controls.stdout 2> cdr-drain-wave-source-controls/execution-controls.stderr
-      - name: Require all current execution controls
-        run: |
-          python3 -B - <<'PY'
-          import json,os,sys
-          from pathlib import Path
-          sys.path.insert(0,'scripts')
-          import cloud_cdr_current_wire_ownership as host
-          root=Path('cdr-drain-wave-source-controls')
-          records={key:json.loads((root/name).read_bytes())for key,name in (('controls','controls.json'),('publication','publication-controls.json'),('ownership','ownership-controls.json'),('execution','execution-controls.json'))}
-          host.bind_controls(host.context(os.environ),records)
-          PY
-      - name: Exercise current42-input geometry admission and independent failure retention
-        run: python3 -B scripts/check_cdr_current_tail_straps.py > cdr-drain-wave-source-controls/tail-controls.stdout 2> cdr-drain-wave-source-controls/tail-controls.stderr
-      - name: Require all195 actual same-source controls
-        run: |
-          python3 -B - <<'PY'
-          import json,os,sys
-          from pathlib import Path
-          sys.path.insert(0,'scripts')
-          import cloud_cdr_current_tail_straps as host
-          root=Path('cdr-drain-wave-source-controls')
-          records={key:json.loads((root/name).read_bytes())for key,name in (('controls','controls.json'),('publication','publication-controls.json'),('ownership','ownership-controls.json'),('execution','execution-controls.json'),('tail','tail-controls.json'))}
-          host.bind_controls(host.context(os.environ),records)
-          PY
-      - name: Exercise exact admitted physical producer and fresh graph boundaries
-        run: python3 -B scripts/check_cdr_current_tail_graph.py > cdr-drain-wave-source-controls/graph-controls.stdout 2> cdr-drain-wave-source-controls/graph-controls.stderr
-      - name: Require all227 actual same-source controls
-        run: |
-          python3 -B - <<'PY'
-          import json,os,sys
-          from pathlib import Path
-          sys.path.insert(0,'scripts')
-          import cloud_cdr_current_tail_graph as host
-          root=Path('cdr-drain-wave-source-controls')
-          records={key:json.loads((root/name).read_bytes())for key,name in (('controls','controls.json'),('publication','publication-controls.json'),('ownership','ownership-controls.json'),('execution','execution-controls.json'),('tail','tail-controls.json'),('graph','graph-controls.json'))}
-          host.bind_controls(host.context(os.environ),records)
-          PY
-      - name: Bind current RC authority and test unchanged numerical workers and exact new input admission
-        run: |
-          python3 -B - <<'PY'
-          import hashlib,json,sys
-          from pathlib import Path
-          sys.path.insert(0,'scripts')
-          import cdr_current_eight_drain_fresh_rc_admission as s
-          raw=Path(s.METHOD).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='bd9e67b47630538934b808e803e60fc72b0211bd3382786d4d1f527eb9cc65d6'
-          assert s.methods()==json.loads(raw)
-          s.contract()
-          PY
-          python3 -B scripts/check_cdr_current_eight_drain_fresh_rc.py --output cdr-drain-wave-source-controls/fresh-rc-controls.json > cdr-drain-wave-source-controls/fresh-rc-controls.stdout 2> cdr-drain-wave-source-controls/fresh-rc-controls.stderr
-      - name: Always preserve complete source records
+      - name: Always emit full source metadata and streams
         if: always()
         run: |
-          python3 -B - <<'PY'
+          python -B - <<'PY'
           import base64,hashlib,json
           from pathlib import Path
-          for name in ('context.json','controls.json','controls.stdout','controls.stderr','publication-controls.json','publication-controls.stdout','publication-controls.stderr','ownership-manifest.json','ownership-controls.json','ownership-controls.stdout','ownership-controls.stderr','execution-manifest.json','execution-controls.json','execution-controls.stdout','execution-controls.stderr','tail-manifest.json','tail-controls.json','tail-controls.stdout','tail-controls.stderr','graph-manifest.json','graph-controls.json','graph-controls.stdout','graph-controls.stderr','fresh-rc-controls.json','fresh-rc-controls.stdout','fresh-rc-controls.stderr'):
-              p=Path('cdr-drain-wave-source-controls')/name
-              assert not p.is_symlink()
-              raw=p.read_bytes() if p.is_file() else b''
-              pieces=[raw[i:i+6000] for i in range(0,len(raw),6000)]
-              print('CDR_DRAIN_WAVE_SOURCE_INDEX '+json.dumps(dict(path=name,present=p.is_file(),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(pieces)),sort_keys=True))
-              for i,b in enumerate(pieces):
-                  print('CDR_DRAIN_WAVE_SOURCE_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          root=Path('hw/soc/out/cdr-current-eight-drain-loaded-controls')
+          names=['context.json']+[n+s for n in ('historical','execution','publication','imports','current')for s in('.json','.stdout','.stderr')]
+          for name in names:
+              p=root/name;present=p.is_file()and not p.is_symlink();raw=p.read_bytes()if present else b''
+              chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
+              print('DRAIN_LOADED_SOURCE_INDEX '+json.dumps(dict(path=name,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,chunk in enumerate(chunks):
+                  print('DRAIN_LOADED_SOURCE_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(chunk).decode()),sort_keys=True))
           PY
-      - name: Preserve full outputs including failure
+      - name: Retain all source success or failure bytes
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: cdr-drain-wave-source-controls-${{ github.run_id }}-${{ github.run_attempt }}
-          path: cdr-drain-wave-source-controls
+          name: drain-m1-loaded-source-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: hw/soc/out/cdr-current-eight-drain-loaded-controls
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 90
   preserve-job-log:
@@ -255,14 +311,12 @@ jobs:
           assert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
           jobs=read('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
           selected=[j for j in jobs['jobs'] if j['name']=='source-controls'];assert len(selected)==1
-          listed=selected[0]
-          j=read('actions/jobs/'+str(listed['id']),'job.json')
-          assert j['id']==listed['id'] and j['name']=='source-controls'
-          assert j['head_sha']==e['GITHUB_SHA'] and j['run_id']==int(e['GITHUB_RUN_ID'])
+          j=selected[0];assert j['status']=='completed' and j['head_sha']==e['GITHUB_SHA']
+          read('actions/jobs/'+str(j['id']),'job.json')
           b=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(j['id'])+'/logs'])
           assert b;(root/'job.log').write_bytes(b)
           receipt=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
-            job_id=j['id'],job_conclusion=j['conclusion'],api_status=j['status'],api_metadata_claims_terminal=j['status']=='completed',execution_dependency_finished=True,full_raw_job_log=True,
+            job_id=j['id'],job_conclusion=j['conclusion'],full_raw_job_log=True,
             log_bytes=len(b),log_sha256=hashlib.sha256(b).hexdigest(),native_acquisition=False)
           (root/'receipt.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
           print(json.dumps(receipt,sort_keys=True))
@@ -271,24 +325,23 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: cdr-drain-wave-source-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          name: cdr-current-eight-drain-loaded-source-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
           path: job-logs
           if-no-files-found: error
           retention-days: 90
-
-
-  graph:
+  prepare:
     needs: [source-controls, preserve-job-log]
-    if: ${{ inputs.mode == 'rc' }}
+    if: ${{ inputs.mode != 'controls' }}
     permissions:
       contents: write
       actions: read
     runs-on: ubuntu-24.04
-    timeout-minutes: 300
+    timeout-minutes: 120
+
     env:
       GH_TOKEN: ${{ github.token }}
-      OPENBLAS_NUM_THREADS: '1'
-      OMP_NUM_THREADS: '1'
+      LOADED_CASE: nominal_early
+      PREPARE_ONLY: 'true'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -297,232 +350,323 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Bind exact graph source before native acquisition
+      - name: Authenticate complete same-source controls before any native acquisition
         run: |
           python3 -B - <<'PY'
-          import hashlib,os,sys
+          import base64,hashlib,json,os,subprocess,sys
           from pathlib import Path
+          e=os.environ;repo='repos/'+e['GITHUB_REPOSITORY']+'/'
+          assert e['GITHUB_ACTIONS']=='true' and e['RUNNER_ENVIRONMENT']=='github-hosted'
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_REF']=='refs/heads/codex/cdr-drain-m1-loaded-electrical'
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           sys.path.insert(0,'scripts')
-          import cloud_cdr_current_tail_graph as host
-          raw=Path(host.MANIFEST).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='7318774a4b27685ae8e9c92db7522501c1c9b2bf614fa04909c5967e642d2537'
-          m=host.source_guard(host.context(os.environ));assert len(m['files'])==1329
-          PY
-      - name: Recover every same-source control record from completed actual job log
-        run: |
-          python3 -B - <<'PY'
-          import base64,hashlib,json,os,subprocess,sys,time
-          from pathlib import Path
-          e=os.environ;out=Path('ownership-source-proof');out.mkdir()
-          prefix='repos/Melihakbulut221/nssoc/'
-          def get(path,name):
-              b=subprocess.check_output(['gh','api',prefix+path]);(out/name).write_bytes(b);return json.loads(b)
-          jobs=get('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
-          found=[j for j in jobs['jobs']if j['name']=='source-controls'];assert len(found)==1
-          for _ in range(30):
-              job=get('actions/jobs/'+str(found[0]['id']),'job.json')
-              assert job['head_sha']==e['GITHUB_SHA'] and job['run_id']==int(e['GITHUB_RUN_ID'])
-              if job['status']=='completed':break
-              time.sleep(2)
-          assert job['status']=='completed' and job['conclusion']=='success'
-          raw=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(job['id'])+'/logs']);assert raw
-          (out/'source-controls.log').write_bytes(raw)
-          expected={'context.json','controls.json','controls.stdout','controls.stderr','publication-controls.json','publication-controls.stdout','publication-controls.stderr','ownership-manifest.json','ownership-controls.json','ownership-controls.stdout','ownership-controls.stderr','execution-manifest.json','execution-controls.json','execution-controls.stdout','execution-controls.stderr','tail-manifest.json','tail-controls.json','tail-controls.stdout','tail-controls.stderr','graph-manifest.json','graph-controls.json','graph-controls.stdout','graph-controls.stderr','fresh-rc-controls.json','fresh-rc-controls.stdout','fresh-rc-controls.stderr'}
-          idx={};chunks={}
-          for line in raw.decode().splitlines():
-              for marker,is_index in (('CDR_DRAIN_WAVE_SOURCE_INDEX ',True),('CDR_DRAIN_WAVE_SOURCE_CHUNK ',False)):
-                  if marker not in line:continue
-                  text=line.split(marker,1)[1]
-                  if not text.startswith('{'):continue
-                  d=json.loads(text);name=d['path'];assert name in expected
-                  if is_index:assert name not in idx;idx[name]=d
+          import cdr_current_eight_drain_loaded_admission as a
+          ctx=a.context();method=a.methods()
+          a.authorize(e['PREPARE_ONLY']=='true')
+          def read(path):return subprocess.check_output(['gh','api','--allow-escape-sequences',repo+path])
+          runraw=read('actions/runs/'+e['GITHUB_RUN_ID']);run=json.loads(runraw)
+          assert run['head_sha']==ctx['source'] and run['run_attempt']==1
+          jobsraw=read('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100');jobs=json.loads(jobsraw)
+          selected=[j for j in jobs['jobs']if j['name']=='source-controls'];assert len(selected)==1
+          job=selected[0];assert job['head_sha']==ctx['source'] and job['status']=='completed' and job['conclusion']=='success'
+          assert all(s['conclusion']=='success'for s in job['steps'])
+          preserve=[j for j in jobs['jobs']if j['name']=='preserve-job-log'];assert len(preserve)==1
+          assert preserve[0]['conclusion']=='success' and preserve[0]['head_sha']==ctx['source']
+          log=read('actions/jobs/'+str(job['id'])+'/logs');assert log
+          root=Path('drain-loaded-same-source-controls');root.mkdir(exist_ok=False)
+          for name,raw in (('run.json',runraw),('jobs.json',jobsraw),('source-job.log',log)):(root/name).write_bytes(raw)
+          indexes={};chunks={}
+          for line in log.decode().splitlines():
+              for marker,kind in (('DRAIN_LOADED_SOURCE_INDEX ','index'),('DRAIN_LOADED_SOURCE_CHUNK ','chunk')):
+                  start=line.find(marker)
+                  if start<0 or not line[start+len(marker):].startswith('{'):continue
+                  row=json.loads(line[start+len(marker):]);name=row['path']
+                  if kind=='index':
+                      assert name not in indexes;indexes[name]=row
                   else:
-                      part=chunks.setdefault(name,{})
-                      assert type(d['index'])is int and d['index']not in part;part[d['index']]=d
-          assert set(idx)==expected
-          values={}
-          for name,pin in idx.items():
-              assert pin['present'] is True
-              parts=chunks.get(name,{});assert set(parts)==set(range(pin['chunks']))
-              data=b''.join(base64.b64decode(parts[i]['base64'],validate=True)for i in range(pin['chunks']))
-              assert len(data)==pin['bytes'] and hashlib.sha256(data).hexdigest()==pin['sha256']
-              (out/name).write_bytes(data)
-              if name.endswith('.json'):values[name]=json.loads(data)
-          context=values['context.json']
-          assert context['source']==e['GITHUB_SHA'] and context['run_id']==int(e['GITHUB_RUN_ID']) and context['attempt']==1
-          assert context['native_acquisition'] is False
-          assert (out/'ownership-manifest.json').read_bytes()==Path('scripts/cdr-current-wire-ownership-source-pins.json').read_bytes()
-          assert (out/'execution-manifest.json').read_bytes()==Path('scripts/cdr-current-wire-ownership-execution-pins.json').read_bytes()
-          assert (out/'tail-manifest.json').read_bytes()==Path('scripts/cdr-current-tail-straps-pins.json').read_bytes()
-          assert (out/'graph-manifest.json').read_bytes()==Path('scripts/cdr-current-tail-graph-pins.json').read_bytes()
-          records={key:values[name]for key,name in (('controls','controls.json'),('publication','publication-controls.json'),('ownership','ownership-controls.json'),('execution','execution-controls.json'),('tail','tail-controls.json'),('graph','graph-controls.json'))}
-          sys.path.insert(0,'scripts')
-          import cloud_cdr_current_tail_graph as host
-          proof=host.bind_controls(host.context(e),records)
-          (out/'bound-controls.json').write_text(json.dumps(records,sort_keys=True,indent=2)+'\n')
-          (out/'index.json').write_text(json.dumps(idx,sort_keys=True,indent=2)+'\n')
-          print(json.dumps(dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),source_job=job['id'],full_records=len(idx),proof=proof,native_acquisition=False),sort_keys=True))
+                      assert row['index']not in chunks.setdefault(name,{})
+                      chunks[name][row['index']]=row
+          names=['context.json']+[n+s for n in ('historical','execution','publication','imports','current')for s in('.json','.stdout','.stderr')]
+          assert set(indexes)==set(names)
+          for name in names:
+              pin=indexes[name];assert pin['present']is True
+              rows=chunks.get(name,{});assert set(rows)==set(range(pin['chunks']))
+              raw=b''.join(base64.b64decode(rows[i]['base64'],validate=True)for i in range(pin['chunks']))
+              assert len(raw)==pin['bytes']and hashlib.sha256(raw).hexdigest()==pin['sha256']
+              (root/name).write_bytes(raw)
+          current=json.loads((root/'current.json').read_bytes())
+          assert current['status']=='PASS_CURRENT_EIGHT_DRAIN_LOADED_SOURCE_CONTROLS'
+          assert current['current_context']=={**ctx,'source_controls_only':True,'native_executed':False}
+          assert all(current[k]is False for k in ('native_executed','native_acquisition_performed','numerical_worker_imported','numerical_worker_executed','simulator_executed','electrical_accepted','physical_accepted','full_phy_accepted'))
+          expected={'authority':(5,56),'reports':(2,42),'live':(1,12),'restore':(3,12),'result':(2,12)}
+          for name,counts in expected.items():assert(current[name]['positive'],current[name]['refusal'])==counts
+          assert(current['publication']['publication_cases'],current['publication']['actual_lifecycle_cases'])==(15,2)
+          context=json.loads((root/'context.json').read_bytes())
+          assert context['source']==ctx['source']and context['run_id']==ctx['run_id']and context['attempt']==1
+          assert context['method_sha256']==hashlib.sha256(Path(a.METHOD).read_bytes()).hexdigest()
+          a.write(root/'binding.json',dict(current_context=ctx,indexes=indexes,source_job_id=job['id'],source_job_log_sha256=hashlib.sha256(log).hexdigest(),native_acquisition_performed=False))
           PY
-      - name: Require independently reserved empty exact-source release
+      - name: Require all eleven exact-source reservations before native dependencies
+        run: python3 -B scripts/cloud_cdr_current_eight_drain_loaded_stage.py --case "$LOADED_CASE" --prepare-only --preflight
+      - name: Original loaded simulator dependencies
         run: |
-          python3 -B - <<'PY'
-          import json,os,subprocess,time
-          from pathlib import Path
-          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-cdr-current-eight-drain-fresh-rc'
-          prefix='repos/Melihakbulut221/nssoc/'
-          for attempt in range(120):
-              r=subprocess.run(['gh','api',prefix+'releases/tags/'+tag],capture_output=True,text=True)
-              if r.returncode==0:
-                  info=json.loads(r.stdout);break
-              assert 'HTTP 404' in r.stderr,r.stderr
-              time.sleep(2)
-          else:raise RuntimeError('No independent reservation; native archive acquisition prohibited')
-          ref=json.loads(subprocess.check_output(['gh','api',prefix+'git/ref/tags/'+tag]))
-          assert info['tag_name']==tag and info['target_commitish']==e['GITHUB_SHA']
-          assert info['draft'] is False and info['prerelease'] is True and info['assets']==[]
-          assert ref['object']['type']=='commit' and ref['object']['sha']==e['GITHUB_SHA']
-          proof=dict(tag=tag,tested_source=e['GITHUB_SHA'],release_id=info['id'],existing_assets=[],target_verified=True,assets_overwritten=False,externally_reserved=True,creation_attempted=False,read_attempts=attempt+1)
-          Path('ownership-reservation.json').write_text(json.dumps(proof,sort_keys=True,indent=2)+'\n')
-          PY
-      - name: Authorize exact new RC source and controls against independent empty reservation
-        run: |
-          python3 -B - <<'PY'
-          import hashlib,json,os,sys
-          from pathlib import Path
-          sys.path.insert(0,'scripts')
-          import cdr_current_eight_drain_fresh_rc_admission as s
-          assert hashlib.sha256(Path(s.METHOD).read_bytes()).hexdigest()=='bd9e67b47630538934b808e803e60fc72b0211bd3382786d4d1f527eb9cc65d6'
-          proof=s.preflight()
-          with open(os.environ['GITHUB_ENV'],'a')as stream:stream.write(s.RESERVATION_ENV+'='+proof['sha256']+'\n')
-          print(json.dumps(proof,sort_keys=True))
-          PY
-      - name: Install pinned numerical runtime
-        run: python3 -B -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
-      - name: Acquire and verify original immutable native AppImage after independent reservation
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y libfuse2 tcl8.6 tk8.6 tcl-dev tk-dev build-essential m4 autoconf libreadline-dev libx11-dev libxext-dev libxpm-dev libxt-dev libcairo2-dev libgl1-mesa-dev libglu1-mesa-dev uidmap
-          curl --fail --location --retry 2 --output "$RUNNER_TEMP/current-tail-physical.AppImage" https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
-          python3 -B - <<'PY'
-          import hashlib,os
-          from pathlib import Path
-          path=Path(os.environ['RUNNER_TEMP'])/'current-tail-physical.AppImage'
-          with path.open('rb')as f:assert hashlib.file_digest(f,'sha256').hexdigest()=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
-          path.chmod(0o755)
-          PY
-      - name: Admit only the pinned runtime to hosted AppArmor user namespaces
-        run: |
-          python3 -B - <<'PY'
-          import hashlib,json,os,re,subprocess
-          from pathlib import Path
-          e=os.environ
-          assert e['GITHUB_ACTIONS']=='true' and e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
-          assert e['GITHUB_REF']=='refs/heads/codex/cdr-drain-m1-loaded-electrical' and e['GITHUB_RUN_ATTEMPT']=='1'
-          assert re.fullmatch('[1-9][0-9]*',e['GITHUB_RUN_ID']) and re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA'])
-          app=Path(e['RUNNER_TEMP'])/'current-tail-physical.AppImage'
-          assert app==Path('/home/runner/work/_temp/current-tail-physical.AppImage') and app.is_file() and not app.is_symlink()
-          with app.open('rb')as f:digest=hashlib.file_digest(f,'sha256').hexdigest()
-          assert digest=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
-          key=Path('/proc/sys/kernel/apparmor_restrict_unprivileged_userns')
-          before=key.read_text().strip()
-          name='nssoc-cdr-runtime-'+e['GITHUB_RUN_ID']+'-1'
-          target=Path('/etc/apparmor.d')/name
-          assert not target.exists() and not target.is_symlink()
-          policy='abi <abi/4.0>,\ninclude <tunables/global>\nprofile '+name+' "'+str(app)+'" flags=(unconfined) {\n  userns,\n}\n'
-          installed=subprocess.run(['sudo','tee',str(target)],input=policy.encode(),capture_output=True,check=True)
-          assert installed.stdout==policy.encode() and target.read_text()==policy
-          loaded=subprocess.run(['sudo','apparmor_parser','-a',str(target)],capture_output=True,check=True)
-          profiles=subprocess.check_output(['sudo','cat','/sys/kernel/security/apparmor/profiles'],text=True).splitlines()
-          active=[line for line in profiles if line.startswith(name+' (')]
-          assert len(active)==1 and key.read_text().strip()==before
-          proof=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
-            appimage=str(app),appimage_sha256=digest,profile=str(target),profile_text=policy,
-            profile_sha256=hashlib.sha256(policy.encode()).hexdigest(),loaded=True,active=active,
-            restriction_before=before,restriction_after=key.read_text().strip(),global_policy_changed=False,
-            parser_stdout=loaded.stdout.decode(),parser_stderr=loaded.stderr.decode(),
-            native_geometry_executed=False,scope='Exact pinned executable on this ephemeral GitHub runner only')
-          Path('current-cdr-runtime-policy.json').write_text(json.dumps(proof,sort_keys=True,indent=2)+'\n')
-          print(json.dumps(proof,sort_keys=True))
-          PY
-      - name: Extract fresh500-device binding, wire RC and seven MIMs in both native orders
-        env:
-          CLOUD_APPIMAGE: ${{ runner.temp }}/current-tail-physical.AppImage
-        run: |
-          mkdir -p hw/soc/out/cdr-current-eight-drain-fresh-rc-driver-logs
-          python3 -B scripts/cloud_cdr_current_eight_drain_fresh_rc.py > hw/soc/out/cdr-current-eight-drain-fresh-rc-driver-logs/driver.log 2>&1
-      - name: Permanently preserve every native output including failures
-        if: always()
-        env:
-          CLOUD_APPIMAGE: ${{ runner.temp }}/current-tail-physical.AppImage
-        run: |
-          python3 -B scripts/cloud_cdr_current_eight_drain_fresh_rc.py --publish-only > current-cdr-tail-graph.stdout 2> current-cdr-tail-graph.stderr
-      - name: Always emit complete derived records and actual failure output
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3 networkx==3.4.2
+      - name: Original complete loaded binding without transient
+        id: native
+        run: python3 -B scripts/cloud_cdr_current_eight_drain_loaded_stage.py --case "$LOADED_CASE" --prepare-only
+      - name: Preserve raw failure evidence when publication has not started
         if: always()
         run: |
           python3 -B - <<'PY'
-          import sys
+          import os,subprocess,sys
           from pathlib import Path
-          for name in ('current-cdr-tail-graph.stdout','current-cdr-tail-graph.stderr'):
-              p=Path(name)
-              if p.is_file():sys.stdout.buffer.write(p.read_bytes());sys.stdout.buffer.write(b'\n')
+          prepare=os.environ['PREPARE_ONLY']=='true';case=os.environ['LOADED_CASE']
+          assert case in ('nominal_early','nominal_late','hot_early','hot_late','cold_early','cold_late','constant_zero','constant_one','clock_stopped','vi_bias_off')
+          assert not prepare or case=='nominal_early'
+          suffix='preparation' if prepare else case
+          transport=Path('hw/soc/out')/('cloud-cdr-current-eight-drain-loaded-'+suffix+'-publication')
+          assert not transport.is_symlink()
+          if transport.exists():
+              assert transport.is_dir()
+              print('Existing publication transport retained; no publication retry or overwrite.')
+          else:
+              argv=[sys.executable,'-B','scripts/cloud_cdr_current_eight_drain_loaded_stage.py','--case',case,'--publish-only']
+              if prepare:argv.append('--prepare-only')
+              subprocess.run(argv,check=True)
           PY
-      - name: Preserve complete owned native bundle and publication fallback
+      - name: Always emit exact terminal and publication metadata
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json,os
+          from pathlib import Path
+          prepare=os.environ['PREPARE_ONLY']=='true';case=os.environ['LOADED_CASE']
+          suffix='preparation' if prepare else case
+          out=Path('cloud-cdr-current-eight-drain-loaded-evidence-'+suffix)
+          transport=Path('hw/soc/out')/('cloud-cdr-current-eight-drain-loaded-'+suffix+'-publication')
+          stem='cdr-current-eight-drain-loaded-'+suffix+'-'+os.environ['GITHUB_RUN_ID']+'-1'
+          paths=[out/'result.json',out/'publication-source-check.json',out/'direct-publication-plan.json',
+            transport/'publication.json',transport/(stem+'.summary.json'),transport/(stem+'.parts.json')]
+          for p in paths:
+              assert not p.is_symlink()
+              present=p.is_file();raw=p.read_bytes() if present else b''
+              chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
+              print('WIDTH_CURRENT_NATIVE_INDEX '+json.dumps(dict(path=str(p),present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):
+                  print('WIDTH_CURRENT_NATIVE_CHUNK '+json.dumps(dict(path=str(p),index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          PY
+      - name: Preserve complete worker output and partial publication
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: current-cdr-tail-graph-${{ github.run_id }}-${{ github.run_attempt }}
+          name: drain-m1-loaded-preparation-full-${{ github.run_id }}-${{ github.run_attempt }}
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 90
+          compression-level: 1
           path: |
-            ownership-source-proof
-            ownership-reservation.json
-            current-cdr-runtime-policy.json
-            hw/soc/out/cloud-cdr-current-eight-drain-fresh-rc
-            hw/soc/out/cloud-cdr-current-eight-drain-fresh-rc-publication
-            hw/soc/out/cdr-current-eight-drain-fresh-rc-preflight
-            hw/soc/out/cdr-current-eight-drain-fresh-rc-driver-logs
-            hw/soc/out/cdr-current-eight-drain-graph-41206809668-1
-            current-cdr-tail-graph-publication
-            current-cdr-tail-graph.stdout
-            current-cdr-tail-graph.stderr
+            drain-loaded-same-source-controls
+            cloud-cdr-current-eight-drain-loaded-evidence-preparation
+            cloud-cdr-current-eight-drain-loaded-nominal_early
+            hw/soc/out/cloud-cdr-current-eight-drain-loaded-preparation-publication
 
-  preserve-graph-job-logs:
-    needs: [source-controls, preserve-job-log, graph]
-    if: ${{ always() && inputs.mode == 'rc' }}
+  loaded:
+    needs: [source-controls, prepare]
+    if: ${{ inputs.mode == 'loaded' }}
+    permissions:
+      contents: write
+      actions: read
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        case: [nominal_early, nominal_late, hot_early, hot_late, cold_early, cold_late, constant_zero, constant_one, clock_stopped, vi_bias_off]
     env:
       GH_TOKEN: ${{ github.token }}
+      LOADED_CASE: ${{ matrix.case }}
+      PREPARE_ONLY: 'false'
     steps:
-      - name: Preserve complete terminal execution logs and metadata
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Authenticate complete same-source controls before any native acquisition
         run: |
           python3 -B - <<'PY'
-          import hashlib,json,os,subprocess
+          import base64,hashlib,json,os,subprocess,sys
           from pathlib import Path
-          e=os.environ;out=Path('ownership-job-logs');out.mkdir()
-          prefix='repos/Melihakbulut221/nssoc/'
-          def get(path,name):
-              raw=subprocess.check_output(['gh','api',prefix+path]);(out/name).write_bytes(raw);return json.loads(raw)
-          run=get('actions/runs/'+e['GITHUB_RUN_ID'],'run.json')
-          assert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
-          jobs=get('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
-          records={}
-          for listed in jobs['jobs']:
-              if listed['name'] not in ('source-controls','preserve-job-log','graph'):continue
-              job=get('actions/jobs/'+str(listed['id']),str(listed['id'])+'.json')
-              assert job['head_sha']==e['GITHUB_SHA'] and job['run_id']==int(e['GITHUB_RUN_ID'])
-              if job['conclusion']=='skipped':continue
-              raw=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(job['id'])+'/logs']);assert raw
-              (out/(str(job['id'])+'.log')).write_bytes(raw)
-              records[job['name']]=dict(id=job['id'],api_status=job['status'],conclusion=job['conclusion'],execution_dependency_finished=True,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
-          (out/'receipt.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run=int(e['GITHUB_RUN_ID']),attempt=1,complete_raw_logs=records),sort_keys=True,indent=2)+'\n')
+          e=os.environ;repo='repos/'+e['GITHUB_REPOSITORY']+'/'
+          assert e['GITHUB_ACTIONS']=='true' and e['RUNNER_ENVIRONMENT']=='github-hosted'
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_REF']=='refs/heads/codex/cdr-drain-m1-loaded-electrical'
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
+          sys.path.insert(0,'scripts')
+          import cdr_current_eight_drain_loaded_admission as a
+          ctx=a.context();method=a.methods()
+          a.authorize(e['PREPARE_ONLY']=='true')
+          def read(path):return subprocess.check_output(['gh','api','--allow-escape-sequences',repo+path])
+          runraw=read('actions/runs/'+e['GITHUB_RUN_ID']);run=json.loads(runraw)
+          assert run['head_sha']==ctx['source'] and run['run_attempt']==1
+          jobsraw=read('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100');jobs=json.loads(jobsraw)
+          selected=[j for j in jobs['jobs']if j['name']=='source-controls'];assert len(selected)==1
+          job=selected[0];assert job['head_sha']==ctx['source'] and job['status']=='completed' and job['conclusion']=='success'
+          assert all(s['conclusion']=='success'for s in job['steps'])
+          preserve=[j for j in jobs['jobs']if j['name']=='preserve-job-log'];assert len(preserve)==1
+          assert preserve[0]['conclusion']=='success' and preserve[0]['head_sha']==ctx['source']
+          log=read('actions/jobs/'+str(job['id'])+'/logs');assert log
+          root=Path('drain-loaded-same-source-controls');root.mkdir(exist_ok=False)
+          for name,raw in (('run.json',runraw),('jobs.json',jobsraw),('source-job.log',log)):(root/name).write_bytes(raw)
+          indexes={};chunks={}
+          for line in log.decode().splitlines():
+              for marker,kind in (('DRAIN_LOADED_SOURCE_INDEX ','index'),('DRAIN_LOADED_SOURCE_CHUNK ','chunk')):
+                  start=line.find(marker)
+                  if start<0 or not line[start+len(marker):].startswith('{'):continue
+                  row=json.loads(line[start+len(marker):]);name=row['path']
+                  if kind=='index':
+                      assert name not in indexes;indexes[name]=row
+                  else:
+                      assert row['index']not in chunks.setdefault(name,{})
+                      chunks[name][row['index']]=row
+          names=['context.json']+[n+s for n in ('historical','execution','publication','imports','current')for s in('.json','.stdout','.stderr')]
+          assert set(indexes)==set(names)
+          for name in names:
+              pin=indexes[name];assert pin['present']is True
+              rows=chunks.get(name,{});assert set(rows)==set(range(pin['chunks']))
+              raw=b''.join(base64.b64decode(rows[i]['base64'],validate=True)for i in range(pin['chunks']))
+              assert len(raw)==pin['bytes']and hashlib.sha256(raw).hexdigest()==pin['sha256']
+              (root/name).write_bytes(raw)
+          current=json.loads((root/'current.json').read_bytes())
+          assert current['status']=='PASS_CURRENT_EIGHT_DRAIN_LOADED_SOURCE_CONTROLS'
+          assert current['current_context']=={**ctx,'source_controls_only':True,'native_executed':False}
+          assert all(current[k]is False for k in ('native_executed','native_acquisition_performed','numerical_worker_imported','numerical_worker_executed','simulator_executed','electrical_accepted','physical_accepted','full_phy_accepted'))
+          expected={'authority':(5,56),'reports':(2,42),'live':(1,12),'restore':(3,12),'result':(2,12)}
+          for name,counts in expected.items():assert(current[name]['positive'],current[name]['refusal'])==counts
+          assert(current['publication']['publication_cases'],current['publication']['actual_lifecycle_cases'])==(15,2)
+          context=json.loads((root/'context.json').read_bytes())
+          assert context['source']==ctx['source']and context['run_id']==ctx['run_id']and context['attempt']==1
+          assert context['method_sha256']==hashlib.sha256(Path(a.METHOD).read_bytes()).hexdigest()
+          a.write(root/'binding.json',dict(current_context=ctx,indexes=indexes,source_job_id=job['id'],source_job_log_sha256=hashlib.sha256(log).hexdigest(),native_acquisition_performed=False))
           PY
-      - name: Preserve complete actual logs
+      - name: Require all eleven exact-source reservations before native dependencies
+        run: python3 -B scripts/cloud_cdr_current_eight_drain_loaded_stage.py --case "$LOADED_CASE"  --preflight
+      - name: Original loaded simulator dependencies
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3 networkx==3.4.2
+      - name: Original OFF operating point and full loaded transient
+        id: native
+        run: python3 -B scripts/cloud_cdr_current_eight_drain_loaded_stage.py --case "$LOADED_CASE" 
+      - name: Preserve raw failure evidence when publication has not started
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import os,subprocess,sys
+          from pathlib import Path
+          prepare=os.environ['PREPARE_ONLY']=='true';case=os.environ['LOADED_CASE']
+          assert case in ('nominal_early','nominal_late','hot_early','hot_late','cold_early','cold_late','constant_zero','constant_one','clock_stopped','vi_bias_off')
+          assert not prepare or case=='nominal_early'
+          suffix='preparation' if prepare else case
+          transport=Path('hw/soc/out')/('cloud-cdr-current-eight-drain-loaded-'+suffix+'-publication')
+          assert not transport.is_symlink()
+          if transport.exists():
+              assert transport.is_dir()
+              print('Existing publication transport retained; no publication retry or overwrite.')
+          else:
+              argv=[sys.executable,'-B','scripts/cloud_cdr_current_eight_drain_loaded_stage.py','--case',case,'--publish-only']
+              if prepare:argv.append('--prepare-only')
+              subprocess.run(argv,check=True)
+          PY
+      - name: Always emit exact terminal and publication metadata
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json,os
+          from pathlib import Path
+          prepare=os.environ['PREPARE_ONLY']=='true';case=os.environ['LOADED_CASE']
+          suffix='preparation' if prepare else case
+          out=Path('cloud-cdr-current-eight-drain-loaded-evidence-'+suffix)
+          transport=Path('hw/soc/out')/('cloud-cdr-current-eight-drain-loaded-'+suffix+'-publication')
+          stem='cdr-current-eight-drain-loaded-'+suffix+'-'+os.environ['GITHUB_RUN_ID']+'-1'
+          paths=[out/'result.json',out/'publication-source-check.json',out/'direct-publication-plan.json',
+            transport/'publication.json',transport/(stem+'.summary.json'),transport/(stem+'.parts.json')]
+          for p in paths:
+              assert not p.is_symlink()
+              present=p.is_file();raw=p.read_bytes() if present else b''
+              chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
+              print('WIDTH_CURRENT_NATIVE_INDEX '+json.dumps(dict(path=str(p),present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):
+                  print('WIDTH_CURRENT_NATIVE_CHUNK '+json.dumps(dict(path=str(p),index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          PY
+      - name: Preserve complete worker output and partial publication
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: current-cdr-tail-graph-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ownership-job-logs
+          name: drain-m1-loaded-${{ matrix.case }}-full-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 1
+          path: |
+            drain-loaded-same-source-controls
+            cloud-cdr-current-eight-drain-loaded-evidence-${{ matrix.case }}
+            cloud-cdr-current-eight-drain-loaded-${{ matrix.case }}
+            hw/soc/out/cloud-cdr-current-eight-drain-loaded-${{ matrix.case }}-publication
+
+  preserve-native-job-logs:
+    needs: [source-controls, preserve-job-log, prepare, loaded]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Preserve every terminal actual job log including failed cases
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess,traceback
+          from pathlib import Path
+          root=Path('all-job-logs');root.mkdir()
+          e=os.environ;prefix='repos/'+e['GITHUB_REPOSITORY']+'/'
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_RUN_ATTEMPT']=='1'
+          def read(path):return subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+path])
+          raw=read('actions/runs/'+e['GITHUB_RUN_ID']);run=json.loads(raw);(root/'run.json').write_bytes(raw)
+          assert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
+          raw=read('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100')
+          jobs=json.loads(raw);(root/'jobs.json').write_bytes(raw)
+          assert len(jobs['jobs'])==jobs['total_count']<=20
+          rows=[];errors=[]
+          for j in jobs['jobs']:
+              if j['name']=='preserve-native-job-logs':continue
+              assert j['status']=='completed' and j['head_sha']==e['GITHUB_SHA']
+              if j['conclusion']=='skipped':continue
+              try:
+                  raw=read('actions/jobs/'+str(j['id'])+'/logs');assert raw
+                  (root/('job-'+str(j['id'])+'.log')).write_bytes(raw)
+                  rows.append(dict(id=j['id'],name=j['name'],conclusion=j['conclusion'],bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()))
+              except BaseException as error:
+                  errors.append(dict(id=j['id'],name=j['name'],error=repr(error),traceback=traceback.format_exc()))
+          receipt=dict(source=e['GITHUB_SHA'],run=run['id'],attempt=1,records=rows,errors=errors,full_raw_logs=True,native_acquisition=False)
+          (root/'receipt.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(receipt))
+          assert not errors
+          PY
+      - name: Retain complete actual logs and any collector failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-current-eight-drain-loaded-all-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: all-job-logs
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 90

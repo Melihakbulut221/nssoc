@@ -1,0 +1,1855 @@
+{
+  "base": "ebe4ebb3ca2aef7b23cfc68f4b17588c03cd84fb",
+  "branch": "codex/cdr-drain-m1-loaded-electrical",
+  "derivations": {
+    "stage": {
+      "baseline": {
+        "path": "scripts/cloud_cdr_drain_m1_loaded_stage.py",
+        "sha256": "828d2e4c9af4dfaa37ef87b0fab571b9c8fb804955acb6d55a019184cc994e72"
+      },
+      "edits": [
+        {
+          "after": "import cdr_current_eight_drain_loaded_admission as a",
+          "before": "import cdr_drain_m1_loaded_admission as a",
+          "occurrences": 1
+        },
+        {
+          "after": "import cdr_current_eight_drain_loaded_result as result_gate",
+          "before": "import cdr_drain_m1_loaded_result as result_gate",
+          "occurrences": 1
+        },
+        {
+          "after": "scripts/cloud_cdr_current_eight_drain_loaded.py",
+          "before": "scripts/cloud_cdr_drain_m1_loaded.py",
+          "occurrences": 1
+        },
+        {
+          "after": "cdr-current-eight-drain-loaded-",
+          "before": "cdr-drain-m1-loaded-",
+          "occurrences": 7
+        },
+        {
+          "after": "a.RUN",
+          "before": "41007572323",
+          "occurrences": 2
+        },
+        {
+          "after": "a.PHYSICAL_RUN",
+          "before": "41000358737",
+          "occurrences": 2
+        },
+        {
+          "after": "a.GRAPH_RUN",
+          "before": "41003747027",
+          "occurrences": 2
+        },
+        {
+          "after": "a.PHYSICAL_SOURCE",
+          "before": "\"37b5b75738b5bbe5eafcfb5e94101c08503c995a\"",
+          "occurrences": 2
+        },
+        {
+          "after": "a.GRAPH_SOURCE",
+          "before": "\"474045b9821069cbe42a71752c3c53267e5493fd\"",
+          "occurrences": 2
+        }
+      ],
+      "generated": {
+        "path": "scripts/cloud_cdr_current_eight_drain_loaded_stage.py",
+        "sha256": "5026677fa24dab1131891537e46210a2e4b0cbb9d5d68eb7404c044ce4aebcea"
+      }
+    },
+    "worker": {
+      "baseline": {
+        "path": "scripts/cloud_cdr_drain_m1_loaded.py",
+        "sha256": "a280107ba16a1c69651eac61b1709c78b0ce6245fb34cc79c28a3e5b590593d2"
+      },
+      "edits": [
+        {
+          "after": "import cdr_current_eight_drain_loaded_admission as current_inputs",
+          "before": "import cdr_drain_m1_loaded_admission as current_inputs",
+          "occurrences": 1
+        },
+        {
+          "after": "ROOT/'scripts/cdr-current-eight-drain-loaded-methods.json'",
+          "before": "ROOT/'scripts/cdr-drain-m1-loaded-methods.json'",
+          "occurrences": 1
+        },
+        {
+          "after": "cloud-cdr-current-eight-drain-loaded-",
+          "before": "cloud-cdr-drain-m1-loaded-",
+          "occurrences": 1
+        }
+      ],
+      "generated": {
+        "path": "scripts/cloud_cdr_current_eight_drain_loaded.py",
+        "sha256": "add45d0ef874ec93fc9078d99bbb5cb0e684b667ec2f5699121eadb821ec5392"
+      }
+    }
+  },
+  "execution_policy": {
+    "automatic_retry": false,
+    "create_preparation_reservation_last": true,
+    "each_loaded_case_seconds": 7200,
+    "fail_fast": false,
+    "groups": [
+      "cdr-current-eight-drain-loaded-nominal_early",
+      "cdr-current-eight-drain-loaded-nominal_late",
+      "cdr-current-eight-drain-loaded-hot_early",
+      "cdr-current-eight-drain-loaded-hot_late",
+      "cdr-current-eight-drain-loaded-cold_early",
+      "cdr-current-eight-drain-loaded-cold_late",
+      "cdr-current-eight-drain-loaded-constant_zero",
+      "cdr-current-eight-drain-loaded-constant_one",
+      "cdr-current-eight-drain-loaded-clock_stopped",
+      "cdr-current-eight-drain-loaded-vi_bias_off",
+      "cdr-current-eight-drain-loaded-preparation"
+    ],
+    "max_parallel": 2,
+    "preparation_seconds": 1200,
+    "reserve_all_eleven_before_any_native_dependencies": true
+  },
+  "expected_source_controls": {
+    "authority": [
+      5,
+      56
+    ],
+    "live": [
+      1,
+      12
+    ],
+    "positive": 13,
+    "refusal": 134,
+    "reports": [
+      2,
+      42
+    ],
+    "restore": [
+      3,
+      12
+    ],
+    "result": [
+      2,
+      12
+    ]
+  },
+  "fresh_model": {
+    "member": "mim/composition/pd500-mim-wire.spice",
+    "sha256": "acb76bac03d1217350e4928124e93e53ad6dbf2abd5b63c9b30f81057916abd5"
+  },
+  "fresh_planes": {
+    "member": "mim/precise/source/native-planes.json",
+    "sha256": "0dff90f1d32496937bc77b055a5a3bed1fd8c132155652d1ff3976a5f9137b07"
+  },
+  "frozen_numerical_block_coordinate_source": {
+    "method": "One-based inclusive line coordinates in this exact baseline; each extracted byte block must occur exactly once in both the original v59 loaded source and current-tail derivative.",
+    "path": "scripts/cloud_cdr500_v58_loaded.py",
+    "sha256": "12fffebb23c7478d0994c00bc0e6fc53e4842b09bfca496db59316c923e86ab2"
+  },
+  "full_phy_accepted": false,
+  "full_target_terminal_bindings": {
+    "T003_D": {
+      "component": 17,
+      "graph_full_partition": {
+        "ports": [],
+        "terminals": [
+          [
+            3,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            4,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            5,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            6,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            61,
+            "npn13G2",
+            "E"
+          ],
+          [
+            62,
+            "npn13G2",
+            "E"
+          ],
+          [
+            64,
+            "npn13G2",
+            "E"
+          ],
+          [
+            65,
+            "npn13G2",
+            "E"
+          ]
+        ]
+      },
+      "native_cluster": 28,
+      "native_net": "$131",
+      "node": "w_T003_D",
+      "terminals": [
+        {
+          "anchor": "T003_D",
+          "instance": "XD0003",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 3,
+          "native_net": "$131",
+          "node": "w_T003_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T004_D",
+          "instance": "XD0004",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 4,
+          "native_net": "$131",
+          "node": "w_T004_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T005_D",
+          "instance": "XD0005",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 5,
+          "native_net": "$131",
+          "node": "w_T005_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T006_D",
+          "instance": "XD0006",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 6,
+          "native_net": "$131",
+          "node": "w_T006_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T061_E",
+          "instance": "XD0061",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 61,
+          "native_net": "$131",
+          "node": "w_T061_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T062_E",
+          "instance": "XD0062",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 62,
+          "native_net": "$131",
+          "node": "w_T062_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T064_E",
+          "instance": "XD0064",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 64,
+          "native_net": "$131",
+          "node": "w_T064_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T065_E",
+          "instance": "XD0065",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 65,
+          "native_net": "$131",
+          "node": "w_T065_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        }
+      ]
+    },
+    "T004_D": {
+      "component": 17,
+      "graph_full_partition": {
+        "ports": [],
+        "terminals": [
+          [
+            3,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            4,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            5,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            6,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            61,
+            "npn13G2",
+            "E"
+          ],
+          [
+            62,
+            "npn13G2",
+            "E"
+          ],
+          [
+            64,
+            "npn13G2",
+            "E"
+          ],
+          [
+            65,
+            "npn13G2",
+            "E"
+          ]
+        ]
+      },
+      "native_cluster": 28,
+      "native_net": "$131",
+      "node": "w_T004_D",
+      "terminals": [
+        {
+          "anchor": "T003_D",
+          "instance": "XD0003",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 3,
+          "native_net": "$131",
+          "node": "w_T003_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T004_D",
+          "instance": "XD0004",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 4,
+          "native_net": "$131",
+          "node": "w_T004_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T005_D",
+          "instance": "XD0005",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 5,
+          "native_net": "$131",
+          "node": "w_T005_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T006_D",
+          "instance": "XD0006",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 6,
+          "native_net": "$131",
+          "node": "w_T006_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T061_E",
+          "instance": "XD0061",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 61,
+          "native_net": "$131",
+          "node": "w_T061_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T062_E",
+          "instance": "XD0062",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 62,
+          "native_net": "$131",
+          "node": "w_T062_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T064_E",
+          "instance": "XD0064",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 64,
+          "native_net": "$131",
+          "node": "w_T064_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T065_E",
+          "instance": "XD0065",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 65,
+          "native_net": "$131",
+          "node": "w_T065_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        }
+      ]
+    },
+    "T005_D": {
+      "component": 17,
+      "graph_full_partition": {
+        "ports": [],
+        "terminals": [
+          [
+            3,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            4,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            5,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            6,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            61,
+            "npn13G2",
+            "E"
+          ],
+          [
+            62,
+            "npn13G2",
+            "E"
+          ],
+          [
+            64,
+            "npn13G2",
+            "E"
+          ],
+          [
+            65,
+            "npn13G2",
+            "E"
+          ]
+        ]
+      },
+      "native_cluster": 28,
+      "native_net": "$131",
+      "node": "w_T005_D",
+      "terminals": [
+        {
+          "anchor": "T003_D",
+          "instance": "XD0003",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 3,
+          "native_net": "$131",
+          "node": "w_T003_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T004_D",
+          "instance": "XD0004",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 4,
+          "native_net": "$131",
+          "node": "w_T004_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T005_D",
+          "instance": "XD0005",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 5,
+          "native_net": "$131",
+          "node": "w_T005_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T006_D",
+          "instance": "XD0006",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 6,
+          "native_net": "$131",
+          "node": "w_T006_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T061_E",
+          "instance": "XD0061",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 61,
+          "native_net": "$131",
+          "node": "w_T061_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T062_E",
+          "instance": "XD0062",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 62,
+          "native_net": "$131",
+          "node": "w_T062_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T064_E",
+          "instance": "XD0064",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 64,
+          "native_net": "$131",
+          "node": "w_T064_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T065_E",
+          "instance": "XD0065",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 65,
+          "native_net": "$131",
+          "node": "w_T065_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        }
+      ]
+    },
+    "T006_D": {
+      "component": 17,
+      "graph_full_partition": {
+        "ports": [],
+        "terminals": [
+          [
+            3,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            4,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            5,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            6,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            61,
+            "npn13G2",
+            "E"
+          ],
+          [
+            62,
+            "npn13G2",
+            "E"
+          ],
+          [
+            64,
+            "npn13G2",
+            "E"
+          ],
+          [
+            65,
+            "npn13G2",
+            "E"
+          ]
+        ]
+      },
+      "native_cluster": 28,
+      "native_net": "$131",
+      "node": "w_T006_D",
+      "terminals": [
+        {
+          "anchor": "T003_D",
+          "instance": "XD0003",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 3,
+          "native_net": "$131",
+          "node": "w_T003_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T004_D",
+          "instance": "XD0004",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 4,
+          "native_net": "$131",
+          "node": "w_T004_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T005_D",
+          "instance": "XD0005",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 5,
+          "native_net": "$131",
+          "node": "w_T005_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T006_D",
+          "instance": "XD0006",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 28,
+          "native_id": 6,
+          "native_net": "$131",
+          "node": "w_T006_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T061_E",
+          "instance": "XD0061",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 61,
+          "native_net": "$131",
+          "node": "w_T061_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T062_E",
+          "instance": "XD0062",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 62,
+          "native_net": "$131",
+          "node": "w_T062_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T064_E",
+          "instance": "XD0064",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 64,
+          "native_net": "$131",
+          "node": "w_T064_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T065_E",
+          "instance": "XD0065",
+          "model": "npn13g2",
+          "native_cluster": 28,
+          "native_id": 65,
+          "native_net": "$131",
+          "node": "w_T065_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        }
+      ]
+    },
+    "T032_D": {
+      "component": 61,
+      "graph_full_partition": {
+        "ports": [],
+        "terminals": [
+          [
+            32,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            33,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            34,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            35,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            115,
+            "npn13G2",
+            "E"
+          ],
+          [
+            116,
+            "npn13G2",
+            "E"
+          ],
+          [
+            118,
+            "npn13G2",
+            "E"
+          ],
+          [
+            119,
+            "npn13G2",
+            "E"
+          ]
+        ]
+      },
+      "native_cluster": 135,
+      "native_net": "$699",
+      "node": "w_T032_D",
+      "terminals": [
+        {
+          "anchor": "T032_D",
+          "instance": "XD0032",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 135,
+          "native_id": 32,
+          "native_net": "$699",
+          "node": "w_T032_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T033_D",
+          "instance": "XD0033",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 135,
+          "native_id": 33,
+          "native_net": "$699",
+          "node": "w_T033_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T034_D",
+          "instance": "XD0034",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 135,
+          "native_id": 34,
+          "native_net": "$699",
+          "node": "w_T034_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T035_D",
+          "instance": "XD0035",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 135,
+          "native_id": 35,
+          "native_net": "$699",
+          "node": "w_T035_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T115_E",
+          "instance": "XD0115",
+          "model": "npn13g2",
+          "native_cluster": 135,
+          "native_id": 115,
+          "native_net": "$699",
+          "node": "w_T115_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T116_E",
+          "instance": "XD0116",
+          "model": "npn13g2",
+          "native_cluster": 135,
+          "native_id": 116,
+          "native_net": "$699",
+          "node": "w_T116_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T118_E",
+          "instance": "XD0118",
+          "model": "npn13g2",
+          "native_cluster": 135,
+          "native_id": 118,
+          "native_net": "$699",
+          "node": "w_T118_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T119_E",
+          "instance": "XD0119",
+          "model": "npn13g2",
+          "native_cluster": 135,
+          "native_id": 119,
+          "native_net": "$699",
+          "node": "w_T119_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        }
+      ]
+    },
+    "T033_D": {
+      "component": 61,
+      "graph_full_partition": {
+        "ports": [],
+        "terminals": [
+          [
+            32,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            33,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            34,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            35,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            115,
+            "npn13G2",
+            "E"
+          ],
+          [
+            116,
+            "npn13G2",
+            "E"
+          ],
+          [
+            118,
+            "npn13G2",
+            "E"
+          ],
+          [
+            119,
+            "npn13G2",
+            "E"
+          ]
+        ]
+      },
+      "native_cluster": 135,
+      "native_net": "$699",
+      "node": "w_T033_D",
+      "terminals": [
+        {
+          "anchor": "T032_D",
+          "instance": "XD0032",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 135,
+          "native_id": 32,
+          "native_net": "$699",
+          "node": "w_T032_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T033_D",
+          "instance": "XD0033",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 135,
+          "native_id": 33,
+          "native_net": "$699",
+          "node": "w_T033_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T034_D",
+          "instance": "XD0034",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 135,
+          "native_id": 34,
+          "native_net": "$699",
+          "node": "w_T034_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T035_D",
+          "instance": "XD0035",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 135,
+          "native_id": 35,
+          "native_net": "$699",
+          "node": "w_T035_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T115_E",
+          "instance": "XD0115",
+          "model": "npn13g2",
+          "native_cluster": 135,
+          "native_id": 115,
+          "native_net": "$699",
+          "node": "w_T115_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T116_E",
+          "instance": "XD0116",
+          "model": "npn13g2",
+          "native_cluster": 135,
+          "native_id": 116,
+          "native_net": "$699",
+          "node": "w_T116_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T118_E",
+          "instance": "XD0118",
+          "model": "npn13g2",
+          "native_cluster": 135,
+          "native_id": 118,
+          "native_net": "$699",
+          "node": "w_T118_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T119_E",
+          "instance": "XD0119",
+          "model": "npn13g2",
+          "native_cluster": 135,
+          "native_id": 119,
+          "native_net": "$699",
+          "node": "w_T119_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        }
+      ]
+    },
+    "T034_D": {
+      "component": 61,
+      "graph_full_partition": {
+        "ports": [],
+        "terminals": [
+          [
+            32,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            33,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            34,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            35,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            115,
+            "npn13G2",
+            "E"
+          ],
+          [
+            116,
+            "npn13G2",
+            "E"
+          ],
+          [
+            118,
+            "npn13G2",
+            "E"
+          ],
+          [
+            119,
+            "npn13G2",
+            "E"
+          ]
+        ]
+      },
+      "native_cluster": 135,
+      "native_net": "$699",
+      "node": "w_T034_D",
+      "terminals": [
+        {
+          "anchor": "T032_D",
+          "instance": "XD0032",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 135,
+          "native_id": 32,
+          "native_net": "$699",
+          "node": "w_T032_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T033_D",
+          "instance": "XD0033",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 135,
+          "native_id": 33,
+          "native_net": "$699",
+          "node": "w_T033_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T034_D",
+          "instance": "XD0034",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 135,
+          "native_id": 34,
+          "native_net": "$699",
+          "node": "w_T034_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T035_D",
+          "instance": "XD0035",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 135,
+          "native_id": 35,
+          "native_net": "$699",
+          "node": "w_T035_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T115_E",
+          "instance": "XD0115",
+          "model": "npn13g2",
+          "native_cluster": 135,
+          "native_id": 115,
+          "native_net": "$699",
+          "node": "w_T115_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T116_E",
+          "instance": "XD0116",
+          "model": "npn13g2",
+          "native_cluster": 135,
+          "native_id": 116,
+          "native_net": "$699",
+          "node": "w_T116_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T118_E",
+          "instance": "XD0118",
+          "model": "npn13g2",
+          "native_cluster": 135,
+          "native_id": 118,
+          "native_net": "$699",
+          "node": "w_T118_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T119_E",
+          "instance": "XD0119",
+          "model": "npn13g2",
+          "native_cluster": 135,
+          "native_id": 119,
+          "native_net": "$699",
+          "node": "w_T119_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        }
+      ]
+    },
+    "T035_D": {
+      "component": 61,
+      "graph_full_partition": {
+        "ports": [],
+        "terminals": [
+          [
+            32,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            33,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            34,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            35,
+            "sg13_lv_nmos",
+            "D"
+          ],
+          [
+            115,
+            "npn13G2",
+            "E"
+          ],
+          [
+            116,
+            "npn13G2",
+            "E"
+          ],
+          [
+            118,
+            "npn13G2",
+            "E"
+          ],
+          [
+            119,
+            "npn13G2",
+            "E"
+          ]
+        ]
+      },
+      "native_cluster": 135,
+      "native_net": "$699",
+      "node": "w_T035_D",
+      "terminals": [
+        {
+          "anchor": "T032_D",
+          "instance": "XD0032",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 135,
+          "native_id": 32,
+          "native_net": "$699",
+          "node": "w_T032_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T033_D",
+          "instance": "XD0033",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 135,
+          "native_id": 33,
+          "native_net": "$699",
+          "node": "w_T033_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T034_D",
+          "instance": "XD0034",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 135,
+          "native_id": 34,
+          "native_net": "$699",
+          "node": "w_T034_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T035_D",
+          "instance": "XD0035",
+          "model": "sg13_lv_nmos",
+          "native_cluster": 135,
+          "native_id": 35,
+          "native_net": "$699",
+          "node": "w_T035_D",
+          "parameters": {
+            "ad": "12.24p",
+            "as": "12.24p",
+            "l": "0.3u",
+            "m": "1",
+            "ng": "1",
+            "pd": "72.68u",
+            "ps": "72.68u",
+            "rfmode": "0",
+            "w": "36u"
+          },
+          "terminal": "D"
+        },
+        {
+          "anchor": "T115_E",
+          "instance": "XD0115",
+          "model": "npn13g2",
+          "native_cluster": 135,
+          "native_id": 115,
+          "native_net": "$699",
+          "node": "w_T115_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T116_E",
+          "instance": "XD0116",
+          "model": "npn13g2",
+          "native_cluster": 135,
+          "native_id": 116,
+          "native_net": "$699",
+          "node": "w_T116_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T118_E",
+          "instance": "XD0118",
+          "model": "npn13g2",
+          "native_cluster": 135,
+          "native_id": 118,
+          "native_net": "$699",
+          "node": "w_T118_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        },
+        {
+          "anchor": "T119_E",
+          "instance": "XD0119",
+          "model": "npn13g2",
+          "native_cluster": 135,
+          "native_id": 119,
+          "native_net": "$699",
+          "node": "w_T119_E",
+          "parameters": {
+            "le": "0.900u",
+            "nx": "2",
+            "we": "0.070u"
+          },
+          "terminal": "E"
+        }
+      ]
+    }
+  },
+  "legacy_active_workflow_pin_not_inherited": true,
+  "local_simulation_executed": false,
+  "new_input": {
+    "canonical_members": 496,
+    "current_members": 75,
+    "graph_members": 330,
+    "members": 2874,
+    "proof_commit": "d0ba7914df68f3452d142caedf47d30d677cd208",
+    "receipt": "docs/evidence/cdr-current-eight-drain-fresh-rc-terminal-41213815773/receipt.json",
+    "receipt_sha256": "7b83bc306552b43d75cc4cf31fa9656b32098ce6c7d7ecad0efdc95aab3078a2",
+    "release_id": 430009833,
+    "run": 41213815773,
+    "source": "ebe4ebb3ca2aef7b23cfc68f4b17588c03cd84fb",
+    "tag": "cloud-results-41213815773-1-cdr-current-eight-drain-fresh-rc"
+  },
+  "numerical_settings": {
+    "all_other_measurement_predicates": "entire frozen numerical blocks and original result validator retained",
+    "bit_count": 256,
+    "hbt_maximum_alltime_abs_vbe_v": 1,
+    "hbt_maximum_alltime_abs_vce_v": 1.6,
+    "hbt_minimum_active_vce_v": 0.4,
+    "native_options": "reltol=1e-4 abstol=1e-12 klu; num_threads=1",
+    "ngspice_sha256": "103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509",
+    "sampler_clock_to_valid_ps": 37.5,
+    "stage_tail_current_a": 0.0005,
+    "start_seconds": 2e-09,
+    "step_seconds": 3.125e-13,
+    "transient_stop_expression": "START+258*UI",
+    "ui_seconds": 1.25e-10,
+    "xor_clock_to_valid_ps": 75
+  },
+  "original_eight_rejections_and_two_fault_detections_retained": true,
+  "original_simulation": {
+    "complete_terminal_proof_commit": "a1e0cbe514f536a50edbcb27bf8d98f2b69a3c46",
+    "method": "scripts/cdr-width-loaded-execution-methods.json",
+    "method_sha256": "119b7a2d35abb1163570d01b8af16d18c6d9401e839a38904863d8b42eecef67",
+    "numerical_result": "Eight original normal/static cases rejected; two intentional faults detected. Source reuse is not electrical acceptance.",
+    "run": 40906725656,
+    "run_conclusion": "failure",
+    "source": "e191424507e67331b2e79800caece4a3f03a1cc0",
+    "source_qualification": {
+      "qualified_execution_source": "2ffb41c84041cd2980ab2c57415ff72b9ebfcc50",
+      "qualified_execution_source_receipt_sha256": "eaeb12fbb8c823d7d4634e26e077b84f977337d3769aa0f0b52d94c4c29633fd",
+      "qualified_execution_source_run": 40905069113,
+      "qualified_worker_method": "scripts/cdr-width-loaded-worker-source-methods.json",
+      "qualified_worker_method_sha256": "c9dd549439b98c69265f36ea419cf9d05fe67dba321ce69d60de73094dab2c3c",
+      "qualified_worker_source_receipt_sha256": "899dac1bd0a7926be3daaaa43cea50c883ea9b2c0091a72793395e4fa7d30389",
+      "qualified_worker_source_run": 40884116773
+    },
+    "worker_sha256": "ebf92a9842280587a437de161425f49f6ce4a82c9d76a0ce2532075d0e309bf5",
+    "workflow_id": 400799746
+  },
+  "proof_source": "d0ba7914df68f3452d142caedf47d30d677cd208",
+  "required_report_count": 24,
+  "runtime_limits": {
+    "max_group_RSS_kib": 10485760,
+    "min_available_kib": 2097152,
+    "sampler_sha256": "55fb9a3ba9a049c509b629e8638a688b5f827316485f9fd89cd5a8888804df07",
+    "sampler_source": "docs/evidence/cdr-v59-tail-qualified-memory-sampler-20261026.py",
+    "supervisor_and_sampler_unchanged": true,
+    "supervisor_sha256": "e326e548ebe11550d18a049d639bdf063f03602d4ba08299b00a5747d3281c0b",
+    "supervisor_source": "docs/evidence/cdr-v59-mim-qualified-process-supervisor-20261025.py"
+  },
+  "schema": "cdr-current-eight-drain-loaded-source-review-v1",
+  "status": "AUTHORED_SOURCE_ONLY_NATIVE_DISABLED",
+  "tests_executed": false,
+  "unchanged_numerical_blocks": [
+    {
+      "bytes": 7507,
+      "end_line": 127,
+      "name": "native_binding",
+      "sha256": "a7067fdb80569bbabc2d70193e2bf4e28865a0647a1c0789ca0995aeb37deafb",
+      "start_line": 31
+    },
+    {
+      "bytes": 3639,
+      "end_line": 180,
+      "name": "binding_faults",
+      "sha256": "20f3e8acdf034b458eb8c9bc7e3dde43af0a0f5cdf0c863d47f27fe66e4c0222",
+      "start_line": 128
+    },
+    {
+      "bytes": 424,
+      "end_line": 191,
+      "name": "case_corner_oracles",
+      "sha256": "7bb0b9fbd02029addf8024787d91591eb9a4f73869134cffe806828c3e5da6ab",
+      "start_line": 188
+    },
+    {
+      "bytes": 4136,
+      "end_line": 260,
+      "name": "model_runtime_and_bench",
+      "sha256": "37df0c59a36aa6fb9f465ff9f543dfdf8fd428fcc4ae9ee14505298fdc53dd3b",
+      "start_line": 225
+    },
+    {
+      "bytes": 1271,
+      "end_line": 275,
+      "name": "OFF_OP_stream_admission",
+      "sha256": "1a05d71d6f12258dc23fa7437f44574674b4d616df9d4cb18c0132961a1f9717",
+      "start_line": 267
+    },
+    {
+      "bytes": 7156,
+      "end_line": 337,
+      "name": "frozen_measurement",
+      "sha256": "25d8ab3689494cd55f7173b56d25914bb5b41f8bc3fa6f7d38ac20cf430bebfb",
+      "start_line": 276
+    }
+  ],
+  "unchanged_stage_functions": [
+    "read_json",
+    "inventory",
+    "error_record",
+    "storage",
+    "execute",
+    "copy_worker",
+    "qualify_native",
+    "finalize",
+    "publish",
+    "run_case",
+    "main"
+  ],
+  "validation_performed": [
+    "Static source AST parse and exact source derivations only; all executable controls run on GitHub.",
+    "Actual collector byte hashes authenticate new2874-member capsule; local acquisition restricted to derived JSON/text."
+  ]
+}
