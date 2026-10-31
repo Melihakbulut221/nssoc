@@ -98,7 +98,7 @@ def full_numerical_controls(context,tmp):
 def main():
     out=ROOT/'rc-core-source-controls';out.mkdir(exist_ok=False);result=dict(status='RUNNING',scope='SYNTHETIC_SOURCE_NUMERICAL_CONTROLS_ONLY',native_acquired=False,native_executed=False,physical_accepted=False,qualified_pex=False,full_phy_accepted=False,records=RECORDS)
     try:
-        result['context']=source_guard();definition_controls()
+        result['context']=source_guard();result['python_runtime']=dict(version=sys.version,implementation=sys.implementation.name,ast_empty_fields=c.stable_ast_dump(ast.parse('def f(): pass').body[0]));definition_controls()
         with tempfile.TemporaryDirectory(prefix='nssoc-source-fixture-')as temporary:result['full_numerical_fixture']=full_numerical_controls(result['context'],Path(temporary))
         result.update(status='PASS_COMPLETE_SYNTHETIC_NUMERICAL_SOURCE_CONTROLS_ONLY',passed=len(RECORDS),failed=0)
     except BaseException as error:

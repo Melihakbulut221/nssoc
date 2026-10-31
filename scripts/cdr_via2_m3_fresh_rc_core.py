@@ -34,6 +34,11 @@ def regular(root,relative):
     require(not any(p.is_symlink()for p in path.parents if p!=root),'linked source ancestry')
     return path
 
+def stable_ast_dump(node):
+    # Python 3.14 omits empty fields by default; earlier versions include them.
+    if 'show_empty'in inspect.signature(ast.dump).parameters:return ast.dump(node,include_attributes=False,show_empty=True)
+    return ast.dump(node,include_attributes=False)
+
 def catalog(root):return json.loads(regular(root,CATALOG).read_text())
 
 def source(root,key):
@@ -49,7 +54,7 @@ def checked_nodes(root,key,names):
         require(len(found)==1,'missing or duplicated definition')
         node=found[0];pin=item['definitions'][name];raw=('\n'.join(lines[node.lineno-1:node.end_lineno]).rstrip()+'\n').encode()
         require(len(raw)==pin['bytes']and hashlib.sha256(raw).hexdigest()==pin['sha256'],'frozen definition bytes')
-        require(hashlib.sha256(ast.dump(node,include_attributes=False).encode()).hexdigest()==pin['ast_sha256'],'frozen definition AST')
+        require(hashlib.sha256(stable_ast_dump(node).encode()).hexdigest()==pin['ast_sha256'],'frozen definition AST')
         require(not node.decorator_list,'definition decorators refused')
         if isinstance(node,ast.FunctionDef):
             require(not node.args.defaults and not any(node.args.kw_defaults)and node.returns is None,'definition-time evaluation refused')
@@ -73,7 +78,7 @@ def block_nodes(root,name):
     require(all(a<=n.lineno and n.end_lineno<=b for n in tr.body if n.lineno<=b and n.end_lineno>=a),'partial statement selection')
     raw=('\n'.join(text.splitlines()[a-1:b])+'\n').encode()
     require(len(nodes)==pin['statements']and len(raw)==pin['bytes']and hashlib.sha256(raw).hexdigest()==pin['sha256'],'numeric block source bytes')
-    require(hashlib.sha256(ast.dump(ast.Module(body=nodes,type_ignores=[]),include_attributes=False).encode()).hexdigest()==pin['ast_sha256'],'numeric block AST')
+    require(hashlib.sha256(stable_ast_dump(ast.Module(body=nodes,type_ignores=[])).encode()).hexdigest()==pin['ast_sha256'],'numeric block AST')
     return pin,copy.deepcopy(nodes)
 
 def run_block(root,name,scope,values):
