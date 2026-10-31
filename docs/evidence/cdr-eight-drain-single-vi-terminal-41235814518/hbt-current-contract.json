@@ -1,0 +1,35 @@
+{
+  "source": "2ee31206416e6c8b1fe1bb19078fa815038f2644",
+  "path": "scripts/cloud_cdr_eight_drain_vi_bias_off_worker_v1.py",
+  "sha256": "a7cbc821d98cc8919519c01d9bc3e7460919fc5823dd4dd5495ea0c43089a6ed",
+  "vector_source_lines": [
+    223,
+    245,
+    246
+  ],
+  "hbt_gate_source_lines": [
+    288,
+    289
+  ],
+  "field": "maximum_alltime_abs_ic_per_emitter_a",
+  "definition": "max(abs(native HBT collector current ic)) / native device nx",
+  "predicate": "maximum_alltime_abs_ic_per_emitter_a < 0.003 A",
+  "quantity_is_collector_current_per_emitter": true,
+  "raw_emitter_current_Ie_captured": false,
+  "raw_base_current_Ib_captured": false,
+  "raw_Ie_or_Ib_qualified": false,
+  "saved_vector_census": {
+    "hbt_collector_currents": 124,
+    "mos_drain_currents": 50,
+    "save_commands": 9,
+    "total": 1151,
+    "voltage_nodes": 977
+  },
+  "saved_current_kinds": {
+    "ic": 124,
+    "ids": 50,
+    "ib": 0,
+    "ie": 0
+  },
+  "comment": "The word emitter denotes the nx multiplicity normalization. It does not turn measured collector current into emitter-terminal current. A future Ie/Ib requirement needs explicit capture and qualification; no gate is changed here."
+}
