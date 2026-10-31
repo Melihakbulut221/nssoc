@@ -1,0 +1,17 @@
+# Current eight-drain single VI continuation v1
+
+This separately admitted run completes only the storage-blocked vi_bias_off case of original matrix 41218657461 at 84b8b591e10be32716947c8d6b079fd7a21ce18d. Nine cases already produced simulations and are not rerun. The original VI failure remains an initial storage refusal with unknown actual free bytes, followed by a secondary missing-result publication error.
+
+Execution is initially disabled in the new manifest. Source-only controls run first on GitHub. Native activation requires a separately reviewed manifest change, new exact-source controls, explicit approved_source and mode=vi-bias-off, and two independently created empty public releases for the actual new source/run. No old GITHUB_SHA or producer-run environment value is substituted.
+
+The preparation job runs nominal_early --prepare-only without a transient. The only transient job is vi_bias_off. Both release reservations must exist empty before preparation; each job requires its own release empty before acquiring native inputs. The VI job accepts only successful preparation from this same new run and source. Existing releases are neither created by the adapter nor overwritten, and there is no retry matrix.
+
+The worker differs only in admission module, method path and an early exact case/phase authorization. Six original numerical source spans total 24,133 bytes; the entire electrical result validator is unchanged apart from its admission import. Original corner, loads, 256 bits, timestep, engine hash, operating-point and electrical limits remain frozen. The external ideal 8 GHz clock remains a limitation; this is not closed-loop CDR, recovered clock, complete PHY or physical acceptance.
+
+The proven 12a4203 storage source remains byte-identical. This new stage retains the initial 16 GiB threshold and max(4 GiB,2*source_bytes+1 GiB) copy/publication thresholds. An outer result exists before the first storage test. Exclusive fsynced journal records preserve actual free/required bytes and primary failures. Each storage record asserts measurement scope only and never implies execution authority.
+
+A discovered publication ordering defect is corrected only in the separately named VI publisher: the actual publication storage journal is written before the final complete output inventory is computed. Original files are frozen. Hosted tests exercise the real journal with all original publication and terminal lifecycle fixtures; complete packed members, summary and publisher receipt must agree, including the journal. Raw terminal bytes remain unchanged and receipt self-exclusion follows the frozen publisher contract.
+
+Pinned checkout bootstraps one manifest, then streams all exact anchored protected paths over stdin with noncone blob:none sparse checkout. This avoids both whole-tree materialization and the previously observed action environment argument limit. No protected source is omitted, no evidence is deleted and no disk limit is reduced. Actual disk bytes are recorded before and after checkout.
+
+Qualification consists of the unchanged storage source suite, strict context/method/two-reservation/same-source-log refusal tests, exact source derivation, native-disabled lifecycle tests and real-journal publication fixtures. Native archives, models and waves stay on hosted runners. Complete derived reports, stdout, stderr and terminal job logs are preserved even on failure. Source checks alone do not change the original electrical rejections or establish full PHY acceptance.

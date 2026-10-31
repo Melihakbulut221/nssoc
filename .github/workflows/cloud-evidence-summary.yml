@@ -65,7 +65,7 @@ jobs:
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['APPROVED_SOURCE']==e['GITHUB_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           p=Path('scripts/cdr-eight-drain-vi-bias-off-methods-v1.json');raw=p.read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='215a92e9fea13bffcd8bdf2000ae3de49870daa93217512a6214a9dd693e40ee'
+          assert hashlib.sha256(raw).hexdigest()=='5fc62a0113235f214646ade8aeaf730f7c7e6b5af7c37c1dfab82a6e054d1fbb'
           m=json.loads(raw)
           assert m['branch']=='codex/cdr-eight-drain-storage-preflight-v1'
           assert subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()=='https://github.com/Melihakbulut221/nssoc'
@@ -189,7 +189,7 @@ jobs:
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['APPROVED_SOURCE']==e['GITHUB_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           p=Path('scripts/cdr-eight-drain-vi-bias-off-methods-v1.json');raw=p.read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='215a92e9fea13bffcd8bdf2000ae3de49870daa93217512a6214a9dd693e40ee'
+          assert hashlib.sha256(raw).hexdigest()=='5fc62a0113235f214646ade8aeaf730f7c7e6b5af7c37c1dfab82a6e054d1fbb'
           m=json.loads(raw)
           assert m['branch']=='codex/cdr-eight-drain-storage-preflight-v1'
           assert subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()=='https://github.com/Melihakbulut221/nssoc'
@@ -264,6 +264,15 @@ jobs:
           stem='cdr-current-eight-drain-loaded-'+suffix+'-'+os.environ['GITHUB_RUN_ID']+'-1'
           paths=[out/'result.json',out/'publication-source-check.json',out/'direct-publication-plan.json',
             transport/'publication.json',transport/(stem+'.summary.json'),transport/(stem+'.parts.json')]
+          prerequisite=Path('hw/soc/out/cdr-eight-drain-vi-prerequisites')
+          assert not prerequisite.is_symlink()
+          if prerequisite.exists():
+              assert prerequisite.is_dir()
+              for p in sorted(prerequisite.rglob('*')):
+                  assert not p.is_symlink()
+                  if p.is_dir():continue
+                  assert p.is_file()and p.name in ('run.json','jobs.json','source-controls.log','admission.json')
+                  paths.append(p)
           for p in paths:
               assert not p.is_symlink()
               present=p.is_file();raw=p.read_bytes() if present else b''
@@ -333,7 +342,7 @@ jobs:
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['APPROVED_SOURCE']==e['GITHUB_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           p=Path('scripts/cdr-eight-drain-vi-bias-off-methods-v1.json');raw=p.read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='215a92e9fea13bffcd8bdf2000ae3de49870daa93217512a6214a9dd693e40ee'
+          assert hashlib.sha256(raw).hexdigest()=='5fc62a0113235f214646ade8aeaf730f7c7e6b5af7c37c1dfab82a6e054d1fbb'
           m=json.loads(raw)
           assert m['branch']=='codex/cdr-eight-drain-storage-preflight-v1'
           assert subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()=='https://github.com/Melihakbulut221/nssoc'
@@ -408,6 +417,15 @@ jobs:
           stem='cdr-current-eight-drain-loaded-'+suffix+'-'+os.environ['GITHUB_RUN_ID']+'-1'
           paths=[out/'result.json',out/'publication-source-check.json',out/'direct-publication-plan.json',
             transport/'publication.json',transport/(stem+'.summary.json'),transport/(stem+'.parts.json')]
+          prerequisite=Path('hw/soc/out/cdr-eight-drain-vi-prerequisites')
+          assert not prerequisite.is_symlink()
+          if prerequisite.exists():
+              assert prerequisite.is_dir()
+              for p in sorted(prerequisite.rglob('*')):
+                  assert not p.is_symlink()
+                  if p.is_dir():continue
+                  assert p.is_file()and p.name in ('run.json','jobs.json','source-controls.log','admission.json')
+                  paths.append(p)
           for p in paths:
               assert not p.is_symlink()
               present=p.is_file();raw=p.read_bytes() if present else b''
