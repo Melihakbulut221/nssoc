@@ -185,12 +185,19 @@ def perform(ctx,c,reserved,controls_raw,out,api_call=q.api,fetch=q.download,pipe
             q.preserve_error(out,'native-archive-cleanup-error.json',error,primary)
             if primary is None:raise
 
+def derived_text_name(name):
+    """A text suffix never turns a native/compressed payload name into derived evidence."""
+    p=Path(name)
+    native={'.odb','.gds','.gds2','.gdsii','.oas','.oasis','.def','.lef','.spef','.spice','.sp','.cir','.l2n','.lvsdb','.ext','.raw','.wave','.vcd','.fst','.bin','.tar','.gz','.zip','.7z'}
+    suffixes={suffix.lower()for part in p.parts for suffix in Path(part).suffixes}
+    return not name.startswith('inputs/')and not(native&suffixes)and p.suffix.lower()in{'.json','.jsonl','.log','.stdout','.stderr'}
+
 def emit_derived(out,writer=print):
     # Complete native bytes remain in the release/artifact, never in local-bound logs.
     records=publisher.inventory(out);writer('VIA2_M3_VIEW_INDEX '+json.dumps(records,sort_keys=True),flush=True)
     selected={}
     for name,record in records.items():
-        allowed=not name.startswith('inputs/')and(name.endswith(('.json','.jsonl','.log','.stdout','.stderr')))
+        allowed=derived_text_name(name)
         if allowed:
             raw=q.regular(out,name).read_bytes()
             try:raw.decode('utf-8',errors='strict')

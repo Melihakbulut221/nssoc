@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Hosted source controls; actual project/native archives are never acquired."""
-import ast,base64,copy,json,os,tempfile,types,traceback
+import ast,base64,copy,json,os,tempfile,types,traceback,zlib
 from pathlib import Path
 from unittest.mock import patch
 import cdr_via2_m3_canonical_view_admission as a
@@ -151,25 +151,45 @@ def transport_controls(ctx,result):
     refusals=[];lines=log.decode().splitlines()
     for label,modified in [('missing-index','\n'.join(x for x in lines if not(x.startswith('VIA2_M3_VIEW_CONTROL_INDEX ')and 'canonical-view-controls.stdout'in x)).encode()),('missing-chunk','\n'.join(x for x in lines if not(x.startswith('VIA2_M3_VIEW_CONTROL_CHUNK ')and 'canonical-view-controls.stdout'in x)).encode()),('duplicate-index',log+(lines[1]+'\n').encode()),('duplicate-chunk',log+(lines[2]+'\n').encode()),('bad-base64',log.replace(b'"base64": ""',b'"base64": "%"',1)),('extra-path',log.replace(b'canonical-view-controls.stdout',b'unexpected-path',1))]:
         reject(lambda:a.authenticate_source_log(ctx,modified));refusals.append(label)
-    for label,mutate in [('wrong-source',lambda r:r['context'].update(source='1'*40)),('wrong-run',lambda r:r['context'].update(run_id=2)),('bad-result',lambda r:r.update(passed=False)),('missing-refusals',lambda r:r.update(restore_refusals=0)),('native-claimed',lambda r:r.update(actual_view_executed=True)),('core-not-passed',lambda r:r.update(core_controls_passed=False)),('seam-incomplete',lambda r:r.update(seam_test_count=0)),('simulation-claimed',lambda r:r.update(simulation_executed=True))]:
+    for label,mutate in [('wrong-source',lambda r:r['context'].update(source='1'*40)),('wrong-run',lambda r:r['context'].update(run_id=2)),('bad-result',lambda r:r.update(passed=False)),('missing-refusals',lambda r:r.update(restore_refusals=0)),('native-claimed',lambda r:r.update(actual_view_executed=True)),('core-not-passed',lambda r:r.update(core_controls_passed=False)),('emission-incomplete',lambda r:r.update(emission_refusals=0)),('seam-incomplete',lambda r:r.update(seam_test_count=0)),('simulation-claimed',lambda r:r.update(simulation_executed=True))]:
         bad=copy.deepcopy(result);mutate(bad);values=dict(records);values[key]=a.encode(bad);reject(lambda:a.authenticate_source_log(ctx,log_bytes(values)));refusals.append(label)
     with patch.object(a.subprocess,'check_output',return_value=b'\x1b[31mRAW\x00BYTES')as execute:
         a.require(a.read_source_log(123)==b'\x1b[31mRAW\x00BYTES','escape bytes unchanged')
         execute.assert_called_once_with(['gh','api','--allow-escape-sequences','repos/'+a.q.REPOSITORY+'/actions/jobs/123/logs'])
     return refusals
 
+def emission_controls():
+    positive={'result.json':b'{"explicit_synthetic":true}', 'failure.stderr':b'actual failure mentions x.gds and schematic.spice without redaction', 'worker.stdout':b'explicit synthetic stdout', 'summary.jsonl':b'{"synthetic":true}\n', 'trace.log':b'explicit synthetic log'}
+    suffixes=('.odb','.gds','.gds2','.gdsii','.oas','.oasis','.def','.lef','.spef','.spice','.sp','.cir','.l2n','.lvsdb','.ext','.raw','.wave','.vcd','.fst','.bin','.tar','.gz','.zip','.7z')
+    negative={('native/view/payload'+suffix+('.log'if suffix in('.spice','.sp','.cir')else'.json')):b'EXPLICIT_SYNTHETIC_NOT_NATIVE_BYTES'for suffix in suffixes}
+    negative.update({'native/view/UPPER.GDS.JsOn':b'EXPLICIT_SYNTHETIC_NOT_NATIVE_BYTES','native/model.gds/result.json':b'EXPLICIT_SYNTHETIC_NOT_NATIVE_BYTES','inputs/result.json':b'EXPLICIT_SYNTHETIC_NOT_NATIVE_BYTES','unknown.txt':b'EXPLICIT_SYNTHETIC_NOT_NATIVE_BYTES','invalid.json':b'\xff\xfe'})
+    with tempfile.TemporaryDirectory(prefix='synthetic-derived-name-boundary-')as temp:
+        root=Path(temp);emitted=[]
+        for name,raw in{**positive,**negative}.items():
+            p=root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(raw)
+        result=host.emit_derived(root,lambda line,**kw:emitted.append(line))
+        a.require(set(result['complete_inventory'])==set(positive)|set(negative),'all known and unknown bytes retained in full cloud inventory')
+        a.require(set(result['emitted_derived'])==set(positive),'composite native suffix, unknown text and invalid UTF8 are cloud-only')
+        chunks=[json.loads(line.split('CHUNK ',1)[1])for line in emitted if 'CHUNK 'in line]
+        a.require({row['name']for row in chunks}==set(positive),'no native-classified payload emitted')
+        for name,raw in positive.items():
+            rows=sorted((row for row in chunks if row['name']==name),key=lambda row:row['index'])
+            restored=zlib.decompress(b''.join(base64.b64decode(row['data'],validate=True)for row in rows))
+            a.require(restored==raw,'valid failure/stdout bytes remain complete and unredacted')
+    return dict(positive=sorted(positive),refused=sorted(negative),positive_count=len(positive),refusal_count=len(negative),native_payloads_synthetic=True)
+
 def main():
     ctx=a.context(os.environ);method=a.source_guard(ctx);out=ROOT/'canonical-view-controls';a.require(not out.exists(),'new source controls output');out.mkdir();primary=None
     try:
         a.require(ctx['job']=='source-controls','source controls only')
-        p=producer_controls(method);r=restore_controls(method);e=context_controls(method);j=current_run_controls();f=frozen_methods();l=lifecycle_controls()
+        p=producer_controls(method);r=restore_controls(method);e=context_controls(method);j=current_run_controls();f=frozen_methods();l=lifecycle_controls();em=emission_controls()
         pub=publication_controls.controls(dict(source=ctx['source'],run_id=ctx['run_id'],attempt=1));a.require(pub['passed']is True,'complete publisher controls')
         core_config=a.q.decode(a.q.regular(ROOT,method['core']['config_path']).read_bytes())
         core_controls.RECORDS.clear();core_controls.source_definition_controls(core_config);core_controls.count_controls();core_controls.material_controls(core_config);core_controls.scope_controls(core_config);core_controls.incremental_preservation_controls(core_config)
         core_records={str(p.relative_to(ROOT)):a.q.file_pin(p)for p in sorted(core_controls.RESULT.rglob('*'))if p.is_file()}
         a.require(len(core_controls.RECORDS)==59 and len(core_records)==15,'all original core59 and actual15 synthetic evidence files')
         seam=seam_controls.controls(a.q.decode(a.q.regular(ROOT,'scripts/cdr-via2-m3-canonical-view-inputs.json').read_bytes()))
-        result=dict(status='PASS_CANONICAL_VIEW_ADAPTER_SOURCE_CONTROLS',passed=True,context=dict(source=ctx['source'],run_id=ctx['run_id'],attempt=1),producer_refusals=len(p),restore_refusals=len(r),context_refusals=len(e),current_job_refusals=len(j),lifecycle_cases=len(l),publication_cases=pub['counts']['positive'],publication_refusals=pub['counts']['refusals'],producer_cases=p,restore_cases=r,context_cases=e,current_job_cases=j,lifecycle=l,publication=pub,frozen_methods=f,core_controls_passed=True,core_test_count=len(core_controls.RECORDS),core_controls=core_controls.RECORDS,core_incremental_records=core_records,seam_test_count=len(seam['cases']),seam=seam,native_payload_acquired=False,actual_view_executed=False,RC_executed=False,simulation_executed=False,**a.FLAGS)
+        result=dict(status='PASS_CANONICAL_VIEW_ADAPTER_SOURCE_CONTROLS',passed=True,context=dict(source=ctx['source'],run_id=ctx['run_id'],attempt=1),producer_refusals=len(p),restore_refusals=len(r),context_refusals=len(e),current_job_refusals=len(j),lifecycle_cases=len(l),publication_cases=pub['counts']['positive'],publication_refusals=pub['counts']['refusals'],producer_cases=p,restore_cases=r,context_cases=e,current_job_cases=j,lifecycle=l,publication=pub,emission=em,emission_refusals=em['refusal_count'],frozen_methods=f,core_controls_passed=True,core_test_count=len(core_controls.RECORDS),core_controls=core_controls.RECORDS,core_incremental_records=core_records,seam_test_count=len(seam['cases']),seam=seam,native_payload_acquired=False,actual_view_executed=False,RC_executed=False,simulation_executed=False,**a.FLAGS)
         result['source_log_refusals']=14;transport=transport_controls(ctx,result);result['source_log_refusals']=len(transport);result['source_log_cases']=transport
         a.bind_controls(a.encode(result),ctx);a.source_guard(ctx)
     except BaseException as error:primary=error;result=dict(status='FAIL_CANONICAL_VIEW_ADAPTER_SOURCE_CONTROLS',passed=False,error=repr(error),traceback=traceback.format_exc(),**a.FLAGS)
