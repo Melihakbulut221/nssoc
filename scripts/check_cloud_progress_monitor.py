@@ -841,5 +841,96 @@ class MainObservationControls(unittest.TestCase):
             self.assertFalse(saved["automatic_native_dispatch"])
             self.assertFalse(saved["full_phy_accepted"])
 
+
+class BoundedManyShardControls(unittest.TestCase):
+    fixture = Path(__file__).with_name("fixtures") / "cloud-progress-monitor-532-v197.json"
+
+    def captured(self):
+        raw = self.fixture.read_bytes()
+        self.assertEqual(hashlib.sha256(raw).hexdigest(), "1de54815eea5fcf7df63055f6f589bf1a4e2470edfc671b256a52359e8561451")
+        f = json.loads(raw)
+        self.assertEqual(f["root_source"], "80b1f781ef2e9077ed829e9db1eef04b9864c09b")
+        bodies = {p: base64.b64decode(b, validate=True) for p,b in f["bodies_base64"].items()}
+        return f, bodies
+
+    def test_actual_three_shards_reproduce_old_failure_then_preserve_all_532_rows(self):
+        f,bodies = self.captured()
+        old = f["old_assembled_inventory"]
+        self.assertEqual(hashlib.sha256(old.encode()).hexdigest(), f["old_assembled_sha256"])
+        namespace = dict(vars(m))
+        exec(compile(old, "frozen-main-two-shard-reader.py", "exec"), namespace)
+        manifest = json.loads(bodies[m.INVENTORY_PATH])
+        with self.assertRaisesRegex(AssertionError, "^Inventory shard count$"):
+            namespace["assembled_inventory"](InventoryAPI(bodies), HEAD, manifest)
+        actual,proof = m.load_config(InventoryAPI(bodies), config())
+        expected = [r for item in manifest["run_files"] for r in json.loads(bodies[item["path"]])["runs"]]
+        self.assertEqual(actual["runs"], expected)
+        self.assertEqual(len(actual["runs"]), 532)
+        self.assertEqual(len({r["run"] for r in actual["runs"]}), 532)
+        self.assertEqual(proof["resolved_run_count"], 532)
+        self.assertEqual(proof["runs_sha256"], manifest["runs_sha256"])
+        self.assertEqual([d["path"] for d in proof["documents"]], [m.INVENTORY_PATH,*[i["path"] for i in manifest["run_files"]]])
+        self.assertFalse(actual["automatic_native_dispatch"])
+        self.assertFalse(proof["bootstrap"])
+
+    def bundle(self, count):
+        value=config()
+        value["runs"]=[dict(value["runs"][0],run=1000+i) for i in range(count)]
+        manifest={k:copy.deepcopy(v) for k,v in value.items() if k not in ("schema","runs")}
+        manifest.update(schema=2,run_files=[],run_count=count,
+            runs_sha256=hashlib.sha256(json.dumps(value["runs"],sort_keys=True,separators=(",",":"),allow_nan=False).encode()).hexdigest())
+        bodies={}
+        for i,row in enumerate(value["runs"]):
+            path=".github/cloud-progress-monitor-runs-"+str(i).zfill(3)+".json"
+            raw=inventory_json(dict(schema="cloud-progress-monitor-runs-v1",repository=m.REPO,target_branch=value["target_branch"],runs=[row]))
+            bodies[path]=raw
+            manifest["run_files"].append(dict(path=path,bytes=len(raw),blob_sha=content_record(raw)["sha"],sha256=hashlib.sha256(raw).hexdigest(),run_count=1))
+        bodies[m.INVENTORY_PATH]=inventory_json(manifest)
+        return value,manifest,bodies
+
+    def test_all_bounded_counts_keep_one_head_and_complete_order(self):
+        self.assertEqual(m.MAX_RUN_FILES,16)
+        self.assertEqual(m.INVENTORY_LIMIT,65536)
+        for count in range(1,17):
+            with self.subTest(count=count):
+                value,manifest,bodies=self.bundle(count)
+                api=InventoryAPI(bodies)
+                actual,proof=m.load_config(api,config())
+                self.assertEqual(actual,value)
+                self.assertEqual(api.head_reads,1)
+                self.assertEqual(len(proof["documents"]),count+1)
+                self.assertTrue(all(p.endswith("?ref="+HEAD) for kind,p in api.calls if kind=="maybe"))
+
+    def test_seventeen_shards_refused_before_child_reads(self):
+        _,_,bodies=self.bundle(17)
+        api=InventoryAPI(bodies)
+        with self.assertRaisesRegex(AssertionError,"Inventory shard count"):
+            m.load_config(api,config())
+        self.assertEqual(len(api.calls),2)
+
+    def test_third_shard_must_be_contiguous_present_and_byte_exact(self):
+        _,bodies=self.captured()
+        path=".github/cloud-progress-monitor-runs-002.json"
+        for fault in ("missing","changed","reordered","hole","external","too_large"):
+            with self.subTest(fault=fault):
+                changed=copy.deepcopy(bodies);manifest=json.loads(changed[m.INVENTORY_PATH])
+                if fault=="missing":del changed[path]
+                elif fault=="changed":changed[path]+=b" "
+                elif fault=="reordered":manifest["run_files"][1:]=reversed(manifest["run_files"][1:])
+                elif fault=="hole":manifest["run_files"][2]["path"]=".github/cloud-progress-monitor-runs-003.json"
+                elif fault=="external":manifest["run_files"][2]["path"]="https://example.invalid/data"
+                else:manifest["run_files"][2]["bytes"]=65537
+                changed[m.INVENTORY_PATH]=inventory_json(manifest)
+                with self.assertRaises(AssertionError):m.load_config(InventoryAPI(changed),config())
+
+    def test_unapproved_child_path_never_reaches_api(self):
+        class NoAPI:
+            def maybe(self,path):raise RuntimeError("unexpected request")
+        for path in (".github/cloud-progress-monitor-runs-016.json",".github/cloud-progress-monitor-runs-2.json",".github/cloud-progress-monitor-runs-002.json?ref=main","../inventory.json"):
+            with self.subTest(path=path):
+                with self.assertRaisesRegex(AssertionError,"Unapproved inventory path"):
+                    m.inventory_document(NoAPI(),HEAD,path)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

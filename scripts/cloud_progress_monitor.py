@@ -114,6 +114,7 @@ def check_config(config):
     assert config["automatic_native_dispatch"] is False
 
 INVENTORY_LIMIT = 65536
+MAX_RUN_FILES = 16
 INVENTORY_PATH = ".github/cloud-progress-monitor.json"
 RUN_FILE_PATHS = (
     ".github/cloud-progress-monitor-runs-000.json",
@@ -124,7 +125,7 @@ RUN_FILE_PATHS = (
 def inventory_document(api, head, path, optional=False):
     """Read one bounded document at the already captured commit, never a child ref."""
     assert re.fullmatch(r"[0-9a-f]{40}", head)
-    assert path in (INVENTORY_PATH, *RUN_FILE_PATHS), "Unapproved inventory path"
+    assert path == INVENTORY_PATH or path in tuple(".github/cloud-progress-monitor-runs-"+str(i).zfill(3)+".json" for i in range(MAX_RUN_FILES)), "Unapproved inventory path"
     data = api.maybe("contents/" + path + "?ref=" + head)
     if data is None:
         assert optional and path == INVENTORY_PATH, ("Missing inventory shard", path)
@@ -138,14 +139,14 @@ def inventory_document(api, head, path, optional=False):
 
 
 def assembled_inventory(api, head, manifest):
-    """Explicit two-file format; preserve ordered rows and validate globally."""
+    """Bounded contiguous shard format; preserve all ordered rows and validate globally."""
     assert set(manifest) == {
         "schema", "repository", "target_branch", "stall_seconds", "automatic_native_dispatch",
         "latest_workflows", "inventory_version", "inventory_updated_at",
         "run_files", "run_count", "runs_sha256",
     }, "Inventory manifest fields"
     assert type(manifest["schema"]) is int and manifest["schema"] == 2
-    assert type(manifest["run_files"]) is list and len(manifest["run_files"]) == 2, "Inventory shard count"
+    assert type(manifest["run_files"]) is list and 1 <= len(manifest["run_files"]) <= MAX_RUN_FILES, "Inventory shard count"
     assert type(manifest["run_count"]) is int and manifest["run_count"] > 0, "Inventory run count"
     assert isinstance(manifest["runs_sha256"], str) and re.fullmatch(r"[0-9a-f]{64}", manifest["runs_sha256"])
     config = {k:manifest[k] for k in (
@@ -155,7 +156,8 @@ def assembled_inventory(api, head, manifest):
     config.update(schema=1, runs=[])
     check_config(config)
     # Validate all descriptors before the first child read.
-    for path, item in zip(RUN_FILE_PATHS, manifest["run_files"], strict=True):
+    paths = tuple(".github/cloud-progress-monitor-runs-"+str(i).zfill(3)+".json" for i in range(len(manifest["run_files"])))
+    for path, item in zip(paths, manifest["run_files"], strict=True):
         assert type(item) is dict and set(item) == {"path","blob_sha","sha256","bytes","run_count"}, "Inventory descriptor fields"
         assert item["path"] == path, "Inventory shard order/path"
         assert type(item["bytes"]) is int and 0 < item["bytes"] <= INVENTORY_LIMIT, "Inventory descriptor size"
