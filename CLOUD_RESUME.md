@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v151
+# Cloud continuation — checkpoint v152
 
-Updated: 2026-10-31T04:44:50.731886+00:00
+Updated: 2026-10-31T05:07:41.814641+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint v151: reversible diode namespace workaround committed5256e147. GitHub source controls41169110251 passed all25new namespace rows,49adapter rows and inherited10positive49refusal20lifecycle9renderedTcl. Full25file3,847,906B proof3576fc27 including both rawjoblogs and nine testedsourcefiles is byte-verified. The real repair41163081445 remains a preserved SIGSEGV failure; this source pass does not resolve actualnative crash or qualifyphysicalresults. Next hosted-only native API/current-chip name roundtrip beforeonebounded genuine repair. Current1707pinmanifest/workflow keepnativeexecutiondisabled. Localworkspace/tmp/nativeprocesses remainempty; originalreviewpaths absent and untouched. Exact cloudcontinuation preserves analogoriginalrejections, current608antenna nets andstill-openPHY/finalRCSTA.
+Cloud-only checkpoint v152: actual native namespace qualification41170992512 dispatched once at8753125c. Same-source controls and source log preservation passed; namespace-qualification124448935866 is live. Independently reservedemptypublicprerelease429733762 for exactsource beforeacquisition. Production repair/route remainsdisabled; dedicated1736pin adapter invokes realpinned OpenROAD currentchip name/DEF/snapshot roundtrip with3explicit disposableobjects, normal and expected-primary cases. No actualnative result yet. Followthishandle and preserveall4logs/8sourcerecords/fullnativecapsule onterminal. If qualified, proceedtoonegenuine bulk repair/DRT withunchangedproductionrenderer. Allnativepayloadsremaincloud; localworkspace/tmp/nativeprocesses empty; fullPHY/finalRCSTA remainopen.
 
-Active handles at this snapshot: No native run remains active in this snapshot.
+Active handles at this snapshot: 41170992512 in_progress
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9270,3 +9271,10 @@ Local project/tmp/native processes verified absent. Inventory412 exact cloud han
 Cloud-only checkpoint v151: reversible diode namespace workaround committed5256e147. GitHub source controls41169110251 passed all25new namespace rows,49adapter rows and inherited10positive49refusal20lifecycle9renderedTcl. Full25file3,847,906B proof3576fc27 including both rawjoblogs and nine testedsourcefiles is byte-verified. The real repair41163081445 remains a preserved SIGSEGV failure; this source pass does not resolve actualnative crash or qualifyphysicalresults. Next hosted-only native API/current-chip name roundtrip beforeonebounded genuine repair. Current1707pinmanifest/workflow keepnativeexecutiondisabled. Localworkspace/tmp/nativeprocesses remainempty; originalreviewpaths absent and untouched. Exact cloudcontinuation preserves analogoriginalrejections, current608antenna nets andstill-openPHY/finalRCSTA.
 
 Local project/tmp/native processes verified absent. Inventory413 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-31T05:07:41.814641+00:00 — cloud-only checkpoint v152
+
+Cloud-only checkpoint v152: actual native namespace qualification41170992512 dispatched once at8753125c. Same-source controls and source log preservation passed; namespace-qualification124448935866 is live. Independently reservedemptypublicprerelease429733762 for exactsource beforeacquisition. Production repair/route remainsdisabled; dedicated1736pin adapter invokes realpinned OpenROAD currentchip name/DEF/snapshot roundtrip with3explicit disposableobjects, normal and expected-primary cases. No actualnative result yet. Followthishandle and preserveall4logs/8sourcerecords/fullnativecapsule onterminal. If qualified, proceedtoonegenuine bulk repair/DRT withunchangedproductionrenderer. Allnativepayloadsremaincloud; localworkspace/tmp/nativeprocesses empty; fullPHY/finalRCSTA remainopen.
+
+Local project/tmp/native processes verified absent. Inventory414 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

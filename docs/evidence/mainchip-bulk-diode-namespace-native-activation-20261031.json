@@ -1,0 +1,84 @@
+{
+  "acceptance": "Both actual OpenDB/Tcl cases restore all originals and remove3unconnected disposable instances. Full independently reloaded native snapshot and rawDEF hashes must exactly match complete baseline. NativeAPI result is separate from physical repair, route, timing and fullPHY.",
+  "actual_namespace_qualification_executed": false,
+  "actual_physical_repair_calls": 0,
+  "actual_route_calls": 0,
+  "all_success_failure_outputs_permanently_preserved": true,
+  "baseline_instances": 153129,
+  "cases": [
+    "success",
+    "primary_error"
+  ],
+  "files": {
+    ".github/workflows/mainchip-net459-diode-prune.yml": {
+      "bytes": 23512,
+      "sha256": "a220efc11c1da5e8b453c662abc0bcaff9a4a45aff16d68283bfdc3e2e8d9ffc"
+    },
+    "scripts/cloud_mainchip_bulk_diode_namespace_qualification.py": {
+      "bytes": 10582,
+      "sha256": "1f2edd302bfdbd44559525f91b8ada09e12e881d52959241386934da0a5a7720"
+    },
+    "scripts/mainchip-bulk-diode-namespace-qualification-pins.json": {
+      "bytes": 280409,
+      "sha256": "dab7a2c26e32d4aeefa59684ed0165ca0f239c9871679273d26d66640291f7bb"
+    },
+    "scripts/mainchip_bulk_diode_namespace_qualification.py": {
+      "bytes": 9714,
+      "sha256": "22c1af27778ea6da6534523388be8b87561c3cb99072280bb3b68d05d8ad07ea"
+    },
+    "scripts/mainchip_bulk_diode_namespace_qualification_inner.py": {
+      "bytes": 7755,
+      "sha256": "6da5e2fb9cb6623b0a1bbb74c27b0535f2e5f81e2f6d5f0cce9964dbcbaec3cf"
+    }
+  },
+  "full_phy_accepted": false,
+  "independent_empty_exact_source_release_required": true,
+  "input": {
+    "bytes": 213429050,
+    "sha256": "3f422f7c92b9395f3678e1bf065fe790478b1c424c5b7bae39060095b23c3d53"
+  },
+  "isolated_existing_diodes": 9143,
+  "manifest_sha256": "dab7a2c26e32d4aeefa59684ed0165ca0f239c9871679273d26d66640291f7bb",
+  "native_payload_local": false,
+  "native_phase_commands": [
+    "prepare",
+    "success",
+    "audit_success",
+    "primary_error",
+    "audit_primary_error"
+  ],
+  "native_qualification_only": true,
+  "original_clocks_and_fixed": 1691,
+  "parent": "3576fc274ef087d2913955186b5aabd293b0ef7f",
+  "physical_acceptance": false,
+  "production_adapters_and_renderer_unchanged": true,
+  "protected_files": 1736,
+  "real_repair_command_removed_in_disposable_process": true,
+  "run_dispatched": false,
+  "schema": "native-diode-namespace-qualification-activation-v1",
+  "source_control_rows": {
+    "adapter": 49,
+    "inherited": {
+      "lifecycle": 20,
+      "positive": 10,
+      "refusal": 49,
+      "rendered_tcl": 9
+    },
+    "namespace": 25
+  },
+  "source_controls_required_on_same_source": true,
+  "supervision": "Existing pinned ELF/runtime, credential-free12GiBcontainer,2CPU,actual child exit/streams/RSS and1200s phase supervision; unchanged acquire/publish/owned cleanup functions reused.",
+  "timing_accepted": false,
+  "upstream": [
+    {
+      "fact": "Published Tcl uses odb::dbInst_create; actual API validated in this qualification.",
+      "sha256": "e7263231e2089673930741f37380221b31060196ef14341aa60dd88fc0af7a33",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/OpenRoad.tcl"
+    },
+    {
+      "fact": "Native rename returns false for occupied name and otherwise updates name hash.",
+      "sha256": "7a662e319dc015a2cd0aa16311ce51364870bb4c0c706c26e3666f8935f9c18f",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/db/dbInst.cpp"
+    }
+  ]
+}
