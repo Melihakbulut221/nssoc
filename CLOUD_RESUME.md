@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v152
+# Cloud continuation — checkpoint v153
 
-Updated: 2026-10-31T05:07:41.814641+00:00
+Updated: 2026-10-31T05:41:44.671217+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint v152: actual native namespace qualification41170992512 dispatched once at8753125c. Same-source controls and source log preservation passed; namespace-qualification124448935866 is live. Independently reservedemptypublicprerelease429733762 for exactsource beforeacquisition. Production repair/route remainsdisabled; dedicated1736pin adapter invokes realpinned OpenROAD currentchip name/DEF/snapshot roundtrip with3explicit disposableobjects, normal and expected-primary cases. No actualnative result yet. Followthishandle and preserveall4logs/8sourcerecords/fullnativecapsule onterminal. If qualified, proceedtoonegenuine bulk repair/DRT withunchangedproductionrenderer. Allnativepayloadsremaincloud; localworkspace/tmp/nativeprocesses empty; fullPHY/finalRCSTA remainopen.
+Cloud-only checkpoint v153: actualnative name roundtrip41170992512 passedbothnormal/expected-primary cases; full107fileproof1cf754fc byte-verified,4rawlogs/8sourcerecords/69native-derivedrecords and56member424,041,297Bcapsule retained. Whole624,649,274B snapshot and185,377,344BDEF matchbaseline;153129instances,9143old canonicalnames,1691clocks restored and3fixturesremoved. Genuinebulk repair41172959321 nowactive at4c672914; exactsameproductionbodies,1839sourcepins, allsame-sourcecontrols passed andemptyrelease429743993 independentlyreserved. Onlyactualnewresult canprovecrashresolved/antennaDRTclosure. Alloriginalclock/numericalgates unchanged. AnalogRCcontact inputs expandedto31authenticatedmembermetadata withcurrentrawEXT/MAG; auditisnotimplemented. Everythingnative remainscloud; localworkspace/tmp/nativeprocesses empty; fullPHY/currentRCSTA remainopen.
 
-Active handles at this snapshot: 41170992512 in_progress
+Active handles at this snapshot: 41172959321 in_progress
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9278,3 +9279,10 @@ Local project/tmp/native processes verified absent. Inventory413 exact cloud han
 Cloud-only checkpoint v152: actual native namespace qualification41170992512 dispatched once at8753125c. Same-source controls and source log preservation passed; namespace-qualification124448935866 is live. Independently reservedemptypublicprerelease429733762 for exactsource beforeacquisition. Production repair/route remainsdisabled; dedicated1736pin adapter invokes realpinned OpenROAD currentchip name/DEF/snapshot roundtrip with3explicit disposableobjects, normal and expected-primary cases. No actualnative result yet. Followthishandle and preserveall4logs/8sourcerecords/fullnativecapsule onterminal. If qualified, proceedtoonegenuine bulk repair/DRT withunchangedproductionrenderer. Allnativepayloadsremaincloud; localworkspace/tmp/nativeprocesses empty; fullPHY/finalRCSTA remainopen.
 
 Local project/tmp/native processes verified absent. Inventory414 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-31T05:41:44.671217+00:00 — cloud-only checkpoint v153
+
+Cloud-only checkpoint v153: actualnative name roundtrip41170992512 passedbothnormal/expected-primary cases; full107fileproof1cf754fc byte-verified,4rawlogs/8sourcerecords/69native-derivedrecords and56member424,041,297Bcapsule retained. Whole624,649,274B snapshot and185,377,344BDEF matchbaseline;153129instances,9143old canonicalnames,1691clocks restored and3fixturesremoved. Genuinebulk repair41172959321 nowactive at4c672914; exactsameproductionbodies,1839sourcepins, allsame-sourcecontrols passed andemptyrelease429743993 independentlyreserved. Onlyactualnewresult canprovecrashresolved/antennaDRTclosure. Alloriginalclock/numericalgates unchanged. AnalogRCcontact inputs expandedto31authenticatedmembermetadata withcurrentrawEXT/MAG; auditisnotimplemented. Everythingnative remainscloud; localworkspace/tmp/nativeprocesses empty; fullPHY/currentRCSTA remainopen.
+
+Local project/tmp/native processes verified absent. Inventory415 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
