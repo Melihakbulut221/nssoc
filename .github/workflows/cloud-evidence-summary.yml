@@ -5,11 +5,11 @@ on:
     inputs:
       mode:
         type: choice
-        options: [controls, readback]
+        options: [controls, analysis]
         default: controls
         required: true
       approved_source:
-        description: Exact independently reviewed source SHA for readonly collection
+        description: Exact reviewed source for derived-text analysis only
         type: string
         required: false
 permissions:
@@ -29,19 +29,22 @@ jobs:
             /.github/workflows/cloud-evidence-summary.yml
             /scripts/mainchip_terminal_readback.py
             /scripts/check_mainchip_terminal_readback.py
-            /scripts/mainchip-stale-wire-terminal-inputs.json
-            /scripts/mainchip-stale-wire-terminal-source.json
-            /docs/mainchip-two-drt-report-readback-20261031.md
+            /scripts/mainchip_drt_report_analysis.py
+            /scripts/check_mainchip_drt_report_analysis.py
+            /scripts/mainchip-drt-report-analysis-inputs.json
+            /scripts/mainchip-drt-report-analysis-source.json
+            /docs/mainchip-drt-text-analysis-20261031.md
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - run: python3 -B scripts/mainchip_terminal_readback.py --controls
+      - run: python3 -B scripts/mainchip_drt_report_analysis.py --controls
       - run: python3 -B scripts/check_mainchip_terminal_readback.py
-  readback:
+      - run: python3 -B scripts/check_mainchip_drt_report_analysis.py
+  analysis:
     needs: source-controls
-    if: ${{ inputs.mode == 'readback' && inputs.approved_source == github.sha }}
+    if: ${{ inputs.mode == 'analysis' && inputs.approved_source == github.sha }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 40
+    timeout-minutes: 20
     permissions:
       contents: write
       actions: read
@@ -58,23 +61,25 @@ jobs:
             /.github/workflows/cloud-evidence-summary.yml
             /scripts/mainchip_terminal_readback.py
             /scripts/check_mainchip_terminal_readback.py
-            /scripts/mainchip-stale-wire-terminal-inputs.json
-            /scripts/mainchip-stale-wire-terminal-source.json
-            /docs/mainchip-two-drt-report-readback-20261031.md
+            /scripts/mainchip_drt_report_analysis.py
+            /scripts/check_mainchip_drt_report_analysis.py
+            /scripts/mainchip-drt-report-analysis-inputs.json
+            /scripts/mainchip-drt-report-analysis-source.json
+            /docs/mainchip-drt-text-analysis-20261031.md
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Authenticate all 735 members and read exactly two DRT reports in cloud
-        run: python3 -B scripts/mainchip_terminal_readback.py > terminal-readback-worker.stdout 2> terminal-readback-worker.stderr
-      - name: Preserve complete result or failure and worker logs
+      - name: Read only four authenticated derived text inputs and classify exact records
+        run: python3 -B scripts/mainchip_drt_report_analysis.py > drt-analysis-worker.stdout 2> drt-analysis-worker.stderr
+      - name: Preserve complete derived output or failure and worker logs
         if: ${{ always() }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: mainchip-drt-report-readback-${{ github.run_id }}-${{ github.run_attempt }}
+          name: mainchip-drt-analysis-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            terminal-readback/
-            terminal-readback-worker.stdout
-            terminal-readback-worker.stderr
+            drt-report-analysis/
+            drt-analysis-worker.stdout
+            drt-analysis-worker.stderr
           compression-level: 6
           if-no-files-found: error
           retention-days: 90

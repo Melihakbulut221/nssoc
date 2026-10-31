@@ -1,0 +1,7 @@
+# Mainchip DRT textual classification
+
+The only runtime inputs are two already authenticated iteration 5/10 report assets and the already authenticated insertion-plan and stale-wire-mutation JSON assets. The source pins their exact asset IDs, byte counts, hashes, successful collector runs and complete immutable release identities. No original archive, ODB, DEF, layout, toolchain or CAD process is acquired or executed.
+
+All counting and exact-record comparisons run on GitHub. Parsing preserves escaped net names and all coordinate text without arithmetic. Membership in the mutable/cleared or protected manifest is reported literally; any other name is not classified as fixed, power or any physical owner. Attached diode instance names come only from the authenticated insertion manifest. Exact three-line multiset differences preserve duplicate markers; they are not geometric equivalence or a proof of physical causality.
+
+The 12 qualified collector controls are retained unchanged. Eight additional source controls exercise grammar and name/coordinate preservation, manifest invariants, malformed inputs, duplicate-aware exact delta and end-to-end synthetic classification. Actual analysis requires successful own source controls, exact approved source, original attempt and an independently created empty exact-source public release. All physical, timing, full PHY, native tool, reroute and physical-cause acceptance flags remain false.
