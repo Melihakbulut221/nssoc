@@ -1,0 +1,97 @@
+﻿2026-10-31T18:06:10.9920862Z Current runner version: '2.338.2'
+2026-10-31T18:06:10.9938010Z ##[group]Runner Image Provisioner
+2026-10-31T18:06:10.9938598Z Hosted Compute Agent
+2026-10-31T18:06:10.9938987Z Version: 20261021.618
+2026-10-31T18:06:10.9939379Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-31T18:06:10.9939810Z Build Date: 2026-10-21T00:45:21Z
+2026-10-31T18:06:10.9940208Z Worker ID: {2b501563-65fa-4bc9-9b74-84012c6830a4}
+2026-10-31T18:06:10.9940675Z Region: westus3
+2026-10-31T18:06:10.9941041Z Cloud: Azure
+2026-10-31T18:06:10.9941383Z ##[endgroup]
+2026-10-31T18:06:10.9942136Z ##[group]Operating System
+2026-10-31T18:06:10.9942497Z Ubuntu
+2026-10-31T18:06:10.9942972Z 24.04.5
+2026-10-31T18:06:10.9943311Z LTS
+2026-10-31T18:06:10.9943610Z ##[endgroup]
+2026-10-31T18:06:10.9943979Z ##[group]Runner Image
+2026-10-31T18:06:10.9944342Z Image: ubuntu-24.04
+2026-10-31T18:06:10.9944740Z Version: 20261025.353.1
+2026-10-31T18:06:10.9945492Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-31T18:06:10.9946381Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-10-31T18:06:10.9946928Z ##[endgroup]
+2026-10-31T18:06:10.9947707Z ##[group]GITHUB_TOKEN Permissions
+2026-10-31T18:06:10.9948896Z Actions: read
+2026-10-31T18:06:10.9949289Z Contents: read
+2026-10-31T18:06:10.9949622Z Metadata: read
+2026-10-31T18:06:10.9949928Z ##[endgroup]
+2026-10-31T18:06:10.9951573Z Secret source: Actions
+2026-10-31T18:06:10.9952116Z Cache mode: write
+2026-10-31T18:06:10.9952592Z Prepare workflow directory
+2026-10-31T18:06:11.0253434Z Prepare all required actions
+2026-10-31T18:06:11.0284141Z Getting action download info
+2026-10-31T18:06:11.3000974Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-31T18:06:11.5340575Z Complete job name: preserve-native-job-logs
+2026-10-31T18:06:11.5839834Z ##[group]Run python3 -B - <<'PY'
+2026-10-31T18:06:11.5840238Z [36;1mpython3 -B - <<'PY'[0m
+2026-10-31T18:06:11.5840592Z [36;1mimport hashlib,json,os,subprocess,traceback[0m
+2026-10-31T18:06:11.5840963Z [36;1mfrom pathlib import Path[0m
+2026-10-31T18:06:11.5841290Z [36;1mroot=Path('all-job-logs');root.mkdir()[0m
+2026-10-31T18:06:11.5841696Z [36;1me=os.environ;prefix='repos/'+e['GITHUB_REPOSITORY']+'/'[0m
+2026-10-31T18:06:11.5842244Z [36;1massert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_RUN_ATTEMPT']=='1'[0m
+2026-10-31T18:06:11.5843042Z [36;1mdef read(path):return subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+path])[0m
+2026-10-31T18:06:11.5843727Z [36;1mraw=read('actions/runs/'+e['GITHUB_RUN_ID']);run=json.loads(raw);(root/'run.json').write_bytes(raw)[0m
+2026-10-31T18:06:11.5844303Z [36;1massert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1[0m
+2026-10-31T18:06:11.5844841Z [36;1mraw=read('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100')[0m
+2026-10-31T18:06:11.5845337Z [36;1mjobs=json.loads(raw);(root/'jobs.json').write_bytes(raw)[0m
+2026-10-31T18:06:11.5845761Z [36;1massert len(jobs['jobs'])==jobs['total_count']<=20[0m
+2026-10-31T18:06:11.5846116Z [36;1mrows=[];errors=[][0m
+2026-10-31T18:06:11.5846398Z [36;1mfor j in jobs['jobs']:[0m
+2026-10-31T18:06:11.5846738Z [36;1m    if j['name']=='preserve-native-job-logs':continue[0m
+2026-10-31T18:06:11.5847189Z [36;1m    assert j['status']=='completed' and j['head_sha']==e['GITHUB_SHA'][0m
+2026-10-31T18:06:11.5847618Z [36;1m    if j['conclusion']=='skipped':continue[0m
+2026-10-31T18:06:11.5847942Z [36;1m    try:[0m
+2026-10-31T18:06:11.5848266Z [36;1m        raw=read('actions/jobs/'+str(j['id'])+'/logs');assert raw[0m
+2026-10-31T18:06:11.5848702Z [36;1m        (root/('job-'+str(j['id'])+'.log')).write_bytes(raw)[0m
+2026-10-31T18:06:11.5849325Z [36;1m        rows.append(dict(id=j['id'],name=j['name'],conclusion=j['conclusion'],bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()))[0m
+2026-10-31T18:06:11.5850089Z [36;1m    except BaseException as error:[0m
+2026-10-31T18:06:11.5850589Z [36;1m        errors.append(dict(id=j['id'],name=j['name'],error=repr(error),traceback=traceback.format_exc()))[0m
+2026-10-31T18:06:11.5851350Z [36;1mreceipt=dict(source=e['GITHUB_SHA'],run=run['id'],attempt=1,records=rows,errors=errors,full_raw_logs=True,native_acquisition=False)[0m
+2026-10-31T18:06:11.5852070Z [36;1m(root/'receipt.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')[0m
+2026-10-31T18:06:11.5852532Z [36;1mprint(json.dumps(receipt))[0m
+2026-10-31T18:06:11.5852917Z [36;1massert not errors[0m
+2026-10-31T18:06:11.5853186Z [36;1mPY[0m
+2026-10-31T18:06:11.5871339Z shell: /usr/bin/bash -e {0}
+2026-10-31T18:06:11.5871719Z env:
+2026-10-31T18:06:11.5871959Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T18:06:11.5874153Z   GH_TOKEN: ***
+2026-10-31T18:06:11.5874394Z ##[endgroup]
+2026-10-31T18:06:23.9336159Z {"source": "84b8b591e10be32716947c8d6b079fd7a21ce18d", "run": 41218657461, "attempt": 1, "records": [{"id": 124588424322, "name": "source-controls", "conclusion": "success", "bytes": 381017, "sha256": "b438aa09f37633783e29d5372396412ed27b1b3ba0e0fd1ab9cf3d456e3c1cde"}, {"id": 124588820017, "name": "preserve-job-log", "conclusion": "success", "bytes": 7577, "sha256": "3cdd4c8574256f261148a2aae4bcd2abb037fbbd255892e7b6ce069db471692b"}, {"id": 124588861999, "name": "prepare", "conclusion": "success", "bytes": 3511032, "sha256": "a24cd609ec83530d340657a10f0d9dcd5bee84e9c5a4b2f3450de6e42e7101ad"}, {"id": 124589674775, "name": "loaded (hot_late)", "conclusion": "failure", "bytes": 2951969, "sha256": "a902ac531b84905067bed7b1aa82f623610714647f8a732269c0687677d95a40"}, {"id": 124589674792, "name": "loaded (cold_early)", "conclusion": "failure", "bytes": 2951337, "sha256": "f4faafbf71daca7297c20fbcdfc46babff2908afe1f23d20cf2afce52d98c9f6"}, {"id": 124589674793, "name": "loaded (constant_zero)", "conclusion": "failure", "bytes": 2980997, "sha256": "94c7636a36b9992c049abbc86f092121d4bcf225bcc2d326f3b87994a23ca408"}, {"id": 124589674795, "name": "loaded (cold_late)", "conclusion": "failure", "bytes": 2965333, "sha256": "db2b5c23e23a96adfa4a1481df57b94758233c4c9d9244b079b01978a7fe636a"}, {"id": 124589674818, "name": "loaded (nominal_late)", "conclusion": "failure", "bytes": 2927235, "sha256": "cb05c984431c341e97c2ec533ff12cbe4b3f2e7fef4695b1d83cf81411d42b9f"}, {"id": 124589674855, "name": "loaded (clock_stopped)", "conclusion": "success", "bytes": 3710278, "sha256": "733783035334e8dbd31553eaefdfcd512e1ed8f49e23da5816280d0343097126"}, {"id": 124589674859, "name": "loaded (hot_early)", "conclusion": "failure", "bytes": 2947022, "sha256": "b9c4beba3c3c65e06679a4595d6e1dad6fa615a3f89178b869563fc18a2ae71e"}, {"id": 124589674889, "name": "loaded (nominal_early)", "conclusion": "failure", "bytes": 2963560, "sha256": "ab01e0056e3751abe91f954f5813fc6ee36b6a8e9f9669e724d844dc9c2e0009"}, {"id": 124589674907, "name": "loaded (constant_one)", "conclusion": "failure", "bytes": 2967785, "sha256": "118fc3c7bf0f177737fca70d107ef1d53ddeceff7b693c0f6552e8e849801d0e"}, {"id": 124589674997, "name": "loaded (vi_bias_off)", "conclusion": "failure", "bytes": 87948, "sha256": "6b01dddd6ebef99605927d13b5e9037ab28b4bf0296774273b50dca8b246b577"}], "errors": [], "full_raw_logs": true, "native_acquisition": false}
+2026-10-31T18:06:23.9484023Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-31T18:06:23.9484310Z with:
+2026-10-31T18:06:23.9484521Z   name: cdr-current-eight-drain-loaded-all-job-logs-41218657461-1
+2026-10-31T18:06:23.9484762Z   path: all-job-logs
+2026-10-31T18:06:23.9484925Z   include-hidden-files: true
+2026-10-31T18:06:23.9485098Z   if-no-files-found: error
+2026-10-31T18:06:23.9485258Z   retention-days: 90
+2026-10-31T18:06:23.9485410Z   compression-level: 6
+2026-10-31T18:06:23.9485562Z   overwrite: false
+2026-10-31T18:06:23.9485708Z env:
+2026-10-31T18:06:23.9485855Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-31T18:06:23.9487404Z   GH_TOKEN: ***
+2026-10-31T18:06:23.9487558Z ##[endgroup]
+2026-10-31T18:06:24.1758981Z (node:2101) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-31T18:06:24.1760406Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-31T18:06:24.1825403Z With the provided path, there will be 16 files uploaded
+2026-10-31T18:06:24.1828878Z Artifact name is valid!
+2026-10-31T18:06:24.1830112Z Root directory input is valid!
+2026-10-31T18:06:24.5322958Z Beginning upload of artifact content to blob storage
+2026-10-31T18:06:24.9255785Z (node:2101) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-31T18:06:25.6131511Z Uploaded bytes 8258991
+2026-10-31T18:06:25.6678849Z Finished uploading artifact content to blob storage!
+2026-10-31T18:06:25.6679467Z SHA256 digest of uploaded artifact zip is 9e182a60692dbe7411da52a4f894d678dd9c2a3ecc57ac2856a96fc86f97838e
+2026-10-31T18:06:25.6680686Z Finalizing artifact upload
+2026-10-31T18:06:26.1072681Z Artifact cdr-current-eight-drain-loaded-all-job-logs-41218657461-1.zip successfully finalized. Artifact ID 13052676145
+2026-10-31T18:06:26.1077609Z Artifact cdr-current-eight-drain-loaded-all-job-logs-41218657461-1 has been successfully uploaded! Final size is 8258991 bytes. Artifact ID is 13052676145
+2026-10-31T18:06:26.1079234Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/41218657461/artifacts/13052676145
+2026-10-31T18:06:26.1260514Z Cleaning up orphan processes
+2026-10-31T18:06:26.1514388Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

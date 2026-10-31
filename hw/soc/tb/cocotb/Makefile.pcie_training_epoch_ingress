@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: Apache-2.0
+ifneq ($(GITHUB_ACTIONS),true)
+$(error Hosted-only epoch ingress verification)
+endif
+TOPLEVEL_LANG := verilog
+SIM ?= icarus
+DEPTH ?= 32
+EPOCH_W ?= 2
+BENCH := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+ROOT := $(abspath $(BENCH)/../../../..)
+export PYTHONPATH := $(BENCH):$(ROOT)/scripts:$(PYTHONPATH)
+ifeq ($(SIM),icarus)
+COMPILE_ARGS += -P$(TOPLEVEL).EPOCH_W=$(EPOCH_W)
+ifneq ($(TOPLEVEL),soc_pcie_training_epoch_control_v1)
+COMPILE_ARGS += -P$(TOPLEVEL).FIFO_DEPTH=$(DEPTH)
+endif
+else ifeq ($(SIM),verilator)
+COMPILE_ARGS += -GEPOCH_W=$(EPOCH_W) -Wno-fatal --timing
+ifneq ($(TOPLEVEL),soc_pcie_training_epoch_control_v1)
+COMPILE_ARGS += -GFIFO_DEPTH=$(DEPTH)
+endif
+else
+$(error Only qualified Icarus/Verilator engines)
+endif
+ifndef VERILOG_SOURCES
+$(error Explicit protected sources required)
+endif
+ifndef COCOTB_TEST_MODULES
+$(error Explicit reviewed test module required)
+endif
+include $(shell cocotb-config --makefiles)/Makefile.sim
