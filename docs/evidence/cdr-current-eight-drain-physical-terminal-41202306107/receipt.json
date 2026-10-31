@@ -1,0 +1,317 @@
+{
+  "actual_native_inputs_acquired": true,
+  "actual_result": {
+    "actual_native_inputs_acquired": true,
+    "context": {
+      "attempt": 1,
+      "case": "nominal_early",
+      "group": "cdr-current-eight-drain-straps",
+      "run_id": 41202306107,
+      "source": "5751072669e52450bd025b0cd6c72873dc273bc1",
+      "tag": "cloud-results-41202306107-1-cdr-current-eight-drain-straps",
+      "token": "41202306107-1"
+    },
+    "controls": {
+      "controls": {
+        "bytes": 6742,
+        "sha256": "3d06ee5412d959eeaaac0c88d33d063cde77b1747c570de5c872efb877211960"
+      },
+      "execution": {
+        "bytes": 1950,
+        "sha256": "0068b744ba38669d871fbb4b2e56ff74e51ba5ca8097d313c5599a08e67293ee"
+      },
+      "ownership": {
+        "bytes": 1723,
+        "sha256": "9d9be52e55bca2bb4bfeaaeeee8dbf243640bb57f2e74a8edc38ac4d57bb849d"
+      },
+      "publication": {
+        "bytes": 4189,
+        "sha256": "f827125120c1fb51eaf5366de6d7043d4a0c0a5bb59243913c5ef7652449fc01"
+      },
+      "tail": {
+        "bytes": 1506,
+        "sha256": "e37abf4b20608ac6f9faceaee0947500685cfbff5de403f53ababdb7c07dbe36"
+      }
+    },
+    "electrical_acceptance": false,
+    "error": "AssertionError(('eight-current-drain-straps', '', 'Traceback (most recent call last):\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps_native.py\", line 184, in <module>\\n    if __name__==\"__main__\":main()\\n                            ~~~~^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps_native.py\", line 177, in main\\n    generate(pya,args.selected,args.output,config)\\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps_native.py\", line 107, in generate\\n    require(add[layer].sized(plan.CLEARANCE[layer]).interacting(foreign).is_empty(),\"new M%d foreign metal clearance device%d\"%(layer,nid))\\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps.py\", line 18, in require\\n    if not value:raise AssertionError(message)\\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nAssertionError: new M10 foreign metal clearance device3\\n'))",
+    "full_phy_accepted": false,
+    "input_census": {
+      "full_members": 2797,
+      "native_inputs_retained_in_bundle": true,
+      "selected": 42
+    },
+    "new_simulation": false,
+    "physical_acceptance": false,
+    "physical_trial_completed": false,
+    "qualified_pex": false,
+    "status": "FAIL_CURRENT_EIGHT_DRAIN_PHYSICAL_TRIAL",
+    "terminal_errors": [],
+    "timing_accepted": false,
+    "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 183, in terminal_body\n    try:action()\n        ^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 269, in <lambda>\n    terminal_body(lambda:do_work(ctx,proof,controls,a.bundle,evidence,report,a.pins_sha256,a.appimage),\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 172, in do_work\n    physical=native_readback(pins,saved,native,expected,app)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 118, in native_readback\n    if primary is not None:raise primary\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 101, in native_readback\n    execute([app,\"python\",root/NATIVE,\"--selected\",selected,\"--output\",out/\"layout\",\"--pins-sha256\",expected],\"eight-current-drain-straps\",1800)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 92, in execute\n    if failure is not None:raise failure\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 78, in execute\n    with tokenless():supervisor.supervised(list(map(str,argv)),label,seconds=seconds,cwd=root)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/docs/evidence/cdr-v59-mim-qualified-process-supervisor-20261025.py\", line 251, in supervised\n    if passed:assert result.returncode==0,(label,out[-3000:],err[-3000:])\n                     ^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('eight-current-drain-straps', '', 'Traceback (most recent call last):\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps_native.py\", line 184, in <module>\\n    if __name__==\"__main__\":main()\\n                            ~~~~^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps_native.py\", line 177, in main\\n    generate(pya,args.selected,args.output,config)\\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps_native.py\", line 107, in generate\\n    require(add[layer].sized(plan.CLEARANCE[layer]).interacting(foreign).is_empty(),\"new M%d foreign metal clearance device%d\"%(layer,nid))\\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps.py\", line 18, in require\\n    if not value:raise AssertionError(message)\\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nAssertionError: new M10 foreign metal clearance device3\\n')\n"
+  },
+  "attempt": 1,
+  "capsule_archive": {
+    "bytes": 8420635,
+    "sha256": "b5032fd8cd491ea5ae6062e9c97f54da4ba61b58eeac307f558d739301a83dc8"
+  },
+  "capsule_files": 88,
+  "complete_native_capsule_preserved": true,
+  "electrical_acceptance": false,
+  "files": {
+    "capsule-metadata/cdr-current-eight-drain-straps-41202306107-1.parts.json": {
+      "bytes": 881,
+      "sha256": "3b60f11d39fc1288bd089d25b3d857238ff8946fbbcdc6a9b143b33df2322ed8"
+    },
+    "capsule-metadata/complete-output-index.json": {
+      "bytes": 16493,
+      "sha256": "64531aa8802a3e2de653e9ecc2c28b451b21dbdd540c961d5147b8d18bfba828"
+    },
+    "jobs.json": {
+      "bytes": 12714,
+      "sha256": "b9478345426d4ade4122f759773aeb7178f453172755bf4f42e0463a3d194423"
+    },
+    "jobs/124540358196.json": {
+      "bytes": 5390,
+      "sha256": "9bf449d327d1c5a6d19e7fb07f8cfc97ff9339df7996facc9e408eeeb6a630a7"
+    },
+    "jobs/124540500052.json": {
+      "bytes": 1657,
+      "sha256": "4e8272f86e2b7fbb869f56d4e79ee4a760625f344e66c471b664a9719a7fc17a"
+    },
+    "jobs/124540531992.json": {
+      "bytes": 3964,
+      "sha256": "8a63c454f5f1e0bd5d1c0baad82762a3dc3c08da91a0809c30e7624f748a5f07"
+    },
+    "jobs/124541053227.json": {
+      "bytes": 1673,
+      "sha256": "ce249d6803dbde92d6a933b3172c0edee803e6e5f06eb806a862e5aaef7e3687"
+    },
+    "logs/124540358196.log": {
+      "bytes": 427350,
+      "sha256": "9a2e5c10b47883c7fa55230679f1821424cf41b109fbfe4b32b3140e5305f13c"
+    },
+    "logs/124540500052.log": {
+      "bytes": 7915,
+      "sha256": "63da77ffc38778ae46870ccf4a98cca4041c98cb6b8140cb88ab9c03cafadc04"
+    },
+    "logs/124540531992.log": {
+      "bytes": 931764,
+      "sha256": "d0ff305af54a4aec4208e3497c148d026d3b9f6a4e7c295040097b3e7a3f5b1b"
+    },
+    "logs/124541053227.log": {
+      "bytes": 7201,
+      "sha256": "07a9d55f6de82e6e22a2a6f71662da7e798a41c2dde9068a5bde669962db5c00"
+    },
+    "native-derived-shards/0000.json": {
+      "bytes": 824770,
+      "sha256": "16c5596dd5a34cba4f018dc81da6bf40f02cd75a85f304b4c53b55f699be6675"
+    },
+    "native-derived-shards/0001.json": {
+      "bytes": 920622,
+      "sha256": "08618dc56e1b2f98bd8c31bc18f4150792149e296d12ff01a0fc7795fb5ca5ec"
+    },
+    "native-derived-shards/0002.json": {
+      "bytes": 85984,
+      "sha256": "f2c61a8539412081c37c13973428b0c06545f6feb9965810abe191dfc8a66f49"
+    },
+    "native-derived-shards/0003.json": {
+      "bytes": 1964028,
+      "sha256": "a473f1232d4d13967d802aa819b84989c60d5bd1387bcdf0299dd45fcbfec1fb"
+    },
+    "native-derived-shards/0004.json": {
+      "bytes": 108056,
+      "sha256": "53a8da613e8ff87f07f71076e89f57373d2d78ccb66845e575a150a64b487576"
+    },
+    "native-index.json": {
+      "bytes": 4259,
+      "sha256": "f51b2bed876236312ef9a64f8fdcf680b5c5f430a27ef8e3299f230845a59cc0"
+    },
+    "native-record-locations.json": {
+      "bytes": 7125,
+      "sha256": "a5a402b655bab3e0b85cccdc29519b665feea33dad3943f48cff7cc1e71caebb"
+    },
+    "native-text-transport-errors.json": {
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "readable-records/complete-input-census.json": {
+      "bytes": 606462,
+      "sha256": "ff181ce1101e7e1c3782869ef06bc88b77af59e186ee78e7cdee5fa289050640"
+    },
+    "readable-records/complete-native-text-index.json": {
+      "bytes": 2020,
+      "sha256": "59fbfb398c0649ce027c5364de624cfa3204be5cdefc93f1f73fa72997bf279d"
+    },
+    "readable-records/native-records/layout/drain-003-proposal.json": {
+      "bytes": 2712,
+      "sha256": "8ddfe3b1a98ce4b6254615bd6b68f64bfd3fc43ae1d6ece61cbc0091f810d1de"
+    },
+    "readable-records/native-records/layout/generation-failure.json": {
+      "bytes": 1156,
+      "sha256": "4d089e3cd5d388390460f63de04d1900483e3f0155e96d2ee8150c30726b11ae"
+    },
+    "readable-records/native-records/native-lifecycle.json": {
+      "bytes": 5345,
+      "sha256": "6fb176fee4f6a7d46ca916c8054408585795bd436e3e8eafb54e18a94a9568f0"
+    },
+    "readable-records/result.json": {
+      "bytes": 5656,
+      "sha256": "31d8ccc1485e47ca5a10d0a23eb4adf297db4b54530bb2474f5e4cb59a95df10"
+    },
+    "readable-records/runtime-policy.json": {
+      "bytes": 950,
+      "sha256": "76e83dc8d57f658cb3bf170a1649c68e55e40ec482c209eba1888ddbfdc302cf"
+    },
+    "readable-records/terminal-integrity.json": {
+      "bytes": 274,
+      "sha256": "31d13e88a2a0f74870cabc8a46c5852e755c9a4120b2448d2b60147e3dcdb9c2"
+    },
+    "release.json": {
+      "bytes": 7780,
+      "sha256": "9c663a1b4e73949edf3e03300de8f516dc933da9c44475495f519e50cddc0344"
+    },
+    "run.json": {
+      "bytes": 13145,
+      "sha256": "c6fa8e7d2ab8bec3cd7d54ce26f2060581896b95ea5dfbcb802e5a069081dc2c"
+    },
+    "source-index.json": {
+      "bytes": 3971,
+      "sha256": "25f2a0ce0b873f2a144a71f919d23f017d43a3da4043d96646192f9119b4b1a6"
+    },
+    "source-records/context.json": {
+      "bytes": 15960,
+      "sha256": "eb4d85b9ad4e9ed3e377e48a3ed8ca172f4e7c285b3a74a81e2bf2076da83078"
+    },
+    "source-records/controls.json": {
+      "bytes": 6742,
+      "sha256": "3d06ee5412d959eeaaac0c88d33d063cde77b1747c570de5c872efb877211960"
+    },
+    "source-records/controls.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-records/controls.stdout": {
+      "bytes": 6743,
+      "sha256": "850988d55204c0ba22219aa98c49156628b487e9308d9819908a3d3414f5638d"
+    },
+    "source-records/execution-controls.json": {
+      "bytes": 1950,
+      "sha256": "0068b744ba38669d871fbb4b2e56ff74e51ba5ca8097d313c5599a08e67293ee"
+    },
+    "source-records/execution-controls.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-records/execution-controls.stdout": {
+      "bytes": 6759,
+      "sha256": "9990c24c9bbcbcab14b9c1184a824d2696eb513e4a8c8cef182bcd43a0efb2b4"
+    },
+    "source-records/execution-manifest.json": {
+      "bytes": 23701,
+      "sha256": "ab91402b1329d4ceb882377b9e4fe2cba6a187e86f08aa4767fd3d77668d3b62"
+    },
+    "source-records/ownership-controls.json": {
+      "bytes": 1723,
+      "sha256": "9d9be52e55bca2bb4bfeaaeeee8dbf243640bb57f2e74a8edc38ac4d57bb849d"
+    },
+    "source-records/ownership-controls.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-records/ownership-controls.stdout": {
+      "bytes": 5027,
+      "sha256": "7d659ad985dd5b7308e6fe9cfdc53a3f0df583126f2e7c06444cdb1d54851081"
+    },
+    "source-records/ownership-manifest.json": {
+      "bytes": 17289,
+      "sha256": "56414a109482fa2a219b492510b1952e5da057db4b44d836bf84fa60f618c936"
+    },
+    "source-records/publication-controls.json": {
+      "bytes": 4189,
+      "sha256": "f827125120c1fb51eaf5366de6d7043d4a0c0a5bb59243913c5ef7652449fc01"
+    },
+    "source-records/publication-controls.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-records/publication-controls.stdout": {
+      "bytes": 3335,
+      "sha256": "202819ca0a2853b528cc2a25f6448c2a3e0c1472f9c91a8cb1b8259a2a77a834"
+    },
+    "source-records/tail-controls.json": {
+      "bytes": 1506,
+      "sha256": "e37abf4b20608ac6f9faceaee0947500685cfbff5de403f53ababdb7c07dbe36"
+    },
+    "source-records/tail-controls.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-records/tail-controls.stdout": {
+      "bytes": 2127,
+      "sha256": "42d7e8e7e7b4fd019f828cd978585d03111c1d872660a7bc087a8af9deb987b9"
+    },
+    "source-records/tail-manifest.json": {
+      "bytes": 178155,
+      "sha256": "0adaa1b957fefe191c81aaf3b382da9e4d156649541e523b5021ac20d412dde3"
+    },
+    "tag-ref.json": {
+      "bytes": 519,
+      "sha256": "8b0118c1b23c190529262030fe7ca56d29edbec0b48a01222c965372e96ea197"
+    },
+    "tested-source/.github/workflows/cdr-current-access-overlay.yml": {
+      "bytes": 29918,
+      "sha256": "02fd81e380a1a0359511b0b927cad249b4970ad533dd2f06227964e68ab4dcc2"
+    },
+    "tested-source/docs/evidence/cdr-current-eight-drain-cloud-physical-source-20261031.json": {
+      "bytes": 2548,
+      "sha256": "adb9874b3a6d0e1465cd66d3dce70d1fedaaf405197c9739a43e0a2ca03e3c73"
+    },
+    "tested-source/docs/evidence/cdr-current-eight-drain-runtime-namespace-source-20261031.json": {
+      "bytes": 1867,
+      "sha256": "83a3571c60dfe86433774e75f794d2062e1922cf0ba017678d7f5ae3c7895c7b"
+    },
+    "tested-source/scripts/cdr-current-tail-straps-inputs.json": {
+      "bytes": 15001,
+      "sha256": "eafd84fd8f4ad094e7ffec4c2cfeede402fe59420dd92283f82273b9b5063caf"
+    },
+    "tested-source/scripts/cdr-current-tail-straps-pins.json": {
+      "bytes": 178155,
+      "sha256": "0adaa1b957fefe191c81aaf3b382da9e4d156649541e523b5021ac20d412dde3"
+    },
+    "tested-source/scripts/cdr_current_tail_straps.py": {
+      "bytes": 3696,
+      "sha256": "d760ae865d8a055bd670b6420d144a9e7cb7e82060856524808e90190b21b0fd"
+    },
+    "tested-source/scripts/cdr_current_tail_straps_native.py": {
+      "bytes": 14189,
+      "sha256": "af700df970ba955cf6b5bd7e3e85e038d38af22e407379461e520b67428660ca"
+    },
+    "tested-source/scripts/check_cdr_current_tail_straps.py": {
+      "bytes": 6178,
+      "sha256": "51eb5dfc05769251ae321b5c1813648b51ec603385b87ec6e0592bbff5a47c1c"
+    },
+    "tested-source/scripts/cloud_cdr_current_tail_straps.py": {
+      "bytes": 20099,
+      "sha256": "081544a85ccd77171fa75e96b3f9bbbf0e712bf0bba82928266b1c5d7238a845"
+    }
+  },
+  "full_phy_accepted": false,
+  "generation": null,
+  "independent_archive_reextraction": false,
+  "native_payload_downloaded_locally": false,
+  "native_records": 29,
+  "native_transport_errors": [],
+  "physical": null,
+  "physical_acceptance": false,
+  "physical_trial_completed": false,
+  "raw_job_logs": 4,
+  "run": 41202306107,
+  "schema": "current-eight-drain-physical-terminal-v1",
+  "source": "5751072669e52450bd025b0cd6c72873dc273bc1",
+  "source_controls": 187,
+  "source_controls_passed": true,
+  "source_records": 19,
+  "timing_accepted": false,
+  "workflow_conclusion": "failure"
+}

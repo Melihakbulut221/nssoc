@@ -1,0 +1,50 @@
+{
+  "actual_native_inputs_acquired": true,
+  "context": {
+    "attempt": 1,
+    "case": "nominal_early",
+    "group": "cdr-current-eight-drain-straps",
+    "run_id": 41202306107,
+    "source": "5751072669e52450bd025b0cd6c72873dc273bc1",
+    "tag": "cloud-results-41202306107-1-cdr-current-eight-drain-straps",
+    "token": "41202306107-1"
+  },
+  "controls": {
+    "controls": {
+      "bytes": 6742,
+      "sha256": "3d06ee5412d959eeaaac0c88d33d063cde77b1747c570de5c872efb877211960"
+    },
+    "execution": {
+      "bytes": 1950,
+      "sha256": "0068b744ba38669d871fbb4b2e56ff74e51ba5ca8097d313c5599a08e67293ee"
+    },
+    "ownership": {
+      "bytes": 1723,
+      "sha256": "9d9be52e55bca2bb4bfeaaeeee8dbf243640bb57f2e74a8edc38ac4d57bb849d"
+    },
+    "publication": {
+      "bytes": 4189,
+      "sha256": "f827125120c1fb51eaf5366de6d7043d4a0c0a5bb59243913c5ef7652449fc01"
+    },
+    "tail": {
+      "bytes": 1506,
+      "sha256": "e37abf4b20608ac6f9faceaee0947500685cfbff5de403f53ababdb7c07dbe36"
+    }
+  },
+  "electrical_acceptance": false,
+  "error": "AssertionError(('eight-current-drain-straps', '', 'Traceback (most recent call last):\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps_native.py\", line 184, in <module>\\n    if __name__==\"__main__\":main()\\n                            ~~~~^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps_native.py\", line 177, in main\\n    generate(pya,args.selected,args.output,config)\\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps_native.py\", line 107, in generate\\n    require(add[layer].sized(plan.CLEARANCE[layer]).interacting(foreign).is_empty(),\"new M%d foreign metal clearance device%d\"%(layer,nid))\\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps.py\", line 18, in require\\n    if not value:raise AssertionError(message)\\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nAssertionError: new M10 foreign metal clearance device3\\n'))",
+  "full_phy_accepted": false,
+  "input_census": {
+    "full_members": 2797,
+    "native_inputs_retained_in_bundle": true,
+    "selected": 42
+  },
+  "new_simulation": false,
+  "physical_acceptance": false,
+  "physical_trial_completed": false,
+  "qualified_pex": false,
+  "status": "FAIL_CURRENT_EIGHT_DRAIN_PHYSICAL_TRIAL",
+  "terminal_errors": [],
+  "timing_accepted": false,
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 183, in terminal_body\n    try:action()\n        ^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 269, in <lambda>\n    terminal_body(lambda:do_work(ctx,proof,controls,a.bundle,evidence,report,a.pins_sha256,a.appimage),\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 172, in do_work\n    physical=native_readback(pins,saved,native,expected,app)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 118, in native_readback\n    if primary is not None:raise primary\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 101, in native_readback\n    execute([app,\"python\",root/NATIVE,\"--selected\",selected,\"--output\",out/\"layout\",\"--pins-sha256\",expected],\"eight-current-drain-straps\",1800)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 92, in execute\n    if failure is not None:raise failure\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_straps.py\", line 78, in execute\n    with tokenless():supervisor.supervised(list(map(str,argv)),label,seconds=seconds,cwd=root)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/docs/evidence/cdr-v59-mim-qualified-process-supervisor-20261025.py\", line 251, in supervised\n    if passed:assert result.returncode==0,(label,out[-3000:],err[-3000:])\n                     ^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('eight-current-drain-straps', '', 'Traceback (most recent call last):\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps_native.py\", line 184, in <module>\\n    if __name__==\"__main__\":main()\\n                            ~~~~^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps_native.py\", line 177, in main\\n    generate(pya,args.selected,args.output,config)\\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps_native.py\", line 107, in generate\\n    require(add[layer].sized(plan.CLEARANCE[layer]).interacting(foreign).is_empty(),\"new M%d foreign metal clearance device%d\"%(layer,nid))\\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_straps.py\", line 18, in require\\n    if not value:raise AssertionError(message)\\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nAssertionError: new M10 foreign metal clearance device3\\n')\n"
+}
