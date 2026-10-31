@@ -1,13 +1,18 @@
 # SPDX-License-Identifier: Apache-2.0
-name: PCIe epoch ingress source controls only
+name: PCIe epoch ingress reviewed digital candidate
 on:
   workflow_dispatch:
     inputs:
       mode:
         type: choice
-        options: [controls]
+        options: [controls, rtl]
         default: controls
-        description: Source and refusal controls only; native simulation disabled
+        description: Explicit source-only controls or reviewed digital RTL candidate
+      approved_source:
+        type: string
+        required: false
+        default: ''
+        description: Exact current 40-hex source SHA; mandatory only in rtl mode
 permissions:
   contents: read
   actions: read
@@ -31,10 +36,15 @@ jobs:
       - name: Assert actual source context and immutable methods
         env:
           MODE: ${{ inputs.mode }}
-          METHOD_SHA: 31fbfa76b18cda4826966835304330822db467a333d7669c7bbf95d11608a4ac
+          APPROVED_SOURCE: ${{ inputs.approved_source }}
+          METHOD_SHA: 465457e8a4524100be586db6d408185a02299070acea82da5333bcec6637b710
         run: |
           set -euo pipefail
-          test "$MODE" = controls
+          case "$MODE" in
+            controls) test -z "$APPROVED_SOURCE" ;;
+            rtl) test "$APPROVED_SOURCE" = "$GITHUB_SHA" ;;
+            *) exit 1 ;;
+          esac
           test "$GITHUB_REF" = refs/heads/codex/pcie-training-epoch-ingress-v1
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           echo "$METHOD_SHA  scripts/pcie-training-epoch-ingress-methods.json" | sha256sum -c -
@@ -44,6 +54,8 @@ jobs:
           mkdir epoch-source-controls
           python3 -u scripts/check_pcie_training_epoch_ingress.py --source-controls 2>&1 | tee epoch-source-controls/pins.log
           python3 -u scripts/check_pcie_training_epoch_ingress_source.py 2>&1 | tee epoch-source-controls/controls.log
+          python3 -u scripts/ensure_cloud_tested_source_release.py --controls 2>&1 | tee epoch-source-controls/release-controls.log
+          python3 -u scripts/wait_cloud_tested_source_release.py --controls 2>&1 | tee epoch-source-controls/wait-controls.log
       - name: Preserve all source outputs, including failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -52,8 +64,83 @@ jobs:
           path: epoch-source-controls/
           if-no-files-found: warn
           retention-days: 90
-  preserve-job-log:
+  epoch-rtl:
     needs: source-controls
+    if: inputs.mode == 'rtl'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      NSSOC_EPOCH_NATIVE: rtl
+      NSSOC_EPOCH_APPROVED_SOURCE: ${{ inputs.approved_source }}
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Recheck source and independently reserved empty exact-source release
+        run: |
+          set -euo pipefail
+          python3 -u scripts/check_pcie_training_epoch_ingress.py --source-controls
+          python3 -u scripts/wait_cloud_tested_source_release.py --group pcie-training-epoch-ingress-v1
+          python3 -u scripts/check_pcie_training_epoch_ingress.py --admit-reservation
+      - name: Provision qualified digital RTL tools
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends iverilog yosys build-essential autoconf flex bison libfl-dev zlib1g-dev help2man python3-venv
+          build="$RUNNER_TEMP/epoch-ingress-verilator"
+          prefix="$RUNNER_TEMP/epoch-ingress-tools"
+          mkdir "$build"
+          git -C "$build" init
+          git -C "$build" fetch --depth=1 https://github.com/verilator/verilator.git 51cdf52d0f3a3e59b51fd87762646a851e9f4aff
+          git -C "$build" checkout --detach FETCH_HEAD
+          test "$(git -C "$build" rev-parse HEAD)" = 51cdf52d0f3a3e59b51fd87762646a851e9f4aff
+          test -z "$(git -C "$build" status --porcelain)"
+          cd "$build"
+          autoconf
+          ./configure --prefix="$prefix"
+          make -j2
+          make install
+          echo "$prefix/bin" >> "$GITHUB_PATH"
+      - name: Complete reviewed digital matrix and structural CDC census
+        run: |
+          set -euo pipefail
+          python3 -u scripts/check_pcie_training_epoch_ingress.py --out hw/soc/out/pcie-training-epoch-ingress-v1 \
+            2>&1 | tee epoch-ingress-rtl.log
+      - name: Print complete terminal digital result
+        if: always()
+        run: |
+          if test -f hw/soc/out/pcie-training-epoch-ingress-v1/result.json; then
+            cat hw/soc/out/pcie-training-epoch-ingress-v1/result.json
+          fi
+      - name: Publish every output byte including failed cases without replacing assets
+        if: always()
+        run: |
+          set -euo pipefail
+          if test -d hw/soc/out/pcie-training-epoch-ingress-v1; then
+            python3 -u scripts/check_pcie_training_epoch_ingress.py \
+              --publish hw/soc/out/pcie-training-epoch-ingress-v1 \
+              --destination "$RUNNER_TEMP/epoch-ingress-publication"
+          fi
+      - name: Preserve every compile log XML hierarchy result and publication record
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pcie-epoch-rtl-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            epoch-ingress-rtl.log
+            hw/soc/out/pcie-training-epoch-ingress-v1/
+            ${{ runner.temp }}/epoch-ingress-publication/
+          if-no-files-found: warn
+          retention-days: 90
+  preserve-job-log:
+    needs: [source-controls, epoch-rtl]
     if: always()
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -70,12 +157,13 @@ jobs:
           out=pathlib.Path("full-source-job-log")
           data=json.loads((out/"jobs.json").read_bytes())
           assert data["total_count"]<=100
-          jobs=[j for j in data["jobs"] if j["name"]=="source-controls"]
-          assert len(jobs)==1 and jobs[0]["status"]=="completed"
-          job=jobs[0]
-          raw=subprocess.check_output(["gh","api","--allow-escape-sequences",f"repos/{os.environ['GITHUB_REPOSITORY']}/actions/jobs/{job['id']}/logs"])
-          (out/(str(job["id"])+".log")).write_bytes(raw)
-          (out/"source-binding.json").write_text(json.dumps(dict(source=os.environ["GITHUB_SHA"],run=os.environ["GITHUB_RUN_ID"],attempt=os.environ["GITHUB_RUN_ATTEMPT"],native_executed=False,source_job=job),indent=2)+"\n")
+          jobs=[j for j in data["jobs"] if j["name"] in ("source-controls","epoch-rtl")]
+          assert len(jobs)==2 and all(j["status"]=="completed"for j in jobs)
+          for job in jobs:
+              if job["conclusion"]=="skipped":continue
+              raw=subprocess.check_output(["gh","api","--allow-escape-sequences",f"repos/{os.environ['GITHUB_REPOSITORY']}/actions/jobs/{job['id']}/logs"])
+              (out/(str(job["id"])+".log")).write_bytes(raw)
+          (out/"source-binding.json").write_text(json.dumps(dict(source=os.environ["GITHUB_SHA"],run=os.environ["GITHUB_RUN_ID"],attempt=os.environ["GITHUB_RUN_ATTEMPT"],jobs=jobs,physical_acceptance=False),indent=2)+"\n")
           PY
       - name: Upload unfiltered source job log
         if: always()

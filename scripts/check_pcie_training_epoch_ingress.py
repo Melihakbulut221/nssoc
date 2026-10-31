@@ -9,6 +9,9 @@ ROOT=Path(__file__).resolve().parents[1]
 BENCH=ROOT/'hw/soc/tb/cocotb';RTL=ROOT/'hw/soc/rtl/pcie'
 METHOD=ROOT/'scripts/pcie-training-epoch-ingress-methods.json'
 BRANCH='codex/pcie-training-epoch-ingress-v1'
+GROUP='pcie-training-epoch-ingress-v1'
+REVIEWED_CORE_SOURCE='2a69d010371aff75fb8be204c92ef4c1d384d48e'
+REVIEWED_CORE_PINS={"hw/soc/rtl/pcie/soc_pcie_training_epoch_control_v1.v":"cefc0002abae89ad0cafaae0bc6b78df02ddc4f702340b96b6465b0232747143","hw/soc/rtl/pcie/soc_pcie_training_ingress_x4_v1.v":"92d9cf982699c334aacf612f258fad32e43efa9e728589643479d16326872474","hw/soc/tb/cocotb/test_pcie_training_epoch_control.py":"42771e1e62452a33108d975422a52797f5dd4f5a9e9c1a80e62dcfa3cf96220f","hw/soc/tb/cocotb/test_pcie_training_ingress.py":"6b3ed9aa218f43dcc7e1314a9e1e0c3b5eeb7f67bea71a381c1ac38d821c3048"}
 BASE='1d9847cfd8c159a3faef5dd50cc05cdf364cdfc8'
 CONTROL='soc_pcie_training_epoch_control_v1'
 INGRESS='soc_pcie_training_ingress_x4_v1'
@@ -33,7 +36,13 @@ def context(env,head):
 def validate_manifest(m,raw):
     assert m['schema']=='pcie-training-epoch-ingress-v1'and m['base']==BASE
     assert m['branch']==BRANCH
-    assert m['native_authorized']is False,'Native execution not reviewed'
+    assert m['native_authorized']is True,'Native activation manifest'
+    assert m['native_review']['core_source']==REVIEWED_CORE_SOURCE
+    assert m['native_review']['dispatch_requires_exact_source']is True
+    assert {p:m['protected'][p]for p in REVIEWED_CORE_PINS}==REVIEWED_CORE_PINS,'Reviewed RTL/oracle changed'
+    expected_acceptance={'complete_semantic_training_owner','mainchip_serial_integration','full_gen3_x4_phy',
+      'analog_cdr_pll_pma','physical_cdc','layout_drc_lvs','final_setup_hold','production_signoff'}
+    assert set(m['physical_and_protocol_acceptance'])==expected_acceptance,'Acceptance schema'
     assert all(v is False for v in m['physical_and_protocol_acceptance'].values())
     assert set(raw)==set(m['protected']),'Exact protected source set'
     for p,h in m['protected'].items():
@@ -64,9 +73,32 @@ def pins():
     assert m['source_origins']['shared_front_ref']=='64d31863ad2f5cd59483251dbe1dad8e7069c44e'
     return m
 
-def authorize_native(m):
-    # Root review required before changing this source-bound unconditional refusal.
-    raise PermissionError('Candidate native execution is disabled pending exact-source root review')
+def authorize_native(m,env=None,head=None):
+    # Explicit manual exact-source dispatch only. Unit controls use isolated
+    # dictionary arguments; neither real environment nor real Git refs are changed.
+    env=os.environ if env is None else env
+    if head is None:head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+    context(env,head)
+    assert m['native_authorized']is True
+    assert m['native_review']['core_source']==REVIEWED_CORE_SOURCE
+    assert {p:m['protected'][p]for p in REVIEWED_CORE_PINS}==REVIEWED_CORE_PINS
+    assert env.get('GITHUB_JOB')=='epoch-rtl','Dedicated native job only'
+    assert env.get('NSSOC_EPOCH_NATIVE')=='rtl','Explicit native mode required'
+    assert env.get('NSSOC_EPOCH_APPROVED_SOURCE')==head,'Exact dispatch source approval required'
+    return dict(source=head,reviewed_core_source=REVIEWED_CORE_SOURCE,native_job_authorized=True,
+      physical_acceptance=False)
+
+def reservation(m):
+    import ensure_cloud_tested_source_release as release
+    authorize_native(m)
+    tag,source=release.context(GROUP,os.environ)
+    return empty_reservation(release.api('releases/tags/'+tag),release.api('git/ref/tags/'+tag),tag,source)
+
+def empty_reservation(info,ref,tag,source):
+    import ensure_cloud_tested_source_release as release
+    proof=release.validate_release(info,ref,tag,source)
+    assert proof['existing_assets']==[],'Native execution requires a separate empty exact-source release'
+    return proof
 
 def xml_review(raw,module,returncode,mutation=None,log=''):
     assert type(raw)is bytes and len(raw)<=2*1024**2 and b'<!DOCTYPE'not in raw and b'<!ENTITY'not in raw
@@ -165,12 +197,12 @@ def hierarchy(out,env,vendor):
     return proofs
 
 def run(out):
-    m=pins();authorize_native(m)
+    m=pins();authorize_native(m);reserved=reservation(m)
     out=Path(out).resolve();assert out.is_relative_to(ROOT/'hw/soc/out')
     out.mkdir(parents=True,exist_ok=False)
     result=dict(status='RUNNING',source=os.environ['GITHUB_SHA'],run=os.environ['GITHUB_RUN_ID'],
       attempt=os.environ['GITHUB_RUN_ATTEMPT'],method_sha256=sha(METHOD.read_bytes()),
-      simulations=[],hierarchy=[],physical_and_protocol_acceptance=m['physical_and_protocol_acceptance'])
+      reservation=reserved,simulations=[],hierarchy=[],physical_and_protocol_acceptance=m['physical_and_protocol_acceptance'])
     error=None
     try:
         env,result['toolchain']=shared.runtime(out,('icarus','verilator'))
@@ -227,13 +259,45 @@ def run(out):
     if error:raise error
     return result
 
+def publish(out,destination):
+    import cloud_chunked_results
+    import ensure_cloud_tested_source_release as release
+    m=pins();authorize_native(m);out=Path(out).resolve();destination=Path(destination).resolve()
+    assert out.is_relative_to(ROOT/'hw/soc/out')and out.exists()
+    assert not destination.is_relative_to(out)
+    destination.mkdir(parents=True,exist_ok=False)
+    tag,source=release.context('pcie-training-epoch-ingress-v1',os.environ)
+    info=release.api('releases/tags/'+tag)
+    proof=release.validate_release(info,release.api('git/ref/tags/'+tag),tag,source)
+    assert proof['existing_assets']==[],'Never overwrite or retry a partial publication'
+    stem='pcie-training-epoch-ingress-v1'
+    manifest=cloud_chunked_results.pack(out,stem,destination)
+    direct=destination/'result.json';direct.write_bytes((out/'result.json').read_bytes())
+    uploads=[destination/r['name']for r in manifest['parts']]+[destination/(stem+'.parts.json'),direct]
+    for path in uploads:
+        subprocess.run(['gh','release','upload',tag,str(path),'-R',release.REPO],check=True)
+    terminal=release.api('releases/tags/'+tag)
+    assert {a['name']for a in terminal['assets']}=={p.name for p in uploads}
+    for a in terminal['assets']:
+        p=destination/a['name'];assert a['size']==p.stat().st_size and a['digest']=='sha256:'+sha(p.read_bytes())
+    receipt=dict(status='COMPLETE_UNFILTERED_OUTPUTS_PUBLISHED',release_id=info['id'],tag=tag,source=source,
+      assets=terminal['assets'],all_outputs_preserved=True,assets_overwritten=False,
+      physical_and_protocol_acceptance=json.loads(METHOD.read_bytes())['physical_and_protocol_acceptance'])
+    shared.save(destination/'publication-receipt.json',receipt)
+    subprocess.run(['gh','release','upload',tag,str(destination/'publication-receipt.json'),'-R',release.REPO],check=True)
+    print(json.dumps(receipt,indent=2))
+
 def main():
     p=argparse.ArgumentParser();g=p.add_mutually_exclusive_group(required=True)
     g.add_argument('--source-controls',action='store_true');g.add_argument('--out')
+    g.add_argument('--admit-reservation',action='store_true');g.add_argument('--publish')
+    p.add_argument('--destination')
     a=p.parse_args()
     if a.source_controls:
         m=pins();print(json.dumps(dict(status='PASS_SOURCE_PINS_ONLY',source=os.environ['GITHUB_SHA'],
-          protected=len(m['protected']),native_executed=False,native_authorized=False,
+          protected=len(m['protected']),native_executed=False,native_authorized=m['native_authorized'],
           physical_and_protocol_acceptance=m['physical_and_protocol_acceptance']),indent=2))
+    elif a.admit_reservation:print(json.dumps(reservation(pins()),indent=2))
+    elif a.publish:publish(a.publish,a.destination)
     else:run(a.out)
 if __name__=='__main__':main()

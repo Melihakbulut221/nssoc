@@ -68,9 +68,14 @@ clean release plus CDC physical constraints remain integration obligations.
 
 ## Planned cloud verification, not yet executed
 
-The native guard is an unconditional refusal pending exact-source root review.
-The manual workflow has only source-controls and complete log preservation jobs.
-No native simulation or physical job is dispatched by this source branch.
+The original source-only candidate and 16 passing controls are preserved at
+2a69d010371aff75fb8be204c92ef4c1d384d48e and run41226031156. Root and peer reviewed
+the exact RTL and oracle bytes there. The activation adapter leaves those bytes
+unchanged and requires the real dedicated epoch-rtl job, actual branch/HEAD,
+manual rtl mode and an explicit approved_source equal to that workflow's SHA.
+A separate empty exact-source release must already exist before tool provisioning
+or any simulation. Controls mode performs no native work. An activation source
+and passing source/refusal controls still require explicit dispatch review.
 
 Planned matrix: 110 positive named RTL tests, six compiled semantic mutants and
 four hierarchy checks. New command/actual-ingress tests run in Icarus and pinned
@@ -113,3 +118,14 @@ and reset values, recovered/common clock bindings and ASYNC_REG attributes are
 recorded and checked. This is structural evidence; bundled-data setup/hold,
 synchronizer placement/metastability parameters and asynchronous reset recovery
 remain physical CDC/reset integration obligations, not qualified here.
+
+## Reviewed activation adapter
+
+The 110/6/4 candidate matrix and original50 shared-front cases are unchanged.
+Pinned Verilator source51cdf52d0f3a3e59b51fd87762646a851e9f4aff, Python3.12 and
+hash-pinned cocotb2.0.1/find_libpython0.4.0 match the qualified shared-front flow.
+Actual Icarus/Yosys version evidence is retained. The exact source release helpers
+are reused unchanged; the all-output publisher is the frozen shared-front
+publisher with only candidate group/pin binding and the explicit native guard.
+An existing partial release is refused, never overwritten. Native outputs and
+compiled images remain entirely in GitHub. No physical acceptance flag changes.

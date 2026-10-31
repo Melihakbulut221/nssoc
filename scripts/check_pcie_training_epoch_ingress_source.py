@@ -50,10 +50,10 @@ class Controls(unittest.TestCase):
         self.reject_manifest(lambda m,r:r.__setitem__('extra',b''))
         p=next(iter(self.raw));self.reject_manifest(lambda m,r:r.__setitem__(p,r[p].decode()))
     def test_native_authority_and_each_acceptance_refused(self):
-        self.reject_manifest(lambda m,r:m.__setitem__('native_authorized',True))
+        self.reject_manifest(lambda m,r:m.__setitem__('native_authorized',False))
         for k in self.m['physical_and_protocol_acceptance']:
             self.reject_manifest(lambda m,r,k=k:m['physical_and_protocol_acceptance'].__setitem__(k,True))
-        with self.assertRaises(PermissionError):target.authorize_native(self.m)
+        with self.assertRaises(AssertionError):target.authorize_native(self.m)
     def test_positive_xml_is_complete(self):
         rows=self.review(self.xml());self.assertEqual(len(rows),6)
         self.assertTrue(all(r['disposition']=='PASS'for r in rows))
@@ -109,6 +109,50 @@ class Controls(unittest.TestCase):
             self.assertNotIn('force(',s);self.assertNotIn('deposit(',s)
         self.assertIn('table_rx.SerialOracle',self.raw['hw/soc/tb/cocotb/test_pcie_training_ingress.py'].decode())
         self.assertIn('self.gen3.next_word(k)',self.raw['hw/soc/tb/cocotb/test_pcie_training_ingress.py'].decode())
+
+    def native_env(self):
+        return dict(self.env,GITHUB_JOB='epoch-rtl',NSSOC_EPOCH_NATIVE='rtl',NSSOC_EPOCH_APPROVED_SOURCE='a'*40)
+    def test_exact_native_context_only_is_admitted_without_execution(self):
+        before=dict(os.environ);result=target.authorize_native(self.m,self.native_env(),'a'*40)
+        self.assertTrue(result['native_job_authorized']);self.assertFalse(result['physical_acceptance'])
+        self.assertEqual(dict(os.environ),before)
+    def test_native_mode_job_source_and_core_refusals(self):
+        for k,v in [('GITHUB_JOB','source-controls'),('NSSOC_EPOCH_NATIVE','controls'),
+          ('NSSOC_EPOCH_APPROVED_SOURCE',''),('NSSOC_EPOCH_APPROVED_SOURCE','b'*40),
+          ('GITHUB_REF','refs/heads/main'),('GITHUB_EVENT_NAME','push')]:
+            env=self.native_env();env[k]=v
+            with self.assertRaises(AssertionError):target.authorize_native(self.m,env,'a'*40)
+        m=copy.deepcopy(self.m);m['native_review']['core_source']='b'*40
+        with self.assertRaises(AssertionError):target.authorize_native(m,self.native_env(),'a'*40)
+        m=copy.deepcopy(self.m);m['protected'][next(iter(target.REVIEWED_CORE_PINS))]='b'*64
+        with self.assertRaises(AssertionError):target.authorize_native(m,self.native_env(),'a'*40)
+    def test_empty_exact_source_reservation_and_partial_refusals(self):
+        tag='cloud-results-123-1-'+target.GROUP;source='a'*40
+        info=dict(id=7,tag_name=tag,target_commitish=source,draft=False,prerelease=True,assets=[])
+        ref=dict(ref='refs/tags/'+tag,object=dict(type='commit',sha=source))
+        self.assertEqual(target.empty_reservation(info,ref,tag,source)['existing_assets'],[])
+        cases=[
+          lambda i,r:i['assets'].append(dict(id=8,name='partial.json',size=1,digest='sha256:'+'b'*64)),
+          lambda i,r:i.__setitem__('target_commitish','b'*40),
+          lambda i,r:r['object'].__setitem__('sha','b'*40),
+          lambda i,r:r['object'].__setitem__('type','tag'),
+          lambda i,r:i.__setitem__('draft',True),
+          lambda i,r:i.__setitem__('prerelease',False)]
+        for mutate in cases:
+            i,r=copy.deepcopy((info,ref));mutate(i,r)
+            with self.assertRaises(AssertionError):target.empty_reservation(i,r,tag,source)
+    def test_empty_acceptance_map_and_changed_review_refused(self):
+        self.reject_manifest(lambda m,r:m.__setitem__('physical_and_protocol_acceptance',{}))
+        self.reject_manifest(lambda m,r:m['native_review'].__setitem__('dispatch_requires_exact_source',False))
+        self.reject_manifest(lambda m,r:m['native_review'].__setitem__('core_source','b'*40))
+    def test_publisher_is_frozen_source_with_only_candidate_bindings(self):
+        original=(target.ROOT/'scripts/check_pcie_shared_serial_front.py').read_text()
+        expected=original[original.index('def publish('):original.index('def main():')]
+        expected=expected.replace('pcie-shared-serial-front-v1','pcie-training-epoch-ingress-v1')
+        expected=expected.replace('    pins();out=Path(out).resolve();','    m=pins();authorize_native(m);out=Path(out).resolve();')
+        expected=expected.replace("    save(destination/'publication-receipt.json',receipt)","    shared.save(destination/'publication-receipt.json',receipt)")
+        actual=(target.ROOT/'scripts/check_pcie_training_epoch_ingress.py').read_text()
+        self.assertEqual(actual.count(expected),1)
 
 if __name__=='__main__':
     suite=unittest.defaultTestLoader.loadTestsFromTestCase(Controls)

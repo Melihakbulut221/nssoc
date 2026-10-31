@@ -6,7 +6,7 @@
     "Full training oracle/state handoff, soc_top replacement and full serial PHY remain open.",
     "Clean PMA/reset/loss assertions and coherent common-domain PMA acknowledgment are external contracts.",
     "Bundled-data physical CDC/metastability and reset recovery/removal remain unqualified.",
-    "Native runner refuses unconditionally until exact-source root review; workflow has no native job."
+    "Native work requires explicit reviewed exact-source manual dispatch in the dedicated job and separate empty release; physical claims remain false."
   ],
   "mutations": [
     {
@@ -64,7 +64,14 @@
       "test": "actual_gen3_all_offsets_opaque_os_and_194_bit_metadata"
     }
   ],
-  "native_authorized": false,
+  "native_authorized": true,
+  "native_review": {
+    "actual_rtl_dispatched": false,
+    "core_source": "2a69d010371aff75fb8be204c92ef4c1d384d48e",
+    "dispatch_requires_exact_source": true,
+    "source_controls_proof": "9fa7ac82df98e32db95d08bb527580fbaf31a1c8",
+    "source_controls_run": 41226031156
+  },
   "physical_and_protocol_acceptance": {
     "analog_cdr_pll_pma": false,
     "complete_semantic_training_owner": false,
@@ -99,7 +106,7 @@
     ]
   },
   "protected": {
-    "docs/pcie-training-epoch-ingress-20261031.md": "5df2b5761b6c0c6e8ac066317d587c0d2f8a6c2c06e0aebaf7bf8242d6029d70",
+    "docs/pcie-training-epoch-ingress-20261031.md": "96b7e56522643500ce90105d191a9ad95386b418be8a341a2a531bbf2f31ac6d",
     "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v": "009d4885c5492dbc291b7eea3987304847d9a187013439459ada829a18ed54af",
     "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v": "5a0661a0681bbe351714305859a111bb8c53544e80e680e1056c057ffcc4de66",
     "hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v": "d9fb7d39ec8916e33efebdcd7fe62fd6e32f437cab3e8436436bd9e09eb2b8b9",
@@ -140,10 +147,13 @@
     "hw/soc/tb/pcie_shared_front_events_compare.v": "1419d1ec858d758a1aa75be00a31efe17a60ef27b99cad288b0b36cb07127de3",
     "scripts/check_pcie_gen12_raw32_rx.py": "451667d66bb77df193e56ed60cc82f91738d676316e4b6016f3bc9d119d7c7da",
     "scripts/check_pcie_shared_serial_front.py": "06e34afcf4e51bbe008f866db7d3fd19ed44159bfe32b3af54e67c3adb849343",
-    "scripts/check_pcie_training_epoch_ingress.py": "a5c43e9ddf5da9f946bbff98de8583aa5ce0d2e255e7f4c3d25161bc50dd75d2",
-    "scripts/check_pcie_training_epoch_ingress_source.py": "4175d791cb69bf6368f0a471b921d2a1ea0e923a940e442d7c5fd4e5eed202e7",
+    "scripts/check_pcie_training_epoch_ingress.py": "161f29a6a0721628c28575a103ccfb6ead547a9add938ce73f072f6fa409e918",
+    "scripts/check_pcie_training_epoch_ingress_source.py": "3e975c413a753c5a82d1a5cdf271fb2e5e58474f3015a8e27a9edf6cb0755191",
+    "scripts/cloud_chunked_results.py": "fe414dcd92c233554a82a2151232bab8803e6ec7863df3872fbde009d3905816",
+    "scripts/ensure_cloud_tested_source_release.py": "ff213cb47a28b65207ef280be8ab4a0059622a3daa6a1e2c81f781c81ff2876e",
     "scripts/pcie-gen12-record-cdc-requirements.txt": "71f8607c76595a1254177a372191a5ed5e17a50367c4248e461ee02cb8f4d070",
     "scripts/pcie-shared-serial-front-methods.json": "6f6065e40e55be6b97e951318a1e37b93d77e42112f923b19b3b3e9187299a78",
+    "scripts/wait_cloud_tested_source_release.py": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73",
     "sw/tests/data/pcie_gen12_ieee8023z_codes.json": "e7c1ced79890c6cbef114045370bb110a00a21e863b4f802680ea12adc0ab438"
   },
   "schema": "pcie-training-epoch-ingress-v1",
