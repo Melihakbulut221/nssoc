@@ -1,14 +1,19 @@
-# Cloud continuation — checkpoint v156
+# Cloud continuation — checkpoint v157
 
-Updated: 2026-10-31T09:46:13.245442+00:00
+Updated: 2026-10-31T09:50:26.849009+00:00
 
-All tests, numerical work, CAD and native payloads remain on GitHub runners. Local workspace, project temp scans and native processes are empty. The latest cloud-only instruction overrides old local goal wording.
+All tests, numerical work, CAD and native archives/models/GDS/ODB/DEF/waves stay on GitHub runners. Local workspace, project temp scans and native processes are empty. Latest cloud-only user instruction overrides old local goal wording.
 
-Pointer audit 41187928413 completed all native reads: full delta, master identities, 608 before and 608 after wire projections. The final comparator failed on the real wire-rect kind. All 162 proof files and the 1261-member native capsule are preserved; failure stays failure. Saved-data finalizer 41189662022 at f45f2ba now handles wire-rect and compares both typed and untyped exact rectangles. It performs zero fresh database reads, repairs or routes. Its 30 source controls and original 162 controls must pass. Release 429844778 was independently reserved empty; do not dispatch or reserve again.
+Saved-data finalizer 41189662022 succeeded at f45f2ba. All 30 new and original 162 source controls passed. All 53 proof files, 4 raw logs, 64 derived records and 20-member native capsule are preserved; proof 82efce43 was byte-readback verified. There is no active native job in this checkpoint.
 
-The exact terminal collector and continuation note are stored as v156. Authoritative checkpoint: docs/evidence/cloud-active-checkpoint-20261024.json. An unchanged diagnostic does not qualify a physical candidate. The existing 8h monitor is read-only; the last observed HTTP502 remains unresolved. Full serial PHY, routed main chip and final setup/hold remain open. All physical/electrical/timing gates remain unchanged.
+Actual diagnosis: all 1351 new cells use the exact native template master, but legacy Python wrapper equality returns false for all, including two wrappers of the template. All 608 changed nets have genuinely different exact rectangle sets even ignoring primitive kind. Therefore the original wire gate must continue rejecting the partial repair; this is not only an encoding change. All 153129 original cells and 1691 clock records remain unchanged.
+
+Next: qualify cloud-only reconstruction from the accepted original ODB plus exactly verified new diode placements/A connections and template PG, preserving every original wire opcode/data and metadata. Correct same-live-DB object comparisons with native identity. Creation APIs and full write/reload/admission must be qualified before actual routing. No gate may be waived; no physical candidate has been promoted. Exact next design and evidence are stored in the v157 note and authoritative docs/evidence/cloud-active-checkpoint-20261024.json.
+
+Full serial PHY, routed main chip and final setup/hold remain open. Original electrical/physical/timing gates remain unchanged. Existing 8h monitor is read-only; last observed HTTP502 remains unresolved.
 
 ## Historical notes below — not current running-job status
+
 
 
 
