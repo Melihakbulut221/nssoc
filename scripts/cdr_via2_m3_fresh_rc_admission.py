@@ -35,9 +35,24 @@ def validate_config(c):
     require(c['generation_authorized']is c['electrical_simulation_authorized']is False,'no generation or waveform authority')
     require(c['producer_path']==PRODUCER and c['original_output_root']==str(ORIGINAL)and c['fresh_output_root']==str(OUT),'separate original and fresh roots')
     require(c['core']is not None and c['namespace_source']=='0a9e1741232bf60fdf4f4c443ea3466575b7c6b3','qualified corrected core binding required')
-    required={'producer_positive','producer_refusals','namespace_positive','namespace_refusals','core_controls','context_refusals','current_job_refusals','source_log_refusals','lifecycle_cases','publication_cases','publication_refusals','emission_refusals'}
+    required={'producer_positive','producer_refusals','namespace_positive','namespace_refusals','core_controls','context_refusals','current_job_refusals','source_log_refusals','lifecycle_cases','publication_cases','publication_refusals','emission_refusals','runtime_positive','runtime_refusals','phase_controls'}
     require(set(c['source_control_requirements'])==required and all(type(v)is int and v>0 for v in c['source_control_requirements'].values()),'complete positive actual source-control requirements')
     return c
+
+def historical_controls(root,c):
+    for name,spec in c['historical_source_controls'].items():
+        prefix=spec['prefix'];raw=q.regular(root,prefix+'/receipt.json').read_bytes()
+        require(q.fingerprint(raw)==spec['receipt'],'exact historical source proof '+name);receipt=q.decode(raw)
+        require(receipt['source']==spec['source']and receipt['run']==spec['run_id']and receipt['attempt']==1 and receipt['conclusion']=='success','actual historical source-control execution')
+        require(len(receipt['files'])+1==spec['files'],'complete historical proof file census')
+        for relative,pin in receipt['files'].items():require(q.fingerprint(q.regular(root,prefix+'/'+relative).read_bytes())==pin,'complete historical proof bytes '+relative)
+        if name=='core':
+            require(receipt['top_level_passed']==28 and receipt['failed']==0 and receipt['native_acquired']is receipt['native_executed']is False,'actual full numerical source controls only')
+        elif name=='namespace':
+            require(receipt['tests']==48 and receipt['expected_refusals']==42 and receipt['positives']==6 and receipt['native_acquisition']is receipt['native_execution']is False,'actual corrected model-schema namespace source controls')
+        else:raise AssertionError('unexpected historical source-control group')
+    for name,pin in c['core']['source_files'].items():require(q.file_pin(q.regular(root,name))==pin,'exact qualified numerical core closure '+name)
+    return True
 
 def source_guard(ctx=None,root=ROOT):
     ctx=context(os.environ)if ctx is None else ctx
@@ -50,6 +65,7 @@ def source_guard(ctx=None,root=ROOT):
     require(m['fresh_rc_execution_authorized']is c['fresh_rc_execution_authorized'],'separate authority consistent with manifest')
     p=q.decode(q.regular(root,PRODUCER).read_bytes());producer.metadata(root,p)
     require(p['native_authorization_asserted_by_this_record']is False,'producer evidence grants no execution authority')
+    historical_controls(root,c)
     return c,p
 
 def authorize_native(ctx,c):
