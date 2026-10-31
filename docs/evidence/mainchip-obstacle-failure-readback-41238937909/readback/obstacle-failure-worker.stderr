@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_obstacle_failure_readback.py", line 159, in <module>
+    else:main()
+         ^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_obstacle_failure_readback.py", line 100, in main
+    raw=api("actions/artifacts/13056264389/zip",True)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_obstacle_failure_readback.py", line 23, in api
+    raw=subprocess.check_output(args,stderr=subprocess.PIPE,timeout=180)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['gh', 'api', '--allow-escape-sequences', 'repos/Melihakbulut221/nssoc/actions/artifacts/13056264389/zip', '-H', 'Accept: application/octet-stream']' returned non-zero exit status 1.

@@ -1,0 +1,69 @@
+name: Via2 M3 canonical view source controls only
+on:
+  workflow_dispatch:
+    inputs:
+      approved_source:
+        type: string
+        required: true
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: via2-m3-canonical-view-source-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+  APPROVED_SOURCE: ${{ inputs.approved_source }}
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr-via2-m3-canonical-view-pins.json
+      - name: Materialize exact source-only closure
+        run: |
+          python3 -B - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          name='scripts/cdr-via2-m3-canonical-view-pins.json'
+          m=json.loads(Path(name).read_bytes())
+          assert m['native_execution_authorized'] is False
+          assert os.environ['APPROVED_SOURCE']==os.environ['GITHUB_SHA']
+          names=sorted(set(m['files'])|{name})
+          assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
+          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
+          PY
+      - name: Run real projection with explicit synthetic fixtures only
+        run: python3 -B scripts/check_cdr_via2_m3_canonical_view.py > canonical-view-controls.stdout 2> canonical-view-controls.stderr
+      - name: Emit complete source-only result and streams
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          for name in ('canonical-view-source-controls/result.json','canonical-view-controls.stdout','canonical-view-controls.stderr'):
+              p=Path(name)
+              if not p.is_file():continue
+              assert not p.is_symlink()
+              raw=p.read_bytes();raw.decode('utf-8','strict')
+              chunks=[raw[i:i+24000]for i in range(0,len(raw),24000)]or[b'']
+              print('CANONICAL_VIEW_SOURCE_INDEX '+json.dumps(dict(path=name,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):print('CANONICAL_VIEW_SOURCE_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          PY
+      - name: Retain complete source control results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: canonical-view-source-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            canonical-view-source-controls
+            canonical-view-controls.stdout
+            canonical-view-controls.stderr
+          if-no-files-found: error
+          retention-days: 90
