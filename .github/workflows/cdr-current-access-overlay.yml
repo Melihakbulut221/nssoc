@@ -1,4 +1,4 @@
-name: Current CDR admitted eight-drain fresh graph with full identity and material verification
+name: Current eight-drain fresh RC with original500-device and seven-MIM audits
 on:
   workflow_dispatch:
     inputs:
@@ -7,12 +7,12 @@ on:
         type: choice
         required: true
         default: controls
-        options: [controls, graph]
+        options: [controls, rc]
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-current-eight-drain-graph-${{ github.ref }}
+  group: cdr-current-eight-drain-fresh-rc-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -114,7 +114,7 @@ jobs:
           Path('cdr-drain-wave-source-controls/graph-manifest.json').write_bytes(raw)
           PY
       - name: Install exact original numerical runtime for synthetic source controls
-        run: python3 -B -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2
+        run: python3 -B -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
       - name: Exercise original parser, measurements, refusals and failure preservation on synthetic inputs
         run: python3 -B scripts/check_cdr_drain_m1_wave_replay.py --output cdr-drain-wave-source-controls/controls.json > cdr-drain-wave-source-controls/controls.stdout 2> cdr-drain-wave-source-controls/controls.stderr
       - name: Require complete actual source controls
@@ -196,13 +196,26 @@ jobs:
           records={key:json.loads((root/name).read_bytes())for key,name in (('controls','controls.json'),('publication','publication-controls.json'),('ownership','ownership-controls.json'),('execution','execution-controls.json'),('tail','tail-controls.json'),('graph','graph-controls.json'))}
           host.bind_controls(host.context(os.environ),records)
           PY
+      - name: Bind current RC authority and test unchanged numerical workers and exact new input admission
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import cdr_current_eight_drain_fresh_rc_admission as s
+          raw=Path(s.METHOD).read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='d823ddc2c2423874b04bf0dbe96baf7e0fffdd4fef0ad4344919b874a7bcb160'
+          assert s.methods()==json.loads(raw)
+          s.contract()
+          PY
+          python3 -B scripts/check_cdr_current_eight_drain_fresh_rc.py --output cdr-drain-wave-source-controls/fresh-rc-controls.json > cdr-drain-wave-source-controls/fresh-rc-controls.stdout 2> cdr-drain-wave-source-controls/fresh-rc-controls.stderr
       - name: Always preserve complete source records
         if: always()
         run: |
           python3 -B - <<'PY'
           import base64,hashlib,json
           from pathlib import Path
-          for name in ('context.json','controls.json','controls.stdout','controls.stderr','publication-controls.json','publication-controls.stdout','publication-controls.stderr','ownership-manifest.json','ownership-controls.json','ownership-controls.stdout','ownership-controls.stderr','execution-manifest.json','execution-controls.json','execution-controls.stdout','execution-controls.stderr','tail-manifest.json','tail-controls.json','tail-controls.stdout','tail-controls.stderr','graph-manifest.json','graph-controls.json','graph-controls.stdout','graph-controls.stderr'):
+          for name in ('context.json','controls.json','controls.stdout','controls.stderr','publication-controls.json','publication-controls.stdout','publication-controls.stderr','ownership-manifest.json','ownership-controls.json','ownership-controls.stdout','ownership-controls.stderr','execution-manifest.json','execution-controls.json','execution-controls.stdout','execution-controls.stderr','tail-manifest.json','tail-controls.json','tail-controls.stdout','tail-controls.stderr','graph-manifest.json','graph-controls.json','graph-controls.stdout','graph-controls.stderr','fresh-rc-controls.json','fresh-rc-controls.stdout','fresh-rc-controls.stderr'):
               p=Path('cdr-drain-wave-source-controls')/name
               assert not p.is_symlink()
               raw=p.read_bytes() if p.is_file() else b''
@@ -266,7 +279,7 @@ jobs:
 
   graph:
     needs: [source-controls, preserve-job-log]
-    if: ${{ inputs.mode == 'graph' }}
+    if: ${{ inputs.mode == 'rc' }}
     permissions:
       contents: write
       actions: read
@@ -314,7 +327,7 @@ jobs:
           assert job['status']=='completed' and job['conclusion']=='success'
           raw=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(job['id'])+'/logs']);assert raw
           (out/'source-controls.log').write_bytes(raw)
-          expected={'context.json','controls.json','controls.stdout','controls.stderr','publication-controls.json','publication-controls.stdout','publication-controls.stderr','ownership-manifest.json','ownership-controls.json','ownership-controls.stdout','ownership-controls.stderr','execution-manifest.json','execution-controls.json','execution-controls.stdout','execution-controls.stderr','tail-manifest.json','tail-controls.json','tail-controls.stdout','tail-controls.stderr','graph-manifest.json','graph-controls.json','graph-controls.stdout','graph-controls.stderr'}
+          expected={'context.json','controls.json','controls.stdout','controls.stderr','publication-controls.json','publication-controls.stdout','publication-controls.stderr','ownership-manifest.json','ownership-controls.json','ownership-controls.stdout','ownership-controls.stderr','execution-manifest.json','execution-controls.json','execution-controls.stdout','execution-controls.stderr','tail-manifest.json','tail-controls.json','tail-controls.stdout','tail-controls.stderr','graph-manifest.json','graph-controls.json','graph-controls.stdout','graph-controls.stderr','fresh-rc-controls.json','fresh-rc-controls.stdout','fresh-rc-controls.stderr'}
           idx={};chunks={}
           for line in raw.decode().splitlines():
               for marker,is_index in (('CDR_DRAIN_WAVE_SOURCE_INDEX ',True),('CDR_DRAIN_WAVE_SOURCE_CHUNK ',False)):
@@ -355,7 +368,7 @@ jobs:
           python3 -B - <<'PY'
           import json,os,subprocess,time
           from pathlib import Path
-          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-cdr-current-eight-drain-graph'
+          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-cdr-current-eight-drain-fresh-rc'
           prefix='repos/Melihakbulut221/nssoc/'
           for attempt in range(120):
               r=subprocess.run(['gh','api',prefix+'releases/tags/'+tag],capture_output=True,text=True)
@@ -371,12 +384,24 @@ jobs:
           proof=dict(tag=tag,tested_source=e['GITHUB_SHA'],release_id=info['id'],existing_assets=[],target_verified=True,assets_overwritten=False,externally_reserved=True,creation_attempted=False,read_attempts=attempt+1)
           Path('ownership-reservation.json').write_text(json.dumps(proof,sort_keys=True,indent=2)+'\n')
           PY
+      - name: Authorize exact new RC source and controls against independent empty reservation
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import cdr_current_eight_drain_fresh_rc_admission as s
+          assert hashlib.sha256(Path(s.METHOD).read_bytes()).hexdigest()=='d823ddc2c2423874b04bf0dbe96baf7e0fffdd4fef0ad4344919b874a7bcb160'
+          proof=s.preflight()
+          with open(os.environ['GITHUB_ENV'],'a')as stream:stream.write(s.RESERVATION_ENV+'='+proof['sha256']+'\n')
+          print(json.dumps(proof,sort_keys=True))
+          PY
       - name: Install pinned numerical runtime
-        run: python3 -B -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2
+        run: python3 -B -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
       - name: Acquire and verify original immutable native AppImage after independent reservation
         run: |
           sudo apt-get update
-          sudo apt-get install --no-install-recommends -y libfuse2 tcl8.6 uidmap
+          sudo apt-get install --no-install-recommends -y libfuse2 tcl8.6 tk8.6 tcl-dev tk-dev build-essential m4 autoconf libreadline-dev libx11-dev libxext-dev libxpm-dev libxt-dev libcairo2-dev libgl1-mesa-dev libglu1-mesa-dev uidmap
           curl --fail --location --retry 2 --output "$RUNNER_TEMP/current-tail-physical.AppImage" https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
           python3 -B - <<'PY'
           import hashlib,os
@@ -419,8 +444,18 @@ jobs:
           Path('current-cdr-runtime-policy.json').write_text(json.dumps(proof,sort_keys=True,indent=2)+'\n')
           print(json.dumps(proof,sort_keys=True))
           PY
-      - name: Extract exact admitted eight-drain graph and verify complete native identities and declared material
-        run: python3 -B scripts/cloud_cdr_current_tail_graph.py --bundle "$GITHUB_WORKSPACE/hw/soc/out/cdr-current-eight-drain-graph-${GITHUB_RUN_ID}-1" --publication current-cdr-tail-graph-publication --reservation ownership-reservation.json --controls ownership-source-proof/bound-controls.json --pins-sha256 7318774a4b27685ae8e9c92db7522501c1c9b2bf614fa04909c5967e642d2537 --appimage "$RUNNER_TEMP/current-tail-physical.AppImage" > current-cdr-tail-graph.stdout 2> current-cdr-tail-graph.stderr
+      - name: Extract fresh500-device binding, wire RC and seven MIMs in both native orders
+        env:
+          CLOUD_APPIMAGE: ${{ runner.temp }}/current-tail-physical.AppImage
+        run: |
+          mkdir -p hw/soc/out/cdr-current-eight-drain-fresh-rc-driver-logs
+          python3 -B scripts/cloud_cdr_current_eight_drain_fresh_rc.py > hw/soc/out/cdr-current-eight-drain-fresh-rc-driver-logs/driver.log 2>&1
+      - name: Permanently preserve every native output including failures
+        if: always()
+        env:
+          CLOUD_APPIMAGE: ${{ runner.temp }}/current-tail-physical.AppImage
+        run: |
+          python3 -B scripts/cloud_cdr_current_eight_drain_fresh_rc.py --publish-only > current-cdr-tail-graph.stdout 2> current-cdr-tail-graph.stderr
       - name: Always emit complete derived records and actual failure output
         if: always()
         run: |
@@ -443,14 +478,18 @@ jobs:
             ownership-source-proof
             ownership-reservation.json
             current-cdr-runtime-policy.json
-            hw/soc/out/cdr-current-eight-drain-graph-${{ github.run_id }}-1
+            hw/soc/out/cloud-cdr-current-eight-drain-fresh-rc
+            hw/soc/out/cloud-cdr-current-eight-drain-fresh-rc-publication
+            hw/soc/out/cdr-current-eight-drain-fresh-rc-preflight
+            hw/soc/out/cdr-current-eight-drain-fresh-rc-driver-logs
+            hw/soc/out/cdr-current-eight-drain-graph-41206809668-1
             current-cdr-tail-graph-publication
             current-cdr-tail-graph.stdout
             current-cdr-tail-graph.stderr
 
   preserve-graph-job-logs:
     needs: [source-controls, preserve-job-log, graph]
-    if: ${{ always() && inputs.mode == 'graph' }}
+    if: ${{ always() && inputs.mode == 'rc' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
