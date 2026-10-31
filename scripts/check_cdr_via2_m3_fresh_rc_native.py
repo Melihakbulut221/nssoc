@@ -22,6 +22,9 @@ def source_guard():
     return dict(source=head,run_id=int(e['GITHUB_RUN_ID']),attempt=1)
 
 def controls(ctx,out):
+    # Numerical fixtures bind only source/run/attempt, never production mode/job.
+    # The actual environment is checked independently by authorized() below.
+    ctx=n.context_key(ctx)
     out=Path(out);out.mkdir(parents=True,exist_ok=False);records=[]
     def record(name,**kw):records.append(dict(name=name,passed=True,**kw))
     def reject(name,call):
