@@ -90,6 +90,8 @@ def validate_native_result(inner):
       and labels.index(CLEAR)+1==labels.index(ROUTE),"single clear immediately before single route")
     clear=rows[labels.index(CLEAR)];route=rows[labels.index(ROUTE)]
     p.exact(clear["argv"],ARGV,"exact clear invocation")
+    p.exact(route["argv"],["/work/engine/openroad","-no_init","-exit",str(WORK/"route.tcl")],
+      "exact unchanged route invocation")
     p.require(type(clear["requested_timeout_seconds"])is int and clear["requested_timeout_seconds"]==1200,
       "original clear phase budget")
     p.require(type(route["requested_timeout_seconds"])is int and route["requested_timeout_seconds"]==14400,

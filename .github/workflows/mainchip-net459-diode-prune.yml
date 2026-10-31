@@ -92,13 +92,26 @@ jobs:
           sys.path.insert(0,'scripts')
           import mainchip_stale_wire_admission as a
           raw=Path(a.MANIFEST).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='f3f637faca563aea8e9125276d0823495fb64fa71a7eb2905770c0caed2d06a9'
+          assert hashlib.sha256(raw).hexdigest()=='9631d9f99e9a52feddcb5b43b766f17b0b3ef9e134233c7c4a6292ba82e80105'
           assert a.source_gate()==json.loads(raw)
           Path('bulk-postdrt-integration-controls/stale-wire-admission-manifest.json').write_bytes(raw)
           for path in a.NEW:ast.parse(Path(path).read_bytes(),filename=path)
           PY
           set -o pipefail
           python3 -B scripts/check_mainchip_stale_wire_admission.py 2>&1 | tee bulk-postdrt-integration-controls/stale-wire-admission-controls.log
+          python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          report=json.loads(Path('bulk-postdrt-integration-controls/stale-wire-admission-controls.json').read_bytes())
+          assert report['source']==os.environ['GITHUB_SHA'] and report['run_id']==int(os.environ['GITHUB_RUN_ID']) and report['attempt']==1
+          assert report['status']=='PASS' and report['tests']==28 and report['failures']==report['errors']==report['skipped']==[]
+          assert all(report[k] is False for k in ('native_acquisition','native_executed','physical_acceptance','timing_accepted','full_phy_accepted'))
+          fixture=report['synthetic_capsule']
+          assert fixture['synthetic_only'] is True and fixture['native_bytes_generated'] is False
+          assert fixture['tests_mock_no_audit_functions'] is True and fixture['complete_audit_nonmutation_passed'] is True
+          assert len(fixture['fixture_files'])==58
+          assert {k:fixture[k] for k in ('commands','supervised_commands','mutable_nets','attachments','protected_nets','instances','nets')}==dict(commands=17,supervised_commands=15,mutable_nets=608,attachments=1351,protected_nets=1691,instances=154480,nets=143820)
+          PY
       - name: Validate and test scoped stale-wire and exact clock census adapters
         run: |
           python3 -B - <<'PY'
