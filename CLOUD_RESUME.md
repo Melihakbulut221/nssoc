@@ -1,14 +1,17 @@
-# Cloud continuation — checkpoint v159
+# Cloud continuation — checkpoint v160
 
-Updated: 2026-10-31T10:12:06.513025+00:00
+Updated: 2026-10-31T10:23:45.358414+00:00
 
-Cloud-only execution remains required. Local workspace remains empty; all native payloads stay on runners. Existing reconstruction41190910993 atbe2f83b2 is the sole active native trial; source controls52+162 passed. Read current live state before action; never dispatch or reserve the existing run again. Exact terminal collector remains the unexecuted v158 recipe. The v159 snapshot updates status only; no native result is claimed until complete evidence is collected.
+All work and native payloads remain on GitHub runners. Local workspace, project temporary files and native CAD processes are empty.
 
-New pinned source finding for routing: read_guides clears every net guide set, and text writeGuides omits via-layer, congestion, jumper and terminal-connection flags. A partial guide-file import would erase unrelated guides; a full text roundtrip also loses metadata. See the v159 guide-research note. After successful diode reconstruction, inspect actual native guide records before any necessary overlay; preserve all unowned/protected guides and full physical admission. Source inspection alone does not qualify native guide editing.
+Actual native diode reconstruction41190910993 completed all5 phases with all7 commands rc0. It added1351diodes and passed the complete original admission:143820 original wire/net records,153129 original instances and1691 clock records preserved. The candidate is213,798,975B SHA2675b9465e7e220931b608ecc0aeec4f171355f3b19259024e04c4e0fb079c34. All63 proof files and47-member native capsule are preserved and proof836d0872 byte-readback verified. The overall workflow remains FAILURE because host code used saved_audit_result instead of saved_diode_reconstruction_result. Do not rerun the successful native construction.
 
-Authoritative checkpoint: docs/evidence/cloud-active-checkpoint-20261024.json. Full serial PHY, routed main chip and final setup/hold remain open. Existing8h monitor remains read-only; last observed HTTP502 remains unresolved. No acceptance threshold has changed.
+The host transfer fix0292d62f validates full native phase/command scope and admission before report transfer. Source-only regression41192394563 reproduces the authentic old failure, executes the actual corrected host transfer, and checks8 refusal cases. Expected62 controls plus original162. No native job/release is authorized for this controls-mode dispatch. Exact terminal collector and note are stored as v160; inspect the live run before acting.
+
+Next: after source regression, completely restore/verify the saved native capsule on a runner and qualify guide handling plus constrained routing. v159 research proves read_guides clears all net guides and text guide roundtrip loses via-layer/flags; preserve every unowned/protected guide and original physical invariant. Full serial PHY, routed main chip and final setup/hold remain open. No physical/timing gate changed. Authoritative checkpoint: docs/evidence/cloud-active-checkpoint-20261024.json.
 
 ## Historical notes below — not current running-job status
+
 
 
 
