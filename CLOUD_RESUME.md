@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v160
+# Cloud continuation — checkpoint v161
 
-Updated: 2026-10-31T10:23:45.358414+00:00
+Updated: 2026-10-31T10:26:31.505485+00:00
 
-All work and native payloads remain on GitHub runners. Local workspace, project temporary files and native CAD processes are empty.
+All computation and native payloads remain on GitHub runners; local workspace is empty. No active native job is recorded here.
 
-Actual native diode reconstruction41190910993 completed all5 phases with all7 commands rc0. It added1351diodes and passed the complete original admission:143820 original wire/net records,153129 original instances and1691 clock records preserved. The candidate is213,798,975B SHA2675b9465e7e220931b608ecc0aeec4f171355f3b19259024e04c4e0fb079c34. All63 proof files and47-member native capsule are preserved and proof836d0872 byte-readback verified. The overall workflow remains FAILURE because host code used saved_audit_result instead of saved_diode_reconstruction_result. Do not rerun the successful native construction.
+Actual diode reconstruction41190910993 passed all5 native phases/all7 commands and the complete original admission, preserving143820 original wire/net records,153129 original cells and1691 clockrecords while adding1351diodes. Candidate213,798,975B SHA2675b9465e7e220931b608ecc0aeec4f171355f3b19259024e04c4e0fb079c34 is retained in the complete47-member native capsule. The overall producer workflow remains FAILURE due to recorded host KeyError saved_audit_result; this failure is never rewritten.
 
-The host transfer fix0292d62f validates full native phase/command scope and admission before report transfer. Source-only regression41192394563 reproduces the authentic old failure, executes the actual corrected host transfer, and checks8 refusal cases. Expected62 controls plus original162. No native job/release is authorized for this controls-mode dispatch. Exact terminal collector and note are stored as v160; inspect the live run before acting.
+The corrected host transfer0292d62f passed source-only regression41192394563:62 controls plus162 original controls. The authentic old failure was reproduced and the actual fixed host statement accepted the complete real native result;8 refusal mutations also passed. All30 proof files and2raw logs ated506529 were byte-readback verified. Construction was not repeated. Exact collectors v158 andv160 have both executed; do not rerun them or redispatch unchanged jobs.
 
-Next: after source regression, completely restore/verify the saved native capsule on a runner and qualify guide handling plus constrained routing. v159 research proves read_guides clears all net guides and text guide roundtrip loses via-layer/flags; preserve every unowned/protected guide and original physical invariant. Full serial PHY, routed main chip and final setup/hold remain open. No physical/timing gate changed. Authoritative checkpoint: docs/evidence/cloud-active-checkpoint-20261024.json.
+Next: restore and verify the complete native capsule on a runner, qualify actual guide ownership and any restricted guide overlay, then run constrained detailed routing on the exact candidate. Read v159 research before using read_guides: it clears all net guides and text roundtrip loses via-layer/flags. Preserve all unowned/protected guide records and original physical invariants. Require full DRC/antenna/connectivity/power/original-clock checks followed by final extraction/STA. Full serial PHY and final setup/hold remain open; no final acceptance is claimed. Authoritative checkpoint: docs/evidence/cloud-active-checkpoint-20261024.json.
 
 ## Historical notes below — not current running-job status
+
 
 
 
