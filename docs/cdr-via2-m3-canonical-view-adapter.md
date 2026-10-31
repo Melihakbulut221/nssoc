@@ -1,6 +1,6 @@
 # Canonical view of the physically checked Via2/M3 candidate
 
-This source prepares one fresh graph/view of the existing candidate; it does not regenerate geometry, extract RC, run transient simulation, or claim electrical closure. The initial workflow exposes source controls only. View authority is false, as are regeneration, RC, electrical, full-PHY and timing acceptance. Source preparation has not acquired any native design archive.
+This source prepares one fresh graph/view of the existing candidate; it does not regenerate geometry, extract RC, run transient simulation, or claim electrical closure. The workflow exposes controls and view modes. This source separately authorizes only canonical-view execution after actual same-source controls and an independent empty exact-source destination are authenticated. Regeneration, RC, electrical, full-PHY and timing acceptance remain false. Source preparation has not acquired any native design archive.
 
 ## Immutable inputs
 
@@ -20,10 +20,12 @@ The immutable AppImage, tokenless child boundary, original resource limits, hear
 
 ## Source verification boundary
 
-Hosted fixtures exercise both exact producer admission maps, synthetic complete 330/172-member restored byte maps, changed/missing bytes, original result retention, current job/source context, raw log transport, original publication and lifecycle failures, and the complete core/projection controls. Fifteen actual synthetic incremental-failure JSON records are retained separately. No actual candidate view, RC or waveform has executed in this source-preparation step. A future activation must be separately reviewed, pass its own exact-source controls and receive an independently reserved empty destination before native acquisition.
+Hosted fixtures exercise both exact producer admission maps, synthetic complete 330/172-member restored byte maps, changed/missing bytes, original result retention, current job/source context, raw log transport, original publication and lifecycle failures, and the complete core/projection controls. Fifteen actual synthetic incremental-failure JSON records are retained separately. No actual candidate view, RC or waveform has executed in this source-preparation step. This activation must pass its own exact-source controls and receive root review and an independently reserved empty destination before its single actual canonical-view dispatch. No actual view has run at preparation time.
 
 The publication transport deliberately retains the original frozen replay-named schema/status fields. Those fields authenticate transport completeness only; the new canonical-view qualification is carried by its own source-bound result and never by that legacy transport label.
 
 The hosted emitter additionally refuses native/compressed suffixes anywhere in a path, including composite names such as x.gds.json and x.spice.log. Thirty-two synthetic refusal cases include case variations, native directory components, unknown text and invalid UTF-8; five valid derived streams are replayed byte-for-byte, including failure messages mentioning native filenames without redaction. The full output inventory retains every excluded file for cloud-only publication.
 
 Hidden path components are refused before suffix checks, including .gds.json and .gds/result.json. The exact published 502-member input inventory also contains native .lyrdb reports; that suffix is explicitly excluded and covered by its own composite-name fixture. This classification change does not alter the complete cloud inventory or any calculation.
+
+The disabled source b4ca5a65cbbb36a8edbc6d57a852c1633c4680aa completed GitHub run 41243146068 successfully; its complete 47-file proof is preserved at commit 7e7c980c4a70bd2b0b2c2bcded2ca5c1824ab3c1 under docs/evidence/cdr-via2-m3-canonical-view-controls-41243146068/. This activation changes only the authorization boolean, workflow, documentation and matching pin manifest. Core, admission, host/native pipeline, publisher and checker bytes remain unchanged. The controls-mode canonical-view job is skipped; a view-mode job requires both successful prerequisite jobs, then authenticates their complete actual source log before acquiring either design archive.
