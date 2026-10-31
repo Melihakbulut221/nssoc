@@ -45,6 +45,61 @@ def actual_controls(pya,candidate,out,before,raw,material,bbox,added):
         else:raise AssertionError("Accepted actual serialized fault: "+name)
     require(len(rows)==5,"complete actual native mutation controls")
     return rows
+def segmented_m2(pya,tr,owned,full,add_m1,record):
+    """Search only three declared drain-centered widths inside the original envelope."""
+    foreign={layer:(full[layer]-owned[layer]).merged()for layer in(10,19,29)}
+    # Extra5nm is a conservative guard against equality/boundary interaction.
+    blocked=(foreign[10].sized(plan.CLEARANCE[10]+5)+foreign[19].sized(5)+foreign[29].sized(5)).merged()
+    candidates=[];record["metal2_candidates"]=[]
+    for width in plan.M2_WIDTHS:
+        local_box=pya.Box(830-width//2,plan.M2_BOX[1],830+width//2,plan.M2_BOX[3])
+        local=(blocked.transformed(tr.inverted())&pya.Region(local_box)).merged()
+        intervals=[(poly.bbox().bottom//5*5,((poly.bbox().top+4)//5)*5)for poly in local.each()]
+        spans=plan.open_spans(local_box.bottom,local_box.top,intervals)
+        pieces=[pya.Box(local_box.left,lo,local_box.right,hi).transformed(tr)for lo,hi in spans]
+        groups=[[]for _ in pieces];decisions=[]
+        for index,raw in enumerate(plan.local_plan()["via1"]):
+            box=pya.Box(*raw).transformed(tr);cut=pya.Region(box)
+            containing=[i for i,piece in enumerate(pieces)if(cut.sized(50)-pya.Region(piece)).is_empty()]
+            require(len(containing)<=1,"unique legal upper metal segment")
+            decision=dict(index=index,box_dbu=box_record(box),insert=False)
+            if not containing:decision["reason"]="outside_conservatively_spaced_M2_segment"
+            elif not cut.sized(plan.CLEARANCE[19]).interacting(foreign[19]).is_empty():
+                decision["reason"]="spacing_to_existing_foreign_Via1"
+            elif not cut.sized(plan.CLEARANCE[19]).interacting(owned[19]).is_empty():
+                decision["reason"]="spacing_to_existing_same_net_Via1"
+            else:
+                require((cut.sized(10)-(owned[8]+add_m1)).is_empty(),"new V1 lower enclosure")
+                decision.update(insert=True,reason="new_owned_segment_cut",segment=containing[0])
+                groups[containing[0]].append((index,box))
+            decisions.append(decision)
+        kept=[];cuts=[];bridged=0
+        for i,piece in enumerate(pieces):
+            group=groups[i]
+            if len(group)<2:
+                for index,box in group:decisions[index].update(insert=False,reason="segment_requires_two_new_vias")
+                continue
+            require(pya.Region(piece).sized(plan.CLEARANCE[10]).interacting(foreign[10]).is_empty(),"actual new M2 foreign clearance")
+            require(pya.Region(piece).interacting(foreign[19]+foreign[29]).is_empty(),"actual new M2 foreign via separation")
+            kept.append(piece);cuts.extend(box for index,box in group)
+            ys=[plan.CUT_CENTERS[index][1]for index,box in group];bridged+=max(ys)-min(ys)
+        union=pya.Region()
+        for box in kept:union.insert(box)
+        for box in cuts:require((pya.Region(box).sized(50)-union).is_empty(),"actual selected V1 upper enclosure")
+        proof=dict(width_dbu=width,local_envelope=box_record(local_box),blocked_local_polygons=[p.to_s()for p in local.each()],
+          blocked_y_intervals=[list(x)for x in intervals],open_y_spans=[list(x)for x in spans],
+          retained_top_boxes=[box_record(x)for x in kept],cut_decisions=decisions,new_cuts=len(cuts),
+          bridged_drain_length_dbu=bridged,minimum_new_cuts=32,minimum_new_cuts_per_segment=2,
+          eligible=len(cuts)>=32,geometric_score_only_not_electrical_acceptance=True)
+        record["metal2_candidates"].append(proof)
+        if proof["eligible"]:candidates.append(((bridged,width,len(cuts)),kept,cuts,proof))
+    if not candidates:return None
+    score,kept,cuts,proof=max(candidates,key=lambda row:row[0])
+    record.update(selected_metal2_width_dbu=proof["width_dbu"],selected_geometric_score=list(score),
+      cut_decisions=proof["cut_decisions"],selection="maximum bridged drain length, then widest M2, then cut count")
+    return kept,cuts
+
+
 def generate(pya,selected,out,config):
     gp=BASE+"parent/layout/"+plan.TOP+".gds"
     layout=pya.Layout();layout.read(str(selected/gp))
@@ -95,42 +150,35 @@ def generate(pya,selected,out,config):
         native_layer=lvs.layer_by_index(graph["native_layer_mapping"]["8"])
         require(lvs.probe_net(native_layer,point).cluster_id==net.cluster_id,"actual LVS drain point owner")
         require((owned[8]-lvs.shapes_of_net(net,native_layer,True)).is_empty(),"complete M1 native partition")
-        boxes={8:pya.Box(*plan.M1_BOX).transformed(tr),10:pya.Box(*plan.M2_BOX).transformed(tr)}
-        add={layer:pya.Region(box)for layer,box in boxes.items()}
+        m1_box=pya.Box(*plan.M1_BOX).transformed(tr);add_m1=pya.Region(m1_box)
         record=dict(device=nid,native_cluster=net.cluster_id,native_name=net.name,wire_component=component,
           hierarchy=hierarchy,anchor=a,original_rail_dbu=box_record(matches[0].box.transformed(tr)),
-          proposed_metal={str(k):box_record(v)for k,v in boxes.items()},cut_decisions=[],clearance_complete=False)
+          proposed_metal1=box_record(m1_box),maximum_metal2_envelope=box_record(pya.Box(*plan.M2_BOX).transformed(tr)),
+          cut_decisions=[],clearance_complete=False)
         reports.append(record)
         put(out,"drain-%03d-proposal.json"%nid,record)
-        for layer in(8,10):
-            foreign=(full[layer]-owned[layer]).merged()
-            require(add[layer].sized(plan.CLEARANCE[layer]).interacting(foreign).is_empty(),"new M%d foreign metal clearance device%d"%(layer,nid))
-            require(add[layer].interacting(full[19]-owned[19]).is_empty(),"foreign Via1 must not touch new metal")
-        require(add[10].interacting(full[29]-owned[29]).is_empty(),"foreign Via2 must not touch new M2")
-        cuts=[]
-        for index,local in enumerate(plan.local_plan()["via1"]):
-            box=pya.Box(*local).transformed(tr);cut=pya.Region(box)
-            require((cut.sized(10)-(owned[8]+add[8])).is_empty(),"new V1 lower enclosure")
-            require((cut.sized(50)-(owned[10]+add[10])).is_empty(),"new V1 upper enclosure")
-            foreign=full[19]-owned[19]
-            require(cut.sized(plan.CLEARANCE[19]).interacting(foreign).is_empty(),"new V1 foreign cut clearance")
-            close=cut.sized(plan.CLEARANCE[19]).interacting(owned[19])
-            decision=dict(index=index,box_dbu=box_record(box),insert=close.is_empty(),reason="new_owned_cut"if close.is_empty()else"spacing_to_existing_same_net_Via1")
-            record["cut_decisions"].append(decision)
-            if decision["insert"]:cuts.append(box)
+        require(add_m1.sized(plan.CLEARANCE[8]).interacting(full[8]-owned[8]).is_empty(),"new M1 foreign metal clearance")
+        require(add_m1.interacting(full[19]-owned[19]).is_empty(),"foreign Via1 must not touch new M1")
+        candidate=segmented_m2(pya,tr,owned,full,add_m1,record)
+        put(out,"drain-%03d-segment-planning.json"%nid,record)
+        require(candidate is not None,"no32-via legal segmented M2 candidate device%d"%nid)
+        m2_boxes,cuts=candidate
         require(len(cuts)>=32,"at least32 new drain taps per device")
-        region=pya.Region()
-        for box in cuts:region.insert(box)
-        require(region.count()==len(cuts),"distinct new cut geometry")
-        record.update(clearance_complete=True,new_cuts=len(cuts),minimum_clearance_dbu=plan.CLEARANCE)
+        regions={8:add_m1,10:pya.Region(),19:pya.Region()}
+        for box in m2_boxes:regions[10].insert(box)
+        for box in cuts:regions[19].insert(box)
+        require(regions[19].count()==len(cuts),"distinct new cut geometry")
+        record.update(clearance_complete=True,new_cuts=len(cuts),minimum_clearance_dbu=plan.CLEARANCE,
+          selected_metal2_top_boxes=[box_record(box)for box in m2_boxes])
         put(out,"drain-%03d-admission.json"%nid,record)
-        for layer,box in boxes.items():
-            # Current3/32 already have exactly this M1 overlay; do not duplicate it.
-            if not(pya.Region(box)-full[layer]).is_empty():
-                planned.append(dict(device=nid,cluster=net.cluster_id,layer=layer,datatype=0,box_dbu=box_record(box)))
+        for layer,boxes in ((8,[m1_box]),(10,m2_boxes)):
+            for box in boxes:
+                # Retain every original shape; avoid redundant raw overlays.
+                if not(pya.Region(box)-full[layer]).is_empty():
+                    planned.append(dict(device=nid,cluster=net.cluster_id,layer=layer,datatype=0,box_dbu=box_record(box)))
         planned.extend(dict(device=nid,cluster=net.cluster_id,layer=19,datatype=0,box_dbu=box_record(box))for box in cuts)
         for layer in(8,10,19):
-            ownadd=region if layer==19 else add[layer]
+            ownadd=regions[layer]
             for other,reg in same_owner.get(layer,[]):
                 if other!=net.cluster_id:require(ownadd.sized(plan.CLEARANCE[layer]).interacting(reg).is_empty(),"new-to-new foreign clearance")
             same_owner.setdefault(layer,[]).append((net.cluster_id,ownadd))

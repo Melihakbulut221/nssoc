@@ -213,7 +213,14 @@
       1330,
       35800
     ],
+    "metal2_min_segment_length_dbu": 1000,
+    "metal2_width_candidates_dbu": [
+      1000,
+      600,
+      300
+    ],
     "minimum_new_cuts": 32,
+    "minimum_new_cuts_per_segment": 2,
     "new_simulation": false,
     "physical_acceptance": false,
     "possible_cuts": 71,
@@ -224,6 +231,7 @@
       910,
       36000
     ],
+    "selection": "maximum bridged drain length, then widest M2, then cut count",
     "timing_accepted": false,
     "via1": [
       [
@@ -653,7 +661,7 @@
         35595
       ]
     ],
-    "via_filter": "Only skip candidates too close to an existing same-net Via1; preserve every decision."
+    "via_filter": "Use fully enclosed cut positions in conservatively spaced M2 segments; skip near existing Via1; discard segments with fewer than two new cuts; preserve every decision."
   },
   "producer_run": 41017290646,
   "qualified_pex": false,

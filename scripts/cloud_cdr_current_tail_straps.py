@@ -48,7 +48,7 @@ def bind_controls(ctx,records):
     require(set(records)=={"controls","publication","ownership","execution","tail"},"all current source control groups")
     checked=qualified.bind_controls(ctx,{k:v for k,v in records.items()if k!="tail"})
     tail=records["tail"]
-    require(tail["status"]=="PASS_CURRENT_EIGHT_DRAIN_SOURCE_CONTROLS"and tail["count"]==22 and len(set(tail["passed_cases"]))==22,"current22 controls")
+    require(tail["status"]=="PASS_CURRENT_EIGHT_DRAIN_SOURCE_CONTROLS"and tail["count"]==30 and len(set(tail["passed_cases"]))==30,"current30 controls")
     require(tail["source"]==ctx["source"]and tail["run_id"]==ctx["run_id"]and tail["attempt"]==1,"fresh current control identity")
     require(tail["native_executed"]is False and all(tail[k]is False for k in FLAGS),"source controls cannot qualify physical candidate")
     checked["tail"]=dict(bytes=len(encode(tail)),sha256=hashlib.sha256(encode(tail)).hexdigest())

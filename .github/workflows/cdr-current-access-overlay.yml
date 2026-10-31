@@ -92,7 +92,7 @@ jobs:
           sys.path.insert(0,'scripts')
           import cloud_cdr_current_tail_straps as host
           raw=Path(host.MANIFEST).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='0adaa1b957fefe191c81aaf3b382da9e4d156649541e523b5021ac20d412dde3'
+          assert hashlib.sha256(raw).hexdigest()=='c898d3f61c64f9dc621f0ee576c3987ee1f5a189f609b8ba7a7119b910111b43'
           m=host.source_guard(host.context(os.environ))
           assert len(m['files'])==1190
           for name in ('scripts/cdr_current_tail_straps.py','scripts/cdr_current_tail_straps_native.py','scripts/cloud_cdr_current_tail_straps.py','scripts/check_cdr_current_tail_straps.py'):
@@ -158,7 +158,7 @@ jobs:
           PY
       - name: Exercise current42-input geometry admission and independent failure retention
         run: python3 -B scripts/check_cdr_current_tail_straps.py > cdr-drain-wave-source-controls/tail-controls.stdout 2> cdr-drain-wave-source-controls/tail-controls.stderr
-      - name: Require all187 actual same-source controls
+      - name: Require all195 actual same-source controls
         run: |
           python3 -B - <<'PY'
           import json,os,sys
@@ -265,7 +265,7 @@ jobs:
           sys.path.insert(0,'scripts')
           import cloud_cdr_current_tail_straps as host
           raw=Path(host.MANIFEST).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='0adaa1b957fefe191c81aaf3b382da9e4d156649541e523b5021ac20d412dde3'
+          assert hashlib.sha256(raw).hexdigest()=='c898d3f61c64f9dc621f0ee576c3987ee1f5a189f609b8ba7a7119b910111b43'
           m=host.source_guard(host.context(os.environ));assert len(m['files'])==1190
           PY
       - name: Recover every same-source control record from completed actual job log
@@ -392,7 +392,7 @@ jobs:
           print(json.dumps(proof,sort_keys=True))
           PY
       - name: Generate actual eight-drain straps and run original full560DRC and500-device LVS13 controls
-        run: python3 -B scripts/cloud_cdr_current_tail_straps.py --bundle "$GITHUB_WORKSPACE/hw/soc/out/cdr-current-eight-drain-straps-${GITHUB_RUN_ID}-1" --publication current-cdr-tail-straps-publication --reservation ownership-reservation.json --controls ownership-source-proof/bound-controls.json --pins-sha256 0adaa1b957fefe191c81aaf3b382da9e4d156649541e523b5021ac20d412dde3 --appimage "$RUNNER_TEMP/current-tail-physical.AppImage" > current-cdr-tail-straps.stdout 2> current-cdr-tail-straps.stderr
+        run: python3 -B scripts/cloud_cdr_current_tail_straps.py --bundle "$GITHUB_WORKSPACE/hw/soc/out/cdr-current-eight-drain-straps-${GITHUB_RUN_ID}-1" --publication current-cdr-tail-straps-publication --reservation ownership-reservation.json --controls ownership-source-proof/bound-controls.json --pins-sha256 c898d3f61c64f9dc621f0ee576c3987ee1f5a189f609b8ba7a7119b910111b43 --appimage "$RUNNER_TEMP/current-tail-physical.AppImage" > current-cdr-tail-straps.stdout 2> current-cdr-tail-straps.stderr
       - name: Always emit complete derived records and actual failure output
         if: always()
         run: |

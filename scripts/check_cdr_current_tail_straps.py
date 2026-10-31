@@ -87,12 +87,24 @@ def main():
     records={key:json.loads((root/name).read_bytes())for key,name in
       (("controls","controls.json"),("publication","publication-controls.json"),
        ("ownership","ownership-controls.json"),("execution","execution-controls.json"))}
-    fixture=dict(status="PASS_CURRENT_EIGHT_DRAIN_SOURCE_CONTROLS",count=22,passed_cases=["fixture-%02d"%n for n in range(22)],
+    fixture=dict(status="PASS_CURRENT_EIGHT_DRAIN_SOURCE_CONTROLS",count=30,passed_cases=["fixture-%02d"%n for n in range(30)],
       source=ctx["source"],run_id=ctx["run_id"],attempt=1,native_executed=False,**plan.FLAGS)
     ok("tail binds all original165 and new source groups",lambda:host.bind_controls(ctx,{**records,"tail":fixture}))
     refuse("tail refuses stale source group",lambda:host.bind_controls(ctx,{**records,"tail":{**fixture,"source":"0"*40}}))
     assert len(rows)==22 and len(set(rows))==22
-    result=dict(status="PASS_CURRENT_EIGHT_DRAIN_SOURCE_CONTROLS",count=22,passed_cases=rows,
+    ok("tail unblocked segment retains entire envelope",lambda:eq(plan.open_spans(200,35800,[]),[(200,35800)]))
+    ok("tail crossing obstacle splits real route interval",lambda:eq(plan.open_spans(200,35800,[(15000,16000)]),[(200,15000),(16000,35800)]))
+    ok("tail overlapping and touching blockers merge",lambda:eq(plan.open_spans(200,35800,[(9000,11000),(5000,8000),(7000,9000)]),[(200,5000),(11000,35800)]))
+    def clipped():
+        eq(plan.open_spans(200,35800,[(-1000,0),(36000,37000)]),[(200,35800)])
+        eq(plan.open_spans(200,35800,[(-1000,37000)]),[])
+    ok("tail outside and spanning blockers clipped conservatively",clipped)
+    ok("tail undersized metal slivers are excluded",lambda:eq(plan.open_spans(200,35800,[(1100,35000)]),[]))
+    refuse("tail reversed segment bounds refused",lambda:plan.open_spans(35800,200,[]))
+    refuse("tail offgrid blocker refused",lambda:plan.open_spans(200,35800,[(5001,6000)]))
+    refuse("tail reversed blocker refused",lambda:plan.open_spans(200,35800,[(8000,7000)]))
+    assert len(rows)==30 and len(set(rows))==30
+    result=dict(status="PASS_CURRENT_EIGHT_DRAIN_SOURCE_CONTROLS",count=30,passed_cases=rows,
       source=ctx["source"],run_id=ctx["run_id"],attempt=1,native_executed=False,
       synthetic_boundaries=["native target identity records","terminal lifecycle callbacks","new group binding fixture"],
       native_geometry_not_executed=True,**plan.FLAGS)
