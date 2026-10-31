@@ -943,8 +943,29 @@ class BoundedObservationAPI:
         self.observed = []
         self.selector_calls = 0
         self.selector_error = None
+        self.discovery_errors = set()
+        self.discovery_calls = []
+        self.extra_active = []
+        self.active_states = {rid: "in_progress" for rid in self.active}
+        self.attempts = {}
 
     def get(self, path):
+        if path.startswith("actions/runs?status="):
+            query = m.urllib.parse.parse_qs(path.partition("?")[2])
+            status = query["status"][0]
+            page = int(query["page"][0])
+            self.discovery_calls.append((status, page))
+            if status in self.discovery_errors:
+                raise RuntimeError("synthetic active discovery failure")
+            values = []
+            for rid in self.active:
+                item = self.items[rid]
+                value = run(self.active_states[rid])
+                value.update(id=rid, head_sha=item["head_sha"], head_branch=item["branch"], run_attempt=self.attempts.get(rid, 1))
+                values.append(value)
+            values.extend(copy.deepcopy(self.extra_active))
+            values = [r for r in values if r["status"] == status]
+            return dict(total_count=len(values), workflow_runs=values[(page-1)*100:page*100])
         assert path.startswith("actions/runs/") and path.rsplit("/", 1)[-1].isdigit()
         rid = int(path.rsplit("/", 1)[-1])
         if self.stop_after is not None and len(self.observed) >= self.stop_after:
@@ -1182,8 +1203,6 @@ class IncrementalObservationControls(unittest.TestCase):
     def test_inventory_read_failure_preserves_early_bootstrap_snapshot(self):
         self.assertEqual(self.main_failure("inventory")["phase"], "loading_inventory")
 
-    def test_previous_artifact_failure_preserves_complete_loaded_inventory(self):
-        self.assertEqual(self.main_failure("previous")["phase"], "loading_previous_snapshot")
 
     def test_atomic_snapshot_failure_keeps_previous_complete_file(self):
         import tempfile
@@ -1209,6 +1228,163 @@ class IncrementalObservationControls(unittest.TestCase):
         self.assertIn("CACHED:", rendered)
         self.assertIn("not refreshed", rendered)
         self.assertFalse(result["routine_unchanged"])
+
+
+    def test_actual_old_active_outside_newest16_is_first_without_cache(self):
+        value = self.many(533)
+        api = BoundedObservationAPI(value["runs"], active=[1001], stop_after=4)
+        result, _, _ = self.observe(value, api)
+        self.assertEqual(api.observed[0], 1001)
+        self.assertEqual(result["discovered_active_runs"], [1001])
+        self.assertEqual(api.discovery_calls, [(s, 1) for s in m.ACTIVE_STATUSES])
+        self.assertTrue(result["active_discovery_complete"])
+        self.assertEqual(len(result["runs"]), 533)
+
+    def test_actual_rerun_of_cached_completed_old_run_is_prioritized(self):
+        value = self.many(50)
+        previous = self.previous(value)
+        api = BoundedObservationAPI(value["runs"], active=[1002], stop_after=3)
+        api.attempts[1002] = 2
+        result, _, _ = self.observe(value, api, previous)
+        self.assertEqual(api.observed[0], 1002)
+        row = next(r for r in result["runs"] if r["id"] == 1002)
+        self.assertEqual(row["status"], "in_progress")
+        self.assertEqual(row["run_attempt"], 2)
+        self.assertEqual(row["observation_state"], "CURRENT")
+        self.assertTrue(row["changed_since_previous"])
+        self.assertFalse(row["stale"])
+
+    def test_all_five_actual_active_filters_prioritize_exact_pinned_identity(self):
+        value = self.many(100)
+        api = BoundedObservationAPI(value["runs"], active=range(1000, 1005), stop_after=5)
+        api.active_states = {1000+i: status for i, status in enumerate(m.ACTIVE_STATUSES)}
+        result, _, _ = self.observe(value, api)
+        self.assertEqual(result["discovered_active_runs"], list(range(1000, 1005)))
+        self.assertEqual(api.observed[:3], [1004, 1003, 1005])
+        self.assertTrue(all(result["active_discovery"][s]["complete"] for s in m.ACTIVE_STATUSES))
+
+    def test_untracked_active_is_visible_without_jobs_or_native_acquisition(self):
+        value = self.many(2)
+        api = BoundedObservationAPI(value["runs"])
+        unknown = run()
+        unknown.update(id=999999, head_sha="c"*40, head_branch="codex/untracked")
+        api.extra_active = [unknown]
+        result, _, _ = self.observe(value, api)
+        self.assertEqual(result["untracked_active_runs"][0]["id"], 999999)
+        self.assertFalse(result["untracked_active_runs"][0]["inventory_verified"])
+        self.assertEqual(result["status"], "PARTIAL_OBSERVATION")
+        self.assertNotIn(999999, api.observed)
+        self.assertEqual(len(result["runs"]), 2)
+        self.assertFalse(result["observation_complete"])
+
+    def test_discovery_identity_conflict_never_promotes_unmatched_source(self):
+        value = self.many(30)
+        api = BoundedObservationAPI(value["runs"], stop_after=2)
+        wrong = run()
+        wrong.update(id=1000, head_sha="c"*40)
+        api.extra_active = [wrong]
+        result, _, _ = self.observe(value, api)
+        self.assertNotIn(1000, result["discovered_active_runs"])
+        self.assertEqual(result["errors"][0]["type"], "IdentityMismatch")
+        self.assertEqual(api.observed, [1029, 1028])
+        self.assertFalse(result["active_discovery_complete"])
+
+    def test_discovery_failure_keeps_prior_known_active_priority(self):
+        value = self.many(50)
+        previous = self.previous(value, active=[1001])
+        api = BoundedObservationAPI(value["runs"], active=[1001], stop_after=3)
+        api.discovery_errors.add("in_progress")
+        result, _, _ = self.observe(value, api, previous)
+        self.assertEqual(api.observed[0], 1001)
+        self.assertFalse(result["active_discovery_complete"])
+        self.assertEqual(result["status"], "PARTIAL_OBSERVATION")
+        self.assertTrue(any(e["phase"] == "active_discovery" for e in result["errors"]))
+
+    def test_active_pagination_is_bounded_and_partial_if_more_remain(self):
+        value = self.many(1)
+        api = BoundedObservationAPI(value["runs"])
+        api.extra_active = [dict(run(), id=9000+i) for i in range(205)]
+        result, _, _ = self.observe(value, api)
+        self.assertEqual(len(result["untracked_active_runs"]), 200)
+        self.assertEqual(result["active_discovery"]["in_progress"]["pages"], 2)
+        self.assertFalse(result["active_discovery_complete"])
+        self.assertTrue(any(e["type"] == "PageLimit" for e in result["errors"]))
+        self.assertEqual(api.observed, [1000])
+
+    def test_cache_subbudget_does_not_exhaust_live_get_budget(self):
+        clock = [0.0]
+        api = m.API("fixture")
+        api.read_budget = m.ReadBudget(clock=lambda: clock[0])
+        api.cache_read_budget = m.ReadBudget(clock=lambda: clock[0], seconds=90, limit_type=m.CacheLookupLimit)
+        api.opener = CaptureOpener(SmallResponse(b"{}"))
+        api.raw("actions/artifacts?name=fixture")
+        clock[0] = 30.0
+        with self.assertRaises(m.CacheLookupLimit):
+            api.raw("actions/artifacts/1/zip")
+        self.assertEqual(len(api.opener.requests), 1)
+        api.cache_read_budget = None
+        api.opener = CaptureOpener(SmallResponse(b"{}"))
+        self.assertEqual(api.raw("actions/runs?status=in_progress"), b"{}")
+        self.assertLess(api.read_budget.report()["elapsed_seconds"], 540)
+        self.assertEqual(api.read_budget.requests, 3)  # Conservative attempted-GET count.
+
+    def test_prior_snapshot_source_candidate_cap_prevents_unbounded_lookup(self):
+        class ManyUntrusted:
+            def __init__(self): self.sources = []
+            def pages(self, path, key, maximum=1000):
+                return [dict(id=i, expired=False, name=m.ARTIFACT, size_in_bytes=100, created_at="2026-10-24T11:00:00Z", workflow_run=dict(id=i)) for i in range(1, 30)]
+            def get(self, path):
+                self.sources.append(path)
+                return dict(path=m.WORKFLOW, status="completed", head_branch="codex/untrusted")
+            def raw(self, *args, **kwargs): raise AssertionError("Untrusted artifact acquired")
+        api = ManyUntrusted()
+        with self.assertRaises(m.CacheLookupLimit):
+            m.previous_snapshot(api, 999)
+        self.assertEqual(len(api.sources), 16)
+
+    def test_previous_artifact_refusal_continues_live_observation_with_partial_provenance(self):
+        import tempfile, os
+        from unittest.mock import patch
+        value = self.many(3)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            bootstrap = root/"config.json"
+            bootstrap.write_text(json.dumps(value))
+            output = root/"out"
+            api = BoundedObservationAPI(value["runs"], active=[1000])
+            with patch.object(m, "API", return_value=api), patch.object(m, "load_config", return_value=(value, dict(head_sha=HEAD, bootstrap=False))), patch.object(m, "previous_snapshot", side_effect=AssertionError("synthetic prior digest refusal")):
+                with patch.dict(os.environ, dict(GITHUB_ACTIONS="true", RUNNER_ENVIRONMENT="github-hosted", GITHUB_REPOSITORY=m.REPO, GH_TOKEN="fixture", GITHUB_RUN_ID="999", GITHUB_STEP_SUMMARY=str(root/"summary.md"))):
+                    with patch.object(sys, "argv", ["monitor", "--config", str(bootstrap), "--out", str(output)]):
+                        self.assertEqual(m.main(), 0)
+            saved = json.loads((output/"result.json").read_text())
+            self.assertEqual(saved["status"], "PARTIAL_OBSERVATION")
+            self.assertEqual(len(saved["refreshed_runs"]), 3)
+            self.assertEqual(api.observed[0], 1000)
+            self.assertIn("prior digest refusal", saved["cache_lookup"]["error"]["detail"])
+            self.assertIsNone(saved["previous_snapshot_source"])
+            self.assertFalse(saved["routine_unchanged"])
+            self.assertFalse(saved["full_phy_accepted"])
+
+    def test_signal_during_prior_artifact_stops_with_complete_unread_inventory(self):
+        import tempfile, os
+        from unittest.mock import patch
+        value = self.many(3)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            bootstrap = root/"config.json"
+            bootstrap.write_text(json.dumps(value))
+            output = root/"out"
+            api = BoundedObservationAPI(value["runs"])
+            with patch.object(m, "API", return_value=api), patch.object(m, "load_config", return_value=(value, dict(head_sha=HEAD, bootstrap=False))), patch.object(m, "previous_snapshot", side_effect=m.ObservationLimit("synthetic SIGTERM boundary")):
+                with patch.dict(os.environ, dict(GITHUB_ACTIONS="true", RUNNER_ENVIRONMENT="github-hosted", GITHUB_REPOSITORY=m.REPO, GH_TOKEN="fixture", GITHUB_RUN_ID="999", GITHUB_STEP_SUMMARY=str(root/"summary.md"))):
+                    with patch.object(sys, "argv", ["monitor", "--config", str(bootstrap), "--out", str(output)]):
+                        self.assertEqual(m.main(), 0)
+            saved = json.loads((output/"result.json").read_text())
+            self.assertEqual(saved["status"], "PARTIAL_OBSERVATION")
+            self.assertEqual(saved["unobserved_runs"], [1000, 1001, 1002])
+            self.assertEqual(api.observed, [])
+            self.assertEqual(saved["read_budget"]["maximum_requests"], 600)
+            self.assertFalse(saved["observation_complete"])
 
 
 if __name__ == "__main__":

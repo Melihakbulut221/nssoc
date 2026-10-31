@@ -57,12 +57,19 @@ class API:
         budget = getattr(self, "read_budget", None)
         if budget is not None:
             budget.before(path)
+        section = getattr(self, "cache_read_budget", None)
         try:
+            if section is not None:
+                section.before(path)
             value = self._raw(path, limit, binary)
         except BaseException as error:
+            if section is not None:
+                section.after(path, type(error).__name__)
             if budget is not None:
                 budget.after(path, type(error).__name__)
             raise
+        if section is not None:
+            section.after(path, None)
         if budget is not None:
             budget.after(path, None)
         return value
@@ -342,22 +349,34 @@ def select_runs(api, config):
             current.setdefault("also_selected_by", []).append(item["workflow"])
     return list(selected.values()), missing
 
-def previous_snapshot(api, current_run):
+def previous_snapshot(api, current_run, trace=None):
     artifacts = api.pages("actions/artifacts?name=" + ARTIFACT, "artifacts", maximum=1000)
+    examined = 0
     for artifact in sorted(artifacts, key=lambda a: a["created_at"], reverse=True):
         if artifact["expired"] or artifact["workflow_run"]["id"] == current_run:
             continue
         if artifact["name"] != ARTIFACT or artifact["size_in_bytes"] > LIMIT:
             continue
+        examined += 1
+        if examined > 16:
+            raise CacheLookupLimit("Prior snapshot candidate limit reached; live work still needs observation")
+        provenance = dict(artifact_id=artifact["id"], producer_run=artifact["workflow_run"]["id"],
+                          created_at=artifact["created_at"], bytes=artifact["size_in_bytes"], digest=artifact.get("digest"), state="candidate")
+        if trace is not None:
+            trace.setdefault("candidates", []).append(provenance)
         source = api.get("actions/runs/" + str(artifact["workflow_run"]["id"]))
+        provenance["producer"] = {k: source.get(k) for k in ("id", "path", "status", "head_branch", "head_sha", "run_attempt")}
         if source["path"] != WORKFLOW or source["status"] != "completed":
+            provenance["state"] = "refused_producer_workflow_or_status"
             continue
         if source["head_branch"] not in ("main", "codex/cloud-progress-monitor"):
+            provenance["state"] = "refused_producer_branch"
             continue
         # Actions archive endpoint requires the normal GitHub API Accept header;
         # only release assets use application/octet-stream at the API hop.
         packed = api.raw("actions/artifacts/" + str(artifact["id"]) + "/zip")
         packed_sha = hashlib.sha256(packed).hexdigest()
+        provenance.update(state="archive_read_awaiting_validation", observed_archive_sha256=packed_sha)
         if artifact.get("digest"):
             assert artifact["digest"] == "sha256:" + packed_sha, "Monitor artifact digest changed"
         with zipfile.ZipFile(io.BytesIO(packed)) as archive:
@@ -372,6 +391,7 @@ def previous_snapshot(api, current_run):
         assert isinstance(data.get("runs"), list), "Snapshot run inventory"
         if data.get("status") == "MONITOR_ERROR" and not data["runs"]:
             continue
+        provenance["state"] = "validated_snapshot"
         data["_artifact_source"] = dict(id=artifact["id"], run=source["id"], sha256=packed_sha)
         return data
     return None
@@ -476,9 +496,13 @@ def collect(api, config, now, previous=None, configuration_source=None):
 class ObservationLimit(RuntimeError):
     """Expected read-only checkpoint boundary, never a native engineering action."""
 
+class CacheLookupLimit(ObservationLimit):
+    """Stop optional cache lookup while preserving the live-observation budget."""
+
 class ReadBudget:
-    def __init__(self, clock=None, emit=None, max_requests=600, seconds=540):
+    def __init__(self, clock=None, emit=None, max_requests=600, seconds=540, limit_type=ObservationLimit):
         self.clock = clock or time.monotonic
+        self.limit_type = limit_type
         self.emit = emit or (lambda event: None)
         self.started = self.clock()
         self.max_requests = max_requests
@@ -489,7 +513,7 @@ class ReadBudget:
     def before(self, path):
         # API.raw has a 60-second timeout. Never start a call that cannot fit.
         if self.requests >= self.max_requests or self.clock() - self.started + 60 >= self.seconds:
-            raise ObservationLimit("Bounded GET/wall-time budget reached before the next request")
+            raise self.limit_type("Bounded GET/wall-time budget reached before the next request")
         self.requests += 1
         self.inflight = path
         self.emit(dict(event="GET_START", path=path, **self.report()))
@@ -560,7 +584,7 @@ def initial_snapshot(config, configuration_source=None):
                 monitor_run=os.environ.get("GITHUB_RUN_ID"), runs=[unseen_row(r) for r in config["runs"]],
                 missing_selectors=[], missing_required_workflows=[], problem_runs=[], current_problem_runs=[],
                 errors=[], previous_snapshot_source=None, status="PARTIAL_OBSERVATION", routine_unchanged=False,
-                observation_complete=False, selectors_complete=False, phase="bootstrap",
+                observation_complete=False, selectors_complete=False, active_discovery_complete=False, active_discovery={}, untracked_active_runs=[], phase="bootstrap",
                 automatic_native_dispatch=False, full_phy_accepted=False, final_timing_accepted=False,
                 scope="Read-only bounded progress. Cached history is explicitly stale; no native repair or product acceptance.")
 
@@ -575,9 +599,9 @@ def finalize_snapshot(result, budget=None):
     result["refreshed_runs"] = [r["id"] for r in rows if r["observation_state"] == "CURRENT"]
     result["refresh_error_runs"] = [r["id"] for r in rows if r["observation_state"] == "REFRESH_ERROR"]
     result["missing_required_workflows"] = [m["workflow"] for m in result["missing_selectors"] if not m["optional"]]
-    result["observation_complete"] = bool(result["selectors_complete"] and not result["errors"] and all(r["observation_state"] == "CURRENT" for r in rows))
+    result["observation_complete"] = bool(result["selectors_complete"] and result["active_discovery_complete"] and not result["untracked_active_runs"] and not result["errors"] and all(r["observation_state"] == "CURRENT" for r in rows))
     result["routine_unchanged"] = bool(result["observation_complete"] and result.get("previous_target_head") == result["target_head"] and all(r["changed_since_previous"] is False for r in rows))
-    partial = bool(result["unobserved_runs"] or result["refresh_error_runs"] or result["errors"] or not result["selectors_complete"])
+    partial = bool(result["unobserved_runs"] or result["refresh_error_runs"] or result["errors"] or result["untracked_active_runs"] or not result["selectors_complete"] or not result["active_discovery_complete"])
     result["status"] = ("PARTIAL_OBSERVATION" if partial else "ATTENTION_REQUIRED" if result["problem_runs"] or result["missing_required_workflows"] else "OBSERVED_WITH_CACHED_HISTORY" if result["cached_runs"] else "OBSERVED_NO_CURRENT_FAILURE")
     result["checkpoint_at"] = utc_now().isoformat()
     if budget is not None:
@@ -585,14 +609,14 @@ def finalize_snapshot(result, budget=None):
     return result
 
 
-def observation_order(selected, rows, previous):
+def observation_order(selected, rows, previous, active_ids=()):
     """Priority work alternates with history, so a busy active set cannot starve it."""
     by_id = {r["id"]: r for r in rows}
     recent = {r["run"] for r in sorted(selected, key=lambda r: r["run"], reverse=True)[:16]}
-    priority = sorted([r for r in selected if r.get("selection") == "latest_workflow"
+    priority = sorted([r for r in selected if r["run"] in active_ids or r.get("selection") == "latest_workflow"
                        or (by_id[r["run"]]["status"] not in ("completed", "unobserved"))
                        or (r["run"] in recent and by_id[r["run"]]["observation_state"] == "UNOBSERVED")],
-                      key=lambda r: (by_id[r["run"]]["status"] in ("completed", "unobserved"), -r["run"]))
+                      key=lambda r: (r["run"] not in active_ids, by_id[r["run"]]["status"] in ("completed", "unobserved"), -r["run"]))
     priority_ids = {r["run"] for r in priority}
     history = sorted([r for r in selected if r["run"] not in priority_ids], key=lambda r: r["run"])
     cursor = (previous or {}).get("next_history_run")
@@ -617,11 +641,69 @@ def observation_order(selected, rows, previous):
     return order, history
 
 
-def observe_incrementally(api, config, previous, configuration_source, save, budget=None):
+ACTIVE_STATUSES = ("in_progress", "queued", "requested", "waiting", "pending")
+
+
+def discover_active(api, selected, result, checkpoint):
+    """Bounded live repository GETs, independently of cache age or run ID order."""
+    pinned = {r["run"]: r for r in selected}
+    active_ids = set()
+    unknown = {}
+    result["phase"] = "active_discovery"
+    for status in ACTIVE_STATUSES:
+        report = dict(pages=0, observed=[], complete=False)
+        result["active_discovery"][status] = report
+        try:
+            for page in (1, 2):
+                data = api.get("actions/runs?status="+status+"&per_page=100&page="+str(page))
+                rows = data["workflow_runs"]
+                assert isinstance(rows, list) and len(rows) <= 100, "Bounded active run page"
+                assert type(data["total_count"]) is int and data["total_count"] >= 0, "Active run total"
+                report["pages"] = page
+                for row in rows:
+                    assert type(row["id"]) is int and row["id"] > 0 and re.fullmatch(r"[0-9a-f]{40}", row["head_sha"]), "Active run identity"
+                    item = pinned.get(row["id"])
+                    metadata = {k: row.get(k) for k in ("id", "head_sha", "head_branch", "status", "run_attempt", "updated_at", "html_url")}
+                    report["observed"].append(metadata)
+                    if row["status"] not in ACTIVE_STATUSES:
+                        # A run may finish while filtered pages are in flight.
+                        continue
+                    if item is None:
+                        unknown[row["id"]] = dict(metadata, classification="UNTRACKED_ACTIVE_METADATA", inventory_verified=False,
+                                                  reason="Active repository run is not in the selected pinned inventory; no jobs or artifacts acquired")
+                    elif row["head_sha"] != item["head_sha"] or row["head_branch"] != item["branch"]:
+                        result["errors"].append(dict(phase="active_discovery", run=row["id"], type="IdentityMismatch", detail="Active run does not match the pinned source and branch"))
+                    else:
+                        active_ids.add(row["id"])
+                result["untracked_active_runs"] = [unknown[k] for k in sorted(unknown)]
+                if len(rows) < 100 or page*100 >= data["total_count"]:
+                    report["complete"] = True
+                    checkpoint()
+                    break
+                checkpoint()
+            if not report["complete"]:
+                result["errors"].append(dict(phase="active_discovery", status=status, type="PageLimit", detail="More than two active-status pages; remaining active rows are unobserved"))
+        except ObservationLimit:
+            checkpoint()
+            raise
+        except Exception as error:
+            result["errors"].append(dict(phase="active_discovery", status=status, type=type(error).__name__, detail=str(error)))
+        checkpoint()
+    result["active_discovery_complete"] = all(r["complete"] for r in result["active_discovery"].values()) and not any(e["phase"] == "active_discovery" for e in result["errors"])
+    result["discovered_active_runs"] = sorted(active_ids)
+    checkpoint()
+    return active_ids
+
+
+def observe_incrementally(api, config, previous, configuration_source, save, budget=None, cache_diagnostic=None):
     check_config(config)
     result = initial_snapshot(config, configuration_source)
     result.update(previous_snapshot_source=None if previous is None else previous.get("_artifact_source"),
                   previous_target_head=None if previous is None else previous.get("target_head"), phase="selecting")
+    if cache_diagnostic is not None:
+        result["cache_lookup"] = cache_diagnostic
+        if cache_diagnostic.get("error"):
+            result["errors"].append(dict(phase="loading_previous_snapshot", **cache_diagnostic["error"]))
     selected = [dict(r, selection="pinned") for r in config["runs"]]
     result["runs"] = [cached_row(r, previous) or unseen_row(r) for r in selected]
     def checkpoint():
@@ -647,9 +729,15 @@ def observe_incrementally(api, config, previous, configuration_source, save, bud
             result["errors"].append(dict(phase="selecting", selector=selector["workflow"], type=type(error).__name__, detail=str(error)))
         checkpoint()
     result["selectors_complete"] = not any(e["phase"] == "selecting" for e in result["errors"])
+    try:
+        active_ids = discover_active(api, selected, result, checkpoint)
+    except ObservationLimit as error:
+        result["errors"].append(dict(phase="active_discovery", type=type(error).__name__, detail=str(error)))
+        checkpoint()
+        return result
     result["phase"] = "observing"
     positions = {r["id"]: i for i,r in enumerate(result["runs"])}
-    order, history = observation_order(selected, result["runs"], previous)
+    order, history = observation_order(selected, result["runs"], previous, active_ids)
     result["next_history_run"] = history[0]["run"] if history else None
     checkpoint()
     for item, historical in order:
@@ -734,6 +822,7 @@ def main():
     def save(value):
         nonlocal state
         state = value
+        state["read_budget"] = budget.report()
         atomic_snapshot(args.out / "result.json", state)
     def progress(event):
         event = dict(event, at=utc_now().isoformat())
@@ -757,8 +846,22 @@ def main():
         state = initial_snapshot(config, configuration_source)
         state["phase"] = "loading_previous_snapshot"
         save(state)
-        previous = previous_snapshot(api, int(os.environ["GITHUB_RUN_ID"]))
-        state = observe_incrementally(api, config, previous, configuration_source, save, budget)
+        previous = None
+        cache_budget = ReadBudget(max_requests=24, seconds=90, limit_type=CacheLookupLimit)
+        api.cache_read_budget = cache_budget
+        cache_diagnostic = dict(trusted_source_branches=["main", "codex/cloud-progress-monitor"], maximum_candidates=16)
+        try:
+            previous = previous_snapshot(api, int(os.environ["GITHUB_RUN_ID"]), cache_diagnostic)
+        except CacheLookupLimit as cache_error:
+            cache_diagnostic["error"] = dict(type=type(cache_error).__name__, detail=str(cache_error))
+        except ObservationLimit:
+            raise
+        except Exception as cache_error:
+            cache_diagnostic["error"] = dict(type=type(cache_error).__name__, detail=str(cache_error))
+        finally:
+            api.cache_read_budget = None
+            cache_diagnostic["read_budget"] = cache_budget.report()
+        state = observe_incrementally(api, config, previous, configuration_source, save, budget, cache_diagnostic)
     except ObservationLimit as exc:
         state.setdefault("errors", []).append(dict(phase=state.get("phase"), type=type(exc).__name__, detail=str(exc)))
         finalize_snapshot(state, budget)
