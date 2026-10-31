@@ -104,7 +104,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);args=p.parse_args();ctx=r.context(os.environ);primary=None
     try:
         c=r.source_guard();r.checkout_binding(ctx,c)
-        old=inherited.controls();stream=io.StringIO();suite=unittest.defaultTestLoader.loadTestsFromTestCase(AccessControls)
+        a.load_numeric_dependencies();old=inherited.controls();stream=io.StringIO();suite=unittest.defaultTestLoader.loadTestsFromTestCase(AccessControls)
         outcome=unittest.TextTestRunner(stream=stream,verbosity=2).run(suite)
         result=dict(status='PASS_CDR_CURRENT_ACCESS_RC_SOURCE_CONTROLS'if outcome.wasSuccessful()else'FAIL_CDR_CURRENT_ACCESS_RC_SOURCE_CONTROLS',passed=outcome.wasSuccessful(),current_context=ctx,inherited_counts=old['counts'],sampler_test_methods=old['sampler_test_methods'],access_test_methods=outcome.testsRun,access_tests_successful=outcome.wasSuccessful(),access_test_output=stream.getvalue(),inherited=old,actual_native_acquired=False,physical_acceptance=False)
         r.require(outcome.testsRun==12 and outcome.wasSuccessful(),'all twelve RC controls pass')

@@ -5,9 +5,15 @@ import ast,hashlib,heapq,math,shlex
 from collections import Counter,defaultdict
 from itertools import combinations
 from pathlib import Path
-import numpy as np
-from scipy.sparse import coo_matrix
-from scipy.sparse.linalg import splu
+np=None
+coo_matrix=None
+splu=None
+
+def load_numeric_dependencies():
+    global np,coo_matrix,splu
+    import numpy as np
+    from scipy.sparse import coo_matrix
+    from scipy.sparse.linalg import splu
 import build_pcie_local_vco_hybrid_v6 as parser
 
 def require(ok,message):
@@ -208,6 +214,7 @@ def shortest_path(edges,start,stop):
     return dict(edges=list(reversed(path)),series_path_resistance_ohm=distances[stop],physical_route_length_not_inferred=True)
 
 def evaluate(census):
+    load_numeric_dependencies()
     by={e['id']:e for e in census['edges']};evaluations=[]
     for net in census['networks']:
         edges=[(name,*by[name]['nodes'],by[name]['value_si'])for name in net['R']]
