@@ -1,18 +1,17 @@
-# Cloud continuation — checkpoint v157
+# Cloud continuation — checkpoint v158
 
-Updated: 2026-10-31T09:50:26.849009+00:00
+Updated: 2026-10-31T10:01:41.016327+00:00
 
-All tests, numerical work, CAD and native archives/models/GDS/ODB/DEF/waves stay on GitHub runners. Local workspace, project temp scans and native processes are empty. Latest cloud-only user instruction overrides old local goal wording.
+All tests, numerical work, CAD and native payloads stay on GitHub runners. Local workspace, project temp scans and native processes are empty. Latest cloud-only user instruction overrides older local goal wording.
 
-Saved-data finalizer 41189662022 succeeded at f45f2ba. All 30 new and original 162 source controls passed. All 53 proof files, 4 raw logs, 64 derived records and 20-member native capsule are preserved; proof 82efce43 was byte-readback verified. There is no active native job in this checkpoint.
+Actual diode reconstruction qualification 41190910993 is dispatched at be2f83b2. The exact-source release429853533 was independently reserved empty; do not dispatch or reserve again. The implementation uses the accepted original ODB and only the1351 verified saved new diode rows, with existing template master and PG nets. It never copies the608 altered wires from the failed repair. No repair_antennas or detailed route is authorized in this job.
 
-Actual diagnosis: all 1351 new cells use the exact native template master, but legacy Python wrapper equality returns false for all, including two wrappers of the template. All 608 changed nets have genuinely different exact rectangle sets even ignoring primitive kind. Therefore the original wire gate must continue rejecting the partial repair; this is not only an encoding change. All 153129 original cells and 1691 clock records remain unchanged.
+Required evidence:52 new/inherited observer source controls plus162 original controls; complete native saved plan; fresh original full snapshot byte identity; actual native creation; native write/reload; original unmodified admission across all143820 wires/nets,153129 original cells and1691 clock records. Candidate creation is experimental, not production acceptance. Any failure retains the full native state and logs.
 
-Next: qualify cloud-only reconstruction from the accepted original ODB plus exactly verified new diode placements/A connections and template PG, preserving every original wire opcode/data and metadata. Correct same-live-DB object comparisons with native identity. Creation APIs and full write/reload/admission must be qualified before actual routing. No gate may be waived; no physical candidate has been promoted. Exact next design and evidence are stored in the v157 note and authoritative docs/evidence/cloud-active-checkpoint-20261024.json.
-
-Full serial PHY, routed main chip and final setup/hold remain open. Original electrical/physical/timing gates remain unchanged. Existing 8h monitor is read-only; last observed HTTP502 remains unresolved.
+Exact terminal collector and continuation note are stored as v158; authoritative checkpoint is docs/evidence/cloud-active-checkpoint-20261024.json. After passing full admission, bind constrained routing to the authenticated candidate; otherwise diagnose actual failure without relaxing gates. Full serial PHY, routed main chip and final setup/hold remain open. The existing8h monitor is read-only; last observed HTTP502 remains unresolved.
 
 ## Historical notes below — not current running-job status
+
 
 
 
