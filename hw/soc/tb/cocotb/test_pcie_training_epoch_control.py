@@ -196,3 +196,53 @@ async def common_pause_abort_startup_and_illegal_encoding(d):
         assert not p.v("epoch_active_o"),"illegal encoding retained active admission"
         await p.issue(1,12,10);p.applied()
     finally:await p.close()
+
+@cocotb.test()
+async def stopped_lane_after_high_ack_cannot_abandon_low_phase(d):
+    p=Commands(d)
+    try:
+        await p.start();p.pma_auto=False
+        e=await p.issue(2,6,9,wait=False)
+        await p.until(lambda:p.v("lane_ack_o")==15)
+        p.pause[2]=True
+        await Timer(10000,unit="ps")
+        p.pma_auto=True
+        await p.until(lambda:not p.v("pma_request_o"))
+        await p.until(lambda:p.v("lane_ack_o")==4 and not p.v("pma_ack_i"))
+        d.epoch_abort_i.value=1;await Timer(127,unit="ps");d.epoch_abort_i.value=0
+        await Timer(100000,unit="ps")
+        assert p.v("lane_ack_o")==4,"stopped high acknowledgement disappeared"
+        assert not p.v("command_ready_o")and not p.v("epoch_active_o"),"aborted low phase abandoned outstanding ack"
+        assert p.v("front_reset_o")and p.v("epoch_o")==e
+        p.pause[2]=False
+        await p.until(lambda:p.v("command_ready_o"))
+        await Timer(8000,unit="ps")
+        assert (e,0)in p.done and (e,1)not in p.done,"aborted low phase reported success"
+        await p.issue(1,12,3);p.applied()
+    finally:await p.close()
+
+@cocotb.test()
+async def abort_on_completion_edge_suppresses_success_witness(d):
+    p=Commands(d)
+    try:
+        await p.start()
+        for port in ("reset_i","epoch_abort_i"):
+            d.fronts_ready_i.value=0
+            await p.issue(2,5,15,wait=False)
+            await p.until(lambda:not p.v("front_reset_o")and not p.v("epoch_active_o"))
+            p.pause_common=True
+            await p.until(lambda:p.v("common_clk_i")==0)
+            await Timer(333,unit="ps")
+            # The paused driver owns no rising edges: assert the clean abort
+            # and release the frontend barrier on the exact same completion edge.
+            d.fronts_ready_i.value=1;getattr(d,port).value=1;d.common_clk_i.value=1
+            await Timer(1,unit="ps")
+            assert not p.v("command_success_o"),"coincident abort leaked a success witness"
+            assert not p.v("epoch_active_o")and p.v("front_reset_o")
+            d.common_clk_i.value=0
+            await Timer(133,unit="ps");getattr(d,port).value=0
+            p.pause_common=False
+            await p.until(lambda:p.v("command_ready_o"))
+            assert not p.v("command_success_o")
+        await p.issue(1,10,15);p.applied()
+    finally:await p.close()

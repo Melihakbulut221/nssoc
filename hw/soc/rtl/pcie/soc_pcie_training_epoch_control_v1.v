@@ -15,7 +15,7 @@ module soc_pcie_training_epoch_control_v1 #(parameter EPOCH_W=16) (
  input wire command_valid_i,output wire command_ready_o,
  input wire [1:0] command_encoding_i,
  input wire [3:0] command_polarity_i,command_align_i,
- output reg command_done_o,command_success_o,
+ output reg command_done_o,output wire command_success_o,
  output wire [EPOCH_W-1:0] epoch_o,output wire [1:0] encoding_o,
  output wire [3:0] polarity_o,align_o,
  output wire pma_request_o,
@@ -37,7 +37,7 @@ module soc_pcie_training_epoch_control_v1 #(parameter EPOCH_W=16) (
  reg [EPOCH_W-1:0] epoch_q;
  reg [1:0] encoding_q;
  reg [3:0] polarity_q,align_q;
- reg request_q,protocol_fault_q,issued_q;
+ reg request_q,protocol_fault_q,issued_q,command_success_q;
  wire abort_request=!por_ni || reset_i || epoch_abort_i;
  reg abort_q;
  wire [3:0] ack_local;
@@ -59,6 +59,9 @@ module soc_pcie_training_epoch_control_v1 #(parameter EPOCH_W=16) (
  assign front_reset_o=abort_request || abort_q || protocol_fault_q || command_fire ||
    !(state_q==STARTUP || state_q==ACTIVE);
  assign epoch_active_o=por_ni && state_q==ACTIVE && !front_reset_o && fronts_ready_i;
+ // A coincident asynchronous abort may schedule abort_q in the same delta as
+ // completion. Qualify the public success witness directly, not one clock later.
+ assign command_success_o=command_success_q && !abort_request && !abort_q && !protocol_fault_q;
  assign epoch_fault_o=por_ni && (protocol_fault_q || (issued_q && abort_q));
  genvar lane;
  generate for(lane=0;lane<4;lane=lane+1)begin:mailboxes
@@ -95,10 +98,10 @@ module soc_pcie_training_epoch_control_v1 #(parameter EPOCH_W=16) (
   if(!por_ni)begin
    ack_meta_q<=0;ack_sync_q<=0;state_q<=IDLE;epoch_q<=0;
    encoding_q<=0;polarity_q<=0;align_q<=0;request_q<=0;
-   protocol_fault_q<=0;issued_q<=0;command_done_o<=0;command_success_o<=0;
+   protocol_fault_q<=0;issued_q<=0;command_done_o<=0;command_success_q<=0;
   end else begin
    ack_meta_q<=ack_local;ack_sync_q<=ack_meta_q;
-   command_done_o<=0;command_success_o<=0;
+   command_done_o<=0;command_success_q<=0;
    if(command_fire)begin
     if(command_encoding_i==2'b11)begin
      protocol_fault_q<=1'b1;state_q<=IDLE;command_done_o<=1'b1;
@@ -117,16 +120,16 @@ module soc_pcie_training_epoch_control_v1 #(parameter EPOCH_W=16) (
      end
     end
     WAIT_LOW:if(acknowledgments_low)begin
-     if(abort_q || protocol_fault_q)begin state_q<=IDLE;command_done_o<=1;end
+     if(abort_request || abort_q || protocol_fault_q)begin state_q<=IDLE;command_done_o<=1;end
      else state_q<=STARTUP;
     end
     STARTUP:begin
-     if(abort_q || protocol_fault_q)begin state_q<=IDLE;command_done_o<=1;end
+     if(abort_request || abort_q || protocol_fault_q)begin state_q<=IDLE;command_done_o<=1;end
      else if(fronts_ready_i)begin
-      state_q<=ACTIVE;command_done_o<=1;command_success_o<=1;
+      state_q<=ACTIVE;command_done_o<=1;command_success_q<=1;
      end
     end
-    ACTIVE:if(abort_q || protocol_fault_q)state_q<=IDLE;
+    ACTIVE:if(abort_request || abort_q || protocol_fault_q)state_q<=IDLE;
     default:begin end
    endcase
   end

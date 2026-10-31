@@ -72,7 +72,7 @@ The native guard is an unconditional refusal pending exact-source root review.
 The manual workflow has only source-controls and complete log preservation jobs.
 No native simulation or physical job is dispatched by this source branch.
 
-Planned matrix: 98 positive named RTL tests, six compiled semantic mutants and
+Planned matrix: 110 positive named RTL tests, six compiled semantic mutants and
 four hierarchy checks. New command/actual-ingress tests run in Icarus and pinned
 Verilator5.040 at FIFO depths4/8/32 with EPOCH_W=2 (more than three complete wraps).
 The default16-bit controller elaborates in the native hierarchy census. The
@@ -84,7 +84,9 @@ or private FIFO/FSM state. They compare actual complete typed records, all32
 bit offsets, error metadata, both polarities, variable SKP lengths, opaque pre-SDS
 OS, held records and per-lane ready. Tests exercise queued records across encoding
 changes/wrap, stopped/restarted/asymmetric clocks, short clean resets, actual FIFO
-overflow, live caller-pin poisoning and wrong/missing PMA acknowledgments.
+overflow, live caller-pin poisoning and wrong/missing PMA acknowledgments. A recovered clock also stops after its high
+ack: abort during the low phase must keep admission/new-command blocked until
+that lane resumes and its real low acknowledgment returns.
 
 Compiled mutants must produce the exact independent behavioral assertion:
 stale returned epoch, torn live command, lost lane ack, partial-lane ack barrier,
@@ -94,3 +96,20 @@ cannot qualify as detection. The bounded testbench deadline is not a DUT timer.
 
 Existing authoritative full-training-oracle access remains unresolved; no new
 normative rules or authorized-standard-access claims are invented here.
+
+## Source review refinements before native execution
+
+The candidate oracle slices each valid HDL lane before integer conversion, so an
+unwritten invalid lane cannot contaminate another lane's comparison. Retirement
+samples the actual ready pins at the observation edge. No unresolved bit of the
+valid record is masked. A dedicated completion-edge abort test covers both clean
+reset and external abort; the public success witness is directly qualified by
+abort assertion, and the FSM also prioritizes the direct abort level. Source
+review also adds the stopped-after-high-ack low-phase test described above.
+
+Native hierarchy checks also require exactly four two-flop request synchronizers
+and two four-bit acknowledgment stages. Their actual Yosys $adff D/Q, POR polarity
+and reset values, recovered/common clock bindings and ASYNC_REG attributes are
+recorded and checked. This is structural evidence; bundled-data setup/hold,
+synchronizer placement/metastability parameters and asynchronous reset recovery
+remain physical CDC/reset integration obligations, not qualified here.

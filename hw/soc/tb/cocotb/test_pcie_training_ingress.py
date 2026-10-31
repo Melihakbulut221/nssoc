@@ -77,11 +77,11 @@ class Ingress(Commands):
         if self.mode!=2:
             fields=("data","k","code_error","disparity_error","comma")
             widths=(128,16,16,16,16)
-            return tuple((self.v("gen12_"+f+"_o")>>(w*k))&((1<<w)-1)for f,w in zip(fields,widths))
-        return ((self.v("gen3_block_o")>>(194*k))&((1<<194)-1),
-                (self.v("gen3_length_code_o")>>(3*k))&7,
-                (self.v("gen3_skp_o")>>k)&1,(self.v("gen3_eieos_o")>>k)&1,
-                (self.v("gen3_realign_o")>>k)&1)
+            return tuple(int(getattr(self.d,"gen12_"+f+"_o").value[w*k+w-1:w*k])for f,w in zip(fields,widths))
+        return (int(self.d.gen3_block_o.value[194*k+193:194*k]),
+                int(self.d.gen3_length_code_o.value[3*k+2:3*k]),
+                int(self.d.gen3_skp_o.value[k]),int(self.d.gen3_eieos_o.value[k]),
+                int(self.d.gen3_realign_o.value[k]))
     async def common(self):
         try:
             while True:
@@ -103,11 +103,12 @@ class Ingress(Commands):
                     assert not self.v("epoch_fault_o"),"faulted epoch exposed records"
                     self.applied()
                     valid=v3 if self.mode==2 else v12
+                    ready=self.v("gen3_ready_i"if self.mode==2 else"gen12_ready_i")
                     for k in range(4):
                         bit=1<<k;item=self.item(k)if valid&bit else None
                         if self.held[k]is not None:assert item==self.held[k],"held complete typed record changed"
-                        self.held[k]=item if valid&bit and not self.ready&bit else None
-                        if valid&bit and self.ready&bit:
+                        self.held[k]=item if valid&bit and not ready&bit else None
+                        if valid&bit and ready&bit:
                             assert self.expected[k],"invented or duplicate typed record"
                             expected=self.expected[k].popleft()
                             assert item==expected,("typed raw-record mismatch",self.mode,self.generation,k,item,expected)

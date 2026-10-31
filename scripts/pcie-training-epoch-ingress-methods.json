@@ -1,0 +1,163 @@
+{
+  "base": "1d9847cfd8c159a3faef5dd50cc05cdf364cdfc8",
+  "branch": "codex/pcie-training-epoch-ingress-v1",
+  "limitations": [
+    "Candidate command and typed record ingress only; no TS/EQ acceptance or LTSSM.",
+    "Full training oracle/state handoff, soc_top replacement and full serial PHY remain open.",
+    "Clean PMA/reset/loss assertions and coherent common-domain PMA acknowledgment are external contracts.",
+    "Bundled-data physical CDC/metastability and reset recovery/removal remain unqualified.",
+    "Native runner refuses unconditionally until exact-source root review; workflow has no native job."
+  ],
+  "mutations": [
+    {
+      "assertion": "stale applied lane epoch",
+      "file": "soc_pcie_training_epoch_control_v1.v",
+      "module": "test_pcie_training_epoch_control",
+      "name": "stale-applied-epoch",
+      "new": "applied_q<={held_payload[PAYLOAD_W-1:4]-1'b1,held_payload[3:0]};",
+      "old": "applied_q<=held_payload;",
+      "test": "held_payload_and_four_phase_ack_barrier"
+    },
+    {
+      "assertion": "torn applied encoding",
+      "file": "soc_pcie_training_epoch_control_v1.v",
+      "module": "test_pcie_training_epoch_control",
+      "name": "torn-live-command",
+      "new": "applied_q<={epoch_q,command_encoding_i,command_polarity_i[lane],command_align_i[lane]};",
+      "old": "applied_q<=held_payload;",
+      "test": "held_payload_and_four_phase_ack_barrier"
+    },
+    {
+      "assertion": "missing applied lane acknowledgement",
+      "file": "soc_pcie_training_epoch_control_v1.v",
+      "module": "test_pcie_training_epoch_control",
+      "name": "lost-lane-ack",
+      "new": "ack_q<=1'b0;",
+      "old": "ack_q<=1'b1;",
+      "test": "held_payload_and_four_phase_ack_barrier"
+    },
+    {
+      "assertion": "stopped lane bypassed command barrier",
+      "file": "soc_pcie_training_epoch_control_v1.v",
+      "module": "test_pcie_training_epoch_control",
+      "name": "partial-lane-barrier",
+      "new": "if((|ack_sync_q) && pma_ack_i)begin",
+      "old": "if((&ack_sync_q) && pma_ack_i)begin",
+      "test": "held_payload_and_four_phase_ack_barrier"
+    },
+    {
+      "assertion": "typed raw-record mismatch",
+      "file": "soc_pcie_gen3_recovered_front_x4_v1.v",
+      "module": "test_pcie_training_ingress",
+      "name": "lost-gen3-realign",
+      "new": ".wr_realign_i(1'b0)",
+      "old": ".wr_realign_i(realign)",
+      "test": "actual_gen3_all_offsets_opaque_os_and_194_bit_metadata"
+    },
+    {
+      "assertion": "typed raw-record mismatch",
+      "file": "soc_pcie_gen3_recovered_front_x4_v1.v",
+      "module": "test_pcie_training_ingress",
+      "name": "truncated-gen3-record",
+      "new": ".wr_block_i({64'b0,block_data[129:0]})",
+      "old": ".wr_block_i(block_data)",
+      "test": "actual_gen3_all_offsets_opaque_os_and_194_bit_metadata"
+    }
+  ],
+  "native_authorized": false,
+  "physical_and_protocol_acceptance": {
+    "analog_cdr_pll_pma": false,
+    "complete_semantic_training_owner": false,
+    "final_setup_hold": false,
+    "full_gen3_x4_phy": false,
+    "layout_drc_lvs": false,
+    "mainchip_serial_integration": false,
+    "physical_cdc": false,
+    "production_signoff": false
+  },
+  "planned": {
+    "compiled_semantic_mutations": 6,
+    "fifo_depths": [
+      4,
+      8,
+      32
+    ],
+    "hierarchy_epoch_widths": [
+      2,
+      16
+    ],
+    "native_executed": false,
+    "normal_frozen_named_tests": 50,
+    "physical_fifos": 8,
+    "positive_rtl_named_tests": 110,
+    "production_hierarchies": 4,
+    "selected_active_fifos": 4,
+    "simulation_epoch_width": 2,
+    "simulators": [
+      "icarus",
+      "verilator"
+    ]
+  },
+  "protected": {
+    "docs/pcie-training-epoch-ingress-20261031.md": "5df2b5761b6c0c6e8ac066317d587c0d2f8a6c2c06e0aebaf7bf8242d6029d70",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v": "009d4885c5492dbc291b7eea3987304847d9a187013439459ada829a18ed54af",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v": "5a0661a0681bbe351714305859a111bb8c53544e80e680e1056c057ffcc4de66",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v": "d9fb7d39ec8916e33efebdcd7fe62fd6e32f437cab3e8436436bd9e09eb2b8b9",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v": "96c6dea3aecca038dc8d5322d2c4a85d7847dbe24bc45a1b4a22d27301980566",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v": "b83c9e0d15e055020e8d44c0dc948eaff88d118cede1feaf33b8d38ddd24bc78",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v": "3c60eead90fe053c2615b76d44e1d5c74add6b3351a3cd85f76572ac3faabf20",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v": "01a3c63b3f3e561e25adb955526a2e0f5241986181dec9ada78cc5f84e7e5533",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v": "483685e8574baecc8e754678ca7cd90aae93be2a0313d8669935546758ebc31d",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v": "9022c0f0479a52fdd928dcad574c11b0b4405412ca9f8f93f015793e7930d735",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v6.v": "276d2869efdefae58072bf819319537834707825f9bcd3e0cbfce615e33a4b85",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_owned_v3.v": "2f7666cbca8c676445676a8cfe2b8bd18198ff54802dcfc961ea78419cede117",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_lane_align_v3.v": "7d8df97bc16c4c1e8dc10de8539dff0de50fefd88d6fe8ec02c20fcf25258cdb",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_record_descrambler_v1.v": "514dc351e8f140635c16cf9bfe4c0ce4066bc9566493a55b55d46820fac7b007",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v2.v": "ee78b371252c9573ec27e21d443f330becbbcfdfff560872f0180024867cbd50",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v3.v": "96149b30b94620dd6fbc6c00e3c6c3336802af9cb9cd195907655d11639de98e",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_front_x4_v1.v": "f3b0172b1025929046bc0b8284672b3f6150e553ba6ffcd0b28e826c3050331c",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_owned_rx_v1.v": "0ca444320dd44eb4f90cf59df4841109dc29879a5d81c772bebf3dbe410fe022",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_owned_rx_v2.v": "6de3d85e1de27dc5ab8b768d93b21b43b995f29ebb4ee7a463b53e83789c4903",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v4.v": "588f2f94e0eab7b7751d21cbe433670c44774a10da15815b983eed3e710be91d",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v5.v": "de5da3658aedb27d0c5685111064b31f92d7c182786e634725c4c12265b1bc8f",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_sds_deskew_v2.v": "bc3120f3f03af9e267449a72ebb77241a90b5fb008e74edfd14e154451a25ac7",
+    "hw/soc/rtl/pcie/soc_pcie_training_epoch_control_v1.v": "cefc0002abae89ad0cafaae0bc6b78df02ddc4f702340b96b6465b0232747143",
+    "hw/soc/rtl/pcie/soc_pcie_training_ingress_x4_v1.v": "92d9cf982699c334aacf612f258fad32e43efa9e728589643479d16326872474",
+    "hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v": "365cb1b03c3fd89aae055210beae154d6aa4abcbbf7c01d79c14d692ffd87a4f",
+    "hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v": "ac5eb688080565efe3e2a1c8120e7a672401583f2ba39e19f233f699b499867e",
+    "hw/soc/rtl/soc_top.v": "b782a7fbe7b9ad5abb0db67bd132907d71e1ef43c9451b9befa2f356b77d4847",
+    "hw/soc/tb/cocotb/Makefile.pcie_shared_serial_front": "14f2058ecccd39283c9f73dd9ff9cdf2e0bcfdf9f39f17ffa5715736b18ea672",
+    "hw/soc/tb/cocotb/Makefile.pcie_training_epoch_ingress": "138e0215f8f126b22daa8a424bfb6a55c59beba8316b42f81b5f34a7545c3685",
+    "hw/soc/tb/cocotb/pcie_gen12_record_cdc_harness.py": "c928cf3c61a2a9cb26d3203b99ddeef98661d5eebb48b74e8f2af295a6a62979",
+    "hw/soc/tb/cocotb/test_pcie_shared_serial_front.py": "501277217738a4fa1ca3f8f16fce97eb8ea26b2ecc62facbc5f1bb544d6a142c",
+    "hw/soc/tb/cocotb/test_pcie_shared_serial_front_composition.py": "9aec5b11bde439ad29927923e0701855a2ee40fc4f6b36ea9044f039aca524b5",
+    "hw/soc/tb/cocotb/test_pcie_training_epoch_control.py": "42771e1e62452a33108d975422a52797f5dd4f5a9e9c1a80e62dcfa3cf96220f",
+    "hw/soc/tb/cocotb/test_pcie_training_ingress.py": "6b3ed9aa218f43dcc7e1314a9e1e0c3b5eeb7f67bea71a381c1ac38d821c3048",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v4.py": "eb96c52581e862ca3214b68fb1ce464eb2d86dba9f977d56529e771ffaeaaae9",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_dllp_consumer_v6.py": "0045535806ec603e756c45805b5e6c684042b5268e2302511b98a4403a2e1b66",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_recovered_events_v2.py": "7bf2b4f3b44cfb1ce4053d721e5a32970f37156dc7437e7058d59a8436fe2b96",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_recovered_x4_v3.py": "58280100a30f37b0d99f6a3fad929b01b23a0171c505616014a4aab613eae54d",
+    "hw/soc/tb/pcie_shared_front_events_compare.v": "1419d1ec858d758a1aa75be00a31efe17a60ef27b99cad288b0b36cb07127de3",
+    "scripts/check_pcie_gen12_raw32_rx.py": "451667d66bb77df193e56ed60cc82f91738d676316e4b6016f3bc9d119d7c7da",
+    "scripts/check_pcie_shared_serial_front.py": "06e34afcf4e51bbe008f866db7d3fd19ed44159bfe32b3af54e67c3adb849343",
+    "scripts/check_pcie_training_epoch_ingress.py": "a5c43e9ddf5da9f946bbff98de8583aa5ce0d2e255e7f4c3d25161bc50dd75d2",
+    "scripts/check_pcie_training_epoch_ingress_source.py": "4175d791cb69bf6368f0a471b921d2a1ea0e923a940e442d7c5fd4e5eed202e7",
+    "scripts/pcie-gen12-record-cdc-requirements.txt": "71f8607c76595a1254177a372191a5ed5e17a50367c4248e461ee02cb8f4d070",
+    "scripts/pcie-shared-serial-front-methods.json": "6f6065e40e55be6b97e951318a1e37b93d77e42112f923b19b3b3e9187299a78",
+    "sw/tests/data/pcie_gen12_ieee8023z_codes.json": "e7c1ced79890c6cbef114045370bb110a00a21e863b4f802680ea12adc0ab438"
+  },
+  "schema": "pcie-training-epoch-ingress-v1",
+  "source_origins": {
+    "base": "1d9847cfd8c159a3faef5dd50cc05cdf364cdfc8",
+    "initial_candidate_review": "7d763b0f188fc7d996b1f6a6003bfcc18bd63ae4",
+    "shared_front_makefile_ref": "17033684f3dfd0c760ac7cf64d2e1dc1a4b2fdb0",
+    "shared_front_ref": "64d31863ad2f5cd59483251dbe1dad8e7069c44e"
+  },
+  "vendor": {
+    "bytes": 34468,
+    "git_blob_sha": "b73ae6cd57b98290cc8f46dbac9738a7cf5f65ec",
+    "path": "lib/axis/rtl/axis_async_fifo.v",
+    "sha256": "339734a7984d7d540451c92f0831495837c451d170ba60dfbd59f851b28f4250",
+    "source_ref": "12744433de03b28ba4b0081ad3f49b150327b8fc"
+  }
+}
