@@ -1657,6 +1657,11 @@
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-stale-wire-test-fix-live-v175.json",
     "sha256": "6be69ba4ad9ce62377e604a36b6449e4618a4f9a70a71a6bde5ea097b7d39f60"
   },
+  "continuation_note_v176": {
+    "bytes": 5698,
+    "path": "docs/evidence/cloud-collector-recipes-20261029/cdr-current-eight-drain-fresh-rc-live-v176.json",
+    "sha256": "ddb0072785e601a2661b32ed66720d435b7e33a0434fea147ee50e0ddf97a449"
+  },
   "current_run_snapshot": [
     {
       "attempt": 1,
@@ -1813,6 +1818,75 @@
       "run": 41211382427,
       "source": "ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9",
       "status": "in_progress"
+    },
+    {
+      "attempt": 1,
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124566939851,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124567308303,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Clear608owned stale wires and route with unchanged physical invariants"
+          ],
+          "conclusion": null,
+          "id": 124567343451,
+          "name": "diode-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41211382427,
+      "source": "ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9",
+      "status": "in_progress"
+    },
+    {
+      "attempt": 1,
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124572341859,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124572695214,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124572740826,
+          "name": "preserve-graph-job-logs",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124572742163,
+          "name": "graph",
+          "status": "completed"
+        }
+      ],
+      "run": 41213217899,
+      "source": "df3f239e24eb39486af0ca0f4d2ec6ee2801d3af",
+      "status": "completed"
     }
   ],
   "executed_collector_v163_initial": {
@@ -76089,13 +76163,13 @@
     "tests_and_CAD_on_GitHub": true
   },
   "local_cleanup_verification": {
-    "at": "2026-10-31T14:44:45.388188+00:00",
+    "at": "2026-10-31T15:09:42.280504+00:00",
     "local_CAD_processes": [],
     "native_payload_downloaded_locally": false,
     "owned_project_tmp_empty": true,
     "workspace_empty": true
   },
-  "local_workspace_verified_empty_at": "2026-10-31T14:44:45.388188+00:00",
+  "local_workspace_verified_empty_at": "2026-10-31T15:09:42.280504+00:00",
   "monitor": {
     "automatic_native_dispatch": false,
     "branch": "main",
@@ -76131,7 +76205,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 175,
+    "inventory_version": 176,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -76172,12 +76246,12 @@
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66"
   },
   "next_actions": [
-    "CLOUD ONLY: all tests/CAD/native payloads/archives remain GitHub, never acquire native archives locally even RAM. Workspace and ownedtmp empty; latest direct request overrides old goal local-work wording.",
-    "Poll SAME41211382427. Original327controls and15newtests gate native acquisition. Check actual608wire removal native terminal, allguide/fullsnapshot equality, route_delta,1691clocks/placement, bothcontactmodes/antenna/DRC; preserve fullnativefailure andalllogs. No rerun/cancel on quiet logs.",
-    "Current mainchip source isddc1cbddf68096c5e976bf9acda5c5fb0168c5b9; predecessor571c94d source-control failure fully preserved inroot docs/evidence/mainchip-stale-wire-control-failure-41211073897/. No native attempt infailed41211073897. Exact ASTtest was corrected, originalnativecode/limits unchanged.",
-    "Prior actual native41209965584 sourcea74b74 proved all1351newdiode Apins lackwirecontact inall608nets bothpositivearea/closedboundary; permanent429983566 andfullrootproofv173. Newactualrouting not yet accepted.",
-    "CDR graph41206809668/source9cb8738b remains freshRC-ready only. Implement exact330member/current75fileview admission withoriginal absolutegraph paths; original500device/wireRC/sevenMIM bothorders22controls/order and21composition, then1151vector nominal_early/constant_one loaded electricalmatrix.",
-    "FullPHY/finalsetuphold open; analoglimits and20/4/8/8ns+5% unchanged.8hmonitor read-only436handles automatic_native_dispatch=false; historicalHTTP502 issue not claimedfixed."
+    "CLOUD ONLY. No local native payloads/archives even RAM; no local tests/CAD. Workspace and project temporary files empty. Latest direct user policy overrides old goal local-work wording.",
+    "Poll SAME mainchip41211382427 sourceddc1cbdd.342source controls passed. Require actual608wire clear/reload/allguide invariance, original1691clock/placement/nonmutable guards, route_delta and both physical contact modes, antenna/DRC. Preserve fullnativecapsule andalllogs at terminal. Do not restart on quiet logs.",
+    "Poll SAME CDR41213217899 sourcedf3f239e, release430005706. This is freshRC dispatch, not acceptance. Existing227+118+16 source controls gate native acquisition. Preserve actual failed/complete output and all logs before diagnosis.",
+    "Current CDR workflow oncodex/cdr-drain-m1-loaded-electrical supports controls/rc; legacy production job name graph now executes current RC. Do not dispatch old graph mode or replay completed graph41206809668. Original frozen sources remain unchanged.",
+    "After actual freshRC success run original nominal_early/constant_one1151-vector loaded matrix on newly composed model. No oldRC/trace substitution. FullserialPHY and finalsetuphold open; analoglimits and20/4/8/8ns+5% unchanged.",
+    "8hmonitor read-only437runhandles automatic_native_dispatch=false; historicalHTTP502 issue not claimed fixed."
   ],
   "prepared_collector_v155": {
     "bytes": 14498,
@@ -76760,6 +76834,80 @@
         "workflow_conclusion": "failure"
       },
       "timing_accepted": false
+    },
+    "cdr_current_eight_drain_fresh_rc_in_progress": {
+      "all_source_bytes_readback_verified": true,
+      "branch": "codex/cdr-drain-m1-loaded-electrical",
+      "complete_graph_members": 330,
+      "controls_required": {
+        "current_RC_unittests": 16,
+        "current_graph_inherited": 227,
+        "original_RC": {
+          "positive": 8,
+          "refusal": 110
+        }
+      },
+      "current_view_files": 75,
+      "electrical_simulation_executed": false,
+      "exact_current_path": "/home/runner/work/nssoc/nssoc/hw/soc/out/cdr-current-eight-drain-graph-41206809668-1/native/candidate",
+      "full_phy_accepted": false,
+      "graph_producer": 41206809668,
+      "graph_source": "de79f76bc60b3ef2b06c88736f4f3d0ee3491257",
+      "manifest_path": "scripts/cdr-current-eight-drain-fresh-rc-methods.json",
+      "manifest_sha256": "d823ddc2c2423874b04bf0dbe96baf7e0fffdd4fef0ad4344919b874a7bcb160",
+      "native_RC_acceptance": false,
+      "numerical_gates": "Original500-device/1446-terminal binding; wireRC13raw faults; sevenMIM both orders22controls each and21composition controls; original validator15c6d6f6 retained.",
+      "physical_producer": 41203881385,
+      "physical_source": "39496d034c4c1f2c9bcc3a9fe70cb3d82823fb53",
+      "production_job_name": "graph",
+      "protected_sources": 1720,
+      "published_files": 14,
+      "release": 430005706,
+      "run": 41213217899,
+      "runtime": "Pinned AppImage d6a349ec; executable-scoped AppArmor exception only. Frozen runtime restoration inside supervised330member restore. networkx3.4.2/numpy2.3.3/scipy1.16.2.",
+      "snapshot": {
+        "attempt": 1,
+        "conclusion": "failure",
+        "jobs": [
+          {
+            "active_steps": [],
+            "conclusion": "failure",
+            "id": 124572341859,
+            "name": "source-controls",
+            "status": "completed"
+          },
+          {
+            "active_steps": [],
+            "conclusion": "success",
+            "id": 124572695214,
+            "name": "preserve-job-log",
+            "status": "completed"
+          },
+          {
+            "active_steps": [],
+            "conclusion": "success",
+            "id": 124572740826,
+            "name": "preserve-graph-job-logs",
+            "status": "completed"
+          },
+          {
+            "active_steps": [],
+            "conclusion": "skipped",
+            "id": 124572742163,
+            "name": "graph",
+            "status": "completed"
+          }
+        ],
+        "run": 41213217899,
+        "source": "df3f239e24eb39486af0ca0f4d2ec6ee2801d3af",
+        "status": "completed"
+      },
+      "source": "df3f239e24eb39486af0ca0f4d2ec6ee2801d3af",
+      "source_derivation": "Five numerical workers change only admission imports. Legacy paths/authority and driver producer metadata bind current graph. Original numerical bodies, resource bounds and failure publication preserved.",
+      "status": "CLOUD_CURRENT_GRAPH_FRESH_RC_DISPATCHED_NOT_YET_QUALIFIED",
+      "timing_accepted": false,
+      "workflow_id": 401118236,
+      "workflow_mode": "rc"
     },
     "cdr_current_eight_drain_fresh_rc_successor": {
       "all_native_payloads_in_cloud": true,
@@ -85120,18 +85268,23 @@
         "conclusion": null,
         "jobs": [
           {
+            "active_steps": [],
             "conclusion": "success",
             "id": 124566939851,
             "name": "source-controls",
             "status": "completed"
           },
           {
+            "active_steps": [],
             "conclusion": "success",
             "id": 124567308303,
             "name": "preserve-job-log",
             "status": "completed"
           },
           {
+            "active_steps": [
+              "Clear608owned stale wires and route with unchanged physical invariants"
+            ],
             "conclusion": null,
             "id": 124567343451,
             "name": "diode-routing",
@@ -86280,7 +86433,7 @@
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167",
     "source": "2a44527cd4a72a4e118c327eae484386e710b57e"
   },
-  "root_source_before_receipt": "4a944aeef29ddf798c8c55f2c61360c8f3cecab4",
+  "root_source_before_receipt": "89d336366ad2369f2c483a2f7730826d80f299f5",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -86288,5 +86441,5 @@
     "sha256": "e91938bb7dc9cb4c57c934f1aa3b8fff562efc2e04d1e2726976afcb74d65835"
   },
   "schema_version": 1,
-  "updated_at": "2026-10-31T14:44:45.388188+00:00"
+  "updated_at": "2026-10-31T15:09:42.280504+00:00"
 }
