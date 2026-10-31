@@ -1,6 +1,6 @@
-# Cloud continuation — checkpoint v194
+# Cloud continuation — checkpoint v195
 
-Updated: 2026-10-31T20:46:44.824068+00:00
+Updated: 2026-10-31T21:08:39.629587+00:00
 
 The latest user instruction is cloud-only. Every test, simulation, CAD tool and native numerical analysis runs on GitHub. Local source authoring, static review and derived API text coordination use RAM only. Never acquire native project archives, models/SPICE, ODB/GDS, raw waves or native-frame gzip locally, even in RAM. The workspace and project temporary prefixes are empty; no local CAD processes. Preserve unrelated user files and original attachments.
 
@@ -26,13 +26,19 @@ The adapter restores all 99 original members at their original absolute path, re
 
 Disabled source controls 41238328897 and activated source controls 41238703809 passed, with complete 35-file and 37-file proofs. An activation fixture assumption was caught before actual execution and corrected to use an explicitly disabled copy plus a refusal for the real source-control job under enabled configuration.
 
-## Candidate view for fresh extraction: source controls only
+## Candidate-bound canonical view: source qualified, actual view still pending
 
-Source 6f0dd8af1c026acfd1345bd9f01bae93329c2769 on codex/cdr-via2-m3-fresh-rc-source-v1 passed [41239363169](https://github.com/Melihakbulut221/nssoc/actions/runs/41239363169): 18 projection/refusal cases using explicit synthetic files. The earlier synthetic symlink fixture failure and its full 17-file proof are preserved; the correction changed only parentheses and its pin. Complete successful proof has 26 files.
+Projection source 6f0dd8af1c026acfd1345bd9f01bae93329c2769 passed 18 hosted synthetic cases in 41239363169; its earlier fixture failure remains preserved. Four frozen wire workers already cover all seven metals and six vias. The candidate view replaces only four layout and six flat-LVS files, keeps all 49 original child/input files and both original metadata records, and writes explicitly derived metadata. Historical graph/RC results are not promoted as current.
 
-Existing numerical workers already cover Via2/Metal3 within all seven metals and six vias. The source-only projection copies the new layout and flat LVS, retains immutable reference children and both original metadata files, and writes separately labeled derived metadata. Old native graph/RC results are not copied as new. The actual physical binding remains null and the native entry unconditionally refuses.
+Core source 5f483fb3c584a741875b915e12f62c87e8a61f68 passed 53 hosted source/synthetic controls in [41240740760](https://github.com/Melihakbulut221/nssoc/actions/runs/41240740760). Root independently read its 11,647-byte result, SHA 6194b4a262b7f6952af8f098c71b983478eb7d83e9d53f80db06f8bdf6022a0c. Complete 31-file proof: 51ec43cf30d79318afadbd1b2871efd8bcbc8c30. Root and peer source reviews found no blocking issue.
 
-Physical PASS is now available. fresh_rc_next_audit owns the source-only host/admission/publication adapter; loaded_admission_review owns the native core and exact frozen-function/source-pin recovery. Combine and review their exact sources, bind the real report/source/run, and then regenerate the native view, preserving all 500 devices, 1,446 terminal records, 25 public ports and seven intrinsic MIMs. Authenticate all new resistance/capacitance branches and required observables. New topology counts may differ from the baseline. Only then run one matching nominal_late comparison with unchanged electrical thresholds and semantics.
+Core binds the actual 41238994098 physical source, exact candidate GDS, all 330 reference and 172 physical members and original 4,721-byte generation record. It retains exact frozen definition bodies for source-pin recovery, parent/native planes, full native identity and witness checks. Graph counts come from complete observed censuses; no old 113/238/114 count is fabricated. All 500 devices, 1,446 terminals, 25 ports, semantic device parameters/locations/anchors and full terminal/port partitions must remain equal. Every actual conductor partition on all 13 layers must equal the original material union exactly the 16 declared Via2/M3 additions.
+
+Incremental preservation successor e3aa98926d83cc158316d577e35b6d5eb17be55b passed [41241667320](https://github.com/Melihakbulut221/nssoc/actions/runs/41241667320): 59 hosted source/synthetic controls. Only the six completed-observation writes moved before subsequent gates; all native calculations and comparisons remain unchanged. Five explicit synthetic failure boundaries preserve exactly 1, 2, 3, 4 and 5 completed JSON observations. Root independently authenticated the 17,940-byte result, SHA 6beda175657b75f5e5e10a3d8277527a71464a029b001c694e83ec52aee0b26a, and complete 46-file proof c6a5faa559f0b126c828aef7b19f60b713d3c7b6. These fixtures are not real candidate CAD evidence.
+
+The standalone native core remains unconditionally disabled. fresh_rc_next_audit owns the separate host/admission/acquisition/publication layer; loaded_admission_review owns the core and cross-review. A tool RAM-session timeout discarded unpublished host drafts only; durable core/evidence stayed in GitHub and no native/local data were lost. Host reconstruction uses small incremental native-disabled skip-ci commits on codex/cdr-via2-m3-canonical-view-adapter, beginning at 412461d9088757c48e8a117d8851e7985c4c7cbc. Latest durable preparation is 11242a683e7db72e988dd0840fab1e22325498d8: the exact latest core, admission, native lifecycle and publisher are saved with the protected 1,520-file closure; tests, workflow and manifest are still pending and all native authority remains false. Finish host reconstruction, review the combined immutable source, run its own controls and reserve one exact-source destination before actual native view acquisition.
+
+After actual canonical-view PASS, bind its complete current_files and exact absolute root to frozen binding, wire-RC, precise/precise_reversed seven-MIM extraction and composition. Retain all 13 wire controls, 22 controls for each MIM order and 21 composition controls, full R/C/X multiset/terminal/parameter/node/port/substrate equivalence and exactly seven intrinsic MIMs. New R/C and voltage-vector counts must be measured; 124 HBT Ic and 50 MOS Ids retain their exact meaning. Only then run one matching nominal_late comparison with unchanged model/runtime/PRBS/phase/load/step and electrical thresholds. No new view, RC or waveform acceptance is inferred from source controls.
 
 ## Mainchip observer failure and cloud-only diagnosis
 
@@ -46,6 +52,14 @@ The actual native command hit elapsed_limit at 1,200.192 seconds, return code -1
 
 A proven host defect explains the empty release: finish_record rethrew the primary failure before publication. The successor must publish complete failure evidence before rethrowing, add bounded native substage/batch progress and periodic stack diagnostics, and preserve all observations/census/digests. Root approved a 3,600-second readonly observation budget and an outer deadline of at least 3,900 seconds within the 90-minute workflow. Memory guards remain 10 GiB group RSS, 12 GiB container and 2 GiB host available; STA/electrical thresholds do not change. Actual dispatch still requires own-source controls, full proof and review.
 
+Successor source f5f60a3f8eae3d3377c04c8425cac541211f7d55 passed all 50 hosted controls in [41241261859](https://github.com/Melihakbulut221/nssoc/actions/runs/41241261859), zero failures/errors/skips. Root authenticated its 5,778-byte result, SHA b68588001f5602901b3ee6693bb368fbe73869e580b41a90a9e2b0a3b4a1238d, and complete ten-file proof c7eeceb29122b5a9adaf6fd0ab15c4ecb5270e0b. Publication now occurs before the original failure is rethrown. The exact frozen supervisor is adapted only at its allowed-time guard; command validation accepts only 3600 seconds, with unchanged memory/exit/cleanup checks. Bounded 1024-item substage progress and 60-second stack diagnostics preserve geometry, census and digests; hosted AST equality confirms that calculation scope.
+
+Both earlier source-control failures are preserved: 41240833018 stopped at a two-space Python syntax typo before tests; 41241019298 ran 50 tests and failed two fixtures (old40 test count and save-error injection into a re-exported alias rather than the real defining namespace). The corrected injection retains the exact original OSError expectation and proves an actual writer call plus terminal-save evidence. Production code did not change for the latter fixture correction.
+
+Read-only activation 00b46253e990983365db3b5f2b44a1233e20623e changed only the two authority flags, dedicated workflow, documentation and pins. Runtime and all 50 test bodies remain byte-identical. Its own [41241501983](https://github.com/Melihakbulut221/nssoc/actions/runs/41241501983) completed successfully; source/log jobs passed and the observation job was skipped. Root and independent peer reviewed exact four-file activation, GROUP/work-root output ownership and 3600/3900/90-minute deadlines.
+
+Exactly one actual read-only observation [41241933572](https://github.com/Melihakbulut221/nssoc/actions/runs/41241933572) was dispatched at 21:05:27 UTC on 2026-10-31 at source 00b46253e990983365db3b5f2b44a1233e20623e. Root independently reserved empty public prerelease 430186433 and exact lightweight tag cloud-results-41241933572-1-mainchip-drt-obstacle-progress; readback verified at 21:05:54.209045 UTC. Monitor this same run. Do not dispatch another observation or reroute. Its successful completion and actual slow-operation cause are not yet established; use the current checkpoint's live job snapshot.
+
 Repeated encoded-path serialization is only a source-level hypothesis; no geometry algorithm change is selected from it.
 
 The saved stale-wire-cleared.odb is preroute input and lacks iteration 10 mutable routes. Original route 41211382427 hit the 10 GiB RSS guard and produced no routed checkpoint. Preserve all 1,691 clock/fixed nets and use actual evidence to select the next bounded change. Final routing/setup/hold remain open.
@@ -54,7 +68,7 @@ The saved stale-wire-cleared.odb is preroute input and lacks iteration 10 mutabl
 
 Full serial Gen3 x4 PHY, PLL/SERDES/TS/EQ/LTSSM, physical CDC and soc_top serial integration, final routing/setup/hold, RC min/max and production approval remain open. Keep UI 125 ps, sampler 100 mV/37.5 ps, XOR 100 mV/75 ps, HBT minimum VCE 0.4 V, maximum absolute VCE 1.6 V and VBE 1 V, actual Ic/emitter limit 3 mA, and PLL 62.5 ps. STA clocks remain 20/4/8/8 ns plus five percent, three PVT corners and zero setup/hold/slew/capacitance/fanout violations.
 
-Monitor v194 tracks 512 handles every eight hours, read-only with automatic_native_dispatch=false. Earlier HTTP 502 is not claimed fixed. Use [skip ci], nonforce compare-and-swap updates and scoped Git trees.
+Monitor v195 tracks 519 handles every eight hours, read-only with automatic_native_dispatch=false. Earlier HTTP 502 is not claimed fixed. Use [skip ci], nonforce compare-and-swap updates and scoped Git trees.
 
 Detailed state: docs/evidence/cloud-active-checkpoint-20261024.json
-Immutable receipt: docs/evidence/cloud-collector-recipes-20261029/cloud-physical-recheck-and-mainchip-failure-v194.json
+Immutable receipt: docs/evidence/cloud-collector-recipes-20261029/cloud-canonical-view-core-and-observer-progress-v195.json
