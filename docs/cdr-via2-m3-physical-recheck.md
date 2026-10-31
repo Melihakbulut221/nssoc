@@ -1,6 +1,6 @@
 # Physical-only recheck of the existing Via2/M3 candidate
 
-This adapter is initially disabled for native execution. Its workflow runs source controls only. Geometry regeneration, RC extraction and electrical simulation are never authorized here.
+This exact-source adapter authorizes physical verification only in the explicitly selected recheck job, after its same-run source controls and independent empty release reservation pass. Geometry regeneration, RC extraction and electrical simulation remain unauthorized. Source preparation and controls have not acquired or executed a native candidate.
 
 Producer run 41235314835 at db7077a9495229ef444d1155aed687cfe374f9ae generated the exact sixteen Via2/M3 shapes successfully, including serialized structural reversal. It then failed during checker import because seven original SPICE source files were absent from the sparse checkout. DRC/LVS were not executed. That complete failure, its 99-file output index, all three release assets and full logs are preserved; a failed run is not admitted as physical success.
 
@@ -14,4 +14,4 @@ The native pipeline contains only frozen runtime restoration and the full unchan
 
 The hosted source suite adds actual historical JSON mutation refusals, an explicitly synthetic 99-member restored input fixture, immutable absolute-path and no-result-rewrite checks, context/authority refusals, nine-record log transport tests, unchanged physical/publication method equality and full failure retention tests. No original GDS, model, archive or waveform is acquired by those tests. Native source-model bytes are read only on the hosted runner; local work uses Python/JSON/logs and Git metadata in RAM.
 
-A future actual physical-only run needs a separately reviewed activated SHA, its own passing source controls and one independently reserved empty exact-source public release. This source preparation does not dispatch or reserve that run. Fresh RC and matched original nominal_late electrical gates remain separate later requirements even if physical verification passes.
+The activated SHA still needs its own passing hosted source controls and explicit reviewed dispatch with one independently reserved empty exact-source public release. The disabled-source test authority assumption is fixed using an explicit disabled config copy; the actual source-controls context is also rejected with an enabled physical config. Production admission, worker, frozen checker and publisher code are unchanged. This source preparation does not dispatch or reserve an actual run. Fresh RC and matched original nominal_late electrical gates remain separate later requirements even if physical verification passes.
