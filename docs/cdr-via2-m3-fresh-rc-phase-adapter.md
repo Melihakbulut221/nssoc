@@ -1,0 +1,15 @@
+# Current-source fresh RC phase adapter
+
+This adapter is source-only until the separately reviewed fresh-RC host grants exact-source extraction authority. This branch contains no native job. The original numerical core, generated-method derivations, thresholds and two-order/corruption algorithms remain unchanged.
+
+The host authenticates and restores the original 665-member canonical producer, its complete current 78-file view, frozen runtime/model inputs, same-source controls and an independent empty result release. The adapter operates only below the new fresh-RC output root. Every phase rechecks the actual environment, host manifest/preflight, complete runtime cache and earlier phase byte receipts. No historical producer source/environment or module main is substituted.
+
+The host supervises prepare followed by the core's 13 commands. Native binding export and seven-MIM generation use pinned AppImage Python. Raw extraction remains three independently supervised generated scripts. All eleven wrapper calls preserve first-error evidence and exclusive phase receipts; numerical snapshots exclude concurrently written host supervision logs. Prior numerical inputs cannot be rewritten. Frozen function provenance and the current wrapper/core are recorded separately.
+
+The phase adapter copies authenticated Magic runtimes preserving modes, validates the precise library dependency report, prepares both native orders and uses the actual current semantic port order. The final file validator requires complete binding/contact/target controls, thirteen raw-wire controls, five capture/thirteen raw/nine intrinsic controls in each order, original count/order controls and twenty-one composition refusals. R/C counts are measured, not copied from the old layout.
+
+The only accepted final status is PASS_CURRENT_VIA2_M3_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES. It does not accept electrical behavior, qualified PEX, or a complete PCIe PHY. Both native numerical orders and loaded electrical evidence remain distinct requirements.
+
+Source controls run the independent complete synthetic numerical fixture, then test the same report/byte validator with stale source/run, changed bytes, consistently repinned but semantically invalid reports, missing phases/controls/orders and failed extraction. Separate lifecycle controls preserve primary before/body/after failures and real partial files. Fixture receipts explicitly use SOURCE_ONLY_SYNTHETIC_PHASE_FIXTURE and cannot produce actual native qualification. Standalone actual source-job admission is tested without altering the environment.
+
+Integration API: check_cdr_via2_m3_fresh_rc_native.controls(ctx, out) returns the source-only result with passed count/records. cdr_via2_m3_fresh_rc_native.validate_complete(out, ctx) repeats actual host guards before and after complete file validation. The host must pin/import the exact adapter/checker and document; this branch's workflow and manifest are not an integration manifest.
