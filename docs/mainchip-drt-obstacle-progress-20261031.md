@@ -84,3 +84,26 @@ so no save error was injected. The corrected fixture guards alias identity,
 patches the actual defining namespace, counts the save call and requires the
 terminal-save evidence plus the exact same original OSError. Production bodies
 and exception expectations remain unchanged; both complete failures are retained.
+
+## Reviewed read-only activation
+
+Source-only run 41241261859 at `f5f60a3f8eae3d3377c04c8425cac541211f7d55`
+passed all 50 controls with zero failures, errors or skips. Complete proof:
+[`c7eeceb2`](https://github.com/Melihakbulut221/nssoc/tree/c7eeceb29122b5a9adaf6fd0ab15c4ecb5270e0b/docs/evidence/mainchip-drt-obstacle-progress-controls-41241261859),
+10 files / 90,598 B, receipt SHA256
+`f83b5d121c2d74f1ee23d964fce0a233baaacbe758d6a0941c52506afd253938`.
+
+This activation changes only the two explicit read-only authority flags,
+dedicated manual workflow, this note and source pins. Runtime, geometry,
+budget, publication and all 50 test bodies are unchanged from that qualified
+source. The candidate permits only a manually approved exact-source observation
+after its own successful source controls and complete log-preservation job.
+The observation job has a 90-minute wall-time cap and uses the already tested
+3600 s native / 3900 s outer deadlines with unchanged memory/resource guards.
+Its output scope includes both complete generated native-output trees and
+worker streams; authenticated frozen inputs remain excluded from generated
+output publication. An independent empty public prerelease at the exact source
+and `mainchip-drt-obstacle-progress` result group is mandatory before acquisition.
+Actual dispatch still requires the separate reviewed run/reservation step.
+This source change does not claim a native observation, root cause, routing or
+timing/physical pass.
