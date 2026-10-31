@@ -149,6 +149,25 @@ jobs:
     # healthy job before its later suites execute.
     timeout-minutes: 360
     steps:
+      - name: Record the original six-hour budget before checkout and tools
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib, time
+          path = pathlib.Path(os.environ['RUNNER_TEMP']) / 'nssoc-ci-budget.json'
+          record = {
+              'schema': 'nssoc-ci-job-budget-v1',
+              'identity': {k: os.environ.get(k) for k in ('GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT', 'GITHUB_SHA', 'GITHUB_JOB')},
+              'monotonic_origin_ns': time.monotonic_ns(),
+              'maximum_seconds': 21600,
+              'finalization_reserve_seconds': 180,
+              'origin_scope': 'first user step, before checkout/setup; runner setup offset is unknown and covered by the reserve, not asserted zero',
+          }
+          with path.open('x', encoding='utf-8') as stream:
+              json.dump(record, stream, sort_keys=True)
+              stream.write('\n'); stream.flush(); os.fsync(stream.fileno())
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as stream:
+              stream.write('NSSOC_CI_BUDGET_FILE=' + str(path) + '\n')
+          PY
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           # The full pytest suite verifies immutable historical Git blobs.
@@ -187,6 +206,17 @@ jobs:
 
       - name: Every check, from the same script the developer runs
         run: scripts/ci_local.sh all
+
+      - name: Retain full gate output and incomplete pytest diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: checks-observation
+          path: |
+            hw/soc/out/ci-observe/
+            ${{ runner.temp }}/nssoc-ci-budget.json
+          if-no-files-found: error
+          retention-days: 30
 
       - name: The paper must have built here, even though it cannot there
         run: |

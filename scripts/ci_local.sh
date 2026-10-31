@@ -75,15 +75,24 @@ export TECTONIC
 
 pass=0; fail=0; skip=0
 failed_names=""
+# A separate invocation namespace keeps nested CI/test helpers disjoint.
+observation_root="${NSSOC_CI_OBSERVE_ROOT:-hw/soc/out/ci-observe}/$(date -u +%Y%m%dT%H%M%S)-$"
+gate_number=0
 
-run() {   # run <name> <command...>
+run() {   # run <name> <command...>; original commands and verdicts are retained
     local name=$1; shift
-    printf '  %-46s ' "$name"
-    if out=$("$@" 2>&1); then
-        echo "ok"; pass=$((pass+1))
+    gate_number=$((gate_number+1))
+    local output="$observation_root/gate-$(printf '%04d' "$gate_number")"
+    local progress=()
+    if [ "$name" = "the whole pytest suite" ]; then
+        progress=(--pytest-progress)
+    fi
+    printf '  %s\n' "$name"
+    if "$PY" scripts/ci_observe_command.py --out "$output" --label "$name" "${progress[@]}" -- "$@"; then
+        echo "  ok"; pass=$((pass+1))
     else
-        echo "FAIL"; fail=$((fail+1)); failed_names="$failed_names $name"
-        printf '%s\n' "$out" | tail -12 | sed 's/^/      /'
+        echo "  FAIL (complete output and supervision: $output)"
+        fail=$((fail+1)); failed_names="$failed_names $name"
     fi
 }
 
