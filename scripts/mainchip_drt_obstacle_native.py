@@ -9,6 +9,7 @@ import mainchip_drt_obstacle_contract as k
 import mainchip_original_clock_restoration_native as original
 import mainchip_two_signal_ownership_native as geom
 import mainchip_bulk_postdrt_antenna as old
+import mainchip_drt_obstacle_progress as telemetry
 q=k.q
 ROOT=Path("/work/tail-source")
 INPUTS=Path("/work/obstacle-inputs")
@@ -30,11 +31,14 @@ def all_pin_geometry(t):
             expected.append((box.getTechLayer().getName(),geom.placed_box(transform,box)))
     q.require(sorted(actual)==sorted(expected),"complete transformed MPin/ITerm geometry equality")
     return actual
-def native_scope(db,block,scope,owners,plan,progress):
+def native_scope(db,block,scope,owners,plan,progress,trace):
+    trace.begin("native-census")
     q.require(not list(block.getChildren()),"no hidden child blocks")
     all_nets=list(block.getNets());all_instances=list(block.getInsts())
     k.census([n.getName()for n in all_nets],[i.getName()for i in all_instances],plan["added_instances"],plan["attachments"])
     q.require(db.getTech().getDbUnitsPerMicron()==block.getDbUnitsPerMicron()==scope["dbu"],"native DBU binding")
+    trace.end()
+    trace.begin("diode-connections")
     mutable,protected,attachments=owners
     actual_new={i.getName():i for i in all_instances if i.getName().startswith("NSSOC_BULK_NEW_")}
     q.require(set(actual_new)==set(plan["added_instances"])==set(attachments)and len(actual_new)==1351,"complete added diode census")
@@ -42,14 +46,23 @@ def native_scope(db,block,scope,owners,plan,progress):
         q.require(inst.getMaster().getName()==old.DIODE,"exact qualified diode master")
         a=inst.findITerm("A")
         q.require(a is not None and a.getNet()is not None and a.getNet().getName()==attachments[name],"actual added diode A connection")
+        trace.tick()
+    trace.end()
+    trace.begin("native-api-evidence")
     proof=geom.api_evidence();layers=geom.named_layers(db.getTech(),proof)
+    trace.end()
     markers=scope["markers"];by_net={}
     for m in markers:
         for name in m["nets"]:by_net.setdefault(name,[]).append(m)
     observed={};seen_iterms={};seen_bterms={};witnesses={str(m["ordinal"]):[]for m in markers}
     for name in scope["endpoint_names"]:
         net=block.findNet(name);q.require(net is not None and net.getName()==name,"exact endpoint net lookup")
-        identity=original.identity(db,net);encoded=original.encoded(net)
+        trace.begin("endpoint-identity",name)
+        identity=original.identity(db,net)
+        trace.end()
+        trace.begin("endpoint-encoding",name)
+        encoded=original.encoded(net)
+        trace.end()
         if name in mutable:
             q.require(encoded==dict(wire_present=False,metadata="ROUTED",paths=[]),"selected mutable wire was cleared; iteration10 routes absent")
         stats={};digest=hashlib.sha256();pins=[];records=0
@@ -65,10 +78,16 @@ def native_scope(db,block,scope,owners,plan,progress):
                 if found is not None:witnesses[str(marker["ordinal"])].append(found)
         wire=net.getWire();wire_pin=None;wire_projection_pin=None
         if wire is not None:
+            trace.begin("endpoint-wire-projection",name)
             projection=geom.native_wire(db,block,wire,layers,proof)
+            trace.end()
             wire_pin=k.source_pin(projection["raw"]);wire_projection_pin=k.source_pin(projection)
+            trace.begin("endpoint-wire-shapes",name)
             for i,shape in enumerate(projection["shapes"]):
                 feed(dict(shape,owner=name,record_id=["net",name,"wire","shape",i],route_metadata=encoded["metadata"],encoded_classes=encoded["paths"]))
+                trace.tick()
+            trace.end()
+        trace.begin("endpoint-iterm-pins",name)
         for t in net.getITerms():
             inst=t.getInst();terminal=t.getMTerm().getName()
             q.require(t.getNet()is not None and t.getNet().getName()==name,"actual ITerm connection")
@@ -79,6 +98,9 @@ def native_scope(db,block,scope,owners,plan,progress):
                   kind="iterm-pin",layer=layer,box=rect,instance=inst.getName(),
                   terminal=terminal,master=[inst.getMaster().getLib().getName(),inst.getMaster().getName()],
                   added_diode=inst.getName()in actual_new),is_pin=True)
+            trace.tick()
+        trace.end()
+        trace.begin("endpoint-bterm-pins",name)
         for t in net.getBTerms():
             q.require(t.getNet()is not None and t.getNet().getName()==name,"actual BTerm connection")
             q.require(t.getName()not in seen_bterms,"unique connected endpoint BTerm");seen_bterms[t.getName()]=name
@@ -87,6 +109,9 @@ def native_scope(db,block,scope,owners,plan,progress):
                     q.require(not b.isVia(),"BPin via requires separate qualification")
                     feed(dict(owner=name,record_id=["bterm",t.getName(),"bpin",pi,"box",i],
                       kind="bterm-pin",layer=b.getTechLayer().getName(),box=geom.box(b),terminal=t.getName()),is_pin=True)
+            trace.tick()
+        trace.end()
+        trace.begin("endpoint-special-wires",name)
         for si,swire in enumerate(net.getSWires()):
             for i,b in enumerate(swire.getWires()):
                 rid=["net",name,"swire",si,"box",i]
@@ -101,16 +126,20 @@ def native_scope(db,block,scope,owners,plan,progress):
                           layer=part["layer"],box=[r[0]+xy[0],r[1]+xy[1],r[2]+xy[0],r[3]+xy[1]],
                           via=v,origin_xy=xy,via_namespace="tech"if tech is not None else"block"))
                 else:feed(dict(owner=name,record_id=rid,kind="special-wire",layer=b.getTechLayer().getName(),box=geom.box(b)))
+                trace.tick()
+        trace.end()
         observed[name]=dict(identity=identity,encoded=encoded,wire_raw_pin=wire_pin,
           wire_projection_pin=wire_projection_pin,native_geometry_records=records,native_geometry_counts=stats,
           native_geometry_sha256=digest.hexdigest(),all_endpoint_pin_geometry=pins,
           manifest_membership="mutable_cleared_manifest"if name in mutable else"protected_manifest"if name in protected else"not_in_either_manifest")
         progress(dict(stage="native-endpoint-census",complete=False,observed_endpoint_names=sorted(observed),required_endpoint_names=scope["endpoint_names"],**k.FLAGS))
+    trace.begin("block-terminal-census")
     endpoint_set=set(scope["endpoint_names"])
     expected_iterms={(t.getInst().getName(),t.getMTerm().getName()):t.getNet().getName()for t in block.getITerms()if t.getNet()is not None and t.getNet().getName()in endpoint_set}
     expected_bterms={t.getName():t.getNet().getName()for t in block.getBTerms()if t.getNet()is not None and t.getNet().getName()in endpoint_set}
     q.require(seen_iterms==expected_iterms and seen_bterms==expected_bterms,"independent block connected endpoint terminal census")
     q.require(set(observed)==set(scope["endpoint_names"])and set(witnesses)=={str(m["ordinal"])for m in markers},"complete scoped observation")
+    trace.end()
     return dict(status="COMPLETE_PREROUTE_ENDPOINT_OBSTACLE_OBSERVATION",markers=[dict(m,endpoint_witnesses=witnesses[str(m["ordinal"])])for m in markers],
       other_markers=scope["other_markers"],endpoint_nets=observed,all_net_count=len(all_nets),all_instance_count=len(all_instances),
       actual_added_diode_A_connections=len(actual_new),dbu_per_micron=scope["dbu"],
@@ -127,7 +156,9 @@ def main():
     q.require(not OUT.exists(),"exclusive native outputs");OUT.mkdir(parents=True)
     result=dict(status="IN_PROGRESS",**k.FLAGS);db=None;primary=None;terminal_errors=[]
     source=INPUTS/ODB_MEMBER
+    trace=telemetry.Progress(telemetry.emitter(OUT));stacks_started=False
     try:
+        telemetry.start_stacks();stacks_started=True
         for name,pin in config["selected_members"].items():
             q.require(q.pin(INPUTS/name)==pin,"authenticated native input "+name)
         q.require(q.pin(source)==k.INPUT_ODB,"exact stale-wire-cleared input")
@@ -135,16 +166,19 @@ def main():
         plan=q.decode((INPUTS/PLAN_MEMBER).read_bytes());mutation=q.decode((INPUTS/MUTATION_MEMBER).read_bytes())
         analysis=q.decode((INPUTS/"hosted-analysis.json").read_bytes())
         q.require(analysis["source"]=="7ecad63b24ed156a42f7bd1cda24c3326667444a"and analysis["run"]==41232959125,"qualified text analysis source/run")
+        trace.begin("database-load")
         db,block=original.load(source)
+        trace.end()
         scope,owners=k.scope((INPUTS/REPORT_MEMBER).read_bytes(),plan,mutation,analysis,block.getDbUnitsPerMicron(),596,434)
         record("scope.json",dict(scope,**k.FLAGS))
-        result=native_scope(db,block,scope,owners,plan,lambda row:record("progress.json",row))
+        result=native_scope(db,block,scope,owners,plan,lambda row:record("progress.json",row),trace)
     except BaseException as exc:
         primary=exc;result.update(status="FAIL_PREROUTE_ENDPOINT_OBSTACLE_OBSERVATION",error=repr(exc))
     finally:
         def attempt(label,fn):
             try:fn()
             except BaseException as exc:terminal_errors.append(dict(stage=label,error=repr(exc)))
+        if stacks_started:attempt("stop-periodic-stack-diagnostic",telemetry.stop_stacks)
         if db is not None:attempt("destroy-read-only-database",lambda:odb.dbDatabase.destroy(db))
         def unchanged():
             result["input_odb_unchanged"]=q.pin(source)==k.INPUT_ODB

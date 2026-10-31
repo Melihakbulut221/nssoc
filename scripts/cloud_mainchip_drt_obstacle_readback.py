@@ -4,18 +4,19 @@
 import ast,base64,hashlib,json,os,re,shutil,subprocess,time,types
 from pathlib import Path
 import mainchip_drt_obstacle_contract as k
+import mainchip_drt_obstacle_budget as budget
 import mainchip_fixed_engine_route_tail_contract as c
 import cloud_mainchip_fixed_engine_route_tail as tail
 import cloud_mainchip_full_antenna_readback as restore
 import mainchip_witness_engine_build as build
 q=k.q
 ROOT=Path(__file__).resolve().parents[1]
-GROUP="mainchip-drt-obstacle-readback"
+GROUP="mainchip-drt-obstacle-progress"
 MANIFEST="scripts/mainchip-drt-obstacle-readback-source.json"
 CONFIG="scripts/mainchip-drt-obstacle-readback-inputs.json"
 INNER="scripts/mainchip_drt_obstacle_inner.py"
 OUT=ROOT/"obstacle-readback"
-EXPECTED_TESTS=40
+EXPECTED_TESTS=50
 def context(env,checkout):
     ctx=k.context(env,checkout)
     q.require(env.get("RUNNER_ENVIRONMENT")=="github-hosted"and env.get("RUNNER_OS")=="Linux","hosted Linux")
@@ -24,7 +25,7 @@ def context(env,checkout):
     return dict(ctx,run_id=ctx["run"],token=str(ctx["run"])+"-1",name="nssoc-witness-build-"+str(ctx["run"])+"-1")
 def current_run(ctx,run,jobs):
     q.require((run["id"],run["head_sha"],run["head_branch"],run["event"],run["run_attempt"],run["path"],run["workflow_id"],run["status"])==
-      (ctx["run"],ctx["source"],"codex/mainchip-drt-obstacle-readback","workflow_dispatch",1,".github/workflows/cloud-evidence-summary.yml",382556685,"in_progress"),"actual current observer run")
+      (ctx["run"],ctx["source"],"codex/mainchip-drt-obstacle-progress-v2","workflow_dispatch",1,".github/workflows/cloud-evidence-summary.yml",382556685,"in_progress"),"actual current observer run")
     q.require(jobs["total_count"]==len(jobs["jobs"])==3 and {j["name"]for j in jobs["jobs"]}=={"source-controls","preserve-job-log","observation"},"complete actual job set")
     for j in jobs["jobs"]:
         q.require(j["head_sha"]==ctx["source"]and j["run_id"]==ctx["run"]and j["run_attempt"]==1,"actual job identity")
@@ -170,6 +171,26 @@ def publication(ctx,proof,out):
     subprocess.run(["gh","release","upload",tag,str(rp),"--repo",q.REPO],check=True,timeout=1800)
     expected[rp.name]=q.pin(rp);destination(ctx,False,expected)
     return receipt
+def finish_then_publish(ctx,proof,out,report,primary):
+    """Always attempt complete failure publication after saving, before rethrowing."""
+    pending=primary
+    try:
+        c.finish_record(out/"result.json",report,"FAIL_READONLY_OBSTACLE_CLOUD_OBSERVATION",primary)
+    except BaseException as exc:
+        # finish_record deliberately rethrows the original primary after preserving it.
+        # A save-only failure is likewise retained; publication never converts either to pass.
+        if pending is None:pending=exc
+    if proof is not None:
+        try:publication(ctx,proof,out)
+        except BaseException as exc:
+            failure=dict(error=c.error_record("publication",exc),primary_preserved=pending is not None,**k.FLAGS)
+            try:(out/"publication-failure.json").write_bytes(q.encode(failure))
+            except BaseException as save:
+                print("OBSTACLE_PUBLICATION_FAILURE_FALLBACK "+json.dumps(dict(failure,
+                  evidence_save_error=c.error_record("publication-failure-save",save)),sort_keys=True),flush=True)
+            if pending is None:pending=exc
+    if pending is not None:raise pending
+
 def perform(ctx,work,out,config,manifest):
     out.mkdir();report=dict(status="IN_PROGRESS",source=ctx["source"],run=ctx["run"],commands=[],terminal_errors=[],creation_attempted=False,**k.FLAGS)
     primary=None;identity=None;proof=None;restored=False;projected=False;selected=None
@@ -193,7 +214,7 @@ def perform(ctx,work,out,config,manifest):
         argv=hosted_argv(ctx,work,os.getuid(),os.getgid(),os.environ)
         identity=build.create_owned(ctx,work,report,command,argv);initial=inspect(identity);c.validate_container(initial,ctx,work)
         (out/"container-initial.json").write_bytes(q.encode(initial))
-        command("obstacle-owned-container",["docker","start","--attach",identity],1500)
+        command("obstacle-owned-container",["docker","start","--attach",identity],budget.CONTAINER_SECONDS)
         result=q.decode((nativeout/"obstacle-inner-result.json").read_bytes())
         q.require(result["status"]=="COMPLETE_READONLY_OBSTACLE_ENGINE"and result["terminal_errors"]==[],"native inner terminal")
         report["native_complete"]=True
@@ -213,12 +234,7 @@ def perform(ctx,work,out,config,manifest):
             c.attempt(report,"successful-container-terminal",lambda:q.require(not state.get("Running",True)and state.get("ExitCode")==0 and state.get("OOMKilled")is False and not state.get("Error"),"container terminal failure"))
         if(work/"out").is_dir():c.attempt(report,"complete-generated-output-retention",lambda:preserve_outputs(work,work/"out",out,report))
         report["status"]="COMPLETE_READONLY_OBSTACLE_CLOUD_OBSERVATION"if primary is None and not report["terminal_errors"]and report.get("native_complete")else"FAIL_READONLY_OBSTACLE_CLOUD_OBSERVATION"
-        c.finish_record(out/"result.json",report,"FAIL_READONLY_OBSTACLE_CLOUD_OBSERVATION",primary)
-        if proof is not None:
-            try:publication(ctx,proof,out)
-            except BaseException as exc:
-                (out/"publication-failure.json").write_bytes(q.encode(dict(error=repr(exc),**k.FLAGS)))
-                if primary is None:primary=exc
+        finish_then_publish(ctx,proof,out,report,primary)
     if primary is not None:raise primary
     q.require(not report["terminal_errors"],"read-only terminal failures")
     return report

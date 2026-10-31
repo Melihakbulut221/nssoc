@@ -7,6 +7,7 @@ sys.path.insert(0,"/work/tail-source/scripts")
 import mainchip_drt_obstacle_contract as k
 import mainchip_fixed_engine_route_tail_contract as c
 import mainchip_bulk_postdrt_antenna_inner as original
+import mainchip_drt_obstacle_budget as budget
 from mainchip_witness_engine_build import fingerprint
 OUT=Path("/work/out");INPUTS=Path("/work/obstacle-inputs")
 SCRIPT="/work/tail-source/scripts/mainchip_drt_obstacle_native.py"
@@ -50,7 +51,8 @@ def main():
         for sig in(signal.SIGINT,signal.SIGTERM):handlers[sig]=signal.signal(sig,sup.interrupted)
         beat=threading.Thread(target=sup.heartbeat,daemon=True);beat.start()
         argv=[ENGINE,"-no_init","-exit","-python",SCRIPT]
-        original.supervised_run(report,"obstacle-endpoint-observation",argv,1200,sup,cwd=INPUTS)
+        report["observation_budget_seconds"]=budget.OBSERVATION_SECONDS
+        budget.runner(original)(report,"obstacle-endpoint-observation",argv,budget.OBSERVATION_SECONDS,sup,cwd=INPUTS)
         native=k.q.decode((OUT/"obstacle-native/result.json").read_bytes())
         k.q.require(native["status"]=="COMPLETE_PREROUTE_ENDPOINT_OBSTACLE_OBSERVATION"and native["terminal_errors"]==[]
           and native["input_odb_unchanged"]is True and native["read_only"]is True,"complete read-only native observation")

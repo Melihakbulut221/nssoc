@@ -99,7 +99,7 @@ def native_authorization(root=None):
     return m
 def context(env,checkout):
     q.require(env.get("GITHUB_ACTIONS")=="true"and env.get("GITHUB_REPOSITORY")=="Melihakbulut221/nssoc","actual hosted repository")
-    q.require(env.get("GITHUB_EVENT_NAME")=="workflow_dispatch"and env.get("GITHUB_REF")=="refs/heads/codex/mainchip-drt-obstacle-readback","actual manual branch")
+    q.require(env.get("GITHUB_EVENT_NAME")=="workflow_dispatch"and env.get("GITHUB_REF")=="refs/heads/codex/mainchip-drt-obstacle-progress-v2","actual manual branch")
     q.require(re.fullmatch("[a-f0-9]{40}",env.get("GITHUB_SHA",""))is not None and checkout==env["GITHUB_SHA"],"exact checkout")
     q.require(env.get("GITHUB_RUN_ATTEMPT")=="1"and re.fullmatch("[1-9][0-9]*",env.get("GITHUB_RUN_ID",""))is not None,"original run")
     return dict(source=checkout,run=int(env["GITHUB_RUN_ID"]),attempt=1)

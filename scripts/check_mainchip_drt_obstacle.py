@@ -70,7 +70,7 @@ class Controls(unittest.TestCase):
             with self.assertRaises(ValueError):k.census(nn,ii,aa,at)
     def test_actual_context_and_native_authority_refusal(self):
         e=dict(GITHUB_ACTIONS="true",GITHUB_REPOSITORY="Melihakbulut221/nssoc",GITHUB_EVENT_NAME="workflow_dispatch",
-          GITHUB_REF="refs/heads/codex/mainchip-drt-obstacle-readback",GITHUB_SHA="a"*40,GITHUB_RUN_ATTEMPT="1",GITHUB_RUN_ID="123")
+          GITHUB_REF="refs/heads/codex/mainchip-drt-obstacle-progress-v2",GITHUB_SHA="a"*40,GITHUB_RUN_ATTEMPT="1",GITHUB_RUN_ID="123")
         self.assertEqual(k.context(e,"a"*40),dict(source="a"*40,run=123,attempt=1))
         for key,val in(("GITHUB_ACTIONS","false"),("GITHUB_REPOSITORY","other/repo"),("GITHUB_EVENT_NAME","push"),
           ("GITHUB_REF","refs/heads/main"),("GITHUB_SHA","b"*40),("GITHUB_RUN_ATTEMPT","2"),("GITHUB_RUN_ID","0")):
@@ -106,6 +106,137 @@ class Controls(unittest.TestCase):
             elif mode=="transform":actual[0]=(actual[0][0],[-29,40,-10,60])
             else:boxes[0].isVia=lambda:True
             with self.subTest(mode=mode),self.assertRaises(ValueError):fn(term)
+
+    def test_progress_batch_census_and_exact_endpoint_stages(self):
+        import mainchip_drt_obstacle_progress as p
+        rows=[];clock=[10.0];trace=p.Progress(rows.append,lambda:clock[0])
+        trace.begin("endpoint-iterm-pins","VGND")
+        for i in range(2049):trace.tick()
+        clock[0]=11.0;trace.end();trace.begin("endpoint-special-wires","VGND");trace.end()
+        self.assertEqual([r["completed_items"]for r in rows],[0,1024,2048,2049,0,0])
+        self.assertEqual([r["sequence"]for r in rows],list(range(6)))
+        self.assertEqual([r["event"]for r in rows],["begin","checkpoint","checkpoint","complete","begin","complete"])
+        self.assertTrue(all(r["endpoint"]=="VGND"and all(r[n]is False for n in k.FLAGS)for r in rows))
+        self.assertEqual(rows[3]["elapsed_seconds"],1.0)
+    def test_progress_refuses_overlap_bad_clock_and_preserves_sink_failure(self):
+        import mainchip_drt_obstacle_progress as p
+        rows=[];clock=[10.0];trace=p.Progress(rows.append,lambda:clock[0])
+        with self.assertRaises(ValueError):trace.tick()
+        with self.assertRaises(ValueError):trace.end()
+        with self.assertRaises(ValueError):trace.begin("unqualified-stage")
+        trace.begin("endpoint-identity","VGND")
+        with self.assertRaises(ValueError):trace.begin("endpoint-encoding","VGND")
+        clock[0]=9.0
+        with self.assertRaises(ValueError):trace.end()
+        primary=OSError("explicit synthetic telemetry sink failure")
+        with self.assertRaises(OSError)as caught:p.Progress(lambda row:(_ for _ in()).throw(primary),lambda:0).begin("database-load")
+        self.assertIs(caught.exception,primary)
+    def test_progress_append_journal_and_atomic_latest_failure_are_visible(self):
+        import json,tempfile
+        import mainchip_drt_obstacle_progress as p
+        with tempfile.TemporaryDirectory()as d:
+            root=Path(d);trace=p.Progress(p.emitter(root),lambda:0)
+            trace.begin("endpoint-identity","VGND");trace.end()
+            rows=[json.loads(line)for line in(root/"substage-events.jsonl").read_text().splitlines()]
+            self.assertEqual(len(rows),2);self.assertEqual(json.loads((root/"substage-progress.json").read_bytes()),rows[-1])
+            primary=OSError("synthetic latest rename failure")
+            with patch.object(Path,"replace",side_effect=primary):
+                with self.assertRaises(OSError)as caught:trace.begin("endpoint-encoding","VGND")
+            self.assertIs(caught.exception,primary)
+            self.assertEqual(len((root/"substage-events.jsonl").read_text().splitlines()),3)
+            self.assertEqual(json.loads((root/"substage-progress.json.partial").read_bytes())["stage"],"endpoint-encoding")
+            self.assertEqual(json.loads((root/"substage-progress.json").read_bytes()),rows[-1])
+    def test_complete_native_geometry_ast_unchanged_except_telemetry(self):
+        import hashlib
+        baseline=Path(__file__).resolve().parents[1]/"docs/evidence/mainchip-drt-obstacle-65e620-native-source.py"
+        raw=baseline.read_bytes()
+        self.assertEqual(hashlib.sha256(raw).hexdigest(),"c7204c678d84045cf03040b5d7a857411a81ac5720abd2e5f481e46f4208b23f")
+        old=ast.parse(raw);new=ast.parse(Path(__file__).with_name("mainchip_drt_obstacle_native.py").read_text())
+        def function(tree,name):return next(n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name==name)
+        class RemoveTelemetry(ast.NodeTransformer):
+            def visit_Expr(self,node):
+                call=node.value
+                if isinstance(call,ast.Call)and isinstance(call.func,ast.Attribute)and isinstance(call.func.value,ast.Name)and call.func.value.id=="trace":
+                    if call.func.attr not in("begin","tick","end"):raise AssertionError("unqualified trace operation")
+                    return None
+                return self.generic_visit(node)
+        prior=function(old,"native_scope");observed=copy.deepcopy(function(new,"native_scope"))
+        self.assertEqual(observed.args.args[-1].arg,"trace");observed.args.args.pop()
+        observed=RemoveTelemetry().visit(observed)
+        self.assertEqual(ast.dump(observed,include_attributes=False),ast.dump(prior,include_attributes=False))
+        for name in("record","all_pin_geometry"):
+            self.assertEqual(ast.dump(function(new,name),include_attributes=False),ast.dump(function(old,name),include_attributes=False))
+    def test_periodic_stack_diagnostics_are_nonterminating_and_cancelled(self):
+        import mainchip_drt_obstacle_progress as p
+        with patch.object(p.faulthandler,"dump_traceback_later")as start,patch.object(p.faulthandler,"cancel_dump_traceback_later")as stop:
+            p.start_stacks();p.stop_stacks()
+            start.assert_called_once_with(60,repeat=True,file=p.sys.stderr,exit=False);stop.assert_called_once_with()
+        tree=ast.parse(Path(__file__).with_name("mainchip_drt_obstacle_native.py").read_text())
+        main=next(n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name=="main")
+        outer=next(n for n in main.body if isinstance(n,ast.Try))
+        self.assertTrue(any(isinstance(n,ast.Attribute)and isinstance(n.value,ast.Name)and n.value.id=="telemetry"and n.attr=="stop_stacks"for stmt in outer.finalbody for n in ast.walk(stmt)))
+
+
+    def test_exact_readonly_3600_budget_and_unchanged_resource_refusals(self):
+        import mainchip_drt_obstacle_budget as b
+        import mainchip_exit_checked_command_evidence as original
+        check=b.validator(original)
+        self.assertIs(check.__code__,original.validate.__code__)
+        self.assertEqual(original.SECONDS,(1200,14400));self.assertEqual(check.__globals__["SECONDS"],(3600,))
+        self.assertEqual((b.OBSERVATION_SECONDS,b.CONTAINER_SECONDS),(3600,3900))
+        row=dict(returncode=0,supervision_failure=None,pid=5,minimum_available_kib=2097152,
+          maximum_group_rss_kib=10485760,elapsed_seconds=2.0,requested_timeout_seconds=3600,
+          process_group_cleanup=dict(signals=[],remaining_live=[],remaining_nonrunning=[]),
+          last_memory_sentinel_sample=dict(available_kib=2097152,group_rss_kib=10485760),
+          memory_read_error=None,memory_terminal_resolution=None)
+        self.assertEqual(check(row,3600)["status"],"PASS_EXIT_CHECKED_COMMAND_EVIDENCE")
+        for seconds in(1200,14400,3599,3601,3600.0,True):
+            with self.subTest(seconds=seconds),self.assertRaises(ValueError):check(row,seconds)
+        for key,val in(("minimum_available_kib",2097151),("maximum_group_rss_kib",10485761),("requested_timeout_seconds",1200)):
+            with self.assertRaises(ValueError):check({**row,key:val},3600)
+        for key,val in(("available_kib",2097151),("group_rss_kib",10485761)):
+            bad=copy.deepcopy(row);bad["last_memory_sentinel_sample"][key]=val
+            with self.assertRaises(ValueError):check(bad,3600)
+    def test_budget_runner_exact_source_and_synthetic_command_pipeline(self):
+        import hashlib,json,tempfile
+        import mainchip_drt_obstacle_budget as b
+        import mainchip_exit_checked_command_evidence as evidence
+        path=Path(__file__).with_name("mainchip_bulk_postdrt_antenna_inner.py")
+        tree=ast.parse(path.read_text());node=next(n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name=="supervised_run")
+        original=types.ModuleType("explicit_synthetic_original_namespace");original.__file__=str(path)
+        original.WORK=Path("/explicit-synthetic-unused-default")
+        original.command_evidence=evidence;original.p=types.SimpleNamespace(require=k.q.require,pin=lambda raw:dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()))
+        progress=[];original.write=lambda name,report:progress.append((name,copy.deepcopy(report)))
+        original.c=types.SimpleNamespace(require=k.q.require,decode=k.q.decode,secure_file=lambda root,name:root/name,
+          error_record=lambda action,exc:dict(action=action,error=repr(exc)),
+          attempt=lambda report,label,fn:fn())
+        streamed=[];original.stream_contract=types.SimpleNamespace(terminal_stream=lambda row,root,label:streamed.append((row["argv"],label)))
+        exec(compile(ast.Module(body=[node],type_ignores=[]),str(path),"exec"),original.__dict__)
+        adapted=b.runner(original)
+        self.assertEqual(b.source(original.supervised_run).count(b.OLD_GUARD),1)
+        with patch.object(b,"source",return_value=b.source(original.supervised_run)+"# altered source\n"):
+            with self.assertRaises(ValueError):b.runner(original)
+        with tempfile.TemporaryDirectory()as d:
+            root=Path(d);calls=[];label="obstacle-endpoint-observation";argv=["explicit-synthetic-no-process"]
+            def supervised(args,name,seconds,cwd):
+                calls.append((args,name,seconds,cwd))
+                row=dict(argv=args,returncode=0,supervision_failure=None,pid=5,minimum_available_kib=2097152,
+                  maximum_group_rss_kib=10485760,elapsed_seconds=2.0,
+                  process_group_cleanup=dict(signals=[],remaining_live=[],remaining_nonrunning=[]),
+                  last_memory_sentinel_sample=dict(available_kib=2097152,group_rss_kib=10485760),
+                  memory_read_error=None,memory_terminal_resolution=None)
+                (root/(name+".command.json")).write_bytes(k.q.encode(row))
+            sup=types.SimpleNamespace(TRACE=root,supervised=supervised)
+            report=dict(commands=[],terminal_errors=[])
+            adapted(report,label,argv,3600,sup,cwd=root)
+            self.assertEqual(calls,[(argv,label,3600,root)])
+            self.assertEqual(streamed,[(argv,label)]);self.assertEqual(len(progress),1)
+            self.assertEqual(report["commands"][0]["requested_timeout_seconds"],3600)
+            self.assertEqual(report["commands"][0]["command_evidence"]["status"],"PASS_EXIT_CHECKED_COMMAND_EVIDENCE")
+            for value in(1200,14400,3600.0,True):
+                with self.assertRaises(ValueError):adapted(dict(commands=[],terminal_errors=[]),label,argv,value,sup,cwd=root)
+            self.assertEqual(len(calls),1)
+
 if __name__=="__main__":
     if os.environ.get("GITHUB_ACTIONS")!="true":raise RuntimeError("Hosted controls only")
     unittest.main(verbosity=2)

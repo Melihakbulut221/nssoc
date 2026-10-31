@@ -9,11 +9,11 @@ q=h.q;k=h.k
 class Controls(unittest.TestCase):
     def env(self):
         return dict(GITHUB_ACTIONS="true",GITHUB_REPOSITORY="Melihakbulut221/nssoc",GITHUB_EVENT_NAME="workflow_dispatch",
-          GITHUB_REF="refs/heads/codex/mainchip-drt-obstacle-readback",GITHUB_SHA="a"*40,GITHUB_RUN_ID="123",GITHUB_RUN_ATTEMPT="1",
+          GITHUB_REF="refs/heads/codex/mainchip-drt-obstacle-progress-v2",GITHUB_SHA="a"*40,GITHUB_RUN_ID="123",GITHUB_RUN_ATTEMPT="1",
           RUNNER_ENVIRONMENT="github-hosted",RUNNER_OS="Linux",GITHUB_JOB="observation",MODE="observation",APPROVED_SOURCE="a"*40)
     def ctx(self):return h.context(self.env(),"a"*40)
     def actual(self):
-        ctx=self.ctx();run=dict(id=123,head_sha=ctx["source"],head_branch="codex/mainchip-drt-obstacle-readback",event="workflow_dispatch",
+        ctx=self.ctx();run=dict(id=123,head_sha=ctx["source"],head_branch="codex/mainchip-drt-obstacle-progress-v2",event="workflow_dispatch",
           run_attempt=1,path=".github/workflows/cloud-evidence-summary.yml",workflow_id=382556685,status="in_progress")
         jobs=dict(total_count=3,jobs=[dict(id=i,head_sha=ctx["source"],run_id=123,run_attempt=1,name=n,status="in_progress"if n=="observation"else"completed",
           conclusion=None if n=="observation"else"success",steps=[dict(status="completed",conclusion="success")])for i,n in enumerate(("source-controls","preserve-job-log","observation"),1)])
@@ -146,6 +146,49 @@ class Controls(unittest.TestCase):
         scope["check_usage"](v)
         for name,val in(("memory.max",str(h.c.MEMORY+1)),("memory.swap.max","1"),("pids.max","999"),("cpu.max","100000 100000")):
             with self.assertRaises(ValueError):scope["check_usage"]({**v,name:val})
+
+    def test_primary_failure_is_published_before_exact_rethrow(self):
+        with tempfile.TemporaryDirectory()as d:
+            out=Path(d);primary=ValueError("explicit native elapsed_limit")
+            report=dict(status="FAIL_READONLY_OBSTACLE_CLOUD_OBSERVATION",terminal_errors=[],**k.FLAGS)
+            seen=[]
+            def publish(ctx,proof,path):
+                saved=q.decode((path/"result.json").read_bytes());seen.append(saved)
+                self.assertEqual(saved["status"],"FAIL_READONLY_OBSTACLE_CLOUD_OBSERVATION")
+                self.assertIn("explicit native elapsed_limit",saved["primary_exception"]["error"])
+            with patch.object(h,"publication",side_effect=publish):
+                with self.assertRaises(ValueError)as caught:h.finish_then_publish(self.ctx(),dict(release_id=9),out,report,primary)
+            self.assertIs(caught.exception,primary);self.assertEqual(len(seen),1)
+    def test_save_and_publication_failures_do_not_mask_first_exception(self):
+        for mode in("primary-and-publication","save-and-publication","publication-only"):
+            with self.subTest(mode=mode),tempfile.TemporaryDirectory()as d:
+                out=Path(d);first=ValueError("first native failure")if mode=="primary-and-publication"else None
+                save=OSError("first result save failure");publication=RuntimeError("publication failed")
+                report=dict(status="COMPLETE_READONLY_OBSTACLE_CLOUD_OBSERVATION",terminal_errors=[],**k.FLAGS)
+                real=h.c.atomic_record
+                def atomic(*args,**kwargs):
+                    if mode=="save-and-publication":raise save
+                    return real(*args,**kwargs)
+                with patch.object(h.c,"atomic_record",side_effect=atomic),patch.object(h,"publication",side_effect=publication)as pub:
+                    with self.assertRaises(BaseException)as caught:h.finish_then_publish(self.ctx(),dict(release_id=9),out,report,first)
+                self.assertIs(caught.exception,first if first is not None else save if mode=="save-and-publication"else publication)
+                self.assertEqual(pub.call_count,1)
+                self.assertIn("publication failed",q.decode((out/"publication-failure.json").read_bytes())["error"]["error"])
+    def test_reserved_acquisition_failure_still_publishes_once(self):
+        with tempfile.TemporaryDirectory()as d:
+            root=Path(d);primary=ValueError("synthetic acquired input failure");seen=[]
+            def publish(ctx,proof,out):
+                self.assertEqual(proof,dict(release_id=9))
+                saved=q.decode((out/"result.json").read_bytes());seen.append(saved)
+                self.assertEqual(saved["status"],"FAIL_READONLY_OBSTACLE_CLOUD_OBSERVATION")
+                self.assertFalse(saved.get("native_complete",False))
+            with (patch.object(h,"collect_controls",return_value={}),patch.object(h,"reserved",return_value=dict(release_id=9)),
+              patch.object(h.shutil,"disk_usage",return_value=types.SimpleNamespace(free=25*1024**3)),
+              patch.object(h,"acquire",side_effect=primary),patch.object(h.build,"cleanup_owned"),
+              patch.object(k,"source_gate",return_value={}),patch.object(h,"publication",side_effect=publish)):
+                with self.assertRaises(ValueError)as caught:h.perform(self.ctx(),root/"work",root/"out",{}, {})
+            self.assertIs(caught.exception,primary);self.assertEqual(len(seen),1)
+
 def main():
     import importlib,sys
     q.require(os.environ.get("GITHUB_ACTIONS")=="true","hosted source controls only")
