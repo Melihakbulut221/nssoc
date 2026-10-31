@@ -48,12 +48,8 @@ jobs:
           for n in m['files']:
               if n.endswith('.py'):ast.parse(Path(n).read_text())
           PY
-      - name: Run unchanged archive controls and textual manifest controls
-        run: |
-          python3 -B scripts/check_mainchip_terminal_readback.py
-          python3 -B scripts/check_mainchip_drt_report_analysis.py
-      - name: Run exact DBU census endpoint and complete pin synthetic controls
-        run: python3 -B scripts/check_mainchip_drt_obstacle.py
+      - name: Run unchanged archive and parser plus full observer adapter controls
+        run: python3 -B scripts/check_mainchip_drt_obstacle_host.py
   preserve-job-log:
     needs: source-controls
     if: always()

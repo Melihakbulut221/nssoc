@@ -123,6 +123,7 @@ def main():
     k.native_authorization(ROOT)
     q.require(not any(x in os.environ for x in("GH_TOKEN","GITHUB_TOKEN")),"credential-free native process")
     config=q.decode((ROOT/"scripts/mainchip-drt-obstacle-readback-inputs.json").read_bytes())
+    k.validate_config(config);q.require(config["native_readonly_authorized"]is True,"configured native observation disabled")
     q.require(not OUT.exists(),"exclusive native outputs");OUT.mkdir(parents=True)
     result=dict(status="IN_PROGRESS",**k.FLAGS);db=None;primary=None;terminal_errors=[]
     source=INPUTS/ODB_MEMBER

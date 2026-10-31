@@ -67,14 +67,35 @@ def source_gate(root=None):
     q.require(m["schema"]=="mainchip-drt-obstacle-readback-source-v1"and m["native_routing_authorized"]is False,"read-only source scope")
     q.require(type(m["native_readonly_authorized"])is bool,"explicit native authority")
     q.require(m["inherited_files"]==prior["files"]and inherited.MANIFEST in m["files"],"complete unchanged inherited source closure")
+    for n,digest in m["inherited_files"].items():
+        q.valid_name(n);q.require((root/n).is_file()and not(root/n).is_symlink()and q.pin(root/n)["sha256"]==digest,"projected inherited source "+n)
     for n,p in m["files"].items():
         q.valid_name(n);q.filepin(p);q.require((root/n).is_file()and not(root/n).is_symlink()and q.pin(root/n)==p,"protected source "+n)
     return m
+def validate_config(c):
+    q.require(c["schema"]=="mainchip-drt-obstacle-readback-inputs-v1","input schema")
+    q.require(type(c["native_readonly_authorized"])is bool and c["native_routing_authorized"]is False,"input typed read-only authority")
+    q.require(all(c[k]is False for k in("physical_acceptance","timing_accepted","full_phy_accepted")),"input acceptance flags")
+    p=c["producer"]
+    q.require((p["producer_run"],p["producer_source"],p["release_id"])==(41211382427,"ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9",429993235),"exact original producer")
+    q.require(len(p["members"])==735 and p["parts"]["archive"]==dict(bytes=872843510,sha256="733e3b40c8d97512eb98c43dd6470dd67293152a2f7938baed2069830a2885bb"),"complete native archive")
+    for name,pin in p["members"].items():q.valid_name(name);q.filepin(pin)
+    names={"work/bulk-postdrt-antenna/stale-wire-cleared.odb","work/bulk-postdrt-antenna/fixed-routing.drc-10.rpt","bulk-postdrt-antenna/insertion-plan.json","bulk-postdrt-antenna/stale-wire-mutation.json"}
+    q.require(c["selected_members"]=={n:p["members"][n]for n in names},"exact selected native input census")
+    q.require(c["selected_members"]["work/bulk-postdrt-antenna/stale-wire-cleared.odb"]==INPUT_ODB,"current saved ODB")
+    a=c["analysis_result"]
+    q.require((a["run"],a["source"],a["release"],a["asset_id"],a["asset_name"])==
+      (41232959125,"7ecad63b24ed156a42f7bd1cda24c3326667444a",430131389,696244544,"result.json"),"qualified analysis producer")
+    q.require(a["pin"]==dict(bytes=1953280,sha256="3f2c87c48e68e070bcc1b59c111c5709ff7edd74887e7a3dc9d3a472936c7794"),"qualified analysis result bytes")
+    q.require(c["expected_report_records"]==596 and c["expected_selected_metal2_shorts"]==434,"complete report scope")
+    return c
 def native_authorization(root=None):
     import os
     m=source_gate(root)
     q.require(os.environ.get("GITHUB_ACTIONS")=="true","hosted native execution only")
     q.require(m["native_readonly_authorized"]is True and m["native_routing_authorized"]is False,"native read-only activation is disabled")
+    ctx=context(os.environ,os.environ.get("GITHUB_SHA"))
+    q.require(os.environ.get("GITHUB_JOB")=="observation"and os.environ.get("MODE")=="observation"and os.environ.get("APPROVED_SOURCE")==ctx["source"],"dedicated exact-source observation job")
     return m
 def context(env,checkout):
     q.require(env.get("GITHUB_ACTIONS")=="true"and env.get("GITHUB_REPOSITORY")=="Melihakbulut221/nssoc","actual hosted repository")
