@@ -1,37 +1,38 @@
-# Cloud continuation — checkpoint v176
+# Cloud continuation — checkpoint v177
 
-Updated: 2026-10-31T15:09:42.280504+00:00
+Updated: 2026-10-31T15:21:49.274547+00:00
 
-All engineering work runs in GitHub. Do not acquire native payloads or archives locally, including into RAM. The local project and owned temporary directories are empty. No local CAD processes run. Source authoring and API coordination use memory only.
+All engineering runs in GitHub. Do not acquire native payloads or archives locally, even into RAM. Local workspace and owned temporary files are empty; no local CAD processes run. Source authoring and API coordination use memory only.
 
 ## Mainchip
 
-Observe the SAME run 41211382427, source ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9, branch codex/mainchip-net459-diode-prune, release 429993235. All 342 source controls passed. Latest observation: in_progress/None. Recheck live state before acting.
+Poll the SAME run 41211382427, source ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9, branch codex/mainchip-net459-diode-prune, release 429993235. All 342 source controls passed. Latest snapshot: in_progress/None. Quiet native logs are not a reason to restart.
 
-The scoped fix removes only the old wires of 608 diode-owning nets from a separate ODB. Require complete native snapshots and every guide to remain equal outside that scope. Preserve 1,691 clock nets, all placements, nonmutable wires and PG material. Retain the original route delta, both contact modes, antenna and DRC gates. The only clock-gate change is the obsolete uniform instance census: exact donor 153,130 / candidate 154,480. All clock records and attached placements must still match.
+Only the old wires of 608 diode-owning nets are removed from a separate ODB. Require every guide, all 1,691 clock nets, all placements, nonmutable wires and PG material to remain equal. Preserve original route delta, both physical contact modes, antenna and DRC gates. The clock census is donor153130/candidate154480; actual clock records and placements still must match.
 
-Native diagnosis 41209965584 proved all 1,351 new diode signal pins lack wire access on all 608 nets. Its full proof is in docs/evidence/mainchip-saved-route-connectivity-terminal-41209965584/ and release 429983566. Failed source-control run 41211073897 is preserved too; it did not acquire native inputs.
+Actual diagnosis 41209965584 found all 1,351 new diode signal pins lack wire access on all 608 nets. Full proof is in docs/evidence/mainchip-saved-route-connectivity-terminal-41209965584/. Failed source-control run41211073897 remains preserved.
 
 ## Current CDR fresh RC
 
-Observe the SAME run 41213217899, source df3f239e24eb39486af0ca0f4d2ec6ee2801d3af, branch codex/cdr-drain-m1-loaded-electrical, release 430005706. Latest observation: completed/failure. The workflow now supports controls / rc. The legacy production job name remains graph.
+Poll the SAME corrected run 41213815773, source ebe4ebb3ca2aef7b23cfc68f4b17588c03cd84fb, branch codex/cdr-drain-m1-loaded-electrical, release 430009833. Latest snapshot: in_progress/None. Source controls succeeded; native job graph executes RC, not the already completed graph qualification. Workflow modes: controls / rc.
 
-The new source has 14 files and protects 1,720 source/evidence files. Native acquisition requires the existing 227 controls, the original RC suite (8 positive / 110 refusal controls), and 16 new input/source tests. These are requirements until the actual source job succeeds.
+Initial run41213217899 failed an inherited synthetic branch fixture; native acquisition was skipped. All 35 proof files / 1,271,196 bytes are preserved in docs/evidence/cdr-current-eight-drain-rc-control-failure-41213217899/. The correction changes only the synthetic fixture authority and adds rejection of the legacy branch by the real new context. Native implementation is unchanged.
 
-Authenticate all 330 members from graph run 41206809668 and restore exactly 75 current files at the original absolute path:
+Current manifest bd9e67b47630538934b808e803e60fc72b0211bd3382786d4d1f527eb9cc65d6. Controls preserve 227 inherited graph checks, original RC 8 positive / 110 refusal cases, and 16 current adapter tests.
+
+Authenticate all330 graph-capsule members from run41206809668 and restore exactly75 current files at the original absolute path:
 /home/runner/work/nssoc/nssoc/hw/soc/out/cdr-current-eight-drain-graph-41206809668-1/native/candidate
 
-Do not rebase report paths or substitute old RC. Five numerical workers change only admission imports. Preserve original 500-device / 1,446-terminal binding, wire RC and 13 raw faults, seven MIM devices in both native orders with 22 controls each, and 21 composition controls. The original numerical validator and resource limits remain unchanged. The pinned AppImage has only an executable-scoped AppArmor exception; global policy remains unchanged.
+Preserve original500-device/1446-terminal binding, wireRC13rawfaults, sevenMIM devices both orders22controls each, and21composition controls. Five numerical workers change only admission imports. Numerical validator, resource limits, runtime hash, executable-scoped AppArmor policy and full failure publication remain unchanged.
 
-After actual fresh RC success, run original nominal_early and constant_one loaded electrical tests with all 1,151 vectors on the newly composed model. Graph or RC success alone is not electrical or PHY acceptance.
+After actual RC success, run original nominal_early/constant_one loaded electrical matrix with all1151vectors on newly composed model. No oldRC/trace substitution. Graph/RC success alone is not fullPHY or electrical acceptance.
 
 ## Continuation
 
-Poll these exact handles. Quiet output, polling timeouts or transient network failures do not justify restarting. Preserve full logs, native capsules and failures at terminal; native payloads stay in GitHub.
-
-Full serial Gen3 x4 PHY and final setup/hold remain open. Analog limits and mainchip 20/4/8/8 ns + 5% constraints are unchanged. The 8-hour monitor is read-only with 437 run handles and automatic_native_dispatch=false. Its historical HTTP 502 issue is not claimed fixed.
+Observe these exact handles. Preserve full native capsules/logs/failures in GitHub. Full serial Gen3x4 PHY and finalsetuphold remain open. Analog limits and mainchip20/4/8/8ns+5% remain unchanged. Read-only8hmonitor has438runhandles and automatic_native_dispatch=false; historicalHTTP502 issue is not claimed fixed.
 
 ## Historical notes below — not current running-job status
+
 
 
 

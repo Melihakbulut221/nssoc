@@ -1,5 +1,12 @@
 {
   "active_runs": {
+    "cdr_current_eight_drain_fresh_rc": {
+      "release": 430009833,
+      "run": 41213815773,
+      "source": "ebe4ebb3ca2aef7b23cfc68f4b17588c03cd84fb",
+      "tag": "cloud-results-41213815773-1-cdr-current-eight-drain-fresh-rc",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41213815773"
+    },
     "mainchip_scoped_stale_wire_reroute": {
       "release": 429993235,
       "run": 41211382427,
@@ -1662,6 +1669,11 @@
     "path": "docs/evidence/cloud-collector-recipes-20261029/cdr-current-eight-drain-fresh-rc-live-v176.json",
     "sha256": "ddb0072785e601a2661b32ed66720d435b7e33a0434fea147ee50e0ddf97a449"
   },
+  "continuation_note_v177": {
+    "bytes": 6669,
+    "path": "docs/evidence/cloud-collector-recipes-20261029/cdr-current-eight-drain-fresh-rc-live-v177.json",
+    "sha256": "105423f76b3e99dc5f4cba68727a55b0c757a37f7190bb7ab78ad047bf97614c"
+  },
   "current_run_snapshot": [
     {
       "attempt": 1,
@@ -1887,6 +1899,70 @@
       "run": 41213217899,
       "source": "df3f239e24eb39486af0ca0f4d2ec6ee2801d3af",
       "status": "completed"
+    },
+    {
+      "attempt": 1,
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124566939851,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124567308303,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Clear608owned stale wires and route with unchanged physical invariants"
+          ],
+          "conclusion": null,
+          "id": 124567343451,
+          "name": "diode-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41211382427,
+      "source": "ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9",
+      "status": "in_progress"
+    },
+    {
+      "attempt": 1,
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124574086181,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124574714904,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Extract fresh500-device binding, wire RC and seven MIMs in both native orders"
+          ],
+          "conclusion": null,
+          "id": 124574758088,
+          "name": "graph",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41213815773,
+      "source": "ebe4ebb3ca2aef7b23cfc68f4b17588c03cd84fb",
+      "status": "in_progress"
     }
   ],
   "executed_collector_v163_initial": {
@@ -76163,13 +76239,13 @@
     "tests_and_CAD_on_GitHub": true
   },
   "local_cleanup_verification": {
-    "at": "2026-10-31T15:09:42.280504+00:00",
+    "at": "2026-10-31T15:21:49.274547+00:00",
     "local_CAD_processes": [],
     "native_payload_downloaded_locally": false,
     "owned_project_tmp_empty": true,
     "workspace_empty": true
   },
-  "local_workspace_verified_empty_at": "2026-10-31T15:09:42.280504+00:00",
+  "local_workspace_verified_empty_at": "2026-10-31T15:21:49.274547+00:00",
   "monitor": {
     "automatic_native_dispatch": false,
     "branch": "main",
@@ -76205,7 +76281,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 176,
+    "inventory_version": 177,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -76246,12 +76322,11 @@
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66"
   },
   "next_actions": [
-    "CLOUD ONLY. No local native payloads/archives even RAM; no local tests/CAD. Workspace and project temporary files empty. Latest direct user policy overrides old goal local-work wording.",
-    "Poll SAME mainchip41211382427 sourceddc1cbdd.342source controls passed. Require actual608wire clear/reload/allguide invariance, original1691clock/placement/nonmutable guards, route_delta and both physical contact modes, antenna/DRC. Preserve fullnativecapsule andalllogs at terminal. Do not restart on quiet logs.",
-    "Poll SAME CDR41213217899 sourcedf3f239e, release430005706. This is freshRC dispatch, not acceptance. Existing227+118+16 source controls gate native acquisition. Preserve actual failed/complete output and all logs before diagnosis.",
-    "Current CDR workflow oncodex/cdr-drain-m1-loaded-electrical supports controls/rc; legacy production job name graph now executes current RC. Do not dispatch old graph mode or replay completed graph41206809668. Original frozen sources remain unchanged.",
-    "After actual freshRC success run original nominal_early/constant_one1151-vector loaded matrix on newly composed model. No oldRC/trace substitution. FullserialPHY and finalsetuphold open; analoglimits and20/4/8/8ns+5% unchanged.",
-    "8hmonitor read-only437runhandles automatic_native_dispatch=false; historicalHTTP502 issue not claimed fixed."
+    "CLOUD ONLY: no local native archives or payloads, even RAM; no local CAD/tests. Source/API coordination in RAM. Local workspace and project temporary files remain empty.",
+    "Poll SAME mainchip41211382427 sourceddc1cbdd, release429993235.342source controls passed. Actual608wire clear/reload/allguide invariance plus original1691clock/placement/nonmutable guards, route_delta, both contact modes and antenna/DRC remain required. Preserve complete terminal outputs. No duplicate restart on quiet logs.",
+    "Poll SAME correctedCDR41213815773 sourceebe4ebb3, release430009833. Source controls success; native job graph extracts freshRC. Initialsourcefailure41213217899 fully preserved and native skipped. Actual RC/electrical acceptance remains false.",
+    "After actual current freshRC success run original nominal_early/constant_one1151-vector loaded matrix on newly composed model. Keep original analog gates, vector counts, failures and immutable inputs. No oldRC or trace substitution.",
+    "FullserialGen3x4 PHY and finalsetuphold still open.20/4/8/8ns+5% and all analoglimits unchanged.8hmonitor read-only438runhandles automatic_native_dispatch=false; historical502issue not claimed fixed."
   ],
   "prepared_collector_v155": {
     "bytes": 14498,
@@ -76854,7 +76929,7 @@
       "graph_producer": 41206809668,
       "graph_source": "de79f76bc60b3ef2b06c88736f4f3d0ee3491257",
       "manifest_path": "scripts/cdr-current-eight-drain-fresh-rc-methods.json",
-      "manifest_sha256": "d823ddc2c2423874b04bf0dbe96baf7e0fffdd4fef0ad4344919b874a7bcb160",
+      "manifest_sha256": "bd9e67b47630538934b808e803e60fc72b0211bd3382786d4d1f527eb9cc65d6",
       "native_RC_acceptance": false,
       "numerical_gates": "Original500-device/1446-terminal binding; wireRC13raw faults; sevenMIM both orders22controls each and21composition controls; original validator15c6d6f6 retained.",
       "physical_producer": 41203881385,
@@ -76862,52 +76937,63 @@
       "production_job_name": "graph",
       "protected_sources": 1720,
       "published_files": 14,
-      "release": 430005706,
-      "run": 41213217899,
+      "release": 430009833,
+      "run": 41213815773,
       "runtime": "Pinned AppImage d6a349ec; executable-scoped AppArmor exception only. Frozen runtime restoration inside supervised330member restore. networkx3.4.2/numpy2.3.3/scipy1.16.2.",
       "snapshot": {
         "attempt": 1,
-        "conclusion": "failure",
+        "conclusion": null,
         "jobs": [
           {
             "active_steps": [],
-            "conclusion": "failure",
-            "id": 124572341859,
+            "conclusion": "success",
+            "id": 124574086181,
             "name": "source-controls",
             "status": "completed"
           },
           {
             "active_steps": [],
             "conclusion": "success",
-            "id": 124572695214,
+            "id": 124574714904,
             "name": "preserve-job-log",
             "status": "completed"
           },
           {
-            "active_steps": [],
-            "conclusion": "success",
-            "id": 124572740826,
-            "name": "preserve-graph-job-logs",
-            "status": "completed"
-          },
-          {
-            "active_steps": [],
-            "conclusion": "skipped",
-            "id": 124572742163,
+            "active_steps": [
+              "Extract fresh500-device binding, wire RC and seven MIMs in both native orders"
+            ],
+            "conclusion": null,
+            "id": 124574758088,
             "name": "graph",
-            "status": "completed"
+            "status": "in_progress"
           }
         ],
-        "run": 41213217899,
-        "source": "df3f239e24eb39486af0ca0f4d2ec6ee2801d3af",
-        "status": "completed"
+        "run": 41213815773,
+        "source": "ebe4ebb3ca2aef7b23cfc68f4b17588c03cd84fb",
+        "status": "in_progress"
       },
-      "source": "df3f239e24eb39486af0ca0f4d2ec6ee2801d3af",
+      "source": "ebe4ebb3ca2aef7b23cfc68f4b17588c03cd84fb",
+      "source_controls_job": 124574086181,
+      "source_controls_passed": true,
       "source_derivation": "Five numerical workers change only admission imports. Legacy paths/authority and driver producer metadata bind current graph. Original numerical bodies, resource bounds and failure publication preserved.",
-      "status": "CLOUD_CURRENT_GRAPH_FRESH_RC_DISPATCHED_NOT_YET_QUALIFIED",
+      "source_fix": "Only inherited synthetic reservation fixture receives legacy branch. New real context still rejects legacy branch. Native implementation unchanged.",
+      "status": "SOURCE_CONTROLS_PASSED_NATIVE_FRESH_RC_RUNNING_NOT_YET_QUALIFIED",
       "timing_accepted": false,
       "workflow_id": 401118236,
       "workflow_mode": "rc"
+    },
+    "cdr_current_eight_drain_fresh_rc_source_failure": {
+      "all_failures_preserved": true,
+      "complete_proof_bytes": 1271196,
+      "complete_proof_files": 35,
+      "complete_proof_prefix": "docs/evidence/cdr-current-eight-drain-rc-control-failure-41213217899/",
+      "native_input_acquired": false,
+      "reason": "Inherited old RC synthetic reservation fixture used real new branch and failed old branch expectation.",
+      "receipt_sha256": "b30e682e4f60cee0e4128498188c2471754f2fce2b33fd34c7b39b4958dc9b0e",
+      "release": 430005706,
+      "run": 41213217899,
+      "source": "df3f239e24eb39486af0ca0f4d2ec6ee2801d3af",
+      "status": "SOURCE_CONTROL_FAILURE_NATIVE_SKIPPED"
     },
     "cdr_current_eight_drain_fresh_rc_successor": {
       "all_native_payloads_in_cloud": true,
@@ -86433,7 +86519,7 @@
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167",
     "source": "2a44527cd4a72a4e118c327eae484386e710b57e"
   },
-  "root_source_before_receipt": "89d336366ad2369f2c483a2f7730826d80f299f5",
+  "root_source_before_receipt": "ae89794a17591a152c729f57765653eb17cd1474",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -86441,5 +86527,5 @@
     "sha256": "e91938bb7dc9cb4c57c934f1aa3b8fff562efc2e04d1e2726976afcb74d65835"
   },
   "schema_version": 1,
-  "updated_at": "2026-10-31T15:09:42.280504+00:00"
+  "updated_at": "2026-10-31T15:21:49.274547+00:00"
 }
