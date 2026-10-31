@@ -1,0 +1,31 @@
+{
+  "schema": "fresh-rc-source-only-terminal-findings-v1",
+  "run_id": 41249180631,
+  "source": "c1d49671afad9052f2e1c289d130b63f8809567b",
+  "actual_error": "AssertionError()",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_adapter.py\", line 182, in main\n    phase=phase_controls.controls(ctx,out/'phase-fixtures');observations['phase']=phase\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_native.py\", line 54, in controls\n    methods=n.core.derive_wire_methods(ROOT,fixture/'wire-stage')\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_via2_m3_fresh_rc_core.py\", line 132, in derive_wire_methods\n    result=run_block(root,'wire_derive',scope,dict(OUT=Path(wire_parent),methods=methods))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_via2_m3_fresh_rc_core.py\", line 91, in run_block\n    return ns['numerical_stage'](**values)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen-current-wire_derive>\", line 72, in numerical_stage\nAssertionError\n",
+  "actual_failure_location": "frozen wire_derive line 72 exclusive generated-method destination assertion",
+  "complete_core_reference_controls": 28,
+  "passed_groups_before_failure": {
+    "context_refusals": 12,
+    "current_job_refusals": 13,
+    "emission_refusals": 32,
+    "lifecycle_cases": 15,
+    "namespace_positive": 6,
+    "namespace_refusals": 42,
+    "producer_positive": 6,
+    "producer_refusals": 53,
+    "publication_cases": 7,
+    "publication_refusals": 33,
+    "runtime_positive": 6,
+    "runtime_refusals": 32
+  },
+  "source_fixture_collision": true,
+  "existing_reviewed_successor": "5d2c83ebd9b5da323e9f8747df0d8d42cb5974a6",
+  "successor_does_not_change_production_methods": true,
+  "complete_uncompressed_fixture_emission_retained": true,
+  "native_acquired": false,
+  "native_executed": false,
+  "RC_executed": false,
+  "all_available_emitted_records_authenticated": true
+}
