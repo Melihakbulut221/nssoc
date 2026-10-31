@@ -70,6 +70,16 @@ class Controls(unittest.TestCase):
             release["assets"]=[dict(name="out.json",size=2,digest="sha256:"+"1"*64)]
             m.destination(head,False,{"out.json":dict(bytes=2,sha256="1"*64)})
             with self.assertRaises(ValueError):m.destination(head,False,{})
+    def test_mutable_download_counters_do_not_weaken_published_content_identity(self):
+        r=dict(id=19,tag_name="tag",target_commitish="a"*40,draft=False,prerelease=True,
+          assets=[dict(id=7,name="part",size=17,digest="sha256:"+"1"*64,download_count=0)])
+        changed=copy.deepcopy(r);changed["assets"][0]["download_count"]=5
+        self.assertEqual(m.immutable_release(r),m.immutable_release(changed))
+        for key,value in(("id",8),("name","other"),("size",18),("digest","sha256:"+"2"*64)):
+            bad=copy.deepcopy(changed);bad["assets"][0][key]=value
+            self.assertNotEqual(m.immutable_release(r),m.immutable_release(bad))
+        changed["target_commitish"]="b"*40
+        self.assertNotEqual(m.immutable_release(r),m.immutable_release(changed))
     def test_nonhosted_refusal_precedes_network(self):
         with patch.dict(os.environ,{"GITHUB_ACTIONS":"false"}),patch.object(m,"api",side_effect=AssertionError("network")):
             with self.assertRaisesRegex(ValueError,"hosted only"):m.source_gate()

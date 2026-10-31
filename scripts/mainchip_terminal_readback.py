@@ -51,12 +51,16 @@ def source_gate():
     require(c["producer_run"]==41211382427 and c["producer_source"]=="ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9","producer source")
     require(c["read_only"]is True and c["physical_acceptance"]is False,"readonly source")
     return c,head
+def immutable_release(r):
+    return dict(id=r["id"],tag_name=r["tag_name"],target_commitish=r["target_commitish"],
+      draft=r["draft"],prerelease=r["prerelease"],
+      assets=sorted([dict(id=a["id"],name=a["name"],size=a["size"],digest=a["digest"])for a in r["assets"]],key=lambda a:a["name"]))
 def producer(c):
     run=api("actions/runs/"+str(c["producer_run"]))
     require(run["head_sha"]==c["producer_source"]and run["status"]=="completed"and run["conclusion"]=="failure"and run["run_attempt"]==1,"original terminal failure")
     release=api("releases/"+str(c["release_id"]))
     ref=api("git/ref/tags/"+c["release_tag"])
-    require(release["tag_name"]==c["release_tag"]and release["target_commitish"]==c["producer_source"]and release["draft"]is False and release["prerelease"]is True,"original release source")
+    require(release["id"]==c["release_id"]and release["tag_name"]==c["release_tag"]and release["target_commitish"]==c["producer_source"]and release["draft"]is False and release["prerelease"]is True,"original release source")
     require(ref["object"]=={"type":"commit","sha":c["producer_source"],"url":ref["object"]["url"]},"original tag")
     assets={a["name"]:a for a in release["assets"]}
     require(len(assets)==len(release["assets"])and set(assets)==set(c["assets"]),"exact original assets")
@@ -156,7 +160,7 @@ def run():
         require(pin(archive)==parts["archive"],"complete native archive")
         report=scan(archive,index["files"],c["selected"],OUT/"reports")
         after=producer(c)
-        require(before["release"]==after["release"]and before["ref"]==after["ref"],"producer publication unchanged")
+        require(immutable_release(before["release"])==immutable_release(after["release"])and before["ref"]==after["ref"],"producer publication unchanged")
         (OUT/"producer-after.json").write_bytes(encode(after))
         (OUT/"candidate-outputs.json").write_bytes((work/"candidate-outputs.json").read_bytes())
         (OUT/"candidate-parts.json").write_bytes((work/"candidate-parts.json").read_bytes())
@@ -178,8 +182,11 @@ def run():
         destination(head,True)
         for n in expected:subprocess.run(["gh","release","upload",tag,str(pub/n),"--repo",REPO],check=True)
         _,published=destination(head,False,expected)
-        receipt=dict(tag=tag,release_id=published["id"],source=head,files=expected,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
-        (OUT/"publication-receipt.json").write_bytes(encode(receipt))
+        receipt=dict(tag=tag,release_id=published["id"],source=head,files=dict(expected),receipt_self_not_in_files=True,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)
+        receipt_path=OUT/"publication-receipt.json";receipt_path.write_bytes(encode(receipt))
+        subprocess.run(["gh","release","upload",tag,str(receipt_path),"--repo",REPO],check=True)
+        expected["publication-receipt.json"]=pin(receipt_path)
+        destination(head,False,expected)
         print(json.dumps(result),flush=True)
     except BaseException as exc:
         (OUT/"collector-failure.json").write_bytes(encode(dict(error_type=type(exc).__name__,error=str(exc),physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)))
