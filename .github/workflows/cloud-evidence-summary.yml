@@ -65,7 +65,7 @@ jobs:
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['APPROVED_SOURCE']==e['GITHUB_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           p=Path('scripts/cdr-eight-drain-vi-bias-off-methods-v1.json');raw=p.read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='ff78e6c288dc31ceb7b1dbbc4b7689d2d008056fc560d8fcbbb9b1265d7106a3'
+          assert hashlib.sha256(raw).hexdigest()=='96ab162f0b9f9879b31542c51379a2f334b7b9b7571b946f4423f6888162ecab'
           m=json.loads(raw)
           assert m['branch']=='codex/cdr-eight-drain-storage-preflight-v1'
           assert subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()=='https://github.com/Melihakbulut221/nssoc'
@@ -206,7 +206,7 @@ jobs:
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['APPROVED_SOURCE']==e['GITHUB_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           p=Path('scripts/cdr-eight-drain-vi-bias-off-methods-v1.json');raw=p.read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='ff78e6c288dc31ceb7b1dbbc4b7689d2d008056fc560d8fcbbb9b1265d7106a3'
+          assert hashlib.sha256(raw).hexdigest()=='96ab162f0b9f9879b31542c51379a2f334b7b9b7571b946f4423f6888162ecab'
           m=json.loads(raw)
           assert m['branch']=='codex/cdr-eight-drain-storage-preflight-v1'
           assert subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()=='https://github.com/Melihakbulut221/nssoc'
@@ -359,7 +359,7 @@ jobs:
           assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert e['APPROVED_SOURCE']==e['GITHUB_SHA']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           p=Path('scripts/cdr-eight-drain-vi-bias-off-methods-v1.json');raw=p.read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='ff78e6c288dc31ceb7b1dbbc4b7689d2d008056fc560d8fcbbb9b1265d7106a3'
+          assert hashlib.sha256(raw).hexdigest()=='96ab162f0b9f9879b31542c51379a2f334b7b9b7571b946f4423f6888162ecab'
           m=json.loads(raw)
           assert m['branch']=='codex/cdr-eight-drain-storage-preflight-v1'
           assert subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()=='https://github.com/Melihakbulut221/nssoc'

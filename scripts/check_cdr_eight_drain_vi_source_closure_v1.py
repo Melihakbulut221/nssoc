@@ -12,6 +12,35 @@ TRANSPORT='docs/evidence/cdr-via-rich-stream-transport-pass-20261019.json'
 def encoded(x):return(json.dumps(x,sort_keys=True,indent=2)+'\n').encode()
 def require(v,message):
     if not v:raise AssertionError(message)
+def initialize_installed_numpy():
+    # Initialize only the workflow-pinned scientific dependency before the fixture
+    # audit hook. No project module or native design input is imported here.
+    import importlib.metadata
+    distribution=importlib.metadata.distribution('numpy')
+    require(distribution.version=='2.3.3','Exact installed NumPy dependency')
+    origin=Path(importlib.util.find_spec('numpy').origin).resolve()
+    expected=Path(distribution.locate_file('numpy/__init__.py')).resolve()
+    require(origin==expected and not origin.is_relative_to(ROOT),'Installed NumPy origin outside project')
+    before=set(sys.modules);numpy=importlib.import_module('numpy')
+    require(numpy.__version__=='2.3.3'and Path(numpy.__file__).resolve()==origin,'Imported installed NumPy identity')
+    loaded={}
+    for name,module in sorted(sys.modules.items()):
+        file=getattr(module,'__file__',None)
+        if not file:continue
+        path=Path(file).resolve()
+        if name not in before:require(not path.is_relative_to(ROOT),'Project code imported before fixture barrier: '+name)
+        if name=='numpy'or name.startswith('numpy.')or name in('ctypes','_ctypes')or name.startswith('ctypes.'):
+            require(path.is_file()and not path.is_relative_to(ROOT),'Installed dependency file only')
+            raw=path.read_bytes();loaded[name]=dict(path=str(path),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+    metadata={}
+    for name in('METADATA','RECORD'):
+        text=distribution.read_text(name);require(isinstance(text,str)and bool(text),'Installed NumPy metadata')
+        raw=text.encode();metadata[name]=dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+    require('numpy'in loaded and 'ctypes'in loaded and '_ctypes'in loaded,'Record numeric dependency and ctypes initialization')
+    return dict(package='numpy',version=numpy.__version__,origin=str(origin),distribution_root=str(Path(distribution.locate_file('')).resolve()),
+      installed_metadata=metadata,loaded_modules=loaded,initialized_before_fixture_barrier=True,
+      project_modules_imported=False,native_design_acquired=False,production_worker_imported=False)
+
 def controls(method):
     actual=a.context();require(os.environ['GITHUB_JOB']=='source-controls','Source-control fixture only')
     environment=dict(os.environ)
@@ -34,6 +63,7 @@ def controls(method):
         expressions.append(dict(line=n.lineno,scope='main',expression=ast.get_source_segment(text,n)))
     require(expressions==spec['worker_root_expressions']and len(expressions)==11,'Complete worker ROOT expression census')
     require(spec['manual_scope']['unresolved_reachable_ROOT_paths']==[],'Unresolved reachable ROOT read')
+    numpy_initialization=initialize_installed_numpy()
     outer=ROOT/'hw/soc/out/cdr-eight-drain-single-vi-source-controls/closure'
     require(not outer.exists()and not outer.is_symlink(),'New owned fixture output');outer.mkdir(parents=True)
     state=dict(active=False,owned=None,blocked=[],reads=set(),bytecode_probes=set())
@@ -58,7 +88,8 @@ def controls(method):
     barrier=[]
     try:
         for name,call in(('socket',lambda:socket.socket()),('subprocess',lambda:subprocess.Popen([sys.executable,'-c','raise SystemExit(91)'])),
-          ('os.system',lambda:os.system('exit 91')),('urllib',lambda:urllib.request.urlopen('https://example.invalid/'))):
+          ('os.system',lambda:os.system('exit 91')),('urllib',lambda:urllib.request.urlopen('https://example.invalid/')),
+          ('ctypes',lambda:sys.modules['ctypes'].CDLL(None))):
             try:call()
             except AssertionError as error:
                 require(str(error).startswith('SOURCE_FIXTURE_BLOCKED_EXTERNAL_EFFECT'),'Unexpected barrier failure');barrier.append(name)
@@ -124,7 +155,7 @@ def controls(method):
     require(TRANSPORT in state['reads'],'Actual static transport file was not read')
     report=dict(status='PASS_FROZEN_MAIN_STATIC_CLOSURE_FIXTURE_NOT_PRODUCTION_ADMISSION',source=actual['source'],run_id=actual['run_id'],
       method_sha256=a.sha(ROOT/a.METHOD),worker_sha256=spec['worker']['sha256'],production_gate_refusals=production_rejections,
-      cases=cases,network_process_barrier_controls=barrier,blocked_events=state['blocked'],
+      cases=cases,installed_numpy_initialization=numpy_initialization,network_process_barrier_controls=barrier,blocked_events=state['blocked'],
       actual_repository_reads=sorted(state['reads']),absent_bytecode_probes=sorted(state['bytecode_probes']),
       frozen_runtime_sources=len(spec['frozen_runtime_source_sha256']),ROOT_expressions=11,
       fixture_globals_only=True,production_module_changed=False,github_environment_spoofed=False,
