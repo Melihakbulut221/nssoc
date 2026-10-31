@@ -79,8 +79,12 @@ def context_controls(c):
     value=env();ctx=a.context(value);faults=[]
     for key,bad in [('GITHUB_SHA','bad'),('APPROVED_SOURCE','b'*40),('GITHUB_RUN_ATTEMPT','2'),('GITHUB_REF','refs/heads/main'),('GITHUB_JOB','candidate'),('GITHUB_EVENT_NAME','push'),('GITHUB_REPOSITORY','other/repo'),('RUNNER_ENVIRONMENT','self-hosted')]:
         modified=dict(value);modified[key]=bad;reject(lambda:a.context(modified));faults.append(key)
-    reject(lambda:a.authorize_native(ctx,c));faults.append('disabled-actual-authority')
+    disabled=copy.deepcopy(c);disabled['physical_verification_authorized']=False
+    reject(lambda:a.authorize_native(ctx,disabled));faults.append('explicit-disabled-authority')
     authorized=copy.deepcopy(c);authorized['physical_verification_authorized']=True;a.authorize_native(ctx,authorized)
+    actual_source_context=a.context(os.environ)
+    a.require(actual_source_context['job']=='source-controls','actual source-control job identity')
+    reject(lambda:a.authorize_native(actual_source_context,authorized));faults.append('actual-source-job-refused-with-enabled-config')
     for key in('generation_authorized','fresh_rc_authorized','electrical_simulation_authorized'):
         bad=copy.deepcopy(authorized);bad[key]=True;reject(lambda:a.authorize_native(ctx,bad));faults.append(key)
     return faults
