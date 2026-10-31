@@ -1,0 +1,59 @@
+{
+  "actual_native_inputs_acquired": true,
+  "context": {
+    "attempt": 1,
+    "case": "nominal_early",
+    "group": "cdr-current-eight-drain-graph",
+    "run_id": 41206019222,
+    "source": "501943b31856d1fa08fc8e710cf27186fd071adc",
+    "tag": "cloud-results-41206019222-1-cdr-current-eight-drain-graph",
+    "token": "41206019222-1"
+  },
+  "controls": {
+    "controls": {
+      "bytes": 6742,
+      "sha256": "375249eb1a522b6878271d717c68d7cb440cd71d6bc1147342ca3c817a06e28b"
+    },
+    "execution": {
+      "bytes": 1950,
+      "sha256": "572e7e712ac8f3cc17f9f55de1e713806cc323856571046ac473e4f635952be9"
+    },
+    "graph": {
+      "bytes": 2083,
+      "sha256": "521b3c34fc306d5dfdbb8d08b9c69c902d75a762ab2c8fbec1bd97d6cb64ce96"
+    },
+    "ownership": {
+      "bytes": 1723,
+      "sha256": "7e01499311f989730593e0dec6c94092a7b7e84b3a5e183ccf8d8f0ae51d23de"
+    },
+    "publication": {
+      "bytes": 4189,
+      "sha256": "ef41cd3e385c090fbcc5014293def475dae0c6db9e76bdd8a19dc4d69ae7b839"
+    },
+    "tail": {
+      "bytes": 1901,
+      "sha256": "d1e9cd97a591411699293d85b2f42e561df3581cc7744fe18f9e4766be071064"
+    }
+  },
+  "electrical_acceptance": false,
+  "error": "AssertionError(('fresh-complete-identity-and-material', '', 'current_tail_graph_native.py\", line 267, in <module>\\n    if __name__==\"__main__\":main()\\n                            ~~~~^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_graph_native.py\", line 265, in main\\n    else:verify(a.selected,a.physical,a.output,config)\\n         ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_graph_native.py\", line 239, in verify\\n    h.write(out/\"native-material-controls.json\",h.encode(material_controls(pya)))\\n                                                         ~~~~~~~~~~~~~~~~~^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_graph_native.py\", line 162, in material_controls\\n    exact_union(pya,before,after,[box])\\n    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_graph_native.py\", line 154, in exact_union\\n    expected=pya.Region(before)\\nTypeError: No overload with matching arguments. Variants are:\\n  static new Region ptr new(PolygonWithProperties[] array, bool dummy = true) [match candidate]\\n  static new Region ptr new() [0 argument(s) expected, but 1 given]\\n  static new Region ptr new(Polygon[] array) [match candidate]\\n  static new Region ptr new(const Box box) [match candidate]\\n  static new Region ptr new(const BoxWithProperties box) [match candidate]\\n  static new Region ptr new(const Polygon polygon) [match candidate]\\n  static new Region ptr new(const PolygonWithProperties polygon) [match candidate]\\n  static new Region ptr new(const SimplePolygon polygon) [match candidate]\\n  static new Region ptr new(const SimplePolygonWithProperties polygon) [match candidate]\\n  static new Region ptr new(const Path path) [match candidate]\\n  static new Region ptr new(const PathWithProperties path) [match candidate]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator) [match candidate]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, const ICplxTrans trans) [no value given for argument #2]\\n  static new Region ptr new(const Shapes shapes) [match candidate]\\n  static new Region ptr new(const Shapes shapes, const ICplxTrans trans) [no value given for argument #2]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore deep_shape_store, double area_ratio = 0, unsigned long max_vertex_count = 0) [no value given for argument #2]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore deep_shape_store, const ICplxTrans trans, double area_ratio = 0, unsigned long max_vertex_count = 0) [no value given for argument #2 and following]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, string expr, bool as_pattern = true, int enl = 1) [no value given for argument #2]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore dss, string expr, bool as_pattern = true, int enl = 1) [no value given for argument #2 and following]\\n in Region.__init__\\n'))",
+  "full_phy_accepted": false,
+  "graph_trial_completed": false,
+  "input_census": {
+    "full_members": 2797,
+    "native_inputs_retained_in_bundle": true,
+    "selected": 66
+  },
+  "new_simulation": false,
+  "physical_acceptance": false,
+  "physical_census": {
+    "full_members": 339,
+    "native_inputs_retained_in_bundle": true,
+    "selected": 39
+  },
+  "qualified_pex": false,
+  "status": "FAIL_CURRENT_EIGHT_DRAIN_FRESH_GRAPH",
+  "terminal_errors": [],
+  "timing_accepted": false,
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_graph.py\", line 220, in terminal_body\n    try:action()\n        ^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_graph.py\", line 313, in <lambda>\n    terminal_body(lambda:do_work(ctx,proof,controls,a.bundle,evidence,report,a.pins_sha256,a.appimage),\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_graph.py\", line 208, in do_work\n    graph=native_readback(pins,saved,saved_physical,native,expected,app)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_graph.py\", line 126, in native_readback\n    if primary is not None:raise primary\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_graph.py\", line 107, in native_readback\n    execute(common+[\"--mode\",\"verify\"],\"fresh-complete-identity-and-material\",1200)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_graph.py\", line 93, in execute\n    if failure is not None:raise failure\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_graph.py\", line 79, in execute\n    with tokenless():supervisor.supervised(list(map(str,argv)),label,seconds=seconds,cwd=root)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/docs/evidence/cdr-v59-mim-qualified-process-supervisor-20261025.py\", line 251, in supervised\n    if passed:assert result.returncode==0,(label,out[-3000:],err[-3000:])\n                     ^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('fresh-complete-identity-and-material', '', 'current_tail_graph_native.py\", line 267, in <module>\\n    if __name__==\"__main__\":main()\\n                            ~~~~^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_graph_native.py\", line 265, in main\\n    else:verify(a.selected,a.physical,a.output,config)\\n         ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_graph_native.py\", line 239, in verify\\n    h.write(out/\"native-material-controls.json\",h.encode(material_controls(pya)))\\n                                                         ~~~~~~~~~~~~~~~~~^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_graph_native.py\", line 162, in material_controls\\n    exact_union(pya,before,after,[box])\\n    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_graph_native.py\", line 154, in exact_union\\n    expected=pya.Region(before)\\nTypeError: No overload with matching arguments. Variants are:\\n  static new Region ptr new(PolygonWithProperties[] array, bool dummy = true) [match candidate]\\n  static new Region ptr new() [0 argument(s) expected, but 1 given]\\n  static new Region ptr new(Polygon[] array) [match candidate]\\n  static new Region ptr new(const Box box) [match candidate]\\n  static new Region ptr new(const BoxWithProperties box) [match candidate]\\n  static new Region ptr new(const Polygon polygon) [match candidate]\\n  static new Region ptr new(const PolygonWithProperties polygon) [match candidate]\\n  static new Region ptr new(const SimplePolygon polygon) [match candidate]\\n  static new Region ptr new(const SimplePolygonWithProperties polygon) [match candidate]\\n  static new Region ptr new(const Path path) [match candidate]\\n  static new Region ptr new(const PathWithProperties path) [match candidate]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator) [match candidate]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, const ICplxTrans trans) [no value given for argument #2]\\n  static new Region ptr new(const Shapes shapes) [match candidate]\\n  static new Region ptr new(const Shapes shapes, const ICplxTrans trans) [no value given for argument #2]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore deep_shape_store, double area_ratio = 0, unsigned long max_vertex_count = 0) [no value given for argument #2]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore deep_shape_store, const ICplxTrans trans, double area_ratio = 0, unsigned long max_vertex_count = 0) [no value given for argument #2 and following]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, string expr, bool as_pattern = true, int enl = 1) [no value given for argument #2]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore dss, string expr, bool as_pattern = true, int enl = 1) [no value given for argument #2 and following]\\n in Region.__init__\\n')\n"
+}

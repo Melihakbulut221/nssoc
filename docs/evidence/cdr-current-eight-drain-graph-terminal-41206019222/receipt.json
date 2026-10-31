@@ -1,0 +1,430 @@
+{
+  "actual_native_inputs_acquired": true,
+  "actual_result": {
+    "actual_native_inputs_acquired": true,
+    "context": {
+      "attempt": 1,
+      "case": "nominal_early",
+      "group": "cdr-current-eight-drain-graph",
+      "run_id": 41206019222,
+      "source": "501943b31856d1fa08fc8e710cf27186fd071adc",
+      "tag": "cloud-results-41206019222-1-cdr-current-eight-drain-graph",
+      "token": "41206019222-1"
+    },
+    "controls": {
+      "controls": {
+        "bytes": 6742,
+        "sha256": "375249eb1a522b6878271d717c68d7cb440cd71d6bc1147342ca3c817a06e28b"
+      },
+      "execution": {
+        "bytes": 1950,
+        "sha256": "572e7e712ac8f3cc17f9f55de1e713806cc323856571046ac473e4f635952be9"
+      },
+      "graph": {
+        "bytes": 2083,
+        "sha256": "521b3c34fc306d5dfdbb8d08b9c69c902d75a762ab2c8fbec1bd97d6cb64ce96"
+      },
+      "ownership": {
+        "bytes": 1723,
+        "sha256": "7e01499311f989730593e0dec6c94092a7b7e84b3a5e183ccf8d8f0ae51d23de"
+      },
+      "publication": {
+        "bytes": 4189,
+        "sha256": "ef41cd3e385c090fbcc5014293def475dae0c6db9e76bdd8a19dc4d69ae7b839"
+      },
+      "tail": {
+        "bytes": 1901,
+        "sha256": "d1e9cd97a591411699293d85b2f42e561df3581cc7744fe18f9e4766be071064"
+      }
+    },
+    "electrical_acceptance": false,
+    "error": "AssertionError(('fresh-complete-identity-and-material', '', 'current_tail_graph_native.py\", line 267, in <module>\\n    if __name__==\"__main__\":main()\\n                            ~~~~^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_graph_native.py\", line 265, in main\\n    else:verify(a.selected,a.physical,a.output,config)\\n         ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_graph_native.py\", line 239, in verify\\n    h.write(out/\"native-material-controls.json\",h.encode(material_controls(pya)))\\n                                                         ~~~~~~~~~~~~~~~~~^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_graph_native.py\", line 162, in material_controls\\n    exact_union(pya,before,after,[box])\\n    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_graph_native.py\", line 154, in exact_union\\n    expected=pya.Region(before)\\nTypeError: No overload with matching arguments. Variants are:\\n  static new Region ptr new(PolygonWithProperties[] array, bool dummy = true) [match candidate]\\n  static new Region ptr new() [0 argument(s) expected, but 1 given]\\n  static new Region ptr new(Polygon[] array) [match candidate]\\n  static new Region ptr new(const Box box) [match candidate]\\n  static new Region ptr new(const BoxWithProperties box) [match candidate]\\n  static new Region ptr new(const Polygon polygon) [match candidate]\\n  static new Region ptr new(const PolygonWithProperties polygon) [match candidate]\\n  static new Region ptr new(const SimplePolygon polygon) [match candidate]\\n  static new Region ptr new(const SimplePolygonWithProperties polygon) [match candidate]\\n  static new Region ptr new(const Path path) [match candidate]\\n  static new Region ptr new(const PathWithProperties path) [match candidate]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator) [match candidate]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, const ICplxTrans trans) [no value given for argument #2]\\n  static new Region ptr new(const Shapes shapes) [match candidate]\\n  static new Region ptr new(const Shapes shapes, const ICplxTrans trans) [no value given for argument #2]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore deep_shape_store, double area_ratio = 0, unsigned long max_vertex_count = 0) [no value given for argument #2]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore deep_shape_store, const ICplxTrans trans, double area_ratio = 0, unsigned long max_vertex_count = 0) [no value given for argument #2 and following]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, string expr, bool as_pattern = true, int enl = 1) [no value given for argument #2]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore dss, string expr, bool as_pattern = true, int enl = 1) [no value given for argument #2 and following]\\n in Region.__init__\\n'))",
+    "full_phy_accepted": false,
+    "graph_trial_completed": false,
+    "input_census": {
+      "full_members": 2797,
+      "native_inputs_retained_in_bundle": true,
+      "selected": 66
+    },
+    "new_simulation": false,
+    "physical_acceptance": false,
+    "physical_census": {
+      "full_members": 339,
+      "native_inputs_retained_in_bundle": true,
+      "selected": 39
+    },
+    "qualified_pex": false,
+    "status": "FAIL_CURRENT_EIGHT_DRAIN_FRESH_GRAPH",
+    "terminal_errors": [],
+    "timing_accepted": false,
+    "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_graph.py\", line 220, in terminal_body\n    try:action()\n        ^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_graph.py\", line 313, in <lambda>\n    terminal_body(lambda:do_work(ctx,proof,controls,a.bundle,evidence,report,a.pins_sha256,a.appimage),\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_graph.py\", line 208, in do_work\n    graph=native_readback(pins,saved,saved_physical,native,expected,app)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_graph.py\", line 126, in native_readback\n    if primary is not None:raise primary\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_graph.py\", line 107, in native_readback\n    execute(common+[\"--mode\",\"verify\"],\"fresh-complete-identity-and-material\",1200)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_graph.py\", line 93, in execute\n    if failure is not None:raise failure\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_tail_graph.py\", line 79, in execute\n    with tokenless():supervisor.supervised(list(map(str,argv)),label,seconds=seconds,cwd=root)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/docs/evidence/cdr-v59-mim-qualified-process-supervisor-20261025.py\", line 251, in supervised\n    if passed:assert result.returncode==0,(label,out[-3000:],err[-3000:])\n                     ^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('fresh-complete-identity-and-material', '', 'current_tail_graph_native.py\", line 267, in <module>\\n    if __name__==\"__main__\":main()\\n                            ~~~~^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_graph_native.py\", line 265, in main\\n    else:verify(a.selected,a.physical,a.output,config)\\n         ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_graph_native.py\", line 239, in verify\\n    h.write(out/\"native-material-controls.json\",h.encode(material_controls(pya)))\\n                                                         ~~~~~~~~~~~~~~~~~^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_graph_native.py\", line 162, in material_controls\\n    exact_union(pya,before,after,[box])\\n    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_current_tail_graph_native.py\", line 154, in exact_union\\n    expected=pya.Region(before)\\nTypeError: No overload with matching arguments. Variants are:\\n  static new Region ptr new(PolygonWithProperties[] array, bool dummy = true) [match candidate]\\n  static new Region ptr new() [0 argument(s) expected, but 1 given]\\n  static new Region ptr new(Polygon[] array) [match candidate]\\n  static new Region ptr new(const Box box) [match candidate]\\n  static new Region ptr new(const BoxWithProperties box) [match candidate]\\n  static new Region ptr new(const Polygon polygon) [match candidate]\\n  static new Region ptr new(const PolygonWithProperties polygon) [match candidate]\\n  static new Region ptr new(const SimplePolygon polygon) [match candidate]\\n  static new Region ptr new(const SimplePolygonWithProperties polygon) [match candidate]\\n  static new Region ptr new(const Path path) [match candidate]\\n  static new Region ptr new(const PathWithProperties path) [match candidate]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator) [match candidate]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, const ICplxTrans trans) [no value given for argument #2]\\n  static new Region ptr new(const Shapes shapes) [match candidate]\\n  static new Region ptr new(const Shapes shapes, const ICplxTrans trans) [no value given for argument #2]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore deep_shape_store, double area_ratio = 0, unsigned long max_vertex_count = 0) [no value given for argument #2]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore deep_shape_store, const ICplxTrans trans, double area_ratio = 0, unsigned long max_vertex_count = 0) [no value given for argument #2 and following]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, string expr, bool as_pattern = true, int enl = 1) [no value given for argument #2]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore dss, string expr, bool as_pattern = true, int enl = 1) [no value given for argument #2 and following]\\n in Region.__init__\\n')\n"
+  },
+  "attempt": 1,
+  "capsule_archive": {
+    "bytes": 6529298,
+    "sha256": "a548262d66abf329c8214af0bbf675daeca389197760ae9422df1b938d9c7cce"
+  },
+  "capsule_files": 322,
+  "complete_native_capsule_preserved": true,
+  "electrical_acceptance": false,
+  "files": {
+    "capsule-metadata/cdr-current-eight-drain-graph-41206019222-1.parts.json": {
+      "bytes": 878,
+      "sha256": "99e3de661045fedbebe707776f3f3e29b8969bf02771763444d2957d86ca1945"
+    },
+    "capsule-metadata/complete-output-index.json": {
+      "bytes": 60380,
+      "sha256": "bc8a281a05299ccd1f43b1cd8a05a6aaff1c311d2fbf507811bfb1aceafe2041"
+    },
+    "jobs.json": {
+      "bytes": 13368,
+      "sha256": "287b213049a96e925b5e9708230a1189ddd17536c9c947a88a2e9c5d96548802"
+    },
+    "jobs/124551143929.json": {
+      "bytes": 5999,
+      "sha256": "e2a81f0c440950d76f8fdd55479636b3c55cc8adb1eb75bb4f5e541a45f42f9c"
+    },
+    "jobs/124551373885.json": {
+      "bytes": 1672,
+      "sha256": "2f15c1414df45db13e4f9f2ad94c3c29abcd0e113342d153f588d0720aa09ada"
+    },
+    "jobs/124551414750.json": {
+      "bytes": 3982,
+      "sha256": "93904a3e9479de08f667209c5260fc03cd6af86a6aab381122e5f08094128afe"
+    },
+    "jobs/124552004741.json": {
+      "bytes": 1685,
+      "sha256": "88338a2db14c731983a08ab4a7d3255b3c0a1a5dc74a2efe7cc64ec8733c60a1"
+    },
+    "logs/124551143929.log": {
+      "bytes": 718229,
+      "sha256": "48d90eae1d12b89afef0b8955baed0ce41a162a1d53f47b065bd26d1f37027ec"
+    },
+    "logs/124551373885.log": {
+      "bytes": 7913,
+      "sha256": "06a01e1fd6f286219a2665f72c29d995ee011f39377fbd0dae8170c01bdb272e"
+    },
+    "logs/124551414750.log": {
+      "bytes": 2513502,
+      "sha256": "f6bca44fc9a2585fa863524e385913c6902433c2c9c4a8673ffc45284bf3bd05"
+    },
+    "logs/124552004741.log": {
+      "bytes": 7191,
+      "sha256": "07c382a6908275a2623529bc73ac30c7d7180bce404d57a0d9493f5c2cc078a2"
+    },
+    "native-derived-shards/0000.json": {
+      "bytes": 966096,
+      "sha256": "eb939351634a3df7d0ba5a318ee18d28a434cff304f274115fff8a30ae39a293"
+    },
+    "native-derived-shards/0001.json": {
+      "bytes": 858261,
+      "sha256": "c7727db10f8fb98166770122a0c860ca0a19dd3aec34d0f13253ff3b13aa3305"
+    },
+    "native-derived-shards/0002.json": {
+      "bytes": 943800,
+      "sha256": "3034183b0e0bcfb90dec4ac61a3b06b81a24739fdb4d7c88700ba2ed87ba5b36"
+    },
+    "native-derived-shards/0003.json": {
+      "bytes": 978787,
+      "sha256": "478990d747fcccfc13b91478d7b49ac541a2747dab5e01ec59cc328c620d4fb7"
+    },
+    "native-derived-shards/0004.json": {
+      "bytes": 136118,
+      "sha256": "a286e5fd76d44931b365642210c3744b140eb04654081d3ea704d7ae3a807dbe"
+    },
+    "native-derived-shards/0005.json": {
+      "bytes": 1205695,
+      "sha256": "08b374e8f7790f5695536315897457993ebe63ba55ff4c950e160a2780340838"
+    },
+    "native-derived-shards/0006.json": {
+      "bytes": 2201124,
+      "sha256": "ee370358500be4cf56ff896fd3e6c1b8f049cd1eee3ded637fc398ae1b8c712a"
+    },
+    "native-derived-shards/0007.json": {
+      "bytes": 922559,
+      "sha256": "59f5209bb26c4701104047e6af0c9eafd14570b9cb69e33fcac153f45e825d17"
+    },
+    "native-derived-shards/0008.json": {
+      "bytes": 387957,
+      "sha256": "86d805d9a294323ef2c2af3bd51e583baf60d0393699783a9471e0c5f30d6539"
+    },
+    "native-derived-shards/0009.json": {
+      "bytes": 1329879,
+      "sha256": "a8bb97fe4dfd15f9f1cab5cd8340147b5a5804b844a77c3091be139373114e51"
+    },
+    "native-derived-shards/0010.json": {
+      "bytes": 90790,
+      "sha256": "2414304ed2ce37bb7aa9d54f611ade05edc15933825a463f853d9d3c7d961107"
+    },
+    "native-derived-shards/0011.json": {
+      "bytes": 6349031,
+      "sha256": "b222b34b1378deff22bf66070f93515a79dbfdfb4ecaf9f0a917ace19ba57206"
+    },
+    "native-derived-shards/0012.json": {
+      "bytes": 6349075,
+      "sha256": "af9dac599bbfaa6f07211186dfafdb71e02d798a22076d79dabc9b93cb4f47ec"
+    },
+    "native-derived-shards/0013.json": {
+      "bytes": 997946,
+      "sha256": "190a7d284a12d5f6bb0e65376e97e118c978fabc391d34db1c1f870c23c61599"
+    },
+    "native-derived-shards/0014.json": {
+      "bytes": 285516,
+      "sha256": "9fd7ea8f1d8634af5f492688b0acc2364e6df8d0cd4b736fb88fdd2eedcf037c"
+    },
+    "native-derived-shards/0015.json": {
+      "bytes": 1964028,
+      "sha256": "a473f1232d4d13967d802aa819b84989c60d5bd1387bcdf0299dd45fcbfec1fb"
+    },
+    "native-derived-shards/0016.json": {
+      "bytes": 179520,
+      "sha256": "8e949f4dfced0c7c457b48024c734a7d17d60a98af9ac9c5d8874e4bb84b72a0"
+    },
+    "native-index.json": {
+      "bytes": 15705,
+      "sha256": "f059675396538be5461f46a4d0172e85dfcdb851a5d41d346939f768b3c5aa1a"
+    },
+    "native-record-locations.json": {
+      "bytes": 26641,
+      "sha256": "65b1f21a849b039b9a22653bf1f4aff7bb86563e6468454ad0c1e32717ea294f"
+    },
+    "native-text-transport-errors.json": {
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    "readable-records/complete-input-census.json": {
+      "bytes": 612732,
+      "sha256": "17d1fa41e1c40813701f750a33f77e9db0ee0f4027a0dce269b84dc94107a3cf"
+    },
+    "readable-records/complete-native-text-index.json": {
+      "bytes": 11536,
+      "sha256": "4067af0fe2290ea40a131484b50ba9b17abadc69ac0bb35612c0c0aa894cacb2"
+    },
+    "readable-records/complete-physical-census.json": {
+      "bytes": 64533,
+      "sha256": "ec9d02851300af6f1e54c4f32dd108d71cbc6763884aa76126451079f6fc91f8"
+    },
+    "readable-records/native-records/actual-witness-faults.json": {
+      "bytes": 1864,
+      "sha256": "a754d9df8afe263c397e8337555d7fd13ee94b21d2469aa4513dc1d562859d75"
+    },
+    "readable-records/native-records/native-identity-comparison.json": {
+      "bytes": 1111,
+      "sha256": "386ab8bdbb78f353aebee9ff8f3e3e6db547a5b2e07df382cabdb1605ba028bd"
+    },
+    "readable-records/native-records/native-lifecycle.json": {
+      "bytes": 19242,
+      "sha256": "1b3d398e3136a72dd21807d3ef7cd898eb7b3cdd3071a244f95e5f56f70d36b9"
+    },
+    "readable-records/native-records/projection.json": {
+      "bytes": 23491,
+      "sha256": "426b4866ed23f8fb63cd9657e1360d24fc0dc1266db9dd6ce5939a3a51ba8264"
+    },
+    "readable-records/result.json": {
+      "bytes": 9868,
+      "sha256": "6a55205c2a91f49971d7fdc1628852ab8da4c47df5a3a11d7a5222245befe353"
+    },
+    "readable-records/runtime-policy.json": {
+      "bytes": 950,
+      "sha256": "1ddef50580c65f3836406ccc8fbc7a3e6ee6d8be6b08558402a89c3bb93f3a95"
+    },
+    "readable-records/terminal-integrity.json": {
+      "bytes": 459,
+      "sha256": "50a208ee1ec0c2ce7940893f1386c7d4ce540bafcac850d18ef90ebe632edb7e"
+    },
+    "release.json": {
+      "bytes": 7849,
+      "sha256": "4fbb42183cde5b98a251b7bbe96f60c0e6faac01cbcabd24de4e9f19ed7f8f20"
+    },
+    "run.json": {
+      "bytes": 13154,
+      "sha256": "d615e002034b53cff86a38f7255e064af5d80d190e0c8bf7fff719b6fde2e294"
+    },
+    "source-index.json": {
+      "bytes": 4799,
+      "sha256": "fee5a6843763605ad2a1ab11cd1bba95f74b8dbd912bef3ebf13ffaa93a0499d"
+    },
+    "source-records/context.json": {
+      "bytes": 15960,
+      "sha256": "43553078fca40639e1f0540b7eeedd9dd4f1d861a4628f64fb9a2d8185b10341"
+    },
+    "source-records/controls.json": {
+      "bytes": 6742,
+      "sha256": "375249eb1a522b6878271d717c68d7cb440cd71d6bc1147342ca3c817a06e28b"
+    },
+    "source-records/controls.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-records/controls.stdout": {
+      "bytes": 6743,
+      "sha256": "e964a53f5e66570855af57e3b74654e99235654e7d6e6e50dc61b26df7f8233f"
+    },
+    "source-records/execution-controls.json": {
+      "bytes": 1950,
+      "sha256": "572e7e712ac8f3cc17f9f55de1e713806cc323856571046ac473e4f635952be9"
+    },
+    "source-records/execution-controls.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-records/execution-controls.stdout": {
+      "bytes": 6759,
+      "sha256": "7887ee62f9fe28961296c2da8e0e229a12437f0139dfcc69bd47b8cc9c9bb186"
+    },
+    "source-records/execution-manifest.json": {
+      "bytes": 23701,
+      "sha256": "ab91402b1329d4ceb882377b9e4fe2cba6a187e86f08aa4767fd3d77668d3b62"
+    },
+    "source-records/graph-controls.json": {
+      "bytes": 2083,
+      "sha256": "521b3c34fc306d5dfdbb8d08b9c69c902d75a762ab2c8fbec1bd97d6cb64ce96"
+    },
+    "source-records/graph-controls.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-records/graph-controls.stdout": {
+      "bytes": 2628,
+      "sha256": "4f45524d08279bbc29a54c6f64cc22602331f3797ee82018929d614922c93d4d"
+    },
+    "source-records/graph-manifest.json": {
+      "bytes": 204617,
+      "sha256": "98e308f243652ec34285ee86a5429b8a8a004b3a5bba7aa92b4c2ecba63ac7df"
+    },
+    "source-records/ownership-controls.json": {
+      "bytes": 1723,
+      "sha256": "7e01499311f989730593e0dec6c94092a7b7e84b3a5e183ccf8d8f0ae51d23de"
+    },
+    "source-records/ownership-controls.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-records/ownership-controls.stdout": {
+      "bytes": 5027,
+      "sha256": "d86c58e871d363a65472d6c96670ce3f5e17bc9d6e0bca3e13defb903be8aaa8"
+    },
+    "source-records/ownership-manifest.json": {
+      "bytes": 17289,
+      "sha256": "56414a109482fa2a219b492510b1952e5da057db4b44d836bf84fa60f618c936"
+    },
+    "source-records/publication-controls.json": {
+      "bytes": 4189,
+      "sha256": "ef41cd3e385c090fbcc5014293def475dae0c6db9e76bdd8a19dc4d69ae7b839"
+    },
+    "source-records/publication-controls.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-records/publication-controls.stdout": {
+      "bytes": 3335,
+      "sha256": "54de97ad772fd9ae763c9a7277a099c5460f1f1e347a01c444def848b585d3e2"
+    },
+    "source-records/tail-controls.json": {
+      "bytes": 1901,
+      "sha256": "d1e9cd97a591411699293d85b2f42e561df3581cc7744fe18f9e4766be071064"
+    },
+    "source-records/tail-controls.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source-records/tail-controls.stdout": {
+      "bytes": 2490,
+      "sha256": "ef9a85d761017a40659e48442fc585b119e49cdef84044104d2d9f4cbfd224bd"
+    },
+    "source-records/tail-manifest.json": {
+      "bytes": 178627,
+      "sha256": "c898d3f61c64f9dc621f0ee576c3987ee1f5a189f609b8ba7a7119b910111b43"
+    },
+    "tag-ref.json": {
+      "bytes": 516,
+      "sha256": "ff864ab26d112b9d883659d0a86ecc85811f14d9b446d3b9d693db43c5da2571"
+    },
+    "tested-source/.github/workflows/cdr-current-access-overlay.yml": {
+      "bytes": 32067,
+      "sha256": "81db039b8799dd649a94759c2ea2e306f9e34a153a7909e299c6f9e764c0bc24"
+    },
+    "tested-source/docs/evidence/cdr-current-eight-drain-cloud-physical-source-20261031.json": {
+      "bytes": 2548,
+      "sha256": "adb9874b3a6d0e1465cd66d3dce70d1fedaaf405197c9739a43e0a2ca03e3c73"
+    },
+    "tested-source/docs/evidence/cdr-current-eight-drain-fresh-graph-source-20261031.json": {
+      "bytes": 3495,
+      "sha256": "6a5d0d31969cf089e44491969efadd13aa3a350ae86227b821542d16a1edb070"
+    },
+    "tested-source/docs/evidence/cdr-current-eight-drain-runtime-namespace-source-20261031.json": {
+      "bytes": 1867,
+      "sha256": "83a3571c60dfe86433774e75f794d2062e1922cf0ba017678d7f5ae3c7895c7b"
+    },
+    "tested-source/docs/evidence/cdr-current-eight-drain-segmented-metal-source-20261031.json": {
+      "bytes": 2468,
+      "sha256": "0d82703562c7b3d4ec4b2eb14f6e0116d625444d31fe38c8ac31486f1cf42e15"
+    },
+    "tested-source/scripts/cdr-current-tail-graph-inputs.json": {
+      "bytes": 61595,
+      "sha256": "06c329cc7f379e1ff6dafaf92348c8c3a898ff28bd96faa223d6ed71d5ad2b37"
+    },
+    "tested-source/scripts/cdr-current-tail-graph-pins.json": {
+      "bytes": 204617,
+      "sha256": "98e308f243652ec34285ee86a5429b8a8a004b3a5bba7aa92b4c2ecba63ac7df"
+    },
+    "tested-source/scripts/cdr-current-tail-straps-inputs.json": {
+      "bytes": 15323,
+      "sha256": "8ed14beada46c4975266041f4eaa8fecfe3627ce4682dd2a969e4d734650f41b"
+    },
+    "tested-source/scripts/cdr-current-tail-straps-pins.json": {
+      "bytes": 178627,
+      "sha256": "c898d3f61c64f9dc621f0ee576c3987ee1f5a189f609b8ba7a7119b910111b43"
+    },
+    "tested-source/scripts/cdr_current_tail_graph.py": {
+      "bytes": 6925,
+      "sha256": "cc8086961ce0a31e8c4157098f009c5ea5e1b497e0fc4988b6208aab8af19026"
+    },
+    "tested-source/scripts/cdr_current_tail_graph_native.py": {
+      "bytes": 19010,
+      "sha256": "556609cc737b0b7b02bdec79be7df1866edf9f36cd0587b11af6256694c2f6fa"
+    },
+    "tested-source/scripts/cdr_current_tail_straps.py": {
+      "bytes": 4992,
+      "sha256": "bd864fb310f430f356d830e9bb96f72b24c0ab35eb3b84f62e632c6bb1f78b61"
+    },
+    "tested-source/scripts/cdr_current_tail_straps_native.py": {
+      "bytes": 17485,
+      "sha256": "5b9b1596daa597c6d073a683f27c6a584797d85183bb8e3bade32fef7a35a248"
+    },
+    "tested-source/scripts/check_cdr_current_tail_graph.py": {
+      "bytes": 7884,
+      "sha256": "ebb7e2828ee44ead038a6aa6faa274fa39138bf025284778d9fc4b134247df3d"
+    },
+    "tested-source/scripts/check_cdr_current_tail_straps.py": {
+      "bytes": 7251,
+      "sha256": "8edc9112b7edc1cef29f824d6b6cef69a74255de153d38c5836afc66482d6875"
+    },
+    "tested-source/scripts/cloud_cdr_current_tail_graph.py": {
+      "bytes": 24294,
+      "sha256": "9b570f9e55237f1991e6724e8e9e1a4a9d08c47187c5a1f1cfd31806941a5185"
+    },
+    "tested-source/scripts/cloud_cdr_current_tail_straps.py": {
+      "bytes": 20099,
+      "sha256": "cf18be51f8650aeeb8e0a5cbda5fe773501dd131b33555537709f299e8f960ca"
+    }
+  },
+  "full_phy_accepted": false,
+  "graph": null,
+  "graph_trial_completed": false,
+  "independent_archive_reextraction": false,
+  "material": null,
+  "native_payload_downloaded_locally": false,
+  "native_records": 99,
+  "native_transport_errors": [],
+  "physical_acceptance": false,
+  "raw_job_logs": 4,
+  "run": 41206019222,
+  "schema": "current-eight-drain-graph-terminal-v1",
+  "source": "501943b31856d1fa08fc8e710cf27186fd071adc",
+  "source_controls": 227,
+  "source_controls_passed": true,
+  "source_records": 23,
+  "timing_accepted": false,
+  "workflow_conclusion": "failure"
+}
