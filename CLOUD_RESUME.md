@@ -1,6 +1,6 @@
-# Cloud continuation — checkpoint v197
+# Cloud continuation — checkpoint v198
 
-Updated: 2026-10-31T22:14:29.842401+00:00
+Updated: 2026-10-31T22:24:57.441523+00:00
 
 The latest user instruction is cloud-only. Every test, simulation, CAD tool and native numerical analysis runs on GitHub. Local source authoring, static review and derived API text coordination use RAM only. Never acquire native project archives, models/SPICE, ODB/GDS, raw waves or native-frame gzip locally, even in RAM. The workspace and project temporary prefixes are empty; no local CAD processes. Preserve unrelated user files and original attachments.
 
@@ -62,7 +62,7 @@ Successor run41246378690 succeeded on Python3.12.3:15 top-level control groups, 
 
 The final numerical core2c23d93eb14cca59d7d06110a4ee757f39c77c5f passed its own41246819821 source run:28 top-level controls, zero failures. Root independently authenticated the2,008,643-byte resultSHA3f288efb559feefb6b131a1f344d5be9fa06ff1ab3245896ef81bfa25d11e33f. Complete38-file proof12db9e3e5eefdee3b2e3de32116e636d62f7f823 preserves all source, output and logs. New controls cover disjoint exact-copy ownership, refusal of changed/missing/link inputs, explicit13-command ordering and persistence of early audit failures; all15 original full numerical groups still pass. No actual native data or CAD ran.
 
-The separately owned host reached df5087e0696b19bbb962db1e67c7df4c68e4eee3 on codex/cdr-via2-m3-fresh-rc-adapter: current producer validation, exact-source admission, original665-member absolute restoration, truthful fresh-RC publication and source-bound runtime acquisition libraries. Root reviewed those boundaries and the synthetic transport handoff was independently peer-reviewed. The actual historical precise-Magic producer's source/tag mismatch is preserved honestly: only exact pinned runtime bytes and original qualification are reused, never historical execution authority. The final native pipeline/config/workflow and its own hosted controls are still being integrated. Standalone native entry remains disabled; actual RC dispatch is not authorized by this checkpoint.
+The separately owned host reached e806066572a66ea1cd120a0f1d8f672be3716767 on codex/cdr-via2-m3-fresh-rc-adapter: current producer validation, exact-source admission, original665-member absolute restoration, truthful fresh-RC publication and source-bound runtime acquisition libraries. Root reviewed those boundaries and the synthetic transport handoff was independently peer-reviewed. The actual historical precise-Magic producer's source/tag mismatch is preserved honestly: only exact pinned runtime bytes and original qualification are reused, never historical execution authority. The supervised native pipeline, disabled configuration/admission and integrated checker are now source drafts. The phase wrapper, final workflow/source manifest and hosted own-source controls are still being integrated. Host enforces exact command/stream/exit/resource checks; runtime acquisition has its own failure receipt and outer publication preserves failures. Standalone native entry remains disabled; actual RC dispatch is not authorized by this checkpoint.
 
 After fresh RC is qualified, compare one matching nominal_late case first against actual baseline41218657461/source84b8b591e10be32716947c8d6b079fd7a21ce18d/release430041784. Root verified baseline derived-result metadata:asset695889571,1571404bytes,SHA721e87699fb8359494e5b20b9f48dd5ad94e6c443f9ea60ecf44346b78353519. Frozen loaded worker29944bytes/SHAadd45d0ef874ec93fc9078d99bbb5cb0e684b667ec2f5699121eadb821ec5392 retains the original PRBS, model/runtime, phase, load, step and actual Ic gates. New voltage vectors must be derived from the actual fresh composition and current semantic port order, not forced to historical1151. No new RC producer has yet been bound, and no waveform authority is granted here.
 
@@ -96,11 +96,21 @@ Exactly one actual read-only crash-isolation observation41245373612 was then aut
 
 The saved stale-wire-cleared.odb is preroute input and lacks iteration 10 mutable routes. Original route 41211382427 hit the 10 GiB RSS guard and produced no routed checkpoint. Preserve all 1,691 clock/fixed nets and use actual evidence to select the next bounded change. Final routing/setup/hold remain open.
 
+## Eight-hour cloud monitor repaired on the default branch
+
+The schedule is installed on main at .github/workflows/cloud-progress-monitor.yml, cron17 */8 * * *. It reads the working-branch inventory at one captured immutable commit and has read-only permissions; no native dispatch or cancellation is authorized.
+
+Latest scheduled run41236976656/source2b79be1ad7e6279a82b9b18bd7cb19482f1a673a failed immediately with Inventory shard count, because its reader required exactly two files while the live inventory now has three. The original complete16,259-byte job logSHA330a7c94b5ae768f4e3fc3cc059fccc9ce634158c7afe9044327542a68b2bbdf is preserved. This is a distinct proven cause from the older HTTP502 observation.
+
+Repair source6df3f373c4fc8052d69fc946b18ad35be640ed58 accepts1 through16 canonical contiguous shard files; every file retains the65,536-byte limit and original Git/SHA/size, ordered rows, combined digest and global uniqueness checks. Every descriptor is validated before child requests. The complete532-handle/v197 fixture reproduces the exact old reader's failure and proves preservation of all three real input files and all rows. Independent peer source review passed.
+
+Own source run41247738623 controls passed77 tests, including all16 permitted counts, seventeenth-shard refusal and missing/changed/reordered/external/oversized third-shard controls. Root authenticated its complete23,387-byte logSHA7189e942ca705b5702935506f886854ba819c3c6084311e88b125291e171aef3. The exact validated source/fixture and complete five-file proof were published to main58af12e1677efb92be00f971518bf2bbe9bba688. The original eight-hour schedule is unchanged. Full read-only observation41247738623 is still in progress at22:23:47UTC; no full live snapshot success or HTTP502 fix is claimed. Its source, schema1 bootstrap and workflow belong on main; the working branch retains the authenticated schema2 inventory and complete proof/reference, not an incompatible duplicate bootstrap entry.
+
 ## Acceptance and continuation
 
 Full serial Gen3 x4 PHY, PLL/SERDES/TS/EQ/LTSSM, physical CDC and soc_top serial integration, final routing/setup/hold, RC min/max and production approval remain open. Keep UI 125 ps, sampler 100 mV/37.5 ps, XOR 100 mV/75 ps, HBT minimum VCE 0.4 V, maximum absolute VCE 1.6 V and VBE 1 V, actual Ic/emitter limit 3 mA, and PLL 62.5 ps. STA clocks remain 20/4/8/8 ns plus five percent, three PVT corners and zero setup/hold/slew/capacitance/fanout violations.
 
-Monitor v197 tracks 532 handles every eight hours, read-only with automatic_native_dispatch=false. Earlier HTTP 502 is not claimed fixed. Use [skip ci], nonforce compare-and-swap updates and scoped Git trees.
+Monitor v198 tracks 533 handles every eight hours, read-only with automatic_native_dispatch=false. Earlier HTTP 502 is not claimed fixed. Use [skip ci], nonforce compare-and-swap updates and scoped Git trees.
 
 Detailed state: docs/evidence/cloud-active-checkpoint-20261024.json
-Immutable receipt: docs/evidence/cloud-collector-recipes-20261029/cloud-current-rc-core-and-mainchip-progress-v197.json
+Immutable receipt: docs/evidence/cloud-collector-recipes-20261029/cloud-runtime-monitor-and-mainchip-progress-v198.json
