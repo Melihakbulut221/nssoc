@@ -1,4 +1,4 @@
-name: Candidate canonical core source and synthetic controls
+name: Current binding namespace source controls
 on:
   workflow_dispatch:
     inputs:
@@ -9,7 +9,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: canonical-core-${{ github.ref }}
+  group: cdr-via2-m3-rc-namespace-source-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -17,7 +17,7 @@ env:
 jobs:
   source-controls:
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -25,103 +25,42 @@ jobs:
           persist-credentials: false
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/cdr-via2-m3-canonical-core-pins.json
-      - name: Materialize exact source and derived JSON closure
+            /scripts/cdr-via2-m3-fresh-rc-namespace-pins.json
+      - name: Materialize exact source-only closure
         run: |
           python3 -B - <<'PY'
-          import json,os,subprocess
+          import json,subprocess
           from pathlib import Path
-          name='scripts/cdr-via2-m3-canonical-core-pins.json'
-          manifest=json.loads(Path(name).read_bytes())
-          assert manifest['native_execution_authorized'] is False
-          assert os.environ['APPROVED_SOURCE']==os.environ['GITHUB_SHA']
-          names=sorted(set(manifest['files'])|{name})
-          assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
-          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
+          manifest='scripts/cdr-via2-m3-fresh-rc-namespace-pins.json'
+          m=json.loads(Path(manifest).read_bytes())
+          paths=sorted(set(m['files'])|{manifest})
+          assert all(not p.startswith('/')and '..'not in Path(p).parts and not any(c in p for c in '*?[!\\\n\r')for p in paths)
+          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+p+'\n'for p in paths),text=True,check=True)
           PY
-      - name: Acquire and verify unchanged native tool for source-only synthetic region controls
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y libfuse2 tcl8.6 uidmap
-          curl --fail --location --retry 2 --output "$RUNNER_TEMP/current-tail-physical.AppImage" https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
-          python3 -B - <<'PY'
-          import hashlib,os
-          from pathlib import Path
-          path=Path(os.environ['RUNNER_TEMP'])/'current-tail-physical.AppImage'
-          with path.open('rb')as f:assert hashlib.file_digest(f,'sha256').hexdigest()=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
-          path.chmod(0o755)
-          PY
-      - name: Admit only the pinned runtime to hosted AppArmor user namespaces
-        run: |
-          python3 -B - <<'PY'
-          import hashlib,json,os,re,subprocess
-          from pathlib import Path
-          e=os.environ
-          assert e['GITHUB_ACTIONS']=='true' and e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
-          assert e['GITHUB_REF']=='refs/heads/codex/cdr-via2-m3-canonical-view-core' and e['GITHUB_RUN_ATTEMPT']=='1'
-          assert re.fullmatch('[1-9][0-9]*',e['GITHUB_RUN_ID']) and re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA'])
-          app=Path(e['RUNNER_TEMP'])/'current-tail-physical.AppImage'
-          assert app==Path('/home/runner/work/_temp/current-tail-physical.AppImage') and app.is_file() and not app.is_symlink()
-          with app.open('rb')as f:digest=hashlib.file_digest(f,'sha256').hexdigest()
-          assert digest=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
-          key=Path('/proc/sys/kernel/apparmor_restrict_unprivileged_userns')
-          before=key.read_text().strip()
-          name='nssoc-cdr-runtime-'+e['GITHUB_RUN_ID']+'-1'
-          target=Path('/etc/apparmor.d')/name
-          assert not target.exists() and not target.is_symlink()
-          policy='abi <abi/4.0>,\ninclude <tunables/global>\nprofile '+name+' "'+str(app)+'" flags=(unconfined) {\n  userns,\n}\n'
-          installed=subprocess.run(['sudo','tee',str(target)],input=policy.encode(),capture_output=True,check=True)
-          assert installed.stdout==policy.encode() and target.read_text()==policy
-          loaded=subprocess.run(['sudo','apparmor_parser','-a',str(target)],capture_output=True,check=True)
-          profiles=subprocess.check_output(['sudo','cat','/sys/kernel/security/apparmor/profiles'],text=True).splitlines()
-          active=[line for line in profiles if line.startswith(name+' (')]
-          assert len(active)==1 and key.read_text().strip()==before
-          proof=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
-            appimage=str(app),appimage_sha256=digest,profile=str(target),profile_text=policy,
-            profile_sha256=hashlib.sha256(policy.encode()).hexdigest(),loaded=True,active=active,
-            restriction_before=before,restriction_after=key.read_text().strip(),global_policy_changed=False,
-            parser_stdout=loaded.stdout.decode(),parser_stderr=loaded.stderr.decode(),
-            native_geometry_executed=False,scope='Exact pinned executable on this ephemeral GitHub runner only')
-          Path('current-cdr-runtime-policy.json').write_text(json.dumps(proof,sort_keys=True,indent=2)+'\n')
-          print(json.dumps(proof,sort_keys=True))
-          PY
-      - name: Run exact source and synthetic native-region controls only
-        run: |
-          "$RUNNER_TEMP/current-tail-physical.AppImage" python3 -B scripts/check_cdr_via2_m3_canonical_core.py > canonical-core.stdout 2> canonical-core.stderr
-      - name: Always emit complete derived control records
+      - name: Run current binding and exact-definition source controls
+        run: python3 -B scripts/check_cdr_via2_m3_fresh_rc_namespaces.py > namespace-source.stdout 2> namespace-source.stderr
+      - name: Always emit complete derived test evidence
         if: always()
         run: |
           python3 -B - <<'PY'
           import base64,hashlib,json
           from pathlib import Path
-          names=['canonical-core.stdout','canonical-core.stderr','current-cdr-runtime-policy.json',
-            'hw/soc/out/cdr-via2-m3-canonical-core-source/source-context.json',
-            'hw/soc/out/cdr-via2-m3-canonical-core-source/source-controls.json',
-            'hw/soc/out/cdr-via2-m3-canonical-core-source/source-failure.json']
-          fixtures=Path('hw/soc/out/cdr-via2-m3-canonical-core-source/lifecycle-fixtures')
-          if fixtures.exists():
-              for p in sorted(fixtures.rglob('*')):
-                  assert not p.is_symlink()and(p.is_dir()or p.is_file())
-                  if p.is_file():
-                      assert p.suffix=='.json'
-                      names.append(p.as_posix())
-          for name in names:
+          for name in ('namespace-source.stdout','namespace-source.stderr','namespace-source-controls/result.json'):
               p=Path(name)
-              if not p.is_file():continue
-              assert not p.is_symlink()
-              b=p.read_bytes();b.decode('utf-8','strict');chunks=[b[i:i+24000]for i in range(0,len(b),24000)]or[b'']
-              print('CANONICAL_CORE_INDEX '+json.dumps(dict(path=name,bytes=len(b),sha256=hashlib.sha256(b).hexdigest(),chunks=len(chunks)),sort_keys=True))
-              for i,part in enumerate(chunks):print('CANONICAL_CORE_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(part).decode()),sort_keys=True))
+              if not p.exists():continue
+              assert p.is_file()and not p.is_symlink()
+              raw=p.read_bytes();chunks=[raw[i:i+24000]for i in range(0,len(raw),24000)]or[b'']
+              print('RC_NAMESPACE_INDEX '+json.dumps(dict(path=name,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,chunk in enumerate(chunks):print('RC_NAMESPACE_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(chunk).decode()),sort_keys=True))
           PY
-      - name: Preserve complete cloud fixture outputs and failures
+      - name: Preserve complete success or failure output
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: canonical-core-source-${{ github.run_id }}-${{ github.run_attempt }}
+          name: cdr-via2-m3-rc-namespace-source-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
-            canonical-core.stdout
-            canonical-core.stderr
-            current-cdr-runtime-policy.json
-            hw/soc/out/cdr-via2-m3-canonical-core-source
-          if-no-files-found: error
+            namespace-source-controls
+            namespace-source.stdout
+            namespace-source.stderr
           retention-days: 90
+          if-no-files-found: error
