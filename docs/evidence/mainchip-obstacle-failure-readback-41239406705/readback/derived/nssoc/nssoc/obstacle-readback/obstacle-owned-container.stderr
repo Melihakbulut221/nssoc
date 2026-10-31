@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/work/inner.py", line 83, in <module>
+    if __name__=="__main__":sys.exit(main())
+                                     ^^^^^^
+  File "/work/inner.py", line 81, in main
+    c.finish_record(OUT/"obstacle-inner-result.json",report,"FAIL_READONLY_OBSTACLE_ENGINE",primary)
+  File "/work/tail-source/scripts/mainchip_witness_engine_build_contract.py", line 205, in finish_record
+    raise primary
+  File "/work/inner.py", line 53, in main
+    original.supervised_run(report,"obstacle-endpoint-observation",argv,1200,sup,cwd=INPUTS)
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_inner.py", line 105, in supervised_run
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_inner.py", line 90, in supervised_run
+    sup.supervised(argv,label,seconds=seconds,cwd=cwd)
+  File "/work/tail-source/hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/cloud_pcie_gen12_training_records_telemetry.py", line 264, in supervised
+    assert previous_timer==(0.0,0.0),'Unexpected nested phase watchdog'
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_mainchip_exit_checked_telemetry.SupervisionFailure: {"argv": ["/work/engine/openroad", "-no_init", "-exit", "-python", "/work/tail-source/scripts/mainchip_drt_obstacle_native.py"], "elapsed_seconds": 1200.192017743, "label": "obstacle-endpoint-observation", "last_memory_sentinel_sample": {"available_kib": 14116180, "enumeration_disappearances": [], "excluded_nonrunning": [], "group_rss_kib": 1135636, "group_rss_may_double_count_shared_pages": true, "members": [{"pgrp": 16, "pid": 16, "rss_kib": 1135636, "starttime": 16763}], "resampling_evidence": [], "sampling_attempts": 1, "sampling_elapsed_seconds": 0.001009989000067435, "total_snapshot_budget_seconds": 0.1}, "maximum_group_rss_kib": 10485760, "memory_read_error": null, "memory_terminal_resolution": null, "minimum_available_kib": 2097152, "pid": 16, "process_group_cleanup": {"remaining_live": [], "remaining_nonrunning": [], "signals": ["SIGTERM"]}, "returncode": -15, "stderr_bytes": 0, "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "stdout_bytes": 285, "stdout_sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1", "supervision_failure": "elapsed_limit"}
