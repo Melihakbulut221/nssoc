@@ -1,0 +1,58 @@
+{
+  "status": "PASS_PINNED_APPIMAGE_INTERPRETER_AND_PYA_IMPORT",
+  "accepted": true,
+  "launcher_started": true,
+  "timed_out": false,
+  "command": [
+    "/home/runner/work/_temp/current-tail-physical.AppImage",
+    "python",
+    "-c",
+    "import hashlib,json,platform,sys\nfrom pathlib import Path\nimport pya\nassert hasattr(pya,'Layout')\ndef digest(path):\n    h=hashlib.sha256()\n    with open(path,'rb')as stream:\n        for b in iter(lambda:stream.read(1024*1024),b''):h.update(b)\n    return h.hexdigest()\nr=dict(schema='cdr-v59-mim-interpreter-v1',executable=sys.executable,\n    executable_sha256=digest(sys.executable),version=sys.version,\n    version_info=list(sys.version_info[:3]),implementation=sys.implementation.name,\n    platform=sys.platform,pya_imported=True,pya_file=pya.__file__,\n    pya_file_sha256=digest(pya.__file__),pya_version=getattr(pya,'__version__',None))\nprint('CDR_V59_MIM_INTERPRETER '+json.dumps(r,sort_keys=True),flush=True)\n"
+  ],
+  "expected_appimage_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "simulation_executed": false,
+  "geometry_executed": false,
+  "cleanup_helper_sha256": "e326e548ebe11550d18a049d639bdf063f03602d4ba08299b00a5747d3281c0b",
+  "appimage_before_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "pid": 2853,
+  "live_after_leader_exit": [],
+  "cleanup": {
+    "signals": [],
+    "remaining_live": [],
+    "remaining_nonrunning": []
+  },
+  "returncode": 0,
+  "appimage_after_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "interpreter": {
+    "executable": "/nix/store/jgrv88sgsa97cvxdk0jz9rnxss19vw1p-devshell-dir/bin/python",
+    "executable_sha256": "6089315ff298ff5ef084e0ef5bf693cf3e60bc5782c4a0294612fe51b44f278a",
+    "implementation": "cpython",
+    "platform": "linux",
+    "pya_file": "/nix/store/ffl2vg3m80k0p74pyffnmai83fnv38mf-python3-3.13.9-env/lib/python3.13/site-packages/pya/__init__.py",
+    "pya_file_sha256": "d421fdce8ce77dd5d097215bad2367a02b7bf75664caab1cd3468525b6df9380",
+    "pya_imported": true,
+    "pya_version": "0.30.7",
+    "schema": "cdr-v59-mim-interpreter-v1",
+    "version": "3.13.9 (main, Oct 14 2025, 13:52:31) [GCC 14.3.0]",
+    "version_info": [
+      3,
+      13,
+      9
+    ]
+  },
+  "terminal_group_verified_before_stream_collection": true,
+  "stdout": {
+    "bytes": 638,
+    "path": "stdout.bin",
+    "complete": true,
+    "sha256": "f113961f733dab26492afda3ea31ded55a95b64a237a0a7d190bdc39beb35577",
+    "base64": "Q0RSX1Y1OV9NSU1fSU5URVJQUkVURVIgeyJleGVjdXRhYmxlIjogIi9uaXgvc3RvcmUvamdydjg4c2dzYTk3Y3Z4ZGswano5cm54c3MxOXZ3MXAtZGV2c2hlbGwtZGlyL2Jpbi9weXRob24iLCAiZXhlY3V0YWJsZV9zaGEyNTYiOiAiNjA4OTMxNWZmMjk4ZmY1ZWYwODRlMGVmNWJmNjkzY2YzZTYwYmM1NzgyYzRhMDI5NDYxMmZlNTFiNDRmMjc4YSIsICJpbXBsZW1lbnRhdGlvbiI6ICJjcHl0aG9uIiwgInBsYXRmb3JtIjogImxpbnV4IiwgInB5YV9maWxlIjogIi9uaXgvc3RvcmUvZmZsMnZnM204MGswcDc0cHlmZm5tYWk4M2ZudjM4bWYtcHl0aG9uMy0zLjEzLjktZW52L2xpYi9weXRob24zLjEzL3NpdGUtcGFja2FnZXMvcHlhL19faW5pdF9fLnB5IiwgInB5YV9maWxlX3NoYTI1NiI6ICJkNDIxZmRjZThjZTc3ZGQ1ZDA5NzIxNWJhZDIzNjdhMDJiN2JmNzU2NjRjYWFiMWNkMzQ2ODUyNWI2ZGY5MzgwIiwgInB5YV9pbXBvcnRlZCI6IHRydWUsICJweWFfdmVyc2lvbiI6ICIwLjMwLjciLCAic2NoZW1hIjogImNkci12NTktbWltLWludGVycHJldGVyLXYxIiwgInZlcnNpb24iOiAiMy4xMy45IChtYWluLCBPY3QgMTQgMjAyNSwgMTM6NTI6MzEpIFtHQ0MgMTQuMy4wXSIsICJ2ZXJzaW9uX2luZm8iOiBbMywgMTMsIDldfQo="
+  },
+  "stderr": {
+    "bytes": 0,
+    "path": "stderr.bin",
+    "complete": true,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "base64": ""
+  }
+}
