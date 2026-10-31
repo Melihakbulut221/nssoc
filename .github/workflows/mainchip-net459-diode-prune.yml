@@ -92,7 +92,7 @@ jobs:
           sys.path.insert(0,'scripts')
           import mainchip_stale_wire_admission as a
           raw=Path(a.MANIFEST).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='48b5117965cfe1710e2ef1cf6f9929625b267119db3c5f7a98ab3969d5e70621'
+          assert hashlib.sha256(raw).hexdigest()=='f3f637faca563aea8e9125276d0823495fb64fa71a7eb2905770c0caed2d06a9'
           assert a.source_gate()==json.loads(raw)
           Path('bulk-postdrt-integration-controls/stale-wire-admission-manifest.json').write_bytes(raw)
           for path in a.NEW:ast.parse(Path(path).read_bytes(),filename=path)

@@ -22,6 +22,11 @@ def fixture():
       stale_wire_clear=dict(phase="stale-wire-clear",complete=True,error=None,terminal_errors=[],**p.FLAGS),**p.FLAGS)
 
 class Controls(unittest.TestCase):
+    def test_exact_bytes_are_typed_and_nonpermissive(self):
+        a.exact_bytes(b"preserved",b"preserved","same exact bytes")
+        for first,second in ((b"preserved",b"changed"),("preserved",b"preserved"),(b"preserved","preserved"),(bytearray(b"same"),b"same")):
+            with self.subTest(first=type(first),second=type(second)),self.assertRaises(AssertionError):
+                a.exact_bytes(first,second,"not exact bytes")
     def test_source_gate(self):
         self.assertFalse(a.source_gate()["current_native_result_accepted"])
     def test_complete_real_environment_unchanged(self):
@@ -121,4 +126,4 @@ if __name__=="__main__":
       native_acquisition=False,native_executed=False,physical_acceptance=False,
       timing_accepted=False,full_phy_accepted=False)
     Path("bulk-postdrt-integration-controls/stale-wire-admission-controls.json").write_text(json.dumps(report,sort_keys=True,indent=2)+"\n")
-    sys.exit(0 if result.wasSuccessful()and result.testsRun==15 and not result.skipped else 1)
+    sys.exit(0 if result.wasSuccessful()and result.testsRun==16 and not result.skipped else 1)

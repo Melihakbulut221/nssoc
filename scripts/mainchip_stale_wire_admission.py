@@ -56,6 +56,9 @@ def pin(path):
         for data in iter(lambda:stream.read(1024*1024),b""):h.update(data);size+=len(data)
     return dict(bytes=size,sha256=h.hexdigest())
 
+def exact_bytes(first,second,reason):
+    p.require(type(first)is bytes and type(second)is bytes and first==second,reason)
+
 def decode(root,name):
     return json.loads(regular(root,name).read_bytes())
 
@@ -96,7 +99,7 @@ def validate_native_result(inner):
       and terminal["error"]is None and terminal["terminal_errors"]==[],"actual complete clear terminal")
     p.require(all(terminal[k]is False for k in p.FLAGS),"no premature clear acceptance")
     result=derived_validator()(inner)
-    p.exact(p.encode(inner),original_bytes,"preserve full historical record")
+    exact_bytes(p.encode(inner),original_bytes,"preserve full historical record")
     return result
 
 def audit(root):
@@ -142,7 +145,7 @@ def audit(root):
     after=regular(root,data+"route-after-stale-wire-clear.tcl").read_bytes()
     p.exact(mutation["route_before"],p.pin(before),"original route text pin")
     p.exact(mutation["route_after"],p.pin(after),"changed route text pin")
-    p.exact(stale.route_text(before.decode(),WORK).encode(),after,"only approved route input substitution")
+    exact_bytes(stale.route_text(before.decode(),WORK).encode(),after,"only approved route input substitution")
     p.exact(decode(root,data+"saved-diode-routing-result.json"),inner["saved_diode_routing_result"],"actual native physical verdict")
     p.exact(pin(regular(root,"work/bulk-postdrt-antenna/final-measured.odb")),
       inner["saved_diode_routing_result"]["candidate"],"actual final candidate")
