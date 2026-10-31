@@ -1,40 +1,44 @@
-# Cloud continuation — checkpoint v181
+# Cloud continuation — checkpoint v182
 
-Updated: 2026-10-31T16:34:13.624020+00:00
+Updated: 2026-10-31T17:09:01.877873+00:00
 
-All engineering, RTL tests, simulation and CAD run on GitHub. Do not download native archives, models, ODB/GDS or waveforms locally, including RAM. Local source authoring and API coordination use memory only. The workspace and project temporary paths are empty; no local CAD process is running.
+The user's latest instruction is cloud-only execution. All RTL tests, simulation, CAD and numeric/native processing run on GitHub. Never download native archives, models, ODB/GDS or waveforms locally, including RAM. Source authoring and API coordination use memory only. The local workspace and project temporary paths are empty; no local CAD process is running.
 
-## Active cloud jobs
+## Preserve existing running work
 
-- Mainchip routing: [41211382427](https://github.com/Melihakbulut221/nssoc/actions/runs/41211382427), source ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9, branch codex/mainchip-net459-diode-prune, release 429993235. Keep this run. It clears 608 owned stale wires and routes under the original physical gates. Do not restart merely because its redirected log is quiet.
-- Loaded CDR matrix: [41218657461](https://github.com/Melihakbulut221/nssoc/actions/runs/41218657461), source 84b8b591e10be32716947c8d6b079fd7a21ce18d, branch codex/cdr-drain-m1-loaded-electrical. Same-run source controls and preparation passed. Two nominal cases are running; eight wait under the original two-job concurrency limit. All eleven releases are already reserved against this exact source; do not create them again.
+- Mainchip routing: [41211382427](https://github.com/Melihakbulut221/nssoc/actions/runs/41211382427), source ddc1cbddf68096c5e976bf9acda5c5fb0168c5b9; branch codex/mainchip-net459-diode-prune, release 429993235. Do not restart because redirected logs are quiet. This is the packet-interface SoC, not full serial PHY integration.
+- Loaded CDR matrix: [41218657461](https://github.com/Melihakbulut221/nssoc/actions/runs/41218657461), source 84b8b591e10be32716947c8d6b079fd7a21ce18d. All eleven case/preparation releases are already reserved; do not recreate them. Ten original cases, two-job concurrency and original electrical limits remain unchanged.
+- Shared serial receiver RTL: [41222222369](https://github.com/Melihakbulut221/nssoc/actions/runs/41222222369), exact source 64d31863ad2f5cd59483251dbe1dad8e7069c44e; reserved release 430065437. Read the actual terminal result before claiming any RTL test total.
 
-The matrix preserves the original ten cases and analog limits. Preparation passed input binding and vector checks but did not execute OFF operating point or transient simulation. It is not electrical or PHY acceptance.
+See the immutable snapshot for exact live job status at this checkpoint; it is not a completion claim.
 
-## Durable preparation evidence
+## Genuine CDR electrical failures
 
-Imported proof 41a8c4d6ca9ed4a1d97f80a8066200f3eea53fd5: 51 files, 9,706,031 bytes, receipt SHA256 84760ccb2e176b133f6e046895706ee70cb19a1696743d12cbedcf533bbdbb81. Path: docs/evidence/cdr-current-eight-drain-loaded-preparation-41218657461/
+Nominal early and late completed with ngspice exit 0, no numerical diagnostics, and complete 113475-row / 1152-column captures. Both failed original electrical acceptance. HBT selectors 61/62/115/116 have minimum active VCE below 0.4 V; sampler/XOR margins and delays, phase output and VI current also fail. Native waveforms stay in cloud releases. Both complete JSON/log proof subtrees are imported with exact receipts; original rejection is preserved.
 
-It preserves three prerequisite/preparation logs, emitted JSON and the actual publication receipt. Native archives remain in GitHub releases. This readback authenticates derived JSON/logs; it does not independently stream-verify the native archive.
+Fresh RC remains the verified 500-device / R24356 / C15566 composition from run 41213815773. Do not substitute older reduced node IDs or captures.
 
-Fresh RC run 41213815773 and collector 41217092264 passed. Loaded input has 2,874 native files and a fresh 500-device composition. Current drains map to component 17/cluster 28/$131 or component 61/cluster 135/$699. Do not substitute old reduced node IDs or old captures.
+The readback adapter branch is codex/cdr-current-eight-drain-wave-readback. Initial source run 41222200293 passed its numerical/provenance controls, including six native-row witness test methods, but failed the log-preservation job; readback was skipped. The workflow repair and its new source run are recorded in docs/evidence/cloud-collector-recipes-20261029/nominal-rejections-and-cloud-only-v182.json. Actual native capture replay has not been accepted. Readback authority remains disabled until independent review, complete hosted source controls and empty exact-source destination releases.
 
-## Mainchip admission and timing
+## Mainchip connectivity and timing
 
-The running router is the packet-interface SoC; it does not yet integrate the full serial PHY. Externally supplied link/training status is not a completed serial link.
+Routed-view source 56df4c3ba965c949f5b47d3503fd64dd0dcf8a43 passed all 26 synthetic controls in run 41221893021. Full proof is 7ea43fda5824e2460d4cec2e4db3f5f106027f62; the earlier fixture failure is also retained. This verifies source functions, not actual routed-chip export or timing.
 
-The new native sequence has 17 commands while the original host expects 16. If all native physical gates pass, authenticate the full original capsule and apply separately qualified read-only admission c6132e91884c796bfdb5c38f9b4c1bb015ccc74d. Run 41217482957 passed 373 controls; complete proof ae4e05018e4f88943b45e56b76daf620ca1b9497 is already imported. A host expectation mismatch alone is not grounds to reroute; a physical failure cannot be relabeled.
+Native export is unconditionally disabled until an independently authenticated terminal candidate is bound. Keep the original 153129 instances plus 1351 diodes, totaling 154480, and 143820 nets. Old candidate Verilog lacks inserted diodes. Only admitted work/bulk-postdrt-antenna/final-measured.odb may feed fresh connectivity export and RC/STA.
 
-Only an admitted work/bulk-postdrt-antenna/final-measured.odb can feed the next stage. Actual starting design has 153,129 instances plus 1,351 inserted diodes, totaling 154,480. Old candidate Verilog lacks those diodes. Export and verify current connectivity, DEF and Verilog before fresh RC/STA. Keep 20/4/8/8 ns clocks, 5% uncertainty, three PVT corners and original violation gates.
+The current native route sequence has 17 commands while the old host expects 16. If actual physical gates pass and only this host expectation fails, apply the separately qualified read-only admission c6132e91884c796bfdb5c38f9b4c1bb015ccc74d after full capsule authentication. Do not reroute just for this bookkeeping mismatch; do not reinterpret a physical failure.
 
-## Source work
+Keep 20/4/8/8 ns clocks, 5% uncertainty, three PVT corners and original zero-violation setup/hold/slew/cap/fanout gates. Nominal RC is not RC-min/max qualification.
 
-- codex/pcie-shared-serial-front-v1: shared recovered-record front with actual v5/owned/events consumers and independent hosted RTL tests; not yet qualified.
-- codex/mainchip-routed-view-admission: routed view export, diode load and parasitic annotation checks. Source controls only until the original router finishes and its candidate is authenticated.
+## Digital integration scope
 
-Full serial PHY, closed-loop analog operation, mainchip serial integration, final setup/hold, RC-min/max qualification and production approval remain open.
+The new actual consumer chain is events_v3 -> owned_rx_v2 -> x4_v5 -> front_x4_v1, sharing four complete recovered-record CDC paths. First RTL run 41221205033 stopped on a Yosys escaped-name checker defect after elaboration, before cocotb. Its full failure proof is retained. The corrected source and current run are above. Planned test counts are not passing results. Training ownership, closed-loop analog operation, full serial PHY and mainchip serial integration remain open.
 
-Eight-hour monitor: 446 handles, inventory v181, automatic_native_dispatch=false. Earlier HTTP 502 issue is not claimed fixed.
+Five accidental generic push runs were canceled and retained in the monitor inventory; all future source commits must include [skip ci]. The original router and CDR matrix were not canceled.
+
+Eight-hour monitor: 461 handles, inventory v182, automatic_native_dispatch=false. The earlier HTTP 502 monitor issue is not claimed fixed.
 
 Detailed state: docs/evidence/cloud-active-checkpoint-20261024.json
-Immutable snapshot: docs/evidence/cloud-collector-recipes-20261029/preparation-and-cloud-only-v181.json
+Immutable snapshot: docs/evidence/cloud-collector-recipes-20261029/nominal-rejections-and-cloud-only-v182.json
+
+Full serial PHY, final routed-chip setup/hold, RC-min/max qualification and production approval are not complete.

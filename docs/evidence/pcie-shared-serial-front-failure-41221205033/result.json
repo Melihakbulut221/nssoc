@@ -1,0 +1,205 @@
+{
+  "status": "FAIL_SHARED_FRONT_RTL",
+  "run": "41221205033",
+  "attempt": "1",
+  "source": "a54cb23d92476889bf0e56c1e1742d09792b8985",
+  "method_sha256": "7bb03f2a6a49724dace927c704836b632f815d3868c888f482316f5f91eeada8",
+  "simulations": [],
+  "hierarchy": [],
+  "physical_and_protocol_acceptance": {
+    "analog_cdr_pll_accepted": false,
+    "serializer_pma_accepted": false,
+    "complete_ltssm_equalization_accepted": false,
+    "mainchip_serial_integration_accepted": false,
+    "layout_drc_lvs_accepted": false,
+    "final_setup_hold_accepted": false,
+    "full_gen3_x4_phy_accepted": false,
+    "production_signoff_accepted": false
+  },
+  "errors": [],
+  "toolchain": {
+    "python": "3.12.15 (main, Oct  1 2026, 02:35:59) [GCC 13.3.0]",
+    "cocotb": "2.0.1",
+    "find_libpython": "0.4.0",
+    "versions": {
+      "icarus": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "60s",
+          "iverilog",
+          "-V"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-shared-serial-front-v1/toolchain/version-icarus.stdout",
+          "bytes": 3294,
+          "sha256": "f9199cc8658f4afcec3edeb93f29f23bb2aebf66d3eeb217cdc728aaa692f946"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-shared-serial-front-v1/toolchain/version-icarus.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "verilator": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "60s",
+          "verilator",
+          "--version"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-shared-serial-front-v1/toolchain/version-verilator.stdout",
+          "bytes": 43,
+          "sha256": "8dfb6ae7dceb54dc2936a78ea7d24751ed8eb8cf128293174e0fb916b79c5636"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-shared-serial-front-v1/toolchain/version-verilator.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "setup": [
+      {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "120s",
+          "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3",
+          "-m",
+          "venv",
+          "/home/runner/work/_temp/shared-front-runtime-ssdez5ds/venv"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-shared-serial-front-v1/toolchain/venv.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-shared-serial-front-v1/toolchain/venv.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "300s",
+          "/home/runner/work/_temp/shared-front-runtime-ssdez5ds/venv/bin/python",
+          "-m",
+          "pip",
+          "install",
+          "--require-hashes",
+          "--only-binary=:all:",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/scripts/pcie-gen12-record-cdc-requirements.txt"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-shared-serial-front-v1/toolchain/packages.stdout",
+          "bytes": 676,
+          "sha256": "62a1ce0a4432cd18d378b4dd61cd2459f666cf5716961f06d03c2d3c1d6f534a"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-shared-serial-front-v1/toolchain/packages.stderr",
+          "bytes": 123,
+          "sha256": "49ef78140217de8c48d38d4670505cda32ebfe99396bdf215825b7c6490c33cb"
+        }
+      },
+      {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "60s",
+          "/home/runner/work/_temp/shared-front-runtime-ssdez5ds/venv/bin/python",
+          "-c",
+          "import sys,importlib.metadata;assert sys.version_info[:2]==(3,12);assert importlib.metadata.version(\"cocotb\")==\"2.0.1\";assert importlib.metadata.version(\"find_libpython\")==\"0.4.0\""
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-shared-serial-front-v1/toolchain/package-identities.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/pcie-shared-serial-front-v1/toolchain/package-identities.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    ],
+    "requirements_sha256": "71f8607c76595a1254177a372191a5ed5e17a50367c4248e461ee02cb8f4d070"
+  },
+  "error": "AssertionError(('Duplicate/missing production front', 'soc_pcie_gen3_recovered_x4_v5', 'soc_pcie_gen3_recovered_front_x4_v1', {'soc_pcie_gen3_recovered_x4_v5': 1, '\\\\soc_pcie_gen3_sds_deskew_v2': 1, '\\\\soc_pcie_gen3_record_descrambler_v1': 4, '\\\\soc_pcie_gen3_recovered_front_x4_v1': 1, 'soc_pcie_gen3_lane_align_v3': 4, '\\\\soc_pcie_gen3_block_cdc_v1': 4, '\\\\axis_async_fifo': 4}))",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_pcie_shared_serial_front.py\", line 215, in run\n    result['hierarchy']=hierarchy(out,env,vendor);save(out/'result.json',result)\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_pcie_shared_serial_front.py\", line 200, in hierarchy\n    assert counts.get(kind)==n,('Duplicate/missing production front',top,kind,counts)\n           ^^^^^^^^^^^^^^^^^^^\nAssertionError: ('Duplicate/missing production front', 'soc_pcie_gen3_recovered_x4_v5', 'soc_pcie_gen3_recovered_front_x4_v1', {'soc_pcie_gen3_recovered_x4_v5': 1, '\\\\soc_pcie_gen3_sds_deskew_v2': 1, '\\\\soc_pcie_gen3_record_descrambler_v1': 4, '\\\\soc_pcie_gen3_recovered_front_x4_v1': 1, 'soc_pcie_gen3_lane_align_v3': 4, '\\\\soc_pcie_gen3_block_cdc_v1': 4, '\\\\axis_async_fifo': 4})\n",
+  "terminal_source_pins_unchanged": true,
+  "outputs": {
+    "hierarchy/soc_pcie_gen3_recovered_x4_v5/hierarchy.json": {
+      "bytes": 7718229,
+      "sha256": "9e07b1dfa689586d713c1c0963fe18239df93e67aa782c7485e03f704310a8b5"
+    },
+    "hierarchy/soc_pcie_gen3_recovered_x4_v5/yosys.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hierarchy/soc_pcie_gen3_recovered_x4_v5/yosys.stdout": {
+      "bytes": 201947,
+      "sha256": "98224147b4300c6320b64618897caa05bfb81c04fa97b3b0e1474a275a8d56e8"
+    },
+    "toolchain/package-identities.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "toolchain/package-identities.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "toolchain/packages.stderr": {
+      "bytes": 123,
+      "sha256": "49ef78140217de8c48d38d4670505cda32ebfe99396bdf215825b7c6490c33cb"
+    },
+    "toolchain/packages.stdout": {
+      "bytes": 676,
+      "sha256": "62a1ce0a4432cd18d378b4dd61cd2459f666cf5716961f06d03c2d3c1d6f534a"
+    },
+    "toolchain/venv.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "toolchain/venv.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "toolchain/version-icarus.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "toolchain/version-icarus.stdout": {
+      "bytes": 3294,
+      "sha256": "f9199cc8658f4afcec3edeb93f29f23bb2aebf66d3eeb217cdc728aaa692f946"
+    },
+    "toolchain/version-verilator.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "toolchain/version-verilator.stdout": {
+      "bytes": 43,
+      "sha256": "8dfb6ae7dceb54dc2936a78ea7d24751ed8eb8cf128293174e0fb916b79c5636"
+    },
+    "vendor/axis_async_fifo.v": {
+      "bytes": 34468,
+      "sha256": "339734a7984d7d540451c92f0831495837c451d170ba60dfbd59f851b28f4250"
+    }
+  }
+}
