@@ -230,7 +230,9 @@ def projection_controls():
             host.source_gate();rows.append(dict(label="actual complete projected method and transitive sources",passed=True))
             path=root/host.PRIOR_METHOD;raw=path.read_bytes();path.unlink()
             try:host.source_gate()
-            except (AssertionError,FileNotFoundError)as exc:rows.append(dict(label="missing historical method refused",error=repr(exc)))
+            except (AssertionError,FileNotFoundError,ValueError)as exc:
+                if isinstance(exc,ValueError):p.require("missing regular file" in str(exc),"missing-file refusal identity")
+                rows.append(dict(label="missing historical method refused",error=repr(exc)))
             else:raise AssertionError("missing historical method accepted")
             path.write_bytes(raw)
             path=root/"scripts/mainchip_bulk_postdrt_antenna_native.py";raw=path.read_bytes()

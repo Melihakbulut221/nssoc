@@ -44,7 +44,7 @@ jobs:
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           name='scripts/mainchip-bulk-postdrt-integration-pins.json'
           raw=Path(name).read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='88aa28fd5c11dff1a4ae879798c52e3d4fcfdbd58ff180a28cddeb821242fef0'
+          assert hashlib.sha256(raw).hexdigest()=='4634a6cc0f4e063835159aaeab982254cd221a403e6ed9b81e915dcdf575a85e'
           m=json.loads(raw)
           assert m['schema']=='bulk-postdrt-integration-pins-v1' and len(m['files'])==1532
           assert m['source_controls_authorized'] is True
