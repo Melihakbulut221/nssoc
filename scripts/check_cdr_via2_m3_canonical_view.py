@@ -65,7 +65,7 @@ def controls(c):
         reject(lambda:project(base/'changed-output',physical_map=v.inventory(physical)));layout.write_bytes(original);cases.append('layout-output-pin-mismatch-refused')
         missing=physical/'native/physical/lvs_flat/deck.log';saved=missing.read_bytes();missing.unlink()
         reject(lambda:project(base/'partial-flat',physical_map=v.inventory(physical)));missing.write_bytes(saved);cases.append('partial-native-flat-LVS-set-refused')
-        extra=reference/'extra-link';extra.symlink_to(physical/'native/layout'/v.TOP+'.gds')
+        extra=reference/'extra-link';extra.symlink_to(physical/'native/layout'/(v.TOP+'.gds'))
         reject(lambda:project(base/'input-link'));extra.unlink();cases.append('input-symlink-refused')
         v.exact_inputs(reference,rm);v.exact_inputs(physical,pm)
         v.require(c['physical_binding']is None,'no fabricated pending physical identity')
