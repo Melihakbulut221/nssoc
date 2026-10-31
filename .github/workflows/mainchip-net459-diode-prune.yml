@@ -1,13 +1,13 @@
-name: Bulk diode naming source controls
+name: Current bulk diode naming readback
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Source qualification only; no native acquisition or CAD
+        description: Qualified existing snapshot readback; no CAD or repair
         type: choice
         required: true
         default: controls
-        options: [controls]
+        options: [controls, readback]
 permissions:
   contents: read
   actions: read
@@ -40,17 +40,17 @@ jobs:
           assert e['GITHUB_REF']=='refs/heads/codex/mainchip-net459-diode-prune'
           assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
           raw=Path('scripts/mainchip-bulk-diode-name-audit-pins.json').read_bytes()
-          assert hashlib.sha256(raw).hexdigest()=='68b8b8ae4c690d1a4e47440c2ab4b2c5944a47df9e1324878ec0522b3121a814'
+          assert hashlib.sha256(raw).hexdigest()=='46092df90ff8721dd259c9df9e8f3e89a5f3bc80e2a1b00862d445b4124079da'
           manifest=json.loads(raw)
-          assert len(manifest['files'])==3 and manifest['native_CAD_authorized']is False
+          assert len(manifest['files'])==23 and manifest['native_CAD_authorized']is False
           for path,pin in manifest['files'].items():
               p=Path(path);assert p.is_file()and not p.is_symlink()
               b=p.read_bytes();assert len(b)==pin['bytes']and hashlib.sha256(b).hexdigest()==pin['sha256']
           ast.parse(Path('scripts/cloud_mainchip_bulk_diode_name_audit.py').read_bytes())
           cfg=Path('scripts/mainchip-bulk-diode-name-audit-inputs.json').read_bytes()
-          assert json.loads(cfg)['readback_authorized']is False
+          assert json.loads(cfg)['readback_authorized']is True
           (out/'manifest.json').write_bytes(raw);(out/'inputs.json').write_bytes(cfg)
-          (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,native_acquisition=False,native_CAD_executed=False,readback_authorized=False),sort_keys=True,indent=2)+'\n')
+          (out/'context.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,native_acquisition=False,native_CAD_executed=False,readback_authorized=True),sort_keys=True,indent=2)+'\n')
           PY
       - name: Install pinned streaming JSON parser
         run: python3 -m pip install --disable-pip-version-check ijson==3.4.0
@@ -145,3 +145,137 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
+  readback:
+    needs: [source-controls, preserve-job-log]
+    if: ${{ inputs.mode == 'readback' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify exact admitted read-only sources
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==os.environ['GITHUB_SHA']
+          raw=Path('scripts/mainchip-bulk-diode-name-audit-pins.json').read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='46092df90ff8721dd259c9df9e8f3e89a5f3bc80e2a1b00862d445b4124079da'
+          manifest=json.loads(raw)
+          assert len(manifest['files'])==23 and manifest['native_CAD_authorized']is False
+          for name,pin in manifest['files'].items():
+              p=Path(name);assert p.is_file()and not p.is_symlink()
+              b=p.read_bytes();assert len(b)==pin['bytes']and hashlib.sha256(b).hexdigest()==pin['sha256']
+          assert json.loads(Path('scripts/mainchip-bulk-diode-name-audit-inputs.json').read_bytes())['readback_authorized']is True
+          PY
+      - name: Install same pinned streaming parser
+        run: python3 -m pip install --disable-pip-version-check ijson==3.4.0
+      - name: Repeat all same-source controls before any input acquisition
+        run: |
+          python3 -B scripts/cloud_mainchip_bulk_diode_name_audit.py --controls --output bulk-diode-name-readback-controls.json > bulk-diode-name-readback-controls.stdout 2> bulk-diode-name-readback-controls.stderr
+      - name: Require independently created exact-source release
+        run: |
+          python3 -B - <<'PY'
+          import json,os,subprocess,time
+          from pathlib import Path
+          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-mainchip-bulk-postdrt-antenna'
+          prefix='repos/Melihakbulut221/nssoc/'
+          for attempt in range(120):
+              p=subprocess.run(['gh','api',prefix+'releases/tags/'+tag],capture_output=True,text=True)
+              if p.returncode==0:
+                  d=json.loads(p.stdout);break
+              assert 'HTTP 404' in p.stderr,p.stderr
+              time.sleep(2)
+          else:raise RuntimeError('Exact-source release reservation was not created; no archive acquisition')
+          r=json.loads(subprocess.check_output(['gh','api',prefix+'git/ref/tags/'+tag]))
+          assert d['tag_name']==tag and d['target_commitish']==e['GITHUB_SHA']
+          assert d['draft'] is False and d['prerelease'] is True and d['assets']==[]
+          assert r['object']['type']=='commit' and r['object']['sha']==e['GITHUB_SHA']
+          receipt=dict(tag=tag,tested_source=e['GITHUB_SHA'],release_id=d['id'],existing_assets=[],target_verified=True,assets_overwritten=False,externally_reserved=True,creation_attempted=False,read_attempts=attempt+1)
+          Path('release-reservation.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Authenticate every existing input member and audit current instance names
+        run: |
+          python3 -B scripts/cloud_mainchip_bulk_diode_name_audit.py --readback --output bulk-diode-name-readback-evidence --work "$RUNNER_TEMP/bulk-diode-name-audit-$GITHUB_RUN_ID-1" --reservation release-reservation.json --controls-proof bulk-diode-name-readback-controls.json > bulk-diode-name-readback.stdout 2> bulk-diode-name-readback.stderr
+      - name: Always emit complete readback records and failures
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import sys
+          from pathlib import Path
+          for name in ('bulk-diode-name-readback-controls.stdout','bulk-diode-name-readback-controls.stderr','bulk-diode-name-readback.stdout','bulk-diode-name-readback.stderr'):
+              p=Path(name)
+              if p.is_file():
+                  sys.stdout.buffer.write(p.read_bytes());sys.stdout.buffer.write(b'\n')
+          PY
+      - name: Preserve all derived evidence and complete publication fallback
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bulk-diode-name-readback-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          path: |
+            bulk-diode-name-readback-evidence
+            bulk-diode-name-readback-controls.json
+            bulk-diode-name-readback-controls.stdout
+            bulk-diode-name-readback-controls.stderr
+            bulk-diode-name-readback.stdout
+            bulk-diode-name-readback.stderr
+            release-reservation.json
+            ${{ runner.temp }}/bulk-diode-name-audit-${{ github.run_id }}-1/owner.json
+            ${{ runner.temp }}/bulk-diode-name-audit-${{ github.run_id }}-1/candidate-outputs.json
+            ${{ runner.temp }}/bulk-diode-name-audit-${{ github.run_id }}-1/candidate-parts.json
+            ${{ runner.temp }}/bulk-diode-name-audit-${{ github.run_id }}-1/candidate-native.tar.gz.part*
+            ${{ runner.temp }}/bulk-diode-name-audit-${{ github.run_id }}-1/publication
+
+  preserve-antenna-job-logs:
+    needs: [source-controls, preserve-job-log, readback]
+    if: ${{ always() && inputs.mode == 'readback' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Preserve all complete terminal execution logs and metadata
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          e=os.environ;out=Path('antenna-job-logs');out.mkdir()
+          prefix='repos/Melihakbulut221/nssoc/'
+          def get(path,name):
+              b=subprocess.check_output(['gh','api',prefix+path]);(out/name).write_bytes(b);return json.loads(b)
+          r=get('actions/runs/'+e['GITHUB_RUN_ID'],'run.json')
+          assert r['head_sha']==e['GITHUB_SHA'] and r['run_attempt']==1
+          jobs=get('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
+          rows={}
+          for j in jobs['jobs']:
+              if j['name'] not in ('source-controls','preserve-job-log','readback'):continue
+              j=get('actions/jobs/'+str(j['id']),str(j['id'])+'.json')
+              assert j['head_sha']==e['GITHUB_SHA'] and j['run_id']==int(e['GITHUB_RUN_ID'])
+              if j['conclusion']=='skipped':continue
+              raw=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(j['id'])+'/logs'])
+              assert raw;(out/(str(j['id'])+'.log')).write_bytes(raw)
+              rows[j['name']]=dict(id=j['id'],conclusion=j['conclusion'],api_status=j['status'],api_metadata_claims_terminal=j['status']=='completed',execution_dependency_finished=True,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+          (out/'receipt.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run=int(e['GITHUB_RUN_ID']),attempt=1,complete_raw_logs=rows),sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Preserve complete actual logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: full-antenna-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: antenna-job-logs
+          if-no-files-found: error
+          retention-days: 90
