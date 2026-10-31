@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v148
+# Cloud continuation — checkpoint v149
 
-Updated: 2026-10-31T03:02:38.988397+00:00
+Updated: 2026-10-31T03:13:24.230374+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Availability of the originally referenced review paths is recorded separately; cleanup is limited to generated project working data.
 
-Cloud-only checkpoint v148: actual replay41131348859 at2373ed0 reproduced both authentic captures exactly; original electrical rejections remain. Full91file12,180,704B proofbffe2513 verified; selected113475/112701rows and full native capsules remain on GitHub releases429506726/429506775. Diagnosis e4a82eb1 identifies observed selector headroom/contact drops and persistent constant-one VI macroport offset, without claiming complete KCL or electrical acceptance. Complete bulk host adapter source qualification41162191753 at234402a3 passed49 newrows plus inherited10/49/20/9; full23file3,352,989B proof4b0702dd verified. Original failed qualification41135271461 retained fa9d24fb, then narrow fixture refusal mismatch fixed. Bulk native repair is not activated yet; next is a same-source controlled, independently reserved single bulk repair/DRT run on current3f422f candidate. Local workspace/tmp/native processes are empty. Full serial PHY, final chipRC/STA and production signoff remain open.
+Cloud-only checkpoint v149: one real bulk antenna repair/DRT run41163081445 was dispatched at exactsourcecb1d9d19 attempt1. All same-source adapter controls passed; source log preservation passed; trial124425029815 is active. Empty public prerelease429687481 was independently reserved for this exact source before acquisition. Qualified production adapters/checker unchanged; activation changes only workflow,1555-pin manifest and activation record. Full success/failure outputs must remain on GitHub. Follow this existing run and do not restart on observation timeout. Analog capture replay remains verified but original electrical rejections remain; continue current-RC/contact ownership diagnosis separately. Local workspace/tmp/native processes are empty. Full serial PHY, final current chipRC/STA and production signoff remain open.
 
-Active handles at this snapshot: No native run remains active in this snapshot.
+Active handles at this snapshot: 41163081445 in_progress
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -9246,3 +9247,10 @@ Local project/tmp/native processes verified absent. Inventory403 exact cloud han
 Cloud-only checkpoint v148: actual replay41131348859 at2373ed0 reproduced both authentic captures exactly; original electrical rejections remain. Full91file12,180,704B proofbffe2513 verified; selected113475/112701rows and full native capsules remain on GitHub releases429506726/429506775. Diagnosis e4a82eb1 identifies observed selector headroom/contact drops and persistent constant-one VI macroport offset, without claiming complete KCL or electrical acceptance. Complete bulk host adapter source qualification41162191753 at234402a3 passed49 newrows plus inherited10/49/20/9; full23file3,352,989B proof4b0702dd verified. Original failed qualification41135271461 retained fa9d24fb, then narrow fixture refusal mismatch fixed. Bulk native repair is not activated yet; next is a same-source controlled, independently reserved single bulk repair/DRT run on current3f422f candidate. Local workspace/tmp/native processes are empty. Full serial PHY, final chipRC/STA and production signoff remain open.
 
 Local project/tmp/native processes verified absent. Inventory409 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-31T03:13:24.230374+00:00 — cloud-only checkpoint v149
+
+Cloud-only checkpoint v149: one real bulk antenna repair/DRT run41163081445 was dispatched at exactsourcecb1d9d19 attempt1. All same-source adapter controls passed; source log preservation passed; trial124425029815 is active. Empty public prerelease429687481 was independently reserved for this exact source before acquisition. Qualified production adapters/checker unchanged; activation changes only workflow,1555-pin manifest and activation record. Full success/failure outputs must remain on GitHub. Follow this existing run and do not restart on observation timeout. Analog capture replay remains verified but original electrical rejections remain; continue current-RC/contact ownership diagnosis separately. Local workspace/tmp/native processes are empty. Full serial PHY, final current chipRC/STA and production signoff remain open.
+
+Local project/tmp/native processes verified absent. Inventory410 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

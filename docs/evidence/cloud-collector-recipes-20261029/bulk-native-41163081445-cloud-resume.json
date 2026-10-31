@@ -1,0 +1,121 @@
+{
+  "schema": "active-cloud-native-run-resume-v1",
+  "native": {
+    "run": 41163081445,
+    "source": "cb1d9d19fa9ee1e18d944733f08e7be44a373d28",
+    "attempt": 1,
+    "workflow": 401215446,
+    "branch": "codex/mainchip-net459-diode-prune",
+    "native_dispatched": true,
+    "reservation": {
+      "release_id": 429687481,
+      "tag": "cloud-results-41163081445-1-mainchip-bulk-postdrt-antenna",
+      "source": "cb1d9d19fa9ee1e18d944733f08e7be44a373d28",
+      "empty_before_acquisition": true,
+      "independently_reserved": true,
+      "draft": false,
+      "prerelease": true,
+      "creation_error": null
+    },
+    "native_payload_acquired_locally": false,
+    "physical_acceptance": false,
+    "timing_accepted": false,
+    "full_phy_accepted": false
+  },
+  "activation": {
+    "source": "cb1d9d19fa9ee1e18d944733f08e7be44a373d28",
+    "branch": "codex/mainchip-net459-diode-prune",
+    "workflow": 401215446,
+    "protected_files": 1555,
+    "manifest_sha256": "571f03d76f91544f817c9576cabdfb6f5e43b93198c3a66096c9f8c00004b770",
+    "workflow_sha256": "42f18987adc00b1a62d30cf39f40d6fa3bde3a7881b41ae8b95fed69c95ffcc3",
+    "native_authorized": true,
+    "native_dispatched": false
+  },
+  "preceding_qualification": {
+    "proof": "4b0702dd771da13e4cf7c6716345be7a33c715f7",
+    "prefix": "docs/evidence/mainchip-bulk-postdrt-integration-source-terminal-41162191753/",
+    "files": 23,
+    "bytes": 3352989,
+    "receipt_sha256": "7d2a15588b560a35b5c07bc53f62e9bf41c5b62222cbcb4c65c6c76eb027cdf2",
+    "run": 41162191753,
+    "source": "234402a376c69742694f8c86e826cd0c80f2c13b",
+    "workflow_conclusion": "success",
+    "source_controls_passed": true,
+    "counts": {
+      "acquisition": 4,
+      "bound_cycle": 21,
+      "inherited": {
+        "lifecycle": 20,
+        "positive": 10,
+        "refusal": 49,
+        "rendered_tcl": 9
+      },
+      "native_audit": 12,
+      "projection": 3,
+      "publication": 3,
+      "shutdown": 4,
+      "supervisor": 2
+    },
+    "errors": [],
+    "all_files_verified": true
+  },
+  "workflow_path": ".github/workflows/mainchip-net459-diode-prune.yml",
+  "active_job": 124425029815,
+  "source_controls_passed": true,
+  "native_complete": false,
+  "physical_acceptance": false,
+  "timing_accepted": false,
+  "full_phy_accepted": false,
+  "do_not_dispatch_duplicate": true,
+  "terminal_collection": {
+    "require_authoritative_terminal_run": true,
+    "exact_source": "cb1d9d19fa9ee1e18d944733f08e7be44a373d28",
+    "attempt": 1,
+    "workflow": 401215446,
+    "job_names": [
+      "source-controls",
+      "preserve-job-log",
+      "trial",
+      "preserve-antenna-job-logs"
+    ],
+    "source_markers": [
+      "BULK_POSTDRT_CONTROL_INDEX ",
+      "BULK_POSTDRT_CONTROL_CHUNK "
+    ],
+    "source_records": [
+      "context.json",
+      "manifest.json",
+      "bulk-manifest.json",
+      "controls.json",
+      "controls.stdout",
+      "controls.stderr",
+      "execution.json"
+    ],
+    "native_markers": [
+      "BULK_POSTDRT_INDEX ",
+      "BULK_POSTDRT_CHUNK "
+    ],
+    "native_encoding": "zlib-base64",
+    "release": {
+      "release_id": 429687481,
+      "tag": "cloud-results-41163081445-1-mainchip-bulk-postdrt-antenna",
+      "source": "cb1d9d19fa9ee1e18d944733f08e7be44a373d28",
+      "empty_before_acquisition": true,
+      "independently_reserved": true,
+      "draft": false,
+      "prerelease": true,
+      "creation_error": null
+    },
+    "source_json_log_and_derived_json_text_in_local_ram_only": true,
+    "never_download_native_payload_locally": true,
+    "archive_metadata_assets": [
+      "candidate-outputs.json",
+      "candidate-parts.json"
+    ],
+    "native_archive_parts": "candidate-native.tar.gz.partNNN; retain on GitHub only",
+    "full_success_and_failure_records_required": true
+  },
+  "dispatch_and_reservation_recipe_already_executed": "import subprocess,json,hashlib,base64\nR='repos/Melihakbulut221/nssoc/'\nB='codex/complete-open-work'\ndef api(path,data=None,method=None):\n c=['gh','api',R+path]\n if data is not None:c+=['--method',method or 'POST','--input','-']\n r=subprocess.run(c,input=json.dumps(data)if data is not None else None,text=True,capture_output=True)\n if r.returncode:raise RuntimeError('GitHub API '+path+': '+r.stderr[:2000])\n return json.loads(r.stdout)if r.stdout.strip()else {}\ndef remote(path,ref):\n d=api('contents/'+path+'?ref='+ref)\n if d.get('content'):return base64.b64decode(d['content'])\n return base64.b64decode(api('git/blobs/'+d['sha'])['content'])\ndef asset(aid):\n return subprocess.check_output(['gh','api',R+'releases/assets/'+str(aid),'-H','Accept: application/octet-stream'])\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef publish(head,files,msg):\n parent=api('git/commits/'+head)\n entries=[]\n for p,d in files.items():\n  if isinstance(d,str):d=d.encode()\n  blob=api('git/blobs',{'encoding':'base64','content':base64.b64encode(d).decode()})\n  entries.append({'path':p,'mode':'100644','type':'blob','sha':blob['sha']})\n tree=api('git/trees',{'base_tree':parent['tree']['sha'],'tree':entries})\n commit=api('git/commits',{'message':msg,'tree':tree['sha'],'parents':[head]})\n assert api('git/ref/heads/'+B)['object']['sha']==head\n api('git/refs/heads/'+B,{'sha':commit['sha'],'force':False},'PATCH')\n return commit['sha']\n\nimport time\n_api_once=api\ndef api(path,data=None,method=None):\n for attempt in range(4):\n  try:return _api_once(path,data,method)\n  except RuntimeError as exc:\n   transient=any(x in str(exc) for x in ('TLS handshake timeout','connection reset','unexpected EOF','HTTP 502','HTTP 503','HTTP 504','i/o timeout'))\n   if data is not None or method not in (None,'GET') or not transient or attempt==3:raise\n   time.sleep(2+attempt)\n\nB='codex/mainchip-net459-diode-prune';SOURCE='cb1d9d19fa9ee1e18d944733f08e7be44a373d28';WORKFLOW=401215446\nassert api('git/ref/heads/'+B)['object']['sha']==SOURCE\npath='actions/workflows/'+str(WORKFLOW)\ndef match():return [r for r in api(path+'/runs?head_sha='+SOURCE+'&per_page=100')['workflow_runs']if r['head_sha']==SOURCE]\nassert not match(),'Exact-source run already exists; reconcile instead of dispatching again.'\ndispatch_error=None\ntry:api(path+'/dispatches',{'ref':B,'inputs':{'mode':'trial'}})\nexcept Exception as exc:dispatch_error=repr(exc)\nfor i in range(8):\n found=match()\n if found:break\n time.sleep(2)\nassert len(found)==1,(dispatch_error,found)\nr=found[0];assert r['run_attempt']==1 and r['event']=='workflow_dispatch' and r['head_branch']==B\nprint(json.dumps(dict(phase='dispatched',run=r['id'],source=SOURCE,attempt=1,status=r['status'],workflow=WORKFLOW,branch=B,dispatch_error=dispatch_error)),flush=True)\ntag='cloud-results-'+str(r['id'])+'-1-mainchip-bulk-postdrt-antenna'\ntry:\n existing=api('releases/tags/'+tag)\nexcept RuntimeError as exc:\n assert 'HTTP 404'in str(exc),str(exc);existing=None\nassert existing is None,'Reservation exists; independently reconcile rather than overwrite.'\ncreation_error=None\ntry:\n release=api('releases',dict(tag_name=tag,target_commitish=SOURCE,name=tag,body='Independently reserved for one exact-source hosted bulk antenna repair iteration and detailed-routing pass. Complete success/failure output will remain here. This reservation is not physical or timing acceptance.',draft=False,prerelease=True,make_latest='false'))\nexcept Exception as exc:creation_error=repr(exc);release=None\n# GET-only reconciliation even after an uncertain create response.\nlive=api('releases/tags/'+tag);ref=api('git/ref/tags/'+tag)\nassert live['tag_name']==tag and live['target_commitish']==SOURCE\nassert live['draft']is False and live['prerelease']is True and live['assets']==[]\nassert ref['object']==dict(sha=SOURCE,type='commit',url=ref['object']['url'])\nif release:assert release['id']==live['id']\nsummary=dict(run=r['id'],source=SOURCE,attempt=1,workflow=WORKFLOW,branch=B,status=r['status'],native_dispatched=True,\n reservation=dict(release_id=live['id'],tag=tag,source=SOURCE,empty_before_acquisition=True,independently_reserved=True,draft=False,prerelease=True,creation_error=creation_error),\n native_payload_acquired_locally=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)\nprint(json.dumps(summary),flush=True)\n",
+  "do_not_rerun_mutations": true
+}
