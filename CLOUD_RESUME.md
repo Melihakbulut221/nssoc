@@ -1,20 +1,21 @@
-# Cloud continuation — checkpoint v173
+# Cloud continuation — checkpoint v174
 
-Updated: 2026-10-31T14:32:36.857642+00:00
+Updated: 2026-10-31T14:40:19.742591+00:00
 
-CLOUD ONLY. Workspace and owned temporary files empty; no local CAD. Native archives/payloads must remain in GitHub, never downloaded locally even RAM. No current engineering run.
+CLOUD ONLY. Workspace and owned temporary files empty; no local CAD. Native archives/payloads must remain in GitHub, never acquired locally even RAM.
 
-Native saved-route connectivity41209965584/sourcea74b74ab completed SUCCESS as a diagnostic only: all608nets observed,0errors,154480instances/143820nets. BOTH positive_area andclosed_boundary:1351newdiode A pins without any wire access,608disconnectednets,0connectednets. Original candidate/runtime/source unchanged.15source tests passed. Full material/lossless projection records permanently stored release429983566. DirectJSON/log/source proof in docs/evidence/mainchip-saved-route-connectivity-terminal-41209965584/.
+LIVE RUN41211073897 SOURCE571c94d54ee9e7ebe8b7f9c007dd84368dc214ec branchcodex/mainchip-net459-diode-prune. Externally reserved release429990936. Current observed status: completed/failure. Poll this same run; do not restart based on quiet logs. Original327controls plus15newsource tests must pass before native acquisition. Physical success not yet claimed.
 
-Implement scoped stale-wire clearing only on608mutable nets before DRT, preserving all1691clocks/allnonmutable wires/allinstances/allguides/2702PGcontacts. Keep original route_delta and physical connectivity/antenna/DRC gates. Fix true hosted GITHUB_ACTIONS propagation and adapt exact clock-gate instance census before donor153130/after candidate154480 without relaxing clock records or placement.
+New scoped fix clears only608owned initial wires on a separate ODB; full snapshot/allguide equality and original1691clocks/placement/nonmutable material guards. All original route_delta, bothconnectivity modes, antenna/DRC gates retained. Clock gate onlychanges obsolete uniform153130census to exact donor153130/candidate154480. Actual hosted GITHUB_ACTIONS is forwarded into same resource-limited isolated Docker. Same original saved-diodes acquisition, no newdiodes, no repair_antennas rerun. All failures/native outputs preserved.
 
-Pinned OpenROAD dcf36133 considers existing wire initial routing; FIXED geometry forces INCR strategy which skips initially routed mutable nets. Previous native snapshots were byte-identical (41208696985), and now actual diode signal pins are proven disconnected. No physical repair yet.
+Actual native diagnosis41209965584 proved all1351newdiode A pins without wireaccess inall608nets underbothcontactmodes. Full proof docs/evidence/mainchip-saved-route-connectivity-terminal-41209965584/ inrootv173 andpermanent release429983566. Pinned DRT source explains initial-route skipping in INCR whenfixed geometry exists. No physical closure yet.
 
-CDR physical41203881385/graph41206809668 remain qualified for their own stages; source9cb8738b. FreshRC not executed. Next exact330members/current75file view retaining original absolute graph-report paths; original500device/wireRC/sevenMIM bothorders controls before1151vector loaded electrical matrix. FullPHY/finaltiming open, limits unchanged.
+CDR graph41206809668/source9cb8738b qualified for freshRC; exact330members/current75file view with original absolutegraph-report paths. FreshRC/electrical not executed. Preserve500device binding/wireRC/sevenMIM bothorders controls then1151vector loadedmatrix. FullPHY/finalsetuphold open; all limits unchanged.
 
-Monitor8h read-only434runs; automatic_native_dispatch=false. HistoricalHTTP502issue not claimed fixed.
+8hmonitor read-only435handles automatic_native_dispatch=false; HTTP502health issue not claimedfixed.
 
 ## Historical notes below — not current running-job status
+
 
 
 
