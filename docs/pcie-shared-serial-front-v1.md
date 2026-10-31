@@ -9,3 +9,11 @@ The hosted-only suite runs an independently generated serial bit-list/complete-r
 All execution is on GitHub. Before tool provisioning, a separate exact-source prerelease reservation is required. Full successful or failed output bytes, compiled images, logs, XML and hierarchy JSON are archived without filtering. Source review by itself is not a simulation pass.
 
 Open work: the clock and raw-bit sources here are explicit testbench drivers, not CDR/PLL/SERDES models. Opaque pre-SDS ordered sets are preserved but this does not implement a normative TS/EQ interpreter, training owner, logical lane map, descrambler state handoff, complete LTSSM, serialized main-chip integration, final physical timing, or production approval. All corresponding acceptance flags remain false.
+
+## Hosted qualification
+
+The exact source 17033684f3dfd0c760ac7cf64d2e1dc1a4b2fdb0 passed [run 41223635170](https://github.com/Melihakbulut221/nssoc/actions/runs/41223635170): 50 positive named RTL tests with no positive skips, two compiled semantic mutation detections, and two production hierarchy checks. All four raw-front tests passed on Icarus and Verilator at FIFO depths 4, 8 and 32; the unchanged 11-test events oracle and both composition tests passed on both simulators. Each production hierarchy contains exactly one shared front, four aligners, four CDCs and four FIFOs.
+
+The two mutation runs select the first raw-record test only; their other six filtered cases are explicitly not executed, not claimed as positive coverage. The first failed attempt stopped before simulation at escaped Yosys identifier normalization. The second passed 37 positive tests and both hierarchies before a missing Verilator timing option stopped miter compilation. Their complete original evidence is retained separately.
+
+The [terminal record](evidence/pcie-shared-serial-front-terminal-41223635170/review.json) binds source, tests, hierarchy counts, full job logs and immutable release asset metadata. Full native outputs remain in the exact-source prerelease. No native payload or simulation was run locally. Full serial PHY, training/equalization, main-chip serial integration and physical/production acceptance flags remain false.
