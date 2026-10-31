@@ -29,10 +29,20 @@ def controls(ctx,out):
         except(ValueError,AssertionError,KeyError,TypeError,FileNotFoundError)as error:record(name,expected_refusal=True,error=repr(error))
         else:raise AssertionError('accepted '+name)
     pins=n.source_pins(ROOT)
-    fixture=out/'full-numerical';fixture.mkdir()
+    reference=out/'core-reference';reference.mkdir();fixture=out/'wrapper-replay'
     # Actual unchanged numerical definitions execute on independent full synthetic
     # devices, terminals, raw R/C, seven MIMs and two extraction enumeration orders.
-    original_records=len(k.RECORDS);full=k.full_numerical_controls(ctx,fixture)
+    original_records=len(k.RECORDS);full=k.full_numerical_controls(ctx,reference)
+    reference_before=n.inventory(reference)
+    # Preserve the original core outputs intact. Only omit generated destinations
+    # that frozen audit_derive and compose correctly require to be new.
+    def omit_generated(directory,names):
+        relative=Path(directory).relative_to(reference).as_posix()
+        if relative=='mim':return ['composition']
+        if relative in ('mim/precise/wire','mim/precise_reversed/wire'):return ['audit-rc48.py','mutations48.py']
+        return []
+    shutil.copytree(reference,fixture,ignore=omit_generated)
+    n.require(all(not(fixture/'mim'/v/'wire'/name).exists()for v in n.VARIANTS for name in ('audit-rc48.py','mutations48.py'))and not(fixture/'mim/composition').exists(),'exclusive replay destinations absent')
     record('complete_independent_synthetic_numerical_pipeline',core_controls=len(k.RECORDS)-original_records,native_executed=False)
     result=dict(r=full['binding'],binding=n.read(fixture/'binding/binding.json'))
     result['r']=dict(result['r'],explicit_synthetic_fixture=True)
@@ -54,12 +64,10 @@ def controls(ctx,out):
         capture.update(explicit_synthetic_fixture=True,native_extraction_executed=False)
         (target/'result.json').write_bytes(n.encode(capture))
         n.operate('mim-audit',variant,fixture,ctx)
-    synthetic_composition=fixture/'mim/composition'
-    n.require(synthetic_composition.resolve().is_relative_to(out.resolve()),'only owned synthetic output may be replaced')
-    shutil.rmtree(synthetic_composition)
     precision=n.operate('compose',None,fixture,ctx)
     n.require(precision['composition']['contract']==full['composition']['composition']['contract'],'independent full fixture and actual wrapper agree')
-    record('actual_wrapper_wire_both_capture_audit_and_composition_paths',phases=6,native_export_or_generation_executed=False)
+    n.require(n.inventory(reference)==reference_before,'complete original core-reference bytes retained')
+    record('actual_wrapper_wire_both_capture_audit_and_composition_paths',phases=6,original_core_reference_unchanged=True,native_export_or_generation_executed=False)
     # Explicit source-only placeholders cover the phase file-ownership contract;
     # no GDS reader or native model is invoked and these are never actual receipts.
     placeholders={
