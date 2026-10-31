@@ -1,6 +1,6 @@
 # Current-source fresh RC phase adapter
 
-This adapter is source-only until the separately reviewed fresh-RC host grants exact-source extraction authority. This branch contains no native job. The original numerical core, generated-method derivations, thresholds and two-order/corruption algorithms remain unchanged.
+This adapter is source-only until the separately reviewed fresh-RC host grants exact-source extraction authority. The original phase-source branch contains no native job. The original numerical core, generated-method derivations, thresholds and two-order/corruption algorithms remain unchanged.
 
 The host authenticates and restores the original 665-member canonical producer, its complete current 78-file view, frozen runtime/model inputs, same-source controls and an independent empty result release. The adapter operates only below the new fresh-RC output root. Every phase rechecks the actual environment, host manifest/preflight, complete runtime cache and earlier phase byte receipts. No historical producer source/environment or module main is substituted.
 
@@ -14,7 +14,7 @@ Source controls run the independent complete synthetic numerical fixture, then t
 
 Integration API: check_cdr_via2_m3_fresh_rc_native.controls(ctx, out) returns the source-only result with passed count/records. cdr_via2_m3_fresh_rc_native.validate_complete(out, ctx) repeats actual host guards before and after complete file validation. The host must pin/import the exact adapter/checker and document; this branch's workflow and manifest are not an integration manifest.
 
-The source fixture additionally executes the actual wrapper wire-audit, both capture-finish/intrinsic-audit branches and composition branch on those independently generated synthetic files. It compares the composition contract with the unchanged core fixture. The complete original core-reference tree remains unchanged. A separate wrapper replay tree copies its inputs while omitting only two generated MIM auditor files per order and the generated composition directory, because the frozen producers require exclusive destinations. Neither production nor fixture code erases the original numerical evidence. Native terminology in the synthetic capture report is explicitly relabelled before reuse.
+The source fixture additionally executes the actual wrapper wire-audit, both capture-finish/intrinsic-audit branches and composition branch on those independently generated synthetic files. It compares the composition contract with the unchanged core fixture. The complete original core-reference tree remains unchanged. A separate wrapper replay tree copies its inputs while omitting only three generated wire-stage methods, two generated MIM auditor files per order, and the generated composition directory, because the frozen producers require exclusive destinations. Neither production nor fixture code erases the original numerical evidence. Native terminology in the synthetic capture report is explicitly relabelled before reuse.
 
 The real source-job refusal calls the production authorized() guard directly and asserts that the actual native output root does not exist before or after. This prevents the failure-preserving production lifecycle from writing an actual-scope receipt during a synthetic negative control.
 

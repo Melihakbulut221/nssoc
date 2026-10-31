@@ -161,10 +161,26 @@ def qualification_controls(c):
     cases.append('actual_perform_ast_requires_gate_before_success')
     return cases
 
+def fixture_transport_controls():
+    import cdr_via2_m3_fresh_rc_fixture_transport as ft
+    name='fresh-rc-controls/phase-fixtures/explicit/result.json';records=[]
+    values=[b'',('explicit UTF-8 fixture: \u03bc\n'+'z'*300000).encode(),''.join(ft.digest(str(i).encode())for i in range(3000)).encode()]
+    for i,raw in enumerate(values):
+        index,chunks=ft.encode(name,raw);a.require(ft.decode(index,chunks)==raw,'complete lossless fixture bytes');records.append(dict(name='roundtrip_'+str(i),passed=True,bytes=len(raw),chunks=len(chunks),compressed_bytes=index['compressed_bytes']))
+    a.require(len(chunks)>1,'actual multi-chunk fixture')
+    mutations=[]
+    for label,alter in [('missing_chunk',lambda ix,cs:cs.pop()),('duplicate_chunk',lambda ix,cs:cs.__setitem__(1,copy.deepcopy(cs[0]))),('wrong_chunk_path',lambda ix,cs:cs[0].update(path=name+'x')),('changed_raw_sha',lambda ix,cs:ix.update(sha256='0'*64)),('changed_compressed_sha',lambda ix,cs:ix.update(compressed_sha256='0'*64)),('changed_raw_size',lambda ix,cs:ix.update(bytes=ix['bytes']-1)),('changed_compressed_size',lambda ix,cs:ix.update(compressed_bytes=ix['compressed_bytes']+1)),('wrong_schema',lambda ix,cs:ix.update(schema='wrong')),('noncanonical_path',lambda ix,cs:ix.update(path='fresh-rc-controls/phase-fixtures/../outside.json')),('invalid_base64',lambda ix,cs:cs[0].update(base64='!'))]:
+        ix=copy.deepcopy(index);cs=copy.deepcopy(chunks);alter(ix,cs);reject(lambda:ft.decode(ix,cs));mutations.append(label)
+    for label,packed in [('truncated_stream',zlib.compress(values[1])[:-1]),('second_stream',zlib.compress(values[1])+zlib.compress(b'extra'))]:
+        ix,cs=ft.encode(name,values[1]);ix.update(compressed_bytes=len(packed),compressed_sha256=ft.digest(packed),chunks=1);cs=[dict(path=name,index=0,base64=base64.b64encode(packed).decode())]
+        reject(lambda:ft.decode(ix,cs));mutations.append(label)
+    return dict(positive=records,refusals=mutations,original_bytes_preserved=True,primary_source_transport_unchanged=True)
+
 def main():
     ctx=a.context(os.environ);c,p=a.source_guard(ctx);out=ROOT/'fresh-rc-controls';a.require(not out.exists(),'new integrated source evidence');out.mkdir();primary=None;observations={};counts={}
     try:
         a.require(ctx['job']=='source-controls','source control job only')
+        observations['fixture_transport']=fixture_transport_controls()
         prod=producer_controls.controls(ROOT,p);observations['producer']=prod;counts.update(producer_positive=len(prod['positive_controls']),producer_refusals=len(prod['refusal_controls']))
         rt=runtime_controls.controls(ROOT);observations['runtime']=rt;counts.update(runtime_positive=len(rt['positive_controls']),runtime_refusals=len(rt['refusal_controls']))
         e=context_controls(c);j=current_run_controls();l=lifecycle_controls()+acquisition_failure_controls()+qualification_controls(c);em=emission_controls()

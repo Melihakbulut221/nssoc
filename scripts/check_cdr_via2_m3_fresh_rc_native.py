@@ -42,10 +42,11 @@ def controls(ctx,out):
     def omit_generated(directory,names):
         relative=Path(directory).relative_to(reference).as_posix()
         if relative=='mim':return ['composition']
+        if relative=='wire-stage/wire':return ['run-rc01.py','audit-rc48.py','mutations48.py']
         if relative in ('mim/precise/wire','mim/precise_reversed/wire'):return ['audit-rc48.py','mutations48.py']
         return []
     shutil.copytree(reference,fixture,ignore=omit_generated)
-    n.require(all(not(fixture/'mim'/v/'wire'/name).exists()for v in n.VARIANTS for name in ('audit-rc48.py','mutations48.py'))and not(fixture/'mim/composition').exists(),'exclusive replay destinations absent')
+    n.require(all(not(fixture/'wire-stage/wire'/name).exists()for name in ('run-rc01.py','audit-rc48.py','mutations48.py'))and all(not(fixture/'mim'/v/'wire'/name).exists()for v in n.VARIANTS for name in ('audit-rc48.py','mutations48.py'))and not(fixture/'mim/composition').exists(),'all seven exclusive method destinations and composition absent')
     record('complete_independent_synthetic_numerical_pipeline',core_controls=len(k.RECORDS)-original_records,native_executed=False)
     result=dict(r=full['binding'],binding=n.read(fixture/'binding/binding.json'))
     result['r']=dict(result['r'],explicit_synthetic_fixture=True)

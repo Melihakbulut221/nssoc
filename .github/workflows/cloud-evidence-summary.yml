@@ -59,6 +59,17 @@ jobs:
         run: python3 -m pip install --disable-pip-version-check networkx==3.5
       - name: Run all integrated source and explicit synthetic controls
         run: python3 -B scripts/check_cdr_via2_m3_fresh_rc_adapter.py > fresh-rc-controls.stdout 2> fresh-rc-controls.stderr
+      - name: Preserve all synthetic results and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-via2-m3-fresh-rc-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            fresh-rc-controls
+            fresh-rc-controls.stdout
+            fresh-rc-controls.stderr
+          if-no-files-found: error
+          retention-days: 90
       - name: Always emit complete derived source-control records
         if: always()
         run: |
@@ -78,23 +89,15 @@ jobs:
           if root.exists():
               sys.path.insert(0,'scripts')
               from cloud_cdr_via2_m3_fresh_rc import derived_text_name
+              from cdr_via2_m3_fresh_rc_fixture_transport import encode as encode_fixture
               for p in sorted(root.rglob('*')):
                   if p.is_file()and derived_text_name(str(p)):
                       try:p.read_bytes().decode('utf-8',errors='strict')
                       except UnicodeError:continue
-                      emit(p,'VIA2_M3_RC_FIXTURE')
+                      index,chunks=encode_fixture(str(p),p.read_bytes())
+                      print('VIA2_M3_RC_FIXTURE_INDEX '+json.dumps(index,sort_keys=True))
+                      for chunk in chunks:print('VIA2_M3_RC_FIXTURE_CHUNK '+json.dumps(chunk,sort_keys=True))
           PY
-      - name: Preserve all synthetic results and failures
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: cdr-via2-m3-fresh-rc-controls-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            fresh-rc-controls
-            fresh-rc-controls.stdout
-            fresh-rc-controls.stderr
-          if-no-files-found: error
-          retention-days: 90
   preserve-job-log:
     needs: source-controls
     if: always()
