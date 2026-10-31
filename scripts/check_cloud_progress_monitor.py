@@ -1384,6 +1384,7 @@ class IncrementalObservationControls(unittest.TestCase):
             self.assertEqual(saved["unobserved_runs"], [1000, 1001, 1002])
             self.assertEqual(api.observed, [])
             self.assertEqual(saved["read_budget"]["maximum_requests"], 600)
+            self.assertEqual(saved["cache_lookup"]["read_budget"]["maximum_requests"], 24)
             self.assertFalse(saved["observation_complete"])
 
 

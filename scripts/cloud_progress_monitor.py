@@ -850,6 +850,8 @@ def main():
         cache_budget = ReadBudget(max_requests=24, seconds=90, limit_type=CacheLookupLimit)
         api.cache_read_budget = cache_budget
         cache_diagnostic = dict(trusted_source_branches=["main", "codex/cloud-progress-monitor"], maximum_candidates=16)
+        state["cache_lookup"] = cache_diagnostic
+        save(state)
         try:
             previous = previous_snapshot(api, int(os.environ["GITHUB_RUN_ID"]), cache_diagnostic)
         except CacheLookupLimit as cache_error:
