@@ -1,0 +1,25 @@
+Traceback (most recent call last):
+  File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_adapter.py", line 195, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_adapter.py", line 194, in main
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_adapter.py", line 182, in main
+    phase=phase_controls.controls(ctx,out/'phase-fixtures');observations['phase']=phase
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_native.py", line 35, in controls
+    original_records=len(k.RECORDS);full=k.full_numerical_controls(ctx,reference)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_via2_m3_fresh_rc_core.py", line 64, in full_numerical_controls
+    data,dpin,descriptor=packet(context,result);provider,intrinsic=c.current_binding(ROOT,lambda:data,context,dpin)
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cdr_via2_m3_fresh_rc_core.py", line 142, in current_binding
+    cb=binding_namespace.CurrentBinding(packet,context,descriptor_pin)
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cdr_via2_m3_fresh_rc_namespaces.py", line 89, in __init__
+    require(set(context)=={"source","run_id","attempt"}and type(context["source"])is str and re.fullmatch("[0-9a-f]{40}",context["source"]),"explicit current source")
+  File "/home/runner/work/nssoc/nssoc/scripts/cdr_via2_m3_fresh_rc_namespaces.py", line 20, in require
+    if not ok:raise ValueError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: explicit current source
