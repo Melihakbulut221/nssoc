@@ -100,8 +100,10 @@ def acquire(root,out,ctx,config,producer,budget):
     finally:
         cleanup=[]
         if temp is not None:
-            try:shutil.rmtree(temp)
-            except BaseException as error:cleanup.append(repr(error))
+            if primary is None:
+                try:shutil.rmtree(temp)
+                except BaseException as error:cleanup.append(repr(error))
+            else:report['retained_failed_acquisition']=dict(path=str(temp),native_bytes_remain_cloud_only=True,complete_or_partial=True)
         report['cleanup_errors']=cleanup
         try:write(cache/'result.json',report)
         except BaseException as error:

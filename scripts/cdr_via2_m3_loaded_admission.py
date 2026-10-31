@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """New exact-source loaded nominal_late admission; no historical producer or environment substitution."""
-import base64,json,os,re,subprocess,time
+import base64,contextlib,json,os,re,signal,subprocess,threading,time
 from pathlib import Path
 import cloud_cdr_current_eight_drain_wave_replay as q
 import cdr_via2_m3_loaded_producer as producer
@@ -30,11 +30,41 @@ def api(endpoint,budget):
     require(isinstance(budget,Deadline)and isinstance(endpoint,str)and endpoint and not endpoint.startswith('/'),'explicit bounded repository API')
     return q.decode(subprocess.check_output(['gh','api','repos/'+q.REPOSITORY+'/'+endpoint],timeout=budget.timeout(60)))
 
+
 def download(pin,path,budget):
     require(isinstance(budget,Deadline)and not path.exists()and not path.is_symlink(),'bounded exclusive download')
-    with path.open('xb')as stream:
-        subprocess.run(['gh','api','-H','Accept: application/octet-stream','repos/'+q.REPOSITORY+'/releases/assets/'+str(pin['id'])],stdout=stream,check=True,timeout=budget.timeout(1800))
-    require(q.file_pin(path)=={k:pin[k]for k in('bytes','sha256')},'complete downloaded bytes')
+    primary=None;stderr=path.parent/('download-'+str(pin['id'])+'.stderr')
+    report=dict(asset=pin,path=str(path),native_bytes_remain_cloud_only=True,status='RUNNING')
+    try:
+        with path.open('xb')as stream,stderr.open('xb')as errors:
+            completed=subprocess.run(['gh','api','-H','Accept: application/octet-stream','repos/'+q.REPOSITORY+'/releases/assets/'+str(pin['id'])],stdout=stream,stderr=errors,check=True,timeout=budget.timeout(1800))
+        report['actual_file']=q.file_pin(path)
+        require(report['actual_file']=={k:pin[k]for k in('bytes','sha256')},'complete downloaded bytes')
+        report['status']='PASS_EXACT_ASSET_BYTES'
+    except BaseException as error:
+        primary=error;report.update(status='FAIL_OR_ERROR',error=repr(error));raise
+    finally:
+        try:
+            if path.is_file()and not path.is_symlink():report['retained_file']=q.file_pin(path)
+            if stderr.is_file()and not stderr.is_symlink():report['stderr']=q.file_pin(stderr)
+            q.write_new(path.parent/('download-'+str(pin['id'])+'.json'),q.encode(report))
+        except BaseException as error:
+            try:print(json.dumps(dict(unsaved_download_observation=report,secondary_error=repr(error)),sort_keys=True),flush=True)
+            except BaseException:pass
+            if primary is None:raise
+
+@contextlib.contextmanager
+def phase_budget(seconds):
+    """Bound Python hashing/extraction as well as child IO; no nested timer spoof."""
+    budget=Deadline(seconds)
+    require(threading.current_thread()is threading.main_thread(),'phase watchdog requires real main thread')
+    require(signal.getitimer(signal.ITIMER_REAL)==(0.0,0.0),'no inherited phase timer')
+    previous=signal.getsignal(signal.SIGALRM)
+    def expired(signum,frame):raise TimeoutError('Explicit loaded host phase deadline exceeded')
+    signal.signal(signal.SIGALRM,expired);signal.setitimer(signal.ITIMER_REAL,seconds)
+    try:yield budget
+    finally:
+        signal.setitimer(signal.ITIMER_REAL,0);signal.signal(signal.SIGALRM,previous)
 
 def context(env):
     require(env.get('GITHUB_ACTIONS')=='true'and env.get('RUNNER_ENVIRONMENT')=='github-hosted'and env.get('RUNNER_OS')=='Linux','hosted Linux only')
