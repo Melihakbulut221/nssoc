@@ -1,0 +1,235 @@
+name: Source controls for exact stale-wire native admission
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Source-only exact17command validation; no native acquisition or execution
+        type: choice
+        required: true
+        default: controls
+        options: [controls]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: net459-diode-prune-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Bind exact source and disabled native scope
+        env:
+          SELECTED_MODE: ${{ inputs.mode }}
+        run: |
+          python3 -B - <<'PY'
+          import ast,hashlib,json,os,subprocess,sys
+          from pathlib import Path
+          out=Path('bulk-postdrt-integration-controls');out.mkdir(exist_ok=True)
+          e=os.environ
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_REF']=='refs/heads/codex/mainchip-stale-wire-admission-controls'
+          assert e['SELECTED_MODE']=='controls'
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
+          name='scripts/mainchip-bulk-postdrt-integration-pins.json'
+          raw=Path(name).read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='f35728f63c4f9ba20d4b2dfa3759d0731f21540d03ea91f930b19a6a0812e872'
+          m=json.loads(raw)
+          assert m['schema']=='bulk-postdrt-integration-pins-v1' and len(m['files'])==1839
+          assert m['source_controls_authorized'] is True
+          assert all(m[k] is False for k in ('native_execution_enabled','physical_acceptance','timing_accepted','full_phy_accepted'))
+          for path,pin in m['files'].items():
+              p=Path(path);assert p.is_file() and not p.is_symlink()
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==pin,path
+          for path in ('scripts/cloud_mainchip_bulk_postdrt_antenna.py','scripts/mainchip_bulk_postdrt_antenna_inner.py','scripts/mainchip_bulk_postdrt_antenna_native.py','scripts/check_mainchip_bulk_postdrt_integration.py'):
+              ast.parse(Path(path).read_bytes(),filename=path)
+          draft=Path('docs/evidence/mainchip-bulk-postdrt-integration-source-draft-20261031.json').read_bytes()
+          assert hashlib.sha256(draft).hexdigest()=='028fe149ec9942c1e650f1bcec9bcf44afa4efacb6f71ebcf58d7be52be78733'
+          sys.path.insert(0,'scripts')
+          import cloud_mainchip_bulk_postdrt_antenna as host
+          assert host.source_gate()==m
+          import cloud_mainchip_saved_diode_routing as qualification
+          qraw=Path('scripts/mainchip-saved-diode-routing-pins.json').read_bytes()
+          assert hashlib.sha256(qraw).hexdigest()=='bfadac16302a07c0702d0694630672c02339d465bc91976f444f8733875d3227'
+          qm=qualification.source_gate()
+          assert qm==json.loads(qraw) and len(qm['files'])==2334
+          qualification.authorize_native(qm)
+          for path in ('scripts/mainchip_saved_diode_routing_native.py','scripts/mainchip_saved_diode_routing_inner.py','scripts/cloud_mainchip_saved_diode_routing.py'):
+              ast.parse(Path(path).read_bytes(),filename=path)
+          (out/'qualification-manifest.json').write_bytes(qraw)
+          (out/'manifest.json').write_bytes(raw)
+          bulk=Path('scripts/mainchip-bulk-postdrt-antenna-pins.json').read_bytes()
+          (out/'bulk-manifest.json').write_bytes(bulk)
+          workflow=Path('.github/workflows/mainchip-net459-diode-prune.yml').read_bytes()
+          context=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
+            source_controls_only=True,mode='controls',qualification_only_in_manifest=True,native_authorized=False,native_acquisition=False,native_executed=False,
+            physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,
+            manifest=dict(path=name,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),files=len(m['files'])),
+            bulk_manifest=dict(bytes=len(bulk),sha256=hashlib.sha256(bulk).hexdigest()),
+            workflow=dict(path='.github/workflows/mainchip-net459-diode-prune.yml',bytes=len(workflow),sha256=hashlib.sha256(workflow).hexdigest()),
+            draft=dict(bytes=len(draft),sha256=hashlib.sha256(draft).hexdigest()),
+            synthetic_native_boundaries=['native DB/DRC I/O','cloud transport/upload','tiny synthetic publication capsule'],
+            real_source_processes='short Python rc0/rc7 using actual supervisor; no OpenROAD')
+          (out/'context.json').write_text(json.dumps(context,sort_keys=True,indent=2)+'\n')
+          PY
+          command -v tclsh
+      - name: Authenticate and test exact extra-phase admission without native execution
+        run: |
+          python3 -B - <<'PY'
+          import ast,hashlib,json,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import mainchip_stale_wire_admission as a
+          raw=Path(a.MANIFEST).read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='87782a2295d755d32143f8349e8831ad154abd1eb54726fac540ecd6d6af29b7'
+          assert a.source_gate()==json.loads(raw)
+          Path('bulk-postdrt-integration-controls/stale-wire-admission-manifest.json').write_bytes(raw)
+          for path in a.NEW:ast.parse(Path(path).read_bytes(),filename=path)
+          PY
+          set -o pipefail
+          python3 -B scripts/check_mainchip_stale_wire_admission.py 2>&1 | tee bulk-postdrt-integration-controls/stale-wire-admission-controls.log
+          python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          report=json.loads(Path('bulk-postdrt-integration-controls/stale-wire-admission-controls.json').read_bytes())
+          assert report['source']==os.environ['GITHUB_SHA'] and report['run_id']==int(os.environ['GITHUB_RUN_ID']) and report['attempt']==1
+          assert report['status']=='PASS' and report['tests']==31 and report['failures']==report['errors']==report['skipped']==[]
+          assert all(report[k] is False for k in ('native_acquisition','native_executed','physical_acceptance','timing_accepted','full_phy_accepted'))
+          fixture=report['synthetic_capsule']
+          assert fixture['synthetic_only'] is True and fixture['native_bytes_generated'] is False
+          assert fixture['tests_mock_no_audit_functions'] is True and fixture['complete_audit_nonmutation_passed'] is True
+          assert len(fixture['fixture_files'])==58
+          assert {k:fixture[k] for k in ('commands','supervised_commands','mutable_nets','attachments','protected_nets','instances','nets')}==dict(commands=17,supervised_commands=15,mutable_nets=608,attachments=1351,protected_nets=1691,instances=154480,nets=143820)
+          PY
+      - name: Validate and test scoped stale-wire and exact clock census adapters
+        run: |
+          python3 -B - <<'PY'
+          import ast,hashlib,json,sys
+          from pathlib import Path
+          raw=Path('scripts/mainchip-stale-wire-routing-pins.json').read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='da69d51c6a6e2a7a991039bf90d2c317eebdb4d7b6bb010af843b7b6aeeb8ee6'
+          sys.path.insert(0,'scripts')
+          import mainchip_stale_wire_routing as a
+          assert a.source_gate()==json.loads(raw)
+          for name in a.NEW:ast.parse(Path(name).read_bytes(),filename=name)
+          PY
+          set -o pipefail
+          python3 -B scripts/check_mainchip_stale_wire_routing.py 2>&1 | tee bulk-postdrt-integration-controls/stale-wire-controls.log
+      - name: Exercise actual adapters, supervisor, native audit boundaries and inherited controls
+        run: |
+          set +e
+          python3 -B scripts/check_mainchip_stale_wire_admission_inherited.py --output bulk-postdrt-integration-controls/controls.json > bulk-postdrt-integration-controls/controls.stdout 2> bulk-postdrt-integration-controls/controls.stderr
+          rc=$?
+          CONTROL_RC="$rc" python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          result=dict(source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,returncode=int(os.environ['CONTROL_RC']),native_executed=False)
+          Path('bulk-postdrt-integration-controls/execution.json').write_text(json.dumps(result,sort_keys=True,indent=2)+'\n')
+          PY
+          exit "$rc"
+      - name: Exercise inherited observer and exact reconstruction refusal controls
+        run: |
+          set +e
+          python3 -B scripts/check_mainchip_saved_diode_routing.py bulk-postdrt-integration-controls/audit-controls.json > bulk-postdrt-integration-controls/audit-controls.stdout 2> bulk-postdrt-integration-controls/audit-controls.stderr
+          rc=$?
+          CONTROL_RC="$rc" python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          result=dict(source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,returncode=int(os.environ['CONTROL_RC']),native_executed=False)
+          Path('bulk-postdrt-integration-controls/audit-execution.json').write_text(json.dumps(result,sort_keys=True,indent=2)+'\n')
+          PY
+          exit "$rc"
+      - name: Require complete actual source controls
+        run: |
+          python3 -B - <<'PY'
+          import json,os,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import cloud_mainchip_bulk_postdrt_antenna as host
+          import check_mainchip_stale_wire_admission_inherited as admission_context
+          ctx=admission_context.source_context(os.environ)
+          proof=host.control_evidence(ctx)
+          r=json.loads(Path('bulk-postdrt-integration-controls/controls.json').read_bytes())
+          assert r['counts']==dict(inherited=dict(positive=10,refusal=49,lifecycle=20,rendered_tcl=9),namespace=25,projection=3,supervisor=2,shutdown=4,acquisition=4,native_audit=12,bound_cycle=21,publication=3)
+          for key in ('positive','refusal','lifecycle','rendered_tcl'):
+              assert len(r['inherited'][key])==r['counts']['inherited'][key]
+          assert r['native_authorized'] is False and proof['native_acquisition'] is False
+          PY
+      - name: Always emit complete source records including failures
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          for name in ('stale-wire-admission-controls.json','stale-wire-admission-controls.log','stale-wire-admission-manifest.json','stale-wire-controls.log','context.json','manifest.json','bulk-manifest.json','qualification-manifest.json','controls.json','controls.stdout','controls.stderr','execution.json','audit-controls.json','audit-controls.stdout','audit-controls.stderr','audit-execution.json','routing-inherited-controls.json','routing-inherited-controls.stdout','routing-inherited-controls.stderr'):
+              p=Path('bulk-postdrt-integration-controls')/name;assert not p.is_symlink()
+              present=p.is_file();raw=p.read_bytes() if present else b''
+              chunks=[raw[i:i+6000]for i in range(0,len(raw),6000)]
+              print('BULK_POSTDRT_CONTROL_INDEX '+json.dumps(dict(path=name,present=present,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):
+                  print('BULK_POSTDRT_CONTROL_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
+          PY
+      - name: Preserve all source output bytes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bulk-postdrt-integration-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: bulk-postdrt-integration-controls
+          if-no-files-found: error
+          retention-days: 90
+
+  preserve-job-log:
+    needs: source-controls
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Preserve full actual source job log and metadata
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          root=Path('job-logs');root.mkdir()
+          e=os.environ
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc' and e['GITHUB_RUN_ATTEMPT']=='1'
+          prefix='repos/'+e['GITHUB_REPOSITORY']+'/'
+          def read(path,name):
+              b=subprocess.check_output(['gh','api',prefix+path]);(root/name).write_bytes(b);return json.loads(b)
+          run=read('actions/runs/'+e['GITHUB_RUN_ID'],'run.json')
+          assert run['head_sha']==e['GITHUB_SHA'] and run['run_attempt']==1
+          jobs=read('actions/runs/'+e['GITHUB_RUN_ID']+'/attempts/1/jobs?per_page=100','jobs.json')
+          selected=[j for j in jobs['jobs'] if j['name']=='source-controls'];assert len(selected)==1
+          listed=selected[0]
+          j=read('actions/jobs/'+str(listed['id']),'job.json')
+          assert j['id']==listed['id'] and j['name']=='source-controls'
+          assert j['head_sha']==e['GITHUB_SHA'] and j['run_id']==int(e['GITHUB_RUN_ID'])
+          b=subprocess.check_output(['gh','api','--allow-escape-sequences',prefix+'actions/jobs/'+str(j['id'])+'/logs'])
+          assert b;(root/'job.log').write_bytes(b)
+          receipt=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
+            job_id=j['id'],job_conclusion=j['conclusion'],api_status=j['status'],api_metadata_claims_terminal=j['status']=='completed',execution_dependency_finished=True,full_raw_job_log=True,
+            log_bytes=len(b),log_sha256=hashlib.sha256(b).hexdigest(),native_acquisition=False)
+          (root/'receipt.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(receipt,sort_keys=True))
+          PY
+      - name: Preserve complete actual logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: bulk-postdrt-source-job-logs-${{ github.run_id }}-${{ github.run_attempt }}
+          path: job-logs
+          if-no-files-found: error
+          retention-days: 90
+
