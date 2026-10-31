@@ -1,0 +1,19 @@
+# Current Via2/M3 access physical adapter
+
+This source prepares one explicit entry for the already reviewed eight-drain candidate. Generation and physical verification remain disabled. The manual workflow only runs source and synthetic controls in GitHub-hosted infrastructure; it cannot acquire the original design archive or dispatch a physical trial. No native project payload is downloaded to a local machine.
+
+The original candidate at f2220e2fed3e21a8138b58f8be3c7a62fdbde1d2 and its successful 30 hosted controls in run 41232355399 remain unchanged. Its deliberately disabled entry is not monkeypatched and its plan remains disabled. The new entry checks a separate current-source admission before executing the exact original generation body. Shared geometry validators and sixteen-shape serialized reversal are unchanged. The frozen physical derivation and acceptance functions still demand all 560 DRC categories, deep and flat 500-device LVS, and thirteen fault controls.
+
+## Exact inputs and producer admission
+
+The original nominal_late producer is run 41218657461, attempt 1, source 84b8b591e10be32716947c8d6b079fd7a21ce18d. The qualified current case reader authenticates all 2991 archive members on the runner and retains exactly twenty SHA-256 and byte-pinned inputs: the seventeen already qualified geometry inputs plus the original LEF, schematic, and layout result. No earlier two-target geometry identity is substituted. The source pin closure retains the original qualified physical/runtime files, actual complete input census, producer metadata, and candidate control receipt.
+
+Before any future native work, the adapter independently requires its exact manual workflow/branch/source/attempt, completed same-run source and full-log jobs, an in-progress candidate job, explicit current-source controls, and a separate empty public exact-source result reservation created outside the worker. Original case identity, full publication census, and source guards run before and after acquisition. Each selected byte pin is checked before and after native work. The current controls-only workflow deliberately cannot satisfy this candidate-job admission. Future authority requires a separate reviewed source and its own successful hosted controls.
+
+## Complete evidence and limits
+
+Native archives, GDS, LVS databases, extracted material, and selected native inputs stay in GitHub releases/artifacts and runner storage. The complete publisher retains all produced files and failures, verifies all part bytes and hashes, uses the independent empty reservation, and never creates or overwrites a release. Only strictly decoded derived JSON/text/log records outside the native inputs directory may be emitted into logs. Full native inventory metadata is retained without logging native payload bytes.
+
+The twenty input files, generated layout, original physical references, all checker outputs, runtime source manifest, supervision/cleanup results, and primary/secondary failures are retained for a future actual trial. Runtime restoration is explicit and guarded; it never replaces an old function's source guard. Generation and physical verification have independent explicit admission, while fresh RC and electrical simulation authority remain false. Even a future geometry/DRC/LVS pass does not grant electrical, timing, full PHY, qualified PEX, or manufacturing acceptance. All such acceptance flags remain false.
+
+Source controls exercise the original thirty Pya geometry controls, context/input/producer/current-run/reservation refusals, an integrated synthetic twenty-input native preflight, exact function derivation, full publication controls, and failure/cleanup/derived-only emission lifecycle. Synthetic fixtures are explicitly synthetic and do not claim an actual candidate was generated. Source preparation has not run native design acquisition, physical checks, RC extraction, or analog simulation.
