@@ -95,8 +95,9 @@ def perform(ctx,c,reserved,controls_raw,out,api_call=q.api,fetch=q.download,pipe
     binding=live('');parts=original['parts'];index=original['index'];restore=a.ORIGINAL
     require(out==a.OUT and not restore.exists()and not restore.is_symlink(),'new original absolute producer restore and exact fresh output')
     needed=parts['bytes']+8*sum(v['bytes']for v in index['files'].values())+16*1024**3
-    require(shutil.disk_usage(out.parent).free>=needed,'entire immutable input plus fresh RC complete-evidence storage')
-    write(out/'initial-storage.json',encode(dict(free_bytes=shutil.disk_usage(out.parent).free,required_bytes=needed)))
+    storage=dict(free_bytes=shutil.disk_usage(out.parent).free,required_bytes=needed)
+    write(out/'initial-storage.json',encode(storage))
+    require(storage['free_bytes']>=storage['required_bytes'],'entire immutable input plus fresh RC complete-evidence storage')
     primary=None;temp=tempfile.TemporaryDirectory(prefix='fresh-rc-native-',dir=out.parent)
     try:
         part=parts['parts'][0];asset=next(x for x in p['assets']if x['name']==part['name'])
