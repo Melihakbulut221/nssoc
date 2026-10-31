@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Hosted-only producer fixtures; no native payload or extraction is used."""
-import copy,json,tempfile,types
+import copy,io,json,tarfile,tempfile,types
 from pathlib import Path
 import cdr_via2_m3_fresh_rc_producer as p
 
@@ -11,7 +11,7 @@ def controls(root,config):
         result=fn();positive.append(name);return result
     def bad(name,fn):
         try:fn()
-        except (RuntimeError,ValueError,KeyError,UnicodeError,TypeError,FileNotFoundError):refused.append(name)
+        except (AssertionError,RuntimeError,ValueError,KeyError,UnicodeError,TypeError,FileNotFoundError):refused.append(name)
         else:raise RuntimeError('refusal did not trigger: '+name)
     actual=good('complete actual proof and current metadata',lambda:p.metadata(root,config))
     good('all actual original live metadata',lambda:p.validate_live(config,actual,*[actual[k]for k in('run','jobs','release','tag')]))
@@ -84,6 +84,38 @@ def controls(root,config):
         sample.unlink();sample.symlink_to(record);bad('restored symlink',lambda:synthetic(restore,sp,full,original));sample.unlink();sample.write_bytes(saved)
         smaller=dict(full);smaller['selected']=dict(members);smaller['selected'].pop(next(iter(smaller['selected'])));bad('omitted selected member',lambda:synthetic(restore,sp,smaller,original))
         good('all synthetic bytes restored after refusals',lambda:synthetic(restore,sp,full,original))
+        # Exercise the actual qualified streaming reader and production validator
+        # together. Every payload is explicitly synthetic; no native bytes used.
+        archive=scratch/'synthetic665.tar.gz';destination=scratch/'transport-restore'
+        def archive_bytes(path,rows):
+            with tarfile.open(path,'w:gz')as tar:
+                for name,raw,kind in rows:
+                    item=tarfile.TarInfo('synthetic-view/'+name)
+                    if kind=='file':item.size=len(raw);tar.addfile(item,io.BytesIO(raw))
+                    else:item.type=tarfile.SYMTYPE;item.linkname='outside';tar.addfile(item)
+        rows=[(n,b,'file')for n,b in payload.items()]
+        archive_bytes(archive,rows)
+        from cloud_cdr_current_eight_drain_wave_replay import select_archive
+        transported=select_archive(archive,{n:v['sha256']for n,v in members.items()},list(members),'synthetic-view',destination)
+        transport_namespace=dict(vars(p));transport_namespace['CURRENT_ROOT']=str(destination/p.CURRENT_PREFIX)
+        validator=types.FunctionType(p.validate_restored.__code__,transport_namespace,'explicit_synthetic_transport_validator')
+        if validator.__code__ is not p.validate_restored.__code__:raise RuntimeError('transport fixture changed validator code')
+        good('real streaming665 transport to production-code78 validator',lambda:validator(destination,sp,transported,original))
+        bad('transport stays outside real production absolute namespace',lambda:p.validate_restored(destination,sp,transported,original))
+        for index,(label,changed_rows)in enumerate((
+            ('missing full archive member',rows[:-1]),
+            ('duplicate archive member',rows+[rows[0]]),
+            ('extra archive member',rows+[('unexpected.json',b'{}','file')]),
+            ('archive member byte mismatch',[(rows[0][0],b'changed','file')]+rows[1:]),
+            ('archive symbolic link',[(rows[0][0],b'','link')]+rows[1:]),
+            ('archive traversal',rows+[('../escape.json',b'{}','file')]))):
+            trial=scratch/('bad-archive-'+str(index)+'.tar.gz');archive_bytes(trial,changed_rows)
+            bad(label,lambda f=trial,i=index:select_archive(f,{n:v['sha256']for n,v in members.items()},list(members),'synthetic-view',scratch/('bad-restore-'+str(i))))
+        missing_selected=list(members)[1:];subset_dir=scratch/'subset-transport'
+        subset=select_archive(archive,{n:v['sha256']for n,v in members.items()},missing_selected,'synthetic-view',subset_dir)
+        subset_ns=dict(vars(p));subset_ns['CURRENT_ROOT']=str(subset_dir/p.CURRENT_PREFIX)
+        subset_validator=types.FunctionType(p.validate_restored.__code__,subset_ns,'explicit_subset_validator')
+        bad('authenticated but partial transport cannot be current665',lambda:subset_validator(subset_dir,sp,subset,original))
     return dict(status='PASS_SOURCE_PRODUCER_METADATA_AND_EXPLICIT_SYNTHETIC_RESTORE_ONLY',positive_controls=positive,refusal_controls=refused,native_acquisition=False,RC_executed=False,electrical_accepted=False)
 
 if __name__=='__main__':
