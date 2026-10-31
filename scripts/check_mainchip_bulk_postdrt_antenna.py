@@ -75,6 +75,7 @@ proc NDATA {method args} {
 proc U {method args} {
   global placement events
   switch -- $method {
+    getName {return U}
     getPlacementStatus {return $placement}
     setPlacementStatus {set placement [lindex $args 0];lappend events "placement:$placement"}
     default {error "bad instance API"}

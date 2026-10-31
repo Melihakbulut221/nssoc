@@ -75,7 +75,7 @@ def setting_prefix(source,environment,original):
     return "source "+q(environment)+"\n"+guards+"read_db "+q(source)+"\n"+router.LAYERS+"\nset_thread_count 2\n"
 
 def repair_tcl(source,environment,original,work):
-    """Metadata shim does not change dbWire path classes or run detailed_route."""
+    """Restore original names and metadata around one legacy antenna call."""
     text=setting_prefix(source,environment,original)
     text+=r'''
 set block [ord::get_db_block]
@@ -89,13 +89,86 @@ foreach net [$block getNets] {
 foreach inst [$block getInsts] {
   lappend instance_restore [list $inst [$inst getPlacementStatus]]
 }
+
+set original_names {}
+set original_name_set {}
+set namespace_ready 0
+set quarantined_names {}
+set new_name_changes {}
+
 set primary_code [catch {
+
+  # The pinned legacy allocator stops at the first gap and then increments
+  # without checking later existing names. Reserve disjoint namespaces and
+  # isolate all originals before it sees the block.
+  foreach inst [$block getInsts] {
+    set name [$inst getName]
+    if {[dict exists $original_name_set $name]} {error "duplicate original instance name"}
+    dict set original_names $inst $name
+    dict set original_name_set $name 1
+    if {[string first NSSOC_BULK_OLD_ $name] == 0 || [string first NSSOC_BULK_NEW_ $name] == 0} {
+      error "reserved bulk diode namespace already occupied"
+    }
+  }
+  set namespace_ready 1
+  dict for {inst name} $original_names {
+    if {![regexp {^ANTENNA_[1-9][0-9]*$} $name]} {continue}
+    set temporary "NSSOC_BULK_OLD_$name"
+    # Record before calling rename: even an exception after mutation must
+    # leave this original in the independent restoration pass.
+    lappend quarantined_names [list $inst $name $temporary]
+    if {![$inst rename $temporary] || [$inst getName] ne $temporary} {
+      error "original diode namespace isolation failed: $name"
+    }
+  }
+  puts "NSSOC_BULK_NAME_ISOLATION_READY [llength $quarantined_names]"
   foreach pair $metadata_restore { [lindex $pair 0] setWireType ROUTED }
   puts NSSOC_BULK_REPAIR_BEGIN
   set inserted [repair_antennas sg13g2_antennanp -iterations 1 -ratio_margin 10 -diode_only]
   puts "NSSOC_BULK_REPAIR_RETURNED $inserted"
 } primary_result primary_options]
 set cleanup_errors {}
+
+# Rename new objects first so every original name is free to be restored.
+# Every cleanup operation is independent; the original repair error wins.
+if {$namespace_ready} {
+  if {[catch {set current_instances [$block getInsts]} cleanup]} {
+    lappend cleanup_errors $cleanup
+    set current_instances {}
+  }
+  foreach inst $current_instances {
+    if {[dict exists $original_names $inst]} {continue}
+    if {[catch {
+      set generated [$inst getName]
+      if {![regexp {^ANTENNA_[1-9][0-9]*$} $generated]} {
+        error "unexpected generated diode name: $generated"
+      }
+      set destination "NSSOC_BULK_NEW_$generated"
+      if {![$inst rename $destination] || [$inst getName] ne $destination} {
+        error "new diode namespace isolation failed: $generated"
+      }
+      lappend new_name_changes [list $generated $destination]
+    } cleanup]} {lappend cleanup_errors $cleanup}
+  }
+  foreach pair $quarantined_names {
+    set inst [lindex $pair 0]
+    set original [lindex $pair 1]
+    if {[catch {
+      if {[$inst getName] ne $original} {
+        if {![$inst rename $original]} {error "original diode name restore refused: $original"}
+      }
+      if {[$inst getName] ne $original} {error "original diode name not restored: $original"}
+    } cleanup]} {lappend cleanup_errors $cleanup}
+  }
+  # Check all original names, including instances which were never renamed.
+  dict for {inst original} $original_names {
+    if {[catch {
+      if {[$inst getName] ne $original} {error "original instance name changed: $original"}
+    } cleanup]} {lappend cleanup_errors $cleanup}
+  }
+}
+puts "NSSOC_BULK_NAME_RESTORATION [llength $quarantined_names] [llength $new_name_changes] [llength $cleanup_errors]"
+
 foreach pair $metadata_restore {
   set net [lindex $pair 0]
   if {[catch {

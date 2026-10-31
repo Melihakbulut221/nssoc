@@ -55,15 +55,21 @@ def control_evidence(ctx,root=CONTROL_DIR):
     f.require(result["status"]=="PASS_BULK_POSTDRT_INTEGRATION_SOURCE_CONTROLS"
       and result["current_context"]==expected,"exact current source controls")
     counts=dict(inherited=dict(positive=10,refusal=49,lifecycle=20,rendered_tcl=9),
-      projection=3,supervisor=2,shutdown=4,acquisition=4,native_audit=12,bound_cycle=21,publication=3)
+      namespace=25,projection=3,supervisor=2,shutdown=4,acquisition=4,native_audit=12,bound_cycle=21,publication=3)
     f.require(result["counts"]==counts,"complete integration control counts")
     f.require(result["inherited"]["status"]=="PASS_BULK_POSTDRT_SOURCE_CONTROLS"
       and result["inherited"]["counts"]==counts["inherited"],"actual inherited controls")
     for key,count in counts.items():
-        if key=="inherited":continue
+        if key in("inherited","namespace"):continue
         fields={"projection":"projection_fixtures","supervisor":"supervisor_fixtures","shutdown":"shutdown_fixtures","acquisition":"acquisition_fixtures",
           "native_audit":"native_audit_byte_fixtures","bound_cycle":"bound_cycle_fixtures","publication":"publication_fixtures"}
         f.require(len(result[fields[key]])==count,"full control rows")
+    namespace=result["namespace_fixtures"]
+    f.require(namespace["status"]=="PASS_BULK_DIODE_NAMESPACE_SOURCE_CONTROLS"
+      and namespace["count"]==25 and len(namespace["rows"])==25,"full namespace fixture rows")
+    f.require(all(namespace[k]is False for k in("actual_native_rename_API_qualified",
+      "actual_current_chip_name_roundtrip_qualified","physical_acceptance","timing_accepted","full_phy_accepted")),
+      "namespace fixtures are source-only")
     f.require(all(result[k]is False for k in("native_executed","physical_acceptance","timing_accepted","full_phy_accepted")),"source-only control flags")
     f.require(c.secure_file(root,"controls.stdout").read_bytes()==raw,"full exact control stdout")
     return dict(context=expected,files={name:f.file_digest(c.secure_file(root,name))

@@ -277,6 +277,8 @@ def shutdown_case(failure=None):
     p.require(value["complete"]is(failure is None),"shutdown failure remains incomplete")
     return dict(failure=failure,events=events,result=value,synthetic_process_io=True)
 
+import check_mainchip_bulk_diode_namespace as namespace_controls
+
 def controls():
     manifest=host.source_gate()
     disabled=copy.deepcopy(manifest);disabled["native_execution_enabled"]=False
@@ -284,6 +286,7 @@ def controls():
     except AssertionError as exc:p.require("bulk native disabled"in str(exc),"disabled authority refusal")
     else:raise AssertionError("inert native authority unexpectedly active")
     projected=projection_controls()
+    names=namespace_controls.controls()
     prior_result=prior.controls()
     p.require(prior_result["counts"]==dict(positive=10,refusal=49,lifecycle=20,rendered_tcl=9),"inherited source control census")
     audits=[audit_case(phase,mutation)for phase in("fixed-audit","restored-audit","failure-restored-audit")for mutation in(None,"geometry","class")]
@@ -301,8 +304,8 @@ def controls():
     acquisitions=[acquisition_case(change)for change in(None,"source","release","asset")]
     publications=[publication_case(),publication_case(upload_failure=True),publication_case(conflict=True)]
     return dict(status="PASS_BULK_POSTDRT_INTEGRATION_SOURCE_CONTROLS",
-      inherited=prior_result,projection_fixtures=projected,native_audit_byte_fixtures=audits,bound_cycle_fixtures=cycles,publication_fixtures=publications,acquisition_fixtures=acquisitions,supervisor_fixtures=supervised,shutdown_fixtures=shutdown,
-      counts=dict(inherited=prior_result["counts"],projection=len(projected),supervisor=len(supervised),shutdown=len(shutdown),acquisition=len(acquisitions),native_audit=len(audits),bound_cycle=len(cycles),publication=len(publications)),
+      inherited=prior_result,namespace_fixtures=names,projection_fixtures=projected,native_audit_byte_fixtures=audits,bound_cycle_fixtures=cycles,publication_fixtures=publications,acquisition_fixtures=acquisitions,supervisor_fixtures=supervised,shutdown_fixtures=shutdown,
+      counts=dict(inherited=prior_result["counts"],namespace=names["count"],projection=len(projected),supervisor=len(supervised),shutdown=len(shutdown),acquisition=len(acquisitions),native_audit=len(audits),bound_cycle=len(cycles),publication=len(publications)),
       native_authorized=False,native_executed=False,**p.FLAGS)
 
 def main():
