@@ -1,7 +1,7 @@
 {
   "schema": "cdr-via2-m3-fresh-rc-host-preparation-v1",
   "branch": "codex/cdr-via2-m3-fresh-rc-adapter",
-  "state": "source_preparation_native_disabled",
+  "state": "integrated_source_ready_native_disabled",
   "fresh_rc_execution_authorized": false,
   "electrical_simulation_authorized": false,
   "layout_regeneration_authorized": false,
@@ -375,7 +375,19 @@
       "sha256": "d8c5e977e18961fc8af7f5c42593114b2a2adca6945547a00e721e889eda78c9"
     }
   },
-  "core_binding": null,
+  "core_binding": {
+    "source": "2c23d93eb14cca59d7d06110a4ee757f39c77c5f",
+    "run_id": 41246819821,
+    "controls": 28,
+    "proof_source": "12db9e3e5eefdee3b2e3de32116e636d62f7f823",
+    "proof_prefix": "docs/evidence/cdr-via2-m3-fresh-rc-core-controls-41246819821/",
+    "proof_tree": "82bd622d17f18f01fbd4c6f55b955f4c5ec2e44a",
+    "receipt": {
+      "bytes": 7208,
+      "sha256": "0469903b9f70fa4b8d6600c6e48eb9717909cbee08d7001e50de85e1abe6aff6"
+    },
+    "native_execution": false
+  },
   "acceptance_boundary": "Canonical view and physical gates passed; new RC counts and loaded electrical behavior have not been measured. Native IDs and port ordinals are read from this actual view, never copied from the historical view.",
   "corrected_namespace": {
     "source": "0a9e1741232bf60fdf4f4c443ea3466575b7c6b3",
@@ -388,5 +400,23 @@
       "bytes": 3767,
       "sha256": "41da79baa005c521332ab80b55fc76dec974aa82706eb505ee77ec205024c0bb"
     }
+  },
+  "phase_wrapper": {
+    "source": "7dab9349d27acea8ff75f2ad7f97e368f8aef9a6",
+    "files": {
+      "scripts/cdr_via2_m3_fresh_rc_native.py": {
+        "bytes": 23049,
+        "sha256": "731a07bc29418f1270cf6d2c98d51e866a4e447e2129d113c5b80108d332292f"
+      },
+      "scripts/check_cdr_via2_m3_fresh_rc_native.py": {
+        "bytes": 13717,
+        "sha256": "4fe5568f8e80710d304c0af0fce27aee39486f527ad447bdbd86743f3388125e"
+      },
+      "docs/cdr-via2-m3-fresh-rc-phase-adapter.md": {
+        "bytes": 3700,
+        "sha256": "252de38fc1e9329d7dc7366b7b7318a2acb652a47673da38aa10b26c3582df6a"
+      }
+    },
+    "integrated_hosted_test_pending": true
   }
 }
