@@ -36,7 +36,7 @@ jobs:
           import hashlib
           from pathlib import Path
           p=Path('scripts/cdr-current-rc-terminal-readback-pins.json')
-          assert hashlib.sha256(p.read_bytes()).hexdigest()=='e3955e9ab41eecbfae9baa09f2c2a4083bac34dd35fcacca79af5b95bc915245'
+          assert hashlib.sha256(p.read_bytes()).hexdigest()=='893d7398853a05ff74fa7395c527652cd8a56fc04f6a97dcd6ba3f48eaa2e2d4'
           PY
           python3 -B scripts/cloud_cdr_current_rc_terminal_readback.py --source-check
       - name: Exercise synthetic archive, source and reservation refusals
@@ -87,7 +87,7 @@ jobs:
           python3 -B - <<'PY'
           import hashlib
           from pathlib import Path
-          assert hashlib.sha256(Path('scripts/cdr-current-rc-terminal-readback-pins.json').read_bytes()).hexdigest()=='e3955e9ab41eecbfae9baa09f2c2a4083bac34dd35fcacca79af5b95bc915245'
+          assert hashlib.sha256(Path('scripts/cdr-current-rc-terminal-readback-pins.json').read_bytes()).hexdigest()=='893d7398853a05ff74fa7395c527652cd8a56fc04f6a97dcd6ba3f48eaa2e2d4'
           PY
           python3 -B scripts/cloud_cdr_current_rc_terminal_readback.py --source-check
       - name: Authenticate complete RC capsule and original publication on runner

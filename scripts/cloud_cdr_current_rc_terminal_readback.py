@@ -77,6 +77,10 @@ def producer_check(cfg,run,jobs,release,ref):
     exact(sorted([{k:a[k]for k in fields}for a in release["assets"]],key=lambda a:a["id"]),
       sorted(cfg["assets"],key=lambda a:a["id"]),"Producer asset set changed")
     return True
+def validate_snapshot(cfg,snapshots):
+    require(set(snapshots)=={"run","jobs","release","tag"},"Producer snapshot namespace")
+    return producer_check(cfg,snapshots["run"],snapshots["jobs"],snapshots["release"],snapshots["tag"])
+
 def validate_parts(cfg,parts):
     exact(parts,cfg["parts"],"Parts manifest changed")
     require(parts["format"]=="ordered-tar-gzip-parts-v1"and parts["source_directory"]==cfg["root"],"Archive format/root")
@@ -252,7 +256,7 @@ def run():
           "release":"releases/"+str(cfg["producer"]["release_id"]),"tag":"git/ref/tags/"+cfg["producer"]["tag"]}
         for name,path in paths.items():
             raw=raw_api(path);write(OUT/("producer-"+name+".json"),raw);snapshots[name]=parse(raw)
-        producer_check(cfg,**snapshots)
+        validate_snapshot(cfg,snapshots)
         auth=[];assets={}
         for a in cfg["assets"]:
             target=work/a["name"];auth.append(asset_download(a,target));assets[a["name"]]=target
@@ -282,7 +286,7 @@ def run():
           "archive":{"bytes":total,"sha256":whole.hexdigest()},"sha256":{n:r["sha256"]for n,r in members.items()},"files":members,
           "directories":dirs,"regular_members":len(members),"all_members_streamed":True,"native_files_extracted":False}))
         result["original_artifact_readback"]=artifact_readback(cfg,work)
-        after={name:api(path)for name,path in paths.items()};producer_check(cfg,**after)
+        after={name:api(path)for name,path in paths.items()};validate_snapshot(cfg,after)
         source_guard()
         result.update(status="PASS_AUTHENTICATED_COMPLETE_RC_CAPSULE_JSON_READBACK_NOT_ELECTRICAL_ACCEPTANCE",
           measurements=measured,all19assets_authenticated=len(auth)==19,producer_unchanged_after_readback=True,

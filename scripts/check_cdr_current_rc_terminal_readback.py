@@ -82,6 +82,12 @@ class Controls(unittest.TestCase):
         for mutation in mutations:
             rows=list(self.producer());mutation(rows)
             with self.subTest(mutation=repr(mutation)),self.assertRaises(AssertionError):c.producer_check(self.cfg,*rows)
+    def test_producer_snapshot_namespace(self):
+        values=dict(zip(("run","jobs","release","tag"),self.producer()))
+        self.assertTrue(c.validate_snapshot(self.cfg,values))
+        values["ref"]=values.pop("tag")
+        with self.assertRaises(AssertionError):c.validate_snapshot(self.cfg,values)
+
     def test_parts_positive(self):
         c.validate_parts(self.cfg,self.cfg["parts"])
     def test_parts_refuses_substitution(self):
