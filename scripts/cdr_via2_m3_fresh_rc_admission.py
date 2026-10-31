@@ -11,7 +11,7 @@ CONFIG='scripts/cdr-via2-m3-fresh-rc-adapter-inputs.json'
 MANIFEST='scripts/cdr-via2-m3-fresh-rc-adapter-pins.json'
 PRODUCER='scripts/cdr-via2-m3-fresh-rc-producer-inputs.json'
 WORKFLOW='.github/workflows/cloud-evidence-summary.yml'
-GROUP='cdr-via2-m3-fresh-rc'
+GROUP='cdr-via2-m3-fresh-rc-nominal_late'
 OUT=ROOT/'hw/soc/out/cloud-cdr-via2-m3-fresh-rc'
 ORIGINAL=ROOT/'hw/soc/out/cloud-cdr-via2-m3-canonical-view'
 require=q.require;encode=q.encode
