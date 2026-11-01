@@ -16,8 +16,13 @@ def save(name,v):
  p=OUT/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(enc(v))
 def api(path):
  return json.loads(subprocess.check_output(["gh","api",REPO+path]))
+def download_command(path):
+ command=["gh","api",REPO+path]
+ if re.fullmatch(r"releases/assets/[0-9]+",path):return command+["-H","Accept: application/octet-stream"]
+ if re.fullmatch(r"actions/artifacts/[0-9]+/zip",path):return command
+ raise AssertionError("unsupported download endpoint")
 def blob(path):
- return subprocess.check_output(["gh","api",REPO+path,"-H","Accept: application/octet-stream"])
+ return subprocess.check_output(download_command(path))
 def source_gate():
  assert os.environ.get("GITHUB_ACTIONS")=="true"
  assert os.environ["GITHUB_REPOSITORY"]=="Melihakbulut221/nssoc"
@@ -68,8 +73,15 @@ def controls():
  try:gate({},plan)
  except AssertionError:passed.append("reject missing net")
  else:raise AssertionError("accepted missing net")
- assert len(passed)==10
- save("controls.json",dict(source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),count=10,passed=passed,**FLAGS))
+ assert download_command("actions/artifacts/12/zip")==["gh","api",REPO+"actions/artifacts/12/zip"]
+ passed.append("artifact ZIP keeps GitHub JSON request negotiation")
+ assert download_command("releases/assets/12")==["gh","api",REPO+"releases/assets/12","-H","Accept: application/octet-stream"]
+ passed.append("release asset uses octet-stream negotiation")
+ try:download_command("unknown")
+ except AssertionError:passed.append("reject unknown download endpoint")
+ else:raise AssertionError("accepted unknown endpoint")
+ assert len(passed)==13
+ save("controls.json",dict(source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),count=13,passed=passed,**FLAGS))
 def analyze():
  inputs=json.loads((ROOT/"scripts/mainchip-connectivity-diagnosis-inputs.json").read_bytes())
  run=api("actions/runs/"+str(RUN));assert run["head_sha"]==SOURCE and run["status"]=="completed"and run["conclusion"]=="failure"and run["run_attempt"]==1
