@@ -3,6 +3,7 @@
 """Cloud-only complete-wave diagnosis of the rejected coupled sampler candidate."""
 import argparse,ast,base64,hashlib,json,math,os,pathlib,resource,subprocess,tarfile,time,traceback,zlib
 import numpy as np
+import cdr_sampler_transfer as transfer
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 CONFIG="scripts/cdr-sampler-candidate-wave-inputs.json"
 REPO="repos/Melihakbulut221/nssoc/"
@@ -268,7 +269,11 @@ def main():
             if row["model"]!="npn13g2":continue
             dev=report["devices"]["xpd."+row["instance"].lower()]
             require(dev["nodes"]==["xpd."+x["node"].lower() for x in row["terminals"]] and dev["nx"]==int(row["parameters"]["nx"]),"native candidate HBT terminal identity")
-        summary={k:v for k,v in result.items()if k not in ("hbt","stages","capture","failing_hbt_events","stage_operating_points")}
+        result["transfer_paths"]=transfer.analyze(report,composition,t,data)
+        transfer_summary={k:v["summary"]for k,v in result["transfer_paths"]["paths"].items()}
+        (out/"transfer-summary.json").write_bytes(encode(transfer_summary))
+        summary={k:v for k,v in result.items()if k not in ("hbt","stages","capture","failing_hbt_events","stage_operating_points","transfer_paths")}
+        summary["transfer_paths"]=transfer_summary
         summary["failing_hbt_events"]=[{k:v for k,v in e.items()if k not in ("all124_simultaneous_hbt","simultaneous_observed_nodes_v","all_violating_intervals")}for e in result["failing_hbt_events"]]
         summary["stage_operating_points"]={tag:[dict(event=x["event"],signed_margin_v=x["signed_margin_v"],observed_nodes_v=x["observed_nodes_v"])for x in rows]for tag,rows in result["stage_operating_points"].items()}
         summary["stages"]={k:{n:v for n,v in s["metrics"].items()if n!="clock_to_valid_by_bit_s"}for k,s in result["stages"].items()}
