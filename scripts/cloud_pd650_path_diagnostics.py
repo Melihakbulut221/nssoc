@@ -50,7 +50,7 @@ def context(case,work):
         if isinstance(value,types.FunctionType)and value.__globals__ is reader.__dict__:
             fn=types.FunctionType(value.__code__,ns,value.__name__,value.__defaults__,value.__closure__)
             fn.__kwdefaults__=value.__kwdefaults__;ns[name]=fn
-            require(fn.__code__is value.__code__,"unchanged original function body")
+            require(fn.__code__ is value.__code__,"unchanged original function body")
     ns.update(ROOT=source,OUT=OUT/case,SOURCE=cfg["source"],PRODUCER_RUN=cfg["run"],RELEASE=cfg["release"],source_gate=gate)
     return ns
 def settling(t,signed,start,stop):
