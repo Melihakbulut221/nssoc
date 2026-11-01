@@ -1,0 +1,83 @@
+{
+  "explicit_synthetic_fixture": true,
+  "wire_methods": {
+    "audit-rc48.py": {
+      "adapted_sha256": "bce83446e108acb2ddac392de70f38bcc375224cb2df7959d499c1e7cbda2487",
+      "changes": [
+        {
+          "after": "original_devices=500",
+          "before": "original_devices=54"
+        },
+        {
+          "map": {
+            "100": "953",
+            "112": "978",
+            "12": "25",
+            "154": "1446",
+            "17": "113",
+            "18": "114",
+            "54": "493"
+          },
+          "numeric_census_token_changes": {
+            "100": 3,
+            "112": 4,
+            "12": 1,
+            "154": 1,
+            "17": 8,
+            "18": 3,
+            "54": 2
+          }
+        },
+        {
+          "after": "==['114']",
+          "before": "==['18']"
+        },
+        {
+          "after": "==['113']",
+          "before": "==['17']"
+        }
+      ],
+      "original_sha256": "81aa93681abcd87a65990667cd1bf7a0c0d04706babef03efce55dd238825638"
+    },
+    "mutations48.py": {
+      "adapted_sha256": "9a34dcf9745b5b6439eaf6426e9e3e059477995190682fe792ecd765dcfcdd28",
+      "changes": [
+        {
+          "after": "# Select one real R whose deletion preserves every connected component.\nresistor_rows=[(i,line.split()) for i,line in enumerate(rows) if re.fullmatch(r'R\\d+ \\S+ \\S+ \\S+',line)]\nassert len(resistor_rows)==len(parsed['resistors'])\nfrom collections import Counter\nedge_counts=Counter(frozenset((f[1],f[2])) for i,f in resistor_rows)\nbridges={frozenset(e) for e in nx.bridges(graph)}\ndrop_index,drop_fields=next((i,f) for i,f in resistor_rows if edge_counts[frozenset((f[1],f[2]))]>1 or frozenset((f[1],f[2])) not in bridges)\ndropped_rows=rows[:drop_index]+rows[drop_index+1:]\ndropped_text='\\n'.join(dropped_rows)+'\\n'\ndropped_parsed=m.rawparser.parse_spice(dropped_text)\nassert len(dropped_parsed['resistors'])==len(parsed['resistors'])-1\nkept_graph=nx.Graph();kept_graph.add_edges_from((x,y) for x,y,v in dropped_parsed['resistors'])\nassert set(kept_graph)==set(graph)\nassert {frozenset(c) for c in nx.connected_components(kept_graph)}=={frozenset(c) for c in nx.connected_components(graph)}\ncases=[\n",
+          "before": "cases=[\n"
+        },
+        {
+          "after": "dropped_text",
+          "before": "re.sub(r'^R\\d+ .*\\n','',text,count=1,flags=re.M)"
+        }
+      ],
+      "original_sha256": "e540a0a626a602a342c244608e1e8896fc89fe5228df31656ea489779f1e4cfe"
+    },
+    "run-rc01.py": {
+      "adapted_sha256": "6923de05b54c8a2b32c61c288ce9d6950d952ac340f30701ef7adabc84ff0299",
+      "changes": [
+        {
+          "after": "B.parent/'magic-cloud/runtime/lib'",
+          "before": "Path('/dev/shm/nssoc-magic-area-product-v4-build/runtime/lib')"
+        },
+        {
+          "after": "B.parent/'magic-cloud/tech'",
+          "before": "Path('/dev/shm/nssoc-magic-pad-stack-tech-v1')"
+        },
+        {
+          "after": "(4*1024**3,)*2",
+          "before": "(2*1024**3,)*2"
+        },
+        {
+          "after": "size>1024*1024**2",
+          "before": "size>80*1024**2"
+        },
+        {
+          "after": "OWNED_SCRATCH_1024MIB_LIMIT",
+          "before": "OWNED_SCRATCH_80MIB_LIMIT"
+        }
+      ],
+      "original_sha256": "de4885a558d8faf61188dc3c3c5734dc6438c7aa33d41561178c4eac2b3f12f7"
+    }
+  }
+}
