@@ -1,0 +1,16 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Select-buffer candidate: only reference and tail become native LVNMOS.
+* Original differential HBT pair, load divider and all four resistors retained.
+* Separate SUB bulk connection for physical substrate contacts; AVSS remains signal return.
+* Not a verified replacement in the full CDR or physical layout.
+.subckt nssoc_cdr_select_hybrid_tail_v2 dp dn qp qn avdd avss sub iref
+XREF iref iref avss sub sg13_lv_nmos w=8u l=.3u ng=1
+XDP qn dp tail sub npn13G2 Nx=2
+XDN qp dn tail sub npn13G2 Nx=2
+XT tail iref avss sub sg13_lv_nmos w=32u l=.3u ng=1
+XHDR avdd load sub rppd w=8u l=2u b=0 sw_et=1
+XHDN load avss sub rppd w=8u l=4.2u b=0 sw_et=1
+XRP load qp sub rppd w=8u l=1.8u b=0 sw_et=1
+XRN load qn sub rppd w=8u l=1.8u b=0 sw_et=1
+.ends nssoc_cdr_select_hybrid_tail_v2

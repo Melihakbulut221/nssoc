@@ -1,0 +1,166 @@
+name: Fresh native connectivity view of six shortcuts
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cdr-wire-shortcuts-canonical-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr-wire-shortcuts-canonical-pins.json
+      - name: Materialize exact current source closure
+        run: |
+          python3 -B - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          manifest='scripts/cdr-wire-shortcuts-canonical-pins.json'
+          pins=json.loads(Path(manifest).read_bytes())
+          names=sorted(set(pins['files'])|{manifest})
+          assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
+          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
+          PY
+      - name: Install pinned control libraries
+        run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1
+      - name: Qualify original geometry and new canonical material controls
+        run: python3 -B scripts/cloud_cdr_wire_shortcuts_canonical.py --controls
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: wire-canonical-controls-${{ github.run_id }}
+          path: hw/soc/out/cloud-cdr-wire-shortcuts-canonical
+          if-no-files-found: error
+          retention-days: 90
+  native-canonical:
+    needs: source-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr-wire-shortcuts-canonical-pins.json
+      - name: Materialize exact current source closure
+        run: |
+          python3 -B - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          manifest='scripts/cdr-wire-shortcuts-canonical-pins.json'
+          pins=json.loads(Path(manifest).read_bytes())
+          names=sorted(set(pins['files'])|{manifest})
+          assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
+          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
+          PY
+      - name: Install pinned control libraries
+        run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1
+      - name: Require independent empty exact-source release reservation
+        id: reserve
+        run: |
+          python3 -B - <<'PY'
+          import json,os,subprocess,time
+          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-cdr-wire-shortcuts-canonical'
+          for i in range(120):
+              p=subprocess.run(['gh','api','repos/Melihakbulut221/nssoc/releases/tags/'+tag],capture_output=True,text=True)
+              if p.returncode==0:
+                  r=json.loads(p.stdout);break
+              assert 'HTTP 404'in p.stderr,p.stderr
+              time.sleep(2)
+          else:raise RuntimeError('missing independent reservation')
+          assert r['target_commitish']==e['GITHUB_SHA']and not r['assets']
+          ref=json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/git/ref/tags/'+tag]))
+          assert ref['object']['sha']==e['GITHUB_SHA']
+          PY
+      - name: Acquire and verify unchanged native tool for fresh RC only
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y libfuse2 tcl8.6 tk8.6 tcl-dev tk-dev build-essential m4 autoconf libreadline-dev libx11-dev libxext-dev libxpm-dev libxt-dev libcairo2-dev libgl1-mesa-dev libglu1-mesa-dev uidmap
+          curl --fail --location --retry 2 --output "$RUNNER_TEMP/current-tail-physical.AppImage" https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
+          python3 -B - <<'PY'
+          import hashlib,os
+          from pathlib import Path
+          path=Path(os.environ['RUNNER_TEMP'])/'current-tail-physical.AppImage'
+          with path.open('rb')as f:assert hashlib.file_digest(f,'sha256').hexdigest()=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
+          path.chmod(0o755)
+          PY
+      - name: Admit only the pinned runtime to hosted AppArmor user namespaces
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,re,subprocess
+          from pathlib import Path
+          e=os.environ
+          assert e['GITHUB_ACTIONS']=='true' and e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr-wire-shortcuts-canonical' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert re.fullmatch('[1-9][0-9]*',e['GITHUB_RUN_ID']) and re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA'])
+          app=Path(e['RUNNER_TEMP'])/'current-tail-physical.AppImage'
+          assert app==Path('/home/runner/work/_temp/current-tail-physical.AppImage') and app.is_file() and not app.is_symlink()
+          with app.open('rb')as f:digest=hashlib.file_digest(f,'sha256').hexdigest()
+          assert digest=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
+          key=Path('/proc/sys/kernel/apparmor_restrict_unprivileged_userns')
+          before=key.read_text().strip()
+          name='nssoc-cdr-runtime-'+e['GITHUB_RUN_ID']+'-1'
+          target=Path('/etc/apparmor.d')/name
+          assert not target.exists() and not target.is_symlink()
+          policy='abi <abi/4.0>,\ninclude <tunables/global>\nprofile '+name+' "'+str(app)+'" flags=(unconfined) {\n  userns,\n}\n'
+          installed=subprocess.run(['sudo','tee',str(target)],input=policy.encode(),capture_output=True,check=True)
+          assert installed.stdout==policy.encode() and target.read_text()==policy
+          loaded=subprocess.run(['sudo','apparmor_parser','-a',str(target)],capture_output=True,check=True)
+          profiles=subprocess.check_output(['sudo','cat','/sys/kernel/security/apparmor/profiles'],text=True).splitlines()
+          active=[line for line in profiles if line.startswith(name+' (')]
+          assert len(active)==1 and key.read_text().strip()==before
+          proof=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
+            appimage=str(app),appimage_sha256=digest,profile=str(target),profile_text=policy,
+            profile_sha256=hashlib.sha256(policy.encode()).hexdigest(),loaded=True,active=active,
+            restriction_before=before,restriction_after=key.read_text().strip(),global_policy_changed=False,
+            parser_stdout=loaded.stdout.decode(),parser_stderr=loaded.stderr.decode(),
+            native_geometry_executed=False,scope='Exact pinned executable on this ephemeral GitHub runner only')
+          Path('current-cdr-runtime-policy.json').write_text(json.dumps(proof,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(proof,sort_keys=True))
+          PY
+      - name: Rebuild actual native wire graph anchors and full layer identity
+        run: python3 -B scripts/cloud_cdr_wire_shortcuts_canonical.py --verify
+      - name: Permanently preserve complete native view success or failure
+        if: always() && steps.reserve.outcome == 'success'
+        run: python3 -B scripts/cloud_cdr_wire_shortcuts_canonical.py --publish
+      - name: Select derived text only
+        if: always()
+        run: python3 -B scripts/cloud_cdr_wire_shortcuts_canonical.py --derived
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: wire-canonical-derived-${{ github.run_id }}
+          path: wire-canonical-derived
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: wire-canonical-native-fallback-${{ github.run_id }}
+          path: |
+            hw/soc/out/cloud-cdr-wire-shortcuts-canonical
+            wire-canonical-publication
+            canonical-physical-cache
+            wire-native-cache
+          if-no-files-found: warn
+          retention-days: 90
