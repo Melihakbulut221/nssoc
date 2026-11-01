@@ -132,12 +132,15 @@ def inspect_lvs(report,top,out):
     import klayout.db as db
     lvs=db.LayoutVsSchematic();lvs.read(str(report))
     circuit=lvs.netlist().circuit_by_name(top);assert circuit is not None
+    def value(obj,key):
+        item=getattr(obj,key)
+        return item() if callable(item) else item
     devices=[]
     for dev in circuit.each_device():
         dc=dev.device_class()
-        devices.append(dict(name=dev.name,model=dc.name,
-            parameters={p.name:dev.parameter(p.id) for p in dc.parameter_definitions()},
-            terminals={t.name:dev.net_for_terminal(t.id).name for t in dc.terminal_definitions()}))
+        devices.append(dict(name=value(dev,"name"),model=value(dc,"name"),
+            parameters={value(p,"name"):dev.parameter(value(p,"name")) for p in dc.parameter_definitions()},
+            terminals={value(t,"name"):value(dev.net_for_terminal(value(t,"id")),"name") for t in dc.terminal_definitions()}))
     Path(out).write_text(json.dumps(dict(top=top,devices=devices),indent=2)+"\n")
 if __name__=="__main__":
     p=argparse.ArgumentParser();p.add_argument("--controls",action="store_true");p.add_argument("--pdk",type=Path);p.add_argument("--out",type=Path)
