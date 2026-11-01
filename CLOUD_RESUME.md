@@ -1,7 +1,14 @@
-# Cloud continuation — checkpoint v231
+# Cloud continuation — checkpoint v232
 
-Updated: 2026-11-01T09:20:32.397432+00:00
+Updated: 2026-11-01T09:54:59.949118+00:00
 All tests, CAD, simulations and numerical/geometry analysis execute on GitHub. This explicit instruction overrides the older local-work goal wording. Local project and project temporary outputs stay empty. Source/API-derived text coordination uses RAM only; no native archives/models/SPICE/ODB/GDS/raw waves are acquired locally.
+
+Latest diagnostic progress:
+- Complete-wave reproduction41293861314/source46319d4691e2b06a193ebf47984b40256800fa41 passed29 controls and reproduced all6 original failures and phase19.616mV. Full22proof198ac19f2ffb0a2d853936ee31f7951c06d673b5.
+- Native-node buffer diagnosis41294574040/sourceabd8ec54a53e615dd9384a287f6690fd9130440f also passed29 controls; full23proof5d32ba3ace05084b64cc1c1766c8ff19fa84908d. At0.9UI, A/C/D sources are already>=100mV but their downstream buffers still have77/43/89wrong-sign samples. X active positive peak75.144mV never reaches100mV. The selector already usesretimedD viaR234-237, so no speculativeB-toDrewire.
+- See docs/pd650-buffer-lag-diagnosis.md. Next explicit hypothesis: halve both legs of A/CdividersR227-230/R238-241 from1.8/10.8to0.9/5.4um and DdividerR234-237 from6/8.6to3/4.3um,w1um. Exact12IDs in v232 proposal. NOT YET GENERATED/SIMULATED. Preserve original gates,200MOS and all other model/RCbytes; after actual electrical result update geometry/freshRC separately.
+- Initial cancelledreader41293342915 and list-type failure41293436380 are preserved in13/17-file proofs71e233ec0651b3062bcd0aaf69a1c5b870f1fc48/1777bacdebf3e371acd5a8ac0b485267f2b4cce3. No simulator rerun in these analyses.
+- Three duplicate proof-ref CI attempts cancelled with originals retained; cancellations are not test passes. Future proof publisher must build its final [skip ci] commit FIRST, then create the branch directly at that commit. Never create an intermediate ref at the tested source, which triggers redundant generalCI.
 
 1. New mainchip source **7a0776718ec37a106b7dfde0cbd477c6a2a5522f**, branch codex/mainchip-net459-diode-prune, shared workflow cloud-evidence-summary.yml. All inherited files including old workflow remain byte-identical. Original 64-iteration environment contract is retained; the actual router argument explicitly uses8 iterations for intermediate stage1 only. Existing828-owner/1351diode/1691protected-record and final DRC/antenna/connectivity/timing predicates remain. No checkpoint or final physical result is inferred from source controls.
 
@@ -19,4 +26,4 @@ All tests, CAD, simulations and numerical/geometry analysis execute on GitHub. T
 
 8. Mainchip remains packet-interface SoC, not full serial PHY ownership. Actual PLL/CDR/SERDES, fulltraining/LTSSM, lane mapping, descrambler/TX and serialsoc_top integration remain open. Authorized spec access request already pending; do not repeat it.
 
-9. Local project and project-named temporary directories were rechecked empty; no CAD process. User files/shared apps preserved. All changes and evidence live on GitHub. Inventory 633 runs. Eight-hour monitor stays read-only automatic_native_dispatch:false. Full serial PHY, routed serial-integrated chip, final setup/hold and production acceptance remain OPEN.
+9. Local project and project-named temporary directories were rechecked empty; no CAD process. User files/shared apps preserved. All changes and evidence live on GitHub. Inventory 643 runs. Eight-hour monitor stays read-only automatic_native_dispatch:false. Full serial PHY, routed serial-integrated chip, final setup/hold and production acceptance remain OPEN.

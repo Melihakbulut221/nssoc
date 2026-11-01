@@ -1,0 +1,1056 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "native_processes": 0,
+    "observed_at": "2026-11-01T09:54:59.949118+00:00",
+    "project_temp_entries": {
+      "/dev/shm": [],
+      "/tmp": [],
+      "/var/tmp": []
+    },
+    "source_API_derived_text_RAM_only": true,
+    "unrelated_user_files_not_modified": true,
+    "workspace_entries": 0
+  },
+  "final_timing_complete": false,
+  "full_serial_phy_accepted": false,
+  "progress": {
+    "document": "# PD650 data-buffer lag localized from complete native rows\n\nThe original circuit remains **electrically rejected**. Analysis success means the\nfailed measurements were reproduced and their location narrowed; it is not a PHY pass.\n\nProducer: run41288195752/source d638e0e3cd15a0ee930212c27ab1f238b5085237,\nrelease430445706. Raw SHA256 4d0227e3cdf45a1e670059882c513b11d254c5d142c5d50bf295e5ddfe2b861f.\nThe cloud reader authenticated every archive member, all1301 vectors and113475\nunmodified rows. It uses the original pinned binary parser and reproduces every\noriginal sampling count, signed margin, per-bit clock-to-valid and phase average.\n\nFull-wave reproduction run41293861314/source46319d4691e2b06a193ebf47984b40256800fa41:\n29 controls passed; complete22-file proof198ac19f2ffb0a2d853936ee31f7951c06d673b5,\n`docs/evidence/pd650-wave-analysis-41293861314`.\n\nPhysical-node path analysis run41294574040/sourceabd8ec54a53e615dd9384a287f6690fd9130440f:\n29 controls passed; complete23-file proof5d32ba3ace05084b64cc1c1766c8ff19fa84908d,\n`docs/evidence/pd650-wave-analysis-41294574040`.\n\n## Findings\n\nA/B failures occur on transitions; A reaches100mV as late as42.656ps and B37.969ps\nagainst the unchanged37.5ps requirement. C/D have later transitions and some late\nmargin collapse. Their118.906ps worst measurements include samples still below\n100mV at the end of the original0.95UI window; this is not evidence that a clean\ntransition occurs at118.906ps.\n\nX's positive active swing peaks at75.144mV, below the100mV requirement. Y's positive\npeak is18.937mV. The phase average remains19.616mV against the original30mV gate.\nAll original transistor voltage/current gates pass in this one nominal run.\n\nAt0.9UI after the original rising edge, the following downstream wrong-sign cases\noccur **even when their source sampler already has at least100mV signed margin**:\n\n| Physical path | Source-valid samples | Downstream wrong-sign samples |\n|---|---:|---:|\n| A divider bases |255|0|\n| A buffer collectors ADP/ADN |255|77|\n| C divider bases |216|27|\n| C buffer collectors CDP/CDN |216|43|\n| D divider at X selector bases |254|69|\n| D divider at Y selector bases |254|69|\n| D buffer collectors S0P/S0N |254|89|\n| D buffer collectors S1P/S1N |254|89|\n\nAt0.6UI all255 A/C/D source samples exceed100mV, but A/C buffer outputs have101/96\nwrong-sign samples and both D buffers112. These are separately labelled diagnostic\ncounts; none replaces the original six sampling gates.\n\nThe physical device graph confirms R234-237 feed USP/USN from **retimed DQP/DQN**,\nnot raw B. Do not apply a speculative B-to-D rewire. A/C data paths use R227-230\nand R238-241. The diagnostic binds the actual bases of Q123/Q125, Q128/Q130,\nQ131/Q132 and Q149/Q150, plus their actual collector aliases, against native\ncomposition/plane identities. No ideal interconnect aliases or reconstructed\nBoolean outputs are inserted.\n\n## Next circuit experiment\n\nA bounded hypothesis is to halve both resistor-divider legs, preserving nominal\nratios: A/C1.8/10.8um becomes0.9/5.4um; D6/8.6um becomes3/4.3um, all widths1um.\nThe exact12 resistor IDs are recorded in the v232 checkpoint proposal.\nThis candidate is **not yet generated or simulated**. Preserve the complete old\nmodel SHA and reverse-verify every changed token/descriptor; keep all200 MOS\nunits, all other model/RC bytes, original stimulus and every electrical gate.\nLower impedance can change loading/headroom, so an actual full simulation must\naccept or reject the candidate. No successful outcome is assumed. Full updated\ngeometry/DRC/LVS/freshRC/PVT and closed-loop/serial integration still follow.\n\n## Retained reader failures and cloud operation\n\nInitial4516b4ce.../41293342915 was cancelled during checkout after inspection\nfound omitted cloud-sampler-load/ archive-prefix handling. Full13-file proof\n71e233ec0651b3062bcd0aaf69a1c5b870f1fc48 is retained.\nSourcef015f8bb.../41293436380 authenticated the full archive then stopped because\nthe reader expected a diagnostic count instead of the actual empty list. Its\nfull17-file proof1777bacdebf3e371acd5a8ac0b485267f2b4cce3 is retained. The final\nreader accepts only the actual empty list and rejects nonempty/mistyped values.\n\nOnly derived text/JSON is read by the coordinator; native archives, models and\nraw waveforms remain on GitHub. Source/electrical/physical execution remains\ncloud-only. Proof branches now point directly at their final [skip ci] commit,\navoiding redundant same-source general CI at temporary base refs. Three duplicate\nproof-branch CI runs were cancelled; original same-source CI attempts are retained.\nTheir cancellation is not represented as a test pass.\n",
+    "duplicate_ci": [
+      {
+        "before_status": "in_progress",
+        "proof_branch": "codex/bounded-route-controls-proof-41292181207",
+        "retained_same_source_ci": 41292160619,
+        "retained_status": "in_progress",
+        "run": 41292450030,
+        "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f"
+      },
+      {
+        "before_status": "in_progress",
+        "proof_branch": "codex/pd650-wave-proof-41293342915",
+        "retained_same_source_ci": 41293340525,
+        "retained_status": "in_progress",
+        "run": 41293657544,
+        "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe"
+      },
+      {
+        "before_status": "queued",
+        "proof_branch": "codex/pd650-wave-proof-41293436380",
+        "retained_same_source_ci": 41293431689,
+        "retained_status": "completed",
+        "run": 41293746883,
+        "source": "f015f8bb23dc75e2c8b83fe0a2cc05cb0f65e17b"
+      }
+    ],
+    "new_runs": {
+      "41292160619": {
+        "scope": "Retained original same-source general CI; not assumed passing",
+        "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f"
+      },
+      "41292450030": {
+        "scope": "Cancelled duplicate proof-ref CI; original attempt retained",
+        "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f"
+      },
+      "41293340525": {
+        "scope": "Retained original same-source general CI; not assumed passing",
+        "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe"
+      },
+      "41293342915": {
+        "scope": "PD650 full-wave buffer diagnosis",
+        "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe"
+      },
+      "41293431689": {
+        "scope": "Retained original same-source general CI; not assumed passing",
+        "source": "f015f8bb23dc75e2c8b83fe0a2cc05cb0f65e17b"
+      },
+      "41293436380": {
+        "scope": "PD650 full-wave buffer diagnosis",
+        "source": "f015f8bb23dc75e2c8b83fe0a2cc05cb0f65e17b"
+      },
+      "41293657544": {
+        "scope": "Cancelled duplicate proof-ref CI; original attempt retained",
+        "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe"
+      },
+      "41293746883": {
+        "scope": "Cancelled duplicate proof-ref CI; original attempt retained",
+        "source": "f015f8bb23dc75e2c8b83fe0a2cc05cb0f65e17b"
+      },
+      "41293861314": {
+        "scope": "PD650 full-wave buffer diagnosis",
+        "source": "46319d4691e2b06a193ebf47984b40256800fa41"
+      },
+      "41294574040": {
+        "scope": "PD650 full-wave buffer diagnosis",
+        "source": "abd8ec54a53e615dd9384a287f6690fd9130440f"
+      }
+    },
+    "next_actions": [
+      "Implement and qualify exact12-resistor divider impedance reduction on baseline PD650 SHA778733...: A/C1.8/10.8->0.9/5.4um, D6/8.6->3/4.3um, w1um. It is a hypothesis, not an accepted fix. Reverse-verify every model/descriptor token and retain all200MOS units, all other devices/RC, stimulus and original electrical gates. Run actual same-source native simulation with independently reserved publication before any acceptance claim.",
+      "Do not repeat existing wave analysis or MOS-unit qualification. Complete-wave reproduction41293861314 and physical buffer-path diagnosis41294574040 succeeded; native underlying circuit remains rejected. At0.9UI source-valid A/C/D buffers still have77/43/89 wrong signs. Do not rewire B to D: native selector already consumes retimed D.",
+      "Observe the already dispatched stage1 Route828 job; do not duplicate it. Read terminal own-job logs and release publication, authenticate actual route-partial/routed-fixed checkpoints and all828 scope/1691 protected records. Stage8 changes only the intermediate route iteration bound; final DRC/antenna/connectivity/STA gates stay unchanged.",
+      "If the bounded stage returns a checkpoint, implement and separately qualify authenticated stage2 continuation from that checkpoint without repeating stage1 stale-wire clear. Do not claim internal optimizer iteration-state resumption or final physical/timing pass from a saved ODB.",
+      "Four physical unit widths are qualified: actual20 stages passed in41290670037, exactsourcee3839b66... . Do not rerun qualification. Use published native GDS and verified diffusion geometry for all200-unit placement/origin mapping; whole-PD650 DRC/LVS/freshRC remain open.",
+      "After native unit dimensions/diffusion qualify, implement all200 physical MOS units/origin mapping and mixed20 private resistor edits, full independent DRC/LVS/freshRC before rebinding; intrinsic650 result remains rejected.",
+      "Repair actual sampler margins/clock-to-valid and phase on domain-corrected model using full stored waveform evidence with unchanged device/electrical limits; no arbitrary passing threshold edits.",
+      "Actual PLL/CDR/SERDES, full training/link protocol, TX and serial soc_top ownership remain open. Routing result is packet-interface SoC only. No full serial PHY, final setup/hold or production approval claim.",
+      "Keep all execution on GitHub and local workspace empty. Eight-hour monitor stays read-only automatic_native_dispatch:false."
+    ],
+    "path_observations": {
+      "A_buffer": {
+        "conditioned": {
+          "0.3": {
+            "source_at_least_100mv": 158,
+            "source_valid_but_probe_wrong_sign": 32,
+            "total": 255
+          },
+          "0.6": {
+            "source_at_least_100mv": 255,
+            "source_valid_but_probe_wrong_sign": 101,
+            "total": 255
+          },
+          "0.9": {
+            "source_at_least_100mv": 255,
+            "source_valid_but_probe_wrong_sign": 77,
+            "total": 255
+          }
+        },
+        "first_09_wrong": [
+          {
+            "bit": 1,
+            "expected": 0,
+            "probe_signed_v": -0.13502931796151812,
+            "source_signed_v": 0.17113162536000467
+          },
+          {
+            "bit": 7,
+            "expected": 1,
+            "probe_signed_v": -0.17461965206512473,
+            "source_signed_v": 0.1506747263043253
+          }
+        ],
+        "metrics": {
+          "below_100mv_samples": 436,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "minimum_signed_margin_v": -0.370002718801247,
+          "samples": 765,
+          "wrong_sign_samples": 299
+        },
+        "nodes": [
+          "xpd.w_t125_c",
+          "xpd.w_t123_c"
+        ],
+        "reference": "a"
+      },
+      "A_divider": {
+        "conditioned": {
+          "0.3": {
+            "source_at_least_100mv": 158,
+            "source_valid_but_probe_wrong_sign": 32,
+            "total": 255
+          },
+          "0.6": {
+            "source_at_least_100mv": 255,
+            "source_valid_but_probe_wrong_sign": 81,
+            "total": 255
+          },
+          "0.9": {
+            "source_at_least_100mv": 255,
+            "source_valid_but_probe_wrong_sign": 0,
+            "total": 255
+          }
+        },
+        "first_09_wrong": [],
+        "metrics": {
+          "below_100mv_samples": 444,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "minimum_signed_margin_v": -0.15423622684810911,
+          "samples": 765,
+          "wrong_sign_samples": 210
+        },
+        "nodes": [
+          "xpd.w_t123_b",
+          "xpd.w_t125_b"
+        ],
+        "reference": "a"
+      },
+      "C_buffer": {
+        "conditioned": {
+          "0.3": {
+            "source_at_least_100mv": 127,
+            "source_valid_but_probe_wrong_sign": 26,
+            "total": 255
+          },
+          "0.6": {
+            "source_at_least_100mv": 255,
+            "source_valid_but_probe_wrong_sign": 96,
+            "total": 255
+          },
+          "0.9": {
+            "source_at_least_100mv": 216,
+            "source_valid_but_probe_wrong_sign": 43,
+            "total": 255
+          }
+        },
+        "first_09_wrong": [
+          {
+            "bit": 14,
+            "expected": 1,
+            "probe_signed_v": -0.18655552059127883,
+            "source_signed_v": 0.1335034426148011
+          },
+          {
+            "bit": 16,
+            "expected": 0,
+            "probe_signed_v": -0.09147420583907115,
+            "source_signed_v": 0.13547349761588726
+          }
+        ],
+        "metrics": {
+          "below_100mv_samples": 448,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "minimum_signed_margin_v": -0.36073359180810977,
+          "samples": 765,
+          "wrong_sign_samples": 300
+        },
+        "nodes": [
+          "xpd.w_t130_c",
+          "xpd.w_t128_c"
+        ],
+        "reference": "c"
+      },
+      "C_divider": {
+        "conditioned": {
+          "0.3": {
+            "source_at_least_100mv": 127,
+            "source_valid_but_probe_wrong_sign": 0,
+            "total": 255
+          },
+          "0.6": {
+            "source_at_least_100mv": 255,
+            "source_valid_but_probe_wrong_sign": 90,
+            "total": 255
+          },
+          "0.9": {
+            "source_at_least_100mv": 216,
+            "source_valid_but_probe_wrong_sign": 27,
+            "total": 255
+          }
+        },
+        "first_09_wrong": [
+          {
+            "bit": 14,
+            "expected": 1,
+            "probe_signed_v": -0.021891451262102516,
+            "source_signed_v": 0.1335034426148011
+          },
+          {
+            "bit": 16,
+            "expected": 0,
+            "probe_signed_v": -0.004698373708820283,
+            "source_signed_v": 0.13547349761588726
+          }
+        ],
+        "metrics": {
+          "below_100mv_samples": 519,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "minimum_signed_margin_v": -0.1445923634983668,
+          "samples": 765,
+          "wrong_sign_samples": 268
+        },
+        "nodes": [
+          "xpd.w_t128_b",
+          "xpd.w_t130_b"
+        ],
+        "reference": "c"
+      },
+      "D_buffer_X": {
+        "conditioned": {
+          "0.3": {
+            "source_at_least_100mv": 127,
+            "source_valid_but_probe_wrong_sign": 32,
+            "total": 255
+          },
+          "0.6": {
+            "source_at_least_100mv": 255,
+            "source_valid_but_probe_wrong_sign": 112,
+            "total": 255
+          },
+          "0.9": {
+            "source_at_least_100mv": 254,
+            "source_valid_but_probe_wrong_sign": 89,
+            "total": 255
+          }
+        },
+        "first_09_wrong": [
+          {
+            "bit": 3,
+            "expected": 0,
+            "probe_signed_v": -0.036157643905852466,
+            "source_signed_v": 0.16285098685926258
+          },
+          {
+            "bit": 8,
+            "expected": 1,
+            "probe_signed_v": -0.10453168463660159,
+            "source_signed_v": 0.11225432658312708
+          }
+        ],
+        "metrics": {
+          "below_100mv_samples": 612,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "minimum_signed_margin_v": -0.20932704476766004,
+          "samples": 765,
+          "wrong_sign_samples": 330
+        },
+        "nodes": [
+          "xpd.w_t132_c",
+          "xpd.w_t131_c"
+        ],
+        "reference": "d"
+      },
+      "D_buffer_Y": {
+        "conditioned": {
+          "0.3": {
+            "source_at_least_100mv": 127,
+            "source_valid_but_probe_wrong_sign": 32,
+            "total": 255
+          },
+          "0.6": {
+            "source_at_least_100mv": 255,
+            "source_valid_but_probe_wrong_sign": 112,
+            "total": 255
+          },
+          "0.9": {
+            "source_at_least_100mv": 254,
+            "source_valid_but_probe_wrong_sign": 89,
+            "total": 255
+          }
+        },
+        "first_09_wrong": [
+          {
+            "bit": 3,
+            "expected": 0,
+            "probe_signed_v": -0.03765303828626956,
+            "source_signed_v": 0.16285098685926258
+          },
+          {
+            "bit": 8,
+            "expected": 1,
+            "probe_signed_v": -0.10369561142212187,
+            "source_signed_v": 0.11225432658312708
+          }
+        ],
+        "metrics": {
+          "below_100mv_samples": 612,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "minimum_signed_margin_v": -0.20910125754044676,
+          "samples": 765,
+          "wrong_sign_samples": 328
+        },
+        "nodes": [
+          "xpd.w_t150_c",
+          "xpd.w_t149_c"
+        ],
+        "reference": "d"
+      },
+      "D_divider_X": {
+        "conditioned": {
+          "0.3": {
+            "source_at_least_100mv": 127,
+            "source_valid_but_probe_wrong_sign": 18,
+            "total": 255
+          },
+          "0.6": {
+            "source_at_least_100mv": 255,
+            "source_valid_but_probe_wrong_sign": 98,
+            "total": 255
+          },
+          "0.9": {
+            "source_at_least_100mv": 254,
+            "source_valid_but_probe_wrong_sign": 69,
+            "total": 255
+          }
+        },
+        "first_09_wrong": [
+          {
+            "bit": 3,
+            "expected": 0,
+            "probe_signed_v": -0.0066669347791015795,
+            "source_signed_v": 0.16285098685926258
+          },
+          {
+            "bit": 8,
+            "expected": 1,
+            "probe_signed_v": -0.03670782839062851,
+            "source_signed_v": 0.11225432658312708
+          }
+        ],
+        "metrics": {
+          "below_100mv_samples": 761,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "minimum_signed_margin_v": -0.09845622860080906,
+          "samples": 765,
+          "wrong_sign_samples": 288
+        },
+        "nodes": [
+          "xpd.w_t131_b",
+          "xpd.w_t132_b"
+        ],
+        "reference": "d"
+      },
+      "D_divider_Y": {
+        "conditioned": {
+          "0.3": {
+            "source_at_least_100mv": 127,
+            "source_valid_but_probe_wrong_sign": 18,
+            "total": 255
+          },
+          "0.6": {
+            "source_at_least_100mv": 255,
+            "source_valid_but_probe_wrong_sign": 98,
+            "total": 255
+          },
+          "0.9": {
+            "source_at_least_100mv": 254,
+            "source_valid_but_probe_wrong_sign": 69,
+            "total": 255
+          }
+        },
+        "first_09_wrong": [
+          {
+            "bit": 3,
+            "expected": 0,
+            "probe_signed_v": -0.006720894620855414,
+            "source_signed_v": 0.16285098685926258
+          },
+          {
+            "bit": 8,
+            "expected": 1,
+            "probe_signed_v": -0.03677098186943643,
+            "source_signed_v": 0.11225432658312708
+          }
+        ],
+        "metrics": {
+          "below_100mv_samples": 761,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "minimum_signed_margin_v": -0.0985268085642957,
+          "samples": 765,
+          "wrong_sign_samples": 288
+        },
+        "nodes": [
+          "xpd.w_t149_b",
+          "xpd.w_t150_b"
+        ],
+        "reference": "d"
+      }
+    },
+    "proofs": [
+      {
+        "bytes": 109238,
+        "conclusion": "cancelled",
+        "files": 13,
+        "head": "71e233ec0651b3062bcd0aaf69a1c5b870f1fc48",
+        "prefix": "docs/evidence/pd650-wave-analysis-41293342915",
+        "receipt": "receipt.json",
+        "receipt_sha256": "c0fc8802247c9967a10225e979c05ac4e0af102cbb17057316f16dfc12fb5f9f",
+        "run": 41293342915,
+        "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe",
+        "tree": "d38012b6f9ce72be525a05649f73cc6ecee1c14b"
+      },
+      {
+        "bytes": 202337,
+        "conclusion": "failure",
+        "files": 17,
+        "head": "1777bacdebf3e371acd5a8ac0b485267f2b4cce3",
+        "prefix": "docs/evidence/pd650-wave-analysis-41293436380",
+        "receipt": "receipt.json",
+        "receipt_sha256": "33856a4bbeb6c59740151080f554609934b7957fdb6e89283d30f025004891b3",
+        "run": 41293436380,
+        "source": "f015f8bb23dc75e2c8b83fe0a2cc05cb0f65e17b",
+        "tree": "85fff6795b28ef18cd998d05f2282b885238c9df"
+      },
+      {
+        "bytes": 3432181,
+        "conclusion": "success",
+        "files": 22,
+        "head": "198ac19f2ffb0a2d853936ee31f7951c06d673b5",
+        "prefix": "docs/evidence/pd650-wave-analysis-41293861314",
+        "receipt": "receipt.json",
+        "receipt_sha256": "f34c30bf5493504dda22a8af9523a1f5238b2e182a40c98cb66905629e78894e",
+        "run": 41293861314,
+        "source": "46319d4691e2b06a193ebf47984b40256800fa41",
+        "tree": "fed1dab984e529771032a4d4771d43f0eb96bc03"
+      },
+      {
+        "bytes": 4358052,
+        "conclusion": "success",
+        "files": 23,
+        "head": "5d32ba3ace05084b64cc1c1766c8ff19fa84908d",
+        "prefix": "docs/evidence/pd650-wave-analysis-41294574040",
+        "receipt": "receipt.json",
+        "receipt_sha256": "d526f719030f939dbb1122caa9d9e7396c68506a342325b4dae109dc4f3c1b36",
+        "run": 41294574040,
+        "source": "abd8ec54a53e615dd9384a287f6690fd9130440f",
+        "tree": "888d2deaef08a904af5cee2655116b6303cf3428"
+      }
+    ],
+    "proposal": {
+      "baseline_model_sha256": "7787330b1bd617a1da93ca6cce0c1b4b3d874a4299cde70733f32fd9fc0b4150",
+      "hypothesis": "Reduce the impedance of both legs of A/C data and D selector dividers while preserving their nominal ratios, to address measured downstream wrong-sign persistence after the source sampler is valid. Need actual full original-gate simulation; no guaranteed pass.",
+      "physical_note": "Changed resistor dimensions require full layout regeneration and fresh RC. Intrinsic electrical test on retained RC is exploratory only.",
+      "preserve": "all original ports, stimulus,200MOS unit sizes/all non-target devices,RC bytes,measurement/device/current/phase gates",
+      "status": "next_circuit_candidate_not_yet_generated_or_simulated",
+      "targets": {
+        "227": {
+          "new_l": "0.9u",
+          "old_l": "1.8u",
+          "w": "1u"
+        },
+        "228": {
+          "new_l": "5.4u",
+          "old_l": "10.8u",
+          "w": "1u"
+        },
+        "229": {
+          "new_l": "0.9u",
+          "old_l": "1.8u",
+          "w": "1u"
+        },
+        "230": {
+          "new_l": "5.4u",
+          "old_l": "10.8u",
+          "w": "1u"
+        },
+        "234": {
+          "new_l": "3u",
+          "old_l": "6u",
+          "w": "1u"
+        },
+        "235": {
+          "new_l": "4.3u",
+          "old_l": "8.6u",
+          "w": "1u"
+        },
+        "236": {
+          "new_l": "3u",
+          "old_l": "6u",
+          "w": "1u"
+        },
+        "237": {
+          "new_l": "4.3u",
+          "old_l": "8.6u",
+          "w": "1u"
+        },
+        "238": {
+          "new_l": "0.9u",
+          "old_l": "1.8u",
+          "w": "1u"
+        },
+        "239": {
+          "new_l": "5.4u",
+          "old_l": "10.8u",
+          "w": "1u"
+        },
+        "240": {
+          "new_l": "0.9u",
+          "old_l": "1.8u",
+          "w": "1u"
+        },
+        "241": {
+          "new_l": "5.4u",
+          "old_l": "10.8u",
+          "w": "1u"
+        }
+      }
+    },
+    "resume": "# Cloud continuation \u2014 checkpoint v232\n\nUpdated: __UPDATED__\nAll tests, CAD, simulations and numerical/geometry analysis execute on GitHub. This explicit instruction overrides the older local-work goal wording. Local project and project temporary outputs stay empty. Source/API-derived text coordination uses RAM only; no native archives/models/SPICE/ODB/GDS/raw waves are acquired locally.\n\nLatest diagnostic progress:\n- Complete-wave reproduction41293861314/source46319d4691e2b06a193ebf47984b40256800fa41 passed29 controls and reproduced all6 original failures and phase19.616mV. Full22proof198ac19f2ffb0a2d853936ee31f7951c06d673b5.\n- Native-node buffer diagnosis41294574040/sourceabd8ec54a53e615dd9384a287f6690fd9130440f also passed29 controls; full23proof5d32ba3ace05084b64cc1c1766c8ff19fa84908d. At0.9UI, A/C/D sources are already>=100mV but their downstream buffers still have77/43/89wrong-sign samples. X active positive peak75.144mV never reaches100mV. The selector already usesretimedD viaR234-237, so no speculativeB-toDrewire.\n- See docs/pd650-buffer-lag-diagnosis.md. Next explicit hypothesis: halve both legs of A/CdividersR227-230/R238-241 from1.8/10.8to0.9/5.4um and DdividerR234-237 from6/8.6to3/4.3um,w1um. Exact12IDs in v232 proposal. NOT YET GENERATED/SIMULATED. Preserve original gates,200MOS and all other model/RCbytes; after actual electrical result update geometry/freshRC separately.\n- Initial cancelledreader41293342915 and list-type failure41293436380 are preserved in13/17-file proofs71e233ec0651b3062bcd0aaf69a1c5b870f1fc48/1777bacdebf3e371acd5a8ac0b485267f2b4cce3. No simulator rerun in these analyses.\n- Three duplicate proof-ref CI attempts cancelled with originals retained; cancellations are not test passes. Future proof publisher must build its final [skip ci] commit FIRST, then create the branch directly at that commit. Never create an intermediate ref at the tested source, which triggers redundant generalCI.\n\n1. New mainchip source **7a0776718ec37a106b7dfde0cbd477c6a2a5522f**, branch codex/mainchip-net459-diode-prune, shared workflow cloud-evidence-summary.yml. All inherited files including old workflow remain byte-identical. Original 64-iteration environment contract is retained; the actual router argument explicitly uses8 iterations for intermediate stage1 only. Existing828-owner/1351diode/1691protected-record and final DRC/antenna/connectivity/timing predicates remain. No checkpoint or final physical result is inferred from source controls.\n\n2. Controls **41292181207** succeeded:12 new source/lifecycle tests plus all inherited controls including165 saved-diode audits. Full controls proof 6c2918b9134a61734e315f6291302655c9ddb9db, prefix docs/evidence/bounded-route-controls-41292181207. Native job **41292673925**, exact-source independently reserved release **430474717**, tag cloud-results-41292673925-1-mainchip-bulk-postdrt-antenna. Observe that same run; do not duplicate it. Supplemental source manifest has2361 exact files. See docs/mainchip-bounded-route-stage.md.\n\n3. The new stage writes actual pre/post route Tcl and hashes all four returned route-partial/routed-fixed DEF/ODB files. Failures and available partial output remain failures. Validate the actual terminal native report, complete streams, protected records and publication. Follow-on stage2 must authenticate and resume the resulting checkpoint without repeating the initial stale-wire clear. Stage2 is NOT implemented yet; no internal TritonRoute optimizer-state resumption is claimed.\n\n4. Original run41270471645 is TERMINAL TIMEOUT:14400.811145697s/-15/elapsed_limit. Full23proof de4e92bc723d6885c3c800aa5c9676f7495f9a4a; full native route readout41290408993/full19proof e19b8a246accee5125c14291b6effd46b94249ad. Last complete iteration26 had129 intermediate router violations;27cut at40%. No optimized ODB saved.1691 original clock/fixed records restored exactly. Do not repeat the old64iteration lost-progress run.\n\n5. PD650 transient41288195752/source d638e0e3cd15a0ee930212c27ab1f238b5085237 is TERMINAL ELECTRICAL REJECTION. Actual engine0,1037.382s,zero diagnostics; all device gates and VI pass but six A/B/C/D/X/Y data stages and phase fail. Full115proof6fdf10cd1683b920950104e7edb6206865eab78e/native release430445706. Original1301vector capture and all raw rows remain cloud-only. Use waveform-led valid-domain drive/load repair; do not revert42MOS to unsupported wide model instances. See docs/cdr-mos-parallel-loaded-simulation.md.\n\n6. Actual four physical MOS unit widths8/9/8.890/8.885um,L.3um,ng1 are qualified in41290670037/sourcee3839b66d23c4cd678e4cf917c3b458495f4ac96. All20native stages passed: four560-category zero-DRC results, eight deep/flat2device unsimplified LVS matches, exact W/L/AS/AD/PS/PD and all8negative controls rejected. Full119proof6e9362d5c95e1c2b2fca62d9c71aec8ac4e099e4/release430461761. Do not rerun this qualification. Prior hostPython/inspector failures remain preserved in v230. Integrate200qualifiedMOS units/50origins while preserving450nonMOS devices and original221tap design; do not blindly add200newtap wrappers. FullPD650 layout/freshRC still open. See docs/cdr-four-mos-unit-physical.md.\n\n7. Gates unchanged: UI125ps, samplers100mV/37.5ps, XOR100mV/75ps; HBTminVCE.4/maxabsVCE1.6/maxabsVBE1/strictIc-emitter<3mA; MOS<=1.32V/activeVDS>=0/nonnegativeunitcurrents/16instantaneousstage-sums>=.5mA; sevenMIM<=1.6V; phase30mV; PLL62.5ps. FinalSTA20/4/8/8ns+5%,3PVT,zero setup/hold/transition/cap.\n\n8. Mainchip remains packet-interface SoC, not full serial PHY ownership. Actual PLL/CDR/SERDES, fulltraining/LTSSM, lane mapping, descrambler/TX and serialsoc_top integration remain open. Authorized spec access request already pending; do not repeat it.\n\n9. Local project and project-named temporary directories were rechecked empty; no CAD process. User files/shared apps preserved. All changes and evidence live on GitHub. Inventory __RUN_COUNT__ runs. Eight-hour monitor stays read-only automatic_native_dispatch:false. Full serial PHY, routed serial-integrated chip, final setup/hold and production acceptance remain OPEN.\n"
+  },
+  "snapshots": [
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124806983932,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124807447237,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Route828owners for eight iterations and preserve actual checkpoints"
+          ],
+          "conclusion": null,
+          "id": 124807477628,
+          "name": "diode-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41292673925,
+      "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41292673925"
+    },
+    {
+      "branch": "codex/cdr-pd650-loaded-wave-analysis",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124808990587,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124809118982,
+          "name": "completed-wave-analysis",
+          "status": "completed"
+        }
+      ],
+      "run": 41293342915,
+      "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293342915"
+    },
+    {
+      "branch": "codex/cdr-pd650-loaded-wave-analysis",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124809262803,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124809426775,
+          "name": "completed-wave-analysis",
+          "status": "completed"
+        }
+      ],
+      "run": 41293436380,
+      "source": "f015f8bb23dc75e2c8b83fe0a2cc05cb0f65e17b",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293436380"
+    },
+    {
+      "branch": "codex/cdr-pd650-loaded-wave-analysis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124810505807,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124810875675,
+          "name": "completed-wave-analysis",
+          "status": "completed"
+        }
+      ],
+      "run": 41293861314,
+      "source": "46319d4691e2b06a193ebf47984b40256800fa41",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293861314"
+    },
+    {
+      "branch": "codex/cdr-pd650-loaded-wave-analysis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124812611764,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124812773464,
+          "name": "completed-wave-analysis",
+          "status": "completed"
+        }
+      ],
+      "run": 41294574040,
+      "source": "abd8ec54a53e615dd9384a287f6690fd9130440f",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41294574040"
+    },
+    {
+      "branch": "codex/bounded-route-controls-proof-41292181207",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124806303083,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124806303203,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124806303237,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124806303261,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124806303285,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124806303376,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124806303445,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124806304118,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41292450030,
+      "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41292450030"
+    },
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437655,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "All declared pilot and SoC regression proofs with fresh source checks"
+          ],
+          "conclusion": null,
+          "id": 124805437693,
+          "name": "formal-sweep (soc)",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [
+            "All declared pilot and SoC regression proofs with fresh source checks"
+          ],
+          "conclusion": null,
+          "id": 124805437696,
+          "name": "formal-sweep (pilot)",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124805437698,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Run every non-frozen RTL suite"
+          ],
+          "conclusion": null,
+          "id": 124805437712,
+          "name": "rtl",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437732,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124805437796,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124805438494,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41292160619,
+      "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41292160619"
+    },
+    {
+      "branch": "codex/pd650-wave-proof-41293342915",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124809909619,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124809909805,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124809909824,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124809909830,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124809909855,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124809909883,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124809909936,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124809910844,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41293657544,
+      "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293657544"
+    },
+    {
+      "branch": "codex/cdr-pd650-loaded-wave-analysis",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977298,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124808977460,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977468,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "All declared pilot and SoC regression proofs with fresh source checks"
+          ],
+          "conclusion": null,
+          "id": 124808977505,
+          "name": "formal-sweep (soc)",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [
+            "Run every non-frozen RTL suite"
+          ],
+          "conclusion": null,
+          "id": 124808977510,
+          "name": "rtl",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [
+            "All declared pilot and SoC regression proofs with fresh source checks"
+          ],
+          "conclusion": null,
+          "id": 124808977536,
+          "name": "formal-sweep (pilot)",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124808977592,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124808978452,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41293340525,
+      "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293340525"
+    },
+    {
+      "branch": "codex/pd650-wave-proof-41293436380",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124810171048,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124810171162,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124810171178,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124810171200,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124810171229,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124810171284,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124810171311,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124810171990,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41293746883,
+      "source": "f015f8bb23dc75e2c8b83fe0a2cc05cb0f65e17b",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293746883"
+    },
+    {
+      "branch": "codex/cdr-pd650-loaded-wave-analysis",
+      "conclusion": "cancelled",
+      "jobs": [],
+      "run": 41293431689,
+      "source": "f015f8bb23dc75e2c8b83fe0a2cc05cb0f65e17b",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293431689"
+    }
+  ],
+  "updated_at": "2026-11-01T09:54:59.949118+00:00",
+  "version": 232
+}
