@@ -26,6 +26,8 @@ def main():
  qualified.OUT=OUT/"model-controls";qualified.OUT.mkdir()
  qualified.controls()
  inherited=json.loads((qualified.OUT/"qualified-controls.json").read_bytes());assert inherited["count"]==67
+ for name in ["mainchip_net459_connectivity.py","mainchip_bulk_postdrt_antenna.py","mainchip_single_antenna_trial.py","mainchip_targeted_counterpart_routing.py"]:
+  assert (ROOT/"scripts"/name).read_bytes()==(ROOT/"original/scripts"/name).read_bytes(),("exact original reader dependencies",name)
  clone=function(ROOT/"original/scripts/mainchip_container_floorplan_import.py","clone",dict(FunctionType=FunctionType))
  def project(plan,scope):return dict(original=plan,scope=scope,projected=scope_core.observation_scope(plan,scope))
  acquisition=clone(qualified.acquire,
@@ -74,7 +76,8 @@ def main():
  assert result["original_wire_only_failed_nets"]==142 and result["qualified_pin_observations"]==1300
  assert len(seen)==828 and len(load_calls)==len(destroyed)==1
  assert native_p.validate_connectivity is gate and reader_function.__globals__==original_globals
- checks=["complete original native reader body reconstructs all 1656 authenticated graphs",
+ checks=["graph, predicate and scope sources identical to frozen native dependencies",
+  "complete original native reader body reconstructs all 1656 authenticated graphs",
   "all 828 original wire-only graph reports retained before adapter acceptance",
   "exact full 828/142/1300/77 core with original 1351 diode predicate",
   "database destroy finally retained",
@@ -103,7 +106,7 @@ def main():
  reject("modified GDS qualification bytes",lambda:binding.records(invalid))
  target.unlink();target.symlink_to(ROOT/name)
  reject("symlinked GDS qualification input",lambda:binding.records(invalid))
- assert len(checks)==11,len(checks)
+ assert len(checks)==12,len(checks)
  save("result.json",dict(status="PASS_ORIGINAL_NATIVE_READER_BOUNDARY_ON_AUTHENTICATED_828_GRAPHS",
   controls=len(checks),inherited_model_controls=67,checks=checks,connectivity=result,
   native_boundary_simulated=True,actual_ODB_engine_executed=False,
