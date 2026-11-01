@@ -1,0 +1,172 @@
+{
+  "full_phy_accepted": false,
+  "native_payloads_acquired_locally": false,
+  "new_native_execution": false,
+  "physical_acceptance": false,
+  "review": {
+    "decision": "Do not implement an unqualified repeated8-pass stage2 and call it optimizer continuation. Await saved native terminal; authenticate restored candidate and no pre-route fallback, examine actual DRC owner/shape evidence. Qualify any restart on the exact engine/DB and retain marker-count and changed-owner evidence. Prefer a measured scoped residual-net ECO if necessary, preserving all untouched wires, original1691 clocks,1351diodes,connectivity,antenna and finalSTA gates. Do not repeat whole828 initial clear by default. Any snapshot-enabled or single-step strategy is a new separately qualified experiment, not automatically equivalent.",
+    "full_phy_accepted": false,
+    "inspected_nssoc_sources": {
+      "scripts/mainchip_bulk_postdrt_antenna_native.py": {
+        "bytes": 26885,
+        "sha256": "afbc5b22116f2f0649a087ae1e8147235921cf2477e78ed78675301093454854"
+      },
+      "scripts/mainchip_fixed_engine_build_contract.py": {
+        "bytes": 9057,
+        "sha256": "b065245c7782651dd5716eea1442c41228c3dff60ddcaecffa94fd20d0740e04"
+      },
+      "scripts/mainchip_saved_diode_routing.py": {
+        "bytes": 7382,
+        "sha256": "262f9078a57500e1e9431ed096358f3bd634ef244b4900b414887a55309780c0"
+      },
+      "scripts/mainchip_saved_diode_routing_inner.py": {
+        "bytes": 8059,
+        "sha256": "3c3c39fd32de10f165cef35a6c8104d3c417d4ca7c113280102c978c82046f1c"
+      },
+      "scripts/mainchip_witness_engine_build_contract.py": {
+        "bytes": 12817,
+        "sha256": "fff2cf22b44cf39680c1fdeb4884b86e03a3b6d0d8c6683a61d82163121340cb"
+      }
+    },
+    "inspected_upstream_sources": {
+      "src/drt/src/TritonRoute.cpp": {
+        "blob_sha": "252d7146a7e4bde9d740b7b003bdf60c410cdc3d",
+        "bytes": 46888,
+        "sha256": "fa5c6c23a992648c5282ed99ecb03a92bee9187dd55b9630809a5da41f18a3f5"
+      },
+      "src/drt/src/TritonRoute.tcl": {
+        "blob_sha": "b518bbd95a85e69f7d32f1569a9794ee30de4597",
+        "bytes": 15390,
+        "sha256": "6cc777bde429f6ab1dfdda3e70ae6c22e2e8e6a2d93b9a723d6a2f992291f265"
+      },
+      "src/drt/src/dr/FlexDR.cpp": {
+        "blob_sha": "13a4d92b8bf8a69769552e8968d7cfb59534c5ff",
+        "bytes": 77688,
+        "sha256": "122e84ca0906d7e53d4e5f4c7216a72e55f085f1a62b0848df06fc9eafd2e3af"
+      }
+    },
+    "modified_router_sha256": "385e2d9f681c0039c8caa7c49a4b8bf72570c97d6be808533475486f102be7fd",
+    "native_resume_qualified": false,
+    "nssoc_build_contract": "scripts/mainchip_fixed_engine_build_contract.py",
+    "nssoc_only_modified_upstream": [
+      "src/drt/src/TritonRoute.cpp",
+      "src/drt/src/dr/FlexDR_init.cpp"
+    ],
+    "nssoc_source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
+    "physical_acceptance": false,
+    "primary_sources": [
+      {
+        "finding": "dr() allocates a fresh FlexDR; single-step path initializes it. stepDR executes supplied search parameters and increments its live counter. endFR finishes/reset that object then updates OpenDB.",
+        "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/TritonRoute.cpp#L645-L695"
+      },
+      {
+        "finding": "main() initializes routing and selects the strategy afresh. Snapshot writes update OpenDB geometry. The viewed code does not establish serialization/restoration of complete optimizer state; repeated8-bound calls are not a proven equivalent to continuing the64-bound call. Actual loop counters must come from logs.",
+        "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/dr/FlexDR.cpp#L1884-L1948"
+      },
+      {
+        "finding": "step_dr has nine positional arguments; it is a developer interface, not a persisted optimizer-resume command.",
+        "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/TritonRoute.tcl#L440-L448"
+      },
+      {
+        "finding": "Historical maintainer response reports repeated detailed_route calls were not a supported pause/resume solution and suggests iteration snapshots. Treat historical report as supporting caution, not a current execution proof.",
+        "url": "https://github.com/The-OpenROAD-Project/OpenROAD/issues/6330#issuecomment-2544315053"
+      }
+    ],
+    "restoration": {
+      "failure_restoration_evidence": [
+        "failure-restored-snapshot.json",
+        "failure-restored-clock-gate.json"
+      ],
+      "final_measured_candidate": "work/bulk-postdrt-antenna/final-measured.odb",
+      "must_reject_pre_route_fallback": true,
+      "next": "Await actual producer terminal. Authenticate native archive on GitHub and inspect restored candidate, source_pin and fallback flag; never treat four raw route checkpoints as class-restored acceptance. Reaudit failed-but-returned candidates before any stage2 dispatch; preserve original failure and original gates. Do not repeat stale-wire clear.",
+      "paths": [
+        "scripts/mainchip_saved_diode_routing_inner.py",
+        "scripts/mainchip_bulk_postdrt_antenna_native.py",
+        "scripts/mainchip_saved_diode_routing.py"
+      ],
+      "restoration_record": "bulk-postdrt-antenna/class-restoration-plan.json",
+      "restoration_selects": [
+        "routed-fixed.odb",
+        "route-partial.odb",
+        "fixed.odb"
+      ],
+      "restored_candidate": "work/bulk-postdrt-antenna/candidate.odb",
+      "route_checkpoints_before_class_restoration": true,
+      "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
+      "successful_restoration_evidence": [
+        "restored-snapshot.json",
+        "route-delta.json",
+        "original-clock-gate.json",
+        "connectivity-summary.json"
+      ]
+    },
+    "schema": "route-restart-source-review-v1",
+    "source_review_only": true,
+    "timing_accepted": false,
+    "upstream": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+  },
+  "snapshots": [
+    {
+      "branch": "codex/cdr-divider-drive",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124816664707,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate original inputs and run sampler-load candidate with original measurements"
+          ],
+          "conclusion": null,
+          "id": 124816780448,
+          "name": "simulate",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41295928971,
+      "source": "3a6f1f9e3b30f97ffae87f43cf0f7f00e2d2ab43",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41295928971"
+    },
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124806983932,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124807447237,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Route828owners for eight iterations and preserve actual checkpoints"
+          ],
+          "conclusion": null,
+          "id": 124807477628,
+          "name": "diode-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41292673925,
+      "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41292673925"
+    }
+  ],
+  "timing_accepted": false,
+  "updated_at": "2026-11-01T10:22:04.726263+00:00"
+}

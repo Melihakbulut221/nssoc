@@ -1,3 +1,13 @@
+# Cloud continuation — checkpoint v234
+
+Updated: 2026-11-01T10:22:04.726263+00:00
+
+Important continuation correction: an exported ODB is not proven to persist TritonRoute optimizer/iteration state. Do not implement repeated8-bound calls as equivalent continuation. See docs/mainchip-routing-restart-review.md and exact-source review evidence. Authenticate restored candidate and source/fallback flags first,then derive actual residual-owner repair or separately qualify the restart. Four raw route files precede class restoration; never infer preserved clocks merely from their existence.
+
+Existing cloud jobs remain41295928971(PD650 trial) and41292673925(mainchip route). Observe those handles; no duplicate dispatch. Full serial PHY,routing and final timing remain open. Local native execution remains prohibited by latest user instruction.
+
+## Prior continuation record
+
 # Cloud continuation — checkpoint v233
 
 Updated: 2026-11-01T10:08:14.357865+00:00
