@@ -1,0 +1,31 @@
+{"phase": "restored-audit", "primary": "AssertionError('unchanged routed snapshot masters')", "terminal_errors": []}
+Traceback (most recent call last):
+  File "/work/tail-source/scripts/mainchip_scoped_counterpart_restoration_native.py", line 63, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/work/tail-source/scripts/mainchip_scoped_counterpart_restoration_native.py", line 61, in main
+    container.clone(native.main,phase=original_phase)()
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 431, in main
+    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,"input unchanged"),
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 148, in run_phase
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 135, in run_phase
+    try:action()
+        ^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 431, in <lambda>
+    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,"input unchanged"),
+                                  ^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 386, in phase
+    delta=p.route_delta(read("insertion-snapshot.json"),current,plan)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_targeted_counterpart_routing_native.py", line 147, in delta
+    return scope_core.route_delta(before, after, plan, scope, p.same_base)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_targeted_counterpart_routing.py", line 122, in route_delta
+    exact(restored[key], inserted[key], "unchanged routed snapshot " + key)
+  File "/work/tail-source/scripts/mainchip_targeted_counterpart_routing.py", line 17, in exact
+    require(got == expected, message)
+  File "/work/tail-source/scripts/mainchip_targeted_counterpart_routing.py", line 14, in require
+    raise AssertionError(message)
+AssertionError: unchanged routed snapshot masters
