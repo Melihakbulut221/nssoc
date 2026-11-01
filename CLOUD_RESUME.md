@@ -1,38 +1,28 @@
-# Cloud continuation — checkpoint v210
+# Cloud continuation — checkpoint v211
 
-Updated: 2026-11-01T03:20:16.579105+00:00
+Updated: 2026-11-01T03:42:38.007666+00:00
 
-Latest user instruction is cloud-only. All tests, simulation, numerical/geometry analysis and CAD run on GitHub. Source/static inspection and API-derived text coordination use RAM only. Never acquire native archives, models/SPICE, ODB/GDS, raw waves or native-frame gzip locally. Preserve unrelated files and original attachments.
+Latest user instruction: all work in the cloud, clear local project data. Local workspace is empty, no local native CAD processes. Source authoring/static inspection and API-derived text coordination use RAM only; tests, simulation, numerical/geometry processing and CAD execute on GitHub. Never acquire native archives, SPICE/models, raw waves, ODB/GDS or native-frame gzip locally, including RAM. Preserve unrelated files and original user attachments.
 
-## Active actual jobs
+## Mainchip
 
-- Mainchip targeted828 routing: [41266854050](https://github.com/Melihakbulut221/nssoc/actions/runs/41266854050), source8b7404c7340ef5ebc4a70e36dfa30a96d07013d9, branch codex/mainchip-net459-diode-prune, release430325810. Last observed active step was Clear828owned signal wires and route with unchanged physical invariants. Detailed-route internal subphase is not established by the step name.
-- Four-shunt exploratory CDR simulation: [41268684044](https://github.com/Melihakbulut221/nssoc/actions/runs/41268684044), source6733a6916dec86ac84f7879285c3a7c8b495ab6c, branch codex/cdr-four-shunt-headroom, independently reserved empty exact-source release430336080/tagcloud-results-41268684044-1-cdr-four-shunt. Root reservation receipt is docs/evidence/cdr-four-shunt-reservation-41268684044.json.
+Previous actual route [41266854050](https://github.com/Melihakbulut221/nssoc/actions/runs/41266854050), source8b7404c7, failed BEFORE detailed_route: unchanged snapshot masters assertion. Native output remains release430325810; combined archive872464089B SHA25645b963bc2bd9ecf8cef462f1dc5870f91dde73a3acb186401d64976851a5f764. Do not download native archive locally.
 
-Do not duplicate either run or mutate their source branches until terminal. Poll exact current jobs/steps before claiming native progress.
+Cloud readback [41269689818](https://github.com/Melihakbulut221/nssoc/actions/runs/41269689818) succeeded: persisted master geometry identical; unchanged strict core.clear_delta passes complete saved snapshots and all828 scoped nets. A real equal list/tuple coordinate difference reproduces the exact failure. Full18-file proof imported.
 
-## New implementation and evidence
+Narrow repair source2b8931b9c8988fc5dbf497a7b561db579e39f64c on codex/mainchip-net459-diode-prune reads both complete persisted JSON snapshots. Geometry checks/strict core remain unchanged. Existing test extended to reproduce tuple/list failure and reject coordinate, missing pin, unowned wire mutations.
+[Source controls41270165333](https://github.com/Melihakbulut221/nssoc/actions/runs/41270165333) dispatched once. Check current terminal state and preserve full proof. No actual route dispatched for this repair yet. Only after passing original full suites, reserve a new empty exact-source release and dispatch once. Old reservation is consumed.
 
-Candidate changes only XD0184/XD0185/XD0222/XD0223 rppd L5um->7.4um at W4um. Frozen original prepare/measurement function bodies, external clock/data, thresholds, other intrinsic devices and baseline RC remain unchanged. Source-controls41268552520 succeeded: nine candidate corruptions and five archive corruptions rejected, complete frozen catalog checked. Full12file proofedee2696a29ef33575f3d3de5385fb279a8742e4 is imported.
+## CDR
 
-The native job additionally authenticates all original archive members and all original13 binding controls. It runs the original1200s engine budget, original1151-vector measurements and preserves native artifacts on failure. See docs/cdr-four-shunt-cloud-experiment.md.
+Actual four-shunt run41268684044 completed failure, with simulator returncode0 after688.745s and all1151 vectors. All output retained in release430336080 and full61-file derived proof imported. Four rppd shunts L5um to7.4um changed; baseline RC reused, no candidate layout/fresh PEX.
 
-This is an exploratory intrinsic-parameter screen. No candidate layout was regenerated and no candidate RC was extracted. A screen pass still requires real native PCell changes/fullphysical verification/freshRC, all corners and closed-loop integration.
+Actual comparison41269888640 succeeded, full15-file proof imported; comparison controls41269140813 full10-file proof imported. Original device/bit/stage/phase/VI predicates unchanged. Four original minVCE failures T61/T62/T115/T116 disappear but maxVCE failures T59/T60/T111/T112 appear. All six data stages still fail. Phase0.01465777V below0.03V; VI current44.3405uA below50uA and voltage0.0125679V above0.005V. Candidate rejected. Do not repeat unchanged experiment or mark PHY complete.
 
-Topology diagnosis41267705616/full16proof3e45b11 joined all500 devices/124HBT/51logicalnets. Four failing VCE devices are the D/C lower cn-clock steering pairs. Original loaded41260582673 remains rejected; original wave diagnostic41263882381 remains the baseline.
+## Continue
 
-Eight-hour read-only monitor automatic_native_dispatch:false; inventory566runs. Local workspace remains empty. FullserialPHY/mainchiprouting/finalsetuphold are open.
-
-## Next actions
-
-1. Observe the SAME two actual native runs: mainchip41266854050/source8b7404c7340ef5ebc4a70e36dfa30a96d07013d9/release430325810 and CDRfour-shunt41268684044/source6733a6916dec86ac84f7879285c3a7c8b495ab6c/release430336080. Freeze both source branches until terminal; do not duplicate dispatch/restart after observation timeout.
-
-2. At CDR terminal preserve full job logs, source-control and derived artifacts, reserved release metadata/complete-output-index/parts and all native outputs on GitHub. Do not acquire native archives/models/raw locally. Collect only whitelisted derived JSON/text/source into RAM for durable Git evidence. Report actual engine result separately from original electrical rejection and publication status.
-
-3. Compare four-shunt candidate to original loaded41260582673: all124HBT/50MOS/7MIM stress and16tail-group gates, four sampler+twoXOR complete bit delays/margins, original phase/VI. All predicates/clock/data are frozen. Treat changed model as exploratory with baseline RC; even a pass requires actual PCell layout changes, full DRC/LVS and fresh MIM/wire RC before acceptance. Reject regressions; preserve failed trials.
-
-4. Atterminal preserve all actualjoblogs, exact source, complete native outputs andpublication/failure records before assessingresults. Verify exactseed checks,828clear/snapshot/guideproof,all828physicalconnectivitybothmodes,all1351diodepins,all1691clock/fixed records,fullantenna andDRC. NativeclosedqualificationrequireszeroreportedDRC/antenna; finalsetup/hold andfullPHYremainseparate. Ifexactseed orresource gatefails diagnoseactualbytes/phase andkeepfailure; do notrelaxgates orrepeatidenticalcase.
-
-5. Candidate implementation source6733a6916 has 32 pinned files, original preparation/measurement code objects unchanged in a separate namespace, nine mutation refusals and five archive refusals passed. It authenticates baseline before every candidate binding and derives only four L5u->7.4u changes. Complete source proofedee2696 is imported. Do not edit frozen catalog/gates or claim original RC extracted the candidate layout.
-
-6. Keep eight-hour read-only monitor automatic_native_dispatch:false, inventory566 runs after this checkpoint. Continue cloud-only. Local workspace and project temp prefixes empty; no native local processing or payloads. Goal remains active: fullserialPHY, closed-loopCDR/PLL, routedmainchip and finalsetup/hold are incomplete.
+1. Collect source-controls41270165333, then qualified new exact-source mainchip route with independent output reservation.
+2. Preserve prior mainchip failed job logs/artifact13067853823 and735 encoded derived records; native payloads remain on GitHub. Readback proof already imported.
+3. Develop next CDR circuit change from actual regression and persistent margins/delays, qualify unchanged gates before native dispatch; real layout/freshRC/allcorners/closedloop remain required.
+4. Maintain cloud-only policy, empty local workspace and8h read-only monitor automatic_native_dispatch:false. Inventory570runs.
+5. Full serial PHY, routed mainchip, final setup/hold and production acceptance remain OPEN. Check live jobs before claiming progress.
