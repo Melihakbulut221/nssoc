@@ -51,19 +51,27 @@ def restore(archive,inventory,wanted,directory,prefix="cloud-cdr-via2-m3-loaded"
     require(seen==set(inventory)and set(receipt)==set(wanted),"all indexed members and requested files")
     return dict(verified_members=len(seen),all_members_verified=True,selected=receipt)
 
-def inspect_text(path):
-    raw=path.read_bytes();lines=raw.decode().splitlines()
-    pattern=re.compile(r"\b[wl](?:min|max)\b|(?:validity|valid|calibrat|characteriz).*range|range.*(?:valid|calibrat)|(?:finger.*width|width.*finger)|(?:maximum|minimum).*\b(?:width|length)\b|\bw\s*/\s*ng\b",re.I)
-    ids={i for i,line in enumerate(lines)if pattern.search(line)or re.search(r"\\b(?:w|l|ng|m)\\s*=",line)or re.match(r"\\s*\\.(?:if|elseif|else|endif)\\b",line,re.I)}
-    # Width bounds may continue on the line after the range heading.
+def selected_lines(lines):
+    domain=re.compile(r"\b[wl](?:min|max)\b|(?:validity|valid|calibrat|characteriz).*range|range.*(?:valid|calibrat)|(?:finger.*width|width.*finger)|(?:maximum|minimum).*\b(?:width|length)\b|\bw\s*/\s*ng\b",re.I)
+    parameter=re.compile(r"\b(?:w|l|ng|m)\s*=",re.I)
+    branch=re.compile(r"\s*\.(?:if|elseif|else|endif)\b",re.I)
+    ids={i for i,line in enumerate(lines)if domain.search(line)or parameter.search(line)or branch.match(line)}
     for i,line in enumerate(lines):
         if re.search(r"(?:valid|validity).*range",line,re.I):
             ids.update(range(max(0,i-1),min(len(lines),i+5)))
-    rows=[dict(line=i+1,text=lines[i].strip())for i in sorted(ids)]
+    return [dict(line=i+1,text=lines[i].strip())for i in sorted(ids)]
+def selector_controls():
+    require(selected_lines(["+ W=w NG=ng"])==[dict(line=1,text="+ W=w NG=ng")],"actual parameter mapping selection")
+    require(selected_lines([".if (pre_layout)"])==[dict(line=1,text=".if (pre_layout)")],"actual branch selection")
+    require([x["line"]for x in selected_lines(["* Valid range for model: L = (0.13 - 10)um","* W = (0.15 - 10)um"]) ]==[1,2],"continued range selection")
+    require(selected_lines(["sg13_lv_nmos_thesatw=1.5"])==[],"unrelated model coefficient is not wrapper width")
+    return dict(checks=4,failures=0,scope="derived selector controls only")
+def inspect_text(path):
+    raw=path.read_bytes();lines=raw.decode().splitlines()
+    rows=selected_lines(lines)
     headers=[dict(line=i,text=line.strip())for i,line in enumerate(lines,1)if re.match(r"\s*\.subckt\s+sg13_lv_[np]mos\b",line,re.I)]
     require(len(rows)<200,"bounded parameter/domain declaration report")
-    return dict(file_pin=pin(path),total_lines=len(lines),domain_or_finger_expression_matches=rows,continuation_context_preserved=True,device_headers=headers,
-        no_match_is_not_domain_acceptance=True)
+    return dict(file_pin=pin(path),total_lines=len(lines),domain_or_finger_expression_matches=rows,continuation_context_preserved=True,wrapper_parameter_selector_checked=True,device_headers=headers,no_match_is_not_domain_acceptance=True)
 def scalar(value):
     m=re.fullmatch(r"([0-9]+(?:\.[0-9]*)?)([unp]?)",value)
     require(m is not None,"explicit geometry scalar")
@@ -73,6 +81,7 @@ def main():
     c=json.loads((ROOT/CFG).read_bytes())
     for p,expected in c["source_files"].items():require(pin(ROOT/p)==expected,"exact audit source")
     OUT.mkdir(exist_ok=False)
+    (OUT/"selector-controls.json").write_bytes(enc(selector_controls()))
     for p in [*c["source_files"],CFG]:
         target=OUT/"source"/p;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes((ROOT/p).read_bytes())
     values={}
@@ -109,9 +118,17 @@ def main():
             total_width_um=str(scalar(p["w"])/Decimal("1e-6")),
             reported_finger_width_um=str(scalar(p["w"])/ng/Decimal("1e-6"))))
     require(len(mos)==50,"all50 MOS geometry records")
+    # This conclusion applies to the current explicit ng=1 records, not inferred layout fingers.
+    require(all(r["parameters"]["ng"]=="1"for r in mos),"current single-finger simulation census")
+    for suffix in ("cornerMOSlv.lib","sg13g2_moslv_parm.lib"):
+        entries=[v for k,v in models.items()if k.endswith("/"+suffix)]
+        require(len(entries)==1 and any(re.search(r"\bW\s*=\s*\(0\.15\s*-\s*10\)um",x["text"])for x in entries[0]["domain_or_finger_expression_matches"]),"exact declared W range in used model")
+    outside=[r for r in mos if not Decimal(".15")<=Decimal(r["reported_finger_width_um"])<=Decimal("10")]
+
     result=dict(status="COMPLETE_PINNED_MOS_MODEL_PARAMETER_AUDIT_NOT_ACCEPTANCE",
         source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),producer_context=c["producer_context"],
-        native_archive=c["archive"],models=models,all50_mos=mos,
+        native_archive=c["archive"],models=models,all50_mos=mos,declared_width_range_um=["0.15","10"],
+        all50_current_simulation_ng_one=True,outside_declared_width_range=outside,model_width_domain_passed=not outside,
         proposed_slave_width_trial=dict(native_ids=[7,8,9,10,36,37,38,39],width_um=54,ng=1,dispatched=False,model_domain_qualified=False),
         interpretation="Range declarations and width/finger mapping from the exact used model must be interpreted before a new width trial. LVS total-width equality and prior stress-gate success are not model-domain qualification. No model file or raw archive is included in derived outputs.",
         native_models_retained_on_runner_only=True,native_simulation_rerun=False,geometry_changed=False,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False)
