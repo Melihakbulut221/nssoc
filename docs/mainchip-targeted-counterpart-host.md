@@ -1,9 +1,13 @@
-# Targeted828 cloud integration
+# Targeted routing in GitHub
 
-This disabled candidate connects the previously qualified separate routing scope to the original full hosted lifecycle. The complete original bulk integration and165 saved-diode controls are retained, with15 targeted scope and10 host controls.
+The candidate routes 828 signal nets: the original 608 diode-bearing nets plus 220 authenticated counterparts. The original antenna plan, all 1,351 diode attachments and all 1,691 protected nets remain unchanged.
 
-Before mutation the candidate hashes both the exact213943992-byte fixed ODB and the complete624587929-byte fixed snapshot from the classified prior run. Hashing is streamed. The three complete authenticated derived input documents are projected with all original sources into the credential-free native container. Source/command/full-stream proofs, original phase/resource limits, independent exact-source empty-release admission, success/failure restoration, permanent capsule publication and artifact fallback remain required.
+Source `49bc2439ca43756b016f67efa586ba1b7402f2b6` passed [41266077522](https://github.com/Melihakbulut221/nssoc/actions/runs/41266077522): 15 scope controls, 10 host controls, 15 stale-wire/clock controls, 162 bulk integration controls and 165 saved-diode controls. The earlier AST fixture failure in run 41265812656 is retained; its correction changes no production code.
 
-The original result validator is called only after validating exactly one additional clear command immediately before routing. The clear's complete native report,828-net scope,608/220 split,1691-protected invariants, all guides, original plan and exact seeds must match. The real supervised argv,budget,command record andboth full stdout/stderr streams are authenticated. Only this separately validated command is projected out of the inherited command-list check; no original command,physical failure or terminal error is removed.
+Before mutation, the runner streams and hashes the exact 213,943,992-byte fixed ODB and the complete 624,587,929-byte fixed snapshot from the classified prior run. Three authenticated derived input documents and the pinned source closure enter the credential-free native container.
 
-Native execution remains disabled. All source tests run on GitHub. Actual native routing requires this integration's own successful fullcontrols, source review, explicit activation andindependently reserved empty exact-source release. Passing these controls is not a routed-layout, PHY or timing acceptance.
+The host validates exactly one successful clear immediately before routing. It checks the full native scope and mutation report, exact input seeds, guides, original plan, supervised command, original 1,200-second clear budget, complete command-record bytes and both output streams. Only that separately validated extra command is removed from the list passed to the original validator. Every original command, physical predicate and terminal error remains checked.
+
+Scoped native execution is enabled only through manual route mode, the exact approved source, same-run source and log admission, and an independently reserved empty exact-source release. This activation changes no runtime code, test, workflow, resource limit or physical algorithm. Its own controls-only qualification remains required before the single intended route.
+
+Success and failure restoration, permanent output publication and artifact fallback remain enabled. Source qualification is not a routed-layout, PHY or timing acceptance. All execution and native data remain on GitHub.
