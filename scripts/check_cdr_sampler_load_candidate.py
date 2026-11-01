@@ -21,12 +21,12 @@ def main():
             cards.append(" ".join([d["instance"],*[t["node"] for t in d["terminals"]],d["model"],*[k+"="+v for k,v in d["parameters"].items()]]))
     text="* exact unrelated bytes\nR_keep a b 42\nC_keep a 0 1f\n"+"\n".join(cards)+"\n.end\n"
     changed,updated,delta=candidate.rewrite(text,contract)
-    assert len(delta["changes"])==24
-    loads={175,176,177,178,191,194,195,196,202,205,207,208,212,214,215,216};shunts={184,185,222,223};buffers={182,183,220,221}
+    assert len(delta["changes"])==16
+    loads={175,176,191,194,202,205,212,214};shunts={184,185,222,223};buffers={182,183,220,221}
     assert {x["native_id"]for x in delta["changes"]}==loads|shunts|buffers
     for x in delta["changes"]:
         if x["native_id"]in loads:
-            assert x["old_l"]=="2.6u"and x["new_l"]=="1.5u"and x["w"]=="32u"
+            assert x["old_l"]=="2.6u"and x["new_l"]=="2.0u"and x["w"]=="32u"
         elif x["native_id"]in shunts:
             assert x["old_l"]=="5u"and x["new_l"]=="3.4u"and x["w"]=="4u"
         else:
@@ -68,9 +68,11 @@ def main():
     reject("wrong load physical net",text,wrong)
     reject("wrong load card terminal",text.replace("w_T175_rppd_2","wrong",1),contract)
     wrong=copy.deepcopy(contract)
-    next(d for d in wrong["device_records"]if d["native_id"]==177)["parameters"]["w"]="16u"
-    reject("wrong master load width",text,wrong)
-    reject("wrong master card terminal",text.replace("w_T177_rppd_2","wrong",1),contract)
+    wrong["device_records"][0]["native_id"]=wrong["device_records"][1]["native_id"]
+    reject("duplicate physical identity",text,wrong)
+    wrong=copy.deepcopy(contract)
+    next(d for d in wrong["device_records"]if d["native_id"]==191)["parameters"]["m"]="2"
+    reject("wrong selected multiplicity",text,wrong)
     wrong=copy.deepcopy(contract)
     next(d for d in wrong["device_records"]if d["native_id"]==182)["parameters"]["w"]="16u"
     reject("wrong buffer pullup width",text,wrong)
