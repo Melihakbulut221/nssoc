@@ -26,7 +26,7 @@ def source_gate():
         require(original.core.file_pin(ROOT/actual)==pin,"immutable original source "+path)
     for path,pin in pins["files"].items():
         require(original.core.file_pin(ROOT/path)==pin,"exact supplemental source "+path)
-    return dict(source=head,run_id=int(os.environ["GITHUB_RUN_ID"]),attempt=1,original_workflow_archive=ARCHIVED,actual_workflow=WORKFLOW,cloud_only=True)
+    return dict(source=head,run_id=int(os.environ["GITHUB_RUN_ID"]),attempt=1)
 NS=dict(original.__dict__)
 for key,value in original.__dict__.items():
     if isinstance(value,types.FunctionType) and value.__globals__ is original.__dict__:

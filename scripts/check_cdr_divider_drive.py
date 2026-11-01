@@ -9,7 +9,7 @@ import check_cdr_sampler_load_candidate as prior
 import check_cdr_sampler_resistor_base as resistor_checks
 import cdr_via2_m3_loaded_core as core
 def main():
-    ctx=host.source_gate()
+    ctx=host.source_gate();assert core.actual_context(ctx)==ctx
     # Execute unchanged original test bodies with the explicit current-source gate.
     # No original module globals or executable test predicates are modified.
     facade=types.SimpleNamespace(source_gate=host.source_gate,restore=host.original.restore)
