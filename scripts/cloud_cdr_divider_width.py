@@ -44,7 +44,7 @@ def admit(ctx):
     run=original.api("actions/runs/"+ident)
     jobs=original.api("actions/runs/"+ident+"/jobs?per_page=100")
     require(run["head_sha"]==ctx["source"] and run["status"]=="completed" and run["conclusion"]=="success" and run["run_attempt"]==1 and run["event"]=="workflow_dispatch","qualified separate exact-source controls")
-    require(run["head_branch"]=="codex/cdr-divider-width" and run["path"]==WORKFLOW,"exact controls branch and workflow")
+    require(run["head_branch"]=="codex/cdr-divider-width4" and run["path"]==WORKFLOW,"exact controls branch and workflow")
     controls=[j for j in jobs["jobs"]if j["name"]=="source-controls"]
     require(len(controls)==1 and controls[0]["conclusion"]=="success" and all(s["conclusion"]in("success","skipped")for s in controls[0]["steps"]),"complete separate controls")
     require(all(j["conclusion"]=="skipped" for j in jobs["jobs"]if j["name"]=="simulate"),"separate qualification did not simulate")

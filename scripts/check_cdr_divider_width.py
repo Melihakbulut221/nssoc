@@ -25,7 +25,7 @@ def main():
     before=(candidate.parent.derive,candidate.original.derive,candidate.original.variant,core.prepare_case.__globals__,host.original.source_gate)
     golden=candidate.parent.derive(text,contract,native=False)
     s=candidate.derive(text,contract,native=False)
-    expected={i:"2u"for i in candidate.TARGETS}
+    expected={i:"4u"for i in candidate.TARGETS}
     assert len(expected)==12
     oldrows={d["native_id"]:d for d in golden["contract"]["device_records"]}
     newrows={d["native_id"]:d for d in s["contract"]["device_records"]}
@@ -63,7 +63,7 @@ def main():
     assert len(adapted["r"]["binding_controls"]["rejected"])==13
     assert adapted["r"]["binding_controls"]["candidate_expansion"]["checks"]==12
     assert len(adapted["bound"]["groups"]["npn13g2"])==124
-    assert all(d["parameters"]["w"]=="2u"for d in s["contract"]["device_records"]if d["native_id"]in expected)
+    assert all(d["parameters"]["w"]=="4u"for d in s["contract"]["device_records"]if d["native_id"]in expected)
     assert len(adapted["bound"]["groups"]["sg13_lv_nmos"])==200 and len(adapted["bound"]["mos_tail_groups"])==16
     paths=lambda prefix:{k:"/"+prefix+"/"+k for k in("model","composition","planes")}
     variant=candidate.variant(paths("baseline"),paths("candidate"))
