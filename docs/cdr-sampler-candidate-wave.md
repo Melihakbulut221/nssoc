@@ -1,13 +1,11 @@
-# Original-master q20 candidate original-wave operating points
+# Original-master q15 loaded transfer diagnosis
 
-The actual 16-resistor native experiment41277056212 passed device predicates but failed all six data stages. This read-only diagnosis consumes that exact complete native archive on a GitHub runner, verifies all members and reproduces the original124HBT metrics, all six stages and1530bit delays, phase and VI measurements with the frozen reader.
+This reads the complete existing native wave from run41277054717, sourcee85179e6900c2be9d931a8b30549c99f47c7617d, release430382305. No additional simulator or geometry mutation runs. Native payload remains only on GitHub.
 
-It additionally records simultaneous terminal voltages and collector currents for all124HBT devices at each stage's worst original sampled margin and at the original deadline for its worst-delay bit. The identical interpolation time is used for every device. Out-of-range times, invalid axes, missing/nonfinite vectors and incorrect identities are refused. The observed clock/data/alias nodes are retained alongside those operating points.
+The original124HBT/all6stage/1530delay/phaseVI reproduction and simultaneous operating points remain unchanged. Seven frozen-reader, thirteen event and seven transfer controls must pass before archive acquisition.
 
-Seven inherited frozen-reader controls and thirteen event/operating-point tests run first; pipeline errors propagate. The original sampling/gates/workload are unchanged. These diagnostic snapshots show correlations and do not establish that a circuit edit will fix a failure.
+Four authenticated paths are traced: A->AD, C->CD, B->S0 and B->S1. Each receiver base must have one native series resistor, one parallel MIM and one actual avss shunt from its assigned sampler collector. All500native devices and receiver terminal identities are preserved. Shared B divider nodes and distinct routed receiver leaves are retained.
 
-Producer sourceedc7c8d04659f73d024c45bbfa4936b977c90c32, release430382311, tagcloud-results-41277056212-1-cdr-sampler-load. Archive1053737922bytes SHA25628fd7b4f3e8202e52374ba27d07d24c3a0dfd4dfd7e6a9bb301b53510239fb49. All109members are verified. Full measurement and publication descriptors are pinned to terminal proofa9b1c76d93d90fb57b8820f26b06ccccd1fcfebc.
+A hysteretic crossing detector uses50mV for sampler/buffer observations and10mV for internal bases. These are diagnostic noise thresholds, not altered external acceptance gates. A causal match requires exactly one same-direction crossing before the next input transition and within125ps. Missing/ambiguous and preceding/following same-direction events are retained; the tool does not infer a successful transfer from unmatched or ambiguous edges.
 
-No simulator, layout mutation or output release reservation is involved. Native payload stays only on GitHub runners; local collection is restricted to derived text/JSON and source, excluding native-failure archives. A successful diagnosis is not circuit acceptance, fullPHY verification or timing closure.
-
-This repeats the qualified operating-point method from run41277766243 on the actual q20 wave. All original source controls, sampling and electrical predicates remain unchanged. No additional native simulation.
+The unchanged electrical screen still requires100mV/37.5ps sampler and100mV/75ps XOR validity. This diagnosis cannot establish circuit acceptance, freshPEX, closed-loop/fullPHY operation or finalchip timing. The complete events and topology are published as derived JSON.

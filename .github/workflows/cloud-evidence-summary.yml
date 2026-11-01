@@ -1,4 +1,4 @@
-name: Original-master q20 original-wave sampler operating points
+name: Loaded original-master transfer timing diagnosis
 on:
   workflow_dispatch:
     inputs:
@@ -26,6 +26,8 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
+            /scripts/cdr_sampler_transfer.py
+            /scripts/check_cdr_sampler_transfer.py
             /scripts/cdr_sampler_candidate_wave.py
             /scripts/check_cdr_sampler_candidate_wave.py
             /scripts/check_cdr_sampler_candidate_frozen.py
@@ -45,6 +47,7 @@ jobs:
           mkdir cloud-sampler-candidate-controls
           python3 -B scripts/check_cdr_sampler_candidate_frozen.py 2>&1 | tee cloud-sampler-candidate-controls/frozen.log
           python3 -B scripts/check_cdr_sampler_candidate_wave.py 2>&1 | tee cloud-sampler-candidate-controls/events.log
+          python3 -B scripts/check_cdr_sampler_transfer.py 2>&1 | tee cloud-sampler-candidate-controls/transfer.log
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -67,6 +70,8 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
+            /scripts/cdr_sampler_transfer.py
+            /scripts/check_cdr_sampler_transfer.py
             /scripts/cdr_sampler_candidate_wave.py
             /scripts/check_cdr_sampler_candidate_wave.py
             /scripts/check_cdr_sampler_candidate_frozen.py

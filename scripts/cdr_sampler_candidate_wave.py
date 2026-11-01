@@ -3,6 +3,7 @@
 """Cloud-only complete-wave diagnosis of the rejected coupled sampler candidate."""
 import argparse,ast,base64,hashlib,json,math,os,pathlib,resource,subprocess,tarfile,time,traceback,zlib
 import numpy as np
+import cdr_sampler_transfer as transfer
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 CONFIG="scripts/cdr-sampler-candidate-wave-inputs.json"
 REPO="repos/Melihakbulut221/nssoc/"
@@ -121,7 +122,7 @@ def simultaneous_hbt(t,when,devices,voltage,current):
     return result
 def diagnose(report,t,data):
     require(report["case"]=="nominal_late"and report["corner"]=="nominal"and report["returncode"]==0 and report["diagnostics"]==[]and report["sources_unchanged"]is True,"complete original case")
-    require(report["current_context"]==dict(attempt=1,run_id=41277056212,source="edc7c8d04659f73d024c45bbfa4936b977c90c32"),"actual case identity")
+    require(report["current_context"]==dict(attempt=1,run_id=41277054717,source="e85179e6900c2be9d931a8b30549c99f47c7617d"),"actual case identity")
     require(len(report["devices"])==124 and len(report["vectors"])==1151,"all original devices/vectors")
     aliases=report["binding"]["aliases"]
     def v(name):
@@ -211,13 +212,13 @@ def acquire(config,out,work):
     for name,rule in rules.items():
         raw=remote(rule);(out/name).write_bytes(raw);values[name]=json.loads(raw)
     report=values["measurement.json"];index=values["index.json"];parts=values["parts.json"]
-    run=api("actions/runs/41277056212");release=api("releases/430382311");ref=api("git/ref/tags/"+config["release_tag"])
+    run=api("actions/runs/41277054717");release=api("releases/430382305");ref=api("git/ref/tags/"+config["release_tag"])
     require(run["status"]=="completed"and run["conclusion"]=="failure"and run["head_sha"]==config["producer_source"]and run["run_attempt"]==1,"original rejected run identity")
-    require(release["id"]==430382311 and release["tag_name"]==config["release_tag"]and release["target_commitish"]==config["producer_source"]and release["draft"]is False and release["prerelease"]is True,"original publication identity")
+    require(release["id"]==430382305 and release["tag_name"]==config["release_tag"]and release["target_commitish"]==config["producer_source"]and release["draft"]is False and release["prerelease"]is True,"original publication identity")
     require(ref["object"]["type"]=="commit"and ref["object"]["sha"]==config["producer_source"],"exact source release tag")
     (out/"producer.json").write_bytes(encode(dict(run=run,release=release,ref=ref)))
     assets={a["name"]:a for a in release["assets"]};require(len(assets)==len(release["assets"])==6,"complete original release assets")
-    require(parts["archive"]==dict(bytes=1053737922,sha256="28fd7b4f3e8202e52374ba27d07d24c3a0dfd4dfd7e6a9bb301b53510239fb49") and parts["context"]==report["current_context"] and index["context"]==report["current_context"] and parts["source_directory"]=="cloud-sampler-load","original ordered archive")
+    require(parts["archive"]==dict(bytes=1053409153,sha256="85589cfeef80154768dc83db199d73c50a106050fcec727bd193e6bc16ace72e") and parts["context"]==report["current_context"] and index["context"]==report["current_context"] and parts["source_directory"]=="cloud-sampler-load","original ordered archive")
     require(len(index["files"])==config["inventory_members"] and len(parts["parts"])==4,"full original inventory")
     combined=work/"complete-native.tar.gz";observations=[];start=time.monotonic()
     with combined.open("xb")as archive:
@@ -268,7 +269,11 @@ def main():
             if row["model"]!="npn13g2":continue
             dev=report["devices"]["xpd."+row["instance"].lower()]
             require(dev["nodes"]==["xpd."+x["node"].lower() for x in row["terminals"]] and dev["nx"]==int(row["parameters"]["nx"]),"native candidate HBT terminal identity")
-        summary={k:v for k,v in result.items()if k not in ("hbt","stages","capture","failing_hbt_events","stage_operating_points")}
+        result["transfer_paths"]=transfer.analyze(report,composition,t,data)
+        transfer_summary={k:v["summary"]for k,v in result["transfer_paths"]["paths"].items()}
+        (out/"transfer-summary.json").write_bytes(encode(transfer_summary))
+        summary={k:v for k,v in result.items()if k not in ("hbt","stages","capture","failing_hbt_events","stage_operating_points","transfer_paths")}
+        summary["transfer_paths"]=transfer_summary
         summary["failing_hbt_events"]=[{k:v for k,v in e.items()if k not in ("all124_simultaneous_hbt","simultaneous_observed_nodes_v","all_violating_intervals")}for e in result["failing_hbt_events"]]
         summary["stage_operating_points"]={tag:[dict(event=x["event"],signed_margin_v=x["signed_margin_v"],observed_nodes_v=x["observed_nodes_v"])for x in rows]for tag,rows in result["stage_operating_points"].items()}
         summary["stages"]={k:{n:v for n,v in s["metrics"].items()if n!="clock_to_valid_by_bit_s"}for k,s in result["stages"].items()}
