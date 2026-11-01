@@ -8,8 +8,8 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"pd650-wave-analysis"
 UI=125e-12;START=2e-9;STOP=START+258*UI;STEP=.3125e-12
-SOURCE="3a6f1f9e3b30f97ffae87f43cf0f7f00e2d2ab43"
-PRODUCER_RUN=41295928971;RELEASE=430496244
+SOURCE="2a62d651d415fba8db3c5b758d1b66c05cde3a38"
+PRODUCER_RUN=41306148937;RELEASE=430565351
 CASE="native/case-nominal_late/"
 SELECTED={CASE+"native/wave.raw",CASE+"measurement-result.json","native/candidate/composition.json","native/candidate/planes.json"}
 def sha(path):
@@ -23,7 +23,7 @@ def source_gate():
     assert os.environ.get("GITHUB_ACTIONS")=="true" and os.environ["GITHUB_RUN_ATTEMPT"]=="1"
     assert os.environ["GITHUB_REPOSITORY"]=="Melihakbulut221/nssoc"
     assert os.environ["GITHUB_EVENT_NAME"]=="workflow_dispatch"
-    assert os.environ["GITHUB_REF"]=="refs/heads/codex/cdr-pd650-loaded-wave-analysis"
+    assert os.environ["GITHUB_REF"]=="refs/heads/codex/cdr-width-wave-analysis"
     assert np.__version__=="2.3.3"
     pins=json.loads((ROOT/"scripts/pd650-wave-analysis-pins.json").read_bytes())
     assert set(pins)=={"scripts/cloud_pd650_wave_analysis.py","scripts/pd650-wave-analysis-inputs.json",
@@ -131,7 +131,10 @@ def controls():
         try:checked_phase_average(bad,actual)
         except AssertionError:passed.append("reject overwritten or nonfinite phase "+repr(bad))
         else:raise AssertionError("accepted overwritten phase")
-    assert len(passed)==33
+    width_phase=.0370801368476178
+    assert checked_phase_average(width_phase,width_phase)==width_phase
+    passed.append("phase above threshold still preserves original data rejection")
+    assert len(passed)==34
     return dict(status="PASS_SOURCE_READER_AND_ORIGINAL_MEASUREMENT_CONTROLS",source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),count=len(passed),passed=passed,native_simulation=False)
 def relative_member(name,source_directory):
     assert source_directory=="cloud-sampler-load"
@@ -263,7 +266,9 @@ def analyze(base,index):
            active_commonmode_v=stats(((v(p)+v(n))/2)[active]),by_transition=transition,
            worst_cases=worst,events=events,probe_devices=probe_devices.get(tag,[]))
     phase_average_v=float(np.trapezoid(((v("xp")-v("xn"))-(v("yp")-v("yn")))[window],t[window])/(t[window][-1]-t[window][0]))
-    assert abs(phase_average_v-m["phase_average_v"])<1e-13 and phase_average_v<.03
+    assert abs(phase_average_v-m["phase_average_v"])<1e-13
+    assert m["phase_passed"] is bool(phase_average_v>=.03)
+    assert m["data_passed"] is False and all(not s["reproduced_original_gate"]["passed"] for s in stages.values())
     contract=json.loads((base/"native/candidate/composition.json").read_bytes())
     planes=json.loads((base/"native/candidate/planes.json").read_bytes())
     logical={}
