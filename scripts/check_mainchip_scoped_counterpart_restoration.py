@@ -71,7 +71,6 @@ def main():
     assert immutable==(json.dumps(classes,sort_keys=True),json.dumps(p,sort_keys=True),json.dumps(s,sort_keys=True),a,b)
     controls.append('all_callers_and_input_bytes_unchanged')
     # Reproduce the actual native list-of-tuples versus persisted JSON mismatch.
-    import copy
     box=('Metal1',1,2,3,4)
     native={'masters':{'lib/cell':dict(width=10,height=20,type='CORE',
         pins={'A':dict(io='INPUT',sigtype='SIGNAL',boxes=[[box],[('Metal2',5,6,7,8)]])})},
