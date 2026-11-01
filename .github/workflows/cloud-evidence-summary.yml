@@ -1,4 +1,4 @@
-name: Four-shunt CDR headroom experiment
+name: Coupled sampler load and headroom CDR experiment
 on:
   workflow_dispatch:
     inputs:
@@ -10,7 +10,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: cdr-four-shunt-${{ github.ref }}
+  group: cdr-sampler-load-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   source-controls:
@@ -25,6 +25,7 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /.github/workflows/cloud-evidence-summary.yml
+            /docs/cdr-sampler-load-headroom.md
             /docs/evidence/cdr-via-rich-stream-transport-pass-20261019.json
             /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/derived-loaded-vector-projection.json
             /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/direct/complete-output-index.json
@@ -40,18 +41,18 @@ jobs:
             /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-summary.json
             /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-tag-ref.json
             /scripts/build_pcie_local_vco_hybrid_v6.py
-            /scripts/cdr-four-shunt-host-pins.json
+            /scripts/cdr-sampler-load-host-pins.json
             /scripts/cdr-via2-m3-loaded-core-catalog.json
             /scripts/cdr-via2-m3-loaded-core-inputs.json
             /scripts/cdr-via2-m3-loaded-producer-inputs.json
             /scripts/cdr-via2-m3-loaded-runtime-inputs.json
-            /scripts/cdr_four_shunt_candidate.py
+            /scripts/cdr_sampler_load_candidate.py
             /scripts/cdr_v59_tail_loaded_terminal.py
             /scripts/cdr_via2_m3_loaded_core.py
-            /scripts/check_cdr_four_shunt_candidate.py
+            /scripts/check_cdr_sampler_load_candidate.py
             /scripts/cloud_cdr_current_eight_drain_loaded.py
-            /scripts/cloud_cdr_four_shunt.py
             /scripts/cloud_cdr_pd_vi.py
+            /scripts/cloud_cdr_sampler_load.py
             /scripts/cloud_cdr_xor.py
             /scripts/cloud_pll_pump_current.py
             /scripts/cloud_tx_stream.py
@@ -61,21 +62,21 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
-      - name: Verify exact source and four-shunt mutation controls
+      - name: Verify exact source and sampler-load mutation controls
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           test "$GITHUB_RUN_ATTEMPT" = "1"
-          python3 -B scripts/check_cdr_four_shunt_candidate.py
+          python3 -B scripts/check_cdr_sampler_load_candidate.py
       - name: Preserve candidate and full source control output
         if: always()
         run: |
-          mkdir -p cloud-four-shunt-controls/source
-          cp scripts/cdr_four_shunt_candidate.py scripts/check_cdr_four_shunt_candidate.py scripts/cloud_cdr_four_shunt.py scripts/cdr-four-shunt-host-pins.json .github/workflows/cloud-evidence-summary.yml cloud-four-shunt-controls/source/
+          mkdir -p cloud-sampler-load-controls/source
+          cp scripts/cdr_sampler_load_candidate.py scripts/check_cdr_sampler_load_candidate.py scripts/cloud_cdr_sampler_load.py scripts/cdr-sampler-load-host-pins.json .github/workflows/cloud-evidence-summary.yml docs/cdr-sampler-load-headroom.md cloud-sampler-load-controls/source/
       - if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: cdr-four-shunt-controls-${{ github.run_id }}
-          path: cloud-four-shunt-controls
+          name: cdr-sampler-load-controls-${{ github.run_id }}
+          path: cloud-sampler-load-controls
           if-no-files-found: error
           retention-days: 90
   simulate:
@@ -96,6 +97,7 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /.github/workflows/cloud-evidence-summary.yml
+            /docs/cdr-sampler-load-headroom.md
             /docs/evidence/cdr-via-rich-stream-transport-pass-20261019.json
             /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/derived-loaded-vector-projection.json
             /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/direct/complete-output-index.json
@@ -111,18 +113,18 @@ jobs:
             /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-summary.json
             /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-tag-ref.json
             /scripts/build_pcie_local_vco_hybrid_v6.py
-            /scripts/cdr-four-shunt-host-pins.json
+            /scripts/cdr-sampler-load-host-pins.json
             /scripts/cdr-via2-m3-loaded-core-catalog.json
             /scripts/cdr-via2-m3-loaded-core-inputs.json
             /scripts/cdr-via2-m3-loaded-producer-inputs.json
             /scripts/cdr-via2-m3-loaded-runtime-inputs.json
-            /scripts/cdr_four_shunt_candidate.py
+            /scripts/cdr_sampler_load_candidate.py
             /scripts/cdr_v59_tail_loaded_terminal.py
             /scripts/cdr_via2_m3_loaded_core.py
-            /scripts/check_cdr_four_shunt_candidate.py
+            /scripts/check_cdr_sampler_load_candidate.py
             /scripts/cloud_cdr_current_eight_drain_loaded.py
-            /scripts/cloud_cdr_four_shunt.py
             /scripts/cloud_cdr_pd_vi.py
+            /scripts/cloud_cdr_sampler_load.py
             /scripts/cloud_cdr_xor.py
             /scripts/cloud_pll_pump_current.py
             /scripts/cloud_tx_stream.py
@@ -137,31 +139,31 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
           python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
-      - name: Authenticate original inputs and run four-shunt candidate with original measurements
+      - name: Authenticate original inputs and run sampler-load candidate with original measurements
         id: native
-        run: python3 -B scripts/cloud_cdr_four_shunt.py
+        run: python3 -B scripts/cloud_cdr_sampler_load.py
       - name: Preserve complete native result even when electrical gates reject it
         id: publication
         if: always() && steps.native.outcome != 'skipped'
-        run: python3 -B scripts/cloud_cdr_four_shunt.py --publish
+        run: python3 -B scripts/cloud_cdr_sampler_load.py --publish
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: cdr-four-shunt-derived-${{ github.run_id }}
-          path: cloud-four-shunt/derived
+          name: cdr-sampler-load-derived-${{ github.run_id }}
+          path: cloud-sampler-load/derived
           if-no-files-found: warn
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: cdr-four-shunt-native-${{ github.run_id }}
-          path: cloud-four-shunt/publication
+          name: cdr-sampler-load-native-${{ github.run_id }}
+          path: cloud-sampler-load/publication
           if-no-files-found: warn
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always() && steps.publication.outcome != 'success'
         with:
-          name: cdr-four-shunt-native-failure-${{ github.run_id }}
-          path: cloud-four-shunt/native
+          name: cdr-sampler-load-native-failure-${{ github.run_id }}
+          path: cloud-sampler-load/native
           if-no-files-found: warn
           retention-days: 90
