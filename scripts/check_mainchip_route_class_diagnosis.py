@@ -39,6 +39,12 @@ def main():
     expect('malformed_section',lambda:d.analyze(before.replace(b'NETS 2',b'NETS 3'),before,{'protected':'ROUTED'},['mutable']))
     expect('duplicate_net',lambda:run(record(name='mutable')))
     expect('CRLF_refused',lambda:d.analyze(before.replace(b'\n',b'\r\n'),before,{'protected':'ROUTED'},['mutable']))
+    r,_,_=d.analyze(before,fixture(record(kind='ROUTED',x=11)),{'protected':'ROUTED'},['mutable'],['protected'])
+    assert r['counterpart_records']==1 and r['normalized_counterpart_changes']==1 and r['normalized_changes_outside_counterparts']==0 and r['strict_failures_outside_counterparts']==0
+    checks.append('authorized_counterpart_class_geometry_change_reported_separately')
+    expect('unknown_counterpart',lambda:d.analyze(before,before,{'protected':'ROUTED'},['mutable'],['absent']))
+    expect('duplicate_counterpart',lambda:d.analyze(before,before,{'protected':'ROUTED'},['mutable'],['protected','protected']))
+    expect('wrong_counterpart_original_class',lambda:d.analyze(before,before,{'protected':'FIXED'},['mutable'],['protected']))
     assert all(r[k]is False for k in ['layout_modified','full_phy_accepted','physical_acceptance','timing_accepted'])
     checks.append('all_acceptance_and_mutation_flags_false')
     out=Path('cloud-route-class-controls');out.mkdir(exist_ok=False)

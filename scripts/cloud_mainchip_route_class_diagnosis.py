@@ -3,6 +3,7 @@
 import hashlib,json,os,subprocess,tarfile,time,traceback
 from pathlib import Path,PurePosixPath
 import mainchip_route_class_diagnosis as diag
+import mainchip_targeted_counterpart_routing as scope_core
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'cloud-route-class-diagnosis'
 REPO='repos/Melihakbulut221/nssoc/'
@@ -15,7 +16,8 @@ ASSETS={
  'candidate-outputs.json':(163920,'a51300c7e60446e04af87747792f19e58464d587ea46502118e4e920cc027eec'),
  'candidate-parts.json':(487,'d670ee107b22b5242c254cd656225e2d3d1527bc8f33e6e12d152a7434d087e0')}
 SELECTED={'work/bulk-postdrt-antenna/fixed.def','work/bulk-postdrt-antenna/routed-fixed.def',
- 'bulk-postdrt-antenna/drt-original-classes.json','bulk-postdrt-antenna/insertion-plan.json'}
+ 'bulk-postdrt-antenna/drt-original-classes.json','bulk-postdrt-antenna/insertion-plan.json',
+ 'bulk-postdrt-antenna/targeted-routing-scope.json'}
 def sha(path):
  h=hashlib.sha256()
  with path.open('rb')as f:
@@ -92,12 +94,16 @@ def main():
     if sink:sink.close()
    pin=dict(bytes=length,sha256=h.hexdigest());assert pin==index['files'][m.name],m.name;seen[m.name]=pin
  assert set(seen)==set(index['files'])
+ save('archive-authentication',dict(context=ctx,producer=PRODUCER,producer_run=PRODUCER_RUN,archive=parts['archive'],authenticated_members=len(seen),selected_inputs={n:seen[n]for n in sorted(SELECTED)},native_payloads_remain_cloud=True))
  selected=work/'selected'
  classes=json.loads((selected/'bulk-postdrt-antenna/drt-original-classes.json').read_text())
  plan=json.loads((selected/'bulk-postdrt-antenna/insertion-plan.json').read_text())
- assert len(plan['mutable_nets'])==828
+ scope=json.loads((selected/'bulk-postdrt-antenna/targeted-routing-scope.json').read_text())
+ antenna,extra,protected,routing=scope_core.validate_scope(scope,plan)
+ assert len(antenna)==608 and len(extra)==220 and len(routing)==828 and len(protected)==1691
+ save('authenticated-routing-scope',scope)
  result,pins,changes=diag.analyze((selected/'work/bulk-postdrt-antenna/fixed.def').read_bytes(),
-  (selected/'work/bulk-postdrt-antenna/routed-fixed.def').read_bytes(),classes,plan['mutable_nets'])
+  (selected/'work/bulk-postdrt-antenna/routed-fixed.def').read_bytes(),classes,plan['mutable_nets'],sorted(extra))
  result.update(context=ctx,producer=PRODUCER,producer_run=PRODUCER_RUN,producer_release=RELEASE,
   authenticated_members=len(seen),archive=parts['archive'],selected_inputs={n:seen[n]for n in sorted(SELECTED)},
   native_cad_executed=False,native_payloads_remain_cloud=True)
