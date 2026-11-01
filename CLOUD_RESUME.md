@@ -1,11 +1,25 @@
-# Cloud continuation — checkpoint v249
+# Cloud continuation — checkpoint v250
 
-Updated: 2026-11-01T14:51:23.814883+00:00
+Updated: 2026-11-01T15:27:59.673720+00:00
 
 Latest instruction: **her şeyi bulutta yap, lokalde bir şey bırakma temizle.**
 It overrides the earlier local-execution wording in the active goal. All CAD, simulation, native archive/layout/waveform acquisition and numerical/geometric analysis run on GitHub. Local coordination uses source/API-derived text in RAM only. Never acquire native ODB/DEF/GDS/SPICE/raw archives locally, including RAM. The local workspace and project temp entries were verified empty, with no local CAD processes. Unrelated user files remain untouched.
 
-## Latest result: qualified native adapter implemented; actual layout audit running
+## Latest result: cloud-only handoff, completed native audits and rejected physical candidate
+
+All project CAD, simulation, native data acquisition and analysis run on GitHub. The local workspace and project temporary locations were verified empty; no local CAD processes were present. Source/API-derived text coordination uses RAM only. Do not download native ODB/DEF/GDS/SPICE/raw archives locally.
+
+Actual run 41317927121/source 340fb4f217e920c1bc4d5fa552e4b11eb81d0a4b completed all six native phases: qualified connectivity for 828 nets in both modes, 2702 direct diode power contacts, and unchanged 1691 protected clock/fixed nets passed. The physical candidate is still rejected: 399 DRC markers, 19 antenna nets and 23 violation rows remain. No final timing or full serial PHY acceptance.
+
+The host job is red with three preservation errors: original-clock-gate/before.def and after.def are already authenticated in the native capsule but refused by the derived suffix filter; oversized host-progress.json is outside the native publication prefixes. Preserve these failures and fix the exact output cases with refusal controls in a successor; do not rerun CAD merely to recolor CI. The permanent native release is 430648315, archive SHA256 c9cf1d646a8116c5ddc77dcb0d36838677c9d6243f4db08df9ac17369d65f95f. No candidate data needs a local copy.
+
+Width8 full-wave diagnosis 41319989811/source 7866608fd58ceb372fa927b408ba7087c54d9610 passed 48 controls and reproduced the six original measurements and all device tables. Its proof is imported below docs/evidence/divider-width8-wave-terminal-41319989811. It confirms failure, not PHY acceptance: phase 25.861 mV is below 30 mV; eight HBT limit violations and one aggregate stage-tail current violation remain. Full raw waves stay in release 430594515.
+
+Readout 41320700483 failed because the final*.json selector included the 27 MB all-net antenna table. Corrected source 23a41f2b4c6d057babbffad3dfd3b768f1809e49 uses an explicit bounded-report allowlist and four selection controls while still hashing EVERY archive member. Run 41321233030 is the single dispatched successor; inspect its actual terminal result before relying on its readout.
+
+Next: collect that existing readout, classify the 399 DRC markers and 19 antenna owners on the actual current candidate, then qualify the next physical repair. Export and prove a matching diode-inclusive netlist and fresh RC before unchanged multi-corner setup/hold gates; old route12 netlist/RC is stale. PHY work must address the measured internal divider/buffer/device failures, not declare width-only screening complete. All work continues in the cloud.
+
+## Previous checkpoint v249: qualified native adapter and dispatch
 
 The private adapter is implemented at source 340fb4f217e920c1bc4d5fa552e4b11eb81d0a4b on codex/mainchip-qualified-restoration. It binds the unchanged qualified core to the original native connectivity reader, preserving all original wire-only reports. Candidate ODB bytes and both GDS qualification records are hash-bound. The original source, predicate and graph functions are not mutated. Native source additions are authenticated in the existing source capsule.
 
