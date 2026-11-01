@@ -95,7 +95,7 @@ def main():
     nodes=[n for n in parsed.body if isinstance(n,ast.Assign)and any(isinstance(t,ast.Name)and t.id=="TARGETS"for t in n.targets)]
     require(len(nodes)==1,"one literal candidate target definition")
     targets=ast.literal_eval(nodes[0].value)
-    require(set(targets)=={175,176,184,185,191,194,202,205,212,214,222,223},"exact twelve candidate devices")
+    require(set(targets)=={175,176,177,178,182,183,184,185,191,194,195,196,202,205,207,208,212,214,215,216,220,221,222,223},"exact twenty-four candidate devices")
     loc=json.loads(raw["locations.json"])
     require(loc["status"]=="PASS_ALL_500_DEVICES_HAVE_UNIQUE_PHYSICAL_PCELL_ENCLOSURE","original qualified enclosure report")
     inputs=loc["inputs"]
