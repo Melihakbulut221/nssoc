@@ -1,0 +1,515 @@
+{
+  "canonical_master_restoration": {
+    "actual_master_readout": {
+      "added": [],
+      "after_count": 58,
+      "after_instances": 154480,
+      "all_differences_only_mpin_order": false,
+      "archive": {
+        "bytes": 421497727,
+        "sha256": "275b702ebfbe7d0bcbb5e28facceb82386417f606aec759123f9be03733de1fd"
+      },
+      "authenticated_members": 51,
+      "before_count": 58,
+      "before_instances": 154480,
+      "changed": [],
+      "context": {
+        "attempt": 1,
+        "run": 41307592168,
+        "source": "edd99c33b8ee783afc882b216e88ba7871f5bd13"
+      },
+      "exact_equal": true,
+      "full_phy_accepted": false,
+      "layout_modified": false,
+      "mpin_order_only": [],
+      "native_cad_executed": false,
+      "native_payloads_remain_cloud": true,
+      "nonroute_fields_equal": {
+        "block": true,
+        "clock_record_pins": true,
+        "diode_template": true,
+        "immutable": true,
+        "instances": true,
+        "protected": true
+      },
+      "other_changed": [],
+      "physical_acceptance": false,
+      "producer": "be65a271b066faeffee86237fa879f5f96b70273",
+      "producer_release": 430558340,
+      "producer_run": 41305082558,
+      "removed": [],
+      "selected_inputs": {
+        "bulk-postdrt-antenna/insertion-snapshot.json": {
+          "bytes": 627376262,
+          "sha256": "501e93ae94d2a08477d59f14f8bee320412a0de83578ec1c6ad7a818878e772f"
+        },
+        "bulk-postdrt-antenna/restored-snapshot.json": {
+          "bytes": 627640193,
+          "sha256": "7d9512e51de23b4cc927752bf56d969e78b59f5e78f902c6544ece93b7e9a2a5"
+        }
+      },
+      "timing_accepted": false
+    },
+    "controls_count": 49,
+    "correction": "Canonicalize only native master pin box tuple records to the identical persisted JSON list representation; serialized geometry bytes,order,multiplicity and all original gates unchanged.",
+    "full_phy_accepted": false,
+    "independent_controls": 41308125643,
+    "native": {
+      "branch": "codex/mainchip-scoped-restoration",
+      "control": 41308125643,
+      "release": 430583367,
+      "run": 41308526628,
+      "source": "05d336a1b1b681c9d96b71d464c5ea430835e438",
+      "tag": "cloud-results-41308526628-1-mainchip-bulk-postdrt-antenna",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41308526628"
+    },
+    "native_result_pending": true,
+    "original_cad_failure": {
+      "actual_restored_def": {
+        "bytes": 186265982,
+        "sha256": "a5183887cf3733b0c8cf9070af98156596d624a11808e955403daf350b80a36c"
+      },
+      "candidate_odb": {
+        "bytes": 214409779,
+        "sha256": "d526feec659883b65dc737853d4d6a192d529384e2676d8a2d17e9b5e7d6de7e"
+      },
+      "conclusion": "failure",
+      "expected_restored_def": {
+        "bytes": 186265982,
+        "sha256": "a5183887cf3733b0c8cf9070af98156596d624a11808e955403daf350b80a36c"
+      },
+      "final_audits_executed": false,
+      "full_phy_accepted": false,
+      "next_failure": "unchanged routed snapshot masters",
+      "physical_acceptance": false,
+      "restore_import_executed_successfully": true,
+      "restore_plan_executed_successfully": true,
+      "run": 41305082558,
+      "timing_accepted": false
+    },
+    "original_source_files_verified": 2361,
+    "physical_acceptance": false,
+    "timing_accepted": false
+  },
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "native_processes": 0,
+    "observed_at": "2026-11-01T12:56:53.404555+00:00",
+    "project_temp_entries": {
+      "/dev/shm": [],
+      "/tmp": [],
+      "/var/tmp": []
+    },
+    "source_API_derived_text_RAM_only": true,
+    "unrelated_user_files_not_modified": true,
+    "workspace_entries": 0
+  },
+  "collectors": {
+    "canonical_scoped_restoration": "import subprocess,json,hashlib,base64,time\nR='repos/Melihakbulut221/nssoc/'\nB='codex/complete-open-work'\ndef api(path,data=None,method=None):\n for attempt in range(4):\n  cmd=['gh','api',R+path]\n  if data is not None:cmd+=['--method',method or 'POST','--input','-']\n  p=subprocess.run(cmd,input=json.dumps(data)if data is not None else None,text=True,capture_output=True)\n  if p.returncode==0:return json.loads(p.stdout)if p.stdout.strip()else {}\n  if data is not None or method not in(None,'GET')or attempt==3 or not any(x in p.stderr for x in('HTTP 502','HTTP 503','HTTP 504','TLS handshake','connection reset','unexpected EOF','i/o timeout')):raise RuntimeError(path+': '+p.stderr[:2000])\n  time.sleep(2+attempt)\ndef remote(path,ref):\n d=api('contents/'+path+'?ref='+ref)\n if d.get('content'):return base64.b64decode(d['content'])\n return base64.b64decode(api('git/blobs/'+d['sha'])['content'])\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef publish(head,files,msg):\n parent=api('git/commits/'+head);entries=[]\n for p,b in files.items():\n  if isinstance(b,str):b=b.encode()\n  blob=api('git/blobs',dict(encoding='base64',content=base64.b64encode(b).decode()))\n  entries.append(dict(path=p,mode='100644',type='blob',sha=blob['sha']))\n tree=api('git/trees',dict(base_tree=parent['tree']['sha'],tree=entries))\n commit=api('git/commits',dict(message=msg,tree=tree['sha'],parents=[head]))\n assert api('git/ref/heads/'+B)['object']['sha']==head\n api('git/refs/heads/'+B,dict(sha=commit['sha'],force=False),'PATCH')\n return commit['sha']\n\nimport io,zipfile\nfrom concurrent.futures import ThreadPoolExecutor\nRUN=41308526628;SOURCE='05d336a1b1b681c9d96b71d464c5ea430835e438';RELEASE=430583367\nrun=api('actions/runs/'+str(RUN));assert run['status']=='completed'and run['head_sha']==SOURCE and run['run_attempt']==1\njobs=api('actions/runs/'+str(RUN)+'/jobs?per_page=100');assert jobs['total_count']==len(jobs['jobs'])==2\narts=api('actions/runs/'+str(RUN)+'/artifacts?per_page=100');assert arts['total_count']==len(arts['artifacts'])\nrelease=api('releases/'+str(RELEASE));tag=api('git/ref/tags/'+release['tag_name'])\nassert release['target_commitish']==SOURCE and tag['object']['type']=='commit'and tag['object']['sha']==SOURCE\nselected={'scoped-restoration-controls-'+str(RUN):'controls','scoped-restoration-derived-'+str(RUN):'derived'}\nfiles={};receipts=[]\nfor a in arts['artifacts']:\n if a['name']not in selected:continue\n assert not a['expired']and a['size_in_bytes']<80000000\n raw=subprocess.check_output(['gh','api',R+'actions/artifacts/'+str(a['id'])+'/zip'])\n assert a['digest']=='sha256:'+sha(raw)\n z=zipfile.ZipFile(io.BytesIO(raw));assert len(z.namelist())==len(set(z.namelist()))and sum(x.file_size for x in z.infolist())<150000000\n for info in z.infolist():\n  n=info.filename\n  if info.is_dir():continue\n  assert not n.startswith('/')and '..'not in n.split('/')and n.endswith(('.json','.jsonl','.log','.txt','.stdout','.stderr','.tcl','.py','.md','.yml')),n\n  assert ((info.external_attr>>16)&0o170000)!=0o120000\n  b=z.read(n);b.decode()\n  if n.endswith('.json'):json.loads(b)\n  if n.endswith('.jsonl'):\n   for line in b.splitlines():json.loads(line)\n  files[selected[a['name']]+'/'+n]=b\n receipts.append(dict(id=a['id'],name=a['name'],bytes=len(raw),sha256=sha(raw),files=len(z.namelist())))\nassert {r['name']for r in receipts}==set(selected)\nassets={a['name']:a for a in release['assets']}\nartifact_only_host_records={}\nif assets:\n for n in ['candidate-outputs.json','candidate-parts.json']:\n  a=assets[n];assert a['size']<30000000\n  raw=subprocess.check_output(['gh','api',R+'releases/assets/'+str(a['id']),'-H','Accept: application/octet-stream'])\n  assert len(raw)==a['size']and a['digest']=='sha256:'+sha(raw)\n  json.loads(raw);files['publication/'+n]=raw\n outputs=json.loads(files['publication/candidate-outputs.json'])\n assert int(outputs['run'])==RUN and outputs['source']==SOURCE and int(outputs['attempt'])==1\n assert not any(outputs[k]for k in ['full_phy_accepted','physical_acceptance','timing_accepted'])\n parts=json.loads(files['publication/candidate-parts.json'])\n assert set(assets)=={'candidate-outputs.json','candidate-parts.json'}|{p['name']for p in parts['parts']}\n for p in parts['parts']:assert assets[p['name']]['size']==p['bytes']and assets[p['name']]['digest']=='sha256:'+p['sha256']\n for n,b in files.items():\n  if n.startswith('derived/native/'):\n   key=n.removeprefix('derived/native/')\n   pin=dict(bytes=len(b),sha256=sha(b))\n   if key in outputs['files']:assert outputs['files'][key]==pin,key\n   else:\n    assert key in {'container-terminal.json','create-attempt.json','host-progress.json',\n     'image-inspect.stderr','image-inspect.stdout','immutable-image-pull.stderr','immutable-image-pull.stdout',\n     'names-before-owned-create.stderr','names-before-owned-create.stdout',\n     'owned-container-create.stderr','owned-container-create.stdout','owned-container-remove.stderr',\n     'owned-container-remove.stdout','owned-removal-census.stderr','owned-removal-census.stdout',\n     'prefix-envelope.json','prefix-restoration.json'},key\n    artifact_only_host_records[key]=pin\ndef log(j):\n if j['conclusion']=='skipped'or not j['steps']:return None\n return 'jobs/'+str(j['id'])+'.log',subprocess.check_output(['gh','api',R+'actions/jobs/'+str(j['id'])+'/logs'])\nfor row in ThreadPoolExecutor(2).map(log,jobs['jobs']):\n if row:files[row[0]]=row[1]\npinpath='scripts/mainchip-scoped-restoration-native-pins.json';pinraw=remote(pinpath,SOURCE)\nfiles['source/'+pinpath]=pinraw\nfor n,p in json.loads(pinraw).items():\n b=remote(n,SOURCE);assert dict(bytes=len(b),sha256=sha(b))==p\n files['source/'+n]=b\nfiles['source/docs/mainchip-scoped-counterpart-restoration.md']=remote('docs/mainchip-scoped-counterpart-restoration.md',SOURCE)\nfor n,v in [('run',run),('jobs',jobs),('artifacts',arts),('release',release),('tag-ref',tag),('archive-receipts',receipts)]:\n files[n+'.json']=(json.dumps(v,sort_keys=True,indent=2)+chr(10)).encode()\nobservation=dict(run=RUN,source=SOURCE,conclusion=run['conclusion'],native_archive_acquired_locally=False,\n archive_parts_published=len(assets)>0,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)\nfor n in ['derived/result.json','derived/host-failure.json','derived/native/bulk-postdrt-scoped-inner-result.json']:\n if n in files:observation[n]=json.loads(files[n])\nprint(json.dumps(dict(run=RUN,conclusion=run['conclusion'],derived_reports={n:dict(status=v.get('status'),error=v.get('error',{}).get('error','')[:1800],phases=[dict(phase=r['phase'],status=r['status'])for r in v.get('phases',[])])for n,v in observation.items()if n.startswith('derived/')}) ),flush=True)\nreceipt=dict(run=RUN,source=SOURCE,conclusion=run['conclusion'],release=RELEASE,native_payloads_acquired_locally=False,\n native_archive_parts_downloaded=False,all_selected_derived_artifacts_complete=True,\n artifact_authenticated_host_records_outside_native_capsule=artifact_only_host_records,\n physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False,\n files={n:dict(bytes=len(b),sha256=sha(b))for n,b in files.items()})\nfiles['receipt.json']=(json.dumps(receipt,sort_keys=True,indent=2)+chr(10)).encode()\nPREFIX='docs/evidence/scoped-restoration-native-terminal-'+str(RUN);B='codex/scoped-restoration-native-proof-'+str(RUN)\nassert api('git/matching-refs/heads/'+B)==[]\nentries=[]\nfor n,b in files.items():\n assert len(b)<90000000\n blob=api('git/blobs',dict(encoding='base64',content=base64.b64encode(b).decode()))\n entries.append(dict(path=PREFIX+'/'+n,mode='100644',type='blob',sha=blob['sha']))\ntree=api('git/trees',dict(base_tree=api('git/commits/'+SOURCE)['tree']['sha'],tree=entries))\ncommit=api('git/commits',dict(message='Preserve complete native scoped restoration attempt and original audit outcomes [skip ci]',tree=tree['sha'],parents=[SOURCE]))\nassert api('git/matching-refs/heads/'+B)==[]\napi('git/refs',dict(ref='refs/heads/'+B,sha=commit['sha']))\nhead=commit['sha'];print(json.dumps(dict(published=head,prefix=PREFIX,files=len(files))),flush=True)\ndef verify_file(item):\n n,b=item;assert remote(PREFIX+'/'+n,head)==b,n\nlist(ThreadPoolExecutor(3).map(verify_file,files.items()))\nprint(json.dumps(dict(head=head,prefix=PREFIX,files=len(files),bytes=sum(map(len,files.values())),receipt_sha256=sha(files['receipt.json']),run=RUN,source=SOURCE,conclusion=run['conclusion'])),flush=True)\n"
+  },
+  "divider_width_terminal": {
+    "accepted": false,
+    "comparisons": {
+      "x": {
+        "below_100mv_samples": 731,
+        "maximum_clock_to_valid_s": 1.189062500003487e-10,
+        "minimum_signed_margin_v": -0.12133675033255584,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 418
+      },
+      "y": {
+        "below_100mv_samples": 634,
+        "maximum_clock_to_valid_s": 1.189062500003487e-10,
+        "minimum_signed_margin_v": -0.0011176777477597919,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 6
+      }
+    },
+    "data_passed": false,
+    "devices_passed": true,
+    "diagnostics": [],
+    "phase_average_v": 0.0370801368476178,
+    "phase_passed": true,
+    "sampler_checks": {
+      "a": {
+        "below_100mv_samples": 97,
+        "maximum_clock_to_valid_s": 4.2343749999991824e-11,
+        "minimum_signed_margin_v": 0.060701995910069896,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 0
+      },
+      "b": {
+        "below_100mv_samples": 25,
+        "maximum_clock_to_valid_s": 3.7968750000017056e-11,
+        "minimum_signed_margin_v": 0.09684343133826087,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 0
+      },
+      "c": {
+        "below_100mv_samples": 167,
+        "maximum_clock_to_valid_s": 1.189062500003487e-10,
+        "minimum_signed_margin_v": -0.01637682167749921,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 30
+      },
+      "d": {
+        "below_100mv_samples": 129,
+        "maximum_clock_to_valid_s": 1.1890624999999013e-10,
+        "minimum_signed_margin_v": -0.019985084122945352,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 33
+      }
+    },
+    "sources_unchanged": true,
+    "status": "REJECTED_WHOLE_MIM_PD650_LOADED",
+    "transient_executed": true
+  },
+  "final_timing_complete": false,
+  "full_serial_phy_accepted": false,
+  "imported_proof_files": 259,
+  "proofs": [
+    {
+      "bytes": 2684730,
+      "conclusion": "failure",
+      "files": 89,
+      "head": "08928e966747c93c5fd9a9fd95c3059872cf2ec4",
+      "prefix": "docs/evidence/scoped-restoration-native-terminal-41305082558",
+      "receipt_sha256": "ea360ec9b320b413d11897f6ed6dbc2035d74aa78b2066252f2f14ba84992671",
+      "run": 41305082558,
+      "source": "be65a271b066faeffee86237fa879f5f96b70273"
+    },
+    {
+      "bytes": 7523443,
+      "conclusion": "failure",
+      "files": 111,
+      "head": "9da21f3fe75a760e893f6f898eb9240c751c1ee3",
+      "prefix": "docs/evidence/divider-width-native-terminal-41306148937",
+      "receipt": "receipt.json",
+      "receipt_sha256": "213c541c4fa35396bc0baef31fb03e9e293ffa0a968e1cfd0df3d61655ce37c2",
+      "run": 41306148937,
+      "source": "2a62d651d415fba8db3c5b758d1b66c05cde3a38"
+    },
+    {
+      "bytes": 57257,
+      "conclusion": "success",
+      "files": 13,
+      "head": "d799b06a8233741699f7c3fc9fc47d459ef3a915",
+      "prefix": "docs/evidence/master-controls-41307350399",
+      "receipt_sha256": "436eee12c0b795875b0ea7da6521c91ac141a617d0a6936a08fed0b0ee2778ce",
+      "run": 41307350399,
+      "source": "edd99c33b8ee783afc882b216e88ba7871f5bd13"
+    },
+    {
+      "bytes": 940212,
+      "conclusion": "success",
+      "files": 27,
+      "head": "01464772eb673c65db84070ef44da02af7b7019b",
+      "prefix": "docs/evidence/master-diagnosis-terminal-41307592168",
+      "receipt_sha256": "fc83a27464e9d922a85463d017332941ff2766aeacf30503f2ecf1b573e528cc",
+      "run": 41307592168,
+      "source": "edd99c33b8ee783afc882b216e88ba7871f5bd13"
+    },
+    {
+      "bytes": 125708,
+      "conclusion": "success",
+      "files": 19,
+      "head": "bd8817ea70a9d4692a68a58236e2884267693094",
+      "prefix": "docs/evidence/scoped-restoration-controls-41308125643",
+      "receipt_sha256": "846d620ec4fb606e76951efeeae49cb4a716892a0b1766b3afd91e5140be0a89",
+      "run": 41308125643,
+      "source": "05d336a1b1b681c9d96b71d464c5ea430835e438"
+    }
+  ],
+  "snapshots": [
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437655,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437693,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437696,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124805437698,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437712,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437732,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124805437796,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124805438494,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41292160619,
+      "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41292160619"
+    },
+    {
+      "branch": "codex/cdr-pd650-loaded-wave-analysis",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977298,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124808977460,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977468,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977505,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124808977510,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977536,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124808977592,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124808978452,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41293340525,
+      "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293340525"
+    },
+    {
+      "branch": "codex/mainchip-scoped-restoration",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124843736454,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124843853524,
+          "name": "native-restoration",
+          "status": "completed"
+        }
+      ],
+      "run": 41305082558,
+      "source": "be65a271b066faeffee86237fa879f5f96b70273",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41305082558"
+    },
+    {
+      "branch": "codex/cdr-divider-width",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124846825081,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124847010636,
+          "name": "simulate",
+          "status": "completed"
+        }
+      ],
+      "run": 41306148937,
+      "source": "2a62d651d415fba8db3c5b758d1b66c05cde3a38",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41306148937"
+    },
+    {
+      "branch": "codex/mainchip-master-diagnosis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124850358758,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124850393279,
+          "name": "master-diagnosis",
+          "status": "completed"
+        }
+      ],
+      "run": 41307350399,
+      "source": "edd99c33b8ee783afc882b216e88ba7871f5bd13",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41307350399"
+    },
+    {
+      "branch": "codex/mainchip-master-diagnosis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124851070744,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124851111962,
+          "name": "master-diagnosis",
+          "status": "completed"
+        }
+      ],
+      "run": 41307592168,
+      "source": "edd99c33b8ee783afc882b216e88ba7871f5bd13",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41307592168"
+    },
+    {
+      "branch": "codex/mainchip-scoped-restoration",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124852659019,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124852774448,
+          "name": "native-restoration",
+          "status": "completed"
+        }
+      ],
+      "run": 41308125643,
+      "source": "05d336a1b1b681c9d96b71d464c5ea430835e438",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41308125643"
+    },
+    {
+      "branch": "codex/mainchip-scoped-restoration",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124853853717,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Restore original classes and execute original native physical audits"
+          ],
+          "conclusion": null,
+          "id": 124853961665,
+          "name": "native-restoration",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41308526628,
+      "source": "05d336a1b1b681c9d96b71d464c5ea430835e438",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41308526628"
+    }
+  ],
+  "updated_at": "2026-11-01T12:56:53.404555+00:00",
+  "version": 242
+}

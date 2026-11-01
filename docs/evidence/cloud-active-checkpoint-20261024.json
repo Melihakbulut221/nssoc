@@ -136,31 +136,31 @@
       "status": "in_progress",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293340525"
     },
-    "41306148937": {
-      "branch": "codex/cdr-divider-width",
+    "41308526628": {
+      "branch": "codex/mainchip-scoped-restoration",
       "conclusion": null,
       "jobs": [
         {
           "active_steps": [],
           "conclusion": "success",
-          "id": 124846825081,
+          "id": 124853853717,
           "name": "source-controls",
           "status": "completed"
         },
         {
           "active_steps": [
-            "Authenticate original inputs and run sampler-load candidate with original measurements"
+            "Restore original classes and execute original native physical audits"
           ],
           "conclusion": null,
-          "id": 124847010636,
-          "name": "simulate",
+          "id": 124853961665,
+          "name": "native-restoration",
           "status": "in_progress"
         }
       ],
-      "run": 41306148937,
-      "source": "2a62d651d415fba8db3c5b758d1b66c05cde3a38",
+      "run": 41308526628,
+      "source": "05d336a1b1b681c9d96b71d464c5ea430835e438",
       "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41306148937"
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41308526628"
     }
   },
   "bounded_route_class_diagnosis_v238": {
@@ -249,7 +249,99 @@
     "run": 41292673925,
     "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f"
   },
-  "checkpoint_version": 241,
+  "canonical_master_restoration_v242": {
+    "actual_master_readout": {
+      "added": [],
+      "after_count": 58,
+      "after_instances": 154480,
+      "all_differences_only_mpin_order": false,
+      "archive": {
+        "bytes": 421497727,
+        "sha256": "275b702ebfbe7d0bcbb5e28facceb82386417f606aec759123f9be03733de1fd"
+      },
+      "authenticated_members": 51,
+      "before_count": 58,
+      "before_instances": 154480,
+      "changed": [],
+      "context": {
+        "attempt": 1,
+        "run": 41307592168,
+        "source": "edd99c33b8ee783afc882b216e88ba7871f5bd13"
+      },
+      "exact_equal": true,
+      "full_phy_accepted": false,
+      "layout_modified": false,
+      "mpin_order_only": [],
+      "native_cad_executed": false,
+      "native_payloads_remain_cloud": true,
+      "nonroute_fields_equal": {
+        "block": true,
+        "clock_record_pins": true,
+        "diode_template": true,
+        "immutable": true,
+        "instances": true,
+        "protected": true
+      },
+      "other_changed": [],
+      "physical_acceptance": false,
+      "producer": "be65a271b066faeffee86237fa879f5f96b70273",
+      "producer_release": 430558340,
+      "producer_run": 41305082558,
+      "removed": [],
+      "selected_inputs": {
+        "bulk-postdrt-antenna/insertion-snapshot.json": {
+          "bytes": 627376262,
+          "sha256": "501e93ae94d2a08477d59f14f8bee320412a0de83578ec1c6ad7a818878e772f"
+        },
+        "bulk-postdrt-antenna/restored-snapshot.json": {
+          "bytes": 627640193,
+          "sha256": "7d9512e51de23b4cc927752bf56d969e78b59f5e78f902c6544ece93b7e9a2a5"
+        }
+      },
+      "timing_accepted": false
+    },
+    "controls_count": 49,
+    "correction": "Canonicalize only native master pin box tuple records to the identical persisted JSON list representation; serialized geometry bytes,order,multiplicity and all original gates unchanged.",
+    "full_phy_accepted": false,
+    "independent_controls": 41308125643,
+    "native": {
+      "branch": "codex/mainchip-scoped-restoration",
+      "control": 41308125643,
+      "release": 430583367,
+      "run": 41308526628,
+      "source": "05d336a1b1b681c9d96b71d464c5ea430835e438",
+      "tag": "cloud-results-41308526628-1-mainchip-bulk-postdrt-antenna",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41308526628"
+    },
+    "native_result_pending": true,
+    "original_cad_failure": {
+      "actual_restored_def": {
+        "bytes": 186265982,
+        "sha256": "a5183887cf3733b0c8cf9070af98156596d624a11808e955403daf350b80a36c"
+      },
+      "candidate_odb": {
+        "bytes": 214409779,
+        "sha256": "d526feec659883b65dc737853d4d6a192d529384e2676d8a2d17e9b5e7d6de7e"
+      },
+      "conclusion": "failure",
+      "expected_restored_def": {
+        "bytes": 186265982,
+        "sha256": "a5183887cf3733b0c8cf9070af98156596d624a11808e955403daf350b80a36c"
+      },
+      "final_audits_executed": false,
+      "full_phy_accepted": false,
+      "next_failure": "unchanged routed snapshot masters",
+      "physical_acceptance": false,
+      "restore_import_executed_successfully": true,
+      "restore_plan_executed_successfully": true,
+      "run": 41305082558,
+      "timing_accepted": false
+    },
+    "original_source_files_verified": 2361,
+    "physical_acceptance": false,
+    "timing_accepted": false
+  },
+  "checkpoint_version": 242,
   "cloud_results_release_reservations": {
     "mainchip_artifact_recovery": {
       "exact_tag_target_verified": true,
@@ -2150,6 +2242,7 @@
   "continuation_note_v239": "PROGRESS: implemented scoped class restoration and original native audit adapter. Actual34 core controls and all2361 frozen-source pins passed on sourcebe65a271b066faeffee86237fa879f5f96b70273. Initial missing three derived JSON inputs failure preserved and corrected without weakening source gate. Native restoration dispatched once after independent successful controls and exact-source empty release readback; inspect its actual result before claiming restoration or signoff. No local CAD/geometry/archive payloads; workspace/temp remain empty.",
   "continuation_note_v240": "PROGRESS: exact12-divider width trial implemented from authenticated pre-HBT-change parent. Independent75 new mutation refusals plus original75 divider checks and compiled binding passed; complete54file proof imported. Native simulation dispatched once after controls/readback and exact-source empty release reservation. Mainchip scoped restoration is separately monitored. All acquisition/CAD/simulation remains cloud-only; neither native result is assumed accepted.",
   "continuation_note_v241": "Source review found that old route12 STA geometry admission excludes all new diodes and pins a pre-diode netlist. Actual new1351-diode route needs a qualified exact current ODB/DEF/netlist boundary before numerical RC/STA. Both native jobs remain subject to live snapshots; no STA,RC or closure claimed.",
+  "continuation_note_v242": "PROGRESS: actual scoped restore-plan/import and identical restored DEF succeeded, then master equality failed. Cloud readout proved all58 persisted masters,154480instances and nonroute fields equal; exact native tuple-versus-JSON-list source bug corrected.49 controls plus2361 original source pins passed; corrected native audit dispatched once. PHY12-width trial passed37.080mV phase and device/VI gates but all six data gates remain rejected. Complete proofs imported; no final timing/PHY acceptance.",
   "current_run_snapshot": [
     {
       "attempt": 1,
@@ -23198,6 +23291,69 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41299745896"
     }
   ],
+  "divider_width_terminal_v242": {
+    "accepted": false,
+    "comparisons": {
+      "x": {
+        "below_100mv_samples": 731,
+        "maximum_clock_to_valid_s": 1.189062500003487e-10,
+        "minimum_signed_margin_v": -0.12133675033255584,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 418
+      },
+      "y": {
+        "below_100mv_samples": 634,
+        "maximum_clock_to_valid_s": 1.189062500003487e-10,
+        "minimum_signed_margin_v": -0.0011176777477597919,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 6
+      }
+    },
+    "data_passed": false,
+    "devices_passed": true,
+    "diagnostics": [],
+    "phase_average_v": 0.0370801368476178,
+    "phase_passed": true,
+    "sampler_checks": {
+      "a": {
+        "below_100mv_samples": 97,
+        "maximum_clock_to_valid_s": 4.2343749999991824e-11,
+        "minimum_signed_margin_v": 0.060701995910069896,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 0
+      },
+      "b": {
+        "below_100mv_samples": 25,
+        "maximum_clock_to_valid_s": 3.7968750000017056e-11,
+        "minimum_signed_margin_v": 0.09684343133826087,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 0
+      },
+      "c": {
+        "below_100mv_samples": 167,
+        "maximum_clock_to_valid_s": 1.189062500003487e-10,
+        "minimum_signed_margin_v": -0.01637682167749921,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 30
+      },
+      "d": {
+        "below_100mv_samples": 129,
+        "maximum_clock_to_valid_s": 1.1890624999999013e-10,
+        "minimum_signed_margin_v": -0.019985084122945352,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 33
+      }
+    },
+    "sources_unchanged": true,
+    "status": "REJECTED_WHOLE_MIM_PD650_LOADED",
+    "transient_executed": true
+  },
   "divider_width_trial_v240": {
     "changed_width_descriptors": 12,
     "controls": {
@@ -76437,6 +76593,59 @@
       "source": "2a62d651d415fba8db3c5b758d1b66c05cde3a38"
     }
   ],
+  "imported_checkpoint_receipts_v242": [
+    {
+      "bytes": 2684730,
+      "conclusion": "failure",
+      "files": 89,
+      "head": "08928e966747c93c5fd9a9fd95c3059872cf2ec4",
+      "prefix": "docs/evidence/scoped-restoration-native-terminal-41305082558",
+      "receipt_sha256": "ea360ec9b320b413d11897f6ed6dbc2035d74aa78b2066252f2f14ba84992671",
+      "run": 41305082558,
+      "source": "be65a271b066faeffee86237fa879f5f96b70273"
+    },
+    {
+      "bytes": 7523443,
+      "conclusion": "failure",
+      "files": 111,
+      "head": "9da21f3fe75a760e893f6f898eb9240c751c1ee3",
+      "prefix": "docs/evidence/divider-width-native-terminal-41306148937",
+      "receipt": "receipt.json",
+      "receipt_sha256": "213c541c4fa35396bc0baef31fb03e9e293ffa0a968e1cfd0df3d61655ce37c2",
+      "run": 41306148937,
+      "source": "2a62d651d415fba8db3c5b758d1b66c05cde3a38"
+    },
+    {
+      "bytes": 57257,
+      "conclusion": "success",
+      "files": 13,
+      "head": "d799b06a8233741699f7c3fc9fc47d459ef3a915",
+      "prefix": "docs/evidence/master-controls-41307350399",
+      "receipt_sha256": "436eee12c0b795875b0ea7da6521c91ac141a617d0a6936a08fed0b0ee2778ce",
+      "run": 41307350399,
+      "source": "edd99c33b8ee783afc882b216e88ba7871f5bd13"
+    },
+    {
+      "bytes": 940212,
+      "conclusion": "success",
+      "files": 27,
+      "head": "01464772eb673c65db84070ef44da02af7b7019b",
+      "prefix": "docs/evidence/master-diagnosis-terminal-41307592168",
+      "receipt_sha256": "fc83a27464e9d922a85463d017332941ff2766aeacf30503f2ecf1b573e528cc",
+      "run": 41307592168,
+      "source": "edd99c33b8ee783afc882b216e88ba7871f5bd13"
+    },
+    {
+      "bytes": 125708,
+      "conclusion": "success",
+      "files": 19,
+      "head": "bd8817ea70a9d4692a68a58236e2884267693094",
+      "prefix": "docs/evidence/scoped-restoration-controls-41308125643",
+      "receipt_sha256": "846d620ec4fb606e76951efeeae49cb4a716892a0b1766b3afd91e5140be0a89",
+      "run": 41308125643,
+      "source": "05d336a1b1b681c9d96b71d464c5ea430835e438"
+    }
+  ],
   "imported_checkpoint_receipts_v25": [
     {
       "path": "docs/evidence/pll-cache-reference-directory-dispatch-20261024.json",
@@ -100798,6 +101007,290 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41306148937"
     }
   ],
+  "latest_observed_runs_v242": [
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437655,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437693,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437696,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124805437698,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437712,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437732,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124805437796,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124805438494,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41292160619,
+      "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41292160619"
+    },
+    {
+      "branch": "codex/cdr-pd650-loaded-wave-analysis",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977298,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124808977460,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977468,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977505,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124808977510,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977536,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124808977592,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124808978452,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41293340525,
+      "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293340525"
+    },
+    {
+      "branch": "codex/mainchip-scoped-restoration",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124843736454,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124843853524,
+          "name": "native-restoration",
+          "status": "completed"
+        }
+      ],
+      "run": 41305082558,
+      "source": "be65a271b066faeffee86237fa879f5f96b70273",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41305082558"
+    },
+    {
+      "branch": "codex/cdr-divider-width",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124846825081,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124847010636,
+          "name": "simulate",
+          "status": "completed"
+        }
+      ],
+      "run": 41306148937,
+      "source": "2a62d651d415fba8db3c5b758d1b66c05cde3a38",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41306148937"
+    },
+    {
+      "branch": "codex/mainchip-master-diagnosis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124850358758,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124850393279,
+          "name": "master-diagnosis",
+          "status": "completed"
+        }
+      ],
+      "run": 41307350399,
+      "source": "edd99c33b8ee783afc882b216e88ba7871f5bd13",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41307350399"
+    },
+    {
+      "branch": "codex/mainchip-master-diagnosis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124851070744,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124851111962,
+          "name": "master-diagnosis",
+          "status": "completed"
+        }
+      ],
+      "run": 41307592168,
+      "source": "edd99c33b8ee783afc882b216e88ba7871f5bd13",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41307592168"
+    },
+    {
+      "branch": "codex/mainchip-scoped-restoration",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124852659019,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124852774448,
+          "name": "native-restoration",
+          "status": "completed"
+        }
+      ],
+      "run": 41308125643,
+      "source": "05d336a1b1b681c9d96b71d464c5ea430835e438",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41308125643"
+    },
+    {
+      "branch": "codex/mainchip-scoped-restoration",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124853853717,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Restore original classes and execute original native physical audits"
+          ],
+          "conclusion": null,
+          "id": 124853961665,
+          "name": "native-restoration",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41308526628,
+      "source": "05d336a1b1b681c9d96b71d464c5ea430835e438",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41308526628"
+    }
+  ],
   "latest_terminal_runs": {
     "cdr_actual_terminal_current_ledger": 40171679250,
     "cdr_current_ledger_controls": 40171508329,
@@ -101272,6 +101765,19 @@
     "unrelated_user_files_not_modified": true,
     "workspace_entries": 0
   },
+  "local_cleanup_v242": {
+    "native_payloads_cloud_only": true,
+    "native_processes": 0,
+    "observed_at": "2026-11-01T12:56:53.404555+00:00",
+    "project_temp_entries": {
+      "/dev/shm": [],
+      "/tmp": [],
+      "/var/tmp": []
+    },
+    "source_API_derived_text_RAM_only": true,
+    "unrelated_user_files_not_modified": true,
+    "workspace_entries": 0
+  },
   "local_cleanup_verification": {
     "native_payloads_cloud_only": true,
     "native_processes": 0,
@@ -101285,7 +101791,7 @@
     "unrelated_user_files_not_modified": true,
     "workspace_entries": 0
   },
-  "local_workspace_verified_empty_at": "2026-11-01T12:23:24.798662+00:00",
+  "local_workspace_verified_empty_at": "2026-11-01T12:56:53.404555+00:00",
   "monitor": {
     "automatic_native_dispatch": false,
     "branch": "main",
@@ -142550,7 +143056,7 @@
     "timing_accepted": false,
     "timing_limits_unchanged": true
   },
-  "root_source_before_receipt": "219ea87c8ee9441be8fea37c31feded35f661b73",
+  "root_source_before_receipt": "52490c49f70c626162854d9e64f8e6e54c473e32",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -142589,5 +143095,5 @@
     "source_projection_failure_preserved": 41304415754,
     "timing_accepted": false
   },
-  "updated_at": "2026-11-01T12:29:29.344125+00:00"
+  "updated_at": "2026-11-01T12:56:53.404555+00:00"
 }
