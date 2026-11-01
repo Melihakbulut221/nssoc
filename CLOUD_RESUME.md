@@ -1,11 +1,29 @@
-# Cloud continuation — checkpoint v266
+# Cloud continuation — checkpoint v267
 
-Updated: 2026-11-01T20:36:09.101937+00:00
+Updated: 2026-11-01T21:02:45.638107+00:00
 
 Latest instruction: **her şeyi bulutta yap, lokalde bir şey bırakma temizle.**
 It overrides the earlier local-execution wording in the active goal. All CAD, simulation, native archive/layout/waveform acquisition and numerical/geometric analysis run on GitHub. Local coordination uses source/API-derived text in RAM only. Never acquire native ODB/DEF/GDS/SPICE/raw archives locally, including RAM. The local workspace and project temp entries were verified empty, with no local CAD processes. Unrelated user files remain untouched.
 
-## Latest result: cloud-only cleanup verified; terminal failures retained
+## Latest result: four mixed clock-selector paths generated; full physical checks and mainchip route running
+
+Execution remains GitHub-only. Local workspace and project temporary files remain empty; native archives/GDS/ODB/L2N/SPICE/waves are never acquired locally. Source/API/derived-text coordination is RAM-only. This overrides stale local-execution wording in the active goal.
+
+Native stack audit41348276461/sourcea5b632140452e3c2b28bff69521d98cdc0a1ccd7/release430845320 passed the original42 controls and authenticated the same actual six-shortcut parent. It proved that all four previously blocked M1 endpoints have same-component, enclosed existing Via1/Via2 paths to legal Metal3 landings. Original entire-Metal2 landing reuse was rejected by foreign-M2 clearance, not malformed cuts. The M2 emitter-side terminals instead admit direct Metal2 access and are blocked on direct Metal3. Thus mixed Metal2/Via2/Metal3 routing is based on actual geometry, not assumed layer connectivity.
+
+Initial mixed generation41348741667/source748b5ab8c76603d8436aaf921f600e109d1eb7f7/release430848757 passed52 controls and generated only D_emitter/C_emitter. Its actual1000340-byte GDS SHA256f7782129bd7e3b6fff0ebdd5c6646eb765b175368ef2e9b78d348979ba1b9e88 and exact serialized delta/original-material reversal were preserved, while the run remained FAILED because both collectors were unrouted. Each collector had six admitted bridge options but all432 simple Metal3 routes failed actual foreign-material guards. This failed intermediate remains evidence, not a physical pass.
+
+Obstacle-aware generation41349305622/source2c5de6a9a9c84f170a9272eed63b37156e6e6043/release430851849 succeeded. All60 controls passed: original42, ten mixed-layer guards and eight search refusal/geometry fixtures. Both collectors use an actual rectilinear obstacle graph on the5nm grid with conservative center clearances910nm around foreign Metal3 and310nm around foreign vias; the original complete final geometric guards are rechecked on the full assembled metal and cuts. Native searches expanded7901/7939 nodes and each collector path length is604235nm. Both emitter paths retained the direct candidate. All four paths are now generated: D_collector,D_emitter,C_collector,C_emitter. Actual GDS1001172bytes, SHA2561c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94. Only Metal2/Via2/Metal3 were added, with two new Via2 cuts per path; all original devices,M1,Via1 and preexisting material were retained. Actual serialized delta and exact original-material reversal passed.
+
+Full physical verification41349608125/source8203934d2a56cdcc8a2fa7754d76d2bf24330658, branchcodex/cdr-wire-tail-physical, reservedrelease430854100, tests this exact new GDS. Frozen checker SHA2563ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66, all560 DRC categories, deep/flat500-device25-port LVS and13 injected faults remain unchanged. Parent reference schematic/LEF, PDK, AppImage and supervision limits are unchanged. Consult latest actual run snapshot; do not assume physical success from generator success. After a physical pass, obtain fresh canonical/material/terminal binding, distributed RC and the original loaded waveform/device predicates. No electrical/PHY acceptance exists yet. The previous rejected loaded result41341309504 remains authoritative until replaced by real new simulation.
+
+Mainchip full64 snapshot sourcea47bb1895ad12fdebddeb055dc5e3e9c414c04e0, branchcodex/mainchip-full64-snapshots, passed independent controls41349079496:11 original stage tests,12 original native-preservation tests and8 new snapshot tests. Actual native run41349316524/release430851918 was then dispatched and repeats those controls before routing. Original full64/seed42/two threads/layers/clock constraints/resource checks/route budget remain. The sole Tcl delta enables the preexisting iteration snapshot branch, so progress can be published even if the route times out. The actual native run and snapshot readback/reload are not yet qualified; every snapshot is marked reload_verified:false. Original full64 run41323446729 failed on the four-hour elapsed limit, not OOM, with no returned final route. Do not repeat that old job or reuse stale postroute/STA pins. Upstream source confirms the snapshot path at OpenROADdcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/dr/FlexDR.cpp; this is source evidence, not a native resume-equivalence claim.
+
+For mainchip, once actual new bytes are available: reopen/audit them in the cloud, restore original classes using new pins, check scoped connectivity/2702 diode PG contacts/original nets and clocks/DRC/antenna, export matching154480-instance diode-inclusive netlist, generate fresh RC and run the original three-corner setup/hold constraints. Full serial PLL/CDR/SERDES/training/LTSSM/replay/credit/ESD and production approval remain open.
+
+Inventory717 runs; existing eight-hour monitor is read-only and automatic_native_dispatch:false. Earlier monitorHTTP502 is not claimed repaired. Preserve the live jobs and inspect their existing handles before any follow-up dispatch.
+
+## Previous checkpoint v266: cloud-only cleanup verified; terminal failures retained
 
 All native CAD, layout, waveform and archive processing runs on GitHub. The local workspace and project-specific temporary entries are empty; no local CAD process is running. API/source/derived-text coordination uses RAM only.
 

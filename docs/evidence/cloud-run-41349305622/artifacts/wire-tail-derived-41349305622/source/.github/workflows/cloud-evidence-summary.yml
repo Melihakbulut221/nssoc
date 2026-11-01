@@ -1,0 +1,104 @@
+name: Generate native Metal2 Via2 Metal3 clock-selector shortcuts
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cdr-wire-tail-shortcuts-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+  OMP_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr-wire-tail-shortcuts-pins.json
+      - name: Materialize exact guarded geometry source
+        run: |
+          python3 -B - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          m='scripts/cdr-wire-tail-shortcuts-pins.json'
+          names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
+          assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
+          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
+          PY
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1
+      - name: Original numerical coordinate and geometry guard controls
+        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --controls
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: wire-tail-controls-${{ github.run_id }}
+          path: wire-tail-shortcuts
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+  native-generation:
+    needs: source-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr-wire-tail-shortcuts-pins.json
+      - name: Materialize exact guarded geometry source
+        run: |
+          python3 -B - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          m='scripts/cdr-wire-tail-shortcuts-pins.json'
+          names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
+          assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
+          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
+          PY
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1
+      - name: Acquire current native geometry and route four measured voltage-drop paths
+        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --generate-mixed
+      - name: Preserve complete generated or failed native result
+        id: publish
+        if: always()
+        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --publish
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: wire-tail-derived-${{ github.run_id }}
+          path: wire-tail-shortcuts
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.publish.outcome != 'success'
+        with:
+          name: wire-tail-native-fallback-${{ github.run_id }}
+          path: wire-tail-shortcuts-native
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 90
