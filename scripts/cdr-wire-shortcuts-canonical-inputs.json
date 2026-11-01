@@ -1,9 +1,9 @@
 {
-  "branch": "codex/cdr-wire-shortcuts-canonical",
+  "branch": "codex/cdr-wire-tail-canonical",
   "candidate": {
     "gds": {
-      "bytes": 999700,
-      "sha256": "244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347"
+      "bytes": 1001172,
+      "sha256": "1c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94"
     }
   },
   "electrical_accepted": false,
@@ -36,1923 +36,1221 @@
   },
   "full_phy_accepted": false,
   "generation": {
+    "pin": {
+      "bytes": 546,
+      "sha256": "37b0e14d35f50602c4201df56ed7edeee8659c7b734552b38c381ba5a6fa31b8"
+    },
     "proof": {
       "candidate": {
-        "bytes": 999700,
-        "sha256": "244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347"
+        "bytes": 1001172,
+        "sha256": "1c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94"
       },
       "exact_serialized_delta": true,
       "full_phy_accepted": false,
       "generated_targets": [
-        "A_p",
-        "A_n",
-        "C_p",
-        "C_n",
-        "D_p",
-        "D_n"
+        "D_collector",
+        "D_emitter",
+        "C_collector",
+        "C_emitter"
       ],
-      "original_devices_unchanged": true,
+      "original_devices_m1_via1_unchanged": true,
       "original_material_roundtrip": true,
       "physical_acceptance": false,
-      "scope": "Physical interconnect candidate only. Requires native DRC/LVS, fresh RC and unchanged loaded-wave/device gates."
+      "scope": "Physical candidate only; requires strict native DRC/LVS, canonical binding, fresh RC and original loaded electrical gates"
     },
-    "run": 41333497715,
-    "source": "2f7f6e673e0bac5052d82e7ffd7073b9685f962f",
+    "run": 41349305622,
+    "source": "2c5de6a9a9c84f170a9272eed63b37156e6e6043",
     "targets": {
-      "A_n": {
-        "added_material_dbu2": {
-          "10": 38344150,
-          "19": 0
+      "C_collector": {
+        "component": 63,
+        "label": "C_collector",
+        "m2_access": {
+          "admitted_sites": [
+            [
+              1870190,
+              1477540
+            ]
+          ],
+          "anchor_point_dbu": [
+            1870190,
+            1477542
+          ],
+          "anchor_reference_not_moved": true,
+          "attempted_sites": [
+            {
+              "admitted": true,
+              "guards": {
+                "foreign_lower_metal": true,
+                "foreign_m2_clearance": true,
+                "foreign_via1": true,
+                "foreign_via2": true,
+                "grid5_new_route_center": true,
+                "lower_via_enclosure": true,
+                "new_center_within_existing_same_net_M2": true,
+                "new_m2_material": false,
+                "no_unclassified_m2_or_via_drawing": true,
+                "upper_via_enclosure": true,
+                "via_existing_clearance": true
+              },
+              "point": [
+                1870190,
+                1477540
+              ]
+            }
+          ],
+          "direct_existing_m2": true,
+          "guards": {
+            "foreign_lower_metal": true,
+            "foreign_m2_clearance": true,
+            "foreign_via1": true,
+            "foreign_via2": true,
+            "grid5_new_route_center": true,
+            "lower_via_enclosure": true,
+            "new_center_within_existing_same_net_M2": true,
+            "new_m2_material": false,
+            "no_unclassified_m2_or_via_drawing": true,
+            "upper_via_enclosure": true,
+            "via_existing_clearance": true
+          },
+          "landing_bbox": [
+            1869890,
+            1477240,
+            1870490,
+            1477840
+          ],
+          "new_via1_count": 0,
+          "reason": null
         },
-        "candidates": [
-          {
-            "cut_bbox": null,
-            "guards": {
+        "selected": {
+          "bridge": {
+            "admitted": true,
+            "center": [
+              1875190,
+              1477540
+            ],
+            "m2_guards": {
               "foreign_lower_metal": true,
               "foreign_m2_clearance": true,
               "foreign_via1": true,
               "foreign_via2": true,
               "lower_via_enclosure": true,
               "new_m2_material": true,
-              "new_route_within_existing_die_bbox": true,
               "no_unclassified_m2_or_via_drawing": true,
-              "single_continuous_new_m2": true,
-              "two_distinct_access_arrays": true,
               "upper_via_enclosure": true,
               "via_existing_clearance": true
             },
-            "metal_bbox": [
-              1203235,
-              2055230,
-              1264965,
-              2059990
+            "m3_guards": {
+              "foreign_m2_at_new_vias": true,
+              "foreign_m3_clearance": true,
+              "foreign_via2": true,
+              "foreign_via3": true,
+              "lower_m2_connected": true,
+              "lower_via2_enclosure": true,
+              "new_cuts_spacing": true,
+              "new_m3_material": true,
+              "no_unclassified_m3_or_via": true,
+              "original_m2_anchor_connected": true,
+              "two_new_cuts": true,
+              "upper_via2_enclosure": true,
+              "via2_existing_clearance": true
+            },
+            "via2_centers": [
+              [
+                1874940,
+                1477540
+              ],
+              [
+                1875440,
+                1477540
+              ]
+            ]
+          },
+          "existing_m3_access": {
+            "admitted": true,
+            "center": [
+              1372245,
+              1578830
             ],
-            "points_dbu": [
+            "checks": {
+              "center_in_original_m3": true,
+              "foreign_m2_at_new_vias": true,
+              "foreign_m3_clearance": true,
+              "foreign_via2": true,
+              "foreign_via3": true,
+              "grid5": true,
+              "lower_via2_enclosure": true,
+              "new_m3_material": true,
+              "no_unclassified_m3_or_via": true,
+              "original_cut_190nm": true,
+              "original_cut_lower_enclosure": true,
+              "original_cut_upper_enclosure": true,
+              "upper_via2_enclosure": true,
+              "via2_existing_clearance": true
+            },
+            "existing_via2_box": [
+              1372150,
+              1578735,
+              1372340,
+              1578925
+            ]
+          },
+          "new_via1_count": 0,
+          "new_via2_count": 2,
+          "route": {
+            "guards": {
+              "all_unknown_via_drawings_clear": true,
+              "connects_existing_m3": true,
+              "foreign_m2_at_new_vias": true,
+              "foreign_m3_clearance": true,
+              "foreign_via2": true,
+              "foreign_via3": true,
+              "inside_original_bbox": true,
+              "lower_via2_enclosure": true,
+              "new_m3_material": true,
+              "no_unclassified_m3_or_via": true,
+              "single_new_m3": true,
+              "upper_via2_enclosure": true,
+              "via2_existing_clearance": true
+            },
+            "maze_search": true,
+            "points": [
               [
-                1204100,
-                2059690
+                1372245,
+                1578830
               ],
               [
-                1264100,
-                2059690
+                1372645,
+                1578830
               ],
               [
-                1264100,
-                2055530
+                1372645,
+                1578645
+              ],
+              [
+                1373310,
+                1578645
+              ],
+              [
+                1373310,
+                1575255
+              ],
+              [
+                1871315,
+                1575255
+              ],
+              [
+                1871315,
+                1481480
+              ],
+              [
+                1871710,
+                1481480
+              ],
+              [
+                1871710,
+                1480335
+              ],
+              [
+                1874855,
+                1480335
+              ],
+              [
+                1874855,
+                1477540
+              ],
+              [
+                1875190,
+                1477540
               ]
             ]
           }
-        ],
-        "component": 67,
-        "label": "A_n",
-        "selected": {
-          "cut_bbox": null,
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": true,
-            "new_route_within_existing_die_bbox": true,
-            "no_unclassified_m2_or_via_drawing": true,
-            "single_continuous_new_m2": true,
-            "two_distinct_access_arrays": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
-          },
-          "metal_bbox": [
-            1203235,
-            2055230,
-            1264965,
-            2059990
-          ],
-          "points_dbu": [
-            [
-              1204100,
-              2059690
-            ],
-            [
-              1264100,
-              2059690
-            ],
-            [
-              1264100,
-              2055530
-            ]
-          ]
-        },
-        "sink_access": {
-          "admitted_sites": [
-            [
-              1264100,
-              2055530
-            ]
-          ],
-          "anchor_point_dbu": [
-            1264100,
-            2055530
-          ],
-          "array_trials": [],
-          "attempted_sites": [],
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": false,
-            "no_unclassified_m2_or_via_drawing": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
-          },
-          "landing_bbox": [
-            1263235,
-            2055385,
-            1264965,
-            2055675
-          ],
-          "new_via1_count": 0,
-          "original_lower_upper_enclosures_checked": true,
-          "original_m1_m2_and_via1_ownership_checked": true,
-          "reason": null,
-          "reused_existing_stack": true,
-          "reused_via1_boxes_dbu": [
-            [
-              1263285,
-              2055435,
-              1263475,
-              2055625
-            ],
-            [
-              1263765,
-              2055435,
-              1263955,
-              2055625
-            ],
-            [
-              1264245,
-              2055435,
-              1264435,
-              2055625
-            ],
-            [
-              1264725,
-              2055435,
-              1264915,
-              2055625
-            ]
-          ],
-          "reused_via1_count": 4
         },
         "sink_anchor": {
           "coincident_witnesses": [
             {
               "detail": {
-                "device": 230,
+                "device": 108,
                 "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
-                "metal": 8,
-                "model": "rppd",
-                "native_cluster": 140,
-                "native_net": "$788",
+                "metal": 10,
+                "model": "npn13G2",
+                "native_cluster": 134,
+                "native_net": "$698",
                 "point_dbu": [
-                  1264100,
-                  2055530
+                  1870190,
+                  1477542
                 ],
-                "terminal": "rppd_1",
-                "wire_component": 67
+                "terminal": "E",
+                "wire_component": 63
               },
-              "label": "T230_rppd_1",
-              "metal": 8,
-              "native_cluster": 140,
+              "label": "T108_E",
+              "metal": 10,
+              "native_cluster": 134,
               "point_dbu": [
-                1264100,
-                2055530
+                1870190,
+                1477542
               ],
-              "wire_component": 67
+              "wire_component": 63
             }
           ],
           "detail": {
-            "device": 230,
+            "device": 108,
             "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
-            "metal": 8,
-            "model": "rppd",
-            "native_cluster": 140,
-            "native_net": "$788",
+            "metal": 10,
+            "model": "npn13G2",
+            "native_cluster": 134,
+            "native_net": "$698",
             "point_dbu": [
-              1264100,
-              2055530
+              1870190,
+              1477542
             ],
-            "terminal": "rppd_1",
-            "wire_component": 67
+            "terminal": "E",
+            "wire_component": 63
           },
-          "label": "T230_rppd_1",
+          "label": "T108_E",
           "logical_labels": [
-            "T230_rppd_1"
+            "T108_E"
           ],
-          "metal": 8,
-          "native_cluster": 140,
+          "metal": 10,
+          "native_cluster": 134,
           "point_dbu": [
-            1264100,
-            2055530
+            1870190,
+            1477542
           ],
-          "wire_component": 67
-        },
-        "source_access": {
-          "admitted_sites": [
-            [
-              1204100,
-              2059690
-            ]
-          ],
-          "anchor_point_dbu": [
-            1204100,
-            2059690
-          ],
-          "array_trials": [],
-          "attempted_sites": [],
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": false,
-            "no_unclassified_m2_or_via_drawing": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
-          },
-          "landing_bbox": [
-            1203235,
-            2059545,
-            1204965,
-            2059835
-          ],
-          "new_via1_count": 0,
-          "original_lower_upper_enclosures_checked": true,
-          "original_m1_m2_and_via1_ownership_checked": true,
-          "reason": null,
-          "reused_existing_stack": true,
-          "reused_via1_boxes_dbu": [
-            [
-              1203285,
-              2059595,
-              1203475,
-              2059785
-            ],
-            [
-              1204245,
-              2059595,
-              1204435,
-              2059785
-            ],
-            [
-              1203765,
-              2059595,
-              1203955,
-              2059785
-            ],
-            [
-              1204725,
-              2059595,
-              1204915,
-              2059785
-            ]
-          ],
-          "reused_via1_count": 4
+          "wire_component": 63
         },
         "source_anchor": {
           "coincident_witnesses": [
             {
               "detail": {
-                "device": 229,
+                "device": 115,
                 "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
                 "metal": 8,
-                "model": "rppd",
-                "native_cluster": 140,
-                "native_net": "$788",
+                "model": "npn13G2",
+                "native_cluster": 134,
+                "native_net": "$698",
                 "point_dbu": [
-                  1204100,
-                  2059690
+                  1371525,
+                  1578790
                 ],
-                "terminal": "rppd_2",
-                "wire_component": 67
+                "terminal": "C",
+                "wire_component": 63
               },
-              "label": "T229_rppd_2",
+              "label": "T115_C",
               "metal": 8,
-              "native_cluster": 140,
+              "native_cluster": 134,
               "point_dbu": [
-                1204100,
-                2059690
+                1371525,
+                1578790
               ],
-              "wire_component": 67
+              "wire_component": 63
             }
           ],
           "detail": {
-            "device": 229,
+            "device": 115,
             "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
             "metal": 8,
-            "model": "rppd",
-            "native_cluster": 140,
-            "native_net": "$788",
+            "model": "npn13G2",
+            "native_cluster": 134,
+            "native_net": "$698",
             "point_dbu": [
-              1204100,
-              2059690
+              1371525,
+              1578790
             ],
-            "terminal": "rppd_2",
-            "wire_component": 67
+            "terminal": "C",
+            "wire_component": 63
           },
-          "label": "T229_rppd_2",
+          "label": "T115_C",
           "logical_labels": [
-            "T229_rppd_2"
+            "T115_C"
           ],
           "metal": 8,
-          "native_cluster": 140,
+          "native_cluster": 134,
           "point_dbu": [
-            1204100,
-            2059690
+            1371525,
+            1578790
           ],
-          "wire_component": 67
+          "wire_component": 63
         }
       },
-      "A_p": {
-        "added_material_dbu2": {
-          "10": 38344150,
-          "19": 0
+      "C_emitter": {
+        "component": 61,
+        "label": "C_emitter",
+        "m2_access": {
+          "admitted_sites": [
+            [
+              1371525,
+              1577540
+            ]
+          ],
+          "anchor_point_dbu": [
+            1371525,
+            1577542
+          ],
+          "anchor_reference_not_moved": true,
+          "attempted_sites": [
+            {
+              "admitted": true,
+              "guards": {
+                "foreign_lower_metal": true,
+                "foreign_m2_clearance": true,
+                "foreign_via1": true,
+                "foreign_via2": true,
+                "grid5_new_route_center": true,
+                "lower_via_enclosure": true,
+                "new_center_within_existing_same_net_M2": true,
+                "new_m2_material": false,
+                "no_unclassified_m2_or_via_drawing": true,
+                "upper_via_enclosure": true,
+                "via_existing_clearance": true
+              },
+              "point": [
+                1371525,
+                1577540
+              ]
+            }
+          ],
+          "direct_existing_m2": true,
+          "guards": {
+            "foreign_lower_metal": true,
+            "foreign_m2_clearance": true,
+            "foreign_via1": true,
+            "foreign_via2": true,
+            "grid5_new_route_center": true,
+            "lower_via_enclosure": true,
+            "new_center_within_existing_same_net_M2": true,
+            "new_m2_material": false,
+            "no_unclassified_m2_or_via_drawing": true,
+            "upper_via_enclosure": true,
+            "via_existing_clearance": true
+          },
+          "landing_bbox": [
+            1371225,
+            1577240,
+            1371825,
+            1577840
+          ],
+          "new_via1_count": 0,
+          "reason": null
         },
-        "candidates": [
-          {
-            "cut_bbox": null,
-            "guards": {
+        "selected": {
+          "bridge": {
+            "admitted": true,
+            "center": [
+              1376525,
+              1577540
+            ],
+            "m2_guards": {
               "foreign_lower_metal": true,
               "foreign_m2_clearance": true,
               "foreign_via1": true,
               "foreign_via2": true,
               "lower_via_enclosure": true,
               "new_m2_material": true,
-              "new_route_within_existing_die_bbox": true,
               "no_unclassified_m2_or_via_drawing": true,
-              "single_continuous_new_m2": true,
-              "two_distinct_access_arrays": true,
               "upper_via_enclosure": true,
               "via_existing_clearance": true
             },
-            "metal_bbox": [
-              1023235,
-              2055230,
-              1084965,
-              2059990
-            ],
-            "points_dbu": [
+            "m3_guards": {
+              "foreign_m2_at_new_vias": true,
+              "foreign_m3_clearance": true,
+              "foreign_via2": true,
+              "foreign_via3": true,
+              "lower_m2_connected": true,
+              "lower_via2_enclosure": true,
+              "new_cuts_spacing": true,
+              "new_m3_material": true,
+              "no_unclassified_m3_or_via": true,
+              "original_m2_anchor_connected": true,
+              "two_new_cuts": true,
+              "upper_via2_enclosure": true,
+              "via2_existing_clearance": true
+            },
+            "via2_centers": [
               [
-                1024100,
-                2059690
+                1376275,
+                1577540
               ],
               [
-                1084100,
-                2059690
-              ],
-              [
-                1084100,
-                2055530
+                1376775,
+                1577540
               ]
             ]
-          }
-        ],
-        "component": 66,
-        "label": "A_p",
-        "selected": {
-          "cut_bbox": null,
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": true,
-            "new_route_within_existing_die_bbox": true,
-            "no_unclassified_m2_or_via_drawing": true,
-            "single_continuous_new_m2": true,
-            "two_distinct_access_arrays": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
           },
-          "metal_bbox": [
-            1023235,
-            2055230,
-            1084965,
-            2059990
-          ],
-          "points_dbu": [
-            [
-              1024100,
-              2059690
+          "existing_m3_access": {
+            "admitted": true,
+            "center": [
+              1997305,
+              1595550
             ],
-            [
-              1084100,
-              2059690
-            ],
-            [
-              1084100,
-              2055530
+            "checks": {
+              "center_in_original_m3": true,
+              "foreign_m2_at_new_vias": true,
+              "foreign_m3_clearance": true,
+              "foreign_via2": true,
+              "foreign_via3": true,
+              "grid5": true,
+              "lower_via2_enclosure": true,
+              "new_m3_material": true,
+              "no_unclassified_m3_or_via": true,
+              "original_cut_190nm": true,
+              "original_cut_lower_enclosure": true,
+              "original_cut_upper_enclosure": true,
+              "upper_via2_enclosure": true,
+              "via2_existing_clearance": true
+            },
+            "existing_via2_box": [
+              1997210,
+              1595455,
+              1997400,
+              1595645
             ]
-          ]
-        },
-        "sink_access": {
-          "admitted_sites": [
-            [
-              1084100,
-              2055530
-            ]
-          ],
-          "anchor_point_dbu": [
-            1084100,
-            2055530
-          ],
-          "array_trials": [],
-          "attempted_sites": [],
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": false,
-            "no_unclassified_m2_or_via_drawing": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
           },
-          "landing_bbox": [
-            1083235,
-            2055385,
-            1084965,
-            2055675
-          ],
           "new_via1_count": 0,
-          "original_lower_upper_enclosures_checked": true,
-          "original_m1_m2_and_via1_ownership_checked": true,
-          "reason": null,
-          "reused_existing_stack": true,
-          "reused_via1_boxes_dbu": [
-            [
-              1083285,
-              2055435,
-              1083475,
-              2055625
+          "new_via2_count": 2,
+          "route": {
+            "bridge_center": [
+              1376525,
+              1577540
             ],
-            [
-              1083765,
-              2055435,
-              1083955,
-              2055625
+            "guards": {
+              "connects_existing_m3": true,
+              "foreign_m2_at_new_vias": true,
+              "foreign_m3_clearance": true,
+              "foreign_via2": true,
+              "foreign_via3": true,
+              "inside_original_bbox": true,
+              "lower_via2_enclosure": true,
+              "new_m3_material": true,
+              "no_unclassified_m3_or_via": true,
+              "single_new_m3": true,
+              "upper_via2_enclosure": true,
+              "via2_existing_clearance": true
+            },
+            "points": [
+              [
+                1997305,
+                1595550
+              ],
+              [
+                1997305,
+                1590550
+              ],
+              [
+                1376525,
+                1590550
+              ],
+              [
+                1376525,
+                1577540
+              ]
             ],
-            [
-              1084245,
-              2055435,
-              1084435,
-              2055625
-            ],
-            [
-              1084725,
-              2055435,
-              1084915,
-              2055625
+            "source_center": [
+              1997305,
+              1595550
             ]
-          ],
-          "reused_via1_count": 4
+          }
         },
         "sink_anchor": {
           "coincident_witnesses": [
             {
               "detail": {
-                "device": 228,
+                "device": 34,
                 "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
                 "metal": 8,
-                "model": "rppd",
-                "native_cluster": 139,
-                "native_net": "$787",
+                "model": "sg13_lv_nmos",
+                "native_cluster": 124,
+                "native_net": "$680",
                 "point_dbu": [
-                  1084100,
-                  2055530
+                  1997305,
+                  1595550
                 ],
-                "terminal": "rppd_1",
-                "wire_component": 66
+                "terminal": "D",
+                "wire_component": 61
               },
-              "label": "T228_rppd_1",
+              "label": "T034_D",
               "metal": 8,
-              "native_cluster": 139,
+              "native_cluster": 124,
               "point_dbu": [
-                1084100,
-                2055530
+                1997305,
+                1595550
               ],
-              "wire_component": 66
+              "wire_component": 61
             }
           ],
           "detail": {
-            "device": 228,
+            "device": 34,
             "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
             "metal": 8,
-            "model": "rppd",
-            "native_cluster": 139,
-            "native_net": "$787",
+            "model": "sg13_lv_nmos",
+            "native_cluster": 124,
+            "native_net": "$680",
             "point_dbu": [
-              1084100,
-              2055530
+              1997305,
+              1595550
             ],
-            "terminal": "rppd_1",
-            "wire_component": 66
+            "terminal": "D",
+            "wire_component": 61
           },
-          "label": "T228_rppd_1",
+          "label": "T034_D",
           "logical_labels": [
-            "T228_rppd_1"
+            "T034_D"
           ],
           "metal": 8,
-          "native_cluster": 139,
+          "native_cluster": 124,
           "point_dbu": [
-            1084100,
-            2055530
+            1997305,
+            1595550
           ],
-          "wire_component": 66
-        },
-        "source_access": {
-          "admitted_sites": [
-            [
-              1024100,
-              2059690
-            ]
-          ],
-          "anchor_point_dbu": [
-            1024100,
-            2059690
-          ],
-          "array_trials": [],
-          "attempted_sites": [],
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": false,
-            "no_unclassified_m2_or_via_drawing": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
-          },
-          "landing_bbox": [
-            1023235,
-            2059545,
-            1024965,
-            2059835
-          ],
-          "new_via1_count": 0,
-          "original_lower_upper_enclosures_checked": true,
-          "original_m1_m2_and_via1_ownership_checked": true,
-          "reason": null,
-          "reused_existing_stack": true,
-          "reused_via1_boxes_dbu": [
-            [
-              1023285,
-              2059595,
-              1023475,
-              2059785
-            ],
-            [
-              1023765,
-              2059595,
-              1023955,
-              2059785
-            ],
-            [
-              1024245,
-              2059595,
-              1024435,
-              2059785
-            ],
-            [
-              1024725,
-              2059595,
-              1024915,
-              2059785
-            ]
-          ],
-          "reused_via1_count": 4
+          "wire_component": 61
         },
         "source_anchor": {
           "coincident_witnesses": [
             {
               "detail": {
-                "device": 227,
+                "device": 115,
                 "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
-                "metal": 8,
-                "model": "rppd",
-                "native_cluster": 139,
-                "native_net": "$787",
+                "metal": 10,
+                "model": "npn13G2",
+                "native_cluster": 124,
+                "native_net": "$680",
                 "point_dbu": [
-                  1024100,
-                  2059690
+                  1371525,
+                  1577542
                 ],
-                "terminal": "rppd_2",
-                "wire_component": 66
+                "terminal": "E",
+                "wire_component": 61
               },
-              "label": "T227_rppd_2",
-              "metal": 8,
-              "native_cluster": 139,
+              "label": "T115_E",
+              "metal": 10,
+              "native_cluster": 124,
               "point_dbu": [
-                1024100,
-                2059690
+                1371525,
+                1577542
               ],
-              "wire_component": 66
+              "wire_component": 61
             }
           ],
           "detail": {
-            "device": 227,
+            "device": 115,
             "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
-            "metal": 8,
-            "model": "rppd",
-            "native_cluster": 139,
-            "native_net": "$787",
+            "metal": 10,
+            "model": "npn13G2",
+            "native_cluster": 124,
+            "native_net": "$680",
             "point_dbu": [
-              1024100,
-              2059690
+              1371525,
+              1577542
             ],
-            "terminal": "rppd_2",
-            "wire_component": 66
+            "terminal": "E",
+            "wire_component": 61
           },
-          "label": "T227_rppd_2",
+          "label": "T115_E",
           "logical_labels": [
-            "T227_rppd_2"
+            "T115_E"
           ],
-          "metal": 8,
-          "native_cluster": 139,
+          "metal": 10,
+          "native_cluster": 124,
           "point_dbu": [
-            1024100,
-            2059690
+            1371525,
+            1577542
           ],
-          "wire_component": 66
+          "wire_component": 61
         }
       },
-      "C_n": {
-        "added_material_dbu2": {
-          "10": 38344150,
-          "19": 0
+      "D_collector": {
+        "component": 19,
+        "label": "D_collector",
+        "m2_access": {
+          "admitted_sites": [
+            [
+              1870190,
+              288020
+            ]
+          ],
+          "anchor_point_dbu": [
+            1870190,
+            288022
+          ],
+          "anchor_reference_not_moved": true,
+          "attempted_sites": [
+            {
+              "admitted": true,
+              "guards": {
+                "foreign_lower_metal": true,
+                "foreign_m2_clearance": true,
+                "foreign_via1": true,
+                "foreign_via2": true,
+                "grid5_new_route_center": true,
+                "lower_via_enclosure": true,
+                "new_center_within_existing_same_net_M2": true,
+                "new_m2_material": false,
+                "no_unclassified_m2_or_via_drawing": true,
+                "upper_via_enclosure": true,
+                "via_existing_clearance": true
+              },
+              "point": [
+                1870190,
+                288020
+              ]
+            }
+          ],
+          "direct_existing_m2": true,
+          "guards": {
+            "foreign_lower_metal": true,
+            "foreign_m2_clearance": true,
+            "foreign_via1": true,
+            "foreign_via2": true,
+            "grid5_new_route_center": true,
+            "lower_via_enclosure": true,
+            "new_center_within_existing_same_net_M2": true,
+            "new_m2_material": false,
+            "no_unclassified_m2_or_via_drawing": true,
+            "upper_via_enclosure": true,
+            "via_existing_clearance": true
+          },
+          "landing_bbox": [
+            1869890,
+            287720,
+            1870490,
+            288320
+          ],
+          "new_via1_count": 0,
+          "reason": null
         },
-        "candidates": [
-          {
-            "cut_bbox": null,
-            "guards": {
+        "selected": {
+          "bridge": {
+            "admitted": true,
+            "center": [
+              1875190,
+              288020
+            ],
+            "m2_guards": {
               "foreign_lower_metal": true,
               "foreign_m2_clearance": true,
               "foreign_via1": true,
               "foreign_via2": true,
               "lower_via_enclosure": true,
               "new_m2_material": true,
-              "new_route_within_existing_die_bbox": true,
               "no_unclassified_m2_or_via_drawing": true,
-              "single_continuous_new_m2": true,
-              "two_distinct_access_arrays": true,
               "upper_via_enclosure": true,
               "via_existing_clearance": true
             },
-            "metal_bbox": [
-              1203235,
-              2831120,
-              1264965,
-              2835880
+            "m3_guards": {
+              "foreign_m2_at_new_vias": true,
+              "foreign_m3_clearance": true,
+              "foreign_via2": true,
+              "foreign_via3": true,
+              "lower_m2_connected": true,
+              "lower_via2_enclosure": true,
+              "new_cuts_spacing": true,
+              "new_m3_material": true,
+              "no_unclassified_m3_or_via": true,
+              "original_m2_anchor_connected": true,
+              "two_new_cuts": true,
+              "upper_via2_enclosure": true,
+              "via2_existing_clearance": true
+            },
+            "via2_centers": [
+              [
+                1874940,
+                288020
+              ],
+              [
+                1875440,
+                288020
+              ]
+            ]
+          },
+          "existing_m3_access": {
+            "admitted": true,
+            "center": [
+              1372245,
+              389310
             ],
-            "points_dbu": [
+            "checks": {
+              "center_in_original_m3": true,
+              "foreign_m2_at_new_vias": true,
+              "foreign_m3_clearance": true,
+              "foreign_via2": true,
+              "foreign_via3": true,
+              "grid5": true,
+              "lower_via2_enclosure": true,
+              "new_m3_material": true,
+              "no_unclassified_m3_or_via": true,
+              "original_cut_190nm": true,
+              "original_cut_lower_enclosure": true,
+              "original_cut_upper_enclosure": true,
+              "upper_via2_enclosure": true,
+              "via2_existing_clearance": true
+            },
+            "existing_via2_box": [
+              1372150,
+              389215,
+              1372340,
+              389405
+            ]
+          },
+          "new_via1_count": 0,
+          "new_via2_count": 2,
+          "route": {
+            "guards": {
+              "all_unknown_via_drawings_clear": true,
+              "connects_existing_m3": true,
+              "foreign_m2_at_new_vias": true,
+              "foreign_m3_clearance": true,
+              "foreign_via2": true,
+              "foreign_via3": true,
+              "inside_original_bbox": true,
+              "lower_via2_enclosure": true,
+              "new_m3_material": true,
+              "no_unclassified_m3_or_via": true,
+              "single_new_m3": true,
+              "upper_via2_enclosure": true,
+              "via2_existing_clearance": true
+            },
+            "maze_search": true,
+            "points": [
               [
-                1204100,
-                2835580
+                1372245,
+                389310
               ],
               [
-                1264100,
-                2835580
+                1372645,
+                389310
               ],
               [
-                1264100,
-                2831420
+                1372645,
+                389125
+              ],
+              [
+                1373310,
+                389125
+              ],
+              [
+                1373310,
+                385735
+              ],
+              [
+                1871315,
+                385735
+              ],
+              [
+                1871315,
+                291960
+              ],
+              [
+                1871710,
+                291960
+              ],
+              [
+                1871710,
+                290815
+              ],
+              [
+                1874855,
+                290815
+              ],
+              [
+                1874855,
+                288020
+              ],
+              [
+                1875190,
+                288020
               ]
             ]
           }
-        ],
-        "component": 76,
-        "label": "C_n",
-        "selected": {
-          "cut_bbox": null,
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": true,
-            "new_route_within_existing_die_bbox": true,
-            "no_unclassified_m2_or_via_drawing": true,
-            "single_continuous_new_m2": true,
-            "two_distinct_access_arrays": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
-          },
-          "metal_bbox": [
-            1203235,
-            2831120,
-            1264965,
-            2835880
-          ],
-          "points_dbu": [
-            [
-              1204100,
-              2835580
-            ],
-            [
-              1264100,
-              2835580
-            ],
-            [
-              1264100,
-              2831420
-            ]
-          ]
-        },
-        "sink_access": {
-          "admitted_sites": [
-            [
-              1264100,
-              2831420
-            ]
-          ],
-          "anchor_point_dbu": [
-            1264100,
-            2831420
-          ],
-          "array_trials": [],
-          "attempted_sites": [],
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": false,
-            "no_unclassified_m2_or_via_drawing": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
-          },
-          "landing_bbox": [
-            1263235,
-            2831275,
-            1264965,
-            2831565
-          ],
-          "new_via1_count": 0,
-          "original_lower_upper_enclosures_checked": true,
-          "original_m1_m2_and_via1_ownership_checked": true,
-          "reason": null,
-          "reused_existing_stack": true,
-          "reused_via1_boxes_dbu": [
-            [
-              1263285,
-              2831325,
-              1263475,
-              2831515
-            ],
-            [
-              1263765,
-              2831325,
-              1263955,
-              2831515
-            ],
-            [
-              1264245,
-              2831325,
-              1264435,
-              2831515
-            ],
-            [
-              1264725,
-              2831325,
-              1264915,
-              2831515
-            ]
-          ],
-          "reused_via1_count": 4
         },
         "sink_anchor": {
           "coincident_witnesses": [
             {
               "detail": {
-                "device": 241,
+                "device": 56,
                 "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
-                "metal": 8,
-                "model": "rppd",
-                "native_cluster": 153,
-                "native_net": "$870",
+                "metal": 10,
+                "model": "npn13G2",
+                "native_cluster": 37,
+                "native_net": "$148",
                 "point_dbu": [
-                  1264100,
-                  2831420
+                  1870190,
+                  288022
                 ],
-                "terminal": "rppd_1",
-                "wire_component": 76
+                "terminal": "E",
+                "wire_component": 19
               },
-              "label": "T241_rppd_1",
-              "metal": 8,
-              "native_cluster": 153,
+              "label": "T056_E",
+              "metal": 10,
+              "native_cluster": 37,
               "point_dbu": [
-                1264100,
-                2831420
+                1870190,
+                288022
               ],
-              "wire_component": 76
+              "wire_component": 19
             }
           ],
           "detail": {
-            "device": 241,
+            "device": 56,
             "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
-            "metal": 8,
-            "model": "rppd",
-            "native_cluster": 153,
-            "native_net": "$870",
+            "metal": 10,
+            "model": "npn13G2",
+            "native_cluster": 37,
+            "native_net": "$148",
             "point_dbu": [
-              1264100,
-              2831420
+              1870190,
+              288022
             ],
-            "terminal": "rppd_1",
-            "wire_component": 76
+            "terminal": "E",
+            "wire_component": 19
           },
-          "label": "T241_rppd_1",
+          "label": "T056_E",
           "logical_labels": [
-            "T241_rppd_1"
+            "T056_E"
           ],
-          "metal": 8,
-          "native_cluster": 153,
+          "metal": 10,
+          "native_cluster": 37,
           "point_dbu": [
-            1264100,
-            2831420
+            1870190,
+            288022
           ],
-          "wire_component": 76
-        },
-        "source_access": {
-          "admitted_sites": [
-            [
-              1204100,
-              2835580
-            ]
-          ],
-          "anchor_point_dbu": [
-            1204100,
-            2835580
-          ],
-          "array_trials": [],
-          "attempted_sites": [],
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": false,
-            "no_unclassified_m2_or_via_drawing": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
-          },
-          "landing_bbox": [
-            1203235,
-            2835435,
-            1204965,
-            2835725
-          ],
-          "new_via1_count": 0,
-          "original_lower_upper_enclosures_checked": true,
-          "original_m1_m2_and_via1_ownership_checked": true,
-          "reason": null,
-          "reused_existing_stack": true,
-          "reused_via1_boxes_dbu": [
-            [
-              1203285,
-              2835485,
-              1203475,
-              2835675
-            ],
-            [
-              1203765,
-              2835485,
-              1203955,
-              2835675
-            ],
-            [
-              1204245,
-              2835485,
-              1204435,
-              2835675
-            ],
-            [
-              1204725,
-              2835485,
-              1204915,
-              2835675
-            ]
-          ],
-          "reused_via1_count": 4
+          "wire_component": 19
         },
         "source_anchor": {
           "coincident_witnesses": [
             {
               "detail": {
-                "device": 240,
+                "device": 61,
                 "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
                 "metal": 8,
-                "model": "rppd",
-                "native_cluster": 153,
-                "native_net": "$870",
+                "model": "npn13G2",
+                "native_cluster": 37,
+                "native_net": "$148",
                 "point_dbu": [
-                  1204100,
-                  2835580
+                  1371525,
+                  389270
                 ],
-                "terminal": "rppd_2",
-                "wire_component": 76
+                "terminal": "C",
+                "wire_component": 19
               },
-              "label": "T240_rppd_2",
+              "label": "T061_C",
               "metal": 8,
-              "native_cluster": 153,
+              "native_cluster": 37,
               "point_dbu": [
-                1204100,
-                2835580
+                1371525,
+                389270
               ],
-              "wire_component": 76
+              "wire_component": 19
             }
           ],
           "detail": {
-            "device": 240,
+            "device": 61,
             "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
             "metal": 8,
-            "model": "rppd",
-            "native_cluster": 153,
-            "native_net": "$870",
+            "model": "npn13G2",
+            "native_cluster": 37,
+            "native_net": "$148",
             "point_dbu": [
-              1204100,
-              2835580
+              1371525,
+              389270
             ],
-            "terminal": "rppd_2",
-            "wire_component": 76
+            "terminal": "C",
+            "wire_component": 19
           },
-          "label": "T240_rppd_2",
+          "label": "T061_C",
           "logical_labels": [
-            "T240_rppd_2"
+            "T061_C"
           ],
           "metal": 8,
-          "native_cluster": 153,
+          "native_cluster": 37,
           "point_dbu": [
-            1204100,
-            2835580
+            1371525,
+            389270
           ],
-          "wire_component": 76
+          "wire_component": 19
         }
       },
-      "C_p": {
-        "added_material_dbu2": {
-          "10": 38344150,
-          "19": 0
+      "D_emitter": {
+        "component": 17,
+        "label": "D_emitter",
+        "m2_access": {
+          "admitted_sites": [
+            [
+              1371525,
+              388020
+            ]
+          ],
+          "anchor_point_dbu": [
+            1371525,
+            388022
+          ],
+          "anchor_reference_not_moved": true,
+          "attempted_sites": [
+            {
+              "admitted": true,
+              "guards": {
+                "foreign_lower_metal": true,
+                "foreign_m2_clearance": true,
+                "foreign_via1": true,
+                "foreign_via2": true,
+                "grid5_new_route_center": true,
+                "lower_via_enclosure": true,
+                "new_center_within_existing_same_net_M2": true,
+                "new_m2_material": false,
+                "no_unclassified_m2_or_via_drawing": true,
+                "upper_via_enclosure": true,
+                "via_existing_clearance": true
+              },
+              "point": [
+                1371525,
+                388020
+              ]
+            }
+          ],
+          "direct_existing_m2": true,
+          "guards": {
+            "foreign_lower_metal": true,
+            "foreign_m2_clearance": true,
+            "foreign_via1": true,
+            "foreign_via2": true,
+            "grid5_new_route_center": true,
+            "lower_via_enclosure": true,
+            "new_center_within_existing_same_net_M2": true,
+            "new_m2_material": false,
+            "no_unclassified_m2_or_via_drawing": true,
+            "upper_via_enclosure": true,
+            "via_existing_clearance": true
+          },
+          "landing_bbox": [
+            1371225,
+            387720,
+            1371825,
+            388320
+          ],
+          "new_via1_count": 0,
+          "reason": null
         },
-        "candidates": [
-          {
-            "cut_bbox": null,
-            "guards": {
+        "selected": {
+          "bridge": {
+            "admitted": true,
+            "center": [
+              1376525,
+              388020
+            ],
+            "m2_guards": {
               "foreign_lower_metal": true,
               "foreign_m2_clearance": true,
               "foreign_via1": true,
               "foreign_via2": true,
               "lower_via_enclosure": true,
               "new_m2_material": true,
-              "new_route_within_existing_die_bbox": true,
               "no_unclassified_m2_or_via_drawing": true,
-              "single_continuous_new_m2": true,
-              "two_distinct_access_arrays": true,
               "upper_via_enclosure": true,
               "via_existing_clearance": true
             },
-            "metal_bbox": [
-              1023235,
-              2831120,
-              1084965,
-              2835880
-            ],
-            "points_dbu": [
-              [
-                1024100,
-                2835580
-              ],
-              [
-                1084100,
-                2835580
-              ],
-              [
-                1084100,
-                2831420
-              ]
-            ]
-          }
-        ],
-        "component": 75,
-        "label": "C_p",
-        "selected": {
-          "cut_bbox": null,
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": true,
-            "new_route_within_existing_die_bbox": true,
-            "no_unclassified_m2_or_via_drawing": true,
-            "single_continuous_new_m2": true,
-            "two_distinct_access_arrays": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
-          },
-          "metal_bbox": [
-            1023235,
-            2831120,
-            1084965,
-            2835880
-          ],
-          "points_dbu": [
-            [
-              1024100,
-              2835580
-            ],
-            [
-              1084100,
-              2835580
-            ],
-            [
-              1084100,
-              2831420
-            ]
-          ]
-        },
-        "sink_access": {
-          "admitted_sites": [
-            [
-              1084100,
-              2831420
-            ]
-          ],
-          "anchor_point_dbu": [
-            1084100,
-            2831420
-          ],
-          "array_trials": [],
-          "attempted_sites": [],
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": false,
-            "no_unclassified_m2_or_via_drawing": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
-          },
-          "landing_bbox": [
-            1083235,
-            2831275,
-            1084965,
-            2831565
-          ],
-          "new_via1_count": 0,
-          "original_lower_upper_enclosures_checked": true,
-          "original_m1_m2_and_via1_ownership_checked": true,
-          "reason": null,
-          "reused_existing_stack": true,
-          "reused_via1_boxes_dbu": [
-            [
-              1083285,
-              2831325,
-              1083475,
-              2831515
-            ],
-            [
-              1084245,
-              2831325,
-              1084435,
-              2831515
-            ],
-            [
-              1083765,
-              2831325,
-              1083955,
-              2831515
-            ],
-            [
-              1084725,
-              2831325,
-              1084915,
-              2831515
-            ]
-          ],
-          "reused_via1_count": 4
-        },
-        "sink_anchor": {
-          "coincident_witnesses": [
-            {
-              "detail": {
-                "device": 239,
-                "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
-                "metal": 8,
-                "model": "rppd",
-                "native_cluster": 152,
-                "native_net": "$869",
-                "point_dbu": [
-                  1084100,
-                  2831420
-                ],
-                "terminal": "rppd_1",
-                "wire_component": 75
-              },
-              "label": "T239_rppd_1",
-              "metal": 8,
-              "native_cluster": 152,
-              "point_dbu": [
-                1084100,
-                2831420
-              ],
-              "wire_component": 75
-            }
-          ],
-          "detail": {
-            "device": 239,
-            "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
-            "metal": 8,
-            "model": "rppd",
-            "native_cluster": 152,
-            "native_net": "$869",
-            "point_dbu": [
-              1084100,
-              2831420
-            ],
-            "terminal": "rppd_1",
-            "wire_component": 75
-          },
-          "label": "T239_rppd_1",
-          "logical_labels": [
-            "T239_rppd_1"
-          ],
-          "metal": 8,
-          "native_cluster": 152,
-          "point_dbu": [
-            1084100,
-            2831420
-          ],
-          "wire_component": 75
-        },
-        "source_access": {
-          "admitted_sites": [
-            [
-              1024100,
-              2835580
-            ]
-          ],
-          "anchor_point_dbu": [
-            1024100,
-            2835580
-          ],
-          "array_trials": [],
-          "attempted_sites": [],
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": false,
-            "no_unclassified_m2_or_via_drawing": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
-          },
-          "landing_bbox": [
-            1023235,
-            2835435,
-            1024965,
-            2835725
-          ],
-          "new_via1_count": 0,
-          "original_lower_upper_enclosures_checked": true,
-          "original_m1_m2_and_via1_ownership_checked": true,
-          "reason": null,
-          "reused_existing_stack": true,
-          "reused_via1_boxes_dbu": [
-            [
-              1023285,
-              2835485,
-              1023475,
-              2835675
-            ],
-            [
-              1023765,
-              2835485,
-              1023955,
-              2835675
-            ],
-            [
-              1024245,
-              2835485,
-              1024435,
-              2835675
-            ],
-            [
-              1024725,
-              2835485,
-              1024915,
-              2835675
-            ]
-          ],
-          "reused_via1_count": 4
-        },
-        "source_anchor": {
-          "coincident_witnesses": [
-            {
-              "detail": {
-                "device": 238,
-                "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
-                "metal": 8,
-                "model": "rppd",
-                "native_cluster": 152,
-                "native_net": "$869",
-                "point_dbu": [
-                  1024100,
-                  2835580
-                ],
-                "terminal": "rppd_2",
-                "wire_component": 75
-              },
-              "label": "T238_rppd_2",
-              "metal": 8,
-              "native_cluster": 152,
-              "point_dbu": [
-                1024100,
-                2835580
-              ],
-              "wire_component": 75
-            }
-          ],
-          "detail": {
-            "device": 238,
-            "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
-            "metal": 8,
-            "model": "rppd",
-            "native_cluster": 152,
-            "native_net": "$869",
-            "point_dbu": [
-              1024100,
-              2835580
-            ],
-            "terminal": "rppd_2",
-            "wire_component": 75
-          },
-          "label": "T238_rppd_2",
-          "logical_labels": [
-            "T238_rppd_2"
-          ],
-          "metal": 8,
-          "native_cluster": 152,
-          "point_dbu": [
-            1024100,
-            2835580
-          ],
-          "wire_component": 75
-        }
-      },
-      "D_n": {
-        "added_material_dbu2": {
-          "10": 39784150,
-          "19": 0
-        },
-        "candidates": [
-          {
-            "cut_bbox": null,
-            "guards": {
-              "foreign_lower_metal": true,
-              "foreign_m2_clearance": true,
-              "foreign_via1": true,
+            "m3_guards": {
+              "foreign_m2_at_new_vias": true,
+              "foreign_m3_clearance": true,
               "foreign_via2": true,
-              "lower_via_enclosure": true,
-              "new_m2_material": true,
-              "new_route_within_existing_die_bbox": true,
-              "no_unclassified_m2_or_via_drawing": true,
-              "single_continuous_new_m2": true,
-              "two_distinct_access_arrays": true,
-              "upper_via_enclosure": true,
-              "via_existing_clearance": true
+              "foreign_via3": true,
+              "lower_m2_connected": true,
+              "lower_via2_enclosure": true,
+              "new_cuts_spacing": true,
+              "new_m3_material": true,
+              "no_unclassified_m3_or_via": true,
+              "original_m2_anchor_connected": true,
+              "two_new_cuts": true,
+              "upper_via2_enclosure": true,
+              "via2_existing_clearance": true
             },
-            "metal_bbox": [
-              1203235,
-              2580490,
-              1264965,
-              2587650
-            ],
-            "points_dbu": [
+            "via2_centers": [
               [
-                1204100,
-                2587350
+                1376275,
+                388020
               ],
               [
-                1264100,
-                2587350
-              ],
-              [
-                1264100,
-                2580790
+                1376775,
+                388020
               ]
             ]
-          }
-        ],
-        "component": 74,
-        "label": "D_n",
-        "selected": {
-          "cut_bbox": null,
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": true,
-            "new_route_within_existing_die_bbox": true,
-            "no_unclassified_m2_or_via_drawing": true,
-            "single_continuous_new_m2": true,
-            "two_distinct_access_arrays": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
           },
-          "metal_bbox": [
-            1203235,
-            2580490,
-            1264965,
-            2587650
-          ],
-          "points_dbu": [
-            [
-              1204100,
-              2587350
+          "existing_m3_access": {
+            "admitted": true,
+            "center": [
+              1997305,
+              406030
             ],
-            [
-              1264100,
-              2587350
-            ],
-            [
-              1264100,
-              2580790
-            ]
-          ]
-        },
-        "sink_access": {
-          "admitted_sites": [
-            [
-              1264100,
-              2580790
-            ]
-          ],
-          "anchor_point_dbu": [
-            1264100,
-            2580790
-          ],
-          "array_trials": [],
-          "attempted_sites": [],
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": false,
-            "no_unclassified_m2_or_via_drawing": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
-          },
-          "landing_bbox": [
-            1263235,
-            2580645,
-            1264965,
-            2580935
-          ],
-          "new_via1_count": 0,
-          "original_lower_upper_enclosures_checked": true,
-          "original_m1_m2_and_via1_ownership_checked": true,
-          "reason": null,
-          "reused_existing_stack": true,
-          "reused_via1_boxes_dbu": [
-            [
-              1263765,
-              2580695,
-              1263955,
-              2580885
-            ],
-            [
-              1263285,
-              2580695,
-              1263475,
-              2580885
-            ],
-            [
-              1264245,
-              2580695,
-              1264435,
-              2580885
-            ],
-            [
-              1264725,
-              2580695,
-              1264915,
-              2580885
-            ]
-          ],
-          "reused_via1_count": 4
-        },
-        "sink_anchor": {
-          "coincident_witnesses": [
-            {
-              "detail": {
-                "device": 237,
-                "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
-                "metal": 8,
-                "model": "rppd",
-                "native_cluster": 151,
-                "native_net": "$852",
-                "point_dbu": [
-                  1264100,
-                  2580790
-                ],
-                "terminal": "rppd_1",
-                "wire_component": 74
-              },
-              "label": "T237_rppd_1",
-              "metal": 8,
-              "native_cluster": 151,
-              "point_dbu": [
-                1264100,
-                2580790
-              ],
-              "wire_component": 74
-            }
-          ],
-          "detail": {
-            "device": 237,
-            "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
-            "metal": 8,
-            "model": "rppd",
-            "native_cluster": 151,
-            "native_net": "$852",
-            "point_dbu": [
-              1264100,
-              2580790
-            ],
-            "terminal": "rppd_1",
-            "wire_component": 74
-          },
-          "label": "T237_rppd_1",
-          "logical_labels": [
-            "T237_rppd_1"
-          ],
-          "metal": 8,
-          "native_cluster": 151,
-          "point_dbu": [
-            1264100,
-            2580790
-          ],
-          "wire_component": 74
-        },
-        "source_access": {
-          "admitted_sites": [
-            [
-              1204100,
-              2587350
-            ]
-          ],
-          "anchor_point_dbu": [
-            1204100,
-            2587350
-          ],
-          "array_trials": [],
-          "attempted_sites": [],
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": false,
-            "no_unclassified_m2_or_via_drawing": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
-          },
-          "landing_bbox": [
-            1203235,
-            2587205,
-            1204965,
-            2587495
-          ],
-          "new_via1_count": 0,
-          "original_lower_upper_enclosures_checked": true,
-          "original_m1_m2_and_via1_ownership_checked": true,
-          "reason": null,
-          "reused_existing_stack": true,
-          "reused_via1_boxes_dbu": [
-            [
-              1203285,
-              2587255,
-              1203475,
-              2587445
-            ],
-            [
-              1203765,
-              2587255,
-              1203955,
-              2587445
-            ],
-            [
-              1204245,
-              2587255,
-              1204435,
-              2587445
-            ],
-            [
-              1204725,
-              2587255,
-              1204915,
-              2587445
-            ]
-          ],
-          "reused_via1_count": 4
-        },
-        "source_anchor": {
-          "coincident_witnesses": [
-            {
-              "detail": {
-                "device": 236,
-                "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
-                "metal": 8,
-                "model": "rppd",
-                "native_cluster": 151,
-                "native_net": "$852",
-                "point_dbu": [
-                  1204100,
-                  2587350
-                ],
-                "terminal": "rppd_2",
-                "wire_component": 74
-              },
-              "label": "T236_rppd_2",
-              "metal": 8,
-              "native_cluster": 151,
-              "point_dbu": [
-                1204100,
-                2587350
-              ],
-              "wire_component": 74
-            }
-          ],
-          "detail": {
-            "device": 236,
-            "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
-            "metal": 8,
-            "model": "rppd",
-            "native_cluster": 151,
-            "native_net": "$852",
-            "point_dbu": [
-              1204100,
-              2587350
-            ],
-            "terminal": "rppd_2",
-            "wire_component": 74
-          },
-          "label": "T236_rppd_2",
-          "logical_labels": [
-            "T236_rppd_2"
-          ],
-          "metal": 8,
-          "native_cluster": 151,
-          "point_dbu": [
-            1204100,
-            2587350
-          ],
-          "wire_component": 74
-        }
-      },
-      "D_p": {
-        "added_material_dbu2": {
-          "10": 39784150,
-          "19": 0
-        },
-        "candidates": [
-          {
-            "cut_bbox": null,
-            "guards": {
-              "foreign_lower_metal": true,
-              "foreign_m2_clearance": true,
-              "foreign_via1": true,
+            "checks": {
+              "center_in_original_m3": true,
+              "foreign_m2_at_new_vias": true,
+              "foreign_m3_clearance": true,
               "foreign_via2": true,
-              "lower_via_enclosure": true,
-              "new_m2_material": true,
-              "new_route_within_existing_die_bbox": true,
-              "no_unclassified_m2_or_via_drawing": true,
-              "single_continuous_new_m2": true,
-              "two_distinct_access_arrays": true,
-              "upper_via_enclosure": true,
-              "via_existing_clearance": true
+              "foreign_via3": true,
+              "grid5": true,
+              "lower_via2_enclosure": true,
+              "new_m3_material": true,
+              "no_unclassified_m3_or_via": true,
+              "original_cut_190nm": true,
+              "original_cut_lower_enclosure": true,
+              "original_cut_upper_enclosure": true,
+              "upper_via2_enclosure": true,
+              "via2_existing_clearance": true
             },
-            "metal_bbox": [
-              1023235,
-              2580490,
-              1084965,
-              2587650
+            "existing_via2_box": [
+              1997210,
+              405935,
+              1997400,
+              406125
+            ]
+          },
+          "new_via1_count": 0,
+          "new_via2_count": 2,
+          "route": {
+            "bridge_center": [
+              1376525,
+              388020
             ],
-            "points_dbu": [
+            "guards": {
+              "connects_existing_m3": true,
+              "foreign_m2_at_new_vias": true,
+              "foreign_m3_clearance": true,
+              "foreign_via2": true,
+              "foreign_via3": true,
+              "inside_original_bbox": true,
+              "lower_via2_enclosure": true,
+              "new_m3_material": true,
+              "no_unclassified_m3_or_via": true,
+              "single_new_m3": true,
+              "upper_via2_enclosure": true,
+              "via2_existing_clearance": true
+            },
+            "points": [
               [
-                1024100,
-                2587350
+                1997305,
+                406030
               ],
               [
-                1084100,
-                2587350
+                1997305,
+                401030
               ],
               [
-                1084100,
-                2580790
+                1376525,
+                401030
+              ],
+              [
+                1376525,
+                388020
               ]
+            ],
+            "source_center": [
+              1997305,
+              406030
             ]
           }
-        ],
-        "component": 73,
-        "label": "D_p",
-        "selected": {
-          "cut_bbox": null,
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": true,
-            "new_route_within_existing_die_bbox": true,
-            "no_unclassified_m2_or_via_drawing": true,
-            "single_continuous_new_m2": true,
-            "two_distinct_access_arrays": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
-          },
-          "metal_bbox": [
-            1023235,
-            2580490,
-            1084965,
-            2587650
-          ],
-          "points_dbu": [
-            [
-              1024100,
-              2587350
-            ],
-            [
-              1084100,
-              2587350
-            ],
-            [
-              1084100,
-              2580790
-            ]
-          ]
-        },
-        "sink_access": {
-          "admitted_sites": [
-            [
-              1084100,
-              2580790
-            ]
-          ],
-          "anchor_point_dbu": [
-            1084100,
-            2580790
-          ],
-          "array_trials": [],
-          "attempted_sites": [],
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": false,
-            "no_unclassified_m2_or_via_drawing": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
-          },
-          "landing_bbox": [
-            1083235,
-            2580645,
-            1084965,
-            2580935
-          ],
-          "new_via1_count": 0,
-          "original_lower_upper_enclosures_checked": true,
-          "original_m1_m2_and_via1_ownership_checked": true,
-          "reason": null,
-          "reused_existing_stack": true,
-          "reused_via1_boxes_dbu": [
-            [
-              1083285,
-              2580695,
-              1083475,
-              2580885
-            ],
-            [
-              1083765,
-              2580695,
-              1083955,
-              2580885
-            ],
-            [
-              1084245,
-              2580695,
-              1084435,
-              2580885
-            ],
-            [
-              1084725,
-              2580695,
-              1084915,
-              2580885
-            ]
-          ],
-          "reused_via1_count": 4
         },
         "sink_anchor": {
           "coincident_witnesses": [
             {
               "detail": {
-                "device": 235,
+                "device": 5,
                 "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
                 "metal": 8,
-                "model": "rppd",
-                "native_cluster": 150,
-                "native_net": "$851",
+                "model": "sg13_lv_nmos",
+                "native_cluster": 39,
+                "native_net": "$150",
                 "point_dbu": [
-                  1084100,
-                  2580790
+                  1997305,
+                  406030
                 ],
-                "terminal": "rppd_1",
-                "wire_component": 73
+                "terminal": "D",
+                "wire_component": 17
               },
-              "label": "T235_rppd_1",
+              "label": "T005_D",
               "metal": 8,
-              "native_cluster": 150,
+              "native_cluster": 39,
               "point_dbu": [
-                1084100,
-                2580790
+                1997305,
+                406030
               ],
-              "wire_component": 73
+              "wire_component": 17
             }
           ],
           "detail": {
-            "device": 235,
+            "device": 5,
             "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
             "metal": 8,
-            "model": "rppd",
-            "native_cluster": 150,
-            "native_net": "$851",
+            "model": "sg13_lv_nmos",
+            "native_cluster": 39,
+            "native_net": "$150",
             "point_dbu": [
-              1084100,
-              2580790
+              1997305,
+              406030
             ],
-            "terminal": "rppd_1",
-            "wire_component": 73
+            "terminal": "D",
+            "wire_component": 17
           },
-          "label": "T235_rppd_1",
+          "label": "T005_D",
           "logical_labels": [
-            "T235_rppd_1"
+            "T005_D"
           ],
           "metal": 8,
-          "native_cluster": 150,
+          "native_cluster": 39,
           "point_dbu": [
-            1084100,
-            2580790
+            1997305,
+            406030
           ],
-          "wire_component": 73
-        },
-        "source_access": {
-          "admitted_sites": [
-            [
-              1024100,
-              2587350
-            ]
-          ],
-          "anchor_point_dbu": [
-            1024100,
-            2587350
-          ],
-          "array_trials": [],
-          "attempted_sites": [],
-          "guards": {
-            "foreign_lower_metal": true,
-            "foreign_m2_clearance": true,
-            "foreign_via1": true,
-            "foreign_via2": true,
-            "lower_via_enclosure": true,
-            "new_m2_material": false,
-            "no_unclassified_m2_or_via_drawing": true,
-            "upper_via_enclosure": true,
-            "via_existing_clearance": true
-          },
-          "landing_bbox": [
-            1023235,
-            2587205,
-            1024965,
-            2587495
-          ],
-          "new_via1_count": 0,
-          "original_lower_upper_enclosures_checked": true,
-          "original_m1_m2_and_via1_ownership_checked": true,
-          "reason": null,
-          "reused_existing_stack": true,
-          "reused_via1_boxes_dbu": [
-            [
-              1023285,
-              2587255,
-              1023475,
-              2587445
-            ],
-            [
-              1023765,
-              2587255,
-              1023955,
-              2587445
-            ],
-            [
-              1024245,
-              2587255,
-              1024435,
-              2587445
-            ],
-            [
-              1024725,
-              2587255,
-              1024915,
-              2587445
-            ]
-          ],
-          "reused_via1_count": 4
+          "wire_component": 17
         },
         "source_anchor": {
           "coincident_witnesses": [
             {
               "detail": {
-                "device": 234,
+                "device": 61,
                 "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
-                "metal": 8,
-                "model": "rppd",
-                "native_cluster": 150,
-                "native_net": "$851",
+                "metal": 10,
+                "model": "npn13G2",
+                "native_cluster": 39,
+                "native_net": "$150",
                 "point_dbu": [
-                  1024100,
-                  2587350
+                  1371525,
+                  388022
                 ],
-                "terminal": "rppd_2",
-                "wire_component": 73
+                "terminal": "E",
+                "wire_component": 17
               },
-              "label": "T234_rppd_2",
-              "metal": 8,
-              "native_cluster": 150,
+              "label": "T061_E",
+              "metal": 10,
+              "native_cluster": 39,
               "point_dbu": [
-                1024100,
-                2587350
+                1371525,
+                388022
               ],
-              "wire_component": 73
+              "wire_component": 17
             }
           ],
           "detail": {
-            "device": 234,
+            "device": 61,
             "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
-            "metal": 8,
-            "model": "rppd",
-            "native_cluster": 150,
-            "native_net": "$851",
+            "metal": 10,
+            "model": "npn13G2",
+            "native_cluster": 39,
+            "native_net": "$150",
             "point_dbu": [
-              1024100,
-              2587350
+              1371525,
+              388022
             ],
-            "terminal": "rppd_2",
-            "wire_component": 73
+            "terminal": "E",
+            "wire_component": 17
           },
-          "label": "T234_rppd_2",
+          "label": "T061_E",
           "logical_labels": [
-            "T234_rppd_2"
+            "T061_E"
           ],
-          "metal": 8,
-          "native_cluster": 150,
+          "metal": 10,
+          "native_cluster": 39,
           "point_dbu": [
-            1024100,
-            2587350
+            1371525,
+            388022
           ],
-          "wire_component": 73
+          "wire_component": 17
         }
       }
     }
@@ -1969,36 +1267,36 @@
   "native_acquisition_authorized": true,
   "native_execution_authorized": true,
   "original_reference_gds": {
-    "bytes": 998644,
-    "sha256": "42ed5bcd567518786b718248947771172e9f5cc419d0aaa8fc8c49d8cfa4e876"
+    "bytes": 999700,
+    "sha256": "244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347"
   },
   "physical": {
     "assets": {
       "complete-output-index.json": {
-        "bytes": 20769,
-        "id": 699119950,
-        "sha256": "0d1e51baea9ffbbb699fc131d3406d443178aa17bb6e861873e1c23979209226"
+        "bytes": 20773,
+        "id": 699519434,
+        "sha256": "5e44568d47ab16bf18465ffadea480554240204ae066704b1a42a2ee0eeb4611"
       },
       "native-physical.tar.gz": {
-        "bytes": 5970038,
-        "id": 699119951,
-        "sha256": "b4b708083f11f67e57de36f30518f1e2a1782659ce8019e4b4c6ce5691723496"
+        "bytes": 5979956,
+        "id": 699519433,
+        "sha256": "bcdeb4489a4923540119f8d71c06224aa0a66f013e6d04e589ca6538fffb8528"
       }
     },
     "index": {
       "context": {
         "attempt": 1,
-        "run": 41335306847,
-        "source": "50cb5767faef80336161ab7fa40de7d99dbf6243"
+        "run": 41349608125,
+        "source": "8203934d2a56cdcc8a2fa7754d76d2bf24330658"
       },
       "files": {
         "candidate-acquisition.json": {
-          "bytes": 23268,
-          "sha256": "83b9b129a24d25b0e08e61d7ddcd4e67bd7365c050ead68f0911d568350465b8"
+          "bytes": 24297,
+          "sha256": "11b2412e967ad1e2fb0fdda969350973c84df6756efd3d2558bc6a79dfaf3900"
         },
         "candidate-layout-binding.json": {
-          "bytes": 3356,
-          "sha256": "7e34df790ac3affe252a1a97f21a60a2dc0275872b4dea2ec1fef153724a908b"
+          "bytes": 3367,
+          "sha256": "388d1bd2a0365e0f572ece671c01211b6c7a2a338e41591abad753a3f0b05705"
         },
         "controls.json": {
           "bytes": 2470,
@@ -2009,16 +1307,16 @@
           "sha256": "8caa4db1ae881af8fe57fa9d01df16bd57a2f31ece40fecd9bc4e8e139952ac2"
         },
         "layout/nssoc_cdr_pd500_resistor_v59.gds": {
-          "bytes": 999700,
-          "sha256": "244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347"
+          "bytes": 1001172,
+          "sha256": "1c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94"
         },
         "layout/nssoc_cdr_pd500_resistor_v59.lef": {
           "bytes": 6436,
           "sha256": "1f595545113979fdeda5f663c3c03398e8dce75c3821c6c8d4c6b686f9673896"
         },
         "layout/result.json": {
-          "bytes": 3356,
-          "sha256": "7e34df790ac3affe252a1a97f21a60a2dc0275872b4dea2ec1fef153724a908b"
+          "bytes": 3367,
+          "sha256": "388d1bd2a0365e0f572ece671c01211b6c7a2a338e41591abad753a3f0b05705"
         },
         "layout/schematic.cir": {
           "bytes": 24510,
@@ -2037,12 +1335,12 @@
           "sha256": "bf0e999102f52c15a805b4c47e440e7f14bbb14dc09f2c7082b0b5d05dfc762c"
         },
         "physical-qualification.json": {
-          "bytes": 430,
-          "sha256": "fe310d46b7b27fd4935f3d206450a41e630a0832528a9c1fd77600f5ce478f1f"
+          "bytes": 438,
+          "sha256": "ff66769c6b2e15e3362d8f8bc14108221c4b89839c876b7d44a820a8b85c0a8e"
         },
         "physical/drc/deck.log": {
           "bytes": 79735,
-          "sha256": "5182bd80d231e18aed55b6200591da405c34299e24f97a4ad7c8e8dcbf8b7016"
+          "sha256": "75812f0ac8e83d780e199083732f5c9e536c3d6c5d42b7380960b5f36d9c9c51"
         },
         "physical/drc/drc.lyrdb": {
           "bytes": 113664,
@@ -2050,15 +1348,15 @@
         },
         "physical/drc/result.json": {
           "bytes": 282,
-          "sha256": "b970fc534542e7da42e39be92b2340cd3971bba8dc2a92397e678a49bb38a606"
+          "sha256": "f02136ea71a1badb18b23aa47046622f1395e207f84bd08f8b1d3e46aaed407f"
         },
         "physical/drc/run.log": {
           "bytes": 79668,
-          "sha256": "84087b380c8f2b28bbe11dbb8f3b948943a6bba93d97d61b6b3deef265c2a99d"
+          "sha256": "12471b27d548e72b52fcaeb54cb43a921bb03254850222444c020a1e8513ba24"
         },
         "physical/gain_gate_disconnected/audit.json": {
           "bytes": 1051,
-          "sha256": "f2bb92dc4cc8ae8a9c13d8b68d36168bdd5cd9e42406da4baaa9ac55420ccbb7"
+          "sha256": "c8f689c49db161f3770ccda8e3b54dcf6d904aa8327a1fc115eb0a2a42735675"
         },
         "physical/gain_gate_disconnected/audit.log": {
           "bytes": 5,
@@ -2066,27 +1364,27 @@
         },
         "physical/gain_gate_disconnected/deck.log": {
           "bytes": 37285,
-          "sha256": "7c43c88a6eab27d6f4de9cb658442d76ee73fa0246063a99996b6c91af747b42"
+          "sha256": "4e3e4f1c2b819ff5086e68af85b82dbcca767adbc23c5e771951e0eabea2b6a2"
         },
         "physical/gain_gate_disconnected/extracted.cir": {
-          "bytes": 24917,
-          "sha256": "7580cfe92a45769ce203f0efc0840141c9a2b947486b3c1b522a3cd3ac54e309"
+          "bytes": 24897,
+          "sha256": "bbff3caf55b74d4ca41b4a1d7ccf05c5518628927493f45982d400da99dcca4d"
         },
         "physical/gain_gate_disconnected/fault.cir": {
           "bytes": 24511,
           "sha256": "91dcb9d69983eb848e691308a902773796363bac4f420e860a57fa99fd84381a"
         },
         "physical/gain_gate_disconnected/result.lvsdb": {
-          "bytes": 3550174,
-          "sha256": "2258f0e72785faf21286105287fd33b101e785832ede56379a1f6c068a518ebf"
+          "bytes": 3551746,
+          "sha256": "b3e4078db19cf2ec00699bbca6b874e18136ccdc954b542bf4a0f056a5b17642"
         },
         "physical/gain_gate_disconnected/run.log": {
           "bytes": 37218,
-          "sha256": "6d4875676c2ee58b0650ced92461647a58b64099f205526a49f0fbeeb2919ce2"
+          "sha256": "5f5429311be3657a3b50999342285d42577a0d4a0557225f4d497528841b0194"
         },
         "physical/gain_tail_width/audit.json": {
           "bytes": 1037,
-          "sha256": "0393766a2349fc9ccdd82d42eca1f858985f840769d5e3494cb2489da94d1a42"
+          "sha256": "a1a827c03cc34274b0670e5b0cb2c5e11b858f109abc7b56fcb660e7157d6664"
         },
         "physical/gain_tail_width/audit.log": {
           "bytes": 5,
@@ -2094,27 +1392,27 @@
         },
         "physical/gain_tail_width/deck.log": {
           "bytes": 37264,
-          "sha256": "70effdd4bc6d49175ffdf5a32fa8e7ee4325e599abec8ddcf93876bae5ffe54f"
+          "sha256": "13fb2be7d7ab00d1ab4766631a54293d7524004873790035825ba198319ec2e8"
         },
         "physical/gain_tail_width/extracted.cir": {
-          "bytes": 24917,
-          "sha256": "7580cfe92a45769ce203f0efc0840141c9a2b947486b3c1b522a3cd3ac54e309"
+          "bytes": 24897,
+          "sha256": "4fff2449080b4a4c46c2c7ff2b0526891eb2acb1aa611ca1b2fff93a73fdaec1"
         },
         "physical/gain_tail_width/fault.cir": {
           "bytes": 24506,
           "sha256": "783266716c3bb4673ba4a3e598d0ac205056fdc0b08ccaa82ef7358a26fda328"
         },
         "physical/gain_tail_width/result.lvsdb": {
-          "bytes": 3550061,
-          "sha256": "1eb2482a78feecac1e0aaecc9fe7eb1115a3a658a20047de563c751804311094"
+          "bytes": 3551233,
+          "sha256": "4b0bd0944b18801a3ad20c18eea15f51fe6091350aaf33e40f68fc907519e8ef"
         },
         "physical/gain_tail_width/run.log": {
           "bytes": 37197,
-          "sha256": "e1e223b488663d43ba1716d1398db993026559a557cc68b862263220879f3ff0"
+          "sha256": "4ac66186befc34d04c295d9dfc86a0704a5e02399db84a0a89b1077e66dcf943"
         },
         "physical/lvs/audit.json": {
           "bytes": 883,
-          "sha256": "ed03048a80b29c15acd027fba3f744f7eaf681b383cd0e96a8ad36c66ffb98e8"
+          "sha256": "07b60edf572e058da9f72e0c5f9cb1765f97086f6c6e892c8b0a5b5b3f7ec701"
         },
         "physical/lvs/audit.log": {
           "bytes": 29,
@@ -2122,23 +1420,23 @@
         },
         "physical/lvs/deck.log": {
           "bytes": 37237,
-          "sha256": "7711248d37b687d14258742b795980ee555c8194c030485fc81fd283b257b529"
+          "sha256": "d1c86e3d5ff6d2ab2d8057a6c4c2b43ec6b64b3fb93c4aa696b3ea84431e6670"
         },
         "physical/lvs/extracted.cir": {
-          "bytes": 24917,
-          "sha256": "7580cfe92a45769ce203f0efc0840141c9a2b947486b3c1b522a3cd3ac54e309"
+          "bytes": 24897,
+          "sha256": "89b928567f7bf261d562385dee7a08574e2aa95342ee2d6bfede09587bd1bc58"
         },
         "physical/lvs/result.lvsdb": {
-          "bytes": 3548774,
-          "sha256": "15cef7301babf07c66851bbf58ed60146982621bef989dd6654e8c43bedfee12"
+          "bytes": 3550261,
+          "sha256": "adf76781da5e260933e2cd130ee4127b09abc8f8656ca2526aa7cd010a25dce8"
         },
         "physical/lvs/run.log": {
           "bytes": 37170,
-          "sha256": "e85c56d4b63cc28dd117e6be85345af5be4e8aa9c154fbaa8927812f8aa912b5"
+          "sha256": "65c048b80a32a0dbc076bb43f0dc6623802e671c43e6ac6dcf5f90dcfcc95801"
         },
         "physical/lvs_flat/audit.json": {
           "bytes": 893,
-          "sha256": "1258018ee91abdb45e1f1aebefca8842f7e148288fb1c42cbc8304b6a26e5ec4"
+          "sha256": "8c0e7b80b97bb4e1012eb802bc87c53de69fedd64b0f48350035bf1de017af2e"
         },
         "physical/lvs_flat/audit.log": {
           "bytes": 29,
@@ -2146,23 +1444,23 @@
         },
         "physical/lvs_flat/deck.log": {
           "bytes": 37238,
-          "sha256": "8d1d6cb2c37464fe1707e2d674152442811351901477f3cebfd665fb7f8b17c2"
+          "sha256": "8f543e88d2b6171e5e61b6467acf19964422c33f42e7fcc663b61840d1ac1e23"
         },
         "physical/lvs_flat/extracted.cir": {
-          "bytes": 24753,
-          "sha256": "c2f1f0ad0b719437b609c96e187f56a90b2550d9196721d9bd37004c665c24be"
+          "bytes": 24752,
+          "sha256": "1e14eded21c0b60905ad6e0e052a45bba4f2b42be9ff8cb9bbb480e723f4459b"
         },
         "physical/lvs_flat/result.lvsdb": {
-          "bytes": 2721592,
-          "sha256": "337c3d7349886dfacdc758004bb8edbb48963c9abeac9cdcd7dcd702c2290ff4"
+          "bytes": 2723359,
+          "sha256": "4a6559ae5e416762de7c2287f970254ff0bf57db2469daa95d2aede5467722a5"
         },
         "physical/lvs_flat/run.log": {
           "bytes": 37171,
-          "sha256": "4ef7f9d28ec9b58ed788bd26e2e1119d5f71880f04032e37cbf6799b072b80d6"
+          "sha256": "8f50485133b513d1e86f571b92b42aea77b5bebe6865850ab32d2b6770747adc"
         },
         "physical/missing_gain_hbt/audit.json": {
           "bytes": 1039,
-          "sha256": "ad08e7357111aa62777046dcc0fe4c4cccfe90ba25453441159f87d187cf6f3a"
+          "sha256": "b7a46a147008ffc46915546db7b972e61573a6ce8e0bc8238fba8da3667f8040"
         },
         "physical/missing_gain_hbt/audit.log": {
           "bytes": 5,
@@ -2170,27 +1468,27 @@
         },
         "physical/missing_gain_hbt/deck.log": {
           "bytes": 37267,
-          "sha256": "78968c5f6f44d6bf1cceaac17d1aae5506dedbe333056c16daaa9e8e674deb98"
+          "sha256": "47b661e5d4433b3d2ee0c8432fbbee3914cca2e1e35ae23d96dd3da3039c1c96"
         },
         "physical/missing_gain_hbt/extracted.cir": {
-          "bytes": 24917,
-          "sha256": "7580cfe92a45769ce203f0efc0840141c9a2b947486b3c1b522a3cd3ac54e309"
+          "bytes": 24897,
+          "sha256": "fe2b090301f547fd503dd5e62a701e72831b471ac74ed9fd60630fb9dee73e25"
         },
         "physical/missing_gain_hbt/fault.cir": {
           "bytes": 24441,
           "sha256": "8ecf67edbff4e62a1e6e35e80d395417eb6ab46472dcc10178bd558a2076e21d"
         },
         "physical/missing_gain_hbt/result.lvsdb": {
-          "bytes": 3550185,
-          "sha256": "a609df7e465eb6de5112b298c6aea85ca3973af0a5bce8d32aac18857b94eb7f"
+          "bytes": 3551373,
+          "sha256": "7ac904e5a6363f20289e145a25eb8a2e39481155923b7cf9a1c112b0d35e96a7"
         },
         "physical/missing_gain_hbt/run.log": {
           "bytes": 37200,
-          "sha256": "b3255ce85abd3742637942aea6ee6d615a672f8b941613d3654751aeffadb305"
+          "sha256": "7c27beb592b3525eb465d500ae1299e6800ad2ebfaba93019616a17663a0d78f"
         },
         "physical/missing_hbt/audit.json": {
           "bytes": 1029,
-          "sha256": "9d80e4803d446b98a1dcd7c3bc921140b1948bc751a01e86dd85d3fa0d43f116"
+          "sha256": "fbde325e84527dff3974572fe25c6e783199f27701d51f96f069766f1d296565"
         },
         "physical/missing_hbt/audit.log": {
           "bytes": 5,
@@ -2198,35 +1496,35 @@
         },
         "physical/missing_hbt/deck.log": {
           "bytes": 37252,
-          "sha256": "22d901f190cecdd25f20956c83903580767e01c7308c5cd0aa21c67f84a272be"
+          "sha256": "4cb9d2ccea1712ae6849994858549d1b1ec17a4f13d29615e05cd0fbf7c3f27c"
         },
         "physical/missing_hbt/extracted.cir": {
-          "bytes": 24917,
-          "sha256": "9acd5b0c85483ce79dcae2bbe1c5487759bd22ef6a15d07ff9af625cc2a97443"
+          "bytes": 24897,
+          "sha256": "6df331ff5c000d7f0e817ca7438342b72828a5aeb7cd9a2a3a6597919602eb57"
         },
         "physical/missing_hbt/fault.cir": {
           "bytes": 24442,
           "sha256": "14b05e5ca2ce79f506a88fe342893c9fce7ccb1dbd01cd70cc603d9c15d287e7"
         },
         "physical/missing_hbt/result.lvsdb": {
-          "bytes": 3550092,
-          "sha256": "3fae22264fc080c4cf2d58c4a2da6cce007ff35b34d8529a9b193fd1896e7e93"
+          "bytes": 3551221,
+          "sha256": "029fede130c11800bc892b6c312ac5ba43fc4c573c57e593afcdf3ff12d103ab"
         },
         "physical/missing_hbt/run.log": {
           "bytes": 37185,
-          "sha256": "2eb02a10ba3bfae9a35f99391c186156989ddaffa149c4ed6a015acec68fb623"
+          "sha256": "128bcf58cce3cc1294f5202b8fb26271fd4fd4bc9a44d1eaac0fd2d8bf687a78"
         },
         "physical/offgrid/deck.log": {
           "bytes": 79726,
-          "sha256": "1b6dbd051fb8242be42a2602e128adca3cc846950b15aebfc7c69d78bf8e779c"
+          "sha256": "9ffe807d7ac9f1062bfd2cf9dc628f620e53347e1aaed1f81c25863579317399"
         },
         "physical/offgrid/drc.lyrdb": {
-          "bytes": 29646472,
-          "sha256": "19e2d134fbce8a9381538f4f579fd3d2d3ea0834404771ee443740b43e2aac52"
+          "bytes": 29692052,
+          "sha256": "53f06b0f4549448a271e7217a9f3bc2d92f0ea6ec8c48493f15e61d582799587"
         },
         "physical/offgrid/fault.gds": {
-          "bytes": 999700,
-          "sha256": "9535614aa3c9e68af74307ac564e0abfe9d3eab3d3a7ffab28b900f13173b858"
+          "bytes": 1001172,
+          "sha256": "87b6d3ec474884b5c0cb860bf1d1744dbded36f3abe2c0e11698c2075d5128a2"
         },
         "physical/offgrid/fault.py": {
           "bytes": 1234,
@@ -2238,15 +1536,15 @@
         },
         "physical/offgrid/result.json": {
           "bytes": 1105,
-          "sha256": "39ea3be1c566b6d0a1534eb7ef3fece95af59d7fb5495722682a273dfee63533"
+          "sha256": "a6dabea0e55322871d0fbcb311224b013d21bc463bb83ace992f11b40bdf7d33"
         },
         "physical/offgrid/run.log": {
           "bytes": 79659,
-          "sha256": "c3b81e635602af8a4bb99ce14c91f1d28b612c03ced66851b5aede59c7a7da53"
+          "sha256": "08efd5f88f7dcbd4abc6c7ec269da0e1762d0acb74c3e68c3055ff60cb9db383"
         },
         "physical/old_data_header_length/audit.json": {
           "bytes": 1051,
-          "sha256": "6d11b29a98569154eeb95b718396b9e099306aa8a67960f2a0f36612a351b2c9"
+          "sha256": "218d1328baa6e9f3baa596515673a95da1487e7c8f5474ab6cf08bebbad1d770"
         },
         "physical/old_data_header_length/audit.log": {
           "bytes": 5,
@@ -2254,27 +1552,27 @@
         },
         "physical/old_data_header_length/deck.log": {
           "bytes": 37285,
-          "sha256": "8f92625745a61039d7e4eba8c9a34ba5786d93e3784a2354882321d68cb2dee7"
+          "sha256": "c9fcc6198b9e610238acf13b13a08cfeb873ce354e4b7e778270496abaa3db53"
         },
         "physical/old_data_header_length/extracted.cir": {
-          "bytes": 24917,
-          "sha256": "9acd5b0c85483ce79dcae2bbe1c5487759bd22ef6a15d07ff9af625cc2a97443"
+          "bytes": 24897,
+          "sha256": "6df331ff5c000d7f0e817ca7438342b72828a5aeb7cd9a2a3a6597919602eb57"
         },
         "physical/old_data_header_length/fault.cir": {
           "bytes": 24506,
           "sha256": "c8f52b98ea32813a7243eb25c76f905144c0b87d3cf32eb5577a733affa363eb"
         },
         "physical/old_data_header_length/result.lvsdb": {
-          "bytes": 3551275,
-          "sha256": "c49878fb664a8703462cb4f4900e63eaff86ecfcd211cfbf007f1d00655170cf"
+          "bytes": 3552390,
+          "sha256": "ad75a81d2d35cfac7bb550c3f450f49ebc45af4742c89140528099d7e9503e57"
         },
         "physical/old_data_header_length/run.log": {
           "bytes": 37218,
-          "sha256": "b1d413fdc7e4578086566ddf08e37e3429428c2dafd637a2c73df657725eb247"
+          "sha256": "66bb12f3db42ed65160435f156a7f02276ae39de5eb153d2964e6c43ccdc82db"
         },
         "physical/old_retime_width/audit.json": {
           "bytes": 1039,
-          "sha256": "1d8dc03113a652aa9f4dcabe9e1d34d3a5fc69bb374974b5f8f11d6d8f42fd13"
+          "sha256": "cf3622c4dd6b1cd2eb823781c4f7dc7da58ad44d7dfe8f04721d21639ad4a44e"
         },
         "physical/old_retime_width/audit.log": {
           "bytes": 5,
@@ -2282,27 +1580,27 @@
         },
         "physical/old_retime_width/deck.log": {
           "bytes": 37267,
-          "sha256": "d00a77e533ec54bb3c788074cecc916fe84f12af6f7860081444cb2a9adb9f75"
+          "sha256": "8fc26798f87e9d5e2d95815cc5f60e393a1551702965a6fdc1daa095794a4951"
         },
         "physical/old_retime_width/extracted.cir": {
-          "bytes": 24917,
-          "sha256": "9acd5b0c85483ce79dcae2bbe1c5487759bd22ef6a15d07ff9af625cc2a97443"
+          "bytes": 24897,
+          "sha256": "6df331ff5c000d7f0e817ca7438342b72828a5aeb7cd9a2a3a6597919602eb57"
         },
         "physical/old_retime_width/fault.cir": {
           "bytes": 24510,
           "sha256": "acbe1e39c5b3553222f22be924310fdf3966c42f286bb99401a58c4210c48245"
         },
         "physical/old_retime_width/result.lvsdb": {
-          "bytes": 3550819,
-          "sha256": "dbb8adbb6d5d38f6b40f3d5486b41f03ce9482a3b67dabff501da5a7d508f332"
+          "bytes": 3551929,
+          "sha256": "6c38af44317f0ce1d2df4859bcae257f7efb5c0265b22ce6137536aa412888b8"
         },
         "physical/old_retime_width/run.log": {
           "bytes": 37200,
-          "sha256": "9d26892dae099025af0ec086dd0d027e6ca5c734cf71a495f7335d1311bdeadd"
+          "sha256": "5d63787b2d361544e3b67559ac35ec9d741c307aed8c1d879653e88bc6036da1"
         },
         "physical/old_sampler_input_width/audit.json": {
           "bytes": 1053,
-          "sha256": "3d3499f75d6c1a596e92b4b1197b1ee1678267b1108c9a49b2d63f82bfe71ac0"
+          "sha256": "1638a9ce0ad9b7fdfd5fed22b8e197879dc9692dd64232e092091fa090976402"
         },
         "physical/old_sampler_input_width/audit.log": {
           "bytes": 5,
@@ -2310,27 +1608,27 @@
         },
         "physical/old_sampler_input_width/deck.log": {
           "bytes": 37288,
-          "sha256": "64b8ef1feb4d4a807d64594bc9c0c3da1d655543b69e2ca4970549b1e2014f1e"
+          "sha256": "83de17eacaeb712094d7f9ff797265c4155c85655999a5de1d3f456351fecfba"
         },
         "physical/old_sampler_input_width/extracted.cir": {
-          "bytes": 24917,
-          "sha256": "7580cfe92a45769ce203f0efc0840141c9a2b947486b3c1b522a3cd3ac54e309"
+          "bytes": 24897,
+          "sha256": "bbff3caf55b74d4ca41b4a1d7ccf05c5518628927493f45982d400da99dcca4d"
         },
         "physical/old_sampler_input_width/fault.cir": {
           "bytes": 24510,
           "sha256": "3d369d34e7337714138ebd49c6b14242cc0633b8c93ed94ac068cc7111bb9ab4"
         },
         "physical/old_sampler_input_width/result.lvsdb": {
-          "bytes": 3552451,
-          "sha256": "7a89d3c441153c6769dd9493f57a681a25005967790c8fb40ca23c9eb4ef7a04"
+          "bytes": 3553807,
+          "sha256": "ce7e49055437189cb4a774b0565b923960ddbe091ac5c4ffa8f8b77a17fe8ebc"
         },
         "physical/old_sampler_input_width/run.log": {
           "bytes": 37221,
-          "sha256": "d5ee232b57d492447c6234a4c34e5fef5b5b458c3f281d9d9aca2113251bd2a2"
+          "sha256": "6d8fb78860fe7e6d736bfe0d996223bda45888ff61172bc2745dc6d2b01f0c31"
         },
         "physical/q_open/audit.json": {
           "bytes": 958,
-          "sha256": "3be2df1acece19e340dca2c316173e9a106ca08c808eb7662d781476c0eb7abb"
+          "sha256": "2d87e913eae44e64b12a0aa586f766e3e589121e3b4812d397f0c541785ff178"
         },
         "physical/q_open/audit.log": {
           "bytes": 5,
@@ -2338,15 +1636,15 @@
         },
         "physical/q_open/deck.log": {
           "bytes": 37218,
-          "sha256": "bc706c6ce7979c8d15f5fd853a503d07447a74867170567d5cda43e229ed0b71"
+          "sha256": "69132a48a24bfa3364f78d882a9f85f7d6f8e8b3936b39125b76b598e5e9e8e5"
         },
         "physical/q_open/extracted.cir": {
-          "bytes": 24923,
-          "sha256": "3f2d22377b9a36fdc19a9b8a06ccc28ad7aee60300277c263bf62aa3898835da"
+          "bytes": 24903,
+          "sha256": "045d1bb8f6e411d08de30abbef75ae256f9211d6d866bb3ad435098fc65a6084"
         },
         "physical/q_open/fault.gds": {
-          "bytes": 999508,
-          "sha256": "43af81242933dd23707e3a7b4f4615a744ab0b0aebeae8e5b7d2c8751310c891"
+          "bytes": 1000980,
+          "sha256": "8e66212eb9eb4f7c3ec1b46fe6624028d5a44e8156600a207b6bf40d8d61067e"
         },
         "physical/q_open/fault.py": {
           "bytes": 1232,
@@ -2357,16 +1655,16 @@
           "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
         },
         "physical/q_open/result.lvsdb": {
-          "bytes": 3548717,
-          "sha256": "20c2d9f67e7b302129e5235443f561ebb63c9f8d4526f0179e29de452c958322"
+          "bytes": 3549882,
+          "sha256": "791896297fa143eab7e590557d329cd374550918a9b48d0003f65ad9dba04e46"
         },
         "physical/q_open/run.log": {
           "bytes": 37151,
-          "sha256": "2aabc80d7f2953d333523b30d138676289aa588c405abd62747b042c4701169f"
+          "sha256": "fbeb984ae626cd39a11373292bc9e2e7e480494e186b90c261e96ef6a3676a29"
         },
         "physical/rail_short/audit.json": {
           "bytes": 1027,
-          "sha256": "901fb9d199a9695378c6e5650828767d9c85faec7593b8ba5dd47eb826f73115"
+          "sha256": "514d4e39ea6bfe53462797a6699a5356e01815c0291174fb8597c8a41ed291fb"
         },
         "physical/rail_short/audit.log": {
           "bytes": 5,
@@ -2374,15 +1672,15 @@
         },
         "physical/rail_short/deck.log": {
           "bytes": 37230,
-          "sha256": "b465a47785a9bccbf52bc7f779d1f213e3313cee07e6540b46cbdde1341774b5"
+          "sha256": "aacb5f7efcb35ec09d42c1d7070d6cb6f391451752996e611371b60ffd27fa62"
         },
         "physical/rail_short/extracted.cir": {
-          "bytes": 25607,
-          "sha256": "153f51964e497617bd292004be8b4b401c606d7bea9ec1341f3f80328b2924c1"
+          "bytes": 25587,
+          "sha256": "7266fd4a2d6bcc5b2d0821f9cad6d9ddaa395c68b72ae2bc66fe86b6a0ca027f"
         },
         "physical/rail_short/fault.gds": {
-          "bytes": 999764,
-          "sha256": "47f67e5f5645c3b55efd55ad75cc5bb39390c911f2b4f9f7dfcf86852e983159"
+          "bytes": 1001236,
+          "sha256": "5604ad704fd4adfda8b04c4a2e7cb1d89a70080912d4af4250060ed1274bed25"
         },
         "physical/rail_short/fault.py": {
           "bytes": 1240,
@@ -2393,20 +1691,20 @@
           "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
         },
         "physical/rail_short/result.lvsdb": {
-          "bytes": 3551633,
-          "sha256": "f4260d535c016dcffef99a238abed772a25f9c8eda40bf12a01fe4c9167009c2"
+          "bytes": 3552784,
+          "sha256": "c7e4ac7b364e78ed701a3003181a381b28d358f8a6363314efa0b319ed0c26c3"
         },
         "physical/rail_short/run.log": {
           "bytes": 37163,
-          "sha256": "a3ea896facb430b26c312a977176ff2ff2abdb973ecece7cd2727b836d334c3d"
+          "sha256": "3716128bf80ca947513ea1109a756dcd3ba7268dccb46aa4a19b1927af32844f"
         },
         "physical/result.json": {
-          "bytes": 82676,
-          "sha256": "52356958a13e7690f7d4b3f3580380b36106c7c713adeb18d41e5e6786dcab9a"
+          "bytes": 82690,
+          "sha256": "0a9ed2f7661aa46a4fedce939f50be57d46d342e7307985c161efcdc4e14f223"
         },
         "physical/v59_old_length/audit.json": {
           "bytes": 1035,
-          "sha256": "b79ffbb4ec865fa7d0b621da20ecb5fc14174018437573555cf432bb7f3d5290"
+          "sha256": "46bac96adaf1b3a5d7067af45571b91145694fa8563130e2ae41fb7939733388"
         },
         "physical/v59_old_length/audit.log": {
           "bytes": 5,
@@ -2414,27 +1712,27 @@
         },
         "physical/v59_old_length/deck.log": {
           "bytes": 37261,
-          "sha256": "e2f644d32c85f40a78ef987bc80871e2d0fd69878d7fbf8dd292134dc0928db8"
+          "sha256": "84173778a9ae69cd6740acd8ffc3c42c86c17e5a82b34162bf7ebae1595db34d"
         },
         "physical/v59_old_length/extracted.cir": {
-          "bytes": 24917,
-          "sha256": "7580cfe92a45769ce203f0efc0840141c9a2b947486b3c1b522a3cd3ac54e309"
+          "bytes": 24897,
+          "sha256": "fb3080f5d7a44df2f9d06ce578e1e0cf981df2127c979ba524699cb3ceaa0be4"
         },
         "physical/v59_old_length/fault.cir": {
           "bytes": 24518,
           "sha256": "6584b250afd567f135ee44b9a9f98ab39b2a6810057c5e1a04b5316ef267fde7"
         },
         "physical/v59_old_length/result.lvsdb": {
-          "bytes": 3550775,
-          "sha256": "c83c1bb4df577e2957ced5d7d0916c3a2c9097836a6dae4785daf1802688328f"
+          "bytes": 3552134,
+          "sha256": "347c0db3b08fedfd61b5ce576c3a9d38668d6aa95f152c6289f8f47b97a1dc41"
         },
         "physical/v59_old_length/run.log": {
           "bytes": 37194,
-          "sha256": "b9e252cca0e661929371e69afdfe5aae5af1ca7f56583957b795f72c74e17ae5"
+          "sha256": "430e0da20f663f307e9e26ae90a00863870273738ad107d4726f5b676b5c2926"
         },
         "physical/wrong_finger_count/audit.json": {
           "bytes": 1043,
-          "sha256": "6d3502584e8742bcebc85e4f89af3211418c6b5dafe3081f5859d12bf1029ae6"
+          "sha256": "ed5a9a2582ee887cbed7817c342baa22f4f41ec992f29ff95f86608454c85326"
         },
         "physical/wrong_finger_count/audit.log": {
           "bytes": 5,
@@ -2442,27 +1740,27 @@
         },
         "physical/wrong_finger_count/deck.log": {
           "bytes": 37273,
-          "sha256": "c2bdd6fd57b63f28378d85763aa306e48a7950bbe1c0ca47a1b94f9852ffcdd5"
+          "sha256": "7009b780f61d75916bdf53b4cd891865238543ca34d3d916a711e58b69f56d9e"
         },
         "physical/wrong_finger_count/extracted.cir": {
-          "bytes": 24917,
-          "sha256": "9acd5b0c85483ce79dcae2bbe1c5487759bd22ef6a15d07ff9af625cc2a97443"
+          "bytes": 24897,
+          "sha256": "6df331ff5c000d7f0e817ca7438342b72828a5aeb7cd9a2a3a6597919602eb57"
         },
         "physical/wrong_finger_count/fault.cir": {
           "bytes": 24510,
           "sha256": "375c3bcbdb27f328ec86530ca1bb82775a71334b210dd90f0a2ebfddd90ef4c5"
         },
         "physical/wrong_finger_count/result.lvsdb": {
-          "bytes": 3550249,
-          "sha256": "b7c40b8bfa4ed68de13a0efc13806d43913647a33abf564414be55d3159a0a2f"
+          "bytes": 3551363,
+          "sha256": "246da348ccce27491d935c7cf81c3e06e502c62f3a501c0552b8850b636b26bb"
         },
         "physical/wrong_finger_count/run.log": {
           "bytes": 37206,
-          "sha256": "d2dba8225eb54e61d3b802448eaf09d8a4e65fa605713778f925c963216456d5"
+          "sha256": "fe8cdf1253d4183e51202c42f1937ce33549a07799b6ef34a81b2cdbc8eb62b3"
         },
         "physical/wrong_follower_polarity/audit.json": {
           "bytes": 1053,
-          "sha256": "02d1ed3ac42ec847db2a1f3f5666ee3b04718f36e425f175da079d1afaa3242c"
+          "sha256": "0e1c1926979e896d77f8bb1d0cd459a1ccda28494d2847d545c2d3e5e1d950aa"
         },
         "physical/wrong_follower_polarity/audit.log": {
           "bytes": 5,
@@ -2470,31 +1768,31 @@
         },
         "physical/wrong_follower_polarity/deck.log": {
           "bytes": 37288,
-          "sha256": "5a3ee6eaf5c0fd24fbe25cd5d5047947899361403b26c38039ed735f9ea6e11b"
+          "sha256": "dc0b56a82eeaea5130590035e20560fb238b4a68857176871655f70c98e827bc"
         },
         "physical/wrong_follower_polarity/extracted.cir": {
-          "bytes": 24917,
-          "sha256": "9acd5b0c85483ce79dcae2bbe1c5487759bd22ef6a15d07ff9af625cc2a97443"
+          "bytes": 24897,
+          "sha256": "6df331ff5c000d7f0e817ca7438342b72828a5aeb7cd9a2a3a6597919602eb57"
         },
         "physical/wrong_follower_polarity/fault.cir": {
           "bytes": 24510,
           "sha256": "6ccce847f315094667425473dd05948ce5f5c3d5267d20ba44e3b9f26c346464"
         },
         "physical/wrong_follower_polarity/result.lvsdb": {
-          "bytes": 3550008,
-          "sha256": "91d35fd3b50ad468786c34e83183b30bedc8c3cfe75858d6e2a67146d3d72d46"
+          "bytes": 3551128,
+          "sha256": "dcb3a927178cfdef05efa4cf3f6c811dc2231410c0382589e6bdb2b316010834"
         },
         "physical/wrong_follower_polarity/run.log": {
           "bytes": 37221,
-          "sha256": "f75f7b1cc2223b3d8b8534b7d8de4da7832d1c8b65eceaa8a55af1cadb658eb9"
+          "sha256": "137f986762afae93effa98c34e21858c9ebb6a06acb500fc8b532b41eb3a02b6"
         },
         "runtime-policy.json": {
           "bytes": 950,
-          "sha256": "9c5ef879f38de2631905bec5957dec767285f89d5dcdc81f283c748e63007dbd"
+          "sha256": "17fbb604de609806757d1e569d6e8b84856f01d20684444f7040a2fce4dde457"
         },
         "runtime-smoke/result.json": {
           "bytes": 3569,
-          "sha256": "47d8a9809bb9953697bd49a53cd34e333433da78e5c0167af126737f2851e466"
+          "sha256": "a1894702dc598ab93f6a0c887f9bf21ad91bb3868caabc436b1cb122bf437372"
         },
         "runtime-smoke/stderr.bin": {
           "bytes": 0,
@@ -2509,12 +1807,12 @@
           "sha256": "6e95dfc1075aacd799d1e80c5526352e374e8057353036046bf56084a4637b5d"
         },
         "supervision/events.jsonl": {
-          "bytes": 19568,
-          "sha256": "73c6c8ebf38c647287eaa4be1793d95278a699c910939131a2be961a6111da58"
+          "bytes": 27275,
+          "sha256": "5f2549e193410bd52d3bef7624e39b279f4ef1f58703215fd0c1403ec0fb88cc"
         },
         "supervision/full560-DRC-deep-flat-LVS13.command.json": {
-          "bytes": 1518,
-          "sha256": "7389697b3228b2c5bc87f6e77b696a5b9603438c611015de763d6e10dc40568e"
+          "bytes": 1525,
+          "sha256": "2c39554a19a527200ab012b6f1a47a51827ce11e506abcb24b775670110cc90d"
         },
         "supervision/full560-DRC-deep-flat-LVS13.stderr": {
           "bytes": 0,
@@ -2525,25 +1823,25 @@
           "sha256": "6b657cba81b004819d5ec53c1ee7bc25021a887f6097ab5f951def6bcbabf05e"
         },
         "supervision/latest.json": {
-          "bytes": 1707,
-          "sha256": "10f4ed1056e47d161c13aab9a354f938f7468e83f994a318e4b488a8d57b1072"
+          "bytes": 1087,
+          "sha256": "231bad2d1b78f9883bee7e964e3f6887c917e6d3bbd9a85c05fc75fcdbde8190"
         }
       }
     },
-    "release": 430763614,
-    "run": 41335306847,
-    "source": "50cb5767faef80336161ab7fa40de7d99dbf6243",
-    "tag": "cloud-results-41335306847-1-cdr-wire-shortcuts-physical"
+    "release": 430854100,
+    "run": 41349608125,
+    "source": "8203934d2a56cdcc8a2fa7754d76d2bf24330658",
+    "tag": "cloud-results-41349608125-1-cdr-wire-shortcuts-physical"
   },
   "physical_accepted": false,
   "physical_binding": {
-    "release_id": 430763614,
-    "run_id": 41335306847,
-    "source": "50cb5767faef80336161ab7fa40de7d99dbf6243"
+    "release_id": 430854100,
+    "run_id": 41349608125,
+    "source": "8203934d2a56cdcc8a2fa7754d76d2bf24330658"
   },
   "rc_extraction_authorized": false,
   "reference_prefix": "binding/inputs/",
-  "schema": "nssoc.six-shortcut.canonical.v1",
+  "schema": "nssoc.four-mixed-shortcut.canonical.v1",
   "source_controls_authorized": true,
   "view_execution_authorized": true,
   "wire_workers": {
