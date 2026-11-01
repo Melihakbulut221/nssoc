@@ -1,17 +1,31 @@
-# Cloud continuation — checkpoint v248
+# Cloud continuation — checkpoint v249
 
-Updated: 2026-11-01T14:36:35.329738+00:00
+Updated: 2026-11-01T14:51:23.814883+00:00
 
 Latest instruction: **her şeyi bulutta yap, lokalde bir şey bırakma temizle.**
 It overrides the earlier local-execution wording in the active goal. All CAD, simulation, native archive/layout/waveform acquisition and numerical/geometric analysis run on GitHub. Local coordination uses source/API-derived text in RAM only. Never acquire native ODB/DEF/GDS/SPICE/raw archives locally, including RAM. The local workspace and project temp entries were verified empty, with no local CAD processes. Unrelated user files remain untouched.
 
-## Latest result: complete 828-net qualified connectivity model passed
+## Latest result: qualified native adapter implemented; actual layout audit running
+
+The private adapter is implemented at source 340fb4f217e920c1bc4d5fa552e4b11eb81d0a4b on codex/mainchip-qualified-restoration. It binds the unchanged qualified core to the original native connectivity reader, preserving all original wire-only reports. Candidate ODB bytes and both GDS qualification records are hash-bound. The original source, predicate and graph functions are not mutated. Native source additions are authenticated in the existing source capsule.
+
+Independent control run 41317771048 completed successfully: all 49 restoration controls, 67 inherited graph/GDS/model controls and 12 boundary controls passed. The actual original native reader function body reproduced all 1656 graphs across the authenticated 828-net dataset with simulated ODB accessors. Graph, predicate and scope source files were byte-identical to frozen native dependencies. This is boundary qualification, not actual ODB execution. Complete 48-file proof 26ef125546aa247ab72707f20c04a30c0040ee33 is imported under docs/evidence/qualified-native-binding-controls-41317771048.
+
+**Actual native run 41317927121 is dispatched on that exact source**, with the independent control run supplied. Empty exact-source release 430648315 / cloud-results-41317927121-1-mainchip-bulk-postdrt-antenna was reserved and verified before native admission. The native run's repeated source controls also passed. Poll that existing run and its release; do not restart it merely because observation expires.
+
+The sequence is original class restoration, full restored snapshot / 1691 protected-net audit, qualified physical connectivity, 2702 direct power contacts, final DRC/antenna checks and final unchanged-snapshot comparison. No routing, reconstruction or physical geometry edits were added. The result explicitly names qualified physical audits and retains original_wire_only_acceptance=false. A successfully completed invocation does not establish a zero-violation result; inspect the actual census and bounded_cycle_qualified.
+
+Next: collect and authenticate the terminal native capsule, preserve failed and successful phases, and repair whichever actual physical gate fails. If physical checks pass, export a matching diode-inclusive netlist from the actual current database and extract fresh RC before the unchanged multi-corner timing gates. Full serial Gen3 x4 PHY remains unaccepted. No final timing or production acceptance is claimed.
+
+All CAD, native acquisition and analysis remain on GitHub. No local project files or native payloads are needed. Completed collection, dispatch and reservation recipes are saved in docs/evidence/cloud-collector-recipes-20261029/cloud-qualified-native-v249.json and must not be rerun as creation mutations.
+
+## Previous result: complete 828-net qualified connectivity model passed
 
 Cloud run 41316154727 at source 77247c06db249537a643fb2e6e9a256bdbcfe557 (codex/mainchip-qualified-pin-connectivity) completed successfully. All 67 controls passed: 52 inherited and 15 qualified-model controls. The complete authenticated 828-net dataset passed both overlap modes after replaying all 1656 original graphs. All 142 original wire-only failures and 686 original passes remain preserved. Only the actual 1300 pin observations / 77 master pins independently verified against frozen GDS, LEF and placement transforms were admitted as physical conductors. All 1351 diode attachment requirements remain enforced. No logical-name bridging, inferred vias or geometry edits are allowed.
 
 The pure core is scripts/mainchip_qualified_pin_connectivity.py at that source, with the wrapper scripts/cloud_mainchip_qualified_pin_connectivity.py and 19-file manifest scripts/mainchip-qualified-pin-pins.json. Complete 34-file proof 90231e2a46b2bccd0169c304cddae2b7aa8cade7 is imported under docs/evidence/qualified-pin-connectivity-terminal-41316154727. The successful result is explicitly NOT execution of the native adapter and is not chip acceptance.
 
-**Next concrete work:** privately bind the qualified core into the restored-audit native connectivity wrapper at source 05d336a1b1b681c9d96b71d464c5ea430835e438. Retain the original wire-only reports and candidate ODB SHA256 d526feec659883b65dc737853d4d6a192d529384e2676d8a2d17e9b5e7d6de7e. Pin the core and GDS qualification records in the native source capsule; require the original 828/142/1300/77 census and unchanged 608 diode ownership, 1351 diode pins and 1691 protected nets. Override only the scoped connectivity hook, not frozen original functions. Qualify the adapter binding independently on the exact source and reserve an empty exact-source native release before dispatch.
+**Completed in v249:** the private native adapter is implemented and independently qualified; actual native run 41317927121 is now the authoritative next step, as described above.
 
 Then execute the remaining 2702 power-contact checks and final DRC/antenna checks. Fresh matching-netlist RC/STA and full serial PHY remain open. No native adapter, new physical route, full chip LVS/DRC, fresh RC, final timing, or full PHY acceptance is claimed by this result.
 
