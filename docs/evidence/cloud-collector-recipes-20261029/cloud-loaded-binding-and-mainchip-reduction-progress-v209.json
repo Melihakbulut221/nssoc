@@ -1,0 +1,474 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "native_processes": 0,
+    "observed_at": "2026-11-01T03:08:44.755330+00:00",
+    "source_API_derived_text_RAM_only": true,
+    "tmp": {
+      "/tmp": [],
+      "/var/tmp": []
+    },
+    "unrelated_user_files_not_modified": true,
+    "workspace_entries": 0
+  },
+  "final_timing_complete": false,
+  "full_serial_phy_accepted": false,
+  "native_payloads_acquired_locally": false,
+  "progress": {
+    "authored_documents": {
+      "docs/cdr-loaded-topology-diagnosis.md": "# Loaded CDR headroom topology diagnosis\n\nCloud run [41267705616](https://github.com/Melihakbulut221/nssoc/actions/runs/41267705616) at source fd3c0ccf005a15c5e168b35b02a93e79a8ee138b completed successfully. All 500 physical devices, 51 logical native nets, 124 HBT waveform identities and original four failure events joined exactly. Nine corruption controls rejected altered device IDs, terminal probes, parameters, aliases, missing waveform devices and relaxed original thresholds.\n\nThe complete 16-file proof at docs/evidence/cdr-loaded-topology-terminal-41267705616 contains original authenticated inputs, source, results, controls, job log and GitHub metadata. The proof commit is 3e45b11b44cfbc08f51334b1bb2d372384c3820b. Artifact transport and API-derived JSON were handled only in RAM; all computation ran on GitHub.\n\n## Findings\n\nT061/T062 share C net $158, E net $149 and B net cn; these are the D sampler's lower clock-steering pair. Their collector net joins the emitters of T054/T056 and bleed resistor T179. Their tail net joins MOS devices T003\u2013T006. The worst measured VCE is 0.3407016057195903 V against the unchanged 0.4 V minimum.\n\nT115/T116 share C net $698, E net $680 and B net cn; these are the corresponding C sampler pair. Their collector net joins T106/T108 emitters and bleed resistor T217. Their tail net joins T032\u2013T035. Worst VCE is 0.3762439066818176 V.\n\nThe upper D-pair bases are on $99/$98, with pull-ups T182/T183 (rppd W8um L1.8um) and ground shunts T184/T185 (W4um L5um). The C-pair bases are on $652/$651 with equivalent pull-ups T220/T221 and shunts T222/T223. The existing v59 generator changed these four shunts from L7.4um to L5um; it retained source references and old native primitive geometry.\n\n## Next circuit experiment\n\nA concrete candidate is restoring only T184/T185/T222/T223 from L5um to L7.4um, keeping W4um and all terminal connections. This is a hypothesis to raise the upper-pair base common-mode and hence lower-pair collector headroom. It is not a demonstrated repair: gain, sampler settling, tail compliance, all 124 HBT limits and phase/VI may improve or regress. Compare it against the exact current loaded baseline using the original external clock/data/corner/stimulus and acceptance predicates. Do not change clock common-mode or relax a threshold to obtain a pass.\n\nBefore native simulation, qualify exact source and reserve an independent empty exact-source cloud release. An exploratory model-parameter change cannot claim physical acceptance. Before accepting layout, replace real native PCells, update schematic references, verify unchanged unrelated geometry/connectivity, and rerun full physical extraction and fresh MIM/wire RC. Preserve all failed trials. Then rerun original loaded metrics and all required corners. Do not treat the old v58 result as evidence for the new via2/M3 geometry.\n\nNative-net membership is connectivity, not equality of distributed RC terminal voltages. No ideal aliases, removed parasitics or relabeled test oracles were used.\n\n## Scope still open\n\nFull serial Gen3 x4 PHY and closed-loop CDR/PLL, mainchip routing and final setup/hold remain open. Mainchip run41266854050 continues independently at immutable source8b7404c7340ef5ebc4a70e36dfa30a96d07013d9. Do not duplicate it or mutate that branch until terminal.\n"
+    },
+    "cloud_only": true,
+    "continuation_note": "Cloud topology run41267705616 succeeded, full16proof3e45b11 imported. Four VCE failures map to C/D lower cn-clock steering pairs. Upper-base pull-ups/shunts identified. Next qualify a scoped four-shunt L5um->7.4um candidate with unchanged bench, then real PCell replacement/fresh physical/RC proof before acceptance. No circuit repair or full PHY accepted yet. Same native route41266854050 remains active; do not duplicate.",
+    "followon_nominal_plan": {
+      "topology_diagnostic": {
+        "circuit_repair_validated": false,
+        "counts": {
+          "corruption_controls": 9,
+          "devices": 500,
+          "hbt": 124,
+          "logical_nets": 51
+        },
+        "next_candidate": {
+          "ids": [
+            184,
+            185,
+            222,
+            223
+          ],
+          "model": "rppd",
+          "new_l_um": 7.4,
+          "old_l_um": 5,
+          "status": "hypothesis_requires_qualified_simulation_and_real_layout",
+          "w_um": 4
+        },
+        "proof": {
+          "bytes": 5802135,
+          "files": 16,
+          "head": "3e45b11b44cfbc08f51334b1bb2d372384c3820b",
+          "prefix": "docs/evidence/cdr-loaded-topology-terminal-41267705616",
+          "receipt": "receipt.json",
+          "receipt_sha256": "8eedc19b1046cde9000ee90bae9d945f83d9f94095e021c047bcd4928f598bd8"
+        },
+        "run": 41267705616,
+        "source": "fd3c0ccf005a15c5e168b35b02a93e79a8ee138b",
+        "status": "success"
+      }
+    },
+    "new_runs": {
+      "41267705616": {
+        "scope": "CDR exact measured-device topology diagnosis; derived only; nine corruption controls",
+        "source": "fd3c0ccf005a15c5e168b35b02a93e79a8ee138b"
+      }
+    },
+    "next_actions": [
+      "Poll the SAME mainchip workflow41266854050 at source8b7404c7340ef5ebc4a70e36dfa30a96d07013d9, independently reserved release430325810. Last actual active step: Clear828owned signal wires and route with unchanged physical invariants. Detailed native subphase not established. Never duplicate dispatch or mutate its branch while live.",
+      "Atterminal preserve all actualjoblogs, exact source, complete native outputs andpublication/failure records before assessingresults. Verify exactseed checks,828clear/snapshot/guideproof,all828physicalconnectivitybothmodes,all1351diodepins,all1691clock/fixed records,fullantenna andDRC. NativeclosedqualificationrequireszeroreportedDRC/antenna; finalsetup/hold andfullPHYremainseparate. Ifexactseed orresource gatefails diagnoseactualbytes/phase andkeepfailure; do notrelaxgates orrepeatidenticalcase.",
+      "Topology diagnosis41267705616/sourcefd3c0ccf is complete SUCCESS; full16proof3e45b11 (5802135 bytes) includes exact 500-device/124-HBT join, nine corruption controls and all original data. Inspect docs/cdr-loaded-topology-diagnosis.md and full result device_index.",
+      "Develop and qualify the four-shunt candidate T184/T185/T222/T223 W4um L5um->7.4um while keeping all original clock/data/corner/bias/thresholds. This is an untested headroom hypothesis, not an accepted correction. Explicitly preserve all 124 HBT stress, sampler/XOR timing and phase/VI metrics. Native experiment requires exact source controls and independent empty exact-source release. Real layout acceptance requires native PCell geometry, independent DRC/LVS and fresh complete MIM/wire RC; no reuse of baseline RC as proof for changed geometry.",
+      "Keep eight-hour monitor read-only automatic_native_dispatch:false. New topology run must be included in inventory. Source/control records and failed native outputs remain cloud only; no subagent dispatch.",
+      "Keep localworkspace/projecttemporaryprefixes empty,no localCAD. Source/static/API-derivedtext coordination RAMonly; alltests/simulation/nativegeometry/CAD andnativearchives/models/raws onGitHub. NonforceCAS,skip-ci,no mutation retry. Preserve unrelateduserfiles andattachments. FullserialPHY,PLL/CDRloop,mainchiproutingandfinalsetup/holdremainopen; goalactive."
+    ],
+    "previous_goal_turn_classification": "verified_wait: live workflow41266854050 was polled; local cleanup verified. Current turn progress: qualified actual cloud topology join and complete proof.",
+    "proofs": [
+      {
+        "bytes": 5802135,
+        "files": 16,
+        "head": "3e45b11b44cfbc08f51334b1bb2d372384c3820b",
+        "prefix": "docs/evidence/cdr-loaded-topology-terminal-41267705616",
+        "receipt": "receipt.json",
+        "receipt_sha256": "8eedc19b1046cde9000ee90bae9d945f83d9f94095e021c047bcd4928f598bd8",
+        "tree": "19a0b2579a4805bc7acec9d63ee803b08e994570"
+      }
+    ],
+    "resume": "# Cloud continuation \u2014 checkpoint v209\n\nUpdated: __UPDATED__\n\nLatest user instruction is cloud-only. All tests, simulation, numerical/geometry analysis and CAD run on GitHub. Source/static inspection and API-derived text coordination use RAM only. Never acquire native archives, models/SPICE, ODB/GDS, raw waves or native-frame gzip locally. Preserve unrelated files and original attachments.\n\n## Current work\n\nOne actual targeted828 route is active: [41266854050](https://github.com/Melihakbulut221/nssoc/actions/runs/41266854050), exact source8b7404c7340ef5ebc4a70e36dfa30a96d07013d9, branch codex/mainchip-net459-diode-prune, independent release430325810. Last observed active step: Clear828owned signal wires and route with unchanged physical invariants. Do not duplicate or mutate this source branch until terminal; observe actual current phase before claiming progress. Complete original608net/1351diode attachment plan,828route scope,1691 protected nets, original DRC/antenna and resource gates remain intact.\n\nNew cloud topology diagnosis [41267705616](https://github.com/Melihakbulut221/nssoc/actions/runs/41267705616) completed successfully at fd3c0ccf005a15c5e168b35b02a93e79a8ee138b. Complete16file proof3e45b11b44cfbc08f51334b1bb2d372384c3820b is imported. All500 devices,124 HBT and51 logical nets joined; nine corruption controls passed. T061/T062 andT115/T116 are lower cn-clock steering pairs in D/C samplers, with upper-pair input bias resistor networks now identified.\n\nSee docs/cdr-loaded-topology-diagnosis.md for exact terminal topology and next four-shunt candidate (T184/T185/T222/T223 L5um->7.4um). This is an untested circuit hypothesis; no new simulation, physical acceptance or threshold change occurred. Qualify before native experiment. Require real native PCell replacement/full DRC/LVS/fresh MIM/wire RC before claiming changed layout acceptance.\n\nOriginal loaded run41260582673 remains rejected. Existing-wave diagnosis41263882381 reproduced original113475rows/124HBT/sixstages/1530delays/phase/VI. Keep these original electrical gates. Mainchip final routing, full serialPHY/closed-loop CDR/PLL and finalsetup/hold remain open.\n\nEight-hour monitor stays read-only automatic_native_dispatch:false; inventory__RUN_COUNT__runs. Local workspace remains empty.\n\n## Next actions\n\n1. Poll the SAME mainchip workflow41266854050 at source8b7404c7340ef5ebc4a70e36dfa30a96d07013d9, independently reserved release430325810. Last actual active step: Clear828owned signal wires and route with unchanged physical invariants. Detailed native subphase not established. Never duplicate dispatch or mutate its branch while live.\n\n2. Atterminal preserve all actualjoblogs, exact source, complete native outputs andpublication/failure records before assessingresults. Verify exactseed checks,828clear/snapshot/guideproof,all828physicalconnectivitybothmodes,all1351diodepins,all1691clock/fixed records,fullantenna andDRC. NativeclosedqualificationrequireszeroreportedDRC/antenna; finalsetup/hold andfullPHYremainseparate. Ifexactseed orresource gatefails diagnoseactualbytes/phase andkeepfailure; do notrelaxgates orrepeatidenticalcase.\n\n3. Topology diagnosis41267705616/sourcefd3c0ccf is complete SUCCESS; full16proof3e45b11 (5802135 bytes) includes exact 500-device/124-HBT join, nine corruption controls and all original data. Inspect docs/cdr-loaded-topology-diagnosis.md and full result device_index.\n\n4. Develop and qualify the four-shunt candidate T184/T185/T222/T223 W4um L5um->7.4um while keeping all original clock/data/corner/bias/thresholds. This is an untested headroom hypothesis, not an accepted correction. Explicitly preserve all 124 HBT stress, sampler/XOR timing and phase/VI metrics. Native experiment requires exact source controls and independent empty exact-source release. Real layout acceptance requires native PCell geometry, independent DRC/LVS and fresh complete MIM/wire RC; no reuse of baseline RC as proof for changed geometry.\n\n5. Keep eight-hour monitor read-only automatic_native_dispatch:false. New topology run must be included in inventory. Source/control records and failed native outputs remain cloud only; no subagent dispatch.\n\n6. Keep localworkspace/projecttemporaryprefixes empty,no localCAD. Source/static/API-derivedtext coordination RAMonly; alltests/simulation/nativegeometry/CAD andnativearchives/models/raws onGitHub. NonforceCAS,skip-ci,no mutation retry. Preserve unrelateduserfiles andattachments. FullserialPHY,PLL/CDRloop,mainchiproutingandfinalsetup/holdremainopen; goalactive.\n",
+    "source_documents": []
+  },
+  "snapshots": [
+    {
+      "branch": "codex/cdr-current-eight-drain-wave-readback",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939637,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939756,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124684939804,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939813,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939841,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939865,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939961,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124684940663,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41223192019,
+      "source": "dd320012480c99914c4a198c8236b7190b39ce26",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41223192019"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-readback",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124641350036,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124641474888,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124641511122,
+          "name": "observation",
+          "status": "completed"
+        }
+      ],
+      "run": 41236517605,
+      "source": "65e620dc413389fffaa8389e4abdfc17cfbf4ecf",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41236517605"
+    },
+    {
+      "branch": "codex/cdr-via2-m3-physical-recheck",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124648720069,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124648978870,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124649026868,
+          "name": "physical-recheck",
+          "status": "completed"
+        }
+      ],
+      "run": 41238994098,
+      "source": "0b1ec86b35f8cb98928a5687f007a7ccd676f620",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41238994098"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-progress-v2",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124657431983,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124657565622,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124657605748,
+          "name": "observation",
+          "status": "completed"
+        }
+      ],
+      "run": 41241933572,
+      "source": "00b46253e990983365db3b5f2b44a1233e20623e",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41241933572"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-crash-isolation-v1",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124667589535,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124667697328,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124667723726,
+          "name": "observation",
+          "status": "completed"
+        }
+      ],
+      "run": 41245373612,
+      "source": "277f2382b18198e399ddeef1e7ab8f35aaf629c2",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41245373612"
+    },
+    {
+      "branch": "codex/cloud-progress-monitor-shards-v2",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124674583313,
+          "name": "controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124674612392,
+          "name": "observe",
+          "status": "completed"
+        }
+      ],
+      "run": 41247738623,
+      "source": "6df3f373c4fc8052d69fc946b18ad35be640ed58",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41247738623"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684149904,
+          "name": "controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684192874,
+          "name": "observe",
+          "status": "completed"
+        }
+      ],
+      "run": 41250947168,
+      "source": "5f3814a3e0366b8ec310c9270494c01dd6b3e03c",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41250947168"
+    },
+    {
+      "branch": "codex/cdr-via2-m3-fresh-rc-adapter",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124686498262,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124687385817,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124687428141,
+          "name": "fresh-rc",
+          "status": "completed"
+        }
+      ],
+      "run": 41251732540,
+      "source": "9bf12d1e496f7d9192582175ab2fa714e3e8d41b",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41251732540"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-reduction-v1",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124690802895,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124690863676,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124690929404,
+          "name": "analysis",
+          "status": "completed"
+        }
+      ],
+      "run": 41253195469,
+      "source": "210fc85c43753e23fb9ecc2e398a48d318d1f330",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41253195469"
+    },
+    {
+      "branch": "codex/cdr-via2-m3-loaded-adapter",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124712844047,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124712997863,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124713024059,
+          "name": "loaded",
+          "status": "completed"
+        }
+      ],
+      "run": 41260582673,
+      "source": "cde6353e164d32feee5a3e56cc54b32a3001f736",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41260582673"
+    },
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124731344945,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124731680569,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Clear828owned signal wires and route with unchanged physical invariants"
+          ],
+          "conclusion": null,
+          "id": 124731737763,
+          "name": "diode-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41266854050,
+      "source": "8b7404c7340ef5ebc4a70e36dfa30a96d07013d9",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41266854050"
+    },
+    {
+      "branch": "codex/cdr-loaded-topology-20261101",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124733875490,
+          "name": "diagnose",
+          "status": "completed"
+        }
+      ],
+      "run": 41267705616,
+      "source": "fd3c0ccf005a15c5e168b35b02a93e79a8ee138b",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41267705616"
+    }
+  ],
+  "updated_at": "2026-11-01T03:08:44.755330+00:00",
+  "version": 209
+}

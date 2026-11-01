@@ -1,0 +1,41 @@
+name: CDR measured-device topology diagnosis
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cdr-topology-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr_loaded_topology.py
+            /scripts/cdr-loaded-topology-inputs.json
+            /.github/workflows/cloud-evidence-summary.yml
+      - name: Join authenticated existing records and run corruption controls
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 -B scripts/cdr_loaded_topology.py
+      - name: Preserve source and full derived records
+        if: always()
+        run: |
+          mkdir -p cloud-cdr-topology/source
+          cp scripts/cdr_loaded_topology.py scripts/cdr-loaded-topology-inputs.json .github/workflows/cloud-evidence-summary.yml cloud-cdr-topology/source/
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: cdr-loaded-topology-${{ github.run_id }}
+          path: cloud-cdr-topology
+          if-no-files-found: error
+          retention-days: 90
