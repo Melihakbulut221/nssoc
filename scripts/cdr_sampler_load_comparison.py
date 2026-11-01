@@ -76,10 +76,10 @@ def gates(r):
         failing_mos=[n for n,v in mos.items() if not v],failing_caps=[n for n,v in cap.items() if not v],
         hbt_tails_passed=tails,mos_tails_passed=mos_tails,stage_tails_passed=stage_tails,stages=stages,
         phase_average_v=r["phase_average_v"],vi_mean_current_a=vi["mean_signed_current_a"],vi_mean_voltage_v=vi["mean_output_difference_v"],vi_current_passed=vi["mean_signed_current_a"]>=50e-6,vi_voltage_passed=vi["mean_output_difference_v"]>=.005)
-LOADS=(175,176,177,178,191,194,195,196,202,205,207,208,212,214,215,216)
+LOADS=(175,176,191,194,202,205,212,214)
 BUFFERS=(182,183,220,221)
 SHUNTS=(184,185,222,223)
-DECLARED=dict(native_ids=sorted(LOADS+BUFFERS+SHUNTS),sixteen_latch_loads_l_um=[2.6,1.5],four_buffer_loads_l_um=[1.8,1.0],four_shunts_l_um=[5,3.4])
+DECLARED=dict(native_ids=sorted(LOADS+BUFFERS+SHUNTS),eight_latch_loads_l_um=[2.6,2.0],four_buffer_loads_l_um=[1.8,1.0],four_shunts_l_um=[5,3.4])
 def compare(base,cand):
     original=gates(base);current=gates(cand)
     for key in ("case","corner","data_offset_s","source_bits","source_bits_sha256","vectors","vector_census","devices","mos_devices","native_caps","expected_samples","expected_comparisons"):
@@ -87,10 +87,10 @@ def compare(base,cand):
     expected=copy.deepcopy(base["binding"])
     for ident in LOADS+BUFFERS+SHUNTS:
         entry=expected["groups"]["rppd"]["xpd.xd"+format(ident,"04d")]
-        old,new,width=("2.6u","1.5u","32u")if ident in LOADS else(("1.8u","1.0u","8u")if ident in BUFFERS else("5u","3.4u","4u"))
+        old,new,width=("2.6u","2.0u","32u")if ident in LOADS else(("1.8u","1.0u","8u")if ident in BUFFERS else("5u","3.4u","4u"))
         require(entry["parameters"]["l"]==old and entry["parameters"]["w"]==width,"original exact load or shunt")
         entry["parameters"]["l"]=new
-    require(cand["binding"]==expected,"only twenty-four declared intrinsic lengths changed in complete bound circuit")
+    require(cand["binding"]==expected,"only sixteen declared intrinsic lengths changed in complete bound circuit")
     require(cand["circuit_candidate"]==DECLARED,"declared candidate")
     require(cand["baseline_wire_rc_retained"] is True and cand["wire_rc_recomputed"] is False and cand["layout_regenerated"] is False and cand["physical_acceptance"] is False,"exploratory physical scope")
     changes={}
@@ -104,7 +104,7 @@ def controls(base):
     # Deliberately synthetic positive comparison, never emitted as native evidence.
     synth=copy.deepcopy(base)
     for ident in LOADS+BUFFERS+SHUNTS:
-        synth["binding"]["groups"]["rppd"]["xpd.xd"+format(ident,"04d")]["parameters"]["l"]="1.5u"if ident in LOADS else("1.0u"if ident in BUFFERS else"3.4u")
+        synth["binding"]["groups"]["rppd"]["xpd.xd"+format(ident,"04d")]["parameters"]["l"]="2.0u"if ident in LOADS else("1.0u"if ident in BUFFERS else"3.4u")
     synth.update(circuit_candidate=copy.deepcopy(DECLARED),
         baseline_wire_rc_retained=True,wire_rc_recomputed=False,layout_regenerated=False,physical_acceptance=False)
     compare(base,synth)
@@ -121,7 +121,7 @@ def controls(base):
         ("relaxed VI voltage gate",lambda x:x["vi"]["phase_limits"].__setitem__("minimum_signed_voltage_v",.001)),
         ("wrong buffer pullup length",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0182"]["parameters"].__setitem__("l","1.1u")),
         ("wrong buffer pullup width",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0182"]["parameters"].__setitem__("w","16u")),
-        ("wrong master load length",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0177"]["parameters"].__setitem__("l","2.6u")),
+        ("unauthorized master load change",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0177"]["parameters"].__setitem__("l","2.5u")),
     ];refused=[]
     for name,change in mutations:
         bad=copy.deepcopy(synth);change(bad)
