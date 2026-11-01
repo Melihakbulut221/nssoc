@@ -54,10 +54,15 @@ def restore(archive,inventory,wanted,directory,prefix="cloud-cdr-via2-m3-loaded"
 def inspect_text(path):
     raw=path.read_bytes();lines=raw.decode().splitlines()
     pattern=re.compile(r"\b[wl](?:min|max)\b|(?:validity|valid|calibrat|characteriz).*range|range.*(?:valid|calibrat)|(?:finger.*width|width.*finger)|(?:maximum|minimum).*\b(?:width|length)\b|\bw\s*/\s*ng\b",re.I)
-    rows=[dict(line=i,text=line.strip())for i,line in enumerate(lines,1)if pattern.search(line)]
+    ids={i for i,line in enumerate(lines)if pattern.search(line)or re.search(r"\\b(?:w|l|ng|m)\\s*=",line)or re.match(r"\\s*\\.(?:if|elseif|else|endif)\\b",line,re.I)}
+    # Width bounds may continue on the line after the range heading.
+    for i,line in enumerate(lines):
+        if re.search(r"(?:valid|validity).*range",line,re.I):
+            ids.update(range(max(0,i-1),min(len(lines),i+5)))
+    rows=[dict(line=i+1,text=lines[i].strip())for i in sorted(ids)]
     headers=[dict(line=i,text=line.strip())for i,line in enumerate(lines,1)if re.match(r"\s*\.subckt\s+sg13_lv_[np]mos\b",line,re.I)]
     require(len(rows)<200,"bounded parameter/domain declaration report")
-    return dict(file_pin=pin(path),total_lines=len(lines),domain_or_finger_expression_matches=rows,device_headers=headers,
+    return dict(file_pin=pin(path),total_lines=len(lines),domain_or_finger_expression_matches=rows,continuation_context_preserved=True,device_headers=headers,
         no_match_is_not_domain_acceptance=True)
 def scalar(value):
     m=re.fullmatch(r"([0-9]+(?:\.[0-9]*)?)([unp]?)",value)
