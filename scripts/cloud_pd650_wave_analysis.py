@@ -109,7 +109,17 @@ def controls():
         try:relative_member(bad,"cloud-sampler-load")
         except AssertionError:passed.append("reject archive path "+bad)
         else:raise AssertionError("Accepted archive path "+bad)
-    assert len(passed)==20
+    good=dict(source_head=SOURCE,current_context=dict(attempt=1,run_id=PRODUCER_RUN,source=SOURCE),
+      case="nominal_late",accepted=False,devices_passed=True,data_offset_s=.15*UI,diagnostics=[],returncode=0)
+    producer_measurement_gate(good);passed.append("actual list-valued empty diagnostics")
+    for key,value in (("diagnostics",0),("diagnostics",["warning"]),("diagnostics","[]"),
+                      ("data_offset_s",0.),("returncode",1),("devices_passed",False),
+                      ("source_head","0"*40),("current_context",{})):
+        bad=copy.deepcopy(good);bad[key]=value
+        try:producer_measurement_gate(bad)
+        except AssertionError:passed.append("reject producer "+key+repr(value))
+        else:raise AssertionError("Accepted invalid producer "+key)
+    assert len(passed)==29
     return dict(status="PASS_SOURCE_READER_AND_ORIGINAL_MEASUREMENT_CONTROLS",source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),count=len(passed),passed=passed,native_simulation=False)
 def relative_member(name,source_directory):
     assert source_directory=="cloud-sampler-load"
@@ -165,17 +175,28 @@ def acquire(work):
     save("acquisition.json",dict(run=run,release=release,archive=parts["archive"],authenticated_members=seen,
       selected=sorted(SELECTED),native_simulation=False,native_payloads_remain_cloud=True))
     return work/"selected",index
+def producer_measurement_gate(m):
+    assert m["source_head"]==SOURCE
+    assert m["current_context"]==dict(attempt=1,run_id=PRODUCER_RUN,source=SOURCE)
+    assert m["case"]=="nominal_late"and m["accepted"]is False and m["devices_passed"]is True
+    assert m["data_offset_s"]==.15*UI
+    assert type(m["diagnostics"])is list and m["diagnostics"]==[]
+    assert type(m["returncode"])is int and m["returncode"]==0
 def analyze(base,index):
     m=json.loads((base/(CASE+"measurement-result.json")).read_bytes())
-    assert m["case"]=="nominal_late"and m["accepted"]is False and m["devices_passed"]is True
-    assert m["data_offset_s"]==.15*UI and m["diagnostics"]==0 and m["returncode"]==0
+    producer_measurement_gate(m)
     bound=m["binding"];vectors=m["raw_capture"]["logical_vector_order"][1:]
     assert len(vectors)==1301 and len(set(vectors))==1301
     t,d,capture=parser()(base/(CASE+"native/wave.raw"),vectors,STOP,STEP)
     assert capture==m["raw_capture"]
+    # Preserve every row; cache read-only contiguous arrays for repeated point diagnostics.
+    t=np.array(t,copy=True);t.setflags(write=False);voltage_cache={}
     def v(n):
         n=bound["aliases"].get(n,n)
-        return np.zeros(len(t))if n=="0"else d["v("+n+")"]
+        if n not in voltage_cache:
+            value=np.zeros(len(t))if n=="0"else np.array(d["v("+n+")"],copy=True)
+            value.setflags(write=False);voltage_cache[n]=value
+        return voltage_cache[n]
     expected=m["expected_samples"]
     bits=[expected["c"][0],*expected["a"]]
     assert len(bits)==256 and hashlib.sha256(bytes(bits)).hexdigest()==m["source_bits_sha256"]

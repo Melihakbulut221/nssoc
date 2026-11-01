@@ -11,6 +11,8 @@ and collector/tail current samples, full HBT state and logical device topology.
 Only derived JSON is published. The existing native archive stays cloud-only.
 No simulator is invoked, no model/threshold changes are made, and no new physical,
 timing or serial PHY acceptance follows from a successful analysis.
-Twenty source/parser/refusal/measurement/archive-path controls run before archive acquisition.
+Twenty-nine source/parser/refusal/measurement/archive-path/producer-type controls run before archive acquisition.
 
 The initial reader source4516b4ce.../run41293342915 was cancelled after static inspection found the producer tar stores a cloud-sampler-load/ prefix. The corrected reader requires that exact prefix and authenticates every stripped relative member against the original complete index. The initial attempt remains preserved; no simulation was rerun.
+
+Run41293436380 authenticated the entire native archive, then correctly stopped before waveform analysis because the reader incorrectly expected diagnostics=0 instead of the actual diagnostics=[] list. The corrected gate accepts only an empty list and rejects nonempty warnings and mistyped summary counts. Native source measurements and original electrical criteria remain unchanged. Repeated diagnostic interpolation now uses read-only contiguous copies of the same complete row vectors.
