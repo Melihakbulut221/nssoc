@@ -1,18 +1,18 @@
-name: Diagnose observed pin metal in restored Route828
+name: Verify actual restored pin metal against pinned cell GDS
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: pin-metal-diagnosis-${{ github.ref }}
+  group: pin-gds-correspondence-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
 jobs:
   source-controls:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -21,30 +21,37 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
+            /scripts/cloud_mainchip_pin_gds.py
+            /scripts/mainchip-pin-gds-pins.json
             /scripts/cloud_mainchip_connectivity_diagnosis.py
             /scripts/mainchip-connectivity-diagnosis-inputs.json
-            /scripts/mainchip-connectivity-diagnosis-pins.json
             /scripts/mainchip_net459_connectivity.py
             /scripts/mainchip_bulk_postdrt_antenna.py
             /scripts/mainchip_single_antenna_trial.py
             /scripts/mainchip_targeted_counterpart_routing.py
+            /scripts/prepare_mainchip_postroute_pdk.py
+            /docs/evidence/restored-pin-metal-diagnosis-41312549409/derived/pin-metal-observation.json
+            /docs/evidence/restored-pin-metal-diagnosis-41312549409/derived/result.json
+            /docs/evidence/pin-gds-primary/dbTransform.cpp
+            /docs/evidence/pin-gds-primary/dbInst.cpp
+            /docs/mainchip-pin-gds-correspondence.md
             /.github/workflows/cloud-evidence-summary.yml
-            /docs/mainchip-restored-connectivity-diagnosis.md
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - run: python3 -B scripts/cloud_mainchip_connectivity_diagnosis.py controls
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir klayout==0.30.2 zstandard==0.23.0
+      - run: python3 -B scripts/cloud_mainchip_pin_gds.py controls
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pin-metal-controls-${{ github.run_id }}
-          path: pin-metal-diagnosis
+          name: pin-gds-controls-${{ github.run_id }}
+          path: pin-gds-evidence
           retention-days: 90
           if-no-files-found: error
-  connectivity-diagnosis:
+  pin-gds-correspondence:
     needs: source-controls
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 90
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -55,23 +62,30 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
+            /scripts/cloud_mainchip_pin_gds.py
+            /scripts/mainchip-pin-gds-pins.json
             /scripts/cloud_mainchip_connectivity_diagnosis.py
             /scripts/mainchip-connectivity-diagnosis-inputs.json
-            /scripts/mainchip-connectivity-diagnosis-pins.json
             /scripts/mainchip_net459_connectivity.py
             /scripts/mainchip_bulk_postdrt_antenna.py
             /scripts/mainchip_single_antenna_trial.py
             /scripts/mainchip_targeted_counterpart_routing.py
+            /scripts/prepare_mainchip_postroute_pdk.py
+            /docs/evidence/restored-pin-metal-diagnosis-41312549409/derived/pin-metal-observation.json
+            /docs/evidence/restored-pin-metal-diagnosis-41312549409/derived/result.json
+            /docs/evidence/pin-gds-primary/dbTransform.cpp
+            /docs/evidence/pin-gds-primary/dbInst.cpp
+            /docs/mainchip-pin-gds-correspondence.md
             /.github/workflows/cloud-evidence-summary.yml
-            /docs/mainchip-restored-connectivity-diagnosis.md
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - run: python3 -B scripts/cloud_mainchip_connectivity_diagnosis.py analyze
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir klayout==0.30.2 zstandard==0.23.0
+      - run: python3 -B scripts/cloud_mainchip_pin_gds.py analyze
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pin-metal-analyze-${{ github.run_id }}
-          path: pin-metal-diagnosis
+          name: pin-gds-analyze-${{ github.run_id }}
+          path: pin-gds-evidence
           retention-days: 90
           if-no-files-found: error
