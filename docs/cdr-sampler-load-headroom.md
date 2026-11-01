@@ -1,21 +1,19 @@
-# Original-master output-load experiment q15
+# q15 A/C divider impedance experiment
 
-The preceding24-resistor native run41274791029 (sourceeca0c5abf194169c8b42f58a48f22feb716e7dec) completed normally, but was electrically rejected. Its exact-source complete comparison41276473135 passed13corruption controls and authenticated all original predicates. All124HBT,50MOS,7MIM and original tail-current checks passed in that nominal case. Every data stage still failed, phase mean was5.619mV and VI current19.073uA; VI voltage5.209mV passed its5mV floor. This is not physical or fullPHY acceptance.
+This is an exploratory intrinsic experiment derived from rejected q15 run41277054717. Original eight master lengths stay2.6um/W32. The q15 sixteen resistor changes remain: eight output loads1.5um/W32, four buffer pullups1um/W8, four shunts3.4um/W4.
 
-## Controlled question
+Read-only original-wave diagnostics41280306194 and41280275014 passed7 frozen-reader,13 event and8 transfer controls plus an authenticated actual-topology preflight. q15 A->AD had127 source transitions but only22 matched buffer crossings within the bounded125ps window; C->CD had128/14. The respective sampler-to-base median observed matched delays were61.9468ps and68.6585ps. These are diagnostic correlations, not proof that changing resistance fixes the circuit. Full35-file proofs031a9d3d6554b1574f4ba609279d3543cff03b8e and3266bcfca451cc2e8c06ac372409f1dbb240fb04 retain all events and original metrics.
 
-The24-resistor case changed both the input-buffer divider and the8master-latch loads relative to the previous12-resistor case. The latter had B passing, whereas the24-resistor case had B's minimum margin62.216mV and maximum delay118.906ps. Those coupled changes do not establish which change caused the regression.
+## Controlled delta
 
-This experiment restores all8master-load lengths to their original2.6um while holding the new buffer values fixed. The two predeclared sibling experiments differ only in the8slave/output load lengths: q15 uses1.5um, q20 uses2.0um. Comparing q15 with the24-resistor case isolates master restoration; comparing q20 with q15 isolates output load. Restoring output swing may improve reaching the fixed100mV threshold, while increased resistance can also worsen settling and change headroom. No pass or improvement is assumed.
+Only eight additional A/C divider lengths change:
+* Series R227,R229,R238,R240:3.6um ->1.8um, width1um.
+* Ground shunts R228,R230,R239,R241:21.6um ->10.8um, width1um.
 
-## Exact delta from authenticated original baseline
+This preserves the geometric series/shunt length ratio and tests reduced input impedance. It does not assume unchanged loaded DC voltage: base current, contacts, output loading and device capacitance remain in the actual nonlinear simulation. D->S0/S1 dividers, all MIM capacitors, all HBT emitter counts, and all remaining device parameters are unchanged. In total exactly24 intrinsic length tokens differ from the authenticated original500-device model; this is a distinct target set from the older24-resistor master/buffer candidate.
 
-* 8 slave/output collector loads XD0175/176/191/194/202/205/212/214: L2.6 -> 1.5um, W32 unchanged.
-* 4 input-buffer pullups XD0182/183/220/221: L1.8 ->1.0um, W8 unchanged.
-* 4 input-buffer shunts XD0184/185/222/223: L5 ->3.4um, W4 unchanged.
+The mutation requires exact500-device census, every targeted original model parameter, ordered terminals/net/cluster and complete native card tokens. Reversing the24 changes must recover every original model byte and composition value. Source controls include21 corruption refusals and5 archive refusals; actual preparation retains13 original binding controls.
 
-Exactly16length tokens change. The8master loads XD0177/178/195/196/207/208/215/216 retain original L2.6/W32. All other500-device fields, model bytes and baseline wireRC are unchanged. Original prepare/measure executable bodies, clock/data waveforms,1151vectors,10ohm source resistance,150fF sampler/50fF XOR load and every electrical threshold remain unchanged. Source controls require17circuit corruption refusals and5archive refusals; the original13actual binding controls still run before native measurement.
+All original prepare/measure function bodies,150fF sampler and50fF XOR loads,10ohm sources,1151 vectors, stimulus,125ps UI,100mV/37.5ps sampler,100mV/75ps XOR, device current/voltage and phase/VI gates remain fixed. Current at3mA per emitter remains a failure. Original distributed wire RC is retained for exploratory comparison; this is not fresh PEX or regenerated layout.
 
-Run source controls first. Before simulator start, independently reserve and read back an empty exact-source release. All computation and native outputs remain onGitHub. Retain every success and failure.
-
-This is an intrinsic screen with baselineRC, not a generated layout. The24-device map is insufficient for physical editing because masters now remain untouched. The collector PCells are shared with those masters; a passing16-device candidate requires selected-instance private cells, a new complete physical mapping, native DRC/LVS, freshRC, corners and closed-loop/fullPHY verification. Do not globally change the shared collector cell definition.
+Run source controls first, preserve their complete proof, then independently reserve an empty exact-source release for one actual native run. Record all failures and full native/derived evidence on GitHub. No native archive, model, SPICE, wave or geometry is acquired locally. A passing circuit would still need a new full physical map for these eight divider instances, independently authored schematic changes, physical DRC/LVS, fresh RC, corners and closed-loop validation. FullPHY and finalchip timing remain open.

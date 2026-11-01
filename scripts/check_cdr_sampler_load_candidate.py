@@ -21,16 +21,21 @@ def main():
             cards.append(" ".join([d["instance"],*[t["node"] for t in d["terminals"]],d["model"],*[k+"="+v for k,v in d["parameters"].items()]]))
     text="* exact unrelated bytes\nR_keep a b 42\nC_keep a 0 1f\n"+"\n".join(cards)+"\n.end\n"
     changed,updated,delta=candidate.rewrite(text,contract)
-    assert len(delta["changes"])==16
+    assert len(delta["changes"])==24
     loads={175,176,191,194,202,205,212,214};shunts={184,185,222,223};buffers={182,183,220,221}
-    assert {x["native_id"]for x in delta["changes"]}==loads|shunts|buffers
+    series={227,229,238,240};divider_shunts={228,230,239,241}
+    assert {x["native_id"]for x in delta["changes"]}==loads|shunts|buffers|series|divider_shunts
     for x in delta["changes"]:
         if x["native_id"]in loads:
             assert x["old_l"]=="2.6u"and x["new_l"]=="1.5u"and x["w"]=="32u"
         elif x["native_id"]in shunts:
             assert x["old_l"]=="5u"and x["new_l"]=="3.4u"and x["w"]=="4u"
-        else:
+        elif x["native_id"]in buffers:
             assert x["old_l"]=="1.8u"and x["new_l"]=="1.0u"and x["w"]=="8u"
+        elif x["native_id"]in series:
+            assert x["old_l"]=="3.6u"and x["new_l"]=="1.8u"and x["w"]=="1u"
+        else:
+            assert x["native_id"]in divider_shunts and x["old_l"]=="21.6u"and x["new_l"]=="10.8u"and x["w"]=="1u"
     assert text.splitlines()[:3]==changed.splitlines()[:3]
     rejected=[]
     def reject(label,t,ct):
@@ -79,7 +84,15 @@ def main():
     wrong=copy.deepcopy(contract)
     next(d for d in wrong["device_records"]if d["native_id"]==182)["terminals"][1]["native_net"]="$98"
     reject("wrong buffer physical net",text,wrong)
-    assert len(rejected)==17
+    wrong=copy.deepcopy(contract)
+    next(d for d in wrong["device_records"]if d["native_id"]==227)["parameters"]["w"]="2u"
+    reject("wrong A divider width",text,wrong)
+    wrong=copy.deepcopy(contract)
+    next(d for d in wrong["device_records"]if d["native_id"]==241)["terminals"][1]["native_cluster"]=16
+    reject("wrong C divider ground",text,wrong)
+    reject("wrong divider native terminal",text.replace("w_T238_rppd_1","wrong",1),contract)
+    reject("already modified divider",text.replace("l=21.6u","l=10.8u",1),contract)
+    assert len(rejected)==21
     archive_controls=[]
     with tempfile.TemporaryDirectory(prefix="sampler-load-controls-") as directory:
         base=Path(directory);payload=b"source-control-only"
