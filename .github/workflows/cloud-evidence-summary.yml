@@ -22,13 +22,14 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /scripts/cloud_mainchip_connectivity_diagnosis.py
-            /scripts/mainchip-pin-metal-diagnosis-inputs.json
-            /scripts/mainchip-pin-metal-diagnosis-pins.json
+            /scripts/mainchip-connectivity-diagnosis-inputs.json
+            /scripts/mainchip-connectivity-diagnosis-pins.json
             /scripts/mainchip_net459_connectivity.py
             /scripts/mainchip_bulk_postdrt_antenna.py
+            /scripts/mainchip_single_antenna_trial.py
             /scripts/mainchip_targeted_counterpart_routing.py
             /.github/workflows/cloud-evidence-summary.yml
-            /docs/mainchip-pin-metal-diagnosis.md
+            /docs/mainchip-restored-connectivity-diagnosis.md
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
@@ -40,7 +41,7 @@ jobs:
           path: pin-metal-diagnosis
           retention-days: 90
           if-no-files-found: error
-  pin-metal-diagnosis:
+  connectivity-diagnosis:
     needs: source-controls
     runs-on: ubuntu-24.04
     timeout-minutes: 60
@@ -55,13 +56,14 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /scripts/cloud_mainchip_connectivity_diagnosis.py
-            /scripts/mainchip-pin-metal-diagnosis-inputs.json
-            /scripts/mainchip-pin-metal-diagnosis-pins.json
+            /scripts/mainchip-connectivity-diagnosis-inputs.json
+            /scripts/mainchip-connectivity-diagnosis-pins.json
             /scripts/mainchip_net459_connectivity.py
             /scripts/mainchip_bulk_postdrt_antenna.py
+            /scripts/mainchip_single_antenna_trial.py
             /scripts/mainchip_targeted_counterpart_routing.py
             /.github/workflows/cloud-evidence-summary.yml
-            /docs/mainchip-pin-metal-diagnosis.md
+            /docs/mainchip-restored-connectivity-diagnosis.md
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
