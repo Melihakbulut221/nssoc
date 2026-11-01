@@ -1,0 +1,225 @@
+﻿2026-11-01T13:42:39.6468199Z Current runner version: '2.338.2'
+2026-11-01T13:42:39.6494768Z ##[group]Runner Image Provisioner
+2026-11-01T13:42:39.6495664Z Hosted Compute Agent
+2026-11-01T13:42:39.6496306Z Version: 20261021.618
+2026-11-01T13:42:39.6497011Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-01T13:42:39.6497830Z Build Date: 2026-10-21T00:45:21Z
+2026-11-01T13:42:39.6498543Z Worker ID: {535e0198-8b97-4c4b-ae99-bcbb139f95df}
+2026-11-01T13:42:39.6499379Z Region: centralus
+2026-11-01T13:42:39.6500183Z Cloud: Azure
+2026-11-01T13:42:39.6500841Z ##[endgroup]
+2026-11-01T13:42:39.6502455Z ##[group]Operating System
+2026-11-01T13:42:39.6503113Z Ubuntu
+2026-11-01T13:42:39.6503759Z 24.04.5
+2026-11-01T13:42:39.6504300Z LTS
+2026-11-01T13:42:39.6504864Z ##[endgroup]
+2026-11-01T13:42:39.6505491Z ##[group]Runner Image
+2026-11-01T13:42:39.6506113Z Image: ubuntu-24.04
+2026-11-01T13:42:39.6506750Z Version: 20261025.353.1
+2026-11-01T13:42:39.6508092Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-01T13:42:39.6510145Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-11-01T13:42:39.6511177Z ##[endgroup]
+2026-11-01T13:42:39.6512504Z ##[group]GITHUB_TOKEN Permissions
+2026-11-01T13:42:39.6515081Z Actions: read
+2026-11-01T13:42:39.6515902Z Contents: read
+2026-11-01T13:42:39.6516488Z Metadata: read
+2026-11-01T13:42:39.6517451Z ##[endgroup]
+2026-11-01T13:42:39.6520088Z Secret source: Actions
+2026-11-01T13:42:39.6521248Z Cache mode: write
+2026-11-01T13:42:39.6522340Z Prepare workflow directory
+2026-11-01T13:42:39.7084055Z Prepare all required actions
+2026-11-01T13:42:39.7137390Z Getting action download info
+2026-11-01T13:42:39.9942742Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-11-01T13:42:40.0872304Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-11-01T13:42:40.1722611Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-01T13:42:40.3817189Z Complete job name: connectivity-diagnosis
+2026-11-01T13:42:40.4679804Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-11-01T13:42:40.4680998Z with:
+2026-11-01T13:42:40.4681513Z   ref: a8588f493cc2816fa4e5c601209a4fd89f670dc8
+2026-11-01T13:42:40.4682152Z   persist-credentials: false
+2026-11-01T13:42:40.4682676Z   filter: blob:none
+2026-11-01T13:42:40.4683159Z   sparse-checkout-cone-mode: false
+2026-11-01T13:42:40.4686185Z   sparse-checkout: /scripts/cloud_mainchip_connectivity_diagnosis.py
+/scripts/mainchip-connectivity-diagnosis-inputs.json
+/scripts/mainchip-connectivity-diagnosis-pins.json
+/scripts/mainchip_net459_connectivity.py
+/scripts/mainchip_bulk_postdrt_antenna.py
+/scripts/mainchip_single_antenna_trial.py
+/scripts/mainchip_targeted_counterpart_routing.py
+/.github/workflows/cloud-evidence-summary.yml
+/docs/mainchip-restored-connectivity-diagnosis.md
+
+2026-11-01T13:42:40.4689263Z   repository: Melihakbulut221/nssoc
+2026-11-01T13:42:40.4693479Z   token: ***
+2026-11-01T13:42:40.4693937Z   ssh-strict: true
+2026-11-01T13:42:40.4694425Z   ssh-user: git
+2026-11-01T13:42:40.4694861Z   clean: true
+2026-11-01T13:42:40.4695343Z   fetch-depth: 1
+2026-11-01T13:42:40.4695788Z   fetch-tags: false
+2026-11-01T13:42:40.4696249Z   show-progress: true
+2026-11-01T13:42:40.4696707Z   lfs: false
+2026-11-01T13:42:40.4697128Z   submodules: false
+2026-11-01T13:42:40.4697605Z   set-safe-directory: true
+2026-11-01T13:42:40.4698374Z env:
+2026-11-01T13:42:40.4698840Z   PYTHONDONTWRITEBYTECODE: 1
+2026-11-01T13:42:40.4702993Z   GH_TOKEN: ***
+2026-11-01T13:42:40.4703454Z ##[endgroup]
+2026-11-01T13:42:40.7590842Z Syncing repository: Melihakbulut221/nssoc
+2026-11-01T13:42:40.7593396Z ##[group]Getting Git version info
+2026-11-01T13:42:40.7594580Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-11-01T13:42:40.7596406Z [command]/usr/bin/git version
+2026-11-01T13:42:40.7713191Z git version 2.56.0
+2026-11-01T13:42:40.7741320Z ##[endgroup]
+2026-11-01T13:42:40.7763475Z Temporarily overriding HOME='/home/runner/work/_temp/ff3e0dab-399c-423b-95e7-1641efe6a645' before making global git config changes
+2026-11-01T13:42:40.7764953Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-01T13:42:40.7769668Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-11-01T13:42:40.7828494Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-11-01T13:42:40.7840659Z ##[group]Initializing the repository
+2026-11-01T13:42:40.7850983Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-11-01T13:42:40.7972572Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-01T13:42:40.7974457Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-01T13:42:40.7975461Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-01T13:42:40.7976279Z hint: call:
+2026-11-01T13:42:40.7976716Z hint:
+2026-11-01T13:42:40.7977274Z hint: 	git config --global init.defaultBranch <name>
+2026-11-01T13:42:40.7977929Z hint:
+2026-11-01T13:42:40.7978537Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-01T13:42:40.7979816Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-01T13:42:40.7980658Z hint:
+2026-11-01T13:42:40.7981330Z hint: 	git branch -m <name>
+2026-11-01T13:42:40.7982228Z hint:
+2026-11-01T13:42:40.7983288Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-01T13:42:40.7985278Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-11-01T13:42:40.7997667Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-11-01T13:42:40.8056420Z ##[endgroup]
+2026-11-01T13:42:40.8057749Z ##[group]Disabling automatic garbage collection
+2026-11-01T13:42:40.8060748Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-01T13:42:40.8103416Z ##[endgroup]
+2026-11-01T13:42:40.8104700Z ##[group]Setting up auth
+2026-11-01T13:42:40.8112708Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-01T13:42:40.8160874Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-01T13:42:40.8632122Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-01T13:42:40.8689137Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-01T13:42:40.8962892Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-01T13:42:40.9019356Z ##[endgroup]
+2026-11-01T13:42:40.9021157Z ##[group]Fetching the repository
+2026-11-01T13:42:40.9034102Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --filter=blob:none --depth=1 origin a8588f493cc2816fa4e5c601209a4fd89f670dc8
+2026-11-01T13:42:41.3317810Z From https://github.com/Melihakbulut221/nssoc
+2026-11-01T13:42:41.3320296Z  * branch            a8588f493cc2816fa4e5c601209a4fd89f670dc8 -> FETCH_HEAD
+2026-11-01T13:42:41.3324606Z ##[endgroup]
+2026-11-01T13:42:41.3326651Z ##[group]Determining the checkout info
+2026-11-01T13:42:41.3329419Z ##[endgroup]
+2026-11-01T13:42:41.3331247Z ##[group]Setting up sparse checkout
+2026-11-01T13:42:41.3336633Z [command]/usr/bin/git config core.sparseCheckout true
+2026-11-01T13:42:41.3394401Z [command]/usr/bin/git rev-parse --git-path info/sparse-checkout
+2026-11-01T13:42:41.3432932Z .git/info/sparse-checkout
+2026-11-01T13:42:41.3445512Z ##[endgroup]
+2026-11-01T13:42:41.3447463Z ##[group]Checking out the ref
+2026-11-01T13:42:41.3452069Z [command]/usr/bin/git checkout --progress --force a8588f493cc2816fa4e5c601209a4fd89f670dc8
+2026-11-01T13:42:41.9531209Z Note: switching to 'a8588f493cc2816fa4e5c601209a4fd89f670dc8'.
+2026-11-01T13:42:41.9532196Z 
+2026-11-01T13:42:41.9532874Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-01T13:42:41.9534244Z changes and commit them, and you can discard any commits you make in this
+2026-11-01T13:42:41.9535701Z state without impacting any branches by switching back to a branch.
+2026-11-01T13:42:41.9536686Z 
+2026-11-01T13:42:41.9537292Z If you want to create a new branch to retain commits you create, you may
+2026-11-01T13:42:41.9538800Z do so (now or later) by using -c with the switch command. Example:
+2026-11-01T13:42:41.9539890Z 
+2026-11-01T13:42:41.9540219Z   git switch -c <new-branch-name>
+2026-11-01T13:42:41.9540846Z 
+2026-11-01T13:42:41.9541229Z Or undo this operation with:
+2026-11-01T13:42:41.9541835Z 
+2026-11-01T13:42:41.9542151Z   git switch -
+2026-11-01T13:42:41.9542558Z 
+2026-11-01T13:42:41.9543123Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-01T13:42:41.9543880Z 
+2026-11-01T13:42:41.9544606Z HEAD is now at a8588f4 Keep complete original sparse sources in pin-metal diagnostic [skip ci]
+2026-11-01T13:42:41.9547258Z ##[endgroup]
+2026-11-01T13:42:41.9613463Z [command]/usr/bin/git log -1 --format=%H
+2026-11-01T13:42:41.9652688Z a8588f493cc2816fa4e5c601209a4fd89f670dc8
+2026-11-01T13:42:41.9662871Z ##[group]Removing auth
+2026-11-01T13:42:41.9666464Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-01T13:42:41.9711746Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-01T13:42:42.0030038Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-01T13:42:42.0071051Z http.https://github.com/.extraheader
+2026-11-01T13:42:42.0080887Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-01T13:42:42.0131332Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-01T13:42:42.0449215Z ##[endgroup]
+2026-11-01T13:42:42.0736336Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-11-01T13:42:42.0736907Z with:
+2026-11-01T13:42:42.0737160Z   python-version: 3.12
+2026-11-01T13:42:42.0737437Z   check-latest: false
+2026-11-01T13:42:42.0740719Z   token: ***
+2026-11-01T13:42:42.0741004Z   update-environment: true
+2026-11-01T13:42:42.0741305Z   allow-prereleases: false
+2026-11-01T13:42:42.0741583Z   freethreaded: false
+2026-11-01T13:42:42.0741836Z env:
+2026-11-01T13:42:42.0742082Z   PYTHONDONTWRITEBYTECODE: 1
+2026-11-01T13:42:42.0744975Z   GH_TOKEN: ***
+2026-11-01T13:42:42.0745244Z ##[endgroup]
+2026-11-01T13:42:42.2275365Z ##[group]Installed versions
+2026-11-01T13:42:42.2370489Z (node:2361) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-01T13:42:42.2371987Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-01T13:42:42.2372960Z Successfully set up CPython (3.12.15)
+2026-11-01T13:42:42.2374011Z ##[endgroup]
+2026-11-01T13:42:42.2587345Z ##[group]Run python3 -B scripts/cloud_mainchip_connectivity_diagnosis.py analyze
+2026-11-01T13:42:42.2588105Z [36;1mpython3 -B scripts/cloud_mainchip_connectivity_diagnosis.py analyze[0m
+2026-11-01T13:42:42.2632578Z shell: /usr/bin/bash -e {0}
+2026-11-01T13:42:42.2633243Z env:
+2026-11-01T13:42:42.2633687Z   PYTHONDONTWRITEBYTECODE: 1
+2026-11-01T13:42:42.2640435Z   GH_TOKEN: ***
+2026-11-01T13:42:42.2641277Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T13:42:42.2642214Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-01T13:42:42.2643142Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T13:42:42.2643581Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T13:42:42.2644017Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T13:42:42.2644443Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-01T13:42:42.2644816Z ##[endgroup]
+2026-11-01T13:43:01.6641425Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-01T13:43:01.6641879Z with:
+2026-11-01T13:43:01.6642099Z   name: pin-metal-analyze-41312549409
+2026-11-01T13:43:01.6642382Z   path: pin-metal-diagnosis
+2026-11-01T13:43:01.6642623Z   retention-days: 90
+2026-11-01T13:43:01.6642853Z   if-no-files-found: error
+2026-11-01T13:43:01.6643089Z   compression-level: 6
+2026-11-01T13:43:01.6643301Z   overwrite: false
+2026-11-01T13:43:01.6643517Z   include-hidden-files: false
+2026-11-01T13:43:01.6643756Z env:
+2026-11-01T13:43:01.6643981Z   PYTHONDONTWRITEBYTECODE: 1
+2026-11-01T13:43:01.6646930Z   GH_TOKEN: ***
+2026-11-01T13:43:01.6647227Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T13:43:01.6647674Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-01T13:43:01.6648125Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T13:43:01.6648561Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T13:43:01.6648934Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T13:43:01.6649309Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-01T13:43:01.6649924Z ##[endgroup]
+2026-11-01T13:43:01.8413310Z (node:2422) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-01T13:43:01.8414190Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-01T13:43:01.8505194Z With the provided path, there will be 6 files uploaded
+2026-11-01T13:43:01.8508864Z Artifact name is valid!
+2026-11-01T13:43:01.8520039Z Root directory input is valid!
+2026-11-01T13:43:02.1640159Z Beginning upload of artifact content to blob storage
+2026-11-01T13:43:02.2894182Z (node:2422) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-01T13:43:02.5370482Z Uploaded bytes 386622
+2026-11-01T13:43:02.5772960Z Finished uploading artifact content to blob storage!
+2026-11-01T13:43:02.5773981Z SHA256 digest of uploaded artifact zip is 9dba626d4830e8a844a60cf7eaff3bc00b8384310ff21a1985a6025ae2012962
+2026-11-01T13:43:02.5775450Z Finalizing artifact upload
+2026-11-01T13:43:03.0409284Z Artifact pin-metal-analyze-41312549409.zip successfully finalized. Artifact ID 13085757653
+2026-11-01T13:43:03.0411224Z Artifact pin-metal-analyze-41312549409 has been successfully uploaded! Final size is 386622 bytes. Artifact ID is 13085757653
+2026-11-01T13:43:03.0419241Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/41312549409/artifacts/13085757653
+2026-11-01T13:43:03.0647306Z Post job cleanup.
+2026-11-01T13:43:03.1926675Z (node:2436) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-01T13:43:03.1927574Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-01T13:43:03.2167335Z Post job cleanup.
+2026-11-01T13:43:03.3135310Z [command]/usr/bin/git version
+2026-11-01T13:43:03.3216397Z git version 2.56.0
+2026-11-01T13:43:03.3258606Z Temporarily overriding HOME='/home/runner/work/_temp/7d5b3c14-8338-4436-bf7a-12c27a842e7c' before making global git config changes
+2026-11-01T13:43:03.3260143Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-01T13:43:03.3266151Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-11-01T13:43:03.3318417Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-01T13:43:03.3361962Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-01T13:43:03.3724694Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-01T13:43:03.3781840Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-01T13:43:03.4394921Z Cleaning up orphan processes
+2026-11-01T13:43:03.4840982Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
