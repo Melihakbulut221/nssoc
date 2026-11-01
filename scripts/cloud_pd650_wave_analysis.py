@@ -8,8 +8,8 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"pd650-wave-analysis"
 UI=125e-12;START=2e-9;STOP=START+258*UI;STEP=.3125e-12
-SOURCE="d638e0e3cd15a0ee930212c27ab1f238b5085237"
-PRODUCER_RUN=41288195752;RELEASE=430445706
+SOURCE="3a6f1f9e3b30f97ffae87f43cf0f7f00e2d2ab43"
+PRODUCER_RUN=41295928971;RELEASE=430496244
 CASE="native/case-nominal_late/"
 SELECTED={CASE+"native/wave.raw",CASE+"measurement-result.json","native/candidate/composition.json","native/candidate/planes.json"}
 def sha(path):
@@ -306,6 +306,71 @@ def analyze(base,index):
           negative_physical_node=bound["aliases"].get(n,n),metrics=metric,source_conditioned=conditional,
           events=events,diagnostic_only=True)
     save("buffer-paths.json",path_results)
+    # Observe physical drivers/consumers at failing bits without changing any gate.
+    # Cluster identity discovers connections; samples still use each actual terminal node.
+    buffer_details={}
+    buffer_specs={
+      "A_buffer":("a","adp","adn"),
+      "C_buffer":("c","cdp","cdn"),
+      "D_buffer_X":("d","s0p","s0n"),
+      "D_buffer_Y":("d","s1p","s1n")}
+    def hbt_point(name,when):
+        dev=bound["groups"]["npn13g2"][name]
+        vc,vb,ve,vs=[float(np.interp(when,t,v(node)))for node in dev["nodes"]]
+        return dict(nodes=dev["nodes"],nx=dev["nx"],vc_v=vc,vb_v=vb,ve_v=ve,vs_v=vs,
+          vce_v=vc-ve,vbe_v=vb-ve,ic_a=float(np.interp(when,t,d["@q."+name+".qnpn13g2[ic]"])))
+    for name,(reference,positive,negative)in buffer_specs.items():
+        clusters={}
+        for label in (positive,negative):
+            matches={cluster for (cluster,native),nets in logical.items()if label in nets}
+            assert len(matches)==1,(label,matches)
+            clusters[label]=next(iter(matches))
+        assert len(set(clusters.values()))==2
+        connected={}
+        for row in contract["device_records"]:
+            if row["model"]!="npn13g2":continue
+            ports={q["terminal"]:[label for label,cluster in clusters.items()if q["native_cluster"]==cluster]for q in row["terminals"]}
+            ports={port:labels for port,labels in ports.items()if labels}
+            if ports:
+                device="xpd."+row["instance"].lower()
+                assert device in bound["groups"]["npn13g2"]
+                connected[device]=dict(native_id=row["native_id"],parameters=row["parameters"],connected_ports=ports)
+        assert connected and any("B"in x["connected_ports"]for x in connected.values())
+        assert any("C"in x["connected_ports"]for x in connected.values())
+        original=stages[reference]["events"];events=path_results[name]["events"]
+        phase_cases={}
+        for pi,phase in enumerate((.3,.6,.9)):
+            rows=[(o,e)for o,e in zip(original,events,strict=True)if o["signed_margins_v"][pi]>=.1]
+            chosen=sorted(rows,key=lambda pair:pair[1]["signed_margins_v"][pi])[:8]
+            cases=[]
+            for source,event in chosen:
+                assert source["bit_index"]==event["bit_index"]and source["expected"]==event["expected"]
+                when=event["edge_s"]+phase*UI
+                cases.append(dict(bit_index=event["bit_index"],expected=event["expected"],phase=phase,
+                  time_s=when,source_signed_v=source["signed_margins_v"][pi],
+                  buffer_signed_v=event["signed_margins_v"][pi],
+                  source_positive_v=float(np.interp(when,t,v(outputs[reference][0]))),
+                  source_negative_v=float(np.interp(when,t,v(outputs[reference][1]))),
+                  buffer_positive_v=float(np.interp(when,t,v("xpd."+positive))),
+                  buffer_negative_v=float(np.interp(when,t,v("xpd."+negative))),
+                  devices={device:hbt_point(device,when)for device in connected}))
+            phase_cases[str(phase)]=cases
+        # Two complete one-UI diagnostic traces, sampled from unchanged full rows.
+        worst=sorted(zip(original,events,strict=True),key=lambda pair:min(pair[1]["signed_margins_v"]))[:2]
+        traces=[]
+        for source,event in worst:
+            points=[]
+            for phase in np.linspace(0.,1.,17):
+                when=event["edge_s"]+float(phase)*UI
+                points.append(dict(phase=float(phase),time_s=when,
+                  source_diff_v=float(np.interp(when,t,v(outputs[reference][0])-v(outputs[reference][1]))),
+                  buffer_diff_v=float(np.interp(when,t,v("xpd."+positive)-v("xpd."+negative))),
+                  devices={device:hbt_point(device,when)for device in connected}))
+            traces.append(dict(bit_index=event["bit_index"],expected=event["expected"],points=points))
+        buffer_details[name]=dict(reference_sampler=reference,physical_clusters=clusters,
+          connected_hbt_devices=connected,source_valid_cases=phase_cases,worst_transition_traces=traces,
+          diagnostic_only=True,acceptance_criteria_changed=False)
+    save("buffer-device-observations.json",buffer_details)
     hbt={}
     for name,dev in bound["groups"]["npn13g2"].items():
         vc,vb,ve,_=map(v,dev["nodes"]);current=d["@q."+name+".qnpn13g2[ic]"]
