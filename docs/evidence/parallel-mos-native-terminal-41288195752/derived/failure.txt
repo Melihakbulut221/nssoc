@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_sampler_load.py", line 206, in <module>
+    else:simulate()
+         ^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_sampler_load.py", line 163, in simulate
+    report=v["measure_case"](case,ctx,rc,core.file_pin(case/"prepared-state.json"))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/cdr_via2_m3_loaded_core.py", line 269, in measure_case
+    block('measurement',ns,root)
+  File "/home/runner/work/nssoc/nssoc/scripts/cdr_sampler_load_candidate.py", line 151, in block
+    if name in BLOCK_CHANGES:exec(compile(adapted_text(name,root),"<qualified-parallel-"+name+">","exec"),namespace)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<qualified-parallel-measurement>", line 69, in <module>
+AssertionError: Actual whole-wire retimed sampling, loaded phase/current or device gate failed
