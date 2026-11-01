@@ -172,6 +172,90 @@ def physical_controls(comp,locations,joined,plan):
     require(len(checks)==12,"twelve corruption controls")
     return dict(checks=len(checks),failures=0,refused=checks)
 
+
+def rewrite_parallel(text,comp,plan,joined):
+    validate_plan(plan,joined)
+    origins={r["native_id"]:r for r in comp["device_records"]}
+    result=text;deltas=[];expanded=[]
+    plan_by_id={p["native_id"]:p for p in plan}
+    for p in plan:
+        r=origins[p["native_id"]];name=r["instance"]
+        pattern=re.compile(r"(?mi)^"+re.escape(name)+r"[ \t][^\r\n]*(?:\r?\n\+[^\r\n]*)*")
+        matches=list(pattern.finditer(result));require(len(matches)==1,"one original MOS card "+name)
+        match=matches[0];before=match.group();words=re.sub(r"\r?\n\+"," ",before).split()
+        nodes=[t["node"]for t in r["terminals"]]
+        require(words[:6]==[name,*nodes,r["model"]],"original MOS ordered card binding")
+        require(len(words[6:])==len(r["parameters"])and set(words[6:])=={k+"="+v for k,v in r["parameters"].items()},"complete original MOS parameters")
+        cards=[]
+        for u in p["units"]:
+            require(not re.search(r"(?mi)^"+re.escape(u["instance"])+r"[ \t]",result),"exclusive candidate instance")
+            cards.append(" ".join([u["instance"],*[t["node"]for t in u["terminals"]],u["model"],*[k+"="+v for k,v in sorted(u["parameters"].items())]]))
+        after="\n".join(cards);result=result[:match.start()]+after+result[match.end():]
+        deltas.append(dict(native_id=r["native_id"],source_instance=name,before=before,after=after,unit_instances=[u["instance"]for u in p["units"]]))
+    reverse=result
+    for d in deltas:
+        require(reverse.count(d["after"])==1,"unique full expanded card block")
+        reverse=reverse.replace(d["after"],d["before"],1)
+    require(reverse==text,"all other original model bytes and distributed RC preserved")
+    old_names=re.findall(r"(?mi)^(XD[0-9]+)[ \t]",text)
+    new_names=re.findall(r"(?mi)^(XD[0-9]+(?:_U[0-9]+)?)[ \t]",result)
+    require(len(old_names)==len(set(old_names))==500,"all original500 native card identities")
+    require(len(new_names)==len(set(new_names))==650,"complete650 unique expanded native cards")
+    expected={r["instance"]for r in comp["device_records"]if r["native_id"]not in plan_by_id}|{u["instance"]for p in plan for u in p["units"]}
+    require(set(new_names)==expected,"only explicitly declared 50-to200 expansion")
+    for r in comp["device_records"]:
+        if r["native_id"]in plan_by_id:
+            for u in plan_by_id[r["native_id"]]["units"]:
+                expanded.append(dict(source_native_id=r["native_id"],candidate_instance=u["instance"],device=u))
+        else:expanded.append(dict(source_native_id=r["native_id"],candidate_instance=r["instance"],device=r))
+    require(len(expanded)==650,"complete origin expansion mapping")
+    return result,expanded,deltas
+def renderer_controls(comp,plan,joined):
+    import copy
+    cards=[]
+    for r in comp["device_records"]:
+        cards.append(" ".join([r["instance"],*[t["node"]for t in r["terminals"]],r["model"],*[k+"="+v for k,v in sorted(r["parameters"].items())]]))
+    fixture="* synthetic full500 binding control only\n"+"\n".join(cards)+"\nR_SENTINEL a b 7\n.end\n"
+    output,expanded,delta=rewrite_parallel(fixture,comp,plan,joined)
+    require("R_SENTINEL a b 7\n.end\n"in output and len(expanded)==650,"positive complete binding and unaffected bytes")
+    first=joined[0]["simulation"];line=next(x for x in cards if x.startswith(first["instance"]+" "))
+    cases={"duplicate original MOS":fixture+line+"\n",
+        "missing original MOS":fixture.replace(line+"\n","",1),
+        "wrong model terminal":fixture.replace(line,line.replace(first["terminals"][0]["node"],"bad_node",1),1),
+        "wrong original width":fixture.replace(line,line.replace("w="+first["parameters"]["w"],"w=1u",1),1),
+        "extra original token":fixture.replace(line,line+" bad=1",1),
+        "missing other device":fixture.replace(next(x for x in cards if x.startswith("XD0500 "))+"\n","",1),
+        "preexisting expanded identity":fixture+plan[0]["units"][0]["instance"]+" d g s b sg13_lv_nmos\n"}
+    refused=[]
+    for label,bad in cases.items():
+        try:rewrite_parallel(bad,comp,plan,joined)
+        except ValueError:refused.append(label)
+        else:raise ValueError("renderer accepted invalid control "+label)
+    require(len(refused)==7,"seven renderer corruptions")
+    return dict(checks=8,positive_complete500_to650=True,refused=refused,failures=0,synthetic_fixture_not_native_acceptance=True)
+def output_reservation():
+    import time
+    tag="cloud-results-"+os.environ["GITHUB_RUN_ID"]+"-1-mos-parallel-candidate"
+    for attempt in range(90):
+        p=subprocess.run(["gh","api",REPO+"releases/tags/"+tag],capture_output=True,timeout=120)
+        if p.returncode==0:break
+        require(b"HTTP 404"in p.stderr,"reservation read failure");time.sleep(2)
+    else:raise ValueError("independent exact-source output reservation missing")
+    r=json.loads(p.stdout);ref=api("git/ref/tags/"+tag)
+    require(r["target_commitish"]==os.environ["GITHUB_SHA"]and r["tag_name"]==tag and r["assets"]==[]and r["prerelease"]and not r["draft"],"empty independent exact-source release")
+    require(ref["object"]["type"]=="commit"and ref["object"]["sha"]==os.environ["GITHUB_SHA"],"exact output tag")
+    return r
+def publish_native_generation(directory,reservation):
+    expected={p.name:pin(p)for p in directory.iterdir()if p.is_file()}
+    require(set(expected)=={"model.spice","candidate-expansion.json","source-composition.json","native-generation.json"},"complete native candidate output set")
+    for name in expected:
+        p=subprocess.run(["gh","release","upload",reservation["tag_name"],str(directory/name),"--repo","Melihakbulut221/nssoc"],capture_output=True,timeout=600)
+        require(p.returncode==0,p.stderr.decode()[:2000])
+    observed=api("releases/"+str(reservation["id"]))
+    require(len(observed["assets"])==len(expected)and {a["name"]for a in observed["assets"]}==set(expected),"all native outputs published")
+    for a in observed["assets"]:require(a["size"]==expected[a["name"]]["bytes"]and a["digest"]=="sha256:"+expected[a["name"]]["sha256"],"exact published bytes")
+    return dict(release=observed["id"],tag=observed["tag_name"],source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),outputs=expected,assets=observed["assets"],simulation_executed=False,physical_acceptance=False)
+
 def main():
     require(os.environ.get("GITHUB_ACTIONS")=="true"and os.environ.get("GITHUB_RUN_ATTEMPT")=="1"and os.environ.get("GITHUB_REPOSITORY")=="Melihakbulut221/nssoc","single cloud execution")
     c=json.loads((ROOT/CFG).read_bytes())
@@ -183,7 +267,11 @@ def main():
     values={}
     for name,p in c["inputs"].items():
         raw=fetch(p);(OUT/name).write_bytes(raw);values[name]=json.loads(raw)
+    comp_pre=values["composition.json"];joined_pre=joined_mos(comp_pre,values["physical-locations.json"]);plan_pre=make_plan(joined_pre)
+    (OUT/"renderer-controls.json").write_bytes(enc(renderer_controls(comp_pre,plan_pre,joined_pre)))
+    reservation=output_reservation();(OUT/"output-reservation.json").write_bytes(enc(reservation))
     index=values["index.json"];parts=values["parts.json"]
+    require(index["files"]["native/candidate/model.spice"]==dict(bytes=1967632,sha256="4b5c155517c81990e528190b6ebd0405a876184da57224233fd1f05ae25d658b"),"exact existing mixed20 native model")
     require(parts["context"]==index["context"]==c["producer_context"]and parts["archive"]==c["archive"],"exact native producer and complete archive")
     run=api("actions/runs/"+str(c["producer_context"]["run_id"]));release=api("releases/"+str(c["release_id"]));tag=api("git/ref/tags/"+c["release_tag"])
     require(run["status"]=="completed"and run["conclusion"]=="failure"and run["run_attempt"]==1 and run["head_sha"]==c["producer_context"]["source"],"actual producer identity")
@@ -202,9 +290,9 @@ def main():
             with p.open("rb")as stream:
                 while block:=stream.read(4*1024**2):output.write(block)
     require(pin(archive)==c["archive"],"complete native archive digest")
-    selected=restore(archive,index["files"],set(c["model_members"]),work/"selected",prefix="cloud-sampler-load")
+    selected=restore(archive,index["files"],set(c["model_members"])|{"native/candidate/model.spice"},work/"selected",prefix="cloud-sampler-load")
     (OUT/"restore.json").write_bytes(enc(selected))
-    models={name:inspect_text(pathlib.Path(value["path"]))for name,value in selected["selected"].items()}
+    models={name:inspect_text(pathlib.Path(value["path"]))for name,value in selected["selected"].items()if name in c["model_members"]}
     comp=values["composition.json"];require(len(comp["device_records"])==500 and len({r["native_id"]for r in comp["device_records"]})==500,"complete composition")
     mos=[]
     for r in comp["device_records"]:
@@ -226,6 +314,15 @@ def main():
     (OUT/"physical-controls.json").write_bytes(enc(controls))
     (OUT/"physical-join.json").write_bytes(enc(dict(status="COMPLETE50_PINNED_PHYSICAL_JOIN_NOT_NEW_EXTRACTION",devices=joined,physical_input=c["inputs"]["physical-locations.json"],no_new_layout=True)))
     (OUT/"parallel-device-plan.json").write_bytes(enc(dict(status="PROPOSED_PARALLEL_DEVICE_PLAN_NOT_NATIVE_ACCEPTANCE",devices=plan,original_mos_count=50,proposed_mos_count=sum(len(p["units"])for p in plan),unmodified_other_devices=450,proposed_total_device_count=450+sum(len(p["units"])for p in plan),proposed_width_grid_um=".005",source_drain_extension_um=".34",new_layout_generated=False,new_netlist_generated=False,fresh_parasitics=False,model_domain_passed_for_proposed_unit_widths_only=True,original_other_devices_sha256=sha(enc([r for r in comp["device_records"]if r["model"]!="sg13_lv_nmos"])),caveat="Explicit independent devices, not ng-only. Junction perimeters change. Contacts, spacing, routing, body taps, extracted identity expansion, model core mapping and independent DRC/LVS/PEX/electrical gates remain to be proven.")))
+    original_path=pathlib.Path(selected["selected"]["native/candidate/model.spice"]["path"])
+    candidate,expanded,deltas=rewrite_parallel(original_path.read_text(),comp,plan,joined)
+    native=ROOT/"cloud-mos-parallel-native";native.mkdir(exist_ok=False)
+    (native/"model.spice").write_text(candidate)
+    (native/"source-composition.json").write_bytes((OUT/"composition.json").read_bytes())
+    (native/"candidate-expansion.json").write_bytes(enc(dict(schema="explicit-origin500-to-native650-v1",expanded_device_records=expanded,original_device_count=500,expanded_device_count=650,model_mos_count=200,geometry_regenerated=False,wire_rc_recomputed=False)))
+    generation=dict(source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),original_model=pin(original_path),candidate_model=pin(native/"model.spice"),original_composition=pin(OUT/"composition.json"),expanded_composition=pin(native/"candidate-expansion.json"),delta=[{k:v for k,v in row.items()if k not in ("before","after")}|dict(before_sha256=sha(row["before"].encode()),after_sha256=sha(row["after"].encode()))for row in deltas],all_other_model_bytes_preserved=True,native_simulation_executed=False,physical_acceptance=False,fresh_rc=False,full_phy_accepted=False,final_timing_complete=False)
+    (native/"native-generation.json").write_bytes(enc(generation));(OUT/"native-generation.json").write_bytes(enc(generation))
+    (OUT/"native-publication.json").write_bytes(enc(publish_native_generation(native,reservation)))
     result=dict(status="COMPLETE_PINNED_MOS_MODEL_PARAMETER_AUDIT_NOT_ACCEPTANCE",
         source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),producer_context=c["producer_context"],
         native_archive=c["archive"],models=models,all50_mos=mos,physical_join_count=len(joined),parallel_proposed_units=sum(len(p["units"])for p in plan),declared_width_range_um=["0.15","10"],

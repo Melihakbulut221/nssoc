@@ -1,8 +1,8 @@
-name: Full MOS physical join and parallel-device domain correction plan
+name: Materialize domain-corrected parallel MOS native candidate without simulation
 on:
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: mos-model-domain-${{ github.ref }}
   cancel-in-progress: false
@@ -35,4 +35,11 @@ jobs:
           path: cloud-mos-model-domain-audit
           include-hidden-files: true
           if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: mos-parallel-native-${{ github.run_id }}
+          path: cloud-mos-parallel-native
+          if-no-files-found: warn
           retention-days: 90
