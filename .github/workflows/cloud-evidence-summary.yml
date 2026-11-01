@@ -1,11 +1,11 @@
-name: Reproduce buffer drive raw data and all original device decisions
+name: Diagnose native divider paths and supply drops across three rejected PD650 cases
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: pd650-wave-analysis-${{ github.ref }}
+  group: pd650-path-diagnostics-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -21,31 +21,37 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
+            /scripts/cloud_pd650_path_diagnostics.py
+            /scripts/pd650-path-diagnostics-pins.json
+            /scripts/pd650-path-diagnostics-inputs.json
             /scripts/cloud_pd650_wave_analysis.py
-            /scripts/pd650-wave-analysis-inputs.json
-            /scripts/pd650-wave-analysis-pins.json
             /scripts/cloud_tx_stream.py
             /scripts/cloud_cdr_current_eight_drain_loaded.py
-            /docs/cdr-buffer-wave-analysis.md
+            /docs/cdr-physical-path-diagnostics.md
             /.github/workflows/cloud-evidence-summary.yml
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
-      - run: python3 -B scripts/cloud_pd650_wave_analysis.py controls
+      - run: python3 -B scripts/cloud_pd650_path_diagnostics.py controls
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pd650-wave-controls-${{ github.run_id }}
-          path: pd650-wave-analysis
+          name: pd650-path-controls-${{ github.run_id }}
+          path: pd650-path-diagnostics
           retention-days: 90
           if-no-files-found: error
-  completed-wave-analysis:
+  case-analysis:
     needs: source-controls
     runs-on: ubuntu-24.04
     timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        case: [width2, width8, buffer_drive]
     env:
       GH_TOKEN: ${{ github.token }}
+      PD650_CASE: ${{ matrix.case }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -54,23 +60,24 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
+            /scripts/cloud_pd650_path_diagnostics.py
+            /scripts/pd650-path-diagnostics-pins.json
+            /scripts/pd650-path-diagnostics-inputs.json
             /scripts/cloud_pd650_wave_analysis.py
-            /scripts/pd650-wave-analysis-inputs.json
-            /scripts/pd650-wave-analysis-pins.json
             /scripts/cloud_tx_stream.py
             /scripts/cloud_cdr_current_eight_drain_loaded.py
-            /docs/cdr-buffer-wave-analysis.md
+            /docs/cdr-physical-path-diagnostics.md
             /.github/workflows/cloud-evidence-summary.yml
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
-      - name: Authenticate entire existing archive and analyze complete original rows
-        run: python3 -B scripts/cloud_pd650_wave_analysis.py analyze
+      - name: Authenticate original full archive, reproduce all measurements, diagnose actual terminals
+        run: python3 -B scripts/cloud_pd650_path_diagnostics.py analyze
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pd650-wave-derived-${{ github.run_id }}
-          path: pd650-wave-analysis
+          name: pd650-path-${{ matrix.case }}-${{ github.run_id }}
+          path: pd650-path-diagnostics
           retention-days: 90
           if-no-files-found: error
