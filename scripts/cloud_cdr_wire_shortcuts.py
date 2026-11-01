@@ -26,7 +26,10 @@ def gate():
     m=json.loads((ROOT/MANIFEST).read_bytes())
     for n,p in m["files"].items():need(pin(ROOT/n)==p and not(ROOT/n).is_symlink(),"source "+n)
     prior.OUT=OUT
-    return json.loads((ROOT/INPUT).read_bytes())
+    cfg=json.loads((ROOT/INPUT).read_bytes())
+    for n in("binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds","binding/inputs/wire/native05/wires.l2n","binding/inputs/wire/native05/wires.gds"):
+        need(n in cfg["complete_members"],"selected native geometry in authenticated inventory: "+n)
+    return cfg
 def box(x,y,half):return pya.Region(pya.Box(x-half,y-half,x+half,y+half))
 def bounds(region):
     b=region.bbox();return [b.left,b.bottom,b.right,b.top]if not region.is_empty()else None
@@ -96,7 +99,7 @@ def region_snapshot(layout,top):
     return {(layout.get_info(li).layer,layout.get_info(li).datatype):pya.Region(top.begin_shapes_rec(li)).merged()for li in layout.layer_indexes()}
 def generate(base,cfg):
     gpath=base/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds"
-    wpath=base/"mim/precise/wire/native05/wires.l2n"
+    wpath=base/"binding/inputs/wire/native05/wires.l2n"
     g=pya.Layout();g.read(str(gpath));need(g.dbu==.001,"original GDS DBU")
     top=g.cell(TOP);need(top is not None,"original top")
     before=region_snapshot(g,top)

@@ -55,7 +55,7 @@ def acquire(cfg):
     selected={cfg["model"]["path"],cfg["composition"]["path"],"mim/composition/verified-wire-projection.spice",
       "mim/precise/wire/anchors08.json","mim/precise/wire/rc03/pump_wires.ext","mim/precise/wire/rc03/pump_wires.res.ext",
       "wire-stage/wire/audit.json","binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds",
-      "mim/precise/wire/native05/wires.l2n","mim/precise/wire/native05/wires.gds"}
+      "binding/inputs/wire/native05/wires.l2n","binding/inputs/wire/native05/wires.gds"}
     with tarfile.open(archive,"r|gz")as tar:
         for m in tar:
             need(m.name not in names,"duplicate member");names.add(m.name)
@@ -73,6 +73,8 @@ def acquire(cfg):
             finally:
                 if f:f.close()
             pin=dict(bytes=size,sha256=h.hexdigest());need(pin==cfg["complete_members"][n],"member digest "+n);seen[n]=pin
+    if not(set(seen)==set(cfg["complete_members"])and selected<=set(seen)):
+        save("acquisition-failure.json",dict(authenticated_members=len(seen),missing_selected=sorted(selected-set(seen)),missing_members=sorted(set(cfg["complete_members"])-set(seen)),unexpected_members=sorted(set(seen)-set(cfg["complete_members"]))))
     need(set(seen)==set(cfg["complete_members"])and selected<=set(seen),"complete authenticated capsule")
     save("acquisition.json",dict(run=r,release=rel,members_authenticated=seen,selected=sorted(selected),native_payloads_cloud_only=True))
     return target
