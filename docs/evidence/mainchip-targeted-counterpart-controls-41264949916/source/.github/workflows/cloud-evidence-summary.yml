@@ -1,0 +1,62 @@
+name: Targeted counterpart routing source qualification
+on:
+  workflow_dispatch:
+    inputs:
+      approved_source:
+        description: Exact source commit for controls only
+        type: string
+        required: true
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: targeted-counterpart-source-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+  APPROVED_SOURCE: ${{ inputs.approved_source }}
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/mainchip-targeted-counterpart-routing-inputs.json
+      - name: Materialize exact source closure
+        run: |
+          python3 -B - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          name='scripts/mainchip-targeted-counterpart-routing-inputs.json'
+          m=json.loads(Path(name).read_bytes())
+          assert m['native_execution_authorized'] is False
+          assert os.environ['APPROVED_SOURCE']==os.environ['GITHUB_SHA']
+          names=sorted(set(m['source_files'])|{name})
+          assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
+          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
+          PY
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Authenticate complete existing derived classification and antenna plan
+        run: python3 -B scripts/prepare_mainchip_targeted_counterpart_inputs.py
+      - name: Test separate routing scope and retained physical gates
+        run: python3 -B scripts/check_mainchip_targeted_counterpart_routing.py
+      - name: Preserve every acquired input and control result
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: targeted-counterpart-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            targeted-routing-inputs
+            targeted-routing-controls
+          if-no-files-found: error
+          retention-days: 90
