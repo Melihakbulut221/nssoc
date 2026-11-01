@@ -121,7 +121,7 @@ def simultaneous_hbt(t,when,devices,voltage,current):
     return result
 def diagnose(report,t,data):
     require(report["case"]=="nominal_late"and report["corner"]=="nominal"and report["returncode"]==0 and report["diagnostics"]==[]and report["sources_unchanged"]is True,"complete original case")
-    require(report["current_context"]==dict(attempt=1,run_id=41274791029,source="eca0c5abf194169c8b42f58a48f22feb716e7dec"),"actual case identity")
+    require(report["current_context"]==dict(attempt=1,run_id=41277056212,source="edc7c8d04659f73d024c45bbfa4936b977c90c32"),"actual case identity")
     require(len(report["devices"])==124 and len(report["vectors"])==1151,"all original devices/vectors")
     aliases=report["binding"]["aliases"]
     def v(name):
@@ -211,13 +211,13 @@ def acquire(config,out,work):
     for name,rule in rules.items():
         raw=remote(rule);(out/name).write_bytes(raw);values[name]=json.loads(raw)
     report=values["measurement.json"];index=values["index.json"];parts=values["parts.json"]
-    run=api("actions/runs/41274791029");release=api("releases/430370301");ref=api("git/ref/tags/"+config["release_tag"])
+    run=api("actions/runs/41277056212");release=api("releases/430382311");ref=api("git/ref/tags/"+config["release_tag"])
     require(run["status"]=="completed"and run["conclusion"]=="failure"and run["head_sha"]==config["producer_source"]and run["run_attempt"]==1,"original rejected run identity")
-    require(release["id"]==430370301 and release["tag_name"]==config["release_tag"]and release["target_commitish"]==config["producer_source"]and release["draft"]is False and release["prerelease"]is True,"original publication identity")
+    require(release["id"]==430382311 and release["tag_name"]==config["release_tag"]and release["target_commitish"]==config["producer_source"]and release["draft"]is False and release["prerelease"]is True,"original publication identity")
     require(ref["object"]["type"]=="commit"and ref["object"]["sha"]==config["producer_source"],"exact source release tag")
     (out/"producer.json").write_bytes(encode(dict(run=run,release=release,ref=ref)))
     assets={a["name"]:a for a in release["assets"]};require(len(assets)==len(release["assets"])==6,"complete original release assets")
-    require(parts["archive"]==dict(bytes=1053002403,sha256="912b8da101caf2db339d5930ab07e2f81b14f4a0b77b12fa2724631c1a6ea49f") and parts["context"]==report["current_context"] and index["context"]==report["current_context"] and parts["source_directory"]=="cloud-sampler-load","original ordered archive")
+    require(parts["archive"]==dict(bytes=1053737922,sha256="28fd7b4f3e8202e52374ba27d07d24c3a0dfd4dfd7e6a9bb301b53510239fb49") and parts["context"]==report["current_context"] and index["context"]==report["current_context"] and parts["source_directory"]=="cloud-sampler-load","original ordered archive")
     require(len(index["files"])==config["inventory_members"] and len(parts["parts"])==4,"full original inventory")
     combined=work/"complete-native.tar.gz";observations=[];start=time.monotonic()
     with combined.open("xb")as archive:
