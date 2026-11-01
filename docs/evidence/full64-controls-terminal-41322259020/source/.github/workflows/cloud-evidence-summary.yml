@@ -1,0 +1,34 @@
+name: Qualify original full64 route lifecycle
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  full64-source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/mainchip_full_route_stage.py
+            /scripts/check_mainchip_full_route_stage.py
+            /scripts/mainchip-bounded-route-baseline.tcl
+            /scripts/mainchip-full64-pins.json
+            /docs/mainchip-full64-route.md
+            /.github/workflows/cloud-evidence-summary.yml
+      - name: Refuse shortened routing and verify partial-output preservation
+        run: python3 -B scripts/check_mainchip_full_route_stage.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: full64-controls-${{ github.run_id }}
+          path: full64-controls
+          retention-days: 90
+          if-no-files-found: error
