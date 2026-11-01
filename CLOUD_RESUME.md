@@ -1,11 +1,45 @@
-# Cloud continuation — checkpoint v256
+# Cloud continuation — checkpoint v257
 
-Updated: 2026-11-01T17:32:52.972631+00:00
+Updated: 2026-11-01T17:55:42.077839+00:00
 
 Latest instruction: **her şeyi bulutta yap, lokalde bir şey bırakma temizle.**
 It overrides the earlier local-execution wording in the active goal. All CAD, simulation, native archive/layout/waveform acquisition and numerical/geometric analysis run on GitHub. Local coordination uses source/API-derived text in RAM only. Never acquire native ODB/DEF/GDS/SPICE/raw archives locally, including RAM. The local workspace and project temp entries were verified empty, with no local CAD processes. Unrelated user files remain untouched.
 
-## Latest result: original extracted wire bottlenecks and native coordinates mapped
+## Latest result: six real physical divider shortcuts generated on cloud
+
+Actual native run41333497715/source2f7f6e673e0bac5052d82e7ffd7073b9685f962f succeeded after31 controls (19 unchanged wire/coordinate plus12 geometry tests). It authenticated all3091 original RC capsule members, loaded actual GDS42ed5bcd567518786b718248947771172e9f5cc419d0aaa8fc8c49d8cfa4e876 and wire L2N57abb9fe69e4fcc57a18ee8a61fbcfa04475ad3331581062fde41f2d6aa6fe3b, matched complete M1/Via1/M2/Via2 layer unions, and generated all six A_p,A_n,C_p,C_n,D_p,D_n shortcuts. No target remains unrouted within this six-net candidate.
+
+Actual new native file: native/nssoc_cdr_pd500_wire_shortcuts.gds in archive root wire-shortcuts;999700bytes;SHA256244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347.
+Permanent release430752170/tag cloud-results-41333497715-1-cdr-wire-shortcuts:
+- complete-output-index.json asset699061027,1894bytes,SHA256f0258c68ee4bf6608e5b926f420cdd259a8119f7f5ef0e78a111be7dd903f3f3.
+- native-candidate.tar.gz asset699061028,348712bytes,SHA2560dec57eeac173fc9c9ec0ca76d1a6cd218e265605c8e143188d69bac71ba7e17.
+The native archive was never acquired locally. Derived artifact13094222549,164182bytes,SHA256a5ae083a4e41009d348b7fddc440efd4e57cc2c72b870e44912404d09e598de9.
+
+Only0.6um-wide Metal2 shortcuts were added. Each endpoint reused its actual original four-Via1 landing, after proving same-net M1/M2 ownership and50nm lower/upper enclosure of each190nm square cut. Existing Via2 cuts and all original vias remain. There are zero new Via1 shapes. All original device/M1 geometry remains unchanged. The serialized GDS contains exactly the declared layer-union additions; deleting inserted shapes restores all original layer material. Foreign-M2 clearance605nm, foreign-via avoidance, same-net ownership, continuous route and existing die boundary checks all passed. These static guards are NOT the full PDK DRC/LVS or electrical acceptance.
+
+All six selected routes use the first Manhattan path:
+A_p [1024100,2059690]->[1084100,2059690]->[1084100,2055530];
+A_n [1204100,2059690]->[1264100,2059690]->[1264100,2055530];
+C_p [1024100,2835580]->[1084100,2835580]->[1084100,2831420];
+C_n [1204100,2835580]->[1264100,2835580]->[1264100,2831420];
+D_p [1024100,2587350]->[1084100,2587350]->[1084100,2580790];
+D_n [1204100,2587350]->[1264100,2587350]->[1264100,2580790].
+Coordinates are original1nm GDS DBU. New M2 area38344150DBU2 per A/C route and39784150DBU2 per D route; via added area0.
+
+Preserved actual unsuccessful predecessors:
+41332615153/source7374d2201b6541f67c23e6f56dda8b0b78325eb1/release430746317 passed27 controls but selected a nonexistent mim/precise/wire/native05/wires.l2n path; no generation. Correct canonical input is binding/inputs/wire/native05/wires.l2n (and matching wires.gds). New source checks selected paths against pinned complete inventory before acquisition.
+41332859047/source9fb67f1332fbc2e17e51d182461a176b40669e6e/release430747892 passed27 controls and native layer-union checks but found no new via sites in a small search; no candidate.
+41333160166/source60464d2610e69ffbd040c35ee4d5abef7778487f/release430750188 passed29 controls and preserved every10um bounded access refusal. It revealed that existing four-via stacks already occupy the1.730um x0.300um M1 /1.730um x0.290um M2 terminals. The final source reuses these existing qualified same-net landings rather than duplicating cuts. No clearance or electrical threshold was relaxed.
+All four complete source/log/result proofs are imported under docs/evidence/wire-shortcuts-terminal-RUN. Initial failures remain genuine failures; only the final generation succeeded.
+
+NEXT REQUIRED PHYSICAL ACTION: authenticate the new candidate archive on GitHub; run original full560-category DRC, deep and flat500-device transistor LVS and13 actual fault controls on this exact new GDS. Preserve original schematic/ports and bind fresh candidate metadata/output hashes; do not relabel the previous GDS result.json as a new generation. Existing validated physical pipeline is scripts/cloud_cdr_via2_m3_physical_recheck.py at9bf12d1e496f7d9192582175ab2fa714e3e8d41b: derive_physical uses cloud_cdr500_resistor_v59_physical.physical_source(original,'cd_shunt') with four exact substitutions; checker SHA3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66. Original source hw/soc/flow/check_pcie_cdr_sampler_active_input_v57_parent.py checks actual layout result inputs/outputs, immutable PDK revision5e6d592e4002946a4616f798c357f0f3c06cf3b6, all560categories, deep/flat primitive counts124HBT/50MOS/98R/7MIM/221ptap and13 fault controls. AppImage3.0.5 SHA d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466, pinned frozen runtime and scoped AppArmor launcher must be restored on cloud using actual current-source admission, not old producer authority.
+Then create canonical native view/new wire extraction and fresh RC for the exact new GDS, run unchanged loaded-wave/device/phase/V-I gates. The new RC/electrical improvement is NOT yet measured. Width2/Nx8 device-geometry trials are still not regenerated accepted layouts. Supply-path repair and complete closed-loop/serialPHY remain open.
+
+Mainchip full64 run41323446729/sourceff1c0e6163e0ba1537a075d50e940fafc9332c64 remains active; do not restart or duplicate. After terminal publication qualify actual pins/classes/native connectivity, DRC/antenna and new diode-inclusive154480-instance netlist/RC/STA.
+
+All CAD/native acquisition/analysis remains on GitHub; local source/API-derived coordination RAM only. Workspace and project temp remain empty. Eight-hour monitor inventory now697, read-only automatic_native_dispatch:false. Prior live monitor HTTP502 remains recorded. Full serial PHY, mainchip physical closure and final setup/hold remain unachieved.
+
+## Previous checkpoint v256: original extracted wire bottlenecks and native coordinates mapped
 
 Actual cloud run41331408334/source352b68e4d6a0f6fabbb18b850fff264e24fa0121 passed14 controls and mapped eleven physical-anchor pairs on the original RC graph. Its first coordinate reader handled EXT node records but omitted rnode records; most internal coordinate references were empty. Preserve this limitation and do not treat that first pass as complete geometry mapping. Proof0a1833238c5884607e6e2a703db8d0322b005886 at docs/evidence/wire-path-map-terminal-41331408334 contains all17 files (receipt3234ec6216d594cd6d2a5cf7605991c020df158516b141da3588da119a855e62).
 
