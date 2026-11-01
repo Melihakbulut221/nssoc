@@ -1,26 +1,18 @@
-name: Restore scoped classes and audit saved Route828 without rerouting
+name: Diagnose actual restored Route828 connectivity failures
 on:
   workflow_dispatch:
-    inputs:
-      execute:
-        description: Restore and audit saved routing after independent controls
-        type: boolean
-        default: false
-      control_run:
-        description: Independently completed same-source source-controls run
-        type: string
-        default: '0'
 permissions:
   contents: read
   actions: read
+concurrency:
+  group: restored-connectivity-diagnosis-${{ github.ref }}
+  cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
 jobs:
   source-controls:
     runs-on: ubuntu-24.04
-    env:
-      GH_TOKEN: ${{ github.token }}
-    timeout-minutes: 30
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -29,57 +21,31 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/mainchip_original_clock_restoration.py
+            /scripts/cloud_mainchip_connectivity_diagnosis.py
+            /scripts/mainchip-connectivity-diagnosis-inputs.json
+            /scripts/mainchip-connectivity-diagnosis-pins.json
+            /scripts/mainchip_net459_connectivity.py
+            /scripts/mainchip_bulk_postdrt_antenna.py
             /scripts/mainchip_targeted_counterpart_routing.py
-            /scripts/mainchip_scoped_counterpart_restoration.py
-            /scripts/check_mainchip_scoped_counterpart_restoration.py
-            /scripts/mainchip_scoped_counterpart_restoration_native.py
-            /scripts/mainchip_scoped_counterpart_restoration_inner.py
-            /scripts/cloud_mainchip_scoped_counterpart_restoration.py
-            /scripts/prepare_scoped_restoration_sources.py
-            /scripts/mainchip-scoped-restoration-native-pins.json
             /.github/workflows/cloud-evidence-summary.yml
-      - name: Verify exact adapter source and run class restoration controls
-        run: |
-          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          python3 -B - <<'PY'
-          import hashlib,json,pathlib,subprocess
-          pins=json.loads(pathlib.Path("scripts/mainchip-scoped-restoration-native-pins.json").read_text())
-          subprocess.run(["git","diff","--exit-code","HEAD","--","scripts/mainchip-scoped-restoration-native-pins.json",*pins],check=True)
-          for name,pin in pins.items():
-              raw=pathlib.Path(name).read_bytes()
-              assert len(raw)==pin["bytes"] and hashlib.sha256(raw).hexdigest()==pin["sha256"],name
-              if name.endswith(".py"):compile(raw,name,"exec")
-          PY
-          python3 -B scripts/check_mainchip_scoped_counterpart_restoration.py
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+            /docs/mainchip-restored-connectivity-diagnosis.md
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
-          ref: 7a0776718ec37a106b7dfde0cbd477c6a2a5522f
-          path: original
-          persist-credentials: false
-          filter: blob:none
-          sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/mainchip-bounded-route-host-pins.json
-      - name: Authenticate full original source without acquiring native archives
-        run: python3 -B scripts/prepare_scoped_restoration_sources.py
+          python-version: '3.12'
+      - run: python3 -B scripts/cloud_mainchip_connectivity_diagnosis.py controls
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: scoped-restoration-controls-${{ github.run_id }}
-          path: scoped-restoration-controls
+          name: restored-connectivity-controls-${{ github.run_id }}
+          path: connectivity-diagnosis
           retention-days: 90
           if-no-files-found: error
-  native-restoration:
-    if: inputs.execute
+  connectivity-diagnosis:
     needs: source-controls
     runs-on: ubuntu-24.04
-    timeout-minutes: 360
-    permissions:
-      contents: write
-      actions: read
+    timeout-minutes: 60
     env:
       GH_TOKEN: ${{ github.token }}
-      CONTROL_RUN: ${{ inputs.control_run }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -88,52 +54,22 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/mainchip_original_clock_restoration.py
+            /scripts/cloud_mainchip_connectivity_diagnosis.py
+            /scripts/mainchip-connectivity-diagnosis-inputs.json
+            /scripts/mainchip-connectivity-diagnosis-pins.json
+            /scripts/mainchip_net459_connectivity.py
+            /scripts/mainchip_bulk_postdrt_antenna.py
             /scripts/mainchip_targeted_counterpart_routing.py
-            /scripts/mainchip_scoped_counterpart_restoration.py
-            /scripts/check_mainchip_scoped_counterpart_restoration.py
-            /scripts/mainchip_scoped_counterpart_restoration_native.py
-            /scripts/mainchip_scoped_counterpart_restoration_inner.py
-            /scripts/cloud_mainchip_scoped_counterpart_restoration.py
-            /scripts/prepare_scoped_restoration_sources.py
-            /scripts/mainchip-scoped-restoration-native-pins.json
             /.github/workflows/cloud-evidence-summary.yml
-      - name: Verify exact adapter source before dependency acquisition
-        run: |
-          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          python3 -B - <<'PY'
-          import hashlib,json,pathlib,subprocess
-          pins=json.loads(pathlib.Path("scripts/mainchip-scoped-restoration-native-pins.json").read_text())
-          subprocess.run(["git","diff","--exit-code","HEAD","--","scripts/mainchip-scoped-restoration-native-pins.json",*pins],check=True)
-          for name,pin in pins.items():
-              raw=pathlib.Path(name).read_bytes()
-              assert len(raw)==pin["bytes"] and hashlib.sha256(raw).hexdigest()==pin["sha256"],name
-              if name.endswith(".py"):compile(raw,name,"exec")
-          PY
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+            /docs/mainchip-restored-connectivity-diagnosis.md
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
-          ref: 7a0776718ec37a106b7dfde0cbd477c6a2a5522f
-          path: original
-          persist-credentials: false
-          filter: blob:none
-          sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/mainchip-bounded-route-host-pins.json
-      - name: Authenticate full original source without acquiring native archives
-        run: python3 -B scripts/prepare_scoped_restoration_sources.py
-      - name: Restore original classes and execute original native physical audits
-        run: python3 -B scripts/cloud_mainchip_scoped_counterpart_restoration.py
+          python-version: '3.12'
+      - run: python3 -B scripts/cloud_mainchip_connectivity_diagnosis.py analyze
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: scoped-restoration-derived-${{ github.run_id }}
-          path: scoped-restoration-evidence
+          name: restored-connectivity-analyze-${{ github.run_id }}
+          path: connectivity-diagnosis
           retention-days: 90
           if-no-files-found: error
-      - name: Preserve native workspace fallback
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: scoped-restoration-native-${{ github.run_id }}
-          path: ${{ runner.temp }}/mainchip-bulk-postdrt-antenna-${{ github.run_id }}-1/out
-          retention-days: 30
-          if-no-files-found: warn
