@@ -21,13 +21,11 @@
           "status": "in_progress"
         },
         {
-          "active_steps": [
-            "All declared pilot and SoC regression proofs with fresh source checks"
-          ],
-          "conclusion": null,
+          "active_steps": [],
+          "conclusion": "success",
           "id": 124805437696,
           "name": "formal-sweep (pilot)",
-          "status": "in_progress"
+          "status": "completed"
         },
         {
           "active_steps": [],
@@ -37,13 +35,11 @@
           "status": "completed"
         },
         {
-          "active_steps": [
-            "Run every non-frozen RTL suite"
-          ],
-          "conclusion": null,
+          "active_steps": [],
+          "conclusion": "success",
           "id": 124805437712,
           "name": "rtl",
-          "status": "in_progress"
+          "status": "completed"
         },
         {
           "active_steps": [],
@@ -73,39 +69,6 @@
       "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
       "status": "in_progress",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41292160619"
-    },
-    "41292673925": {
-      "branch": "codex/mainchip-net459-diode-prune",
-      "conclusion": null,
-      "jobs": [
-        {
-          "active_steps": [],
-          "conclusion": "success",
-          "id": 124806983932,
-          "name": "source-controls",
-          "status": "completed"
-        },
-        {
-          "active_steps": [],
-          "conclusion": "success",
-          "id": 124807447237,
-          "name": "preserve-job-log",
-          "status": "completed"
-        },
-        {
-          "active_steps": [
-            "Preserve complete derived evidence and retained output fallback"
-          ],
-          "conclusion": null,
-          "id": 124807477628,
-          "name": "diode-routing",
-          "status": "in_progress"
-        }
-      ],
-      "run": 41292673925,
-      "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
-      "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41292673925"
     },
     "41293340525": {
       "branch": "codex/cdr-pd650-loaded-wave-analysis",
@@ -144,22 +107,18 @@
           "status": "in_progress"
         },
         {
-          "active_steps": [
-            "Run every non-frozen RTL suite"
-          ],
-          "conclusion": null,
+          "active_steps": [],
+          "conclusion": "failure",
           "id": 124808977510,
           "name": "rtl",
-          "status": "in_progress"
+          "status": "completed"
         },
         {
-          "active_steps": [
-            "All declared pilot and SoC regression proofs with fresh source checks"
-          ],
-          "conclusion": null,
+          "active_steps": [],
+          "conclusion": "success",
           "id": 124808977536,
           "name": "formal-sweep (pilot)",
-          "status": "in_progress"
+          "status": "completed"
         },
         {
           "active_steps": [],
@@ -186,12 +145,19 @@
       "conclusion": null,
       "jobs": [
         {
-          "active_steps": [
-            "Verify exact source and sampler-load mutation controls"
-          ],
-          "conclusion": null,
+          "active_steps": [],
+          "conclusion": "success",
           "id": 124828047248,
           "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate original inputs and run sampler-load candidate with original measurements"
+          ],
+          "conclusion": null,
+          "id": 124828357121,
+          "name": "simulate",
           "status": "in_progress"
         }
       ],
@@ -201,6 +167,28 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41299745896"
     }
   },
+  "bounded_route_terminal_v237": {
+    "all_acceptance_gates_retained": true,
+    "all_selected_text_artifacts_complete": true,
+    "conclusion": "failure",
+    "failure": "Expected FIXED encoded class before restoration",
+    "failure_site": "mainchip_original_clock_restoration.py:215",
+    "files_omitted_from_inline_snapshot": true,
+    "final_audit_started": false,
+    "mixed_native_artifact_downloaded": false,
+    "native_payload_acquired_locally": false,
+    "native_release_parts_downloaded": false,
+    "original_raw_checkpoints_saved": true,
+    "raw_odb_sha256": "b87a2d43fe33dd8ca99f0faa2bdf38337ae30d6c5b72a337472919ac57f64e63",
+    "release": 430474717,
+    "restoration_failed": true,
+    "restored_candidate_accepted": false,
+    "route_returned": true,
+    "router_last_drc_violations": 397,
+    "run": 41292673925,
+    "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f"
+  },
+  "checkpoint_version": 237,
   "cloud_results_release_reservations": {
     "mainchip_artifact_recovery": {
       "exact_tag_target_verified": true,
@@ -2096,6 +2084,7 @@
   "continuation_note_v234": "PROGRESS: exact-source restart review corrects unproven same-optimizer continuation assumption; retained current native and routing handles. No new native run or physical acceptance from review.",
   "continuation_note_v235": "Terminal divider trial preserved and imported; all original failures retained. User cloud-only and local cleanup instruction verified. Mainchip existing routing handle remains tracked; no duplicate native execution.",
   "continuation_note_v236": "PROGRESS: authenticated current-divider failure diagnosis completed; actual40-HBT emitter-count repair implemented and independently source-qualified; original-gate native trial dispatched on GitHub. Mainchip original routing handle retained. No full PHY,physical or timing closure claimed.",
+  "continuation_note_v237": "PROGRESS: completed route checkpoint and restoration failure preserved with full text proof. Actual router returned with397DRC; saved rawODB remains available in cloud. Class-restoration and cleanup assertion fail, final audits notstarted. Existing HBT native trial retained. Latest cloud-only/local-cleanup instruction reverified; no native local data or gate relaxation.",
   "current_run_snapshot": [
     {
       "attempt": 1,
@@ -76167,6 +76156,19 @@
       "source": "12f3e0f3bf7010289dc0f993ac71dbfa55cc19e4"
     }
   ],
+  "imported_checkpoint_receipts_v237": [
+    {
+      "bytes": 22678708,
+      "conclusion": "failure",
+      "files": 63,
+      "head": "4d1ee8c4518d730d6d99a4209f59fc9a7a2c7caa",
+      "prefix": "docs/evidence/bounded-route-native-terminal-41292673925",
+      "receipt": "receipt.json",
+      "receipt_sha256": "02d211fa1087e3cd46e7fca94978d21a4adf7fc7d233aa1fa45d67adeebe7143",
+      "run": 41292673925,
+      "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f"
+    }
+  ],
   "imported_checkpoint_receipts_v25": [
     {
       "path": "docs/evidence/pll-cache-reference-directory-dispatch-20261024.json",
@@ -99371,6 +99373,212 @@
     "tx_qualified_source_import_manifest": "8cecb11af6c4aabd56a0d66d67a5810f32977c77",
     "tx_role_failed_inner_log_dispatch": "ef04b20b155d9f5033b7c3b82c649e094c3bc978"
   },
+  "latest_observed_runs_v237": [
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437655,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "All declared pilot and SoC regression proofs with fresh source checks"
+          ],
+          "conclusion": null,
+          "id": 124805437693,
+          "name": "formal-sweep (soc)",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437696,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124805437698,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437712,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437732,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124805437796,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124805438494,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41292160619,
+      "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41292160619"
+    },
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124806983932,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124807447237,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124807477628,
+          "name": "diode-routing",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124828689772,
+          "name": "preserve-antenna-job-logs",
+          "status": "completed"
+        }
+      ],
+      "run": 41292673925,
+      "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41292673925"
+    },
+    {
+      "branch": "codex/cdr-pd650-loaded-wave-analysis",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977298,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124808977460,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977468,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "All declared pilot and SoC regression proofs with fresh source checks"
+          ],
+          "conclusion": null,
+          "id": 124808977505,
+          "name": "formal-sweep (soc)",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124808977510,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977536,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124808977592,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124808978452,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41293340525,
+      "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293340525"
+    },
+    {
+      "branch": "codex/cdr-hbt-load",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124828047248,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate original inputs and run sampler-load candidate with original measurements"
+          ],
+          "conclusion": null,
+          "id": 124828357121,
+          "name": "simulate",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41299745896,
+      "source": "12f3e0f3bf7010289dc0f993ac71dbfa55cc19e4",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41299745896"
+    }
+  ],
   "latest_terminal_runs": {
     "cdr_actual_terminal_current_ledger": 40171679250,
     "cdr_current_ledger_controls": 40171508329,
@@ -99793,6 +100001,19 @@
     "supersedes_older_local_execution_preference": true,
     "tests_and_CAD_on_GitHub": true
   },
+  "local_cleanup_v237": {
+    "native_payloads_cloud_only": true,
+    "native_processes": 0,
+    "observed_at": "2026-11-01T11:15:04.583818+00:00",
+    "project_temp_entries": {
+      "/dev/shm": [],
+      "/tmp": [],
+      "/var/tmp": []
+    },
+    "source_API_derived_text_RAM_only": true,
+    "unrelated_user_files_not_modified": true,
+    "workspace_entries": 0
+  },
   "local_cleanup_verification": {
     "native_payloads_cloud_only": true,
     "native_processes": 0,
@@ -99806,7 +100027,7 @@
     "unrelated_user_files_not_modified": true,
     "workspace_entries": 0
   },
-  "local_workspace_verified_empty_at": "2026-11-01T10:58:43.416270+00:00",
+  "local_workspace_verified_empty_at": "2026-11-01T11:15:04.583818+00:00",
   "monitor": {
     "automatic_native_dispatch": false,
     "branch": "main",
@@ -141024,7 +141245,7 @@
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167",
     "source": "2a44527cd4a72a4e118c327eae484386e710b57e"
   },
-  "root_source_before_receipt": "17f2ee13f99c7da1d1a8c62d49584c0c041efc75",
+  "root_source_before_receipt": "8fe220489320d752a7abeccc7e76f36c81e8e635",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -141032,5 +141253,5 @@
     "sha256": "e91938bb7dc9cb4c57c934f1aa3b8fff562efc2e04d1e2726976afcb74d65835"
   },
   "schema_version": 1,
-  "updated_at": "2026-11-01T10:58:43.416270+00:00"
+  "updated_at": "2026-11-01T11:15:04.583818+00:00"
 }
