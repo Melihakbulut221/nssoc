@@ -9,6 +9,7 @@ import mainchip_targeted_counterpart_routing as scope_core
 import mainchip_container_floorplan_import as container
 import mainchip_saved_diode_routing_native as saved
 import mainchip_scoped_counterpart_restoration as fix
+import mainchip_qualified_pin_native_binding as qualified
 WORK=Path('/work/out/work/bulk-postdrt-antenna')
 DATA=Path('/work/out/bulk-postdrt-antenna')
 def read(name):return json.loads((DATA/name).read_bytes())
@@ -63,7 +64,8 @@ def main():
         native.p.run_phase(phase,restore if phase=='restore-plan'else power,verify,
             lambda name,value:native.save(DATA/name,value))
     else:
-        original_phase=container.clone(targeted.bind_phase(plan,scope),snapshot=canonical_snapshot)
+        physical=qualified.bind(native,scope_core,container.clone,plan,scope,Path("/work/tail-source"))
+        original_phase=container.clone(targeted.bind_phase(plan,scope),snapshot=canonical_snapshot,connectivity=physical)
         container.clone(native.main,phase=original_phase)()
     verify()
 if __name__=='__main__':main()

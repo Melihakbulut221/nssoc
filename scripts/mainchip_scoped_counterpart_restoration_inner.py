@@ -59,11 +59,15 @@ def main():
             value=execute(report,'scoped-'+label,kind,name,1200,runner=runner)
             row.update(status='complete',result=value)
             base.write('bulk-postdrt-scoped-progress.json',report)
-        report['original_physical_result']=c.decode((DATA/'result.json').read_bytes())
+        report['qualified_physical_result']=c.decode((DATA/'result.json').read_bytes())
         report['class_restoration']=c.decode((DATA/'scoped-class-restoration-plan.json').read_bytes())
         report['candidate']=fingerprint(WORK/'final-measured.odb')
-        report['restoration_and_original_audits_completed']=True
-        report['bounded_cycle_qualified']=report['original_physical_result']['bounded_cycle_qualified']
+        report['restoration_and_qualified_physical_audits_completed']=True
+        report['qualified_connectivity']=c.decode((DATA/'qualified-pin-conductor-binding.json').read_bytes())
+        assert report['qualified_connectivity']['status']=='COMPLETE'
+        assert report['qualified_connectivity']['native_adapter_executed']is True
+        report['original_wire_only_acceptance']=False
+        report['bounded_cycle_qualified']=report['qualified_physical_result']['bounded_cycle_qualified']
     except BaseException as exc:
         primary=exc;report['error']=c.error_record('scoped-class-restoration',exc)
     finally:
@@ -80,7 +84,7 @@ def main():
         if 'cgroup_initial'in report:c.attempt(report,'terminal-cgroup',terminal)
         c.attempt(report,'preserve-native-census',lambda:base.write('bulk-postdrt-scoped-available-output.json',base.preserve_available()))
         report['elapsed_seconds']=time.monotonic()-started
-        report['status']='COMPLETE_SCOPED_CLASS_RESTORATION_AND_ORIGINAL_AUDITS'if primary is None and not report['terminal_errors']and report.get('restoration_and_original_audits_completed')else'FAIL_SCOPED_CLASS_RESTORATION'
+        report['status']='COMPLETE_SCOPED_CLASS_RESTORATION_AND_QUALIFIED_PHYSICAL_AUDITS'if primary is None and not report['terminal_errors']and report.get('restoration_and_qualified_physical_audits_completed')else'FAIL_SCOPED_CLASS_RESTORATION'
         c.finish_record(OUT/'bulk-postdrt-scoped-inner-result.json',report,'FAIL_SCOPED_CLASS_RESTORATION',primary)
-    return 0 if report['status']=='COMPLETE_SCOPED_CLASS_RESTORATION_AND_ORIGINAL_AUDITS'else 1
+    return 0 if report['status']=='COMPLETE_SCOPED_CLASS_RESTORATION_AND_QUALIFIED_PHYSICAL_AUDITS'else 1
 if __name__=='__main__':sys.exit(main())

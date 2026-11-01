@@ -8,7 +8,7 @@ BASE='7a0776718ec37a106b7dfde0cbd477c6a2a5522f'
 REPO='repos/Melihakbulut221/nssoc/'
 GROUP='mainchip-bulk-postdrt-antenna'
 MANIFEST='scripts/mainchip-scoped-restoration-native-pins.json'
-NEW_NATIVE=('scripts/mainchip_scoped_counterpart_restoration.py','scripts/mainchip_scoped_counterpart_restoration_native.py','scripts/mainchip_scoped_counterpart_restoration_inner.py')
+NEW_NATIVE=('scripts/mainchip_scoped_counterpart_restoration.py','scripts/mainchip_scoped_counterpart_restoration_native.py','scripts/mainchip_scoped_counterpart_restoration_inner.py',"scripts/mainchip_qualified_pin_connectivity.py","scripts/mainchip_qualified_pin_native_binding.py","docs/evidence/restored-pin-gds-terminal-41314829887/derived/placed-pin-correspondence.json","docs/evidence/restored-pin-gds-terminal-41314829887/derived/result.json")
 SELECTED={
  'work/bulk-postdrt-antenna/routed-fixed.odb','work/bulk-postdrt-antenna/routed-fixed.def',
  'work/bulk-postdrt-antenna/fixed.def','work/bulk-postdrt-antenna/insertion.def',
@@ -35,7 +35,7 @@ def own_sources():
 def admission():
  assert os.environ.get('GITHUB_ACTIONS')=='true'and os.environ['GITHUB_RUN_ATTEMPT']=='1'
  assert os.environ['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'and os.environ['GITHUB_EVENT_NAME']=='workflow_dispatch'
- assert os.environ['GITHUB_REF']=='refs/heads/codex/mainchip-scoped-restoration'
+ assert os.environ['GITHUB_REF']=='refs/heads/codex/mainchip-qualified-restoration'
  source=os.environ['GITHUB_SHA'];rid=int(os.environ['GITHUB_RUN_ID']);control=int(os.environ['CONTROL_RUN'])
  assert source==subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
  run=api('actions/runs/'+str(control));jobs=api('actions/runs/'+str(control)+'/jobs?per_page=100')
@@ -144,8 +144,8 @@ def main():
   identity=build.create_owned(ctx,work,report,command,argv);c.validate_container(inspect(identity),ctx,work)
   command('bulk-postdrt-owned-container',['docker','start','--attach',identity],18000)
   inner=f.decode((out/'bulk-postdrt-scoped-inner-result.json').read_bytes())
-  assert inner['status']=='COMPLETE_SCOPED_CLASS_RESTORATION_AND_ORIGINAL_AUDITS'
-  assert inner['restoration_and_original_audits_completed']is True
+  assert inner['status']=='COMPLETE_SCOPED_CLASS_RESTORATION_AND_QUALIFIED_PHYSICAL_AUDITS'
+  assert inner['restoration_and_qualified_physical_audits_completed']is True
   assert all(inner[k]==0 for k in ('current_route_calls','current_repair_calls','current_reconstruction_calls'))
   assert all(inner[k]is False for k in p.FLAGS)
   report['native_result']=inner

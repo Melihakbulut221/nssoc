@@ -1,4 +1,4 @@
-name: Restore scoped classes and audit saved Route828 without rerouting
+name: Restore Route828 with GDS-qualified physical connectivity
 on:
   workflow_dispatch:
     inputs:
@@ -29,16 +29,36 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/mainchip_original_clock_restoration.py
-            /scripts/mainchip_targeted_counterpart_routing.py
-            /scripts/mainchip_scoped_counterpart_restoration.py
-            /scripts/check_mainchip_scoped_counterpart_restoration.py
-            /scripts/mainchip_scoped_counterpart_restoration_native.py
-            /scripts/mainchip_scoped_counterpart_restoration_inner.py
-            /scripts/cloud_mainchip_scoped_counterpart_restoration.py
-            /scripts/prepare_scoped_restoration_sources.py
-            /scripts/mainchip-scoped-restoration-native-pins.json
             /.github/workflows/cloud-evidence-summary.yml
+            /docs/evidence/pin-gds-primary/dbInst.cpp
+            /docs/evidence/pin-gds-primary/dbTransform.cpp
+            /docs/evidence/restored-pin-gds-terminal-41314829887/derived/placed-pin-correspondence.json
+            /docs/evidence/restored-pin-gds-terminal-41314829887/derived/result.json
+            /docs/evidence/restored-pin-metal-diagnosis-41312549409/derived/pin-metal-observation.json
+            /docs/evidence/restored-pin-metal-diagnosis-41312549409/derived/result.json
+            /docs/mainchip-pin-gds-correspondence.md
+            /docs/mainchip-qualified-native-restoration.md
+            /docs/mainchip-qualified-pin-connectivity.md
+            /scripts/check_mainchip_qualified_pin_native_binding.py
+            /scripts/check_mainchip_scoped_counterpart_restoration.py
+            /scripts/cloud_mainchip_connectivity_diagnosis.py
+            /scripts/cloud_mainchip_pin_gds.py
+            /scripts/cloud_mainchip_qualified_pin_connectivity.py
+            /scripts/cloud_mainchip_scoped_counterpart_restoration.py
+            /scripts/mainchip-connectivity-diagnosis-inputs.json
+            /scripts/mainchip-scoped-restoration-native-pins.json
+            /scripts/mainchip_bulk_postdrt_antenna.py
+            /scripts/mainchip_net459_connectivity.py
+            /scripts/mainchip_original_clock_restoration.py
+            /scripts/mainchip_qualified_pin_connectivity.py
+            /scripts/mainchip_qualified_pin_native_binding.py
+            /scripts/mainchip_scoped_counterpart_restoration.py
+            /scripts/mainchip_scoped_counterpart_restoration_inner.py
+            /scripts/mainchip_scoped_counterpart_restoration_native.py
+            /scripts/mainchip_single_antenna_trial.py
+            /scripts/mainchip_targeted_counterpart_routing.py
+            /scripts/prepare_mainchip_postroute_pdk.py
+            /scripts/prepare_scoped_restoration_sources.py
       - name: Verify exact adapter source and run class restoration controls
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
@@ -62,6 +82,10 @@ jobs:
           sparse-checkout: /scripts/mainchip-bounded-route-host-pins.json
       - name: Authenticate full original source without acquiring native archives
         run: python3 -B scripts/prepare_scoped_restoration_sources.py
+      - name: Install pinned source-control geometry libraries
+        run: python3 -m pip install --disable-pip-version-check klayout==0.30.2 zstandard==0.23.0
+      - name: Qualify native callback with all original 828 graphs and inherited model controls
+        run: python3 -B scripts/check_mainchip_qualified_pin_native_binding.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -88,16 +112,36 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/mainchip_original_clock_restoration.py
-            /scripts/mainchip_targeted_counterpart_routing.py
-            /scripts/mainchip_scoped_counterpart_restoration.py
-            /scripts/check_mainchip_scoped_counterpart_restoration.py
-            /scripts/mainchip_scoped_counterpart_restoration_native.py
-            /scripts/mainchip_scoped_counterpart_restoration_inner.py
-            /scripts/cloud_mainchip_scoped_counterpart_restoration.py
-            /scripts/prepare_scoped_restoration_sources.py
-            /scripts/mainchip-scoped-restoration-native-pins.json
             /.github/workflows/cloud-evidence-summary.yml
+            /docs/evidence/pin-gds-primary/dbInst.cpp
+            /docs/evidence/pin-gds-primary/dbTransform.cpp
+            /docs/evidence/restored-pin-gds-terminal-41314829887/derived/placed-pin-correspondence.json
+            /docs/evidence/restored-pin-gds-terminal-41314829887/derived/result.json
+            /docs/evidence/restored-pin-metal-diagnosis-41312549409/derived/pin-metal-observation.json
+            /docs/evidence/restored-pin-metal-diagnosis-41312549409/derived/result.json
+            /docs/mainchip-pin-gds-correspondence.md
+            /docs/mainchip-qualified-native-restoration.md
+            /docs/mainchip-qualified-pin-connectivity.md
+            /scripts/check_mainchip_qualified_pin_native_binding.py
+            /scripts/check_mainchip_scoped_counterpart_restoration.py
+            /scripts/cloud_mainchip_connectivity_diagnosis.py
+            /scripts/cloud_mainchip_pin_gds.py
+            /scripts/cloud_mainchip_qualified_pin_connectivity.py
+            /scripts/cloud_mainchip_scoped_counterpart_restoration.py
+            /scripts/mainchip-connectivity-diagnosis-inputs.json
+            /scripts/mainchip-scoped-restoration-native-pins.json
+            /scripts/mainchip_bulk_postdrt_antenna.py
+            /scripts/mainchip_net459_connectivity.py
+            /scripts/mainchip_original_clock_restoration.py
+            /scripts/mainchip_qualified_pin_connectivity.py
+            /scripts/mainchip_qualified_pin_native_binding.py
+            /scripts/mainchip_scoped_counterpart_restoration.py
+            /scripts/mainchip_scoped_counterpart_restoration_inner.py
+            /scripts/mainchip_scoped_counterpart_restoration_native.py
+            /scripts/mainchip_single_antenna_trial.py
+            /scripts/mainchip_targeted_counterpart_routing.py
+            /scripts/prepare_mainchip_postroute_pdk.py
+            /scripts/prepare_scoped_restoration_sources.py
       - name: Verify exact adapter source before dependency acquisition
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
@@ -120,7 +164,7 @@ jobs:
           sparse-checkout: /scripts/mainchip-bounded-route-host-pins.json
       - name: Authenticate full original source without acquiring native archives
         run: python3 -B scripts/prepare_scoped_restoration_sources.py
-      - name: Restore original classes and execute original native physical audits
+      - name: Restore classes and execute qualified physical audits
         run: python3 -B scripts/cloud_mainchip_scoped_counterpart_restoration.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
