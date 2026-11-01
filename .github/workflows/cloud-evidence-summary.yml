@@ -1,39 +1,54 @@
-# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
-# SPDX-License-Identifier: Apache-2.0
-name: cloud-evidence-summary
+name: Verify PCIe raw alignment nettype and prepared SoC lint
 on:
   workflow_dispatch:
-    inputs:
-      release:
-        description: Exact release containing the archive
-        default: cloud-migration-20261012-000
-        required: false
-      asset:
-        description: Exact archive asset name
-        default: routed-setup-cloud-38306421942-1.tar.gz
-        required: true
-      member:
-        description: Exact JSON or UTF-8 report member to read
-        default: cloud-routed-setup/result.json
-        required: true
 permissions:
   contents: read
+env:
+  SOC_INTERFACE_PROFILE: base
+concurrency:
+  group: pcie-raw-align-nettype-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
-  summarize:
+  prepared-lint:
     runs-on: ubuntu-24.04
-    permissions:
-      contents: write
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          ref: ${{ github.sha }}
           persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Read exact report in cloud and publish source binding
-        env:
-          GH_TOKEN: ${{ github.token }}
-          ASSET: ${{ inputs.asset || 'routed-setup-cloud-38306421942-1.tar.gz' }}
-          MEMBER: ${{ inputs.member || 'cloud-routed-setup/result.json' }}
-          RELEASE: ${{ inputs.release || 'cloud-migration-20261012-000' }}
-        run: python3 scripts/summarize_cloud_evidence.py --asset "$ASSET" --member "$MEMBER" --release "$RELEASE"
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ github.token }}
+      - name: Prepare the same pinned processor and firmware tools
+        run: |
+          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          python3 -m venv .venv
+          .venv/bin/pip install -r sw/requirements.txt -r hw/requirements.txt
+          make soc-prepare
+      - name: Compile raw alignment with implicit nets forbidden
+        run: |
+          mkdir -p hw/soc/out/raw-align-nettype
+          iverilog -g2012 -s soc_pcie_gen12_raw32_align -o hw/soc/out/raw-align-nettype/alignment.vvp hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v
+      - name: Original prepared upstream compatibility and whole SoC elaboration
+        run: |
+          set -o pipefail
+          make soc-prepared-guards 2>&1 | tee hw/soc/out/raw-align-nettype/prepared-guards.log
+      - name: Original whole SoC lint and unchanged diagnostic ledger
+        run: |
+          set -o pipefail
+          PY=.venv/bin/python bash scripts/ci_local.sh lint 2>&1 | tee hw/soc/out/raw-align-nettype/lint.log
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: raw-align-nettype-${{ github.run_id }}
+          path: |
+            hw/soc/out/raw-align-nettype/*.log
+            hw/soc/out/lint-*/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 90
