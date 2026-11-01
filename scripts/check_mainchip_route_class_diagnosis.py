@@ -25,7 +25,9 @@ def main():
     r,_,_=run(record(connection='u2'));assert r['connection_prefix_changes']==1 and r['class_normalized_changed_records']==1;checks.append('connection_change_reported')
     r,_,_=run(record(kind=None));assert r['strict_restorer_failures']==1 and r['class_normalized_changed_records']==1;checks.append('lost_selected_wire_reported')
     r,_,_=d.analyze(fixture(record(kind=None)),fixture(record()),{'protected':None},['mutable']);assert r['strict_restorer_failures']==1;checks.append('new_wire_on_unwired_selected_reported')
-    r,_,_=d.analyze(fixture(record(kind=None)),fixture(record(kind=None)),{'protected':None},['mutable']);assert r['strict_restorer_failures']==0;checks.append('retained_unwired_selected')
+    unwired_with_guard=fixture(record(kind=None)).replace(b'NETS 2',b'NETS 3').replace(b'END NETS',record('guard')+b'END NETS')
+    r,_,_=d.analyze(unwired_with_guard,unwired_with_guard,{'protected':None,'guard':'ROUTED'},['mutable']);assert r['strict_restorer_failures']==0;checks.append('retained_unwired_selected_with_original_required_wired_record')
+    expect('all_unwired_original_restorer_precondition',lambda:d.analyze(fixture(record(kind=None)),fixture(record(kind=None)),{'protected':None},['mutable']))
     expect('mutable_overlap',lambda:run(record(),mutable=['mutable','protected']))
     expect('duplicate_mutable',lambda:run(record(),mutable=['mutable','mutable']))
     expect('missing_partition_owner',lambda:run(record(),mutable=[]))
@@ -42,4 +44,10 @@ def main():
     out=Path('cloud-route-class-controls');out.mkdir(exist_ok=False)
     (out/'controls.json').write_text(json.dumps(dict(status='PASS_READ_ONLY_CLASS_DIAGNOSIS_CONTROLS',checks=checks,count=len(checks)),indent=2)+'\n')
     print(json.dumps(dict(count=len(checks),status='PASS_READ_ONLY_CLASS_DIAGNOSIS_CONTROLS')))
-if __name__=='__main__':main()
+if __name__=='__main__':
+    try:main()
+    except BaseException as exc:
+        import traceback
+        out=Path('cloud-route-class-controls');out.mkdir(exist_ok=True)
+        (out/'failure.json').write_text(json.dumps(dict(error=repr(exc),traceback=traceback.format_exc()),indent=2)+'\n')
+        raise
