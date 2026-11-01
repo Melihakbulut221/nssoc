@@ -157,8 +157,58 @@ def controls():
     need(reuse_access(synthetic,bad,stacked,{})is None,"reject unowned lower metal");passed.append("reject reused stack without lower same-net metal")
     need(len(passed)==31,"19 unchanged plus12 geometry controls");return passed
 
+
+def refined_m1_access(anchor,owned,full,other):
+    x,y=anchor["point_dbu"]
+    need(anchor["metal"]==8 and (box(x,y,1)-owned[8]).is_empty(),"actual M1 reference belongs to extracted net")
+    # Erode the ORIGINAL same-net metal by the exact 95nm cut half-width
+    # plus 50nm lower enclosure. This proposes centres, not new M1 geometry.
+    centres=(owned[8].sized(-145)&box(x,y,10000)).merged()
+    seeds=set()
+    for poly in centres.each():
+        b=poly.bbox()
+        for xx in(b.left+1,(b.left+b.right)//2,b.right-1):
+            for yy in(b.bottom+1,(b.bottom+b.top)//2,b.top-1):
+                for px in(xx//5*5,(xx//5+1)*5):
+                    for py in(yy//5*5,(yy//5+1)*5):
+                        if (box(px,py,1)-centres).is_empty():seeds.add((px,py))
+    ordered=sorted(seeds,key=lambda p:((p[0]-x)**2+(p[1]-y)**2,p))[:24]
+    attempts=[]
+    for point in ordered:
+        search_anchor=dict(anchor,point_dbu=list(point))
+        got,report=access(search_anchor,owned,full,other)
+        attempts.append(dict(search_center=list(point),report=report))
+        if got is not None:
+            return got,dict(reason=None,original_anchor_point_dbu=[x,y],anchor_reference_not_moved=True,search_seed_only=True,
+                geometric_m1_refinement=True,lower_enclosure_erosion_dbu=145,
+                candidate_centres=len(seeds),attempted_refinements=attempts,
+                admitted_sites=report["admitted_sites"],landing_bbox=report["landing_bbox"])
+    return None,dict(reason="no legal original-guard access after exact M1 enclosure refinement",original_anchor_point_dbu=[x,y],anchor_reference_not_moved=True,candidate_centres=len(seeds),attempted_refinements=attempts,admitted_sites=[])
+def refined_m1_controls():
+    own={n:pya.Region()for n in LAYERS}
+    own[8]=pya.Region(pya.Box(-3000,-130,3000,170))
+    a=dict(metal=8,point_dbu=[0,0]);before=encode(a)
+    got,_=access(a,own,own,{})
+    need(got is None,"coarse original seeds cannot enclose the offset narrow strip")
+    got,report=refined_m1_access(a,own,own,{})
+    need(got is not None and len(report["admitted_sites"])>=2,"exact original metal permits refined via array")
+    need(encode(a)==before and report["anchor_reference_not_moved"],"original reference and metal not moved")
+    checks=["refine offset narrow M1 strip with unchanged original guards","original M1 reference unchanged"]
+    narrow={n:r.dup()for n,r in own.items()};narrow[8]=box(0,0,100)
+    got,report=refined_m1_access(a,narrow,narrow,{})
+    need(got is None and report["candidate_centres"]==0,"reject metal too narrow for original enclosure");checks.append("reject insufficient real M1 enclosure")
+    full={n:r.dup()for n,r in own.items()};full[10]=box(0,0,20000)
+    got,report=refined_m1_access(a,own,full,{})
+    need(got is None,"refinement cannot bypass foreign M2 guard");checks.append("refined sites still reject foreign M2")
+    return checks
+
 def terminal_access(anchor,owned,full,other):
-    if anchor["metal"]==8:return access(anchor,owned,full,other)
+    if anchor["metal"]==8:
+        got,report=access(anchor,owned,full,other)
+        if got is not None:return got,report
+        new,refinement=refined_m1_access(anchor,owned,full,other)
+        refinement["original_bounded_search"]=report
+        return new,refinement
     need(anchor["metal"]==10,"supported actual terminal metal M1 or M2")
     x,y=anchor["point_dbu"];touch=box(x,y,1)
     need((touch-owned[10]).is_empty(),"actual M2 terminal reference lies in its extracted own net")
@@ -375,7 +425,7 @@ def verify_target(base,source_label,a,sink_label,b):
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
-        cfg=gate();passed=controls()+direct_m2_controls();save("controls.json",dict(count=len(passed),passed=passed))
+        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
         need(sys.argv[1:]==["--generate"],"explicit generation")
         reserve(wait=True)
