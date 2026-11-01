@@ -1,11 +1,39 @@
-# Cloud continuation — checkpoint v253
+# Cloud continuation — checkpoint v254
 
-Updated: 2026-11-01T16:16:00.390059+00:00
+Updated: 2026-11-01T16:44:03.126112+00:00
 
 Latest instruction: **her şeyi bulutta yap, lokalde bir şey bırakma temizle.**
 It overrides the earlier local-execution wording in the active goal. All CAD, simulation, native archive/layout/waveform acquisition and numerical/geometric analysis run on GitHub. Local coordination uses source/API-derived text in RAM only. Never acquire native ODB/DEF/GDS/SPICE/raw archives locally, including RAM. The local workspace and project temp entries were verified empty, with no local CAD processes. Unrelated user files remain untouched.
 
-## Latest result: A/C buffer drive candidate qualified and native screening dispatched
+## Latest result: buffer drive experiment rejected; full raw diagnosis completed
+
+Actual native run41325168813/source43fd3f71a289fef004aeb41cd2d0972d81f76f41 finished with electrical rejection, not timeout. Engine return0,1088.429415022s, no diagnostics. All six original data checks failed; device limits failed. Phase40.0143933667mV passes30mV and loaded V/I passes. Native archive and failures are durably published in release430697288/tag cloud-results-41325168813-1-cdr-sampler-load. Complete71-file derived/native-publication proof990d448dd8f502691046b7b6dbb4ae2621e87375 is imported under docs/evidence/buffer-drive-native-terminal-41325168813 (receipt a3295ba5cfabd0a1791f7d77789e4ad9ec7f97426b7217502b89eae6dab41ff5). No native archive was acquired locally.
+
+Cloud full-wave run41327211667/source9c5843a973b5a0175d137af0780ae1b5aca46968 on codex/cdr-buffer-wave-analysis PASSED62 reader controls, authenticated all124 native archive members and independently reproduced every original six-data/phase/device/V-I measurement. It is a successful diagnosis of a failed circuit. Complete25-file proof fc2d712203a350ba8a68d7c650290c771a597a29 is imported under docs/evidence/buffer-drive-wave-terminal-41327211667 (receipt76751db63c22a55ec771dae301222f5de480be5e76b245b40cdb12874752e70f).
+
+Nine actual HBT minimum-active-VCE failures against unchanged0.4V:
+129=0.39647300049766077V;
+137=0.29473418798359907V;
+139=0.2964981295741759V;
+142=0.27748090769744127V;
+143=0.27614763950230437V;
+155=0.34184134412719663V;
+157=0.3445799462464897V;
+160=0.33242284308074294V;
+161=0.32964571373351964V.
+These are C-buffer tail129 and all eight XOR selectors. The prior width2 parent passed device limits. Increasing tail Nx4 to8 and halving collector load length therefore cannot be adopted as a fix.
+
+Compared with width2 parent41306148937, A/B below100mV sample counts stay97/25; C wrong signs30 to31 and D stays33. X wrong signs418 to383, Y6 to12. All six data gates remain false. At0.6UI with all255 A source samples valid, A-divider wrong signs remain0 while A-buffer wrong signs worsen111 to125. New A/C mean tail currents are3.582214/3.566502mA, compared with2.529654/2.513732mA for width2. A/C tail minimum-active-VCE becomes0.483172/0.396473V. Do not infer current doubles merely because Nx doubles; measured common-mode/headroom/loading must govern the next design.
+
+Next PHY work: use the actual physical driver/consumer snapshots and sampler worst-bit windows to address the upstream A/B margin/settling failures, C/D bit errors, and divider/buffer/XOR common-mode and headroom. Preserve the width2 device-safe baseline and failed Nx8 trial. Do not just repeat stronger drive or relax thresholds. Any new geometry remains exploratory until regenerated legal layout, fresh extracted RC, corners and full closed-loop/link proof. Existing current evidence is NOT a full serial PHY or chip timing result.
+
+The reader now accepts a passing device flag only if its recomputed decision agrees, rather than hardcoding failure. Data_passed is independently enforced as ALL six data checks AND the original phase gate. It additionally reproduces loaded V/I against the original frozen producer statements;62 controls include exact original VI comparison on four fixtures and invalid combined-data flags. All original electrical limits and accepted=false/full-PHY scope are retained.
+
+Mainchip full64 native run41323446729/sourceff1c0e6163e0ba1537a075d50e940fafc9332c64 remains active; observe existing job/release430685443, never duplicate it. After terminal publication authenticate outputs on cloud, restore original route classes on actual new pins, requalify native connectivity/GDS, measure DRC/antenna, export matching diode-inclusive netlist and extract fresh RC for unchanged three-corner setup/hold. Old candidate/142-net pin proof and old netlist/SPEF are not new-route evidence.
+
+All CAD/native acquisition/analysis stays on GitHub. Local workspace/task temp remain empty, source/API-derived text coordination uses RAM only. Eight-hour monitor remains read-only and inventories689 runs. Full serial PHY, physical routing closure and final timing remain open.
+
+## Previous checkpoint v253: A/C buffer drive candidate qualified and native screening dispatched
 
 Width2 diagnosis showed source-valid A divider samples arriving before the buffered output, with A/C tail minimum active VCE of0.573442/0.486867V against0.4V. Width2 native41306148937 passed device/VI and37.080mV phase but failed all six data gates. The new source43fd3f71a289fef004aeb41cd2d0972d81f76f41 on codex/cdr-buffer-drive changes exactly two tail HBTs126/129 from Nx4 to8 and four collector loads232/233/243/244 from length1.8um to0.9um, retaining width8um. All12 width2 dividers,200MOS units, physical terminals, remaining geometry and original measurement/current/data/phase predicates are retained. Reversing all six edits restores exact parent bytes and descriptors. Both the500-device binder and650-device native model receive identical edits and actual binding exposes Nx8 for both tails. This is a native electrical experiment, not layout acceptance.
 

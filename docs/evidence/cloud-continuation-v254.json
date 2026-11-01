@@ -1,0 +1,120 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "native_processes": [],
+    "observed_at": "2026-11-01T16:44:03.126112+00:00",
+    "project_temp_entries": {
+      "/dev/shm": [],
+      "/tmp": [],
+      "/var/tmp": []
+    },
+    "source_API_derived_text_RAM_only": true,
+    "unrelated_user_files_not_modified": true,
+    "workspace_entries": 0
+  },
+  "creation_mutations_already_executed": true,
+  "note": "## Latest result: buffer drive experiment rejected; full raw diagnosis completed\n\nActual native run41325168813/source43fd3f71a289fef004aeb41cd2d0972d81f76f41 finished with electrical rejection, not timeout. Engine return0,1088.429415022s, no diagnostics. All six original data checks failed; device limits failed. Phase40.0143933667mV passes30mV and loaded V/I passes. Native archive and failures are durably published in release430697288/tag cloud-results-41325168813-1-cdr-sampler-load. Complete71-file derived/native-publication proof990d448dd8f502691046b7b6dbb4ae2621e87375 is imported under docs/evidence/buffer-drive-native-terminal-41325168813 (receipt a3295ba5cfabd0a1791f7d77789e4ad9ec7f97426b7217502b89eae6dab41ff5). No native archive was acquired locally.\n\nCloud full-wave run41327211667/source9c5843a973b5a0175d137af0780ae1b5aca46968 on codex/cdr-buffer-wave-analysis PASSED62 reader controls, authenticated all124 native archive members and independently reproduced every original six-data/phase/device/V-I measurement. It is a successful diagnosis of a failed circuit. Complete25-file proof fc2d712203a350ba8a68d7c650290c771a597a29 is imported under docs/evidence/buffer-drive-wave-terminal-41327211667 (receipt76751db63c22a55ec771dae301222f5de480be5e76b245b40cdb12874752e70f).\n\nNine actual HBT minimum-active-VCE failures against unchanged0.4V:\n129=0.39647300049766077V;\n137=0.29473418798359907V;\n139=0.2964981295741759V;\n142=0.27748090769744127V;\n143=0.27614763950230437V;\n155=0.34184134412719663V;\n157=0.3445799462464897V;\n160=0.33242284308074294V;\n161=0.32964571373351964V.\nThese are C-buffer tail129 and all eight XOR selectors. The prior width2 parent passed device limits. Increasing tail Nx4 to8 and halving collector load length therefore cannot be adopted as a fix.\n\nCompared with width2 parent41306148937, A/B below100mV sample counts stay97/25; C wrong signs30 to31 and D stays33. X wrong signs418 to383, Y6 to12. All six data gates remain false. At0.6UI with all255 A source samples valid, A-divider wrong signs remain0 while A-buffer wrong signs worsen111 to125. New A/C mean tail currents are3.582214/3.566502mA, compared with2.529654/2.513732mA for width2. A/C tail minimum-active-VCE becomes0.483172/0.396473V. Do not infer current doubles merely because Nx doubles; measured common-mode/headroom/loading must govern the next design.\n\nNext PHY work: use the actual physical driver/consumer snapshots and sampler worst-bit windows to address the upstream A/B margin/settling failures, C/D bit errors, and divider/buffer/XOR common-mode and headroom. Preserve the width2 device-safe baseline and failed Nx8 trial. Do not just repeat stronger drive or relax thresholds. Any new geometry remains exploratory until regenerated legal layout, fresh extracted RC, corners and full closed-loop/link proof. Existing current evidence is NOT a full serial PHY or chip timing result.\n\nThe reader now accepts a passing device flag only if its recomputed decision agrees, rather than hardcoding failure. Data_passed is independently enforced as ALL six data checks AND the original phase gate. It additionally reproduces loaded V/I against the original frozen producer statements;62 controls include exact original VI comparison on four fixtures and invalid combined-data flags. All original electrical limits and accepted=false/full-PHY scope are retained.\n\nMainchip full64 native run41323446729/sourceff1c0e6163e0ba1537a075d50e940fafc9332c64 remains active; observe existing job/release430685443, never duplicate it. After terminal publication authenticate outputs on cloud, restore original route classes on actual new pins, requalify native connectivity/GDS, measure DRC/antenna, export matching diode-inclusive netlist and extract fresh RC for unchanged three-corner setup/hold. Old candidate/142-net pin proof and old netlist/SPEF are not new-route evidence.\n\nAll CAD/native acquisition/analysis stays on GitHub. Local workspace/task temp remain empty, source/API-derived text coordination uses RAM only. Eight-hour monitor remains read-only and inventories689 runs. Full serial PHY, physical routing closure and final timing remain open.\n",
+  "proofs": [
+    {
+      "all_readbacks_verified": true,
+      "bytes": 6251349,
+      "conclusion": "failure",
+      "files": 71,
+      "head": "990d448dd8f502691046b7b6dbb4ae2621e87375",
+      "prefix": "docs/evidence/buffer-drive-native-terminal-41325168813",
+      "receipt_sha256": "a3295ba5cfabd0a1791f7d77789e4ad9ec7f97426b7217502b89eae6dab41ff5",
+      "run": 41325168813,
+      "source": "43fd3f71a289fef004aeb41cd2d0972d81f76f41",
+      "tree": "1af9d7e119ccf3ea401553c9906a443d79b51902"
+    },
+    {
+      "all_readbacks_verified": true,
+      "bytes": 5765747,
+      "conclusion": "success",
+      "files": 25,
+      "head": "fc2d712203a350ba8a68d7c650290c771a597a29",
+      "prefix": "docs/evidence/buffer-drive-wave-terminal-41327211667",
+      "receipt_sha256": "76751db63c22a55ec771dae301222f5de480be5e76b245b40cdb12874752e70f",
+      "run": 41327211667,
+      "source": "9c5843a973b5a0175d137af0780ae1b5aca46968",
+      "tree": "c3405536a370a1aa17dd18440999b91acb97968e"
+    }
+  ],
+  "runs": [
+    {
+      "branch": "codex/cdr-buffer-drive",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124903489709,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124903702846,
+          "name": "simulate",
+          "status": "completed"
+        }
+      ],
+      "run": 41325168813,
+      "source": "43fd3f71a289fef004aeb41cd2d0972d81f76f41",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41325168813"
+    },
+    {
+      "branch": "codex/cdr-buffer-wave-analysis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124909560457,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124909610406,
+          "name": "completed-wave-analysis",
+          "status": "completed"
+        }
+      ],
+      "run": 41327211667,
+      "source": "9c5843a973b5a0175d137af0780ae1b5aca46968",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41327211667"
+    },
+    {
+      "branch": "codex/mainchip-full64-native",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124898338248,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Execute and preserve actual full64 route"
+          ],
+          "conclusion": null,
+          "id": 124898487629,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41323446729,
+      "source": "ff1c0e6163e0ba1537a075d50e940fafc9332c64",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41323446729"
+    }
+  ],
+  "version": 254
+}

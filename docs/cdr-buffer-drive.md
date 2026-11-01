@@ -24,4 +24,7 @@ Current status: source implementation prepared; controls and native outcome must
 
 ## Execution evidence
 
-Independent source controls41325031300 passed all67 new refusals plus inherited suites. Native run41325168813 is dispatched on the exact same source; electrical outcome remains pending. Full source proof is in docs/evidence/buffer-drive-controls-terminal-41325031300. See CLOUD_RESUME.md for the latest observation.
+Independent source controls41325031300 passed all67 new refusals plus inherited suites. Native run41325168813 completed and was electrically rejected:engine return0/no diagnostics; phase40.014mV and VI pass, but all six data checks and nine HBT minimum-active-VCE limits fail. Cloud waveform analysis41327211667 passed62 controls, authenticated124 native members and reproduced all original device/data/phase/VI results. This candidate is not adopted. Full source proof is in docs/evidence/buffer-drive-controls-terminal-41325031300. See CLOUD_RESUME.md for the latest observation.
+
+Native terminal proof: docs/evidence/buffer-drive-native-terminal-41325168813.
+Independent full-wave proof: docs/evidence/buffer-drive-wave-terminal-41327211667.
