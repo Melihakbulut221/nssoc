@@ -8,6 +8,14 @@ The existing seven frozen-reader, thirteen event and eight transfer controls rem
 
 This is evidence for choosing the next actual circuit edit, not a fullPHY, regenerated layout, freshPEX or finaltiming acceptance.
 
-## Executed source
+## Completed actual diagnosis
 
-Source93fcfe9d9287e1ff9090e96e69000588f6c7eb66, branchcodex/cdr-mixed20-wave-diagnosis, run41284095439. Source controls and exact composition-digest preflight succeeded before native archive acquisition. The existing-wave diagnosis was observed active. This checkpoint claims no final diagnosis result; revalidate the same run and preserve its complete emitted evidence when terminal. Never restart because an observation window expires.
+Run41284095439/source93fcfe9d9287e1ff9090e96e69000588f6c7eb66 succeeded. Seven frozen-reader, thirteen event and eight transfer controls passed. The preflight complete500-device prediction matched the indexed native composition bytes/SHA before raw acquisition. The runner then verified all109 archive members, extracted the existing waveform and reproduced the original capture,124HBT metrics, six stages/1530delays and phase/VI. No simulator rerun, gate change or geometry change occurred.
+
+Full35-file proofe62b19e3d08245b9993160e0bdc2db1468a1cef4, docs/evidence/cdr-sampler-candidate-wave-41284095439, preserves allsource/input/output/control/log evidence. Native payloads remain exclusively on GitHub.
+
+Bounded125ps sampler-to-buffer correspondence: A->AD40/127, C->CD22/128, D->S0 andD->S1 each14/128; no ambiguous matches. These are diagnostic event counts, not passing electrical samples. Different matching subsets prohibit summing stage medians. The original A/C/D/X/Y failures remain.
+
+B->D128/128 crossings matched with median71.229229ps and expected sequence-index lag0. A->C0/127 matched within the125ps window; expected sequence-index lag1 and128 target transitions remain recorded. Missing-in-window by itself does not prove lost bits; all preceding/following crossings remain in the full result. The C/D original-deadline margins and wrong-sign samples are independent genuine gate failures.
+
+Same-time latch and clock-emitter analysis41284522943/source7e4277e5d0d6ab629541cf4f00905762fcb6459f also succeeded; full14-file proofdfa424f2d2bf58bf35adcef6bec6c8f9fb1d6604. See cdr-mixed20-cd-latch-diagnosis.md. Neither job qualifies the circuit for layout or establishes fullPHY/finaltiming.

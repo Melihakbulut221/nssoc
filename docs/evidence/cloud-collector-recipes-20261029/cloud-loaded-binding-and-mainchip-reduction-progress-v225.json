@@ -1,0 +1,585 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "native_processes": 0,
+    "observed_at": "2026-11-01T07:27:36.375500+00:00",
+    "source_API_derived_text_RAM_only": true,
+    "tmp": {
+      "/tmp": [],
+      "/var/tmp": []
+    },
+    "unrelated_user_files_not_modified": true,
+    "workspace_entries": 0
+  },
+  "final_timing_complete": false,
+  "full_serial_phy_accepted": false,
+  "native_payloads_acquired_locally": false,
+  "progress": {
+    "authored_documents": {
+      "docs/cdr-cd-output-load-restore.md": "# A/C divider with original C/D output loads\n\nThis controlled experiment starts from the rejected A/C-divider candidate sourcee2e753c37fcff8b8fef85695208b8157a7399b57, actual native run41280806504. Its clean731.256152s simulation passed device predicates but only samplerB passed data validity. A/C-divider changes raised phase13.177843mV andVI42.150650uA relative to q15, still below30mV/50uA; A/C/D andX/Y timing remain rejected. Full64-file terminal proofe5bd8c9efb5ce8726416f0366b42eeb28aca19e1 and actual16-control comparison41282030219/full15prooff1dc2fcb4893382082993f15595647a0c50628e5 preserve all original measurements.\n\nThe q15 same-time diagnosis41282425236/sourceae6db2f7ee9a11bad03154f5401ca9837a3db6fb authenticates complete C/D follower, input-buffer, master, slave, hold and clock topology. At the worst original sample at3.1ns, C slave input differential magnitude is140.084623mV but output33.754185mV; D input157.171451mV but output22.772750mV. Same-time differential collector currents are4.212637mA and4.548597mA. These are transient snapshots, not a DC Ohm-law estimate or proof of a particular fix.\n\n## Exact new hypothesis\n\nRestore the four C/D output-load resistors XD175/176/212/214 from the prior candidate1.5um/W32 to their original2.6um/W32 by removing them from the intrinsic rewrite. Keep A/B output loads XD191/194/202/205 at1.5um/W32. Keep original master loads unchanged, prior four buffer pullups1um/W8, four shunts3.4um/W4 and eight A/C divider lengths1.8um/10.8um,W1.\n\nExactly20 intrinsic length tokens differ from the authenticated original500-device model. This separates retimed C/D loading from A/B loading. It may improve output amplitude but may worsen settling or voltage headroom; the existing original whole-model gates decide. The earlier global q20 output-load sweep is not a proof of this mixed-load candidate.\n\nSource controls authenticate every selected original parameter/ordered native terminal, preserve exact untouched C/D synthetic cards and all other original bytes/metadata, and retain21 corruption plus5 archive refusals. Actual preparation retains13 original binding refusals. Original prepare/measure bodies,1151vectors,10ohm sources,150fF sampler/50fF XOR loads,stimulus and all electrical limits are unchanged. D-selector divider networks, every MIM and HBT size stay unchanged.\n\nAll work executes on GitHub. Only a successful exact-source control proof and independently reserved empty exact-source release admit the actual simulation. Baseline distributed RC is retained for this intrinsic experiment; no new layout/fresh PEX/closed-loop/fullPHY/finaltiming acceptance is claimed. Preserve all failures. Do not reuse the prior24-target map as proof of a new regenerated layout.\n\n## Completed native result\n\nControls41282742236/source8c7b5cdd86447fe374ae06064f2fef735a7c9b91 passed21 mutation and5 archive refusals. Independent empty exact-source release430414047/tagcloud-results-41282867236-1-cdr-sampler-load admitted exactly one native41282867236.\n\nThe engine completed in706.750878665s with exit0, no diagnostics and unchanged sources. Device predicates passed, including all124HBT,50MOS,7MIM and tail groups. The complete circuit was rejected under unchanged electrical gates.\n\n| Stage | Maximum delay ps | Minimum signed margin mV | Below100mV samples | Wrong-sign samples | Pass |\n| --- | ---: | ---: | ---: | ---: | --- |\n| A |41.40625|65.242374|97|0|no|\n| B |37.34375|105.191923|0|0|yes|\n| C |118.90625|-12.305347|160|27|no|\n| D |104.53125|-18.856008|128|48|no|\n| X |118.90625|-120.401645|749|385|no|\n| Y |118.90625|-20.254185|687|56|no|\n\nPhase21.159943mV still fails30mV. VI62.965906uA passes50uA; output18.591273mV passes5mV and bias passes. Despite improved phase/VI relative to the prior24-target A/C experiment, C/D now have wrong-sign samples and all A/C/D/X/Y validity gates remain false. Do not promote this intrinsic candidate to layout or continue a blind common output-load sweep.\n\nComplete64-file proof740a55daac8798d2f3af976919609d5f7a2353c8, docs/evidence/cdr-sampler-load-terminal-41282867236, retains every failure. Native archive1054102581 bytes/SHA256577686ccfb6b9a09502185da3d5ec89add0f9a5a24374486e251ff8eb42d379d is in four release parts on GitHub; no native payload was acquired locally.\n\nActual original-gate comparison41284059156/source93458f9d15f762a194bb02d9314a8d211a9c1d80 passed18 corruption controls and authenticated the full measured result; full15-file proofafd1a4f68e882c3124867e6eca2f34600b951875. This successful comparison confirms circuit rejection.\n\nThe new20-target physical map41283407710/source1e5bd82f6587c5ac2f764a286802aa858922aaa8 passed16 controls and all500device/4928instance matching. Only A/B191/194/202/205 require private cells; their195/196/207/208 master-load siblings stay untouched. Map preparation is not geometry acceptance.\n\nExisting-wave diagnosis41284095439/source93fcfe9d9287e1ff9090e96e69000588f6c7eb66 completed successfully; full35-file proofe62b19e3d08245b9993160e0bdc2db1468a1cef4. It verified all109 archive members and reproduced all124HBT, six-stage1530-delay and phase/VI results from the same native waveform, without rerunning simulation. Same-time C/D and clock-emitter diagnosis41284522943 also completed; full14-file proofdfa424f2d2bf58bf35adcef6bec6c8f9fb1d6604. See cdr-mixed20-wave-diagnosis.md and cdr-mixed20-cd-latch-diagnosis.md for failures, limitations and the next scoped drive hypothesis.\n",
+      "docs/cdr-mixed20-cd-latch-diagnosis.md": "# Mixed20 same-time C/D latch and bias connectivity\n\nRun41284522943/source7e4277e5d0d6ab629541cf4f00905762fcb6459f succeeded using only immutable derived JSON from native41282867236 and full-wave diagnosis41284095439. Full14-file proofdfa424f2d2bf58bf35adcef6bec6c8f9fb1d6604, docs/evidence/cd-latch-diagnosis-41284522943. Four original failure events retain all124 simultaneous HBT identities, terminal voltages and collector currents; complete native500 topology is authenticated. Fourteen is a file count, not a synthetic test count.\n\nAt the worst original sample3.1ns, cp1.398632394V andcn1.177041289V:\n* C slave-input differential is-139.170264mV; sampled output is-12.305347mV when positive is expected. Slave differential collector current-4.198178mA, total5.166561mA.\n* D slave-input differential is-156.446528mV; sampled output is-18.856008mV when positive is expected. Slave differential collector current-4.535684mA, total5.217070mA.\n* C/D slave-data-clock totals5.005164/5.003524mA; slave-hold clocks33.734770/31.135065uA. Master-hold clocks carry5.635939/5.629088mA while master-data-clock totals46.110003/45.115736uA.\n\nThe slave-input sign is measured first-minus-second B terminal of an inverting differential pair; it must not be equated directly with the required output sign. These139\u2013156mV values are slave inputs/master outputs, not master inputs. C/D master-input differences107.273204/206.277964mV are separately recorded.\n\n## Actual clock emitter connectivity\n\n| Block | Native emitter cluster | MOS drain neighbors | Shared MOS gate cluster | Diode-connected reference |\n| --- | --- | --- | --- | --- |\n| C master |124|32,33,34,35|123|40|\n| C slave |127|36,37,38,39|123|40|\n| D master |38|3,4,5,6|25|11|\n| D slave |30|7,8,9,10|25|11|\n\nEach listed drain-neighbor MOS is sg13_lv_nmos withW36um,L0.3um,m1,ng1,ad/as12.24um2,pd/ps72.68um,rfmode0. References11/40 areW8um,L0.3um. C followers/buffer bias MOS30/31 andD1/2 also share the respective gate cluster and areW53.335um. These are complete native net-cluster connections, not collapsed distributed-RC nodes or proof of simultaneous MOS current.\n\nActual all-time HBT checks remain in native report453667B/SHA256096476d0dc446b3e16ad5e2263b5d73f5b4be43c8ccc031bbdd9cfda6d20b643. Master-data clocks Q61/Q62 have minimumactiveVCE0.407017/0.408186V andQ115/Q1160.410240/0.411376V, close to the unchanged0.4V floor. Slave clock minimumVCEs are higher; all original predicates passed for this rejected intrinsic candidate. This does not predict a new bias setting will pass.\n\n## Next controlled circuit question\n\nThe resistor-only experiments have not closed sampler validity. A useful next experiment is isolated slave current-source drive, preserving shared reference devices11/40, master mirrors3..6/32..35 and input-buffer/follower mirrors1/2/30/31. The proposed target set is only slave MOS7..10/36..39. Start from the existing fast-output A/C24 candidatee2e753c37fcff8b8fef85695208b8157a7399b57, whose C/D samples had small positive margins, and evaluate a scoped MOS width change rather than raising shared external bias or relaxing any clock/load/gate.\n\nThis is an unexecuted hypothesis, not an accepted fix or dispatched simulation. A possible first width trial is36->54um, preservingL0.3um and geometry-consistent ad/as/pd/ps; exact geometry tokens must be derived and qualified from the original model/physical convention before dispatch. Do not edit width alone while leaving inconsistent intrinsic junction geometry. Keep all other native cards/metadata and original1151vectors,10ohm,150fF/50fF, waveform/timing/stress limits fixed. The existing24 resistor changes and new MOS changes must be explicitly and independently authenticated, reversible to the complete original500-device model, source-controlled on GitHub, then admitted via an independently reserved empty exact-source release.\n\nNonlinear loading and shared gate capacitance can still change master headroom; observe every124HBT/50MOS/7MIM, startup and active limits. The source gate and original native results, not a linear current estimate, decide acceptance. A is also still failing and must remain in the full six-stage gate set. Any accepted intrinsic candidate still needs a newly qualified physical map including MOS sharing, independent reference, actual regenerated geometry,DRC/LVS,freshRC/all500rebind,corners,closed-loop/fullserialintegration and finalchip timing. No geometry promotion is authorized by these diagnostic results alone.\n",
+      "docs/cdr-mixed20-wave-diagnosis.md": "# Mixed20 original-wave diagnosis\n\nThis job reads the single existing native41282867236/source8c7b5cdd86447fe374ae06064f2fef735a7c9b91 result on GitHub; it does not rerun simulation or change geometry. All original sampler/XOR/device/phase/VI predicates remain unchanged.\n\nBefore acquiring native payloads, authenticated preflight predicts the exact20 qualified resistor length edits in the complete original500-device composition using only the literal target table from the exact candidate source. It validates all targeted original parameters and ordered terminals and requires the resulting complete JSON bytes/hash to match the candidate composition recorded by the native archive index. This includes restoration of original C/D loads and unchanged master loads. The actual extracted native composition must then equal that authenticated prediction. No candidate Python is executed during this topology prediction.\n\nThe existing seven frozen-reader, thirteen event and eight transfer controls remain. Actual topology preflight authenticates A->AD,C->CD,D->S0/S1, receiver polarity and series/shunt/MIM identities. Full-wave analysis reproduces124 HBT stress reports, six stages and1530 delays, phase/VI, complete failures and same-time124-device snapshots. Diagnostic crossing thresholds50mV/10mV and125ps matching are not electrical acceptance limits; all missing, ambiguous and preceding/following events remain.\n\nThis is evidence for choosing the next actual circuit edit, not a fullPHY, regenerated layout, freshPEX or finaltiming acceptance.\n\n## Completed actual diagnosis\n\nRun41284095439/source93fcfe9d9287e1ff9090e96e69000588f6c7eb66 succeeded. Seven frozen-reader, thirteen event and eight transfer controls passed. The preflight complete500-device prediction matched the indexed native composition bytes/SHA before raw acquisition. The runner then verified all109 archive members, extracted the existing waveform and reproduced the original capture,124HBT metrics, six stages/1530delays and phase/VI. No simulator rerun, gate change or geometry change occurred.\n\nFull35-file proofe62b19e3d08245b9993160e0bdc2db1468a1cef4, docs/evidence/cdr-sampler-candidate-wave-41284095439, preserves allsource/input/output/control/log evidence. Native payloads remain exclusively on GitHub.\n\nBounded125ps sampler-to-buffer correspondence: A->AD40/127, C->CD22/128, D->S0 andD->S1 each14/128; no ambiguous matches. These are diagnostic event counts, not passing electrical samples. Different matching subsets prohibit summing stage medians. The original A/C/D/X/Y failures remain.\n\nB->D128/128 crossings matched with median71.229229ps and expected sequence-index lag0. A->C0/127 matched within the125ps window; expected sequence-index lag1 and128 target transitions remain recorded. Missing-in-window by itself does not prove lost bits; all preceding/following crossings remain in the full result. The C/D original-deadline margins and wrong-sign samples are independent genuine gate failures.\n\nSame-time latch and clock-emitter analysis41284522943/source7e4277e5d0d6ab629541cf4f00905762fcb6459f also succeeded; full14-file proofdfa424f2d2bf58bf35adcef6bec6c8f9fb1d6604. See cdr-mixed20-cd-latch-diagnosis.md. Neither job qualifies the circuit for layout or establishes fullPHY/finaltiming.\n"
+    },
+    "cd_output_candidate": {
+      "actual_comparison_proof": {
+        "bytes": 1600402,
+        "files": 15,
+        "head": "afd1a4f68e882c3124867e6eca2f34600b951875",
+        "prefix": "docs/evidence/cdr-sampler-load-comparison-41284059156",
+        "receipt": "receipt.json",
+        "receipt_sha256": "af6f05d829fa6fc2361ce1a59f6761bad36edd38dce635bbcf64ae59515a873e"
+      },
+      "actual_comparison_run": 41284059156,
+      "cd_latch_proof": {
+        "bytes": 7296162,
+        "conclusion": "success",
+        "files": 14,
+        "head": "dfa424f2d2bf58bf35adcef6bec6c8f9fb1d6604",
+        "prefix": "docs/evidence/cd-latch-diagnosis-41284522943",
+        "receipt": "receipt.json",
+        "receipt_sha256": "47b1c0f63a6cc4f520102a074d623e09e1dec819493f47e03fc2ed836d507f29"
+      },
+      "cd_latch_run": 41284522943,
+      "full_phy_accepted": false,
+      "native_run": 41282867236,
+      "next_native_candidate_dispatched": false,
+      "physical_acceptance": false,
+      "proof": {
+        "bytes": 5159217,
+        "conclusion": "failure",
+        "files": 64,
+        "head": "740a55daac8798d2f3af976919609d5f7a2353c8",
+        "prefix": "docs/evidence/cdr-sampler-load-terminal-41282867236",
+        "receipt": "receipt.json",
+        "receipt_sha256": "09f248814c3f0472fa6de746ab85b520979253b900e176eb34fde18ea4c69dbe"
+      },
+      "source": "8c7b5cdd86447fe374ae06064f2fef735a7c9b91",
+      "status": "terminal_rejected",
+      "wave_proof": {
+        "bytes": 9193966,
+        "files": 35,
+        "head": "e62b19e3d08245b9993160e0bdc2db1468a1cef4",
+        "prefix": "docs/evidence/cdr-sampler-candidate-wave-41284095439",
+        "receipt": "receipt.json",
+        "receipt_sha256": "59f2f95f3e43aa26dccb3fd6b438e12af54315109cb3383373e23c241bc39468"
+      },
+      "wave_run": 41284095439,
+      "wave_source": "93fcfe9d9287e1ff9090e96e69000588f6c7eb66",
+      "wave_status": "terminal_success_diagnostic_only"
+    },
+    "cloud_only": true,
+    "continuation_note": "Completed actual mixed20 wave reproduction and same-time latch/clock-emitter diagnosis, allfullproofs preserved. Identified isolated slaveMOS7..10/36..39 separate fromnear-headroommasterclocks and sharedreference devices; next scoped drive hypothesis notyet authored/dispatched. AllPHYdiagnoses terminal; mainchip sameoriginalroute remainslive. Originalfullobjective/gates unchanged.",
+    "new_runs": {
+      "41284522943": {
+        "scope": "Mixed20 complete same-time C D latch and clock emitter MOS connectivity diagnosis",
+        "source": "7e4277e5d0d6ab629541cf4f00905762fcb6459f"
+      }
+    },
+    "next_actions": [
+      "Observe SAME mainchip41270471645/source2b8931b9c8988fc5dbf497a7b561db579e39f64c/release430345631. Reverified in_progress in combined clear828/route step; no internal subphase inference, restart or source edits. Scope828owned nets/1351diodes/1691protectedrecords;14400s native route budget/360min job. Preserve full terminal native/derived evidence; verify DRC/antenna/connectivity, restored classes/clocks, final-measured.odb and separate unchanged finalSTA. Packet-interface SoC routing does not establish serial integration.",
+      "Mixed20 wave41284095439/source93fcfe9d9287e1ff9090e96e69000588f6c7eb66 is TERMINAL SUCCESS as diagnosis, not circuit acceptance; full35proofe62b19e3d08245b9993160e0bdc2db1468a1cef4.7frozen13event8transfer controls, complete500composition-digest preflight beforearchive, all109members verified, full124HBT/6stage1530delays/phaseVI reproduced. Do not rerun or call this active.",
+      "Mixed20 C/D same-time and clock-emitter diagnosis41284522943/source7e4277e5d0d6ab629541cf4f00905762fcb6459f is TERMINAL SUCCESS, full14proofdfa424f2d2bf58bf35adcef6bec6c8f9fb1d6604. At3.1ns slave input differencesC-139.170264mV/D-156.446528mV (inverting pair), outputsC-12.305347mV/D-18.856008mV expectedpositive. Four events/all124same-time identities/voltages/currents retain exactfailure evidence. No new native simulation or MOS same-time current evidence.",
+      "Next concrete candidate question: isolated C/D slave drive, not sharedreferencebias. Actualslave MOS idsD7..10 atcluster30 andC36..39 atcluster127, W36um/L.3um,ad/as12.24p,pd/ps72.68u,m1,ng1,rfmode0. MasterMOSD3..6(cluster38)/C32..35(cluster124), referencesD11/C40(W8), follower/bufferMOSD1/2/C30/31(W53.335) sharegate25/123 and must remainunchanged. MasterclockQ61/Q62minVCE.407017/.408186 andQ115/Q116.410240/.411376 close to.4floor. Evaluate scoped36->54um slave-width hypothesis on fast-outputAC24sourcee2e753c37fcff8b8fef85695208b8157a7399b57; not yet authored/qualified/dispatched. Derive consistent junctionarea/perimeter tokens from originalgeometry, qualify exact20? NO: this baseline retains24resistorchanges plus separatelydeclared8MOSgeometrychanges; countactualtokens explicitly. Preserve full500 model bytes/metadata exceptdeclared changes, sourcecontrols then independentemptyexactsource release before one native run. No changeexternalbias/stimulus/measurementgates. All sixstagefailuresincludingAremainrequired.",
+      "Do not treat the output-load experiment as accepted: native41282867236/full64proof740a55daac8798d2f3af976919609d5f7a2353c8 and actual18-control comparison41284059156/full15afd1a4f68e882c3124867e6eca2f34600b951875 prove rejection. Devices andVIpass, onlyBsampler passes, A/C/D/X/Y andphasefail. New current-drive nonlineartransients/sharedgatecap maydisturbmasterheadroom; originalnativegatesdecide.",
+      "Mixed20 diagnosticcrossing A->AD40/127,C->CD22/128,D->S0/S114/128 each; noambiguity. A->C0/127inside125ps with expectedsequenceindexlag1 and128targetcrossings; not byitselflostbits. B->D128/128median71.229229ps/expectedlag0. Keepallpreceding/followingevents and do notaddmediansfromdifferent matchedsubsets. Native sampledwrong-sign evidence remainsindependent.",
+      "Qualified mixed20 map41283407710/source1e5bd82f6587c5ac2f764a286802aa858922aaa8/full17proof63402c276101edeb97c23a8f855e1c2d289d6d39 passed16refusals/full500devices4928instances. Selected set20 excludes restored C/D175176212214. A/B191194202205 rppd$2$10 require fourprivatecells to preserve195196207208. Other selected definitions have no unselected physicalusers/conflicts. Ownership only: no native geometry/freshRC acceptance.",
+      "Keep original UI125ps, sampler100mV/37.5ps,XOR100mV/75ps, strictHBTIc/emitter<3mA,minVCE.4,maxabsVCE1.6,maxabsVBE1,PLL62.5ps. FinalSTA20/4/8/8ns+5%,3PVT,zero setup/hold/transition/cap violations. Every accepted intrinsic edit still requires independent schematic, native geometry retaining via2/M3 repairs,DRC/LVS,freshRC/all500rebinding,corners/closedloop/fullserialintegration.",
+      "Serialintegration remains open: soc_top external packet/link/training ports, shared front explicit recovered-clock/raw-bit testbench inputs. Actual CDR/PLL/SERDES, normative training/fullLTSSM/lane mapping/descrambler handoff,TX andsoc_top ownership remain; authorized spec access request already pending. See docs/pcie-serial-integration-boundary.md. Do not infer serialintegration frompacketroute.",
+      "Everything executes on GitHub; workspace/projecttemporary files empty/no localCAD. Source/API-derivedtext coordinationRAMonly, no nativearchives/models/SPICE/ODB/GDS/rawwaves locally evenRAM. Preserve unrelated files. Eight-hour monitor remainsread-only automatic_native_dispatch:false. Goal active/fullPHY/finaltiming/productionapproval OPEN."
+    ],
+    "previous_goal_turn_classification": "progress",
+    "proofs": [
+      {
+        "bytes": 9193966,
+        "files": 35,
+        "head": "e62b19e3d08245b9993160e0bdc2db1468a1cef4",
+        "prefix": "docs/evidence/cdr-sampler-candidate-wave-41284095439",
+        "receipt": "receipt.json",
+        "receipt_sha256": "59f2f95f3e43aa26dccb3fd6b438e12af54315109cb3383373e23c241bc39468",
+        "tree": "eb54ab8a56a81691f0f49b0974d809cc6fd1dcae"
+      },
+      {
+        "bytes": 7296162,
+        "conclusion": "success",
+        "files": 14,
+        "head": "dfa424f2d2bf58bf35adcef6bec6c8f9fb1d6604",
+        "prefix": "docs/evidence/cd-latch-diagnosis-41284522943",
+        "receipt": "receipt.json",
+        "receipt_sha256": "47b1c0f63a6cc4f520102a074d623e09e1dec819493f47e03fc2ed836d507f29",
+        "tree": "b28d93412aae2dfd15c8590314da5950a919d8e5"
+      }
+    ],
+    "resume": "# Cloud continuation \u2014 checkpoint v225\n\nUpdated: __UPDATED__\n\nLatest user instruction: all work in cloud; leave no local project files. Overrides older local-work objective wording. Alltests/simulation/CAD/numericalanalysis onGitHub. Local source/API-derivedtext RAMonly; never acquire nativearchives/models/SPICE/ODB/GDS/rawwaves locally evenRAM. Workspace/projecttemporaryfiles empty/noCAD; unrelatedfilespreserved.\n\n## Exact continuation\n\n1. Observe SAME mainchip41270471645/source2b8931b9c8988fc5dbf497a7b561db579e39f64c/release430345631. Reverified in_progress in combined clear828/route step; no internal subphase inference, restart or source edits. Scope828owned nets/1351diodes/1691protectedrecords;14400s native route budget/360min job. Preserve full terminal native/derived evidence; verify DRC/antenna/connectivity, restored classes/clocks, final-measured.odb and separate unchanged finalSTA. Packet-interface SoC routing does not establish serial integration.\n\n2. Mixed20 wave41284095439/source93fcfe9d9287e1ff9090e96e69000588f6c7eb66 is TERMINAL SUCCESS as diagnosis, not circuit acceptance; full35proofe62b19e3d08245b9993160e0bdc2db1468a1cef4.7frozen13event8transfer controls, complete500composition-digest preflight beforearchive, all109members verified, full124HBT/6stage1530delays/phaseVI reproduced. Do not rerun or call this active.\n\n3. Mixed20 C/D same-time and clock-emitter diagnosis41284522943/source7e4277e5d0d6ab629541cf4f00905762fcb6459f is TERMINAL SUCCESS, full14proofdfa424f2d2bf58bf35adcef6bec6c8f9fb1d6604. At3.1ns slave input differencesC-139.170264mV/D-156.446528mV (inverting pair), outputsC-12.305347mV/D-18.856008mV expectedpositive. Four events/all124same-time identities/voltages/currents retain exactfailure evidence. No new native simulation or MOS same-time current evidence.\n\n4. Next concrete candidate question: isolated C/D slave drive, not sharedreferencebias. Actualslave MOS idsD7..10 atcluster30 andC36..39 atcluster127, W36um/L.3um,ad/as12.24p,pd/ps72.68u,m1,ng1,rfmode0. MasterMOSD3..6(cluster38)/C32..35(cluster124), referencesD11/C40(W8), follower/bufferMOSD1/2/C30/31(W53.335) sharegate25/123 and must remainunchanged. MasterclockQ61/Q62minVCE.407017/.408186 andQ115/Q116.410240/.411376 close to.4floor. Evaluate scoped36->54um slave-width hypothesis on fast-outputAC24sourcee2e753c37fcff8b8fef85695208b8157a7399b57; not yet authored/qualified/dispatched. Derive consistent junctionarea/perimeter tokens from originalgeometry, qualify exact20? NO: this baseline retains24resistorchanges plus separatelydeclared8MOSgeometrychanges; countactualtokens explicitly. Preserve full500 model bytes/metadata exceptdeclared changes, sourcecontrols then independentemptyexactsource release before one native run. No changeexternalbias/stimulus/measurementgates. All sixstagefailuresincludingAremainrequired.\n\n5. Do not treat the output-load experiment as accepted: native41282867236/full64proof740a55daac8798d2f3af976919609d5f7a2353c8 and actual18-control comparison41284059156/full15afd1a4f68e882c3124867e6eca2f34600b951875 prove rejection. Devices andVIpass, onlyBsampler passes, A/C/D/X/Y andphasefail. New current-drive nonlineartransients/sharedgatecap maydisturbmasterheadroom; originalnativegatesdecide.\n\n6. Mixed20 diagnosticcrossing A->AD40/127,C->CD22/128,D->S0/S114/128 each; noambiguity. A->C0/127inside125ps with expectedsequenceindexlag1 and128targetcrossings; not byitselflostbits. B->D128/128median71.229229ps/expectedlag0. Keepallpreceding/followingevents and do notaddmediansfromdifferent matchedsubsets. Native sampledwrong-sign evidence remainsindependent.\n\n7. Qualified mixed20 map41283407710/source1e5bd82f6587c5ac2f764a286802aa858922aaa8/full17proof63402c276101edeb97c23a8f855e1c2d289d6d39 passed16refusals/full500devices4928instances. Selected set20 excludes restored C/D175176212214. A/B191194202205 rppd$2$10 require fourprivatecells to preserve195196207208. Other selected definitions have no unselected physicalusers/conflicts. Ownership only: no native geometry/freshRC acceptance.\n\n8. Keep original UI125ps, sampler100mV/37.5ps,XOR100mV/75ps, strictHBTIc/emitter<3mA,minVCE.4,maxabsVCE1.6,maxabsVBE1,PLL62.5ps. FinalSTA20/4/8/8ns+5%,3PVT,zero setup/hold/transition/cap violations. Every accepted intrinsic edit still requires independent schematic, native geometry retaining via2/M3 repairs,DRC/LVS,freshRC/all500rebinding,corners/closedloop/fullserialintegration.\n\n9. Serialintegration remains open: soc_top external packet/link/training ports, shared front explicit recovered-clock/raw-bit testbench inputs. Actual CDR/PLL/SERDES, normative training/fullLTSSM/lane mapping/descrambler handoff,TX andsoc_top ownership remain; authorized spec access request already pending. See docs/pcie-serial-integration-boundary.md. Do not infer serialintegration frompacketroute.\n\n10. Everything executes on GitHub; workspace/projecttemporary files empty/no localCAD. Source/API-derivedtext coordinationRAMonly, no nativearchives/models/SPICE/ODB/GDS/rawwaves locally evenRAM. Preserve unrelated files. Eight-hour monitor remainsread-only automatic_native_dispatch:false. Goal active/fullPHY/finaltiming/productionapproval OPEN.\n\n## Newly preserved full evidence\n\n- docs/evidence/cdr-sampler-candidate-wave-41284095439: immutablee62b19e3d08245b9993160e0bdc2db1468a1cef4;35files/9193966bytes;receiptSHA25659f2f95f3e43aa26dccb3fd6b438e12af54315109cb3383373e23c241bc39468.\n- docs/evidence/cd-latch-diagnosis-41284522943: immutabledfa424f2d2bf58bf35adcef6bec6c8f9fb1d6604;14files/7296162bytes;receiptSHA25647b1c0f63a6cc4f520102a074d623e09e1dec819493f47e03fc2ed836d507f29.\n\nSee docs/cdr-mixed20-wave-diagnosis.md, docs/cdr-mixed20-cd-latch-diagnosis.md and docs/cdr-cd-output-load-restore.md. Priorrootv224d16d530856f915106cc4e2af62e0bb59d3b56dbe retains106files of fullnative/comparison/map proofs. All earlier failed experiments and fullnative archives remain onGitHub.\n\nInventory__RUN_COUNT__runs. Eight-hour monitor read-only automatic_native_dispatch:false. GoalturnPROGRESS: completewave/current/topologyevidence changesnextcircuitexperiment. FullserialPHY,serial-integratedroutedmainchip,finalsetup/hold/productionapproval OPEN. Do not markcomplete.\n"
+  },
+  "snapshots": [
+    {
+      "branch": "codex/cdr-current-eight-drain-wave-readback",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939637,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939756,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124684939804,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939813,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939841,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939865,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939961,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124684940663,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41223192019,
+      "source": "dd320012480c99914c4a198c8236b7190b39ce26",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41223192019"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-readback",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124641350036,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124641474888,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124641511122,
+          "name": "observation",
+          "status": "completed"
+        }
+      ],
+      "run": 41236517605,
+      "source": "65e620dc413389fffaa8389e4abdfc17cfbf4ecf",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41236517605"
+    },
+    {
+      "branch": "codex/cdr-via2-m3-physical-recheck",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124648720069,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124648978870,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124649026868,
+          "name": "physical-recheck",
+          "status": "completed"
+        }
+      ],
+      "run": 41238994098,
+      "source": "0b1ec86b35f8cb98928a5687f007a7ccd676f620",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41238994098"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-progress-v2",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124657431983,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124657565622,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124657605748,
+          "name": "observation",
+          "status": "completed"
+        }
+      ],
+      "run": 41241933572,
+      "source": "00b46253e990983365db3b5f2b44a1233e20623e",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41241933572"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-crash-isolation-v1",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124667589535,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124667697328,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124667723726,
+          "name": "observation",
+          "status": "completed"
+        }
+      ],
+      "run": 41245373612,
+      "source": "277f2382b18198e399ddeef1e7ab8f35aaf629c2",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41245373612"
+    },
+    {
+      "branch": "codex/cloud-progress-monitor-shards-v2",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124674583313,
+          "name": "controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124674612392,
+          "name": "observe",
+          "status": "completed"
+        }
+      ],
+      "run": 41247738623,
+      "source": "6df3f373c4fc8052d69fc946b18ad35be640ed58",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41247738623"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684149904,
+          "name": "controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684192874,
+          "name": "observe",
+          "status": "completed"
+        }
+      ],
+      "run": 41250947168,
+      "source": "5f3814a3e0366b8ec310c9270494c01dd6b3e03c",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41250947168"
+    },
+    {
+      "branch": "codex/cdr-via2-m3-fresh-rc-adapter",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124686498262,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124687385817,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124687428141,
+          "name": "fresh-rc",
+          "status": "completed"
+        }
+      ],
+      "run": 41251732540,
+      "source": "9bf12d1e496f7d9192582175ab2fa714e3e8d41b",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41251732540"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-reduction-v1",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124690802895,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124690863676,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124690929404,
+          "name": "analysis",
+          "status": "completed"
+        }
+      ],
+      "run": 41253195469,
+      "source": "210fc85c43753e23fb9ecc2e398a48d318d1f330",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41253195469"
+    },
+    {
+      "branch": "codex/cdr-via2-m3-loaded-adapter",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124712844047,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124712997863,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124713024059,
+          "name": "loaded",
+          "status": "completed"
+        }
+      ],
+      "run": 41260582673,
+      "source": "cde6353e164d32feee5a3e56cc54b32a3001f736",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41260582673"
+    },
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124731344945,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124731680569,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124731737763,
+          "name": "diode-routing",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124738255432,
+          "name": "preserve-antenna-job-logs",
+          "status": "completed"
+        }
+      ],
+      "run": 41266854050,
+      "source": "8b7404c7340ef5ebc4a70e36dfa30a96d07013d9",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41266854050"
+    },
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124742028616,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124742398243,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Clear828owned signal wires and route with unchanged physical invariants"
+          ],
+          "conclusion": null,
+          "id": 124742427487,
+          "name": "diode-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41270471645,
+      "source": "2b8931b9c8988fc5dbf497a7b561db579e39f64c",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41270471645"
+    },
+    {
+      "branch": "codex/cdr-ac-cd-output-restore",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124778176197,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124778220399,
+          "name": "simulate",
+          "status": "completed"
+        }
+      ],
+      "run": 41282867236,
+      "source": "8c7b5cdd86447fe374ae06064f2fef735a7c9b91",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41282867236"
+    },
+    {
+      "branch": "codex/cdr-mixed20-wave-diagnosis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124781765008,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124781808953,
+          "name": "diagnose",
+          "status": "completed"
+        }
+      ],
+      "run": 41284095439,
+      "source": "93fcfe9d9287e1ff9090e96e69000588f6c7eb66",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41284095439"
+    },
+    {
+      "branch": "codex/cdr-mixed20-cd-latch-diagnosis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124783012429,
+          "name": "diagnose",
+          "status": "completed"
+        }
+      ],
+      "run": 41284522943,
+      "source": "7e4277e5d0d6ab629541cf4f00905762fcb6459f",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41284522943"
+    }
+  ],
+  "updated_at": "2026-11-01T07:27:36.375500+00:00",
+  "version": 225
+}

@@ -1,0 +1,194 @@
+﻿2026-11-01T07:22:27.3699653Z Current runner version: '2.338.2'
+2026-11-01T07:22:27.3728030Z ##[group]Runner Image Provisioner
+2026-11-01T07:22:27.3728980Z Hosted Compute Agent
+2026-11-01T07:22:27.3729599Z Version: 20261021.618
+2026-11-01T07:22:27.3730228Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-01T07:22:27.3731082Z Build Date: 2026-10-21T00:45:21Z
+2026-11-01T07:22:27.3732155Z Worker ID: {eb3e29e2-c0c6-494d-b2b3-ffb4468a3514}
+2026-11-01T07:22:27.3732986Z Region: centralus
+2026-11-01T07:22:27.3733580Z Cloud: Azure
+2026-11-01T07:22:27.3734125Z ##[endgroup]
+2026-11-01T07:22:27.3735973Z ##[group]Operating System
+2026-11-01T07:22:27.3736648Z Ubuntu
+2026-11-01T07:22:27.3737280Z 24.04.5
+2026-11-01T07:22:27.3737832Z LTS
+2026-11-01T07:22:27.3738359Z ##[endgroup]
+2026-11-01T07:22:27.3739005Z ##[group]Runner Image
+2026-11-01T07:22:27.3739616Z Image: ubuntu-24.04
+2026-11-01T07:22:27.3740177Z Version: 20261025.353.1
+2026-11-01T07:22:27.3741564Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-01T07:22:27.3743718Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-11-01T07:22:27.3744745Z ##[endgroup]
+2026-11-01T07:22:27.3745936Z ##[group]GITHUB_TOKEN Permissions
+2026-11-01T07:22:27.3748178Z Contents: read
+2026-11-01T07:22:27.3748881Z Metadata: read
+2026-11-01T07:22:27.3749574Z ##[endgroup]
+2026-11-01T07:22:27.3752000Z Secret source: Actions
+2026-11-01T07:22:27.3753522Z Cache mode: write
+2026-11-01T07:22:27.3754472Z Prepare workflow directory
+2026-11-01T07:22:27.4293563Z Prepare all required actions
+2026-11-01T07:22:27.4343861Z Getting action download info
+2026-11-01T07:22:27.6769015Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-11-01T07:22:27.7650573Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-01T07:22:27.9625837Z Complete job name: diagnose
+2026-11-01T07:22:28.0442472Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-11-01T07:22:28.0443598Z with:
+2026-11-01T07:22:28.0444086Z   ref: 7e4277e5d0d6ab629541cf4f00905762fcb6459f
+2026-11-01T07:22:28.0444776Z   persist-credentials: false
+2026-11-01T07:22:28.0445293Z   filter: blob:none
+2026-11-01T07:22:28.0445774Z   sparse-checkout-cone-mode: false
+2026-11-01T07:22:28.0446912Z   sparse-checkout: /scripts/cd_latch_diagnosis.py
+/scripts/cd-latch-diagnosis-inputs.json
+/.github/workflows/cloud-evidence-summary.yml
+
+2026-11-01T07:22:28.0448069Z   repository: Melihakbulut221/nssoc
+2026-11-01T07:22:28.0452138Z   token: ***
+2026-11-01T07:22:28.0452595Z   ssh-strict: true
+2026-11-01T07:22:28.0453039Z   ssh-user: git
+2026-11-01T07:22:28.0453473Z   clean: true
+2026-11-01T07:22:28.0453897Z   fetch-depth: 1
+2026-11-01T07:22:28.0454347Z   fetch-tags: false
+2026-11-01T07:22:28.0454808Z   show-progress: true
+2026-11-01T07:22:28.0455278Z   lfs: false
+2026-11-01T07:22:28.0455761Z   submodules: false
+2026-11-01T07:22:28.0456219Z   set-safe-directory: true
+2026-11-01T07:22:28.0456990Z env:
+2026-11-01T07:22:28.0460748Z   GH_TOKEN: ***
+2026-11-01T07:22:28.0461189Z ##[endgroup]
+2026-11-01T07:22:28.3160790Z Syncing repository: Melihakbulut221/nssoc
+2026-11-01T07:22:28.3163324Z ##[group]Getting Git version info
+2026-11-01T07:22:28.3164118Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-11-01T07:22:28.3165206Z [command]/usr/bin/git version
+2026-11-01T07:22:28.3267284Z git version 2.56.0
+2026-11-01T07:22:28.3292211Z ##[endgroup]
+2026-11-01T07:22:28.3308463Z Temporarily overriding HOME='/home/runner/work/_temp/27ddd634-4e20-4ab2-9543-a6b95e4906c3' before making global git config changes
+2026-11-01T07:22:28.3311096Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-01T07:22:28.3313762Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-11-01T07:22:28.3372652Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-11-01T07:22:28.3382512Z ##[group]Initializing the repository
+2026-11-01T07:22:28.3384118Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-11-01T07:22:28.3538734Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-01T07:22:28.3540105Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-01T07:22:28.3541180Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-01T07:22:28.3542534Z hint: call:
+2026-11-01T07:22:28.3543020Z hint:
+2026-11-01T07:22:28.3543617Z hint: 	git config --global init.defaultBranch <name>
+2026-11-01T07:22:28.3544312Z hint:
+2026-11-01T07:22:28.3545097Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-01T07:22:28.3546136Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-01T07:22:28.3546958Z hint:
+2026-11-01T07:22:28.3547540Z hint: 	git branch -m <name>
+2026-11-01T07:22:28.3548125Z hint:
+2026-11-01T07:22:28.3549221Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-01T07:22:28.3551591Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-11-01T07:22:28.3574304Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-11-01T07:22:28.3617451Z ##[endgroup]
+2026-11-01T07:22:28.3618944Z ##[group]Disabling automatic garbage collection
+2026-11-01T07:22:28.3620893Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-01T07:22:28.3658893Z ##[endgroup]
+2026-11-01T07:22:28.3660712Z ##[group]Setting up auth
+2026-11-01T07:22:28.3666450Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-01T07:22:28.3707199Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-01T07:22:28.4184888Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-01T07:22:28.4241984Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-01T07:22:28.4535397Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-01T07:22:28.4594860Z ##[endgroup]
+2026-11-01T07:22:28.4596175Z ##[group]Fetching the repository
+2026-11-01T07:22:28.4613480Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --filter=blob:none --depth=1 origin 7e4277e5d0d6ab629541cf4f00905762fcb6459f
+2026-11-01T07:22:28.9076874Z From https://github.com/Melihakbulut221/nssoc
+2026-11-01T07:22:28.9079691Z  * branch            7e4277e5d0d6ab629541cf4f00905762fcb6459f -> FETCH_HEAD
+2026-11-01T07:22:28.9086247Z ##[endgroup]
+2026-11-01T07:22:28.9088755Z ##[group]Determining the checkout info
+2026-11-01T07:22:28.9091940Z ##[endgroup]
+2026-11-01T07:22:28.9094643Z ##[group]Setting up sparse checkout
+2026-11-01T07:22:28.9097216Z [command]/usr/bin/git config core.sparseCheckout true
+2026-11-01T07:22:28.9147191Z [command]/usr/bin/git rev-parse --git-path info/sparse-checkout
+2026-11-01T07:22:28.9180138Z .git/info/sparse-checkout
+2026-11-01T07:22:28.9189909Z ##[endgroup]
+2026-11-01T07:22:28.9192683Z ##[group]Checking out the ref
+2026-11-01T07:22:28.9197142Z [command]/usr/bin/git checkout --progress --force 7e4277e5d0d6ab629541cf4f00905762fcb6459f
+2026-11-01T07:22:29.5238711Z Note: switching to '7e4277e5d0d6ab629541cf4f00905762fcb6459f'.
+2026-11-01T07:22:29.5241142Z 
+2026-11-01T07:22:29.5242519Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-01T07:22:29.5245205Z changes and commit them, and you can discard any commits you make in this
+2026-11-01T07:22:29.5248125Z state without impacting any branches by switching back to a branch.
+2026-11-01T07:22:29.5249806Z 
+2026-11-01T07:22:29.5251407Z If you want to create a new branch to retain commits you create, you may
+2026-11-01T07:22:29.5254484Z do so (now or later) by using -c with the switch command. Example:
+2026-11-01T07:22:29.5256349Z 
+2026-11-01T07:22:29.5257154Z   git switch -c <new-branch-name>
+2026-11-01T07:22:29.5258203Z 
+2026-11-01T07:22:29.5258841Z Or undo this operation with:
+2026-11-01T07:22:29.5259668Z 
+2026-11-01T07:22:29.5260214Z   git switch -
+2026-11-01T07:22:29.5261212Z 
+2026-11-01T07:22:29.5262942Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-01T07:22:29.5264479Z 
+2026-11-01T07:22:29.5266010Z HEAD is now at 7e4277e Diagnose mixed20 C D latch transitions and complete clock emitter neighbors [skip ci]
+2026-11-01T07:22:29.5271258Z ##[endgroup]
+2026-11-01T07:22:29.5335684Z [command]/usr/bin/git log -1 --format=%H
+2026-11-01T07:22:29.5378638Z 7e4277e5d0d6ab629541cf4f00905762fcb6459f
+2026-11-01T07:22:29.5392998Z ##[group]Removing auth
+2026-11-01T07:22:29.5394992Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-01T07:22:29.5444779Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-01T07:22:29.5796577Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-01T07:22:29.5836335Z http.https://github.com/.extraheader
+2026-11-01T07:22:29.5846241Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-01T07:22:29.5893004Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-01T07:22:29.6239444Z ##[endgroup]
+2026-11-01T07:22:29.6481493Z ##[group]Run python3 -B scripts/cd_latch_diagnosis.py
+2026-11-01T07:22:29.6483137Z [36;1mpython3 -B scripts/cd_latch_diagnosis.py[0m
+2026-11-01T07:22:29.6509578Z shell: /usr/bin/bash -e {0}
+2026-11-01T07:22:29.6510685Z env:
+2026-11-01T07:22:29.6514885Z   GH_TOKEN: ***
+2026-11-01T07:22:29.6515742Z ##[endgroup]
+2026-11-01T07:22:31.9950906Z {"d": [{"event": {"bit_index": 2, "expected": 0, "kind": "maximum_delay_bit_at_original_deadline", "time_s": 2.35e-09}, "signed_margin_v": -0.010892766416363891, "clock": {"cp": 1.4000090824103213, "cn": 1.1769435105976427}, "groups": {"followers": {"ids": [69, 70], "first_minus_second_terminal_v": {"C": 0.059159276191937504, "B": -0.2116495411287307, "E": -0.1998894977500172}, "total_collector_current_a": 0.011304202902458794, "first_minus_second_collector_current_a": -0.0008387702551722219}, "input_buffer": {"ids": [59, 60], "first_minus_second_terminal_v": {"C": 0.20085639287243096, "B": -0.18779697083226843, "E": -0.012862889206726014}, "total_collector_current_a": 0.004702018899139717, "first_minus_second_collector_current_a": -0.004628651261962162}, "master_data": {"ids": [54, 56], "first_minus_second_terminal_v": {"C": 0.13681727682272316, "B": -0.18124264840480486, "E": -0.0070774395969246395}, "total_collector_current_a": 0.0009358662112906502, "first_minus_second_collector_current_a": -0.0009345606486600324}, "master_hold": {"ids": [58, 57], "first_minus_second_terminal_v": {"C": 0.14971407850773089, "B": -0.12845609647780964, "E": -0.027571487906741687}, "total_collector_current_a": 0.003830860655222061, "first_minus_second_collector_current_a": -0.003275946377228077}, "slave_data": {"ids": [53, 55], "first_minus_second_terminal_v": {"C": 0.01089276641636383, "B": 0.12996205633787206, "E": 0.03305773057995953}, "total_collector_current_a": 0.004780404166718082, "first_minus_second_collector_current_a": 0.003830566481827243}, "slave_hold": {"ids": [51, 52], "first_minus_second_terminal_v": {"C": 0.03691965652904372, "B": -0.033412028394931514, "E": -0.0027877067787558385}, "total_collector_current_a": 0.0007532814626073659, "first_minus_second_collector_current_a": -0.00041356545541279684}, "master_data_clock": {"ids": [61, 62], "first_minus_second_terminal_v": {"C": -1.1671496985332652e-05, "B": -4.569965876788373e-05, "E": -5.280892824549577e-05}, "total_collector_current_a": 3.022583030463964e-05, "first_minus_second_collector_current_a": 2.8352135128707637e-10}, "master_hold_clock": {"ids": [64, 65], "first_minus_second_terminal_v": {"C": -4.768216815187465e-05, "B": 3.3590296250940455e-05, "E": 0.002832190021173575}, "total_collector_current_a": 0.00500125931190401, "first_minus_second_collector_current_a": -9.848681127221093e-05}, "slave_data_clock": {"ids": [66, 68], "first_minus_second_terminal_v": {"C": -0.000865396835943999, "B": -1.0388313756104495e-05, "E": 0.001796816884696073}, "total_collector_current_a": 0.004585862278122695, "first_minus_second_collector_current_a": -6.239347044860151e-05}, "slave_hold_clock": {"ids": [63, 67], "first_minus_second_terminal_v": {"C": 4.102340597311738e-05, "B": 9.367671722770865e-06, "E": 0.0001250372423308166}, "total_collector_current_a": 2.2949013788424754e-05, "first_minus_second_collector_current_a": -4.157177918124977e-08}}}, {"event": {"bit_index": 8, "edge_s": 3.0625e-09, "expected": 1, "kind": "worst_original_sample_margin", "negative_v": 2.1432788926683255, "phase_ui": 0.3, "positive_v": 2.1244228844760498, "signed_margin_v": -0.018856008192275522, "time_s": 3.1e-09, "wrong_sign": true}, "signed_margin_v": -0.018856008192275522, "clock": {"cp": 1.3986323942092824, "cn": 1.177041288715009}, "groups": {"followers": {"ids": [69, 70], "first_minus_second_terminal_v": {"C": 0.0086006314633571, "B": 0.18744178591191307, "E": 0.17703179352440923}, "total_collector_current_a": 0.011335092614143422, "first_minus_second_collector_current_a": 0.0008209099882457828}, "input_buffer": {"ids": [59, 60], "first_minus_second_terminal_v": {"C": -0.2294609035026125, "B": 0.17089344378430704, "E": 0.01669273351166134}, "total_collector_current_a": 0.005368253064576067, "first_minus_second_collector_current_a": 0.00517714159734179}, "master_data": {"ids": [54, 56], "first_minus_second_terminal_v": {"C": -0.16393201185670447, "B": 0.20627796369335383, "E": 0.008631333164905497}, "total_collector_current_a": 0.0010985269801867704, "first_minus_second_collector_current_a": 0.0010975420069202432}, "master_hold": {"ids": [58, 57], "first_minus_second_terminal_v": {"C": -0.18257831519184142, "B": 0.15709587113526968, "E": 0.03570618672621517}, "total_collector_current_a": 0.004531410544190841, "first_minus_second_collector_current_a": 0.0041058239778289825}, "slave_data": {"ids": [53, 55], "first_minus_second_terminal_v": {"C": -0.01885600819227573, "B": -0.15644652827245764, "E": -0.0404820114485025}, "total_collector_current_a": 0.00521706965665461, "first_minus_second_collector_current_a": -0.004535683516873976}, "slave_hold": {"ids": [51, 52], "first_minus_second_terminal_v": {"C": -0.050894711027692274, "B": 0.05006145968054332, "E": 0.003382703279038779}, "total_collector_current_a": 0.0006717274119851731, "first_minus_second_collector_current_a": 0.00048381352941829624}, "master_data_clock": {"ids": [61, 62], "first_minus_second_terminal_v": {"C": -4.239801236449736e-05, "B": -4.578445562941624e-05, "E": -5.8383765269121035e-05}, "total_collector_current_a": 4.511573624505664e-05, "first_minus_second_collector_current_a": 4.549628365124297e-09}, "master_hold_clock": {"ids": [64, 65], "first_minus_second_terminal_v": {"C": -7.950531615308343e-05, "B": 2.9155212336151592e-05, "E": 0.0026337125394276795}, "total_collector_current_a": 0.005629088164818882, "first_minus_second_collector_current_a": -9.669484121485996e-05}, "slave_data_clock": {"ids": [66, 68], "first_minus_second_terminal_v": {"C": 0.0008936359375419922, "B": -9.79912652598891e-06, "E": 0.0016276152262975074}, "total_collector_current_a": 0.005003524181611016, "first_minus_second_collector_current_a": -5.872061648306941e-05}, "slave_hold_clock": {"ids": [63, 67], "first_minus_second_terminal_v": {"C": 5.438385210410068e-05, "B": 8.831688894872514e-06, "E": 0.00013588356888094566}, "total_collector_current_a": 3.113506468380477e-05, "first_minus_second_collector_current_a": -6.408875031662685e-08}}}], "c": [{"event": {"bit_index": 233, "expected": 0, "kind": "maximum_delay_bit_at_original_deadline", "time_s": 3.1225000000000003e-08}, "signed_margin_v": 0.007453752387152871, "clock": {"cp": 1.399659355212038, "cn": 1.1773371456567865}, "groups": {"followers": {"ids": [121, 124], "first_minus_second_terminal_v": {"C": -0.021290675465983178, "B": -0.0051642288117426105, "E": -0.03141273202371275}, "total_collector_current_a": 0.010636291196833677, "first_minus_second_collector_current_a": 0.0018271204975159683}, "input_buffer": {"ids": [111, 112], "first_minus_second_terminal_v": {"C": 0.16552188448790495, "B": -0.05587019146964889, "E": -0.00595180834149267}, "total_collector_current_a": 0.004394795110039429, "first_minus_second_collector_current_a": -0.002344682332343772}, "master_data": {"ids": [106, 108], "first_minus_second_terminal_v": {"C": 0.18331119839842636, "B": -0.15685275994434456, "E": -0.006618982667305318}, "total_collector_current_a": 0.0009322242903559004, "first_minus_second_collector_current_a": -0.0009332619966601752}, "master_hold": {"ids": [110, 109], "first_minus_second_terminal_v": {"C": 0.2037427477657925, "B": -0.17422465381910923, "E": -0.03867938118012071}, "total_collector_current_a": 0.004934722270424327, "first_minus_second_collector_current_a": -0.004597060181106653}, "slave_data": {"ids": [105, 107], "first_minus_second_terminal_v": {"C": -0.0074537523871529565, "B": 0.1759432575784432, "E": 0.043029886510234316}, "total_collector_current_a": 0.005458591106953175, "first_minus_second_collector_current_a": 0.004985382591833323}, "slave_hold": {"ids": [103, 104], "first_minus_second_terminal_v": {"C": 0.024889396045707723, "B": -0.022245504234799984, "E": -0.001750423883961405}, "total_collector_current_a": 0.0007587951979129291, "first_minus_second_collector_current_a": -0.00032018902423036513}, "master_data_clock": {"ids": [115, 116], "first_minus_second_terminal_v": {"C": -1.7192997894266426e-05, "B": -4.750250891460972e-05, "E": -6.242117064308994e-05}, "total_collector_current_a": 6.05356778649245e-05, "first_minus_second_collector_current_a": -1.2044603806863431e-08}, "master_hold_clock": {"ids": [118, 119], "first_minus_second_terminal_v": {"C": -0.00015634753399629275, "B": 3.31181720907292e-05, "E": 0.0027440415695014764}, "total_collector_current_a": 0.006125809301816791, "first_minus_second_collector_current_a": -0.00010410144535372666}, "slave_data_clock": {"ids": [114, 120], "first_minus_second_terminal_v": {"C": 0.0019775658547185326, "B": 5.326351217860292e-06, "E": 0.0021983164635648866}, "total_collector_current_a": 0.0053049324121222305, "first_minus_second_collector_current_a": -8.062288889033832e-05}, "slave_hold_clock": {"ids": [113, 117], "first_minus_second_terminal_v": {"C": 4.800566600637879e-05, "B": 9.900592489175963e-06, "E": 0.00014826137991436061}, "total_collector_current_a": 4.182039409914891e-05, "first_minus_second_collector_current_a": -6.01198337145857e-08}}}, {"event": {"bit_index": 8, "edge_s": 3.0625e-09, "expected": 1, "kind": "worst_original_sample_margin", "negative_v": 2.1072081006510994, "phase_ui": 0.3, "positive_v": 2.0949027540951666, "signed_margin_v": -0.01230534655593266, "time_s": 3.1e-09, "wrong_sign": true}, "signed_margin_v": -0.01230534655593266, "clock": {"cp": 1.3986323942092824, "cn": 1.177041288715009}, "groups": {"followers": {"ids": [121, 124], "first_minus_second_terminal_v": {"C": 0.08012135499878248, "B": -0.04003884735802954, "E": -0.016048055420171847}, "total_collector_current_a": 0.010892609053986403, "first_minus_second_collector_current_a": -0.0016250997885376367}, "input_buffer": {"ids": [111, 112], "first_minus_second_terminal_v": {"C": -0.10876724310719488, "B": 0.010432644794661217, "E": 0.002062099581039034}, "total_collector_current_a": 0.0038906070516662034, "first_minus_second_collector_current_a": 0.0005657978966977044}, "master_data": {"ids": [106, 108], "first_minus_second_terminal_v": {"C": -0.1444500387581158, "B": 0.1072732035327475, "E": 0.004906922078511178}, "total_collector_current_a": 0.0007186602346338263, "first_minus_second_collector_current_a": 0.0006954067067593654}, "master_hold": {"ids": [110, 109], "first_minus_second_terminal_v": {"C": -0.1637904726408559, "B": 0.14011878064515182, "E": 0.03331336261349027}, "total_collector_current_a": 0.00445791783313563, "first_minus_second_collector_current_a": 0.003833159238522099}, "slave_data": {"ids": [105, 107], "first_minus_second_terminal_v": {"C": -0.01230534655593285, "B": -0.13917026361286888, "E": -0.03744608605236577}, "total_collector_current_a": 0.0051665609826797515, "first_minus_second_collector_current_a": -0.004198177582125525}, "slave_hold": {"ids": [103, 104], "first_minus_second_terminal_v": {"C": -0.04182422876461667, "B": 0.04111643833735812, "E": 0.003237793622202112}, "total_collector_current_a": 0.0007477254644226481, "first_minus_second_collector_current_a": 0.00046500375154272754}, "master_data_clock": {"ids": [115, 116], "first_minus_second_terminal_v": {"C": -3.0421560826665583e-05, "B": -4.619604715183634e-05, "E": -5.815280155857527e-05}, "total_collector_current_a": 4.611000340687869e-05, "first_minus_second_collector_current_a": 4.896195184407132e-09}, "master_hold_clock": {"ids": [118, 119], "first_minus_second_terminal_v": {"C": -5.331938719987939e-05, "B": 3.2650905336550906e-05, "E": 0.0027800165815706768}, "total_collector_current_a": 0.005635939268348818, "first_minus_second_collector_current_a": -0.00010181337407509823}, "slave_data_clock": {"ids": [114, 120], "first_minus_second_terminal_v": {"C": -2.795100399555217e-05, "B": 3.183077058155348e-06, "E": 0.00223404379487252}, "total_collector_current_a": 0.005005163628430002, "first_minus_second_collector_current_a": -7.976241637395673e-05}, "slave_hold_clock": {"ids": [113, 117], "first_minus_second_terminal_v": {"C": 5.9034412352554355e-05, "B": 9.821826868039452e-06, "E": 0.00014078837074643635}, "total_collector_current_a": 3.3734770396155235e-05, "first_minus_second_collector_current_a": -7.161228576170017e-08}}}]}
+2026-11-01T07:22:32.0066167Z ##[group]Run mkdir source-records
+2026-11-01T07:22:32.0066542Z [36;1mmkdir source-records[0m
+2026-11-01T07:22:32.0067193Z [36;1mcp scripts/cd_latch_diagnosis.py scripts/cd-latch-diagnosis-inputs.json .github/workflows/cloud-evidence-summary.yml source-records/[0m
+2026-11-01T07:22:32.0087936Z shell: /usr/bin/bash -e {0}
+2026-11-01T07:22:32.0088193Z env:
+2026-11-01T07:22:32.0090687Z   GH_TOKEN: ***
+2026-11-01T07:22:32.0090896Z ##[endgroup]
+2026-11-01T07:22:32.0323083Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-01T07:22:32.0323522Z with:
+2026-11-01T07:22:32.0323745Z   name: cd-latch-diagnosis-41284522943
+2026-11-01T07:22:32.0324065Z   path: cloud-cd-latch-diagnosis
+source-records
+
+2026-11-01T07:22:32.0324380Z   if-no-files-found: error
+2026-11-01T07:22:32.0324608Z   retention-days: 90
+2026-11-01T07:22:32.0324814Z   compression-level: 6
+2026-11-01T07:22:32.0325022Z   overwrite: false
+2026-11-01T07:22:32.0325244Z   include-hidden-files: false
+2026-11-01T07:22:32.0325470Z env:
+2026-11-01T07:22:32.0327961Z   GH_TOKEN: ***
+2026-11-01T07:22:32.0328168Z ##[endgroup]
+2026-11-01T07:22:32.2130291Z (node:2397) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-01T07:22:32.2131306Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-01T07:22:32.2242838Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-11-01T07:22:32.2246513Z The least common ancestor is /home/runner/work/nssoc/nssoc. This will be the root directory of the artifact
+2026-11-01T07:22:32.2248217Z With the provided path, there will be 9 files uploaded
+2026-11-01T07:22:32.2250346Z Artifact name is valid!
+2026-11-01T07:22:32.2251658Z Root directory input is valid!
+2026-11-01T07:22:32.5158626Z Beginning upload of artifact content to blob storage
+2026-11-01T07:22:32.6414541Z (node:2397) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-01T07:22:32.9401937Z Uploaded bytes 702860
+2026-11-01T07:22:32.9823172Z Finished uploading artifact content to blob storage!
+2026-11-01T07:22:32.9824018Z SHA256 digest of uploaded artifact zip is 795ca6dfbff3e3fd7ec370cf003bb19b02f38afdf8d7b739fc44e7e0abc6cf67
+2026-11-01T07:22:32.9825993Z Finalizing artifact upload
+2026-11-01T07:22:33.4132546Z Artifact cd-latch-diagnosis-41284522943.zip successfully finalized. Artifact ID 13073599746
+2026-11-01T07:22:33.4133938Z Artifact cd-latch-diagnosis-41284522943 has been successfully uploaded! Final size is 702860 bytes. Artifact ID is 13073599746
+2026-11-01T07:22:33.4140903Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/41284522943/artifacts/13073599746
+2026-11-01T07:22:33.4375848Z Post job cleanup.
+2026-11-01T07:22:33.5293225Z [command]/usr/bin/git version
+2026-11-01T07:22:33.5352825Z git version 2.56.0
+2026-11-01T07:22:33.5416953Z Temporarily overriding HOME='/home/runner/work/_temp/0f4c9cd4-72c9-4cb9-b5b9-b010f43ebfc9' before making global git config changes
+2026-11-01T07:22:33.5418246Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-01T07:22:33.5424554Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-11-01T07:22:33.5470361Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-01T07:22:33.5514928Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-01T07:22:33.5875350Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-01T07:22:33.5919610Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-01T07:22:33.6452306Z Cleaning up orphan processes
+2026-11-01T07:22:33.6867839Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
