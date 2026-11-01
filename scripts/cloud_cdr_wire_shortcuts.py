@@ -51,8 +51,33 @@ def wire(points,width=600):
         need(x==xx or y==yy,"Manhattan segment")
         r.insert(pya.Box(min(x,xx)-width//2,min(y,yy)-width//2,max(x,xx)+width//2,max(y,yy)+width//2))
     return r.merged()
+def reuse_access(anchor,owned,full,other):
+    x,y=anchor["point_dbu"];touch=box(x,y,1)
+    landing=owned[10].interacting(touch).merged()
+    if landing.is_empty()or not(touch-owned[8]).is_empty():return None
+    cuts=owned[19].interacting(landing).merged()
+    if cuts.count()<2:return None
+    records=[]
+    for poly in cuts.each():
+        rect=poly.bbox();cut=pya.Region(poly)
+        if rect.width()!=190 or rect.height()!=190 or poly.area()!=190*190:return None
+        if not(cut.sized(50)-owned[8]).is_empty()or not(cut.sized(50)-landing).is_empty():return None
+        records.append([rect.left,rect.bottom,rect.right,rect.top])
+    tests=conductor_guard(landing,pya.Region(),owned,full,other)
+    if not all(v for k,v in tests.items()if k!="new_m2_material"):return None
+    # Existing cuts are not added or exempted: no new via geometry is generated.
+    # Their exact same-net M1/M2 enclosure is established above.
+    return dict(cuts=pya.Region(),pad=landing,center=[x,y]),dict(
+      reason=None,reused_existing_stack=True,reused_via1_boxes_dbu=records,
+      reused_via1_count=len(records),new_via1_count=0,landing_bbox=bounds(landing),
+      anchor_point_dbu=[x,y],admitted_sites=[[x,y]],attempted_sites=[],array_trials=[],
+      original_m1_m2_and_via1_ownership_checked=True,original_lower_upper_enclosures_checked=True,
+      guards=tests)
+
 def access(anchor,owned,full,other):
     x,y=anchor["point_dbu"];need(anchor["metal"]==8 and x%5==0 and y%5==0,"M1 anchor on original grid")
+    reused=reuse_access(anchor,owned,full,other)
+    if reused is not None:return reused
     cache={};array_trials=[]
     def site(point):
         key=tuple(point)
@@ -117,7 +142,14 @@ def controls():
     blocked={n:r.dup()for n,r in full.items()};blocked[10]=box(0,0,20000)
     access_row,details=access(synthetic,own,blocked,{})
     need(access_row is None and details["attempted_sites"]and all(not x["admitted"]for x in details["attempted_sites"]),"full access blockers retained");passed.append("all rejected access guards retained")
-    need(len(passed)==29,"19 unchanged plus10 geometry controls");return passed
+    stacked={n:pya.Region()for n in LAYERS}
+    stacked[8]=pya.Region(pya.Box(-1000,-150,1000,150));stacked[10]=pya.Region(pya.Box(-1000,-145,1000,145))
+    for xx in(-720,-240,240,720):stacked[19]+=box(xx,0,95)
+    got=reuse_access(synthetic,stacked,stacked,{})
+    need(got is not None and got[0]["cuts"].is_empty()and got[1]["reused_via1_count"]==4,"real stack reused without duplicate cuts");passed.append("reuse four enclosed same-net vias without new cuts")
+    bad={n:r.dup()for n,r in stacked.items()};bad[8]=pya.Region()
+    need(reuse_access(synthetic,bad,stacked,{})is None,"reject unowned lower metal");passed.append("reject reused stack without lower same-net metal")
+    need(len(passed)==31,"19 unchanged plus12 geometry controls");return passed
 def region_snapshot(layout,top):
     return {(layout.get_info(li).layer,layout.get_info(li).datatype):pya.Region(top.begin_shapes_rec(li)).merged()for li in layout.layer_indexes()}
 def generate(base,cfg):
