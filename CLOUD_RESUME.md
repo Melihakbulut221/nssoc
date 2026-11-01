@@ -1,9 +1,25 @@
-# Cloud continuation — checkpoint v246
+# Cloud continuation — checkpoint v247
 
-Updated: 2026-11-01T13:48:26.209792+00:00
+Updated: 2026-11-01T14:18:53.904217+00:00
 
 Latest instruction: **her şeyi bulutta yap, lokalde bir şey bırakma temizle.**
 It overrides the earlier local-execution wording in the active goal. All CAD, simulation, native archive/layout/waveform acquisition and numerical/geometric analysis run on GitHub. Local coordination uses source/API-derived text in RAM only. Never acquire native ODB/DEF/GDS/SPICE/raw archives locally, including RAM. The local workspace and project temp entries were verified empty, with no local CAD processes. Unrelated user files remain untouched.
+
+## Latest result: actual GDS pin correspondence passed
+
+Cloud run41314829887/sourceb0cc820906e9cc75c3a7d55fce11297a8e4f1da1,branch codex/mainchip-pin-gds COMPLETED SUCCESSFULLY. All52controls passed (23inherited graph+29geometry/parser/grid controls). Against the authenticated current restored snapshot, all1300pin observations across the142original wire-only failing nets matched77unique master/pin definitions. Native-to-LEF region equality, GDS drawing-metal coverage including polygon holes, and all placed orientation/origin transforms passed. Missing/mismatched pins:0. Both actual SRAM masters RM_IHPSG13_1P_2048x64_c2_bm_bist and RM_IHPSG13_2P_256x16_c2_bm_bist were included. Actual required GDS reference libraries use0.001um DBU,matching the1000DBU/um native database.
+
+All original native archive members from release430583367 and all five original Ciel PDK archives at revisionc4b8b4e5e7a05f375cca3815d51b3a37721fbf5c were authenticated. Actual comparison used only libs.ref GDS/LEF files and the pinned drawing-layer map. No pin-marker layer was counted as conducting metal. Full33-file proof35f96b34545c1db4fef2b963816958337ec1f499 is imported under docs/evidence/restored-pin-gds-terminal-41314829887. Full native layouts remain cloud-only and unchanged. Peak runner RSS2374316KiB.
+
+Earlier run41314212802/source6a256976d29b2dd5d36b1726245b70ee456dca82 passed45controls and authenticated native/PDK inputs, but its reader stopped at a noninteger GDS-to-ODB scale while scanning all PDK GDS files,including QA/test layouts. This was not a measured chip-connectivity failure. Full29-file proofde9dc9a9d34228bb0c134dd73e59db7eee33bb41 is imported. The successor limits candidate material to actual reference-library paths, records units for every GDS, converts only matching master cells on an exact integer common grid, refuses rounding/overflow, and adds7controls.
+
+**Next concrete change:** Implement and source-qualify an explicit physical-conductor connectivity adapter using this now-verified pin metal. Bind it to exact candidateODB SHA256d526feec659883b65dc737853d4d6a192d529384e2676d8a2d17e9b5e7d6de7e and the complete pinned GDS qualification/placed-pin records. Preserve the original142wire-only failures. Recompute both original graphs and physical conductor graphs, require exact actual pin identities/geometries for all1300qualified observations, retain all828owner/1351diode checks and both positive-area/closed-boundary modes, and refuse extra or changed unqualified failures. This is a model correction justified by actual metal, not a gate waiver. Qualify on the complete authenticated828-net dataset before binding the native restored-audit adapter.
+
+The native integration point is scripts/mainchip_scoped_counterpart_restoration_native.py at source05d336a1b1b681c9d96b71d464c5ea430835e438. Its restored-audit clones targeted.bind_phase(plan,scope); that function currently wraps native.connectivity(path,scope_core.observation_scope(plan,scope),out). Add the qualified adapter privately without mutating frozen source functions. Original validate_connectivity returns changed_nets/both_modes_complete and requires every pin/diode to share a single conductive component in both modes. Keep original wire-only reports separate and explicit. Native host source additions must be included in NEW_NATIVE and their source manifest/projection; require independent same-source controls and exact-source empty release reservation before native execution.
+
+Then run the remaining native2702PG-contact, final DRC/antenna and clock/placement preservation audits. Final full-chip timing and fullserialPHY remain unaccepted. No route/database/pin geometry was edited in these read-only diagnoses; no final chipGDS, fullDRC/LVS, newRC orSTA was executed.
+
+Completed collector recipes: docs/evidence/cloud-collector-recipes-20261029/cloud-pin-gds-v247.json. They have already published both proof branches; do not rerun their creation mutations. The full source and primary OpenDB transform references are preserved in each proof. All work remains on GitHub; workspace/task temp are empty.
 
 ## Current mainchip result and next repair
 
