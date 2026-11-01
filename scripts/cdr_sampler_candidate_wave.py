@@ -105,9 +105,23 @@ def violation_events(t,vc,vb,ve,ic,nx):
         events.append(dict(metric=name,limit=limit,extremum=kind,value=float(values[i]),worst_row=i,time_s=float(t[i]),
             before_active_interval=bool(t[i]<START),all_violating_intervals=intervals))
     return events
+def simultaneous_hbt(t,when,devices,voltage,current):
+    require(t.ndim==1 and len(t)>1 and np.isfinite(t).all() and np.all(np.diff(t)>0),"strict finite operating-point time axis")
+    require(math.isfinite(when) and t[0]<=when<=t[-1],"operating point inside actual capture")
+    def value(x):
+        require(x.shape==t.shape and np.isfinite(x).all(),"complete finite operating-point vector")
+        return float(np.interp(when,t,x))
+    result={}
+    for name,dev in devices.items():
+        require(len(dev["nodes"])==4 and type(dev["nx"])is int and dev["nx"]>0,"operating-point native HBT identity")
+        vals={role:value(voltage(node))for role,node in zip(("C","B","E","S"),dev["nodes"],strict=True)}
+        amps=value(current(name))
+        result[name]=dict(native_id=dev["native_id"],nodes=dev["nodes"],nx=dev["nx"],terminal_v=vals,
+            vce_v=vals["C"]-vals["E"],vbe_v=vals["B"]-vals["E"],collector_current_a=amps,collector_current_per_emitter_a=amps/dev["nx"])
+    return result
 def diagnose(report,t,data):
     require(report["case"]=="nominal_late"and report["corner"]=="nominal"and report["returncode"]==0 and report["diagnostics"]==[]and report["sources_unchanged"]is True,"complete original case")
-    require(report["current_context"]==dict(attempt=1,run_id=41272254964,source="8a07e8f773d931f9cb7f4ac72e5520b68bb133be"),"actual case identity")
+    require(report["current_context"]==dict(attempt=1,run_id=41274791029,source="eca0c5abf194169c8b42f58a48f22feb716e7dec"),"actual case identity")
     require(len(report["devices"])==124 and len(report["vectors"])==1151,"all original devices/vectors")
     aliases=report["binding"]["aliases"]
     def v(name):
@@ -146,6 +160,27 @@ def diagnose(report,t,data):
         require(len(actual["clock_to_valid_by_bit_s"])==len(original["clock_to_valid_by_bit_s"])==255,"complete per-bit delays")
         for x,y in zip(actual["clock_to_valid_by_bit_s"],original["clock_to_valid_by_bit_s"],strict=True):close(x,y,"per-bit delay "+tag)
         stages[tag]=dict(metrics=actual,original_metrics_reproduced=True,all_below_margin_samples=failures)
+    operating_points={}
+    for tag,stage in stages.items():
+        sampler=tag in "abcd";edges=falling if tag=="b"else rising
+        expected=report["expected_samples"if sampler else"expected_comparisons"][tag]
+        worst_bit=int(np.argmax(stage["metrics"]["clock_to_valid_by_bit_s"]))
+        stage_events=[dict(kind="maximum_delay_bit_at_original_deadline",bit_index=worst_bit+1,
+            expected=expected[worst_bit],time_s=edges[worst_bit]+(.3 if sampler else .6)*UI)]
+        if stage["all_below_margin_samples"]:
+            worst=min(stage["all_below_margin_samples"],key=lambda x:x["signed_margin_v"])
+            stage_events.append(dict(kind="worst_original_sample_margin",**worst))
+        captured=[]
+        for event in stage_events:
+            when=event["time_s"]
+            observed={name:float(np.interp(when,t,v(name)))for name in sorted(set(aliases)|{"avdd","cp","cn","dp","dn","xp","xn","yp","yn","vip","vin"})}
+            snapshot=simultaneous_hbt(t,when,report["devices"],v,lambda name:data["@q."+name+".qnpn13g2[ic]"])
+            require(len(snapshot)==124,"all124 simultaneous HBT operating points")
+            positive,negative=("xpd."+tag+"qp","xpd."+tag+"qn")if sampler else(tag+"p",tag+"n")
+            signed=float(np.interp(when,t,v(positive)-v(negative)))*(2*event["expected"]-1)
+            if event["kind"]=="worst_original_sample_margin":close(signed,event["signed_margin_v"],"operating-point original margin")
+            captured.append(dict(event=event,observed_nodes_v=observed,signed_margin_v=signed,all124_hbt=snapshot))
+        operating_points[tag]=captured
     window=(t>=START+8*UI)&(t<=START+255*UI)
     def mean(x):return float(np.trapezoid(x[window],t[window])/(t[window][-1]-t[window][0]))
     phase=mean((v("xp")-v("xn"))-(v("yp")-v("yn")))
@@ -155,7 +190,7 @@ def diagnose(report,t,data):
     return dict(status="COMPLETE_CANDIDATE_WAVE_HEADROOM_DIAGNOSIS",all124HBT_metrics_reproduced=True,all6stage_and1530_bit_delays_reproduced=True,
       original_phase_and_VI_reproduced=True,active_mask="t >= 2e-9",phase_window_s=[START+8*UI,START+255*UI],
       phase_average_v=phase,vi_mean_current_a=current,vi_mean_voltage_v=voltage,
-      failing_hbt_events=events,hbt=all_hbt,stages=stages,
+      failing_hbt_events=events,hbt=all_hbt,stages=stages,stage_operating_points=operating_points,
       interpretation="Simultaneous original native voltages/currents and complete under-margin samples. Correlation is diagnostic evidence, not proof that a particular edit fixes the circuit.",
       **FLAGS)
 def source_guard(config):
@@ -176,13 +211,13 @@ def acquire(config,out,work):
     for name,rule in rules.items():
         raw=remote(rule);(out/name).write_bytes(raw);values[name]=json.loads(raw)
     report=values["measurement.json"];index=values["index.json"];parts=values["parts.json"]
-    run=api("actions/runs/41272254964");release=api("releases/430356103");ref=api("git/ref/tags/"+config["release_tag"])
+    run=api("actions/runs/41274791029");release=api("releases/430370301");ref=api("git/ref/tags/"+config["release_tag"])
     require(run["status"]=="completed"and run["conclusion"]=="failure"and run["head_sha"]==config["producer_source"]and run["run_attempt"]==1,"original rejected run identity")
-    require(release["id"]==430356103 and release["tag_name"]==config["release_tag"]and release["target_commitish"]==config["producer_source"]and release["draft"]is False and release["prerelease"]is True,"original publication identity")
+    require(release["id"]==430370301 and release["tag_name"]==config["release_tag"]and release["target_commitish"]==config["producer_source"]and release["draft"]is False and release["prerelease"]is True,"original publication identity")
     require(ref["object"]["type"]=="commit"and ref["object"]["sha"]==config["producer_source"],"exact source release tag")
     (out/"producer.json").write_bytes(encode(dict(run=run,release=release,ref=ref)))
     assets={a["name"]:a for a in release["assets"]};require(len(assets)==len(release["assets"])==6,"complete original release assets")
-    require(parts["archive"]==dict(bytes=1054093478,sha256="e58999244852bda91d0af576794bcc5a8411b5087e52c155fc08e64efa6f267c") and parts["context"]==report["current_context"] and index["context"]==report["current_context"] and parts["source_directory"]=="cloud-sampler-load","original ordered archive")
+    require(parts["archive"]==dict(bytes=1053002403,sha256="912b8da101caf2db339d5930ab07e2f81b14f4a0b77b12fa2724631c1a6ea49f") and parts["context"]==report["current_context"] and index["context"]==report["current_context"] and parts["source_directory"]=="cloud-sampler-load","original ordered archive")
     require(len(index["files"])==config["inventory_members"] and len(parts["parts"])==4,"full original inventory")
     combined=work/"complete-native.tar.gz";observations=[];start=time.monotonic()
     with combined.open("xb")as archive:
@@ -233,8 +268,9 @@ def main():
             if row["model"]!="npn13g2":continue
             dev=report["devices"]["xpd."+row["instance"].lower()]
             require(dev["nodes"]==["xpd."+x["node"].lower() for x in row["terminals"]] and dev["nx"]==int(row["parameters"]["nx"]),"native candidate HBT terminal identity")
-        summary={k:v for k,v in result.items()if k not in ("hbt","stages","capture","failing_hbt_events")}
+        summary={k:v for k,v in result.items()if k not in ("hbt","stages","capture","failing_hbt_events","stage_operating_points")}
         summary["failing_hbt_events"]=[{k:v for k,v in e.items()if k not in ("all124_simultaneous_hbt","simultaneous_observed_nodes_v","all_violating_intervals")}for e in result["failing_hbt_events"]]
+        summary["stage_operating_points"]={tag:[dict(event=x["event"],signed_margin_v=x["signed_margin_v"],observed_nodes_v=x["observed_nodes_v"])for x in rows]for tag,rows in result["stage_operating_points"].items()}
         summary["stages"]={k:{n:v for n,v in s["metrics"].items()if n!="clock_to_valid_by_bit_s"}for k,s in result["stages"].items()}
         (out/"summary.json").write_bytes(encode(summary))
         source_guard(c)

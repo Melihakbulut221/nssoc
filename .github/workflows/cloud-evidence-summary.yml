@@ -1,4 +1,4 @@
-name: Rejected sampler candidate full-wave headroom diagnosis
+name: Master-buffer original-wave sampler operating points
 on:
   workflow_dispatch:
     inputs:
@@ -39,6 +39,7 @@ jobs:
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
       - name: Frozen reader and all-time versus active-event controls
         run: |
+          set -euo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           test "$GITHUB_RUN_ATTEMPT" = "1"
           mkdir cloud-sampler-candidate-controls
@@ -86,6 +87,7 @@ jobs:
         with:
           name: sampler-candidate-wave-${{ github.run_id }}
           path: cloud-sampler-candidate-wave
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 90
       - name: Preserve runner-only partial native evidence on failure

@@ -38,9 +38,27 @@ class Events(unittest.TestCase):
     def test_wrong_case_identity_refused(self):
         report=dict(case="nominal_late",corner="nominal",returncode=0,diagnostics=[],sources_unchanged=True,current_context=dict(attempt=1,run_id=41260582673,source="cde6353e164d32feee5a3e56cc54b32a3001f736"))
         with self.assertRaisesRegex(ValueError,"actual case identity"):d.diagnose(report,self.t,{})
+    def point(self,t=None,when=.5,voltage=None):
+        if t is None:t=np.array([0.,1.])
+        devs={"a":dict(native_id=1,nx=2,nodes=["c","b","e","s"]),"b":dict(native_id=2,nx=1,nodes=["b","c","e","s"])}
+        nodes={"c":np.array([.8,1.]),"b":np.array([.7,.9]),"e":np.array([0.,.2]),"s":np.array([0.,0.])}
+        return d.simultaneous_hbt(t,when,devs,voltage or nodes.__getitem__,lambda name:np.array([.002,.004]))
+    def test_operating_point_same_time_interpolation(self):
+        p=self.point();self.assertEqual(set(p),{"a","b"})
+        self.assertAlmostEqual(p["a"]["terminal_v"]["C"],.9);self.assertAlmostEqual(p["b"]["terminal_v"]["C"],.8)
+        self.assertAlmostEqual(p["a"]["vce_v"],.8);self.assertAlmostEqual(p["a"]["collector_current_per_emitter_a"],.0015)
+    def test_operating_point_time_axis_refused(self):
+        for t in [np.array([0.,0.]),np.array([1.,0.]),np.array([0.,np.nan])]:
+            with self.subTest(t=t),self.assertRaises(ValueError):self.point(t=t)
+    def test_operating_point_outside_capture_refused(self):
+        for when in [-.01,1.01,float("nan")]:
+            with self.subTest(when=when),self.assertRaises(ValueError):self.point(when=when)
+    def test_operating_point_missing_or_nonfinite_vector_refused(self):
+        for value in [np.array([.1]),np.array([.1,np.inf])]:
+            with self.subTest(value=value),self.assertRaises(ValueError):self.point(voltage=lambda name:value)
 if __name__=="__main__":
     config=json.loads((d.ROOT/d.CONFIG).read_bytes());d.source_guard(config)
     result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Events))
     report=dict(tests=result.testsRun,failures=len(result.failures),errors=len(result.errors),skips=len(result.skipped))
     print("CANDIDATE_EVENTS_CONTROLS "+json.dumps(report),flush=True)
-    raise SystemExit(0 if report==dict(tests=9,failures=0,errors=0,skips=0)else 1)
+    raise SystemExit(0 if report==dict(tests=13,failures=0,errors=0,skips=0)else 1)
