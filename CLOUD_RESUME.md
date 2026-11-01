@@ -1,11 +1,25 @@
-# Cloud continuation — checkpoint v267
+# Cloud continuation — checkpoint v268
 
-Updated: 2026-11-01T21:02:45.638107+00:00
+Updated: 2026-11-01T21:17:25.360338+00:00
 
 Latest instruction: **her şeyi bulutta yap, lokalde bir şey bırakma temizle.**
 It overrides the earlier local-execution wording in the active goal. All CAD, simulation, native archive/layout/waveform acquisition and numerical/geometric analysis run on GitHub. Local coordination uses source/API-derived text in RAM only. Never acquire native ODB/DEF/GDS/SPICE/raw archives locally, including RAM. The local workspace and project temp entries were verified empty, with no local CAD processes. Unrelated user files remain untouched.
 
-## Latest result: four mixed clock-selector paths generated; full physical checks and mainchip route running
+## Latest result: full physical pass; current native graph and mainchip routing in progress
+
+Execution remains cloud-only. All local task workspace/temp entries are empty and no local CAD process is running. Native GDS/ODB/L2N/SPICE/raw archives remain on GitHub; source/API/derived text coordination is RAM-only.
+
+Physical run41349608125/source8203934d2a56cdcc8a2fa7754d76d2bf24330658/release430854100 completed successfully on the actual four-path GDS1001172bytes SHA2561c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94. The full original checker reported560 DRC categories, zero markers, deep and flat LVS pass with124HBT+50MOS+98resistors+7MIM+221taps=500 primitives and the25-port reference, plus13 REJECTED_EXPECTED_FAULT results. All16 native phases passed their required outcome. This proves physical equivalence and DRC within that CDR block's tested scope, not full serial PHY, mainchip LVS/timing or production readiness. Complete native output release assets remain in GitHub: native-physical.tar.gz5979956bytes SHA256bcdeb4489a4923540119f8d71c06224aa0a66f013e6d04e589ca6538fffb8528; index20773bytes SHA2565e44568d47ab16bf18465ffadea480554240204ae066704b1a42a2ee0eeb4611.
+
+Fresh canonical run41350835442/source360a01ea394943614b25895e6389221f2b0ca0ba/branchcodex/cdr-wire-tail-canonical/release430861219 was dispatched. Its before-reference is the actual successful six-shortcut fresh-RC producer41339125361/sourcec6abc571734c0e3197ce1227e990b7b1420610da/release430788452, GDS244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347. All3236 native members are authenticated on GitHub. The earlier pre-six-shortcut42ed reference and old six-M2-only material declaration cannot prove this new mixed-layer delta.
+
+The new adapter independently reconstructs the exact Metal2/Via2/Metal3 additions for four original owner nets from the admitted bridge centers, two new Via2 cuts, original access boxes and complete route points. All original conductor partitions and all13 layers must satisfy exact material union with no deletion or undeclared material. Original500 primitives,1446 terminals,25 ports,978 logical anchors,160 planes/19 fault cases and frozen native identity/source-pin/parent-geometry/worker checks remain. Three new refusal cases cover wrong Via2 count, off-grid new routing and wrong connected endpoint. Source-controls have passed; consult actual run snapshot for native completion. No new RC or loaded transient has run yet. After genuine canonical qualification, derive fresh distributed RC and execute the original loaded electrical/device predicates without model substitution or relaxed limits.
+
+Mainchip actual full64-with-snapshots run41349316524/sourcea47bb1895ad12fdebddeb055dc5e3e9c414c04e0/release430851918 remains monitored. Its independent31 source controls41349079496 and repeated controls passed. Snapshot-only Tcl instrumentation leaves original64 iterations, seed42, threads, clock/layer/resource constraints and supervision intact. Native snapshot reload, restored classes, scoped connectivity,2702 diode PG contacts, original nets/clocks, DRC/antenna, matching154480-instance diode-inclusive netlist, fresh RC and original three-corner setup/hold remain unproven. Preserve the existing live handle; no duplicate dispatch.
+
+All rejected intermediate and previous loaded electrical failures remain retained. Full serial Gen3x4 PHY and final chip timing/production approval remain open. Monitor inventory718 runs; eight-hour monitoring remains read-only with automatic_native_dispatch:false. Prior monitorHTTP502 is not claimed resolved.
+
+## Previous checkpoint v267: four mixed clock-selector paths generated; full physical checks and mainchip route running
 
 Execution remains GitHub-only. Local workspace and project temporary files remain empty; native archives/GDS/ODB/L2N/SPICE/waves are never acquired locally. Source/API/derived-text coordination is RAM-only. This overrides stale local-execution wording in the active goal.
 

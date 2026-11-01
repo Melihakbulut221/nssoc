@@ -26,33 +26,6 @@
       "source": "a47bb1895ad12fdebddeb055dc5e3e9c414c04e0",
       "status": "in_progress",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41349316524"
-    },
-    "41349608125": {
-      "branch": "codex/cdr-wire-tail-physical",
-      "conclusion": null,
-      "jobs": [
-        {
-          "active_steps": [],
-          "conclusion": "success",
-          "id": 124976755919,
-          "name": "source-controls",
-          "status": "completed"
-        },
-        {
-          "active_steps": [
-            "Verify actual new GDS with full native DRC deep flat LVS and faults"
-          ],
-          "conclusion": null,
-          "id": 124976836058,
-          "name": "native-physical",
-          "status": "in_progress"
-        }
-      ],
-      "label": "Full physical verification of four mixed-layer shortcuts",
-      "run": 41349608125,
-      "source": "8203934d2a56cdcc8a2fa7754d76d2bf24330658",
-      "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41349608125"
     }
   },
   "bounded_route_class_diagnosis_v238": {
@@ -329,7 +302,7 @@
     "physical_acceptance": false,
     "timing_accepted": false
   },
-  "checkpoint_version": 267,
+  "checkpoint_version": 268,
   "cloud_results_release_reservations": {
     "mainchip_artifact_recovery": {
       "exact_tag_target_verified": true,
@@ -2255,6 +2228,7 @@
   "continuation_note_v265": "## Latest result: full native wave diagnosis and PCIe nettype repair\n\nAll CAD, native acquisition and geometric/numerical execution remain on GitHub. Local workspace and task temporary files remain empty; API/source/derived text coordination stays in RAM.\n\nActual full-wave diagnosis 41344170319/source 12c97e1c3510fd96cd410ba1e9d62f2b760a009e passed eight frozen-reader refusal controls, authenticated every one of the 130 native capsule members, parsed the complete original 113475-row/1152-column waveform and reproduced the original device/margin/delay/wrong-sign measurements. It did not execute a new transient and did not accept the rejected PHY. Extended diagnosis 41345078765/source 11e7c3f4b33388da8c03d7d571cc405fd384db36 repeated this and measured actual same-net terminal voltage drops.\n\nThe four failed HBTs are cn-clock selector pairs 61/62 and 115/116. At the actual minimum-Vce times, D collector-to-connected input-pair emitter differences are 41.3/60.5 mV and C differences 27.3/79.8 mV; clock-selector emitters sit roughly 46.5\u201347.2 mV above connected MOS drains on the same extracted nets. The corresponding local bleed-resistor avss terminals are at 276/283 mV, whereas substrate is near 1.1 mV. These are measured distributed-wire drops, not ideal-node substitutions. They motivate physical interconnect improvements; they do not by themselves prove a fix or quantify every contribution across the whole trace. A/B transition settling, C/D wrong signs, X/Y and phase/V-I gates remain rejected.\n\nNew physical generation: run 41345681826/source 3a54dd452f99a892e8e9d7521c87e51fe933a431 on codex/cdr-wire-tail-shortcuts. Reserved tag cloud-results-41345681826-1-cdr-wire-tail-shortcuts. Targets are D collector T061_C\u2013T056_E, D emitter T061_E\u2013T005_D, C collector T115_C\u2013T108_E and C emitter T115_E\u2013T034_D. The baseline is the actual already-generated six-shortcut GDS, SHA256 244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347, obtained from successful fresh RC 41339125361/release 430788452, all 3236 members authenticated. Current raw canonical anchors and L2N establish ownership; composition binds exact transistor IDs/terminals. Original eight geometry helper/control bodies are AST-identical and 31 original controls remain required. Generation proposes guarded 600 nm M2/Via1 routes, preserves original devices/M1 and all six earlier shortcuts, and serializes/reverses the exact new layer delta. Any partial or blocked attempt must remain failed and retained. It requires fresh strict DRC/LVS, canonical binding, RC and unchanged loaded electrical gates before acceptance. Do not repeat this existing dispatch blindly.\n\nSeparate actual CI failure repaired: hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v lacked default_nettype guards. Only default_nettype none/wire lines were added; every original behavioral source byte remains. Source 95e0aa8795d7ec7a9d13f59e01d2a936d5ddc609, run 41344951300 passed native Icarus module compilation, original prepared-upstream/whole-SoC guards and original complete lint with the unchanged diagnostic ledger. This closes that nettype failure only; the ledger still retains existing warnings and the rest of formal/boot is not claimed complete. The verified RTL edit is imported here.\n\nGeneral checks 41344155576 was an exact-commit duplicate of 41343649094 (both b038f1e12b35b30d90b619392f74b6388004ae32). The less-progressed duplicate was cancelled to release hosted capacity; its formal-and-boot nettype failure and cancelled job states are preserved, not relabelled passes. The older checks run was left running. The dedicated waveform job subsequently acquired a runner and completed. This observation does not prove GitHub account quota settings. Future source-only experimental commits should avoid launching duplicate broad checks; all required dedicated tests still run at exact source.\n\nMainchip full64 41323446729/source ff1c0e6163e0ba1537a075d50e940fafc9332c64 remains independently monitored; consult the latest snapshot. Do not duplicate it based on observation or assumed deadlines. After actual terminal publication, authenticate current outputs, restore original classes with current byte pins (old restoration code hardcodes an obsolete candidate), audit connectivity/2702 diode PG contacts/original nets/DRC/antenna, export matching 154480-instance netlist, then fresh RC and original three-corner setup/hold. Full serial PHY, final mainchip timing and production approval remain open.\n\nMonitor inventory: 709 tracked runs, eight-hour read-only, automatic_native_dispatch:false. Prior monitor HTTP502 remains unresolved. All derived proofs, failed logs and exact source copies are retained on GitHub.\n",
   "continuation_note_v266": "## Latest result: cloud-only cleanup verified; terminal failures retained\n\nAll native CAD, layout, waveform and archive processing runs on GitHub. The local workspace and project-specific temporary entries are empty; no local CAD process is running. API/source/derived-text coordination uses RAM only.\n\nMainchip run 41323446729 (ff1c0e6163e0ba1537a075d50e940fafc9332c64) ended in failure. Its actual full-route-stage report identifies elapsed_limit at 14400.716919044 seconds, returncode -15, with SIGTERM cleanup. Docker OOMKilled is false. The last memory sentinel measured 9366512 KiB RSS and 5930368 KiB available, against the original 10485760 KiB group limit and 2097152 KiB availability floor. Thus the recorded termination was the four-hour route deadline, not an OOM. The log finished iteration 28 with 86 routing violations and reached iteration 29, 90 percent, with 85 violations before termination. These are partial router observations, not final DRC, a saved final route, or timing closure. The stage reports route_returned:false and an empty checkpoints object. Durable native release 430685443 and derived/native workspace artifact metadata are preserved. Inspect actual candidate-outputs.json before claiming any resumable post-route database. The next route change must address checkpoint/lifecycle/time budget within hosted limits, preserve original constraints and resource checks, and use actual saved byte pins. Do not repeat the identical four-hour job blindly or invoke old restoration against stale pins.\n\nThree physical clock-selector shortcut attempts are retained:\n- 41345681826 / 3a54dd452f99a892e8e9d7521c87e51fe933a431: original M1-only access refused an actual M2 terminal reference; 31 controls passed.\n- 41346242975 / e56e07ea71fa7a0d1d58d02e4e670e9766e6184c: direct owned-M2 access admitted all four M2 sides; original M1 access admitted none; 38 controls passed.\n- 41346732942 / 7210be7e9fae153c45ca7bfeb52fa9d21c35fd81: geometry-derived M1 search seeds retained all original guards, but all four M1 sides still failed; 42 controls passed. No route candidates were evaluated and no new GDS was generated. Representative collector sites failed foreign-M2 clearance and existing-via clearance; MOS-drain sites failed existing-via clearance. These bounded search failures do not prove no legal topology exists. Next inspect/reuse actual same-net existing via stacks and attached M2, proving ownership and original lower/upper enclosure, without relaxing foreign-material spacing or pretending a different pin is the original one. Only then consider another physical candidate.\n\nOriginal loaded electrical failure remains: four HBT headroom violations, A/B delay, C/D wrong signs, X/Y and phase/V-I gates. Measured collector/emitter wire losses and local avss lift remain actionable evidence, not accepted fixes. Every new geometry requires strict DRC/LVS, canonical binding, fresh RC and unchanged loaded waveform tests. Full serial Gen3 x4 PHY, final mainchip setup/hold and production approval remain open.\n\nVerified PCIe nettype repair and full-wave diagnosis from checkpoint v265 remain intact. Monitor inventory now includes 711 runs; eight-hour monitoring stays read-only, automatic_native_dispatch:false. The previously observed monitor HTTP502 is not claimed resolved. No new native run was dispatched during this terminal-evidence update.\n",
   "continuation_note_v267": "## Latest result: four mixed clock-selector paths generated; full physical checks and mainchip route running\n\nExecution remains GitHub-only. Local workspace and project temporary files remain empty; native archives/GDS/ODB/L2N/SPICE/waves are never acquired locally. Source/API/derived-text coordination is RAM-only. This overrides stale local-execution wording in the active goal.\n\nNative stack audit41348276461/sourcea5b632140452e3c2b28bff69521d98cdc0a1ccd7/release430845320 passed the original42 controls and authenticated the same actual six-shortcut parent. It proved that all four previously blocked M1 endpoints have same-component, enclosed existing Via1/Via2 paths to legal Metal3 landings. Original entire-Metal2 landing reuse was rejected by foreign-M2 clearance, not malformed cuts. The M2 emitter-side terminals instead admit direct Metal2 access and are blocked on direct Metal3. Thus mixed Metal2/Via2/Metal3 routing is based on actual geometry, not assumed layer connectivity.\n\nInitial mixed generation41348741667/source748b5ab8c76603d8436aaf921f600e109d1eb7f7/release430848757 passed52 controls and generated only D_emitter/C_emitter. Its actual1000340-byte GDS SHA256f7782129bd7e3b6fff0ebdd5c6646eb765b175368ef2e9b78d348979ba1b9e88 and exact serialized delta/original-material reversal were preserved, while the run remained FAILED because both collectors were unrouted. Each collector had six admitted bridge options but all432 simple Metal3 routes failed actual foreign-material guards. This failed intermediate remains evidence, not a physical pass.\n\nObstacle-aware generation41349305622/source2c5de6a9a9c84f170a9272eed63b37156e6e6043/release430851849 succeeded. All60 controls passed: original42, ten mixed-layer guards and eight search refusal/geometry fixtures. Both collectors use an actual rectilinear obstacle graph on the5nm grid with conservative center clearances910nm around foreign Metal3 and310nm around foreign vias; the original complete final geometric guards are rechecked on the full assembled metal and cuts. Native searches expanded7901/7939 nodes and each collector path length is604235nm. Both emitter paths retained the direct candidate. All four paths are now generated: D_collector,D_emitter,C_collector,C_emitter. Actual GDS1001172bytes, SHA2561c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94. Only Metal2/Via2/Metal3 were added, with two new Via2 cuts per path; all original devices,M1,Via1 and preexisting material were retained. Actual serialized delta and exact original-material reversal passed.\n\nFull physical verification41349608125/source8203934d2a56cdcc8a2fa7754d76d2bf24330658, branchcodex/cdr-wire-tail-physical, reservedrelease430854100, tests this exact new GDS. Frozen checker SHA2563ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66, all560 DRC categories, deep/flat500-device25-port LVS and13 injected faults remain unchanged. Parent reference schematic/LEF, PDK, AppImage and supervision limits are unchanged. Consult latest actual run snapshot; do not assume physical success from generator success. After a physical pass, obtain fresh canonical/material/terminal binding, distributed RC and the original loaded waveform/device predicates. No electrical/PHY acceptance exists yet. The previous rejected loaded result41341309504 remains authoritative until replaced by real new simulation.\n\nMainchip full64 snapshot sourcea47bb1895ad12fdebddeb055dc5e3e9c414c04e0, branchcodex/mainchip-full64-snapshots, passed independent controls41349079496:11 original stage tests,12 original native-preservation tests and8 new snapshot tests. Actual native run41349316524/release430851918 was then dispatched and repeats those controls before routing. Original full64/seed42/two threads/layers/clock constraints/resource checks/route budget remain. The sole Tcl delta enables the preexisting iteration snapshot branch, so progress can be published even if the route times out. The actual native run and snapshot readback/reload are not yet qualified; every snapshot is marked reload_verified:false. Original full64 run41323446729 failed on the four-hour elapsed limit, not OOM, with no returned final route. Do not repeat that old job or reuse stale postroute/STA pins. Upstream source confirms the snapshot path at OpenROADdcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/dr/FlexDR.cpp; this is source evidence, not a native resume-equivalence claim.\n\nFor mainchip, once actual new bytes are available: reopen/audit them in the cloud, restore original classes using new pins, check scoped connectivity/2702 diode PG contacts/original nets and clocks/DRC/antenna, export matching154480-instance diode-inclusive netlist, generate fresh RC and run the original three-corner setup/hold constraints. Full serial PLL/CDR/SERDES/training/LTSSM/replay/credit/ESD and production approval remain open.\n\nInventory717 runs; existing eight-hour monitor is read-only and automatic_native_dispatch:false. Earlier monitorHTTP502 is not claimed repaired. Preserve the live jobs and inspect their existing handles before any follow-up dispatch.\n",
+  "continuation_note_v268": "## Latest result: full physical pass; current native graph and mainchip routing in progress\n\nExecution remains cloud-only. All local task workspace/temp entries are empty and no local CAD process is running. Native GDS/ODB/L2N/SPICE/raw archives remain on GitHub; source/API/derived text coordination is RAM-only.\n\nPhysical run41349608125/source8203934d2a56cdcc8a2fa7754d76d2bf24330658/release430854100 completed successfully on the actual four-path GDS1001172bytes SHA2561c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94. The full original checker reported560 DRC categories, zero markers, deep and flat LVS pass with124HBT+50MOS+98resistors+7MIM+221taps=500 primitives and the25-port reference, plus13 REJECTED_EXPECTED_FAULT results. All16 native phases passed their required outcome. This proves physical equivalence and DRC within that CDR block's tested scope, not full serial PHY, mainchip LVS/timing or production readiness. Complete native output release assets remain in GitHub: native-physical.tar.gz5979956bytes SHA256bcdeb4489a4923540119f8d71c06224aa0a66f013e6d04e589ca6538fffb8528; index20773bytes SHA2565e44568d47ab16bf18465ffadea480554240204ae066704b1a42a2ee0eeb4611.\n\nFresh canonical run41350835442/source360a01ea394943614b25895e6389221f2b0ca0ba/branchcodex/cdr-wire-tail-canonical/release430861219 was dispatched. Its before-reference is the actual successful six-shortcut fresh-RC producer41339125361/sourcec6abc571734c0e3197ce1227e990b7b1420610da/release430788452, GDS244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347. All3236 native members are authenticated on GitHub. The earlier pre-six-shortcut42ed reference and old six-M2-only material declaration cannot prove this new mixed-layer delta.\n\nThe new adapter independently reconstructs the exact Metal2/Via2/Metal3 additions for four original owner nets from the admitted bridge centers, two new Via2 cuts, original access boxes and complete route points. All original conductor partitions and all13 layers must satisfy exact material union with no deletion or undeclared material. Original500 primitives,1446 terminals,25 ports,978 logical anchors,160 planes/19 fault cases and frozen native identity/source-pin/parent-geometry/worker checks remain. Three new refusal cases cover wrong Via2 count, off-grid new routing and wrong connected endpoint. Source-controls have passed; consult actual run snapshot for native completion. No new RC or loaded transient has run yet. After genuine canonical qualification, derive fresh distributed RC and execute the original loaded electrical/device predicates without model substitution or relaxed limits.\n\nMainchip actual full64-with-snapshots run41349316524/sourcea47bb1895ad12fdebddeb055dc5e3e9c414c04e0/release430851918 remains monitored. Its independent31 source controls41349079496 and repeated controls passed. Snapshot-only Tcl instrumentation leaves original64 iterations, seed42, threads, clock/layer/resource constraints and supervision intact. Native snapshot reload, restored classes, scoped connectivity,2702 diode PG contacts, original nets/clocks, DRC/antenna, matching154480-instance diode-inclusive netlist, fresh RC and original three-corner setup/hold remain unproven. Preserve the existing live handle; no duplicate dispatch.\n\nAll rejected intermediate and previous loaded electrical failures remain retained. Full serial Gen3x4 PHY and final chip timing/production approval remain open. Monitor inventory718 runs; eight-hour monitoring remains read-only with automatic_native_dispatch:false. Prior monitorHTTP502 is not claimed resolved.\n",
   "current_run_snapshot": [
     {
       "attempt": 1,
@@ -24281,6 +24255,56 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41349079496"
     },
     {
+      "branch": "codex/cdr-wire-tail-physical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124976755919,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124976836058,
+          "name": "native-physical",
+          "status": "completed"
+        }
+      ],
+      "label": "Actual mixed-layer physical pass",
+      "run": 41349608125,
+      "source": "8203934d2a56cdcc8a2fa7754d76d2bf24330658",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41349608125"
+    },
+    {
+      "branch": "codex/cdr-wire-tail-canonical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124980420247,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124980508441,
+          "name": "native-canonical",
+          "status": "completed"
+        }
+      ],
+      "label": "Fresh current native graph and all13-layer four-path material binding",
+      "run": 41350835442,
+      "source": "360a01ea394943614b25895e6389221f2b0ca0ba",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41350835442"
+    },
+    {
       "branch": "codex/mainchip-full64-snapshots",
       "conclusion": null,
       "jobs": [
@@ -24306,33 +24330,6 @@
       "source": "a47bb1895ad12fdebddeb055dc5e3e9c414c04e0",
       "status": "in_progress",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41349316524"
-    },
-    {
-      "branch": "codex/cdr-wire-tail-physical",
-      "conclusion": null,
-      "jobs": [
-        {
-          "active_steps": [],
-          "conclusion": "success",
-          "id": 124976755919,
-          "name": "source-controls",
-          "status": "completed"
-        },
-        {
-          "active_steps": [
-            "Verify actual new GDS with full native DRC deep flat LVS and faults"
-          ],
-          "conclusion": null,
-          "id": 124976836058,
-          "name": "native-physical",
-          "status": "in_progress"
-        }
-      ],
-      "label": "Full physical verification of four mixed-layer shortcuts",
-      "run": 41349608125,
-      "source": "8203934d2a56cdcc8a2fa7754d76d2bf24330658",
-      "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41349608125"
     }
   ],
   "divider_width4_terminal_v246": {
@@ -106044,6 +106041,85 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41349608125"
     }
   ],
+  "latest_observed_runs_v268": [
+    {
+      "branch": "codex/cdr-wire-tail-physical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124976755919,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124976836058,
+          "name": "native-physical",
+          "status": "completed"
+        }
+      ],
+      "label": "Actual mixed-layer physical pass",
+      "run": 41349608125,
+      "source": "8203934d2a56cdcc8a2fa7754d76d2bf24330658",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41349608125"
+    },
+    {
+      "branch": "codex/cdr-wire-tail-canonical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124980420247,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124980508441,
+          "name": "native-canonical",
+          "status": "completed"
+        }
+      ],
+      "label": "Fresh current native graph and all13-layer four-path material binding",
+      "run": 41350835442,
+      "source": "360a01ea394943614b25895e6389221f2b0ca0ba",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41350835442"
+    },
+    {
+      "branch": "codex/mainchip-full64-snapshots",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124975867442,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Execute and preserve actual full64 route"
+          ],
+          "conclusion": null,
+          "id": 124975988607,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "label": "Actual full64 route with native iteration ODB retention",
+      "run": 41349316524,
+      "source": "a47bb1895ad12fdebddeb055dc5e3e9c414c04e0",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41349316524"
+    }
+  ],
   "latest_terminal_runs": {
     "cdr_actual_terminal_current_ledger": 40171679250,
     "cdr_current_ledger_controls": 40171508329,
@@ -106805,7 +106881,7 @@
   "local_cleanup_verification": {
     "native_payloads_cloud_only": true,
     "native_processes": [],
-    "observed_at": "2026-11-01T21:02:45.638107+00:00",
+    "observed_at": "2026-11-01T21:17:25.360338+00:00",
     "project_temp_entries": {
       "/dev/shm": [],
       "/tmp": [],
@@ -106814,7 +106890,14 @@
     "source_API_derived_text_RAM_only": true,
     "workspace_entries": 0
   },
-  "local_workspace_verified_empty_at": "2026-11-01T21:02:45.638107+00:00",
+  "local_workspace_verified_empty_at": "2026-11-01T21:17:25.360338+00:00",
+  "mixed_physical_proofs_v268": [
+    {
+      "prefix": "docs/evidence/mixed-physical-terminal-41349608125",
+      "receipt_sha256": "fc6b9daa6b20d5d26517b9d1f8f4bdbf3321914cea87567662109977261ad4f0",
+      "run": 41349608125
+    }
+  ],
   "monitor": {
     "automatic_native_dispatch": false,
     "branch": "main",
@@ -106838,7 +106921,7 @@
     },
     "candidate_qualification_run": 41108174342,
     "code_deployed_head": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a",
-    "configured_inventory_rows": 717,
+    "configured_inventory_rows": 718,
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33",
     "every_hours": 8,
     "historical_scheduled_error": {
@@ -106851,7 +106934,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 267,
+    "inventory_version": 268,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -106951,7 +107034,7 @@
   ],
   "next_actions": [
     "Observe existing full64 snapshot native41349316524/sourcea47bb1895ad12fdebddeb055dc5e3e9c414c04e0/release430851918. Independent31 controls41349079496 passed. Only snapshot enable changes Tcl; original64/seed42/2threads/constraints/resources remain. Preserve actual iteration ODBs, then native reopen/ownership/class/connectivity/PG/DRC/antenna audits. Snapshot bytes are not yet qualified for reload or exact in-memory resume. Do not repeat old timed-out41323446729 or dispatch duplicate.",
-    "Observe current full physical41349608125/source8203934d2a56cdcc8a2fa7754d76d2bf24330658/release430854100 before any next candidate. Actual all-four mixed generation41349305622/source2c5de6a9a9c84f170a9272eed63b37156e6e6043 passed60 controls, final geometry guards, exact serialization/reversal; GDS1001172B SHA1c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94. Verify full560DRC/deepflat500device25portLVS/13faults, then fresh canonical binding/material/terminalRC and unchanged loaded waveform/device gates. Two-path intermediate41348741667 remains failed. Do not claim electrical/fullPHY acceptance.",
+    "Observe existing native canonical41350835442/source360a01ea394943614b25895e6389221f2b0ca0ba/release430861219. Physical41349608125 passed actual560DRC zero markers/deepflat500device25portLVS/all13faults on1c7d5617 GDS. New graph uses actual current6-shortcut before-reference41339125361/c6abc.../430788452/all3236members/GDS244992..., reconstructs exact Metal2/Via2/Metal3 additions on all4owner nets and proves all13layers/everypartition. On actual canonical pass, qualify fresh distributedRC and unchanged loaded electrical/device gates; do not reuse stale6-shortcut RC or old42ed pre-six material declarations.",
     "After actual pin-metal correspondence and connectivity qualification, run remaining2702diode PG-contact audit, all1691original clock/fixed-net preservation, all1351diode pin attachments, final DRC/antenna and exact current candidate audits. Saved8-pass router397violations is not final physical acceptance.",
     "Export and authenticate current diode-inclusive154480instance netlist from current native ODB, generate fresh nominal SPEF and run original threecorners/20-4-8-8ns/5percent-derate STA only after physical admission. Do not reuse153130instance route12netlist or stale SPEF.",
     "FullserialPLL/CDR/SERDES/training/LTSSM/replay/credit/lane/TX/serialsoc_top and completeDRC/LVS/ESD/production approval remain open. No packet-interface route or diagnostic pass constitutes fullPHY acceptance.",
@@ -148690,7 +148773,7 @@
     "timing_accepted": false,
     "timing_limits_unchanged": true
   },
-  "root_source_before_receipt": "cf0f0ea2c09859f73187681bbb9dfc401613d7a1",
+  "root_source_before_receipt": "e3f576e224468f89f5cf6889abfdb445419d3ac6",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -148765,7 +148848,7 @@
       "run": 41346732942
     }
   ],
-  "updated_at": "2026-11-01T21:02:45.638107+00:00",
+  "updated_at": "2026-11-01T21:17:25.360338+00:00",
   "width8_wave_diagnosis_v250": {
     "proof": {
       "bytes": 5806735,
