@@ -1,11 +1,26 @@
-# Cloud continuation — checkpoint v265
+# Cloud continuation — checkpoint v266
 
-Updated: 2026-11-01T20:16:11.969466+00:00
+Updated: 2026-11-01T20:36:09.101937+00:00
 
 Latest instruction: **her şeyi bulutta yap, lokalde bir şey bırakma temizle.**
 It overrides the earlier local-execution wording in the active goal. All CAD, simulation, native archive/layout/waveform acquisition and numerical/geometric analysis run on GitHub. Local coordination uses source/API-derived text in RAM only. Never acquire native ODB/DEF/GDS/SPICE/raw archives locally, including RAM. The local workspace and project temp entries were verified empty, with no local CAD processes. Unrelated user files remain untouched.
 
-## Latest result: full native wave diagnosis and PCIe nettype repair
+## Latest result: cloud-only cleanup verified; terminal failures retained
+
+All native CAD, layout, waveform and archive processing runs on GitHub. The local workspace and project-specific temporary entries are empty; no local CAD process is running. API/source/derived-text coordination uses RAM only.
+
+Mainchip run 41323446729 (ff1c0e6163e0ba1537a075d50e940fafc9332c64) ended in failure. Its actual full-route-stage report identifies elapsed_limit at 14400.716919044 seconds, returncode -15, with SIGTERM cleanup. Docker OOMKilled is false. The last memory sentinel measured 9366512 KiB RSS and 5930368 KiB available, against the original 10485760 KiB group limit and 2097152 KiB availability floor. Thus the recorded termination was the four-hour route deadline, not an OOM. The log finished iteration 28 with 86 routing violations and reached iteration 29, 90 percent, with 85 violations before termination. These are partial router observations, not final DRC, a saved final route, or timing closure. The stage reports route_returned:false and an empty checkpoints object. Durable native release 430685443 and derived/native workspace artifact metadata are preserved. Inspect actual candidate-outputs.json before claiming any resumable post-route database. The next route change must address checkpoint/lifecycle/time budget within hosted limits, preserve original constraints and resource checks, and use actual saved byte pins. Do not repeat the identical four-hour job blindly or invoke old restoration against stale pins.
+
+Three physical clock-selector shortcut attempts are retained:
+- 41345681826 / 3a54dd452f99a892e8e9d7521c87e51fe933a431: original M1-only access refused an actual M2 terminal reference; 31 controls passed.
+- 41346242975 / e56e07ea71fa7a0d1d58d02e4e670e9766e6184c: direct owned-M2 access admitted all four M2 sides; original M1 access admitted none; 38 controls passed.
+- 41346732942 / 7210be7e9fae153c45ca7bfeb52fa9d21c35fd81: geometry-derived M1 search seeds retained all original guards, but all four M1 sides still failed; 42 controls passed. No route candidates were evaluated and no new GDS was generated. Representative collector sites failed foreign-M2 clearance and existing-via clearance; MOS-drain sites failed existing-via clearance. These bounded search failures do not prove no legal topology exists. Next inspect/reuse actual same-net existing via stacks and attached M2, proving ownership and original lower/upper enclosure, without relaxing foreign-material spacing or pretending a different pin is the original one. Only then consider another physical candidate.
+
+Original loaded electrical failure remains: four HBT headroom violations, A/B delay, C/D wrong signs, X/Y and phase/V-I gates. Measured collector/emitter wire losses and local avss lift remain actionable evidence, not accepted fixes. Every new geometry requires strict DRC/LVS, canonical binding, fresh RC and unchanged loaded waveform tests. Full serial Gen3 x4 PHY, final mainchip setup/hold and production approval remain open.
+
+Verified PCIe nettype repair and full-wave diagnosis from checkpoint v265 remain intact. Monitor inventory now includes 711 runs; eight-hour monitoring stays read-only, automatic_native_dispatch:false. The previously observed monitor HTTP502 is not claimed resolved. No new native run was dispatched during this terminal-evidence update.
+
+## Previous checkpoint v265: full native wave diagnosis and PCIe nettype repair
 
 All CAD, native acquisition and geometric/numerical execution remain on GitHub. Local workspace and task temporary files remain empty; API/source/derived text coordination stays in RAM.
 
