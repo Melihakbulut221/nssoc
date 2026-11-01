@@ -1,6 +1,6 @@
 # Parallel MOS domain correction — native candidate, not accepted PHY
 
-Cloud-only continuation from checkpoint v227. The earlier W36->54um single-finger drive experiment remains superseded and was never dispatched.
+Cloud-only continuation from checkpoint v226. The earlier W36->54um single-finger drive experiment remains superseded and was never dispatched.
 
 ## Exact physical/model finding
 
@@ -32,3 +32,7 @@ The existing frozen bind_native function intentionally expects500 total/50MOS an
 The new measurement path must observe all200 MOS currents and preserve every original124HBT,7MIM, six sampler/XOR stages, phase/VI, startup/active stress, source/load and time predicates. Keep original aliases, data-pair collector selection,16 MOS tail-group topology and42 original tail origins while mapping every explicit unit into its original group. Do not merely relax500/50 constants or hide extra units from measurement. Derive the complete expanded vector set on cloud; an expected increase of150 current vectors is only a planning inference until proven. Qualify source controls, independently reserve an empty exact-source simulation release, then dispatch one actual native transient. None has yet been dispatched for this candidate.
 
 Existing distributed RC is retained in this intrinsic candidate. Any electrical success still requires independent reference, actual geometry generation and routing, full DRC/LVS, fresh extraction and all-origin/unit RC rebinding, PVT/closed-loop checks, serial PHY integration and final chip timing. No PHY/physical/final timing acceptance is claimed.
+
+## Subsequent continuation v228
+
+Expansion binding and projection are now qualified by41287453836, and actual transient attempt41287653458 has been dispatched on exact source030ef6022a00fde8bfc787690c1ce2ada0044963. Electrical result is pending; see [expanded-MOS loaded simulation](cdr-mos-parallel-loaded-simulation.md). The preceding no-dispatch statement described the generation-only checkpointv228 and is superseded by this actual run.
