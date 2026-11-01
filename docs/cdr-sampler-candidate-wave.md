@@ -1,11 +1,9 @@
-# Original-master q15 actual-selector transfer diagnosis
+# Mixed20 original-wave diagnosis
 
-Existing native run 41277054717 remains the sole measured circuit. No simulator or geometry mutation runs. All native data remain on GitHub.
+This job reads the single existing native41282867236/source8c7b5cdd86447fe374ae06064f2fef735a7c9b91 result on GitHub; it does not rerun simulation or change geometry. All original sampler/XOR/device/phase/VI predicates remain unchanged.
 
-Initial transfer analysis 41279400555 refused a wrong B-to-selector assumption. Its complete failure evidence is retained at 1992e4d33a5871e498282e7a1557c0cced73ee12 / docs/evidence/cdr-sampler-candidate-wave-41279400555. The actual 500-device composition proves selectors are driven by retimed D: DQP cluster18 through R234 to base150, DQN cluster17 through R236 to base151, shunts R235/R237 and parallel MIM275/276. Q131/Q132 and Q149/Q150 share those base clusters.
+Before acquiring native payloads, authenticated preflight predicts the exact20 qualified resistor length edits in the complete original500-device composition using only the literal target table from the exact candidate source. It validates all targeted original parameters and ordered terminals and requires the resulting complete JSON bytes/hash to match the candidate composition recorded by the native archive index. This includes restoration of original C/D loads and unchanged master loads. The actual extracted native composition must then equal that authenticated prediction. No candidate Python is executed during this topology prediction.
 
-Paths are A->AD, C->CD, D->S0 and D->S1. Seven frozen-reader, thirteen operating-point and eight transfer controls run first. An authenticated actual-composition preflight verifies all four native paths, receiver terminals, collector polarity, series resistors, parallel MIM and real ground shunts before the separate archive job can run. The extracted native composition must equal that preflight input.
+The existing seven frozen-reader, thirteen event and eight transfer controls remain. Actual topology preflight authenticates A->AD,C->CD,D->S0/S1, receiver polarity and series/shunt/MIM identities. Full-wave analysis reproduces124 HBT stress reports, six stages and1530 delays, phase/VI, complete failures and same-time124-device snapshots. Diagnostic crossing thresholds50mV/10mV and125ps matching are not electrical acceptance limits; all missing, ambiguous and preceding/following events remain.
 
-Full-wave diagnosis reproduces all124 HBT metrics, all6 stages and1530 delays and phase/VI without changing original acceptance gates. It additionally records A->C and B->D retimer crossings and expected sequence index lags. Diagnostic hysteresis is50mV for sampler/buffer and10mV for base, with causal125ps event matching; missing, ambiguous, preceding and following events remain visible. These diagnostic thresholds are not electrical acceptance limits. Pipeline crossings alone do not prove retiming correctness.
-
-The sampler100mV/37.5ps and XOR100mV/75ps gates remain unchanged. Neither the preflight nor this analysis establishes accepted PHY, fresh PEX, new physical layout, or final chip timing.
+This is evidence for choosing the next actual circuit edit, not a fullPHY, regenerated layout, freshPEX or finaltiming acceptance.

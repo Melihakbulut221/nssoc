@@ -122,7 +122,7 @@ def simultaneous_hbt(t,when,devices,voltage,current):
     return result
 def diagnose(report,t,data):
     require(report["case"]=="nominal_late"and report["corner"]=="nominal"and report["returncode"]==0 and report["diagnostics"]==[]and report["sources_unchanged"]is True,"complete original case")
-    require(report["current_context"]==dict(attempt=1,run_id=41277054717,source="e85179e6900c2be9d931a8b30549c99f47c7617d"),"actual case identity")
+    require(report["current_context"]==dict(attempt=1,run_id=41282867236,source="8c7b5cdd86447fe374ae06064f2fef735a7c9b91"),"actual case identity")
     require(len(report["devices"])==124 and len(report["vectors"])==1151,"all original devices/vectors")
     aliases=report["binding"]["aliases"]
     def v(name):
@@ -194,6 +194,29 @@ def diagnose(report,t,data):
       failing_hbt_events=events,hbt=all_hbt,stages=stages,stage_operating_points=operating_points,
       interpretation="Simultaneous original native voltages/currents and complete under-margin samples. Correlation is diagnostic evidence, not proof that a particular edit fixes the circuit.",
       **FLAGS)
+
+def expected_composition(config,base,index):
+    """Predict only the qualified20 length tokens, then match native archive digest."""
+    import copy
+    require(index["context"]==config["producer_context"],"exact composition index producer")
+    raw=remote(config["candidate_target_source"])
+    nodes=[n for n in ast.parse(raw).body if isinstance(n,ast.Assign)and any(isinstance(t,ast.Name)and t.id=="TARGETS"for t in n.targets)]
+    require(len(nodes)==1,"one qualified target literal")
+    targets=ast.literal_eval(nodes[0].value)
+    require(set(targets)=={182,183,184,185,191,194,202,205,220,221,222,223,227,228,229,230,238,239,240,241},"exact mixed20 set")
+    result=copy.deepcopy(base);rows=result["device_records"];byid={r["native_id"]:r for r in rows}
+    require(len(rows)==len(byid)==500,"complete baseline topology")
+    for ident,(old,new,width,first,second)in targets.items():
+        r=byid[ident]
+        require(r["model"]=="rppd"and r["instance"]=="XD"+format(ident,"04d"),"exact native resistor")
+        require(r["parameters"]==dict(b="0",l=old,m="1",ps="0u",sw_et="1",w=width),"original topology resistor values")
+        require([(t["terminal"],t["native_net"],t["native_cluster"])for t in r["terminals"]]==[
+            ("rppd_1",*first),("rppd_2",*second),("rppd_sub","$1",1)],"ordered topology terminals")
+        r["parameters"]["l"]=new
+    blob=encode(result)
+    require(dict(bytes=len(blob),sha256=sha(blob))==index["files"]["native/candidate/composition.json"],"complete predicted topology equals indexed native composition")
+    return result
+
 def source_guard(config):
     for path,pin in config["source_files"].items():require(filepin(ROOT/path)==pin,"exact source "+path)
 def api(path,binary=False,timeout=90):
@@ -212,13 +235,13 @@ def acquire(config,out,work):
     for name,rule in rules.items():
         raw=remote(rule);(out/name).write_bytes(raw);values[name]=json.loads(raw)
     report=values["measurement.json"];index=values["index.json"];parts=values["parts.json"]
-    run=api("actions/runs/41277054717");release=api("releases/430382305");ref=api("git/ref/tags/"+config["release_tag"])
+    run=api("actions/runs/41282867236");release=api("releases/430414047");ref=api("git/ref/tags/"+config["release_tag"])
     require(run["status"]=="completed"and run["conclusion"]=="failure"and run["head_sha"]==config["producer_source"]and run["run_attempt"]==1,"original rejected run identity")
-    require(release["id"]==430382305 and release["tag_name"]==config["release_tag"]and release["target_commitish"]==config["producer_source"]and release["draft"]is False and release["prerelease"]is True,"original publication identity")
+    require(release["id"]==430414047 and release["tag_name"]==config["release_tag"]and release["target_commitish"]==config["producer_source"]and release["draft"]is False and release["prerelease"]is True,"original publication identity")
     require(ref["object"]["type"]=="commit"and ref["object"]["sha"]==config["producer_source"],"exact source release tag")
     (out/"producer.json").write_bytes(encode(dict(run=run,release=release,ref=ref)))
     assets={a["name"]:a for a in release["assets"]};require(len(assets)==len(release["assets"])==6,"complete original release assets")
-    require(parts["archive"]==dict(bytes=1053409153,sha256="85589cfeef80154768dc83db199d73c50a106050fcec727bd193e6bc16ace72e") and parts["context"]==report["current_context"] and index["context"]==report["current_context"] and parts["source_directory"]=="cloud-sampler-load","original ordered archive")
+    require(parts["archive"]==dict(bytes=1054102581,sha256="577686ccfb6b9a09502185da3d5ec89add0f9a5a24374486e251ff8eb42d379d") and parts["context"]==report["current_context"] and index["context"]==report["current_context"] and parts["source_directory"]=="cloud-sampler-load","original ordered archive")
     require(len(index["files"])==config["inventory_members"] and len(parts["parts"])==4,"full original inventory")
     combined=work/"complete-native.tar.gz";observations=[];start=time.monotonic()
     with combined.open("xb")as archive:
@@ -264,7 +287,7 @@ def main():
         require(capture==report["raw_capture"],"complete original parser result reproduced")
         result.update(diagnose(report,t,data),capture=capture)
         composition=json.loads((out/"candidate-composition.json").read_bytes())
-        require(composition==json.loads((out/"topology-candidate.json").read_bytes()),"native composition equals authenticated preflight input")
+        require(composition==expected_composition(c,json.loads((out/"topology-baseline.json").read_bytes()),json.loads((out/"index.json").read_bytes())),"native composition equals authenticated preflight input")
         require(len(composition["device_records"])==500,"all500 candidate devices")
         for row in composition["device_records"]:
             if row["model"]!="npn13g2":continue
@@ -286,3 +309,4 @@ def main():
     finally:
         (out/"result.json").write_bytes(encode(result));emit(out)
 if __name__=="__main__":main()
+

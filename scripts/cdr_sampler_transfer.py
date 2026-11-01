@@ -131,12 +131,14 @@ def preflight():
     require(os.environ.get("GITHUB_ACTIONS")=="true"and os.environ.get("GITHUB_RUN_ATTEMPT")=="1","single cloud-only preflight")
     cfg=json.loads((core.ROOT/core.CONFIG).read_bytes());core.source_guard(cfg)
     report=json.loads(core.remote(cfg["derived"]["measurement.json"]))
-    composition=json.loads(core.remote(cfg["derived"]["topology-candidate.json"]))
+    baseline=json.loads(core.remote(cfg["derived"]["topology-baseline.json"]))
+    index=json.loads(core.remote(cfg["derived"]["index.json"]))
+    composition=core.expected_composition(cfg,baseline,index)
     require(report["current_context"]==cfg["producer_context"],"exact preflight native context")
     paths=describe(report,composition)
     result=dict(source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),
         status="COMPLETE_AUTHENTICATED_TRANSFER_TOPOLOGY_PREFLIGHT",native_archive_acquired=False,
-        producer_context=cfg["producer_context"],input_pins={k:cfg["derived"][k]for k in("measurement.json","topology-candidate.json")},paths=paths)
+        producer_context=cfg["producer_context"],candidate_target_source=cfg["candidate_target_source"],complete_composition_digest_matched=True,input_pins={k:cfg["derived"][k]for k in("measurement.json","topology-baseline.json","index.json")},paths=paths)
     out=pathlib.Path("cloud-sampler-candidate-controls/topology-preflight.json")
     require(not out.exists(),"exclusive preflight output");out.write_bytes(core.encode(result))
     print(json.dumps(dict(status=result["status"],paths=list(paths),native_archive_acquired=False)),flush=True)
