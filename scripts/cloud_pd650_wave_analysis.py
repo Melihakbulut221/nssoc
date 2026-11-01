@@ -8,8 +8,8 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"pd650-wave-analysis"
 UI=125e-12;START=2e-9;STOP=START+258*UI;STEP=.3125e-12
-SOURCE="66fb47bb12eff45c83b3d2819d281f99960ac4cc"
-PRODUCER_RUN=41310192873;RELEASE=430594515
+SOURCE="43fd3f71a289fef004aeb41cd2d0972d81f76f41"
+PRODUCER_RUN=41325168813;RELEASE=430697288
 CASE="native/case-nominal_late/"
 SELECTED={CASE+"native/wave.raw",CASE+"measurement-result.json","native/candidate/composition.json","native/candidate/planes.json"}
 def sha(path):
@@ -23,12 +23,12 @@ def source_gate():
     assert os.environ.get("GITHUB_ACTIONS")=="true" and os.environ["GITHUB_RUN_ATTEMPT"]=="1"
     assert os.environ["GITHUB_REPOSITORY"]=="Melihakbulut221/nssoc"
     assert os.environ["GITHUB_EVENT_NAME"]=="workflow_dispatch"
-    assert os.environ["GITHUB_REF"]=="refs/heads/codex/cdr-width8-wave-analysis"
+    assert os.environ["GITHUB_REF"]=="refs/heads/codex/cdr-buffer-wave-analysis"
     assert np.__version__=="2.3.3"
     pins=json.loads((ROOT/"scripts/pd650-wave-analysis-pins.json").read_bytes())
     assert set(pins)=={"scripts/cloud_pd650_wave_analysis.py","scripts/pd650-wave-analysis-inputs.json",
       ".github/workflows/cloud-evidence-summary.yml","scripts/cloud_tx_stream.py",
-      "scripts/cloud_cdr_current_eight_drain_loaded.py","docs/cdr-width8-wave-analysis.md"}
+      "scripts/cloud_cdr_current_eight_drain_loaded.py","docs/cdr-buffer-wave-analysis.md"}
     for name,pin in pins.items():
         p=ROOT/name;assert p.is_file()and not p.is_symlink()
         assert dict(bytes=p.stat().st_size,sha256=sha(p))==pin,name
@@ -141,6 +141,28 @@ def device_controls():
     assert len(checks)==14
     return checks
 
+def reproduce_vi(t,v,d,bound,window,active):
+    def ic(name):return d["@q."+bound["vi_names"][name]+".qnpn13g2[ic]"]
+    current=(ic("xxp")+ic("xyn"))-(ic("xxn")+ic("xyp"))
+    output_delta=v("vip")-v("vin")
+    def mean(values):return float(np.trapezoid(values[window],t[window])/(t[window][-1]-t[window][0]))
+    mean_current=mean(current);mean_output=mean(output_delta)
+    vi_phase_ok=mean_current>=50e-6 and mean_output>=.005
+    vi_tails={tag:float(ic(tag)[active].min())for tag in("xtx","xty")}
+    vi_bias_ok=min(vi_tails.values())>=.0001
+    return dict(mean_signed_current_a=mean_current,mean_output_difference_v=mean_output,
+      minimum_active_tail_current_a=vi_tails,phase_passed=vi_phase_ok,bias_passed=vi_bias_ok,
+      passed=vi_phase_ok and vi_bias_ok,
+      phase_limits=dict(minimum_signed_current_a=50e-6,minimum_signed_voltage_v=.005,constant_maximum_abs_current_a=5e-6,constant_maximum_abs_voltage_v=.002),
+      output_commonmode_v=[float(((v("vip")+v("vin"))/2)[active].min()),float(((v("vip")+v("vin"))/2)[active].max())],
+      native_mim_geometry_um=[40,40],real_input_loading=True,actual_filter_connection=True,closed_loop=False)
+def checked_data_decision(checks,phase,reported):
+    assert set(checks)==set("abcdxy")
+    assert all(type(v)is bool for v in checks.values())
+    assert type(phase)is bool and type(reported)is bool
+    actual=all(checks.values())and phase
+    assert actual is reported,"producer data flag must equal all six gates AND original phase gate"
+    return actual
 def controls():
     source_gate();read=parser();passed=[]
     with tempfile.TemporaryDirectory()as temp:
@@ -185,7 +207,7 @@ def controls():
       case="nominal_late",accepted=False,devices_passed=False,data_offset_s=.15*UI,diagnostics=[],returncode=0)
     producer_measurement_gate(good);passed.append("actual list-valued empty diagnostics")
     for key,value in (("diagnostics",0),("diagnostics",["warning"]),("diagnostics","[]"),
-                      ("data_offset_s",0.),("returncode",1),("devices_passed",True),
+                      ("data_offset_s",0.),("returncode",1),("devices_passed",0),
                       ("source_head","0"*40),("current_context",{})):
         bad=copy.deepcopy(good);bad[key]=value
         try:producer_measurement_gate(bad)
@@ -205,6 +227,43 @@ def controls():
     assert len(passed)==34
     passed+=device_controls()
     assert len(passed)==48
+    good["devices_passed"]=True;producer_measurement_gate(good)
+    passed.append("valid passing device decision admitted for reproduction")
+    flags={k:True for k in"abcdxy"}
+    assert checked_data_decision(flags,True,True)
+    assert not checked_data_decision(flags,False,False)
+    passed+=["all original data and phase gates pass","failed phase rejects otherwise passing data"]
+    mixed=dict(flags);mixed["x"]=False
+    assert not checked_data_decision(mixed,True,False)
+    passed.append("one original data gate fails")
+    for label,args in [
+      ("false reported pass",(mixed,True,True)),
+      ("false reported failure",(flags,True,False)),
+      ("missing data gate",({k:v for k,v in flags.items()if k!="x"},True,True)),
+      ("numeric data flag",(dict(flags,x=1),True,True)),
+      ("numeric phase flag",(flags,1,True)),
+      ("numeric reported flag",(flags,True,1))]:
+        try:checked_data_decision(*args)
+        except AssertionError:passed.append("reject "+label)
+        else:raise AssertionError("accepted "+label)
+    assert len(passed)==58
+    # Execute the actual immutable producer VI statements against identical fixtures.
+    original_text=original.read_text()
+    begin=original_text.index("        def ic(name):")
+    end=original_text.index("        r['interface_observations']",begin)
+    import textwrap
+    original_vi=compile(textwrap.dedent(original_text[begin:end]),str(original),"exec")
+    vt=np.array([0.,1.,2.]);mask=np.array([True,True,True])
+    vb={"vi_names":{k:k for k in("xxp","xyn","xxn","xyp","xtx","xty")}}
+    for current,voltage,tail in[(100e-6,.01,.0002),(49e-6,.01,.0002),(100e-6,.0049,.0002),(100e-6,.01,.000099)]:
+        vd={"@q."+k+".qnpn13g2[ic]":np.full(3,tail if k in("xtx","xty")else current if k=="xxp"else 0.)for k in vb["vi_names"]}
+        vv=lambda name:np.full(3,1.+voltage if name=="vip"else 1.)
+        context=dict(np=np,t=vt,v=vv,d=vd,bound=vb,active=mask,window=mask,constant=False,direction=1,r={})
+        exec(original_vi,context)
+        observed=reproduce_vi(vt,vv,vd,vb,mask,mask)
+        compare_tree(observed,context["r"]["vi"])
+        passed.append("exact frozen original VI decision "+repr((current,voltage,tail)))
+    assert len(passed)==62
     return dict(status="PASS_SOURCE_READER_AND_ORIGINAL_MEASUREMENT_CONTROLS",source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),count=len(passed),passed=passed,native_simulation=False)
 def relative_member(name,source_directory):
     assert source_directory=="cloud-sampler-load"
@@ -215,7 +274,7 @@ def relative_member(name,source_directory):
 def acquire(work):
     inputs=json.loads((ROOT/"scripts/pd650-wave-analysis-inputs.json").read_bytes())
     run=api("actions/runs/"+str(PRODUCER_RUN))
-    assert run["head_sha"]==SOURCE and run["status"]=="completed"and run["conclusion"]=="failure"
+    assert run["head_sha"]==SOURCE and run["status"]=="completed"and run["conclusion"]==inputs["producer_conclusion"] and run["conclusion"]in("success","failure")
     release=api("releases/"+str(RELEASE));assert release["target_commitish"]==SOURCE
     assert api("git/ref/tags/"+release["tag_name"])["object"]["sha"]==SOURCE
     assets={a["name"]:a for a in release["assets"]};assert set(assets)==set(inputs["assets"])
@@ -263,7 +322,7 @@ def acquire(work):
 def producer_measurement_gate(m):
     assert m["source_head"]==SOURCE
     assert m["current_context"]==dict(attempt=1,run_id=PRODUCER_RUN,source=SOURCE)
-    assert m["case"]=="nominal_late"and m["accepted"]is False and m["devices_passed"]is False
+    assert m["case"]=="nominal_late"and m["accepted"]is False and type(m["devices_passed"])is bool
     assert m["data_offset_s"]==.15*UI
     assert type(m["diagnostics"])is list and m["diagnostics"]==[]
     assert type(m["returncode"])is int and m["returncode"]==0
@@ -338,7 +397,7 @@ def analyze(base,index):
     phase_average_v=float(np.trapezoid(((v("xp")-v("xn"))-(v("yp")-v("yn")))[window],t[window])/(t[window][-1]-t[window][0]))
     assert abs(phase_average_v-m["phase_average_v"])<1e-13
     assert m["phase_passed"] is bool(phase_average_v>=.03)
-    assert m["data_passed"] is False and all(not s["reproduced_original_gate"]["passed"] for s in stages.values())
+    checked_data_decision({k:s["reproduced_original_gate"]["passed"]for k,s in stages.items()},m["phase_passed"],m["data_passed"])
     contract=json.loads((base/"native/candidate/composition.json").read_bytes())
     planes=json.loads((base/"native/candidate/planes.json").read_bytes())
     logical={}
@@ -491,7 +550,7 @@ def analyze(base,index):
       (mos_tails,"minimum_active_mos_tail_current_a"),(stage_tails,"minimum_active_stage_tail_current_a"),(caps,"native_cap_voltage_checks")]:
         compare_tree(actual,m[key])
     decision=device_decision(recomputed_hbt,tails,recomputed_mos,mos_tails,stage_tails,caps)
-    assert decision["passed"]is m["devices_passed"]is False
+    assert type(m["devices_passed"])is bool and decision["passed"]is m["devices_passed"]
     failure_samples=[]
     for violation in decision["violations"]:
         if violation["category"]!="hbt":continue
@@ -507,13 +566,18 @@ def analyze(base,index):
         failure_samples.append(dict(**violation,row=at,time_s=float(t[at]),nx=dev["nx"],nodes=dev["nodes"],
           native_instance=record_by_name[name]["instance"],native_id=record_by_name[name]["native_id"],
           vc_v=float(vc[at]),vb_v=float(vb[at]),ve_v=float(ve[at]),vs_v=float(vs[at]),ic_a=float(ic[at])))
+    vi=reproduce_vi(t,v,d,bound,window,active)
+    compare_tree(vi,m["vi"])
+    save("vi-reproduction.json",dict(actual=vi,all_original_vi_metrics_reproduced=True,physical_acceptance=False,full_phy_accepted=False))
     save("device-limit-reproduction.json",dict(all_original_device_tables_reproduced=True,decision=decision,
       hbt_violation_raw_samples=failure_samples,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False))
-    result=dict(status="PASS_AUTHENTICATED_FAILURE_ANALYSIS_ONLY",source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),
+    result=dict(status="PASS_AUTHENTICATED_WAVE_ANALYSIS_ONLY",source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),
       producer_source=SOURCE,producer_run=PRODUCER_RUN,producer_release=RELEASE,raw_capture=capture,
       all_six_original_measurements_reproduced=True,phase_average_v=checked_phase_average(phase_average_v,m["phase_average_v"]),phase_gate_v=.03,
       summary={k:{key:value for key,value in stage["reproduced_original_gate"].items()if key!="clock_to_valid_by_bit_s"}for k,stage in stages.items()},
-      original_devices_passed=m["devices_passed"],all_original_device_tables_reproduced=True,device_limit_failures=decision["violations"],native_simulation=False,source_models_changed=False,
+      original_devices_passed=m["devices_passed"],original_data_passed=m["data_passed"],original_phase_passed=m["phase_passed"],
+      original_vi_passed=m["vi"]["passed"],all_original_vi_metrics_reproduced=True,
+      all_original_device_tables_reproduced=True,device_limit_failures=decision["violations"],native_simulation=False,source_models_changed=False,
       physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,
       scope="Existing full raw rows only. Diagnostic samples use interpolation exactly as original measurement; complete raw remains immutable and cloud-only.")
     save("result.json",result)
