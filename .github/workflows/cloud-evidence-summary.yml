@@ -1,4 +1,4 @@
-name: Inspect native clock-selector existing conductor stacks
+name: Generate native Metal2 Via2 Metal3 clock-selector shortcuts
 on:
   workflow_dispatch:
 permissions:
@@ -48,7 +48,7 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 90
-  native-access-audit:
+  native-generation:
     needs: source-controls
     runs-on: ubuntu-24.04
     timeout-minutes: 40
@@ -80,8 +80,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1
-      - name: Inspect original owned conductor stacks and possible Metal3 landings
-        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --inspect-access
+      - name: Acquire current native geometry and route four measured voltage-drop paths
+        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --generate-mixed
       - name: Preserve complete generated or failed native result
         id: publish
         if: always()

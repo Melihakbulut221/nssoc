@@ -488,17 +488,158 @@ def inspect_access(base,cfg):
     save("access-stack-summary.json",dict(terminals=summary,input_gds=pin(gpath),input_l2n=pin(wpath),native_geometry_unchanged=True,
       new_geometry_generated=False,physical_acceptance=False,full_phy_accepted=False))
 
+
+def mixed_m3_guard(metal,cuts,lower,owned,full,other):
+    return dict(
+      lower_via2_enclosure=(cuts.sized(50)-lower).is_empty(),
+      upper_via2_enclosure=(cuts.sized(50)-metal).is_empty(),
+      via2_existing_clearance=cuts.sized(295).interacting(full[29]).is_empty(),
+      foreign_m2_at_new_vias=cuts.sized(5).interacting(full[10]-owned[10]).is_empty(),
+      foreign_m3_clearance=metal.sized(605).interacting(full[30]-owned[30]).is_empty(),
+      foreign_via2=metal.sized(5).interacting(full[29]-owned[29]).is_empty(),
+      foreign_via3=metal.sized(5).interacting(full[49]-owned[49]).is_empty(),
+      no_unclassified_m3_or_via=all((metal.sized(605)if layer==30 else cuts.sized(295)if layer==29 else metal.sized(5)).interacting(r).is_empty()for(layer,dt),r in other.items()),
+      new_m3_material=not(metal-full[30]).is_empty())
+def mixed_controls():
+    layers=(8,19,10,29,30,49);own={n:pya.Region()for n in layers};full={n:pya.Region()for n in layers}
+    cut=box(0,0,95);metal=box(0,0,300);lower=box(0,0,300)
+    need(all(mixed_m3_guard(metal,cut,lower,own,full,{}).values()),"isolated mixed legal via2")
+    passed=["isolated enclosed new Via2"]
+    for name,layer,shape,key in[
+      ("foreign Metal3",30,box(500,0,100),"foreign_m3_clearance"),
+      ("foreign Via2",29,box(0,0,95),"foreign_via2"),
+      ("foreign Via3",49,box(0,0,95),"foreign_via3"),
+      ("foreign Metal2 at cut",10,box(0,0,100),"foreign_m2_at_new_vias")]:
+        bad={n:r.dup()for n,r in full.items()};bad[layer]+=shape
+        need(not mixed_m3_guard(metal,cut,lower,own,bad,{})[key],name);passed.append("reject "+name)
+    bad={n:r.dup()for n,r in full.items()};bad[29]=box(450,0,95)
+    need(not mixed_m3_guard(metal,cut,lower,own,bad,{})["via2_existing_clearance"],"near existing Via2");passed.append("reject existing Via2 spacing")
+    need(not mixed_m3_guard(metal,cut,box(0,0,100),own,full,{})["lower_via2_enclosure"],"lower enclosure");passed.append("reject insufficient lower Via2 enclosure")
+    need(not mixed_m3_guard(box(0,0,100),cut,lower,own,full,{})["upper_via2_enclosure"],"upper enclosure");passed.append("reject insufficient upper Via2 enclosure")
+    need(not mixed_m3_guard(metal,cut,lower,own,full,{(30,24):box(0,0,10)})["no_unclassified_m3_or_via"],"unclassified Metal3");passed.append("reject unclassified Metal3 drawing")
+    a=box(-250,0,95);b=box(250,0,95)
+    need(a.sized(295).interacting(b).is_empty(),"two separated actual 190nm cuts");passed.append("two Via2 cuts retain original spacing")
+    need(len(passed)==10,"mixed ten controls")
+    return passed
+def existing_m3_landings(anchor,owned,full,other):
+    x,y=anchor["point_dbu"];need(anchor["metal"]==8 and(box(x,y,1)-owned[8]).is_empty(),"actual M1 anchor")
+    lower_vias=[]
+    for poly in owned[19].interacting(box(x,y,10000)).each():
+        r=pya.Region(poly);b=poly.bbox()
+        if b.width()==190 and b.height()==190 and poly.area()==36100 and(r.sized(50)-owned[8]).is_empty()and(r.sized(50)-owned[10]).is_empty():lower_vias.append(bounds(r))
+    need(lower_vias,"original same-component local M1/Via1/M2 path")
+    results=[];trials=[]
+    for poly in owned[29].interacting(box(x,y,10000)).each():
+        r=pya.Region(poly);b=poly.bbox();xx=(b.left+b.right)//2;yy=(b.bottom+b.top)//2;pad=box(xx,yy,300)
+        t=mixed_m3_guard(pad,pya.Region(),owned[10],owned,full,other)
+        t.update(original_cut_190nm=b.width()==190 and b.height()==190 and poly.area()==36100,
+          original_cut_lower_enclosure=(r.sized(50)-owned[10]).is_empty(),original_cut_upper_enclosure=(r.sized(50)-owned[30]).is_empty(),
+          grid5=xx%5==0 and yy%5==0,center_in_original_m3=(box(xx,yy,1)-owned[30]).is_empty())
+        admitted=all(v for k,v in t.items()if k!="new_m3_material")
+        row=dict(center=[xx,yy],existing_via2_box=bounds(r),checks=t,admitted=admitted);trials.append(row)
+        if admitted:results.append(dict(center=[xx,yy],pad=pad,record=row))
+    results.sort(key=lambda row:((row["center"][0]-x)**2+(row["center"][1]-y)**2,row["center"]))
+    return results[:4],dict(original_anchor=anchor,original_via1_boxes=lower_vias,trials=trials,selected_search_limit=4,new_via1_count=0,existing_vias_unchanged=True)
+def mixed_generate(base,cfg):
+    gpath=base/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds";wpath=base/"binding/inputs/wire/native05/wires.l2n"
+    g=pya.Layout();g.read(str(gpath));top=g.cell(TOP);need(top is not None and g.dbu==.001,"original GDS")
+    before=region_snapshot(g,top);w=pya.LayoutToNetlist();w.read(str(wpath));need(w.internal_layout().dbu==.001,"wire DBU")
+    layers=(8,19,10,29,30,49);objects={n:w.layer_by_name("gds_"+str(n))for n in layers}
+    need(all(r is not None for r in objects.values()),"six ownership layers")
+    full={n:before.get((n,0),pya.Region())for n in layers}
+    for n in layers:need((full[n]^objects[n]).is_empty(),"native union "+str(n))
+    nets={n.cluster_id:n for n in w.netlist().top_circuit().each_net()}
+    physical={a["label"]:a for a in json.loads((base/"binding/inputs/wire/anchors08.json").read_bytes())["anchors"]}
+    other2={k:r for k,r in before.items()if k[0]in(10,19)and k[1]!=0 and not r.is_empty()}
+    other3={k:r for k,r in before.items()if k[0]in(30,29,49)and k[1]!=0 and not r.is_empty()}
+    additions={n:pya.Region()for n in(10,29,30)};inserted=[];proposals=[]
+    for label,aa,bb in TARGETS:
+        a=physical[aa];b=physical[bb];verify_target(base,aa,a,bb,b)
+        need(a["wire_component"]==b["wire_component"]and a["native_cluster"]==b["native_cluster"],"original same conductor")
+        m1,m2=(a,b)if a["metal"]==8 else(b,a);need(m1["metal"]==8 and m2["metal"]==10,"actual mixed terminal pair")
+        owned={n:w.shapes_of_net(nets[a["wire_component"]],objects[n],True).merged()for n in layers}
+        current={n:(full[n]+additions.get(n,pya.Region())).merged()for n in layers}
+        access3,proof3=existing_m3_landings(m1,owned,current,other3)
+        access2,proof2=terminal_access(m2,owned,current,other2)
+        row=dict(label=label,source_anchor=a,sink_anchor=b,m1_to_m3_access=proof3,m2_access=proof2,bridge_trials=[],route_trials=[],selected=None)
+        if access3 and access2 is not None:
+            x,y=access2["center"];bridges=[]
+            for delta in(2500,-2500,5000,-5000,7500,-7500,10000,-10000):
+                for dx,dy in((delta,0),(0,delta)):
+                    for orientation in("horizontal","vertical"):
+                        cx,cy=x+dx,y+dy
+                        points=[[cx-250,cy],[cx+250,cy]]if orientation=="horizontal"else[[cx,cy-250],[cx,cy+250]]
+                        c0=box(*points[0],95);c1=box(*points[1],95);cuts=(c0+c1).merged()
+                        pad=pya.Region(pya.Box(min(p[0]for p in points)-300,min(p[1]for p in points)-300,max(p[0]for p in points)+300,max(p[1]for p in points)+300))
+                        metal2=(wire([[x,y],[cx,cy]])+access2["pad"]+pad).merged()
+                        t2=conductor_guard(metal2,pya.Region(),owned,current,other2)
+                        t3=mixed_m3_guard(pad,cuts,(owned[10]+metal2).merged(),owned,current,other3)
+                        t3.update(two_new_cuts=cuts.count()==2,new_cuts_spacing=c0.sized(295).interacting(c1).is_empty(),
+                          lower_m2_connected=metal2.count()==1,original_m2_anchor_connected=(box(*m2["point_dbu"],1)-metal2).is_empty())
+                        admitted=all(t2.values())and all(v for k,v in t3.items()if k!="new_m3_material")
+                        br=dict(center=[cx,cy],via2_centers=points,m2_guards=t2,m3_guards=t3,admitted=admitted)
+                        row["bridge_trials"].append(br)
+                        if admitted:bridges.append(dict(center=[cx,cy],cuts=cuts,pad=pad,metal2=metal2,record=br))
+            bridges.sort(key=lambda q:abs(q["center"][0]-x)+abs(q["center"][1]-y))
+            for bridge in bridges:
+                if row["selected"]is not None:break
+                xx,yy=bridge["center"]
+                for start in access3:
+                    sx,sy=start["center"]
+                    routes=[[[sx,sy],[xx,sy],[xx,yy]],[[sx,sy],[sx,yy],[xx,yy]]]
+                    for delta in(-2000,2000,-5000,5000,-10000,10000,-20000,20000):
+                        routes.extend([[[sx,sy],[sx,sy+delta],[xx,sy+delta],[xx,yy]],[[sx,sy],[sx+delta,sy],[sx+delta,yy],[xx,yy]]])
+                    for points in routes:
+                        metal3=(wire(points)+start["pad"]+bridge["pad"]).merged()
+                        checks=mixed_m3_guard(metal3,bridge["cuts"],(owned[10]+bridge["metal2"]).merged(),owned,current,other3)
+                        checks.update(single_new_m3=metal3.count()==1,inside_original_bbox=((metal3+bridge["metal2"])-pya.Region(top.bbox())).is_empty(),
+                          connects_existing_m3=(box(*start["center"],1)-metal3).is_empty())
+                        trial=dict(points=points,bridge_center=bridge["center"],source_center=start["center"],guards=checks)
+                        row["route_trials"].append(trial)
+                        if all(checks.values()):
+                            row["selected"]=dict(route=trial,bridge=bridge["record"],existing_m3_access=start["record"],new_via2_count=2,new_via1_count=0)
+                            for n,r in((10,bridge["metal2"]),(29,bridge["cuts"]),(30,metal3)):
+                                for poly in r.each():inserted.append(top.shapes(g.layer(n,0)).insert(poly))
+                                additions[n]+=r
+                            break
+                    if row["selected"]is not None:break
+        proposals.append(row);save("mixed-target-"+label+".json",row)
+    adopted=[r["label"]for r in proposals if r["selected"]is not None]
+    save("mixed-generation-summary.json",dict(generated_targets=adopted,unrouted_targets=[r["label"]for r in proposals if r["selected"]is None],
+      input_gds=pin(gpath),input_l2n=pin(wpath),only_added_layers=[10,29,30],original_devices_m1_via1_unchanged=True,
+      physical_acceptance=False,fresh_RC=False,DRC=False,LVS=False,full_phy_accepted=False))
+    need(adopted,"no mixed-layer candidate passed original conservative spacing and enclosure guards")
+    NATIVE.mkdir();candidate=NATIVE/"nssoc_cdr_pd500_wire_tail_shortcuts.gds";g.write(str(candidate))
+    loaded=pya.Layout();loaded.read(str(candidate));after=region_snapshot(loaded,loaded.cell(TOP))
+    need(loaded.dbu==g.dbu and{c.name for c in loaded.each_cell()}=={c.name for c in g.each_cell()},"serialized hierarchy")
+    for layer in set(before)|set(after):
+        expected=before.get(layer,pya.Region())
+        if layer in((10,0),(29,0),(30,0)):expected=(expected+additions[layer[0]]).merged()
+        need((expected^after.get(layer,pya.Region())).is_empty(),"exact mixed layer delta "+str(layer))
+    for shape in reversed(inserted):shape.delete()
+    reverted=region_snapshot(g,top);need(set(before)==set(reverted),"reversed layers")
+    for layer in before:need((before[layer]^reverted[layer]).is_empty(),"exact original geometry reversal")
+    need(pin(gpath)==cfg["complete_members"]["binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds"],"original GDS bytes")
+    save("mixed-generation-proof.json",dict(candidate=pin(candidate),generated_targets=adopted,exact_serialized_delta=True,original_material_roundtrip=True,
+      original_devices_m1_via1_unchanged=True,physical_acceptance=False,full_phy_accepted=False,
+      scope="Physical candidate only; requires strict native DRC/LVS, canonical binding, fresh RC and original loaded electrical gates"))
+    need(len(adopted)==4,"partial mixed-layer candidate preserved; not all four paths routed")
+
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
-        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls();save("controls.json",dict(count=len(passed),passed=passed))
+        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
-        need(sys.argv[1:]in(["--generate"],["--inspect-access"]),"explicit native operation")
+        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"]),"explicit native operation")
         reserve(wait=True)
         base=acquire_current(cfg)
         if sys.argv[1:]==["--inspect-access"]:
             inspect_access(base,cfg)
             save("result.json",dict(status="NATIVE_EXISTING_STACK_INSPECTION_ONLY",physical_acceptance=False,full_phy_accepted=False))
+            return
+        if sys.argv[1:]==["--generate-mixed"]:
+            mixed_generate(base,cfg)
+            save("result.json",dict(status="GENERATED_FOUR_MIXED_LAYER_SHORTCUTS_REQUIRES_NATIVE_QUALIFICATION",physical_acceptance=False,full_phy_accepted=False))
             return
         generate(base,cfg)
         save("result.json",dict(status="GENERATED_FOUR_CLOCK_SELECTOR_SHORTCUTS_REQUIRES_DRC_LVS_RC_WAVES",physical_acceptance=False,full_phy_accepted=False))
