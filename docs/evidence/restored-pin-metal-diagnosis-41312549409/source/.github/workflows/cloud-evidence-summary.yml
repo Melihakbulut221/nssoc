@@ -1,0 +1,77 @@
+name: Diagnose observed pin metal in restored Route828
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: pin-metal-diagnosis-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cloud_mainchip_connectivity_diagnosis.py
+            /scripts/mainchip-connectivity-diagnosis-inputs.json
+            /scripts/mainchip-connectivity-diagnosis-pins.json
+            /scripts/mainchip_net459_connectivity.py
+            /scripts/mainchip_bulk_postdrt_antenna.py
+            /scripts/mainchip_single_antenna_trial.py
+            /scripts/mainchip_targeted_counterpart_routing.py
+            /.github/workflows/cloud-evidence-summary.yml
+            /docs/mainchip-restored-connectivity-diagnosis.md
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python3 -B scripts/cloud_mainchip_connectivity_diagnosis.py controls
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pin-metal-controls-${{ github.run_id }}
+          path: pin-metal-diagnosis
+          retention-days: 90
+          if-no-files-found: error
+  connectivity-diagnosis:
+    needs: source-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cloud_mainchip_connectivity_diagnosis.py
+            /scripts/mainchip-connectivity-diagnosis-inputs.json
+            /scripts/mainchip-connectivity-diagnosis-pins.json
+            /scripts/mainchip_net459_connectivity.py
+            /scripts/mainchip_bulk_postdrt_antenna.py
+            /scripts/mainchip_single_antenna_trial.py
+            /scripts/mainchip_targeted_counterpart_routing.py
+            /.github/workflows/cloud-evidence-summary.yml
+            /docs/mainchip-restored-connectivity-diagnosis.md
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python3 -B scripts/cloud_mainchip_connectivity_diagnosis.py analyze
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pin-metal-analyze-${{ github.run_id }}
+          path: pin-metal-diagnosis
+          retention-days: 90
+          if-no-files-found: error
