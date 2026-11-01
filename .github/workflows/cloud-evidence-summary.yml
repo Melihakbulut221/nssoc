@@ -1,4 +1,4 @@
-name: Twelve-divider width PD650 experiment with original electrical limits
+name: A/C buffer drive PD650 experiment with original electrical limits
 on:
   workflow_dispatch:
     inputs:
@@ -14,7 +14,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: cdr-divider-width-${{ github.ref }}
+  group: cdr-buffer-drive-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   source-controls:
@@ -55,6 +55,13 @@ jobs:
             /scripts/cloud_cdr_divider_width.py
             /scripts/check_cdr_divider_width.py
             /scripts/cdr-divider-width-host-pins.json
+            /scripts/cdr_buffer_drive_candidate.py
+            /scripts/cloud_cdr_buffer_drive.py
+            /scripts/check_cdr_buffer_drive.py
+            /scripts/cdr-buffer-drive-targets.json
+            /scripts/cdr-buffer-drive-host-pins.json
+            /docs/cdr-buffer-drive.md
+            /docs/evidence/cdr-buffer-drive-inputs/width2-workflow.txt
             /docs/cdr-divider-width.md
             /docs/evidence/cdr-divider-width-inputs/divider-workflow.txt
             /docs/evidence/cdr-divider-drive-inputs/original-workflow.txt
@@ -86,7 +93,7 @@ jobs:
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           test "$GITHUB_RUN_ATTEMPT" = "1"
-          python3 -B scripts/check_cdr_divider_width.py
+          python3 -B scripts/check_cdr_buffer_drive.py
       - name: Preserve candidate and full source control output
         if: always()
         run: |
@@ -144,6 +151,13 @@ jobs:
             /scripts/cloud_cdr_divider_width.py
             /scripts/check_cdr_divider_width.py
             /scripts/cdr-divider-width-host-pins.json
+            /scripts/cdr_buffer_drive_candidate.py
+            /scripts/cloud_cdr_buffer_drive.py
+            /scripts/check_cdr_buffer_drive.py
+            /scripts/cdr-buffer-drive-targets.json
+            /scripts/cdr-buffer-drive-host-pins.json
+            /docs/cdr-buffer-drive.md
+            /docs/evidence/cdr-buffer-drive-inputs/width2-workflow.txt
             /docs/cdr-divider-width.md
             /docs/evidence/cdr-divider-width-inputs/divider-workflow.txt
             /docs/evidence/cdr-divider-drive-inputs/original-workflow.txt
@@ -178,11 +192,11 @@ jobs:
           python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
       - name: Authenticate original inputs and run sampler-load candidate with original measurements
         id: native
-        run: python3 -B scripts/cloud_cdr_divider_width.py
+        run: python3 -B scripts/cloud_cdr_buffer_drive.py
       - name: Preserve complete native result even when electrical gates reject it
         id: publication
         if: always() && steps.native.outcome != 'skipped'
-        run: python3 -B scripts/cloud_cdr_divider_width.py --publish
+        run: python3 -B scripts/cloud_cdr_buffer_drive.py --publish
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
