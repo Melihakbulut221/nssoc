@@ -19,6 +19,8 @@ def fetch(pin):
     raw=base64.b64decode(blob["content"])
     require(len(raw)==pin["bytes"]and sha(raw)==pin["sha256"],"exact immutable derived input")
     return raw
+def canonical_model(name):
+    return {"npn13G2":"npn13g2"}.get(name,name)
 def join(loc,inventory,composition,targets,counts=(500,4928)):
     records=loc["devices"];physical={r["native_id"]:r for r in records}
     require(len(records)==len(physical)==counts[0],"complete unique physical device census")
@@ -31,7 +33,7 @@ def join(loc,inventory,composition,targets,counts=(500,4928)):
         cell=row["pcell"];path=cell["path"]
         require(path in bypath and cell==bypath[path]and path not in used,"exact unique device enclosure")
         used.add(path);other=electrical[ident]
-        require(row["model"]==other["model"],"same model")
+        require(canonical_model(row["model"])==other["model"],"same model with explicit native npn13G2 alias only")
         p={t["name"]:(t["net"],t["native_cluster"])for t in row["terminals"]}
         e={t["terminal"]:(t["native_net"],t["native_cluster"])for t in other["terminals"]}
         require(len(p)==len(row["terminals"])and len(e)==len(other["terminals"])and p==e,"all original terminal partitions")
@@ -55,6 +57,8 @@ def fixture():
         terms=[dict(name=k,net=n,native_cluster=i)for k,n,i in [("rppd_1","avdd",16),("rppd_2","out"+str(ident),20+ident),("rppd_sub","$1",1)]]
         rows.append(dict(native_id=ident,model="rppd",parameters=dict(l=2.6,w=32.),pcell=copy.deepcopy(p),terminals=terms))
         elec.append(dict(native_id=ident,instance="XD"+format(ident,"04d"),model="rppd",parameters=dict(b="0",l="2.6u",m="1",ps="0u",sw_et="1",w="32u"),terminals=[dict(terminal=t["name"],native_net=t["net"],native_cluster=t["native_cluster"])for t in terms]))
+    rows[2].update(model="npn13G2",parameters=dict(Nx=2,we=.07,le=.9),terminals=[dict(name=k,net=n,native_cluster=i)for k,n,i in [("C","c3",31),("B","b3",32),("E","e3",33),("S","$1",1)]])
+    elec[2].update(model="npn13g2",parameters=dict(nx="2",we=".07u",le=".9u"),terminals=[dict(terminal=t["name"],native_net=t["net"],native_cluster=t["native_cluster"])for t in rows[2]["terminals"]])
     return dict(devices=rows),inv,dict(device_records=elec),{1:("2.6u","1.5u","32u",("avdd",16),("out1",21))}
 def controls():
     args=fixture();p=join(*args,counts=(3,3))
@@ -65,6 +69,7 @@ def controls():
       ("missing instance",lambda a:a[1].pop()),
       ("wrong shared cell",lambda a:a[0]["devices"][0]["pcell"].__setitem__("cell","wrong")),
       ("wrong native terminal",lambda a:a[0]["devices"][0]["terminals"][0].__setitem__("native_cluster",99)),
+      ("different native HBT variant",lambda a:a[0]["devices"][2].__setitem__("model","npn13G2l")),
       ("wrong physical length",lambda a:a[0]["devices"][0]["parameters"].__setitem__("l",2.5)),
       ("wrong electrical width",lambda a:a[2]["device_records"][0]["parameters"].__setitem__("w","16u")),
       ("wrong selected terminal",lambda a:a[3].__setitem__(1,("2.6u","1.5u","32u",("avdd",16),("out2",22)))),
@@ -81,7 +86,7 @@ def main():
     require(os.environ.get("GITHUB_ACTIONS")=="true"and os.environ.get("GITHUB_RUN_ATTEMPT")=="1"and os.environ.get("GITHUB_REPOSITORY")=="Melihakbulut221/nssoc","single cloud execution")
     if args.controls:OUT=ROOT/"cloud-sampler-layout-map-controls"
     OUT.mkdir(exist_ok=False)
-    c=controls();(OUT/"controls.json").write_bytes(encode(c));require(len(c["refused"])==8,"all corruption refusals")
+    c=controls();(OUT/"controls.json").write_bytes(encode(c));require(len(c["refused"])==9,"all corruption refusals")
     if args.controls:print(json.dumps(c));return
     cfg=json.loads((ROOT/"scripts/cdr-sampler-layout-map-inputs.json").read_bytes())
     raw={name:fetch(pin)for name,pin in cfg["inputs"].items()}
