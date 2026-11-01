@@ -79,18 +79,20 @@ def gates(r):
 LOADS=(175,176,191,194,202,205,212,214)
 BUFFERS=(182,183,220,221)
 SHUNTS=(184,185,222,223)
-DECLARED=dict(native_ids=sorted(LOADS+BUFFERS+SHUNTS),eight_latch_loads_l_um=[2.6,1.5],four_buffer_loads_l_um=[1.8,1.0],four_shunts_l_um=[5,3.4])
+AC_SERIES=(227,229,238,240)
+AC_SHUNTS=(228,230,239,241)
+DECLARED=dict(native_ids=sorted(LOADS+BUFFERS+SHUNTS+AC_SERIES+AC_SHUNTS),eight_latch_loads_l_um=[2.6,1.5],four_buffer_loads_l_um=[1.8,1.0],four_shunts_l_um=[5,3.4],ac_series_l_um=[3.6,1.8],ac_shunts_l_um=[21.6,10.8],unchanged_divider_width_um=1)
 def compare(base,cand):
     original=gates(base);current=gates(cand)
     for key in ("case","corner","data_offset_s","source_bits","source_bits_sha256","vectors","vector_census","devices","mos_devices","native_caps","expected_samples","expected_comparisons"):
         require(base[key]==cand[key],"unchanged experimental contract "+key)
     expected=copy.deepcopy(base["binding"])
-    for ident in LOADS+BUFFERS+SHUNTS:
+    for ident in LOADS+BUFFERS+SHUNTS+AC_SERIES+AC_SHUNTS:
         entry=expected["groups"]["rppd"]["xpd.xd"+format(ident,"04d")]
-        old,new,width=("2.6u","1.5u","32u")if ident in LOADS else(("1.8u","1.0u","8u")if ident in BUFFERS else("5u","3.4u","4u"))
+        old,new,width=("2.6u","1.5u","32u")if ident in LOADS else(("1.8u","1.0u","8u")if ident in BUFFERS else(("5u","3.4u","4u")if ident in SHUNTS else(("3.6u","1.8u","1u")if ident in AC_SERIES else("21.6u","10.8u","1u"))))
         require(entry["parameters"]["l"]==old and entry["parameters"]["w"]==width,"original exact load or shunt")
         entry["parameters"]["l"]=new
-    require(cand["binding"]==expected,"only sixteen declared intrinsic lengths changed in complete bound circuit")
+    require(cand["binding"]==expected,"only twenty-four declared intrinsic lengths changed in complete bound circuit")
     require(cand["circuit_candidate"]==DECLARED,"declared candidate")
     require(cand["baseline_wire_rc_retained"] is True and cand["wire_rc_recomputed"] is False and cand["layout_regenerated"] is False and cand["physical_acceptance"] is False,"exploratory physical scope")
     changes={}
@@ -103,8 +105,8 @@ def compare(base,cand):
 def controls(base):
     # Deliberately synthetic positive comparison, never emitted as native evidence.
     synth=copy.deepcopy(base)
-    for ident in LOADS+BUFFERS+SHUNTS:
-        synth["binding"]["groups"]["rppd"]["xpd.xd"+format(ident,"04d")]["parameters"]["l"]="1.5u"if ident in LOADS else("1.0u"if ident in BUFFERS else"3.4u")
+    for ident in LOADS+BUFFERS+SHUNTS+AC_SERIES+AC_SHUNTS:
+        synth["binding"]["groups"]["rppd"]["xpd.xd"+format(ident,"04d")]["parameters"]["l"]="1.5u"if ident in LOADS else("1.0u"if ident in BUFFERS else("3.4u"if ident in SHUNTS else("1.8u"if ident in AC_SERIES else"10.8u")))
     synth.update(circuit_candidate=copy.deepcopy(DECLARED),
         baseline_wire_rc_retained=True,wire_rc_recomputed=False,layout_regenerated=False,physical_acceptance=False)
     compare(base,synth)
@@ -122,6 +124,9 @@ def controls(base):
         ("wrong buffer pullup length",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0182"]["parameters"].__setitem__("l","1.1u")),
         ("wrong buffer pullup width",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0182"]["parameters"].__setitem__("w","16u")),
         ("unauthorized master load change",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0177"]["parameters"].__setitem__("l","2.5u")),
+        ("wrong A divider series length",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0227"]["parameters"].__setitem__("l","1.7u")),
+        ("wrong C divider shunt width",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0241"]["parameters"].__setitem__("w","2u")),
+        ("unauthorized D selector change",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0234"]["parameters"].__setitem__("l","3u")),
     ];refused=[]
     for name,change in mutations:
         bad=copy.deepcopy(synth);change(bad)
@@ -135,12 +140,16 @@ def main():
     if args.controls:OUT=pathlib.Path("cloud-sampler-load-comparison-controls")
     require(os.environ.get("GITHUB_ACTIONS")=="true","cloud computation only")
     cfg=json.loads((ROOT/"scripts/cdr-sampler-load-comparison-inputs.json").read_bytes())
+    for path,pin in cfg["source_files"].items():
+        raw=(ROOT/path).read_bytes();require(dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())==pin,"exact comparison source "+path)
+
     OUT.mkdir(exist_ok=False);reports={}
     for name,pin in cfg["inputs"].items():
         if args.controls and name!="baseline.json":continue
         require(isinstance(pin,dict),"candidate terminal proof must be supplied")
         raw=fetch(pin);(OUT/name).write_bytes(raw);reports[name]=json.loads(raw)
     control_result=controls(reports["baseline.json"])
+    require(len(control_result["refused"])==16,"all16 original-gate comparison refusals")
     (OUT/"controls.json").write_bytes(encode(control_result))
     if args.controls:
         print(json.dumps(control_result,sort_keys=True));return
