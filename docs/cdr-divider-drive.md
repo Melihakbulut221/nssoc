@@ -19,3 +19,7 @@ Lower resistance increases loading and may reduce headroom. No pass is predicted
 ## Execution record
 
 Source controls41295792666 passed on 3a6f1f9e3b30f97ffae87f43cf0f7f00e2d2ab43. Full proof 29ca141af33df09b69c320ccdceb92ae1bbc3c63 (docs/evidence/divider-drive-controls-41295792666). Native trial41295928971 has independently reserved release430496244 and the exact same source. Terminal acceptance is not yet established; retain every failure.
+
+## Native terminal result
+
+Run41295928971 completed with electrical rejection. Simulator returncode0,diagnostics[],device gates pass; all six data gates fail. Phase29.329406mV remains below the unchanged30mV criterion. Full proof 19d07ce5f55be3d0c09014f56df9e76a51c9aa1a at docs/evidence/divider-drive-native-terminal-41295928971. Retained-wire RC trial does not establish regenerated layout or fresh extracted RC.

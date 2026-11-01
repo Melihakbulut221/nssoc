@@ -1,3 +1,17 @@
+# Cloud continuation — checkpoint v235
+
+Updated: 2026-11-01T10:31:28.804048+00:00
+
+All CAD,simulation and native payloads stay on GitHub. Local project directory and project-prefixed temporary entries are empty; no CAD processes are running locally. Source/API text coordination is in RAM only. User unrelated files remain untouched.
+
+PD650 twelve-divider trial41295928971 completed and was rejected by original electrical gates. The simulator exited0 without diagnostics and device gates passed; all six sampler/comparison gates failed. Phase improved to29.329mV but remains below30mV. Full terminal proof: 19d07ce5f55be3d0c09014f56df9e76a51c9aa1a at docs/evidence/divider-drive-native-terminal-41295928971. Do not present this as full PHY closure or automatically repeat the same trial.
+
+Mainchip routing41292673925 must be observed at its existing handle. Preserve the v234 restart caveat: an ODB is not proof of persisted optimizer state; inspect actual restored output and residual violations before another repair. Full serial PHY,routing and final setup/hold are still open.
+
+Eight-hour monitor stays read-only with automatic_native_dispatch:false.
+
+## Previous continuation records
+
 # Cloud continuation — checkpoint v234
 
 Updated: 2026-11-01T10:22:04.726263+00:00
