@@ -1,11 +1,23 @@
-# Cloud continuation — checkpoint v247
+# Cloud continuation — checkpoint v248
 
-Updated: 2026-11-01T14:18:53.904217+00:00
+Updated: 2026-11-01T14:36:35.329738+00:00
 
 Latest instruction: **her şeyi bulutta yap, lokalde bir şey bırakma temizle.**
 It overrides the earlier local-execution wording in the active goal. All CAD, simulation, native archive/layout/waveform acquisition and numerical/geometric analysis run on GitHub. Local coordination uses source/API-derived text in RAM only. Never acquire native ODB/DEF/GDS/SPICE/raw archives locally, including RAM. The local workspace and project temp entries were verified empty, with no local CAD processes. Unrelated user files remain untouched.
 
-## Latest result: actual GDS pin correspondence passed
+## Latest result: complete 828-net qualified connectivity model passed
+
+Cloud run 41316154727 at source 77247c06db249537a643fb2e6e9a256bdbcfe557 (codex/mainchip-qualified-pin-connectivity) completed successfully. All 67 controls passed: 52 inherited and 15 qualified-model controls. The complete authenticated 828-net dataset passed both overlap modes after replaying all 1656 original graphs. All 142 original wire-only failures and 686 original passes remain preserved. Only the actual 1300 pin observations / 77 master pins independently verified against frozen GDS, LEF and placement transforms were admitted as physical conductors. All 1351 diode attachment requirements remain enforced. No logical-name bridging, inferred vias or geometry edits are allowed.
+
+The pure core is scripts/mainchip_qualified_pin_connectivity.py at that source, with the wrapper scripts/cloud_mainchip_qualified_pin_connectivity.py and 19-file manifest scripts/mainchip-qualified-pin-pins.json. Complete 34-file proof 90231e2a46b2bccd0169c304cddae2b7aa8cade7 is imported under docs/evidence/qualified-pin-connectivity-terminal-41316154727. The successful result is explicitly NOT execution of the native adapter and is not chip acceptance.
+
+**Next concrete work:** privately bind the qualified core into the restored-audit native connectivity wrapper at source 05d336a1b1b681c9d96b71d464c5ea430835e438. Retain the original wire-only reports and candidate ODB SHA256 d526feec659883b65dc737853d4d6a192d529384e2676d8a2d17e9b5e7d6de7e. Pin the core and GDS qualification records in the native source capsule; require the original 828/142/1300/77 census and unchanged 608 diode ownership, 1351 diode pins and 1691 protected nets. Override only the scoped connectivity hook, not frozen original functions. Qualify the adapter binding independently on the exact source and reserve an empty exact-source native release before dispatch.
+
+Then execute the remaining 2702 power-contact checks and final DRC/antenna checks. Fresh matching-netlist RC/STA and full serial PHY remain open. No native adapter, new physical route, full chip LVS/DRC, fresh RC, final timing, or full PHY acceptance is claimed by this result.
+
+All CAD and analysis stay on GitHub. Local workspace/task temp entries are empty; source/API-derived text coordination uses RAM only. Completed collector recipes are preserved and must not be rerun as creation mutations.
+
+## Previous result: actual GDS pin correspondence passed
 
 Cloud run41314829887/sourceb0cc820906e9cc75c3a7d55fce11297a8e4f1da1,branch codex/mainchip-pin-gds COMPLETED SUCCESSFULLY. All52controls passed (23inherited graph+29geometry/parser/grid controls). Against the authenticated current restored snapshot, all1300pin observations across the142original wire-only failing nets matched77unique master/pin definitions. Native-to-LEF region equality, GDS drawing-metal coverage including polygon holes, and all placed orientation/origin transforms passed. Missing/mismatched pins:0. Both actual SRAM masters RM_IHPSG13_1P_2048x64_c2_bm_bist and RM_IHPSG13_2P_256x16_c2_bm_bist were included. Actual required GDS reference libraries use0.001um DBU,matching the1000DBU/um native database.
 
@@ -13,7 +25,7 @@ All original native archive members from release430583367 and all five original 
 
 Earlier run41314212802/source6a256976d29b2dd5d36b1726245b70ee456dca82 passed45controls and authenticated native/PDK inputs, but its reader stopped at a noninteger GDS-to-ODB scale while scanning all PDK GDS files,including QA/test layouts. This was not a measured chip-connectivity failure. Full29-file proofde9dc9a9d34228bb0c134dd73e59db7eee33bb41 is imported. The successor limits candidate material to actual reference-library paths, records units for every GDS, converts only matching master cells on an exact integer common grid, refuses rounding/overflow, and adds7controls.
 
-**Next concrete change:** Implement and source-qualify an explicit physical-conductor connectivity adapter using this now-verified pin metal. Bind it to exact candidateODB SHA256d526feec659883b65dc737853d4d6a192d529384e2676d8a2d17e9b5e7d6de7e and the complete pinned GDS qualification/placed-pin records. Preserve the original142wire-only failures. Recompute both original graphs and physical conductor graphs, require exact actual pin identities/geometries for all1300qualified observations, retain all828owner/1351diode checks and both positive-area/closed-boundary modes, and refuse extra or changed unqualified failures. This is a model correction justified by actual metal, not a gate waiver. Qualify on the complete authenticated828-net dataset before binding the native restored-audit adapter.
+**Completed in v248:** the explicit physical-conductor core is implemented and qualified on all 828 nets. See the latest result above for the remaining native adapter binding.
 
 The native integration point is scripts/mainchip_scoped_counterpart_restoration_native.py at source05d336a1b1b681c9d96b71d464c5ea430835e438. Its restored-audit clones targeted.bind_phase(plan,scope); that function currently wraps native.connectivity(path,scope_core.observation_scope(plan,scope),out). Add the qualified adapter privately without mutating frozen source functions. Original validate_connectivity returns changed_nets/both_modes_complete and requires every pin/diode to share a single conductive component in both modes. Keep original wire-only reports separate and explicit. Native host source additions must be included in NEW_NATIVE and their source manifest/projection; require independent same-source controls and exact-source empty release reservation before native execution.
 
@@ -33,7 +45,7 @@ Diagnosis41311644194/source8f8f13a42d0edf2a3d11ef0931351c2974ba9c29 PASSED13cont
 
 Pin-metal diagnosis41312549409/sourcea8588f493cc2816fa4e5c601209a4fd89f670dc8 PASSED all23controls (13original+10new) and actual authenticated readout. Adding only the observed ODB/LEF pin-metal rectangles in a separate diagnostic graph connects all142nets, under BOTH positive-area and closed-boundary overlap. Original pin access is missing on0nets;57nets have a single actual pin rectangle that directly bridges original wire components. No joining by logical pin name, inferred via, or unobserved filled gap is allowed. Original wire-only gate and original failures remain unchanged. Full24-file proof1f8da68823e1451c7b04a3a831d57d6b2e6060ce is imported under docs/evidence/restored-pin-metal-diagnosis-41312549409.
 
-**Next:** Verify the observed pin rectangles against the actual frozen standard-cell GDS/LEF and placement transforms on GitHub. Do not call all142 true opens, blindly reroute them, or silently turn the diagnostic augmentation into acceptance. If actual pin metal explains connectivity, qualify an explicit physical-conductor model correction with preserved original reports and controls for disjoint pin shapes, layer separation, missing vias, positive-area contact, all828owners and all1351diode pins. Then run the remaining native PG, final DRC/antenna and matching-netlist/RC/STA gates. No original physical criterion is waived.
+**Completed in v247-v248:** actual GDS/LEF/placement correspondence and full 828-net qualified physical connectivity now pass. Remaining native PG, DRC/antenna and matching-netlist RC/STA work is described above.
 
 No new native routing was run during these diagnoses. The saved8-pass router reported397last-router violations; this is not final DRC acceptance. Preserve608diode ownership separately from828routing ownership,1691protected nets,1351diodes and2702required PG contacts.
 
