@@ -10,7 +10,7 @@ OUT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-physical"
 MANIFEST="scripts/cdr-wire-shortcuts-physical-pins.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
 CANDIDATE="scripts/cdr-wire-physical-candidate.json"
-BRANCH="codex/cdr-wire-shortcuts-physical"
+BRANCH="codex/cdr-wire-tail-physical"
 APP_SHA="d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
 CHECKER_SHA="3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66"
 TOP="nssoc_cdr_pd500_resistor_v59"
@@ -50,7 +50,7 @@ def metadata(parent,gds,schematic,lef,inputs):
     need(pin(gds)==json.loads((ROOT/CANDIDATE).read_bytes())["candidate"],"exact actual new GDS")
     need(gds.name==TOP+".gds"and schematic.name=="schematic.cir","checker file names")
     return dict(status="GENERATED_PHYSICAL_WIRE_SHORTCUT_CANDIDATE_REQUIRES_FULL_VERIFICATION",
-      source_head=os.environ["GITHUB_SHA"],generation_producer=41333497715,top=TOP,
+      source_head=os.environ["GITHUB_SHA"],generation_producer=json.loads((ROOT/CANDIDATE).read_bytes())["run"],top=TOP,
       ports=parent["ports"],inputs={str(p.resolve()):sha(p)for p in inputs},
       outputs={p.name:sha(p)for p in(gds,schematic,lef)},
       original_devices_and_reference_unchanged=True,physical_acceptance=False,
@@ -100,15 +100,15 @@ def candidate():
     with tarfile.open(work/"native-candidate.tar.gz","r|gz")as tar:
         for m in tar:
             need(m.name not in members,"unique candidate member");members.add(m.name)
-            n=acquire.relative(m.name,"wire-shortcuts")
+            n=acquire.relative(m.name,"wire-tail-shortcuts")
             need(m.isfile()and n in index["files"],"candidate known regular member")
             p=target/n;p.parent.mkdir(parents=True,exist_ok=True)
             with p.open("xb")as f:shutil.copyfileobj(tar.extractfile(m),f)
             seen[n]=pin(p);need(seen[n]==index["files"][n],"candidate member digest")
     need(seen==index["files"],"every actual candidate member")
-    proof=json.loads((target/"derived/generation-proof.json").read_bytes())
+    proof=json.loads((target/"derived/mixed-generation-proof.json").read_bytes())
     need(proof["candidate"]==cfg["candidate"]and proof["exact_serialized_delta"]and proof["original_material_roundtrip"]and not proof["physical_acceptance"],"actual geometry proof remains candidate")
-    need(proof["generated_targets"]==["A_p","A_n","C_p","C_n","D_p","D_n"],"all six actual paths")
+    need(proof["generated_targets"]==["D_collector","D_emitter","C_collector","C_emitter"]and proof["original_devices_m1_via1_unchanged"],"all four actual paths; original devices M1 and Via1")
     save("candidate-acquisition.json",dict(run=run,release=rel,authenticated_members=seen))
     return target
 def restore_runtime():
@@ -133,11 +133,11 @@ def prepare_layout(parent_base,new_base,checker):
     old=parent_base/"binding/inputs/parent/layout";cfg=json.loads((ROOT/PARENT).read_bytes())
     for n in("schematic.cir",TOP+".lef","result.json",TOP+".gds"):
         need(pin(old/n)==cfg["complete_members"]["binding/inputs/parent/layout/"+n],"original parent "+n)
-    shutil.copyfile(new_base/"native/nssoc_cdr_pd500_wire_shortcuts.gds",layout/(TOP+".gds"))
+    shutil.copyfile(new_base/"native/nssoc_cdr_pd500_wire_tail_shortcuts.gds",layout/(TOP+".gds"))
     for n in("schematic.cir",TOP+".lef"):shutil.copyfile(old/n,layout/n);need(pin(old/n)==pin(layout/n),"unchanged original reference")
     p=json.loads((old/"result.json").read_bytes())
     inputs=[old/n for n in("result.json","schematic.cir",TOP+".lef",TOP+".gds")]
-    inputs.extend([new_base/"derived/generation-proof.json",new_base/"native/nssoc_cdr_pd500_wire_shortcuts.gds",ROOT/CANDIDATE,ROOT/PARENT,checker,ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
+    inputs.extend([new_base/"derived/mixed-generation-proof.json",new_base/"native/nssoc_cdr_pd500_wire_tail_shortcuts.gds",ROOT/CANDIDATE,ROOT/PARENT,checker,ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
     record=metadata(p,layout/(TOP+".gds"),layout/"schematic.cir",layout/(TOP+".lef"),inputs)
     (layout/"result.json").write_bytes(encode(record));save("candidate-layout-binding.json",record)
     return layout
@@ -192,7 +192,7 @@ def verify():
         for p,h in record["inputs"].items():need(sha(Path(p))==h,"actual final physical input "+p)
         need(record["inputs"][str(layout/(TOP+".gds"))]==json.loads((ROOT/CANDIDATE).read_bytes())["candidate"]["sha256"],"actual new candidate verified")
         gate()
-        save("physical-qualification.json",dict(status="PASS_SIX_SHORTCUT_GDS_FULL560_DRC_DEEP_FLAT_LVS13",gds=pin(layout/(TOP+".gds")),record=pin(OUT/"physical/result.json"),new_RC_executed=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False))
+        save("physical-qualification.json",dict(status="PASS_FOUR_MIXED_SHORTCUT_GDS_FULL560_DRC_DEEP_FLAT_LVS13",gds=pin(layout/(TOP+".gds")),record=pin(OUT/"physical/result.json"),new_RC_executed=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False))
     except BaseException as exc:error=exc
     finally:
         try:cleanup.append(dict(process_group=sup.stop_process(sup.ACTIVE)))
