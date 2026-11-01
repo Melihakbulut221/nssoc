@@ -1,0 +1,237 @@
+{
+  "audit": {
+    "corners": [
+      "nom_slow_1p08V_125C",
+      "nom_typ_1p20V_25C",
+      "nom_fast_1p32V_m40C"
+    ],
+    "current_native_restoration": 41305082558,
+    "current_routing_scope": {
+      "added_diodes": 1351,
+      "antenna_owners": 608,
+      "counterpart_owners": 220,
+      "protected_owners": 1691,
+      "required_new_diode_pg_contacts": 2702
+    },
+    "files": {
+      "hw/soc/pnr/mainchip_completed_postroute_flow.py": {
+        "bytes": 534,
+        "sha256": "4b87f2b4b7f24acf34cd870d5fed0ae645fba66bbffe7fd19ac7707ad10c2176"
+      },
+      "scripts/cloud_mainchip_route12_postroute.py": {
+        "bytes": 15704,
+        "sha256": "c6335c535959286b7f77c3aaf6a5ab631640557c8453079a80dd97c97f58701f"
+      },
+      "scripts/cloud_mainchip_route12_postroute_geometry.py": {
+        "bytes": 7490,
+        "sha256": "52de46aacf9b97ab17ac56560efef838d149a746a2dd09a6f1af87ed41be0c97"
+      }
+    },
+    "full_phy_accepted": false,
+    "nominal_rc_not_foundry_rc_min_max_qualification": true,
+    "numerical_program_execution": false,
+    "old_flow_directly_compatible": false,
+    "old_geometry_requires": {
+      "added_diodes": 0,
+      "retained_instances": 153130
+    },
+    "old_route12_netlist_sha256": "3c053c4cda51a001b926cce347b97de5c825cbff2082de550eeb9e31ff7fe5cd",
+    "original_physical_and_timing_decisions_remain_separate": true,
+    "physical_acceptance": false,
+    "required_next_action": "After actual native restoration readback, qualify exact candidate ODB/DEF and matching diode-inclusive netlist with unchanged logical connectivity, original1691-clock proof, full1351 diode membership and2702PG contacts; then adapt only source/admission/state pins around original nominalRC and three-cornerSTA.",
+    "reviewed_at": "2026-11-01T12:29:29.344125+00:00",
+    "schema": "restored-route-timing-handoff-source-review-v1",
+    "source": "219ea87c8ee9441be8fea37c31feded35f661b73",
+    "source_code_modified": false,
+    "timing_accepted": false,
+    "timing_limits_unchanged": true
+  },
+  "snapshots": [
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437655,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437693,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437696,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124805437698,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437712,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437732,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124805437796,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124805438494,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41292160619,
+      "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41292160619"
+    },
+    {
+      "branch": "codex/cdr-pd650-loaded-wave-analysis",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977298,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124808977460,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977468,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977505,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124808977510,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977536,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124808977592,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124808978452,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41293340525,
+      "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293340525"
+    },
+    {
+      "branch": "codex/mainchip-scoped-restoration",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124843736454,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124843853524,
+          "name": "native-restoration",
+          "status": "completed"
+        }
+      ],
+      "run": 41305082558,
+      "source": "be65a271b066faeffee86237fa879f5f96b70273",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41305082558"
+    },
+    {
+      "branch": "codex/cdr-divider-width",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124846825081,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate original inputs and run sampler-load candidate with original measurements"
+          ],
+          "conclusion": null,
+          "id": 124847010636,
+          "name": "simulate",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41306148937,
+      "source": "2a62d651d415fba8db3c5b758d1b66c05cde3a38",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41306148937"
+    }
+  ]
+}

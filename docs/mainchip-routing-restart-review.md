@@ -1,6 +1,6 @@
 # Routing checkpoint use and residual repair
 
-Source review:1November2026. This is an execution-plan correction,not a native routing or timing pass. Active producer41292673925/source7a0776718ec37a106b7dfde0cbd477c6a2a5522f must finish and publish before its output can be admitted.
+Source review:1November2026. This is an execution-plan correction,not a native routing or timing pass. Producer41292673925/source7a0776718ec37a106b7dfde0cbd477c6a2a5522f is terminal failure with retained raw routed checkpoints and397 last-router DRC. Actual diagnosis41302468053 isolated220 counterpart class-restoration failures; scoped native restoration41305082558 is a separate pending attempt. Neither route admission nor final timing is established by this review.
 
 ## What the current stage saves
 

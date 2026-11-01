@@ -1,6 +1,6 @@
-# Cloud continuation — checkpoint v240
+# Cloud continuation — checkpoint v241
 
-Updated: 2026-11-01T12:23:24.798662+00:00
+Updated: 2026-11-01T12:29:29.344125+00:00
 
 Latest user instruction: all work in the cloud; leave no local project data. It overrides the older goal's local-work wording. All native acquisition, CAD, geometry analysis and simulations run on GitHub-hosted runners. Local coordination is source/API-derived text in RAM only. Do not acquire native archives, ODB/DEF/GDS, transistor models or waveforms locally, including RAM. Workspace/project temporary entries are empty, with no native CAD processes.
 
@@ -12,6 +12,9 @@ The candidate starts from actual twelve-divider parent modelSHA2560a2ce363d3f815
 Evidence for this experiment: corrected reader41298781054 reproduced the original native measurements. At0.6UI, all255A-source samples meet100mV but65divider outputs and107buffer outputs still have wrong sign; D has255valid sources but92wrong divider outputs and112wrongX-selector buffers. Lower divider impedance is a targeted hypothesis, not a claimed repair. Model parasitics/loading also change with width; actual full simulation decides. Existing wireRC is exploratory only; regenerated layout and freshRC remain required after electrical acceptance.
 
 After terminal, preserve complete controls/derived output/logs/source and authenticate release index/parts WITHOUT downloading native parts locally. The exact ready collector sources are stored in docs/evidence/cloud-collector-recipes-20261029/cloud-divider-width-v240.json, collectors.mainchip_scoped_restoration and collectors.divider_width_native (the latter has this run/release already substituted). Run only against terminal status; failures are evidence, never acceptance.
+
+## Final timing integration finding from source review
+Do NOT feed the new1351-diode candidate into the old route12 controller unchanged. Its geometry admission requires153130 retained instances and added_diode_count==0; the worker pins the pre-diode resized netlist3c053c4c... . After actual scoped restoration succeeds, qualify a new exact candidateODB/DEF and matching diode-inclusive netlist boundary with full original functional connectivity,1691clock proof,all1351diode pins and2702PG contacts. Preserve all original numerical RC/STA code and20/4/8/8ns+5percent/three-corner decisions. The old numerical worker already keeps physical and timing acceptance separate; failed measurements may be retained without normalizing them to a pass. Nominal RC remains insufficient for foundryRCmin/max. See docs/mainchip-restored-route-timing-handoff.md and its exact source-fingerprint receipt. This review did not execute STA or RC.
 
 ## First next task: read actual scoped restoration native result
 Scoped restoration is IMPLEMENTED on branch codex/mainchip-scoped-restoration, sourcebe65a271b066faeffee86237fa879f5f96b70273. Native run41305082558, release430558340, exact-source tagcloud-results-41305082558-1-mainchip-bulk-postdrt-antenna was dispatched ONCE after independent controls41304921000 and an empty release reservation/readback. Inspect the actual run and preserve terminal evidence; do not redispatch blindly. Native completion is NOT established in this checkpoint.
