@@ -10,7 +10,7 @@ digest=parent.digest
 cloned=parent.cloned
 TARGETS=parent.TARGETS
 GOLDEN="0a2ce363d3f8159a290f8642fe3a26c7ac1997ca4d8b934e4530fb4823974ef3"
-SCOPE="Exploratory PD650 divider impedance trial:12 rppd widths1um to2um over the exact twelve-divider/200MOS parent. All lengths,ratios,HBT Nx,MOS units,ports and original electrical/current/data/phase gates retained. Existing distributed wire RC is screening only; changed geometry requires regenerated layout and fresh PEX. No closed-loop,full PHY,physical or final timing acceptance."
+SCOPE="Exploratory PD650 divider impedance trial:12 rppd widths1um to8um over the exact twelve-divider/200MOS parent. All lengths,ratios,HBT Nx,MOS units,ports and original electrical/current/data/phase gates retained. Existing distributed wire RC is screening only; changed geometry requires regenerated layout and fresh PEX. No closed-loop,full PHY,physical or final timing acceptance."
 def rewrite(text,contract,root=original.frozen.ROOT):
     rows=contract["device_records"]
     require(len(rows)in(500,650)and contract["counts"]["devices"]==len(rows)and len({d["native_id"]for d in rows})==len(rows),"complete unique500/650 census")
@@ -28,11 +28,11 @@ def rewrite(text,contract,root=original.frozen.ROOT):
         match=found[0];before=match.group();words=re.sub(r"\r?\n\+"," ",before).split()
         require(words[:5]==[name,*[t["node"]for t in ts],"rppd"],"exact ordered divider card nodes")
         require(len(words[5:])==len(d["parameters"])and set(words[5:])=={k+"="+v for k,v in d["parameters"].items()},"complete original card parameters")
-        after,n=re.subn(r"(?<!\S)w=1u(?=\s|$)","w=2u",before)
+        after,n=re.subn(r"(?<!\S)w=1u(?=\s|$)","w=8u",before)
         require(n==1,"one physical width token")
         result=result[:match.start()]+after+result[match.end():]
-        next(x for x in updated["device_records"]if x["native_id"]==ident)["parameters"]["w"]="2u"
-        changes.append(dict(native_id=ident,before=before,after=after,old_w="1u",new_w="2u",unchanged_l=length))
+        next(x for x in updated["device_records"]if x["native_id"]==ident)["parameters"]["w"]="8u"
+        changes.append(dict(native_id=ident,before=before,after=after,old_w="1u",new_w="8u",unchanged_l=length))
     reverse=result
     for change in changes:
         require(reverse.count(change["after"])==1,"unique reverse card")
