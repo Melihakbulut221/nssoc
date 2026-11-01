@@ -29,8 +29,12 @@ In q15, Q89/91 maximum recorded current per emitter is about2.115mA, withNx4; Q1
 
 The public IHP [npn13G2 PCell source](https://github.com/IHP-GmbH/IHP-Open-PDK/blob/main/ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/ihp/npn13G2_code.py) exposes Nx from1to10 and fixed default le/we. It also annotates collector-current limits by voltage. Any sizing change must be checked against the actual pinned PDK/model and operating envelope; the current nominal screening gate alone is not production approval. No change of emitter count, divider or capacitor has been implemented by this diagnosis.
 
+## Corrected selector identity
+
+The initial transfer analysis incorrectly assigned the S0/S1 divider input to B. The authenticated native composition instead binds DQP/DQN clusters18/17 throughR234/R236 to bases150/151, shared byQ131/Q149 andQ132/Q150. The topology guard refused the wrong assumption. See [actual transfer topology](cdr-sampler-transfer-topology.md) for full failure proofs and the corrected preflight.
+
 ## Next bounded work
 
-Use the preserved full wave and complete composition to quantify transfer from A/B/C outputs into the divider bases and buffered AD/CD/S0/S1 nodes at the failing deadlines. Separate sampler delay from downstream settling. Qualify a controlled edit to the identified path only after confirming its complete native identity, current/voltage constraints and model support. Keep all original external load, source, timing and voltage gates.
+Use the preserved full wave and complete composition to quantify transfer from A/C/D outputs into the divider bases and buffered AD/CD/S0/S1 nodes at the failing deadlines. Separate sampler delay from downstream settling. Qualify a controlled edit to the identified path only after confirming its complete native identity, current/voltage constraints and model support. Keep all original external load, source, timing and voltage gates.
 
 The original static8GHz screen is still rejected. Closed-loop CDR, complete serialGen3x4PHY, newphysicalDRC/LVS/freshRC and finalchip timing are not established by this diagnosis.
