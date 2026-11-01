@@ -1,8 +1,12 @@
-# Cloud continuation — checkpoint v242
+# Cloud continuation — checkpoint v243
 
-Updated: 2026-11-01T12:56:53.404555+00:00
+Updated: 2026-11-01T13:03:24.428996+00:00
 
 Latest user instruction: do all work in the cloud and leave no local project data. This overrides the old goal's local-work wording. All CAD,simulation,native archive/geometry/waveform acquisition and numerical analysis run on GitHub. Local coordination is source/API-derived text in RAM only. Never acquire native ODB/DEF/GDS/SPICE/raw archives locally,including RAM. Workspace and project temp directories are empty; no local CAD processes. Preserve unrelated user files.
+
+## Additional active cloud diagnosis (v243)
+
+Run41309130293,source d516afbe5391c42d1f1e378102116cc593a23680,branch codex/cdr-width-wave-analysis. All34 reader/original-measurement controls passed. Full retained width-trial waveform analysis is pending. It authenticates all native archive members on GitHub, reproduces all six original data measurements and the37.0801368476mV phase integral, then diagnoses divider/buffer errors and actual transistor currents/voltages. No simulation, model/layout edit or acceptance. Inspect this exact run; do not redispatch. Its terminal collector is saved in docs/evidence/cloud-collector-recipes-20261029/cloud-width-wave-v243.json. New branch source and workflow have full API readback. Native waveforms and archives must never be downloaded locally.
 
 ## First next task: actual native audit after master representation correction
 Run41308526628,source05d336a1b1b681c9d96b71d464c5ea430835e438,branch codex/mainchip-scoped-restoration,release430583367,tagcloud-results-41308526628-1-mainchip-bulk-postdrt-antenna. It was dispatched ONCE after independent successful controls41308125643 and exact-source empty release reservation/readback. Inspect actual run status; do not redispatch after an observation timeout. Native outcome is PENDING here.
@@ -49,4 +53,4 @@ UI125ps; samplers100mV/37.5ps; XOR100mV/75ps. HBTactiveVCE>=0.4V,absVCE<=1.6V,ab
 The current native terminal collector is saved in docs/evidence/cloud-collector-recipes-20261029/cloud-master-restoration-v242.json. Run it only after authoritative terminal status. It preserves all selected derived text/log/source files and verifies native release parts by metadata only. Seventeen explicit container/bootstrap records are artifact-authenticated but outside the native capsule index; this distinction is in the prior receipt. JSONL supervisor events are fully preserved and parsed. Do not download the native artifact or release archive locally.
 
 Create proof branches directly at final[skip ci]commits; no temporary branch at an old tested commit. Never retry uncertain mutations blindly. Whole-repo recursive Git trees truncate; traverse bounded subtrees and verify imported subtree hashes. All failed controls/native results remain preserved.
-Inventory665runs. Eight-hour cloud monitor is read-only,automatic_native_dispatch:false. Full goal remains ACTIVE and UNFINISHED.
+Inventory666runs. Eight-hour cloud monitor is read-only,automatic_native_dispatch:false. Full goal remains ACTIVE and UNFINISHED.

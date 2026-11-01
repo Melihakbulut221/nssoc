@@ -1,0 +1,203 @@
+{
+  "collector": "import subprocess,json,hashlib,base64,time\nR='repos/Melihakbulut221/nssoc/'\nB='codex/complete-open-work'\ndef api(path,data=None,method=None):\n for attempt in range(4):\n  cmd=['gh','api',R+path]\n  if data is not None:cmd+=['--method',method or 'POST','--input','-']\n  p=subprocess.run(cmd,input=json.dumps(data)if data is not None else None,text=True,capture_output=True)\n  if p.returncode==0:return json.loads(p.stdout)if p.stdout.strip()else {}\n  if data is not None or method not in(None,'GET')or attempt==3 or not any(x in p.stderr for x in('HTTP 502','HTTP 503','HTTP 504','TLS handshake','connection reset','unexpected EOF','i/o timeout')):raise RuntimeError(path+': '+p.stderr[:2000])\n  time.sleep(2+attempt)\ndef remote(path,ref):\n d=api('contents/'+path+'?ref='+ref)\n if d.get('content'):return base64.b64decode(d['content'])\n return base64.b64decode(api('git/blobs/'+d['sha'])['content'])\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef publish(head,files,msg):\n parent=api('git/commits/'+head);entries=[]\n for p,b in files.items():\n  if isinstance(b,str):b=b.encode()\n  blob=api('git/blobs',dict(encoding='base64',content=base64.b64encode(b).decode()))\n  entries.append(dict(path=p,mode='100644',type='blob',sha=blob['sha']))\n tree=api('git/trees',dict(base_tree=parent['tree']['sha'],tree=entries))\n commit=api('git/commits',dict(message=msg,tree=tree['sha'],parents=[head]))\n assert api('git/ref/heads/'+B)['object']['sha']==head\n api('git/refs/heads/'+B,dict(sha=commit['sha'],force=False),'PATCH')\n return commit['sha']\n\nimport io,zipfile\nfrom concurrent.futures import ThreadPoolExecutor\nRUN=41309130293;SOURCE='d516afbe5391c42d1f1e378102116cc593a23680'\nrun=api('actions/runs/'+str(RUN));assert run['status']=='completed'and run['head_sha']==SOURCE and run['run_attempt']==1\njobs=api('actions/runs/'+str(RUN)+'/jobs?per_page=100');assert jobs['total_count']==len(jobs['jobs'])==2\narts=api('actions/runs/'+str(RUN)+'/artifacts?per_page=100');assert arts['total_count']==len(arts['artifacts'])\nselected={'pd650-wave-controls-'+str(RUN):'controls','pd650-wave-derived-'+str(RUN):'derived'}\nfiles={};receipts=[]\nfor a in arts['artifacts']:\n if a['name']not in selected:continue\n assert not a['expired']and a['size_in_bytes']<50000000\n raw=subprocess.check_output(['gh','api',R+'actions/artifacts/'+str(a['id'])+'/zip'])\n assert a['digest']=='sha256:'+sha(raw)\n z=zipfile.ZipFile(io.BytesIO(raw));assert len(z.namelist())==len(set(z.namelist()))\n assert sum(x.file_size for x in z.infolist())<100000000\n for info in z.infolist():\n  n=info.filename\n  if info.is_dir():continue\n  assert not n.startswith('/')and '..'not in n.split('/')and n.endswith('.json'),n\n  assert ((info.external_attr>>16)&0o170000)!=0o120000\n  raw=z.read(n);raw.decode();json.loads(raw);files[selected[a['name']]+'/'+n]=raw\n receipts.append(dict(name=a['name'],id=a['id'],bytes=a['size_in_bytes'],sha256=a['digest'][7:]))\nassert {r['name']for r in receipts}==set(selected)\ncontrols=json.loads(files['controls/controls.json']);assert controls['count']==34\nif run['conclusion']=='success':\n result=json.loads(files['derived/result.json'])\n assert result['producer_run']==41306148937 and result['all_six_original_measurements_reproduced']\n assert not any(result[k]for k in ['physical_acceptance','timing_accepted','full_phy_accepted','source_models_changed','native_simulation'])\n assert result['phase_average_v']==0.0370801368476178\n assert all(not row['passed']for row in result['summary'].values())\n print(json.dumps(dict(result={k:v for k,v in result.items()if k!='raw_capture'},\n  paths={k:v['source_conditioned']for k,v in json.loads(files['derived/buffer-paths.json']).items()})),flush=True)\nelse:\n print(json.dumps({n:json.loads(b)for n,b in files.items()if n.endswith('failure.json')}),flush=True)\nfor j in jobs['jobs']:\n if j['conclusion']!='skipped'and j['steps']:files['jobs/'+str(j['id'])+'.log']=subprocess.check_output(['gh','api',R+'actions/jobs/'+str(j['id'])+'/logs'])\npinpath='scripts/pd650-wave-analysis-pins.json';raw=remote(pinpath,SOURCE);files['source/'+pinpath]=raw\nfor name,pin in json.loads(raw).items():\n b=remote(name,SOURCE);assert dict(bytes=len(b),sha256=sha(b))==pin;files['source/'+name]=b\nfiles['source/docs/cdr-width-wave-analysis.md']=remote('docs/cdr-width-wave-analysis.md',SOURCE)\nfor n,v in [('run',run),('jobs',jobs),('artifacts',arts),('archive-receipts',receipts)]:\n files[n+'.json']=(json.dumps(v,sort_keys=True,indent=2)+chr(10)).encode()\nreceipt=dict(run=RUN,source=SOURCE,conclusion=run['conclusion'],producer_run=41306148937,\n native_payloads_acquired_locally=False,native_simulation=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,\n files={n:dict(bytes=len(b),sha256=sha(b))for n,b in files.items()})\nfiles['receipt.json']=(json.dumps(receipt,sort_keys=True,indent=2)+chr(10)).encode()\nPREFIX='docs/evidence/width-wave-analysis-'+str(RUN);B='codex/width-wave-proof-'+str(RUN)\nassert api('git/matching-refs/heads/'+B)==[]\nentries=[]\nfor n,b in files.items():\n blob=api('git/blobs',dict(encoding='base64',content=base64.b64encode(b).decode()))\n entries.append(dict(path=PREFIX+'/'+n,mode='100644',type='blob',sha=blob['sha']))\ntree=api('git/trees',dict(base_tree=api('git/commits/'+SOURCE)['tree']['sha'],tree=entries))\ncommit=api('git/commits',dict(message='Preserve actual width waveform data-path diagnosis and all controls [skip ci]',tree=tree['sha'],parents=[SOURCE]))\napi('git/refs',dict(ref='refs/heads/'+B,sha=commit['sha']))\nhead=commit['sha'];print(json.dumps(dict(published=head,prefix=PREFIX,files=len(files))),flush=True)\ndef verify(item):\n n,b=item;assert remote(PREFIX+'/'+n,head)==b,n\nlist(ThreadPoolExecutor(3).map(verify,files.items()))\nprint(json.dumps(dict(head=head,prefix=PREFIX,files=len(files),bytes=sum(map(len,files.values())),receipt_sha256=sha(files['receipt.json']),run=RUN,source=SOURCE,conclusion=run['conclusion'])),flush=True)\n",
+  "final_timing_complete": false,
+  "full_phy_accepted": false,
+  "handle": {
+    "branch": "codex/cdr-width-wave-analysis",
+    "run": 41309130293,
+    "source": "d516afbe5391c42d1f1e378102116cc593a23680",
+    "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41309130293",
+    "workflow": 382556685
+  },
+  "snapshots": [
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437655,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437693,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437696,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124805437698,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437712,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437732,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124805437796,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124805438494,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41292160619,
+      "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41292160619"
+    },
+    {
+      "branch": "codex/cdr-pd650-loaded-wave-analysis",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977298,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124808977460,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977468,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977505,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124808977510,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977536,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124808977592,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124808978452,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41293340525,
+      "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293340525"
+    },
+    {
+      "branch": "codex/mainchip-scoped-restoration",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124853853717,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Restore original classes and execute original native physical audits"
+          ],
+          "conclusion": null,
+          "id": 124853961665,
+          "name": "native-restoration",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41308526628,
+      "source": "05d336a1b1b681c9d96b71d464c5ea430835e438",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41308526628"
+    },
+    {
+      "branch": "codex/cdr-width-wave-analysis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124855652413,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124855854316,
+          "name": "completed-wave-analysis",
+          "status": "completed"
+        }
+      ],
+      "run": 41309130293,
+      "source": "d516afbe5391c42d1f1e378102116cc593a23680",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41309130293"
+    }
+  ],
+  "source_controls_passed": 34,
+  "updated_at": "2026-11-01T13:03:24.428996+00:00",
+  "version": 243
+}
