@@ -50,6 +50,14 @@ def join(loc,inventory,composition,targets,counts=(500,4928)):
         selected.append(dict(native_id=ident,pcell=p["pcell"],terminals=p["terminals"],old_l=old,requested_l=new,width=width,
                              untargeted_users_of_same_cell=others,private_cell_required=bool(others)))
     return dict(status="COMPLETE_DERIVED_NATIVE_INSTANCE_MAP",verified_devices=counts[0],verified_instance_inventory=counts[1],selected=selected,**FLAGS)
+def pair_targets(left,right,loads):
+    require(set(loads)<=set(left),"all paired output loads exist")
+    expected={ident:((row[0],"2.0u",*row[2:]) if ident in loads else row)for ident,row in left.items()}
+    require(right==expected,"q20 differs only in eight requested output lengths")
+def literal_targets(raw):
+    nodes=[n for n in ast.parse(raw).body if isinstance(n,ast.Assign)and any(isinstance(t,ast.Name)and t.id=="TARGETS"for t in n.targets)]
+    require(len(nodes)==1,"one literal candidate target definition")
+    return ast.literal_eval(nodes[0].value)
 def fixture():
     inv=[];rows=[];elec=[]
     for ident,cell in [(1,"shared"),(2,"shared"),(3,"other")]:
@@ -79,23 +87,31 @@ def controls():
         try:join(*a,counts=(3,3))
         except ValueError:refused.append(name)
         else:raise AssertionError("accepted "+name)
-    return dict(synthetic_only=True,refused=refused,positive_shared_cell_fixture=True,**FLAGS)
+    left=args[3];right={1:("2.6u","2.0u","32u",("avdd",16),("out1",21))}
+    pair_targets(left,right,(1,))
+    for name,value in [
+        ("q20 wrong output length",("2.6u","2.1u","32u",("avdd",16),("out1",21))),
+        ("q20 changed terminal",("2.6u","2.0u","32u",("avdd",16),("out2",22))),
+    ]:
+        bad=copy.deepcopy(right);bad[1]=value
+        try:pair_targets(left,bad,(1,))
+        except ValueError:refused.append(name)
+        else:raise AssertionError("accepted "+name)
+    return dict(synthetic_only=True,refused=refused,positive_shared_cell_fixture=True,paired_variant_fixture=True,**FLAGS)
 def main():
     global OUT
     p=argparse.ArgumentParser();p.add_argument("--controls",action="store_true");args=p.parse_args()
     require(os.environ.get("GITHUB_ACTIONS")=="true"and os.environ.get("GITHUB_RUN_ATTEMPT")=="1"and os.environ.get("GITHUB_REPOSITORY")=="Melihakbulut221/nssoc","single cloud execution")
     if args.controls:OUT=ROOT/"cloud-sampler-layout-map-controls"
     OUT.mkdir(exist_ok=False)
-    c=controls();(OUT/"controls.json").write_bytes(encode(c));require(len(c["refused"])==9,"all corruption refusals")
+    c=controls();(OUT/"controls.json").write_bytes(encode(c));require(len(c["refused"])==11,"all corruption refusals")
     if args.controls:print(json.dumps(c));return
     cfg=json.loads((ROOT/"scripts/cdr-sampler-layout-map-inputs.json").read_bytes())
     raw={name:fetch(pin)for name,pin in cfg["inputs"].items()}
     for name,value in raw.items():(OUT/name).write_bytes(value)
-    parsed=ast.parse(raw["candidate.py"])
-    nodes=[n for n in parsed.body if isinstance(n,ast.Assign)and any(isinstance(t,ast.Name)and t.id=="TARGETS"for t in n.targets)]
-    require(len(nodes)==1,"one literal candidate target definition")
-    targets=ast.literal_eval(nodes[0].value)
-    require(set(targets)=={175,176,177,178,182,183,184,185,191,194,195,196,202,205,207,208,212,214,215,216,220,221,222,223},"exact twenty-four candidate devices")
+    targets=literal_targets(raw["candidate.py"]);second=literal_targets(raw["candidate-q20.py"])
+    require(set(targets)=={175,176,182,183,184,185,191,194,202,205,212,214,220,221,222,223},"exact sixteen candidate devices")
+    pair_targets(targets,second,(175,176,191,194,202,205,212,214))
     loc=json.loads(raw["locations.json"])
     require(loc["status"]=="PASS_ALL_500_DEVICES_HAVE_UNIQUE_PHYSICAL_PCELL_ENCLOSURE","original qualified enclosure report")
     inputs=loc["inputs"]
@@ -103,6 +119,9 @@ def main():
         matches=[value for name,value in inputs.items()if name.endswith(suffix)]
         require(matches==[expected],"same exact native geometry and inventory provenance")
     result=join(loc,json.loads(raw["inventory.json"]),json.loads(raw["composition.json"]),targets)
+    other=join(loc,json.loads(raw["inventory.json"]),json.loads(raw["composition.json"]),second)
+    result["paired_q20_selected"]=other["selected"]
+    result["q20_changes_only_eight_requested_output_lengths"]=True
     result.update(source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),baseline_gds_sha256=cfg["baseline_gds_sha256"],baseline_lvsdb_sha256=cfg["baseline_lvsdb_sha256"])
     (OUT/"result.json").write_bytes(encode(result))
     print(json.dumps(dict(status=result["status"],selected=[dict(native_id=r["native_id"],cell=r["pcell"]["cell"],private_cell_required=r["private_cell_required"],untargeted_users=r["untargeted_users_of_same_cell"])for r in result["selected"]]),sort_keys=True))
