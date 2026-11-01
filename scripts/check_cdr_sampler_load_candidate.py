@@ -19,10 +19,19 @@ def main():
     for d in contract["device_records"]:
         if d["native_id"] in candidate.TARGETS:
             cards.append(" ".join([d["instance"],*[t["node"] for t in d["terminals"]],d["model"],*[k+"="+v for k,v in d["parameters"].items()]]))
-    text="* exact unrelated bytes\nR_keep a b 42\nC_keep a 0 1f\n"+"\n".join(cards)+"\n.end\n"
+    untouched_cards=[]
+    for d in contract["device_records"]:
+        if d["native_id"]in(175,176,212,214):
+            assert d["parameters"]["l"]=="2.6u"and d["parameters"]["w"]=="32u"
+            untouched_cards.append(" ".join([d["instance"],*[t["node"]for t in d["terminals"]],d["model"],*[k+"="+v for k,v in d["parameters"].items()]]))
+    assert len(untouched_cards)==4
+    text="* exact unrelated bytes\nR_keep a b 42\nC_keep a 0 1f\n"+"\n".join(cards+untouched_cards)+"\n.end\n"
     changed,updated,delta=candidate.rewrite(text,contract)
-    assert len(delta["changes"])==24
-    loads={175,176,191,194,202,205,212,214};shunts={184,185,222,223};buffers={182,183,220,221}
+    assert all(changed.count(card)==text.count(card)==1 for card in untouched_cards)
+    assert {d["native_id"]:d for d in updated["device_records"]if d["native_id"]in(175,176,212,214)}=={d["native_id"]:d for d in contract["device_records"]if d["native_id"]in(175,176,212,214)}
+
+    assert len(delta["changes"])==20
+    loads={191,194,202,205};shunts={184,185,222,223};buffers={182,183,220,221}
     series={227,229,238,240};divider_shunts={228,230,239,241}
     assert {x["native_id"]for x in delta["changes"]}==loads|shunts|buffers|series|divider_shunts
     for x in delta["changes"]:
@@ -66,12 +75,12 @@ def main():
     assert v["prepare_case"].__globals__["verify_runtime"] is frozen.verify_runtime
     reject("already changed load",text.replace("l=2.6u","l=1.5u",1),contract)
     wrong=copy.deepcopy(contract)
-    next(d for d in wrong["device_records"]if d["native_id"]==175)["parameters"]["w"]="16u"
+    next(d for d in wrong["device_records"]if d["native_id"]==191)["parameters"]["w"]="16u"
     reject("wrong load width",text,wrong)
     wrong=copy.deepcopy(contract)
-    next(d for d in wrong["device_records"]if d["native_id"]==175)["terminals"][1]["native_net"]="$70"
+    next(d for d in wrong["device_records"]if d["native_id"]==191)["terminals"][1]["native_net"]="$70"
     reject("wrong load physical net",text,wrong)
-    reject("wrong load card terminal",text.replace("w_T175_rppd_2","wrong",1),contract)
+    reject("wrong load card terminal",text.replace("w_T191_rppd_2","wrong",1),contract)
     wrong=copy.deepcopy(contract)
     wrong["device_records"][0]["native_id"]=wrong["device_records"][1]["native_id"]
     reject("duplicate physical identity",text,wrong)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""q15 output/buffer plus eight A/C divider lengths; original masters and electrical gates.
+"""Mixed A/B output loads and original C/D output loads; eight A/C divider lengths; original gates.
 Baseline distributed RC is retained. Not regenerated-layout PEX or signoff.
 """
 import copy,hashlib,json,re,types
@@ -7,14 +7,10 @@ from pathlib import Path
 import cdr_via2_m3_loaded_core as frozen
 # id: old length, candidate length, unchanged width, ordered terminal net/cluster
 TARGETS={
- 175:("2.6u","1.5u","32u",("avdd",16),("$69",17)),
- 176:("2.6u","1.5u","32u",("avdd",16),("$70",18)),
  191:("2.6u","1.5u","32u",("avdd",16),("$285",58)),
  194:("2.6u","1.5u","32u",("avdd",16),("$286",59)),
  202:("2.6u","1.5u","32u",("avdd",16),("$449",87)),
  205:("2.6u","1.5u","32u",("avdd",16),("$450",88)),
- 212:("2.6u","1.5u","32u",("avdd",16),("$622",117)),
- 214:("2.6u","1.5u","32u",("avdd",16),("$623",118)),
  182:("1.8u","1.0u","8u",("avdd",16),("$99",22)),
  183:("1.8u","1.0u","8u",("avdd",16),("$98",21)),
  220:("1.8u","1.0u","8u",("avdd",16),("$652",122)),
@@ -40,7 +36,7 @@ def rewrite(text,contract):
     rows=contract["device_records"]
     require(len(rows)==500 and len({d["native_id"]for d in rows})==500,"complete unique original500 devices")
     selected={d["native_id"]:d for d in rows if d["native_id"]in TARGETS}
-    require(set(selected)==set(TARGETS)and len(selected)==24,"exact24 physical resistor identities")
+    require(set(selected)==set(TARGETS)and len(selected)==20,"exact20 physical resistor identities")
     updated=copy.deepcopy(contract);result=text;changes=[]
     for ident,(old,new,width,first,second)in TARGETS.items():
         d=selected[ident];name="XD"+format(ident,"04d")
@@ -75,7 +71,7 @@ def variant(baseline_paths,candidate_paths,root=frozen.ROOT):
     """Clone unchanged original functions into an explicit candidate namespace.
     Original module globals, function bodies, stimulus, and acceptance predicates
     remain intact. Candidate input verification always authenticates the baseline
-    first and then derives the exact twenty-four-token delta again.
+    first and then derives the exact twenty-token delta again.
     """
     require(set(baseline_paths)==set(candidate_paths)=={"model","composition","planes"},"explicit complete paths")
     require(all(Path(v).is_absolute() and Path(v).resolve()==Path(v) for v in [*baseline_paths.values(),*candidate_paths.values()]),"unaliased absolute paths")
@@ -92,8 +88,8 @@ def variant(baseline_paths,candidate_paths,root=frozen.ROOT):
     def block(name,namespace,root=root):
         answer=frozen.block(name,namespace,root)
         if name=="scenario":
-            namespace["r"].update(scope="Exploratory q15 with half-length A/C divider resistors and original master lengths with baseline distributed RC; original whole-model electrical predicates. Not regenerated-layout PEX.",
-                circuit_candidate=dict(native_ids=sorted(TARGETS),eight_latch_loads_l_um=[2.6,1.5],four_buffer_loads_l_um=[1.8,1.0],four_shunts_l_um=[5,3.4],ac_series_l_um=[3.6,1.8],ac_shunts_l_um=[21.6,10.8],unchanged_divider_width_um=1),
+            namespace["r"].update(scope="Exploratory mixed A/B output loads with original C/D outputs and masters plus half-length A/C dividers with baseline distributed RC; original whole-model electrical predicates. Not regenerated-layout PEX.",
+                circuit_candidate=dict(native_ids=sorted(TARGETS),four_ab_output_loads_l_um=[2.6,1.5],unchanged_cd_output_ids=[175,176,212,214],four_buffer_loads_l_um=[1.8,1.0],four_shunts_l_um=[5,3.4],ac_series_l_um=[3.6,1.8],ac_shunts_l_um=[21.6,10.8],unchanged_divider_width_um=1),
                 baseline_wire_rc_retained=True,wire_rc_recomputed=False,layout_regenerated=False,physical_acceptance=False)
         return answer
     ns=dict(frozen.__dict__)
