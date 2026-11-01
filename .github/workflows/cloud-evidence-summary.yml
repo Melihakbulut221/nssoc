@@ -1,69 +1,15 @@
-name: Mixed20 restored C D original-wave diagnosis
+name: Exact archived MOS model domain and finger geometry audit
 on:
   workflow_dispatch:
-    inputs:
-      mode:
-        type: choice
-        options: [controls, diagnose]
-        default: controls
 permissions:
   contents: read
 concurrency:
-  group: sampler-candidate-wave-${{ github.ref }}
+  group: mos-model-domain-${{ github.ref }}
   cancel-in-progress: false
-env:
-  OMP_NUM_THREADS: '1'
-  OPENBLAS_NUM_THREADS: '1'
 jobs:
-  source-controls:
+  audit:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: false
-          filter: blob:none
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /scripts/cdr_sampler_transfer.py
-            /scripts/check_cdr_sampler_transfer.py
-            /scripts/cdr_sampler_candidate_wave.py
-            /scripts/check_cdr_sampler_candidate_wave.py
-            /scripts/check_cdr_sampler_candidate_frozen.py
-            /scripts/cdr-sampler-candidate-wave-inputs.json
-            /scripts/cdr-via2-m3-wave-original-stream.py
-            /docs/cdr-sampler-candidate-wave.md
-            /.github/workflows/cloud-evidence-summary.yml
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
-      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
-      - name: Frozen reader and all-time versus active-event controls
-        run: |
-          set -euo pipefail
-          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          test "$GITHUB_RUN_ATTEMPT" = "1"
-          mkdir cloud-sampler-candidate-controls
-          python3 -B scripts/check_cdr_sampler_candidate_frozen.py 2>&1 | tee cloud-sampler-candidate-controls/frozen.log
-          python3 -B scripts/check_cdr_sampler_candidate_wave.py 2>&1 | tee cloud-sampler-candidate-controls/events.log
-          python3 -B scripts/check_cdr_sampler_transfer.py 2>&1 | tee cloud-sampler-candidate-controls/transfer.log
-      - name: Authenticate actual receiver topology before native archive acquisition
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: python3 -B scripts/cdr_sampler_transfer.py --preflight
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: sampler-candidate-wave-controls-${{ github.run_id }}
-          path: cloud-sampler-candidate-controls
-          if-no-files-found: error
-          retention-days: 90
-  diagnose:
-    if: ${{ inputs.mode == 'diagnose' }}
-    needs: source-controls
-    runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 30
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -74,36 +20,19 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/cdr_sampler_transfer.py
-            /scripts/check_cdr_sampler_transfer.py
-            /scripts/cdr_sampler_candidate_wave.py
-            /scripts/check_cdr_sampler_candidate_wave.py
-            /scripts/check_cdr_sampler_candidate_frozen.py
-            /scripts/cdr-sampler-candidate-wave-inputs.json
-            /scripts/cdr-via2-m3-wave-original-stream.py
-            /docs/cdr-sampler-candidate-wave.md
+            /scripts/mos_model_domain_audit.py
+            /scripts/mos-model-domain-audit-inputs.json
             /.github/workflows/cloud-evidence-summary.yml
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
-      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
-      - name: Reproduce all original metrics and locate simultaneous voltage violations
-        id: diagnose
-        run: python3 -B scripts/cdr_sampler_candidate_wave.py
-      - name: Preserve all derived results and source
+      - name: Inspect exact used model metadata on runner only
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_RUN_ATTEMPT" = "1"
+          python3 -B scripts/mos_model_domain_audit.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: sampler-candidate-wave-${{ github.run_id }}
-          path: cloud-sampler-candidate-wave
+          name: mos-model-domain-${{ github.run_id }}
+          path: cloud-mos-model-domain-audit
           include-hidden-files: true
           if-no-files-found: error
-          retention-days: 90
-      - name: Preserve runner-only partial native evidence on failure
-        if: failure() && steps.diagnose.outcome == 'failure'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: sampler-candidate-wave-native-failure-${{ github.run_id }}
-          path: ${{ runner.temp }}/nssoc-sampler-candidate-wave-${{ github.run_id }}
-          if-no-files-found: warn
           retention-days: 90
