@@ -1,3 +1,19 @@
+# Cloud continuation — checkpoint v236
+
+Updated: 2026-11-01T10:58:43.416270+00:00
+
+Cloud-only instruction remains authoritative: no native payload,tests,CAD or simulation runs locally. Workspace and project temporary files remain empty.
+
+Current native PHY handle: 41299745896, branch codex/cdr-hbt-load,source 12f3e0f3bf7010289dc0f993ac71dbfa55cc19e4, independent release 430521829,tag cloud-results-41299745896-1-cdr-sampler-load. Do not redispatch. Controls41299445254 passed all inherited suites plus243 HBT mutation refusals and40 changed-emitter bindings. The source makes40 actual HBT Nx changes on the authenticated12-divider/200MOS model. Original electrical gates and per-emitter current limits are retained. Actual electrical result is pending; regenerated geometry and fresh RC are still required.
+
+Corrected reader41298781054 (33 controls) reproduced all six original failures and29.329406mV phase. Valid source samples can still produce wrong buffer signs: A65/255,C39/214,D-X85/254,D-Y87/254 at0.9UI. This supports investigating actual buffer/XOR loading; it is not acceptance. Earlier reader41298254630 had a phase-report loop-variable error and remains rejected. Initial HBT controls41299284469 failed before fixtures; its context-argument correction is included in the qualified source. All full proofs are imported,including failures.
+
+Mainchip routing remains41292673925. Observe its terminal publication,restored candidate and actual residual violations before further ECO; retain v234 warning that ODB export is not proven optimizer-state persistence. Full serial PHY,complete routing and final setup/hold remain open.
+
+Monitor inventory650 runs; eight-hour monitor remains read-only with automatic_native_dispatch:false.
+
+## Previous continuation records
+
 # Cloud continuation — checkpoint v235
 
 Updated: 2026-11-01T10:31:28.804048+00:00
