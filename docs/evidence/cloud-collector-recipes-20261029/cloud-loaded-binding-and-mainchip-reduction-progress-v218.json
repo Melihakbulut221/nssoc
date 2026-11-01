@@ -1,0 +1,772 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "native_processes": 0,
+    "observed_at": "2026-11-01T05:31:00.786587+00:00",
+    "source_API_derived_text_RAM_only": true,
+    "tmp": {
+      "/tmp": [],
+      "/var/tmp": []
+    },
+    "unrelated_user_files_not_modified": true,
+    "workspace_entries": 0
+  },
+  "final_timing_complete": false,
+  "full_serial_phy_accepted": false,
+  "native_payloads_acquired_locally": false,
+  "progress": {
+    "authored_documents": {
+      "docs/cdr-master-buffer-impedance.md": "# Master/slave latch and input-buffer impedance experiment\n\nThis supersedes the rejected12-resistor coupled-load candidate for experimental design only. It does not accept or modify its layout.\n\n## Evidence and mechanism\n\nFull original-gate native comparison41273897568 found only B passing; A/C/D/X/Y failed. Native wave diagnosis41274403461 (sourceb3b4c87e894662f61eb53210c1dbe982885b3f00) repeats all124HBT metrics, all6stage/1530bit delays and phase/VI outputs with the original frozen reader. Seven inherited controls and9event controls pass, including the strict Ic/emitter<3mA boundary. Its preceding diagnostic41274356086 is retained but superseded because its event detector treated current equality as passing; no simulator or original measurement was changed.\n\nVoltage maxima at XD0059/60/111/112 occur during active operation around3.72\u20133.96ns, not only initialization. Collectors reach about2.016\u20132.047V while emitters are0.371\u20130.391V, giving maxVCE1.638\u20131.656V against1.6V. XD0061's minimum at30.312ns is0.398992V (collector0.909276V/emitter0.510284V) against0.4V.\n\nThe exact topology shows XD0059/60 andXD0111/112 are input differential pairs with pullups plus shunts at their collectors. Those collectors directly drive the following master latch. Reducing only final Q load resistors improved B but left the master loads unchanged; increasing only the shunt length raised the off-side collector and created active overvoltage. These measurements motivate reducing buffer impedance while limiting its high level and reducing master settling time together.\n\n## Exact exploratory intrinsic delta\n\nAll lengths are um. Width, model, instance identity, terminals and unrelated parameters remain unchanged.\n\n* 16master/slave collector loads: XD0175/176/177/178/191/194/195/196/202/205/207/208/212/214/215/216, L2.6->1.5 atW32.\n* 4buffer pullups: XD0182/183/220/221, L1.8->1.0 atW8.\n* 4buffer shunts: XD0184/185/222/223, L5->3.4 atW4.\n\nThis is a24-length-token modification from the authenticated original baseline, not a chained edit of a failed native model. Shorter paired buffer pullup/shunt devices are an initial engineering hypothesis for lower loaded impedance and narrower voltage excursion; actual resistance includes contacts and the model, so length ratios are not accepted as a measured voltage prediction. Lower latch/load swing, increased bias loading and supply/wire drops may still cause failure. Only the full native screen can decide.\n\nThe original500-device census, complete model bytes outside these24tokens, wire RC,10ohm source resistance,150fF sampler/50fF XOR loads, clock/data waveforms,1151saved vectors, active and all-time predicates and frozen prepare/measure code remain unchanged. Source controls include17malformed-circuit refusals and5archive refusals. The original13actual binding controls still run on the native deck.\n\n## Admission and physical follow-up\n\nFirst run exact-source source controls. Before simulator start, independently reserve and read back an empty exact-source output release. The host verifies that reservation and its own completed source-controls job. Preserve success or failure fully. No native artifacts are downloaded locally.\n\nNo layout regeneration or new RC is claimed here. The old12-instance map is insufficient for this24-device candidate; a passing screen requires a new complete map, private cells for all shared targeted PCells, actual geometry, native DRC/LVS, freshRC, corners and closed-loop/wholePHY verification.\n\nOriginal inherited voltage screening is preserved. As documented in the IHP [bipolar process specification](https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/03_bjt_params.html), a typical breakdown figure is not a foundry-approved operating envelope. A passing1.6V screen does not by itself prove reliability or production approval.\n\n\n## Terminal result\n\nNative run41274791029 (sourceeca0c5abf194169c8b42f58a48f22feb716e7dec, release430370301) completed with engine returncode0 and no native diagnostics after1139.887429s. The original full device predicates passed, but all six data stages, phase and VI current failed. This is an electrical rejection, not a simulator-start or archive error.\n\n| Stage | Maximum delay ps | Minimum signed mV | Below100mV samples | Wrong-sign samples |\n| --- | ---: | ---: | ---: | ---: |\n| A | 45.46875 | 39.13727 | 109 | 0 |\n| B | 118.90625 | 62.21606 | 83 | 0 |\n| C | 118.90625 | 17.87941 | 269 | 0 |\n| D | 118.90625 | -3.06290 | 155 | 3 |\n| X | 118.90625 | -103.49336 | 763 | 371 |\n| Y | 118.90625 | -6.53915 | 756 | 125 |\n\nPhase5.619233mV is below30mV. VI current19.073419uA is below50uA; VI voltage5.209325mV passes5mV. Original nominal HBT margins now pass, including minimum VCE atXD61 .410003V andXD115 .410431V, but this proves neither corners nor reliability.\n\nFull64-file terminal proof8d5acc3dd28028897d09b6adc46bfcdfae8392be and actual comparison41276473135/source78cd193415dcb2445ad3d50e318815f5d8e6beb8/full15-file proof8431599645f7adf3efe96815df67550ceb689dae preserve complete source, controls, measurements and logs. The comparison repeats13corruption refusals and verifies the entire24-token binding and all original gates. Original reports remain available; no acceptance is transferred from a synthetic fixture.\n\nPhysical map41274889443 passed9controls and all500devices/4928instances/24targets without modifying geometry. Its24targets cover all native users of four selected resistor cell definitions within the complete500-device census. This fact does not authorize reusing shared master/slave cells for the follow-up16-target candidates: restored master users must remain unchanged.\n\n## Controlled follow-up\n\nSee [original-master follow-up](cdr-original-master-followup.md). Restore eight master lengths and retain the new input-buffer values, then compare two output-load lengths. This separates two effects previously changed together. Neither variant is accepted before its real native results pass the unchanged predicates. No new layout, DRC/LVS or freshRC is claimed.\n",
+      "docs/cdr-original-master-followup.md": "# Original-master controlled native experiments\n\nThe24-resistor master/buffer candidate passed its original nominal device predicates but failed all data stages. Relative to the earlier12-resistor candidate it changed both buffer impedance and master loads, so the observed regression cannot be assigned to one change alone.\n\nBoth follow-up variants start from the authenticated original500-device model. They retain original master loads XD177/178/195/196/207/208/215/216 atL2.6um/W32. Four buffer pullups XD182/183/220/221 useL1.0um/W8 instead of1.8um; four shunts XD184/185/222/223 useL3.4um/W4 instead of5um. Eight output/slave loads XD175/176/191/194/202/205/212/214 differ:\n\n| Variant | Output load L um (W32 retained) | Source | Controls | Actual native |\n| --- | ---: | --- | --- | --- |\n| q15 | 1.5 | e85179e6900c2be9d931a8b30549c99f47c7617d | 41276766920 | 41277054717 |\n| q20 | 2.0 | edc7c8d04659f73d024c45bbfa4936b977c90c32 | 41276785721 | 41277056212 |\n\nEach changes exactly16 length tokens, with the entire remaining model, wireRC,1151vectors,10ohm sources,150fF sampler/50fF XOR loads and original frozen prepare/measure bodies unchanged. Both source controls passed17circuit and5archive refusals. The same original13native binding controls remain required. q15 versus24candidate isolates master restoration; q20 versusq15 isolates output-load length. These are hypotheses, not results.\n\nExact-source empty output releases430382305 and430382311 were independently created/read back before host admission. Their tags are cloud-results-41277054717-1-cdr-sampler-load and cloud-results-41277056212-1-cdr-sampler-load. Preserve all terminal results, including electrical failures, without changing gates.\n\nEach candidate has a16-target result comparator with13corruption refusals. The candidate report descriptor remains null until the full authenticated actual terminal report is available. Sources: codex/cdr-original-master-q15-comparison atf2b4d0c474a36466a6d3115dfbeb5028fed3a7f9 and codex/cdr-original-master-q20-comparison atb744e0b827bdcd7ab2e731928a990bb1ab8a93a8. No simulator rerun or native payload is needed for derived report comparison.\n\n## Physical follow-up requirements\n\nThe previous24-target map includes masters now deliberately unchanged. Therefore shared output/master resistor cells require private targeted instances. Do not mutate shared definitions blindly.\n\nExisting physical source inspection identified reusable real-PCell regeneration, original material matching, PLUS/MINUS pin matching, owned M1 endpoint bridges, foreign-metal clearance and serialized original-cell/hierarchy preservation. However, the old generate_cdr500_resistor_v59.py targets legacyv58 and a7.4-to5um shunt change; it cannot run unchanged on current canonicalv59. Preserve current via2/M3 repairs. Derive current native net ownership from the current canonical LVSDB and independently patch genuine authored parent/leaf schematic references. Never derive an LVS reference by copying extracted netlist. Re-establish all500semantic device bindings after extraction because native IDs may reorder.\n\nNo geometry has changed for either candidate. Even an electrical screen pass still requires actual layout, nativeDRC/LVS, freshRC, corners, closed-loop/fullserialPHY and mainchip timing verification.\n\nAll simulation, controls, comparisons, geometry and numerical analysis run onGitHub. Native archives/models/SPICE/GDS/ODB/rawwave data stay cloud-only. Local source/API-derived text coordination is temporary RAM only; project workspace and temporary file areas remain empty.\n"
+    },
+    "cloud_only": true,
+    "continuation_note": "Actual24candidate engine0 and all device predicates pass but all six data stages/phase/VIcurrent fail; full terminal64 and comparison15 proofs retained. Two original-master16resistor variants q15/q20 passed17circuit5archive, independent exact-source releases reserved and actualnative jobs active. Both13refusal comparators passed with nullcandidatepins. Mainchip same run remains active. Local workspace/tmp empty and no CAD; all computation remains cloud-only.",
+    "new_runs": {
+      "41276473135": {
+        "scope": "Actual24resistor full native report original-gate comparison; device pass and all-six-stage rejection",
+        "source": "78cd193415dcb2445ad3d50e318815f5d8e6beb8"
+      },
+      "41276766920": {
+        "scope": "Original-master q15 16resistor17circuit5archive source controls",
+        "source": "e85179e6900c2be9d931a8b30549c99f47c7617d"
+      },
+      "41276785721": {
+        "scope": "Original-master q20 16resistor17circuit5archive source controls",
+        "source": "edc7c8d04659f73d024c45bbfa4936b977c90c32"
+      },
+      "41277054717": {
+        "scope": "Actual original-master q15 16resistor unchanged-gate native experiment",
+        "source": "e85179e6900c2be9d931a8b30549c99f47c7617d"
+      },
+      "41277056212": {
+        "scope": "Actual original-master q20 16resistor unchanged-gate native experiment",
+        "source": "edc7c8d04659f73d024c45bbfa4936b977c90c32"
+      },
+      "41277088980": {
+        "scope": "Original-master q15 full-report comparator13corruption refusals",
+        "source": "f2b4d0c474a36466a6d3115dfbeb5028fed3a7f9"
+      },
+      "41277091096": {
+        "scope": "Original-master q20 full-report comparator13corruption refusals",
+        "source": "b744e0b827bdcd7ab2e731928a990bb1ab8a93a8"
+      }
+    },
+    "next_actions": [
+      "Observe SAME native q15 run41277054717/sourcee85179e6900c2be9d931a8b30549c99f47c7617d/release430382305 and q20 run41277056212/sourceedc7c8d04659f73d024c45bbfa4936b977c90c32/release430382311. Preserve every terminal output. Never duplicate dispatch/restart or mutate active source branches.",
+      "At each native terminal adapt already qualified cloud_master_buffer_terminal_collect_source to exact run/source/release; source controls17circuit5archive, complete derived measurements/source/logs/release index/parts metadata. Native archives/models/SPICE/GDS/ODB/raw waves stay on GitHub; only strict derived text whitelist may pass through temporary local RAM.",
+      "Candidate comparison branches codex/cdr-original-master-q15-comparison atf2b4d0c474a36466a6d3115dfbeb5028fed3a7f9 and q20-comparison atb744e0b827bdcd7ab2e731928a990bb1ab8a93a8 have13refusal controls passed. Bind only the null candidate descriptor to complete authenticated actual report proof and exact current_context. Run modecompare once, preserving full124HBT/50MOS/7MIM/all1530delays/phaseVI original gates.",
+      "q15/q20 restore all8master loads at original2.6/W32;8outputload lengths1.5 versus2.0/W32;4pullups1.0/W8 and4shunts3.4/W4. Exactly16intrinsic tokens, original complete native500 and baseline wireRC frozen. This is exploratory; no layoutregeneration or freshRC.",
+      "Any passing intrinsic screen needs a new16target physical mapping. Unlike prior24map, master users now untargeted, so private cells required for shared master/output definitions. Preserve current canonical via2/M3 repairs and full old material; bridge actual pins using current LVSDB net ownership, patch genuine authored refs, and rebindall500after extraction. Legacyv58 generator cannot run unchanged.",
+      "Observe SAME mainchip41270471645/source2b8931b9c8988fc5dbf497a7b561db579e39f64c/release430345631. Combined clear828/routing step name alone does not establish detailed_route subphase. At terminal retain complete evidence, verify828ownednets1351diodes1691protectedrecords, actual DRC/antenna and finalSTA separately.",
+      "Keepcloud-only policy: project workspace/tmp empty; no local CAD/tests/numericalwork/native payloads, source/API-derived text RAMonly. Keep8hmonitorread-onlyautomatic_native_dispatch:false. Device nominal screen pass is not corners, full serialPHY, finaltiming or foundry approval."
+    ],
+    "previous_goal_turn_classification": "progress",
+    "proofs": [
+      {
+        "bytes": 5166241,
+        "conclusion": "failure",
+        "files": 64,
+        "head": "8d5acc3dd28028897d09b6adc46bfcdfae8392be",
+        "prefix": "docs/evidence/cdr-sampler-load-terminal-41274791029",
+        "receipt": "receipt.json",
+        "receipt_sha256": "71c4bfb433a67cb7770b904afac20ffe94fb46b7ebe055ab9432aa894bd4e614",
+        "tree": "59512bac70fce792fcf57815dc18496d9203e442"
+      },
+      {
+        "bytes": 1599734,
+        "files": 15,
+        "head": "8431599645f7adf3efe96815df67550ceb689dae",
+        "prefix": "docs/evidence/cdr-sampler-load-comparison-41276473135",
+        "receipt": "receipt.json",
+        "receipt_sha256": "65e87cd89bff803a9ad8c744bc8f60d486d3f9a44cfa69d9e098ec1d0fd4ca54",
+        "tree": "7d1e3faea907ea2240089484935c82f23fc9687f"
+      },
+      {
+        "bytes": 99863,
+        "conclusion": "success",
+        "files": 13,
+        "head": "87de6b8fe3c82733ab20f88a2373a2d14e6e4585",
+        "prefix": "docs/evidence/cdr-sampler-load-controls-41276766920",
+        "receipt": "receipt.json",
+        "receipt_sha256": "0e1d8e62afdef4eeb67cc8ef37932020cd4d866f23befd3053cd7f07115515d6",
+        "tree": "26d5f8f0440d06bf203e1c018189e6f672c3d0cc"
+      },
+      {
+        "branch": "codex/cdr-sampler-load-reservation-41277054717",
+        "bytes": 21232,
+        "files": 6,
+        "head": "e01a8cdea452f491e8fe0fd86a16c71d9c4df332",
+        "prefix": "docs/evidence/cdr-sampler-load-reservation-41277054717",
+        "receipt": "receipt.json",
+        "receipt_sha256": "a87069db3bc4c4b6c833ac84131e5477ef9f4f265bc46ed26547c182f01cb809",
+        "reservation": {
+          "control_proof": {
+            "bytes": 99863,
+            "conclusion": "success",
+            "files": 13,
+            "head": "87de6b8fe3c82733ab20f88a2373a2d14e6e4585",
+            "prefix": "docs/evidence/cdr-sampler-load-controls-41276766920",
+            "receipt": "receipt.json",
+            "receipt_sha256": "0e1d8e62afdef4eeb67cc8ef37932020cd4d866f23befd3053cd7f07115515d6"
+          },
+          "empty": true,
+          "exact_lightweight_tag": true,
+          "full_phy_accepted": false,
+          "independently_created_and_verified": true,
+          "native_workflow_does_not_create_reservation": true,
+          "observed_at": "2026-11-01T05:28:15.435656+00:00",
+          "physical_acceptance": false,
+          "release_id": 430382305,
+          "run": 41277054717,
+          "source": "e85179e6900c2be9d931a8b30549c99f47c7617d",
+          "tag": "cloud-results-41277054717-1-cdr-sampler-load",
+          "timing_accepted": false
+        },
+        "tree": "5ea1414d20e603eb63fbb90cc71a93511a25f247"
+      },
+      {
+        "bytes": 508920,
+        "files": 10,
+        "head": "a06a5f3fe976336d92b7a0bbd0b41046aa8fadc3",
+        "prefix": "docs/evidence/cdr-sampler-load-comparison-controls-41277088980",
+        "receipt": "receipt.json",
+        "receipt_sha256": "4bac948666a46835e83a5d4ef0a2a9bf9cea2b5847cc5d24d6c973ab9813d9fa",
+        "tree": "58edc3b6f111868fd645a3223379bf11ca62c57c"
+      },
+      {
+        "bytes": 99863,
+        "conclusion": "success",
+        "files": 13,
+        "head": "5c780273d36df67f7e0c3ad7001294bdeadeb1c2",
+        "prefix": "docs/evidence/cdr-sampler-load-controls-41276785721",
+        "receipt": "receipt.json",
+        "receipt_sha256": "5cd7ddbf87774d7ae783a2553dc62fb9dc756952973086884442721e839e0b18",
+        "tree": "0469c13d75e46e3d5e29b82da303b9fac29a2a34"
+      },
+      {
+        "branch": "codex/cdr-sampler-load-reservation-41277056212",
+        "bytes": 21232,
+        "files": 6,
+        "head": "0f15bdb0936f94fcaa70387343fee03b4796c182",
+        "prefix": "docs/evidence/cdr-sampler-load-reservation-41277056212",
+        "receipt": "receipt.json",
+        "receipt_sha256": "e43cf6987755ad678929c3da0eef275d3eb437979c35027af112aa2f865485f4",
+        "reservation": {
+          "control_proof": {
+            "bytes": 99863,
+            "conclusion": "success",
+            "files": 13,
+            "head": "5c780273d36df67f7e0c3ad7001294bdeadeb1c2",
+            "prefix": "docs/evidence/cdr-sampler-load-controls-41276785721",
+            "receipt": "receipt.json",
+            "receipt_sha256": "5cd7ddbf87774d7ae783a2553dc62fb9dc756952973086884442721e839e0b18"
+          },
+          "empty": true,
+          "exact_lightweight_tag": true,
+          "full_phy_accepted": false,
+          "independently_created_and_verified": true,
+          "native_workflow_does_not_create_reservation": true,
+          "observed_at": "2026-11-01T05:28:15.748112+00:00",
+          "physical_acceptance": false,
+          "release_id": 430382311,
+          "run": 41277056212,
+          "source": "edc7c8d04659f73d024c45bbfa4936b977c90c32",
+          "tag": "cloud-results-41277056212-1-cdr-sampler-load",
+          "timing_accepted": false
+        },
+        "tree": "f77c55a05813c457f3cb803c22ac3feeef0fa403"
+      },
+      {
+        "bytes": 508927,
+        "files": 10,
+        "head": "98f3465637ef29fbeaf505717ed13f1d77c335c6",
+        "prefix": "docs/evidence/cdr-sampler-load-comparison-controls-41277091096",
+        "receipt": "receipt.json",
+        "receipt_sha256": "3c4edb9cc125467b86bf1d052099cb4efd8cc307270e8eb1d8b544c7d4570c4c",
+        "tree": "429426e7f95c81ff0e60ecb64d2adedb0e240824"
+      }
+    ],
+    "resume": "# Cloud continuation \u2014 checkpoint v218\n\nUpdated: __UPDATED__\n\nLatest direct user instruction: **cloud only; leave no local project files**. This overrides older goal wording saying local. Workspace and project temp areas are verified empty; no local CAD processes. All simulation, controls, numerical/geometry analysis and layout run on GitHub. Source/API-derived text coordination uses temporary RAM only. Never download native archives/models/SPICE/ODB/GDS/raw waves/native-frame gzip locally, even into RAM. Preserve unrelated user files.\n\n## Active actual cloud work\n\n* Mainchip [41270471645](https://github.com/Melihakbulut221/nssoc/actions/runs/41270471645), branchcodex/mainchip-net459-diode-prune, source2b8931b9c8988fc5dbf497a7b561db579e39f64c, release430345631/tagcloud-results-41270471645-1-mainchip-bulk-postdrt-antenna. At latest observation combined clear828/routing step active; internal detailed-router phase not established. Preserve828ownednets=608diodeowners+220counterparts,1351diodes,1691protectedrecords. No duplicate/restart.\n* Original-master q15 [41277054717](https://github.com/Melihakbulut221/nssoc/actions/runs/41277054717), branchcodex/cdr-original-master-q15, sourcee85179e6900c2be9d931a8b30549c99f47c7617d, independently reserved release430382305/tagcloud-results-41277054717-1-cdr-sampler-load.\n* Original-master q20 [41277056212](https://github.com/Melihakbulut221/nssoc/actions/runs/41277056212), branchcodex/cdr-original-master-q20, sourceedc7c8d04659f73d024c45bbfa4936b977c90c32, independently reserved release430382311/tagcloud-results-41277056212-1-cdr-sampler-load.\n* Both new native hosts passed source-controls and entered the actual admission/simulation step. No terminal result yet. Their17circuit/5archive preflight runs41276766920 and41276785721 passed; full proofs are imported below.\n\n## Rejected prior24-resistor experiment\n\nRun41274791029/sourceeca0c5abf194169c8b42f58a48f22feb716e7dec/release430370301 is now terminal electrical FAILURE, not active. Engine0, no diagnostics,1139.887429s. All original device predicates passed; all6data stages/phase/VIcurrent failed. Phase5.619233mV, VI19.073419uA, VIvoltage5.209325mV passes5mV. Keep all gates unchanged. Full64proof8d5acc3dd28028897d09b6adc46bfcdfae8392be imported; full original-gate actual comparison41276473135/source78cd193415dcb2445ad3d50e318815f5d8e6beb8/full15proof8431599645f7adf3efe96815df67550ceb689dae imported. See docs/cdr-master-buffer-impedance.md for all stage metrics.\n\n## Controlled follow-up and prepared comparisons\n\nSee docs/cdr-original-master-followup.md. Both variants restore8master loads tooriginalL2.6/W32 and keep4bufferpullupsL1/W8+4shuntsL3.4/W4. The8output loads useL1.5/W32(q15) versusL2/W32(q20). Only16lengthtokens from authenticated original500device model, original wireRC/gates/workload/functions unchanged. q15 versus24candidate isolates master restoration; q20 versusq15 isolates outputload length.\n\nComparators use16target binding, all124HBT/50MOS/7MIM/all1530delays/phaseVI and13corruption controls:\n* q15controls41277088980/sourcef2b4d0c474a36466a6d3115dfbeb5028fed3a7f9, branchcodex/cdr-original-master-q15-comparison.\n* q20controls41277091096/sourceb744e0b827bdcd7ab2e731928a990bb1ab8a93a8, branchcodex/cdr-original-master-q20-comparison.\nBoth controls passed. Candidate report pin is null until complete actual terminal proof; do not substitute synthetic fixture.\n\nNo physical layout changed. Previous24map covers master cells now untargeted; private output instances required before physical edits. Legacyv58 generator cannot run unchanged on canonicalv59. Preserve current via2/M3 repairs, use actual old material/pin boxes and current LVSDB ownership, independently patch authored refs; redo500binding after extraction. Native electrical screen alone is not fullPHY or signoff.\n\n## Retained foundational evidence\n\nPrior12resistor41272254964/source8a07/release430356103 rejected; full63proof6cd6853e3f79613d066076871280f56fea7ee10d; comparison41273897568/full15proof3107d34d22c8572989fc958cd35a252a6e543a38.\nCorrected fullwave diagnosis41274403461/full29proof6c1132c9c0c64884ad2ec58ec01440e9b78e77c3 reproduced all metrics and proved5VCE violations occurred duringactiveoperation. Firstdiagnosis41274356086 retained but strictIc equality event predicate corrected. Originalsimulation gates never changed.\nFourshuntonly41268684044/full61proof62535582b4a1ad13b005a68dfb2af7b62c66d4a4, comparison41269888640/fullaac575ff357328279cb7fad4d93a35416aa52261.\nOriginalloaded41260582673/sourcecde6353/release430292142/full631proof53e39a2c43bfef518793da536a6bc423398d7262.\nFreshRC41251732540/source9bf12d1/release430243359/full454proof682ae5a848d5b578ddc27b47bfc3458578c7ce87.\nCanonicalview41243752186/source394b6e2/release430197123/full186proofe7b9d3a152295b7f870ea2783c90f5c6116547a1.\nTopology full16proof3e45b11b44cfbc08f51334b1bb2d372384c3820b.\nMainchip priorfailed41266854050 full17proof24e4a5c4ddd80cbdb6f6dfdbd6fc6a964b478e30, corrected savedJSON41269689818 full18proof80f894220ee2e206124bc4f64423e1da042d4942 andactual controls41270165333 full83proof504129e2e1c00576b2db10fa7ef1de6683f0fe19.\nPreviousrootv217:811005e240595259ac368882e10e32bc0447b7d1. All previous evidence retained.\n\n## Next actions\n\n1. Observe SAME native q15 run41277054717/sourcee85179e6900c2be9d931a8b30549c99f47c7617d/release430382305 and q20 run41277056212/sourceedc7c8d04659f73d024c45bbfa4936b977c90c32/release430382311. Preserve every terminal output. Never duplicate dispatch/restart or mutate active source branches.\n2. At each native terminal adapt already qualified cloud_master_buffer_terminal_collect_source to exact run/source/release; source controls17circuit5archive, complete derived measurements/source/logs/release index/parts metadata. Native archives/models/SPICE/GDS/ODB/raw waves stay on GitHub; only strict derived text whitelist may pass through temporary local RAM.\n3. Candidate comparison branches codex/cdr-original-master-q15-comparison atf2b4d0c474a36466a6d3115dfbeb5028fed3a7f9 and q20-comparison atb744e0b827bdcd7ab2e731928a990bb1ab8a93a8 have13refusal controls passed. Bind only the null candidate descriptor to complete authenticated actual report proof and exact current_context. Run modecompare once, preserving full124HBT/50MOS/7MIM/all1530delays/phaseVI original gates.\n4. q15/q20 restore all8master loads at original2.6/W32;8outputload lengths1.5 versus2.0/W32;4pullups1.0/W8 and4shunts3.4/W4. Exactly16intrinsic tokens, original complete native500 and baseline wireRC frozen. This is exploratory; no layoutregeneration or freshRC.\n5. Any passing intrinsic screen needs a new16target physical mapping. Unlike prior24map, master users now untargeted, so private cells required for shared master/output definitions. Preserve current canonical via2/M3 repairs and full old material; bridge actual pins using current LVSDB net ownership, patch genuine authored refs, and rebindall500after extraction. Legacyv58 generator cannot run unchanged.\n6. Observe SAME mainchip41270471645/source2b8931b9c8988fc5dbf497a7b561db579e39f64c/release430345631. Combined clear828/routing step name alone does not establish detailed_route subphase. At terminal retain complete evidence, verify828ownednets1351diodes1691protectedrecords, actual DRC/antenna and finalSTA separately.\n7. Keepcloud-only policy: project workspace/tmp empty; no local CAD/tests/numericalwork/native payloads, source/API-derived text RAMonly. Keep8hmonitorread-onlyautomatic_native_dispatch:false. Device nominal screen pass is not corners, full serialPHY, finaltiming or foundry approval.\n\nInventory__RUN_COUNT__runs,8hmonitor automatic_native_dispatch:false. **FullserialGen3x4PHY, mainchiprouting, finalsetup/hold andproductionapproval remainOPEN.** This checkpoint records actual progress and cleanup, not completion.\n"
+  },
+  "snapshots": [
+    {
+      "branch": "codex/cdr-current-eight-drain-wave-readback",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939637,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939756,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124684939804,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939813,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939841,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939865,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939961,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124684940663,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41223192019,
+      "source": "dd320012480c99914c4a198c8236b7190b39ce26",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41223192019"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-readback",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124641350036,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124641474888,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124641511122,
+          "name": "observation",
+          "status": "completed"
+        }
+      ],
+      "run": 41236517605,
+      "source": "65e620dc413389fffaa8389e4abdfc17cfbf4ecf",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41236517605"
+    },
+    {
+      "branch": "codex/cdr-via2-m3-physical-recheck",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124648720069,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124648978870,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124649026868,
+          "name": "physical-recheck",
+          "status": "completed"
+        }
+      ],
+      "run": 41238994098,
+      "source": "0b1ec86b35f8cb98928a5687f007a7ccd676f620",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41238994098"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-progress-v2",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124657431983,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124657565622,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124657605748,
+          "name": "observation",
+          "status": "completed"
+        }
+      ],
+      "run": 41241933572,
+      "source": "00b46253e990983365db3b5f2b44a1233e20623e",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41241933572"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-crash-isolation-v1",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124667589535,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124667697328,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124667723726,
+          "name": "observation",
+          "status": "completed"
+        }
+      ],
+      "run": 41245373612,
+      "source": "277f2382b18198e399ddeef1e7ab8f35aaf629c2",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41245373612"
+    },
+    {
+      "branch": "codex/cloud-progress-monitor-shards-v2",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124674583313,
+          "name": "controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124674612392,
+          "name": "observe",
+          "status": "completed"
+        }
+      ],
+      "run": 41247738623,
+      "source": "6df3f373c4fc8052d69fc946b18ad35be640ed58",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41247738623"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684149904,
+          "name": "controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684192874,
+          "name": "observe",
+          "status": "completed"
+        }
+      ],
+      "run": 41250947168,
+      "source": "5f3814a3e0366b8ec310c9270494c01dd6b3e03c",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41250947168"
+    },
+    {
+      "branch": "codex/cdr-via2-m3-fresh-rc-adapter",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124686498262,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124687385817,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124687428141,
+          "name": "fresh-rc",
+          "status": "completed"
+        }
+      ],
+      "run": 41251732540,
+      "source": "9bf12d1e496f7d9192582175ab2fa714e3e8d41b",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41251732540"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-reduction-v1",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124690802895,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124690863676,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124690929404,
+          "name": "analysis",
+          "status": "completed"
+        }
+      ],
+      "run": 41253195469,
+      "source": "210fc85c43753e23fb9ecc2e398a48d318d1f330",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41253195469"
+    },
+    {
+      "branch": "codex/cdr-via2-m3-loaded-adapter",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124712844047,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124712997863,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124713024059,
+          "name": "loaded",
+          "status": "completed"
+        }
+      ],
+      "run": 41260582673,
+      "source": "cde6353e164d32feee5a3e56cc54b32a3001f736",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41260582673"
+    },
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124731344945,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124731680569,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124731737763,
+          "name": "diode-routing",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124738255432,
+          "name": "preserve-antenna-job-logs",
+          "status": "completed"
+        }
+      ],
+      "run": 41266854050,
+      "source": "8b7404c7340ef5ebc4a70e36dfa30a96d07013d9",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41266854050"
+    },
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124742028616,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124742398243,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Clear828owned signal wires and route with unchanged physical invariants"
+          ],
+          "conclusion": null,
+          "id": 124742427487,
+          "name": "diode-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41270471645,
+      "source": "2b8931b9c8988fc5dbf497a7b561db579e39f64c",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41270471645"
+    },
+    {
+      "branch": "codex/cdr-master-buffer-impedance",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124754674199,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124754726207,
+          "name": "simulate",
+          "status": "completed"
+        }
+      ],
+      "run": 41274791029,
+      "source": "eca0c5abf194169c8b42f58a48f22feb716e7dec",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41274791029"
+    },
+    {
+      "branch": "codex/cdr-master-buffer-comparison",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124759564148,
+          "name": "comparison",
+          "status": "completed"
+        }
+      ],
+      "run": 41276473135,
+      "source": "78cd193415dcb2445ad3d50e318815f5d8e6beb8",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41276473135"
+    },
+    {
+      "branch": "codex/cdr-original-master-q15",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124760414385,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124760456779,
+          "name": "simulate",
+          "status": "completed"
+        }
+      ],
+      "run": 41276766920,
+      "source": "e85179e6900c2be9d931a8b30549c99f47c7617d",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41276766920"
+    },
+    {
+      "branch": "codex/cdr-original-master-q20",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124760468041,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124760510482,
+          "name": "simulate",
+          "status": "completed"
+        }
+      ],
+      "run": 41276785721,
+      "source": "edc7c8d04659f73d024c45bbfa4936b977c90c32",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41276785721"
+    },
+    {
+      "branch": "codex/cdr-original-master-q15",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124761260268,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate original inputs and run sampler-load candidate with original measurements"
+          ],
+          "conclusion": null,
+          "id": 124761301742,
+          "name": "simulate",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41277054717,
+      "source": "e85179e6900c2be9d931a8b30549c99f47c7617d",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41277054717"
+    },
+    {
+      "branch": "codex/cdr-original-master-q20",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124761264263,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate original inputs and run sampler-load candidate with original measurements"
+          ],
+          "conclusion": null,
+          "id": 124761310328,
+          "name": "simulate",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41277056212,
+      "source": "edc7c8d04659f73d024c45bbfa4936b977c90c32",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41277056212"
+    },
+    {
+      "branch": "codex/cdr-original-master-q15-comparison",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124761365108,
+          "name": "comparison",
+          "status": "completed"
+        }
+      ],
+      "run": 41277088980,
+      "source": "f2b4d0c474a36466a6d3115dfbeb5028fed3a7f9",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41277088980"
+    },
+    {
+      "branch": "codex/cdr-original-master-q20-comparison",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124761370963,
+          "name": "comparison",
+          "status": "completed"
+        }
+      ],
+      "run": 41277091096,
+      "source": "b744e0b827bdcd7ab2e731928a990bb1ab8a93a8",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41277091096"
+    }
+  ],
+  "updated_at": "2026-11-01T05:31:00.786587+00:00",
+  "version": 218
+}

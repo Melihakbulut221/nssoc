@@ -31,6 +31,25 @@ No layout regeneration or new RC is claimed here. The old12-instance map is insu
 Original inherited voltage screening is preserved. As documented in the IHP [bipolar process specification](https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/03_bjt_params.html), a typical breakdown figure is not a foundry-approved operating envelope. A passing1.6V screen does not by itself prove reliability or production approval.
 
 
-Cloud admission: source controls41274689297 passed17circuit/5archive refusals. Native41274791029 is pinned to sourceeca0c5abf194169c8b42f58a48f22feb716e7dec with independent exact-source release430370301. This records launch, not a passing result. Comparator41274831856 passed13refusals; actual candidate report is not yet supplied. Physical instance map41274889443 passed9controls and all500devices/4928instances/24targets without modifying geometry.
+## Terminal result
 
-The new24-device map found no untargeted native device users of its four selected resistor cell definitions (rppd$2$11, rppd$2$10, rppd$23, rppd$v59_cd_shunt) within the complete500-device census. All users of each selected definition request the same new dimensions. This observation does not itself modify geometry or prove its DRC/LVS.
+Native run41274791029 (sourceeca0c5abf194169c8b42f58a48f22feb716e7dec, release430370301) completed with engine returncode0 and no native diagnostics after1139.887429s. The original full device predicates passed, but all six data stages, phase and VI current failed. This is an electrical rejection, not a simulator-start or archive error.
+
+| Stage | Maximum delay ps | Minimum signed mV | Below100mV samples | Wrong-sign samples |
+| --- | ---: | ---: | ---: | ---: |
+| A | 45.46875 | 39.13727 | 109 | 0 |
+| B | 118.90625 | 62.21606 | 83 | 0 |
+| C | 118.90625 | 17.87941 | 269 | 0 |
+| D | 118.90625 | -3.06290 | 155 | 3 |
+| X | 118.90625 | -103.49336 | 763 | 371 |
+| Y | 118.90625 | -6.53915 | 756 | 125 |
+
+Phase5.619233mV is below30mV. VI current19.073419uA is below50uA; VI voltage5.209325mV passes5mV. Original nominal HBT margins now pass, including minimum VCE atXD61 .410003V andXD115 .410431V, but this proves neither corners nor reliability.
+
+Full64-file terminal proof8d5acc3dd28028897d09b6adc46bfcdfae8392be and actual comparison41276473135/source78cd193415dcb2445ad3d50e318815f5d8e6beb8/full15-file proof8431599645f7adf3efe96815df67550ceb689dae preserve complete source, controls, measurements and logs. The comparison repeats13corruption refusals and verifies the entire24-token binding and all original gates. Original reports remain available; no acceptance is transferred from a synthetic fixture.
+
+Physical map41274889443 passed9controls and all500devices/4928instances/24targets without modifying geometry. Its24targets cover all native users of four selected resistor cell definitions within the complete500-device census. This fact does not authorize reusing shared master/slave cells for the follow-up16-target candidates: restored master users must remain unchanged.
+
+## Controlled follow-up
+
+See [original-master follow-up](cdr-original-master-followup.md). Restore eight master lengths and retain the new input-buffer values, then compare two output-load lengths. This separates two effects previously changed together. Neither variant is accepted before its real native results pass the unchanged predicates. No new layout, DRC/LVS or freshRC is claimed.
