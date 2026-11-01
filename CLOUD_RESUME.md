@@ -1,11 +1,24 @@
-# Cloud continuation — checkpoint v251
+# Cloud continuation — checkpoint v252
 
-Updated: 2026-11-01T15:41:41.424855+00:00
+Updated: 2026-11-01T15:56:44.742675+00:00
 
 Latest instruction: **her şeyi bulutta yap, lokalde bir şey bırakma temizle.**
 It overrides the earlier local-execution wording in the active goal. All CAD, simulation, native archive/layout/waveform acquisition and numerical/geometric analysis run on GitHub. Local coordination uses source/API-derived text in RAM only. Never acquire native ODB/DEF/GDS/SPICE/raw archives locally, including RAM. The local workspace and project temp entries were verified empty, with no local CAD processes. Unrelated user files remain untouched.
 
-## Latest result: remaining physical failures classified; original64-pass stage qualified
+## Latest result: actual full64 native route dispatched and running
+
+Source ff1c0e6163e0ba1537a075d50e940fafc9332c64 on codex/mainchip-full64-native integrates the actual original64-pass router with authenticated saved-diode acquisition, original prep/guide/PG/fixed-overlay/828-net clear, owned native engine/runtime/container and permanent checkpoint publication. Independent controls41323333392 passed all11 full64 lifecycle plus12 preservation/dispatch controls,0 failures/errors/skips, and authenticated2361 original source files. Complete20-file proof063318bb2cb55c5b394a4c091dc8d8fa6ebaf20e is imported under docs/evidence/full64-native-controls-terminal-41323333392.
+
+**Actual native run41323446729 has been dispatched exactly once.** Permanent empty exact-source release430685443/tag cloud-results-41323446729-1-mainchip-bulk-postdrt-antenna was reserved and verified. The native run repeated all source controls successfully. Latest live observation: job124898487629/native-routing in progress at Execute and preserve actual full64 route. This step includes cloud acquisition and CAD; do not infer the current internal route iteration from the Actions step alone. Poll this existing run, not a replacement.
+
+The native phase order is bootstrap,guide-overlay,guide-reload-audit,power-contact-audit,make-overlay,fixed-import,fixed-audit,clear,route. The source executes the exact original64-pass Tcl; it is a fresh same-seed trial, not a resumed internal iteration. Native report is bulk-postdrt-full64-inner-result.json; successful route status is COMPLETE_FULL64_NATIVE_ROUTE_CHECKPOINT. Route output pins are in bulk-postdrt-antenna/full-route-stage.json and work/bulk-postdrt-antenna/routed-fixed.odb/.def plus route-partial.odb/.def. Output preservation always runs. Host output is full64-native-evidence; fallback artifact contains the run-owned out directory. Do not download native archives locally.
+
+The checkpoint intentionally retains temporary fixed classes. It is NOT a restored candidate, physical/timing/full-PHY acceptance. The next stage must restore classes using the actual new routed-fixed pins and the scoped restoration algorithm, then measure fresh native graphs and requalify relevant GDS pin correspondence. Old core.CANDIDATE d526... and exact142 failed-net/1300-pin/77-master-pin qualification are bound to the old8-pass candidate and MUST NOT be relabeled as new-route proof. Core.audit accepts an explicit expected tuple, but production values must come from authenticated new readout, not from making tests pass. No broad acceptance is granted by route completion.
+
+Host preservation is now implemented and tested in mainchip_full64_output_preservation.py: exact four Tcl programs require capsule pins and64KiB cap; the two clock-gate DEF files are native-only and require matching capsule pins; host-progress is a regular JSON object capped16MiB and exact-copy verified. The original three host failures were reproduced before confirming the correction. All unexpected-file/symlink/unpublished-large/output-overwrite/hash-drift refusals remain. This correction is integrated into this full64 host.
+
+All source and evidence are in GitHub, local workspace/task temp empty and no local CAD processes. The monitor tracks this run every8 hours and never automatically duplicates native dispatch. New source and reservation/dispatch recipes are already executed; never replay creation mutations. Last accepted physical evidence remains399 DRC/19 antenna nets/23 rows, qualified connectivity828/PG2702/protected1691 from the old candidate. Full serial PHY and final matching-netlist RC/STA remain open.
+## Previous checkpoint v251: classification and source-only full64 qualification
 
 Cloud run41321744519/source4090f5c3ce1d7655de4144299f69df278a2d7a16 passed16 controls and authenticated all1749 native members from release430648315. Every actual DRC/antenna record is retained. Counts:329 shorts +70 metal-spacing markers =399;19 antenna nets/23 rows. Among320 named owners:92 original diode owners,36 previous counterpart owners,186 outside-scope signal owners,4 protected nets and2 power nets. 369 markers involve an outside-scope signal;6 involve protected nets;13 involve power. All antenna rows lie inside the existing828-net scope. Source reports and42-file proof9663c2bcc94ceae21d7739bc6279740522e53524 are imported under docs/evidence/postrestore-classification-terminal-41321744519.
 
