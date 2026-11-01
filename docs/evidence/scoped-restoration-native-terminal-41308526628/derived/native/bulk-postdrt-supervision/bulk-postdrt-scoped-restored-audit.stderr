@@ -1,0 +1,33 @@
+{"phase": "restored-audit", "primary": "AssertionError('physical connectivity: $abc$1804206$new_n113397/positive_area')", "terminal_errors": []}
+Traceback (most recent call last):
+  File "/work/tail-source/scripts/mainchip_scoped_counterpart_restoration_native.py", line 69, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/work/tail-source/scripts/mainchip_scoped_counterpart_restoration_native.py", line 67, in main
+    container.clone(native.main,phase=original_phase)()
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 431, in main
+    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,"input unchanged"),
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 148, in run_phase
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 135, in run_phase
+    try:action()
+        ^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 431, in <lambda>
+    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,"input unchanged"),
+                                  ^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 393, in phase
+    save(out/"connectivity-summary.json",connectivity(work/"candidate.odb",plan,out))
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_targeted_counterpart_routing_native.py", line 156, in connectivity
+    return native.connectivity(path, checked(argument), out)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 335, in connectivity
+    return p.validate_connectivity(result,plan)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py", line 240, in validate_connectivity
+    require(row["mode"]==mode and row["all_pins_share_one_wire_component"]is True
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py", line 37, in require
+    if not ok:raise AssertionError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: physical connectivity: $abc$1804206$new_n113397/positive_area
