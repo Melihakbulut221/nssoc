@@ -52,7 +52,7 @@ jobs:
           sys.path.insert(0,'scripts')
           import cdr_via2_m3_loaded_admission as c
           ctx=c.context(__import__('os').environ);method,producer=c.source_guard(ctx)
-          assert method['loaded_execution_authorized'] is False and method['generation_authorized'] is False and method['fresh_rc_execution_authorized'] is False
+          assert method['loaded_execution_authorized'] is True and method['generation_authorized'] is False and method['fresh_rc_execution_authorized'] is False
           for p in ["scripts/cdr_via2_m3_loaded_admission.py","scripts/cdr_via2_m3_loaded_native.py","scripts/cloud_cdr_via2_m3_loaded.py","scripts/check_cdr_via2_m3_loaded_adapter.py"]:ast.parse(Path(p).read_text())
           PY
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
@@ -136,7 +136,7 @@ jobs:
       contents: write
       actions: read
     needs: [source-controls, preserve-job-log]
-    if: ${{ inputs.mode == 'loaded' && false }}
+    if: ${{ inputs.mode == 'loaded' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 180
     env:
