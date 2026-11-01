@@ -1,0 +1,20 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Actual differential current steering: positive X-Y pulls on below op.
+* No behavioral sources, ideal internal logic or clamp. External references
+* remain explicit; native PVT/load/physical/closed-loop validation required.
+.subckt nssoc_cdr_vi_hbt_v1 xp xn yp yn op on avdd avss sub irx iry
+XXP on xp ex sub npn13G2 Nx=1
+XXN op xn ex sub npn13G2 Nx=1
+XTX ex irx avss sub npn13G2 Nx=1
+XRX irx irx avss sub npn13G2 Nx=1
+XYP op yp ey sub npn13G2 Nx=1
+XYN on yn ey sub npn13G2 Nx=1
+XTY ey iry avss sub npn13G2 Nx=1
+XRY iry iry avss sub npn13G2 Nx=1
+XRP avdd op sub rppd w=2u l=2u b=0 sw_et=1
+XRN avdd on sub rppd w=2u l=2u b=0 sw_et=1
+XBP op avss sub rppd w=2u l=14u b=0 sw_et=1
+XBN on avss sub rppd w=2u l=14u b=0 sw_et=1
+XCF op on cap_cmim w=40u l=40u
+.ends nssoc_cdr_vi_hbt_v1
