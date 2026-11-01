@@ -95,7 +95,7 @@ def violation_events(t,vc,vb,ve,ic,nx):
     events=[]
     for name,values,mask,limit,kind in metrics:
         ids=np.flatnonzero(mask);i=int(ids[np.argmin(values[ids])if kind=="minimum"else np.argmax(values[ids])])
-        bad=mask & ((values<limit)if kind=="minimum"else(values>limit))
+        bad=mask & ((values<limit)if kind=="minimum"else ((values>=limit)if name=="maximum_alltime_abs_ic_per_emitter_a"else(values>limit)))
         if not np.any(bad):continue
         intervals=[]
         invalid=np.flatnonzero(bad)

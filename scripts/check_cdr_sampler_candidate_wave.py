@@ -24,7 +24,8 @@ class Events(unittest.TestCase):
         self.c[[2,3,5]]=.3;r=self.run_events()[0]
         self.assertEqual([(x["first_row"],x["last_row"],x["samples"])for x in r["all_violating_intervals"]],[(2,3,2),(5,5,1)])
     def test_inclusive_limits(self):
-        self.c[2]=.4;self.c[3]=1.6;self.b[4]=1.;self.i[5]=.006;self.assertEqual(self.run_events(),[])
+        self.c[2]=.4;self.c[3]=1.6;self.b[4]=1.;self.i[5]=.0059;self.assertEqual(self.run_events(),[])
+        self.i[5]=.006;r=self.run_events();self.assertEqual(len(r),1);self.assertEqual(r[0]["metric"],"maximum_alltime_abs_ic_per_emitter_a")
     def test_invalid_axes_refused(self):
         for which in ("time","shape","nan","nx","active"):
             t,c,b,e,i=[x.copy()for x in(self.t,self.c,self.b,self.e,self.i)];nx=2
