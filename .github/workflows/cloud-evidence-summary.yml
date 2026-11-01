@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   source-controls:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -39,6 +39,9 @@ jobs:
             /hw/soc/pnr/ihp-lvs.lock.json
             /docs/evidence/pcie-tx-layout-cloud-input-20261013.json
             /.github/workflows/cloud-evidence-summary.yml
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
       - name: Validate exact source and geometry parameter refusal controls without native inputs
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
@@ -80,6 +83,9 @@ jobs:
             /hw/soc/pnr/ihp-lvs.lock.json
             /docs/evidence/pcie-tx-layout-cloud-input-20261013.json
             /.github/workflows/cloud-evidence-summary.yml
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
       - name: Restore hash-pinned native CAD runtime on runner
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"

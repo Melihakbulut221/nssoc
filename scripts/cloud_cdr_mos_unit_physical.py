@@ -22,6 +22,7 @@ def validate_sources():
     return pins
 def controls():
     assert os.environ.get("GITHUB_ACTIONS")=="true"
+    assert sys.version_info[:2]==(3,12), "Qualified host Python 3.12 required"
     from cdr_mos_unit_geometry import controls as check
     pins=validate_sources()
     for name in pins:
@@ -211,4 +212,10 @@ if __name__=="__main__":
     p=argparse.ArgumentParser();p.add_argument("--controls",action="store_true");p.add_argument("--publish",action="store_true");a=p.parse_args()
     if a.controls:print(json.dumps(controls()))
     elif a.publish:publish()
-    else:run_native()
+    else:
+        try:run_native()
+        except BaseException as e:
+            write(DERIVED/"host-failure.json",dict(source=os.environ.get("GITHUB_SHA"),
+                run=os.environ.get("GITHUB_RUN_ID"),error=repr(e),traceback=traceback.format_exc(),
+                full_phy_accepted=False))
+            raise
