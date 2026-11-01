@@ -156,6 +156,60 @@ def controls():
     bad={n:r.dup()for n,r in stacked.items()};bad[8]=pya.Region()
     need(reuse_access(synthetic,bad,stacked,{})is None,"reject unowned lower metal");passed.append("reject reused stack without lower same-net metal")
     need(len(passed)==31,"19 unchanged plus12 geometry controls");return passed
+
+def terminal_access(anchor,owned,full,other):
+    if anchor["metal"]==8:return access(anchor,owned,full,other)
+    need(anchor["metal"]==10,"supported actual terminal metal M1 or M2")
+    x,y=anchor["point_dbu"];touch=box(x,y,1)
+    need((touch-owned[10]).is_empty(),"actual M2 terminal reference lies in its extracted own net")
+    # The reference point can be a sub-grid polygon midpoint. Only the new
+    # route centre is chosen on 5nm grid; no original polygon/anchor is moved.
+    seeds=[]
+    for xx in (x//5*5,(x//5+1)*5):
+        for yy in(y//5*5,(y//5+1)*5):
+            seeds.append([xx,yy])
+    start=list(seeds)
+    for delta in range(500,10001,500):
+        for xx,yy in start:seeds.extend([[xx,yy-delta],[xx,yy+delta],[xx-delta,yy],[xx+delta,yy]])
+    attempts=[];seen=set()
+    for point in seeds:
+        if tuple(point)in seen:continue
+        seen.add(tuple(point));xx,yy=point;pad=box(xx,yy,300)
+        tests=conductor_guard(pad,pya.Region(),owned,full,other)
+        tests["grid5_new_route_center"]=xx%5==0 and yy%5==0
+        tests["new_center_within_existing_same_net_M2"]=(box(xx,yy,1)-owned[10]).is_empty()
+        admitted=all(v for k,v in tests.items()if k!="new_m2_material")
+        attempts.append(dict(point=point,guards=tests,admitted=admitted))
+        if admitted:
+            return dict(cuts=pya.Region(),pad=pad,center=point),dict(reason=None,direct_existing_m2=True,new_via1_count=0,anchor_point_dbu=[x,y],anchor_reference_not_moved=True,admitted_sites=[point],attempted_sites=attempts,landing_bbox=bounds(pad),guards=tests)
+    return None,dict(reason="no guarded direct M2 access on existing same-net metal within 10um",anchor_point_dbu=[x,y],anchor_reference_not_moved=True,attempted_sites=attempts,admitted_sites=[],clipped_owned_m2_bbox=bounds(owned[10]&box(x,y,12000)))
+def direct_m2_controls():
+    passed=[]
+    own={n:pya.Region()for n in LAYERS};own[10]=box(0,0,2000)
+    a=dict(metal=10,point_dbu=[0,2]);before=encode(a)
+    got,report=terminal_access(a,own,own,{})
+    need(got is not None and got["cuts"].is_empty()and got["center"][0]%5==0 and got["center"][1]%5==0,"direct M2 sub-grid reference to grid route")
+    need(encode(a)==before and report["anchor_reference_not_moved"],"original reference unchanged")
+    passed+=["direct owned M2 access without vias","sub-grid reference unchanged and new route grid"]
+    missing={n:pya.Region()for n in LAYERS}
+    try:terminal_access(a,missing,own,{})
+    except AssertionError:passed.append("reject unowned M2 reference")
+    else:raise AssertionError("unowned M2 accepted")
+    for label,layer in[("foreign M2",10),("foreign Via1",19),("foreign Via2",29)]:
+        full={n:r.dup()for n,r in own.items()};full[layer]+=box(0,0,20000)
+        # The M2 foreign test uses the shell around the owned metal. Its
+        # 605nm expansion blocks every 600nm landing near the 4um own pad edge,
+        # while interior pads are covered by foreign via controls separately.
+        if layer==10:full[layer]=box(0,0,20000);small={n:r.dup()for n,r in own.items()};small[10]=box(0,0,100)
+        else:small=own
+        got,report=terminal_access(a,small,full,{})
+        need(got is None and report["attempted_sites"],"reject blocked direct "+label);passed.append("reject direct "+label)
+    try:terminal_access(dict(metal=30,point_dbu=[0,0]),own,own,{})
+    except AssertionError:passed.append("reject unsupported terminal metal")
+    else:raise AssertionError("unknown metal accepted")
+    need(len(passed)==7,"seven direct M2 controls")
+    return passed
+
 def region_snapshot(layout,top):
     return {(layout.get_info(li).layer,layout.get_info(li).datatype):pya.Region(top.begin_shapes_rec(li)).merged()for li in layout.layer_indexes()}
 def generate(base,cfg):
@@ -182,7 +236,8 @@ def generate(base,cfg):
         component=a["wire_component"];need(component in nets,"actual L2N component")
         owned={n:w.shapes_of_net(nets[component],objects[n],True).merged()for n in LAYERS}
         current={n:(full[n]+additions.get(n,pya.Region())).merged()for n in LAYERS}
-        aa,ar=access(a,owned,current,other);bb,br=access(b,owned,current,other)
+        save("target-input-"+label+".json",dict(source_anchor=a,sink_anchor=b,component=component))
+        aa,ar=terminal_access(a,owned,current,other);bb,br=terminal_access(b,owned,current,other)
         result=dict(label=label,source_anchor=a,sink_anchor=b,component=component,source_access=ar,sink_access=br,candidates=[],selected=None)
         if aa is not None and bb is not None:
             x,y=aa["center"];xx,yy=bb["center"]
@@ -320,7 +375,7 @@ def verify_target(base,source_label,a,sink_label,b):
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
-        cfg=gate();passed=controls();save("controls.json",dict(count=len(passed),passed=passed))
+        cfg=gate();passed=controls()+direct_m2_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
         need(sys.argv[1:]==["--generate"],"explicit generation")
         reserve(wait=True)
