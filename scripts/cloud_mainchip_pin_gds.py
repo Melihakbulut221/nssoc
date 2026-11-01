@@ -96,6 +96,20 @@ def parse_lef(text,dbu,needed):
   assert pins and name not in result
   result[name]=dict(size=[coord(v,dbu)for v in size.groups()],pins=pins,origin=origin)
  return result
+def reference_material(name):
+ m=re.fullmatch(r"ihp-sg13g2/libs\.ref/[^/]+/(gds|lef)/.+\.(gds|lef)",name)
+ return m is not None and m.group(1)==m.group(2)
+def gds_scales(gds_dbu,odb_dbu):
+ ratio=Fraction(str(gds_dbu))*odb_dbu
+ assert ratio>0 and max(ratio.numerator,ratio.denominator)<=1000,"unsupported exact common grid"
+ return ratio.denominator,ratio.numerator
+def scaled_region(region,scale):
+ assert type(scale)is int and scale>0
+ if region.is_empty():return region
+ b=region.bbox()
+ assert max(abs(v)for v in [b.left,b.bottom,b.right,b.top])*scale<2**30,"integer geometry scaling overflow bound"
+ return region.transformed(k.ICplxTrans(scale,0,False,0,0))
+
 def controls():
  base.OUT=OUT;base.controls()
  prior=json.loads((OUT/"controls.json").read_bytes());assert prior["count"]==23
@@ -131,8 +145,22 @@ def controls():
  try:layer_map(mapping+"\nMetal1 NET,LEFPIN 8 0")
  except AssertionError:passed.append("duplicate drawing map refused")
  else:raise AssertionError("accepted duplicate layer")
- assert len(passed)==22,len(passed)
- save("gds-controls.json",dict(count=45,inherited_count=23,added_count=22,passed=passed,original=prior,**FLAGS))
+ ns,gs=gds_scales("0.0005",1000);assert(ns,gs)==(2,1);passed.append("finer GDS grid has exact integer common lattice")
+ native=region_rects([[1,1,3,3]]);fine=region_rects([[2,2,6,6]])
+ assert equal(scaled_region(native,ns),scaled_region(fine,gs));passed.append("same physical metal across two grids")
+ assert not(scaled_region(native,ns)-scaled_region(region_rects([[2,2,5,6]]),gs)).is_empty();passed.append("half-ODB-unit missing metal remains visible")
+ try:gds_scales("0.0010000000000000002",1000)
+ except AssertionError:passed.append("unsupported unit normalization is not silently rounded")
+ else:raise AssertionError("silently rounded GDS units")
+ assert reference_material("ihp-sg13g2/libs.ref/sg13g2_stdcell/gds/sg13g2_stdcell.gds")
+ passed.append("actual reference-library material is selected")
+ assert not reference_material("ihp-sg13g2/libs.qa/drc/cell.gds")and not reference_material("ihp-sg13g2/libs.tech/klayout/tech/lvs/testing/cell.gds")
+ passed.append("QA and test layouts cannot substitute reference cells")
+ try:scaled_region(region_rects([[0,0,2000000,2000000]]),1000)
+ except AssertionError:passed.append("scaled geometry integer overflow refused")
+ else:raise AssertionError("accepted oversized geometry")
+ assert len(passed)==29,len(passed)
+ save("gds-controls.json",dict(count=52,inherited_count=23,added_count=29,passed=passed,original=prior,**FLAGS))
 def download(asset,target,repo=REPO):
  target.parent.mkdir(parents=True,exist_ok=True)
  with target.open("xb")as f:
@@ -188,7 +216,7 @@ def acquire_pdk():
     names.add(m.name)
     if m.isdir():continue
     assert m.isfile()and rel.parts[0]=="ihp-sg13g2",(name,m.name)
-    take=m.name.endswith((".gds",".lef"))or m.name.endswith("/klayout/tech/sg13g2.map")
+    take=reference_material(m.name)or m.name.endswith("/klayout/tech/sg13g2.map")
     dst=NATIVE/"pdk"/rel if take else None
     if dst:dst.parent.mkdir(parents=True,exist_ok=True);assert not dst.exists()
     sink=dst.open("xb")if dst else None;dig=hashlib.sha256();n=0
@@ -224,17 +252,21 @@ def analyze():
  maps=[n for n in pdk if n.endswith("/klayout/tech/sg13g2.map")];assert len(maps)==1,maps
  mapping=layer_map((NATIVE/"pdk"/maps[0]).read_text())
  save("actual-layer-map.json",dict(path=maps[0],pin=pdk[maps[0]],metals=mapping))
- lefs=defaultdict(list);gds=defaultdict(list)
+ lefs=defaultdict(list);gds=defaultdict(list);unit_observations=[]
  for name in sorted(pdk):
   path=NATIVE/"pdk"/name
   if name.endswith(".lef"):
    for cell,data in parse_lef(path.read_text(),dbu,needed).items():lefs[cell].append((name,data))
   elif name.endswith(".gds"):
-   layout=k.Layout();layout.read(str(path));scale=exact_int(Fraction(str(layout.dbu))*dbu)
-   assert scale>0,"no geometry rounding"
-   for cellname in needed:
-    cell=layout.cell(cellname)
-    if cell is not None:gds[cellname].append((name,layout,cell,scale))
+   layout=k.Layout();layout.read(str(path))
+   cells={n:layout.cell(n)for n in needed};cells={n:c for n,c in cells.items()if c is not None}
+   unit=dict(file=name,gds_dbu_um=str(layout.dbu),gds_dbu_float_hex=layout.dbu.hex(),odb_dbu=dbu,matching_masters=sorted(cells))
+   unit_observations.append(unit);save("gds-units.json",unit_observations)
+   if not cells:continue
+   native_scale,gds_scale=gds_scales(layout.dbu,dbu)
+   unit.update(native_scale=native_scale,gds_scale=gds_scale,common_unit_um=str(Fraction(1,dbu*native_scale)))
+   save("gds-units.json",unit_observations)
+   for cellname,cell in cells.items():gds[cellname].append((name,layout,cell,native_scale,gds_scale))
  cache={};observed=[];missing=[]
  for row in rows:
   groups=defaultdict(list)
@@ -252,11 +284,11 @@ def analyze():
      p=lef["pins"].get(pname)
      same=p is not None and lef["size"]==[master["width"],master["height"]]and set(p["regions"])==set(native)and all(equal(p["regions"][n],v)for n,v in native.items())
      checks.append(dict(kind="LEF",file=filename,passed=same))
-    for filename,layout,cell,scale in gds[cellname]:
+    for filename,layout,cell,native_scale,gds_scale in gds[cellname]:
      for name,v in native.items():
-      region=k.Region(cell.begin_shapes_rec(layout.layer(*mapping[name]))).transformed(k.ICplxTrans(scale,0,False,0,0)).merged()
-      uncovered=v-region
-      checks.append(dict(kind="GDS",file=filename,layer=name,passed=uncovered.is_empty(),uncovered_area_dbu2=uncovered.area(),uncovered_polygons=[str(p)for p in uncovered.each()]))
+      region=scaled_region(k.Region(cell.begin_shapes_rec(layout.layer(*mapping[name]))),gds_scale).merged()
+      uncovered=scaled_region(v,native_scale)-region
+      checks.append(dict(kind="GDS",file=filename,layer=name,passed=uncovered.is_empty(),native_scale=native_scale,gds_scale=gds_scale,common_unit_um=str(Fraction(1,dbu*native_scale)),uncovered_area_common_grid2=uncovered.area(),uncovered_polygons=[str(p)for p in uncovered.each()]))
     cache[key]=dict(master=[lib,cellname],pin=pname,native_boxes=dict(expected),checks=checks,
       lef_candidates=len(lefs[cellname]),gds_candidates=len(gds[cellname]),
       passed=bool(lefs[cellname])and bool(gds[cellname])and all(x["passed"]for x in checks))
