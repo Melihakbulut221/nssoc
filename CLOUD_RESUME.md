@@ -1,11 +1,23 @@
-# Cloud continuation — checkpoint v252
+# Cloud continuation — checkpoint v253
 
-Updated: 2026-11-01T15:56:44.742675+00:00
+Updated: 2026-11-01T16:16:00.390059+00:00
 
 Latest instruction: **her şeyi bulutta yap, lokalde bir şey bırakma temizle.**
 It overrides the earlier local-execution wording in the active goal. All CAD, simulation, native archive/layout/waveform acquisition and numerical/geometric analysis run on GitHub. Local coordination uses source/API-derived text in RAM only. Never acquire native ODB/DEF/GDS/SPICE/raw archives locally, including RAM. The local workspace and project temp entries were verified empty, with no local CAD processes. Unrelated user files remain untouched.
 
-## Latest result: actual full64 native route dispatched and running
+## Latest result: A/C buffer drive candidate qualified and native screening dispatched
+
+Width2 diagnosis showed source-valid A divider samples arriving before the buffered output, with A/C tail minimum active VCE of0.573442/0.486867V against0.4V. Width2 native41306148937 passed device/VI and37.080mV phase but failed all six data gates. The new source43fd3f71a289fef004aeb41cd2d0972d81f76f41 on codex/cdr-buffer-drive changes exactly two tail HBTs126/129 from Nx4 to8 and four collector loads232/233/243/244 from length1.8um to0.9um, retaining width8um. All12 width2 dividers,200MOS units, physical terminals, remaining geometry and original measurement/current/data/phase predicates are retained. Reversing all six edits restores exact parent bytes and descriptors. Both the500-device binder and650-device native model receive identical edits and actual binding exposes Nx8 for both tails. This is a native electrical experiment, not layout acceptance.
+
+Independent controls41325031300 PASSED:67 new refusal controls,75 inherited width controls and all earlier suites. Complete45-file proof8725ab4120e5999dba12b776a5d3fc2115fe296c is imported under docs/evidence/buffer-drive-controls-terminal-41325031300. Receipt SHA2562f3d959bd7331ade5dea063c56557dfe437699f09e4880a7cc5d0a156972cb3a.
+
+Actual native run41325168813 was dispatched exactly once on that same source with independent controls41325031300. Empty exact-source release430697288 / cloud-results-41325168813-1-cdr-sampler-load was reserved and read back. Its own source controls passed; native job124903702846 is active. Observe the existing job; do not repeat dispatch/reservation mutations. Original ngspice/model/runtime and1200-second engine supervision are retained. The shared host publishes native archive parts, complete-output-index and parts.json into the release even for electrical failures; fallback artifacts preserve failed publication. Retained distributed RC is screening only. Any useful result requires regenerated layout/fresh PEX and full corners/closed-loop/link proof before PHY acceptance.
+
+Actual full64 mainchip route41323446729/sourceff1c0e6163e0ba1537a075d50e940fafc9332c64 remains live at its Execute and preserve actual full64 route step. No internal route iteration is inferred from that API observation. Preserve its existing exact-source release430685443. After terminal publication, authenticate results in the cloud, restore original classes using actual new route pins, requalify actual new connectivity/GDS correspondence and run original-class DRC/antenna. Old d526... candidate/142-net pin proof must not be relabeled. Then export matching diode-inclusive netlist, extract fresh RC and enforce unchanged multi-corner setup/hold. Last measured old candidate still has399DRC and19antenna nets/23rows.
+
+All CAD/native acquisition/analysis remain on GitHub; local source/API-derived text coordination is RAM-only. Local workspace/project temp empty with no local CAD processes. Native payloads must not be downloaded locally even into RAM. The8-hour monitor inventories both new runs and never automatically duplicates native dispatch. Full serial PHY, mainchip physical closure and final timing remain unachieved.
+
+## Previous checkpoint v252: actual full64 native route dispatched and running
 
 Source ff1c0e6163e0ba1537a075d50e940fafc9332c64 on codex/mainchip-full64-native integrates the actual original64-pass router with authenticated saved-diode acquisition, original prep/guide/PG/fixed-overlay/828-net clear, owned native engine/runtime/container and permanent checkpoint publication. Independent controls41323333392 passed all11 full64 lifecycle plus12 preservation/dispatch controls,0 failures/errors/skips, and authenticated2361 original source files. Complete20-file proof063318bb2cb55c5b394a4c091dc8d8fa6ebaf20e is imported under docs/evidence/full64-native-controls-terminal-41323333392.
 
