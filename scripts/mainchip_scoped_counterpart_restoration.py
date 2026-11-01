@@ -47,3 +47,34 @@ def plan(fixed,routed,originals,antenna_plan,scope):
         classes_restored=len(changed),class_changed_names=sorted(changed),counterpart_geometry_retained=True,
         all_unowned_records_preserved=True,all_connection_prefixes_preserved=True,net_order_preserved=True,
         outside_nets_preserved=True,native_import_executed=False,**FLAGS)
+
+def canonical_master_snapshot(snapshot):
+    """Match persisted JSON box representation without changing any geometry value."""
+    import copy,json
+    assert type(snapshot)is dict and type(snapshot['masters'])is dict and snapshot['masters']
+    before=snapshot['masters'];masters=copy.deepcopy(before);tuples=0;boxes=0
+    for name,m in masters.items():
+        assert type(name)is str and '/'in name and set(m)=={'width','height','type','pins'}
+        assert all(type(m[k])is int and m[k]>=0 for k in ('width','height'))
+        assert type(m['type'])is str and type(m['pins'])is dict
+        for name,p in m['pins'].items():
+            assert type(name)is str and set(p)=={'io','sigtype','boxes'}
+            assert type(p['io'])is str and type(p['sigtype'])is str and type(p['boxes'])is list
+            normalized=[]
+            for group in p['boxes']:
+                assert type(group)is list
+                rows=[]
+                for box in group:
+                    assert type(box)in(list,tuple)and len(box)==5 and type(box[0])is str
+                    assert all(type(x)is int for x in box[1:])and box[1]<=box[3]and box[2]<=box[4]
+                    tuples+=type(box)is tuple;boxes+=1;rows.append(list(box))
+                normalized.append(rows)
+            p['boxes']=normalized
+    a=json.dumps(before,sort_keys=True,separators=(',',':'),allow_nan=False).encode()
+    b=json.dumps(masters,sort_keys=True,separators=(',',':'),allow_nan=False).encode()
+    assert a==b,'serialized master values changed'
+    result=dict(snapshot,masters=masters)
+    assert all(result[k]is snapshot[k]for k in snapshot if k!='masters')
+    return result,dict(schema='native-master-box-json-representation-v1',masters=len(masters),
+        boxes=boxes,tuples_converted=tuples,serialized_before=pin(a),serialized_after=pin(b),
+        all_geometry_values_and_multiplicity_preserved=True,group_order_preserved=True,**FLAGS)

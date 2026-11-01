@@ -9,3 +9,11 @@ The native sequence is restore-plan,restore-import,restored-audit,candidate2702P
 Source controls and an independently reserved/read-back empty exact-source release are required before native acquisition. The entire native result and available failure output are published to the release; the workflow retains an additional native fallback artifact. Source/runtime/current/saved inputs are checked unchanged. Container isolation and original resource guards remain unchanged.
 
 An experiment can complete with openDRC/antenna findings: the report retains original bounded_cycle_qualified and all physical/timing/fullPHY acceptance flags remain false. No class fix, native import, routing/signoff or final timing closure is claimed until actual evidence exists. FinalRC/STA and full serialPHY remain separate required work.
+
+
+## Native result and exact master representation correction
+Run41305082558 completed actual restore-plan and restore-import; restored-expected.def and restored-actual.def have identical SHA256a5183887cf3733b0c8cf9070af98156596d624a11808e955403daf350b80a36c. The unchanged route-delta validator then rejected masters. Whole attempt and native candidateODB remain preserved,not accepted.
+
+Cloud readout41307592168 authenticated all51 native archive members and found all58 persisted master descriptors exactly equal,with154480instances on both sides and all nonroute field hashes equal. The native snapshot builds pin rectangles as tuples via mainchip_original_clock_drc.master_pin_boxes,while the saved insertion JSON decodes them as lists. This reproduces the equality failure despite byte-identical serialized master values.
+
+The new adapter converts only these innermost pin rectangles to lists before passing the snapshot to the unchanged original physical validators. Serialized master JSON must remain byte-identical. It does not sort groups,coordinates or shapes,drop duplicates,alter masters or modify the database. All other snapshot objects are retained untouched. Per-native-call proof records tuple counts and before/after serialized hashes.49 source controls include the actual type mismatch and detect geometry,layer,coordinate/group order,multiplicity,width and pin-type corruption. Original routing ownership,clock,connectivity,diode and final gates remain unchanged. New actual native readback remains required.

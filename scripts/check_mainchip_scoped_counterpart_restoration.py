@@ -70,6 +70,39 @@ def main():
     core.plan(a,b,classes,p,s)
     assert immutable==(json.dumps(classes,sort_keys=True),json.dumps(p,sort_keys=True),json.dumps(s,sort_keys=True),a,b)
     controls.append('all_callers_and_input_bytes_unchanged')
+    # Reproduce the actual native list-of-tuples versus persisted JSON mismatch.
+    import copy
+    box=('Metal1',1,2,3,4)
+    native={'masters':{'lib/cell':dict(width=10,height=20,type='CORE',
+        pins={'A':dict(io='INPUT',sigtype='SIGNAL',boxes=[[box],[('Metal2',5,6,7,8)]])})},
+        'other':{'unchanged':[1,2,3]}}
+    persisted=json.loads(json.dumps(native))
+    assert native['masters']!=persisted['masters']
+    fixed,mp=core.canonical_master_snapshot(native)
+    assert fixed==persisted and mp['tuples_converted']==2 and mp['serialized_before']==mp['serialized_after']
+    assert native['masters']['lib/cell']['pins']['A']['boxes'][0][0]is box
+    assert fixed['other']is native['other']
+    controls.extend(['actual_tuple_list_failure_reproduced','json_representation_matches_persisted_master',
+        'canonicalization_keeps_all_json_bytes','canonicalization_does_not_mutate_input'])
+    again,ap=core.canonical_master_snapshot(fixed)
+    assert again==fixed and ap['tuples_converted']==0
+    controls.append('canonicalization_idempotent')
+    def changed_native(label,fn):
+        item=copy.deepcopy(native);fn(item)
+        got,_=core.canonical_master_snapshot(item)
+        assert got['masters']!=persisted['masters'],label
+        controls.append(label)
+    changed_native('changed_geometry_still_detected',lambda x:x['masters']['lib/cell']['pins']['A']['boxes'][0].__setitem__(0,('Metal1',1,2,9,4)))
+    changed_native('changed_layer_still_detected',lambda x:x['masters']['lib/cell']['pins']['A']['boxes'][0].__setitem__(0,('Metal3',1,2,3,4)))
+    changed_native('changed_coordinate_order_still_detected',lambda x:x['masters']['lib/cell']['pins']['A']['boxes'][0].__setitem__(0,('Metal1',2,1,4,3)))
+    changed_native('changed_mpin_order_still_detected',lambda x:x['masters']['lib/cell']['pins']['A']['boxes'].reverse())
+    changed_native('changed_multiplicity_still_detected',lambda x:x['masters']['lib/cell']['pins']['A']['boxes'].append([box]))
+    changed_native('changed_width_still_detected',lambda x:x['masters']['lib/cell'].__setitem__('width',11))
+    changed_native('changed_pin_type_still_detected',lambda x:x['masters']['lib/cell']['pins']['A'].__setitem__('sigtype','CLOCK'))
+    for label,value in [('reject_boolean_coordinate',('Metal1',True,2,3,4)),('reject_string_coordinate',('Metal1','1',2,3,4)),('reject_inverted_geometry',('Metal1',9,2,3,4))]:
+        item=copy.deepcopy(native);item['masters']['lib/cell']['pins']['A']['boxes'][0][0]=value
+        reject(label,lambda item=item:core.canonical_master_snapshot(item))
+    assert len(controls)==49
     out=Path('scoped-restoration-controls');out.mkdir(exist_ok=False)
     (out/'controls.json').write_text(json.dumps(dict(status='PASS_SCOPED_CLASS_RESTORATION_SOURCE_CONTROLS',count=len(controls),checks=controls,native_executed=False),indent=2)+'\n')
     print(json.dumps(dict(count=len(controls),status='PASS_SCOPED_CLASS_RESTORATION_SOURCE_CONTROLS')))

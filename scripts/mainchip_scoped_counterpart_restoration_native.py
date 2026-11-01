@@ -46,6 +46,12 @@ def power():
     result=read('new-diode-direct-pg-contacts.json')
     assert result['complete']is True and len(result['contacts'])==2702
     native.save(DATA/'scoped-candidate-pg-audit.json',dict(candidate=before,contacts=2702,complete=True,**fix.FLAGS))
+def canonical_snapshot(path,out,protected=None):
+    actual=native.snapshot(path,out,protected)
+    result,proof=fix.canonical_master_snapshot(actual)
+    assert proof['masters']==58
+    native.save(DATA/('master-representation-'+out.stem+'.json'),proof)
+    return result
 def main():
     assert not any(k in os.environ for k in ('GH_TOKEN','GITHUB_TOKEN'))
     verify()
@@ -57,7 +63,7 @@ def main():
         native.p.run_phase(phase,restore if phase=='restore-plan'else power,verify,
             lambda name,value:native.save(DATA/name,value))
     else:
-        original_phase=targeted.bind_phase(plan,scope)
+        original_phase=container.clone(targeted.bind_phase(plan,scope),snapshot=canonical_snapshot)
         container.clone(native.main,phase=original_phase)()
     verify()
 if __name__=='__main__':main()
