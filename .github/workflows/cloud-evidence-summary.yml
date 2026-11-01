@@ -1,22 +1,12 @@
-name: Diagnose saved routed DEF class mismatch without rerouting
+name: Qualify scoped counterpart class restoration
 on:
   workflow_dispatch:
-    inputs:
-      execute:
-        description: Read authenticated native archive after independent controls and reservation
-        type: boolean
-        default: false
-      control_run:
-        description: Separately completed same-source controls run
-        type: string
-        default: '0'
 permissions:
   contents: read
-  actions: read
 jobs:
   source-controls:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -27,70 +17,25 @@ jobs:
           sparse-checkout: |
             /scripts/mainchip_original_clock_restoration.py
             /scripts/mainchip_targeted_counterpart_routing.py
-            /scripts/mainchip_route_class_diagnosis.py
-            /scripts/check_mainchip_route_class_diagnosis.py
-            /scripts/cloud_mainchip_route_class_diagnosis.py
-            /scripts/mainchip-route-class-diagnosis-pins.json
+            /scripts/mainchip_scoped_counterpart_restoration.py
+            /scripts/check_mainchip_scoped_counterpart_restoration.py
+            /scripts/mainchip-scoped-restoration-pins.json
             /.github/workflows/cloud-evidence-summary.yml
-      - name: Pin source and qualify actual class diagnosis
+      - name: Verify exact source and exercise restoration refusal controls
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           python3 -B - <<'PY'
           import hashlib,json,pathlib
-          for name,pin in json.loads(pathlib.Path("scripts/mainchip-route-class-diagnosis-pins.json").read_text()).items():
+          for name,pin in json.loads(pathlib.Path("scripts/mainchip-scoped-restoration-pins.json").read_text()).items():
               raw=pathlib.Path(name).read_bytes()
               assert len(raw)==pin["bytes"] and hashlib.sha256(raw).hexdigest()==pin["sha256"],name
               if name.endswith(".py"):compile(raw,name,"exec")
           PY
-          python3 -B scripts/check_mainchip_route_class_diagnosis.py
+          python3 -B scripts/check_mainchip_scoped_counterpart_restoration.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: route-class-controls-${{ github.run_id }}
-          path: cloud-route-class-controls
-          retention-days: 90
-          if-no-files-found: error
-  class-diagnosis:
-    if: inputs.execute
-    needs: source-controls
-    runs-on: ubuntu-24.04
-    timeout-minutes: 35
-    permissions:
-      contents: write
-      actions: read
-    env:
-      GH_TOKEN: ${{ github.token }}
-      CONTROL_RUN: ${{ inputs.control_run }}
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: false
-          filter: blob:none
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /scripts/mainchip_original_clock_restoration.py
-            /scripts/mainchip_targeted_counterpart_routing.py
-            /scripts/mainchip_route_class_diagnosis.py
-            /scripts/check_mainchip_route_class_diagnosis.py
-            /scripts/cloud_mainchip_route_class_diagnosis.py
-            /scripts/mainchip-route-class-diagnosis-pins.json
-            /.github/workflows/cloud-evidence-summary.yml
-      - name: Reverify exact source before native acquisition
-        run: |
-          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          python3 -B - <<'PY'
-          import hashlib,json,pathlib
-          for name,pin in json.loads(pathlib.Path("scripts/mainchip-route-class-diagnosis-pins.json").read_text()).items():
-              raw=pathlib.Path(name).read_bytes()
-              assert len(raw)==pin["bytes"] and hashlib.sha256(raw).hexdigest()==pin["sha256"],name
-          PY
-      - name: Authenticate saved archive and compare actual selected records
-        run: python3 -B scripts/cloud_mainchip_route_class_diagnosis.py
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: route-class-diagnosis-${{ github.run_id }}
-          path: cloud-route-class-diagnosis
+          name: scoped-restoration-controls-${{ github.run_id }}
+          path: scoped-restoration-controls
           retention-days: 90
           if-no-files-found: error
