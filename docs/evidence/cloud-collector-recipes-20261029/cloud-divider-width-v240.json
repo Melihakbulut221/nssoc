@@ -1,0 +1,283 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "native_processes": 0,
+    "observed_at": "2026-11-01T12:23:24.798662+00:00",
+    "project_temp_entries": {
+      "/dev/shm": [],
+      "/tmp": [],
+      "/var/tmp": []
+    },
+    "source_API_derived_text_RAM_only": true,
+    "unrelated_user_files_not_modified": true,
+    "workspace_entries": 0
+  },
+  "collectors": {
+    "divider_width_native": "import subprocess,json,hashlib,base64,time\nR='repos/Melihakbulut221/nssoc/'\nB='codex/complete-open-work'\ndef api(path,data=None,method=None):\n for attempt in range(4):\n  cmd=['gh','api',R+path]\n  if data is not None:cmd+=['--method',method or 'POST','--input','-']\n  p=subprocess.run(cmd,input=json.dumps(data)if data is not None else None,text=True,capture_output=True)\n  if p.returncode==0:return json.loads(p.stdout)if p.stdout.strip()else {}\n  if data is not None or method not in(None,'GET')or attempt==3 or not any(x in p.stderr for x in('HTTP 502','HTTP 503','HTTP 504','TLS handshake','connection reset','unexpected EOF','i/o timeout')):raise RuntimeError(path+': '+p.stderr[:2000])\n  time.sleep(2+attempt)\ndef remote(path,ref):\n d=api('contents/'+path+'?ref='+ref)\n if d.get('content'):return base64.b64decode(d['content'])\n return base64.b64decode(api('git/blobs/'+d['sha'])['content'])\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef publish(head,files,msg):\n parent=api('git/commits/'+head);entries=[]\n for p,b in files.items():\n  if isinstance(b,str):b=b.encode()\n  blob=api('git/blobs',dict(encoding='base64',content=base64.b64encode(b).decode()))\n  entries.append(dict(path=p,mode='100644',type='blob',sha=blob['sha']))\n tree=api('git/trees',dict(base_tree=parent['tree']['sha'],tree=entries))\n commit=api('git/commits',dict(message=msg,tree=tree['sha'],parents=[head]))\n assert api('git/ref/heads/'+B)['object']['sha']==head\n api('git/refs/heads/'+B,dict(sha=commit['sha'],force=False),'PATCH')\n return commit['sha']\n\nimport io,zipfile\nfrom concurrent.futures import ThreadPoolExecutor\nRUN=41306148937;SOURCE='2a62d651d415fba8db3c5b758d1b66c05cde3a38';RELEASE=430565351\nrun=api('actions/runs/'+str(RUN));assert run['status']=='completed' and run['head_sha']==SOURCE and run['run_attempt']==1\njobs=api('actions/runs/'+str(RUN)+'/jobs?per_page=100');assert jobs['total_count']==len(jobs['jobs'])==2\narts=api('actions/runs/'+str(RUN)+'/artifacts?per_page=100');assert arts['total_count']==len(arts['artifacts'])\nrelease=api('releases/'+str(RELEASE));tag=api('git/ref/tags/'+release['tag_name'])\nassert release['target_commitish']==SOURCE and tag['object']['type']=='commit' and tag['object']['sha']==SOURCE\nfiles={};archive_receipts=[]\nselected={'cdr-sampler-load-controls-'+str(RUN):'controls','cdr-sampler-load-derived-'+str(RUN):'derived'}\nfor a in arts['artifacts']:\n if a['name']not in selected:continue\n assert not a['expired']\n raw=subprocess.check_output(['gh','api',R+'actions/artifacts/'+str(a['id'])+'/zip'])\n assert a['digest']=='sha256:'+sha(raw)\n z=zipfile.ZipFile(io.BytesIO(raw));assert len(z.namelist())==len(set(z.namelist())) and sum(x.file_size for x in z.infolist())<60000000\n group=selected[a['name']]\n for info in z.infolist():\n  n=info.filename\n  assert not n.startswith('/') and '..'not in n.split('/') and n.endswith(('.json','.py','.md','.yml','.txt','.log')),n\n  assert ((info.external_attr>>16)&0o170000)!=0o120000,'no symlink'\n  b=z.read(n)\n  if n.endswith('.json'):json.loads(b)\n  else:b.decode()\n  files[group+'/'+n]=b\n archive_receipts.append(dict(id=a['id'],name=a['name'],bytes=len(raw),sha256=sha(raw),files=len(z.namelist())))\nassert set(x['name']for x in archive_receipts)==set(selected),'complete controls and derived artifacts'\nfor name in ['complete-output-index.json','parts.json']:\n a=next(a for a in release['assets']if a['name']==name)\n assert a['size']<30000000\n raw=subprocess.check_output(['gh','api',R+'releases/assets/'+str(a['id']),'-H','Accept: application/octet-stream'])\n assert len(raw)==a['size'] and a['digest']=='sha256:'+sha(raw)\n value=json.loads(raw);assert value['context']==dict(source=SOURCE,run_id=RUN,attempt=1)\n files['publication/'+name]=raw\nparts=json.loads(files['publication/parts.json'])\nassert {a['name']for a in release['assets']}=={'complete-output-index.json','parts.json'}|{x['name']for x in parts['parts']}\nfor p in parts['parts']:\n a=next(a for a in release['assets']if a['name']==p['name'])\n assert a['size']==p['bytes'] and a['digest']=='sha256:'+p['sha256']\nindex=json.loads(files['publication/complete-output-index.json'])\nfor name,pin in index['files'].items():\n if name.startswith('derived/') and name in files:\n  assert dict(bytes=len(files[name]),sha256=sha(files[name]))==pin\ndef log(j):\n if j['conclusion']=='skipped'or not j['steps']:return None\n return 'jobs/'+str(j['id'])+'.log',subprocess.check_output(['gh','api',R+'actions/jobs/'+str(j['id'])+'/logs'])\nfor row in ThreadPoolExecutor(2).map(log,jobs['jobs']):\n if row:files[row[0]]=row[1]\nfor n,d in [('run',run),('jobs',jobs),('artifacts',arts),('release',release),('tag-ref',tag),('archive-receipts',archive_receipts)]:\n files[n+'.json']=(json.dumps(d,sort_keys=True,indent=2)+'\\n').encode()\ncontrol=json.loads(files['controls/divider-controls.json'])\nassert control['status']=='PASS_DIVIDER_SOURCE_CONTROLS_ONLY' and len(control['divider_corruptions_rejected'])==75\nassert control['context']==dict(source=SOURCE,run_id=RUN,attempt=1)\nhbt=json.loads(files['controls/divider-width-controls.json'])\nassert hbt['status']=='PASS_DIVIDER_WIDTH_SOURCE_CONTROLS_ONLY' and len(hbt['divider_corruptions_rejected'])==75\nassert hbt['changed_width_descriptors_verified']==12 and hbt['context']==dict(source=SOURCE,run_id=RUN,attempt=1)\nengine=json.loads(files['derived/engine-result.json'])if 'derived/engine-result.json'in files else None\nmeasurement=json.loads(files['derived/measurement-result.json'])if 'derived/measurement-result.json'in files else None\ndelta=json.loads(files['derived/candidate-delta.json'])if 'derived/candidate-delta.json'in files else None\nobservation=dict(run=RUN,conclusion=run['conclusion'],engine=engine,measurement_keys=sorted(measurement or {}),measurement_status=(measurement or{}).get('status'),delta_keys=sorted(delta or{}),failure=files.get('derived/failure.txt',b'').decode()[-6000:])\nif measurement:\n for key in ['accepted','transient_executed','diagnostics','devices_passed','data_passed','sources_unchanged','phase_passed','phase_average_v','vi','error','interface_observations']:\n  if key in measurement:observation[key]=measurement[key]\n for group in ['sampler_checks','comparisons']:\n  observation[group]={tag:{k:v for k,v in row.items()if k!='clock_to_valid_by_bit_s'}for tag,row in measurement.get(group,{}).items()}\nif delta:observation['candidate_model_sha256']=delta['candidate_model_sha256']\nprint(json.dumps({'observation':observation}),flush=True)\nreceipt=dict(run=RUN,source=SOURCE,conclusion=run['conclusion'],release=RELEASE,native_payloads_acquired_locally=False,native_archive_parts_downloaded=False,all_selected_derived_artifacts_complete=True,original_acceptance_gates_unchanged=True,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False,files={n:dict(bytes=len(b),sha256=sha(b))for n,b in files.items()})\nfiles['receipt.json']=(json.dumps(receipt,sort_keys=True,indent=2)+'\\n').encode()\nPREFIX='docs/evidence/divider-width-native-terminal-'+str(RUN);B='codex/divider-width-native-proof-'+str(RUN)\nassert api('git/matching-refs/heads/'+B)==[]\nentries=[]\nfor n,b in files.items():\n blob=api('git/blobs',dict(encoding='base64',content=base64.b64encode(b).decode()))\n entries.append(dict(path=PREFIX+'/'+n,mode='100644',type='blob',sha=blob['sha']))\ntree=api('git/trees',dict(base_tree=api('git/commits/'+SOURCE)['tree']['sha'],tree=entries))\ncommit=api('git/commits',dict(message='Preserve full PD65012-divider width native attempt and original-gate results [skip ci]',tree=tree['sha'],parents=[SOURCE]))\nassert api('git/matching-refs/heads/'+B)==[]\napi('git/refs',dict(ref='refs/heads/'+B,sha=commit['sha']))\nhead=commit['sha']\ndef verify_file(item):\n n,b=item;assert remote(PREFIX+'/'+n,head)==b,n\nlist(ThreadPoolExecutor(3).map(verify_file,files.items()))\nprint(json.dumps(dict(head=head,prefix=PREFIX,files=len(files),bytes=sum(map(len,files.values())),receipt='receipt.json',receipt_sha256=sha(files['receipt.json']),run=RUN,source=SOURCE,conclusion=run['conclusion'])),flush=True)\n",
+    "mainchip_scoped_restoration": "import subprocess,json,hashlib,base64,time\nR='repos/Melihakbulut221/nssoc/'\nB='codex/complete-open-work'\ndef api(path,data=None,method=None):\n for attempt in range(4):\n  cmd=['gh','api',R+path]\n  if data is not None:cmd+=['--method',method or 'POST','--input','-']\n  p=subprocess.run(cmd,input=json.dumps(data)if data is not None else None,text=True,capture_output=True)\n  if p.returncode==0:return json.loads(p.stdout)if p.stdout.strip()else {}\n  if data is not None or method not in(None,'GET')or attempt==3 or not any(x in p.stderr for x in('HTTP 502','HTTP 503','HTTP 504','TLS handshake','connection reset','unexpected EOF','i/o timeout')):raise RuntimeError(path+': '+p.stderr[:2000])\n  time.sleep(2+attempt)\ndef remote(path,ref):\n d=api('contents/'+path+'?ref='+ref)\n if d.get('content'):return base64.b64decode(d['content'])\n return base64.b64decode(api('git/blobs/'+d['sha'])['content'])\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef publish(head,files,msg):\n parent=api('git/commits/'+head);entries=[]\n for p,b in files.items():\n  if isinstance(b,str):b=b.encode()\n  blob=api('git/blobs',dict(encoding='base64',content=base64.b64encode(b).decode()))\n  entries.append(dict(path=p,mode='100644',type='blob',sha=blob['sha']))\n tree=api('git/trees',dict(base_tree=parent['tree']['sha'],tree=entries))\n commit=api('git/commits',dict(message=msg,tree=tree['sha'],parents=[head]))\n assert api('git/ref/heads/'+B)['object']['sha']==head\n api('git/refs/heads/'+B,dict(sha=commit['sha'],force=False),'PATCH')\n return commit['sha']\n\nimport io,zipfile\nfrom concurrent.futures import ThreadPoolExecutor\nRUN=41305082558;SOURCE='be65a271b066faeffee86237fa879f5f96b70273';RELEASE=430558340\nrun=api('actions/runs/'+str(RUN));assert run['status']=='completed'and run['head_sha']==SOURCE and run['run_attempt']==1\njobs=api('actions/runs/'+str(RUN)+'/jobs?per_page=100');assert jobs['total_count']==len(jobs['jobs'])==2\narts=api('actions/runs/'+str(RUN)+'/artifacts?per_page=100');assert arts['total_count']==len(arts['artifacts'])\nrelease=api('releases/'+str(RELEASE));tag=api('git/ref/tags/'+release['tag_name'])\nassert release['target_commitish']==SOURCE and tag['object']['type']=='commit'and tag['object']['sha']==SOURCE\nselected={'scoped-restoration-controls-'+str(RUN):'controls','scoped-restoration-derived-'+str(RUN):'derived'}\nfiles={};receipts=[]\nfor a in arts['artifacts']:\n if a['name']not in selected:continue\n assert not a['expired']and a['size_in_bytes']<80000000\n raw=subprocess.check_output(['gh','api',R+'actions/artifacts/'+str(a['id'])+'/zip'])\n assert a['digest']=='sha256:'+sha(raw)\n z=zipfile.ZipFile(io.BytesIO(raw));assert len(z.namelist())==len(set(z.namelist()))and sum(x.file_size for x in z.infolist())<150000000\n for info in z.infolist():\n  n=info.filename\n  if info.is_dir():continue\n  assert not n.startswith('/')and '..'not in n.split('/')and n.endswith(('.json','.log','.txt','.stdout','.stderr','.tcl','.py','.md','.yml')),n\n  assert ((info.external_attr>>16)&0o170000)!=0o120000\n  b=z.read(n);b.decode()\n  if n.endswith('.json'):json.loads(b)\n  files[selected[a['name']]+'/'+n]=b\n receipts.append(dict(id=a['id'],name=a['name'],bytes=len(raw),sha256=sha(raw),files=len(z.namelist())))\nassert {r['name']for r in receipts}==set(selected)\nassets={a['name']:a for a in release['assets']}\nif assets:\n for n in ['candidate-outputs.json','candidate-parts.json']:\n  a=assets[n];assert a['size']<30000000\n  raw=subprocess.check_output(['gh','api',R+'releases/assets/'+str(a['id']),'-H','Accept: application/octet-stream'])\n  assert len(raw)==a['size']and a['digest']=='sha256:'+sha(raw)\n  json.loads(raw);files['publication/'+n]=raw\n outputs=json.loads(files['publication/candidate-outputs.json'])\n assert int(outputs['run'])==RUN and outputs['source']==SOURCE and int(outputs['attempt'])==1\n assert not any(outputs[k]for k in ['full_phy_accepted','physical_acceptance','timing_accepted'])\n parts=json.loads(files['publication/candidate-parts.json'])\n assert set(assets)=={'candidate-outputs.json','candidate-parts.json'}|{p['name']for p in parts['parts']}\n for p in parts['parts']:assert assets[p['name']]['size']==p['bytes']and assets[p['name']]['digest']=='sha256:'+p['sha256']\n for n,b in files.items():\n  if n.startswith('derived/native/'):\n   key=n.removeprefix('derived/native/')\n   assert outputs['files'][key]==dict(bytes=len(b),sha256=sha(b)),key\ndef log(j):\n if j['conclusion']=='skipped'or not j['steps']:return None\n return 'jobs/'+str(j['id'])+'.log',subprocess.check_output(['gh','api',R+'actions/jobs/'+str(j['id'])+'/logs'])\nfor row in ThreadPoolExecutor(2).map(log,jobs['jobs']):\n if row:files[row[0]]=row[1]\npinpath='scripts/mainchip-scoped-restoration-native-pins.json';pinraw=remote(pinpath,SOURCE)\nfiles['source/'+pinpath]=pinraw\nfor n,p in json.loads(pinraw).items():\n b=remote(n,SOURCE);assert dict(bytes=len(b),sha256=sha(b))==p\n files['source/'+n]=b\nfiles['source/docs/mainchip-scoped-counterpart-restoration.md']=remote('docs/mainchip-scoped-counterpart-restoration.md',SOURCE)\nfor n,v in [('run',run),('jobs',jobs),('artifacts',arts),('release',release),('tag-ref',tag),('archive-receipts',receipts)]:\n files[n+'.json']=(json.dumps(v,sort_keys=True,indent=2)+chr(10)).encode()\nobservation=dict(run=RUN,source=SOURCE,conclusion=run['conclusion'],native_archive_acquired_locally=False,\n archive_parts_published=len(assets)>0,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False)\nfor n in ['derived/result.json','derived/host-failure.json','derived/native/bulk-postdrt-scoped-inner-result.json']:\n if n in files:observation[n]=json.loads(files[n])\nprint(json.dumps(dict(observation=observation))[:24000],flush=True)\nreceipt=dict(run=RUN,source=SOURCE,conclusion=run['conclusion'],release=RELEASE,native_payloads_acquired_locally=False,\n native_archive_parts_downloaded=False,all_selected_derived_artifacts_complete=True,\n physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False,\n files={n:dict(bytes=len(b),sha256=sha(b))for n,b in files.items()})\nfiles['receipt.json']=(json.dumps(receipt,sort_keys=True,indent=2)+chr(10)).encode()\nPREFIX='docs/evidence/scoped-restoration-native-terminal-'+str(RUN);B='codex/scoped-restoration-native-proof-'+str(RUN)\nassert api('git/matching-refs/heads/'+B)==[]\nentries=[]\nfor n,b in files.items():\n assert len(b)<90000000\n blob=api('git/blobs',dict(encoding='base64',content=base64.b64encode(b).decode()))\n entries.append(dict(path=PREFIX+'/'+n,mode='100644',type='blob',sha=blob['sha']))\ntree=api('git/trees',dict(base_tree=api('git/commits/'+SOURCE)['tree']['sha'],tree=entries))\ncommit=api('git/commits',dict(message='Preserve complete native scoped restoration attempt and original audit outcomes [skip ci]',tree=tree['sha'],parents=[SOURCE]))\nassert api('git/matching-refs/heads/'+B)==[]\napi('git/refs',dict(ref='refs/heads/'+B,sha=commit['sha']))\nhead=commit['sha'];print(json.dumps(dict(published=head,prefix=PREFIX,files=len(files))),flush=True)\ndef verify_file(item):\n n,b=item;assert remote(PREFIX+'/'+n,head)==b,n\nlist(ThreadPoolExecutor(3).map(verify_file,files.items()))\nprint(json.dumps(dict(head=head,prefix=PREFIX,files=len(files),bytes=sum(map(len,files.values())),receipt_sha256=sha(files['receipt.json']),run=RUN,source=SOURCE,conclusion=run['conclusion'])),flush=True)\n"
+  },
+  "divider_width_trial": {
+    "changed_width_descriptors": 12,
+    "controls": {
+      "bytes": 1386933,
+      "conclusion": "success",
+      "files": 54,
+      "head": "42d94ed9d46a7bb1286c8dc7c344acd15e2be662",
+      "prefix": "docs/evidence/divider-width-controls-41305872219",
+      "receipt": "receipt.json",
+      "receipt_sha256": "e2c9b0c4ac21bff222ba8ff4717ad9cd2f303344ddffceaa8fb969a9211071ee",
+      "run": 41305872219,
+      "source": "2a62d651d415fba8db3c5b758d1b66c05cde3a38"
+    },
+    "full_phy_accepted": false,
+    "golden_model_sha256": "0a2ce363d3f8159a290f8642fe3a26c7ac1997ca4d8b934e4530fb4823974ef3",
+    "native": {
+      "branch": "codex/cdr-divider-width",
+      "controls": 41305872219,
+      "independent_empty_exact_source_reservation_readback": true,
+      "release": 430565351,
+      "run": 41306148937,
+      "source": "2a62d651d415fba8db3c5b758d1b66c05cde3a38",
+      "tag": "cloud-results-41306148937-1-cdr-sampler-load"
+    },
+    "native_result_pending": true,
+    "new_width_corruptions_rejected": 75,
+    "original_binding_and_measurement_gates_retained": true,
+    "physical_acceptance": false,
+    "rejected_hbt_nx_changes_not_included": true,
+    "timing_accepted": false,
+    "unchanged_prior_divider_corruptions_rejected": 75
+  },
+  "final_timing_complete": false,
+  "full_serial_phy_accepted": false,
+  "imported_proof_files": 54,
+  "proofs": [
+    {
+      "bytes": 1386933,
+      "conclusion": "success",
+      "files": 54,
+      "head": "42d94ed9d46a7bb1286c8dc7c344acd15e2be662",
+      "prefix": "docs/evidence/divider-width-controls-41305872219",
+      "receipt": "receipt.json",
+      "receipt_sha256": "e2c9b0c4ac21bff222ba8ff4717ad9cd2f303344ddffceaa8fb969a9211071ee",
+      "run": 41305872219,
+      "source": "2a62d651d415fba8db3c5b758d1b66c05cde3a38"
+    }
+  ],
+  "snapshots": [
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437655,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437693,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437696,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124805437698,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437712,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437732,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124805437796,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124805438494,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41292160619,
+      "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41292160619"
+    },
+    {
+      "branch": "codex/cdr-pd650-loaded-wave-analysis",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977298,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124808977460,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977468,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977505,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124808977510,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977536,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124808977592,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124808978452,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41293340525,
+      "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293340525"
+    },
+    {
+      "branch": "codex/mainchip-scoped-restoration",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124843736454,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Restore original classes and execute original native physical audits"
+          ],
+          "conclusion": null,
+          "id": 124843853524,
+          "name": "native-restoration",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41305082558,
+      "source": "be65a271b066faeffee86237fa879f5f96b70273",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41305082558"
+    },
+    {
+      "branch": "codex/cdr-divider-width",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124846016068,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124846174056,
+          "name": "simulate",
+          "status": "completed"
+        }
+      ],
+      "run": 41305872219,
+      "source": "2a62d651d415fba8db3c5b758d1b66c05cde3a38",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41305872219"
+    },
+    {
+      "branch": "codex/cdr-divider-width",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124846825081,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate original inputs and run sampler-load candidate with original measurements"
+          ],
+          "conclusion": null,
+          "id": 124847010636,
+          "name": "simulate",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41306148937,
+      "source": "2a62d651d415fba8db3c5b758d1b66c05cde3a38",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41306148937"
+    }
+  ],
+  "updated_at": "2026-11-01T12:23:24.798662+00:00",
+  "version": 240
+}

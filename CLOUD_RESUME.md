@@ -1,8 +1,17 @@
-# Cloud continuation — checkpoint v239
+# Cloud continuation — checkpoint v240
 
-Updated: 2026-11-01T12:10:18.216447+00:00
+Updated: 2026-11-01T12:23:24.798662+00:00
 
 Latest user instruction: all work in the cloud; leave no local project data. It overrides the older goal's local-work wording. All native acquisition, CAD, geometry analysis and simulations run on GitHub-hosted runners. Local coordination is source/API-derived text in RAM only. Do not acquire native archives, ODB/DEF/GDS, transistor models or waveforms locally, including RAM. Workspace/project temporary entries are empty, with no native CAD processes.
+
+## Concurrent native PHY experiment: inspect the actual result
+New divider-width simulation run41306148937, source2a62d651d415fba8db3c5b758d1b66c05cde3a38, branch codex/cdr-divider-width, release430565351, tagcloud-results-41306148937-1-cdr-sampler-load. Native result is PENDING at this checkpoint. Independent controls41305872219 passed75 new mutation refusals, all original75 divider controls and original compiled binding. Complete54file proof42d94ed9d46a7bb1286c8dc7c344acd15e2be662 is imported under docs/evidence/divider-width-controls-41305872219. Native dispatch occurred ONCE after full proof readback and independently reserved/read-back empty exact-source release.
+
+The candidate starts from actual twelve-divider parent modelSHA2560a2ce363d3f8159a290f8642fe3a26c7ac1997ca4d8b934e4530fb4823974ef3. It changes ONLY widths1um->2um of12rppd IDs227,228,229,230,234,235,236,237,238,239,240,241. Every length,physical terminal,HBT Nx,200MOS unit and other model byte remains unchanged. Rejected40-HBT trial is NOT retained. Original device/VI/per-emitter current/data/phase gates and compiled prepare/measure code remain unchanged.
+
+Evidence for this experiment: corrected reader41298781054 reproduced the original native measurements. At0.6UI, all255A-source samples meet100mV but65divider outputs and107buffer outputs still have wrong sign; D has255valid sources but92wrong divider outputs and112wrongX-selector buffers. Lower divider impedance is a targeted hypothesis, not a claimed repair. Model parasitics/loading also change with width; actual full simulation decides. Existing wireRC is exploratory only; regenerated layout and freshRC remain required after electrical acceptance.
+
+After terminal, preserve complete controls/derived output/logs/source and authenticate release index/parts WITHOUT downloading native parts locally. The exact ready collector sources are stored in docs/evidence/cloud-collector-recipes-20261029/cloud-divider-width-v240.json, collectors.mainchip_scoped_restoration and collectors.divider_width_native (the latter has this run/release already substituted). Run only against terminal status; failures are evidence, never acceptance.
 
 ## First next task: read actual scoped restoration native result
 Scoped restoration is IMPLEMENTED on branch codex/mainchip-scoped-restoration, sourcebe65a271b066faeffee86237fa879f5f96b70273. Native run41305082558, release430558340, exact-source tagcloud-results-41305082558-1-mainchip-bulk-postdrt-antenna was dispatched ONCE after independent controls41304921000 and an empty release reservation/readback. Inspect the actual run and preserve terminal evidence; do not redispatch blindly. Native completion is NOT established in this checkpoint.
@@ -43,4 +52,4 @@ Full serial PLL/CDR/SERDES,training/LTSSM,replay/credit,lane mapping/descrambler
 
 Use separately successful same-source controls and independently created/read-back empty exact-source release before native acquisition/dispatch. Never blindly retry dispatch or publication after timeout. Proof branches start at their final[skip ci]commit. GitHub's whole-repo recursive tree listing now truncates; use bounded subtree traversal and compare imported subtree Git hashes.
 
-Inventory659runs. Eight-hour cloud monitor remains read-only,automatic_native_dispatch:false. Full objective remains ACTIVE and UNFINISHED.
+Inventory661runs. Eight-hour cloud monitor remains read-only,automatic_native_dispatch:false. Full objective remains ACTIVE and UNFINISHED.
