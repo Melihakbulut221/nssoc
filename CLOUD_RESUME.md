@@ -1,11 +1,39 @@
-# Cloud continuation — checkpoint v259
+# Cloud continuation — checkpoint v260
 
-Updated: 2026-11-01T18:28:42.323205+00:00
+Updated: 2026-11-01T18:35:43.885358+00:00
 
 Latest instruction: **her şeyi bulutta yap, lokalde bir şey bırakma temizle.**
 It overrides the earlier local-execution wording in the active goal. All CAD, simulation, native archive/layout/waveform acquisition and numerical/geometric analysis run on GitHub. Local coordination uses source/API-derived text in RAM only. Never acquire native ODB/DEF/GDS/SPICE/raw archives locally, including RAM. The local workspace and project temp entries were verified empty, with no local CAD processes. Unrelated user files remain untouched.
 
-## Latest result: six-shortcut GDS full physical verification passed; fresh native view running
+## Latest result: actual six-shortcut native view qualified; new RC basis frozen
+
+Run41336588343/source2e42588a8ae03d6ef460c5cecf16943d715c5147 completed successfully.39 source controls and all eight actual native phases passed. The physically qualified GDS244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347 now has a fresh78-file native view.
+Full identity preserved:500 devices,1446 terminals,25 ports,978 anchors,238 native nets. All160 planes/19 plane faults,16 leaf placements/5 independent geometry controls, source-pin recovery and native witness controls passed. Complete113-conductor x13-layer material comparison has1469 rows; exactly six M2 rows changed. Added area38344150DBU2 for each A/C path and39784150DBU2 for each D path. No new vias, missing conductor material or foreign partition changes.
+All eight supervised commands returned0; primary_error is null, heartbeat stopped and no live process remains. This is actual newly derived native geometry/connectivity evidence, not an inferred RC or wave improvement.
+
+Full146-file proof7d09fd1cc02f50cafb0efe5e59b680982d17370f,20052852bytes,receipt5360d112ab9d8d38731c4c97c309b21d98ed34e04a93e1b11458cd779c9e437c is imported under docs/evidence/wire-canonical-terminal-41336588343.
+Permanent release430771584/tag cloud-results-41336588343-1-cdr-wire-shortcuts-canonical:
+complete-output-index.json asset699151389,22738bytes,SHA256280383a72f37276acc2e1026ef3795105a92d0e1d9c46de6e51c53fd0a67c40e;
+native-canonical.tar.gz asset699151390,3548835bytes,SHA2562ef9a587865ba810d28fee2db13944cec7fcb5f62f446e3168f608389ee90137.
+Archive root wire-shortcuts-canonical,133 members. Current view path view/candidate/ with78 members. Actual original runner root hw/soc/out/cloud-cdr-wire-shortcuts-canonical/view/candidate.
+Derived artifact13095134941,1295843bytes,SHA25654fec302808159110070a160efdf90fb7b1d7d76793ba86b1f27f46ee2e64f78. Native archive was not acquired locally.
+
+CRITICAL semantic port-order change: the new actual native order contains ... iry,yp,yn,irvx,irvy,vin,vip, whereas the old order had ... iry,yn,yp,... . Full public name/terminal/anchor identity matches; raw enumeration order is not a circuit change. New RC config and compact model/binding/stimulus must use the actual new semantic port order from native_identity.new_native_port_order, never retain the old positional interface. Source/device/anchor order must not be guessed.
+docs/evidence/wire-shortcuts-fresh-rc-basis.json now binds the actual current78 files, full133-member native capsule, qualification/hash, source/release/tag, actual25-port order, and authenticated original runtime-cache inventory. It is SOURCE PREPARATION ONLY; native RC remains unexecuted.
+
+NEXT REQUIRED NATIVE ACTION: adapt the frozen numerical RC core at9bf12d1e496f7d9192582175ab2fa714e3e8d41b to this actual newly qualified current view, with current-source hosted admission and an independent empty source-bound result release. Do not rerun or relabel old41251732540 outputs as new RC. The original numerical definitions can remain byte-exact:
+- scripts/cdr_via2_m3_fresh_rc_core.py: current_view_proof validates configured root and all78 pins; prepare_current_view copies actual inputs into binding/wire-stage; binding_native_export/validate build500-device contact-oracle/model binding; derive_wire_methods runs the frozen extraction/audit methods.
+- command_plan requires output ROOT/hw/soc/out/cloud-cdr-via2-m3-fresh-rc and original native entry path. It has13 commands after prepare:binding-export,binding-validate,wire-extract,wire-audit,then precise and precise_reversed MIM generation/extraction/finish/audit,then compose. Reusing the path on a fresh cloud runner is possible; the old producer/authority cannot be reused.
+- scripts/cdr_via2_m3_fresh_rc_native.py pure helpers include current_packet,verify_runtime_cache,copy_cache,operate,validate_complete_files,source_pins,lifecycle/receipt validators. If extracting their definitions into a new explicit current host, preserve actual phase context, all11 terminal receipts, exact executed command streams, original raw13 corruption refusals, MIM5/9controls, composition21controls, whole branch/capacitance ownership and direct/reverse measured count/value equivalence. Do not execute old main/authorized/admission wrappers on the new producer.
+- core.current_binding reads scripts/cdr-via2-m3-fresh-rc-namespace-inputs.json and CurrentBinding freshly rereads descriptor+summary on every stage. It must bind the current new source/run and actual new port order; no historical report authority.
+- Original RC capsule41251732540/release430243359 already authenticates3091 members and contains658 runtime-inputs/ members totaling32215858bytes: frozen_layout197 files, model source and model-pins, baseline Magic, precise Magic and complete provenance. They can be restored on cloud from that exact fully authenticated capsule instead of fetching the same runtimes repeatedly. Record current restoration/hash checks and repeat original producer provenance validation; historical acquisition status is not current execution proof.
+- verify_runtime_cache checks complete byte inventory for frozen_layout/models/magic, exact selected precise outputs and summary, all original MODEL_PINS under ROOT/pdk, and every frozen PDK runtime file. Copy runtime-inputs/models/models into ROOT/pdk/libs.tech/ngspice/models and original frozen_layout members into ROOT without overwriting different source. Precise and baseline Magic library hashes and AppImage/scoped AppArmor remain unchanged.
+Then run native freshRC, preserve full success/failure proof, and only after complete numerical qualification execute unchanged loaded-wave/device/phase/V-I tests. NominalRC still does not constitute foundry RCmin/max or production signoff. Width2/Nx8 device screening is not regenerated accepted physical geometry.
+
+Physical verification41335306847 remains a genuine separate pass (560DRC0markers,deep/flat500-device LVS13). Mainchip full64 run41323446729 remains independently live; no duplicate restart. After actual route termination verify classes/pins/PG/DRC/antenna, matching154480-instance netlist,newRC,and unchanged three-corner setup/hold.
+Full serial Gen3 x4 PHY and final mainchip physical/timing closure remain open. Local workspace/project temp remain empty; all native CAD/acquisition/analysis is GitHub-only. Monitor inventory700/read-only automatic_native_dispatch:false remains; prior monitor502 has not been declared resolved.
+
+## Previous checkpoint v259: six-shortcut GDS full physical verification passed; fresh native view running
 
 Actual physical run41335306847/source50cb5767faef80336161ab7fa40de7d99dbf6243 completed successfully. All36 source controls passed. The exact999700-byte GDS SHA256244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347 passed:
 - Full560-category DRC:0 markers.
