@@ -1,0 +1,22 @@
+{"phase": "stale-wire-clear", "primary": "AssertionError('unchanged snapshot masters')", "terminal_errors": []}
+Traceback (most recent call last):
+  File "/work/tail-source/scripts/mainchip_targeted_counterpart_routing_native.py", line 165, in <module>
+    main()
+  File "/work/tail-source/scripts/mainchip_targeted_counterpart_routing_native.py", line 158, in main
+    p.run_phase("stale-wire-clear", clear, saved.verify_inputs, saved.save)
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 148, in run_phase
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 135, in run_phase
+    try:action()
+        ^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_targeted_counterpart_routing_native.py", line 111, in clear
+    report["delta"] = scope_core.clear_delta(before, after, plan, scope, p.pin(p.encode(None)))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_targeted_counterpart_routing.py", line 95, in clear_delta
+    exact(after[key], before[key], "unchanged snapshot " + key)
+  File "/work/tail-source/scripts/mainchip_targeted_counterpart_routing.py", line 17, in exact
+    require(got == expected, message)
+  File "/work/tail-source/scripts/mainchip_targeted_counterpart_routing.py", line 14, in require
+    raise AssertionError(message)
+AssertionError: unchanged snapshot masters
