@@ -1,0 +1,21 @@
+{
+  "context": {
+    "attempt": 1,
+    "case": "nominal_late",
+    "group": "cdr-via2-m3-loaded-nominal_late",
+    "job": "loaded",
+    "mode": "loaded",
+    "run_id": 41260582673,
+    "source": "cde6353e164d32feee5a3e56cc54b32a3001f736",
+    "token": "41260582673-1"
+  },
+  "electrical_accepted": false,
+  "error": "AssertionError('explicit wrapper exit contract')",
+  "full_phy_accepted": false,
+  "layout_regenerated": false,
+  "original_electrical_rejection_overridden": false,
+  "physical_accepted": false,
+  "qualified_pex": false,
+  "status": "FAIL_CURRENT_VIA2_M3_LOADED",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_via2_m3_loaded.py\", line 226, in run\n    result=body(ctx,c,reserved,controls_raw,out);write(out/'result.json',encode(result))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_via2_m3_loaded.py\", line 183, in perform\n    qualification=pipeline(restore,out,out/'preflight.json',c,p);require_qualification(qualification,c)\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_via2_m3_loaded.py\", line 143, in native_pipeline\n    if primary is not None:raise primary\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_via2_m3_loaded.py\", line 132, in native_pipeline\n    execute(base+['--phase','measure']+args+['--engine-bytes',engine_pin['bytes'],'--engine-sha256',engine_pin['sha256']],'measure')\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_via2_m3_loaded.py\", line 118, in execute\n    if failure is not None:raise failure\n                           ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_via2_m3_loaded.py\", line 113, in execute\n    require(record['returncode']in(0,1)if allow_nonzero else record['returncode']==0,'explicit wrapper exit contract')\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_current_eight_drain_wave_replay.py\", line 27, in require\n    if not ok:raise AssertionError(message)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: explicit wrapper exit contract\n"
+}

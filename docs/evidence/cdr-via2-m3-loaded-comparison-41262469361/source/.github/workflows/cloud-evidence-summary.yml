@@ -1,0 +1,39 @@
+name: Loaded nominal-late comparison
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: loaded-comparison-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  comparison:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/compare_cdr_via2_m3_loaded.py
+            /.github/workflows/cloud-evidence-summary.yml
+      - name: Exact source and single attempt
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_RUN_ATTEMPT" = "1"
+          sha256sum scripts/compare_cdr_via2_m3_loaded.py .github/workflows/cloud-evidence-summary.yml
+      - name: Five controls and complete matching real-report comparison
+        run: python3 -B scripts/compare_cdr_via2_m3_loaded.py
+      - name: Preserve inputs, controls and every comparison outcome
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: loaded-comparison-${{ github.run_id }}-${{ github.run_attempt }}
+          path: cloud-loaded-comparison
+          if-no-files-found: error
+          retention-days: 90
