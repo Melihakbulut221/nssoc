@@ -8,8 +8,8 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"pd650-wave-analysis"
 UI=125e-12;START=2e-9;STOP=START+258*UI;STEP=.3125e-12
-SOURCE="2a62d651d415fba8db3c5b758d1b66c05cde3a38"
-PRODUCER_RUN=41306148937;RELEASE=430565351
+SOURCE="66fb47bb12eff45c83b3d2819d281f99960ac4cc"
+PRODUCER_RUN=41310192873;RELEASE=430594515
 CASE="native/case-nominal_late/"
 SELECTED={CASE+"native/wave.raw",CASE+"measurement-result.json","native/candidate/composition.json","native/candidate/planes.json"}
 def sha(path):
@@ -23,12 +23,12 @@ def source_gate():
     assert os.environ.get("GITHUB_ACTIONS")=="true" and os.environ["GITHUB_RUN_ATTEMPT"]=="1"
     assert os.environ["GITHUB_REPOSITORY"]=="Melihakbulut221/nssoc"
     assert os.environ["GITHUB_EVENT_NAME"]=="workflow_dispatch"
-    assert os.environ["GITHUB_REF"]=="refs/heads/codex/cdr-width-wave-analysis"
+    assert os.environ["GITHUB_REF"]=="refs/heads/codex/cdr-width8-wave-analysis"
     assert np.__version__=="2.3.3"
     pins=json.loads((ROOT/"scripts/pd650-wave-analysis-pins.json").read_bytes())
     assert set(pins)=={"scripts/cloud_pd650_wave_analysis.py","scripts/pd650-wave-analysis-inputs.json",
       ".github/workflows/cloud-evidence-summary.yml","scripts/cloud_tx_stream.py",
-      "scripts/cloud_cdr_current_eight_drain_loaded.py"}
+      "scripts/cloud_cdr_current_eight_drain_loaded.py","docs/cdr-width8-wave-analysis.md"}
     for name,pin in pins.items():
         p=ROOT/name;assert p.is_file()and not p.is_symlink()
         assert dict(bytes=p.stat().st_size,sha256=sha(p))==pin,name
@@ -73,6 +73,74 @@ def checked_phase_average(integrated,producer):
     assert np.isfinite(integrated) and np.isfinite(producer),"finite measured phase"
     assert abs(integrated-producer)<1e-13,"phase report must match authenticated integration"
     return float(integrated)
+def compare_tree(actual,prior):
+    assert type(actual)is type(prior),(type(actual),type(prior))
+    if isinstance(actual,dict):
+        assert set(actual)==set(prior)
+        for key in actual:compare_tree(actual[key],prior[key])
+    elif isinstance(actual,(list,tuple)):
+        assert len(actual)==len(prior)
+        for a,b in zip(actual,prior,strict=True):compare_tree(a,b)
+    elif isinstance(actual,float):
+        assert np.isfinite(actual)and np.isfinite(prior)and abs(actual-prior)<=1e-13
+    else:assert actual==prior
+def device_decision(checks,tails,mos,mos_tails,stages,caps):
+    assert all(isinstance(table,dict)and table for table in (checks,tails,mos,mos_tails,stages,caps))
+    violations=[]
+    def check(category,name,metric,value,relation,limit):
+        assert type(value)in(int,float)and np.isfinite(value)
+        ok=value>=limit if relation==">="else value<=limit if relation=="<="else value<limit
+        if not ok:violations.append(dict(category=category,device=name,metric=metric,value=value,relation=relation,limit=limit))
+        return bool(ok)
+    for name,row in checks.items():
+        for metric,relation,limit in [
+          ("minimum_active_vce_v",">=",.4),("maximum_alltime_abs_vce_v","<=",1.6),
+          ("maximum_alltime_abs_vbe_v","<=",1.),("maximum_alltime_abs_ic_per_emitter_a","<",.003)]:
+            check("hbt",name,metric,row[metric],relation,limit)
+    for name,value in tails.items():check("hbt_tail",name,"minimum_active_current_a",value,">=",.0005)
+    for name,row in mos.items():
+        assert row["limit_v"]==1.32
+        valid=[check("mos",name,metric,value,"<=",1.32)for metric,value in row["peaks_v"].items()]
+        valid.append(check("mos",name,"minimum_active_vds_v",row["minimum_active_vds_v"],">=",0.))
+        assert row["passed"]is all(valid),"producer MOS flag differs from actual limits"
+    for name,value in mos_tails.items():check("mos_tail",name,"minimum_active_current_a",value,">=",0.)
+    for name,value in stages.items():check("stage_tail",name,"minimum_active_current_a",value,">=",.0005)
+    for name,row in caps.items():
+        assert row["limit_v"]==1.6
+        check("mim",name,"maximum_alltime_abs_v",row["maximum_alltime_abs_v"],"<=",1.6)
+    return dict(passed=not violations,violations=violations,
+      counts=dict(hbt=len(checks),hbt_tails=len(tails),mos=len(mos),mos_tails=len(mos_tails),stage_tails=len(stages),mim=len(caps)))
+def device_controls():
+    fixture=[
+      {"h":dict(minimum_active_vce_v=.4,maximum_alltime_abs_vce_v=1.6,maximum_alltime_abs_vbe_v=1.,maximum_alltime_abs_ic_per_emitter_a=.002999)},
+      {"t":.0005},
+      {"m":dict(limit_v=1.32,peaks_v=dict(vds=1.32,vgs=1.32,vgd=1.32,vdb=1.32,vsb=1.32),minimum_active_vds_v=0.,passed=True)},
+      {"mt":0.},{"stage":.0005},{"cap":dict(limit_v=1.6,maximum_alltime_abs_v=1.6)}]
+    assert device_decision(*fixture)["passed"];checks=["unchanged inclusive device limits and strict current limit"]
+    cases=[
+      ("HBT active VCE",lambda x:x[0]["h"].__setitem__("minimum_active_vce_v",.399)),
+      ("HBT VCE absolute",lambda x:x[0]["h"].__setitem__("maximum_alltime_abs_vce_v",1.601)),
+      ("HBT VBE absolute",lambda x:x[0]["h"].__setitem__("maximum_alltime_abs_vbe_v",1.001)),
+      ("HBT current equality rejected",lambda x:x[0]["h"].__setitem__("maximum_alltime_abs_ic_per_emitter_a",.003)),
+      ("HBT tail minimum",lambda x:x[1].__setitem__("t",.000499)),
+      ("MOS terminal overvoltage",lambda x:(x[2]["m"]["peaks_v"].__setitem__("vgd",1.321),x[2]["m"].__setitem__("passed",False))),
+      ("MOS VDS reversal",lambda x:(x[2]["m"].__setitem__("minimum_active_vds_v",-.001),x[2]["m"].__setitem__("passed",False))),
+      ("individual MOS reverse current",lambda x:x[3].__setitem__("mt",-.000001)),
+      ("stage tail current",lambda x:x[4].__setitem__("stage",.000499)),
+      ("MIM overvoltage",lambda x:x[5]["cap"].__setitem__("maximum_alltime_abs_v",1.601))]
+    for label,mutate in cases:
+        bad=copy.deepcopy(fixture);mutate(bad);assert device_decision(*bad)["passed"]is False;checks.append("reject "+label)
+    for label,mutate in [
+      ("nonfinite HBT metric",lambda x:x[0]["h"].__setitem__("minimum_active_vce_v",float("nan"))),
+      ("empty device table",lambda x:x[0].clear()),
+      ("forged MOS pass flag",lambda x:x[2]["m"]["peaks_v"].__setitem__("vds",1.321))]:
+        bad=copy.deepcopy(fixture);mutate(bad)
+        try:device_decision(*bad)
+        except AssertionError:checks.append("reject "+label)
+        else:raise AssertionError("accepted "+label)
+    assert len(checks)==14
+    return checks
+
 def controls():
     source_gate();read=parser();passed=[]
     with tempfile.TemporaryDirectory()as temp:
@@ -114,10 +182,10 @@ def controls():
         except AssertionError:passed.append("reject archive path "+bad)
         else:raise AssertionError("Accepted archive path "+bad)
     good=dict(source_head=SOURCE,current_context=dict(attempt=1,run_id=PRODUCER_RUN,source=SOURCE),
-      case="nominal_late",accepted=False,devices_passed=True,data_offset_s=.15*UI,diagnostics=[],returncode=0)
+      case="nominal_late",accepted=False,devices_passed=False,data_offset_s=.15*UI,diagnostics=[],returncode=0)
     producer_measurement_gate(good);passed.append("actual list-valued empty diagnostics")
     for key,value in (("diagnostics",0),("diagnostics",["warning"]),("diagnostics","[]"),
-                      ("data_offset_s",0.),("returncode",1),("devices_passed",False),
+                      ("data_offset_s",0.),("returncode",1),("devices_passed",True),
                       ("source_head","0"*40),("current_context",{})):
         bad=copy.deepcopy(good);bad[key]=value
         try:producer_measurement_gate(bad)
@@ -135,6 +203,8 @@ def controls():
     assert checked_phase_average(width_phase,width_phase)==width_phase
     passed.append("phase above threshold still preserves original data rejection")
     assert len(passed)==34
+    passed+=device_controls()
+    assert len(passed)==48
     return dict(status="PASS_SOURCE_READER_AND_ORIGINAL_MEASUREMENT_CONTROLS",source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),count=len(passed),passed=passed,native_simulation=False)
 def relative_member(name,source_directory):
     assert source_directory=="cloud-sampler-load"
@@ -193,7 +263,7 @@ def acquire(work):
 def producer_measurement_gate(m):
     assert m["source_head"]==SOURCE
     assert m["current_context"]==dict(attempt=1,run_id=PRODUCER_RUN,source=SOURCE)
-    assert m["case"]=="nominal_late"and m["accepted"]is False and m["devices_passed"]is True
+    assert m["case"]=="nominal_late"and m["accepted"]is False and m["devices_passed"]is False
     assert m["data_offset_s"]==.15*UI
     assert type(m["diagnostics"])is list and m["diagnostics"]==[]
     assert type(m["returncode"])is int and m["returncode"]==0
@@ -397,11 +467,53 @@ def analyze(base,index):
     for name,value in [("stages.json",stages),("tail-groups.json",groups),("hbt-state.json",hbt),
                        ("logical-device-topology.json",topology),("producer-measurement.json",m)]:
         save(name,value)
+    # Reproduce all original device metrics from complete raw rows, not stored pass flags.
+    recomputed_hbt={}
+    for name,dev in bound["groups"]["npn13g2"].items():
+        vc,vb,ve,_=map(v,dev["nodes"]);ic=d["@q."+name+".qnpn13g2[ic]"]
+        recomputed_hbt[name]=dict(minimum_active_vce_v=float((vc-ve)[active].min()),
+          maximum_alltime_abs_vce_v=float(abs(vc-ve).max()),maximum_alltime_abs_vbe_v=float(abs(vb-ve).max()),
+          maximum_alltime_abs_ic_per_emitter_a=float(abs(ic).max()/dev["nx"]))
+    tails={name:float(d["@q."+name+".qnpn13g2[ic]"][active].min())for name in bound["tail_names"]}
+    recomputed_mos={}
+    for name,dev in bound["groups"]["sg13_lv_nmos"].items():
+        vd,vg,vs,vb=map(v,dev["nodes"]);ids=d["@n."+name+".nsg13_lv_nmos[ids]"]
+        peaks={label:float(abs(value).max())for label,value in [("vds",vd-vs),("vgs",vg-vs),("vgd",vg-vd),("vdb",vd-vb),("vsb",vs-vb)]}
+        recomputed_mos[name]=dict(peaks_v=peaks,limit_v=1.32,minimum_active_vds_v=float((vd-vs)[active].min()),
+          minimum_active_drain_current_a=float(ids[active].min()),maximum_alltime_abs_drain_current_a=float(abs(ids).max()),
+          passed=max(peaks.values())<=1.32 and float((vd-vs)[active].min())>=0)
+    mos_tails={name:recomputed_mos[name]["minimum_active_drain_current_a"]for name in bound["mos_tail_names"]}
+    stage_tails={name:float(values[active].min())for name,values in group_values.items()}
+    caps={name:dict(maximum_alltime_abs_v=float(abs(v(dev["nodes"][0])-v(dev["nodes"][1])).max()),limit_v=1.6)
+      for name,dev in bound["groups"]["cap_cmim"].items()}
+    assert (len(recomputed_hbt),len(recomputed_mos),len(stage_tails),len(caps))==(124,200,16,7)
+    for actual,key in [(recomputed_hbt,"device_checks"),(tails,"minimum_active_tail_current_a"),(recomputed_mos,"mos_checks"),
+      (mos_tails,"minimum_active_mos_tail_current_a"),(stage_tails,"minimum_active_stage_tail_current_a"),(caps,"native_cap_voltage_checks")]:
+        compare_tree(actual,m[key])
+    decision=device_decision(recomputed_hbt,tails,recomputed_mos,mos_tails,stage_tails,caps)
+    assert decision["passed"]is m["devices_passed"]is False
+    failure_samples=[]
+    for violation in decision["violations"]:
+        if violation["category"]!="hbt":continue
+        name=violation["device"];dev=bound["groups"]["npn13g2"][name]
+        vc,vb,ve,vs=map(v,dev["nodes"]);ic=d["@q."+name+".qnpn13g2[ic]"]
+        metric=violation["metric"]
+        signals=dict(minimum_active_vce_v=vc-ve,maximum_alltime_abs_vce_v=abs(vc-ve),
+          maximum_alltime_abs_vbe_v=abs(vb-ve),maximum_alltime_abs_ic_per_emitter_a=abs(ic)/dev["nx"])
+        signal=signals[metric]
+        ids=np.flatnonzero(active)if metric=="minimum_active_vce_v"else np.arange(len(t))
+        at=int(ids[np.argmin(signal[ids])if metric=="minimum_active_vce_v"else np.argmax(signal[ids])])
+        assert abs(float(signal[at])-violation["value"])<=1e-13
+        failure_samples.append(dict(**violation,row=at,time_s=float(t[at]),nx=dev["nx"],nodes=dev["nodes"],
+          native_instance=record_by_name[name]["instance"],native_id=record_by_name[name]["native_id"],
+          vc_v=float(vc[at]),vb_v=float(vb[at]),ve_v=float(ve[at]),vs_v=float(vs[at]),ic_a=float(ic[at])))
+    save("device-limit-reproduction.json",dict(all_original_device_tables_reproduced=True,decision=decision,
+      hbt_violation_raw_samples=failure_samples,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False))
     result=dict(status="PASS_AUTHENTICATED_FAILURE_ANALYSIS_ONLY",source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),
       producer_source=SOURCE,producer_run=PRODUCER_RUN,producer_release=RELEASE,raw_capture=capture,
       all_six_original_measurements_reproduced=True,phase_average_v=checked_phase_average(phase_average_v,m["phase_average_v"]),phase_gate_v=.03,
       summary={k:{key:value for key,value in stage["reproduced_original_gate"].items()if key!="clock_to_valid_by_bit_s"}for k,stage in stages.items()},
-      original_devices_passed=True,native_simulation=False,source_models_changed=False,
+      original_devices_passed=m["devices_passed"],all_original_device_tables_reproduced=True,device_limit_failures=decision["violations"],native_simulation=False,source_models_changed=False,
       physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,
       scope="Existing full raw rows only. Diagnostic samples use interpolation exactly as original measurement; complete raw remains immutable and cloud-only.")
     save("result.json",result)

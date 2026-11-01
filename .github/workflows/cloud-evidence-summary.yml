@@ -1,4 +1,4 @@
-name: Diagnose rejected PD650 width trial data paths
+name: Diagnose width8 raw data and original device limit failures
 on:
   workflow_dispatch:
 permissions:
@@ -18,6 +18,16 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cloud_pd650_wave_analysis.py
+            /scripts/pd650-wave-analysis-inputs.json
+            /scripts/pd650-wave-analysis-pins.json
+            /scripts/cloud_tx_stream.py
+            /scripts/cloud_cdr_current_eight_drain_loaded.py
+            /docs/cdr-width8-wave-analysis.md
+            /.github/workflows/cloud-evidence-summary.yml
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
@@ -41,6 +51,16 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cloud_pd650_wave_analysis.py
+            /scripts/pd650-wave-analysis-inputs.json
+            /scripts/pd650-wave-analysis-pins.json
+            /scripts/cloud_tx_stream.py
+            /scripts/cloud_cdr_current_eight_drain_loaded.py
+            /docs/cdr-width8-wave-analysis.md
+            /.github/workflows/cloud-evidence-summary.yml
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
