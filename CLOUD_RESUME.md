@@ -1,11 +1,39 @@
-# Cloud continuation — checkpoint v261
+# Cloud continuation — checkpoint v262
 
-Updated: 2026-11-01T18:57:28.176139+00:00
+Updated: 2026-11-01T19:11:28.563758+00:00
 
 Latest instruction: **her şeyi bulutta yap, lokalde bir şey bırakma temizle.**
 It overrides the earlier local-execution wording in the active goal. All CAD, simulation, native archive/layout/waveform acquisition and numerical/geometric analysis run on GitHub. Local coordination uses source/API-derived text in RAM only. Never acquire native ODB/DEF/GDS/SPICE/raw archives locally, including RAM. The local workspace and project temp entries were verified empty, with no local CAD processes. Unrelated user files remain untouched.
 
-## Latest result: current six-shortcut fresh RC dispatched on cloud
+## Latest result: actual six-shortcut fresh RC numerically qualified
+
+Run41339125361/sourcec6abc571734c0e3197ce1227e990b7b1420610da completed successfully.13 current-host controls,28 frozen-core controls and33 phase controls passed. All14 actual supervised commands returned0; all11 actual source/run-bound phase receipts validated. Both precise MIM input orders, original raw13/MIM5+9/composition21 controls and complete branch/capacitance ownership passed. Native lifecycle has primary_error null,heartbeat stopped,no remaining live process.
+
+Actual new model:500 devices,24474R,15640C,1446terminals. Model mim/composition/pd500-mim-wire.spice is1976884bytes SHA2562d58e10cf840abf3648f89fa97d8124ba3cd7593f39f84de05d0992833b53c27. Composition973274bytes SHA256e1fe928d7cae252dd21d8cbd7d085500c1f991a3a3c9a8eae7eaa232479fddc5. Actual semantic interface is the current25-port order (iry,yp,yn) plus wire_cref. Never copy old positional yn,yp order.
+This is newly computed RC from physically qualified GDS244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347. Device geometry was not changed by width2/Nx8 screening and must not be silently combined with those trials. New R/C counts alone say nothing about electrical improvement.
+
+Permanent release430788452/tag cloud-results-41339125361-1-cdr-wire-shortcuts-fresh-rc has complete-output-index.json asset699234264,609145bytes SHA256ea1dd295d64c3627d0f44b1cc25fc60a7bc9456bc451def188134e877163022e; native-fresh-rc.tar.gz asset699234263,61422387bytes SHA256a1820c15192ac63b4181931d38e3ee62d45fe1ffca5db08b47f6fe62b7fc60c0. Archive root wire-shortcuts-fresh-rc,3236 fully indexed members.
+Complete475-file proof ccb1a3059fc6a434bb0a9fb325b17a06a570529f,90999065bytes,receipt453765586de3fc812fc1c27914c3fd16ed168fd98deac183cb89d721b3f2f991 under docs/evidence/wire-rc-terminal-41339125361. Original preflightfailure41338512381 remains separate.
+
+NEXT: execute the actual new500-device distributed model under frozen loaded-wave/device/phase/V-I gates. Current source basis docs/evidence/wire-shortcuts-loaded-basis.json pins full3236-member RC capsule,new model/composition/planes,actual qualification/source/tag/release and original loaded numerical/runtime references. SOURCE PREPARATION ONLY: no new transient has started.
+
+Reusable frozen loaded library at source43fd3f71a289fef004aeb41cd2d0972d81f76f41:
+- scripts/cdr_via2_m3_loaded_core.py and scripts/cdr-via2-m3-loaded-core-catalog.json contain9 complete pinned source files,29definitions and5 executable blocks (scenario,prerequisites,binding,deck,measurement); historical_runtime_reference is not executable. Actual catalog original source84b8b591e10be32716947c8d6b079fd7a21ce18d. Keep numerical AST/body bytes unchanged.
+- Original current_configuration is bound to old41251732540 and its exact old INPUTS_SHA. Do not invoke it as current authority or bypass checks. New explicit host must bind new RC producer and actual current context, and provide verified current configuration to isolated cloned frozen pure functions. Historical configs only supply immutable runtime/transport constants. Do not overwrite frozen old inputs or fake old receipts.
+- prepare_case/measure_case/numerical_namespace/verify_current_inputs/verify_runtime/verify_projection can use independent namespaces whose current_configuration validates the actual new producer, new qualified model/composition/planes, current generated projection and actual exact interface. Keep every original measurement/body and unchanged models/runtime.
+- bind_native validates all500 device cards/1446 terminals/26ports and topology-derived sampler/VI aliases. It is semantic-order aware: external nodes are constructed in contract interface order. No source edit is needed to handle yp/yn order.
+- Generate the new projection ON CLOUD from actual newly restored model and composition using the frozen binder and the original deck prefix selecting nodes/vectors. Do not reuse old1151-vector or old15489-wire-map counts: those were measurements, not invariants. Declare actual native-card validation when it ran; source projection alone is not a wave result. Preserve and protect projection bytes for both preparation and measurement.
+- Native preparation must repeat all13 actual binding rejection controls and equivalent-unit checks. Frozen scenario UI125ps,START2ns,STOP34.25ns,STEP0.3125ps; 125ps is8GT/s. Original core's first declared case nominal_late is not full PLL/CDR or full-corner closure. Preserve original sourcebits,solver/backend readbacks,data/current/device/phase/V-I gates.
+- Original runtime config scripts/cdr-via2-m3-loaded-runtime-inputs.json binds pump39029337682/release415768966. Its historical electrical failure must remain failure while reusing only authenticated frozen engine/model bytes. Complete archive120members/40selected,patched-ngspice SHA103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509 and model-pin436914ae3ef1e1727b31e799317cfd92354cf00a00839527f49fcb079b9da1a6. Full acquisition and native parsing/wave work stays on GitHub.
+- scripts/cloud_cdr_sampler_load.py has reusable isolated pure acquisition/restore/run_engine helpers. Never invoke its historical acquire/producer admission or simulation that selects old model or experimental candidate. Original engine limit1200s and log16MiB; preserve actual process exit/cleanup,all raw waveform/OP/deck/stdout/stderr and errors. Sourcecontrols and independently reserved exact-source release precede native execution.
+- scripts/cdr-sampler-load-host-pins.json on the same source has37files. Use relevant unchanged source closure, archive original workflow separately or omit it from a new manifest, and pin the actual new current host/workflow independently. All29frozen defs/5executed blocks plus original runtime records must stay byte-exact.
+Full new transient source/dispatch is still to be implemented, not asserted complete.
+
+Mainchip full64 run41323446729/sourceff1c0e6163e0ba1537a075d50e940fafc9332c64 remains live; do not duplicate. Route14400s/outer18000s deadlines are execution budgets, not observation limits. After terminal inspect actual classes/pins/connectivity/PG/DRC/antenna, export matching154480-instance/1351diode netlist, freshRC and unchanged three-corner setuphold (20/4/8/8ns,5percent derate). Old153130-instance route12 netlist cannot be reused.
+
+All native CAD/simulation/acquisition/geometry/numerics stay on GitHub; no native payload download even to local RAM. Local source/API/derived text only in RAM; workspace and project temp empty. Monitor702rows/8h/read-only automatic_native_dispatch:false; previous monitor502 not declared healthy. Physical/canonical/nominalRC passes do not close fullserialPHY,foundryRCcorner qualification,mainchip timing or production approval.
+
+## Previous checkpoint v261: current six-shortcut fresh RC dispatched on cloud
 
 Physical run41335306847 and canonical run41336588343 passed on the actual six-shortcut GDS244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347:560DRC categories zero markers,deep/flat500-device LVS and13 faults; native78-file view,500devices/1446terminals/25ports/978anchors,full113x13 material identity. These results are not electrical/fullPHY or final mainchip timing acceptance.
 
