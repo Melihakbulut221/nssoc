@@ -33,3 +33,7 @@ Latest explicit user instruction: EVERYTHING IN CLOUD. Overrides older local-wor
 14. Everything executes on GitHub; workspace/projecttemporary files empty/no localCAD. Source/API-derivedtext coordinationRAMonly, no nativearchives/models/SPICE/ODB/GDS/rawwaves locally evenRAM. Preserve unrelated files. Eight-hour monitor remainsread-only automatic_native_dispatch:false. Goal active/fullPHY/finaltiming/productionapproval OPEN.
 
 See docs/cdr-mos-parallel-loaded-simulation.md for corrected runtime namespace and exact proof/limits. Old41287653458 is terminal; new41288195752 is active. All failed evidence retained. Inventory624runs. Eight-hour monitor read-only automatic_native_dispatch:false. Previous/current goalturnPROGRESS. FullserialPHY,serial-integratedmainchiproute,finalsetup/hold OPEN. Do not markcomplete.
+
+## Cloud-only cleanup follow-up
+
+A broader temporary-file check found six historical PCIe helper scripts and six Icarus scratch files outside the already empty workspace. They were archived and hash/readback verified in commit 2e035fefe7fb6bce2b2235d0cdae60a2c36eea5f before deletion. The disposable Yosys shared-memory cache and empty stale AppImage directory were also removed. No native CAD process is running locally. Shared applications and unrelated user files remain intact. All further design execution stays on GitHub. See docs/evidence/cloud-only-cleanup-20261101/cleanup-result.json. Existing live jobs and acceptance gates are unchanged.
