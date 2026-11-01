@@ -1,6 +1,6 @@
-# Cloud continuation — checkpoint v213
+# Cloud continuation — checkpoint v214
 
-Updated: 2026-11-01T04:01:28.644893+00:00
+Updated: 2026-11-01T04:06:09.463198+00:00
 
 Latest user instruction is cloud-only and local cleanup. Workspace empty, no local CAD/native processes. Source authoring/static inspection and API-derived text transport use RAM only; all tests/simulation/numerical/geometry/CAD execute on GitHub. Never acquire native archives, SPICE/models, raw waves, ODB/GDS or native-frame gzip locally, including RAM. Unrelated files/attachments preserved.
 
@@ -21,13 +21,13 @@ See docs/cdr-four-shunt-rejection-and-next-circuit-scope.md for authenticated up
 ## New clock path diagnosis
 
 Source45286428f2d9a5dfcf6781ef04f1bb61cd20def8 on codex/cdr-clock-path-diagnostic. Sourcecontrols41271164898 passed all seven original and six new tests; full16-file proof imported.
-[Read-only waveform diagnosis41271280278](https://github.com/Melihakbulut221/nssoc/actions/runs/41271280278) is running on the SAME immutable source. It authenticates complete original113-member archive and1151-vector raw; reruns no simulator and changes no geometry. Native payloads remain on GitHub.
+[Read-only waveform diagnosis41271280278](https://github.com/Melihakbulut221/nssoc/actions/runs/41271280278) completed SUCCESS on the SAME immutable source. Full31-file12559046B proof is imported. It authenticates complete original113-member archive and1151-vector raw; reruns no simulator and changes no geometry. Native payloads remain on GitHub.
 
 The analysis first reproduces all original124HBT metrics/all6stage1530bit delays/phaseVI. Then measures all physical cp/cn clock pairs over eight shared emitter tails,32clockdevices,both edge directions and255bits, preserving missing/multiple local crossings. All four samplers retain255original bit/deadline/settling records with native topology output/preceding stage links. This is diagnostic correlation, not isolated cell propagation or signoff. Source and corruption controls are in scripts/cdr_clock_path_diagnostic.py and scripts/check_cdr_clock_path_diagnostic.py; frozen original reader/diagnosis preserved. See docs/cdr-clock-path-diagnostic.md.
 
 ## Next actions
 
-1. Preserve terminal clock-diagnosis41271280278 full derived results/source/logs and use actual delays before choosing the next circuit edit. Do not download native-failure artifact locally.
+1. Clock diagnosis41271280278 is complete. See docs/cdr-clock-path-results-and-design-next-step.md. Internal clock delay is relative to loaded external ports (about1.95–4.06ps), while first external edge itself is about11ps after nominal. Complete all-bit records are retained; use cloud-only derived aggregation for full statistics before selecting next clock/data/headroom circuit change. Do not rerun the native archive just for statistics.
 2. Poll same actualmainchip41270471645, preserve complete terminal evidence. Verify actual clear delta then router/physical gates; step names alone do not prove router execution.
 2. Verify all828 connectivity,1351 diodeattachments,1691 protectedclock/fixedrecords, zero DRC/antenna, then finalsetup/hold separately. Do not conflate route success with closure.
 3. Develop next CDR circuit based on both common-mode/headroom and six-stage margin/delay failures; retain original stimulus/1151vectors/all original gates. Require regenerated layout/freshRC and closed-loop evidence before acceptance.

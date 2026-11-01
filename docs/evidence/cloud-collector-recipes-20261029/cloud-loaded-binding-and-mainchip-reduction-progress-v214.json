@@ -1,0 +1,567 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "native_processes": 0,
+    "observed_at": "2026-11-01T04:06:09.463198+00:00",
+    "source_API_derived_text_RAM_only": true,
+    "tmp": {
+      "/tmp": [],
+      "/var/tmp": []
+    },
+    "unrelated_user_files_not_modified": true,
+    "workspace_entries": 0
+  },
+  "final_timing_complete": false,
+  "full_serial_phy_accepted": false,
+  "native_payloads_acquired_locally": false,
+  "progress": {
+    "authored_documents": {
+      "docs/cdr-clock-path-results-and-design-next-step.md": "# Clock path diagnosis: measured result and design consequence\n\nRead-only run41271280278 (source45286428f2d9a5dfcf6781ef04f1bb61cd20def8) completed successfully. Complete31-file proof: docs/evidence/cdr-clock-path-diagnose-41271280278. Native wave/archive stayed on GitHub.\n\nThe unchanged original reader and diagnostics reproduced all124 HBT metrics, all six stage metrics and1530 per-bit settling values, plus phase/VI. The new analysis retained all32 physical clock devices/eight shared emitter groups, four cp/cn terminal-pair combinations per group, both clock directions and255bits. All local crossing windows were unique.\n\nMeasured internal clock delay is relative to the already-loaded cp/cn boundary ports, not the ideal source. Representative pair extrema range from1.9544750519272536ps (B preceding group$318) to4.063760328786802ps (C output group$683). Therefore this result alone must not be used to claim that the entire clock path consumes only2\u20134ps.\n\nThe first rising edge demonstrates the distinction:\n- nominal edge2.1875e-9s;\n- actual loaded external crossing2.1985014172157795e-9s;\n- A output clock pair101/97 crossing2.2017799491419757e-9s;\n- original A deadline2.225e-9s;\n- original A bit1 settling delay44.21874999999147ps relative to nominal;\n- recorded settling-minus-local-clock29.93880085801587ps;\n- signed A margin at the unchanged deadline0.03454877699928918V.\n\nThese are one-bit examples, not whole-run extrema. The full result retains every external edge and every original sampler bit for a complete cloud-only aggregation. Stable bits can already be valid before a clock edge and thus have negative settling-minus-local-clock; those values are not negative physical cell delays and must not be discarded or interpreted as such. Separate toggling/stable cases transparently if useful, without dropping any gate checks.\n\nNative topology links are A:$485(output)/$482(preceding), B:$321/$318, C:$683/$680, D:$133/$149. Original testbench includes10ohm source resistances on cp/cn and unchanged150fF loads at sampler observation points. Those are part of the qualified workload; lowering source resistance, dropping output loads or shifting deadlines is not a demonstrated repair.\n\nNext design work must consider the loaded external clock path and internal regeneration/loaded data path together, while resolving the separate coupled headroom failure. A physical clock-buffer or output-buffer topology would require real new devices/routing, complete device/vector coverage, unchanged functional/stress gates and fresh PEX. No such topology has yet been implemented or accepted. The prior four-shunt candidate remains rejected. Full PHY, routed mainchip and final setup/hold remain open.\n"
+    },
+    "cloud_only": true,
+    "continuation_note": "Existing native clock diagnosis41271280278 completed success, full31file12559046B proof imported. Reproduced every original metric. Internal local-to-loaded-port clock delays about1.95\u20134.06ps and all windows unique. External boundary is already loaded: first edge is~11ps after nominal, so do not claim entire clock path only2\u20134ps. Complete255bit stage records retained; stable-bit negative settle-minus-localclock is not negative propagation. Mainchip41270471645 remains live in clear/routing step, exactsource2b8931/release430345631. No new circuit candidate or native route duplicate dispatched.",
+    "new_runs": {},
+    "next_actions": [
+      "Observe SAME mainchip41270471645/source2b8931/release430345631. At terminal preserve all evidence and verify actual clear delta, detailed route, all828connections/1351diodes/1691protectedrecords/zeroDRCantenna; finalSTA remains separate.",
+      "Use complete derived result docs/evidence/cdr-clock-path-diagnose-41271280278/artifacts/cdr-clock-path-diagnostic-41271280278-1/result.json on proofheadc3517dd428948ca15a949a422c35bb79535bc4cf. Perform any further numerical aggregation on GitHub, not locally. Separate loaded external-port versus internalclock delay and toggling/stable sampler cases without discarding original checks. All data already exists; do not rerun1GB waveform diagnosis merely for statistics.",
+      "Design next actual CDR circuit addressing loaded clock/input/output dynamics and common-mode headroom together. Internalclock2\u20134ps alone cannot explain whole nominal-edge delay. Four-shunt7.4um candidate still fails four maxVCE/all6data/phase/VIcurrent gates. VIvoltage passes minimum. Do not reduce10ohm/150fF workload or relax deadlines to claim closure.",
+      "Any added physical clock/output buffer must be actual devices and routing with complete stress/vector coverage, new physical verification/freshRC, originalfunctional/gatecoverage and closed-loopcorners. No new topology is claimed complete. Preserve all failed trials.",
+      "Cloud-only, emptylocalworkspace, nativepayloadsneverlocal. Keep8h read-onlymonitorautomatic_native_dispatch:false and fullgoalactive."
+    ],
+    "previous_goal_turn_classification": "progress",
+    "proofs": [
+      {
+        "bytes": 12559046,
+        "conclusion": "success",
+        "files": 31,
+        "head": "c3517dd428948ca15a949a422c35bb79535bc4cf",
+        "prefix": "docs/evidence/cdr-clock-path-diagnose-41271280278",
+        "receipt": "receipt.json",
+        "receipt_sha256": "bc7df6c278dae5a2899b379023f2875c3324eb58e1fe1b9f6984b21b68136cd6",
+        "run": 41271280278,
+        "source": "45286428f2d9a5dfcf6781ef04f1bb61cd20def8",
+        "tree": "9682e2f7176ebdcfd34072074a6955f3fed7c860"
+      }
+    ],
+    "resume": "# Cloud continuation \u2014 checkpoint v214\n\nUpdated: __UPDATED__\n\nLatest user instruction is cloud-only and local cleanup. Workspace empty, no local CAD/native processes. Source authoring/static inspection and API-derived text transport use RAM only; all tests/simulation/numerical/geometry/CAD execute on GitHub. Never acquire native archives, SPICE/models, raw waves, ODB/GDS or native-frame gzip locally, including RAM. Unrelated files/attachments preserved.\n\n## Active actual mainchip run\n\n[41270471645](https://github.com/Melihakbulut221/nssoc/actions/runs/41270471645), exactsource2b8931b9c8988fc5dbf497a7b561db579e39f64c, branch codex/mainchip-net459-diode-prune. Independently reserved empty exact-source release430345631/tagcloud-results-41270471645-1-mainchip-bulk-postdrt-antenna. Freeze source until terminal. Do not duplicate dispatch.\n\nSource controls41270165333 succeeded:15scope,10host and all inherited unchanged suites. Full83-file proof imported. The fix compares both complete persisted JSON snapshots; strict geometry/identity/protected-net core is unchanged. Original run41266854050 failed before detailed_route due Python tuples versus JSON lists. Cloud readback41269689818 proves unchanged strict delta passes all828 nets on complete saved snapshots and reproduces representation mismatch.\n\nPrior failure native archive872464089B remains release430325810. Complete failedjob logs with all735 authenticated encoded derived records are retained in docs/evidence/mainchip-targeted-failure-41266854050. No native payload acquired locally. Old release reservation is consumed and must not be reused.\n\n## CDR rejected experiment\n\nFour-shunt actual41268684044 engine returned0 after688.745s, all1151vectors measured, but original electrical gates failed. Full61-file terminal and15-file comparison41269888640 proofs are retained. Four old minVCE failures disappear, four new maxVCE failures T59/T60/T111/T112 appear. All six data stages fail; phase0.01465777V below0.03V. VI44.3405uA below50uA. **VI output0.0125679V passes its0.005V minimum**; priorv211 prose incorrectly implied an upper limit. No gate changed.\n\nSee docs/cdr-four-shunt-rejection-and-next-circuit-scope.md for authenticated upstream driver topology. No further circuit candidate dispatched. BaselineRC only; no regenerated candidate layout or freshPEX. FullserialPHY/closedloopCDRPLL/allcorners still open.\n\n## New clock path diagnosis\n\nSource45286428f2d9a5dfcf6781ef04f1bb61cd20def8 on codex/cdr-clock-path-diagnostic. Sourcecontrols41271164898 passed all seven original and six new tests; full16-file proof imported.\n[Read-only waveform diagnosis41271280278](https://github.com/Melihakbulut221/nssoc/actions/runs/41271280278) completed SUCCESS on the SAME immutable source. Full31-file12559046B proof is imported. It authenticates complete original113-member archive and1151-vector raw; reruns no simulator and changes no geometry. Native payloads remain on GitHub.\n\nThe analysis first reproduces all original124HBT metrics/all6stage1530bit delays/phaseVI. Then measures all physical cp/cn clock pairs over eight shared emitter tails,32clockdevices,both edge directions and255bits, preserving missing/multiple local crossings. All four samplers retain255original bit/deadline/settling records with native topology output/preceding stage links. This is diagnostic correlation, not isolated cell propagation or signoff. Source and corruption controls are in scripts/cdr_clock_path_diagnostic.py and scripts/check_cdr_clock_path_diagnostic.py; frozen original reader/diagnosis preserved. See docs/cdr-clock-path-diagnostic.md.\n\n## Next actions\n\n1. Clock diagnosis41271280278 is complete. See docs/cdr-clock-path-results-and-design-next-step.md. Internal clock delay is relative to loaded external ports (about1.95\u20134.06ps), while first external edge itself is about11ps after nominal. Complete all-bit records are retained; use cloud-only derived aggregation for full statistics before selecting next clock/data/headroom circuit change. Do not rerun the native archive just for statistics.\n2. Poll same actualmainchip41270471645, preserve complete terminal evidence. Verify actual clear delta then router/physical gates; step names alone do not prove router execution.\n2. Verify all828 connectivity,1351 diodeattachments,1691 protectedclock/fixedrecords, zero DRC/antenna, then finalsetup/hold separately. Do not conflate route success with closure.\n3. Develop next CDR circuit based on both common-mode/headroom and six-stage margin/delay failures; retain original stimulus/1151vectors/all original gates. Require regenerated layout/freshRC and closed-loop evidence before acceptance.\n4. Keep8h read-only monitor automatic_native_dispatch:false; inventory__RUN_COUNT__runs.\n5. FullserialPHY, routedmainchip, finalsetup/hold and production approval remain OPEN.\n",
+    "source_documents": []
+  },
+  "snapshots": [
+    {
+      "branch": "codex/cdr-current-eight-drain-wave-readback",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939637,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939756,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124684939804,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939813,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939841,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939865,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939961,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124684940663,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41223192019,
+      "source": "dd320012480c99914c4a198c8236b7190b39ce26",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41223192019"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-readback",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124641350036,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124641474888,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124641511122,
+          "name": "observation",
+          "status": "completed"
+        }
+      ],
+      "run": 41236517605,
+      "source": "65e620dc413389fffaa8389e4abdfc17cfbf4ecf",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41236517605"
+    },
+    {
+      "branch": "codex/cdr-via2-m3-physical-recheck",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124648720069,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124648978870,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124649026868,
+          "name": "physical-recheck",
+          "status": "completed"
+        }
+      ],
+      "run": 41238994098,
+      "source": "0b1ec86b35f8cb98928a5687f007a7ccd676f620",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41238994098"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-progress-v2",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124657431983,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124657565622,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124657605748,
+          "name": "observation",
+          "status": "completed"
+        }
+      ],
+      "run": 41241933572,
+      "source": "00b46253e990983365db3b5f2b44a1233e20623e",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41241933572"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-crash-isolation-v1",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124667589535,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124667697328,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124667723726,
+          "name": "observation",
+          "status": "completed"
+        }
+      ],
+      "run": 41245373612,
+      "source": "277f2382b18198e399ddeef1e7ab8f35aaf629c2",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41245373612"
+    },
+    {
+      "branch": "codex/cloud-progress-monitor-shards-v2",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124674583313,
+          "name": "controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124674612392,
+          "name": "observe",
+          "status": "completed"
+        }
+      ],
+      "run": 41247738623,
+      "source": "6df3f373c4fc8052d69fc946b18ad35be640ed58",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41247738623"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684149904,
+          "name": "controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684192874,
+          "name": "observe",
+          "status": "completed"
+        }
+      ],
+      "run": 41250947168,
+      "source": "5f3814a3e0366b8ec310c9270494c01dd6b3e03c",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41250947168"
+    },
+    {
+      "branch": "codex/cdr-via2-m3-fresh-rc-adapter",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124686498262,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124687385817,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124687428141,
+          "name": "fresh-rc",
+          "status": "completed"
+        }
+      ],
+      "run": 41251732540,
+      "source": "9bf12d1e496f7d9192582175ab2fa714e3e8d41b",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41251732540"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-reduction-v1",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124690802895,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124690863676,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124690929404,
+          "name": "analysis",
+          "status": "completed"
+        }
+      ],
+      "run": 41253195469,
+      "source": "210fc85c43753e23fb9ecc2e398a48d318d1f330",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41253195469"
+    },
+    {
+      "branch": "codex/cdr-via2-m3-loaded-adapter",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124712844047,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124712997863,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124713024059,
+          "name": "loaded",
+          "status": "completed"
+        }
+      ],
+      "run": 41260582673,
+      "source": "cde6353e164d32feee5a3e56cc54b32a3001f736",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41260582673"
+    },
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124731344945,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124731680569,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124731737763,
+          "name": "diode-routing",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124738255432,
+          "name": "preserve-antenna-job-logs",
+          "status": "completed"
+        }
+      ],
+      "run": 41266854050,
+      "source": "8b7404c7340ef5ebc4a70e36dfa30a96d07013d9",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41266854050"
+    },
+    {
+      "branch": "codex/cdr-four-shunt-headroom",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124736764231,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124736813696,
+          "name": "simulate",
+          "status": "completed"
+        }
+      ],
+      "run": 41268684044,
+      "source": "6733a6916dec86ac84f7879285c3a7c8b495ab6c",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41268684044"
+    },
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124741139252,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124741474394,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124741510434,
+          "name": "diode-routing",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124741510864,
+          "name": "preserve-antenna-job-logs",
+          "status": "completed"
+        }
+      ],
+      "run": 41270165333,
+      "source": "2b8931b9c8988fc5dbf497a7b561db579e39f64c",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41270165333"
+    },
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124742028616,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124742398243,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Clear828owned signal wires and route with unchanged physical invariants"
+          ],
+          "conclusion": null,
+          "id": 124742427487,
+          "name": "diode-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41270471645,
+      "source": "2b8931b9c8988fc5dbf497a7b561db579e39f64c",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41270471645"
+    },
+    {
+      "branch": "codex/cdr-clock-path-diagnostic",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124744067025,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124744105911,
+          "name": "diagnose",
+          "status": "completed"
+        }
+      ],
+      "run": 41271164898,
+      "source": "45286428f2d9a5dfcf6781ef04f1bb61cd20def8",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41271164898"
+    },
+    {
+      "branch": "codex/cdr-clock-path-diagnostic",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124744405386,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124744450192,
+          "name": "diagnose",
+          "status": "completed"
+        }
+      ],
+      "run": 41271280278,
+      "source": "45286428f2d9a5dfcf6781ef04f1bb61cd20def8",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41271280278"
+    }
+  ],
+  "updated_at": "2026-11-01T04:06:09.463198+00:00",
+  "version": 214
+}
