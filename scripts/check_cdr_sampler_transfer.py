@@ -43,8 +43,12 @@ class Transfer(unittest.TestCase):
         with self.assertRaises(ValueError):d.passive_branch(rows[:-1],88,139)
         rows[1]["terminals"][1]["native_net"]="wrong"
         with self.assertRaises(ValueError):d.passive_branch(rows,88,139)
+    def test_expected_sequence_lag_direction(self):
+        source=[1,0,0,1,1,0,1,0];target=[0,1,0,0,1,1,0,1]
+        self.assertEqual(d.expected_lags(source,target),[dict(target_index_minus_source_index=1,compared=7)])
+        with self.assertRaises(ValueError):d.expected_lags(source,target[:-1]+[2])
 if __name__=="__main__":
     result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Transfer))
     report=dict(tests=result.testsRun,failures=len(result.failures),errors=len(result.errors),skips=len(result.skipped))
     print("TRANSFER_CONTROLS "+json.dumps(report),flush=True)
-    raise SystemExit(0 if report==dict(tests=7,failures=0,errors=0,skips=0)else 1)
+    raise SystemExit(0 if report==dict(tests=8,failures=0,errors=0,skips=0)else 1)
