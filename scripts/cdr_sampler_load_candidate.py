@@ -113,6 +113,24 @@ def verify_projection(ns,projection):
     require(vectors==expected and len(vectors)==len(set(vectors))==1301,"complete1301 projected vectors including200 actual currents")
     require(ns["bound"]["aliases"]=={name:row["loaded_node"]for name,row in projection["aliases"].items()},"all original actual collector aliases")
     require(ns["r"]["vector_census"]==dict(total=1301,voltage_nodes=977,hbt_collector_currents=124,mos_drain_currents=200,save_commands=len(ns["native_save_commands"](vectors))),"expanded exact census")
+def namespace_for_state(state,root=frozen.ROOT,numpy=None):
+    # Frozen definitions retain their ORIGINAL globals dictionary. Never update it.
+    original=frozen.numerical_namespace(root,numpy)
+    original_bind=original["bind_native"]
+    require(original["binding_controls"].__globals__ is original,"original control namespace ownership")
+    ns=dict(original)
+    def bind(text,contract,planes):
+        require(original["bind_native"] is original_bind,"baseline binder was not replaced")
+        return expanded_bind(text,contract,planes,state,original)
+    def controls(text,contract,planes):
+        require(original["bind_native"] is original_bind,"baseline control binder remains original")
+        base=original["binding_controls"](state["baseline_text"],state["baseline_contract"],planes)
+        base.update(original_baseline_only=True,candidate_expansion=expansion_controls(text,contract,planes,state,original))
+        return base
+    ns.update(bind_native=bind,binding_controls=controls)
+    require(ns is not original and original["bind_native"] is original_bind,"separate candidate namespace")
+    return ns
+
 def variant(baseline_paths,candidate_paths,root=frozen.ROOT):
     require(set(baseline_paths)==set(candidate_paths)=={"model","composition","planes"},"complete explicit paths")
     require(all(Path(v).is_absolute()and Path(v).resolve()==Path(v)for v in [*baseline_paths.values(),*candidate_paths.values()]),"unaliased absolute paths")
@@ -127,14 +145,8 @@ def variant(baseline_paths,candidate_paths,root=frozen.ROOT):
         require(Path(paths["planes"]).read_bytes()==Path(baseline_paths["planes"]).read_bytes(),"all original160 planes unchanged")
         return c,records,s["contract"],planes
     def numerical(root=root,numpy=None):
-        ns=frozen.numerical_namespace(root,numpy);_,_,s,planes=state();original=dict(ns)
-        def bind(text,contract,p):return expanded_bind(text,contract,p,s,original)
-        def controls(text,contract,p):
-            base=original["binding_controls"](s["baseline_text"],s["baseline_contract"],p)
-            base.update(original_baseline_only=True,candidate_expansion=expansion_controls(text,contract,p,s,original))
-            return base
-        ns.update(bind_native=bind,binding_controls=controls)
-        return ns
+        _,_,s,_=state()
+        return namespace_for_state(s,root,numpy)
     def block(name,namespace,root=root):
         if name in BLOCK_CHANGES:exec(compile(adapted_text(name,root),"<qualified-parallel-"+name+">","exec"),namespace)
         else:frozen.block(name,namespace,root)

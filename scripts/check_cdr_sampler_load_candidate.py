@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Cloud source qualification, synthetic full500 fixture is never native evidence."""
-import copy,json,os
+import copy,json,os,tempfile
 from pathlib import Path
 import check_cdr_sampler_resistor_base as legacy
 import cloud_cdr_sampler_load as host
@@ -45,6 +45,20 @@ def main():
         try:candidate.verify_projection(bad,projection)
         except ValueError:refused.append(label)
         else:raise AssertionError("accepted projection corruption "+label)
+    # Exercise the SAME compiled binding block and namespace factory as native prepare.
+    adapted=candidate.namespace_for_state(s)
+    with tempfile.TemporaryDirectory(prefix="parallel-binding-source-control-")as directory:
+        model=Path(directory)/"synthetic-candidate.spice";model.write_text(s["text"])
+        adapted.update(model=model,contract=s["contract"],planes=planes,r={},proof={"synthetic":True})
+        frozen.block("binding",adapted)
+    assert adapted["bound"]==bound
+    assert adapted["r"]["binding_controls"]["original_baseline_only"]is True
+    assert len(adapted["r"]["binding_controls"]["rejected"])==13
+    assert adapted["r"]["binding_controls"]["candidate_expansion"]["checks"]==12
+    # Independent factories must not affect one another or the original namespace.
+    second=candidate.namespace_for_state(s)
+    assert second["bind_native"](s["text"],s["contract"],planes)==bound
+    assert ns["bind_native"](s["baseline_text"],s["baseline_contract"],planes)==base
     changes={}
     for name in candidate.BLOCK_CHANGES:
         updated=candidate.adapted_text(name);compile(updated,"<qualified-block>","exec")
@@ -54,7 +68,7 @@ def main():
     assert all(v[k].__code__ is getattr(frozen,k).__code__ for k in v)
     assert before==(frozen.verify_current_inputs,frozen.block,frozen.prepare_case.__globals__)and v["prepare_case"].__globals__["verify_runtime"]is frozen.verify_runtime
     out=Path("cloud-sampler-load-controls")
-    result=dict(status="PASS_PARALLEL_MOS_BINDING_SOURCE_CONTROLS_NOT_NATIVE_SIMULATION",context=ctx,original_baseline_binding_controls=base_controls,candidate_expansion_controls=controls,projection_corruptions_refused=refused,baseline_groups={k:len(v)for k,v in base["groups"].items()},candidate_groups={k:len(v)for k,v in bound["groups"].items()},candidate_vectors=report["vector_census"],original_tail_origins=42,expanded_tail_units=192,unchanged_stage_tail_groups=16,executable_changes=changes,original_prepare_measure_function_bodies_identical=True,native_model_acquired=False,simulation_executed=False,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False)
+    result=dict(status="PASS_PARALLEL_MOS_BINDING_SOURCE_CONTROLS_NOT_NATIVE_SIMULATION",context=ctx,original_baseline_binding_controls=base_controls,candidate_expansion_controls=controls,projection_corruptions_refused=refused,baseline_groups={k:len(v)for k,v in base["groups"].items()},candidate_groups={k:len(v)for k,v in bound["groups"].items()},candidate_vectors=report["vector_census"],original_tail_origins=42,expanded_tail_units=192,unchanged_stage_tail_groups=16,executable_changes=changes,original_prepare_measure_function_bodies_identical=True,actual_compiled_binding_block_exercised=True,isolated_namespace_factories_checked=2,baseline_namespace_unchanged=True,native_model_acquired=False,simulation_executed=False,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False)
     (out/"parallel-controls.json").write_bytes(candidate.encode(result))
     (out/"parallel-binding.json").write_bytes(candidate.encode(bound))
     (out/"parallel-projection.json").write_bytes(candidate.encode(dict(vectors=actual,source_projection_sha256=c["records"]["derived-loaded-vector-projection.json"]["sha256"],native_capture=False)))
