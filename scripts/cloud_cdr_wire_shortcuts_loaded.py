@@ -85,7 +85,7 @@ def frozen():
             ns[name]=types.FunctionType(fn.__code__,ns,fn.__name__,fn.__defaults__,fn.__closure__)
     ns.pop("main",None)
     ns.update(current_configuration=current_configuration,INPUTS=BASIS)
-    need(ns["prepare_case"].__code__ is original.prepare_case.__code__and ns["measure_case"].__code__ is original.measure_case.__code__,"unchanged complete preparation and measurement bodies")
+    need(ns["prepare_case"].__code__ is original.prepare_case.__code__ and ns["measure_case"].__code__ is original.measure_case.__code__,"unchanged complete preparation and measurement bodies")
     return types.SimpleNamespace(**ns)
 def controls():
     gate();b=basis();CONTROLS.mkdir()

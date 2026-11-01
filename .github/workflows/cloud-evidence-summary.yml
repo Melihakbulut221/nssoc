@@ -39,7 +39,9 @@ jobs:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
       - name: Verify unchanged complete numerical methods and current input refusals
-        run: python3 -B scripts/cloud_cdr_wire_shortcuts_loaded.py --controls
+        run: |
+          set -o pipefail
+          python3 -B scripts/cloud_cdr_wire_shortcuts_loaded.py --controls 2>&1 | tee wire-loaded-controls.log
       - name: Preserve complete source-control results
         if: always()
         run: python3 -B scripts/cloud_cdr_wire_shortcuts_loaded.py --derived-controls
@@ -47,7 +49,9 @@ jobs:
         if: always()
         with:
           name: wire-loaded-controls-${{ github.run_id }}
-          path: wire-loaded-controls-derived
+          path: |
+            wire-loaded-controls-derived
+            wire-loaded-controls.log
           if-no-files-found: error
           retention-days: 90
   loaded-wave:
