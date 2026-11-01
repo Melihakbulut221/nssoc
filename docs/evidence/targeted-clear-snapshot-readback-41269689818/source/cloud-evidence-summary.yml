@@ -1,0 +1,40 @@
+name: Failed targeted-clear snapshot readback
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: targeted-readback-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  readback:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/targeted_snapshot_readback.py
+            /scripts/targeted-snapshot-readback-inputs.json
+            /.github/workflows/cloud-evidence-summary.yml
+      - name: Authenticate failed native archive and compare full saved snapshots
+        run: python3 -B scripts/targeted_snapshot_readback.py
+      - name: Preserve readback source
+        if: always()
+        run: |
+          mkdir -p cloud-targeted-snapshot-readback/source
+          cp scripts/targeted_snapshot_readback.py scripts/targeted-snapshot-readback-inputs.json .github/workflows/cloud-evidence-summary.yml cloud-targeted-snapshot-readback/source/
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: targeted-snapshot-readback-${{ github.run_id }}
+          path: cloud-targeted-snapshot-readback
+          if-no-files-found: error
+          retention-days: 90
