@@ -1,39 +1,53 @@
-# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
-# SPDX-License-Identifier: Apache-2.0
-name: cloud-evidence-summary
+name: Derived complete sampler physical instance mapping
 on:
   workflow_dispatch:
     inputs:
-      release:
-        description: Exact release containing the archive
-        default: cloud-migration-20261012-000
-        required: false
-      asset:
-        description: Exact archive asset name
-        default: routed-setup-cloud-38306421942-1.tar.gz
-        required: true
-      member:
-        description: Exact JSON or UTF-8 report member to read
-        default: cloud-routed-setup/result.json
-        required: true
+      mode:
+        type: choice
+        options: [controls, inspect]
+        default: controls
 permissions:
   contents: read
+concurrency:
+  group: sampler-layout-map-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
-  summarize:
+  inspect:
     runs-on: ubuntu-24.04
-    permissions:
-      contents: write
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          ref: ${{ github.sha }}
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr_sampler_layout_map.py
+            /scripts/cdr-sampler-layout-map-inputs.json
+            /.github/workflows/cloud-evidence-summary.yml
+      - name: Exact source and corruption controls
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_RUN_ATTEMPT" = "1"
+          python3 -B scripts/cdr_sampler_layout_map.py --controls
+      - name: Join all original physical and electrical records
+        if: ${{ inputs.mode == 'inspect' }}
+        run: python3 -B scripts/cdr_sampler_layout_map.py
+      - name: Preserve complete source
+        if: always()
+        run: |
+          mkdir -p source-records
+          cp scripts/cdr_sampler_layout_map.py scripts/cdr-sampler-layout-map-inputs.json .github/workflows/cloud-evidence-summary.yml source-records/
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
         with:
-          python-version: '3.12'
-      - name: Read exact report in cloud and publish source binding
-        env:
-          GH_TOKEN: ${{ github.token }}
-          ASSET: ${{ inputs.asset || 'routed-setup-cloud-38306421942-1.tar.gz' }}
-          MEMBER: ${{ inputs.member || 'cloud-routed-setup/result.json' }}
-          RELEASE: ${{ inputs.release || 'cloud-migration-20261012-000' }}
-        run: python3 scripts/summarize_cloud_evidence.py --asset "$ASSET" --member "$MEMBER" --release "$RELEASE"
+          name: sampler-layout-map-${{ github.run_id }}
+          path: |
+            cloud-sampler-layout-map-controls
+            cloud-sampler-layout-map
+            source-records
+          if-no-files-found: error
+          retention-days: 90
