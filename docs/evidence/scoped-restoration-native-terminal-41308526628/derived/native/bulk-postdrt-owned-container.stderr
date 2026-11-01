@@ -1,0 +1,25 @@
+Traceback (most recent call last):
+  File "/work/inner.py", line 86, in <module>
+    if __name__=='__main__':sys.exit(main())
+                                     ^^^^^^
+  File "/work/inner.py", line 84, in main
+    c.finish_record(OUT/'bulk-postdrt-scoped-inner-result.json',report,'FAIL_SCOPED_CLASS_RESTORATION',primary)
+  File "/work/tail-source/scripts/mainchip_witness_engine_build_contract.py", line 205, in finish_record
+    raise primary
+  File "/work/inner.py", line 59, in main
+    value=execute(report,'scoped-'+label,kind,name,1200,runner=runner)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_inner.py", line 118, in execute_phase
+    runner(report,"bulk-postdrt-"+label,phase_command(kind,name,work),seconds)
+  File "/work/inner.py", line 54, in <lambda>
+    runner=lambda rep,label,argv,seconds:base.supervised_run(rep,label,argv,seconds,sup)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_inner.py", line 105, in supervised_run
+    if primary is not None:raise primary
+                           ^^^^^^^^^^^^^
+  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_inner.py", line 90, in supervised_run
+    sup.supervised(argv,label,seconds=seconds,cwd=cwd)
+  File "/work/tail-source/hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/cloud_pcie_gen12_training_records_telemetry.py", line 269, in supervised
+    extra={'vector_sha256':sha(result[0]),'vector_bytes':result[0].stat().st_size,
+             ^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('bulk-postdrt-scoped-restored-audit', 'OpenROAD dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 \nFeatures included (+) or not (-): +GPU -GUI +Python\nThis program is licensed under the BSD-3 license. See the LICENSE file for details.\nComponents of this program may be licensed under more restrictive licenses which must be honored.\n', '{"phase": "restored-audit", "primary": "AssertionError(\'physical connectivity: $abc$1804206$new_n113397/positive_area\')", "terminal_errors": []}\nTraceback (most recent call last):\n  File "/work/tail-source/scripts/mainchip_scoped_counterpart_restoration_native.py", line 69, in <module>\n    if __name__==\'__main__\':main()\n                            ^^^^^^\n  File "/work/tail-source/scripts/mainchip_scoped_counterpart_restoration_native.py", line 67, in main\n    container.clone(native.main,phase=original_phase)()\n  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 431, in main\n    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,"input unchanged"),\n  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 148, in run_phase\n    if primary is not None:raise primary\n                           ^^^^^^^^^^^^^\n  File "/work/tail-source/scripts/mainchip_single_antenna_trial.py", line 135, in run_phase\n    try:action()\n        ^^^^^^^^\n  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 431, in <lambda>\n    p.run_phase(args.phase,lambda:phase(args),lambda:p.exact(fp(args.input),p.INPUT,"input unchanged"),\n                                  ^^^^^^^^^^^\n  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 393, in phase\n    save(out/"connectivity-summary.json",connectivity(work/"candidate.odb",plan,out))\n                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/work/tail-source/scripts/mainchip_targeted_counterpart_routing_native.py", line 156, in connectivity\n    return native.connectivity(path, checked(argument), out)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna_native.py", line 335, in connectivity\n    return p.validate_connectivity(result,plan)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py", line 240, in validate_connectivity\n    require(row["mode"]==mode and row["all_pins_share_one_wire_component"]is True\n  File "/work/tail-source/scripts/mainchip_bulk_postdrt_antenna.py", line 37, in require\n    if not ok:raise AssertionError(message)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: physical connectivity: $abc$1804206$new_n113397/positive_area\n')
