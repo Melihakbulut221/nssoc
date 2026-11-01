@@ -1,0 +1,103 @@
+name: Existing native clock path and sampler settling diagnosis
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        description: Controls only or diagnosis of the existing complete native waveform
+        options: [controls, diagnose]
+        default: controls
+permissions:
+  contents: read
+concurrency:
+  group: cdr-clock-path-diagnostic-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  OMP_NUM_THREADS: '1'
+  OPENBLAS_NUM_THREADS: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr_via2_m3_wave_diagnostic.py
+            /scripts/check_cdr_via2_m3_wave_diagnostic.py
+            /scripts/cdr-via2-m3-wave-diagnostic-inputs.json
+            /scripts/cdr-via2-m3-wave-original-stream.py
+            /scripts/cdr_clock_path_diagnostic.py
+            /scripts/check_cdr_clock_path_diagnostic.py
+            /docs/cdr-clock-path-diagnostic.md
+            /docs/cdr-via2-m3-wave-diagnostic.md
+            /.github/workflows/cloud-evidence-summary.yml
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
+      - name: Exact source and complete frozen-reader/extraction/measurement controls
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_RUN_ATTEMPT" = "1"
+          mkdir cloud-clock-path-controls
+          python3 -B scripts/check_cdr_via2_m3_wave_diagnostic.py 2>&1 | tee cloud-clock-path-controls/original-tests.log
+          python3 -B scripts/check_cdr_clock_path_diagnostic.py 2>&1 | tee cloud-clock-path-controls/clock-tests.log
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: clock-path-controls-${{ github.run_id }}
+          path: cloud-clock-path-controls
+          if-no-files-found: error
+          retention-days: 90
+  diagnose:
+    if: ${{ inputs.mode == 'diagnose' }}
+    needs: source-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr_via2_m3_wave_diagnostic.py
+            /scripts/check_cdr_via2_m3_wave_diagnostic.py
+            /scripts/cdr-via2-m3-wave-diagnostic-inputs.json
+            /scripts/cdr-via2-m3-wave-original-stream.py
+            /scripts/cdr_clock_path_diagnostic.py
+            /scripts/check_cdr_clock_path_diagnostic.py
+            /docs/cdr-clock-path-diagnostic.md
+            /docs/cdr-via2-m3-wave-diagnostic.md
+            /.github/workflows/cloud-evidence-summary.yml
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
+      - name: Diagnose original raw with unchanged reader and original gates
+        id: diagnosis
+        run: python3 -B scripts/cdr_clock_path_diagnostic.py
+      - name: Preserve complete derived results and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-clock-path-diagnostic-${{ github.run_id }}-${{ github.run_attempt }}
+          path: cloud-clock-path-diagnostic
+          if-no-files-found: error
+          retention-days: 90
+      - name: Preserve runner-only partial native acquisition if diagnosis failed
+        if: failure() && steps.diagnosis.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-clock-path-native-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/nssoc-clock-path-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 90
