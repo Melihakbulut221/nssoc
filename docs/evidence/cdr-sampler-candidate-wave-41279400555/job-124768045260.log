@@ -1,0 +1,294 @@
+﻿2026-11-01T06:05:36.2581772Z Current runner version: '2.338.2'
+2026-11-01T06:05:36.2608468Z ##[group]Runner Image Provisioner
+2026-11-01T06:05:36.2609433Z Hosted Compute Agent
+2026-11-01T06:05:36.2610163Z Version: 20261021.618
+2026-11-01T06:05:36.2610911Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-01T06:05:36.2611677Z Build Date: 2026-10-21T00:45:21Z
+2026-11-01T06:05:36.2612725Z Worker ID: {e0ad52b5-0f86-4cb1-9f96-27e1724e322f}
+2026-11-01T06:05:36.2613510Z Region: westcentralus
+2026-11-01T06:05:36.2614169Z Cloud: Azure
+2026-11-01T06:05:36.2614818Z ##[endgroup]
+2026-11-01T06:05:36.2616251Z ##[group]Operating System
+2026-11-01T06:05:36.2617051Z Ubuntu
+2026-11-01T06:05:36.2617623Z 24.04.5
+2026-11-01T06:05:36.2618237Z LTS
+2026-11-01T06:05:36.2618861Z ##[endgroup]
+2026-11-01T06:05:36.2619499Z ##[group]Runner Image
+2026-11-01T06:05:36.2620217Z Image: ubuntu-24.04
+2026-11-01T06:05:36.2620842Z Version: 20261025.353.1
+2026-11-01T06:05:36.2622253Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-01T06:05:36.2624075Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-11-01T06:05:36.2625188Z ##[endgroup]
+2026-11-01T06:05:36.2626416Z ##[group]GITHUB_TOKEN Permissions
+2026-11-01T06:05:36.2628425Z Contents: read
+2026-11-01T06:05:36.2629110Z Metadata: read
+2026-11-01T06:05:36.2630146Z ##[endgroup]
+2026-11-01T06:05:36.2632408Z Secret source: Actions
+2026-11-01T06:05:36.2633627Z Cache mode: write
+2026-11-01T06:05:36.2634522Z Prepare workflow directory
+2026-11-01T06:05:36.3070013Z Prepare all required actions
+2026-11-01T06:05:36.3117855Z Getting action download info
+2026-11-01T06:05:36.6018435Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-11-01T06:05:36.7250618Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-11-01T06:05:36.8044675Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-01T06:05:37.0194171Z Complete job name: source-controls
+2026-11-01T06:05:37.1042070Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-11-01T06:05:37.1043499Z with:
+2026-11-01T06:05:37.1044004Z   ref: c421cc577281d78441fd51c6db160020e990a62c
+2026-11-01T06:05:37.1044638Z   persist-credentials: false
+2026-11-01T06:05:37.1045160Z   filter: blob:none
+2026-11-01T06:05:37.1045643Z   sparse-checkout-cone-mode: false
+2026-11-01T06:05:37.1048301Z   sparse-checkout: /scripts/cdr_sampler_transfer.py
+/scripts/check_cdr_sampler_transfer.py
+/scripts/cdr_sampler_candidate_wave.py
+/scripts/check_cdr_sampler_candidate_wave.py
+/scripts/check_cdr_sampler_candidate_frozen.py
+/scripts/cdr-sampler-candidate-wave-inputs.json
+/scripts/cdr-via2-m3-wave-original-stream.py
+/docs/cdr-sampler-candidate-wave.md
+/.github/workflows/cloud-evidence-summary.yml
+
+2026-11-01T06:05:37.1051118Z   repository: Melihakbulut221/nssoc
+2026-11-01T06:05:37.1055046Z   token: ***
+2026-11-01T06:05:37.1055504Z   ssh-strict: true
+2026-11-01T06:05:37.1055977Z   ssh-user: git
+2026-11-01T06:05:37.1056449Z   clean: true
+2026-11-01T06:05:37.1056890Z   fetch-depth: 1
+2026-11-01T06:05:37.1057345Z   fetch-tags: false
+2026-11-01T06:05:37.1057807Z   show-progress: true
+2026-11-01T06:05:37.1058272Z   lfs: false
+2026-11-01T06:05:37.1058697Z   submodules: false
+2026-11-01T06:05:37.1059162Z   set-safe-directory: true
+2026-11-01T06:05:37.1059944Z env:
+2026-11-01T06:05:37.1060375Z   OMP_NUM_THREADS: 1
+2026-11-01T06:05:37.1060851Z   OPENBLAS_NUM_THREADS: 1
+2026-11-01T06:05:37.1061335Z ##[endgroup]
+2026-11-01T06:05:37.3113563Z Syncing repository: Melihakbulut221/nssoc
+2026-11-01T06:05:37.3116272Z ##[group]Getting Git version info
+2026-11-01T06:05:37.3117681Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-11-01T06:05:37.3119362Z [command]/usr/bin/git version
+2026-11-01T06:05:37.3162104Z git version 2.56.0
+2026-11-01T06:05:37.3193607Z ##[endgroup]
+2026-11-01T06:05:37.3213413Z Temporarily overriding HOME='/home/runner/work/_temp/6b7d4e89-1edd-4609-a871-3fab18a31cac' before making global git config changes
+2026-11-01T06:05:37.3215987Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-01T06:05:37.3220736Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-11-01T06:05:37.3283932Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-11-01T06:05:37.3296891Z ##[group]Initializing the repository
+2026-11-01T06:05:37.3303739Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-11-01T06:05:37.3434778Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-01T06:05:37.3437415Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-01T06:05:37.3438888Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-01T06:05:37.3440108Z hint: call:
+2026-11-01T06:05:37.3440716Z hint:
+2026-11-01T06:05:37.3441499Z hint: 	git config --global init.defaultBranch <name>
+2026-11-01T06:05:37.3442461Z hint:
+2026-11-01T06:05:37.3443560Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-01T06:05:37.3445065Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-01T06:05:37.3446272Z hint:
+2026-11-01T06:05:37.3446983Z hint: 	git branch -m <name>
+2026-11-01T06:05:37.3447820Z hint:
+2026-11-01T06:05:37.3448838Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-01T06:05:37.3463714Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-11-01T06:05:37.3468733Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-11-01T06:05:37.3526671Z ##[endgroup]
+2026-11-01T06:05:37.3528120Z ##[group]Disabling automatic garbage collection
+2026-11-01T06:05:37.3533205Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-01T06:05:37.3588709Z ##[endgroup]
+2026-11-01T06:05:37.3590382Z ##[group]Setting up auth
+2026-11-01T06:05:37.3592034Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-01T06:05:37.3644063Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-01T06:05:37.4057419Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-01T06:05:37.4116030Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-01T06:05:37.4382119Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-01T06:05:37.4436905Z ##[endgroup]
+2026-11-01T06:05:37.4438188Z ##[group]Fetching the repository
+2026-11-01T06:05:37.4449679Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --filter=blob:none --depth=1 origin c421cc577281d78441fd51c6db160020e990a62c
+2026-11-01T06:05:38.1360054Z From https://github.com/Melihakbulut221/nssoc
+2026-11-01T06:05:38.1364782Z  * branch            c421cc577281d78441fd51c6db160020e990a62c -> FETCH_HEAD
+2026-11-01T06:05:38.1369295Z ##[endgroup]
+2026-11-01T06:05:38.1370640Z ##[group]Determining the checkout info
+2026-11-01T06:05:38.1373900Z ##[endgroup]
+2026-11-01T06:05:38.1375139Z ##[group]Setting up sparse checkout
+2026-11-01T06:05:38.1376186Z [command]/usr/bin/git config core.sparseCheckout true
+2026-11-01T06:05:38.1429763Z [command]/usr/bin/git rev-parse --git-path info/sparse-checkout
+2026-11-01T06:05:38.1465680Z .git/info/sparse-checkout
+2026-11-01T06:05:38.1475939Z ##[endgroup]
+2026-11-01T06:05:38.1483978Z ##[group]Checking out the ref
+2026-11-01T06:05:38.1494611Z [command]/usr/bin/git checkout --progress --force c421cc577281d78441fd51c6db160020e990a62c
+2026-11-01T06:05:38.8910338Z Note: switching to 'c421cc577281d78441fd51c6db160020e990a62c'.
+2026-11-01T06:05:38.8910879Z 
+2026-11-01T06:05:38.8911277Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-01T06:05:38.8911931Z changes and commit them, and you can discard any commits you make in this
+2026-11-01T06:05:38.8912811Z state without impacting any branches by switching back to a branch.
+2026-11-01T06:05:38.8913175Z 
+2026-11-01T06:05:38.8913429Z If you want to create a new branch to retain commits you create, you may
+2026-11-01T06:05:38.8914043Z do so (now or later) by using -c with the switch command. Example:
+2026-11-01T06:05:38.8914358Z 
+2026-11-01T06:05:38.8914530Z   git switch -c <new-branch-name>
+2026-11-01T06:05:38.8914793Z 
+2026-11-01T06:05:38.8915025Z Or undo this operation with:
+2026-11-01T06:05:38.8915260Z 
+2026-11-01T06:05:38.8915405Z   git switch -
+2026-11-01T06:05:38.8915603Z 
+2026-11-01T06:05:38.8915882Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-01T06:05:38.8916279Z 
+2026-11-01T06:05:38.8916738Z HEAD is now at c421cc5 Measure original-master q15 loaded transfer crossings under unchanged original gates [skip ci]
+2026-11-01T06:05:38.8933952Z ##[endgroup]
+2026-11-01T06:05:38.8995123Z [command]/usr/bin/git log -1 --format=%H
+2026-11-01T06:05:38.9045343Z c421cc577281d78441fd51c6db160020e990a62c
+2026-11-01T06:05:38.9056560Z ##[group]Removing auth
+2026-11-01T06:05:38.9059999Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-01T06:05:38.9105349Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-01T06:05:38.9459042Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-01T06:05:38.9498475Z http.https://github.com/.extraheader
+2026-11-01T06:05:38.9506243Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-01T06:05:38.9553219Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-01T06:05:38.9899846Z ##[endgroup]
+2026-11-01T06:05:39.0165756Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-11-01T06:05:39.0166218Z with:
+2026-11-01T06:05:39.0166484Z   python-version: 3.12
+2026-11-01T06:05:39.0166778Z   check-latest: false
+2026-11-01T06:05:39.0169058Z   token: ***
+2026-11-01T06:05:39.0169331Z   update-environment: true
+2026-11-01T06:05:39.0169632Z   allow-prereleases: false
+2026-11-01T06:05:39.0169914Z   freethreaded: false
+2026-11-01T06:05:39.0170177Z env:
+2026-11-01T06:05:39.0170422Z   OMP_NUM_THREADS: 1
+2026-11-01T06:05:39.0170700Z   OPENBLAS_NUM_THREADS: 1
+2026-11-01T06:05:39.0170978Z ##[endgroup]
+2026-11-01T06:05:39.1659125Z ##[group]Installed versions
+2026-11-01T06:05:39.1754890Z (node:2424) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-01T06:05:39.1756191Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-01T06:05:39.1756890Z Successfully set up CPython (3.12.15)
+2026-11-01T06:05:39.1757864Z ##[endgroup]
+2026-11-01T06:05:39.1874767Z ##[group]Run python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
+2026-11-01T06:05:39.1875581Z [36;1mpython3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3[0m
+2026-11-01T06:05:39.1910428Z shell: /usr/bin/bash -e {0}
+2026-11-01T06:05:39.1910775Z env:
+2026-11-01T06:05:39.1911034Z   OMP_NUM_THREADS: 1
+2026-11-01T06:05:39.1911322Z   OPENBLAS_NUM_THREADS: 1
+2026-11-01T06:05:39.1911760Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T06:05:39.1912274Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-01T06:05:39.1913181Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T06:05:39.1913617Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T06:05:39.1914122Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T06:05:39.1914657Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-01T06:05:39.1915101Z ##[endgroup]
+2026-11-01T06:05:40.0629286Z Collecting numpy==2.3.3
+2026-11-01T06:05:40.1767979Z   Downloading numpy-2.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+2026-11-01T06:05:40.2377874Z Downloading numpy-2.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.6 MB)
+2026-11-01T06:05:40.3719929Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.6/16.6 MB 153.5 MB/s  0:00:00
+2026-11-01T06:05:40.4453930Z Installing collected packages: numpy
+2026-11-01T06:05:42.4159836Z Successfully installed numpy-2.3.3
+2026-11-01T06:05:42.4704164Z ##[group]Run set -euo pipefail
+2026-11-01T06:05:42.4704545Z [36;1mset -euo pipefail[0m
+2026-11-01T06:05:42.4704842Z [36;1mtest "$(git rev-parse HEAD)" = "$GITHUB_SHA"[0m
+2026-11-01T06:05:42.4705182Z [36;1mtest "$GITHUB_RUN_ATTEMPT" = "1"[0m
+2026-11-01T06:05:42.4705527Z [36;1mmkdir cloud-sampler-candidate-controls[0m
+2026-11-01T06:05:42.4706107Z [36;1mpython3 -B scripts/check_cdr_sampler_candidate_frozen.py 2>&1 | tee cloud-sampler-candidate-controls/frozen.log[0m
+2026-11-01T06:05:42.4706867Z [36;1mpython3 -B scripts/check_cdr_sampler_candidate_wave.py 2>&1 | tee cloud-sampler-candidate-controls/events.log[0m
+2026-11-01T06:05:42.4707596Z [36;1mpython3 -B scripts/check_cdr_sampler_transfer.py 2>&1 | tee cloud-sampler-candidate-controls/transfer.log[0m
+2026-11-01T06:05:42.4730820Z shell: /usr/bin/bash -e {0}
+2026-11-01T06:05:42.4731104Z env:
+2026-11-01T06:05:42.4731320Z   OMP_NUM_THREADS: 1
+2026-11-01T06:05:42.4731550Z   OPENBLAS_NUM_THREADS: 1
+2026-11-01T06:05:42.4731904Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T06:05:42.4732362Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-01T06:05:42.4733110Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T06:05:42.4733498Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T06:05:42.4733876Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T06:05:42.4734281Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-01T06:05:42.4734610Z ##[endgroup]
+2026-11-01T06:05:42.6444831Z test_archive_all_members_and_selected_only (__main__.Controls.test_archive_all_members_and_selected_only) ... ok
+2026-11-01T06:05:42.6483853Z test_archive_corruption_ownership_and_missing_refusals (__main__.Controls.test_archive_corruption_ownership_and_missing_refusals) ... ok
+2026-11-01T06:05:42.6566310Z test_frozen_reader_complete_alias_and_digest (__main__.Controls.test_frozen_reader_complete_alias_and_digest) ... ok
+2026-11-01T06:05:42.6893648Z test_frozen_reader_refusals (__main__.Controls.test_frozen_reader_refusals) ... ok
+2026-11-01T06:05:42.6898259Z test_known_headroom_event_and_active_mask (__main__.Controls.test_known_headroom_event_and_active_mask) ... ok
+2026-11-01T06:05:42.6900875Z test_original_reader_pin (__main__.Controls.test_original_reader_pin) ... ok
+2026-11-01T06:05:42.6907084Z test_sample_sign_margin_and_complete_delays (__main__.Controls.test_sample_sign_margin_and_complete_delays) ... ok
+2026-11-01T06:05:42.6907972Z 
+2026-11-01T06:05:42.6908226Z ----------------------------------------------------------------------
+2026-11-01T06:05:42.6908762Z Ran 7 tests in 0.049s
+2026-11-01T06:05:42.6908986Z 
+2026-11-01T06:05:42.6909105Z OK
+2026-11-01T06:05:42.6909564Z WAVE_DIAG_CONTROLS {"tests": 7, "failures": 0, "errors": 0, "skips": 0}
+2026-11-01T06:05:42.8578137Z test_all_intervals_preserved (__main__.Events.test_all_intervals_preserved) ... ok
+2026-11-01T06:05:42.8580969Z test_inclusive_limits (__main__.Events.test_inclusive_limits) ... ok
+2026-11-01T06:05:42.8584848Z test_invalid_axes_refused (__main__.Events.test_invalid_axes_refused) ... ok
+2026-11-01T06:05:42.8588220Z test_minimum_active_only (__main__.Events.test_minimum_active_only) ... ok
+2026-11-01T06:05:42.8590605Z test_negative_voltage_absolute_limit (__main__.Events.test_negative_voltage_absolute_limit) ... ok
+2026-11-01T06:05:42.8592422Z test_no_false_positive (__main__.Events.test_no_false_positive) ... ok
+2026-11-01T06:05:42.8595034Z test_operating_point_missing_or_nonfinite_vector_refused (__main__.Events.test_operating_point_missing_or_nonfinite_vector_refused) ... ok
+2026-11-01T06:05:42.8596743Z test_operating_point_outside_capture_refused (__main__.Events.test_operating_point_outside_capture_refused) ... ok
+2026-11-01T06:05:42.8598699Z test_operating_point_same_time_interpolation (__main__.Events.test_operating_point_same_time_interpolation) ... ok
+2026-11-01T06:05:42.8600741Z test_operating_point_time_axis_refused (__main__.Events.test_operating_point_time_axis_refused) ... ok
+2026-11-01T06:05:42.8603075Z test_startup_maximum_is_not_filtered (__main__.Events.test_startup_maximum_is_not_filtered) ... ok
+2026-11-01T06:05:42.8605559Z test_vbe_and_per_emitter_current (__main__.Events.test_vbe_and_per_emitter_current) ... ok
+2026-11-01T06:05:42.8607192Z test_wrong_case_identity_refused (__main__.Events.test_wrong_case_identity_refused) ... ok
+2026-11-01T06:05:42.8607914Z 
+2026-11-01T06:05:42.8608343Z ----------------------------------------------------------------------
+2026-11-01T06:05:42.8608932Z Ran 13 tests in 0.004s
+2026-11-01T06:05:42.8609136Z 
+2026-11-01T06:05:42.8609257Z OK
+2026-11-01T06:05:42.8609723Z CANDIDATE_EVENTS_CONTROLS {"tests": 13, "failures": 0, "errors": 0, "skips": 0}
+2026-11-01T06:05:43.0104890Z test_ambiguity_and_preceding_event_retained (__main__.Transfer.test_ambiguity_and_preceding_event_retained) ... ok
+2026-11-01T06:05:43.0152742Z test_delayed_and_missing_events (__main__.Transfer.test_delayed_and_missing_events) ... ok
+2026-11-01T06:05:43.0154374Z test_interpolated_crossings_and_hysteresis (__main__.Transfer.test_interpolated_crossings_and_hysteresis) ... ok
+2026-11-01T06:05:43.0156091Z test_invalid_capture_and_order_refused (__main__.Transfer.test_invalid_capture_and_order_refused) ... ok
+2026-11-01T06:05:43.0157741Z test_no_match_crosses_next_source_transition (__main__.Transfer.test_no_match_crosses_next_source_transition) ... ok
+2026-11-01T06:05:43.0163898Z test_subthreshold_chatter_does_not_create_transitions (__main__.Transfer.test_subthreshold_chatter_does_not_create_transitions) ... ok
+2026-11-01T06:05:43.0165689Z test_topology_requires_parallel_cap_and_real_ground (__main__.Transfer.test_topology_requires_parallel_cap_and_real_ground) ... ok
+2026-11-01T06:05:43.0166641Z 
+2026-11-01T06:05:43.0167088Z ----------------------------------------------------------------------
+2026-11-01T06:05:43.0167939Z Ran 7 tests in 0.006s
+2026-11-01T06:05:43.0168223Z 
+2026-11-01T06:05:43.0168355Z OK
+2026-11-01T06:05:43.0168861Z TRANSFER_CONTROLS {"tests": 7, "failures": 0, "errors": 0, "skips": 0}
+2026-11-01T06:05:43.0390917Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-01T06:05:43.0391349Z with:
+2026-11-01T06:05:43.0391605Z   name: sampler-candidate-wave-controls-41279400555
+2026-11-01T06:05:43.0391966Z   path: cloud-sampler-candidate-controls
+2026-11-01T06:05:43.0392270Z   if-no-files-found: error
+2026-11-01T06:05:43.0392767Z   retention-days: 90
+2026-11-01T06:05:43.0393033Z   compression-level: 6
+2026-11-01T06:05:43.0393268Z   overwrite: false
+2026-11-01T06:05:43.0393494Z   include-hidden-files: false
+2026-11-01T06:05:43.0393738Z env:
+2026-11-01T06:05:43.0393928Z   OMP_NUM_THREADS: 1
+2026-11-01T06:05:43.0394146Z   OPENBLAS_NUM_THREADS: 1
+2026-11-01T06:05:43.0394440Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T06:05:43.0394886Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-01T06:05:43.0395307Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T06:05:43.0395725Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T06:05:43.0396300Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T06:05:43.0396681Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-01T06:05:43.0397009Z ##[endgroup]
+2026-11-01T06:05:43.2058407Z (node:2469) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-01T06:05:43.2059536Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-01T06:05:43.2133680Z With the provided path, there will be 3 files uploaded
+2026-11-01T06:05:43.2138990Z Artifact name is valid!
+2026-11-01T06:05:43.2139972Z Root directory input is valid!
+2026-11-01T06:05:43.5258722Z Beginning upload of artifact content to blob storage
+2026-11-01T06:05:43.5485424Z (node:2469) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-01T06:05:43.7499508Z Uploaded bytes 1368
+2026-11-01T06:05:43.8076475Z Finished uploading artifact content to blob storage!
+2026-11-01T06:05:43.8077656Z SHA256 digest of uploaded artifact zip is 700b78de1e6cb60e9f3ee137cee6da9e4c23e848c69b18bf2fb21389a6a2028a
+2026-11-01T06:05:43.8078923Z Finalizing artifact upload
+2026-11-01T06:05:44.3049485Z Artifact sampler-candidate-wave-controls-41279400555.zip successfully finalized. Artifact ID 13072453392
+2026-11-01T06:05:44.3050758Z Artifact sampler-candidate-wave-controls-41279400555 has been successfully uploaded! Final size is 1368 bytes. Artifact ID is 13072453392
+2026-11-01T06:05:44.3058073Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/41279400555/artifacts/13072453392
+2026-11-01T06:05:44.3253619Z Post job cleanup.
+2026-11-01T06:05:44.4510154Z (node:2482) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-01T06:05:44.4511256Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-01T06:05:44.4741727Z Post job cleanup.
+2026-11-01T06:05:44.5734034Z [command]/usr/bin/git version
+2026-11-01T06:05:44.5791679Z git version 2.56.0
+2026-11-01T06:05:44.5836282Z Temporarily overriding HOME='/home/runner/work/_temp/93e8343d-de1f-461c-8f2c-ecf71de96df7' before making global git config changes
+2026-11-01T06:05:44.5837791Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-01T06:05:44.5845241Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-11-01T06:05:44.5891779Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-01T06:05:44.5940398Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-01T06:05:44.6380906Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-01T06:05:44.6439150Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-01T06:05:44.6983517Z Cleaning up orphan processes
+2026-11-01T06:05:44.7372938Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
