@@ -21,7 +21,8 @@ def selected(n):
   "bulk-postdrt-antenna/route-delta.json","bulk-postdrt-antenna/new-diode-direct-pg-contacts.json",
   "work/bulk-postdrt-antenna/final-counts.json","work/bulk-postdrt-antenna/final-drc.rpt",
   "work/bulk-postdrt-antenna/final-drc-reread.rpt"}
- return n in fixed or n.startswith("bulk-postdrt-antenna/final")and n.endswith(".json")
+ fixed.update("bulk-postdrt-antenna/"+name for name in ("final-antenna-summary.json","final-antenna-violations.json","final-audit-terminal.json","final-drc-markers.json","final-drc.json"))
+ return n in fixed
 def outline(value,depth=0):
  if isinstance(value,dict):return {k:outline(v,depth+1)for k,v in value.items()}
  if isinstance(value,list):return dict(type="list",count=len(value),examples=[outline(x,depth+1)for x in value[:3]]if depth<3 else [])
@@ -33,6 +34,10 @@ def main():
  assert subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()==os.environ["GITHUB_SHA"]
  pins=json.loads((ROOT/"scripts/mainchip-qualified-terminal-pins.json").read_bytes())
  for name,pin in pins.items():assert fp(ROOT/name)==pin,("source",name)
+ assert selected("bulk-postdrt-antenna/final-antenna-violations.json")
+ assert selected("bulk-postdrt-antenna/final-drc-markers.json")
+ assert not selected("bulk-postdrt-antenna/final-antenna-nets.json")
+ assert not selected("bulk-postdrt-antenna/final-unexpected.json")
  OUT.mkdir(exist_ok=False)
  inputs=json.loads((ROOT/"scripts/mainchip-qualified-terminal-inputs.json").read_bytes())
  run=api("actions/runs/"+str(RUN));assert run["head_sha"]==SOURCE and run["status"]=="completed"and run["conclusion"]=="failure"and run["run_attempt"]==1
