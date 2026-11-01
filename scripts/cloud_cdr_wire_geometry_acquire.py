@@ -58,6 +58,7 @@ def acquire(cfg):
       "binding/inputs/wire/native05/wires.l2n","binding/inputs/wire/native05/wires.gds",
       "binding/inputs/parent/layout/result.json","binding/inputs/parent/layout/schematic.cir",
       "binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.lef"}
+    selected|={n for n in cfg["complete_members"]if n.startswith("binding/inputs/")}
     with tarfile.open(archive,"r|gz")as tar:
         for m in tar:
             need(m.name not in names,"duplicate member");names.add(m.name)

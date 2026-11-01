@@ -1,11 +1,11 @@
-name: Full physical verification of six wire shortcuts
+name: Fresh native connectivity view of six shortcuts
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-wire-shortcuts-physical-${{ github.ref }}
+  group: cdr-wire-shortcuts-canonical-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -21,13 +21,13 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/cdr-wire-shortcuts-physical-pins.json
+            /scripts/cdr-wire-shortcuts-canonical-pins.json
       - name: Materialize exact current source closure
         run: |
           python3 -B - <<'PY'
           import json,subprocess
           from pathlib import Path
-          manifest='scripts/cdr-wire-shortcuts-physical-pins.json'
+          manifest='scripts/cdr-wire-shortcuts-canonical-pins.json'
           pins=json.loads(Path(manifest).read_bytes())
           names=sorted(set(pins['files'])|{manifest})
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
@@ -35,16 +35,16 @@ jobs:
           PY
       - name: Install pinned control libraries
         run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1
-      - name: Qualify all original geometry controls and unchanged physical checker
-        run: python3 -B scripts/cloud_cdr_wire_shortcuts_physical.py --controls
+      - name: Qualify original geometry and new canonical material controls
+        run: python3 -B scripts/cloud_cdr_wire_shortcuts_canonical.py --controls
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: wire-physical-controls-${{ github.run_id }}
-          path: hw/soc/out/cloud-cdr-wire-shortcuts-physical
+          name: wire-canonical-controls-${{ github.run_id }}
+          path: hw/soc/out/cloud-cdr-wire-shortcuts-canonical
           if-no-files-found: error
           retention-days: 90
-  native-physical:
+  native-canonical:
     needs: source-controls
     runs-on: ubuntu-24.04
     timeout-minutes: 180
@@ -61,13 +61,13 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/cdr-wire-shortcuts-physical-pins.json
+            /scripts/cdr-wire-shortcuts-canonical-pins.json
       - name: Materialize exact current source closure
         run: |
           python3 -B - <<'PY'
           import json,subprocess
           from pathlib import Path
-          manifest='scripts/cdr-wire-shortcuts-physical-pins.json'
+          manifest='scripts/cdr-wire-shortcuts-canonical-pins.json'
           pins=json.loads(Path(manifest).read_bytes())
           names=sorted(set(pins['files'])|{manifest})
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
@@ -80,7 +80,7 @@ jobs:
         run: |
           python3 -B - <<'PY'
           import json,os,subprocess,time
-          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-cdr-wire-shortcuts-physical'
+          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-cdr-wire-shortcuts-canonical'
           for i in range(120):
               p=subprocess.run(['gh','api','repos/Melihakbulut221/nssoc/releases/tags/'+tag],capture_output=True,text=True)
               if p.returncode==0:
@@ -111,7 +111,7 @@ jobs:
           from pathlib import Path
           e=os.environ
           assert e['GITHUB_ACTIONS']=='true' and e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
-          assert e['GITHUB_REF']=='refs/heads/codex/cdr-wire-shortcuts-physical' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr-wire-shortcuts-canonical' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert re.fullmatch('[1-9][0-9]*',e['GITHUB_RUN_ID']) and re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA'])
           app=Path(e['RUNNER_TEMP'])/'current-tail-physical.AppImage'
           assert app==Path('/home/runner/work/_temp/current-tail-physical.AppImage') and app.is_file() and not app.is_symlink()
@@ -138,29 +138,29 @@ jobs:
           Path('current-cdr-runtime-policy.json').write_text(json.dumps(proof,sort_keys=True,indent=2)+'\n')
           print(json.dumps(proof,sort_keys=True))
           PY
-      - name: Verify actual new GDS with full native DRC deep flat LVS and faults
-        run: python3 -B scripts/cloud_cdr_wire_shortcuts_physical.py --verify
-      - name: Permanently preserve complete physical success or failure
+      - name: Rebuild actual native wire graph anchors and full layer identity
+        run: python3 -B scripts/cloud_cdr_wire_shortcuts_canonical.py --verify
+      - name: Permanently preserve complete native view success or failure
         if: always() && steps.reserve.outcome == 'success'
-        run: python3 -B scripts/cloud_cdr_wire_shortcuts_physical.py --publish
+        run: python3 -B scripts/cloud_cdr_wire_shortcuts_canonical.py --publish
       - name: Select derived text only
         if: always()
-        run: python3 -B scripts/cloud_cdr_wire_shortcuts_physical.py --derived
+        run: python3 -B scripts/cloud_cdr_wire_shortcuts_canonical.py --derived
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: wire-physical-derived-${{ github.run_id }}
-          path: wire-physical-derived
+          name: wire-canonical-derived-${{ github.run_id }}
+          path: wire-canonical-derived
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: wire-physical-native-fallback-${{ github.run_id }}
+          name: wire-canonical-native-fallback-${{ github.run_id }}
           path: |
-            hw/soc/out/cloud-cdr-wire-shortcuts-physical
-            wire-physical-publication
-            wire-physical-candidate-cache
+            hw/soc/out/cloud-cdr-wire-shortcuts-canonical
+            wire-canonical-publication
+            canonical-physical-cache
             wire-native-cache
           if-no-files-found: warn
           retention-days: 90
