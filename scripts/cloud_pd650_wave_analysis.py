@@ -102,8 +102,21 @@ def controls():
             compare(actual,ns["measure"]("p","n",bits,edges,phases,limit))
             assert len(events)==4
             passed.append("exact original measure "+str(bits)+str(phases))
-    assert len(passed)==14
+    assert relative_member("cloud-sampler-load/native/case/wave.raw","cloud-sampler-load")=="native/case/wave.raw"
+    passed.append("exact producer archive prefix")
+    for bad in ("native/wave.raw","/cloud-sampler-load/native/x","cloud-sampler-load/../x",
+                "cloud-sampler-load//native/x","cloud-sampler-load"):
+        try:relative_member(bad,"cloud-sampler-load")
+        except AssertionError:passed.append("reject archive path "+bad)
+        else:raise AssertionError("Accepted archive path "+bad)
+    assert len(passed)==20
     return dict(status="PASS_SOURCE_READER_AND_ORIGINAL_MEASUREMENT_CONTROLS",source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),count=len(passed),passed=passed,native_simulation=False)
+def relative_member(name,source_directory):
+    assert source_directory=="cloud-sampler-load"
+    path=PurePosixPath(name)
+    assert str(path)==name and not path.is_absolute()and ".."not in path.parts
+    assert len(path.parts)>=2 and path.parts[0]==source_directory
+    return "/".join(path.parts[1:])
 def acquire(work):
     inputs=json.loads((ROOT/"scripts/pd650-wave-analysis-inputs.json").read_bytes())
     run=api("actions/runs/"+str(PRODUCER_RUN))
@@ -133,9 +146,10 @@ def acquire(work):
             assert not p.is_absolute()and ".."not in p.parts and member.name not in members
             members.add(member.name)
             if member.isdir():continue
-            assert member.isfile()and member.name in index["files"]
-            selected=member.name in SELECTED
-            target=work/"selected"/member.name
+            name=relative_member(member.name,parts["source_directory"])
+            assert member.isfile()and name in index["files"]and name not in seen
+            selected=name in SELECTED
+            target=work/"selected"/name
             if selected:target.parent.mkdir(parents=True,exist_ok=True)
             out=target.open("xb")if selected else None;h=hashlib.sha256();n=0
             try:
@@ -145,8 +159,8 @@ def acquire(work):
                     if out:out.write(b)
             finally:
                 if out:out.close()
-            pin=dict(bytes=n,sha256=h.hexdigest());assert pin==index["files"][member.name],member.name
-            seen[member.name]=pin
+            pin=dict(bytes=n,sha256=h.hexdigest());assert pin==index["files"][name],member.name
+            seen[name]=pin
     assert set(seen)==set(index["files"])and SELECTED<=set(seen)
     save("acquisition.json",dict(run=run,release=release,archive=parts["archive"],authenticated_members=seen,
       selected=sorted(SELECTED),native_simulation=False,native_payloads_remain_cloud=True))
