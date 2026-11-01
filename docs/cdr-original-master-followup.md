@@ -24,3 +24,20 @@ Existing physical source inspection identified reusable real-PCell regeneration,
 No geometry has changed for either candidate. Even an electrical screen pass still requires actual layout, nativeDRC/LVS, freshRC, corners, closed-loop/fullserialPHY and mainchip timing verification.
 
 All simulation, controls, comparisons, geometry and numerical analysis run onGitHub. Native archives/models/SPICE/GDS/ODB/rawwave data stay cloud-only. Local source/API-derived text coordination is temporary RAM only; project workspace and temporary file areas remain empty.
+
+## Verified paired physical map
+
+Run [41277369515](https://github.com/Melihakbulut221/nssoc/actions/runs/41277369515), source `7bea91b0ec7a6a4fd9f8205a0cb3f5808a069a71`, passed 11 corruption controls and joined all 500 native device records with all 4,928 instance records for both candidates. The q20 target dictionary must equal q15 with only eight requested output lengths changed to 2.0 um; changes to any other target field are rejected.
+
+The eight output resistors require private cells:
+
+| Shared definition | Targeted output devices | Untargeted master devices that must stay unchanged |
+| --- | --- | --- |
+| `rppd$2$11` | 175, 176, 212, 214 | 177, 178, 215, 216 |
+| `rppd$2$10` | 191, 194, 202, 205 | 195, 196, 207, 208 |
+
+The four buffer pullups use `rppd$23`; the four shunts use `rppd$v59_cd_shunt`. Their selected definitions have no untargeted users in the complete 500-device census. The complete actual paths, transforms, pins, original dimensions, electrical terminals and shared users are retained in the report; this summary is not a substitute for those records.
+
+Full 16-file proof: `f89d371d49788e6e5bec240a65c242cafe22e7c8`, prefix `docs/evidence/cdr-sampler-layout-map-41277369515`. Receipt SHA256: `9492b246006433ea5d63c61409f355324df9d365cb93f21b3489b6d1daa62447`.
+
+This is a read-only join of authenticated native-derived inventories. It did not load or alter GDS, rerun extraction, or establish DRC/LVS, electrical acceptance, full PHY operation or final timing.

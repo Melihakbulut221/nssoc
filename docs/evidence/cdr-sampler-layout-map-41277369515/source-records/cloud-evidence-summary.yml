@@ -1,0 +1,53 @@
+name: Derived complete sampler physical instance mapping
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [controls, inspect]
+        default: controls
+permissions:
+  contents: read
+concurrency:
+  group: sampler-layout-map-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr_sampler_layout_map.py
+            /scripts/cdr-sampler-layout-map-inputs.json
+            /.github/workflows/cloud-evidence-summary.yml
+      - name: Exact source and corruption controls
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_RUN_ATTEMPT" = "1"
+          python3 -B scripts/cdr_sampler_layout_map.py --controls
+      - name: Join all original physical and electrical records
+        if: ${{ inputs.mode == 'inspect' }}
+        run: python3 -B scripts/cdr_sampler_layout_map.py
+      - name: Preserve complete source
+        if: always()
+        run: |
+          mkdir -p source-records
+          cp scripts/cdr_sampler_layout_map.py scripts/cdr-sampler-layout-map-inputs.json .github/workflows/cloud-evidence-summary.yml source-records/
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sampler-layout-map-${{ github.run_id }}
+          path: |
+            cloud-sampler-layout-map-controls
+            cloud-sampler-layout-map
+            source-records
+          if-no-files-found: error
+          retention-days: 90
