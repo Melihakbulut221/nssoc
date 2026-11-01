@@ -1,4 +1,4 @@
-name: Execute original full64 route and preserve native checkpoint
+name: Preserve iteration ODB snapshots during full64 native routing
 on:
   workflow_dispatch:
     inputs:
@@ -30,6 +30,10 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /scripts/mainchip_full_route_stage.py
+            /scripts/mainchip_full_route_snapshots.py
+            /scripts/mainchip_full64_snapshot_inner.py
+            /scripts/cloud_mainchip_full64_snapshots.py
+            /scripts/check_mainchip_full_route_snapshots.py
             /scripts/check_mainchip_full_route_stage.py
             /scripts/mainchip_full64_route_inner.py
             /scripts/cloud_mainchip_full64_route.py
@@ -38,16 +42,17 @@ jobs:
             /scripts/mainchip-bounded-route-baseline.tcl
             /scripts/prepare_scoped_restoration_sources.py
             /docs/mainchip-full64-route.md
+            /docs/mainchip-full64-iteration-snapshots.md
             /scripts/mainchip-full64-pins.json
-            /scripts/mainchip-full64-native-pins.json
+            /scripts/mainchip-full64-snapshot-pins.json
             /.github/workflows/cloud-evidence-summary.yml
       - name: Authenticate every own source before execution
         run: |
           python3 -B - <<'PY'
           import hashlib,json,pathlib,subprocess
           root=pathlib.Path(".")
-          m=json.loads((root/"scripts/mainchip-full64-native-pins.json").read_bytes())
-          subprocess.run(["git","diff","--exit-code","HEAD","--","scripts/mainchip-full64-native-pins.json",*m],check=True)
+          m=json.loads((root/"scripts/mainchip-full64-snapshot-pins.json").read_bytes())
+          subprocess.run(["git","diff","--exit-code","HEAD","--","scripts/mainchip-full64-snapshot-pins.json",*m],check=True)
           for n,p in m.items():
               f=root/n
               assert f.is_file()and not f.is_symlink()
@@ -68,6 +73,7 @@ jobs:
         run: |
           python3 -B scripts/check_mainchip_full_route_stage.py
           python3 -B scripts/check_mainchip_full64_native.py
+          python3 -B scripts/check_mainchip_full_route_snapshots.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -75,6 +81,7 @@ jobs:
           path: |
             full64-controls
             full64-native-controls
+            full64-snapshot-controls
             scoped-restoration-controls
           retention-days: 90
           if-no-files-found: error
@@ -98,6 +105,10 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /scripts/mainchip_full_route_stage.py
+            /scripts/mainchip_full_route_snapshots.py
+            /scripts/mainchip_full64_snapshot_inner.py
+            /scripts/cloud_mainchip_full64_snapshots.py
+            /scripts/check_mainchip_full_route_snapshots.py
             /scripts/check_mainchip_full_route_stage.py
             /scripts/mainchip_full64_route_inner.py
             /scripts/cloud_mainchip_full64_route.py
@@ -106,16 +117,17 @@ jobs:
             /scripts/mainchip-bounded-route-baseline.tcl
             /scripts/prepare_scoped_restoration_sources.py
             /docs/mainchip-full64-route.md
+            /docs/mainchip-full64-iteration-snapshots.md
             /scripts/mainchip-full64-pins.json
-            /scripts/mainchip-full64-native-pins.json
+            /scripts/mainchip-full64-snapshot-pins.json
             /.github/workflows/cloud-evidence-summary.yml
       - name: Authenticate every own source before execution
         run: |
           python3 -B - <<'PY'
           import hashlib,json,pathlib,subprocess
           root=pathlib.Path(".")
-          m=json.loads((root/"scripts/mainchip-full64-native-pins.json").read_bytes())
-          subprocess.run(["git","diff","--exit-code","HEAD","--","scripts/mainchip-full64-native-pins.json",*m],check=True)
+          m=json.loads((root/"scripts/mainchip-full64-snapshot-pins.json").read_bytes())
+          subprocess.run(["git","diff","--exit-code","HEAD","--","scripts/mainchip-full64-snapshot-pins.json",*m],check=True)
           for n,p in m.items():
               f=root/n
               assert f.is_file()and not f.is_symlink()
@@ -133,7 +145,7 @@ jobs:
       - name: Authenticate original source and exact derived scope inputs
         run: python3 -B scripts/prepare_scoped_restoration_sources.py
       - name: Execute and preserve actual full64 route
-        run: python3 -B scripts/cloud_mainchip_full64_route.py
+        run: python3 -B scripts/cloud_mainchip_full64_snapshots.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

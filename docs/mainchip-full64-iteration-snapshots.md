@@ -1,0 +1,13 @@
+# Full64 native iteration snapshots
+
+The actual run 41323446729/source ff1c0e6163e0ba1537a075d50e940fafc9332c64 stopped at its route elapsed limit of 14400.716919044 seconds. Docker reported OOMKilled:false. Iteration 28 completed with 86 router violations; iteration 29 reached 90 percent/85 violations, but route_returned:false and checkpoints:{} show that this was not a final returned route.
+
+This separate cloud-only source enables the existing OpenROAD iteration snapshot branch. The original Tcl bytes are authenticated by the original stage module. Exactly one line, `set ::env(DRT_SAVE_SNAPSHOTS) 1`, is inserted before the existing snapshot branch. Original 64 iteration setting, seed42, two threads, layers, routing arguments, global environment, frozen scope, resource checks and 14400-second route supervision remain unchanged. Original 23 stage/native-preservation controls remain; eight additional controls exercise the exact delta, corrupted source rejection, stale/invalid/symlink snapshot rejection, failed-route preservation and false acceptance refusal.
+
+Primary implementation at pinned OpenROAD upstream dcf36133a369abc8f3c5e5738cd4d82e4903c0e0, src/drt/src/dr/FlexDR.cpp, writes drt_iterN.odb inside its snapshot debug branch after a routing iteration:
+https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/dr/FlexDR.cpp
+This source observation does not itself qualify the built engine's new execution or database reload. Native execution remains a separate step after successful independent same-source controls.
+
+Snapshots stay under the owned work/bulk-postdrt-antenna directory, covered by the existing permanent native publication and complete workspace fallback. The new stage inventories exact nonempty regular snapshot bytes only after the routing process has returned or been supervised to termination. A file digest does not prove successful ODB serialization: every snapshot is marked reload_verified:false and the stage never claims resume qualification. A failed route remains failed, even with snapshots. Original-class restoration, scoped connectivity, 2702 diode PG contacts, original clock/fixed-net preservation, DRC/antenna, matching diode-inclusive netlist, fresh RC and original three-corner STA remain required.
+
+The purpose is to preserve real geometric progress rather than lose all completed routing iterations on timeout. A future continuation must acquire these bytes on GitHub, reopen/audit the chosen native database and validate its origin/constraints. This is not evidence of bit-identical continuation of the router's in-memory search state, completed routing, full serial PHY, or timing/production signoff.
