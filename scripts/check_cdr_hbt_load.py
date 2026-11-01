@@ -7,7 +7,7 @@ import cloud_cdr_hbt_load as host
 import check_cdr_divider_drive as prior
 import cdr_via2_m3_loaded_core as core
 def main():
-    ctx=host.source_gate();assert ctx==core.actual_context()
+    ctx=host.source_gate();assert core.actual_context(ctx)==ctx
     # Run unchanged divider/original suites with the explicit current-source gate.
     pn=dict(prior.__dict__);pn["host"]=host
     candidate.cloned(prior.main,pn)()

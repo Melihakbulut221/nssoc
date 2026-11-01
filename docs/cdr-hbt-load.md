@@ -17,3 +17,7 @@ The exact40 HBTs are discovered and pinned from the actual native clusters:8 buf
 All inherited original and75 divider-corruption controls run unchanged,plus243 HBT mutation refusals and all40 bound-emitter checks. They use synthetic fixtures and cannot prove electrical success. Native execution requires a separate successful same-source controls run and independently reserved/read-back empty exact-source release. All simulation,raw data and publication remain on GitHub.
 
 The actual native screening must retain every failed gate. All124 HBTs,200MOS,98 resistors,7MIM and221 taps remain. The old distributed wire RC is retained only to isolate this screening change. Any useful candidate still requires regenerated geometry,complete DRC/LVS,new qualified RC,all required corners/phase offsets and full PLL/CDR/SERDES and chip timing integration.
+
+## Source qualification history
+
+Controls41299284469 stopped before fixture execution because the newly added context check omitted the required context argument. Native simulation was skipped. The check is corrected to the existing actual_context(ctx) contract; its failure and complete source are preserved. A fresh same-source controls pass is required before any native simulation.
