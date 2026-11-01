@@ -1,44 +1,54 @@
-# Cloud continuation — checkpoint v216
+# Cloud continuation — checkpoint v217
 
-Updated: 2026-11-01T04:41:04.569529+00:00
+Updated: 2026-11-01T04:58:09.507771+00:00
 
-Latest direct instruction: do everything in cloud and leave no local project files. This supersedes the older goal text saying local. Workspace and project temporary directories are empty; no local CAD process. All tests, numerical analysis, simulations and layout run on GitHub. Source/API-derived text coordination is RAM only. Never acquire native archives/models/SPICE/GDS/ODB/raw waves/native-frame gzip locally, including RAM. Preserve unrelated user files and attachments.
+Latest direct user instruction: **cloud only; leave no local project files**. This overrides older goal text saying local. Workspace and project temp areas empty; no local CAD process. All tests, numerical/geometry analysis, simulation and CAD run onGitHub. Source/API-derived text coordinationRAMonly. Never acquire native archives/models/SPICE/GDS/ODB/raw waves/native-frame gzip locally, includingRAM. Preserve unrelated files and attachments.
 
-## Active mainchip job
+## Two actual jobs
 
-[41270471645](https://github.com/Melihakbulut221/nssoc/actions/runs/41270471645), source `2b8931b9c8988fc5dbf497a7b561db579e39f64c`, branch `codex/mainchip-net459-diode-prune`, independently reserved release430345631/tagcloud-results-41270471645-1-mainchip-bulk-postdrt-antenna. Source controls passed, clear828/routing step active at last observation. This step name does not establish detailed router subphase. Do not duplicate or mutate native source while active. Scope828=608diodeowners+220counterparts,1351diodeattachments,1691protected records. Actual zeroDRC/antenna and finalSTA required separately.
+* [Mainchip41270471645](https://github.com/Melihakbulut221/nssoc/actions/runs/41270471645), source2b8931b9c8988fc5dbf497a7b561db579e39f64c, branchcodex/mainchip-net459-diode-prune, independently reserved release430345631/tagcloud-results-41270471645-1-mainchip-bulk-postdrt-antenna. Sourcecontrols pass; combined clear828/routing step active at last observation. No conclusion about detailedrouter subphase from step name. Scope828=608diodeowners+220counterparts,1351diodeattachments,1691protected records. ActualzeroDRC/antenna andfinalSTA required separately.
+* [Master/buffer native41274791029](https://github.com/Melihakbulut221/nssoc/actions/runs/41274791029), sourceeca0c5abf194169c8b42f58a48f22feb716e7dec, branchcodex/cdr-master-buffer-impedance. Empty exact-source release430370301/tagcloud-results-41274791029-1-cdr-sampler-load independently created/readback beforehostadmission. Sourcecontrols passed; original-gate nativeexperiment active, no electricalresult yet. No duplicate dispatch/source edits while active.
 
-Prior41266854050 failed on Python tuple versus persisted JSON list in unchanged snapshot masters. Corrected comparison loads complete persisted before/after snapshots, preserving strict invariants. Full prior failure735 emitted records retained; readback41269689818 passed all828 and reproduced representation mismatch. Source controls41270165333 passed.
+## Measured cause and new circuit
 
-## Actual sampler-load result: rejected
+Corrected full-wave diagnosis41274403461/sourceb3b4c87e894662f61eb53210c1dbe982885b3f00 reproduced all124HBT metrics/all6stage1530delays/phaseVI on exact candidate41272254964 waveform. FourmaxVCE violations atXD59/60/111/112 occur3.72–3.96ns, duringactiveoperation:collector2.016–2.047V/emitter.371–.391V. XD61minVCE.398992V at30.312ns. All124HBT simultaneousterminal/current values and allviolatingintervals saved.7inherited+9eventcontrols pass, strictIc/emitter<3mA preserved. Full29proof6c1132c9c0c64884ad2ec58ec01440e9b78e77c3.
+Earlier41274356086/source4b9fdd4129197513625f754dd4ab58d1e68a9c83/full29prooff14057a107fbd6d35e63aee4c21e1f9c41d8eb20 retained butdiagnosticcurrentequality superseded. Originalsimulator/measurement unchanged. Bothartifacthiddenworkflow recovered from exactsource, explicitlyrecorded inreceipt.
 
-Native41272254964/source8a07e8f773d931f9cb7f4ac72e5520b68bb133be/release430356103/tagcloud-results-41272254964-1-cdr-sampler-load completed failure. Engine returned0 after863.308s; electrical gate rejected. Full63file proof `6cd6853e3f79613d066076871280f56fea7ee10d`, prefix `docs/evidence/cdr-sampler-load-terminal-41272254964`, retained and imported.
+New24resistor experiment:
+* 16master/slave loads175/176/177/178/191/194/195/196/202/205/207/208/212/214/215/216: L2.6->1.5um,W32unchanged.
+* 4inputbufferpullups182/183/220/221: L1.8->1.0um,W8unchanged.
+* 4inputbuffershunts184/185/222/223: L5->3.4um,W4unchanged.
 
-Coupled changes: XD0175/176/191/194/202/205/212/214 collector rppd L2.6->1.5um/W32; XD0184/185/222/223 shunts L5->7.4um/W4. Only12intrinsic lengths; baseline full500device wireRC retained, no regeneratedlayout orfreshPEX. Original1151vectors and workload/gates unchanged;13circuit/5archive source controls passed41272126724.
+Lowerbufferimpedance and controlledhighlevel plusmastersettling improvement are engineering hypotheses, not a voltage prediction or pass. Allother500devicevalues/modelbytes,wireRC,1151vectors,10ohm/150fF/50fF workload,gates, frozenprepare/measurecode remain. No changedgeometry/freshPEX. Source33pinnedfiles;controls41274689297 passed17circuit+5archive refusals/full13proof55fe8e44b26297421be558d2815bc0cd8116ef0f. Original13nativebindingcontrols still required. See docs/cdr-master-buffer-impedance.md.
 
-Actual comparison41273897568/source7c0c9766544dfe673421c42a48b18b600c565323 passed all10controls and full124HBT/1530bit comparison. B alone passes100mV37.5ps; A/C/D/X/Y fail. Candidate HBT failures XD0059/60/111/112 maxVCE andXD0061 minVCE. Phase10.026mV, VI31.984uA fail; VIvoltage9.031mV passes5mV. See docs/cdr-sampler-load-results.md. Never treat successful comparison as passing native PHY.
+## Qualified next-result comparison
 
-## Physical mapping prepared, no geometry changed
+Branchcodex/cdr-master-buffer-comparison, headc011c5e1cc667207ce7c83367952c3ba2ff8ea97. Controls41274831856 passed13refusals/full10proof6c4aec1db3ce4353e58a8d7729dfcc6a5adc2ff1. Candidatecontext isrun41274791029/sourceeca0;candidate.json isnull untilfullterminalproof exists. Verifyall24lengthchanges andeveryoriginalgate/complete124HBT/50MOS/7MIM/16stage tails/1530delays. Changeonlynullreportdescriptor then one modecompare. No syntheticfixture asnativeproof.
 
-Read-only failed41273236353/sourceae6e4024bdfec0a5dbeb5e3a8f72ec4b1f2a86b7 retained. It failed nativeHBT spellingnpn13G2 versusnpn13g2.
-Fixed41273410851/source8abbaf038172fa9a862733d35f2327adac1cac6a passed9controls/full500devices4928instances/12exacttargets. Only explicitmodelalias accepted; npn13G2l rejected. Full15file successproof58f623f796326427db8ed6f333b1e7128c66e66d, prefixdocs/evidence/cdr-sampler-layout-map-41273410851. Failurefull15proofb15aada9df6c1cf2802cfcc387edf49449f495ca alsoimported.
-SharedcollectorPCells have untargetedusers; futurephysicaledit requires privatecellselectedinstances. Do not globally edit sharedcells.
+## Physical map
 
-## Retained earlier evidence
+Run41274889443/sourcea9919896996ab84e795e9e96239839506f47695d, branchcodex/cdr-master-buffer-layout-map passed9controls andall500device/4928instance joins for24targets. It uses samebaselineGDS42ed5bcd567518786b718248947771172e9f5cc419d0aaa8fc8c49d8cfa4e876 andLVSDB3e133656d97d0c191390365919187102d9e5f1c75361bf53120e48eea9001295. Full15-file proof:7decde1c73b07ce5fee769fced75454770b21884, prefixdocs/evidence/cdr-sampler-layout-map-41274889443. Only derived inventories were joined; no new GDS or geometry processed. All24targets cover all native users of four selected resistor cell definitions; no untargeted device users found in complete500-device census. Consultallsharedcellusers beforefutureactualedit. Theolder12target map doesnotcovernewcandidate.
 
-FreshRC41251732540 source9bf12d1e496f7d9192582175ab2fa714e3e8d41b release430243359; full454proof682ae5a848d5b578ddc27b47bfc3458578c7ce87. Canonicalview41243752186/source394b6e2c5e6fffbbc1a8d92fbdf41bd5d3a93356/release430197123; full186proofe7b9d3a152295b7f870ea2783c90f5c6116547a1. GDS42ed5bcd567518786b718248947771172e9f5cc419d0aaa8fc8c49d8cfa4e876; flatLVS3e133656d97d0c191390365919187102d9e5f1c75361bf53120e48eea9001295. Allnativefilescloudonly.
+## Previous retained evidence
 
-Originalloaded41260582673/sourcecde6353e164d32feee5a3e56cc54b32a3001f736 rejected; full631proof53e39a2c43bfef518793da536a6bc423398d7262. Four-shuntonly41268684044/source6733a6916dec86ac84f7879285c3a7c8b495ab6c rejected; full61proof62535582b4a1ad13b005a68dfb2af7b62c66d4a4; comparison41269888640/full15proofaac575ff357328279cb7fad4d93a35416aa52261.
-
-Clockdiagnosis41271280278/source45286428f2d9a5dfcf6781ef04f1bb61cd20def8 passed original fullwave reproduction; full31proofc3517dd428948ca15a949a422c35bb79535bc4cf. Localclock1.95–4.06ps is relative to alreadyloaded externalports, first externaledge~11psafter nominal. Do not redownload1GBnativewave for aggregating existingderived records. Topologyfull16proof3e45b11b44cfbc08f51334b1bb2d372384c3820b.
+12resistor41272254964/source8a07/release430356103 rejected: engine0/863.308s; Bpassonly, A/C/D/X/Y andfiveHBTfail, phase10.026mV/VI31.984uAfail; VI9.031mVpasses5mV. Full63proof6cd6853e3f79613d066076871280f56fea7ee10d; actualcomparison41273897568/full15proof3107d34d22c8572989fc958cd35a252a6e543a38.
+Fourshuntonly41268684044/source6733a691/release430336080 rejected; full61proof62535582b4a1ad13b005a68dfb2af7b62c66d4a4; comparison41269888640/full15proofaac575ff357328279cb7fad4d93a35416aa52261.
+Originalloaded41260582673/sourcecde6353/release430292142; full631proof53e39a2c43bfef518793da536a6bc423398d7262.
+FreshRC41251732540/source9bf12d1/release430243359; full454proof682ae5a848d5b578ddc27b47bfc3458578c7ce87.
+Canonicalview41243752186/source394b6e2/release430197123; full186proofe7b9d3a152295b7f870ea2783c90f5c6116547a1.
+Clockdiagnosis41271280278/full31proofc3517dd428948ca15a949a422c35bb79535bc4cf: localclock1.95–4.06ps relativealreadyloadedexternalports; firstexternaledge~11psafter nominal. No needrepeat1GBnativeacquisition for aggregating existingderived records.
+Topologyfull16proof3e45b11b44cfbc08f51334b1bb2d372384c3820b.
+Prior mainchip41266854050 tuple/list unchangedmastersfalsefailure fullyretained735emittedrecords; savedJSONreadback41269689818 passedall828invariants; correctedsourcecontrols41270165333 pass.
 
 ## Next actions
 
-1. Observe SAME mainchip41270471645/source2b8931/release430345631. No duplicate native dispatch/source edits until terminal; active step alone is not proof of detailed_route phase.
-2. At mainchip terminal preserve complete source/log/native release/derived evidence and independently check828owned signal connections,1351diodes,1691protected records, zeroDRC/antenna, finalSTA separately.
-3. Use full actual sampler comparison41273897568 before next circuit repair. Candidate41272254964 rejected: B passes but A/C/D/X/Y and XD0059/60/61/111/112 fail. No layout acceptance or gate relaxation.
-4. Prepare next measured headroom/common-mode and settling repair using existing exact topology and complete metrics. Qualify corruption controls, reserve exact-source empty native release, then dispatch once. Do not choose a load value solely by interpolation or relabel an exploratory baseline-RC screen physical.
-5. Use map41273410851 for any future physical edit:12selected instances, complete500device4928instance checks; collector PCells shared with untargeted devices require private cells. No changedlayout exists for rejected sampler candidate.
-6. All computation/simulation/CAD/tests in cloud. Never download native archives/models/SPICE/GDS/ODB/waves locally including RAM. Text source/API coordination RAM only. Keep workspace/tmp empty, preserve unrelated files.8h monitor read-onlyautomatic_native_dispatch:false.
+1. Observe SAME actual native41274791029/sourceeca0c5abf194169c8b42f58a48f22feb716e7dec/release430370301/tagcloud-results-41274791029-1-cdr-sampler-load and SAME mainchip41270471645/source2b8931b9c8988fc5dbf497a7b561db579e39f64c/release430345631. Freeze native branches; no duplicate dispatch/restart on observation timeout.
+2. At native terminal collect complete controls/derived/source/logs/releaseindex/parts metadata. RAM recipe cloud_master_buffer_terminal_collect_source already binds run/release/source and17circuit5archive controls. Source's derived upload now includes hidden .github. Never acquire native payload locally including RAM.
+3. Bind complete candidate measurement proof bytes/SHA/path/source to nullcandidate.json in scripts/cdr-sampler-load-comparison-inputs.json on codex/cdr-master-buffer-comparison, headc011c5e1cc667207ce7c83367952c3ba2ff8ea97. Context already fixed to actualrun41274791029/sourceeca0. Change only descriptor, preserve24target comparator, dispatch one modecompare which repeats13controls. Full124HBT/50MOS/7MIM/16stage tails/1530bit delays/phaseVI remain original.
+4. Candidate24token delta:16master/slave loadlengths2.6->1.5/W32;4inputbufferpullups1.8->1.0/W8;4shunts5->3.4/W4. BaselineRC retained; no layoutregeneration. Passing electricalscreen still needs actualchangedgeometry/fullDRC-LVS/freshRC/corners/closedloop/fullserialPHY. Reject failures unchanged.
+5. Use complete24target map41274889443, not prior12target map, for any physical edit. All500device/4928instance original pins and geometry provenance checked; read selected instance paths/sharedcell users and clone when needed. Sharedtargetcells must also be split if requested dimensions differ.
+6. Corrected waveform diagnosis41274403461/full29proof6c1132c9c0c64884ad2ec58ec01440e9b78e77c3 establishes active maxVCE1.638-1.656 atXD59/60/111/112 and minVCE.398992 atXD61. Original firstdiagnosis41274356086 retained; current equality detector corrected from<= to<3mA. Both preserveoriginalnativegates; no originalmeasurementmodified. Missing hiddenworkflow in these2artifacts recovered from exact immutable source withreceiptoriginmetadata.
+7. At mainchip terminal preserve complete source/log/native release/derived evidence, verify828ownednets/1351diodes/1691protectedrecords,actual zeroDRC/antenna andfinalSTA separately. Combined clear/routing step name is not evidence of detailed_route phase.
+8. Keepallcomputation/tests/simulation/CAD onGitHub. Localworkspace/tmp empty, noCADprocesses; native archives/models/SPICE/GDS/ODB/raw waves neverlocal evenRAM. Source/API-derived text coordinationRAMonly.8hmonitorread-onlyautomatic_native_dispatch:false. Original1.6Vscreen is not foundry-approved reliability envelope; productionapproval remains open.
 
-Inventory 579 runs; eight-hour monitor remains read-only with automatic_native_dispatch:false. FullserialGen3x4PHY, routedmainchip, finalsetup/hold andproductionapproval remain OPEN. See previous durable v215 for full source qualification and recipe history.
+Inventory585runs;8hmonitor automatic_native_dispatch:false. FullserialGen3x4PHY, routedmainchip, finalsetup/hold andproductionapproval remainOPEN. Previous durablev216:1025c9dc8bdd864d5a4bf5fbe42dab480f8aee62.
