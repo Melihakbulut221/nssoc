@@ -85,8 +85,9 @@ def validate_config(c):
     require(type(c['loaded_execution_authorized'])is bool,'explicit typed loaded nominal_late authority')
     require(c['generation_authorized']is c['fresh_rc_execution_authorized']is False,'no generation or RC authority')
     require(c['producer_path']==PRODUCER and c['original_output_root']==str(ORIGINAL)and c['fresh_output_root']==str(OUT),'separate original and fresh roots')
-    required={'producer_positive','producer_refusals','core_controls','context_refusals','current_job_refusals','source_log_refusals','lifecycle_cases','publication_cases','publication_refusals','emission_refusals','runtime_positive','runtime_refusals','core_refusals'}
+    required={'producer_positive','producer_refusals','core_controls','context_refusals','current_job_refusals','source_log_refusals','lifecycle_cases','publication_cases','publication_refusals','emission_refusals','runtime_positive','runtime_refusals','core_refusals','native_positive','native_refusals'}
     require(set(c['source_control_requirements'])==required and all(type(v)is int and v>0 for v in c['source_control_requirements'].values()),'complete positive actual source-control requirements')
+    require(c['resources']==dict(metadata_seconds=180,acquisition_seconds=900,engine_seconds=1200,publication_seconds=900),'fixed original engine and bounded host phase budgets')
     return c
 
 def core_source_closure(root,c):
