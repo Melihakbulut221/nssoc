@@ -36,13 +36,17 @@ def context(e=None,native=False):
     need(e["GITHUB_JOB"]in("source-controls","native-rc"),"bounded current job")
     if native:need(e["GITHUB_JOB"]=="native-rc","current native job required")
     return dict(source=e["GITHUB_SHA"],run_id=int(e["GITHUB_RUN_ID"]),attempt=1)
+def verify_source(path,expected):
+    need("sha256"in expected and set(expected)<={"bytes","sha256","git_blob_sha1"},"declared source pin schema")
+    actual=pin(path);need(actual["sha256"]==expected["sha256"],"protected source digest "+str(path))
+    if "bytes"in expected:need(actual["bytes"]==expected["bytes"],"protected source size")
+    if "git_blob_sha1"in expected:
+        b=path.read_bytes();need(hashlib.sha1(("blob "+str(len(b))+"\0").encode()+b).hexdigest()==expected["git_blob_sha1"],"source git blob")
 def gate():
     ctx=context();need(subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip()==ctx["source"],"exact checkout")
     pins=json.loads((ROOT/MANIFEST).read_bytes())
     for n,p in pins["files"].items():
-        path=ROOT/n;need(pin(path)=={k:p[k]for k in("bytes","sha256")},"protected source "+n)
-        if "git_blob_sha1"in p:
-            b=path.read_bytes();need(hashlib.sha1(("blob "+str(len(b))+"\0").encode()+b).hexdigest()==p["git_blob_sha1"],"source git blob")
+        verify_source(ROOT/n,p)
     return pins
 def basis():
     b=json.loads((ROOT/BASIS).read_bytes())
@@ -100,6 +104,15 @@ def command_plan(app,python):
 def controls():
     gate();b=basis();need(not OUT.exists(),"source controls precede native output")
     COUT.mkdir()
+    testpin=COUT/"source-pin-fixture.txt";testpin.write_bytes(b"explicit synthetic pin fixture\n")
+    expected=pin(testpin);checks=[]
+    for label,value in[("historical hash-only",dict(sha256=expected["sha256"])),("complete size-hash",expected)]:
+        verify_source(testpin,value);checks.append(label)
+    for label,value in[("wrong digest",dict(sha256="0"*64)),("wrong size",dict(expected,bytes=1)),
+      ("wrong git identity",dict(expected,git_blob_sha1="0"*40)),("missing digest",dict(bytes=expected["bytes"])),("unknown schema field",dict(expected,unknown=True))]:
+        try:verify_source(testpin,value)
+        except AssertionError:checks.append("reject "+label)
+        else:raise AssertionError(label)
     import check_cdr_via2_m3_fresh_rc_core as k
     import check_cdr_via2_m3_fresh_rc_native as tests
     k.RECORDS.clear();k.definition_controls()
@@ -108,7 +121,7 @@ def controls():
     need(phase["status"]=="PASS_SOURCE_ONLY_PHASE_CONTROLS"and phase["failed"]==0 and not phase["native_executed"],"all frozen numerical and lifecycle controls")
     n,rt=frozen();cfg,records=rt.records()
     plan=command_plan(Path("/fixture/runtime.AppImage"),Path("/usr/bin/python3"))
-    tests_current=[]
+    tests_current=list(checks)
     need(set(n.PHASES)=={"prepare","binding-export","binding-validate","wire-audit","mim-generate","mim-finish","mim-audit","compose"}and len(n.LABELS)==11,"all original phase receipts")
     tests_current.append("all frozen phase methods with historical native entries excluded")
     tests_current.append("reversible exact13-command adaptation changes only ten entry paths")
@@ -278,18 +291,21 @@ def publish():
         a=next(a for a in assets if a["name"]==p.name);need(a["size"]==p.stat().st_size and a["digest"]=="sha256:"+sha(p),"exact uploaded result")
     save("publication.json",dict(tag=tag,release=rel["id"],assets=assets))
 
-def derived(root,dest):
+def derived(root,dest,extra=None):
     dest.mkdir();copied={}
     if root.exists():
         for p in sorted(root.rglob("*")):
             if p.is_file()and p.suffix in(".json",".jsonl",".log",".stdout",".stderr")and p.stat().st_size<=32*1024*1024:
                 name=p.relative_to(root);q=dest/name;q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q);copied[str(name)]=pin(q)
+    for name,p in (extra or {}).items():
+        if p.is_file():
+            q=dest/name;shutil.copyfile(p,q);copied[name]=pin(q)
     (dest/"derived-index.json").write_bytes(encode(copied))
 def main():
     args=sys.argv[1:]
     if args==["--publish"]:publish();return
     if args==["--derived"]:derived(OUT,ROOT/"wire-rc-derived");return
-    if args==["--derived-controls"]:derived(COUT,ROOT/"wire-rc-controls-derived");return
+    if args==["--derived-controls"]:derived(COUT,ROOT/"wire-rc-controls-derived",{"host-failure.json":OUT/"failure.json"});return
     try:
         if args==["--controls"]:controls()
         elif args==["--verify"]:verify()
