@@ -76,12 +76,12 @@ def gates(r):
         failing_mos=[n for n,v in mos.items() if not v],failing_caps=[n for n,v in cap.items() if not v],
         hbt_tails_passed=tails,mos_tails_passed=mos_tails,stage_tails_passed=stage_tails,stages=stages,
         phase_average_v=r["phase_average_v"],vi_mean_current_a=vi["mean_signed_current_a"],vi_mean_voltage_v=vi["mean_output_difference_v"],vi_current_passed=vi["mean_signed_current_a"]>=50e-6,vi_voltage_passed=vi["mean_output_difference_v"]>=.005)
-LOADS=(175,176,191,194,202,205,212,214)
+LOADS=(191,194,202,205)
 BUFFERS=(182,183,220,221)
 SHUNTS=(184,185,222,223)
 AC_SERIES=(227,229,238,240)
 AC_SHUNTS=(228,230,239,241)
-DECLARED=dict(native_ids=sorted(LOADS+BUFFERS+SHUNTS+AC_SERIES+AC_SHUNTS),eight_latch_loads_l_um=[2.6,1.5],four_buffer_loads_l_um=[1.8,1.0],four_shunts_l_um=[5,3.4],ac_series_l_um=[3.6,1.8],ac_shunts_l_um=[21.6,10.8],unchanged_divider_width_um=1)
+DECLARED=dict(native_ids=sorted(LOADS+BUFFERS+SHUNTS+AC_SERIES+AC_SHUNTS),four_ab_output_loads_l_um=[2.6,1.5],unchanged_cd_output_ids=[175,176,212,214],four_buffer_loads_l_um=[1.8,1.0],four_shunts_l_um=[5,3.4],ac_series_l_um=[3.6,1.8],ac_shunts_l_um=[21.6,10.8],unchanged_divider_width_um=1)
 def compare(base,cand):
     original=gates(base);current=gates(cand)
     for key in ("case","corner","data_offset_s","source_bits","source_bits_sha256","vectors","vector_census","devices","mos_devices","native_caps","expected_samples","expected_comparisons"):
@@ -92,7 +92,7 @@ def compare(base,cand):
         old,new,width=("2.6u","1.5u","32u")if ident in LOADS else(("1.8u","1.0u","8u")if ident in BUFFERS else(("5u","3.4u","4u")if ident in SHUNTS else(("3.6u","1.8u","1u")if ident in AC_SERIES else("21.6u","10.8u","1u"))))
         require(entry["parameters"]["l"]==old and entry["parameters"]["w"]==width,"original exact load or shunt")
         entry["parameters"]["l"]=new
-    require(cand["binding"]==expected,"only twenty-four declared intrinsic lengths changed in complete bound circuit")
+    require(cand["binding"]==expected,"only twenty declared intrinsic lengths changed in complete bound circuit")
     require(cand["circuit_candidate"]==DECLARED,"declared candidate")
     require(cand["baseline_wire_rc_retained"] is True and cand["wire_rc_recomputed"] is False and cand["layout_regenerated"] is False and cand["physical_acceptance"] is False,"exploratory physical scope")
     changes={}
@@ -118,8 +118,8 @@ def controls(base):
         ("shortened delay census",lambda x:x["sampler_checks"]["a"]["clock_to_valid_by_bit_s"].pop()),
         ("invented layout acceptance",lambda x:x.__setitem__("physical_acceptance",True)),
         ("false successful gate",lambda x:x.__setitem__("devices_passed",not x["devices_passed"])),
-        ("wrong collector load length",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0175"]["parameters"].__setitem__("l","1.4u")),
-        ("wrong collector load width",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0175"]["parameters"].__setitem__("w","64u")),
+        ("unauthorized restored C D load length",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0175"]["parameters"].__setitem__("l","1.4u")),
+        ("unauthorized restored C D load width",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0175"]["parameters"].__setitem__("w","64u")),
         ("relaxed VI voltage gate",lambda x:x["vi"]["phase_limits"].__setitem__("minimum_signed_voltage_v",.001)),
         ("wrong buffer pullup length",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0182"]["parameters"].__setitem__("l","1.1u")),
         ("wrong buffer pullup width",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0182"]["parameters"].__setitem__("w","16u")),
@@ -127,6 +127,9 @@ def controls(base):
         ("wrong A divider series length",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0227"]["parameters"].__setitem__("l","1.7u")),
         ("wrong C divider shunt width",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0241"]["parameters"].__setitem__("w","2u")),
         ("unauthorized D selector change",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0234"]["parameters"].__setitem__("l","3u")),
+        ("wrong retained A B load length",lambda x:x["binding"]["groups"]["rppd"]["xpd.xd0191"]["parameters"].__setitem__("l","2.6u")),
+        ("false restored C D declaration",lambda x:x["circuit_candidate"]["unchanged_cd_output_ids"].pop()),
+
     ];refused=[]
     for name,change in mutations:
         bad=copy.deepcopy(synth);change(bad)
@@ -149,7 +152,7 @@ def main():
         require(isinstance(pin,dict),"candidate terminal proof must be supplied")
         raw=fetch(pin);(OUT/name).write_bytes(raw);reports[name]=json.loads(raw)
     control_result=controls(reports["baseline.json"])
-    require(len(control_result["refused"])==16,"all16 original-gate comparison refusals")
+    require(len(control_result["refused"])==18,"all18 original-gate comparison refusals")
     (OUT/"controls.json").write_bytes(encode(control_result))
     if args.controls:
         print(json.dumps(control_result,sort_keys=True));return
