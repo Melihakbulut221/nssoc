@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Cloud-only source controls. Synthetic cards are never native simulation proof."""
-import copy,json,os
+import copy,hashlib,io,json,os,tarfile,tempfile
+import cloud_cdr_four_shunt as host
 from pathlib import Path
 import cdr_four_shunt_candidate as candidate
 import cdr_via2_m3_loaded_core as frozen
 def main():
     assert os.environ.get("GITHUB_ACTIONS")=="true"
+    host.source_gate()
     c,records=frozen.current_configuration()
     frozen.catalog()
     ns=frozen.numerical_namespace()
@@ -49,8 +51,36 @@ def main():
     assert v["prepare_case"].__globals__ is not frozen.prepare_case.__globals__
     assert v["prepare_case"].__globals__["verify_runtime"] is frozen.verify_runtime
     assert len(rejected)==9
+    archive_controls=[]
+    with tempfile.TemporaryDirectory(prefix="four-shunt-controls-") as directory:
+        base=Path(directory);payload=b"source-control-only"
+        expected={"record.txt":dict(bytes=len(payload),sha256=hashlib.sha256(payload).hexdigest())}
+        def make(name,mode):
+            p=base/(name+".tar.gz")
+            with tarfile.open(p,"w:gz") as tar:
+                info=tarfile.TarInfo("fixture/record.txt");info.size=len(payload)
+                tar.addfile(info,io.BytesIO(payload))
+                if mode=="duplicate":tar.addfile(info,io.BytesIO(payload))
+                if mode=="link":
+                    link=tarfile.TarInfo("fixture/link");link.type=tarfile.SYMTYPE;link.linkname="/tmp/escape";tar.addfile(link)
+                if mode=="traversal":
+                    bad=tarfile.TarInfo("fixture/../escape");bad.size=1;tar.addfile(bad,io.BytesIO(b"x"))
+            return p
+        good=make("good","good")
+        proof=host.restore(good,"fixture",expected,set(expected),base/"positive")
+        assert proof["full_member_count"]==1 and (base/"positive/record.txt").read_bytes()==payload
+        cases=[("duplicate",make("duplicate","duplicate"),expected),
+               ("link",make("link","link"),expected),
+               ("traversal",make("traversal","traversal"),expected),
+               ("wrong hash",good,{"record.txt":dict(bytes=len(payload),sha256="0"*64)}),
+               ("missing member",good,dict(expected,missing=expected["record.txt"]))]
+        for i,(label,archive,pins) in enumerate(cases):
+            try:host.restore(archive,"fixture",pins,set(pins),base/("bad"+str(i)))
+            except ValueError:archive_controls.append(label)
+            else:raise AssertionError("accepted archive "+label)
+    assert len(archive_controls)==5
     out=Path("cloud-four-shunt-controls");out.mkdir(exist_ok=False)
-    result=dict(status="PASS_SOURCE_ONLY_FOUR_SHUNT_CANDIDATE",source=os.environ["GITHUB_SHA"],run=os.environ["GITHUB_RUN_ID"],rejected=rejected,
+    result=dict(status="PASS_SOURCE_ONLY_FOUR_SHUNT_CANDIDATE",source=os.environ["GITHUB_SHA"],run=os.environ["GITHUB_RUN_ID"],rejected=rejected,archive_rejected=archive_controls,
         original_prepare_measure_function_bodies_identical=True,original_module_not_mutated=True,frozen_catalog_checked=True,
         native_model_acquired=False,simulation_executed=False,physical_acceptance=False,full_phy_accepted=False)
     (out/"result.json").write_bytes(candidate.encode(result));(out/"synthetic-delta.json").write_bytes(candidate.encode(delta))
