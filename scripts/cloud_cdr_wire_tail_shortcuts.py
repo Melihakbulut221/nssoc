@@ -422,14 +422,85 @@ def verify_target(base,source_label,a,sink_label,b):
         terms.append(term)
     need(terms[0]["native_net"]==terms[1]["native_net"]and terms[0]["native_cluster"]==terms[1]["native_cluster"],"same native conductor before adding metal")
 
+
+def inspect_access(base,cfg):
+    gpath=base/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds"
+    wpath=base/"binding/inputs/wire/native05/wires.l2n"
+    g=pya.Layout();g.read(str(gpath));top=g.cell(TOP)
+    need(top is not None and g.dbu==.001,"original physical layout")
+    before=region_snapshot(g,top)
+    w=pya.LayoutToNetlist();w.read(str(wpath));need(w.internal_layout().dbu==.001,"original wire DBU")
+    layers=(8,19,10,29,30,49)
+    objects={n:w.layer_by_name("gds_"+str(n))for n in layers}
+    available={n:r is not None for n,r in objects.items()}
+    save("access-layer-inventory.json",dict(native_layers=available,gds_nonempty_layers=[list(k)for k,r in before.items()if not r.is_empty()]))
+    need(all(available.values()),"all M1/Via1/M2/Via2/M3/Via3 ownership layers required")
+    full={n:before.get((n,0),pya.Region())for n in layers}
+    for n in layers:need((full[n]^objects[n]).is_empty(),"exact GDS/L2N union "+str(n))
+    nets={n.cluster_id:n for n in w.netlist().top_circuit().each_net()}
+    physical={a["label"]:a for a in json.loads((base/"binding/inputs/wire/anchors08.json").read_bytes())["anchors"]}
+    for label,aa,bb in TARGETS:verify_target(base,aa,physical[aa],bb,physical[bb])
+    other_m2={k:r for k,r in before.items()if k[0]in(10,19)and k[1]!=0 and not r.is_empty()}
+    other_m3={k:r for k,r in before.items()if k[0]in(30,29,49)and k[1]!=0 and not r.is_empty()}
+    summary=[]
+    for label in sorted({x for _,a,b in TARGETS for x in(a,b)}):
+        a=physical[label];x,y=a["point_dbu"];touch=box(x,y,1);component=a["wire_component"]
+        need(component in nets,"actual component")
+        owned={n:w.shapes_of_net(nets[component],objects[n],True).merged()for n in layers}
+        need((touch-owned[a["metal"]]).is_empty(),"original anchor belongs to exact component")
+        landing=owned[10].interacting(touch).merged();cuts=owned[19].interacting(landing).merged()
+        old=dict(m1_at_reference=(touch-owned[8]).is_empty(),m2_at_reference=(touch-owned[10]).is_empty(),
+          full_m2_landing_bbox=bounds(landing),full_m2_landing_polygon_count=landing.count(),via1_count=cuts.count(),
+          guards=conductor_guard(landing,pya.Region(),owned,full,other_m2),cut_failures=[])
+        for poly in cuts.each():
+            b=poly.bbox();cut=pya.Region(poly)
+            checks=dict(exact_190nm=b.width()==190 and b.height()==190 and poly.area()==36100,
+              lower_enclosed=(cut.sized(50)-owned[8]).is_empty(),upper_enclosed=(cut.sized(50)-landing).is_empty())
+            if not all(checks.values()):old["cut_failures"].append(dict(box=bounds(cut),checks=checks))
+        local={}
+        for lower,via,upper in[(8,19,10),(10,29,30)]:
+            records=[]
+            for poly in owned[via].interacting(box(x,y,10000)).each():
+                b=poly.bbox();cut=pya.Region(poly)
+                records.append(dict(box=bounds(cut),center=[(b.left+b.right)//2,(b.bottom+b.top)//2],
+                  exact_190nm=b.width()==190 and b.height()==190 and poly.area()==36100,
+                  lower_enclosed=(cut.sized(50)-owned[lower]).is_empty(),
+                  upper_enclosed=(cut.sized(50)-owned[upper]).is_empty()))
+            local[str(via)]=records
+        m3=[]
+        for row in local["29"]:
+            xx,yy=row["center"];pad=box(xx,yy,300)
+            checks=dict(existing_via_exact=row["exact_190nm"],existing_via_lower_enclosed=row["lower_enclosed"],
+              existing_via_upper_enclosed=row["upper_enclosed"],grid5=xx%5==0 and yy%5==0,
+              route_center_owned_m3=(box(xx,yy,1)-owned[30]).is_empty(),
+              foreign_m3_clearance=pad.sized(605).interacting(full[30]-owned[30]).is_empty(),
+              foreign_via2=pad.sized(5).interacting(full[29]-owned[29]).is_empty(),
+              foreign_via3=pad.sized(5).interacting(full[49]-owned[49]).is_empty(),
+              no_unclassified_drawing=all(pad.sized(605 if layer==30 else 5).interacting(r).is_empty()for(layer,dt),r in other_m3.items()))
+            m3.append(dict(center=[xx,yy],pad_bbox=bounds(pad),checks=checks,admitted=all(checks.values())))
+        result=dict(anchor=a,component=component,original_m2_reuse=old,local_vias=local,m3_landing_candidates=m3,
+          original_geometry_unchanged=True,physical_acceptance=False,full_phy_accepted=False)
+        save("access-stack-"+label+".json",result)
+        summary.append(dict(label=label,old_m2_guard_failures=[k for k,v in old["guards"].items()if not v and k!="new_m2_material"],
+          old_stack_cut_failures=len(old["cut_failures"]),local_via1=len(local["19"]),local_via2=len(local["29"]),
+          guarded_m3_landings=sum(r["admitted"]for r in m3)))
+    need(pin(gpath)==cfg["complete_members"]["binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds"],"read-only original GDS")
+    save("access-stack-summary.json",dict(terminals=summary,input_gds=pin(gpath),input_l2n=pin(wpath),native_geometry_unchanged=True,
+      new_geometry_generated=False,physical_acceptance=False,full_phy_accepted=False))
+
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
         cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
-        need(sys.argv[1:]==["--generate"],"explicit generation")
+        need(sys.argv[1:]in(["--generate"],["--inspect-access"]),"explicit native operation")
         reserve(wait=True)
-        base=acquire_current(cfg);generate(base,cfg)
+        base=acquire_current(cfg)
+        if sys.argv[1:]==["--inspect-access"]:
+            inspect_access(base,cfg)
+            save("result.json",dict(status="NATIVE_EXISTING_STACK_INSPECTION_ONLY",physical_acceptance=False,full_phy_accepted=False))
+            return
+        generate(base,cfg)
         save("result.json",dict(status="GENERATED_FOUR_CLOCK_SELECTOR_SHORTCUTS_REQUIRES_DRC_LVS_RC_WAVES",physical_acceptance=False,full_phy_accepted=False))
     except Exception as exc:
         save("failure.json",dict(type=type(exc).__name__,message=str(exc),traceback=traceback.format_exc(),physical_acceptance=False));raise
