@@ -14,10 +14,27 @@ Source controls authenticate every selected original parameter/ordered native te
 
 All work executes on GitHub. Only a successful exact-source control proof and independently reserved empty exact-source release admit the actual simulation. Baseline distributed RC is retained for this intrinsic experiment; no new layout/fresh PEX/closed-loop/fullPHY/finaltiming acceptance is claimed. Preserve all failures. Do not reuse the prior24-target map as proof of a new regenerated layout.
 
-## Qualified dispatch
+## Completed native result
 
-Source8c7b5cdd86447fe374ae06064f2fef735a7c9b91, branchcodex/cdr-ac-cd-output-restore. Controls41282742236 passed21 mutation and5 archive refusals; full13-file proof5033155164f61cc4331052de3e335961da5e2ac3.
+Controls41282742236/source8c7b5cdd86447fe374ae06064f2fef735a7c9b91 passed21 mutation and5 archive refusals. Independent empty exact-source release430414047/tagcloud-results-41282867236-1-cdr-sampler-load admitted exactly one native41282867236.
 
-Exactly one native dispatch41282867236. Independent exact-source empty release430414047/tagcloud-results-41282867236-1-cdr-sampler-load reserved2026-11-01T06:57:51.667570UTC; full6-file reservation proofcfeadc6fff84946f78728fbf5e92d899a8d86ede. The native workflow repeated source controls successfully and was observed executing the actual simulation. This checkpoint claims no terminal result. Do not redispatch or edit the active source.
+The engine completed in706.750878665s with exit0, no diagnostics and unchanged sources. Device predicates passed, including all124HBT,50MOS,7MIM and tail groups. The complete circuit was rejected under unchanged electrical gates.
 
-A new20-target comparator and physical ownership map must be qualified; the previous24-target versions do not qualify this target set. A passing intrinsic result would still require independently authored reference, regenerated geometry, DRC/LVS, fresh RC and all500-device rebinding, corners and full closed-loop integration.
+| Stage | Maximum delay ps | Minimum signed margin mV | Below100mV samples | Wrong-sign samples | Pass |
+| --- | ---: | ---: | ---: | ---: | --- |
+| A |41.40625|65.242374|97|0|no|
+| B |37.34375|105.191923|0|0|yes|
+| C |118.90625|-12.305347|160|27|no|
+| D |104.53125|-18.856008|128|48|no|
+| X |118.90625|-120.401645|749|385|no|
+| Y |118.90625|-20.254185|687|56|no|
+
+Phase21.159943mV still fails30mV. VI62.965906uA passes50uA; output18.591273mV passes5mV and bias passes. Despite improved phase/VI relative to the prior24-target A/C experiment, C/D now have wrong-sign samples and all A/C/D/X/Y validity gates remain false. Do not promote this intrinsic candidate to layout or continue a blind common output-load sweep.
+
+Complete64-file proof740a55daac8798d2f3af976919609d5f7a2353c8, docs/evidence/cdr-sampler-load-terminal-41282867236, retains every failure. Native archive1054102581 bytes/SHA256577686ccfb6b9a09502185da3d5ec89add0f9a5a24374486e251ff8eb42d379d is in four release parts on GitHub; no native payload was acquired locally.
+
+Actual original-gate comparison41284059156/source93458f9d15f762a194bb02d9314a8d211a9c1d80 passed18 corruption controls and authenticated the full measured result; full15-file proofafd1a4f68e882c3124867e6eca2f34600b951875. This successful comparison confirms circuit rejection.
+
+The new20-target physical map41283407710/source1e5bd82f6587c5ac2f764a286802aa858922aaa8 passed16 controls and all500device/4928instance matching. Only A/B191/194/202/205 require private cells; their195/196/207/208 master-load siblings stay untouched. Map preparation is not geometry acceptance.
+
+Existing-wave diagnosis41284095439/source93fcfe9d9287e1ff9090e96e69000588f6c7eb66 passed source controls and the full-composition topology preflight and was observed running. It reuses this same native waveform, without rerunning simulation. Preserve full terminal results; inspect worst C/D margins and clock-edge/internal-node relationships before selecting another circuit change.
