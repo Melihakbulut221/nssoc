@@ -1,4 +1,4 @@
-name: Parallel200 MOS loaded native experiment with original electrical limits
+name: Twelve-divider drive PD650 experiment with original electrical limits
 on:
   workflow_dispatch:
     inputs:
@@ -7,10 +7,14 @@ on:
         options: [controls, simulate]
         default: controls
         description: Source controls or independently reserved exploratory native screen
+      qualified_controls:
+        type: string
+        default: ''
+        description: Separately successful same-source controls run required for native execution
 permissions:
   contents: write
 concurrency:
-  group: cdr-sampler-load-${{ github.ref }}
+  group: cdr-divider-drive-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   source-controls:
@@ -42,6 +46,12 @@ jobs:
             /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-tag-ref.json
             /scripts/build_pcie_local_vco_hybrid_v6.py
             /scripts/cdr-sampler-load-host-pins.json
+            /scripts/cdr_divider_drive_candidate.py
+            /scripts/cloud_cdr_divider_drive.py
+            /scripts/check_cdr_divider_drive.py
+            /docs/cdr-divider-drive.md
+            /scripts/cdr-divider-drive-host-pins.json
+            /docs/evidence/cdr-divider-drive-inputs/original-workflow.txt
             /scripts/cdr-via2-m3-loaded-core-catalog.json
             /scripts/cdr-via2-m3-loaded-core-inputs.json
             /scripts/cdr-via2-m3-loaded-producer-inputs.json
@@ -70,7 +80,7 @@ jobs:
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           test "$GITHUB_RUN_ATTEMPT" = "1"
-          python3 -B scripts/check_cdr_sampler_load_candidate.py
+          python3 -B scripts/check_cdr_divider_drive.py
       - name: Preserve candidate and full source control output
         if: always()
         run: |
@@ -90,6 +100,7 @@ jobs:
     timeout-minutes: 180
     env:
       GH_TOKEN: ${{ github.token }}
+      QUALIFIED_CONTROLS: ${{ inputs.qualified_controls }}
       OMP_NUM_THREADS: '1'
       OPENBLAS_NUM_THREADS: '1'
     steps:
@@ -118,6 +129,12 @@ jobs:
             /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-tag-ref.json
             /scripts/build_pcie_local_vco_hybrid_v6.py
             /scripts/cdr-sampler-load-host-pins.json
+            /scripts/cdr_divider_drive_candidate.py
+            /scripts/cloud_cdr_divider_drive.py
+            /scripts/check_cdr_divider_drive.py
+            /docs/cdr-divider-drive.md
+            /scripts/cdr-divider-drive-host-pins.json
+            /docs/evidence/cdr-divider-drive-inputs/original-workflow.txt
             /scripts/cdr-via2-m3-loaded-core-catalog.json
             /scripts/cdr-via2-m3-loaded-core-inputs.json
             /scripts/cdr-via2-m3-loaded-producer-inputs.json
@@ -149,11 +166,11 @@ jobs:
           python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
       - name: Authenticate original inputs and run sampler-load candidate with original measurements
         id: native
-        run: python3 -B scripts/cloud_cdr_sampler_load.py
+        run: python3 -B scripts/cloud_cdr_divider_drive.py
       - name: Preserve complete native result even when electrical gates reject it
         id: publication
         if: always() && steps.native.outcome != 'skipped'
-        run: python3 -B scripts/cloud_cdr_sampler_load.py --publish
+        run: python3 -B scripts/cloud_cdr_divider_drive.py --publish
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
