@@ -1,0 +1,46 @@
+{
+  "method": {
+    "adapted_sha256": "039a0eeda3cf94274b2753a0b211b51980dfbb4eaea0d819fe3648f09d697384",
+    "edits": [
+      {
+        "after": "B.parent/'precision-runtime/lib'",
+        "before": "Path('/dev/shm/nssoc-magic-area-product-v4-build/runtime/lib')"
+      },
+      {
+        "after": "B.parent/'ngspice-mim-tech'",
+        "before": "Path('/dev/shm/nssoc-magic-pad-stack-tech-v1')"
+      },
+      {
+        "after": "(4*1024**3,)*2",
+        "before": "(2*1024**3,)*2"
+      },
+      {
+        "after": "size>1024*1024**2",
+        "before": "size>80*1024**2"
+      },
+      {
+        "after": "OWNED_SCRATCH_1024MIB_LIMIT",
+        "before": "OWNED_SCRATCH_80MIB_LIMIT"
+      },
+      {
+        "after": "1a44bd5c70af3800213419c2e3b2213285523a74fcc4b92bc9cf7314d93a592c",
+        "before": "e8f2d96121e704acee41e7a58c23feead887527e3bfc4f51da4d97aa8183970e"
+      },
+      {
+        "after": "'extract all','exec /usr/bin/python3 {/home/runner/work/nssoc/nssoc/scripts/tx_reverse_native_cap_order.py} {/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-cdr-via2-m3-fresh-rc/mim/precise_reversed/wire/rc03/pump_wires.ext}',",
+        "before": "'extract all',"
+      }
+    ],
+    "original_sha256": "de4885a558d8faf61188dc3c3c5734dc6438c7aa33d41561178c4eac2b3f12f7"
+  },
+  "private_tech": {
+    "all_other_technology_bytes_unchanged": true,
+    "original_sha256": "650b16fb651c8b3d62ca34763516de286ecdc1319508dad136b43bfdea71d1ed",
+    "private_sha256": "1439949ae12e2e4da21b0fcb2833b78cf10ac8ad52fa5c68889057aabb69b96c",
+    "removed_cdl_device_estimate_lines": [
+      " defaultareacap     *mimcap metal5 1500\n",
+      " defaultperimeter   *mimcap metal5 40\n"
+    ],
+    "scope": "Used only with explicit cap_cmim subcircuit in ngspice() style; not approved for CDL or capacitor-only extraction."
+  }
+}

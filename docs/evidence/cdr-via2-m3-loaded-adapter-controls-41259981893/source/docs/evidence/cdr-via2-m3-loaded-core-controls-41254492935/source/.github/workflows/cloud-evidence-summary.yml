@@ -1,0 +1,133 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Current Via2 M3 loaded numerical core source controls
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [controls]
+        default: controls
+        required: true
+      approved_source:
+        type: string
+        required: true
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cdr-via2-m3-loaded-core-controls-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+  MODE: controls
+  APPROVED_SOURCE: ${{ inputs.approved_source }}
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr-via2-m3-loaded-core-pins.json
+      - name: Materialize exact source and derived JSON closure
+        run: |
+          python3 -B - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          name='scripts/cdr-via2-m3-loaded-core-pins.json'
+          m=json.loads(Path(name).read_bytes())
+          assert m['native_execution_authorized'] is False and m['wave_execution_authorized'] is False
+          names=sorted(set(m['files'])|{name})
+          assert all(not n.startswith('/') and '..' not in Path(n).parts and not any(x in n for x in '*?[!\\\n\r') for n in names)
+          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
+          PY
+      - name: Authenticate actual source-only checkout
+        run: |
+          python3 -B - <<'PY'
+          import ast,hashlib,json,os,subprocess
+          from pathlib import Path
+          e=os.environ;head=e['GITHUB_SHA'];name='scripts/cdr-via2-m3-loaded-core-pins.json'
+          assert e['GITHUB_ACTIONS']=='true' and e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr-via2-m3-loaded-source-v1' and e['GITHUB_JOB']=='source-controls'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch' and e['MODE']=='controls' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['APPROVED_SOURCE']==head==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          raw=Path(name).read_bytes();assert raw==subprocess.check_output(['git','show',head+':'+name]);m=json.loads(raw)
+          assert m['native_execution_authorized'] is False and m['wave_execution_authorized'] is False
+          for path,pin in m['files'].items():
+              p=Path(path);assert p.is_file() and not p.is_symlink() and p.resolve()==p.absolute()
+              b=p.read_bytes();assert dict(bytes=len(b),sha256=hashlib.sha256(b).hexdigest())==pin,path
+              if path.endswith('.py'):ast.parse(b,filename=path)
+          out=Path('loaded-core-source-controls');out.mkdir(exist_ok=False)
+          result=dict(status='PASS_EXACT_DISABLED_LOADED_CORE_SOURCE',source=head,run_id=int(e['GITHUB_RUN_ID']),attempt=1,job=e['GITHUB_JOB'],mode=e['MODE'],files=len(m['files']),manifest_sha256=hashlib.sha256(raw).hexdigest(),native_execution_authorized=False,wave_execution_authorized=False)
+          (out/'source.json').write_text(json.dumps(result,sort_keys=True,indent=2)+'\n')
+          print(json.dumps(result,sort_keys=True),flush=True)
+          PY
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install fixed source-fixture numerical package
+        run: python -m pip install numpy==2.3.3
+      - name: Full frozen binding deck and measurement source fixtures
+        run: |
+          set +e
+          python -B scripts/check_cdr_via2_m3_loaded_core.py --out loaded-core-source-controls/controls > loaded-core-source-controls/controls.stdout.log 2> loaded-core-source-controls/controls.stderr.log
+          result=$?
+          exit "$result"
+      - name: Preserve complete fixture outputs in the cloud
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-via2-m3-loaded-core-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: loaded-core-source-controls
+          if-no-files-found: error
+          retention-days: 90
+      - name: Preserve only derived source-control records in full log
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          root=Path('loaded-core-source-controls')
+          for name in ('source.json','controls/result.json','controls.stdout.log','controls.stderr.log'):
+              p=root/name
+              if not p.exists():
+                  print('LOADED_CORE_SOURCE_MISSING '+json.dumps(dict(path=name)),flush=True);continue
+              assert p.is_file() and not p.is_symlink()
+              b=p.read_bytes();index=dict(path=name,bytes=len(b),sha256=hashlib.sha256(b).hexdigest(),chunks=(len(b)+24575)//24576)
+              print('LOADED_CORE_SOURCE_INDEX '+json.dumps(index,sort_keys=True),flush=True)
+              for i in range(index['chunks']):print('LOADED_CORE_SOURCE_CHUNK '+json.dumps(dict(path=name,index=i,data=base64.b64encode(b[i*24576:(i+1)*24576]).decode()),sort_keys=True),flush=True)
+          PY
+  preserve-job-log:
+    needs: source-controls
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Preserve complete original source job log
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          e=os.environ;repo='repos/'+e['GITHUB_REPOSITORY'];run=e['GITHUB_RUN_ID'];attempt=e['GITHUB_RUN_ATTEMPT']
+          raw=subprocess.check_output(['gh','api',repo+'/actions/runs/'+run+'/attempts/'+attempt+'/jobs?per_page=100'],timeout=60);jobs=json.loads(raw)
+          selected=[j for j in jobs['jobs']if j['name']=='source-controls'];assert len(selected)==1
+          job=selected[0];assert job['run_id']==int(run) and job['head_sha']==e['GITHUB_SHA'] and job['status']=='completed'
+          out=Path('loaded-core-source-job-log');out.mkdir();(out/'jobs.json').write_bytes(raw)
+          log=subprocess.check_output(['gh','api','--allow-escape-sequences',repo+'/actions/jobs/'+str(job['id'])+'/logs'],timeout=60)
+          (out/(str(job['id'])+'.log')).write_bytes(log)
+          result=dict(job_id=job['id'],run_id=int(run),source=e['GITHUB_SHA'],bytes=len(log),sha256=hashlib.sha256(log).hexdigest(),original_conclusion=job['conclusion'])
+          (out/'receipt.json').write_text(json.dumps(result,sort_keys=True,indent=2)+'\n');print('LOADED_CORE_JOB_LOG '+json.dumps(result,sort_keys=True),flush=True)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: cdr-via2-m3-loaded-core-job-log-${{ github.run_id }}-${{ github.run_attempt }}
+          path: loaded-core-source-job-log
+          if-no-files-found: error
+          retention-days: 90
