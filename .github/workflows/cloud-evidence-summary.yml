@@ -1,11 +1,11 @@
-name: Fresh native connectivity view of six shortcuts
+name: Native fresh RC of physically verified six shortcuts
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-wire-shortcuts-canonical-${{ github.ref }}
+  group: cdr-wire-shortcuts-fresh-rc-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -21,33 +21,36 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/cdr-wire-shortcuts-canonical-pins.json
+            /scripts/cdr-wire-shortcuts-fresh-rc-pins.json
       - name: Materialize exact current source closure
         run: |
           python3 -B - <<'PY'
           import json,subprocess
           from pathlib import Path
-          manifest='scripts/cdr-wire-shortcuts-canonical-pins.json'
+          manifest='scripts/cdr-wire-shortcuts-fresh-rc-pins.json'
           pins=json.loads(Path(manifest).read_bytes())
           names=sorted(set(pins['files'])|{manifest})
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
           PY
       - name: Install pinned control libraries
-        run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1
-      - name: Qualify original geometry and new canonical material controls
-        run: python3 -B scripts/cloud_cdr_wire_shortcuts_canonical.py --controls
+        run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1 networkx==3.5
+      - name: Qualify frozen full numerical and lifecycle fixtures with current host
+        run: python3 -B scripts/cloud_cdr_wire_shortcuts_fresh_rc.py --controls
+      - name: Select complete derived source control records
+        if: always()
+        run: python3 -B scripts/cloud_cdr_wire_shortcuts_fresh_rc.py --derived-controls
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: wire-canonical-controls-${{ github.run_id }}
-          path: hw/soc/out/cloud-cdr-wire-shortcuts-canonical
+          name: wire-rc-controls-${{ github.run_id }}
+          path: wire-rc-controls-derived
           if-no-files-found: error
           retention-days: 90
-  native-canonical:
+  native-rc:
     needs: source-controls
     runs-on: ubuntu-24.04
-    timeout-minutes: 180
+    timeout-minutes: 360
     permissions:
       contents: write
       actions: read
@@ -61,26 +64,26 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/cdr-wire-shortcuts-canonical-pins.json
+            /scripts/cdr-wire-shortcuts-fresh-rc-pins.json
       - name: Materialize exact current source closure
         run: |
           python3 -B - <<'PY'
           import json,subprocess
           from pathlib import Path
-          manifest='scripts/cdr-wire-shortcuts-canonical-pins.json'
+          manifest='scripts/cdr-wire-shortcuts-fresh-rc-pins.json'
           pins=json.loads(Path(manifest).read_bytes())
           names=sorted(set(pins['files'])|{manifest})
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
           PY
       - name: Install pinned control libraries
-        run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1
+        run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1 networkx==3.5
       - name: Require independent empty exact-source release reservation
         id: reserve
         run: |
           python3 -B - <<'PY'
           import json,os,subprocess,time
-          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-cdr-wire-shortcuts-canonical'
+          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-cdr-wire-shortcuts-fresh-rc'
           for i in range(120):
               p=subprocess.run(['gh','api','repos/Melihakbulut221/nssoc/releases/tags/'+tag],capture_output=True,text=True)
               if p.returncode==0:
@@ -92,7 +95,7 @@ jobs:
           ref=json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/git/ref/tags/'+tag]))
           assert ref['object']['sha']==e['GITHUB_SHA']
           PY
-      - name: Acquire and verify unchanged native tool for fresh RC only
+      - name: Acquire exact pinned native runtime for fresh RC
         run: |
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y libfuse2 tcl8.6 tk8.6 tcl-dev tk-dev build-essential m4 autoconf libreadline-dev libx11-dev libxext-dev libxpm-dev libxt-dev libcairo2-dev libgl1-mesa-dev libglu1-mesa-dev uidmap
@@ -111,7 +114,7 @@ jobs:
           from pathlib import Path
           e=os.environ
           assert e['GITHUB_ACTIONS']=='true' and e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
-          assert e['GITHUB_REF']=='refs/heads/codex/cdr-wire-shortcuts-canonical' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr-wire-shortcuts-fresh-rc' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert re.fullmatch('[1-9][0-9]*',e['GITHUB_RUN_ID']) and re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA'])
           app=Path(e['RUNNER_TEMP'])/'current-tail-physical.AppImage'
           assert app==Path('/home/runner/work/_temp/current-tail-physical.AppImage') and app.is_file() and not app.is_symlink()
@@ -138,29 +141,31 @@ jobs:
           Path('current-cdr-runtime-policy.json').write_text(json.dumps(proof,sort_keys=True,indent=2)+'\n')
           print(json.dumps(proof,sort_keys=True))
           PY
-      - name: Rebuild actual native wire graph anchors and full layer identity
-        run: python3 -B scripts/cloud_cdr_wire_shortcuts_canonical.py --verify
-      - name: Permanently preserve complete native view success or failure
+      - name: Extract actual new wire RC and both precise MIM orders then compose
+        run: python3 -B scripts/cloud_cdr_wire_shortcuts_fresh_rc.py --verify
+      - name: Permanently preserve actual fresh RC or complete failure
         if: always() && steps.reserve.outcome == 'success'
-        run: python3 -B scripts/cloud_cdr_wire_shortcuts_canonical.py --publish
+        run: python3 -B scripts/cloud_cdr_wire_shortcuts_fresh_rc.py --publish
       - name: Select derived text only
         if: always()
-        run: python3 -B scripts/cloud_cdr_wire_shortcuts_canonical.py --derived
+        run: python3 -B scripts/cloud_cdr_wire_shortcuts_fresh_rc.py --derived
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: wire-canonical-derived-${{ github.run_id }}
-          path: wire-canonical-derived
+          name: wire-rc-derived-${{ github.run_id }}
+          path: wire-rc-derived
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: wire-canonical-native-fallback-${{ github.run_id }}
+          name: wire-rc-native-fallback-${{ github.run_id }}
           path: |
+            hw/soc/out/cloud-cdr-via2-m3-fresh-rc
+            wire-rc-publication
+            wire-rc-canonical-cache
             hw/soc/out/cloud-cdr-wire-shortcuts-canonical
-            wire-canonical-publication
-            canonical-physical-cache
+            wire-rc-controls
             wire-native-cache
           if-no-files-found: warn
           retention-days: 90

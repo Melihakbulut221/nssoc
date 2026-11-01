@@ -58,7 +58,7 @@ def acquire(cfg):
       "binding/inputs/wire/native05/wires.l2n","binding/inputs/wire/native05/wires.gds",
       "binding/inputs/parent/layout/result.json","binding/inputs/parent/layout/schematic.cir",
       "binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.lef"}
-    selected|={n for n in cfg["complete_members"]if n.startswith("binding/inputs/")}
+    selected|={n for n in cfg["complete_members"]if n.startswith("runtime-inputs/")}
     with tarfile.open(archive,"r|gz")as tar:
         for m in tar:
             need(m.name not in names,"duplicate member");names.add(m.name)
@@ -74,7 +74,9 @@ def acquire(cfg):
                     size+=len(b);h.update(b)
                     if f:f.write(b)
             finally:
-                if f:f.close()
+                if f:
+                    f.close()
+                    if n.startswith("runtime-inputs/"):os.chmod(p,m.mode&0o777)
             pin=dict(bytes=size,sha256=h.hexdigest());need(pin==cfg["complete_members"][n],"member digest "+n);seen[n]=pin
     if not(set(seen)==set(cfg["complete_members"])and selected<=set(seen)):
         save("acquisition-failure.json",dict(authenticated_members=len(seen),missing_selected=sorted(selected-set(seen)),missing_members=sorted(set(cfg["complete_members"])-set(seen)),unexpected_members=sorted(set(seen)-set(cfg["complete_members"]))))
