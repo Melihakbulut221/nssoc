@@ -37,6 +37,7 @@ def original_functions(path,names,constants):
 def functions():
  graph=original_functions("scripts/mainchip_net459_connectivity.py",["require","box","overlap","observe"],["METALS","FLAGS"])
  gate=original_functions("scripts/mainchip_bulk_postdrt_antenna.py",["require","exact","validate_connectivity"],["FLAGS"])
+ gate["encode"]=original_functions("scripts/mainchip_single_antenna_trial.py",["encode"],[])["encode"]
  return graph["observe"],gate["validate_connectivity"]
 def controls():
  observe,gate=functions()
