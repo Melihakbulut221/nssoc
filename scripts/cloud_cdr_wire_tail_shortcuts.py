@@ -540,6 +540,116 @@ def existing_m3_landings(anchor,owned,full,other):
         if admitted:results.append(dict(center=[xx,yy],pad=pad,record=row))
     results.sort(key=lambda row:((row["center"][0]-x)**2+(row["center"][1]-y)**2,row["center"]))
     return results[:4],dict(original_anchor=anchor,original_via1_boxes=lower_vias,trials=trials,selected_search_limit=4,new_via1_count=0,existing_vias_unchanged=True)
+
+def rectilinear_search(starts,goals,obstacles,window,max_expanded=100000,seconds=120):
+    import heapq,time
+    started=time.monotonic();left,bottom,right,top=window
+    need(all(type(v)is int for v in window)and left<right and bottom<top,"bounded integer search window")
+    starts=[tuple(p)for p in starts];goals=[tuple(p)for p in goals]
+    need(starts and goals and all(x%5==0 and y%5==0 for x,y in starts+goals),"nonempty grid5 endpoints")
+    def inside(p):return left<p[0]<right and bottom<p[1]<top
+    clipped=(obstacles&pya.Region(pya.Box(left,bottom,right,top))).merged()
+    xs={p[0]for p in starts+goals};ys={p[1]for p in starts+goals}
+    for poly in clipped.each():
+        vertices=list(poly.each_point_hull())
+        for hole in range(poly.holes()):vertices.extend(poly.each_point_hole(hole))
+        for p in vertices:
+            xs.update([p.x//5*5-5,(p.x//5+1)*5+5])
+            ys.update([p.y//5*5-5,(p.y//5+1)*5+5])
+    xs.update(range((left//10000+1)*10000,right,10000));ys.update(range((bottom//10000+1)*10000,top,10000))
+    xs=sorted(x for x in xs if left<x<right);ys=sorted(y for y in ys if bottom<y<top)
+    report=dict(x_coordinates=len(xs),y_coordinates=len(ys),expanded=0,edge_checks=0,seconds_limit=seconds,node_limit=max_expanded,window=window,reason=None)
+    if len(xs)>4000 or len(ys)>4000:report["reason"]="bounded coordinate count";return None,report
+    xi={x:i for i,x in enumerate(xs)};yi={y:i for i,y in enumerate(ys)}
+    node_cache={};edge_cache={}
+    def clear(node):
+        if node not in node_cache:node_cache[node]=box(xs[node[0]],ys[node[1]],1).interacting(clipped).is_empty()
+        return node_cache[node]
+    def edge(a,b):
+        key=tuple(sorted((a,b)))
+        if key not in edge_cache:
+            edge_cache[key]=wire([[xs[a[0]],ys[a[1]]],[xs[b[0]],ys[b[1]]]],width=2).interacting(clipped).is_empty()
+            report["edge_checks"]+=1
+        return edge_cache[key]
+    target={(xi[x],yi[y])for x,y in goals if inside((x,y))and x in xi and y in yi}
+    target={n for n in target if clear(n)}
+    if not target:report["reason"]="no clear target";return None,report
+    def heuristic(n):return min(abs(xs[n[0]]-xs[g[0]])+abs(ys[n[1]]-ys[g[1]])for g in target)
+    heap=[];dist={};parents={}
+    for x,y in starts:
+        if not inside((x,y))or x not in xi or y not in yi:continue
+        n=(xi[x],yi[y])
+        if not clear(n):continue
+        dist[n]=0;parents[n]=None;heapq.heappush(heap,(heuristic(n),0,n))
+    if not heap:report["reason"]="no clear source";return None,report
+    while heap:
+        _,cost,node=heapq.heappop(heap)
+        if dist.get(node)!=cost:continue
+        if node in target:
+            chain=[];cursor=node
+            while cursor is not None:
+                chain.append([xs[cursor[0]],ys[cursor[1]]]);cursor=parents[cursor]
+            chain.reverse();compact=[]
+            for point in chain:
+                while len(compact)>=2 and((compact[-2][0]==compact[-1][0]==point[0])or(compact[-2][1]==compact[-1][1]==point[1])):compact.pop()
+                compact.append(point)
+            report.update(reason="found",path_length_dbu=cost,elapsed_seconds=time.monotonic()-started,visited=len(dist))
+            return compact,report
+        report["expanded"]+=1
+        if report["expanded"]>max_expanded or time.monotonic()-started>seconds:
+            report.update(reason="bounded search budget",elapsed_seconds=time.monotonic()-started,visited=len(dist));return None,report
+        i,j=node
+        for other in((i-1,j),(i+1,j),(i,j-1),(i,j+1)):
+            ii,jj=other
+            if not(0<=ii<len(xs)and 0<=jj<len(ys))or not clear(other):continue
+            new=cost+abs(xs[i]-xs[ii])+abs(ys[j]-ys[jj])
+            if new>=dist.get(other,float("inf"))or not edge(node,other):continue
+            dist[other]=new;parents[other]=node;heapq.heappush(heap,(new+heuristic(other),new,other))
+    report.update(reason="no path in bounded exact obstacle graph",elapsed_seconds=time.monotonic()-started,visited=len(dist))
+    return None,report
+def maze_controls():
+    window=[-2000,-2000,2000,2000];empty=pya.Region()
+    p,r=rectilinear_search([[-1000,0]],[[1000,0]],empty,window)
+    need(p==[[-1000,0],[1000,0]]and r["path_length_dbu"]==2000,"empty exact Manhattan path")
+    checks=["straight empty graph"]
+    obstacle=box(0,0,300);before=bounds(obstacle)
+    p,r=rectilinear_search([[-1000,0]],[[1000,0]],obstacle,window)
+    need(p is not None and len(p)>2 and r["path_length_dbu"]>2000 and wire(p,width=2).interacting(obstacle).is_empty(),"actual obstacle detour")
+    need(bounds(obstacle)==before,"input obstacle untouched");checks.append("detour exact obstacle without mutation")
+    wall=pya.Region(pya.Box(-100,-3000,100,3000))
+    p,r=rectilinear_search([[-1000,0]],[[1000,0]],wall,window)
+    need(p is None,"closed wall has no accepted path");checks.append("reject closed wall")
+    p,r=rectilinear_search([[0,0]],[[1000,0]],obstacle,window);need(p is None and r["reason"]=="no clear source","blocked source");checks.append("reject blocked source")
+    p,r=rectilinear_search([[-1000,0]],[[0,0]],obstacle,window);need(p is None and r["reason"]=="no clear target","blocked target");checks.append("reject blocked target")
+    p,r=rectilinear_search([[-1000,0],[500,0]],[[1000,0]],empty,window)
+    need(p==[[500,0],[1000,0]],"native multiple access alternatives");checks.append("select shorter valid access")
+    p,r=rectilinear_search([[-1000,0]],[[1000,0]],obstacle,window,max_expanded=0)
+    need(p is None and r["reason"]=="bounded search budget","budget is not acceptance");checks.append("budget refusal")
+    try:rectilinear_search([[-1001,0]],[[1000,0]],empty,window)
+    except AssertionError:checks.append("reject off-grid new path")
+    else:raise AssertionError("off-grid accepted")
+    need(len(checks)==8,"eight maze controls");return checks
+def mixed_maze(access3,bridges,owned,current,other3,top):
+    if not access3 or not bridges:return None,dict(reason="no admitted endpoints")
+    obstacles=(current[30]-owned[30]).sized(910)+(current[29]-owned[29]).sized(310)+(current[49]-owned[49]).sized(310)
+    for(layer,dt),r in other3.items():obstacles+=r.sized(910 if layer==30 else 310)
+    obstacles=obstacles.merged()
+    points=[q["center"]for q in access3+bridges];b=top.bbox()
+    window=[max(b.left+300,min(p[0]for p in points)-100000),max(b.bottom+300,min(p[1]for p in points)-100000),
+      min(b.right-300,max(p[0]for p in points)+100000),min(b.top-300,max(p[1]for p in points)+100000)]
+    path,report=rectilinear_search([q["center"]for q in access3],[q["center"]for q in bridges],obstacles,window)
+    report.update(m3_center_clearance_dbu=910,via_center_clearance_dbu=310,original_geometry_unchanged=True,physical_acceptance=False)
+    if path is None:return None,report
+    start=next(q for q in access3 if q["center"]==path[0]);bridge=next(q for q in bridges if q["center"]==path[-1])
+    metal3=(wire(path)+start["pad"]+bridge["pad"]).merged()
+    checks=mixed_m3_guard(metal3,bridge["cuts"],(owned[10]+bridge["metal2"]).merged(),owned,current,other3)
+    checks.update(single_new_m3=metal3.count()==1,inside_original_bbox=((metal3+bridge["metal2"])-pya.Region(top.bbox())).is_empty(),
+      connects_existing_m3=(box(*start["center"],1)-metal3).is_empty(),
+      all_unknown_via_drawings_clear=all(metal3.sized(5).interacting(r).is_empty()for(layer,dt),r in other3.items()if layer in(29,49)))
+    report.update(points=path,final_original_guards=checks)
+    if not all(checks.values()):report["reason"]="final native guards refused maze result";return None,report
+    return dict(start=start,bridge=bridge,metal3=metal3,path=path,checks=checks),report
+
 def mixed_generate(base,cfg):
     gpath=base/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds";wpath=base/"binding/inputs/wire/native05/wires.l2n"
     g=pya.Layout();g.read(str(gpath));top=g.cell(TOP);need(top is not None and g.dbu==.001,"original GDS")
@@ -603,6 +713,15 @@ def mixed_generate(base,cfg):
                                 additions[n]+=r
                             break
                     if row["selected"]is not None:break
+        if row["selected"]is None and access3 and access2 is not None:
+            found,maze_report=mixed_maze(access3,bridges,owned,current,other3,top);row["maze_search"]=maze_report
+            if found is not None:
+                bridge=found["bridge"];start=found["start"]
+                row["selected"]=dict(route=dict(points=found["path"],guards=found["checks"],maze_search=True),bridge=bridge["record"],
+                  existing_m3_access=start["record"],new_via2_count=2,new_via1_count=0)
+                for n,r in((10,bridge["metal2"]),(29,bridge["cuts"]),(30,found["metal3"])):
+                    for poly in r.each():inserted.append(top.shapes(g.layer(n,0)).insert(poly))
+                    additions[n]+=r
         proposals.append(row);save("mixed-target-"+label+".json",row)
     adopted=[r["label"]for r in proposals if r["selected"]is not None]
     save("mixed-generation-summary.json",dict(generated_targets=adopted,unrouted_targets=[r["label"]for r in proposals if r["selected"]is None],
@@ -628,7 +747,7 @@ def mixed_generate(base,cfg):
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
-        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls();save("controls.json",dict(count=len(passed),passed=passed))
+        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
         need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"]),"explicit native operation")
         reserve(wait=True)
