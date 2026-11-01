@@ -1,0 +1,11 @@
+# Restore the original full 64-pass routing effort
+
+Cloud diagnosis 41321744519/source4090f5c3ce1d7655de4144299f69df278a2d7a16 authenticated all1749 capsule members and classified all399 actual DRC markers:329 shorts and70 spacing errors;369 markers involve an outside-scope signal. Antenna remains19 nets/23 rows. Four protected nets and the two power nets appear as counterparts and must not be changed.
+
+The actual route was produced by scripts/mainchip_bounded_route_stage.py at source7a0776718ec37a106b7dfde0cbd477c6a2a5522f. That explicitly replaces the original64-pass environment argument with8 passes. It was an intermediate checkpoint, not full effort. The new mainchip_full_route_stage.py executes the byte-identical original pre-stage program SHA2564769e146e1bf59e08fb4c08c436d1f0f285de4086f8c72974825305db6fa9a7b. The environment guard still enforces64,2 threads, original layers, seed42, failure saving, and the14400-second supervision budget.
+
+This is a new full-effort trial from the same authenticated saved-diode seed and same828-net scope, not a claim to resume TritonRoute's internal iteration state. Starting with the same scope isolates the effect of completing the intended effort. Native export, guide equality, diode pin attachments, protected1691 records, full physical connectivity,2702 PG contacts, original-class final DRC/antenna, matching-netlist fresh RC and final timing remain mandatory. No protected-net change or expanded scope is authorized by this source-only qualification.
+
+Eleven cloud lifecycle controls exercise exact-program admission, refusal of the8-pass program, preserved failed partial outputs, stale/symlink outputs, repeated calls, wrong commands/budgets, missing outputs, source drift and false acceptance. Synthetic outputs are explicitly non-native.
+
+Native integration remains to do: bind this module after the original828-net clear, integrate current qualified physical adapter and scoped class restoration for the NEW measured route pins, repair the three host preservation errors, independently qualify the combined source, reserve an exact-source permanent release and launch one owned cloud run. Do not apply the old routed-fixed.odb hash to the new result or promote source controls to routing evidence.

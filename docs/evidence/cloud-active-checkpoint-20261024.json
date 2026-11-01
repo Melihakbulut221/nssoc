@@ -1,64 +1,5 @@
 {
-  "active_runs": {
-    "41293340525": {
-      "branch": "codex/cdr-pd650-loaded-wave-analysis",
-      "conclusion": null,
-      "jobs": [
-        {
-          "conclusion": "success",
-          "id": 124808977298,
-          "name": "python-quality",
-          "status": "completed"
-        },
-        {
-          "conclusion": null,
-          "id": 124808977460,
-          "name": "checks",
-          "status": "in_progress"
-        },
-        {
-          "conclusion": "success",
-          "id": 124808977468,
-          "name": "memory-parity",
-          "status": "completed"
-        },
-        {
-          "conclusion": "success",
-          "id": 124808977505,
-          "name": "formal-sweep (soc)",
-          "status": "completed"
-        },
-        {
-          "conclusion": "failure",
-          "id": 124808977510,
-          "name": "rtl",
-          "status": "completed"
-        },
-        {
-          "conclusion": "success",
-          "id": 124808977536,
-          "name": "formal-sweep (pilot)",
-          "status": "completed"
-        },
-        {
-          "conclusion": "failure",
-          "id": 124808977592,
-          "name": "formal-and-boot",
-          "status": "completed"
-        },
-        {
-          "conclusion": "skipped",
-          "id": 124808978452,
-          "name": "native-boot",
-          "status": "completed"
-        }
-      ],
-      "run": 41293340525,
-      "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe",
-      "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293340525"
-    }
-  },
+  "active_runs": {},
   "bounded_route_class_diagnosis_v238": {
     "archive": {
       "bytes": 751995332,
@@ -260,7 +201,7 @@
     "physical_acceptance": false,
     "timing_accepted": false
   },
-  "checkpoint_version": 250,
+  "checkpoint_version": 251,
   "cloud_results_release_reservations": {
     "mainchip_artifact_recovery": {
       "exact_tag_target_verified": true,
@@ -2169,6 +2110,7 @@
   "continuation_note_v248": "PROGRESS: qualified physical-conductor core implemented; 67 controls and full 828-net replay passed. Native restored-audit adapter integration, PG, DRC/antenna, fresh RC/STA and full serial PHY remain open.",
   "continuation_note_v249": "PROGRESS: qualified native binding implemented and all 49+67+12 independent controls passed. Actual native run41317927121 launched with exact-source empty release430648315; observe this existing run, collect terminal native evidence and continue actual physical fixes/RC/STA. Full serial PHY and final timing remain open.",
   "continuation_note_v250": "## Latest result: cloud-only handoff, completed native audits and rejected physical candidate\n\nAll project CAD, simulation, native data acquisition and analysis run on GitHub. The local workspace and project temporary locations were verified empty; no local CAD processes were present. Source/API-derived text coordination uses RAM only. Do not download native ODB/DEF/GDS/SPICE/raw archives locally.\n\nActual run 41317927121/source 340fb4f217e920c1bc4d5fa552e4b11eb81d0a4b completed all six native phases: qualified connectivity for 828 nets in both modes, 2702 direct diode power contacts, and unchanged 1691 protected clock/fixed nets passed. The physical candidate is still rejected: 399 DRC markers, 19 antenna nets and 23 violation rows remain. No final timing or full serial PHY acceptance.\n\nThe host job is red with three preservation errors: original-clock-gate/before.def and after.def are already authenticated in the native capsule but refused by the derived suffix filter; oversized host-progress.json is outside the native publication prefixes. Preserve these failures and fix the exact output cases with refusal controls in a successor; do not rerun CAD merely to recolor CI. The permanent native release is 430648315, archive SHA256 c9cf1d646a8116c5ddc77dcb0d36838677c9d6243f4db08df9ac17369d65f95f. No candidate data needs a local copy.\n\nWidth8 full-wave diagnosis 41319989811/source 7866608fd58ceb372fa927b408ba7087c54d9610 passed 48 controls and reproduced the six original measurements and all device tables. Its proof is imported below docs/evidence/divider-width8-wave-terminal-41319989811. It confirms failure, not PHY acceptance: phase 25.861 mV is below 30 mV; eight HBT limit violations and one aggregate stage-tail current violation remain. Full raw waves stay in release 430594515.\n\nReadout 41320700483 failed because the final*.json selector included the 27 MB all-net antenna table. Corrected source 23a41f2b4c6d057babbffad3dfd3b768f1809e49 uses an explicit bounded-report allowlist and four selection controls while still hashing EVERY archive member. Run 41321233030 is the single dispatched successor; inspect its actual terminal result before relying on its readout.\n\nNext: collect that existing readout, classify the 399 DRC markers and 19 antenna owners on the actual current candidate, then qualify the next physical repair. Export and prove a matching diode-inclusive netlist and fresh RC before unchanged multi-corner setup/hold gates; old route12 netlist/RC is stale. PHY work must address the measured internal divider/buffer/device failures, not declare width-only screening complete. All work continues in the cloud.\n\n",
+  "continuation_note_v251": "## Latest result: remaining physical failures classified; original64-pass stage qualified\n\nCloud run41321744519/source4090f5c3ce1d7655de4144299f69df278a2d7a16 passed16 controls and authenticated all1749 native members from release430648315. Every actual DRC/antenna record is retained. Counts:329 shorts +70 metal-spacing markers =399;19 antenna nets/23 rows. Among320 named owners:92 original diode owners,36 previous counterpart owners,186 outside-scope signal owners,4 protected nets and2 power nets. 369 markers involve an outside-scope signal;6 involve protected nets;13 involve power. All antenna rows lie inside the existing828-net scope. Source reports and42-file proof9663c2bcc94ceae21d7739bc6279740522e53524 are imported under docs/evidence/postrestore-classification-terminal-41321744519.\n\nThe actual routing effort was explicitly limited to8 passes by mainchip_bounded_route_stage.py at7a0776718ec37a106b7dfde0cbd477c6a2a5522f, despite the original environment requiring64. Complete the intended effort on the same seed/scope first, so a scope expansion is not conflated with additional router optimization. Existing final399/19/23 rejection remains authoritative until a new native candidate is measured.\n\nNew mainchip_full_route_stage.py/source0502f3cbb7e74286d6cb024504d593be04bd778a executes the byte-identical original64-pass Tcl (SHA2564769e146e1bf59e08fb4c08c436d1f0f285de4086f8c72974825305db6fa9a7b). Cloud run41322259020 passed all11 lifecycle controls,0 failures/errors/skips. It preserves partial failures and rejects8-pass programs, stale/symlink outputs, repeated calls, wrong commands/budgets, missing outputs, source drift and false acceptance. Source proof fcde4e2991da08c38e0521c8dd4e2756da787287 is imported under docs/evidence/full64-controls-terminal-41322259020. **No native64-pass run has been launched or accepted.** This will be a new trial from the same saved-diode seed, not a claim of internal router-iteration resume.\n\nNext concrete work: integrate full64 execute_stage after the original828-net clear and before current qualified restoration/connectivity/PG/final audits; fix exact host preservation cases before dispatch. The original cloud_mainchip_saved_diode_routing.perform acquires CURRENT, failed donor41172959321/release429743993 and saved reconstruction41190910993/release429853533 before tail.restore_prefix; do not omit either seed acquisition. The existing scoped-restoration host only replays a saved8-pass route and cannot itself run64. Preserve original frozen source projection, owned container, native runtime and source pins. Adapt new routed-fixed/candidate pins from measured results rather than keeping old hardcoded pins. Keep all1351 diode attachments/1691 protected nets and all original physical gates. Independently qualify combined source, reserve exact-source cloud release, then dispatch exactly once. If using staged routing followed by restoration, preserve original failures and distinguish route completion from full physical acceptance.\n\nNo native data is stored locally. Full serial PHY still fails width8 device/data/phase gates; final RC/STA needs the actual current diode-inclusive matching netlist. Goal remains active and unachieved.\n\n",
   "current_run_snapshot": [
     {
       "attempt": 1,
@@ -23303,64 +23245,6 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41292160619"
     },
     {
-      "branch": "codex/cdr-pd650-loaded-wave-analysis",
-      "conclusion": null,
-      "jobs": [
-        {
-          "conclusion": "success",
-          "id": 124808977298,
-          "name": "python-quality",
-          "status": "completed"
-        },
-        {
-          "conclusion": null,
-          "id": 124808977460,
-          "name": "checks",
-          "status": "in_progress"
-        },
-        {
-          "conclusion": "success",
-          "id": 124808977468,
-          "name": "memory-parity",
-          "status": "completed"
-        },
-        {
-          "conclusion": "success",
-          "id": 124808977505,
-          "name": "formal-sweep (soc)",
-          "status": "completed"
-        },
-        {
-          "conclusion": "failure",
-          "id": 124808977510,
-          "name": "rtl",
-          "status": "completed"
-        },
-        {
-          "conclusion": "success",
-          "id": 124808977536,
-          "name": "formal-sweep (pilot)",
-          "status": "completed"
-        },
-        {
-          "conclusion": "failure",
-          "id": 124808977592,
-          "name": "formal-and-boot",
-          "status": "completed"
-        },
-        {
-          "conclusion": "skipped",
-          "id": 124808978452,
-          "name": "native-boot",
-          "status": "completed"
-        }
-      ],
-      "run": 41293340525,
-      "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe",
-      "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293340525"
-    },
-    {
       "branch": "codex/mainchip-qualified-restoration",
       "conclusion": "failure",
       "jobs": [
@@ -23421,6 +23305,64 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41320700483"
     },
     {
+      "branch": "codex/cdr-pd650-loaded-wave-analysis",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "conclusion": "success",
+          "id": 124808977298,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "conclusion": "cancelled",
+          "id": 124808977460,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 124808977468,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 124808977505,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "id": 124808977510,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 124808977536,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "id": 124808977592,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "id": 124808978452,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41293340525,
+      "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293340525"
+    },
+    {
       "branch": "codex/mainchip-qualified-terminal",
       "conclusion": "success",
       "jobs": [
@@ -23435,6 +23377,38 @@
       "source": "23a41f2b4c6d057babbffad3dfd3b768f1809e49",
       "status": "completed",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41321233030"
+    },
+    {
+      "branch": "codex/mainchip-postrestore-classification",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "conclusion": "success",
+          "id": 124893254235,
+          "name": "authenticated-native-readout",
+          "status": "completed"
+        }
+      ],
+      "run": 41321744519,
+      "source": "4090f5c3ce1d7655de4144299f69df278a2d7a16",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41321744519"
+    },
+    {
+      "branch": "codex/mainchip-full64-route",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "conclusion": "success",
+          "id": 124894784098,
+          "name": "full64-source-controls",
+          "status": "completed"
+        }
+      ],
+      "run": 41322259020,
+      "source": "0502f3cbb7e74286d6cb024504d593be04bd778a",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41322259020"
     }
   ],
   "divider_width4_terminal_v246": {
@@ -23768,6 +23742,37 @@
   },
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
   "final_timing_complete": false,
+  "full64_source_controls_v251": {
+    "native64_dispatched": false,
+    "proof": {
+      "all_readbacks_verified": true,
+      "bytes": 54609,
+      "conclusion": "success",
+      "files": 12,
+      "head": "fcde4e2991da08c38e0521c8dd4e2756da787287",
+      "prefix": "docs/evidence/full64-controls-terminal-41322259020",
+      "receipt_sha256": "6e58d33046fafd27942dfa156733631f8b4ad1ad22cd6e3ccbf3cd724583ae3c",
+      "result": {
+        "errors": 0,
+        "failures": 0,
+        "full_phy_accepted": false,
+        "iterations": 64,
+        "native_executed": false,
+        "physical_acceptance": false,
+        "run": 41322259020,
+        "skips": 0,
+        "source": "0502f3cbb7e74286d6cb024504d593be04bd778a",
+        "tests": 11,
+        "timing_accepted": false,
+        "unchanged_baseline_Tcl": {
+          "bytes": 2359,
+          "sha256": "4769e146e1bf59e08fb4c08c436d1f0f285de4086f8c72974825305db6fa9a7b"
+        }
+      },
+      "run": 41322259020,
+      "source": "0502f3cbb7e74286d6cb024504d593be04bd778a"
+    }
+  },
   "full_serial_phy_accepted": false,
   "hbt_load_terminal_v238": {
     "accepted": false,
@@ -77233,6 +77238,49 @@
       "tree": "78156f866e3f50fcf45f53d9f380a9c02da67eba"
     }
   ],
+  "imported_checkpoint_receipts_v251": [
+    {
+      "all_readbacks_verified": true,
+      "bytes": 15690142,
+      "conclusion": "success",
+      "files": 42,
+      "head": "9663c2bcc94ceae21d7739bc6279740522e53524",
+      "prefix": "docs/evidence/postrestore-classification-terminal-41321744519",
+      "receipt_sha256": "4243c6e28c53bdab1fb37755b46a98f576093c4351b8fed500424be9cfa69fdc",
+      "run": 41321744519,
+      "source": "4090f5c3ce1d7655de4144299f69df278a2d7a16",
+      "tree": "ec74b704df21683495b58365f73f2b524585b70d"
+    },
+    {
+      "all_readbacks_verified": true,
+      "bytes": 54609,
+      "conclusion": "success",
+      "files": 12,
+      "head": "fcde4e2991da08c38e0521c8dd4e2756da787287",
+      "prefix": "docs/evidence/full64-controls-terminal-41322259020",
+      "receipt_sha256": "6e58d33046fafd27942dfa156733631f8b4ad1ad22cd6e3ccbf3cd724583ae3c",
+      "result": {
+        "errors": 0,
+        "failures": 0,
+        "full_phy_accepted": false,
+        "iterations": 64,
+        "native_executed": false,
+        "physical_acceptance": false,
+        "run": 41322259020,
+        "skips": 0,
+        "source": "0502f3cbb7e74286d6cb024504d593be04bd778a",
+        "tests": 11,
+        "timing_accepted": false,
+        "unchanged_baseline_Tcl": {
+          "bytes": 2359,
+          "sha256": "4769e146e1bf59e08fb4c08c436d1f0f285de4086f8c72974825305db6fa9a7b"
+        }
+      },
+      "run": 41322259020,
+      "source": "0502f3cbb7e74286d6cb024504d593be04bd778a",
+      "tree": "f46ebc3cb2baf18019d801d637b953552c55c145"
+    }
+  ],
   "imported_checkpoint_receipts_v30": [
     {
       "bytes": 27858,
@@ -103412,6 +103460,114 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41321233030"
     }
   ],
+  "latest_observed_runs_v251": [
+    {
+      "branch": "codex/cdr-pd650-loaded-wave-analysis",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "conclusion": "success",
+          "id": 124808977298,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "conclusion": "cancelled",
+          "id": 124808977460,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 124808977468,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 124808977505,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "id": 124808977510,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 124808977536,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "id": 124808977592,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "id": 124808978452,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41293340525,
+      "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293340525"
+    },
+    {
+      "branch": "codex/mainchip-qualified-terminal",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "conclusion": "success",
+          "id": 124891715853,
+          "name": "authenticated-native-readout",
+          "status": "completed"
+        }
+      ],
+      "run": 41321233030,
+      "source": "23a41f2b4c6d057babbffad3dfd3b768f1809e49",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41321233030"
+    },
+    {
+      "branch": "codex/mainchip-postrestore-classification",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "conclusion": "success",
+          "id": 124893254235,
+          "name": "authenticated-native-readout",
+          "status": "completed"
+        }
+      ],
+      "run": 41321744519,
+      "source": "4090f5c3ce1d7655de4144299f69df278a2d7a16",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41321744519"
+    },
+    {
+      "branch": "codex/mainchip-full64-route",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "conclusion": "success",
+          "id": 124894784098,
+          "name": "full64-source-controls",
+          "status": "completed"
+        }
+      ],
+      "run": 41322259020,
+      "source": "0502f3cbb7e74286d6cb024504d593be04bd778a",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41322259020"
+    }
+  ],
   "latest_terminal_runs": {
     "cdr_actual_terminal_current_ledger": 40171679250,
     "cdr_current_ledger_controls": 40171508329,
@@ -103972,10 +104128,10 @@
     "unrelated_user_files_not_modified": true,
     "workspace_entries": 0
   },
-  "local_cleanup_verification": {
+  "local_cleanup_v251": {
     "native_payloads_cloud_only": true,
     "native_processes": [],
-    "observed_at": "2026-11-01T15:27:59.673720+00:00",
+    "observed_at": "2026-11-01T15:41:41.424855+00:00",
     "project_temp_entries": {
       "/dev/shm": [],
       "/tmp": [],
@@ -103985,7 +104141,20 @@
     "unrelated_user_files_not_modified": true,
     "workspace_entries": 0
   },
-  "local_workspace_verified_empty_at": "2026-11-01T15:27:59.673720+00:00",
+  "local_cleanup_verification": {
+    "native_payloads_cloud_only": true,
+    "native_processes": [],
+    "observed_at": "2026-11-01T15:41:41.424855+00:00",
+    "project_temp_entries": {
+      "/dev/shm": [],
+      "/tmp": [],
+      "/var/tmp": []
+    },
+    "source_API_derived_text_RAM_only": true,
+    "unrelated_user_files_not_modified": true,
+    "workspace_entries": 0
+  },
+  "local_workspace_verified_empty_at": "2026-11-01T15:41:41.424855+00:00",
   "monitor": {
     "automatic_native_dispatch": false,
     "branch": "main",
@@ -104009,7 +104178,7 @@
     },
     "candidate_qualification_run": 41108174342,
     "code_deployed_head": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a",
-    "configured_inventory_rows": 682,
+    "configured_inventory_rows": 684,
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33",
     "every_hours": 8,
     "historical_scheduled_error": {
@@ -104022,7 +104191,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 250,
+    "inventory_version": 251,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -104063,7 +104232,7 @@
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66"
   },
   "next_actions": [
-    "Collect existing cloud readout41321233030/source23a41f2b4c6d057babbffad3dfd3b768f1809e49; do not duplicate dispatch. Actual native phases passed828 connectivity/2702 PG/1691 protected nets, but399 DRC/19 antenna nets/23 rows remain. Classify and qualify next physical repair, preserving failed host-output cases. Then matching diode-inclusive netlist/fresh RC/STA. PHY width8 full-wave proof confirms8 HBT and1 stage-tail failures. No local native acquisition or execution.",
+    "Integrate qualified full64 stage/source0502f3cbb7e74286d6cb024504d593be04bd778a after original828-net clear with current restoration/qualified connectivity and host preservation fixes. Native64 NOT dispatched. Cloud11 controls passed41322259020. Preserve original source/runtime; acquire saved reconstruction and failed donor as original saved-diode host requires. Use measured new-route pins. Independent combined controls then exact-source release and one dispatch. Actual399 DRC/19 antenna/23 rows and PHY/RC/STA remain open.",
     "After actual pin-metal correspondence and connectivity qualification, run remaining2702diode PG-contact audit, all1691original clock/fixed-net preservation, all1351diode pin attachments, final DRC/antenna and exact current candidate audits. Saved8-pass router397violations is not final physical acceptance.",
     "For PHY, use full-wave width2 buffer delay and width8 actual failed device/data reports to select a circuit repair. Wider dividers alone did not close the loaded path. Width4 has no measurement due1200s host timeout; any larger execution allowance needs explicit separately controlled host experiment, identical model/stimuli/electrical gates and independently reserved exact-source release.",
     "Export and authenticate current diode-inclusive154480instance netlist from current native ODB, generate fresh nominal SPEF and run original threecorners/20-4-8-8ns/5percent-derate STA only after physical admission. Do not reuse153130instance route12netlist or stale SPEF.",
@@ -104131,6 +104300,91 @@
       "receipt_sha256": "646baca993965cc16112b9b050e319b35a733d7a2ece68afccc883fc4ad78ec1",
       "run": 41314829887,
       "source": "b0cc820906e9cc75c3a7d55fce11297a8e4f1da1"
+    }
+  },
+  "postrestore_classification_v251": {
+    "proof": {
+      "all_readbacks_verified": true,
+      "bytes": 15690142,
+      "conclusion": "success",
+      "files": 42,
+      "head": "9663c2bcc94ceae21d7739bc6279740522e53524",
+      "prefix": "docs/evidence/postrestore-classification-terminal-41321744519",
+      "receipt_sha256": "4243c6e28c53bdab1fb37755b46a98f576093c4351b8fed500424be9cfa69fdc",
+      "run": 41321744519,
+      "source": "4090f5c3ce1d7655de4144299f69df278a2d7a16"
+    },
+    "summary": {
+      "all_marker_ordinals_preserved": true,
+      "antenna_by_role": {
+        "antenna_owner": 18,
+        "counterpart_owner": 5
+      },
+      "antenna_nets": 19,
+      "antenna_rows": 23,
+      "by_layer": {
+        "Metal2": 199,
+        "Metal3": 59,
+        "Metal4": 43,
+        "Metal5": 98
+      },
+      "by_owner_roles": {
+        "antenna_owner": 5,
+        "antenna_owner+counterpart_owner": 5,
+        "antenna_owner+outside_routing_scope": 230,
+        "antenna_owner+power": 11,
+        "antenna_owner+protected": 6,
+        "counterpart_owner": 1,
+        "counterpart_owner+outside_routing_scope": 139,
+        "counterpart_owner+power": 2
+      },
+      "by_rule": {
+        "Metal Spacing": 70,
+        "Short": 329
+      },
+      "categories": [
+        {
+          "cap": 10000,
+          "count": 0,
+          "path": [
+            "NSSOC_ONE_BULK_POSTDRT_ANTENNA_DRC"
+          ]
+        },
+        {
+          "cap": 10000,
+          "count": 329,
+          "path": [
+            "NSSOC_ONE_BULK_POSTDRT_ANTENNA_DRC",
+            "Short"
+          ]
+        },
+        {
+          "cap": 10000,
+          "count": 70,
+          "path": [
+            "NSSOC_ONE_BULK_POSTDRT_ANTENNA_DRC",
+            "Metal Spacing"
+          ]
+        }
+      ],
+      "classification_only": true,
+      "cooccurrence_components": 93,
+      "full_phy_accepted": false,
+      "input_antenna_sha256": "af8e9a4dcc786652805d3f475cb12be738951368ffb2955f32810fef6922d2b3",
+      "input_markers_sha256": "09bad88a0503461cfd21a4918f70f600e002e97c55ade823bd2af3bcaaafc0b1",
+      "marker_non_net_source_ordinals": [],
+      "markers": 399,
+      "owners": 320,
+      "owners_by_role": {
+        "antenna_owner": 92,
+        "counterpart_owner": 36,
+        "outside_routing_scope": 186,
+        "power": 2,
+        "protected": 4
+      },
+      "physical_acceptance": false,
+      "routing_authorized": false,
+      "timing_accepted": false
     }
   },
   "prepared_collector_v155": {
@@ -145628,7 +145882,7 @@
     "timing_accepted": false,
     "timing_limits_unchanged": true
   },
-  "root_source_before_receipt": "2c14684e6a344751919118549cc01f12839b23ac",
+  "root_source_before_receipt": "52feeeea1c447c96cc8aecd8df40f200c8f55c62",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -145681,7 +145935,7 @@
     "Actual PLL/CDR/SERDES, full training/link protocol, TX and serial soc_top ownership remain open. Routing result is packet-interface SoC only. No full serial PHY, final setup/hold or production approval claim.",
     "Keep all execution on GitHub and local workspace empty. Eight-hour monitor stays read-only automatic_native_dispatch:false."
   ],
-  "updated_at": "2026-11-01T15:27:59.673720+00:00",
+  "updated_at": "2026-11-01T15:41:41.424855+00:00",
   "width8_wave_diagnosis_v250": {
     "proof": {
       "bytes": 5806735,

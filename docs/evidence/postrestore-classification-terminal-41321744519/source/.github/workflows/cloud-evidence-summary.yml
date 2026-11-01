@@ -1,0 +1,38 @@
+name: Classify actual post-restoration DRC and antenna owners
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  authenticated-native-readout:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/mainchip_postrestore_classification.py
+            /scripts/mainchip_targeted_counterpart_routing.py
+            /scripts/cloud_mainchip_qualified_terminal.py
+            /scripts/mainchip-qualified-terminal-inputs.json
+            /scripts/mainchip-qualified-terminal-pins.json
+            /docs/mainchip-qualified-terminal.md
+            /.github/workflows/cloud-evidence-summary.yml
+      - name: Authenticate complete published native archive and inspect all completed gates
+        run: python3 -B scripts/cloud_mainchip_qualified_terminal.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: qualified-native-terminal-${{ github.run_id }}
+          path: qualified-native-terminal
+          retention-days: 90
+          if-no-files-found: error
