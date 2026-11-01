@@ -1,66 +1,18 @@
-name: Actual six-shortcut fresh RC loaded waveform verification
+name: Classify actual rejected six-shortcut transient
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-wire-shortcuts-loaded-${{ github.ref }}
+  group: cdr-wire-device-audit-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
-  OMP_NUM_THREADS: '1'
-  OPENBLAS_NUM_THREADS: '1'
 jobs:
-  source-controls:
+  classify:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: false
-          filter: blob:none
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /scripts/cdr-wire-shortcuts-loaded-pins.json
-      - name: Materialize exact loaded source closure
-        run: |
-          python3 -B - <<'PY'
-          import json,subprocess
-          from pathlib import Path
-          m='scripts/cdr-wire-shortcuts-loaded-pins.json'
-          names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
-          assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
-          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
-          PY
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
-      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
-      - name: Verify unchanged complete numerical methods and current input refusals
-        run: |
-          set -o pipefail
-          python3 -B scripts/cloud_cdr_wire_shortcuts_loaded.py --controls 2>&1 | tee wire-loaded-controls.log
-      - name: Preserve complete source-control results
-        if: always()
-        run: python3 -B scripts/cloud_cdr_wire_shortcuts_loaded.py --derived-controls
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: wire-loaded-controls-${{ github.run_id }}
-          path: |
-            wire-loaded-controls-derived
-            wire-loaded-controls.log
-          if-no-files-found: error
-          retention-days: 90
-  loaded-wave:
-    needs: source-controls
-    runs-on: ubuntu-24.04
-    timeout-minutes: 180
-    permissions:
-      contents: write
-      actions: read
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -71,55 +23,26 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/cdr-wire-shortcuts-loaded-pins.json
-      - name: Materialize exact loaded source closure
+            /scripts/cdr-wire-shortcuts-device-audit-pins.json
+      - name: Materialize exact classifier source
         run: |
           python3 -B - <<'PY'
           import json,subprocess
           from pathlib import Path
-          m='scripts/cdr-wire-shortcuts-loaded-pins.json'
+          m='scripts/cdr-wire-shortcuts-device-audit-pins.json'
           names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
           PY
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
-      - name: Original frozen native-engine dependencies
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
-          python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
-      - name: Require independently reserved current-source release
-        id: reserve
-        run: |
-          python3 -B - <<'PY'
-          import sys
-          sys.path.insert(0,'scripts')
-          import cloud_cdr_wire_shortcuts_loaded as host
-          host.gate()
-          host.release_gate(wait=True)
-          PY
-      - name: Authenticate new RC and execute unchanged loaded-wave measurements
-        id: native
-        run: python3 -B scripts/cloud_cdr_wire_shortcuts_loaded.py --simulate
-      - name: Permanently preserve complete success or failure and native waves
-        if: always() && steps.reserve.outcome == 'success'
-        run: python3 -B scripts/cloud_cdr_wire_shortcuts_loaded.py --publish
-      - name: Select derived text without native payload
-        if: always()
-        run: python3 -B scripts/cloud_cdr_wire_shortcuts_loaded.py --derived
+      - name: Check exact electrical boundary predicates
+        run: python3 -B scripts/cloud_cdr_wire_shortcuts_device_audit.py --controls
+      - name: Reproduce rejected measurements and identify failing devices
+        run: python3 -B scripts/cloud_cdr_wire_shortcuts_device_audit.py --diagnose
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: wire-loaded-derived-${{ github.run_id }}
-          path: wire-loaded-derived
+          name: wire-device-audit-${{ github.run_id }}
+          path: wire-device-audit
+          include-hidden-files: true
           if-no-files-found: error
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: wire-loaded-native-fallback-${{ github.run_id }}
-          path: cloud-wire-shortcuts-loaded
-          if-no-files-found: warn
           retention-days: 90
