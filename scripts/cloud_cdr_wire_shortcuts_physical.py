@@ -28,7 +28,9 @@ def gate():
     need(subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip()==e["GITHUB_SHA"],"source checkout")
     pins=json.loads((ROOT/MANIFEST).read_bytes())
     for n,p in pins["files"].items():
-        path=ROOT/n;need(path.is_file()and not path.is_symlink()and pin(path)==p,"protected source "+n)
+        path=ROOT/n;need(path.is_file()and not path.is_symlink()and pin(path)=={k:p[k]for k in("bytes","sha256")},"protected source "+n)
+        if "git_blob_sha1"in p:
+            raw=path.read_bytes();need(hashlib.sha1(("blob "+str(len(raw))+"\0").encode()+raw).hexdigest()==p["git_blob_sha1"],"protected git blob "+n)
     acquire.OUT=OUT/"parent-acquisition"
     return pins
 def pick_function(path,name,scope):
