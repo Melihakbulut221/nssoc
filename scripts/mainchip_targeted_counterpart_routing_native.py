@@ -54,6 +54,10 @@ def seed_pin(path):
             h.update(chunk)
     return dict(bytes=size, sha256=h.hexdigest())
 
+def read_snapshot(path):
+    """Compare the complete persisted JSON representation on both sides."""
+    return json.loads(path.read_bytes())
+
 def clear():
     plan, scope = load_scope()
     original, target = WORK / "fixed.odb", WORK / "stale-wire-cleared.odb"
@@ -63,7 +67,7 @@ def clear():
     snapshot_pin = seed_pin(DATA / "fixed-snapshot.json")
     p.exact(input_pin, config["seed_pins"]["fixed_odb"], "exact classified fixed ODB seed")
     p.exact(snapshot_pin, config["seed_pins"]["fixed_snapshot"], "complete classified fixed snapshot")
-    before = json.loads((DATA / "fixed-snapshot.json").read_bytes())
+    before = read_snapshot(DATA / "fixed-snapshot.json")
     p.require(len(before["instances"]) == 154480 and len(before["nets"]) == 143820,
               "complete current candidate census")
     guides = saved.read_guides(original)
@@ -108,6 +112,12 @@ def clear():
     gc.collect()
     after = native.snapshot(target, WORK / "stale-wire-cleared.def", plan["protected_nets"])
     saved.save("stale-wire-cleared-snapshot.json", after)
+    # OpenDB master_pin_boxes contains tuples; the saved baseline contains JSON
+    # arrays. Compare the exact saved evidence on both sides, retaining every
+    # existing strict geometry, identity, class and nonowned-net predicate.
+    del after
+    gc.collect()
+    after = read_snapshot(DATA / "stale-wire-cleared-snapshot.json")
     report["delta"] = scope_core.clear_delta(before, after, plan, scope, p.pin(p.encode(None)))
     p.exact(seed_pin(original), input_pin, "unchanged fixed input")
     p.exact(report["removed"], scope["routing_nets"], "all 828 removals")

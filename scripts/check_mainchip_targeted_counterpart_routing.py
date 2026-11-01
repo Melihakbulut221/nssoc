@@ -119,6 +119,28 @@ class Controls(unittest.TestCase):
         result = target.clear_delta(before, after, plan, scope, empty)
         self.assertEqual(len(result["cleared_nets"]), 828)
         self.assertEqual(plan, original)
+        # Reproduce the real failed native boundary with the actual adapter's
+        # saved-record reader; do not relax the unchanged strict delta function.
+        reader = definition("scripts/mainchip_targeted_counterpart_routing_native.py",
+                            "read_snapshot", {"json": json})
+        before["masters"] = {"cell": {"pins": {"Y": {"boxes": [[["Metal2", 1, 2, 3, 4]]]}}}}
+        after["masters"] = {"cell": {"pins": {"Y": {"boxes": [[("Metal2", 1, 2, 3, 4)]]}}}}
+        with self.assertRaisesRegex(AssertionError, "unchanged snapshot masters"):
+            target.clear_delta(before, after, plan, scope, empty)
+        def record(value):
+            return SimpleNamespace(read_bytes=lambda: json.dumps(value, allow_nan=False).encode())
+        saved_before, saved_after = reader(record(before)), reader(record(after))
+        self.assertTrue(target.clear_delta(saved_before, saved_after, plan, scope, empty)["complete"])
+        for change in ("coordinate", "missing-pin", "unowned-wire"):
+            changed = copy.deepcopy(after)
+            if change == "coordinate":
+                changed["masters"]["cell"]["pins"]["Y"]["boxes"][0][0] = ("Metal2", 9, 2, 3, 4)
+            elif change == "missing-pin":
+                del changed["masters"]["cell"]["pins"]["Y"]
+            else:
+                changed["nets"]["TEST_UNOWNED"]["wire"]["opcode_count"] = 0
+            with self.subTest(change=change), self.assertRaises(AssertionError):
+                target.clear_delta(saved_before, reader(record(changed)), plan, scope, empty)
     def test_clear_rejects_clock_pg_unowned_and_all_snapshot_drift(self):
         plan, scope, before, after, empty = fixture()
         for name in ("TEST_UNOWNED", "TEST_POWER", scope["protected_nets"][0]):
