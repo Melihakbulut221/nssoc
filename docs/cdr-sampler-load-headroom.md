@@ -1,17 +1,31 @@
-# Coupled sampler load and headroom candidate
+# Master/slave latch and input-buffer impedance experiment
 
-This is one exploratory twelve-resistor circuit candidate, not physical signoff. It follows original loaded run41260582673, rejected four-shunt run41268684044, complete comparison41269888640 and full-wave clock/data diagnosis41271280278.
+This supersedes the rejected12-resistor coupled-load candidate for experimental design only. It does not accept or modify its layout.
 
-Hypothesis: reducing the eight sampler output collector pullup resistances can improve loaded output settling and raise the A/B output common mode feeding the C/D input buffers. The latter may offset the excessive VCE introduced at those input buffers by the four-shunt-only candidate. Reduced differential swing is a real risk; the original100mV/37.5ps sampler gates remain unchanged and may reject it.
+## Evidence and mechanism
 
-Exact intrinsic changes from authenticated baseline:
-- XD0175,XD0176,XD0191,XD0194,XD0202,XD0205,XD0212,XD0214: rppd L2.6um to1.5um, W32um unchanged. These are the eight physical pullups of the four sampler Q output nets.
-- XD0184,XD0185,XD0222,XD0223: rppd L5um to7.4um, W4um unchanged. These are the same four input-amplifier shunts from the rejected experiment.
-- All terminals, other device parameters, all remaining circuit cards and baseline wire RC remain byte/value identical. Exact original-model authentication precedes the reversible12-token rewrite.
+Full original-gate native comparison41273897568 found only B passing; A/C/D/X/Y failed. Native wave diagnosis41274403461 (sourceb3b4c87e894662f61eb53210c1dbe982885b3f00) repeats all124HBT metrics, all6stage/1530bit delays and phase/VI outputs with the original frozen reader. Seven inherited controls and9event controls pass, including the strict Ic/emitter<3mA boundary. Its preceding diagnostic41274356086 is retained but superseded because its event detector treated current equality as passing; no simulator or original measurement was changed.
 
-Original prepare and measure executable bodies remain identical in an independent candidate namespace. No changes to original1151 vectors,10ohm clock/data input source resistances,150fF sampler loads,50fF XOR loads,125ps UI, clock/data sequences, stage/phase/VI predicates or device stress limits. Full original13 native binding controls are required before simulation. Source controls reject13 circuit corruptions and5 archive corruptions and verify original frozen catalog/module/function identity. Synthetic cards used for these tests are never native simulation evidence.
+Voltage maxima at XD0059/60/111/112 occur during active operation around3.72–3.96ns, not only initialization. Collectors reach about2.016–2.047V while emitters are0.371–0.391V, giving maxVCE1.638–1.656V against1.6V. XD0061's minimum at30.312ns is0.398992V (collector0.909276V/emitter0.510284V) against0.4V.
 
-The candidate reuses baseline distributed RC only for an exploratory electrical screen. Length changes alter real geometry and parasitics; no candidate PCell layout, new DRC/LVS or fresh RC is claimed. Even an electrical pass requires those steps plus corners/closed-loop integration before acceptance. The IHP rppd PCell explicitly uses process minL/minW, geometry and contacts; a future layout must be generated/checked, not inferred from length tokens alone:
-https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/main/ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/ihp/rppd_code.py
+The exact topology shows XD0059/60 andXD0111/112 are input differential pairs with pullups plus shunts at their collectors. Those collectors directly drive the following master latch. Reducing only final Q load resistors improved B but left the master loads unchanged; increasing only the shunt length raised the off-side collector and created active overvoltage. These measurements motivate reducing buffer impedance while limiting its high level and reducing master settling time together.
 
-All execution is on GitHub. Qualify exact source controls first; independently reserve an empty exact-source release before the sole actual simulation can enter native admission. Preserve complete baseline/native/candidate/results on success or failure. Source branch: codex/cdr-sampler-load-headroom. Output release tag: cloud-results-RUN-1-cdr-sampler-load. Final PHY, physical acceptance and timing remain false.
+## Exact exploratory intrinsic delta
+
+All lengths are um. Width, model, instance identity, terminals and unrelated parameters remain unchanged.
+
+*16master/slave collector loads: XD0175/176/177/178/191/194/195/196/202/205/207/208/212/214/215/216, L2.6->1.5 atW32.
+*4buffer pullups: XD0182/183/220/221, L1.8->1.0 atW8.
+*4buffer shunts: XD0184/185/222/223, L5->3.4 atW4.
+
+This is a24-length-token modification from the authenticated original baseline, not a chained edit of a failed native model. Shorter paired buffer pullup/shunt devices are an initial engineering hypothesis for lower loaded impedance and narrower voltage excursion; actual resistance includes contacts and the model, so length ratios are not accepted as a measured voltage prediction. Lower latch/load swing, increased bias loading and supply/wire drops may still cause failure. Only the full native screen can decide.
+
+The original500-device census, complete model bytes outside these24tokens, wire RC,10ohm source resistance,150fF sampler/50fF XOR loads, clock/data waveforms,1151saved vectors, active and all-time predicates and frozen prepare/measure code remain unchanged. Source controls include17malformed-circuit refusals and5archive refusals. The original13actual binding controls still run on the native deck.
+
+## Admission and physical follow-up
+
+First run exact-source source controls. Before simulator start, independently reserve and read back an empty exact-source output release. The host verifies that reservation and its own completed source-controls job. Preserve success or failure fully. No native artifacts are downloaded locally.
+
+No layout regeneration or new RC is claimed here. The old12-instance map is insufficient for this24-device candidate; a passing screen requires a new complete map, private cells for all shared targeted PCells, actual geometry, native DRC/LVS, freshRC, corners and closed-loop/wholePHY verification.
+
+Original inherited voltage screening is preserved. As documented in the IHP [bipolar process specification](https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/03_bjt_params.html), a typical breakdown figure is not a foundry-approved operating envelope. A passing1.6V screen does not by itself prove reliability or production approval.

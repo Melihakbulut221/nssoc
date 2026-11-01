@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Coupled sampler load/headroom intrinsic candidate; original electrical gates.
+"""Master/slave and input-buffer impedance intrinsic candidate; original electrical gates.
 Baseline distributed RC is retained. Not regenerated-layout PEX or signoff.
 """
 import copy,hashlib,json,re,types
@@ -9,16 +9,28 @@ import cdr_via2_m3_loaded_core as frozen
 TARGETS={
  175:("2.6u","1.5u","32u",("avdd",16),("$69",17)),
  176:("2.6u","1.5u","32u",("avdd",16),("$70",18)),
+ 177:("2.6u","1.5u","32u",("avdd",16),("$55",11)),
+ 178:("2.6u","1.5u","32u",("avdd",16),("$56",12)),
  191:("2.6u","1.5u","32u",("avdd",16),("$285",58)),
  194:("2.6u","1.5u","32u",("avdd",16),("$286",59)),
+ 195:("2.6u","1.5u","32u",("avdd",16),("$269",54)),
+ 196:("2.6u","1.5u","32u",("avdd",16),("$270",55)),
  202:("2.6u","1.5u","32u",("avdd",16),("$449",87)),
  205:("2.6u","1.5u","32u",("avdd",16),("$450",88)),
+ 207:("2.6u","1.5u","32u",("avdd",16),("$433",83)),
+ 208:("2.6u","1.5u","32u",("avdd",16),("$434",84)),
  212:("2.6u","1.5u","32u",("avdd",16),("$622",117)),
  214:("2.6u","1.5u","32u",("avdd",16),("$623",118)),
- 184:("5u","7.4u","4u",("$99",22),("avss",23)),
- 185:("5u","7.4u","4u",("$98",21),("avss",23)),
- 222:("5u","7.4u","4u",("$652",122),("avss",23)),
- 223:("5u","7.4u","4u",("$651",121),("avss",23)),
+ 215:("2.6u","1.5u","32u",("avdd",16),("$609",112)),
+ 216:("2.6u","1.5u","32u",("avdd",16),("$610",113)),
+ 182:("1.8u","1.0u","8u",("avdd",16),("$99",22)),
+ 183:("1.8u","1.0u","8u",("avdd",16),("$98",21)),
+ 220:("1.8u","1.0u","8u",("avdd",16),("$652",122)),
+ 221:("1.8u","1.0u","8u",("avdd",16),("$651",121)),
+ 184:("5u","3.4u","4u",("$99",22),("avss",23)),
+ 185:("5u","3.4u","4u",("$98",21),("avss",23)),
+ 222:("5u","3.4u","4u",("$652",122),("avss",23)),
+ 223:("5u","3.4u","4u",("$651",121),("avss",23)),
 }
 def require(ok,message):
     if not ok:raise ValueError(message)
@@ -28,7 +40,7 @@ def rewrite(text,contract):
     rows=contract["device_records"]
     require(len(rows)==500 and len({d["native_id"]for d in rows})==500,"complete unique original500 devices")
     selected={d["native_id"]:d for d in rows if d["native_id"]in TARGETS}
-    require(set(selected)==set(TARGETS)and len(selected)==12,"exact12 physical resistor identities")
+    require(set(selected)==set(TARGETS)and len(selected)==24,"exact24 physical resistor identities")
     updated=copy.deepcopy(contract);result=text;changes=[]
     for ident,(old,new,width,first,second)in TARGETS.items():
         d=selected[ident];name="XD"+format(ident,"04d")
@@ -63,7 +75,7 @@ def variant(baseline_paths,candidate_paths,root=frozen.ROOT):
     """Clone unchanged original functions into an explicit candidate namespace.
     Original module globals, function bodies, stimulus, and acceptance predicates
     remain intact. Candidate input verification always authenticates the baseline
-    first and then derives the exact twelve-token delta again.
+    first and then derives the exact twenty-four-token delta again.
     """
     require(set(baseline_paths)==set(candidate_paths)=={"model","composition","planes"},"explicit complete paths")
     require(all(Path(v).is_absolute() and Path(v).resolve()==Path(v) for v in [*baseline_paths.values(),*candidate_paths.values()]),"unaliased absolute paths")
@@ -80,8 +92,8 @@ def variant(baseline_paths,candidate_paths,root=frozen.ROOT):
     def block(name,namespace,root=root):
         answer=frozen.block(name,namespace,root)
         if name=="scenario":
-            namespace["r"].update(scope="Exploratory coupled sampler load/headroom intrinsic length candidate with baseline distributed RC; original whole-model electrical predicates. Not regenerated-layout PEX.",
-                circuit_candidate=dict(native_ids=sorted(TARGETS),eight_loads_l_um=[2.6,1.5],four_shunts_l_um=[5,7.4]),
+            namespace["r"].update(scope="Exploratory master/slave load and input-buffer impedance intrinsic length candidate with baseline distributed RC; original whole-model electrical predicates. Not regenerated-layout PEX.",
+                circuit_candidate=dict(native_ids=sorted(TARGETS),sixteen_latch_loads_l_um=[2.6,1.5],four_buffer_loads_l_um=[1.8,1.0],four_shunts_l_um=[5,3.4]),
                 baseline_wire_rc_retained=True,wire_rc_recomputed=False,layout_regenerated=False,physical_acceptance=False)
         return answer
     ns=dict(frozen.__dict__)

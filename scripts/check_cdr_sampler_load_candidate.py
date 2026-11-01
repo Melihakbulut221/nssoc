@@ -21,14 +21,16 @@ def main():
             cards.append(" ".join([d["instance"],*[t["node"] for t in d["terminals"]],d["model"],*[k+"="+v for k,v in d["parameters"].items()]]))
     text="* exact unrelated bytes\nR_keep a b 42\nC_keep a 0 1f\n"+"\n".join(cards)+"\n.end\n"
     changed,updated,delta=candidate.rewrite(text,contract)
-    assert len(delta["changes"])==12
-    loads={175,176,191,194,202,205,212,214};shunts={184,185,222,223}
-    assert {x["native_id"]for x in delta["changes"]}==loads|shunts
+    assert len(delta["changes"])==24
+    loads={175,176,177,178,191,194,195,196,202,205,207,208,212,214,215,216};shunts={184,185,222,223};buffers={182,183,220,221}
+    assert {x["native_id"]for x in delta["changes"]}==loads|shunts|buffers
     for x in delta["changes"]:
         if x["native_id"]in loads:
             assert x["old_l"]=="2.6u"and x["new_l"]=="1.5u"and x["w"]=="32u"
+        elif x["native_id"]in shunts:
+            assert x["old_l"]=="5u"and x["new_l"]=="3.4u"and x["w"]=="4u"
         else:
-            assert x["old_l"]=="5u"and x["new_l"]=="7.4u"and x["w"]=="4u"
+            assert x["old_l"]=="1.8u"and x["new_l"]=="1.0u"and x["w"]=="8u"
     assert text.splitlines()[:3]==changed.splitlines()[:3]
     rejected=[]
     def reject(label,t,ct):
@@ -39,7 +41,7 @@ def main():
     reject("duplicate card",text+cards[0]+"\n",contract)
     reject("wrong model token",text.replace(" rppd "," npn13g2 ",1),contract)
     reject("wrong card terminal",text.replace("w_T184_rppd_1","wrong",1),contract)
-    reject("already modified card",text.replace("l=5u","l=7.4u",1),contract)
+    reject("already modified card",text.replace("l=5u","l=3.4u",1),contract)
     reject("extra parameter",text.replace(cards[0],cards[0]+" extra=1"),contract)
     wrong=copy.deepcopy(contract)
     next(d for d in wrong["device_records"] if d["native_id"]==184)["parameters"]["w"]="8u"
@@ -65,7 +67,17 @@ def main():
     next(d for d in wrong["device_records"]if d["native_id"]==175)["terminals"][1]["native_net"]="$70"
     reject("wrong load physical net",text,wrong)
     reject("wrong load card terminal",text.replace("w_T175_rppd_2","wrong",1),contract)
-    assert len(rejected)==13
+    wrong=copy.deepcopy(contract)
+    next(d for d in wrong["device_records"]if d["native_id"]==177)["parameters"]["w"]="16u"
+    reject("wrong master load width",text,wrong)
+    reject("wrong master card terminal",text.replace("w_T177_rppd_2","wrong",1),contract)
+    wrong=copy.deepcopy(contract)
+    next(d for d in wrong["device_records"]if d["native_id"]==182)["parameters"]["w"]="16u"
+    reject("wrong buffer pullup width",text,wrong)
+    wrong=copy.deepcopy(contract)
+    next(d for d in wrong["device_records"]if d["native_id"]==182)["terminals"][1]["native_net"]="$98"
+    reject("wrong buffer physical net",text,wrong)
+    assert len(rejected)==17
     archive_controls=[]
     with tempfile.TemporaryDirectory(prefix="sampler-load-controls-") as directory:
         base=Path(directory);payload=b"source-control-only"
