@@ -1,0 +1,102 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "native_processes": [],
+    "observed_at": "2026-11-01T21:24:23.218442+00:00",
+    "project_temp_entries": {
+      "/dev/shm": [],
+      "/tmp": [],
+      "/var/tmp": []
+    },
+    "source_API_derived_text_RAM_only": true,
+    "workspace_entries": 0
+  },
+  "note": "## Latest result: current four-path native geometry binding passed\n\nExecution remains cloud-only: native GDS/ODB/L2N/SPICE/raw data and CAD execution stay on GitHub. The local task workspace and project temporary entries are empty; only source/API/derived-text coordination occurs in RAM.\n\nCanonical run41350835442/source360a01ea394943614b25895e6389221f2b0ca0ba/release430861219 passed on the actual four-path GDS1c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94. All500 primitives,1446 terminals,25 public ports,978 anchors and all13-layer owner partitions passed the frozen identity checks. Current canonical view has78 files; the complete native archive has133 authenticated members. Original geometry is retained and the four declared Metal2/Via2/Metal3 additions are verified. Physical run41349608125 already passed560DRC categories with zero markers, deep/flat LVS and13 expected fault rejections.\n\nActual native port ordering now has irx,xn,xp rather than the preceding view's irx,xp,xn. Fresh RC and subsequent wave models must bind this actual semantic order; no stale positional mapping is acceptable. No new RC or loaded electrical result is claimed. Use the frozen full numerical fresh-RC pipeline with this exact qualified canonical archive and unchanged original runtime cache, then rerun original loaded predicates without relaxing limits.\n\nMainchip route41349316524/sourcea47bb1895ad12fdebddeb055dc5e3e9c414c04e0 remains the existing handle. Keep its actual iteration snapshots and final/failure evidence; do not duplicate. Snapshot reload, classes/connectivity/diode PG, DRC/antenna, matching netlist, fresh RC and original three-corner setup/hold still require actual proof. Full serial PHY and final timing are not complete.\n",
+  "proofs": [
+    {
+      "prefix": "docs/evidence/mixed-canonical-terminal-41350835442",
+      "receipt_sha256": "32f802c2410fedde3e82abd97b5bd584ea5eea8c2b1c367bffd652aafd5c716f",
+      "run": 41350835442
+    }
+  ],
+  "runs": [
+    {
+      "branch": "codex/cdr-wire-tail-physical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124976755919,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124976836058,
+          "name": "native-physical",
+          "status": "completed"
+        }
+      ],
+      "label": "Actual mixed-layer physical pass",
+      "run": 41349608125,
+      "source": "8203934d2a56cdcc8a2fa7754d76d2bf24330658",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41349608125"
+    },
+    {
+      "branch": "codex/cdr-wire-tail-canonical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124980420247,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124980508441,
+          "name": "native-canonical",
+          "status": "completed"
+        }
+      ],
+      "label": "Fresh current native graph and all13-layer four-path material binding",
+      "run": 41350835442,
+      "source": "360a01ea394943614b25895e6389221f2b0ca0ba",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41350835442"
+    },
+    {
+      "branch": "codex/mainchip-full64-snapshots",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124975867442,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Execute and preserve actual full64 route"
+          ],
+          "conclusion": null,
+          "id": 124975988607,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "label": "Actual full64 route with native iteration ODB retention",
+      "run": 41349316524,
+      "source": "a47bb1895ad12fdebddeb055dc5e3e9c414c04e0",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41349316524"
+    }
+  ],
+  "version": 269
+}
