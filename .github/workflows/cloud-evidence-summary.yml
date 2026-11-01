@@ -1,39 +1,39 @@
-# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
-# SPDX-License-Identifier: Apache-2.0
-name: cloud-evidence-summary
+name: Loaded nominal-late comparison
 on:
   workflow_dispatch:
-    inputs:
-      release:
-        description: Exact release containing the archive
-        default: cloud-migration-20261012-000
-        required: false
-      asset:
-        description: Exact archive asset name
-        default: routed-setup-cloud-38306421942-1.tar.gz
-        required: true
-      member:
-        description: Exact JSON or UTF-8 report member to read
-        default: cloud-routed-setup/result.json
-        required: true
 permissions:
   contents: read
+concurrency:
+  group: loaded-comparison-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
-  summarize:
+  comparison:
     runs-on: ubuntu-24.04
-    permissions:
-      contents: write
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          ref: ${{ github.sha }}
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/compare_cdr_via2_m3_loaded.py
+            /.github/workflows/cloud-evidence-summary.yml
+      - name: Exact source and single attempt
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_RUN_ATTEMPT" = "1"
+          sha256sum scripts/compare_cdr_via2_m3_loaded.py .github/workflows/cloud-evidence-summary.yml
+      - name: Five controls and complete matching real-report comparison
+        run: python3 -B scripts/compare_cdr_via2_m3_loaded.py
+      - name: Preserve inputs, controls and every comparison outcome
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          python-version: '3.12'
-      - name: Read exact report in cloud and publish source binding
-        env:
-          GH_TOKEN: ${{ github.token }}
-          ASSET: ${{ inputs.asset || 'routed-setup-cloud-38306421942-1.tar.gz' }}
-          MEMBER: ${{ inputs.member || 'cloud-routed-setup/result.json' }}
-          RELEASE: ${{ inputs.release || 'cloud-migration-20261012-000' }}
-        run: python3 scripts/summarize_cloud_evidence.py --asset "$ASSET" --member "$MEMBER" --release "$RELEASE"
+          name: loaded-comparison-${{ github.run_id }}-${{ github.run_attempt }}
+          path: cloud-loaded-comparison
+          if-no-files-found: error
+          retention-days: 90
