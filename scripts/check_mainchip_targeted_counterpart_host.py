@@ -3,6 +3,7 @@ import ast
 import base64
 import copy
 import hashlib
+import inspect
 import json
 import os
 import tempfile
@@ -154,7 +155,12 @@ class Controls(unittest.TestCase):
         old = list(constants(host.original.perform.__code__))
         new = list(constants(bound.__code__))
         self.assertEqual(new, [host.INNER if v == host.inherited.OLD_INNER else v for v in old])
-        self.assertEqual(old.count(host.inherited.OLD_INNER), 3)
+        # CPython interns repeated constants within a code object. Count source
+        # occurrences in the AST, while retaining full compiled-constant equality.
+        tree = ast.parse(inspect.getsource(host.original.perform))
+        occurrences = [n for n in ast.walk(tree) if isinstance(n, ast.Constant)
+                       and n.value == host.inherited.OLD_INNER]
+        self.assertEqual(len(occurrences), 3)
         for name in ("publish_capsule", "preserve_outputs", "retained_workspace", "reservation",
                      "acquire_current", "acquire_failed", "acquire_reconstruction"):
             self.assertIs(bound.__globals__[name], host.original.perform.__globals__[name])
