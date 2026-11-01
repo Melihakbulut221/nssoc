@@ -1,0 +1,169 @@
+name: Coupled sampler load and headroom CDR experiment
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [controls, simulate]
+        default: controls
+        description: Source controls or independently reserved exploratory native screen
+permissions:
+  contents: write
+concurrency:
+  group: cdr-sampler-load-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/workflows/cloud-evidence-summary.yml
+            /docs/cdr-sampler-load-headroom.md
+            /docs/evidence/cdr-via-rich-stream-transport-pass-20261019.json
+            /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/derived-loaded-vector-projection.json
+            /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/direct/complete-output-index.json
+            /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/readback/actual/binding/inputs/native-planes.json
+            /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/readback/actual/fresh-rc-qualification.json
+            /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/readback/actual/mim/composition/composition.json
+            /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/readback/actual/result.json
+            /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/receipt.json
+            /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-jobs.json
+            /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-parts.json
+            /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-release.json
+            /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-run.json
+            /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-summary.json
+            /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-tag-ref.json
+            /scripts/build_pcie_local_vco_hybrid_v6.py
+            /scripts/cdr-sampler-load-host-pins.json
+            /scripts/cdr-via2-m3-loaded-core-catalog.json
+            /scripts/cdr-via2-m3-loaded-core-inputs.json
+            /scripts/cdr-via2-m3-loaded-producer-inputs.json
+            /scripts/cdr-via2-m3-loaded-runtime-inputs.json
+            /scripts/cdr_sampler_load_candidate.py
+            /scripts/cdr_v59_tail_loaded_terminal.py
+            /scripts/cdr_via2_m3_loaded_core.py
+            /scripts/check_cdr_sampler_load_candidate.py
+            /scripts/cloud_cdr_current_eight_drain_loaded.py
+            /scripts/cloud_cdr_pd_vi.py
+            /scripts/cloud_cdr_sampler_load.py
+            /scripts/cloud_cdr_xor.py
+            /scripts/cloud_pll_pump_current.py
+            /scripts/cloud_tx_stream.py
+            /scripts/cloud_vbic_tree32_backend.py
+            /scripts/run_cloud_tx_mux4.py
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
+      - name: Verify exact source and sampler-load mutation controls
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_RUN_ATTEMPT" = "1"
+          python3 -B scripts/check_cdr_sampler_load_candidate.py
+      - name: Preserve candidate and full source control output
+        if: always()
+        run: |
+          mkdir -p cloud-sampler-load-controls/source
+          cp scripts/cdr_sampler_load_candidate.py scripts/check_cdr_sampler_load_candidate.py scripts/cloud_cdr_sampler_load.py scripts/cdr-sampler-load-host-pins.json .github/workflows/cloud-evidence-summary.yml docs/cdr-sampler-load-headroom.md cloud-sampler-load-controls/source/
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-sampler-load-controls-${{ github.run_id }}
+          path: cloud-sampler-load-controls
+          if-no-files-found: error
+          retention-days: 90
+  simulate:
+    if: ${{ inputs.mode == 'simulate' }}
+    needs: source-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      GH_TOKEN: ${{ github.token }}
+      OMP_NUM_THREADS: '1'
+      OPENBLAS_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.github/workflows/cloud-evidence-summary.yml
+            /docs/cdr-sampler-load-headroom.md
+            /docs/evidence/cdr-via-rich-stream-transport-pass-20261019.json
+            /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/derived-loaded-vector-projection.json
+            /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/direct/complete-output-index.json
+            /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/readback/actual/binding/inputs/native-planes.json
+            /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/readback/actual/fresh-rc-qualification.json
+            /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/readback/actual/mim/composition/composition.json
+            /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/readback/actual/result.json
+            /docs/evidence/cdr-via2-m3-fresh-rc-terminal-41251732540/receipt.json
+            /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-jobs.json
+            /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-parts.json
+            /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-release.json
+            /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-run.json
+            /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-summary.json
+            /docs/evidence/cdr-via2-m3-loaded-runtime-inputs/pump-tag-ref.json
+            /scripts/build_pcie_local_vco_hybrid_v6.py
+            /scripts/cdr-sampler-load-host-pins.json
+            /scripts/cdr-via2-m3-loaded-core-catalog.json
+            /scripts/cdr-via2-m3-loaded-core-inputs.json
+            /scripts/cdr-via2-m3-loaded-producer-inputs.json
+            /scripts/cdr-via2-m3-loaded-runtime-inputs.json
+            /scripts/cdr_sampler_load_candidate.py
+            /scripts/cdr_v59_tail_loaded_terminal.py
+            /scripts/cdr_via2_m3_loaded_core.py
+            /scripts/check_cdr_sampler_load_candidate.py
+            /scripts/cloud_cdr_current_eight_drain_loaded.py
+            /scripts/cloud_cdr_pd_vi.py
+            /scripts/cloud_cdr_sampler_load.py
+            /scripts/cloud_cdr_xor.py
+            /scripts/cloud_pll_pump_current.py
+            /scripts/cloud_tx_stream.py
+            /scripts/cloud_vbic_tree32_backend.py
+            /scripts/run_cloud_tx_mux4.py
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Original frozen-engine runtime dependencies
+        timeout-minutes: 15
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
+      - name: Authenticate original inputs and run sampler-load candidate with original measurements
+        id: native
+        run: python3 -B scripts/cloud_cdr_sampler_load.py
+      - name: Preserve complete native result even when electrical gates reject it
+        id: publication
+        if: always() && steps.native.outcome != 'skipped'
+        run: python3 -B scripts/cloud_cdr_sampler_load.py --publish
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: cdr-sampler-load-derived-${{ github.run_id }}
+          path: cloud-sampler-load/derived
+          if-no-files-found: warn
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: cdr-sampler-load-native-${{ github.run_id }}
+          path: cloud-sampler-load/publication
+          if-no-files-found: warn
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.publication.outcome != 'success'
+        with:
+          name: cdr-sampler-load-native-failure-${{ github.run_id }}
+          path: cloud-sampler-load/native
+          if-no-files-found: warn
+          retention-days: 90
