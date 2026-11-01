@@ -1,0 +1,987 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "native_processes": 0,
+    "observed_at": "2026-11-01T09:01:34.122118+00:00",
+    "source_API_derived_text_RAM_only": true,
+    "tmp": {
+      "/tmp": [],
+      "/var/tmp": []
+    },
+    "unrelated_user_files_not_modified": true,
+    "workspace_entries": 0
+  },
+  "final_timing_complete": false,
+  "full_serial_phy_accepted": false,
+  "native_payloads_acquired_locally": false,
+  "progress": {
+    "authored_documents": {
+      "docs/cdr-four-mos-unit-physical.md": "# Physical units for the domain-corrected MOS implementation\n\nImplement four real single-gate SG13_dev nmos widths:8,9,8.890 and8.885um, each L=.3um. Every isolated unit includes an actual2um\u00d72um ptap1 substrate contact, explicit gate contact, separate source/drain/gate/substrate routing and four boundary pins. The independent reference has one MOS plus one finite tap; it is never synthesized from extracted devices.\n\nThe exact-source workflow requires all20 native stages: main DRC (all560 categories, zero markers), deep and flat unsimplified LVS (exact two primitive devices, one Match circuit, no extraction diagnostics), wrong-width reference rejection and a real physical source/drain short rejection for each width. Native W/L/AS/AD/PS/PD must independently equal proposed unit values. The .34um diffusion extension and perimeter formula are hypotheses until that check passes.\n\nSource44d1ded... controls41289860886 passed, but native41289980511 failed before PDK acquisition/geometry: ubuntu22 system Python lacked hashlib.file_digest. Both control and native hosts are now explicitly Python3.12 on ubuntu22. The failure and empty release430456917 are preserved.\n\nSourcef196319... controls41290206079 passed. Native41290340331 generated four layouts; the8um layout passed actual main DRC560/zero markers and deep transistor LVS2devices/Match/no diagnostics. The subsequent parameter-report inspector failed because a KLayout parameter-id accessor was a method. This is not completion of the four-width qualification. Complete36-file proof 9c6133755ff5424125b2014566ba76ff0ad39694, release430459347, retains actual reports and generated layouts.\n\nCorrected sourcee3839b66d23c4cd678e4cf917c3b458495f4ac96 reads parameters by normalized names and normalizes terminal accessors. Controls41290550100 passed20 parameter-refusal cases. Native41290670037 was independently reserved in release430461761 and dispatched on the same exact source. It completed successfully: all20 native stages passed, four widths each had zero DRC markers across560 categories, both deep and flat unsimplified LVS matched exactly two devices without extraction diagnostics, and actual W/L/AS/AD/PS/PD matched. All eight wrong-width/physical-short controls were rejected with NoMatch. Source and runtime files remained unchanged. Native GDS/LVS/report archive stays in release430461761.\n\nThese isolated units are prerequisites for the200-unit main macro. They do not prove all50 origin placements,200-unit connectivity,221 original taps, mixed20 resistor edits, full macro/parent DRC/LVS, fresh interconnect RC, PVT, closed loop or complete serial PCIe PHY. The intrinsic PD650 simulation itself remains electrically rejected.\n\nFor full PD650 integration, reuse the qualified MOS body/contact geometry and explicitly map its four terminals to each original origin. The qualification wrapper contains a test tap: instantiating all200 wrappers unchanged would introduce200 additional taps and would no longer be the650-device candidate. Preserve the221 original finite taps and their connectivity, or declare and independently validate any intentional census change. Never silently project additional devices away.\n\nComplete successful119-file proof: 6e9362d5c95e1c2b2fca62d9c71aec8ac4e099e4, `docs/evidence/mos-unit-terminal-41290670037`. This includes all exact source files, complete derived native reports, source-control records, job logs and release metadata. Native geometry/extraction archives remain on GitHub only.\n",
+      "docs/cdr-mos-parallel-loaded-simulation.md": "# PD650 loaded simulation: actual electrical rejection\n\nRun [41288195752](https://github.com/Melihakbulut221/nssoc/actions/runs/41288195752), exact source d638e0e3cd15a0ee930212c27ab1f238b5085237, completed the native transient. The engine returned 0 after 1037.3823876919998 seconds. There were no simulator diagnostics and protected sources remained unchanged. Original electrical acceptance failed.\n\nFull115-file proof: 6fdf10cd1683b920950104e7edb6206865eab78e, `docs/evidence/parallel-mos-native-terminal-41288195752`. Complete native wave/model archive remains in release430445706; no native payload was acquired locally.\n\nThe real capture retains all1301 vectors (977 node voltages,124 HBT currents,200 MOS currents),11 save commands,200 independent MOS units from50 origins,192 tail units in16 original groups and7 MIMs. Device voltage/current gates and the loaded VI gate pass. All six data stages fail:\n\n| Stage | Max clock-to-valid (ps) | Minimum signed margin (mV) | Below100mV samples | Wrong-sign samples |\n|---|---:|---:|---:|---:|\n| A |42.65625|59.369517|97|0|\n| B |37.96875|97.230100|22|0|\n| C |118.90625|-17.551896|167|33|\n| D |118.90625|-24.196656|129|50|\n| X |118.90625|-112.636678|753|385|\n| Y |118.90625|-18.551353|717|58|\n\nEach stage has765 sampled points. Original sampler limits remain100mV and37.5ps; XOR limits100mV and75ps. Phase mean19.616143590646336mV fails30mV. Loaded VI reports59.817713930936uA and17.667962748922mV and passes its original limits.\n\nThis corrects the former live status. Previous41287653458 failed before engine execution because baseline namespace globals were overwritten; its failure remains preserved separately. New41288195752 executed the real engine and was rejected electrically. The isolated namespace source correction worked.\n\nThe200-unit model remains the explicit domain-corrected candidate, not accepted timing or layout. It retains original wire RC; its geometry has not been expanded/re-extracted. Do not revert to the42 original out-of-model-domain widths to recover a superficially better result. Four native unit widths are being physically qualified independently. Complete sampler corrections, independent references, full DRC/LVS, fresh RC, PVT, closed loop and serial integration remain mandatory.\n",
+      "docs/mainchip-828-routing-timeout.md": "# Actual scoped-router timeout and required checkpointing correction\n\nOriginal run41270471645/source2b8931b9c8988fc5dbf497a7b561db579e39f64c is terminal failure. The supervised native router ran14400.811145697seconds, returned-15, and recorded supervision_failure=elapsed_limit. This is an observed four-hour cutoff, not a memory-failure diagnosis. Full logs,677 encoded JSON records and complete native publication metadata are preserved in de4e92bc723d6885c3c800aa5c9676f7495f9a4a, `docs/evidence/mainchip-828-terminal-41270471645`. Native release430345631 remains intact.\n\nCloud readout41290408993/sourcec74b2fb8311315a09f16f899c2cd540fcb0731cb authenticated the complete archived native members and extracted the actual full router stdout and exact Tcl without rerunning CAD. Full19-file proof e19b8a246accee5125c14291b6effd46b94249ad, `docs/evidence/mainchip-828-readout-41290408993`.\n\nThe last completed optimization iteration was26, with129 native router DRC violations. Iteration27 reached40% when the supervisor cut the process. This is an intermediate router count, not final chip DRC or STA acceptance.\n\nThe exact route Tcl requested64 iterations and had DRT_SAVE_SNAPSHOTS=0. Its route-partial and routed-fixed DEF/ODB writes execute only after detailed_route returns. A SIGTERM at the supervision limit bypassed those Tcl writes. The archived native index contains the known stale-wire-cleared seed and restoration views, but no route-partial/routed-fixed ODB carrying optimized progress. The restored candidate.odb matches the guide-overlay/insertion-connected seed identity; it must not be described as the26-iteration routed checkpoint.\n\nThe failure restoration independently preserved all1691 original clock/fixed DEF records and attached geometry. That scope does not prove final signal routing, antenna, connectivity, RC or timing.\n\nRequired next implementation: an explicit bounded routing stage that returns and publishes its native database before the supervision limit, followed by authenticated continuation from that database. Keep all828 routing owners,1351 diode placements and1691 protected records; do not silently change final physical/electrical gates. Separately validate routing iteration policy/source controls and actual checkpoint write/readback before another long native dispatch. Do not simply repeat the64-iteration run with the same lost-progress behavior.\n\nFinal mainchip DRC, antenna/connectivity, extracted RC and three-corner setup/hold remain open. This is still a packet-interface SoC; serial PHY ownership/integration is separate.\n\nOpenROAD documents the existing `-droute_end_iter` limit and the `DRT snapshot`/`-snapshot_dir` mechanism in its [official detailed routing documentation](https://openroad.readthedocs.io/en/latest/main/src/drt/README.html). This does not prove checkpoint behavior for the pinned engine. Qualify actual native write/readback and continuation before relying on either mechanism.\n"
+    },
+    "continuation_note": "PROGRESS: complete PD650 electrical rejection and actual route timeout diagnosed and preserved; all four real MOS unit widths now pass20 native DRC/LVS/diffusion/negative stages. Continue whole200-unit physical integration and bounded route checkpoint implementation; full serial PHY and timing remain open.",
+    "mainchip_route": {
+      "actual_elapsed_seconds": 14400.811145697,
+      "actual_returncode": -15,
+      "actual_supervision_failure": "elapsed_limit",
+      "clock_or_fixed_records_preserved": 1691,
+      "final_timing_complete": false,
+      "full_phy_accepted": false,
+      "interrupted_iteration": 27,
+      "interrupted_reported_progress_percent": 40,
+      "last_complete_iteration_drc_violations": 129,
+      "last_complete_optimization_iteration": 26,
+      "next": "Implement explicit bounded routing stage that returns and writes native DB before 4h boundary. Do not merely rerun64 or claim recovered candidate.odb contains optimized progress; archive has no route-partial/routed-fixed ODB. Preserve frozen clocks/fixed classes, full routing-owner scope and original final DRC/antenna/connectivity/STA gates. Validate stage continuation on exact-source controls before next native dispatch.",
+      "original_droute_end_iter": 64,
+      "original_save_snapshots": 0,
+      "post_route_checkpoint_present": false,
+      "proof": {
+        "bytes": 10811383,
+        "conclusion": "failure",
+        "files": 23,
+        "head": "de4e92bc723d6885c3c800aa5c9676f7495f9a4a",
+        "prefix": "docs/evidence/mainchip-828-terminal-41270471645",
+        "receipt": "receipt.json",
+        "receipt_sha256": "d253c91e2ced2d0e82fbdbb421c935a23760b8d12afe5bd9080cd61725a0fd12"
+      },
+      "readout_proof": {
+        "bytes": 314076,
+        "conclusion": "success",
+        "files": 19,
+        "head": "e19b8a246accee5125c14291b6effd46b94249ad",
+        "prefix": "docs/evidence/mainchip-828-readout-41290408993",
+        "receipt": "receipt.json",
+        "receipt_sha256": "30de503e80ad117d14b73577350abe9d3ebb547ea9b3e2c69efab49bc921de51"
+      },
+      "readout_run": 41290408993,
+      "release": 430345631,
+      "run": 41270471645,
+      "source": "2b8931b9c8988fc5dbf497a7b561db579e39f64c",
+      "status": "TERMINAL_NATIVE_ROUTE_ELAPSED_LIMIT"
+    },
+    "new_runs": {
+      "41289860886": {
+        "scope": "Four physical MOS units original source controls; native host coverage gap retained",
+        "source": "44d1ded602e688ae94c1c2f90acd62ea0dfc9166"
+      },
+      "41289980511": {
+        "scope": "Terminal host Python mismatch before native unit geometry",
+        "source": "44d1ded602e688ae94c1c2f90acd62ea0dfc9166"
+      },
+      "41290206079": {
+        "scope": "Four-unit exact Python312 host source controls",
+        "source": "f196319144d14623095a00ee43b7c611ce8e633a"
+      },
+      "41290340331": {
+        "scope": "Actual W8 unit DRC and unsimplified deep LVS pass then parameter inspector API failure",
+        "source": "f196319144d14623095a00ee43b7c611ce8e633a"
+      },
+      "41290408993": {
+        "scope": "Complete stopped router archive authentication and full actual log/Tcl readout; no CAD rerun",
+        "source": "c74b2fb8311315a09f16f899c2cd540fcb0731cb"
+      },
+      "41290550100": {
+        "scope": "Four-unit normalized native parameter accessor source controls",
+        "source": "e3839b66d23c4cd678e4cf917c3b458495f4ac96"
+      },
+      "41290670037": {
+        "scope": "Actual four-unit PCell, DRC, deep/flat unsimplified LVS and native diffusion qualification",
+        "source": "e3839b66d23c4cd678e4cf917c3b458495f4ac96"
+      }
+    },
+    "next_actions": [
+      "Four physical unit widths are qualified: actual20 stages passed in41290670037, exactsourcee3839b66... . Do not rerun qualification. Use published native GDS and verified diffusion geometry for all200-unit placement/origin mapping; whole-PD650 DRC/LVS/freshRC remain open.",
+      "Implement/check bounded mainchip detailed-route stages with intermediate database publication before timeout; authenticate initial828 scope and preserve1691 clock/fixed records. Actual4h run reached26 completed iterations/129 violations, cut during27; optimized DB was never written. Keep64-iteration final-goal policy distinct from per-job stage budget.",
+      "After native unit dimensions/diffusion qualify, implement all200 physical MOS units/origin mapping and mixed20 private resistor edits, full independent DRC/LVS/freshRC before rebinding; intrinsic650 result remains rejected.",
+      "Repair actual sampler margins/clock-to-valid and phase on domain-corrected model using full stored waveform evidence with unchanged device/electrical limits; no arbitrary passing threshold edits.",
+      "Actual PLL/CDR/SERDES, full training/link protocol, TX and serial soc_top ownership remain open. Routing result is packet-interface SoC only. No full serial PHY, final setup/hold or production approval claim.",
+      "Keep all execution on GitHub and local workspace empty. Eight-hour monitor stays read-only automatic_native_dispatch:false."
+    ],
+    "parallel_simulation": {
+      "all_device_limits_passed": true,
+      "all_six_data_stages_failed": true,
+      "baseline_wire_rc_retained": true,
+      "candidate_devices": 650,
+      "diagnostics": 0,
+      "engine_elapsed_seconds": 1037.3823876919998,
+      "engine_returncode": 0,
+      "full_phy_accepted": false,
+      "hbt_devices": 124,
+      "mim_devices": 7,
+      "mos_origins": 50,
+      "mos_units": 200,
+      "next": "Use valid-domain 200-unit measurements for further drive/load decisions; do not roll back to out-of-domain wide ng1 model or weaken original gates. Geometry units required independently; no whole-PD650 layout promotion.",
+      "phase_average_v": 0.019616143590646336,
+      "phase_minimum_v": 0.03,
+      "physical_acceptance": false,
+      "proof": {
+        "bytes": 11818664,
+        "conclusion": "failure",
+        "files": 115,
+        "head": "6fdf10cd1683b920950104e7edb6206865eab78e",
+        "prefix": "docs/evidence/parallel-mos-native-terminal-41288195752",
+        "receipt": "receipt.json",
+        "receipt_sha256": "737f3a983bbdf072027f54a023a6ecdf0d70086007a20b9567c52c112c74295e"
+      },
+      "release": 430445706,
+      "run": 41288195752,
+      "source": "d638e0e3cd15a0ee930212c27ab1f238b5085237",
+      "sources_unchanged": true,
+      "status": "TERMINAL_ELECTRICAL_REJECTION",
+      "tail_groups": 16,
+      "tail_units": 192,
+      "vectors": 1301,
+      "vi_passed": true
+    },
+    "proofs": [
+      {
+        "bytes": 11818664,
+        "conclusion": "failure",
+        "files": 115,
+        "head": "6fdf10cd1683b920950104e7edb6206865eab78e",
+        "prefix": "docs/evidence/parallel-mos-native-terminal-41288195752",
+        "receipt": "receipt.json",
+        "receipt_sha256": "737f3a983bbdf072027f54a023a6ecdf0d70086007a20b9567c52c112c74295e",
+        "tree": "53c800e649dc73935bb2d05ac5c1ac718a9cd1fd"
+      },
+      {
+        "bytes": 112253,
+        "conclusion": "success",
+        "files": 16,
+        "head": "d45ce700a3f969d83f532a1c302454b5fc288d34",
+        "prefix": "docs/evidence/mos-unit-controls-41289860886",
+        "receipt": "receipt.json",
+        "receipt_sha256": "a0d8af215cb3014c0f4c3b9f1272249327c75e5f363098c16b243fcc7505fe6a",
+        "tree": "dab37f6ae3b4903ee54c93f3d8cc26b12a16371a"
+      },
+      {
+        "bytes": 65786,
+        "conclusion": "failure",
+        "files": 7,
+        "head": "365a16cda10b4ce909c81d8b88aa995272dda043",
+        "prefix": "docs/evidence/mos-unit-host-failure-41289980511",
+        "receipt": "receipt.json",
+        "receipt_sha256": "b3c162601621f9f94fd7dc505f5ab3f88e0424d397d8dfa789e5a6d04dd58987",
+        "tree": "8218d32a98e26ca76a121e47d789659cdbc7d7b1"
+      },
+      {
+        "bytes": 116100,
+        "conclusion": "success",
+        "files": 16,
+        "head": "c27e161c63a347e2c268c8503df272d4d7d56026",
+        "prefix": "docs/evidence/mos-unit-controls-41290206079",
+        "receipt": "receipt.json",
+        "receipt_sha256": "41b8581ff0331ce723ac4ef7622f5849b2322b0856cd67fb0a4ea738f1a2ef84",
+        "tree": "adb435e170ed913fafbf99db91dd0f958224ca6d"
+      },
+      {
+        "bytes": 10811383,
+        "conclusion": "failure",
+        "files": 23,
+        "head": "de4e92bc723d6885c3c800aa5c9676f7495f9a4a",
+        "prefix": "docs/evidence/mainchip-828-terminal-41270471645",
+        "receipt": "receipt.json",
+        "receipt_sha256": "d253c91e2ced2d0e82fbdbb421c935a23760b8d12afe5bd9080cd61725a0fd12",
+        "tree": "c465dc19e7bac19c62572fdcffb5248e8f7176ee"
+      },
+      {
+        "bytes": 519127,
+        "conclusion": "failure",
+        "files": 36,
+        "head": "9c6133755ff5424125b2014566ba76ff0ad39694",
+        "prefix": "docs/evidence/mos-unit-terminal-41290340331",
+        "receipt": "receipt.json",
+        "receipt_sha256": "154670a1455e89aee48e0c1ad8a58c1ebf9337ca51c01b188b2139b435e4378d",
+        "tree": "322e25bfd56df8feb9cdd77eb719faf3b72b1612"
+      },
+      {
+        "bytes": 116248,
+        "conclusion": "success",
+        "files": 16,
+        "head": "db034bcabe0c028b6d7c34151efb44f3a5da2c56",
+        "prefix": "docs/evidence/mos-unit-controls-41290550100",
+        "receipt": "receipt.json",
+        "receipt_sha256": "aa86d0cd8d7bd53c664d415385d57e7006546d80efe562a764ed579cbe894e83",
+        "tree": "572987c9a1a2ba9e1cd72c88e024bdb0b8e5cc5d"
+      },
+      {
+        "bytes": 314076,
+        "conclusion": "success",
+        "files": 19,
+        "head": "e19b8a246accee5125c14291b6effd46b94249ad",
+        "prefix": "docs/evidence/mainchip-828-readout-41290408993",
+        "receipt": "receipt.json",
+        "receipt_sha256": "30de503e80ad117d14b73577350abe9d3ebb547ea9b3e2c69efab49bc921de51",
+        "tree": "f7ee0f4231761c82c9900205d043aa9b5b2f4cea"
+      },
+      {
+        "bytes": 2196007,
+        "conclusion": "success",
+        "files": 119,
+        "head": "6e9362d5c95e1c2b2fca62d9c71aec8ac4e099e4",
+        "prefix": "docs/evidence/mos-unit-terminal-41290670037",
+        "receipt": "receipt.json",
+        "receipt_sha256": "769d2bb94c8e828e0646eb5bed0ddc11575049f72346807f02d3214d024247e3",
+        "tree": "60c18d8e3ad49839af28b460d96d64607700ccac"
+      }
+    ],
+    "resume": "# Cloud continuation \u2014 checkpoint v230\n\nUpdated: __UPDATED__\nEverything executes on GitHub. The latest explicit cloud-only instruction overrides the old local-work wording in the goal. Local workspace stays empty; source/API-derived text coordination is RAM only. No local native archive/model/SPICE/ODB/GDS/raw waves.\n\n1. PD650 simulation41288195752 is TERMINAL ELECTRICAL REJECTION. Engine0,1037.382s,no diagnostics,sources unchanged; all device gates and VI pass, all A/B/C/D/X/Y data stages and phase fail. Full115proof6fdf10cd1683b920950104e7edb6206865eab78e; native release430445706. See docs/cdr-mos-parallel-loaded-simulation.md. Do not restart or call it live. Domain-corrected units remain required; do not use original out-of-range wideMOS to claim improvement.\n\n2. Original mainchip41270471645 is TERMINAL NATIVE ROUTE TIMEOUT. Actual14400.811145697s/return-15/elapsed_limit. Full23proofde4e92bc723d6885c3c800aa5c9676f7495f9a4a. Actual cloud archive readout41290408993/full19proofe19b8a246accee5125c14291b6effd46b94249ad proves last complete iteration26=129violations, interrupted27at40%. No optimized ODB checkpoint was written because64-iteration call was killed before post-call saves and snapshots=0. Known original/cleared seed ODBs remain;1691 protected clock/fixed records restored exactly. See docs/mainchip-828-routing-timeout.md.\n\n3. Implement an explicitly bounded router stage with actual DB save/restore before another long route dispatch. Keep828owners/1351diodes/1691protectedrecords and original final DRC/antenna/connectivity/STA criteria. Do not rerun64 with same failure behavior. Read full router stdout/Tcl in readout proof; full native archives stay on GitHub.\n\n4. Four native MOS unit layout generator/checker is implemented. Widths8/9/8.890/8.885um,L.3um,ng1, real finite tap and independent2device reference. Sourcee3839b66d23c4cd678e4cf917c3b458495f4ac96, controls41290550100/full16proofdb034bcabe0c028b6d7c34151efb44f3a5da2c56. Native41290670037/release430461761 is TERMINAL SUCCESS FOR FOUR UNITS ONLY: all20 stages passed, four DRC560zero, eight deep/flat2deviceLVS passes with no extraction diagnostics, all native W/L/AS/AD/PS/PD exact, all8 negative controls rejected. Source/runtime unchanged. Full119proof6e9362d5c95e1c2b2fca62d9c71aec8ac4e099e4. Do not rerun qualification; use these actual units for the200-unit layout integration.\n\n5. Preserve unit failures:41289980511/44d1ded... failed before geometry due Python3.10; bothhosts nowexplicitPython3.12. Full7proof365a16cda10b4ce909c81d8b88aa995272dda043.41290340331/f196319... generated4layouts and8um passed560DRCzero/deepLVS2devicesMatch; parameter inspector failed callable-idAPI. Full36proof9c6133755ff5424125b2014566ba76ff0ad39694/native430459347. New inspector uses normalized parameter names/accessors. Do not claimall4qualified from8umonly.\n\n6. Unit qualification then actual200-unit/50-origin placement, original450nonMOS preservation, mixed20private-resistor changes, fullindependentDRC/LVS and freshRC/rebinding. Isolated unit pass is not fullPD650 layout or serialPHY pass. Native PD650 electrical rejection still needs valid-domain waveform-led drive/load repair.\n\n7. Original gates unchanged: UI125ps,sampler100mV/37.5ps,XOR100mV/75ps;HBTminVCE.4/maxabsVCE1.6/maxabsVBE1/strictIc-emitter<3mA;MOS<=1.32V/activeVDS>=0/nonnegativeunitcurrents;16stage instantaneous-sum>=.5mA;7MIM<=1.6V;phase30mV;PLL62.5ps. FinalSTA20/4/8/8ns+5%,3PVT,zero setup/hold/transition/cap.\n\n8. Actual CDR/PLL/SERDES, fulltraining/LTSSM/lanemapping/descrambler/TX andserialsoc_topownership remain open. Packet-interface route does not prove serialintegration. Authorized spec access request already pending; do not repeat.\n\n9. Cleanup follow-upd84da6f... archived6historicalPCIehelper+6Icarusscratchfiles before deletion, removed disposableYosysRAMcache and emptyAppImagemountdir. Sharedapps/userfilespreserved. Continue sourcecoordinationRAMonly, alltests/CAD/analysisGitHubonly.\n\nInventory __RUN_COUNT__ runs. Eight-hour monitor remains read-only automatic_native_dispatch:false. This turn PROGRESS: actual terminal failures preserved and diagnosed, physical-unit implementation/fixes tested, all20 native physical-unit stages passed. FullPHY, serial-integratedroute, finalsetup/hold, productionapproval OPEN.\n",
+    "unit_physical": {
+      "controls_proof": {
+        "bytes": 116248,
+        "conclusion": "success",
+        "files": 16,
+        "head": "db034bcabe0c028b6d7c34151efb44f3a5da2c56",
+        "prefix": "docs/evidence/mos-unit-controls-41290550100",
+        "receipt": "receipt.json",
+        "receipt_sha256": "aa86d0cd8d7bd53c664d415385d57e7006546d80efe562a764ed579cbe894e83"
+      },
+      "controls_run": 41290550100,
+      "deep_flat_lvs_passed": true,
+      "diffusion_parameters_verified": true,
+      "drc_markers": 0,
+      "earlier_host_failure": {
+        "native_geometry_executed": false,
+        "proof": {
+          "bytes": 65786,
+          "conclusion": "failure",
+          "files": 7,
+          "head": "365a16cda10b4ce909c81d8b88aa995272dda043",
+          "prefix": "docs/evidence/mos-unit-host-failure-41289980511",
+          "receipt": "receipt.json",
+          "receipt_sha256": "b3c162601621f9f94fd7dc505f5ab3f88e0424d397d8dfa789e5a6d04dd58987"
+        },
+        "reason": "Ubuntu22 Python3.10 missing hashlib.file_digest; source controls had Ubuntu24 system Python. Both now explicitly same Python3.12.",
+        "run": 41289980511
+      },
+      "earlier_inspector_failure": {
+        "actual_w8_deep_lvs": "Match, 2 devices, no extraction diagnostics",
+        "actual_w8_drc_categories": 560,
+        "actual_w8_drc_markers": 0,
+        "proof": {
+          "bytes": 519127,
+          "conclusion": "failure",
+          "files": 36,
+          "head": "9c6133755ff5424125b2014566ba76ff0ad39694",
+          "prefix": "docs/evidence/mos-unit-terminal-41290340331",
+          "receipt": "receipt.json",
+          "receipt_sha256": "154670a1455e89aee48e0c1ad8a58c1ebf9337ca51c01b188b2139b435e4378d"
+        },
+        "reason": "KLayout parameter id accessor was a method; inspector now uses normalized parameter names and terminal accessors.",
+        "run": 41290340331
+      },
+      "full_pd650_generated": false,
+      "full_phy_accepted": false,
+      "native_proof": {
+        "bytes": 2196007,
+        "conclusion": "success",
+        "files": 119,
+        "head": "6e9362d5c95e1c2b2fca62d9c71aec8ac4e099e4",
+        "prefix": "docs/evidence/mos-unit-terminal-41290670037",
+        "receipt": "receipt.json",
+        "receipt_sha256": "769d2bb94c8e828e0646eb5bed0ddc11575049f72346807f02d3214d024247e3"
+      },
+      "native_stages_completed": 20,
+      "native_steps_required": 20,
+      "negative_controls_rejected": 8,
+      "qualified_pex": false,
+      "release": 430461761,
+      "run": 41290670037,
+      "scope": "Four native isolated single-gate MOS widths with finite substrate tap and independent references. Require DRC560, deep+flat exact2device LVS, native diffusion parameters and wrong-width/physical-short refusal for each. Does not establish PD650 placement, fresh RC, complete PHY or mainchip signoff.",
+      "source": "e3839b66d23c4cd678e4cf917c3b458495f4ac96",
+      "status": "PASS_FOUR_NATIVE_UNITS_ONLY",
+      "widths_um": [
+        "8",
+        "9",
+        "8.890",
+        "8.885"
+      ]
+    }
+  },
+  "snapshots": [
+    {
+      "branch": "codex/cdr-current-eight-drain-wave-readback",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939637,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939756,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124684939804,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939813,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939841,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939865,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684939961,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124684940663,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41223192019,
+      "source": "dd320012480c99914c4a198c8236b7190b39ce26",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41223192019"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-readback",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124641350036,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124641474888,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124641511122,
+          "name": "observation",
+          "status": "completed"
+        }
+      ],
+      "run": 41236517605,
+      "source": "65e620dc413389fffaa8389e4abdfc17cfbf4ecf",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41236517605"
+    },
+    {
+      "branch": "codex/cdr-via2-m3-physical-recheck",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124648720069,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124648978870,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124649026868,
+          "name": "physical-recheck",
+          "status": "completed"
+        }
+      ],
+      "run": 41238994098,
+      "source": "0b1ec86b35f8cb98928a5687f007a7ccd676f620",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41238994098"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-progress-v2",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124657431983,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124657565622,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124657605748,
+          "name": "observation",
+          "status": "completed"
+        }
+      ],
+      "run": 41241933572,
+      "source": "00b46253e990983365db3b5f2b44a1233e20623e",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41241933572"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-crash-isolation-v1",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124667589535,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124667697328,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124667723726,
+          "name": "observation",
+          "status": "completed"
+        }
+      ],
+      "run": 41245373612,
+      "source": "277f2382b18198e399ddeef1e7ab8f35aaf629c2",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41245373612"
+    },
+    {
+      "branch": "codex/cloud-progress-monitor-shards-v2",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124674583313,
+          "name": "controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 124674612392,
+          "name": "observe",
+          "status": "completed"
+        }
+      ],
+      "run": 41247738623,
+      "source": "6df3f373c4fc8052d69fc946b18ad35be640ed58",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41247738623"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684149904,
+          "name": "controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124684192874,
+          "name": "observe",
+          "status": "completed"
+        }
+      ],
+      "run": 41250947168,
+      "source": "5f3814a3e0366b8ec310c9270494c01dd6b3e03c",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41250947168"
+    },
+    {
+      "branch": "codex/cdr-via2-m3-fresh-rc-adapter",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124686498262,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124687385817,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124687428141,
+          "name": "fresh-rc",
+          "status": "completed"
+        }
+      ],
+      "run": 41251732540,
+      "source": "9bf12d1e496f7d9192582175ab2fa714e3e8d41b",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41251732540"
+    },
+    {
+      "branch": "codex/mainchip-drt-obstacle-reduction-v1",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124690802895,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124690863676,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124690929404,
+          "name": "analysis",
+          "status": "completed"
+        }
+      ],
+      "run": 41253195469,
+      "source": "210fc85c43753e23fb9ecc2e398a48d318d1f330",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41253195469"
+    },
+    {
+      "branch": "codex/cdr-via2-m3-loaded-adapter",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124712844047,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124712997863,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124713024059,
+          "name": "loaded",
+          "status": "completed"
+        }
+      ],
+      "run": 41260582673,
+      "source": "cde6353e164d32feee5a3e56cc54b32a3001f736",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41260582673"
+    },
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124731344945,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124731680569,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124731737763,
+          "name": "diode-routing",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124738255432,
+          "name": "preserve-antenna-job-logs",
+          "status": "completed"
+        }
+      ],
+      "run": 41266854050,
+      "source": "8b7404c7340ef5ebc4a70e36dfa30a96d07013d9",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41266854050"
+    },
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124742028616,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124742398243,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124742427487,
+          "name": "diode-routing",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124798379096,
+          "name": "preserve-antenna-job-logs",
+          "status": "completed"
+        }
+      ],
+      "run": 41270471645,
+      "source": "2b8931b9c8988fc5dbf497a7b561db579e39f64c",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41270471645"
+    },
+    {
+      "branch": "codex/cdr-ac-cd-output-restore",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124778176197,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124778220399,
+          "name": "simulate",
+          "status": "completed"
+        }
+      ],
+      "run": 41282867236,
+      "source": "8c7b5cdd86447fe374ae06064f2fef735a7c9b91",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41282867236"
+    },
+    {
+      "branch": "codex/cdr-mixed20-wave-diagnosis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124781765008,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124781808953,
+          "name": "diagnose",
+          "status": "completed"
+        }
+      ],
+      "run": 41284095439,
+      "source": "93fcfe9d9287e1ff9090e96e69000588f6c7eb66",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41284095439"
+    },
+    {
+      "branch": "codex/cdr-mixed20-cd-latch-diagnosis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124783012429,
+          "name": "diagnose",
+          "status": "completed"
+        }
+      ],
+      "run": 41284522943,
+      "source": "7e4277e5d0d6ab629541cf4f00905762fcb6459f",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41284522943"
+    },
+    {
+      "branch": "codex/cdr-parallel-mos-loaded-complete-source",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124792131915,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124792193452,
+          "name": "simulate",
+          "status": "completed"
+        }
+      ],
+      "run": 41287653458,
+      "source": "030ef6022a00fde8bfc787690c1ce2ada0044963",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41287653458"
+    },
+    {
+      "branch": "codex/cdr-parallel-mos-isolated-binding",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124793737922,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124793805756,
+          "name": "simulate",
+          "status": "completed"
+        }
+      ],
+      "run": 41288195752,
+      "source": "d638e0e3cd15a0ee930212c27ab1f238b5085237",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41288195752"
+    },
+    {
+      "branch": "codex/cdr-four-mos-unit-physical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124798671225,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124798711556,
+          "name": "native-units",
+          "status": "completed"
+        }
+      ],
+      "run": 41289860886,
+      "source": "44d1ded602e688ae94c1c2f90acd62ea0dfc9166",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41289860886"
+    },
+    {
+      "branch": "codex/cdr-four-mos-unit-physical",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124799028178,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124799053699,
+          "name": "native-units",
+          "status": "completed"
+        }
+      ],
+      "run": 41289980511,
+      "source": "44d1ded602e688ae94c1c2f90acd62ea0dfc9166",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41289980511"
+    },
+    {
+      "branch": "codex/cdr-four-mos-unit-physical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124799696002,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124799738855,
+          "name": "native-units",
+          "status": "completed"
+        }
+      ],
+      "run": 41290206079,
+      "source": "f196319144d14623095a00ee43b7c611ce8e633a",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41290206079"
+    },
+    {
+      "branch": "codex/cdr-four-mos-unit-physical",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124800094292,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124800128931,
+          "name": "native-units",
+          "status": "completed"
+        }
+      ],
+      "run": 41290340331,
+      "source": "f196319144d14623095a00ee43b7c611ce8e633a",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41290340331"
+    },
+    {
+      "branch": "codex/mainchip-828-terminal-readout",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124800300141,
+          "name": "readout",
+          "status": "completed"
+        }
+      ],
+      "run": 41290408993,
+      "source": "c74b2fb8311315a09f16f899c2cd540fcb0731cb",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41290408993"
+    },
+    {
+      "branch": "codex/cdr-four-mos-unit-physical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124800714592,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124800745546,
+          "name": "native-units",
+          "status": "completed"
+        }
+      ],
+      "run": 41290550100,
+      "source": "e3839b66d23c4cd678e4cf917c3b458495f4ac96",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41290550100"
+    },
+    {
+      "branch": "codex/cdr-four-mos-unit-physical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124801075014,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124801105443,
+          "name": "native-units",
+          "status": "completed"
+        }
+      ],
+      "run": 41290670037,
+      "source": "e3839b66d23c4cd678e4cf917c3b458495f4ac96",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41290670037"
+    }
+  ],
+  "updated_at": "2026-11-01T09:01:34.122118+00:00",
+  "version": 230
+}

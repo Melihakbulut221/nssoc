@@ -1,0 +1,17 @@
+# Physical units for the domain-corrected MOS implementation
+
+Implement four real single-gate SG13_dev nmos widths:8,9,8.890 and8.885um, each L=.3um. Every isolated unit includes an actual2um×2um ptap1 substrate contact, explicit gate contact, separate source/drain/gate/substrate routing and four boundary pins. The independent reference has one MOS plus one finite tap; it is never synthesized from extracted devices.
+
+The exact-source workflow requires all20 native stages: main DRC (all560 categories, zero markers), deep and flat unsimplified LVS (exact two primitive devices, one Match circuit, no extraction diagnostics), wrong-width reference rejection and a real physical source/drain short rejection for each width. Native W/L/AS/AD/PS/PD must independently equal proposed unit values. The .34um diffusion extension and perimeter formula are hypotheses until that check passes.
+
+Source44d1ded... controls41289860886 passed, but native41289980511 failed before PDK acquisition/geometry: ubuntu22 system Python lacked hashlib.file_digest. Both control and native hosts are now explicitly Python3.12 on ubuntu22. The failure and empty release430456917 are preserved.
+
+Sourcef196319... controls41290206079 passed. Native41290340331 generated four layouts; the8um layout passed actual main DRC560/zero markers and deep transistor LVS2devices/Match/no diagnostics. The subsequent parameter-report inspector failed because a KLayout parameter-id accessor was a method. This is not completion of the four-width qualification. Complete36-file proof 9c6133755ff5424125b2014566ba76ff0ad39694, release430459347, retains actual reports and generated layouts.
+
+Corrected sourcee3839b66d23c4cd678e4cf917c3b458495f4ac96 reads parameters by normalized names and normalizes terminal accessors. Controls41290550100 passed20 parameter-refusal cases. Native41290670037 was independently reserved in release430461761 and dispatched on the same exact source. It completed successfully: all20 native stages passed, four widths each had zero DRC markers across560 categories, both deep and flat unsimplified LVS matched exactly two devices without extraction diagnostics, and actual W/L/AS/AD/PS/PD matched. All eight wrong-width/physical-short controls were rejected with NoMatch. Source and runtime files remained unchanged. Native GDS/LVS/report archive stays in release430461761.
+
+These isolated units are prerequisites for the200-unit main macro. They do not prove all50 origin placements,200-unit connectivity,221 original taps, mixed20 resistor edits, full macro/parent DRC/LVS, fresh interconnect RC, PVT, closed loop or complete serial PCIe PHY. The intrinsic PD650 simulation itself remains electrically rejected.
+
+For full PD650 integration, reuse the qualified MOS body/contact geometry and explicitly map its four terminals to each original origin. The qualification wrapper contains a test tap: instantiating all200 wrappers unchanged would introduce200 additional taps and would no longer be the650-device candidate. Preserve the221 original finite taps and their connectivity, or declare and independently validate any intentional census change. Never silently project additional devices away.
+
+Complete successful119-file proof: 6e9362d5c95e1c2b2fca62d9c71aec8ac4e099e4, `docs/evidence/mos-unit-terminal-41290670037`. This includes all exact source files, complete derived native reports, source-control records, job logs and release metadata. Native geometry/extraction archives remain on GitHub only.

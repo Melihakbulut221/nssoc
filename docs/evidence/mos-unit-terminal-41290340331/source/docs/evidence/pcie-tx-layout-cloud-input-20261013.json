@@ -1,0 +1,99 @@
+{
+  "receipt": {
+    "name": "pcie-tx-layout-cloud-input-20261013.tar.gz",
+    "bytes": 667167,
+    "sha256": "8caa4db1ae881af8fe57fa9d01df16bd57a2f31ece40fecd9bc4e8e139952ac2",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/pcie-tx-layout-cloud-input-20261013.tar.gz",
+    "id": 635047665
+  },
+  "pdk_files": 197,
+  "method_archives": [
+    {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/batch-000023.tar.gz",
+      "sha256": "3ec98f567dd6190e13a657adac11773094ff2e17a75d91b9bb7f1ba6b8b74332",
+      "members": {
+        "hw/soc/out/pcie-tx-mux2-20261012/tx_mux2_hbt_passive_fast_v1.spice": "4d7606b3c14ef06de2d25ce46c266dcef3635fe602218b3a8932f7f061e53101"
+      }
+    },
+    {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/batch-000016.tar.gz",
+      "sha256": "026ffa6be2ca58807f8d0a598257436b088d003409d8cc318ff2674730fc5d83",
+      "members": {
+        "hw/soc/out/pcie-tx-mux2-20261012/layout91.py": "848c443d2913f9dc141faf9d0f709e935224e50e00b93cfbf974f82e7c76b992",
+        "hw/soc/out/pcie-tx-mux2-20261012/physical92.py": "ba44d4ef878bcf2f4c7cb192ffaf54326937e277408c2f9627447e1d801d81dc"
+      }
+    }
+  ],
+  "runtime_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "variants": [
+    "baseline",
+    "topmetal_trunks",
+    "topmetal_trunks_narrow_bus",
+    "critical_buses",
+    "critical_buses_wide_escape"
+  ],
+  "prospective_changes": {
+    "vertical_metal": "Metal4 to TopMetal1",
+    "vertical_width_um": [
+      1.2,
+      1.64
+    ],
+    "lane_pitch_um": [
+      3,
+      3.6
+    ],
+    "hbt_bank_pitch_um": [
+      26,
+      28.8
+    ],
+    "resistor_pitch_um": [
+      12,
+      14.4
+    ],
+    "signal_bus_width_um": {
+      "baseline": 4,
+      "topmetal_trunks": 4,
+      "topmetal_trunks_narrow_bus": 3
+    },
+    "kelvin_Metal5_bypass": "Removed in both candidates because its broad rectangle would contact new via stacks. Return remains connected through the new TopMetal1 trunks, subject to strict native LVS and subsequent electrical check.",
+    "critical_bus_order": [
+      "qn",
+      "qp",
+      "ea",
+      "eb",
+      "tail",
+      "sp",
+      "sn",
+      "op",
+      "on",
+      "ap",
+      "an",
+      "bp",
+      "bn",
+      "iref",
+      "avdd",
+      "avss",
+      "sub"
+    ],
+    "critical_buses_wide_escape_hbt_via_columns": [
+      4,
+      8
+    ],
+    "critical_bus_reason": "Actual failed transitions reach100mV as late as67.23ps, after the unchanged37.5ps first sample. Place qn/qp/ea/eb/tail/select buses nearer native devices; compare an additional4-to8-column HBT access via variant. Real DRC/LVS/extracted full-wave gates required.",
+    "critical_bus_supply_adjacent_gap_um": 5
+  },
+  "unchanged": [
+    "54device circuit",
+    "19HBTNx1..10",
+    "12ports",
+    "560DRC rule coverage",
+    "hierarchical and flat transistor LVS",
+    "five actual physical/reference fault controls"
+  ],
+  "adopted": false,
+  "prior_critical_bus_trial": {
+    "run": 38315004937,
+    "rejected": true,
+    "drc": "Both new geometries: one TM2.bR marker each. Exact native deck requires5um when one line is wider than5um and parallel run exceeds50um. Increase the three gaps adjacent to the reordered16um supply buses; no waiver or deck change."
+  }
+}

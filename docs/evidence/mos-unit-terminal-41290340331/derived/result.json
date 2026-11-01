@@ -1,0 +1,74 @@
+{
+  "status": "FAIL_OR_ERROR",
+  "source": "f196319144d14623095a00ee43b7c611ce8e633a",
+  "reservation": {
+    "run": 41290340331,
+    "source": "f196319144d14623095a00ee43b7c611ce8e633a",
+    "controls_run": 41290206079,
+    "tag": "cloud-results-41290340331-1-mos-unit-physical",
+    "release": 430459347,
+    "independent_empty_release_verified": true
+  },
+  "steps": [
+    {
+      "top": "nssoc_cdr_mos_unit_w8",
+      "kind": "drc",
+      "returncode": 0,
+      "input_sha256": {
+        "/home/runner/work/nssoc/nssoc/cloud-mos-unit-native/geometry/nssoc_cdr_mos_unit_w8/unit.gds": "2c4fe1b57132d4c5491f95ff0dc9bd61481d7b97fba3fa00437380a4f1d8e136",
+        "/home/runner/work/nssoc/nssoc/cloud-mos-unit-native/geometry/nssoc_cdr_mos_unit_w8/reference.cir": "6c417b27de52265c2addc3e2c048db66646d403250354f2a179cb3f3aac962b5"
+      },
+      "measurement": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 560,
+        "report_sha256": "35804ec6791c6098b129fcd857077a8b3c9983eb1e0b13739362247f1a8a6058",
+        "log_sha256": "a23f5304c657818ec7da83892385cf3aa5ae0ad5693ad9310f808e11f52ce4db"
+      }
+    },
+    {
+      "top": "nssoc_cdr_mos_unit_w8",
+      "kind": "lvs_deep",
+      "returncode": 0,
+      "input_sha256": {
+        "/home/runner/work/nssoc/nssoc/cloud-mos-unit-native/geometry/nssoc_cdr_mos_unit_w8/unit.gds": "2c4fe1b57132d4c5491f95ff0dc9bd61481d7b97fba3fa00437380a4f1d8e136",
+        "/home/runner/work/nssoc/nssoc/cloud-mos-unit-native/geometry/nssoc_cdr_mos_unit_w8/reference.cir": "6c417b27de52265c2addc3e2c048db66646d403250354f2a179cb3f3aac962b5"
+      },
+      "audit": {
+        "status": "PASS within comparison scope",
+        "top": "nssoc_cdr_mos_unit_w8",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_cdr_mos_unit_w8",
+            "schematic": "NSSOC_CDR_MOS_UNIT_W8",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/cloud-mos-unit-native/nssoc_cdr_mos_unit_w8/lvs_deep/result.lvsdb": {
+            "bytes": 15111,
+            "sha256": "026ef91e98a0ab3376183fa6e45d15df2c543abc4425cb42f3a63c8aed386a1f"
+          },
+          "/home/runner/work/nssoc/nssoc/cloud-mos-unit-native/nssoc_cdr_mos_unit_w8/lvs_deep/deck.log": {
+            "bytes": 37110,
+            "sha256": "3571e118d61251409a8b0a73bc479c2f92049dcc3d35d9ba44f0b499f4c168c9"
+          }
+        }
+      }
+    }
+  ],
+  "full_phy_accepted": false,
+  "full_pd650_generated": false,
+  "qualified_pex": false,
+  "error": "AssertionError()",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_mos_unit_physical.py\", line 157, in run_native\n    assert execute([app,\"python\",geometry,\"--inspect\",d/\"result.lvsdb\",\"--top\",top,\"--out\",d/\"devices.json\"],d,\"inspect\")==0\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+}

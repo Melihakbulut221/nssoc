@@ -1,0 +1,874 @@
+﻿2026-11-01T08:52:50.2773759Z Current runner version: '2.338.2'
+2026-11-01T08:52:50.2796472Z ##[group]Runner Image Provisioner
+2026-11-01T08:52:50.2797254Z Hosted Compute Agent
+2026-11-01T08:52:50.2797786Z Version: 20261021.618
+2026-11-01T08:52:50.2798338Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-01T08:52:50.2799052Z Build Date: 2026-10-21T00:45:21Z
+2026-11-01T08:52:50.2799639Z Worker ID: {85c10bfa-2cee-4456-be09-9f7928e2ca67}
+2026-11-01T08:52:50.2800266Z Region: westus3
+2026-11-01T08:52:50.2800778Z Cloud: Azure
+2026-11-01T08:52:50.2801252Z ##[endgroup]
+2026-11-01T08:52:50.2802406Z ##[group]Operating System
+2026-11-01T08:52:50.2802960Z Ubuntu
+2026-11-01T08:52:50.2803554Z 22.04.5
+2026-11-01T08:52:50.2804117Z LTS
+2026-11-01T08:52:50.2804563Z ##[endgroup]
+2026-11-01T08:52:50.2805145Z ##[group]Runner Image
+2026-11-01T08:52:50.2805657Z Image: ubuntu-22.04
+2026-11-01T08:52:50.2806130Z Version: 20261025.340.1
+2026-11-01T08:52:50.2807288Z Included Software: https://github.com/actions/runner-images/blob/ubuntu22/20261025.340/images/ubuntu/Ubuntu2204-Readme.md
+2026-11-01T08:52:50.2808636Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu22%2F20261025.340
+2026-11-01T08:52:50.2809450Z ##[endgroup]
+2026-11-01T08:52:50.2810760Z ##[group]GITHUB_TOKEN Permissions
+2026-11-01T08:52:50.2812526Z Actions: read
+2026-11-01T08:52:50.2813030Z Contents: write
+2026-11-01T08:52:50.2813773Z Metadata: read
+2026-11-01T08:52:50.2814254Z ##[endgroup]
+2026-11-01T08:52:50.2816044Z Secret source: Actions
+2026-11-01T08:52:50.2816888Z Cache mode: write
+2026-11-01T08:52:50.2817506Z Prepare workflow directory
+2026-11-01T08:52:50.3230776Z Prepare all required actions
+2026-11-01T08:52:50.3270078Z Getting action download info
+2026-11-01T08:52:50.6309156Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-11-01T08:52:50.8357412Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-11-01T08:52:51.0024152Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-01T08:52:51.2584275Z Complete job name: native-units
+2026-11-01T08:52:51.3300999Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-11-01T08:52:51.3301882Z with:
+2026-11-01T08:52:51.3302294Z   ref: e3839b66d23c4cd678e4cf917c3b458495f4ac96
+2026-11-01T08:52:51.3302811Z   persist-credentials: false
+2026-11-01T08:52:51.3303235Z   filter: blob:none
+2026-11-01T08:52:51.3303945Z   sparse-checkout-cone-mode: false
+2026-11-01T08:52:51.3306009Z   sparse-checkout: /scripts/cdr_mos_unit_geometry.py
+/scripts/cloud_cdr_mos_unit_physical.py
+/scripts/cdr-mos-unit-pins.json
+/hw/soc/flow/audit_klayout_lvs.py
+/hw/soc/flow/check_ihp_drc.py
+/hw/soc/flow/prepare_ihp_drc.py
+/hw/soc/pnr/ihp-drc.lock.json
+/hw/soc/pnr/ihp-lvs.lock.json
+/docs/evidence/pcie-tx-layout-cloud-input-20261013.json
+/.github/workflows/cloud-evidence-summary.yml
+
+2026-11-01T08:52:51.3308325Z   repository: Melihakbulut221/nssoc
+2026-11-01T08:52:51.3311612Z   token: ***
+2026-11-01T08:52:51.3311992Z   ssh-strict: true
+2026-11-01T08:52:51.3312367Z   ssh-user: git
+2026-11-01T08:52:51.3312836Z   clean: true
+2026-11-01T08:52:51.3313185Z   fetch-depth: 1
+2026-11-01T08:52:51.3313823Z   fetch-tags: false
+2026-11-01T08:52:51.3314217Z   show-progress: true
+2026-11-01T08:52:51.3314598Z   lfs: false
+2026-11-01T08:52:51.3314953Z   submodules: false
+2026-11-01T08:52:51.3315344Z   set-safe-directory: true
+2026-11-01T08:52:51.3316041Z env:
+2026-11-01T08:52:51.3319142Z   GH_TOKEN: ***
+2026-11-01T08:52:51.3319544Z   UNIT_CONTROLS_RUN: 41290550100
+2026-11-01T08:52:51.3319983Z ##[endgroup]
+2026-11-01T08:52:51.4949961Z Syncing repository: Melihakbulut221/nssoc
+2026-11-01T08:52:51.4952177Z ##[group]Getting Git version info
+2026-11-01T08:52:51.4953083Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-11-01T08:52:51.4954654Z [command]/usr/bin/git version
+2026-11-01T08:52:51.4960398Z git version 2.56.0
+2026-11-01T08:52:51.4985458Z ##[endgroup]
+2026-11-01T08:52:51.4993119Z Temporarily overriding HOME='/home/runner/work/_temp/214dc766-8810-4551-a81a-1e9aafaeb9d5' before making global git config changes
+2026-11-01T08:52:51.4995779Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-01T08:52:51.4997870Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-11-01T08:52:51.5028261Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-11-01T08:52:51.5032901Z ##[group]Initializing the repository
+2026-11-01T08:52:51.5037277Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-11-01T08:52:51.5125389Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-01T08:52:51.5127129Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-01T08:52:51.5128784Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-01T08:52:51.5130281Z hint: call:
+2026-11-01T08:52:51.5130994Z hint:
+2026-11-01T08:52:51.5131896Z hint: 	git config --global init.defaultBranch <name>
+2026-11-01T08:52:51.5132938Z hint:
+2026-11-01T08:52:51.5134877Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-01T08:52:51.5136413Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-01T08:52:51.5137654Z hint:
+2026-11-01T08:52:51.5138384Z hint: 	git branch -m <name>
+2026-11-01T08:52:51.5139206Z hint:
+2026-11-01T08:52:51.5140220Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-01T08:52:51.5141940Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-11-01T08:52:51.5145150Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-11-01T08:52:51.5173987Z ##[endgroup]
+2026-11-01T08:52:51.5177999Z ##[group]Disabling automatic garbage collection
+2026-11-01T08:52:51.5178618Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-01T08:52:51.5209459Z ##[endgroup]
+2026-11-01T08:52:51.5210146Z ##[group]Setting up auth
+2026-11-01T08:52:51.5216533Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-01T08:52:51.5250838Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-01T08:52:51.5564120Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-01T08:52:51.5599984Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-01T08:52:51.5838174Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-01T08:52:51.5880812Z ##[endgroup]
+2026-11-01T08:52:51.5881597Z ##[group]Fetching the repository
+2026-11-01T08:52:51.5888938Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --filter=blob:none --depth=1 origin e3839b66d23c4cd678e4cf917c3b458495f4ac96
+2026-11-01T08:52:52.2953007Z From https://github.com/Melihakbulut221/nssoc
+2026-11-01T08:52:52.2954545Z  * branch            e3839b66d23c4cd678e4cf917c3b458495f4ac96 -> FETCH_HEAD
+2026-11-01T08:52:52.2957886Z ##[endgroup]
+2026-11-01T08:52:52.2959144Z ##[group]Determining the checkout info
+2026-11-01T08:52:52.2960561Z ##[endgroup]
+2026-11-01T08:52:52.2961828Z ##[group]Setting up sparse checkout
+2026-11-01T08:52:52.2963723Z [command]/usr/bin/git config core.sparseCheckout true
+2026-11-01T08:52:52.3002506Z [command]/usr/bin/git rev-parse --git-path info/sparse-checkout
+2026-11-01T08:52:52.3027130Z .git/info/sparse-checkout
+2026-11-01T08:52:52.3034734Z ##[endgroup]
+2026-11-01T08:52:52.3036216Z ##[group]Checking out the ref
+2026-11-01T08:52:52.3039067Z [command]/usr/bin/git checkout --progress --force e3839b66d23c4cd678e4cf917c3b458495f4ac96
+2026-11-01T08:52:53.1293919Z Note: switching to 'e3839b66d23c4cd678e4cf917c3b458495f4ac96'.
+2026-11-01T08:52:53.1294417Z 
+2026-11-01T08:52:53.1294886Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-01T08:52:53.1295536Z changes and commit them, and you can discard any commits you make in this
+2026-11-01T08:52:53.1296087Z state without impacting any branches by switching back to a branch.
+2026-11-01T08:52:53.1296431Z 
+2026-11-01T08:52:53.1296659Z If you want to create a new branch to retain commits you create, you may
+2026-11-01T08:52:53.1297223Z do so (now or later) by using -c with the switch command. Example:
+2026-11-01T08:52:53.1297556Z 
+2026-11-01T08:52:53.1297682Z   git switch -c <new-branch-name>
+2026-11-01T08:52:53.1297885Z 
+2026-11-01T08:52:53.1298019Z Or undo this operation with:
+2026-11-01T08:52:53.1298227Z 
+2026-11-01T08:52:53.1298344Z   git switch -
+2026-11-01T08:52:53.1298505Z 
+2026-11-01T08:52:53.1298788Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-01T08:52:53.1299216Z 
+2026-11-01T08:52:53.1299669Z HEAD is now at e3839b6 Read native KLayout parameter definitions by name and normalize accessor methods [skip ci]
+2026-11-01T08:52:53.1308605Z ##[endgroup]
+2026-11-01T08:52:53.1358707Z [command]/usr/bin/git log -1 --format=%H
+2026-11-01T08:52:53.1388579Z e3839b66d23c4cd678e4cf917c3b458495f4ac96
+2026-11-01T08:52:53.1396794Z ##[group]Removing auth
+2026-11-01T08:52:53.1400092Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-01T08:52:53.1430569Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-01T08:52:53.1732817Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-01T08:52:53.1758525Z http.https://github.com/.extraheader
+2026-11-01T08:52:53.1765316Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-01T08:52:53.1800262Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-01T08:52:53.2097283Z ##[endgroup]
+2026-11-01T08:52:53.2377493Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-11-01T08:52:53.2377836Z with:
+2026-11-01T08:52:53.2378004Z   python-version: 3.12
+2026-11-01T08:52:53.2378183Z   check-latest: false
+2026-11-01T08:52:53.2380008Z   token: ***
+2026-11-01T08:52:53.2380182Z   update-environment: true
+2026-11-01T08:52:53.2380380Z   allow-prereleases: false
+2026-11-01T08:52:53.2380610Z   freethreaded: false
+2026-11-01T08:52:53.2380812Z env:
+2026-11-01T08:52:53.2382582Z   GH_TOKEN: ***
+2026-11-01T08:52:53.2382754Z   UNIT_CONTROLS_RUN: 41290550100
+2026-11-01T08:52:53.2382957Z ##[endgroup]
+2026-11-01T08:52:53.3532581Z ##[group]Installed versions
+2026-11-01T08:52:53.3957700Z (node:1921) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-01T08:52:53.3958561Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-01T08:52:53.3958954Z Successfully set up CPython (3.12.15)
+2026-11-01T08:52:53.3959548Z ##[endgroup]
+2026-11-01T08:52:53.4110606Z ##[group]Run test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+2026-11-01T08:52:53.4111061Z [36;1mtest "$(git rev-parse HEAD)" = "$GITHUB_SHA"[0m
+2026-11-01T08:52:53.4111333Z [36;1msudo apt-get update -qq[0m
+2026-11-01T08:52:53.4111646Z [36;1msudo apt-get install -y --no-install-recommends libfuse2 tcl8.6[0m
+2026-11-01T08:52:53.4112346Z [36;1mcurl --fail --location --retry 3 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"[0m
+2026-11-01T08:52:53.4113148Z [36;1mecho "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check[0m
+2026-11-01T08:52:53.4114068Z [36;1mchmod +x "$RUNNER_TEMP/librelane.AppImage"[0m
+2026-11-01T08:52:53.4114407Z [36;1mecho "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"[0m
+2026-11-01T08:52:53.4257633Z shell: /usr/bin/bash -e {0}
+2026-11-01T08:52:53.4258022Z env:
+2026-11-01T08:52:53.4261441Z   GH_TOKEN: ***
+2026-11-01T08:52:53.4261720Z   UNIT_CONTROLS_RUN: 41290550100
+2026-11-01T08:52:53.4262111Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:52:53.4262644Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-01T08:52:53.4263166Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:52:53.4263792Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:52:53.4264257Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:52:53.4264731Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-01T08:52:53.4265158Z ##[endgroup]
+2026-11-01T08:53:03.4851219Z Reading package lists...
+2026-11-01T08:53:03.7664323Z Building dependency tree...
+2026-11-01T08:53:03.7673794Z Reading state information...
+2026-11-01T08:53:03.9425200Z tcl8.6 is already the newest version (8.6.12+dfsg-1build1).
+2026-11-01T08:53:03.9425698Z The following NEW packages will be installed:
+2026-11-01T08:53:03.9427968Z   libfuse2
+2026-11-01T08:53:03.9579497Z 0 upgraded, 1 newly installed, 0 to remove and 19 not upgraded.
+2026-11-01T08:53:03.9580006Z Need to get 90.3 kB of archives.
+2026-11-01T08:53:03.9580375Z After this operation, 330 kB of additional disk space will be used.
+2026-11-01T08:53:03.9580711Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-11-01T08:53:04.0206917Z Get:2 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 libfuse2 amd64 2.9.9-5ubuntu3 [90.3 kB]
+2026-11-01T08:53:04.2989234Z Fetched 90.3 kB in 0s (1213 kB/s)
+2026-11-01T08:53:04.3225845Z Selecting previously unselected package libfuse2:amd64.
+2026-11-01T08:53:04.3634579Z (Reading database ... 
+2026-11-01T08:53:04.3634930Z (Reading database ... 5%
+2026-11-01T08:53:04.3635196Z (Reading database ... 10%
+2026-11-01T08:53:04.3654384Z (Reading database ... 15%
+2026-11-01T08:53:04.3654711Z (Reading database ... 20%
+2026-11-01T08:53:04.3655008Z (Reading database ... 25%
+2026-11-01T08:53:04.3655304Z (Reading database ... 30%
+2026-11-01T08:53:04.3655609Z (Reading database ... 35%
+2026-11-01T08:53:04.3655903Z (Reading database ... 40%
+2026-11-01T08:53:04.3656188Z (Reading database ... 45%
+2026-11-01T08:53:04.3656468Z (Reading database ... 50%
+2026-11-01T08:53:04.4362726Z (Reading database ... 55%
+2026-11-01T08:53:04.6294681Z (Reading database ... 60%
+2026-11-01T08:53:04.8808922Z (Reading database ... 65%
+2026-11-01T08:53:04.9949571Z (Reading database ... 70%
+2026-11-01T08:53:05.2332417Z (Reading database ... 75%
+2026-11-01T08:53:05.4868463Z (Reading database ... 80%
+2026-11-01T08:53:05.7715198Z (Reading database ... 85%
+2026-11-01T08:53:05.9283157Z (Reading database ... 90%
+2026-11-01T08:53:06.1796698Z (Reading database ... 95%
+2026-11-01T08:53:06.1796956Z (Reading database ... 100%
+2026-11-01T08:53:06.1797238Z (Reading database ... 263322 files and directories currently installed.)
+2026-11-01T08:53:06.1855964Z Preparing to unpack .../libfuse2_2.9.9-5ubuntu3_amd64.deb ...
+2026-11-01T08:53:06.1965973Z Unpacking libfuse2:amd64 (2.9.9-5ubuntu3) ...
+2026-11-01T08:53:06.2461772Z Setting up libfuse2:amd64 (2.9.9-5ubuntu3) ...
+2026-11-01T08:53:06.2490036Z Processing triggers for libc-bin (2.35-0ubuntu3.15) ...
+2026-11-01T08:53:09.1491529Z 
+2026-11-01T08:53:09.1492210Z Running kernel seems to be up-to-date.
+2026-11-01T08:53:09.1492534Z 
+2026-11-01T08:53:09.1492658Z No services need to be restarted.
+2026-11-01T08:53:09.1492892Z 
+2026-11-01T08:53:09.1493026Z No containers need to be restarted.
+2026-11-01T08:53:09.1493248Z 
+2026-11-01T08:53:09.1493532Z No user sessions are running outdated binaries.
+2026-11-01T08:53:09.1493797Z 
+2026-11-01T08:53:09.1494454Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-11-01T08:53:10.3730526Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:10.3731326Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:10.3731892Z 
+2026-11-01T08:53:10.6515123Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:10.6515563Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:10.8903242Z 
+2026-11-01T08:53:11.8875743Z   0 1333M    0 10.0M    0     0  19.3M      0  0:01:08 --:--:--  0:01:08 19.3M
+2026-11-01T08:53:12.8599406Z   9 1333M    9  130M    0     0  85.8M      0  0:00:15  0:00:01  0:00:14  120M
+2026-11-01T08:53:13.8934423Z  18 1333M   18  250M    0     0   100M      0  0:00:13  0:00:02  0:00:11  121M
+2026-11-01T08:53:14.8575682Z  27 1333M   27  370M    0     0   105M      0  0:00:12  0:00:03  0:00:09  119M
+2026-11-01T08:53:15.8577805Z  35 1333M   35  470M    0     0   104M      0  0:00:12  0:00:04  0:00:08  115M
+2026-11-01T08:53:16.8621992Z  40 1333M   40  538M    0     0  98.1M      0  0:00:13  0:00:05  0:00:08  106M
+2026-11-01T08:53:17.8735841Z  48 1333M   48  640M    0     0  98.6M      0  0:00:13  0:00:06  0:00:07  102M
+2026-11-01T08:53:18.8590298Z  56 1333M   56  750M    0     0  99.9M      0  0:00:13  0:00:07  0:00:06 99.7M
+2026-11-01T08:53:19.8940590Z  64 1333M   64  860M    0     0   101M      0  0:00:13  0:00:08  0:00:05 98.6M
+2026-11-01T08:53:20.8805289Z  73 1333M   73  980M    0     0   102M      0  0:00:12  0:00:09  0:00:03  101M
+2026-11-01T08:53:21.8578817Z  80 1333M   80 1070M    0     0   101M      0  0:00:13  0:00:10  0:00:03  105M
+2026-11-01T08:53:22.9299240Z  86 1333M   86 1153M    0     0   100M      0  0:00:13  0:00:11  0:00:02  102M
+2026-11-01T08:53:23.8589366Z  91 1333M   91 1220M    0     0  97.1M      0  0:00:13  0:00:12  0:00:01 92.9M
+2026-11-01T08:53:24.0164442Z  98 1333M   98 1312M    0     0  97.3M      0  0:00:13  0:00:13 --:--:-- 90.4M
+2026-11-01T08:53:24.0165074Z 100 1333M  100 1333M    0     0  97.7M      0  0:00:13  0:00:13 --:--:-- 85.7M
+2026-11-01T08:53:27.8597801Z /home/runner/work/_temp/librelane.AppImage: OK
+2026-11-01T08:53:27.8648272Z ##[group]Run python3 -B scripts/cloud_cdr_mos_unit_physical.py
+2026-11-01T08:53:27.8648649Z [36;1mpython3 -B scripts/cloud_cdr_mos_unit_physical.py[0m
+2026-11-01T08:53:27.8702648Z shell: /usr/bin/bash -e {0}
+2026-11-01T08:53:27.8702853Z env:
+2026-11-01T08:53:27.8705064Z   GH_TOKEN: ***
+2026-11-01T08:53:27.8705256Z   UNIT_CONTROLS_RUN: 41290550100
+2026-11-01T08:53:27.8705513Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:53:27.8705847Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-01T08:53:27.8706179Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:53:27.8706475Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:53:27.8706764Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:53:27.8707075Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-01T08:53:27.8707381Z   CLOUD_APPIMAGE: /home/runner/work/_temp/librelane.AppImage
+2026-11-01T08:53:27.8707675Z ##[endgroup]
+2026-11-01T08:53:32.0197551Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.0198446Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.0199166Z 
+2026-11-01T08:53:32.0210966Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.0212161Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.0212483Z 
+2026-11-01T08:53:32.0227782Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.0228891Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.0229090Z 
+2026-11-01T08:53:32.0244628Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.0245338Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.0245544Z 
+2026-11-01T08:53:32.0253787Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.0254531Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.0255140Z 
+2026-11-01T08:53:32.0257690Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.0258482Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.0258864Z 
+2026-11-01T08:53:32.1745575Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.1746193Z 100 19754  100 19754    0     0   124k      0 --:--:-- --:--:-- --:--:--  125k
+2026-11-01T08:53:32.1791668Z 
+2026-11-01T08:53:32.1792349Z 100 11357  100 11357    0     0  73171      0 --:--:-- --:--:-- --:--:-- 73270
+2026-11-01T08:53:32.1821443Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.1822289Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.1823005Z 
+2026-11-01T08:53:32.1832381Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.1833014Z 100  4280  100  4280    0     0  26104      0 --:--:-- --:--:-- --:--:-- 26257
+2026-11-01T08:53:32.1864246Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.1865446Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.1894936Z 
+2026-11-01T08:53:32.1895344Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.1896150Z 100  4862  100  4862    0     0  29509      0 --:--:-- --:--:-- --:--:-- 29646
+2026-11-01T08:53:32.1908968Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.1909824Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.1910347Z 
+2026-11-01T08:53:32.1943890Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.1944831Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.1945380Z 
+2026-11-01T08:53:32.3333903Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.3334286Z 100  2524  100  2524    0     0  17696      0 --:--:-- --:--:-- --:--:-- 17774
+2026-11-01T08:53:32.3407463Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.3408348Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.3408650Z 
+2026-11-01T08:53:32.3504438Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.3505032Z 100  2697  100  2697    0     0  16015      0 --:--:-- --:--:-- --:--:-- 16053
+2026-11-01T08:53:32.3576759Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.3578551Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.3579348Z 
+2026-11-01T08:53:32.3653997Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.3654744Z 100  2537  100  2537    0     0  15020      0 --:--:-- --:--:-- --:--:-- 15101
+2026-11-01T08:53:32.3685138Z 
+2026-11-01T08:53:32.3685854Z 100  2215  100  2215    0     0  12148      0 --:--:-- --:--:-- --:--:-- 12170
+2026-11-01T08:53:32.3724466Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.3728283Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.3728818Z 
+2026-11-01T08:53:32.3827188Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.3830842Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.3831205Z 
+2026-11-01T08:53:32.3874420Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.3875180Z 100 18267  100 18267    0     0  50817      0 --:--:-- --:--:-- --:--:-- 50883
+2026-11-01T08:53:32.3935901Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.3936629Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.3937150Z 
+2026-11-01T08:53:32.4184336Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.4184913Z 100 27346  100 27346    0     0  69874      0 --:--:-- --:--:-- --:--:-- 69938
+2026-11-01T08:53:32.4236906Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.4237439Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.4237749Z 
+2026-11-01T08:53:32.5119953Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.5120519Z 100  2547  100  2547    0     0  18152      0 --:--:-- --:--:-- --:--:-- 18192
+2026-11-01T08:53:32.5130038Z 
+2026-11-01T08:53:32.5130386Z 100  1720  100  1720    0     0   9970      0 --:--:-- --:--:-- --:--:-- 10000
+2026-11-01T08:53:32.5191596Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.5193637Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.5194182Z 
+2026-11-01T08:53:32.5195121Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.5196560Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.5196900Z 
+2026-11-01T08:53:32.5198821Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.5199589Z 100  2685  100  2685    0     0  18708      0 --:--:-- --:--:-- --:--:-- 19598
+2026-11-01T08:53:32.5264953Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.5265719Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.5266377Z 
+2026-11-01T08:53:32.5278743Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.5279480Z 100  2188  100  2188    0     0  12841      0 --:--:-- --:--:-- --:--:-- 12870
+2026-11-01T08:53:32.5368261Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.5372528Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.5373057Z 
+2026-11-01T08:53:32.5535665Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.5564020Z 100  2175  100  2175    0     0  13537      0 --:--:-- --:--:-- --:--:-- 13593
+2026-11-01T08:53:32.5651666Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.5652421Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.5653020Z 
+2026-11-01T08:53:32.5837473Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.5837996Z 100  2273  100  2273    0     0  14187      0 --:--:-- --:--:-- --:--:-- 14206
+2026-11-01T08:53:32.5924251Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.5925066Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.5925349Z 
+2026-11-01T08:53:32.6526626Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.6527007Z 100  4536  100  4536    0     0  33942      0 --:--:-- --:--:-- --:--:-- 34105
+2026-11-01T08:53:32.6602230Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.6602745Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.6603024Z 
+2026-11-01T08:53:32.7077853Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.7078399Z 100  2641  100  2641    0     0  15391      0 --:--:-- --:--:-- --:--:-- 15444
+2026-11-01T08:53:32.7145109Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.7145806Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.7148081Z 
+2026-11-01T08:53:32.7465757Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.7466276Z 100  3100  100  3100    0     0  17075      0 --:--:-- --:--:-- --:--:-- 17127
+2026-11-01T08:53:32.7506244Z 
+2026-11-01T08:53:32.7525676Z 100  1653  100  1653    0     0  10354      0 --:--:-- --:--:-- --:--:-- 10396
+2026-11-01T08:53:32.7534935Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.7535655Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.7538966Z 
+2026-11-01T08:53:32.7572600Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.7573316Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.7573747Z 
+2026-11-01T08:53:32.7971559Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.7972173Z 100  2782  100  2782    0     0  20281      0 --:--:-- --:--:-- --:--:-- 20306
+2026-11-01T08:53:32.8039559Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.8040248Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.8040624Z 
+2026-11-01T08:53:32.8714159Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.8714858Z 100  2309  100  2309    0     0   6561      0 --:--:-- --:--:-- --:--:--  6559
+2026-11-01T08:53:32.8715459Z 100  2309  100  2309    0     0   6559      0 --:--:-- --:--:-- --:--:--  6559
+2026-11-01T08:53:32.8776951Z 
+2026-11-01T08:53:32.8786503Z   6 44126    6  2747    0     0  16816      0  0:00:02 --:--:--  0:00:02 16750  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.8787296Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.8789391Z 
+2026-11-01T08:53:32.8838821Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.8839539Z 100  2679  100  2679    0     0   7492      0 --:--:-- --:--:-- --:--:--  7483
+2026-11-01T08:53:32.8840513Z 100  2679  100  2679    0     0   7490      0 --:--:-- --:--:-- --:--:--  7483
+2026-11-01T08:53:32.8881409Z 
+2026-11-01T08:53:32.8882226Z 100 44126  100 44126    0     0   247k      0 --:--:-- --:--:-- --:--:--  247k
+2026-11-01T08:53:32.8911013Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.8914104Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.8914735Z 
+2026-11-01T08:53:32.8961105Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.8962467Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.8964838Z 
+2026-11-01T08:53:32.9092060Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.9111944Z 100  1533  100  1533    0     0   9838      0 --:--:-- --:--:-- --:--:--  9826
+2026-11-01T08:53:32.9112604Z 100  1533  100  1533    0     0   9825      0 --:--:-- --:--:-- --:--:--  9826
+2026-11-01T08:53:32.9143683Z 
+2026-11-01T08:53:32.9144196Z 100  4857  100  4857    0     0  31365      0 --:--:-- --:--:-- --:--:-- 31335
+2026-11-01T08:53:32.9149890Z 100  4857  100  4857    0     0  31341      0 --:--:-- --:--:-- --:--:-- 31335
+2026-11-01T08:53:32.9176908Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.9204083Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.9204556Z 
+2026-11-01T08:53:32.9213045Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.9214168Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.9214495Z 
+2026-11-01T08:53:32.9617067Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:32.9617685Z 100  2892  100  2892    0     0  18314      0 --:--:-- --:--:-- --:--:-- 18303
+2026-11-01T08:53:32.9618369Z 100  2892  100  2892    0     0  18306      0 --:--:-- --:--:-- --:--:-- 18303
+2026-11-01T08:53:32.9685268Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:32.9685852Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:32.9686129Z 
+2026-11-01T08:53:33.0490760Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.0491726Z 100  3657  100  3657    0     0  21450      0 --:--:-- --:--:-- --:--:-- 21511
+2026-11-01T08:53:33.0562386Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.0563213Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.0563759Z 
+2026-11-01T08:53:33.0602485Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.0603057Z 100  3081  100  3081    0     0  18199      0 --:--:-- --:--:-- --:--:-- 18230
+2026-11-01T08:53:33.0668475Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.0669208Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.0672134Z 
+2026-11-01T08:53:33.0752535Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.0753238Z 100  3518  100  3518    0     0  19604      0 --:--:-- --:--:-- --:--:-- 19653
+2026-11-01T08:53:33.0836444Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.0837256Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.0837862Z 
+2026-11-01T08:53:33.1064188Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.1065080Z 100  3930  100  3930    0     0  21337      0 --:--:-- --:--:-- --:--:-- 21358
+2026-11-01T08:53:33.1116932Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.1117669Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.1118256Z 
+2026-11-01T08:53:33.1143642Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.1144149Z 100  1684  100  1684    0     0   8532      0 --:--:-- --:--:-- --:--:--  8548
+2026-11-01T08:53:33.1218787Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.1219902Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.1220357Z 
+2026-11-01T08:53:33.1956198Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.1956772Z 100  3532  100  3532    0     0  25318      0 --:--:-- --:--:-- --:--:-- 25410
+2026-11-01T08:53:33.2028923Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.2031354Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.2031664Z 
+2026-11-01T08:53:33.2212952Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.2213608Z 100  2858  100  2858    0     0  20717      0 --:--:-- --:--:-- --:--:-- 20861
+2026-11-01T08:53:33.2282991Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.2283885Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.2284506Z 
+2026-11-01T08:53:33.2305380Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.2305929Z 100  2737  100  2737    0     0  16703      0 --:--:-- --:--:-- --:--:-- 16791
+2026-11-01T08:53:33.2369839Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.2370546Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.2371042Z 
+2026-11-01T08:53:33.2614319Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.2614929Z 100  1672  100  1672    0     0  11954      0 --:--:-- --:--:-- --:--:-- 12028
+2026-11-01T08:53:33.2681218Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.2682066Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.2682395Z 
+2026-11-01T08:53:33.2781606Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.2782153Z 100  3817  100  3817    0     0  22910      0 --:--:-- --:--:-- --:--:-- 22993
+2026-11-01T08:53:33.2847228Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.2850617Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.2851993Z 
+2026-11-01T08:53:33.3345805Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.3346421Z 100  1695  100  1695    0     0  12858      0 --:--:-- --:--:-- --:--:-- 12938
+2026-11-01T08:53:33.3415989Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.3417021Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.3417358Z 
+2026-11-01T08:53:33.3514843Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.3515393Z 100  1367  100  1367    0     0   3568      0 --:--:-- --:--:-- --:--:--  3569
+2026-11-01T08:53:33.3583660Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.3584408Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.3585714Z 
+2026-11-01T08:53:33.3594188Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.3594883Z 100 10083  100 10083    0     0  76817      0 --:--:-- --:--:-- --:--:-- 76969
+2026-11-01T08:53:33.4020723Z 
+2026-11-01T08:53:33.4021192Z 100 14153  100 14153    0     0  85658      0 --:--:-- --:--:-- --:--:-- 85775
+2026-11-01T08:53:33.4589955Z 
+2026-11-01T08:53:33.4590436Z 100  1888  100  1888    0     0  10824      0 --:--:-- --:--:-- --:--:-- 10850
+2026-11-01T08:53:33.5105106Z 
+2026-11-01T08:53:33.5105578Z 100  9078  100  9078    0     0  59607      0 --:--:-- --:--:-- --:--:-- 59723
+2026-11-01T08:53:33.5222364Z 
+2026-11-01T08:53:33.5222830Z 100  147k  100  147k    0     0   817k      0 --:--:-- --:--:-- --:--:--  821k
+2026-11-01T08:53:33.6208011Z 
+2026-11-01T08:53:33.6208392Z 100 42605  100 42605    0     0   117k      0 --:--:-- --:--:-- --:--:--  118k
+2026-11-01T08:53:33.6338216Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.6346168Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.6352544Z 
+2026-11-01T08:53:33.6357010Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.6357863Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.6358186Z 
+2026-11-01T08:53:33.6358676Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.6359200Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.6359411Z 
+2026-11-01T08:53:33.6359698Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.6360116Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.6360301Z 
+2026-11-01T08:53:33.6360607Z   0       0%   T o t0a l        0%   R e c0e i v e d  0%   X f e r d0    A v e r a0ge  -S-p:e-e-d: - -  T-i-m:e - - : -T-i m-e- : - - : -T-i m e     C0urrent
+2026-11-01T08:53:33.6361253Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.6361542Z 
+2026-11-01T08:53:33.6362282Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.6362986Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.6363514Z 
+2026-11-01T08:53:33.7808248Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.7809397Z 100  1788  100  1788    0     0  12231      0 --:--:-- --:--:-- --:--:-- 12246
+2026-11-01T08:53:33.7866929Z 
+2026-11-01T08:53:33.7867280Z 100  4832  100  4832    0     0  32086      0 --:--:-- --:--:-- --:--:-- 32213
+2026-11-01T08:53:33.7884721Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.7885463Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.7885911Z 
+2026-11-01T08:53:33.7918182Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.7918802Z 100 10782  100 10782    0     0  68202      0 --:--:-- --:--:-- --:--:-- 68675
+2026-11-01T08:53:33.7934610Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.7935353Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.7935862Z 
+2026-11-01T08:53:33.7985584Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.7986500Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.7986951Z 
+2026-11-01T08:53:33.8096427Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.8123128Z 100 11357  100 11357    0     0  63269      0 --:--:-- --:--:-- --:--:-- 63446
+2026-11-01T08:53:33.8188362Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.8189129Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.8189590Z 
+2026-11-01T08:53:33.8267732Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.8288076Z 100  2055  100  2055    0     0  10646      0 --:--:-- --:--:-- --:--:-- 10703
+2026-11-01T08:53:33.8364668Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.8367103Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.8367419Z 
+2026-11-01T08:53:33.8633081Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.8633673Z   0     0    0     0    0     0      0      
+2026-11-01T08:53:33.9537089Z 0   -0- : - - : -0-   - - :0-- : - -   -0-: - - : -0-          00      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.9537680Z 100  2470  100  2470    0     0  14941      0 --:--:-- --:--:-- --:--:-- 14879
+2026-11-01T08:53:33.9538134Z 100  2470  100  2470    0     0  14933      0 --:--:-- --:--:-- --:--:-- 14879
+2026-11-01T08:53:33.9608687Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.9609362Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.9609711Z 
+2026-11-01T08:53:33.9760531Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.9762565Z   0  1690    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.9763217Z 100  1690  100  1690    0     0   9235      0 --:--:-- --:--:-- --:--:--  9234
+2026-11-01T08:53:33.9801656Z 
+2026-11-01T08:53:33.9802438Z 100  1693  100  1693    0     0  10471      0 --:--:-- --:--:-- --:--:-- 10450
+2026-11-01T08:53:33.9846949Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.9847845Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.9848411Z 
+2026-11-01T08:53:33.9863899Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:33.9864624Z 100  5585  100  5585    0     0  36675      0 --:--:-- --:--:-- --:--:-- 36503
+2026-11-01T08:53:33.9884064Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.9891620Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.9892029Z 
+2026-11-01T08:53:33.9942136Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:33.9943074Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:33.9943611Z 
+2026-11-01T08:53:34.0001371Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:34.0013948Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:34.0014765Z 100  2912  100  2912    0     0   7935      0 --:--:-- --:--:-- --:--:--  7934
+2026-11-01T08:53:34.0015417Z 100  2912  100  2912    0     0   7933      0 --:--:-- --:--:-- --:--:--  7934
+2026-11-01T08:53:34.0112635Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.0115572Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.0116042Z 
+2026-11-01T08:53:34.1519697Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:34.1520237Z 100  7000  100  7000    0     0  41457      0 --:--:-- --:--:-- --:--:-- 41666
+2026-11-01T08:53:34.1561312Z 
+2026-11-01T08:53:34.1561974Z 100  7691  100  7691    0     0  47438      0 --:--:-- --:--:-- --:--:-- 47475
+2026-11-01T08:53:34.1602169Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.1604204Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.1605220Z 
+2026-11-01T08:53:34.1628966Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.1629704Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.1630318Z 
+2026-11-01T08:53:34.1664631Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:34.1665183Z 100  2107  100  2107    0     0   5724      0 --:--:-- --:--:-- --:--:--  5710
+2026-11-01T08:53:34.1704639Z 
+2026-11-01T08:53:34.1705650Z 100  7436  100  7436    0     0  46427      0 --:--:-- --:--:-- --:--:-- 46475
+2026-11-01T08:53:34.1769258Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.1794611Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.1795044Z 
+2026-11-01T08:53:34.1824683Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.1825593Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.1825908Z 
+2026-11-01T08:53:34.3202630Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:34.3203172Z 100  9197  100  9197    0     0  64499      0 --:--:-- --:--:-- --:--:-- 64767
+2026-11-01T08:53:34.3223608Z 
+2026-11-01T08:53:34.3224131Z 100  4245  100  4245    0     0  11738      0 --:--:-- --:--:-- --:--:-- 11759
+2026-11-01T08:53:34.3231222Z 
+2026-11-01T08:53:34.3231915Z 100  6985  100  6985    0     0  48881      0 --:--:-- --:--:-- --:--:-- 49190
+2026-11-01T08:53:34.3271359Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.3272127Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.3272566Z 
+2026-11-01T08:53:34.3295048Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.3296617Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.3297105Z 
+2026-11-01T08:53:34.3306919Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.3307909Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.3308239Z 
+2026-11-01T08:53:34.3375495Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:34.3376063Z 100  3249  100  3249    0     0  18584      0 --:--:-- --:--:-- --:--:-- 18672
+2026-11-01T08:53:34.3397705Z 
+2026-11-01T08:53:34.3425506Z 100  1722  100  1722    0     0   4912      0 --:--:-- --:--:-- --:--:--  4920
+2026-11-01T08:53:34.3455986Z 
+2026-11-01T08:53:34.3476250Z 100 15226  100 15226    0     0  84665      0 --:--:-- --:--:-- --:--:-- 85061
+2026-11-01T08:53:34.3486126Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.3486859Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.3487343Z 
+2026-11-01T08:53:34.3492358Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.3493293Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.3493988Z 
+2026-11-01T08:53:34.3534423Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.3535321Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.3535703Z 
+2026-11-01T08:53:34.5203926Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:34.5204385Z 100  2447  100  2447    0     0  14293      0 --:--:-- --:--:-- --:--:-- 14309
+2026-11-01T08:53:34.5219248Z 
+2026-11-01T08:53:34.5219751Z 100  3443  100  3443    0     0  20321      0 --:--:-- --:--:-- --:--:-- 20372
+2026-11-01T08:53:34.5279814Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.5280560Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.5281039Z 
+2026-11-01T08:53:34.5288269Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.5289173Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.5289656Z 
+2026-11-01T08:53:34.5359145Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:34.5359654Z 100  1419  100  1419    0     0   7562      0 --:--:-- --:--:-- --:--:--  7588
+2026-11-01T08:53:34.5454401Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.5454982Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.5455332Z 
+2026-11-01T08:53:34.6904208Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:34.6904943Z 100  3287  100  3287    0     0  20329      0 --:--:-- --:--:-- --:--:-- 20416
+2026-11-01T08:53:34.6935308Z 
+2026-11-01T08:53:34.6936034Z 100  4115  100  4115    0     0  11219      0 --:--:-- --:--:-- --:--:-- 11243
+2026-11-01T08:53:34.6985602Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.6986324Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.6986808Z 
+2026-11-01T08:53:34.7011537Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.7013334Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.7013979Z 
+2026-11-01T08:53:34.7023519Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:34.7024269Z 100  4320  100  4320    0     0  11618      0 --:--:-- --:--:-- --:--:-- 11644
+2026-11-01T08:53:34.7033786Z 
+2026-11-01T08:53:34.7034660Z 100 23322  100 23322    0     0  62429      0 --:--:-- --:--:-- --:--:-- 62525
+2026-11-01T08:53:34.7094697Z 
+2026-11-01T08:53:34.7124179Z 100  7217  100  7217    0     0  43544      0 --:--:-- --:--:-- --:--:-- 43739
+2026-11-01T08:53:34.7134420Z     %%  TToottaall        %%  RReecceeiivveedd  %%  XXffeerrdd    AAvveerraaggee  SSppeeeedd      TTiimmee        TTiimmee       Time  Current
+2026-11-01T08:53:34.7173959Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.7184039Z 
+2026-11-01T08:53:34.7189544Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0   Time  Current
+2026-11-01T08:53:34.7190302Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.7190619Z 
+2026-11-01T08:53:34.7191037Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.7191789Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.7192108Z 
+2026-11-01T08:53:34.8347718Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:34.8348119Z 100  5775  100  5775    0     0  42371      0 --:--:-- --:--:-- --:--:-- 42463
+2026-11-01T08:53:34.8422853Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.8423631Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.8426802Z 
+2026-11-01T08:53:34.8677766Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:34.8678296Z 100  2103  100  2103    0     0   6186      0 --:--:-- --:--:-- --:--:--  6185
+2026-11-01T08:53:34.8678967Z 100  2103  100  2103    0     0   6184      0 --:--:-- --:--:-- --:--:--  6185
+2026-11-01T08:53:34.8697307Z 
+2026-11-01T08:53:34.8698287Z 100  2112  100  2112    0     0  12512      0 --:--:-- --:--:-- --:--:-- 12497
+2026-11-01T08:53:34.8699081Z 100  2112  100  2112    0     0  12504      0 --:--:-- --:--:-- --:--:-- 12497
+2026-11-01T08:53:34.8720005Z 
+2026-11-01T08:53:34.8755624Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.8756567Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.8758194Z 
+2026-11-01T08:53:34.8770980Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.8771643Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.8771851Z 
+2026-11-01T08:53:34.8842366Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:34.8842992Z 100  1468  100  1468    0     0   8850      0 --:--:-- --:--:-- --:--:--  8843
+2026-11-01T08:53:34.8843811Z 100  1468  100  1468    0     0   8845      0 --:--:-- --:--:-- --:--:--  8843
+2026-11-01T08:53:34.8910744Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.8914156Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.8914653Z 
+2026-11-01T08:53:34.9084058Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:34.9084786Z 100  3010  100  3010    0     0  15401      0 --:--:-- --:--:-- --:--:-- 15357
+2026-11-01T08:53:34.9114029Z 100  3010  100  3010    0     0  15394      0 --:--:-- --:--:-- --:--:-- 15357
+2026-11-01T08:53:34.9152983Z 
+2026-11-01T08:53:34.9163339Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:34.9164489Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:34.9164893Z 
+2026-11-01T08:53:35.0057825Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:35.0128429Z 100  3932  100  3932    0     0  24044      0 --:--:-- --:--:-- --:--:-- 23975
+2026-11-01T08:53:35.0129048Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:35.0129680Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:35.0129920Z 
+2026-11-01T08:53:35.0549464Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:35.0550025Z 100  4311  100  4311    0     0  12545      0 --:--:-- --:--:-- --:--:-- 12531
+2026-11-01T08:53:35.0565065Z 
+2026-11-01T08:53:35.0565622Z 100   951  100   951    0     0   5739      0 --:--:-- --:--:-- --:--:--  5763
+2026-11-01T08:53:35.0621293Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:35.0622054Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:35.0622620Z 
+2026-11-01T08:53:35.0635581Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:35.0638414Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:35.0639018Z 
+2026-11-01T08:53:35.0664654Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:35.0665186Z 100 43846  100 43846    0     0   225k      0 --:--:-- --:--:-- --:--:--  226k
+2026-11-01T08:53:35.0734155Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:35.0745042Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:35.0745487Z 
+2026-11-01T08:53:35.0757521Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:35.0758223Z 100  1645  100  1645    0     0   8209      0 --:--:-- --:--:-- --:--:--  8225
+2026-11-01T08:53:35.0783858Z 
+2026-11-01T08:53:35.0784303Z 100  3249  100  3249    0     0  20168      0 --:--:-- --:--:-- --:--:-- 20180
+2026-11-01T08:53:35.0855022Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:35.0884809Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:35.0885394Z 
+2026-11-01T08:53:35.0886049Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:35.0886960Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:35.0887451Z 
+2026-11-01T08:53:35.2274823Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:35.2275412Z 100  1422  100  1422    0     0   9981      0 --:--:-- --:--:-- --:--:-- 10014
+2026-11-01T08:53:35.2350035Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:35.2353883Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:35.2354094Z 
+2026-11-01T08:53:35.2430356Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:35.2430821Z 100  1393  100  1393    0     0   7692      0 --:--:-- --:--:-- --:--:--  7696
+2026-11-01T08:53:35.2499494Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:35.2500258Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:35.2500917Z 
+2026-11-01T08:53:35.3545653Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:35.3546018Z 100  2377  100  2377    0     0   6953      0 --:--:-- --:--:-- --:--:--  6970
+2026-11-01T08:53:35.3618784Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:35.3619538Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:35.3620328Z 
+2026-11-01T08:53:35.3790705Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:35.3791209Z 100  4689  100  4689    0     0  36280      0 --:--:-- --:--:-- --:--:-- 36348
+2026-11-01T08:53:35.3859426Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:35.3860174Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:35.3860728Z 
+2026-11-01T08:53:35.3952549Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:35.3953094Z 100  2510  100  2510    0     0  15647      0 --:--:-- --:--:-- --:--:-- 15687
+2026-11-01T08:53:35.4018770Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:35.4019595Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:35.4020112Z 
+2026-11-01T08:53:35.4321432Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:35.4321960Z 100  2724  100  2724    
+2026-11-01T08:53:35.4322488Z 01  0 0   0  3 606  7 318060     3 6 0 60  - - : -0- : - -   -0- : --1:0-0-3 8-- : - - : - - 0  7-4-0:2--
+2026-11-01T08:53:35.4322989Z :-- --:--:-- --:--:-- 10044
+2026-11-01T08:53:35.4398596Z    %  To%t aTlo t a l  %   R e%c eRievceeidv e%d  X%f eXrfde r dA v eArvaegreag eS pSepeede d     TTiimmee        TTiimmee          TTimiem e  C uCrurrernetn
+2026-11-01T08:53:35.4399381Z t  
+2026-11-01T08:53:35.4400130Z                                                              D l o aDdl o aUdp l oUapdl o a Tdo t a lT o t aSlp e nt  S p e nLte f t    LSepfete d 
+2026-11-01T08:53:35.4400728Z Spe
+2026-11-01T08:53:35.4400942Z e d 
+2026-11-01T08:53:35.4401154Z 0 
+2026-11-01T08:53:35.4541084Z       00         00         00         00         00          0  0           00   - - : - -:0- -- --:-:----::----  ----::----::----   -  - :0--:--     0
+2026-11-01T08:53:35.4542319Z 100   954  100   954    0     0   2578      0 --:--:-- --:--:-- --:--:--  2599
+2026-11-01T08:53:35.4628644Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+2026-11-01T08:53:35.4632099Z                                  Dload  Upload   Total   Spent    Left  Speed
+2026-11-01T08:53:35.4632524Z 
+2026-11-01T08:53:35.4908458Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+2026-11-01T08:53:35.4909023Z 100  1975  100  1975    0     0  15297      0 --:--:-- --:--:-- --:--:-- 15310
+2026-11-01T08:53:35.5500471Z 
+2026-11-01T08:53:35.5501072Z 100  1500  100  1500    0     0   9133      0 --:--:-- --:--:-- --:--:--  9146
+2026-11-01T08:53:35.5644623Z 
+2026-11-01T08:53:35.5645404Z 100  2254  100  2254    0     0  18037      0 --:--:-- --:--:-- --:--:-- 18177
+2026-11-01T08:53:35.5676804Z 
+2026-11-01T08:53:35.5677316Z 100  2099  100  2099    0     0  12647      0 --:--:-- --:--:-- --:--:-- 12721
+2026-11-01T08:53:35.6253784Z 
+2026-11-01T08:53:35.6254409Z 100 16626  100 16626    0     0    99k      0 --:--:-- --:--:-- --:--:--  100k
+2026-11-01T08:53:35.8024585Z 
+2026-11-01T08:53:35.8025128Z 100 32212  100 32212    0     0  88764      0 --:--:-- --:--:-- --:--:-- 88983
+2026-11-01T08:55:15.6371688Z ##[group]Run python3 -B scripts/cloud_cdr_mos_unit_physical.py --publish
+2026-11-01T08:55:15.6372122Z [36;1mpython3 -B scripts/cloud_cdr_mos_unit_physical.py --publish[0m
+2026-11-01T08:55:15.6425680Z shell: /usr/bin/bash -e {0}
+2026-11-01T08:55:15.6425878Z env:
+2026-11-01T08:55:15.6427914Z   GH_TOKEN: ***
+2026-11-01T08:55:15.6428106Z   UNIT_CONTROLS_RUN: 41290550100
+2026-11-01T08:55:15.6428362Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:55:15.6428702Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-01T08:55:15.6429032Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:55:15.6429336Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:55:15.6429633Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:55:15.6429926Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-01T08:55:15.6430262Z   CLOUD_APPIMAGE: /home/runner/work/_temp/librelane.AppImage
+2026-11-01T08:55:15.6430514Z ##[endgroup]
+2026-11-01T08:55:17.7175577Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-01T08:55:17.7175907Z with:
+2026-11-01T08:55:17.7176082Z   name: mos-unit-derived-41290670037
+2026-11-01T08:55:17.7176309Z   path: cloud-mos-unit-derived
+2026-11-01T08:55:17.7176523Z   if-no-files-found: error
+2026-11-01T08:55:17.7176710Z   retention-days: 90
+2026-11-01T08:55:17.7176882Z   compression-level: 6
+2026-11-01T08:55:17.7177055Z   overwrite: false
+2026-11-01T08:55:17.7177232Z   include-hidden-files: false
+2026-11-01T08:55:17.7177422Z env:
+2026-11-01T08:55:17.7179323Z   GH_TOKEN: ***
+2026-11-01T08:55:17.7179526Z   UNIT_CONTROLS_RUN: 41290550100
+2026-11-01T08:55:17.7179783Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:55:17.7180124Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-01T08:55:17.7180453Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:55:17.7180777Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:55:17.7181072Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:55:17.7181366Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-01T08:55:17.7181678Z   CLOUD_APPIMAGE: /home/runner/work/_temp/librelane.AppImage
+2026-11-01T08:55:17.7181932Z ##[endgroup]
+2026-11-01T08:55:17.8580974Z (node:4979) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-01T08:55:17.8581721Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-01T08:55:17.8802316Z With the provided path, there will be 100 files uploaded
+2026-11-01T08:55:17.8806497Z Artifact name is valid!
+2026-11-01T08:55:17.8806998Z Root directory input is valid!
+2026-11-01T08:55:18.2129694Z Beginning upload of artifact content to blob storage
+2026-11-01T08:55:18.3003487Z (node:4979) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-01T08:55:18.6867896Z Uploaded bytes 217008
+2026-11-01T08:55:18.7422812Z Finished uploading artifact content to blob storage!
+2026-11-01T08:55:18.7423750Z SHA256 digest of uploaded artifact zip is 7fc7fede6c18bafac2edd22fbb7640bd54f9aa2bebb1e8ca87e4e56b552b44ba
+2026-11-01T08:55:18.7424829Z Finalizing artifact upload
+2026-11-01T08:55:19.2344118Z Artifact mos-unit-derived-41290670037.zip successfully finalized. Artifact ID 13077087031
+2026-11-01T08:55:19.2344851Z Artifact mos-unit-derived-41290670037 has been successfully uploaded! Final size is 217008 bytes. Artifact ID is 13077087031
+2026-11-01T08:55:19.2349570Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/41290670037/artifacts/13077087031
+2026-11-01T08:55:19.2505288Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-01T08:55:19.2505802Z with:
+2026-11-01T08:55:19.2506068Z   name: mos-unit-native-41290670037
+2026-11-01T08:55:19.2506426Z   path: cloud-mos-unit-native
+2026-11-01T08:55:19.2506753Z   if-no-files-found: warn
+2026-11-01T08:55:19.2507061Z   retention-days: 90
+2026-11-01T08:55:19.2507341Z   compression-level: 6
+2026-11-01T08:55:19.2507620Z   overwrite: false
+2026-11-01T08:55:19.2507903Z   include-hidden-files: false
+2026-11-01T08:55:19.2508203Z env:
+2026-11-01T08:55:19.2511409Z   GH_TOKEN: ***
+2026-11-01T08:55:19.2511697Z   UNIT_CONTROLS_RUN: 41290550100
+2026-11-01T08:55:19.2512096Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:55:19.2512656Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-01T08:55:19.2513207Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:55:19.2514015Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:55:19.2514525Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T08:55:19.2515041Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-01T08:55:19.2515574Z   CLOUD_APPIMAGE: /home/runner/work/_temp/librelane.AppImage
+2026-11-01T08:55:19.2516000Z ##[endgroup]
+2026-11-01T08:55:19.3925044Z (node:4993) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-01T08:55:19.3925820Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-01T08:55:19.4236761Z With the provided path, there will be 146 files uploaded
+2026-11-01T08:55:19.4237190Z Artifact name is valid!
+2026-11-01T08:55:19.4237392Z Root directory input is valid!
+2026-11-01T08:55:19.7362847Z Beginning upload of artifact content to blob storage
+2026-11-01T08:55:19.8571916Z (node:4993) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-01T08:55:20.2343549Z Uploaded bytes 309895
+2026-11-01T08:55:20.2894341Z Finished uploading artifact content to blob storage!
+2026-11-01T08:55:20.2895115Z SHA256 digest of uploaded artifact zip is 7d843dbf944d763b834f067f554dc60fc04919a57b286a95bd73577c7f9f8e33
+2026-11-01T08:55:20.2895769Z Finalizing artifact upload
+2026-11-01T08:55:20.7634507Z Artifact mos-unit-native-41290670037.zip successfully finalized. Artifact ID 13076747976
+2026-11-01T08:55:20.7635481Z Artifact mos-unit-native-41290670037 has been successfully uploaded! Final size is 309895 bytes. Artifact ID is 13076747976
+2026-11-01T08:55:20.7640429Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/41290670037/artifacts/13076747976
+2026-11-01T08:55:20.7810690Z Post job cleanup.
+2026-11-01T08:55:20.8808398Z (node:5005) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-01T08:55:20.8809024Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-01T08:55:20.8954650Z Post job cleanup.
+2026-11-01T08:55:20.9729245Z [command]/usr/bin/git version
+2026-11-01T08:55:20.9765958Z git version 2.56.0
+2026-11-01T08:55:20.9795129Z Temporarily overriding HOME='/home/runner/work/_temp/41c4fec0-2325-4f81-94f4-f35fbacf249e' before making global git config changes
+2026-11-01T08:55:20.9796205Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-01T08:55:20.9798820Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-11-01T08:55:20.9842025Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-01T08:55:20.9877013Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-01T08:55:21.0227290Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-01T08:55:21.0268494Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-01T08:55:21.0723772Z Cleaning up orphan processes
+2026-11-01T08:55:21.1065912Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

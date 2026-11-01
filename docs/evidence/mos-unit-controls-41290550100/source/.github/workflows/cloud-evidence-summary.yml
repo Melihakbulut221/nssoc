@@ -1,0 +1,116 @@
+name: Qualify physical MOS units for PD650
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Source controls or independently reserved native unit qualification
+        required: true
+        default: controls
+        type: choice
+        options: [controls, native]
+      controls_run:
+        description: Completed exact-source controls-only run, mandatory for native
+        required: false
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: mos-unit-physical-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr_mos_unit_geometry.py
+            /scripts/cloud_cdr_mos_unit_physical.py
+            /scripts/cdr-mos-unit-pins.json
+            /hw/soc/flow/audit_klayout_lvs.py
+            /hw/soc/flow/check_ihp_drc.py
+            /hw/soc/flow/prepare_ihp_drc.py
+            /hw/soc/pnr/ihp-drc.lock.json
+            /hw/soc/pnr/ihp-lvs.lock.json
+            /docs/evidence/pcie-tx-layout-cloud-input-20261013.json
+            /.github/workflows/cloud-evidence-summary.yml
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Validate exact source and geometry parameter refusal controls without native inputs
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_RUN_ATTEMPT" = "1"
+          python3 -B scripts/cloud_cdr_mos_unit_physical.py --controls
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: mos-unit-controls-${{ github.run_id }}
+          path: cloud-mos-unit-derived
+          if-no-files-found: error
+          retention-days: 90
+  native-units:
+    if: inputs.mode == 'native'
+    needs: source-controls
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      UNIT_CONTROLS_RUN: ${{ inputs.controls_run }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cdr_mos_unit_geometry.py
+            /scripts/cloud_cdr_mos_unit_physical.py
+            /scripts/cdr-mos-unit-pins.json
+            /hw/soc/flow/audit_klayout_lvs.py
+            /hw/soc/flow/check_ihp_drc.py
+            /hw/soc/flow/prepare_ihp_drc.py
+            /hw/soc/pnr/ihp-drc.lock.json
+            /hw/soc/pnr/ihp-lvs.lock.json
+            /docs/evidence/pcie-tx-layout-cloud-input-20261013.json
+            /.github/workflows/cloud-evidence-summary.yml
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore hash-pinned native CAD runtime on runner
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6
+          curl --fail --location --retry 3 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Qualify four real MOS units with unchanged native rules and independent references
+        run: python3 -B scripts/cloud_cdr_mos_unit_physical.py
+      - name: Preserve complete native output and failure evidence in exact-source release
+        if: always()
+        run: python3 -B scripts/cloud_cdr_mos_unit_physical.py --publish
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: mos-unit-derived-${{ github.run_id }}
+          path: cloud-mos-unit-derived
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: mos-unit-native-${{ github.run_id }}
+          path: cloud-mos-unit-native
+          if-no-files-found: warn
+          retention-days: 90
