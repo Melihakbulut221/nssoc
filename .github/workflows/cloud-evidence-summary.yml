@@ -1,4 +1,4 @@
-name: Four-shunt original-gate comparison
+name: Sampler-load original-gate comparison
 on:
   workflow_dispatch:
     inputs:
@@ -9,7 +9,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: four-shunt-comparison-${{ github.ref }}
+  group: sampler-load-comparison-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   comparison:
@@ -25,29 +25,29 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/cdr_four_shunt_comparison.py
-            /scripts/cdr-four-shunt-comparison-inputs.json
+            /scripts/cdr_sampler_load_comparison.py
+            /scripts/cdr-sampler-load-comparison-inputs.json
             /.github/workflows/cloud-evidence-summary.yml
       - name: Original-gate comparison corruption controls on authenticated baseline
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           test "$GITHUB_RUN_ATTEMPT" = "1"
-          python3 -B scripts/cdr_four_shunt_comparison.py --controls
+          python3 -B scripts/cdr_sampler_load_comparison.py --controls
       - name: Compare actual candidate against all original metrics
         if: ${{ inputs.mode == 'compare' }}
-        run: python3 -B scripts/cdr_four_shunt_comparison.py
+        run: python3 -B scripts/cdr_sampler_load_comparison.py
       - name: Preserve complete comparison sources
         if: always()
         run: |
           mkdir -p comparison-source
-          cp scripts/cdr_four_shunt_comparison.py scripts/cdr-four-shunt-comparison-inputs.json .github/workflows/cloud-evidence-summary.yml comparison-source/
+          cp scripts/cdr_sampler_load_comparison.py scripts/cdr-sampler-load-comparison-inputs.json .github/workflows/cloud-evidence-summary.yml comparison-source/
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: four-shunt-comparison-${{ github.run_id }}
+          name: sampler-load-comparison-${{ github.run_id }}
           path: |
-            cloud-four-shunt-comparison-controls
-            cloud-four-shunt-comparison
+            cloud-sampler-load-comparison-controls
+            cloud-sampler-load-comparison
             comparison-source
           if-no-files-found: error
           retention-days: 90
