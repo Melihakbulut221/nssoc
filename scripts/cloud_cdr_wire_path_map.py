@@ -141,17 +141,30 @@ def controls():
         except AssertionError:checks.append("reject numeric "+t)
         else:raise AssertionError(t)
     return checks
-def physical_nodes(path):
-    text=path.read_text();out=collections.defaultdict(list);scale=[1.,1.,1.]
+def parse_physical_nodes(text):
+    out=collections.defaultdict(list);scale=[1.,1.,1.];scales_seen=0
     for line in text.splitlines():
         t=shlex.split(line)
         if not t:continue
         if t[0]=="scale":
-            need(len(t)==4,"EXT scale");scale=list(map(float,t[1:]));need(all(math.isfinite(x)and x>0 for x in scale),"positive scales")
-        if t[0]=="node":
+            need(len(t)==4,"EXT scale");scales_seen+=1;need(scales_seen==1,"single EXT scale");scale=list(map(float,t[1:]));need(all(math.isfinite(x)and x>0 for x in scale),"positive scales")
+        if t[0]in("node","rnode"):
             need(len(t)>=7,"EXT node record")
-            out[t[1]].append(dict(x_native=float(t[4]),y_native=float(t[5]),material=t[6]))
+            x,y=float(t[4]),float(t[5]);need(math.isfinite(x)and math.isfinite(y),"finite EXT coordinates")
+            out[t[1]].append(dict(record=t[0],x_native=x,y_native=y,material=t[6]if t[0]=="node"else None,rnode_type_field=t[6]if t[0]=="rnode"else None))
     return dict(scale=scale,nodes=dict(out),node_coordinates_are_reference_points_not_resistor_footprints=True)
+def physical_nodes(path):return parse_physical_nodes(path.read_text())
+def coordinate_controls():
+    checks=[]
+    row=parse_physical_nodes('scale 1000 1 0.5\nnode "P" 0 1 240 6400 m7\nrnode "P.n0" 0 2 300 6400 0\n')
+    need(row["scale"]==[1000.,1.,.5]and row["nodes"]["P"][0]["material"]=="m7","ordinary node geometry");checks.append("ordinary node scale")
+    r=row["nodes"]["P.n0"][0];need(r["record"]=="rnode"and r["material"]is None and r["rnode_type_field"]=="0"and r["x_native"]==300.,"rnode coordinate and unknown material");checks.append("rnode numeric type is not a metal")
+    for label,text in[("duplicate scale","scale 1 1 1\nscale 1 1 1"),("nonfinite coordinate",'rnode "x" 0 1 nan 2 0'),("short record",'rnode "x" 0 1 2')]:
+        try:parse_physical_nodes(text)
+        except AssertionError:checks.append("reject "+label)
+        else:raise AssertionError(label)
+    return checks
+
 def analyze(base,cfg):
     comp=json.loads((base/cfg["composition"]["path"]).read_bytes())
     anchors=json.loads((base/"mim/precise/wire/anchors08.json").read_bytes())
@@ -174,18 +187,25 @@ def analyze(base,cfg):
         need(a in physical and b in physical,"actual physical anchor")
         pa,pb=physical[a],physical[b];need(pa["native_cluster"]==pb["native_cluster"]and pa["wire_component"]==pb["wire_component"],"native conductor ownership")
         row=solve(edges,a,b);row["source_anchor"]=pa;row["sink_anchor"]=pb
+        row["terminal_coordinate_offsets_dbu"]={}
+        for name,anchor in ((a,pa),(b,pb)):
+            records=ext["pump_wires.res.ext"]["nodes"].get(name,[])
+            need(records,"actual rnode coordinate for physical terminal")
+            row["terminal_coordinate_offsets_dbu"][name]=[dict(delta_x=r["x_native"]*ext["pump_wires.res.ext"]["scale"][2]*10-anchor["point_dbu"][0],delta_y=r["y_native"]*ext["pump_wires.res.ext"]["scale"][2]*10-anchor["point_dbu"][1])for r in records]
         for e in row["top_edges"]:
             e["native_node_references"]={n:{f:info["nodes"].get(n,[])for f,info in ext.items()}for n in(e["a"],e["b"])}
+            need(all(refs["pump_wires.res.ext"]for refs in e["native_node_references"].values()),"all ranked edge endpoints have native rnode records")
         results[label]=row
     save("physical-path-resistance-map.json",dict(source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),
       producer=cfg["producer_run_id"],original_model_R_cards_exact=True,resistors=len(edges),targets=results,
+      all_ranked_endpoints_have_rnode_coordinates=True,
       ext_scale={n:i["scale"]for n,i in ext.items()},ext_coordinate_reference="https://opencircuitdesign.com/magic/manpages/ext_manpage.html",
       scope="Unit-current passive DC sensitivity on original extracted wire graph; not operational currents, AC transfer, proof of cause, resistor footprints or PEX signoff.",
       devices_mutated=False,layout_mutated=False,RC_mutated=False,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
     save("summary.json",{k:{n:v for n,v in r.items()if n not in("top_edges","source_anchor","sink_anchor")}for k,r in results.items()})
 def main():
     try:
-        cfg=gate();checks=controls();save("controls.json",dict(count=len(checks),passed=checks))
+        cfg=gate();checks=controls()+coordinate_controls();save("controls.json",dict(count=len(checks),passed=checks))
         if sys.argv[1:] == ["--controls"]:return
         need(sys.argv[1:]==["--map"],"explicit mode")
         base=acquire(cfg);analyze(base,cfg)
