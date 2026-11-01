@@ -53,7 +53,7 @@ def restore(archive,inventory,wanted,directory,prefix="cloud-cdr-via2-m3-loaded"
 
 def selected_lines(lines):
     domain=re.compile(r"\b[wl](?:min|max)\b|(?:validity|valid|calibrat|characteriz).*range|range.*(?:valid|calibrat)|(?:finger.*width|width.*finger)|(?:maximum|minimum).*\b(?:width|length)\b|\bw\s*/\s*ng\b",re.I)
-    parameter=re.compile(r"\b(?:w|l|ng|m)\s*=",re.I)
+    parameter=re.compile(r"\b(?:w|l|ng|m|nf|mult)\s*=",re.I)
     branch=re.compile(r"\s*\.(?:if|elseif|else|endif)\b",re.I)
     ids={i for i,line in enumerate(lines)if domain.search(line)or parameter.search(line)or branch.match(line)}
     for i,line in enumerate(lines):
@@ -65,7 +65,8 @@ def selector_controls():
     require(selected_lines([".if (pre_layout)"])==[dict(line=1,text=".if (pre_layout)")],"actual branch selection")
     require([x["line"]for x in selected_lines(["* Valid range for model: L = (0.13 - 10)um","* W = (0.15 - 10)um"]) ]==[1,2],"continued range selection")
     require(selected_lines(["sg13_lv_nmos_thesatw=1.5"])==[],"unrelated model coefficient is not wrapper width")
-    return dict(checks=4,failures=0,scope="derived selector controls only")
+    require(selected_lines(["+ nf=ng mult=m"])==[dict(line=1,text="+ nf=ng mult=m")],"core finger and multiplier mapping")
+    return dict(checks=5,failures=0,scope="derived selector controls only")
 def inspect_text(path):
     raw=path.read_bytes();lines=raw.decode().splitlines()
     rows=selected_lines(lines)
@@ -76,6 +77,101 @@ def scalar(value):
     m=re.fullmatch(r"([0-9]+(?:\.[0-9]*)?)([unp]?)",value)
     require(m is not None,"explicit geometry scalar")
     return Decimal(m[1])*{"":Decimal(1),"u":Decimal("1e-6"),"n":Decimal("1e-9"),"p":Decimal("1e-12")}[m[2]]
+
+def decimal_close(a,b,label):
+    require(abs(Decimal(str(a))-Decimal(str(b)))<=Decimal("1e-9"),label)
+def joined_mos(comp,locations):
+    records=comp["device_records"];physical=locations["devices"]
+    require(len(records)==len(physical)==500,"complete500 both inputs")
+    require(len({r["native_id"]for r in records})==len({r["native_id"]for r in physical})==500,"unique native identities")
+    require({r["native_id"]for r in records}=={r["native_id"]for r in physical},"same full identity set")
+    pm={r["native_id"]:r for r in physical};joined=[]
+    for r in records:
+        if r["model"]!="sg13_lv_nmos":continue
+        p=pm[r["native_id"]];q=r["parameters"]
+        require(p["model"]==r["model"]and q["ng"]==q["m"]=="1","exact model ng and multiplicity")
+        rt={t["terminal"]:t for t in r["terminals"]};pt={t["name"]:t for t in p["terminals"]}
+        require(set(rt)==set(pt)=={"D","G","S","B"}and len(r["terminals"])==len(p["terminals"])==4,"four unique terminals")
+        for t in rt:require(rt[t]["native_cluster"]==pt[t]["native_cluster"]and rt[t]["native_net"]==pt[t]["net"],"terminal cluster and net")
+        for k,unit in [("w","1e-6"),("l","1e-6"),("ad","1e-12"),("as","1e-12"),("pd","1e-6"),("ps","1e-6")]:
+            decimal_close(scalar(q[k])/Decimal(unit),p["parameters"][k.upper()],"same extracted "+k)
+        require(Decimal(q["rfmode"])==Decimal(str(p["parameters"]["rfmode"])),"same rfmode")
+        gates=pt["G"]["native_layers"]
+        require(len(gates)==1 and gates[0]["polygons"]==1,"single extracted gate polygon")
+        m=re.fullmatch(r"\((-?\d+),(-?\d+);(-?\d+),(-?\d+)\)",gates[0]["bbox_dbu"])
+        require(m is not None,"integer gate bbox");x0,y0,x1,y1=map(int,m.groups())
+        require(x1>x0 and y1>y0 and (x1-x0)*(y1-y0)==gates[0]["area_dbu2"],"gate rectangle equals bbox area")
+        require(p["pcell"]["path"]and p["pcell"]["cell"],"owned physical PCell")
+        joined.append(dict(native_id=r["native_id"],simulation=r,physical=p,gate_rectangle_dbu=dict(dx=x1-x0,dy=y1-y0),gate_polygon_count=1))
+    require(len(joined)==50 and len({j["physical"]["pcell"]["path"]for j in joined})==50,"complete50 distinct physical instances")
+    return joined
+def partition_units(width):
+    # Candidate independent-device geometry on a declared 5 nm design grid.
+    # This is not an assertion that these devices have been physically placed.
+    grid=Decimal(".005");w=Decimal(width)
+    require(w>0 and w/grid==(w/grid).to_integral_value(),"exact proposed width grid")
+    n=int((w/Decimal("9")).to_integral_value(rounding="ROUND_CEILING"))
+    steps=int(w/grid);base,remainder=divmod(steps,n)
+    widths=[Decimal(base+(i<remainder))*grid for i in range(n)]
+    require(sum(widths)==w and all(Decimal(".15")<=x<=Decimal("10")for x in widths),"preserved total width and explicit per-unit domain")
+    return widths
+def validate_plan(plan,joined):
+    require(len(plan)==len(joined)==50 and {p["native_id"]for p in plan}=={j["native_id"]for j in joined},"complete unique plan origins")
+    origins={j["native_id"]:j["simulation"]for j in joined};names=[]
+    for p in plan:
+        r=origins[p["native_id"]];q=r["parameters"];units=p["units"]
+        require(units and p["source_instance"]==r["instance"],"source owner")
+        require(sum(scalar(u["parameters"]["w"])for u in units)==scalar(q["w"]),"original total width conserved")
+        for u in units:
+            names.append(u["instance"]);v=u["parameters"]
+            require(u["terminals"]==r["terminals"]and u["model"]==r["model"],"all four exact source connections")
+            require(v["ng"]==v["m"]=="1"and v["l"]==q["l"]and v["rfmode"]==q["rfmode"],"length model mode and multiplicity conserved")
+            w=scalar(v["w"])/Decimal("1e-6")
+            require(Decimal(".15")<=w<=Decimal("10"),"unit width model domain")
+            require(w/Decimal(".005")==(w/Decimal(".005")).to_integral_value(),"unit width on proposed grid")
+            require(scalar(v["as"])==scalar(v["ad"])==w*Decimal(".34e-12"),"independent junction area")
+            require(scalar(v["ps"])==scalar(v["pd"])==2*(w+Decimal(".34"))*Decimal("1e-6"),"independent junction perimeter")
+    require(len(names)==len(set(names)),"unique expanded instances")
+def make_plan(joined):
+    plan=[]
+    for j in joined:
+        r=j["simulation"];q=r["parameters"];units=[]
+        for i,w in enumerate(partition_units(scalar(q["w"])/Decimal("1e-6"))):
+            v=dict(q,w=str(w)+"u",ad=str(w*Decimal(".34"))+"p",**{"as":str(w*Decimal(".34"))+"p"},
+                pd=str(2*(w+Decimal(".34")))+"u",ps=str(2*(w+Decimal(".34")))+"u")
+            units.append(dict(instance=r["instance"]+"_U"+str(i),model=r["model"],parameters=v,terminals=r["terminals"]))
+        plan.append(dict(native_id=r["native_id"],source_instance=r["instance"],original_parameters=q,units=units))
+    validate_plan(plan,joined);return plan
+def physical_controls(comp,locations,joined,plan):
+    import copy
+    checks=[]
+    def refuses(label,fun):
+        try:fun()
+        except ValueError:checks.append(label)
+        else:raise ValueError("accepted corrupt control: "+label)
+    def change_physical(fn):
+        p=copy.deepcopy(locations);fn(p["devices"]);return joined_mos(comp,p)
+    target=joined[0]["native_id"]
+    def one(rows):return next(r for r in rows if r["native_id"]==target)
+    refuses("missing physical device",lambda:change_physical(lambda rows:rows.pop()))
+    refuses("duplicate physical identity",lambda:change_physical(lambda rows:rows.__setitem__(-1,copy.deepcopy(rows[0]))))
+    refuses("changed extracted width",lambda:change_physical(lambda rows:one(rows)["parameters"].__setitem__("W",1)))
+    refuses("changed terminal cluster",lambda:change_physical(lambda rows:one(rows)["terminals"][0].__setitem__("native_cluster",-99)))
+    refuses("changed model",lambda:change_physical(lambda rows:one(rows).__setitem__("model","wrong")))
+    def corrupt_gate(rows):
+        g=next(t for t in one(rows)["terminals"]if t["name"]=="G")["native_layers"][0];g["polygons"]=2
+    refuses("unqualified multiple gate polygons",lambda:change_physical(corrupt_gate))
+    def change_plan(fn):
+        p=copy.deepcopy(plan);fn(p);validate_plan(p,joined)
+    refuses("missing plan origin",lambda:change_plan(lambda p:p.pop()))
+    refuses("changed unit width",lambda:change_plan(lambda p:p[0]["units"][0]["parameters"].__setitem__("w","54u")))
+    refuses("changed unit length",lambda:change_plan(lambda p:p[0]["units"][0]["parameters"].__setitem__("l","0.5u")))
+    refuses("changed unit connection",lambda:change_plan(lambda p:p[0]["units"][0]["terminals"][0].__setitem__("node","wrong")))
+    refuses("stale wide junction perimeter",lambda:change_plan(lambda p:p[0]["units"][0]["parameters"].__setitem__("pd",p[0]["original_parameters"]["pd"])))
+    refuses("metadata-only finger repair",lambda:change_plan(lambda p:p[0]["units"][0]["parameters"].__setitem__("ng","4")))
+    require(len(checks)==12,"twelve corruption controls")
+    return dict(checks=len(checks),failures=0,refused=checks)
+
 def main():
     require(os.environ.get("GITHUB_ACTIONS")=="true"and os.environ.get("GITHUB_RUN_ATTEMPT")=="1"and os.environ.get("GITHUB_REPOSITORY")=="Melihakbulut221/nssoc","single cloud execution")
     c=json.loads((ROOT/CFG).read_bytes())
@@ -125,9 +221,14 @@ def main():
         require(len(entries)==1 and any(re.search(r"\bW\s*=\s*\(0\.15\s*-\s*10\)um",x["text"])for x in entries[0]["domain_or_finger_expression_matches"]),"exact declared W range in used model")
     outside=[r for r in mos if not Decimal(".15")<=Decimal(r["reported_finger_width_um"])<=Decimal("10")]
 
+    joined=joined_mos(comp,values["physical-locations.json"]);plan=make_plan(joined)
+    controls=physical_controls(comp,values["physical-locations.json"],joined,plan)
+    (OUT/"physical-controls.json").write_bytes(enc(controls))
+    (OUT/"physical-join.json").write_bytes(enc(dict(status="COMPLETE50_PINNED_PHYSICAL_JOIN_NOT_NEW_EXTRACTION",devices=joined,physical_input=c["inputs"]["physical-locations.json"],no_new_layout=True)))
+    (OUT/"parallel-device-plan.json").write_bytes(enc(dict(status="PROPOSED_PARALLEL_DEVICE_PLAN_NOT_NATIVE_ACCEPTANCE",devices=plan,original_mos_count=50,proposed_mos_count=sum(len(p["units"])for p in plan),unmodified_other_devices=450,proposed_total_device_count=450+sum(len(p["units"])for p in plan),proposed_width_grid_um=".005",source_drain_extension_um=".34",new_layout_generated=False,new_netlist_generated=False,fresh_parasitics=False,model_domain_passed_for_proposed_unit_widths_only=True,original_other_devices_sha256=sha(enc([r for r in comp["device_records"]if r["model"]!="sg13_lv_nmos"])),caveat="Explicit independent devices, not ng-only. Junction perimeters change. Contacts, spacing, routing, body taps, extracted identity expansion, model core mapping and independent DRC/LVS/PEX/electrical gates remain to be proven.")))
     result=dict(status="COMPLETE_PINNED_MOS_MODEL_PARAMETER_AUDIT_NOT_ACCEPTANCE",
         source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),producer_context=c["producer_context"],
-        native_archive=c["archive"],models=models,all50_mos=mos,declared_width_range_um=["0.15","10"],
+        native_archive=c["archive"],models=models,all50_mos=mos,physical_join_count=len(joined),parallel_proposed_units=sum(len(p["units"])for p in plan),declared_width_range_um=["0.15","10"],
         all50_current_simulation_ng_one=True,outside_declared_width_range=outside,model_width_domain_passed=not outside,
         proposed_slave_width_trial=dict(native_ids=[7,8,9,10,36,37,38,39],width_um=54,ng=1,dispatched=False,model_domain_qualified=False),
         interpretation="Range declarations and width/finger mapping from the exact used model must be interpreted before a new width trial. LVS total-width equality and prior stress-gate success are not model-domain qualification. No model file or raw archive is included in derived outputs.",
