@@ -1,11 +1,29 @@
-# Cloud continuation — checkpoint v264
+# Cloud continuation — checkpoint v265
 
-Updated: 2026-11-01T19:51:31.546181+00:00
+Updated: 2026-11-01T20:16:11.969466+00:00
 
 Latest instruction: **her şeyi bulutta yap, lokalde bir şey bırakma temizle.**
 It overrides the earlier local-execution wording in the active goal. All CAD, simulation, native archive/layout/waveform acquisition and numerical/geometric analysis run on GitHub. Local coordination uses source/API-derived text in RAM only. Never acquire native ODB/DEF/GDS/SPICE/raw archives locally, including RAM. The local workspace and project temp entries were verified empty, with no local CAD processes. Unrelated user files remain untouched.
 
-## Latest result: loaded transient rejected; exact device classification completed
+## Latest result: full native wave diagnosis and PCIe nettype repair
+
+All CAD, native acquisition and geometric/numerical execution remain on GitHub. Local workspace and task temporary files remain empty; API/source/derived text coordination stays in RAM.
+
+Actual full-wave diagnosis 41344170319/source 12c97e1c3510fd96cd410ba1e9d62f2b760a009e passed eight frozen-reader refusal controls, authenticated every one of the 130 native capsule members, parsed the complete original 113475-row/1152-column waveform and reproduced the original device/margin/delay/wrong-sign measurements. It did not execute a new transient and did not accept the rejected PHY. Extended diagnosis 41345078765/source 11e7c3f4b33388da8c03d7d571cc405fd384db36 repeated this and measured actual same-net terminal voltage drops.
+
+The four failed HBTs are cn-clock selector pairs 61/62 and 115/116. At the actual minimum-Vce times, D collector-to-connected input-pair emitter differences are 41.3/60.5 mV and C differences 27.3/79.8 mV; clock-selector emitters sit roughly 46.5–47.2 mV above connected MOS drains on the same extracted nets. The corresponding local bleed-resistor avss terminals are at 276/283 mV, whereas substrate is near 1.1 mV. These are measured distributed-wire drops, not ideal-node substitutions. They motivate physical interconnect improvements; they do not by themselves prove a fix or quantify every contribution across the whole trace. A/B transition settling, C/D wrong signs, X/Y and phase/V-I gates remain rejected.
+
+New physical generation: run 41345681826/source 3a54dd452f99a892e8e9d7521c87e51fe933a431 on codex/cdr-wire-tail-shortcuts. Reserved tag cloud-results-41345681826-1-cdr-wire-tail-shortcuts. Targets are D collector T061_C–T056_E, D emitter T061_E–T005_D, C collector T115_C–T108_E and C emitter T115_E–T034_D. The baseline is the actual already-generated six-shortcut GDS, SHA256 244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347, obtained from successful fresh RC 41339125361/release 430788452, all 3236 members authenticated. Current raw canonical anchors and L2N establish ownership; composition binds exact transistor IDs/terminals. Original eight geometry helper/control bodies are AST-identical and 31 original controls remain required. Generation proposes guarded 600 nm M2/Via1 routes, preserves original devices/M1 and all six earlier shortcuts, and serializes/reverses the exact new layer delta. Any partial or blocked attempt must remain failed and retained. It requires fresh strict DRC/LVS, canonical binding, RC and unchanged loaded electrical gates before acceptance. Do not repeat this existing dispatch blindly.
+
+Separate actual CI failure repaired: hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v lacked default_nettype guards. Only default_nettype none/wire lines were added; every original behavioral source byte remains. Source 95e0aa8795d7ec7a9d13f59e01d2a936d5ddc609, run 41344951300 passed native Icarus module compilation, original prepared-upstream/whole-SoC guards and original complete lint with the unchanged diagnostic ledger. This closes that nettype failure only; the ledger still retains existing warnings and the rest of formal/boot is not claimed complete. The verified RTL edit is imported here.
+
+General checks 41344155576 was an exact-commit duplicate of 41343649094 (both b038f1e12b35b30d90b619392f74b6388004ae32). The less-progressed duplicate was cancelled to release hosted capacity; its formal-and-boot nettype failure and cancelled job states are preserved, not relabelled passes. The older checks run was left running. The dedicated waveform job subsequently acquired a runner and completed. This observation does not prove GitHub account quota settings. Future source-only experimental commits should avoid launching duplicate broad checks; all required dedicated tests still run at exact source.
+
+Mainchip full64 41323446729/source ff1c0e6163e0ba1537a075d50e940fafc9332c64 remains independently monitored; consult the latest snapshot. Do not duplicate it based on observation or assumed deadlines. After actual terminal publication, authenticate current outputs, restore original classes with current byte pins (old restoration code hardcodes an obsolete candidate), audit connectivity/2702 diode PG contacts/original nets/DRC/antenna, export matching 154480-instance netlist, then fresh RC and original three-corner setup/hold. Full serial PHY, final mainchip timing and production approval remain open.
+
+Monitor inventory: 709 tracked runs, eight-hour read-only, automatic_native_dispatch:false. Prior monitor HTTP502 remains unresolved. All derived proofs, failed logs and exact source copies are retained on GitHub.
+
+## Previous checkpoint v264: loaded transient rejected; exact device classification completed
 
 All CAD, simulations, native payload acquisition and numerical/geometric work remain on GitHub. Local workspace and project temporary files are empty; local coordination uses source/API/derived text in RAM only.
 

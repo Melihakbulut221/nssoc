@@ -1,0 +1,519 @@
+﻿2026-11-01T19:55:12.1420072Z Current runner version: '2.338.2'
+2026-11-01T19:55:12.1447269Z ##[group]Runner Image Provisioner
+2026-11-01T19:55:12.1448275Z Hosted Compute Agent
+2026-11-01T19:55:12.1449119Z Version: 20261021.618
+2026-11-01T19:55:12.1449929Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-01T19:55:12.1450856Z Build Date: 2026-10-21T00:45:21Z
+2026-11-01T19:55:12.1451819Z Worker ID: {e10b6aa6-cbe9-4437-88c8-3a453c39ac2f}
+2026-11-01T19:55:12.1452889Z Region: centralus
+2026-11-01T19:55:12.1453923Z Cloud: Azure
+2026-11-01T19:55:12.1454663Z ##[endgroup]
+2026-11-01T19:55:12.1456286Z ##[group]Operating System
+2026-11-01T19:55:12.1457102Z Ubuntu
+2026-11-01T19:55:12.1457837Z 24.04.5
+2026-11-01T19:55:12.1458423Z LTS
+2026-11-01T19:55:12.1459111Z ##[endgroup]
+2026-11-01T19:55:12.1459801Z ##[group]Runner Image
+2026-11-01T19:55:12.1460635Z Image: ubuntu-24.04
+2026-11-01T19:55:12.1461431Z Version: 20261025.353.1
+2026-11-01T19:55:12.1463246Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-01T19:55:12.1465289Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-11-01T19:55:12.1466738Z ##[endgroup]
+2026-11-01T19:55:12.1468127Z ##[group]GITHUB_TOKEN Permissions
+2026-11-01T19:55:12.1470508Z Contents: read
+2026-11-01T19:55:12.1471229Z Metadata: read
+2026-11-01T19:55:12.1471991Z ##[endgroup]
+2026-11-01T19:55:12.1474510Z Secret source: Actions
+2026-11-01T19:55:12.1475704Z Cache mode: write
+2026-11-01T19:55:12.1476839Z Prepare workflow directory
+2026-11-01T19:55:12.1978999Z Prepare all required actions
+2026-11-01T19:55:12.2034110Z Getting action download info
+2026-11-01T19:55:12.4335730Z Download action repository 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-11-01T19:55:12.5217223Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-11-01T19:55:12.6279023Z Download action repository 'YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde' (SHA:aefa8397bbf8fc6670a0a62af9805a89738f3cde)
+2026-11-01T19:55:12.9755291Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-01T19:55:13.2312961Z Complete job name: formal-and-boot
+2026-11-01T19:55:13.3008854Z ##[group]Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+2026-11-01T19:55:13.3009749Z with:
+2026-11-01T19:55:13.3010154Z   repository: Melihakbulut221/nssoc
+2026-11-01T19:55:13.3013606Z   token: ***
+2026-11-01T19:55:13.3013996Z   ssh-strict: true
+2026-11-01T19:55:13.3014394Z   ssh-user: git
+2026-11-01T19:55:13.3014789Z   persist-credentials: true
+2026-11-01T19:55:13.3015211Z   clean: true
+2026-11-01T19:55:13.3015597Z   sparse-checkout-cone-mode: true
+2026-11-01T19:55:13.3016059Z   fetch-depth: 1
+2026-11-01T19:55:13.3016445Z   fetch-tags: false
+2026-11-01T19:55:13.3016834Z   show-progress: true
+2026-11-01T19:55:13.3017260Z   lfs: false
+2026-11-01T19:55:13.3017633Z   submodules: false
+2026-11-01T19:55:13.3018037Z   set-safe-directory: true
+2026-11-01T19:55:13.3018480Z   allow-unsafe-pr-checkout: false
+2026-11-01T19:55:13.3019090Z env:
+2026-11-01T19:55:13.3019460Z   SOC_INTERFACE_PROFILE: base
+2026-11-01T19:55:13.3019890Z ##[endgroup]
+2026-11-01T19:55:13.4799442Z Syncing repository: Melihakbulut221/nssoc
+2026-11-01T19:55:13.4801596Z ##[group]Getting Git version info
+2026-11-01T19:55:13.4802512Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-11-01T19:55:13.4804165Z [command]/usr/bin/git version
+2026-11-01T19:55:13.4843634Z git version 2.56.0
+2026-11-01T19:55:13.4859176Z ##[endgroup]
+2026-11-01T19:55:13.4870703Z Temporarily overriding HOME='/home/runner/work/_temp/6ccd7b08-6b89-4f35-b0c2-fa3221c3fd32' before making global git config changes
+2026-11-01T19:55:13.4872878Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-01T19:55:13.4875344Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-11-01T19:55:13.4915114Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-11-01T19:55:13.4918796Z ##[group]Initializing the repository
+2026-11-01T19:55:13.4921631Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-11-01T19:55:13.4999757Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-01T19:55:13.5001065Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-01T19:55:13.5001985Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-01T19:55:13.5002946Z hint: call:
+2026-11-01T19:55:13.5003309Z hint:
+2026-11-01T19:55:13.5003882Z hint: 	git config --global init.defaultBranch <name>
+2026-11-01T19:55:13.5004499Z hint:
+2026-11-01T19:55:13.5005058Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-01T19:55:13.5005986Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-01T19:55:13.5006691Z hint:
+2026-11-01T19:55:13.5007132Z hint: 	git branch -m <name>
+2026-11-01T19:55:13.5007637Z hint:
+2026-11-01T19:55:13.5008205Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-01T19:55:13.5016202Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-11-01T19:55:13.5027344Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-11-01T19:55:13.5066446Z ##[endgroup]
+2026-11-01T19:55:13.5067596Z ##[group]Disabling automatic garbage collection
+2026-11-01T19:55:13.5069702Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-01T19:55:13.5130588Z ##[endgroup]
+2026-11-01T19:55:13.5131720Z ##[group]Setting up auth
+2026-11-01T19:55:13.5135996Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-01T19:55:13.5165802Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-01T19:55:13.5479366Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-01T19:55:13.5571407Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-01T19:55:13.5730109Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-01T19:55:13.5766187Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-01T19:55:13.5968521Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-01T19:55:13.6011348Z ##[endgroup]
+2026-11-01T19:55:13.6021425Z ##[group]Fetching the repository
+2026-11-01T19:55:13.6023331Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +b038f1e12b35b30d90b619392f74b6388004ae32:refs/remotes/origin/codex/cdr-wire-wave-diagnosis
+2026-11-01T19:55:35.2526098Z From https://github.com/Melihakbulut221/nssoc
+2026-11-01T19:55:35.2527077Z  * [new ref]           b038f1e12b35b30d90b619392f74b6388004ae32 -> origin/codex/cdr-wire-wave-diagnosis
+2026-11-01T19:55:35.2530598Z ##[endgroup]
+2026-11-01T19:55:35.2533276Z ##[group]Determining the checkout info
+2026-11-01T19:55:35.2533916Z ##[endgroup]
+2026-11-01T19:55:35.2538597Z [command]/usr/bin/git sparse-checkout disable
+2026-11-01T19:55:35.2590181Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-01T19:55:35.2624930Z ##[group]Checking out the ref
+2026-11-01T19:55:35.2628563Z [command]/usr/bin/git checkout --progress --force -B codex/cdr-wire-wave-diagnosis refs/remotes/origin/codex/cdr-wire-wave-diagnosis
+2026-11-01T19:55:36.4508455Z Updating files:   9% (4356/45494)
+2026-11-01T19:55:36.5966921Z Updating files:  10% (4550/45494)
+2026-11-01T19:55:36.6676003Z Updating files:  11% (5005/45494)
+2026-11-01T19:55:36.9371290Z Updating files:  12% (5460/45494)
+2026-11-01T19:55:37.2388684Z Updating files:  13% (5915/45494)
+2026-11-01T19:55:37.3018286Z Updating files:  14% (6370/45494)
+2026-11-01T19:55:37.6156833Z Updating files:  14% (6409/45494)
+2026-11-01T19:55:37.7608516Z Updating files:  15% (6825/45494)
+2026-11-01T19:55:37.8925909Z Updating files:  16% (7280/45494)
+2026-11-01T19:55:37.9565691Z Updating files:  17% (7734/45494)
+2026-11-01T19:55:38.0618437Z Updating files:  18% (8189/45494)
+2026-11-01T19:55:38.2258839Z Updating files:  19% (8644/45494)
+2026-11-01T19:55:38.3005963Z Updating files:  20% (9099/45494)
+2026-11-01T19:55:38.5901399Z Updating files:  20% (9159/45494)
+2026-11-01T19:55:38.6960780Z Updating files:  21% (9554/45494)
+2026-11-01T19:55:38.8785043Z Updating files:  22% (10009/45494)
+2026-11-01T19:55:39.0303736Z Updating files:  23% (10464/45494)
+2026-11-01T19:55:39.1239919Z Updating files:  24% (10919/45494)
+2026-11-01T19:55:39.3024170Z Updating files:  25% (11374/45494)
+2026-11-01T19:55:39.3617830Z Updating files:  25% (11769/45494)
+2026-11-01T19:55:39.9839486Z Updating files:  26% (11829/45494)
+2026-11-01T19:55:40.0836019Z Updating files:  27% (12284/45494)
+2026-11-01T19:55:40.3030108Z Updating files:  28% (12739/45494)
+2026-11-01T19:55:40.6314116Z Updating files:  28% (13076/45494)
+2026-11-01T19:55:40.8108015Z Updating files:  29% (13194/45494)
+2026-11-01T19:55:40.9591539Z Updating files:  30% (13649/45494)
+2026-11-01T19:55:41.3167295Z Updating files:  31% (14104/45494)
+2026-11-01T19:55:41.6963847Z Updating files:  31% (14449/45494)
+2026-11-01T19:55:42.3046862Z Updating files:  32% (14559/45494)
+2026-11-01T19:55:42.3625318Z Updating files:  32% (14768/45494)
+2026-11-01T19:55:42.4486193Z Updating files:  33% (15014/45494)
+2026-11-01T19:55:42.6732261Z Updating files:  34% (15468/45494)
+2026-11-01T19:55:42.8109035Z Updating files:  35% (15923/45494)
+2026-11-01T19:55:42.8651623Z Updating files:  36% (16378/45494)
+2026-11-01T19:55:43.0724102Z Updating files:  37% (16833/45494)
+2026-11-01T19:55:43.3139237Z Updating files:  38% (17288/45494)
+2026-11-01T19:55:43.7398867Z Updating files:  38% (17338/45494)
+2026-11-01T19:55:44.0480221Z Updating files:  39% (17743/45494)
+2026-11-01T19:55:44.3124475Z Updating files:  40% (18198/45494)
+2026-11-01T19:55:44.3938813Z Updating files:  40% (18564/45494)
+2026-11-01T19:55:44.9266292Z Updating files:  41% (18653/45494)
+2026-11-01T19:55:45.0885520Z Updating files:  42% (19108/45494)
+2026-11-01T19:55:45.3118540Z Updating files:  43% (19563/45494)
+2026-11-01T19:55:46.3538084Z Updating files:  43% (19566/45494)
+2026-11-01T19:55:47.3149631Z Updating files:  43% (19576/45494)
+2026-11-01T19:55:47.3677818Z Updating files:  43% (19981/45494)
+2026-11-01T19:55:47.9839353Z Updating files:  44% (20018/45494)
+2026-11-01T19:55:48.3018718Z Updating files:  45% (20473/45494)
+2026-11-01T19:55:48.4293821Z Updating files:  45% (20744/45494)
+2026-11-01T19:55:48.4786453Z Updating files:  46% (20928/45494)
+2026-11-01T19:55:48.5085608Z Updating files:  47% (21383/45494)
+2026-11-01T19:55:48.8757682Z Updating files:  48% (21838/45494)
+2026-11-01T19:55:48.9633537Z Updating files:  49% (22293/45494)
+2026-11-01T19:55:48.9936635Z Updating files:  50% (22747/45494)
+2026-11-01T19:55:49.0219362Z Updating files:  51% (23202/45494)
+2026-11-01T19:55:49.0396695Z Updating files:  52% (23657/45494)
+2026-11-01T19:55:49.0649877Z Updating files:  53% (24112/45494)
+2026-11-01T19:55:49.0825355Z Updating files:  54% (24567/45494)
+2026-11-01T19:55:49.0994361Z Updating files:  55% (25022/45494)
+2026-11-01T19:55:49.1277593Z Updating files:  56% (25477/45494)
+2026-11-01T19:55:49.1930430Z Updating files:  57% (25932/45494)
+2026-11-01T19:55:49.2462767Z Updating files:  58% (26387/45494)
+2026-11-01T19:55:49.2707477Z Updating files:  59% (26842/45494)
+2026-11-01T19:55:49.3064921Z Updating files:  60% (27297/45494)
+2026-11-01T19:55:49.3081979Z Updating files:  60% (27718/45494)
+2026-11-01T19:55:49.3345802Z Updating files:  61% (27752/45494)
+2026-11-01T19:55:49.3649655Z Updating files:  62% (28207/45494)
+2026-11-01T19:55:49.3828671Z Updating files:  63% (28662/45494)
+2026-11-01T19:55:49.4186884Z Updating files:  64% (29117/45494)
+2026-11-01T19:55:49.4643189Z Updating files:  65% (29572/45494)
+2026-11-01T19:55:49.4898150Z Updating files:  66% (30027/45494)
+2026-11-01T19:55:49.5059294Z Updating files:  67% (30481/45494)
+2026-11-01T19:55:49.5347906Z Updating files:  68% (30936/45494)
+2026-11-01T19:55:49.5768144Z Updating files:  69% (31391/45494)
+2026-11-01T19:55:49.6212413Z Updating files:  70% (31846/45494)
+2026-11-01T19:55:49.6427182Z Updating files:  71% (32301/45494)
+2026-11-01T19:55:49.6596093Z Updating files:  72% (32756/45494)
+2026-11-01T19:55:49.6868012Z Updating files:  73% (33211/45494)
+2026-11-01T19:55:49.6994135Z Updating files:  74% (33666/45494)
+2026-11-01T19:55:49.7126529Z Updating files:  75% (34121/45494)
+2026-11-01T19:55:49.7476743Z Updating files:  76% (34576/45494)
+2026-11-01T19:55:49.8469224Z Updating files:  77% (35031/45494)
+2026-11-01T19:55:50.2216538Z Updating files:  78% (35486/45494)
+2026-11-01T19:55:50.3220838Z Updating files:  79% (35941/45494)
+2026-11-01T19:55:50.3367887Z Updating files:  79% (36023/45494)
+2026-11-01T19:55:50.3851030Z Updating files:  80% (36396/45494)
+2026-11-01T19:55:50.4003976Z Updating files:  81% (36851/45494)
+2026-11-01T19:55:50.4156884Z Updating files:  82% (37306/45494)
+2026-11-01T19:55:50.4311051Z Updating files:  83% (37761/45494)
+2026-11-01T19:55:50.4805607Z Updating files:  84% (38215/45494)
+2026-11-01T19:55:50.5348428Z Updating files:  85% (38670/45494)
+2026-11-01T19:55:50.5690518Z Updating files:  86% (39125/45494)
+2026-11-01T19:55:50.5868179Z Updating files:  87% (39580/45494)
+2026-11-01T19:55:50.6097127Z Updating files:  88% (40035/45494)
+2026-11-01T19:55:50.6719745Z Updating files:  89% (40490/45494)
+2026-11-01T19:55:50.7204136Z Updating files:  90% (40945/45494)
+2026-11-01T19:55:50.7523899Z Updating files:  91% (41400/45494)
+2026-11-01T19:55:50.7680217Z Updating files:  92% (41855/45494)
+2026-11-01T19:55:50.7860396Z Updating files:  93% (42310/45494)
+2026-11-01T19:55:50.8170480Z Updating files:  94% (42765/45494)
+2026-11-01T19:55:50.8587050Z Updating files:  95% (43220/45494)
+2026-11-01T19:55:50.8880578Z Updating files:  96% (43675/45494)
+2026-11-01T19:55:50.9236434Z Updating files:  97% (44130/45494)
+2026-11-01T19:55:50.9530012Z Updating files:  98% (44585/45494)
+2026-11-01T19:55:50.9990530Z Updating files:  99% (45040/45494)
+2026-11-01T19:55:50.9990935Z Updating files: 100% (45494/45494)
+2026-11-01T19:55:50.9991165Z Updating files: 100% (45494/45494), done.
+2026-11-01T19:55:51.2774483Z Switched to a new branch 'codex/cdr-wire-wave-diagnosis'
+2026-11-01T19:55:51.2775214Z branch 'codex/cdr-wire-wave-diagnosis' set up to track 'origin/codex/cdr-wire-wave-diagnosis'.
+2026-11-01T19:55:51.2999326Z ##[endgroup]
+2026-11-01T19:55:51.3047343Z [command]/usr/bin/git log -1 --format=%H
+2026-11-01T19:55:51.3083579Z b038f1e12b35b30d90b619392f74b6388004ae32
+2026-11-01T19:55:51.5853307Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-11-01T19:55:51.5853656Z with:
+2026-11-01T19:55:51.5853829Z   python-version: 3.12
+2026-11-01T19:55:51.5854008Z   cache: pip
+2026-11-01T19:55:51.5854253Z   cache-dependency-path: sw/requirements.txt
+hw/requirements.txt
+
+2026-11-01T19:55:51.5854544Z   check-latest: false
+2026-11-01T19:55:51.5856699Z   token: ***
+2026-11-01T19:55:51.5856872Z   update-environment: true
+2026-11-01T19:55:51.5857069Z   allow-prereleases: false
+2026-11-01T19:55:51.5857253Z   freethreaded: false
+2026-11-01T19:55:51.5857421Z env:
+2026-11-01T19:55:51.5857582Z   SOC_INTERFACE_PROFILE: base
+2026-11-01T19:55:51.5857772Z ##[endgroup]
+2026-11-01T19:55:51.6938906Z ##[group]Installed versions
+2026-11-01T19:55:51.7309076Z (node:2127) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-01T19:55:51.7310088Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-01T19:55:51.7323303Z Successfully set up CPython (3.12.15)
+2026-11-01T19:55:51.7334798Z ##[endgroup]
+2026-11-01T19:55:51.7671896Z [command]/opt/hostedtoolcache/Python/3.12.15/x64/bin/pip cache dir
+2026-11-01T19:55:52.2268358Z /home/runner/.cache/pip
+2026-11-01T19:55:52.3980722Z pip cache is not found
+2026-11-01T19:55:52.4381438Z ##[group]Run YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+2026-11-01T19:55:52.4381779Z with:
+2026-11-01T19:55:52.4381945Z   version: 2026-08-04
+2026-11-01T19:55:52.4384526Z   github-token: ***
+2026-11-01T19:55:52.4384728Z   python-override: false
+2026-11-01T19:55:52.4384914Z env:
+2026-11-01T19:55:52.4385078Z   SOC_INTERFACE_PROFILE: base
+2026-11-01T19:55:52.4385330Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:55:52.4385711Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-01T19:55:52.4386057Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:55:52.4386362Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:55:52.4386672Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:55:52.4386968Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-01T19:55:52.4387223Z ##[endgroup]
+2026-11-01T19:55:52.4982924Z Setting up oss-cad-suite
+2026-11-01T19:55:52.5013392Z Getting download URL for oss-cad-suite-linux-x64
+2026-11-01T19:55:52.7170064Z Downloading package from https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2026-08-04/oss-cad-suite-linux-x64-20260804.tgz
+2026-11-01T19:55:57.7368090Z Extracting /home/runner/work/_temp/oss-cad-suite.tgz to /home/runner/work/_temp/oss-cad-suite
+2026-11-01T19:55:57.7491373Z [command]/usr/bin/tar xz --strip-components=1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/oss-cad-suite -f /home/runner/work/_temp/oss-cad-suite.tgz
+2026-11-01T19:56:10.7044069Z Done
+2026-11-01T19:56:10.8013178Z ##[group]Run echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+2026-11-01T19:56:10.8013996Z [36;1mecho "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"[0m
+2026-11-01T19:56:10.8014544Z [36;1mpython3 -m venv .venv[0m
+2026-11-01T19:56:10.8015003Z [36;1m.venv/bin/pip install -r sw/requirements.txt -r hw/requirements.txt[0m
+2026-11-01T19:56:10.8015480Z [36;1mmake soc-prepare[0m
+2026-11-01T19:56:10.8038292Z shell: /usr/bin/bash -e {0}
+2026-11-01T19:56:10.8038510Z env:
+2026-11-01T19:56:10.8038678Z   SOC_INTERFACE_PROFILE: base
+2026-11-01T19:56:10.8038935Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:56:10.8039280Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-01T19:56:10.8039608Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:56:10.8039909Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:56:10.8040270Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:56:10.8040569Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-01T19:56:10.8040833Z ##[endgroup]
+2026-11-01T19:56:13.9384517Z Collecting pytest>=8.0 (from -r sw/requirements.txt (line 1))
+2026-11-01T19:56:14.0076027Z   Downloading pytest-9.2.0-py3-none-any.whl.metadata (7.9 kB)
+2026-11-01T19:56:14.0817543Z Collecting pyyaml>=6.0 (from -r sw/requirements.txt (line 2))
+2026-11-01T19:56:14.0947182Z   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+2026-11-01T19:56:14.2310112Z Collecting networkx==3.6.1 (from -r sw/requirements.txt (line 3))
+2026-11-01T19:56:14.2441239Z   Downloading networkx-3.6.1-py3-none-any.whl.metadata (6.8 kB)
+2026-11-01T19:56:14.5236133Z Collecting numpy==2.5.3 (from -r sw/requirements.txt (line 4))
+2026-11-01T19:56:14.5369647Z   Downloading numpy-2.5.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+2026-11-01T19:56:14.7696177Z Collecting reuse==6.2.0 (from -r sw/requirements.txt (line 5))
+2026-11-01T19:56:14.7845837Z   Downloading reuse-6.2.0.tar.gz (1.6 MB)
+2026-11-01T19:56:15.0069132Z      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 7.2 MB/s eta 0:00:00
+2026-11-01T19:56:15.0966191Z   Installing build dependencies: started
+2026-11-01T19:56:16.2295671Z   Installing build dependencies: finished with status 'done'
+2026-11-01T19:56:16.2300887Z   Getting requirements to build wheel: started
+2026-11-01T19:56:16.3267310Z   Getting requirements to build wheel: finished with status 'done'
+2026-11-01T19:56:16.3274209Z   Preparing metadata (pyproject.toml): started
+2026-11-01T19:56:16.5006660Z   Preparing metadata (pyproject.toml): finished with status 'done'
+2026-11-01T19:56:16.6999131Z Collecting cocotb==2.0.1 (from -r hw/requirements.txt (line 4))
+2026-11-01T19:56:16.7332896Z   Downloading cocotb-2.0.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (2.8 kB)
+2026-11-01T19:56:17.3028843Z Collecting Jinja2>=3.0.0 (from reuse==6.2.0->-r sw/requirements.txt (line 5))
+2026-11-01T19:56:17.3159131Z   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+2026-11-01T19:56:17.7165211Z Collecting attrs>=23.2 (from reuse==6.2.0->-r sw/requirements.txt (line 5))
+2026-11-01T19:56:17.7299426Z   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+2026-11-01T19:56:18.3283732Z Collecting click>=8.1 (from reuse==6.2.0->-r sw/requirements.txt (line 5))
+2026-11-01T19:56:18.3419631Z   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+2026-11-01T19:56:18.6707850Z Collecting license-expression>=21.6.14 (from reuse==6.2.0->-r sw/requirements.txt (line 5))
+2026-11-01T19:56:18.6857253Z   Downloading license_expression-30.4.4-py3-none-any.whl.metadata (11 kB)
+2026-11-01T19:56:18.9494196Z Collecting python-debian>=0.1.48 (from reuse==6.2.0->-r sw/requirements.txt (line 5))
+2026-11-01T19:56:18.9625746Z   Downloading python_debian-1.1.1-py3-none-any.whl.metadata (2.6 kB)
+2026-11-01T19:56:19.1115895Z Collecting python-magic>=0.4.12 (from reuse==6.2.0->-r sw/requirements.txt (line 5))
+2026-11-01T19:56:19.1245045Z   Downloading python_magic-0.4.27-py2.py3-none-any.whl.metadata (5.8 kB)
+2026-11-01T19:56:19.5578292Z Collecting tomlkit>=0.8 (from reuse==6.2.0->-r sw/requirements.txt (line 5))
+2026-11-01T19:56:19.5709242Z   Downloading tomlkit-0.15.2-py3-none-any.whl.metadata (3.4 kB)
+2026-11-01T19:56:19.8096044Z Collecting find_libpython (from cocotb==2.0.1->-r hw/requirements.txt (line 4))
+2026-11-01T19:56:19.8228996Z   Downloading find_libpython-0.5.1-py3-none-any.whl.metadata (2.8 kB)
+2026-11-01T19:56:20.3347040Z Collecting iniconfig>=2 (from pytest>=8.0->-r sw/requirements.txt (line 1))
+2026-11-01T19:56:20.3479050Z   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+2026-11-01T19:56:20.9656723Z Collecting packaging>=24 (from pytest>=8.0->-r sw/requirements.txt (line 1))
+2026-11-01T19:56:20.9786817Z   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+2026-11-01T19:56:21.1329611Z Collecting pluggy<2,>=1.6 (from pytest>=8.0->-r sw/requirements.txt (line 1))
+2026-11-01T19:56:21.1460881Z   Downloading pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+2026-11-01T19:56:21.2727716Z Collecting pygments>=2.15 (from pytest>=8.0->-r sw/requirements.txt (line 1))
+2026-11-01T19:56:21.2859436Z   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+2026-11-01T19:56:21.7269509Z Collecting MarkupSafe>=2.0 (from Jinja2>=3.0.0->reuse==6.2.0->-r sw/requirements.txt (line 5))
+2026-11-01T19:56:21.7400951Z   Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+2026-11-01T19:56:21.7724576Z Collecting boolean.py>=4.0 (from license-expression>=21.6.14->reuse==6.2.0->-r sw/requirements.txt (line 5))
+2026-11-01T19:56:21.7854465Z   Downloading boolean_py-5.0-py3-none-any.whl.metadata (2.3 kB)
+2026-11-01T19:56:21.8070339Z Downloading networkx-3.6.1-py3-none-any.whl (2.1 MB)
+2026-11-01T19:56:21.8288914Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 90.6 MB/s eta 0:00:00
+2026-11-01T19:56:21.8422042Z Downloading numpy-2.5.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.7 MB)
+2026-11-01T19:56:21.9816972Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.7/16.7 MB 119.7 MB/s eta 0:00:00
+2026-11-01T19:56:21.9956795Z Downloading cocotb-2.0.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (4.6 MB)
+2026-11-01T19:56:22.0395690Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.6/4.6 MB 102.3 MB/s eta 0:00:00
+2026-11-01T19:56:22.0530697Z Downloading pytest-9.2.0-py3-none-any.whl (411 kB)
+2026-11-01T19:56:22.0747294Z Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+2026-11-01T19:56:22.0824407Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 807.9/807.9 kB 90.4 MB/s eta 0:00:00
+2026-11-01T19:56:22.0957633Z Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+2026-11-01T19:56:22.1107638Z Downloading click-8.5.0-py3-none-any.whl (125 kB)
+2026-11-01T19:56:22.1254038Z Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+2026-11-01T19:56:22.1397492Z Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+2026-11-01T19:56:22.1547603Z Downloading license_expression-30.4.4-py3-none-any.whl (120 kB)
+2026-11-01T19:56:22.1695055Z Downloading packaging-26.3-py3-none-any.whl (129 kB)
+2026-11-01T19:56:22.1841716Z Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+2026-11-01T19:56:22.2110025Z Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+2026-11-01T19:56:22.2208546Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 126.5 MB/s eta 0:00:00
+2026-11-01T19:56:22.2358957Z Downloading python_debian-1.1.1-py3-none-any.whl (138 kB)
+2026-11-01T19:56:22.2505000Z Downloading python_magic-0.4.27-py2.py3-none-any.whl (13 kB)
+2026-11-01T19:56:22.2650644Z Downloading tomlkit-0.15.2-py3-none-any.whl (52 kB)
+2026-11-01T19:56:22.2794185Z Downloading find_libpython-0.5.1-py3-none-any.whl (9.2 kB)
+2026-11-01T19:56:22.2939764Z Downloading boolean_py-5.0-py3-none-any.whl (26 kB)
+2026-11-01T19:56:22.3085404Z Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+2026-11-01T19:56:22.3459686Z Building wheels for collected packages: reuse
+2026-11-01T19:56:22.3466898Z   Building wheel for reuse (pyproject.toml): started
+2026-11-01T19:56:22.5629192Z   Building wheel for reuse (pyproject.toml): finished with status 'done'
+2026-11-01T19:56:22.5635312Z   Created wheel for reuse: filename=reuse-6.2.0-cp312-cp312-linux_x86_64.whl size=158930 sha256=80f2c720b537fafa1f777693d0835c49cde45db6b9d012a0db6ed6e7523869c2
+2026-11-01T19:56:22.5636602Z   Stored in directory: /home/runner/.cache/pip/wheels/d9/9b/65/452ca3606bb61b38303f1fb0dd3603544aba74c60bbd213561
+2026-11-01T19:56:22.5661364Z Successfully built reuse
+2026-11-01T19:56:22.5945644Z Installing collected packages: boolean.py, tomlkit, pyyaml, python-magic, python-debian, pygments, pluggy, packaging, numpy, networkx, MarkupSafe, license-expression, iniconfig, find_libpython, click, attrs, pytest, Jinja2, cocotb, reuse
+2026-11-01T19:56:26.5602929Z Successfully installed Jinja2-3.1.6 MarkupSafe-3.0.4 attrs-26.1.0 boolean.py-5.0 click-8.5.0 cocotb-2.0.1 find_libpython-0.5.1 iniconfig-2.3.1 license-expression-30.4.4 networkx-3.6.1 numpy-2.5.3 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-9.2.0 python-debian-1.1.1 python-magic-0.4.27 pyyaml-6.0.3 reuse-6.2.0 tomlkit-0.15.2
+2026-11-01T19:56:26.6494661Z 
+2026-11-01T19:56:26.6495158Z [notice] A new release of pip is available: 25.0.1 -> 26.2.2
+2026-11-01T19:56:26.6495547Z [notice] To update, run: python3 -m pip install --upgrade pip
+2026-11-01T19:56:26.7583857Z make -f /home/runner/work/nssoc/nssoc/hw/soc/tools.soc.mk fetch-sv2v fetch-ibex
+2026-11-01T19:56:26.7596962Z make[1]: Entering directory '/home/runner/work/nssoc/nssoc'
+2026-11-01T19:56:26.7608383Z curl -sSL -o /home/runner/work/nssoc/nssoc/hw/soc/tools/sv2v-Linux.zip "https://github.com/zachjs/sv2v/releases/download/v0.0.13/sv2v-Linux.zip"
+2026-11-01T19:56:26.9779873Z /home/runner/work/nssoc/nssoc/hw/soc/tools/sv2v-Linux.zip: OK
+2026-11-01T19:56:26.9781806Z cd /home/runner/work/nssoc/nssoc/hw/soc/tools && unzip -o -q sv2v-Linux.zip && rm -f sv2v-Linux.zip
+2026-11-01T19:56:27.0538770Z sv2v v0.0.13
+2026-11-01T19:56:30.7216752Z git -C /home/runner/work/nssoc/nssoc/hw/soc/ext/ibex fetch --quiet origin
+2026-11-01T19:56:30.9273028Z git -C /home/runner/work/nssoc/nssoc/hw/soc/ext/ibex checkout --quiet 34b0705760ef3dfa00e99637432473d2be8f22f3
+2026-11-01T19:56:31.0742318Z ibex @ 34b0705760ef3dfa00e99637432473d2be8f22f3
+2026-11-01T19:56:31.0742949Z make[1]: Leaving directory '/home/runner/work/nssoc/nssoc'
+2026-11-01T19:56:31.0745905Z bash /home/runner/work/nssoc/nssoc/hw/soc/flow/sv2v_ibex.sh /home/runner/work/nssoc/nssoc/hw/soc/ext/ibex /home/runner/work/nssoc/nssoc/hw/soc/gen /home/runner/work/nssoc/nssoc/hw/soc/tools/sv2v-Linux/sv2v
+2026-11-01T19:56:31.0810597Z == sv2v: vendored primitives
+2026-11-01T19:56:31.4946735Z == sv2v: ibex core
+2026-11-01T19:56:39.0802163Z == sv2v output: 34 files, 15873 lines
+2026-11-01T19:56:39.0803254Z make soc-interfaces-prepare
+2026-11-01T19:56:39.0814934Z make[1]: Entering directory '/home/runner/work/nssoc/nssoc'
+2026-11-01T19:56:39.0821384Z make -f /home/runner/work/nssoc/nssoc/hw/soc/tools.soc.mk fetch-verilog-i2c fetch-verilog-ethernet
+2026-11-01T19:56:39.0834914Z make[2]: Entering directory '/home/runner/work/nssoc/nssoc'
+2026-11-01T19:56:39.4449858Z git -C /home/runner/work/nssoc/nssoc/hw/soc/ext/verilog-i2c fetch --quiet origin
+2026-11-01T19:56:39.6166458Z git -C /home/runner/work/nssoc/nssoc/hw/soc/ext/verilog-i2c checkout --quiet a65be4045e898a52e791c6ee71f8f79a7cd2e129
+2026-11-01T19:56:39.6219032Z verilog-i2c @ a65be4045e898a52e791c6ee71f8f79a7cd2e129
+2026-11-01T19:56:40.5647711Z git -C /home/runner/work/nssoc/nssoc/hw/soc/ext/verilog-ethernet fetch --quiet origin
+2026-11-01T19:56:40.7555367Z git -C /home/runner/work/nssoc/nssoc/hw/soc/ext/verilog-ethernet checkout --quiet 77320a9471d19c7dd383914bc049e02d9f4f1ffb
+2026-11-01T19:56:40.7994500Z verilog-ethernet @ 77320a9471d19c7dd383914bc049e02d9f4f1ffb
+2026-11-01T19:56:40.8399012Z make[2]: Leaving directory '/home/runner/work/nssoc/nssoc'
+2026-11-01T19:56:40.8408266Z /home/runner/work/nssoc/nssoc/.venv/bin/python /home/runner/work/nssoc/nssoc/hw/soc/flow/prepare_interfaces.py --profile base
+2026-11-01T19:56:40.9221392Z /home/runner/work/nssoc/nssoc/hw/soc/gen/interfaces.bundle.vh: 9 upstream RTL files, 9 inputs
+2026-11-01T19:56:40.9273581Z make[1]: Leaving directory '/home/runner/work/nssoc/nssoc'
+2026-11-01T19:56:40.9275851Z python3 /home/runner/work/nssoc/nssoc/hw/soc/flow/ibex_fault_port.py /home/runner/work/nssoc/nssoc/hw/soc/gen /home/runner/work/nssoc/nssoc/hw/soc/genp
+2026-11-01T19:56:40.9462163Z wrote /home/runner/work/nssoc/nssoc/hw/soc/genp/ibex_top.v (mode=secded)
+2026-11-01T19:56:40.9490872Z make -f /home/runner/work/nssoc/nssoc/hw/soc/tools.soc.mk fetch-rvgcc
+2026-11-01T19:56:40.9506531Z make[1]: Entering directory '/home/runner/work/nssoc/nssoc'
+2026-11-01T19:56:40.9516715Z curl -sSL -o /home/runner/work/nssoc/nssoc/hw/soc/tools/rvgcc.tar.gz "https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v15.2.0-1/xpack-riscv-none-elf-gcc-15.2.0-1-linux-x64.tar.gz"
+2026-11-01T19:56:45.5353152Z /home/runner/work/nssoc/nssoc/hw/soc/tools/rvgcc.tar.gz: OK
+2026-11-01T19:56:45.5369988Z tar -xzf /home/runner/work/nssoc/nssoc/hw/soc/tools/rvgcc.tar.gz -C /home/runner/work/nssoc/nssoc/hw/soc/tools/rvgcc --strip-components=1
+2026-11-01T19:56:53.5974202Z riscv-none-elf-gcc (xPack GNU RISC-V Embedded GCC x86_64) 15.2.0
+2026-11-01T19:56:53.5976094Z make[1]: Leaving directory '/home/runner/work/nssoc/nssoc'
+2026-11-01T19:56:53.6222227Z ##[group]Run make soc-prepared-guards
+2026-11-01T19:56:53.6222752Z [36;1mmake soc-prepared-guards[0m
+2026-11-01T19:56:53.6241772Z shell: /usr/bin/bash -e {0}
+2026-11-01T19:56:53.6241985Z env:
+2026-11-01T19:56:53.6242156Z   SOC_INTERFACE_PROFILE: base
+2026-11-01T19:56:53.6242425Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:56:53.6242906Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-01T19:56:53.6243240Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:56:53.6243714Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:56:53.6244010Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:56:53.6244303Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-01T19:56:53.6244597Z   OSS_CAD_SUITE: /home/runner/work/_temp/oss-cad-suite
+2026-11-01T19:56:53.6244839Z ##[endgroup]
+2026-11-01T19:56:53.7433568Z cd /home/runner/work/nssoc/nssoc && /home/runner/work/nssoc/nssoc/.venv/bin/python -m pytest -q \
+2026-11-01T19:56:53.7434365Z   sw/tests/test_soc_regfile_guards.py::test_upstreams_own_file_measures_the_data_flip_flops_only \
+2026-11-01T19:56:53.7434931Z   sw/tests/test_soc_regfile_guards.py::test_the_substitute_declares_upstreams_ports_in_upstreams_order \
+2026-11-01T19:56:53.7435470Z   sw/tests/test_soc_regfile_guards.py::test_the_substitute_accepts_every_parameter_ibex_top_overrides \
+2026-11-01T19:56:53.7435969Z   sw/tests/test_soc_synthesis_guards.py::test_the_ibex_top_patch_applies_to_the_pinned_output \
+2026-11-01T19:56:53.7436488Z   sw/tests/test_soc_synthesis_guards.py::test_the_whole_soc_elaborates_as_one_design \
+2026-11-01T19:56:53.7436915Z   sw/tests/test_no_orphan_modules.py::test_register_file_external_entry_contract
+2026-11-01T19:58:31.8471838Z ......                                                                   [100%]
+2026-11-01T19:58:31.8472252Z 6 passed in 97.06s (0:01:37)
+2026-11-01T19:58:31.8743997Z ##[group]Run PY=.venv/bin/python bash scripts/ci_local.sh lint
+2026-11-01T19:58:31.8744396Z [36;1mPY=.venv/bin/python bash scripts/ci_local.sh lint[0m
+2026-11-01T19:58:31.8763107Z shell: /usr/bin/bash -e {0}
+2026-11-01T19:58:31.8763313Z env:
+2026-11-01T19:58:31.8763491Z   SOC_INTERFACE_PROFILE: base
+2026-11-01T19:58:31.8763757Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:58:31.8764114Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-01T19:58:31.8764441Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:58:31.8764756Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:58:31.8765069Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:58:31.8765362Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-01T19:58:31.8765654Z   OSS_CAD_SUITE: /home/runner/work/_temp/oss-cad-suite
+2026-11-01T19:58:31.8765898Z ##[endgroup]
+2026-11-01T19:58:31.8854966Z == lint
+2026-11-01T19:58:31.9633973Z   prepared whole-SoC lint                        FAIL
+2026-11-01T19:58:31.9650850Z       usage: check_soc_lint.py [-h] [--profile {base,full}]
+2026-11-01T19:58:31.9651421Z                                [--memory {array,sram-logic}] [--mbist]
+2026-11-01T19:58:31.9651797Z                                [--rom-image ROM_IMAGE] [--output OUTPUT]
+2026-11-01T19:58:31.9652159Z                                [--verilator VERILATOR] [--yosys YOSYS] [--eth-mbist]
+2026-11-01T19:58:31.9652825Z       check_soc_lint.py: error: Nettype discipline failed: hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v
+2026-11-01T19:58:31.9656751Z 
+2026-11-01T19:58:31.9658602Z 0 passed, 1 failed, 0 skipped
+2026-11-01T19:58:31.9659260Z failed: prepared whole-SoC lint
+2026-11-01T19:58:31.9669304Z ##[error]Process completed with exit code 1.
+2026-11-01T19:58:31.9751684Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-01T19:58:31.9751999Z with:
+2026-11-01T19:58:31.9752172Z   name: formal-and-boot-results
+2026-11-01T19:58:31.9754441Z   path: hw/soc/formal/regfile_contract_*/logfile.txt
+hw/soc/formal/regfile_contract_*/status
+hw/soc/formal/regfile_equivalence_*/logfile.txt
+hw/soc/formal/regfile_equivalence_*/status
+hw/soc/out/regfile-contract-checks/
+hw/soc/out/boot-geometry/
+hw/soc/out/apb-timeout-demo/sim.log
+hw/soc/out/crash-demo/sim.log
+hw/soc/out/crash-demo/crash-cocotb*
+hw/soc/out/ethernet-demo/sim.log
+hw/soc/out/lint-*/
+hw/soc/out/external-irq/rtl-run.log
+hw/soc/out/external-irq/source-hashes.json
+hw/soc/out/external-irq-negative/rtl-run.log
+hw/soc/out/external-irq-negative/source-hashes.json
+hw/soc/formal/soc_busstat_*/status
+hw/soc/formal/soc_apb_bridge_*/status
+hw/soc/formal/soc_npu_*/status
+hw/soc/out/boot-regression/**/*.log
+hw/soc/out/boot-regression/**/boot-rom/manifest.json
+
+2026-11-01T19:58:31.9756681Z   retention-days: 30
+2026-11-01T19:58:31.9756866Z   if-no-files-found: warn
+2026-11-01T19:58:31.9757054Z   compression-level: 6
+2026-11-01T19:58:31.9757229Z   overwrite: false
+2026-11-01T19:58:31.9757406Z   include-hidden-files: false
+2026-11-01T19:58:31.9757595Z env:
+2026-11-01T19:58:31.9757754Z   SOC_INTERFACE_PROFILE: base
+2026-11-01T19:58:31.9757996Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:58:31.9758333Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-11-01T19:58:31.9758657Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:58:31.9758956Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:58:31.9759249Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-11-01T19:58:31.9759547Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-11-01T19:58:31.9759838Z   OSS_CAD_SUITE: /home/runner/work/_temp/oss-cad-suite
+2026-11-01T19:58:31.9760075Z ##[endgroup]
+2026-11-01T19:58:32.1111223Z (node:3045) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-01T19:58:32.1111976Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-01T19:58:32.1248372Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-11-01T19:58:32.1250278Z The least common ancestor is /home/runner/work/nssoc/nssoc/hw/soc. This will be the root directory of the artifact
+2026-11-01T19:58:32.1273130Z ##[warning]No files were found with the provided path: hw/soc/formal/regfile_contract_*/logfile.txt
+hw/soc/formal/regfile_contract_*/status
+hw/soc/formal/regfile_equivalence_*/logfile.txt
+hw/soc/formal/regfile_equivalence_*/status
+hw/soc/out/regfile-contract-checks/
+hw/soc/out/boot-geometry/
+hw/soc/out/apb-timeout-demo/sim.log
+hw/soc/out/crash-demo/sim.log
+hw/soc/out/crash-demo/crash-cocotb*
+hw/soc/out/ethernet-demo/sim.log
+hw/soc/out/lint-*/
+hw/soc/out/external-irq/rtl-run.log
+hw/soc/out/external-irq/source-hashes.json
+hw/soc/out/external-irq-negative/rtl-run.log
+hw/soc/out/external-irq-negative/source-hashes.json
+hw/soc/formal/soc_busstat_*/status
+hw/soc/formal/soc_apb_bridge_*/status
+hw/soc/formal/soc_npu_*/status
+hw/soc/out/boot-regression/**/*.log
+hw/soc/out/boot-regression/**/boot-rom/manifest.json. No artifacts will be uploaded.
+2026-11-01T19:58:32.1497450Z Post job cleanup.
+2026-11-01T19:58:32.2234526Z [command]/usr/bin/git version
+2026-11-01T19:58:32.2267235Z git version 2.56.0
+2026-11-01T19:58:32.2301745Z Temporarily overriding HOME='/home/runner/work/_temp/5254fb93-1d89-40c6-be1c-61cd658394df' before making global git config changes
+2026-11-01T19:58:32.2302817Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-01T19:58:32.2307832Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-11-01T19:58:32.2345431Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-01T19:58:32.2403164Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-01T19:58:32.2739806Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-01T19:58:32.2760476Z http.https://github.com/.extraheader
+2026-11-01T19:58:32.2772722Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-01T19:58:32.2823393Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-01T19:58:32.3132295Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-01T19:58:32.3173905Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-01T19:58:32.3600254Z Cleaning up orphan processes
+2026-11-01T19:58:32.3888516Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02, YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

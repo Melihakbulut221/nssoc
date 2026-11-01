@@ -1,0 +1,142 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "native_processes": [],
+    "observed_at": "2026-11-01T20:16:11.969466+00:00",
+    "project_temp_entries": {
+      "/dev/shm": [],
+      "/tmp": [],
+      "/var/tmp": []
+    },
+    "source_API_derived_text_RAM_only": true,
+    "workspace_entries": 0
+  },
+  "note": "## Latest result: full native wave diagnosis and PCIe nettype repair\n\nAll CAD, native acquisition and geometric/numerical execution remain on GitHub. Local workspace and task temporary files remain empty; API/source/derived text coordination stays in RAM.\n\nActual full-wave diagnosis 41344170319/source 12c97e1c3510fd96cd410ba1e9d62f2b760a009e passed eight frozen-reader refusal controls, authenticated every one of the 130 native capsule members, parsed the complete original 113475-row/1152-column waveform and reproduced the original device/margin/delay/wrong-sign measurements. It did not execute a new transient and did not accept the rejected PHY. Extended diagnosis 41345078765/source 11e7c3f4b33388da8c03d7d571cc405fd384db36 repeated this and measured actual same-net terminal voltage drops.\n\nThe four failed HBTs are cn-clock selector pairs 61/62 and 115/116. At the actual minimum-Vce times, D collector-to-connected input-pair emitter differences are 41.3/60.5 mV and C differences 27.3/79.8 mV; clock-selector emitters sit roughly 46.5\u201347.2 mV above connected MOS drains on the same extracted nets. The corresponding local bleed-resistor avss terminals are at 276/283 mV, whereas substrate is near 1.1 mV. These are measured distributed-wire drops, not ideal-node substitutions. They motivate physical interconnect improvements; they do not by themselves prove a fix or quantify every contribution across the whole trace. A/B transition settling, C/D wrong signs, X/Y and phase/V-I gates remain rejected.\n\nNew physical generation: run 41345681826/source 3a54dd452f99a892e8e9d7521c87e51fe933a431 on codex/cdr-wire-tail-shortcuts. Reserved tag cloud-results-41345681826-1-cdr-wire-tail-shortcuts. Targets are D collector T061_C\u2013T056_E, D emitter T061_E\u2013T005_D, C collector T115_C\u2013T108_E and C emitter T115_E\u2013T034_D. The baseline is the actual already-generated six-shortcut GDS, SHA256 244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347, obtained from successful fresh RC 41339125361/release 430788452, all 3236 members authenticated. Current raw canonical anchors and L2N establish ownership; composition binds exact transistor IDs/terminals. Original eight geometry helper/control bodies are AST-identical and 31 original controls remain required. Generation proposes guarded 600 nm M2/Via1 routes, preserves original devices/M1 and all six earlier shortcuts, and serializes/reverses the exact new layer delta. Any partial or blocked attempt must remain failed and retained. It requires fresh strict DRC/LVS, canonical binding, RC and unchanged loaded electrical gates before acceptance. Do not repeat this existing dispatch blindly.\n\nSeparate actual CI failure repaired: hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v lacked default_nettype guards. Only default_nettype none/wire lines were added; every original behavioral source byte remains. Source 95e0aa8795d7ec7a9d13f59e01d2a936d5ddc609, run 41344951300 passed native Icarus module compilation, original prepared-upstream/whole-SoC guards and original complete lint with the unchanged diagnostic ledger. This closes that nettype failure only; the ledger still retains existing warnings and the rest of formal/boot is not claimed complete. The verified RTL edit is imported here.\n\nGeneral checks 41344155576 was an exact-commit duplicate of 41343649094 (both b038f1e12b35b30d90b619392f74b6388004ae32). The less-progressed duplicate was cancelled to release hosted capacity; its formal-and-boot nettype failure and cancelled job states are preserved, not relabelled passes. The older checks run was left running. The dedicated waveform job subsequently acquired a runner and completed. This observation does not prove GitHub account quota settings. Future source-only experimental commits should avoid launching duplicate broad checks; all required dedicated tests still run at exact source.\n\nMainchip full64 41323446729/source ff1c0e6163e0ba1537a075d50e940fafc9332c64 remains independently monitored; consult the latest snapshot. Do not duplicate it based on observation or assumed deadlines. After actual terminal publication, authenticate current outputs, restore original classes with current byte pins (old restoration code hardcodes an obsolete candidate), audit connectivity/2702 diode PG contacts/original nets/DRC/antenna, export matching 154480-instance netlist, then fresh RC and original three-corner setup/hold. Full serial PHY, final mainchip timing and production approval remain open.\n\nMonitor inventory: 709 tracked runs, eight-hour read-only, automatic_native_dispatch:false. Prior monitor HTTP502 remains unresolved. All derived proofs, failed logs and exact source copies are retained on GitHub.\n",
+  "proofs": [
+    {
+      "prefix": "docs/evidence/wire-fullwave-terminal-41344170319",
+      "receipt_sha256": "e2e9ab31185f05f20dbd0a0173b2d9a554f3c8f779cb1aff0ed61ff7d4fd3cbb",
+      "run": 41344170319,
+      "source": "12c97e1c3510fd96cd410ba1e9d62f2b760a009e"
+    },
+    {
+      "prefix": "docs/evidence/wire-fullwave-terminal-41345078765",
+      "receipt_sha256": "2ec3c4cfffaa9f4ba7fa81c572a6fc6cdb49ad2dcb41867fbae53c1f07fb39cd",
+      "run": 41345078765,
+      "source": "11e7c3f4b33388da8c03d7d571cc405fd384db36"
+    },
+    {
+      "prefix": "docs/evidence/raw-align-nettype-terminal-41344951300",
+      "receipt_sha256": "805f830b6eb95f64787ae78e46b464865bbb2a1f6dbc621f451571e838c2e629",
+      "run": 41344951300,
+      "source": "95e0aa8795d7ec7a9d13f59e01d2a936d5ddc609"
+    }
+  ],
+  "runs": [
+    {
+      "branch": "codex/cdr-wire-wave-diagnosis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124960325189,
+          "name": "classify",
+          "status": "completed"
+        }
+      ],
+      "run": 41344170319,
+      "source": "12c97e1c3510fd96cd410ba1e9d62f2b760a009e",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41344170319"
+    },
+    {
+      "branch": "codex/cdr-wire-wave-diagnosis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124963075467,
+          "name": "classify",
+          "status": "completed"
+        }
+      ],
+      "run": 41345078765,
+      "source": "11e7c3f4b33388da8c03d7d571cc405fd384db36",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41345078765"
+    },
+    {
+      "branch": "codex/pcie-raw-align-nettype",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124962694489,
+          "name": "prepared-lint",
+          "status": "completed"
+        }
+      ],
+      "run": 41344951300,
+      "source": "95e0aa8795d7ec7a9d13f59e01d2a936d5ddc609",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41344951300"
+    },
+    {
+      "branch": "codex/cdr-wire-tail-shortcuts",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124964866959,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124964932223,
+          "name": "native-generation",
+          "status": "completed"
+        }
+      ],
+      "run": 41345681826,
+      "source": "3a54dd452f99a892e8e9d7521c87e51fe933a431",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41345681826"
+    },
+    {
+      "branch": "codex/mainchip-full64-native",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124898338248,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Execute and preserve actual full64 route"
+          ],
+          "conclusion": null,
+          "id": 124898487629,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41323446729,
+      "source": "ff1c0e6163e0ba1537a075d50e940fafc9332c64",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41323446729"
+    }
+  ],
+  "tail_release": 430829469,
+  "tail_run": 41345681826,
+  "tail_source": "3a54dd452f99a892e8e9d7521c87e51fe933a431",
+  "version": 265
+}
