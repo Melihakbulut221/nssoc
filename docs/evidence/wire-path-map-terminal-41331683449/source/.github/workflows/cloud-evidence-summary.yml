@@ -1,0 +1,69 @@
+name: Native wire path mapping
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cdr-wire-path-map-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cloud_cdr_wire_path_map.py
+            /scripts/cdr-wire-path-map-inputs.json
+            /scripts/cdr-wire-path-map-pins.json
+            /.github/workflows/cloud-evidence-summary.yml
+            /docs/cdr-wire-path-map.md
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2
+      - name: Source compile and numerical refusal controls
+        run: |
+          python3 -B -c "import ast,pathlib; ast.parse(pathlib.Path('scripts/cloud_cdr_wire_path_map.py').read_bytes())"
+          python3 -B scripts/cloud_cdr_wire_path_map.py --controls
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: wire-path-map-controls-${{ github.run_id }}
+          path: wire-path-map
+          if-no-files-found: error
+          retention-days: 90
+  native-mapping:
+    needs: source-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/cloud_cdr_wire_path_map.py
+            /scripts/cdr-wire-path-map-inputs.json
+            /scripts/cdr-wire-path-map-pins.json
+            /.github/workflows/cloud-evidence-summary.yml
+            /docs/cdr-wire-path-map.md
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2
+      - name: Authenticate original native capsule and map actual wire resistance
+        run: python3 -B scripts/cloud_cdr_wire_path_map.py --map
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: wire-path-map-derived-${{ github.run_id }}
+          path: wire-path-map
+          if-no-files-found: error
+          retention-days: 90
