@@ -18,14 +18,19 @@ All original prepare/measure function bodies,150fF sampler and50fF XOR loads,10o
 
 Run source controls first, preserve their complete proof, then independently reserve an empty exact-source release for one actual native run. Record all failures and full native/derived evidence on GitHub. No native archive, model, SPICE, wave or geometry is acquired locally. A passing circuit would still need a new full physical map for these eight divider instances, independently authored schematic changes, physical DRC/LVS, fresh RC, corners and closed-loop validation. FullPHY and finalchip timing remain open.
 
-## Qualified execution
+## Completed native result
 
-Source e2e753c37fcff8b8fef85695208b8157a7399b57, branch codex/cdr-q15-ac-divider-half. Controls run41280673267 passed21 mutation and5 archive refusals. Complete13-file proof f6b4019cedf6c98f77e28e127c87388a4974e49c.
+Source e2e753c37fcff8b8fef85695208b8157a7399b57, native run41280806504, release430402693. Source controls41280673267 passed21 mutation and5 archive refusals. The native engine completed with exit0, no diagnostics, unchanged sources, in731.256152176s. Device predicates passed; the circuit was rejected by unchanged electrical gates.
 
-Exactly one actual simulation dispatch: run41280806504. Root independently created and verified empty release430402693, tag cloud-results-41280806504-1-cdr-sampler-load, against that exact source before archive acquisition. Reservation observed2026-11-01T06:26:06.698212UTC. The workflow repeats same-source controls before admission. No terminal native result is claimed at this checkpoint; collect the complete result after it finishes without duplicate dispatch or source mutation.
+| Stage | Maximum delay ps | Minimum signed margin mV | Samples below100mV | Wrong-sign samples | Accepted |
+| --- | ---: | ---: | ---: | ---: | --- |
+| A |41.40625|65.232130|95|0|no|
+| B |37.03125|105.754858|0|0|yes|
+| C |118.90625|33.636826|194|0|no|
+| D |118.90625|22.748544|129|0|no|
+| X |118.90625|-107.981677|759|393|no|
+| Y |118.90625|-15.137816|748|90|no|
 
-## Prepared physical ownership and actual-result comparison
+Phase13.177843mV fails30mV; VI42.150650uA fails50uA. VI voltage12.350182mV passes5mV and bias passes. Relative to q15, phase and VI improve, but timing remains open and some XOR metrics worsen. This candidate is not accepted for layout.
 
-The complete new24-target physical map41281132642 passed13 refusals and full500-device/4928-instance matching;17-file proofad03e9fda6cf2c0a9867d7953b6ee830afa616cf. New A/C divider definitions rppd$8 andrppd$1$3 have no untargeted instance users. The earlier eight output-load instances still need private cells to preserve their eight master-load siblings. See [physical mapping](cdr-ac-divider-physical-map.md).
-
-Comparator controls41281253819/sourcee2ed3ba10eb00045fd190bc2930068d9f2014f57 passed16 corruption refusals with an AST-identical original gate function;10-file proofde70bfcbf5aa809d182d460caf9b4c05d2c87a3e. The actual report pin remains null until native completion; no actual comparison or electrical acceptance is claimed. See [comparison admission](cdr-ac-divider-comparison.md).
+Full64-file terminal proof e5bd8c9efb5ce8726416f0366b42eeb28aca19e1, docs/evidence/cdr-sampler-load-terminal-41280806504; actual comparison41282030219/full15proof f1dc2fcb4893382082993f15595647a0c50628e5. The24-target physical map remains an ownership analysis only. See cdr-ac-divider-comparison.md and cdr-ac-divider-physical-map.md.
