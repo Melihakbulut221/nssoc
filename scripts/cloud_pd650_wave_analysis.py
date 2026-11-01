@@ -264,6 +264,48 @@ def analyze(base,index):
         topology.append(dict(instance=dev["instance"],model=dev["model"],native_id=dev["native_id"],
           source_native_id=dev.get("source_native_id"),parameters=dev["parameters"],
           terminals=[dict(x,logical_nets=sorted(set(logical.get((x["native_cluster"],x["native_net"]),[]))))for x in dev["terminals"]]))
+    # Diagnose buffer paths only after reproducing all original acceptance metrics.
+    # This never creates a new acceptance criterion or replaces the six original gates.
+    record_by_name={"xpd."+r["instance"].lower():r for r in contract["device_records"]}
+    def base_node(ident,logical_name):
+        name="xpd.xd"+format(ident,"04d")
+        row=record_by_name[name];assert row["model"]=="npn13g2"
+        terminal=next(r for r in row["terminals"]if r["terminal"]=="B")
+        assert logical_name in logical[(terminal["native_cluster"],terminal["native_net"])]
+        dev=bound["groups"]["npn13g2"][name]
+        return dev["nodes"][1]
+    paths={
+      "A_divider":("a",base_node(123,"uap"),base_node(125,"uan")),
+      "A_buffer":("a","xpd.adp","xpd.adn"),
+      "C_divider":("c",base_node(128,"ucp"),base_node(130,"ucn")),
+      "C_buffer":("c","xpd.cdp","xpd.cdn"),
+      "D_divider_X":("d",base_node(131,"usp"),base_node(132,"usn")),
+      "D_divider_Y":("d",base_node(149,"usp"),base_node(150,"usn")),
+      "D_buffer_X":("d","xpd.s0p","xpd.s0n"),
+      "D_buffer_Y":("d","xpd.s1p","xpd.s1n")}
+    path_results={}
+    for name,(reference,p,n)in paths.items():
+        phases=(.3,.6,.9);edges=[START+(i+.5)*UI for i in range(1,256)]
+        metric,events=measure(t,v(p)-v(n),expected[reference],edges,phases,.3)
+        metric.pop("passed") # diagnostic only, never a substituted gate
+        original_events=stages[reference]["events"]
+        conditional={}
+        for phase_index,phase in enumerate(phases):
+            samples=[]
+            for output,probe in zip(original_events,events,strict=True):
+                assert output["bit_index"]==probe["bit_index"]and output["expected"]==probe["expected"]
+                samples.append(dict(bit=probe["bit_index"],expected=probe["expected"],
+                  source_signed_v=output["signed_margins_v"][phase_index],
+                  probe_signed_v=probe["signed_margins_v"][phase_index]))
+            settled=[r for r in samples if r["source_signed_v"]>=.1]
+            wrong=[r for r in settled if r["probe_signed_v"]<=0]
+            conditional[str(phase)]=dict(total=len(samples),source_at_least_100mv=len(settled),
+              source_valid_but_probe_wrong_sign=len(wrong),wrong_bit_indices=[r["bit"]for r in wrong],
+              actual_wrong_examples=wrong[:8])
+        path_results[name]=dict(reference_sampler=reference,positive_physical_node=bound["aliases"].get(p,p),
+          negative_physical_node=bound["aliases"].get(n,n),metrics=metric,source_conditioned=conditional,
+          events=events,diagnostic_only=True)
+    save("buffer-paths.json",path_results)
     hbt={}
     for name,dev in bound["groups"]["npn13g2"].items():
         vc,vb,ve,_=map(v,dev["nodes"]);current=d["@q."+name+".qnpn13g2[ic]"]
