@@ -23,3 +23,9 @@ Run source controls first, preserve their complete proof, then independently res
 Source e2e753c37fcff8b8fef85695208b8157a7399b57, branch codex/cdr-q15-ac-divider-half. Controls run41280673267 passed21 mutation and5 archive refusals. Complete13-file proof f6b4019cedf6c98f77e28e127c87388a4974e49c.
 
 Exactly one actual simulation dispatch: run41280806504. Root independently created and verified empty release430402693, tag cloud-results-41280806504-1-cdr-sampler-load, against that exact source before archive acquisition. Reservation observed2026-11-01T06:26:06.698212UTC. The workflow repeats same-source controls before admission. No terminal native result is claimed at this checkpoint; collect the complete result after it finishes without duplicate dispatch or source mutation.
+
+## Prepared physical ownership and actual-result comparison
+
+The complete new24-target physical map41281132642 passed13 refusals and full500-device/4928-instance matching;17-file proofad03e9fda6cf2c0a9867d7953b6ee830afa616cf. New A/C divider definitions rppd$8 andrppd$1$3 have no untargeted instance users. The earlier eight output-load instances still need private cells to preserve their eight master-load siblings. See [physical mapping](cdr-ac-divider-physical-map.md).
+
+Comparator controls41281253819/sourcee2ed3ba10eb00045fd190bc2930068d9f2014f57 passed16 corruption refusals with an AST-identical original gate function;10-file proofde70bfcbf5aa809d182d460caf9b4c05d2c87a3e. The actual report pin remains null until native completion; no actual comparison or electrical acceptance is claimed. See [comparison admission](cdr-ac-divider-comparison.md).
