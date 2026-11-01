@@ -12,13 +12,11 @@
           "status": "completed"
         },
         {
-          "active_steps": [
-            "All declared pilot and SoC regression proofs with fresh source checks"
-          ],
-          "conclusion": null,
+          "active_steps": [],
+          "conclusion": "success",
           "id": 124805437693,
           "name": "formal-sweep (soc)",
-          "status": "in_progress"
+          "status": "completed"
         },
         {
           "active_steps": [],
@@ -98,13 +96,11 @@
           "status": "completed"
         },
         {
-          "active_steps": [
-            "All declared pilot and SoC regression proofs with fresh source checks"
-          ],
-          "conclusion": null,
+          "active_steps": [],
+          "conclusion": "success",
           "id": 124808977505,
           "name": "formal-sweep (soc)",
-          "status": "in_progress"
+          "status": "completed"
         },
         {
           "active_steps": [],
@@ -139,33 +135,72 @@
       "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe",
       "status": "in_progress",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293340525"
-    },
-    "41299745896": {
-      "branch": "codex/cdr-hbt-load",
-      "conclusion": null,
-      "jobs": [
-        {
-          "active_steps": [],
-          "conclusion": "success",
-          "id": 124828047248,
-          "name": "source-controls",
-          "status": "completed"
-        },
-        {
-          "active_steps": [
-            "Authenticate original inputs and run sampler-load candidate with original measurements"
-          ],
-          "conclusion": null,
-          "id": 124828357121,
-          "name": "simulate",
-          "status": "in_progress"
-        }
-      ],
-      "run": 41299745896,
-      "source": "12f3e0f3bf7010289dc0f993ac71dbfa55cc19e4",
-      "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41299745896"
     }
+  },
+  "bounded_route_class_diagnosis_v238": {
+    "archive": {
+      "bytes": 751995332,
+      "sha256": "136e2aaa710f7e51c2ed31ef42054309a7c2c13be7a85e2d849db8cfbeaf436f"
+    },
+    "authenticated_members": 728,
+    "changed_records": 220,
+    "class_normalized_changed_records": 220,
+    "class_transitions": {
+      "FIXED->FIXED": 142878,
+      "FIXED->ROUTED": 220,
+      "None->None": 114
+    },
+    "connection_prefix_changes": 0,
+    "context": {
+      "attempt": 1,
+      "run": 41302468053,
+      "source": "7e465ee49cb69783919e14ba17fa3f6dd76c3f09"
+    },
+    "counterpart_records": 220,
+    "first_strict_failure": "$abc$1804206$new_n104941",
+    "full_phy_accepted": false,
+    "layout_modified": false,
+    "mutable_records": 608,
+    "native_cad_executed": false,
+    "native_payloads_remain_cloud": true,
+    "net_order_equal": true,
+    "normalized_changes_outside_counterparts": 0,
+    "normalized_counterpart_changes": 220,
+    "original_restore_exception": "AssertionError()",
+    "outside_nets_bytes_equal": true,
+    "physical_acceptance": false,
+    "producer": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
+    "producer_release": 430474717,
+    "producer_run": 41292673925,
+    "routing_records": 828,
+    "selected_inputs": {
+      "bulk-postdrt-antenna/drt-original-classes.json": {
+        "bytes": 5734371,
+        "sha256": "d908976aeb5bfeb109a169d3ce71914471a418ef9b2502dba2ec9411c88a8df6"
+      },
+      "bulk-postdrt-antenna/insertion-plan.json": {
+        "bytes": 221814,
+        "sha256": "b3175b5c1a4f9f3574279cabb4c48684936df4b6f919924af6e9a68253b6899d"
+      },
+      "bulk-postdrt-antenna/targeted-routing-scope.json": {
+        "bytes": 107695,
+        "sha256": "3e044d7679588d23bf50414228ad2651d3d2ee7cca1c4312b2e77ec6b3c83e42"
+      },
+      "work/bulk-postdrt-antenna/fixed.def": {
+        "bytes": 185488886,
+        "sha256": "9f28be4140f481886d501b26370ffcd431ceb8a436de1aff0946ee39573456d5"
+      },
+      "work/bulk-postdrt-antenna/routed-fixed.def": {
+        "bytes": 186123105,
+        "sha256": "0ac5108f828158156a858086a2edaff204020a14e17cb491d0ab173131345511"
+      }
+    },
+    "selected_records": 143212,
+    "status": "COMPLETE_READ_ONLY_CLASS_DIAGNOSIS",
+    "strict_failures_outside_counterparts": 0,
+    "strict_restorer_failures": 220,
+    "timing_accepted": false,
+    "total_records": 143820
   },
   "bounded_route_terminal_v237": {
     "all_acceptance_gates_retained": true,
@@ -188,7 +223,7 @@
     "run": 41292673925,
     "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f"
   },
-  "checkpoint_version": 237,
+  "checkpoint_version": 238,
   "cloud_results_release_reservations": {
     "mainchip_artifact_recovery": {
       "exact_tag_target_verified": true,
@@ -2085,6 +2120,7 @@
   "continuation_note_v235": "Terminal divider trial preserved and imported; all original failures retained. User cloud-only and local cleanup instruction verified. Mainchip existing routing handle remains tracked; no duplicate native execution.",
   "continuation_note_v236": "PROGRESS: authenticated current-divider failure diagnosis completed; actual40-HBT emitter-count repair implemented and independently source-qualified; original-gate native trial dispatched on GitHub. Mainchip original routing handle retained. No full PHY,physical or timing closure claimed.",
   "continuation_note_v237": "PROGRESS: completed route checkpoint and restoration failure preserved with full text proof. Actual router returned with397DRC; saved rawODB remains available in cloud. Class-restoration and cleanup assertion fail, final audits notstarted. Existing HBT native trial retained. Latest cloud-only/local-cleanup instruction reverified; no native local data or gate relaxation.",
+  "continuation_note_v238": "PROGRESS: actual archived143820net diagnosis proves all220 class failures and normalized geometry changes are authorized routed counterparts; all remaining selected records and connections unchanged. Restore-plan lacks expanded-scope handling; repair against savedODB next. HBT40Nx native trial rejected by original data/phase gates, complete113fileproof retained. All200 selected proof files imported; full record catalogs remain pinned on cloud release. No physical/final timing/PHY closure.",
   "current_run_snapshot": [
     {
       "attempt": 1,
@@ -23156,6 +23192,69 @@
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
   "final_timing_complete": false,
   "full_serial_phy_accepted": false,
+  "hbt_load_terminal_v238": {
+    "accepted": false,
+    "comparisons": {
+      "x": {
+        "below_100mv_samples": 759,
+        "maximum_clock_to_valid_s": 1.189062500003487e-10,
+        "minimum_signed_margin_v": -0.10200501759107475,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 420
+      },
+      "y": {
+        "below_100mv_samples": 752,
+        "maximum_clock_to_valid_s": 1.189062500003487e-10,
+        "minimum_signed_margin_v": -0.0020305461484184713,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 34
+      }
+    },
+    "data_passed": false,
+    "devices_passed": true,
+    "diagnostics": [],
+    "phase_average_v": 0.02088339639361072,
+    "phase_passed": false,
+    "sampler_checks": {
+      "a": {
+        "below_100mv_samples": 97,
+        "maximum_clock_to_valid_s": 4.2656249999991765e-11,
+        "minimum_signed_margin_v": 0.05980055500749599,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 0
+      },
+      "b": {
+        "below_100mv_samples": 24,
+        "maximum_clock_to_valid_s": 3.7968750000017056e-11,
+        "minimum_signed_margin_v": 0.0971131879063412,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 0
+      },
+      "c": {
+        "below_100mv_samples": 165,
+        "maximum_clock_to_valid_s": 1.189062500003487e-10,
+        "minimum_signed_margin_v": -0.01664064119229533,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 33
+      },
+      "d": {
+        "below_100mv_samples": 129,
+        "maximum_clock_to_valid_s": 1.1890624999999013e-10,
+        "minimum_signed_margin_v": -0.022742229336972893,
+        "passed": false,
+        "samples": 765,
+        "wrong_sign_samples": 44
+      }
+    },
+    "sources_unchanged": true,
+    "status": "REJECTED_WHOLE_MIM_PD650_LOADED",
+    "transient_executed": true
+  },
   "immutable_continuation_receipts": {
     "gen12_rx": {
       "path": "docs/evidence/pcie-gen12-rx-cloud-checkpoint-20261024.json",
@@ -76169,6 +76268,69 @@
       "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f"
     }
   ],
+  "imported_checkpoint_receipts_v238": [
+    {
+      "bytes": 7628454,
+      "conclusion": "failure",
+      "files": 113,
+      "head": "221c55f256afab55630d4e8cb1903ab4e1b3d942",
+      "prefix": "docs/evidence/hbt-load-native-terminal-41299745896",
+      "receipt": "receipt.json",
+      "receipt_sha256": "9efdf446065efd9459609e076d091d398de29ca21e3a2cb423e26c8a2f9b20a2",
+      "run": 41299745896,
+      "source": "12f3e0f3bf7010289dc0f993ac71dbfa55cc19e4"
+    },
+    {
+      "bytes": 68124,
+      "conclusion": "failure",
+      "files": 12,
+      "head": "6b6d7b046fe1a13d23fd464d92848bc275c2f60a",
+      "prefix": "docs/evidence/route-class-controls-41301583231",
+      "receipt_sha256": "58de9d6b5e35b6d4362dd6447e26689c9a11921e04fba677f281e6ec194cc9b4",
+      "run": 41301583231,
+      "source": "27614ddd854ed2d4faa9eae10915552bfdf312ae"
+    },
+    {
+      "bytes": 70822,
+      "conclusion": "success",
+      "files": 14,
+      "head": "40b41127a606516c4bf8145ff6a4f8dab7b8db1c",
+      "prefix": "docs/evidence/route-class-controls-41301770098",
+      "receipt_sha256": "e36290b1519c80039139d8f39092d415a0b44ab0b91595e94b7bb3998fcede45",
+      "run": 41301770098,
+      "source": "8a2087e6e5111a3716c46d6558a7ef5793af2690"
+    },
+    {
+      "bytes": 117172,
+      "conclusion": "failure",
+      "files": 20,
+      "head": "750b7c23d9decb159d3d3290bb101c4765c666b7",
+      "prefix": "docs/evidence/route-class-native-terminal-41301914645",
+      "receipt_sha256": "1bfaa3e62c60b2013dbd66e42a198414f7edbaf6847d677a72d405d2d175e3ab",
+      "run": 41301914645,
+      "source": "8a2087e6e5111a3716c46d6558a7ef5793af2690"
+    },
+    {
+      "bytes": 83925,
+      "conclusion": "success",
+      "files": 15,
+      "head": "3805fc25bf191ebeb969430dc0a4813459e718d2",
+      "prefix": "docs/evidence/route-class-controls-41302309403",
+      "receipt_sha256": "4feaee2017e29c08edd590bca05d11fc4695681ea31db696d18e3c638d1a22aa",
+      "run": 41302309403,
+      "source": "7e465ee49cb69783919e14ba17fa3f6dd76c3f09"
+    },
+    {
+      "bytes": 456648,
+      "conclusion": "success",
+      "files": 26,
+      "head": "3a41a57034270dd8a6bbef69334725035d6105db",
+      "prefix": "docs/evidence/route-class-native-terminal-41302468053",
+      "receipt_sha256": "bcd944576cd03d47b5e8b67542440f0a4ee7c07d0dd6895a19c9b72bf149b1eb",
+      "run": 41302468053,
+      "source": "7e465ee49cb69783919e14ba17fa3f6dd76c3f09"
+    }
+  ],
   "imported_checkpoint_receipts_v25": [
     {
       "path": "docs/evidence/pll-cache-reference-directory-dispatch-20261024.json",
@@ -99579,6 +99741,326 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41299745896"
     }
   ],
+  "latest_observed_runs_v238": [
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437655,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437693,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437696,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124805437698,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437712,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124805437732,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124805437796,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124805438494,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41292160619,
+      "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41292160619"
+    },
+    {
+      "branch": "codex/mainchip-net459-diode-prune",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124806983932,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124807447237,
+          "name": "preserve-job-log",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124807477628,
+          "name": "diode-routing",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124828689772,
+          "name": "preserve-antenna-job-logs",
+          "status": "completed"
+        }
+      ],
+      "run": 41292673925,
+      "source": "7a0776718ec37a106b7dfde0cbd477c6a2a5522f",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41292673925"
+    },
+    {
+      "branch": "codex/cdr-pd650-loaded-wave-analysis",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977298,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 124808977460,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977468,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977505,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124808977510,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124808977536,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124808977592,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124808978452,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41293340525,
+      "source": "4516b4ce74c1b4423b230af11e6907c17bf1ccfe",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41293340525"
+    },
+    {
+      "branch": "codex/cdr-hbt-load",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124828047248,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124828357121,
+          "name": "simulate",
+          "status": "completed"
+        }
+      ],
+      "run": 41299745896,
+      "source": "12f3e0f3bf7010289dc0f993ac71dbfa55cc19e4",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41299745896"
+    },
+    {
+      "branch": "codex/mainchip-route-class-diagnosis",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124833441431,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124833472764,
+          "name": "class-diagnosis",
+          "status": "completed"
+        }
+      ],
+      "run": 41301583231,
+      "source": "27614ddd854ed2d4faa9eae10915552bfdf312ae",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41301583231"
+    },
+    {
+      "branch": "codex/mainchip-route-class-diagnosis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124834036263,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124834071140,
+          "name": "class-diagnosis",
+          "status": "completed"
+        }
+      ],
+      "run": 41301770098,
+      "source": "8a2087e6e5111a3716c46d6558a7ef5793af2690",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41301770098"
+    },
+    {
+      "branch": "codex/mainchip-route-class-diagnosis",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124834456390,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 124834493334,
+          "name": "class-diagnosis",
+          "status": "completed"
+        }
+      ],
+      "run": 41301914645,
+      "source": "8a2087e6e5111a3716c46d6558a7ef5793af2690",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41301914645"
+    },
+    {
+      "branch": "codex/mainchip-route-class-diagnosis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124835643829,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 124835674439,
+          "name": "class-diagnosis",
+          "status": "completed"
+        }
+      ],
+      "run": 41302309403,
+      "source": "7e465ee49cb69783919e14ba17fa3f6dd76c3f09",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41302309403"
+    },
+    {
+      "branch": "codex/mainchip-route-class-diagnosis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124836102875,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 124836139318,
+          "name": "class-diagnosis",
+          "status": "completed"
+        }
+      ],
+      "run": 41302468053,
+      "source": "7e465ee49cb69783919e14ba17fa3f6dd76c3f09",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41302468053"
+    }
+  ],
   "latest_terminal_runs": {
     "cdr_actual_terminal_current_ledger": 40171679250,
     "cdr_current_ledger_controls": 40171508329,
@@ -100014,6 +100496,19 @@
     "unrelated_user_files_not_modified": true,
     "workspace_entries": 0
   },
+  "local_cleanup_v238": {
+    "native_payloads_cloud_only": true,
+    "native_processes": 0,
+    "observed_at": "2026-11-01T11:41:05.379638+00:00",
+    "project_temp_entries": {
+      "/dev/shm": [],
+      "/tmp": [],
+      "/var/tmp": []
+    },
+    "source_API_derived_text_RAM_only": true,
+    "unrelated_user_files_not_modified": true,
+    "workspace_entries": 0
+  },
   "local_cleanup_verification": {
     "native_payloads_cloud_only": true,
     "native_processes": 0,
@@ -100027,7 +100522,7 @@
     "unrelated_user_files_not_modified": true,
     "workspace_entries": 0
   },
-  "local_workspace_verified_empty_at": "2026-11-01T11:15:04.583818+00:00",
+  "local_workspace_verified_empty_at": "2026-11-01T11:41:05.379638+00:00",
   "monitor": {
     "automatic_native_dispatch": false,
     "branch": "main",
@@ -141245,7 +141740,7 @@
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167",
     "source": "2a44527cd4a72a4e118c327eae484386e710b57e"
   },
-  "root_source_before_receipt": "8fe220489320d752a7abeccc7e76f36c81e8e635",
+  "root_source_before_receipt": "f4af0f189234d9817b5fd9cf27b889df9a00bfd0",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -141253,5 +141748,5 @@
     "sha256": "e91938bb7dc9cb4c57c934f1aa3b8fff562efc2e04d1e2726976afcb74d65835"
   },
   "schema_version": 1,
-  "updated_at": "2026-11-01T11:15:04.583818+00:00"
+  "updated_at": "2026-11-01T11:41:05.379638+00:00"
 }
