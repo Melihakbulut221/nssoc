@@ -1,13 +1,17 @@
-name: Reroute stale diode wires with complete original physical guards
+name: Route828 scoped signals preserving original physical guards
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Clear only608owned stale wires then route saved diodes; no repair or new cells
+        description: Route608 diode owners plus220 authenticated counterparts; no new cells
         type: choice
         required: true
         default: controls
         options: [controls, route]
+      approved_source:
+        description: Exact reviewed commit
+        type: string
+        required: true
 permissions:
   contents: read
   actions: read
@@ -16,6 +20,7 @@ concurrency:
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
+  APPROVED_SOURCE: ${{ inputs.approved_source }}
 jobs:
   source-controls:
     runs-on: ubuntu-24.04
@@ -98,6 +103,14 @@ jobs:
           PY
           set -o pipefail
           python3 -B scripts/check_mainchip_stale_wire_routing.py 2>&1 | tee bulk-postdrt-integration-controls/stale-wire-controls.log
+      - name: Authenticate exact derived input scope
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 -B scripts/prepare_mainchip_targeted_counterpart_inputs.py
+      - name: Test all828 routing owners and original connectivity predicates
+        run: python3 -B scripts/check_mainchip_targeted_counterpart_routing.py
+      - name: Test exact hosted source, command, stream and publication bindings
+        run: python3 -B scripts/check_mainchip_targeted_counterpart_host.py
       - name: Exercise actual adapters, supervisor, native audit boundaries and inherited controls
         run: |
           set +e
@@ -151,6 +164,35 @@ jobs:
               for i,b in enumerate(chunks):
                   print('BULK_POSTDRT_CONTROL_CHUNK '+json.dumps(dict(path=name,index=i,base64=base64.b64encode(b).decode()),sort_keys=True))
           PY
+      - name: Always emit complete targeted input and control records
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json,zlib
+          from pathlib import Path
+          names=['targeted-routing-inputs/'+n for n in ('counterparts.json','summary.json','insertion_plan.json','acquisition.json')]
+          names+=['targeted-routing-controls/result.json','targeted-routing-controls/scope.json','targeted-host-controls/result.json']
+          for name in names:
+              p=Path(name);assert not p.is_symlink()
+              raw=p.read_bytes()if p.is_file()else b''
+              value=base64.b64encode(zlib.compress(raw,9)).decode()
+              chunks=[value[i:i+10000]for i in range(0,len(value),10000)]
+              print('TARGETED_INPUT_INDEX '+json.dumps(dict(path=name,present=p.is_file(),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),chunks=len(chunks))))
+              for i,value in enumerate(chunks):
+                  print('TARGETED_INPUT_CHUNK '+json.dumps(dict(path=name,index=i,base64=value)))
+          PY
+      - name: Preserve all targeted scope inputs and results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: targeted-routing-qualification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            targeted-routing-inputs
+            targeted-routing-controls
+            targeted-host-controls
+          if-no-files-found: error
+          retention-days: 90
+
       - name: Preserve all source output bytes
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -308,6 +350,47 @@ jobs:
           (root/'index.json').write_text(json.dumps(idx,sort_keys=True,indent=2)+'\n')
           (root/'admission.json').write_text(json.dumps(dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,full_source_records=15,source_job=j['id'],full_log_sha256=hashlib.sha256(raw).hexdigest(),proof=proof,native_acquisition=False),sort_keys=True,indent=2)+'\n')
           PY
+      - name: Admit full targeted controls and exact derived inputs before native acquisition
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json,os,sys,zlib
+          from pathlib import Path
+          expected={'targeted-routing-inputs/'+n for n in ('counterparts.json','summary.json','insertion_plan.json','acquisition.json')}
+          expected|={'targeted-routing-controls/result.json','targeted-routing-controls/scope.json','targeted-host-controls/result.json'}
+          raw=Path('bulk-postdrt-integration-controls/source-controls.log').read_bytes()
+          indexes={};chunks={}
+          for line in raw.decode().splitlines():
+              for marker,is_index in (('TARGETED_INPUT_INDEX ',True),('TARGETED_INPUT_CHUNK ',False)):
+                  if marker not in line:continue
+                  text=line.split(marker,1)[1]
+                  if not text.startswith('{'):continue
+                  row=json.loads(text);name=row['path'];assert name in expected
+                  if is_index:
+                      assert name not in indexes;indexes[name]=row
+                  else:
+                      parts=chunks.setdefault(name,{})
+                      assert type(row['index'])is int and row['index']not in parts
+                      parts[row['index']]=row['base64']
+          assert set(indexes)==set(chunks)==expected
+          for name,pin in indexes.items():
+              assert pin['present']is True
+              parts=chunks[name];assert set(parts)==set(range(pin['chunks']))
+              data=zlib.decompress(base64.b64decode(''.join(parts[i]for i in range(pin['chunks'])),validate=True))
+              assert len(data)==pin['bytes']and hashlib.sha256(data).hexdigest()==pin['sha256']
+              path=Path(name);assert not path.exists()and not path.is_symlink()
+              path.parent.mkdir(exist_ok=True)
+              path.write_bytes(data)
+          assert os.environ['APPROVED_SOURCE']==os.environ['GITHUB_SHA']
+          sys.path.insert(0,'scripts')
+          import cloud_mainchip_targeted_counterpart_routing as host
+          manifest=host.source_gate();host.authorize(manifest)
+          ctx=host.original.context(os.environ);controls=host.control_evidence(ctx)
+          config,plan,scope=host.inputs_scope()
+          assert scope==json.loads(Path('targeted-routing-controls/scope.json').read_bytes())
+          Path('bulk-postdrt-integration-controls/targeted-admission.json').write_text(json.dumps(dict(
+              source=ctx['source'],run=ctx['run_id'],controls=controls,scope=scope,
+              complete_inputs=indexes,native_acquisition=False),sort_keys=True,indent=2)+'\n')
+          PY
       - name: Reclaim only disposable hosted SDK storage
         run: |
           test "$GITHUB_ACTIONS" = true
@@ -335,8 +418,8 @@ jobs:
           receipt=dict(tag=tag,tested_source=e['GITHUB_SHA'],release_id=d['id'],existing_assets=[],target_verified=True,assets_overwritten=False,externally_reserved=True,creation_attempted=False,read_attempts=attempt+1)
           Path('release-reservation.json').write_text(json.dumps(receipt,sort_keys=True,indent=2)+'\n')
           PY
-      - name: Clear608owned stale wires and route with unchanged physical invariants
-        run: python3 -B scripts/cloud_mainchip_stale_wire_routing.py --output bulk-postdrt-antenna-evidence --reservation release-reservation.json > bulk-postdrt-antenna.stdout 2> bulk-postdrt-antenna.stderr
+      - name: Clear828owned signal wires and route with unchanged physical invariants
+        run: python3 -B scripts/cloud_mainchip_targeted_counterpart_routing.py --output bulk-postdrt-antenna-evidence --reservation release-reservation.json > bulk-postdrt-antenna.stdout 2> bulk-postdrt-antenna.stderr
       - name: Always emit full bounded evidence and failure output
         if: always()
         run: |
