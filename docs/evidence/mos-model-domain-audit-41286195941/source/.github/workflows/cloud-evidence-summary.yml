@@ -1,0 +1,38 @@
+name: Full MOS physical join and parallel-device domain correction plan
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mos-model-domain-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/mos_model_domain_audit.py
+            /scripts/mos-model-domain-audit-inputs.json
+            /.github/workflows/cloud-evidence-summary.yml
+      - name: Inspect exact used model metadata on runner only
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_RUN_ATTEMPT" = "1"
+          python3 -B scripts/mos_model_domain_audit.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: mos-model-domain-${{ github.run_id }}
+          path: cloud-mos-model-domain-audit
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
