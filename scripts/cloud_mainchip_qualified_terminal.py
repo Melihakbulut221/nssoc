@@ -22,6 +22,7 @@ def selected(n):
   "work/bulk-postdrt-antenna/final-counts.json","work/bulk-postdrt-antenna/final-drc.rpt",
   "work/bulk-postdrt-antenna/final-drc-reread.rpt"}
  fixed.update("bulk-postdrt-antenna/"+name for name in ("final-antenna-summary.json","final-antenna-violations.json","final-audit-terminal.json","final-drc-markers.json","final-drc.json"))
+ fixed.update("bulk-postdrt-antenna/"+name for name in ("insertion-plan.json","targeted-routing-scope.json","drt-original-classes.json","baseline-antenna-violations.json"))
  return n in fixed
 def outline(value,depth=0):
  if isinstance(value,dict):return {k:outline(v,depth+1)for k,v in value.items()}
@@ -30,7 +31,7 @@ def outline(value,depth=0):
 def main():
  assert os.environ.get("GITHUB_ACTIONS")=="true"and os.environ["GITHUB_RUN_ATTEMPT"]=="1"
  assert os.environ["GITHUB_REPOSITORY"]=="Melihakbulut221/nssoc"and os.environ["GITHUB_EVENT_NAME"]=="workflow_dispatch"
- assert os.environ["GITHUB_REF"]=="refs/heads/codex/mainchip-qualified-terminal"
+ assert os.environ["GITHUB_REF"]=="refs/heads/codex/mainchip-postrestore-classification"
  assert subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()==os.environ["GITHUB_SHA"]
  pins=json.loads((ROOT/"scripts/mainchip-qualified-terminal-pins.json").read_bytes())
  for name,pin in pins.items():assert fp(ROOT/name)==pin,("source",name)
@@ -39,6 +40,8 @@ def main():
  assert not selected("bulk-postdrt-antenna/final-antenna-nets.json")
  assert not selected("bulk-postdrt-antenna/final-unexpected.json")
  OUT.mkdir(exist_ok=False)
+ from mainchip_postrestore_classification import controls
+ save("classification-controls.json",controls())
  inputs=json.loads((ROOT/"scripts/mainchip-qualified-terminal-inputs.json").read_bytes())
  run=api("actions/runs/"+str(RUN));assert run["head_sha"]==SOURCE and run["status"]=="completed"and run["conclusion"]=="failure"and run["run_attempt"]==1
  release=api("releases/"+str(RELEASE));assert release["target_commitish"]==SOURCE
@@ -102,6 +105,15 @@ def main():
   source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),members=len(seen),selected=len(kept),
   connectivity=binding["connectivity"],power_contacts=pg["contacts"],protected_nets=clock["clock_or_fixed_nets"],
   bounded_cycle_qualified=physical["bounded_cycle_qualified"],native_simulation=False,**FLAGS))
+ from mainchip_postrestore_classification import classify
+ from mainchip_targeted_counterpart_routing import validate_scope
+ plan=read("bulk-postdrt-antenna/insertion-plan.json");scope=read("bulk-postdrt-antenna/targeted-routing-scope.json")
+ validate_scope(scope,plan)
+ classified=classify(read("bulk-postdrt-antenna/final-drc-markers.json"),read("bulk-postdrt-antenna/final-antenna-violations.json"),scope,read("bulk-postdrt-antenna/drt-original-classes.json"))
+ assert classified["summary"]["markers"]==physical["DRT_markers"]==399
+ assert classified["summary"]["antenna_nets"]==physical["candidate_antenna_nets"]==19
+ assert classified["summary"]["antenna_rows"]==physical["candidate_violation_rows"]==23
+ for name,value in classified.items():save("classification/"+name+".json",value)
  for name,pin in pins.items():assert fp(ROOT/name)==pin
 if __name__=="__main__":
  try:main()

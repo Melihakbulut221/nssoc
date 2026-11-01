@@ -1,4 +1,4 @@
-name: Authenticate qualified native audits and remaining physical gates
+name: Classify actual post-restoration DRC and antenna owners
 on:
   workflow_dispatch:
 permissions:
@@ -20,6 +20,8 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
+            /scripts/mainchip_postrestore_classification.py
+            /scripts/mainchip_targeted_counterpart_routing.py
             /scripts/cloud_mainchip_qualified_terminal.py
             /scripts/mainchip-qualified-terminal-inputs.json
             /scripts/mainchip-qualified-terminal-pins.json
