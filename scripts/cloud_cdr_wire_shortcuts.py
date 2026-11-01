@@ -53,27 +53,44 @@ def wire(points,width=600):
     return r.merged()
 def access(anchor,owned,full,other):
     x,y=anchor["point_dbu"];need(anchor["metal"]==8 and x%5==0 and y%5==0,"M1 anchor on original grid")
-    candidates=[]
-    # Actual same-net M1 only; no added M1 or device geometry.
-    for dx,dy in[(0,0),(0,-500),(0,500),(-500,0),(500,0),(0,-1000),(0,1000),(-1000,0),(1000,0)]:
-        cut=box(x+dx,y+dy,95);landing=box(x+dx,y+dy,300)
-        tests=conductor_guard(landing,cut,owned,full,other)
-        required={k:v for k,v in tests.items()if k!="new_m2_material"}
-        if all(required.values()):
-            if all(cut.sized(295).interacting(c["cut"]).is_empty()for c in candidates):
-                candidates.append(dict(point=[x+dx,y+dy],cut=cut))
-        if len(candidates)==4:break
-    if len(candidates)<2:return None,dict(reason="fewer than two guarded same-net Via1 sites",admitted_sites=[c["point"]for c in candidates])
-    cuts=pya.Region()
-    for c in candidates:cuts+=c["cut"]
-    points=[c["point"]for c in candidates]
-    # One connected M2 landing covers all selected collinear/cross sites.
-    xs=[p[0]for p in points];ys=[p[1]for p in points]
-    pad=pya.Region(pya.Box(min(xs)-300,min(ys)-300,max(xs)+300,max(ys)+300))
-    tests=conductor_guard(pad,cuts,owned,full,other)
-    if not all(v for k,v in tests.items()if k!="new_m2_material"):
-        return None,dict(reason="array landing guard",tests=tests,admitted_sites=points)
-    return dict(cuts=cuts,pad=pad,center=[x,y]),dict(admitted_sites=points,cut_count=len(points),landing_bbox=bounds(pad))
+    cache={};array_trials=[]
+    def site(point):
+        key=tuple(point)
+        if key not in cache:
+            xx,yy=point;cut=box(xx,yy,95);landing=box(xx,yy,300)
+            tests=conductor_guard(landing,cut,owned,full,other)
+            cache[key]=dict(point=list(point),guards=tests,admitted=all(v for k,v in tests.items()if k!="new_m2_material"))
+        return cache[key]
+    seeds=[[x,y]]
+    for delta in range(500,10001,500):
+        seeds.extend([[x,y-delta],[x,y+delta],[x-delta,y],[x+delta,y]])
+    def report(reason=None,points=None,pad=None):
+        value=dict(attempted_sites=list(cache.values()),array_trials=array_trials,
+          clipped_local_owned_layer_boxes={str(n):[bounds(pya.Region(poly))for poly in(owned[n]&box(x,y,12000)).merged().each()]for n in LAYERS},
+          search_radius_dbu=10000,anchor_point_dbu=[x,y],reason=reason,admitted_sites=points or[])
+        if points:value.update(cut_count=len(points),landing_bbox=bounds(pad))
+        return value
+    for seed in seeds:
+        if not site(seed)["admitted"]:continue
+        sx,sy=seed;candidates=[]
+        for dx,dy in[(0,0),(0,-500),(0,500),(-500,0),(500,0),(0,-1000),(0,1000),(-1000,0),(1000,0)]:
+            point=[sx+dx,sy+dy]
+            if max(abs(point[0]-x),abs(point[1]-y))>10000:continue
+            if site(point)["admitted"]:
+                cut=box(*point,95)
+                if all(cut.sized(295).interacting(c["cut"]).is_empty()for c in candidates):candidates.append(dict(point=point,cut=cut))
+            if len(candidates)==4:break
+        if len(candidates)<2:continue
+        points=[c["point"]for c in candidates];cuts=pya.Region()
+        for c in candidates:cuts+=c["cut"]
+        xs=[p[0]for p in points];ys=[p[1]for p in points]
+        pad=pya.Region(pya.Box(min(xs)-300,min(ys)-300,max(xs)+300,max(ys)+300))
+        tests=conductor_guard(pad,cuts,owned,full,other)
+        array_trials.append(dict(seed=seed,points=points,tests=tests))
+        if all(v for k,v in tests.items()if k!="new_m2_material"):
+            return dict(cuts=cuts,pad=pad,center=seed),report(points=points,pad=pad)
+    return None,report(reason="no guarded two-to-four-via array in bounded actual same-net M1 search")
+
 def controls():
     passed=prior.controls()+prior.coordinate_controls()
     empty={n:pya.Region()for n in LAYERS}
@@ -94,7 +111,13 @@ def controls():
     need(not conductor_guard(metal,cut,own,full,{(10,24):box(0,0,50)})["no_unclassified_m2_or_via_drawing"],"unclassified mask");passed.append("reject unclassified mask")
     r=wire([[0,0],[1000,0],[1000,1000]])
     need(r.count()==1 and (box(0,0,300)-r).is_empty()and(box(1000,1000,300)-r).is_empty(),"Manhattan connected endpoints");passed.append("Manhattan endpoints connected")
-    need(len(passed)==27,"19 unchanged plus8 geometry controls");return passed
+    synthetic=dict(point_dbu=[0,0],metal=8)
+    access_row,details=access(synthetic,own,full,{})
+    need(access_row is not None and len(details["admitted_sites"])>=2 and(box(*access_row["center"],1)-access_row["pad"]).is_empty(),"bounded access with connected route landing");passed.append("bounded original metal access and route landing")
+    blocked={n:r.dup()for n,r in full.items()};blocked[10]=box(0,0,20000)
+    access_row,details=access(synthetic,own,blocked,{})
+    need(access_row is None and details["attempted_sites"]and all(not x["admitted"]for x in details["attempted_sites"]),"full access blockers retained");passed.append("all rejected access guards retained")
+    need(len(passed)==29,"19 unchanged plus10 geometry controls");return passed
 def region_snapshot(layout,top):
     return {(layout.get_info(li).layer,layout.get_info(li).datatype):pya.Region(top.begin_shapes_rec(li)).merged()for li in layout.layer_indexes()}
 def generate(base,cfg):
@@ -123,7 +146,7 @@ def generate(base,cfg):
         aa,ar=access(a,owned,current,other);bb,br=access(b,owned,current,other)
         result=dict(label=label,source_anchor=a,sink_anchor=b,component=component,source_access=ar,sink_access=br,candidates=[],selected=None)
         if aa is not None and bb is not None:
-            x,y=a["point_dbu"];xx,yy=b["point_dbu"]
+            x,y=aa["center"];xx,yy=bb["center"]
             routes=[[[x,y],[xx,y],[xx,yy]],[[x,y],[x,yy],[xx,yy]]]
             # Bounded explicit horizontal detours; preserve every rejected guard.
             for delta in(-2000,2000,-5000,5000,-10000,10000):
