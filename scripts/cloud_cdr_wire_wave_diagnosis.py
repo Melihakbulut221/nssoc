@@ -137,6 +137,28 @@ def diagnose():
         starts=np.flatnonzero(mask&~np.r_[False,mask[:-1]]);ends=np.flatnonzero(mask&~np.r_[mask[1:],False])
         episodes=[dict(start_s=float(t[i]),end_s=float(t[j]),minimum_vce_v=float(a[i:j+1].min()))for i,j in zip(starts,ends,strict=True)]
         failures[name]=dict(device=describe(dev["native_id"]),minimum_vce_v=float(a[worst]),at_s=float(t[worst]),vc_v=float(vc[worst]),vb_v=float(vb[worst]),ve_v=float(ve[worst]),ic_a=float(d["@q."+name+".qnpn13g2[ic]"][worst]),samples_below=len(ids),episodes=episodes,signals_at_minimum=signals(worst))
+    # Quantify voltage loss between terminals that share the SAME extracted net.
+    # The distributed wire model remains unchanged; no ideal electrical alias is added.
+    for name,row in failures.items():
+        i=int(np.argmin(abs(t-row["at_s"])));rec=records[row["device"]["native_id"]]
+        neighbors={}
+        for term in rec["terminals"]:
+            if term["terminal"]not in("C","E"):continue
+            key=(term["native_cluster"],term["native_net"])
+            origin_node=m["binding"]["interface"].get(term["node"],"xpd."+term["node"].lower())
+            origin=float(v(origin_node)[i]);members=[]
+            for other in contract["device_records"]:
+                if other["model"]=="ptap1":continue
+                hits=[q for q in other["terminals"]if(q["native_cluster"],q["native_net"])==key]
+                if not hits:continue
+                measurements=[]
+                for q in other["terminals"]:
+                    node=m["binding"]["interface"].get(q["node"],"xpd."+q["node"].lower())
+                    value=float(v(node)[i])
+                    measurements.append(dict(terminal=q["terminal"],native_net=q["native_net"],logical_labels=sorted(logical.get((q["native_cluster"],q["native_net"]),set())),node=node,voltage_v=value,same_extracted_net=(q["native_cluster"],q["native_net"])==key,delta_from_failed_terminal_v=value-origin))
+                members.append(dict(native_id=other["native_id"],model=other["model"],parameters=other["parameters"],terminals=measurements))
+            neighbors[term["terminal"]]=dict(native_net=term["native_net"],origin_node=origin_node,origin_voltage_v=origin,connected_devices=members)
+        row["same_net_native_voltage_drops_at_minimum"]=neighbors
     need(set(failures)=={"xpd.xd0061","xpd.xd0062","xpd.xd0115","xpd.xd0116"},"same current four HBT failures")
     timing={}
     for kind,checks,expected,phases,limit in[("sampler",m["sampler_checks"],m["expected_samples"],(.3,.6,.9),.3),("comparison",m["comparisons"],m["expected_comparisons"],(.6,.75,.9),.6)]:
