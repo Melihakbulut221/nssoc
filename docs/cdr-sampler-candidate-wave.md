@@ -1,11 +1,11 @@
-# Original-master q15 loaded transfer diagnosis
+# Original-master q15 actual-selector transfer diagnosis
 
-This reads the complete existing native wave from run41277054717, sourcee85179e6900c2be9d931a8b30549c99f47c7617d, release430382305. No additional simulator or geometry mutation runs. Native payload remains only on GitHub.
+Existing native run 41277054717 remains the sole measured circuit. No simulator or geometry mutation runs. All native data remain on GitHub.
 
-The original124HBT/all6stage/1530delay/phaseVI reproduction and simultaneous operating points remain unchanged. Seven frozen-reader, thirteen event and seven transfer controls must pass before archive acquisition.
+Initial transfer analysis 41279400555 refused a wrong B-to-selector assumption. Its complete failure evidence is retained at 1992e4d33a5871e498282e7a1557c0cced73ee12 / docs/evidence/cdr-sampler-candidate-wave-41279400555. The actual 500-device composition proves selectors are driven by retimed D: DQP cluster18 through R234 to base150, DQN cluster17 through R236 to base151, shunts R235/R237 and parallel MIM275/276. Q131/Q132 and Q149/Q150 share those base clusters.
 
-Four authenticated paths are traced: A->AD, C->CD, B->S0 and B->S1. Each receiver base must have one native series resistor, one parallel MIM and one actual avss shunt from its assigned sampler collector. All500native devices and receiver terminal identities are preserved. Shared B divider nodes and distinct routed receiver leaves are retained.
+Paths are A->AD, C->CD, D->S0 and D->S1. Seven frozen-reader, thirteen operating-point and eight transfer controls run first. An authenticated actual-composition preflight verifies all four native paths, receiver terminals, collector polarity, series resistors, parallel MIM and real ground shunts before the separate archive job can run. The extracted native composition must equal that preflight input.
 
-A hysteretic crossing detector uses50mV for sampler/buffer observations and10mV for internal bases. These are diagnostic noise thresholds, not altered external acceptance gates. A causal match requires exactly one same-direction crossing before the next input transition and within125ps. Missing/ambiguous and preceding/following same-direction events are retained; the tool does not infer a successful transfer from unmatched or ambiguous edges.
+Full-wave diagnosis reproduces all124 HBT metrics, all6 stages and1530 delays and phase/VI without changing original acceptance gates. It additionally records A->C and B->D retimer crossings and expected sequence index lags. Diagnostic hysteresis is50mV for sampler/buffer and10mV for base, with causal125ps event matching; missing, ambiguous, preceding and following events remain visible. These diagnostic thresholds are not electrical acceptance limits. Pipeline crossings alone do not prove retiming correctness.
 
-The unchanged electrical screen still requires100mV/37.5ps sampler and100mV/75ps XOR validity. This diagnosis cannot establish circuit acceptance, freshPEX, closed-loop/fullPHY operation or finalchip timing. The complete events and topology are published as derived JSON.
+The sampler100mV/37.5ps and XOR100mV/75ps gates remain unchanged. Neither the preflight nor this analysis establishes accepted PHY, fresh PEX, new physical layout, or final chip timing.

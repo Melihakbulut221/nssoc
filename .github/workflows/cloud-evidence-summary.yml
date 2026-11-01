@@ -48,6 +48,10 @@ jobs:
           python3 -B scripts/check_cdr_sampler_candidate_frozen.py 2>&1 | tee cloud-sampler-candidate-controls/frozen.log
           python3 -B scripts/check_cdr_sampler_candidate_wave.py 2>&1 | tee cloud-sampler-candidate-controls/events.log
           python3 -B scripts/check_cdr_sampler_transfer.py 2>&1 | tee cloud-sampler-candidate-controls/transfer.log
+      - name: Authenticate actual receiver topology before native archive acquisition
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 -B scripts/cdr_sampler_transfer.py --preflight
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
