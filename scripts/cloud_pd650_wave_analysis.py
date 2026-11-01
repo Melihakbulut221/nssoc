@@ -69,6 +69,10 @@ def compare(actual,prior):
 def stats(values):
     return dict(min=float(np.min(values)),p05=float(np.quantile(values,.05)),median=float(np.median(values)),
                 mean=float(np.mean(values)),p95=float(np.quantile(values,.95)),max=float(np.max(values)))
+def checked_phase_average(integrated,producer):
+    assert np.isfinite(integrated) and np.isfinite(producer),"finite measured phase"
+    assert abs(integrated-producer)<1e-13,"phase report must match authenticated integration"
+    return float(integrated)
 def controls():
     source_gate();read=parser();passed=[]
     with tempfile.TemporaryDirectory()as temp:
@@ -120,6 +124,14 @@ def controls():
         except AssertionError:passed.append("reject producer "+key+repr(value))
         else:raise AssertionError("Accepted invalid producer "+key)
     assert len(passed)==29
+    actual=.029329406448082424
+    assert checked_phase_average(actual,actual)==actual
+    passed.append("phase report bound to measured integral")
+    for bad in (1.0,.9,float("nan")):
+        try:checked_phase_average(bad,actual)
+        except AssertionError:passed.append("reject overwritten or nonfinite phase "+repr(bad))
+        else:raise AssertionError("accepted overwritten phase")
+    assert len(passed)==33
     return dict(status="PASS_SOURCE_READER_AND_ORIGINAL_MEASUREMENT_CONTROLS",source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),count=len(passed),passed=passed,native_simulation=False)
 def relative_member(name,source_directory):
     assert source_directory=="cloud-sampler-load"
@@ -250,8 +262,8 @@ def analyze(base,index):
         stages[tag]=dict(reproduced_original_gate=reproduced,active_output_diff_v=stats(delta[active]),
            active_commonmode_v=stats(((v(p)+v(n))/2)[active]),by_transition=transition,
            worst_cases=worst,events=events,probe_devices=probe_devices.get(tag,[]))
-    phase=float(np.trapezoid(((v("xp")-v("xn"))-(v("yp")-v("yn")))[window],t[window])/(t[window][-1]-t[window][0]))
-    assert abs(phase-m["phase_average_v"])<1e-13 and phase<.03
+    phase_average_v=float(np.trapezoid(((v("xp")-v("xn"))-(v("yp")-v("yn")))[window],t[window])/(t[window][-1]-t[window][0]))
+    assert abs(phase_average_v-m["phase_average_v"])<1e-13 and phase_average_v<.03
     contract=json.loads((base/"native/candidate/composition.json").read_bytes())
     planes=json.loads((base/"native/candidate/planes.json").read_bytes())
     logical={}
@@ -382,7 +394,7 @@ def analyze(base,index):
         save(name,value)
     result=dict(status="PASS_AUTHENTICATED_FAILURE_ANALYSIS_ONLY",source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),
       producer_source=SOURCE,producer_run=PRODUCER_RUN,producer_release=RELEASE,raw_capture=capture,
-      all_six_original_measurements_reproduced=True,phase_average_v=phase,phase_gate_v=.03,
+      all_six_original_measurements_reproduced=True,phase_average_v=checked_phase_average(phase_average_v,m["phase_average_v"]),phase_gate_v=.03,
       summary={k:{key:value for key,value in stage["reproduced_original_gate"].items()if key!="clock_to_valid_by_bit_s"}for k,stage in stages.items()},
       original_devices_passed=True,native_simulation=False,source_models_changed=False,
       physical_acceptance=False,timing_accepted=False,full_phy_accepted=False,
