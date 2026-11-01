@@ -1,11 +1,27 @@
-# Cloud continuation — checkpoint v260
+# Cloud continuation — checkpoint v261
 
-Updated: 2026-11-01T18:35:43.885358+00:00
+Updated: 2026-11-01T18:57:28.176139+00:00
 
 Latest instruction: **her şeyi bulutta yap, lokalde bir şey bırakma temizle.**
 It overrides the earlier local-execution wording in the active goal. All CAD, simulation, native archive/layout/waveform acquisition and numerical/geometric analysis run on GitHub. Local coordination uses source/API-derived text in RAM only. Never acquire native ODB/DEF/GDS/SPICE/raw archives locally, including RAM. The local workspace and project temp entries were verified empty, with no local CAD processes. Unrelated user files remain untouched.
 
-## Latest result: actual six-shortcut native view qualified; new RC basis frozen
+## Latest result: current six-shortcut fresh RC dispatched on cloud
+
+Physical run41335306847 and canonical run41336588343 passed on the actual six-shortcut GDS244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347:560DRC categories zero markers,deep/flat500-device LVS and13 faults; native78-file view,500devices/1446terminals/25ports/978anchors,full113x13 material identity. These results are not electrical/fullPHY or final mainchip timing acceptance.
+
+The current fresh RC host is scripts/cloud_cdr_wire_shortcuts_fresh_rc.py on codex/cdr-wire-shortcuts-fresh-rc. Current source c6abc571734c0e3197ce1227e990b7b1420610da protects2111 source/config files. Original numerical16sources/30definitions/9blocks remain byte-exact; current hosted admission and current11phase receipts bind actual78-file inputs, actual25-port order (iry,yp,yn),all raw13/MIM5+9/composition21/order controls. No old RC numerical result is reused as a new result. Original authenticated658-file runtime cache is restored and revalidated only on GitHub.
+
+Initial run41338512381/source2c100541638c37b012447e41c50f3aba51e19e9b failed source preflight with KeyError bytes;1137 historical source pins contain sha256 only. No native input/extraction started. Full original traceback and7-file proof are preserved under docs/evidence/wire-rc-terminal-41338512381. The fix checks every declared SHA256, optional size and Git blob identity, with7 source-schema fixture tests and no weakened numerical acceptance. It also includes host-failure.json in future source-control artifacts.
+
+Fixed run41339125361/sourcec6abc571734c0e3197ce1227e990b7b1420610da was independently dispatched once. Reserved exact-source release430788452/tag cloud-results-41339125361-1-cdr-wire-shortcuts-fresh-rc. Watch source-controls then native-rc; do not duplicate dispatch. Workflow native timeout360min; each actual command bounded1200sec with supervisor evidence. Runtime input/cache, native current view, extraction, all raw results and permanent complete archive remain cloud-only.
+
+NEXT: collect actual terminal current RC evidence, preserving failures, then require actual original complete numerical qualification before unchanged loaded-wave/device/phase/V-I validation. New shortcut electrical improvement remains unmeasured. Nominal RC is not foundry corner RC or production signoff.
+
+Mainchip full64 run41323446729 remains independently live on sourceff1c0e6163e0ba1537a075d50e940fafc9332c64; no duplicate restart. Its native process deadline14400s and outer18000s are separate from observation. After terminal inspect actual output classes/pins, native connectivity/PG/DRC/antenna, matching154480-instance netlist including1351diodes, newRC and unchanged3cornersetuphold. Oldroute12netlist153130instances is stale.
+
+User latest instruction governs all work: everything on cloud, no project files/native payloads on local storage. Local workspace/temp are empty; only source/API/derived text is handled in RAM. Native archives/GDS/L2N/ODB/DEF/SPICE/raw must never be downloaded locally even into RAM. Monitor remains8h/read-only automatic_native_dispatch:false; prior502 not declared resolved. Full serialGen3x4PHY and final mainchip routing/timing remain open.
+
+## Previous checkpoint v260: actual six-shortcut native view qualified; new RC basis frozen
 
 Run41336588343/source2e42588a8ae03d6ef460c5cecf16943d715c5147 completed successfully.39 source controls and all eight actual native phases passed. The physically qualified GDS244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347 now has a fresh78-file native view.
 Full identity preserved:500 devices,1446 terminals,25 ports,978 anchors,238 native nets. All160 planes/19 plane faults,16 leaf placements/5 independent geometry controls, source-pin recovery and native witness controls passed. Complete113-conductor x13-layer material comparison has1469 rows; exactly six M2 rows changed. Added area38344150DBU2 for each A/C path and39784150DBU2 for each D path. No new vias, missing conductor material or foreign partition changes.
