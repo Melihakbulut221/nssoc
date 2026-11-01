@@ -20,7 +20,7 @@ Run source-controls independently on the exact source first. The simulate dispat
 
 Existing distributed interconnect RC is retained for comparison only. No new geometry or RC extraction is claimed. A promising electrical result still requires regenerated legal layout, fresh extracted parasitics and full corner/closed-loop/link qualification. This experiment cannot establish full serial PHY, chip routing, final setup/hold or production acceptance.
 
-Current status: source implementation prepared; controls and native outcome must be recorded from actual jobs.
+Current status: native screening completed and was rejected. Independent full-wave analysis reproduced all failures; see the execution evidence below.
 
 ## Execution evidence
 
