@@ -33,6 +33,6 @@ The new measurement path must observe all200 MOS currents and preserve every ori
 
 Existing distributed RC is retained in this intrinsic candidate. Any electrical success still requires independent reference, actual geometry generation and routing, full DRC/LVS, fresh extraction and all-origin/unit RC rebinding, PVT/closed-loop checks, serial PHY integration and final chip timing. No PHY/physical/final timing acceptance is claimed.
 
-## Subsequent continuation v228
+## Subsequent continuation v229
 
-Expansion binding and projection are now qualified by41287453836, and actual transient attempt41287653458 has been dispatched on exact source030ef6022a00fde8bfc787690c1ce2ada0044963. Electrical result is pending; see [expanded-MOS loaded simulation](cdr-mos-parallel-loaded-simulation.md). The preceding no-dispatch statement described the generation-only checkpointv228 and is superseded by this actual run.
+Generation-only checkpointv227 was followed by qualified expansion binding and actual preparation attempt41287653458, which failed before simulator execution because baseline/candidate globals were mixed. The isolated correction is qualified by41288015065; new native attempt41288195752/source d638e0e3cd15a0ee930212c27ab1f238b5085237 is active. No electrical acceptance yet. See [expanded-MOS loaded simulation](cdr-mos-parallel-loaded-simulation.md).
