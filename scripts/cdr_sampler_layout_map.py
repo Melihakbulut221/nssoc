@@ -71,6 +71,10 @@ def join(loc,inventory,composition,targets,counts=(500,4928)):
 def extended_targets(baseline,candidate,extra):
     require(not(set(baseline)&set(extra)),"additional targets do not replace baseline targets")
     require(candidate==(baseline|extra),"exact retained baseline plus additional targets")
+def mixed_targets(baseline,candidate,extra,restored):
+    require(set(restored)<=set(baseline),"all restored loads belong to baseline")
+    retained={k:v for k,v in baseline.items()if k not in restored}
+    extended_targets(retained,candidate,extra)
 def literal_targets(raw):
     nodes=[n for n in ast.parse(raw).body if isinstance(n,ast.Assign)and any(isinstance(t,ast.Name)and t.id=="TARGETS"for t in n.targets)]
     require(len(nodes)==1,"one literal candidate target definition")
@@ -122,6 +126,15 @@ def controls():
         try:extended_targets(left,bad,extra)
         except ValueError:refused.append(name)
         else:raise AssertionError("accepted "+name)
+    # Restored loads must be removed; retained targets must be byte-equivalent.
+    original={1:left[1],3:left[1]};new={1:left[1]}|extra
+    mixed_targets(original,new,extra,{3})
+    for name,bad in [("restored target still changed",new|{3:original[3]}),
+                     ("retained target dropped",extra),
+                     ("retained target altered",new|{1:("2.6u","2.0u","32u",("avdd",16),("out1",21))})]:
+        try:mixed_targets(original,bad,extra,{3})
+        except ValueError:refused.append(name)
+        else:raise AssertionError("accepted "+name)
     return dict(synthetic_only=True,refused=refused,positive_shared_cell_fixture=True,
         positive_unbound_physical_instance_fixture=True,positive_conflicting_target_geometry_fixture=True,**FLAGS)
 def main():
@@ -133,15 +146,16 @@ def main():
         raw=(ROOT/path).read_bytes();require(dict(bytes=len(raw),sha256=sha(raw))==pin,"exact source "+path)
     if args.controls:OUT=ROOT/"cloud-sampler-layout-map-controls"
     OUT.mkdir(exist_ok=False)
-    c=controls();(OUT/"controls.json").write_bytes(encode(c));require(len(c["refused"])==13,"all corruption refusals")
+    c=controls();(OUT/"controls.json").write_bytes(encode(c));require(len(c["refused"])==16,"all corruption refusals")
     if args.controls:print(json.dumps(c));return
     cfg=json.loads((ROOT/"scripts/cdr-sampler-layout-map-inputs.json").read_bytes())
     raw={name:fetch(pin)for name,pin in cfg["inputs"].items()}
     for name,value in raw.items():(OUT/name).write_bytes(value)
     targets=literal_targets(raw["candidate.py"]);baseline=literal_targets(raw["baseline-q15.py"])
     require(set(baseline)=={175,176,182,183,184,185,191,194,202,205,212,214,220,221,222,223},"exact retained sixteen baseline targets")
-    extended_targets(baseline,targets,EXTRA)
-    require(len(targets)==24,"exact24 candidate devices")
+    restored={175,176,212,214}
+    mixed_targets(baseline,targets,EXTRA,restored)
+    require(len(targets)==20,"exact20 candidate devices")
     loc=json.loads(raw["locations.json"])
     require(loc["status"]=="PASS_ALL_500_DEVICES_HAVE_UNIQUE_PHYSICAL_PCELL_ENCLOSURE","original qualified enclosure report")
     inputs=loc["inputs"]
@@ -150,7 +164,8 @@ def main():
         require(matches==[expected],"same exact native geometry and inventory provenance")
     result=join(loc,json.loads(raw["inventory.json"]),json.loads(raw["composition.json"]),targets)
     result["candidate_source"]=cfg["inputs"]["candidate.py"]["source"]
-    result["retained_q15_targets"]=sorted(baseline)
+    result["retained_q15_targets"]=sorted(set(baseline)-restored)
+    result["restored_original_cd_output_ids"]=sorted(restored)
     result["additional_ac_divider_targets"]=sorted(EXTRA)
     result["all_instance_sharing_audited"]=True
     result.update(source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),baseline_gds_sha256=cfg["baseline_gds_sha256"],baseline_lvsdb_sha256=cfg["baseline_lvsdb_sha256"])
