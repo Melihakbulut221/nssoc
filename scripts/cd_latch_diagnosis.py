@@ -50,6 +50,22 @@ def topology(comp,report):
   points=report["binding"]["probe_witnesses"]
   need(pins(g["slave_data"],"C")==[points[tag+"qp"]["native_cluster"],points[tag+"qn"]["native_cluster"]],"actual sampled outputs")
  return byid
+def clock_connections(rows):
+    result={}
+    for tag,g in GROUPS.items():
+        ids=[i for role,a in g.items()if role.endswith("_clock")for i in a]
+        clusters=sorted({term(rows[i],"E")for i in ids})
+        traced=[]
+        for cluster in clusters:
+            neighbors=[dict(record=r,connected_terminals=[t["terminal"]for t in r["terminals"]if t["native_cluster"]==cluster])
+                for r in rows.values()if any(t["native_cluster"]==cluster for t in r["terminals"])]
+            gates=sorted({t["native_cluster"]for n in neighbors for t in n["record"]["terminals"]if t["terminal"]=="G"})
+            gate_neighbors={str(gate):[dict(record=r,connected_terminals=[t["terminal"]for t in r["terminals"]if t["native_cluster"]==gate])
+                for r in rows.values()if any(t["native_cluster"]==gate for t in r["terminals"])]for gate in gates}
+            traced.append(dict(clock_emitter_cluster=cluster,clock_ids=[i for i in ids if term(rows[i],"E")==cluster],
+                complete_direct_neighbors=neighbors,mos_gate_connections=gate_neighbors))
+        result[tag]=traced
+    return result
 def main():
  need(os.environ.get("GITHUB_ACTIONS")=="true"and os.environ.get("GITHUB_RUN_ATTEMPT")=="1","single cloud execution")
  cfg=json.loads((ROOT/CFG).read_bytes())
@@ -58,7 +74,7 @@ def main():
  OUT.mkdir(exist_ok=False);raw={k:fetch(p)for k,p in cfg["inputs"].items()}
  for k,b in raw.items():(OUT/k).write_bytes(b)
  report=json.loads(raw["measurement.json"]);result=json.loads(raw["operating-points.json"]);comp=json.loads(raw["composition.json"])
- need(report["current_context"]==cfg["producer_context"]and report["devices_passed"]is True,"exact qualified nominal q15 case")
+ need(report["current_context"]==cfg["producer_context"]and report["devices_passed"]is True,"exact original mixed20 nominal case")
  need(result["status"]=="COMPLETE_CANDIDATE_WAVE_HEADROOM_DIAGNOSIS"and result["all124HBT_metrics_reproduced"]and result["all6stage_and1530_bit_delays_reproduced"]and result["original_phase_and_VI_reproduced"],"original full-wave metric reproduction")
  rows=topology(comp,report);events={}
  for tag,groups in GROUPS.items():
@@ -82,10 +98,12 @@ def main():
    events[tag].append(dict(event=point["event"],signed_margin_v=point["signed_margin_v"],
      observed_clock_v={n:point["observed_nodes_v"][n]for n in("cp","cn")},groups=group_rows))
  out=dict(status="COMPLETE_AUTHENTICATED_CD_LATCH_SNAPSHOTS",source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),
-   producer_context=cfg["producer_context"],topology_groups=GROUPS,events=events,
+   producer_context=cfg["producer_context"],topology_groups=GROUPS,events=events,clock_emitter_connections=clock_connections(rows),
+   current_observation_limit="Only HBT collector currents are captured at these instants; static MOS gate connectivity is not a simultaneous current or causality proof.",
    interpretation="Paired currents and voltages at each original common timestamp. Global extrema remain separate; these observations are not proof that resizing fixes the circuit.",
    native_payloads_acquired=False,native_simulation_rerun=False,gates_changed=False,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False)
  (OUT/"result.json").write_bytes(enc(out))
+ (OUT/"clock-emitter-connections.json").write_bytes(enc(out["clock_emitter_connections"]))
  summary={tag:[dict(event=x["event"],signed_margin_v=x["signed_margin_v"],clock=x["observed_clock_v"],
   groups={n:{k:v for k,v in row.items()if k not in("devices","original_alltime_device_checks")}for n,row in x["groups"].items()})for x in points]for tag,points in events.items()}
  (OUT/"summary.json").write_bytes(enc(summary));print(json.dumps(summary),flush=True)
