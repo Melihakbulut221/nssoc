@@ -136,6 +136,38 @@ run_gen12_record_cdc() {
     fi
 }
 
+run_guarded_pcie() {
+    local name=$1 suite expected work python rc counts p f s
+    case "$name" in
+        pcie_shared_serial_front) suite=shared; expected=25 ;;
+        pcie_training_epoch_ingress) suite=epoch; expected=30 ;;
+        *) return 2 ;;
+    esac
+    work=$(mktemp -d "$LOG_DIR/guarded-pcie-$suite.XXXXXX") || return 1
+    python="$PY"
+    [ ! -x "$ROOT/hw/.venv/bin/python" ] || python="$ROOT/hw/.venv/bin/python"
+    timeout --signal=TERM --kill-after=10s 3600 \
+        "$python" "$ROOT/scripts/check_pcie_guarded_root.py" --suite "$suite" \
+        --out "$work/capture" > "$LOG_DIR/$name.log" 2>&1
+    rc=$?
+    if ! counts=$("$python" "$ROOT/scripts/check_pcie_guarded_root.py" --suite "$suite" \
+        --counts "$work/capture/result.json" 2>>"$LOG_DIR/$name.log"); then
+        printf '  %-28s INVALID/MISSING GUARDED RESULT (driver rc=%s; %s)\n' "$name" "$rc" "$LOG_DIR/$name.log"
+        suite_fail=$((suite_fail + 1))
+        return
+    fi
+    read -r p f s <<< "$counts"
+    pass_total=$((pass_total + p))
+    fail_total=$((fail_total + f))
+    skip_total=$((skip_total + s))
+    if [ "$rc" != "0" ] || [ "$p" != "$expected" ] || [ "$f" != "0" ] || [ "$s" != "0" ]; then
+        printf '  %-28s %s passed, %s failed, %s skipped; NOT CLEAN (driver rc=%s)\n' "$name" "$p" "$f" "$s" "$rc"
+        suite_fail=$((suite_fail + 1))
+    else
+        printf '  %-28s %s passed, %s skipped\n' "$name" "$p" "$s"
+    fi
+}
+
 run_one() {
     local dir=$1 mk=$2 name=$3
     suite_total=$((suite_total + 1))
@@ -145,6 +177,10 @@ run_one() {
     fi
     if [ "$name" = "soc_pcie_ethernet" ]; then
         run_pcie_ethernet || suite_fail=$((suite_fail + 1))
+        return
+    fi
+    if [ "$name" = "pcie_shared_serial_front" ] || [ "$name" = "pcie_training_epoch_ingress" ]; then
+        run_guarded_pcie "$name" || suite_fail=$((suite_fail + 1))
         return
     fi
     # The results-file glob. Every suite under hw/tb and hw/soc/tb/cocotb
@@ -344,6 +380,14 @@ for dir in hw/tb hw/soc/tb/cocotb; do
              [ "$mod" = "test_soc_pcie_gen12_recovered_records_v1" ]; } &&
            "$PY" "$ROOT/scripts/check_pcie_gen12_record_cdc_root.py" --bind-module "$mod"; then
             continue
+        fi
+        if [ "$dir" = "hw/soc/tb/cocotb" ]; then
+            case "$mod" in
+                test_pcie_shared_serial_front|test_pcie_shared_serial_front_composition|test_soc_pcie_gen3_recovered_events_v2|test_pcie_training_epoch_control|test_pcie_training_ingress)
+                    if "$PY" "$ROOT/scripts/check_pcie_guarded_root.py" --bind-module "$mod"; then
+                        continue
+                    fi ;;
+            esac
         fi
         case " $SKIP_MODULES " in *" $mod "*) continue ;; esac
         # Reached if some Makefile in this directory names it as MODULE or
