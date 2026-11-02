@@ -26,31 +26,31 @@
       "status": "in_progress",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41415994457"
     },
-    "41427042946": {
-      "branch": "codex/cdr-drain-m23-physical",
+    "41428154889": {
+      "branch": "codex/cdr-drain-m23-canonical",
       "conclusion": null,
       "jobs": [
         {
           "active_steps": [],
           "conclusion": "success",
-          "id": 125216077134,
+          "id": 125219736118,
           "name": "source-controls",
           "status": "completed"
         },
         {
           "active_steps": [
-            "Verify actual new GDS with full native DRC deep flat LVS and faults"
+            "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
           ],
           "conclusion": null,
-          "id": 125216227270,
-          "name": "native-physical",
+          "id": 125219931761,
+          "name": "native-canonical",
           "status": "in_progress"
         }
       ],
-      "run": 41427042946,
-      "source": "5b7b7532067870a402d5f1cd32610318652fe3cb",
+      "run": 41428154889,
+      "source": "198797326d783aba9a57e46ce9ce690863387490",
       "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41427042946"
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41428154889"
     }
   },
   "bounded_route_class_diagnosis_v238": {
@@ -327,7 +327,7 @@
     "physical_acceptance": false,
     "timing_accepted": false
   },
-  "checkpoint_version": 298,
+  "checkpoint_version": 299,
   "cloud_results_release_reservations": {
     "mainchip_artifact_recovery": {
       "exact_tag_target_verified": true,
@@ -2284,6 +2284,7 @@
   "continuation_note_v296": "## Current continuation: actual source M2 loaded rejection diagnosed; current physical access map\n\nPrevious rootv295=07ce5eb609b9a665e66dc76ab1a0f4b9d7b7ebbc/778inventory fully readback-verified. NativeCAD/GDS/ODB/SPICE/waves exclusivelyGitHub; local workspace empty. FullserialPCIeGen3x4PHY,mainchiprouting andfinalsetup/hold remain OPEN. The actual GDS9fef07bc passed full560DRC0/deep-flat500LVS13, canonical1469comparisons/73controls and freshRC41420011926; none proves electrical closure.\n\nLoaded41422407076/sourcee96ca21ed0c63dd0353cbd499be25c1b0ed22c75/release431279993 completed FAILURE after actual native transient exit0 with unchanged electrical gates. Complete raw113475rows/1152columns/1045823299bytes SHAb1824920ca04941650b2cab231f00dc6a1b926becbed42e302a3dd882465ac69, all rows original/unmodified, maxstep.3125ps/end34.25ns. Derived13130843225=1367845bytes SHA82afe810a9b53a9cb09703d3c2f3c3c6fdb5a6e2871d2a803fe0611c1edfb0a5. Complete native release index701266971=24685bytes SHA9b6e7cb5a8b8dc0e1fd43511ea3fec64b635bfd228b16b36d9933749fac206ee; parts701268444=1031bytes SHA1547b41abb98c612ce2b8d891b72cee788ff4e6ae7579efee53c52bb3c8d0736. Native parts701267008/701267393/701267724/701268167 remain cloud-only. Initial negative-fixture failed41422125181 preserved separately inv295; no native execution in that source-control failure.\n\nActual phase14.3817746547mV<30;VI43.1924974678uA<50. HBT61/62/115/116 minimumVce0.3373770346/0.3341069023/0.3595448875/0.3580410229V<0.4. SamplerA/B/C/D maximumvalid45.78125/41.71875/51.09375/54.53125ps>37.5;wrong-sign0/0/2/34;below100mV129/128/128/128 of765. C/Dsign errors improved from15/48 in old4ccf but remainfailed. ComparatorX/Y wrongsign387/44 anddelay118.90625ps alsofailed. No threshold/stimulus/case/portname relaxation. External8GHztest is not closedloopCDR.\n\nFullwave diagnosis41424462139/sourceaaf92f61a67cd74c33c6c871baf88b2be038caed/branchcodex/cdr-source-m2-wave-diagnosis SUCCESS. Derived13131201670=120771bytes SHAc2b8c82d9ea3bd6174c345a9a0bdda5eaa0670e7eff0e8e7f8b54edc010d9bdf. Every original native archive member authenticated; fullwave parsed, every HBTminimum and sampler/comparator margin/delay/sign count reproduced. Parser controls and entire diagnosis body byte-identical to qualifieda36dd3 except branch/current inputbindings. Sameexact4HBTfailure-set guard preserved.\n\nAt61/62worstVce:collector0.82577/0.82448V,emitter0.48840/0.49037V,Ic3.915/3.834mA. ConnectedMOS3..6 drains0.4342..0.4374V,sources0.2731..0.2764V,gates0.9561V. Collector's same-net driving emitters54/56 are46.5..67.0mVhigher. At115/116worst:collector0.84866/0.84918,emitter0.48911/0.49114,Ic3.959/3.879mA. MOS32..35drains0.4343..0.4374,sources0.2785..0.2817,gates0.9630. Collector driving106/108 same-net drop29.7..92.6mV. Emitter-to-MOS drops51..57mV remain. Source-localground reduction increasedcurrent; do not assume further local ground changes automatically fixheadroom.\n\nQualified passive41423647133/a11002d current9fef against ORIGINALb9b9reference: all8sourceReff -25.51015ohm (~56percent), to19.7183..20.1611ohm. Other24queries unchanged within2.1e-11ohm. Full500devices1446anchors114partitions preserved. Residual source-local7.01435ohm andshared4.88213/1.35196ohm contributions do not equal operatingloss without actualcurrent. Nativecollector/emittercritical edges retained inall32scope.\n\nCurrent read-only physicalmap41424965941/source6e68a6c8fc0f641803af5f05f492c10a0d021b97/branchcodex/cdr-source-m2-critical-access/release431298692. Uses actualcurrent freshRC41420011926 and current32query results41423647133. All103geometrycontrols unchanged; maps all978portcoordinates,documented7MIMrelocations,all24530native/exportedresistors and13nativeconductorunions. Only acquire_current metadata andinspect_critical_access producerconstants change; numerical/geometry bodies preserved. Await real native endpoint/owned/foreign material map before additional collector/emitter/groundlayout design. Keep existingVia1-only failure requiring4vias/everydrain; do not lowercoverage.\n\nMainchip41415994457/sourcef808321a65ca9197f10e75f2f59073d47095a718/release431237039 same live native47net routing. Follow exactjob, no timeout duplicates. Returncandidate requires originalglobalclasses,independentfullDRC,diodePG/connectivity/LVS,final3cornerSTA.\n\nRoot publishing uses hierarchical changedtrees after originalHTTP422, exactsource/nonforce ref guards and fullreadbacks. Derived ZIPs are permanently stored in separate evidence releases with digest/completebyte readback; never mutate sealed native producer assets. Readonly8hourmonitor automatic_native_dispatch=false. FullPHY/PVT/EM/production/mainchipfinaltiming remainOPEN.\n\nObserved at 2026-11-02T10:00:38.265877+00:00:\n- 41415994457: in_progress/None\n- 41422407076: completed/failure\n- 41424462139: completed/success\n- 41424965941: completed/success\n",
   "continuation_note_v297": "## Current continuation: actual drain M2/M3 candidate generated; full physical qualification dispatched\n\nPrevious verified rootv296=e153d93bb49f38c3d761d47c73d5bb77792503a5,780inventory. All nativeGDS/ODB/SPICE/wave archives exclusivelyGitHub; local workspace empty. FullserialPCIeGen3x4PHY,mainchiprouting andfinalsetup/hold remainOPEN.\n\nCurrent sourceM2 parent9fef07bc passed full560DRC/deepflatLVS13/canonical1469comparisons/freshRC41420011926 but loaded41422407076 actuallyREJECTED with engineexit0 and full113475rows1152columns1045823299bytes rawSHAb1824920ca04941650b2cab231f00dc6a1b926becbed42e302a3dd882465ac69. Phase14.3818mV<30;VI43.1925uA<50;fourHBTminVce.337377/.334107/.359545/.358041V<.4. SamplerA/B/C/Ddelay45.78125/41.71875/51.09375/54.53125ps>37.5;wrongsign0/0/2/34. ComparatorX/Y alsofailed. All fullwaves and scalar failures preserved rootv296 and release431279993. No gates loosened.\n\nFullwave diagnosis41424462139/aaf92f61 SUCCESS exactlyreproduces all scalar measurements with originalparser/body. Actual emitter-to-MOSdrain drops51..57mV and collector same-net drops~30..93mV. Ground-only repair increasedcurrent, so next candidate targets signal drain access. Passive41423647133/a11002d proves8ground paths-25.51015ohm vs ORIGINALb9b9 (~56percent), not electricalclosure.\n\nActual physicalmap41424965941/source6e68a6c8fc0f641803af5f05f492c10a0d021b97/release431298692 SUCCESS: all103controls,978original/extractedanchor ownership/coordinate checks,13conductorunions and24530native-exportedresistor endpoints/value/multiplicity. Derived13130664324=476687bytes SHAc3084a8740b194cb4eca40cf3f29bfc4c963898f2fa67e4c2ee7e012629162cb. Current realdrains have narrowM2/M3 at(x,y) and originalupperattachment(x,y+17600nm);8actual originalM1drains preserved.\n\nNEW generation41425901322/sourcefe2715306626db1367aca6dbf9637b1e06b35a20/branchcodex/cdr-drain-m23-reinforcement/release431305033 SUCCESS. All103original controls unchanged. GDS1075316bytes SHA5e5ef3940bb0e410af8bbb92376e2c1cb60e3c520e37b65c7e675af41e58603f. Originalinput9fef07bc1018452bytes;inputL2N2005450bytes SHA1c354daa4898a789eb0f91e52ac2dc6797b6abfbf79f45530ff866d5b53a3261. Derived13131907548=291402bytes SHA8d4f590d937513a006e97ffb315e70079c41198bdcd17c8ee1fd4cb42264b2b9;controls13130869316=1254bytes SHA95f3723d7b29d3741f1748a025b270e704010ac6493f3a40bc9580870e480ae7.\n\nAdded onlylayers10/29/30 (M2/Via2/M3) areas158400000/31479200/151100000nm2. For each8actualMOSdrain3/4/5/6/32/33/34/35, M2+M3 rectangle[x-150,y-200,x+1250,y+17800]nm. Via2 centers dx0/480/960,dy0..17280step480 admitted only exact190nm cut/50nm bothmetal enclosure/240nmexisting-new spacing. Actual109perdrain=872unique cuts; rejected originaloverlap/spacing positions retained. Every actualguard passed, full13nativeunions andserializeddelta verified, exact originalmaterial recovered afterreversal. No devices orVia1 changed. OriginalVia1-only failure staysrejected; that coveragegate was neverlowered. No physical/electrical acceptance fromgeneration.\n\nNEW fullphysical41426359185/source5b7b7532067870a402d5f1cd32610318652fe3cb/branchcodex/cdr-drain-m23-physical/release431308018. Same frozenphysicalcheckerSHA3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66,full560DRC/deep-flat500primitiveLVS13,43original source/contextcontrols. Candidateauthentication exactGDS/areas/872cutcenters/8drainidentities/two actualnativeemitter nets/individualmetal andvia guards. Current schematic andLEF areindependently matched to41420011926. Nativechecker/verificationbodies unchanged exceptlabel.\n\nNEXT: Follow actualphysical41426359185. Onfailure preserve allmarkers/native data and repairrealgeometry. OnPASS build NEW completecanonical delta proof relative current9fef07bc, with bothnativeemitterpartitions (actualdrain anchors), exactM2/Via2/M3 reconstruction ofall8rectangles/all872cuts, allother113partition/13layer material comparisons and500device1446terminal identity preservation. Do not reuse older source-ground-only canonicaldelta whitelist. Use actual measuredports and unchangedcanonical/nativequalification; then actualfreshRC and unchangedloaded fullwave gates. FullEM/currentdistribution/PVT/closedloopCDR/fullserialPHY remainopen.\n\nMainchip41415994457/sourcef808321a65ca9197f10e75f2f59073d47095a718/release431237039 continues same47net/64iteration/seed42/2thread/1691protectedclock routing with11GiBRSSinside12GiBnoswapcontainer and2GiBhostreserve. No duplicate on observationtimeout. Returnedroute requires originalglobalclasses,independentDRC,diodePG/connectivity/LVS andfinal3cornerSTA.\n\nCheckpointpublisher now uses hierarchical changedtrees with source/nonforce guards and fullreadbacks. Derived completeZIP archives in separateevidence releases, sealednativeproducer assets untouched. Readonly8hourmonitor automatic_native_dispatch=false. Goalnotachieved.\n\nObserved at 2026-11-02T10:10:54.852685+00:00:\n- 41415994457: in_progress/None\n- 41424965941: completed/success\n- 41425901322: completed/success\n- 41426359185: in_progress/None\n",
   "continuation_note_v298": "## Current continuation: actual drainM23 full DRC PASS; physical suite counter-sampling failure and exact-source retry\n\nPrevious rootv297=3edf3f984c470909742296cbca7394a1f63ca125/782inventory fully readback-verified. NativeCAD/GDS/ODB/SPICE/waves exclusivelyGitHub; local workspace empty. FullserialPCIeGen3x4PHY,mainchiprouting/finalsetuphold remainOPEN.\n\nGeneration41425901322/sourcefe2715306626db1367aca6dbf9637b1e06b35a20/release431305033 SUCCESS;103originalcontrols andall8realdrain geometricguards. ActualGDS1075316bytes SHA5e5ef3940bb0e410af8bbb92376e2c1cb60e3c520e37b65c7e675af41e58603f. AddedM2/Via2/M3 onlyareas158400000/31479200/151100000nm2,872new190nmVia2=109perdrain. SourceM2parent9fef07bc1018452bytes unchanged, same500primitives. Exactserializeddelta/originalmaterialreversal verified. Fullgeometry and operatingwave evidence recordedrootv296/v297.\n\nFirstphysical41426359185/source5b7b7532067870a402d5f1cd32610318652fe3cb/release431308018 terminalFAILURE. All43source/contextcontrols passed. Actualfull560DRC process0/zero markers PASS, reportSHA65323bd352a208ac709ce75e782faf3b6dd9291cce44ddb14ee15e01d5e919b0. Complete13fault LVSsuite did NOT finish: at85.60125085seconds qualified supervisor terminated processgroup with memory_sample_unavailable, CounterError Missing-counter resampling window exhausted. Lastsuccessfulsample489404KiBgroupRSS and14982108KiBavailable, farinside10GiBRSS/2GiBreserve. This is not memory-capacity exhaustion, geometryDRC failure or accepted LVSsuite. Nativechecker/source/gates unchanged.\n\nFailedderived13132670907=301000bytes SHA99e7eb505410a12b17fdaff7242a651db440ec8b98d8014764fa2f53d102d6c2. Complete native release index701315896=14697bytes SHAbcff77d2cb7b7d42625efcaa951c2984c0017956bb262ede8ab89edc6adf9c68;native701315895=3478583bytes SHA546e508f751d73f918d3f835fc4ff901d5e3c6102cf7ab015bb1688ee2865b29 stayscloud-only. Native fallback13132352526 also retained. Allfailed evidence and partialreports preserved.\n\nONE bounded exact-source retry41427042946/source5b7b7532067870a402d5f1cd32610318652fe3cb/branchcodex/cdr-drain-m23-physical/release431312532. The oldrun was authoritatively terminal and no samebranch job live before dispatch. Newrun attempt1, samecandidate/source/checker/control/limits; NOT restart because of an observationtimeout. No samplingguard disabled or threshold relaxed. Follow this exactrun. If sameinfraissue recurs, investigate qualified/proc counter sampler with preservedfailures and targeted race controls rather than loopblindretries.\n\nAfter actualfullphysicalPASS, create NEW canonical exactdelta proof relative9fef07bc using current producer41420011926 (freshRC) and fullphysicalretry41427042946. Actualtwoemitterpartitions correspond8MOSdrainanchors, additionsonly10/29/30,872cutcenters. Independently reconstruct eachrectangle[x-150,y-200,x+1250,y+17800] and each109cutarray: dx0/480/960,dy0..17280step480 excludingexisting-conflict(0,0)and(0,17280), then actualbothmetal50nm andold/new240nm spacing checks. Preserve originalfull113partition13layer material comparisons and500primitive1446terminal identity. Keep all73oldcanonicalcontrols andaddnewdrainadversarialcontrols. Neverreuse avss-onlyM2/Via1/Via2 whitelist. Then actualfreshRC,measureactualportorder and unchangedloadedfullwave gates.\n\nSourceM2loaded41422407076 remainsREJECTED:phase14.3818mV/30,VI43.1925uA/50,fourHBTminVce.337377/.334107/.359545/.358041V/.4,samplerA/B/C/Ddelay45.78125/41.71875/51.09375/54.53125ps/37.5,wrongsign0/0/2/34;comparatorsalsofailed. Fullraw1045823299bytes SHAb1824920ca04941650b2cab231f00dc6a1b926becbed42e302a3dd882465ac69 stayscloud-only. Fullwave diagnosis41424462139 reproducesallscalars; actualemitter-to-MOSdrops51..57mV andcollectorconnectiondrops30..93mV justifiednewdraincandidate. Physicalmap41424965941 passedall978port/24530R/13unionchecks. Groundpassive-25.51015ohm didnot closeelectricalgates. FullclosedloopCDR/PHY/PVT/EM notaccepted.\n\nMainchip41415994457/sourcef808321a65ca9197f10e75f2f59073d47095a718/release431237039 same live47netrouting. Follow samejob; eventualoriginalglobalclasses/independentDRC/diodePG/connectivity/LVS/final3cornerSTA. Readonly8hourmonitor automatic_native_dispatch=false. Separatepermanentevidence archives andhierarchicalrootpublication withallreadbacks; originalsealedproducerassets untouched.\n\nObserved at 2026-11-02T10:15:19.689654+00:00:\n- 41415994457: in_progress/None\n- 41426359185: completed/failure\n- 41427042946: in_progress/None\n",
+  "continuation_note_v299": "## Current continuation: drainM23 full physical PASS; complete independent canonical proof executing\n\nPrevious fully verified rootv298=2b20e771ed0fd0935ea555b6b67c4d6cc695eee5/783inventory. NativeGDS/ODB/SPICE/waves andarchives exclusivelyGitHub;local workspace empty. FullserialPCIeGen3x4PHY/mainchiprouting/finalsetuphold remainOPEN.\n\nActual candidateGDS1075316bytes SHA5e5ef3940bb0e410af8bbb92376e2c1cb60e3c520e37b65c7e675af41e58603f fromgeneration41425901322/sourcefe2715306626db1367aca6dbf9637b1e06b35a20/release431305033:8MOSdrains3/4/5/6/32/33/34/35,M2+M3rectangles[x-150,y-200,x+1250,y+17800],872newVia2(109perdrain),only10/29/30areas158400000/31479200/151100000nm2. All103originalgeometrycontrols passed,all13unions/exactserialization/materialreversal preserved,no primitive/Via1change.\n\nFULL PHYSICAL41427042946/source5b7b7532067870a402d5f1cd32610318652fe3cb/release431312532 SUCCESS. Actual560categoryDRC0markers,deep/flat500primitiveLVS PASS,all13faults REJECTED_EXPECTED_FAULT. All16steps checked. Same43source/contextcontrols and frozencheckerSHA3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66. Derived13132766774=354515bytes SHA30fb20281e48e53dced451e723a5b36b67027a9f6c3ec85494d394e57b96605f. Nativefallback13132702065 remainscloudonly. Earlier identicalsource41426359185 stopped onmissingcounter resampling afterfullDRCPASS; completefailedhistory retainedv298. Exactlyone retry, no relaxed supervisor or electrical/physical thresholds.\n\nNEW completecanonical41428154889/source198797326d783aba9a57e46ce9ce690863387490/branchcodex/cdr-drain-m23-canonical/release431319979. Independently reauthenticate all3236currentreference freshRC41420011926 native members; GDS9fef07bc1018452bytes andL2N2005450bytes SHA1c354daa4898a789eb0f91e52ac2dc6797b6abfbf79f45530ff866d5b53a3261. Completepassedphysicalcapsule also authenticated. New independent drain_m23_variant/prove_material reconstruct exact8rectangles/872cuts on ORIGINAL two emitter partitions. Eachoriginalnativeanchor must match fullcanonicalreference exactly; devices3..6 use$159 and32..35 use$700. OriginalM1point andoriginalM2/M3lower+upperattachments required. Exact190nm cuts/bothmetal50nm enclosure/old-new240nmspacing independently evaluated. Each109cutgrid dx0/480/960,dy0..17280step480 excluding(0,0),(0,17280).\n\nAll113nativepartitions\u00d713layers=1469material comparisons required; exactly6changedrows across2originalemitterpartitions/3layers;allothermaterial exact. Combinedcutcount436perpartition and totalarea perlayer pinned. Original500device1446terminal25port identities/anchors/transforms/sourcepinwitnessfaults and78canonicalfile census remain unchanged. All73oldsource/geometrycontrols preserved plus23newdrain mutations=96expectedcontrols, actual count must pass. Actualnative methods and supervisor boundaries unchanged; oldavss-onlywhitelist is not reused.\n\nNEXT: follow41428154889. OnactualcanonicalPASS authenticate fullqualification/files and measured semanticportorder; derive freshRC fromqualifiedbbbd992fcc8806fcb9132d22d09cf42c5c3c234b (sourceM2 freshRC41420011926). Preserve entire13commandpipeline/11native receipts/bothMIMorders/658runtimefiles, measureactualnewR/Ccounts/model/composition. Then derive loaded frome96ca21ed0c63dd0353cbd499be25c1b0ed22c75 using actualnewmodel/ports; preserve29frozen numericaldefinitions,5blocks9files,43fdprepare/measure/fullstimuli/phase-current-Vce-sampler gates. Ensure old-port-order negative fixtures are actuallydifferent from newlymeasuredorder; never assume previousorder. NegativeR-count fixture+=1 stays. Sourcefixtures remainnative_executed=false. Do not infer electricacceptance fromphysical/canonical/RC.\n\nParent9fefloaded41422407076 isREJECTED with fullraw1045823299bytes SHAb1824920ca04941650b2cab231f00dc6a1b926becbed42e302a3dd882465ac69;phase14.3818mV/30,VI43.1925uA/50,HBTminVce.337377/.334107/.359545/.358041V/.4,samplerA/B/C/Ddelay45.78125/41.71875/51.09375/54.53125ps/37.5,wrongsign0/0/2/34,comparatorsalsofail. Fullwave diagnosis41424462139 reproducedallscalars;collectorlosses30..93mV/emitter-to-MOS51..57mV justifiedactualdrainrepair. Newground-only resistance-25.51015ohm (~56percent vsoriginalb9b9) didnotcloseelectricalgates. PVT/EM/closedloopCDR/fullserialPHY remainopen.\n\nMainchip41415994457/sourcef808321a65ca9197f10e75f2f59073d47095a718/release431237039 same live47net/64iteration/seed42/2thread/1691protectedclock native routing. No duplicateonobservationtimeout. Need eventualoriginalglobalclasses/independentDRC/diodePG/connectivity/LVS/final3cornerSTA. Readonly8hourmonitor automatic_native_dispatch=false. Separatecomplete derivedZIP archives/hierarchicalrootpublication/fullreadbacks; sealedproducerassets unchanged.\n\nObserved at 2026-11-02T10:24:03.991418+00:00:\n- 41415994457: in_progress/None\n- 41427042946: completed/success\n- 41428154889: in_progress/None\n",
   "current_run_snapshot": [
     {
       "attempt": 1,
@@ -25821,6 +25822,30 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41425901322"
     },
     {
+      "branch": "codex/cdr-drain-m23-physical",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125213825496,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125213950219,
+          "name": "native-physical",
+          "status": "completed"
+        }
+      ],
+      "run": 41426359185,
+      "source": "5b7b7532067870a402d5f1cd32610318652fe3cb",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41426359185"
+    },
+    {
       "branch": "codex/mainchip-route47-repair",
       "conclusion": null,
       "jobs": [
@@ -25848,31 +25873,7 @@
     },
     {
       "branch": "codex/cdr-drain-m23-physical",
-      "conclusion": "failure",
-      "jobs": [
-        {
-          "active_steps": [],
-          "conclusion": "success",
-          "id": 125213825496,
-          "name": "source-controls",
-          "status": "completed"
-        },
-        {
-          "active_steps": [],
-          "conclusion": "failure",
-          "id": 125213950219,
-          "name": "native-physical",
-          "status": "completed"
-        }
-      ],
-      "run": 41426359185,
-      "source": "5b7b7532067870a402d5f1cd32610318652fe3cb",
-      "status": "completed",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41426359185"
-    },
-    {
-      "branch": "codex/cdr-drain-m23-physical",
-      "conclusion": null,
+      "conclusion": "success",
       "jobs": [
         {
           "active_steps": [],
@@ -25882,19 +25883,43 @@
           "status": "completed"
         },
         {
-          "active_steps": [
-            "Verify actual new GDS with full native DRC deep flat LVS and faults"
-          ],
-          "conclusion": null,
+          "active_steps": [],
+          "conclusion": "success",
           "id": 125216227270,
           "name": "native-physical",
-          "status": "in_progress"
+          "status": "completed"
         }
       ],
       "run": 41427042946,
       "source": "5b7b7532067870a402d5f1cd32610318652fe3cb",
-      "status": "in_progress",
+      "status": "completed",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41427042946"
+    },
+    {
+      "branch": "codex/cdr-drain-m23-canonical",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125219736118,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+          ],
+          "conclusion": null,
+          "id": 125219931761,
+          "name": "native-canonical",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41428154889,
+      "source": "198797326d783aba9a57e46ce9ce690863387490",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41428154889"
     }
   ],
   "divider_width4_terminal_v246": {
@@ -110376,6 +110401,84 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41427042946"
     }
   ],
+  "latest_observed_runs_v299": [
+    {
+      "branch": "codex/mainchip-route47-repair",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125179873554,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Resolve exact47net identities, prove reversible FIXED protection, reroute and measure full DRC"
+          ],
+          "conclusion": null,
+          "id": 125180094267,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41415994457,
+      "source": "f808321a65ca9197f10e75f2f59073d47095a718",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41415994457"
+    },
+    {
+      "branch": "codex/cdr-drain-m23-physical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125216077134,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125216227270,
+          "name": "native-physical",
+          "status": "completed"
+        }
+      ],
+      "run": 41427042946,
+      "source": "5b7b7532067870a402d5f1cd32610318652fe3cb",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41427042946"
+    },
+    {
+      "branch": "codex/cdr-drain-m23-canonical",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125219736118,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02"
+          ],
+          "conclusion": null,
+          "id": 125219931761,
+          "name": "native-canonical",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41428154889,
+      "source": "198797326d783aba9a57e46ce9ce690863387490",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41428154889"
+    }
+  ],
   "latest_terminal_runs": {
     "cdr_actual_terminal_current_ledger": 40171679250,
     "cdr_current_ledger_controls": 40171508329,
@@ -111136,11 +111239,11 @@
   },
   "local_cleanup_verification": {
     "native_payloads_cloud_only": true,
-    "observed_at": "2026-11-02T10:15:19.689654+00:00",
+    "observed_at": "2026-11-02T10:24:03.991418+00:00",
     "source_API_derived_text_RAM_only": true,
     "workspace_entries": 0
   },
-  "local_workspace_verified_empty_at": "2026-11-02T10:15:19.689654+00:00",
+  "local_workspace_verified_empty_at": "2026-11-02T10:24:03.991418+00:00",
   "mixed_canonical_proofs_v269": [
     {
       "prefix": "docs/evidence/mixed-canonical-terminal-41350835442",
@@ -111178,7 +111281,7 @@
     },
     "candidate_qualification_run": 41108174342,
     "code_deployed_head": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a",
-    "configured_inventory_rows": 783,
+    "configured_inventory_rows": 784,
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33",
     "every_hours": 8,
     "historical_scheduled_error": {
@@ -111191,7 +111294,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 298,
+    "inventory_version": 299,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -111291,7 +111394,7 @@
   ],
   "next_actions": [
     "Follow exact active mainchip41393730481/source7cc6f94a7a685423533a25bc0d418e33764e8366. Native outputs pending; no duplicate. Original64route41349316524 is terminal timeout; qualified iteration20 is input to current47net repair, not an active original job.",
-    "Firstphysical41426359185 actualfull560DRC0markers but supervisorcounterfailure interrupted fullLVS13suite. Follow exact-source retry41427042946. OnphysicalPASS independentnew2emittercanonicaldelta thenfreshRC/unchangedloaded; onrecurringcounterfailure fixsamplerwithracecontrols, no blindrepeat. Same live mainchip41415994457 finalDRC/LVS/STA.",
+    "Physical41427042946 actualfull560DRC0/deepflat500LVS13 PASS. Follow completeindependentcanonical41428154889 (73old+23newcontrols), all1469comparisons/twoemitterdelta. OnPASS actualfreshRC then unchangedloaded usingmeasurednewports/counts. Mainchip41415994457same live run; finalDRC/LVS/STA stillopen.",
     "After actual pin-metal correspondence and connectivity qualification, run remaining2702diode PG-contact audit, all1691original clock/fixed-net preservation, all1351diode pin attachments, final DRC/antenna and exact current candidate audits. Saved8-pass router397violations is not final physical acceptance.",
     "Export and authenticate current diode-inclusive154480instance netlist from current native ODB, generate fresh nominal SPEF and run original threecorners/20-4-8-8ns/5percent-derate STA only after physical admission. Do not reuse153130instance route12netlist or stale SPEF.",
     "FullserialPLL/CDR/SERDES/training/LTSSM/replay/credit/lane/TX/serialsoc_top and completeDRC/LVS/ESD/production approval remain open. No packet-interface route or diagnostic pass constitutes fullPHY acceptance.",
@@ -153030,7 +153133,7 @@
     "timing_accepted": false,
     "timing_limits_unchanged": true
   },
-  "root_source_before_receipt": "3edf3f984c470909742296cbca7394a1f63ca125",
+  "root_source_before_receipt": "2b20e771ed0fd0935ea555b6b67c4d6cc695eee5",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -153117,7 +153220,7 @@
       "run": 41349316524
     }
   ],
-  "updated_at": "2026-11-02T10:15:19.689654+00:00",
+  "updated_at": "2026-11-02T10:24:03.991418+00:00",
   "width8_wave_diagnosis_v250": {
     "proof": {
       "bytes": 5806735,

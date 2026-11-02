@@ -1,6 +1,29 @@
-# Cloud continuation — checkpoint v298
+# Cloud continuation — checkpoint v299
 
-Updated: 2026-11-02T10:15:19.689654+00:00
+Updated: 2026-11-02T10:24:03.991418+00:00
+
+## Current continuation: drainM23 full physical PASS; complete independent canonical proof executing
+
+Previous fully verified rootv298=2b20e771ed0fd0935ea555b6b67c4d6cc695eee5/783inventory. NativeGDS/ODB/SPICE/waves andarchives exclusivelyGitHub;local workspace empty. FullserialPCIeGen3x4PHY/mainchiprouting/finalsetuphold remainOPEN.
+
+Actual candidateGDS1075316bytes SHA5e5ef3940bb0e410af8bbb92376e2c1cb60e3c520e37b65c7e675af41e58603f fromgeneration41425901322/sourcefe2715306626db1367aca6dbf9637b1e06b35a20/release431305033:8MOSdrains3/4/5/6/32/33/34/35,M2+M3rectangles[x-150,y-200,x+1250,y+17800],872newVia2(109perdrain),only10/29/30areas158400000/31479200/151100000nm2. All103originalgeometrycontrols passed,all13unions/exactserialization/materialreversal preserved,no primitive/Via1change.
+
+FULL PHYSICAL41427042946/source5b7b7532067870a402d5f1cd32610318652fe3cb/release431312532 SUCCESS. Actual560categoryDRC0markers,deep/flat500primitiveLVS PASS,all13faults REJECTED_EXPECTED_FAULT. All16steps checked. Same43source/contextcontrols and frozencheckerSHA3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66. Derived13132766774=354515bytes SHA30fb20281e48e53dced451e723a5b36b67027a9f6c3ec85494d394e57b96605f. Nativefallback13132702065 remainscloudonly. Earlier identicalsource41426359185 stopped onmissingcounter resampling afterfullDRCPASS; completefailedhistory retainedv298. Exactlyone retry, no relaxed supervisor or electrical/physical thresholds.
+
+NEW completecanonical41428154889/source198797326d783aba9a57e46ce9ce690863387490/branchcodex/cdr-drain-m23-canonical/release431319979. Independently reauthenticate all3236currentreference freshRC41420011926 native members; GDS9fef07bc1018452bytes andL2N2005450bytes SHA1c354daa4898a789eb0f91e52ac2dc6797b6abfbf79f45530ff866d5b53a3261. Completepassedphysicalcapsule also authenticated. New independent drain_m23_variant/prove_material reconstruct exact8rectangles/872cuts on ORIGINAL two emitter partitions. Eachoriginalnativeanchor must match fullcanonicalreference exactly; devices3..6 use$159 and32..35 use$700. OriginalM1point andoriginalM2/M3lower+upperattachments required. Exact190nm cuts/bothmetal50nm enclosure/old-new240nmspacing independently evaluated. Each109cutgrid dx0/480/960,dy0..17280step480 excluding(0,0),(0,17280).
+
+All113nativepartitions×13layers=1469material comparisons required; exactly6changedrows across2originalemitterpartitions/3layers;allothermaterial exact. Combinedcutcount436perpartition and totalarea perlayer pinned. Original500device1446terminal25port identities/anchors/transforms/sourcepinwitnessfaults and78canonicalfile census remain unchanged. All73oldsource/geometrycontrols preserved plus23newdrain mutations=96expectedcontrols, actual count must pass. Actualnative methods and supervisor boundaries unchanged; oldavss-onlywhitelist is not reused.
+
+NEXT: follow41428154889. OnactualcanonicalPASS authenticate fullqualification/files and measured semanticportorder; derive freshRC fromqualifiedbbbd992fcc8806fcb9132d22d09cf42c5c3c234b (sourceM2 freshRC41420011926). Preserve entire13commandpipeline/11native receipts/bothMIMorders/658runtimefiles, measureactualnewR/Ccounts/model/composition. Then derive loaded frome96ca21ed0c63dd0353cbd499be25c1b0ed22c75 using actualnewmodel/ports; preserve29frozen numericaldefinitions,5blocks9files,43fdprepare/measure/fullstimuli/phase-current-Vce-sampler gates. Ensure old-port-order negative fixtures are actuallydifferent from newlymeasuredorder; never assume previousorder. NegativeR-count fixture+=1 stays. Sourcefixtures remainnative_executed=false. Do not infer electricacceptance fromphysical/canonical/RC.
+
+Parent9fefloaded41422407076 isREJECTED with fullraw1045823299bytes SHAb1824920ca04941650b2cab231f00dc6a1b926becbed42e302a3dd882465ac69;phase14.3818mV/30,VI43.1925uA/50,HBTminVce.337377/.334107/.359545/.358041V/.4,samplerA/B/C/Ddelay45.78125/41.71875/51.09375/54.53125ps/37.5,wrongsign0/0/2/34,comparatorsalsofail. Fullwave diagnosis41424462139 reproducedallscalars;collectorlosses30..93mV/emitter-to-MOS51..57mV justifiedactualdrainrepair. Newground-only resistance-25.51015ohm (~56percent vsoriginalb9b9) didnotcloseelectricalgates. PVT/EM/closedloopCDR/fullserialPHY remainopen.
+
+Mainchip41415994457/sourcef808321a65ca9197f10e75f2f59073d47095a718/release431237039 same live47net/64iteration/seed42/2thread/1691protectedclock native routing. No duplicateonobservationtimeout. Need eventualoriginalglobalclasses/independentDRC/diodePG/connectivity/LVS/final3cornerSTA. Readonly8hourmonitor automatic_native_dispatch=false. Separatecomplete derivedZIP archives/hierarchicalrootpublication/fullreadbacks; sealedproducerassets unchanged.
+
+Observed at 2026-11-02T10:24:03.991418+00:00:
+- 41415994457: in_progress/None
+- 41427042946: completed/success
+- 41428154889: in_progress/None
 
 ## Current continuation: actual drainM23 full DRC PASS; physical suite counter-sampling failure and exact-source retry
 
