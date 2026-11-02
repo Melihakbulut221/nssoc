@@ -1,0 +1,81 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "observed_at": "2026-11-02T10:44:00.227802+00:00",
+    "source_API_derived_text_RAM_only": true,
+    "workspace_entries": 0
+  },
+  "note": "## Verified incremental drain M2/M3 resistance result\n\nActual resistance run41430503141/source3d2601040c26b9e10443f674e6d2c211f8d14546 completed SUCCESS. Its original reference is b9b9; the new derived comparison independently authenticates BOTH sourceM2 run41423647133 and drainM23 run41430503141, both complete artifact ZIP digests and their identical original reference. All32 stable querylabels and exact source/sink terminal identities are bound before comparing actual after_ohm values.\n\nAgainst IMMEDIATE sourceM2 predecessor9fef, all16 emitter-to-drain paths improved by5.285668407882763..5.6270956810249135ohm (27.461296408640123..28.970250552801946percent). Other16paths(8collector+8ground) maximum absolute delta8.196110456992756e-12ohm. Full114partitions/500primitive parameters/1446terminal identity checks passed in each original native comparison. This result proves targeted passive resistance reduction, NOT actual operating voltage/current, electrical acceptance, closed-loop CDR or fullPHY.\n\nMachine-readable proof: docs/evidence/drain-m23-incremental-resistance-41430503141.json. Reproduction source uses only API/derivedJSON and no local native CAD: docs/evidence/drain-m23-incremental-resistance-analysis.py. Native current model was500devices26218R16796C, original sourceM2model500devices24530R15676C; the comparison preserves each actual census.\n\nLoaded41430498959/source8a73ba2c575c4e6b8accf1dff736d481e1e53606/release431336246 is the next acceptance gate. Keep full rawwaves/actual failures and original thresholds. Mainchip41415994457 remains the same47net routing handle; never duplicate on observation timeout. FullserialPHY, mainchip routing, finalDRC/LVS/3cornerSTA remain open. All native work is GitHub-only.\n\nObserved at 2026-11-02T10:44:00.227802+00:00:\n- 41415994457: in_progress/None\n- 41430498959: in_progress/None\n- 41430503141: completed/success\n",
+  "runs": [
+    {
+      "branch": "codex/mainchip-route47-repair",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125179873554,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Resolve exact47net identities, prove reversible FIXED protection, reroute and measure full DRC"
+          ],
+          "conclusion": null,
+          "id": 125180094267,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41415994457,
+      "source": "f808321a65ca9197f10e75f2f59073d47095a718",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41415994457"
+    },
+    {
+      "branch": "codex/cdr-drain-m23-loaded",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125227578828,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate new RC and execute unchanged loaded-wave measurements"
+          ],
+          "conclusion": null,
+          "id": 125227749444,
+          "name": "loaded-wave",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41430498959,
+      "source": "8a73ba2c575c4e6b8accf1dff736d481e1e53606",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41430498959"
+    },
+    {
+      "branch": "codex/cdr-drain-m23-resistance",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125227598806,
+          "name": "classify",
+          "status": "completed"
+        }
+      ],
+      "run": 41430503141,
+      "source": "3d2601040c26b9e10443f674e6d2c211f8d14546",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41430503141"
+    }
+  ],
+  "version": 302
+}

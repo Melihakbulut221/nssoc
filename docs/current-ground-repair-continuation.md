@@ -1,3 +1,18 @@
+## Verified incremental drain M2/M3 resistance result
+
+Actual resistance run41430503141/source3d2601040c26b9e10443f674e6d2c211f8d14546 completed SUCCESS. Its original reference is b9b9; the new derived comparison independently authenticates BOTH sourceM2 run41423647133 and drainM23 run41430503141, both complete artifact ZIP digests and their identical original reference. All32 stable querylabels and exact source/sink terminal identities are bound before comparing actual after_ohm values.
+
+Against IMMEDIATE sourceM2 predecessor9fef, all16 emitter-to-drain paths improved by5.285668407882763..5.6270956810249135ohm (27.461296408640123..28.970250552801946percent). Other16paths(8collector+8ground) maximum absolute delta8.196110456992756e-12ohm. Full114partitions/500primitive parameters/1446terminal identity checks passed in each original native comparison. This result proves targeted passive resistance reduction, NOT actual operating voltage/current, electrical acceptance, closed-loop CDR or fullPHY.
+
+Machine-readable proof: docs/evidence/drain-m23-incremental-resistance-41430503141.json. Reproduction source uses only API/derivedJSON and no local native CAD: docs/evidence/drain-m23-incremental-resistance-analysis.py. Native current model was500devices26218R16796C, original sourceM2model500devices24530R15676C; the comparison preserves each actual census.
+
+Loaded41430498959/source8a73ba2c575c4e6b8accf1dff736d481e1e53606/release431336246 is the next acceptance gate. Keep full rawwaves/actual failures and original thresholds. Mainchip41415994457 remains the same47net routing handle; never duplicate on observation timeout. FullserialPHY, mainchip routing, finalDRC/LVS/3cornerSTA remain open. All native work is GitHub-only.
+
+Observed at 2026-11-02T10:44:00.227802+00:00:
+- 41415994457: in_progress/None
+- 41430498959: in_progress/None
+- 41430503141: completed/success
+
 ## Current continuation: drain M2/M3 fresh RC PASS; full loaded transient and resistor analysis dispatched
 
 Root v300=1ee6d1ee2978eeaa2c8bd04e529f496736446207, inventory785. Native CAD/GDS/ODB/SPICE/waves remain GitHub-only. Local workspace empty. Full serial Gen3 x4 PHY, mainchip routing and final setup/hold remain OPEN.
