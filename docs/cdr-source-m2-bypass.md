@@ -12,3 +12,5 @@ https://ihp-open-pdk-docs.readthedocs.io/en/latest/verification/drc/02_main_rule
 Important electrical risk: ground resistance reductions can alter sourcebias and increase HBT current. The preceding small ground repair slightly worsened minimum HBT Vce. Generation claims no electrical improvement; keep all original loaded phase/current/Vce/sampler gates. Full physicalDRC/deep-flatLVS13, canonical partition proof, freshRC, loaded transient, actual current sharing/PVT/EM and bias-headroom review are required. Full closed-loop Gen3x4 PHY and mainchip signoff remain open.
 
 All native operations/data run only in GitHub; no local CAD or waveform files.
+
+Initial41416167847/sourcec59d1c2 passed103geometry controls and first actual M2 landing/ownership/foreign-clearance checks, then exclusive evidence writing refused reuse of a proposal filename before geometry acceptance. Preserve this failure. Progress now uses unique per-source/per-cut evidence paths; all original exclusive-write behavior and physical guards remain unchanged. Final complete proposal is still written exactly once.

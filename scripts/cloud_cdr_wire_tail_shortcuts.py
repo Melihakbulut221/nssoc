@@ -1397,7 +1397,7 @@ def generate_source_m2_bypass(base,cfg):
             [[p.x,p.y]for p in poly.each_point_hull()]for poly in metal.each()],
             metal_guards=guards,via1=[],via2=[])
         rows.append(row)
-        save("source-m2-bypass-proposal.json",dict(input_gds=pin(gp),targets=rows,complete=False,physical_acceptance=False,full_phy_accepted=False))
+        save("source-m2-bypass-progress/"+label+"-metal.json",dict(input_gds=pin(gp),target=row,complete=False,physical_acceptance=False,full_phy_accepted=False))
         need(all(guards.values()),"source M2 full same-net attachment/foreign-spacing guards "+label)
         future_m2=(own[10]+additions[10]+metal).merged()
         for layer,ys,lower,upper in (
@@ -1411,7 +1411,7 @@ def generate_source_m2_bypass(base,cfg):
                         lower_owned_layer=8 if layer==19 else 10,upper_owned_layer=10 if layer==19 else 30,
                         original_wire_component=component,native_net="avss")
                     row["via1"if layer==19 else"via2"].append(record)
-                    save("source-m2-bypass-proposal.json",dict(input_gds=pin(gp),targets=rows,complete=False,physical_acceptance=False,full_phy_accepted=False))
+                    save("source-m2-bypass-progress/"+label+"-"+str(layer)+"-"+str(cx)+"-"+str(cy)+".json",dict(input_gds=pin(gp),label=label,cut=record,complete=False,physical_acceptance=False,full_phy_accepted=False))
                     need(all(checks.values()),"same-net enclosed190nm cut/240nm spacing "+label+" layer"+str(layer))
                     additions[layer]+=cut
         need(len(row["via1"])==24 and len(row["via2"])==3,"all24source and3ground access cuts")
