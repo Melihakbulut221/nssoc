@@ -28,3 +28,9 @@ Two additional source controls distinguish legal at-most5um parallel lines from 
 Actual centered5um run41386007875 admitted only5of32branches;27failed the real standard2um foreign-metal guard, so no GDS was generated. The same5um width is now tried in three added-only positions: centered, upper-only and lower-only. Each variant preserves every original polygon and longitudinal endpoint and uses exactly the same width-dependent spacing, via, unclassified drawing and boundary predicates. It never moves or removes original wire material. All32branches must still find an admitted variant.
 
 Three added source controls verify exact independent rectangle coordinates, selection of the clear side when the other side is blocked, and refusal when both sides are blocked. Keep the centered5um failure and do not interpret alternate-position generation as full DRC/LVS or electrical acceptance.
+
+## Diagnose unchanged baseline versus newly added material before redesign
+
+Run41386421055 admitted18of32branches, so the unchanged all32predicate refused generation. New read-only diagnostics record all32original branches and all three proposed variants, splitting whole and added-only geometry. For1999/2000/2005/5000/5005nm expansion, record native overlap area, overlap bbox and foreign polygon bboxes. This distinguishes an unchanged exact minimum gap from spacing lost by added metal. The existing predicates and generation requirements are byte-for-byte unchanged. No acceptance is inferred from diagnostics.
+
+Three independent rectangular geometry controls establish zero area at exact2000nm contact,500000nm2at2005nm expansion,90000000nm2when900nm is added toward the neighboring line, and zero added-material overlap on the clear side. Full560DRC/deep-flatLVS/canonical/freshRC/loaded gates remain mandatory for any actual candidate.

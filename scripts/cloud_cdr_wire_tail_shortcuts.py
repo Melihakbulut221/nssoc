@@ -955,6 +955,30 @@ def horizontal_ground_options(original,owned,full,other,outline):
         options.append(dict(strategy=strategy,widened=widened,guards=checks,admitted=all(checks.values())))
     return options
 
+def horizontal_clearance_probe(region,foreign):
+    result={}
+    for clearance in (1999,2000,2005,5000,5005):
+        expanded=region.sized(clearance)
+        touched=expanded.interacting(foreign)
+        overlap=(expanded&foreign).merged()
+        offenders=foreign.interacting(expanded)
+        result[str(clearance)]=dict(interacting=not touched.is_empty(),overlap_area_dbu2=overlap.area(),
+            overlap_bbox=None if overlap.is_empty()else bounds(overlap),
+            foreign_bboxes=[bounds(pya.Region(p))for p in offenders.each()])
+    return result
+
+def horizontal_clearance_controls():
+    original=pya.Region(pya.Box(0,0,100000,3200))
+    foreign=pya.Region(pya.Box(0,5200,100000,8400))
+    q=horizontal_clearance_probe(original,foreign)
+    need(q["1999"]["overlap_area_dbu2"]==0 and q["2000"]["overlap_area_dbu2"]==0 and q["2005"]["overlap_area_dbu2"]==500000,"exact independent 2000nm gap area")
+    candidate=original.sized(0,900,2)
+    q=horizontal_clearance_probe(candidate,foreign)
+    need(q["2000"]["overlap_area_dbu2"]==90000000,"actual widened spacing loss area")
+    lower=original.sized(0,900,2).moved(0,-900)
+    need(horizontal_clearance_probe(lower-original,foreign)["2005"]["overlap_area_dbu2"]==0,"new material clear while original exact minimum persists")
+    return ["diagnose exact original 2000nm gap independently","diagnose added 900nm spacing loss independently","separate clear additions from unchanged minimum gap"]
+
 def horizontal_ground_controls():
     original=pya.Region(pya.Box(-100000,-1600,100000,1600))
     widened=original.sized(0,900,2).merged();outline=box(0,0,200000)
@@ -1013,10 +1037,17 @@ def generate_horizontal_ground(base,cfg):
         else:retained.append(dict(bbox=bounds(pya.Region(poly)),area_dbu2=poly.area()))
     need(len(candidates)==32 and len(retained)==1 and retained[0]["bbox"]==[0,80000,308800,144000],"all32observed branches and unchanged public pad")
     other={k:r for k,r in before.items()if k[0]in layers and k[1]!=0 and not r.is_empty()}
-    additions=pya.Region();rows=[]
+    additions=pya.Region();rows=[];diagnosis=[]
     for index,poly in enumerate(sorted(candidates,key=lambda p:(p.bbox().bottom,p.bbox().left))):
         original=pya.Region(poly);options=horizontal_ground_options(original,owned,full,other,outline)
         selected=next((v for v in options if v["admitted"]),None)
+        foreign=(full[134]-owned[134]).merged()
+        diagnosis.append(dict(index=index,original_bbox=bounds(original),
+            baseline=horizontal_clearance_probe(original,foreign),
+            variants=[dict(strategy=v["strategy"],admitted=v["admitted"],
+                whole=horizontal_clearance_probe(v["widened"],foreign),
+                additions=horizontal_clearance_probe(v["widened"]-original,foreign))for v in options]))
+
         rows.append(dict(index=index,original_bbox=bounds(original),old_area_dbu2=original.area(),
             variants=[dict(strategy=v["strategy"],widened_bbox=bounds(v["widened"]),new_area_dbu2=v["widened"].area(),guards=v["guards"],admitted=v["admitted"])for v in options],
             selected_strategy=None if selected is None else selected["strategy"],admitted=selected is not None))
@@ -1025,6 +1056,9 @@ def generate_horizontal_ground(base,cfg):
         accepted_branches=sum(r["admitted"]for r in rows),requested_branches=32,
         original_width_dbu=3200,candidate_width_dbu=5000,only_added_layer=[134,0],
         physical_acceptance=False,full_phy_accepted=False))
+    save("horizontal-ground-clearance-diagnosis.json",dict(branches=diagnosis,
+        exact_input_gds=pin(gp),exact_input_wire_l2n=pin(wp),
+        diagnostic_only=True,original_guards_unchanged=True,physical_acceptance=False,full_phy_accepted=False))
     need(all(r["admitted"]for r in rows),"all actual ground branch widths must pass original owned-stack guards")
     additions=additions.merged();handles=[]
     for poly in additions.each():handles.append(top.shapes(g.layer(134,0)).insert(poly))
@@ -1048,7 +1082,7 @@ def generate_horizontal_ground(base,cfg):
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
-        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls()+horizontal_ground_controls();save("controls.json",dict(count=len(passed),passed=passed))
+        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls()+horizontal_ground_controls()+horizontal_clearance_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
         need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"],["--generate-horizontal-ground"]),"explicit native operation")
         reserve(wait=True)
