@@ -36,6 +36,21 @@ def validate_scope(result,delta,selection):
     for record in (result,delta):
         need(all(record[k]is False for k in ("physical_acceptance","timing_accepted","full_phy_accepted")),"all final acceptance gates remain open")
     return dict(native_clock_and_other_wires_unchanged=True,complete_DEF_scope_verified=True,changed_signal_count=46,selected_signal_count=47,production_accepted=False)
+def native_intersects(a_box,b_box):
+    # Use the Point overload. The Rect overload rejects Rect proxy inputs in
+    # the frozen embedded Python build; do not omit the native cross-check.
+    a=odb.Rect(*a_box);b=odb.Rect(*b_box)
+    need([a.xMin(),a.yMin(),a.xMax(),a.yMax()]==a_box and [b.xMin(),b.yMin(),b.xMax(),b.yMax()]==b_box,"native rectangle coordinates")
+    point=odb.Point(max(a_box[0],b_box[0]),max(a_box[1],b_box[1]))
+    first=a.intersects(point);second=b.intersects(point)
+    need(type(first)is bool and type(second)is bool,"native closed point containment booleans")
+    return first and second
+def native_rectangle_controls():
+    cases=[([0,0,10,10],[10,0,20,10],True),([0,0,10,10],[11,0,20,10],False),
+        ([0,0,10,10],[5,5,5,5],True),([0,0,10,10],[0,11,10,20],False),
+        ([-20,-20,-10,-10],[-15,-15,-5,-5],True),([0,0,0,0],[0,0,0,0],True)]
+    for a,b,want in cases:need(native_intersects(a,b)is want and intersects(a,b)is want,"native rectangle closed-boundary control")
+    return len(cases)
 def main():
     pins=json.loads(Path("/work/recovery-selected-pins.json").read_bytes())
     for name,pin in pins.items():need(native.fp(ROOT/name)==pin,"authenticated recovered member")
@@ -52,6 +67,7 @@ def main():
     classes=json.loads((ROOT/"bulk-postdrt-antenna/narrow47-original-classes.json").read_bytes())
     raw=json.loads((ROOT/"bulk-postdrt-antenna/final-drc-markers.json").read_bytes())
     root=raw[native.CATEGORY];need(root["source"]=="DRT"and set(root["category"])=={"Short","Metal Spacing"},"actual complete marker categories")
+    native_control_count=native_rectangle_controls()
     db,block=native.n.load(path)
     try:
         need(len(list(block.getNets()))==143820 and len(list(block.getInsts()))==154480,"actual native census")
@@ -85,14 +101,14 @@ def main():
             for name in r["sources"]:
                 for gi,g in enumerate(guide_map[name]):
                     hit=intersects(r["bbox_dbu"],g["box"])
-                    need(hit==odb.Rect(*r["bbox_dbu"]).intersects(odb.Rect(*g["box"])),"independent native rectangle intersection")
+                    need(hit==native_intersects(r["bbox_dbu"],g["box"]),"independent native rectangle intersection")
                     if hit:
                         b=g["box"];meta=net_rows[name]
                         hits.append(dict(marker=ordinal,owner=name,guide=gi,bbox_dbu=b,width_um=(b[2]-b[0])/units,height_um=(b[3]-b[1])/units,
                             area_um2=(b[2]-b[0])*(b[3]-b[1])/(units*units),selected47=meta["selected47"],protected_clock=meta["protected_clock"],temporarily_fixed_in_route47=meta["temporarily_fixed_in_route47"]))
         ranked=sorted(hits,key=lambda r:(-r["area_um2"],r["owner"],r["guide"],r["marker"]))
         summary=dict(status="OBSERVED_ACTUAL92_MARKERS_AND_NATIVE_GUIDE_EXTENTS",source_run=41440285882,input=native.fp(path),
-            recovered_scope_proof=scope_proof,native_units=units,marker_count=92,source_net_count=len(owners),guide_count=sum(len(v)for v in guide_map.values()),
+            native_rectangle_controls=native_control_count,recovered_scope_proof=scope_proof,native_units=units,marker_count=92,source_net_count=len(owners),guide_count=sum(len(v)for v in guide_map.values()),
             marker_guide_intersections=len(hits),protected_clock_source_count=sum(v["protected_clock"]for v in net_rows.values()),
             selected_source_count=sum(v["selected47"]for v in net_rows.values()),fixed_overlay_source_count=sum(v["temporarily_fixed_in_route47"]for v in net_rows.values()),
             largest_intersections=ranked[:20],current_route_calls=0,current_repair_calls=0,geometry_changed=False,

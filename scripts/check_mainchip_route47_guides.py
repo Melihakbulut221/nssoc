@@ -67,7 +67,9 @@ assignment=next(n for n in t.body if isinstance(n,ast.Assign)and any(isinstance(
 assert ast.literal_eval(assignment.value)==('guide-audit',)
 assert "report['snapshot_reload_qualified']=False"in s and "report['guide_observation_complete']=True"in s
 assert 'write_db'not in src and 'write_def'not in src and 'detailed_route'not in src
-assert 'odb.Rect(*r["bbox_dbu"]).intersects(odb.Rect(*g["box"]))'in src
+assert 'native_intersects(r["bbox_dbu"],g["box"])'in src
+assert 'first=a.intersects(point);second=b.intersects(point)'in src
+assert 'native_control_count=native_rectangle_controls()'in src
 cfg=json.loads((root/'scripts/mainchip-route47-guide-inputs.json').read_bytes())
 assert cfg['producer']['run']==41440285882 and len(cfg['index']['files'])==72 and len(cfg['selected'])==6
 assert len(set(cfg['selected']))==6 and set(cfg['selected'])<=set(cfg['index']['files'])
