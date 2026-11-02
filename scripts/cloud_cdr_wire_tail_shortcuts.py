@@ -7,7 +7,7 @@ import cloud_cdr_wire_geometry_acquire as prior
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"wire-tail-shortcuts";NATIVE=ROOT/"wire-tail-shortcuts-native"
 MANIFEST="scripts/cdr-wire-tail-shortcuts-pins.json";INPUT="scripts/cdr-wire-tail-shortcuts-inputs.json"
-BRANCH="codex/cdr-current-ground-topology";TOP="nssoc_cdr_pd500_resistor_v59"
+BRANCH="codex/cdr-horizontal-ground";TOP="nssoc_cdr_pd500_resistor_v59"
 LAYERS=(8,19,10,29)
 TARGETS=(("D_collector","T061_C","T056_E"),("D_emitter","T061_E","T005_D"),("C_collector","T115_C","T108_E"),("C_emitter","T115_E","T034_D"))
 need=prior.need
@@ -929,14 +929,101 @@ def inspect_ground_topology(base,cfg):
         no_continuous_M5_spine_assumed=True,new_geometry_generated=False,physical_acceptance=False,
         full_phy_accepted=False,final_timing_complete=False))
 
+def horizontal_ground_guard(original,widened,owned,full,other,outline):
+    a=original.bbox();b=widened.bbox()
+    return dict(
+        original_owned=(original-owned[134]).is_empty(),
+        original_preserved=(original-widened).is_empty(),
+        same_longitudinal_span=a.left==b.left and a.right==b.right,
+        exact_width_change=a.height()==3200 and b.height()==10000,
+        new_metal=not(widened-full[134]).is_empty(),
+        foreign_topmetal2_clearance_5um=widened.sized(5005).interacting(full[134]-owned[134]).is_empty(),
+        foreign_topvia2=widened.sized(5).interacting(full[133]-owned[133]).is_empty(),
+        unclassified_drawing_clear=all(widened.sized(5005 if k[0]==134 else 5).interacting(r).is_empty()for k,r in other.items()),
+        inside_original_bbox=(widened-outline).is_empty())
+def horizontal_ground_controls():
+    original=pya.Region(pya.Box(-100000,-1600,100000,1600))
+    widened=original.sized(0,3400).merged();outline=box(0,0,200000)
+    own={134:original,133:pya.Region()};full={n:r.dup()for n,r in own.items()};checks=[]
+    need(all(horizontal_ground_guard(original,widened,own,full,{},outline).values()),"positive owned horizontal widening")
+    checks.append("widen real original horizontal branch without changing ends")
+    for label,n,key in[("foreign TopMetal2",134,"foreign_topmetal2_clearance_5um"),("foreign TopVia2",133,"foreign_topvia2")]:
+        bad={k:r.dup()for k,r in full.items()};bad[n]+=box(0,4000,100)
+        need(not horizontal_ground_guard(original,widened,own,bad,{},outline)[key],"reject "+label);checks.append("reject "+label)
+    need(not horizontal_ground_guard(original,widened,own,full,{(134,24):box(0,4000,10)},outline)["unclassified_drawing_clear"],"unknown mask");checks.append("reject unknown drawing")
+    need(not horizontal_ground_guard(original,widened,own,full,{},box(0,0,100))["inside_original_bbox"],"outside");checks.append("reject outside boundary")
+    missing={134:pya.Region(),133:pya.Region()}
+    need(not horizontal_ground_guard(original,widened,missing,full,{},outline)["original_owned"],"unowned");checks.append("reject unowned branch")
+    shorter=pya.Region(pya.Box(-90000,-5000,100000,5000))
+    need(not horizontal_ground_guard(original,shorter,own,full,{},outline)["same_longitudinal_span"],"changed endpoint");checks.append("reject changed original ends")
+    need(not horizontal_ground_guard(original,original.sized(0,1000),own,full,{},outline)["exact_width_change"],"wrong width");checks.append("reject incorrect width")
+    need(not horizontal_ground_guard(original,original,own,full,{},outline)["new_metal"],"no-op");checks.append("reject no new material")
+    need(len(checks)==9,"nine horizontal guard controls")
+    return checks
+def generate_horizontal_ground(base,cfg):
+    inspect_ground_topology(base,cfg)
+    topology=json.loads((OUT/"current-ground-stack-topology.json").read_bytes())
+    need(topology["all13native_unions_verified"]and topology["component"]==14,"actual complete ground topology")
+    gp=base/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds";wp=base/"binding/inputs/wire/native05/wires.l2n"
+    g=pya.Layout();g.read(str(gp));top=g.cell(TOP);need(top is not None and g.dbu==.001,"actual input")
+    before=region_snapshot(g,top);outline=pya.Region(top.bbox())
+    w=pya.LayoutToNetlist();w.read(str(wp));need(w.internal_layout().dbu==.001,"current wire DBU")
+    nets={n.cluster_id:n for n in w.netlist().top_circuit().each_net()}
+    layers=(133,134);objects={n:w.layer_by_name("gds_"+str(n))for n in layers}
+    need(all(r is not None for r in objects.values()),"actual TopMetal2 and TopVia2")
+    full={n:before.get((n,0),pya.Region())for n in layers}
+    for n in layers:need((full[n]^objects[n]).is_empty(),"actual complete layer union")
+    owned={n:w.shapes_of_net(nets[topology["component"]],objects[n],True).merged()for n in layers}
+    candidates=[];retained=[]
+    for poly in owned[134].each():
+        b=poly.bbox()
+        if b.height()==3200 and b.width()>=200000:candidates.append(poly)
+        else:retained.append(dict(bbox=bounds(pya.Region(poly)),area_dbu2=poly.area()))
+    need(len(candidates)==32 and len(retained)==1 and retained[0]["bbox"]==[0,80000,308800,144000],"all32observed branches and unchanged public pad")
+    other={k:r for k,r in before.items()if k[0]in layers and k[1]!=0 and not r.is_empty()}
+    additions=pya.Region();rows=[]
+    for index,poly in enumerate(sorted(candidates,key=lambda p:(p.bbox().bottom,p.bbox().left))):
+        original=pya.Region(poly);widened=original.sized(0,3400).merged()
+        checks=horizontal_ground_guard(original,widened,owned,full,other,outline)
+        rows.append(dict(index=index,original_bbox=bounds(original),widened_bbox=bounds(widened),
+            old_area_dbu2=original.area(),new_area_dbu2=widened.area(),guards=checks,admitted=all(checks.values())))
+        if all(checks.values()):additions+=widened
+    save("horizontal-ground-proposal.json",dict(branches=rows,unchanged_public_pad=retained[0],
+        accepted_branches=sum(r["admitted"]for r in rows),requested_branches=32,
+        original_width_dbu=3200,candidate_width_dbu=10000,only_added_layer=[134,0],
+        physical_acceptance=False,full_phy_accepted=False))
+    need(all(r["admitted"]for r in rows),"all actual ground branch widths must pass original owned-stack guards")
+    additions=additions.merged();handles=[]
+    for poly in additions.each():handles.append(top.shapes(g.layer(134,0)).insert(poly))
+    NATIVE.mkdir();candidate=NATIVE/"nssoc_cdr_pd500_wire_ground_branches.gds";g.write(str(candidate))
+    readback=pya.Layout();readback.read(str(candidate));after=region_snapshot(readback,readback.cell(TOP))
+    need(readback.dbu==g.dbu and{c.name for c in readback.each_cell()}=={c.name for c in g.each_cell()},"exact serialized original hierarchy")
+    for layer in set(before)|set(after):
+        expected=before.get(layer,pya.Region())
+        if layer==(134,0):expected=(expected+additions).merged()
+        need((expected^after.get(layer,pya.Region())).is_empty(),"exact sole TopMetal2 delta "+str(layer))
+    for h in reversed(handles):h.delete()
+    reverted=region_snapshot(g,top);need(set(before)==set(reverted),"original layer set")
+    for layer in before:need((before[layer]^reverted[layer]).is_empty(),"exact original material after reversal")
+    need(pin(gp)==cfg["complete_members"]["binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds"],"original source GDS unchanged")
+    save("horizontal-ground-generation-proof.json",dict(candidate=pin(candidate),input_gds=pin(gp),input_l2n=pin(wp),
+        branch_count=32,original_width_dbu=3200,candidate_width_dbu=10000,only_added_layer=[134,0],
+        exact_serialized_delta=True,original_material_roundtrip=True,original_devices_and_vias_unchanged=True,
+        original_port_pad_unchanged=True,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False,
+        requires=["full560DRC","deep_flat_LVS13","current_canonical_binding","fresh_RC","unchanged_loaded_wave_gates"]))
+
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
-        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls();save("controls.json",dict(count=len(passed),passed=passed))
+        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls()+horizontal_ground_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
-        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"]),"explicit native operation")
+        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"],["--generate-horizontal-ground"]),"explicit native operation")
         reserve(wait=True)
         base=acquire_current(cfg)
+        if sys.argv[1:]==["--generate-horizontal-ground"]:
+            generate_horizontal_ground(base,cfg)
+            save("result.json",dict(status="GENERATED_ACTUAL_HORIZONTAL_GROUND_BRANCHES_REQUIRES_NATIVE_QUALIFICATION",physical_acceptance=False,full_phy_accepted=False))
+            return
         if sys.argv[1:]==["--inspect-ground-topology"]:
             inspect_ground_topology(base,cfg)
             save("result.json",dict(status="COMPLETE_CURRENT_NATIVE_GROUND_STACK_TOPOLOGY",physical_acceptance=False,full_phy_accepted=False))
