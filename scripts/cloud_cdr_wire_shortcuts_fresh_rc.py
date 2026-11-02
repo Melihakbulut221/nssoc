@@ -8,7 +8,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"hw/soc/out/cloud-cdr-via2-m3-fresh-rc"
 CURRENT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-canonical/view/candidate"
 COUT=ROOT/"wire-rc-controls"
-BRANCH="codex/cdr-source-m2-fresh-rc"
+BRANCH="codex/cdr-drain-m23-fresh-rc"
 MANIFEST="scripts/cdr-wire-shortcuts-fresh-rc-pins.json"
 BASIS="scripts/cdr-wire-shortcuts-fresh-rc-basis.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
@@ -50,12 +50,12 @@ def gate():
     return pins
 def basis():
     b=json.loads((ROOT/BASIS).read_bytes())
-    need(b["schema"]=="nssoc.source-m2-bypass.fresh-rc-basis.v1"and b["source_preparation_only"]and not b["native_RC_execution_authorized"],"basis is evidence not authority")
-    need(b["producer"]["run"]==41419044277 and b["producer"]["source"]=="c0cb25a769f061912eab1274f4d17fe8964486bc"and b["producer"]["release"]==431257808,"actual canonical producer")
-    need(b["candidate"]==dict(bytes=1018452,sha256="9fef07bce22bce079cf82e3c7600932aa6adce49359838f6c72569fbde3ef61b"),"actual new layout")
+    need(b["schema"]=="nssoc.drain-m23.fresh-rc-basis.v1"and b["source_preparation_only"]and not b["native_RC_execution_authorized"],"basis is evidence not authority")
+    need(b["producer"]["run"]==41428154889 and b["producer"]["source"]=="198797326d783aba9a57e46ce9ce690863387490"and b["producer"]["release"]==431319979,"actual canonical producer")
+    need(b["candidate"]==dict(bytes=1075316,sha256="5e5ef3940bb0e410af8bbb92376e2c1cb60e3c520e37b65c7e675af41e58603f"),"actual new layout")
     cfg=json.loads((ROOT/core.CONFIG).read_bytes())["canonical_view"]
     need(cfg["current_files"]==b["current_view_files"]and cfg["port_order"]==b["actual_semantic_port_order"]and ROOT/cfg["root"]==CURRENT,"current numerical input binding")
-    need(len(cfg["current_files"])==78 and len(cfg["port_order"])==25 and cfg["port_order"]==["avdd","avss","sub","ird","cn","cp","dn","dp","irb","ira","irc","ibda","ibdc","ibs0","irx","xp","xn","ibs1","iry","yp","yn","irvx","irvy","vin","vip"],"actual port order and view census")
+    need(len(cfg["current_files"])==78 and len(cfg["port_order"])==25 and cfg["port_order"]==["avdd","avss","sub","ird","cn","cp","dn","dp","irb","ira","irc","ibda","ibdc","ibs0","irx","xn","xp","ibs1","iry","yp","yn","irvx","irvy","vin","vip"],"actual port order and view census")
     return b
 def definitions(path,scope,exclude=(),assignments=False):
     """Only frozen pure functions/constants; never historical imports, main or native admission."""
@@ -132,7 +132,7 @@ def controls():
         else:raise AssertionError("accepted altered "+key)
     need(n.core is core and nsame(n.verify_runtime_cache,ROOT/NATIVE),"actual frozen function origin")
     tests_current.append("original runtime validator and all current source provenance bound")
-    output=dict(status="PASS_SOURCE_M2_BYPASS_RC_SOURCE_CONTROLS",current=tests_current,core_control_count=len(k.RECORDS),
+    output=dict(status="PASS_DRAIN_M23_RC_SOURCE_CONTROLS",current=tests_current,core_control_count=len(k.RECORDS),
       core_controls=k.RECORDS,phase_controls=phase,command_adaptation=plan,actual_port_order=b["actual_semantic_port_order"],
       runtime_producer=cfg["precise"]["run_id"],native_executed=False,**FLAGS)
     (COUT/"result.json").write_bytes(encode(output))
@@ -162,7 +162,7 @@ def acquire_view():
             seen[name]=pin(target);need(seen[name]==p["complete_members"][name],"canonical member digest")
     need(seen==p["complete_members"],"all133 actual canonical members")
     q=json.loads((destination/"view/canonical-view-qualification.json").read_bytes())
-    need(q["status"]=="PASS_SOURCE_M2_BYPASS_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC"and q["current_files"]==b["current_view_files"]and q["native_identity"]==b["native_identity"],"actual canonical qualification")
+    need(q["status"]=="PASS_DRAIN_M23_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC"and q["current_files"]==b["current_view_files"]and q["native_identity"]==b["native_identity"],"actual canonical qualification")
     core.current_view_proof(ROOT,CURRENT)
     save("canonical-acquisition.json",dict(run=run,release=rel,authenticated_members=seen))
 def restore_runtime(selected):
@@ -258,8 +258,8 @@ def verify():
         n,rt=frozen();q=n.validate_complete_files(OUT,context(),n.source_pins(ROOT),basis()["actual_semantic_port_order"],n.ACTUAL)
         need(q["status"]==n.STATUS and q["fresh_RC_pipeline_complete"]and not q["qualified_pex"],"original complete numerical qualification")
         save("fresh-rc-original-qualification.json",q)
-        save("fresh-rc-qualification.json",dict(status="PASS_SOURCE_M2_BYPASS_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES",
-          current_context=context(),candidate=basis()["candidate"],canonical_run=41419044277,
+        save("fresh-rc-qualification.json",dict(status="PASS_DRAIN_M23_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES",
+          current_context=context(),candidate=basis()["candidate"],canonical_run=41428154889,
           original_qualification=pin(OUT/"fresh-rc-original-qualification.json"),counts=q["counts"],
           semantic_port_order=basis()["actual_semantic_port_order"],model=pin(OUT/"mim/composition/pd500-mim-wire.spice"),
           composition=pin(OUT/"mim/composition/composition.json"),fresh_RC_executed=True,**FLAGS))
