@@ -10,7 +10,7 @@ OUT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-physical"
 MANIFEST="scripts/cdr-wire-shortcuts-physical-pins.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
 CANDIDATE="scripts/cdr-wire-physical-candidate.json"
-BRANCH="codex/cdr-horizontal-ground-physical"
+BRANCH="codex/cdr-local-source-m1-physical"
 APP_SHA="d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
 CHECKER_SHA="3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66"
 TOP="nssoc_cdr_pd500_resistor_v59"
@@ -106,11 +106,11 @@ def candidate():
             with p.open("xb")as f:shutil.copyfileobj(tar.extractfile(m),f)
             seen[n]=pin(p);need(seen[n]==index["files"][n],"candidate member digest")
     need(seen==index["files"],"every actual candidate member")
-    proof=json.loads((target/"derived/horizontal-ground-generation-proof.json").read_bytes())
+    proof=json.loads((target/"derived/local-source-m1-generation-proof.json").read_bytes())
     need(proof["candidate"]==cfg["candidate"]and proof["exact_serialized_delta"]and proof["original_material_roundtrip"]and not proof["physical_acceptance"],"actual geometry proof remains candidate")
-    need(proof["branch_count"]==32 and proof["original_width_dbu"]==3200 and proof["candidate_width_dbu"]==4600 and proof["only_added_layer"]==[134,0],"all32 actual TopMetal2 branches with exact new width")
-    need(proof["original_devices_and_vias_unchanged"]and proof["original_port_pad_unchanged"],"unchanged devices vias and public pad")
-    need(proof["input_gds"]==dict(bytes=1001172,sha256="1c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94"),"actual previous qualified four-path GDS")
+    need(proof["source_count"]==8 and proof["only_added_layer"]==[8,0]and proof["total_added_area_dbu2"]>0,"all eight actual source M1 reinforcements")
+    need(not proof["new_devices"]and not proof["new_vias"],"no new devices or vias")
+    need(proof["input_gds"]==dict(bytes=1003348,sha256="b9b92319590ecca1c9ce31dcf1cc31f4fdc1d468fc514585931671ed2f4fa492"),"actual qualified horizontal ground parent")
     save("candidate-acquisition.json",dict(run=run,release=rel,authenticated_members=seen))
     return target
 def restore_runtime():
@@ -135,11 +135,11 @@ def prepare_layout(parent_base,new_base,checker):
     old=parent_base/"binding/inputs/parent/layout";cfg=json.loads((ROOT/PARENT).read_bytes())
     for n in("schematic.cir",TOP+".lef","result.json",TOP+".gds"):
         need(pin(old/n)==cfg["complete_members"]["binding/inputs/parent/layout/"+n],"original parent "+n)
-    shutil.copyfile(new_base/"native/nssoc_cdr_pd500_wire_ground_branches.gds",layout/(TOP+".gds"))
+    shutil.copyfile(new_base/"native/nssoc_cdr_pd500_local_source_m1.gds",layout/(TOP+".gds"))
     for n in("schematic.cir",TOP+".lef"):shutil.copyfile(old/n,layout/n);need(pin(old/n)==pin(layout/n),"unchanged original reference")
     p=json.loads((old/"result.json").read_bytes())
     inputs=[old/n for n in("result.json","schematic.cir",TOP+".lef",TOP+".gds")]
-    inputs.extend([new_base/"derived/horizontal-ground-generation-proof.json",new_base/"native/nssoc_cdr_pd500_wire_ground_branches.gds",ROOT/CANDIDATE,ROOT/PARENT,checker,ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
+    inputs.extend([new_base/"derived/local-source-m1-generation-proof.json",new_base/"native/nssoc_cdr_pd500_local_source_m1.gds",ROOT/CANDIDATE,ROOT/PARENT,checker,ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
     record=metadata(p,layout/(TOP+".gds"),layout/"schematic.cir",layout/(TOP+".lef"),inputs)
     (layout/"result.json").write_bytes(encode(record));save("candidate-layout-binding.json",record)
     return layout
