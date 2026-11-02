@@ -1,6 +1,31 @@
-# Cloud continuation — checkpoint v282
+# Cloud continuation — checkpoint v283
 
-Updated: 2026-11-02T05:55:26.846178+00:00
+Updated: 2026-11-02T06:10:47.856857+00:00
+
+## Current continuation: native resistor physical mapping passed; measured local Metal1 candidate dispatched
+
+All native work remains GitHub-only. Full serial Gen3x4PHY, final mainchip route and final setup/hold remain OPEN. Local workspace is empty.
+
+Actual physical resistor mapping41397314520/source7b2a7efcedd829412cb18fd45d66179c071a3c79 PASSED. Derived13119862659 is406050bytes SHA52f13ce1c9b223d49367d75e928168e932f2eab61fb51992d847fc861f59a9f2. Full52critical-resistor coordinate/ownership map, all978port checks, all24530native/exportedR correspondence, all13native conductor union equalities and unchanged GDS proof are preserved under docs/evidence/current-terminal-41397314520/. This is diagnostic acceptance only.
+
+Failed attempts41396652103/source02db0affab32b2f7d331c2e5f720ad38663d2c84 and41396958129/source9e2c0fa6b6b5df855d5d1d84293ac418ea3071d9 are preserved. The new reader initially selected pre-MIM anchors from binding/inputs/wire/anchors08.json. Its unchanged2nm coordinate gate correctly refused seven mismatches. Complete diagnostic proved971coordinates exact and seven MIM bottom reference differences (devices273-279). Correct actual references reside at mim/precise/wire/anchors08.json in the same authenticated freshRC archive. The seven documented bottom points are on actual Metal5 outside the intrinsic MIM mask; no RC or GDS was modified. Corrected reader requires exactly those documented seven changes, every other field equal, both original and extraction points on the same native-owned metal and all978extracted coordinates within original2nm/5nm-grid tolerance. All85original controls passed.
+
+The dominant32.5245ohm source edges terminate on actual290nm-wide M1 strips. For example T003_S=[1884565,406030]nm and its opposite native resistor endpoint P_avss.n175=[1868095,388430]nm is on the actual M3/Via3/M4/Via4/M5 ground landing. T032_S=[1884565,1595550]nm has the symmetric structure. A resistor edge can aggregate multiple physical segments; this evidence does not assign its entire resistance to M1 or guarantee a repair effect.
+
+Candidate generation41397981344/source6ef31b5bd00bd0eacc3e46983a13fe2b3e09ab4f/branchcodex/cdr-local-source-m1/release431121700 is dispatched with exact reserved tagcloud-results-41397981344-1-cdr-wire-tail-shortcuts. Follow this exact run. The native function generate_local_source_m1 in scripts/cloud_cdr_wire_tail_shortcuts.py proposes left-only M1 reinforcement of source3,4,5,6,32,33,34,35 within18um each side of the actual reference. It tries added widths1500,1200,900,600,300nm and requires all8targets to admit. Added material must be connected, inside originalbbox,605nm clear of foreignM1,5nm clear of foreignVia1 and avoid unclassified material. No device, via, contact, source stimulus or logical reference is changed. Original85controls plus6new positive/adversarial guard controls run before native execution. Candidate serialization must equal originalGDS plus precisely reported layer8/0 additions, and reversal must reproduce original material. Parent remains GDS1003348bytes SHAb9b92319590ecca1c9ce31dcf1cc31f4fdc1d468fc514585931671ed2f4fa492.
+
+Next PHY action: inspect candidate local-source-m1-proposal.json and local-source-m1-generation-proof.json. If refused, diagnose exact foreign clearance or attachment evidence, never lower guards to force admission. If generated, run the original complete physical checker SHA3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66:560DRC categories, deep/flat500primitiveLVS and13faults. Reuse actual physical host at c40549f17f783ae3250139e63a9edee75721b219, update candidate source/release/index and proof selector to local-source-m1-generation-proof.json / native/nssoc_cdr_pd500_local_source_m1.gds, keep all frozen checker/source/runtime gates. New proof only layer8/0,8sources,no devices/no vias, mapped parentb9b923. Its original schematic/LEF remain frozen and byte-identical. Only after physical pass: canonical binding, freshRC and original loaded wave gates. Loaded41391065497 remains rejected for HBTminVce, phase/signedVI and sampler timings.
+
+Mainchip41393730481/source7cc6f94a7a685423533a25bc0d418e33764e8366/release431098535 remains the exact native reroute job. Source controls passed; current native results pending. Preserve47scope identity/reversal,1691clocks, actualfullDRC/antenna, originalglobalclass restoration, diodePG/connectivity/LVS and final3cornerSTA. Original140DRC remain last measured count until new actual results prove otherwise. Do not duplicate or restart on observation timeout.
+
+Previous fully verified rootv282=d927c2e5dca792040c63be0f33065caf244b74c7 (49files/18979465bytes). Inventory753; read-only8hour monitor and automatic_native_dispatch=false retained.
+
+Observed at 2026-11-02T06:10:47.856857+00:00:
+- 41396652103: completed/failure
+- 41396958129: completed/failure
+- 41397314520: completed/success
+- 41397981344: queued/None
+- 41393730481: in_progress/None
 
 ## Current continuation: actual resistance bottleneck measured; physical mapping dispatched
 
