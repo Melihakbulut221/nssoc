@@ -1,11 +1,11 @@
-name: Diagnose native sampler stage and clock arrival timing
+name: Diagnose rejected slave-drive actual stage and clock timing
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-sampler-stage-timing-${{ github.ref }}
+  group: cdr-slave-drive-stage-timing-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -40,7 +40,7 @@ jobs:
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
       - name: Check exact frozen full-wave parser refusals
         run: python3 -B scripts/cloud_cdr_wire_wave_diagnosis.py --controls
-      - name: Authenticate all native members and diagnose complete original waveform
+      - name: Authenticate all native members and diagnose complete proposed slave-drive waveform
         run: python3 -B scripts/cloud_cdr_wire_wave_diagnosis.py --diagnose
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"wire-wave-diagnosis";NATIVE=ROOT/"wire-wave-diagnosis-native"
 CFG="scripts/cdr-wire-wave-diagnosis-inputs.json"
 PINS="scripts/cdr-wire-wave-diagnosis-pins.json"
-BRANCH="codex/cdr-sampler-stage-timing";REPO="Melihakbulut221/nssoc"
+BRANCH="codex/cdr-slave-drive-stage-timing";REPO="Melihakbulut221/nssoc"
 def need(ok,msg):
     if not ok:raise AssertionError(msg)
 def digest(path):
@@ -110,6 +110,18 @@ def diagnose():
     need(m["current_context"]==dict(source=c["parent"]["source"],run_id=c["parent"]["run"],attempt=1),"measurement source")
     t,d,capture=reader()(paths["wave"],m["vectors"],34.25e-9,.3125e-12)
     need(capture==m["raw_capture"],"same complete original native raw measurement")
+    derivation=json.loads(paths["derivation"].read_bytes())
+    geometry=json.loads(paths["geometry_controls"].read_bytes())
+    need(derivation["status"]=="DERIVED_PROVISIONAL_SLAVE_DRIVE_LOAD_TRIAL"and derivation["delta"]==24,"actual24 parameter trial provenance")
+    need(derivation["all_other476_devices_unchanged"]and derivation["all_parent_wire_RC_cards_unchanged"]and derivation["entire_model_exact_reversal"],"recorded complete original trial derivation")
+    need(pin(paths["composition"])==derivation["trial_inputs"]["composition"]and pin(paths["planes"])==derivation["trial_inputs"]["planes"],"actual candidate composition and fixed parent planes")
+    need(geometry["status"]=="PASS_ACTUAL500_PROPOSED16_GEOMETRY_BINDING"and len(geometry["rejected"])==8,"actual proposed geometry fault controls")
+    binding=m["binding"]["proposed_geometry_binding"]
+    need(binding["status"]=="EXACT16_SLAVE_GEOMETRY_AFTER_ORIGINAL_TOPOLOGY_CHECK"and len(binding["instances"])==16 and binding["simulation_uses_actual_candidate_dimensions"],"actual simulated candidate geometry")
+    need(len(m["binding_controls"]["rejected"])==13 and m["binding_controls"]["equivalent_unit_spellings"]==2,"original complete binding fault controls")
+    for report in (derivation,geometry,binding):
+        need(all(report[k]is False for k in ("fresh_RC_for_modified_devices","full_phy_accepted","matching_layout_verified","physical_acceptance","qualified_pex","final_timing_complete")),"provisional scope preserved")
+    save("candidate-analysis-scope.json",dict(derivation=derivation,geometry_controls=geometry,binding=binding,unchanged48_HBT_role_mapping_required=True,new_transient_executed=False,full_phy_accepted=False,physical_acceptance=False))
     stage_timing.diagnose_stages(ROOT,m,contract,t,d,save)
     active=t>=2e-9;UI=125e-12;START=2e-9
     def v(n):

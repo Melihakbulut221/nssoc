@@ -1,0 +1,7 @@
+# Rejected slave-drive waveform: complete stage diagnosis
+
+Run41501239838 completed its actual 500-device native transient with returncode0 but failed unchanged electrical gates. The24device proposal uses fixed parent wire RC and has no matching layout or fresh extraction. This read-only follow-up authenticates every archive member and uses the actual proposed composition, not the original physical composition.
+
+It preserves the original full-wave parser, all1152columns/113475rows, original 48HBT mapping and complete per-bit/stage/clock diagnosis. The48 HBTs were not resized by the proposal; their actual IDs, parameters, native terminal clusters and mapped roles must still match exactly. The candidate derivation,8geometry fault controls,13original binding faults,2unit cases and explicit false physical/PEX/PHY flags are checked before diagnosis.
+
+The new waveform improved A/B/D worst delays and all sampler wrong-sign counts, but C worsened to118.90625ps; phase fell to12.974mV. Inspect master/slave inputs/outputs, clock crossing brackets and sampled swing to locate that regression before another circuit change. Existing all-sample delays, margins, wrong counts and failed HBT minima must be reproduced. This is not another transient, physical closure or a relaxed acceptance threshold. Full native input payloads stay on GitHub; derived full stage results are retained in the workflow artifact and must be copied to durable root evidence after terminal completion.
