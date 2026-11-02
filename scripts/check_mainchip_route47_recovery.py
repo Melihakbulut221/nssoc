@@ -14,6 +14,8 @@ a=fn(old,'execute');b=fn(new,'execute');assert isinstance(b.body[0],ast.If)
 assert ast.dump(ast.Module(body=a.body,type_ignores=[]),include_attributes=False)==ast.dump(ast.Module(body=b.body[1:],type_ignores=[]),include_attributes=False)
 oldh=source('scripts/cloud_mainchip_snapshot_reload.py');newh=source('scripts/cloud_mainchip_route47_recovery.py')
 for name in('sha','fp','api','write','own_sources','acquire_snapshot'):assert body(oldh,name)==body(newh,name)
+native=source('scripts/mainchip_route47_recovery_native.py')
+assert native.index('sys.path.insert(0,"/work/tail-source/scripts")')<native.index('import mainchip_route47_native as n')
 c=json.loads((ROOT/'scripts/mainchip-route47-recovery-inputs.json').read_bytes())
 assert c['producer']['run']==41415994457 and c['producer']['source']=='f808321a65ca9197f10e75f2f59073d47095a718'
 assert len(c['index']['files'])==100 and len(c['selected'])==len(set(c['selected']))==7

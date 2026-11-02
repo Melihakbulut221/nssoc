@@ -1,6 +1,7 @@
 """Authenticate and recover actual iteration19 without rerouting or changing route acceptance."""
-import gc,json,shutil
+import gc,json,shutil,sys
 from pathlib import Path
+sys.path.insert(0,"/work/tail-source/scripts")
 import mainchip_route47_native as n
 from mainchip_route47_contract import need,select
 ROOT=Path("/work/recovery-inputs")
