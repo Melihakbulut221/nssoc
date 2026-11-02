@@ -122,7 +122,7 @@ def controls():
         elif label=="scope":y["execution_scope"]="SOURCE_ONLY_SYNTHETIC_PHASE_FIXTURE"
         elif label=="missing-phase":y["phase_receipts"].pop("compose")
         elif label=="old-port-order":x["semantic_port_order"][19:21]=["yn","yp"]
-        elif label=="old-selector-port-order":x["semantic_port_order"][15:17]=["xp","xn"]
+        elif label=="old-selector-port-order":x["semantic_port_order"][15:17]=["xn","xp"]
         elif label=="electrical-claim":y["electrical_accepted"]=True
         elif label=="old-index":z["context"]["run"]=41251732540
         try:qualified_rc(x,y,z,b)
