@@ -33,6 +33,25 @@ def reader():
     ns=dict(Path=Path,hashlib=hashlib,np=np)
     exec(compile(ast.Module(body=nodes,type_ignores=[]),str(path),"exec"),ns)
     return ns["read_streamed_wave"]
+def trial_delta(derivation):
+    rows=derivation["delta"]
+    expected={194,191,205,202,214,212,176,175,7,8,9,10,16,17,18,19,25,26,27,28,36,37,38,39}
+    need(type(rows)is list and len(rows)==24,"actual24-element device delta list")
+    need(all(isinstance(row,dict)and type(row.get("native_id"))is int for row in rows),"typed native delta identity")
+    need({row["native_id"]for row in rows}==expected,"unique exact24 changed native devices")
+    need(all(isinstance(row.get("old"),dict)and isinstance(row.get("new"),dict)and row["old"]!=row["new"]for row in rows),"actual changed parameter records")
+    return True
+def trial_delta_controls():
+    import copy
+    d=json.loads((ROOT/"docs/evidence/slave-drive-stage-derivation-fixture.json").read_bytes())
+    need(trial_delta(d),"actual captured derivation list")
+    rejected=[]
+    for label,bad in (("integer_count",24),("missing_device",d["delta"][:-1]),("duplicate_device",d["delta"][:-1]+d["delta"][:1])):
+        candidate=copy.deepcopy(d);candidate["delta"]=bad
+        try:trial_delta(candidate)
+        except AssertionError:rejected.append(label)
+        else:raise AssertionError("accepted malformed derivation "+label)
+    return dict(actual_captured_list_passed=True,rejected=rejected,native_executed=False)
 def controls():
     gate();read=reader();folder=NATIVE/"controls";folder.mkdir(parents=True,exist_ok=False)
     head=b"Title: control\nDate: control\nPlotname: Transient Analysis\nFlags: real\nNo. Variables: 2\nNo. Points: 2\nVariables:\n0 time time\n1 v(x) voltage\nBinary:\n"
@@ -52,7 +71,7 @@ def controls():
         try:read(q,["v(x)"],1e-12,1e-12)
         except AssertionError:rejected.append(label)
         else:raise AssertionError("accepted malformed native "+label)
-    save("controls.json",dict(status="PASS_FROZEN_FULL_WAVE_READER_CONTROLS",rejected=rejected,stage_controls=stage_timing.source_controls(),new_transient_executed=False))
+    save("controls.json",dict(status="PASS_FROZEN_FULL_WAVE_READER_CONTROLS",rejected=rejected,stage_controls=stage_timing.source_controls(),trial_delta_controls=trial_delta_controls(),new_transient_executed=False))
 def acquire(c):
     p=c["parent"];r=api("actions/runs/"+str(p["run"]));rel=api("releases/"+str(p["release"]));tag=api("git/ref/tags/"+p["tag"])
     need(r["status"]=="completed"and r["conclusion"]=="failure"and r["head_sha"]==p["source"]and r["run_attempt"]==1,"actual rejected source")
@@ -112,7 +131,7 @@ def diagnose():
     need(capture==m["raw_capture"],"same complete original native raw measurement")
     derivation=json.loads(paths["derivation"].read_bytes())
     geometry=json.loads(paths["geometry_controls"].read_bytes())
-    need(derivation["status"]=="DERIVED_PROVISIONAL_SLAVE_DRIVE_LOAD_TRIAL"and derivation["delta"]==24,"actual24 parameter trial provenance")
+    need(derivation["status"]=="DERIVED_PROVISIONAL_SLAVE_DRIVE_LOAD_TRIAL"and trial_delta(derivation),"actual24 parameter trial provenance")
     need(derivation["all_other476_devices_unchanged"]and derivation["all_parent_wire_RC_cards_unchanged"]and derivation["entire_model_exact_reversal"],"recorded complete original trial derivation")
     need(pin(paths["composition"])==derivation["trial_inputs"]["composition"]and pin(paths["planes"])==derivation["trial_inputs"]["planes"],"actual candidate composition and fixed parent planes")
     need(geometry["status"]=="PASS_ACTUAL500_PROPOSED16_GEOMETRY_BINDING"and len(geometry["rejected"])==8,"actual proposed geometry fault controls")
