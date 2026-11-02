@@ -1,6 +1,24 @@
-# Cloud continuation — checkpoint v327
+# Cloud continuation — checkpoint v328
 
-Updated: 2026-11-02T20:50:28.727041+00:00
+Updated: 2026-11-02T21:14:49.130163+00:00
+
+## Current continuation: isolated load trial rejected; current-parent model-domain correction now source-qualified
+
+Load-only41521089374/source3e15debe2f1d0c165d5e964aee8bbac6ef79e712 completed actual34.25ns,113475rows/1152columns,engine return0 in1027.856699s and was electrically rejected. Phase11.576923mV<30mV,VI35.922831uA<50uA; A/B/C/D42.96875/38.90625/118.90625/50.15625ps all fail37.5ps. Wrong signs0/0/0/0 do not pass amplitude: below100mV counts114/64/160/128. Four HBT low-activeVce failures61/62/115/116 persist. Full non-source derived contents, raw-wave receipt, preparation/controls/model delta/native log, release index and parts manifest are permanently in docs/evidence/cloud-v328-load-only-41521089374/. Native raw/engine remain only in cloudrelease431945564. All four parent/current/load/combined wave results were independently reauthenticated and preserved in docs/evidence/cloud-v328-four-corner-electrical-comparison.json; all remain rejected.
+
+Important current model gap was revalidated: actual runtime's three MOS library hashes match native audit41286495589;42 of50 current single-gate MOS exceed the declared0.15..10um range. Existing original stress checks or LVS do not qualify this model domain. Both old500-device physical handoff documents now explicitly retire promotion of rejected width/load proposals.
+
+Next actual source is codex/cdr-current-domain-partition at9324e2da283540c6d4f1a1bec18641ccec30fefa. It applies only explicit50-to200 independent MOS partition to ORIGINAL current freshRC41439516945, preserving all98 resistors/all450 non-MOS records/parent wireRC/totalW/L/connections. It does not compound the old mixed20 resistor candidate. Initial controls41525549975 and strengthened controls41526131863 both succeeded. Complete strengthened artifact and source proof are retained.24 refusals include balanced11um/7um devices retaining total36um and consistent junctions, rejected specifically by the domain predicate. These controls did NOT execute an actual650-device model, transient or layout. Source branch code is not yet integrated into root execution.
+
+Continue by adapting the actual current-parent loaded host using these explicit units, complete current native500 binding, original13 faults plus12 expanded-binding faults,200 currents and1301 full vectors; retain all original numerical gates. Do not reuse historical native cluster IDs or old mixed20 model hashes. Details and exact four-way metrics: docs/cdr-current-domain-next-native.md. Then actual650-device geometry/DRC/deep+flatLVS/freshRC/waves,closedloopCDR/PLL and full serialPHY/mainchip acceptance remain required.
+
+Keep same full64route41513663302/source302f9c30a847acd659a8c451bdce83707fce5d70/release431900029 running. Its endpoint measures DRC/antenna, not finalSTA; it explicitly leaves original-global-class restoration/diodePG/fullLVS acceptance false. Authenticate final native capsule and required downstream audits before matchingRC/Liberty setup/hold. Root PCIe test dispatch repair remains integrated and88 actual positives41521879475 remain valid within their functional scope. Monitor stays8hours,read-only,automatic_native_dispatch=false. Full serialGen3x4 PHY, accepted mainchip PCIe/Ethernet route and final setup/hold remain OPEN. Local workspace empty; all native work/evidence cloud-only.
+
+Observed 2026-11-02T21:14:49.130163+00:00:
+- 41521089374: completed/failure
+- 41525549975: completed/success
+- 41526131863: completed/success
+- 41513663302: in_progress/None
 
 ## Current continuation: actual88-test PCIe root repair integrated; analog and routing handles retained
 

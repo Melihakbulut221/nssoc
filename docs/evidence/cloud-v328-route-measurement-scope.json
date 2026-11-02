@@ -1,0 +1,16 @@
+{
+  "diode_pg_audit_accepted": false,
+  "final_sta_in_this_function": false,
+  "full_drc_and_antenna_measured": true,
+  "full_lvs_accepted": false,
+  "measure_function": "def measure():\n    antenna,drc=native.collect_checks(\"final\",WORK,DATA)\n    after=snap(WORK/\"final-measured.odb\",\"narrow47-measured-observed\")\n    need(after==read(DATA/\"narrow47-restored-observed.json\"),\"read-only full DRC and antenna measurement\")\n    need(antenna[\"design_is_routed\"]==1,\"native design_is_routed result\")\n    save(\"narrow47-result.json\",dict(status=\"COMPLETE_ACTUAL47_ROUTE_SCOPE_AND_FULL_DRC_ANTENNA_MEASUREMENT\",candidate=native.fp(WORK/\"narrow47-restored.odb\"),\n        selected47_routing_executed=True,all_nonselected_wires_and_clocks_unchanged=True,temporary47_protection_restored=True,\n        original_global_route_classes_restored=False,diode_PG_audit_complete=False,full_LVS_accepted=False,\n        drc=drc,antenna=antenna,routing_complete=False,**p.FLAGS))",
+  "original_global_class_restoration_accepted": false,
+  "path": "scripts/mainchip_route47_native.py",
+  "requires_fresh_candidate_evidence_after_route": true,
+  "run": 41513663302,
+  "source": "302f9c30a847acd659a8c451bdce83707fce5d70",
+  "source_pin": {
+    "bytes": 10530,
+    "sha256": "562de54cc211ab171b85b884f4e5ff42a666c316797ee2e864dd21dc1f460964"
+  }
+}
