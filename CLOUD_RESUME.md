@@ -1,6 +1,33 @@
-# Cloud continuation — checkpoint v307
+# Cloud continuation — checkpoint v308
 
-Updated: 2026-11-02T12:12:29.850129+00:00
+Updated: 2026-11-02T12:35:01.538130+00:00
+
+## Current continuation: actual recovered route92DRC; collector candidate electrically rejected; guide-memory diagnosis dispatched
+
+Previous rootv307 ac5300c77500b098904cfd059221b94a25b11cdc/inventory799. Native work/payloads exclusivelyGitHub; localworkspace empty. Complete serialGen3x4PHY/mainchiproute/finalsetuphold remainOPEN.
+
+MAINCHIP RECOVERY41440285882/source0990e2971dee0333598a59a033dfe4f1f1f4215b/release431403455 TERMINAL SUCCESS. Exactiteration19 recovered, originaltemporary47protection restored, all1691clocks/allnonselectedwires unchanged, completeDEF auditPASS.46of47selectedwires changed versusoriginal140marker input. Originalfailedroute41415994457 remainsFAIL; currentrecovery made0routecalls. Nativeinner650.6126seconds, zero terminalerrors. design_is_routed=1 does not meanDRCclean.
+
+ACTUAL FULL DRT CHECK92markers=64Short+28MetalSpacing, allcategories below10000cap and complete serializedcensus. FullsignoffDRC=false. Report16461bytes SHA4d70f7bb24b4aaceb7e435b4a70b4670a20f5ad07a06e4398349e69d2000c59b; markerJSON118206bytes SHAa7cbb4ad472a6f0bf6a8e422eb439dab2e2685ad3ec63062c304af7f4d0bebb9. Antenna21nets with27reportedviolations. Some includePCIe receiveownership andholdbuffers. Originalglobalrouteclass restoration/diodePG/fullLVS/finalSTA stillrequired; recovery didnotclaimthem. Restoredcandidate214392179bytes SHAe460c8d0751ad9d22042a2e133103e0853048110fb0b2747c04ced44eb284d4e. MeasuredODB214402279bytes SHA53b42f42c244af7416a78c0cc04cc897f99b114c892c6bc86ecc60affa3e05af. Complete72member release sealed; single507337878bytepart. Derived13140238534=281462bytes SHA09dea7b60ec56de5ae36dadd3e40196d4dd639e1190f29524e4b99e0d374e1b6.
+
+NEW GUIDE AUDIT41445399432/sourcecccc79890d45e1e9796ee096bfbc42b064f72160/branchcodex/mainchip-route47-guide-audit/release431439188. Independent same-sourcecontrols41444984360 PASS. Reuse unchangedengine/runtime/resources and originalfrozen source gates. Authenticateall72recoverynativemembers plusoriginalscopeinputs, select6currentfiles. Readactual92markerJSON/ODB/nativeguide records with exactliteralnames, nativeDBU/losslessDecimal coordinates and cross-check allrectangleintersections againstactualodb.Rect. Classify selected47/protected1691/temporaryFIXEDoverlay. Preserveallguides/intersections andrankedextents. NO routing/repair/write_db/write_def. No claim ofexactinternalfrNetguide equivalence, memorycause ornewmaterial. This diagnostic follows recoveredactualviolations tochoose a later boundedroute strategy; nounchangedmemoryfailing rerun.
+
+COLLECTOR LOADED41441047354/sourceeb5eb3e34f248e77c26b573f4cfd52a1fdf585ae/release431408879 TERMINAL ELECTRICAL FAILURE. Nativeengineexit0, fulltransient=true/sourcesunchanged=true, statusREJECTED_WHOLE_MIM_PD500_LOADED. Phase14.325205048534979mV<30mV; signedVI43.05123360647242uA<50uA. HBT61/62/115/116minimumVce .34269694860107586/.33977774836005276/.3709673862509904/.3691976007675946V<.4. Versusparent41430498959 improve5.264/5.611/12.762/12.478mV, stillfail. SamplerA/B/C/D maxdelays45.78125/41.71875/51.09375/54.53125ps>37.5; wrongsign0/0/2/34; below100mV129/128/128/128 of765. ComparatorX/Ywrong387/44, below100mV726/652, delay118.90625ps remainfailures.
+
+Fullraw1045823299bytes SHA6bb19cfd4db727ecc28b6564bf3a157470e09153d488626ffa1f5b7cf9e6ce7d=113475rows1152columns,34.25ns,0.3125psmaxstep unchanged. Measurement452909bytes SHAc16b5b66490b76de73f932f2df0d807527cb7b0eafa00139694795ec76b4d5b8. Derived13140423325=1375316bytes SHA91e990391786c5460d772e66963724841985ed4bc95689ad24f9677fade7e0e4. Completeindex701645061=25422bytes SHA881d6d759972190866998369cad80f7f016a49a96748b0734e586af304e59e55. All4nativearchiveparts andoriginalfailure preserved; never shortenwave orrelaxgates.
+
+FULLWAVE DIAGNOSIS41443536765/source9911d8f5a6bae26a8864d858c3a21bc7b48808d0 SUCCESS. Entireparser/diagnosis unchangedfrom55fa84c2 exceptbranch+producer/index/parts. Allactualraw/scalars/margins/delays/signcounts reproduced andexactbadset61/62/115/116 retained. Derived13140329003=120423bytes SHA16ffa363ead36ea95ae97cc579780a274d8015bca56fccdf8949f22f40793c77.
+
+Nativeoperatingminima now61:Vc.829382412,Ve.486685463,Vb1.420525401,Ic3.992023mA;62:Vc.828401554,Ve.488623806,Vb1.420592491,Ic3.912432mA. Drivers54/56E=.872704176/.888610480 atthoseminima; remainingpathdrops43.32..60.21mV.115:Vc.858448311,Ve.487480925,Vb1.424827861,Ic4.044968mA,drivers106/108E=.937624156/.889631044, drops79.18/31.18mV.116minimum movedto18.18671875ns:Vc.861016737,Ve.491819136,Vb1.427232995,Ic3.970839mA;drivers106/108E=.892858328/.937510976, drops31.84/76.49mV. TailMOSdrain/gate/sourcevoltages andallupperdriverC/B/E/Sterminals saved in compactderivedoperatingrecord. Remainingemitter-to-MOSdrops42.1..47.7mV. Needactualbias/geometry design investigation; no claim another smallVia changealonecloses phase/delay/fullPHY.
+
+Passive41441842390 proved8collectorReff -11.26..13.49percent andother24unchanged. Allphysical/canonical/freshRC passes remainvalidonlywithin analogsubblockscope. Do notequate passivegainwithloadedacceptance. Readonly8hourmonitor automatic_native_dispatch=false. Followguideauditactualhandle; preserveallfailures/controls. FullclosedloopCDR/PLL/SERDES/PVT/ESD/EM andmainchiprouting/PG/LVS/3cornerSTA stillopen.
+
+Observed at 2026-11-02T12:35:01.538130+00:00:
+- 41441047354: completed/failure
+- 41440285882: completed/success
+- 41443536765: completed/success
+- 41444984360: completed/success
+- 41445399432: in_progress/None
 
 ## Current continuation: measured collector-path improvement; actual loaded and mainchip recovery still under observation
 
