@@ -178,9 +178,16 @@
       "jobs": [
         {
           "active_steps": [],
-          "conclusion": null,
+          "conclusion": "success",
           "id": 125512150865,
           "name": "controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125515511051,
+          "name": "observe",
           "status": "queued"
         }
       ],
@@ -201,16 +208,18 @@
           "status": "completed"
         },
         {
-          "active_steps": [],
+          "active_steps": [
+            "Authenticate parent RC then simulate explicit 16-MOS current-only parameter trial"
+          ],
           "conclusion": null,
           "id": 125513614933,
           "name": "loaded-wave",
-          "status": "queued"
+          "status": "in_progress"
         }
       ],
       "run": 41514109475,
       "source": "d8289b3f57f23b66288cd7851b03ca81bc4954b6",
-      "status": "queued",
+      "status": "in_progress",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41514109475"
     }
   },
@@ -508,7 +517,7 @@
     "physical_acceptance": false,
     "timing_accepted": false
   },
-  "checkpoint_version": 324,
+  "checkpoint_version": 325,
   "cloud_results_release_reservations": {
     "mainchip_artifact_recovery": {
       "exact_tag_target_verified": true,
@@ -2491,6 +2500,7 @@
   "continuation_note_v322": "## Current continuation: full64 route source and isolated16-MOS trial dispatched for controls; complete PHY stage diagnosis preserved\n\nActual new-engine full-chip roundtrip41506262574 remains passed: all143820nets154480instances1691protected clocks and ODB/DEF/material snapshots identical; fullDRT92 and21antenna nets/27records remain OPEN. The9.054GB check peak is not routing memory reduction or timing acceptance.\n\nFull64 source302f9c30a847acd659a8c451bdce83707fce5d70 is published on codex/mainchip-guide-full64-route. It explicitly uses the new ELF and authenticates the complete successful actual-chip qualification archive/fixture before routing. Original11phase bodies, original47clear/protection/restore, full64 schedule, original resources/supervision/snapshots and oldELF protection stay intact. Independent execute=false source controls41512344559 is dispatched once. Native full64 has NOT been dispatched. After successful same-source controls, authenticate all controls, dispatch execute=true with control_run41512344559 once, and reserve exact-source empty release cloud-results-RUN-1-mainchip-bulk-postdrt-antenna. Do not restart queued/live handles. Source snapshot including all transitive pins is preserved here.\n\nPHY stage diagnosis41508059395/sourcee6c78d53d05c724c2b4adc83f86aebd47d44d9f7 SUCCESS. Authenticated derived artifact13172382269,1777693bytes SHAabc5ae184c3cfe1e477901bd50afd6f95726a7eb660028edd7e31834b5fcba7d. ALL eight derived members are permanently preserved, including complete13872333byte per-bit stage JSON and1198670byte native device diagnosis. Original complete113475x1152 raw wave remained cloud-only. Controls8 malformed waves+3 stage cases+3 actual24-list cases passed; all old scalar delays reproduced. This is diagnosis of rejected41501239838, not new successful transient.\n\nAt C bit8, sampled slave output is28.415mV at0.3UI,120.445mV at0.4UI,173.372mV at0.5UI,99.105mV at0.9UI. It first exceeds100mV and then loses hold margin; do not report118.90625ps as a successful transition time. Eight C bit windows reach that original bounded metric. Clock crossing lag1.5625..4.6875ps remains small relative to sampled data transition failure. A/B/D maxima42.96875/38.90625/49.21875ps still exceed37.5ps. Four master clock HBTs61/62/115/116 retain lowVce failures. Underlying24device trial remains rejected with no matching physical layout.\n\nNew isolated electrical proposal source d8289b3f57f23b66288cd7851b03ca81bc4954b6 on codex/cdr-slave-current-only-trial changes only16slave tail MOS widths36->48um plus consistent proposed diffusion, deriving again from original freshRC41439516945. All collector resistors retain2.6um length, all other484devices and parent interconnect RC unchanged. This isolates increased current from prior combined load reduction that coincided with C droop; improvement is a hypothesis. Actual16MOS geometry binding, exact model reversal, all frozen numerical methods, all100mV/37.5ps/voltage/current gates and150fF loads remain. Independent execute=false controls41512921089 is dispatched once; native not dispatched. After SUCCESS, dispatch execute=true once and reserve exact-source release cloud-results-RUN-1-cdr-slave-current-only-trial. A passed provisional circuit still needs matching schematic/GDS/DRC/LVS/freshPEX and repeated loaded simulation.\n\nSource-only branches use skip-ci for frozen-ancestor general push tests; independent source controls and native experiments remain mandatory. Existing broadCI41505377046/41507901483 and their failures remain recorded. Monitor41501146100 FAILED observe/main-inventory guard: it is not a healthy monitor or successful native repair. Root inventory now includes both new handles; main synchronization remains to investigate, and automatic_native_dispatch remainsfalse.\n\nEverything native/heavy is cloud-only; local workspace empty. Full serialGen3x4 PHY, accepted chip PCIe/Ethernet routing, final setup/hold and production acceptance remain OPEN.\n\nObserved 2026-11-02T19:46:50.689885+00:00:\n- 41512344559: queued/None\n- 41512921089: queued/None\n- 41508059395: completed/success\n- 41505377046: queued/None\n- 41507901483: in_progress/None\n- 41501146100: completed/failure\n",
   "continuation_note_v323": "## Current continuation: monitor inventory overflow repaired without dropping history\n\nThe scheduled monitor41501146100 failed because an inventory shard exceeded its unchanged65536byte bound. The main workflow already loads the exact working-branch inventory; this was NOT a missing main synchronization problem. The previous v322 note named the failing guard but did not yet identify this cause.\n\nAll835 ordered records are now repacked into contiguous shards below60000bytes, with matching byte counts, Git blob IDs, per-shard SHA256 and unchanged combined ordered-row SHA256. No record, failure or job was removed; monitor source,8hour schedule,request bounds and automatic_native_dispatch=false remain unchanged. Run existing main cloud-progress-monitor.yml mode=observe with approved_source equal current main SHA to verify live acquisition. Do not claim successful observation until that job actually passes loading.\n\nTwo obsolete push CI runs41498680552 and41493899500 were cancellation-requested after verifying their branch source had advanced and intervening changes were only scripts/docs/.github. Existing lint/RTL failures remain; cancellation is not pass. Current-source tests and all actual CAD/SPICE jobs remain enabled.\n\nFull64 independent source controls41512344559 succeeded at302f9c30a847acd659a8c451bdce83707fce5d70. Authenticate its derived controls and dispatch actual full64 once with control_run41512344559, then reserve exact-source release. Isolated16MOS current-only controls41512921089 remain their own handle. Complete PHY diagnosis and both candidate source snapshots are preserved in v322. No PHY, chip route or setup/hold acceptance is implied.\n\nObserved 2026-11-02T19:50:16.034850+00:00:\n- 41498680552: completed/cancelled\n- 41493899500: completed/cancelled\n- 41512344559: completed/success\n- 41512921089: in_progress/None\n",
   "continuation_note_v324": "## Current continuation: actual full64 routing and current-only full-wave experiment dispatched\n\nFull64 native workflow41513663302 is dispatched ONCE at source302f9c30a847acd659a8c451bdce83707fce5d70, branchcodex/mainchip-guide-full64-route. Independent controls41512344559 SUCCESS; exact derived artifact13174561106,5959bytes SHAbfcca00bee1dba67ec6533b5eedf4bf5243145117a9d312ac326e04c4d550f90 authenticated and ALL11JSON members preserved here. All original source-control suites,22 actual-qualification refusals and unchanged11phase bodies passed. Native input control_run41512344559. Exact-source release431900029/tagcloud-results-41513663302-1-mainchip-bulk-postdrt-antenna reserved. Follow this handle; do not dispatch a replacement because it is queued or an observation times out. Actual route must still complete with original47/full64 protections, lower violations and later pass final timing. Prior qualified snapshot retains92DRC/21antenna nets27records; qualification is not completed routing.\n\nPHY current-only native workflow41514109475 dispatched ONCE at sourced8289b3f57f23b66288cd7851b03ca81bc4954b6, branchcodex/cdr-slave-current-only-trial. Independent controls41512921089 SUCCESS, artifact13173972691,1594bytes SHAc29e36dbb70791b1f0b1f4c24cb7869781731f671c6829d7b085d03cc09ec4e3 authenticated and complete derived JSON/log preserved. Controls retain29definitions/5blocks/9frozen source files/13admission refusals,16primitive reversals/14bad cards,16geometry positives/5adapter refusals. Actual13native binding refusals+2unitcases+8actualgeometry faults must still pass before transient. Exact-source release431902569/tagcloud-results-41514109475-1-cdr-slave-current-only-trial reserved. Only16slave NMOS widths36->48um and associated provisional diffusion change; original eight collector resistors and other484devices/parentwireRC remain unchanged. No physical candidate has been accepted. Inspect full actual wave/measurement before proposing further changes; successful fixed-parentRC simulation alone needs matchingGDS/DRC/LVS/freshPEX and rerun.\n\nMonitor repairv323 preserves all835historical records below64KiB per shard. Live main monitor41513825922 dispatched ONCE at5f3814a3e0366b8ec310c9270494c01dd6b3e03c with modeobserve/approved_source. Its main workflow reads exact current working-branch inventory. Follow existing handle and verify acquisition; do not claim a healthy monitor based only on repacking. The preceding41501146100 failure was inventory size, not missing main synchronization. New inventory includes both native handles and this observer; all prior failures remain.\n\nTwo superseded pushCI cancellation requests41498680552/41493899500 free hosted capacity; terminal outcomes are recorded below. No actual CAD/SPICE job was cancelled. Complete prior PHY stage diagnosis is permanently in docs/evidence/cloud-v322-slave-stage-41508059395, including full per-bit data and four failed HBTs.\n\nFull serialGen3x4 PHY, accepted mainchip PCIe/Ethernet routing and final setup/hold remain OPEN. All native execution, archives, ODB/GDS and raw waves remain GitHub-only. Local workspace is empty. Continue from existing handles and preserve complete success/failure evidence; never mark goal complete based on controls or diagnostics.\n\nObserved 2026-11-02T19:54:57.860752+00:00:\n- 41513663302: queued/None\n- 41514109475: queued/None\n- 41513825922: queued/None\n- 41512344559: completed/success\n- 41512921089: completed/success\n- 41498680552: completed/cancelled\n- 41493899500: completed/cancelled\n",
+  "continuation_note_v325": "## Current continuation: actual current-only electrical stage live; existing route and monitor handles retained\n\nFollow the same dispatched jobs: full64 route41513663302/source302f9c30a847acd659a8c451bdce83707fce5d70/release431900029;16MOS current-only41514109475/sourced8289b3f57f23b66288cd7851b03ca81bc4954b6/release431902569; main live observer41513825922/source5f3814a3e0366b8ec310c9270494c01dd6b3e03c. Independent source controls and both native workflows' source-control jobs passed. At the latest direct observation, current-only loaded-wave job125513614933 is in its authenticate-parent-and-simulate step; no terminal electrical result is available yet. Full64 native-routing125512950978 and monitor observe125515511051 are queued. Do not infer a stopped job or launch replacements from queue delay.\n\nOne additional superseded general pushCI41496973308 was cancellation-requested and is now terminal cancelled. Its successor41507901483 remains enabled. Exact ancestor comparison shows only six docs/scripts/workflow files changed, no RTL. Existing old lint/RTL failures remain; cancellation never counts as a pass. Build-branch general CI41492788476 was NOT cancelled: a wider comparison was divergent and did not establish equivalent hardware.\n\nThe physical downstream dependency is now pinned in docs/cdr-current-only-physical-handoff.md and docs/evidence/cloud-v325-current-only-physical-handoff.json. Existing physical41435641296 and freshRC41439516945 prove the original36um geometry only. A useful48um electrical result requires actual16-device geometry plus matching schematic, full DRC/deep+flat LVS, new complete mapping/terminal identities, actual intrinsic dimensions and fresh wire/MIM extraction, then the unchanged full loaded-wave gates. Do not reuse parent GDS/RC hashes, assume native IDs survive extraction, or substitute provisional diffusion parameters for extracted ones. This inspection did not generate new layout.\n\nAll new job handles, exact-source reservations and complete independent controls are already preserved in v324. Complete rejected previous trial's stage data is preserved in v322. Monitor inventory has838rows in shards below64KiB, schedule remains8hours and automatic_native_dispatch=false. Full serialGen3x4 PHY, accepted mainchip PCIe/Ethernet route and final setup/hold remain OPEN. Native evidence and computation remain GitHub-only; local workspace stays empty.\n\nObserved 2026-11-02T20:05:23.567245+00:00:\n- 41513663302: queued/None\n- 41514109475: in_progress/None\n- 41513825922: queued/None\n- 41496973308: completed/cancelled\n",
   "current_run_snapshot": [
     {
       "attempt": 1,
@@ -27429,71 +27439,6 @@
     },
     {
       "branch": "codex/mainchip-guide-full64-route",
-      "conclusion": null,
-      "jobs": [
-        {
-          "active_steps": [],
-          "conclusion": "success",
-          "id": 125511588907,
-          "name": "source-controls",
-          "status": "completed"
-        },
-        {
-          "active_steps": [],
-          "conclusion": null,
-          "id": 125512950978,
-          "name": "native-routing",
-          "status": "queued"
-        }
-      ],
-      "run": 41513663302,
-      "source": "302f9c30a847acd659a8c451bdce83707fce5d70",
-      "status": "queued",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41513663302"
-    },
-    {
-      "branch": "codex/cdr-slave-current-only-trial",
-      "conclusion": null,
-      "jobs": [
-        {
-          "active_steps": [],
-          "conclusion": "success",
-          "id": 125513129800,
-          "name": "source-controls",
-          "status": "completed"
-        },
-        {
-          "active_steps": [],
-          "conclusion": null,
-          "id": 125513614933,
-          "name": "loaded-wave",
-          "status": "queued"
-        }
-      ],
-      "run": 41514109475,
-      "source": "d8289b3f57f23b66288cd7851b03ca81bc4954b6",
-      "status": "queued",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41514109475"
-    },
-    {
-      "branch": "main",
-      "conclusion": null,
-      "jobs": [
-        {
-          "active_steps": [],
-          "conclusion": null,
-          "id": 125512150865,
-          "name": "controls",
-          "status": "queued"
-        }
-      ],
-      "run": 41513825922,
-      "source": "5f3814a3e0366b8ec310c9270494c01dd6b3e03c",
-      "status": "queued",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41513825922"
-    },
-    {
-      "branch": "codex/mainchip-guide-full64-route",
       "conclusion": "success",
       "jobs": [
         {
@@ -27671,6 +27616,146 @@
       "source": "4bc8aa4117cb603155e4d03bcd00c69c7d6ee943",
       "status": "completed",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41493899500"
+    },
+    {
+      "branch": "codex/mainchip-guide-full64-route",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125511588907,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125512950978,
+          "name": "native-routing",
+          "status": "queued"
+        }
+      ],
+      "run": 41513663302,
+      "source": "302f9c30a847acd659a8c451bdce83707fce5d70",
+      "status": "queued",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41513663302"
+    },
+    {
+      "branch": "codex/cdr-slave-current-only-trial",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125513129800,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate parent RC then simulate explicit 16-MOS current-only parameter trial"
+          ],
+          "conclusion": null,
+          "id": 125513614933,
+          "name": "loaded-wave",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41514109475,
+      "source": "d8289b3f57f23b66288cd7851b03ca81bc4954b6",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41514109475"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125512150865,
+          "name": "controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125515511051,
+          "name": "observe",
+          "status": "queued"
+        }
+      ],
+      "run": 41513825922,
+      "source": "5f3814a3e0366b8ec310c9270494c01dd6b3e03c",
+      "status": "queued",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41513825922"
+    },
+    {
+      "branch": "codex/cdr-sampler-stage-timing",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 125454371721,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 125454371961,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125454371968,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125454372217,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125454372290,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125454372372,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 125454372435,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125454373908,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41496973308,
+      "source": "f3bbcddef55b19194cce675f91a0bb265b577bce",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41496973308"
     }
   ],
   "divider_width4_terminal_v246": {
@@ -115437,6 +115522,148 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41493899500"
     }
   ],
+  "latest_observed_runs_v325": [
+    {
+      "branch": "codex/mainchip-guide-full64-route",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125511588907,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125512950978,
+          "name": "native-routing",
+          "status": "queued"
+        }
+      ],
+      "run": 41513663302,
+      "source": "302f9c30a847acd659a8c451bdce83707fce5d70",
+      "status": "queued",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41513663302"
+    },
+    {
+      "branch": "codex/cdr-slave-current-only-trial",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125513129800,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate parent RC then simulate explicit 16-MOS current-only parameter trial"
+          ],
+          "conclusion": null,
+          "id": 125513614933,
+          "name": "loaded-wave",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41514109475,
+      "source": "d8289b3f57f23b66288cd7851b03ca81bc4954b6",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41514109475"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125512150865,
+          "name": "controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125515511051,
+          "name": "observe",
+          "status": "queued"
+        }
+      ],
+      "run": 41513825922,
+      "source": "5f3814a3e0366b8ec310c9270494c01dd6b3e03c",
+      "status": "queued",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41513825922"
+    },
+    {
+      "branch": "codex/cdr-sampler-stage-timing",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 125454371721,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 125454371961,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125454371968,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125454372217,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125454372290,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125454372372,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 125454372435,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125454373908,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41496973308,
+      "source": "f3bbcddef55b19194cce675f91a0bb265b577bce",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41496973308"
+    }
+  ],
   "latest_terminal_runs": {
     "cdr_actual_terminal_current_ledger": 40171679250,
     "cdr_current_ledger_controls": 40171508329,
@@ -116197,11 +116424,11 @@
   },
   "local_cleanup_verification": {
     "native_payloads_cloud_only": true,
-    "observed_at": "2026-11-02T19:54:57.860752+00:00",
+    "observed_at": "2026-11-02T20:05:23.567245+00:00",
     "source_API_derived_text_RAM_only": true,
     "workspace_entries": 0
   },
-  "local_workspace_verified_empty_at": "2026-11-02T19:54:57.860752+00:00",
+  "local_workspace_verified_empty_at": "2026-11-02T20:05:23.567245+00:00",
   "mixed_canonical_proofs_v269": [
     {
       "prefix": "docs/evidence/mixed-canonical-terminal-41350835442",
@@ -116252,7 +116479,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 324,
+    "inventory_version": 325,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -158167,7 +158394,7 @@
     "timing_accepted": false,
     "timing_limits_unchanged": true
   },
-  "root_source_before_receipt": "665895c1cd3f3cbe5095bc608cae727c6f0fae27",
+  "root_source_before_receipt": "1fb6f6c25eade4400fbad962e452ddd26b229144",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -158205,6 +158432,11 @@
     "routing_repair_reconstruction_calls": 0,
     "source_projection_failure_preserved": 41304415754,
     "timing_accepted": false
+  },
+  "slave_current_only_physical_handoff_v325": {
+    "document": "docs/cdr-current-only-physical-handoff.md",
+    "evidence": "docs/evidence/cloud-v325-current-only-physical-handoff.json",
+    "matching_new_layout_verified": false
   },
   "slave_current_only_trial_v322": {
     "branch": "codex/cdr-slave-current-only-trial",
@@ -158410,7 +158642,7 @@
       "run": 41349316524
     }
   ],
-  "updated_at": "2026-11-02T19:54:57.860752+00:00",
+  "updated_at": "2026-11-02T20:05:23.567245+00:00",
   "width8_wave_diagnosis_v250": {
     "proof": {
       "bytes": 5806735,

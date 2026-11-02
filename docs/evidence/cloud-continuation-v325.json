@@ -1,0 +1,152 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "observed_at": "2026-11-02T20:05:23.567245+00:00",
+    "source_API_derived_text_RAM_only": true,
+    "workspace_entries": 0
+  },
+  "note": "## Current continuation: actual current-only electrical stage live; existing route and monitor handles retained\n\nFollow the same dispatched jobs: full64 route41513663302/source302f9c30a847acd659a8c451bdce83707fce5d70/release431900029;16MOS current-only41514109475/sourced8289b3f57f23b66288cd7851b03ca81bc4954b6/release431902569; main live observer41513825922/source5f3814a3e0366b8ec310c9270494c01dd6b3e03c. Independent source controls and both native workflows' source-control jobs passed. At the latest direct observation, current-only loaded-wave job125513614933 is in its authenticate-parent-and-simulate step; no terminal electrical result is available yet. Full64 native-routing125512950978 and monitor observe125515511051 are queued. Do not infer a stopped job or launch replacements from queue delay.\n\nOne additional superseded general pushCI41496973308 was cancellation-requested and is now terminal cancelled. Its successor41507901483 remains enabled. Exact ancestor comparison shows only six docs/scripts/workflow files changed, no RTL. Existing old lint/RTL failures remain; cancellation never counts as a pass. Build-branch general CI41492788476 was NOT cancelled: a wider comparison was divergent and did not establish equivalent hardware.\n\nThe physical downstream dependency is now pinned in docs/cdr-current-only-physical-handoff.md and docs/evidence/cloud-v325-current-only-physical-handoff.json. Existing physical41435641296 and freshRC41439516945 prove the original36um geometry only. A useful48um electrical result requires actual16-device geometry plus matching schematic, full DRC/deep+flat LVS, new complete mapping/terminal identities, actual intrinsic dimensions and fresh wire/MIM extraction, then the unchanged full loaded-wave gates. Do not reuse parent GDS/RC hashes, assume native IDs survive extraction, or substitute provisional diffusion parameters for extracted ones. This inspection did not generate new layout.\n\nAll new job handles, exact-source reservations and complete independent controls are already preserved in v324. Complete rejected previous trial's stage data is preserved in v322. Monitor inventory has838rows in shards below64KiB, schedule remains8hours and automatic_native_dispatch=false. Full serialGen3x4 PHY, accepted mainchip PCIe/Ethernet route and final setup/hold remain OPEN. Native evidence and computation remain GitHub-only; local workspace stays empty.\n\nObserved 2026-11-02T20:05:23.567245+00:00:\n- 41513663302: queued/None\n- 41514109475: in_progress/None\n- 41513825922: queued/None\n- 41496973308: completed/cancelled\n",
+  "runs": [
+    {
+      "branch": "codex/mainchip-guide-full64-route",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125511588907,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125512950978,
+          "name": "native-routing",
+          "status": "queued"
+        }
+      ],
+      "run": 41513663302,
+      "source": "302f9c30a847acd659a8c451bdce83707fce5d70",
+      "status": "queued",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41513663302"
+    },
+    {
+      "branch": "codex/cdr-slave-current-only-trial",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125513129800,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate parent RC then simulate explicit 16-MOS current-only parameter trial"
+          ],
+          "conclusion": null,
+          "id": 125513614933,
+          "name": "loaded-wave",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41514109475,
+      "source": "d8289b3f57f23b66288cd7851b03ca81bc4954b6",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41514109475"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125512150865,
+          "name": "controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125515511051,
+          "name": "observe",
+          "status": "queued"
+        }
+      ],
+      "run": 41513825922,
+      "source": "5f3814a3e0366b8ec310c9270494c01dd6b3e03c",
+      "status": "queued",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41513825922"
+    },
+    {
+      "branch": "codex/cdr-sampler-stage-timing",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 125454371721,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 125454371961,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125454371968,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125454372217,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125454372290,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125454372372,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 125454372435,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125454373908,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41496973308,
+      "source": "f3bbcddef55b19194cce675f91a0bb265b577bce",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41496973308"
+    }
+  ],
+  "version": 325
+}
