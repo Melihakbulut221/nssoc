@@ -10,7 +10,7 @@ BASE='7a0776718ec37a106b7dfde0cbd477c6a2a5522f'
 REPO='repos/Melihakbulut221/nssoc/'
 GROUP='mainchip-bulk-postdrt-antenna'
 MANIFEST='scripts/mainchip-snapshot-reload-pins.json'
-NEW_NATIVE=('scripts/mainchip_snapshot_reload_contract.py','scripts/mainchip_snapshot_reload_inner.py','scripts/mainchip_snapshot_reload_native.py','scripts/mainchip_route47_contract.py','scripts/mainchip_route47_import.py','scripts/mainchip_route47_native.py','scripts/mainchip-route47-selected.json')
+NEW_NATIVE=('scripts/mainchip_snapshot_reload_contract.py','scripts/mainchip_snapshot_reload_inner.py','scripts/mainchip_snapshot_reload_native.py','scripts/mainchip_route47_contract.py','scripts/mainchip_route47_import.py','scripts/mainchip_route47_native.py','scripts/mainchip-route47-selected.json','scripts/mainchip_route47_memory.py')
 def sha(path):
  h=hashlib.sha256()
  with path.open('rb')as f:

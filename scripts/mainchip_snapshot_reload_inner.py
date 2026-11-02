@@ -3,6 +3,7 @@ import json,os,signal,sys,threading,time
 from pathlib import Path
 sys.path.insert(0,'/work/tail-source/scripts')
 import mainchip_bulk_postdrt_antenna_inner as base
+import mainchip_route47_memory as memory_policy
 from mainchip_bulk_postdrt_antenna_inner import c,p,OUT,WORK,DATA,INPUTS,ENGINE,fingerprint
 PHASES=('prepare','freeze-import','freeze-audit','reverse-import','reverse-audit-clear','route','route-restore','restore-import','route-audit','final-check','measure')
 def execute(label,report,runner):
@@ -72,6 +73,10 @@ def main():
         sup=base.supervision.supervisor();sup.OUT=OUT/'bulk-postdrt-supervisor';sup.TRACE=OUT/'bulk-postdrt-supervision'
         sup.OUT.mkdir();sup.TRACE.mkdir()
         assert sup.SECONDS==1200 and sup.MAX_GROUP_RSS_KIB==10485760 and sup.MIN_AVAILABLE_KIB==2097152
+        report['execution_memory_policy']=memory_policy.configure(sup,int(report['cgroup_initial']['memory.max']))
+        actual_checker,checker_proof=memory_policy.checker(Path(base.command_evidence.__file__).read_bytes())
+        report['execution_memory_checker']=checker_proof
+        base.command_evidence=actual_checker
         for sig in (signal.SIGINT,signal.SIGTERM):handlers[sig]=signal.signal(sig,sup.interrupted)
         beat=threading.Thread(target=sup.heartbeat,daemon=True);beat.start()
         runner=lambda rep,label,argv,seconds:base.supervised_run(rep,label,argv,seconds,sup)
