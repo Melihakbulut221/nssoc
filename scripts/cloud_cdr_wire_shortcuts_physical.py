@@ -10,7 +10,7 @@ OUT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-physical"
 MANIFEST="scripts/cdr-wire-shortcuts-physical-pins.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
 CANDIDATE="scripts/cdr-wire-physical-candidate.json"
-BRANCH="codex/cdr-collector-via2-physical"
+BRANCH="codex/cdr-clock-access-physical"
 APP_SHA="d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
 CHECKER_SHA="3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66"
 TOP="nssoc_cdr_pd500_resistor_v59"
@@ -109,58 +109,64 @@ def fetch_asset(asset,path):
     with path.open("xb")as f:subprocess.run(["gh","api","repos/Melihakbulut221/nssoc/releases/assets/"+str(asset["id"]),"-H","Accept: application/octet-stream"],stdout=f,check=True)
     need(pin(path)==dict(bytes=asset["bytes"],sha256=asset["sha256"]),"complete downloaded asset")
 def candidate():
+    import klayout.db as db
     cfg=json.loads((ROOT/CANDIDATE).read_bytes());api=acquire.api
     run=api("actions/runs/"+str(cfg["run"]))
     need(run["head_sha"]==cfg["source"]and run["run_attempt"]==1 and run["status"]=="completed"and run["conclusion"]=="success","actual candidate producer")
-    rel=api("releases/"+str(cfg["release"]));need(rel["target_commitish"]==cfg["source"]and rel["tag_name"]==cfg["tag"],"candidate release")
-    need(api("git/ref/tags/"+cfg["tag"])["object"]["sha"]==cfg["source"],"candidate tag")
-    assets={a["name"]:a for a in rel["assets"]};need(set(assets)==set(cfg["assets"]),"candidate assets")
+    rel=api("releases/"+str(cfg["release"]))
+    need(rel["target_commitish"]==cfg["source"]and rel["tag_name"]==cfg["tag"]and api("git/ref/tags/"+cfg["tag"])["object"]["sha"]==cfg["source"],"candidate release/tag")
+    assets={a["name"]:a for a in rel["assets"]};need(set(assets)==set(cfg["assets"]),"complete candidate assets")
     work=ROOT/"wire-physical-candidate-cache";work.mkdir()
     for n,p in cfg["assets"].items():
+        need(PurePosixPath(n).name==n,"flat asset")
         a=assets[n];need(a["id"]==p["id"]and a["size"]==p["bytes"]and a["digest"]=="sha256:"+p["sha256"],"candidate asset metadata")
         fetch_asset(p,work/n)
-    index=json.loads((work/"complete-output-index.json").read_bytes())
-    need(index==cfg["index"],"independent candidate complete index")
-    target=work/"selected";seen={};members=set()
-    with tarfile.open(work/"native-candidate.tar.gz","r|gz")as tar:
+    index=json.loads((work/"complete-output-index.json").read_bytes());need(index==cfg["index"],"independent complete index")
+    target=work/"selected";seen={}
+    with tarfile.open(work/"native-geometry.tar.gz","r|gz")as tar:
         for m in tar:
-            need(m.name not in members,"unique candidate member");members.add(m.name)
-            n=acquire.relative(m.name,"wire-tail-shortcuts")
-            need(m.isfile()and n in index["files"],"candidate known regular member")
+            n=acquire.relative(m.name,"domain-geometry")
+            need(m.isfile()and n in index["files"]and n not in seen,"known unique regular candidate member")
             p=target/n;p.parent.mkdir(parents=True,exist_ok=True)
             with p.open("xb")as f:shutil.copyfileobj(tar.extractfile(m),f)
-            seen[n]=pin(p);need(seen[n]==index["files"][n],"candidate member digest")
-    need(seen==index["files"],"every actual candidate member")
-    proof=json.loads((target/"derived/collector-via2-generation-proof.json").read_bytes())
-    need(proof["candidate"]==cfg["candidate"]and proof["exact_serialized_delta"]and proof["original_material_roundtrip"]and not proof["physical_acceptance"],"actual geometry proof remains candidate")
-    need(proof["all4actual_collector_driver_accesses"]and proof["all13native_unions_verified"],"all four actual collector driver terminals")
-    need(proof["only_added_layers"]==[[29,0],[30,0]]and proof["added_area_dbu2"]=={"29":1732800,"30":12048600},"exact new Via2 M3 material")
-    need(proof["new_via2_count"]==48 and not proof["new_M2"]and not proof["new_devices"]and not proof["electrical_improvement_claimed"]and not proof["current_density_acceptance"],"48newVia2 without device or acceptance changes")
-    need(proof["input_gds"]==dict(bytes=1075316,sha256="5e5ef3940bb0e410af8bbb92376e2c1cb60e3c520e37b65c7e675af41e58603f"),"actual drainM23 parent")
-    need(proof["input_l2n"]==dict(bytes=2038215,sha256="7a96d141b6513f8c7eb8a5307bc5feed7fc4833cb4797503090addf513bfa6bb"),"actual drainM23 native ownership")
-    proposal=json.loads((target/"derived/collector-via2-proposal.json").read_bytes())
-    need(proposal["new_via2_count"]==48 and proposal["metal_width_nm"]==3650 and proposal["metal_height_nm"]==1100,"actual collector access geometry")
-    need({x["label"]for x in proposal["targets"]}=={"T"+str(i).zfill(3)+"_E"for i in(54,56,106,108)}and len(proposal["targets"])==4,"exact four collector driver identities")
-    metal_keys={"nonempty","grid5","connected_existing_m2","foreign_m2_clearance240","foreign_via1_clearance50","foreign_via2_clearance50","within_original_extent"}
-    via_keys={"square190","grid5","enclosed_m1_50","enclosed_m2_50","existing_via_clearance240","new_via_clearance240","within_original_extent"}
-    positions=set()
-    for row in proposal["targets"]:
-        i=int(row["label"][1:4]);anchor=row["original_anchor"];x,ay=anchor["point_dbu"];y=ay-ay%5
-        need(anchor["label"]==row["label"]and anchor["detail"]["device"]==i and anchor["detail"]["terminal"]=="E"and anchor["metal"]==10
-             and row["native_net"]==anchor["detail"]["native_net"]==("$44"if i<100 else"$598"),"actual collector driver owner")
-        need(ay-y==2 and x%5==0 and row["grid_point_dbu"]==[x,y]and row["metal_bbox"]==[x-1825,y-650,x+1825,y+450],"exact original HBT reference and new M3 pad")
-        need(set(row["metal_guards"])==metal_keys and all(v is True for v in row["metal_guards"].values()),"complete true M3 attachment and foreign via guards")
-        expected={(x+dx,y+dy)for dx in(-1680,-1200,-720,-240,240,720,1200,1680)for dy in(-480,0)if not(dy==0 and dx in(-720,-240,240,720))}
-        actual=set()
-        need(len(row["cuts"])==12,"all12actual Via2 cuts per driver")
-        for cut in row["cuts"]:
-            need(set(cut["guards"])==via_keys and all(v is True for v in cut["guards"].values()),"complete actual lowerM2 upperM3 enclosure and Via2 spacing guards")
-            pt=tuple(cut["center_dbu"]);need(pt not in actual and pt not in positions,"unique physical new Via2")
-            need(cut["bbox"]==[pt[0]-95,pt[1]-95,pt[0]+95,pt[1]+95],"exact190nm new Via2")
-            actual.add(pt);positions.add(pt)
-        need(actual==expected,"independently reconstructed12cut pattern")
-    need(len(positions)==48,"complete48new actual cuts")
-    save("candidate-acquisition.json",dict(run=run,release=rel,authenticated_members=seen))
+            seen[n]=pin(p);need(seen[n]==index["files"][n],"every candidate member digest")
+    need(seen==index["files"],"complete native candidate preservation")
+    proof=json.loads((target/"derived/result.json").read_bytes())
+    proposal=json.loads((target/"derived/redundant-via-proposal.json").read_bytes())
+    need(proof["candidate"]==cfg["candidate"]and proof["new_via_count"]==16 and proof["via_layers"]=={"29":16},"exact16via candidate")
+    need(not proof["physical_acceptance"]and not proof["fresh_RC"]and not proof["electrical_improvement_proven"],"candidate scope")
+    parent=target/"native/selected/binding/inputs/parent/layout"/(TOP+".gds")
+    need(pin(parent)==proof["original_gds"]==dict(bytes=1078900,sha256="c0d420cdbc31863bf21086e88c12f494779961225031c261d6b05fe07e7585a7"),"exact original current GDS")
+    native=target/"native/selected/binding/inputs/wire/native05/wires.l2n"
+    need(pin(native)==proof["original_wire_l2n"],"exact original ownership")
+    old=db.Layout();old.read(str(parent));new=db.Layout();new.read(str(target/"native/candidate-clock-access.gds"))
+    need(old.dbu==new.dbu==.001 and old.cell(TOP)is not None and new.cell(TOP)is not None,"same exact physical grid/top")
+    snap=lambda ly:{(ly.get_info(i).layer,ly.get_info(i).datatype):db.Region(ly.cell(TOP).begin_shapes_rec(i)).merged()for i in ly.layer_indexes()}
+    before=snap(old);after=snap(new)
+    l2n=db.LayoutToNetlist();l2n.read(str(native))
+    nets={n.cluster_id:n for n in l2n.netlist().top_circuit().each_net()}
+    objects={n:l2n.layer_by_name("gds_"+str(n))for n in (10,29,30)}
+    for n,r in objects.items():need((r^before[(n,0)]).is_empty(),"same original conductor union")
+    addition=db.Region();owned_cache={}
+    need(len(proposal["admitted"])==16,"all16 cuts")
+    labels={}
+    for r in proposal["admitted"]:
+        need(r["via_layer"]==29 and r["lower"]==10 and r["upper"]==30,"only Via2")
+        b=r["bbox"];need(len(b)==4 and all(v%5==0 for v in b)and b[2]-b[0]==b[3]-b[1]==190,"actual190nm grid-aligned cut")
+        cut=db.Region(db.Box(*b));c=r["component"]
+        if c not in owned_cache:owned_cache[c]={n:l2n.shapes_of_net(nets[c],obj,True).merged()for n,obj in objects.items()}
+        own=owned_cache[c]
+        need((cut.sized(50,50,2)-own[10]).is_empty()and(cut.sized(50,50,2)-own[30]).is_empty(),"independent original same-net M2/M3 enclosure")
+        need((cut&(objects[29]+addition).sized(240,240,2)).is_empty(),"independent original/new cut separation")
+        need((cut.sized(50,50,2)&((objects[10]-own[10])+(objects[30]-own[30]))).is_empty(),"no foreign same-plane connection")
+        addition+=cut;labels[r["label"]]=labels.get(r["label"],0)+1
+    need(labels=={k:4 for k in ("T054_E","T056_E","T106_E","T108_E")}and addition.count()==16 and addition.area()==16*36100,"exact four actual upper-emitter accesses")
+    for key in set(before)|set(after):
+        expected=before.get(key,db.Region())
+        if key==(29,0):expected=(expected+addition).merged()
+        need((expected^after.get(key,db.Region())).is_empty(),"independent exact via-only serialized delta")
+    need(pin(target/"native/candidate-clock-access.gds")==cfg["candidate"],"exact candidate bytes")
+    save("candidate-acquisition.json",dict(run=run,release=rel,authenticated_members=seen,independent_geometry_delta=True,new_vias=16,device_geometry_unchanged=True))
     return target
 def restore_runtime():
     cfg=json.loads((ROOT/"docs/evidence/pcie-tx-layout-cloud-input-20261013.json").read_bytes())["receipt"]
@@ -184,11 +190,11 @@ def prepare_layout(parent_base,new_base,checker):
     old=parent_base/"binding/inputs/parent/layout";cfg=json.loads((ROOT/PARENT).read_bytes())
     for n in("schematic.cir",TOP+".lef","result.json",TOP+".gds"):
         need(pin(old/n)==cfg["complete_members"]["binding/inputs/parent/layout/"+n],"original parent "+n)
-    shutil.copyfile(new_base/"native/nssoc_cdr_pd500_collector_via2_access.gds",layout/(TOP+".gds"))
+    shutil.copyfile(new_base/"native/candidate-clock-access.gds",layout/(TOP+".gds"))
     for n in("schematic.cir",TOP+".lef"):shutil.copyfile(old/n,layout/n);need(pin(old/n)==pin(layout/n),"unchanged original reference")
     p=json.loads((old/"result.json").read_bytes())
     inputs=[old/n for n in("result.json","schematic.cir",TOP+".lef",TOP+".gds")]
-    inputs.extend([new_base/"derived/collector-via2-generation-proof.json",new_base/"native/nssoc_cdr_pd500_collector_via2_access.gds",ROOT/CANDIDATE,ROOT/PARENT,checker,ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
+    inputs.extend([new_base/"derived/result.json",new_base/"native/candidate-clock-access.gds",ROOT/CANDIDATE,ROOT/PARENT,checker,ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
     record=metadata(p,layout/(TOP+".gds"),layout/"schematic.cir",layout/(TOP+".lef"),inputs)
     (layout/"result.json").write_bytes(encode(record));save("candidate-layout-binding.json",record)
     return layout
@@ -243,7 +249,7 @@ def verify():
         for p,h in record["inputs"].items():need(sha(Path(p))==h,"actual final physical input "+p)
         need(record["inputs"][str(layout/(TOP+".gds"))]==json.loads((ROOT/CANDIDATE).read_bytes())["candidate"]["sha256"],"actual new candidate verified")
         gate()
-        save("physical-qualification.json",dict(status="PASS_COLLECTOR_VIA2_GDS_FULL560_DRC_DEEP_FLAT_LVS13",gds=pin(layout/(TOP+".gds")),record=pin(OUT/"physical/result.json"),new_RC_executed=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False))
+        save("physical-qualification.json",dict(status="PASS_CLOCK_ACCESS16_GDS_FULL560_DRC_DEEP_FLAT_LVS13",gds=pin(layout/(TOP+".gds")),record=pin(OUT/"physical/result.json"),new_RC_executed=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False))
     except BaseException as exc:error=exc
     finally:
         try:cleanup.append(dict(process_group=sup.stop_process(sup.ACTIVE)))
