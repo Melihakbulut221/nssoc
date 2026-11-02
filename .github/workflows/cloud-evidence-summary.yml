@@ -1,9 +1,9 @@
-name: Recover actual iteration19 and independently audit full chip routing
+name: Inspect actual recovered92 marker guide extents without routing
 on:
   workflow_dispatch:
     inputs:
       execute:
-        description: Audit retained iteration19 after independent same-source controls
+        description: Inspect native guide extents after same-source controls
         type: boolean
         default: false
       control_run:
@@ -70,6 +70,12 @@ jobs:
             /scripts/mainchip-route47-recovery-inputs.json
             /scripts/check_mainchip_route47_recovery.py
             /docs/mainchip-route47-snapshot19-recovery.md
+            /scripts/cloud_mainchip_route47_guides.py
+            /scripts/mainchip_route47_guides_inner.py
+            /scripts/mainchip_route47_guides_native.py
+            /scripts/mainchip-route47-guide-inputs.json
+            /scripts/check_mainchip_route47_guides.py
+            /docs/mainchip-route47-guide-audit.md
             /.github/workflows/cloud-evidence-summary.yml
       - name: Authenticate every own source before execution
         run: |
@@ -104,6 +110,7 @@ jobs:
           python3 -B scripts/check_mainchip_route47_import.py
           python3 -B scripts/check_mainchip_route47_memory.py
           python3 -B scripts/check_mainchip_route47_recovery.py
+          python3 -B scripts/check_mainchip_route47_guides.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -117,6 +124,7 @@ jobs:
             route47-import-controls
             route47-memory-controls
             route47-recovery-controls
+            route47-guide-controls
             scoped-restoration-controls
           retention-days: 90
           if-no-files-found: error
@@ -180,6 +188,12 @@ jobs:
             /scripts/mainchip-route47-recovery-inputs.json
             /scripts/check_mainchip_route47_recovery.py
             /docs/mainchip-route47-snapshot19-recovery.md
+            /scripts/cloud_mainchip_route47_guides.py
+            /scripts/mainchip_route47_guides_inner.py
+            /scripts/mainchip_route47_guides_native.py
+            /scripts/mainchip-route47-guide-inputs.json
+            /scripts/check_mainchip_route47_guides.py
+            /docs/mainchip-route47-guide-audit.md
             /.github/workflows/cloud-evidence-summary.yml
       - name: Authenticate every own source before execution
         run: |
@@ -204,8 +218,8 @@ jobs:
           sparse-checkout: /scripts/mainchip-bounded-route-host-pins.json
       - name: Authenticate original source and exact derived scope inputs
         run: python3 -B scripts/prepare_scoped_restoration_sources.py
-      - name: Restore saved iteration19 classes, audit all wires and clocks, and measure full DRC
-        run: python3 -B scripts/cloud_mainchip_route47_recovery.py
+      - name: Read exact recovered DRC sources and native guide extents without routing
+        run: python3 -B scripts/cloud_mainchip_route47_guides.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
