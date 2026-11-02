@@ -13,3 +13,10 @@ Required continuation: use the actual original current parent and runtime, re-ru
 All execution and native payloads remain cloud-only. This branch presently has source controls only; no new native waveform or layout is claimed.
 
 Initial source controls41525549975 passed all50 partitions and23 refusals. Their full output is preserved. An additional adversarial case retains totalW36um while changing two9um units to11um and7um with matching independent junction parameters; it must fail specifically at the per-unit model-range predicate. This separates width-domain enforcement from total-width conservation. Current expected source refusals:24.
+
+
+## Actual loaded adapter (new; execution results pending)
+The loaded host now authenticates the original current freshRC41439516945 and native runtime, binds all500 original devices, derives exactly200 independent MOS units, and constructs650 devices. No resistor or previous bias/load candidate is applied. All450 other records,98 resistors and parent distributed RC remain unchanged. Actual three MOS-library files are compared with audited current runtime pins before preparation.
+The baseline13 corruption tests and2 equivalent-unit controls remain, with12 expansion binding faults. Selected vectors change only from50 to200 MOS drain currents:977 voltage and124 HBT vectors remain, giving1301 vectors. Source controls reject the obsolete historical projection schema.
+The full original prepare/measure code and all numerical limits remain unchanged. Only explicit deck/measurement cardinalities and PD650 status labels change. Original34.25ns transient,loads,100mV signal,37.5ps timing,30mV phase,50uA VI and device stress gates remain. Full simulation failures and waves are permanently published.
+Passing this provisional electrical screen does not prove matching device layout or new parasitics. New650-device native geometry,DRC/deep+flatLVS,freshRC,rerun waves,closed-loopCDR/PLL and full serialPHY/mainchip timing remain required. No such acceptance is claimed.
