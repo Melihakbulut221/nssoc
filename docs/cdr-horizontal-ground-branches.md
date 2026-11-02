@@ -1,3 +1,9 @@
+# Current candidate: actual4.6um ground branches
+
+Run41387922295 measured the actual same GDS and proved that all32original branches pass the2005nm clearance probe. The14refused5um branches fail due to actual added material, not an unchanged-baseline false positive. At multiple original6000nm pitch corridors,3200nm ground and3200nm neighboring widths leave2800nm; symmetric5um widening reduces that to1900nm and therefore fails the true2000nm minimum. Preserve that failure and all original/added collision evidence.
+
+This candidate uses4600nm width with700nm symmetric addition, leaving2100nm in the measured constrained corridors. The same2005nm standard and5005nm wide-neighbor guards remain byte-identical; only the intended candidate width and corresponding independent geometry controls change. It still requires all32branches. No original conductor/device/via/public pad is removed or moved. Full560DRC/deep-flatLVS13/canonical/freshRC/unchanged loaded gates remain mandatory. Narrowing the candidate from the failed5um proposal is a physical redesign; it does not change the required complete serial Gen3x4PHY or electrical acceptance.
+
 # Actual horizontal ground branch reinforcement
 
 Actual13-layer native topology41384121103 established a wide vertical TopMetal1 ground bus and32horizontal TopMetal2 branches, each3200nmhigh, connected through existing lower-layer ground conductors. The failed vertical Metal5 hypothesis41383764902 is preserved; this candidate uses the actual existing TopMetal2 branches instead.

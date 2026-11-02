@@ -939,7 +939,7 @@ def horizontal_ground_guard(original,widened,owned,full,other,outline):
         original_owned=(original-owned[134]).is_empty(),
         original_preserved=(original-widened).is_empty(),
         same_longitudinal_span=a.left==b.left and a.right==b.right,
-        exact_width_change=a.height()==3200 and b.height()==5000,
+        exact_width_change=a.height()==3200 and b.height()==4600,
         new_metal=not(widened-full[134]).is_empty(),
         foreign_topmetal2_standard_2um=widened.sized(2005).interacting(foreign).is_empty(),
         wide_foreign_topmetal2_clearance_5um=widened.sized(5005).interacting(conservative_wide).is_empty(),
@@ -948,8 +948,8 @@ def horizontal_ground_guard(original,widened,owned,full,other,outline):
         inside_original_bbox=(widened-outline).is_empty())
 def horizontal_ground_options(original,owned,full,other,outline):
     options=[]
-    centered=original.sized(0,900,2).merged()
-    for strategy,dy in (("centered",0),("upper_only",900),("lower_only",-900)):
+    centered=original.sized(0,700,2).merged()
+    for strategy,dy in (("centered",0),("upper_only",700),("lower_only",-700)):
         widened=centered.moved(0,dy).merged()
         checks=horizontal_ground_guard(original,widened,owned,full,other,outline)
         options.append(dict(strategy=strategy,widened=widened,guards=checks,admitted=all(checks.values())))
@@ -981,8 +981,8 @@ def horizontal_clearance_controls():
 
 def horizontal_ground_controls():
     original=pya.Region(pya.Box(-100000,-1600,100000,1600))
-    widened=original.sized(0,900,2).merged();outline=box(0,0,200000)
-    need(bounds(widened)==[-100000,-2500,100000,2500],"explicit anisotropic coordinates")
+    widened=original.sized(0,700,2).merged();outline=box(0,0,200000)
+    need(bounds(widened)==[-100000,-2300,100000,2300],"explicit anisotropic coordinates")
     own={134:original,133:pya.Region()};full={n:r.dup()for n,r in own.items()};checks=[]
     need(all(horizontal_ground_guard(original,widened,own,full,{},outline).values()),"positive owned horizontal widening")
     checks.append("widen real original horizontal branch without changing ends")
@@ -998,14 +998,14 @@ def horizontal_ground_controls():
     need(not horizontal_ground_guard(original,original.sized(0,1000,2),own,full,{},outline)["exact_width_change"],"wrong width");checks.append("reject incorrect width")
     need(not horizontal_ground_guard(original,original,own,full,{},outline)["new_metal"],"no-op");checks.append("reject no new material")
     narrow={n:r.dup()for n,r in full.items()};narrow[134]+=pya.Region(pya.Box(-100000,4900,100000,8100))
-    need(all(horizontal_ground_guard(original,widened,own,narrow,{},outline).values()),"two narrow parallel lines with actual2.4umspace")
+    need(all(horizontal_ground_guard(original,widened,own,narrow,{},outline).values()),"two narrow parallel lines with actual2.6umspace")
     checks.append("two at-most5umlines retain standard2umspacing")
     broad={n:r.dup()for n,r in full.items()};broad[134]+=pya.Region(pya.Box(-100000,6000,100000,16000))
     broad_check=horizontal_ground_guard(original,widened,own,broad,{},outline)
     need(broad_check["foreign_topmetal2_standard_2um"]and not broad_check["wide_foreign_topmetal2_clearance_5um"],"wide neighboring line still requires5um")
     checks.append("wide foreign line retains5umspacing")
     choices=horizontal_ground_options(original,own,full,{},outline)
-    need([bounds(v["widened"])for v in choices]==[[-100000,-2500,100000,2500],[-100000,-1600,100000,3400],[-100000,-3400,100000,1600]],"exact native asymmetric rectangles")
+    need([bounds(v["widened"])for v in choices]==[[-100000,-2300,100000,2300],[-100000,-1600,100000,3000],[-100000,-3000,100000,1600]],"exact native asymmetric rectangles")
     checks.append("exact added-only centered upper and lower widths")
     above={n:r.dup()for n,r in full.items()};above[134]+=pya.Region(pya.Box(-100000,4000,100000,7200))
     choices=horizontal_ground_options(original,own,above,{},outline)
@@ -1054,7 +1054,7 @@ def generate_horizontal_ground(base,cfg):
         if selected is not None:additions+=selected["widened"]
     save("horizontal-ground-proposal.json",dict(branches=rows,unchanged_public_pad=retained[0],
         accepted_branches=sum(r["admitted"]for r in rows),requested_branches=32,
-        original_width_dbu=3200,candidate_width_dbu=5000,only_added_layer=[134,0],
+        original_width_dbu=3200,candidate_width_dbu=4600,only_added_layer=[134,0],
         physical_acceptance=False,full_phy_accepted=False))
     save("horizontal-ground-clearance-diagnosis.json",dict(branches=diagnosis,
         exact_input_gds=pin(gp),exact_input_wire_l2n=pin(wp),
@@ -1074,7 +1074,7 @@ def generate_horizontal_ground(base,cfg):
     for layer in before:need((before[layer]^reverted[layer]).is_empty(),"exact original material after reversal")
     need(pin(gp)==cfg["complete_members"]["binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds"],"original source GDS unchanged")
     save("horizontal-ground-generation-proof.json",dict(candidate=pin(candidate),input_gds=pin(gp),input_l2n=pin(wp),
-        branch_count=32,original_width_dbu=3200,candidate_width_dbu=5000,only_added_layer=[134,0],
+        branch_count=32,original_width_dbu=3200,candidate_width_dbu=4600,only_added_layer=[134,0],
         exact_serialized_delta=True,original_material_roundtrip=True,original_devices_and_vias_unchanged=True,
         original_port_pad_unchanged=True,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False,
         requires=["full560DRC","deep_flat_LVS13","current_canonical_binding","fresh_RC","unchanged_loaded_wave_gates"]))
