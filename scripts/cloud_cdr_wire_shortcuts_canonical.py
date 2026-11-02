@@ -394,7 +394,7 @@ def access16_controls(pya):
     need(access16_variant(pya,original,row)[29].area()==144400,"analytic exact four cuts")
     passed=["exact four redundant cuts"]
     for label in ("missing","duplicate","wrong-owner","wrong-layer","wrong-net","offgrid","size","lower-enclosure","upper-enclosure","old-via-collision"):
-        r=copy.deepcopy(row);o={k:pya.Region(v)for k,v in original.items()}
+        r=copy.deepcopy(row);o={k:pya.Region(list(v.each()))for k,v in original.items()}
         if label=="missing":r["cuts"].pop()
         elif label=="duplicate":r["cuts"][1]=copy.deepcopy(r["cuts"][0])
         elif label=="wrong-owner":r["cuts"][0]["component"]=4

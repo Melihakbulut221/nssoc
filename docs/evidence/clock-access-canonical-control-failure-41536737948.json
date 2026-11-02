@@ -1,0 +1,32 @@
+{
+  "artifact": {
+    "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/13183678137/zip",
+    "created_at": "2026-11-02T22:23:00Z",
+    "digest": "sha256:499423a08a8529eb2f4f22dc02d27861e0e3019e86645566bfedbd290c022412",
+    "expired": false,
+    "expires_at": "2027-01-31T22:22:41Z",
+    "id": 13183678137,
+    "name": "wire-canonical-controls-41536737948",
+    "node_id": "MDg6QXJ0aWZhY3QxMzE4MzY3ODEzNw==",
+    "size_in_bytes": 952,
+    "updated_at": "2026-11-02T22:23:00Z",
+    "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/13183678137",
+    "workflow_run": {
+      "head_branch": "codex/cdr-clock-access-canonical",
+      "head_repository_id": 1364721142,
+      "head_sha": "ebc7daf2d5c471fd1f81915c1914a09accc85fa4",
+      "id": 41536737948,
+      "repository_id": 1364721142
+    }
+  },
+  "failure": {
+    "electrical_accepted": false,
+    "error": "TypeError('No overload with matching arguments. Variants are:\\n  static new Region ptr new() [0 argument(s) expected, but 1 given]\\n  static new Region ptr new(Polygon[] array) [match candidate]\\n  static new Region ptr new(PolygonWithProperties[] array, bool dummy = true) [match candidate]\\n  static new Region ptr new(const Box box) [match candidate]\\n  static new Region ptr new(const BoxWithProperties box) [match candidate]\\n  static new Region ptr new(const Polygon polygon) [match candidate]\\n  static new Region ptr new(const PolygonWithProperties polygon) [match candidate]\\n  static new Region ptr new(const SimplePolygon polygon) [match candidate]\\n  static new Region ptr new(const SimplePolygonWithProperties polygon) [match candidate]\\n  static new Region ptr new(const Path path) [match candidate]\\n  static new Region ptr new(const PathWithProperties path) [match candidate]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator) [match candidate]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, const ICplxTrans trans) [no value given for argument #2]\\n  static new Region ptr new(const Shapes shapes) [match candidate]\\n  static new Region ptr new(const Shapes shapes, const ICplxTrans trans) [no value given for argument #2]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore deep_shape_store, double area_ratio = 0, unsigned long max_vertex_count = 0) [no value given for argument #2]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore deep_shape_store, const ICplxTrans trans, double area_ratio = 0, unsigned long max_vertex_count = 0) [no value given for argument #2 and following]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, string expr, bool as_pattern = true, int enl = 1) [no value given for argument #2]\\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore dss, string expr, bool as_pattern = true, int enl = 1) [no value given for argument #2 and following]\\n in Region.__init__')",
+    "final_timing_complete": false,
+    "fresh_RC_executed": false,
+    "full_phy_accepted": false,
+    "qualified_pex": false,
+    "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_wire_shortcuts_canonical.py\", line 718, in main\n    if mode==[\"--controls\"]:controls()\n                            ^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_wire_shortcuts_canonical.py\", line 508, in controls\n    checks.extend(access16_controls(pya))\n                  ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_wire_shortcuts_canonical.py\", line 397, in access16_controls\n    r=copy.deepcopy(row);o={k:pya.Region(v)for k,v in original.items()}\n                              ^^^^^^^^^^^^^\nTypeError: No overload with matching arguments. Variants are:\n  static new Region ptr new() [0 argument(s) expected, but 1 given]\n  static new Region ptr new(Polygon[] array) [match candidate]\n  static new Region ptr new(PolygonWithProperties[] array, bool dummy = true) [match candidate]\n  static new Region ptr new(const Box box) [match candidate]\n  static new Region ptr new(const BoxWithProperties box) [match candidate]\n  static new Region ptr new(const Polygon polygon) [match candidate]\n  static new Region ptr new(const PolygonWithProperties polygon) [match candidate]\n  static new Region ptr new(const SimplePolygon polygon) [match candidate]\n  static new Region ptr new(const SimplePolygonWithProperties polygon) [match candidate]\n  static new Region ptr new(const Path path) [match candidate]\n  static new Region ptr new(const PathWithProperties path) [match candidate]\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator) [match candidate]\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, const ICplxTrans trans) [no value given for argument #2]\n  static new Region ptr new(const Shapes shapes) [match candidate]\n  static new Region ptr new(const Shapes shapes, const ICplxTrans trans) [no value given for argument #2]\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore deep_shape_store, double area_ratio = 0, unsigned long max_vertex_count = 0) [no value given for argument #2]\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore deep_shape_store, const ICplxTrans trans, double area_ratio = 0, unsigned long max_vertex_count = 0) [no value given for argument #2 and following]\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, string expr, bool as_pattern = true, int enl = 1) [no value given for argument #2]\n  static new Region ptr new(const RecursiveShapeIterator shape_iterator, DeepShapeStore dss, string expr, bool as_pattern = true, int enl = 1) [no value given for argument #2 and following]\n in Region.__init__\n"
+  },
+  "fix": "Use supported Polygon[] Region constructor for independent fault-fixture copy; native geometry, numerical and acceptance checks unchanged."
+}
