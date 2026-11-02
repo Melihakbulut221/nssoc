@@ -1,24 +1,19 @@
 #!/usr/bin/env python3
-"""Provisional slave drive/load experiment; fixed wire RC is not matching physical extraction."""
+"""Provisional slave current-only experiment; all collector loads stay original; fixed wire RC is not matching physical extraction."""
 import copy,hashlib,io,json,re,subprocess,zipfile
 from pathlib import Path
 TARGETS="scripts/cdr-sampler-bias-trial-targets.json"
 SCOPE="PROVISIONAL_DEVICE_PARAMETER_TRIAL_WITH_FIXED_PARENT_INTERCONNECT_RC"
 FLAGS=dict(matching_layout_verified=False,fresh_RC_for_modified_devices=False,physical_acceptance=False,qualified_pex=False,full_phy_accepted=False,final_timing_complete=False)
-IDS=dict(SA_S_RP=205,SA_S_RN=202,SB_S_RP=194,SB_S_RN=191,SC_S_RP=214,SC_S_RN=212,SD_S_RP=176,SD_S_RN=175)
-IDS.update({f"S{tag}_S_T{i}":start+i for tag,start in [("A",25),("B",16),("C",36),("D",7)]for i in range(4)})
+IDS={f"S{tag}_S_T{i}":start+i for tag,start in [("A",25),("B",16),("C",36),("D",7)]for i in range(4)}
 def require(ok,message):
     if not ok:raise AssertionError(message)
 def digest(data):return hashlib.sha256(data).hexdigest()
 def plan(target):
     name=target["schematic"]["name"]
     require(name in IDS and target["layout"]["id"]==IDS[name],"exact slave target identity")
-    if name.endswith(("_RP","_RN")):
-        model="rppd";old=dict(b="0",l="2.6u",m="1",ps="0u",sw_et="1",w="32u")
-        new=dict(old,l="1.9u");order=["rppd_1","rppd_2","rppd_sub"]
-    else:
-        model="sg13_lv_nmos";old=dict(ad="12.24p",**{"as":"12.24p"},l="0.3u",m="1",ng="1",pd="72.68u",ps="72.68u",rfmode="0",w="36u")
-        new=dict(old,ad="16.32p",**{"as":"16.32p"},pd="96.68u",ps="96.68u",w="48u");order=["D","G","S","B"]
+    model="sg13_lv_nmos";old=dict(ad="12.24p",**{"as":"12.24p"},l="0.3u",m="1",ng="1",pd="72.68u",ps="72.68u",rfmode="0",w="36u")
+    new=dict(old,ad="16.32p",**{"as":"16.32p"},pd="96.68u",ps="96.68u",w="48u");order=["D","G","S","B"]
     require(target["layout"]["model"]==target["schematic"]["model"]==model and target["loaded_parameters"]==old,"exact parent model and parameters")
     return model,old,new,order
 def rewrite_card(line,instance,model,nodes,old,new):
@@ -37,7 +32,7 @@ def rewrite_card(line,instance,model,nodes,old,new):
     return changed
 def source_controls(root):
     targets=json.loads((root/TARGETS).read_bytes())
-    require(len(targets)==24 and {p["schematic"]["name"]:p["layout"]["id"]for p in targets}==IDS,"all24 matched slave targets")
+    require(len(targets)==16 and {p["schematic"]["name"]:p["layout"]["id"]for p in targets}==IDS,"all16 matched slave targets")
     positive=[]
     for t in targets:
         model,old,new,order=plan(t);name=t["loaded_instance"];nodes=["n"+str(i)for i in range(len(order))]
@@ -62,7 +57,7 @@ def source_controls(root):
             try:rewrite_card(bad,"XDTEST",model,nodes,old,new)
             except (AssertionError,ValueError):rejected.append(model+":"+label)
             else:raise AssertionError("accepted "+model+":"+label)
-    return dict(status="PASS_SLAVE_DRIVE_TRIAL_SOURCE_CONTROLS",targets=24,positive_roundtrips=positive,rejected=rejected,native_model_modified=False,transient_executed=False,scope=SCOPE,**FLAGS)
+    return dict(status="PASS_SLAVE_CURRENT_ONLY_TRIAL_SOURCE_CONTROLS",targets=16,positive_roundtrips=positive,rejected=rejected,native_model_modified=False,transient_executed=False,scope=SCOPE,**FLAGS)
 def acquire_mapping(host):
     r=host.api("actions/runs/41450661063")
     require(r["status"]=="completed"and r["conclusion"]=="success"and r["head_sha"]=="22baa225789b8ec1c9ce98437196af1e48fc2918"and r["run_attempt"]==1,"actual successful full500 mapping")
@@ -86,7 +81,7 @@ def derive(host,paths):
     parent_basis=host.basis();parent_pins={k:host.pin(p)for k,p in paths.items()}
     require(all(parent_pins[k]=={f:parent_basis["inputs"][k][f]for f in ("bytes","sha256")}for k in paths),"exact authenticated parent inputs")
     targets=acquire_mapping(host)
-    require(len(targets)==24 and {p["schematic"]["name"]:p["layout"]["id"]for p in targets}==IDS,"exact complete plan")
+    require(len(targets)==16 and {p["schematic"]["name"]:p["layout"]["id"]for p in targets}==IDS,"exact complete plan")
     original=Path(paths["model"]).read_bytes();composition=host.read(paths["composition"]);changed=copy.deepcopy(composition)
     require(len(composition["device_records"])==500,"complete500 model")
     by_id={d["native_id"]:d for d in composition["device_records"]};require(len(by_id)==500,"unique device IDs")
@@ -108,18 +103,18 @@ def derive(host,paths):
         i=indices[name];before=lines[i];lines[i]=rewrite_card(before,name,model,nodes,old,new)
         next(x for x in changed["device_records"]if x["native_id"]==d["native_id"])["parameters"]=new
         delta.append(dict(instance=name,native_id=d["native_id"],schematic=target["schematic"]["name"],model=model,nodes=nodes,old=old,new=new,line_index=i,original_card_sha256=digest(before.encode()),trial_card_sha256=digest(lines[i].encode())))
-    require(len(delta)==24 and len({d["line_index"]for d in delta})==24,"24 distinct exact modifications")
+    require(len(delta)==16 and len({d["line_index"]for d in delta})==16,"16 distinct exact modifications")
     modified="".join(lines).encode();reversed_lines=list(lines)
     for d in delta:reversed_lines[d["line_index"]]=rewrite_card(lines[d["line_index"]],d["instance"],d["model"],d["nodes"],d["new"],d["old"])
     require("".join(reversed_lines).encode()==original,"entire parent model exact reversal including every R/C card")
     reversed_contract=copy.deepcopy(changed)
     for d in delta:next(x for x in reversed_contract["device_records"]if x["native_id"]==d["native_id"])["parameters"]=d["old"]
-    require(reversed_contract==composition,"all other476 devices and all contract metadata unchanged")
+    require(reversed_contract==composition,"all other484 devices and all contract metadata unchanged")
     dest=host.NATIVE/"provisional-bias-model";dest.mkdir()
     (dest/"model.spice").write_bytes(modified);host.save(dest/"composition.json",changed)
     result=dict(model=str(dest/"model.spice"),composition=str(dest/"composition.json"),planes=paths["planes"])
     require(all(host.pin(paths[k])==parent_pins[k]for k in paths),"parent files untouched")
-    receipt=dict(status="DERIVED_PROVISIONAL_SLAVE_DRIVE_LOAD_TRIAL",scope=SCOPE,parent_rc_producer=parent_basis["producer"]["run"],parent_layout=parent_basis["candidate"],parent_inputs=parent_pins,trial_inputs={k:host.pin(p)for k,p in result.items()},delta=delta,entire_model_exact_reversal=True,all_other476_devices_unchanged=True,all_parent_wire_RC_cards_unchanged=True,original_measurement_limits_unchanged=True,closed_loop=False,**FLAGS)
+    receipt=dict(status="DERIVED_PROVISIONAL_SLAVE_CURRENT_ONLY_TRIAL",scope=SCOPE,parent_rc_producer=parent_basis["producer"]["run"],parent_layout=parent_basis["candidate"],parent_inputs=parent_pins,trial_inputs={k:host.pin(p)for k,p in result.items()},delta=delta,entire_model_exact_reversal=True,all_other484_devices_unchanged=True,all_parent_wire_RC_cards_unchanged=True,original_measurement_limits_unchanged=True,closed_loop=False,**FLAGS)
     receipt_path=host.DERIVED/"provisional-bias-derivation.json";host.save(receipt_path,receipt)
     b=copy.deepcopy(parent_basis);ctx=host.context()
     b["producer"]=dict(source=ctx["source"],run=ctx["run_id"],release=host.release_gate()["id"])

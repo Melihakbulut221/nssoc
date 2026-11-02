@@ -1,4 +1,4 @@
-name: Provisional slave sampler drive and load trial
+name: Provisional slave current-only trial with original collector loads
 on:
   workflow_dispatch:
     inputs:
@@ -10,7 +10,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-slave-drive-trial-${{ github.ref }}
+  group: cdr-slave-current-only-trial-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -106,7 +106,7 @@ jobs:
           host.gate()
           host.release_gate(wait=True)
           PY
-      - name: Authenticate parent RC then simulate explicit 24-device slave drive parameter trial
+      - name: Authenticate parent RC then simulate explicit 16-MOS current-only parameter trial
         id: native
         run: python3 -B scripts/cloud_cdr_wire_shortcuts_loaded.py --simulate
       - name: Permanently preserve complete success or failure and native waves

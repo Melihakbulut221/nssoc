@@ -4,7 +4,7 @@ import cdr_sampler_bias_trial as trial
 need=trial.require
 def target_map(root):
     values=json.loads((root/trial.TARGETS).read_bytes())
-    need(len(values)==24 and {v["schematic"]["name"]:v["layout"]["id"]for v in values}==trial.IDS,"exact complete24 circuit plan")
+    need(len(values)==16 and {v["schematic"]["name"]:v["layout"]["id"]for v in values}==trial.IDS,"exact complete16 circuit plan")
     return {v["layout"]["id"]:v for v in values}
 def revert_mos_record(line,record,target):
     model,old,new,order=trial.plan(target)
@@ -21,7 +21,7 @@ def revert_mos_record(line,record,target):
 def bind_with_proposed_geometry(original_bind,text,contract,planes,root):
     targets=target_map(root);records=contract["device_records"]
     need(len(records)==500 and len({r["native_id"]for r in records})==500,"entire500 native model retained")
-    need({r["native_id"]for r in records}>=set(targets),"all24 native target identities")
+    need({r["native_id"]for r in records}>=set(targets),"all16 native target identities")
     lines=text.splitlines(keepends=True);index={}
     for i,line in enumerate(lines):
         f=line.split()
@@ -33,7 +33,7 @@ def bind_with_proposed_geometry(original_bind,text,contract,planes,root):
         ident=record["native_id"]
         if ident not in targets:continue
         t=targets[ident];model,old,new,order=trial.plan(t)
-        need(record["model"]==model and record["instance"]==t["loaded_instance"]and record["parameters"]==new,"exact24 proposed dimensions")
+        need(record["model"]==model and record["instance"]==t["loaded_instance"]and record["parameters"]==new,"exact16 proposed dimensions")
         if model!="sg13_lv_nmos":continue
         key=record["instance"].lower();need(key in index,"one actual proposed MOS card")
         i=index[key];lines[i],restored["device_records"][pos]=revert_mos_record(lines[i],record,t)
