@@ -7,7 +7,7 @@ import cloud_cdr_wire_geometry_acquire as prior
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"wire-tail-shortcuts";NATIVE=ROOT/"wire-tail-shortcuts-native"
 MANIFEST="scripts/cdr-wire-tail-shortcuts-pins.json";INPUT="scripts/cdr-wire-tail-shortcuts-inputs.json"
-BRANCH="codex/cdr-critical-access";TOP="nssoc_cdr_pd500_resistor_v59"
+BRANCH="codex/cdr-local-source-m1";TOP="nssoc_cdr_pd500_resistor_v59"
 LAYERS=(8,19,10,29)
 TARGETS=(("D_collector","T061_C","T056_E"),("D_emitter","T061_E","T005_D"),("C_collector","T115_C","T108_E"),("C_emitter","T115_E","T034_D"))
 need=prior.need
@@ -1195,14 +1195,102 @@ def inspect_critical_access(base,cfg):
         original_geometry_unchanged=True,new_geometry_generated=False,fresh_RC=False,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
 
 
+
+def source_m1_guard(addition,owned,full,other,bbox):
+    return dict(nonempty=not addition.is_empty(),
+        foreign_m1_spacing=addition.sized(605).interacting(full[8]-owned[8]).is_empty(),
+        foreign_via1=addition.sized(5).interacting(full[19]-owned[19]).is_empty(),
+        classified_material=all(addition.sized(605).interacting(r).is_empty()for r in other.values()),
+        inside_original_bbox=(addition-bbox).is_empty(),
+        every_addition_attached=addition.not_interacting(owned[8]).is_empty())
+def source_m1_controls():
+    own={8:pya.Region(pya.Box(0,0,290,10000)),19:pya.Region()}
+    full={n:r.dup()for n,r in own.items()};bounds=pya.Region(pya.Box(-3000,-3000,12000,15000))
+    add=pya.Region(pya.Box(-1200,1000,0,9000))
+    need(all(source_m1_guard(add,own,full,{},bounds).values()),"local source widening admitted control")
+    bad={n:r.dup()for n,r in full.items()};bad[8]+=pya.Region(pya.Box(-1500,1000,-1400,9000))
+    need(not source_m1_guard(add,own,bad,{},bounds)["foreign_m1_spacing"],"reject foreign M1 approach")
+    bad={n:r.dup()for n,r in full.items()};bad[19]+=pya.Region(pya.Box(-1000,2000,-810,2190))
+    need(not source_m1_guard(add,own,bad,{},bounds)["foreign_via1"],"reject foreign via")
+    need(not source_m1_guard(add.moved(-1000,0),own,full,{},bounds)["every_addition_attached"],"reject floating widening")
+    need(not source_m1_guard(add,own,full,{(8,2):add},bounds)["classified_material"],"reject unclassified material")
+    need(not source_m1_guard(add,own,full,{},pya.Region(pya.Box(0,0,300,10000)))["inside_original_bbox"],"reject bbox escape")
+    return ["source M1 positive", "source M1 foreign spacing rejection", "source M1 foreign via rejection",
+        "source M1 unattached rejection", "source M1 unclassified rejection", "source M1 bbox rejection"]
+def generate_local_source_m1(base,cfg):
+    proof=json.loads((ROOT/"scripts/cdr-source-m1-inputs.json").read_bytes())
+    need(proof["mapping_run"]==41397314520 and proof["mapping_source"]=="7b2a7efcedd829412cb18fd45d66179c071a3c79","actual mapped physical producer")
+    labels={"T"+str(n).zfill(3)+"_S"for n in(3,4,5,6,32,33,34,35)}
+    gp=base/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds";wp=base/"binding/inputs/wire/native05/wires.l2n"
+    need(pin(gp)==proof["input_gds"],"exact mapped parent GDS")
+    g=pya.Layout();g.read(str(gp));top=g.cell(TOP);need(g.dbu==.001 and top is not None,"actual source layout")
+    before=region_snapshot(g,top);w=pya.LayoutToNetlist();w.read(str(wp));need(w.internal_layout().dbu==.001,"native wire dbu")
+    objects={n:w.layer_by_name("gds_"+str(n))for n in(8,19)}
+    for n,r in objects.items():need(r is not None and(before[(n,0)]^r).is_empty(),"actual full conductor union")
+    nets={n.cluster_id:n for n in w.netlist().top_circuit().each_net()}
+    anchors={a["label"]:a for a in json.loads((base/"mim/precise/wire/anchors08.json").read_bytes())["anchors"]}
+    need(set(proof["targets"])==labels,"all eight measured source branches")
+    owned={n:w.shapes_of_net(nets[14],r,True).merged()for n,r in objects.items()}
+    full={n:before[(n,0)]for n in objects}
+    other={k:r for k,r in before.items()if k[0]in(8,19)and k[1]!=0 and not r.is_empty()}
+    additions=pya.Region();rows=[]
+    for label in sorted(labels):
+        a=anchors[label];edge=proof["targets"][label]
+        need(a["metal"]==8 and a["wire_component"]==14 and a["native_cluster"]==24 and a["detail"]["native_net"]=="avss","actual source ownership")
+        endpoint=next(e for e in edge["endpoints"]if e["native_node"]==label)
+        need(endpoint["extraction_anchor"]==a and len(endpoint["records"])==1 and endpoint["records"][0]["point_dbu"]==a["point_dbu"],"actual critical terminal coordinate")
+        need(edge["edge"]["resistance_ohm"]==32.5245 and edge["component"]==14,"actual dominant branch")
+        x,y=a["point_dbu"];strip=(owned[8]&pya.Region(pya.Box(x-145,y-18000,x+145,y+18000))).merged()
+        need(strip.count()==1 and(box(x,y,1)-strip).is_empty(),"connected original 290nm source strip")
+        trials=[];selected=None
+        for width in(1500,1200,900,600,300):
+            widened=strip.sized(width//2,0).moved(-width//2,0).merged()
+            need((strip-widened).is_empty(),"no source strip removal")
+            addition=(widened-full[8]).merged()
+            guards=source_m1_guard(addition,owned,full,other,pya.Region(top.bbox()))
+            guards.update(one_local_addition=addition.count()==1,only_left_widening=not addition.is_empty()and addition.bbox().right<=x-145,
+                max_y_span=not addition.is_empty()and addition.bbox().height()<=36000)
+            row=dict(width_added_nm=width,addition_bbox=bounds(addition),addition_area_dbu2=addition.area(),guards=guards,admitted=all(guards.values()))
+            trials.append(row)
+            if row["admitted"]and selected is None:selected=(addition,row)
+        rows.append(dict(label=label,original_anchor=a,original_strip_bbox=bounds(strip),resistor=edge["element"],
+            original_resistance_ohm=32.5245,trials=trials,selected=None if selected is None else selected[1]))
+        if selected is not None:additions+=selected[0]
+    save("local-source-m1-proposal.json",dict(targets=rows,admitted=sum(r["selected"]is not None for r in rows),requested=8,
+        only_added_layer=[8,0],physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
+    need(all(r["selected"]is not None for r in rows),"all eight source widening guards must pass")
+    additions=additions.merged();need(all(source_m1_guard(additions,owned,full,other,pya.Region(top.bbox())).values()),"whole candidate widening guards")
+    handles=[top.shapes(g.layer(8,0)).insert(poly)for poly in additions.each()]
+    NATIVE.mkdir();candidate=NATIVE/"nssoc_cdr_pd500_local_source_m1.gds";g.write(str(candidate))
+    readback=pya.Layout();readback.read(str(candidate));after=region_snapshot(readback,readback.cell(TOP))
+    need(readback.dbu==g.dbu and{c.name for c in readback.each_cell()}=={c.name for c in g.each_cell()},"serialized original hierarchy")
+    for layer in set(before)|set(after):
+        expected=before.get(layer,pya.Region())
+        if layer==(8,0):expected=(expected+additions).merged()
+        need((expected^after.get(layer,pya.Region())).is_empty(),"exact sole M1 delta "+str(layer))
+    for handle in reversed(handles):handle.delete()
+    reverted=region_snapshot(g,top);need(set(before)==set(reverted),"original layer set after reversal")
+    for layer in before:need((before[layer]^reverted[layer]).is_empty(),"exact original geometry after reversal")
+    need(pin(gp)==proof["input_gds"],"unchanged original GDS file")
+    save("local-source-m1-generation-proof.json",dict(candidate=pin(candidate),input_gds=pin(gp),input_l2n=pin(wp),
+        source_count=8,only_added_layer=[8,0],total_added_area_dbu2=additions.area(),
+        exact_serialized_delta=True,original_material_roundtrip=True,new_devices=False,new_vias=False,
+        physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False,
+        requires=["full560DRC","deep_flat_LVS13","current_canonical_binding","fresh_RC","unchanged_loaded_wave_gates"]))
+
+
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
-        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls()+horizontal_ground_controls()+horizontal_clearance_controls();save("controls.json",dict(count=len(passed),passed=passed))
+        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls()+horizontal_ground_controls()+horizontal_clearance_controls()+source_m1_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
-        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"],["--generate-horizontal-ground"],["--inspect-critical-access"]),"explicit native operation")
+        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"],["--generate-horizontal-ground"],["--inspect-critical-access"],["--generate-local-source-m1"]),"explicit native operation")
         reserve(wait=True)
         base=acquire_current(cfg)
+        if sys.argv[1:]==["--generate-local-source-m1"]:
+            generate_local_source_m1(base,cfg)
+            save("result.json",dict(status="GENERATED_EIGHT_LOCAL_SOURCE_M1_REINFORCEMENTS_REQUIRES_NATIVE_QUALIFICATION",physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
+            return
         if sys.argv[1:]==["--inspect-critical-access"]:
             inspect_critical_access(base,cfg)
             save("result.json",dict(status="COMPLETE_CURRENT_CRITICAL_ACCESS_MAP",read_only=True,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))

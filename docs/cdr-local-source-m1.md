@@ -1,0 +1,7 @@
+# Measured local source Metal1 candidate
+
+Actual map41397314520 establishes eight32.5245ohm source-access branches and actual original Metal1 terminal strips of290nm width. This candidate adds only Metal1 to the left of these original source strips, within18um above and below each actual reference. It tries1500,1200,900,600,300nm added widths in order and requires all eight targets to admit.
+
+The source and exact parent GDS are pinned to the complete actual resistance mapping. No transistor, contact, via, logical reference, ground source or model changes. New material must remain inside the parent bbox, attach to original same-net Metal1, maintain605nm from foreign Metal1 and5nm from foreign Via1, and avoid unclassified drawing. Existing material is never removed. Serialized full-layer equality and reversal prove the only material delta is the reported Metal1 addition. Six new guard controls cover acceptance, foreign metal/via, floating metal, unclassified material and bbox escape; all85original controls remain.
+
+This is an unqualified candidate. Full560DRC, deep/flatLVS13, canonical native binding, freshRC and the original loaded electrical gates are mandatory. The32.5245ohm native edge can aggregate several physical segments; widening this local strip is a measurable candidate, not a claimed solution. Re-extraction must determine how much resistance, headroom and sample delay actually change.

@@ -1,11 +1,11 @@
-name: Map actual critical resistor endpoints to native layout
+name: Generate measured local source Metal1 reinforcement
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-critical-access-${{ github.ref }}
+  group: cdr-local-source-m1-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -80,8 +80,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1
-      - name: Map current critical access without changing native geometry
-        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --inspect-critical-access
+      - name: Generate eight guarded local source Metal1 reinforcements
+        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --generate-local-source-m1
       - name: Preserve complete generated or failed native result
         id: publish
         if: always()
