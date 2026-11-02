@@ -38,5 +38,5 @@ with tempfile.TemporaryDirectory(prefix='nssoc-guide-messages-')as folder:
  message_controls=dict(actual_upstream_scanner=True,combined_derived_sources=3,corrected_IDs_passed=True,original_collision_rejected=True,
    collision_stderr=collision.stderr,whole_DRT_module_checked=False,full_module_preflight_required_before_native_build=True)
 print(json.dumps(dict(message_controls=message_controls,status='PASS_BOUND_GUIDE_WORKER_LIFETIME_SOURCE_CONTROLS',upstream_sha256=p.UPSTREAM_SHA256,derived_sha256=p.DERIVED_SHA256,
- complete_source_reversal=True,upstream_refusals=refused,compiled_lifetime_cases=9,maximum_live_workers=2,
+ complete_source_reversal=True,upstream_refusals=refused,compiled_lifetime_cases=9,maximum_live_workers=1,
  fixture_compiled=True,complete_engine_compiled=False,native_chip_routing_executed=False,physical_acceptance=False,timing_accepted=False),sort_keys=True,indent=2))

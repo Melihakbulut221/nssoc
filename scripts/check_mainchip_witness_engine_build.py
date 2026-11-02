@@ -19,7 +19,7 @@ def controls():
     ast.parse((ROOT/"scripts/check_mainchip_witness_engine_build.py").read_text())
     env=dict(GITHUB_ACTIONS="true",RUNNER_OS="Linux",GITHUB_REPOSITORY=c.REPOSITORY,
         GITHUB_RUN_ID="123",GITHUB_RUN_ATTEMPT="1",GITHUB_SHA="a"*40,
-        GITHUB_REF="refs/heads/codex/mainchip-guide-batch-engine")
+        GITHUB_REF="refs/heads/codex/mainchip-guide-single-engine")
     ctx=c.context(env); work=Path("/runner/temp/owned")
     image=dict(Id=c.IMAGE_ID,Architecture="amd64",Os="linux",RepoDigests=[c.IMAGE])
     info=dict(Name="/"+ctx["name"],Id="b"*64,Image=c.IMAGE_ID,Path="/usr/bin/python3",

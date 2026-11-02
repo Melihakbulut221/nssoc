@@ -44,7 +44,7 @@ struct Harness {
     return std::make_unique<FlexDRWorker>();
   }
   void processWorkersBatch(std::vector<std::unique_ptr<FlexDRWorker>>& batch,IterationProgress&){
-    assert(!batch.empty()&&batch.size()<=2);
+    assert(!batch.empty()&&batch.size()<=1);
     for(auto& w:batch){assert(!w->processed);w->processed=true;}
   }
   bool run(){
@@ -63,10 +63,10 @@ int main(){
     for(int i=0;i<n;i++)h.boxes_set.push_back({Rect{i}});
     assert(h.run()==!expected.empty());
     auto actual=h.design.ended;
-    std::sort(expected.begin(),expected.end());std::sort(actual.begin(),actual.end());
+    // Single-worker commits must retain every input worker in exact traversal order.
     assert(expected==actual&&int(expected.size())==h.iter_prog.total_num_workers);
     assert(FlexDRWorker::alive==0&&FlexDRWorker::created==int(expected.size())&&FlexDRWorker::created==FlexDRWorker::destroyed);
-    assert(FlexDRWorker::peak<=2);++cases;
+    assert(FlexDRWorker::peak==(expected.empty()?0:1));++cases;
   }
   for(int count:{0,2}){
     reset();Harness h;h.route_boxes_batches={{0}};h.boxes_set.emplace_back();
