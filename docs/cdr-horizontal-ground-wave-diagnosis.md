@@ -1,0 +1,9 @@
+# Actual new-ground waveform diagnosis
+
+Input is rejected loaded41391065497/source494a63a4136813f6018c8cab027632ff02f54d0d, release431084851, produced from actual new ground GDSb9b923 and freshRC41389957475. All native assets and all archive members must be authenticated before reading the complete original1,045,823,299byte raw waveform (113475rows/1152columns), SHA8e1246b7cb4d26f361538977af4507fad259c3e98eeb0f7f851157f5e295ec75. Native payloads remain cloud-only.
+
+The unchanged transient returned0 in1182.984seconds but electrical acceptance failed: phase14.758390691mV versus30mV, signedVI44.182149848uA versus50uA, all four samplers fail original100mV/37.5ps requirements. C/D wrong-sign samples16/48. Minimum Vce for HBT61/62/115/116 is0.339112537/0.336296287/0.371100560/0.369848838V versus0.4V. These Vce minima are worse than the previous four-shortcut candidate despite a modest phase and VI improvement. Physical DRC/LVS and RC numerical qualification do not establish electrical acceptance.
+
+This job reuses the exact previously qualified full-wave parser and diagnosis code. Only the producer input configuration and documentary bindings changed. It reproduces each failing-device minimum from all original samples, identifies connected native devices and actual distributed-net voltage drops at that instant, and groups sampler/comparator margin and delay by original bit transition. No re-simulation, ideal supply substitution, stimulus change, interpolation in native capture, waveform truncation or acceptance-limit change is introduced. The old electrical rejection and diagnosis remain intact at their immutable source/run IDs.
+
+Use the actual current voltage/current observations to choose the next physical or circuit repair. This diagnosis itself cannot accept fullPHY, closed-loopCDR, foundryPEX or final mainchip timing.
