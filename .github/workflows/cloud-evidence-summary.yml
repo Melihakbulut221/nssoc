@@ -1,4 +1,4 @@
-name: Map actual drain M2 M3 residual critical resistance to owned physical geometry
+name: Generate actual collector-driver Via2 and Metal3 access reinforcement
 on:
   workflow_dispatch:
 permissions:
@@ -80,8 +80,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1
-      - name: Map actual residual critical resistors and every owned physical endpoint
-        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --inspect-critical-access
+      - name: Generate owned collector-driver access with exact original terminal binding
+        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --generate-collector-via2
       - name: Preserve complete generated or failed native result
         id: publish
         if: always()

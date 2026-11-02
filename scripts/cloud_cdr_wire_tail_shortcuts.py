@@ -7,7 +7,7 @@ import cloud_cdr_wire_geometry_acquire as prior
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"wire-tail-shortcuts";NATIVE=ROOT/"wire-tail-shortcuts-native"
 MANIFEST="scripts/cdr-wire-tail-shortcuts-pins.json";INPUT="scripts/cdr-wire-tail-shortcuts-inputs.json"
-BRANCH="codex/cdr-drain-m23-critical-access";TOP="nssoc_cdr_pd500_resistor_v59"
+BRANCH="codex/cdr-collector-via2-access";TOP="nssoc_cdr_pd500_resistor_v59"
 LAYERS=(8,19,10,29)
 TARGETS=(("D_collector","T061_C","T056_E"),("D_emitter","T061_E","T005_D"),("C_collector","T115_C","T108_E"),("C_emitter","T115_E","T034_D"))
 need=prior.need
@@ -1447,14 +1447,107 @@ def generate_source_m2_bypass(base,cfg):
         electrical_improvement_claimed=False,requires=["full560DRC","deep_flat_LVS13","current_canonical_binding",
           "fresh_RC","unchanged_loaded_wave_gates","actual_via_current_distribution","bias_headroom_review"]))
 
+def generate_collector_via2_access(base,cfg):
+
+    m=json.loads((ROOT/"docs/evidence/drain-m23-loaded-41430498959-measurement.json").read_bytes())
+    need(m["current_context"]==dict(source="8a73ba2c575c4e6b8accf1dff736d481e1e53606",run_id=41430498959,attempt=1),"actual loaded rejection context")
+    need(m["status"]=="REJECTED_WHOLE_MIM_PD500_LOADED"and m["returncode"]==0 and m["transient_executed"]and m["sources_unchanged"]and not m["accepted"],"actual electrical rejection not infrastructure")
+    need({n for n,v in m["device_checks"].items()if v["minimum_active_vce_v"]<.4}=={"xpd.xd0061","xpd.xd0062","xpd.xd0115","xpd.xd0116"},"actual four low-headroom HBTs")
+    gp=base/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds"
+    wp=base/"binding/inputs/wire/native05/wires.l2n"
+    need(pin(gp)==dict(bytes=1075316,sha256="5e5ef3940bb0e410af8bbb92376e2c1cb60e3c520e37b65c7e675af41e58603f"),"actual drainM23 input")
+    g=pya.Layout();g.read(str(gp));top=g.cell(TOP)
+    need(g.dbu==.001 and top is not None,"actual original1nm GDS")
+    before=region_snapshot(g,top);extent=pya.Region(top.bbox())
+    w=pya.LayoutToNetlist();w.read(str(wp));need(w.internal_layout().dbu==.001,"actual1nm native ownership")
+    layers=(8,19,10,29,30,49,50,66,67,125,126,133,134)
+    objects={n:w.layer_by_name("gds_"+str(n))for n in layers}
+    for n,r in objects.items():need(r is not None and(before.get((n,0),pya.Region())^r).is_empty(),"all13native conductor unions")
+    nets={n.cluster_id:n for n in w.netlist().top_circuit().each_net()}
+    anchors={a["label"]:a for a in json.loads((base/"mim/precise/wire/anchors08.json").read_bytes())["anchors"]}
+    proof=json.loads((ROOT/"scripts/cdr-critical-resistance-inputs.json").read_bytes())
+    need(proof["run"]==41430503141 and proof["source"]=="3d2601040c26b9e10443f674e6d2c211f8d14546","actual current32query resistance")
+    targets={}
+    for q in proof["queries"]:
+        for t in(q["source_terminal"],q["sink_terminal"]):
+            if isinstance(t,list)and t[0]in(54,56,106,108)and t[1]=="E":
+                old=targets.setdefault(t[0],q["native_net"]);need(old==q["native_net"],"all HBT emitter query owners agree")
+    need(set(targets)=={54,56,106,108},"all4actual collector-driver HBT emitter terminals")
+    all_vias={n:pya.Region()for n in(29,49)}
+    for (layer,datatype),r in before.items():
+        if layer in all_vias:all_vias[layer]+=r
+    all_vias={n:r.merged()for n,r in all_vias.items()}
+    additions={n:pya.Region()for n in(29,30)};by_component={};rows=[]
+    for i,expected in sorted(targets.items()):
+        label="T"+str(i).zfill(3)+"_E";a=anchors[label];x,ay=a["point_dbu"];y=ay-ay%5;component=a["wire_component"]
+        need(x%5==0 and ay-y==2,"independently mapped exact HBT2nm-to5nm extraction-grid offset")
+        need(a["metal"]==10 and a["detail"]["device"]==i and a["detail"]["terminal"]=="E"and a["detail"]["model"].lower()=="npn13g2"and a["detail"]["native_net"]==expected,"actual HBT terminal identity")
+        own={n:w.shapes_of_net(nets[component],r,True).merged()for n,r in objects.items()}
+        need((box(x,ay,1)-own[10]).is_empty()and(box(x,y,1)-own[10]).is_empty(),"actual original and extracted emitter points on owned M2")
+        need((box(x,y,1)-own[30]).is_empty(),"original owned M3 terminal connection")
+        for dx in(-720,-240,240,720):
+            oldcut=box(x+dx,y,95)
+            need((oldcut-own[29]).is_empty(),"all4 original Via2 cuts present")
+        metal=pya.Region(pya.Box(x-1825,y-650,x+1825,y+450))
+        local=by_component.setdefault(component,{n:pya.Region()for n in additions})
+        foreign=(objects[30]-own[30])+(additions[30]-local[30])
+        checks=source_m2_guard(metal,own[30],foreign,all_vias[29]-own[29],all_vias[49]-own[49],extent)
+        row=dict(label=label,original_anchor=a,grid_point_dbu=[x,y],native_net=expected,wire_component=component,metal_bbox=bounds(metal),metal_guards=checks,cuts=[])
+        save("collector-via2-progress/"+label+"-metal.json",dict(target=row,complete=False,physical_acceptance=False))
+        need(all(checks.values()),"actual HBT M3 attachment/foreign240nm/via50nm guards "+label)
+        lower=own[10];upper=(own[30]+local[30]+metal).merged()
+        for dx in(-1680,-1200,-720,-240,240,720,1200,1680):
+            for dy in(-480,0):
+                if dy==0 and dx in(-720,-240,240,720):continue
+                cut=box(x+dx,y+dy,95)
+                guards=via1_reinforcement_guard(cut,lower,upper,all_vias[29],additions[29],extent)
+                entry=dict(center_dbu=[x+dx,y+dy],bbox=bounds(cut),guards=guards)
+                row["cuts"].append(entry)
+                save("collector-via2-progress/"+label+"-cut"+str(len(row["cuts"]))+".json",dict(target=row,complete=False,physical_acceptance=False))
+                need(all(guards.values()),"every proposed HBT Via2 originalM2/newM3 enclosure and cutspacing "+label)
+                additions[29]+=cut;local[29]+=cut
+        need(len(row["cuts"])==12,"exact12new Via2 per HBT in addition to original4")
+        additions[30]+=metal;local[30]+=metal;rows.append(row)
+        save("collector-via2-progress/"+label+"-complete.json",dict(target=row,complete=True,physical_acceptance=False))
+    need(len(rows)==4 and len(by_component)==2,"all4drivers on exact2original collector nets")
+    for component,local in by_component.items():
+        own=w.shapes_of_net(nets[component],objects[30],True).merged()
+        foreign=(objects[30]-own)+(additions[30]-local[30])
+        need((local[30]&foreign.sized(240,240,2)).is_empty(),"all candidate M3 components mutually separated")
+    for n in additions:additions[n]=additions[n].merged()-before.get((n,0),pya.Region())
+    count=sum(len(r["cuts"])for r in rows)
+    need(count==48 and additions[29].count()==48 and additions[29].area()==48*36100,"exact48disjoint190nm new Via2 cuts")
+    need((additions[29]&all_vias[29].sized(240,240,2)).is_empty(),"new versus original Via2 spacing")
+    handles=[]
+    for n,r in additions.items():
+        need(not r.is_empty(),"nonempty actual layer addition")
+        for poly in r.each():handles.append(top.shapes(g.layer(n,0)).insert(poly))
+    NATIVE.mkdir();candidate=NATIVE/"nssoc_cdr_pd500_collector_via2_access.gds";g.write(str(candidate))
+    readback=pya.Layout();readback.read(str(candidate));after=region_snapshot(readback,readback.cell(TOP))
+    need(readback.dbu==g.dbu and{c.name for c in readback.each_cell()}=={c.name for c in g.each_cell()},"serialized original hierarchy")
+    for key in set(before)|set(after):
+        expected=before.get(key,pya.Region())
+        if key[1]==0 and key[0]in additions:expected=(expected+additions[key[0]]).merged()
+        need((expected^after.get(key,pya.Region())).is_empty(),"only exact Via2/M3 additions "+str(key))
+    for handle in reversed(handles):handle.delete()
+    reverted=region_snapshot(g,top);need(set(before)==set(reverted),"original layer set after reversal")
+    for key in before:need((before[key]^reverted[key]).is_empty(),"exact original material reversal")
+    need(pin(gp)==cfg["complete_members"]["binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds"],"original GDS bytes unchanged")
+    save("collector-via2-proposal.json",dict(targets=rows,new_via2_count=count,metal_width_nm=3650,metal_height_nm=1100,metal_foreign_clearance_nm=240,via_cut_nm=190,via_pitch_nm=480,via_metal_enclosure_nm=50,via_spacing_nm=240,physical_acceptance=False,full_phy_accepted=False))
+    save("collector-via2-generation-proof.json",dict(candidate=pin(candidate),input_gds=pin(gp),input_l2n=pin(wp),new_via2_count=count,all4actual_collector_driver_accesses=True,all13native_unions_verified=True,only_added_layers=[[29,0],[30,0]],added_area_dbu2={str(n):r.area()for n,r in additions.items()},exact_serialized_delta=True,original_material_roundtrip=True,new_devices=False,new_M2=False,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False,current_density_acceptance=False,electrical_improvement_claimed=False,requires=["full560DRC","deep_flat_LVS13","current_canonical_binding","fresh_RC","unchanged_loaded_wave_gates","actual_via_current_distribution","bias_headroom_review"]))
+
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
         cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls()+horizontal_ground_controls()+horizontal_clearance_controls()+via1_reinforcement_controls()+source_m2_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
-        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"],["--generate-horizontal-ground"],["--inspect-critical-access"],["--generate-via1-reinforcement"],["--generate-source-m2-bypass"]),"explicit native operation")
+        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"],["--generate-horizontal-ground"],["--inspect-critical-access"],["--generate-via1-reinforcement"],["--generate-source-m2-bypass"],["--generate-collector-via2"]),"explicit native operation")
         reserve(wait=True)
         base=acquire_current(cfg)
+        if sys.argv[1:]==["--generate-collector-via2"]:
+            generate_collector_via2_access(base,cfg)
+            save("result.json",dict(status="GENERATED_ACTUAL_COLLECTOR_VIA2_ACCESS_REQUIRES_FULL_QUALIFICATION",physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
+            return
         if sys.argv[1:]==["--generate-source-m2-bypass"]:
             generate_source_m2_bypass(base,cfg)
             save("result.json",dict(status="GENERATED_ACTUAL_SOURCE_M2_BYPASS_REQUIRES_FULL_QUALIFICATION",physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
