@@ -1,0 +1,4 @@
+# Actual clock-access16 canonical view
+Physical run41535701378 passed all560 DRC categories with0markers,deep andflat500deviceLVS,and13faultcontrols for GDS28eebb9f. Full outputs remain release432027578 and complete derived record is archived here.
+This source reuses every frozen native plane/recovery/identity/worker method. It independently verifies all113 conductor partitions across13 layers against current originalc0d420cd GDS and exact16Via2 additions on2nets, with11 new declaration/enclosure/spacing refusal controls in addition to123 historical controls. Candidate source pins,all500devices/1446terminals/25ports/978anchors must be regenerated and verified; no previous identity orRC result is reused as candidate proof.
+Actual650 MOS geometry and loaded acceptance remain open. Physical success does not establish electrical improvement. Run fresh distributedRC/MIM and unchanged full650wave gates only after actual canonical qualification.

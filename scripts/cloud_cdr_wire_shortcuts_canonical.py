@@ -6,7 +6,7 @@ import cdr_via2_m3_canonical_core as core
 import cdr_v59_tail_access_runtime as runtime
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-canonical"
-BRANCH="codex/cdr-collector-via2-canonical"
+BRANCH="codex/cdr-clock-access-canonical"
 MANIFEST="scripts/cdr-wire-shortcuts-canonical-pins.json"
 CONFIG="scripts/cdr-wire-shortcuts-canonical-inputs.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
@@ -35,21 +35,7 @@ def gate():
         if "git_blob_sha1"in p:
             b=path.read_bytes();need(hashlib.sha1(("blob "+str(len(b))+"\0").encode()+b).hexdigest()==p["git_blob_sha1"],"source git blob")
     return pins
-def config():
-    c=json.loads((ROOT/CONFIG).read_bytes())
-    need(c["schema"]=="nssoc.collector-via2.canonical.v1","actual collector Via2 canonical schema")
-    need(c["candidate"]["gds"]==dict(bytes=1078900,sha256="c0d420cdbc31863bf21086e88c12f494779961225031c261d6b05fe07e7585a7"),"actual collector candidate")
-    need(c["reference_prefix"]=="binding/inputs/"and c["original_reference_gds"]==dict(bytes=1075316,sha256="5e5ef3940bb0e410af8bbb92376e2c1cb60e3c520e37b65c7e675af41e58603f"),"actual drainM23 reference")
-    p=c["physical"];need(p["run"]==41435641296 and p["source"]=="262ac9b4d9142be6235c68d279c67aac9b92e3a8"and p["release"]==431371522,"actual passed physical producer")
-    g=c["generation"];q=g["proof"];rows=g["targets"]
-    need(g["run"]==41434944363 and g["source"]=="f878816a24906f450d5ffa2f72b6b08ed6024e6a","actual collector generation")
-    need(q["candidate"]==c["candidate"]["gds"]and q["input_gds"]==c["original_reference_gds"]and q["exact_serialized_delta"]is True and q["original_material_roundtrip"]is True,"actual serialized delta and reversal")
-    need(q["all4actual_collector_driver_accesses"]is True and q["all13native_unions_verified"]is True,"all four actual driver accesses")
-    need(q["only_added_layers"]==[[29,0],[30,0]]and q["added_area_dbu2"]=={"29":1732800,"30":12048600},"exact collector Via2 M3 additions")
-    need(q["new_via2_count"]==48 and all(q[k]is False for k in("new_M2","new_devices","physical_acceptance","electrical_improvement_claimed","current_density_acceptance")),"original generation boundary")
-    need(len(rows)==4 and{r["label"]for r in rows}=={"T"+str(n).zfill(3)+"_E"for n in(54,56,106,108)},"all four collector driver declarations")
-    need(len({r["wire_component"]for r in rows})==2,"two collector partitions")
-    return c
+
 def ground_variant(pya,original,row):
     def bounds(region):
         b=region.bbox();return [b.left,b.bottom,b.right,b.top]
@@ -383,6 +369,96 @@ def collector_via2_delta_controls(pya):
     need(len(cases)==27,"all27collector Via2 controls")
     return cases
 
+
+def access16_variant(pya,original,row):
+    a=row["original_anchor"]
+    need(a["detail"]["device"]in(54,56,106,108)and a["detail"]["terminal"]=="E"and a["metal"]==10,"actual upper emitter")
+    need(row["label"]==a["label"]=="T"+str(a["detail"]["device"]).zfill(3)+"_E","exact terminal label")
+    need(a["detail"]["native_net"]==("$44"if a["detail"]["device"]<100 else"$598"),"actual native net")
+    need(len(row["cuts"])==4,"four actual extra cuts")
+    addition=pya.Region()
+    for entry in row["cuts"]:
+        need(entry["component"]==a["wire_component"]and entry["label"]==a["label"]and entry["via_layer"]==29 and entry["lower"]==10 and entry["upper"]==30,"actual cut owner and layer")
+        b=entry["bbox"];need(len(b)==4 and all(isinstance(x,int)and x%5==0 for x in b)and b[2]-b[0]==b[3]-b[1]==190,"190nm5nm-grid cut")
+        cut=pya.Region(pya.Box(*b))
+        need((cut.sized(50,50,2)-original[10]).is_empty()and(cut.sized(50,50,2)-original[30]).is_empty(),"same-net50nm enclosure")
+        need((cut&(original[29]+addition).sized(240,240,2)).is_empty(),"original and new cut separation")
+        addition+=cut
+    need(addition.count()==4 and addition.area()==4*36100,"four disjoint actual cuts")
+    return {29:addition}
+def access16_controls(pya):
+    import copy
+    original={10:pya.Region(pya.Box(0,0,4000,4000)),30:pya.Region(pya.Box(0,0,4000,4000)),29:pya.Region()}
+    anchor=dict(detail=dict(device=54,terminal="E",native_net="$44"),metal=10,label="T054_E",wire_component=3)
+    row=dict(label="T054_E",original_anchor=anchor,cuts=[dict(component=3,label="T054_E",via_layer=29,lower=10,upper=30,bbox=[x,1000,x+190,1190])for x in (500,980,1460,1940)])
+    need(access16_variant(pya,original,row)[29].area()==144400,"analytic exact four cuts")
+    passed=["exact four redundant cuts"]
+    for label in ("missing","duplicate","wrong-owner","wrong-layer","wrong-net","offgrid","size","lower-enclosure","upper-enclosure","old-via-collision"):
+        r=copy.deepcopy(row);o={k:pya.Region(v)for k,v in original.items()}
+        if label=="missing":r["cuts"].pop()
+        elif label=="duplicate":r["cuts"][1]=copy.deepcopy(r["cuts"][0])
+        elif label=="wrong-owner":r["cuts"][0]["component"]=4
+        elif label=="wrong-layer":r["cuts"][0]["via_layer"]=19
+        elif label=="wrong-net":r["original_anchor"]["detail"]["native_net"]="avss"
+        elif label=="offgrid":r["cuts"][0]["bbox"][0]+=1
+        elif label=="size":r["cuts"][0]["bbox"][2]+=5
+        elif label=="lower-enclosure":o[10]=pya.Region()
+        elif label=="upper-enclosure":o[30]=pya.Region()
+        elif label=="old-via-collision":o[29]=pya.Region(pya.Box(*r["cuts"][0]["bbox"]))
+        try:access16_variant(pya,o,r)
+        except AssertionError:passed.append("reject "+label)
+        else:raise AssertionError("missed access16 fault "+label)
+    return passed
+def config():
+    c=json.loads((ROOT/CONFIG).read_bytes())
+    need(c["schema"]=="nssoc.clock-access16.canonical.v1","actual access16 schema")
+    need(c["candidate"]["gds"]==dict(bytes=1079924,sha256="28eebb9f880648935a6368ada78a5e5666694ba98e073fbbac3f2e0c986339d6"),"actual16via candidate")
+    need(c["reference_prefix"]=="binding/inputs/"and c["original_reference_gds"]==dict(bytes=1078900,sha256="c0d420cdbc31863bf21086e88c12f494779961225031c261d6b05fe07e7585a7"),"actual current reference")
+    p=c["physical"];need(p["run"]==41535701378 and p["source"]=="e00b2df77c4337940ec7db32159dacc260eb91ab"and p["release"]==432027578,"actual new physical producer")
+    g=c["generation"];q=g["proof"]
+    need(g["run"]==41535065105 and g["source"]=="381397901390b96a7609f6592918d685d104bfbd","actual16via producer")
+    need(q["candidate"]==c["candidate"]["gds"]and q["original_gds"]==c["original_reference_gds"]and q["new_via_count"]==16 and q["via_layers"]=={"29":16},"exact actual16via proposal")
+    need(all(q[k]is False for k in("physical_acceptance","fresh_RC","electrical_improvement_proven","full_phy_accepted","final_timing_complete")),"candidate not electrical acceptance")
+    rows=g["targets"]
+    need(len(rows)==4 and{r["label"]for r in rows}=={"T"+str(n).zfill(3)+"_E"for n in(54,56,106,108)},"all four actual upper-emitter declarations")
+    need(len({r["original_anchor"]["wire_component"]for r in rows})==2,"two original partitions")
+    return c
+def prove_material(pya,reference,view,old,new,c):
+    _,before=core.component_keys(old["graph"]);_,after=core.component_keys(new["graph"])
+    need(set(before)==set(after)and len(before)==len(after)==113,"all113complete original partitions")
+    original_wire=reference/(c["reference_prefix"]+"wire/native05/wires.l2n")
+    need(pin(original_wire)==c["generation"]["proof"]["original_wire_l2n"],"actual current native wire ownership")
+    ow=pya.LayoutToNetlist();ow.read(str(original_wire))
+    nw=pya.LayoutToNetlist();nw.read(str(view/"wire/native05/wires.l2n"))
+    on={n.cluster_id:n for n in ow.netlist().top_circuit().each_net()};nn={n.cluster_id:n for n in nw.netlist().top_circuit().each_net()}
+    need(set(on)=={v["component"]for v in before.values()}and set(nn)=={v["component"]for v in after.values()},"complete original/new native net census")
+    need(set(old["graph"]["layers"])==set(new["graph"]["layers"])=={str(n)for n in core.LAYERS},"all13 conductor layers")
+    anchors={a["label"]:a for a in old["anchors"]["anchors"]}
+    grouped={};labels={}
+    for row in c["generation"]["targets"]:
+        a=anchors[row["label"]];need(a==row["original_anchor"],"exact complete original anchor")
+        matches=[(k,v)for k,v in before.items()if v["component"]==a["wire_component"]and v["native_cluster"]==a["native_cluster"]]
+        need(len(matches)==1,"unique native original owner");key,owner=matches[0]
+        shapes={n:core.layer_region(pya,ow,on[owner["component"]],old["graph"],n).merged()for n in core.LAYERS}
+        add=access16_variant(pya,shapes,row)[29]
+        grouped.setdefault(key,pya.Region());grouped[key]+=add;labels.setdefault(key,[]).append(row["label"])
+    need(len(grouped)==2 and all(len(v)==2 for v in labels.values()),"two collectors with two emitter accesses each")
+    need(all(v.count()==8 and v.area()==8*36100 for v in grouped.values()),"eight disjoint added vias per partition")
+    records=[]
+    for part in sorted(before):
+        a=before[part];b=after[part]
+        for layer in core.LAYERS:
+            left=core.layer_region(pya,ow,on[a["component"]],old["graph"],layer)
+            right=core.layer_region(pya,nw,nn[b["component"]],new["graph"],layer)
+            addition=grouped.get(part,pya.Region())if layer==29 else pya.Region()
+            material_union(pya,left,right,addition)
+            records.append(dict(partition=json.loads(part),layer=layer,old_component=a["component"],new_component=b["component"],
+                old_area_dbu2=left.area(),new_area_dbu2=right.area(),added_area_dbu2=(right-left).area(),declared_added_area_dbu2=(addition-left).area()))
+    changed=[r for r in records if r["added_area_dbu2"]]
+    need(len(changed)==2 and all(r["layer"]==29 and r["added_area_dbu2"]==r["declared_added_area_dbu2"]==8*36100 for r in changed),"only exact16vias on two native nets")
+    need(len(records)==1469,"all113partitions x13layers")
+    return dict(status="PASS_ALL113_NATIVE_PARTITIONS_ALL13LAYERS_EXACT16_VIA2",records=records,targets=labels,**FLAGS)
+
 def controls():
     gate();c=config()
     import cloud_cdr_wire_shortcuts as geometry
@@ -429,6 +505,8 @@ def controls():
     need(len(checks)==96,"all96 prior canonical controls")
     checks.extend(collector_via2_delta_controls(pya))
     need(len(checks)==123,"all123 prior and collector controls")
+    checks.extend(access16_controls(pya))
+    need(len(checks)==134,"all123 prior plus11 current via controls")
     save("controls.json",dict(count=len(checks),passed=checks,**FLAGS))
 def acquire_physical():
     import cloud_cdr_wire_geometry_acquire as a
@@ -452,7 +530,7 @@ def acquire_physical():
             seen[n]=pin(p);need(seen[n]==c["index"]["files"][n],"exact physical member")
     need(seen==c["index"]["files"],"complete physical native capsule")
     q=json.loads((target/"physical-qualification.json").read_bytes());record=json.loads((target/"physical/result.json").read_bytes())
-    need(q["status"]=="PASS_COLLECTOR_VIA2_GDS_FULL560_DRC_DEEP_FLAT_LVS13"and q["gds"]==config()["candidate"]["gds"],"actual candidate physical qualification")
+    need(q["status"]=="PASS_CLOCK_ACCESS16_GDS_FULL560_DRC_DEEP_FLAT_LVS13"and q["gds"]==config()["candidate"]["gds"],"actual candidate physical qualification")
     need(record["status"]=="PASS_NATIVE_PDK_CDR_PD500_DRC_LVS_AND_FAULT_CONTROLS"and len(record["steps"])==16,"all original native physical gates")
     need(record["steps"]["drc"]["measurement"]["markers"]==0 and record["steps"]["drc"]["measurement"]["category_count"]==560,"actual complete clean DRC")
     need(all(v["status"]==("PASS"if n in("drc","lvs","lvs_flat")else"REJECTED_EXPECTED_FAULT")for n,v in record["steps"].items()),"all native fault controls")
@@ -472,51 +550,7 @@ def prepare():
     texts,records=core.derived_sources(ROOT,c)
     for name,text in texts.items():core.projection.write_new(view,"methods/"+name,text.encode())
     save("view/derived-methods.json",records);core.verify_prepared(view,ROOT,c)
-def prove_material(pya,reference,view,old,new,c):
-    _,before=core.component_keys(old["graph"]);_,after=core.component_keys(new["graph"])
-    need(set(before)==set(after)and len(before)==len(after)==113,"all113complete conductor partitions preserved")
-    original_wire=reference/(c["reference_prefix"]+"wire/native05/wires.l2n")
-    need(pin(original_wire)==c["generation"]["proof"]["input_l2n"],"exact actual drainM23 reference wire graph")
-    ow=pya.LayoutToNetlist();ow.read(str(original_wire))
-    nw=pya.LayoutToNetlist();nw.read(str(view/"wire/native05/wires.l2n"))
-    on={n.cluster_id:n for n in ow.netlist().top_circuit().each_net()};nn={n.cluster_id:n for n in nw.netlist().top_circuit().each_net()}
-    need(set(on)=={v["component"]for v in before.values()}and set(nn)=={v["component"]for v in after.values()},"complete old and new wire net census")
-    need(set(old["graph"]["layers"])==set(new["graph"]["layers"])=={str(n)for n in core.LAYERS},"all13 conductor layers")
-    actual_anchors={a["label"]:a for a in old["anchors"]["anchors"]}
-    grouped={};owners={};labels={}
-    for row in c["generation"]["targets"]:
-        need(row["original_anchor"]==actual_anchors[row["label"]],"independent complete original collector driver anchor identity")
-        a=actual_anchors[row["label"]]
-        matches=[(k,v)for k,v in before.items()if v["component"]==a["wire_component"]and v["native_cluster"]==a["native_cluster"]]
-        need(len(matches)==1,"unique actual native collector partition")
-        key,owner=matches[0];owners[key]=owner;labels.setdefault(key,[]).append(row["label"])
-        original={layer:core.layer_region(pya,ow,on[owner["component"]],old["graph"],layer).merged()for layer in core.LAYERS}
-        shapes=collector_via2_variant(pya,original,row)
-        combined=grouped.setdefault(key,{n:pya.Region()for n in(29,30)})
-        for layer,region in shapes.items():combined[layer]+=region
-    need(len(grouped)==2 and all(len(v)==2 for v in labels.values()),"exact original two collector partitions with two driver emitters each")
-    for key,regions in grouped.items():
-        for layer,region in regions.items():
-            original=core.layer_region(pya,ow,on[owners[key]["component"]],old["graph"],layer)
-            regions[layer]=region.merged()-original
-        need(regions[29].count()==24 and regions[29].area()==24*36100,"all24actual Via2 cuts in each collector partition")
-    records=[]
-    for part in sorted(before):
-        a=before[part];b=after[part]
-        for layer in core.LAYERS:
-            left=core.layer_region(pya,ow,on[a["component"]],old["graph"],layer)
-            right=core.layer_region(pya,nw,nn[b["component"]],new["graph"],layer)
-            addition=grouped.get(part,{}).get(layer,pya.Region())
-            material_union(pya,left,right,addition)
-            records.append(dict(partition=json.loads(part),layer=layer,old_component=a["component"],new_component=b["component"],
-                old_area_dbu2=left.area(),new_area_dbu2=right.area(),added_area_dbu2=(right-left).area(),declared_added_area_dbu2=(addition-left).area()))
-    changed=[r for r in records if r["added_area_dbu2"]]
-    need(len(changed)==4 and{r["old_component"]for r in changed}=={v["component"]for v in owners.values()},"only two actual collector partitions and two declared layers changed")
-    totals={str(layer):sum(r["added_area_dbu2"]for r in changed if r["layer"]==layer)for layer in(29,30)}
-    need(totals=={"29":1732800,"30":12048600},"exact actual whole native two-layer additions")
-    need(all(r["added_area_dbu2"]==r["declared_added_area_dbu2"]for r in changed),"each native addition equals independent geometry")
-    need(len(records)==1469,"all113partitions times13layers")
-    return dict(status="PASS_ALL113_NATIVE_PARTITIONS_ALL13LAYERS_EXACT4_COLLECTOR_VIA2",records=records,targets=labels,**FLAGS)
+
 def qualify():
     import pya
     c=config();reference=ROOT/"wire-native-cache/selected";view=OUT/"view/candidate"
@@ -535,7 +569,7 @@ def qualify():
     reports={"parent-geometry":parent,"planes":planes,"source-pins":recovery,"graph":new["graph"],"locations":new["locations"],"anchors":new["anchors"]}
     bindings={n:core.report_inputs(r,view)for n,r in reports.items()};save("view/fresh-report-bindings.json",bindings)
     files=core.projection.inventory(view);need(len(files)==78,"complete canonical file census")
-    save("view/canonical-view-qualification.json",dict(status="PASS_COLLECTOR_VIA2_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC",
+    save("view/canonical-view-qualification.json",dict(status="PASS_CLOCK_ACCESS16_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC",
       candidate_gds=c["candidate"]["gds"],physical_producer=c["physical"]["run"],current_files=files,
       complete_current_file_count=len(files),native_identity=comparison,native_view_executed=True,
       material=pin(OUT/"view/full-partition-material.json"),fresh_report_bindings=bindings,**FLAGS))
@@ -582,7 +616,7 @@ def tokenless():
 def acquire_reference():
     import cloud_cdr_wire_geometry_acquire as a
     cfg=json.loads((ROOT/PARENT).read_bytes());p=cfg["producer"]
-    need(p["run"]==41428920414 and p["source"]=="a53fb2f3e56b1175172b4320a1ec443bb57773db"and p["release"]==431325407,"actual current drainM23 fresh-RC reference")
+    need(p["run"]==41439516945 and p["source"]=="710869eb13082f3c3dc488159bf167d937294454"and p["release"]==431398178,"actual current drainM23 fresh-RC reference")
     run=api("actions/runs/"+str(p["run"]));rel=api("releases/"+str(p["release"]))
     need(run["head_sha"]==p["source"]and run["conclusion"]=="success"and run["run_attempt"]==1,"successful actual reference")
     need(rel["target_commitish"]==p["source"]and rel["tag_name"]==p["tag"]and api("git/ref/tags/"+p["tag"])["object"]["sha"]==p["source"],"reference release")
@@ -601,7 +635,7 @@ def acquire_reference():
             path=target/n;path.parent.mkdir(parents=True,exist_ok=True)
             with path.open("xb")as f:shutil.copyfileobj(tar.extractfile(m),f)
             seen[n]=pin(path);need(seen[n]==index["files"][n],"reference native bytes "+n)
-    need(seen==index["files"]and len(seen)==3236,"complete current current horizontal-ground native reference")
+    need(seen==index["files"]and len(seen)==len(cfg["complete_members"]),"complete current current horizontal-ground native reference")
     need(pin(target/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds")==config()["original_reference_gds"],"actual before-reference GDS")
     save("reference-acquisition.json",dict(run=run,release=rel,authenticated_members=seen,native_payloads_cloud_only=True))
     return target
@@ -639,7 +673,7 @@ def verify():
         for worker in core.projection.WORKERS:execute([app,"python",OUT/"view/candidate/wire"/worker],"fresh-"+worker.removesuffix(".py"))
         execute([app,"python",script,"--phase","verify"],"canonical-verify")
         q=json.loads((OUT/"view/canonical-view-qualification.json").read_bytes())
-        need(q["status"]=="PASS_COLLECTOR_VIA2_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC","complete actual native view")
+        need(q["status"]=="PASS_CLOCK_ACCESS16_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC","complete actual native view")
     except BaseException as exc:error=exc
     finally:
         try:cleanup.append(dict(process_group=sup.stop_process(sup.ACTIVE)))
