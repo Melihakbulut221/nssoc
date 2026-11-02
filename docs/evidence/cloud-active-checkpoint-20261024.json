@@ -25,32 +25,6 @@
       "source": "7cc6f94a7a685423533a25bc0d418e33764e8366",
       "status": "in_progress",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41393730481"
-    },
-    "41401709497": {
-      "branch": "codex/cdr-local-source-m1-physical",
-      "conclusion": null,
-      "jobs": [
-        {
-          "active_steps": [],
-          "conclusion": "success",
-          "id": 125134752073,
-          "name": "source-controls",
-          "status": "completed"
-        },
-        {
-          "active_steps": [
-            "Verify actual new GDS with full native DRC deep flat LVS and faults"
-          ],
-          "conclusion": null,
-          "id": 125134859865,
-          "name": "native-physical",
-          "status": "in_progress"
-        }
-      ],
-      "run": 41401709497,
-      "source": "a60c812f23d80ce7672a807f6392fa35cc440a32",
-      "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41401709497"
     }
   },
   "bounded_route_class_diagnosis_v238": {
@@ -327,7 +301,7 @@
     "physical_acceptance": false,
     "timing_accepted": false
   },
-  "checkpoint_version": 284,
+  "checkpoint_version": 285,
   "cloud_results_release_reservations": {
     "mainchip_artifact_recovery": {
       "exact_tag_target_verified": true,
@@ -2270,6 +2244,7 @@
   "continuation_note_v282": "## Current continuation: actual resistance bottleneck measured; physical mapping dispatched\n\nAll native CAD, geometry, extracted models and waveforms remain GitHub-only. Local workspace is empty; local activity is source/API/text metadata coordination in RAM. Full serial Gen3 x4 PHY, final mainchip route and final setup/hold remain OPEN.\n\nActual selector resistance run 41395210468 / source 4a20c52579eddaa7f0a1f82f41cb6af8445b806c PASSED. Derived artifact13118444894 is1467909bytes SHA b3a4162dfd66ae6148a987f3d3ffb40d140d661fc35aa741ac9971be215dd7a6. All derived files, all32full pair solutions, controls and acquisition are preserved under docs/evidence/current-terminal-41395210468/. The original loaded electrical rejection is unchanged. Twenty-six network controls and original frozen wave-reader controls passed; actual500device cards and24530R/15676C were authenticated. Every full-network unit-current solve passed KCL, terminal balance, energy, reciprocity and passive maximum-principle checks. This passive R-only sensitivity calculation is not a transient or operating-power result.\n\nThe eight MOS source-to-public-avss paths measure45.22849-45.67123ohm. Each contains a terminal-local32.5245ohm branch accounting for71.2-71.9percent of its equivalent resistance. Actual resistor names: r24495(T003_S), r24476(T004_S), r24457(T005_S), r24438(T006_S), r22219(T032_S), r22200(T033_S), r22181(T034_S), r22162(T035_S). Shared4.88213ohm edges contribute about10.7percent. Selector emitter paths measure18.2452-20.4448ohm; collector paths13.1816-14.2848ohm. These findings identify local access as a stronger next target than another blind top-ground widening.\n\nNative physical mapping run41396652103 / source02db0affab32b2f7d331c2e5f720ad38663d2c84 / branchcodex/cdr-critical-access / release431114381 is dispatched with independently reserved tagcloud-results-41396652103-1-cdr-wire-tail-shortcuts. Follow the exact live job; no duplicate. Source modifies scripts/cloud_cdr_wire_tail_shortcuts.py, adds scripts/cdr-critical-resistance-inputs.json and docs/cdr-critical-resistance-physical-map.md. Original85geometry controls and guard ASTs are unchanged. It binds the CURRENT freshRC41389957475/sourcefe2ccfc1529b0e7507a585d3d8078e9d60af368d and current1003348byte GDS SHA b9b92319590ecca1c9ce31dcf1cc31f4fdc1d468fc514585931671ed2f4fa492, not the old four-shortcut GDS. Full native archive61446034bytes SHAf79de017083fa7d867ffd15888242724487eab6f518a75e4bf0664fbcb8e5da9 stays in GitHub.\n\nMapping must validate all978port coordinates against GDS, all24530native/exported R values/endpoints/multiplicity, and all13conductor unions. It maps top3edges of each32query through the actual composition inverse and native component ownership, preserves rawrnode records and emits owned/foreign geometry at each endpoint. Do not interpret rnode type placeholder as a GDS layer. Read-only input and final GDS equality are required. No new geometry, RC, electrical acceptance, full PHY or timing acceptance is claimed.\n\nNext: inspect actual critical-access-map.json once this job terminates. Select a real physical local connection repair only after its layer and native ownership are proven. Preserve devices and original schematic; require full560DRC/deep-flatLVS13, canonical binding, freshRC and unchanged loaded electrical gates on any revised candidate. Do not delete failed evidence or relax thresholds. Current loaded41391065497 still fails fourHBTminVce, phase/signedVI and sampler margins/delays.\n\nMainchip41393730481/source7cc6f94a7a685423533a25bc0d418e33764e8366/release431098535 remains the exact native job to follow. Source controls passed. Original140DRC remain the latest terminal measured count until its native outputs prove otherwise. ReversibleFIXED identity checks, preservation of1691clocks, actual47net reroute, fullDRC/antenna, originalglobalclass restoration, diodePG/connectivity/LVS and three-cornerSTA remain required. Do not restart the running job for an observation timeout.\n\nPrevious rootv281=28e298bcf0922c8fe17ffe2e2138b16ee7540515. Inventory now750; monitor remains read-only8hour with automatic_native_dispatch=false.\n\nObserved at 2026-11-02T05:55:26.846178+00:00:\n- 41395210468: completed/success\n- 41396652103: in_progress/None\n- 41393730481: in_progress/None\n",
   "continuation_note_v283": "## Current continuation: native resistor physical mapping passed; measured local Metal1 candidate dispatched\n\nAll native work remains GitHub-only. Full serial Gen3x4PHY, final mainchip route and final setup/hold remain OPEN. Local workspace is empty.\n\nActual physical resistor mapping41397314520/source7b2a7efcedd829412cb18fd45d66179c071a3c79 PASSED. Derived13119862659 is406050bytes SHA52f13ce1c9b223d49367d75e928168e932f2eab61fb51992d847fc861f59a9f2. Full52critical-resistor coordinate/ownership map, all978port checks, all24530native/exportedR correspondence, all13native conductor union equalities and unchanged GDS proof are preserved under docs/evidence/current-terminal-41397314520/. This is diagnostic acceptance only.\n\nFailed attempts41396652103/source02db0affab32b2f7d331c2e5f720ad38663d2c84 and41396958129/source9e2c0fa6b6b5df855d5d1d84293ac418ea3071d9 are preserved. The new reader initially selected pre-MIM anchors from binding/inputs/wire/anchors08.json. Its unchanged2nm coordinate gate correctly refused seven mismatches. Complete diagnostic proved971coordinates exact and seven MIM bottom reference differences (devices273-279). Correct actual references reside at mim/precise/wire/anchors08.json in the same authenticated freshRC archive. The seven documented bottom points are on actual Metal5 outside the intrinsic MIM mask; no RC or GDS was modified. Corrected reader requires exactly those documented seven changes, every other field equal, both original and extraction points on the same native-owned metal and all978extracted coordinates within original2nm/5nm-grid tolerance. All85original controls passed.\n\nThe dominant32.5245ohm source edges terminate on actual290nm-wide M1 strips. For example T003_S=[1884565,406030]nm and its opposite native resistor endpoint P_avss.n175=[1868095,388430]nm is on the actual M3/Via3/M4/Via4/M5 ground landing. T032_S=[1884565,1595550]nm has the symmetric structure. A resistor edge can aggregate multiple physical segments; this evidence does not assign its entire resistance to M1 or guarantee a repair effect.\n\nCandidate generation41397981344/source6ef31b5bd00bd0eacc3e46983a13fe2b3e09ab4f/branchcodex/cdr-local-source-m1/release431121700 is dispatched with exact reserved tagcloud-results-41397981344-1-cdr-wire-tail-shortcuts. Follow this exact run. The native function generate_local_source_m1 in scripts/cloud_cdr_wire_tail_shortcuts.py proposes left-only M1 reinforcement of source3,4,5,6,32,33,34,35 within18um each side of the actual reference. It tries added widths1500,1200,900,600,300nm and requires all8targets to admit. Added material must be connected, inside originalbbox,605nm clear of foreignM1,5nm clear of foreignVia1 and avoid unclassified material. No device, via, contact, source stimulus or logical reference is changed. Original85controls plus6new positive/adversarial guard controls run before native execution. Candidate serialization must equal originalGDS plus precisely reported layer8/0 additions, and reversal must reproduce original material. Parent remains GDS1003348bytes SHAb9b92319590ecca1c9ce31dcf1cc31f4fdc1d468fc514585931671ed2f4fa492.\n\nNext PHY action: inspect candidate local-source-m1-proposal.json and local-source-m1-generation-proof.json. If refused, diagnose exact foreign clearance or attachment evidence, never lower guards to force admission. If generated, run the original complete physical checker SHA3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66:560DRC categories, deep/flat500primitiveLVS and13faults. Reuse actual physical host at c40549f17f783ae3250139e63a9edee75721b219, update candidate source/release/index and proof selector to local-source-m1-generation-proof.json / native/nssoc_cdr_pd500_local_source_m1.gds, keep all frozen checker/source/runtime gates. New proof only layer8/0,8sources,no devices/no vias, mapped parentb9b923. Its original schematic/LEF remain frozen and byte-identical. Only after physical pass: canonical binding, freshRC and original loaded wave gates. Loaded41391065497 remains rejected for HBTminVce, phase/signedVI and sampler timings.\n\nMainchip41393730481/source7cc6f94a7a685423533a25bc0d418e33764e8366/release431098535 remains the exact native reroute job. Source controls passed; current native results pending. Preserve47scope identity/reversal,1691clocks, actualfullDRC/antenna, originalglobalclass restoration, diodePG/connectivity/LVS and final3cornerSTA. Original140DRC remain last measured count until new actual results prove otherwise. Do not duplicate or restart on observation timeout.\n\nPrevious fully verified rootv282=d927c2e5dca792040c63be0f33065caf244b74c7 (49files/18979465bytes). Inventory753; read-only8hour monitor and automatic_native_dispatch=false retained.\n\nObserved at 2026-11-02T06:10:47.856857+00:00:\n- 41396652103: completed/failure\n- 41396958129: completed/failure\n- 41397314520: completed/success\n- 41397981344: queued/None\n- 41393730481: in_progress/None\n",
   "continuation_note_v284": "## Current continuation: eight-source M1 candidate generated; full native physical verification dispatched\n\nAll native CAD, model and waveform work remains GitHub-only. Full serial Gen3x4PHY, completed mainchip routing and final setup/hold remain OPEN. Local workspace is empty.\n\nActual generation41400908740/source880dce57683ccb79f38ea43f3014bb90151329e1/branchcodex/cdr-local-source-m1/release431137984 PASSED102controls and native8target admission. New candidate native/nssoc_cdr_pd500_local_source_m1.gds is1003860bytes SHA4ccf1212d4b98046b1b56037bb1b76c53477777b08ee9cba5053c8e6323203e8. Each source3,4,5,6,32,33,34,35 receives a4um-long,1.5um-left M1 reinforcement (6um2 per source; total48um2). Only layer8/0 is added; no device or via changes. Exact serialized full-layer delta and removal/roundtrip back to originalGDS passed. Derived13121530902 is249565bytes SHA30d79a9d8163b92c50f52add9220aff620f0f8ddf5ddb646cfa3cb929e03b87e. Electrical improvement is NOT measured and physical_acceptance remains false.\n\nFull physical run41401158595/sourcee06a1fa008653e57f29a3ba4415711fd90c54498/branchcodex/cdr-local-source-m1-physical/release431139494 is independently reserved with tagcloud-results-41401158595-1-cdr-wire-shortcuts-physical. This first attempt failed before native geometry: inline policy admission still expected the previous horizontal-ground branch. Its complete job log and empty-output publication failure are preserved. Corrected run41401709497/sourcea60c812f23d80ce7672a807f6392fa35cc440a32/release431142636 on the same local-source-m1-physical branch changes only that expected branch literal and adds seven tests of the actual inline policy assertions. Follow41401709497, not the terminal41401158595; no duplicate. It authenticates complete generation archive and current candidate byte digest, then uses unchanged checker SHA3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66 for560DRC categories, deep/flat500primitiveLVS and13negative faults. Only candidate binding/proof/path changed relative to qualified physical sourcec40549f17f783ae3250139e63a9edee75721b219. Original schematic/LEF, all frozen checker/source/runtime/resource controls remain. Source was published atomically to a new branch with skip-ci, avoiding duplicate unrelated baseline RTL jobs while retaining explicitly dispatched physical source controls.\n\nThree generation refusals are preserved in full derived metadata:\n-41397981344/source6ef31b5bd00bd0eacc3e46983a13fe2b3e09ab4f:91controls passed; native original two-argument Region.sized(width/2,0) selected isotropic mode0 and grew Y. All8targets refused on span/left-only/spacing/shape guards; no GDS accepted.\n-41399519731/source7694c28b3ab848acfa854b962f17a5bc1318b603:98controls passed including actual old-overload reproduction and all5width polygon comparisons. Explicit3argument horizontal sizing fixed Y. All8still refused because full36um source contour is not a constant290nm rectangle; added material reached65nm inside nominal left boundary and approached foreignM1.\n-41399977249/sourcecac63a0e8834b3bb620a80e9c7d807c33745a084:102controls passed; none of20-36um source bands was an exact rectangle, so no width admitted. Do not infer nonrectangularity only at distant ends; the measured data only proves these tested full bands are nonrectangular. Actual map41397314520 shows4um local windows are exact290nm rectangles for all8sources. Adding16/12/8/4um search lengths admitted the4um candidate with ALL original605nm foreignM1,5nm foreignVia1, left-only, attachment, maximum-span and exact8target gates unchanged.\n\nKLayout primary API documentation confirms sized(dx,dy,mode) differs from sized(d,mode): https://www.klayout.de/doc-qt5/code/class_Region.html . Current runtime0.30.4.post1 executed regression controls. IHP published M1 rules were researched (0.18um basic,0.22um qualified parallel run,0.6um wide-line case), but NO guard thresholds or fullDRC rules were changed. The generated candidate still passed the stricter605nm proposal guard.\n\nQueue management: cancelled only old/initial-copy checks41397960768 and41396646262, then duplicated generic checks41397312674 on completed read-only diagnostic branch. The latter compare against06d603105065697e069dde1e6954a8605a535c5c proved exactly6changed diagnostic/doc/workflow files and no RTL changes; its actual native mapping41397314520 had passed. Current generation-head CI and all native jobs remained. Cancellation receipts, terminal run/jobs and pre-existing failed formal-and-boot logs are preserved under docs/evidence/cloud-ci-capacity-cleanup-20261102/. Those historical branches lack nettype directives in soc_pcie_gen12_raw32_align.v. Rootv283 already contains both directives; exact comparison proved those44bytes are the only difference. No new RTL patch or claim of full root lint pass was made.\n\nNext: if corrected41401709497 passes full physical scope, bind actual current4ccf1212GDS to canonical native extraction (500devices,1446terminals,25ports,978anchors), prove only expected M1 delta against actual priorb9b923parent, then freshRC numerical validation and unchanged loaded waves. Use actual generator41400908740 and physical41401709497 release/indexes; do not reuse old RC as new. Existing electrical41391065497 remains REJECTED for fourHBTminVce, phase/signedVI and sampler margins/timing. Source-local M1 is only part of a32.5245ohm aggregate edge; improvement must be quantified, not assumed. Complete serial PLL/CDR/SERDES/PCS integration and full chip qualification remain required.\n\nMainchip41393730481/source7cc6f94a7a685423533a25bc0d418e33764e8366/release431098535 remains active. Source controls passed; actual47route/fullDRC/antenna results pending. Original140DRC are last terminal measured count. Preserve reversible class identity,1691clocks, originalglobalclass restoration, diodePG/fullconnectivity/LVS and final3cornerSTA. No duplicate or timeout-based restart.\n\nPrevious fully readback-verified rootv283=6de29461db911bec51ec4c4f7e7052d2b2acdf61. Inventory758, read-only8hour monitor, automatic_native_dispatch=false.\n\nObserved at 2026-11-02T06:45:23.278169+00:00:\n- 41397981344: completed/failure\n- 41399519731: completed/failure\n- 41399977249: completed/failure\n- 41400908740: completed/success\n- 41401158595: completed/failure\n- 41401709497: in_progress/None\n- 41393730481: in_progress/None\n",
+  "continuation_note_v285": "## Current continuation: source M1 physical qualification passed; exact native ownership running\n\nAll native CAD, layouts, extracted models and waveforms remain GitHub-only. The local workspace is empty. Full serial Gen3 x4 PHY, mainchip routing and final setup/hold remain OPEN.\n\nActual eight-source M1 candidate GDS is 1003860 bytes, SHA256 4ccf1212d4b98046b1b56037bb1b76c53477777b08ee9cba5053c8e6323203e8, generated by 41400908740/source880dce57683ccb79f38ea43f3014bb90151329e1. Only eight 1500nm by4000nm Metal1 rectangles (48um2 total) are added; no new devices or vias. Original source controls and all failed attempts are preserved in v284.\n\nPhysical41401709497/sourcea60c812f23d80ce7672a807f6392fa35cc440a32/release431142636 is now SUCCESS: 43controls; all560DRC categories with zero markers; deep/flat500primitiveLVS; 13expected fault rejections. The frozen checker SHA3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66 remains unchanged. Derived13121826335 is352456bytes SHAab2299c2bc5abf9e6436fa7f4e159b51717a52181bf8b0d49f53aaa873ca6360. Native archive700807528 is5988110bytes SHAe1f9f52b103f0cc7aba38af914c9c7aa36e2380c2f0157b0f0d80eb6e92a9e2d, retained only in GitHub.\n\nCanonical41403441348/source52b88fd735c40f3f40faced7e30051b788c9d01d/release431153587 is independently reserved and dispatched on codex/cdr-local-source-m1-canonical. All published source files were read back byte-for-byte. It authenticates actual preceding b9b923 GDS/native graph from freshRC41389957475 and actual physical4ccf1212. It independently reconstructs eight new M1 rectangles from actual original source anchors and requires all13layers of every conductor partition to match exactly, with only avss M1 increasing by48000000nm2. All48original canonical controls remain, plus10new positive/adversarial source-M1 controls. Complete500device/1446terminal/25port/978anchor witnesses remain unchanged. Native results pending; no freshRC acceptance claimed.\n\nPublisher staging initially refused because its AST unchanged-function list did not permit verify's intended status-string rename. Before publication, the actual verify function was inspected and an explicit AST assertion proved that the only change is the exact qualification status literal. No worker, resource, lifecycle, validation or stimulus changed for this correction. The inherited physical qualification label is not a geometry assertion: full16phase results and exact4ccf1212 digest are bound independently.\n\nNext after canonical success: new native RC extraction and all original numerical checks; then unchanged full loaded transient. Previous loaded41391065497 remains REJECTED for HBT minVce, phase/signedVI and sampler margins/timing. No claim that physical M1 repair has yet improved those electrical measurements. Full serial PLL/CDR/SERDES/PCS and mainchip qualification remain required.\n\nFollow the same mainchip41393730481/source7cc6f94a7a685423533a25bc0d418e33764e8366/release431098535. Actual47net reroute is still active; original140DRC remain last measured count. Do not duplicate it on observation timeout. Original global classes,1691clocks, diodePG/connectivity/LVS and3cornerSTA remain required.\n\nPrevious fully readback-verified rootv284=3c8f1dbc17cf0de0cd86af99ba2aec6ced16d163. Inventory759; read-only8hour monitor and automatic_native_dispatch=false preserved.\n\nObserved at 2026-11-02T07:02:38.574099+00:00:\n- 41401709497: completed/success\n- 41403441348: completed/success\n- 41393730481: in_progress/None\n",
   "current_run_snapshot": [
     {
       "attempt": 1,
@@ -25274,7 +25249,7 @@
     },
     {
       "branch": "codex/cdr-local-source-m1-physical",
-      "conclusion": null,
+      "conclusion": "success",
       "jobs": [
         {
           "active_steps": [],
@@ -25284,19 +25259,41 @@
           "status": "completed"
         },
         {
-          "active_steps": [
-            "Verify actual new GDS with full native DRC deep flat LVS and faults"
-          ],
-          "conclusion": null,
+          "active_steps": [],
+          "conclusion": "success",
           "id": 125134859865,
           "name": "native-physical",
-          "status": "in_progress"
+          "status": "completed"
         }
       ],
       "run": 41401709497,
       "source": "a60c812f23d80ce7672a807f6392fa35cc440a32",
-      "status": "in_progress",
+      "status": "completed",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41401709497"
+    },
+    {
+      "branch": "codex/cdr-local-source-m1-canonical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125140104318,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125140238257,
+          "name": "native-canonical",
+          "status": "completed"
+        }
+      ],
+      "run": 41403441348,
+      "source": "52b88fd735c40f3f40faced7e30051b788c9d01d",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41403441348"
     },
     {
       "branch": "codex/mainchip-route47-repair",
@@ -108650,6 +108647,82 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41393730481"
     }
   ],
+  "latest_observed_runs_v285": [
+    {
+      "branch": "codex/cdr-local-source-m1-physical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125134752073,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125134859865,
+          "name": "native-physical",
+          "status": "completed"
+        }
+      ],
+      "run": 41401709497,
+      "source": "a60c812f23d80ce7672a807f6392fa35cc440a32",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41401709497"
+    },
+    {
+      "branch": "codex/cdr-local-source-m1-canonical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125140104318,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125140238257,
+          "name": "native-canonical",
+          "status": "completed"
+        }
+      ],
+      "run": 41403441348,
+      "source": "52b88fd735c40f3f40faced7e30051b788c9d01d",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41403441348"
+    },
+    {
+      "branch": "codex/mainchip-route47-repair",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125110477530,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Resolve exact47net identities, prove reversible FIXED protection, reroute and measure full DRC"
+          ],
+          "conclusion": null,
+          "id": 125110652147,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41393730481,
+      "source": "7cc6f94a7a685423533a25bc0d418e33764e8366",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41393730481"
+    }
+  ],
   "latest_terminal_runs": {
     "cdr_actual_terminal_current_ledger": 40171679250,
     "cdr_current_ledger_controls": 40171508329,
@@ -109410,11 +109483,11 @@
   },
   "local_cleanup_verification": {
     "native_payloads_cloud_only": true,
-    "observed_at": "2026-11-02T06:45:23.278169+00:00",
+    "observed_at": "2026-11-02T07:02:38.574099+00:00",
     "source_API_derived_text_RAM_only": true,
     "workspace_entries": 0
   },
-  "local_workspace_verified_empty_at": "2026-11-02T06:45:23.278169+00:00",
+  "local_workspace_verified_empty_at": "2026-11-02T07:02:38.574099+00:00",
   "mixed_canonical_proofs_v269": [
     {
       "prefix": "docs/evidence/mixed-canonical-terminal-41350835442",
@@ -109452,7 +109525,7 @@
     },
     "candidate_qualification_run": 41108174342,
     "code_deployed_head": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a",
-    "configured_inventory_rows": 758,
+    "configured_inventory_rows": 759,
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33",
     "every_hours": 8,
     "historical_scheduled_error": {
@@ -109465,7 +109538,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 284,
+    "inventory_version": 285,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -109565,7 +109638,7 @@
   ],
   "next_actions": [
     "Follow exact active mainchip41393730481/source7cc6f94a7a685423533a25bc0d418e33764e8366. Native outputs pending; no duplicate. Original64route41349316524 is terminal timeout; qualified iteration20 is input to current47net repair, not an active original job.",
-    "Actual eight-source M1 generation41400908740 PASSED102controls and all original geometry guards; candidate4ccf1212. Initial41401158595 refused before native policy admission; follow corrected full physical41401709497. Only after complete560DRC/deep-flatLVS13 pass: current canonical/freshRC/original loaded gates. Keep41397981344/41399519731/41399977249 refusals and loaded41391065497 rejection.",
+    "Physical41401709497 passed full560DRC, deep-flat500primitiveLVS and13faults on actual4ccf1212 GDS. Follow current canonical41403441348/source52b88fd735c40f3f40faced7e30051b788c9d01d. Only after exact all13layer native ownership and full500device/1446terminal/25port/978anchor identities pass: freshRC and frozen loaded electrical gates. Previous loaded41391065497 remains rejected.",
     "After actual pin-metal correspondence and connectivity qualification, run remaining2702diode PG-contact audit, all1691original clock/fixed-net preservation, all1351diode pin attachments, final DRC/antenna and exact current candidate audits. Saved8-pass router397violations is not final physical acceptance.",
     "Export and authenticate current diode-inclusive154480instance netlist from current native ODB, generate fresh nominal SPEF and run original threecorners/20-4-8-8ns/5percent-derate STA only after physical admission. Do not reuse153130instance route12netlist or stale SPEF.",
     "FullserialPLL/CDR/SERDES/training/LTSSM/replay/credit/lane/TX/serialsoc_top and completeDRC/LVS/ESD/production approval remain open. No packet-interface route or diagnostic pass constitutes fullPHY acceptance.",
@@ -151304,7 +151377,7 @@
     "timing_accepted": false,
     "timing_limits_unchanged": true
   },
-  "root_source_before_receipt": "6de29461db911bec51ec4c4f7e7052d2b2acdf61",
+  "root_source_before_receipt": "3c8f1dbc17cf0de0cd86af99ba2aec6ced16d163",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -151391,7 +151464,7 @@
       "run": 41349316524
     }
   ],
-  "updated_at": "2026-11-02T06:45:23.278169+00:00",
+  "updated_at": "2026-11-02T07:02:38.574099+00:00",
   "width8_wave_diagnosis_v250": {
     "proof": {
       "bytes": 5806735,
