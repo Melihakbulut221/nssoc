@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
-"""Provisional slave current-only trial with exact geometry binding and frozen electrical gates."""
+"""Provisional eight slave collector-load trial with original MOS geometry and frozen electrical gates."""
 import argparse,ast,copy,hashlib,json,os,platform,shutil,signal,subprocess,sys,tarfile,time,traceback,types
 from pathlib import Path,PurePosixPath
 import cdr_via2_m3_loaded_core as original
 import cdr_sampler_bias_trial as trial
-import cdr_slave_drive_binding as geometry_binding
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"cloud-wire-shortcuts-loaded"
 NATIVE=OUT/"native";DERIVED=OUT/"derived";CONTROLS=ROOT/"wire-loaded-controls"
 MANIFEST="scripts/cdr-wire-shortcuts-loaded-pins.json"
 BASIS="scripts/cdr-wire-shortcuts-loaded-basis.json"
 HOST="scripts/cloud_cdr_wire_shortcuts_loaded.py"
-BRANCH="codex/cdr-slave-current-only-trial"
+BRANCH="codex/cdr-slave-load-only-trial"
 REPO="Melihakbulut221/nssoc"
 FLAGS=dict(trial.FLAGS)
 STATE=None
@@ -91,7 +90,7 @@ def current_configuration(root=ROOT):
     return copy.deepcopy(s["configuration"]),copy.deepcopy(s["records"])
 def numerical_namespace(root=ROOT,numpy=None):
     need(Path(root)==ROOT,"explicit current geometry binding root")
-    return geometry_binding.numerical_namespace(original,Path(root),numpy)
+    return original.numerical_namespace(Path(root),numpy)
 def frozen():
     """Clone function globals explicitly; retain original numerical source and all acceptance limits."""
     ns=dict(original.__dict__)
@@ -144,14 +143,13 @@ def controls():
     need(len(prefix)==3 and isinstance(prefix[0],ast.Assign)and prefix[0].targets[0].id=="nodes"and isinstance(prefix[1],ast.Expr)and isinstance(prefix[2],ast.Assign)and prefix[2].targets[0].id=="vectors","exact frozen vector prefix")
     need(STATE is None and not NATIVE.exists(),"no native input in source controls")
     trial_controls=trial.source_controls(ROOT)
-    geometry_controls=geometry_binding.source_controls(ROOT)
-    record=dict(trial_controls=trial_controls,geometry_controls=geometry_controls,status="PASS_PROVISIONAL_BIAS_TRIAL_FROZEN_LOADED_SOURCE_CONTROLS",definitions=29,executable_blocks=5,frozen_source_files=9,rejected=cases,
+    record=dict(trial_controls=trial_controls,original_geometry_binder_unmodified=True,status="PASS_PROVISIONAL_BIAS_TRIAL_FROZEN_LOADED_SOURCE_CONTROLS",definitions=29,executable_blocks=5,frozen_source_files=9,rejected=cases,
       frozen_complete_prepare_and_measure=True,original_13_binding_controls_required_in_actual_preparation=True,
       actual_port_order=b["semantic_interface"],native_acquired=False,transient_executed=False,**FLAGS)
     save(CONTROLS/"result.json",record)
     return record
 def release_gate(empty=True,wait=False):
-    ctx=context(native=True);tag="cloud-results-"+str(ctx["run_id"])+"-1-cdr-slave-current-only-trial"
+    ctx=context(native=True);tag="cloud-results-"+str(ctx["run_id"])+"-1-cdr-slave-load-only-trial"
     for i in range(90 if wait else 1):
         p=subprocess.run(["gh","api","repos/"+REPO+"/releases/tags/"+tag],capture_output=True,text=True,timeout=180)
         if p.returncode==0:break
@@ -208,7 +206,6 @@ def configure(paths):
     need(len(contract["device_records"])==500 and sum(len(d["terminals"])for d in contract["device_records"])==1446,"all native devices and terminals")
     need(planes["status"]=="PASS_PD500_NATIVE160_PLANES_51_NETS_19_FAULTS"and len(planes["anchors"])==160 and len({p["logical_net"]for p in planes["anchors"]})==51,"complete current native plane binding")
     bound=ns["bind_native"](Path(paths["model"]).read_text(),contract,planes)
-    save(DERIVED/"slave-geometry-binding-controls.json",geometry_binding.native_controls(ns,Path(paths["model"]).read_text(),contract,planes,ROOT))
     groups=bound["groups"]
     ns.update(bound=bound,ports=bound["ports"],devices=groups["npn13g2"],mos=groups["sg13_lv_nmos"],
       resistors=groups["rppd"],caps=groups["cap_cmim"],contacts=groups["ptap1"])
@@ -260,7 +257,7 @@ def simulate():
         p=case/"measurement-result.json"
         if p.is_file():shutil.copyfile(p,DERIVED/"measurement-result.json")
         gate()
-    save(DERIVED/"result.json",dict(status="PASS_PROVISIONAL_SLAVE_DRIVE_TRIAL_FROZEN_LOADED_MEASUREMENTS",
+    save(DERIVED/"result.json",dict(status="PASS_PROVISIONAL_SLAVE_LOAD_ONLY_TRIAL_FROZEN_LOADED_MEASUREMENTS",
       context=ctx,model=pin(paths["model"]),measurement=report,loaded_simulation_passed=True,
       scope=trial.SCOPE,**FLAGS))
 def publish():
