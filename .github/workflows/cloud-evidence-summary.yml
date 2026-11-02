@@ -68,6 +68,11 @@ jobs:
         run: |
           set -o pipefail
           PY=python3 bash scripts/run_cocotb.sh pcie_training_epoch_ingress 2>&1 | tee hw/soc/out/guarded-root-validation/epoch.log
+      - name: Run all Gen12 CDC cases through corrected root source review
+        if: always() && steps.controls.outcome == 'success' && steps.tools.outcome == 'success'
+        run: |
+          set -o pipefail
+          PY=python3 bash scripts/run_cocotb.sh gen12_record_cdc 2>&1 | tee hw/soc/out/guarded-root-validation/gen12-rtl.log
       - name: Collect derived text separately from compiled simulator images
         if: always()
         run: |
