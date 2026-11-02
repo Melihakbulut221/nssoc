@@ -1,6 +1,26 @@
-# Cloud continuation — checkpoint v276
+# Cloud continuation — checkpoint v277
 
-Updated: 2026-11-02T04:30:57.119626+00:00
+Updated: 2026-11-02T04:38:20.874842+00:00
+
+## Current continuation: ground candidate passed full physical verification
+
+Native work remains GitHub-only and the local workspace is empty. Full serial Gen3x4PHY, mainchip routing and final setup/hold remain OPEN.
+
+Physical run41388495424/sourcec40549f17f783ae3250139e63a9edee75721b219/release431070997 PASSED on actual all32ground-branch GDS b9b92319590ecca1c9ce31dcf1cc31f4fdc1d468fc514585931671ed2f4fa492 (1003348bytes). Authenticated derived artifact13116248869 is353420bytes SHA6749dd76a05bbf6da3bd27e05b7039f2800b5947f0986d53936b62713cb7e486. Actual result:560DRC categories, zero markers, deep and flat transistor LVS each500primitives (124npn13g2/50sg13_lv_nmos/98rppd/7cap_cmim/221ptap1), all13fault injections rejected as expected, all16phases completed. Full physical checker remains frozen SHA3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66. This is a CDR macro result, not full-chip LVS or fullPHY signoff. New RC and electrical acceptance are explicitly false.
+
+Canonical run41389419224/source944efffd8ed7c4c586f06d9a9028ee81f9d08420/release431075795 is the next exact-source independently reserved native job. It authenticates this physically passed candidate and current four-path reference GDS1c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94 from freshRC41352147913/source6eace90ce68a61546f0268b3fd65b2b9b2b3840d/release430869108. It reconstructs every declared700nm positional widening from the actual original polygon (never bbox-only), verifies all13layers/all conductor partitions and requires exactly one changed avss/TopMetal2partition. Existing native identity/planes/recovered-pin checks and frozen methods remain. Inspect authoritative live state before assuming completion. If it passes, adapt freshRC to the new canonical output, then run the unchanged loaded-wave gates; do not reuse old RC as new geometry evidence.
+
+Actual spacing diagnosis41387922295 proved failed5um proposals narrowed real gaps to1900nm. Geometry was redesigned to4600nm, leaving2100nm in the constrained6000nm-pitch corridors; no spacing threshold was relaxed. All85generation controls and all32branches passed41388218990. Prior failed candidates and the initial missing-reservation failure41387369679 remain permanently preserved in v275/v276.
+
+Mainchip47-net selection41388383192 remains a verified plan only: all140report20violations touch47of828authorized signal nets;7also touch protected clocks,127touch68outside-scope names. All literal escaped names are preserved. Before actual rerouting, independently resolve every source name in native iteration20ODB, build and audit reversible FIXED protection for all nonselected wires, and preserve every original clock and material. The original frozen native helpers fixed_plan/metadata_only/import_tcl/fixed-audit show the required distinction between metadata and encoded path classes; changing metadata alone does not establish fixed geometry. All1691clocks must remain unchanged. Current iteration20 native reload/scope proof passed41385939588, but routing, original class restoration, diodePG, DRC/antenna, LVS and three-corner STA remain open.
+
+Next actions: follow canonical41389419224 without observation-timeout restarts; preserve any terminal failure before redesign. After success, perform newly bound RC extraction and real loaded-wave checks. In parallel task planning, implement the47-net native identity/freeze/clear/route pipeline using actual qualified iteration20geometry, preserving original failure checkpoints and all final acceptance constraints. No full serialPHY or timing acceptance is claimed.
+
+Monitor remains read-only every8hours; automatic_native_dispatch=false.
+
+Observed runs at 2026-11-02T04:38:20.874842+00:00:
+- 41388495424: completed/success
+- 41389419224: in_progress/None
 
 ## Current continuation: all32ground branches generated; full physical verification running
 

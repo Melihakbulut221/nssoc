@@ -1,0 +1,67 @@
+{
+  "changes": [
+    {
+      "after": "nssoc_cdr_pd500_resistor_v59",
+      "before": "nssoc_cdr_pd500_active_input_v57",
+      "count": 1
+    },
+    {
+      "after": "def reference_fault(text, name):\n    if name=='v59_old_length':\n        lines=text.splitlines(keepends=True);hits=[]\n        for i,line in enumerate(lines):\n            fields=line.split()\n            if fields and fields[0] in ['Rsc_DN', 'Rsc_DP', 'Rsd_DN', 'Rsd_DP']:\n                assert line.count(' l=5u ')==1\n                lines[i]=line.replace(' l=5u ',' l=7.4u ');hits.append(fields[0])\n        assert sorted(hits)==['Rsc_DN', 'Rsc_DP', 'Rsd_DN', 'Rsd_DP']\n        return ''.join(lines)\n",
+      "before": "def reference_fault(text, name):",
+      "count": 1
+    },
+    {
+      "after": "            \"lvs_flat\",\n            \"v59_old_length\",\n",
+      "before": "            \"lvs_flat\",\n",
+      "count": 1
+    },
+    {
+      "after": "if name in (\"v59_old_length\", \"gain_gate_disconnected\",",
+      "before": "if name in (\"gain_gate_disconnected\",",
+      "count": 1
+    }
+  ],
+  "checker": {
+    "bytes": 15411,
+    "sha256": "3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66"
+  },
+  "count": 36,
+  "passed": [
+    "series",
+    "series reciprocity",
+    "parallel",
+    "parallel reciprocity",
+    "triangle",
+    "triangle reciprocity",
+    "reject disconnected",
+    "reject zero",
+    "reject negative",
+    "reject nonfinite",
+    "SPICE milli kilo mega",
+    "reject numeric nan",
+    "reject numeric inf",
+    "reject numeric 1x",
+    "ordinary node scale",
+    "rnode numeric type is not a metal",
+    "reject duplicate scale",
+    "reject nonfinite coordinate",
+    "reject short record",
+    "guard isolated legal stack",
+    "reject foreign M2",
+    "reject foreign Via1",
+    "reject foreign Via2",
+    "reject lower enclosure",
+    "reject upper enclosure",
+    "reject unclassified mask",
+    "Manhattan endpoints connected",
+    "bounded original metal access and route landing",
+    "all rejected access guards retained",
+    "reuse four enclosed same-net vias without new cuts",
+    "reject reused stack without lower same-net metal",
+    "frozen full560-category deep-flat500-device13-fault checker bytes",
+    "all16 original positive and fault phases retained",
+    "actual complete source import and500 primitive composition",
+    "all25 original ports",
+    "unchanged qualified launcher supervisor and resource limits"
+  ]
+}
