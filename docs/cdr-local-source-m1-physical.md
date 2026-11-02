@@ -7,3 +7,7 @@ The original complete checker remains byte-identical SHA3ef6c47117a5467acc37ee4e
 Source controls, runtime acquisition/policy, timeout/memory supervision, result publication and all physical checker code are unchanged from the successful horizontal-ground physical run41388495424. Only candidate release/proof/path binding changes. Native payloads remain in GitHub.
 
 A physical pass is not electrical acceptance: current canonical extraction, freshRC and unchanged loaded-wave gates are required next. Full serialGen3x4PHY and mainchip signoff remain open.
+
+Physical attempt41401158595 refused before native geometry execution because the inline AppArmor admission guard still named codex/cdr-horizontal-ground-physical. Host source controls passed but did not previously evaluate that inline branch check. Native candidate DRC/LVS did not execute; the empty-output publication refusal and complete failed job log are retained.
+
+The repair changes only the expected branch literal inside the existing executable-specific policy admission. AppImage hash/path, repository, first-attempt, source/run identity, per-executable policy and global-kernel-policy invariants are unchanged. Seven new source controls parse and evaluate the actual first three inline assertions: accept the current exact branch and reject the former branch, foreign repo, rerun, non-action context, malformed source and run. All prior physical controls and frozen checker bytes remain.

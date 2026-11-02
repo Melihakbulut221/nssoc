@@ -55,6 +55,30 @@ def metadata(parent,gds,schematic,lef,inputs):
       outputs={p.name:sha(p)for p in(gds,schematic,lef)},
       original_devices_and_reference_unchanged=True,physical_acceptance=False,
       serial_phy_complete=False,qualified_pex=False)
+def policy_branch_controls():
+    import re,textwrap
+    lines=(ROOT/".github/workflows/cloud-evidence-summary.yml").read_text().splitlines()
+    step=next(i for i,line in enumerate(lines)if line.strip()=="- name: Admit only the pinned runtime to hosted AppArmor user namespaces")
+    start=next(i for i in range(step+1,len(lines))if lines[i].strip()=="python3 -B - <<'PY'")
+    end=next(i for i in range(start+1,len(lines))if lines[i].strip()=="PY")
+    block=textwrap.dedent("\n".join(lines[start+1:end]))
+    asserts=[n for n in ast.parse(block).body if isinstance(n,ast.Assert)][:3]
+    need(len(asserts)==3,"actual workflow context guards")
+    exprs=[compile(ast.Expression(a.test),"<actual-policy-context>","eval")for a in asserts]
+    good=dict(GITHUB_ACTIONS="true",GITHUB_REPOSITORY="Melihakbulut221/nssoc",GITHUB_REF="refs/heads/"+BRANCH,GITHUB_RUN_ATTEMPT="1",GITHUB_RUN_ID="1",GITHUB_SHA="a"*40)
+    fixtures=[("current physical branch",{},True),
+        ("old physical branch",dict(GITHUB_REF="refs/heads/codex/cdr-horizontal-ground-physical"),False),
+        ("foreign repository",dict(GITHUB_REPOSITORY="other/repo"),False),
+        ("rerun attempt",dict(GITHUB_RUN_ATTEMPT="2"),False),
+        ("not hosted action",dict(GITHUB_ACTIONS="false"),False),
+        ("invalid source",dict(GITHUB_SHA="wrong"),False),
+        ("invalid run",dict(GITHUB_RUN_ID="0"),False)]
+    passed=[]
+    for name,delta,wanted in fixtures:
+        observed=all(bool(eval(code,{"__builtins__":{},"re":re,"e":dict(good,**delta)}))for code in exprs)
+        need(observed==wanted,"actual policy context regression "+name)
+        passed.append("actual workflow policy "+name)
+    return passed
 def controls():
     gate();checks=geometry.controls();text,changes=checker_text()
     need(len(checks)==31,"all original generation controls")
@@ -77,6 +101,7 @@ def controls():
     sup=runtime.supervisor(ROOT,OUT,OUT/"supervision",gate,runtime.SAMPLER_SHA)
     need(callable(launcher.probe)and sup.MIN_AVAILABLE_KIB==2097152 and sup.MAX_GROUP_RSS_KIB==10485760,"qualified runtime boundaries")
     checks.append("unchanged qualified launcher supervisor and resource limits")
+    checks.extend(policy_branch_controls())
     save("controls.json",dict(count=len(checks),passed=checks,checker=dict(bytes=len(text.encode()),sha256=CHECKER_SHA),changes=changes))
     return p
 def fetch_asset(asset,path):
