@@ -6,7 +6,7 @@ import cdr_via2_m3_canonical_core as core
 import cdr_v59_tail_access_runtime as runtime
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-canonical"
-BRANCH="codex/cdr-source-m2-canonical"
+BRANCH="codex/cdr-drain-m23-canonical"
 MANIFEST="scripts/cdr-wire-shortcuts-canonical-pins.json"
 CONFIG="scripts/cdr-wire-shortcuts-canonical-inputs.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
@@ -37,19 +37,19 @@ def gate():
     return pins
 def config():
     c=json.loads((ROOT/CONFIG).read_bytes())
-    need(c["schema"]=="nssoc.source-m2-bypass.canonical.v1","actual source M2 canonical schema")
-    need(c["candidate"]["gds"]==dict(bytes=1018452,sha256="9fef07bce22bce079cf82e3c7600932aa6adce49359838f6c72569fbde3ef61b"),"actual eight-source M2 candidate")
-    need(c["reference_prefix"]=="binding/inputs/"and c["original_reference_gds"]==dict(bytes=1003860,sha256="4ccf1212d4b98046b1b56037bb1b76c53477777b08ee9cba5053c8e6323203e8"),"actual source M1 reference")
-    p=c["physical"];need(p["run"]==41417079679 and p["source"]=="41d9c4a6d96d9e97b1b58dad84fda478f50b2ee0"and p["release"]==431244468,"actual passed physical producer")
+    need(c["schema"]=="nssoc.drain-m23.canonical.v1","actual drainM23 canonical schema")
+    need(c["candidate"]["gds"]==dict(bytes=1075316,sha256="5e5ef3940bb0e410af8bbb92376e2c1cb60e3c520e37b65c7e675af41e58603f"),"actual eight-drain candidate")
+    need(c["reference_prefix"]=="binding/inputs/"and c["original_reference_gds"]==dict(bytes=1018452,sha256="9fef07bce22bce079cf82e3c7600932aa6adce49359838f6c72569fbde3ef61b"),"actual sourceM2 reference")
+    p=c["physical"];need(p["run"]==41427042946 and p["source"]=="5b7b7532067870a402d5f1cd32610318652fe3cb"and p["release"]==431312532,"actual passed exact-source physical retry")
     g=c["generation"];q=g["proof"];rows=g["targets"]
-    need(g["run"]==41416430071 and g["source"]=="2671a5b64f65df0195b7a3e1e724735521609a5b","actual generated source")
+    need(g["run"]==41425901322 and g["source"]=="fe2715306626db1367aca6dbf9637b1e06b35a20","actual generated drain source")
     need(q["candidate"]==c["candidate"]["gds"]and q["input_gds"]==c["original_reference_gds"]and q["exact_serialized_delta"]and q["original_material_roundtrip"],"actual serialized exact delta")
-    need(q["all8actual_source_ground_accesses"]and q["all13native_unions_verified"]and q["all_new_access_owned_by_original_avss"],"eight actual source ground accesses")
-    need(q["only_added_layers"]==[[10,0],[19,0],[29,0]]and q["added_area_dbu2"]=={"10":221876000,"19":6931200,"29":866400},"exact three-layer source M2 addition")
-    need(not q["new_devices"]and not q["physical_acceptance"]and not q["electrical_improvement_claimed"]and not q["current_density_acceptance"],"original generation boundary")
-    labels={"T"+str(n).zfill(3)+"_S"for n in(3,4,5,6,32,33,34,35)}
-    need(len(rows)==8 and {r["label"]for r in rows}==labels,"all eight source declarations")
-    need(g["component"]==14 and g["native_cluster"]==24,"actual prior avss identity")
+    need(q["all8actual_drain_accesses"]and q["all13native_unions_verified"],"all eight actual drain accesses")
+    need(q["only_added_layers"]==[[10,0],[29,0],[30,0]]and q["added_area_dbu2"]=={"10":158400000,"29":31479200,"30":151100000},"exact three-layer drain material addition")
+    need(q["new_via2_count"]==872 and not q["new_via1"]and not q["new_devices"]and not q["physical_acceptance"]and not q["electrical_improvement_claimed"]and not q["current_density_acceptance"],"original generation boundary")
+    labels={"T"+str(n).zfill(3)+"_D"for n in(3,4,5,6,32,33,34,35)}
+    need(len(rows)==8 and{r["label"]for r in rows}==labels,"all eight original drain declarations")
+    need(len({r["wire_component"]for r in rows})==2,"original two emitter partitions")
     return c
 def ground_variant(pya,original,row):
     def bounds(region):
@@ -212,6 +212,91 @@ def source_m2_delta_controls(pya):
     need(len(cases)==15,"all15sourceM2 controls")
     return cases
 
+
+def drain_m23_variant(pya,original,row):
+    a=row["original_anchor"];detail=a["detail"];i=detail["device"]
+    need(type(i)is int and i in(3,4,5,6,32,33,34,35),"actual eight native drain devices")
+    need(row["label"]==a["label"]=="T"+str(i).zfill(3)+"_D"and detail["terminal"]=="D"and a["metal"]==8,"actual drain label terminal and layer")
+    need(a["wire_component"]==row["wire_component"]and detail["native_net"]==row["native_net"]==("$159"if i<10 else"$700"),"actual original emitter net ownership")
+    x,y=a["point_dbu"];need(type(x)is int and type(y)is int and x%5==0 and y%5==0,"actual original drain grid")
+    box=lambda b:pya.Region(pya.Box(*b))
+    need((box([x-1,y-1,x+1,y+1])-original[8]).is_empty(),"original drain on owned Metal1")
+    for layer in(10,30):
+        for cy in(y,y+17600):need((box([x-1,cy-1,x+1,cy+1])-original[layer]).is_empty(),"both original same-net lower and upper metal attachments")
+    coords=[x-150,y-200,x+1250,y+17800]
+    need(row["metal_bbox"]==coords,"independent actual M2 and M3 rectangle")
+    metal=box(coords)
+    metal_keys={"nonempty","grid5","connected_existing_m2","foreign_m2_clearance240","foreign_via1_clearance50","foreign_via2_clearance50","within_original_extent"}
+    need(set(row["metal_guards"])=={"10","30"},"both actual metal admissions")
+    for layer,lo,hi in(("10",19,29),("30",29,49)):
+        m=row["metal_guards"][layer]
+        need(m["lower_adjacent_via"]==lo and m["upper_adjacent_via"]==hi,"correct adjacent via layers")
+        need(set(m["checks"])==metal_keys and all(v is True for v in m["checks"].values()),"complete actual metal admission")
+    expected={(x+dx,y+dy)for dx in(0,480,960)for dy in range(0,17281,480)if(dx,dy)not in((0,0),(0,17280))}
+    need(len(expected)==109 and len(row["cuts"])==109 and{tuple(v["center_dbu"])for v in row["cuts"]}==expected,"independent exact109cut array")
+    via_keys={"square190","grid5","enclosed_m1_50","enclosed_m2_50","existing_via_clearance240","new_via_clearance240","within_original_extent"}
+    cuts=pya.Region();lower=(original[10]+metal).merged();upper=(original[30]+metal).merged()
+    for v in row["cuts"]:
+        cx,cy=v["center_dbu"]
+        need(v["bbox"]==[cx-95,cy-95,cx+95,cy+95],"exact190nm Via2 square")
+        need(set(v["guards"])==via_keys and all(k is True for k in v["guards"].values()),"complete actual Via2 admission")
+        cut=box(v["bbox"]);enclosure=cut.sized(50,50,2)
+        need((enclosure-lower).is_empty()and(enclosure-upper).is_empty(),"independent both-metal50nm enclosure")
+        need((cut&original[29].sized(240,240,2)).is_empty()and(cut&cuts.sized(240,240,2)).is_empty(),"independent original and new240nm via spacing")
+        cuts+=cut
+    cuts=cuts.merged();need(cuts.count()==109 and cuts.area()==109*36100,"exact disjoint Via2 material")
+    return {10:metal,29:cuts,30:metal}
+
+def drain_m23_delta_controls(pya):
+    import copy
+    x,y=10000,20000;box=lambda b:pya.Region(pya.Box(*b))
+    original={n:pya.Region()for n in(8,10,19,29,30,49)}
+    original[8]=box([x-160,y-18000,x+160,y+18000])
+    original[10]=box([x-150,y-200,x+150,y+17800])
+    original[30]=box([x-200,y-200,x+200,y+17800])
+    original[29]=box([x-95,y-95,x+95,y+95])+box([x-95,y+17505,x+95,y+17695])
+    keys=("nonempty","grid5","connected_existing_m2","foreign_m2_clearance240","foreign_via1_clearance50","foreign_via2_clearance50","within_original_extent")
+    vk=("square190","grid5","enclosed_m1_50","enclosed_m2_50","existing_via_clearance240","new_via_clearance240","within_original_extent")
+    row=dict(label="T003_D",native_net="$159",wire_component=18,original_anchor=dict(label="T003_D",metal=8,wire_component=18,native_cluster=40,
+        detail=dict(device=3,terminal="D",native_net="$159"),point_dbu=[x,y]),metal_bbox=[x-150,y-200,x+1250,y+17800],
+        metal_guards={layer:dict(lower_adjacent_via=lo,upper_adjacent_via=hi,checks={k:True for k in keys})for layer,lo,hi in(("10",19,29),("30",29,49))})
+    row["cuts"]=[dict(center_dbu=[x+dx,y+dy],bbox=[x+dx-95,y+dy-95,x+dx+95,y+dy+95],guards={k:True for k in vk})
+        for dx in(0,480,960)for dy in range(0,17281,480)if(dx,dy)not in((0,0),(0,17280))]
+    result=drain_m23_variant(pya,original,row)
+    need(result[29].count()==109 and result[29].area()==3934900,"independent complete109drain Via2 construction")
+    cases=["independent original drain identity rectangle and109cuts"]
+    for name in("device","terminal","label","owner","component","off-grid","metal-box","missing-metal-admission","wrong-via-layer",
+                "failed-metal-guard","nonboolean-metal-guard","via-center","via-box","missing-via","duplicate-via",
+                "failed-via-guard","missing-via-guard","missing-M1","missing-M2","missing-M3","missing-upper-attachment","preexisting-via"):
+        bad=copy.deepcopy(row);ref=dict(original)
+        if name=="device":bad["original_anchor"]["detail"]["device"]=7
+        elif name=="terminal":bad["original_anchor"]["detail"]["terminal"]="S"
+        elif name=="label":bad["label"]="T004_D"
+        elif name=="owner":bad["native_net"]="avss"
+        elif name=="component":bad["wire_component"]=14
+        elif name=="off-grid":bad["original_anchor"]["point_dbu"][0]+=1
+        elif name=="metal-box":bad["metal_bbox"][2]+=5
+        elif name=="missing-metal-admission":bad["metal_guards"].pop("30")
+        elif name=="wrong-via-layer":bad["metal_guards"]["30"]["upper_adjacent_via"]=29
+        elif name=="failed-metal-guard":bad["metal_guards"]["30"]["checks"]["foreign_m2_clearance240"]=False
+        elif name=="nonboolean-metal-guard":bad["metal_guards"]["10"]["checks"]["grid5"]=1
+        elif name=="via-center":bad["cuts"][0]["center_dbu"][0]+=5
+        elif name=="via-box":bad["cuts"][0]["bbox"][0]-=5
+        elif name=="missing-via":bad["cuts"].pop()
+        elif name=="duplicate-via":bad["cuts"][0]=copy.deepcopy(bad["cuts"][1])
+        elif name=="failed-via-guard":bad["cuts"][0]["guards"]["square190"]=False
+        elif name=="missing-via-guard":bad["cuts"][0]["guards"].pop("enclosed_m2_50")
+        elif name=="missing-M1":ref[8]=pya.Region()
+        elif name=="missing-M2":ref[10]=pya.Region()
+        elif name=="missing-M3":ref[30]=pya.Region()
+        elif name=="missing-upper-attachment":ref[30]=box([x-200,y-200,x+200,y+1000])
+        elif name=="preexisting-via":ref[29]=original[29]+box(bad["cuts"][0]["bbox"])
+        try:drain_m23_variant(pya,ref,bad)
+        except AssertionError:cases.append("reject drainM23 "+name)
+        else:raise AssertionError(name)
+    need(len(cases)==23,"all23drainM23 controls")
+    return cases
+
 def controls():
     gate();c=config()
     import cloud_cdr_wire_shortcuts as geometry
@@ -254,6 +339,7 @@ def controls():
     need(len(checks)==48,"all48 independent canonical controls")
     checks.extend(source_m1_delta_controls(pya))
     checks.extend(source_m2_delta_controls(pya))
+    checks.extend(drain_m23_delta_controls(pya))
     save("controls.json",dict(count=len(checks),passed=checks,**FLAGS))
 def acquire_physical():
     import cloud_cdr_wire_geometry_acquire as a
@@ -277,7 +363,7 @@ def acquire_physical():
             seen[n]=pin(p);need(seen[n]==c["index"]["files"][n],"exact physical member")
     need(seen==c["index"]["files"],"complete physical native capsule")
     q=json.loads((target/"physical-qualification.json").read_bytes());record=json.loads((target/"physical/result.json").read_bytes())
-    need(q["status"]=="PASS_SOURCE_M2_BYPASS_GDS_FULL560_DRC_DEEP_FLAT_LVS13"and q["gds"]==config()["candidate"]["gds"],"actual candidate physical qualification")
+    need(q["status"]=="PASS_DRAIN_M23_GDS_FULL560_DRC_DEEP_FLAT_LVS13"and q["gds"]==config()["candidate"]["gds"],"actual candidate physical qualification")
     need(record["status"]=="PASS_NATIVE_PDK_CDR_PD500_DRC_LVS_AND_FAULT_CONTROLS"and len(record["steps"])==16,"all original native physical gates")
     need(record["steps"]["drc"]["measurement"]["markers"]==0 and record["steps"]["drc"]["measurement"]["category_count"]==560,"actual complete clean DRC")
     need(all(v["status"]==("PASS"if n in("drc","lvs","lvs_flat")else"REJECTED_EXPECTED_FAULT")for n,v in record["steps"].items()),"all native fault controls")
@@ -299,22 +385,32 @@ def prepare():
     save("view/derived-methods.json",records);core.verify_prepared(view,ROOT,c)
 def prove_material(pya,reference,view,old,new,c):
     _,before=core.component_keys(old["graph"]);_,after=core.component_keys(new["graph"])
-    need(set(before)==set(after),"all complete conductor partitions preserved")
+    need(set(before)==set(after)and len(before)==len(after)==113,"all113complete conductor partitions preserved")
     original_wire=reference/(c["reference_prefix"]+"wire/native05/wires.l2n")
-    need(pin(original_wire)==c["generation"]["proof"]["input_l2n"],"exact actual prior ground wire graph")
+    need(pin(original_wire)==c["generation"]["proof"]["input_l2n"],"exact actual sourceM2 reference wire graph")
     ow=pya.LayoutToNetlist();ow.read(str(original_wire))
     nw=pya.LayoutToNetlist();nw.read(str(view/"wire/native05/wires.l2n"))
     on={n.cluster_id:n for n in ow.netlist().top_circuit().each_net()};nn={n.cluster_id:n for n in nw.netlist().top_circuit().each_net()}
     need(set(on)=={v["component"]for v in before.values()}and set(nn)=={v["component"]for v in after.values()},"complete old and new wire net census")
     need(set(old["graph"]["layers"])==set(new["graph"]["layers"])=={str(n)for n in core.LAYERS},"all13 conductor layers")
-    matches=[(k,v)for k,v in before.items()if v["component"]==14 and v["native_cluster"]==24]
-    need(len(matches)==1,"unique actual prior avss partition")
-    key,owner=matches[0]
-    original={layer:core.layer_region(pya,ow,on[owner["component"]],old["graph"],layer).merged()for layer in core.LAYERS}
     actual_anchors={a["label"]:a for a in old["anchors"]["anchors"]}
+    grouped={};owners={};labels={}
     for row in c["generation"]["targets"]:
-        need(row["original_anchor"]==actual_anchors[row["label"]],"independent original source anchor identity")
-    grouped={key:source_m2_layers(pya,original,c["generation"]["targets"])}
+        need(row["original_anchor"]==actual_anchors[row["label"]],"independent complete original drain anchor identity")
+        a=actual_anchors[row["label"]]
+        matches=[(k,v)for k,v in before.items()if v["component"]==a["wire_component"]and v["native_cluster"]==a["native_cluster"]]
+        need(len(matches)==1,"unique actual native emitter partition")
+        key,owner=matches[0];owners[key]=owner;labels.setdefault(key,[]).append(row["label"])
+        original={layer:core.layer_region(pya,ow,on[owner["component"]],old["graph"],layer).merged()for layer in core.LAYERS}
+        shapes=drain_m23_variant(pya,original,row)
+        combined=grouped.setdefault(key,{n:pya.Region()for n in(10,29,30)})
+        for layer,region in shapes.items():combined[layer]+=region
+    need(len(grouped)==2 and all(len(v)==4 for v in labels.values()),"exact original two emitter partitions with four drains each")
+    for key,regions in grouped.items():
+        for layer,region in regions.items():
+            original=core.layer_region(pya,ow,on[owners[key]["component"]],old["graph"],layer)
+            regions[layer]=region.merged()-original
+        need(regions[29].count()==436 and regions[29].area()==436*36100,"all436actual Via2 cuts in each emitter partition")
     records=[]
     for part in sorted(before):
         a=before[part];b=after[part]
@@ -324,13 +420,14 @@ def prove_material(pya,reference,view,old,new,c):
             addition=grouped.get(part,{}).get(layer,pya.Region())
             material_union(pya,left,right,addition)
             records.append(dict(partition=json.loads(part),layer=layer,old_component=a["component"],new_component=b["component"],
-              old_area_dbu2=left.area(),new_area_dbu2=right.area(),added_area_dbu2=(right-left).area(),declared_added_area_dbu2=(addition-left).area()))
+                old_area_dbu2=left.area(),new_area_dbu2=right.area(),added_area_dbu2=(right-left).area(),declared_added_area_dbu2=(addition-left).area()))
     changed=[r for r in records if r["added_area_dbu2"]]
-    need(len(changed)==3 and all(row["partition"]==json.loads(key)for row in changed),"sole avss M2/Via1/Via2 additions")
-    need({str(row["layer"]):row["added_area_dbu2"]for row in changed}=={"10":221876000,"19":6931200,"29":866400},"exact native three-layer areas")
-    need(all(row["added_area_dbu2"]==row["declared_added_area_dbu2"]for row in changed),"each native addition equals independent geometry")
-    need(len(records)==len(before)*13,"complete partition layer census")
-    return dict(status="PASS_ALL_NATIVE_PARTITIONS_ALL13LAYERS_EXACT8_SOURCE_M2_BYPASS",records=records,targets={"avss":key},**FLAGS)
+    need(len(changed)==6 and{r["old_component"]for r in changed}=={v["component"]for v in owners.values()},"only two actual emitter partitions and three declared layers changed")
+    totals={str(layer):sum(r["added_area_dbu2"]for r in changed if r["layer"]==layer)for layer in(10,29,30)}
+    need(totals=={"10":158400000,"29":31479200,"30":151100000},"exact actual whole native three-layer additions")
+    need(all(r["added_area_dbu2"]==r["declared_added_area_dbu2"]for r in changed),"each native addition equals independent geometry")
+    need(len(records)==1469,"all113partitions times13layers")
+    return dict(status="PASS_ALL113_NATIVE_PARTITIONS_ALL13LAYERS_EXACT8_DRAIN_M23",records=records,targets=labels,**FLAGS)
 def qualify():
     import pya
     c=config();reference=ROOT/"wire-native-cache/selected";view=OUT/"view/candidate"
@@ -349,7 +446,7 @@ def qualify():
     reports={"parent-geometry":parent,"planes":planes,"source-pins":recovery,"graph":new["graph"],"locations":new["locations"],"anchors":new["anchors"]}
     bindings={n:core.report_inputs(r,view)for n,r in reports.items()};save("view/fresh-report-bindings.json",bindings)
     files=core.projection.inventory(view);need(len(files)==78,"complete canonical file census")
-    save("view/canonical-view-qualification.json",dict(status="PASS_SOURCE_M2_BYPASS_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC",
+    save("view/canonical-view-qualification.json",dict(status="PASS_DRAIN_M23_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC",
       candidate_gds=c["candidate"]["gds"],physical_producer=c["physical"]["run"],current_files=files,
       complete_current_file_count=len(files),native_identity=comparison,native_view_executed=True,
       material=pin(OUT/"view/full-partition-material.json"),fresh_report_bindings=bindings,**FLAGS))
@@ -396,7 +493,7 @@ def tokenless():
 def acquire_reference():
     import cloud_cdr_wire_geometry_acquire as a
     cfg=json.loads((ROOT/PARENT).read_bytes());p=cfg["producer"]
-    need(p["run"]==41404030506 and p["source"]=="9750f2c17a8cca7b5560a74097f04c04b769e5b1"and p["release"]==431157438,"actual current sourceM1 fresh-RC reference")
+    need(p["run"]==41420011926 and p["source"]=="bbbd992fcc8806fcb9132d22d09cf42c5c3c234b"and p["release"]==431264092,"actual current sourceM1 fresh-RC reference")
     run=api("actions/runs/"+str(p["run"]));rel=api("releases/"+str(p["release"]))
     need(run["head_sha"]==p["source"]and run["conclusion"]=="success"and run["run_attempt"]==1,"successful actual reference")
     need(rel["target_commitish"]==p["source"]and rel["tag_name"]==p["tag"]and api("git/ref/tags/"+p["tag"])["object"]["sha"]==p["source"],"reference release")
@@ -453,7 +550,7 @@ def verify():
         for worker in core.projection.WORKERS:execute([app,"python",OUT/"view/candidate/wire"/worker],"fresh-"+worker.removesuffix(".py"))
         execute([app,"python",script,"--phase","verify"],"canonical-verify")
         q=json.loads((OUT/"view/canonical-view-qualification.json").read_bytes())
-        need(q["status"]=="PASS_SOURCE_M2_BYPASS_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC","complete actual native view")
+        need(q["status"]=="PASS_DRAIN_M23_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC","complete actual native view")
     except BaseException as exc:error=exc
     finally:
         try:cleanup.append(dict(process_group=sup.stop_process(sup.ACTIVE)))
