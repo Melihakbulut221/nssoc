@@ -1,4 +1,4 @@
-name: Qualify actual partial snapshot roundtrip and original scoped route delta
+name: Qualify actual iteration20 snapshot and original scoped route delta
 on:
   workflow_dispatch:
     inputs:
@@ -162,7 +162,7 @@ jobs:
           sparse-checkout: /scripts/mainchip-bounded-route-host-pins.json
       - name: Authenticate original source and exact derived scope inputs
         run: python3 -B scripts/prepare_scoped_restoration_sources.py
-      - name: Reopen, rewrite and audit actual last partial route
+      - name: Reopen, rewrite and audit actual lower-violation iteration20
         run: python3 -B scripts/cloud_mainchip_snapshot_reload.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

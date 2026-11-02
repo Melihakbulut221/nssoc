@@ -30,7 +30,7 @@ def own_sources():
 def admission():
  assert os.environ.get('GITHUB_ACTIONS')=='true'and os.environ['GITHUB_RUN_ATTEMPT']=='1'
  assert os.environ['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'and os.environ['GITHUB_EVENT_NAME']=='workflow_dispatch'
- assert os.environ['GITHUB_REF']=='refs/heads/codex/mainchip-snapshot-reload'
+ assert os.environ['GITHUB_REF']=='refs/heads/codex/mainchip-snapshot20-reload'
  source=os.environ['GITHUB_SHA'];rid=int(os.environ['GITHUB_RUN_ID']);control=int(os.environ['CONTROL_RUN'])
  assert source==subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
  run=api('actions/runs/'+str(control));jobs=api('actions/runs/'+str(control)+'/jobs?per_page=100')
@@ -168,8 +168,8 @@ def main():
    c.attempt(report,'container-terminal',lambda:c.require(not state.get('Running',True)and state.get('ExitCode')==0 and state.get('OOMKilled')is False and not state.get('Error'),'native container failed'))
   if snapshot_pins:
    for name,pin in snapshot_pins.items():c.attempt(report,'selected-snapshot-unchanged-'+name,lambda name=name,pin=pin:c.require(fp(work/'reload-inputs'/name)==pin,'selected partial snapshot input changed'))
-  if not snapshot_pins:snapshot_pins={'work/bulk-postdrt-antenna/drt_iter25.odb':json.loads((ROOT/'scripts/mainchip-snapshot-reload-inputs.json').read_bytes())['index']['files']['work/bulk-postdrt-antenna/drt_iter25.odb']}
-  c.attempt(report,'permanent-native-publication',lambda:report.update(native_publication=types.FunctionType(base.publish_capsule.__code__,dict(base.publish_capsule.__globals__,CURRENT=snapshot_pins['work/bulk-postdrt-antenna/drt_iter25.odb']),base.publish_capsule.__name__,base.publish_capsule.__defaults__,base.publish_capsule.__closure__)(ctx,proof,work,out,OUT)))
+  if not snapshot_pins:snapshot_pins={'work/bulk-postdrt-antenna/drt_iter20.odb':json.loads((ROOT/'scripts/mainchip-snapshot-reload-inputs.json').read_bytes())['index']['files']['work/bulk-postdrt-antenna/drt_iter20.odb']}
+  c.attempt(report,'permanent-native-publication',lambda:report.update(native_publication=types.FunctionType(base.publish_capsule.__code__,dict(base.publish_capsule.__globals__,CURRENT=snapshot_pins['work/bulk-postdrt-antenna/drt_iter20.odb']),base.publish_capsule.__name__,base.publish_capsule.__defaults__,base.publish_capsule.__closure__)(ctx,proof,work,out,OUT)))
   c.attempt(report,'preserve-derived-outputs',lambda:preservation.preserve_outputs(base,out,OUT,report))
   c.attempt(report,'retained-native-workspace',lambda:base.retained_workspace(ctx,work,out,report))
   report['status']='COMPLETE_PARTIAL_SNAPSHOT_CLOUD_AUDIT'if primary is None and not report['terminal_errors']else'FAIL_PARTIAL_SNAPSHOT_CLOUD_AUDIT'

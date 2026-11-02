@@ -9,7 +9,7 @@ from mainchip_snapshot_reload_contract import compare_scope, need
 ROOT=Path("/work/reload-inputs")
 DATA=Path("/work/out/bulk-postdrt-antenna")
 WORK=Path("/work/out/work/bulk-postdrt-antenna")
-CANDIDATE=ROOT/"work/bulk-postdrt-antenna/drt_iter25.odb"
+CANDIDATE=ROOT/"work/bulk-postdrt-antenna/drt_iter20.odb"
 def read(path): return json.loads(path.read_bytes())
 def main():
     proof=read(Path("/work/snapshot-selected-pins.json"))
@@ -17,7 +17,7 @@ def main():
     stage=read(ROOT/"bulk-postdrt-antenna/full-route-stage.json")
     need(not stage["route_returned"] and not stage["snapshot_reload_qualified"], "partial route only")
     need({v["iteration"]for v in stage["snapshot_inventory"].values()}==set(range(26)), "complete retained iteration census")
-    need(native.fp(CANDIDATE)=={k:stage["snapshot_inventory"]["drt_iter25.odb"][k] for k in ("bytes","sha256")}, "actual last retained iteration")
+    need(native.fp(CANDIDATE)=={k:stage["snapshot_inventory"]["drt_iter20.odb"][k] for k in ("bytes","sha256")}, "actual selected retained iteration20")
     original_path=ROOT/"bulk-postdrt-antenna/stale-wire-cleared-snapshot.json"
     original=read(original_path)
     protected=original["protected"]
