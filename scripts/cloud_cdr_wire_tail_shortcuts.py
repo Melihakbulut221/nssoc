@@ -7,7 +7,7 @@ import cloud_cdr_wire_geometry_acquire as prior
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"wire-tail-shortcuts";NATIVE=ROOT/"wire-tail-shortcuts-native"
 MANIFEST="scripts/cdr-wire-tail-shortcuts-pins.json";INPUT="scripts/cdr-wire-tail-shortcuts-inputs.json"
-BRANCH="codex/cdr-horizontal-ground";TOP="nssoc_cdr_pd500_resistor_v59"
+BRANCH="codex/cdr-critical-access";TOP="nssoc_cdr_pd500_resistor_v59"
 LAYERS=(8,19,10,29)
 TARGETS=(("D_collector","T061_C","T056_E"),("D_emitter","T061_E","T005_D"),("C_collector","T115_C","T108_E"),("C_emitter","T115_E","T034_D"))
 need=prior.need
@@ -385,7 +385,7 @@ def acquire_current(cfg):
         need(pin(path)=={k:a[k]for k in("bytes","sha256")},"actual full RC asset bytes")
     index=json.loads((work/"complete-output-index.json").read_bytes())
     need(index["files"]==cfg["complete_members"]and index["context"]==dict(run=p["run"],source=p["source"],attempt=1),"actual full RC index")
-    selected={"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds","binding/inputs/wire/native05/wires.l2n","binding/inputs/wire/native05/wires.gds","binding/inputs/wire/anchors08.json","mim/composition/composition.json","fresh-rc-qualification.json","binding/inputs/native-planes.json"}
+    selected={"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds","binding/inputs/wire/native05/wires.l2n","binding/inputs/wire/native05/wires.gds","binding/inputs/wire/anchors08.json","mim/composition/composition.json","fresh-rc-qualification.json","binding/inputs/native-planes.json","mim/precise/wire/rc03/pump_wires.ext","mim/precise/wire/rc03/pump_wires.res.ext","mim/precise/wire/rc03/wires.spice"}
     target=work/"selected";seen=set()
     with tarfile.open(work/"native-fresh-rc.tar.gz","r|gz")as tar:
         for m in tar:
@@ -405,8 +405,8 @@ def acquire_current(cfg):
             need(dict(bytes=size,sha256=h.hexdigest())==expected,"member digest "+n);seen.add(n)
     need(seen==set(index["files"])and selected<=seen,"all current RC members authenticated")
     q=json.loads((target/"fresh-rc-qualification.json").read_bytes())
-    need(q["status"]=="PASS_FOUR_MIXED_SHORTCUT_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual current RC qualification")
-    need(pin(target/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds")==dict(bytes=1001172,sha256="1c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94"),"actual current four-path GDS baseline")
+    need(q["status"]=="PASS_HORIZONTAL_GROUND_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual current RC qualification")
+    need(pin(target/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds")==dict(bytes=1003348,sha256="b9b92319590ecca1c9ce31dcf1cc31f4fdc1d468fc514585931671ed2f4fa492"),"actual current four-path GDS baseline")
     save("acquisition.json",dict(run=r,release=rel,authenticated_members=len(seen),selected=sorted(selected),all_current_members_authenticated=True,native_payloads_cloud_only=True))
     return target
 def verify_target(base,source_label,a,sink_label,b):
@@ -1079,14 +1079,107 @@ def generate_horizontal_ground(base,cfg):
         original_port_pad_unchanged=True,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False,
         requires=["full560DRC","deep_flat_LVS13","current_canonical_binding","fresh_RC","unchanged_loaded_wave_gates"]))
 
+def inspect_critical_access(base,cfg):
+    import shlex
+    from collections import Counter,defaultdict
+    from decimal import Decimal
+    root=base/"mim/precise/wire/rc03"
+    parse=lambda p:[shlex.split(line,comments=False)for line in p.read_text().splitlines()if line.strip()and not line.lstrip().startswith("*")]
+    raw=parse(root/"pump_wires.ext");distributed=parse(root/"pump_wires.res.ext")
+    anchors={a["label"]:a for a in json.loads((base/"binding/inputs/wire/anchors08.json").read_bytes())["anchors"]}
+    comp=json.loads((base/"mim/composition/composition.json").read_bytes())
+    proof=json.loads((ROOT/"scripts/cdr-critical-resistance-inputs.json").read_bytes())
+    need(proof["run"]==41395210468 and proof["source"]=="4a20c52579eddaa7f0a1f82f41cb6af8445b806c","actual sensitivity producer")
+    queries=proof["queries"];need(len(queries)==32,"all measured queries")
+    public={r[1]:r for r in raw if r[0]=="port"}
+    need(len(public)==978 and set(public)==set(anchors),"full native port coordinate census")
+    deltas=[]
+    for name,row in public.items():
+        need(row[3:5]==row[5:7],"actual point port")
+        xy=[int(v)*5 for v in row[3:5]];expected=anchors[name]["point_dbu"]
+        delta=[a-b for a,b in zip(xy,expected)]
+        need(all(abs(v)<=2 for v in delta),"actual 5nm native grid against every geometric anchor")
+        deltas.append(delta)
+    inverse={v.lower():k for k,v in comp["wire_node_map"].items()}
+    need(len(inverse)==len(comp["wire_node_map"]),"unique native-to-composed mapping")
+    def value(s):
+        m=re.fullmatch(r"([-+]?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)([numkpf]?)",s.lower())
+        need(m is not None,"original native numeric token")
+        return Decimal(m[1])*{"":Decimal(1),"n":Decimal("1e-9"),"u":Decimal("1e-6"),"m":Decimal("1e-3"),"k":Decimal("1e3"),"p":Decimal("1e-12"),"f":Decimal("1e-15")}[m[2]]
+    key=lambda a,b,v:(tuple(sorted((a.lower(),b.lower()))),value(v))
+    wire=[r for r in parse(root/"wires.spice")if r[0].lower().startswith("r")]
+    need(len(wire)==24530 and all(len(r)==4 for r in wire),"actual complete wire resistor census")
+    by={r[0].lower():r for r in wire};need(len(by)==24530,"unique native resistor names")
+    physical_r=[r for r in distributed if r[0]=="resist"]
+    need(Counter(key(*r[1:4])for r in physical_r)==Counter(key(*r[1:4])for r in wire),"all native and exported R endpoints/values/multiplicity equal")
+    points=defaultdict(list)
+    for row in distributed:
+        if row[0]=="rnode":
+            need(len(row)==7 and value(row[2])==0 and value(row[3])>=0,"native distributed node record")
+            points[row[1].lower()].append(dict(raw_record=row,point_dbu=[int(row[4])*5,int(row[5])*5],type_token=row[6]))
+    targets={}
+    for query in queries:
+        nid,term=query["source_terminal"];label="T"+str(nid).zfill(3)+"_"+term
+        anchor=anchors[label];record=next(t for d in comp["device_records"]if int(d["native_id"])==nid for t in d["terminals"]if t["terminal"]==term)
+        need(record["anchor"]==label and record["native_cluster"]==anchor["native_cluster"]and record["native_net"]==query["native_net"],"current physical source ownership")
+        for edge in query["top_edges"][:3]:
+            name=edge["element"];row=by[name]
+            mapped=[inverse[edge[x]].lower()for x in("a","b")]
+            need(sorted(mapped)==sorted(v.lower()for v in row[1:3])and abs(float(value(row[3]))-edge["resistance_ohm"])<=1e-12*max(1.,edge["resistance_ohm"]),"actual critical resistor binding")
+            item=targets.setdefault(name,dict(edge=edge,component=anchor["wire_component"],native_cluster=anchor["native_cluster"],native_net=query["native_net"],queries=[]))
+            need(item["component"]==anchor["wire_component"] and item["native_cluster"]==anchor["native_cluster"] and item["native_net"]==query["native_net"],"one physical owner for critical R")
+            item["queries"].append(query["label"])
+    gp=base/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds";wp=base/"binding/inputs/wire/native05/wires.l2n"
+    g=pya.Layout();g.read(str(gp));top=g.cell(TOP);need(top is not None and g.dbu==.001,"current GDS")
+    before=region_snapshot(g,top);w=pya.LayoutToNetlist();w.read(str(wp));need(w.internal_layout().dbu==.001,"wire DBU")
+    nets={n.cluster_id:n for n in w.netlist().top_circuit().each_net()}
+    layers=(8,19,10,29,30,49,50,66,67,125,126,133,134)
+    objects={n:w.layer_by_name("gds_"+str(n))for n in layers}
+    for n,layer in objects.items():need(layer is not None and(before.get((n,0),pya.Region())^layer).is_empty(),"all13native conductor unions")
+    cache={}
+    def owned(component):
+        if component not in cache:cache[component]={n:w.shapes_of_net(nets[component],layer,True).merged()for n,layer in objects.items()}
+        return cache[component]
+    def members(region):
+        return [dict(bbox=bounds(pya.Region(p)),area_dbu2=p.area(),hull=[[pt.x,pt.y]for pt in p.each_point_hull()],holes=[[[pt.x,pt.y]for pt in p.each_point_hole(i)]for i in range(p.holes())])for p in region.each()]
+    rows=[]
+    for name,item in sorted(targets.items()):
+        shapes=owned(item["component"]);endpoints=[]
+        for role in("a","b"):
+            native=inverse[item["edge"][role]];records=points[native.lower()]
+            need(records,"native coordinate record for every critical endpoint")
+            at=[]
+            for r in records:
+                x,y=r["point_dbu"];near=box(x,y,2000)
+                at.append(dict(**r,layers={str(n):dict(contains_2nm_box=(box(x,y,1)-region).is_empty(),
+                    intersects_20nm_box=not region.interacting(box(x,y,10)).is_empty(),
+                    owned_local_polygons=members(region&near),
+                    foreign_local_polygons=members((objects[n]-region)&near))for n,region in shapes.items()if not(objects[n]&near).is_empty()}))
+            endpoints.append(dict(role=role,model_node=item["edge"][role],native_node=native,records=at,original_anchor=anchors.get(native)))
+        rows.append(dict(element=name,**item,endpoints=endpoints))
+    after=region_snapshot(g,top);need(set(before)==set(after),"same GDS layers")
+    for n in before:need((before[n]^after[n]).is_empty(),"unchanged physical material")
+    for n in("binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds","binding/inputs/wire/native05/wires.l2n","mim/precise/wire/rc03/pump_wires.ext","mim/precise/wire/rc03/pump_wires.res.ext","mim/precise/wire/rc03/wires.spice","mim/composition/composition.json"):
+        need(pin(base/n)==cfg["complete_members"][n],"actual input unchanged "+n)
+    save("critical-access-map.json",dict(status="COMPLETE_ACTUAL_CRITICAL_RESISTOR_COORDINATE_AND_OWNERSHIP_MAP",
+        input_gds=pin(gp),sensitivity_proof=pin(ROOT/"scripts/cdr-critical-resistance-inputs.json"),all978port_coordinate_checks=True,
+        all24530native_exported_resistors_equal=True,all13native_unions_verified=True,critical_resistors=rows,
+        coordinate_interpretation="Original Magic internal5nm coordinate grid independently checked against all978actual GDS anchors. rnode type_token is retained without treating it as a GDS layer; physical layer evidence comes only from native owned geometry.",
+        original_geometry_unchanged=True,new_geometry_generated=False,fresh_RC=False,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
+
+
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
         cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls()+horizontal_ground_controls()+horizontal_clearance_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
-        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"],["--generate-horizontal-ground"]),"explicit native operation")
+        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"],["--generate-horizontal-ground"],["--inspect-critical-access"]),"explicit native operation")
         reserve(wait=True)
         base=acquire_current(cfg)
+        if sys.argv[1:]==["--inspect-critical-access"]:
+            inspect_critical_access(base,cfg)
+            save("result.json",dict(status="COMPLETE_CURRENT_CRITICAL_ACCESS_MAP",read_only=True,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
+            return
         if sys.argv[1:]==["--generate-horizontal-ground"]:
             generate_horizontal_ground(base,cfg)
             save("result.json",dict(status="GENERATED_ACTUAL_HORIZONTAL_GROUND_BRANCHES_REQUIRES_NATIVE_QUALIFICATION",physical_acceptance=False,full_phy_accepted=False))

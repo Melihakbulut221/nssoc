@@ -1,11 +1,11 @@
-name: Generate actual horizontal ground branch reinforcement
+name: Map actual critical resistor endpoints to native layout
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-horizontal-ground-${{ github.ref }}
+  group: cdr-critical-access-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -80,8 +80,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1
-      - name: Generate guarded horizontal ground branches from actual native topology
-        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --generate-horizontal-ground
+      - name: Map current critical access without changing native geometry
+        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --inspect-critical-access
       - name: Preserve complete generated or failed native result
         id: publish
         if: always()
