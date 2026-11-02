@@ -6,7 +6,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"wire-wave-diagnosis";NATIVE=ROOT/"wire-wave-diagnosis-native"
 CFG="scripts/cdr-wire-wave-diagnosis-inputs.json"
 PINS="scripts/cdr-wire-wave-diagnosis-pins.json"
-BRANCH="codex/cdr-source-m1-wave-diagnosis";REPO="Melihakbulut221/nssoc"
+BRANCH="codex/cdr-source-m2-wave-diagnosis";REPO="Melihakbulut221/nssoc"
 def need(ok,msg):
     if not ok:raise AssertionError(msg)
 def digest(path):
