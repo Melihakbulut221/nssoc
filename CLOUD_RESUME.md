@@ -1,6 +1,22 @@
-# Cloud continuation — checkpoint v289
+# Cloud continuation — checkpoint v290
 
-Updated: 2026-11-02T07:55:22.862502+00:00
+Updated: 2026-11-02T08:41:28.983018+00:00
+
+## Current continuation: mainchip memory termination and Via1 coverage refusal
+
+All native CAD/layout/model/waveform work remains GitHub-only. Local workspace verified empty. Full serial Gen3 x4 PHY, mainchip routing and final setup/hold remain OPEN.
+
+Mainchip 41393730481/source 7cc6f94a7a685423533a25bc0d418e33764e8366 TERMINATED FAILURE. The actual 47-net route ran 7021.574 seconds then original RSS supervisor sent SIGTERM: measured 11218012 KiB exceeded 10485760 KiB (10 GiB); available host memory 4000064 KiB exceeded retained 2097152 KiB minimum. Container hard cap 12884901888 bytes (12 GiB), peak reached hard cap; memory.max events 6179 but all OOM counts zero. Prepare/freeze/reversal audits passed. Last completed router iteration19 reported 92 internal markers (28 MetalSpacing,64 Short); iteration20 reached 90 at90percent before termination. These are internal partial counts, NOT completed independent full DRC. No returned routed-fixed candidate, final route audit, restored full DRC/LVS or timing acceptance exists. Baseline independently measured140 remains historical, not a newly measured terminal result. Next repair: investigate snapshot-time memory peak and a bounded budget within unchanged12GiB container and2GiB host reserve; keep route64/seed42/2threads and all electrical/physical gates. Do not blindly rerun or claim snapshot as completed route.
+
+Via1 generation41412504017/source0677daccbaca68d007e6b37c4509ef143fc43db2 TERMINATED FAILURE. Source-controls passed; native generation refused "at least four additional local same-net vias for each of eight actual MOS drains". Actual ownership assertion was NOT the failure. Existing overlap geometry did not yield all eight required drain coverages. No Via1 candidate accepted. Preserve failure and exact attempted script. Next inspect per-terminal coverage and existing same-net overlap capacity; implement a genuine metal-access repair if existing overlap is insufficient. Do not delete or lower coverage/spacing/ownership checks.
+
+Earlier actual4ccf1212 GDS passed block560DRC/deep-flatLVS13 and canonical identity; freshRC41404030506 completed. Loaded41405079602 remains REJECTED: HBT minVce0.3362–0.3708V below0.4V, sampler max delays41.40625–55.15625ps above37.5ps. All32 actual resistor comparisons41407813062 show only0.6357ohm improvement in eight source-ground paths, other24unchanged. Full-wave41408975201 and geometry41408690630 completed successfully as diagnosis, not electrical acceptance. Next via/metal changes require fresh physical/canonical/RC/unchanged loaded gates.
+
+Both terminal result artifacts, original failure messages, source job metadata and permanent release indexes are preserved with byte/digest validation. Native payloads remain exclusively in GitHub. Read-only8hour monitor remains automatic_native_dispatch=false.
+
+Observed at 2026-11-02T08:41:28.983018+00:00:
+- 41393730481: completed/failure
+- 41412504017: completed/failure
 
 ## Current continuation: loaded source M1 candidate rejected; next larger ground-access repair under diagnosis
 

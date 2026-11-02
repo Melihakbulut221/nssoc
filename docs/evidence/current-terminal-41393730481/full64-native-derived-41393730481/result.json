@@ -1,0 +1,1545 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "docker",
+        "pull",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a"
+      ],
+      "elapsed_seconds": 37.756392917,
+      "label": "immutable-image-pull",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "image",
+        "inspect",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a"
+      ],
+      "elapsed_seconds": 0.03226500700000656,
+      "label": "image-inspect",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "container",
+        "ls",
+        "-a",
+        "--format",
+        "{{.Names}}"
+      ],
+      "elapsed_seconds": 0.032141914999982646,
+      "label": "names-before-owned-create",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "create",
+        "--env",
+        "GITHUB_ACTIONS=true",
+        "--name",
+        "nssoc-witness-build-41393730481-1",
+        "--label",
+        "nssoc.build.source=7cc6f94a7a685423533a25bc0d418e33764e8366",
+        "--label",
+        "nssoc.build.token=41393730481-1",
+        "--network",
+        "none",
+        "--read-only",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--memory",
+        "12884901888",
+        "--memory-swap",
+        "12884901888",
+        "--cpus",
+        "2",
+        "--pids-limit",
+        "4096",
+        "--user",
+        "1001:1001",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,size=268435456",
+        "--mount",
+        "type=bind,src=/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41393730481-1,dst=/work",
+        "--workdir",
+        "/work/source",
+        "--env",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "--entrypoint",
+        "/usr/bin/python3",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a",
+        "/work/inner.py"
+      ],
+      "elapsed_seconds": 0.06431462299997293,
+      "label": "owned-container-create",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "start",
+        "--attach",
+        "ae0142cf8f303277bba118f46c172bf015cb5d2be0a7103c41299bf61dd25e59"
+      ],
+      "elapsed_seconds": 8227.66012666,
+      "error": {
+        "action": "bulk-postdrt-owned-container",
+        "error": "ValueError('bulk-postdrt-owned-container failed')",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build.py\", line 71, in execute_command\n    c.require(result.returncode == 0, label+\" failed\")\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build_contract.py\", line 26, in require\n    raise ValueError(reason)\nValueError: bulk-postdrt-owned-container failed\n",
+        "type": "ValueError"
+      },
+      "label": "bulk-postdrt-owned-container",
+      "returncode": 1
+    },
+    {
+      "argv": [
+        "docker",
+        "rm",
+        "ae0142cf8f303277bba118f46c172bf015cb5d2be0a7103c41299bf61dd25e59"
+      ],
+      "elapsed_seconds": 0.03209394700024859,
+      "label": "owned-container-remove",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "container",
+        "ls",
+        "-a",
+        "--format",
+        "{{.Names}}"
+      ],
+      "elapsed_seconds": 0.01598121100141725,
+      "label": "owned-removal-census",
+      "returncode": 0
+    }
+  ],
+  "container_terminal": {
+    "AppArmorProfile": "docker-default",
+    "Args": [
+      "/work/inner.py"
+    ],
+    "Config": {
+      "AttachStderr": true,
+      "AttachStdin": false,
+      "AttachStdout": true,
+      "Cmd": [
+        "/work/inner.py"
+      ],
+      "Domainname": "",
+      "Entrypoint": [
+        "/usr/bin/python3"
+      ],
+      "Env": [
+        "GITHUB_ACTIONS=true",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "DEBIAN_FRONTEND=noninteractive",
+        "TZ=America/Los_Angeles",
+        "LANG=C.UTF-8",
+        "LC_ALL=C.UTF-8"
+      ],
+      "Hostname": "ae0142cf8f30",
+      "Image": "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a",
+      "Labels": {
+        "nssoc.build.source": "7cc6f94a7a685423533a25bc0d418e33764e8366",
+        "nssoc.build.token": "41393730481-1",
+        "org.opencontainers.image.ref.name": "ubuntu",
+        "org.opencontainers.image.version": "24.04"
+      },
+      "OnBuild": null,
+      "OpenStdin": false,
+      "StdinOnce": false,
+      "Tty": false,
+      "User": "1001:1001",
+      "Volumes": null,
+      "WorkingDir": "/work/source"
+    },
+    "Created": "2026-11-02T05:26:33.213675Z",
+    "Driver": "overlay2",
+    "ExecIDs": null,
+    "GraphDriver": {
+      "Data": {
+        "ID": "ae0142cf8f303277bba118f46c172bf015cb5d2be0a7103c41299bf61dd25e59",
+        "LowerDir": "/var/lib/docker/overlay2/508935695ed878dc15d8dab69e849f298464ff5f1963e05c6ebbe6278233295b-init/diff:/var/lib/docker/overlay2/c4b212550ec4c963ce6303ff80672f4224253c26a4c6cdcffc6c8ca43fe945fc/diff:/var/lib/docker/overlay2/ab9b70843dbae019319bb006a9ecfb968e27d2779fd9657a5ff2c52eebc40e77/diff:/var/lib/docker/overlay2/55b77ffd9d2a8a4af0270f277fd3655c66469fa1e595a419f548704627216e8e/diff",
+        "MergedDir": "/var/lib/docker/overlay2/508935695ed878dc15d8dab69e849f298464ff5f1963e05c6ebbe6278233295b/merged",
+        "UpperDir": "/var/lib/docker/overlay2/508935695ed878dc15d8dab69e849f298464ff5f1963e05c6ebbe6278233295b/diff",
+        "WorkDir": "/var/lib/docker/overlay2/508935695ed878dc15d8dab69e849f298464ff5f1963e05c6ebbe6278233295b/work"
+      },
+      "Name": "overlay2"
+    },
+    "HostConfig": {
+      "AutoRemove": false,
+      "Binds": null,
+      "BlkioDeviceReadBps": [],
+      "BlkioDeviceReadIOps": [],
+      "BlkioDeviceWriteBps": [],
+      "BlkioDeviceWriteIOps": [],
+      "BlkioWeight": 0,
+      "BlkioWeightDevice": [],
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "Cgroup": "",
+      "CgroupParent": "",
+      "CgroupnsMode": "private",
+      "ConsoleSize": [
+        0,
+        0
+      ],
+      "ContainerIDFile": "",
+      "CpuCount": 0,
+      "CpuPercent": 0,
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuRealtimePeriod": 0,
+      "CpuRealtimeRuntime": 0,
+      "CpuShares": 0,
+      "CpusetCpus": "",
+      "CpusetMems": "",
+      "DeviceCgroupRules": null,
+      "DeviceRequests": null,
+      "Devices": [],
+      "Dns": [],
+      "DnsOptions": [],
+      "DnsSearch": [],
+      "ExtraHosts": null,
+      "GroupAdd": null,
+      "IOMaximumBandwidth": 0,
+      "IOMaximumIOps": 0,
+      "IpcMode": "private",
+      "Isolation": "",
+      "Links": null,
+      "LogConfig": {
+        "Config": {},
+        "Type": "json-file"
+      },
+      "MaskedPaths": [
+        "/proc/asound",
+        "/proc/acpi",
+        "/proc/interrupts",
+        "/proc/kcore",
+        "/proc/keys",
+        "/proc/latency_stats",
+        "/proc/timer_list",
+        "/proc/timer_stats",
+        "/proc/sched_debug",
+        "/proc/scsi",
+        "/sys/firmware",
+        "/sys/devices/virtual/powercap"
+      ],
+      "Memory": 12884901888,
+      "MemoryReservation": 0,
+      "MemorySwap": 12884901888,
+      "MemorySwappiness": null,
+      "Mounts": [
+        {
+          "Source": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41393730481-1",
+          "Target": "/work",
+          "Type": "bind"
+        }
+      ],
+      "NanoCpus": 2000000000,
+      "NetworkMode": "none",
+      "OomKillDisable": null,
+      "OomScoreAdj": 0,
+      "PidMode": "",
+      "PidsLimit": 4096,
+      "PortBindings": {},
+      "Privileged": false,
+      "PublishAllPorts": false,
+      "ReadonlyPaths": [
+        "/proc/bus",
+        "/proc/fs",
+        "/proc/irq",
+        "/proc/sys",
+        "/proc/sysrq-trigger"
+      ],
+      "ReadonlyRootfs": true,
+      "RestartPolicy": {
+        "MaximumRetryCount": 0,
+        "Name": "no"
+      },
+      "Runtime": "runc",
+      "SecurityOpt": [
+        "no-new-privileges"
+      ],
+      "ShmSize": 67108864,
+      "Tmpfs": {
+        "/tmp": "rw,nosuid,nodev,size=268435456"
+      },
+      "UTSMode": "",
+      "Ulimits": [],
+      "UsernsMode": "",
+      "VolumeDriver": "",
+      "VolumesFrom": null
+    },
+    "HostnamePath": "/var/lib/docker/containers/ae0142cf8f303277bba118f46c172bf015cb5d2be0a7103c41299bf61dd25e59/hostname",
+    "HostsPath": "/var/lib/docker/containers/ae0142cf8f303277bba118f46c172bf015cb5d2be0a7103c41299bf61dd25e59/hosts",
+    "Id": "ae0142cf8f303277bba118f46c172bf015cb5d2be0a7103c41299bf61dd25e59",
+    "Image": "sha256:a958d3bee9c5261b26e221e1c1461c92f830f14293bc5050848653bd7ec8d185",
+    "LogPath": "/var/lib/docker/containers/ae0142cf8f303277bba118f46c172bf015cb5d2be0a7103c41299bf61dd25e59/ae0142cf8f303277bba118f46c172bf015cb5d2be0a7103c41299bf61dd25e59-json.log",
+    "MountLabel": "",
+    "Mounts": [
+      {
+        "Destination": "/work",
+        "Mode": "",
+        "Propagation": "rprivate",
+        "RW": true,
+        "Source": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41393730481-1",
+        "Type": "bind"
+      }
+    ],
+    "Name": "/nssoc-witness-build-41393730481-1",
+    "NetworkSettings": {
+      "Bridge": "",
+      "EndpointID": "",
+      "Gateway": "",
+      "GlobalIPv6Address": "",
+      "GlobalIPv6PrefixLen": 0,
+      "HairpinMode": false,
+      "IPAddress": "",
+      "IPPrefixLen": 0,
+      "IPv6Gateway": "",
+      "LinkLocalIPv6Address": "",
+      "LinkLocalIPv6PrefixLen": 0,
+      "MacAddress": "",
+      "Networks": {
+        "none": {
+          "Aliases": null,
+          "DNSNames": null,
+          "DriverOpts": null,
+          "EndpointID": "",
+          "Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "GwPriority": 0,
+          "IPAMConfig": null,
+          "IPAddress": "",
+          "IPPrefixLen": 0,
+          "IPv6Gateway": "",
+          "Links": null,
+          "MacAddress": "",
+          "NetworkID": "db2021413c20229694a1bb193d11e88c1917d996791603dc252632a6c43231b7"
+        }
+      },
+      "Ports": {},
+      "SandboxID": "",
+      "SandboxKey": "",
+      "SecondaryIPAddresses": null,
+      "SecondaryIPv6Addresses": null
+    },
+    "Path": "/usr/bin/python3",
+    "Platform": "linux",
+    "ProcessLabel": "",
+    "ResolvConfPath": "/var/lib/docker/containers/ae0142cf8f303277bba118f46c172bf015cb5d2be0a7103c41299bf61dd25e59/resolv.conf",
+    "RestartCount": 0,
+    "State": {
+      "Dead": false,
+      "Error": "",
+      "ExitCode": 1,
+      "FinishedAt": "2026-11-02T07:43:40.857969212Z",
+      "OOMKilled": false,
+      "Paused": false,
+      "Pid": 0,
+      "Restarting": false,
+      "Running": false,
+      "StartedAt": "2026-11-02T05:26:33.315184908Z",
+      "Status": "exited"
+    }
+  },
+  "creation_attempted": true,
+  "error": {
+    "action": "scoped-restoration-host",
+    "error": "ValueError('bulk-postdrt-owned-container failed')",
+    "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_snapshot_reload.py\", line 147, in main\n    command('bulk-postdrt-owned-container',['docker','start','--attach',identity],21600)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_snapshot_reload.py\", line 120, in command\n    def command(label,argv,timeout=120):return build.execute_command(report,out,label,argv,timeout)\n                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build.py\", line 82, in execute_command\n    if primary is not None: raise primary\n                            ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build.py\", line 71, in execute_command\n    c.require(result.returncode == 0, label+\" failed\")\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build_contract.py\", line 26, in require\n    raise ValueError(reason)\nValueError: bulk-postdrt-owned-container failed\n",
+    "type": "ValueError"
+  },
+  "full_phy_accepted": false,
+  "native_publication": {
+    "archive": {
+      "bytes": 1589860532,
+      "sha256": "0d895ecf411c884fc476127e9d5cbe1edf305ee7ffd013c57de6ce42c019c2f9"
+    },
+    "assets": [
+      {
+        "bytes": 17249,
+        "id": 701009960,
+        "name": "candidate-outputs.json",
+        "reconciled_upload_error": null,
+        "sha256": "6a58beb95a7f14ac7a49f91f25219ddf2cf41eb37b9287dcee00bac06965ecf7"
+      },
+      {
+        "bytes": 659,
+        "id": 701010042,
+        "name": "candidate-parts.json",
+        "reconciled_upload_error": null,
+        "sha256": "ee9c40c21af7825aba04833762c99ce4345604ec04c31fa7daf5ec03a257aaad"
+      },
+      {
+        "bytes": 536870912,
+        "id": 701010115,
+        "name": "candidate-native.tar.gz.part000",
+        "reconciled_upload_error": null,
+        "sha256": "f10931ff2bab57529c60bfbebd3c7d13d1e643608779dace159a659b628da633"
+      },
+      {
+        "bytes": 536870912,
+        "id": 701010808,
+        "name": "candidate-native.tar.gz.part001",
+        "reconciled_upload_error": null,
+        "sha256": "5ff65c70169f6ac621f97862710503068570bc8d51cbea9e71c7e7cbec9d7cdd"
+      },
+      {
+        "bytes": 516118708,
+        "id": 701011577,
+        "name": "candidate-native.tar.gz.part002",
+        "reconciled_upload_error": null,
+        "sha256": "18e47783d48449d7b684c366406b83fe623a8926e85b73d744ed0e5f8caeda64"
+      }
+    ],
+    "files": {
+      "bulk-postdrt-antenna/narrow47-clear-delta.json": {
+        "bytes": 4670,
+        "sha256": "c53a6872729dbc1db0d50e26ba14cc80d9811d83146b7d12dc1d77e6d6518180"
+      },
+      "bulk-postdrt-antenna/narrow47-cleared-observed.json": {
+        "bytes": 624675760,
+        "sha256": "c794e613a63715f54767b186ce3eced114a716e1b26b059ba1b7afe268bf97d3"
+      },
+      "bulk-postdrt-antenna/narrow47-fixed-observed.json": {
+        "bytes": 624790986,
+        "sha256": "f80d6e3dcab5ce30d7377f1040453c4f409f39339b638db27de0a96cd6a1bb7c"
+      },
+      "bulk-postdrt-antenna/narrow47-freeze-audit.json": {
+        "bytes": 223,
+        "sha256": "eab742f664b11b115b1cb32b2945d5da4827e7adf9e747d7e656384a3f1154f7"
+      },
+      "bulk-postdrt-antenna/narrow47-native-selection.json": {
+        "bytes": 8007,
+        "sha256": "44c228a608c27614e960e482eefa218a7acbe812c65a65bfdf12eece5e517d1e"
+      },
+      "bulk-postdrt-antenna/narrow47-original-classes.json": {
+        "bytes": 5612727,
+        "sha256": "365bc6967e29260dd2a8e7de3a1ab95156e3533e41d342bfdc30f41261e2a91c"
+      },
+      "bulk-postdrt-antenna/narrow47-prepare.json": {
+        "bytes": 214,
+        "sha256": "d1032a2bff1d6c70446c88f16ae34be0f9c8f3eb34a04f9daa45966ca144e83a"
+      },
+      "bulk-postdrt-antenna/narrow47-reversal-proof.json": {
+        "bytes": 395,
+        "sha256": "1cdb6074e3549d6ebcadda8af04f845d4224c5c23b3fde14a35bbc2a7fa53732"
+      },
+      "bulk-postdrt-antenna/narrow47-reversed-observed.json": {
+        "bytes": 624857033,
+        "sha256": "d462e23d669656842762b8e45bd014383d3a3e12b797a5ab627da041aa745ac7"
+      },
+      "bulk-postdrt-antenna/narrow47-route-actual.tcl": {
+        "bytes": 2461,
+        "sha256": "eab5f5c7682878d8095990aec86ce19a828ffe08f049c0bfa62a866da04c4758"
+      },
+      "bulk-postdrt-antenna/narrow47-route-original.tcl": {
+        "bytes": 2346,
+        "sha256": "8d840c9d4a0a97e5fb034dd9ed9058e9350cd0145cb30efcb5f9a521ab96dc7e"
+      },
+      "bulk-postdrt-antenna/narrow47-seed.json": {
+        "bytes": 605,
+        "sha256": "ada2341b7902eb3955c3a07cdde0316dd0106cff149d0506ba14520206f427b9"
+      },
+      "bulk-postdrt-antenna/snapshot-after.json": {
+        "bytes": 624857033,
+        "sha256": "d462e23d669656842762b8e45bd014383d3a3e12b797a5ab627da041aa745ac7"
+      },
+      "bulk-postdrt-antenna/snapshot-before.json": {
+        "bytes": 624857033,
+        "sha256": "d462e23d669656842762b8e45bd014383d3a3e12b797a5ab627da041aa745ac7"
+      },
+      "bulk-postdrt-antenna/snapshot-reload-result.json": {
+        "bytes": 29147,
+        "sha256": "9f894be6a1b39f1dc9e75f9b66f12ecf5bee271ff58c063c22a072eb20a46f7d"
+      },
+      "bulk-postdrt-antenna/snapshot-roundtrip.json": {
+        "bytes": 653,
+        "sha256": "11ddbf294a0df1ad10ba2894b8256c6143d22c12b9544fb7b5842c6d5a1bb9a2"
+      },
+      "bulk-postdrt-antenna/snapshot-scoped-delta.json": {
+        "bytes": 26305,
+        "sha256": "740181458b0935fba4e5d74ef4e42236bbbdb99ce17d63ddff502cf64ee6d972"
+      },
+      "bulk-postdrt-inner-progress.json": {
+        "bytes": 24259,
+        "sha256": "12e06bc2a9c30f0d7431af5cfd8bb8cc98c13fe0c3e27bdadf5f13de96874574"
+      },
+      "bulk-postdrt-ldd.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-ldd.stdout": {
+        "bytes": 10979,
+        "sha256": "324b4d23d02eb8588356532f35cd3d40e3406824ff9442e523239d3c3caf3265"
+      },
+      "bulk-postdrt-owned-container.stderr": {
+        "bytes": 2815,
+        "sha256": "706197544f54928e0000965d5f6cc21dcb260f40468173bd44131903e1f3f61d"
+      },
+      "bulk-postdrt-owned-container.stdout": {
+        "bytes": 793630,
+        "sha256": "71de57ef69b54870125c656674a8a7e97c4cf9a9cea4f70fea5bcd532c4fc1b2"
+      },
+      "bulk-postdrt-runtime-observed.json": {
+        "bytes": 16940,
+        "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0"
+      },
+      "bulk-postdrt-snapshot-acquisition.json": {
+        "bytes": 167438,
+        "sha256": "afd089a1b34fdc83c82017a7e41b9a122eb41aab6afb5966562c554028018596"
+      },
+      "bulk-postdrt-snapshot-available-output.json": {
+        "bytes": 16868,
+        "sha256": "4d5651a3a5f24dc469160b386da5bc63c973a0450d34b2e8d27f34c5846c1f8c"
+      },
+      "bulk-postdrt-snapshot-inner-result.json": {
+        "bytes": 55712,
+        "sha256": "b06a2aa0ea2422ee6bc32240ca38856cfabae570a31a1b72f7eb92c69a000667"
+      },
+      "bulk-postdrt-snapshot-progress.json": {
+        "bytes": 18794,
+        "sha256": "e386e8d28566c66f01f665cfe8ebd012c511ff098817843d0cd65a4afb608186"
+      },
+      "bulk-postdrt-supervision/events.jsonl": {
+        "bytes": 781470,
+        "sha256": "13b46f995bc0a62ae26f6a42f1943cb09cd7dff50e6a2ce86e7761ae8196afa4"
+      },
+      "bulk-postdrt-supervision/latest.json": {
+        "bytes": 1556,
+        "sha256": "3f9d2c347c28c8311fc3a38ca1b04deeb0b6fced78bba6e7251ef1787c6af699"
+      },
+      "bulk-postdrt-supervision/narrow47-actual-original64-route.command.json": {
+        "bytes": 1363,
+        "sha256": "1f42c1aeea66d6a48256efb5d2fac3091ac4df14c4581fcf9334d29350be46ab"
+      },
+      "bulk-postdrt-supervision/narrow47-actual-original64-route.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/narrow47-actual-original64-route.stdout": {
+        "bytes": 48761,
+        "sha256": "4fe51ea4226645a17b040d88084613dd34bfafc40012db99f15fc8d55ba4fed9"
+      },
+      "bulk-postdrt-supervision/narrow47-freeze-audit.command.json": {
+        "bytes": 1265,
+        "sha256": "28f61664c598e074fa13019658c9239176855b0e000292d6f38b01ba24a25cf3"
+      },
+      "bulk-postdrt-supervision/narrow47-freeze-audit.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/narrow47-freeze-audit.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/narrow47-freeze-import.command.json": {
+        "bytes": 1259,
+        "sha256": "0cba5133ad57b7898c17f673fd09751ec77fb39539f9f92452e92924bb2dc120"
+      },
+      "bulk-postdrt-supervision/narrow47-freeze-import.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/narrow47-freeze-import.stdout": {
+        "bytes": 849,
+        "sha256": "684aff1976fe85edf8b58e7723b6ca484f05eda8a46cb66deba407297779273f"
+      },
+      "bulk-postdrt-supervision/narrow47-prepare.command.json": {
+        "bytes": 1261,
+        "sha256": "513f4a576ca64fbf4767542a783da0447bfcad34d01e9272fe876f2bdf6e7194"
+      },
+      "bulk-postdrt-supervision/narrow47-prepare.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/narrow47-prepare.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/narrow47-reverse-audit-clear.command.json": {
+        "bytes": 1277,
+        "sha256": "67d2871cdcc98ab2058c5d308b7be85a1a4a0d1a1f2afa3491b734bd804b43f1"
+      },
+      "bulk-postdrt-supervision/narrow47-reverse-audit-clear.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/narrow47-reverse-audit-clear.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/narrow47-reverse-import.command.json": {
+        "bytes": 1262,
+        "sha256": "75bf618e7fbd2c9ccdef46244e8707a532d72f2d537b94e6e55401b77f1c8c67"
+      },
+      "bulk-postdrt-supervision/narrow47-reverse-import.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/narrow47-reverse-import.stdout": {
+        "bytes": 861,
+        "sha256": "4f79a4cf2a5051f6c2d28fbe9555d9983599764527228460edaf6663a12af6b7"
+      },
+      "bulk-postdrt-version.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-version.stdout": {
+        "bytes": 42,
+        "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae"
+      },
+      "work/bulk-postdrt-antenna/drt_iter0.odb": {
+        "bytes": 214437258,
+        "sha256": "9b93c15b29bb6b6c6a889989cce86cb6e4aa912de64fbb0414e96170c8262b52"
+      },
+      "work/bulk-postdrt-antenna/drt_iter1.odb": {
+        "bytes": 214426043,
+        "sha256": "e5cbbfe54a2f2bc8f294ac0b94bc5ddf8daf24cba45fc653440fb2e298ea93db"
+      },
+      "work/bulk-postdrt-antenna/drt_iter10.odb": {
+        "bytes": 214398088,
+        "sha256": "62b3ff3b1b218464f75efae0aad53666742b7e47463221ad360c317aab08ae8c"
+      },
+      "work/bulk-postdrt-antenna/drt_iter11.odb": {
+        "bytes": 214397283,
+        "sha256": "b369215d70468420c99a653fd60016414f94c2170989933220e357a0f9d0b21c"
+      },
+      "work/bulk-postdrt-antenna/drt_iter12.odb": {
+        "bytes": 214398023,
+        "sha256": "e5ee4cd52fa27481dbce0d44df21f7db215df233600eedf82afb68774be0e847"
+      },
+      "work/bulk-postdrt-antenna/drt_iter13.odb": {
+        "bytes": 214397508,
+        "sha256": "3226469de006ff36a8aad513a8cca0b9c09a13ac91950f2c3cf02678fcd35950"
+      },
+      "work/bulk-postdrt-antenna/drt_iter14.odb": {
+        "bytes": 214397283,
+        "sha256": "9c9ea2dc870c695a2c7405584efdcd9fa65faa33c73ba1cd486dbd3f8e84b7bb"
+      },
+      "work/bulk-postdrt-antenna/drt_iter15.odb": {
+        "bytes": 214393644,
+        "sha256": "6f7709feeeff983a8ae2966746f98e858becf2a39a1847dcf0c817dad26c1a81"
+      },
+      "work/bulk-postdrt-antenna/drt_iter16.odb": {
+        "bytes": 214393274,
+        "sha256": "6c2f20befe78b49c933177181c68c2c7e09ccc0757b66f9cb41d6dd04b895576"
+      },
+      "work/bulk-postdrt-antenna/drt_iter17.odb": {
+        "bytes": 214391959,
+        "sha256": "8f50fda2847e6befb0376f1b9530ba26508e13abcf7cd10f046ebd24df2e105c"
+      },
+      "work/bulk-postdrt-antenna/drt_iter18.odb": {
+        "bytes": 214393859,
+        "sha256": "80227d5d460bc90febecfcd43fb2203ddf86de528fc915b73ec6bae14c3d400a"
+      },
+      "work/bulk-postdrt-antenna/drt_iter19.odb": {
+        "bytes": 214392179,
+        "sha256": "a93e921ccd7abb164dbe2ff3f6a1a1c26777d707399cea7580d7c5d08ea11017"
+      },
+      "work/bulk-postdrt-antenna/drt_iter2.odb": {
+        "bytes": 214424143,
+        "sha256": "0f1347397683504e58e1a06c1067269c0409844c634e8dd44d2efb04ef921397"
+      },
+      "work/bulk-postdrt-antenna/drt_iter3.odb": {
+        "bytes": 214430518,
+        "sha256": "fd3c64307694d4ce1adfa203d87ec30da7eae964c0d4f3da6cbddef171b7a1d0"
+      },
+      "work/bulk-postdrt-antenna/drt_iter4.odb": {
+        "bytes": 214430858,
+        "sha256": "c8fecb26ae715282149a05cfaf833e9363ac89d968dcb9675dadf40becac7de3"
+      },
+      "work/bulk-postdrt-antenna/drt_iter5.odb": {
+        "bytes": 214407113,
+        "sha256": "2dc3c3002255193c57ddbd96a962dafa38ecc379592c89ef679a4f8d22897afe"
+      },
+      "work/bulk-postdrt-antenna/drt_iter6.odb": {
+        "bytes": 214407283,
+        "sha256": "0b2f29e5bf3926cb0e8bbb0ba46450a3fd6dd05dd9b762b0367665b30c97def8"
+      },
+      "work/bulk-postdrt-antenna/drt_iter7.odb": {
+        "bytes": 214407568,
+        "sha256": "328d9bf443450bdaad35a6e7013687f2c8dfdbef615436c1e9e6fe8cc52b6449"
+      },
+      "work/bulk-postdrt-antenna/drt_iter8.odb": {
+        "bytes": 214406158,
+        "sha256": "8b99d80df6f3f40ab647af67af3bc902466744b58307e20af657a1657fa47ee1"
+      },
+      "work/bulk-postdrt-antenna/drt_iter9.odb": {
+        "bytes": 214406088,
+        "sha256": "b7eb7be00becbca05a9642102ff667439fd64017ba3b2564fe37a24ada89c509"
+      },
+      "work/bulk-postdrt-antenna/fixed-routing.drc-10.rpt": {
+        "bytes": 27585,
+        "sha256": "4436f45fa34bb04606b6a6b72caba8a41fd268eb67f6a70d8e82dfe6b27eba37"
+      },
+      "work/bulk-postdrt-antenna/fixed-routing.drc-15.rpt": {
+        "bytes": 20662,
+        "sha256": "6342acf9b89b0e09988fc9c317484366783008b763db98675a886b785c8d04ca"
+      },
+      "work/bulk-postdrt-antenna/fixed-routing.drc-5.rpt": {
+        "bytes": 51063,
+        "sha256": "b4f79bc427d27385410bb0e48a0ac2d53a968b9c02922a0eefb99291e9d5261e"
+      },
+      "work/bulk-postdrt-antenna/narrow47-cleared-observed.def": {
+        "bytes": 185818356,
+        "sha256": "a21681af4819627568cb48138f57e3b03c0ae4e501f11865134512ceb812fa96"
+      },
+      "work/bulk-postdrt-antenna/narrow47-cleared.odb": {
+        "bytes": 214261800,
+        "sha256": "2438c77e39b54fdf3d174105723319c10cd62f757968dcace26d1ca92cc3509b"
+      },
+      "work/bulk-postdrt-antenna/narrow47-fixed-base.odb": {
+        "bytes": 214408331,
+        "sha256": "e9fde6b36a6565fe57395aeb82acfce20941ea4b7c7fe26136d7216a441761b7"
+      },
+      "work/bulk-postdrt-antenna/narrow47-fixed-expected.def": {
+        "bytes": 186094863,
+        "sha256": "fbdfc4153db4852125717383b446d5736d0a032920602262657f957a5e4208b5"
+      },
+      "work/bulk-postdrt-antenna/narrow47-fixed-observed.def": {
+        "bytes": 186094863,
+        "sha256": "fbdfc4153db4852125717383b446d5736d0a032920602262657f957a5e4208b5"
+      },
+      "work/bulk-postdrt-antenna/narrow47-fixed-patch.def": {
+        "bytes": 138282156,
+        "sha256": "76ffec9878e038b89cefa715aaf6ff52886a049ac924d455626dcf7b4589a42c"
+      },
+      "work/bulk-postdrt-antenna/narrow47-fixed-single.def": {
+        "bytes": 186094863,
+        "sha256": "0bf6b40f33c2bd2519ec68890982fc720d89cbba03fd94ccd6004d6dcc8f30b1"
+      },
+      "work/bulk-postdrt-antenna/narrow47-fixed.def": {
+        "bytes": 186094863,
+        "sha256": "fbdfc4153db4852125717383b446d5736d0a032920602262657f957a5e4208b5"
+      },
+      "work/bulk-postdrt-antenna/narrow47-fixed.odb": {
+        "bytes": 214408331,
+        "sha256": "3c4c650a42f4f44ef04dca60d8db9c913fcdfaeb811cf12878721cb104fe6887"
+      },
+      "work/bulk-postdrt-antenna/narrow47-freeze-audit.log": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "work/bulk-postdrt-antenna/narrow47-freeze-import.log": {
+        "bytes": 849,
+        "sha256": "684aff1976fe85edf8b58e7723b6ca484f05eda8a46cb66deba407297779273f"
+      },
+      "work/bulk-postdrt-antenna/narrow47-freeze.tcl": {
+        "bytes": 465,
+        "sha256": "aa2a1d86c1c5eaaec6d2ae10dda8c733d314e372b23f6114dbca372d35b07064"
+      },
+      "work/bulk-postdrt-antenna/narrow47-prepare.log": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "work/bulk-postdrt-antenna/narrow47-reverse-audit-clear.log": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "work/bulk-postdrt-antenna/narrow47-reverse-import.log": {
+        "bytes": 861,
+        "sha256": "4f79a4cf2a5051f6c2d28fbe9555d9983599764527228460edaf6663a12af6b7"
+      },
+      "work/bulk-postdrt-antenna/narrow47-reversed-base.odb": {
+        "bytes": 214408331,
+        "sha256": "84f61019891fe81f9a3e53856d543c990a98438e739b7ef08854d14cfd20c802"
+      },
+      "work/bulk-postdrt-antenna/narrow47-reversed-expected.def": {
+        "bytes": 186095644,
+        "sha256": "b614adddfd3e4de15b9919b31e97dfb504e45b19dedee68ab9506acea21307a0"
+      },
+      "work/bulk-postdrt-antenna/narrow47-reversed-observed.def": {
+        "bytes": 186095644,
+        "sha256": "b614adddfd3e4de15b9919b31e97dfb504e45b19dedee68ab9506acea21307a0"
+      },
+      "work/bulk-postdrt-antenna/narrow47-reversed-patch.def": {
+        "bytes": 138282937,
+        "sha256": "7d09946981213d24b04a910752da28d784194c91b5e94c0bf99667eb5362e451"
+      },
+      "work/bulk-postdrt-antenna/narrow47-reversed-single.def": {
+        "bytes": 186095644,
+        "sha256": "bc9167bc72f57a74fe12d99e20f7c04dfe5658961665349a61a3d7e7dbaffa62"
+      },
+      "work/bulk-postdrt-antenna/narrow47-reversed-source.def": {
+        "bytes": 186094863,
+        "sha256": "fbdfc4153db4852125717383b446d5736d0a032920602262657f957a5e4208b5"
+      },
+      "work/bulk-postdrt-antenna/narrow47-reversed.def": {
+        "bytes": 186095644,
+        "sha256": "b614adddfd3e4de15b9919b31e97dfb504e45b19dedee68ab9506acea21307a0"
+      },
+      "work/bulk-postdrt-antenna/narrow47-reversed.odb": {
+        "bytes": 214408331,
+        "sha256": "2fd0a0614a9e7081d6a6655e87128346ff7550cc5370ee55ec7e75f34922cb3d"
+      },
+      "work/bulk-postdrt-antenna/narrow47-reversed.tcl": {
+        "bytes": 483,
+        "sha256": "9f1b36cabfc5d07a99a210d0c2fbf7fe1abb97c8d997d0430833c8323d7a286f"
+      },
+      "work/bulk-postdrt-antenna/route.tcl": {
+        "bytes": 2461,
+        "sha256": "eab5f5c7682878d8095990aec86ce19a828ffe08f049c0bfa62a866da04c4758"
+      },
+      "work/bulk-postdrt-antenna/snapshot-after.def": {
+        "bytes": 186095644,
+        "sha256": "b614adddfd3e4de15b9919b31e97dfb504e45b19dedee68ab9506acea21307a0"
+      },
+      "work/bulk-postdrt-antenna/snapshot-before.def": {
+        "bytes": 186095644,
+        "sha256": "b614adddfd3e4de15b9919b31e97dfb504e45b19dedee68ab9506acea21307a0"
+      },
+      "work/bulk-postdrt-antenna/snapshot-reloaded.odb": {
+        "bytes": 214408331,
+        "sha256": "2fd0a0614a9e7081d6a6655e87128346ff7550cc5370ee55ec7e75f34922cb3d"
+      }
+    },
+    "native_bytes_remain_in_cloud": true,
+    "partial_failure_preserved": true,
+    "release_id": 431098535,
+    "source": "7cc6f94a7a685423533a25bc0d418e33764e8366",
+    "status": "COMPLETE_PERMANENT_NATIVE_CAPSULE",
+    "tag": "cloud-results-41393730481-1-mainchip-bulk-postdrt-antenna"
+  },
+  "output_preservation": {
+    "artifact_required": true,
+    "complete": false,
+    "complete_large_outputs_in_native_capsule": {
+      "bulk-postdrt-antenna/narrow47-cleared-observed.json": {
+        "bytes": 624675760,
+        "sha256": "c794e613a63715f54767b186ce3eced114a716e1b26b059ba1b7afe268bf97d3"
+      },
+      "bulk-postdrt-antenna/narrow47-fixed-observed.json": {
+        "bytes": 624790986,
+        "sha256": "f80d6e3dcab5ce30d7377f1040453c4f409f39339b638db27de0a96cd6a1bb7c"
+      },
+      "bulk-postdrt-antenna/narrow47-original-classes.json": {
+        "bytes": 5612727,
+        "sha256": "365bc6967e29260dd2a8e7de3a1ab95156e3533e41d342bfdc30f41261e2a91c"
+      },
+      "bulk-postdrt-antenna/narrow47-reversed-observed.json": {
+        "bytes": 624857033,
+        "sha256": "d462e23d669656842762b8e45bd014383d3a3e12b797a5ab627da041aa745ac7"
+      },
+      "bulk-postdrt-antenna/snapshot-after.json": {
+        "bytes": 624857033,
+        "sha256": "d462e23d669656842762b8e45bd014383d3a3e12b797a5ab627da041aa745ac7"
+      },
+      "bulk-postdrt-antenna/snapshot-before.json": {
+        "bytes": 624857033,
+        "sha256": "d462e23d669656842762b8e45bd014383d3a3e12b797a5ab627da041aa745ac7"
+      }
+    },
+    "copied": {
+      "bulk-postdrt-antenna/narrow47-clear-delta.json": {
+        "bytes": 4670,
+        "sha256": "c53a6872729dbc1db0d50e26ba14cc80d9811d83146b7d12dc1d77e6d6518180"
+      },
+      "bulk-postdrt-antenna/narrow47-freeze-audit.json": {
+        "bytes": 223,
+        "sha256": "eab742f664b11b115b1cb32b2945d5da4827e7adf9e747d7e656384a3f1154f7"
+      },
+      "bulk-postdrt-antenna/narrow47-native-selection.json": {
+        "bytes": 8007,
+        "sha256": "44c228a608c27614e960e482eefa218a7acbe812c65a65bfdf12eece5e517d1e"
+      },
+      "bulk-postdrt-antenna/narrow47-prepare.json": {
+        "bytes": 214,
+        "sha256": "d1032a2bff1d6c70446c88f16ae34be0f9c8f3eb34a04f9daa45966ca144e83a"
+      },
+      "bulk-postdrt-antenna/narrow47-reversal-proof.json": {
+        "bytes": 395,
+        "sha256": "1cdb6074e3549d6ebcadda8af04f845d4224c5c23b3fde14a35bbc2a7fa53732"
+      },
+      "bulk-postdrt-antenna/narrow47-seed.json": {
+        "bytes": 605,
+        "sha256": "ada2341b7902eb3955c3a07cdde0316dd0106cff149d0506ba14520206f427b9"
+      },
+      "bulk-postdrt-antenna/snapshot-reload-result.json": {
+        "bytes": 29147,
+        "sha256": "9f894be6a1b39f1dc9e75f9b66f12ecf5bee271ff58c063c22a072eb20a46f7d"
+      },
+      "bulk-postdrt-antenna/snapshot-roundtrip.json": {
+        "bytes": 653,
+        "sha256": "11ddbf294a0df1ad10ba2894b8256c6143d22c12b9544fb7b5842c6d5a1bb9a2"
+      },
+      "bulk-postdrt-antenna/snapshot-scoped-delta.json": {
+        "bytes": 26305,
+        "sha256": "740181458b0935fba4e5d74ef4e42236bbbdb99ce17d63ddff502cf64ee6d972"
+      },
+      "bulk-postdrt-inner-progress.json": {
+        "bytes": 24259,
+        "sha256": "12e06bc2a9c30f0d7431af5cfd8bb8cc98c13fe0c3e27bdadf5f13de96874574"
+      },
+      "bulk-postdrt-ldd.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-ldd.stdout": {
+        "bytes": 10979,
+        "sha256": "324b4d23d02eb8588356532f35cd3d40e3406824ff9442e523239d3c3caf3265"
+      },
+      "bulk-postdrt-owned-container.stderr": {
+        "bytes": 2815,
+        "sha256": "706197544f54928e0000965d5f6cc21dcb260f40468173bd44131903e1f3f61d"
+      },
+      "bulk-postdrt-owned-container.stdout": {
+        "bytes": 793630,
+        "sha256": "71de57ef69b54870125c656674a8a7e97c4cf9a9cea4f70fea5bcd532c4fc1b2"
+      },
+      "bulk-postdrt-runtime-observed.json": {
+        "bytes": 16940,
+        "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0"
+      },
+      "bulk-postdrt-snapshot-acquisition.json": {
+        "bytes": 167438,
+        "sha256": "afd089a1b34fdc83c82017a7e41b9a122eb41aab6afb5966562c554028018596"
+      },
+      "bulk-postdrt-snapshot-available-output.json": {
+        "bytes": 16868,
+        "sha256": "4d5651a3a5f24dc469160b386da5bc63c973a0450d34b2e8d27f34c5846c1f8c"
+      },
+      "bulk-postdrt-snapshot-inner-result.json": {
+        "bytes": 55712,
+        "sha256": "b06a2aa0ea2422ee6bc32240ca38856cfabae570a31a1b72f7eb92c69a000667"
+      },
+      "bulk-postdrt-snapshot-progress.json": {
+        "bytes": 18794,
+        "sha256": "e386e8d28566c66f01f665cfe8ebd012c511ff098817843d0cd65a4afb608186"
+      },
+      "bulk-postdrt-supervision/events.jsonl": {
+        "bytes": 781470,
+        "sha256": "13b46f995bc0a62ae26f6a42f1943cb09cd7dff50e6a2ce86e7761ae8196afa4"
+      },
+      "bulk-postdrt-supervision/latest.json": {
+        "bytes": 1556,
+        "sha256": "3f9d2c347c28c8311fc3a38ca1b04deeb0b6fced78bba6e7251ef1787c6af699"
+      },
+      "bulk-postdrt-supervision/narrow47-actual-original64-route.command.json": {
+        "bytes": 1363,
+        "sha256": "1f42c1aeea66d6a48256efb5d2fac3091ac4df14c4581fcf9334d29350be46ab"
+      },
+      "bulk-postdrt-supervision/narrow47-actual-original64-route.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/narrow47-actual-original64-route.stdout": {
+        "bytes": 48761,
+        "sha256": "4fe51ea4226645a17b040d88084613dd34bfafc40012db99f15fc8d55ba4fed9"
+      },
+      "bulk-postdrt-supervision/narrow47-freeze-audit.command.json": {
+        "bytes": 1265,
+        "sha256": "28f61664c598e074fa13019658c9239176855b0e000292d6f38b01ba24a25cf3"
+      },
+      "bulk-postdrt-supervision/narrow47-freeze-audit.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/narrow47-freeze-audit.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/narrow47-freeze-import.command.json": {
+        "bytes": 1259,
+        "sha256": "0cba5133ad57b7898c17f673fd09751ec77fb39539f9f92452e92924bb2dc120"
+      },
+      "bulk-postdrt-supervision/narrow47-freeze-import.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/narrow47-freeze-import.stdout": {
+        "bytes": 849,
+        "sha256": "684aff1976fe85edf8b58e7723b6ca484f05eda8a46cb66deba407297779273f"
+      },
+      "bulk-postdrt-supervision/narrow47-prepare.command.json": {
+        "bytes": 1261,
+        "sha256": "513f4a576ca64fbf4767542a783da0447bfcad34d01e9272fe876f2bdf6e7194"
+      },
+      "bulk-postdrt-supervision/narrow47-prepare.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/narrow47-prepare.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/narrow47-reverse-audit-clear.command.json": {
+        "bytes": 1277,
+        "sha256": "67d2871cdcc98ab2058c5d308b7be85a1a4a0d1a1f2afa3491b734bd804b43f1"
+      },
+      "bulk-postdrt-supervision/narrow47-reverse-audit-clear.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/narrow47-reverse-audit-clear.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/narrow47-reverse-import.command.json": {
+        "bytes": 1262,
+        "sha256": "75bf618e7fbd2c9ccdef46244e8707a532d72f2d537b94e6e55401b77f1c8c67"
+      },
+      "bulk-postdrt-supervision/narrow47-reverse-import.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/narrow47-reverse-import.stdout": {
+        "bytes": 861,
+        "sha256": "4f79a4cf2a5051f6c2d28fbe9555d9983599764527228460edaf6663a12af6b7"
+      },
+      "bulk-postdrt-version.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-version.stdout": {
+        "bytes": 42,
+        "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae"
+      },
+      "container-terminal.json": {
+        "bytes": 6877,
+        "sha256": "a3aec76f7f56991c06e2db52d3c6b9ace1b95afb8cdd01f2d81153d6d5e17774"
+      },
+      "create-attempt.json": {
+        "bytes": 1265,
+        "sha256": "0c841f50ff2eadfeeb28fbfe7ffad8c50568e149799bae18ef275c3a0f36003d"
+      },
+      "host-progress.json": {
+        "bytes": 13226,
+        "sha256": "e01fbb4d1fc2cc9af10978be85b0ab3dbf1f115f6e2faf1110b6cce21e0f3dcb"
+      },
+      "image-inspect.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "image-inspect.stdout": {
+        "bytes": 2643,
+        "sha256": "573f077d748673bb81ea21c7eb9ebdcaf43642dfed529a0346b0c65fc80dd9c6"
+      },
+      "immutable-image-pull.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "immutable-image-pull.stdout": {
+        "bytes": 771,
+        "sha256": "51ccfd81d7b2a4d41c73b0d5b3779712634ba28cddaee2ae5cb26cf0c56b9e70"
+      },
+      "names-before-owned-create.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "names-before-owned-create.stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-container-create.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-container-create.stdout": {
+        "bytes": 65,
+        "sha256": "664fd83a7be812afeb11a8532ee9248691c61b16e1dc22fd2f54ad0115acebf0"
+      },
+      "owned-container-remove.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-container-remove.stdout": {
+        "bytes": 65,
+        "sha256": "664fd83a7be812afeb11a8532ee9248691c61b16e1dc22fd2f54ad0115acebf0"
+      },
+      "owned-removal-census.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-removal-census.stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "prefix-envelope.json": {
+        "bytes": 4270,
+        "sha256": "11281aedb0c83745f8126820b9c3c5421c20ed572e48bda55356f5d68c8313fb"
+      },
+      "prefix-restoration.json": {
+        "bytes": 423478,
+        "sha256": "23f45038bb461360ec38c7a2490ba24c84db2f9dd3a53e8b2e689201d693d177"
+      }
+    },
+    "excluded_roots": [
+      "work"
+    ],
+    "owned_outputs_retained": true,
+    "retained_output_path": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41393730481-1/out"
+  },
+  "owned_container_recovery": {
+    "id": "ae0142cf8f303277bba118f46c172bf015cb5d2be0a7103c41299bf61dd25e59",
+    "name": "/nssoc-witness-build-41393730481-1",
+    "recovered_after_create_client_error": false
+  },
+  "physical_acceptance": false,
+  "run_id": 41393730481,
+  "source": "7cc6f94a7a685423533a25bc0d418e33764e8366",
+  "status": "FAIL_ACTUAL47_CLOUD_ROUTE_OBSERVATION",
+  "terminal_actions": [
+    {
+      "action": "recover-owned-container",
+      "completed": true
+    },
+    {
+      "action": "owned-stop",
+      "completed": true
+    },
+    {
+      "action": "post-stop-inspect",
+      "completed": true
+    },
+    {
+      "action": "owned-kill-if-running",
+      "completed": true
+    },
+    {
+      "action": "terminal-inspect",
+      "completed": true
+    },
+    {
+      "action": "stopped-container-contract",
+      "completed": true
+    },
+    {
+      "action": "owned-container-removal",
+      "completed": true
+    },
+    {
+      "action": "owned-removal-confirmation",
+      "completed": true
+    },
+    {
+      "action": "owned-container-cleanup",
+      "completed": true
+    },
+    {
+      "action": "own-source-unchanged",
+      "completed": true
+    },
+    {
+      "action": "original-source-unchanged",
+      "completed": true
+    },
+    {
+      "action": "frozen-prefix-unchanged",
+      "completed": true
+    },
+    {
+      "action": "original-projection-unchanged",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_snapshot_reload_contract.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_snapshot_reload_inner.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_snapshot_reload_native.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_contract.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_import.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_native.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip-route47-selected.json",
+      "completed": true
+    },
+    {
+      "action": "inner-source-unchanged",
+      "completed": true
+    },
+    {
+      "action": "current-input-unchanged",
+      "completed": true
+    },
+    {
+      "action": "container-terminal",
+      "completed": false
+    },
+    {
+      "action": "selected-snapshot-unchanged-bulk-postdrt-antenna/targeted-routing-scope.json",
+      "completed": true
+    },
+    {
+      "action": "selected-snapshot-unchanged-bulk-postdrt-antenna/stale-wire-cleared-snapshot.json",
+      "completed": true
+    },
+    {
+      "action": "selected-snapshot-unchanged-work/bulk-postdrt-antenna/drt_iter20.odb",
+      "completed": true
+    },
+    {
+      "action": "selected-snapshot-unchanged-bulk-postdrt-antenna/drt-original-classes.json",
+      "completed": true
+    },
+    {
+      "action": "selected-snapshot-unchanged-bulk-postdrt-antenna/full-route-stage.json",
+      "completed": true
+    },
+    {
+      "action": "permanent-native-publication",
+      "completed": true
+    },
+    {
+      "action": "enumerate:.",
+      "completed": true
+    },
+    {
+      "action": "enumerate:bulk-postdrt-antenna",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/narrow47-clear-delta.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/narrow47-cleared-observed.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/narrow47-fixed-observed.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/narrow47-freeze-audit.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/narrow47-native-selection.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/narrow47-original-classes.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/narrow47-prepare.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/narrow47-reversal-proof.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/narrow47-reversed-observed.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/narrow47-route-actual.tcl",
+      "completed": false
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/narrow47-route-original.tcl",
+      "completed": false
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/narrow47-seed.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/snapshot-after.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/snapshot-before.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/snapshot-reload-result.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/snapshot-roundtrip.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/snapshot-scoped-delta.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-inner-progress.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-ldd.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-ldd.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-owned-container.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-owned-container.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-runtime-observed.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-snapshot-acquisition.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-snapshot-available-output.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-snapshot-inner-result.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-snapshot-progress.json",
+      "completed": true
+    },
+    {
+      "action": "enumerate:bulk-postdrt-supervision",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/events.jsonl",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/latest.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-actual-original64-route.command.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-actual-original64-route.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-actual-original64-route.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-freeze-audit.command.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-freeze-audit.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-freeze-audit.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-freeze-import.command.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-freeze-import.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-freeze-import.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-prepare.command.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-prepare.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-prepare.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-reverse-audit-clear.command.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-reverse-audit-clear.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-reverse-audit-clear.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-reverse-import.command.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-reverse-import.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/narrow47-reverse-import.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision",
+      "completed": true
+    },
+    {
+      "action": "enumerate:bulk-postdrt-supervisor",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervisor",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-version.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-version.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:container-terminal.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:create-attempt.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:host-progress.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:image-inspect.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:image-inspect.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:immutable-image-pull.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:immutable-image-pull.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:names-before-owned-create.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:names-before-owned-create.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-container-create.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-container-create.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-container-remove.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-container-remove.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-removal-census.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-removal-census.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:prefix-envelope.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:prefix-restoration.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:work",
+      "completed": true
+    },
+    {
+      "action": "preserve-derived-outputs",
+      "completed": true
+    },
+    {
+      "action": "retained-native-workspace",
+      "completed": true
+    }
+  ],
+  "terminal_errors": [
+    {
+      "action": "container-terminal",
+      "error": "ValueError('native container failed')",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build_contract.py\", line 169, in attempt\n    value = action()\n            ^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_snapshot_reload.py\", line 168, in <lambda>\n    c.attempt(report,'container-terminal',lambda:c.require(not state.get('Running',True)and state.get('ExitCode')==0 and state.get('OOMKilled')is False and not state.get('Error'),'native container failed'))\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build_contract.py\", line 26, in require\n    raise ValueError(reason)\nValueError: native container failed\n",
+      "type": "ValueError"
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/narrow47-route-actual.tcl",
+      "error": "AssertionError('unexpected output')",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build_contract.py\", line 169, in attempt\n    value = action()\n            ^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_full64_output_preservation.py\", line 25, in one\n    f.require(path.is_file()and(base.derived_path(path)or name in EXACT_TCL|EXACT_DEF),\"unexpected output\")\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/cloud_mainchip_final_marker_readback.py\", line 38, in require\n    raise AssertionError(reason)\nAssertionError: unexpected output\n",
+      "type": "AssertionError"
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/narrow47-route-original.tcl",
+      "error": "AssertionError('unexpected output')",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build_contract.py\", line 169, in attempt\n    value = action()\n            ^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_full64_output_preservation.py\", line 25, in one\n    f.require(path.is_file()and(base.derived_path(path)or name in EXACT_TCL|EXACT_DEF),\"unexpected output\")\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/cloud_mainchip_final_marker_readback.py\", line 38, in require\n    raise AssertionError(reason)\nAssertionError: unexpected output\n",
+      "type": "AssertionError"
+    }
+  ],
+  "timing_accepted": false,
+  "workspace_retained": {
+    "cleanup_after_artifact": true,
+    "output_path": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41393730481-1/out",
+    "path": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41393730481-1",
+    "reason": "Retained until complete workflow artifact upload succeeds"
+  }
+}
