@@ -1,0 +1,2930 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "docker",
+        "pull",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a"
+      ],
+      "elapsed_seconds": 48.118381451999994,
+      "label": "immutable-image-pull",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "image",
+        "inspect",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a"
+      ],
+      "elapsed_seconds": 0.03206163299998366,
+      "label": "image-inspect",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "container",
+        "ls",
+        "-a",
+        "--format",
+        "{{.Names}}"
+      ],
+      "elapsed_seconds": 0.015952336999987438,
+      "label": "names-before-owned-create",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "create",
+        "--env",
+        "GITHUB_ACTIONS=true",
+        "--name",
+        "nssoc-witness-build-41506262574-1",
+        "--label",
+        "nssoc.build.source=64a21283a014b802329e295d1136ae1ec645fee0",
+        "--label",
+        "nssoc.build.token=41506262574-1",
+        "--network",
+        "none",
+        "--read-only",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--memory",
+        "12884901888",
+        "--memory-swap",
+        "12884901888",
+        "--cpus",
+        "2",
+        "--pids-limit",
+        "4096",
+        "--user",
+        "1001:1001",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,size=268435456",
+        "--mount",
+        "type=bind,src=/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41506262574-1,dst=/work",
+        "--workdir",
+        "/work/source",
+        "--env",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "--entrypoint",
+        "/usr/bin/python3",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a",
+        "/work/inner.py"
+      ],
+      "elapsed_seconds": 0.03198364499999684,
+      "label": "owned-container-create",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "start",
+        "--attach",
+        "239bd4b3f2aa9334de947638139d661c278263846a20ed73258994a05cc4489a"
+      ],
+      "elapsed_seconds": 684.9196711510001,
+      "label": "bulk-postdrt-owned-container",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "rm",
+        "239bd4b3f2aa9334de947638139d661c278263846a20ed73258994a05cc4489a"
+      ],
+      "elapsed_seconds": 0.03201589100001456,
+      "label": "owned-container-remove",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "container",
+        "ls",
+        "-a",
+        "--format",
+        "{{.Names}}"
+      ],
+      "elapsed_seconds": 0.01593852999997125,
+      "label": "owned-removal-census",
+      "returncode": 0
+    }
+  ],
+  "container_terminal": {
+    "AppArmorProfile": "docker-default",
+    "Args": [
+      "/work/inner.py"
+    ],
+    "Config": {
+      "AttachStderr": true,
+      "AttachStdin": false,
+      "AttachStdout": true,
+      "Cmd": [
+        "/work/inner.py"
+      ],
+      "Domainname": "",
+      "Entrypoint": [
+        "/usr/bin/python3"
+      ],
+      "Env": [
+        "GITHUB_ACTIONS=true",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "DEBIAN_FRONTEND=noninteractive",
+        "TZ=America/Los_Angeles",
+        "LANG=C.UTF-8",
+        "LC_ALL=C.UTF-8"
+      ],
+      "Hostname": "239bd4b3f2aa",
+      "Image": "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a",
+      "Labels": {
+        "nssoc.build.source": "64a21283a014b802329e295d1136ae1ec645fee0",
+        "nssoc.build.token": "41506262574-1",
+        "org.opencontainers.image.ref.name": "ubuntu",
+        "org.opencontainers.image.version": "24.04"
+      },
+      "OnBuild": null,
+      "OpenStdin": false,
+      "StdinOnce": false,
+      "Tty": false,
+      "User": "1001:1001",
+      "Volumes": null,
+      "WorkingDir": "/work/source"
+    },
+    "Created": "2026-11-02T19:06:59.579899942Z",
+    "Driver": "overlay2",
+    "ExecIDs": null,
+    "GraphDriver": {
+      "Data": {
+        "ID": "239bd4b3f2aa9334de947638139d661c278263846a20ed73258994a05cc4489a",
+        "LowerDir": "/var/lib/docker/overlay2/b35c9db102bbafca338cdf94600c112a55d0db37eca4becdf2ce10b23224066c-init/diff:/var/lib/docker/overlay2/1d25a4a86c4c49097b7aa004d773c0f4e88350dbf08961e427bd9a6fdc9132c3/diff:/var/lib/docker/overlay2/85a7c74ba5c9200a175197fab861100688be6204036fb7548b66d972da8092c6/diff:/var/lib/docker/overlay2/4edd3e3a61e562160cc92a8e2d45769b0b62205aab163be8d9a3806e664a8b37/diff",
+        "MergedDir": "/var/lib/docker/overlay2/b35c9db102bbafca338cdf94600c112a55d0db37eca4becdf2ce10b23224066c/merged",
+        "UpperDir": "/var/lib/docker/overlay2/b35c9db102bbafca338cdf94600c112a55d0db37eca4becdf2ce10b23224066c/diff",
+        "WorkDir": "/var/lib/docker/overlay2/b35c9db102bbafca338cdf94600c112a55d0db37eca4becdf2ce10b23224066c/work"
+      },
+      "Name": "overlay2"
+    },
+    "HostConfig": {
+      "AutoRemove": false,
+      "Binds": null,
+      "BlkioDeviceReadBps": [],
+      "BlkioDeviceReadIOps": [],
+      "BlkioDeviceWriteBps": [],
+      "BlkioDeviceWriteIOps": [],
+      "BlkioWeight": 0,
+      "BlkioWeightDevice": [],
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "Cgroup": "",
+      "CgroupParent": "",
+      "CgroupnsMode": "private",
+      "ConsoleSize": [
+        0,
+        0
+      ],
+      "ContainerIDFile": "",
+      "CpuCount": 0,
+      "CpuPercent": 0,
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuRealtimePeriod": 0,
+      "CpuRealtimeRuntime": 0,
+      "CpuShares": 0,
+      "CpusetCpus": "",
+      "CpusetMems": "",
+      "DeviceCgroupRules": null,
+      "DeviceRequests": null,
+      "Devices": [],
+      "Dns": [],
+      "DnsOptions": [],
+      "DnsSearch": [],
+      "ExtraHosts": null,
+      "GroupAdd": null,
+      "IOMaximumBandwidth": 0,
+      "IOMaximumIOps": 0,
+      "IpcMode": "private",
+      "Isolation": "",
+      "Links": null,
+      "LogConfig": {
+        "Config": {},
+        "Type": "json-file"
+      },
+      "MaskedPaths": [
+        "/proc/asound",
+        "/proc/acpi",
+        "/proc/interrupts",
+        "/proc/kcore",
+        "/proc/keys",
+        "/proc/latency_stats",
+        "/proc/timer_list",
+        "/proc/timer_stats",
+        "/proc/sched_debug",
+        "/proc/scsi",
+        "/sys/firmware",
+        "/sys/devices/virtual/powercap"
+      ],
+      "Memory": 12884901888,
+      "MemoryReservation": 0,
+      "MemorySwap": 12884901888,
+      "MemorySwappiness": null,
+      "Mounts": [
+        {
+          "Source": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41506262574-1",
+          "Target": "/work",
+          "Type": "bind"
+        }
+      ],
+      "NanoCpus": 2000000000,
+      "NetworkMode": "none",
+      "OomKillDisable": null,
+      "OomScoreAdj": 0,
+      "PidMode": "",
+      "PidsLimit": 4096,
+      "PortBindings": {},
+      "Privileged": false,
+      "PublishAllPorts": false,
+      "ReadonlyPaths": [
+        "/proc/bus",
+        "/proc/fs",
+        "/proc/irq",
+        "/proc/sys",
+        "/proc/sysrq-trigger"
+      ],
+      "ReadonlyRootfs": true,
+      "RestartPolicy": {
+        "MaximumRetryCount": 0,
+        "Name": "no"
+      },
+      "Runtime": "runc",
+      "SecurityOpt": [
+        "no-new-privileges"
+      ],
+      "ShmSize": 67108864,
+      "Tmpfs": {
+        "/tmp": "rw,nosuid,nodev,size=268435456"
+      },
+      "UTSMode": "",
+      "Ulimits": [],
+      "UsernsMode": "",
+      "VolumeDriver": "",
+      "VolumesFrom": null
+    },
+    "HostnamePath": "/var/lib/docker/containers/239bd4b3f2aa9334de947638139d661c278263846a20ed73258994a05cc4489a/hostname",
+    "HostsPath": "/var/lib/docker/containers/239bd4b3f2aa9334de947638139d661c278263846a20ed73258994a05cc4489a/hosts",
+    "Id": "239bd4b3f2aa9334de947638139d661c278263846a20ed73258994a05cc4489a",
+    "Image": "sha256:a958d3bee9c5261b26e221e1c1461c92f830f14293bc5050848653bd7ec8d185",
+    "LogPath": "/var/lib/docker/containers/239bd4b3f2aa9334de947638139d661c278263846a20ed73258994a05cc4489a/239bd4b3f2aa9334de947638139d661c278263846a20ed73258994a05cc4489a-json.log",
+    "MountLabel": "",
+    "Mounts": [
+      {
+        "Destination": "/work",
+        "Mode": "",
+        "Propagation": "rprivate",
+        "RW": true,
+        "Source": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41506262574-1",
+        "Type": "bind"
+      }
+    ],
+    "Name": "/nssoc-witness-build-41506262574-1",
+    "NetworkSettings": {
+      "Bridge": "",
+      "EndpointID": "",
+      "Gateway": "",
+      "GlobalIPv6Address": "",
+      "GlobalIPv6PrefixLen": 0,
+      "HairpinMode": false,
+      "IPAddress": "",
+      "IPPrefixLen": 0,
+      "IPv6Gateway": "",
+      "LinkLocalIPv6Address": "",
+      "LinkLocalIPv6PrefixLen": 0,
+      "MacAddress": "",
+      "Networks": {
+        "none": {
+          "Aliases": null,
+          "DNSNames": null,
+          "DriverOpts": null,
+          "EndpointID": "",
+          "Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "GwPriority": 0,
+          "IPAMConfig": null,
+          "IPAddress": "",
+          "IPPrefixLen": 0,
+          "IPv6Gateway": "",
+          "Links": null,
+          "MacAddress": "",
+          "NetworkID": "db2021413c20229694a1bb193d11e88c1917d996791603dc252632a6c43231b7"
+        }
+      },
+      "Ports": {},
+      "SandboxID": "",
+      "SandboxKey": "",
+      "SecondaryIPAddresses": null,
+      "SecondaryIPv6Addresses": null
+    },
+    "Path": "/usr/bin/python3",
+    "Platform": "linux",
+    "ProcessLabel": "",
+    "ResolvConfPath": "/var/lib/docker/containers/239bd4b3f2aa9334de947638139d661c278263846a20ed73258994a05cc4489a/resolv.conf",
+    "RestartCount": 0,
+    "State": {
+      "Dead": false,
+      "Error": "",
+      "ExitCode": 0,
+      "FinishedAt": "2026-11-02T19:18:23.236975108Z",
+      "OOMKilled": false,
+      "Paused": false,
+      "Pid": 0,
+      "Restarting": false,
+      "Running": false,
+      "StartedAt": "2026-11-02T19:06:59.638151231Z",
+      "Status": "exited"
+    }
+  },
+  "creation_attempted": true,
+  "full_phy_accepted": false,
+  "native_publication": {
+    "archive": {
+      "bytes": 314976709,
+      "sha256": "13cf17f6d75294cc2444013b5cfa321c50d676b29ac4975b87c257578c400bb3"
+    },
+    "assets": [
+      {
+        "bytes": 8670,
+        "id": 702896826,
+        "name": "candidate-outputs.json",
+        "reconciled_upload_error": null,
+        "sha256": "9f9cc076ca9a2a8794cba0399d2ded42d91eefe69a02f35efcdc5bd1f2b752cf"
+      },
+      {
+        "bytes": 316,
+        "id": 702896941,
+        "name": "candidate-parts.json",
+        "reconciled_upload_error": null,
+        "sha256": "6f7724682e5d65eb64efdb4d1ac3cefa277bb8a0ae8e6b97723a3362657139cb"
+      },
+      {
+        "bytes": 314976709,
+        "id": 702897085,
+        "name": "candidate-native.tar.gz.part000",
+        "reconciled_upload_error": null,
+        "sha256": "13cf17f6d75294cc2444013b5cfa321c50d676b29ac4975b87c257578c400bb3"
+      }
+    ],
+    "files": {
+      "bulk-postdrt-antenna/final-antenna-nets.json": {
+        "bytes": 27187674,
+        "sha256": "4e0b74076a084bd3a9fb53d6f0e2b2792d6445cbede1ad18e84154fe4cb6168b"
+      },
+      "bulk-postdrt-antenna/final-antenna-summary.json": {
+        "bytes": 1771,
+        "sha256": "761ef732401359b9beb821fb65046787cfb2b64e36a92b0904ff71a227865559"
+      },
+      "bulk-postdrt-antenna/final-antenna-violations.json": {
+        "bytes": 8725,
+        "sha256": "1016612b1dbb4035a101ae880f16654308f7c5efc9064ed076e5e975918009ee"
+      },
+      "bulk-postdrt-antenna/final-drc-markers.json": {
+        "bytes": 118206,
+        "sha256": "a7cbb4ad472a6f0bf6a8e422eb439dab2e2685ad3ec63062c304af7f4d0bebb9"
+      },
+      "bulk-postdrt-antenna/final-drc.json": {
+        "bytes": 1220,
+        "sha256": "8e1a52fa680c533b581726535ef81d618e7fcd2ceac7106208bf6e631d3868ef"
+      },
+      "bulk-postdrt-antenna/guide-engine-after.json": {
+        "bytes": 624857592,
+        "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+      },
+      "bulk-postdrt-antenna/guide-engine-before.json": {
+        "bytes": 624857592,
+        "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+      },
+      "bulk-postdrt-antenna/guide-engine-measured.json": {
+        "bytes": 624857592,
+        "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+      },
+      "bulk-postdrt-antenna/guide-engine-measurement.json": {
+        "bytes": 22967,
+        "sha256": "73f1edd99f1b6d385befe995a2b0254d2958550ba1fa044e1a33ba07eeb1c6cf"
+      },
+      "bulk-postdrt-antenna/guide-engine-result.json": {
+        "bytes": 13411,
+        "sha256": "8a5f2fda6b9f7f75e9a3d2c942d2f9972d44ef25dbe76bb01be905ee2d652dd4"
+      },
+      "bulk-postdrt-antenna/guide-engine-roundtrip.json": {
+        "bytes": 1153,
+        "sha256": "2715c2888cef7fb5e25076ebaa031ffac129778dd65720495f8d8e98ae58f41c"
+      },
+      "bulk-postdrt-guide-engine-acquisition.json": {
+        "bytes": 17427,
+        "sha256": "514348cc19ca42a0393aebe1690734b6c6aeeaf409f7550a884a98beb9d57919"
+      },
+      "bulk-postdrt-guide-reference-acquisition.json": {
+        "bytes": 14505,
+        "sha256": "eaf805892981915bda65d6dd25ce2a2ad50aac0e087f6c61bb3c840c8f09b97a"
+      },
+      "bulk-postdrt-inner-progress.json": {
+        "bytes": 13015,
+        "sha256": "3e2cac24fb9d2ddf76d69447b74e510fa1dc5afa4b9719ab1ba9fbfda8cc1792"
+      },
+      "bulk-postdrt-ldd.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-ldd.stdout": {
+        "bytes": 10979,
+        "sha256": "12506ce3805ac833f33d9cd45dce7721c57a711a5ae1b07798fd2570eb2b25cb"
+      },
+      "bulk-postdrt-owned-container.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-owned-container.stdout": {
+        "bytes": 72012,
+        "sha256": "afdbe8458e4dc630e91bdfb1829f3a67ef57b83ecd6783a94b6e750364846339"
+      },
+      "bulk-postdrt-runtime-observed.json": {
+        "bytes": 16940,
+        "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0"
+      },
+      "bulk-postdrt-snapshot-available-output.json": {
+        "bytes": 8293,
+        "sha256": "d88491f6863a85feea57f79fb593086ac7eb18ea52f8f49474a8a88e04862f9d"
+      },
+      "bulk-postdrt-snapshot-inner-result.json": {
+        "bytes": 58821,
+        "sha256": "b12d692f85383bab5499663ca30bf7cf919828e1127250346d332d1037ecb111"
+      },
+      "bulk-postdrt-snapshot-progress.json": {
+        "bytes": 29164,
+        "sha256": "7b30f1ed3c08d07d2bf86fdd07648034db258e8216d2da5a48ebf6b9284bda3f"
+      },
+      "bulk-postdrt-supervision/events.jsonl": {
+        "bytes": 71084,
+        "sha256": "e7233431ffc63618f98aad48e81632438c96ffaea2722a1bc052bae8ac5394c7"
+      },
+      "bulk-postdrt-supervision/guide-engine-full-drc-antenna.command.json": {
+        "bytes": 1146,
+        "sha256": "a03afbe14e8ff4e72c7f95361220c614a51551ef3f36f8ec59142dbcebadfefb"
+      },
+      "bulk-postdrt-supervision/guide-engine-full-drc-antenna.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/guide-engine-full-drc-antenna.stdout": {
+        "bytes": 244999,
+        "sha256": "3b45644720d0033fd112a2a09a97165f754a8dcfa7a17e5d8274f9ff2a7b3319"
+      },
+      "bulk-postdrt-supervision/guide-engine-measure.command.json": {
+        "bytes": 1279,
+        "sha256": "80275af1c18d88500309d49498bca8d071de0ed46e24a18bb1c4651e828e577a"
+      },
+      "bulk-postdrt-supervision/guide-engine-measure.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/guide-engine-measure.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/guide-engine-roundtrip.command.json": {
+        "bytes": 1277,
+        "sha256": "e3255cba487059cc895a382287f221ae5922923cd4545b0c370a346583fa66d0"
+      },
+      "bulk-postdrt-supervision/guide-engine-roundtrip.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/guide-engine-roundtrip.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/latest.json": {
+        "bytes": 1457,
+        "sha256": "8cf1972301f97ce4bae2e67346b43959a98e6910f29a5595f6bd5097ebfaf4f0"
+      },
+      "bulk-postdrt-version.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-version.stdout": {
+        "bytes": 42,
+        "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae"
+      },
+      "work/bulk-postdrt-antenna/final-check-after.def": {
+        "bytes": 186096898,
+        "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+      },
+      "work/bulk-postdrt-antenna/final-check-before.def": {
+        "bytes": 186096898,
+        "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+      },
+      "work/bulk-postdrt-antenna/final-check.tcl": {
+        "bytes": 751,
+        "sha256": "12ee949063aac9d9924642d208f948fb4184a865c96e1e5b60f24ea02a169732"
+      },
+      "work/bulk-postdrt-antenna/final-counts.json": {
+        "bytes": 39,
+        "sha256": "c98dccb8ca8dd69dc4592fde8b6cf3a58a6b38158ab02eed386808e4ae9e63e9"
+      },
+      "work/bulk-postdrt-antenna/final-drc-reread.rpt": {
+        "bytes": 16461,
+        "sha256": "4d70f7bb24b4aaceb7e435b4a70b4670a20f5ad07a06e4398349e69d2000c59b"
+      },
+      "work/bulk-postdrt-antenna/final-drc.rpt": {
+        "bytes": 16461,
+        "sha256": "4d70f7bb24b4aaceb7e435b4a70b4670a20f5ad07a06e4398349e69d2000c59b"
+      },
+      "work/bulk-postdrt-antenna/final-full-antenna.rpt": {
+        "bytes": 424828504,
+        "sha256": "5edaedb8f0f041cf8bb1f3889cd2d460330a4ceeb18f907ed2e1d54d611f0903"
+      },
+      "work/bulk-postdrt-antenna/final-measured.odb": {
+        "bytes": 214402279,
+        "sha256": "53b42f42c244af7416a78c0cc04cc897f99b114c892c6bc86ecc60affa3e05af"
+      },
+      "work/bulk-postdrt-antenna/guide-engine-after.def": {
+        "bytes": 186096898,
+        "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+      },
+      "work/bulk-postdrt-antenna/guide-engine-before.def": {
+        "bytes": 186096898,
+        "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+      },
+      "work/bulk-postdrt-antenna/guide-engine-full-drc-antenna.log": {
+        "bytes": 244999,
+        "sha256": "3b45644720d0033fd112a2a09a97165f754a8dcfa7a17e5d8274f9ff2a7b3319"
+      },
+      "work/bulk-postdrt-antenna/guide-engine-measure.log": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "work/bulk-postdrt-antenna/guide-engine-measured.def": {
+        "bytes": 186096898,
+        "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+      },
+      "work/bulk-postdrt-antenna/guide-engine-roundtrip.log": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "work/bulk-postdrt-antenna/narrow47-restored.odb": {
+        "bytes": 214392179,
+        "sha256": "e460c8d0751ad9d22042a2e133103e0853048110fb0b2747c04ced44eb284d4e"
+      }
+    },
+    "native_bytes_remain_in_cloud": true,
+    "partial_failure_preserved": true,
+    "release_id": 431857262,
+    "source": "64a21283a014b802329e295d1136ae1ec645fee0",
+    "status": "COMPLETE_PERMANENT_NATIVE_CAPSULE",
+    "tag": "cloud-results-41506262574-1-mainchip-bulk-postdrt-antenna"
+  },
+  "native_result": {
+    "available_outputs": {
+      "bulk-postdrt-antenna/final-antenna-nets.json": {
+        "bytes": 27187674,
+        "sha256": "4e0b74076a084bd3a9fb53d6f0e2b2792d6445cbede1ad18e84154fe4cb6168b"
+      },
+      "bulk-postdrt-antenna/final-antenna-summary.json": {
+        "bytes": 1771,
+        "sha256": "761ef732401359b9beb821fb65046787cfb2b64e36a92b0904ff71a227865559"
+      },
+      "bulk-postdrt-antenna/final-antenna-violations.json": {
+        "bytes": 8725,
+        "sha256": "1016612b1dbb4035a101ae880f16654308f7c5efc9064ed076e5e975918009ee"
+      },
+      "bulk-postdrt-antenna/final-drc-markers.json": {
+        "bytes": 118206,
+        "sha256": "a7cbb4ad472a6f0bf6a8e422eb439dab2e2685ad3ec63062c304af7f4d0bebb9"
+      },
+      "bulk-postdrt-antenna/final-drc.json": {
+        "bytes": 1220,
+        "sha256": "8e1a52fa680c533b581726535ef81d618e7fcd2ceac7106208bf6e631d3868ef"
+      },
+      "bulk-postdrt-antenna/guide-engine-after.json": {
+        "bytes": 624857592,
+        "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+      },
+      "bulk-postdrt-antenna/guide-engine-before.json": {
+        "bytes": 624857592,
+        "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+      },
+      "bulk-postdrt-antenna/guide-engine-measured.json": {
+        "bytes": 624857592,
+        "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+      },
+      "bulk-postdrt-antenna/guide-engine-measurement.json": {
+        "bytes": 22967,
+        "sha256": "73f1edd99f1b6d385befe995a2b0254d2958550ba1fa044e1a33ba07eeb1c6cf"
+      },
+      "bulk-postdrt-antenna/guide-engine-result.json": {
+        "bytes": 13411,
+        "sha256": "8a5f2fda6b9f7f75e9a3d2c942d2f9972d44ef25dbe76bb01be905ee2d652dd4"
+      },
+      "bulk-postdrt-antenna/guide-engine-roundtrip.json": {
+        "bytes": 1153,
+        "sha256": "2715c2888cef7fb5e25076ebaa031ffac129778dd65720495f8d8e98ae58f41c"
+      },
+      "bulk-postdrt-guide-engine-acquisition.json": {
+        "bytes": 17427,
+        "sha256": "514348cc19ca42a0393aebe1690734b6c6aeeaf409f7550a884a98beb9d57919"
+      },
+      "bulk-postdrt-guide-reference-acquisition.json": {
+        "bytes": 14505,
+        "sha256": "eaf805892981915bda65d6dd25ce2a2ad50aac0e087f6c61bb3c840c8f09b97a"
+      },
+      "bulk-postdrt-inner-progress.json": {
+        "bytes": 13015,
+        "sha256": "3e2cac24fb9d2ddf76d69447b74e510fa1dc5afa4b9719ab1ba9fbfda8cc1792"
+      },
+      "bulk-postdrt-ldd.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-ldd.stdout": {
+        "bytes": 10979,
+        "sha256": "12506ce3805ac833f33d9cd45dce7721c57a711a5ae1b07798fd2570eb2b25cb"
+      },
+      "bulk-postdrt-owned-container.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-owned-container.stdout": {
+        "bytes": 72012,
+        "sha256": "afdbe8458e4dc630e91bdfb1829f3a67ef57b83ecd6783a94b6e750364846339"
+      },
+      "bulk-postdrt-runtime-observed.json": {
+        "bytes": 16940,
+        "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0"
+      },
+      "bulk-postdrt-snapshot-available-output.json": {
+        "bytes": 8293,
+        "sha256": "d88491f6863a85feea57f79fb593086ac7eb18ea52f8f49474a8a88e04862f9d"
+      },
+      "bulk-postdrt-snapshot-progress.json": {
+        "bytes": 29164,
+        "sha256": "7b30f1ed3c08d07d2bf86fdd07648034db258e8216d2da5a48ebf6b9284bda3f"
+      },
+      "bulk-postdrt-supervision/events.jsonl": {
+        "bytes": 71084,
+        "sha256": "e7233431ffc63618f98aad48e81632438c96ffaea2722a1bc052bae8ac5394c7"
+      },
+      "bulk-postdrt-supervision/guide-engine-full-drc-antenna.command.json": {
+        "bytes": 1146,
+        "sha256": "a03afbe14e8ff4e72c7f95361220c614a51551ef3f36f8ec59142dbcebadfefb"
+      },
+      "bulk-postdrt-supervision/guide-engine-full-drc-antenna.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/guide-engine-full-drc-antenna.stdout": {
+        "bytes": 244999,
+        "sha256": "3b45644720d0033fd112a2a09a97165f754a8dcfa7a17e5d8274f9ff2a7b3319"
+      },
+      "bulk-postdrt-supervision/guide-engine-measure.command.json": {
+        "bytes": 1279,
+        "sha256": "80275af1c18d88500309d49498bca8d071de0ed46e24a18bb1c4651e828e577a"
+      },
+      "bulk-postdrt-supervision/guide-engine-measure.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/guide-engine-measure.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/guide-engine-roundtrip.command.json": {
+        "bytes": 1277,
+        "sha256": "e3255cba487059cc895a382287f221ae5922923cd4545b0c370a346583fa66d0"
+      },
+      "bulk-postdrt-supervision/guide-engine-roundtrip.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/guide-engine-roundtrip.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/latest.json": {
+        "bytes": 1457,
+        "sha256": "8cf1972301f97ce4bae2e67346b43959a98e6910f29a5595f6bd5097ebfaf4f0"
+      },
+      "bulk-postdrt-version.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-version.stdout": {
+        "bytes": 42,
+        "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae"
+      },
+      "create-attempt.json": {
+        "bytes": 1265,
+        "sha256": "a007a0b3f21335d83e717cbf8669d6cb9857f7e81ba40e61dd0659df4b84072f"
+      },
+      "host-progress.json": {
+        "bytes": 2390,
+        "sha256": "e72161cda37bb8d44cd19d238fef33469ddf75d4631ad407194034f9ea4a66cd"
+      },
+      "image-inspect.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "image-inspect.stdout": {
+        "bytes": 2643,
+        "sha256": "d3ca285a66190e177b14f797cfb96db0c6484627d39762e43c21636ad5865f59"
+      },
+      "immutable-image-pull.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "immutable-image-pull.stdout": {
+        "bytes": 837,
+        "sha256": "f2e858bdd0164b89c06da570b7d63e234534590a4872d84ac5f27f07d033fbe4"
+      },
+      "names-before-owned-create.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "names-before-owned-create.stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-container-create.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-container-create.stdout": {
+        "bytes": 65,
+        "sha256": "7bbd5a0d8a6fe54fe2f7a073dd092d71229cf23d56e035287354baaf997376e6"
+      },
+      "prefix-envelope.json": {
+        "bytes": 4270,
+        "sha256": "11281aedb0c83745f8126820b9c3c5421c20ed572e48bda55356f5d68c8313fb"
+      },
+      "prefix-restoration.json": {
+        "bytes": 423478,
+        "sha256": "23f45038bb461360ec38c7a2490ba24c84db2f9dd3a53e8b2e689201d693d177"
+      },
+      "work/baseline-native.json": {
+        "bytes": 93552939,
+        "sha256": "65b2199b81643a0216504fb44421e42f60da5added54807f3c91659836c59fff"
+      },
+      "work/baseline-original.def": {
+        "bytes": 185377920,
+        "sha256": "50637ee844f1166c6e2faf7dd6d6e365147096ac974fa878b6a00aeb0448be4a"
+      },
+      "work/bulk-postdrt-antenna/final-check-after.def": {
+        "bytes": 186096898,
+        "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+      },
+      "work/bulk-postdrt-antenna/final-check-before.def": {
+        "bytes": 186096898,
+        "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+      },
+      "work/bulk-postdrt-antenna/final-check.tcl": {
+        "bytes": 751,
+        "sha256": "12ee949063aac9d9924642d208f948fb4184a865c96e1e5b60f24ea02a169732"
+      },
+      "work/bulk-postdrt-antenna/final-counts.json": {
+        "bytes": 39,
+        "sha256": "c98dccb8ca8dd69dc4592fde8b6cf3a58a6b38158ab02eed386808e4ae9e63e9"
+      },
+      "work/bulk-postdrt-antenna/final-drc-reread.rpt": {
+        "bytes": 16461,
+        "sha256": "4d70f7bb24b4aaceb7e435b4a70b4670a20f5ad07a06e4398349e69d2000c59b"
+      },
+      "work/bulk-postdrt-antenna/final-drc.rpt": {
+        "bytes": 16461,
+        "sha256": "4d70f7bb24b4aaceb7e435b4a70b4670a20f5ad07a06e4398349e69d2000c59b"
+      },
+      "work/bulk-postdrt-antenna/final-full-antenna.rpt": {
+        "bytes": 424828504,
+        "sha256": "5edaedb8f0f041cf8bb1f3889cd2d460330a4ceeb18f907ed2e1d54d611f0903"
+      },
+      "work/bulk-postdrt-antenna/final-measured.odb": {
+        "bytes": 214402279,
+        "sha256": "53b42f42c244af7416a78c0cc04cc897f99b114c892c6bc86ecc60affa3e05af"
+      },
+      "work/bulk-postdrt-antenna/guide-engine-after.def": {
+        "bytes": 186096898,
+        "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+      },
+      "work/bulk-postdrt-antenna/guide-engine-before.def": {
+        "bytes": 186096898,
+        "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+      },
+      "work/bulk-postdrt-antenna/guide-engine-full-drc-antenna.log": {
+        "bytes": 244999,
+        "sha256": "3b45644720d0033fd112a2a09a97165f754a8dcfa7a17e5d8274f9ff2a7b3319"
+      },
+      "work/bulk-postdrt-antenna/guide-engine-measure.log": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "work/bulk-postdrt-antenna/guide-engine-measured.def": {
+        "bytes": 186096898,
+        "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+      },
+      "work/bulk-postdrt-antenna/guide-engine-roundtrip.log": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "work/bulk-postdrt-antenna/narrow47-restored.odb": {
+        "bytes": 214392179,
+        "sha256": "e460c8d0751ad9d22042a2e133103e0853048110fb0b2747c04ced44eb284d4e"
+      },
+      "work/expected-fixed.def": {
+        "bytes": 185234217,
+        "sha256": "71e7923d9dfde9c058b293f10d88be942e87e21f2955f8da9d3d08a2b39d0f29"
+      },
+      "work/fixed-audit-result.json": {
+        "bytes": 6641,
+        "sha256": "19fbc0bdae6dac7d69025ec81aeea211ba8d15d1b7e48cc39cc70787d0d8d20b"
+      },
+      "work/fixed-audit.def": {
+        "bytes": 185234217,
+        "sha256": "71e7923d9dfde9c058b293f10d88be942e87e21f2955f8da9d3d08a2b39d0f29"
+      },
+      "work/fixed-base.odb": {
+        "bytes": 213738152,
+        "sha256": "015add446fac5bd730a670257d73a1bc465b1c5ece41cd94c016289e57a96a7f"
+      },
+      "work/fixed-metadata.def": {
+        "bytes": 185234217,
+        "sha256": "71e7923d9dfde9c058b293f10d88be942e87e21f2955f8da9d3d08a2b39d0f29"
+      },
+      "work/fixed-native.json": {
+        "bytes": 90722025,
+        "sha256": "83d064cdeac60ea8af2b0cc3ed84b81354c5c01af9956f6b9c0dfe4328177349"
+      },
+      "work/fixed-patch.def": {
+        "bytes": 137947066,
+        "sha256": "f91bc68a1a00894a1966e34340e2521e3b83de76c3d3384b079b88516efabced"
+      },
+      "work/fixed-single.def": {
+        "bytes": 185234217,
+        "sha256": "852bbf6e26aa37b876c2b3db1d1848cecf274e6fdd85b160f730a3fbfa9c0658"
+      },
+      "work/fixed.def": {
+        "bytes": 185234217,
+        "sha256": "71e7923d9dfde9c058b293f10d88be942e87e21f2955f8da9d3d08a2b39d0f29"
+      },
+      "work/fixed.odb": {
+        "bytes": 213738152,
+        "sha256": "45dc1b634fafaba4dda8475430ea1a82a69a355dfac6a6b2bbdf63529777e431"
+      },
+      "work/fixed.tcl": {
+        "bytes": 285,
+        "sha256": "04decbd74305bae6b500ba284a947f9cbecb4f9e2f10cd227196f2cd8f9ce3fc"
+      },
+      "work/original-classes.json": {
+        "bytes": 5758159,
+        "sha256": "519ccd6b21dd71e4a79619ce3b68c0537492c2466a10b7e66b03b68cc6e9abcd"
+      },
+      "work/original-gate-before-two-net-repair/after.def": {
+        "bytes": 185377920,
+        "sha256": "50637ee844f1166c6e2faf7dd6d6e365147096ac974fa878b6a00aeb0448be4a"
+      },
+      "work/original-gate-before-two-net-repair/before.def": {
+        "bytes": 59000251,
+        "sha256": "f8e4c86346c8876fa04ff02ccd8d8f060f018e6fab36fdca834b986d07a4748c"
+      },
+      "work/original-gate-before-two-net-repair/result.json": {
+        "bytes": 648,
+        "sha256": "9d9ec828fdbdecd37d8a1b151f05de663a98ce18320562d10f4bba41b78e18f1"
+      },
+      "work/owners.json": {
+        "bytes": 4663140,
+        "sha256": "5607c28196291f1ddf75919fd22afe344fc6b167c6fc4fec26fad79a33b1283b"
+      },
+      "work/ownership-result.json": {
+        "bytes": 558394,
+        "sha256": "9d9669a1ad3dc51d1527026db610f69f7c44a26fe9b7bb1ba7f21db47aa2a4f5"
+      },
+      "work/ownership.json": {
+        "bytes": 508186,
+        "sha256": "046eaa66796563fd0ed49c9cd87077bbce7889a0767b4852bc9131f07529a08f"
+      },
+      "work/prepare-fixed-result.json": {
+        "bytes": 384,
+        "sha256": "dcd7282696a30ca1a08a9d022bbc72844bc10a2128b0349a9a26d62bd0081ffe"
+      },
+      "work/repair.tcl": {
+        "bytes": 1719,
+        "sha256": "ea723ae478c019c45ce79f33c6a4abb65d298c053abd32c35c4376902be02c2d"
+      },
+      "work/router-census-observed.json": {
+        "bytes": 214498564,
+        "sha256": "d62edab967a4c17cbdca2dc4f37b6a8730c5abb18bf73cb2b1c4caf62dad4c72"
+      },
+      "work/router-census-report.json": {
+        "bytes": 5827,
+        "sha256": "39cfb5c33bb526b3ac4836b57312636b93940acbc34c28b3d21c86ffde2625fa"
+      },
+      "work/source-markers.json": {
+        "bytes": 4106,
+        "sha256": "7cd9e8de6c42fdd7da36ffac188298100fe207099c3db8687184feee47284934"
+      },
+      "work/source-markers.rpt": {
+        "bytes": 433,
+        "sha256": "47391c36cc33bc08cdf11552d52da427de1e1c287ca99527aa7074d5d68a3d26"
+      }
+    },
+    "bounded_cycle_qualified": false,
+    "cgroup_initial": {
+      "cpu.max": "200000 100000",
+      "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+      "memory.max": "12884901888",
+      "memory.peak": "230166528",
+      "memory.swap.max": "0",
+      "pids.max": "4096"
+    },
+    "cgroup_terminal": {
+      "cpu.max": "200000 100000",
+      "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+      "memory.max": "12884901888",
+      "memory.peak": "9054203904",
+      "memory.swap.max": "0",
+      "pids.max": "4096"
+    },
+    "commands": [
+      {
+        "argv": [
+          "/work/guide-engine/openroad",
+          "-version"
+        ],
+        "elapsed_seconds": 0.031913392999996404,
+        "label": "bulk-postdrt-version",
+        "returncode": 0
+      },
+      {
+        "argv": [
+          "ldd",
+          "/work/guide-engine/openroad"
+        ],
+        "elapsed_seconds": 0.032222133999994185,
+        "label": "bulk-postdrt-ldd",
+        "returncode": 0
+      },
+      {
+        "argv": [
+          "/work/guide-engine/openroad",
+          "-no_init",
+          "-exit",
+          "-python",
+          "/work/tail-source/scripts/mainchip_guide_engine_native.py"
+        ],
+        "command_evidence": {
+          "command_only": true,
+          "event_authenticated": false,
+          "full_phy_accepted": false,
+          "native_execution_performed": false,
+          "path": "ordinary_no_memory_error",
+          "physical_acceptance": false,
+          "pre_cleanup_command_deadline_proved": false,
+          "requested_timeout_bound": false,
+          "requested_timeout_recorded": false,
+          "retained_memory_read_error": null,
+          "seconds": 1200,
+          "source_authenticated": false,
+          "status": "PASS_EXIT_CHECKED_COMMAND_EVIDENCE",
+          "stream_bytes_authenticated": false,
+          "terminal_resolution_validated": false,
+          "timing_accepted": false
+        },
+        "command_record_pin": {
+          "bytes": 1277,
+          "sha256": "e3255cba487059cc895a382287f221ae5922923cd4545b0c370a346583fa66d0"
+        },
+        "label": "guide-engine-roundtrip",
+        "requested_timeout_seconds": 1200,
+        "returncode": 0,
+        "supervision_record": {
+          "argv": [
+            "/work/guide-engine/openroad",
+            "-no_init",
+            "-exit",
+            "-python",
+            "/work/tail-source/scripts/mainchip_guide_engine_native.py"
+          ],
+          "elapsed_seconds": 215.256526499,
+          "label": "guide-engine-roundtrip",
+          "last_memory_sentinel_sample": {
+            "available_kib": 13890752,
+            "enumeration_disappearances": [],
+            "excluded_nonrunning": [],
+            "group_rss_kib": 617368,
+            "group_rss_may_double_count_shared_pages": true,
+            "members": [
+              {
+                "pgrp": 16,
+                "pid": 16,
+                "rss_kib": 617368,
+                "starttime": 22227
+              }
+            ],
+            "resampling_evidence": [],
+            "sampling_attempts": 1,
+            "sampling_elapsed_seconds": 0.0010589769999569398,
+            "total_snapshot_budget_seconds": 0.1
+          },
+          "maximum_group_rss_kib": 11534336,
+          "memory_read_error": null,
+          "memory_terminal_resolution": null,
+          "minimum_available_kib": 2097152,
+          "pid": 16,
+          "process_group_cleanup": {
+            "remaining_live": [],
+            "remaining_nonrunning": [],
+            "signals": []
+          },
+          "returncode": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 285,
+          "stdout_sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+          "supervision_failure": null
+        }
+      },
+      {
+        "argv": [
+          "/work/guide-engine/openroad",
+          "-no_init",
+          "-exit",
+          "/work/out/work/bulk-postdrt-antenna/final-check.tcl"
+        ],
+        "command_evidence": {
+          "command_only": true,
+          "event_authenticated": false,
+          "full_phy_accepted": false,
+          "native_execution_performed": false,
+          "path": "ordinary_no_memory_error",
+          "physical_acceptance": false,
+          "pre_cleanup_command_deadline_proved": false,
+          "requested_timeout_bound": false,
+          "requested_timeout_recorded": false,
+          "retained_memory_read_error": null,
+          "seconds": 1200,
+          "source_authenticated": false,
+          "status": "PASS_EXIT_CHECKED_COMMAND_EVIDENCE",
+          "stream_bytes_authenticated": false,
+          "terminal_resolution_validated": false,
+          "timing_accepted": false
+        },
+        "command_record_pin": {
+          "bytes": 1146,
+          "sha256": "a03afbe14e8ff4e72c7f95361220c614a51551ef3f36f8ec59142dbcebadfefb"
+        },
+        "label": "guide-engine-full-drc-antenna",
+        "requested_timeout_seconds": 1200,
+        "returncode": 0,
+        "supervision_record": {
+          "argv": [
+            "/work/guide-engine/openroad",
+            "-no_init",
+            "-exit",
+            "/work/out/work/bulk-postdrt-antenna/final-check.tcl"
+          ],
+          "elapsed_seconds": 285.02946684,
+          "label": "guide-engine-full-drc-antenna",
+          "last_memory_sentinel_sample": {
+            "available_kib": 14067476,
+            "enumeration_disappearances": [],
+            "excluded_nonrunning": [],
+            "group_rss_kib": 0,
+            "group_rss_may_double_count_shared_pages": true,
+            "members": [],
+            "resampling_evidence": [],
+            "sampling_attempts": 1,
+            "sampling_elapsed_seconds": 0.0006176790000154142,
+            "total_snapshot_budget_seconds": 0.1
+          },
+          "maximum_group_rss_kib": 11534336,
+          "memory_read_error": null,
+          "memory_terminal_resolution": null,
+          "minimum_available_kib": 2097152,
+          "pid": 17,
+          "process_group_cleanup": {
+            "remaining_live": [],
+            "remaining_nonrunning": [],
+            "signals": []
+          },
+          "returncode": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 244999,
+          "stdout_sha256": "3b45644720d0033fd112a2a09a97165f754a8dcfa7a17e5d8274f9ff2a7b3319",
+          "supervision_failure": null
+        }
+      },
+      {
+        "argv": [
+          "/work/guide-engine/openroad",
+          "-no_init",
+          "-exit",
+          "-python",
+          "/work/tail-source/scripts/mainchip_guide_engine_native.py"
+        ],
+        "command_evidence": {
+          "command_only": true,
+          "event_authenticated": false,
+          "full_phy_accepted": false,
+          "native_execution_performed": false,
+          "path": "ordinary_no_memory_error",
+          "physical_acceptance": false,
+          "pre_cleanup_command_deadline_proved": false,
+          "requested_timeout_bound": false,
+          "requested_timeout_recorded": false,
+          "retained_memory_read_error": null,
+          "seconds": 1200,
+          "source_authenticated": false,
+          "status": "PASS_EXIT_CHECKED_COMMAND_EVIDENCE",
+          "stream_bytes_authenticated": false,
+          "terminal_resolution_validated": false,
+          "timing_accepted": false
+        },
+        "command_record_pin": {
+          "bytes": 1279,
+          "sha256": "80275af1c18d88500309d49498bca8d071de0ed46e24a18bb1c4651e828e577a"
+        },
+        "label": "guide-engine-measure",
+        "requested_timeout_seconds": 1200,
+        "returncode": 0,
+        "supervision_record": {
+          "argv": [
+            "/work/guide-engine/openroad",
+            "-no_init",
+            "-exit",
+            "-python",
+            "/work/tail-source/scripts/mainchip_guide_engine_native.py"
+          ],
+          "elapsed_seconds": 172.9080372269999,
+          "label": "guide-engine-measure",
+          "last_memory_sentinel_sample": {
+            "available_kib": 14175212,
+            "enumeration_disappearances": [],
+            "excluded_nonrunning": [],
+            "group_rss_kib": 617396,
+            "group_rss_may_double_count_shared_pages": true,
+            "members": [
+              {
+                "pgrp": 21,
+                "pid": 21,
+                "rss_kib": 617396,
+                "starttime": 72257
+              }
+            ],
+            "resampling_evidence": [],
+            "sampling_attempts": 1,
+            "sampling_elapsed_seconds": 0.0006836329999941881,
+            "total_snapshot_budget_seconds": 0.1
+          },
+          "maximum_group_rss_kib": 11534336,
+          "memory_read_error": null,
+          "memory_terminal_resolution": null,
+          "minimum_available_kib": 2097152,
+          "pid": 21,
+          "process_group_cleanup": {
+            "remaining_live": [],
+            "remaining_nonrunning": [],
+            "signals": []
+          },
+          "returncode": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 285,
+          "stdout_sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+          "supervision_failure": null
+        }
+      }
+    ],
+    "current_audit_calls": 3,
+    "current_class_import_phases": 0,
+    "current_reconstruction_calls": 0,
+    "current_repair_calls": 0,
+    "current_route_calls": 0,
+    "elapsed_seconds": 677.265687405,
+    "execution_memory_checker": {
+      "all_function_bodies_unchanged": true,
+      "derived_sha256": "08b30b1fcb7319ca5a204bf94da2ce8a7f03ead5e17d310aa0baaf8fc17c9e84",
+      "only_MAX_GROUP_RSS_KIB_changed": true,
+      "original_sha256": "059e3e4edde4a63997cc841728f02d5b6a2aaf77335cb7d1b8dba70ed7d2e321"
+    },
+    "execution_memory_policy": {
+      "container_bytes": 12884901888,
+      "execution_resource_change_only": true,
+      "full_phy_accepted": false,
+      "maximum_group_rss_kib": 11534336,
+      "minimum_available_kib": 2097152,
+      "non_RSS_reserve_bytes": 1073741824,
+      "original_maximum_group_rss_kib": 10485760,
+      "physical_acceptance": false,
+      "timing_accepted": false
+    },
+    "full_phy_accepted": false,
+    "guide_engine_observation_complete": true,
+    "guide_engine_result": {
+      "antenna": {
+        "design_is_routed": 1,
+        "net_count": 21,
+        "violations": [
+          {
+            "display_limit": "200.00",
+            "display_value": "324.55",
+            "layer": "Metal5",
+            "line": 1935656,
+            "master": "sg13g2_o21ai_1",
+            "net": "$abc$1804206$new_n41551",
+            "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1815427/A1",
+            "required_line": 1935657,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "324.89",
+            "layer": "Metal5",
+            "line": 1935738,
+            "master": "sg13g2_o21ai_1",
+            "net": "$abc$1804206$new_n41551",
+            "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1815469/A2",
+            "required_line": 1935739,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "365.04",
+            "layer": "Metal4",
+            "line": 11478470,
+            "master": "sg13g2_buf_2",
+            "net": "net20232",
+            "pin": "wire6147/A",
+            "required_line": 11478471,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "605.89",
+            "layer": "Metal2",
+            "line": 5641466,
+            "master": "sg13g2_dlygate4sd3_1",
+            "net": "net257",
+            "pin": "hold35334/A",
+            "required_line": 5641467,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "202.36",
+            "layer": "Metal4",
+            "line": 12297034,
+            "master": "sg13g2_buf_1",
+            "net": "net36525",
+            "pin": "fanout36524/A",
+            "required_line": 12297035,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "227.70",
+            "layer": "Metal3",
+            "line": 12419315,
+            "master": "sg13g2_nand3_1",
+            "net": "net37046",
+            "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1874335/A",
+            "required_line": 12419316,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "254.92",
+            "layer": "Metal4",
+            "line": 12419331,
+            "master": "sg13g2_nand3_1",
+            "net": "net37046",
+            "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1874335/A",
+            "required_line": 12419332,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "254.37",
+            "layer": "Metal2",
+            "line": 12420032,
+            "master": "sg13g2_buf_1",
+            "net": "net37049",
+            "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1828282/A",
+            "required_line": 12420033,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "240.31",
+            "layer": "Metal3",
+            "line": 12538825,
+            "master": "sg13g2_a22oi_1",
+            "net": "net37476",
+            "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1868920/B2",
+            "required_line": 12538826,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "223.02",
+            "layer": "Metal3",
+            "line": 12577731,
+            "master": "sg13g2_a22oi_1",
+            "net": "net37592",
+            "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1869398/B2",
+            "required_line": 12577732,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "217.34",
+            "layer": "Metal3",
+            "line": 12658203,
+            "master": "sg13g2_a22oi_1",
+            "net": "net37854",
+            "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1831011/B2",
+            "required_line": 12658204,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "430.18",
+            "layer": "Metal3",
+            "line": 5652154,
+            "master": "sg13g2_buf_1",
+            "net": "net40",
+            "pin": "fanout37999/A",
+            "required_line": 5652155,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "208.64",
+            "layer": "Metal3",
+            "line": 8854998,
+            "master": "sg13g2_nand2_1",
+            "net": "net4398",
+            "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1831832/B",
+            "required_line": 8854999,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "229.24",
+            "layer": "Metal4",
+            "line": 8855014,
+            "master": "sg13g2_nand2_1",
+            "net": "net4398",
+            "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1831832/B",
+            "required_line": 8855015,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "252.28",
+            "layer": "Metal4",
+            "line": 8858513,
+            "master": "sg13g2_buf_1",
+            "net": "net4455",
+            "pin": "load_slew4452/A",
+            "required_line": 8858514,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "227.95",
+            "layer": "Metal3",
+            "line": 5691322,
+            "master": "sg13g2_dlygate4sd3_1",
+            "net": "s_wdata[26]",
+            "pin": "hold21178/A",
+            "required_line": 5691323,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "202.47",
+            "layer": "Metal3",
+            "line": 5694046,
+            "master": "sg13g2_dlygate4sd3_1",
+            "net": "s_wdata[8]",
+            "pin": "hold21208/A",
+            "required_line": 5694047,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "205.47",
+            "layer": "Metal2",
+            "line": 6204231,
+            "master": "sg13g2_a22oi_1",
+            "net": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[21\\].rf_reg_q[11]",
+            "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1869896/B2",
+            "required_line": 6204232,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "318.06",
+            "layer": "Metal3",
+            "line": 6361022,
+            "master": "sg13g2_a22oi_1",
+            "net": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[31\\].rf_reg_q[17]",
+            "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1868762/B2",
+            "required_line": 6361023,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "321.83",
+            "layer": "Metal4",
+            "line": 6361038,
+            "master": "sg13g2_a22oi_1",
+            "net": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[31\\].rf_reg_q[17]",
+            "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1868762/B2",
+            "required_line": 6361039,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "302.30",
+            "layer": "TopMetal1",
+            "line": 6472333,
+            "master": "sg13g2_a21o_1",
+            "net": "u_ibex.gen_regfile_ff.register_file_i.waddr_a_i[4]",
+            "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1841844/A1",
+            "required_line": 6472334,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "302.30",
+            "layer": "TopMetal1",
+            "line": 6472431,
+            "master": "sg13g2_a21oi_1",
+            "net": "u_ibex.gen_regfile_ff.register_file_i.waddr_a_i[4]",
+            "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1846638/A1",
+            "required_line": 6472432,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "290.80",
+            "layer": "Metal2",
+            "line": 7106559,
+            "master": "sg13g2_dlygate4sd3_1",
+            "net": "u_pcie.receive_ownership.packets\\[110\\][4]",
+            "pin": "hold33483/A",
+            "required_line": 7106560,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "284.87",
+            "layer": "Metal2",
+            "line": 7121214,
+            "master": "sg13g2_dlygate4sd3_1",
+            "net": "u_pcie.receive_ownership.packets\\[123\\][1]",
+            "pin": "hold34720/A",
+            "required_line": 7121215,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "222.12",
+            "layer": "Metal2",
+            "line": 7166892,
+            "master": "sg13g2_dlygate4sd3_1",
+            "net": "u_pcie.receive_ownership.packets\\[37\\][5]",
+            "pin": "hold34091/A",
+            "required_line": 7166893,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "435.88",
+            "layer": "Metal3",
+            "line": 7321280,
+            "master": "sg13g2_dfrbpq_1",
+            "net": "u_rom.u_ecc.s_go",
+            "pin": "$auto$ff.cc:337:slice$1314943/D",
+            "required_line": 7321281,
+            "rule": "Cumulative area",
+            "violated": true
+          },
+          {
+            "display_limit": "200.00",
+            "display_value": "451.00",
+            "layer": "Metal4",
+            "line": 7321296,
+            "master": "sg13g2_dfrbpq_1",
+            "net": "u_rom.u_ecc.s_go",
+            "pin": "$auto$ff.cc:337:slice$1314943/D",
+            "required_line": 7321297,
+            "rule": "Cumulative area",
+            "violated": true
+          }
+        ]
+      },
+      "current_repair_calls": 0,
+      "current_route_calls": 0,
+      "drc": {
+        "all_categories_below_native_cap": true,
+        "categories": [
+          {
+            "direct_markers": 0,
+            "maximum_markers": 10000,
+            "path": [
+              "NSSOC_ONE_BULK_POSTDRT_ANTENNA_DRC"
+            ],
+            "source": "DRT"
+          },
+          {
+            "direct_markers": 64,
+            "maximum_markers": 10000,
+            "path": [
+              "NSSOC_ONE_BULK_POSTDRT_ANTENNA_DRC",
+              "Short"
+            ],
+            "source": "DRT"
+          },
+          {
+            "direct_markers": 28,
+            "maximum_markers": 10000,
+            "path": [
+              "NSSOC_ONE_BULK_POSTDRT_ANTENNA_DRC",
+              "Metal Spacing"
+            ],
+            "source": "DRT"
+          }
+        ],
+        "full_signoff_DRC": false,
+        "marker_count": 92,
+        "report_bytes": 16461,
+        "report_sha256": "4d70f7bb24b4aaceb7e435b4a70b4670a20f5ad07a06e4398349e69d2000c59b",
+        "serialized_markers": {
+          "bytes": 118206,
+          "category_count": 3,
+          "complete_native_category_census_equal": true,
+          "marker_count": 92,
+          "scope": "Exact named category paths, direct counts, positive caps, DRT source and total count; full marker bodies preserved, not an independent shape-semantic interpretation.",
+          "sha256": "a7cbb4ad472a6f0bf6a8e422eb439dab2e2685ad3ec63062c304af7f4d0bebb9"
+        },
+        "zero_reported_DRT_markers": false
+      },
+      "full_phy_accepted": false,
+      "native_chip_roundtrip_qualified": true,
+      "native_routing_qualified": false,
+      "physical_acceptance": false,
+      "roundtrip": {
+        "after": {
+          "DEF": {
+            "bytes": 186096898,
+            "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+          },
+          "instances": 154480,
+          "nets": 143820,
+          "protected_clock_records": 1691,
+          "snapshot": {
+            "bytes": 624857592,
+            "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+          }
+        },
+        "before": {
+          "DEF": {
+            "bytes": 186096898,
+            "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+          },
+          "instances": 154480,
+          "nets": 143820,
+          "protected_clock_records": 1691,
+          "snapshot": {
+            "bytes": 624857592,
+            "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+          }
+        },
+        "candidate": {
+          "bytes": 214392179,
+          "sha256": "e460c8d0751ad9d22042a2e133103e0853048110fb0b2747c04ced44eb284d4e"
+        },
+        "current_route_calls": 0,
+        "full_phy_accepted": false,
+        "physical_acceptance": false,
+        "rewritten": {
+          "bytes": 214392179,
+          "sha256": "e460c8d0751ad9d22042a2e133103e0853048110fb0b2747c04ced44eb284d4e"
+        },
+        "status": "PASS_ACTUAL_CHIP_NEW_ENGINE_ROUNDTRIP",
+        "timing_accepted": false
+      },
+      "routing_complete": false,
+      "routing_memory_reduction_measured": false,
+      "snapshot": {
+        "DEF": {
+          "bytes": 186096898,
+          "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+        },
+        "instances": 154480,
+        "nets": 143820,
+        "protected_clock_records": 1691,
+        "snapshot": {
+          "bytes": 624857592,
+          "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+        }
+      },
+      "status": "PASS_ACTUAL_CHIP_ENGINE_ROUNDTRIP_AND_FULL_CHECKS",
+      "timing_accepted": false
+    },
+    "new_candidate_connectivity_accepted": false,
+    "phases": [
+      {
+        "phase": "roundtrip",
+        "result": {
+          "after": {
+            "DEF": {
+              "bytes": 186096898,
+              "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+            },
+            "instances": 154480,
+            "nets": 143820,
+            "protected_clock_records": 1691,
+            "snapshot": {
+              "bytes": 624857592,
+              "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+            }
+          },
+          "before": {
+            "DEF": {
+              "bytes": 186096898,
+              "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+            },
+            "instances": 154480,
+            "nets": 143820,
+            "protected_clock_records": 1691,
+            "snapshot": {
+              "bytes": 624857592,
+              "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+            }
+          },
+          "candidate": {
+            "bytes": 214392179,
+            "sha256": "e460c8d0751ad9d22042a2e133103e0853048110fb0b2747c04ced44eb284d4e"
+          },
+          "current_route_calls": 0,
+          "full_phy_accepted": false,
+          "physical_acceptance": false,
+          "rewritten": {
+            "bytes": 214392179,
+            "sha256": "e460c8d0751ad9d22042a2e133103e0853048110fb0b2747c04ced44eb284d4e"
+          },
+          "status": "PASS_ACTUAL_CHIP_NEW_ENGINE_ROUNDTRIP",
+          "timing_accepted": false
+        },
+        "status": "complete"
+      },
+      {
+        "phase": "final-check",
+        "result": {
+          "actual_drc_antenna_checker_returned": true
+        },
+        "status": "complete"
+      },
+      {
+        "phase": "measure",
+        "result": {
+          "antenna": {
+            "design_is_routed": 1,
+            "net_count": 21,
+            "violations": [
+              {
+                "display_limit": "200.00",
+                "display_value": "324.55",
+                "layer": "Metal5",
+                "line": 1935656,
+                "master": "sg13g2_o21ai_1",
+                "net": "$abc$1804206$new_n41551",
+                "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1815427/A1",
+                "required_line": 1935657,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "324.89",
+                "layer": "Metal5",
+                "line": 1935738,
+                "master": "sg13g2_o21ai_1",
+                "net": "$abc$1804206$new_n41551",
+                "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1815469/A2",
+                "required_line": 1935739,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "365.04",
+                "layer": "Metal4",
+                "line": 11478470,
+                "master": "sg13g2_buf_2",
+                "net": "net20232",
+                "pin": "wire6147/A",
+                "required_line": 11478471,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "605.89",
+                "layer": "Metal2",
+                "line": 5641466,
+                "master": "sg13g2_dlygate4sd3_1",
+                "net": "net257",
+                "pin": "hold35334/A",
+                "required_line": 5641467,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "202.36",
+                "layer": "Metal4",
+                "line": 12297034,
+                "master": "sg13g2_buf_1",
+                "net": "net36525",
+                "pin": "fanout36524/A",
+                "required_line": 12297035,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "227.70",
+                "layer": "Metal3",
+                "line": 12419315,
+                "master": "sg13g2_nand3_1",
+                "net": "net37046",
+                "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1874335/A",
+                "required_line": 12419316,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "254.92",
+                "layer": "Metal4",
+                "line": 12419331,
+                "master": "sg13g2_nand3_1",
+                "net": "net37046",
+                "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1874335/A",
+                "required_line": 12419332,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "254.37",
+                "layer": "Metal2",
+                "line": 12420032,
+                "master": "sg13g2_buf_1",
+                "net": "net37049",
+                "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1828282/A",
+                "required_line": 12420033,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "240.31",
+                "layer": "Metal3",
+                "line": 12538825,
+                "master": "sg13g2_a22oi_1",
+                "net": "net37476",
+                "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1868920/B2",
+                "required_line": 12538826,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "223.02",
+                "layer": "Metal3",
+                "line": 12577731,
+                "master": "sg13g2_a22oi_1",
+                "net": "net37592",
+                "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1869398/B2",
+                "required_line": 12577732,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "217.34",
+                "layer": "Metal3",
+                "line": 12658203,
+                "master": "sg13g2_a22oi_1",
+                "net": "net37854",
+                "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1831011/B2",
+                "required_line": 12658204,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "430.18",
+                "layer": "Metal3",
+                "line": 5652154,
+                "master": "sg13g2_buf_1",
+                "net": "net40",
+                "pin": "fanout37999/A",
+                "required_line": 5652155,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "208.64",
+                "layer": "Metal3",
+                "line": 8854998,
+                "master": "sg13g2_nand2_1",
+                "net": "net4398",
+                "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1831832/B",
+                "required_line": 8854999,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "229.24",
+                "layer": "Metal4",
+                "line": 8855014,
+                "master": "sg13g2_nand2_1",
+                "net": "net4398",
+                "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1831832/B",
+                "required_line": 8855015,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "252.28",
+                "layer": "Metal4",
+                "line": 8858513,
+                "master": "sg13g2_buf_1",
+                "net": "net4455",
+                "pin": "load_slew4452/A",
+                "required_line": 8858514,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "227.95",
+                "layer": "Metal3",
+                "line": 5691322,
+                "master": "sg13g2_dlygate4sd3_1",
+                "net": "s_wdata[26]",
+                "pin": "hold21178/A",
+                "required_line": 5691323,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "202.47",
+                "layer": "Metal3",
+                "line": 5694046,
+                "master": "sg13g2_dlygate4sd3_1",
+                "net": "s_wdata[8]",
+                "pin": "hold21208/A",
+                "required_line": 5694047,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "205.47",
+                "layer": "Metal2",
+                "line": 6204231,
+                "master": "sg13g2_a22oi_1",
+                "net": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[21\\].rf_reg_q[11]",
+                "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1869896/B2",
+                "required_line": 6204232,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "318.06",
+                "layer": "Metal3",
+                "line": 6361022,
+                "master": "sg13g2_a22oi_1",
+                "net": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[31\\].rf_reg_q[17]",
+                "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1868762/B2",
+                "required_line": 6361023,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "321.83",
+                "layer": "Metal4",
+                "line": 6361038,
+                "master": "sg13g2_a22oi_1",
+                "net": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[31\\].rf_reg_q[17]",
+                "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1868762/B2",
+                "required_line": 6361039,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "302.30",
+                "layer": "TopMetal1",
+                "line": 6472333,
+                "master": "sg13g2_a21o_1",
+                "net": "u_ibex.gen_regfile_ff.register_file_i.waddr_a_i[4]",
+                "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1841844/A1",
+                "required_line": 6472334,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "302.30",
+                "layer": "TopMetal1",
+                "line": 6472431,
+                "master": "sg13g2_a21oi_1",
+                "net": "u_ibex.gen_regfile_ff.register_file_i.waddr_a_i[4]",
+                "pin": "$abc$1804206$auto$blifparse.cc:397:parse_blif$1846638/A1",
+                "required_line": 6472432,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "290.80",
+                "layer": "Metal2",
+                "line": 7106559,
+                "master": "sg13g2_dlygate4sd3_1",
+                "net": "u_pcie.receive_ownership.packets\\[110\\][4]",
+                "pin": "hold33483/A",
+                "required_line": 7106560,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "284.87",
+                "layer": "Metal2",
+                "line": 7121214,
+                "master": "sg13g2_dlygate4sd3_1",
+                "net": "u_pcie.receive_ownership.packets\\[123\\][1]",
+                "pin": "hold34720/A",
+                "required_line": 7121215,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "222.12",
+                "layer": "Metal2",
+                "line": 7166892,
+                "master": "sg13g2_dlygate4sd3_1",
+                "net": "u_pcie.receive_ownership.packets\\[37\\][5]",
+                "pin": "hold34091/A",
+                "required_line": 7166893,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "435.88",
+                "layer": "Metal3",
+                "line": 7321280,
+                "master": "sg13g2_dfrbpq_1",
+                "net": "u_rom.u_ecc.s_go",
+                "pin": "$auto$ff.cc:337:slice$1314943/D",
+                "required_line": 7321281,
+                "rule": "Cumulative area",
+                "violated": true
+              },
+              {
+                "display_limit": "200.00",
+                "display_value": "451.00",
+                "layer": "Metal4",
+                "line": 7321296,
+                "master": "sg13g2_dfrbpq_1",
+                "net": "u_rom.u_ecc.s_go",
+                "pin": "$auto$ff.cc:337:slice$1314943/D",
+                "required_line": 7321297,
+                "rule": "Cumulative area",
+                "violated": true
+              }
+            ]
+          },
+          "current_repair_calls": 0,
+          "current_route_calls": 0,
+          "drc": {
+            "all_categories_below_native_cap": true,
+            "categories": [
+              {
+                "direct_markers": 0,
+                "maximum_markers": 10000,
+                "path": [
+                  "NSSOC_ONE_BULK_POSTDRT_ANTENNA_DRC"
+                ],
+                "source": "DRT"
+              },
+              {
+                "direct_markers": 64,
+                "maximum_markers": 10000,
+                "path": [
+                  "NSSOC_ONE_BULK_POSTDRT_ANTENNA_DRC",
+                  "Short"
+                ],
+                "source": "DRT"
+              },
+              {
+                "direct_markers": 28,
+                "maximum_markers": 10000,
+                "path": [
+                  "NSSOC_ONE_BULK_POSTDRT_ANTENNA_DRC",
+                  "Metal Spacing"
+                ],
+                "source": "DRT"
+              }
+            ],
+            "full_signoff_DRC": false,
+            "marker_count": 92,
+            "report_bytes": 16461,
+            "report_sha256": "4d70f7bb24b4aaceb7e435b4a70b4670a20f5ad07a06e4398349e69d2000c59b",
+            "serialized_markers": {
+              "bytes": 118206,
+              "category_count": 3,
+              "complete_native_category_census_equal": true,
+              "marker_count": 92,
+              "scope": "Exact named category paths, direct counts, positive caps, DRT source and total count; full marker bodies preserved, not an independent shape-semantic interpretation.",
+              "sha256": "a7cbb4ad472a6f0bf6a8e422eb439dab2e2685ad3ec63062c304af7f4d0bebb9"
+            },
+            "zero_reported_DRT_markers": false
+          },
+          "full_phy_accepted": false,
+          "native_chip_roundtrip_qualified": true,
+          "native_routing_qualified": false,
+          "physical_acceptance": false,
+          "roundtrip": {
+            "after": {
+              "DEF": {
+                "bytes": 186096898,
+                "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+              },
+              "instances": 154480,
+              "nets": 143820,
+              "protected_clock_records": 1691,
+              "snapshot": {
+                "bytes": 624857592,
+                "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+              }
+            },
+            "before": {
+              "DEF": {
+                "bytes": 186096898,
+                "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+              },
+              "instances": 154480,
+              "nets": 143820,
+              "protected_clock_records": 1691,
+              "snapshot": {
+                "bytes": 624857592,
+                "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+              }
+            },
+            "candidate": {
+              "bytes": 214392179,
+              "sha256": "e460c8d0751ad9d22042a2e133103e0853048110fb0b2747c04ced44eb284d4e"
+            },
+            "current_route_calls": 0,
+            "full_phy_accepted": false,
+            "physical_acceptance": false,
+            "rewritten": {
+              "bytes": 214392179,
+              "sha256": "e460c8d0751ad9d22042a2e133103e0853048110fb0b2747c04ced44eb284d4e"
+            },
+            "status": "PASS_ACTUAL_CHIP_NEW_ENGINE_ROUNDTRIP",
+            "timing_accepted": false
+          },
+          "routing_complete": false,
+          "routing_memory_reduction_measured": false,
+          "snapshot": {
+            "DEF": {
+              "bytes": 186096898,
+              "sha256": "68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4"
+            },
+            "instances": 154480,
+            "nets": 143820,
+            "protected_clock_records": 1691,
+            "snapshot": {
+              "bytes": 624857592,
+              "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+            }
+          },
+          "status": "PASS_ACTUAL_CHIP_ENGINE_ROUNDTRIP_AND_FULL_CHECKS",
+          "timing_accepted": false
+        },
+        "status": "complete"
+      }
+    ],
+    "physical_acceptance": false,
+    "physical_audits_complete": false,
+    "restoration_complete": false,
+    "routing_complete": false,
+    "runtime_after": {
+      "count": 104,
+      "exact_paths_sizes_hashes": true
+    },
+    "runtime_before": {
+      "count": 104,
+      "exact_paths_sizes_hashes": true
+    },
+    "snapshot_reload_qualified": true,
+    "status": "PASS_GUIDE_ENGINE_ACTUAL_CHIP_QUALIFICATION",
+    "terminal_actions": [
+      {
+        "action": "bulk-postdrt-version:stop",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-version:wait-after-stop",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-version:kill-if-live",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-version:wait-after-kill",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-version:terminal-child",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-version:progress",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-ldd:stop",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-ldd:wait-after-stop",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-ldd:kill-if-live",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-ldd:wait-after-kill",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-ldd:terminal-child",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-ldd:progress",
+        "completed": true
+      },
+      {
+        "action": "guide-engine-roundtrip:retain-full-command",
+        "completed": true
+      },
+      {
+        "action": "guide-engine-roundtrip:progress",
+        "completed": true
+      },
+      {
+        "action": "guide-engine-full-drc-antenna:retain-full-command",
+        "completed": true
+      },
+      {
+        "action": "guide-engine-full-drc-antenna:progress",
+        "completed": true
+      },
+      {
+        "action": "guide-engine-measure:retain-full-command",
+        "completed": true
+      },
+      {
+        "action": "guide-engine-measure:progress",
+        "completed": true
+      },
+      {
+        "action": "owned-native-process-cleanup",
+        "completed": true
+      },
+      {
+        "action": "heartbeat-stop",
+        "completed": true
+      },
+      {
+        "action": "heartbeat-join",
+        "completed": true
+      },
+      {
+        "action": "restore-signal-2",
+        "completed": true
+      },
+      {
+        "action": "restore-signal-15",
+        "completed": true
+      },
+      {
+        "action": "original-engine-unchanged",
+        "completed": true
+      },
+      {
+        "action": "new-engine-unchanged",
+        "completed": true
+      },
+      {
+        "action": "input-unchanged",
+        "completed": true
+      },
+      {
+        "action": "runtime-after",
+        "completed": true
+      },
+      {
+        "action": "terminal-cgroup",
+        "completed": true
+      },
+      {
+        "action": "preserve-native-census",
+        "completed": true
+      }
+    ],
+    "terminal_errors": [],
+    "timing_accepted": false
+  },
+  "output_preservation": {
+    "artifact_required": true,
+    "complete": true,
+    "complete_large_outputs_in_native_capsule": {
+      "bulk-postdrt-antenna/final-antenna-nets.json": {
+        "bytes": 27187674,
+        "sha256": "4e0b74076a084bd3a9fb53d6f0e2b2792d6445cbede1ad18e84154fe4cb6168b"
+      },
+      "bulk-postdrt-antenna/guide-engine-after.json": {
+        "bytes": 624857592,
+        "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+      },
+      "bulk-postdrt-antenna/guide-engine-before.json": {
+        "bytes": 624857592,
+        "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+      },
+      "bulk-postdrt-antenna/guide-engine-measured.json": {
+        "bytes": 624857592,
+        "sha256": "bb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0"
+      }
+    },
+    "copied": {
+      "bulk-postdrt-antenna/final-antenna-summary.json": {
+        "bytes": 1771,
+        "sha256": "761ef732401359b9beb821fb65046787cfb2b64e36a92b0904ff71a227865559"
+      },
+      "bulk-postdrt-antenna/final-antenna-violations.json": {
+        "bytes": 8725,
+        "sha256": "1016612b1dbb4035a101ae880f16654308f7c5efc9064ed076e5e975918009ee"
+      },
+      "bulk-postdrt-antenna/final-drc-markers.json": {
+        "bytes": 118206,
+        "sha256": "a7cbb4ad472a6f0bf6a8e422eb439dab2e2685ad3ec63062c304af7f4d0bebb9"
+      },
+      "bulk-postdrt-antenna/final-drc.json": {
+        "bytes": 1220,
+        "sha256": "8e1a52fa680c533b581726535ef81d618e7fcd2ceac7106208bf6e631d3868ef"
+      },
+      "bulk-postdrt-antenna/guide-engine-measurement.json": {
+        "bytes": 22967,
+        "sha256": "73f1edd99f1b6d385befe995a2b0254d2958550ba1fa044e1a33ba07eeb1c6cf"
+      },
+      "bulk-postdrt-antenna/guide-engine-result.json": {
+        "bytes": 13411,
+        "sha256": "8a5f2fda6b9f7f75e9a3d2c942d2f9972d44ef25dbe76bb01be905ee2d652dd4"
+      },
+      "bulk-postdrt-antenna/guide-engine-roundtrip.json": {
+        "bytes": 1153,
+        "sha256": "2715c2888cef7fb5e25076ebaa031ffac129778dd65720495f8d8e98ae58f41c"
+      },
+      "bulk-postdrt-guide-engine-acquisition.json": {
+        "bytes": 17427,
+        "sha256": "514348cc19ca42a0393aebe1690734b6c6aeeaf409f7550a884a98beb9d57919"
+      },
+      "bulk-postdrt-guide-reference-acquisition.json": {
+        "bytes": 14505,
+        "sha256": "eaf805892981915bda65d6dd25ce2a2ad50aac0e087f6c61bb3c840c8f09b97a"
+      },
+      "bulk-postdrt-inner-progress.json": {
+        "bytes": 13015,
+        "sha256": "3e2cac24fb9d2ddf76d69447b74e510fa1dc5afa4b9719ab1ba9fbfda8cc1792"
+      },
+      "bulk-postdrt-ldd.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-ldd.stdout": {
+        "bytes": 10979,
+        "sha256": "12506ce3805ac833f33d9cd45dce7721c57a711a5ae1b07798fd2570eb2b25cb"
+      },
+      "bulk-postdrt-owned-container.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-owned-container.stdout": {
+        "bytes": 72012,
+        "sha256": "afdbe8458e4dc630e91bdfb1829f3a67ef57b83ecd6783a94b6e750364846339"
+      },
+      "bulk-postdrt-runtime-observed.json": {
+        "bytes": 16940,
+        "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0"
+      },
+      "bulk-postdrt-snapshot-available-output.json": {
+        "bytes": 8293,
+        "sha256": "d88491f6863a85feea57f79fb593086ac7eb18ea52f8f49474a8a88e04862f9d"
+      },
+      "bulk-postdrt-snapshot-inner-result.json": {
+        "bytes": 58821,
+        "sha256": "b12d692f85383bab5499663ca30bf7cf919828e1127250346d332d1037ecb111"
+      },
+      "bulk-postdrt-snapshot-progress.json": {
+        "bytes": 29164,
+        "sha256": "7b30f1ed3c08d07d2bf86fdd07648034db258e8216d2da5a48ebf6b9284bda3f"
+      },
+      "bulk-postdrt-supervision/events.jsonl": {
+        "bytes": 71084,
+        "sha256": "e7233431ffc63618f98aad48e81632438c96ffaea2722a1bc052bae8ac5394c7"
+      },
+      "bulk-postdrt-supervision/guide-engine-full-drc-antenna.command.json": {
+        "bytes": 1146,
+        "sha256": "a03afbe14e8ff4e72c7f95361220c614a51551ef3f36f8ec59142dbcebadfefb"
+      },
+      "bulk-postdrt-supervision/guide-engine-full-drc-antenna.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/guide-engine-full-drc-antenna.stdout": {
+        "bytes": 244999,
+        "sha256": "3b45644720d0033fd112a2a09a97165f754a8dcfa7a17e5d8274f9ff2a7b3319"
+      },
+      "bulk-postdrt-supervision/guide-engine-measure.command.json": {
+        "bytes": 1279,
+        "sha256": "80275af1c18d88500309d49498bca8d071de0ed46e24a18bb1c4651e828e577a"
+      },
+      "bulk-postdrt-supervision/guide-engine-measure.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/guide-engine-measure.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/guide-engine-roundtrip.command.json": {
+        "bytes": 1277,
+        "sha256": "e3255cba487059cc895a382287f221ae5922923cd4545b0c370a346583fa66d0"
+      },
+      "bulk-postdrt-supervision/guide-engine-roundtrip.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/guide-engine-roundtrip.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/latest.json": {
+        "bytes": 1457,
+        "sha256": "8cf1972301f97ce4bae2e67346b43959a98e6910f29a5595f6bd5097ebfaf4f0"
+      },
+      "bulk-postdrt-version.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-version.stdout": {
+        "bytes": 42,
+        "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae"
+      },
+      "container-terminal.json": {
+        "bytes": 6880,
+        "sha256": "be14a6a2316b2c172c7c3ccd3736c48850827a8d5c442929bf576564195b2e4d"
+      },
+      "create-attempt.json": {
+        "bytes": 1265,
+        "sha256": "a007a0b3f21335d83e717cbf8669d6cb9857f7e81ba40e61dd0659df4b84072f"
+      },
+      "host-progress.json": {
+        "bytes": 73603,
+        "sha256": "c30bc2c219677842e85cf417246b612ba067f30b9fe425bb3be656d42d6b9ff8"
+      },
+      "image-inspect.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "image-inspect.stdout": {
+        "bytes": 2643,
+        "sha256": "d3ca285a66190e177b14f797cfb96db0c6484627d39762e43c21636ad5865f59"
+      },
+      "immutable-image-pull.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "immutable-image-pull.stdout": {
+        "bytes": 837,
+        "sha256": "f2e858bdd0164b89c06da570b7d63e234534590a4872d84ac5f27f07d033fbe4"
+      },
+      "names-before-owned-create.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "names-before-owned-create.stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-container-create.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-container-create.stdout": {
+        "bytes": 65,
+        "sha256": "7bbd5a0d8a6fe54fe2f7a073dd092d71229cf23d56e035287354baaf997376e6"
+      },
+      "owned-container-remove.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-container-remove.stdout": {
+        "bytes": 65,
+        "sha256": "7bbd5a0d8a6fe54fe2f7a073dd092d71229cf23d56e035287354baaf997376e6"
+      },
+      "owned-removal-census.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-removal-census.stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "prefix-envelope.json": {
+        "bytes": 4270,
+        "sha256": "11281aedb0c83745f8126820b9c3c5421c20ed572e48bda55356f5d68c8313fb"
+      },
+      "prefix-restoration.json": {
+        "bytes": 423478,
+        "sha256": "23f45038bb461360ec38c7a2490ba24c84db2f9dd3a53e8b2e689201d693d177"
+      }
+    },
+    "excluded_roots": [
+      "work"
+    ],
+    "owned_outputs_retained": true,
+    "retained_output_path": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41506262574-1/out"
+  },
+  "owned_container_recovery": {
+    "id": "239bd4b3f2aa9334de947638139d661c278263846a20ed73258994a05cc4489a",
+    "name": "/nssoc-witness-build-41506262574-1",
+    "recovered_after_create_client_error": false
+  },
+  "physical_acceptance": false,
+  "run_id": 41506262574,
+  "source": "64a21283a014b802329e295d1136ae1ec645fee0",
+  "status": "PASS_CLOUD_GUIDE_ENGINE_ACTUAL_CHIP_QUALIFICATION",
+  "terminal_actions": [
+    {
+      "action": "recover-owned-container",
+      "completed": true
+    },
+    {
+      "action": "owned-stop",
+      "completed": true
+    },
+    {
+      "action": "post-stop-inspect",
+      "completed": true
+    },
+    {
+      "action": "owned-kill-if-running",
+      "completed": true
+    },
+    {
+      "action": "terminal-inspect",
+      "completed": true
+    },
+    {
+      "action": "stopped-container-contract",
+      "completed": true
+    },
+    {
+      "action": "owned-container-removal",
+      "completed": true
+    },
+    {
+      "action": "owned-removal-confirmation",
+      "completed": true
+    },
+    {
+      "action": "owned-container-cleanup",
+      "completed": true
+    },
+    {
+      "action": "own-source-unchanged",
+      "completed": true
+    },
+    {
+      "action": "original-source-unchanged",
+      "completed": true
+    },
+    {
+      "action": "frozen-prefix-unchanged",
+      "completed": true
+    },
+    {
+      "action": "original-projection-unchanged",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_guide_engine_inner.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_guide_engine_native.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_guide_engine_acquisition.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_memory.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip-guide-engine-built-inputs.json",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip-guide-engine-reference.json",
+      "completed": true
+    },
+    {
+      "action": "inner-source-unchanged",
+      "completed": true
+    },
+    {
+      "action": "current-input-unchanged",
+      "completed": true
+    },
+    {
+      "action": "container-terminal",
+      "completed": true
+    },
+    {
+      "action": "guide-reference-work/bulk-postdrt-antenna/narrow47-restored.odb",
+      "completed": true
+    },
+    {
+      "action": "guide-reference-work/bulk-postdrt-antenna/narrow47-restored-observed.def",
+      "completed": true
+    },
+    {
+      "action": "guide-reference-work/bulk-postdrt-antenna/final-check.tcl",
+      "completed": true
+    },
+    {
+      "action": "guide-reference-bulk-postdrt-antenna/narrow47-restored-observed.json",
+      "completed": true
+    },
+    {
+      "action": "guide-reference-bulk-postdrt-antenna/narrow47-result.json",
+      "completed": true
+    },
+    {
+      "action": "guide-reference-bulk-postdrt-antenna/final-antenna-nets.json",
+      "completed": true
+    },
+    {
+      "action": "guide-reference-bulk-postdrt-antenna/final-antenna-summary.json",
+      "completed": true
+    },
+    {
+      "action": "guide-reference-bulk-postdrt-antenna/final-antenna-violations.json",
+      "completed": true
+    },
+    {
+      "action": "guide-engine-openroad",
+      "completed": true
+    },
+    {
+      "action": "guide-engine-runtime-dependencies.json",
+      "completed": true
+    },
+    {
+      "action": "permanent-native-publication",
+      "completed": true
+    },
+    {
+      "action": "enumerate:.",
+      "completed": true
+    },
+    {
+      "action": "enumerate:bulk-postdrt-antenna",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/final-antenna-nets.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/final-antenna-summary.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/final-antenna-violations.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/final-drc-markers.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/final-drc.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/guide-engine-after.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/guide-engine-before.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/guide-engine-measured.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/guide-engine-measurement.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/guide-engine-result.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/guide-engine-roundtrip.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-guide-engine-acquisition.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-guide-reference-acquisition.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-inner-progress.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-ldd.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-ldd.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-owned-container.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-owned-container.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-runtime-observed.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-snapshot-available-output.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-snapshot-inner-result.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-snapshot-progress.json",
+      "completed": true
+    },
+    {
+      "action": "enumerate:bulk-postdrt-supervision",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/events.jsonl",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/guide-engine-full-drc-antenna.command.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/guide-engine-full-drc-antenna.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/guide-engine-full-drc-antenna.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/guide-engine-measure.command.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/guide-engine-measure.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/guide-engine-measure.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/guide-engine-roundtrip.command.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/guide-engine-roundtrip.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/guide-engine-roundtrip.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/latest.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision",
+      "completed": true
+    },
+    {
+      "action": "enumerate:bulk-postdrt-supervisor",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervisor",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-version.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-version.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:container-terminal.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:create-attempt.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:host-progress.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:image-inspect.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:image-inspect.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:immutable-image-pull.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:immutable-image-pull.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:names-before-owned-create.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:names-before-owned-create.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-container-create.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-container-create.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-container-remove.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-container-remove.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-removal-census.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-removal-census.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:prefix-envelope.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:prefix-restoration.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:work",
+      "completed": true
+    },
+    {
+      "action": "preserve-derived-outputs",
+      "completed": true
+    },
+    {
+      "action": "retained-native-workspace",
+      "completed": true
+    }
+  ],
+  "terminal_errors": [],
+  "timing_accepted": false,
+  "workspace_retained": {
+    "cleanup_after_artifact": true,
+    "output_path": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41506262574-1/out",
+    "path": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41506262574-1",
+    "reason": "Retained until complete workflow artifact upload succeeds"
+  }
+}

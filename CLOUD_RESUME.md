@@ -1,6 +1,30 @@
-# Cloud continuation — checkpoint v320
+# Cloud continuation — checkpoint v321
 
-Updated: 2026-11-02T19:15:12.781416+00:00
+Updated: 2026-11-02T19:30:20.133310+00:00
+
+## Current continuation: actual new-engine full-chip qualification PASSED and authenticated
+
+Native41506262574/source64a21283a014b802329e295d1136ae1ec645fee0 SUCCESS, host PASS_CLOUD_GUIDE_ENGINE_ACTUAL_CHIP_QUALIFICATION, inner PASS_GUIDE_ENGINE_ACTUAL_CHIP_QUALIFICATION, result PASS_ACTUAL_CHIP_ENGINE_ROUNDTRIP_AND_FULL_CHECKS. No terminal errors; every host/native command0; container exit0/noOOM, original source/runtime protected. Actual inner677.265687seconds, peak9054203904bytes under12GiB; this is snapshot/check memory, NOT routing RSS reduction.
+
+ALL143820nets154480instances1691protected clocks and full material/wire snapshot remain byte-identical across old engine, new-engine load, write/reload and full DRT/antenna measurement. Full snapshot624857592bytes SHAbb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0; DEF186096898bytes SHA68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4; even ODB rewrite214392179bytes SHAe460c8d0751ad9d22042a2e133103e0853048110fb0b2747c04ced44eb284d4e equals input. Full DRT92=64short+28spacing and21antenna nets/27records exactly match old engine. No routing/repair occurred; no physical/timing/fullPHY acceptance.
+
+Authenticated derived artifact13171308389 212137bytes SHA96cf31b611eecd8556ef76144e976f5edc64d7bfcf0319bd6e6d0f20aa114461; relevant complete derived records, supervision, actual command streams, result, container and permanent-publication records copied here. Release431857262 contains native archive314976709bytes SHA13cf17f6d75294cc2444013b5cfa321c50d676b29ac4975b87c257578c400bb3 (asset702897085), exact index702896826/parts702896941. Native archive was NOT downloaded locally. scripts/mainchip-guide-engine-qualified-inputs.json pins producer/allassets/fullindex/parts and selected qualification evidence for the next cloud-only full64 consumer. Actual captured fixture is docs/evidence/mainchip-guide-engine-qualification-fixture.json. Keep built-engine manifest unchanged; qualification is separate.
+
+NEXT MAINCHIP: implement explicit new-engine full64 host/inner based on unchanged sourcef808321a65ca9197f10e75f2f59073d47095a718 scripts/cloud_mainchip_snapshot_reload.py and mainchip_snapshot_reload_inner.py, with original11phases, original47clear/protection/restore, all1691clocks, full64 schedule, route snapshots, original memory/supervision/cleanup. Authenticate complete successful qualification capsule and actual result/runtime/engine binding before execution; keep old ELF separately protected. Use new ELF /work/guide-engine/openroad explicitly, never silently overwrite c.ENGINE. Retain all original source tests and updated transitive manifests. Independent same-source controls and external release reservation required. No new full64 source/dispatch has been published yet; original source investigation is RAM only. Current original seed exact snapshot20 and selected47 plan remain pinned; no claimed internal router-state resume. New engine route must still actually complete, lower DRC/antenna, preserve full scope and pass eventual timing.
+
+CURRENT PHY read-only stage diagnosis41508059395/sourcee6c78d53d05c724c2b4adc83f86aebd47d44d9f7, branchcodex/cdr-slave-drive-stage-timing. It uses actual proposed composition and full rejected41501239838 wave; parser/stage controls plus actual24-list fixture and3malformed-list refusals precede native archive acquisition. Prior41507270587 was cancelled while queued because source compared delta list to integer; do not restart it. Follow current handle and permanently preserve full derived stage/per-bit/clock results when terminal. Underlying24device trial remains electrically rejected, no matchingGDS/freshPEX: phase12.974mV, VI39.692uA, C worst metric118.90625ps, four lowVceHBTs. No new proposed geometry accepted.
+
+Superseded push CI41504869013/source0423d948 and41507164455/sourcee9ebe92 were cancellation-requested to release hosted capacity; current-source push checks41505377046/41507901483 remain enabled. Existing failures preserved; cancellation never counts as pass. Historical41504869013 lint failure was missing default_nettype guards in soc_pcie_gen12_raw32_align.v. Current root already adds exactly the two guards and otherwise retains identical bytes (comparison+full log preserved here); no new RTL edit or whole-root lint pass claimed.
+
+Everything native/heavy remains GitHub-only; workspace empty. Readonly8hour monitor automatic_native_dispatch=false. Full serialGen3x4 PHY, accepted mainchip PCIe/Ethernet route and final setup/hold remain OPEN. Qualification success is permission to test actual new routing, not production signoff.
+
+Observed 2026-11-02T19:30:20.133310+00:00:
+- 41506262574: completed/success
+- 41508059395: completed/success
+- 41504869013: completed/cancelled
+- 41507164455: completed/cancelled
+- 41505377046: queued/None
+- 41507901483: in_progress/None
 
 ## Current continuation: actual-chip qualification and complete slave-drive stage diagnosis
 
