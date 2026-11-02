@@ -1,11 +1,11 @@
-name: Full physical verification of four mixed clock-selector shortcuts
+name: Full physical verification of horizontal ground branches
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-wire-shortcuts-physical-${{ github.ref }}
+  group: cdr-horizontal-ground-physical-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -93,7 +93,7 @@ jobs:
           ref=json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/git/ref/tags/'+tag]))
           assert ref['object']['sha']==e['GITHUB_SHA']
           PY
-      - name: Acquire and verify unchanged native tool for fresh RC only
+      - name: Acquire and verify unchanged native physical validation tool
         run: |
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y libfuse2 tcl8.6 tk8.6 tcl-dev tk-dev build-essential m4 autoconf libreadline-dev libx11-dev libxext-dev libxpm-dev libxt-dev libcairo2-dev libgl1-mesa-dev libglu1-mesa-dev uidmap
@@ -112,7 +112,7 @@ jobs:
           from pathlib import Path
           e=os.environ
           assert e['GITHUB_ACTIONS']=='true' and e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
-          assert e['GITHUB_REF']=='refs/heads/codex/cdr-wire-tail-physical' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr-horizontal-ground-physical' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert re.fullmatch('[1-9][0-9]*',e['GITHUB_RUN_ID']) and re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA'])
           app=Path(e['RUNNER_TEMP'])/'current-tail-physical.AppImage'
           assert app==Path('/home/runner/work/_temp/current-tail-physical.AppImage') and app.is_file() and not app.is_symlink()
