@@ -1,6 +1,29 @@
-# Cloud continuation — checkpoint v281
+# Cloud continuation — checkpoint v282
 
-Updated: 2026-11-02T05:30:48.810766+00:00
+Updated: 2026-11-02T05:55:26.846178+00:00
+
+## Current continuation: actual resistance bottleneck measured; physical mapping dispatched
+
+All native CAD, geometry, extracted models and waveforms remain GitHub-only. Local workspace is empty; local activity is source/API/text metadata coordination in RAM. Full serial Gen3 x4 PHY, final mainchip route and final setup/hold remain OPEN.
+
+Actual selector resistance run 41395210468 / source 4a20c52579eddaa7f0a1f82f41cb6af8445b806c PASSED. Derived artifact13118444894 is1467909bytes SHA b3a4162dfd66ae6148a987f3d3ffb40d140d661fc35aa741ac9971be215dd7a6. All derived files, all32full pair solutions, controls and acquisition are preserved under docs/evidence/current-terminal-41395210468/. The original loaded electrical rejection is unchanged. Twenty-six network controls and original frozen wave-reader controls passed; actual500device cards and24530R/15676C were authenticated. Every full-network unit-current solve passed KCL, terminal balance, energy, reciprocity and passive maximum-principle checks. This passive R-only sensitivity calculation is not a transient or operating-power result.
+
+The eight MOS source-to-public-avss paths measure45.22849-45.67123ohm. Each contains a terminal-local32.5245ohm branch accounting for71.2-71.9percent of its equivalent resistance. Actual resistor names: r24495(T003_S), r24476(T004_S), r24457(T005_S), r24438(T006_S), r22219(T032_S), r22200(T033_S), r22181(T034_S), r22162(T035_S). Shared4.88213ohm edges contribute about10.7percent. Selector emitter paths measure18.2452-20.4448ohm; collector paths13.1816-14.2848ohm. These findings identify local access as a stronger next target than another blind top-ground widening.
+
+Native physical mapping run41396652103 / source02db0affab32b2f7d331c2e5f720ad38663d2c84 / branchcodex/cdr-critical-access / release431114381 is dispatched with independently reserved tagcloud-results-41396652103-1-cdr-wire-tail-shortcuts. Follow the exact live job; no duplicate. Source modifies scripts/cloud_cdr_wire_tail_shortcuts.py, adds scripts/cdr-critical-resistance-inputs.json and docs/cdr-critical-resistance-physical-map.md. Original85geometry controls and guard ASTs are unchanged. It binds the CURRENT freshRC41389957475/sourcefe2ccfc1529b0e7507a585d3d8078e9d60af368d and current1003348byte GDS SHA b9b92319590ecca1c9ce31dcf1cc31f4fdc1d468fc514585931671ed2f4fa492, not the old four-shortcut GDS. Full native archive61446034bytes SHAf79de017083fa7d867ffd15888242724487eab6f518a75e4bf0664fbcb8e5da9 stays in GitHub.
+
+Mapping must validate all978port coordinates against GDS, all24530native/exported R values/endpoints/multiplicity, and all13conductor unions. It maps top3edges of each32query through the actual composition inverse and native component ownership, preserves rawrnode records and emits owned/foreign geometry at each endpoint. Do not interpret rnode type placeholder as a GDS layer. Read-only input and final GDS equality are required. No new geometry, RC, electrical acceptance, full PHY or timing acceptance is claimed.
+
+Next: inspect actual critical-access-map.json once this job terminates. Select a real physical local connection repair only after its layer and native ownership are proven. Preserve devices and original schematic; require full560DRC/deep-flatLVS13, canonical binding, freshRC and unchanged loaded electrical gates on any revised candidate. Do not delete failed evidence or relax thresholds. Current loaded41391065497 still fails fourHBTminVce, phase/signedVI and sampler margins/delays.
+
+Mainchip41393730481/source7cc6f94a7a685423533a25bc0d418e33764e8366/release431098535 remains the exact native job to follow. Source controls passed. Original140DRC remain the latest terminal measured count until its native outputs prove otherwise. ReversibleFIXED identity checks, preservation of1691clocks, actual47net reroute, fullDRC/antenna, originalglobalclass restoration, diodePG/connectivity/LVS and three-cornerSTA remain required. Do not restart the running job for an observation timeout.
+
+Previous rootv281=28e298bcf0922c8fe17ffe2e2138b16ee7540515. Inventory now750; monitor remains read-only8hour with automatic_native_dispatch=false.
+
+Observed at 2026-11-02T05:55:26.846178+00:00:
+- 41395210468: completed/success
+- 41396652103: in_progress/None
+- 41393730481: in_progress/None
 
 ## Current continuation: full new-ground waveform diagnosis passed; repaired47native run active
 
