@@ -28,7 +28,7 @@ from mainchip_snapshot_reload_contract import validate_archive_member
 count=0
 for name,regular,size in [('../escape',True,1),('/absolute',True,1),('unknown',True,1),(c['selected'][0],False,c['index']['files'][c['selected'][0]]['bytes']),(c['selected'][0],True,1)]:
  try:validate_archive_member(name,regular,size,c['index']['files'],set())
- except AssertionError:count+=1
+ except ValueError:count+=1
  else:raise AssertionError(name)
 assert count==5
 out=ROOT/'route47-recovery-controls';out.mkdir()
