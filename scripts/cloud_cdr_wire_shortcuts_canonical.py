@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Cloud-only fresh native canonical wire view for the physically verified current four-path GDS."""
+"""Cloud-only fresh native canonical wire view for the physically verified current horizontal-ground GDS."""
 import argparse,contextlib,hashlib,json,os,shutil,signal,subprocess,sys,tarfile,threading,traceback
 from pathlib import Path,PurePosixPath
 import cdr_via2_m3_canonical_core as core
 import cdr_v59_tail_access_runtime as runtime
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-canonical"
-BRANCH="codex/cdr-horizontal-ground-canonical"
+BRANCH="codex/cdr-local-source-m1-canonical"
 MANIFEST="scripts/cdr-wire-shortcuts-canonical-pins.json"
 CONFIG="scripts/cdr-wire-shortcuts-canonical-inputs.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
@@ -37,16 +37,17 @@ def gate():
     return pins
 def config():
     c=json.loads((ROOT/CONFIG).read_bytes())
-    need(c["schema"]=="nssoc.horizontal-ground.canonical.v1","current ground canonical schema")
-    need(c["candidate"]["gds"]==dict(bytes=1003348,sha256="b9b92319590ecca1c9ce31dcf1cc31f4fdc1d468fc514585931671ed2f4fa492"),"actual32ground candidate")
-    need(c["reference_prefix"]=="binding/inputs/"and c["original_reference_gds"]==dict(bytes=1001172,sha256="1c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94"),"actual current four-path reference")
-    p=c["physical"];need(p["run"]==41388495424 and p["source"]=="c40549f17f783ae3250139e63a9edee75721b219"and p["release"]==431070997,"actual passed ground physical producer")
-    g=c["generation"];q=g["proof"];rows=g["branches"]
-    need(g["run"]==41388218990 and g["source"]=="06d603105065697e069dde1e6954a8605a535c5c","actual generated source")
+    need(c["schema"]=="nssoc.local-source-m1.canonical.v1","actual local source canonical schema")
+    need(c["candidate"]["gds"]==dict(bytes=1003860,sha256="4ccf1212d4b98046b1b56037bb1b76c53477777b08ee9cba5053c8e6323203e8"),"actual eight-source candidate")
+    need(c["reference_prefix"]=="binding/inputs/"and c["original_reference_gds"]==dict(bytes=1003348,sha256="b9b92319590ecca1c9ce31dcf1cc31f4fdc1d468fc514585931671ed2f4fa492"),"actual current horizontal-ground reference")
+    p=c["physical"];need(p["run"]==41401709497 and p["source"]=="a60c812f23d80ce7672a807f6392fa35cc440a32"and p["release"]==431142636,"actual passed physical producer")
+    g=c["generation"];q=g["proof"];rows=g["targets"]
+    need(g["run"]==41400908740 and g["source"]=="880dce57683ccb79f38ea43f3014bb90151329e1","actual generated source")
     need(q["candidate"]==c["candidate"]["gds"]and q["input_gds"]==c["original_reference_gds"]and q["exact_serialized_delta"]and q["original_material_roundtrip"],"actual serialized exact delta")
-    need(q["branch_count"]==32 and q["original_width_dbu"]==3200 and q["candidate_width_dbu"]==4600 and q["only_added_layer"]==[134,0],"exact ground width and layer")
-    need(q["original_devices_and_vias_unchanged"]and q["original_port_pad_unchanged"]and not q["physical_acceptance"],"original generation boundary")
-    need(len(rows)==32 and [r["index"]for r in rows]==list(range(32))and all(r["admitted"]for r in rows),"all32 admitted declarations")
+    need(q["source_count"]==8 and q["only_added_layer"]==[8,0]and q["total_added_area_dbu2"]==48000000,"exact source count layer and area")
+    need(not q["new_devices"]and not q["new_vias"]and not q["physical_acceptance"],"original generation boundary")
+    labels={"T"+str(n).zfill(3)+"_S"for n in(3,4,5,6,32,33,34,35)}
+    need(len(rows)==8 and {r["label"]for r in rows}==labels and all(r["selected"]is not None for r in rows),"all eight source declarations")
     need(g["component"]==14 and g["native_cluster"]==24,"actual prior avss identity")
     return c
 def ground_variant(pya,original,row):
@@ -63,14 +64,52 @@ def ground_variant(pya,original,row):
     need(bounds(result)==variant["widened_bbox"]and result.area()==variant["new_area_dbu2"],"actual serialized variant declaration")
     need(result.bbox().left==original.bbox().left and result.bbox().right==original.bbox().right,"unchanged longitudinal ends")
     return result
+def source_m1_variant(pya,original,row):
+    a=row["original_anchor"];selected=row["selected"]
+    need(a["metal"]==8 and a["wire_component"]==14 and a["native_cluster"]==24 and a["detail"]["native_net"]=="avss","actual source M1 owner")
+    need(selected is not None and selected in row["trials"]and selected["admitted"]and all(selected["guards"].values()),"actual selected guarded trial")
+    need(selected["width_added_nm"]==1500 and selected["halfspan_nm"]==2000,"actual four-micron source rectangle")
+    x,y=a["point_dbu"];need(x%5==0 and y%5==0,"source grid")
+    source_box=[x-145,y-2000,x+145,y+2000]
+    original_strip=pya.Region(pya.Box(*source_box))
+    need(selected["original_strip_bbox"]==source_box and(original_strip-original).is_empty(),"exact source rectangle on original metal")
+    added_box=[x-1645,y-2000,x-145,y+2000]
+    addition=pya.Region(pya.Box(*added_box))
+    need(selected["addition_bbox"]==added_box and selected["addition_area_dbu2"]==addition.area()==6000000,"independently reconstructed added rectangle")
+    need((addition&original).is_empty(),"entire declared rectangle is new material")
+    return addition
 def declared_layers(pya,original,rows):
-    polys=sorted([p for p in original.each()if p.bbox().height()==3200 and p.bbox().width()>=200000],key=lambda p:(p.bbox().bottom,p.bbox().left))
-    need(len(polys)==len(rows)==32,"all original actual ground branches")
+    need(len(rows)==8 and len({r["label"]for r in rows})==8,"all eight unique source targets")
     result=pya.Region()
-    for poly,row in zip(polys,rows):result+=ground_variant(pya,pya.Region(poly),row)
-    return {134:result.merged()}
+    for row in rows:result+=source_m1_variant(pya,original,row)
+    result=result.merged()
+    need(result.count()==8 and result.area()==48000000,"eight disjoint exact new source rectangles")
+    return {8:result}
 def material_union(pya,before,after,declared):
     need(((before+declared).merged()^after.merged()).is_empty(),"exact owner and layer material union")
+def source_m1_delta_controls(pya):
+    import copy
+    original=pya.Region(pya.Box(9855,18000,10145,22000))
+    trial=dict(width_added_nm=1500,halfspan_nm=2000,original_strip_bbox=[9855,18000,10145,22000],addition_bbox=[8355,18000,9855,22000],addition_area_dbu2=6000000,admitted=True,guards=dict(exact=True))
+    row=dict(label="T003_S",original_anchor=dict(metal=8,wire_component=14,native_cluster=24,detail=dict(native_net="avss"),point_dbu=[10000,20000]),selected=trial,trials=[trial])
+    got=source_m1_variant(pya,original,row)
+    need((got^pya.Region(pya.Box(8355,18000,9855,22000))).is_empty(),"independent exact source rectangle")
+    passed=["independent local-source M1 rectangle reconstruction"]
+    for label in("old-box","new-box","new-area","width","span","failed-guard","unadmitted","owner","missing-original"):
+        bad=copy.deepcopy(row);sel=bad["selected"];ref=original
+        if label=="old-box":sel["original_strip_bbox"][0]+=5
+        elif label=="new-box":sel["addition_bbox"][0]+=5
+        elif label=="new-area":sel["addition_area_dbu2"]+=1
+        elif label=="width":sel["width_added_nm"]+=10
+        elif label=="span":sel["halfspan_nm"]+=5
+        elif label=="failed-guard":sel["guards"]["exact"]=False
+        elif label=="unadmitted":sel["admitted"]=False
+        elif label=="owner":bad["original_anchor"]["wire_component"]=13
+        elif label=="missing-original":ref=pya.Region()
+        try:source_m1_variant(pya,ref,bad)
+        except AssertionError:passed.append("reject local-source "+label)
+        else:raise AssertionError(label)
+    return passed
 def controls():
     gate();c=config()
     import cloud_cdr_wire_shortcuts as geometry
@@ -111,6 +150,7 @@ def controls():
     need(len(c["wire_workers"])==4 and set(c["wire_workers"])=={core.projection.WIRE_SOURCE+n for n in core.projection.WORKERS},"four original native workers")
     core.projection.wire_coverage(ROOT,c["wire_workers"]);checks.append("complete frozen worker dependency coverage")
     need(len(checks)==48,"all48 independent canonical controls")
+    checks.extend(source_m1_delta_controls(pya))
     save("controls.json",dict(count=len(checks),passed=checks,**FLAGS))
 def acquire_physical():
     import cloud_cdr_wire_geometry_acquire as a
@@ -167,8 +207,11 @@ def prove_material(pya,reference,view,old,new,c):
     matches=[(k,v)for k,v in before.items()if v["component"]==14 and v["native_cluster"]==24]
     need(len(matches)==1,"unique actual prior avss partition")
     key,owner=matches[0]
-    original=core.layer_region(pya,ow,on[owner["component"]],old["graph"],134).merged()
-    grouped={key:declared_layers(pya,original,c["generation"]["branches"])}
+    original=core.layer_region(pya,ow,on[owner["component"]],old["graph"],8).merged()
+    actual_anchors={a["label"]:a for a in old["anchors"]["anchors"]}
+    for row in c["generation"]["targets"]:
+        need(row["original_anchor"]==actual_anchors[row["label"]],"independent original source anchor identity")
+    grouped={key:declared_layers(pya,original,c["generation"]["targets"])}
     records=[]
     for part in sorted(before):
         a=before[part];b=after[part]
@@ -180,10 +223,10 @@ def prove_material(pya,reference,view,old,new,c):
             records.append(dict(partition=json.loads(part),layer=layer,old_component=a["component"],new_component=b["component"],
               old_area_dbu2=left.area(),new_area_dbu2=right.area(),added_area_dbu2=(right-left).area(),declared_added_area_dbu2=(addition-left).area()))
     changed=[r for r in records if r["added_area_dbu2"]]
-    need(len(changed)==1 and changed[0]["partition"]==json.loads(key)and changed[0]["layer"]==134,"sole avss TopMetal2 material addition")
-    need(changed[0]["added_area_dbu2"]==changed[0]["declared_added_area_dbu2"]>0,"exact native ground added area")
+    need(len(changed)==1 and changed[0]["partition"]==json.loads(key)and changed[0]["layer"]==8,"sole avss Metal1 material addition")
+    need(changed[0]["added_area_dbu2"]==changed[0]["declared_added_area_dbu2"]==48000000,"exact native source M1 added area")
     need(len(records)==len(before)*13,"complete partition layer census")
-    return dict(status="PASS_ALL_NATIVE_PARTITIONS_ALL13LAYERS_EXACT32_GROUND_BRANCHES",records=records,targets={"avss":key},**FLAGS)
+    return dict(status="PASS_ALL_NATIVE_PARTITIONS_ALL13LAYERS_EXACT8_SOURCE_M1",records=records,targets={"avss":key},**FLAGS)
 def qualify():
     import pya
     c=config();reference=ROOT/"wire-native-cache/selected";view=OUT/"view/candidate"
@@ -202,7 +245,7 @@ def qualify():
     reports={"parent-geometry":parent,"planes":planes,"source-pins":recovery,"graph":new["graph"],"locations":new["locations"],"anchors":new["anchors"]}
     bindings={n:core.report_inputs(r,view)for n,r in reports.items()};save("view/fresh-report-bindings.json",bindings)
     files=core.projection.inventory(view);need(len(files)==78,"complete canonical file census")
-    save("view/canonical-view-qualification.json",dict(status="PASS_HORIZONTAL_GROUND_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC",
+    save("view/canonical-view-qualification.json",dict(status="PASS_LOCAL_SOURCE_M1_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC",
       candidate_gds=c["candidate"]["gds"],physical_producer=c["physical"]["run"],current_files=files,
       complete_current_file_count=len(files),native_identity=comparison,native_view_executed=True,
       material=pin(OUT/"view/full-partition-material.json"),fresh_report_bindings=bindings,**FLAGS))
@@ -249,7 +292,7 @@ def tokenless():
 def acquire_reference():
     import cloud_cdr_wire_geometry_acquire as a
     cfg=json.loads((ROOT/PARENT).read_bytes());p=cfg["producer"]
-    need(p["run"]==41352147913 and p["source"]=="6eace90ce68a61546f0268b3fd65b2b9b2b3840d"and p["release"]==430869108,"actual current four-path fresh-RC reference")
+    need(p["run"]==41389957475 and p["source"]=="fe2ccfc1529b0e7507a585d3d8078e9d60af368d"and p["release"]==431078750,"actual current horizontal-ground fresh-RC reference")
     run=api("actions/runs/"+str(p["run"]));rel=api("releases/"+str(p["release"]))
     need(run["head_sha"]==p["source"]and run["conclusion"]=="success"and run["run_attempt"]==1,"successful actual reference")
     need(rel["target_commitish"]==p["source"]and rel["tag_name"]==p["tag"]and api("git/ref/tags/"+p["tag"])["object"]["sha"]==p["source"],"reference release")
@@ -268,7 +311,7 @@ def acquire_reference():
             path=target/n;path.parent.mkdir(parents=True,exist_ok=True)
             with path.open("xb")as f:shutil.copyfileobj(tar.extractfile(m),f)
             seen[n]=pin(path);need(seen[n]==index["files"][n],"reference native bytes "+n)
-    need(seen==index["files"]and len(seen)==3236,"complete current current four-path native reference")
+    need(seen==index["files"]and len(seen)==3236,"complete current current horizontal-ground native reference")
     need(pin(target/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds")==config()["original_reference_gds"],"actual before-reference GDS")
     save("reference-acquisition.json",dict(run=run,release=rel,authenticated_members=seen,native_payloads_cloud_only=True))
     return target
@@ -306,7 +349,7 @@ def verify():
         for worker in core.projection.WORKERS:execute([app,"python",OUT/"view/candidate/wire"/worker],"fresh-"+worker.removesuffix(".py"))
         execute([app,"python",script,"--phase","verify"],"canonical-verify")
         q=json.loads((OUT/"view/canonical-view-qualification.json").read_bytes())
-        need(q["status"]=="PASS_HORIZONTAL_GROUND_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC","complete actual native view")
+        need(q["status"]=="PASS_LOCAL_SOURCE_M1_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC","complete actual native view")
     except BaseException as exc:error=exc
     finally:
         try:cleanup.append(dict(process_group=sup.stop_process(sup.ACTIVE)))
