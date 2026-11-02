@@ -7,7 +7,7 @@ import cloud_cdr_wire_geometry_acquire as prior
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"wire-tail-shortcuts";NATIVE=ROOT/"wire-tail-shortcuts-native"
 MANIFEST="scripts/cdr-wire-tail-shortcuts-pins.json";INPUT="scripts/cdr-wire-tail-shortcuts-inputs.json"
-BRANCH="codex/cdr-wire-tail-shortcuts";TOP="nssoc_cdr_pd500_resistor_v59"
+BRANCH="codex/cdr-current-rail-access";TOP="nssoc_cdr_pd500_resistor_v59"
 LAYERS=(8,19,10,29)
 TARGETS=(("D_collector","T061_C","T056_E"),("D_emitter","T061_E","T005_D"),("C_collector","T115_C","T108_E"),("C_emitter","T115_E","T034_D"))
 need=prior.need
@@ -385,7 +385,7 @@ def acquire_current(cfg):
         need(pin(path)=={k:a[k]for k in("bytes","sha256")},"actual full RC asset bytes")
     index=json.loads((work/"complete-output-index.json").read_bytes())
     need(index["files"]==cfg["complete_members"]and index["context"]==dict(run=p["run"],source=p["source"],attempt=1),"actual full RC index")
-    selected={"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds","binding/inputs/wire/native05/wires.l2n","binding/inputs/wire/native05/wires.gds","binding/inputs/wire/anchors08.json","mim/composition/composition.json","fresh-rc-qualification.json"}
+    selected={"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds","binding/inputs/wire/native05/wires.l2n","binding/inputs/wire/native05/wires.gds","binding/inputs/wire/anchors08.json","mim/composition/composition.json","fresh-rc-qualification.json","binding/inputs/native-planes.json"}
     target=work/"selected";seen=set()
     with tarfile.open(work/"native-fresh-rc.tar.gz","r|gz")as tar:
         for m in tar:
@@ -405,8 +405,8 @@ def acquire_current(cfg):
             need(dict(bytes=size,sha256=h.hexdigest())==expected,"member digest "+n);seen.add(n)
     need(seen==set(index["files"])and selected<=seen,"all current RC members authenticated")
     q=json.loads((target/"fresh-rc-qualification.json").read_bytes())
-    need(q["status"]=="PASS_SIX_SHORTCUT_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual current RC qualification")
-    need(pin(target/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds")==dict(bytes=999700,sha256="244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347"),"actual six-shortcut GDS baseline")
+    need(q["status"]=="PASS_FOUR_MIXED_SHORTCUT_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual current RC qualification")
+    need(pin(target/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds")==dict(bytes=1001172,sha256="1c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94"),"actual current four-path GDS baseline")
     save("acquisition.json",dict(run=r,release=rel,authenticated_members=len(seen),selected=sorted(selected),all_current_members_authenticated=True,native_payloads_cloud_only=True))
     return target
 def verify_target(base,source_label,a,sink_label,b):
@@ -744,14 +744,86 @@ def mixed_generate(base,cfg):
       scope="Physical candidate only; requires strict native DRC/LVS, canonical binding, fresh RC and original loaded electrical gates"))
     need(len(adopted)==4,"partial mixed-layer candidate preserved; not all four paths routed")
 
+def inspect_current_rails(base,cfg):
+    """Read actual current native rail topology; no synthetic rail or geometry edit."""
+    diagnosis=cfg["diagnosis"]
+    run=prior.api("actions/runs/"+str(diagnosis["run"]))
+    need(run["status"]=="completed"and run["conclusion"]=="success"and run["head_sha"]==diagnosis["source"],"current completed full-wave diagnosis")
+    artifacts=prior.api("actions/runs/"+str(diagnosis["run"])+"/artifacts")["artifacts"]
+    artifact=next(a for a in artifacts if a["id"]==diagnosis["artifact"])
+    need(artifact["digest"]=="sha256:"+diagnosis["artifact_sha256"],"exact current diagnosis proof")
+    comp=json.loads((base/"mim/composition/composition.json").read_bytes())
+    planes=json.loads((base/"binding/inputs/native-planes.json").read_bytes())
+    avss={(a["native_cluster"],a["native_name"])for a in planes["anchors"]if a["logical_net"]=="avss"}
+    need(len(avss)==1,"one actual canonical avss net")
+    key=next(iter(avss))
+    records={int(d["native_id"]):d for d in comp["device_records"]}
+    anchors=json.loads((base/"binding/inputs/wire/anchors08.json").read_bytes())["anchors"]
+    physical={a["label"]:a for a in anchors}
+    targets=[3,4,5,6,32,33,34,35]
+    gpath=base/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds"
+    wpath=base/"binding/inputs/wire/native05/wires.l2n"
+    before_pin=pin(gpath);wire_pin=pin(wpath)
+    g=pya.Layout();g.read(str(gpath));top=g.cell(TOP)
+    need(top is not None and g.dbu==.001,"actual current top and DBU")
+    before=region_snapshot(g,top)
+    w=pya.LayoutToNetlist();w.read(str(wpath));need(w.internal_layout().dbu==.001,"actual wire DBU")
+    layers=(8,19,10,29,30,49)
+    objects={n:w.layer_by_name("gds_"+str(n))for n in layers}
+    need(all(r is not None for r in objects.values()),"all six original conductor layers")
+    full={n:before.get((n,0),pya.Region())for n in layers}
+    for n in layers:need((full[n]^objects[n]).is_empty(),"actual full GDS/L2N union "+str(n))
+    nets={n.cluster_id:n for n in w.netlist().top_circuit().each_net()}
+    other2={k:r for k,r in before.items()if k[0]in(10,19)and k[1]!=0 and not r.is_empty()}
+    other3={k:r for k,r in before.items()if k[0]in(30,29,49)and k[1]!=0 and not r.is_empty()}
+    entries=[];components=set()
+    for number in targets:
+        record=records[number];need(record["model"]=="sg13_lv_nmos","measured tail MOS")
+        term=next(t for t in record["terminals"]if t["terminal"]=="S")
+        need((term["native_cluster"],term["native_net"])==key,"tail source connected to actual canonical avss")
+        label="T%03d_S"%number;anchor=physical[label]
+        need(anchor["native_cluster"]==key[0],"actual source anchor cluster")
+        component=anchor["wire_component"];components.add(component);need(component in nets,"existing wire component")
+        owned={n:w.shapes_of_net(nets[component],objects[n],True).merged()for n in layers}
+        need(anchor["metal"]in layers and(box(*anchor["point_dbu"],1)-owned[anchor["metal"]]).is_empty(),"actual source anchor on owned metal")
+        access2,proof2=terminal_access(anchor,owned,full,other2)
+        landings=[];proof3={}
+        if anchor["metal"]==8:
+            try:landings,proof3=existing_m3_landings(anchor,owned,full,other3)
+            except AssertionError as exc:proof3=dict(refusal=str(exc))
+        entry=dict(label=label,record=record,anchor=anchor,component=component,
+            existing_m2_access=proof2,admitted_m2_access=access2 is not None,
+            existing_m3_access=proof3,admitted_m3_access=len(landings),
+            owned_layer_geometry={str(n):dict(bbox=bounds(r),polygons=r.count(),area_dbu2=r.area())for n,r in owned.items()},
+            original_geometry_unchanged=True,physical_acceptance=False)
+        save("current-rail-"+label+".json",entry)
+        entries.append(dict(label=label,component=component,metal=anchor["metal"],admitted_m2_access=access2 is not None,admitted_m3_access=len(landings)))
+    need(len(components)==1,"all measured tail-source rails same actual extracted component")
+    rail_anchors=[a for a in anchors if a["native_cluster"]==key[0]]
+    need(rail_anchors and all(a["wire_component"]in components for a in rail_anchors),"complete canonical rail anchors share actual wire component")
+    save("current-avss-anchors.json",dict(native_net=dict(cluster=key[0],name=key[1]),anchors=rail_anchors,
+        canonical_anchors=[a for a in planes["anchors"]if(a["native_cluster"],a["native_name"])==key],source_binding_exact=True))
+    after=region_snapshot(g,top);need(set(before)==set(after),"unchanged layer set")
+    for layer in before:need((before[layer]^after[layer]).is_empty(),"no geometry mutation")
+    need(pin(gpath)==before_pin and pin(wpath)==wire_pin,"original native bytes unchanged")
+    save("current-rail-access-summary.json",dict(status="COMPLETE_CURRENT_NATIVE_AVSS_ACCESS_INSPECTION",
+        input_gds=before_pin,input_l2n=wire_pin,diagnosis=diagnosis,targets=entries,
+        rail_anchor_count=len(rail_anchors),canonical_avss=dict(cluster=key[0],name=key[1]),all_sources_same_actual_rail=True,
+        new_geometry_generated=False,original_geometry_unchanged=True,physical_acceptance=False,
+        full_phy_accepted=False,final_timing_complete=False))
+
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
         cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
-        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"]),"explicit native operation")
+        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"]),"explicit native operation")
         reserve(wait=True)
         base=acquire_current(cfg)
+        if sys.argv[1:]==["--inspect-current-rails"]:
+            inspect_current_rails(base,cfg)
+            save("result.json",dict(status="COMPLETE_CURRENT_NATIVE_AVSS_ACCESS_INSPECTION",physical_acceptance=False,full_phy_accepted=False))
+            return
         if sys.argv[1:]==["--inspect-access"]:
             inspect_access(base,cfg)
             save("result.json",dict(status="NATIVE_EXISTING_STACK_INSPECTION_ONLY",physical_acceptance=False,full_phy_accepted=False))
