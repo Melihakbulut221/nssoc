@@ -5,13 +5,14 @@ from pathlib import Path,PurePosixPath
 import cdr_via2_m3_loaded_core as original
 import cdr_current_domain_partition as trial
 import cdr_current_domain_loaded_adapter as adapter
+import cdr_clock_access_identity as identity
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"cloud-wire-shortcuts-loaded"
 NATIVE=OUT/"native";DERIVED=OUT/"derived";CONTROLS=ROOT/"wire-loaded-controls"
 MANIFEST="scripts/cdr-wire-shortcuts-loaded-pins.json"
 BASIS="scripts/cdr-wire-shortcuts-loaded-basis.json"
 HOST="scripts/cloud_cdr_wire_shortcuts_loaded.py"
-BRANCH="codex/cdr-current-domain-partition"
+BRANCH="codex/cdr-clock-access-domain-loaded"
 REPO="Melihakbulut221/nssoc"
 FLAGS=dict(trial.FLAGS)
 STATE=None
@@ -50,10 +51,10 @@ def validate_assets(assets):
 def basis():
     b=read(ROOT/BASIS)
     validate_assets(b["producer"]["assets"])
-    need(b["schema"]=="nssoc.collector-via2.loaded-basis.v1"and b["source_preparation_only"]and not b["native_execution_authorized"]and not b["wave_execution_authorized"],"basis is input evidence not execution authority")
-    need(b["producer"]["run"]==41439516945 and b["producer"]["source"]=="710869eb13082f3c3dc488159bf167d937294454"and b["producer"]["release"]==431398178,"actual new fresh RC producer")
-    need(b["candidate"]==dict(bytes=1078900,sha256="c0d420cdbc31863bf21086e88c12f494779961225031c261d6b05fe07e7585a7"),"physically qualified actual layout")
-    need(b["semantic_interface"]==["avdd","avss","sub","ird","cn","cp","dn","dp","irb","ira","irc","ibda","ibdc","ibs0","irx","xp","xn","ibs1","iry","yp","yn","irvx","irvy","vin","vip","wire_cref"],"actual new semantic order")
+    need(b["schema"]=="nssoc.clock-access16.loaded-basis.v1"and b["source_preparation_only"]and not b["native_execution_authorized"]and not b["wave_execution_authorized"],"basis is input evidence not execution authority")
+    need(b["producer"]["run"]==41537723922 and b["producer"]["source"]=="bd1fc5b2deed8a0ea153db91a362c983e6379254"and b["producer"]["release"]==432038108,"actual new fresh RC producer")
+    need(b["candidate"]==dict(bytes=1079924,sha256="28eebb9f880648935a6368ada78a5e5666694ba98e073fbbac3f2e0c986339d6"),"physically qualified actual layout")
+    need(b["semantic_interface"]==["avdd","avss","sub","ird","cn","cp","dn","dp","irb","ira","irc","ibda","ibdc","ibs0","irx","xp","xn","ibs1","iry","yn","yp","irvx","irvy","vin","vip","wire_cref"],"actual new semantic order")
     need(b["loaded_numerical"]["source"]=="43fd3f71a289fef004aeb41cd2d0972d81f76f41","frozen loaded source")
     return b
 def qualified_rc(q,oq,index,b):
@@ -61,9 +62,9 @@ def qualified_rc(q,oq,index,b):
     need(index["context"]==dict(source=p["source"],run=p["run"],attempt=1)and index["files"]==p["complete_members"],"complete current RC index")
     need(q==b["qualification"],"exact current qualification")
     need(q["current_context"]==oq["context"]==ctx,"actual source/run qualification")
-    need(q["status"]=="PASS_COLLECTOR_VIA2_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual four-mixed-shortcut RC")
+    need(q["status"]=="PASS_CLOCK_ACCESS16_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual four-mixed-shortcut RC")
     need(oq["status"]=="PASS_CURRENT_VIA2_M3_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and oq["fresh_RC_pipeline_complete"]and oq["execution_scope"]=="ACTUAL_AUTHORIZED_NATIVE_PHASE","complete original numerical qualification")
-    need(q["counts"]==oq["counts"]==b["counts"]==dict(devices=500,R=26222,C=16798),"actual newly measured RC census")
+    need(q["counts"]==oq["counts"]==b["counts"]==dict(devices=500,R=26218,C=16796),"actual newly measured RC census")
     need(q["candidate"]==b["candidate"]and q["semantic_port_order"]+["wire_cref"]==b["semantic_interface"],"actual layout and interface")
     for record in(q,oq):
         need(all(record[k]is False for k in("electrical_accepted","full_phy_accepted","qualified_pex","loaded_simulation_passed")),"RC is not electrical acceptance")
@@ -128,7 +129,7 @@ def controls():
         elif label=="counts":y["counts"]["R"]+=1
         elif label=="scope":y["execution_scope"]="SOURCE_ONLY_SYNTHETIC_PHASE_FIXTURE"
         elif label=="missing-phase":y["phase_receipts"].pop("compose")
-        elif label=="old-port-order":x["semantic_port_order"][19:21]=["yn","yp"]
+        elif label=="old-port-order":x["semantic_port_order"][19:21]=["yp","yn"]
         elif label=="old-selector-port-order":x["semantic_port_order"][15:17]=["xn","xp"]
         elif label=="electrical-claim":y["electrical_accepted"]=True
         elif label=="old-index":z["context"]["run"]=41251732540
@@ -143,14 +144,15 @@ def controls():
     prefix=ast.parse(original.extract(c["blocks"]["deck"],dedented=True)[0]).body[:3]
     need(len(prefix)==3 and isinstance(prefix[0],ast.Assign)and prefix[0].targets[0].id=="nodes"and isinstance(prefix[1],ast.Expr)and isinstance(prefix[2],ast.Assign)and prefix[2].targets[0].id=="vectors","exact frozen vector prefix")
     need(STATE is None and not NATIVE.exists(),"no native input in source controls")
+    identity_controls=identity.check(ROOT,with_faults=True)
     trial_controls=trial.controls()
-    record=dict(trial_controls=trial_controls,original_baseline_geometry_binder_unmodified=True,adapter_controls=adapter.source_controls(ROOT),status="PASS_CURRENT_DOMAIN_PARTITION_LOADED_SOURCE_CONTROLS",definitions=29,executable_blocks=5,frozen_source_files=9,rejected=cases,
+    record=dict(identity_controls=identity_controls,trial_controls=trial_controls,original_baseline_geometry_binder_unmodified=True,adapter_controls=adapter.source_controls(ROOT),status="PASS_CURRENT_DOMAIN_PARTITION_LOADED_SOURCE_CONTROLS",definitions=29,executable_blocks=5,frozen_source_files=9,rejected=cases,
       frozen_complete_prepare_and_measure=True,original_13_binding_controls_required_in_actual_preparation=True,
       actual_port_order=b["semantic_interface"],native_acquired=False,transient_executed=False,**FLAGS)
     save(CONTROLS/"result.json",record)
     return record
 def release_gate(empty=True,wait=False):
-    ctx=context(native=True);tag="cloud-results-"+str(ctx["run_id"])+"-1-cdr-current-domain-partition"
+    ctx=context(native=True);tag="cloud-results-"+str(ctx["run_id"])+"-1-cdr-clock-access-domain-loaded"
     for i in range(90 if wait else 1):
         p=subprocess.run(["gh","api","repos/"+REPO+"/releases/tags/"+tag],capture_output=True,text=True,timeout=180)
         if p.returncode==0:break
@@ -245,6 +247,7 @@ def simulate():
     save(DERIVED/"admission.json",dict(run=r,jobs=jobs,release=release_gate(wait=True)))
     need(shutil.disk_usage(OUT).free>=8*1024**3,"original8GiB native workspace reserve")
     paths=acquire_rc();runtime=acquire_runtime()
+    save(DERIVED/"native-identity-correspondence.json",identity.check(ROOT))
     TRIAL_BASIS=basis();TRIAL_PROTECTED={str(Path(p)):pin(p)for p in paths.values()}
     baseline_paths=paths;baseline=configure(baseline_paths)
     baseline.verify_runtime(runtime)

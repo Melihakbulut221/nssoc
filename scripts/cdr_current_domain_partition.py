@@ -5,7 +5,7 @@ from pathlib import Path
 from decimal import Decimal
 import mos_model_domain_audit as prior
 ROOT=Path(__file__).resolve().parents[1]
-MAP='docs/evidence/cdr-current-domain-parent-map.json'
+MAP='docs/evidence/cdr-clock-access-domain-parent-map.json'
 METHOD='scripts/cdr-current-domain-partition-methods.json'
 SCOPE="Current original-parent MOS-only model-domain correction; unchanged baseline wire RC, no matching physical layout or closed-loop acceptance."
 FLAGS=dict(full_phy_accepted=False,physical_acceptance=False,final_timing_complete=False,
@@ -81,7 +81,7 @@ def fixture(mapping):
 def controls():
     e=os.environ
     need(e.get('GITHUB_ACTIONS')=='true'and e.get('RUNNER_ENVIRONMENT')=='github-hosted','Hosted source controls')
-    need(e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'and e['GITHUB_REF']=='refs/heads/codex/cdr-current-domain-partition','Exact branch')
+    need(e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'and e['GITHUB_REF']=='refs/heads/codex/cdr-clock-access-domain-loaded','Exact branch')
     need(e['GITHUB_EVENT_NAME']=='workflow_dispatch'and e['GITHUB_RUN_ATTEMPT']=='1','First manual run')
     need(subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA'],'Actual source checkout')
     method=json.loads((ROOT/METHOD).read_bytes())
