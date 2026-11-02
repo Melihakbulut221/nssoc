@@ -1,0 +1,14 @@
+# Actual current MOS geometry audit for independent-unit layout
+
+This cloud job authenticates physical41435641296/source262ac9b4d9142be6235c68d279c67aac9b92e3a8 and its complete native archive, selects exact current GDS/flatLVS and qualification, and reads all500 native matched devices. It binds all50 original MOS to actual GDS PCell enclosures and D/G/S/B shapes, preserving complete observations and failures. It does not generate a new layout or claim650-device physical verification.
+
+The new model-range proposal uses independent units; original source/drain areas, perimeters, contacts, substrate taps, spacing and external wires must be accounted for in new geometry. This audit supplies the actual current placement/terminal ownership input, rather than historical geometry IDs. Every mapped terminal, extracted parameter and schematic identity must match current correspondence; an ID/order change is an explicit failure to diagnose, not a reason to skip mapping.
+
+Native GDS/LVS remain cloud-only. Complete output is preserved in an independently reserved exact-source release; derived JSON is separately available. Actual electrical trial41528163238 is independent and remains subject to full gates. No new layout, freshRC, closedloopCDR/PLL, complete serialGen3x4 or finalSTA acceptance is implied.
+
+API references: [KLayout terminal shapes](https://www.klayout.de/doc-qt5/code/class_LayoutToNetlist.html), [native cross-reference](https://www.klayout.de/doc-qt5/code/class_NetlistCrossReference.html), [device geometry](https://www.klayout.org/downloads/master/doc-qt5/code/class_Device.html). Execution uses pinned klayout0.30.4.post1.
+
+
+## Preserved first execution and named-top correction
+Run41529608784/sourcebb8bb8d failed the inventory's extra whole-file single-root assertion after complete archive acquisition and500 matched native pairs were recovered. All500 recovered schematic identities/models/terminal owners match the current correspondence exactly. Full derived failure and actual pairs are retained; this is not a device or LVS failure.
+The qualified original generator selects the explicit nssoc_cdr_pd500_resistor_v59 cell. The inspector now selects that same exact named cell, requires equality with the fully matched native LVS circuit and coordinate units, and records every root name/bounding box. Exact GDS digest and all500/50-device correspondence checks remain. No root is renamed, geometry modified or extraction result replaced.
