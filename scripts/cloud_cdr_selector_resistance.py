@@ -16,7 +16,7 @@ def gate():
     current_configuration()
     return cfg
 
-def compare_queries(old,new):
+def compare_queries(old,new,ownership=None):
     import math
     need(len(old)==len(new)==32,"all32 comparisons")
     a={r["label"]:r for r in old};b={r["label"]:r for r in new}
@@ -24,8 +24,14 @@ def compare_queries(old,new):
     rows=[]
     for label in sorted(a):
         left,right=a[label],b[label]
-        for key in("source_terminal","sink_terminal","native_net"):
+        for key in("source_terminal","sink_terminal"):
             need(left[key]==right[key],"same native terminal ownership "+key)
+        if ownership is None:
+            need(left["native_net"]==right["native_net"],"same fixture net")
+        else:
+            need(set(ownership)==set(a),"all32actual ownership witnesses")
+            p=ownership[label]
+            need(left["native_net"]==p["old_native_net"]and right["native_net"]==p["new_native_net"],"actual full-partition names")
         x,y=left["effective_resistance_ohm"],right["effective_resistance_ohm"]
         need(math.isfinite(x)and math.isfinite(y)and x>0 and y>0,"positive finite measured resistances")
         rows.append(dict(label=label,source_terminal=right["source_terminal"],sink_terminal=right["sink_terminal"],
@@ -51,6 +57,73 @@ def comparison_controls():
         except ValueError:passed.append("reject "+label)
         else:raise AssertionError(label)
     prior.save("comparison-controls.json",dict(passed=passed,count=len(passed),native_executed=False))
+
+def partition_identity(left,right):
+    import re
+    def normalize(c):
+        need(len(c["device_records"])==500 and sum(len(d["terminals"])for d in c["device_records"])==1446,"whole500device1446terminal composition")
+        public=set(c["interface"])-{"wire_cref"}
+        need(len(public)==25,"all25real ports")
+        devices={};groups={}
+        for d in c["device_records"]:
+            i=int(d["native_id"]);need(i not in devices,"unique native device id")
+            devices[i]=dict(model=d["model"],parameters=d["parameters"],terminals=sorted((t["terminal"],t["anchor"])for t in d["terminals"]))
+            for t in d["terminals"]:
+                name=t["native_net"];need(name in public or re.fullmatch(r"\$[0-9]+",name),"public or actual unnamed native net")
+                g=groups.setdefault(t["native_cluster"],dict(name=name,members=[]))
+                need(g["name"]==name,"one name per actual cluster")
+                g["members"].append((i,d["model"],t["terminal"]))
+        out={}
+        for cluster,g in groups.items():
+            key=json.dumps(dict(public_port=g["name"]if g["name"]in public else None,terminals=sorted(g["members"])),sort_keys=True,separators=(",",":"))
+            need(key not in out,"unique complete native partition")
+            out[key]=dict(native_net=g["name"],native_cluster=cluster,terminal_count=len(g["members"]))
+        need(len({g["native_net"]for g in out.values()})==len(out),"unique full native names")
+        return devices,out,public
+    a,x,pa=normalize(left);b,y,pb=normalize(right)
+    need(a==b and pa==pb,"all actual primitive parameters terminals anchors and port names preserved")
+    need(set(x)==set(y),"all complete native terminal partitions preserved")
+    rows=[dict(partition=json.loads(k),old=x[k],new=y[k])for k in sorted(x)]
+    return dict(status="PASS_ALL500_PRIMITIVES1446_TERMINALS_COMPLETE_PARTITIONS",partition_count=len(rows),rows=rows)
+
+def ownership_for_queries(proof,queries):
+    out={}
+    for q in queries:
+        origin=tuple(q["source_terminal"])
+        found=[r for r in proof["rows"]if any((m[0],m[2])==origin for m in r["partition"]["terminals"])]
+        need(len(found)==1,"unique whole native source partition")
+        r=found[0];dest=q["sink_terminal"]
+        if dest=="public_avss":need(r["partition"]["public_port"]=="avss","actual public ground endpoint")
+        else:need(any((m[0],m[2])==tuple(dest)for m in r["partition"]["terminals"]),"actual sink in same full partition")
+        need(q["native_net"]==r["old"]["native_net"],"original query really belongs to old partition")
+        out[q["label"]]=dict(old_native_net=r["old"]["native_net"],new_native_net=r["new"]["native_net"],full_partition=r["partition"])
+    need(len(out)==len(queries)==32,"all32owned queries")
+    return out
+
+def partition_controls():
+    import copy
+    original=json.loads((ROOT/"scripts/cdr-source-m1-resistance-reference-composition.json").read_bytes())
+    renamed=copy.deepcopy(original);changes=0
+    for d in renamed["device_records"]:
+        for t in d["terminals"]:
+            if t["native_net"]=="$700":t["native_net"]="$999999";changes+=1
+    need(changes>0,"actual formerly numbered emitter net present")
+    proof=partition_identity(original,renamed)
+    need(any(r["old"]["native_net"]=="$700"and r["new"]["native_net"]=="$999999"for r in proof["rows"]),"renumbering preserves complete ownership")
+    passed=["complete actual500device partition identity across unnamed renumbering"]
+    for label in("changed-membership","changed-parameter","renamed-public"):
+        bad=copy.deepcopy(original)
+        if label=="changed-membership":
+            terms=bad["device_records"][0]["terminals"];terms[0]["native_cluster"]=terms[1]["native_cluster"];terms[0]["native_net"]=terms[1]["native_net"]
+        elif label=="changed-parameter":bad["device_records"][0]["parameters"]["w"]="99u"
+        elif label=="renamed-public":
+            for d in bad["device_records"]:
+                for t in d["terminals"]:
+                    if t["native_net"]=="avss":t["native_net"]="avss_changed"
+        try:partition_identity(original,bad)
+        except ValueError:passed.append("reject "+label)
+        else:raise AssertionError(label)
+    prior.save("partition-controls.json",dict(count=len(passed),passed=passed,native_executed=False))
 
 def current_configuration():
     c=json.loads((ROOT/"scripts/cdr-source-m1-resistance-inputs.json").read_bytes())
@@ -138,6 +211,7 @@ def main():
     if sys.argv[1:]==["--controls"]:
         prior.controls()
         comparison_controls()
+        partition_controls()
         return
     need(sys.argv[1:]==["--analyze"],"explicit read-only analysis")
     current=current_configuration()
@@ -181,7 +255,14 @@ def main():
         summary.append(dict(**query,effective_resistance_ohm=reff,component_nodes=result["component_nodes"],
             component_resistors=result["component_resistors"],maximum_kcl_residual_a=result["maximum_kcl_residual_a"],
             full_result=filename,full_result_pin=prior.pin(prior.OUT/filename),top_edges=result["full_edge_contributions"][:12]))
-    comparison=compare_queries(reference["queries"],summary)
+    old_contract=json.loads((ROOT/"scripts/cdr-source-m1-resistance-reference-composition.json").read_bytes())
+    need(prior.pin(ROOT/"scripts/cdr-source-m1-resistance-reference-composition.json")==reference["inputs"]["composition"],"actual old analyzed composition")
+    identity=partition_identity(old_contract,contract)
+    ownership=ownership_for_queries(identity,reference["queries"])
+    prior.save("native-partition-comparison.json",identity)
+    prior.save("query-ownership.json",ownership)
+    comparison=compare_queries(reference["queries"],summary,ownership)
+
     prior.save("model-comparison.json",dict(status="COMPLETE_ACTUAL_SOURCE_M1_RESISTANCE_COMPARISON",
         current_rc=current["producer"],reference=current["reference"],queries=comparison,
         same_frozen_solver=True,all32_actual_full_network_queries=True,new_transient_executed=False,
