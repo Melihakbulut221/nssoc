@@ -186,7 +186,7 @@ def route_link(db,start,end,foreign,extent):
     sx,sy=start;tx,ty=end
     candidates=[[start,(tx,sy),end],[start,(sx,ty),end]]
     box=db.Box(min(sx,tx)-100000,min(sy,ty)-100000,max(sx,tx)+100000,max(sy,ty)+100000)
-    near=(foreign&db.Region(box)).merged()
+    near=foreign.interacting(db.Region(box)).merged()
     xs={sx,tx,box.left+4000,box.right-4000};ys={sy,ty,box.bottom+4000,box.top-4000}
     for p in near.each():
         for q in p.each_point_hull():
@@ -227,6 +227,11 @@ def metal_controls():
     blocked=db.Region(db.Box(40000,-30000,60000,130000))
     fail,_=route_link(db,(0,0),(100000,0),blocked,extent)
     need(fail is None,"sealed obstacle cannot escape extent");passed.append("sealed obstacle refused")
+    longwall=db.Region(db.Box(40000,-110000,60000,110000))
+    wide_extent=db.Region(db.Box(-200000,-200000,200000,200000))
+    around,_=route_link(db,(0,0),(100000,0),longwall,wide_extent)
+    need(around is not None and admissible_route(around,longwall,wide_extent),"unclipped obstacle extent regression")
+    passed.append("actual obstacle beyond search window detoured using full polygon")
     return dict(passed=passed,count=len(passed),physical_acceptance=False)
 
 def generate_metal(db,layout,top,before,objects,owned,target_anchors):
@@ -260,17 +265,20 @@ def generate_metal(db,layout,top,before,objects,owned,target_anchors):
             for n,r in st.items():adds[n]+=r
         if any(not all(a['checks'].values())for a in landings):
             proposals.append(dict(component=component,landings=landings,routes=[],accepted_for_candidate=False));continue
-        # Minimum Manhattan spanning tree; each edge receives its own full obstacle search.
-        connected={0};links=[];pairs=[]
+        # Build a complete connected tree using physically routable links.
+        # Preserve every refused edge; do not force a blocked shortest-Manhattan edge.
+        connected={0};links=[];rejected_links=[]
         while len(connected)<len(landings):
-            distance,i,j=min((sum(abs(a-b)for a,b in zip(landings[i]['center_dbu'],landings[j]['center_dbu'])),i,j)for i in connected for j in range(len(landings))if j not in connected)
-            pairs.append((i,j));connected.add(j)
-        for i,j in pairs:
-            r,record=route_link(db,tuple(landings[i]['center_dbu']),tuple(landings[j]['center_dbu']),foreign[126],extent)
-            record.update(source=landings[i]['label'],sink=landings[j]['label'],component=component)
-            links.append(record)
-            if r is None:failures.append(dict(kind="route",record=record))
-            else:adds[126]+=r
+            pairs=sorted((sum(abs(a-b)for a,b in zip(landings[i]['center_dbu'],landings[j]['center_dbu'])),i,j)for i in connected for j in range(len(landings))if j not in connected)
+            for distance,i,j in pairs:
+                r,record=route_link(db,tuple(landings[i]['center_dbu']),tuple(landings[j]['center_dbu']),foreign[126],extent)
+                record.update(source=landings[i]['label'],sink=landings[j]['label'],component=component)
+                if r is None:rejected_links.append(record);continue
+                links.append(record);adds[126]+=r;connected.add(j);break
+            else:
+                record=dict(reason="No remaining terminal can connect without crossing actual obstacles",component=component,connected=sorted(connected),rejected_links=rejected_links)
+                failures.append(dict(kind="route",record=record));links.append(record);break
+        save(DERIVED/("rejected-route-links-"+str(component)+".json"),dict(rejected_links=rejected_links))
         if any('reason'in r for r in links):
             proposals.append(dict(component=component,landings=landings,routes=links,accepted_for_candidate=False));continue
         adds={n:r.merged()for n,r in adds.items()}
