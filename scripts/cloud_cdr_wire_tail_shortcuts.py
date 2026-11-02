@@ -385,7 +385,7 @@ def acquire_current(cfg):
         need(pin(path)=={k:a[k]for k in("bytes","sha256")},"actual full RC asset bytes")
     index=json.loads((work/"complete-output-index.json").read_bytes())
     need(index["files"]==cfg["complete_members"]and index["context"]==dict(run=p["run"],source=p["source"],attempt=1),"actual full RC index")
-    selected={"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds","binding/inputs/wire/native05/wires.l2n","binding/inputs/wire/native05/wires.gds","binding/inputs/wire/anchors08.json","mim/composition/composition.json","fresh-rc-qualification.json","binding/inputs/native-planes.json","mim/precise/wire/rc03/pump_wires.ext","mim/precise/wire/rc03/pump_wires.res.ext","mim/precise/wire/rc03/wires.spice"}
+    selected={"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds","binding/inputs/wire/native05/wires.l2n","binding/inputs/wire/native05/wires.gds","binding/inputs/wire/anchors08.json","mim/composition/composition.json","fresh-rc-qualification.json","binding/inputs/native-planes.json","mim/precise/wire/rc03/pump_wires.ext","mim/precise/wire/rc03/pump_wires.res.ext","mim/precise/wire/rc03/wires.spice","mim/precise/wire/anchors08.json"}
     target=work/"selected";seen=set()
     with tarfile.open(work/"native-fresh-rc.tar.gz","r|gz")as tar:
         for m in tar:
@@ -1086,7 +1086,26 @@ def inspect_critical_access(base,cfg):
     root=base/"mim/precise/wire/rc03"
     parse=lambda p:[shlex.split(line,comments=False)for line in p.read_text().splitlines()if line.strip()and not line.lstrip().startswith("*")]
     raw=parse(root/"pump_wires.ext");distributed=parse(root/"pump_wires.res.ext")
-    anchors={a["label"]:a for a in json.loads((base/"binding/inputs/wire/anchors08.json").read_bytes())["anchors"]}
+    import copy
+    original={a["label"]:a for a in json.loads((base/"binding/inputs/wire/anchors08.json").read_bytes())["anchors"]}
+    extraction=json.loads((base/"mim/precise/wire/anchors08.json").read_bytes())
+    anchors={a["label"]:a for a in extraction["anchors"]}
+    need(set(original)==set(anchors)and len(anchors)==978,"exact original and extraction anchor census")
+    changes={r["label"]:r for r in extraction["mim_bottom_point_changes"]}
+    wanted={"T"+str(n)+"_mim_btm"for n in range(273,280)}
+    need(set(changes)==wanted and len(extraction["mim_bottom_point_changes"])==7,"exact documented seven MIM access references")
+    def relocate(v,old,new):
+        if isinstance(v,dict):return {k:(new if k=="point_dbu"and val==old else relocate(val,old,new))for k,val in v.items()}
+        if isinstance(v,list):return [relocate(x,old,new)for x in v]
+        return v
+    for name,anchor in anchors.items():
+        expected=original[name]
+        if name in changes:
+            c=changes[name]
+            need(c["old_point_dbu"]==expected["point_dbu"]and c["new_point_dbu"]==anchor["point_dbu"]and c["old_point_dbu"]!=c["new_point_dbu"],"documented actual MIM relocation")
+            need(expected["metal"]==67 and expected["detail"]["model"]=="cap_cmim"and c["native_id"]==expected["detail"]["device"],"original MIM owner")
+            expected=relocate(expected,c["old_point_dbu"],c["new_point_dbu"])
+        need(anchor==expected,"only authenticated seven MIM coordinate changes; all other metadata exact")
     comp=json.loads((base/"mim/composition/composition.json").read_bytes())
     proof=json.loads((ROOT/"scripts/cdr-critical-resistance-inputs.json").read_bytes())
     need(proof["run"]==41395210468 and proof["source"]=="4a20c52579eddaa7f0a1f82f41cb6af8445b806c","actual sensitivity producer")
@@ -1143,6 +1162,11 @@ def inspect_critical_access(base,cfg):
     def owned(component):
         if component not in cache:cache[component]={n:w.shapes_of_net(nets[component],layer,True).merged()for n,layer in objects.items()}
         return cache[component]
+    for name,anchor in anchors.items():
+        shapes=owned(anchor["wire_component"])
+        for kind,ref in (("original",original[name]),("actual_extraction",anchor)):
+            x,y=ref["point_dbu"]
+            need((box(x,y,1)-shapes[ref["metal"]]).is_empty(),"all actual and original port points on same native owned metal "+name+" "+kind)
     def members(region):
         return [dict(bbox=bounds(pya.Region(p)),area_dbu2=p.area(),hull=[[pt.x,pt.y]for pt in p.each_point_hull()],holes=[[[pt.x,pt.y]for pt in p.each_point_hole(i)]for i in range(p.holes())])for p in region.each()]
     rows=[]
@@ -1158,16 +1182,16 @@ def inspect_critical_access(base,cfg):
                     intersects_20nm_box=not region.interacting(box(x,y,10)).is_empty(),
                     owned_local_polygons=members(region&near),
                     foreign_local_polygons=members((objects[n]-region)&near))for n,region in shapes.items()if not(objects[n]&near).is_empty()}))
-            endpoints.append(dict(role=role,model_node=item["edge"][role],native_node=native,records=at,original_anchor=anchors.get(native)))
+            endpoints.append(dict(role=role,model_node=item["edge"][role],native_node=native,records=at,original_anchor=original.get(native),extraction_anchor=anchors.get(native)))
         rows.append(dict(element=name,**item,endpoints=endpoints))
     after=region_snapshot(g,top);need(set(before)==set(after),"same GDS layers")
     for n in before:need((before[n]^after[n]).is_empty(),"unchanged physical material")
-    for n in("binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds","binding/inputs/wire/native05/wires.l2n","mim/precise/wire/rc03/pump_wires.ext","mim/precise/wire/rc03/pump_wires.res.ext","mim/precise/wire/rc03/wires.spice","mim/composition/composition.json"):
+    for n in("binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds","binding/inputs/wire/native05/wires.l2n","mim/precise/wire/rc03/pump_wires.ext","mim/precise/wire/rc03/pump_wires.res.ext","mim/precise/wire/rc03/wires.spice","mim/composition/composition.json","mim/precise/wire/anchors08.json"):
         need(pin(base/n)==cfg["complete_members"][n],"actual input unchanged "+n)
     save("critical-access-map.json",dict(status="COMPLETE_ACTUAL_CRITICAL_RESISTOR_COORDINATE_AND_OWNERSHIP_MAP",
-        input_gds=pin(gp),sensitivity_proof=pin(ROOT/"scripts/cdr-critical-resistance-inputs.json"),all978port_coordinate_checks=True,
+        input_gds=pin(gp),sensitivity_proof=pin(ROOT/"scripts/cdr-critical-resistance-inputs.json"),all978port_coordinate_checks=True,all978original_and_extraction_ownership_checks=True,documented_mim_access_relocations=list(changes.values()),
         all24530native_exported_resistors_equal=True,all13native_unions_verified=True,critical_resistors=rows,
-        coordinate_interpretation="Original Magic internal5nm coordinate grid independently checked against all978actual GDS anchors. rnode type_token is retained without treating it as a GDS layer; physical layer evidence comes only from native owned geometry.",
+        coordinate_interpretation="Original Magic internal5nm coordinate grid independently checked against all978actual extraction anchors; seven previously documented MIM bottom access relocations authenticated and both point sets physically owned. rnode type_token is retained without treating it as a GDS layer; physical layer evidence comes only from native owned geometry.",
         original_geometry_unchanged=True,new_geometry_generated=False,fresh_RC=False,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
 
 
