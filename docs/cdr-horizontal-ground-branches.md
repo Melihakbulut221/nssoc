@@ -8,3 +8,9 @@ Original68source controls remain intact plus9horizontal-specific controls. Nativ
 
 After generation, require the unchanged full560DRC, deep/flatLVS13, current canonical binding, fresh RC and actual loaded-wave gates. No physical, electrical, full-PHY or final-timing acceptance is asserted at generation.
 Process rule reference: https://ihp-open-pdk-docs.readthedocs.io/en/latest/verification/drc/02_main_rules.html
+
+## Preserved source-control failure and precise API correction
+
+Run41385188402 failed the positive horizontal-widening control before native acquisition; no GDS was generated and native-generation was skipped. KLayout Region.sized with two integer arguments binds the isotropic(distance,mode) overload. The intended anisotropic call requires three arguments(dx,dy,mode). Use sized(0,3400,2) for actual y-only widening and explicitly assert the independent expected control rectangle coordinates. The malformed-width refusal also uses the explicit anisotropic overload. Geometry guard limits, target widths and original source controls are unchanged.
+
+API reference: https://www.klayout.de/doc-qt5/code/class_Region.html#method65

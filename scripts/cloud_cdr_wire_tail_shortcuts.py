@@ -943,7 +943,8 @@ def horizontal_ground_guard(original,widened,owned,full,other,outline):
         inside_original_bbox=(widened-outline).is_empty())
 def horizontal_ground_controls():
     original=pya.Region(pya.Box(-100000,-1600,100000,1600))
-    widened=original.sized(0,3400).merged();outline=box(0,0,200000)
+    widened=original.sized(0,3400,2).merged();outline=box(0,0,200000)
+    need(bounds(widened)==[-100000,-5000,100000,5000],"explicit anisotropic coordinates")
     own={134:original,133:pya.Region()};full={n:r.dup()for n,r in own.items()};checks=[]
     need(all(horizontal_ground_guard(original,widened,own,full,{},outline).values()),"positive owned horizontal widening")
     checks.append("widen real original horizontal branch without changing ends")
@@ -956,7 +957,7 @@ def horizontal_ground_controls():
     need(not horizontal_ground_guard(original,widened,missing,full,{},outline)["original_owned"],"unowned");checks.append("reject unowned branch")
     shorter=pya.Region(pya.Box(-90000,-5000,100000,5000))
     need(not horizontal_ground_guard(original,shorter,own,full,{},outline)["same_longitudinal_span"],"changed endpoint");checks.append("reject changed original ends")
-    need(not horizontal_ground_guard(original,original.sized(0,1000),own,full,{},outline)["exact_width_change"],"wrong width");checks.append("reject incorrect width")
+    need(not horizontal_ground_guard(original,original.sized(0,1000,2),own,full,{},outline)["exact_width_change"],"wrong width");checks.append("reject incorrect width")
     need(not horizontal_ground_guard(original,original,own,full,{},outline)["new_metal"],"no-op");checks.append("reject no new material")
     need(len(checks)==9,"nine horizontal guard controls")
     return checks
@@ -983,7 +984,7 @@ def generate_horizontal_ground(base,cfg):
     other={k:r for k,r in before.items()if k[0]in layers and k[1]!=0 and not r.is_empty()}
     additions=pya.Region();rows=[]
     for index,poly in enumerate(sorted(candidates,key=lambda p:(p.bbox().bottom,p.bbox().left))):
-        original=pya.Region(poly);widened=original.sized(0,3400).merged()
+        original=pya.Region(poly);widened=original.sized(0,3400,2).merged()
         checks=horizontal_ground_guard(original,widened,owned,full,other,outline)
         rows.append(dict(index=index,original_bbox=bounds(original),widened_bbox=bounds(widened),
             old_area_dbu2=original.area(),new_area_dbu2=widened.area(),guards=checks,admitted=all(checks.values())))
