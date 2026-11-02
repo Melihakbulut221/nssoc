@@ -1,11 +1,16 @@
-name: Actual collector Via2 freshRC loaded-wave verification
+name: Provisional C D sampler input bias trial
 on:
   workflow_dispatch:
+    inputs:
+      execute:
+        description: Run full provisional electrical trial after source controls
+        type: boolean
+        default: false
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-wire-shortcuts-loaded-${{ github.ref }}
+  group: cdr-sampler-bias-trial-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -55,6 +60,7 @@ jobs:
           if-no-files-found: error
           retention-days: 90
   loaded-wave:
+    if: ${{ inputs.execute }}
     needs: source-controls
     runs-on: ubuntu-24.04
     timeout-minutes: 180
@@ -100,7 +106,7 @@ jobs:
           host.gate()
           host.release_gate(wait=True)
           PY
-      - name: Authenticate new RC and execute unchanged loaded-wave measurements
+      - name: Authenticate parent RC then simulate explicit four-resistor parameter trial
         id: native
         run: python3 -B scripts/cloud_cdr_wire_shortcuts_loaded.py --simulate
       - name: Permanently preserve complete success or failure and native waves

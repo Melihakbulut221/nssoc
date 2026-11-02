@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
-"""Run unchanged loaded numerical methods on the actual four-mixed-shortcut fresh RC model."""
+"""Provisional C/D input-bias trial using frozen loaded methods and fixed parent wire RC."""
 import argparse,ast,copy,hashlib,json,os,platform,shutil,signal,subprocess,sys,tarfile,time,traceback,types
 from pathlib import Path,PurePosixPath
 import cdr_via2_m3_loaded_core as original
+import cdr_sampler_bias_trial as trial
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"cloud-wire-shortcuts-loaded"
 NATIVE=OUT/"native";DERIVED=OUT/"derived";CONTROLS=ROOT/"wire-loaded-controls"
 MANIFEST="scripts/cdr-wire-shortcuts-loaded-pins.json"
 BASIS="scripts/cdr-wire-shortcuts-loaded-basis.json"
 HOST="scripts/cloud_cdr_wire_shortcuts_loaded.py"
-BRANCH="codex/cdr-collector-via2-loaded"
+BRANCH="codex/cdr-sampler-bias-trial"
 REPO="Melihakbulut221/nssoc"
-FLAGS=dict(full_phy_accepted=False,qualified_pex=False,final_timing_complete=False)
+FLAGS=dict(trial.FLAGS)
 STATE=None
+TRIAL_BASIS=None
+TRIAL_PROTECTED=None
 def need(ok,msg):
     if not ok:raise AssertionError(msg)
 def pin(p):return original.file_pin(p)
@@ -136,13 +139,14 @@ def controls():
     prefix=ast.parse(original.extract(c["blocks"]["deck"],dedented=True)[0]).body[:3]
     need(len(prefix)==3 and isinstance(prefix[0],ast.Assign)and prefix[0].targets[0].id=="nodes"and isinstance(prefix[1],ast.Expr)and isinstance(prefix[2],ast.Assign)and prefix[2].targets[0].id=="vectors","exact frozen vector prefix")
     need(STATE is None and not NATIVE.exists(),"no native input in source controls")
-    record=dict(status="PASS_CURRENT_COLLECTOR_VIA2_LOADED_SOURCE_CONTROLS",definitions=29,executable_blocks=5,frozen_source_files=9,rejected=cases,
+    trial_controls=trial.source_controls(ROOT)
+    record=dict(trial_controls=trial_controls,status="PASS_PROVISIONAL_BIAS_TRIAL_FROZEN_LOADED_SOURCE_CONTROLS",definitions=29,executable_blocks=5,frozen_source_files=9,rejected=cases,
       frozen_complete_prepare_and_measure=True,original_13_binding_controls_required_in_actual_preparation=True,
       actual_port_order=b["semantic_interface"],native_acquired=False,transient_executed=False,**FLAGS)
     save(CONTROLS/"result.json",record)
     return record
 def release_gate(empty=True,wait=False):
-    ctx=context(native=True);tag="cloud-results-"+str(ctx["run_id"])+"-1-cdr-wire-shortcuts-loaded"
+    ctx=context(native=True);tag="cloud-results-"+str(ctx["run_id"])+"-1-cdr-sampler-bias-trial"
     for i in range(90 if wait else 1):
         p=subprocess.run(["gh","api","repos/"+REPO+"/releases/tags/"+tag],capture_output=True,text=True,timeout=180)
         if p.returncode==0:break
@@ -193,7 +197,8 @@ def acquire_runtime():
 def configure(paths):
     global STATE
     need(STATE is None,"one actual configuration")
-    b=basis();contract=read(paths["composition"]);planes=read(paths["planes"]);ns=original.numerical_namespace()
+    need(TRIAL_BASIS is not None and TRIAL_PROTECTED is not None,"explicit provisional trial derivation")
+    b=TRIAL_BASIS;contract=read(paths["composition"]);planes=read(paths["planes"]);ns=original.numerical_namespace()
     need(contract["counts"]==b["counts"]and contract["interface"]==b["semantic_interface"],"actual current numerical interface")
     need(len(contract["device_records"])==500 and sum(len(d["terminals"])for d in contract["device_records"])==1446,"all native devices and terminals")
     need(planes["status"]=="PASS_PD500_NATIVE160_PLANES_51_NETS_19_FAULTS"and len(planes["anchors"])==160 and len({p["logical_net"]for p in planes["anchors"]})==51,"complete current native plane binding")
@@ -216,14 +221,16 @@ def configure(paths):
       observed=dict(**b["counts"],terminals=1446,interface=b["semantic_interface"],selected_vectors=projection["counts"],
         selection_is_measured_not_general_invariant=True,native_card_validation_pending=False),
       records={},native_execution_authorized=False,wave_execution_authorized=False)
-    c["scope"]=dict(closed_loop=False,external_clock=True,electrical_accepted=False,qualified_pex=False,full_phy_accepted=False,native_card_validation_executed=True,loaded_simulation_executed=False)
+    c["scope"]=dict(scope=trial.SCOPE,closed_loop=False,external_clock=True,electrical_accepted=False,native_card_validation_executed=True,loaded_simulation_executed=False,**FLAGS)
     transport=c["transport_prerequisite"];t=original.pinned_json(ROOT/transport["path"],transport)
     records={"readback/actual/mim/composition/composition.json":contract,"readback/actual/binding/inputs/native-planes.json":planes,"derived-loaded-vector-projection.json":projection,"transport_prerequisite":t}
     protected={str(ROOT/BASIS):pin(ROOT/BASIS),str(projection_path):pin(projection_path),**{str(Path(p)):pin(p)for p in paths.values()}}
+    protected.update(TRIAL_PROTECTED)
     STATE=dict(configuration=c,records=records,protected=protected)
     save(DERIVED/"actual-configuration.json",dict(configuration=c,protected=protected,actual_context=context()))
     return frozen()
 def simulate():
+    global TRIAL_BASIS,TRIAL_PROTECTED
     ctx=gate();context(native=True);control=controls()
     OUT.mkdir();NATIVE.mkdir();DERIVED.mkdir()
     save(DERIVED/"context.json",ctx);save(DERIVED/"same-source-controls.json",control)
@@ -233,7 +240,9 @@ def simulate():
     need(len(checks)==1 and checks[0]["conclusion"]=="success"and all(s["conclusion"]in("success","skipped")for s in checks[0]["steps"]),"own completed actual source controls")
     save(DERIVED/"admission.json",dict(run=r,jobs=jobs,release=release_gate(wait=True)))
     need(shutil.disk_usage(OUT).free>=8*1024**3,"original8GiB native workspace reserve")
-    paths=acquire_rc();runtime=acquire_runtime();core=configure(paths)
+    paths=acquire_rc();runtime=acquire_runtime()
+    paths,TRIAL_BASIS,TRIAL_PROTECTED=trial.derive(sys.modules[__name__],paths)
+    core=configure(paths)
     core.verify_current_inputs(paths);core.verify_runtime(runtime);gate()
     case=NATIVE/"nominal_late";prepared=core.prepare_case(case,paths,runtime,ctx)
     need(len(prepared["report"]["binding_controls"]["rejected"])==13 and prepared["report"]["binding_controls"]["equivalent_unit_spellings"]==2,"all actual binding controls")
@@ -245,9 +254,9 @@ def simulate():
         p=case/"measurement-result.json"
         if p.is_file():shutil.copyfile(p,DERIVED/"measurement-result.json")
         gate()
-    save(DERIVED/"result.json",dict(status="PASS_ACTUAL_FOUR_MIXED_SHORTCUT_NOMINAL_LATE_FROZEN_LOADED_MEASUREMENTS",
+    save(DERIVED/"result.json",dict(status="PASS_PROVISIONAL_FOUR_RESISTOR_TRIAL_FROZEN_LOADED_MEASUREMENTS",
       context=ctx,model=pin(paths["model"]),measurement=report,loaded_simulation_passed=True,
-      scope="Actual500-device new RC with original external-clock nominal_late scenario; not complete serial PHY or corners",**FLAGS))
+      scope=trial.SCOPE,**FLAGS))
 def publish():
     gate();ctx=context(native=True);rel=release_gate();need(OUT.is_dir(),"owned actual attempt")
     source=DERIVED/"source";source.mkdir(parents=True)
