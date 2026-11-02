@@ -1236,6 +1236,22 @@ def source_m1_sizing_controls():
     need((left_source_widening(stepped,600)^expected).is_empty(),"stepped original material left extrusion")
     passed.append("source M1 stepped original contour exact extrusion")
     return passed
+def source_m1_band(owned,x,y,halfspan):
+    need(isinstance(halfspan,int)and 0<halfspan<=18000 and halfspan%5==0,"bounded source band")
+    wanted=pya.Region(pya.Box(x-145,y-halfspan,x+145,y+halfspan))
+    actual=(owned&wanted).merged()
+    return actual,(actual^wanted).is_empty()
+def source_m1_band_controls():
+    long=pya.Region(pya.Box(-80,-18000,80,18000))
+    centre=pya.Region(pya.Box(-145,-16000,145,16000))
+    actual=(long+centre).merged()
+    need(not source_m1_band(actual,0,0,18000)[1],"reject original narrow end notches before expanding")
+    need(source_m1_band(actual,0,0,16000)[1],"select exact original rectangular centre")
+    need(source_m1_band(actual,0,0,10000)[1],"select fully owned shorter centre")
+    hole=pya.Region(pya.Box(-20,-10,20,10))
+    need(not source_m1_band(actual-hole,0,0,16000)[1],"reject hole in original source band")
+    return ["source M1 reject narrowed original ends","source M1 admit exact original centre",
+        "source M1 admit wholly owned shorter band","source M1 reject missing source material"]
 def generate_local_source_m1(base,cfg):
     proof=json.loads((ROOT/"scripts/cdr-source-m1-inputs.json").read_bytes())
     need(proof["mapping_run"]==41397314520 and proof["mapping_source"]=="7b2a7efcedd829412cb18fd45d66179c071a3c79","actual mapped physical producer")
@@ -1259,20 +1275,23 @@ def generate_local_source_m1(base,cfg):
         endpoint=next(e for e in edge["endpoints"]if e["native_node"]==label)
         need(endpoint["extraction_anchor"]==a and len(endpoint["records"])==1 and endpoint["records"][0]["point_dbu"]==a["point_dbu"],"actual critical terminal coordinate")
         need(edge["edge"]["resistance_ohm"]==32.5245 and edge["component"]==14,"actual dominant branch")
-        x,y=a["point_dbu"];strip=(owned[8]&pya.Region(pya.Box(x-145,y-18000,x+145,y+18000))).merged()
-        need(strip.count()==1 and(box(x,y,1)-strip).is_empty(),"connected original 290nm source strip")
-        trials=[];selected=None
-        for width in(1500,1200,900,600,300):
-            widened=left_source_widening(strip,width)
-            need((strip-widened).is_empty(),"no source strip removal")
-            addition=(widened-full[8]).merged()
-            guards=source_m1_guard(addition,owned,full,other,pya.Region(top.bbox()))
-            guards.update(one_local_addition=addition.count()==1,only_left_widening=not addition.is_empty()and addition.bbox().right<=x-145,
-                max_y_span=not addition.is_empty()and addition.bbox().height()<=36000)
-            row=dict(width_added_nm=width,addition_bbox=bounds(addition),addition_area_dbu2=addition.area(),guards=guards,admitted=all(guards.values()))
-            trials.append(row)
-            if row["admitted"]and selected is None:selected=(addition,row)
-        rows.append(dict(label=label,original_anchor=a,original_strip_bbox=bounds(strip),resistor=edge["element"],
+        x,y=a["point_dbu"];trials=[];selected=None;bands=[]
+        for halfspan in(18000,16000,14000,12000,10000):
+            strip,rectangular=source_m1_band(owned[8],x,y,halfspan)
+            bands.append(dict(halfspan_nm=halfspan,original_strip_bbox=bounds(strip),exact_original_rectangle=rectangular))
+            if not rectangular:continue
+            for width in(1500,1200,900,600,300):
+                widened=left_source_widening(strip,width)
+                need((strip-widened).is_empty(),"no source strip removal")
+                addition=(widened-full[8]).merged()
+                guards=source_m1_guard(addition,owned,full,other,pya.Region(top.bbox()))
+                guards.update(one_local_addition=addition.count()==1,only_left_widening=not addition.is_empty()and addition.bbox().right<=x-145,
+                    max_y_span=not addition.is_empty()and addition.bbox().height()<=36000,
+                    exact_original_source_rectangle=rectangular)
+                row=dict(width_added_nm=width,halfspan_nm=halfspan,original_strip_bbox=bounds(strip),addition_bbox=bounds(addition),addition_area_dbu2=addition.area(),guards=guards,admitted=all(guards.values()))
+                trials.append(row)
+                if row["admitted"]and selected is None:selected=(addition,row)
+        rows.append(dict(label=label,original_anchor=a,source_bands=bands,resistor=edge["element"],
             original_resistance_ohm=32.5245,trials=trials,selected=None if selected is None else selected[1]))
         if selected is not None:additions+=selected[0]
     save("local-source-m1-proposal.json",dict(targets=rows,admitted=sum(r["selected"]is not None for r in rows),requested=8,
@@ -1301,7 +1320,7 @@ def generate_local_source_m1(base,cfg):
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
-        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls()+horizontal_ground_controls()+horizontal_clearance_controls()+source_m1_controls()+source_m1_sizing_controls();save("controls.json",dict(count=len(passed),passed=passed))
+        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls()+horizontal_ground_controls()+horizontal_clearance_controls()+source_m1_controls()+source_m1_sizing_controls()+source_m1_band_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
         need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"],["--generate-horizontal-ground"],["--inspect-critical-access"],["--generate-local-source-m1"]),"explicit native operation")
         reserve(wait=True)
