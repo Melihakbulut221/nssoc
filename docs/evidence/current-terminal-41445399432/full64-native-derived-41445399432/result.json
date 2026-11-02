@@ -1,0 +1,993 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "docker",
+        "pull",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a"
+      ],
+      "elapsed_seconds": 30.077339224000013,
+      "label": "immutable-image-pull",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "image",
+        "inspect",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a"
+      ],
+      "elapsed_seconds": 0.015843963000008898,
+      "label": "image-inspect",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "container",
+        "ls",
+        "-a",
+        "--format",
+        "{{.Names}}"
+      ],
+      "elapsed_seconds": 0.015845914999999877,
+      "label": "names-before-owned-create",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "create",
+        "--env",
+        "GITHUB_ACTIONS=true",
+        "--name",
+        "nssoc-witness-build-41445399432-1",
+        "--label",
+        "nssoc.build.source=cccc79890d45e1e9796ee096bfbc42b064f72160",
+        "--label",
+        "nssoc.build.token=41445399432-1",
+        "--network",
+        "none",
+        "--read-only",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--memory",
+        "12884901888",
+        "--memory-swap",
+        "12884901888",
+        "--cpus",
+        "2",
+        "--pids-limit",
+        "4096",
+        "--user",
+        "1001:1001",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,size=268435456",
+        "--mount",
+        "type=bind,src=/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41445399432-1,dst=/work",
+        "--workdir",
+        "/work/source",
+        "--env",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "--entrypoint",
+        "/usr/bin/python3",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a",
+        "/work/inner.py"
+      ],
+      "elapsed_seconds": 0.03225421400000528,
+      "label": "owned-container-create",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "start",
+        "--attach",
+        "ad0a28d67a47afa17ca48d839f59107784f20231813cb55f224919f984105d9b"
+      ],
+      "elapsed_seconds": 2.820664224000012,
+      "error": {
+        "action": "bulk-postdrt-owned-container",
+        "error": "ValueError('bulk-postdrt-owned-container failed')",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build.py\", line 71, in execute_command\n    c.require(result.returncode == 0, label+\" failed\")\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build_contract.py\", line 26, in require\n    raise ValueError(reason)\nValueError: bulk-postdrt-owned-container failed\n",
+        "type": "ValueError"
+      },
+      "label": "bulk-postdrt-owned-container",
+      "returncode": 1
+    },
+    {
+      "argv": [
+        "docker",
+        "rm",
+        "ad0a28d67a47afa17ca48d839f59107784f20231813cb55f224919f984105d9b"
+      ],
+      "elapsed_seconds": 0.01590299599999412,
+      "label": "owned-container-remove",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "container",
+        "ls",
+        "-a",
+        "--format",
+        "{{.Names}}"
+      ],
+      "elapsed_seconds": 0.015802914999994755,
+      "label": "owned-removal-census",
+      "returncode": 0
+    }
+  ],
+  "container_terminal": {
+    "AppArmorProfile": "docker-default",
+    "Args": [
+      "/work/inner.py"
+    ],
+    "Config": {
+      "AttachStderr": true,
+      "AttachStdin": false,
+      "AttachStdout": true,
+      "Cmd": [
+        "/work/inner.py"
+      ],
+      "Domainname": "",
+      "Entrypoint": [
+        "/usr/bin/python3"
+      ],
+      "Env": [
+        "GITHUB_ACTIONS=true",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "DEBIAN_FRONTEND=noninteractive",
+        "TZ=America/Los_Angeles",
+        "LANG=C.UTF-8",
+        "LC_ALL=C.UTF-8"
+      ],
+      "Hostname": "ad0a28d67a47",
+      "Image": "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a",
+      "Labels": {
+        "nssoc.build.source": "cccc79890d45e1e9796ee096bfbc42b064f72160",
+        "nssoc.build.token": "41445399432-1",
+        "org.opencontainers.image.ref.name": "ubuntu",
+        "org.opencontainers.image.version": "24.04"
+      },
+      "OnBuild": null,
+      "OpenStdin": false,
+      "StdinOnce": false,
+      "Tty": false,
+      "User": "1001:1001",
+      "Volumes": null,
+      "WorkingDir": "/work/source"
+    },
+    "Created": "2026-11-02T12:35:00.360407909Z",
+    "Driver": "overlay2",
+    "ExecIDs": null,
+    "GraphDriver": {
+      "Data": {
+        "ID": "ad0a28d67a47afa17ca48d839f59107784f20231813cb55f224919f984105d9b",
+        "LowerDir": "/var/lib/docker/overlay2/317ceda9367faf3530de4369679b33c294ecf95e959923444283866bf038e7c4-init/diff:/var/lib/docker/overlay2/609d6a24217b4b7c7baa2d56cec903f747d00ec9e2ce7fe3c05b82b06095e3f6/diff:/var/lib/docker/overlay2/97b3a87f792f1c30f7fe03246d6eb1d6d39add0347aad178e26bbe30527da334/diff:/var/lib/docker/overlay2/a21060e9834a837a42a9df19abfa28fc0f91cd773159f4372162e24dc9275317/diff",
+        "MergedDir": "/var/lib/docker/overlay2/317ceda9367faf3530de4369679b33c294ecf95e959923444283866bf038e7c4/merged",
+        "UpperDir": "/var/lib/docker/overlay2/317ceda9367faf3530de4369679b33c294ecf95e959923444283866bf038e7c4/diff",
+        "WorkDir": "/var/lib/docker/overlay2/317ceda9367faf3530de4369679b33c294ecf95e959923444283866bf038e7c4/work"
+      },
+      "Name": "overlay2"
+    },
+    "HostConfig": {
+      "AutoRemove": false,
+      "Binds": null,
+      "BlkioDeviceReadBps": [],
+      "BlkioDeviceReadIOps": [],
+      "BlkioDeviceWriteBps": [],
+      "BlkioDeviceWriteIOps": [],
+      "BlkioWeight": 0,
+      "BlkioWeightDevice": [],
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "Cgroup": "",
+      "CgroupParent": "",
+      "CgroupnsMode": "private",
+      "ConsoleSize": [
+        0,
+        0
+      ],
+      "ContainerIDFile": "",
+      "CpuCount": 0,
+      "CpuPercent": 0,
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuRealtimePeriod": 0,
+      "CpuRealtimeRuntime": 0,
+      "CpuShares": 0,
+      "CpusetCpus": "",
+      "CpusetMems": "",
+      "DeviceCgroupRules": null,
+      "DeviceRequests": null,
+      "Devices": [],
+      "Dns": [],
+      "DnsOptions": [],
+      "DnsSearch": [],
+      "ExtraHosts": null,
+      "GroupAdd": null,
+      "IOMaximumBandwidth": 0,
+      "IOMaximumIOps": 0,
+      "IpcMode": "private",
+      "Isolation": "",
+      "Links": null,
+      "LogConfig": {
+        "Config": {},
+        "Type": "json-file"
+      },
+      "MaskedPaths": [
+        "/proc/asound",
+        "/proc/acpi",
+        "/proc/interrupts",
+        "/proc/kcore",
+        "/proc/keys",
+        "/proc/latency_stats",
+        "/proc/timer_list",
+        "/proc/timer_stats",
+        "/proc/sched_debug",
+        "/proc/scsi",
+        "/sys/firmware",
+        "/sys/devices/virtual/powercap"
+      ],
+      "Memory": 12884901888,
+      "MemoryReservation": 0,
+      "MemorySwap": 12884901888,
+      "MemorySwappiness": null,
+      "Mounts": [
+        {
+          "Source": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41445399432-1",
+          "Target": "/work",
+          "Type": "bind"
+        }
+      ],
+      "NanoCpus": 2000000000,
+      "NetworkMode": "none",
+      "OomKillDisable": null,
+      "OomScoreAdj": 0,
+      "PidMode": "",
+      "PidsLimit": 4096,
+      "PortBindings": {},
+      "Privileged": false,
+      "PublishAllPorts": false,
+      "ReadonlyPaths": [
+        "/proc/bus",
+        "/proc/fs",
+        "/proc/irq",
+        "/proc/sys",
+        "/proc/sysrq-trigger"
+      ],
+      "ReadonlyRootfs": true,
+      "RestartPolicy": {
+        "MaximumRetryCount": 0,
+        "Name": "no"
+      },
+      "Runtime": "runc",
+      "SecurityOpt": [
+        "no-new-privileges"
+      ],
+      "ShmSize": 67108864,
+      "Tmpfs": {
+        "/tmp": "rw,nosuid,nodev,size=268435456"
+      },
+      "UTSMode": "",
+      "Ulimits": [],
+      "UsernsMode": "",
+      "VolumeDriver": "",
+      "VolumesFrom": null
+    },
+    "HostnamePath": "/var/lib/docker/containers/ad0a28d67a47afa17ca48d839f59107784f20231813cb55f224919f984105d9b/hostname",
+    "HostsPath": "/var/lib/docker/containers/ad0a28d67a47afa17ca48d839f59107784f20231813cb55f224919f984105d9b/hosts",
+    "Id": "ad0a28d67a47afa17ca48d839f59107784f20231813cb55f224919f984105d9b",
+    "Image": "sha256:a958d3bee9c5261b26e221e1c1461c92f830f14293bc5050848653bd7ec8d185",
+    "LogPath": "/var/lib/docker/containers/ad0a28d67a47afa17ca48d839f59107784f20231813cb55f224919f984105d9b/ad0a28d67a47afa17ca48d839f59107784f20231813cb55f224919f984105d9b-json.log",
+    "MountLabel": "",
+    "Mounts": [
+      {
+        "Destination": "/work",
+        "Mode": "",
+        "Propagation": "rprivate",
+        "RW": true,
+        "Source": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41445399432-1",
+        "Type": "bind"
+      }
+    ],
+    "Name": "/nssoc-witness-build-41445399432-1",
+    "NetworkSettings": {
+      "Bridge": "",
+      "EndpointID": "",
+      "Gateway": "",
+      "GlobalIPv6Address": "",
+      "GlobalIPv6PrefixLen": 0,
+      "HairpinMode": false,
+      "IPAddress": "",
+      "IPPrefixLen": 0,
+      "IPv6Gateway": "",
+      "LinkLocalIPv6Address": "",
+      "LinkLocalIPv6PrefixLen": 0,
+      "MacAddress": "",
+      "Networks": {
+        "none": {
+          "Aliases": null,
+          "DNSNames": null,
+          "DriverOpts": null,
+          "EndpointID": "",
+          "Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "GwPriority": 0,
+          "IPAMConfig": null,
+          "IPAddress": "",
+          "IPPrefixLen": 0,
+          "IPv6Gateway": "",
+          "Links": null,
+          "MacAddress": "",
+          "NetworkID": "db2021413c20229694a1bb193d11e88c1917d996791603dc252632a6c43231b7"
+        }
+      },
+      "Ports": {},
+      "SandboxID": "",
+      "SandboxKey": "",
+      "SecondaryIPAddresses": null,
+      "SecondaryIPv6Addresses": null
+    },
+    "Path": "/usr/bin/python3",
+    "Platform": "linux",
+    "ProcessLabel": "",
+    "ResolvConfPath": "/var/lib/docker/containers/ad0a28d67a47afa17ca48d839f59107784f20231813cb55f224919f984105d9b/resolv.conf",
+    "RestartCount": 0,
+    "State": {
+      "Dead": false,
+      "Error": "",
+      "ExitCode": 1,
+      "FinishedAt": "2026-11-02T12:35:03.158518061Z",
+      "OOMKilled": false,
+      "Paused": false,
+      "Pid": 0,
+      "Restarting": false,
+      "Running": false,
+      "StartedAt": "2026-11-02T12:35:00.414118514Z",
+      "Status": "exited"
+    }
+  },
+  "creation_attempted": true,
+  "error": {
+    "action": "scoped-restoration-host",
+    "error": "ValueError('bulk-postdrt-owned-container failed')",
+    "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_route47_guides.py\", line 201, in main\n    command('bulk-postdrt-owned-container',['docker','start','--attach',identity],21600)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_route47_guides.py\", line 173, in command\n    def command(label,argv,timeout=120):return build.execute_command(report,out,label,argv,timeout)\n                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build.py\", line 82, in execute_command\n    if primary is not None: raise primary\n                            ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build.py\", line 71, in execute_command\n    c.require(result.returncode == 0, label+\" failed\")\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build_contract.py\", line 26, in require\n    raise ValueError(reason)\nValueError: bulk-postdrt-owned-container failed\n",
+    "type": "ValueError"
+  },
+  "full_phy_accepted": false,
+  "native_publication": {
+    "archive": {
+      "bytes": 81608,
+      "sha256": "304eb3bf2033256d5eaf44d62b369c3b9d12c8b30ff4b33b17e965771e02f9ce"
+    },
+    "assets": [
+      {
+        "bytes": 3335,
+        "id": 701704343,
+        "name": "candidate-outputs.json",
+        "reconciled_upload_error": null,
+        "sha256": "dbe8c2117edf2a7ab066b930371d952fa32fc2486f999a1ea2ebf6543c27b7c6"
+      },
+      {
+        "bytes": 308,
+        "id": 701704486,
+        "name": "candidate-parts.json",
+        "reconciled_upload_error": null,
+        "sha256": "4d8dea6a705be179cad7a64820a381aefdc92fb8fbe20ee39da771771ed543fe"
+      },
+      {
+        "bytes": 81608,
+        "id": 701704597,
+        "name": "candidate-native.tar.gz.part000",
+        "reconciled_upload_error": null,
+        "sha256": "304eb3bf2033256d5eaf44d62b369c3b9d12c8b30ff4b33b17e965771e02f9ce"
+      }
+    ],
+    "files": {
+      "bulk-postdrt-inner-progress.json": {
+        "bytes": 7781,
+        "sha256": "2cecc09853d00f36bae2fa6dc23cf61bc44499f50f436a49d491a22a5ee82551"
+      },
+      "bulk-postdrt-ldd.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-ldd.stdout": {
+        "bytes": 10979,
+        "sha256": "b111b5149c8b8a63cdec7fe0934c3378d558620b4b9b623aee4f8f3eaa7db89e"
+      },
+      "bulk-postdrt-owned-container.stderr": {
+        "bytes": 2643,
+        "sha256": "8bc73c0eb704f94c5eb1f7b746dc7cea7b1955160928eda76f37a36df8e5d5dc"
+      },
+      "bulk-postdrt-owned-container.stdout": {
+        "bytes": 5011,
+        "sha256": "8d1698708589d30a1962e2235583b7a9f9023ee005dbec437590ddf19a9fd131"
+      },
+      "bulk-postdrt-recovery-acquisition.json": {
+        "bytes": 14135,
+        "sha256": "1081d31445314051ca23c37cc031a14a5e5db796da894af539649bc0e11ee6b0"
+      },
+      "bulk-postdrt-runtime-observed.json": {
+        "bytes": 16940,
+        "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0"
+      },
+      "bulk-postdrt-snapshot-acquisition.json": {
+        "bytes": 167438,
+        "sha256": "afd089a1b34fdc83c82017a7e41b9a122eb41aab6afb5966562c554028018596"
+      },
+      "bulk-postdrt-snapshot-available-output.json": {
+        "bytes": 2955,
+        "sha256": "224478e2db5c067a6acb82ff7d56adef5e4575f3c9882a2909fc066425f655ae"
+      },
+      "bulk-postdrt-snapshot-inner-result.json": {
+        "bytes": 24444,
+        "sha256": "e13ae6437b34777efd3f0a0e559bab5c6d2bbfcf15d5de5df4dc31010106b18e"
+      },
+      "bulk-postdrt-snapshot-progress.json": {
+        "bytes": 2908,
+        "sha256": "7c11b52906ac68e4b8261089e098216ae6326b419cc7b39756d57bb2bcbd0e64"
+      },
+      "bulk-postdrt-supervision/actual92-guide-audit.command.json": {
+        "bytes": 1278,
+        "sha256": "ce21e253d99b5f18dc3d25a0982ce8617670da045c2d15ff7e9a49e11a09318a"
+      },
+      "bulk-postdrt-supervision/actual92-guide-audit.stderr": {
+        "bytes": 680,
+        "sha256": "7bad3970131f87cdc06c0ee26ca81d87ce3a70c01346e07f478c57660fa5f875"
+      },
+      "bulk-postdrt-supervision/actual92-guide-audit.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/events.jsonl": {
+        "bytes": 4931,
+        "sha256": "2e96b49200c55e482e538a710941f889d0ea6432aea7f162ad999e8ca9322cf1"
+      },
+      "bulk-postdrt-supervision/latest.json": {
+        "bytes": 1458,
+        "sha256": "7f11bbbfebeb82aa81c9e1cc3cf35fa6410d38ee48b0ca170075296636510be0"
+      },
+      "bulk-postdrt-version.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-version.stdout": {
+        "bytes": 42,
+        "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae"
+      },
+      "work/bulk-postdrt-antenna/actual92-guide-audit.log": {
+        "bytes": 965,
+        "sha256": "1a1c002bcb8ef5f5059e060378c509e87abdc237a548c81a6cc1fc0dd5451950"
+      }
+    },
+    "native_bytes_remain_in_cloud": true,
+    "partial_failure_preserved": true,
+    "release_id": 431439188,
+    "source": "cccc79890d45e1e9796ee096bfbc42b064f72160",
+    "status": "COMPLETE_PERMANENT_NATIVE_CAPSULE",
+    "tag": "cloud-results-41445399432-1-mainchip-bulk-postdrt-antenna"
+  },
+  "output_preservation": {
+    "artifact_required": true,
+    "complete": true,
+    "copied": {
+      "bulk-postdrt-inner-progress.json": {
+        "bytes": 7781,
+        "sha256": "2cecc09853d00f36bae2fa6dc23cf61bc44499f50f436a49d491a22a5ee82551"
+      },
+      "bulk-postdrt-ldd.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-ldd.stdout": {
+        "bytes": 10979,
+        "sha256": "b111b5149c8b8a63cdec7fe0934c3378d558620b4b9b623aee4f8f3eaa7db89e"
+      },
+      "bulk-postdrt-owned-container.stderr": {
+        "bytes": 2643,
+        "sha256": "8bc73c0eb704f94c5eb1f7b746dc7cea7b1955160928eda76f37a36df8e5d5dc"
+      },
+      "bulk-postdrt-owned-container.stdout": {
+        "bytes": 5011,
+        "sha256": "8d1698708589d30a1962e2235583b7a9f9023ee005dbec437590ddf19a9fd131"
+      },
+      "bulk-postdrt-recovery-acquisition.json": {
+        "bytes": 14135,
+        "sha256": "1081d31445314051ca23c37cc031a14a5e5db796da894af539649bc0e11ee6b0"
+      },
+      "bulk-postdrt-runtime-observed.json": {
+        "bytes": 16940,
+        "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0"
+      },
+      "bulk-postdrt-snapshot-acquisition.json": {
+        "bytes": 167438,
+        "sha256": "afd089a1b34fdc83c82017a7e41b9a122eb41aab6afb5966562c554028018596"
+      },
+      "bulk-postdrt-snapshot-available-output.json": {
+        "bytes": 2955,
+        "sha256": "224478e2db5c067a6acb82ff7d56adef5e4575f3c9882a2909fc066425f655ae"
+      },
+      "bulk-postdrt-snapshot-inner-result.json": {
+        "bytes": 24444,
+        "sha256": "e13ae6437b34777efd3f0a0e559bab5c6d2bbfcf15d5de5df4dc31010106b18e"
+      },
+      "bulk-postdrt-snapshot-progress.json": {
+        "bytes": 2908,
+        "sha256": "7c11b52906ac68e4b8261089e098216ae6326b419cc7b39756d57bb2bcbd0e64"
+      },
+      "bulk-postdrt-supervision/actual92-guide-audit.command.json": {
+        "bytes": 1278,
+        "sha256": "ce21e253d99b5f18dc3d25a0982ce8617670da045c2d15ff7e9a49e11a09318a"
+      },
+      "bulk-postdrt-supervision/actual92-guide-audit.stderr": {
+        "bytes": 680,
+        "sha256": "7bad3970131f87cdc06c0ee26ca81d87ce3a70c01346e07f478c57660fa5f875"
+      },
+      "bulk-postdrt-supervision/actual92-guide-audit.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/events.jsonl": {
+        "bytes": 4931,
+        "sha256": "2e96b49200c55e482e538a710941f889d0ea6432aea7f162ad999e8ca9322cf1"
+      },
+      "bulk-postdrt-supervision/latest.json": {
+        "bytes": 1458,
+        "sha256": "7f11bbbfebeb82aa81c9e1cc3cf35fa6410d38ee48b0ca170075296636510be0"
+      },
+      "bulk-postdrt-version.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-version.stdout": {
+        "bytes": 42,
+        "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae"
+      },
+      "container-terminal.json": {
+        "bytes": 6880,
+        "sha256": "c8ed921a055800f893a2974b05f69ee9c046bfc28e22886c002d4481dcb834f7"
+      },
+      "create-attempt.json": {
+        "bytes": 1265,
+        "sha256": "5494d0449f58dae827860cd7033b2fcef45280b62360f5080be7559963ef1f87"
+      },
+      "host-progress.json": {
+        "bytes": 13239,
+        "sha256": "62f8fa271a6d20ad1285d869ffa70095f38cd17cbe5514dcc9d3c09a84229237"
+      },
+      "image-inspect.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "image-inspect.stdout": {
+        "bytes": 2643,
+        "sha256": "8d97a3543bef6644a4f77e4ebac1d9021e5b225817c8460fe3834649e5dd0578"
+      },
+      "immutable-image-pull.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "immutable-image-pull.stdout": {
+        "bytes": 837,
+        "sha256": "f2e858bdd0164b89c06da570b7d63e234534590a4872d84ac5f27f07d033fbe4"
+      },
+      "names-before-owned-create.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "names-before-owned-create.stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-container-create.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-container-create.stdout": {
+        "bytes": 65,
+        "sha256": "621bdbc5e543cee9dd93975c555d4ad51955ec0667ed54093ecc6f589c3e121b"
+      },
+      "owned-container-remove.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-container-remove.stdout": {
+        "bytes": 65,
+        "sha256": "621bdbc5e543cee9dd93975c555d4ad51955ec0667ed54093ecc6f589c3e121b"
+      },
+      "owned-removal-census.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-removal-census.stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "prefix-envelope.json": {
+        "bytes": 4270,
+        "sha256": "11281aedb0c83745f8126820b9c3c5421c20ed572e48bda55356f5d68c8313fb"
+      },
+      "prefix-restoration.json": {
+        "bytes": 423478,
+        "sha256": "23f45038bb461360ec38c7a2490ba24c84db2f9dd3a53e8b2e689201d693d177"
+      }
+    },
+    "excluded_roots": [
+      "work"
+    ],
+    "owned_outputs_retained": true,
+    "retained_output_path": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41445399432-1/out"
+  },
+  "owned_container_recovery": {
+    "id": "ad0a28d67a47afa17ca48d839f59107784f20231813cb55f224919f984105d9b",
+    "name": "/nssoc-witness-build-41445399432-1",
+    "recovered_after_create_client_error": false
+  },
+  "physical_acceptance": false,
+  "run_id": 41445399432,
+  "source": "cccc79890d45e1e9796ee096bfbc42b064f72160",
+  "status": "FAIL_ACTUAL47_CLOUD_GUIDE_OBSERVATION",
+  "terminal_actions": [
+    {
+      "action": "recover-owned-container",
+      "completed": true
+    },
+    {
+      "action": "owned-stop",
+      "completed": true
+    },
+    {
+      "action": "post-stop-inspect",
+      "completed": true
+    },
+    {
+      "action": "owned-kill-if-running",
+      "completed": true
+    },
+    {
+      "action": "terminal-inspect",
+      "completed": true
+    },
+    {
+      "action": "stopped-container-contract",
+      "completed": true
+    },
+    {
+      "action": "owned-container-removal",
+      "completed": true
+    },
+    {
+      "action": "owned-removal-confirmation",
+      "completed": true
+    },
+    {
+      "action": "owned-container-cleanup",
+      "completed": true
+    },
+    {
+      "action": "own-source-unchanged",
+      "completed": true
+    },
+    {
+      "action": "original-source-unchanged",
+      "completed": true
+    },
+    {
+      "action": "frozen-prefix-unchanged",
+      "completed": true
+    },
+    {
+      "action": "original-projection-unchanged",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_guides_native.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_guides_inner.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_recovery_native.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_snapshot_reload_contract.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_snapshot_reload_inner.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_snapshot_reload_native.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_contract.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_import.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_native.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip-route47-selected.json",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_memory.py",
+      "completed": true
+    },
+    {
+      "action": "inner-source-unchanged",
+      "completed": true
+    },
+    {
+      "action": "current-input-unchanged",
+      "completed": true
+    },
+    {
+      "action": "container-terminal",
+      "completed": false
+    },
+    {
+      "action": "recovery-input-bulk-postdrt-antenna/narrow47-route-delta.json",
+      "completed": true
+    },
+    {
+      "action": "recovery-input-bulk-postdrt-antenna/narrow47-result.json",
+      "completed": true
+    },
+    {
+      "action": "recovery-input-work/bulk-postdrt-antenna/final-measured.odb",
+      "completed": true
+    },
+    {
+      "action": "recovery-input-bulk-postdrt-antenna/final-drc-markers.json",
+      "completed": true
+    },
+    {
+      "action": "recovery-input-bulk-postdrt-antenna/narrow47-original-classes.json",
+      "completed": true
+    },
+    {
+      "action": "recovery-input-bulk-postdrt-antenna/narrow47-native-selection.json",
+      "completed": true
+    },
+    {
+      "action": "selected-snapshot-unchanged-work/bulk-postdrt-antenna/drt_iter20.odb",
+      "completed": true
+    },
+    {
+      "action": "selected-snapshot-unchanged-bulk-postdrt-antenna/targeted-routing-scope.json",
+      "completed": true
+    },
+    {
+      "action": "selected-snapshot-unchanged-bulk-postdrt-antenna/stale-wire-cleared-snapshot.json",
+      "completed": true
+    },
+    {
+      "action": "selected-snapshot-unchanged-bulk-postdrt-antenna/drt-original-classes.json",
+      "completed": true
+    },
+    {
+      "action": "selected-snapshot-unchanged-bulk-postdrt-antenna/full-route-stage.json",
+      "completed": true
+    },
+    {
+      "action": "permanent-native-publication",
+      "completed": true
+    },
+    {
+      "action": "enumerate:.",
+      "completed": true
+    },
+    {
+      "action": "enumerate:bulk-postdrt-antenna",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-inner-progress.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-ldd.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-ldd.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-owned-container.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-owned-container.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-recovery-acquisition.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-runtime-observed.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-snapshot-acquisition.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-snapshot-available-output.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-snapshot-inner-result.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-snapshot-progress.json",
+      "completed": true
+    },
+    {
+      "action": "enumerate:bulk-postdrt-supervision",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/actual92-guide-audit.command.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/actual92-guide-audit.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/actual92-guide-audit.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/events.jsonl",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/latest.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision",
+      "completed": true
+    },
+    {
+      "action": "enumerate:bulk-postdrt-supervisor",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervisor",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-version.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-version.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:container-terminal.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:create-attempt.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:host-progress.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:image-inspect.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:image-inspect.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:immutable-image-pull.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:immutable-image-pull.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:names-before-owned-create.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:names-before-owned-create.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-container-create.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-container-create.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-container-remove.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-container-remove.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-removal-census.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-removal-census.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:prefix-envelope.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:prefix-restoration.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:work",
+      "completed": true
+    },
+    {
+      "action": "preserve-derived-outputs",
+      "completed": true
+    },
+    {
+      "action": "retained-native-workspace",
+      "completed": true
+    }
+  ],
+  "terminal_errors": [
+    {
+      "action": "container-terminal",
+      "error": "ValueError('native container failed')",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build_contract.py\", line 169, in attempt\n    value = action()\n            ^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_route47_guides.py\", line 222, in <lambda>\n    c.attempt(report,'container-terminal',lambda:c.require(not state.get('Running',True)and state.get('ExitCode')==0 and state.get('OOMKilled')is False and not state.get('Error'),'native container failed'))\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build_contract.py\", line 26, in require\n    raise ValueError(reason)\nValueError: native container failed\n",
+      "type": "ValueError"
+    }
+  ],
+  "timing_accepted": false,
+  "workspace_retained": {
+    "cleanup_after_artifact": true,
+    "output_path": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41445399432-1/out",
+    "path": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41445399432-1",
+    "reason": "Retained until complete workflow artifact upload succeeds"
+  }
+}

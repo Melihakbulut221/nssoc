@@ -1,0 +1,9 @@
+{
+  "electrical_accepted": false,
+  "error": "AttributeError(\"'Net' object has no attribute 'id'\")",
+  "final_timing_complete": false,
+  "full_phy_accepted": false,
+  "layout_modified": false,
+  "physical_acceptance": false,
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_collector_device_map.py\", line 177, in main\n    cfg=json.loads(CONFIG.read_bytes());inputs=acquire(cfg);native_map(cfg,inputs)\n                                                            ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_collector_device_map.py\", line 134, in native_map\n    rows.append(dict(status=str(pair.status()),layout=device_row(a),schematic=device_row(b)))\n                                                      ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_collector_device_map.py\", line 114, in device_row\n    terminals={t.name:dict(id=device.net_for_terminal(t.id()).id(),name=device.net_for_terminal(t.id()).name,expanded_name=device.net_for_terminal(t.id()).expanded_name(),cluster=device.net_for_terminal(t.id()).cluster_id)for t in dc.terminal_definitions()})\n                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: 'Net' object has no attribute 'id'\n"
+}

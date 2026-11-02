@@ -1,0 +1,2261 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "docker",
+        "pull",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a"
+      ],
+      "elapsed_seconds": 33.84787305200001,
+      "label": "immutable-image-pull",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "image",
+        "inspect",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a"
+      ],
+      "elapsed_seconds": 0.03201778199999694,
+      "label": "image-inspect",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "container",
+        "ls",
+        "-a",
+        "--format",
+        "{{.Names}}"
+      ],
+      "elapsed_seconds": 0.015966894999991155,
+      "label": "names-before-owned-create",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "create",
+        "--env",
+        "GITHUB_ACTIONS=true",
+        "--name",
+        "nssoc-witness-build-41449886129-1",
+        "--label",
+        "nssoc.build.source=3bf8acec68f0a90ca008a94dff3f7f074f7b9717",
+        "--label",
+        "nssoc.build.token=41449886129-1",
+        "--network",
+        "none",
+        "--read-only",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--memory",
+        "12884901888",
+        "--memory-swap",
+        "12884901888",
+        "--cpus",
+        "2",
+        "--pids-limit",
+        "4096",
+        "--user",
+        "1001:1001",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,size=268435456",
+        "--mount",
+        "type=bind,src=/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41449886129-1,dst=/work",
+        "--workdir",
+        "/work/source",
+        "--env",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "--entrypoint",
+        "/usr/bin/python3",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a",
+        "/work/inner.py"
+      ],
+      "elapsed_seconds": 0.06408765999998423,
+      "label": "owned-container-create",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "start",
+        "--attach",
+        "1f64944f7848038d4a4a26c2e4dcb9e1b9d1b7d88338037fa9b33e92b739308c"
+      ],
+      "elapsed_seconds": 7.03179985700001,
+      "label": "bulk-postdrt-owned-container",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "rm",
+        "1f64944f7848038d4a4a26c2e4dcb9e1b9d1b7d88338037fa9b33e92b739308c"
+      ],
+      "elapsed_seconds": 0.031892863999985366,
+      "label": "owned-container-remove",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "container",
+        "ls",
+        "-a",
+        "--format",
+        "{{.Names}}"
+      ],
+      "elapsed_seconds": 0.015950760000009723,
+      "label": "owned-removal-census",
+      "returncode": 0
+    }
+  ],
+  "container_terminal": {
+    "AppArmorProfile": "docker-default",
+    "Args": [
+      "/work/inner.py"
+    ],
+    "Config": {
+      "AttachStderr": true,
+      "AttachStdin": false,
+      "AttachStdout": true,
+      "Cmd": [
+        "/work/inner.py"
+      ],
+      "Domainname": "",
+      "Entrypoint": [
+        "/usr/bin/python3"
+      ],
+      "Env": [
+        "GITHUB_ACTIONS=true",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "DEBIAN_FRONTEND=noninteractive",
+        "TZ=America/Los_Angeles",
+        "LANG=C.UTF-8",
+        "LC_ALL=C.UTF-8"
+      ],
+      "Hostname": "1f64944f7848",
+      "Image": "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a",
+      "Labels": {
+        "nssoc.build.source": "3bf8acec68f0a90ca008a94dff3f7f074f7b9717",
+        "nssoc.build.token": "41449886129-1",
+        "org.opencontainers.image.ref.name": "ubuntu",
+        "org.opencontainers.image.version": "24.04"
+      },
+      "OnBuild": null,
+      "OpenStdin": false,
+      "StdinOnce": false,
+      "Tty": false,
+      "User": "1001:1001",
+      "Volumes": null,
+      "WorkingDir": "/work/source"
+    },
+    "Created": "2026-11-02T13:08:25.760585183Z",
+    "Driver": "overlay2",
+    "ExecIDs": null,
+    "GraphDriver": {
+      "Data": {
+        "ID": "1f64944f7848038d4a4a26c2e4dcb9e1b9d1b7d88338037fa9b33e92b739308c",
+        "LowerDir": "/var/lib/docker/overlay2/7c8ad76de4eb110056760fb5dbc6aadb64afc5656f99bd5961dbea0231758d29-init/diff:/var/lib/docker/overlay2/013d21449c8476c6cb0b4a27e8360eaf5a81badd5e78c2c97e7ae140e99f92d6/diff:/var/lib/docker/overlay2/371535afdd8d0a43c93f17dc5b4a143c2ea5ed34773c232fbad2df27df73b4ca/diff:/var/lib/docker/overlay2/0ee25d2d61197859d591e81a48ec59138cdc90e47591f3da0e09ab1b86eda778/diff",
+        "MergedDir": "/var/lib/docker/overlay2/7c8ad76de4eb110056760fb5dbc6aadb64afc5656f99bd5961dbea0231758d29/merged",
+        "UpperDir": "/var/lib/docker/overlay2/7c8ad76de4eb110056760fb5dbc6aadb64afc5656f99bd5961dbea0231758d29/diff",
+        "WorkDir": "/var/lib/docker/overlay2/7c8ad76de4eb110056760fb5dbc6aadb64afc5656f99bd5961dbea0231758d29/work"
+      },
+      "Name": "overlay2"
+    },
+    "HostConfig": {
+      "AutoRemove": false,
+      "Binds": null,
+      "BlkioDeviceReadBps": [],
+      "BlkioDeviceReadIOps": [],
+      "BlkioDeviceWriteBps": [],
+      "BlkioDeviceWriteIOps": [],
+      "BlkioWeight": 0,
+      "BlkioWeightDevice": [],
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "Cgroup": "",
+      "CgroupParent": "",
+      "CgroupnsMode": "private",
+      "ConsoleSize": [
+        0,
+        0
+      ],
+      "ContainerIDFile": "",
+      "CpuCount": 0,
+      "CpuPercent": 0,
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuRealtimePeriod": 0,
+      "CpuRealtimeRuntime": 0,
+      "CpuShares": 0,
+      "CpusetCpus": "",
+      "CpusetMems": "",
+      "DeviceCgroupRules": null,
+      "DeviceRequests": null,
+      "Devices": [],
+      "Dns": [],
+      "DnsOptions": [],
+      "DnsSearch": [],
+      "ExtraHosts": null,
+      "GroupAdd": null,
+      "IOMaximumBandwidth": 0,
+      "IOMaximumIOps": 0,
+      "IpcMode": "private",
+      "Isolation": "",
+      "Links": null,
+      "LogConfig": {
+        "Config": {},
+        "Type": "json-file"
+      },
+      "MaskedPaths": [
+        "/proc/asound",
+        "/proc/acpi",
+        "/proc/interrupts",
+        "/proc/kcore",
+        "/proc/keys",
+        "/proc/latency_stats",
+        "/proc/timer_list",
+        "/proc/timer_stats",
+        "/proc/sched_debug",
+        "/proc/scsi",
+        "/sys/firmware",
+        "/sys/devices/virtual/powercap"
+      ],
+      "Memory": 12884901888,
+      "MemoryReservation": 0,
+      "MemorySwap": 12884901888,
+      "MemorySwappiness": null,
+      "Mounts": [
+        {
+          "Source": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41449886129-1",
+          "Target": "/work",
+          "Type": "bind"
+        }
+      ],
+      "NanoCpus": 2000000000,
+      "NetworkMode": "none",
+      "OomKillDisable": null,
+      "OomScoreAdj": 0,
+      "PidMode": "",
+      "PidsLimit": 4096,
+      "PortBindings": {},
+      "Privileged": false,
+      "PublishAllPorts": false,
+      "ReadonlyPaths": [
+        "/proc/bus",
+        "/proc/fs",
+        "/proc/irq",
+        "/proc/sys",
+        "/proc/sysrq-trigger"
+      ],
+      "ReadonlyRootfs": true,
+      "RestartPolicy": {
+        "MaximumRetryCount": 0,
+        "Name": "no"
+      },
+      "Runtime": "runc",
+      "SecurityOpt": [
+        "no-new-privileges"
+      ],
+      "ShmSize": 67108864,
+      "Tmpfs": {
+        "/tmp": "rw,nosuid,nodev,size=268435456"
+      },
+      "UTSMode": "",
+      "Ulimits": [],
+      "UsernsMode": "",
+      "VolumeDriver": "",
+      "VolumesFrom": null
+    },
+    "HostnamePath": "/var/lib/docker/containers/1f64944f7848038d4a4a26c2e4dcb9e1b9d1b7d88338037fa9b33e92b739308c/hostname",
+    "HostsPath": "/var/lib/docker/containers/1f64944f7848038d4a4a26c2e4dcb9e1b9d1b7d88338037fa9b33e92b739308c/hosts",
+    "Id": "1f64944f7848038d4a4a26c2e4dcb9e1b9d1b7d88338037fa9b33e92b739308c",
+    "Image": "sha256:a958d3bee9c5261b26e221e1c1461c92f830f14293bc5050848653bd7ec8d185",
+    "LogPath": "/var/lib/docker/containers/1f64944f7848038d4a4a26c2e4dcb9e1b9d1b7d88338037fa9b33e92b739308c/1f64944f7848038d4a4a26c2e4dcb9e1b9d1b7d88338037fa9b33e92b739308c-json.log",
+    "MountLabel": "",
+    "Mounts": [
+      {
+        "Destination": "/work",
+        "Mode": "",
+        "Propagation": "rprivate",
+        "RW": true,
+        "Source": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41449886129-1",
+        "Type": "bind"
+      }
+    ],
+    "Name": "/nssoc-witness-build-41449886129-1",
+    "NetworkSettings": {
+      "Bridge": "",
+      "EndpointID": "",
+      "Gateway": "",
+      "GlobalIPv6Address": "",
+      "GlobalIPv6PrefixLen": 0,
+      "HairpinMode": false,
+      "IPAddress": "",
+      "IPPrefixLen": 0,
+      "IPv6Gateway": "",
+      "LinkLocalIPv6Address": "",
+      "LinkLocalIPv6PrefixLen": 0,
+      "MacAddress": "",
+      "Networks": {
+        "none": {
+          "Aliases": null,
+          "DNSNames": null,
+          "DriverOpts": null,
+          "EndpointID": "",
+          "Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "GwPriority": 0,
+          "IPAMConfig": null,
+          "IPAddress": "",
+          "IPPrefixLen": 0,
+          "IPv6Gateway": "",
+          "Links": null,
+          "MacAddress": "",
+          "NetworkID": "db2021413c20229694a1bb193d11e88c1917d996791603dc252632a6c43231b7"
+        }
+      },
+      "Ports": {},
+      "SandboxID": "",
+      "SandboxKey": "",
+      "SecondaryIPAddresses": null,
+      "SecondaryIPv6Addresses": null
+    },
+    "Path": "/usr/bin/python3",
+    "Platform": "linux",
+    "ProcessLabel": "",
+    "ResolvConfPath": "/var/lib/docker/containers/1f64944f7848038d4a4a26c2e4dcb9e1b9d1b7d88338037fa9b33e92b739308c/resolv.conf",
+    "RestartCount": 0,
+    "State": {
+      "Dead": false,
+      "Error": "",
+      "ExitCode": 0,
+      "FinishedAt": "2026-11-02T13:08:32.796404473Z",
+      "OOMKilled": false,
+      "Paused": false,
+      "Pid": 0,
+      "Restarting": false,
+      "Running": false,
+      "StartedAt": "2026-11-02T13:08:25.849690676Z",
+      "Status": "exited"
+    }
+  },
+  "creation_attempted": true,
+  "full_phy_accepted": false,
+  "native_publication": {
+    "archive": {
+      "bytes": 111091,
+      "sha256": "eadc48bf5d610e133ebe1b681f6131f5a17a695facdf0385dd189c770d0f4b34"
+    },
+    "assets": [
+      {
+        "bytes": 3658,
+        "id": 701799346,
+        "name": "candidate-outputs.json",
+        "reconciled_upload_error": null,
+        "sha256": "73379b3aba6622ba0801c5781916be8e40ed6a49bd60dab666093a5cdacc61cf"
+      },
+      {
+        "bytes": 310,
+        "id": 701799431,
+        "name": "candidate-parts.json",
+        "reconciled_upload_error": null,
+        "sha256": "dd713f9ae8b1c51331287654912a6225a21344a359189433ba10fd1773a418d5"
+      },
+      {
+        "bytes": 111091,
+        "id": 701799501,
+        "name": "candidate-native.tar.gz.part000",
+        "reconciled_upload_error": null,
+        "sha256": "eadc48bf5d610e133ebe1b681f6131f5a17a695facdf0385dd189c770d0f4b34"
+      }
+    ],
+    "files": {
+      "bulk-postdrt-antenna/guide-observation.json": {
+        "bytes": 1012909,
+        "sha256": "d54abd172e41b3bd5d3a33243eec7fb86b3c48c24d38ab9e42ff470f6512be2b"
+      },
+      "bulk-postdrt-antenna/guide-summary.json": {
+        "bytes": 8645,
+        "sha256": "5c5c5d2c646fce675d59383584c89aacc2f5376ff9910047ac76a3b403bb6c5d"
+      },
+      "bulk-postdrt-inner-progress.json": {
+        "bytes": 5725,
+        "sha256": "4366926bad38bcd15456a347fc8c7b9f3b12aa693eb8ea5028dd644d319d50be"
+      },
+      "bulk-postdrt-ldd.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-ldd.stdout": {
+        "bytes": 10979,
+        "sha256": "15243382f5470cbcde7b3ce5186767d876b4d4c391f35b4a7d40ffd36491efcd"
+      },
+      "bulk-postdrt-owned-container.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-owned-container.stdout": {
+        "bytes": 3700,
+        "sha256": "484ad4b15c3f5b93c5125e7febee8e6aa2d4063d4ee610f54b7b261783da44b2"
+      },
+      "bulk-postdrt-recovery-acquisition.json": {
+        "bytes": 14135,
+        "sha256": "1081d31445314051ca23c37cc031a14a5e5db796da894af539649bc0e11ee6b0"
+      },
+      "bulk-postdrt-runtime-observed.json": {
+        "bytes": 16940,
+        "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0"
+      },
+      "bulk-postdrt-snapshot-acquisition.json": {
+        "bytes": 167438,
+        "sha256": "afd089a1b34fdc83c82017a7e41b9a122eb41aab6afb5966562c554028018596"
+      },
+      "bulk-postdrt-snapshot-available-output.json": {
+        "bytes": 3281,
+        "sha256": "330eff89c1d9df8d67f79da5b8fef3b356cb2e0451fde4cdf85d80a9fada27c8"
+      },
+      "bulk-postdrt-snapshot-inner-result.json": {
+        "bytes": 36388,
+        "sha256": "c25433ad34382930209564d39555ad0c2223dddf237187d199f121f0eac21605"
+      },
+      "bulk-postdrt-snapshot-progress.json": {
+        "bytes": 16736,
+        "sha256": "fe645cbaee6f213d4ff973cce0e004cc25f0712528a7d185dc7d682d2dfcd8a8"
+      },
+      "bulk-postdrt-supervision/actual92-guide-audit.command.json": {
+        "bytes": 1275,
+        "sha256": "1687cf18c86e4812611bb27a2a68238e9682fe6d6511d044e480a0f48664ce23"
+      },
+      "bulk-postdrt-supervision/actual92-guide-audit.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/actual92-guide-audit.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/events.jsonl": {
+        "bytes": 3636,
+        "sha256": "7deffaa53d96fedad15302cf1f8d4ae031dd6e80e9e1cbc8137e6bccf8bccfe7"
+      },
+      "bulk-postdrt-supervision/latest.json": {
+        "bytes": 1455,
+        "sha256": "9ab77493a1382e730797db88dd1aa7312f8c59ca9b588605ea651e1ab697b530"
+      },
+      "bulk-postdrt-version.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-version.stdout": {
+        "bytes": 42,
+        "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae"
+      },
+      "work/bulk-postdrt-antenna/actual92-guide-audit.log": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      }
+    },
+    "native_bytes_remain_in_cloud": true,
+    "partial_failure_preserved": true,
+    "release_id": 431471737,
+    "source": "3bf8acec68f0a90ca008a94dff3f7f074f7b9717",
+    "status": "COMPLETE_PERMANENT_NATIVE_CAPSULE",
+    "tag": "cloud-results-41449886129-1-mainchip-bulk-postdrt-antenna"
+  },
+  "native_result": {
+    "available_outputs": {
+      "bulk-postdrt-antenna/guide-observation.json": {
+        "bytes": 1012909,
+        "sha256": "d54abd172e41b3bd5d3a33243eec7fb86b3c48c24d38ab9e42ff470f6512be2b"
+      },
+      "bulk-postdrt-antenna/guide-summary.json": {
+        "bytes": 8645,
+        "sha256": "5c5c5d2c646fce675d59383584c89aacc2f5376ff9910047ac76a3b403bb6c5d"
+      },
+      "bulk-postdrt-inner-progress.json": {
+        "bytes": 5725,
+        "sha256": "4366926bad38bcd15456a347fc8c7b9f3b12aa693eb8ea5028dd644d319d50be"
+      },
+      "bulk-postdrt-ldd.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-ldd.stdout": {
+        "bytes": 10979,
+        "sha256": "15243382f5470cbcde7b3ce5186767d876b4d4c391f35b4a7d40ffd36491efcd"
+      },
+      "bulk-postdrt-owned-container.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-owned-container.stdout": {
+        "bytes": 3700,
+        "sha256": "484ad4b15c3f5b93c5125e7febee8e6aa2d4063d4ee610f54b7b261783da44b2"
+      },
+      "bulk-postdrt-recovery-acquisition.json": {
+        "bytes": 14135,
+        "sha256": "1081d31445314051ca23c37cc031a14a5e5db796da894af539649bc0e11ee6b0"
+      },
+      "bulk-postdrt-runtime-observed.json": {
+        "bytes": 16940,
+        "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0"
+      },
+      "bulk-postdrt-snapshot-acquisition.json": {
+        "bytes": 167438,
+        "sha256": "afd089a1b34fdc83c82017a7e41b9a122eb41aab6afb5966562c554028018596"
+      },
+      "bulk-postdrt-snapshot-available-output.json": {
+        "bytes": 3281,
+        "sha256": "330eff89c1d9df8d67f79da5b8fef3b356cb2e0451fde4cdf85d80a9fada27c8"
+      },
+      "bulk-postdrt-snapshot-progress.json": {
+        "bytes": 16736,
+        "sha256": "fe645cbaee6f213d4ff973cce0e004cc25f0712528a7d185dc7d682d2dfcd8a8"
+      },
+      "bulk-postdrt-supervision/actual92-guide-audit.command.json": {
+        "bytes": 1275,
+        "sha256": "1687cf18c86e4812611bb27a2a68238e9682fe6d6511d044e480a0f48664ce23"
+      },
+      "bulk-postdrt-supervision/actual92-guide-audit.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/actual92-guide-audit.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/events.jsonl": {
+        "bytes": 3636,
+        "sha256": "7deffaa53d96fedad15302cf1f8d4ae031dd6e80e9e1cbc8137e6bccf8bccfe7"
+      },
+      "bulk-postdrt-supervision/latest.json": {
+        "bytes": 1455,
+        "sha256": "9ab77493a1382e730797db88dd1aa7312f8c59ca9b588605ea651e1ab697b530"
+      },
+      "bulk-postdrt-version.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-version.stdout": {
+        "bytes": 42,
+        "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae"
+      },
+      "create-attempt.json": {
+        "bytes": 1265,
+        "sha256": "8ac826aaf6fb3763f8bee716b57b9523d784a9b4197eda332998e66d9cdfc77e"
+      },
+      "host-progress.json": {
+        "bytes": 2389,
+        "sha256": "57cbde77d7fb493a88dc8886e17cbf639cf8899cc7585da4009653b5eaa4e519"
+      },
+      "image-inspect.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "image-inspect.stdout": {
+        "bytes": 2643,
+        "sha256": "2919690c2c5667ab8cd8acd27f1f6009375b120ce2448822c4d6120000831111"
+      },
+      "immutable-image-pull.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "immutable-image-pull.stdout": {
+        "bytes": 837,
+        "sha256": "f2e858bdd0164b89c06da570b7d63e234534590a4872d84ac5f27f07d033fbe4"
+      },
+      "names-before-owned-create.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "names-before-owned-create.stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-container-create.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-container-create.stdout": {
+        "bytes": 65,
+        "sha256": "cf82f83fa7964b835889f887962b07543f891f7b101e1e802f0e6329c69b04a4"
+      },
+      "prefix-envelope.json": {
+        "bytes": 4270,
+        "sha256": "11281aedb0c83745f8126820b9c3c5421c20ed572e48bda55356f5d68c8313fb"
+      },
+      "prefix-restoration.json": {
+        "bytes": 423478,
+        "sha256": "23f45038bb461360ec38c7a2490ba24c84db2f9dd3a53e8b2e689201d693d177"
+      },
+      "work/baseline-native.json": {
+        "bytes": 93552939,
+        "sha256": "65b2199b81643a0216504fb44421e42f60da5added54807f3c91659836c59fff"
+      },
+      "work/baseline-original.def": {
+        "bytes": 185377920,
+        "sha256": "50637ee844f1166c6e2faf7dd6d6e365147096ac974fa878b6a00aeb0448be4a"
+      },
+      "work/bulk-postdrt-antenna/actual92-guide-audit.log": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "work/expected-fixed.def": {
+        "bytes": 185234217,
+        "sha256": "71e7923d9dfde9c058b293f10d88be942e87e21f2955f8da9d3d08a2b39d0f29"
+      },
+      "work/fixed-audit-result.json": {
+        "bytes": 6641,
+        "sha256": "19fbc0bdae6dac7d69025ec81aeea211ba8d15d1b7e48cc39cc70787d0d8d20b"
+      },
+      "work/fixed-audit.def": {
+        "bytes": 185234217,
+        "sha256": "71e7923d9dfde9c058b293f10d88be942e87e21f2955f8da9d3d08a2b39d0f29"
+      },
+      "work/fixed-base.odb": {
+        "bytes": 213738152,
+        "sha256": "015add446fac5bd730a670257d73a1bc465b1c5ece41cd94c016289e57a96a7f"
+      },
+      "work/fixed-metadata.def": {
+        "bytes": 185234217,
+        "sha256": "71e7923d9dfde9c058b293f10d88be942e87e21f2955f8da9d3d08a2b39d0f29"
+      },
+      "work/fixed-native.json": {
+        "bytes": 90722025,
+        "sha256": "83d064cdeac60ea8af2b0cc3ed84b81354c5c01af9956f6b9c0dfe4328177349"
+      },
+      "work/fixed-patch.def": {
+        "bytes": 137947066,
+        "sha256": "f91bc68a1a00894a1966e34340e2521e3b83de76c3d3384b079b88516efabced"
+      },
+      "work/fixed-single.def": {
+        "bytes": 185234217,
+        "sha256": "852bbf6e26aa37b876c2b3db1d1848cecf274e6fdd85b160f730a3fbfa9c0658"
+      },
+      "work/fixed.def": {
+        "bytes": 185234217,
+        "sha256": "71e7923d9dfde9c058b293f10d88be942e87e21f2955f8da9d3d08a2b39d0f29"
+      },
+      "work/fixed.odb": {
+        "bytes": 213738152,
+        "sha256": "45dc1b634fafaba4dda8475430ea1a82a69a355dfac6a6b2bbdf63529777e431"
+      },
+      "work/fixed.tcl": {
+        "bytes": 285,
+        "sha256": "04decbd74305bae6b500ba284a947f9cbecb4f9e2f10cd227196f2cd8f9ce3fc"
+      },
+      "work/original-classes.json": {
+        "bytes": 5758159,
+        "sha256": "519ccd6b21dd71e4a79619ce3b68c0537492c2466a10b7e66b03b68cc6e9abcd"
+      },
+      "work/original-gate-before-two-net-repair/after.def": {
+        "bytes": 185377920,
+        "sha256": "50637ee844f1166c6e2faf7dd6d6e365147096ac974fa878b6a00aeb0448be4a"
+      },
+      "work/original-gate-before-two-net-repair/before.def": {
+        "bytes": 59000251,
+        "sha256": "f8e4c86346c8876fa04ff02ccd8d8f060f018e6fab36fdca834b986d07a4748c"
+      },
+      "work/original-gate-before-two-net-repair/result.json": {
+        "bytes": 648,
+        "sha256": "9d9ec828fdbdecd37d8a1b151f05de663a98ce18320562d10f4bba41b78e18f1"
+      },
+      "work/owners.json": {
+        "bytes": 4663140,
+        "sha256": "5607c28196291f1ddf75919fd22afe344fc6b167c6fc4fec26fad79a33b1283b"
+      },
+      "work/ownership-result.json": {
+        "bytes": 558394,
+        "sha256": "9d9669a1ad3dc51d1527026db610f69f7c44a26fe9b7bb1ba7f21db47aa2a4f5"
+      },
+      "work/ownership.json": {
+        "bytes": 508186,
+        "sha256": "046eaa66796563fd0ed49c9cd87077bbce7889a0767b4852bc9131f07529a08f"
+      },
+      "work/prepare-fixed-result.json": {
+        "bytes": 384,
+        "sha256": "dcd7282696a30ca1a08a9d022bbc72844bc10a2128b0349a9a26d62bd0081ffe"
+      },
+      "work/repair.tcl": {
+        "bytes": 1719,
+        "sha256": "ea723ae478c019c45ce79f33c6a4abb65d298c053abd32c35c4376902be02c2d"
+      },
+      "work/router-census-observed.json": {
+        "bytes": 214498564,
+        "sha256": "d62edab967a4c17cbdca2dc4f37b6a8730c5abb18bf73cb2b1c4caf62dad4c72"
+      },
+      "work/router-census-report.json": {
+        "bytes": 5827,
+        "sha256": "39cfb5c33bb526b3ac4836b57312636b93940acbc34c28b3d21c86ffde2625fa"
+      },
+      "work/source-markers.json": {
+        "bytes": 4106,
+        "sha256": "7cd9e8de6c42fdd7da36ffac188298100fe207099c3db8687184feee47284934"
+      },
+      "work/source-markers.rpt": {
+        "bytes": 433,
+        "sha256": "47391c36cc33bc08cdf11552d52da427de1e1c287ca99527aa7074d5d68a3d26"
+      }
+    },
+    "bounded_cycle_qualified": false,
+    "cgroup_initial": {
+      "cpu.max": "200000 100000",
+      "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+      "memory.max": "12884901888",
+      "memory.peak": "229527552",
+      "memory.swap.max": "0",
+      "pids.max": "4096"
+    },
+    "cgroup_terminal": {
+      "cpu.max": "200000 100000",
+      "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+      "memory.max": "12884901888",
+      "memory.peak": "1259376640",
+      "memory.swap.max": "0",
+      "pids.max": "4096"
+    },
+    "commands": [
+      {
+        "argv": [
+          "/work/engine/openroad",
+          "-version"
+        ],
+        "elapsed_seconds": 0.03194850300002372,
+        "label": "bulk-postdrt-version",
+        "returncode": 0
+      },
+      {
+        "argv": [
+          "ldd",
+          "/work/engine/openroad"
+        ],
+        "elapsed_seconds": 0.03215244700001563,
+        "label": "bulk-postdrt-ldd",
+        "returncode": 0
+      },
+      {
+        "argv": [
+          "/work/engine/openroad",
+          "-no_init",
+          "-exit",
+          "-python",
+          "/work/tail-source/scripts/mainchip_route47_guides_native.py"
+        ],
+        "command_evidence": {
+          "command_only": true,
+          "event_authenticated": false,
+          "full_phy_accepted": false,
+          "native_execution_performed": false,
+          "path": "ordinary_no_memory_error",
+          "physical_acceptance": false,
+          "pre_cleanup_command_deadline_proved": false,
+          "requested_timeout_bound": false,
+          "requested_timeout_recorded": false,
+          "retained_memory_read_error": null,
+          "seconds": 1200,
+          "source_authenticated": false,
+          "status": "PASS_EXIT_CHECKED_COMMAND_EVIDENCE",
+          "stream_bytes_authenticated": false,
+          "terminal_resolution_validated": false,
+          "timing_accepted": false
+        },
+        "command_record_pin": {
+          "bytes": 1275,
+          "sha256": "1687cf18c86e4812611bb27a2a68238e9682fe6d6511d044e480a0f48664ce23"
+        },
+        "label": "actual92-guide-audit",
+        "requested_timeout_seconds": 1200,
+        "returncode": 0,
+        "supervision_record": {
+          "argv": [
+            "/work/engine/openroad",
+            "-no_init",
+            "-exit",
+            "-python",
+            "/work/tail-source/scripts/mainchip_route47_guides_native.py"
+          ],
+          "elapsed_seconds": 4.220967128000041,
+          "label": "actual92-guide-audit",
+          "last_memory_sentinel_sample": {
+            "available_kib": 14398068,
+            "enumeration_disappearances": [],
+            "excluded_nonrunning": [],
+            "group_rss_kib": 654092,
+            "group_rss_may_double_count_shared_pages": true,
+            "members": [
+              {
+                "pgrp": 16,
+                "pid": 16,
+                "rss_kib": 654092,
+                "starttime": 25406
+              }
+            ],
+            "resampling_evidence": [],
+            "sampling_attempts": 1,
+            "sampling_elapsed_seconds": 0.0008249859999978071,
+            "total_snapshot_budget_seconds": 0.1
+          },
+          "maximum_group_rss_kib": 11534336,
+          "memory_read_error": null,
+          "memory_terminal_resolution": null,
+          "minimum_available_kib": 2097152,
+          "pid": 16,
+          "process_group_cleanup": {
+            "remaining_live": [],
+            "remaining_nonrunning": [],
+            "signals": []
+          },
+          "returncode": 0,
+          "stderr_bytes": 0,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdout_bytes": 285,
+          "stdout_sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1",
+          "supervision_failure": null
+        }
+      }
+    ],
+    "current_audit_calls": 1,
+    "current_class_import_phases": 0,
+    "current_reconstruction_calls": 0,
+    "current_repair_calls": 0,
+    "current_route_calls": 0,
+    "elapsed_seconds": 5.062140243999977,
+    "execution_memory_checker": {
+      "all_function_bodies_unchanged": true,
+      "derived_sha256": "08b30b1fcb7319ca5a204bf94da2ce8a7f03ead5e17d310aa0baaf8fc17c9e84",
+      "only_MAX_GROUP_RSS_KIB_changed": true,
+      "original_sha256": "059e3e4edde4a63997cc841728f02d5b6a2aaf77335cb7d1b8dba70ed7d2e321"
+    },
+    "execution_memory_policy": {
+      "container_bytes": 12884901888,
+      "execution_resource_change_only": true,
+      "full_phy_accepted": false,
+      "maximum_group_rss_kib": 11534336,
+      "minimum_available_kib": 2097152,
+      "non_RSS_reserve_bytes": 1073741824,
+      "original_maximum_group_rss_kib": 10485760,
+      "physical_acceptance": false,
+      "timing_accepted": false
+    },
+    "full_phy_accepted": false,
+    "guide_observation_complete": true,
+    "guide_result": {
+      "current_repair_calls": 0,
+      "current_route_calls": 0,
+      "fixed_overlay_source_count": 61,
+      "full_observation": {
+        "bytes": 1012909,
+        "sha256": "d54abd172e41b3bd5d3a33243eec7fb86b3c48c24d38ab9e42ff470f6512be2b"
+      },
+      "full_phy_accepted": false,
+      "geometry_changed": false,
+      "guide_count": 2593,
+      "input": {
+        "bytes": 214402279,
+        "sha256": "53b42f42c244af7416a78c0cc04cc897f99b114c892c6bc86ecc60affa3e05af"
+      },
+      "largest_intersections": [
+        {
+          "area_um2": 3421.44,
+          "bbox_dbu": [
+            302400,
+            1706400,
+            777600,
+            1713600
+          ],
+          "guide": 8,
+          "height_um": 7.2,
+          "marker": 38,
+          "owner": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[31\\].rf_reg_q[18]",
+          "protected_clock": false,
+          "selected47": false,
+          "temporarily_fixed_in_route47": true,
+          "width_um": 475.2
+        },
+        {
+          "area_um2": 3421.44,
+          "bbox_dbu": [
+            302400,
+            1706400,
+            777600,
+            1713600
+          ],
+          "guide": 8,
+          "height_um": 7.2,
+          "marker": 39,
+          "owner": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[31\\].rf_reg_q[18]",
+          "protected_clock": false,
+          "selected47": false,
+          "temporarily_fixed_in_route47": true,
+          "width_um": 475.2
+        },
+        {
+          "area_um2": 3421.44,
+          "bbox_dbu": [
+            302400,
+            1706400,
+            777600,
+            1713600
+          ],
+          "guide": 8,
+          "height_um": 7.2,
+          "marker": 40,
+          "owner": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[31\\].rf_reg_q[18]",
+          "protected_clock": false,
+          "selected47": false,
+          "temporarily_fixed_in_route47": true,
+          "width_um": 475.2
+        },
+        {
+          "area_um2": 3058.56,
+          "bbox_dbu": [
+            417600,
+            1317600,
+            424800,
+            1742400
+          ],
+          "guide": 5,
+          "height_um": 424.8,
+          "marker": 64,
+          "owner": "$abc$1804206$new_n73151",
+          "protected_clock": false,
+          "selected47": true,
+          "temporarily_fixed_in_route47": false,
+          "width_um": 7.2
+        },
+        {
+          "area_um2": 3058.56,
+          "bbox_dbu": [
+            561600,
+            1706400,
+            986400,
+            1713600
+          ],
+          "guide": 14,
+          "height_um": 7.2,
+          "marker": 46,
+          "owner": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[7\\].g_chk.rf_chk_q[2]",
+          "protected_clock": false,
+          "selected47": false,
+          "temporarily_fixed_in_route47": true,
+          "width_um": 424.8
+        },
+        {
+          "area_um2": 2954.88,
+          "bbox_dbu": [
+            439200,
+            1288800,
+            446400,
+            1699200
+          ],
+          "guide": 12,
+          "height_um": 410.4,
+          "marker": 5,
+          "owner": "$abc$1804206$new_n72641",
+          "protected_clock": false,
+          "selected47": true,
+          "temporarily_fixed_in_route47": false,
+          "width_um": 7.2
+        },
+        {
+          "area_um2": 2954.88,
+          "bbox_dbu": [
+            439200,
+            1288800,
+            446400,
+            1699200
+          ],
+          "guide": 12,
+          "height_um": 410.4,
+          "marker": 10,
+          "owner": "$abc$1804206$new_n72641",
+          "protected_clock": false,
+          "selected47": true,
+          "temporarily_fixed_in_route47": false,
+          "width_um": 7.2
+        },
+        {
+          "area_um2": 2747.52,
+          "bbox_dbu": [
+            381600,
+            1663200,
+            763200,
+            1670400
+          ],
+          "guide": 25,
+          "height_um": 7.2,
+          "marker": 21,
+          "owner": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[9\\].rf_reg_q[26]",
+          "protected_clock": false,
+          "selected47": true,
+          "temporarily_fixed_in_route47": false,
+          "width_um": 381.6
+        },
+        {
+          "area_um2": 2592.0,
+          "bbox_dbu": [
+            93600,
+            1663200,
+            453600,
+            1670400
+          ],
+          "guide": 30,
+          "height_um": 7.2,
+          "marker": 21,
+          "owner": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[13\\].rf_reg_q[2]",
+          "protected_clock": false,
+          "selected47": false,
+          "temporarily_fixed_in_route47": true,
+          "width_um": 360.0
+        },
+        {
+          "area_um2": 2436.48,
+          "bbox_dbu": [
+            424800,
+            1620000,
+            763200,
+            1627200
+          ],
+          "guide": 2,
+          "height_um": 7.2,
+          "marker": 20,
+          "owner": "net37629",
+          "protected_clock": false,
+          "selected47": false,
+          "temporarily_fixed_in_route47": true,
+          "width_um": 338.4
+        },
+        {
+          "area_um2": 2073.6,
+          "bbox_dbu": [
+            561600,
+            1504800,
+            568800,
+            1792800
+          ],
+          "guide": 2,
+          "height_um": 288.0,
+          "marker": 30,
+          "owner": "net1624",
+          "protected_clock": false,
+          "selected47": false,
+          "temporarily_fixed_in_route47": true,
+          "width_um": 7.2
+        },
+        {
+          "area_um2": 1866.24,
+          "bbox_dbu": [
+            194400,
+            1620000,
+            453600,
+            1627200
+          ],
+          "guide": 4,
+          "height_um": 7.2,
+          "marker": 19,
+          "owner": "$abc$1804206$new_n113425",
+          "protected_clock": false,
+          "selected47": false,
+          "temporarily_fixed_in_route47": true,
+          "width_um": 259.2
+        },
+        {
+          "area_um2": 1866.24,
+          "bbox_dbu": [
+            194400,
+            1620000,
+            453600,
+            1627200
+          ],
+          "guide": 4,
+          "height_um": 7.2,
+          "marker": 71,
+          "owner": "$abc$1804206$new_n113425",
+          "protected_clock": false,
+          "selected47": false,
+          "temporarily_fixed_in_route47": true,
+          "width_um": 259.2
+        },
+        {
+          "area_um2": 1347.84,
+          "bbox_dbu": [
+            2088000,
+            64800,
+            2095200,
+            252000
+          ],
+          "guide": 7,
+          "height_um": 187.2,
+          "marker": 58,
+          "owner": "net120",
+          "protected_clock": false,
+          "selected47": true,
+          "temporarily_fixed_in_route47": false,
+          "width_um": 7.2
+        },
+        {
+          "area_um2": 1347.84,
+          "bbox_dbu": [
+            2088000,
+            64800,
+            2095200,
+            252000
+          ],
+          "guide": 7,
+          "height_um": 187.2,
+          "marker": 59,
+          "owner": "net120",
+          "protected_clock": false,
+          "selected47": true,
+          "temporarily_fixed_in_route47": false,
+          "width_um": 7.2
+        },
+        {
+          "area_um2": 1244.16,
+          "bbox_dbu": [
+            828000,
+            1504800,
+            835200,
+            1677600
+          ],
+          "guide": 16,
+          "height_um": 172.8,
+          "marker": 79,
+          "owner": "net4113",
+          "protected_clock": false,
+          "selected47": false,
+          "temporarily_fixed_in_route47": true,
+          "width_um": 7.2
+        },
+        {
+          "area_um2": 1244.16,
+          "bbox_dbu": [
+            828000,
+            1504800,
+            835200,
+            1677600
+          ],
+          "guide": 16,
+          "height_um": 172.8,
+          "marker": 80,
+          "owner": "net4113",
+          "protected_clock": false,
+          "selected47": false,
+          "temporarily_fixed_in_route47": true,
+          "width_um": 7.2
+        },
+        {
+          "area_um2": 1244.16,
+          "bbox_dbu": [
+            828000,
+            1504800,
+            835200,
+            1677600
+          ],
+          "guide": 16,
+          "height_um": 172.8,
+          "marker": 82,
+          "owner": "net4113",
+          "protected_clock": false,
+          "selected47": false,
+          "temporarily_fixed_in_route47": true,
+          "width_um": 7.2
+        },
+        {
+          "area_um2": 1192.32,
+          "bbox_dbu": [
+            100800,
+            648000,
+            108000,
+            813600
+          ],
+          "guide": 7,
+          "height_um": 165.6,
+          "marker": 0,
+          "owner": "net189",
+          "protected_clock": false,
+          "selected47": true,
+          "temporarily_fixed_in_route47": false,
+          "width_um": 7.2
+        },
+        {
+          "area_um2": 1192.32,
+          "bbox_dbu": [
+            100800,
+            648000,
+            108000,
+            813600
+          ],
+          "guide": 7,
+          "height_um": 165.6,
+          "marker": 1,
+          "owner": "net189",
+          "protected_clock": false,
+          "selected47": true,
+          "temporarily_fixed_in_route47": false,
+          "width_um": 7.2
+        }
+      ],
+      "marker_count": 92,
+      "marker_guide_intersections": 325,
+      "memory_cause_proven": false,
+      "native_rectangle_controls": 6,
+      "native_units": 1000,
+      "physical_acceptance": false,
+      "protected_clock_source_count": 4,
+      "recovered_scope_proof": {
+        "changed_signal_count": 46,
+        "complete_DEF_scope_verified": true,
+        "native_clock_and_other_wires_unchanged": true,
+        "production_accepted": false,
+        "selected_signal_count": 47
+      },
+      "router_internal_guide_mapping_equivalence_proven": false,
+      "selected_source_count": 34,
+      "source_net_count": 96,
+      "source_run": 41440285882,
+      "status": "OBSERVED_ACTUAL92_MARKERS_AND_NATIVE_GUIDE_EXTENTS",
+      "timing_accepted": false
+    },
+    "new_candidate_connectivity_accepted": false,
+    "phases": [
+      {
+        "phase": "guide-audit",
+        "result": {
+          "current_repair_calls": 0,
+          "current_route_calls": 0,
+          "fixed_overlay_source_count": 61,
+          "full_observation": {
+            "bytes": 1012909,
+            "sha256": "d54abd172e41b3bd5d3a33243eec7fb86b3c48c24d38ab9e42ff470f6512be2b"
+          },
+          "full_phy_accepted": false,
+          "geometry_changed": false,
+          "guide_count": 2593,
+          "input": {
+            "bytes": 214402279,
+            "sha256": "53b42f42c244af7416a78c0cc04cc897f99b114c892c6bc86ecc60affa3e05af"
+          },
+          "largest_intersections": [
+            {
+              "area_um2": 3421.44,
+              "bbox_dbu": [
+                302400,
+                1706400,
+                777600,
+                1713600
+              ],
+              "guide": 8,
+              "height_um": 7.2,
+              "marker": 38,
+              "owner": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[31\\].rf_reg_q[18]",
+              "protected_clock": false,
+              "selected47": false,
+              "temporarily_fixed_in_route47": true,
+              "width_um": 475.2
+            },
+            {
+              "area_um2": 3421.44,
+              "bbox_dbu": [
+                302400,
+                1706400,
+                777600,
+                1713600
+              ],
+              "guide": 8,
+              "height_um": 7.2,
+              "marker": 39,
+              "owner": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[31\\].rf_reg_q[18]",
+              "protected_clock": false,
+              "selected47": false,
+              "temporarily_fixed_in_route47": true,
+              "width_um": 475.2
+            },
+            {
+              "area_um2": 3421.44,
+              "bbox_dbu": [
+                302400,
+                1706400,
+                777600,
+                1713600
+              ],
+              "guide": 8,
+              "height_um": 7.2,
+              "marker": 40,
+              "owner": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[31\\].rf_reg_q[18]",
+              "protected_clock": false,
+              "selected47": false,
+              "temporarily_fixed_in_route47": true,
+              "width_um": 475.2
+            },
+            {
+              "area_um2": 3058.56,
+              "bbox_dbu": [
+                417600,
+                1317600,
+                424800,
+                1742400
+              ],
+              "guide": 5,
+              "height_um": 424.8,
+              "marker": 64,
+              "owner": "$abc$1804206$new_n73151",
+              "protected_clock": false,
+              "selected47": true,
+              "temporarily_fixed_in_route47": false,
+              "width_um": 7.2
+            },
+            {
+              "area_um2": 3058.56,
+              "bbox_dbu": [
+                561600,
+                1706400,
+                986400,
+                1713600
+              ],
+              "guide": 14,
+              "height_um": 7.2,
+              "marker": 46,
+              "owner": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[7\\].g_chk.rf_chk_q[2]",
+              "protected_clock": false,
+              "selected47": false,
+              "temporarily_fixed_in_route47": true,
+              "width_um": 424.8
+            },
+            {
+              "area_um2": 2954.88,
+              "bbox_dbu": [
+                439200,
+                1288800,
+                446400,
+                1699200
+              ],
+              "guide": 12,
+              "height_um": 410.4,
+              "marker": 5,
+              "owner": "$abc$1804206$new_n72641",
+              "protected_clock": false,
+              "selected47": true,
+              "temporarily_fixed_in_route47": false,
+              "width_um": 7.2
+            },
+            {
+              "area_um2": 2954.88,
+              "bbox_dbu": [
+                439200,
+                1288800,
+                446400,
+                1699200
+              ],
+              "guide": 12,
+              "height_um": 410.4,
+              "marker": 10,
+              "owner": "$abc$1804206$new_n72641",
+              "protected_clock": false,
+              "selected47": true,
+              "temporarily_fixed_in_route47": false,
+              "width_um": 7.2
+            },
+            {
+              "area_um2": 2747.52,
+              "bbox_dbu": [
+                381600,
+                1663200,
+                763200,
+                1670400
+              ],
+              "guide": 25,
+              "height_um": 7.2,
+              "marker": 21,
+              "owner": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[9\\].rf_reg_q[26]",
+              "protected_clock": false,
+              "selected47": true,
+              "temporarily_fixed_in_route47": false,
+              "width_um": 381.6
+            },
+            {
+              "area_um2": 2592.0,
+              "bbox_dbu": [
+                93600,
+                1663200,
+                453600,
+                1670400
+              ],
+              "guide": 30,
+              "height_um": 7.2,
+              "marker": 21,
+              "owner": "u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops\\[13\\].rf_reg_q[2]",
+              "protected_clock": false,
+              "selected47": false,
+              "temporarily_fixed_in_route47": true,
+              "width_um": 360.0
+            },
+            {
+              "area_um2": 2436.48,
+              "bbox_dbu": [
+                424800,
+                1620000,
+                763200,
+                1627200
+              ],
+              "guide": 2,
+              "height_um": 7.2,
+              "marker": 20,
+              "owner": "net37629",
+              "protected_clock": false,
+              "selected47": false,
+              "temporarily_fixed_in_route47": true,
+              "width_um": 338.4
+            },
+            {
+              "area_um2": 2073.6,
+              "bbox_dbu": [
+                561600,
+                1504800,
+                568800,
+                1792800
+              ],
+              "guide": 2,
+              "height_um": 288.0,
+              "marker": 30,
+              "owner": "net1624",
+              "protected_clock": false,
+              "selected47": false,
+              "temporarily_fixed_in_route47": true,
+              "width_um": 7.2
+            },
+            {
+              "area_um2": 1866.24,
+              "bbox_dbu": [
+                194400,
+                1620000,
+                453600,
+                1627200
+              ],
+              "guide": 4,
+              "height_um": 7.2,
+              "marker": 19,
+              "owner": "$abc$1804206$new_n113425",
+              "protected_clock": false,
+              "selected47": false,
+              "temporarily_fixed_in_route47": true,
+              "width_um": 259.2
+            },
+            {
+              "area_um2": 1866.24,
+              "bbox_dbu": [
+                194400,
+                1620000,
+                453600,
+                1627200
+              ],
+              "guide": 4,
+              "height_um": 7.2,
+              "marker": 71,
+              "owner": "$abc$1804206$new_n113425",
+              "protected_clock": false,
+              "selected47": false,
+              "temporarily_fixed_in_route47": true,
+              "width_um": 259.2
+            },
+            {
+              "area_um2": 1347.84,
+              "bbox_dbu": [
+                2088000,
+                64800,
+                2095200,
+                252000
+              ],
+              "guide": 7,
+              "height_um": 187.2,
+              "marker": 58,
+              "owner": "net120",
+              "protected_clock": false,
+              "selected47": true,
+              "temporarily_fixed_in_route47": false,
+              "width_um": 7.2
+            },
+            {
+              "area_um2": 1347.84,
+              "bbox_dbu": [
+                2088000,
+                64800,
+                2095200,
+                252000
+              ],
+              "guide": 7,
+              "height_um": 187.2,
+              "marker": 59,
+              "owner": "net120",
+              "protected_clock": false,
+              "selected47": true,
+              "temporarily_fixed_in_route47": false,
+              "width_um": 7.2
+            },
+            {
+              "area_um2": 1244.16,
+              "bbox_dbu": [
+                828000,
+                1504800,
+                835200,
+                1677600
+              ],
+              "guide": 16,
+              "height_um": 172.8,
+              "marker": 79,
+              "owner": "net4113",
+              "protected_clock": false,
+              "selected47": false,
+              "temporarily_fixed_in_route47": true,
+              "width_um": 7.2
+            },
+            {
+              "area_um2": 1244.16,
+              "bbox_dbu": [
+                828000,
+                1504800,
+                835200,
+                1677600
+              ],
+              "guide": 16,
+              "height_um": 172.8,
+              "marker": 80,
+              "owner": "net4113",
+              "protected_clock": false,
+              "selected47": false,
+              "temporarily_fixed_in_route47": true,
+              "width_um": 7.2
+            },
+            {
+              "area_um2": 1244.16,
+              "bbox_dbu": [
+                828000,
+                1504800,
+                835200,
+                1677600
+              ],
+              "guide": 16,
+              "height_um": 172.8,
+              "marker": 82,
+              "owner": "net4113",
+              "protected_clock": false,
+              "selected47": false,
+              "temporarily_fixed_in_route47": true,
+              "width_um": 7.2
+            },
+            {
+              "area_um2": 1192.32,
+              "bbox_dbu": [
+                100800,
+                648000,
+                108000,
+                813600
+              ],
+              "guide": 7,
+              "height_um": 165.6,
+              "marker": 0,
+              "owner": "net189",
+              "protected_clock": false,
+              "selected47": true,
+              "temporarily_fixed_in_route47": false,
+              "width_um": 7.2
+            },
+            {
+              "area_um2": 1192.32,
+              "bbox_dbu": [
+                100800,
+                648000,
+                108000,
+                813600
+              ],
+              "guide": 7,
+              "height_um": 165.6,
+              "marker": 1,
+              "owner": "net189",
+              "protected_clock": false,
+              "selected47": true,
+              "temporarily_fixed_in_route47": false,
+              "width_um": 7.2
+            }
+          ],
+          "marker_count": 92,
+          "marker_guide_intersections": 325,
+          "memory_cause_proven": false,
+          "native_rectangle_controls": 6,
+          "native_units": 1000,
+          "physical_acceptance": false,
+          "protected_clock_source_count": 4,
+          "recovered_scope_proof": {
+            "changed_signal_count": 46,
+            "complete_DEF_scope_verified": true,
+            "native_clock_and_other_wires_unchanged": true,
+            "production_accepted": false,
+            "selected_signal_count": 47
+          },
+          "router_internal_guide_mapping_equivalence_proven": false,
+          "selected_source_count": 34,
+          "source_net_count": 96,
+          "source_run": 41440285882,
+          "status": "OBSERVED_ACTUAL92_MARKERS_AND_NATIVE_GUIDE_EXTENTS",
+          "timing_accepted": false
+        },
+        "status": "complete"
+      }
+    ],
+    "physical_acceptance": false,
+    "physical_audits_complete": false,
+    "restoration_complete": false,
+    "routing_complete": false,
+    "runtime_after": {
+      "count": 104,
+      "exact_paths_sizes_hashes": true
+    },
+    "runtime_before": {
+      "count": 104,
+      "exact_paths_sizes_hashes": true
+    },
+    "snapshot_reload_qualified": false,
+    "status": "COMPLETE_ACTUAL47_GUIDE_OBSERVATION",
+    "terminal_actions": [
+      {
+        "action": "bulk-postdrt-version:stop",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-version:wait-after-stop",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-version:kill-if-live",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-version:wait-after-kill",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-version:terminal-child",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-version:progress",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-ldd:stop",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-ldd:wait-after-stop",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-ldd:kill-if-live",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-ldd:wait-after-kill",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-ldd:terminal-child",
+        "completed": true
+      },
+      {
+        "action": "bulk-postdrt-ldd:progress",
+        "completed": true
+      },
+      {
+        "action": "actual92-guide-audit:retain-full-command",
+        "completed": true
+      },
+      {
+        "action": "actual92-guide-audit:progress",
+        "completed": true
+      },
+      {
+        "action": "owned-native-process-cleanup",
+        "completed": true
+      },
+      {
+        "action": "heartbeat-stop",
+        "completed": true
+      },
+      {
+        "action": "heartbeat-join",
+        "completed": true
+      },
+      {
+        "action": "restore-signal-2",
+        "completed": true
+      },
+      {
+        "action": "restore-signal-15",
+        "completed": true
+      },
+      {
+        "action": "engine-unchanged",
+        "completed": true
+      },
+      {
+        "action": "input-unchanged",
+        "completed": true
+      },
+      {
+        "action": "runtime-after",
+        "completed": true
+      },
+      {
+        "action": "terminal-cgroup",
+        "completed": true
+      },
+      {
+        "action": "preserve-native-census",
+        "completed": true
+      }
+    ],
+    "terminal_errors": [],
+    "timing_accepted": false
+  },
+  "output_preservation": {
+    "artifact_required": true,
+    "complete": true,
+    "copied": {
+      "bulk-postdrt-antenna/guide-observation.json": {
+        "bytes": 1012909,
+        "sha256": "d54abd172e41b3bd5d3a33243eec7fb86b3c48c24d38ab9e42ff470f6512be2b"
+      },
+      "bulk-postdrt-antenna/guide-summary.json": {
+        "bytes": 8645,
+        "sha256": "5c5c5d2c646fce675d59383584c89aacc2f5376ff9910047ac76a3b403bb6c5d"
+      },
+      "bulk-postdrt-inner-progress.json": {
+        "bytes": 5725,
+        "sha256": "4366926bad38bcd15456a347fc8c7b9f3b12aa693eb8ea5028dd644d319d50be"
+      },
+      "bulk-postdrt-ldd.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-ldd.stdout": {
+        "bytes": 10979,
+        "sha256": "15243382f5470cbcde7b3ce5186767d876b4d4c391f35b4a7d40ffd36491efcd"
+      },
+      "bulk-postdrt-owned-container.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-owned-container.stdout": {
+        "bytes": 3700,
+        "sha256": "484ad4b15c3f5b93c5125e7febee8e6aa2d4063d4ee610f54b7b261783da44b2"
+      },
+      "bulk-postdrt-recovery-acquisition.json": {
+        "bytes": 14135,
+        "sha256": "1081d31445314051ca23c37cc031a14a5e5db796da894af539649bc0e11ee6b0"
+      },
+      "bulk-postdrt-runtime-observed.json": {
+        "bytes": 16940,
+        "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0"
+      },
+      "bulk-postdrt-snapshot-acquisition.json": {
+        "bytes": 167438,
+        "sha256": "afd089a1b34fdc83c82017a7e41b9a122eb41aab6afb5966562c554028018596"
+      },
+      "bulk-postdrt-snapshot-available-output.json": {
+        "bytes": 3281,
+        "sha256": "330eff89c1d9df8d67f79da5b8fef3b356cb2e0451fde4cdf85d80a9fada27c8"
+      },
+      "bulk-postdrt-snapshot-inner-result.json": {
+        "bytes": 36388,
+        "sha256": "c25433ad34382930209564d39555ad0c2223dddf237187d199f121f0eac21605"
+      },
+      "bulk-postdrt-snapshot-progress.json": {
+        "bytes": 16736,
+        "sha256": "fe645cbaee6f213d4ff973cce0e004cc25f0712528a7d185dc7d682d2dfcd8a8"
+      },
+      "bulk-postdrt-supervision/actual92-guide-audit.command.json": {
+        "bytes": 1275,
+        "sha256": "1687cf18c86e4812611bb27a2a68238e9682fe6d6511d044e480a0f48664ce23"
+      },
+      "bulk-postdrt-supervision/actual92-guide-audit.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-supervision/actual92-guide-audit.stdout": {
+        "bytes": 285,
+        "sha256": "ee72cf880ca9700fd51d4a6754bd20c6f3973e71b95345af0139544519dabad1"
+      },
+      "bulk-postdrt-supervision/events.jsonl": {
+        "bytes": 3636,
+        "sha256": "7deffaa53d96fedad15302cf1f8d4ae031dd6e80e9e1cbc8137e6bccf8bccfe7"
+      },
+      "bulk-postdrt-supervision/latest.json": {
+        "bytes": 1455,
+        "sha256": "9ab77493a1382e730797db88dd1aa7312f8c59ca9b588605ea651e1ab697b530"
+      },
+      "bulk-postdrt-version.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bulk-postdrt-version.stdout": {
+        "bytes": 42,
+        "sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae"
+      },
+      "container-terminal.json": {
+        "bytes": 6880,
+        "sha256": "2f7407b77eb1945ac9f401b060b909dfb928c60825e27cd6f45ce0ab1bf3e6cd"
+      },
+      "create-attempt.json": {
+        "bytes": 1265,
+        "sha256": "8ac826aaf6fb3763f8bee716b57b9523d784a9b4197eda332998e66d9cdfc77e"
+      },
+      "host-progress.json": {
+        "bytes": 50244,
+        "sha256": "145a36bd05ddedcdc7ca1bd912bf61c0a368d5a09eaa100542daeda37748b174"
+      },
+      "image-inspect.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "image-inspect.stdout": {
+        "bytes": 2643,
+        "sha256": "2919690c2c5667ab8cd8acd27f1f6009375b120ce2448822c4d6120000831111"
+      },
+      "immutable-image-pull.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "immutable-image-pull.stdout": {
+        "bytes": 837,
+        "sha256": "f2e858bdd0164b89c06da570b7d63e234534590a4872d84ac5f27f07d033fbe4"
+      },
+      "names-before-owned-create.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "names-before-owned-create.stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-container-create.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-container-create.stdout": {
+        "bytes": 65,
+        "sha256": "cf82f83fa7964b835889f887962b07543f891f7b101e1e802f0e6329c69b04a4"
+      },
+      "owned-container-remove.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-container-remove.stdout": {
+        "bytes": 65,
+        "sha256": "cf82f83fa7964b835889f887962b07543f891f7b101e1e802f0e6329c69b04a4"
+      },
+      "owned-removal-census.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "owned-removal-census.stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "prefix-envelope.json": {
+        "bytes": 4270,
+        "sha256": "11281aedb0c83745f8126820b9c3c5421c20ed572e48bda55356f5d68c8313fb"
+      },
+      "prefix-restoration.json": {
+        "bytes": 423478,
+        "sha256": "23f45038bb461360ec38c7a2490ba24c84db2f9dd3a53e8b2e689201d693d177"
+      }
+    },
+    "excluded_roots": [
+      "work"
+    ],
+    "owned_outputs_retained": true,
+    "retained_output_path": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41449886129-1/out"
+  },
+  "owned_container_recovery": {
+    "id": "1f64944f7848038d4a4a26c2e4dcb9e1b9d1b7d88338037fa9b33e92b739308c",
+    "name": "/nssoc-witness-build-41449886129-1",
+    "recovered_after_create_client_error": false
+  },
+  "physical_acceptance": false,
+  "run_id": 41449886129,
+  "source": "3bf8acec68f0a90ca008a94dff3f7f074f7b9717",
+  "status": "COMPLETE_ACTUAL47_CLOUD_GUIDE_OBSERVATION",
+  "terminal_actions": [
+    {
+      "action": "recover-owned-container",
+      "completed": true
+    },
+    {
+      "action": "owned-stop",
+      "completed": true
+    },
+    {
+      "action": "post-stop-inspect",
+      "completed": true
+    },
+    {
+      "action": "owned-kill-if-running",
+      "completed": true
+    },
+    {
+      "action": "terminal-inspect",
+      "completed": true
+    },
+    {
+      "action": "stopped-container-contract",
+      "completed": true
+    },
+    {
+      "action": "owned-container-removal",
+      "completed": true
+    },
+    {
+      "action": "owned-removal-confirmation",
+      "completed": true
+    },
+    {
+      "action": "owned-container-cleanup",
+      "completed": true
+    },
+    {
+      "action": "own-source-unchanged",
+      "completed": true
+    },
+    {
+      "action": "original-source-unchanged",
+      "completed": true
+    },
+    {
+      "action": "frozen-prefix-unchanged",
+      "completed": true
+    },
+    {
+      "action": "original-projection-unchanged",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_guides_native.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_guides_inner.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_recovery_native.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_snapshot_reload_contract.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_snapshot_reload_inner.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_snapshot_reload_native.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_contract.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_import.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_native.py",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip-route47-selected.json",
+      "completed": true
+    },
+    {
+      "action": "new-projection-scripts/mainchip_route47_memory.py",
+      "completed": true
+    },
+    {
+      "action": "inner-source-unchanged",
+      "completed": true
+    },
+    {
+      "action": "current-input-unchanged",
+      "completed": true
+    },
+    {
+      "action": "container-terminal",
+      "completed": true
+    },
+    {
+      "action": "recovery-input-bulk-postdrt-antenna/narrow47-result.json",
+      "completed": true
+    },
+    {
+      "action": "recovery-input-bulk-postdrt-antenna/narrow47-native-selection.json",
+      "completed": true
+    },
+    {
+      "action": "recovery-input-work/bulk-postdrt-antenna/final-measured.odb",
+      "completed": true
+    },
+    {
+      "action": "recovery-input-bulk-postdrt-antenna/final-drc-markers.json",
+      "completed": true
+    },
+    {
+      "action": "recovery-input-bulk-postdrt-antenna/narrow47-route-delta.json",
+      "completed": true
+    },
+    {
+      "action": "recovery-input-bulk-postdrt-antenna/narrow47-original-classes.json",
+      "completed": true
+    },
+    {
+      "action": "selected-snapshot-unchanged-bulk-postdrt-antenna/stale-wire-cleared-snapshot.json",
+      "completed": true
+    },
+    {
+      "action": "selected-snapshot-unchanged-work/bulk-postdrt-antenna/drt_iter20.odb",
+      "completed": true
+    },
+    {
+      "action": "selected-snapshot-unchanged-bulk-postdrt-antenna/full-route-stage.json",
+      "completed": true
+    },
+    {
+      "action": "selected-snapshot-unchanged-bulk-postdrt-antenna/drt-original-classes.json",
+      "completed": true
+    },
+    {
+      "action": "selected-snapshot-unchanged-bulk-postdrt-antenna/targeted-routing-scope.json",
+      "completed": true
+    },
+    {
+      "action": "permanent-native-publication",
+      "completed": true
+    },
+    {
+      "action": "enumerate:.",
+      "completed": true
+    },
+    {
+      "action": "enumerate:bulk-postdrt-antenna",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/guide-observation.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna/guide-summary.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-antenna",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-inner-progress.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-ldd.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-ldd.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-owned-container.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-owned-container.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-recovery-acquisition.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-runtime-observed.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-snapshot-acquisition.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-snapshot-available-output.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-snapshot-inner-result.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-snapshot-progress.json",
+      "completed": true
+    },
+    {
+      "action": "enumerate:bulk-postdrt-supervision",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/actual92-guide-audit.command.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/actual92-guide-audit.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/actual92-guide-audit.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/events.jsonl",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision/latest.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervision",
+      "completed": true
+    },
+    {
+      "action": "enumerate:bulk-postdrt-supervisor",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-supervisor",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-version.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:bulk-postdrt-version.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:container-terminal.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:create-attempt.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:host-progress.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:image-inspect.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:image-inspect.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:immutable-image-pull.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:immutable-image-pull.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:names-before-owned-create.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:names-before-owned-create.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-container-create.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-container-create.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-container-remove.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-container-remove.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-removal-census.stderr",
+      "completed": true
+    },
+    {
+      "action": "preserve:owned-removal-census.stdout",
+      "completed": true
+    },
+    {
+      "action": "preserve:prefix-envelope.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:prefix-restoration.json",
+      "completed": true
+    },
+    {
+      "action": "preserve:work",
+      "completed": true
+    },
+    {
+      "action": "preserve-derived-outputs",
+      "completed": true
+    },
+    {
+      "action": "preserve-guide-summary.json",
+      "completed": true
+    },
+    {
+      "action": "preserve-guide-observation.json",
+      "completed": true
+    },
+    {
+      "action": "retained-native-workspace",
+      "completed": true
+    }
+  ],
+  "terminal_errors": [],
+  "timing_accepted": false,
+  "workspace_retained": {
+    "cleanup_after_artifact": true,
+    "output_path": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41449886129-1/out",
+    "path": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41449886129-1",
+    "reason": "Retained until complete workflow artifact upload succeeds"
+  }
+}

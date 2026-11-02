@@ -1,26 +1,52 @@
-## Current continuation: actual recovered route92DRC; collector candidate electrically rejected; guide-memory diagnosis dispatched
+## Current continuation: guide audit and full PHY device correspondence completed
 
-Previous rootv307 ac5300c77500b098904cfd059221b94a25b11cdc/inventory799. Native work/payloads exclusivelyGitHub; localworkspace empty. Complete serialGen3x4PHY/mainchiproute/finalsetuphold remainOPEN.
+Root v308: a773002fb728e25c4c7d449b4de01c7344b9eec3, inventory802. Native CAD, geometry, simulation, waveform and archive payloads remain exclusively on GitHub. Local workspace remains empty. Full serial PCIe Gen3 x4 PHY, final mainchip routing and setup/hold are NOT complete.
 
-MAINCHIP RECOVERY41440285882/source0990e2971dee0333598a59a033dfe4f1f1f4215b/release431403455 TERMINAL SUCCESS. Exactiteration19 recovered, originaltemporary47protection restored, all1691clocks/allnonselectedwires unchanged, completeDEF auditPASS.46of47selectedwires changed versusoriginal140marker input. Originalfailedroute41415994457 remainsFAIL; currentrecovery made0routecalls. Nativeinner650.6126seconds, zero terminalerrors. design_is_routed=1 does not meanDRCclean.
+MAINCHIP
+Recovery41440285882 retains the actual routed iteration19: 92 DRT violations (64 shorts,28 metal spacing),21 antenna nets. All1691 protected clock wires and all nonselected wires unchanged;46 of47 selected wires changed. Original failed route41415994457 is still a failure. No new routing was performed this turn.
 
-ACTUAL FULL DRT CHECK92markers=64Short+28MetalSpacing, allcategories below10000cap and complete serializedcensus. FullsignoffDRC=false. Report16461bytes SHA4d70f7bb24b4aaceb7e435b4a70b4670a20f5ad07a06e4398349e69d2000c59b; markerJSON118206bytes SHAa7cbb4ad472a6f0bf6a8e422eb439dab2e2685ad3ec63062c304af7f4d0bebb9. Antenna21nets with27reportedviolations. Some includePCIe receiveownership andholdbuffers. Originalglobalrouteclass restoration/diodePG/fullLVS/finalSTA stillrequired; recovery didnotclaimthem. Restoredcandidate214392179bytes SHAe460c8d0751ad9d22042a2e133103e0853048110fb0b2747c04ced44eb284d4e. MeasuredODB214402279bytes SHA53b42f42c244af7416a78c0cc04cc897f99b114c892c6bc86ecc60affa3e05af. Complete72member release sealed; single507337878bytepart. Derived13140238534=281462bytes SHA09dea7b60ec56de5ae36dadd3e40196d4dd639e1190f29524e4b99e0d374e1b6.
+Initial guide audit41445399432/sourcecccc79890d45e1e9796ee096bfbc42b064f72160 failed before opening ODB. It incorrectly required complete_DEF.accepted=true. The original routing_delta function returns accepted=false even after all scoped DEF assertions pass; this is a production acceptance disclaimer. Corrected consumer independently checks native clock/other-wire booleans, protected DEF records/non-NETS bytes, exact46 changed owners within47 selection, native/DEF changed-set agreement and ordered-name SHA. It continues to require accepted=false and all final acceptance flags false. Real producer fixture plus22 refusal controls and9 coordinate/rectangle controls passed41447590694/sourceb3ea23076cc47c0f94c912eff85f853815a95692.
 
-NEW GUIDE AUDIT41445399432/sourcecccc79890d45e1e9796ee096bfbc42b064f72160/branchcodex/mainchip-route47-guide-audit/release431439188. Independent same-sourcecontrols41444984360 PASS. Reuse unchangedengine/runtime/resources and originalfrozen source gates. Authenticateall72recoverynativemembers plusoriginalscopeinputs, select6currentfiles. Readactual92markerJSON/ODB/nativeguide records with exactliteralnames, nativeDBU/losslessDecimal coordinates and cross-check allrectangleintersections againstactualodb.Rect. Classify selected47/protected1691/temporaryFIXEDoverlay. Preserveallguides/intersections andrankedextents. NO routing/repair/write_db/write_def. No claim ofexactinternalfrNetguide equivalence, memorycause ornewmaterial. This diagnostic follows recoveredactualviolations tochoose a later boundedroute strategy; nounchangedmemoryfailing rerun.
+Actual audit41447786520 then passed scope but failed at embedded OpenROAD Rect.intersects(Rect) overload. No geometry or original gates were changed. Source3bf8acec68f0a90ca008a94dff3f7f074f7b9717 uses native Point containment in both rectangles for the common lower-left candidate point, preserving exact inclusive intersection and checking native coordinates and result types. Six native boundary/degenerate/disjoint cases pass. Independent source-controls41449620712 passed.
 
-COLLECTOR LOADED41441047354/sourceeb5eb3e34f248e77c26b573f4cfd52a1fdf585ae/release431408879 TERMINAL ELECTRICAL FAILURE. Nativeengineexit0, fulltransient=true/sourcesunchanged=true, statusREJECTED_WHOLE_MIM_PD500_LOADED. Phase14.325205048534979mV<30mV; signedVI43.05123360647242uA<50uA. HBT61/62/115/116minimumVce .34269694860107586/.33977774836005276/.3709673862509904/.3691976007675946V<.4. Versusparent41430498959 improve5.264/5.611/12.762/12.478mV, stillfail. SamplerA/B/C/D maxdelays45.78125/41.71875/51.09375/54.53125ps>37.5; wrongsign0/0/2/34; below100mV129/128/128/128 of765. ComparatorX/Ywrong387/44, below100mV726/652, delay118.90625ps remainfailures.
+ACTUAL GUIDE AUDIT41449886129 SUCCESS; source3bf8acec68f0a90ca008a94dff3f7f074f7b9717; branchcodex/mainchip-route47-guide-audit; release431471737.
+- Actual measuredODB214402279bytes SHA53b42f42c244af7416a78c0cc04cc897f99b114c892c6bc86ecc60affa3e05af.
+- All92 markers,96 source nets,2593 guide records,325 marker-guide intersections.
+-34 source nets in selected47;61 in temporary FIXED overlay;4 protected clock source nets.
+- Largest intersecting guide475.2x7.2um (3421.44um2), from a fixed nonselected register-file net. Selected long guides include424.8x7.2um and410.4x7.2um.
+- Full observation1012909bytes SHAd54abd172e41b3bd5d3a33243eec7fb86b3c48c24d38ab9e42ff470f6512be2b.
+- Derivedartifact13144512570=275127bytes SHAab6bf3e7cd71b0223f2169a02da674fabd90cd12ec934642c7afafe991a320e5.
+- current_route_calls=0,current_repair_calls=0,geometry_changed=false,memory_cause_proven=false,router_internal_guide_mapping_equivalence_proven=false. This is native diagnosis, not closure.
 
-Fullraw1045823299bytes SHA6bb19cfd4db727ecc28b6564bf3a157470e09153d488626ffa1f5b7cf9e6ce7d=113475rows1152columns,34.25ns,0.3125psmaxstep unchanged. Measurement452909bytes SHAc16b5b66490b76de73f932f2df0d807527cb7b0eafa00139694795ec76b4d5b8. Derived13140423325=1375316bytes SHA91e990391786c5460d772e66963724841985ed4bc95689ad24f9677fade7e0e4. Completeindex701645061=25422bytes SHA881d6d759972190866998369cad80f7f016a49a96748b0734e586af304e59e55. All4nativearchiveparts andoriginalfailure preserved; never shortenwave orrelaxgates.
+Exact upstreamdcf36133a369abc8f3c5e5738cd4d82e4903c0e0 source inspection:
+FlexDR::guideTilesFlow builds workers from all intersecting original net guides, merges same-orientation intersections, constructs all workers before processing batches, and retains each batch's results until all its workers finish. Unlike optimizationFlow, it does not subdivide batches by BATCHSIZE. Flow switches to guides at <=100 violations unless ripupALL/INCR or max-spacing work. Current stored-guide observation is not proof of identical internal iteration20 guide order/batches.
+NEXT MAINCHIP: implement/qualify bounded guide-worker allocation and completion batches in the pinned router while retaining original full64 schedule/costs/guide geometry and immutable wire/clock audits; do not repeat the unchanged 11GiB failure. Alternative single-step ALL-ripup forcing bounded optimization tiles was investigated in source but NOT implemented; it changes routing strategy. No engine patch/build/route trial has yet been dispatched.
 
-FULLWAVE DIAGNOSIS41443536765/source9911d8f5a6bae26a8864d858c3a21bc7b48808d0 SUCCESS. Entireparser/diagnosis unchangedfrom55fa84c2 exceptbranch+producer/index/parts. Allactualraw/scalars/margins/delays/signcounts reproduced andexactbadset61/62/115/116 retained. Derived13140329003=120423bytes SHA16ffa363ead36ea95ae97cc579780a274d8015bca56fccdf8949f22f40793c77.
+PHY
+Collector Via2 candidatec0d420 remains physically/canonically/RC qualified only at subblock scope. Actual loaded41441047354 remains REJECTED: phase14.325mV<30mV, signedVI43.051uA<50uA, Vce61/62/115/116=.342697/.339778/.370967/.369198V<.4; sampler delays41.72..54.53ps>37.5ps. Complete raw113475x1152,1,045,823,299bytes retained. Original external-clock nominal scenario; no closed-loop/fullPHY acceptance.
 
-Nativeoperatingminima now61:Vc.829382412,Ve.486685463,Vb1.420525401,Ic3.992023mA;62:Vc.828401554,Ve.488623806,Vb1.420592491,Ic3.912432mA. Drivers54/56E=.872704176/.888610480 atthoseminima; remainingpathdrops43.32..60.21mV.115:Vc.858448311,Ve.487480925,Vb1.424827861,Ic4.044968mA,drivers106/108E=.937624156/.889631044, drops79.18/31.18mV.116minimum movedto18.18671875ns:Vc.861016737,Ve.491819136,Vb1.427232995,Ic3.970839mA;drivers106/108E=.892858328/.937510976, drops31.84/76.49mV. TailMOSdrain/gate/sourcevoltages andallupperdriverC/B/E/Sterminals saved in compactderivedoperatingrecord. Remainingemitter-to-MOSdrops42.1..47.7mV. Needactualbias/geometry design investigation; no claim another smallVia changealonecloses phase/delay/fullPHY.
+NEW FULL NATIVE DEVICE CORRESPONDENCE41450661063 SUCCESS, source22baa225789b8ec1c9ce98437196af1e48fc2918, branchcodex/cdr-collector-device-map.
+Authenticate complete physical41435641296 release431371522 and exact flat LVSdatabase2760554bytes SHA9df6ea3e90bccaebe216834488154f680317934560ed99ad0b1a9be1ff22da37. Native KLayout reader0.30.4.post1; exact500 matching primitive pairs/bidirectional bijection and25ports. Cross-check all1446 native terminal IDs/model spellings/net names/clusters against actual freshRC41439516945 native planes244758bytes SHA380865a73b8be42afa07ef81a5fcd05e7110e570455ce857f772770e09b08048, and all500 actual loaded composition records1015133bytes SHAd775d58fcaaba7c6f4d5d06a51645839e0b0e4e853de5e6249f3156b1f9b27d5. Ten source-only refusal controls passed.
+Derivedartifact13144567876=66389bytes SHA415215780ef60cd6bd971ccb782d1dfbe4430a67c2f5ae10a3f0d60c6bbcd9cb.
+Preserved earlierfailures41449736667/source11d5d2b6a40b82a30dc5058c7814f68e19193324 (invalid redundant Net.id API) and41450082352/sourceda58d7d649e982cead0a7e419f79e5a069bb94ad (lowercased npn13G2 did not equal raw native model spelling). Correct reader uses net cluster_id/name/expanded_name and separately preserves raw/normalized model names. No identity comparison removed.
 
-Passive41441842390 proved8collectorReff -11.26..13.49percent andother24unchanged. Allphysical/canonical/freshRC passes remainvalidonlywithin analogsubblockscope. Do notequate passivegainwithloadedacceptance. Readonly8hourmonitor automatic_native_dispatch=false. Followguideauditactualhandle; preserveallfailures/controls. FullclosedloopCDR/PLL/SERDES/PVT/ESD/EM andmainchiprouting/PG/LVS/3cornerSTA stillopen.
+Actual source mappings:
+61=SD_M_CS0;62=SD_M_CS1;115=SC_M_CS0;116=SC_M_CS1. All four clock-selected HBTs useNx2,le0.9um,we0.07um; basesCN, collectorsSD_M_SE/SC_M_SE, emittersSD_M_TE/SC_M_TE.
+54=SD_M_DP;56=SD_M_DN;106=SC_M_DP;108=SC_M_DN. Data pair HBTs useNx4,le0.9um,we0.07um; basesSD_LP/LN orSC_LP/LN, common emittersSD_M_SE/SC_M_SE.
+3..6=SD_M_T0..T3 and32..35=SC_M_T0..T3; eachNMOS W36um,L0.3um, gatesIRD/IRC,sourcesAVSS. Actual loaded source voltage includes extracted ground drop and is not ideal ground.
+LVS can exchange equivalent parallel devices; pairs are a valid native correspondence, not a unique physical naming guarantee.
 
-Observed at 2026-11-02T12:35:01.538130+00:00:
-- 41441047354: completed/failure
-- 41440285882: completed/success
-- 41443536765: completed/success
-- 41444984360: completed/success
-- 41445399432: in_progress/None
+NEXT PHY: use this native source mapping with preserved fullwave operating points to design/simulate specific clock/data common-mode, device sizing or remaining collector-wire corrections. Data-input deviceNx4 -> higherNx would be a circuit change with added capacitance; not yet simulated, not a claimed fix. Any exploratory parameter simulation must be explicitly provisional because old RC/layout no longer qualifies modified primitive geometry. Actual final change must regenerate schematic/GDS, full DRC/LVS, canonical material, fresh RC and unchanged loaded gates before integration.
+All full closed-loopCDR/PLL/SERDES, PVT/ESD/EM and mainchip PG/fullLVS/final3cornerSTA obligations remain open.
+
+Readonly8hour monitor remains automatic_native_dispatch=false. No local native files or new local project files.
+
+Observed at 2026-11-02T13:20:03.899552+00:00:
+- 41445399432: completed/failure
+- 41447590694: completed/success
+- 41447786520: completed/failure
+- 41449620712: completed/success
+- 41449886129: completed/success
+- 41449736667: completed/failure
+- 41450082352: completed/failure
+- 41450661063: completed/success
