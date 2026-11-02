@@ -1,6 +1,31 @@
-# Cloud continuation — checkpoint v279
+# Cloud continuation — checkpoint v280
 
-Updated: 2026-11-02T05:11:33.888930+00:00
+Updated: 2026-11-02T05:25:08.405102+00:00
+
+## Current continuation: loaded ground candidate rejected; native path bug repaired and new run launched
+
+All native CAD, archives and full raw waves remain GitHub-only. Local workspace is empty. Full serial Gen3x4PHY, mainchip routing and final setup/hold remain OPEN.
+
+Actual new-ground loaded41391065497/source494a63a4136813f6018c8cab027632ff02f54d0d/release431084851 is terminal FAILURE. The unchanged transient returned0 after1182.983702seconds and preserved all113475rows/1152columns,1045823299bytes SHA8e1246b7cb4d26f361538977af4507fad259c3e98eeb0f7f851157f5e295ec75. Electrical status REJECTED_WHOLE_MIM_PD500_LOADED: phase14.758390691mV versus30mV, signedVI44.182149848uA versus50uA, A/B/C/D maximum clock-to-valid45.78125/41.40625/53.28125/55.15625ps versus37.5ps; C/D wrong-sign samples16/48. HBT61/62/115/116 minimumVce0.339112537/0.336296287/0.371100560/0.369848838V versus0.4V. These four minima worsened from the previous four-shortcut candidate, while phase/VI improved modestly. No electrical acceptance follows from the passed macro physical and freshRC checks. Frozen stimuli/device limits/measurement bodies remain unchanged. Authenticated derived13117914409 is1372359bytes SHAdfba52f7ddf8c398da57a21bc7a5b5476ab761fc60bb36047ae1fe314c92116e; all original native parts remain release431084851.
+
+New full-wave diagnosis41393728274/source3007520e9bbc6a4bfccb294cc6d8acee62bef30b uses the exact previous parser/diagnosis methods with only the producer configuration changed. It authenticates every complete native archive member, reads every original waveform sample, reproduces each failing-device scalar, measures connected native terminal voltage drops and groups sampler/comparator errors by bit transition. Follow its actual outcome before selecting another circuit/layout repair. It is diagnosis, not another transient or acceptance claim.
+
+Mainchip41391752608/source4ac4c07b02172eb63b399648efc48279fa79dcb1/release431088470 failed in prepare BEFORE ANY class import or routing: frozen import_tcl called a hosted-root-only path encoder and rejected /work. Full native iteration20 roundtrip, original scoped delta and native report-name selection already passed. Routecalls0/importcalls0, elapsed444.352901seconds, peak6675869696bytes, allOOM counters0. Authenticated derived13118560094 is208526bytes SHAb7eaba5d8fa8213e769d589e3f29192bee2e7f672533effe5584ad57cc5a716c. Original140DRC remain; no route improvement is claimed. Complete235944940byte failure archive SHA6483d298b94861c7bb9ce7d7c47be234e491f8ecf85f9f3299c265813fc19567 remains cloud release431088470.
+
+Source7cc6f94a7a685423533a25bc0d418e33764e8366 fixes only the owned-path import boundary. The original import function bytecode/defaults/closure is reused with an isolated namespace whose path encoder admits only canonical exact-owned paths and three declared stems. Original globals remain unchanged; both floorplan imports and all six Tcl commands remain exact. Additional20controls reproduce the actual historical rejection, cover each import sequence, and reject wrong-stage, foreign, injected and real symlink paths. All new and existing controls PASSED independent41393574410. Native41393730481/release431098535 is reserved at the exact source and dispatched using that control run. Follow the SAME handle; do not restart on observation timeout. All original native identity, reversible protection,47owner wire/guide checks,1691clocks, full DRC/antenna and resource controls remain.
+
+After successful route observation, original global route-class restoration, diodePG/connectivity/fullLVS and final three-corner RC/STA remain mandatory. Frozen global restoration also needs authenticated original baseline/insertion snapshots, insertion plan and original classes; do not equate temporary47class restoration with original global restoration. Original producer41349316524 index contains all necessary inputs, including baseline-snapshot624649274bytes SHA93cd2b9336d37dab192cacb16781b6a85489c4b56b95ab978ff20686816c1138 and insertion-snapshot627376262bytes SHA501e93ae94d2a08477d59f14f8bee320412a0de83578ec1c6ad7a818878e772f. Keep these native structures cloud-only.
+
+Checkpointv279 committed b768ae41969479809efed0d4012c3a4ee6427ce2 and all434files/96165608bytes were readback-verified. Its original coordinator attempt stopped before publication because the new8351097byte derivedRC package exceeded the metadata guard. Recovery admitted only the exact known artifactID/size/digest, preserving the native-payload exclusion and full readback checks. No native CAD ran locally.
+
+Monitor remains read-only every8hours with automatic_native_dispatch=false.
+
+Observed at 2026-11-02T05:25:08.405102+00:00:
+- 41391065497: completed/failure
+- 41391752608: completed/failure
+- 41393574410: completed/success
+- 41393730481: in_progress/None
+- 41393728274: completed/success
 
 ## Current continuation: new ground RC passed; loaded waves and actual47net repair launched
 

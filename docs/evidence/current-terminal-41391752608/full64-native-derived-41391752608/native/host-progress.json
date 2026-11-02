@@ -1,0 +1,408 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "docker",
+        "pull",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a"
+      ],
+      "elapsed_seconds": 38.71370628,
+      "label": "immutable-image-pull",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "image",
+        "inspect",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a"
+      ],
+      "elapsed_seconds": 0.032135006000004296,
+      "label": "image-inspect",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "container",
+        "ls",
+        "-a",
+        "--format",
+        "{{.Names}}"
+      ],
+      "elapsed_seconds": 0.032093198000012535,
+      "label": "names-before-owned-create",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "create",
+        "--env",
+        "GITHUB_ACTIONS=true",
+        "--name",
+        "nssoc-witness-build-41391752608-1",
+        "--label",
+        "nssoc.build.source=4ac4c07b02172eb63b399648efc48279fa79dcb1",
+        "--label",
+        "nssoc.build.token=41391752608-1",
+        "--network",
+        "none",
+        "--read-only",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--memory",
+        "12884901888",
+        "--memory-swap",
+        "12884901888",
+        "--cpus",
+        "2",
+        "--pids-limit",
+        "4096",
+        "--user",
+        "1001:1001",
+        "--tmpfs",
+        "/tmp:rw,nosuid,nodev,size=268435456",
+        "--mount",
+        "type=bind,src=/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41391752608-1,dst=/work",
+        "--workdir",
+        "/work/source",
+        "--env",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "--entrypoint",
+        "/usr/bin/python3",
+        "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a",
+        "/work/inner.py"
+      ],
+      "elapsed_seconds": 0.06414701799999989,
+      "label": "owned-container-create",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "start",
+        "--attach",
+        "82fd3e1465f97620052a3bc394992a199241e67345ac36479c5f951181972a92"
+      ],
+      "elapsed_seconds": 448.23070124599997,
+      "error": {
+        "action": "bulk-postdrt-owned-container",
+        "error": "ValueError('bulk-postdrt-owned-container failed')",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build.py\", line 71, in execute_command\n    c.require(result.returncode == 0, label+\" failed\")\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build_contract.py\", line 26, in require\n    raise ValueError(reason)\nValueError: bulk-postdrt-owned-container failed\n",
+        "type": "ValueError"
+      },
+      "label": "bulk-postdrt-owned-container",
+      "returncode": 1
+    },
+    {
+      "argv": [
+        "docker",
+        "rm",
+        "82fd3e1465f97620052a3bc394992a199241e67345ac36479c5f951181972a92"
+      ],
+      "elapsed_seconds": 0.031978481000010106,
+      "label": "owned-container-remove",
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "docker",
+        "container",
+        "ls",
+        "-a",
+        "--format",
+        "{{.Names}}"
+      ],
+      "elapsed_seconds": 0.015993556000012177,
+      "label": "owned-removal-census",
+      "returncode": 0
+    }
+  ],
+  "container_terminal": {
+    "AppArmorProfile": "docker-default",
+    "Args": [
+      "/work/inner.py"
+    ],
+    "Config": {
+      "AttachStderr": true,
+      "AttachStdin": false,
+      "AttachStdout": true,
+      "Cmd": [
+        "/work/inner.py"
+      ],
+      "Domainname": "",
+      "Entrypoint": [
+        "/usr/bin/python3"
+      ],
+      "Env": [
+        "GITHUB_ACTIONS=true",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "DEBIAN_FRONTEND=noninteractive",
+        "TZ=America/Los_Angeles",
+        "LANG=C.UTF-8",
+        "LC_ALL=C.UTF-8"
+      ],
+      "Hostname": "82fd3e1465f9",
+      "Image": "openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a",
+      "Labels": {
+        "nssoc.build.source": "4ac4c07b02172eb63b399648efc48279fa79dcb1",
+        "nssoc.build.token": "41391752608-1",
+        "org.opencontainers.image.ref.name": "ubuntu",
+        "org.opencontainers.image.version": "24.04"
+      },
+      "OnBuild": null,
+      "OpenStdin": false,
+      "StdinOnce": false,
+      "Tty": false,
+      "User": "1001:1001",
+      "Volumes": null,
+      "WorkingDir": "/work/source"
+    },
+    "Created": "2026-11-02T05:06:38.552529466Z",
+    "Driver": "overlay2",
+    "ExecIDs": null,
+    "GraphDriver": {
+      "Data": {
+        "ID": "82fd3e1465f97620052a3bc394992a199241e67345ac36479c5f951181972a92",
+        "LowerDir": "/var/lib/docker/overlay2/15163a9c8e76475db95a16042b4a4c633aa847aebd8c4cb70807d6039a9a04f1-init/diff:/var/lib/docker/overlay2/39b53baa949ce3c4e528769d6b9f3366a4b049f9f45b1e617391116e2644762c/diff:/var/lib/docker/overlay2/7249e7979fe32f9d6c3144d8c5a02c0a4d3a6be5d2aea7b47f325d4b7d8b3e1f/diff:/var/lib/docker/overlay2/4e2ab2c5fb379668790056ae7c5d6ff2f05e5f491088534cc76cded436a0510e/diff",
+        "MergedDir": "/var/lib/docker/overlay2/15163a9c8e76475db95a16042b4a4c633aa847aebd8c4cb70807d6039a9a04f1/merged",
+        "UpperDir": "/var/lib/docker/overlay2/15163a9c8e76475db95a16042b4a4c633aa847aebd8c4cb70807d6039a9a04f1/diff",
+        "WorkDir": "/var/lib/docker/overlay2/15163a9c8e76475db95a16042b4a4c633aa847aebd8c4cb70807d6039a9a04f1/work"
+      },
+      "Name": "overlay2"
+    },
+    "HostConfig": {
+      "AutoRemove": false,
+      "Binds": null,
+      "BlkioDeviceReadBps": [],
+      "BlkioDeviceReadIOps": [],
+      "BlkioDeviceWriteBps": [],
+      "BlkioDeviceWriteIOps": [],
+      "BlkioWeight": 0,
+      "BlkioWeightDevice": [],
+      "CapAdd": null,
+      "CapDrop": [
+        "ALL"
+      ],
+      "Cgroup": "",
+      "CgroupParent": "",
+      "CgroupnsMode": "private",
+      "ConsoleSize": [
+        0,
+        0
+      ],
+      "ContainerIDFile": "",
+      "CpuCount": 0,
+      "CpuPercent": 0,
+      "CpuPeriod": 0,
+      "CpuQuota": 0,
+      "CpuRealtimePeriod": 0,
+      "CpuRealtimeRuntime": 0,
+      "CpuShares": 0,
+      "CpusetCpus": "",
+      "CpusetMems": "",
+      "DeviceCgroupRules": null,
+      "DeviceRequests": null,
+      "Devices": [],
+      "Dns": [],
+      "DnsOptions": [],
+      "DnsSearch": [],
+      "ExtraHosts": null,
+      "GroupAdd": null,
+      "IOMaximumBandwidth": 0,
+      "IOMaximumIOps": 0,
+      "IpcMode": "private",
+      "Isolation": "",
+      "Links": null,
+      "LogConfig": {
+        "Config": {},
+        "Type": "json-file"
+      },
+      "MaskedPaths": [
+        "/proc/asound",
+        "/proc/acpi",
+        "/proc/interrupts",
+        "/proc/kcore",
+        "/proc/keys",
+        "/proc/latency_stats",
+        "/proc/timer_list",
+        "/proc/timer_stats",
+        "/proc/sched_debug",
+        "/proc/scsi",
+        "/sys/firmware",
+        "/sys/devices/virtual/powercap"
+      ],
+      "Memory": 12884901888,
+      "MemoryReservation": 0,
+      "MemorySwap": 12884901888,
+      "MemorySwappiness": null,
+      "Mounts": [
+        {
+          "Source": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41391752608-1",
+          "Target": "/work",
+          "Type": "bind"
+        }
+      ],
+      "NanoCpus": 2000000000,
+      "NetworkMode": "none",
+      "OomKillDisable": null,
+      "OomScoreAdj": 0,
+      "PidMode": "",
+      "PidsLimit": 4096,
+      "PortBindings": {},
+      "Privileged": false,
+      "PublishAllPorts": false,
+      "ReadonlyPaths": [
+        "/proc/bus",
+        "/proc/fs",
+        "/proc/irq",
+        "/proc/sys",
+        "/proc/sysrq-trigger"
+      ],
+      "ReadonlyRootfs": true,
+      "RestartPolicy": {
+        "MaximumRetryCount": 0,
+        "Name": "no"
+      },
+      "Runtime": "runc",
+      "SecurityOpt": [
+        "no-new-privileges"
+      ],
+      "ShmSize": 67108864,
+      "Tmpfs": {
+        "/tmp": "rw,nosuid,nodev,size=268435456"
+      },
+      "UTSMode": "",
+      "Ulimits": [],
+      "UsernsMode": "",
+      "VolumeDriver": "",
+      "VolumesFrom": null
+    },
+    "HostnamePath": "/var/lib/docker/containers/82fd3e1465f97620052a3bc394992a199241e67345ac36479c5f951181972a92/hostname",
+    "HostsPath": "/var/lib/docker/containers/82fd3e1465f97620052a3bc394992a199241e67345ac36479c5f951181972a92/hosts",
+    "Id": "82fd3e1465f97620052a3bc394992a199241e67345ac36479c5f951181972a92",
+    "Image": "sha256:a958d3bee9c5261b26e221e1c1461c92f830f14293bc5050848653bd7ec8d185",
+    "LogPath": "/var/lib/docker/containers/82fd3e1465f97620052a3bc394992a199241e67345ac36479c5f951181972a92/82fd3e1465f97620052a3bc394992a199241e67345ac36479c5f951181972a92-json.log",
+    "MountLabel": "",
+    "Mounts": [
+      {
+        "Destination": "/work",
+        "Mode": "",
+        "Propagation": "rprivate",
+        "RW": true,
+        "Source": "/home/runner/work/_temp/mainchip-bulk-postdrt-antenna-41391752608-1",
+        "Type": "bind"
+      }
+    ],
+    "Name": "/nssoc-witness-build-41391752608-1",
+    "NetworkSettings": {
+      "Bridge": "",
+      "EndpointID": "",
+      "Gateway": "",
+      "GlobalIPv6Address": "",
+      "GlobalIPv6PrefixLen": 0,
+      "HairpinMode": false,
+      "IPAddress": "",
+      "IPPrefixLen": 0,
+      "IPv6Gateway": "",
+      "LinkLocalIPv6Address": "",
+      "LinkLocalIPv6PrefixLen": 0,
+      "MacAddress": "",
+      "Networks": {
+        "none": {
+          "Aliases": null,
+          "DNSNames": null,
+          "DriverOpts": null,
+          "EndpointID": "",
+          "Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "GwPriority": 0,
+          "IPAMConfig": null,
+          "IPAddress": "",
+          "IPPrefixLen": 0,
+          "IPv6Gateway": "",
+          "Links": null,
+          "MacAddress": "",
+          "NetworkID": "db2021413c20229694a1bb193d11e88c1917d996791603dc252632a6c43231b7"
+        }
+      },
+      "Ports": {},
+      "SandboxID": "",
+      "SandboxKey": "",
+      "SecondaryIPAddresses": null,
+      "SecondaryIPv6Addresses": null
+    },
+    "Path": "/usr/bin/python3",
+    "Platform": "linux",
+    "ProcessLabel": "",
+    "ResolvConfPath": "/var/lib/docker/containers/82fd3e1465f97620052a3bc394992a199241e67345ac36479c5f951181972a92/resolv.conf",
+    "RestartCount": 0,
+    "State": {
+      "Dead": false,
+      "Error": "",
+      "ExitCode": 1,
+      "FinishedAt": "2026-11-02T05:14:06.547963266Z",
+      "OOMKilled": false,
+      "Paused": false,
+      "Pid": 0,
+      "Restarting": false,
+      "Running": false,
+      "StartedAt": "2026-11-02T05:06:38.633658853Z",
+      "Status": "exited"
+    }
+  },
+  "creation_attempted": true,
+  "error": {
+    "action": "scoped-restoration-host",
+    "error": "ValueError('bulk-postdrt-owned-container failed')",
+    "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_snapshot_reload.py\", line 147, in main\n    command('bulk-postdrt-owned-container',['docker','start','--attach',identity],21600)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_snapshot_reload.py\", line 120, in command\n    def command(label,argv,timeout=120):return build.execute_command(report,out,label,argv,timeout)\n                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build.py\", line 82, in execute_command\n    if primary is not None: raise primary\n                            ^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build.py\", line 71, in execute_command\n    c.require(result.returncode == 0, label+\" failed\")\n  File \"/home/runner/work/nssoc/nssoc/original/scripts/mainchip_witness_engine_build_contract.py\", line 26, in require\n    raise ValueError(reason)\nValueError: bulk-postdrt-owned-container failed\n",
+    "type": "ValueError"
+  },
+  "full_phy_accepted": false,
+  "owned_container_recovery": {
+    "id": "82fd3e1465f97620052a3bc394992a199241e67345ac36479c5f951181972a92",
+    "name": "/nssoc-witness-build-41391752608-1",
+    "recovered_after_create_client_error": false
+  },
+  "physical_acceptance": false,
+  "run_id": 41391752608,
+  "source": "4ac4c07b02172eb63b399648efc48279fa79dcb1",
+  "status": "IN_PROGRESS",
+  "terminal_actions": [
+    {
+      "action": "recover-owned-container",
+      "completed": true
+    },
+    {
+      "action": "owned-stop",
+      "completed": true
+    },
+    {
+      "action": "post-stop-inspect",
+      "completed": true
+    },
+    {
+      "action": "owned-kill-if-running",
+      "completed": true
+    },
+    {
+      "action": "terminal-inspect",
+      "completed": true
+    },
+    {
+      "action": "stopped-container-contract",
+      "completed": true
+    },
+    {
+      "action": "owned-container-removal",
+      "completed": true
+    }
+  ],
+  "terminal_errors": [],
+  "timing_accepted": false
+}
