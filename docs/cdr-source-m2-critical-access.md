@@ -1,0 +1,7 @@
+# Current source M2 residual physical resistance map
+
+New sourceM2 physical layout9fef07bc has passed full560DRC,deep/flatLVS13 and actual freshRC41420011926. Real loaded41422407076 was rejected despite eight source-path resistances falling25.51015ohm against original horizontal-ground reference. Fullwave diagnosis41424462139 is the operating evidence; passive ranking alone is not sufficient.
+
+This read-only cloud survey binds all32current network queries from41423647133/a11002d7924f6649598fbec223eb830ed64402af. It uses unchanged mapping and geometry methods from2671a5b, all103original controls, current complete native archive and every member digest. Only the actual freshRC/status/GDS and sensitivity producer identities change. All978native port coordinates, seven documented MIM relocations, complete24530resistor endpoints/values/multiplicity,13conductor unions and all original/extraction anchor ownership remain checked.
+
+The residual source-local contribution is7.01435ohm, with shared branches4.88213 and1.35196ohm; collector/emitter paths also remain in the32query scope. Map actual endpoint coordinates and surrounding owned/foreign geometry before designing any additional metal. Do not assign an aggregate Magic resistor to a single layer based on its rnode type token. No native material changes or new simulation, physical acceptance, EM or full PHY closure are claimed by this map.

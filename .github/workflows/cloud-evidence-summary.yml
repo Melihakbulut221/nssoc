@@ -1,4 +1,4 @@
-name: Generate actual eight-source ground M2 bypass
+name: Map actual source M2 residual critical resistance to owned physical geometry
 on:
   workflow_dispatch:
 permissions:
@@ -80,8 +80,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1
-      - name: Generate owned source-M2 connections with enclosed Via1 and Via2 arrays
-        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --generate-source-m2-bypass
+      - name: Map actual residual critical resistors and every owned physical endpoint
+        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --inspect-critical-access
       - name: Preserve complete generated or failed native result
         id: publish
         if: always()

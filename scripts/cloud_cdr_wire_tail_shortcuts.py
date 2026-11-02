@@ -7,7 +7,7 @@ import cloud_cdr_wire_geometry_acquire as prior
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"wire-tail-shortcuts";NATIVE=ROOT/"wire-tail-shortcuts-native"
 MANIFEST="scripts/cdr-wire-tail-shortcuts-pins.json";INPUT="scripts/cdr-wire-tail-shortcuts-inputs.json"
-BRANCH="codex/cdr-source-m2-bypass";TOP="nssoc_cdr_pd500_resistor_v59"
+BRANCH="codex/cdr-source-m2-critical-access";TOP="nssoc_cdr_pd500_resistor_v59"
 LAYERS=(8,19,10,29)
 TARGETS=(("D_collector","T061_C","T056_E"),("D_emitter","T061_E","T005_D"),("C_collector","T115_C","T108_E"),("C_emitter","T115_E","T034_D"))
 need=prior.need
@@ -405,8 +405,8 @@ def acquire_current(cfg):
             need(dict(bytes=size,sha256=h.hexdigest())==expected,"member digest "+n);seen.add(n)
     need(seen==set(index["files"])and selected<=seen,"all current RC members authenticated")
     q=json.loads((target/"fresh-rc-qualification.json").read_bytes())
-    need(q["status"]=="PASS_LOCAL_SOURCE_M1_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual current RC qualification")
-    need(pin(target/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds")==dict(bytes=1003860,sha256="4ccf1212d4b98046b1b56037bb1b76c53477777b08ee9cba5053c8e6323203e8"),"actual current four-path GDS baseline")
+    need(q["status"]=="PASS_SOURCE_M2_BYPASS_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual current RC qualification")
+    need(pin(target/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds")==dict(bytes=1018452,sha256="9fef07bce22bce079cf82e3c7600932aa6adce49359838f6c72569fbde3ef61b"),"actual current four-path GDS baseline")
     save("acquisition.json",dict(run=r,release=rel,authenticated_members=len(seen),selected=sorted(selected),all_current_members_authenticated=True,native_payloads_cloud_only=True))
     return target
 def verify_target(base,source_label,a,sink_label,b):
@@ -1108,7 +1108,7 @@ def inspect_critical_access(base,cfg):
         need(anchor==expected,"only authenticated seven MIM coordinate changes; all other metadata exact")
     comp=json.loads((base/"mim/composition/composition.json").read_bytes())
     proof=json.loads((ROOT/"scripts/cdr-critical-resistance-inputs.json").read_bytes())
-    need(proof["run"]==41407813062 and proof["source"]=="fafb2d0be139a44b3c70b449dfc182c5b9f171b0","actual sensitivity producer")
+    need(proof["run"]==41423647133 and proof["source"]=="a11002d7924f6649598fbec223eb830ed64402af","actual sensitivity producer")
     queries=proof["queries"];need(len(queries)==32,"all measured queries")
     public={r[1]:r for r in raw if r[0]=="port"}
     need(len(public)==978 and set(public)==set(anchors),"full native port coordinate census")
