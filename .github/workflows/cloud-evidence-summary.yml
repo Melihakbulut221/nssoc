@@ -1,9 +1,9 @@
-name: Qualify bounded guide engine on actual full chip
+name: Route original full64 with actual-chip-qualified bounded guide engine
 on:
   workflow_dispatch:
     inputs:
       execute:
-        description: Compare new engine full-chip roundtrip and DRT antenna against exact old reference
+        description: Execute original full64 routing after same-source controls and actual-chip engine qualification
         type: boolean
         default: false
       control_run:
@@ -78,6 +78,13 @@ jobs:
             /scripts/mainchip-guide-engine-reference.json
             /scripts/check_mainchip_guide_engine.py
             /docs/mainchip-guide-engine-roundtrip.md
+            /docs/evidence/mainchip-guide-engine-qualification-fixture.json
+            /docs/mainchip-guide-full64-route.md
+            /scripts/check_mainchip_guide_full64.py
+            /scripts/cloud_mainchip_guide_full64_route.py
+            /scripts/mainchip-guide-engine-qualified-inputs.json
+            /scripts/mainchip_guide_full64_inner.py
+            /scripts/mainchip_guide_route_qualification.py
             /.github/workflows/cloud-evidence-summary.yml
       - name: Authenticate every own source before execution
         run: |
@@ -113,6 +120,7 @@ jobs:
           python3 -B scripts/check_mainchip_route47_memory.py
           python3 -B scripts/check_mainchip_route47_recovery.py
           python3 -B scripts/check_mainchip_guide_engine.py
+          python3 -B scripts/check_mainchip_guide_full64.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -128,6 +136,7 @@ jobs:
             route47-recovery-controls
             scoped-restoration-controls
             guide-engine-controls
+            guide-full64-controls
           retention-days: 90
           if-no-files-found: error
   native-routing:
@@ -198,6 +207,13 @@ jobs:
             /scripts/mainchip-guide-engine-reference.json
             /scripts/check_mainchip_guide_engine.py
             /docs/mainchip-guide-engine-roundtrip.md
+            /docs/evidence/mainchip-guide-engine-qualification-fixture.json
+            /docs/mainchip-guide-full64-route.md
+            /scripts/check_mainchip_guide_full64.py
+            /scripts/cloud_mainchip_guide_full64_route.py
+            /scripts/mainchip-guide-engine-qualified-inputs.json
+            /scripts/mainchip_guide_full64_inner.py
+            /scripts/mainchip_guide_route_qualification.py
             /.github/workflows/cloud-evidence-summary.yml
       - name: Authenticate every own source before execution
         run: |
@@ -222,8 +238,8 @@ jobs:
           sparse-checkout: /scripts/mainchip-bounded-route-host-pins.json
       - name: Authenticate original source and exact derived scope inputs
         run: python3 -B scripts/prepare_scoped_restoration_sources.py
-      - name: Authenticate new engine, roundtrip actual chip, compare full DRT and antenna
-        run: python3 -B scripts/cloud_mainchip_guide_engine_roundtrip.py
+      - name: Authenticate actual chip qualification then execute original full64 route and audits
+        run: python3 -B scripts/cloud_mainchip_guide_full64_route.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
