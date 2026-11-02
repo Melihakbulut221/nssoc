@@ -1,15 +1,32 @@
-## Current continuation: source M1 loaded source controls passed; actual production job identity verified
+## Current continuation: loaded source M1 candidate rejected; next larger ground-access repair under diagnosis
 
-Current loaded41405079602/source d1acc79777356767bdc61cffe96d7a8e7edc2409 on codex/cdr-local-source-m1-loaded passed source controls: all29definitions,5executableblocks,9frozen files, complete unchanged prepare/measure bodies and negative previous-port-order/count fixtures. Authenticated control artifact13123375512 is1120bytes SHA8841f4c2bc9568e90d251f0a2cac1ecc1f7b17103f3418c9a20fbe5ab59780fe. Source controls explicitly report no native acquisition or transient; actual loaded execution remains a separate job.
+All native CAD/layout/model/waveform work remains GitHub-only. Local workspace empty. Full serial Gen3x4PHY, completed mainchip routing and final setup/hold remain OPEN.
 
-GitHub reports the production job name loaded-wave, not native-loaded. Corrected that single monitor inventory entry using the actual current jobs response, preserving run/source/branch and inventory count761. No simulation or numerical source changed and no new workflow was dispatched for this metadata correction. Read-only8hour monitoring/automatic_native_dispatch=false unchanged.
+Actual4ccf1212 sourceM1 GDS passed full physical41401709497, canonical41403441348 and freshRC41404030506. Loaded41405079602/source d1acc79777356767bdc61cffe96d7a8e7edc2409/release431163845 now FAILED electrical qualification after a real native transient: engine exit0,829.814seconds; full113475rows/1152columns retained with no decimation. Raw1045823299bytes SHA d1ef391296ccb274f54500bbd6c5bceec9172b13af89a637546b017217efd49b. Complete release index/parts and derived13123443651 (1368933bytes SHAdcf43aada2b7a63d9ce7b2374c6dd89cff7c5b1a65dd5b8368eb468c55f2161e) preserved. Native archive parts remain only in GitHub.
 
-Actual current GDS4ccf1212 passed physical41401709497, canonical41403441348 and freshRC41404030506. The complete new RC model1982076bytes SHAede72ee139584ccce88eec9f7a8b05c74ae1be6da49e32e1b16185b0846a66fc, composition and all11numerical receipts are preserved under current-terminal-41404030506/qualified in rootv287. All native material remains in cloud releases. Native loaded-wave measurements are not yet accepted; previous41391065497 remains rejected. Inspect current loaded41405079602, preserving full raw/failure release evidence and comparing unchanged HBT minVce, phase/signedVI and sampler margins/timing. Do not replace the model or relax gates.
+Actual new phase14.752861593mV<30mV; signedVI44.166729330uA<50uA. HBT61/62/115/116 minVce0.339030756/0.336205693/0.370825949/0.369569860V<0.4V. SamplerA/B/C/D max delays45.78125/41.40625/52.96875/55.15625ps>37.5ps. Wrong-signA/B/C/D0/0/15/48; below100mV129/128/128/128. Prior ground model41391065497 phase14.758390691mV/VI44.182149848uA, C delay53.28125ps and16wrong signs. Other effects are tiny and HBT minima slightly worsen. Do not accept this as electrical closure.
 
-Same mainchip41393730481/source7cc6f94a7a685423533a25bc0d418e33764e8366 remains the owned47net reroute; original140DRC is last terminal count. Original globalclasses,1691clocks, diodePG/connectivity/LVS and final3cornerSTA remain required. No duplicate on observation timeout.
+Qualified resistance41407813062/sourcefafb2d0be139a44b3c70b449dfc182c5b9f171b0 on codex/cdr-source-m1-resistance PASSED. All32same frozen full-network solves and reciprocity checks ran. All500composition primitive parameters/terminal anchors,1446terminals and114complete composed electrical partitions match. Unnamed extractor ordinals may change only with complete partition identity; all public names fixed. 26original network,7comparison and4whole-partition controls passed (original full-wave reader controls also retained). New source-to-ground resistances44.592789–45.035528ohm: each improved by ONLY0.6357ohm (~1.39–1.41percent); all24other query values unchanged. Derived13124003147=1501108bytes SHAeeaa76224b1aadb3ba6a9def4debfe6026ff4835154dd390fd9e088909472665. Unit-current sensitivity is not actual operating-current loss.
 
-Full serial Gen3x4PHY, completed mainchip routing and final setup/hold remain OPEN. Full previous continuation recipe is in v287. Previous all-file-readback-verified rootv287=cffeb34537dc7741c5efc45e60054e9f14f4b67f (32files/13501121bytes). Workspace empty; no local native payload.
+Preserve two diagnostic refusals:
+41406550838/source19b28ebe5329b05e6948665aa3d3db7d60a79c18 stopped before acquisition because comparison negative test caught AssertionError while unchanged need()raises ValueError. Only expected exception fixed.
+41406816137/sourcec141ddb5c9e0034890a5fd541a140c51ba240f24 passed controls and all32native network solves, then refused raw net-name equality ($700 became$699). Its complete pair outputs remain preserved. Final41407813062 authenticates prior actual compositionc863575e... from freshRC41389957475 and proves entire primitive/partition identity before comparisons, with rejection controls for actual connectivity, parameter and public-name changes. No numerical solver or electrical limit changed.
 
-Observed at 2026-11-02T07:19:58.243622+00:00:
-- 41405079602: in_progress/None
+Current all-layer geometry survey41408690630/source41bc40b0bbfd5a4bda407b8c43b236247f2fb21d/release431188942 on codex/cdr-source-m1-ground-access PASSED. It uses current4ccf1212 GDS/current freshRC and the actual current32query sensitivity proof. All original85geometry controls,978port coordinates, both978anchor ownership sets,7MIM relocation witnesses,24530native/exported resistors and13native unions are retained. ground-access-corridors.json contains full source/shared avss endpoint corridors padded5um, all13layers' owned/foreign polygons and actual same-net M1/M2 and M2/M3 overlaps. No geometry changed; no via dimensions/enclosure/spacing/current-density approval claimed. Derived13124178828=447045bytes SHA36f8ec13b86715b0c7ae7ca6dda7b808e3f40de042e6fd975a9085d65346dc5b.
+
+Full-wave diagnosis41408975201/sourcea36dd3a2613a365b608dc5d9b10c5a24b41d00ea on codex/cdr-source-m1-wave-diagnosis dispatched with every source file readback verified. It binds current failed41405079602 release/index/parts, authenticates whole native archive, reads all original raw rows and reproduces HBT/sampler scalar failures before reporting same-net terminal losses at actual HBT minima. All diagnosis bodies and frozen parser controls remain byte-identical to3007520; only branch/current input metadata changed. Follow this exact job; do not duplicate. Native data stays in GitHub.
+
+Next engineering action: combine current geometry survey and actual operating voltage-loss diagnosis to select a larger source/shared-ground access repair. The4um local M1-only widening was insufficient; inspect remaining31.8888ohm source aggregate edges and shared accesses, potential same-net upper-metal/via connections and foreign geometry. Do not assign an aggregate resistor wholly to one metal layer or infer operating loss from unit-current rank. Any new via/metal design requires actual PDK spacing/enclosure/current-density checks, full560DRC/deep-flatLVS13, exact canonical identity, newRC and unchanged loaded gates. Consider circuit headroom/bias if operating losses show metal alone cannot resolve four HBT minima. Full closed-loop serialPHY and corners still required.
+
+Mainchip41393730481/source7cc6f94a7a685423533a25bc0d418e33764e8366 remains the same owned47net reroute; original140DRC last terminal count. Originalglobalclasses,1691clocks, diodePG/connectivity/LVS and final3cornerSTA remain open. No observation-timeout restart.
+
+Previous verified rootv288=cc9c5992735942cb9dc3f3210c899a8bae5a04f5. Inventory766. Read-only8hour monitor and automatic_native_dispatch=false preserved.
+
+Observed at 2026-11-02T07:55:22.862502+00:00:
+- 41405079602: completed/failure
+- 41406550838: completed/failure
+- 41406816137: completed/failure
+- 41407813062: completed/success
+- 41408690630: completed/success
+- 41408975201: completed/success
 - 41393730481: in_progress/None
