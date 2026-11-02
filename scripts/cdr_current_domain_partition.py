@@ -7,6 +7,7 @@ import mos_model_domain_audit as prior
 ROOT=Path(__file__).resolve().parents[1]
 MAP='docs/evidence/cdr-current-domain-parent-map.json'
 METHOD='scripts/cdr-current-domain-partition-methods.json'
+SCOPE="Current original-parent MOS-only model-domain correction; unchanged baseline wire RC, no matching physical layout or closed-loop acceptance."
 FLAGS=dict(full_phy_accepted=False,physical_acceptance=False,final_timing_complete=False,
            matching_layout_verified=False,fresh_RC_for_modified_devices=False)
 need=prior.require

@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-"""Provisional eight slave collector-load trial with original MOS geometry and frozen electrical gates."""
+"""Current-parent model-range MOS partition with full frozen electrical gates."""
 import argparse,ast,copy,hashlib,json,os,platform,shutil,signal,subprocess,sys,tarfile,time,traceback,types
 from pathlib import Path,PurePosixPath
 import cdr_via2_m3_loaded_core as original
-import cdr_sampler_bias_trial as trial
+import cdr_current_domain_partition as trial
+import cdr_current_domain_loaded_adapter as adapter
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"cloud-wire-shortcuts-loaded"
 NATIVE=OUT/"native";DERIVED=OUT/"derived";CONTROLS=ROOT/"wire-loaded-controls"
 MANIFEST="scripts/cdr-wire-shortcuts-loaded-pins.json"
 BASIS="scripts/cdr-wire-shortcuts-loaded-basis.json"
 HOST="scripts/cloud_cdr_wire_shortcuts_loaded.py"
-BRANCH="codex/cdr-slave-load-only-trial"
+BRANCH="codex/cdr-current-domain-partition"
 REPO="Melihakbulut221/nssoc"
 FLAGS=dict(trial.FLAGS)
 STATE=None
@@ -142,14 +143,14 @@ def controls():
     prefix=ast.parse(original.extract(c["blocks"]["deck"],dedented=True)[0]).body[:3]
     need(len(prefix)==3 and isinstance(prefix[0],ast.Assign)and prefix[0].targets[0].id=="nodes"and isinstance(prefix[1],ast.Expr)and isinstance(prefix[2],ast.Assign)and prefix[2].targets[0].id=="vectors","exact frozen vector prefix")
     need(STATE is None and not NATIVE.exists(),"no native input in source controls")
-    trial_controls=trial.source_controls(ROOT)
-    record=dict(trial_controls=trial_controls,original_geometry_binder_unmodified=True,status="PASS_PROVISIONAL_BIAS_TRIAL_FROZEN_LOADED_SOURCE_CONTROLS",definitions=29,executable_blocks=5,frozen_source_files=9,rejected=cases,
+    trial_controls=trial.controls()
+    record=dict(trial_controls=trial_controls,original_baseline_geometry_binder_unmodified=True,adapter_controls=adapter.source_controls(ROOT),status="PASS_CURRENT_DOMAIN_PARTITION_LOADED_SOURCE_CONTROLS",definitions=29,executable_blocks=5,frozen_source_files=9,rejected=cases,
       frozen_complete_prepare_and_measure=True,original_13_binding_controls_required_in_actual_preparation=True,
       actual_port_order=b["semantic_interface"],native_acquired=False,transient_executed=False,**FLAGS)
     save(CONTROLS/"result.json",record)
     return record
 def release_gate(empty=True,wait=False):
-    ctx=context(native=True);tag="cloud-results-"+str(ctx["run_id"])+"-1-cdr-slave-load-only-trial"
+    ctx=context(native=True);tag="cloud-results-"+str(ctx["run_id"])+"-1-cdr-current-domain-partition"
     for i in range(90 if wait else 1):
         p=subprocess.run(["gh","api","repos/"+REPO+"/releases/tags/"+tag],capture_output=True,text=True,timeout=180)
         if p.returncode==0:break
@@ -244,11 +245,16 @@ def simulate():
     save(DERIVED/"admission.json",dict(run=r,jobs=jobs,release=release_gate(wait=True)))
     need(shutil.disk_usage(OUT).free>=8*1024**3,"original8GiB native workspace reserve")
     paths=acquire_rc();runtime=acquire_runtime()
-    paths,TRIAL_BASIS,TRIAL_PROTECTED=trial.derive(sys.modules[__name__],paths)
-    core=configure(paths)
+    TRIAL_BASIS=basis();TRIAL_PROTECTED={str(Path(p)):pin(p)for p in paths.values()}
+    baseline_paths=paths;baseline=configure(baseline_paths)
+    baseline.verify_runtime(runtime)
+    paths,state=adapter.materialize(baseline,baseline_paths,runtime,NATIVE/"current-domain-candidate",ROOT)
+    save(DERIVED/"current-domain-derivation.json",read(NATIVE/"current-domain-candidate/derivation.json"))
+    core=adapter.variant(baseline,baseline_paths,paths,state,ROOT)
     core.verify_current_inputs(paths);core.verify_runtime(runtime);gate()
     case=NATIVE/"nominal_late";prepared=core.prepare_case(case,paths,runtime,ctx)
     need(len(prepared["report"]["binding_controls"]["rejected"])==13 and prepared["report"]["binding_controls"]["equivalent_unit_spellings"]==2,"all actual binding controls")
+    need(prepared["report"]["binding_controls"]["candidate_expansion"]["checks"]==12,"all actual650 expansion faults")
     protected_before=pin(case/"prepared-state.json")
     need(protected_before==prepared["plan"]["prepared_state"],"exact current prepared state")
     gate();rc=legacy().run_engine(prepared["plan"])
@@ -257,7 +263,7 @@ def simulate():
         p=case/"measurement-result.json"
         if p.is_file():shutil.copyfile(p,DERIVED/"measurement-result.json")
         gate()
-    save(DERIVED/"result.json",dict(status="PASS_PROVISIONAL_SLAVE_LOAD_ONLY_TRIAL_FROZEN_LOADED_MEASUREMENTS",
+    save(DERIVED/"result.json",dict(status="PASS_CURRENT_DOMAIN_PARTITION_FROZEN_LOADED_MEASUREMENTS",
       context=ctx,model=pin(paths["model"]),measurement=report,loaded_simulation_passed=True,
       scope=trial.SCOPE,**FLAGS))
 def publish():
