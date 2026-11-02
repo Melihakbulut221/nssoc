@@ -1,79 +1,5 @@
 {
   "active_runs": {
-    "41498680552": {
-      "branch": "codex/cdr-slave-drive-trial",
-      "conclusion": null,
-      "jobs": [
-        {
-          "active_steps": [
-            "Every check, from the same script the developer runs"
-          ],
-          "conclusion": null,
-          "id": 125460240457,
-          "name": "checks",
-          "status": "in_progress"
-        },
-        {
-          "active_steps": [],
-          "conclusion": "success",
-          "id": 125460241037,
-          "name": "memory-parity",
-          "status": "completed"
-        },
-        {
-          "active_steps": [
-            "All declared pilot and SoC regression proofs with fresh source checks"
-          ],
-          "conclusion": null,
-          "id": 125460241111,
-          "name": "formal-sweep (soc)",
-          "status": "in_progress"
-        },
-        {
-          "active_steps": [],
-          "conclusion": "failure",
-          "id": 125460241162,
-          "name": "formal-and-boot",
-          "status": "completed"
-        },
-        {
-          "active_steps": [
-            "All declared pilot and SoC regression proofs with fresh source checks"
-          ],
-          "conclusion": null,
-          "id": 125460241236,
-          "name": "formal-sweep (pilot)",
-          "status": "in_progress"
-        },
-        {
-          "active_steps": [],
-          "conclusion": "success",
-          "id": 125460241322,
-          "name": "python-quality",
-          "status": "completed"
-        },
-        {
-          "active_steps": [
-            "Run every non-frozen RTL suite"
-          ],
-          "conclusion": null,
-          "id": 125460241468,
-          "name": "rtl",
-          "status": "in_progress"
-        },
-        {
-          "active_steps": [],
-          "conclusion": "skipped",
-          "id": 125460243421,
-          "name": "native-boot",
-          "status": "completed"
-        }
-      ],
-      "run": 41498680552,
-      "source": "df723c791fec2621585c80fb56409d65b5811b44",
-      "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41498680552"
-    },
     "41505377046": {
       "branch": "codex/mainchip-guide-engine-roundtrip",
       "conclusion": null,
@@ -222,38 +148,20 @@
       "status": "in_progress",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41507901483"
     },
-    "41512344559": {
-      "branch": "codex/mainchip-guide-full64-route",
-      "conclusion": null,
-      "jobs": [
-        {
-          "active_steps": [],
-          "conclusion": null,
-          "id": 125507117101,
-          "name": "source-controls",
-          "status": "queued"
-        }
-      ],
-      "run": 41512344559,
-      "source": "302f9c30a847acd659a8c451bdce83707fce5d70",
-      "status": "queued",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41512344559"
-    },
     "41512921089": {
       "branch": "codex/cdr-slave-current-only-trial",
       "conclusion": null,
       "jobs": [
         {
-          "active_steps": [],
           "conclusion": null,
           "id": 125509060695,
           "name": "source-controls",
-          "status": "queued"
+          "status": "in_progress"
         }
       ],
       "run": 41512921089,
       "source": "d8289b3f57f23b66288cd7851b03ca81bc4954b6",
-      "status": "queued",
+      "status": "in_progress",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41512921089"
     }
   },
@@ -551,7 +459,7 @@
     "physical_acceptance": false,
     "timing_accepted": false
   },
-  "checkpoint_version": 322,
+  "checkpoint_version": 323,
   "cloud_results_release_reservations": {
     "mainchip_artifact_recovery": {
       "exact_tag_target_verified": true,
@@ -2532,6 +2440,7 @@
   "continuation_note_v320": "## Current continuation: actual-chip qualification and complete slave-drive stage diagnosis\n\nThe first stage reader41507270587/sourcee9ebe92ef4023990a0ad9a23c19eb4b604eaccc7 was CANCELLED while queued, before runner execution (classify job had no steps). Source review found the 24-element derivation delta list was compared to integer24. This is a source guard defect, not electrical failure. Corrected sourcee6c78d53 validates the actual list, unique exact24 native IDs and changed parameter records. Source controls now consume the authenticated real captured derivation fixture and refuse integer/missing/duplicate-device forms before archive acquisition. Old source, queued state and cancellation remain preserved. Corrected reader41508059395 was dispatched once; follow it, never restart cancelled41507270587.\n\nCURRENT MAINCHIP NATIVE41506262574, source64a21283a014b802329e295d1136ae1ec645fee0, branchcodex/mainchip-guide-engine-roundtrip; reserved release431857262/tagcloud-results-41506262574-1-mainchip-bulk-postdrt-antenna. Independent controls41505439588 and same-run source-controls passed. Exact engine41493369685 versus recovered full chip41440285882; full143820net/154480instance/1691clock native snapshot and DEF before/after actual ODB rewrite, original fullDRT/antenna and post-check full-scope equality. Old ELF/runtime/source/supervision preserved. Follow this handle; no duplicate dispatch on polling delay. Terminal native PASS, all checks and full permanent capsule must be authenticated before full64 routing. Zero current route/repair calls and no convergence/memory-saving/timing acceptance merely from this qualification.\n\nCURRENT PHY READ-ONLY DIAGNOSIS41508059395, sourcee6c78d53d05c724c2b4adc83f86aebd47d44d9f7, branchcodex/cdr-slave-drive-stage-timing. Authenticates the entire native archive from electrically rejected41501239838, all original1152columns/113475rows and scalar reproduction. Uses ACTUAL proposed composition native/provisional-bias-model/composition.json SHA071b2c83a130de7b1a0483735f4b8297cfe48657a8616fd95981e703a96e23cf, not old parent composition. Requires actual24device derivation, unchanged other476devices/full wireRC, exact trial composition/planes pins,8actual geometry faults,13original binding faults,2unit-equivalence cases and explicit false matching-layout/freshPEX/PHY flags. The original48HBT stage-role mapping and all parser/clock/per-bit algorithms remain byte-identical; all48HBT parameters/native terminals must match the independently LVS-derived roles. It measures master/slave data arrivals, local clock brackets and complete native delays/margins, reproduces all original gate scalars. It is diagnosis of an existing rejected waveform, not another transient or relaxed acceptance. Workflow first runs original frozen-wave parser and stage controls, then full cloud-only archive/wave analysis. Complete derived stage output must be authenticated and permanently preserved after terminal completion; native wave/archive must never be fetched locally.\n\nPHY41501239838 is terminal ELECTRICALLY REJECTED, engine0, full capture preserved. Rootv317 contains complete measurements,8geometry controls,13binding refusals/2unit cases, source/derivation/runtime metadata, release431828783 pins. A/B/C/Dwrong0/0/0/0; delays42.96875/38.90625/118.90625/49.21875ps>37.5, phase12.974mV<30, VI39.692uA<50 and four HBT61/62/115/116 low activeVce remain. The read-only follow-up is specifically to isolate C's regression before deciding a new parameter change. Do not promote this24device trial into GDS/layout; no matching layout/freshRC.\n\nPrevious engine source-control stale transitive pin failure41504918363 is preserved; corrected controls41505439588 full10JSON evidence is rootv3181fab74aad99b173671a6133e9bce99667e475755. Historical push CI formal-and-boot lint failure on41504869013 is separately recorded; do not present narrow controls as all-CI success.\n\nAll native CAD/SPICE/raw waves/GDS/ODB/archives stay GitHub-only. Local workspace empty. Readonly8hour monitor remains automatic_native_dispatch=false. Full serialGen3x4 PHY, accepted mainchip PCIe/Ethernet route, final setup/hold and production approval remain OPEN.\n\nObserved 2026-11-02T19:15:12.781416+00:00:\n- 41508059395: queued/None\n- 41507901483: pending/None\n- 41506262574: in_progress/None\n- 41507270587: completed/cancelled\n",
   "continuation_note_v321": "## Current continuation: actual new-engine full-chip qualification PASSED and authenticated\n\nNative41506262574/source64a21283a014b802329e295d1136ae1ec645fee0 SUCCESS, host PASS_CLOUD_GUIDE_ENGINE_ACTUAL_CHIP_QUALIFICATION, inner PASS_GUIDE_ENGINE_ACTUAL_CHIP_QUALIFICATION, result PASS_ACTUAL_CHIP_ENGINE_ROUNDTRIP_AND_FULL_CHECKS. No terminal errors; every host/native command0; container exit0/noOOM, original source/runtime protected. Actual inner677.265687seconds, peak9054203904bytes under12GiB; this is snapshot/check memory, NOT routing RSS reduction.\n\nALL143820nets154480instances1691protected clocks and full material/wire snapshot remain byte-identical across old engine, new-engine load, write/reload and full DRT/antenna measurement. Full snapshot624857592bytes SHAbb626be69f89e559432104cec5404ef1831917b230c11db0c03dfc01e91ecba0; DEF186096898bytes SHA68fe1bb0329424c421d4c0a6bc0d20e444ca7ab43e425413ae95498e57990fd4; even ODB rewrite214392179bytes SHAe460c8d0751ad9d22042a2e133103e0853048110fb0b2747c04ced44eb284d4e equals input. Full DRT92=64short+28spacing and21antenna nets/27records exactly match old engine. No routing/repair occurred; no physical/timing/fullPHY acceptance.\n\nAuthenticated derived artifact13171308389 212137bytes SHA96cf31b611eecd8556ef76144e976f5edc64d7bfcf0319bd6e6d0f20aa114461; relevant complete derived records, supervision, actual command streams, result, container and permanent-publication records copied here. Release431857262 contains native archive314976709bytes SHA13cf17f6d75294cc2444013b5cfa321c50d676b29ac4975b87c257578c400bb3 (asset702897085), exact index702896826/parts702896941. Native archive was NOT downloaded locally. scripts/mainchip-guide-engine-qualified-inputs.json pins producer/allassets/fullindex/parts and selected qualification evidence for the next cloud-only full64 consumer. Actual captured fixture is docs/evidence/mainchip-guide-engine-qualification-fixture.json. Keep built-engine manifest unchanged; qualification is separate.\n\nNEXT MAINCHIP: implement explicit new-engine full64 host/inner based on unchanged sourcef808321a65ca9197f10e75f2f59073d47095a718 scripts/cloud_mainchip_snapshot_reload.py and mainchip_snapshot_reload_inner.py, with original11phases, original47clear/protection/restore, all1691clocks, full64 schedule, route snapshots, original memory/supervision/cleanup. Authenticate complete successful qualification capsule and actual result/runtime/engine binding before execution; keep old ELF separately protected. Use new ELF /work/guide-engine/openroad explicitly, never silently overwrite c.ENGINE. Retain all original source tests and updated transitive manifests. Independent same-source controls and external release reservation required. No new full64 source/dispatch has been published yet; original source investigation is RAM only. Current original seed exact snapshot20 and selected47 plan remain pinned; no claimed internal router-state resume. New engine route must still actually complete, lower DRC/antenna, preserve full scope and pass eventual timing.\n\nCURRENT PHY read-only stage diagnosis41508059395/sourcee6c78d53d05c724c2b4adc83f86aebd47d44d9f7, branchcodex/cdr-slave-drive-stage-timing. It uses actual proposed composition and full rejected41501239838 wave; parser/stage controls plus actual24-list fixture and3malformed-list refusals precede native archive acquisition. Prior41507270587 was cancelled while queued because source compared delta list to integer; do not restart it. Follow current handle and permanently preserve full derived stage/per-bit/clock results when terminal. Underlying24device trial remains electrically rejected, no matchingGDS/freshPEX: phase12.974mV, VI39.692uA, C worst metric118.90625ps, four lowVceHBTs. No new proposed geometry accepted.\n\nSuperseded push CI41504869013/source0423d948 and41507164455/sourcee9ebe92 were cancellation-requested to release hosted capacity; current-source push checks41505377046/41507901483 remain enabled. Existing failures preserved; cancellation never counts as pass. Historical41504869013 lint failure was missing default_nettype guards in soc_pcie_gen12_raw32_align.v. Current root already adds exactly the two guards and otherwise retains identical bytes (comparison+full log preserved here); no new RTL edit or whole-root lint pass claimed.\n\nEverything native/heavy remains GitHub-only; workspace empty. Readonly8hour monitor automatic_native_dispatch=false. Full serialGen3x4 PHY, accepted mainchip PCIe/Ethernet route and final setup/hold remain OPEN. Qualification success is permission to test actual new routing, not production signoff.\n\nObserved 2026-11-02T19:30:20.133310+00:00:\n- 41506262574: completed/success\n- 41508059395: completed/success\n- 41504869013: completed/cancelled\n- 41507164455: completed/cancelled\n- 41505377046: queued/None\n- 41507901483: in_progress/None\n",
   "continuation_note_v322": "## Current continuation: full64 route source and isolated16-MOS trial dispatched for controls; complete PHY stage diagnosis preserved\n\nActual new-engine full-chip roundtrip41506262574 remains passed: all143820nets154480instances1691protected clocks and ODB/DEF/material snapshots identical; fullDRT92 and21antenna nets/27records remain OPEN. The9.054GB check peak is not routing memory reduction or timing acceptance.\n\nFull64 source302f9c30a847acd659a8c451bdce83707fce5d70 is published on codex/mainchip-guide-full64-route. It explicitly uses the new ELF and authenticates the complete successful actual-chip qualification archive/fixture before routing. Original11phase bodies, original47clear/protection/restore, full64 schedule, original resources/supervision/snapshots and oldELF protection stay intact. Independent execute=false source controls41512344559 is dispatched once. Native full64 has NOT been dispatched. After successful same-source controls, authenticate all controls, dispatch execute=true with control_run41512344559 once, and reserve exact-source empty release cloud-results-RUN-1-mainchip-bulk-postdrt-antenna. Do not restart queued/live handles. Source snapshot including all transitive pins is preserved here.\n\nPHY stage diagnosis41508059395/sourcee6c78d53d05c724c2b4adc83f86aebd47d44d9f7 SUCCESS. Authenticated derived artifact13172382269,1777693bytes SHAabc5ae184c3cfe1e477901bd50afd6f95726a7eb660028edd7e31834b5fcba7d. ALL eight derived members are permanently preserved, including complete13872333byte per-bit stage JSON and1198670byte native device diagnosis. Original complete113475x1152 raw wave remained cloud-only. Controls8 malformed waves+3 stage cases+3 actual24-list cases passed; all old scalar delays reproduced. This is diagnosis of rejected41501239838, not new successful transient.\n\nAt C bit8, sampled slave output is28.415mV at0.3UI,120.445mV at0.4UI,173.372mV at0.5UI,99.105mV at0.9UI. It first exceeds100mV and then loses hold margin; do not report118.90625ps as a successful transition time. Eight C bit windows reach that original bounded metric. Clock crossing lag1.5625..4.6875ps remains small relative to sampled data transition failure. A/B/D maxima42.96875/38.90625/49.21875ps still exceed37.5ps. Four master clock HBTs61/62/115/116 retain lowVce failures. Underlying24device trial remains rejected with no matching physical layout.\n\nNew isolated electrical proposal source d8289b3f57f23b66288cd7851b03ca81bc4954b6 on codex/cdr-slave-current-only-trial changes only16slave tail MOS widths36->48um plus consistent proposed diffusion, deriving again from original freshRC41439516945. All collector resistors retain2.6um length, all other484devices and parent interconnect RC unchanged. This isolates increased current from prior combined load reduction that coincided with C droop; improvement is a hypothesis. Actual16MOS geometry binding, exact model reversal, all frozen numerical methods, all100mV/37.5ps/voltage/current gates and150fF loads remain. Independent execute=false controls41512921089 is dispatched once; native not dispatched. After SUCCESS, dispatch execute=true once and reserve exact-source release cloud-results-RUN-1-cdr-slave-current-only-trial. A passed provisional circuit still needs matching schematic/GDS/DRC/LVS/freshPEX and repeated loaded simulation.\n\nSource-only branches use skip-ci for frozen-ancestor general push tests; independent source controls and native experiments remain mandatory. Existing broadCI41505377046/41507901483 and their failures remain recorded. Monitor41501146100 FAILED observe/main-inventory guard: it is not a healthy monitor or successful native repair. Root inventory now includes both new handles; main synchronization remains to investigate, and automatic_native_dispatch remainsfalse.\n\nEverything native/heavy is cloud-only; local workspace empty. Full serialGen3x4 PHY, accepted chip PCIe/Ethernet routing, final setup/hold and production acceptance remain OPEN.\n\nObserved 2026-11-02T19:46:50.689885+00:00:\n- 41512344559: queued/None\n- 41512921089: queued/None\n- 41508059395: completed/success\n- 41505377046: queued/None\n- 41507901483: in_progress/None\n- 41501146100: completed/failure\n",
+  "continuation_note_v323": "## Current continuation: monitor inventory overflow repaired without dropping history\n\nThe scheduled monitor41501146100 failed because an inventory shard exceeded its unchanged65536byte bound. The main workflow already loads the exact working-branch inventory; this was NOT a missing main synchronization problem. The previous v322 note named the failing guard but did not yet identify this cause.\n\nAll835 ordered records are now repacked into contiguous shards below60000bytes, with matching byte counts, Git blob IDs, per-shard SHA256 and unchanged combined ordered-row SHA256. No record, failure or job was removed; monitor source,8hour schedule,request bounds and automatic_native_dispatch=false remain unchanged. Run existing main cloud-progress-monitor.yml mode=observe with approved_source equal current main SHA to verify live acquisition. Do not claim successful observation until that job actually passes loading.\n\nTwo obsolete push CI runs41498680552 and41493899500 were cancellation-requested after verifying their branch source had advanced and intervening changes were only scripts/docs/.github. Existing lint/RTL failures remain; cancellation is not pass. Current-source tests and all actual CAD/SPICE jobs remain enabled.\n\nFull64 independent source controls41512344559 succeeded at302f9c30a847acd659a8c451bdce83707fce5d70. Authenticate its derived controls and dispatch actual full64 once with control_run41512344559, then reserve exact-source release. Isolated16MOS current-only controls41512921089 remain their own handle. Complete PHY diagnosis and both candidate source snapshots are preserved in v322. No PHY, chip route or setup/hold acceptance is implied.\n\nObserved 2026-11-02T19:50:16.034850+00:00:\n- 41498680552: completed/cancelled\n- 41493899500: completed/cancelled\n- 41512344559: completed/success\n- 41512921089: in_progress/None\n",
   "current_run_snapshot": [
     {
       "attempt": 1,
@@ -114934,6 +114843,162 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41501146100"
     }
   ],
+  "latest_observed_runs_v323": [
+    {
+      "branch": "codex/cdr-slave-drive-trial",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "conclusion": "cancelled",
+          "id": 125460240457,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 125460241037,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "conclusion": "cancelled",
+          "id": 125460241111,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "id": 125460241162,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "conclusion": "cancelled",
+          "id": 125460241236,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 125460241322,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "id": 125460241468,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "id": 125460243421,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41498680552,
+      "source": "df723c791fec2621585c80fb56409d65b5811b44",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41498680552"
+    },
+    {
+      "branch": "codex/cdr-sampler-balanced-bias-trial",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "conclusion": "failure",
+          "id": 125443709514,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 125443709613,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 125443709651,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "cancelled",
+          "id": 125443709673,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "id": 125443709783,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 125443709883,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "conclusion": "cancelled",
+          "id": 125443709969,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "id": 125443711429,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41493899500,
+      "source": "4bc8aa4117cb603155e4d03bcd00c69c7d6ee943",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41493899500"
+    },
+    {
+      "branch": "codex/mainchip-guide-full64-route",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "conclusion": "success",
+          "id": 125507117101,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "id": 125511004378,
+          "name": "native-routing",
+          "status": "completed"
+        }
+      ],
+      "run": 41512344559,
+      "source": "302f9c30a847acd659a8c451bdce83707fce5d70",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41512344559"
+    },
+    {
+      "branch": "codex/cdr-slave-current-only-trial",
+      "conclusion": null,
+      "jobs": [
+        {
+          "conclusion": null,
+          "id": 125509060695,
+          "name": "source-controls",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41512921089,
+      "source": "d8289b3f57f23b66288cd7851b03ca81bc4954b6",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41512921089"
+    }
+  ],
   "latest_terminal_runs": {
     "cdr_actual_terminal_current_ledger": 40171679250,
     "cdr_current_ledger_controls": 40171508329,
@@ -115749,7 +115814,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 322,
+    "inventory_version": 323,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -115788,6 +115853,80 @@
     ],
     "schedule_verified_at": "2026-10-28T19:30:09.304878+00:00",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66"
+  },
+  "monitor_inventory_repair_v323": {
+    "cloud_live_observation_pending": true,
+    "combined_runs_sha256": "0683b78d4b675d59f2f7924a8885b386f9dc812959094f555e7b32af092d2672",
+    "inventory_limit": 65536,
+    "monitor_code_changed": false,
+    "monitor_policy_changed": false,
+    "native_dispatch_enabled": false,
+    "new_shards": [
+      {
+        "blob_sha": "53868dff16d1fea54db7599d5167ab46e9b18797",
+        "bytes": 59791,
+        "path": ".github/cloud-progress-monitor-runs-000.json",
+        "run_count": 208,
+        "sha256": "31ed8bc433baf2860d5a7afbbb8f13e62ca7db9afc74f8818dc5de77b987e371"
+      },
+      {
+        "blob_sha": "1d79bac21800ff6a6c7006757b1b8d6e11a2df33",
+        "bytes": 59923,
+        "path": ".github/cloud-progress-monitor-runs-001.json",
+        "run_count": 198,
+        "sha256": "2144b4f83d03657e4004d356c48d9c5d496091a89bbf11804caf425bb5cadb4a"
+      },
+      {
+        "blob_sha": "bf33afc780b332c7c7964b30b4a8f10238d04907",
+        "bytes": 59767,
+        "path": ".github/cloud-progress-monitor-runs-002.json",
+        "run_count": 172,
+        "sha256": "8bfb5b51820dcb75a69dff8cff6aa31d75423ebaf0ebc146349855bb890b4980"
+      },
+      {
+        "blob_sha": "64a8e125d898dda15ac20b61bd2a5f15c2e918f6",
+        "bytes": 59737,
+        "path": ".github/cloud-progress-monitor-runs-003.json",
+        "run_count": 188,
+        "sha256": "be1a08685a7f8746bb0872c5fc84569c078bcfd68feb4cd86ca2f94458d1ebc6"
+      },
+      {
+        "blob_sha": "5158b18160be298a519ef350291ea059751bc160",
+        "bytes": 21936,
+        "path": ".github/cloud-progress-monitor-runs-004.json",
+        "run_count": 69,
+        "sha256": "2086470bce35db63c8473e7d48e938e757c8a5991111b89ba82fe4cf5d03d5fd"
+      }
+    ],
+    "ordered_rows_byte_equivalent": true,
+    "original_monitor_run": 41501146100,
+    "original_shards": [
+      {
+        "blob_sha": "56d16274ee1a573451f601ab738732139154a6ac",
+        "bytes": 45984,
+        "path": ".github/cloud-progress-monitor-runs-000.json",
+        "run_count": 210,
+        "sha256": "923f24152ac2df0b1df5243386f5e1156cf515de5a0798bd3a1b7bdf689f0140"
+      },
+      {
+        "blob_sha": "06fd2bcf0bb414fcbc30b49f98e7e53b5af993d0",
+        "bytes": 48113,
+        "path": ".github/cloud-progress-monitor-runs-001.json",
+        "run_count": 210,
+        "sha256": "87c2ba7c53c009396321b821b8187536574cdc769905e9f2d503c48878042b5e"
+      },
+      {
+        "blob_sha": "411177cbc5f0c26e3d8c84373d21fe37fbbab3df",
+        "bytes": 136347,
+        "path": ".github/cloud-progress-monitor-runs-002.json",
+        "run_count": 415,
+        "sha256": "8c03d6848a931779667c2cbed1df57e5521db4d7365fef19cdd1cea82c3bfe99"
+      }
+    ],
+    "original_source": "5f3814a3e0366b8ec310c9270494c01dd6b3e03c",
+    "packing_limit": 60000,
+    "root_parent": "d1b008046626ec6e452a446a2ae8edf0f6ad706a",
+    "run_count": 835
   },
   "native_mixed_and_snapshot_proofs_v267": [
     {
@@ -157588,7 +157727,7 @@
     "timing_accepted": false,
     "timing_limits_unchanged": true
   },
-  "root_source_before_receipt": "3096100f20bdf2209e11830cbd8c19110cc09345",
+  "root_source_before_receipt": "d1b008046626ec6e452a446a2ae8edf0f6ad706a",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -157827,7 +157966,7 @@
       "run": 41349316524
     }
   ],
-  "updated_at": "2026-11-02T19:46:50.689885+00:00",
+  "updated_at": "2026-11-02T19:50:16.034850+00:00",
   "width8_wave_diagnosis_v250": {
     "proof": {
       "bytes": 5806735,

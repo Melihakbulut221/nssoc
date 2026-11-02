@@ -1,0 +1,161 @@
+{
+  "note": "## Current continuation: monitor inventory overflow repaired without dropping history\n\nThe scheduled monitor41501146100 failed because an inventory shard exceeded its unchanged65536byte bound. The main workflow already loads the exact working-branch inventory; this was NOT a missing main synchronization problem. The previous v322 note named the failing guard but did not yet identify this cause.\n\nAll835 ordered records are now repacked into contiguous shards below60000bytes, with matching byte counts, Git blob IDs, per-shard SHA256 and unchanged combined ordered-row SHA256. No record, failure or job was removed; monitor source,8hour schedule,request bounds and automatic_native_dispatch=false remain unchanged. Run existing main cloud-progress-monitor.yml mode=observe with approved_source equal current main SHA to verify live acquisition. Do not claim successful observation until that job actually passes loading.\n\nTwo obsolete push CI runs41498680552 and41493899500 were cancellation-requested after verifying their branch source had advanced and intervening changes were only scripts/docs/.github. Existing lint/RTL failures remain; cancellation is not pass. Current-source tests and all actual CAD/SPICE jobs remain enabled.\n\nFull64 independent source controls41512344559 succeeded at302f9c30a847acd659a8c451bdce83707fce5d70. Authenticate its derived controls and dispatch actual full64 once with control_run41512344559, then reserve exact-source release. Isolated16MOS current-only controls41512921089 remain their own handle. Complete PHY diagnosis and both candidate source snapshots are preserved in v322. No PHY, chip route or setup/hold acceptance is implied.\n\nObserved 2026-11-02T19:50:16.034850+00:00:\n- 41498680552: completed/cancelled\n- 41493899500: completed/cancelled\n- 41512344559: completed/success\n- 41512921089: in_progress/None\n",
+  "runs": [
+    {
+      "branch": "codex/cdr-slave-drive-trial",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "conclusion": "cancelled",
+          "id": 125460240457,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 125460241037,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "conclusion": "cancelled",
+          "id": 125460241111,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "id": 125460241162,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "conclusion": "cancelled",
+          "id": 125460241236,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 125460241322,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "id": 125460241468,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "id": 125460243421,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41498680552,
+      "source": "df723c791fec2621585c80fb56409d65b5811b44",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41498680552"
+    },
+    {
+      "branch": "codex/cdr-sampler-balanced-bias-trial",
+      "conclusion": "cancelled",
+      "jobs": [
+        {
+          "conclusion": "failure",
+          "id": 125443709514,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 125443709613,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 125443709651,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "cancelled",
+          "id": 125443709673,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "conclusion": "failure",
+          "id": 125443709783,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "id": 125443709883,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "conclusion": "cancelled",
+          "id": 125443709969,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "id": 125443711429,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41493899500,
+      "source": "4bc8aa4117cb603155e4d03bcd00c69c7d6ee943",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41493899500"
+    },
+    {
+      "branch": "codex/mainchip-guide-full64-route",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "conclusion": "success",
+          "id": 125507117101,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "conclusion": "skipped",
+          "id": 125511004378,
+          "name": "native-routing",
+          "status": "completed"
+        }
+      ],
+      "run": 41512344559,
+      "source": "302f9c30a847acd659a8c451bdce83707fce5d70",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41512344559"
+    },
+    {
+      "branch": "codex/cdr-slave-current-only-trial",
+      "conclusion": null,
+      "jobs": [
+        {
+          "conclusion": null,
+          "id": 125509060695,
+          "name": "source-controls",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41512921089,
+      "source": "d8289b3f57f23b66288cd7851b03ca81bc4954b6",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41512921089"
+    }
+  ],
+  "version": 323,
+  "workspace_empty": true
+}
