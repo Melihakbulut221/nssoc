@@ -1217,6 +1217,25 @@ def source_m1_controls():
     need(not source_m1_guard(add,own,full,{},pya.Region(pya.Box(0,0,300,10000)))["inside_original_bbox"],"reject bbox escape")
     return ["source M1 positive", "source M1 foreign spacing rejection", "source M1 foreign via rejection",
         "source M1 unattached rejection", "source M1 unclassified rejection", "source M1 bbox rejection"]
+def left_source_widening(strip,width):
+    need(isinstance(width,int)and width>0 and width%10==0,"positive grid5 bilateral half width")
+    return strip.sized(width//2,0,2).moved(-width//2,0).merged()
+def source_m1_sizing_controls():
+    source=pya.Region(pya.Box(1884420,388030,1884710,424030));passed=[]
+    for width in(1500,1200,900,600,300):
+        got=left_source_widening(source,width)
+        expected=pya.Region(pya.Box(1884420-width,388030,1884710,424030))
+        need((got^expected).is_empty(),"exact horizontal-only source extrusion at every proposed width")
+        need((source-got).is_empty()and got.bbox().height()==36000,"no original removal or vertical growth")
+        passed.append("source M1 exact anisotropic extrusion "+str(width))
+    old=source.sized(750,0).moved(-750,0).merged()
+    need(old.bbox().height()>36000 and not(old^left_source_widening(source,1500)).is_empty(),"reproduce rejected two-argument isotropic sizing")
+    passed.append("source M1 reproduce original isotropic overload regression")
+    stepped=pya.Region(pya.Box(0,0,290,1000))+pya.Region(pya.Box(0,1000,145,2000))
+    expected=pya.Region(pya.Box(-600,0,290,1000))+pya.Region(pya.Box(-600,1000,145,2000))
+    need((left_source_widening(stepped,600)^expected).is_empty(),"stepped original material left extrusion")
+    passed.append("source M1 stepped original contour exact extrusion")
+    return passed
 def generate_local_source_m1(base,cfg):
     proof=json.loads((ROOT/"scripts/cdr-source-m1-inputs.json").read_bytes())
     need(proof["mapping_run"]==41397314520 and proof["mapping_source"]=="7b2a7efcedd829412cb18fd45d66179c071a3c79","actual mapped physical producer")
@@ -1244,7 +1263,7 @@ def generate_local_source_m1(base,cfg):
         need(strip.count()==1 and(box(x,y,1)-strip).is_empty(),"connected original 290nm source strip")
         trials=[];selected=None
         for width in(1500,1200,900,600,300):
-            widened=strip.sized(width//2,0).moved(-width//2,0).merged()
+            widened=left_source_widening(strip,width)
             need((strip-widened).is_empty(),"no source strip removal")
             addition=(widened-full[8]).merged()
             guards=source_m1_guard(addition,owned,full,other,pya.Region(top.bbox()))
@@ -1282,7 +1301,7 @@ def generate_local_source_m1(base,cfg):
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
-        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls()+horizontal_ground_controls()+horizontal_clearance_controls()+source_m1_controls();save("controls.json",dict(count=len(passed),passed=passed))
+        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls()+horizontal_ground_controls()+horizontal_clearance_controls()+source_m1_controls()+source_m1_sizing_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
         need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"],["--generate-horizontal-ground"],["--inspect-critical-access"],["--generate-local-source-m1"]),"explicit native operation")
         reserve(wait=True)
