@@ -10,3 +10,6 @@ API references: https://www.klayout.de/doc/code/class_LayoutVsSchematic.html and
 
 
 First attempt 41449736667 authenticated the complete physical capsule and reached native LVS device enumeration, then failed because Net has no id() API. Device IDs remain unchanged; net identity uses the documented cluster_id/name/expanded_name fields already used by the actual loaded-terminal binder. Remove only the redundant invalid Net.id call; all source controls, terminal comparisons, pair census and failures remain preserved.
+
+
+Second attempt41450082352 read and bijectively validated all500 native LVS pairs, but failed the exact loaded1446terminal binding. Preserve complete observed native pairs and actual/expected terminal metadata before validation so any remaining mismatch is diagnosable. The original planes generator exports raw device-class names, whereas the mapping initially normalized them to lower case. Preserve raw native model spelling separately for the exact native-terminal comparison; normalized model names remain used only for the published primitive census and loaded-SPICE model matching. No terminal identity gate is removed.

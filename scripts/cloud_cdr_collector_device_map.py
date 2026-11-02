@@ -109,7 +109,7 @@ def acquire(cfg):
     return inputs
 def device_row(device):
     dc=device.device_class()
-    return dict(id=device.id(),name=device.name,expanded_name=device.expanded_name(),model=dc.name.lower(),
+    return dict(id=device.id(),name=device.name,expanded_name=device.expanded_name(),model=dc.name.lower(),native_model=dc.name,
       parameters={p.name:device.parameter(p.id())for p in dc.parameter_definitions()},
       terminals={t.name:dict(name=device.net_for_terminal(t.id()).name,expanded_name=device.net_for_terminal(t.id()).expanded_name(),cluster=device.net_for_terminal(t.id()).cluster_id)for t in dc.terminal_definitions()})
 def native_map(cfg,inputs):
@@ -132,6 +132,7 @@ def native_map(cfg,inputs):
         a,b=pair.first(),pair.second();need(a is not None and b is not None,"no unmatched primitive")
         need(xref.other_device_for(a).id()==b.id()and xref.other_device_for(b).id()==a.id(),"bidirectional native cross-reference")
         rows.append(dict(status=str(pair.status()),layout=device_row(a),schematic=device_row(b)))
+    save("native-pairs-observed.json",dict(pairs=rows,loaded_binding_verified=False,**FLAGS))
     byid=validate(rows,500,CENSUS,CRITICAL)
     # IDs originate in this exact LVS database in the unchanged canonical planes extractor.
     # The loaded model's ID binding is verified from the independently pinned derived planes.
@@ -142,8 +143,12 @@ def native_map(cfg,inputs):
     planes=json.loads(raw);actual=[]
     for row in rows:
         for name,t in row["layout"]["terminals"].items():
-            actual.append(dict(device=row["layout"]["id"],model=row["layout"]["model"],terminal=name,native_cluster=t["cluster"],native_name=t["name"]))
+            actual.append(dict(device=row["layout"]["id"],model=row["layout"]["native_model"],terminal=name,native_cluster=t["cluster"],native_name=t["name"]))
     key=lambda x:(x["device"],x["model"],x["terminal"])
+    expected=planes["native_terminals"]
+    aa=sorted(actual,key=key);bb=sorted(expected,key=key)
+    save("terminal-identity-comparison.json",dict(actual=aa,expected=bb,actual_count=len(aa),expected_count=len(bb),
+      exact_equal=aa==bb,all_comparisons=[dict(actual=a,expected=b)for a,b in zip(aa,bb)if a!=b],**FLAGS))
     need(len(actual)==1446 and sorted(actual,key=key)==sorted(planes["native_terminals"],key=key),"all1446 actual loaded native terminal identities")
     refs=[v for k,v in planes["inputs"].items()if k.endswith("/parent/physical/lvs_flat/result.lvsdb")]
     need(len(refs)==1 and refs[0]==fp(inputs["physical/lvs_flat/result.lvsdb"])["sha256"],"actual loaded planes use exact current LVS database")
