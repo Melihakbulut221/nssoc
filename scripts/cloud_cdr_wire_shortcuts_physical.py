@@ -10,7 +10,7 @@ OUT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-physical"
 MANIFEST="scripts/cdr-wire-shortcuts-physical-pins.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
 CANDIDATE="scripts/cdr-wire-physical-candidate.json"
-BRANCH="codex/cdr-clock-access-physical"
+BRANCH="codex/cdr-clock-metal-physical"
 APP_SHA="d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
 CHECKER_SHA="3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66"
 TOP="nssoc_cdr_pd500_resistor_v59"
@@ -108,6 +108,82 @@ def fetch_asset(asset,path):
     need(not path.exists(),"no overwrite download")
     with path.open("xb")as f:subprocess.run(["gh","api","repos/Melihakbulut221/nssoc/releases/assets/"+str(asset["id"]),"-H","Accept: application/octet-stream"],stdout=f,check=True)
     need(pin(path)==dict(bytes=asset["bytes"],sha256=asset["sha256"]),"complete downloaded asset")
+
+def validate_metal_candidate(target,cfg,proof):
+    import klayout.db as db
+    need(proof["status"]=="GENERATED_DIRECT_CLOCK_TOPMETAL1_REQUIRES_FULL_DRC_LVS_AND_FRESH_RC"and proof["candidate"]==cfg["candidate"],"actual direct metal candidate")
+    need(proof["landings"]==8 and proof["networks"]==2 and proof["route_width_dbu"]==4000,"complete two clock networks")
+    need(proof["new_vias"]==dict(Via3=48,Via4=48,TopVia1=32),"all actual new cuts")
+    need(all(proof[k]is False for k in ("physical_acceptance","fresh_RC","electrical_improvement_proven","full_phy_accepted","final_timing_complete")),"unaccepted candidate")
+    parent=target/"native/selected/binding/inputs/parent/layout"/(TOP+".gds")
+    native=target/"native/selected/binding/inputs/wire/native05/wires.l2n"
+    candidate=target/"native/candidate-clock-metal.gds"
+    need(pin(parent)==proof["original_gds"]==dict(bytes=1079924,sha256="28eebb9f880648935a6368ada78a5e5666694ba98e073fbbac3f2e0c986339d6"),"actual latest baseline")
+    need(pin(native)==proof["original_wire_l2n"]and pin(candidate)==cfg["candidate"],"independent input/output binding")
+    old=db.Layout();old.read(str(parent));new=db.Layout();new.read(str(candidate))
+    need(old.dbu==new.dbu==.001 and old.cell(TOP)is not None and new.cell(TOP)is not None,"actual top and DBU")
+    snap=lambda ly:{(ly.get_info(i).layer,ly.get_info(i).datatype):db.Region(ly.cell(TOP).begin_shapes_rec(i)).merged()for i in ly.layer_indexes()}
+    before=snap(old);after=snap(new)
+    l2n=db.LayoutToNetlist();l2n.read(str(native))
+    all_layers=(8,19,10,29,30,49,50,66,67,125,126,133,134)
+    objects={n:l2n.layer_by_name("gds_"+str(n))for n in all_layers}
+    for n,r in objects.items():need(r is not None and(r^before.get((n,0),db.Region())).is_empty(),"independent all13 conductor unions")
+    nets={n.cluster_id:n for n in l2n.netlist().top_circuit().each_net()}
+    anchors={a["label"]:a for a in json.loads((target/"native/selected/mim/precise/wire/anchors08.json").read_bytes())["anchors"]}
+    need(len(anchors)==978,"all original anchors")
+    groups=[["T054_E","T056_E","T061_C","T062_C"],["T106_E","T108_E","T115_C","T116_C"]]
+    expected={}
+    for labels in groups:
+        components={anchors[n]["wire_component"]for n in labels};need(len(components)==1,"independent original same net")
+        c=components.pop();need(c not in expected,"two distinct original nets");expected[c]=labels
+    raw=json.loads((target/"derived/metal-additions.json").read_bytes())["by_component"]
+    need(set(raw)=={str(c)for c in expected},"exact two declared original nets")
+    def region(polys):
+        r=db.Region()
+        for item in polys:
+            need(set(item)=={"hull","holes"}and len(item["hull"])>=4,"explicit polygon vertices")
+            p=db.Polygon([db.Point(*q)for q in item["hull"]])
+            for h in item["holes"]:p.insert_hole([db.Point(*q)for q in h])
+            for points in [item["hull"],*item["holes"]]:
+                need(all(len(q)==2 and all(type(v)is int and v%5==0 for v in q)for q in points),"actual5nm grid")
+            r.insert(p)
+        return r.merged()
+    layers={30,49,50,66,67,125,126};adds={}
+    for c,labels in expected.items():
+        need(set(raw[str(c)])=={str(n)for n in layers},"exact seven additive layers")
+        a={int(n):region(p)for n,p in raw[str(c)].items()};own={n:l2n.shapes_of_net(nets[c],objects[n],True).merged()for n in layers}
+        need((a[30]-own[30]).is_empty(),"all M3 landing pads inside actual original same net")
+        for n,r in a.items():
+            need(not r.is_empty()and(r-db.Region(old.cell(TOP).bbox())).is_empty(),"nonempty within baseline extent")
+            foreign=objects[n]-own[n]
+            spacing=1650 if n==126 else 430 if n==125 else 300 if n in (49,66)else 610
+            need((r&foreign.sized(spacing if n!=30 else 0,spacing if n!=30 else 0,2)).is_empty(),"independent no foreign conductor or insufficient clearance")
+            if n in (49,66,125):need((r&objects[n].sized(spacing,spacing,2)).is_empty(),"new vs original via separation")
+        for low,via,high,size,count,enc_lo,enc_hi in ((30,49,50,190,24,50,50),(50,66,67,190,24,50,50),(67,125,126,420,16,100,420)):
+            need(a[via].count()==count and all(p.area()==size*size and p.bbox().width()==p.bbox().height()==size for p in a[via].each()),"exact cut count and dimensions")
+            need(a[via].space_check(220 if via!=125 else 420).is_empty(),"all new cut spacing")
+            need((a[via].sized(enc_lo,enc_lo,2)-a[low]).is_empty()and(a[via].sized(enc_hi,enc_hi,2)-a[high]).is_empty(),"both new via enclosures")
+        need(a[126].count()==1 and a[126].width_check(1640).is_empty(),"one actual connected upper-metal network")
+        for label in labels:
+            point=anchors[label]["point_dbu"];x=5*round(point[0]/5)-100;y=5*round(point[1]/5)
+            # Demand complete landing stack at each independently bound terminal,
+            # not merely some nearby connected same-net shapes.
+            for n,half_x,half_y in ((30,625,385),(50,625,385),(67,730,730),(126,1050,1050)):
+                need((db.Region(db.Box(x-half_x,y-half_y,x+half_x,y+half_y))-a[n]).is_empty(),"every terminal has full landing metal")
+            for n,offsets,half in ((49,[(-480,-240),(-480,240),(0,-240),(0,240),(480,-240),(480,240)],95),(66,[(-480,-240),(-480,240),(0,-240),(0,240),(480,-240),(480,240)],95),(125,[(-420,-420),(-420,420),(420,-420),(420,420)],210)):
+                for dx,dy in offsets:need((db.Region(db.Box(x+dx-half,y+dy-half,x+dx+half,y+dy+half))-a[n]).is_empty(),"every terminal has every actual via")
+        adds[c]=a
+    c,d=sorted(adds)
+    for n in layers:
+        spacing=1650 if n==126 else 430 if n==125 else 300 if n in (49,66)else 610
+        need((adds[c][n]&adds[d][n].sized(spacing,spacing,2)).is_empty(),"independent new-net separation on every layer")
+    for key in set(before)|set(after):
+        original=before.get(key,db.Region());wanted=original
+        if key[1]==0 and key[0]in layers:wanted=(original+adds[c][key[0]]+adds[d][key[0]]).merged()
+        need((wanted^after.get(key,db.Region())).is_empty(),"independent exact serialized additive delta")
+        need((original-after.get(key,db.Region())).is_empty(),"no removal on any layer")
+    return dict(eight_original_anchors_independently_bound=True,two_distinct_networks=True,all13_native_conductor_unions=True,all_other_layers_unchanged=True,all_new_cut_enclosures=True,physical_acceptance=False)
+
 def candidate():
     import klayout.db as db
     cfg=json.loads((ROOT/CANDIDATE).read_bytes());api=acquire.api
@@ -132,41 +208,8 @@ def candidate():
             seen[n]=pin(p);need(seen[n]==index["files"][n],"every candidate member digest")
     need(seen==index["files"],"complete native candidate preservation")
     proof=json.loads((target/"derived/result.json").read_bytes())
-    proposal=json.loads((target/"derived/redundant-via-proposal.json").read_bytes())
-    need(proof["candidate"]==cfg["candidate"]and proof["new_via_count"]==16 and proof["via_layers"]=={"29":16},"exact16via candidate")
-    need(not proof["physical_acceptance"]and not proof["fresh_RC"]and not proof["electrical_improvement_proven"],"candidate scope")
-    parent=target/"native/selected/binding/inputs/parent/layout"/(TOP+".gds")
-    need(pin(parent)==proof["original_gds"]==dict(bytes=1078900,sha256="c0d420cdbc31863bf21086e88c12f494779961225031c261d6b05fe07e7585a7"),"exact original current GDS")
-    native=target/"native/selected/binding/inputs/wire/native05/wires.l2n"
-    need(pin(native)==proof["original_wire_l2n"],"exact original ownership")
-    old=db.Layout();old.read(str(parent));new=db.Layout();new.read(str(target/"native/candidate-clock-access.gds"))
-    need(old.dbu==new.dbu==.001 and old.cell(TOP)is not None and new.cell(TOP)is not None,"same exact physical grid/top")
-    snap=lambda ly:{(ly.get_info(i).layer,ly.get_info(i).datatype):db.Region(ly.cell(TOP).begin_shapes_rec(i)).merged()for i in ly.layer_indexes()}
-    before=snap(old);after=snap(new)
-    l2n=db.LayoutToNetlist();l2n.read(str(native))
-    nets={n.cluster_id:n for n in l2n.netlist().top_circuit().each_net()}
-    objects={n:l2n.layer_by_name("gds_"+str(n))for n in (10,29,30)}
-    for n,r in objects.items():need((r^before[(n,0)]).is_empty(),"same original conductor union")
-    addition=db.Region();owned_cache={}
-    need(len(proposal["admitted"])==16,"all16 cuts")
-    labels={}
-    for r in proposal["admitted"]:
-        need(r["via_layer"]==29 and r["lower"]==10 and r["upper"]==30,"only Via2")
-        b=r["bbox"];need(len(b)==4 and all(v%5==0 for v in b)and b[2]-b[0]==b[3]-b[1]==190,"actual190nm grid-aligned cut")
-        cut=db.Region(db.Box(*b));c=r["component"]
-        if c not in owned_cache:owned_cache[c]={n:l2n.shapes_of_net(nets[c],obj,True).merged()for n,obj in objects.items()}
-        own=owned_cache[c]
-        need((cut.sized(50,50,2)-own[10]).is_empty()and(cut.sized(50,50,2)-own[30]).is_empty(),"independent original same-net M2/M3 enclosure")
-        need((cut&(objects[29]+addition).sized(240,240,2)).is_empty(),"independent original/new cut separation")
-        need((cut.sized(50,50,2)&((objects[10]-own[10])+(objects[30]-own[30]))).is_empty(),"no foreign same-plane connection")
-        addition+=cut;labels[r["label"]]=labels.get(r["label"],0)+1
-    need(labels=={k:4 for k in ("T054_E","T056_E","T106_E","T108_E")}and addition.count()==16 and addition.area()==16*36100,"exact four actual upper-emitter accesses")
-    for key in set(before)|set(after):
-        expected=before.get(key,db.Region())
-        if key==(29,0):expected=(expected+addition).merged()
-        need((expected^after.get(key,db.Region())).is_empty(),"independent exact via-only serialized delta")
-    need(pin(target/"native/candidate-clock-access.gds")==cfg["candidate"],"exact candidate bytes")
-    save("candidate-acquisition.json",dict(run=run,release=rel,authenticated_members=seen,independent_geometry_delta=True,new_vias=16,device_geometry_unchanged=True))
+    verified=validate_metal_candidate(target,cfg,proof)
+    save("candidate-acquisition.json",dict(run=run,release=rel,authenticated_members=seen,independent_geometry_delta=verified,device_geometry_unchanged=True))
     return target
 def restore_runtime():
     cfg=json.loads((ROOT/"docs/evidence/pcie-tx-layout-cloud-input-20261013.json").read_bytes())["receipt"]
@@ -190,11 +233,11 @@ def prepare_layout(parent_base,new_base,checker):
     old=parent_base/"binding/inputs/parent/layout";cfg=json.loads((ROOT/PARENT).read_bytes())
     for n in("schematic.cir",TOP+".lef","result.json",TOP+".gds"):
         need(pin(old/n)==cfg["complete_members"]["binding/inputs/parent/layout/"+n],"original parent "+n)
-    shutil.copyfile(new_base/"native/candidate-clock-access.gds",layout/(TOP+".gds"))
+    shutil.copyfile(new_base/"native/candidate-clock-metal.gds",layout/(TOP+".gds"))
     for n in("schematic.cir",TOP+".lef"):shutil.copyfile(old/n,layout/n);need(pin(old/n)==pin(layout/n),"unchanged original reference")
     p=json.loads((old/"result.json").read_bytes())
     inputs=[old/n for n in("result.json","schematic.cir",TOP+".lef",TOP+".gds")]
-    inputs.extend([new_base/"derived/result.json",new_base/"native/candidate-clock-access.gds",ROOT/CANDIDATE,ROOT/PARENT,checker,ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
+    inputs.extend([new_base/"derived/result.json",new_base/"native/candidate-clock-metal.gds",ROOT/CANDIDATE,ROOT/PARENT,checker,ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
     record=metadata(p,layout/(TOP+".gds"),layout/"schematic.cir",layout/(TOP+".lef"),inputs)
     (layout/"result.json").write_bytes(encode(record));save("candidate-layout-binding.json",record)
     return layout
@@ -249,7 +292,7 @@ def verify():
         for p,h in record["inputs"].items():need(sha(Path(p))==h,"actual final physical input "+p)
         need(record["inputs"][str(layout/(TOP+".gds"))]==json.loads((ROOT/CANDIDATE).read_bytes())["candidate"]["sha256"],"actual new candidate verified")
         gate()
-        save("physical-qualification.json",dict(status="PASS_CLOCK_ACCESS16_GDS_FULL560_DRC_DEEP_FLAT_LVS13",gds=pin(layout/(TOP+".gds")),record=pin(OUT/"physical/result.json"),new_RC_executed=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False))
+        save("physical-qualification.json",dict(status="PASS_DIRECT_CLOCK_METAL_GDS_FULL560_DRC_DEEP_FLAT_LVS13",gds=pin(layout/(TOP+".gds")),record=pin(OUT/"physical/result.json"),new_RC_executed=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False))
     except BaseException as exc:error=exc
     finally:
         try:cleanup.append(dict(process_group=sup.stop_process(sup.ACTIVE)))
