@@ -1,0 +1,232 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "observed_at": "2026-11-02T04:16:38.712752+00:00",
+    "source_API_derived_text_RAM_only": true,
+    "workspace_entries": 0
+  },
+  "note": "## Current continuation: route iteration20 verified; ground clearance diagnosis\n\nAll native CAD remains GitHub-only. Full serial Gen3x4 PHY, complete mainchip routing and final setup/hold are OPEN.\n\nActual original router reports authenticated in run41385020793: iterations5/10/15/20/25 contain561/267/159/140/298 violations. Iteration20 has89shorts and51metal-spacing violations; it is the lowest of the five retained reports, not proof of a completed route. Run41385939588 independently loaded, wrote and reloaded iteration20 and verified preservation of154480instances,143820nets,1691protected clocks and original828-net allowed changes, with zero absent owned wires. It did not run routing repair, restore original signal classes, verify diodePG, close timing or accept physical signoff. The original iteration25 verification remains valid, but iteration20 is the preferred qualified next repair input.\n\nGround reinforcement runs are preserved, including failures:41385188402 source-controls caught an ambiguous KLayout sizing overload; explicit three-argument sizing fixed it.41385545130 rejected all32ten-micron candidates;41386007875 admitted5of32centered five-micron candidates;41386421055 admitted18of32using centered/upper/lower added-only positions with identical guards. No candidate GDS was generated. Do not claim18of32as a passing repair. The remaining14need actual layout redesign.\n\nCurrent diagnosis41387369679/source88babaeadcbf90ec8aff7d4fc7885a106c653a1e reports whole/original/added-only clearances using actual native geometry. It preserves every existing guard and reports exact overlap areas and foreign bboxes at1999/2000/2005/5000/5005nm. Three independent geometry controls distinguish an unchanged exact2000nm baseline gap from new spacing loss. Inspect the live outcome before further width proposals. No weaker acceptance or synthetic input substitution is authorized.\n\nSnapshot20 first attempt41385528741 failed source authentication because a newly pinned document was missing from explicit sparse-checkout lists. Fixed source6ea1056a421a5ba7ebe6bba23d549d552d3e18bf passed standalone controls41385666865 and native41385939588. These failures remain recorded.\n\nElectrical reference is still loaded41379770619: local ground rise0.324-0.331V, phase13.5867mV<30mV and HBT minimumVce0.3490/0.3463/0.3813/0.3801V<0.4V. Current accepted physical geometry remains four-shortcut GDS1c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94; no later failed proposal replaces it. Any new actual GDS needs full560DRC, deep/flatLVS13, exact canonical binding, fresh RC and unchanged loaded-wave acceptance.\n\nNext: inspect actual baseline-vs-added ground collisions; redesign only from native evidence. For mainchip, classify140report20violations against native net identity and original scoped owners, then implement a bounded actual repair with protected-clock/material checks. Loading an ODB does not restore the internal detailed-router search state. Keep full original three-corner timing constraints and all physical acceptance gates. Monitor remains read-only every8hours; automatic_native_dispatch=false.\n\nObserved runs at 2026-11-02T04:16:38.712752+00:00:\n- 41385020793: completed/success\n- 41385188402: completed/failure\n- 41385545130: completed/failure\n- 41385528741: completed/failure\n- 41385666865: completed/success\n- 41385939588: completed/success\n- 41386007875: completed/failure\n- 41386421055: completed/failure\n- 41387369679: in_progress/None\n",
+  "runs": [
+    {
+      "branch": "codex/mainchip-route-drc-diagnosis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125083840661,
+          "name": "classify",
+          "status": "completed"
+        }
+      ],
+      "label": "Classify five authenticated original DRC reports",
+      "run": 41385020793,
+      "source": "b58208c97479b63379a754e8edc43498ee5c6926",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41385020793"
+    },
+    {
+      "branch": "codex/cdr-horizontal-ground",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125084372330,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125084453320,
+          "name": "native-generation",
+          "status": "completed"
+        }
+      ],
+      "label": "Source control refuses ambiguous sizing overload",
+      "run": 41385188402,
+      "source": "96cb5cb91e6e96a454f1237feadbf6e025a29397",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41385188402"
+    },
+    {
+      "branch": "codex/cdr-horizontal-ground",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125085461988,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125085546773,
+          "name": "native-generation",
+          "status": "completed"
+        }
+      ],
+      "label": "Reject all ten-micron ground branches",
+      "run": 41385545130,
+      "source": "a7ab837e7513284cb6b3a3be17d4565d2a7d3e3b",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41385545130"
+    },
+    {
+      "branch": "codex/mainchip-snapshot20-reload",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125085413897,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125085448895,
+          "name": "native-routing",
+          "status": "completed"
+        }
+      ],
+      "label": "Snapshot20 sparse-checkout source failure",
+      "run": 41385528741,
+      "source": "0f735ae35416db6bd79581b8600f43c38e12e76b",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41385528741"
+    },
+    {
+      "branch": "codex/mainchip-snapshot20-reload",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125085829098,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125086011853,
+          "name": "native-routing",
+          "status": "completed"
+        }
+      ],
+      "label": "Independent snapshot20 controls",
+      "run": 41385666865,
+      "source": "6ea1056a421a5ba7ebe6bba23d549d552d3e18bf",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41385666865"
+    },
+    {
+      "branch": "codex/mainchip-snapshot20-reload",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125086684264,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125086814002,
+          "name": "native-routing",
+          "status": "completed"
+        }
+      ],
+      "label": "Actual snapshot20 full load-write-reload and scoped preservation",
+      "run": 41385939588,
+      "source": "6ea1056a421a5ba7ebe6bba23d549d552d3e18bf",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41385939588"
+    },
+    {
+      "branch": "codex/cdr-horizontal-ground",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125086905075,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125087018264,
+          "name": "native-generation",
+          "status": "completed"
+        }
+      ],
+      "label": "Reject centered five-micron proposal; five admitted",
+      "run": 41386007875,
+      "source": "18cb58c6dd0b055bed7cd712bd71bbe213c8c4c6",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41386007875"
+    },
+    {
+      "branch": "codex/cdr-horizontal-ground",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125088165229,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125088257205,
+          "name": "native-generation",
+          "status": "completed"
+        }
+      ],
+      "label": "Reject asymmetric five-micron proposal; eighteen admitted",
+      "run": 41386421055,
+      "source": "21bb2ad58e0a09f7827048e1455076a36888930b",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41386421055"
+    },
+    {
+      "branch": "codex/cdr-horizontal-ground",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125091101744,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Generate guarded horizontal ground branches from actual native topology"
+          ],
+          "conclusion": null,
+          "id": 125091199503,
+          "name": "native-generation",
+          "status": "in_progress"
+        }
+      ],
+      "label": "Actual original-versus-added clearance diagnosis",
+      "run": 41387369679,
+      "source": "88babaeadcbf90ec8aff7d4fc7885a106c653a1e",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41387369679"
+    }
+  ],
+  "version": 275
+}
