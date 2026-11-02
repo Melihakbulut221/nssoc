@@ -1,0 +1,5 @@
+# Direct clock metal canonical view
+The exact full physical-qualified eight-terminal/two-network candidate must be rebound to newly executed native geometry, connectivity, transistor identities and terminal locations before RC extraction.
+Reference is the latest physically accepted16Via2 layout and complete freshRC41537723922 capsule, not an older pre-via graph. Preserve all500devices,1446terminals,25ports,978anchors, and original native partitions. All113partitions x13conductor layers must match the exact original plus declared per-owner additions. Only the expected six nonzero metal/via layers on two original clock nets may change; M3 pads are wholly inside original same-net metal and add zero material.
+All134prior source controls remain; two actual declared networks and seven new material faults add9controls. The original native identity, primitive geometry, pin recovery and all fault controls remain.
+This canonical step provides no electrical acceptance. Fresh distributedRC and the unchanged loaded650wave must follow. Actual650matching geometry, complete closedloopPHY and final mainchip setup/hold are still open. All native work stays on GitHub.

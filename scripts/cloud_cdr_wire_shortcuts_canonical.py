@@ -6,7 +6,7 @@ import cdr_via2_m3_canonical_core as core
 import cdr_v59_tail_access_runtime as runtime
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-canonical"
-BRANCH="codex/cdr-clock-access-canonical"
+BRANCH="codex/cdr-clock-metal-canonical"
 MANIFEST="scripts/cdr-wire-shortcuts-canonical-pins.json"
 CONFIG="scripts/cdr-wire-shortcuts-canonical-inputs.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
@@ -409,55 +409,106 @@ def access16_controls(pya):
         except AssertionError:passed.append("reject "+label)
         else:raise AssertionError("missed access16 fault "+label)
     return passed
+
+
+def direct_metal_layers(pya,declared):
+    changed={30,49,50,66,67,125,126}
+    need(set(declared)=={str(n)for n in changed},"exact seven declared clock layers")
+    out={n:pya.Region()for n in core.LAYERS}
+    for layer,polys in declared.items():
+        need(isinstance(polys,list)and polys,"nonempty declared layer")
+        for row in polys:
+            need(set(row)=={"hull","holes"}and len(row["hull"])>=4,"actual polygon boundary")
+            for points in [row["hull"],*row["holes"]]:
+                need(len(points)>=4 and all(len(q)==2 and all(type(v)is int and v%5==0 for v in q)for q in points),"every declared vertex on5nm grid")
+            p=pya.Polygon([pya.Point(*q)for q in row["hull"]])
+            for hole in row["holes"]:p.insert_hole([pya.Point(*q)for q in hole])
+            out[int(layer)].insert(p)
+        out[int(layer)]=out[int(layer)].merged()
+    for via,size,count in ((49,190,24),(66,190,24),(125,420,16)):
+        r=out[via];need(r.count()==count and all(p.area()==size*size and p.bbox().width()==p.bbox().height()==size for p in r.each()),"all exact physical stack cuts")
+        need(r.space_check(420 if via==125 else 220).is_empty(),"all declared cut spacing")
+    for lo,via,hi,le,he in ((30,49,50,50,50),(50,66,67,50,50),(67,125,126,100,420)):
+        need((out[via].sized(le,le,2)-out[lo]).is_empty()and(out[via].sized(he,he,2)-out[hi]).is_empty(),"complete independent declared enclosures")
+    need(out[126].count()==1 and out[126].width_check(1640).is_empty(),"entire original four-terminal upper-metal network")
+    return out
+
 def config():
     c=json.loads((ROOT/CONFIG).read_bytes())
-    need(c["schema"]=="nssoc.clock-access16.canonical.v1","actual access16 schema")
-    need(c["candidate"]["gds"]==dict(bytes=1079924,sha256="28eebb9f880648935a6368ada78a5e5666694ba98e073fbbac3f2e0c986339d6"),"actual16via candidate")
-    need(c["reference_prefix"]=="binding/inputs/"and c["original_reference_gds"]==dict(bytes=1078900,sha256="c0d420cdbc31863bf21086e88c12f494779961225031c261d6b05fe07e7585a7"),"actual current reference")
-    p=c["physical"];need(p["run"]==41535701378 and p["source"]=="e00b2df77c4337940ec7db32159dacc260eb91ab"and p["release"]==432027578,"actual new physical producer")
+    need(c["schema"]=="nssoc.clock-direct-metal.canonical.v1","actual direct metal schema")
+    need(c["candidate"]["gds"]==dict(bytes=1090004,sha256="0209d91c15d490631937f31aa12d2bbe68153f88a62e7be596fbc4eaae295dfa"),"actual direct clock candidate")
+    need(c["reference_prefix"]=="binding/inputs/"and c["original_reference_gds"]==dict(bytes=1079924,sha256="28eebb9f880648935a6368ada78a5e5666694ba98e073fbbac3f2e0c986339d6"),"actual latest16Via2 reference")
+    p=c["physical"];need(p["run"]==41545635890 and p["source"]=="014e51092c1de1521e17d1963e8095d5e8c6322a"and p["release"]==432079295,"actual direct-metal full physical producer")
     g=c["generation"];q=g["proof"]
-    need(g["run"]==41535065105 and g["source"]=="381397901390b96a7609f6592918d685d104bfbd","actual16via producer")
-    need(q["candidate"]==c["candidate"]["gds"]and q["original_gds"]==c["original_reference_gds"]and q["new_via_count"]==16 and q["via_layers"]=={"29":16},"exact actual16via proposal")
-    need(all(q[k]is False for k in("physical_acceptance","fresh_RC","electrical_improvement_proven","full_phy_accepted","final_timing_complete")),"candidate not electrical acceptance")
+    need(g["run"]==41545373835 and g["source"]=="85b5462fa5155ba3b790d0e3552ac4c4a26d8e81","actual generated candidate producer")
+    need(q["candidate"]==c["candidate"]["gds"]and q["original_gds"]==c["original_reference_gds"]and q["landings"]==8 and q["networks"]==2,"complete actual candidate")
+    need(q["new_vias"]==dict(Via3=48,Via4=48,TopVia1=32),"all128actual cuts")
+    need(all(q[k]is False for k in ("physical_acceptance","fresh_RC","electrical_improvement_proven","full_phy_accepted","final_timing_complete")),"no false generation acceptance")
     rows=g["targets"]
-    need(len(rows)==4 and{r["label"]for r in rows}=={"T"+str(n).zfill(3)+"_E"for n in(54,56,106,108)},"all four actual upper-emitter declarations")
-    need(len({r["original_anchor"]["wire_component"]for r in rows})==2,"two original partitions")
+    need(len(rows)==8 and {r["label"]for r in rows}=={"T054_E","T056_E","T061_C","T062_C","T106_E","T108_E","T115_C","T116_C"},"all eight original terminals")
+    components={r["original_anchor"]["wire_component"]for r in rows}
+    need(len(components)==2 and set(g["additions"])=={str(n)for n in components},"two exact original owners")
     return c
+
 def prove_material(pya,reference,view,old,new,c):
     _,before=core.component_keys(old["graph"]);_,after=core.component_keys(new["graph"])
     need(set(before)==set(after)and len(before)==len(after)==113,"all113complete original partitions")
     original_wire=reference/(c["reference_prefix"]+"wire/native05/wires.l2n")
-    need(pin(original_wire)==c["generation"]["proof"]["original_wire_l2n"],"actual current native wire ownership")
-    ow=pya.LayoutToNetlist();ow.read(str(original_wire))
-    nw=pya.LayoutToNetlist();nw.read(str(view/"wire/native05/wires.l2n"))
+    need(pin(original_wire)==c["generation"]["proof"]["original_wire_l2n"],"actual current native ownership")
+    ow=pya.LayoutToNetlist();ow.read(str(original_wire));nw=pya.LayoutToNetlist();nw.read(str(view/"wire/native05/wires.l2n"))
     on={n.cluster_id:n for n in ow.netlist().top_circuit().each_net()};nn={n.cluster_id:n for n in nw.netlist().top_circuit().each_net()}
-    need(set(on)=={v["component"]for v in before.values()}and set(nn)=={v["component"]for v in after.values()},"complete original/new native net census")
+    need(set(on)=={v["component"]for v in before.values()}and set(nn)=={v["component"]for v in after.values()},"all original/new native nets")
     need(set(old["graph"]["layers"])==set(new["graph"]["layers"])=={str(n)for n in core.LAYERS},"all13 conductor layers")
-    anchors={a["label"]:a for a in old["anchors"]["anchors"]}
-    grouped={};labels={}
+    anchors={a["label"]:a for a in old["anchors"]["anchors"]};grouped={};labels={}
     for row in c["generation"]["targets"]:
-        a=anchors[row["label"]];need(a==row["original_anchor"],"exact complete original anchor")
+        a=anchors[row["label"]];need(a==row["original_anchor"],"exact full original terminal anchor")
         matches=[(k,v)for k,v in before.items()if v["component"]==a["wire_component"]and v["native_cluster"]==a["native_cluster"]]
-        need(len(matches)==1,"unique native original owner");key,owner=matches[0]
-        shapes={n:core.layer_region(pya,ow,on[owner["component"]],old["graph"],n).merged()for n in core.LAYERS}
-        add=access16_variant(pya,shapes,row)[29]
-        grouped.setdefault(key,pya.Region());grouped[key]+=add;labels.setdefault(key,[]).append(row["label"])
-    need(len(grouped)==2 and all(len(v)==2 for v in labels.values()),"two collectors with two emitter accesses each")
-    need(all(v.count()==8 and v.area()==8*36100 for v in grouped.values()),"eight disjoint added vias per partition")
+        need(len(matches)==1,"unique independent native owner");key,owner=matches[0]
+        labels.setdefault(key,[]).append(row["label"])
+        if key not in grouped:
+            layers=direct_metal_layers(pya,c["generation"]["additions"][str(a["wire_component"])])
+            own=core.layer_region(pya,ow,on[owner["component"]],old["graph"],30).merged()
+            need((layers[30]-own).is_empty(),"all original same-net M3 landings")
+            grouped[key]=layers
+    need(len(grouped)==2 and all(len(v)==4 for v in labels.values()),"all four actual terminals in each original net")
     records=[]
     for part in sorted(before):
         a=before[part];b=after[part]
         for layer in core.LAYERS:
             left=core.layer_region(pya,ow,on[a["component"]],old["graph"],layer)
             right=core.layer_region(pya,nw,nn[b["component"]],new["graph"],layer)
-            addition=grouped.get(part,pya.Region())if layer==29 else pya.Region()
+            addition=grouped[part][layer]if part in grouped else pya.Region()
             material_union(pya,left,right,addition)
             records.append(dict(partition=json.loads(part),layer=layer,old_component=a["component"],new_component=b["component"],
-                old_area_dbu2=left.area(),new_area_dbu2=right.area(),added_area_dbu2=(right-left).area(),declared_added_area_dbu2=(addition-left).area()))
+              old_area_dbu2=left.area(),new_area_dbu2=right.area(),added_area_dbu2=(right-left).area(),declared_added_area_dbu2=(addition-left).area()))
     changed=[r for r in records if r["added_area_dbu2"]]
-    need(len(changed)==2 and all(r["layer"]==29 and r["added_area_dbu2"]==r["declared_added_area_dbu2"]==8*36100 for r in changed),"only exact16vias on two native nets")
+    need(len(changed)==12 and {r["layer"]for r in changed}=={49,50,66,67,125,126},"only six nonzero material layers on each clock net")
+    need(all(r["added_area_dbu2"]==r["declared_added_area_dbu2"]for r in changed),"exact independent per-owner additions")
     need(len(records)==1469,"all113partitions x13layers")
-    return dict(status="PASS_ALL113_NATIVE_PARTITIONS_ALL13LAYERS_EXACT16_VIA2",records=records,targets=labels,**FLAGS)
+    return dict(status="PASS_ALL113_NATIVE_PARTITIONS_ALL13LAYERS_EXACT_DIRECT_CLOCK_METAL",records=records,targets=labels,**FLAGS)
+
+
+def direct_metal_controls(pya,c):
+    import copy
+    passed=[]
+    for owner,declared in sorted(c["generation"]["additions"].items()):
+        direct_metal_layers(pya,declared);passed.append("actual complete direct metal owner "+owner)
+    sample=next(iter(c["generation"]["additions"].values()))
+    for name in ("missing-layer","extra-layer","offgrid","missing-via","wrong-cut-width","missing-enclosure","lost-TM1"):
+        bad=copy.deepcopy(sample)
+        if name=="missing-layer":bad.pop("50")
+        elif name=="extra-layer":bad["8"]=copy.deepcopy(bad["30"])
+        elif name=="offgrid":bad["49"][0]["hull"][0][0]+=1
+        elif name=="missing-via":bad["66"].pop()
+        elif name=="wrong-cut-width":
+            for p in bad["49"][0]["hull"]:p[0]*=2
+        elif name=="missing-enclosure":bad["67"]=copy.deepcopy(bad["49"])
+        elif name=="lost-TM1":bad["126"]=copy.deepcopy(bad["30"])
+        try:direct_metal_layers(pya,bad)
+        except AssertionError:passed.append("reject direct metal "+name)
+        else:raise AssertionError("missed actual direct metal fault "+name)
+    need(len(passed)==9,"all two original owners and seven direct-metal faults")
+    return passed
 
 def controls():
     gate();c=config()
@@ -507,6 +558,8 @@ def controls():
     need(len(checks)==123,"all123 prior and collector controls")
     checks.extend(access16_controls(pya))
     need(len(checks)==134,"all123 prior plus11 current via controls")
+    checks.extend(direct_metal_controls(pya,c))
+    need(len(checks)==143,"all134prior plus9direct metal controls")
     save("controls.json",dict(count=len(checks),passed=checks,**FLAGS))
 def acquire_physical():
     import cloud_cdr_wire_geometry_acquire as a
@@ -530,7 +583,7 @@ def acquire_physical():
             seen[n]=pin(p);need(seen[n]==c["index"]["files"][n],"exact physical member")
     need(seen==c["index"]["files"],"complete physical native capsule")
     q=json.loads((target/"physical-qualification.json").read_bytes());record=json.loads((target/"physical/result.json").read_bytes())
-    need(q["status"]=="PASS_CLOCK_ACCESS16_GDS_FULL560_DRC_DEEP_FLAT_LVS13"and q["gds"]==config()["candidate"]["gds"],"actual candidate physical qualification")
+    need(q["status"]=="PASS_DIRECT_CLOCK_METAL_GDS_FULL560_DRC_DEEP_FLAT_LVS13"and q["gds"]==config()["candidate"]["gds"],"actual candidate physical qualification")
     need(record["status"]=="PASS_NATIVE_PDK_CDR_PD500_DRC_LVS_AND_FAULT_CONTROLS"and len(record["steps"])==16,"all original native physical gates")
     need(record["steps"]["drc"]["measurement"]["markers"]==0 and record["steps"]["drc"]["measurement"]["category_count"]==560,"actual complete clean DRC")
     need(all(v["status"]==("PASS"if n in("drc","lvs","lvs_flat")else"REJECTED_EXPECTED_FAULT")for n,v in record["steps"].items()),"all native fault controls")
@@ -569,7 +622,7 @@ def qualify():
     reports={"parent-geometry":parent,"planes":planes,"source-pins":recovery,"graph":new["graph"],"locations":new["locations"],"anchors":new["anchors"]}
     bindings={n:core.report_inputs(r,view)for n,r in reports.items()};save("view/fresh-report-bindings.json",bindings)
     files=core.projection.inventory(view);need(len(files)==78,"complete canonical file census")
-    save("view/canonical-view-qualification.json",dict(status="PASS_CLOCK_ACCESS16_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC",
+    save("view/canonical-view-qualification.json",dict(status="PASS_DIRECT_CLOCK_METAL_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC",
       candidate_gds=c["candidate"]["gds"],physical_producer=c["physical"]["run"],current_files=files,
       complete_current_file_count=len(files),native_identity=comparison,native_view_executed=True,
       material=pin(OUT/"view/full-partition-material.json"),fresh_report_bindings=bindings,**FLAGS))
@@ -616,7 +669,7 @@ def tokenless():
 def acquire_reference():
     import cloud_cdr_wire_geometry_acquire as a
     cfg=json.loads((ROOT/PARENT).read_bytes());p=cfg["producer"]
-    need(p["run"]==41439516945 and p["source"]=="710869eb13082f3c3dc488159bf167d937294454"and p["release"]==431398178,"actual current drainM23 fresh-RC reference")
+    need(p["run"]==41537723922 and p["source"]=="bd1fc5b2deed8a0ea153db91a362c983e6379254"and p["release"]==432038108,"actual latest16Via2 fresh-RC reference")
     run=api("actions/runs/"+str(p["run"]));rel=api("releases/"+str(p["release"]))
     need(run["head_sha"]==p["source"]and run["conclusion"]=="success"and run["run_attempt"]==1,"successful actual reference")
     need(rel["target_commitish"]==p["source"]and rel["tag_name"]==p["tag"]and api("git/ref/tags/"+p["tag"])["object"]["sha"]==p["source"],"reference release")
@@ -673,7 +726,7 @@ def verify():
         for worker in core.projection.WORKERS:execute([app,"python",OUT/"view/candidate/wire"/worker],"fresh-"+worker.removesuffix(".py"))
         execute([app,"python",script,"--phase","verify"],"canonical-verify")
         q=json.loads((OUT/"view/canonical-view-qualification.json").read_bytes())
-        need(q["status"]=="PASS_CLOCK_ACCESS16_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC","complete actual native view")
+        need(q["status"]=="PASS_DIRECT_CLOCK_METAL_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC","complete actual native view")
     except BaseException as exc:error=exc
     finally:
         try:cleanup.append(dict(process_group=sup.stop_process(sup.ACTIVE)))
