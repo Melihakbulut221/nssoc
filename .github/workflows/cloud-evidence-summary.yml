@@ -37,6 +37,7 @@ jobs:
             /scripts/mainchip-snapshot-reload-inputs.json
             /scripts/mainchip-snapshot-reload-pins.json
             /docs/mainchip-snapshot-reload.md
+            /docs/mainchip-snapshot20-reload.md
             /scripts/mainchip_full_route_stage.py
             /scripts/mainchip_full_route_snapshots.py
             /scripts/mainchip_full64_snapshot_inner.py
@@ -63,7 +64,7 @@ jobs:
           subprocess.run(["git","diff","--exit-code","HEAD","--","scripts/mainchip-snapshot-reload-pins.json",*m],check=True)
           for n,p in m.items():
               f=root/n
-              assert f.is_file()and not f.is_symlink()
+              assert f.is_file()and not f.is_symlink(),n
               b=f.read_bytes();assert dict(bytes=len(b),sha256=hashlib.sha256(b).hexdigest())==p,n
               if n.endswith(".py"):compile(b,n,"exec")
           PY
@@ -122,6 +123,7 @@ jobs:
             /scripts/mainchip-snapshot-reload-inputs.json
             /scripts/mainchip-snapshot-reload-pins.json
             /docs/mainchip-snapshot-reload.md
+            /docs/mainchip-snapshot20-reload.md
             /scripts/mainchip_full_route_stage.py
             /scripts/mainchip_full_route_snapshots.py
             /scripts/mainchip_full64_snapshot_inner.py
@@ -148,7 +150,7 @@ jobs:
           subprocess.run(["git","diff","--exit-code","HEAD","--","scripts/mainchip-snapshot-reload-pins.json",*m],check=True)
           for n,p in m.items():
               f=root/n
-              assert f.is_file()and not f.is_symlink()
+              assert f.is_file()and not f.is_symlink(),n
               b=f.read_bytes();assert dict(bytes=len(b),sha256=hashlib.sha256(b).hexdigest())==p,n
               if n.endswith(".py"):compile(b,n,"exec")
           PY
