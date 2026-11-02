@@ -25,6 +25,32 @@
       "source": "f808321a65ca9197f10e75f2f59073d47095a718",
       "status": "in_progress",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41415994457"
+    },
+    "41419044277": {
+      "branch": "codex/cdr-source-m2-canonical",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125189899017,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Rebuild actual native wire graph anchors and full layer identity"
+          ],
+          "conclusion": null,
+          "id": 125190065779,
+          "name": "native-canonical",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41419044277,
+      "source": "c0cb25a769f061912eab1274f4d17fe8964486bc",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41419044277"
     }
   },
   "bounded_route_class_diagnosis_v238": {
@@ -301,7 +327,7 @@
     "physical_acceptance": false,
     "timing_accepted": false
   },
-  "checkpoint_version": 292,
+  "checkpoint_version": 293,
   "cloud_results_release_reservations": {
     "mainchip_artifact_recovery": {
       "exact_tag_target_verified": true,
@@ -2252,6 +2278,7 @@
   "continuation_note_v290": "## Current continuation: mainchip memory termination and Via1 coverage refusal\n\nAll native CAD/layout/model/waveform work remains GitHub-only. Local workspace verified empty. Full serial Gen3 x4 PHY, mainchip routing and final setup/hold remain OPEN.\n\nMainchip 41393730481/source 7cc6f94a7a685423533a25bc0d418e33764e8366 TERMINATED FAILURE. The actual 47-net route ran 7021.574 seconds then original RSS supervisor sent SIGTERM: measured 11218012 KiB exceeded 10485760 KiB (10 GiB); available host memory 4000064 KiB exceeded retained 2097152 KiB minimum. Container hard cap 12884901888 bytes (12 GiB), peak reached hard cap; memory.max events 6179 but all OOM counts zero. Prepare/freeze/reversal audits passed. Last completed router iteration19 reported 92 internal markers (28 MetalSpacing,64 Short); iteration20 reached 90 at90percent before termination. These are internal partial counts, NOT completed independent full DRC. No returned routed-fixed candidate, final route audit, restored full DRC/LVS or timing acceptance exists. Baseline independently measured140 remains historical, not a newly measured terminal result. Next repair: investigate snapshot-time memory peak and a bounded budget within unchanged12GiB container and2GiB host reserve; keep route64/seed42/2threads and all electrical/physical gates. Do not blindly rerun or claim snapshot as completed route.\n\nVia1 generation41412504017/source0677daccbaca68d007e6b37c4509ef143fc43db2 TERMINATED FAILURE. Source-controls passed; native generation refused \"at least four additional local same-net vias for each of eight actual MOS drains\". Actual ownership assertion was NOT the failure. Existing overlap geometry did not yield all eight required drain coverages. No Via1 candidate accepted. Preserve failure and exact attempted script. Next inspect per-terminal coverage and existing same-net overlap capacity; implement a genuine metal-access repair if existing overlap is insufficient. Do not delete or lower coverage/spacing/ownership checks.\n\nEarlier actual4ccf1212 GDS passed block560DRC/deep-flatLVS13 and canonical identity; freshRC41404030506 completed. Loaded41405079602 remains REJECTED: HBT minVce0.3362\u20130.3708V below0.4V, sampler max delays41.40625\u201355.15625ps above37.5ps. All32 actual resistor comparisons41407813062 show only0.6357ohm improvement in eight source-ground paths, other24unchanged. Full-wave41408975201 and geometry41408690630 completed successfully as diagnosis, not electrical acceptance. Next via/metal changes require fresh physical/canonical/RC/unchanged loaded gates.\n\nBoth terminal result artifacts, original failure messages, source job metadata and permanent release indexes are preserved with byte/digest validation. Native payloads remain exclusively in GitHub. Read-only8hour monitor remains automatic_native_dispatch=false.\n\nObserved at 2026-11-02T08:41:28.983018+00:00:\n- 41393730481: completed/failure\n- 41412504017: completed/failure\n",
   "continuation_note_v291": "## Current continuation: bounded route retry and actual source-ground M2 bypass\n\nFull serial PCIe Gen3x4 PHY, completed mainchip routing and final setup/hold remain OPEN. All native CAD/GDS/ODB/RC/waves remain GitHub-only. Local workspace empty. Prior verified rootv290=2aa3f2a110716dd059c9f60212e538fba4140a4a preserves mainchip41393730481 memory failure and Via1-only41412504017 zero-admission failure in full.\n\nMainchip route resource fix on codex/mainchip-route47-repair sourcef808321a65ca9197f10e75f2f59073d47095a718:\nOriginal same64iteration/seed42/2thread route,47selectednets,1691protectedclocks,12GiB no-swap container and2GiB minimum available host memory retained. Only isolated supervisor RSS constant AND its supervised keyword default are changed10GiB->11GiB, leaving1GiB non-RSS cgroup reserve. Command evidence checker derived from authenticated14874bytes SHA059e3e4edde4a63997cc841728f02d5b6a2aaf77335cb7d1b8dba70ed7d2e321 by single reversible constant replacement; every function body AST-identical. DerivedSHA08b30b1fcb7319ca5a204bf94da2ce8a7f03ead5e17d310aa0baaf8fc17c9e84. No physical/electrical/time/output/PID/cleanup/identity threshold changes. Growth may still exceed available memory; no success guarantee.\n\nInitial controls41415300286/source7cd3336db272810b86d756bf42e9ccd1d7ea9909 refused a stale nested workflow digest before native execution. Fix updated only nested full64/snapshot manifests and their transitive pins, not original control bodies. Independent same-source41415631201 PASSED original suites plus19new resource/exit-boundary/owned-keyword-default controls. Authenticatedartifact13127009267 includes route47-memory-controls/result.json. Production41415994457/release431237039 now owns this retry; follow this exact run, do not duplicate or infer success from control-only result. Full candidate output/original route-class restoration,PG/connectivity/LVS/final3cornerSTA still required.\n\nPHY sourceM2 physical bypass experiment on codex/cdr-source-m2-bypass:\nInput actual4ccf1212 GDS/current freshRC41404030506/actual32query41407813062. Prior Via1-only41412504017 tested existing overlaps but admittedZEROcuts at all28critical terminals. New geometry instead adds1400nmwideM2 columns from existing1500x4000nm sourceM1 patches to actual same-netM3 ground access17.6um below, a290nm landing to originalM2,24Via1+3Via2 per each of8sources. All216cuts190nm,480pitch,50nm bothmetal enclosure,240nm existing/newvia spacing. Require all13original native unions,actualavss ownership,240nm foreignM2 spacing,50nm foreignVia1/2 clearance,extent/grid,all8sourcearrays,exact serialized onlyM2/Via1/Via2 delta and reversal. No devices/parameters/originalmaterial removed. Original95geometry controls plus8newM2 guards.\n\nFirst41416167847/sourcec59d1c25092d95e5ffab69be402b17a8ea7103a4 PASSED103controls and firstactual M2owned/foreigngeometry guards, then failed FileExistsError because partial progress reused an exclusive-write filename. Preserve failure, initial proposal and logs. Fix2671a5b64f65df0195b7a3e1e724735521609a5b uses unique per-source/per-cut progress files while retaining exclusive-write save and ALLgeometry guards unchanged. Retry41416430071/release431239884 follows this exact source. No generation or electrical acceptance assumed.\n\nGround bypass can change bias/current; previous small ground improvement slightly worsened HBT Vce. Require full560DRC,deep-flatLVS13,new canonical full partition proof,newRC,unchangedloaded phase/current/Vce/sampler gates,actualcurrentdistribution/PVT/EM and bias review. Priorloaded41405079602 remainsREJECTED despite physicallyclean block. No completeclosedloopPHY or finalmainchipSTA accepted.\n\nRead-only8hour monitor stays automatic_native_dispatch=false. Each native job is explicitly dispatched only after checking source and terminal predecessor evidence.\n\nObserved at 2026-11-02T08:56:22.982255+00:00:\n- 41415300286: completed/failure\n- 41415631201: completed/success\n- 41415994457: in_progress/None\n- 41416167847: completed/failure\n- 41416430071: completed/success\n",
   "continuation_note_v292": "## Current continuation: actual source M2 bypass generated; full physical and mainchip route active\n\nPrevious verified rootv291=b7dada7de94a143af041c524c984f114fda91c88 preserved all failed/qualified memory-policy and M2-generation attempts. Native CAD/GDS/ODB/RC/waves exclusively GitHub; local workspace verified empty. Full serialGen3x4 PHY, completed mainchip routing and final setup/hold remain OPEN.\n\nActual sourceM2 bypass41416430071/source2671a5b64f65df0195b7a3e1e724735521609a5b/release431239884 PASSED103geometry controls and native generation. Candidate1018452bytes SHA9fef07bce22bce079cf82e3c7600932aa6adce49359838f6c72569fbde3ef61b. Exactly8source avss accesses,192Via1/24Via2, newM2 area221876000nm2,Via1area6931200nm2,Via2area866400nm2. All13input native unions,all actual owned metal/cut guards,exactserialized delta and originalmaterial reversal passed. No devices/parameters removed or changed. Generation is not fullDRC/LVS or electrical acceptance.\n\nDerived13127433872=372610bytes SHA32d168ac55b07499e8142c95688f1e8b101298f510e272761327939cdc2df953; controls13128036797=1254bytes SHA3a4f053f8a9b007a5f64fe3cd46d409c308b8cc9170298b86e2410a920e5ac8c. Release index701115344=44711bytes SHA952bdd2be030fb0b5dfe8aea7da2d413139a8d24ae57e8a1349ca7138f4120ba; nativearchive701115342=438601bytes SHA374ab2efa102165da7048e8a658e4e8b831cbb7898077ad6c685187a7b69526f remainscloudonly.\n\nNEW full physical41417079679/source41d9c4a6d96d9e97b1b58dad84fda478f50b2ee0/branchcodex/cdr-source-m2-physical/release431244468. Source controls passed; actual native verification started. It authenticates entire generation archive/memberindex,actualsourceidentities/declaredareas/216guardedcuts, and runs unchanged full560DRC/deep-flat500primitiveLVS/13faultchecker SHA3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66. Its inherited parent is used for unchanged schematic/LEF only; both independently compared against current41404030506 parent and match byte-for-byte. NewcandidateGDS alwaysused forphysical. Original43controls/contextguardcases unchanged. Follow exactjob; do not duplicate on observation timeout.\n\nMainchip41415994457/sourcef808321a65ca9197f10e75f2f59073d47095a718/release431237039 is the only new native47net route. Same64iterations/seed42/2threads/1691protectedclocks; explicit11GiB RSS within unchanged12GiB no-swap container and2GiB host reserve, both isolateddefault/global bound and unchanged-function checker validated by19newcontrols in independent41415631201. Previous41393730481 failed10GiBRSS after7021.574s; lastcompletediteration19internal92markers is partialnotfinalDRC. Currentroutehasnotyetprovidedcompletedphysical/timingacceptance.\n\nNext: once newM2fullphysical reallypasses, derive new canonical per-partition M2/Via1/Via2 ownership from actual newGDS, newRC, unchangedloaded transient and actualbias/currentdistribution/PVT/EM. Ground bypass can change current and worsenheadroom; previousloaded41405079602 remainsREJECTED. No electrical improvement inferred. After mainchiprealreturnedroute, require originalglobalclasses,diodePG/connectivity/LVS and final3cornerSTA. Read-only8hourmonitor stays automatic_native_dispatch=false.\n\nObserved at 2026-11-02T09:03:50.183260+00:00:\n- 41415994457: in_progress/None\n- 41417079679: completed/success\n",
+  "continuation_note_v293": "## Current continuation: source M2 physical PASS; current-reference full canonical proof running\n\nPrevious rootv292=f551337492ffd5bd0a20c709a7fbf682e031d3ab is fully readback verified (773inventory). Full serialGen3x4PHY,completedmainchiprouting,finalsetup/hold remainOPEN. NativeCAD/layout/model/waves onlyGitHub; localworkspace empty.\n\nNew sourceM2 GDS1018452bytes SHA9fef07bce22bce079cf82e3c7600932aa6adce49359838f6c72569fbde3ef61b from generation41416430071 passed actual fullphysical41417079679/source41d9c4a6d96d9e97b1b58dad84fda478f50b2ee0/release431244468. Actual560DRC categories0markers; deep/flat500primitiveLVS PASS; all13faults REJECTED_EXPECTED_FAULT. Physicalqualification explicitly electrical_accepted=false,new_RC_executed=false,full_phy_accepted=false,final_timing_complete=false. Derived13127274700=363167bytes SHA6dff1eb3a41f88efdbae32c83744df308ae9ef9c25b5485a9c048c18422a2426. Releaseindex701135347=20773bytes SHAa2fcb80ecbbc4237d6c5f32f7f981c4a3b1bad9ac3458a1dfd7ec214696adfb5; nativephysical701135346=6035043bytes SHAb8f416c017c9028b5503f65fb8acf2f51048a6f2104680f8710d88a001c6e086 remainscloudonly.\n\nNEW canonical41419044277/sourcec0cb25a769f061912eab1274f4d17fe8964486bc/branchcodex/cdr-source-m2-canonical/release431257808. Independent sourcecontrols passed; native-canonical running. All58prior controls remain, plus15new independent sourceM2/via mutation cases. Reconstruct originalanchoredM2 column/landing and24Via1+3Via2 per source independently, require originalM1 landing,oldM2attachment,oldM3enclosure,190nm cut bounds,50nm bothmetal enclosure,240nm old/newcutspacing,all guard key sets/truevalues,all8actualoriginalanchors. Allcomplete conductorpartitions compared across ALL13layers. ONLYavss layers10/19/29 may add areas221876000/6931200/866400nm2; every othernet/layer must exactlymatch.\n\nReference choice resolved: use current4ccf1212 actualfreshRC41404030506/source9750f2c17a8cca7b5560a74097f04c04b769e5b1/release431157438 via existing simple acquire_reference schema in canonical PARENT. OriginalL2N1996982bytes SHA5bbfcd2257b1f287b0f7a919d3edccdaa56a668de0050f813a42c47eea0885e3 matches newgeneration input_l2n. Do not use olderb9b9reference or compare newL2Ntoold. Current complete_members file came directly from generation2671 sourceM2 input config; whole nativearchive/membervalidation retained. Canonical extraction/primitive/terminal/port/anchor/transform identity and originalfaultcontrols still native; counts must be actually measured.\n\nIf canonical passes, bind NEW actualcanonical qualification/viewfiles/portorder into freshRC source9750 baseline on newbranch, retain unchanged13command pipeline/all original numerical functions, execute all11actual qualification receipts. Do not assume nativeportorder or numerical R/Ccounts. Then bindactualnewfreshRC to unchangedloaded methods fromd1acc/43fd; previousloaded41405079602 remainsREJECTED. Groundbypass can changebias/current and worsenHBT headroom; no electricalimprovement claimed from physical/canonical. Actualvia currentdistribution/PVT/EM and fullclosedloopCDR/PHY stillrequired.\n\nMainchip41415994457/sourcef808321a65ca9197f10e75f2f59073d47095a718/release431237039 confirmedinprogress. Same actual47net/64iterations/seed42/2threads/1691protectedclocks route with validated11GiB RSS,unchanged12GiBnoswapcgroup/2GiBhostreserve. Follow exactjob. Require realreturnedcandidate,originalglobalclass restoration,diodePG/connectivity/LVS and final3cornerSTA. Previous10GiB failure41393730481 remainspreserved;92partialinternalmarkers is not completedDRC.\n\nRead-only8hourmonitor remains automatic_native_dispatch=false. No duplicate dispatch on observationtimeout.\n\nObserved at 2026-11-02T09:17:21.885031+00:00:\n- 41415994457: in_progress/None\n- 41419044277: in_progress/None\n",
   "current_run_snapshot": [
     {
       "attempt": 1,
@@ -25587,6 +25614,30 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41416430071"
     },
     {
+      "branch": "codex/cdr-source-m2-physical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125183481032,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125183705411,
+          "name": "native-physical",
+          "status": "completed"
+        }
+      ],
+      "run": 41417079679,
+      "source": "41d9c4a6d96d9e97b1b58dad84fda478f50b2ee0",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41417079679"
+    },
+    {
       "branch": "codex/mainchip-route47-repair",
       "conclusion": null,
       "jobs": [
@@ -25613,28 +25664,30 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41415994457"
     },
     {
-      "branch": "codex/cdr-source-m2-physical",
-      "conclusion": "success",
+      "branch": "codex/cdr-source-m2-canonical",
+      "conclusion": null,
       "jobs": [
         {
           "active_steps": [],
           "conclusion": "success",
-          "id": 125183481032,
+          "id": 125189899017,
           "name": "source-controls",
           "status": "completed"
         },
         {
-          "active_steps": [],
-          "conclusion": "success",
-          "id": 125183705411,
-          "name": "native-physical",
-          "status": "completed"
+          "active_steps": [
+            "Rebuild actual native wire graph anchors and full layer identity"
+          ],
+          "conclusion": null,
+          "id": 125190065779,
+          "name": "native-canonical",
+          "status": "in_progress"
         }
       ],
-      "run": 41417079679,
-      "source": "41d9c4a6d96d9e97b1b58dad84fda478f50b2ee0",
-      "status": "completed",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41417079679"
+      "run": 41419044277,
+      "source": "c0cb25a769f061912eab1274f4d17fe8964486bc",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41419044277"
     }
   ],
   "divider_width4_terminal_v246": {
@@ -109618,6 +109671,60 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41417079679"
     }
   ],
+  "latest_observed_runs_v293": [
+    {
+      "branch": "codex/mainchip-route47-repair",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125179873554,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Resolve exact47net identities, prove reversible FIXED protection, reroute and measure full DRC"
+          ],
+          "conclusion": null,
+          "id": 125180094267,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41415994457,
+      "source": "f808321a65ca9197f10e75f2f59073d47095a718",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41415994457"
+    },
+    {
+      "branch": "codex/cdr-source-m2-canonical",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125189899017,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Rebuild actual native wire graph anchors and full layer identity"
+          ],
+          "conclusion": null,
+          "id": 125190065779,
+          "name": "native-canonical",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41419044277,
+      "source": "c0cb25a769f061912eab1274f4d17fe8964486bc",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41419044277"
+    }
+  ],
   "latest_terminal_runs": {
     "cdr_actual_terminal_current_ledger": 40171679250,
     "cdr_current_ledger_controls": 40171508329,
@@ -110378,11 +110485,11 @@
   },
   "local_cleanup_verification": {
     "native_payloads_cloud_only": true,
-    "observed_at": "2026-11-02T09:03:50.183260+00:00",
+    "observed_at": "2026-11-02T09:17:21.885031+00:00",
     "source_API_derived_text_RAM_only": true,
     "workspace_entries": 0
   },
-  "local_workspace_verified_empty_at": "2026-11-02T09:03:50.183260+00:00",
+  "local_workspace_verified_empty_at": "2026-11-02T09:17:21.885031+00:00",
   "mixed_canonical_proofs_v269": [
     {
       "prefix": "docs/evidence/mixed-canonical-terminal-41350835442",
@@ -110420,7 +110527,7 @@
     },
     "candidate_qualification_run": 41108174342,
     "code_deployed_head": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a",
-    "configured_inventory_rows": 773,
+    "configured_inventory_rows": 774,
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33",
     "every_hours": 8,
     "historical_scheduled_error": {
@@ -110433,7 +110540,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 292,
+    "inventory_version": 293,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -110533,7 +110640,7 @@
   ],
   "next_actions": [
     "Follow exact active mainchip41393730481/source7cc6f94a7a685423533a25bc0d418e33764e8366. Native outputs pending; no duplicate. Original64route41349316524 is terminal timeout; qualified iteration20 is input to current47net repair, not an active original job.",
-    "Follow active mainchip41415994457 and newM2 fullphysical41417079679. Native M2generation41416430071 passed103controls/exactnewGDS. Require actual fullphysicalPASS before new canonical M2/Via1/Via2 ownership,newRC,unchangedloaded,PVT/currentdensity/bias checks. Mainchip realreturnedroute still needs originalclass restoration,PG/connectivity/LVS/finalSTA.",
+    "SourceM2 fullphysical41417079679 actually PASSED560DRC0/deepflatLVS13. Follow canonical41419044277 using CURRENT4ccf reference41404030506. After truecanonicalPASS derive new actualview/portorder freshRC then unchangedloaded; no electricalacceptance inferred. Follow same live mainchip41415994457, then originalclass/PG/connectivity/LVS/finalSTA.",
     "After actual pin-metal correspondence and connectivity qualification, run remaining2702diode PG-contact audit, all1691original clock/fixed-net preservation, all1351diode pin attachments, final DRC/antenna and exact current candidate audits. Saved8-pass router397violations is not final physical acceptance.",
     "Export and authenticate current diode-inclusive154480instance netlist from current native ODB, generate fresh nominal SPEF and run original threecorners/20-4-8-8ns/5percent-derate STA only after physical admission. Do not reuse153130instance route12netlist or stale SPEF.",
     "FullserialPLL/CDR/SERDES/training/LTSSM/replay/credit/lane/TX/serialsoc_top and completeDRC/LVS/ESD/production approval remain open. No packet-interface route or diagnostic pass constitutes fullPHY acceptance.",
@@ -152272,7 +152379,7 @@
     "timing_accepted": false,
     "timing_limits_unchanged": true
   },
-  "root_source_before_receipt": "b7dada7de94a143af041c524c984f114fda91c88",
+  "root_source_before_receipt": "f551337492ffd5bd0a20c709a7fbf682e031d3ab",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -152359,7 +152466,7 @@
       "run": 41349316524
     }
   ],
-  "updated_at": "2026-11-02T09:03:50.183260+00:00",
+  "updated_at": "2026-11-02T09:17:21.885031+00:00",
   "width8_wave_diagnosis_v250": {
     "proof": {
       "bytes": 5806735,
