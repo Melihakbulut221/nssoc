@@ -1,0 +1,7 @@
+# Fresh RC of eight physically verified source Metal1 reinforcements
+
+Actual candidate4ccf1212 passed full560DRC/deep-flat500primitiveLVS13 in41401709497 and complete13layer canonical identity/material qualification in41403441348. This job binds all78actual canonical files and the observed25semantic ports,500devices,1446terminals,113wire components,238native nets,114electrical nets and978anchors.
+
+All original numerical methods,13command plan,both precise MIM orders,runtime658members,resource/lifecycle controls and validators remain unchanged. The native extractor assigned port order yn,yp at positions19,20 instead of the older yp,yn. Complete semantic identity is preserved; both the numerical configuration and exact host order guard use the actual new order. No electrical net is renamed or swapped. The host is reversibly equal to previous qualified fe2ccfc source after only the reviewed branch,producer,geometry,schema andstatus bindings are undone. The exact canonical qualification is copied from whole authenticated derived artifact13122158804 with exact artifact/member hashes.
+
+This performs actual new extraction of4ccf1212, not reuse of old RC. Previous loaded41391065497 failed electrical gates. Only a new full loaded transient under the same stimuli and thresholds can establish improvement. No complete serialPHY, qualifiedPEX, mainchip integration or final timing acceptance is claimed. Preserve complete failed outputs and native payloads in GitHub only.
