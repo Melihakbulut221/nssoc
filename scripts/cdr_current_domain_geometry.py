@@ -107,7 +107,12 @@ def inspect(paths):
         native_pairs.append(dict(status=str(row.status()),**sides))
     save(DERIVED/"actual-native-pairs.json",dict(pairs=native_pairs,original_flat_lvs=pin(paths["physical/lvs_flat/result.lvsdb"])))
     layout=db.Layout();layout.read(str(paths["layout/"+TOP+".gds"]))
-    top=layout.cell(TOP);need(top is not None and len(layout.top_cells())==1,"exact physical top")
+    top=layout.cell(TOP)
+    save(DERIVED/"actual-layout-roots.json",dict(expected_top=TOP,matched_lvs_top=circuit.name,
+        roots=[dict(name=c.name,bbox_dbu=str(c.bbox()))for c in layout.top_cells()],
+        actual_gds=pin(paths["layout/"+TOP+".gds"])))
+    need(top is not None and top.name==circuit.name==TOP,"exact named GDS top matched by original full LVS")
+    need(math.isclose(lvs.internal_layout().dbu,layout.dbu),"same native LVS/GDS coordinate units")
     dbu=layout.dbu;need(math.isclose(dbu,.001),"actual nanometre GDS units")
     pcells=[]
     def walk(cell,trans,path,ancestors):
