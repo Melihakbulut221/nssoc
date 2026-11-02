@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/home/runner/work/nssoc/nssoc/scripts/check_pcie_gen12_record_cdc_root_controls.py", line 213, in <module>
+    result=controls();print(json.dumps(result,indent=2,allow_nan=False))
+           ^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_pcie_gen12_record_cdc_root_controls.py", line 9, in controls
+    method,original=c.pins();positive={};rejected={}
+                    ^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/check_pcie_gen12_record_cdc_root.py", line 29, in pins
+    assert sha((ROOT/p).read_bytes())==h,'Integration source pin: '+p
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Integration source pin: hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v
