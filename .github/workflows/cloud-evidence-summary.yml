@@ -1,9 +1,9 @@
-name: Recover actual iteration19 and independently audit full chip routing
+name: Qualify bounded guide engine on actual full chip
 on:
   workflow_dispatch:
     inputs:
       execute:
-        description: Audit retained iteration19 after independent same-source controls
+        description: Compare new engine full-chip roundtrip and DRT antenna against exact old reference
         type: boolean
         default: false
       control_run:
@@ -70,6 +70,14 @@ jobs:
             /scripts/mainchip-route47-recovery-inputs.json
             /scripts/check_mainchip_route47_recovery.py
             /docs/mainchip-route47-snapshot19-recovery.md
+            /scripts/mainchip_guide_engine_acquisition.py
+            /scripts/mainchip_guide_engine_native.py
+            /scripts/mainchip_guide_engine_inner.py
+            /scripts/cloud_mainchip_guide_engine_roundtrip.py
+            /scripts/mainchip-guide-engine-built-inputs.json
+            /scripts/mainchip-guide-engine-reference.json
+            /scripts/check_mainchip_guide_engine.py
+            /docs/mainchip-guide-engine-roundtrip.md
             /.github/workflows/cloud-evidence-summary.yml
       - name: Authenticate every own source before execution
         run: |
@@ -104,6 +112,7 @@ jobs:
           python3 -B scripts/check_mainchip_route47_import.py
           python3 -B scripts/check_mainchip_route47_memory.py
           python3 -B scripts/check_mainchip_route47_recovery.py
+          python3 -B scripts/check_mainchip_guide_engine.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -118,6 +127,7 @@ jobs:
             route47-memory-controls
             route47-recovery-controls
             scoped-restoration-controls
+            guide-engine-controls
           retention-days: 90
           if-no-files-found: error
   native-routing:
@@ -180,6 +190,14 @@ jobs:
             /scripts/mainchip-route47-recovery-inputs.json
             /scripts/check_mainchip_route47_recovery.py
             /docs/mainchip-route47-snapshot19-recovery.md
+            /scripts/mainchip_guide_engine_acquisition.py
+            /scripts/mainchip_guide_engine_native.py
+            /scripts/mainchip_guide_engine_inner.py
+            /scripts/cloud_mainchip_guide_engine_roundtrip.py
+            /scripts/mainchip-guide-engine-built-inputs.json
+            /scripts/mainchip-guide-engine-reference.json
+            /scripts/check_mainchip_guide_engine.py
+            /docs/mainchip-guide-engine-roundtrip.md
             /.github/workflows/cloud-evidence-summary.yml
       - name: Authenticate every own source before execution
         run: |
@@ -204,8 +222,8 @@ jobs:
           sparse-checkout: /scripts/mainchip-bounded-route-host-pins.json
       - name: Authenticate original source and exact derived scope inputs
         run: python3 -B scripts/prepare_scoped_restoration_sources.py
-      - name: Restore saved iteration19 classes, audit all wires and clocks, and measure full DRC
-        run: python3 -B scripts/cloud_mainchip_route47_recovery.py
+      - name: Authenticate new engine, roundtrip actual chip, compare full DRT and antenna
+        run: python3 -B scripts/cloud_mainchip_guide_engine_roundtrip.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
