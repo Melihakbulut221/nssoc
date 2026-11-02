@@ -9,7 +9,7 @@ NATIVE=OUT/"native";DERIVED=OUT/"derived";CONTROLS=ROOT/"wire-loaded-controls"
 MANIFEST="scripts/cdr-wire-shortcuts-loaded-pins.json"
 BASIS="scripts/cdr-wire-shortcuts-loaded-basis.json"
 HOST="scripts/cloud_cdr_wire_shortcuts_loaded.py"
-BRANCH="codex/cdr-horizontal-ground-loaded"
+BRANCH="codex/cdr-local-source-m1-loaded"
 REPO="Melihakbulut221/nssoc"
 FLAGS=dict(full_phy_accepted=False,qualified_pex=False,final_timing_complete=False)
 STATE=None
@@ -46,10 +46,10 @@ def validate_assets(assets):
 def basis():
     b=read(ROOT/BASIS)
     validate_assets(b["producer"]["assets"])
-    need(b["schema"]=="nssoc.horizontal-ground.loaded-basis.v1"and b["source_preparation_only"]and not b["native_execution_authorized"]and not b["wave_execution_authorized"],"basis is input evidence not execution authority")
-    need(b["producer"]["run"]==41389957475 and b["producer"]["source"]=="fe2ccfc1529b0e7507a585d3d8078e9d60af368d"and b["producer"]["release"]==431078750,"actual new fresh RC producer")
-    need(b["candidate"]==dict(bytes=1003348,sha256="b9b92319590ecca1c9ce31dcf1cc31f4fdc1d468fc514585931671ed2f4fa492"),"physically qualified actual layout")
-    need(b["semantic_interface"]==["avdd","avss","sub","ird","cn","cp","dn","dp","irb","ira","irc","ibda","ibdc","ibs0","irx","xn","xp","ibs1","iry","yp","yn","irvx","irvy","vin","vip","wire_cref"],"actual new semantic order")
+    need(b["schema"]=="nssoc.local-source-m1.loaded-basis.v1"and b["source_preparation_only"]and not b["native_execution_authorized"]and not b["wave_execution_authorized"],"basis is input evidence not execution authority")
+    need(b["producer"]["run"]==41404030506 and b["producer"]["source"]=="9750f2c17a8cca7b5560a74097f04c04b769e5b1"and b["producer"]["release"]==431157438,"actual new fresh RC producer")
+    need(b["candidate"]==dict(bytes=1003860,sha256="4ccf1212d4b98046b1b56037bb1b76c53477777b08ee9cba5053c8e6323203e8"),"physically qualified actual layout")
+    need(b["semantic_interface"]==["avdd","avss","sub","ird","cn","cp","dn","dp","irb","ira","irc","ibda","ibdc","ibs0","irx","xn","xp","ibs1","iry","yn","yp","irvx","irvy","vin","vip","wire_cref"],"actual new semantic order")
     need(b["loaded_numerical"]["source"]=="43fd3f71a289fef004aeb41cd2d0972d81f76f41","frozen loaded source")
     return b
 def qualified_rc(q,oq,index,b):
@@ -57,7 +57,7 @@ def qualified_rc(q,oq,index,b):
     need(index["context"]==dict(source=p["source"],run=p["run"],attempt=1)and index["files"]==p["complete_members"],"complete current RC index")
     need(q==b["qualification"],"exact current qualification")
     need(q["current_context"]==oq["context"]==ctx,"actual source/run qualification")
-    need(q["status"]=="PASS_HORIZONTAL_GROUND_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual four-mixed-shortcut RC")
+    need(q["status"]=="PASS_LOCAL_SOURCE_M1_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual four-mixed-shortcut RC")
     need(oq["status"]=="PASS_CURRENT_VIA2_M3_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and oq["fresh_RC_pipeline_complete"]and oq["execution_scope"]=="ACTUAL_AUTHORIZED_NATIVE_PHASE","complete original numerical qualification")
     need(q["counts"]==oq["counts"]==b["counts"]==dict(devices=500,R=24530,C=15676),"actual newly measured RC census")
     need(q["candidate"]==b["candidate"]and q["semantic_port_order"]+["wire_cref"]==b["semantic_interface"],"actual layout and interface")
@@ -118,10 +118,10 @@ def controls():
     for label in("source","counts","scope","missing-phase","old-port-order","old-selector-port-order","electrical-claim","old-index"):
         x,y,z=copy.deepcopy(q),copy.deepcopy(oq),copy.deepcopy(index)
         if label=="source":y["context"]["source"]="0"*40
-        elif label=="counts":y["counts"]["R"]=24360
+        elif label=="counts":y["counts"]["R"]+=1
         elif label=="scope":y["execution_scope"]="SOURCE_ONLY_SYNTHETIC_PHASE_FIXTURE"
         elif label=="missing-phase":y["phase_receipts"].pop("compose")
-        elif label=="old-port-order":x["semantic_port_order"][19:21]=["yn","yp"]
+        elif label=="old-port-order":x["semantic_port_order"][19:21]=["yp","yn"]
         elif label=="old-selector-port-order":x["semantic_port_order"][15:17]=["xp","xn"]
         elif label=="electrical-claim":y["electrical_accepted"]=True
         elif label=="old-index":z["context"]["run"]=41251732540
@@ -136,7 +136,7 @@ def controls():
     prefix=ast.parse(original.extract(c["blocks"]["deck"],dedented=True)[0]).body[:3]
     need(len(prefix)==3 and isinstance(prefix[0],ast.Assign)and prefix[0].targets[0].id=="nodes"and isinstance(prefix[1],ast.Expr)and isinstance(prefix[2],ast.Assign)and prefix[2].targets[0].id=="vectors","exact frozen vector prefix")
     need(STATE is None and not NATIVE.exists(),"no native input in source controls")
-    record=dict(status="PASS_CURRENT_HORIZONTAL_GROUND_LOADED_SOURCE_CONTROLS",definitions=29,executable_blocks=5,frozen_source_files=9,rejected=cases,
+    record=dict(status="PASS_CURRENT_LOCAL_SOURCE_M1_LOADED_SOURCE_CONTROLS",definitions=29,executable_blocks=5,frozen_source_files=9,rejected=cases,
       frozen_complete_prepare_and_measure=True,original_13_binding_controls_required_in_actual_preparation=True,
       actual_port_order=b["semantic_interface"],native_acquired=False,transient_executed=False,**FLAGS)
     save(CONTROLS/"result.json",record)
