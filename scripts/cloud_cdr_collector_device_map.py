@@ -111,7 +111,7 @@ def device_row(device):
     dc=device.device_class()
     return dict(id=device.id(),name=device.name,expanded_name=device.expanded_name(),model=dc.name.lower(),
       parameters={p.name:device.parameter(p.id())for p in dc.parameter_definitions()},
-      terminals={t.name:dict(id=device.net_for_terminal(t.id()).id(),name=device.net_for_terminal(t.id()).name,expanded_name=device.net_for_terminal(t.id()).expanded_name(),cluster=device.net_for_terminal(t.id()).cluster_id)for t in dc.terminal_definitions()})
+      terminals={t.name:dict(name=device.net_for_terminal(t.id()).name,expanded_name=device.net_for_terminal(t.id()).expanded_name(),cluster=device.net_for_terminal(t.id()).cluster_id)for t in dc.terminal_definitions()})
 def native_map(cfg,inputs):
     import klayout.db as db
     audit=json.loads(inputs["physical/lvs_flat/audit.json"].read_bytes())

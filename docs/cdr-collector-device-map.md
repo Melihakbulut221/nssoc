@@ -7,3 +7,6 @@ Read the exact physical41435641296 flat LVS database (2760554 bytes, SHA256 9df6
 This is a read-only observation, not a rerun of extraction, electrical simulation, signoff or layout editing. Preserve original failed waves and all acceptance gates. Ten source-only negative controls reject partial census, wrong IDs, duplicates, model mismatch, missing source names and nonmatching status. Native data and execution stay on GitHub; outputs are derived JSON only.
 
 API references: https://www.klayout.de/doc/code/class_LayoutVsSchematic.html and https://www.klayout.de/doc/code/class_NetlistCrossReference.html .
+
+
+First attempt 41449736667 authenticated the complete physical capsule and reached native LVS device enumeration, then failed because Net has no id() API. Device IDs remain unchanged; net identity uses the documented cluster_id/name/expanded_name fields already used by the actual loaded-terminal binder. Remove only the redundant invalid Net.id call; all source controls, terminal comparisons, pair census and failures remain preserved.
