@@ -1,38 +1,20 @@
-## Verified incremental drain M2/M3 resistance result
+## Current continuation: actual residual physical map while full loaded transient runs
 
-Actual resistance run41430503141/source3d2601040c26b9e10443f674e6d2c211f8d14546 completed SUCCESS. Its original reference is b9b9; the new derived comparison independently authenticates BOTH sourceM2 run41423647133 and drainM23 run41430503141, both complete artifact ZIP digests and their identical original reference. All32 stable querylabels and exact source/sink terminal identities are bound before comparing actual after_ohm values.
+Previous rootv302=fb7eba842810fe50397137b8d8aaacc8f20c0a9e/inventory787. All nativeCAD/GDS/ODB/SPICE/waves remain exclusively GitHub; local workspace empty. FullserialGen3x4PHY, mainchiproute and finalsetuphold remain OPEN.
 
-Against IMMEDIATE sourceM2 predecessor9fef, all16 emitter-to-drain paths improved by5.285668407882763..5.6270956810249135ohm (27.461296408640123..28.970250552801946percent). Other16paths(8collector+8ground) maximum absolute delta8.196110456992756e-12ohm. Full114partitions/500primitive parameters/1446terminal identity checks passed in each original native comparison. This result proves targeted passive resistance reduction, NOT actual operating voltage/current, electrical acceptance, closed-loop CDR or fullPHY.
+Current candidateGDS5e5ef394 adds872Via2 at8drains plusM2/M3. Physical41427042946 passed full560DRC0/deepflat500LVS13faultrefusals. Canonical41428154889 passed96controls/1469net-layer comparisons, only emittercomponents18/62 changed. FreshRC41428920414/a53fb2f3/release431325407 actualPASS:500devices26218R16796C. Model2112612bytes SHAd9b1de9dfce3564af178bc0ec643b1f9e7b9bee13e04d6cb2fcce7da3c14042e;composition1015041bytes SHAbcdf63fc9053749ae23794cacc43b9069a988a2fad99885de9ab60a28957ee0a.
 
-Machine-readable proof: docs/evidence/drain-m23-incremental-resistance-41430503141.json. Reproduction source uses only API/derivedJSON and no local native CAD: docs/evidence/drain-m23-incremental-resistance-analysis.py. Native current model was500devices26218R16796C, original sourceM2model500devices24530R15676C; the comparison preserves each actual census.
+Loaded41430498959/source8a73ba2c575c4e6b8accf1dff736d481e1e53606/release431336246/branchcodex/cdr-drain-m23-loaded has passed unchanged sourcecontrols and is executing original full transient. All29frozendefinitions/5blocks9files/43fdpreparationmeasurement/stimuli/loads/phase-current-Vce-sampler-comparatorgates/fullraw unchanged. Actualneworderxn,xp at15/16;yp,yn at19/20; old-selector negative nowxp,xn. Census26218R16796C. Do not substitute passive/physical success for actualloaded gates.
 
-Loaded41430498959/source8a73ba2c575c4e6b8accf1dff736d481e1e53606/release431336246 is the next acceptance gate. Keep full rawwaves/actual failures and original thresholds. Mainchip41415994457 remains the same47net routing handle; never duplicate on observation timeout. FullserialPHY, mainchip routing, finalDRC/LVS/3cornerSTA remain open. All native work is GitHub-only.
+Resistance41430503141/3d260104 completed SUCCESS. Rootv302 saved independently authenticated incremental comparison against immediate9fef sourceM2:16emitterpaths reduced5.285668..5.627096ohm/27.461296..28.970251percent; other16queries(8collector+8ground) unchanged within8.2e-12ohm. Original native reference b9b9 remains explicitly distinguished. All114partitions/500primitiveparameters/1446anchors checked. Passive unitcurrent is not actual operating current/voltage.
 
-Observed at 2026-11-02T10:44:00.227802+00:00:
+NEW read-only physical map41431599840/source6a6b14ef4cb48666ce4ada1d89ba3796075389b2/branchcodex/cdr-drain-m23-critical-access/release431344051. All103originalsourcecontrols passed. Derives from6e68a6c8 current-sourceM2map with only actualfreshRC/candidate/status/resistanceproducer metadata plus actual26218resistor census in inspect_critical_access. The truthful result field nowall26218native_exported_resistors_equal. All978nativeports/alloriginal-extractionownership/7documentedMIMrelocations/13conductorunions/fullRendpoints-values-multiplicity remain mandatory. AllotherfunctionASTs identical; actualmapping methods andcontrols unchanged. Acquires all complete nativearchive members with SHA256. This run changes no geometry and claims no electrical acceptance. Purpose: exact physical residual endpoint ownership for the next correction if the pending loaded transient still fails.
+
+NEXT: follow same loaded41430498959 and map41431599840. Read complete actual measurement-result only after native output preserved. If rejected, preserve fullraw and derive unchanged fullwave diagnosis fromaaf92 after binding exactnewproducer/rawhash and checking actualfailedHBTset; no threshold relaxation. Combine actual operating voltagedrop/current with currentphysicalmap and32querysolutions before another geometry/bias change. Prior9fefloaded41422407076 remains rejected; its fullwave diagnoses collector30..93mV/emitter51..57mV losses and all failures remain archived.
+
+Mainchip41415994457/f808321a65ca9197f10e75f2f59073d47095a718/release431237039 same live47netroute; no duplicate on observation timeout. 11GiBRSS/12GiBnoswap/2GiBhostreserve unchanged. Await candidate then originalclass restoration/independentfullDRC/diodePG/connectivity/LVS/final3cornerSTA. FullclosedloopCDR/PLL/SERDES/serialGen3x4/PVT/ESD/EM stillopen. Readonly8hourmonitor automatic_native_dispatch=false. DerivedZIPs preserved separately withbyteforbyte readback; sealednativeproducerassetsets unchanged.
+
+Observed at 2026-11-02T10:49:31.719765+00:00:
 - 41415994457: in_progress/None
 - 41430498959: in_progress/None
-- 41430503141: completed/success
-
-## Current continuation: drain M2/M3 fresh RC PASS; full loaded transient and resistor analysis dispatched
-
-Root v300=1ee6d1ee2978eeaa2c8bd04e529f496736446207, inventory785. Native CAD/GDS/ODB/SPICE/waves remain GitHub-only. Local workspace empty. Full serial Gen3 x4 PHY, mainchip routing and final setup/hold remain OPEN.
-
-Actual GDS5e5ef394 (1075316bytes) adds872Via2/8drains and M2/M3. Full physical41427042946 passed560DRC0, deep/flat500primitiveLVS and13fault refusals. Canonical41428154889 passed96controls/1469partition-layer comparisons; only emitter components18/62 changed. Prior counter-sampling physical failure41426359185 is preserved; one unchanged retry succeeded.
-
-FRESH RC41428920414/sourcea53fb2f3e56b1175172b4320a1ec443bb57773db/release431325407 completed SUCCESS. Actual500devices26218R16796C. Model2112612bytes SHAd9b1de9dfce3564af178bc0ec643b1f9e7b9bee13e04d6cb2fcce7da3c14042e;composition1015041bytes SHAbcdf63fc9053749ae23794cacc43b9069a988a2fad99885de9ab60a28957ee0a. Derived13133507423=8369726bytes SHAa6dde0d967d9c8f4f36bdff608e61e935eee71f1557672383f7bc3610ce7c60a. Originalqualification3767bytes SHAf7a940f37c5cfe20d190862074b73f0ff6cd839c8393b64d806adbb6102b4db0. Numerical PASS does not imply qualified PEX or electrical/PHY acceptance.
-
-LOADED41430498959/source8a73ba2c575c4e6b8accf1dff736d481e1e53606/branchcodex/cdr-drain-m23-loaded/release431336246. Source controls passed; fullwave job follows. Exact producer/assets/allmembers/model/composition/current measured census and25ports+wire_cref bound. Semantic order nowxn,xp at15/16;yp,yn at19/20. Old-selector negative fixture nowxp,xn; old-port-order remainsyn,yp; counts negative remainsR+=1. Qualification fixtures explicitly native_executed=false/source_only_metadata_fixture=true. Host reverses exactly to e96ca21 except current metadata/census/order and meaningful negative fixture. All29frozen definitions/5blocks9files/43fdpreparation and measurement bodies/stimuli/loads/fullwave preservation/phase-current-Vce-sampler-comparator gates unchanged. Preparation-only workflow-title assertion initially stopped before mutations, corrected to actual dispatch-only YAML; no native failure.
-
-RESISTANCE41430503141/source3d2601040c26b9e10443f674e6d2c211f8d14546/branchcodex/cdr-drain-m23-resistance. Unchanged32complete-network queries/reciprocal solves/26solver controls/7comparison controls/4partition controls. Reference remains ORIGINALb9b9 result41395210468, NOT immediate9fef. Current census26218R16796C; old reference census24530R15676C retained. Host exactly reversible to a11002 after metadata/currentcensus pins/status. Need all114partitions/1446anchors/500primitive parameters before semantic comparison. Unit-current resistance is not operating voltage/power. Initialdispatch HTTP500 was reconciled against exact branch/runlist; only one actual run exists. Do not replay source publishers.
-
-Parent9fefloaded41422407076 remains REJECTED:phase14.3818mV<30,VI43.1925uA<50,HBTminVce.337377/.334107/.359545/.358041V<.4,sampler45.78125/41.71875/51.09375/54.53125ps>37.5,wrongsign0/0/2/34. Fullraw1045823299bytes SHAb1824920ca04941650b2cab231f00dc6a1b926becbed42e302a3dd882465ac69 stayscloudonly. SourceM2 fullwave diagnosis41424462139 reproduced all scalars:collectorloss30..93mV/emitter-to-MOS51..57mV motivated newdrainrepair. SourceM2 resistance41423647133 measured ground-25.51015ohm vsoriginalb9b9 without closing electrical gates.
-
-NEXT: follow same loaded41430498959 and resistance41430503141 handles. Inspect complete actual scalar gates, preserve fullraw and failures. If rejected, derive fullwave diagnosis from aaf92 with actual newproducer and first verify actual failing HBT set; never soften gates to fit. Compare emitter resistance to both b9b9 and separately authenticated9fef by stable querylabels; do not confuse baselines. Full closed-loop CDR/PLL/SERDES/Gen3x4/PVT/ESD/EM remain open.
-
-Mainchip41415994457/sourcef808321a65ca9197f10e75f2f59073d47095a718/release431237039 remains same live47netroute. 11GiBRSS inside12GiBno-swap plus2GiBhostreserve. Do not restart on observation timeout. Await candidate then originalclass restoration/independent fullDRC/diodePG/connectivity/LVS/final3cornerSTA. Read-only8hourmonitor automatic_native_dispatch=false. Permanent derivedZIP copies are separate from sealed native releases, with fullbyte readback.
-
-Observed at 2026-11-02T10:41:16.218513+00:00:
-- 41415994457: in_progress/None
-- 41428920414: completed/success
-- 41430498959: in_progress/None
-- 41430503141: completed/success
+- 41431599840: completed/success
