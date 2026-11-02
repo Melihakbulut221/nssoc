@@ -3,10 +3,10 @@
 import copy,json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-BASE='docs/evidence/cdr-current-domain-parent-map.json'
+BASE='docs/evidence/clock-metal-origin-parent-map.json'
 CURRENT='docs/evidence/cdr-clock-access-domain-parent-map.json'
-OLD='docs/evidence/clock-access16-old-native-identity.json'
-NEW='docs/evidence/clock-access16-new-native-identity.json'
+OLD='docs/evidence/clock-metal-old-native-identity.json'
+NEW='docs/evidence/clock-metal-new-native-identity.json'
 def need(ok,msg):
     if not ok:raise AssertionError(msg)
 def verify(old,new,original,current):

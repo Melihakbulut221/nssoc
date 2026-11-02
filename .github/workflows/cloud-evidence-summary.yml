@@ -1,4 +1,4 @@
-name: Clock access16 fresh RC full650 electrical comparison
+name: Direct clock metal fresh RC full650 electrical comparison
 on:
   workflow_dispatch:
     inputs:
@@ -14,7 +14,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-clock-access-domain-loaded-${{ github.ref }}
+  group: cdr-clock-metal-domain-loaded-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -119,7 +119,7 @@ jobs:
           host.gate()
           host.release_gate(wait=True)
           PY
-      - name: Authenticate new16Via2 RC and simulate all200 explicit model-range MOS units
+      - name: Authenticate direct clock metal RC and simulate all200 explicit model-range MOS units
         id: native
         run: python3 -B scripts/cloud_cdr_wire_shortcuts_loaded.py --simulate
       - name: Permanently preserve complete success or failure and native waves

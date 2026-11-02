@@ -12,7 +12,7 @@ NATIVE=OUT/"native";DERIVED=OUT/"derived";CONTROLS=ROOT/"wire-loaded-controls"
 MANIFEST="scripts/cdr-wire-shortcuts-loaded-pins.json"
 BASIS="scripts/cdr-wire-shortcuts-loaded-basis.json"
 HOST="scripts/cloud_cdr_wire_shortcuts_loaded.py"
-BRANCH="codex/cdr-clock-access-domain-loaded"
+BRANCH="codex/cdr-clock-metal-domain-loaded"
 REPO="Melihakbulut221/nssoc"
 FLAGS=dict(trial.FLAGS)
 STATE=None
@@ -51,10 +51,10 @@ def validate_assets(assets):
 def basis():
     b=read(ROOT/BASIS)
     validate_assets(b["producer"]["assets"])
-    need(b["schema"]=="nssoc.clock-access16.loaded-basis.v1"and b["source_preparation_only"]and not b["native_execution_authorized"]and not b["wave_execution_authorized"],"basis is input evidence not execution authority")
-    need(b["producer"]["run"]==41537723922 and b["producer"]["source"]=="bd1fc5b2deed8a0ea153db91a362c983e6379254"and b["producer"]["release"]==432038108,"actual new fresh RC producer")
-    need(b["candidate"]==dict(bytes=1079924,sha256="28eebb9f880648935a6368ada78a5e5666694ba98e073fbbac3f2e0c986339d6"),"physically qualified actual layout")
-    need(b["semantic_interface"]==["avdd","avss","sub","ird","cn","cp","dn","dp","irb","ira","irc","ibda","ibdc","ibs0","irx","xp","xn","ibs1","iry","yn","yp","irvx","irvy","vin","vip","wire_cref"],"actual new semantic order")
+    need(b["schema"]=="nssoc.direct-clock-metal.loaded-basis.v1"and b["source_preparation_only"]and not b["native_execution_authorized"]and not b["wave_execution_authorized"],"basis is input evidence not execution authority")
+    need(b["producer"]["run"]==41547492718 and b["producer"]["source"]=="f1248c7a3709d8112da98d25b9c3d67bf39c83fe"and b["producer"]["release"]==432088543,"actual new fresh RC producer")
+    need(b["candidate"]==dict(bytes=1090004,sha256="0209d91c15d490631937f31aa12d2bbe68153f88a62e7be596fbc4eaae295dfa"),"physically qualified actual layout")
+    need(b["semantic_interface"]==["avdd","avss","sub","ird","cn","cp","dn","dp","irb","ira","irc","ibda","ibdc","ibs0","irx","xp","xn","ibs1","iry","yp","yn","irvx","irvy","vin","vip","wire_cref"],"actual new semantic order")
     need(b["loaded_numerical"]["source"]=="43fd3f71a289fef004aeb41cd2d0972d81f76f41","frozen loaded source")
     return b
 def qualified_rc(q,oq,index,b):
@@ -62,9 +62,9 @@ def qualified_rc(q,oq,index,b):
     need(index["context"]==dict(source=p["source"],run=p["run"],attempt=1)and index["files"]==p["complete_members"],"complete current RC index")
     need(q==b["qualification"],"exact current qualification")
     need(q["current_context"]==oq["context"]==ctx,"actual source/run qualification")
-    need(q["status"]=="PASS_CLOCK_ACCESS16_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual four-mixed-shortcut RC")
+    need(q["status"]=="PASS_DIRECT_CLOCK_METAL_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual four-mixed-shortcut RC")
     need(oq["status"]=="PASS_CURRENT_VIA2_M3_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and oq["fresh_RC_pipeline_complete"]and oq["execution_scope"]=="ACTUAL_AUTHORIZED_NATIVE_PHASE","complete original numerical qualification")
-    need(q["counts"]==oq["counts"]==b["counts"]==dict(devices=500,R=26218,C=16796),"actual newly measured RC census")
+    need(q["counts"]==oq["counts"]==b["counts"]==dict(devices=500,R=26344,C=16878),"actual newly measured RC census")
     need(q["candidate"]==b["candidate"]and q["semantic_port_order"]+["wire_cref"]==b["semantic_interface"],"actual layout and interface")
     for record in(q,oq):
         need(all(record[k]is False for k in("electrical_accepted","full_phy_accepted","qualified_pex","loaded_simulation_passed")),"RC is not electrical acceptance")
@@ -129,7 +129,7 @@ def controls():
         elif label=="counts":y["counts"]["R"]+=1
         elif label=="scope":y["execution_scope"]="SOURCE_ONLY_SYNTHETIC_PHASE_FIXTURE"
         elif label=="missing-phase":y["phase_receipts"].pop("compose")
-        elif label=="old-port-order":x["semantic_port_order"][19:21]=["yp","yn"]
+        elif label=="old-port-order":x["semantic_port_order"][19:21]=["yn","yp"]
         elif label=="old-selector-port-order":x["semantic_port_order"][15:17]=["xn","xp"]
         elif label=="electrical-claim":y["electrical_accepted"]=True
         elif label=="old-index":z["context"]["run"]=41251732540
@@ -152,7 +152,7 @@ def controls():
     save(CONTROLS/"result.json",record)
     return record
 def release_gate(empty=True,wait=False):
-    ctx=context(native=True);tag="cloud-results-"+str(ctx["run_id"])+"-1-cdr-clock-access-domain-loaded"
+    ctx=context(native=True);tag="cloud-results-"+str(ctx["run_id"])+"-1-cdr-clock-metal-domain-loaded"
     for i in range(90 if wait else 1):
         p=subprocess.run(["gh","api","repos/"+REPO+"/releases/tags/"+tag],capture_output=True,text=True,timeout=180)
         if p.returncode==0:break

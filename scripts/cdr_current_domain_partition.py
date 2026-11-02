@@ -81,7 +81,7 @@ def fixture(mapping):
 def controls():
     e=os.environ
     need(e.get('GITHUB_ACTIONS')=='true'and e.get('RUNNER_ENVIRONMENT')=='github-hosted','Hosted source controls')
-    need(e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'and e['GITHUB_REF']=='refs/heads/codex/cdr-clock-access-domain-loaded','Exact branch')
+    need(e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'and e['GITHUB_REF']=='refs/heads/codex/cdr-clock-metal-domain-loaded','Exact branch')
     need(e['GITHUB_EVENT_NAME']=='workflow_dispatch'and e['GITHUB_RUN_ATTEMPT']=='1','First manual run')
     need(subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA'],'Actual source checkout')
     method=json.loads((ROOT/METHOD).read_bytes())
