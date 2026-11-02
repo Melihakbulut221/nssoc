@@ -1,6 +1,19 @@
-# Cloud continuation — checkpoint v335
+# Cloud continuation — checkpoint v336
 
-Updated: 2026-11-02T23:00:33.030900+00:00
+Updated: 2026-11-02T23:10:14.769742+00:00
+
+## Current continuation: full64 stopped at RSS guard; single-worker engine build dispatched
+Mainchip41513663302/source302f9c30a847acd659a8c451bdce83707fce5d70 is TERMINAL FAILURE. Actual router ended2026-11-02T22:28:18Z after6800.61579865s withreturn-15 andsupervision_failure=maximum_group_rss. Observed11832844KiB >11534336KiB guard; available3317168KiB. Container OOMKilledfalse. This was NOT a timeout. Process receivedSIGTERM and no live children remained. The cloud job continued packaging/uploading after native compute stopped; earlier job-levelactive reports must not be read as proof of ongoing native computation.
+Original64 route reached guides iteration20. Last internal progress was90percent with82markers vs92 atiteration19; route did NOT return, no completed route-restore/final-check/measure acceptance exists.82is not a final DRC result. Full failure artifact13185543898 (396593bytes,SHA68b8593758f2b9f28106e7953e3c05b983f67b944c5bae17246ebe392edb9261) is retained completely in docs/evidence/mainchip-guide-full64-41513663302-memory-failure.json. Native release431900029 preserved1589851937-byte archive in3parts plusindex/parts metadata. Never download those native parts locally.
+Concrete fix source62e6ac38e32493023dcda04bbb4cf5476e9d50f2, branchcodex/mainchip-guide-single-engine: change only C++guide_worker_limit2->1 in existing qualified upstream FlexDR patch. New fullFlexDRSHA393bbfd15596cddfdbc3bb4d87a3055449596d5646945b89a4cc6526a32ac8b0. Exact source reversal and sole C++constant delta checked during source preparation. Originalguideboxes,IDs,searchargs,64schedule and resourceguards retained. Stronger compiled nine-case fixture must prove maxexactly1liveworker,allIDs in exact input traversal order, no leaks and zero/multi-box refusal. Preserve7positive/45refusal/25lifecycle build controls and DRTmessage-ID checks.
+New complete engine build41542996185,release432065531/tagcloud-results-41542996185-1-mainchip-guide-batch-engine-build. Follow same run; do not duplicate. Controls precede complete native build. BUILD SUCCESS IS NOT ACTUAL CHIP QUALIFICATION. When built, authenticate binary/runtime/source receipt, then repeat fullactualchip ODB/DEF/net/clock/DRC/antenna qualification with thisnewbinary before full64 route. Priorenginequalification41506262574 cannot qualify the newELF. Final fullchipLVS/diodePG/globalclasses/qualifiedRC/Liberty/allcornerSTA remain open.
+PHY comparison41540256258/source15feb7375e24de69d10377f1e52e8e07e3ef02c0 remains the same full650 electrical trial against actualfreshRC41537723922. Preserve/compare its actual electrical result to rejected41528163238. New8path network measurement41541318521 proves only1.61665-1.93600percent Reff improvement, leaving11.50867-12.11822ohm. If electrical gates reject, design actual wider/upper-metal same-net paths and localaccess reinforcement using saved nativecoordinates; do not repeat tiny via-only repairs or idealize R. Such metalcandidate is NOT implemented yet.
+Actual650physical geometry,closedloopCDR/PLL,fullserialGen3x4PHY and finalmainchip setup/hold remain open. Cloud-only native work; localworkspaceempty.8hour read-only monitor/automatic_native_dispatch=false unchanged.
+
+Observed 2026-11-02T23:10:14.769742+00:00:
+- 41513663302: completed/failure
+- 41542996185: in_progress/None
+- 41540256258: in_progress/None
 
 ## Current continuation: measured16Via2 benefit is small; full650 wave still authoritative
 Cloud resistance comparison41541318521/source09b163cb8a45f3682188586806044fc0e2fcd459 SUCCESS, release432056699. All3236 freshRC archive members authenticated; all26218 native/exported resistors agree,978 native anchors and coordinates verified. Eight full unit-injection networks passed KCL/energy,analytic2.5ohm,reciprocity and4fault controls. All ranked edges retain native coordinates.
