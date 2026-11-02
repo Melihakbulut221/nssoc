@@ -1,11 +1,11 @@
-name: Diagnose actual full native rejected waveform
+name: Diagnose native sampler stage and clock arrival timing
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-wire-wave-diagnosis-${{ github.ref }}
+  group: cdr-sampler-stage-timing-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'

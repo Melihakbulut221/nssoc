@@ -2,11 +2,12 @@
 import ast,hashlib,json,os,subprocess,sys,tarfile
 from pathlib import Path
 import numpy as np
+import cdr_sampler_stage_timing as stage_timing
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"wire-wave-diagnosis";NATIVE=ROOT/"wire-wave-diagnosis-native"
 CFG="scripts/cdr-wire-wave-diagnosis-inputs.json"
 PINS="scripts/cdr-wire-wave-diagnosis-pins.json"
-BRANCH="codex/cdr-collector-via2-wave-diagnosis";REPO="Melihakbulut221/nssoc"
+BRANCH="codex/cdr-sampler-stage-timing";REPO="Melihakbulut221/nssoc"
 def need(ok,msg):
     if not ok:raise AssertionError(msg)
 def digest(path):
@@ -51,7 +52,7 @@ def controls():
         try:read(q,["v(x)"],1e-12,1e-12)
         except AssertionError:rejected.append(label)
         else:raise AssertionError("accepted malformed native "+label)
-    save("controls.json",dict(status="PASS_FROZEN_FULL_WAVE_READER_CONTROLS",rejected=rejected,new_transient_executed=False))
+    save("controls.json",dict(status="PASS_FROZEN_FULL_WAVE_READER_CONTROLS",rejected=rejected,stage_controls=stage_timing.source_controls(),new_transient_executed=False))
 def acquire(c):
     p=c["parent"];r=api("actions/runs/"+str(p["run"]));rel=api("releases/"+str(p["release"]));tag=api("git/ref/tags/"+p["tag"])
     need(r["status"]=="completed"and r["conclusion"]=="failure"and r["head_sha"]==p["source"]and r["run_attempt"]==1,"actual rejected source")
@@ -109,6 +110,7 @@ def diagnose():
     need(m["current_context"]==dict(source=c["parent"]["source"],run_id=c["parent"]["run"],attempt=1),"measurement source")
     t,d,capture=reader()(paths["wave"],m["vectors"],34.25e-9,.3125e-12)
     need(capture==m["raw_capture"],"same complete original native raw measurement")
+    stage_timing.diagnose_stages(ROOT,m,contract,t,d,save)
     active=t>=2e-9;UI=125e-12;START=2e-9
     def v(n):
         n=m["binding"]["aliases"].get(n,n)
