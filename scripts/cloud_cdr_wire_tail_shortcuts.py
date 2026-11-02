@@ -7,7 +7,7 @@ import cloud_cdr_wire_geometry_acquire as prior
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"wire-tail-shortcuts";NATIVE=ROOT/"wire-tail-shortcuts-native"
 MANIFEST="scripts/cdr-wire-tail-shortcuts-pins.json";INPUT="scripts/cdr-wire-tail-shortcuts-inputs.json"
-BRANCH="codex/cdr-current-ground-strap";TOP="nssoc_cdr_pd500_resistor_v59"
+BRANCH="codex/cdr-current-ground-topology";TOP="nssoc_cdr_pd500_resistor_v59"
 LAYERS=(8,19,10,29)
 TARGETS=(("D_collector","T061_C","T056_E"),("D_emitter","T061_E","T005_D"),("C_collector","T115_C","T108_E"),("C_emitter","T115_E","T034_D"))
 need=prior.need
@@ -896,14 +896,51 @@ def generate_ground_strap(base,cfg):
         physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False,
         requires=["full560DRC","deep_flat_LVS13","current_canonical_binding","fresh_RC","unchanged_loaded_wave_gates"]))
 
+def inspect_ground_topology(base,cfg):
+    inspect_current_rails(base,cfg)
+    report=json.loads((OUT/"current-avss-anchors.json").read_bytes())
+    components={a["wire_component"]for a in report["anchors"]};need(len(components)==1,"one current native avss component")
+    component=next(iter(components))
+    gp=base/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds";wp=base/"binding/inputs/wire/native05/wires.l2n"
+    g=pya.Layout();g.read(str(gp));top=g.cell(TOP);need(top is not None and g.dbu==.001,"current physical top")
+    before=region_snapshot(g,top);w=pya.LayoutToNetlist();w.read(str(wp));need(w.internal_layout().dbu==.001,"actual wire DBU")
+    nets={n.cluster_id:n for n in w.netlist().top_circuit().each_net()};need(component in nets,"actual native ground")
+    layers=(8,19,10,29,30,49,50,66,67,125,126,133,134)
+    records={};owned={}
+    for n in layers:
+        layer=w.layer_by_name("gds_"+str(n));need(layer is not None,"complete original conductor stack")
+        full=before.get((n,0),pya.Region());need((full^layer).is_empty(),"complete physical union "+str(n))
+        region=w.shapes_of_net(nets[component],layer,True).merged();owned[n]=region
+        need((region-full).is_empty(),"actual owned subset")
+        polys=[dict(bbox=bounds(pya.Region(p)),area_dbu2=p.area(),rectangle=p.area()==p.bbox().area())for p in region.each()]
+        records[str(n)]=dict(bbox=bounds(region),polygons=len(polys),area_dbu2=region.area(),members=polys)
+    rows=[]
+    for anchor in report["canonical_anchors"]:
+        metal=anchor["metal"];point=anchor["point_dbu"];touch=box(*point,1)
+        need(metal in owned and(touch-owned[metal]).is_empty(),"canonical avss anchor on extracted owned stack")
+        rows.append(dict(anchor=anchor,containing_original_polygon_bboxes=[bounds(pya.Region(p))for p in owned[metal].interacting(touch).each()],
+            local_stack={str(n):dict(bbox=bounds(owned[n]&box(*point,20000)),polygons=(owned[n]&box(*point,20000)).merged().count())for n in layers}))
+    need(pin(gp)==cfg["complete_members"]["binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds"]and pin(wp)==cfg["complete_members"]["binding/inputs/wire/native05/wires.l2n"],"native inputs unchanged")
+    after=region_snapshot(g,top);need(set(before)==set(after),"unchanged layers")
+    for k in before:need((before[k]^after[k]).is_empty(),"unchanged actual geometry")
+    save("current-ground-stack-topology.json",dict(status="COMPLETE_CURRENT_NATIVE_GROUND_STACK_TOPOLOGY",
+        input_gds=pin(gp),input_l2n=pin(wp),component=component,canonical_net=report["native_net"],
+        layers=records,anchors=rows,all13native_unions_verified=True,original_geometry_unchanged=True,
+        no_continuous_M5_spine_assumed=True,new_geometry_generated=False,physical_acceptance=False,
+        full_phy_accepted=False,final_timing_complete=False))
+
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
         cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
-        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"]),"explicit native operation")
+        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"]),"explicit native operation")
         reserve(wait=True)
         base=acquire_current(cfg)
+        if sys.argv[1:]==["--inspect-ground-topology"]:
+            inspect_ground_topology(base,cfg)
+            save("result.json",dict(status="COMPLETE_CURRENT_NATIVE_GROUND_STACK_TOPOLOGY",physical_acceptance=False,full_phy_accepted=False))
+            return
         if sys.argv[1:]==["--generate-ground-strap"]:
             generate_ground_strap(base,cfg)
             save("result.json",dict(status="GENERATED_ACTUAL_M5_GROUND_STRAP_REQUIRES_NATIVE_QUALIFICATION",physical_acceptance=False,full_phy_accepted=False))
