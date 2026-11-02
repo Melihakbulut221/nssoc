@@ -1,6 +1,20 @@
-# Cloud continuation — checkpoint v272
+# Cloud continuation — checkpoint v273
 
-Updated: 2026-11-02T02:53:00.667587+00:00
+Updated: 2026-11-02T03:22:24.929421+00:00
+
+## Latest continuation: actual snapshot reload passed; actual PHY wave rejected
+
+All native work remains GitHub-only. No local native input, waveform, GDS, ODB, tool cache or project files are retained.
+
+**Mainchip:** native run41381113212/source968ca55acade41e869ae66bb2280c799bd7e41e3/release431030641 passed the actual last partial-ODB load/write/reload and full original scoped-delta audit. Candidate and rewritten ODB are byte-identical:214432143bytes/bde736aeacee0fd7a476d5375ae9c30a7199c630fdae190934145dcc4d43e977. The full native snapshot covers154480instances,143820nets,1691protected clock records. Exactly828owned signal nets changed from the original cleared snapshot; no owned net remains without a wire; all nonowned structure/wiring remains exact. Independent52source controls passed in41380942856. This proves safe preservation of the partial database, NOT router-state resume equivalence or completed routing. Original26snapshots and elapsed-limit failure41349316524 remain preserved. Latest route iteration25 had298router violations; these are not setup/hold counts.
+
+**Current PHY electrical rejection:** run41379770619/source16c1b1d7d5ab2cf88a884c9dd255da359eff6d2c completed the actual current24530R/15676C loaded transient with unchanged sources and simulator return0. All113475rows/1152columns were read. Data, phase and device predicates failed. Phase13.586716731mV<30mV; signed VI41.460608381uA<50uA. Four transistor minimumVce values:61=.349021977V,62=.346337364V,115=.381265704V,116=.380062961V against.4V. SamplerC22andD50wrong-sign samples remain. Do not confuse this electrical failure with initial descriptor-only failure41379434066.
+
+**Current full-wave diagnosis:** run41382407375/source9154c6b9c4358b8e233df6b79a4ccb1365ebced3 passed the unchanged frozen reader and8refusal cases, authenticated all131native archive members, parsed the entire existing waveform and independently reproduced original scalar measurements. Failed-wave SHA5d4dd06eb3590e860d0528f30e548f8b436d41a90084de9719fb4f91cf6e42bd. At transistor61/62 minimumVce, connected tail MOS source avss is.32396-.32715V while substrate is.001061V. At115/116 minima, tail sources are.32782-.33095V, substrate.001063V. Related load-resistor avss is.27639/.28131V. These current-wave measurements justify investigating actual supply/ground routing, but do not by themselves prove a specific repair will pass. Current shortcuts leave emitter-net drops around42-46mV and collector paths24-78mV. Preserve all models and gates; use real native ownership for any metal reinforcement, then full DRC/LVS, canonical binding, new RC and loaded waves.
+
+**Next mainchip action:** inspect pinned router source before choosing a snapshot continuation strategy. Pinned upstreamdcf36133a369abc8f3c5e5738cd4d82e4903c0e0 contains single_step_dr/step_dr; main detailed_route still performs initGuide/prep/track-assignment before routing. Therefore loading a passed snapshot does not alone prove continuation from iteration26. No new route has been dispatched in this checkpoint. Preserve exact scope, original wire classes, diodePG, matching netlist, full DRC/antenna and original3corner RC/STA acceptance requirements.
+
+All four runs above are terminal. Full serial Gen3x4 PHY, mainchip route, final setup/hold and production approval remain open. Monitor remains read-only every8hours; automatic_native_dispatch=false.
 
 ## Latest continuation: corrected current RC loaded job active
 
