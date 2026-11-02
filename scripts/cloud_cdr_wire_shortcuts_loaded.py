@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Provisional C/D input-bias trial using frozen loaded methods and fixed parent wire RC."""
+"""Provisional slave-drive trial with exact geometry binding and frozen electrical gates."""
 import argparse,ast,copy,hashlib,json,os,platform,shutil,signal,subprocess,sys,tarfile,time,traceback,types
 from pathlib import Path,PurePosixPath
 import cdr_via2_m3_loaded_core as original
 import cdr_sampler_bias_trial as trial
+import cdr_slave_drive_binding as geometry_binding
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"cloud-wire-shortcuts-loaded"
 NATIVE=OUT/"native";DERIVED=OUT/"derived";CONTROLS=ROOT/"wire-loaded-controls"
@@ -88,6 +89,9 @@ def current_configuration(root=ROOT):
     s=STATE
     for name,expected in s["protected"].items():need(pin(name)==expected,"unchanged actual configuration input "+name)
     return copy.deepcopy(s["configuration"]),copy.deepcopy(s["records"])
+def numerical_namespace(root=ROOT,numpy=None):
+    need(Path(root)==ROOT,"explicit current geometry binding root")
+    return geometry_binding.numerical_namespace(original,Path(root),numpy)
 def frozen():
     """Clone function globals explicitly; retain original numerical source and all acceptance limits."""
     ns=dict(original.__dict__)
@@ -95,7 +99,7 @@ def frozen():
         if isinstance(fn,types.FunctionType)and fn.__globals__ is original.__dict__ and name not in("main","current_configuration"):
             ns[name]=types.FunctionType(fn.__code__,ns,fn.__name__,fn.__defaults__,fn.__closure__)
     ns.pop("main",None)
-    ns.update(current_configuration=current_configuration,INPUTS=BASIS)
+    ns.update(current_configuration=current_configuration,INPUTS=BASIS,numerical_namespace=numerical_namespace)
     need(ns["prepare_case"].__code__ is original.prepare_case.__code__ and ns["measure_case"].__code__ is original.measure_case.__code__,"unchanged complete preparation and measurement bodies")
     return types.SimpleNamespace(**ns)
 def controls():
@@ -140,7 +144,8 @@ def controls():
     need(len(prefix)==3 and isinstance(prefix[0],ast.Assign)and prefix[0].targets[0].id=="nodes"and isinstance(prefix[1],ast.Expr)and isinstance(prefix[2],ast.Assign)and prefix[2].targets[0].id=="vectors","exact frozen vector prefix")
     need(STATE is None and not NATIVE.exists(),"no native input in source controls")
     trial_controls=trial.source_controls(ROOT)
-    record=dict(trial_controls=trial_controls,status="PASS_PROVISIONAL_BIAS_TRIAL_FROZEN_LOADED_SOURCE_CONTROLS",definitions=29,executable_blocks=5,frozen_source_files=9,rejected=cases,
+    geometry_controls=geometry_binding.source_controls(ROOT)
+    record=dict(trial_controls=trial_controls,geometry_controls=geometry_controls,status="PASS_PROVISIONAL_BIAS_TRIAL_FROZEN_LOADED_SOURCE_CONTROLS",definitions=29,executable_blocks=5,frozen_source_files=9,rejected=cases,
       frozen_complete_prepare_and_measure=True,original_13_binding_controls_required_in_actual_preparation=True,
       actual_port_order=b["semantic_interface"],native_acquired=False,transient_executed=False,**FLAGS)
     save(CONTROLS/"result.json",record)
@@ -198,11 +203,12 @@ def configure(paths):
     global STATE
     need(STATE is None,"one actual configuration")
     need(TRIAL_BASIS is not None and TRIAL_PROTECTED is not None,"explicit provisional trial derivation")
-    b=TRIAL_BASIS;contract=read(paths["composition"]);planes=read(paths["planes"]);ns=original.numerical_namespace()
+    b=TRIAL_BASIS;contract=read(paths["composition"]);planes=read(paths["planes"]);ns=numerical_namespace()
     need(contract["counts"]==b["counts"]and contract["interface"]==b["semantic_interface"],"actual current numerical interface")
     need(len(contract["device_records"])==500 and sum(len(d["terminals"])for d in contract["device_records"])==1446,"all native devices and terminals")
     need(planes["status"]=="PASS_PD500_NATIVE160_PLANES_51_NETS_19_FAULTS"and len(planes["anchors"])==160 and len({p["logical_net"]for p in planes["anchors"]})==51,"complete current native plane binding")
     bound=ns["bind_native"](Path(paths["model"]).read_text(),contract,planes)
+    save(DERIVED/"slave-geometry-binding-controls.json",geometry_binding.native_controls(ns,Path(paths["model"]).read_text(),contract,planes,ROOT))
     groups=bound["groups"]
     ns.update(bound=bound,ports=bound["ports"],devices=groups["npn13g2"],mos=groups["sg13_lv_nmos"],
       resistors=groups["rppd"],caps=groups["cap_cmim"],contacts=groups["ptap1"])
