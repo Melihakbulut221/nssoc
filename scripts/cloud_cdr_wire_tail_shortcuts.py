@@ -7,7 +7,7 @@ import cloud_cdr_wire_geometry_acquire as prior
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"wire-tail-shortcuts";NATIVE=ROOT/"wire-tail-shortcuts-native"
 MANIFEST="scripts/cdr-wire-tail-shortcuts-pins.json";INPUT="scripts/cdr-wire-tail-shortcuts-inputs.json"
-BRANCH="codex/cdr-source-m2-critical-access";TOP="nssoc_cdr_pd500_resistor_v59"
+BRANCH="codex/cdr-drain-m23-critical-access";TOP="nssoc_cdr_pd500_resistor_v59"
 LAYERS=(8,19,10,29)
 TARGETS=(("D_collector","T061_C","T056_E"),("D_emitter","T061_E","T005_D"),("C_collector","T115_C","T108_E"),("C_emitter","T115_E","T034_D"))
 need=prior.need
@@ -405,8 +405,8 @@ def acquire_current(cfg):
             need(dict(bytes=size,sha256=h.hexdigest())==expected,"member digest "+n);seen.add(n)
     need(seen==set(index["files"])and selected<=seen,"all current RC members authenticated")
     q=json.loads((target/"fresh-rc-qualification.json").read_bytes())
-    need(q["status"]=="PASS_SOURCE_M2_BYPASS_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual current RC qualification")
-    need(pin(target/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds")==dict(bytes=1018452,sha256="9fef07bce22bce079cf82e3c7600932aa6adce49359838f6c72569fbde3ef61b"),"actual current four-path GDS baseline")
+    need(q["status"]=="PASS_DRAIN_M23_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual current RC qualification")
+    need(pin(target/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds")==dict(bytes=1075316,sha256="5e5ef3940bb0e410af8bbb92376e2c1cb60e3c520e37b65c7e675af41e58603f"),"actual current four-path GDS baseline")
     save("acquisition.json",dict(run=r,release=rel,authenticated_members=len(seen),selected=sorted(selected),all_current_members_authenticated=True,native_payloads_cloud_only=True))
     return target
 def verify_target(base,source_label,a,sink_label,b):
@@ -1108,7 +1108,7 @@ def inspect_critical_access(base,cfg):
         need(anchor==expected,"only authenticated seven MIM coordinate changes; all other metadata exact")
     comp=json.loads((base/"mim/composition/composition.json").read_bytes())
     proof=json.loads((ROOT/"scripts/cdr-critical-resistance-inputs.json").read_bytes())
-    need(proof["run"]==41423647133 and proof["source"]=="a11002d7924f6649598fbec223eb830ed64402af","actual sensitivity producer")
+    need(proof["run"]==41430503141 and proof["source"]=="3d2601040c26b9e10443f674e6d2c211f8d14546","actual sensitivity producer")
     queries=proof["queries"];need(len(queries)==32,"all measured queries")
     public={r[1]:r for r in raw if r[0]=="port"}
     need(len(public)==978 and set(public)==set(anchors),"full native port coordinate census")
@@ -1130,8 +1130,8 @@ def inspect_critical_access(base,cfg):
         return Decimal(m[1])*{"":Decimal(1),"n":Decimal("1e-9"),"u":Decimal("1e-6"),"m":Decimal("1e-3"),"k":Decimal("1e3"),"p":Decimal("1e-12"),"f":Decimal("1e-15")}[m[2]]
     key=lambda a,b,v:(tuple(sorted((a.lower(),b.lower()))),value(v))
     wire=[r for r in parse(root/"wires.spice")if r[0].lower().startswith("r")]
-    need(len(wire)==24530 and all(len(r)==4 for r in wire),"actual complete wire resistor census")
-    by={r[0].lower():r for r in wire};need(len(by)==24530,"unique native resistor names")
+    need(len(wire)==26218 and all(len(r)==4 for r in wire),"actual complete wire resistor census")
+    by={r[0].lower():r for r in wire};need(len(by)==26218,"unique native resistor names")
     physical_r=[r for r in distributed if r[0]=="resist"]
     need(Counter(key(*r[1:4])for r in physical_r)==Counter(key(*r[1:4])for r in wire),"all native and exported R endpoints/values/multiplicity equal")
     points=defaultdict(list)
@@ -1207,7 +1207,7 @@ def inspect_critical_access(base,cfg):
         need(pin(base/n)==cfg["complete_members"][n],"actual input unchanged "+n)
     save("critical-access-map.json",dict(status="COMPLETE_ACTUAL_CRITICAL_RESISTOR_COORDINATE_AND_OWNERSHIP_MAP",
         input_gds=pin(gp),sensitivity_proof=pin(ROOT/"scripts/cdr-critical-resistance-inputs.json"),all978port_coordinate_checks=True,all978original_and_extraction_ownership_checks=True,documented_mim_access_relocations=list(changes.values()),
-        all24530native_exported_resistors_equal=True,all13native_unions_verified=True,critical_resistors=rows,
+        all26218native_exported_resistors_equal=True,all13native_unions_verified=True,critical_resistors=rows,
         coordinate_interpretation="Original Magic internal5nm coordinate grid independently checked against all978actual extraction anchors; seven previously documented MIM bottom access relocations authenticated and both point sets physically owned. rnode type_token is retained without treating it as a GDS layer; physical layer evidence comes only from native owned geometry.",
         original_geometry_unchanged=True,new_geometry_generated=False,fresh_RC=False,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
 
