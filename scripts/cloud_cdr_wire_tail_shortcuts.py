@@ -946,6 +946,15 @@ def horizontal_ground_guard(original,widened,owned,full,other,outline):
         foreign_topvia2=widened.sized(5).interacting(full[133]-owned[133]).is_empty(),
         unclassified_drawing_clear=all(widened.sized(5005 if k[0]==134 else 5).interacting(r).is_empty()for k,r in other.items()),
         inside_original_bbox=(widened-outline).is_empty())
+def horizontal_ground_options(original,owned,full,other,outline):
+    options=[]
+    centered=original.sized(0,900,2).merged()
+    for strategy,dy in (("centered",0),("upper_only",900),("lower_only",-900)):
+        widened=centered.moved(0,dy).merged()
+        checks=horizontal_ground_guard(original,widened,owned,full,other,outline)
+        options.append(dict(strategy=strategy,widened=widened,guards=checks,admitted=all(checks.values())))
+    return options
+
 def horizontal_ground_controls():
     original=pya.Region(pya.Box(-100000,-1600,100000,1600))
     widened=original.sized(0,900,2).merged();outline=box(0,0,200000)
@@ -971,7 +980,17 @@ def horizontal_ground_controls():
     broad_check=horizontal_ground_guard(original,widened,own,broad,{},outline)
     need(broad_check["foreign_topmetal2_standard_2um"]and not broad_check["wide_foreign_topmetal2_clearance_5um"],"wide neighboring line still requires5um")
     checks.append("wide foreign line retains5umspacing")
-    need(len(checks)==11,"eleven horizontal guard controls")
+    choices=horizontal_ground_options(original,own,full,{},outline)
+    need([bounds(v["widened"])for v in choices]==[[-100000,-2500,100000,2500],[-100000,-1600,100000,3400],[-100000,-3400,100000,1600]],"exact native asymmetric rectangles")
+    checks.append("exact added-only centered upper and lower widths")
+    above={n:r.dup()for n,r in full.items()};above[134]+=pya.Region(pya.Box(-100000,4000,100000,7200))
+    choices=horizontal_ground_options(original,own,above,{},outline)
+    need([v["strategy"]for v in choices if v["admitted"]]==["lower_only"],"choose actual clear side without weaker guards")
+    checks.append("choose clear side next to blocked rail")
+    both={n:r.dup()for n,r in above.items()};both[134]+=pya.Region(pya.Box(-100000,-7200,100000,-4000))
+    need(not any(v["admitted"]for v in horizontal_ground_options(original,own,both,{},outline)),"reject both blocked sides")
+    checks.append("reject when both sides blocked")
+    need(len(checks)==14,"fourteen horizontal guard controls")
     return checks
 def generate_horizontal_ground(base,cfg):
     inspect_ground_topology(base,cfg)
@@ -996,11 +1015,12 @@ def generate_horizontal_ground(base,cfg):
     other={k:r for k,r in before.items()if k[0]in layers and k[1]!=0 and not r.is_empty()}
     additions=pya.Region();rows=[]
     for index,poly in enumerate(sorted(candidates,key=lambda p:(p.bbox().bottom,p.bbox().left))):
-        original=pya.Region(poly);widened=original.sized(0,900,2).merged()
-        checks=horizontal_ground_guard(original,widened,owned,full,other,outline)
-        rows.append(dict(index=index,original_bbox=bounds(original),widened_bbox=bounds(widened),
-            old_area_dbu2=original.area(),new_area_dbu2=widened.area(),guards=checks,admitted=all(checks.values())))
-        if all(checks.values()):additions+=widened
+        original=pya.Region(poly);options=horizontal_ground_options(original,owned,full,other,outline)
+        selected=next((v for v in options if v["admitted"]),None)
+        rows.append(dict(index=index,original_bbox=bounds(original),old_area_dbu2=original.area(),
+            variants=[dict(strategy=v["strategy"],widened_bbox=bounds(v["widened"]),new_area_dbu2=v["widened"].area(),guards=v["guards"],admitted=v["admitted"])for v in options],
+            selected_strategy=None if selected is None else selected["strategy"],admitted=selected is not None))
+        if selected is not None:additions+=selected["widened"]
     save("horizontal-ground-proposal.json",dict(branches=rows,unchanged_public_pad=retained[0],
         accepted_branches=sum(r["admitted"]for r in rows),requested_branches=32,
         original_width_dbu=3200,candidate_width_dbu=5000,only_added_layer=[134,0],
