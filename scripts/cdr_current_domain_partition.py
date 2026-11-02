@@ -120,7 +120,21 @@ def controls():
         elif label=='metadata-fingers':u['parameters']['ng']='4'
         else:plan[1]['units'][0]['instance']=u['instance']
         reject(label,lambda:prior.validate_plan(plan,state['joined']))
-    need(len(rejected)==16 and len(renderer['refused'])==7,'All23 source fault cases')
+    # Preserve total W and all junction formulae: this can only be refused
+    # by the per-unit model-domain predicate, not the width-sum safeguard.
+    balanced=copy.deepcopy(state['plan'])
+    target=next(p for p in balanced if p['original_parameters']['w']=='36u')
+    need(len(target['units'])==4 and all(prior.scalar(u['parameters']['w'])==Decimal('9e-6')for u in target['units']),'Exact balanced-domain fixture')
+    for unit,width in zip(target['units'][:2],(Decimal('11'),Decimal('7'))):
+        q=unit['parameters'];q.update(w=str(width)+'u',ad=str(width*Decimal('.34'))+'p',
+          **{'as':str(width*Decimal('.34'))+'p'},pd=str(2*(width+Decimal('.34')))+'u',ps=str(2*(width+Decimal('.34')))+'u')
+    need(sum(prior.scalar(u['parameters']['w'])for u in target['units'])==Decimal('36e-6'),'Balanced corrupted width sum remains36um')
+    try:prior.validate_plan(balanced,state['joined'])
+    except ValueError as error:
+        need(str(error)=='unit width model domain','Domain fault must reach the exact domain predicate')
+        rejected.append('balanced-out-of-domain-unit-with-valid-total-width-and-junctions')
+    else:raise ValueError('Accepted balanced out-of-domain primitive')
+    need(len(rejected)==17 and len(renderer['refused'])==7,'All24 source fault cases')
     # All inherited helper input/source objects remain immutable.
     need((ROOT/MAP).read_bytes()==enc(mapping),'Exact canonical input mapping bytes')
     return dict(status='PASS_CURRENT_MOS_ONLY_PARTITION_SOURCE_CONTROLS',source=e['GITHUB_SHA'],
@@ -132,5 +146,5 @@ def main():
     parser.add_argument('--out',type=Path,required=True);a=parser.parse_args()
     result=controls();a.out.mkdir(parents=True,exist_ok=False)
     (a.out/'result.json').write_bytes(enc(result))
-    print(json.dumps(dict(status=result['status'],source_faults=23,original_mos=50,proposed_units=200,native_executed=False)))
+    print(json.dumps(dict(status=result['status'],source_faults=24,original_mos=50,proposed_units=200,native_executed=False)))
 if __name__=='__main__':main()
