@@ -1,6 +1,38 @@
-# Cloud continuation — checkpoint v283
+# Cloud continuation — checkpoint v284
 
-Updated: 2026-11-02T06:10:47.856857+00:00
+Updated: 2026-11-02T06:45:23.278169+00:00
+
+## Current continuation: eight-source M1 candidate generated; full native physical verification dispatched
+
+All native CAD, model and waveform work remains GitHub-only. Full serial Gen3x4PHY, completed mainchip routing and final setup/hold remain OPEN. Local workspace is empty.
+
+Actual generation41400908740/source880dce57683ccb79f38ea43f3014bb90151329e1/branchcodex/cdr-local-source-m1/release431137984 PASSED102controls and native8target admission. New candidate native/nssoc_cdr_pd500_local_source_m1.gds is1003860bytes SHA4ccf1212d4b98046b1b56037bb1b76c53477777b08ee9cba5053c8e6323203e8. Each source3,4,5,6,32,33,34,35 receives a4um-long,1.5um-left M1 reinforcement (6um2 per source; total48um2). Only layer8/0 is added; no device or via changes. Exact serialized full-layer delta and removal/roundtrip back to originalGDS passed. Derived13121530902 is249565bytes SHA30d79a9d8163b92c50f52add9220aff620f0f8ddf5ddb646cfa3cb929e03b87e. Electrical improvement is NOT measured and physical_acceptance remains false.
+
+Full physical run41401158595/sourcee06a1fa008653e57f29a3ba4415711fd90c54498/branchcodex/cdr-local-source-m1-physical/release431139494 is independently reserved with tagcloud-results-41401158595-1-cdr-wire-shortcuts-physical. This first attempt failed before native geometry: inline policy admission still expected the previous horizontal-ground branch. Its complete job log and empty-output publication failure are preserved. Corrected run41401709497/sourcea60c812f23d80ce7672a807f6392fa35cc440a32/release431142636 on the same local-source-m1-physical branch changes only that expected branch literal and adds seven tests of the actual inline policy assertions. Follow41401709497, not the terminal41401158595; no duplicate. It authenticates complete generation archive and current candidate byte digest, then uses unchanged checker SHA3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66 for560DRC categories, deep/flat500primitiveLVS and13negative faults. Only candidate binding/proof/path changed relative to qualified physical sourcec40549f17f783ae3250139e63a9edee75721b219. Original schematic/LEF, all frozen checker/source/runtime/resource controls remain. Source was published atomically to a new branch with skip-ci, avoiding duplicate unrelated baseline RTL jobs while retaining explicitly dispatched physical source controls.
+
+Three generation refusals are preserved in full derived metadata:
+-41397981344/source6ef31b5bd00bd0eacc3e46983a13fe2b3e09ab4f:91controls passed; native original two-argument Region.sized(width/2,0) selected isotropic mode0 and grew Y. All8targets refused on span/left-only/spacing/shape guards; no GDS accepted.
+-41399519731/source7694c28b3ab848acfa854b962f17a5bc1318b603:98controls passed including actual old-overload reproduction and all5width polygon comparisons. Explicit3argument horizontal sizing fixed Y. All8still refused because full36um source contour is not a constant290nm rectangle; added material reached65nm inside nominal left boundary and approached foreignM1.
+-41399977249/sourcecac63a0e8834b3bb620a80e9c7d807c33745a084:102controls passed; none of20-36um source bands was an exact rectangle, so no width admitted. Do not infer nonrectangularity only at distant ends; the measured data only proves these tested full bands are nonrectangular. Actual map41397314520 shows4um local windows are exact290nm rectangles for all8sources. Adding16/12/8/4um search lengths admitted the4um candidate with ALL original605nm foreignM1,5nm foreignVia1, left-only, attachment, maximum-span and exact8target gates unchanged.
+
+KLayout primary API documentation confirms sized(dx,dy,mode) differs from sized(d,mode): https://www.klayout.de/doc-qt5/code/class_Region.html . Current runtime0.30.4.post1 executed regression controls. IHP published M1 rules were researched (0.18um basic,0.22um qualified parallel run,0.6um wide-line case), but NO guard thresholds or fullDRC rules were changed. The generated candidate still passed the stricter605nm proposal guard.
+
+Queue management: cancelled only old/initial-copy checks41397960768 and41396646262, then duplicated generic checks41397312674 on completed read-only diagnostic branch. The latter compare against06d603105065697e069dde1e6954a8605a535c5c proved exactly6changed diagnostic/doc/workflow files and no RTL changes; its actual native mapping41397314520 had passed. Current generation-head CI and all native jobs remained. Cancellation receipts, terminal run/jobs and pre-existing failed formal-and-boot logs are preserved under docs/evidence/cloud-ci-capacity-cleanup-20261102/. Those historical branches lack nettype directives in soc_pcie_gen12_raw32_align.v. Rootv283 already contains both directives; exact comparison proved those44bytes are the only difference. No new RTL patch or claim of full root lint pass was made.
+
+Next: if corrected41401709497 passes full physical scope, bind actual current4ccf1212GDS to canonical native extraction (500devices,1446terminals,25ports,978anchors), prove only expected M1 delta against actual priorb9b923parent, then freshRC numerical validation and unchanged loaded waves. Use actual generator41400908740 and physical41401709497 release/indexes; do not reuse old RC as new. Existing electrical41391065497 remains REJECTED for fourHBTminVce, phase/signedVI and sampler margins/timing. Source-local M1 is only part of a32.5245ohm aggregate edge; improvement must be quantified, not assumed. Complete serial PLL/CDR/SERDES/PCS integration and full chip qualification remain required.
+
+Mainchip41393730481/source7cc6f94a7a685423533a25bc0d418e33764e8366/release431098535 remains active. Source controls passed; actual47route/fullDRC/antenna results pending. Original140DRC are last terminal measured count. Preserve reversible class identity,1691clocks, originalglobalclass restoration, diodePG/fullconnectivity/LVS and final3cornerSTA. No duplicate or timeout-based restart.
+
+Previous fully readback-verified rootv283=6de29461db911bec51ec4c4f7e7052d2b2acdf61. Inventory758, read-only8hour monitor, automatic_native_dispatch=false.
+
+Observed at 2026-11-02T06:45:23.278169+00:00:
+- 41397981344: completed/failure
+- 41399519731: completed/failure
+- 41399977249: completed/failure
+- 41400908740: completed/success
+- 41401158595: completed/failure
+- 41401709497: in_progress/None
+- 41393730481: in_progress/None
 
 ## Current continuation: native resistor physical mapping passed; measured local Metal1 candidate dispatched
 
