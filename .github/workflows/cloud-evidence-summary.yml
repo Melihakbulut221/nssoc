@@ -1,4 +1,4 @@
-name: Current-parent actual MOS geometry and native mapping
+name: Current collector access resistance and redundant via candidate
 on:
   workflow_dispatch:
     inputs:
@@ -10,7 +10,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: current-domain-geometry-${{ github.ref }}
+  group: clock-collector-access-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -32,13 +32,13 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/cdr-current-domain-geometry-methods.json
+            /scripts/cdr-clock-collector-access-methods.json
       - name: Materialize exact geometry source closure
         run: |
           python3 -B - <<'PY'
           import json,subprocess
           from pathlib import Path
-          m='scripts/cdr-current-domain-geometry-methods.json'
+          m='scripts/cdr-clock-collector-access-methods.json'
           names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
           assert all(not n.startswith('/')and '..'not in Path(n).parts for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
@@ -46,27 +46,27 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir klayout==0.30.4.post1
-      - name: Authenticate actual current GDS and map all50 MOS native terminals
-        run: python3 -B scripts/cdr_current_domain_geometry.py --execute
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir klayout==0.30.4.post1 numpy==2.3.3 scipy==1.16.2
+      - name: Authenticate actual current RC and generate same-net clock access vias
+        run: python3 -B scripts/cdr_clock_collector_access.py --execute
       - name: Preserve complete geometry inspection success or failure
         if: always()
-        run: python3 -B scripts/cdr_current_domain_geometry.py --publish
+        run: python3 -B scripts/cdr_clock_collector_access.py --publish
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: current-domain-geometry-derived-${{ github.run_id }}
-          path: cloud-domain-geometry/derived
+          name: clock-collector-access-derived-${{ github.run_id }}
+          path: cloud-clock-access/derived
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: current-domain-geometry-native-${{ github.run_id }}
+          name: clock-collector-access-native-${{ github.run_id }}
           path: |
-            cloud-domain-geometry
-            domain-geometry-publication
+            cloud-clock-access
+            clock-access-publication
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 90
