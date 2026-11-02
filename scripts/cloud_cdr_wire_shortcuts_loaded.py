@@ -36,8 +36,16 @@ def gate():
     m=read(ROOT/MANIFEST)
     for name,expected in m["files"].items():need(pin(ROOT/name)==expected,"protected current source "+name)
     return ctx
+def validate_assets(assets):
+    need(set(assets)=={"native-fresh-rc.tar.gz","complete-output-index.json"},"exact RC asset names")
+    for name,value in assets.items():
+        need(set(value)=={"id","name","bytes","sha256"},"complete downloader asset schema")
+        need(value["name"]==name and type(value["id"])is int and value["id"]>0 and type(value["bytes"])is int and value["bytes"]>0,"downloader asset identity")
+        need(isinstance(value["sha256"],str)and len(value["sha256"])==64 and all(c in "0123456789abcdef"for c in value["sha256"]),"asset digest")
+    return True
 def basis():
     b=read(ROOT/BASIS)
+    validate_assets(b["producer"]["assets"])
     need(b["schema"]=="nssoc.four-mixed-shortcut.loaded-basis.v1"and b["source_preparation_only"]and not b["native_execution_authorized"]and not b["wave_execution_authorized"],"basis is input evidence not execution authority")
     need(b["producer"]["run"]==41352147913 and b["producer"]["source"]=="6eace90ce68a61546f0268b3fd65b2b9b2b3840d"and b["producer"]["release"]==430869108,"actual new fresh RC producer")
     need(b["candidate"]==dict(bytes=1001172,sha256="1c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94"),"physically qualified actual layout")
@@ -99,6 +107,14 @@ def controls():
     q,oq,index=copy.deepcopy(fixture["q"]),copy.deepcopy(fixture["oq"]),dict(context=dict(source=b["producer"]["source"],run=b["producer"]["run"],attempt=1),files=b["producer"]["complete_members"])
     qualified_rc(q,oq,index,b)
     cases=[]
+    for label in ("missing-asset-name","mismatched-asset-name"):
+        altered=copy.deepcopy(b["producer"]["assets"])
+        target=altered["native-fresh-rc.tar.gz"]
+        if label=="missing-asset-name":target.pop("name")
+        else:target["name"]="other.tar.gz"
+        try:validate_assets(altered)
+        except AssertionError:cases.append(label)
+        else:raise AssertionError("accepted "+label)
     for label in("source","counts","scope","missing-phase","old-port-order","old-selector-port-order","electrical-claim","old-index"):
         x,y,z=copy.deepcopy(q),copy.deepcopy(oq),copy.deepcopy(index)
         if label=="source":y["context"]["source"]="0"*40
