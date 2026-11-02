@@ -1,4 +1,4 @@
-name: Current collector access resistance and redundant via candidate
+name: Direct clock TopMetal1 physical interconnect candidate
 on:
   workflow_dispatch:
     inputs:
@@ -10,7 +10,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: clock-collector-access-${{ github.ref }}
+  group: clock-direct-metal-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -32,13 +32,13 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/cdr-clock-collector-access-methods.json
+            /scripts/cdr-clock-direct-metal-methods.json
       - name: Materialize exact geometry source closure
         run: |
           python3 -B - <<'PY'
           import json,subprocess
           from pathlib import Path
-          m='scripts/cdr-clock-collector-access-methods.json'
+          m='scripts/cdr-clock-direct-metal-methods.json'
           names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
           assert all(not n.startswith('/')and '..'not in Path(n).parts for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
@@ -47,26 +47,26 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir klayout==0.30.4.post1 numpy==2.3.3 scipy==1.16.2
-      - name: Authenticate actual current RC and generate same-net clock access vias
-        run: python3 -B scripts/cdr_clock_collector_access.py --execute
-      - name: Preserve complete geometry inspection success or failure
+      - name: Generate both complete four-terminal direct clock metal networks
+        run: python3 -B scripts/cdr_clock_direct_metal.py --execute
+      - name: Preserve full geometry candidate or rejection
         if: always()
-        run: python3 -B scripts/cdr_clock_collector_access.py --publish
+        run: python3 -B scripts/cdr_clock_direct_metal.py --publish
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: clock-collector-access-derived-${{ github.run_id }}
-          path: cloud-clock-access/derived
+          name: clock-direct-metal-derived-${{ github.run_id }}
+          path: cloud-clock-metal/derived
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: clock-collector-access-native-${{ github.run_id }}
+          name: clock-direct-metal-native-${{ github.run_id }}
           path: |
-            cloud-clock-access
-            clock-access-publication
+            cloud-clock-metal
+            clock-metal-publication
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 90
