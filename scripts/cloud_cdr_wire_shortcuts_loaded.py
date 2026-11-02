@@ -10,7 +10,7 @@ NATIVE=OUT/"native";DERIVED=OUT/"derived";CONTROLS=ROOT/"wire-loaded-controls"
 MANIFEST="scripts/cdr-wire-shortcuts-loaded-pins.json"
 BASIS="scripts/cdr-wire-shortcuts-loaded-basis.json"
 HOST="scripts/cloud_cdr_wire_shortcuts_loaded.py"
-BRANCH="codex/cdr-sampler-bias-trial"
+BRANCH="codex/cdr-sampler-balanced-bias-trial"
 REPO="Melihakbulut221/nssoc"
 FLAGS=dict(trial.FLAGS)
 STATE=None
@@ -146,7 +146,7 @@ def controls():
     save(CONTROLS/"result.json",record)
     return record
 def release_gate(empty=True,wait=False):
-    ctx=context(native=True);tag="cloud-results-"+str(ctx["run_id"])+"-1-cdr-sampler-bias-trial"
+    ctx=context(native=True);tag="cloud-results-"+str(ctx["run_id"])+"-1-cdr-sampler-balanced-bias-trial"
     for i in range(90 if wait else 1):
         p=subprocess.run(["gh","api","repos/"+REPO+"/releases/tags/"+tag],capture_output=True,text=True,timeout=180)
         if p.returncode==0:break
@@ -254,7 +254,7 @@ def simulate():
         p=case/"measurement-result.json"
         if p.is_file():shutil.copyfile(p,DERIVED/"measurement-result.json")
         gate()
-    save(DERIVED/"result.json",dict(status="PASS_PROVISIONAL_FOUR_RESISTOR_TRIAL_FROZEN_LOADED_MEASUREMENTS",
+    save(DERIVED/"result.json",dict(status="PASS_PROVISIONAL_BALANCED_EIGHT_RESISTOR_TRIAL_FROZEN_LOADED_MEASUREMENTS",
       context=ctx,model=pin(paths["model"]),measurement=report,loaded_simulation_passed=True,
       scope=trial.SCOPE,**FLAGS))
 def publish():

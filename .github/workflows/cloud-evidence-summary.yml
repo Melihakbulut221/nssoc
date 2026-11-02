@@ -1,4 +1,4 @@
-name: Provisional C D sampler input bias trial
+name: Provisional balanced C D sampler input bias trial
 on:
   workflow_dispatch:
     inputs:
@@ -10,7 +10,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-sampler-bias-trial-${{ github.ref }}
+  group: cdr-sampler-balanced-bias-trial-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -106,7 +106,7 @@ jobs:
           host.gate()
           host.release_gate(wait=True)
           PY
-      - name: Authenticate parent RC then simulate explicit four-resistor parameter trial
+      - name: Authenticate parent RC then simulate explicit eight-resistor balanced parameter trial
         id: native
         run: python3 -B scripts/cloud_cdr_wire_shortcuts_loaded.py --simulate
       - name: Permanently preserve complete success or failure and native waves
