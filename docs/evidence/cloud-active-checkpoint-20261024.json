@@ -26,31 +26,79 @@
       "status": "in_progress",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41493369685"
     },
-    "41494299114": {
-      "branch": "codex/cdr-sampler-balanced-bias-trial",
+    "41498680552": {
+      "branch": "codex/cdr-slave-drive-trial",
       "conclusion": null,
       "jobs": [
         {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 125460240457,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
           "active_steps": [],
           "conclusion": "success",
-          "id": 125445088416,
-          "name": "source-controls",
+          "id": 125460241037,
+          "name": "memory-parity",
           "status": "completed"
         },
         {
           "active_steps": [
-            "Authenticate parent RC then simulate explicit eight-resistor balanced parameter trial"
+            "All declared pilot and SoC regression proofs with fresh source checks"
           ],
           "conclusion": null,
-          "id": 125445339483,
-          "name": "loaded-wave",
+          "id": 125460241111,
+          "name": "formal-sweep (soc)",
           "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125460241162,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "All declared pilot and SoC regression proofs with fresh source checks"
+          ],
+          "conclusion": null,
+          "id": 125460241236,
+          "name": "formal-sweep (pilot)",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125460241322,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Run every non-frozen RTL suite"
+          ],
+          "conclusion": null,
+          "id": 125460241468,
+          "name": "rtl",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125460243421,
+          "name": "native-boot",
+          "status": "completed"
         }
       ],
-      "run": 41494299114,
+      "run": 41498680552,
       "source": "df723c791fec2621585c80fb56409d65b5811b44",
       "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41494299114"
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41498680552"
     }
   },
   "bounded_route_class_diagnosis_v238": {
@@ -327,7 +375,7 @@
     "physical_acceptance": false,
     "timing_accepted": false
   },
-  "checkpoint_version": 312,
+  "checkpoint_version": 313,
   "cloud_results_release_reservations": {
     "mainchip_artifact_recovery": {
       "exact_tag_target_verified": true,
@@ -2298,6 +2346,7 @@
   "continuation_note_v310": "## Current continuation: bounded guide-worker engine build dispatched\n\nRoot v309 a91216f4c7c39e4b9ede5b4278bd421f81fd3c2f permanently preserved all completed guide and full500-device mapping observations and failures (inventory809,77files10,969,281bytes, every readback verified). Native work/payloads exclusively GitHub; local workspace empty. Full serial PHY, mainchip route and final setup/hold remain OPEN.\n\nNEW REAL ENGINE BUILD41453866417, source5a82cbd4068411de19acc73605ebb64250b010fc, branchcodex/mainchip-guide-batch-engine, release431499827/tagcloud-results-41453866417-1-mainchip-guide-batch-engine-build. Independent same-sourcecontrols41453547634 SUCCESS. Do not restart if observation times out; follow this actual handle.\n\nCHANGE: exact pinned OpenROADdcf36133a369abc8f3c5e5738cd4d82e4903c0e0 FlexDR.cpp originalSHA122e84ca0906d7e53d4e5f4c7216a72e55f085f1a62b0848df06fc9eafd2e3af -> derivedSHA1a9c208a7be43783dc5873bc07e1022c15847714ccdf8b1ddac68c2717af2361. Only guideTilesFlow worker lifetime section changes. It lazily creates at most2workers, executes each chunk, commits results and destroys those workers before creating more. One box per guide worker is asserted; total completed workers must match original count. Actual original guide selection/merging/boxes/independent batch grouping, costs, ripup/follow-guide parameters and full64 strategy remain unchanged. Commit timing within each independent batch changes; routing equivalence and RSS improvement are NOT assumed.\n\nSOURCE CONTROLS: original engine7positive/45refusal/25lifecycle and original internal observer4positive/29refusal passed. New actual C++replacement body compiled with g++-std=c++20-O2-Wall-Wextra-Werror and executed under instrumented worker constructor/destructor and completion checks:7positive lifetime scenarios including empty/single/odd/multiple/nonmonotonic batches;2invalid box groups rejected. All <=2live workers and each worker completed/freed exactly once.3modified upstream source cases refused. Complete source reversal exact. These are source/fixture controls, not a complete engine or chip route qualification.\n\nCOMPILATION uses prior qualified build source26e2f28b735238bd69140dca9a0fc6d2bf29f197 with original observer derivation retained; fixed gitlinks/OpenSTA/ABC, immutableubuntu24.04-dev image,12GiB cgroup,2CPUs,no swap, native full project build and Tcl/Python interface checks. Exact source-before/after and source guard remain. All available failures and native engine archive published to the separately reserved release. No native data is downloaded locally. Complete build can qualify only compilation/interfaces, not clocks/routes/finaltiming. The next action is to collect its terminal evidence, qualify the new binary on actual recovered native data with original full-wire/clock/scope observations, then route and run full DRC/antenna; later PG/LVS/freshRC/3cornerSTA are still required.\n\nKNOWN CHIP EVIDENCE: recovery41440285882 has92DRT(64short+28spacing),21antenna nets.1691protected clocks and nonselected wires unchanged. Completed native guide audit41449886129/source3bf8acec68f0a90ca008a94dff3f7f074f7b9717 measured96source nets/2593guides/325intersections,34selectedsources,61temporaryFIXEDsources,4clock sources. No new routing/violation reduction yet. Source audit corrected complete_DEF.accepted=false semantics without dropping any scope checks; Point-overload native closed intersection passed6native cases. Original failed audits41445399432/41447786520 retained.\n\nKNOWN PHY EVIDENCE: full native mapping41450661063/source22baa225789b8ec1c9ce98437196af1e48fc2918 matched500LVS devices and all1446loaded terminal identities plus all500composition records. Critical61/62 areSD_M_CS0/1 and115/116 areSC_M_CS0/1 (Nx2 clock-selector HBTs, basesCN). Drivers54/56 and106/108 areSD/SC_M_DP/DN (Nx4 data pair). TailMOS3..6/32..35 areSD/SC_M_T0..T3(W36um,L0.3um). Symmetric parallel devices can exchange equivalent schematic pairing; no uniquephysical-name claim. Mapping failures41449736667/41450082352 retained.\nLoaded41441047354 stillREJECTED: phase14.325mV<30mV,VI43.051uA<50uA,Vce.3398..37097V<.4,sampler41.72..54.53ps>37.5. Fullwave1,045,823,299bytes preserved. Native scope/DRC/LVS/RC successes are not fullPHY acceptance. Next electrical work must use actual source mapping and fullwave operating points for an explicit bias/device-size/collector-wire change, then real physical regeneration and unchanged loaded gates. No provisional parameter experiment or new analog geometry has yet been dispatched.\n\nReadonly8hour monitor remains automatic_native_dispatch=false. Full closed-loopCDR/PLL/SERDES/PVT/ESD/EM and mainchip final acceptance remain open.\n\nObserved at 2026-11-02T13:35:37.399898+00:00:\n- 41453547634: completed/success\n- 41453866417: in_progress/None\n",
   "continuation_note_v311": "## Current continuation: real C/D input-bias experiment dispatched\n\nNative CAD, SPICE, waveforms, GDS/ODB and native archives remain GitHub only. Local workspace empty. Full serial Gen3 x4 PHY, routed mainchip and final setup/hold remain OPEN.\n\nNEW PROVISIONAL ELECTRICAL EXPERIMENT41458294059, source4bc8aa4117cb603155e4d03bcd00c69c7d6ee943, branchcodex/cdr-sampler-bias-trial, reserved release431531665/tagcloud-results-41458294059-1-cdr-sampler-bias-trial. Independent source-controls41458035010 SUCCESS; original29 definitions,5 executable blocks,9 numerical files,13 admission refusals retained; new six single-card fault refusals passed. Derived sourcecontrol artifact13148670349=1338bytes SHA f111f22ef817e376917147bebec40771909ca001a7ceec179cf8261e945db312, text preserved here.\n\nActual native correspondence41450661063 establishes SD_UP/UN = native182/183 and SC_UP/UN=220/221. These four rppd resistors pull AVDD to C/D input-gain collector nodes; length1.8um,width8um. A/B input circuits differ: there are NOT eight identical pull-ups. New trial changes only these four lengths to1.5um. Hypothesis: higher input common-mode improves clock-selector Vce; reduced differential gain is a risk. This is NOT an observed improvement.\n\nDedicated cloud helper authenticates successful mapping's complete derived ZIP and all500 Match records, then exact four full parameter/terminal mappings. It authenticates the unchanged full parent freshRC41439516945 and runtime, writes separate candidate model/composition files, checks exactly four reversible length-token changes and full composition reversal, preserves other496 primitive parameters and every interconnect R/C card. Parent files remain untouched. All original stimuli, external8GHz clock, loads,34.25ns full waves,13 actual binding controls,2 unit-equivalence controls and measurement gates are unchanged.\n\nIMPORTANT: inherited interconnect RC is fixed parent RC and does NOT constitute matching extraction for changed resistor geometry. Every trial/configuration/provenance explicitly marks matching_layout_verified=false, fresh_RC_for_modified_devices=false, physical_acceptance=false, full_phy_accepted=false and final_timing_complete=false. Trial producer/source identify current trial, with authenticated parent provenance separate. Successful numerical results would still require schematic/GDS regeneration, DRC/LVS, canonical material, fresh RC, original loaded gates and full-loop/PVT/ESD/EM before integration. No new analog GDS has yet been generated. Original loaded41441047354 remains REJECTED (phase14.325mV,VI43.051uA,Vce.3398..3710V and delay41.72..54.53ps fail original limits).\n\nMAINCHIP build41453866417/source5a82cbd4068411de19acc73605ebb64250b010fc remains the SAME engine build handle. Bounded guide-worker lifetime code and all original source controls passed, full engine compilation/native scope qualification and actual route effect must be established independently. Current actual recovered chip remains92DRT (64short+28spacing),21antenna nets;1691 protected clocks unchanged. No new route reduction or final setup/hold closure is claimed.\n\nNEXT: follow both exact live handles without restarting on observation timeouts. For the trial, collect complete terminal measurement/raw-wave preservation and compare against parent with unchanged gates; if promising, implement real physical regeneration before acceptance. For engine, inspect full build and interface evidence, then qualify binary on actual checkpoint and protected clock/wire scopes before original full64 route. Keep fullPG/LVS/freshRC/3cornerSTA and full serial PHY obligations open.\n\nReadonly8hour monitor retains automatic_native_dispatch=false. All source changes are already on the dedicated remote branch.\n\nObserved at 2026-11-02T14:05:41.264544+00:00:\n- 41453866417: in_progress/None\n- 41458035010: completed/success\n- 41458294059: in_progress/None\n",
   "continuation_note_v312": "## Current continuation: compiler ID collision corrected; first bias trial rejected; balanced divider trial dispatched\n\nAll native CAD, SPICE, waveforms, GDS/ODB and native archives remain GitHub only. Local workspace empty. Full serial Gen3 x4 PHY, routed mainchip and final setup/hold remain OPEN.\n\nMAINCHIP actual full build41453866417 FAILED after2063.7seconds at87%: upstream message scanner found DRT9999 twice (new FlexDR guard and existing TritonRoute.cpp). Compiler exit2, no OOM, cgroup peak3717890048bytes under12GiB limit. Original release431499827 preserved; no binary was qualified. The passing lifetime fixture did not cover cross-file message IDs.\n\nCloud diagnostic41460346322/sourceb36fa4700d78c2b8a5145db94603126887d13052 succeeded, authenticated entire failed archive and retained complete logs. Derived13147914267=77579bytes SHA56f4602691b66d161598bd4dd8962e8cb6392a755c6172813683edf9a2645c17. Its full selected text is stored here.\n\nCORRECTION source851db8f517c03cffd0afeb6527e281bd9353f5d2: only new guard ID9999->10000, next free reported by actual scanner; worker accounting guard9998 unchanged. FlexDR derivedSHA892a9771d911cf8ed350ffe4d42683b16561f3989f1e7c8302a02f8016328d9e,78757bytes. Bounded two live workers, guides, geometry, cost and original full64 schedule unchanged. Source controls41492927619 SUCCESS: all old engine7positive/45refusal/25lifecycle and observer4positive/29refusal,9compiled lifetime cases retained. Exact pinned upstream find_messages.py now scans both actual derived C++files plus observer header; corrected version passes and prior duplicate-ID version is rejected. Whole actual DRT directory preflight is also required before compiler-container creation; original upstream build check remains enabled. Source-check three-file scope is not whole-engine qualification.\n\nNEW COMPLETE ENGINE BUILD41493369685, same source851db8f5, branchcodex/mainchip-guide-batch-engine, release431773741/tagcloud-results-41493369685-1-mainchip-guide-batch-engine-build. Follow this exact handle; do not restart on observation timeout. After successful build/interfaces, qualify new binary on actual recovered chip and all protected clock/wire scopes before full64 routing. Current chip evidence remains92DRT (64short28spacing),21antenna nets,1691protected clocks unchanged. No new route/STA improvement has been measured.\n\nPHY first provisional pull-up-only experiment41458294059/source4bc8aa4117cb603155e4d03bcd00c69c7d6ee943 is terminal REJECTED_WHOLE_MIM_PD500_LOADED. Native transient return0, sourcesunchanged=true, complete34.25ns/113475rows/1152columns raw1,045,823,299bytes SHA1370699f6fbd8523743afd942fceee845a82f4f014e08de075f199a71b1a971d. Full native release431531665 retains four parts and complete index. Derived13148519767=1409362bytes SHA1aaf64b5b67ca623db80c4a33f18271790ae0904b662c38b38575d7ae58dbf93; complete measurement and provenance copied here.\n\nCompared with unchanged physical parent41441047354, four critical Vce values rose from(.342697,.339778,.370967,.369198)V to(.396086,.393141,.416315,.413390)V. C now passes0.4V for its two critical devices; D still fails. Phase14.18547mV<30mV and VI42.66045uA<50uA remain failures. Sampler A/B/C/D maximum clock-to-valid45.78125/41.71875/118.90625/54.21875ps, limit37.5ps; C previously51.09375ps worsened. Wrong signs0/0/0/33, below100mV129/128/128/128of765. Do not promote pull-up-only trial to physical layout or acceptance.\n\nNEXT BALANCED TRIAL41494299114/source df723c791fec2621585c80fb56409d65b5811b44, branchcodex/cdr-sampler-balanced-bias-trial, release431779366/tagcloud-results-41494299114-1-cdr-sampler-balanced-bias-trial. Independent controls41493968467 SUCCESS, artifact13165312239=1338bytes SHAd383b888f1d9753f34c3ebb13aa3112ad7c4ccb9512e24a59a4e0de67840c640. Original29numerical definitions/5blocks/9files/13admission refusals plus6card refusals and both parameter shapes retained; actual13binding and2equivalent-unit controls still required.\n\nThis experiment starts from unchanged authenticated collector Via2 freshRC41439516945, not previous trial. Actual mapped pull-ups182/183/220/221 change L1.8->1.75um,W8 unchanged; pull-downs184/185/222/223 change L5->6um,W4 unchanged. First-order sheet-only normalized parallel resistance0.190677966->0.190909091 (+0.1212%); supply-divider fraction0.847457627->0.872727273. Hypothesis: raise common-mode while retaining differential load/gain, unlike previous14.49% normalized resistance drop. This estimate ignores contact/bias/capacitance effects and is not measured PDK resistance or expected success.\n\nBoth trials explicitly use fixed parent interconnect RC with modified primitive dimensions; matching_layout_verified=false and fresh_RC_for_modified_devices=false. New trial preserves other492devices, all interconnectRC, all original externalclock/stimuli/loads/gates/fullwaves and requires exact model/contract reversal. No new analog geometry generated. Even numerical success needs actual schematic/GDS regeneration, DRC/LVS, canonical matching, freshRC and original loaded verification; full-loop/PVT/ESD/EM/PCIe integration remain open.\n\nReadonly8hour monitor keeps automatic_native_dispatch=false. Next: collect both current native results, diagnose actual failure/success, maintain same handles until terminal; never equate fixture/build or provisional circuit improvement with fullPHY/production/timing acceptance.\n\nObserved at 2026-11-02T17:49:05.888877+00:00:\n- 41453866417: completed/failure\n- 41460346322: completed/success\n- 41458294059: completed/failure\n- 41492927619: completed/success\n- 41493369685: in_progress/None\n- 41493968467: completed/success\n- 41494299114: in_progress/None\n",
+  "continuation_note_v313": "## Current continuation: full-wave stage diagnosis complete; balanced bias rejected; slave drive trial source published\n\nAll native CAD, SPICE, GDS/ODB, raw waves and native archives remain GitHub-only. Local source/API/derived text are RAM-only; workspace remains empty. Full serial PCIe Gen3 x4 PHY, accepted mainchip route and final setup/hold remain OPEN.\n\nMAINCHIP: keep following corrected complete-engine build41493369685/source851db8f517c03cffd0afeb6527e281bd9353f5d2 on codex/mainchip-guide-batch-engine, release431773741. Its build status is recorded below; never restart on observation timeout. Two-worker lifetime patch is not yet qualified on a routed chip, and no new route/timing improvement is claimed. Current retained chip remains92DRT=64short+28spacing and21antenna nets; all1691protected clock wires were unchanged in recovery41440285882. After actual successful engine build and runtime authentication, require full143820net/154480instance/no-route roundtrip and original protected wire/clock comparison plus full DRT/antenna before full64 routing. Do not silently change old c.ENGINE or drop frozen-source/runtime checks.\n\nBALANCED BIAS41494299114/source df723c791fec2621585c80fb56409d65b5811b44 completed and FAILED original electrical acceptance. Engine returned0, whole transient complete, sources unchanged; all native records sealed in release431779366. Derived13166113737=1409781bytes SHA904b21b197686f66d1911c758dabbbd14dbda350f9104c9040e05fae96d04ec4. Complete measurement, engine, derivation, publication and failure records are preserved here.\n\nBalanced C critical Vce .421640/.420208V exceeds0.4V; D .389873/.386994V still fails. This does not mean all other device gates passed: the comparison JSON retains every failed HBT gate including all-time overvoltage. Phase14.590486mV<30mV still fails. A/B/C/D output maxima45.78125/41.71875/51.09375/54.21875ps exceed37.5ps; wrong signs0/0/1/33 and below100mV129/128/128/128of765. XOR comparisons also fail. This provisional fixed-parent-RC experiment is rejected and not promoted to geometry; the original and pull-up-only failure remain intact.\n\nSAMPLER STAGE DIAGNOSIS41497066977/sourcef3bbcddef55b19194cce675f91a0bb265b577bce SUCCESS. Derived13166219492=1776044bytes SHA9464d8a319a1b733724f8cdacabe95bf3c79ce3141d9c15bb25d4a265b52189d. The full original native wave from41441047354 was authenticated and parsed in cloud. All48 master/slave data and selector HBTs were joined by actual full500 LVS mapping41450661063, native IDs, parameters and all terminal clusters. Every original per-bit sampler delay and original scalar measurement reproduced. All16 selector-pair local crossing comparisons had unique matches, no missing/ambiguous reference edges. Native clock-crossing delay bounds1.5625..4.6875ps. Full per-bit native samples/crossing brackets and source controls are retained here; no new transient/layout or changed acceptance gate.\n\nRepresentative worst A/B/C edges already have correct-polarity master output and slave input while slave output is still old or below100mV. D also has a late upstream input. This supports testing slave drive/load response, not asserting a sole cause or claiming timing closure.\n\nNEXT SOURCE522ac9b2736a3445c839ac6dfcf25bf245ab78d1, branchcodex/cdr-slave-drive-trial, six changed files read back byte-exact. Independent source-controls run41498753635; branch-creation checks41498680552 (actual parent sourcedf723c79; NOT a test of new source522ac9b2). Follow exact handles. Native trial has NOT yet been dispatched in this checkpoint: first verify actual source-control result24primitive roundtrips/14card refusals plus original29definitions/5blocks/9files/13admission refusals, then independently reserve exact-source release and dispatch execute=true once. Preserve run identity if visibility times out.\n\nThe next experiment starts from original authenticated collector Via2 freshRC41439516945, not either failed bias model. Eight slave load resistors SA/SB/SC/SD_S_RP/RN L2.6->1.9um,W32 unchanged; sixteen slave tail MOS SA/SB/SC/SD_S_T0..3 W36->48um,L0.3 unchanged. Provisional consistent AD/AS12.24p->16.32p and PD/PS72.68um->96.68um use parent0.34um diffusion extension. Exact target IDs/parameters/native terminals required. Whole-model and contract reversal prove all other476devices and every parent wireR/C card unchanged. No HBT/reference bias/master/input divider/stimulus/clock/150fF load/gate changes.\n\nSheet-only resistance ratio1.9/2.6 and nominal width/current48/36 give I*R ratio0.97436; nonlinear/device/contact/wire behavior may invalidate this hypothesis. Actual full waveform and voltage/current-density gates decide. This is a provisional parameter trial without matching GDS or recomputed wire parasitics. Even a numerical pass requires real schematic/GDS, DRC/LVS, canonical terminal mapping, freshRC and original loaded simulation before promotion. Closed-loop serial PHY/PVT/ESD/EM/integration/STA remain open.\n\nReadonly8hour monitor keeps automatic_native_dispatch=false. Do not mistake successful diagnosis or source controls for accepted electrical/physical behavior.\n\nObserved at 2026-11-02T18:19:49.824516+00:00:\n- 41493369685: in_progress/None\n- 41494299114: completed/failure\n- 41497066977: completed/success\n- 41498680552: in_progress/None\n- 41498753635: completed/success\n",
   "current_run_snapshot": [
     {
       "attempt": 1,
@@ -26640,6 +26689,30 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41492927619"
     },
     {
+      "branch": "codex/cdr-sampler-balanced-bias-trial",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125443971513,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125444116115,
+          "name": "loaded-wave",
+          "status": "completed"
+        }
+      ],
+      "run": 41493968467,
+      "source": "df723c791fec2621585c80fb56409d65b5811b44",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41493968467"
+    },
+    {
       "branch": "codex/mainchip-guide-batch-engine",
       "conclusion": null,
       "jobs": [
@@ -26667,31 +26740,7 @@
     },
     {
       "branch": "codex/cdr-sampler-balanced-bias-trial",
-      "conclusion": "success",
-      "jobs": [
-        {
-          "active_steps": [],
-          "conclusion": "success",
-          "id": 125443971513,
-          "name": "source-controls",
-          "status": "completed"
-        },
-        {
-          "active_steps": [],
-          "conclusion": "skipped",
-          "id": 125444116115,
-          "name": "loaded-wave",
-          "status": "completed"
-        }
-      ],
-      "run": 41493968467,
-      "source": "df723c791fec2621585c80fb56409d65b5811b44",
-      "status": "completed",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41493968467"
-    },
-    {
-      "branch": "codex/cdr-sampler-balanced-bias-trial",
-      "conclusion": null,
+      "conclusion": "failure",
       "jobs": [
         {
           "active_steps": [],
@@ -26701,19 +26750,132 @@
           "status": "completed"
         },
         {
-          "active_steps": [
-            "Authenticate parent RC then simulate explicit eight-resistor balanced parameter trial"
-          ],
-          "conclusion": null,
+          "active_steps": [],
+          "conclusion": "failure",
           "id": 125445339483,
           "name": "loaded-wave",
-          "status": "in_progress"
+          "status": "completed"
         }
       ],
       "run": 41494299114,
       "source": "df723c791fec2621585c80fb56409d65b5811b44",
-      "status": "in_progress",
+      "status": "completed",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41494299114"
+    },
+    {
+      "branch": "codex/cdr-sampler-stage-timing",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125454704311,
+          "name": "classify",
+          "status": "completed"
+        }
+      ],
+      "run": 41497066977,
+      "source": "f3bbcddef55b19194cce675f91a0bb265b577bce",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41497066977"
+    },
+    {
+      "branch": "codex/cdr-slave-drive-trial",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 125460240457,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125460241037,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "All declared pilot and SoC regression proofs with fresh source checks"
+          ],
+          "conclusion": null,
+          "id": 125460241111,
+          "name": "formal-sweep (soc)",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125460241162,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "All declared pilot and SoC regression proofs with fresh source checks"
+          ],
+          "conclusion": null,
+          "id": 125460241236,
+          "name": "formal-sweep (pilot)",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125460241322,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Run every non-frozen RTL suite"
+          ],
+          "conclusion": null,
+          "id": 125460241468,
+          "name": "rtl",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125460243421,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41498680552,
+      "source": "df723c791fec2621585c80fb56409d65b5811b44",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41498680552"
+    },
+    {
+      "branch": "codex/cdr-slave-drive-trial",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125460504756,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125462026812,
+          "name": "loaded-wave",
+          "status": "completed"
+        }
+      ],
+      "run": 41498753635,
+      "source": "522ac9b2736a3445c839ac6dfcf25bf245ab78d1",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41498753635"
     }
   ],
   "divider_width4_terminal_v246": {
@@ -112641,6 +112803,173 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41494299114"
     }
   ],
+  "latest_observed_runs_v313": [
+    {
+      "branch": "codex/mainchip-guide-batch-engine",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125441871204,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Build complete pinned engine under owned cgroup"
+          ],
+          "conclusion": null,
+          "id": 125442201861,
+          "name": "engine-build",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41493369685,
+      "source": "851db8f517c03cffd0afeb6527e281bd9353f5d2",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41493369685"
+    },
+    {
+      "branch": "codex/cdr-sampler-balanced-bias-trial",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125445088416,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125445339483,
+          "name": "loaded-wave",
+          "status": "completed"
+        }
+      ],
+      "run": 41494299114,
+      "source": "df723c791fec2621585c80fb56409d65b5811b44",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41494299114"
+    },
+    {
+      "branch": "codex/cdr-sampler-stage-timing",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125454704311,
+          "name": "classify",
+          "status": "completed"
+        }
+      ],
+      "run": 41497066977,
+      "source": "f3bbcddef55b19194cce675f91a0bb265b577bce",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41497066977"
+    },
+    {
+      "branch": "codex/cdr-slave-drive-trial",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [
+            "Every check, from the same script the developer runs"
+          ],
+          "conclusion": null,
+          "id": 125460240457,
+          "name": "checks",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125460241037,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "All declared pilot and SoC regression proofs with fresh source checks"
+          ],
+          "conclusion": null,
+          "id": 125460241111,
+          "name": "formal-sweep (soc)",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125460241162,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "All declared pilot and SoC regression proofs with fresh source checks"
+          ],
+          "conclusion": null,
+          "id": 125460241236,
+          "name": "formal-sweep (pilot)",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125460241322,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Run every non-frozen RTL suite"
+          ],
+          "conclusion": null,
+          "id": 125460241468,
+          "name": "rtl",
+          "status": "in_progress"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125460243421,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41498680552,
+      "source": "df723c791fec2621585c80fb56409d65b5811b44",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41498680552"
+    },
+    {
+      "branch": "codex/cdr-slave-drive-trial",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125460504756,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125462026812,
+          "name": "loaded-wave",
+          "status": "completed"
+        }
+      ],
+      "run": 41498753635,
+      "source": "522ac9b2736a3445c839ac6dfcf25bf245ab78d1",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41498753635"
+    }
+  ],
   "latest_terminal_runs": {
     "cdr_actual_terminal_current_ledger": 40171679250,
     "cdr_current_ledger_controls": 40171508329,
@@ -113401,11 +113730,11 @@
   },
   "local_cleanup_verification": {
     "native_payloads_cloud_only": true,
-    "observed_at": "2026-11-02T17:49:05.888877+00:00",
+    "observed_at": "2026-11-02T18:19:49.824516+00:00",
     "source_API_derived_text_RAM_only": true,
     "workspace_entries": 0
   },
-  "local_workspace_verified_empty_at": "2026-11-02T17:49:05.888877+00:00",
+  "local_workspace_verified_empty_at": "2026-11-02T18:19:49.824516+00:00",
   "mixed_canonical_proofs_v269": [
     {
       "prefix": "docs/evidence/mixed-canonical-terminal-41350835442",
@@ -113443,7 +113772,7 @@
     },
     "candidate_qualification_run": 41108174342,
     "code_deployed_head": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a",
-    "configured_inventory_rows": 818,
+    "configured_inventory_rows": 821,
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33",
     "every_hours": 8,
     "historical_scheduled_error": {
@@ -113456,7 +113785,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 312,
+    "inventory_version": 313,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -113556,7 +113885,7 @@
   ],
   "next_actions": [
     "Follow exact active mainchip41393730481/source7cc6f94a7a685423533a25bc0d418e33764e8366. Native outputs pending; no duplicate. Original64route41349316524 is terminal timeout; qualified iteration20 is input to current47net repair, not an active original job.",
-    "Follow corrected bounded-worker engine41493369685 and balanced divider trial41494299114. Old engine41453866417 failed message-ID collision; old bias41458294059 rejected. Qualify new binary before full64 route. Provisional bias uses fixed-parent RC and needs real physical regeneration.92DRT/21antenna,fullPHY/finalSTA remain open.",
+    "Verify slave-drive source control41498753635 then dispatch exactsource522ac9b2 native trial with independent release; follow live engine41493369685 and qualify binary before full64 route. Balanced41494299114 failed, stage41497066977 diagnostic passed; fullPHY/route/finalSTA remain open.",
     "After actual pin-metal correspondence and connectivity qualification, run remaining2702diode PG-contact audit, all1691original clock/fixed-net preservation, all1351diode pin attachments, final DRC/antenna and exact current candidate audits. Saved8-pass router397violations is not final physical acceptance.",
     "Export and authenticate current diode-inclusive154480instance netlist from current native ODB, generate fresh nominal SPEF and run original threecorners/20-4-8-8ns/5percent-derate STA only after physical admission. Do not reuse153130instance route12netlist or stale SPEF.",
     "FullserialPLL/CDR/SERDES/training/LTSSM/replay/credit/lane/TX/serialsoc_top and completeDRC/LVS/ESD/production approval remain open. No packet-interface route or diagnostic pass constitutes fullPHY acceptance.",
@@ -155295,7 +155624,7 @@
     "timing_accepted": false,
     "timing_limits_unchanged": true
   },
-  "root_source_before_receipt": "a0162902277b3e1df123ebac4a642ad51b39c329",
+  "root_source_before_receipt": "f33d69117f1a82de6a083d48f459e54cc67c1a83",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -155382,7 +155711,7 @@
       "run": 41349316524
     }
   ],
-  "updated_at": "2026-11-02T17:49:05.888877+00:00",
+  "updated_at": "2026-11-02T18:19:49.824516+00:00",
   "width8_wave_diagnosis_v250": {
     "proof": {
       "bytes": 5806735,
