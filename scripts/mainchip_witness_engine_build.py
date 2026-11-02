@@ -181,7 +181,7 @@ def build():
         c.require(not proof["existing_assets"],"release is not empty before build")
         write(out/"release-reservation.json",proof)
         shutil.copyfile(ROOT/c.METHOD,out/"method.json")
-        for filename in ("engine-build-controls.json","internal-witness-controls.json"):
+        for filename in ("engine-build-controls.json","internal-witness-controls.json","guide-batch-controls.json"):
             c.require((ROOT/filename).is_file(),"source controls evidence missing")
             shutil.copyfile(ROOT/filename,out/filename)
         c.require(shutil.disk_usage(work).free >= m["limits"]["min_free_disk_bytes"],"free disk budget")
@@ -218,6 +218,14 @@ def build():
         c.require(c.digest(modified)==m["derived_router_sha256"],"derived router identity")
         (source/"src/drt/src/TritonRoute.cpp").write_bytes(modified)
         shutil.copyfile(ROOT/observer.HEADER,source/"src/drt/src/MainchipInternalWitness.h")
+        import mainchip_guide_worker_batch_patch as guide_batch
+        guide_original=(source/"src/drt/src/dr/FlexDR.cpp").read_bytes()
+        guide_modified=guide_batch.derive(guide_original)
+        c.require(c.digest(guide_modified)==m["guide_batch"]["derived_sha256"],"derived guide worker lifetime source")
+        (source/"src/drt/src/dr/FlexDR.cpp").write_bytes(guide_modified)
+        (out/"guide-batch-before.cpp").write_bytes(guide_original)
+        (out/"guide-batch-after.cpp").write_bytes(guide_modified)
+        write(out/"guide-batch-derivation.json",m["guide_batch"])
         before=snapshot(source); write(out/"source-before.json",before)
         for local,destination in (("scripts/mainchip_witness_engine_build_inner.py","inner.py"),
                                    ("scripts/mainchip_witness_engine_build_contract.py","mainchip_witness_engine_build_contract.py")):

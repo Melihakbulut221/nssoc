@@ -15,7 +15,7 @@ IMAGE_ID = "sha256:a958d3bee9c5261b26e221e1c1461c92f830f14293bc5050848653bd7ec8d
 MEMORY = 12 * 1024**3
 CPUS = 2_000_000_000
 PIDS = 4096
-GROUP = "mainchip-internal-witness-engine-build"
+GROUP = "mainchip-guide-batch-engine-build"
 GITLINKS = {
     "src/sta": ("https://github.com/The-OpenROAD-Project/OpenSTA.git", "857316ff001b2a8dbbdc5996944d08a6d38c87ab"),
     "third-party/abc": ("https://github.com/The-OpenROAD-Project/abc.git", "4c756ffb8dff7c583e80c7970d117abd3dfddb5c"),
@@ -69,7 +69,7 @@ def context(env):
         require(re.fullmatch("[1-9][0-9]*", env.get(k, "")) is not None, "run identity")
     require(env["GITHUB_RUN_ATTEMPT"] == "1", "no automatic retry")
     require(re.fullmatch("[0-9a-f]{40}", env.get("GITHUB_SHA", "")) is not None, "immutable tested source")
-    require(env.get("GITHUB_REF") == "refs/heads/codex/mainchip-internal-witness-engine-build", "build branch")
+    require(env.get("GITHUB_REF") == "refs/heads/codex/mainchip-guide-batch-engine", "build branch")
     token = env["GITHUB_RUN_ID"] + "-" + env["GITHUB_RUN_ATTEMPT"]
     return dict(name="nssoc-witness-build-" + token, source=env["GITHUB_SHA"], token=token)
 
