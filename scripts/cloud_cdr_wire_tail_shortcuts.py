@@ -7,7 +7,7 @@ import cloud_cdr_wire_geometry_acquire as prior
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"wire-tail-shortcuts";NATIVE=ROOT/"wire-tail-shortcuts-native"
 MANIFEST="scripts/cdr-wire-tail-shortcuts-pins.json";INPUT="scripts/cdr-wire-tail-shortcuts-inputs.json"
-BRANCH="codex/cdr-source-m2-critical-access";TOP="nssoc_cdr_pd500_resistor_v59"
+BRANCH="codex/cdr-drain-m23-reinforcement";TOP="nssoc_cdr_pd500_resistor_v59"
 LAYERS=(8,19,10,29)
 TARGETS=(("D_collector","T061_C","T056_E"),("D_emitter","T061_E","T005_D"),("C_collector","T115_C","T108_E"),("C_emitter","T115_E","T034_D"))
 need=prior.need
@@ -1447,14 +1447,107 @@ def generate_source_m2_bypass(base,cfg):
         electrical_improvement_claimed=False,requires=["full560DRC","deep_flat_LVS13","current_canonical_binding",
           "fresh_RC","unchanged_loaded_wave_gates","actual_via_current_distribution","bias_headroom_review"]))
 
+def generate_drain_m23_reinforcement(base,cfg):
+    gp=base/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds"
+    wp=base/"binding/inputs/wire/native05/wires.l2n"
+    need(pin(gp)==dict(bytes=1018452,sha256="9fef07bce22bce079cf82e3c7600932aa6adce49359838f6c72569fbde3ef61b"),"actual sourceM2 electrically rejected input")
+    g=pya.Layout();g.read(str(gp));top=g.cell(TOP)
+    need(g.dbu==.001 and top is not None,"actual original1nm GDS")
+    before=region_snapshot(g,top);extent=pya.Region(top.bbox())
+    w=pya.LayoutToNetlist();w.read(str(wp));need(w.internal_layout().dbu==.001,"actual1nm native ownership")
+    layers=(8,19,10,29,30,49,50,66,67,125,126,133,134)
+    objects={n:w.layer_by_name("gds_"+str(n))for n in layers}
+    for n,r in objects.items():
+        need(r is not None and(before.get((n,0),pya.Region())^r).is_empty(),"all13native conductor unions")
+    nets={n.cluster_id:n for n in w.netlist().top_circuit().each_net()}
+    anchors={a["label"]:a for a in json.loads((base/"mim/precise/wire/anchors08.json").read_bytes())["anchors"]}
+    proof=json.loads((ROOT/"scripts/cdr-critical-resistance-inputs.json").read_bytes())
+    need(proof["run"]==41423647133 and proof["source"]=="a11002d7924f6649598fbec223eb830ed64402af","current actual32query resistance")
+    targets={}
+    for q in proof["queries"]:
+        t=q["sink_terminal"]
+        if isinstance(t,list)and t[0]in(3,4,5,6,32,33,34,35)and t[1]=="D":
+            old=targets.setdefault(t[0],q["native_net"]);need(old==q["native_net"],"all query drain owners agree")
+    need(set(targets)=={3,4,5,6,32,33,34,35},"all8actual failing-stage MOS drain targets")
+    all_vias={n:pya.Region()for n in(19,29,49)}
+    for (layer,datatype),r in before.items():
+        if layer in all_vias:all_vias[layer]+=r
+    all_vias={n:r.merged()for n,r in all_vias.items()}
+    additions={n:pya.Region()for n in(10,29,30)};by_component={};rows=[]
+    for i,expected in sorted(targets.items()):
+        label="T"+str(i).zfill(3)+"_D";a=anchors[label];x,y=a["point_dbu"];component=a["wire_component"]
+        need(a["metal"]==8 and a["detail"]["device"]==i and a["detail"]["native_net"]==expected,"actual native drain identity")
+        own={n:w.shapes_of_net(nets[component],r,True).merged()for n,r in objects.items()}
+        need((box(x,y,1)-own[8]).is_empty(),"actual drain anchor on original owned M1")
+        need((box(x,y,1)-own[10]).is_empty()and(box(x,y,1)-own[30]).is_empty(),"original M2/M3 access at exact drain")
+        need((box(x,y+17600,1)-own[10]).is_empty()and(box(x,y+17600,1)-own[30]).is_empty(),"original same-net upper M2/M3 attachment")
+        metal=pya.Region(pya.Box(x-150,y-200,x+1250,y+17800))
+        local=by_component.setdefault(component,{n:pya.Region()for n in additions})
+        row=dict(label=label,original_anchor=a,native_net=expected,wire_component=component,metal_bbox=bounds(metal),metal_guards={},cuts=[],rejected_cuts=[])
+        for layer,lower_via,upper_via in((10,19,29),(30,29,49)):
+            foreign=(objects[layer]-own[layer])+(additions[layer]-local[layer])
+            checks=source_m2_guard(metal,own[layer],foreign,all_vias[lower_via]-own[lower_via],all_vias[upper_via]-own[upper_via],extent)
+            row["metal_guards"][str(layer)]=dict(lower_adjacent_via=lower_via,upper_adjacent_via=upper_via,checks=checks)
+            save("drain-m23-progress/"+label+"-metal"+str(layer)+".json",dict(target=row,complete=False,physical_acceptance=False))
+            need(all(checks.values()),"actual drain metal attachment/foreign240nm/via50nm guards "+label+" layer"+str(layer))
+        lower=(own[10]+local[10]+metal).merged();upper=(own[30]+local[30]+metal).merged()
+        for dx in(0,480,960):
+            for dy in range(0,17281,480):
+                cut=box(x+dx,y+dy,95)
+                checks=via1_reinforcement_guard(cut,lower,upper,all_vias[29],additions[29],extent)
+                entry=dict(center_dbu=[x+dx,y+dy],bbox=bounds(cut),guards=checks)
+                if not all(checks.values()):
+                    row["rejected_cuts"].append(entry);continue
+                row["cuts"].append(entry);additions[29]+=cut;local[29]+=cut
+        need(len(row["cuts"])>=70,"at least70new190nm same-net Via2 cuts at each of8drains")
+        for layer in(10,30):additions[layer]+=metal;local[layer]+=metal
+        rows.append(row)
+        save("drain-m23-progress/"+label+"-complete.json",dict(target=row,complete=True,physical_acceptance=False))
+    need(len(rows)==8 and len(by_component)==2,"all8drains on original two emitter nets")
+    for component,local in by_component.items():
+        own={n:w.shapes_of_net(nets[component],r,True).merged()for n,r in objects.items()}
+        for layer in(10,30):
+            foreign=(objects[layer]-own[layer])+(additions[layer]-local[layer])
+            need((local[layer]&foreign.sized(240,240,2)).is_empty(),"all candidate metal components mutually separated")
+    for n in additions:additions[n]=additions[n].merged()-before.get((n,0),pya.Region())
+    count=sum(len(row["cuts"])for row in rows)
+    need(additions[29].count()==count and additions[29].area()==count*36100,"all exact disjoint190nm new Via2 squares")
+    need((additions[29]&all_vias[29].sized(240,240,2)).is_empty(),"all new Via2 original cut spacing")
+    handles=[]
+    for n,r in additions.items():
+        need(not r.is_empty(),"nonempty actual layer addition")
+        for poly in r.each():handles.append(top.shapes(g.layer(n,0)).insert(poly))
+    NATIVE.mkdir();candidate=NATIVE/"nssoc_cdr_pd500_drain_m23_reinforced.gds";g.write(str(candidate))
+    readback=pya.Layout();readback.read(str(candidate));after=region_snapshot(readback,readback.cell(TOP))
+    need(readback.dbu==g.dbu and{c.name for c in readback.each_cell()}=={c.name for c in g.each_cell()},"serialized original hierarchy")
+    for key in set(before)|set(after):
+        expected=before.get(key,pya.Region())
+        if key[1]==0 and key[0]in additions:expected=(expected+additions[key[0]]).merged()
+        need((expected^after.get(key,pya.Region())).is_empty(),"only exact M2/Via2/M3 additions "+str(key))
+    for handle in reversed(handles):handle.delete()
+    reverted=region_snapshot(g,top);need(set(before)==set(reverted),"original layer set after reversal")
+    for key in before:need((before[key]^reverted[key]).is_empty(),"exact original material reversal")
+    need(pin(gp)==cfg["complete_members"]["binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds"],"original GDS bytes unchanged")
+    save("drain-m23-proposal.json",dict(targets=rows,new_via2_count=count,metal_width_nm=1400,metal_length_nm=18000,metal_foreign_clearance_nm=240,
+        via_cut_nm=190,via_pitch_nm=480,via_metal_enclosure_nm=50,via_spacing_nm=240,physical_acceptance=False,full_phy_accepted=False))
+    save("drain-m23-generation-proof.json",dict(candidate=pin(candidate),input_gds=pin(gp),input_l2n=pin(wp),new_via2_count=count,
+        all8actual_drain_accesses=True,all13native_unions_verified=True,only_added_layers=[[10,0],[29,0],[30,0]],
+        added_area_dbu2={str(n):r.area()for n,r in additions.items()},exact_serialized_delta=True,original_material_roundtrip=True,
+        new_devices=False,new_via1=False,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False,current_density_acceptance=False,
+        electrical_improvement_claimed=False,requires=["full560DRC","deep_flat_LVS13","current_canonical_binding","fresh_RC","unchanged_loaded_wave_gates","actual_via_current_distribution","bias_headroom_review"]))
+
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
         cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls()+horizontal_ground_controls()+horizontal_clearance_controls()+via1_reinforcement_controls()+source_m2_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
-        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"],["--generate-horizontal-ground"],["--inspect-critical-access"],["--generate-via1-reinforcement"],["--generate-source-m2-bypass"]),"explicit native operation")
+        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"],["--generate-horizontal-ground"],["--inspect-critical-access"],["--generate-via1-reinforcement"],["--generate-source-m2-bypass"],["--generate-drain-m23"]),"explicit native operation")
         reserve(wait=True)
         base=acquire_current(cfg)
+        if sys.argv[1:]==["--generate-drain-m23"]:
+            generate_drain_m23_reinforcement(base,cfg)
+            save("result.json",dict(status="GENERATED_ACTUAL_DRAIN_M23_REINFORCEMENT_REQUIRES_FULL_QUALIFICATION",physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
+            return
         if sys.argv[1:]==["--generate-source-m2-bypass"]:
             generate_source_m2_bypass(base,cfg)
             save("result.json",dict(status="GENERATED_ACTUAL_SOURCE_M2_BYPASS_REQUIRES_FULL_QUALIFICATION",physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
