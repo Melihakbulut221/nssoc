@@ -3,9 +3,13 @@
   "engine_build_authorized": true,
   "guide_batch": {
     "commit_timing_within_independent_batch_changes": true,
-    "derived_sha256": "1a9c208a7be43783dc5873bc07e1022c15847714ccdf8b1ddac68c2717af2361",
+    "derived_sha256": "892a9771d911cf8ed350ffe4d42683b16561f3989f1e7c8302a02f8016328d9e",
     "guide_geometry_changed": false,
     "maximum_live_workers": 2,
+    "message_ids": {
+      "single_box_guard": 10000,
+      "worker_accounting_guard": 9998
+    },
     "original_full64_schedule_preserved": true,
     "physical_acceptance": false,
     "routing_equivalence_qualified": false,
@@ -20,6 +24,14 @@
     "min_free_disk_bytes": 34359738368,
     "nano_cpus": 2000000000,
     "pids": 4096
+  },
+  "message_id_correction": {
+    "build_verified": false,
+    "diagnostic_run": 41460346322,
+    "failed_build": 41453866417,
+    "full_DRT_preflight_required": true,
+    "original_failure_preserved": true,
+    "prior_source": "5a82cbd4068411de19acc73605ebb64250b010fc"
   },
   "native_routing_authorized": false,
   "observer_equivalence_qualified": false,
@@ -416,12 +428,13 @@
     "docs/evidence/mainchip-two-signal-wrapper-import-publication-independent-review-20261026.json": "79f959745d0468fc74dbb6a703a5f6118c3f5c3d2852f11795e8949a03cb0fec",
     "docs/evidence/onehot-clock-restore-pass-20261020.json": "169fd80a0fadf36eba427fbe05f3e30d9c7c6dc2189e2b35f1b5e71f8ab20d3a",
     "docs/evidence/onehot-routed-extraction-preflight-20261018.json": "a2aef5d32449f74d7145bddb56a7cb67d74abae759642c87b61f61db18003679",
+    "docs/evidence/openroad-find-messages-dcf36133.py": "21dcb1a4a4916c9a429bf1aa7d6444a75c1bbf0851a4d156e97d86678bf994fe",
     "docs/evidence/route146-all-reachable-branch-recipe-20261016.json": "12795513c5d9694eaae9daed4ca6b2c6209a42040c1ff8bdba9a23f249e8b31a",
     "docs/mainchip-clock-marker-classification-20261025.md": "e77f49234bafe85fd25d3ee312b2a673b0632c701b61d9a424b54d50c080cba7",
     "docs/mainchip-completed-saved-postroute-20261025.md": "3da976e660c933e9d7450e14ddf2a268826e7f7e67841201e39874e99b8b6c56",
     "docs/mainchip-fixed-clock-signal-repair-20261026.md": "de1b2fb43c4001d7a2d46075b816d14362c5c42e1baf194810559ca17f8d017a",
     "docs/mainchip-fixed-clock-signal-repair-via-json-correction-20261026.md": "786ae368eed099ec16f6a77152d2f549bb3fbe1dff19810eda6da5d7402631b7",
-    "docs/mainchip-guide-worker-batch.md": "2a2279b4bfc58d088268c51fd6669d528ba650efc910e5bc8cd784e322a73b10",
+    "docs/mainchip-guide-worker-batch.md": "c133e49b462dcdfc89b4a90d637db0de4bc22201e34f01d91ecf2d1d3ba7909c",
     "docs/mainchip-original-clock-marker-api-correction-20261025.md": "6ffe7adb67d356719dea215c447cef8907729e455e347daf04ae9916cb6d51fd",
     "docs/mainchip-original-clock-restoration-cloud-20261025.md": "ed69bfc46cfd9a776d8bb6cd77d9dfb27b37331eded614e08b51c7772d682d5c",
     "docs/mainchip-original-clock-restoration-source-20261025.md": "3510726a5f5a91a2ab2499795c2a2d8287ca244d70d5ca836392ea6e458a1c2e",
@@ -452,7 +465,7 @@
     "scripts/check_final_native_antenna_counts.py": "70abda1232ec88f48b8e8687d48b2f4e83239d73456f2c98714b123b0f1fce13",
     "scripts/check_mainchip_clock_marker_classification.py": "14539f8845746f99bb6cc79db61560c935b00fa3afe82daf8b75a11745889b8f",
     "scripts/check_mainchip_fixed_clock_signal_repair.py": "276645fc1d637417e517d1399df751bc71ba89bab9ccbf7ce454d194466fb129",
-    "scripts/check_mainchip_guide_worker_batch.py": "e0821f753045a9d4ebeb01506ee3ed3563cf955e65d24dc75298e714b445fc6f",
+    "scripts/check_mainchip_guide_worker_batch.py": "37e21a4037324ac0690ccdbc3620dbb62fc9d79a071ce7f47b8a5314595834c4",
     "scripts/check_mainchip_original_clock_restoration.py": "15a2f88f3ca920eea78665d2f3a2e7fd90ae94bd347a452485b22540db5a29e4",
     "scripts/check_mainchip_original_clock_restoration_driver.py": "ef455966e3c0922c468d730da9dcad874a96bea3fd24a6d7eb2aeef1d84e7e3b",
     "scripts/check_mainchip_postroute_config.py": "6e120dfe941173796056318397eecdfadf5b0658963012ec5a987ef53329afcb",
@@ -549,7 +562,7 @@
     "scripts/mainchip_clock_marker_classification.py": "d53f718b5f7a767fada1384a468e348a1bbf44d361862c0a04d9b3e5619e36e4",
     "scripts/mainchip_fixed_clock_signal_repair.py": "fefe067abf459cd9827dcd89113eec3a63b948bf7a46146fdfe1f902e69f7c2d",
     "scripts/mainchip_fixed_clock_signal_repair_native.py": "a33fc4659e0da96325ebc8a5cc33dbc7afe5e350be0f9bd643848c0ab56ff386",
-    "scripts/mainchip_guide_worker_batch_patch.py": "9c327702c412f231d2cca1e62add9efe4d1c70fa6f3e5654553e86cc847a8ee5",
+    "scripts/mainchip_guide_worker_batch_patch.py": "b29aa253ea116e8fca8027478f6113cebaac13f0452895415a9aa0d9f29920a0",
     "scripts/mainchip_original_clock_drc.py": "c429ffaf94c1a40f62b5fc24d44ebab6c9203b9f1cdc6b4a1bb337814985940b",
     "scripts/mainchip_original_clock_restoration.py": "fd69f21bae8beed99f1886accec86a9b35bfa7db5437cdb792813a76e60f9194",
     "scripts/mainchip_original_clock_restoration_native.py": "e48e0071f26309cfebadd051286408c3a229b1a6c54884ec516292d3017bee4c",
@@ -565,7 +578,7 @@
     "scripts/mainchip_two_signal_ownership_native.py": "b5ac981c99dad7031553330c1cfbcfdfd5523728bf3071b6fdae382123f0d34d",
     "scripts/mainchip_two_signal_repair.py": "22a3c95f09218dce2661af42a770b5dcb234ef0188ba381aedee96a82eeebcd8",
     "scripts/mainchip_two_signal_repair_native.py": "d94e03651bacfb86243174bd6e15522e5829ce2bc8a856c7c555713458cef049",
-    "scripts/mainchip_witness_engine_build.py": "76f2e7d6be0c906066af187df59704ecbac892a359b507bfa9a8a1a57a645855",
+    "scripts/mainchip_witness_engine_build.py": "45cfa12142008396659eff02015627db47221196aa95bc37cbf7e183400633b9",
     "scripts/mainchip_witness_engine_build_contract.py": "89c8e3756550c7f7013807c18f48b1ae6805072a52fcc9861d267ed417937874",
     "scripts/mainchip_witness_engine_build_inner.py": "2e46ee1770261ab31689148b0b45c1c7a8b180141c55d7d717f832ce93e31caa",
     "scripts/measured_hold_targets.py": "91138b2c0f590b151ed93f12aeabb17fa5406e1286754498ad14b694e423efdf",
@@ -612,6 +625,7 @@
     "etc/Build.sh": "5d0d0e6d15662214a87b7c088dd5f13d57f6e99071cc96743a3406fa330829d7",
     "etc/DependencyInstaller.sh": "13ca3359af432f29eea8c374a53105c3b66f1673583261ce264d0e770626588b",
     "etc/DockerTag.sh": "27c21ce7014664550b1f4f81ff36b31939ca04fdfef8e8f1216ad02551b994e0",
+    "etc/find_messages.py": "21dcb1a4a4916c9a429bf1aa7d6444a75c1bbf0851a4d156e97d86678bf994fe",
     "src/drt/src/dr/FlexDR.cpp": "122e84ca0906d7e53d4e5f4c7216a72e55f085f1a62b0848df06fc9eafd2e3af"
   }
 }

@@ -227,6 +227,7 @@ def build():
         (out/"guide-batch-after.cpp").write_bytes(guide_modified)
         write(out/"guide-batch-derivation.json",m["guide_batch"])
         before=snapshot(source); write(out/"source-before.json",before)
+        command("drt-message-preflight",[sys.executable,str(source/"etc/find_messages.py"),"--dir",str(source/"src/drt")],120)
         for local,destination in (("scripts/mainchip_witness_engine_build_inner.py","inner.py"),
                                    ("scripts/mainchip_witness_engine_build_contract.py","mainchip_witness_engine_build_contract.py")):
             shutil.copyfile(ROOT/local,work/destination)
