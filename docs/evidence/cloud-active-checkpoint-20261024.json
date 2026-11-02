@@ -1,31 +1,58 @@
 {
   "active_runs": {
-    "41389957475": {
-      "branch": "codex/cdr-horizontal-ground-fresh-rc",
+    "41391065497": {
+      "branch": "codex/cdr-horizontal-ground-loaded",
       "conclusion": null,
       "jobs": [
         {
           "active_steps": [],
           "conclusion": "success",
-          "id": 125098947865,
+          "id": 125102436321,
           "name": "source-controls",
           "status": "completed"
         },
         {
           "active_steps": [
-            "Acquire exact pinned native runtime for fresh RC"
+            "Authenticate new RC and execute unchanged loaded-wave measurements"
           ],
           "conclusion": null,
-          "id": 125099145332,
-          "name": "native-rc",
+          "id": 125102506859,
+          "name": "loaded-wave",
           "status": "in_progress"
         }
       ],
-      "label": "New actual ground RC with unchanged numerical methods",
-      "run": 41389957475,
-      "source": "fe2ccfc1529b0e7507a585d3d8078e9d60af368d",
+      "label": "Unchanged loaded-wave gates on actual new ground RC",
+      "run": 41391065497,
+      "source": "494a63a4136813f6018c8cab027632ff02f54d0d",
       "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41389957475"
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41391065497"
+    },
+    "41391752608": {
+      "branch": "codex/mainchip-route47-repair",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125104539817,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Resolve exact47net identities, prove reversible FIXED protection, reroute and measure full DRC"
+          ],
+          "conclusion": null,
+          "id": 125104693935,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "label": "Actual47native identity reversible protection routing and full DRC antenna observation",
+      "run": 41391752608,
+      "source": "4ac4c07b02172eb63b399648efc48279fa79dcb1",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41391752608"
     }
   },
   "bounded_route_class_diagnosis_v238": {
@@ -302,7 +329,7 @@
     "physical_acceptance": false,
     "timing_accepted": false
   },
-  "checkpoint_version": 278,
+  "checkpoint_version": 279,
   "cloud_results_release_reservations": {
     "mainchip_artifact_recovery": {
       "exact_tag_target_verified": true,
@@ -2239,6 +2266,7 @@
   "continuation_note_v276": "## Current continuation: all32ground branches generated; full physical verification running\n\nNative CAD, archives and waveforms remain GitHub-only. The local workspace is empty. Full serial Gen3x4PHY, completed mainchip routing and final setup/hold remain OPEN.\n\nRun41387922295/source88babaeadcbf90ec8aff7d4fc7885a106c653a1e/release431068062 completed the real native original-versus-added clearance diagnosis. All32original branches have zero overlap at1999/2000/2005nm. Fourteen failed5um variants create actual spacing loss: at6000nm line pitch, the original2800nm gap becomes1900nm after900nm symmetric addition. This disproves the unchanged-baseline false-positive hypothesis. Do not relax the2005nm/5005nm spacing predicates.\n\nRun41388218990/source06d603105065697e069dde1e6954a8605a535c5c/release431069611 PASSED actual generation of all32branches at4600nm width,700nm symmetric addition (2100nm gap in measured constrained corridors), preserving the exact original spacing guards. It passed85source controls. Actual GDS1003348bytes SHA b9b92319590ecca1c9ce31dcf1cc31f4fdc1d468fc514585931671ed2f4fa492 adds only TopMetal2 and preserves all original material, devices, vias and public pad. Generation alone is not physical or electrical acceptance. Original physically qualified reference GDS1c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94 remains the last qualified reference until the new candidate passes every downstream gate.\n\nPhysical qualification41388495424/sourcec40549f17f783ae3250139e63a9edee75721b219/release431070997 executes the unchanged checker SHA3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66:560DRC categories, deep/flat500primitive LVS,13faults and all16phases. Inspect live outcome; never infer success from source controls or generation. Original schematic9f70d7af1f26aa07029c8b473e7596f27cd6a50e1dacae4ea16bfd4559fc9f13 and LEF1f595545113979fdeda5f663c3c03398e8dce75c3821c6c8d4c6b686f9673896 were independently matched to current freshRC source6eace manifest. Newly extracted RC and unchanged loaded electrical gates are still required after physical qualification.\n\nEarlier diagnosis41387369679 failed before acquisition because its independently reserved release was not created within the wait period. Its85controls passed; it produced no actual geometry diagnosis. Preserve the failure and use41387922295, whose release was independently created and bound before native work, for actual measurements. Do not rerun a terminated job as attempt2 because first-attempt guards require a fresh dispatch. Always reserve the exact-source tag/release immediately after dispatch identification.\n\nMainchip literal report selection41388383192/source802088c5e961d43af4b3cb83db0e9da50ad22a8d PASSED11source controls and authenticated both original derived artifacts. All140iteration20violations touch47members of the original828-net routing scope:7records also touch protected clocks,127touch68outside-scope names,6involve only owned nets. Escaped names were preserved exactly. No clock is selected. Native ODB identity of all report sources and reversible FIXED protection for all nonselected wires must be verified before rerouting47signals. Selection is not routing repair. Snapshot20 full load/write/reload and original-scope preservation already passed41385939588 with154480instances143820nets1691protected clocks. Current route remains140reported violations; final timing is not accepted.\n\nNext: follow the active exact physical run without restarting on elapsed observation; preserve terminal reports. If it passes, rebuild canonical connectivity/material ownership relative to current four-path GDS and then extract freshRC and run the unchanged loaded-wave checker. New ground canonical declarations must reconstruct each original owned branch plus its selected700nm positional addition, not approximate nonrectangular polygons by bounding boxes. Prove exact all13layer conductor partitions. Keep500devices/25ports/all canonical terminals and all original fault controls. For mainchip, implement native47-net identity and reversible protection, then actual bounded routing repair retaining all1691clocks and full final DRC/antenna/LVS/STA gates. No shortcut in these requirements.\n\nMonitor remains read-only every8hours; automatic_native_dispatch=false.\n\nObserved runs at 2026-11-02T04:30:57.119626+00:00:\n- 41387369679: completed/failure\n- 41387922295: completed/failure\n- 41388218990: completed/success\n- 41388383192: completed/success\n- 41388495424: in_progress/None\n",
   "continuation_note_v277": "## Current continuation: ground candidate passed full physical verification\n\nNative work remains GitHub-only and the local workspace is empty. Full serial Gen3x4PHY, mainchip routing and final setup/hold remain OPEN.\n\nPhysical run41388495424/sourcec40549f17f783ae3250139e63a9edee75721b219/release431070997 PASSED on actual all32ground-branch GDS b9b92319590ecca1c9ce31dcf1cc31f4fdc1d468fc514585931671ed2f4fa492 (1003348bytes). Authenticated derived artifact13116248869 is353420bytes SHA6749dd76a05bbf6da3bd27e05b7039f2800b5947f0986d53936b62713cb7e486. Actual result:560DRC categories, zero markers, deep and flat transistor LVS each500primitives (124npn13g2/50sg13_lv_nmos/98rppd/7cap_cmim/221ptap1), all13fault injections rejected as expected, all16phases completed. Full physical checker remains frozen SHA3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66. This is a CDR macro result, not full-chip LVS or fullPHY signoff. New RC and electrical acceptance are explicitly false.\n\nCanonical run41389419224/source944efffd8ed7c4c586f06d9a9028ee81f9d08420/release431075795 is the next exact-source independently reserved native job. It authenticates this physically passed candidate and current four-path reference GDS1c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94 from freshRC41352147913/source6eace90ce68a61546f0268b3fd65b2b9b2b3840d/release430869108. It reconstructs every declared700nm positional widening from the actual original polygon (never bbox-only), verifies all13layers/all conductor partitions and requires exactly one changed avss/TopMetal2partition. Existing native identity/planes/recovered-pin checks and frozen methods remain. Inspect authoritative live state before assuming completion. If it passes, adapt freshRC to the new canonical output, then run the unchanged loaded-wave gates; do not reuse old RC as new geometry evidence.\n\nActual spacing diagnosis41387922295 proved failed5um proposals narrowed real gaps to1900nm. Geometry was redesigned to4600nm, leaving2100nm in the constrained6000nm-pitch corridors; no spacing threshold was relaxed. All85generation controls and all32branches passed41388218990. Prior failed candidates and the initial missing-reservation failure41387369679 remain permanently preserved in v275/v276.\n\nMainchip47-net selection41388383192 remains a verified plan only: all140report20violations touch47of828authorized signal nets;7also touch protected clocks,127touch68outside-scope names. All literal escaped names are preserved. Before actual rerouting, independently resolve every source name in native iteration20ODB, build and audit reversible FIXED protection for all nonselected wires, and preserve every original clock and material. The original frozen native helpers fixed_plan/metadata_only/import_tcl/fixed-audit show the required distinction between metadata and encoded path classes; changing metadata alone does not establish fixed geometry. All1691clocks must remain unchanged. Current iteration20 native reload/scope proof passed41385939588, but routing, original class restoration, diodePG, DRC/antenna, LVS and three-corner STA remain open.\n\nNext actions: follow canonical41389419224 without observation-timeout restarts; preserve any terminal failure before redesign. After success, perform newly bound RC extraction and real loaded-wave checks. In parallel task planning, implement the47-net native identity/freeze/clear/route pipeline using actual qualified iteration20geometry, preserving original failure checkpoints and all final acceptance constraints. No full serialPHY or timing acceptance is claimed.\n\nMonitor remains read-only every8hours; automatic_native_dispatch=false.\n\nObserved runs at 2026-11-02T04:38:20.874842+00:00:\n- 41388495424: completed/success\n- 41389419224: in_progress/None\n",
   "continuation_note_v278": "## Current continuation: ground physical and canonical PASSED; newly bound RC dispatched\n\nAll native CAD and archives remain GitHub-only. The local workspace is empty. Full serial Gen3x4PHY, mainchip routing and final setup/hold remain OPEN.\n\nActual all32ground branches at4.6um were generated in41388218990/source06d603105065697e069dde1e6954a8605a535c5c. GDS1003348bytes SHA b9b92319590ecca1c9ce31dcf1cc31f4fdc1d468fc514585931671ed2f4fa492 passed physical41388495424/sourcec40549f17f783ae3250139e63a9edee75721b219:560DRC categories/zero markers, deep-flat500primitive LVS,13expected fault rejections,16phases. This is a CDR macro result, not full-chip signoff.\n\nCanonical41389419224/source944efffd8ed7c4c586f06d9a9028ee81f9d08420/release431075795 PASSED actual native execution. Authenticated derived artifact13117060205 is1449657bytes SHA9ef855ce02101fb12666265cfc4c48c027ee14cfeac86192222e59d7344bcb53. It preserves500devices,1446terminals,25ports,978anchors,238native nets,113wire components and114electrical nets. Exact comparison of every conductor partition on all13layers found only the declared avssTopMetal2addition:29916180000nm2. Native ground component14/canonical cluster24; all levels/ordinals/transforms remained equal. All78current-view files are bound. No bbox approximation of original nonrectangular polygons was used.\n\nNew actual RC job41389957475/sourcefe2ccfc1529b0e7507a585d3d8078e9d60af368d/release431078750 is independently reserved and dispatched. It binds the new78-file canonical view and observed semantic port order to unchanged full numerical methods,13command plan, both precise MIM orders and original runtime/lifecycle controls. Reused658-member runtime is not new RC evidence. Numerical definitions/validators and electrical limits were not relaxed. Exact current source-only control and native execution state are recorded below; poll the same run until terminal, never restart because observation time elapsed.\n\nObserved unchanged semantic port order is avdd,avss,sub,ird,cn,cp,dn,dp,irb,ira,irc,ibda,ibdc,ibs0,irx,xn,xp,ibs1,iry,yp,yn,irvx,irvy,vin,vip. Do not infer it from historical numeric native port IDs. The new canonical qualification is separately pinned by whole artifact digest and exact member bytes in the RC source; no claim is made that the generated proof existed in its producer Git tree.\n\nIf freshRC passes, bind its actual composition/model/native outputs into the unchanged loaded-wave checker. Electrical reference remains the failed four-shortcut loaded41379770619 (ground rise0.324-0.331V and minimumHBT Vce0.3490/0.3463/0.3813/0.3801V below0.4V). Do not transfer its electrical result or its RC model to the new GDS. The new geometry must meet all original scalar/wave and device limits without altered stimuli or idealized ground.\n\nMainchip remains at qualified iteration20reload41385939588 with140reported DRC. Selection41388383192 verified47authorized nets touch all140records;7records also touch protected clocks and127touch68outside-scope names. Native identity of every report name and reversible FIXED protection for all nonselected wires remain prerequisites to actual47-net routing. Both encoded route classes and net metadata require verification. All1691clock records, native material/terminals, original class restoration, diodePG, complete DRC/antenna/LVS and final three-corner STA remain required.\n\nPrior width10um/5um refusals, missing reservation41387369679, successful real spacing diagnosis41387922295 and all source controls are preserved. New4.6um geometry leaves2100nm in measured constrained corridors; original2005nm/5005nm predicates are unchanged. Monitor stays read-only every8hours with automatic_native_dispatch=false.\n\nObserved runs at 2026-11-02T04:43:58.488950+00:00:\n- 41389419224: completed/success\n- 41389957475: in_progress/None\n",
+  "continuation_note_v279": "## Current continuation: new ground RC passed; loaded waves and actual47net repair launched\n\nAll native CAD, archives and raw waves remain GitHub-only. Local workspace is empty. Full serial Gen3x4PHY, mainchip route and final setup/hold remain OPEN.\n\nFreshRC41389957475/sourcefe2ccfc1529b0e7507a585d3d8078e9d60af368d/release431078750 PASSED actual numerical extraction for ground GDSb9b92319590ecca1c9ce31dcf1cc31f4fdc1d468fc514585931671ed2f4fa492. Authenticated derived artifact13117376512:8351097bytes SHA3942e7dac897fae1bcd9362024a6863031b37bee4c2da94d77f8e411a675126d. Actual model1982585bytes SHA0bfdbf74c8dd73b2234b771746785af57fade28f122af94b436096c27b2ff943; composition974729bytes SHAc863575e8fd2f6586d0436a8db2fc0c80061b3032c8f9633fc9d9777f18c1527. Counts500devices/24530R/15676C. Original full numerical qualification and all11receipts passed. FreshRC is not loaded electrical acceptance or foundry-qualifiedPEX.\n\nLoaded run41391065497/source494a63a4136813f6018c8cab027632ff02f54d0d/release431084851 uses this actual new model. All original29loaded definitions/five executable blocks/nine source files, stimuli, complete prepare/measure bodies, actual semantic port order, raw-wave handling and device/electrical limits are unchanged. Same model census as previous candidate is measured, not assumed. Independently reserved release is bound to the exact source. Inspect live outcome before claiming improvement over failed41379770619. Full waves must remain in GitHub. The first coordinator preparation attempt failed before any branch mutation because the qualification fixture also has two explicit source-only metadata flags; the second preserved both flags and updated only q/oq inputs.\n\nMainchip source4ac4c07b02172eb63b399648efc48279fa79dcb1 on codex/mainchip-route47-repair passed independent controls41391622039, including20additional scope/identity/clock/PG/instance/terminal refusal controls and all existing controls. Actual native run41391752608/release431088470 was independently reserved and dispatched with control_run41391622039. Do not dispatch a duplicate while this handle is live.\n\nThe native flow repeats the complete original iteration20roundtrip/scope audit, resolves every literal source name in all140reports, and checks47ordinary selected ITerm-only nets. It constructs both metadata and encoded FIXED protection for all nonselected wires. Before deleting any selected route, the protection is reversed and the full native snapshot (including every original wire opcode/clock record) must exactly equal the input. Any failure stops before routing. Then only47wires are cleared, every guide is verified unchanged, and the same original64iteration engine/settings/layers/seed run on the authenticated seed. Per-iteration native snapshots and complete partial outputs are retained. This is a new scoped cycle, not internal-search-state continuation.\n\nIf routing returns, temporary47protection is reversed; every nonselected wire,1691clocks, complete native sections and wholeDEF are compared. Full original DRC/antenna checks then run read-only. A green observation job is not signoff: result reports actual remaining DRC/antenna, and original global route-class restoration, complete diodePG/connectivity/LVS and final three-cornerRC/STA remain required. All acceptance flags remain false. Original input iteration20 has140DRC until a newly measured result proves otherwise.\n\nThe owned native47pipeline uses the same frozen engine/container/runtime/resource limits;6floorplan_initialize imports across3class-import phases,7audit/preparation phases and one actual route invocation are explicitly counted. Original route budget14400seconds and all per-phase1200second/resource supervision are retained; hosted job budget360minutes. Preserve terminal refusals or checkpoints rather than treating elapsed observation as failure.\n\nPrior ground generation/physical/canonical passes remain documented in v276-v278. Follow both exact live jobs, preserve results, then respond to measured electrical or route failures without weakening any gate. Monitor remains read-only every8hours with automatic_native_dispatch=false.\n\nObserved runs at 2026-11-02T05:11:33.888930+00:00:\n- 41389957475: completed/success\n- 41391065497: in_progress/None\n- 41391622039: completed/success\n- 41391752608: in_progress/None\n",
   "current_run_snapshot": [
     {
       "attempt": 1,
@@ -24892,7 +24920,7 @@
     },
     {
       "branch": "codex/cdr-horizontal-ground-fresh-rc",
-      "conclusion": null,
+      "conclusion": "success",
       "jobs": [
         {
           "active_steps": [],
@@ -24902,20 +24930,97 @@
           "status": "completed"
         },
         {
-          "active_steps": [
-            "Acquire exact pinned native runtime for fresh RC"
-          ],
-          "conclusion": null,
+          "active_steps": [],
+          "conclusion": "success",
           "id": 125099145332,
           "name": "native-rc",
+          "status": "completed"
+        }
+      ],
+      "label": "PASSED actual32ground-branch freshRC with full numerical qualification",
+      "run": 41389957475,
+      "source": "fe2ccfc1529b0e7507a585d3d8078e9d60af368d",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41389957475"
+    },
+    {
+      "branch": "codex/cdr-horizontal-ground-loaded",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125102436321,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate new RC and execute unchanged loaded-wave measurements"
+          ],
+          "conclusion": null,
+          "id": 125102506859,
+          "name": "loaded-wave",
           "status": "in_progress"
         }
       ],
-      "label": "New actual ground RC with unchanged numerical methods",
-      "run": 41389957475,
-      "source": "fe2ccfc1529b0e7507a585d3d8078e9d60af368d",
+      "label": "Unchanged loaded-wave gates on actual new ground RC",
+      "run": 41391065497,
+      "source": "494a63a4136813f6018c8cab027632ff02f54d0d",
       "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41389957475"
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41391065497"
+    },
+    {
+      "branch": "codex/mainchip-route47-repair",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125104072740,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125104240765,
+          "name": "native-routing",
+          "status": "completed"
+        }
+      ],
+      "label": "Independent actual47repair source controls",
+      "run": 41391622039,
+      "source": "4ac4c07b02172eb63b399648efc48279fa79dcb1",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41391622039"
+    },
+    {
+      "branch": "codex/mainchip-route47-repair",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125104539817,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Resolve exact47net identities, prove reversible FIXED protection, reroute and measure full DRC"
+          ],
+          "conclusion": null,
+          "id": 125104693935,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "label": "Actual47native identity reversible protection routing and full DRC antenna observation",
+      "run": 41391752608,
+      "source": "4ac4c07b02172eb63b399648efc48279fa79dcb1",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41391752608"
     }
   ],
   "divider_width4_terminal_v246": {
@@ -107608,6 +107713,112 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41389957475"
     }
   ],
+  "latest_observed_runs_v279": [
+    {
+      "branch": "codex/cdr-horizontal-ground-fresh-rc",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125098947865,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125099145332,
+          "name": "native-rc",
+          "status": "completed"
+        }
+      ],
+      "label": "PASSED actual32ground-branch freshRC with full numerical qualification",
+      "run": 41389957475,
+      "source": "fe2ccfc1529b0e7507a585d3d8078e9d60af368d",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41389957475"
+    },
+    {
+      "branch": "codex/cdr-horizontal-ground-loaded",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125102436321,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate new RC and execute unchanged loaded-wave measurements"
+          ],
+          "conclusion": null,
+          "id": 125102506859,
+          "name": "loaded-wave",
+          "status": "in_progress"
+        }
+      ],
+      "label": "Unchanged loaded-wave gates on actual new ground RC",
+      "run": 41391065497,
+      "source": "494a63a4136813f6018c8cab027632ff02f54d0d",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41391065497"
+    },
+    {
+      "branch": "codex/mainchip-route47-repair",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125104072740,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125104240765,
+          "name": "native-routing",
+          "status": "completed"
+        }
+      ],
+      "label": "Independent actual47repair source controls",
+      "run": 41391622039,
+      "source": "4ac4c07b02172eb63b399648efc48279fa79dcb1",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41391622039"
+    },
+    {
+      "branch": "codex/mainchip-route47-repair",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125104539817,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Resolve exact47net identities, prove reversible FIXED protection, reroute and measure full DRC"
+          ],
+          "conclusion": null,
+          "id": 125104693935,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "label": "Actual47native identity reversible protection routing and full DRC antenna observation",
+      "run": 41391752608,
+      "source": "4ac4c07b02172eb63b399648efc48279fa79dcb1",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41391752608"
+    }
+  ],
   "latest_terminal_runs": {
     "cdr_actual_terminal_current_ledger": 40171679250,
     "cdr_current_ledger_controls": 40171508329,
@@ -108368,11 +108579,11 @@
   },
   "local_cleanup_verification": {
     "native_payloads_cloud_only": true,
-    "observed_at": "2026-11-02T04:43:58.488950+00:00",
+    "observed_at": "2026-11-02T05:11:33.888930+00:00",
     "source_API_derived_text_RAM_only": true,
     "workspace_entries": 0
   },
-  "local_workspace_verified_empty_at": "2026-11-02T04:43:58.488950+00:00",
+  "local_workspace_verified_empty_at": "2026-11-02T05:11:33.888930+00:00",
   "mixed_canonical_proofs_v269": [
     {
       "prefix": "docs/evidence/mixed-canonical-terminal-41350835442",
@@ -108410,7 +108621,7 @@
     },
     "candidate_qualification_run": 41108174342,
     "code_deployed_head": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a",
-    "configured_inventory_rows": 742,
+    "configured_inventory_rows": 745,
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33",
     "every_hours": 8,
     "historical_scheduled_error": {
@@ -108423,7 +108634,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 278,
+    "inventory_version": 279,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -108523,7 +108734,7 @@
   ],
   "next_actions": [
     "Observe existing full64 snapshot native41349316524/sourcea47bb1895ad12fdebddeb055dc5e3e9c414c04e0/release430851918. Independent31 controls41349079496 passed. Only snapshot enable changes Tcl; original64/seed42/2threads/constraints/resources remain. Preserve actual iteration ODBs, then native reopen/ownership/class/connectivity/PG/DRC/antenna audits. Snapshot bytes are not yet qualified for reload or exact in-memory resume. Do not repeat old timed-out41323446729 or dispatch duplicate.",
-    "Ground b9b923 passed physical41388495424 and canonical41389419224. Follow same freshRC41389957475; then bind actual new model and run unchanged loaded gates. Mainchip47net native identity/reversible FIXED protection then real routing repair;140DRC/fullPHY/finalSTA remain open.",
+    "Ground freshRC41389957475 PASSED actual new model0bfdbf. Follow unchanged loaded41391065497 and actual47route41391752608 (independent controls41391622039). Preserve failures; no duplicate dispatch on elapsed observation. Full serialPHY, mainchip final DRC/antenna/LVS/classes/diodePG/STA remain open.",
     "After actual pin-metal correspondence and connectivity qualification, run remaining2702diode PG-contact audit, all1691original clock/fixed-net preservation, all1351diode pin attachments, final DRC/antenna and exact current candidate audits. Saved8-pass router397violations is not final physical acceptance.",
     "Export and authenticate current diode-inclusive154480instance netlist from current native ODB, generate fresh nominal SPEF and run original threecorners/20-4-8-8ns/5percent-derate STA only after physical admission. Do not reuse153130instance route12netlist or stale SPEF.",
     "FullserialPLL/CDR/SERDES/training/LTSSM/replay/credit/lane/TX/serialsoc_top and completeDRC/LVS/ESD/production approval remain open. No packet-interface route or diagnostic pass constitutes fullPHY acceptance.",
@@ -150262,7 +150473,7 @@
     "timing_accepted": false,
     "timing_limits_unchanged": true
   },
-  "root_source_before_receipt": "ea2063ac222616c2301d9abaac1e6943fe8982db",
+  "root_source_before_receipt": "cbb557ddb2e4de9f4523160f7ae7a4181c77eda2",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -150349,7 +150560,7 @@
       "run": 41349316524
     }
   ],
-  "updated_at": "2026-11-02T04:43:58.488950+00:00",
+  "updated_at": "2026-11-02T05:11:33.888930+00:00",
   "width8_wave_diagnosis_v250": {
     "proof": {
       "bytes": 5806735,
