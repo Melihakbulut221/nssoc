@@ -1276,7 +1276,7 @@ def generate_local_source_m1(base,cfg):
         need(endpoint["extraction_anchor"]==a and len(endpoint["records"])==1 and endpoint["records"][0]["point_dbu"]==a["point_dbu"],"actual critical terminal coordinate")
         need(edge["edge"]["resistance_ohm"]==32.5245 and edge["component"]==14,"actual dominant branch")
         x,y=a["point_dbu"];trials=[];selected=None;bands=[]
-        for halfspan in(18000,16000,14000,12000,10000):
+        for halfspan in(18000,16000,14000,12000,10000,8000,6000,4000,2000):
             strip,rectangular=source_m1_band(owned[8],x,y,halfspan)
             bands.append(dict(halfspan_nm=halfspan,original_strip_bbox=bounds(strip),exact_original_rectangle=rectangular))
             if not rectangular:continue
