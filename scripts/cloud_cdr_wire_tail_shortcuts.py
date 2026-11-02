@@ -7,7 +7,7 @@ import cloud_cdr_wire_geometry_acquire as prior
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"wire-tail-shortcuts";NATIVE=ROOT/"wire-tail-shortcuts-native"
 MANIFEST="scripts/cdr-wire-tail-shortcuts-pins.json";INPUT="scripts/cdr-wire-tail-shortcuts-inputs.json"
-BRANCH="codex/cdr-via1-reinforcement";TOP="nssoc_cdr_pd500_resistor_v59"
+BRANCH="codex/cdr-source-m2-bypass";TOP="nssoc_cdr_pd500_resistor_v59"
 LAYERS=(8,19,10,29)
 TARGETS=(("D_collector","T061_C","T056_E"),("D_emitter","T061_E","T005_D"),("C_collector","T115_C","T108_E"),("C_emitter","T115_E","T034_D"))
 need=prior.need
@@ -1327,14 +1327,138 @@ def generate_via1_reinforcement(base,cfg):
         all_new_cuts_on_same_owned_m1_m2=True,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False,
         current_density_acceptance=False,requires=["full560DRC","deep_flat_LVS13","current_canonical_binding","fresh_RC","unchanged_loaded_wave_gates","actual_via_current_distribution"]))
 
+def source_m2_guard(metal,owned_m2,foreign_m2,foreign_via1,foreign_via2,extent):
+    return dict(nonempty=not metal.is_empty(),
+        grid5=all(v%5==0 for poly in metal.each()for point in poly.each_point_hull()for v in(point.x,point.y)),
+        connected_existing_m2=not(metal&owned_m2).is_empty(),
+        foreign_m2_clearance240=(metal&foreign_m2.sized(240,240,2)).is_empty(),
+        foreign_via1_clearance50=(metal&foreign_via1.sized(50,50,2)).is_empty(),
+        foreign_via2_clearance50=(metal&foreign_via2.sized(50,50,2)).is_empty(),
+        within_original_extent=(metal-extent).is_empty())
+
+def source_m2_controls():
+    metal=pya.Region(pya.Box(0,0,1400,20000))
+    owned=pya.Region(pya.Box(0,0,300,300));empty=pya.Region();extent=pya.Region(pya.Box(-1000,-1000,4000,22000))
+    args=[metal,owned,empty,empty,empty,extent]
+    need(all(source_m2_guard(*args).values()),"valid attached source M2 bypass")
+    passed=["valid source M2 attachment"]
+    tests=[("no-metal",0,empty),("no-attachment",1,empty),
+      ("off-grid",0,pya.Region(pya.Box(1,0,1400,20000))),
+      ("foreign-metal",2,pya.Region(pya.Box(1600,0,1900,20000))),
+      ("foreign-via1",3,box(1400,10000,95)),
+      ("foreign-via2",4,box(1400,10000,95)),
+      ("outside-original-extent",5,pya.Region(pya.Box(0,0,1000,20000)))]
+    for name,index,value in tests:
+        changed=list(args);changed[index]=value
+        need(not all(source_m2_guard(*changed).values()),"refuse "+name)
+        passed.append("refuse "+name)
+    return passed
+
+def generate_source_m2_bypass(base,cfg):
+    gp=base/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds"
+    wp=base/"binding/inputs/wire/native05/wires.l2n"
+    need(pin(gp)==dict(bytes=1003860,sha256="4ccf1212d4b98046b1b56037bb1b76c53477777b08ee9cba5053c8e6323203e8"),"actual loaded rejected source-M1 input")
+    g=pya.Layout();g.read(str(gp));top=g.cell(TOP)
+    need(g.dbu==.001 and top is not None,"actual GDS1nm database")
+    before=region_snapshot(g,top);extent=pya.Region(top.bbox())
+    w=pya.LayoutToNetlist();w.read(str(wp));need(w.internal_layout().dbu==.001,"actual native wire1nm database")
+    layers=(8,19,10,29,30,49,50,66,67,125,126,133,134)
+    objects={n:w.layer_by_name("gds_"+str(n))for n in layers}
+    for n,r in objects.items():
+        need(r is not None and(before.get((n,0),pya.Region())^r).is_empty(),"all13native input conductor unions")
+    nets={n.cluster_id:n for n in w.netlist().top_circuit().each_net()}
+    anchors={a["label"]:a for a in json.loads((base/"mim/precise/wire/anchors08.json").read_bytes())["anchors"]}
+    proof=json.loads((ROOT/"scripts/cdr-critical-resistance-inputs.json").read_bytes())
+    need(proof["run"]==41407813062 and proof["source"]=="fafb2d0be139a44b3c70b449dfc182c5b9f171b0","actual current32query resistance diagnosis")
+    queries={tuple(q["source_terminal"]):q for q in proof["queries"]if q["sink_terminal"]=="public_avss"}
+    need(set(queries)=={(i,"S")for i in(3,4,5,6,32,33,34,35)},"all8actual source ground queries")
+    components={anchors["T"+str(i).zfill(3)+"_S"]["wire_component"]for i,_ in queries}
+    need(len(components)==1,"one original ground wire component")
+    component=next(iter(components))
+    own={n:w.shapes_of_net(nets[component],r,True).merged()for n,r in objects.items()}
+    all_vias={n:pya.Region()for n in(19,29)}
+    for (layer,datatype),r in before.items():
+        if layer in all_vias:all_vias[layer]+=r
+    all_vias={n:r.merged()for n,r in all_vias.items()}
+    additions={n:pya.Region()for n in(10,19,29)};rows=[]
+    for i,t in sorted(queries):
+        label="T"+str(i).zfill(3)+"_S";a=anchors[label];x,y=a["point_dbu"]
+        need(a["metal"]==8 and a["detail"]["device"]==i and a["detail"]["native_net"]=="avss"
+             and queries[(i,t)]["native_net"]=="avss","actual native source ground identity")
+        need((box(x,y,1)-own[8]).is_empty(),"original source anchor physically owned")
+        top_patch=pya.Region(pya.Box(x-1645,y-2000,x-145,y+2000))
+        need((top_patch-own[8]).is_empty(),"entire actual prior1500x4000nm source-M1 landing")
+        # The landing exactly joins the existing original290nm M2/M3 access.
+        column=pya.Region(pya.Box(x-1595,y-17800,x-195,y+2000))
+        landing=pya.Region(pya.Box(x-1595,y-17745,x+145,y-17455))
+        metal=(column+landing).merged()
+        guards=source_m2_guard(metal,own[10],objects[10]-own[10],all_vias[19]-own[19],all_vias[29]-own[29],extent)
+        row=dict(label=label,original_anchor=a,metal_bbox=bounds(metal),metal_polygons=[
+            [[p.x,p.y]for p in poly.each_point_hull()]for poly in metal.each()],
+            metal_guards=guards,via1=[],via2=[])
+        rows.append(row)
+        save("source-m2-bypass-proposal.json",dict(input_gds=pin(gp),targets=rows,complete=False,physical_acceptance=False,full_phy_accepted=False))
+        need(all(guards.values()),"source M2 full same-net attachment/foreign-spacing guards "+label)
+        future_m2=(own[10]+additions[10]+metal).merged()
+        for layer,ys,lower,upper in (
+            (19,range(y-1680,y+1681,480),own[8],future_m2),
+            (29,[y-17600],future_m2,own[30])):
+            for cx in (x-1450,x-970,x-490):
+                for cy in ys:
+                    cut=box(cx,cy,95)
+                    checks=via1_reinforcement_guard(cut,lower,upper,all_vias[layer],additions[layer],extent)
+                    record=dict(center_dbu=[cx,cy],bbox=bounds(cut),guards=checks,
+                        lower_owned_layer=8 if layer==19 else 10,upper_owned_layer=10 if layer==19 else 30,
+                        original_wire_component=component,native_net="avss")
+                    row["via1"if layer==19 else"via2"].append(record)
+                    save("source-m2-bypass-proposal.json",dict(input_gds=pin(gp),targets=rows,complete=False,physical_acceptance=False,full_phy_accepted=False))
+                    need(all(checks.values()),"same-net enclosed190nm cut/240nm spacing "+label+" layer"+str(layer))
+                    additions[layer]+=cut
+        need(len(row["via1"])==24 and len(row["via2"])==3,"all24source and3ground access cuts")
+        additions[10]+=metal
+    for n in additions:additions[n]=additions[n].merged()-before.get((n,0),pya.Region())
+    need(additions[19].count()==192 and additions[29].count()==24,"all8actual new via arrays")
+    need(additions[19].area()==192*36100 and additions[29].area()==24*36100,"exact disjoint190nm cuts")
+    handles=[]
+    for n,r in additions.items():
+        need(not r.is_empty(),"actual nonempty layer addition")
+        for poly in r.each():handles.append(top.shapes(g.layer(n,0)).insert(poly))
+    NATIVE.mkdir();candidate=NATIVE/"nssoc_cdr_pd500_source_m2_bypass.gds";g.write(str(candidate))
+    readback=pya.Layout();readback.read(str(candidate));after=region_snapshot(readback,readback.cell(TOP))
+    need(readback.dbu==g.dbu and{c.name for c in readback.each_cell()}=={c.name for c in g.each_cell()},"serialized original hierarchy")
+    for key in set(before)|set(after):
+        expected=before.get(key,pya.Region())
+        if key[1]==0 and key[0]in additions:expected=(expected+additions[key[0]]).merged()
+        need((expected^after.get(key,pya.Region())).is_empty(),"only exact newM2/Via1/Via2 material "+str(key))
+    for handle in reversed(handles):handle.delete()
+    reverted=region_snapshot(g,top);need(set(before)==set(reverted),"original layer set after reversal")
+    for key in before:need((before[key]^reverted[key]).is_empty(),"exact original material reversal")
+    need(pin(gp)==cfg["complete_members"]["binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds"],"source GDS bytes unchanged")
+    save("source-m2-bypass-proposal.json",dict(input_gds=pin(gp),targets=rows,complete=True,
+        new_via1_count=192,new_via2_count=24,metal_width_nm=1400,metal_foreign_clearance_nm=240,
+        via_cut_nm=190,via_pitch_nm=480,via_metal_enclosure_nm=50,via_spacing_nm=240,
+        physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
+    save("source-m2-bypass-generation-proof.json",dict(candidate=pin(candidate),input_gds=pin(gp),input_l2n=pin(wp),
+        all8actual_source_ground_accesses=True,all13native_unions_verified=True,
+        added_area_dbu2={str(n):r.area()for n,r in additions.items()},
+        only_added_layers=[[10,0],[19,0],[29,0]],exact_serialized_delta=True,original_material_roundtrip=True,
+        new_devices=False,all_new_access_owned_by_original_avss=True,physical_acceptance=False,
+        full_phy_accepted=False,final_timing_complete=False,current_density_acceptance=False,
+        electrical_improvement_claimed=False,requires=["full560DRC","deep_flat_LVS13","current_canonical_binding",
+          "fresh_RC","unchanged_loaded_wave_gates","actual_via_current_distribution","bias_headroom_review"]))
+
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
-        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls()+horizontal_ground_controls()+horizontal_clearance_controls()+via1_reinforcement_controls();save("controls.json",dict(count=len(passed),passed=passed))
+        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls()+horizontal_ground_controls()+horizontal_clearance_controls()+via1_reinforcement_controls()+source_m2_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
-        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"],["--generate-horizontal-ground"],["--inspect-critical-access"],["--generate-via1-reinforcement"]),"explicit native operation")
+        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"],["--generate-horizontal-ground"],["--inspect-critical-access"],["--generate-via1-reinforcement"],["--generate-source-m2-bypass"]),"explicit native operation")
         reserve(wait=True)
         base=acquire_current(cfg)
+        if sys.argv[1:]==["--generate-source-m2-bypass"]:
+            generate_source_m2_bypass(base,cfg)
+            save("result.json",dict(status="GENERATED_ACTUAL_SOURCE_M2_BYPASS_REQUIRES_FULL_QUALIFICATION",physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
+            return
         if sys.argv[1:]==["--generate-via1-reinforcement"]:
             generate_via1_reinforcement(base,cfg)
             save("result.json",dict(status="GENERATED_ACTUAL_SAME_NET_VIA1_REINFORCEMENT_REQUIRES_FULL_QUALIFICATION",physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
