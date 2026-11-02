@@ -1,4 +1,4 @@
-name: Analyze actual selector and ground resistance bottlenecks
+name: Compare actual source Metal1 and prior ground resistance networks
 on:
   workflow_dispatch:
 permissions:
@@ -42,7 +42,7 @@ jobs:
         run: |
           python3 -B scripts/cloud_cdr_selector_resistance.py --controls
           python3 -B scripts/check_cdr_selector_resistance.py
-      - name: Authenticate original model and solve32passive terminal resistance queries
+      - name: Authenticate current RC and compare32full-network queries with qualified prior results
         run: python3 -B scripts/cloud_cdr_selector_resistance.py --analyze
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
