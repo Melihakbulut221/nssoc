@@ -7,7 +7,7 @@ import cloud_cdr_wire_geometry_acquire as prior
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"wire-tail-shortcuts";NATIVE=ROOT/"wire-tail-shortcuts-native"
 MANIFEST="scripts/cdr-wire-tail-shortcuts-pins.json";INPUT="scripts/cdr-wire-tail-shortcuts-inputs.json"
-BRANCH="codex/cdr-critical-access";TOP="nssoc_cdr_pd500_resistor_v59"
+BRANCH="codex/cdr-source-m1-ground-access";TOP="nssoc_cdr_pd500_resistor_v59"
 LAYERS=(8,19,10,29)
 TARGETS=(("D_collector","T061_C","T056_E"),("D_emitter","T061_E","T005_D"),("C_collector","T115_C","T108_E"),("C_emitter","T115_E","T034_D"))
 need=prior.need
@@ -405,8 +405,8 @@ def acquire_current(cfg):
             need(dict(bytes=size,sha256=h.hexdigest())==expected,"member digest "+n);seen.add(n)
     need(seen==set(index["files"])and selected<=seen,"all current RC members authenticated")
     q=json.loads((target/"fresh-rc-qualification.json").read_bytes())
-    need(q["status"]=="PASS_HORIZONTAL_GROUND_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual current RC qualification")
-    need(pin(target/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds")==dict(bytes=1003348,sha256="b9b92319590ecca1c9ce31dcf1cc31f4fdc1d468fc514585931671ed2f4fa492"),"actual current four-path GDS baseline")
+    need(q["status"]=="PASS_LOCAL_SOURCE_M1_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual current RC qualification")
+    need(pin(target/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds")==dict(bytes=1003860,sha256="4ccf1212d4b98046b1b56037bb1b76c53477777b08ee9cba5053c8e6323203e8"),"actual current four-path GDS baseline")
     save("acquisition.json",dict(run=r,release=rel,authenticated_members=len(seen),selected=sorted(selected),all_current_members_authenticated=True,native_payloads_cloud_only=True))
     return target
 def verify_target(base,source_label,a,sink_label,b):
@@ -1108,7 +1108,7 @@ def inspect_critical_access(base,cfg):
         need(anchor==expected,"only authenticated seven MIM coordinate changes; all other metadata exact")
     comp=json.loads((base/"mim/composition/composition.json").read_bytes())
     proof=json.loads((ROOT/"scripts/cdr-critical-resistance-inputs.json").read_bytes())
-    need(proof["run"]==41395210468 and proof["source"]=="4a20c52579eddaa7f0a1f82f41cb6af8445b806c","actual sensitivity producer")
+    need(proof["run"]==41407813062 and proof["source"]=="fafb2d0be139a44b3c70b449dfc182c5b9f171b0","actual sensitivity producer")
     queries=proof["queries"];need(len(queries)==32,"all measured queries")
     public={r[1]:r for r in raw if r[0]=="port"}
     need(len(public)==978 and set(public)==set(anchors),"full native port coordinate census")
@@ -1169,7 +1169,7 @@ def inspect_critical_access(base,cfg):
             need((box(x,y,1)-shapes[ref["metal"]]).is_empty(),"all actual and original port points on same native owned metal "+name+" "+kind)
     def members(region):
         return [dict(bbox=bounds(pya.Region(p)),area_dbu2=p.area(),hull=[[pt.x,pt.y]for pt in p.each_point_hull()],holes=[[[pt.x,pt.y]for pt in p.each_point_hole(i)]for i in range(p.holes())])for p in region.each()]
-    rows=[]
+    rows=[];corridors=[]
     for name,item in sorted(targets.items()):
         shapes=owned(item["component"]);endpoints=[]
         for role in("a","b"):
@@ -1183,7 +1183,24 @@ def inspect_critical_access(base,cfg):
                     owned_local_polygons=members(region&near),
                     foreign_local_polygons=members((objects[n]-region)&near))for n,region in shapes.items()if not(objects[n]&near).is_empty()}))
             endpoints.append(dict(role=role,model_node=item["edge"][role],native_node=native,records=at,original_anchor=original.get(native),extraction_anchor=anchors.get(native)))
+        if item["native_net"]=="avss":
+            coordinates=[r["point_dbu"]for e in endpoints for r in e["records"]]
+            need(len(coordinates)>=2,"all ground resistor endpoint coordinates")
+            xs,ys=zip(*coordinates);window=pya.Region(pya.Box(min(xs)-5000,min(ys)-5000,max(xs)+5000,max(ys)+5000))
+            corridors.append(dict(element=name,queries=item["queries"],resistance_ohm=item["edge"]["resistance_ohm"],
+                component=item["component"],native_cluster=item["native_cluster"],window_bbox=bounds(window),
+                endpoint_coordinates=coordinates,
+                layers={str(n):dict(owned=members(region&window),foreign=members((objects[n]-region)&window))for n,region in shapes.items()},
+                same_net_m1_m2_overlap=members(shapes[8]&shapes[10]&window),
+                same_net_m2_m3_overlap=members(shapes[10]&shapes[30]&window),
+                no_new_geometry=True,no_via_sizing_or_drc_acceptance=True))
         rows.append(dict(element=name,**item,endpoints=endpoints))
+    need(corridors and all(r["queries"]for r in corridors),"all actual ground critical access corridors")
+    save("ground-access-corridors.json",dict(status="COMPLETE_CURRENT_SOURCE_AND_SHARED_GROUND_ACCESS_SURVEY",
+        input_gds=pin(gp),sensitivity_producer=cfg["critical_resistance_diagnosis"],corridors=corridors,
+        all13layers_in_each_window=True,original_geometry_unchanged=True,new_geometry_generated=False,
+        physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False,
+        limits="Actual same-net overlaps and foreign geometry only. Via dimensions, enclosure, spacing and current density still require separately validated design; no aggregate extracted resistor is assigned to one layer."))
     after=region_snapshot(g,top);need(set(before)==set(after),"same GDS layers")
     for n in before:need((before[n]^after[n]).is_empty(),"unchanged physical material")
     for n in("binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds","binding/inputs/wire/native05/wires.l2n","mim/precise/wire/rc03/pump_wires.ext","mim/precise/wire/rc03/pump_wires.res.ext","mim/precise/wire/rc03/wires.spice","mim/composition/composition.json","mim/precise/wire/anchors08.json"):
