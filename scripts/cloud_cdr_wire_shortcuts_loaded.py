@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run unchanged loaded numerical methods on the actual six-shortcut fresh RC model."""
+"""Run unchanged loaded numerical methods on the actual four-mixed-shortcut fresh RC model."""
 import argparse,ast,copy,hashlib,json,os,platform,shutil,signal,subprocess,sys,tarfile,time,traceback,types
 from pathlib import Path,PurePosixPath
 import cdr_via2_m3_loaded_core as original
@@ -9,7 +9,7 @@ NATIVE=OUT/"native";DERIVED=OUT/"derived";CONTROLS=ROOT/"wire-loaded-controls"
 MANIFEST="scripts/cdr-wire-shortcuts-loaded-pins.json"
 BASIS="scripts/cdr-wire-shortcuts-loaded-basis.json"
 HOST="scripts/cloud_cdr_wire_shortcuts_loaded.py"
-BRANCH="codex/cdr-wire-shortcuts-loaded"
+BRANCH="codex/cdr-wire-tail-loaded"
 REPO="Melihakbulut221/nssoc"
 FLAGS=dict(full_phy_accepted=False,qualified_pex=False,final_timing_complete=False)
 STATE=None
@@ -38,10 +38,10 @@ def gate():
     return ctx
 def basis():
     b=read(ROOT/BASIS)
-    need(b["schema"]=="nssoc.six-shortcut.loaded-basis.v1"and b["source_preparation_only"]and not b["native_execution_authorized"]and not b["wave_execution_authorized"],"basis is input evidence not execution authority")
-    need(b["producer"]["run"]==41339125361 and b["producer"]["source"]=="c6abc571734c0e3197ce1227e990b7b1420610da"and b["producer"]["release"]==430788452,"actual new fresh RC producer")
-    need(b["candidate"]==dict(bytes=999700,sha256="244992e91350d3bcac15fd58c48cc5249ee615ffc21f30f539a0cbb6b42fc347"),"physically qualified actual layout")
-    need(b["semantic_interface"][18:21]==["iry","yp","yn"]and b["semantic_interface"][-1]=="wire_cref","actual new semantic order")
+    need(b["schema"]=="nssoc.four-mixed-shortcut.loaded-basis.v1"and b["source_preparation_only"]and not b["native_execution_authorized"]and not b["wave_execution_authorized"],"basis is input evidence not execution authority")
+    need(b["producer"]["run"]==41352147913 and b["producer"]["source"]=="6eace90ce68a61546f0268b3fd65b2b9b2b3840d"and b["producer"]["release"]==430869108,"actual new fresh RC producer")
+    need(b["candidate"]==dict(bytes=1001172,sha256="1c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94"),"physically qualified actual layout")
+    need(b["semantic_interface"]==["avdd","avss","sub","ird","cn","cp","dn","dp","irb","ira","irc","ibda","ibdc","ibs0","irx","xn","xp","ibs1","iry","yp","yn","irvx","irvy","vin","vip","wire_cref"],"actual new semantic order")
     need(b["loaded_numerical"]["source"]=="43fd3f71a289fef004aeb41cd2d0972d81f76f41","frozen loaded source")
     return b
 def qualified_rc(q,oq,index,b):
@@ -49,9 +49,9 @@ def qualified_rc(q,oq,index,b):
     need(index["context"]==dict(source=p["source"],run=p["run"],attempt=1)and index["files"]==p["complete_members"],"complete current RC index")
     need(q==b["qualification"],"exact current qualification")
     need(q["current_context"]==oq["context"]==ctx,"actual source/run qualification")
-    need(q["status"]=="PASS_SIX_SHORTCUT_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual six-shortcut RC")
+    need(q["status"]=="PASS_FOUR_MIXED_SHORTCUT_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual four-mixed-shortcut RC")
     need(oq["status"]=="PASS_CURRENT_VIA2_M3_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and oq["fresh_RC_pipeline_complete"]and oq["execution_scope"]=="ACTUAL_AUTHORIZED_NATIVE_PHASE","complete original numerical qualification")
-    need(q["counts"]==oq["counts"]==b["counts"]==dict(devices=500,R=24474,C=15640),"actual newly measured RC census")
+    need(q["counts"]==oq["counts"]==b["counts"]==dict(devices=500,R=24530,C=15676),"actual newly measured RC census")
     need(q["candidate"]==b["candidate"]and q["semantic_port_order"]+["wire_cref"]==b["semantic_interface"],"actual layout and interface")
     for record in(q,oq):
         need(all(record[k]is False for k in("electrical_accepted","full_phy_accepted","qualified_pex","loaded_simulation_passed")),"RC is not electrical acceptance")
@@ -99,13 +99,14 @@ def controls():
     q,oq,index=copy.deepcopy(fixture["q"]),copy.deepcopy(fixture["oq"]),dict(context=dict(source=b["producer"]["source"],run=b["producer"]["run"],attempt=1),files=b["producer"]["complete_members"])
     qualified_rc(q,oq,index,b)
     cases=[]
-    for label in("source","counts","scope","missing-phase","old-port-order","electrical-claim","old-index"):
+    for label in("source","counts","scope","missing-phase","old-port-order","old-selector-port-order","electrical-claim","old-index"):
         x,y,z=copy.deepcopy(q),copy.deepcopy(oq),copy.deepcopy(index)
         if label=="source":y["context"]["source"]="0"*40
         elif label=="counts":y["counts"]["R"]=24360
         elif label=="scope":y["execution_scope"]="SOURCE_ONLY_SYNTHETIC_PHASE_FIXTURE"
         elif label=="missing-phase":y["phase_receipts"].pop("compose")
         elif label=="old-port-order":x["semantic_port_order"][19:21]=["yn","yp"]
+        elif label=="old-selector-port-order":x["semantic_port_order"][15:17]=["xp","xn"]
         elif label=="electrical-claim":y["electrical_accepted"]=True
         elif label=="old-index":z["context"]["run"]=41251732540
         try:qualified_rc(x,y,z,b)
@@ -119,7 +120,7 @@ def controls():
     prefix=ast.parse(original.extract(c["blocks"]["deck"],dedented=True)[0]).body[:3]
     need(len(prefix)==3 and isinstance(prefix[0],ast.Assign)and prefix[0].targets[0].id=="nodes"and isinstance(prefix[1],ast.Expr)and isinstance(prefix[2],ast.Assign)and prefix[2].targets[0].id=="vectors","exact frozen vector prefix")
     need(STATE is None and not NATIVE.exists(),"no native input in source controls")
-    record=dict(status="PASS_CURRENT_SIX_SHORTCUT_LOADED_SOURCE_CONTROLS",definitions=29,executable_blocks=5,frozen_source_files=9,rejected=cases,
+    record=dict(status="PASS_CURRENT_FOUR_MIXED_SHORTCUT_LOADED_SOURCE_CONTROLS",definitions=29,executable_blocks=5,frozen_source_files=9,rejected=cases,
       frozen_complete_prepare_and_measure=True,original_13_binding_controls_required_in_actual_preparation=True,
       actual_port_order=b["semantic_interface"],native_acquired=False,transient_executed=False,**FLAGS)
     save(CONTROLS/"result.json",record)
@@ -228,7 +229,7 @@ def simulate():
         p=case/"measurement-result.json"
         if p.is_file():shutil.copyfile(p,DERIVED/"measurement-result.json")
         gate()
-    save(DERIVED/"result.json",dict(status="PASS_ACTUAL_SIX_SHORTCUT_NOMINAL_LATE_FROZEN_LOADED_MEASUREMENTS",
+    save(DERIVED/"result.json",dict(status="PASS_ACTUAL_FOUR_MIXED_SHORTCUT_NOMINAL_LATE_FROZEN_LOADED_MEASUREMENTS",
       context=ctx,model=pin(paths["model"]),measurement=report,loaded_simulation_passed=True,
       scope="Actual500-device new RC with original external-clock nominal_late scenario; not complete serial PHY or corners",**FLAGS))
 def publish():
