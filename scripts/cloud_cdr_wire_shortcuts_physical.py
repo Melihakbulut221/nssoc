@@ -10,7 +10,7 @@ OUT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-physical"
 MANIFEST="scripts/cdr-wire-shortcuts-physical-pins.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
 CANDIDATE="scripts/cdr-wire-physical-candidate.json"
-BRANCH="codex/cdr-drain-m23-physical"
+BRANCH="codex/cdr-collector-via2-physical"
 APP_SHA="d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
 CHECKER_SHA="3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66"
 TOP="nssoc_cdr_pd500_resistor_v59"
@@ -131,32 +131,35 @@ def candidate():
             with p.open("xb")as f:shutil.copyfileobj(tar.extractfile(m),f)
             seen[n]=pin(p);need(seen[n]==index["files"][n],"candidate member digest")
     need(seen==index["files"],"every actual candidate member")
-    proof=json.loads((target/"derived/drain-m23-generation-proof.json").read_bytes())
+    proof=json.loads((target/"derived/collector-via2-generation-proof.json").read_bytes())
     need(proof["candidate"]==cfg["candidate"]and proof["exact_serialized_delta"]and proof["original_material_roundtrip"]and not proof["physical_acceptance"],"actual geometry proof remains candidate")
-    need(proof["all8actual_drain_accesses"]and proof["all13native_unions_verified"],"all eight actual native drains")
-    need(proof["only_added_layers"]==[[10,0],[29,0],[30,0]]
-         and proof["added_area_dbu2"]=={"10":158400000,"29":31479200,"30":151100000},"exact new M2 Via2 M3 material")
-    need(proof["new_via2_count"]==872 and not proof["new_via1"]and not proof["new_devices"]
-         and not proof["electrical_improvement_claimed"]and not proof["current_density_acceptance"],"candidate only872Via2 without device or acceptance changes")
-    need(proof["input_gds"]==dict(bytes=1018452,sha256="9fef07bce22bce079cf82e3c7600932aa6adce49359838f6c72569fbde3ef61b"),"actual sourceM2 parent")
-    need(proof["input_l2n"]==dict(bytes=2005450,sha256="1c354daa4898a789eb0f91e52ac2dc6797b6abfbf79f45530ff866d5b53a3261"),"actual sourceM2 native ownership")
-    proposal=json.loads((target/"derived/drain-m23-proposal.json").read_bytes())
-    need(proposal["new_via2_count"]==872 and proposal["metal_width_nm"]==1400 and proposal["metal_length_nm"]==18000,"exact actual new drain geometry")
-    need({x["label"]for x in proposal["targets"]}=={"T"+str(i).zfill(3)+"_D"for i in(3,4,5,6,32,33,34,35)}
-         and len(proposal["targets"])==8,"exact eight original drain identities")
+    need(proof["all4actual_collector_driver_accesses"]and proof["all13native_unions_verified"],"all four actual collector driver terminals")
+    need(proof["only_added_layers"]==[[29,0],[30,0]]and proof["added_area_dbu2"]=={"29":1732800,"30":12048600},"exact new Via2 M3 material")
+    need(proof["new_via2_count"]==48 and not proof["new_M2"]and not proof["new_devices"]and not proof["electrical_improvement_claimed"]and not proof["current_density_acceptance"],"48newVia2 without device or acceptance changes")
+    need(proof["input_gds"]==dict(bytes=1075316,sha256="5e5ef3940bb0e410af8bbb92376e2c1cb60e3c520e37b65c7e675af41e58603f"),"actual drainM23 parent")
+    need(proof["input_l2n"]==dict(bytes=2038215,sha256="7a96d141b6513f8c7eb8a5307bc5feed7fc4833cb4797503090addf513bfa6bb"),"actual drainM23 native ownership")
+    proposal=json.loads((target/"derived/collector-via2-proposal.json").read_bytes())
+    need(proposal["new_via2_count"]==48 and proposal["metal_width_nm"]==3650 and proposal["metal_height_nm"]==1100,"actual collector access geometry")
+    need({x["label"]for x in proposal["targets"]}=={"T"+str(i).zfill(3)+"_E"for i in(54,56,106,108)}and len(proposal["targets"])==4,"exact four collector driver identities")
+    metal_keys={"nonempty","grid5","connected_existing_m2","foreign_m2_clearance240","foreign_via1_clearance50","foreign_via2_clearance50","within_original_extent"}
+    via_keys={"square190","grid5","enclosed_m1_50","enclosed_m2_50","existing_via_clearance240","new_via_clearance240","within_original_extent"}
     positions=set()
     for row in proposal["targets"]:
-        i=int(row["label"][1:4]);anchor=row["original_anchor"]
-        need(anchor["label"]==row["label"]and anchor["detail"]["device"]==i and anchor["detail"]["terminal"]=="D"
-             and row["native_net"]==anchor["detail"]["native_net"]==("$159"if i<10 else"$700"),"exact actual drain owner")
-        need(set(row["metal_guards"])=={"10","30"}and len(row["cuts"])==109,"all109actual Via2 cuts at each drain")
-        for layer,lower,upper in(("10",19,29),("30",29,49)):
-            m=row["metal_guards"][layer]
-            need(m["lower_adjacent_via"]==lower and m["upper_adjacent_via"]==upper and all(m["checks"].values()),"both owned metal and adjacent foreign via guards")
+        i=int(row["label"][1:4]);anchor=row["original_anchor"];x,ay=anchor["point_dbu"];y=ay-ay%5
+        need(anchor["label"]==row["label"]and anchor["detail"]["device"]==i and anchor["detail"]["terminal"]=="E"and anchor["metal"]==10
+             and row["native_net"]==anchor["detail"]["native_net"]==("$44"if i<100 else"$598"),"actual collector driver owner")
+        need(ay-y==2 and x%5==0 and row["grid_point_dbu"]==[x,y]and row["metal_bbox"]==[x-1825,y-650,x+1825,y+450],"exact original HBT reference and new M3 pad")
+        need(set(row["metal_guards"])==metal_keys and all(v is True for v in row["metal_guards"].values()),"complete true M3 attachment and foreign via guards")
+        expected={(x+dx,y+dy)for dx in(-1680,-1200,-720,-240,240,720,1200,1680)for dy in(-480,0)if not(dy==0 and dx in(-720,-240,240,720))}
+        actual=set()
+        need(len(row["cuts"])==12,"all12actual Via2 cuts per driver")
         for cut in row["cuts"]:
-            need(all(cut["guards"].values()),"all actual cut enclosure and spacing guards")
-            pt=tuple(cut["center_dbu"]);need(pt not in positions,"unique physical new Via2");positions.add(pt)
-    need(len(positions)==872,"complete872new actual cuts")
+            need(set(cut["guards"])==via_keys and all(v is True for v in cut["guards"].values()),"complete actual lowerM2 upperM3 enclosure and Via2 spacing guards")
+            pt=tuple(cut["center_dbu"]);need(pt not in actual and pt not in positions,"unique physical new Via2")
+            need(cut["bbox"]==[pt[0]-95,pt[1]-95,pt[0]+95,pt[1]+95],"exact190nm new Via2")
+            actual.add(pt);positions.add(pt)
+        need(actual==expected,"independently reconstructed12cut pattern")
+    need(len(positions)==48,"complete48new actual cuts")
     save("candidate-acquisition.json",dict(run=run,release=rel,authenticated_members=seen))
     return target
 def restore_runtime():
@@ -181,11 +184,11 @@ def prepare_layout(parent_base,new_base,checker):
     old=parent_base/"binding/inputs/parent/layout";cfg=json.loads((ROOT/PARENT).read_bytes())
     for n in("schematic.cir",TOP+".lef","result.json",TOP+".gds"):
         need(pin(old/n)==cfg["complete_members"]["binding/inputs/parent/layout/"+n],"original parent "+n)
-    shutil.copyfile(new_base/"native/nssoc_cdr_pd500_drain_m23_reinforced.gds",layout/(TOP+".gds"))
+    shutil.copyfile(new_base/"native/nssoc_cdr_pd500_collector_via2_access.gds",layout/(TOP+".gds"))
     for n in("schematic.cir",TOP+".lef"):shutil.copyfile(old/n,layout/n);need(pin(old/n)==pin(layout/n),"unchanged original reference")
     p=json.loads((old/"result.json").read_bytes())
     inputs=[old/n for n in("result.json","schematic.cir",TOP+".lef",TOP+".gds")]
-    inputs.extend([new_base/"derived/drain-m23-generation-proof.json",new_base/"native/nssoc_cdr_pd500_drain_m23_reinforced.gds",ROOT/CANDIDATE,ROOT/PARENT,checker,ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
+    inputs.extend([new_base/"derived/collector-via2-generation-proof.json",new_base/"native/nssoc_cdr_pd500_collector_via2_access.gds",ROOT/CANDIDATE,ROOT/PARENT,checker,ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
     record=metadata(p,layout/(TOP+".gds"),layout/"schematic.cir",layout/(TOP+".lef"),inputs)
     (layout/"result.json").write_bytes(encode(record));save("candidate-layout-binding.json",record)
     return layout
@@ -240,7 +243,7 @@ def verify():
         for p,h in record["inputs"].items():need(sha(Path(p))==h,"actual final physical input "+p)
         need(record["inputs"][str(layout/(TOP+".gds"))]==json.loads((ROOT/CANDIDATE).read_bytes())["candidate"]["sha256"],"actual new candidate verified")
         gate()
-        save("physical-qualification.json",dict(status="PASS_DRAIN_M23_GDS_FULL560_DRC_DEEP_FLAT_LVS13",gds=pin(layout/(TOP+".gds")),record=pin(OUT/"physical/result.json"),new_RC_executed=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False))
+        save("physical-qualification.json",dict(status="PASS_COLLECTOR_VIA2_GDS_FULL560_DRC_DEEP_FLAT_LVS13",gds=pin(layout/(TOP+".gds")),record=pin(OUT/"physical/result.json"),new_RC_executed=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False))
     except BaseException as exc:error=exc
     finally:
         try:cleanup.append(dict(process_group=sup.stop_process(sup.ACTIVE)))
