@@ -8,7 +8,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"hw/soc/out/cloud-cdr-via2-m3-fresh-rc"
 CURRENT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-canonical/view/candidate"
 COUT=ROOT/"wire-rc-controls"
-BRANCH="codex/cdr-wire-tail-fresh-rc"
+BRANCH="codex/cdr-horizontal-ground-fresh-rc"
 MANIFEST="scripts/cdr-wire-shortcuts-fresh-rc-pins.json"
 BASIS="scripts/cdr-wire-shortcuts-fresh-rc-basis.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
@@ -50,9 +50,9 @@ def gate():
     return pins
 def basis():
     b=json.loads((ROOT/BASIS).read_bytes())
-    need(b["schema"]=="nssoc.four-mixed-shortcut.fresh-rc-basis.v1"and b["source_preparation_only"]and not b["native_RC_execution_authorized"],"basis is evidence not authority")
-    need(b["producer"]["run"]==41350835442 and b["producer"]["source"]=="360a01ea394943614b25895e6389221f2b0ca0ba"and b["producer"]["release"]==430861219,"actual canonical producer")
-    need(b["candidate"]==dict(bytes=1001172,sha256="1c7d56173b350c067df5db468b4099d7c5b8681e891d027b700737566c2c3b94"),"actual new layout")
+    need(b["schema"]=="nssoc.horizontal-ground.fresh-rc-basis.v1"and b["source_preparation_only"]and not b["native_RC_execution_authorized"],"basis is evidence not authority")
+    need(b["producer"]["run"]==41389419224 and b["producer"]["source"]=="944efffd8ed7c4c586f06d9a9028ee81f9d08420"and b["producer"]["release"]==431075795,"actual canonical producer")
+    need(b["candidate"]==dict(bytes=1003348,sha256="b9b92319590ecca1c9ce31dcf1cc31f4fdc1d468fc514585931671ed2f4fa492"),"actual new layout")
     cfg=json.loads((ROOT/core.CONFIG).read_bytes())["canonical_view"]
     need(cfg["current_files"]==b["current_view_files"]and cfg["port_order"]==b["actual_semantic_port_order"]and ROOT/cfg["root"]==CURRENT,"current numerical input binding")
     need(len(cfg["current_files"])==78 and len(cfg["port_order"])==25 and cfg["port_order"]==["avdd","avss","sub","ird","cn","cp","dn","dp","irb","ira","irc","ibda","ibdc","ibs0","irx","xn","xp","ibs1","iry","yp","yn","irvx","irvy","vin","vip"],"actual port order and view census")
@@ -132,7 +132,7 @@ def controls():
         else:raise AssertionError("accepted altered "+key)
     need(n.core is core and nsame(n.verify_runtime_cache,ROOT/NATIVE),"actual frozen function origin")
     tests_current.append("original runtime validator and all current source provenance bound")
-    output=dict(status="PASS_FOUR_MIXED_SHORTCUT_RC_SOURCE_CONTROLS",current=tests_current,core_control_count=len(k.RECORDS),
+    output=dict(status="PASS_HORIZONTAL_GROUND_RC_SOURCE_CONTROLS",current=tests_current,core_control_count=len(k.RECORDS),
       core_controls=k.RECORDS,phase_controls=phase,command_adaptation=plan,actual_port_order=b["actual_semantic_port_order"],
       runtime_producer=cfg["precise"]["run_id"],native_executed=False,**FLAGS)
     (COUT/"result.json").write_bytes(encode(output))
@@ -162,7 +162,7 @@ def acquire_view():
             seen[name]=pin(target);need(seen[name]==p["complete_members"][name],"canonical member digest")
     need(seen==p["complete_members"],"all133 actual canonical members")
     q=json.loads((destination/"view/canonical-view-qualification.json").read_bytes())
-    need(q["status"]=="PASS_FOUR_MIXED_SHORTCUT_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC"and q["current_files"]==b["current_view_files"]and q["native_identity"]==b["native_identity"],"actual canonical qualification")
+    need(q["status"]=="PASS_HORIZONTAL_GROUND_NATIVE_CANONICAL_VIEW_REQUIRES_FRESH_RC"and q["current_files"]==b["current_view_files"]and q["native_identity"]==b["native_identity"],"actual canonical qualification")
     core.current_view_proof(ROOT,CURRENT)
     save("canonical-acquisition.json",dict(run=run,release=rel,authenticated_members=seen))
 def restore_runtime(selected):
@@ -258,8 +258,8 @@ def verify():
         n,rt=frozen();q=n.validate_complete_files(OUT,context(),n.source_pins(ROOT),basis()["actual_semantic_port_order"],n.ACTUAL)
         need(q["status"]==n.STATUS and q["fresh_RC_pipeline_complete"]and not q["qualified_pex"],"original complete numerical qualification")
         save("fresh-rc-original-qualification.json",q)
-        save("fresh-rc-qualification.json",dict(status="PASS_FOUR_MIXED_SHORTCUT_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES",
-          current_context=context(),candidate=basis()["candidate"],canonical_run=41350835442,
+        save("fresh-rc-qualification.json",dict(status="PASS_HORIZONTAL_GROUND_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES",
+          current_context=context(),candidate=basis()["candidate"],canonical_run=41389419224,
           original_qualification=pin(OUT/"fresh-rc-original-qualification.json"),counts=q["counts"],
           semantic_port_order=basis()["actual_semantic_port_order"],model=pin(OUT/"mim/composition/pd500-mim-wire.spice"),
           composition=pin(OUT/"mim/composition/composition.json"),fresh_RC_executed=True,**FLAGS))

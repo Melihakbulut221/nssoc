@@ -1,4 +1,4 @@
-name: Native fresh RC of physically verified four mixed shortcuts
+name: Native fresh RC of physically verified32ground branches
 on:
   workflow_dispatch:
 permissions:
@@ -114,7 +114,7 @@ jobs:
           from pathlib import Path
           e=os.environ
           assert e['GITHUB_ACTIONS']=='true' and e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
-          assert e['GITHUB_REF']=='refs/heads/codex/cdr-wire-tail-fresh-rc' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr-horizontal-ground-fresh-rc' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert re.fullmatch('[1-9][0-9]*',e['GITHUB_RUN_ID']) and re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA'])
           app=Path(e['RUNNER_TEMP'])/'current-tail-physical.AppImage'
           assert app==Path('/home/runner/work/_temp/current-tail-physical.AppImage') and app.is_file() and not app.is_symlink()
