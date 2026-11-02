@@ -1,4 +1,4 @@
-name: Actual clock access16 resistance comparison
+name: Actual direct clock metal resistance comparison
 on:
   workflow_dispatch:
     inputs:
@@ -9,7 +9,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: clock-access-resistance-${{ github.ref }}
+  group: clock-metal-resistance-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   compare:
@@ -24,7 +24,7 @@ jobs:
       PYTHONDONTWRITEBYTECODE: '1'
       OPENBLAS_NUM_THREADS: '1'
       OMP_NUM_THREADS: '1'
-      RESULT_TAG: cloud-results-${{ github.run_id }}-1-clock-access-resistance
+      RESULT_TAG: cloud-results-${{ github.run_id }}-1-clock-metal-resistance
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:

@@ -76,7 +76,7 @@ def controls():
 
 def main():
     need(os.environ.get('GITHUB_ACTIONS')=='true'and os.environ.get('RUNNER_ENVIRONMENT')=='github-hosted','hosted only')
-    need(os.environ['GITHUB_REPOSITORY']==REPO and os.environ['GITHUB_REF']=='refs/heads/codex/cdr-clock-access-resistance','exact source branch')
+    need(os.environ['GITHUB_REPOSITORY']==REPO and os.environ['GITHUB_REF']=='refs/heads/codex/cdr-clock-metal-resistance','exact source branch')
     need(os.environ['GITHUB_EVENT_NAME']=='workflow_dispatch'and os.environ['GITHUB_RUN_ATTEMPT']=='1','first explicit dispatch')
     need(os.environ['APPROVED_SOURCE']==os.environ['GITHUB_SHA'],'approved source')
     need(subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==os.environ['GITHUB_SHA'],'exact checkout')
@@ -122,7 +122,7 @@ def main():
     exported=[r for r in parse('mim/precise/wire/rc03/wires.spice')if r[0].lower().startswith('r')]
     distributed=parse('mim/precise/wire/rc03/pump_wires.res.ext')
     key=lambda a,b,r:(tuple(sorted((a.lower(),b.lower()))),number(r))
-    need(len(exported)==q['counts']['R']==26218 and all(len(r)==4 for r in exported),'all26218 actual resistors')
+    need(len(exported)==q['counts']['R']==26344 and all(len(r)==4 for r in exported),'all26344 actual resistors')
     need(Counter(key(*r[1:4])for r in exported)==Counter(key(*r[1:4])for r in distributed if r[0]=='resist'),'native/exported complete R agreement')
     edges=[(r[0].lower(),r[1].lower(),r[2].lower(),float(number(r[3])))for r in exported]
     need(len({e[0]for e in edges})==len(edges),'unique R elements')
