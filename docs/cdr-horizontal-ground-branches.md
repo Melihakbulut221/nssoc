@@ -13,4 +13,12 @@ Process rule reference: https://ihp-open-pdk-docs.readthedocs.io/en/latest/verif
 
 Run41385188402 failed the positive horizontal-widening control before native acquisition; no GDS was generated and native-generation was skipped. KLayout Region.sized with two integer arguments binds the isotropic(distance,mode) overload. The intended anisotropic call requires three arguments(dx,dy,mode). Use sized(0,3400,2) for actual y-only widening and explicitly assert the independent expected control rectangle coordinates. The malformed-width refusal also uses the explicit anisotropic overload. Geometry guard limits, target widths and original source controls are unchanged.
 
-API reference: https://www.klayout.de/doc-qt5/code/class_Region.html#method65
+API reference: https://www.klayout.de/doc-qt5/code/class_Region.html
+
+## Native10um proposal refused; redesigned5um branches
+
+Actual generation41385545130 passed77source controls, then all32branches failed foreign TopMetal2 spacing. No GDS was emitted. The10um symmetric expansion is preserved as a rejected proposal.
+
+The redesigned branch width is exactly5000nm, grown only900nm per side with the explicit three-argument native sizing API. IHP TM2.b requires2um spacing; TM2.bR requires5um if either parallel line is wider than5um over a long run. This design therefore enforces2005nm spacing to every foreign polygon and5005nm to every foreign polygon whose vertical extent exceeds5000nm. That latter condition is conservative for nonparallel shapes and short runs. Unclassified drawing and foreign-via guards remain conservative and all original full560physical checks are still required.
+
+Two additional source controls distinguish legal at-most5um parallel lines from a wide neighboring line that still requires5um. All original68controls and the horizontal guard controls remain. This changes the physical candidate to fit actual routing space; it does not accept the failed10um geometry or relax final DRC/LVS/electrical acceptance.
