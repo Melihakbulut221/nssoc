@@ -1,6 +1,21 @@
-# Cloud continuation — checkpoint v336
+# Cloud continuation — checkpoint v337
 
-Updated: 2026-11-02T23:10:14.769742+00:00
+Updated: 2026-11-02T23:14:00.210773+00:00
+
+## Current continuation:16Via2 full650 wave rejected; one-worker routing engine building
+Actual full650wave41540256258/source15feb7375e24de69d10377f1e52e8e07e3ef02c0 completed34.25ns with simulatorreturn0 after1175.928051441s. MeasurementREJECTED_WHOLE_MIM_PD650_LOADED is a real electrical rejection, not process/infrastructure failure.113475rows,1301vectors+time,124HBT currents,200MOS currents,977Vnodes,11savecommands retained. Raw1182001399bytes/SHA4d543b24922e80a186c5073092f4033ff9b8eccf0534120b6dd6f359d5a8041a remains in cloud. Actual13binding+2equivalent-unit+12expansion controls passed; source13admission/24partition/4projection/6identity controls passed. No native warnings in diagnostics; zero-sourceOP maximum0.
+Phase13.179724361mV still below30mV (old13.179521608mV); VI40.422928501uA still below50uA (old40.422021823uA). All A/B/C/D maximum clock-to-valid times remain exactly47.03125/42.65625/118.90625/99.84375ps vs37.5ps gate. Wrong-sign samples remain0/0/3/34; below100mV129/128/129/128 of765. ComparatorX/Y wrong-sign counts remain387/44; this was also present in the previous wave, not a new regression.
+Minimum activeVce61=.3545478598V,62=.3519561613V,115=.3811308016V,116=.3798059077V. Improvements are only.67056/.70965/1.58834/1.58760mV. Remaining deficits against.4V are45.452/48.044/18.869/20.194mV. Source/sink resistance measurement41541318521 found1.62-1.94percent improvement, consistent with limited headroom benefit; this repair does not close any failed electrical gate.
+Retain rejected baseline41528163238 and new rejection. Full native release432050827 has4parts plusindex/parts; all raw/source/case outputs remain there. Authenticated derivedartifact13188180017,2016185bytes,SHA84ed30b96d741bd51133c1b93b7f5e4662bfe7b9944eb95815c7c195b864fc5b. Selected complete measurement/preparation/control/derivation/release reports and full per-stage baseline comparison preserved in docs/evidence/cloud-v337-domain-wave-41540256258/. Scope remains proposed650MOS partition over actual500device wireRC, not matching650physical geometry.
+NEXT PHY ACTION: implement actual low-resistance metal/access repair; further identical via-only work is not sufficient. Use native fullgraph/coordinates in clock-access-resistance-41541318521/result.json. Investigate direct upper-metal same-net paths between E54/E56 and C61/C62, and translated E106/E108 to C115/C116, with realvia-stack landings and foreign-net keepouts on everylayer. This metalcandidate is NOT implemented yet. Require560DRC/deep+flatLVS13,completecanonicalidentity,freshRC and unchanged loaded gates. Also preserve independent phase/current/sampling failures; solving4HBT headroom alone cannot prove fullPHY.
+Mainchipfull64 run41513663302 is terminalRSSfailure: route6800.616s,11832844KiB>11534336KiBguard,return-15, noOOM. Actualcompute ended22:28UTC; jobcontinueduploading. Partialiteration20/90percent82markers is NOTfinalDRC. Nativefailurecapsule431900029 stayscloud.
+Single-guide-worker complete engine build41542996185/source62e6ac38e32493023dcda04bbb4cf5476e9d50f2, branchcodex/mainchip-guide-single-engine, release432065531. Ownsourcecontrols passed; actualengine-buildjob125612193523 active atlastdirectpoll. Only C++liveworkerlimit2->1 changed; strengthenednine-casefixture,7positive/45refusal/25lifecyclecontrols retained. Authenticate resultingnewELF/runtime, then repeat actualchip ODB/DEF/net/clock/DRC/antenna qualification before full64 route. Never reuse oldELF qualification fornewbinary. Same12GiBcgroup/11GiBRSSguard/2GiBavailablefloor; no scope reduction.
+Actual650layout,closedloopCDRPLL,fullserialGen3x4PHY and finalmainchipsetup/hold remainopen. Cloud-only work; localworkspaceempty.8hourread-onlymonitor/automatic_native_dispatch=false unchanged.
+
+Observed 2026-11-02T23:14:00.210773+00:00:
+- 41540256258: completed/failure
+- 41542996185: in_progress/None
+- 41513663302: completed/failure
 
 ## Current continuation: full64 stopped at RSS guard; single-worker engine build dispatched
 Mainchip41513663302/source302f9c30a847acd659a8c451bdce83707fce5d70 is TERMINAL FAILURE. Actual router ended2026-11-02T22:28:18Z after6800.61579865s withreturn-15 andsupervision_failure=maximum_group_rss. Observed11832844KiB >11534336KiB guard; available3317168KiB. Container OOMKilledfalse. This was NOT a timeout. Process receivedSIGTERM and no live children remained. The cloud job continued packaging/uploading after native compute stopped; earlier job-levelactive reports must not be read as proof of ongoing native computation.
