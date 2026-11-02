@@ -4,18 +4,42 @@ from pathlib import Path
 sys.path.insert(0,'/work/tail-source/scripts')
 import mainchip_bulk_postdrt_antenna_inner as base
 from mainchip_bulk_postdrt_antenna_inner import c,p,OUT,WORK,DATA,INPUTS,ENGINE,fingerprint
-PHASES=('snapshot-reload',)
+PHASES=('prepare','freeze-import','freeze-audit','reverse-import','reverse-audit-clear','route','route-restore','restore-import','route-audit','final-check','measure')
 def execute(label,report,runner):
-    assert label=='snapshot-reload'
-    runner(report,'bulk-postdrt-snapshot-reload',[ENGINE,'-no_init','-exit','-python','/work/tail-source/scripts/mainchip_snapshot_reload_native.py'],1200)
-    value=c.decode((DATA/'snapshot-reload-result.json').read_bytes())
-    assert value['status']=='PASS_PARTIAL_SNAPSHOT_ROUNDTRIP_AND_ORIGINAL_SCOPED_DELTA'
-    assert value['snapshot_reload_qualified']is True and value['routing_complete']is False
-    assert all(value[k]is False for k in p.FLAGS)
-    return value
+    script='/work/tail-source/scripts/mainchip_route47_native.py'
+    native_outputs={'prepare':'narrow47-prepare.json','freeze-audit':'narrow47-freeze-audit.json',
+        'reverse-audit-clear':'narrow47-seed.json','route-restore':None,
+        'route-audit':'narrow47-route-delta.json','measure':'narrow47-result.json'}
+    imports={'freeze-import':'narrow47-freeze.tcl','reverse-import':'narrow47-reversed.tcl','restore-import':'narrow47-restored.tcl'}
+    if label in native_outputs:
+        os.environ['NSSOC_ROUTE47_PHASE']=label
+        runner(report,'narrow47-'+label,[ENGINE,'-no_init','-exit','-python',script],1200)
+        path=native_outputs[label]
+        if path is None:
+            assert (WORK/'narrow47-restored.tcl').is_file()
+            return dict(restoration_prepared=True)
+        value=c.decode((DATA/path).read_bytes())
+        assert all(value[k]is False for k in p.FLAGS)
+        return value
+    if label in imports:
+        path=WORK/imports[label]
+        assert path.is_file()
+        runner(report,'narrow47-'+label,[ENGINE,'-no_init','-exit',str(path)],1200)
+        return dict(class_import_completed=True,script=fingerprint(path),floorplan_initialize_calls=2)
+    if label=='route':
+        seed=c.decode((DATA/'narrow47-seed.json').read_bytes())
+        assert seed['status']=='PASS_NATIVE47_IDENTITY_REVERSIBLE_FIXED_AND_SCOPED_CLEAR'
+        assert seed['selected']==47 and seed['protected_clocks']==1691
+        assert fingerprint(WORK/'narrow47-cleared.odb')==seed['seed']and fingerprint(WORK/'route.tcl')==seed['route_tcl']
+        runner(report,'narrow47-actual-original64-route',[ENGINE,'-no_init','-exit',str(WORK/'route.tcl')],14400)
+        assert (WORK/'routed-fixed.odb').is_file()and (WORK/'routed-fixed.def').is_file()
+        return dict(actual_router_returned=True,checkpoint=fingerprint(WORK/'routed-fixed.odb'),internal_search_state_resume_claimed=False)
+    assert label=='final-check'
+    runner(report,'narrow47-full-drc-antenna',[ENGINE,'-no_init','-exit',str(WORK/'final-check.tcl')],1200)
+    return dict(actual_drc_antenna_checker_returned=True)
 def main():
     report=dict(status='IN_PROGRESS',commands=[],terminal_errors=[],phases=[],
-        current_route_calls=0,current_repair_calls=0,current_reconstruction_calls=0,current_audit_calls=0,**p.FLAGS)
+        current_route_calls=0,current_repair_calls=0,current_reconstruction_calls=0,current_audit_calls=0,current_class_import_phases=0,**p.FLAGS)
     primary=None;sup=None;beat=None;handlers={};started=time.monotonic()
     def usage():
         root=Path('/sys/fs/cgroup')
@@ -54,11 +78,15 @@ def main():
         for label in PHASES:
             row=dict(phase=label,status='started');report['phases'].append(row)
             base.write('bulk-postdrt-snapshot-progress.json',report)
-            report['current_audit_calls']+=1
+            if label=='route':report['current_route_calls']+=1
+            elif label in('freeze-import','reverse-import','restore-import'):
+                report['current_reconstruction_calls']+=2;report['current_class_import_phases']+=1
+            else:report['current_audit_calls']+=1
             value=execute(label,report,runner)
             row.update(status='complete',result=value)
             base.write('bulk-postdrt-snapshot-progress.json',report)
-        report['snapshot_result']=value
+        report['narrow47_result']=value
+        report['narrow47_observation_complete']=True
         report['snapshot_reload_qualified']=True
         report['routing_complete']=False
         report['restoration_complete']=False
@@ -81,7 +109,7 @@ def main():
         if 'cgroup_initial'in report:c.attempt(report,'terminal-cgroup',terminal)
         c.attempt(report,'preserve-native-census',lambda:base.write('bulk-postdrt-snapshot-available-output.json',base.preserve_available()))
         report['elapsed_seconds']=time.monotonic()-started
-        report['status']='COMPLETE_PARTIAL_SNAPSHOT_NATIVE_AUDIT'if primary is None and not report['terminal_errors']and report.get('snapshot_reload_qualified')else'FAIL_PARTIAL_SNAPSHOT_NATIVE_AUDIT'
-        c.finish_record(OUT/'bulk-postdrt-snapshot-inner-result.json',report,'FAIL_PARTIAL_SNAPSHOT_NATIVE_AUDIT',primary)
-    return 0 if report['status']=='COMPLETE_PARTIAL_SNAPSHOT_NATIVE_AUDIT'else 1
+        report['status']='COMPLETE_ACTUAL47_NATIVE_ROUTE_OBSERVATION'if primary is None and not report['terminal_errors']and report.get('narrow47_observation_complete')else'FAIL_ACTUAL47_NATIVE_ROUTE_OBSERVATION'
+        c.finish_record(OUT/'bulk-postdrt-snapshot-inner-result.json',report,'FAIL_ACTUAL47_NATIVE_ROUTE_OBSERVATION',primary)
+    return 0 if report['status']=='COMPLETE_ACTUAL47_NATIVE_ROUTE_OBSERVATION'else 1
 if __name__=='__main__':sys.exit(main())

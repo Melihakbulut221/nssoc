@@ -1,9 +1,9 @@
-name: Qualify actual iteration20 snapshot and original scoped route delta
+name: Actual47net repair from authenticated iteration20 with reversible protection
 on:
   workflow_dispatch:
     inputs:
       execute:
-        description: Execute one read-only native partial-snapshot qualification after independent controls
+        description: Execute actual47net repair only after independent controls and native reversible protection
         type: boolean
         default: false
       control_run:
@@ -29,6 +29,11 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
+            /scripts/mainchip_route47_contract.py
+            /scripts/check_mainchip_route47.py
+            /scripts/mainchip_route47_native.py
+            /scripts/mainchip-route47-selected.json
+            /docs/mainchip-route47-repair.md
             /scripts/mainchip_snapshot_reload_contract.py
             /scripts/mainchip_snapshot_reload_native.py
             /scripts/mainchip_snapshot_reload_inner.py
@@ -84,6 +89,7 @@ jobs:
           python3 -B scripts/check_mainchip_full64_native.py
           python3 -B scripts/check_mainchip_full_route_snapshots.py
           python3 -B scripts/check_mainchip_snapshot_reload.py
+          python3 -B scripts/check_mainchip_route47.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -93,6 +99,7 @@ jobs:
             full64-native-controls
             full64-snapshot-controls
             snapshot-reload-controls
+            route47-controls
             scoped-restoration-controls
           retention-days: 90
           if-no-files-found: error
@@ -100,7 +107,7 @@ jobs:
     if: inputs.execute
     needs: source-controls
     runs-on: ubuntu-24.04
-    timeout-minutes: 180
+    timeout-minutes: 360
     permissions:
       contents: write
       actions: read
@@ -115,6 +122,11 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
+            /scripts/mainchip_route47_contract.py
+            /scripts/check_mainchip_route47.py
+            /scripts/mainchip_route47_native.py
+            /scripts/mainchip-route47-selected.json
+            /docs/mainchip-route47-repair.md
             /scripts/mainchip_snapshot_reload_contract.py
             /scripts/mainchip_snapshot_reload_native.py
             /scripts/mainchip_snapshot_reload_inner.py
@@ -164,7 +176,7 @@ jobs:
           sparse-checkout: /scripts/mainchip-bounded-route-host-pins.json
       - name: Authenticate original source and exact derived scope inputs
         run: python3 -B scripts/prepare_scoped_restoration_sources.py
-      - name: Reopen, rewrite and audit actual lower-violation iteration20
+      - name: Resolve exact47net identities, prove reversible FIXED protection, reroute and measure full DRC
         run: python3 -B scripts/cloud_mainchip_snapshot_reload.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

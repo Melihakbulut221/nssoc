@@ -10,7 +10,7 @@ BASE='7a0776718ec37a106b7dfde0cbd477c6a2a5522f'
 REPO='repos/Melihakbulut221/nssoc/'
 GROUP='mainchip-bulk-postdrt-antenna'
 MANIFEST='scripts/mainchip-snapshot-reload-pins.json'
-NEW_NATIVE=('scripts/mainchip_snapshot_reload_contract.py','scripts/mainchip_snapshot_reload_inner.py','scripts/mainchip_snapshot_reload_native.py')
+NEW_NATIVE=('scripts/mainchip_snapshot_reload_contract.py','scripts/mainchip_snapshot_reload_inner.py','scripts/mainchip_snapshot_reload_native.py','scripts/mainchip_route47_contract.py','scripts/mainchip_route47_native.py','scripts/mainchip-route47-selected.json')
 def sha(path):
  h=hashlib.sha256()
  with path.open('rb')as f:
@@ -30,7 +30,7 @@ def own_sources():
 def admission():
  assert os.environ.get('GITHUB_ACTIONS')=='true'and os.environ['GITHUB_RUN_ATTEMPT']=='1'
  assert os.environ['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'and os.environ['GITHUB_EVENT_NAME']=='workflow_dispatch'
- assert os.environ['GITHUB_REF']=='refs/heads/codex/mainchip-snapshot20-reload'
+ assert os.environ['GITHUB_REF']=='refs/heads/codex/mainchip-route47-repair'
  source=os.environ['GITHUB_SHA'];rid=int(os.environ['GITHUB_RUN_ID']);control=int(os.environ['CONTROL_RUN'])
  assert source==subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
  run=api('actions/runs/'+str(control));jobs=api('actions/runs/'+str(control)+'/jobs?per_page=100')
@@ -144,11 +144,11 @@ def main():
   c.validate_image(f.decode(command('image-inspect',['docker','image','inspect',c.IMAGE]))[0])
   argv=inherited.hosted_argv(c.create_argv,ctx,work,os.getuid(),os.getgid())
   identity=build.create_owned(ctx,work,report,command,argv);c.validate_container(inspect(identity),ctx,work)
-  command('bulk-postdrt-owned-container',['docker','start','--attach',identity],5400)
+  command('bulk-postdrt-owned-container',['docker','start','--attach',identity],21600)
   inner=f.decode((out/'bulk-postdrt-snapshot-inner-result.json').read_bytes())
-  assert inner['status']=='COMPLETE_PARTIAL_SNAPSHOT_NATIVE_AUDIT'
+  assert inner['status']=='COMPLETE_ACTUAL47_NATIVE_ROUTE_OBSERVATION' and inner['narrow47_observation_complete'] is True
   assert inner['snapshot_reload_qualified']is True and inner['routing_complete']is False
-  assert inner['current_audit_calls']==1 and all(inner[k]==0 for k in ('current_route_calls','current_repair_calls','current_reconstruction_calls'))
+  assert inner['current_audit_calls']==7 and inner['current_route_calls']==1 and inner['current_repair_calls']==0 and inner['current_reconstruction_calls']==6 and inner['current_class_import_phases']==3
   assert all(inner[k]is False for k in p.FLAGS)
   report['native_result']=inner
  except BaseException as exc:primary=exc;report['error']=c.error_record('scoped-restoration-host',exc)
@@ -172,9 +172,9 @@ def main():
   c.attempt(report,'permanent-native-publication',lambda:report.update(native_publication=types.FunctionType(base.publish_capsule.__code__,dict(base.publish_capsule.__globals__,CURRENT=snapshot_pins['work/bulk-postdrt-antenna/drt_iter20.odb']),base.publish_capsule.__name__,base.publish_capsule.__defaults__,base.publish_capsule.__closure__)(ctx,proof,work,out,OUT)))
   c.attempt(report,'preserve-derived-outputs',lambda:preservation.preserve_outputs(base,out,OUT,report))
   c.attempt(report,'retained-native-workspace',lambda:base.retained_workspace(ctx,work,out,report))
-  report['status']='COMPLETE_PARTIAL_SNAPSHOT_CLOUD_AUDIT'if primary is None and not report['terminal_errors']else'FAIL_PARTIAL_SNAPSHOT_CLOUD_AUDIT'
+  report['status']='COMPLETE_ACTUAL47_CLOUD_ROUTE_OBSERVATION'if primary is None and not report['terminal_errors']else'FAIL_ACTUAL47_CLOUD_ROUTE_OBSERVATION'
   write(OUT/'result.json',report)
- return 0 if report['status']=='COMPLETE_PARTIAL_SNAPSHOT_CLOUD_AUDIT'else 1
+ return 0 if report['status']=='COMPLETE_ACTUAL47_CLOUD_ROUTE_OBSERVATION'else 1
 if __name__=='__main__':
  try:sys.exit(main())
  except BaseException as exc:
