@@ -1,6 +1,28 @@
-# Cloud continuation — checkpoint v294
+# Cloud continuation — checkpoint v295
 
-Updated: 2026-11-02T09:48:12.630690+00:00
+Updated: 2026-11-02T09:52:04.934587+00:00
+
+## Current continuation: source M2 reduces actual ground-path resistance; loaded and mainchip route active
+
+Previous rootv294=1fd50238ec67ad4cce93775de4ef307959c9bfcc,775inventory is fully readback-verified. Full serial PCIe Gen3x4 PHY, mainchip routed integration and final setup/hold remain OPEN. All native GDS/ODB/SPICE/wave processing exclusively GitHub; local workspace empty.
+
+SourceM2 GDS9fef07bc already passed full560DRC0markers/deep-flat500primitiveLVS13 in41417079679. Full canonical41419044277 passed73controls and1469 complete partition/layer comparisons. FreshRC41420011926/sourcebbbd992fcc8806fcb9132d22d09cf42c5c3c234b/release431264092 completed actual numerical pipeline including11native receipts. Model1981942bytes SHA60c292b827899ad2b222df6fd96a20a7265004832ada95fa80ebb87df5ebf0dc, composition974729bytes SHAeebbf88566d615a6cae7b9a1c7d03e8346bc52580eea8c72fc1fdb92b160f391. Complete500devices/24530R/15676C. Physical/canonical/RC acceptance is not electrical acceptance.
+
+New loaded41422407076/sourcee96ca21ed0c63dd0353cbd499be25c1b0ed22c75/branchcodex/cdr-source-m2-loaded/release431279993 passed source-controls and started actual loaded transient. Retains29frozen numerical definitions,5blocks,9files,exact43fdprepare/measure,all stimuli/load/phase/current/Vce/sampler gates. Measured25port order is avdd,avss,sub,ird,cn,cp,dn,dp,irb,ira,irc,ibda,ibdc,ibs0,irx,xp,xn,ibs1,iry,yp,yn,irvx,irvy,vin,vip plus wire_cref in RC interface. Earlier41422125181/sourcee65a44db15798f7b7c72d205974b48e26de03002 failed ONLY the old-selector-port-order negative fixture: its xp,xn mutation had become valid. No native acquisition/transient occurred. Corrected fixture now uses previous xn,xp. No checker or numerical threshold relaxed. Failure logs and both attempts retained.
+
+Actual passive comparison41423647133/sourcea11002d7924f6649598fbec223eb830ed64402af/branchcodex/cdr-source-m2-resistance SUCCESS. Derived13131285945=1502833bytes SHAb37f734198ded94349ef247bb9c1b052e89b460de9c0092fea95f424db8ab036. Same32full-network reciprocal solves,26solvercontrols,7comparisoncontrols,4whole-partitioncontrols. All500primitive parameters,1446terminal anchors,114complete electrical partitions preserved. Each of8MOS source paths reduced25.51015ohm versus ORIGINAL b9b9 horizontal-ground reference41395210468, from45.22849..45.67123 to19.71834..20.16108ohm (~55.86..56.40percent). Other24query deltas <=2.1e-11ohm. The current4ccf sourceM1 predecessor independently reduced0.6357ohm against same b9b9 reference; new comparison is explicitly not mislabeled as direct4ccf comparison. Unit-current edge power does not prove operating dissipation, EM, bias headroom or loaded acceptance. Ground improvement can increase selector current and worsen HBT Vce; await actual loaded results.
+
+Mainchip41415994457/sourcef808321a65ca9197f10e75f2f59073d47095a718/release431237039 remains the same native47net/64iteration/seed42/2thread routing with1691protected clocks.11GiBRSS guard inside12GiBno-swap container and2GiBhost reserve. Do not duplicate on observation timeout. Returned candidate requires original global class restoration,independentDRC,diodePG/connectivity/LVS and final3cornerSTA.
+
+Rootv294 initial single nested-path git/trees creation timed outHTTP422 beforecommit/refupdate. Fixed publication by building exact changed subtrees bottom-up. All33files/11597245bytes were readback-verified at1fd5023; no native job stopped. Complete derived archives permanently preserved in separate release431275466/tagcloud-derived-evidence-v294 with byte-for-byte readbacks. Sealed native producer release sets untouched. v295 uses the same safe publication and separate archive scheme.
+
+Next: inspect actual loaded41422407076 terminal derived measurement result. If rejected, preserve entire nativewave in GitHub and bind unchanged fullwave diagnosis a36dd3a2613a365b608dc5d9b10c5a24b41d00ea to this exact new release/index/parts; reproduce every scalar before designing further ground/bias/signal changes. Follow original live mainchip job. Monitor remains read-only8hour automatic_native_dispatch=false. FullclosedloopCDR/SERDES/link,actualEM/PVT,fullchipsetuphold andproduction gates remain OPEN.
+
+Observed at 2026-11-02T09:52:04.934587+00:00:
+- 41415994457: in_progress/None
+- 41422125181: completed/failure
+- 41422407076: in_progress/None
+- 41423647133: completed/success
 
 ## Current continuation: source M2 full canonical PASS; new actual RC extraction running
 
