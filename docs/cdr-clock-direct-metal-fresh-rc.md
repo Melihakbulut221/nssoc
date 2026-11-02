@@ -1,0 +1,4 @@
+# Direct clock metal distributed RC
+Re-execute the full original numerical extraction/composition pipeline on the exact new physical and canonical-qualified GDS. Keep all original numerical/lifecycle/source controls, native commands and resource boundaries. Bind all78current-view files and actual observed25port order to the new canonical producer; regenerate500device wire resistance/capacitance and preciseMIM composition.
+No old RC is carried over as the new candidate result. Original frozen runtime and numerical method sources are reused only as tools, with complete byte/command provenance.
+A successful extraction is not electrical acceptance or foundry-qualifiedPEX. The unchanged full650loaded-wave and actual critical resistance network comparison must follow. Full650physical layout, closedloopPHY and finalchipsetup/hold remain open.
