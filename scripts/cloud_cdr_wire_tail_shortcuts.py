@@ -1098,8 +1098,11 @@ def inspect_critical_access(base,cfg):
         need(row[3:5]==row[5:7],"actual point port")
         xy=[int(v)*5 for v in row[3:5]];expected=anchors[name]["point_dbu"]
         delta=[a-b for a,b in zip(xy,expected)]
-        need(all(abs(v)<=2 for v in delta),"actual 5nm native grid against every geometric anchor")
-        deltas.append(delta)
+        deltas.append(dict(label=name,raw_port=row,actual_grid5_point=xy,anchor=anchors[name],delta_dbu=delta,within2nm=all(abs(v)<=2 for v in delta)))
+    save("port-coordinate-diagnosis.json",dict(expected_grid_nm=5,expected_tolerance_nm=2,ports=deltas,
+        mismatch_count=sum(not r["within2nm"]for r in deltas),native_headers=[r for r in raw if r[0]in("scale","resistclasses","tech","timestamp")],
+        original_geometry_unchanged=True,physical_acceptance=False))
+    need(all(r["within2nm"]for r in deltas),"actual 5nm native grid against every geometric anchor")
     inverse={v.lower():k for k,v in comp["wire_node_map"].items()}
     need(len(inverse)==len(comp["wire_node_map"]),"unique native-to-composed mapping")
     def value(s):
