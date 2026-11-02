@@ -18,6 +18,24 @@ def intersects(a,b):
     need(len(a)==len(b)==4 and all(type(v)is int for v in a+b),"integer rectangles")
     need(a[0]<=a[2]and a[1]<=a[3]and b[0]<=b[2]and b[1]<=b[3],"ordered rectangles")
     return a[0]<=b[2]and b[0]<=a[2]and a[1]<=b[3]and b[1]<=a[3]
+def validate_scope(result,delta,selection):
+    need(result["temporary47_protection_restored"]is True and result["all_nonselected_wires_and_clocks_unchanged"]is True,"actual recovered fullscope proof")
+    need(delta["mode"]=="route"and delta["all_clocks_unchanged"]is True and delta["all_other_wires_unchanged"]is True,"original native clock and other-wire invariants")
+    need(type(selection)is list and len(selection)==len(set(selection))==47 and all(type(n)is str for n in selection),"exact47 unique selected names")
+    need(delta["selected"]==sorted(selection),"native route delta selected identity")
+    changed=delta["changed"]
+    need(type(changed)is list and len(changed)==len(set(changed))==46 and all(type(n)is str for n in changed),"actual46 unique changed names")
+    need(changed==sorted(changed)and set(changed)<=set(selection),"only selected wires changed")
+    proof=delta["complete_DEF"]
+    need(proof["other_records_byte_exact"]is True and proof["non_NETS_bytes_exact"]is True,"complete DEF protected records and non-NETS bytes")
+    names=proof["changed_signal_names"]
+    need(type(names)is list and len(names)==len(set(names))==46 and sorted(names)==changed and type(proof["changed_signal_count"])is int and proof["changed_signal_count"]==46,"native and full DEF changed owner agreement")
+    digest=hashlib.sha256(json.dumps(names,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+    need(proof["changed_signal_names_sha256"]==digest,"exact full DEF changed-order digest")
+    need(proof["accepted"]is False,"scope audit does not grant production acceptance")
+    for record in (result,delta):
+        need(all(record[k]is False for k in ("physical_acceptance","timing_accepted","full_phy_accepted")),"all final acceptance gates remain open")
+    return dict(native_clock_and_other_wires_unchanged=True,complete_DEF_scope_verified=True,changed_signal_count=46,selected_signal_count=47,production_accepted=False)
 def main():
     pins=json.loads(Path("/work/recovery-selected-pins.json").read_bytes())
     for name,pin in pins.items():need(native.fp(ROOT/name)==pin,"authenticated recovered member")
@@ -25,11 +43,10 @@ def main():
     need(native.fp(path)==dict(bytes=214402279,sha256="53b42f42c244af7416a78c0cc04cc897f99b114c892c6bc86ecc60affa3e05af"),"actual measured recovered19ODB")
     result=json.loads((ROOT/"bulk-postdrt-antenna/narrow47-result.json").read_bytes())
     delta=json.loads((ROOT/"bulk-postdrt-antenna/narrow47-route-delta.json").read_bytes())
-    need(result["temporary47_protection_restored"]is True and result["all_nonselected_wires_and_clocks_unchanged"]is True,"actual recovered fullscope proof")
-    need(delta["all_clocks_unchanged"]is True and delta["all_other_wires_unchanged"]is True and delta["complete_DEF"]["accepted"]is True,"complete original clockwireDEF proof")
     need(result["drc"]["marker_count"]==92 and result["antenna"]["design_is_routed"]==1,"actual reported routed92marker candidate")
     selection=json.loads((ROOT/"bulk-postdrt-antenna/narrow47-native-selection.json").read_bytes())
     selected=set(selection["selected"]);need(len(selected)==47,"actual47selection")
+    scope_proof=validate_scope(result,delta,selection["selected"])
     scope=json.loads(Path("/work/reload-inputs/bulk-postdrt-antenna/targeted-routing-scope.json").read_bytes())
     clocks=set(scope["protected_nets"]);need(len(clocks)==1691 and not selected&clocks,"exact1691protected clocks")
     classes=json.loads((ROOT/"bulk-postdrt-antenna/narrow47-original-classes.json").read_bytes())
@@ -75,7 +92,7 @@ def main():
                             area_um2=(b[2]-b[0])*(b[3]-b[1])/(units*units),selected47=meta["selected47"],protected_clock=meta["protected_clock"],temporarily_fixed_in_route47=meta["temporarily_fixed_in_route47"]))
         ranked=sorted(hits,key=lambda r:(-r["area_um2"],r["owner"],r["guide"],r["marker"]))
         summary=dict(status="OBSERVED_ACTUAL92_MARKERS_AND_NATIVE_GUIDE_EXTENTS",source_run=41440285882,input=native.fp(path),
-            native_units=units,marker_count=92,source_net_count=len(owners),guide_count=sum(len(v)for v in guide_map.values()),
+            recovered_scope_proof=scope_proof,native_units=units,marker_count=92,source_net_count=len(owners),guide_count=sum(len(v)for v in guide_map.values()),
             marker_guide_intersections=len(hits),protected_clock_source_count=sum(v["protected_clock"]for v in net_rows.values()),
             selected_source_count=sum(v["selected47"]for v in net_rows.values()),fixed_overlay_source_count=sum(v["temporarily_fixed_in_route47"]for v in net_rows.values()),
             largest_intersections=ranked[:20],current_route_calls=0,current_repair_calls=0,geometry_changed=False,
