@@ -1,6 +1,25 @@
-# Cloud continuation — checkpoint v316
+# Cloud continuation — checkpoint v317
 
-Updated: 2026-11-02T18:39:06.150165+00:00
+Updated: 2026-11-02T19:00:25.681610+00:00
+
+## Current continuation: actual new-engine chip qualification implemented; slave drive trial electrically rejected
+
+Guide engine qualification source64a21283a014b802329e295d1136ae1ec645fee0 on codex/mainchip-guide-engine-roundtrip implements whole-chip comparison with exact engine41493369685 and recovered reference41440285882. New ELF remains separate /work/guide-engine/openroad; old frozen engine/source/runtime/lifecycle preserved. Authenticates all engine and chip capsule members, including unselected files, exact producer/source/releases/asset IDs, full hashes, directory census and no symlinks/aliases. New native phases: full143820net/154480instance/1691clock old-engine snapshot+DEF equality, actual ODB write/reload equality, unchanged fullDRT/antenna Tcl and exact complete measurement comparison, full post-check snapshot equality. Zero routing or repair calls; no memory reduction, convergence, LVS, PHY or setup/hold acceptance claimed.
+
+First source controls41504918363/source0423d9480918fd98e7ce94d709040ef8c5b50dae correctly refused stale transitive workflow pins in mainchip-full64-pins.json before native dispatch; full log preserved here. Corrected only cascading three pin manifests, retained all eight original control suites and added two positive archive transports plus sixteen malicious capsule refusals, original lifecycle/resource equality and explicit new ELF/runtime binding. Corrected independent controls41505439588 is current. Follow it, authenticate its artifact and only after success dispatch native execute=true with control_run=41505439588 at exact corrected source; externally reserve its unique release as prescribed by host. Do not rerun failed source controls or call a build pass full-chip qualification. Native qualification has not yet been dispatched at this checkpoint.
+
+PHY41501239838/source4aeff85064492459822c36dcec869aae87f44be4 FINISHED and was ELECTRICALLY REJECTED. This is different from prior pre-transient binding failure41499547929: actual500-device geometry binding passed all8paired faults; original13binder refusals and2equivalent-unit cases passed; engine returned0 after1070.412seconds and produced full113475rows1152columns34.25ns waveform. Full raw1045823299bytes SHA2507f874be9fa67550e12262d7eb8a752bf75db96ccd68f72ba29f24ccbf748b remains GitHub-only. Sources unchanged. Derived artifact13170781492 1423785bytes SHAe7b64e17db437cc37d7dd1d28e22267fb7afa0e7da0d57e81a98bb2f7b8b765a authenticated; full measurement, geometry controls, derivation, engine, config, prepared state, publication and failure records copied here.
+
+The24device trial reduced A/B/D worst delays to42.96875/38.90625/49.21875ps versus original45.78125/41.71875/54.53125; C worsened51.09375->118.90625ps, all exceed37.5ps. A/B/C/D wrong-sign counts0/0/0/0 (original0/0/2/34) but below100mV counts123/64/129/128of765 remain. X/Ywrong383/44 and below100mV741/680. Phase12.97409175mV<30mV, VI39.69184228uA<50uA; original14.325205mV and43.0512336uA. Four HBT61/62/115/116 minimum activeVce0.337347154/0.334221321/0.372771895/0.370736187V<0.4. No individual MOS terminal-voltage or MIM cap-voltage gate failures in this run. Do not mistake improved signs for acceptance. Release431828783 permanently preserves complete native output in four parts plus exact index/parts. Fixed-parent-RC geometry experiment only; no matching layout/freshPEX/fullPHY claim. Do not promote this trial into mainchip layout. Next PHY work must diagnose C timing/swing and remaining clock-tail headroom using authenticated complete waves; avoid inferring that lower collector resistance and higher MOS width solve all stages.
+
+All native CAD/SPICE/raw waves/GDS/ODB/archives stay in GitHub. Local workspace remains empty. Monitor stays readonly every8hours with automatic_native_dispatch=false. Full serial Gen3x4 PHY, accepted mainchip PCIe/Ethernet routing and final setup/hold remain OPEN. Last retained mainchip92DRT/21antenna; no new routing/timing/production closure.
+
+Observed 2026-11-02T19:00:25.681610+00:00:
+- 41505439588: in_progress/None
+- 41505377046: pending/None
+- 41504918363: completed/failure
+- 41504869013: in_progress/None
+- 41501239838: completed/failure
 
 ## Current continuation: complete bounded-worker engine built and metadata authenticated
 
