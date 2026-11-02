@@ -1,0 +1,55 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "observed_at": "2026-11-02T22:05:12.240564+00:00",
+    "source_API_derived_text_RAM_only": true,
+    "workspace_entries": 0
+  },
+  "note": "## Current continuation: complete actual650 diagnosis identifies access-wire headroom loss\n\nDiagnosis41532494266/sourcef9a1713ad83a3ea11684c451034b008a82b640c2 SUCCESS. Authenticated the complete current650 native archive from41528163238, rederived the exact model/contract/partition, parsed the entire original34.25ns raw waveform and reproduced original scalar measurements. All9 JSON outputs, including the full13.87MB per-edge stage timings, are preserved without trimming under docs/evidence/cloud-v331-current-stage-41532494266/. This is diagnosis, not a new simulation or physical/electrical acceptance.\n\nAt the actual four failing master-clock HBT minima, measured dominant-upper-emitter to clock-collector wire drops are SC_M_CS0=72.998071mV, SC_M_CS1=72.514986mV, SD_M_CS0=53.868987mV and SD_M_CS1=54.729729mV. Corresponding deficits below0.4V are20.457540,21.781687,46.122702 and48.753489mV. Both upper branches and currents are retained. Signed voltage decomposition reproduces each measured Vce exactly. Local clock-edge delays are only a fewps; they do not by themselves explain47-119ps sampler output delays. No causal fix has been proven.\n\nNext concrete physical investigation: inspect actual upper-emitter/clock-collector metal/via access for54/56->61/62 (net$44) and106/108->115/116 (net$598). Current GDS already contains48 Via2 cuts/M3 access repair at upper emitters T054_E,T056_E,T106_E,T108_E from producer41434944363/sourcef878816a24906f450d5ffa2f72b6b08ed6024e6a, release431366909. Actual physical qualification41435641296/source262ac9b4d9142be6235c68d279c67aac9b92e3a8/release431371522 and freshRC41439516945 are the correct basis. Remaining clock-collector access may be a bottleneck; quantify actual resistor paths and owned geometry before changing layout. Do not zero wire resistance or reuse idealized net connectivity as acceptance evidence. Need actual candidate GDS/fullDRC/deep+flatLVS/freshRC and repeated unchanged complete waveform gates.\n\nPrevious current650 trial remains electrically REJECTED: phase13.179522mV,VI40.422022uA,A/B/C/D max47.03125/42.65625/118.90625/99.84375ps; four HBT Vce failures. Full actual500 native mapping and50 MOS physical inventory41530232708 passed, but actual650-device geometry has not been generated. Independent MOS-unit active/contact/gate/tap geometry and its full physical checks remain open.\n\nSame mainchip full64route41513663302 continues; do not restart an active run. Once complete, authenticate all route outputs, DRC/antenna, global net classes/diodePG, fullLVS, qualifiedRC/Liberty and final all-corner setup/hold. No full serialGen3x4 PHY or accepted final PCIe/Ethernet mainchip integration is claimed. Native work remains GitHub-only; local workspace empty. Monitor8hours/read-only/automatic_native_dispatch=false unchanged.\n\nObserved 2026-11-02T22:05:12.240564+00:00:\n- 41532494266: completed/success\n- 41513663302: in_progress/None\n",
+  "runs": [
+    {
+      "branch": "codex/cdr-current-domain-stage-diagnosis",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125575999703,
+          "name": "classify",
+          "status": "completed"
+        }
+      ],
+      "run": 41532494266,
+      "source": "f9a1713ad83a3ea11684c451034b008a82b640c2",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41532494266"
+    },
+    {
+      "branch": "codex/mainchip-guide-full64-route",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125511588907,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate actual chip qualification then execute original full64 route and audits"
+          ],
+          "conclusion": null,
+          "id": 125512950978,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41513663302,
+      "source": "302f9c30a847acd659a8c451bdce83707fce5d70",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41513663302"
+    }
+  ],
+  "version": 331
+}
