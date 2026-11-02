@@ -1,6 +1,19 @@
-# Cloud continuation — checkpoint v333
+# Cloud continuation — checkpoint v334
 
-Updated: 2026-11-02T22:30:48.591198+00:00
+Updated: 2026-11-02T22:48:14.538133+00:00
+
+## Current continuation: actual16Via2 freshRC passed; full650 electrical comparison
+FreshRC41537723922/sourcebd1fc5b2deed8a0ea153db91a362c983e6379254 completed successfully with500 devices,26218R and16796C. ModelSHAe99ea8c8b7edb51b0f8ce51f269e90460ce90d97fa7f8496540c7d11d806154a. All11 numerical phase receipts are retained. Complete native release432038108 remains in cloud. This is extraction qualification, not electrical or fullPHY acceptance.
+New loaded comparison41540256258 oncodex/cdr-clock-access-domain-loaded, source15feb7375e24de69d10377f1e52e8e07e3ef02c0, reservedrelease432050827, tagcloud-results-41540256258-1-cdr-clock-access-domain-loaded. Follow this same run; do not dispatch a duplicate. Source controls precede native execution. It uses the original complete34.25ns/650device electrical trial with unchanged runtime, stimuli, prepare/measure methods and acceptance limits. Compare against rejected41528163238.
+Preparation found35 changed terminal cluster/name labels and observed public orderiry,yn,yp,irvx. Existing physical500device primitives/positions are unchanged. Prior LVS correspondences are transported using independently extracted old/new500device identities and1446terminal ownership, complete physical transforms, a bijective net map and all25 named public-port partitions. Six deliberately corrupted identity inputs must be rejected by cloud controls, in addition to existing13admission,24partition,4projection and actual native13binding+2equivalent-unit+12expansion controls. New map is explicitly correspondence transport, NOT a newly generated native LVS pairing. Original map and failed baseline are preserved.
+Physical41535701378 passed full560DRC with0markers and deep/flat500deviceLVS13. Canonical41537000719 passed all134source controls, all500device/1446terminal identities and113x13layer comparisons for exactly16newVia2. Actual650geometry/fullPHY/closedloopCDRPLL and finalmainchip timing remain open.
+Mainchip full64route41513663302 remains the same job. After actual route completion require finalDRC/antenna/globalrouteclasses/diodePG/fullLVS and matchingqualifiedRC/Liberty/all-cornerSTA; route success alone cannot close timing.
+All native work/payloads remain in GitHub. Local workspace empty. Existing8hour read-only monitor and automatic_native_dispatch=false unchanged.
+
+Observed 2026-11-02T22:48:14.538133+00:00:
+- 41537723922: completed/success
+- 41540256258: in_progress/None
+- 41513663302: in_progress/None
 
 ## Current continuation: actual16Via2 physical and canonical passes; freshRC dispatched
 

@@ -1,22 +1,12 @@
-## Current continuation: actual16Via2 physical and canonical passes; freshRC dispatched
+## Current continuation: actual16Via2 freshRC passed; full650 electrical comparison
+FreshRC41537723922/sourcebd1fc5b2deed8a0ea153db91a362c983e6379254 completed successfully with500 devices,26218R and16796C. ModelSHAe99ea8c8b7edb51b0f8ce51f269e90460ce90d97fa7f8496540c7d11d806154a. All11 numerical phase receipts are retained. Complete native release432038108 remains in cloud. This is extraction qualification, not electrical or fullPHY acceptance.
+New loaded comparison41540256258 oncodex/cdr-clock-access-domain-loaded, source15feb7375e24de69d10377f1e52e8e07e3ef02c0, reservedrelease432050827, tagcloud-results-41540256258-1-cdr-clock-access-domain-loaded. Follow this same run; do not dispatch a duplicate. Source controls precede native execution. It uses the original complete34.25ns/650device electrical trial with unchanged runtime, stimuli, prepare/measure methods and acceptance limits. Compare against rejected41528163238.
+Preparation found35 changed terminal cluster/name labels and observed public orderiry,yn,yp,irvx. Existing physical500device primitives/positions are unchanged. Prior LVS correspondences are transported using independently extracted old/new500device identities and1446terminal ownership, complete physical transforms, a bijective net map and all25 named public-port partitions. Six deliberately corrupted identity inputs must be rejected by cloud controls, in addition to existing13admission,24partition,4projection and actual native13binding+2equivalent-unit+12expansion controls. New map is explicitly correspondence transport, NOT a newly generated native LVS pairing. Original map and failed baseline are preserved.
+Physical41535701378 passed full560DRC with0markers and deep/flat500deviceLVS13. Canonical41537000719 passed all134source controls, all500device/1446terminal identities and113x13layer comparisons for exactly16newVia2. Actual650geometry/fullPHY/closedloopCDRPLL and finalmainchip timing remain open.
+Mainchip full64route41513663302 remains the same job. After actual route completion require finalDRC/antenna/globalrouteclasses/diodePG/fullLVS and matchingqualifiedRC/Liberty/all-cornerSTA; route success alone cannot close timing.
+All native work/payloads remain in GitHub. Local workspace empty. Existing8hour read-only monitor and automatic_native_dispatch=false unchanged.
 
-Physical41535701378/sourcee00b2df77c4337940ec7db32159dacc260eb91ab SUCCESS: GDS28eebb9f880648935a6368ada78a5e5666694ba98e073fbbac3f2e0c986339d6 (1079924bytes) passes all560 DRC categories with0markers,deep andflat500deviceLVS,and13 expected fault rejections. Original124HBT/50MOS/98rppd/7MIM/221ptap census retained. This is the analog500device candidate, NOT full-chip or650physical acceptance. Complete native release432027578; derivedartifact13183378339,353107bytes,SHA0073be71d2e29a31dfa12ecd6451d37eb5747faf3514d8a66717fd7228b7cd19. Full derived proof permanently preserved in docs/evidence/clock-access-physical-41535701378.json.
-
-Canonical41537000719/source6aefe5e1cd95b24c9a7fb3bc0c073b57f344c717 SUCCESS. All134source controls passed,including11 new exact-cut/enclosure/spacing/ownership controls. All500device/1446terminal/25port/978anchor identities and238native nets preserved. All113partitions x13layers=1469 complete material comparisons passed. Exactly2changed partitions,layer29 only,288800nm2 each (8newVia2 each). Originalc0d420cd reference and actual28eebb9f candidate independently authenticated;78 current canonical files regenerated. Complete release432034343; artifact13183399167,1450095bytes,SHA13ccd860f80764b388fbdf26e6bee43f1cde715464292282d7143f010501fa31; full derived proof and qualification permanently preserved here.
-
-Initial canonical41536737948/sourceebc7daf2d5c471fd1f81915c1914a09accc85fa4 failed SOURCE CONTROLS ONLY: KLayout Region does not accept a Region as constructor argument. Native job skipped. One fixture-copy line changed to supported Polygon[] constructor; no native material or acceptance predicate changed. Full failure artifact13183678137 retained in clock-access-canonical-control-failure-41536737948.json.
-
-Important actual observed new semantic port order: avdd,avss,sub,ird,cn,cp,dn,dp,irb,ira,irc,ibda,ibdc,ibs0,irx,xp,xn,ibs1,iry,yn,yp,irvx,irvy,vin,vip. yp/yn ordering changed relative to original reference. Bind by actual verified named terminal identity; NEVER reuse old positional order. FreshRC configuration and host exact-order check now both use this actual observed order. Source preparation rejected old-order assumption before any commit or native execution; corrected from actual canonical evidence.
-
-FreshRC41537723922/sourcebd1fc5b2deed8a0ea153db91a362c983e6379254 oncodex/cdr-clock-access-fresh-rc is the next authoritative job. Reservedrelease432038108/tagcloud-results-41537723922-1-cdr-wire-shortcuts-fresh-rc. All frozen numerical/runtime methods,13-command lifecycle,resource/cleanup checks retained. Actual78-file canonical inputs and new semantic order are pinned. Requires real new distributedwireRC and both preciseMIM orders; no original RC result is promoted.
-
-After full freshRC success, authenticate all outputs and compare actual new resistance paths. Then derive model-range200MOS candidate from actual500 model/current physical identities and run unchanged full34.25ns/650device loaded gates. Original rejected650 run41528163238 is the comparison baseline. Check native IDs/terminal bindings rather than assuming prior integer/device or port order. 16via improvement is still UNPROVEN; dense existing collector via arrays and long paths may need actual metal reinforcement if gain insufficient. Actual650geometry/fullPHY/closedloopCDRPLL/final mainchip timing remain open.
-
-Mainchip full64route41513663302 remains SAME job; follow actual outcome, do not restart while live. Final DRC/antenna/globalclasses/diodePG/fullLVS/matchingqualifiedRC/Liberty/all-cornerSTA remain required. Cloud-only native work; local workspace empty.8hour read-only monitor/automatic_native_dispatch=false unchanged.
-
-Observed 2026-11-02T22:30:48.591198+00:00:
-- 41535701378: completed/success
-- 41536737948: completed/failure
-- 41537000719: completed/success
-- 41537723922: in_progress/None
+Observed 2026-11-02T22:48:14.538133+00:00:
+- 41537723922: completed/success
+- 41540256258: in_progress/None
 - 41513663302: in_progress/None
