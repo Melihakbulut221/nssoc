@@ -1,6 +1,29 @@
-# Cloud continuation — checkpoint v309
+# Cloud continuation — checkpoint v310
 
-Updated: 2026-11-02T13:20:03.899552+00:00
+Updated: 2026-11-02T13:35:37.399898+00:00
+
+## Current continuation: bounded guide-worker engine build dispatched
+
+Root v309 a91216f4c7c39e4b9ede5b4278bd421f81fd3c2f permanently preserved all completed guide and full500-device mapping observations and failures (inventory809,77files10,969,281bytes, every readback verified). Native work/payloads exclusively GitHub; local workspace empty. Full serial PHY, mainchip route and final setup/hold remain OPEN.
+
+NEW REAL ENGINE BUILD41453866417, source5a82cbd4068411de19acc73605ebb64250b010fc, branchcodex/mainchip-guide-batch-engine, release431499827/tagcloud-results-41453866417-1-mainchip-guide-batch-engine-build. Independent same-sourcecontrols41453547634 SUCCESS. Do not restart if observation times out; follow this actual handle.
+
+CHANGE: exact pinned OpenROADdcf36133a369abc8f3c5e5738cd4d82e4903c0e0 FlexDR.cpp originalSHA122e84ca0906d7e53d4e5f4c7216a72e55f085f1a62b0848df06fc9eafd2e3af -> derivedSHA1a9c208a7be43783dc5873bc07e1022c15847714ccdf8b1ddac68c2717af2361. Only guideTilesFlow worker lifetime section changes. It lazily creates at most2workers, executes each chunk, commits results and destroys those workers before creating more. One box per guide worker is asserted; total completed workers must match original count. Actual original guide selection/merging/boxes/independent batch grouping, costs, ripup/follow-guide parameters and full64 strategy remain unchanged. Commit timing within each independent batch changes; routing equivalence and RSS improvement are NOT assumed.
+
+SOURCE CONTROLS: original engine7positive/45refusal/25lifecycle and original internal observer4positive/29refusal passed. New actual C++replacement body compiled with g++-std=c++20-O2-Wall-Wextra-Werror and executed under instrumented worker constructor/destructor and completion checks:7positive lifetime scenarios including empty/single/odd/multiple/nonmonotonic batches;2invalid box groups rejected. All <=2live workers and each worker completed/freed exactly once.3modified upstream source cases refused. Complete source reversal exact. These are source/fixture controls, not a complete engine or chip route qualification.
+
+COMPILATION uses prior qualified build source26e2f28b735238bd69140dca9a0fc6d2bf29f197 with original observer derivation retained; fixed gitlinks/OpenSTA/ABC, immutableubuntu24.04-dev image,12GiB cgroup,2CPUs,no swap, native full project build and Tcl/Python interface checks. Exact source-before/after and source guard remain. All available failures and native engine archive published to the separately reserved release. No native data is downloaded locally. Complete build can qualify only compilation/interfaces, not clocks/routes/finaltiming. The next action is to collect its terminal evidence, qualify the new binary on actual recovered native data with original full-wire/clock/scope observations, then route and run full DRC/antenna; later PG/LVS/freshRC/3cornerSTA are still required.
+
+KNOWN CHIP EVIDENCE: recovery41440285882 has92DRT(64short+28spacing),21antenna nets.1691protected clocks and nonselected wires unchanged. Completed native guide audit41449886129/source3bf8acec68f0a90ca008a94dff3f7f074f7b9717 measured96source nets/2593guides/325intersections,34selectedsources,61temporaryFIXEDsources,4clock sources. No new routing/violation reduction yet. Source audit corrected complete_DEF.accepted=false semantics without dropping any scope checks; Point-overload native closed intersection passed6native cases. Original failed audits41445399432/41447786520 retained.
+
+KNOWN PHY EVIDENCE: full native mapping41450661063/source22baa225789b8ec1c9ce98437196af1e48fc2918 matched500LVS devices and all1446loaded terminal identities plus all500composition records. Critical61/62 areSD_M_CS0/1 and115/116 areSC_M_CS0/1 (Nx2 clock-selector HBTs, basesCN). Drivers54/56 and106/108 areSD/SC_M_DP/DN (Nx4 data pair). TailMOS3..6/32..35 areSD/SC_M_T0..T3(W36um,L0.3um). Symmetric parallel devices can exchange equivalent schematic pairing; no uniquephysical-name claim. Mapping failures41449736667/41450082352 retained.
+Loaded41441047354 stillREJECTED: phase14.325mV<30mV,VI43.051uA<50uA,Vce.3398..37097V<.4,sampler41.72..54.53ps>37.5. Fullwave1,045,823,299bytes preserved. Native scope/DRC/LVS/RC successes are not fullPHY acceptance. Next electrical work must use actual source mapping and fullwave operating points for an explicit bias/device-size/collector-wire change, then real physical regeneration and unchanged loaded gates. No provisional parameter experiment or new analog geometry has yet been dispatched.
+
+Readonly8hour monitor remains automatic_native_dispatch=false. Full closed-loopCDR/PLL/SERDES/PVT/ESD/EM and mainchip final acceptance remain open.
+
+Observed at 2026-11-02T13:35:37.399898+00:00:
+- 41453547634: completed/success
+- 41453866417: in_progress/None
 
 ## Current continuation: guide audit and full PHY device correspondence completed
 

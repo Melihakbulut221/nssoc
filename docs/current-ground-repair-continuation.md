@@ -1,52 +1,22 @@
-## Current continuation: guide audit and full PHY device correspondence completed
+## Current continuation: bounded guide-worker engine build dispatched
 
-Root v308: a773002fb728e25c4c7d449b4de01c7344b9eec3, inventory802. Native CAD, geometry, simulation, waveform and archive payloads remain exclusively on GitHub. Local workspace remains empty. Full serial PCIe Gen3 x4 PHY, final mainchip routing and setup/hold are NOT complete.
+Root v309 a91216f4c7c39e4b9ede5b4278bd421f81fd3c2f permanently preserved all completed guide and full500-device mapping observations and failures (inventory809,77files10,969,281bytes, every readback verified). Native work/payloads exclusively GitHub; local workspace empty. Full serial PHY, mainchip route and final setup/hold remain OPEN.
 
-MAINCHIP
-Recovery41440285882 retains the actual routed iteration19: 92 DRT violations (64 shorts,28 metal spacing),21 antenna nets. All1691 protected clock wires and all nonselected wires unchanged;46 of47 selected wires changed. Original failed route41415994457 is still a failure. No new routing was performed this turn.
+NEW REAL ENGINE BUILD41453866417, source5a82cbd4068411de19acc73605ebb64250b010fc, branchcodex/mainchip-guide-batch-engine, release431499827/tagcloud-results-41453866417-1-mainchip-guide-batch-engine-build. Independent same-sourcecontrols41453547634 SUCCESS. Do not restart if observation times out; follow this actual handle.
 
-Initial guide audit41445399432/sourcecccc79890d45e1e9796ee096bfbc42b064f72160 failed before opening ODB. It incorrectly required complete_DEF.accepted=true. The original routing_delta function returns accepted=false even after all scoped DEF assertions pass; this is a production acceptance disclaimer. Corrected consumer independently checks native clock/other-wire booleans, protected DEF records/non-NETS bytes, exact46 changed owners within47 selection, native/DEF changed-set agreement and ordered-name SHA. It continues to require accepted=false and all final acceptance flags false. Real producer fixture plus22 refusal controls and9 coordinate/rectangle controls passed41447590694/sourceb3ea23076cc47c0f94c912eff85f853815a95692.
+CHANGE: exact pinned OpenROADdcf36133a369abc8f3c5e5738cd4d82e4903c0e0 FlexDR.cpp originalSHA122e84ca0906d7e53d4e5f4c7216a72e55f085f1a62b0848df06fc9eafd2e3af -> derivedSHA1a9c208a7be43783dc5873bc07e1022c15847714ccdf8b1ddac68c2717af2361. Only guideTilesFlow worker lifetime section changes. It lazily creates at most2workers, executes each chunk, commits results and destroys those workers before creating more. One box per guide worker is asserted; total completed workers must match original count. Actual original guide selection/merging/boxes/independent batch grouping, costs, ripup/follow-guide parameters and full64 strategy remain unchanged. Commit timing within each independent batch changes; routing equivalence and RSS improvement are NOT assumed.
 
-Actual audit41447786520 then passed scope but failed at embedded OpenROAD Rect.intersects(Rect) overload. No geometry or original gates were changed. Source3bf8acec68f0a90ca008a94dff3f7f074f7b9717 uses native Point containment in both rectangles for the common lower-left candidate point, preserving exact inclusive intersection and checking native coordinates and result types. Six native boundary/degenerate/disjoint cases pass. Independent source-controls41449620712 passed.
+SOURCE CONTROLS: original engine7positive/45refusal/25lifecycle and original internal observer4positive/29refusal passed. New actual C++replacement body compiled with g++-std=c++20-O2-Wall-Wextra-Werror and executed under instrumented worker constructor/destructor and completion checks:7positive lifetime scenarios including empty/single/odd/multiple/nonmonotonic batches;2invalid box groups rejected. All <=2live workers and each worker completed/freed exactly once.3modified upstream source cases refused. Complete source reversal exact. These are source/fixture controls, not a complete engine or chip route qualification.
 
-ACTUAL GUIDE AUDIT41449886129 SUCCESS; source3bf8acec68f0a90ca008a94dff3f7f074f7b9717; branchcodex/mainchip-route47-guide-audit; release431471737.
-- Actual measuredODB214402279bytes SHA53b42f42c244af7416a78c0cc04cc897f99b114c892c6bc86ecc60affa3e05af.
-- All92 markers,96 source nets,2593 guide records,325 marker-guide intersections.
--34 source nets in selected47;61 in temporary FIXED overlay;4 protected clock source nets.
-- Largest intersecting guide475.2x7.2um (3421.44um2), from a fixed nonselected register-file net. Selected long guides include424.8x7.2um and410.4x7.2um.
-- Full observation1012909bytes SHAd54abd172e41b3bd5d3a33243eec7fb86b3c48c24d38ab9e42ff470f6512be2b.
-- Derivedartifact13144512570=275127bytes SHAab6bf3e7cd71b0223f2169a02da674fabd90cd12ec934642c7afafe991a320e5.
-- current_route_calls=0,current_repair_calls=0,geometry_changed=false,memory_cause_proven=false,router_internal_guide_mapping_equivalence_proven=false. This is native diagnosis, not closure.
+COMPILATION uses prior qualified build source26e2f28b735238bd69140dca9a0fc6d2bf29f197 with original observer derivation retained; fixed gitlinks/OpenSTA/ABC, immutableubuntu24.04-dev image,12GiB cgroup,2CPUs,no swap, native full project build and Tcl/Python interface checks. Exact source-before/after and source guard remain. All available failures and native engine archive published to the separately reserved release. No native data is downloaded locally. Complete build can qualify only compilation/interfaces, not clocks/routes/finaltiming. The next action is to collect its terminal evidence, qualify the new binary on actual recovered native data with original full-wire/clock/scope observations, then route and run full DRC/antenna; later PG/LVS/freshRC/3cornerSTA are still required.
 
-Exact upstreamdcf36133a369abc8f3c5e5738cd4d82e4903c0e0 source inspection:
-FlexDR::guideTilesFlow builds workers from all intersecting original net guides, merges same-orientation intersections, constructs all workers before processing batches, and retains each batch's results until all its workers finish. Unlike optimizationFlow, it does not subdivide batches by BATCHSIZE. Flow switches to guides at <=100 violations unless ripupALL/INCR or max-spacing work. Current stored-guide observation is not proof of identical internal iteration20 guide order/batches.
-NEXT MAINCHIP: implement/qualify bounded guide-worker allocation and completion batches in the pinned router while retaining original full64 schedule/costs/guide geometry and immutable wire/clock audits; do not repeat the unchanged 11GiB failure. Alternative single-step ALL-ripup forcing bounded optimization tiles was investigated in source but NOT implemented; it changes routing strategy. No engine patch/build/route trial has yet been dispatched.
+KNOWN CHIP EVIDENCE: recovery41440285882 has92DRT(64short+28spacing),21antenna nets.1691protected clocks and nonselected wires unchanged. Completed native guide audit41449886129/source3bf8acec68f0a90ca008a94dff3f7f074f7b9717 measured96source nets/2593guides/325intersections,34selectedsources,61temporaryFIXEDsources,4clock sources. No new routing/violation reduction yet. Source audit corrected complete_DEF.accepted=false semantics without dropping any scope checks; Point-overload native closed intersection passed6native cases. Original failed audits41445399432/41447786520 retained.
 
-PHY
-Collector Via2 candidatec0d420 remains physically/canonically/RC qualified only at subblock scope. Actual loaded41441047354 remains REJECTED: phase14.325mV<30mV, signedVI43.051uA<50uA, Vce61/62/115/116=.342697/.339778/.370967/.369198V<.4; sampler delays41.72..54.53ps>37.5ps. Complete raw113475x1152,1,045,823,299bytes retained. Original external-clock nominal scenario; no closed-loop/fullPHY acceptance.
+KNOWN PHY EVIDENCE: full native mapping41450661063/source22baa225789b8ec1c9ce98437196af1e48fc2918 matched500LVS devices and all1446loaded terminal identities plus all500composition records. Critical61/62 areSD_M_CS0/1 and115/116 areSC_M_CS0/1 (Nx2 clock-selector HBTs, basesCN). Drivers54/56 and106/108 areSD/SC_M_DP/DN (Nx4 data pair). TailMOS3..6/32..35 areSD/SC_M_T0..T3(W36um,L0.3um). Symmetric parallel devices can exchange equivalent schematic pairing; no uniquephysical-name claim. Mapping failures41449736667/41450082352 retained.
+Loaded41441047354 stillREJECTED: phase14.325mV<30mV,VI43.051uA<50uA,Vce.3398..37097V<.4,sampler41.72..54.53ps>37.5. Fullwave1,045,823,299bytes preserved. Native scope/DRC/LVS/RC successes are not fullPHY acceptance. Next electrical work must use actual source mapping and fullwave operating points for an explicit bias/device-size/collector-wire change, then real physical regeneration and unchanged loaded gates. No provisional parameter experiment or new analog geometry has yet been dispatched.
 
-NEW FULL NATIVE DEVICE CORRESPONDENCE41450661063 SUCCESS, source22baa225789b8ec1c9ce98437196af1e48fc2918, branchcodex/cdr-collector-device-map.
-Authenticate complete physical41435641296 release431371522 and exact flat LVSdatabase2760554bytes SHA9df6ea3e90bccaebe216834488154f680317934560ed99ad0b1a9be1ff22da37. Native KLayout reader0.30.4.post1; exact500 matching primitive pairs/bidirectional bijection and25ports. Cross-check all1446 native terminal IDs/model spellings/net names/clusters against actual freshRC41439516945 native planes244758bytes SHA380865a73b8be42afa07ef81a5fcd05e7110e570455ce857f772770e09b08048, and all500 actual loaded composition records1015133bytes SHAd775d58fcaaba7c6f4d5d06a51645839e0b0e4e853de5e6249f3156b1f9b27d5. Ten source-only refusal controls passed.
-Derivedartifact13144567876=66389bytes SHA415215780ef60cd6bd971ccb782d1dfbe4430a67c2f5ae10a3f0d60c6bbcd9cb.
-Preserved earlierfailures41449736667/source11d5d2b6a40b82a30dc5058c7814f68e19193324 (invalid redundant Net.id API) and41450082352/sourceda58d7d649e982cead0a7e419f79e5a069bb94ad (lowercased npn13G2 did not equal raw native model spelling). Correct reader uses net cluster_id/name/expanded_name and separately preserves raw/normalized model names. No identity comparison removed.
+Readonly8hour monitor remains automatic_native_dispatch=false. Full closed-loopCDR/PLL/SERDES/PVT/ESD/EM and mainchip final acceptance remain open.
 
-Actual source mappings:
-61=SD_M_CS0;62=SD_M_CS1;115=SC_M_CS0;116=SC_M_CS1. All four clock-selected HBTs useNx2,le0.9um,we0.07um; basesCN, collectorsSD_M_SE/SC_M_SE, emittersSD_M_TE/SC_M_TE.
-54=SD_M_DP;56=SD_M_DN;106=SC_M_DP;108=SC_M_DN. Data pair HBTs useNx4,le0.9um,we0.07um; basesSD_LP/LN orSC_LP/LN, common emittersSD_M_SE/SC_M_SE.
-3..6=SD_M_T0..T3 and32..35=SC_M_T0..T3; eachNMOS W36um,L0.3um, gatesIRD/IRC,sourcesAVSS. Actual loaded source voltage includes extracted ground drop and is not ideal ground.
-LVS can exchange equivalent parallel devices; pairs are a valid native correspondence, not a unique physical naming guarantee.
-
-NEXT PHY: use this native source mapping with preserved fullwave operating points to design/simulate specific clock/data common-mode, device sizing or remaining collector-wire corrections. Data-input deviceNx4 -> higherNx would be a circuit change with added capacitance; not yet simulated, not a claimed fix. Any exploratory parameter simulation must be explicitly provisional because old RC/layout no longer qualifies modified primitive geometry. Actual final change must regenerate schematic/GDS, full DRC/LVS, canonical material, fresh RC and unchanged loaded gates before integration.
-All full closed-loopCDR/PLL/SERDES, PVT/ESD/EM and mainchip PG/fullLVS/final3cornerSTA obligations remain open.
-
-Readonly8hour monitor remains automatic_native_dispatch=false. No local native files or new local project files.
-
-Observed at 2026-11-02T13:20:03.899552+00:00:
-- 41445399432: completed/failure
-- 41447590694: completed/success
-- 41447786520: completed/failure
-- 41449620712: completed/success
-- 41449886129: completed/success
-- 41449736667: completed/failure
-- 41450082352: completed/failure
-- 41450661063: completed/success
+Observed at 2026-11-02T13:35:37.399898+00:00:
+- 41453547634: completed/success
+- 41453866417: in_progress/None
