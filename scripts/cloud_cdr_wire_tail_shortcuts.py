@@ -7,7 +7,7 @@ import cloud_cdr_wire_geometry_acquire as prior
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"wire-tail-shortcuts";NATIVE=ROOT/"wire-tail-shortcuts-native"
 MANIFEST="scripts/cdr-wire-tail-shortcuts-pins.json";INPUT="scripts/cdr-wire-tail-shortcuts-inputs.json"
-BRANCH="codex/cdr-source-m1-ground-access";TOP="nssoc_cdr_pd500_resistor_v59"
+BRANCH="codex/cdr-via1-reinforcement";TOP="nssoc_cdr_pd500_resistor_v59"
 LAYERS=(8,19,10,29)
 TARGETS=(("D_collector","T061_C","T056_E"),("D_emitter","T061_E","T005_D"),("C_collector","T115_C","T108_E"),("C_emitter","T115_E","T034_D"))
 need=prior.need
@@ -1212,14 +1212,133 @@ def inspect_critical_access(base,cfg):
         original_geometry_unchanged=True,new_geometry_generated=False,fresh_RC=False,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
 
 
+def via1_reinforcement_guard(cut,m1,m2,old_vias,new_vias,extent):
+    b=bounds(cut);rect=not cut.is_empty()and cut.count()==1 and b[2]-b[0]==190 and b[3]-b[1]==190 and cut.area()==36100
+    return dict(square190=rect,grid5=rect and all(v%5==0 for v in b),
+        enclosed_m1_50=(cut.sized(50,50,2)-m1).is_empty(),
+        enclosed_m2_50=(cut.sized(50,50,2)-m2).is_empty(),
+        existing_via_clearance240=(cut&old_vias.sized(240,240,2)).is_empty(),
+        new_via_clearance240=(cut&new_vias.sized(240,240,2)).is_empty(),
+        within_original_extent=(cut-extent).is_empty())
+
+def via1_reinforcement_controls():
+    extent=pya.Region(pya.Box(0,0,4000,4000));metal=pya.Region(pya.Box(500,0,1500,3000));cut=box(1000,1000,95);empty=pya.Region()
+    need(all(via1_reinforcement_guard(cut,metal,metal,empty,empty,extent).values()),"valid via1 reinforcement")
+    narrow=pya.Region(pya.Box(855,0,1145,3000))
+    need(all(via1_reinforcement_guard(cut,narrow,narrow,empty,empty,extent).values()),"exact290nm existing overlap allowed")
+    cases=[
+        ("wrong-size",box(1000,1000,90),metal,metal,empty,empty,extent),
+        ("off-grid",box(1001,1000,95),metal,metal,empty,empty,extent),
+        ("missing-m1",cut,empty,metal,empty,empty,extent),
+        ("missing-m2",cut,metal,empty,empty,empty,extent),
+        ("short-enclosure",cut,pya.Region(pya.Box(856,0,1145,3000)),metal,empty,empty,extent),
+        ("old-via-spacing",cut,metal,metal,box(1410,1000,95),empty,extent),
+        ("new-via-spacing",cut,metal,metal,empty,box(1410,1000,95),extent),
+        ("outside-layout",cut,metal,metal,empty,empty,pya.Region(pya.Box(0,0,900,4000)))]
+    passed=["valid190nm via","exact existing290nm overlap"]
+    for name,*args in cases:
+        need(not all(via1_reinforcement_guard(*args).values()),"reject "+name)
+        passed.append("reject "+name)
+    return passed
+
+def generate_via1_reinforcement(base,cfg):
+    proof=json.loads((ROOT/"scripts/cdr-critical-resistance-inputs.json").read_bytes())
+    need(proof["run"]==41407813062 and proof["source"]=="fafb2d0be139a44b3c70b449dfc182c5b9f171b0","actual current32query diagnosis")
+    targets={}
+    for q in proof["queries"]:
+        for key in("source_terminal","sink_terminal"):
+            pair=q[key]
+            if pair=="public_avss":continue
+            i,t=pair;label="T"+str(i).zfill(3)+"_"+t
+            record=dict(device=i,terminal=t,native_net=q["native_net"])
+            need(label not in targets or targets[label]==record,"consistent terminal net identity")
+            targets[label]=record
+    need(len(targets)==28,"all28critical native terminals")
+    gp=base/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds";wp=base/"binding/inputs/wire/native05/wires.l2n"
+    need(pin(gp)==dict(bytes=1003860,sha256="4ccf1212d4b98046b1b56037bb1b76c53477777b08ee9cba5053c8e6323203e8"),"current actually measured layout")
+    g=pya.Layout();g.read(str(gp));top=g.cell(TOP);need(g.dbu==.001 and top is not None,"actual current layout")
+    before=region_snapshot(g,top);extent=pya.Region(top.bbox())
+    w=pya.LayoutToNetlist();w.read(str(wp));need(w.internal_layout().dbu==.001,"actual native wire DBU")
+    layers=(8,19,10,29,30,49,50,66,67,125,126,133,134)
+    objects={n:w.layer_by_name("gds_"+str(n))for n in layers}
+    for n,r in objects.items():need(r is not None and(before.get((n,0),pya.Region())^r).is_empty(),"all13actual native conductor unions")
+    nets={n.cluster_id:n for n in w.netlist().top_circuit().each_net()}
+    anchors={a["label"]:a for a in json.loads((base/"mim/precise/wire/anchors08.json").read_bytes())["anchors"]}
+    old_vias=pya.Region()
+    for (layer,datatype),r in before.items():
+        if layer==19:old_vias+=r
+    old_vias=old_vias.merged()
+    cache={}
+    def owned(component):
+        if component not in cache:cache[component]={n:w.shapes_of_net(nets[component],r,True).merged()for n,r in objects.items()}
+        return cache[component]
+    additions=pya.Region();sites=[];rows=[];positions=set()
+    for label,expected in sorted(targets.items()):
+        a=anchors[label]
+        need(a["detail"]["device"]==expected["device"]and a["detail"]["native_net"]==expected["native_net"],"actual critical terminal owner")
+        shapes=owned(a["wire_component"]);x,y=a["point_dbu"]
+        need((box(x,y,1)-shapes[a["metal"]]).is_empty(),"actual port inside its own physical conductor")
+        window=box(x,y,25000);overlap=(shapes[8]&shapes[10]&window).merged()
+        ox,oy=((x+2)//5)*5,((y+2)//5)*5
+        need(abs(ox-x)<=2 and abs(oy-y)<=2,"placement grid reference only; original anchor unchanged")
+        tested=0;admitted=0
+        for polygon in overlap.each():
+            b=polygon.bbox();lo_x,hi_x=b.left+145,b.right-145;lo_y,hi_y=b.bottom+145,b.top-145
+            first_x=ox+((lo_x-ox+479)//480)*480
+            first_y=oy+((lo_y-oy+479)//480)*480
+            for cx in range(first_x,hi_x+1,480):
+                for cy in range(first_y,hi_y+1,480):
+                    if (cx,cy)in positions:continue
+                    tested+=1;cut=box(cx,cy,95)
+                    guards=via1_reinforcement_guard(cut,shapes[8],shapes[10],old_vias,additions,extent)
+                    if not all(guards.values()):continue
+                    additions+=cut;positions.add((cx,cy));admitted+=1
+                    sites.append(dict(center_dbu=[cx,cy],bbox=bounds(cut),component=a["wire_component"],native_cluster=a["native_cluster"],
+                        native_net=a["detail"]["native_net"],selected_by=label,guards=guards))
+        rows.append(dict(label=label,original_anchor=a,window_bbox=bounds(window),grid_reference_dbu=[ox,oy],
+            same_net_overlap_area_dbu2=overlap.area(),tested_sites=tested,added_in_this_pass=admitted))
+    additions=additions.merged()
+    for row in rows:
+        b=row["window_bbox"];component=row["original_anchor"]["wire_component"]
+        row["all_new_sites_in_window"]=[s["center_dbu"]for s in sites if s["component"]==component and b[0]+145<=s["center_dbu"][0]<=b[2]-145 and b[1]+145<=s["center_dbu"][1]<=b[3]-145]
+    drains={"T"+str(i).zfill(3)+"_D"for i in(3,4,5,6,32,33,34,35)}
+    coverage={r["label"]:len(r["all_new_sites_in_window"])for r in rows if r["label"]in drains}
+    save("via1-reinforcement-proposal.json",dict(targets=rows,sites=sites,requested_terminals=28,
+        cut_nm=190,pitch_nm=480,metal_enclosure_nm=50,minimum_existing_new_spacing_nm=240,
+        required_drain_coverage=coverage,only_added_layer=[19,0],physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
+    need(set(coverage)==drains and all(n>=4 for n in coverage.values()),"at least four additional local same-net vias for each of eight actual MOS drains")
+    need(len(sites)>0 and additions.count()==len(sites)and additions.area()==len(sites)*36100,"all exact disjoint190nm cuts")
+    need((additions&old_vias.sized(240,240,2)).is_empty(),"whole candidate original via spacing")
+    handles=[top.shapes(g.layer(19,0)).insert(poly)for poly in additions.each()]
+    NATIVE.mkdir();candidate=NATIVE/"nssoc_cdr_pd500_via1_reinforced.gds";g.write(str(candidate))
+    readback=pya.Layout();readback.read(str(candidate));after=region_snapshot(readback,readback.cell(TOP))
+    need(readback.dbu==g.dbu and{c.name for c in readback.each_cell()}=={c.name for c in g.each_cell()},"serialized original hierarchy")
+    for layer in set(before)|set(after):
+        expected=before.get(layer,pya.Region())
+        if layer==(19,0):expected=(expected+additions).merged()
+        need((expected^after.get(layer,pya.Region())).is_empty(),"exact sole Via1 delta "+str(layer))
+    for handle in reversed(handles):handle.delete()
+    reverted=region_snapshot(g,top);need(set(before)==set(reverted),"original layer set after reversal")
+    for layer in before:need((before[layer]^reverted[layer]).is_empty(),"exact original geometry after reversal")
+    need(pin(gp)==cfg["complete_members"]["binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds"],"unchanged source GDS bytes")
+    save("via1-reinforcement-generation-proof.json",dict(candidate=pin(candidate),input_gds=pin(gp),input_l2n=pin(wp),
+        terminal_count=28,new_via1_count=len(sites),only_added_layer=[19,0],total_added_area_dbu2=additions.area(),
+        exact_serialized_delta=True,original_material_roundtrip=True,new_devices=False,new_metal=False,
+        all_new_cuts_on_same_owned_m1_m2=True,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False,
+        current_density_acceptance=False,requires=["full560DRC","deep_flat_LVS13","current_canonical_binding","fresh_RC","unchanged_loaded_wave_gates","actual_via_current_distribution"]))
+
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
-        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls()+horizontal_ground_controls()+horizontal_clearance_controls();save("controls.json",dict(count=len(passed),passed=passed))
+        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls()+horizontal_ground_controls()+horizontal_clearance_controls()+via1_reinforcement_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
-        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"],["--generate-horizontal-ground"],["--inspect-critical-access"]),"explicit native operation")
+        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"],["--inspect-ground-topology"],["--generate-horizontal-ground"],["--inspect-critical-access"],["--generate-via1-reinforcement"]),"explicit native operation")
         reserve(wait=True)
         base=acquire_current(cfg)
+        if sys.argv[1:]==["--generate-via1-reinforcement"]:
+            generate_via1_reinforcement(base,cfg)
+            save("result.json",dict(status="GENERATED_ACTUAL_SAME_NET_VIA1_REINFORCEMENT_REQUIRES_FULL_QUALIFICATION",physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))
+            return
         if sys.argv[1:]==["--inspect-critical-access"]:
             inspect_critical_access(base,cfg)
             save("result.json",dict(status="COMPLETE_CURRENT_CRITICAL_ACCESS_MAP",read_only=True,physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False))

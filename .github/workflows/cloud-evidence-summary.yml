@@ -1,4 +1,4 @@
-name: Survey actual source and shared ground access in current M1 layout
+name: Generate same-net Via1 reinforcement on actual critical access
 on:
   workflow_dispatch:
 permissions:
@@ -80,8 +80,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1
-      - name: Map current critical access without changing native geometry
-        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --inspect-critical-access
+      - name: Generate exact Via1-only reinforcement on existing same-net metals
+        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --generate-via1-reinforcement
       - name: Preserve complete generated or failed native result
         id: publish
         if: always()
