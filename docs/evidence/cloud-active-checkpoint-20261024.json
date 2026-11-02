@@ -182,6 +182,89 @@
       "source": "64a21283a014b802329e295d1136ae1ec645fee0",
       "status": "in_progress",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41506262574"
+    },
+    "41507164455": {
+      "branch": "codex/cdr-slave-drive-stage-timing",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489296932,
+          "name": "formal-sweep (pilot)",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297312,
+          "name": "formal-sweep (soc)",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297393,
+          "name": "memory-parity",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297416,
+          "name": "checks",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297581,
+          "name": "rtl",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297634,
+          "name": "python-quality",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297715,
+          "name": "formal-and-boot",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125489299397,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41507164455,
+      "source": "e9ebe92ef4023990a0ad9a23c19eb4b604eaccc7",
+      "status": "queued",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41507164455"
+    },
+    "41507270587": {
+      "branch": "codex/cdr-slave-drive-stage-timing",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489676644,
+          "name": "classify",
+          "status": "queued"
+        }
+      ],
+      "run": 41507270587,
+      "source": "e9ebe92ef4023990a0ad9a23c19eb4b604eaccc7",
+      "status": "queued",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41507270587"
     }
   },
   "bounded_guide_engine_build": {
@@ -478,7 +561,7 @@
     "physical_acceptance": false,
     "timing_accepted": false
   },
-  "checkpoint_version": 318,
+  "checkpoint_version": 319,
   "cloud_results_release_reservations": {
     "mainchip_artifact_recovery": {
       "exact_tag_target_verified": true,
@@ -2455,6 +2538,7 @@
   "continuation_note_v316": "## Current continuation: complete bounded-worker engine built and metadata authenticated\n\nCorrected full OpenROAD build41493369685/source851db8f517c03cffd0afeb6527e281bd9353f5d2 SUCCESS. Full project compiled, Tcl/Python interface smoke tests and ldd completed. Host status PASS_COMPILED_ENGINE_INTERFACE_ONLY; inner PASS_COMPLETE_OPENROAD_BUILD_AND_INTERFACE_SMOKE_ONLY. No terminal errors. Inner2815.861seconds, host2901.347seconds; cgroup peak3712278528bytes, no OOM under12GiB. This is NOT actual-chip routing qualification.\n\nActual binary108936520bytes SHAef4b5d3cdfba609be0a57fbf1debc21ed94dff3b331255c6e9d194028e1bd224. Sourcebefore/sourceafter1492875bytes SHA8edcc701e021736baa64882de235a179e3a6e75677862eaf07c3550d1ebfbaa3 identical. DerivedFlexDR78757bytes SHA892a9771d911cf8ed350ffe4d42683b16561f3989f1e7c8302a02f8016328d9e. Full build configuration3671compilecommands, GUI/tests/LTOoff, Pythonon. Runtime104dependencies16940bytes SHA6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0 is identical to the old qualified runtime. Container imageIDa958d3bee9c5261b26e221e1c1461c92f830f14293bc5050848653bd7ec8d185 matches original route image.\n\nRelease431773741/tagcloud-results-41493369685-1-mainchip-guide-batch-engine-build has14assets. Native archive40,899,271bytes SHA551cfed25c0a4b1aae6f6af748ead7167b41ea89d481c0db434f8c2c9d9bd6be, asset702752450. Native archive/binary were NOT downloaded locally. All13 directly published JSON metadata assets, release/tag metadata are authenticated by bytes/SHA and permanently copied here. scripts/mainchip-guide-engine-built-inputs.json records exact producer, all asset pins, complete output index, archive parts, binary, runtime and image for the next cloud-only consumer. It grants no physical/routing acceptance.\n\nNEXT MAINCHIP IMPLEMENTATION: new no-route actual-chip qualification using recovered whole chip before any full64 routing. Original recovery source0990e2971dee0333598a59a033dfe4f1f1f4215b and frozen base7a0776718ec37a106b7dfde0cbd477c6a2a5522f retain acquisition/full-scope audit methods. Actual recovered41440285882/release431403455 contains reference restored native snapshot/DEF. Authenticate all producer archives and use new ELF in a separate explicit path while preserving old frozen engine/source checks; do not silently overwrite c.ENGINE. Runtime is byte-identical but still measure ldd again in new job. Compare full143820nets/154480instances and all1691protected clocks plus all wire geometry against actual old recovered reference; run full DRT/antenna. Original recovery measure() hardcodes selected47_routing_executed=True and cannot substantiate a new no-route claim; explicit new scope/result required. Only after this pass may new ELF run original full64 route. No new full64 or actual-chip qualification has been dispatched at this checkpoint.\n\nPHY: corrected native slave-drive trial41501239838/source4aeff85064492459822c36dcec869aae87f44be4 remains current; release431828783/tagcloud-results-41501239838-1-cdr-slave-drive-trial. Actual status recorded below. Independent controls41500976761 passed24primitive roundtrips/14refusals,16geometry roundtrips/5refusals, original29definitions/5blocks/9files/13admission refusals. Require actual8geometry mutations plus13original binding refusals and2unit-equivalence cases before interpreting the waveform. Model changes remain24slave devices only, fixed parent interconnectRC, original stimulus/clock/150fFloads/gates. Never redispatch earlier pre-transient failure41499547929; it and both rejected bias trials are permanently preserved.\n\nRootv315c7432eefb3d3f0105aa61f9eecb3b45a6f571848 includes detailed geometry correction/previous failure; v3138df4bb006ef1a256ab7a0c3115b454aa75ef428a preserves full original-wave stage diagnosis41497066977 and balanced electrical rejection41494299114. Follow the actual live PHY handle, not old checkpoints' pre-dispatch instructions.\n\nAll native work/payloads remain GitHub-only; local workspace empty. Readonly8hour monitor automatic_native_dispatch=false. Full serial Gen3x4 PHY, accepted mainchip PCIe/Ethernet route and final setup/hold remain OPEN. Last retained route92DRT/21antenna; no timing/production closure claimed.\n\nObserved at 2026-11-02T18:39:06.150165+00:00:\n- 41493369685: completed/success\n- 41501239838: in_progress/None\n",
   "continuation_note_v317": "## Current continuation: actual new-engine chip qualification implemented; slave drive trial electrically rejected\n\nGuide engine qualification source64a21283a014b802329e295d1136ae1ec645fee0 on codex/mainchip-guide-engine-roundtrip implements whole-chip comparison with exact engine41493369685 and recovered reference41440285882. New ELF remains separate /work/guide-engine/openroad; old frozen engine/source/runtime/lifecycle preserved. Authenticates all engine and chip capsule members, including unselected files, exact producer/source/releases/asset IDs, full hashes, directory census and no symlinks/aliases. New native phases: full143820net/154480instance/1691clock old-engine snapshot+DEF equality, actual ODB write/reload equality, unchanged fullDRT/antenna Tcl and exact complete measurement comparison, full post-check snapshot equality. Zero routing or repair calls; no memory reduction, convergence, LVS, PHY or setup/hold acceptance claimed.\n\nFirst source controls41504918363/source0423d9480918fd98e7ce94d709040ef8c5b50dae correctly refused stale transitive workflow pins in mainchip-full64-pins.json before native dispatch; full log preserved here. Corrected only cascading three pin manifests, retained all eight original control suites and added two positive archive transports plus sixteen malicious capsule refusals, original lifecycle/resource equality and explicit new ELF/runtime binding. Corrected independent controls41505439588 is current. Follow it, authenticate its artifact and only after success dispatch native execute=true with control_run=41505439588 at exact corrected source; externally reserve its unique release as prescribed by host. Do not rerun failed source controls or call a build pass full-chip qualification. Native qualification has not yet been dispatched at this checkpoint.\n\nPHY41501239838/source4aeff85064492459822c36dcec869aae87f44be4 FINISHED and was ELECTRICALLY REJECTED. This is different from prior pre-transient binding failure41499547929: actual500-device geometry binding passed all8paired faults; original13binder refusals and2equivalent-unit cases passed; engine returned0 after1070.412seconds and produced full113475rows1152columns34.25ns waveform. Full raw1045823299bytes SHA2507f874be9fa67550e12262d7eb8a752bf75db96ccd68f72ba29f24ccbf748b remains GitHub-only. Sources unchanged. Derived artifact13170781492 1423785bytes SHAe7b64e17db437cc37d7dd1d28e22267fb7afa0e7da0d57e81a98bb2f7b8b765a authenticated; full measurement, geometry controls, derivation, engine, config, prepared state, publication and failure records copied here.\n\nThe24device trial reduced A/B/D worst delays to42.96875/38.90625/49.21875ps versus original45.78125/41.71875/54.53125; C worsened51.09375->118.90625ps, all exceed37.5ps. A/B/C/D wrong-sign counts0/0/0/0 (original0/0/2/34) but below100mV counts123/64/129/128of765 remain. X/Ywrong383/44 and below100mV741/680. Phase12.97409175mV<30mV, VI39.69184228uA<50uA; original14.325205mV and43.0512336uA. Four HBT61/62/115/116 minimum activeVce0.337347154/0.334221321/0.372771895/0.370736187V<0.4. No individual MOS terminal-voltage or MIM cap-voltage gate failures in this run. Do not mistake improved signs for acceptance. Release431828783 permanently preserves complete native output in four parts plus exact index/parts. Fixed-parent-RC geometry experiment only; no matching layout/freshPEX/fullPHY claim. Do not promote this trial into mainchip layout. Next PHY work must diagnose C timing/swing and remaining clock-tail headroom using authenticated complete waves; avoid inferring that lower collector resistance and higher MOS width solve all stages.\n\nAll native CAD/SPICE/raw waves/GDS/ODB/archives stay in GitHub. Local workspace remains empty. Monitor stays readonly every8hours with automatic_native_dispatch=false. Full serial Gen3x4 PHY, accepted mainchip PCIe/Ethernet routing and final setup/hold remain OPEN. Last retained mainchip92DRT/21antenna; no new routing/timing/production closure.\n\nObserved 2026-11-02T19:00:25.681610+00:00:\n- 41505439588: in_progress/None\n- 41505377046: pending/None\n- 41504918363: completed/failure\n- 41504869013: in_progress/None\n- 41501239838: completed/failure\n",
   "continuation_note_v318": "## Current continuation: actual-chip new-engine qualification dispatched after independent controls\n\nCURRENT NATIVE HANDLE41506262574, exact source64a21283a014b802329e295d1136ae1ec645fee0, branchcodex/mainchip-guide-engine-roundtrip. Independent controls41505439588 SUCCESS at this exact source, native skipped in control run. Authenticated derived control artifact13170743240,5112bytes SHAcdd2449271644f8e13f9153c547a91b4d0b73d78f7de24c7fda63eb8a3b5ce65; all10JSON records permanently copied here. Eight original suites and new2positive complete archive transports/16hostile refusals passed. Previous stale-transitive-pin failure41504918363 and corrected pin cascade remain preserved in v317.\n\nNative run41506262574 was dispatched once with execute=true/control_run=41505439588. Externally reserved release431857262/tagcloud-results-41506262574-1-mainchip-bulk-postdrt-antenna is bound directly to the exact tested source; it must preserve complete success/failure. Follow this specific handle; queued/in_progress or an observation timeout is NOT a reason to dispatch again. Actual job status recorded below. Qualification is NOT yet accepted merely because controls passed or the run started.\n\nThe run authenticates complete native engine41493369685 and restored-chip41440285882 archives inside GitHub. Exact new ELF separate from immutable original. Actual full143820nets/154480instances/1691clock snapshot and DEF must equal old reference, survive ODB write/reload, and remain equal after unchanged fullDRT/antenna Tcl; measured reports must equal old reference. Runtime, image, source, cgroup, supervision/cleanup and permanent output preservation checks remain enforced. Zero route/repair calls. Only an actual terminal PASS with full measurement and capsule evidence authorizes the next original full64 routing experiment. Source/config/docs are copied to rootv317; runnable workflow and transitive manifest closure live on the exact feature source above.\n\nPHY41501239838 is TERMINAL/ELECTRICALLY REJECTED, not running. Rootv317cb2a34f40518b9fbad355f4789b72d0af3dd3d43 preserves its complete derived measurement/control/derivation/runtime result and release metadata. Actual native engine returned0; full113475x1152 waveform34.25ns preserved in release431828783. Native binding all8paired geometry faults plus original13refusals and2unit cases passed. A/B/C/D wrong signs0/0/0/0, but delays42.96875/38.90625/118.90625/49.21875ps exceed37.5; phase12.97409175mV<30; VI39.69184228uA<50. HBT61/62/115/116 remain below0.4V activeVce. Do not promote24device proposed geometry into layout; parent RC was held fixed and no matchingGDS/freshPEX exists. Next PHY work should use complete authenticated current/parent waves to isolate C timing/swing and remaining clock-tail headroom.\n\nPush checks41504869013 and41505377046 are separately tracked; broad push CI is not identical to the specific independent source controls. Historical-base push job formal-and-boot in41504869013 reported whole-SoC lint failure; this is preserved in snapshots and is not hidden by successful qualification controls. Do not claim all CI passes.\n\nAll heavy/native work and archives remain GitHub-only; local workspace empty. Readonly8hour monitor remains automatic_native_dispatch=false. Full serialGen3x4 PHY, accepted mainchip PCIe/Ethernet route and final setup/hold remain OPEN. No physical/timing/production acceptance from source controls or engine build.\n\nObserved 2026-11-02T19:04:56.217512+00:00:\n- 41505439588: completed/success\n- 41506262574: in_progress/None\n- 41504869013: in_progress/None\n- 41505377046: pending/None\n",
+  "continuation_note_v319": "## Current continuation: actual-chip qualification and complete slave-drive stage diagnosis\n\nCURRENT MAINCHIP NATIVE41506262574, source64a21283a014b802329e295d1136ae1ec645fee0, branchcodex/mainchip-guide-engine-roundtrip; reserved release431857262/tagcloud-results-41506262574-1-mainchip-bulk-postdrt-antenna. Independent controls41505439588 and same-run source-controls passed. Exact engine41493369685 versus recovered full chip41440285882; full143820net/154480instance/1691clock native snapshot and DEF before/after actual ODB rewrite, original fullDRT/antenna and post-check full-scope equality. Old ELF/runtime/source/supervision preserved. Follow this handle; no duplicate dispatch on polling delay. Terminal native PASS, all checks and full permanent capsule must be authenticated before full64 routing. Zero current route/repair calls and no convergence/memory-saving/timing acceptance merely from this qualification.\n\nCURRENT PHY READ-ONLY DIAGNOSIS41507270587, sourcee9ebe92ef4023990a0ad9a23c19eb4b604eaccc7, branchcodex/cdr-slave-drive-stage-timing. Authenticates the entire native archive from electrically rejected41501239838, all original1152columns/113475rows and scalar reproduction. Uses ACTUAL proposed composition native/provisional-bias-model/composition.json SHA071b2c83a130de7b1a0483735f4b8297cfe48657a8616fd95981e703a96e23cf, not old parent composition. Requires actual24device derivation, unchanged other476devices/full wireRC, exact trial composition/planes pins,8actual geometry faults,13original binding faults,2unit-equivalence cases and explicit false matching-layout/freshPEX/PHY flags. The original48HBT stage-role mapping and all parser/clock/per-bit algorithms remain byte-identical; all48HBT parameters/native terminals must match the independently LVS-derived roles. It measures master/slave data arrivals, local clock brackets and complete native delays/margins, reproduces all original gate scalars. It is diagnosis of an existing rejected waveform, not another transient or relaxed acceptance. Workflow first runs original frozen-wave parser and stage controls, then full cloud-only archive/wave analysis. Complete derived stage output must be authenticated and permanently preserved after terminal completion; native wave/archive must never be fetched locally.\n\nPHY41501239838 is terminal ELECTRICALLY REJECTED, engine0, full capture preserved. Rootv317 contains complete measurements,8geometry controls,13binding refusals/2unit cases, source/derivation/runtime metadata, release431828783 pins. A/B/C/Dwrong0/0/0/0; delays42.96875/38.90625/118.90625/49.21875ps>37.5, phase12.974mV<30, VI39.692uA<50 and four HBT61/62/115/116 low activeVce remain. The read-only follow-up is specifically to isolate C's regression before deciding a new parameter change. Do not promote this24device trial into GDS/layout; no matching layout/freshRC.\n\nPrevious engine source-control stale transitive pin failure41504918363 is preserved; corrected controls41505439588 full10JSON evidence is rootv3181fab74aad99b173671a6133e9bce99667e475755. Historical push CI formal-and-boot lint failure on41504869013 is separately recorded; do not present narrow controls as all-CI success.\n\nAll native CAD/SPICE/raw waves/GDS/ODB/archives stay GitHub-only. Local workspace empty. Readonly8hour monitor remains automatic_native_dispatch=false. Full serialGen3x4 PHY, accepted mainchip PCIe/Ethernet route, final setup/hold and production approval remain OPEN.\n\nObserved 2026-11-02T19:10:41.525746+00:00:\n- 41507270587: queued/None\n- 41507164455: queued/None\n- 41506262574: in_progress/None\n",
   "current_run_snapshot": [
     {
       "attempt": 1,
@@ -27110,32 +27194,6 @@
         {
           "active_steps": [],
           "conclusion": "success",
-          "id": 125486261638,
-          "name": "source-controls",
-          "status": "completed"
-        },
-        {
-          "active_steps": [
-            "Authenticate new engine, roundtrip actual chip, compare full DRT and antenna"
-          ],
-          "conclusion": null,
-          "id": 125486699251,
-          "name": "native-routing",
-          "status": "in_progress"
-        }
-      ],
-      "run": 41506262574,
-      "source": "64a21283a014b802329e295d1136ae1ec645fee0",
-      "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41506262574"
-    },
-    {
-      "branch": "codex/mainchip-guide-engine-roundtrip",
-      "conclusion": null,
-      "jobs": [
-        {
-          "active_steps": [],
-          "conclusion": "success",
           "id": 125481470017,
           "name": "python-quality",
           "status": "completed"
@@ -27211,6 +27269,115 @@
       "source": "64a21283a014b802329e295d1136ae1ec645fee0",
       "status": "pending",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41505377046"
+    },
+    {
+      "branch": "codex/cdr-slave-drive-stage-timing",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489676644,
+          "name": "classify",
+          "status": "queued"
+        }
+      ],
+      "run": 41507270587,
+      "source": "e9ebe92ef4023990a0ad9a23c19eb4b604eaccc7",
+      "status": "queued",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41507270587"
+    },
+    {
+      "branch": "codex/cdr-slave-drive-stage-timing",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489296932,
+          "name": "formal-sweep (pilot)",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297312,
+          "name": "formal-sweep (soc)",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297393,
+          "name": "memory-parity",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297416,
+          "name": "checks",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297581,
+          "name": "rtl",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297634,
+          "name": "python-quality",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297715,
+          "name": "formal-and-boot",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125489299397,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41507164455,
+      "source": "e9ebe92ef4023990a0ad9a23c19eb4b604eaccc7",
+      "status": "queued",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41507164455"
+    },
+    {
+      "branch": "codex/mainchip-guide-engine-roundtrip",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125486261638,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate new engine, roundtrip actual chip, compare full DRT and antenna"
+          ],
+          "conclusion": null,
+          "id": 125486699251,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41506262574,
+      "source": "64a21283a014b802329e295d1136ae1ec645fee0",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41506262574"
     }
   ],
   "divider_width4_terminal_v246": {
@@ -113833,6 +114000,117 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41505377046"
     }
   ],
+  "latest_observed_runs_v319": [
+    {
+      "branch": "codex/cdr-slave-drive-stage-timing",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489676644,
+          "name": "classify",
+          "status": "queued"
+        }
+      ],
+      "run": 41507270587,
+      "source": "e9ebe92ef4023990a0ad9a23c19eb4b604eaccc7",
+      "status": "queued",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41507270587"
+    },
+    {
+      "branch": "codex/cdr-slave-drive-stage-timing",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489296932,
+          "name": "formal-sweep (pilot)",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297312,
+          "name": "formal-sweep (soc)",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297393,
+          "name": "memory-parity",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297416,
+          "name": "checks",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297581,
+          "name": "rtl",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297634,
+          "name": "python-quality",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": null,
+          "id": 125489297715,
+          "name": "formal-and-boot",
+          "status": "queued"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125489299397,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "run": 41507164455,
+      "source": "e9ebe92ef4023990a0ad9a23c19eb4b604eaccc7",
+      "status": "queued",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41507164455"
+    },
+    {
+      "branch": "codex/mainchip-guide-engine-roundtrip",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125486261638,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate new engine, roundtrip actual chip, compare full DRT and antenna"
+          ],
+          "conclusion": null,
+          "id": 125486699251,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "run": 41506262574,
+      "source": "64a21283a014b802329e295d1136ae1ec645fee0",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41506262574"
+    }
+  ],
   "latest_terminal_runs": {
     "cdr_actual_terminal_current_ledger": 40171679250,
     "cdr_current_ledger_controls": 40171508329,
@@ -114593,11 +114871,11 @@
   },
   "local_cleanup_verification": {
     "native_payloads_cloud_only": true,
-    "observed_at": "2026-11-02T19:04:56.217512+00:00",
+    "observed_at": "2026-11-02T19:10:41.525746+00:00",
     "source_API_derived_text_RAM_only": true,
     "workspace_entries": 0
   },
-  "local_workspace_verified_empty_at": "2026-11-02T19:04:56.217512+00:00",
+  "local_workspace_verified_empty_at": "2026-11-02T19:10:41.525746+00:00",
   "mixed_canonical_proofs_v269": [
     {
       "prefix": "docs/evidence/mixed-canonical-terminal-41350835442",
@@ -114635,7 +114913,7 @@
     },
     "candidate_qualification_run": 41108174342,
     "code_deployed_head": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a",
-    "configured_inventory_rows": 829,
+    "configured_inventory_rows": 831,
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33",
     "every_hours": 8,
     "historical_scheduled_error": {
@@ -114648,7 +114926,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 318,
+    "inventory_version": 319,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -114748,7 +115026,7 @@
   ],
   "next_actions": [
     "Follow exact active mainchip41393730481/source7cc6f94a7a685423533a25bc0d418e33764e8366. Native outputs pending; no duplicate. Original64route41349316524 is terminal timeout; qualified iteration20 is input to current47net repair, not an active original job.",
-    "Follow actual native engine qualification41506262574 at64a21283, controls41505439588 already passed; release431857262 reserved. Do not redispatch. Authenticate terminal full-chip roundtrip/fullDRT/antenna before full64 route. PHY41501239838 completed/rejected; diagnose complete waves, no promotion.",
+    "Follow actual native engine qualification41506262574 (release431857262) and PHY read-only fullwave stage diagnosis41507270587. Authenticate complete terminal outputs; do not redispatch live handles. Only actual engine qualification pass enables new full64 routing. Diagnose C118.906ps regression before new PHY geometry. No fullPHY/finalSTA acceptance.",
     "After actual pin-metal correspondence and connectivity qualification, run remaining2702diode PG-contact audit, all1691original clock/fixed-net preservation, all1351diode pin attachments, final DRC/antenna and exact current candidate audits. Saved8-pass router397violations is not final physical acceptance.",
     "Export and authenticate current diode-inclusive154480instance netlist from current native ODB, generate fresh nominal SPEF and run original threecorners/20-4-8-8ns/5percent-derate STA only after physical admission. Do not reuse153130instance route12netlist or stale SPEF.",
     "FullserialPLL/CDR/SERDES/training/LTSSM/replay/credit/lane/TX/serialsoc_top and completeDRC/LVS/ESD/production approval remain open. No packet-interface route or diagnostic pass constitutes fullPHY acceptance.",
@@ -156487,7 +156765,7 @@
     "timing_accepted": false,
     "timing_limits_unchanged": true
   },
-  "root_source_before_receipt": "cb2a34f40518b9fbad355f4789b72d0af3dd3d43",
+  "root_source_before_receipt": "1fab74aad99b173671a6133e9bce99667e475755",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -156651,6 +156929,15 @@
       "vi_mean_signed_current_a": 3.969184227720157e-05
     }
   },
+  "slave_drive_complete_stage_diagnosis": {
+    "branch": "codex/cdr-slave-drive-stage-timing",
+    "diagnostic_only": true,
+    "full_phy_accepted": false,
+    "parent": 41501239838,
+    "physical_acceptance": false,
+    "run": 41507270587,
+    "source": "e9ebe92ef4023990a0ad9a23c19eb4b604eaccc7"
+  },
   "superseded_next_actions_v245": [
     "Observe existing40-HBT native trial41299745896/source12f3e0f3bf7010289dc0f993ac71dbfa55cc19e4. Independent controls41299445254 passed all inherited suites,75 divider refusals,243 HBT corruptions and40 changed-Nx bindings. Exact-source release430521829 is independently reserved/read back. Do not duplicate dispatch. Preserve complete terminal output and judge all original data,phase,voltage,current and per-emitter limits; no pass is presumed.",
     "Corrected reader41298781054 reproduced original failure with33 controls; rejected reader41298254630 falsely reported phase1.0 because a diagnostic loop reused the integration variable. Its raw producer remains unchanged and the rejected report is retained. Source controls41299284469 failed before fixtures because a context argument was omitted;12f3e0f3bf7010289dc0f993ac71dbfa55cc19e4 corrects it and41299445254 passed. Do not reuse either failed attempt as qualification.",
@@ -156699,7 +156986,7 @@
       "run": 41349316524
     }
   ],
-  "updated_at": "2026-11-02T19:04:56.217512+00:00",
+  "updated_at": "2026-11-02T19:10:41.525746+00:00",
   "width8_wave_diagnosis_v250": {
     "proof": {
       "bytes": 5806735,

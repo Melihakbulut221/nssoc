@@ -1,6 +1,23 @@
-# Cloud continuation — checkpoint v318
+# Cloud continuation — checkpoint v319
 
-Updated: 2026-11-02T19:04:56.217512+00:00
+Updated: 2026-11-02T19:10:41.525746+00:00
+
+## Current continuation: actual-chip qualification and complete slave-drive stage diagnosis
+
+CURRENT MAINCHIP NATIVE41506262574, source64a21283a014b802329e295d1136ae1ec645fee0, branchcodex/mainchip-guide-engine-roundtrip; reserved release431857262/tagcloud-results-41506262574-1-mainchip-bulk-postdrt-antenna. Independent controls41505439588 and same-run source-controls passed. Exact engine41493369685 versus recovered full chip41440285882; full143820net/154480instance/1691clock native snapshot and DEF before/after actual ODB rewrite, original fullDRT/antenna and post-check full-scope equality. Old ELF/runtime/source/supervision preserved. Follow this handle; no duplicate dispatch on polling delay. Terminal native PASS, all checks and full permanent capsule must be authenticated before full64 routing. Zero current route/repair calls and no convergence/memory-saving/timing acceptance merely from this qualification.
+
+CURRENT PHY READ-ONLY DIAGNOSIS41507270587, sourcee9ebe92ef4023990a0ad9a23c19eb4b604eaccc7, branchcodex/cdr-slave-drive-stage-timing. Authenticates the entire native archive from electrically rejected41501239838, all original1152columns/113475rows and scalar reproduction. Uses ACTUAL proposed composition native/provisional-bias-model/composition.json SHA071b2c83a130de7b1a0483735f4b8297cfe48657a8616fd95981e703a96e23cf, not old parent composition. Requires actual24device derivation, unchanged other476devices/full wireRC, exact trial composition/planes pins,8actual geometry faults,13original binding faults,2unit-equivalence cases and explicit false matching-layout/freshPEX/PHY flags. The original48HBT stage-role mapping and all parser/clock/per-bit algorithms remain byte-identical; all48HBT parameters/native terminals must match the independently LVS-derived roles. It measures master/slave data arrivals, local clock brackets and complete native delays/margins, reproduces all original gate scalars. It is diagnosis of an existing rejected waveform, not another transient or relaxed acceptance. Workflow first runs original frozen-wave parser and stage controls, then full cloud-only archive/wave analysis. Complete derived stage output must be authenticated and permanently preserved after terminal completion; native wave/archive must never be fetched locally.
+
+PHY41501239838 is terminal ELECTRICALLY REJECTED, engine0, full capture preserved. Rootv317 contains complete measurements,8geometry controls,13binding refusals/2unit cases, source/derivation/runtime metadata, release431828783 pins. A/B/C/Dwrong0/0/0/0; delays42.96875/38.90625/118.90625/49.21875ps>37.5, phase12.974mV<30, VI39.692uA<50 and four HBT61/62/115/116 low activeVce remain. The read-only follow-up is specifically to isolate C's regression before deciding a new parameter change. Do not promote this24device trial into GDS/layout; no matching layout/freshRC.
+
+Previous engine source-control stale transitive pin failure41504918363 is preserved; corrected controls41505439588 full10JSON evidence is rootv3181fab74aad99b173671a6133e9bce99667e475755. Historical push CI formal-and-boot lint failure on41504869013 is separately recorded; do not present narrow controls as all-CI success.
+
+All native CAD/SPICE/raw waves/GDS/ODB/archives stay GitHub-only. Local workspace empty. Readonly8hour monitor remains automatic_native_dispatch=false. Full serialGen3x4 PHY, accepted mainchip PCIe/Ethernet route, final setup/hold and production approval remain OPEN.
+
+Observed 2026-11-02T19:10:41.525746+00:00:
+- 41507270587: queued/None
+- 41507164455: queued/None
+- 41506262574: in_progress/None
 
 ## Current continuation: actual-chip new-engine qualification dispatched after independent controls
 
