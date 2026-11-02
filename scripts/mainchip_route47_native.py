@@ -7,6 +7,7 @@ import mainchip_bulk_postdrt_antenna_native as native
 import mainchip_snapshot_reload_native as reload
 import mainchip_saved_diode_routing_native as saved
 from mainchip_route47_contract import need,select,same_sections,wire_delta
+from mainchip_route47_import import import_program
 n,p,c=native.n,native.p,native.c
 ROOT=reload.ROOT;WORK=reload.WORK;DATA=reload.DATA;INPUT=reload.CANDIDATE
 PLAN=Path("/work/tail-source/scripts/mainchip-route47-selected.json")
@@ -44,7 +45,7 @@ def prepare():
     patch,_=c.patch_def(raw,{name:records[name]for name,kind in classes.items()if kind is not None})
     (WORK/"narrow47-fixed-patch.def").write_bytes(patch)
     native.metadata_only(INPUT,WORK/"narrow47-fixed-base.odb",{name:"FIXED"for name,kind in classes.items()if kind is not None})
-    (WORK/"narrow47-freeze.tcl").write_text(n.import_tcl(WORK/"narrow47-fixed-base.odb",WORK/"narrow47-fixed-patch.def",WORK,"narrow47-fixed"))
+    (WORK/"narrow47-freeze.tcl").write_text(import_program(n.import_tcl,WORK/"narrow47-fixed-base.odb",WORK/"narrow47-fixed-patch.def",WORK,"narrow47-fixed"))
     save("narrow47-prepare.json",dict(status="ACTUAL47_IDENTITIES_RESOLVED_AND_REVERSIBLE_OVERLAY_PREPARED",selected=47,route_executed=False,**p.FLAGS))
 def restore_program(source,stem,require_original=False):
     classes=read(DATA/"narrow47-original-classes.json")
@@ -57,7 +58,7 @@ def restore_program(source,stem,require_original=False):
     patch,_=c.patch_def(raw,{name:records[name]for name,kind in classes.items()if kind is not None})
     (WORK/(stem+"-expected.def")).write_bytes(expected);(WORK/(stem+"-patch.def")).write_bytes(patch)
     native.metadata_only(source,WORK/(stem+"-base.odb"),{name:kind for name,kind in classes.items()if kind is not None})
-    (WORK/(stem+".tcl")).write_text(n.import_tcl(WORK/(stem+"-base.odb"),WORK/(stem+"-patch.def"),WORK,stem))
+    (WORK/(stem+".tcl")).write_text(import_program(n.import_tcl,WORK/(stem+"-base.odb"),WORK/(stem+"-patch.def"),WORK,stem))
 def freeze_audit():
     before=read(DATA/"snapshot-before.json");fixed=snap(WORK/"narrow47-fixed.odb","narrow47-fixed-observed")
     need((WORK/"narrow47-fixed-observed.def").read_bytes()==(WORK/"narrow47-fixed-expected.def").read_bytes(),"exact full serialized FIXED overlay")
