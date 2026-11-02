@@ -48,7 +48,7 @@ def comparison_controls():
         elif label=="zero":bad[0]["effective_resistance_ohm"]=0.
         elif label=="nonfinite":bad[0]["effective_resistance_ohm"]=float("nan")
         try:compare_queries(original,bad)
-        except AssertionError:passed.append("reject "+label)
+        except ValueError:passed.append("reject "+label)
         else:raise AssertionError(label)
     prior.save("comparison-controls.json",dict(passed=passed,count=len(passed),native_executed=False))
 
