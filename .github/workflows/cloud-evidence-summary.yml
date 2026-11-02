@@ -1,20 +1,16 @@
-name: Classify retained actual mainchip router violations
+name: Select actual47 route repair owners from original report20
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
-concurrency:
-  group: mainchip-route-drc-diagnosis-${{ github.ref }}
-  cancel-in-progress: false
-env:
-  PYTHONDONTWRITEBYTECODE: '1'
 jobs:
   classify:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 20
     env:
       GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -23,24 +19,16 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/mainchip-route-drc-report-pins.json
-      - name: Materialize exact diagnosis source
-        run: |
-          python3 -B - <<'PY'
-          import json,subprocess
-          from pathlib import Path
-          m='scripts/mainchip-route-drc-report-pins.json'
-          names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
-          assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
-          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
-          PY
-      - name: Authenticate complete archive and classify actual retained DRC reports
-        run: python3 -B scripts/cloud_mainchip_route_drc_reports.py
+            /scripts/cloud_mainchip_route47_plan.py
+            /scripts/mainchip-route47-inputs.json
+            /scripts/mainchip-route47-pins.json
+            /docs/mainchip-route47-plan.md
+            /.github/workflows/cloud-evidence-summary.yml
+      - run: python3 -B scripts/cloud_mainchip_route47_plan.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: route-drc-diagnosis-${{ github.run_id }}
-          path: route-drc-diagnosis
-          include-hidden-files: true
+          name: route47-plan-${{ github.run_id }}
+          path: route47-plan
           if-no-files-found: error
           retention-days: 90
