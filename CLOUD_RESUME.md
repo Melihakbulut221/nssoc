@@ -1,6 +1,20 @@
-# Cloud continuation — checkpoint v334
+# Cloud continuation — checkpoint v335
 
-Updated: 2026-11-02T22:48:14.538133+00:00
+Updated: 2026-11-02T23:00:33.030900+00:00
+
+## Current continuation: measured16Via2 benefit is small; full650 wave still authoritative
+Cloud resistance comparison41541318521/source09b163cb8a45f3682188586806044fc0e2fcd459 SUCCESS, release432056699. All3236 freshRC archive members authenticated; all26218 native/exported resistors agree,978 native anchors and coordinates verified. Eight full unit-injection networks passed KCL/energy,analytic2.5ohm,reciprocity and4fault controls. All ranked edges retain native coordinates.
+Actual reductions are only1.61665%-1.93600% (0.18911-0.23924ohm). New Reff11.50867-12.11822ohm. T054_E->T061_C12.35746->12.11822; T054_E->T062_C12.34120->12.10261; T056_E->T061_C11.69778->11.50867; T056_E->T062_C12.22452->12.01794. Cgroup106/108->115/116 has identical values. This proves a small physical-network improvement, NOT electrical acceptance.
+Important next design decision: repeated via-only work cannot reasonably be treated as sufficient closure. Use actual loaded comparison41540256258 against41528163238 to quantify headroom/delay; if rejected, target real low-resistance metal paths and local access rather than another identical via pass. r2794/r2792 dominate upper54 access; r2739/r2751 and r2801/r2809 dominate clockcollector localaccess; fullnetwork/path coordinates in result.json. Do not interpret matching resistor names across extractions as identical physical elements; compare full source/sink networks.
+Candidate next approach (NOT implemented or accepted): direct wider upper-metal connections between same-net upperE54/56 and clockC61/62, and translated106/108->115/116. Investigate existing qualified via-stack geometry for M3-to-upper-metal transitions, foreign-net keepouts on every touched layer, all4 terminals pernet and serialized ownership. Any proposed strap needs real560DRC/deep+flatLVS13, canonical device/material identity, freshRC and identical loaded gates. Do not idealize resistance, relax voltage/delay limits or claim an unbuilt route.
+Full650wave41540256258/source15feb7375e24de69d10377f1e52e8e07e3ef02c0 remains the same actual comparison with newRC41537723922. Own source controls passed13admission/24partition/4projection plus6identity faults; complete500device/1446terminal/25port identity transport confirmed35renumbered terminals. Native job125602509227 was active at last directpoll. Follow actual terminal result and preserve all outputs. Release432050827. Current500physical and proposed650simulation remain distinct.
+Mainchip full64route41513663302 stays live; do not duplicate it. Fullchip DRC/antenna/diodePG/globalclasses/LVS and qualifiedRC/Liberty/allcornerSTA remain required afterroute. Actual650geometry,closedloopCDRPLL,fullserialPHY and final chip timing remain open.
+Cloud-only work. Local workspace empty.8hour read-only monitor and automatic_native_dispatch=false unchanged.
+
+Observed 2026-11-02T23:00:33.030900+00:00:
+- 41541318521: completed/success
+- 41540256258: in_progress/None
+- 41513663302: in_progress/None
 
 ## Current continuation: actual16Via2 freshRC passed; full650 electrical comparison
 FreshRC41537723922/sourcebd1fc5b2deed8a0ea153db91a362c983e6379254 completed successfully with500 devices,26218R and16796C. ModelSHAe99ea8c8b7edb51b0f8ce51f269e90460ce90d97fa7f8496540c7d11d806154a. All11 numerical phase receipts are retained. Complete native release432038108 remains in cloud. This is extraction qualification, not electrical or fullPHY acceptance.

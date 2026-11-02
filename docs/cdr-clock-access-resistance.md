@@ -1,0 +1,4 @@
+# Native RC comparison for the actual16Via2 repair
+While loaded-wave41540256258 evaluates unchanged full650 electrical gates, authenticate every freshRC41537723922 archive member and solve all8 actual upper-emitter to clock-collector networks. Compare with actual old network41535065105, using complete original source/sink labels and no resistor edits.
+Keep full native/exported R multiset equality,978 original grid anchors and composition terminal ownership. Use a unit-current nodal solve with KCL and energy checks, analytic2.5ohm and reciprocity controls and four invalid-network rejections. Retain every ranked edge and available native coordinates for subsequent metal repair.
+This measurement is diagnostic, not a waveform, electrical acceptance,650physical layout or fullPHY closure. All native inputs remain in their existing cloud releases; only JSON/text results are published here.
