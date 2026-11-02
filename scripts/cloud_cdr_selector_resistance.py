@@ -5,7 +5,7 @@ import cloud_cdr_wire_wave_diagnosis as prior
 from cdr_selector_resistance import need,parse_model,solve
 
 ROOT=Path(__file__).resolve().parents[1]
-prior.BRANCH="codex/cdr-drain-m23-resistance"
+prior.BRANCH="codex/cdr-collector-via2-resistance"
 prior.OUT=ROOT/"wire-selector-resistance"
 prior.NATIVE=ROOT/"wire-selector-resistance-native"
 
@@ -128,13 +128,13 @@ def partition_controls():
 def current_configuration():
     c=json.loads((ROOT/"scripts/cdr-source-m1-resistance-inputs.json").read_bytes())
     p=c["producer"];ref=c["reference"]
-    need(c["schema"]=="nssoc.drain-m23.resistance-comparison.v1","exact comparison schema")
-    need((p["run"],p["source"],p["release"])==(41428920414,"a53fb2f3e56b1175172b4320a1ec443bb57773db",431325407),"actual current freshRC")
+    need(c["schema"]=="nssoc.collector-via2.resistance-comparison.v1","exact comparison schema")
+    need((p["run"],p["source"],p["release"])==(41439516945,"710869eb13082f3c3dc488159bf167d937294454",431398178),"actual current freshRC")
     need((ref["run"],ref["source"],ref["artifact"]["id"])==(41395210468,"4a20c52579eddaa7f0a1f82f41cb6af8445b806c",13118444894),"actual prior full-network sensitivity")
     q=c["qualification"]
-    need(q["candidate"]==dict(bytes=1075316,sha256="5e5ef3940bb0e410af8bbb92376e2c1cb60e3c520e37b65c7e675af41e58603f"),"current actual geometry")
-    need(q["model"]==dict(bytes=2112612,sha256="d9b1de9dfce3564af178bc0ec643b1f9e7b9bee13e04d6cb2fcce7da3c14042e"),"current actual new model")
-    need(q["counts"]==dict(devices=500,R=26218,C=16796),"actual measured complete census")
+    need(q["candidate"]==dict(bytes=1078900,sha256="c0d420cdbc31863bf21086e88c12f494779961225031c261d6b05fe07e7585a7"),"current actual geometry")
+    need(q["model"]==dict(bytes=2112906,sha256="e388befe16436bf93ae3ab561f3d3ffb0d0403cabae887d0de3a142b41566001"),"current actual new model")
+    need(q["counts"]==dict(devices=500,R=26222,C=16798),"actual measured complete census")
     return c
 
 def acquire_current(c):
@@ -174,7 +174,7 @@ def acquire_current(c):
     need(seen==set(idx["files"]),"all current native members authenticated")
     paths={role:dest/name for name,role in c["selected"].items()}
     q=json.loads(paths["qualification"].read_bytes());oq=json.loads(paths["original_qualification"].read_bytes())
-    need(q==c["qualification"]and q["status"]=="PASS_DRAIN_M23_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual complete new RC qualification")
+    need(q==c["qualification"]and q["status"]=="PASS_COLLECTOR_VIA2_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and q["fresh_RC_executed"],"actual complete new RC qualification")
     need(oq["status"]=="PASS_CURRENT_VIA2_M3_FRESH_RC_NUMERICAL_QUALIFICATION_REQUIRES_LOADED_WAVES"and oq["fresh_RC_pipeline_complete"]and oq["execution_scope"]=="ACTUAL_AUTHORIZED_NATIVE_PHASE","original actual numerical qualification")
     need(q["current_context"]==oq["context"]==dict(run_id=p["run"],source=p["source"],attempt=1),"current numerical context")
     need(q["original_qualification"]==prior.pin(paths["original_qualification"])and len(oq["phase_receipts"])==11,"all current numerical receipts")
@@ -219,10 +219,10 @@ def main():
     reference=acquire_reference(current)
     before={name:prior.pin(path)for name,path in paths.items()}
     contract=json.loads(paths["composition"].read_bytes())
-    need(prior.pin(paths["model"])==dict(bytes=2112612,sha256="d9b1de9dfce3564af178bc0ec643b1f9e7b9bee13e04d6cb2fcce7da3c14042e"),"exact actual source M1 RC")
-    need(prior.pin(paths["composition"])==dict(bytes=1015041,sha256="bcdf63fc9053749ae23794cacc43b9069a988a2fad99885de9ab60a28957ee0a"),"exact actual source M1 composition")
+    need(prior.pin(paths["model"])==dict(bytes=2112906,sha256="e388befe16436bf93ae3ab561f3d3ffb0d0403cabae887d0de3a142b41566001"),"exact actual source M1 RC")
+    need(prior.pin(paths["composition"])==dict(bytes=1015133,sha256="d775d58fcaaba7c6f4d5d06a51645839e0b0e4e853de5e6249f3156b1f9b27d5"),"exact actual source M1 composition")
     edges,counts=parse_model(paths["model"].read_text(),contract)
-    need(counts==dict(devices=500,R=26218,C=16796),"complete actual RC census")
+    need(counts==dict(devices=500,R=26222,C=16798),"complete actual RC census")
     device={int(d["native_id"]):d for d in contract["device_records"]}
     def terminal(i,t):
         rows=[r for r in device[i]["terminals"]if r["terminal"]==t]
@@ -263,20 +263,20 @@ def main():
     prior.save("query-ownership.json",ownership)
     comparison=compare_queries(reference["queries"],summary,ownership)
 
-    prior.save("model-comparison.json",dict(status="COMPLETE_ACTUAL_DRAIN_M23_RESISTANCE_COMPARISON",
+    prior.save("model-comparison.json",dict(status="COMPLETE_ACTUAL_COLLECTOR_VIA2_RESISTANCE_COMPARISON",
         current_rc=current["producer"],reference=current["reference"],queries=comparison,
         same_frozen_solver=True,all32_actual_full_network_queries=True,new_transient_executed=False,
         loaded_simulation_passed=False,qualified_pex=False,full_phy_accepted=False,final_timing_complete=False))
     need(before=={name:prior.pin(path)for name,path in paths.items()},"all actual model and evidence bytes unchanged")
     gate()
-    prior.save("result.json",dict(status="COMPLETE_ACTUAL_DRAIN_M23_SELECTOR_RESISTANCE_SENSITIVITY",
+    prior.save("result.json",dict(status="COMPLETE_ACTUAL_COLLECTOR_VIA2_SELECTOR_RESISTANCE_SENSITIVITY",
         source=os.environ["GITHUB_SHA"],run=int(os.environ["GITHUB_RUN_ID"]),reference_parent=cfg["parent"],current_rc=current["producer"],counts=counts,
         inputs=before,queries=summary,solver_versions={n:importlib.metadata.version(n)for n in("numpy","scipy")},
         original_electrical_rejection_preserved=True,all_native_members_authenticated=True,
         new_transient_executed=False,loaded_simulation_passed=False,qualified_pex=False,
         full_phy_accepted=False,physical_acceptance=False,final_timing_complete=False,
         limits="Resistor-only unit-current network with other terminals floating. Capacitors are counted and preserved but excluded from this diagnostic. Edge power ranks sensitivity, not actual operating power. No nonlinear or transient acceptance follows."))
-    print("COMPLETE_ACTUAL_DRAIN_M23_SELECTOR_RESISTANCE_SENSITIVITY",flush=True)
+    print("COMPLETE_ACTUAL_COLLECTOR_VIA2_SELECTOR_RESISTANCE_SENSITIVITY",flush=True)
 
 if __name__=="__main__":
     try:main()
