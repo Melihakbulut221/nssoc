@@ -1,6 +1,34 @@
-# Cloud continuation — checkpoint v303
+# Cloud continuation — checkpoint v304
 
-Updated: 2026-11-02T10:49:31.719765+00:00
+Updated: 2026-11-02T11:15:57.878327+00:00
+
+## Current continuation: drain M2/M3 electrically rejected; actual collector-driver access repair
+
+Previous rootv303=d2e0af7a0ac38f847b68ff1d34aa82391f62c84b/inventory788. NativeCAD/GDS/ODB/SPICE/waves exclusively GitHub; local workspace empty. FullserialGen3x4PHY/mainchiprouting/finalsetuphold remainOPEN.
+
+DrainM23GDS5e5ef394 passed physical560DRC0/deepflatLVS13, canonical96controls/1469comparisons and freshRC41428920414 with500devices26218R16796C. Passive41430503141 found16emitterpaths27.46..28.97percent lower versus immediate9fef; other16 unchanged. Physicalmap41431599840/6a6b14ef actualPASS103controls/all26218native-exportedR/all978portsandownership/7documentedMIMrelocations/13nativeunions/50criticalresistors. Derived13134492431=482051bytes SHA23643f7a0a478045eb1c0424c1a0a04ed77036f5e38c6b5bdf134800275aad23.
+
+ACTUAL LOADED41430498959/source8a73ba2c575c4e6b8accf1dff736d481e1e53606/release431336246 TERMINAL FAILURE: native engineexit0, transient_executed=true/sources_unchanged=true, statusREJECTED_WHOLE_MIM_PD500_LOADED, acceptedfalse. Phaseaverage14.318407882438447mV<30mV; signedVI43.03073211449151uA<50uA. HBT61/62/115/116 minimumVce .33743317402843276/.3341663079585235/.3582050227770855/.35671941943935614V<.4V. SamplerA/B/C/Ddelay45.78125/41.71875/51.09375/54.53125ps>37.5ps, wrongsign0/0/2/34, below100mV129/128/128/128 of765. ComparatorX/Ywrongsign387/44, below100mV726/652, delay118.90625ps. Passive improvement did NOT close operating gates; Cpairheadroom worsened about1.3mV.
+
+Full raw1045823299bytes SHAbf5572baba3665b925385cf257686b7fb8dbcb24371e9de65bef5196a53fddb3=113475rows1152cols, complete unchanged waveform. Measurement452899bytes SHA0f9688d618642b517af3a7fc9a0d071389ed9e64a54bf8f570b0b5ec062e94af. Derivedartifact13135261689=1378192bytes SHA39b4db1199654c16cf7efa7ffa456eeab88f576b6bb4b84205f7515d23488373. Releaseindex701451273=25049bytes SHAc632b51aa343ef9d644439f6928e068f3d01125fef822f6de7db1a1db42b9653. Allnativeparts and originalfailure preserved.
+
+FULLWAVE DIAGNOSIS41433864856/source55fa84c20b0cd4d8dfd074769cad9c3b6e8696e8/branchcodex/cdr-drain-m23-wave-diagnosis completedSUCCESS. Alloriginalparser/diagnosis body exactlyaaf92 except branchandactualproducer/indexpins; sameactualfailure-set61/62/115/116. Allfullwave native bytes/scalars/margins/delays/signcounts reproduced. Derived13136240451=120651bytes SHA7ff5ec8d0e66e6a3acbbc2a7a663acb3d3aff7389037bc9bd21a012c13221ad3.
+
+Actual operatingminima:61Vc.823615534Ve.486182360Ic3.986517mA;62Vc.822283489Ve.488117181Ic3.906766mA;115Vc.845345470Ve.487140447Ic4.028430mA;116Vc.845657446Ve.488938027Ic3.953865mA. Collector driver54/56 losses47.56..68.02mV and106/108losses30.27..94.18mV. Emitter-to-MOSdrops42.04..47.49mV remain. Do not equate passive unit-current resistance improvement with operating headroom improvement.
+
+NEW GENERATOR41434944363/sourcef878816a24906f450d5ffa2f72b6b08ed6024e6a/branchcodex/cdr-collector-via2-access/release431366909. Uses actual rejectedmeasurement and reproducedoperatingproof, exactcurrentGDS5e5ef394/fullRCarchive and103originalcontrols. Targets ONLY4collector-driver HBT54/56/106/108 Eterminals on2nativecollector nets; lowerselectorHBTs unchanged. Newfunctiongenerate_collector_via2_access added; alloriginalfunctionASTs except explicitmain dispatch unchanged. No8HBTdraft wasgenerated/dispatched.
+
+Each proposedM3pad is x±1825nm,y[-650,+450]nm aroundactual5nm point (originalHBTanchor exactly2nmabove). Retain4oldVia2/site. Add12new190nmVia2/site (8atdy-480 withdx±1680/±1200/±720/±240,4atdy0 withdx±1680/±1200), total48. RequireALL48 admitted,50nmboth-metal enclosure,240nmold/newcutspacing,240nmforeignM3clearance,50nmadjacentforeignvias,ownedold/newM2points andoriginalM3attachment,all13unions. Onlylayers29/30 maychange; serializedexactdelta andoriginalmaterialreversal required. No nativegeometry/candidate success yet inferred from dispatch.
+
+NEXT: follow samegenerator41434944363 actualterminal. If successful, readactualGDS/proofarea/cutmetadata and qualify full560DRC/deepflatLVS13 + independently reconstructedcanonicalall113partitions×13layers. Then freshRCwithactualnewcensus/order andunchangedfullloadedgates. If geometricadmission fails, preserveexactfailure and redesignwithcurrentnativeownership; do notlowercut/enclosure/spacing gates. Collector repair may notaloneclose allheadroom/phase/sampler failures; laterbias/architecture changes mayberequired. Nativephysical proof≠fullPHY.
+
+Mainchip41415994457/f808321a65ca9197f10e75f2f59073d47095a718/release431237039 same live47netroute,11GiBRSS/12GiBnoswap/2GiBhostreserve. No duplicate on observationtimeout. Awaitcandidate then originalclass restoration/independentfullDRC/diodePG/connectivity/LVS/final3cornerSTA. FullclosedloopCDR/PLL/SERDES/serialGen3x4/PVT/ESD/EM remainopen. Readonly8hourmonitor automatic_native_dispatch=false. Complete derivedZIPs separatelyarchived withbyteforbyte readback; originalsealedproducerassetsets unchanged.
+
+Observed at 2026-11-02T11:15:57.878327+00:00:
+- 41415994457: in_progress/None
+- 41430498959: completed/failure
+- 41433864856: completed/success
+- 41434944363: completed/success
 
 ## Current continuation: actual residual physical map while full loaded transient runs
 
