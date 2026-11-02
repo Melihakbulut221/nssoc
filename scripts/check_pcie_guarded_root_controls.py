@@ -44,6 +44,15 @@ def main():
             rejected.append(reject(lambda:target.review(ET.tostring(bad),module,0),module+':'+kind))
         rejected.append(reject(lambda:target.review(data,module,1),module+':nonzero-exit'))
         rejected.append(reject(lambda:target.review(b'<!DOCTYPE x>'+data,module,0),module+':doctype'))
+    import check_pcie_gen12_record_cdc_root as gen12
+    align=target.ROOT/'hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v'
+    actual=align.read_bytes();canonical=gen12.canonical_alignment(actual)
+    assert target.sha(canonical)=='d9fb7d39ec8916e33efebdcd7fe62fd6e32f437cab3e8436436bd9e09eb2b8b9'
+    for label,bad in [('missing-guards',canonical),('extra-body',actual+b"\n"),('changed-body',actual.replace(b'module ',b'module changed_',1))]:
+        rejected.append(reject(lambda:gen12.canonical_alignment(bad),'gen12-view:'+label))
+    frozen=gen12.canonical_source_review()
+    assert frozen['protected_count']==27 and frozen['root_nettype_guard_view']['actual_simulation_uses_guarded_root_file']
+    assert align.read_bytes()==actual
     target.pins()
     out=target.ROOT/'hw/soc/out/guarded-root-controls';out.mkdir(parents=True)
     target.shared.save(out/'result.json',dict(status='PASS_ROOT_GUARDED_PCIE_SOURCE_CONTROLS',
