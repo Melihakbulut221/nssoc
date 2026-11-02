@@ -7,7 +7,7 @@ import cloud_cdr_wire_geometry_acquire as prior
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"wire-tail-shortcuts";NATIVE=ROOT/"wire-tail-shortcuts-native"
 MANIFEST="scripts/cdr-wire-tail-shortcuts-pins.json";INPUT="scripts/cdr-wire-tail-shortcuts-inputs.json"
-BRANCH="codex/cdr-current-rail-access";TOP="nssoc_cdr_pd500_resistor_v59"
+BRANCH="codex/cdr-current-ground-strap";TOP="nssoc_cdr_pd500_resistor_v59"
 LAYERS=(8,19,10,29)
 TARGETS=(("D_collector","T061_C","T056_E"),("D_emitter","T061_E","T005_D"),("C_collector","T115_C","T108_E"),("C_emitter","T115_E","T034_D"))
 need=prior.need
@@ -812,14 +812,102 @@ def inspect_current_rails(base,cfg):
         new_geometry_generated=False,original_geometry_unchanged=True,physical_acceptance=False,
         full_phy_accepted=False,final_timing_complete=False))
 
+def ground_strap_guard(strap,core,owned,full,other,outline):
+    return dict(
+        original_continuous_same_net_core=(core-owned[67]).is_empty(),
+        connects_original_core=(core-strap).is_empty(),
+        new_metal=not(strap-full[67]).is_empty(),
+        single_rectangle=strap.count()==1 and all(p.area()==p.bbox().area()for p in strap.each()),
+        inside_original_bbox=(strap-outline).is_empty(),
+        foreign_metal5_clearance_5um=strap.sized(5005).interacting(full[67]-owned[67]).is_empty(),
+        foreign_via4=strap.sized(5).interacting(full[66]-owned[66]).is_empty(),
+        foreign_topvia1=strap.sized(5).interacting(full[125]-owned[125]).is_empty(),
+        unknown_drawing_clear=all(strap.sized(5005 if k[0]==67 else 5).interacting(r).is_empty()for k,r in other.items()))
+def ground_strap_controls():
+    own={n:pya.Region()for n in(66,67,125)}
+    core=pya.Region(pya.Box(-5,-10000,5,10000));own[67]=pya.Region(pya.Box(-300,-10000,300,10000))
+    strap=pya.Region(pya.Box(-3000,-10000,3000,10000));outline=box(0,0,20000)
+    full={n:r.dup()for n,r in own.items()};checks=[]
+    need(all(ground_strap_guard(strap,core,own,full,{},outline).values()),"positive real-owned vertical strap")
+    checks.append("add strap on continuous owned original rail")
+    for label,layer,key in[("foreign M5",67,"foreign_metal5_clearance_5um"),("foreign Via4",66,"foreign_via4"),("foreign TopVia1",125,"foreign_topvia1")]:
+        f={n:r.dup()for n,r in full.items()};f[layer]+=box(1000,0,100)
+        need(not ground_strap_guard(strap,core,own,f,{},outline)[key],"reject "+label);checks.append("reject "+label)
+    missing={n:r.dup()for n,r in own.items()};missing[67]-=box(0,0,100)
+    need(not ground_strap_guard(strap,core,missing,full,{},outline)["original_continuous_same_net_core"],"reject broken core");checks.append("reject broken owned core")
+    need(not ground_strap_guard(strap,core,own,full,{(67,24):box(4000,0,100)},outline)["unknown_drawing_clear"],"reject unknown mask");checks.append("reject unknown mask")
+    need(not ground_strap_guard(strap,core,own,full,{},box(0,0,100))["inside_original_bbox"],"reject outside");checks.append("reject outside layout")
+    need(not ground_strap_guard(own[67],core,own,full,{},outline)["new_metal"],"reject no-op");checks.append("reject no new geometry")
+    need(len(checks)==8,"eight actual strap guards")
+    return checks
+def generate_ground_strap(base,cfg):
+    # First repeat the actual source/avss ownership audit, retaining inaccessible
+    # local M1 accesses. The repair below is on the EXISTING Metal5 backbone.
+    inspect_current_rails(base,cfg)
+    report=json.loads((OUT/"current-avss-anchors.json").read_bytes())
+    anchors=[a for a in report["canonical_anchors"]if a["metal"]==67]
+    need(len(anchors)==16 and len({a["point_dbu"][0]for a in anchors})==1,"sixteen actual M5 ground-spine anchors")
+    x=anchors[0]["point_dbu"][0];ys=[a["point_dbu"][1]for a in anchors]
+    need(x%5==0 and all(y%5==0 for y in ys),"original spine reference grid")
+    physical=report["anchors"];components={a["wire_component"]for a in physical}
+    need(len(components)==1,"one actual ground conductor");component=next(iter(components))
+    gpath=base/"binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds";wpath=base/"binding/inputs/wire/native05/wires.l2n"
+    g=pya.Layout();g.read(str(gpath));top=g.cell(TOP);need(top is not None and g.dbu==.001,"actual original layout")
+    before=region_snapshot(g,top);outline=pya.Region(top.bbox())
+    w=pya.LayoutToNetlist();w.read(str(wpath));need(w.internal_layout().dbu==.001,"original wire DBU")
+    layers=(66,67,125);objects={n:w.layer_by_name("gds_"+str(n))for n in layers}
+    need(all(r is not None for r in objects.values()),"actual Via4 Metal5 TopVia1")
+    full={n:before.get((n,0),pya.Region())for n in layers}
+    for n in layers:need((full[n]^objects[n]).is_empty(),"complete current physical layer union "+str(n))
+    nets={n.cluster_id:n for n in w.netlist().top_circuit().each_net()};need(component in nets,"actual ground component")
+    owned={n:w.shapes_of_net(nets[component],objects[n],True).merged()for n in layers}
+    for a in anchors:need((box(*a["point_dbu"],1)-owned[67]).is_empty(),"each canonical anchor lies on actual owned Metal5")
+    b=top.bbox();strip=(owned[67]&pya.Region(pya.Box(x-5,b.bottom,x+5,b.top))).merged()
+    candidates=[]
+    for poly in strip.each():
+        q=poly.bbox()
+        core=pya.Region(pya.Box(x-5,q.bottom,x+5,q.top))
+        if q.bottom<min(ys)and q.top>max(ys)and(core-owned[67]).is_empty():candidates.append((q.bottom,q.top))
+    save("ground-spine-proposal.json",dict(x_dbu=x,anchor_y_dbu=ys,continuous_original_spans=candidates,
+        component=component,layer=67,proposed_width_dbu=6000,foreign_metal_clearance_dbu=5005,
+        original_devices_and_vias_unchanged=True,physical_acceptance=False))
+    need(len(candidates)==1,"unique continuous original M5 spine spanning every actual ground anchor")
+    low,high=candidates[0];need(low%5==0 and high%5==0,"original spine ends on grid")
+    core=pya.Region(pya.Box(x-5,low,x+5,high))
+    strap=pya.Region(pya.Box(x-3000,low,x+3000,high))
+    other={k:r for k,r in before.items()if k[0]in layers and k[1]!=0 and not r.is_empty()}
+    checks=ground_strap_guard(strap,core,owned,full,other,outline)
+    save("ground-spine-guards.json",dict(checks=checks,strap_bbox=bounds(strap),added_area_dbu2=(strap-full[67]).area(),physical_acceptance=False))
+    need(all(checks.values()),"real ground-spine addition rejected by conservative native guards")
+    handle=top.shapes(g.layer(67,0)).insert(next(strap.each()))
+    NATIVE.mkdir();candidate=NATIVE/"nssoc_cdr_pd500_wire_ground_strap.gds";g.write(str(candidate))
+    after_layout=pya.Layout();after_layout.read(str(candidate));after=region_snapshot(after_layout,after_layout.cell(TOP))
+    need(after_layout.dbu==g.dbu and{c.name for c in after_layout.each_cell()}=={c.name for c in g.each_cell()},"serialized original hierarchy")
+    for layer in set(before)|set(after):
+        expected=before.get(layer,pya.Region())
+        if layer==(67,0):expected=(expected+strap).merged()
+        need((expected^after.get(layer,pya.Region())).is_empty(),"exact sole M5 material delta "+str(layer))
+    handle.delete();reverted=region_snapshot(g,top);need(set(before)==set(reverted),"original layer set after removal")
+    for layer in before:need((before[layer]^reverted[layer]).is_empty(),"exact material reversal "+str(layer))
+    need(pin(gpath)==cfg["complete_members"]["binding/inputs/parent/layout/nssoc_cdr_pd500_resistor_v59.gds"],"original GDS unchanged")
+    save("ground-spine-generation-proof.json",dict(candidate=pin(candidate),input_gds=pin(gpath),input_l2n=pin(wpath),
+        only_added_layer=[67,0],width_dbu=6000,span_dbu=[low,high],component=component,canonical_anchors=anchors,
+        exact_serialized_delta=True,original_material_roundtrip=True,original_devices_and_vias_unchanged=True,
+        physical_acceptance=False,full_phy_accepted=False,final_timing_complete=False,
+        requires=["full560DRC","deep_flat_LVS13","current_canonical_binding","fresh_RC","unchanged_loaded_wave_gates"]))
+
 def main():
     if sys.argv[1:]==["--publish"]:publish();return
     try:
-        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls();save("controls.json",dict(count=len(passed),passed=passed))
+        cfg=gate();passed=controls()+direct_m2_controls()+refined_m1_controls()+mixed_controls()+maze_controls()+ground_strap_controls();save("controls.json",dict(count=len(passed),passed=passed))
         if sys.argv[1:]==["--controls"]:return
-        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"]),"explicit native operation")
+        need(sys.argv[1:]in(["--generate"],["--inspect-access"],["--generate-mixed"],["--inspect-current-rails"],["--generate-ground-strap"]),"explicit native operation")
         reserve(wait=True)
         base=acquire_current(cfg)
+        if sys.argv[1:]==["--generate-ground-strap"]:
+            generate_ground_strap(base,cfg)
+            save("result.json",dict(status="GENERATED_ACTUAL_M5_GROUND_STRAP_REQUIRES_NATIVE_QUALIFICATION",physical_acceptance=False,full_phy_accepted=False))
+            return
         if sys.argv[1:]==["--inspect-current-rails"]:
             inspect_current_rails(base,cfg)
             save("result.json",dict(status="COMPLETE_CURRENT_NATIVE_AVSS_ACCESS_INSPECTION",physical_acceptance=False,full_phy_accepted=False))

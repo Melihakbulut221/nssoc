@@ -1,11 +1,11 @@
-name: Inspect current measured native avss rail access
+name: Generate actual Metal5 ground-spine reinforcement
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-current-rail-access-${{ github.ref }}
+  group: cdr-current-ground-strap-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -80,8 +80,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1
-      - name: Inspect actual current tail-source avss metal access without geometry mutation
-        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --inspect-current-rails
+      - name: Verify current rail ownership and generate single physical Metal5 strap
+        run: python3 -B scripts/cloud_cdr_wire_tail_shortcuts.py --generate-ground-strap
       - name: Preserve complete generated or failed native result
         id: publish
         if: always()
