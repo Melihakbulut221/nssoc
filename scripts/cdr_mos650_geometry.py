@@ -145,13 +145,14 @@ def geometry(plan,mapping,pdkroot):
  paths={r["native_device"]:r["stable_path"]for r in identity["paths"]}
  observed={r["native_id"]:r for r in identity["locations"]["devices"]}
  need(len(paths)==len(observed)==500,"all original identities")
+ def layer_key(info):return str(info.layer)+"/"+str(info.datatype)
  def all_shapes(cell):
-  return {str(layout.get_info(i)):pya.Region(cell.begin_shapes_rec(i)).merged()for i in layout.layer_indexes()}
+  return {layer_key(layout.get_info(i)):pya.Region(cell.begin_shapes_rec(i)).merged()for i in layout.layer_indexes()}
  def compare(a,b,message):
   for k in set(a)|set(b):need((a.get(k,pya.Region())^b.get(k,pya.Region())).is_empty(),message+" "+k)
  def signature(cell,original_names=None):
   original_names={}if original_names is None else original_names
-  shapes=[(str(layout.get_info(i)),sorted(str(x)for x in cell.each_shape(i)))for i in layout.layer_indexes()if not cell.shapes(i).is_empty()]
+  shapes=[(layer_key(layout.get_info(i)),sorted(str(x)for x in cell.each_shape(i)))for i in layout.layer_indexes()if not cell.shapes(i).is_empty()]
   inst=sorted((original_names.get(x.cell.name,x.cell.name),str(x.cplx_trans),x.na,x.nb,str(x.a),str(x.b),x.prop_id)for x in cell.each_inst())
   return hashlib.sha256(enc(dict(shapes=shapes,instances=inst))).hexdigest()
  original_cells={c.cell_index():signature(c)for c in layout.each_cell()}
@@ -192,7 +193,7 @@ def geometry(plan,mapping,pdkroot):
  documented=read(ROOT/"docs/evidence/mos650-original-pcell-marker-differences.json")["full_layer_differences"]
  need(reconstruction_differences==documented and len(documented)==50,"exact observed marker-only differences; no fabrication or other annotation drift")
  for record in documented:
-  need(len(record["differences"])==1 and record["differences"][0]["layer"]=="Metal1.pin (8/2)","only documented internal M1 pin annotations")
+  need(len(record["differences"])==1 and record["differences"][0]["layer"]=="8/2","only documented internal M1 pin annotations")
   d=record["differences"][0];need(d["original"]==dict(area_dbu2=0,bbox_dbu="()",polygons=0)and not d["original_polygons"]and d["regenerated"]["polygons"]==2,"original annotations absent,exact regenerated pair")
  def pin_boxes(cell,layer):
   return sorted([x.bbox()for x in cell.each_shape(layout.layer(layer,2))if not x.is_text()],key=lambda b:(b.left,b.bottom))
@@ -249,7 +250,7 @@ def geometry(plan,mapping,pdkroot):
  before=all_shapes(top);out=NATIVE/"candidate-mos650.gds"
  options=pya.SaveLayoutOptions();options.select_cell(top.cell_index());layout.write(str(out),options)
  reread=pya.Layout();reread.read(str(out));need(reread.dbu==layout.dbu and [c.name for c in reread.top_cells()]==[TOP],"serialized unique candidate top")
- after={str(reread.get_info(i)):pya.Region(reread.cell(TOP).begin_shapes_rec(i)).merged()for i in reread.layer_indexes()}
+ after={layer_key(reread.get_info(i)):pya.Region(reread.cell(TOP).begin_shapes_rec(i)).merged()for i in reread.layer_indexes()}
  compare(before,after,"all serialized candidate polygons")
  save("geometry-proposal.json",dict(original_pcell_reconstruction=old_proof,modifications=modifications,replaced_hierarchy_instances=len(replaced),
   candidate=fp(out),primitive_plan=dict(original_mos=50,explicit_mos=200,other_devices=450,total=650),
