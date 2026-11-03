@@ -209,7 +209,7 @@ def geometry(plan,mapping,pdkroot):
    original_m1=pya.Region(cell.begin_shapes_rec(layout.layer(8,0))).merged()
    for box in oldm:need((pya.Region(box)-original_m1).is_empty(),"regenerated annotation is inside unchanged original physical M1")
    new_wrapper_cells.add(wrapper.cell_index())
-   width=nm(p["original_parameters"]["w"]);gap=1000;y=-gap*(len(spec)-1);placements=[];gates=[];rails=[[],[]]
+   width=nm(p["original_parameters"]["w"]);gap=500;y=-gap*(len(spec)-1);placements=[];gates=[];rails=[[],[]]
    for index,(w,l)in enumerate(spec):
     params=dict(w=w,l=l,ng=1);unit=layout.create_cell("nmos","SG13_dev",params)
     need(unit is not None and unit.cell_index()not in old_leaves,"fresh explicit native unit")
@@ -236,7 +236,7 @@ def geometry(plan,mapping,pdkroot):
    instance.cell_index=wrapper.cell_index();replaced[target]=wrapper.cell_index()
    reference_names[wrapper.name]=cell.name
   modifications.append(dict(native_id=p["native_id"],path=paths[p["native_id"]],original_cell=cell.name,replacement_cell=wrapper.name,
-    source_instance=p["source_instance"],units=placements,vertical_diffusion_gap_dbu=1000,old_top_access_retained=True))
+    source_instance=p["source_instance"],units=placements,vertical_diffusion_gap_dbu=500,old_top_access_retained=True))
  need(len(modifications)==42 and sum(len(p["units"])for p in plan)==200,"all required physical replacements")
  # Restore the observed parent convention: internal M1 pin annotations are absent.
  # Only datatype2 markers in newly created cells are removed; actual Metal1 remains.
