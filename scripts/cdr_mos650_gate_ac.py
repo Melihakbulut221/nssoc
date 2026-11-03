@@ -5,7 +5,7 @@ from pathlib import Path,PurePosixPath
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"mos650-gate-ac";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-gate-ac-inputs.json";PINS="scripts/cdr-mos650-gate-ac-pins.json"
-REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr-mos650-intrinsic-partition"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr-mos650-gate-poly-mesh"
 FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
  full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 def need(ok,msg):
@@ -258,147 +258,186 @@ def current_cases(identity,access):
  return sorted(rows,key=lambda r:r["native_id"])
 
 def characterize(models):
- import shutil
- fixture=read(ROOT/"docs/evidence/mos650-current-gate-model-cases.json");geometries={}
- for unit in fixture["devices"]:
-  p=unit["parameters"];key=tuple(p[k]for k in("W","L","AS","AD","PS","PD"))
-  geometries.setdefault(key,[]).append(unit["native_id"])
- need(len(fixture["devices"])==200 and len(geometries)==4,"complete current physical dimensions")
- original={str(p):pin(p)for p in models.rglob("*")if p.is_file()}
- variant=NATIVE/"intrinsic-models";shutil.copytree(models/"models",variant/"models")
- model=variant/"models/models/sg13g2_moslv_parm.lib";raw=model.read_bytes();source=raw.decode("latin-1")
- matches=[row for row in logical_lines(source)if re.match(r"(?i)^\.model\s+sg13g2_lv_nmos_psp_rf\s+pspnqs103va\b",row["text"])]
- need(len(matches)==1,"exact single frozen RF NMOS model")
- row=matches[0];lines=source.splitlines(keepends=True);start=sum(len(t)for t in lines[:row["line"]-1]);end=sum(len(t)for t in lines[:row["end_line"]])
- block=source[start:end];changed=block
- for key,value in (("rgo","40.0"),("rshg","3.0")):
-  pattern=r"(?i)\b"+key+r"\s*=\s*'rfmode\s*\*\s*"+re.escape(value)+r"'"
-  changed,count=re.subn(pattern,key+"=0.0",changed);need(count==1,"exact original RF "+key+" assignment")
- modified=source[:start]+changed+source[end:];model.write_bytes(modified.encode("latin-1"))
- need(modified[:start]==source[:start]and modified.endswith(source[end:]),"no outside RF model changes")
- save("intrinsic-model-derivation.json",dict(source_file="models/models/sg13g2_moslv_parm.lib",original=dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()),variant=pin(model),
-  original_RF_RGO_ohm=40,original_RF_RSHG_ohm=3,variant_RF_RGO_ohm=0,variant_RF_RSHG_ohm=0,
-  retained_RINT_RVPOLY_and_all_other_model_parameters=True,original_files_unchanged=True,physical_poly_network_present=False,**FLAGS))
- variant_pins={str(p):pin(p)for p in variant.rglob("*")if p.is_file()}
+ import klayout.db as db
+ import importlib.metadata
+ from collections import defaultdict,deque
+ from fractions import Fraction
+ current=NATIVE/"current-wire"
+ access=read(current/"derived/gate-poly-access.json");anchors=read(current/"derived/terminal-anchors.json")
+ gds=current/"native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds"
+ need(pin(gds)==dict(bytes=1624572,sha256="c335182048dc1696821ab875fb34447e5b5a9ba0f1a24d5d16d572680906c16c"),"exact current DRC/LVS-passing geometry")
+ layout=db.Layout();layout.read(str(gds));top=layout.top_cell();need(top.name=="nssoc_cdr_pd500_resistor_v59"and layout.dbu==.001,"actual GDS coordinates")
+ def layer(n):return db.Region(top.begin_shapes_rec(layout.layer(n,0))).merged()
+ allpoly=layer(5);allcuts=layer(6);salblock=layer(28);psd=layer(14);metal=layer(8)
+ def region(strings):
+  out=db.Region()
+  for text in strings:out.insert(db.Polygon.from_s(text.split(" props=")[0]))
+  return out.merged()
+ def same(a,b):return (a^b).is_empty()
+ gates={g["device"]:g for g in access["gates"]}
+ gate_anchors={a["label"]:a for a in anchors["anchors"]if "gate_contact"in a["detail"]}
+ groups=access["groups"];need(len(gates)==200 and len(groups)==50 and len(gate_anchors)==200,"actual full gate/contact scope")
+ physical=[]
+ for i,group in enumerate(sorted(groups,key=lambda g:g["group"])):
+  devices=sorted(group["devices"]);poly=region(group["access_poly_polygons"])
+  need(poly.count()==1 and not list(poly.each())[0].holes(),"single simply connected actual gate poly")
+  need((poly&salblock).is_empty()and(poly&psd).is_empty(),"nominal n-salicided gate material: no SalBlock/pSD intersection")
+  terms={d:region(gates[d]["terminal_polygons"])for d in devices};contact={}
+  for d,terminal in terms.items():
+   need(gates[d]["gate_group"]==group["group"]and same(allpoly.interacting(terminal),poly),"current native intrinsic gate/poly material")
+   need((terminal-poly).is_empty(),"full intrinsic electrode inside actual poly")
+  for label in group["contact_anchors"]:
+   a=gate_anchors[label];cut=region([a["detail"]["contact_polygon"]])
+   need(a["detail"]["gate_group"]==group["group"]and a["native_cluster"]==group["native_cluster"],"same real contact ownership")
+   need(cut.count()==1 and cut.area()==160*160 and (cut-poly).is_empty()and(cut-metal).is_empty(),"real contact cut and M1 enclosure")
+   center=cut.bbox().center();need(a["point_dbu"]==[center.x,center.y],"same actual metal anchor point")
+   contact[label]=cut
+  union=db.Region()
+  for cut in contact.values():union+=cut
+  need(same(allcuts.inside(poly),union),"all actual contacts included exactly")
+  physical.append(dict(index=i,id=group["group"],poly=poly,terms=terms,contacts=contact))
+ parameters=dict(sheet_ohm_per_square=7.0,contact_ohm_per_160nm_cut=15.0,sheet_range=[6.2,7.8],contact_range=[8,20],
+  source="https://ihp-open-pdk-docs.readthedocs.io/en/latest/process_specs/02_process_control_params.html",
+  scope="Nominal published salicided n-poly and M1/n-poly contact values; no narrow-gate calibration, temperature/corner qualification or full PEX claim.")
+ save("physical-material-readback.json",dict(gds=pin(gds),klayout=importlib.metadata.version("klayout"),groups=50,intrinsic_gates=200,contacts=200,
+  all_gate_poly_excludes_SalBlock_and_pSD=True,all_contacts_in_poly_and_M1=True,parameters=parameters,**FLAGS))
  engine=NATIVE/"models/source/runtime/patched-ngspice";engine.chmod(0o755)
- terminals=("d","g","s","b");counts=(1,2,4,8,16);outcomes=[];native_commands=0
- tolerances=dict(dc_relative=1e-7,dc_absolute_A=1e-12,admittance_relative=1e-7,admittance_absolute_S=1e-14)
- save("predeclared-partition-tolerances.json",dict(tolerances=tolerances,reason="Numerical identity test of weighted copies; not a physical model accuracy allowance or a relaxation of original loaded circuit/NGCON gates.",**FLAGS))
- def native_case(stage,lib,dimensions,ids,n,drive,gi):
-  nonlocal native_commands
-  label=f"{stage}-g{gi}-n{n}-{drive}";folder=NATIVE/label;folder.mkdir()
-  W,L,AS,AD,PS,PD=dimensions
-  deck=["* Equal-electrode intrinsic partition: preserve physical dimensions and total weight",
-   f'.lib "{lib}/models/models/cornerMOSlv.lib" mos_tt']
-  for terminal in terminals:
-   dc={"d":.6,"g":.8,"s":0,"b":0}[terminal]
-   deck.append(f"V{terminal} {terminal} 0 DC {dc} AC {int(terminal==drive)}")
-  for j in range(n):
-   deck.append(f"Xu{j} d g s b sg13_lv_nmos w={W:.12g}u l={L:.12g}u as={AS*1e-12:.12g} ad={AD*1e-12:.12g} ps={PS:.12g}u pd={PD:.12g}u ng=1 m={1/n:.17g} rfmode=1 pre_layout=0")
-  deck += [".control",f"pre_osdi {models}/frontend/psp103.osdi",f"pre_osdi {models}/frontend/psp103_nqs.osdi",
-   "set num_threads=1","set numdgt=16","set wr_singlescale","set wr_vecnames","op","echo NSSOC_PARTITION_INSTANCES_BEGIN"]
-  for j in range(n):
-   for parameter in("mult","nf","ngcon","rg","w","l"):
-    deck.append(f"print @n.xu{j}.nsg13_lv_nmos[{parameter}]")
-  deck+=["echo NSSOC_PARTITION_INSTANCES_END"]
-  if n==1 and drive=="g":deck+=["echo NSSOC_PARTITION_MODELS_BEGIN","showmod","echo NSSOC_PARTITION_MODELS_END"]
-  deck+=["ac dec 4 1meg 10g"];columns=[]
-  for terminal in terminals:
-   deck += [f"let yr_{terminal}=real(-v{terminal}#branch)",f"let yi_{terminal}=imag(-v{terminal}#branch)"]
-   columns += [f"yr_{terminal}",f"yi_{terminal}"]
-  deck += [f"wrdata {folder}/admittance.txt "+" ".join(columns)]
-  if drive=="g":
-   deck+=["dc vg 0 1.2 0.1 vd 0.1 1.1 0.5","let bias_d=v(d)","let bias_g=v(g)"]
-   for terminal in terminals:deck.append(f"let i_{terminal}=-v{terminal}#branch")
-   deck += [f"wrdata {folder}/dc.txt bias_d bias_g "+" ".join("i_"+t for t in terminals)]
-  deck+=["quit",".endc",".end"]
-  (folder/"bench.cir").write_text("\n".join(deck)+"\n");(folder/"spinit").write_text("set num_threads=1\n")
+ def refine(values,pitch):
+  values=sorted(set(values));out=set(values)
+  for a,b in zip(values,values[1:]):
+   n=math.ceil((b-a)/pitch)
+   for j in range(1,n):out.add(a+((b-a)*j)//n)
+  return sorted(out)
+ def grid(poly,regions,pitch,prefix):
+  xs=[];ys=[]
+  for r in [poly]+list(regions):
+   for polygon in r.each():
+    pts=list(polygon.each_point_hull())
+    need(all(a.x==b.x or a.y==b.y for a,b in zip(pts,pts[1:]+pts[:1])),"orthogonal actual polygons")
+    xs += [p.x for p in pts];ys += [p.y for p in pts]
+  xs=refine(xs,pitch);ys=refine(ys,pitch);cells={};union=db.Region()
+  for ix,(x0,x1)in enumerate(zip(xs,xs[1:])):
+   for iy,(y0,y1)in enumerate(zip(ys,ys[1:])):
+    box=db.Box(x0,y0,x1,y1);r=db.Region(box);overlap=r&poly
+    if overlap.is_empty():continue
+    need(same(overlap,r),"no partial finite-volume cell")
+    name=f"{prefix}_{ix}_{iy}";cells[(ix,iy)]=dict(node=name,box=box,area=box.area());union.insert(box)
+  need(same(union,poly)and sum(c["area"]for c in cells.values())==poly.area(),"exact native poly material coverage without gaps or double counting")
+  edges=[]
+  for (ix,iy),c in cells.items():
+   for dx,dy in ((1,0),(0,1)):
+    other=cells.get((ix+dx,iy+dy))
+    if other is None:continue
+    a=c["box"];b=other["box"]
+    if dx:distance=(a.width()+b.width())/2;face=a.height();need(a.right==b.left and a.bottom==b.bottom and a.top==b.top,"shared vertical face")
+    else:distance=(a.height()+b.height())/2;face=a.width();need(a.top==b.bottom and a.left==b.left and a.right==b.right,"shared horizontal face")
+    edges.append(dict(a=c["node"],b=other["node"],ohm=7.0*distance/face,kind="poly",squares=distance/face))
+  return cells,edges
+ def run_deck(label,deck,voltages,currents):
+  folder=NATIVE/label;folder.mkdir();deck+=[".control","set num_threads=1","set numdgt=16","op"]
+  for node in voltages:deck.append("print v("+node+")")
+  for source in currents:deck.append("print i("+source+")")
+  deck+=["quit",".endc",".end"];(folder/"bench.cir").write_text("\n".join(deck)+"\n");(folder/"spinit").write_text("set num_threads=1\n")
   os.environ["SPICE_SCRIPTS"]=str(folder);os.environ["OMP_NUM_THREADS"]="1"
-  execute([engine,"-n","-b",folder/"bench.cir"],label,180);native_commands+=1
+  execute([engine,"-n","-b",folder/"bench.cir"],label,180)
   log=(NATIVE/(label+".stdout")).read_text()+(NATIVE/(label+".stderr")).read_text()
-  bad=[line for line in log.splitlines()if re.search(r"error|warning|no such vector|not found|unknown parameter|singular matrix|timestep too small",line,re.I)]
-  save(label+"-diagnostics.json",dict(lines=bad,**FLAGS));need(not bad,"native diagnostics "+label)
-  need(log.count("NSSOC_PARTITION_INSTANCES_BEGIN")==1 and log.count("NSSOC_PARTITION_INSTANCES_END")==1,"actual partition readback markers")
-  instances=[]
-  for j in range(n):
-   params={}
-   for parameter in("mult","nf","ngcon","rg","w","l"):
-    key=f"@n.xu{j}.nsg13_lv_nmos[{parameter}]"
-    values=re.findall(re.escape(key)+r"\s*=\s*([0-9.eE+-]+)",log,re.I)
-    need(len(values)==1 and math.isfinite(float(values[0])),"actual partition parameter "+key)
-    params[parameter]=float(values[0])
-   need(params["mult"]==1/n and params["nf"]==1 and params["ngcon"]==2 and params["rg"]>0,"actual fractional weight and compact gate resistance")
-   need(math.isclose(params["w"],W*1e-6,rel_tol=1e-12)and math.isclose(params["l"],L*1e-6,rel_tol=1e-12),"unchanged physical instance dimensions")
-   instances.append(params)
-  need(sum(p["mult"]for p in instances)==1,"exact total multiplicity")
-  native_model={}
-  if n==1 and drive=="g":
-   need("NSSOC_PARTITION_MODELS_BEGIN"in log and "NSSOC_PARTITION_MODELS_END"in log,"model readback")
-   for key in("swgeo","swnqs","rgo","rshg","rint","rvpoly","dlsil"):
-    found=re.findall(r"(?im)^\s*"+key+r"\s+([0-9.eE+-]+)\s*$",log)
-    need(len(found)==1,"single native model parameter "+key);native_model[key]=float(found[0])
-   need(native_model["rgo"]==(40 if stage=="original"else 0)and native_model["rshg"]==(3 if stage=="original"else 0),"actual intended RF resistance decomposition")
-   need(native_model["swnqs"]==5 and native_model["rint"]==1.3025e-11 and native_model["rvpoly"]==0,"retained native NQS and interface resistance")
-  lines=(folder/"admittance.txt").read_text().splitlines()
-  need(lines[0].split()==["frequency"]+columns,"all four terminal complex responses")
-  values=[[float(s)for s in line.split()]for line in lines[1:]]
-  need(len(values)==17 and all(len(r)==9 and all(math.isfinite(v)for v in r)for r in values),"complete finite admittance")
-  need(abs(values[0][0]-1e6)<1 and abs(values[-1][0]-1e10)<1,"complete frequency range")
-  points=[dict(frequency_Hz=r[0],terminals={t:dict(real_S=r[1+2*i],imag_S=r[2+2*i])for i,t in enumerate(terminals)})for r in values]
-  dc=[]
-  if drive=="g":
-   lines=(folder/"dc.txt").read_text().splitlines()
-   need(lines[0].split()[1:]==["bias_d","bias_g"]+["i_"+t for t in terminals],"actual complete DC columns")
-   values=[[float(s)for s in line.split()]for line in lines[1:]]
-   need(len(values)==39 and all(len(r)==7 and all(math.isfinite(v)for v in r)for r in values),"complete finite39 point DC grid")
-   observed={(round(r[1],9),round(r[2],9))for r in values}
-   need(observed=={(d,round(g/10,9))for d in(.1,.6,1.1)for g in range(13)},"actual swept bias grid")
-   dc=[dict(vd_V=r[1],vg_V=r[2],terminal_currents_A={t:r[3+i]for i,t in enumerate(terminals)})for r in values]
-  result=dict(stage=stage,geometry_index=gi,dimensions=dict(zip(("W_um","L_um","AS_um2","AD_um2","PS_um","PD_um"),dimensions)),
-   actual_native_ids=ids,copies=n,drive=drive,instances=instances,native_model=native_model,admittance=points,dc=dc,
-   deck=pin(folder/"bench.cir"),native_admittance=pin(folder/"admittance.txt"),physical_gate_network_present=False,**FLAGS)
-  if drive=="g":result["native_dc"]=pin(folder/"dc.txt")
-  save(label+"-measurements.json",result);return result
- for stage,lib in (("original",models),("intrinsic",variant)):
-  for gi,(dimensions,ids)in enumerate(sorted(geometries.items())):
-   for n in counts:
-    for drive in terminals:outcomes.append(native_case(stage,lib,dimensions,ids,n,drive,gi))
- need(native_commands==160,"all planned native partitions and terminal excitations")
- violations=[];worst_ac=0;worst_dc=0;comparisons=0
- def violation(kind,case,point,terminal,error,budget):
-  nonlocal worst_ac,worst_dc
-  ratio=error/budget
-  if kind=="ac":worst_ac=max(worst_ac,ratio)
-  else:worst_dc=max(worst_dc,ratio)
-  if error>budget:violations.append(dict(kind=kind,stage=case["stage"],geometry_index=case["geometry_index"],copies=case["copies"],drive=case["drive"],point=point,terminal=terminal,error=error,budget=budget,ratio=ratio))
- for case in outcomes:
-  for point in case["admittance"]:
-   currents=[complex(v["real_S"],v["imag_S"])for v in point["terminals"].values()]
-   budget=tolerances["admittance_absolute_S"]+tolerances["admittance_relative"]*max(map(abs,currents))
-   if abs(sum(currents))>budget:violations.append(dict(kind="ac_kcl",stage=case["stage"],geometry_index=case["geometry_index"],copies=case["copies"],drive=case["drive"],frequency_Hz=point["frequency_Hz"],residual_S=abs(sum(currents)),budget_S=budget))
-  for point in case["dc"]:
-   currents=list(point["terminal_currents_A"].values());budget=tolerances["dc_absolute_A"]+tolerances["dc_relative"]*max(map(abs,currents))
-   if abs(sum(currents))>budget:violations.append(dict(kind="dc_kcl",stage=case["stage"],geometry_index=case["geometry_index"],copies=case["copies"],bias=[point["vd_V"],point["vg_V"]],residual_A=abs(sum(currents)),budget_A=budget))
-  if case["copies"]==1:continue
-  baseline=next(c for c in outcomes if c["stage"]==case["stage"]and c["geometry_index"]==case["geometry_index"]and c["drive"]==case["drive"]and c["copies"]==1)
-  for a,b in zip(case["admittance"],baseline["admittance"]):
-   need(a["frequency_Hz"]==b["frequency_Hz"],"same native frequency points")
-   for terminal in terminals:
-    x=a["terminals"][terminal];y=b["terminals"][terminal];x=complex(x["real_S"],x["imag_S"]);y=complex(y["real_S"],y["imag_S"])
-    violation("ac",case,a["frequency_Hz"],terminal,abs(x-y),tolerances["admittance_absolute_S"]+tolerances["admittance_relative"]*abs(y));comparisons+=1
-  for a,b in zip(case["dc"],baseline["dc"]):
-   need(a["vd_V"]==b["vd_V"]and a["vg_V"]==b["vg_V"],"same native DC biases")
-   for terminal in terminals:
-    x=a["terminal_currents_A"][terminal];y=b["terminal_currents_A"][terminal]
-    violation("dc",case,[a["vd_V"],a["vg_V"]],terminal,abs(x-y),tolerances["dc_absolute_A"]+tolerances["dc_relative"]*abs(y));comparisons+=1
- need(original=={str(p):pin(p)for p in models.rglob("*")if p.is_file()},"all original model files unchanged")
- need(variant_pins=={str(p):pin(p)for p in variant.rglob("*")if p.is_file()},"intrinsic model copy unchanged during simulations")
- save("partition-equivalence.json",dict(native_commands=native_commands,current_physical_units=200,unique_physical_dimensions=4,copies=list(counts),
-  independent_terminal_excitations=list(terminals),dc_grid=dict(gate_V=[i/10 for i in range(13)],drain_V=[.1,.6,1.1]),
-  tolerances=tolerances,comparisons=comparisons,worst_ac_budget_fraction=worst_ac,worst_dc_budget_fraction=worst_dc,
-  violations=violations,all_original_model_files_unchanged=True,physical_gate_network_present=False,distributed_gate_convergence_qualified=False,**FLAGS))
- need(not violations,"weighted intrinsic partition failed native current/admittance or KCL identity")
- return len(geometries)
+  bad=[s for s in log.splitlines()if re.search(r"error|warning|no such vector|not found|unknown parameter|singular matrix|timestep too small",s,re.I)]
+  save(label+"-diagnostics.json",dict(lines=bad,**FLAGS));need(not bad,"native mesh diagnostics")
+  def number(expr):
+   found=re.findall(re.escape(expr)+r"\s*=\s*([0-9.eE+-]+)",log,re.I)
+   need(len(found)==1 and math.isfinite(float(found[0])),"actual native mesh observation "+expr);return float(found[0])
+  return dict(voltages={n:number("v("+n+")")for n in voltages},currents={n:number("i("+n+")")for n in currents},deck=pin(folder/"bench.cir"))
+ summaries=[]
+ for pitch in(600,300,150):
+  # Independent native rectangular-sheet reference: exact analytic R=Rs*L/W.
+  rectangle=db.Region(db.Box(0,0,10000,1000));cells,edges=grid(rectangle,[],pitch,"cal")
+  deck=["* Analytic rectangular sheet check","VL left 0 DC 1","VR right 0 DC 0"]
+  for i,e in enumerate(edges):deck.append(f"R{i} {e['a']} {e['b']} {e['ohm']:.17g}")
+  ri=len(edges)
+  for c in cells.values():
+   box=c["box"]
+   for side,coordinate in(("left",box.left),("right",box.right)):
+    if coordinate!=(0 if side=="left"else 10000):continue
+    deck.append(f"R{ri} {side} {c['node']} {7*box.width()/2/box.height():.17g}");ri+=1
+  check=run_deck(f"analytic-{pitch}",deck,[],["vl","vr"])
+  need(math.isclose(-check["currents"]["vl"],1/70,rel_tol=1e-9,abs_tol=1e-13)and math.isclose(check["currents"]["vr"],1/70,rel_tol=1e-9,abs_tol=1e-13),"native finite-volume rectangle matches exact70ohm")
+  save(f"analytic-{pitch}.json",dict(pitch_nm=pitch,expected_ohm=70,actual=check,**FLAGS))
+  all_edges=[];all_cells=[];coupling=[];contacts=[];group_rows=[]
+  for p in physical:
+   cells,edges=grid(p["poly"],list(p["terms"].values())+list(p["contacts"].values()),pitch,"pg"+str(p["index"]))
+   bynode={c["node"]:c for c in cells.values()};adj=defaultdict(list)
+   for e in edges:adj[e["a"]].append(e["b"]);adj[e["b"]].append(e["a"])
+   seen=set();queue=deque([next(iter(bynode))])
+   while queue:
+    node=queue.popleft()
+    if node in seen:continue
+    seen.add(node);queue.extend(adj[node])
+   need(seen==set(bynode),"every actual poly mesh cell is connected")
+   for label,cut in p["contacts"].items():
+    pieces=[];area=0
+    for c in cells.values():
+     overlap=db.Region(c["box"])&cut
+     if overlap.is_empty():continue
+     need(overlap.area()==c["area"],"contact cut on exact mesh boundaries")
+     area+=c["area"];ohm=15.0*cut.area()/c["area"]
+     edges.append(dict(a="gm_"+label.lower(),b=c["node"],ohm=ohm,kind="contact",contact=label,area_dbu2=c["area"]))
+     pieces.append(dict(node=c["node"],area_dbu2=c["area"],ohm=ohm))
+    need(area==cut.area()and math.isclose(sum(1/x["ohm"]for x in pieces),1/15,rel_tol=1e-12),"whole real contact area and total conductance conserved")
+    contacts.append(dict(label=label,node="gm_"+label.lower(),physical_anchor=gate_anchors[label],patches=pieces))
+   for device,terminal in p["terms"].items():
+    patches=[];total=terminal.area()
+    for c in cells.values():
+     overlap=db.Region(c["box"])&terminal
+     if overlap.is_empty():continue
+     need(overlap.area()==c["area"],"intrinsic electrode on exact mesh boundaries")
+     patches.append(dict(node=c["node"],area_dbu2=c["area"],weight_numerator=c["area"],weight_denominator=total))
+    need(sum(x["area_dbu2"]for x in patches)==total and sum(Fraction(x["weight_numerator"],x["weight_denominator"])for x in patches)==1,"full intrinsic gate area and exact total weight")
+    coupling.append(dict(device=device,gate_group=p["id"],area_dbu2=total,patches=patches,nonuniform_intrinsic_composition_qualified=False))
+   all_edges+=edges;all_cells += [dict(node=c["node"],bbox_dbu=[c["box"].left,c["box"].bottom,c["box"].right,c["box"].top],area_dbu2=c["area"])for c in cells.values()]
+   group_rows.append(dict(group=p["id"],cells=len(cells),edges=len(edges),poly_area_dbu2=p["poly"].area(),contacts=len(p["contacts"]),gates=len(p["terms"])))
+  need(len(contacts)==200 and len({c["label"]for c in contacts})==200 and len(coupling)==200 and len({c["device"]for c in coupling})==200,"all current contacts and intrinsic gates")
+  need(all(math.isfinite(e["ohm"])and e["ohm"]>0 and e["a"]!=e["b"]for e in all_edges),"positive finite physical mesh resistors")
+  native=NATIVE/f"mesh-{pitch}";native.mkdir()
+  fragment=["* Actual current650 gate poly/contact resistor mesh; nominal material values only"]
+  for i,e in enumerate(all_edges):fragment.append(f"Rgp{i} {e['a']} {e['b']} {e['ohm']:.17g}")
+  (native/"gate-poly-resistors.cir").write_text("\n".join(fragment)+"\n")
+  (native/"mesh.json").write_bytes(enc(dict(cells=all_cells,edges=all_edges,groups=group_rows,contacts=contacts,coupling=coupling,parameters=parameters,**FLAGS)))
+  deck=["* Actual physical gate mesh: uniform1nA per intrinsic gate, all M1 contact ports held at0V",f'.include "{native}/gate-poly-resistors.cir"']
+  sources=[]
+  for c in contacts:
+   src="vp_"+c["label"].lower();sources.append(src);deck.append(src+" "+c["node"]+" 0 DC 0")
+  # Actual SPICE voltage source identifiers must begin with V.
+  voltages=[];weights=[]
+  for c in coupling:
+   avg="avg_"+str(c["device"]);voltages.append(avg);terms=[]
+   for j,p in enumerate(c["patches"]):
+    weight=p["weight_numerator"]/p["weight_denominator"]
+    deck.append(f"Iinj{c['device']}_{j} 0 {p['node']} {1e-9*weight:.17g}")
+    terms.append(f"{weight:.17g}*v({p['node']})")
+   deck.append("Bavg"+str(c["device"])+" "+avg+" 0 v={")
+   for offset in range(0,len(terms),8):deck.append("+ "+("+"if offset else"")+"+".join(terms[offset:offset+8]))
+   deck.append("+ }")
+   weights.append(dict(device=c["device"],patch_count=len(c["patches"]),area_dbu2=c["area_dbu2"]))
+  observed=run_deck(f"native-mesh-{pitch}",deck,voltages,sources)
+  need(all(v>0 for v in observed["voltages"].values()),"every actual intrinsic gate receives a finite positive resistive potential")
+  need(all(v>=-1e-16 for v in observed["currents"].values())and math.isclose(sum(observed["currents"].values()),200e-9,rel_tol=1e-8,abs_tol=1e-15),"all injected gate current returns through actual metal contacts")
+  record=dict(pitch_nm=pitch,cells=len(all_cells),poly_resistors=sum(e["kind"]=="poly"for e in all_edges),
+   contact_resistors=sum(e["kind"]=="contact"for e in all_edges),groups=group_rows,gate_quadrature=weights,
+   physical_contacts=200,intrinsic_gates=200,actual_uniform_injection_observation=observed,
+   native_resistor_fragment=pin(native/"gate-poly-resistors.cir"),native_complete_mesh=pin(native/"mesh.json"),
+   metal_contact_ports_held_zero_only_in_diagnostic=True,uniform_gate_injection_A=1e-9,actual_intrinsic_devices_present=False,
+   physical_gate_resistance_network_generated=True,material_values_qualified_for_signoff=False,**FLAGS)
+  save(f"gate-poly-mesh-{pitch}.json",record);summaries.append(record)
+ changes=[]
+ for coarse,fine in zip(summaries,summaries[1:]):
+  a=coarse["actual_uniform_injection_observation"]["voltages"];b=fine["actual_uniform_injection_observation"]["voltages"];need(set(a)==set(b),"same actual200 intrinsic gate averages")
+  changes.append(dict(coarse_pitch_nm=coarse["pitch_nm"],fine_pitch_nm=fine["pitch_nm"],max_relative_gate_average_change=max(abs(a[k]-b[k])/abs(b[k])for k in a)))
+ need(pin(gds)==dict(bytes=1624572,sha256="c335182048dc1696821ab875fb34447e5b5a9ba0f1a24d5d16d572680906c16c"),"actual geometry unchanged")
+ save("physical-gate-resistance-network.json",dict(pitches_nm=[600,300,150],gate_groups=50,intrinsic_gates=200,physical_contacts=200,
+  native_rectangle_references_passed=3,native_actual_mesh_DC_runs_passed=3,refinement_observations=changes,
+  material_parameters=parameters,physical_gate_resistance_network_generated=True,full_metal_network_integrated=False,
+  actual_intrinsic_devices_present=False,nonuniform_gate_convergence_qualified=False,material_values_qualified_for_signoff=False,**FLAGS))
+ return 4
 
 
 def main():
@@ -424,7 +463,7 @@ def main():
   acquire(cfg["magic"],magic,lambda n:n.startswith("wire-stage/magic-cloud/"))
   tech_report(magic/"wire-stage/magic-cloud/tech")
   count=characterize(models)
-  gate();save("result.json",dict(status="PASS_EQUAL_ELECTRODE_INTRINSIC_PARTITION_REQUIRES_PHYSICAL_NETWORK_AND_CONVERGENCE",context=ctx,
+  gate();save("result.json",dict(status="BUILT_ACTUAL_GATE_POLY_R_NETWORK_REQUIRES_INTRINSIC_AND_FULL_METAL_COMPOSITION",context=ctx,
    unique_physical_dimensions=count,actual_mos_units=200,gate_resistance_qualified=False,**FLAGS))
  except BaseException as e:
   save("failure.json",dict(error_type=type(e).__name__,error=str(e),traceback=traceback.format_exc(),**FLAGS));raise

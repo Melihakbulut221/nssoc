@@ -1,4 +1,4 @@
-name: Validate weighted intrinsic gate partition with native terminal responses
+name: Build actual650 gate poly contact mesh and native resistor checks
 on:
   workflow_dispatch:
     inputs:
@@ -12,7 +12,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-mos650-intrinsic-partition-${{ github.ref }}
+  group: cdr-mos650-gate-poly-mesh-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -82,7 +82,9 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Measure full terminal DC and AC equivalence of weighted intrinsic partitions
+      - name: Install pinned native geometry dependency
+        run: python3 -m pip install --disable-pip-version-check --no-cache-dir klayout==0.30.4.post1
+      - name: Build actual native gate poly contact resistance meshes and check conductance
         id: native
         run: python3 -B scripts/cdr_mos650_gate_ac.py --extract
       - name: Preserve every actual native success or failure
