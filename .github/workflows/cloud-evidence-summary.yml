@@ -12,7 +12,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-mos650-metal-rc-${{ github.ref }}
+  group: cdr-mos650-gate-metal-rc-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -28,13 +28,13 @@ jobs:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/cdr-mos650-metal-rc-pins.json
+          sparse-checkout: /scripts/cdr-mos650-gate-metal-rc-pins.json
       - name: Materialize exact source closure
         run: |
           python3 -B - <<'PY'
           import json,subprocess
           from pathlib import Path
-          m='scripts/cdr-mos650-metal-rc-pins.json'
+          m='scripts/cdr-mos650-gate-metal-rc-pins.json'
           names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
@@ -68,13 +68,13 @@ jobs:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/cdr-mos650-metal-rc-pins.json
+          sparse-checkout: /scripts/cdr-mos650-gate-metal-rc-pins.json
       - name: Materialize exact source closure
         run: |
           python3 -B - <<'PY'
           import json,subprocess
           from pathlib import Path
-          m='scripts/cdr-mos650-metal-rc-pins.json'
+          m='scripts/cdr-mos650-gate-metal-rc-pins.json'
           names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)

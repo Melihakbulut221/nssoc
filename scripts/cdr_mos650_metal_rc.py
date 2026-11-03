@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"mos650-metal-rc";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-metal-rc-inputs.json";PINS="scripts/cdr-mos650-metal-rc-pins.json"
 METHODS="docs/evidence/mos650-metal-rc-original-methods.json"
-REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr-mos650-metal-rc"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr-mos650-gate-metal-rc"
 FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
  full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 def need(ok,msg):
@@ -85,7 +85,7 @@ def methods():
    replace("os.killpg(p.pid,signal.SIGKILL)","os.kill(p.pid,signal.SIGKILL)")
   elif name=="audit-rc48.py":
    replace("original_devices=54","original_devices=650")
-   mapping={"12":"25","17":"113","18":"114","112":"1278","154":"2046","54":"643","100":"1403"}
+   mapping={"12":"25","17":"113","18":"114","112":"1428","154":"2046","54":"643","100":"1403"}
    changed=Counter();tokens=[]
    for t in tokenize.generate_tokens(io.StringIO(text).readline):
     if t.type==tokenize.NUMBER and t.string in mapping:
@@ -94,6 +94,11 @@ def methods():
    need(set(changed)==set(mapping),"all explicit native650 census adaptations")
    text=tokenize.untokenize(tokens);edits.append(dict(numeric_census_tokens=dict(changed),mapping=mapping))
    replace("==['18']","==['114']");replace("==['17']","==['113']")
+   replace("dict(ACTUAL_TERMINAL_METAL_POINT_REFERENCE=1403,RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE=643)",
+    "dict(ACTUAL_TERMINAL_METAL_POINT_REFERENCE=1203,RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE=643,RETAINED_INTRINSIC_GATE_REQUIRES_POLY_RC=200)")
+   replace("metal_device_terminals=1403,", "metal_device_terminals=1203,physical_gate_contact_probes=200,unmodeled_intrinsic_gate_terminals=200,")
+   replace(" for r in native_rows:", " require(anchors['gate_groups']==frozen['gate_groups'] and anchors['intrinsic_gate_metal_shortcuts']is False,'Actual distributed gate groups changed')\n require(anchors['physical_gate_contact_count']==200,'Physical gate contact census changed')\n gate_probes=[v for v in anchors['anchors']if 'gate_contact'in v['detail']]\n require(len(gate_probes)==200 and all(v==next(q for q in frozen['anchors']if q['label']==v['label'])for v in gate_probes),'Actual gate contact geometry or owner changed')\n for r in native_rows:")
+
   else:
    need(name=="mutations48.py","only original numerical methods")
    replace("cases=[\n",source["nonbridge_selector"]+"cases=[\n")
@@ -107,11 +112,13 @@ def inputs(cfg):
  physical=ROOT/"mos650-wires";need(not physical.exists(),"exclusive authenticated source-view restoration")
  selected=acquire(cfg["view"],physical,lambda n:n.startswith(("native/view/","native/selected/","derived/")))
  view=physical/"native/view";record=read(physical/"derived/result.json")
- need(record["status"]=="PASS_ACTUAL650_WIRE_TOPOLOGY_AND_TERMINAL_REFERENCES_REQUIRES_METAL_AND_GATE_POLY_RC","actual complete650 topology producer")
+ need(record["status"]=="PASS_CURRENT650_WIRES_200_GATE_CONTACTS_AND_SEPARATE_INTRINSIC_ELECTRODES_REQUIRES_RC","actual complete650 topology producer")
  need((record["devices"],record["terminals"],record["components"],record["electrical_nets"])==(650,2046,113,114),"all actual native topology counts")
  anchors=read(view/"wire/anchors08.json")
- need((anchors["logical_anchor_count"],anchors["physical_anchor_count"])==(1428,1278),"actual geometric alias counts")
- need(len(anchors["anchors"])==1278 and anchors["dispositions"]==dict(ACTUAL_TERMINAL_METAL_POINT_REFERENCE=1403,RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE=643),"all geometric anchors and explicit body scope")
+ need((anchors["logical_anchor_count"],anchors["physical_anchor_count"])==(1428,1428),"actual geometric alias counts")
+ need(len(anchors["anchors"])==1428 and anchors["dispositions"]==dict(ACTUAL_TERMINAL_METAL_POINT_REFERENCE=1203,RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE=643,RETAINED_INTRINSIC_GATE_REQUIRES_POLY_RC=200),"all geometric anchors and explicit body scope")
+ need(record["physical_run"]==41710162510 and record["physical_gate_contacts"]==200 and record["intrinsic_gate_metal_shortcuts"]is False,"current physically accepted source and separate gate electrodes")
+ need(anchors["physical_gate_contact_count"]==200 and anchors["intrinsic_gate_metal_shortcuts"]is False and len(anchors["gate_groups"])==50,"all current native gate contacts and groups")
  for n,h in anchors["inputs"].items():
   p=Path(n);need(p.is_relative_to(physical)and p.is_file()and pin(p)["sha256"]==h,"unchanged absolute complete source input binding")
  runtime=NATIVE/"runtime-parent";runtime.mkdir()
@@ -127,7 +134,7 @@ def inputs(cfg):
  parser=ROOT/"hw/soc/out/pcie-magic-resis-terminals-v1-20261004/audit_pilot.py";parser.parent.mkdir(parents=True,exist_ok=True)
  parser.write_bytes((ROOT/"scripts/frozen_cdr_rc/audit_pilot.py").read_bytes())
  save("input-binding.json",dict(view_source=cfg["view"]["source"],geometry_counts=record,
-  logical_anchors=1428,physical_anchors=1278,wire_inputs={n:pin(wire/n)for n in ("anchors08.json","native05/wires.gds","native05/wires.l2n","native05/result.json")},
+  logical_anchors=1428,physical_anchors=1428,wire_inputs={n:pin(wire/n)for n in ("anchors08.json","native05/wires.gds","native05/wires.l2n","native05/result.json")},
   numerical_methods=derivation,old500_RC_reused=False,**FLAGS))
  return wire,physical,selected
 def execute(argv,label,seconds=1200):
@@ -212,7 +219,7 @@ def main():
   for name,value in [("capture.json",capture),("audit.json",audit),("native-controls.json",controls)]:save(name,value)
   save("result.json",dict(status="PASS_ACTUAL650_FRESH_METAL_VIA_RC_REQUIRES_GATE_POLY_MIM_AND_ELECTRICAL_COMPOSITION",
    context=ctx,physical_source_run=cfg["view"]["run"],actual_resistors=audit["actual_exported_resistors"],actual_capacitors=audit["actual_exported_capacitors"],
-   physical_anchors=1278,logical_anchors=1428,native_fault_controls=13,metal_via_RC_extracted=True,**FLAGS))
+   physical_anchors=1428,logical_anchors=1428,native_fault_controls=13,metal_via_RC_extracted=True,physical_gate_contacts=200,intrinsic_gate_metal_shortcuts=False,**FLAGS))
  except BaseException as e:
   save("failure.json",dict(error=repr(e),traceback=traceback.format_exc(),**FLAGS));raise
  finally:
