@@ -1,0 +1,92 @@
+native-geometry	Reserve exact-source permanent evidence before native execution	﻿2026-11-03T19:14:48.3848177Z ##[group]Run python3 -B scripts/cdr_mos650_gate_metallization.py --reserve
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:48.3850088Z ^[[36;1mpython3 -B scripts/cdr_mos650_gate_metallization.py --reserve^[[0m
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:48.3885094Z shell: /usr/bin/bash -e {0}
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:48.3886086Z env:
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:48.3886908Z   PYTHONDONTWRITEBYTECODE: 1
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:48.3888115Z   APPROVED_SOURCE: 47572b12d3c8becade5488550be754e0d0a56f3a
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:48.3897847Z   GH_TOKEN: ***
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:48.3898944Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:48.3900564Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:48.3902364Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:48.3903863Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:48.3905415Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:48.3906975Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:48.3908306Z ##[endgroup]
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2145604Z gh: Resource not accessible by integration (HTTP 403)
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2181281Z Traceback (most recent call last):
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2187613Z   File "/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_gate_metallization.py", line 264, in <module>
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2188629Z     if __name__=="__main__":main()
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2189266Z                             ^^^^^^
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2190227Z   File "/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_gate_metallization.py", line 251, in main
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2190943Z     if sys.argv[1:]==["--reserve"]:reserve();return
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2191537Z                                    ^^^^^^^^^
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2192669Z   File "/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_gate_metallization.py", line 94, in reserve
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2193348Z     call("git/refs",dict(ref="refs/tags/"+tag,sha=ctx["source"]))
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2193922Z   File "/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_gate_metallization.py", line 86, in call
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2194691Z     raw=subprocess.check_output(["gh","api","repos/"+REPO+"/"+path,"--method","POST","--input","-"],input=enc(data),timeout=180)
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2195318Z         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2195932Z   File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/subprocess.py", line 466, in check_output
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2263868Z     return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2264658Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2265588Z   File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/subprocess.py", line 571, in run
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2266523Z     raise CalledProcessError(retcode, process.args,
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2267668Z subprocess.CalledProcessError: Command '['gh', 'api', 'repos/Melihakbulut221/nssoc/git/refs', '--method', 'POST', '--input', '-']' returned non-zero exit status 1.
+native-geometry	Reserve exact-source permanent evidence before native execution	2026-11-03T19:14:53.2351760Z ##[error]Process completed with exit code 1.
+native-geometry	Preserve every actual native success or failure	﻿2026-11-03T19:14:53.2417667Z ##[group]Run python3 -B scripts/cdr_mos650_gate_metallization.py --publish
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.2418250Z ^[[36;1mpython3 -B scripts/cdr_mos650_gate_metallization.py --publish^[[0m
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.2438874Z shell: /usr/bin/bash -e {0}
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.2439129Z env:
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.2439334Z   PYTHONDONTWRITEBYTECODE: 1
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.2439657Z   APPROVED_SOURCE: 47572b12d3c8becade5488550be754e0d0a56f3a
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.2443233Z   GH_TOKEN: ***
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.2443540Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.2443974Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.2444411Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.2444798Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.2445178Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.2445551Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.2445907Z ##[endgroup]
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6704705Z gh: Not Found (HTTP 404)
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6744936Z Traceback (most recent call last):
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6746039Z   File "/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_gate_metallization.py", line 264, in <module>
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6747064Z     if __name__=="__main__":main()
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6747535Z                             ^^^^^^
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6748465Z   File "/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_gate_metallization.py", line 252, in main
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6749554Z     if sys.argv[1:]==["--publish"]:publish();return
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6750152Z                                    ^^^^^^^^^
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6751188Z   File "/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_gate_metallization.py", line 66, in publish
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6773559Z     ctx=gate();tag="cloud-results-"+str(ctx["run"])+"-1-cdr-mos650-gate-metallization";rel=api("releases/tags/"+tag)
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6793675Z                                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6794897Z   File "/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_gate_metallization.py", line 21, in api
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6796214Z     def api(path):return json.loads(subprocess.check_output(["gh","api","repos/"+REPO+"/"+path],timeout=180))
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6797245Z                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6798375Z   File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/subprocess.py", line 466, in check_output
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6799440Z     return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6800136Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6801035Z   File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/subprocess.py", line 571, in run
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6801958Z     raise CalledProcessError(retcode, process.args,
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6804011Z subprocess.CalledProcessError: Command '['gh', 'api', 'repos/Melihakbulut221/nssoc/releases/tags/cloud-results-41701260499-1-cdr-mos650-gate-metallization']' returned non-zero exit status 1.
+native-geometry	Preserve every actual native success or failure	2026-11-03T19:14:53.6834346Z ##[error]Process completed with exit code 1.
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	﻿2026-11-03T19:14:53.6945429Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6945876Z with:
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6946096Z   name: mos650-derived-41701260499
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6946377Z   path: mos650-gate-metallization/derived
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6946667Z   if-no-files-found: error
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6946903Z   retention-days: 90
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6947118Z   compression-level: 6
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6947327Z   overwrite: false
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6947539Z   include-hidden-files: false
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6947769Z env:
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6947964Z   PYTHONDONTWRITEBYTECODE: 1
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6948268Z   APPROVED_SOURCE: 47572b12d3c8becade5488550be754e0d0a56f3a
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6951105Z   GH_TOKEN: ***
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6951395Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6951830Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6952249Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6952998Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6953377Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6953965Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.6954297Z ##[endgroup]
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.8753719Z (node:2376) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.8754947Z (Use `node --trace-deprecation ...` to show where the warning was created)
+native-geometry	Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02	2026-11-03T19:14:53.8786895Z ##[error]No files were found with the provided path: mos650-gate-metallization/derived. No artifacts will be uploaded.
