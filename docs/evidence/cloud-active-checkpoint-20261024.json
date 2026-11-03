@@ -21,7 +21,7 @@
           "status": "in_progress"
         }
       ],
-      "observed_at": "2026-11-03T21:59:15.436216+00:00",
+      "observed_at": "2026-11-03T22:17:23.623233+00:00",
       "run": 41699812301,
       "source": "9430a57873e78d3c283b531da8e8e74da416f297",
       "status": "in_progress",
@@ -322,7 +322,7 @@
     "physical_acceptance": false,
     "timing_accepted": false
   },
-  "checkpoint_version": 354,
+  "checkpoint_version": 355,
   "clock_access_v332": {
     "candidate_sha256": "28eebb9f880648935a6368ada78a5e5666694ba98e073fbbac3f2e0c986339d6",
     "deep_flat_lvs_passed": true,
@@ -30712,7 +30712,7 @@
           "status": "in_progress"
         }
       ],
-      "observed_at": "2026-11-03T21:59:15.436216+00:00",
+      "observed_at": "2026-11-03T22:17:23.623233+00:00",
       "run": 41699812301,
       "source": "9430a57873e78d3c283b531da8e8e74da416f297",
       "status": "in_progress",
@@ -31292,6 +31292,56 @@
       "source": "8d7874d8c9740725ed1e4cd8c3631ec1c81bc2e6",
       "status": "completed",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41725473326"
+    },
+    {
+      "branch": "codex/cdr-mos650-mim-rc",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126237599438,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 126237783536,
+          "name": "native-metal-rc",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T22:17:23.623233+00:00",
+      "run": 41727960676,
+      "source": "884b9c7df8247b1c31f4822e7f706a98d6ed4bb8",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41727960676"
+    },
+    {
+      "branch": "codex/cdr-mos650-mim-rc",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126239660869,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126239773290,
+          "name": "native-metal-rc",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T22:17:23.623233+00:00",
+      "run": 41728568165,
+      "source": "1b40bf2db3844d6281c467022b248a2871ced6df",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41728568165"
     }
   ],
   "divider_width4_terminal_v246": {
@@ -121817,6 +121867,14 @@
     "prior_run_terminal": true,
     "router_elapsed_seconds": 6800.61579865
   },
+  "mim_rc_v355": {
+    "full_phy_accepted": false,
+    "note": "## Current650 MIM-aware native RC passed in both input orders\n\nRun41728568165/source1b40bf2db3844d6281c467022b248a2871ced6df on codex/cdr-mos650-mim-rc SUCCEEDED,release433272698. Actual current650 geometry,2046 terminals,1428 physical anchors and200 gate contacts are preserved. The seven actual MIM masks/vias were restored to the wire-only extraction view without modifying any original metal/via material. Seven bottom measurement points were rebound to verified real Metal5 access outside the intrinsic masks.\n\nNative double-total Magic1a44bd5c... with explicit-MIM technology1439949a... produced28634 resistors,18476 wire capacitors and7 separate intrinsic MIM cards. Actual original and reversed coupling-record order produced identical complete R/C/device exports. Both runs passed full raw resistor topology/value, per-point groundC, mutual attachment/value and collapsed matrix conservation; each rejected all13 original raw wire corruptions and9 MIM source/replacement/export corruptions. Full intrinsic-to-metal nonlinear composition remains unexecuted.\n\nFirst run41727960676/source884b9c7df8247b1c31f4822e7f706a98d6ed4bb8 FAILED at MIM identity comparison after native geometry and extraction completed. Two actual4800nm square devices had JSON dimension spellings4.800000000000001 and perimeter19.200000000000003; passing those directly into exact Decimal comparison was an adapter bug. Successor derives w/l/A/P from exact native integer rectangle vertices, matches both plates/bounding boxes/areas, and accepts only these two enumerated serialization artifacts. No geometry, RC values or acceptance thresholds changed. The complete failed evidence and logs are preserved.\n\nGate reduction41725473326 remains qualified only for nominal linear port behavior/power/noise. Next compose all actual650 nonlinear devices with these gate macros and the new MIM-aware metal network, preserving the seven native MIM attachment points. Read docs/cdr-mos650-full650-composition-next.md. Reuse old canonical non-MOS model parameters only after current native identity/geometry checks, not old wire networks. Preserve original whole-loaded stimulus and every threshold; actual serial recovered-clock operation remains required afterward.\n\nMainchip full64 route41699812301 remains independently monitored. Neither full serialPHY, final routed mainchip, final setup/hold nor production acceptance is closed. All native payloads remain in cloud.\n\n## Complete observed outcomes\n[\n  {\n    \"conclusion\": \"failure\",\n    \"result\": {\n      \"bytes\": 1148,\n      \"record\": {\n        \"electrical_accepted\": false,\n        \"error\": \"AssertionError('Wrong/duplicate native MIM geometry or terminal ownership')\",\n        \"final_timing_complete\": false,\n        \"full_pex_qualified\": false,\n        \"full_phy_accepted\": false,\n        \"gate_poly_RC_extracted\": false,\n        \"mim_intrinsic_composition_qualified\": false,\n        \"substrate_r_modeled\": false,\n        \"traceback\": \"Traceback (most recent call last):\\n  File \\\"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_metal_rc.py\\\", line 284, in main\\n    mim_extract(cfg,physical)\\n  File \\\"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_metal_rc.py\\\", line 247, in mim_extract\\n    captured=support.check_capture((wire/\\\"rc03/wires.spice\\\").read_text(),anchors,binding)\\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_mim_support.py\\\", line 89, in check_capture\\n    assert key in expected and key not in found,'Wrong/duplicate native MIM geometry or terminal ownership';found[key]=x[0]\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nAssertionError: Wrong/duplicate native MIM geometry or terminal ownership\\n\"\n      },\n      \"sha256\": \"8ddf5dc9d7e0718f791ba8fd1b63a930f7885fa78c81649adbf1a932509cc0ce\"\n    },\n    \"run\": 41727960676,\n    \"source\": \"884b9c7df8247b1c31f4822e7f706a98d6ed4bb8\"\n  },\n  {\n    \"conclusion\": \"success\",\n    \"mim-native-integer-dimensions.json\": {\n      \"all_parameters_derived_from_exact_native_plate_polygons\": true,\n      \"devices\": [\n        {\n          \"bbox_dbu\": [\n            1143600,\n            2055810,\n            1147200,\n            2059410\n          ],\n          \"exact_parameters\": {\n            \"A\": \"12.96\",\n            \"P\": \"14.4\",\n            \"l\": \"3.6\",\n            \"m\": \"1.0\",\n            \"w\": \"3.6\"\n          },\n          \"known_serialization_artifacts\": [],\n          \"native_id\": 423,\n          \"raw_parameters\": {\n            \"A\": 12.96,\n            \"P\": 14.4,\n            \"l\": 3.6,\n            \"m\": 1.0,\n            \"w\": 3.6\n          }\n        },\n        {\n          \"bbox_dbu\": [\n            1323600,\n            2055810,\n            1327200,\n            2059410\n          ],\n          \"exact_parameters\": {\n            \"A\": \"12.96\",\n            \"P\": \"14.4\",\n            \"l\": \"3.6\",\n            \"m\": \"1.0\",\n            \"w\": \"3.6\"\n          },\n          \"known_serialization_artifacts\": [],\n          \"native_id\": 424,\n          \"raw_parameters\": {\n            \"A\": 12.96,\n            \"P\": 14.4,\n            \"l\": 3.6,\n            \"m\": 1.0,\n            \"w\": 3.6\n          }\n        },\n        {\n          \"bbox_dbu\": [\n            1143600,\n            2581070,\n            1148400,\n            2585870\n          ],\n          \"exact_parameters\": {\n            \"A\": \"23.04\",\n            \"P\": \"19.2\",\n            \"l\": \"4.8\",\n            \"m\": \"1.0\",\n            \"w\": \"4.8\"\n          },\n          \"known_serialization_artifacts\": [\n            {\n              \"exact_from_integer_polygons\": \"4.8\",\n              \"parameter\": \"w\",\n              \"raw\": \"4.800000000000001\"\n            },\n            {\n              \"exact_from_integer_polygons\": \"4.8\",\n              \"parameter\": \"l\",\n              \"raw\": \"4.800000000000001\"\n            },\n            {\n              \"exact_from_integer_polygons\": \"19.2\",\n              \"parameter\": \"P\",\n              \"raw\": \"19.200000000000003\"\n            }\n          ],\n          \"native_id\": 425,\n          \"raw_parameters\": {\n            \"A\": 23.04,\n            \"P\": 19.200000000000003,\n            \"l\": 4.800000000000001,\n            \"m\": 1.0,\n            \"w\": 4.800000000000001\n          }\n        },\n        {\n          \"bbox_dbu\": [\n            1323600,\n            2581070,\n            1328400,\n            2585870\n          ],\n          \"exact_parameters\": {\n            \"A\": \"23.04\",\n            \"P\": \"19.2\",\n            \"l\": \"4.8\",\n            \"m\": \"1.0\",\n            \"w\": \"4.8\"\n          },\n          \"known_serialization_artifacts\": [\n            {\n              \"exact_from_integer_polygons\": \"4.8\",\n              \"parameter\": \"w\",\n              \"raw\": \"4.800000000000001\"\n            },\n            {\n              \"exact_from_integer_polygons\": \"4.8\",\n              \"parameter\": \"l\",\n              \"raw\": \"4.800000000000001\"\n            },\n            {\n              \"exact_from_integer_polygons\": \"19.2\",\n              \"parameter\": \"P\",\n              \"raw\": \"19.200000000000003\"\n            }\n          ],\n          \"native_id\": 426,\n          \"raw_parameters\": {\n            \"A\": 23.04,\n            \"P\": 19.200000000000003,\n            \"l\": 4.800000000000001,\n            \"m\": 1.0,\n            \"w\": 4.800000000000001\n          }\n        },\n        {\n          \"bbox_dbu\": [\n            1143600,\n            2831700,\n            1147200,\n            2835300\n          ],\n          \"exact_parameters\": {\n            \"A\": \"12.96\",\n            \"P\": \"14.4\",\n            \"l\": \"3.6\",\n            \"m\": \"1.0\",\n            \"w\": \"3.6\"\n          },\n          \"known_serialization_artifacts\": [],\n          \"native_id\": 427,\n          \"raw_parameters\": {\n            \"A\": 12.96,\n            \"P\": 14.4,\n            \"l\": 3.6,\n            \"m\": 1.0,\n            \"w\": 3.6\n          }\n        },\n        {\n          \"bbox_dbu\": [\n            1323600,\n            2831700,\n            1327200,\n            2835300\n          ],\n          \"exact_parameters\": {\n            \"A\": \"12.96\",\n            \"P\": \"14.4\",\n            \"l\": \"3.6\",\n            \"m\": \"1.0\",\n            \"w\": \"3.6\"\n          },\n          \"known_serialization_artifacts\": [],\n          \"native_id\": 428,\n          \"raw_parameters\": {\n            \"A\": 12.96,\n            \"P\": 14.4,\n            \"l\": 3.6,\n            \"m\": 1.0,\n            \"w\": 3.6\n          }\n        },\n        {\n          \"bbox_dbu\": [\n            1743600,\n            4515480,\n            1783600,\n            4555480\n          ],\n          \"exact_parameters\": {\n            \"A\": \"1600\",\n            \"P\": \"160\",\n            \"l\": \"40\",\n            \"m\": \"1.0\",\n            \"w\": \"40\"\n          },\n          \"known_serialization_artifacts\": [],\n          \"native_id\": 429,\n          \"raw_parameters\": {\n            \"A\": 1600.0,\n            \"P\": 160.0,\n            \"l\": 40.0,\n            \"m\": 1.0,\n            \"w\": 40.0\n          }\n        }\n      ],\n      \"electrical_accepted\": false,\n      \"final_timing_complete\": false,\n      \"full_pex_qualified\": false,\n      \"full_phy_accepted\": false,\n      \"gate_poly_RC_extracted\": false,\n      \"mim_intrinsic_composition_qualified\": false,\n      \"substrate_r_modeled\": false\n    },\n    \"result\": {\n      \"bytes\": 1655,\n      \"record\": {\n        \"actual_capacitors\": 18476,\n        \"actual_resistors\": 28634,\n        \"both_native_orders_verified\": true,\n        \"context\": {\n          \"attempt\": 1,\n          \"run\": 41728568165,\n          \"source\": \"1b40bf2db3844d6281c467022b248a2871ced6df\"\n        },\n        \"current_native_devices\": 650,\n        \"current_native_terminals\": 2046,\n        \"electrical_accepted\": false,\n        \"final_timing_complete\": false,\n        \"full_loaded_composition_executed\": false,\n        \"full_pex_qualified\": false,\n        \"full_phy_accepted\": false,\n        \"gate_poly_RC_extracted\": false,\n        \"intrinsic_mim_cards_separated_from_wire_C_matrix\": true,\n        \"mim_fault_controls_per_order\": 9,\n        \"mim_intrinsic_composition_qualified\": false,\n        \"native_mim_devices\": 7,\n        \"native_orders\": [\n          \"precise\",\n          \"precise_reversed\"\n        ],\n        \"native_rc_and_device_records_equal_in_both_orders\": true,\n        \"order_equivalence\": {\n          \"coupling_records\": 1010,\n          \"non_coupling_records_unchanged\": true,\n          \"original_order_restored\": true,\n          \"symmetric_endpoint_value_multiset_exact\": true\n        },\n        \"physical_anchors\": 1428,\n        \"physical_gate_contacts\": 200,\n        \"physical_source_run\": 41712243960,\n        \"reversal\": {\n          \"coupling_records\": 1010,\n          \"non_coupling_records_unchanged\": true,\n          \"original_order_restored\": true,\n          \"original_sha256\": \"536bfd09cb3268b8eaff4aa63ac1eb20b4f483ccae1b435b64203da4a484b87d\",\n          \"reordered_sha256\": \"ffbb9fed4c4cd64a34f817e075367a7288b5f8c955a7268956415fefabd3f9eb\",\n          \"reversed_enumeration\": true,\n          \"symmetric_endpoint_value_multiset_exact\": true\n        },\n        \"status\": \"PASS_CURRENT650_MIM_AWARE_TWO_ORDER_RC_AND22_FAULTS_EACH_REQUIRES_FULL_COMPOSITION\",\n        \"substrate_r_modeled\": false,\n        \"wire_fault_controls_per_order\": 13\n      },\n      \"sha256\": \"1d07445dc6540c3e22b931791a0f2b2ca202de539bac9a2abe1ae9cdda92efbf\"\n    },\n    \"run\": 41728568165,\n    \"source\": \"1b40bf2db3844d6281c467022b248a2871ced6df\"\n  }\n]\n",
+    "runs": [
+      41727960676,
+      41728568165
+    ]
+  },
   "mixed_canonical_proofs_v269": [
     {
       "prefix": "docs/evidence/mixed-canonical-terminal-41350835442",
@@ -121854,7 +121912,7 @@
     },
     "candidate_qualification_run": 41108174342,
     "code_deployed_head": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a",
-    "configured_inventory_rows": 915,
+    "configured_inventory_rows": 917,
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33",
     "every_hours": 8,
     "historical_scheduled_error": {
@@ -121867,7 +121925,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 354,
+    "inventory_version": 355,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -122608,13 +122666,12 @@
     }
   ],
   "next_actions": [
-    "Reduction41725473326/source8d7874d8c9740725ed1e4cd8c3631ec1c81bc2e6/release433256009 completed successfully. All250 port networks,503 native executions and2 actual fault controls passed at original thresholds. Use sealed current native reduction output to compose full650 model; do not rerun this completed prerequisite or infer fullPHY acceptance.",
+    "Use successful MIM-aware RC41728568165/source1b40bf2db3844d6281c467022b248a2871ced6df/release433272698,28634R/18476C plus7 explicit MIM cards. Both actual input orders match;13 wire and9 MIM fault controls per order pass. The ordinary earlier metalRC41713023974 is preserved but lacks this intrinsic separation.",
+    "Implement docs/cdr-mos650-full650-composition-next.md: combine this actual MIM-aware metal network, qualified gate reduction41725473326 and all current650 devices/2046 terminals. Preserve actual MIM card attachment nodes, physical gate contacts and finite body contacts. No further old500 expansion.",
     "Poll SAME actual mainchip full64 route41699812301/source9430a57873e78d3c283b531da8e8e74da416f297/release433106055. Active exact job126140534081; release empty at observation. In-progress status alone proves no routing/violation improvement. Preserve route guards and all11 phases.",
-    "If reduction passes, integrate actual200 MOS electrodes through its physical contact ports into metalRC41713023974 and the actual650 devices/2046 terminals from wire41712243960. Use current native IDs, physical coordinates, source instance correspondence and every actual R/C point. The old loaded binder accepts500 source devices and then expands; it cannot consume current already650 identity unchanged.",
-    "Read docs/cdr-mos650-full-circuit-binding-audit.md for exact source and schema findings. Preserve original256-bit stimulus,125ps UI,34.25ns stop,0.3125ps maxstep and every original sampler/phase/current/voltage threshold. No new passing linear test can replace rejected full-loaded41549033741.",
     "Reuse qualified intrinsic model split30392de6e292c690fe73f469c32c236a5ce51b1c: retain physicalW/L/AS/AD/PS/PD; multiplicity1/N; remove only RF RGO/RSHG in separate pinned variant, retain RINT/RVPOLY/NQS. Need native full loaded comparison and refinement across actual projected gates, not only equipotential model replicas.",
-    "Restore full gate extrinsicC, MIM intrinsic/metalC composition and643 intrinsic body/well references/substrate scope. Run closed-loop recovered-clock serial operation and allGen3x4 requirements; the old loaded bench explicitly uses external clock and cannot establish clock recovery.",
-    "After actual full chip routing, inspect restored geometry/DRC/antenna/PG/LVS/freshRC/qualifiedLiberty/all-corner setuphold. All three user end states remain unproven. Keep all computation/native archives cloud-only and monitor automatic_native_dispatch=false."
+    "After actual full chip routing, inspect restored geometry/DRC/antenna/PG/LVS/freshRC/qualifiedLiberty/all-corner setuphold. All three user end states remain unproven. Keep all computation/native archives cloud-only and monitor automatic_native_dispatch=false.",
+    "Retain failed41727960676/release433269710. Its geometry and native extraction passed; raw JSON4.800000000000001/19.200000000000003 dimensions broke exact comparison. Successor derives dimensions from exact integer native plate polygons and allows only these known serialization artifacts; geometry and all numerical acceptance tolerances are unchanged."
   ],
   "physical_path_diagnostics_v255": {
     "all_readbacks_verified": true,
@@ -164349,7 +164406,7 @@
     "timing_accepted": false,
     "timing_limits_unchanged": true
   },
-  "root_source_before_receipt": "7da8bc304e3f0ce210e238dd3deec8e6d3bb671c",
+  "root_source_before_receipt": "c1322401cfe6613ecd3c5c43aec7e7befe82a9dd",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -164636,7 +164693,7 @@
       "run": 41349316524
     }
   ],
-  "updated_at": "2026-11-03T21:59:15.436216+00:00",
+  "updated_at": "2026-11-03T22:17:23.623233+00:00",
   "width8_wave_diagnosis_v250": {
     "proof": {
       "bytes": 5806735,
