@@ -1,9 +1,9 @@
-name: Route original full64 with actual-chip-qualified single guide worker
+name: Restore actual mainchip global classes and roundtrip diode-inclusive netlist
 on:
   workflow_dispatch:
     inputs:
       execute:
-        description: Execute original full64 routing after same-source controls and actual-chip engine qualification
+        description: Execute authenticated native restoration and netlist roundtrip after source controls
         type: boolean
         default: false
       control_run:
@@ -85,6 +85,13 @@ jobs:
             /scripts/mainchip-guide-engine-qualified-inputs.json
             /scripts/mainchip_guide_full64_inner.py
             /scripts/mainchip_guide_route_qualification.py
+            /scripts/mainchip_postroute_handoff_contract.py
+            /scripts/mainchip_postroute_handoff_native.py
+            /scripts/mainchip_postroute_handoff_inner.py
+            /scripts/check_mainchip_postroute_handoff.py
+            /scripts/cloud_mainchip_postroute_handoff.py
+            /docs/mainchip-postroute-handoff.md
+            /scripts/mainchip-handoff-route-inputs.json
             /.github/workflows/cloud-evidence-summary.yml
       - name: Authenticate every own source before execution
         run: |
@@ -109,23 +116,14 @@ jobs:
           sparse-checkout: /scripts/mainchip-bounded-route-host-pins.json
       - name: Authenticate original source and exact derived scope inputs
         run: python3 -B scripts/prepare_scoped_restoration_sources.py
-      - name: Full64 lifecycle and native dispatch/preservation controls
-        run: |
-          python3 -B scripts/check_mainchip_full_route_stage.py
-          python3 -B scripts/check_mainchip_full64_native.py
-          python3 -B scripts/check_mainchip_full_route_snapshots.py
-          python3 -B scripts/check_mainchip_snapshot_reload.py
-          python3 -B scripts/check_mainchip_route47.py
-          python3 -B scripts/check_mainchip_route47_import.py
-          python3 -B scripts/check_mainchip_route47_memory.py
-          python3 -B scripts/check_mainchip_route47_recovery.py
-          python3 -B scripts/check_mainchip_guide_engine.py
-          python3 -B scripts/check_mainchip_guide_full64.py
+      - name: Postroute handoff source controls
+        run: python3 -B scripts/check_mainchip_postroute_handoff.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: full64-native-controls-${{ github.run_id }}
           path: |
+            postroute-handoff-controls
             full64-controls
             full64-native-controls
             full64-snapshot-controls
@@ -214,6 +212,13 @@ jobs:
             /scripts/mainchip-guide-engine-qualified-inputs.json
             /scripts/mainchip_guide_full64_inner.py
             /scripts/mainchip_guide_route_qualification.py
+            /scripts/mainchip_postroute_handoff_contract.py
+            /scripts/mainchip_postroute_handoff_native.py
+            /scripts/mainchip_postroute_handoff_inner.py
+            /scripts/check_mainchip_postroute_handoff.py
+            /scripts/cloud_mainchip_postroute_handoff.py
+            /docs/mainchip-postroute-handoff.md
+            /scripts/mainchip-handoff-route-inputs.json
             /.github/workflows/cloud-evidence-summary.yml
       - name: Authenticate every own source before execution
         run: |
@@ -238,8 +243,8 @@ jobs:
           sparse-checkout: /scripts/mainchip-bounded-route-host-pins.json
       - name: Authenticate original source and exact derived scope inputs
         run: python3 -B scripts/prepare_scoped_restoration_sources.py
-      - name: Authenticate actual chip qualification then execute original full64 route and audits
-        run: python3 -B scripts/cloud_mainchip_guide_full64_route.py
+      - name: Restore global classes, export actual netlist, relink and verify all native connections
+        run: python3 -B scripts/cloud_mainchip_postroute_handoff.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
