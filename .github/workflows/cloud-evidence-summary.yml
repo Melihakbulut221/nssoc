@@ -1,4 +1,4 @@
-name: Extract fresh actual650 distributed metal and via RC
+name: Inspect actual650 gate resistance model and geometry
 on:
   workflow_dispatch:
     inputs:
@@ -12,7 +12,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-mos650-metal-rc-${{ github.ref }}
+  group: cdr-mos650-gate-model-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -28,13 +28,13 @@ jobs:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/cdr-mos650-metal-rc-pins.json
+          sparse-checkout: /scripts/cdr-mos650-gate-model-pins.json
       - name: Materialize exact source closure
         run: |
           python3 -B - <<'PY'
           import json,subprocess
           from pathlib import Path
-          m='scripts/cdr-mos650-metal-rc-pins.json'
+          m='scripts/cdr-mos650-gate-model-pins.json'
           names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
@@ -42,16 +42,16 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Verify exact frozen numerical methods and observed650 topology census
-        run: python3 -B scripts/cdr_mos650_metal_rc.py --controls
+      - name: Verify frozen model and physical input sources
+        run: python3 -B scripts/cdr_mos650_gate_model.py --controls
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: mos650-controls-${{ github.run_id }}
-          path: mos650-metal-rc/derived
+          path: mos650-gate-model/derived
           if-no-files-found: error
           retention-days: 90
-  native-metal-rc:
+  native-model-audit:
     if: ${{ inputs.execute }}
     needs: source-controls
     runs-on: ubuntu-24.04
@@ -68,13 +68,13 @@ jobs:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/cdr-mos650-metal-rc-pins.json
+          sparse-checkout: /scripts/cdr-mos650-gate-model-pins.json
       - name: Materialize exact source closure
         run: |
           python3 -B - <<'PY'
           import json,subprocess
           from pathlib import Path
-          m='scripts/cdr-mos650-metal-rc-pins.json'
+          m='scripts/cdr-mos650-gate-model-pins.json'
           names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
@@ -82,29 +82,23 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Install pinned numerical audit library
-        run: python3 -m pip install --disable-pip-version-check --no-cache-dir networkx==3.5
-      - name: Install native Tcl and Magic runtime dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install --no-install-recommends -y tcl8.6 tk8.6 libreadline-dev libx11-dev libxext-dev libxpm-dev libxt-dev libcairo2-dev libgl1-mesa-dev libglu1-mesa-dev
-      - name: Extract complete current metal via RC and audit all native exports
+      - name: Inspect complete actual model controls and gate access geometry
         id: native
-        run: python3 -B scripts/cdr_mos650_metal_rc.py --extract
+        run: python3 -B scripts/cdr_mos650_gate_model.py --extract
       - name: Preserve every actual native success or failure
         if: always()
-        run: python3 -B scripts/cdr_mos650_metal_rc.py --publish
+        run: python3 -B scripts/cdr_mos650_gate_model.py --publish
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: mos650-derived-${{ github.run_id }}
-          path: mos650-metal-rc/derived
+          path: mos650-gate-model/derived
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: mos650-native-fallback-${{ github.run_id }}
-          path: mos650-metal-rc
+          path: mos650-gate-model
           if-no-files-found: warn
           retention-days: 90
