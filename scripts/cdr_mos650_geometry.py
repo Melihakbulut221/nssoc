@@ -141,6 +141,7 @@ def geometry(plan,mapping,pdkroot):
  layout=pya.Layout();layout.read(str(NATIVE/"parent.gds"))
  need(layout.dbu==.001 and layout.cell(TOP)is not None,"actual parent top and grid")
  top=layout.cell(TOP);oldbbox=str(top.bbox());identity=read(ROOT/IDENTITY)
+ original_m1_pin_annotations=pya.Region(top.begin_shapes_rec(layout.layer(8,2))).merged()
  paths={r["native_device"]:r["stable_path"]for r in identity["paths"]}
  observed={r["native_id"]:r for r in identity["locations"]["devices"]}
  need(len(paths)==len(observed)==500,"all original identities")
@@ -188,21 +189,30 @@ def geometry(plan,mapping,pdkroot):
   old_proof.append(dict(native_id=p["native_id"],original_cell=cell.name,original_parameters=p["original_parameters"],native_PCell_geometry_equal=not differences))
  save("pcell-reconstruction.json",dict(devices=50,full_layer_differences=reconstruction_differences,
   candidate_modified=False,pdk_receipt=read(ROOT/CFG)["runtime_receipt"],**FLAGS))
- need(not reconstruction_differences,"all original PCell layers must match; inspect complete differences before changing admission")
+ documented=read(ROOT/"docs/evidence/mos650-original-pcell-marker-differences.json")["full_layer_differences"]
+ need(reconstruction_differences==documented and len(documented)==50,"exact observed marker-only differences; no fabrication or other annotation drift")
+ for record in documented:
+  need(len(record["differences"])==1 and record["differences"][0]["layer"]=="Metal1.pin (8/2)","only documented internal M1 pin annotations")
+  d=record["differences"][0];need(d["original"]==dict(area_dbu2=0,bbox_dbu="()",polygons=0)and not d["original_polygons"]and d["regenerated"]["polygons"]==2,"original annotations absent,exact regenerated pair")
  def pin_boxes(cell,layer):
   return sorted([x.bbox()for x in cell.each_shape(layout.layer(layer,2))if not x.is_text()],key=lambda b:(b.left,b.bottom))
- cache={};modifications=[];replaced={};reference_names={}
+ cache={};modifications=[];replaced={};reference_names={};new_unit_cells=set();new_wrapper_cells=set()
  for p,row,parent,ordinal,cell,instance in targets:
   if len(p["units"])==1:continue
   spec=[(u["parameters"]["w"],u["parameters"]["l"])for u in p["units"]];key=(cell.cell_index(),tuple(spec))
   if key not in cache:
    wrapper=layout.create_cell("nssoc_model_range_"+str(cell.cell_index()))
    need(wrapper is not None and wrapper.cell_index()not in original_cells,"new wrapper")
-   oldg=pin_boxes(cell,5);oldm=pin_boxes(cell,8);need(len(oldg)==1 and len(oldm)==2,"original gate/source/drain pins")
+   oldg=pin_boxes(cell,5);native_original=units[(p["original_parameters"]["w"],p["original_parameters"]["l"])]
+   oldm=pin_boxes(native_original,8);need(len(oldg)==1 and len(oldm)==2,"original gate and independently regenerated source/drain annotations")
+   original_m1=pya.Region(cell.begin_shapes_rec(layout.layer(8,0))).merged()
+   for box in oldm:need((pya.Region(box)-original_m1).is_empty(),"regenerated annotation is inside unchanged original physical M1")
+   new_wrapper_cells.add(wrapper.cell_index())
    width=nm(p["original_parameters"]["w"]);gap=1000;y=-gap*(len(spec)-1);placements=[];gates=[];rails=[[],[]]
    for index,(w,l)in enumerate(spec):
     params=dict(w=w,l=l,ng=1);unit=layout.create_cell("nmos","SG13_dev",params)
     need(unit is not None and unit.cell_index()not in old_leaves,"fresh explicit native unit")
+    new_unit_cells.add(unit.cell_index())
     gp=pin_boxes(unit,5);mp=pin_boxes(unit,8)
     need(len(gp)==1 and len(mp)==2 and gp[0].width()==oldg[0].width(),"unit terminal geometry")
     need(gp[0].height()==nm(w)+360 and gp[0].bottom==-180,"actual native unit width")
@@ -227,6 +237,12 @@ def geometry(plan,mapping,pdkroot):
   modifications.append(dict(native_id=p["native_id"],path=paths[p["native_id"]],original_cell=cell.name,replacement_cell=wrapper.name,
     source_instance=p["source_instance"],units=placements,vertical_diffusion_gap_dbu=1000,old_top_access_retained=True))
  need(len(modifications)==42 and sum(len(p["units"])for p in plan)==200,"all required physical replacements")
+ # Restore the observed parent convention: internal M1 pin annotations are absent.
+ # Only datatype2 markers in newly created cells are removed; actual Metal1 remains.
+ for idx in new_unit_cells|new_wrapper_cells:
+  need(idx not in original_cells,"never remove original annotations")
+  layout.cell(idx).shapes(layout.layer(8,2)).clear()
+ need((pya.Region(top.begin_shapes_rec(layout.layer(8,2))).merged()^original_m1_pin_annotations).is_empty(),"all original public M1 annotations preserved exactly")
  for idx,digest in original_cells.items():need(signature(layout.cell(idx),reference_names)==digest,"every original shape and untargeted hierarchy reference unchanged")
  for p,row,parent,ordinal,cell,instance in targets:compare(old_shapes[cell.cell_index()],all_shapes(cell),"old primitive cells unchanged")
  need(str(top.bbox())==oldbbox,"unchanged macro bounds")
@@ -237,7 +253,7 @@ def geometry(plan,mapping,pdkroot):
  compare(before,after,"all serialized candidate polygons")
  save("geometry-proposal.json",dict(original_pcell_reconstruction=old_proof,modifications=modifications,replaced_hierarchy_instances=len(replaced),
   candidate=fp(out),primitive_plan=dict(original_mos=50,explicit_mos=200,other_devices=450,total=650),
-  eight_original_narrow_mos_unchanged=True,all_original_shapes_and_untargeted_references_unchanged=True,macro_bbox=oldbbox,grid_dbu=5,
+  eight_original_narrow_mos_unchanged=True,only_documented_internal_marker_normalization=True,all_original_public_m1_annotations_unchanged=True,all_original_shapes_and_untargeted_references_unchanged=True,macro_bbox=oldbbox,grid_dbu=5,
   native_transistor_extraction_executed=False,full_DRC_executed=False,**FLAGS))
  return fp(out)
 
