@@ -12,7 +12,7 @@ PARENT="scripts/cdr-wire-physical-parent.json"
 CANDIDATE="scripts/cdr-wire-physical-candidate.json"
 BRANCH="codex/cdr-mos650-physical"
 APP_SHA="d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
-CHECKER_SHA='f8882ff123bf308d8273b40ff3dc06351abb010a3420878d8c226f2e894b787b'
+CHECKER_SHA='30c4586b86167ad775af14b5568152820a802037150bdfd282e7ba0843a1555f'
 TOP="nssoc_cdr_pd500_resistor_v59"
 need=acquire.need;sha=acquire.sha if hasattr(acquire,"sha")else acquire.digest
 def encode(v):return(json.dumps(v,sort_keys=True,indent=2,allow_nan=False)+"\n").encode()
@@ -283,6 +283,15 @@ def publish():
         a=next(a for a in assets if a["name"]==p.name);need(a["size"]==p.stat().st_size and a["digest"]=="sha256:"+sha(p),"exact uploaded result")
     save("publication.json",dict(tag=tag,release=rel["id"],assets=assets))
 def derived():
+    import xml.etree.ElementTree as ET
+    markers=[]
+    def tree(n):
+        return dict(tag=n.tag,attributes=dict(n.attrib),text=n.text,tail=n.tail,children=[tree(c)for c in n])
+    for p in sorted(OUT.glob("physical/*/drc.lyrdb")):
+        report=json.loads((p.parent/"result.json").read_bytes())
+        need(sha(p)==report["report_sha256"],"actual recorded DRC marker report")
+        markers.append(dict(path=str(p.relative_to(OUT)),report=pin(p),measurement=report,xml_tree=tree(ET.parse(p).getroot())))
+    save("physical-drc-marker-details.json",dict(reports=markers,physical_acceptance=False))
     dest=ROOT/"wire-physical-derived";dest.mkdir()
     copied={}
     for p in sorted(OUT.rglob("*")):

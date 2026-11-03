@@ -20,4 +20,23 @@ def derive(text,width):
   ("'Rsd_DN'","'RSD_DN'"),("'Rsd_DP'","'RSD_DP'")]:
   count=text.count(before);assert count>=1,(before,count)
   change(before,after,count)
+ # Preserve each original phase body, but record independent positive failures
+ # so a DRC failure cannot conceal the actual deep/flat LVS diagnosis.
+ start=text.index("            directory = out / name")
+ end=text.index("        if any(digest(p) != h for p, h in pins.items()):",start)
+ body=text[start:end]
+ wrapped="""            if name not in ("drc","lvs","lvs_flat"):
+                prerequisite="drc" if name=="offgrid" else "lvs"
+                if record["steps"].get(prerequisite,{}).get("status")!="PASS":
+                    record["steps"][name]=dict(status="NOT_RUN_FAILED_PREREQUISITE",prerequisite=prerequisite)
+                    save()
+                    continue
+            try:
+"""+ "".join("    "+line if line.strip()else line for line in body.splitlines(keepends=True))+"""            except Exception as error:
+                record["steps"].setdefault(name,{}).update(status="FAIL",error=repr(error))
+                save()
+        if any(v.get("status")!=("PASS" if n in ("drc","lvs","lvs_flat") else "REJECTED_EXPECTED_FAULT") for n,v in record["steps"].items()):
+            raise ValueError("One or more full physical phases failed or prerequisite prevented fault qualification")
+"""
+ change(body,wrapped)
  return text,edits
