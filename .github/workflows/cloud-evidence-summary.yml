@@ -1,4 +1,4 @@
-name: Generate physical650 local gate contacts and metal buses
+name: Generate actual650 local gate contacts and160nm M1 straps
 on:
   workflow_dispatch:
     inputs:
@@ -86,7 +86,7 @@ jobs:
         run: python3 -B scripts/cdr_mos650_gate_metallization.py --reserve
       - name: Install pinned native geometry library
         run: python3 -m pip install --disable-pip-version-check --no-cache-dir klayout==0.30.4.post1
-      - name: Generate actual gate contacts and conservative clear metal buses
+      - name: Generate actual local gate contacts and exact-clearance M1 straps
         id: native
         run: python3 -B scripts/cdr_mos650_gate_metallization.py --extract
       - name: Preserve every actual native success or failure
