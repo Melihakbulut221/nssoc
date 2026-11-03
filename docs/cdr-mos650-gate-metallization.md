@@ -114,3 +114,23 @@ uncovered areas, every actual uncovered cut and nearby original/moved/trimmed
 M1 before rejecting. This distinguishes a baseline condition, a relocation
 error and an actual trimming defect from the exact native geometry. It is a
 diagnostic successor, not a claim of physical repair or acceptance.
+
+
+## Initial detached Via1 verification and explicit removal
+Run41705800932 measured the SAME3465600nm2 uncovered Via1 area in the
+original, post-move and post-trim views at the first group. The96 full190nm
+cuts lie outside that group's repair. The successor independently audits
+the original GDS immediately after loading, before ANY candidate mutation.
+It admits removal only if exactly96 entire cuts have ZERO M1 intersection,
+their union equals the entire uncovered original Via1 region, and area is
+exactly3465600nm2. No partially connected cut may be removed. Otherwise it
+fails and records the fresh initial measurement.
+
+Via1 is the M1-to-M2 connector; cuts with no M1 intersection cannot provide
+that connection. Removing these exact detached cuts is an explicit physical
+cleanup, not a waiver of coverage. Global Via1-in-M1 coverage remains a hard
+zero-missing requirement throughout the repair. Full independent deep/flat
+LVS must still prove the complete650 reference equivalence; no connectivity
+acceptance follows merely from the geometric inference. Earlier560-category
+DRC passes remain historical measurements and are not proof that this extra
+whole-via coverage predicate was checked.

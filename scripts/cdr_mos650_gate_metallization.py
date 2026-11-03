@@ -126,6 +126,18 @@ def generate(cfg):
  top=g.top_cell();need(top.name=="nssoc_cdr_pd500_resistor_v59","actual macro")
  before=layer_regions(g,top,pya);hierarchy=structure(g);annotations=texts(g);bounds=top.bbox()
  poly=before[(5,0)];active=before[(1,0)]
+ # Audit before ANY proposed mutation. A Via1 without any M1 cannot connect
+ # its two intended metal layers; remove only the exact recorded whole cuts.
+ initial_missing=before[(19,0)]-before[(8,0)]
+ orphan_vias=pya.Region()
+ for vp in before[(19,0)].each():
+  if (pya.Region(vp)&before[(8,0)]).is_empty():orphan_vias.insert(vp)
+ save("original-via1-coverage.json",dict(original_gds=pin(gds),original_missing_area_dbu2=initial_missing.area(),
+  entirely_detached_cuts=orphan_vias.count(),entirely_detached_area_dbu2=orphan_vias.area(),
+  cuts=[str(pg)for pg in orphan_vias.each()],measured_before_any_mutation=True,**FLAGS))
+ need(orphan_vias.count()==96 and orphan_vias.area()==3465600 and(initial_missing^orphan_vias).is_empty(),
+   "exact96 completely M1-detached input Via1 cuts; no partially attached cuts removed")
+
  native_lvs=pya.LayoutVsSchematic();native_lvs.read(str(selected/"native/selected/physical/lvs_flat/result.lvsdb"))
  physical_wires=pya.LayoutToNetlist();physical_wires.read(str(selected/"native/view/wire/native05/wires.l2n"))
  wire_graph=read(selected/"native/view/wire/native05/result.json")
@@ -138,7 +150,8 @@ def generate(cfg):
   grouped.setdefault(key,[]).append(row)
  need(len(grouped)==50 and sum(map(len,grouped.values()))==200,"all physical gate groups")
  added={k:pya.Region()for k in((6,0),(8,0))}
- metal=dict(before);removed_m1=pya.Region();removed_v1=pya.Region()
+ metal=dict(before);metal[(19,0)]=before[(19,0)]-orphan_vias
+ removed_m1=pya.Region();removed_v1=orphan_vias.dup()
  extra_m1={};extra_m2={};relocations=[]
  native_devices={d.id():d for d in native_lvs.netlist().top_circuit().each_device()}
  wire_m2=physical_wires.layer_by_name("gds_10")
@@ -192,7 +205,7 @@ def generate(cfg):
    for td in dev.device_class().terminal_definitions():
     if td.name in("S","D"):ds_owners.add(dev.net_for_terminal(td.id()).cluster_id)
   original_vias=[]
-  for vp in before[(19,0)].interacting(m1.sized(400)).each():
+  for vp in metal[(19,0)].interacting(m1.sized(400)).each():
    vb=vp.bbox();vc=vb.center()
    if vc.x==gx:continue
    pad=pya.Region(pya.Box(vb.left-50,vb.bottom-50,vb.right+50,vb.top+50))
@@ -328,7 +341,7 @@ def generate(cfg):
   need((after[key]^expected).is_empty(),"only declared material changes "+str(key))
  deltas={str(k):dict(added_area_dbu2=(after[k]-old).area(),removed_area_dbu2=(old-after[k]).area())for k,old in before.items()}
  need(all(v["added_area_dbu2"]==0 and v["removed_area_dbu2"]==0 for k,v in deltas.items()if k not in("(6, 0)","(8, 0)","(10, 0)","(19, 0)")),"all original nonconductor and transistor geometry unchanged")
- save("source-drain-via-relocation.json",dict(relocations=relocations,count=len(relocations),material_deltas=deltas,
+ save("source-drain-via-relocation.json",dict(relocations=relocations,count=len(relocations),material_deltas=deltas,removed_original_detached_via1_cuts=96,
   all_original_contacts_covered=True,all_original_device_geometry_retained=True,requires_full_DRC_LVS=True,**FLAGS))
  need(structure(g)==hierarchy and texts(g)==annotations,"unchanged complete hierarchy and text annotations")
  layout=NATIVE/"layout";layout.mkdir()
