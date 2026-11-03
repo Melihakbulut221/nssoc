@@ -74,10 +74,12 @@ for call in("native.snapshot(","odb.write_db(","native.check_tcl(","native.colle
 need("detailed_route"not in native and "repair_antennas"not in native,"no hidden routing")
 engine=json.loads((ROOT/"scripts/mainchip-guide-engine-built-inputs.json").read_bytes())
 reference=json.loads((ROOT/"scripts/mainchip-guide-engine-reference.json").read_bytes())
-need(engine["producer"]["run"]==41493369685 and engine["binary"]==engine["output_index"]["files"]["openroad"],"exact successful engine")
+need(engine["producer"]["run"]==41542996185 and engine["binary"]==engine["output_index"]["files"]["openroad"],"exact successful engine")
 need(reference["producer"]["run"]==41440285882 and len(reference["index"]["files"])==72,"actual entire recovered reference")
 need(len(reference["selected"])==8 and set(reference["selected"])<=set(reference["index"]["files"]),"entire declared selected reference")
 need(engine["native_chip_roundtrip_qualified"]is False and engine["native_routing_qualified"]is False,"build is not chip qualification")
+need(engine["output_index"]["files"]["guide-batch-after.cpp"]["sha256"]=="393bbfd15596cddfdbc3bb4d87a3055449596d5646945b89a4cc6526a32ac8b0","exact single-live-worker engine source")
+need(engine["binary"]["sha256"]=="c9fa3fc955888a75801f77bee022b79748d884d32dde0d99645f0ca4c21ce6c1","exact newly built ELF")
 out=ROOT/"guide-engine-controls";out.mkdir()
 (out/"result.json").write_text(json.dumps(dict(status="PASS_GUIDE_ENGINE_TRANSPORT_AND_BINDING_CONTROLS",
  positive_capsule_controls=2,hostile_capsule_refusals=refused,original_resource_guards_unchanged=True,
