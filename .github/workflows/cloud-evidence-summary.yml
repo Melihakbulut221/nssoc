@@ -1,4 +1,4 @@
-name: Extract fresh actual650 distributed metal and via RC
+name: Extract actual650 MIM aware RC and verify native order conservation
 on:
   workflow_dispatch:
     inputs:
@@ -12,7 +12,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-mos650-gate-metal-rc-${{ github.ref }}
+  group: cdr-mos650-mim-rc-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -83,12 +83,12 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install pinned numerical audit library
-        run: python3 -m pip install --disable-pip-version-check --no-cache-dir networkx==3.5
+        run: python3 -m pip install --disable-pip-version-check --no-cache-dir networkx==3.5 klayout==0.30.4.post1
       - name: Install native Tcl and Magic runtime dependencies
         run: |
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y tcl8.6 tk8.6 libreadline-dev libx11-dev libxext-dev libxpm-dev libxt-dev libcairo2-dev libgl1-mesa-dev libglu1-mesa-dev
-      - name: Extract complete current metal via RC and audit all native exports
+      - name: Extract actual MIM geometry RC in both native orders and reject raw faults
         id: native
         run: python3 -B scripts/cdr_mos650_metal_rc.py --extract
       - name: Preserve every actual native success or failure
