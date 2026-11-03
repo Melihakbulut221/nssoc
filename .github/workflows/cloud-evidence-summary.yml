@@ -1,4 +1,4 @@
-name: Extract actual650 full wire topology and gate access geometry
+name: Extract accepted650 gate-metal topology and all200 actual gate contacts
 on:
   workflow_dispatch:
     inputs:
@@ -12,7 +12,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-mos650-wires-${{ github.ref }}
+  group: cdr-mos650-gate-wires-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'

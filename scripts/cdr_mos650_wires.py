@@ -8,18 +8,19 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"mos650-wires";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-wires-inputs.json";PINS="scripts/cdr-mos650-wires-pins.json"
 TOP=identity.TOP;METALS=(8,10,30,50,67,126,134)
-for k,v in dict(OUT=OUT,NATIVE=NATIVE,DERIVED=DERIVED,CFG=CFG,PINS=PINS,BRANCH="codex/cdr-mos650-wires").items():setattr(identity,k,v)
+for k,v in dict(OUT=OUT,NATIVE=NATIVE,DERIVED=DERIVED,CFG=CFG,PINS=PINS,BRANCH="codex/cdr-mos650-gate-wires").items():setattr(identity,k,v)
 need=identity.need;read=identity.read;enc=identity.enc;pin=identity.pin;save=identity.save;api=identity.api;gate=identity.gate
 FLAGS=dict(wire_rc_extracted=False,gate_poly_RC_extracted=False,substrate_r_modeled=False,full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 ORIGIN="docs/evidence/cdr-v59-tail-exact-wire-methods-20261026/"
 def source_controls():
  need(sys.flags.optimize==0,"assertions enabled")
  for n in ("probe01.py","locate01.py","anchors01.py","dedup01.py"):ast.parse((ROOT/ORIGIN/n).read_bytes())
+ ast.parse((ROOT/"scripts/cdr_mos650_gate_anchors.py").read_bytes())
  wanted=identity.expected();need(len(wanted)==650,"complete independent650 plan")
  return wanted
 def fetch_old_pins(cfg):
  prod=cfg["old_source_pins"];r=api("actions/runs/"+str(prod["run"]));rel=api("releases/"+str(prod["release"]))
- need(r["head_sha"]==prod["source"]and r["conclusion"]=="success"and r["run_attempt"]==1,"old physical source qualification")
+ need(r["head_sha"]==prod["source"]and r["status"]=="completed"and r["conclusion"]=="success"and r["run_attempt"]==1,"old physical source qualification")
  need(rel["target_commitish"]==prod["source"]and rel["tag_name"]==prod["tag"]and api("git/ref/tags/"+prod["tag"])["object"]["sha"]==prod["source"],"old physical release identity")
  live={a["name"]:a for a in rel["assets"]};need(set(live)==set(prod["assets"]),"all old assets")
  dest=NATIVE/"old-source";dest.mkdir()
@@ -29,73 +30,83 @@ def fetch_old_pins(cfg):
  idx=read(dest/"complete-output-index.json");need(idx["context"]==dict(run=prod["run"],source=prod["source"],attempt=1),"old index context")
  need(idx["files"][prod["path"]]==prod["pin"],"exact independently qualified old source pin record")
  seen=set();result=None
- with tarfile.open(dest/"native-fresh-rc.tar.gz","r|gz")as tar:
+ with tarfile.open(dest/prod["archive"],"r|gz")as tar:
   for m in tar:
-   prefix="wire-shortcuts-fresh-rc/";need(m.isfile()and m.name.startswith(prefix),"regular old archive member")
+   prefix=prod["archive_root"]+"/";need(m.isfile()and m.name.startswith(prefix),"regular old archive member")
    n=m.name[len(prefix):];need(n in idx["files"]and n not in seen and ".."not in PurePosixPath(n).parts,"unique safe member");seen.add(n)
    h=hashlib.sha256();size=0;parts=[];stream=tar.extractfile(m)
    for b in iter(lambda:stream.read(1024*1024),b""):
     size+=len(b);h.update(b)
-    if n==prod["path"]:parts.append(b)
+    if n in(prod["path"],prod["gds_path"]):parts.append(b)
    need(dict(bytes=size,sha256=h.hexdigest())==idx["files"][n],"complete old archive authentication")
    if n==prod["path"]:result=json.loads(b"".join(parts))
- need(seen==set(idx["files"])and result is not None,"complete source extraction")
+   if n==prod["gds_path"]:
+    (dest/"layout.gds").write_bytes(b"".join(parts))
+    need(pin(dest/"layout.gds")==prod["gds_pin"],"complete qualified prior650 GDS")
+ need(seen==set(idx["files"])and result is not None and pin(dest/"layout.gds")==prod["gds_pin"],"complete source extraction")
  save("old-source-acquisition.json",dict(producer=prod,members=len(seen),old_RC_reused=False,**FLAGS))
  return result
 def source_pins(cfg,flat,old):
  import pya
- original=identity.original
- original.NATIVE=NATIVE/"pcell-runtime";original.NATIVE.mkdir()
- original.DERIVED=DERIVED
- pdk=original.pdk(dict(runtime_receipt=cfg["runtime_receipt"]))
- source=pdk/"libs.tech/klayout/python";sys.path[:0]=[str(source),str(source/"pycell4klayout-api/source/python")]
- import sg13g2_pycell_lib
  g=pya.Layout();g.read(str(NATIVE/"selected/layout"/(TOP+".gds")))
- need(g.dbu==.001,"physical DBU")
- def signature(layout,cell):
+ prior=pya.Layout();prior.read(str(NATIVE/"old-source/layout.gds"))
+ need(g.dbu==prior.dbu==.001,"exact current and qualified prior geometry grid")
+ def signature(layout,cell,exclude=()):
   drawing=[]
   for i in layout.layer_indexes():
    info=layout.get_info(i)
+   if (info.layer,info.datatype)in exclude:continue
    if info.layer in METALS and info.datatype in(2,25):continue
-   r=pya.Region(cell.begin_shapes_rec(i)).merged()
-   if not r.is_empty():drawing.append((info.layer,info.datatype,sorted(p.to_s()for p in r.each())))
+   region=pya.Region(cell.begin_shapes_rec(i)).merged()
+   if not region.is_empty():drawing.append((info.layer,info.datatype,sorted(p.to_s()for p in region.each())))
   need(drawing,"nonempty primitive drawing")
   return hashlib.sha256(json.dumps(sorted(drawing),separators=(",",":")).encode()).hexdigest()
- sources={}
- for row in old["cells"].values():
-  kind=row["cell"].split("$")[0];key=(kind,row["drawing_sha256"])
-  if key in sources:need(sources[key]["pins"]==row["pins"],"consistent old identical drawing pins")
-  else:sources[key]=row
- lib=pya.Layout();specs=sorted({(r["layout"]["parameters"]["W"],r["layout"]["parameters"]["L"])for r in flat["pairs"]if r["layout"]["model"]=="sg13_lv_nmos"})
- regenerated=[]
- for w,l in specs:
-  cell=lib.create_cell("nmos","SG13_dev",dict(w=format(w,".12g")+"u",l=format(l,".12g")+"u",ng=1))
-  need(cell is not None,"native explicit unit PCell")
-  pins=sorted([m,[s.box.left,s.box.bottom,s.box.right,s.box.top]]for m in METALS for s in cell.each_shape(lib.layer(m,2))if s.is_box())
-  need(pins,"actual native MOS source/drain pin annotations")
-  key=("nmos",signature(lib,cell))
-  row=dict(source="pinned native IHP PCell",cell=cell.name,pins=pins,drawing_sha256=key[1],parameters=dict(w_um=w,l_um=l,ng=1))
-  if key in sources:need(sources[key]["pins"]==pins,"regenerated original pin consistency")
-  sources[key]=row;regenerated.append(row)
+ def hierarchy(layout):
+  return {c.name:sorted((i.cell.name,str(i.cplx_trans),i.na,i.nb,str(i.a),str(i.b))for i in c.each_inst())for c in layout.each_cell()}
+ def annotations(layout):
+  rows=[]
+  for c in layout.each_cell():
+   for li in layout.layer_indices():
+    info=layout.get_info(li)
+    for s in c.each_shape(li):
+     if s.is_text():rows.append((c.name,info.layer,info.datatype,str(s.text)))
+    if info.datatype in(2,25):
+     r=pya.Region(c.begin_shapes_rec(li)).merged()
+     if not r.is_empty():rows.append((c.name,info.layer,info.datatype,sorted(p.to_s()for p in r.each())))
+  return sorted(rows,key=lambda r:json.dumps(r,sort_keys=True))
+ need(hierarchy(g)==hierarchy(prior),"complete original physical hierarchy identity")
+ need(annotations(g)==annotations(prior),"every original pin annotation and label retained")
+ need(old["status"]=="PASS_ACTUAL650_SOURCE_PINS_ON_IDENTICAL_PRIMITIVE_DRAWINGS","qualified original650 primitive pin provenance")
  reachable=set()
  def visit(c):
   if c.cell_index()in reachable:return
   reachable.add(c.cell_index())
-  for inst in c.each_inst():need(not inst.is_regular_array(),"explicit actual hierarchy");visit(inst.cell)
- visit(g.cell(TOP));models={"npn13G2","rppd","ptap1","cmim","nmos"};mapped={};required={}
+  for inst in c.each_inst():
+   need(not inst.is_regular_array(),"explicit hierarchy");visit(inst.cell)
+ visit(g.cell(TOP))
+ models={"npn13G2","rppd","ptap1","cmim","nmos"};mapped={};checks=[]
  for idx in reachable:
   c=g.cell(idx);kind=c.name.split("$")[0]
   if kind not in models or list(c.each_inst()):continue
-  key=(kind,signature(g,c));required[c.name]=key
+  oldcell=prior.cell(c.name);need(oldcell is not None,"same independently qualified primitive cell")
+  before=signature(prior,oldcell);after=signature(g,c)
+  intrinsic=signature(g,c,((8,0),(10,0),(19,0)))
+  need(intrinsic==signature(prior,oldcell,((8,0),(10,0),(19,0))),"exact intrinsic material unchanged, not just parameters")
+  checks.append(dict(cell=c.name,original_drawing_sha256=before,current_drawing_sha256=after,unchanged_nonrelocated_material_sha256=intrinsic))
   if kind=="cmim":continue
-  need(key in sources,"actual primitive drawing has independently bound source pins: "+c.name)
-  mapped[c.name]=sources[key]
- need(mapped and {c.split("$")[0]for c in mapped}==models-{"cmim"},"all primitive classes")
- need(set(mapped)=={n for n,k in required.items()if k[0]!="cmim"},"every reachable physical primitive")
- result=dict(status="PASS_ACTUAL650_SOURCE_PINS_ON_IDENTICAL_PRIMITIVE_DRAWINGS",cells=mapped,
- target_gds_sha256=pin(NATIVE/"selected/layout"/(TOP+".gds"))["sha256"],target_geometry_edited=False,
- native_regenerated_MOS=regenerated,reachable_cell_count=len(reachable),old_source_pins=cfg["old_source_pins"]["pin"],**FLAGS)
+  need(c.name in old["cells"],"every actual prior primitive had independently qualified pins")
+  row=copy.deepcopy(old["cells"][c.name])
+  need(row["drawing_sha256"]==before,"old pin record bound to full original primitive drawing")
+  row.update(cell=c.name,drawing_sha256=after,original_drawing_sha256=before,
+    source="Qualified prior full drawing plus exact current intrinsic geometry and pin annotation identity; current conductor probes required")
+  mapped[c.name]=row
+ need(mapped and {c.split("$")[0]for c in mapped}==models-{"cmim"},"complete primitive source-pin coverage")
+ result=dict(status="PASS_CURRENT650_PINS_REBOUND_AFTER_DECLARED_CONDUCTOR_FLATTENING",
+  cells=mapped,primitive_checks=checks,all_original_pin_annotations_equal=True,all_original_hierarchy_equal=True,
+  original_gds=cfg["old_source_pins"]["gds_pin"],target_gds_sha256=pin(NATIVE/"selected/layout"/(TOP+".gds"))["sha256"],
+  target_geometry_edited=False,old_source_pins=cfg["old_source_pins"]["pin"],current_native_anchor_probes_required=True,**FLAGS)
  save("source-pins.json",result);return result
+
 def prepare_workers():
  base=NATIVE/"view";parent=base/"parent";wire=base/"wire";wire.mkdir(parents=True)
  for n in ("layout/"+TOP+".gds","layout/result.json","physical/lvs_flat/result.lvsdb"):
@@ -111,6 +122,10 @@ def prepare_workers():
  derivation={}
  for n,changes in replacements.items():
   old=(ROOT/ORIGIN/n).read_text();s=old;records=[]
+  if n=="anchors01.py":
+   s=(ROOT/"scripts/cdr_mos650_gate_anchors.py").read_text()
+   changes=[]
+   records.append(dict(source="scripts/cdr_mos650_gate_anchors.py",pin=pin(ROOT/"scripts/cdr_mos650_gate_anchors.py"),reason="explicit intrinsic gates and all physical gate contacts"))
   for before,after in changes:
    count=s.count(before);need(count>0,"explicit original worker substitution")
    s=s.replace(before,after);records.append(dict(before=before,after=after,count=count))
@@ -142,7 +157,7 @@ def validate_binding(graph,locations,anchors,flat):
   d=expected[r["native_id"]]["layout"]
   need(r["model"].lower()==d["model"]and r["parameters"]==d["parameters"],"every located physical primitive matches native650 identity")
  need(len(anchors["rows"])==2046 and len(anchors["anchors"])==1428,"all actual anchors and intrinsic body references")
- need(anchors["dispositions"]==dict(ACTUAL_TERMINAL_METAL_POINT_REFERENCE=1403,RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE=643),"complete dispositions")
+ need(anchors["dispositions"]==dict(ACTUAL_TERMINAL_METAL_POINT_REFERENCE=1203,RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE=643,RETAINED_INTRINSIC_GATE_REQUIRES_POLY_RC=200),"complete dispositions")
  seen={}
  for r in anchors["rows"]:
   key=(r["device"],r["terminal"].upper());need(key not in seen and key in wanted,"unique actual anchor terminal")
@@ -153,7 +168,27 @@ def validate_binding(graph,locations,anchors,flat):
   detail=a["detail"]
   if "public_port"in detail:
    p=next(p for p in flat["ports"]if p["name"]==detail["public_port"]);need(a["native_cluster"]==p["cluster"],"public anchor actual owner")
+  elif "gate_contact"in detail:
+   need(detail["devices"]and all(a["native_cluster"]==wanted[(d,"G")]for d in detail["devices"]),"every contact actual intrinsic gate owner")
   else:need(a["native_cluster"]==wanted[(detail["device"],detail["terminal"].upper())],"physical anchor native owner")
+
+ gate_rows=[r for r in anchors["rows"]if r["model"]=="sg13_lv_nmos"and r["terminal"]=="G"]
+ need(len(gate_rows)==200 and all(r["disposition"]=="RETAINED_INTRINSIC_GATE_REQUIRES_POLY_RC"and "point_dbu"not in r and "metal"not in r for r in gate_rows),"no intrinsic gate ideally collapsed onto metal")
+ groups=anchors["gate_groups"];need(len(groups)==50 and len({r["group"]for r in groups})==50,"all50 actual gate-poly groups")
+ members={};labels=set()
+ for group in groups:
+  need(group["devices"]and len(group["devices"])==len(group["contact_anchors"]),"one physical contact per unit count in actual current layout")
+  for dev in group["devices"]:
+   need(dev not in members and wanted[(dev,"G")]==group["native_cluster"],"unique intrinsic gate with actual native group owner")
+   members[dev]=group["group"]
+  for label in group["contact_anchors"]:
+   need(label not in labels,"unique contact label");labels.add(label)
+   a=next(a for a in anchors["anchors"]if a["label"]==label)
+   need(a["detail"]["gate_group"]==group["group"]and a["detail"]["devices"]==group["devices"]and a["native_cluster"]==group["native_cluster"],"complete physical contact group ownership")
+ need(len(members)==len(labels)==200 and {r["device"]:r["gate_group"]for r in gate_rows}==members,"complete200 intrinsic electrodes and200 real contacts")
+ contacts=[a for a in anchors["anchors"]if "gate_contact"in a["detail"]]
+ need({a["label"]for a in contacts}==labels and len({(a["metal"],*a["point_dbu"])for a in contacts})==200,"all distinct actual gate-contact metal points")
+
 def native_material_and_anchors(wire,flat):
  import pya
  g=pya.Layout();g.read(str(NATIVE/"selected/layout"/(TOP+".gds")));top=g.cell(TOP)
@@ -182,13 +217,19 @@ def native_material_and_anchors(wire,flat):
   terminal=pya.Region()
   for r in l.shapes_of_terminal(d.terminal_ref(td.id())).values():terminal+=r
   access=poly.interacting(terminal);holes=contacts.inside(access)
-  need(access.count()==1 and holes.count()==1,"actual unique gate-poly path and contact")
+  need(access.count()==1 and holes.count()>=1,"actual unique gate-poly path and complete contact set")
   owner=d.net_for_terminal(td.id()).cluster_id
-  gates.append(dict(device=d.id(),native_cluster=owner,terminal_polygons=[str(p)for p in terminal.each()],
+  gid=hashlib.sha256(json.dumps(sorted(p.to_s()for p in access.each())).encode()).hexdigest()
+  group=next(r for r in anchors["gate_groups"]if r["group"]==gid)
+  need(d.id()in group["devices"]and owner==group["native_cluster"],"actual intrinsic electrode belongs to reported group")
+  observed={str(p)for p in holes.each()}
+  declared={a["detail"]["contact_polygon"]for a in anchors["anchors"]if a["label"]in group["contact_anchors"]}
+  need(observed==declared and len(observed)==len(group["contact_anchors"]),"every real gate contact represented exactly once")
+  gates.append(dict(device=d.id(),native_cluster=owner,gate_group=gid,terminal_polygons=[str(p)for p in terminal.each()],
    access_poly_polygons=[str(p)for p in access.each()],contact_polygons=[str(p)for p in holes.each()]))
  need(len(gates)==200,"all200 actual gate access paths")
  save("full-material-anchor-readback.json",dict(layers=material,physical_anchor_count=len(anchors["anchors"]),**FLAGS))
- save("gate-poly-access.json",dict(gates=gates,count=200,external_poly_resistance_required=True,**FLAGS))
+ save("gate-poly-access.json",dict(gates=gates,count=200,groups=anchors["gate_groups"],physical_contact_count=200,intrinsic_gate_metal_shortcuts=False,external_poly_resistance_required=True,**FLAGS))
 def fault_controls(graph,locations,anchors,flat):
  # Remove an actual terminal-bearing partition, not an optional empty partition.
  bad=copy.deepcopy(graph);n=next(n for n in bad["native_net_coverage"]if n["device_terminals"]);n["device_terminals"].pop()
@@ -201,6 +242,17 @@ def fault_controls(graph,locations,anchors,flat):
  cases.append(("wrong native terminal owner",graph,locations,wrong))
  wrong=copy.deepcopy(anchors);wrong["anchors"].pop()
  cases.append(("missing physical anchor",graph,locations,wrong))
+ wrong=copy.deepcopy(anchors);wrong["gate_groups"].pop()
+ cases.append(("missing physical gate-poly group",graph,locations,wrong))
+ wrong=copy.deepcopy(anchors);wrong["gate_groups"][0]["contact_anchors"].pop()
+ cases.append(("missing physical gate contact",graph,locations,wrong))
+ wrong=copy.deepcopy(anchors)
+ ga=[a for a in wrong["anchors"]if "gate_contact"in a["detail"]];ga[-1]["point_dbu"]=ga[0]["point_dbu"]
+ cases.append(("duplicate physical gate-contact point",graph,locations,wrong))
+ wrong=copy.deepcopy(anchors);next(r for r in wrong["rows"]if r["disposition"]=="RETAINED_INTRINSIC_GATE_REQUIRES_POLY_RC")["point_dbu"]=[0,0]
+ cases.append(("intrinsic gate ideally collapsed onto metal",graph,locations,wrong))
+ wrong=copy.deepcopy(anchors);wrong["gate_groups"][0]["devices"][0]=-1
+ cases.append(("wrong intrinsic gate-group association",graph,locations,wrong))
  refused=[]
  for name,gr,lo,an in cases:
   try:validate_binding(gr,lo,an,flat)
@@ -236,9 +288,9 @@ def main():
   graph=read(wire/"native05/result.json");locations=read(wire/"device-locations01.json");anchors=read(wire/"anchors03.json")
   validate_binding(graph,locations,anchors,flat);native_material_and_anchors(wire,flat);fault_controls(graph,locations,anchors,flat)
   for name,path in [("wire-graph.json",wire/"native05/result.json"),("device-locations.json",wire/"device-locations01.json"),("terminal-anchors.json",wire/"anchors03.json"),("unique-anchors.json",wire/"anchors08.json")]:save(name,read(path))
-  gate();save("result.json",dict(status="PASS_ACTUAL650_WIRE_TOPOLOGY_AND_TERMINAL_REFERENCES_REQUIRES_METAL_AND_GATE_POLY_RC",
+  gate();save("result.json",dict(status="PASS_CURRENT650_WIRES_200_GATE_CONTACTS_AND_SEPARATE_INTRINSIC_ELECTRODES_REQUIRES_RC",
    context=ctx,devices=650,terminals=2046,anchors=1428,components=graph["wire_component_count"],
-   electrical_nets=graph["native_electrical_net_count"],physical_ports=25,gate_poly_paths=200,**FLAGS))
+   electrical_nets=graph["native_electrical_net_count"],physical_ports=25,gate_poly_paths=200,physical_gate_contacts=200,intrinsic_gate_metal_shortcuts=False,physical_run=cfg["physical"]["run"],**FLAGS))
  except BaseException as e:
   save("failure.json",dict(error=repr(e),traceback=traceback.format_exc(),**FLAGS));raise
 if __name__=="__main__":main()
