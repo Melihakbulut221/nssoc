@@ -1,48 +1,54 @@
-# Cloud continuation — checkpoint v347
+# Cloud continuation — checkpoint v348
 
-Updated: 2026-11-03T19:21:28.889341+00:00
+Updated: 2026-11-03T19:52:18.438269+00:00
 
-## Actual full-chip route and local gate-metal repair
+## Actual gate-metal GDS generated; full independent physical check dispatched
 
-Actual-chip engine qualification41695305770/source5518d9fa75b505848e2c6a5c7d1b4a0ca9c011af SUCCEEDED (release433078096). Full143820nets,154480instances,1691protected-clock records, native ODB/DEF serialization and complete original DRT/antenna observations were preserved. Existing92DRTmarkers and21antenna nets/27violations remain failures of the reference layout, not signoff. Qualification made0routing calls.
+Generation41706600267/source155dd4718ec9ffe6847cfd73f637466ec8f4208c on codex/cdr-mos650-gate-metallization SUCCEEDED. Release433145277 preserves the full native candidate. GDS1640956bytes/SHA25648df330263db46d13d15e61bac380db8f10a0917815a72b5fdeee8d14e8aa461. All42multi-unit gate groups now have160nm M1 gate straps and150new local contacts;8single-unit groups unchanged. All original transistor/nonconductor geometry, hierarchy, labels and public interface are preserved; actual conductor relocation is explicit, so all_original_geometry_retained isFALSE. All serialized layer unions match the intended result.
 
-Full64 independent source controls41699472604 SUCCEEDED. Actual original full64 routing41699812301/source9430a57873e78d3c283b531da8e8e74da416f297 on codex/mainchip-guide-tiled-full64 has reserved release433106055. Follow its live snapshot below. This is the actual complete routing trial; no memory reduction or setup/hold success is established yet. Preserve full64 strategy and all11 phases; compare only completed physical and timing outcomes.
+The actual whole-path repair relocated934 source/drain Via1 cuts and landing geometry outward based on native S/D owner and physical wire-component probes. It trims the continuous original M1 bar protrusions between cuts, preserves every original Cont, and adds same-net M2 landing extensions. Spacing, enclosures, physical own-net overlap, bounded moves and5nm grid are checked; these geometric guards are NOT the full foundry DRC.
 
-PHY side-only gate-metal attempt41700152258/source12497f2c8dea39d4aa6adca64c9ee7d52a879e89 FAILED: all370 first-group side offsets crossed foreignM1; publication then failed404 because no release was reserved. Complete derived failure and failed-step logs are imported. Its original native input remains in qualified wire release433047733. The fallback artifact13261034587 has90day retention; do not falsely call it permanently published.
+An independent read immediately after original GDS load, before any mutation, confirmed96 ENTIRE Via1 cuts haveZERO M1 intersection (3465600nm2 total); there were no partially attached cuts in that difference. These96input cut polygons are preserved in original-via1-coverage.json and explicitly removed from the candidate. Global Via1-in-M1 coverage remains a zero-missing hard guard; it was not waived. Earlier560-category DRC passes remain historical measurements, not proof of this additional coverage predicate.
 
-Successor47572b12d3c8becade5488550be754e0d0a56f3a introduced direct gate-axis vias, zero-to10um offsets, explicit260nm M1 contact pads and geometrically proven original own-netM2 attachment. It retains all foreign-net clearances and checks all50groups, recording full rejected group obstacles. Run41701260499 FAILED before any native geometry: GITHUB_TOKEN tag creation returnedHTTP403. Do not treat it as a circuit result or repeat it unchanged.
+Full native physical verification41707025516/sourceadbb69b069592dc87400988cc6ea995032c9a086 on codex/cdr-mos650-gate-metal-physical has reserved release433147774, tagcloud-results-41707025516-1-cdr-wire-shortcuts-physical. Follow the SAME run's current snapshot below. The actual candidate and independent650reference are authenticated; reference is rebuilt from original schematic/plan and must match35500bytes/SHA25621d730545b983930eacf733ba77a7593df52e253987991724de9594fe136bbfb. Checker SHA30c4586b86167ad775af14b5568152820a802037150bdfd282e7ba0843a1555f is unchanged: all560DRC categories, deep+flat650 LVS and13intentional fault controls. Additional independent native geometry checks require every resulting Via1 cut be covered byBOTH M1 andM2. No physical success is implied until it actually completes.
 
-Current generation41701650129/sourced6824692de9324b0a130e4e95270f119f11185bf on codex/cdr-mos650-gate-metallization verifies the authorized dispatcher's pre-created exact-source release433116338 before native work. Geometry is identical to the unexecuted gate-axis repair; no permissions were widened. Follow the same live run. Generation is not physical acceptance.
+### Preserved native failures that selected this repair
+-41701650129/source d6824692de9324b0a130e4e95270f119f11185bf/release433116338: all42groups rejected by M1/Via1/M2 gate-bus geometry.
+-41702925124/source36b6f4b974e971c72e0c1f3e616c877434455755/release433123805: all42 full160nm M1 straps rejected. A valid first-gap cross-section was insufficient for the complete path.
+-41703662218/source64c0b4c3619b4a6178a8126e46a36af97976286c/release433128105: actual complete physical own-net binding confirmed the obstructions are source/drain M1 landings, not false same-gate classification. Native full-path polygons are retained.
+-41704706891/source820441a935670e68594139b5abda00c4f3bee173/release433134194:934cuts moved;6groups geometrically clear,36rejected because continuous M1 bars still protruded between per-via pads. No partial candidateGDS was accepted.
+-41705428581/sourcef0c54714330488d53b926d0e62e21de45e65b488/release433138345: full bar correction rejected by global Via1 coverage.
+-41705800932/source43b988df9a2675d3b132af09b2c17726af45a1d3/release433140551: exact original/post-move/post-trim uncovered geometry identical, isolating96detached input cuts. This diagnosis did not itself qualify a candidate.
 
-If generation passes, adapt candidate acquisition only in scripts/cloud_cdr_wire_shortcuts_physical.py from frozen physical source852e610cd4873d7cfcd3b09d85f03c62b5151969. Use native-gate-metallization.tar.gz rootmos650-gate-metallization/native/layout/{nssoc_cdr_pd500_resistor_v59.gds,schematic.cir,result.json}; independently rebuilt650 reference must equal35500bytes/SHA25621d730545b983930eacf733ba77a7593df52e253987991724de9594fe136bbfb. Keep exact checker SHA30c4586b86167ad775af14b5568152820a802037150bdfd282e7ba0843a1555f, all560DRC/deep-flat650LVS/13faults and original scoped runtime controls. Do not accept partial routing groups or waive violations.
+Each full derived generation record and immutable release/asset binding is preserved in docs/evidence/mos650-gate-metal-<run>-complete-generation.json. All native payloads stay in cloud releases; no native geometry was downloaded locally.
 
-After physical acceptance, regenerate all native terminal/contact identities and RC for modifiedGDS. Old wire binder requires one contact per poly group and must change for actual multiple contacts. Original650 metalRC41693055344 and native gateAC41696724132 remain useful diagnosis, not RC acceptance for modifiedGDS. QS gateRterms0 and missing normal-poly sheetR remain explicit; RF/NQS model hasdifferentterms andfixedngcon2. Full electrical composition includingMIM, physical gate/access paths and NQS overlap precedes original loaded circuit/fullserial qualification.
+## Mainchip and remaining electrical work
+Actual complete64-iteration route41699812301/source9430a57873e78d3c283b531da8e8e74da416f297/release433106055 remains the authoritative new routing trial. Actual-chip qualification41695305770 passed, preserving143820nets/154480instances/1691protected clocks and original92DRTmarkers/27antenna violations. Those reference counts are not signoff. Follow the current actual route status below; no duplicate or inferred RAM/timing improvement.
 
-The three product requirements remain unclosed. Passed source-controls, generation, unitAC and engine compatibility must never be counted as fullPHY, mainchip routing or final setup/hold completion.
+After new GDS passes independent physical verification, rebuild native device/terminal/contact ownership and freshRC. Current wire binder's one-contact assumption is invalid for150added contacts. Previous650 metalRC41693055344 is stale for modified conductors. Resolve residual gate/poly/contact resistance, compactNQS overlap and fullMIM/intrinsic/poly-coupling composition, then original complete loaded electrical gates and full serial link qualification. FullserialPHY, actual mainchip routing completion and final setup/hold are still unclosed.
 
-Observed 2026-11-03T19:21:28.889341+00:00:
-- 41695305770: completed/success
-- 41699472604: completed/success
+This turn removed140167bytes of automatically cached, still-retrievable gh run logs for41700152258/41701260499/41704706891/41705428581. Use directAPI ZIP reads inRAM for future log inspection to avoid recreating task caches. Other pre-existing CLI caches were not classified or deleted; do not claim the whole home directory is clean.
+
+
+Observed 2026-11-03T19:52:18.438269+00:00:
 - 41699812301: in_progress/None
-- 41700152258: completed/failure
-- 41701260499: completed/failure
 - 41701650129: completed/failure
+- 41702925124: completed/failure
+- 41703662218: completed/failure
+- 41704706891: completed/failure
+- 41705428581: completed/failure
+- 41705800932: completed/failure
+- 41706600267: completed/success
+- 41707025516: in_progress/None
 
 
-## Preserved prior history
-This current entry replaces the accumulated repeated status text. It does not
-discard previous source, failures, measurements or controls. The complete
-v346 continuation and all prior checkpoint documents remain at the immutable
-commit below; use specific referenced reports instead of reading the entire
-historical status log on every resumption:
-https://github.com/Melihakbulut221/nssoc/blob/a112a514867c670008169c4d97772e20ab6bd6f6/CLOUD_RESUME.md
-
-## Execution and acceptance
-All native CAD, GDS, ODB, SPICE and runtime payloads remain cloud-only.
-The local workspace is empty. Source and derived text coordination uses RAM.
-The8-hour monitor remains read-only, automatic_native_dispatch=false; a
-configured inventory is not proof that its latest live observation succeeded.
-Poll exact existing handles before any new dispatch. Never restart on a
-polling timeout. Full serial Gen3x4, actual full-chip routing and final
-setup/hold must all be proven; none is closed by a generator, source control,
-engine build, roundtrip or partial macro test.
+## History and execution
+Previous actual route and failure handoff:
+https://github.com/Melihakbulut221/nssoc/blob/31baea5c41b8dca6ccda678cca0ccb9e51d899ef/CLOUD_RESUME.md
+All earlier sources, complete reports and failed runs remain preserved.
+All native CAD/geometry/runtime/electrical payloads stay cloud-only. The local
+workspace is empty; source and derived-text API coordination uses RAM.
+The8-hour monitor remains read-only with automatic_native_dispatch=false.
+Poll existing exact handles; do not restart on observation timeouts.
+Full serialPHY, completed mainchip routing and final setup/hold must all
+pass real complete verification before the overall goal is complete.
