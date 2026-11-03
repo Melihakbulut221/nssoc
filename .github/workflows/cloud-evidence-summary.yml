@@ -1,11 +1,11 @@
-name: Full physical verification of explicit MOS650 model-range geometry
+name: Full physical verification of actual650 local gate strap metallization
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-mos650-physical-${{ github.ref }}
+  group: cdr-mos650-gate-metal-physical-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -112,7 +112,7 @@ jobs:
           from pathlib import Path
           e=os.environ
           assert e['GITHUB_ACTIONS']=='true' and e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
-          assert e['GITHUB_REF']=='refs/heads/codex/cdr-mos650-physical' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr-mos650-gate-metal-physical' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert re.fullmatch('[1-9][0-9]*',e['GITHUB_RUN_ID']) and re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA'])
           app=Path(e['RUNNER_TEMP'])/'current-tail-physical.AppImage'
           assert app==Path('/home/runner/work/_temp/current-tail-physical.AppImage') and app.is_file() and not app.is_symlink()

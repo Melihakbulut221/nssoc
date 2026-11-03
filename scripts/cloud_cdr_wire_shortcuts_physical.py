@@ -10,7 +10,7 @@ OUT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-physical"
 MANIFEST="scripts/cdr-wire-shortcuts-physical-pins.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
 CANDIDATE="scripts/cdr-wire-physical-candidate.json"
-BRANCH="codex/cdr-mos650-physical"
+BRANCH="codex/cdr-mos650-gate-metal-physical"
 APP_SHA="d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
 CHECKER_SHA='30c4586b86167ad775af14b5568152820a802037150bdfd282e7ba0843a1555f'
 TOP="nssoc_cdr_pd500_resistor_v59"
@@ -122,27 +122,36 @@ def fetch_asset(asset,path):
 
 def validate_mos_candidate(target,cfg,proof):
     import klayout.db as db
-    expected=cfg["derived"]
-    for n,p in expected.items():
+    for n,p in cfg["derived"].items():
         if n=="publication.json":
-            need("derived/"+n not in cfg["index"]["files"],"publication receipt is created after sealing native archive")
-            continue
-        need(json.loads((target/"derived"/n).read_bytes())==p,"all independently pinned generation evidence "+n)
-    need(proof["status"]=="GENERATED_EXPLICIT_MODEL_RANGE_MOS650_REQUIRES_FULL_PHYSICAL_AND_FRESH_RC"and proof["candidate"]==cfg["candidate"],"exact explicitMOS candidate")
-    g=expected["geometry-proposal.json"];r=expected["reference-provenance.json"];serial=expected["serialization.json"]
-    need(g["primitive_plan"]==dict(original_mos=50,explicit_mos=200,other_devices=450,total=650)and len(g["modifications"])==42,"all physical replacements")
-    for k in ("eight_original_narrow_mos_unchanged","all_original_public_m1_annotations_unchanged","all_original_shapes_and_untargeted_references_unchanged","all_serialized_polygons_equal","physical_stream_has_no_executable_pcell_context"):
-        need(g[k]is True,"generation invariant "+k)
-    need(serial["all_layers_equal"]and not serial["write_context_info"]and all(x["difference_area_dbu2"]==0 and not x["difference_polygons"]for x in serial["layers"]),"all actual layer serialization")
-    need(r["reference_constructed_from_original_schematic_not_candidate_extraction"]and r["counts"]==dict(sg13_lv_nmos=200,npn13G2=124,rppd=98,cap_cmim=7,ptap1=221),"independent original schematic")
-    need(pin(target/"native/schematic650.cir")==r["reference"]and pin(target/"native/candidate-mos650.gds")==cfg["candidate"],"actual candidate and reference")
-    need(r["original_mapping"]==pin(ROOT/"docs/evidence/cdr-clock-access-domain-parent-map.json")and r["original_electrical_plan"]==pin(ROOT/"docs/evidence/cdr-mos650-original-electrical-plan.json"),"actual independent reference sources")
-    l=db.Layout();l.read(str(target/"native/candidate-mos650.gds"))
-    need(l.dbu==.001 and [c.name for c in l.top_cells()]==[TOP]and str(l.cell(TOP).bbox())==g["macro_bbox"],"actual physical stream extent")
-    need(all(not c.is_pcell_variant()and not c.is_library_cell()for c in l.each_cell()),"physical cells without regeneration")
-    need(all(proof[k]is False for k in ("physical_acceptance","matching_layout_verified","fresh_RC_for_modified_devices","electrical_accepted","full_phy_accepted","final_timing_complete")),"no prior acceptance")
-    return dict(all_generation_evidence_bound=True,independent_original_schematic=True,physical_acceptance=False)
-
+            need("derived/"+n not in cfg["index"]["files"],"publication follows sealed archive");continue
+        need(json.loads((target/"derived"/n).read_bytes())==p,"complete independently pinned generation "+n)
+    need(proof["status"]=="GENERATED_ACTUAL650_GATE_METAL_CANDIDATE_REQUIRES_INDEPENDENT_DRC_LVS"and proof["candidate"]==cfg["candidate"],"exact gate-metal candidate")
+    g=cfg["derived"]["geometry-plan.json"]
+    need(g["candidate"]==cfg["candidate"]and g["independent_reference"]==cfg["reference"],"candidate and independent original650 schematic")
+    need(g["all_layers_roundtrip_equal"]and g["all_original_device_geometry_retained"]and g["all_original_geometry_retained"]is False,"explicit conductor-only relocation and full serialization")
+    relocation=cfg["derived"]["source-drain-via-relocation.json"]
+    need(relocation["count"]==g["source_drain_via_relocations"]and relocation["count"]>0,"all source/drain cut relocations")
+    need(relocation["all_original_contacts_covered"]and relocation["all_original_device_geometry_retained"]and relocation["requires_full_DRC_LVS"],"physical relocation scope")
+    need(all(v["added_area_dbu2"]==0 and v["removed_area_dbu2"]==0 for k,v in relocation["material_deltas"].items()if k not in("(6, 0)","(8, 0)","(10, 0)","(19, 0)")),"nonconductor geometry unchanged")
+    need(g["geometry_guards_are_not_full_DRC"]and g["added_contact_count"]==150 and g["added_metal_bus_count"]==42 and g["unchanged_single_unit_groups"]==8,"complete geometry candidate scope")
+    need(len(g["groups"])==50 and sum(len(r["devices"])for r in g["groups"])==200,"all actual physical gates")
+    need(len({n for r in g["groups"]for n in r["devices"]})==200,"unique complete physical devices")
+    need(all(r["disposition"]in("UNCHANGED_SINGLE_UNIT","ADDED_LOCAL_CONTACTS_M1_GATE_STRAP")for r in g["groups"]),"no failed group accepted")
+    layout=target/"native/layout"
+    need(pin(layout/(TOP+".gds"))==cfg["candidate"]and pin(layout/"schematic.cir")==cfg["reference"],"exact physical GDS and independent reference")
+    need(pin(OUT/"reference-controls/native/schematic650.cir")==cfg["reference"],"reference independently rebuilt from original schematic and complete electrical plan")
+    l=db.Layout();l.read(str(layout/(TOP+".gds")))
+    need(l.dbu==.001 and [c.name for c in l.top_cells()]==[TOP],"actual native top/grid")
+    top=l.cell(TOP)
+    m1=db.Region(top.begin_shapes_rec(l.layer(8,0))).merged()
+    m2=db.Region(top.begin_shapes_rec(l.layer(10,0))).merged()
+    vias=db.Region(top.begin_shapes_rec(l.layer(19,0))).merged()
+    need((vias-m1).is_empty()and(vias-m2).is_empty(),"independent complete Via1 coverage by both M1 and M2")
+    need(relocation["removed_original_detached_via1_cuts"]==96,"explicit recorded original detached cut cleanup")
+    need(all(not c.is_pcell_variant()and not c.is_library_cell()for c in l.each_cell()),"physical stream without executable regeneration")
+    need(all(proof[k]is False for k in("full_pex_qualified","electrical_accepted","full_phy_accepted","final_timing_complete")),"no prior acceptance")
+    return dict(all_generation_evidence_bound=True,reference_independently_rebuilt=True,physical_acceptance=False)
 
 def candidate():
     import klayout.db as db
@@ -159,9 +168,9 @@ def candidate():
         fetch_asset(p,work/n)
     index=json.loads((work/"complete-output-index.json").read_bytes());need(index==cfg["index"],"independent complete index")
     target=work/"selected";seen={}
-    with tarfile.open(work/"native-mos650-geometry.tar.gz","r|gz")as tar:
+    with tarfile.open(work/"native-gate-metallization.tar.gz","r|gz")as tar:
         for m in tar:
-            n=acquire.relative(m.name,"mos650-geometry")
+            n=acquire.relative(m.name,"mos650-gate-metallization")
             need(m.isfile()and n in index["files"]and n not in seen,"known unique regular candidate member")
             p=target/n;p.parent.mkdir(parents=True,exist_ok=True)
             with p.open("xb")as f:shutil.copyfileobj(tar.extractfile(m),f)
@@ -193,13 +202,13 @@ def prepare_layout(parent_base,new_base,checker):
     old=parent_base/"binding/inputs/parent/layout";cfg=json.loads((ROOT/PARENT).read_bytes())
     for n in("schematic.cir",TOP+".lef","result.json",TOP+".gds"):
         need(pin(old/n)==cfg["complete_members"]["binding/inputs/parent/layout/"+n],"original parent "+n)
-    shutil.copyfile(new_base/"native/candidate-mos650.gds",layout/(TOP+".gds"))
+    shutil.copyfile(new_base/("native/layout/"+TOP+".gds"),layout/(TOP+".gds"))
     shutil.copyfile(old/(TOP+".lef"),layout/(TOP+".lef"));need(pin(old/(TOP+".lef"))==pin(layout/(TOP+".lef")),"unchanged actual macro interface")
-    shutil.copyfile(new_base/"native/schematic650.cir",layout/"schematic.cir")
-    need(pin(layout/"schematic.cir")==json.loads((ROOT/CANDIDATE).read_bytes())["derived"]["reference-provenance.json"]["reference"],"exact independent650 reference")
+    shutil.copyfile(new_base/"native/layout/schematic.cir",layout/"schematic.cir")
+    need(pin(layout/"schematic.cir")==json.loads((ROOT/CANDIDATE).read_bytes())["reference"],"exact independent650 reference")
     p=json.loads((old/"result.json").read_bytes())
     inputs=[old/n for n in("result.json","schematic.cir",TOP+".lef",TOP+".gds")]
-    inputs.extend([new_base/"derived/result.json",new_base/"native/candidate-mos650.gds",ROOT/CANDIDATE,ROOT/PARENT,checker,ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
+    inputs.extend([new_base/"derived/result.json",new_base/("native/layout/"+TOP+".gds"),ROOT/CANDIDATE,ROOT/PARENT,checker,ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
     record=metadata(p,layout/(TOP+".gds"),layout/"schematic.cir",layout/(TOP+".lef"),inputs)
     (layout/"result.json").write_bytes(encode(record));save("candidate-layout-binding.json",record)
     return layout
@@ -254,7 +263,7 @@ def verify():
         for p,h in record["inputs"].items():need(sha(Path(p))==h,"actual final physical input "+p)
         need(record["inputs"][str(layout/(TOP+".gds"))]==json.loads((ROOT/CANDIDATE).read_bytes())["candidate"]["sha256"],"actual new candidate verified")
         gate()
-        save("physical-qualification.json",dict(status="PASS_EXPLICIT_MOS650_GDS_FULL560_DRC_DEEP_FLAT_LVS13",gds=pin(layout/(TOP+".gds")),record=pin(OUT/"physical/result.json"),new_RC_executed=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False))
+        save("physical-qualification.json",dict(status="PASS_GATE_METALLIZED_MOS650_GDS_FULL560_DRC_DEEP_FLAT_LVS13",gds=pin(layout/(TOP+".gds")),record=pin(OUT/"physical/result.json"),new_RC_executed=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False))
     except BaseException as exc:error=exc
     finally:
         try:cleanup.append(dict(process_group=sup.stop_process(sup.ACTIVE)))
