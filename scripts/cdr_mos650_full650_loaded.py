@@ -267,7 +267,7 @@ def run_loaded(worker,models,variant,engine,model,contract,bound,case):
             f'.lib "{lib}/cornerHBT.lib" hbt_typ',f'.lib "{lib}/cornerRES.lib" {c["res"]}',
             f'.lib "{lib}/cornerCAP.lib" {c["cap"]}',f'.lib "{lib}/cornerMOSlv.lib" {c["mos"]}',
             f'.include "{model}"',f'.temp {c["temperature"]}',
-            '.options reltol=1e-4 abstol=1e-12 klu',f'VDD avdd 0 PWL(0 0 500p {2.5*scale:.12g})']
+            '.options reltol=1e-4 abstol=1e-12 sparse',f'VDD avdd 0 PWL(0 0 500p {2.5*scale:.12g})']
         deck += [f'I_{bias} avdd {bias} PWL(0 0 500p '+('.001)'if bias.startswith('ib')else'.0005)')for bias in BIASES]
         deck += [f'I_{bias} avdd {bias} PWL(0 0 500p '+('0)'if case=='vi_bias_off'else'.00025)')for bias in('irvx','irvy')]
         deck += ['VDP dp0 0 '+shifted_data(bits,1.65*scale,.15*scale,offset),
@@ -292,8 +292,9 @@ def run_loaded(worker,models,variant,engine,model,contract,bound,case):
         original_deck='\n'.join(deck)+'\n'
         (folder/'original-bench.cir').write_text(original_deck)
         (folder/'bench.cir').write_text(streaming_deck(original_deck,dict(vectors=vectors)))
+        (folder/'spinit').write_text('set num_threads=1\n')
         protected={str(f):digest(f)for f in [Path(__file__),Path(worker.__file__),model,engine,
-            folder/'bench.cir',folder/'original-bench.cir',*models.rglob('*'),*variant.rglob('*'),
+            folder/'bench.cir',folder/'original-bench.cir',folder/'spinit',*models.rglob('*'),*variant.rglob('*'),
             *[worker.ROOT/p for p in worker.read(worker.ROOT/worker.PINS)['files']]]if f.is_file()}
         r.update(binding=bound,vectors=vectors,source_bits=bits,source_bits_sha256=hashlib.sha256(bytes(bits)).hexdigest(),
             protected_inputs=protected,status='RUNNING_ACTUAL_WHOLE_WIRE_TRANSIENT',
@@ -301,9 +302,14 @@ def run_loaded(worker,models,variant,engine,model,contract,bound,case):
         save()
         worker.execute([engine,'-n','-b','bench.cir'],folder.name,seconds=18000,cwd=folder)
         log=(worker.NATIVE/(folder.name+'.stdout')).read_text()+'\n'+(worker.NATIVE/(folder.name+'.stderr')).read_text()
-        opts,notes,_=backend_readback(log,'klu')
+        opts,notes,_=backend_readback(log,'sparse')
         notes += [line for line in log.splitlines()if 'too many arg'in line.lower()or 'no such vector'in line.lower()]
-        r.update(returncode=0,native_options=opts,diagnostics=notes);save();assert not notes,notes
+        r.update(returncode=0,native_options=opts,diagnostics=notes)
+        if (folder/'op.dat').is_file():
+            early_op=np.loadtxt(folder/'op.dat',skiprows=1)
+            r['startup_op_observation']=dict(values=int(early_op.size),expected_values=len(vectors)+1,
+                finite=bool(np.isfinite(early_op).all()),maximum_abs=float(abs(early_op).max())if np.isfinite(early_op).all()else None)
+        save();assert not notes,notes
         flags=re.findall(r'(?ms)^NSSOC_NATIVE_FLAG_BEGIN (\S+)\n(.*?)^NSSOC_NATIVE_FLAG_END\s*$',log)
         assert [n for n,_ in flags]==['q.'+n+'.qnpn13g2'for n in devices]and all(re.findall(r'(?m)^\s*off\s+([01])\s*$',s)==['1']for _,s in flags)
         r['native_flags_verified']=len(flags)

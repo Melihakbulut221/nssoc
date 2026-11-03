@@ -189,6 +189,9 @@ def geometry_report(physical):
 def execute(argv,label,seconds=1200,cwd=None):
  so=NATIVE/(label+".stdout");se=NATIVE/(label+".stderr");begin=time.monotonic();proc=None;error=None
  env={k:v for k,v in os.environ.items()if k not in("GH_TOKEN","GITHUB_TOKEN","PYTHONOPTIMIZE","LD_PRELOAD","PYTHONPATH","PYTHONHOME")}
+ if cwd is not None:
+  need((Path(cwd)/"spinit").is_file(),"explicit native startup configuration")
+  env["SPICE_SCRIPTS"]=str(cwd)
  try:
   with so.open("xb")as stdout,se.open("xb")as stderr:
    proc=subprocess.Popen(list(map(str,argv)),stdout=stdout,stderr=stderr,env=env,start_new_session=True,cwd=cwd or ROOT)

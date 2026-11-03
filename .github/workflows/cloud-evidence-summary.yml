@@ -99,6 +99,13 @@ jobs:
       - name: Assemble all actual650 partitions and execute selected full256bit loaded transient
         id: native
         run: python3 -B scripts/cdr_mos650_gate_ac.py --extract
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: mos650-derived-early-${{ github.run_id }}
+          path: mos650-gate-ac/derived
+          if-no-files-found: error
+          retention-days: 90
       - name: Preserve every actual native success or failure
         if: always()
         run: python3 -B scripts/cdr_mos650_gate_ac.py --publish
