@@ -1,0 +1,11 @@
+# Actual explicit MOS650 geometry candidate
+
+The accepted500-device parent has50 MOS,42 wider than the declared compact-model range. The provisional loaded model instead has200 separate MOS and650 total devices. This generator attempts to implement exactly that existing unit plan in the actual direct-clock-metal GDS0209d91c. It does not declare physical or electrical acceptance.
+
+Before modifying an instance, regenerate every original MOS from the pinned PDK and require exact equality on every original GDS polygon layer. Resolve all50 devices through the complete independent native canonical hierarchy and transforms. Leave the eight original8um reference MOS unchanged. Replace42 wide instances with explicit single-finger native units of8-9um width, unchanged length and exact total channel width. Use1um vertical diffusion gaps; align the topmost gate with the original top gate access, extending the group downwards. Join source/drain columns with real Metal1 and gates with real poly. Existing parent access metal, clocks, all450 non-MOS devices and complete macro bounds must remain unchanged.
+
+The generator checks every original cell shape and every untargeted hierarchy reference, then writes only the complete current top hierarchy and compares all serialized polygon layers. Existing inherited top name contains pd500; that legacy identifier is not a device-census claim. The declared650 count still requires independent transistor extraction.
+
+Generate a separate650-device reference from original schematic correspondences, preserving every original non-MOS parameter and terminal and expanding only the existing MOS unit plan. This reference is not generated from the new candidate extraction. Original source mapping, original GDS, pinned PDK and all native success/failure outputs are preserved in the cloud release.
+
+Mandatory next gates: full560-rule DRC with no waivers; independent deep and flat650-device transistor LVS with real geometry/reference fault controls; complete native canonicalization and fresh distributed RC for changed MOS/access geometry; then unchanged full loaded electrical gates. The prior500-device RC must not qualify modified devices. Closed-loop CDR/PLL, fullserialGen3x4, mainchip integration and final timing remain open.
