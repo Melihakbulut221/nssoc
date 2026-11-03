@@ -4,9 +4,9 @@ from pathlib import Path
 from mainchip_guide_engine_acquisition import need
 SELECTED=("bulk-postdrt-snapshot-inner-result.json","bulk-postdrt-antenna/guide-engine-result.json",
  "bulk-postdrt-antenna/guide-engine-roundtrip.json","bulk-postdrt-guide-engine-acquisition.json","bulk-postdrt-runtime-observed.json")
-PRODUCER=dict(run=41548861169,source="17d1961a0847f8045449e4bc6b7f42e5aa31e310",
- release=432095403,tag="cloud-results-41548861169-1-mainchip-bulk-postdrt-antenna",attempt=1)
-BINARY=dict(bytes=108936520,sha256="c9fa3fc955888a75801f77bee022b79748d884d32dde0d99645f0ca4c21ce6c1")
+PRODUCER=dict(run=41695305770,source="5518d9fa75b505848e2c6a5c7d1b4a0ca9c011af",
+ release=433078096,tag="cloud-results-41695305770-1-mainchip-bulk-postdrt-antenna",attempt=1)
+BINARY=dict(bytes=108948904,sha256="e12b1c70296c119c31ed5b1a7f739904d06b3c86cd703eebee25dbcc9c357431")
 def validate(config,built,inner,result,acquisition,runtime):
  need(config["schema"]=="mainchip-guide-engine-actual-chip-qualification-v1"and config["producer"]==PRODUCER,"actual successful qualification provenance")
  need(tuple(config["selected"])==SELECTED,"complete selected qualification evidence")

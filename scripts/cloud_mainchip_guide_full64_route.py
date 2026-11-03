@@ -32,7 +32,7 @@ def own_sources():
 def admission():
  assert os.environ.get('GITHUB_ACTIONS')=='true'and os.environ['GITHUB_RUN_ATTEMPT']=='1'
  assert os.environ['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'and os.environ['GITHUB_EVENT_NAME']=='workflow_dispatch'
- assert os.environ['GITHUB_REF']=='refs/heads/codex/mainchip-guide-single-full64'
+ assert os.environ['GITHUB_REF']=='refs/heads/codex/mainchip-guide-tiled-full64'
  source=os.environ['GITHUB_SHA'];rid=int(os.environ['GITHUB_RUN_ID']);control=int(os.environ['CONTROL_RUN'])
  assert source==subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
  run=api('actions/runs/'+str(control));jobs=api('actions/runs/'+str(control)+'/jobs?per_page=100')

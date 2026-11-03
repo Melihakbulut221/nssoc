@@ -1,3 +1,11 @@
+# Bounded-region engine: complete64-iteration actual route
+
+Actual full-chip qualification41695305770/source5518d9fa75b505848e2c6a5c7d1b4a0ca9c011af SUCCEEDED on the new bounded-region ELF e12b1c70296c119c31ed5b1a7f739904d06b3c86cd703eebee25dbcc9c357431. Entire143820net/154480instance/1691clock ODB and DEF snapshots, all104dependencies and original complete DRT/antenna reports were unchanged. Reference92DRT markers and21antenna nets27violations are not signoff.
+
+Bind the actual capture and immutable producer index/archive to the unchanged original11-phase full64 route, restoration and checks. All22 corrupted-qualification controls remain. Do not change resource guards, constraints, search costs, full iteration scope or final acceptance. New engine partitions large merged guide worker regions and retains one live worker; this changes route decomposition and has not yet demonstrated memory reduction or successful final routing.
+
+Old single-worker failure41552715162 remains preserved. Do not repeat it. Follow the current explicit dispatch until authoritative termination; an observation timeout does not permit restart. Full native output and all failure evidence remain cloud-only. DRC/antenna/PG/LVS/freshRC/qualifiedLiberty/allcornerSTA and full PHY acceptance are still required.
+
 # Actual full64 route using the qualified single-live-guide-worker engine
 The previous two-worker run41513663302 terminated after6800.616s at11832844KiB RSS, above the11534336KiB guard. Its partial82markers were not a returned route or finalDRC. Do not repeat that binary.
 Complete engine build41542996185 changes only the live guide worker limit2->1; actual newELF c9fa3fc955888a75801f77bee022b79748d884d32dde0d99645f0ca4c21ce6c1 has now passed actualchip qualification41548861169. Complete143820net/154480instance/1691clock scope, original ODB/DEF identity,92DRT markers and21antenna nets/27violations agree.104 runtime fingerprints and all three native qualification phases are preserved. This qualifies the binary/input roundtrip, not routing, memory reduction or signoff.
