@@ -248,13 +248,23 @@ def geometry(plan,mapping,pdkroot):
  for p,row,parent,ordinal,cell,instance in targets:compare(old_shapes[cell.cell_index()],all_shapes(cell),"old primitive cells unchanged")
  need(str(top.bbox())==oldbbox,"unchanged macro bounds")
  before=all_shapes(top);out=NATIVE/"candidate-mos650.gds"
- options=pya.SaveLayoutOptions();options.select_cell(top.cell_index());layout.write(str(out),options)
+ options=pya.SaveLayoutOptions();options.select_cell(top.cell_index())
+ # Physical GDS contains actual polygons, not executable PCell/library context.
+ # Context would regenerate the PCell on read and restore deliberately absent pins.
+ options.write_context_info=False;layout.write(str(out),options)
  reread=pya.Layout();reread.read(str(out));need(reread.dbu==layout.dbu and [c.name for c in reread.top_cells()]==[TOP],"serialized unique candidate top")
  after={layer_key(reread.get_info(i)):pya.Region(reread.cell(TOP).begin_shapes_rec(i)).merged()for i in reread.layer_indexes()}
+ serialization=[]
+ for key in sorted(set(before)|set(after)):
+  a=before.get(key,pya.Region());b=after.get(key,pya.Region());delta=(a^b).merged()
+  serialization.append(dict(layer=key,before_area_dbu2=a.area(),after_area_dbu2=b.area(),difference_area_dbu2=delta.area(),
+   difference_polygons=[str(p)for p in delta.each()]))
+ save("serialization.json",dict(write_context_info=False,layers=serialization,all_layers_equal=all(x["difference_area_dbu2"]==0 and not x["difference_polygons"]for x in serialization),**FLAGS))
  compare(before,after,"all serialized candidate polygons")
+ need(all(not c.is_pcell_variant()and not c.is_library_cell()for c in reread.each_cell()),"physical stream has no regenerating PCell/library context")
  save("geometry-proposal.json",dict(original_pcell_reconstruction=old_proof,modifications=modifications,replaced_hierarchy_instances=len(replaced),
   candidate=fp(out),primitive_plan=dict(original_mos=50,explicit_mos=200,other_devices=450,total=650),
-  eight_original_narrow_mos_unchanged=True,only_documented_internal_marker_normalization=True,all_original_public_m1_annotations_unchanged=True,all_original_shapes_and_untargeted_references_unchanged=True,macro_bbox=oldbbox,grid_dbu=5,
+  eight_original_narrow_mos_unchanged=True,only_documented_internal_marker_normalization=True,all_serialized_polygons_equal=True,physical_stream_has_no_executable_pcell_context=True,all_original_public_m1_annotations_unchanged=True,all_original_shapes_and_untargeted_references_unchanged=True,macro_bbox=oldbbox,grid_dbu=5,
   native_transistor_extraction_executed=False,full_DRC_executed=False,**FLAGS))
  return fp(out)
 
