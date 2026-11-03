@@ -133,7 +133,13 @@ def model_report(lib):
  report={}
  for p in sorted(lib.rglob("*")):
   if not p.is_file():continue
-  text=p.read_text();lines=logical_lines(text)
+  raw=p.read_bytes()
+  if p.suffix==".osdi":
+   need(raw.startswith(b"\x7fELF"),"actual compiled OSDI model")
+   report[str(p.relative_to(lib))]=dict(source=pin(p),kind="compiled_osdi_model",controls=[],includes_and_subcircuits=[])
+   continue
+  need(p.suffix in(".cir",".spice",".lib"),"declared textual model format")
+  text=raw.decode("utf-8");lines=logical_lines(text)
   hits=[r for r in lines if pattern.search(r["text"])and not r["text"].lstrip().startswith("*")]
   # .model statements can be very long: retain model type and individual
   # relevant assignments, never disguise the complete model deck as a report.
@@ -198,5 +204,5 @@ def main():
   gate();save("result.json",dict(status="ACTUAL_FROZEN_MODEL_AND_POLY_GEOMETRY_REPORT_REQUIRES_RC_INTERPRETATION",context=ctx,
    physical_gate_groups=50,actual_mos_units=200,gate_resistance_qualified=False,**FLAGS))
  except BaseException as e:
-  save("failure.json",dict(error=repr(e),traceback=traceback.format_exc(),**FLAGS));raise
+  save("failure.json",dict(error_type=type(e).__name__,error=str(e),traceback=traceback.format_exc(),**FLAGS));raise
 if __name__=="__main__":main()
