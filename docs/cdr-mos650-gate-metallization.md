@@ -104,3 +104,13 @@ and must belong to an actual source or drain of that gate group. It may
 remove only original M1 material, and every original Cont and every retained
 or relocated Via1 must remain covered. No signal is joined by name. All
 foreign spacing guards and the independent full DRC/LVS requirement remain.
+
+
+## Coverage rejection retained
+Run41705428581 rejected before producing a candidate: after complete bar
+trimming, the global Via1-in-Metal1 coverage predicate failed. Do not weaken
+that predicate. The next execution records original, post-move and post-trim
+uncovered areas, every actual uncovered cut and nearby original/moved/trimmed
+M1 before rejecting. This distinguishes a baseline condition, a relocation
+error and an actual trimming defect from the exact native geometry. It is a
+diagnostic successor, not a claim of physical repair or acceptance.

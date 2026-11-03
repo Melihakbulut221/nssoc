@@ -253,7 +253,22 @@ def generate(cfg):
     owners.append(actual.cluster_id)
    trimmed=metal[(8,0)]-protrusions
    need((before[(6,0)]-trimmed).is_empty(),"bar trimming retains every original Cont")
-   need((metal[(19,0)]-trimmed).is_empty(),"bar trimming retains every actual Via1 cut")
+   missing=metal[(19,0)]-trimmed
+   if not missing.is_empty():
+    touched=metal[(19,0)].interacting(missing)
+    roi=touched.sized(400)
+    save("actual-via-coverage-failure.json",dict(gate_devices=ids,gate_x_dbu=gx,
+      original_missing_area_dbu2=(before[(19,0)]-before[(8,0)]).area(),
+      post_move_missing_area_dbu2=(metal[(19,0)]-metal[(8,0)]).area(),
+      post_trim_missing_area_dbu2=missing.area(),
+      original_missing=[str(pg)for pg in(before[(19,0)]-before[(8,0)]).each()],
+      missing=[str(pg)for pg in missing.each()],actual_vias=[str(pg)for pg in touched.each()],
+      original_m1=[str(pg)for pg in(before[(8,0)]&roi).each()],
+      moved_m1=[str(pg)for pg in(metal[(8,0)]&roi).each()],
+      trimmed_m1=[str(pg)for pg in(trimmed&roi).each()],
+      removed_bar=[str(pg)for pg in(protrusions&roi).each()],
+      source_drain_relocations=relocations,**FLAGS))
+   need(missing.is_empty(),"bar trimming retains every actual Via1 cut")
    metal[(8,0)]=trimmed.merged();removed_m1+=protrusions
    rec["trimmed_source_drain_bar_protrusions"]=[str(pg)for pg in protrusions.each()]
    rec["trimmed_source_drain_native_owners"]=owners
