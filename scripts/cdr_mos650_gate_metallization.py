@@ -119,13 +119,19 @@ def generate(cfg):
  from importlib.metadata import version
  need(version("klayout")=="0.30.4.post1","pinned native geometry package")
  selected=NATIVE/"current";selected.mkdir()
- acquire(cfg["view"],selected,lambda n:n.startswith("native/selected/layout/")or n=="derived/gate-poly-access.json")
+ acquire(cfg["view"],selected,lambda n:n in cfg["view"]["selected"])
  gds=selected/"native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds"
  need(pin(gds)==dict(bytes=1019324,sha256="17bcc6f9e98f5346e92f7c770f4212a012ab1718ba78432fd609e280ff5e0541"),"actual independently650 DRC LVS qualified GDS")
  g=pya.Layout();g.read(str(gds));need(g.dbu==.001 and len(g.top_cells())==1,"exact nm grid and top")
  top=g.top_cell();need(top.name=="nssoc_cdr_pd500_resistor_v59","actual macro")
  before=layer_regions(g,top,pya);hierarchy=structure(g);annotations=texts(g);bounds=top.bbox()
  poly=before[(5,0)];active=before[(1,0)]
+ native_lvs=pya.LayoutVsSchematic();native_lvs.read(str(selected/"native/selected/physical/lvs_flat/result.lvsdb"))
+ physical_wires=pya.LayoutToNetlist();physical_wires.read(str(selected/"native/view/wire/native05/wires.l2n"))
+ wire_graph=read(selected/"native/view/wire/native05/result.json")
+ wire_m1=physical_wires.layer_by_name("gds_8")
+ native_m1=native_lvs.layer_by_index(wire_graph["native_layer_mapping"]["8"])
+
  grouped={}
  for row in read(selected/"derived/gate-poly-access.json")["gates"]:
   key=json.dumps([row["access_poly_polygons"],row["contact_polygons"]],sort_keys=True)
@@ -166,7 +172,14 @@ def generate(cfg):
   need((cuts.sized(180)&before[(6,0)]).is_empty(),"existing contact clearance")
   allowed=before[(8,0)].interacting(contact)
   need(not allowed.is_empty(),"actual original metal gate attachment")
-  foreign_m1=(before[(8,0)]-allowed)+added[(8,0)]
+  # All exemption geometry comes from the exact already-qualified physical wire net,
+  # not native labels or schematic aliases and not an inferred proximity bridge.
+  wn=physical_wires.probe_net(wire_m1,c);ln=native_lvs.probe_net(native_m1,c)
+  need(wn is not None and ln is not None and ln.cluster_id==rows[0]["native_cluster"],"actual gate contact physical and native owner")
+  own_m1=physical_wires.shapes_of_net(wn,wire_m1,True).merged()
+  need((own_m1-before[(8,0)]).is_empty()and(allowed-own_m1).is_empty(),"complete own physical M1 lies in exact GDS and contains original contact component")
+  rec.update(actual_wire_component=wn.cluster_id,original_contact_m1_area_dbu2=allowed.area(),complete_same_gate_m1_area_dbu2=own_m1.area())
+  foreign_m1=(before[(8,0)]-own_m1)+added[(8,0)]
   blocked_m1=foreign_m1.sized(180)
   ys=sorted(gaps+[c.y])
   # Actual source/drain M1 inner edges are +/-260nm from the gate axis.
@@ -183,6 +196,11 @@ def generate(cfg):
    roi=pya.Region(pya.Box(gx-1200,boxes[0].top-500,gx+1200,boxes[1].bottom+500))
    rec["first_gap_obstacles"]={str(k):[str(pg)for pg in (v&roi).each()]for k,v in before.items()if k in((1,0),(5,0),(6,0),(8,0),(10,0),(19,0))}
    rec["first_gap_gate_x_dbu"]=gx;rec["first_gap_y_dbu"]=gaps[0]
+   rec["whole_strap_spacing_intersections"]=[str(pg)for pg in(m1&blocked_m1).each()]
+   rec["whole_strap_actual_foreign_m1"]=[str(pg)for pg in(foreign_m1&m1.sized(181)).each()]
+   rec["whole_strap_actual_same_gate_m1"]=[str(pg)for pg in(own_m1&m1.sized(181)).each()]
+   rec["whole_strap_original_contacts"]=[str(pg)for pg in(before[(6,0)]&m1.sized(600)).each()]
+   print(json.dumps(dict(gate_devices=ids,status="REJECTED_ACTUAL_FULL_STRAP",clashes=clashes)),flush=True)
    continue
   m1=chosen
   need((cuts-m1).is_empty(),"complete contact coverage without prohibited lateral widening")

@@ -44,3 +44,19 @@ run41701260499 failed cloud tag creation403 before geometry.
 Run41701650129 preserved the complete42-group rejection in release433116338.
 The authorized dispatcher reserves each exact-source tag/release; the
 cloud job verifies it before native work. No token permissions are widened.
+
+
+## Whole-strap ownership diagnosis and preserved failure41702925124
+Run41702925124 rejected all42 complete straps. The first-gap cross section
+alone was insufficient: nonzero conflicts occur elsewhere along each full
+path. No candidateGDS was accepted. The successor uses the exact qualified
+wire l2n database and flat native LVS to identify the gate's complete actual
+metal-connected component. Every start contact is probed in both native
+databases and must match the independently extracted gate owner. The full
+own-M1 union must be present in the original GDS and contain the original
+contact component. Only that physically connected geometry is excluded from
+foreign-net checks; no schematic aliases, logical labels or guessed bridges.
+All foreign-net clearance values remain unchanged. If still rejected, save
+full-path intersection, actual foreignM1, ownM1 and contact outlines to
+identify the necessary physical reroute from actual whole-path geometry.
+The first-gap corridor is not evidence that the full strap fits.
