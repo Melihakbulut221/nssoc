@@ -20,3 +20,13 @@ notch fills, relocated vias and all200 gate contact points. It remains a
 metal/via-only network: actual gate-poly/contact resistance, compact-model
 NQS overlap, MIM/intrinsic/coupling composition and full loaded electrical
 qualification must still be completed before any fullPHY claim.
+
+
+## Workflow-path failure41712770691
+This run failed before source controls or native RC started: the new
+concurrency-name substitution also renamed the sparse-checkout pins path
+to a nonexistent file. The successor restores the original pins filename
+in all four checkout/materialization references, retaining the new
+concurrency group. No circuit/geometry result is inferred from this
+workflow failure. Source-only numerical-method derivation is also parsed
+and checked before dispatch; full native runtime/audits remain required.
