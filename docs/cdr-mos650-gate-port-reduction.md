@@ -15,3 +15,7 @@ Predeclared tolerances: DC1e-7 relative+1e-12V, complex AC1e-7+1e-8ohm, noise2e-
 Nominal material values and one temperature remain unqualified for signoff. Full nonlinear intrinsic/metal integration, extrinsic poly capacitance, MIM/substrate scope, loaded transient/noise, full serial x4 and final chip timing are still required. Mainchip route41699812301 remains independent.
 
 Before reduction, compare every original native SPICE Rgp branch against the authenticated mesh JSON: exact ordered names, endpoints and float-roundtripped resistance values. All238068 branches must match; the reduction may not rely on a graph report that differs from the native circuit previously solved.
+
+## Native result
+
+Run41725473326/source8d7874d8c9740725ed1e4cd8c3631ec1c81bc2e6 completed successfully:250 port networks,503 executions,2 fault controls, original thresholds unchanged. See docs/evidence/mos650-gate-port-reduction-41725473326-receipt.json and complete release433256009. Full nonlinear/metal integration, corner/temperature and PHY qualification remain open.

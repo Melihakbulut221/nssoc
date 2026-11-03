@@ -19,7 +19,7 @@ Current wire producer41712243960/sourcef3aece4ae3b048df220cb51277d74fcd026940ed 
 - unique-anchors.json retains actual coordinates, logical_labels and coincident witnesses. Equality of a schematic net name is not permission to short distinct physical anchors.
 - device-locations.json independently records current primitive dimensions and hierarchy. Current layout MOS widths are8/8.885/8.89/9um with0.3um L, not the old32/36/53.335/64um source widths.
 - The known model census is200sg13_lv_nmos,124npn13g2,98rppd,7cap_cmim,221ptap1.
-- Physical gate contact reduction41725473326 is pending native qualification. Each projected intrinsic MOS must retain full physical dimensions with multiplicity1/N, not width scaling. Gate contacts bind through the authenticated current metal RC native ports.
+- Physical gate contact reduction41725473326 passed250 nominal native port comparisons and503 total executions. Full nonlinear composition remains unqualified. Each projected intrinsic MOS must retain full physical dimensions with multiplicity1/N, not width scaling. Gate contacts bind through the authenticated current metal RC native ports.
 - Current metalRC41713023974/source0e5b89ef37bd0664835ebe331af087946a9ab882 contains28619 resistors/18469 capacitors. Preserve all actual point attachments and13 native fault controls.
 
 The intrinsic body/well abstraction and MIM overlap with metal capacitance remain unqualified. Do not silently ground every body node, add a duplicate intrinsic capacitance, or label a nominal composed model fullPEX. Full loaded admission must explicitly account for these open physical scopes.
@@ -27,3 +27,7 @@ The intrinsic body/well abstraction and MIM overlap with metal capacitance remai
 ## Required result after the reduction
 
 Build a new composition and probe projection from current native identities and anchors, then run the unchanged full-loaded electrical experiment. Keep exact failed waveforms and reject on the original thresholds. Require nonlinear loaded convergence across projected-gate partition counts before relying on the reduction for jitter. Recovered-clock serial operation and actual four-lane integration remain separate required end-to-end evidence. Mainchip routing and all-corner STA remain required in parallel.
+
+## Located composition implementations
+
+At source0e5b89ef37bd0664835ebe331af087946a9ab882, scripts/cdr-via2-m3-fresh-rc-core-catalog.json identifies exact existing definitions: scripts/cloud_cdr_retimed_composition.py (assemble/verify/faults), scripts/cdr_v59_mim_composition_derivation.py (derive/controls), scripts/audit_cdr_v59_mim_intrinsic.py (validate_mim), scripts/cloud_cdr_current_eight_drain_fresh_mim_precision.py (records/compose). Inspect these before adapting current650 MIM composition. Old500 geometry is not current geometry proof. Read script subtrees directly through Git trees: whole-repository recursive trees may truncate before scripts.
