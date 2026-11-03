@@ -1,4 +1,4 @@
-name: Inspect actual650 gate resistance model and geometry
+name: Measure frozen MOS gate impedance for actual650 dimensions
 on:
   workflow_dispatch:
     inputs:
@@ -12,7 +12,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-mos650-gate-model-${{ github.ref }}
+  group: cdr-mos650-gate-ac-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -28,13 +28,13 @@ jobs:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/cdr-mos650-gate-model-pins.json
+          sparse-checkout: /scripts/cdr-mos650-gate-ac-pins.json
       - name: Materialize exact source closure
         run: |
           python3 -B - <<'PY'
           import json,subprocess
           from pathlib import Path
-          m='scripts/cdr-mos650-gate-model-pins.json'
+          m='scripts/cdr-mos650-gate-ac-pins.json'
           names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
@@ -43,15 +43,15 @@ jobs:
         with:
           python-version: '3.12'
       - name: Verify frozen model and physical input sources
-        run: python3 -B scripts/cdr_mos650_gate_model.py --controls
+        run: python3 -B scripts/cdr_mos650_gate_ac.py --controls
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: mos650-controls-${{ github.run_id }}
-          path: mos650-gate-model/derived
+          path: mos650-gate-ac/derived
           if-no-files-found: error
           retention-days: 90
-  native-model-audit:
+  native-gate-ac:
     if: ${{ inputs.execute }}
     needs: source-controls
     runs-on: ubuntu-24.04
@@ -68,13 +68,13 @@ jobs:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/cdr-mos650-gate-model-pins.json
+          sparse-checkout: /scripts/cdr-mos650-gate-ac-pins.json
       - name: Materialize exact source closure
         run: |
           python3 -B - <<'PY'
           import json,subprocess
           from pathlib import Path
-          m='scripts/cdr-mos650-gate-model-pins.json'
+          m='scripts/cdr-mos650-gate-ac-pins.json'
           names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
@@ -82,23 +82,23 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Inspect complete actual model controls and gate access geometry
+      - name: Measure actual dimension QS and RF gate impedance with frozen native simulator
         id: native
-        run: python3 -B scripts/cdr_mos650_gate_model.py --extract
+        run: python3 -B scripts/cdr_mos650_gate_ac.py --extract
       - name: Preserve every actual native success or failure
         if: always()
-        run: python3 -B scripts/cdr_mos650_gate_model.py --publish
+        run: python3 -B scripts/cdr_mos650_gate_ac.py --publish
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: mos650-derived-${{ github.run_id }}
-          path: mos650-gate-model/derived
+          path: mos650-gate-ac/derived
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: mos650-native-fallback-${{ github.run_id }}
-          path: mos650-gate-model
+          path: mos650-gate-ac
           if-no-files-found: warn
           retention-days: 90
