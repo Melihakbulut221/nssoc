@@ -5,7 +5,7 @@ from pathlib import Path,PurePosixPath
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"mos650-gate-ac";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-gate-ac-inputs.json";PINS="scripts/cdr-mos650-gate-ac-pins.json"
-REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr-mos650-full-composition"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr-mos650-full-composition-n2"
 FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
  full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 def need(ok,msg):
@@ -26,6 +26,7 @@ def gate():
  need(e["GITHUB_EVENT_NAME"]=="workflow_dispatch"and e["GITHUB_RUN_ATTEMPT"]=="1","first explicit dispatch")
  need(sys.flags.optimize==0 and e["GITHUB_SHA"]==e["APPROVED_SOURCE"]==subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),"exact source and enabled assertions")
  for n,p in read(ROOT/PINS)["files"].items():need(pin(ROOT/n)==p,"source "+n)
+ need(e["GATE_PARTITION"]=="2"and e["LOADED_CASE"]=="nominal_late","exact independently dispatched comparison")
  return dict(run=int(e["GITHUB_RUN_ID"]),source=e["GITHUB_SHA"],attempt=1)
 def fetch(a,path):
  with path.open("xb")as f:subprocess.run(["gh","api","repos/"+REPO+"/releases/assets/"+str(a["id"]),"-H","Accept: application/octet-stream"],stdout=f,check=True,timeout=600)
@@ -344,7 +345,8 @@ def main():
    data=read(ROOT/"docs/evidence/mos650-current-gate-model-cases.json")
    need(len(data["devices"])==200 and len({r["native_id"]for r in data["devices"]})==200,"all current native gates")
    need(cfg["current_wire"]["run"]==41712243960 and data["source_members"]==cfg["current_wire"]["selected"],"actual current source binding")
-   save("source-controls.json",dict(context=ctx,source_files_verified=True,**FLAGS));return
+   need(os.environ["GATE_PARTITION"]=="2"and os.environ["LOADED_CASE"]=="nominal_late","explicit N2 full loaded comparison case")
+   save("source-controls.json",dict(context=ctx,selected_partition=2,selected_case="nominal_late",source_files_verified=True,**FLAGS));return
   need(sys.argv[1:]==["--extract"],"explicit cloud characterization")
   current=NATIVE/"current-wire";current.mkdir()
   acquire(cfg["current_wire"],current,lambda n:n in cfg["current_wire"]["selected"])

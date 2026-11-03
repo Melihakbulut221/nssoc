@@ -1,4 +1,4 @@
-name: Simulate actual650 whole nonlinear gate metal loaded circuit
+name: Compare N2 actual650 full nonlinear gate metal loaded waveform
 on:
   workflow_dispatch:
     inputs:
@@ -8,7 +8,7 @@ on:
       partition:
         type: choice
         options: ['1', '2', '4', '8', '16']
-        default: '1'
+        default: '2'
       case:
         type: choice
         options: ['nominal_early', 'nominal_late', 'hot_early', 'hot_late', 'cold_early', 'cold_late', 'constant_zero', 'constant_one', 'clock_stopped', 'vi_bias_off']
@@ -20,7 +20,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-mos650-full-composition-${{ github.ref }}
+  group: cdr-mos650-full-composition-n2-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
