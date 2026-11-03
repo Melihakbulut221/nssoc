@@ -13,7 +13,15 @@ BASELINE=Path(os.environ["NSSOC_BULK_INPUT"])
 def read(path): return json.loads(path.read_bytes())
 def save(name, value): native.save(DATA/name, value)
 def snap(path, stem):
-    value=native.snapshot(path, WORK/(stem+".def"))
+    # Candidate FIXED includes the temporary router overlay, not just the
+    # original clock/fixed scope. Derive ownership only from the exact baseline.
+    need(native.fp(BASELINE)==p.INPUT, "exact original protected-scope input")
+    db,block=n.load(BASELINE)
+    try:
+        protected=sorted(n.selected(block))
+        need(len(protected)==len(set(protected))==1691, "original protected1691 census")
+    finally: odb.dbDatabase.destroy(db)
+    value=native.snapshot(path, WORK/(stem+".def"), protected)
     save(stem+".json",value)
     return value
 def capture(path):
