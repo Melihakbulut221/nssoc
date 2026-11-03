@@ -133,7 +133,7 @@ def generate(cfg):
   for row in rows:
    need(len(row["terminal_polygons"])==1,"one physical gate electrode")
    pg=polygon(row["terminal_polygons"][0],pya);b=pg.bbox()
-   need(pya.Region(pg)==pya.Region(b)and b.width()==300,"actual vertical300nm gate channel length")
+   need((pya.Region(pg)^pya.Region(b)).is_empty()and b.width()==300,"actual vertical300nm gate channel length")
    boxes.append(b)
   boxes.sort(key=lambda b:b.bottom)
   need(len({(b.left,b.right)for b in boxes})==1,"aligned actual poly stem")
