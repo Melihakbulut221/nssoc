@@ -69,7 +69,7 @@ def context(env):
         require(re.fullmatch("[1-9][0-9]*", env.get(k, "")) is not None, "run identity")
     require(env["GITHUB_RUN_ATTEMPT"] == "1", "no automatic retry")
     require(re.fullmatch("[0-9a-f]{40}", env.get("GITHUB_SHA", "")) is not None, "immutable tested source")
-    require(env.get("GITHUB_REF") == "refs/heads/codex/mainchip-guide-single-engine", "build branch")
+    require(env.get("GITHUB_REF") == "refs/heads/codex/mainchip-guide-tiled-engine", "build branch")
     token = env["GITHUB_RUN_ID"] + "-" + env["GITHUB_RUN_ATTEMPT"]
     return dict(name="nssoc-witness-build-" + token, source=env["GITHUB_SHA"], token=token)
 

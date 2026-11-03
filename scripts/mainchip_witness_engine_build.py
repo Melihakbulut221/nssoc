@@ -169,6 +169,7 @@ def build():
         header=work/"source/src/drt/src/MainchipInternalWitness.h"
         c.require(fingerprint(header)["sha256"] == m["protected"][observer.HEADER], "observer header changed")
         c.method(ROOT)
+        c.require(fingerprint(work/"source/src/drt/src/dr/MainchipGuideTilePartition.h")["sha256"] == m["protected"]["scripts/mainchip-guide-tile-partition.h"], "partition header changed")
     def terminal_engine():
         info=report["container_terminal"]
         inner=c.decode((out/"inner-result.json").read_bytes())
@@ -223,6 +224,8 @@ def build():
         guide_modified=guide_batch.derive(guide_original)
         c.require(c.digest(guide_modified)==m["guide_batch"]["derived_sha256"],"derived guide worker lifetime source")
         (source/"src/drt/src/dr/FlexDR.cpp").write_bytes(guide_modified)
+        shutil.copyfile(ROOT/"scripts/mainchip-guide-tile-partition.h",source/"src/drt/src/dr/MainchipGuideTilePartition.h")
+        c.require(fingerprint(source/"src/drt/src/dr/MainchipGuideTilePartition.h")["sha256"]==m["protected"]["scripts/mainchip-guide-tile-partition.h"],"partition header binding")
         (out/"guide-batch-before.cpp").write_bytes(guide_original)
         (out/"guide-batch-after.cpp").write_bytes(guide_modified)
         write(out/"guide-batch-derivation.json",m["guide_batch"])
