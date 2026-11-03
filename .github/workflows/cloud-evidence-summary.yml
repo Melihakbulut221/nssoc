@@ -1,10 +1,18 @@
-name: Preserve actual gate field port responses power and thermal noise
+name: Simulate actual650 whole nonlinear gate metal loaded circuit
 on:
   workflow_dispatch:
     inputs:
       execute:
         type: boolean
         default: false
+      partition:
+        type: choice
+        options: ['1', '2', '4', '8', '16']
+        default: '1'
+      case:
+        type: choice
+        options: ['nominal_early', 'nominal_late', 'hot_early', 'hot_late', 'cold_early', 'cold_late', 'constant_zero', 'constant_one', 'clock_stopped', 'vi_bias_off']
+        default: nominal_late
       approved_source:
         type: string
         required: true
@@ -12,12 +20,14 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-mos650-gate-port-reduction-${{ github.ref }}
+  group: cdr-mos650-full-composition-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
   OPENBLAS_NUM_THREADS: '1'
   OMP_NUM_THREADS: '1'
+  GATE_PARTITION: ${{ inputs.partition }}
+  LOADED_CASE: ${{ inputs.case }}
   APPROVED_SOURCE: ${{ inputs.approved_source }}
 jobs:
   source-controls:
@@ -57,7 +67,7 @@ jobs:
     if: ${{ inputs.execute }}
     needs: source-controls
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    timeout-minutes: 360
     permissions:
       contents: write
       actions: read
@@ -86,7 +96,7 @@ jobs:
           python-version: '3.12'
       - name: Install pinned sparse linear algebra dependencies
         run: python3 -m pip install --disable-pip-version-check --no-cache-dir --report /tmp/nssoc-gate-reduce-packages.json numpy==2.3.3 scipy==1.16.2
-      - name: Reduce actual gate field ports and compare native DC AC power and noise
+      - name: Assemble all actual650 partitions and execute selected full256bit loaded transient
         id: native
         run: python3 -B scripts/cdr_mos650_gate_ac.py --extract
       - name: Preserve every actual native success or failure
