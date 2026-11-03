@@ -15,3 +15,9 @@ Equal-potential intrinsic partition41717942914 passed160 native tests and13696 D
 First native run41719493627 verifies every actual gate material/contact relationship and passes the600nm-grid native analytic70ohm sheet reference. Mesh generation then fails because KLayout exposes an integral DBU-squared area as a Python float, while Fraction(numerator,denominator) requires Rational inputs.
 
 The successor checks that each area is finite, exactly integral and below2**53 before conversion to int. It never rounds a fractional area. Geometry, mesh boundaries, material values, source GDS, native circuit checks and current-conservation thresholds are unchanged. The full original failure remains preserved.
+
+## Native refinement evidence and75nm continuation
+
+Run41720040423/source6c1eb9d790cf5caeff98d10784e868e5e1113648 passes all exact material/area/contact checks and all three analytic/native mesh solves. The150nm mesh has53848cells,94084poly resistors and800 contact conductance patches representing the same200 actual contacts. Complete per-gate area weights remain exact.
+
+The maximum simultaneous-uniform-injection gate-average change is0.343038% for600->300nm and2.178391% for300->150nm. These results do not establish general convergence. The successor retains all three prior pitches and adds75nm with identical material values and acceptance checks; no existing tolerance is relaxed. Full nonlinear intrinsic and actual metal-network integration remain open.

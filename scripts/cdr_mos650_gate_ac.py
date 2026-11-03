@@ -351,8 +351,8 @@ def characterize(models):
    found=re.findall(re.escape(expr)+r"\s*=\s*([0-9.eE+-]+)",log,re.I)
    need(len(found)==1 and math.isfinite(float(found[0])),"actual native mesh observation "+expr);return float(found[0])
   return dict(voltages={n:number("v("+n+")")for n in voltages},currents={n:number("i("+n+")")for n in currents},deck=pin(folder/"bench.cir"))
- summaries=[]
- for pitch in(600,300,150):
+ summaries=[];pitches=(600,300,150,75)
+ for pitch in pitches:
   # Independent native rectangular-sheet reference: exact analytic R=Rs*L/W.
   rectangle=db.Region(db.Box(0,0,10000,1000));cells,edges=grid(rectangle,[],pitch,"cal")
   deck=["* Analytic rectangular sheet check","VL left 0 DC 1","VR right 0 DC 0"]
@@ -437,8 +437,8 @@ def characterize(models):
   a=coarse["actual_uniform_injection_observation"]["voltages"];b=fine["actual_uniform_injection_observation"]["voltages"];need(set(a)==set(b),"same actual200 intrinsic gate averages")
   changes.append(dict(coarse_pitch_nm=coarse["pitch_nm"],fine_pitch_nm=fine["pitch_nm"],max_relative_gate_average_change=max(abs(a[k]-b[k])/abs(b[k])for k in a)))
  need(pin(gds)==dict(bytes=1624572,sha256="c335182048dc1696821ab875fb34447e5b5a9ba0f1a24d5d16d572680906c16c"),"actual geometry unchanged")
- save("physical-gate-resistance-network.json",dict(pitches_nm=[600,300,150],gate_groups=50,intrinsic_gates=200,physical_contacts=200,
-  native_rectangle_references_passed=3,native_actual_mesh_DC_runs_passed=3,refinement_observations=changes,
+ save("physical-gate-resistance-network.json",dict(pitches_nm=list(pitches),gate_groups=50,intrinsic_gates=200,physical_contacts=200,
+  native_rectangle_references_passed=len(pitches),native_actual_mesh_DC_runs_passed=len(pitches),refinement_observations=changes,
   material_parameters=parameters,physical_gate_resistance_network_generated=True,full_metal_network_integrated=False,
   actual_intrinsic_devices_present=False,nonuniform_gate_convergence_qualified=False,material_values_qualified_for_signoff=False,**FLAGS))
  return 4
