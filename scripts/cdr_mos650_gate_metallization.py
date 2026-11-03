@@ -1,0 +1,225 @@
+#!/usr/bin/env python3
+"""Inspect exact compact-model gate controls and actual gate access geometry in cloud."""
+import hashlib,json,os,re,subprocess,sys,tarfile,traceback,shutil
+from pathlib import Path,PurePosixPath
+ROOT=Path(__file__).resolve().parents[1]
+OUT=ROOT/"mos650-gate-metallization";NATIVE=OUT/"native";DERIVED=OUT/"derived"
+CFG="scripts/cdr-mos650-gate-metallization-inputs.json";PINS="scripts/cdr-mos650-gate-metallization-pins.json"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr-mos650-gate-metallization"
+FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
+ full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
+def need(ok,msg):
+ if not ok:raise ValueError(msg)
+def read(p):return json.loads(Path(p).read_bytes())
+def enc(d):return(json.dumps(d,sort_keys=True,indent=2,allow_nan=False)+"\n").encode()
+def pin(p):
+ p=Path(p)
+ with p.open("rb")as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,"sha256").hexdigest())
+def save(n,d):
+ p=DERIVED/n;p.parent.mkdir(parents=True,exist_ok=True)
+ with p.open("xb")as f:f.write(enc(d))
+def api(path):return json.loads(subprocess.check_output(["gh","api","repos/"+REPO+"/"+path],timeout=180))
+def gate():
+ e=os.environ
+ need(e.get("GITHUB_ACTIONS")=="true"and e.get("RUNNER_ENVIRONMENT")=="github-hosted","hosted only")
+ need(e["GITHUB_REPOSITORY"]==REPO and e["GITHUB_REF"]=="refs/heads/"+BRANCH,"owned branch")
+ need(e["GITHUB_EVENT_NAME"]=="workflow_dispatch"and e["GITHUB_RUN_ATTEMPT"]=="1","first explicit dispatch")
+ need(sys.flags.optimize==0 and e["GITHUB_SHA"]==e["APPROVED_SOURCE"]==subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),"exact source and enabled assertions")
+ for n,p in read(ROOT/PINS)["files"].items():need(pin(ROOT/n)==p,"source "+n)
+ return dict(run=int(e["GITHUB_RUN_ID"]),source=e["GITHUB_SHA"],attempt=1)
+def fetch(a,path):
+ with path.open("xb")as f:subprocess.run(["gh","api","repos/"+REPO+"/releases/assets/"+str(a["id"]),"-H","Accept: application/octet-stream"],stdout=f,check=True,timeout=600)
+ need(pin(path)=={k:a[k]for k in("bytes","sha256")},"whole asset content")
+def acquire(prod,dest,selector):
+ r=api("actions/runs/"+str(prod["run"]));rel=api("releases/"+str(prod["release"]))
+ need(r["head_sha"]==prod["source"]and r["status"]=="completed"and r["conclusion"]=="success"and r["run_attempt"]==1,"actual qualified producer")
+ need(rel["target_commitish"]==prod["source"]and rel["tag_name"]==prod["tag"]and api("git/ref/tags/"+prod["tag"])["object"]["sha"]==prod["source"],"qualified release/tag identity")
+ actual={a["name"]:a for a in rel["assets"]};need(set(actual)==set(prod["assets"]),"complete producer assets")
+ cache=NATIVE/("producer-"+str(prod["run"]));cache.mkdir()
+ for n,a in prod["assets"].items():
+  need(actual[n]["id"]==a["id"]and actual[n]["size"]==a["bytes"]and actual[n]["digest"]=="sha256:"+a["sha256"],"immutable asset metadata")
+  fetch(a,cache/n)
+ index=read(cache/"complete-output-index.json")
+ need(index["context"]==dict(run=prod["run"],source=prod["source"],attempt=1),"complete index context")
+ selected={n:p for n,p in index["files"].items()if selector(n)}
+ need(selected==prod["selected"],"complete independently bound selection")
+ seen=set()
+ with tarfile.open(cache/prod["archive"],"r|gz")as tar:
+  for m in tar:
+   prefix=prod["archive_root"]+"/";need(m.isfile()and m.name.startswith(prefix),"regular archive member")
+   n=m.name[len(prefix):];path=PurePosixPath(n)
+   need(n in index["files"]and n not in seen and not path.is_absolute()and ".."not in path.parts,"unique indexed member");seen.add(n)
+   stream=tar.extractfile(m);h=hashlib.sha256();size=0;output=None
+   if n in selected:
+    p=dest/n;p.parent.mkdir(parents=True,exist_ok=True);output=p.open("xb")
+   try:
+    for b in iter(lambda:stream.read(1024*1024),b""):
+     size+=len(b);h.update(b)
+     if output:output.write(b)
+   finally:
+    if output:output.close();os.chmod(dest/n,m.mode&0o777)
+   need(dict(bytes=size,sha256=h.hexdigest())==index["files"][n],"every indexed archive member authenticated")
+ need(seen==set(index["files"]),"whole producer archive coverage")
+ save("acquisition-"+str(prod["run"])+".json",dict(producer=prod,members=len(seen),selected=selected,**FLAGS))
+ return selected
+def publish():
+ ctx=gate();tag="cloud-results-"+str(ctx["run"])+"-1-cdr-mos650-gate-metallization";rel=api("releases/tags/"+tag)
+ need(rel["target_commitish"]==ctx["source"]and not rel["assets"]and api("git/ref/tags/"+tag)["object"]["sha"]==ctx["source"],"independent empty release")
+ dest=OUT/"publication";dest.mkdir()
+ paths=[p for p in OUT.rglob("*")if p.is_file()and dest not in p.parents]
+ # The authenticated current view is preserved in its immutable producer release.
+ rows={str(p.relative_to(OUT)):pin(p)for p in sorted(paths)}
+ index=dest/"complete-output-index.json";index.write_bytes(enc(dict(context=ctx,files=rows,**FLAGS)))
+ archive=dest/"native-gate-metallization.tar.gz"
+ with tarfile.open(archive,"w:gz",compresslevel=1)as tar:
+  for n in rows:tar.add(OUT/n,arcname="mos650-gate-metallization/"+n,recursive=False)
+ for p in(index,archive):subprocess.run(["gh","release","upload",tag,str(p),"--repo",REPO],check=True,timeout=1200)
+ assets=api("releases/"+str(rel["id"]))["assets"]
+ for p in(index,archive):
+  a=next(a for a in assets if a["name"]==p.name);need(a["size"]==p.stat().st_size and a["digest"]=="sha256:"+pin(p)["sha256"],"exact published output")
+ save("publication.json",dict(release=rel["id"],assets=assets,**FLAGS))
+
+
+def polygon(text,pya):
+ raw=text.split(" props=")[0]
+ need(raw.startswith("(")and raw.endswith(")"),"exact native polygon encoding")
+ points=[pya.Point(*map(int,p.split(",")))for p in raw[1:-1].split(";")]
+ return pya.Polygon(points)
+def layer_regions(g,top,pya):
+ return {(g.get_info(li).layer,g.get_info(li).datatype):pya.Region(top.begin_shapes_rec(li)).merged()for li in g.layer_indices()}
+def structure(g):
+ return {c.name:sorted((g.cell(i.cell_index).name,str(i.cplx_trans),i.na,i.nb,str(i.a),str(i.b))for i in c.each_inst())for c in g.each_cell()}
+def texts(g):
+ return sorted((c.name,g.get_info(li).layer,g.get_info(li).datatype,str(s.text))for c in g.each_cell()for li in g.layer_indices()for s in c.shapes(li).each()if s.is_text())
+def max_uncontacted(intervals,contacts):
+ maximum=0.
+ for lo,hi in intervals:
+  probes=[lo,hi]+[(a+b)/2 for a,b in zip(contacts,contacts[1:])if lo<=(a+b)/2<=hi]
+  maximum=max(maximum,max(min(abs(p-c)for c in contacts)for p in probes))
+ return maximum
+
+def generate(cfg):
+ import klayout.db as pya
+ need(pya.__version__=="0.30.4","pinned native geometry runtime")
+ selected=NATIVE/"current";selected.mkdir()
+ acquire(cfg["view"],selected,lambda n:n.startswith("native/selected/layout/")or n=="derived/gate-poly-access.json")
+ gds=selected/"native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds"
+ need(pin(gds)==dict(bytes=1019324,sha256="17bcc6f9e98f5346e92f7c770f4212a012ab1718ba78432fd609e280ff5e0541"),"actual independently650 DRC LVS qualified GDS")
+ g=pya.Layout();g.read(str(gds));need(g.dbu==.001 and len(g.top_cells())==1,"exact nm grid and top")
+ top=g.top_cell();need(top.name=="nssoc_cdr_pd500_resistor_v59","actual macro")
+ before=layer_regions(g,top,pya);hierarchy=structure(g);annotations=texts(g);bounds=top.bbox()
+ poly=before[(5,0)];active=before[(1,0)]
+ grouped={}
+ for row in read(selected/"derived/gate-poly-access.json")["gates"]:
+  key=json.dumps([row["access_poly_polygons"],row["contact_polygons"]],sort_keys=True)
+  grouped.setdefault(key,[]).append(row)
+ need(len(grouped)==50 and sum(map(len,grouped.values()))==200,"all physical gate groups")
+ added={k:pya.Region()for k in((6,0),(8,0),(10,0),(19,0))}
+ plans=[]
+ for rows in grouped.values():
+  ids=[r["device"]for r in rows];need(len({r["native_cluster"]for r in rows})==1,"same native gate owner per actual poly group")
+  path=pya.Region()
+  for s in rows[0]["access_poly_polygons"]:path.insert(polygon(s,pya))
+  contact=pya.Region()
+  for s in rows[0]["contact_polygons"]:contact.insert(polygon(s,pya))
+  need(path.count()==1 and contact.count()==1 and(path-poly).is_empty(),"bound existing poly/contact group")
+  rec=dict(devices=ids,native_cluster=rows[0]["native_cluster"],gate_poly_area_dbu2=path.area(),
+    nSD_overlap_dbu2=(path&before.get((7,0),pya.Region())).area(),
+    pSD_overlap_dbu2=(path&before.get((14,0),pya.Region())).area(),
+    salicide_block_overlap_dbu2=(path&before.get((28,0),pya.Region())).area())
+  if len(rows)==1:
+   rec["disposition"]="UNCHANGED_SINGLE_UNIT";plans.append(rec);continue
+  boxes=[]
+  for row in rows:
+   need(len(row["terminal_polygons"])==1,"one physical gate electrode")
+   pg=polygon(row["terminal_polygons"][0],pya);b=pg.bbox()
+   need(pya.Region(pg)==pya.Region(b)and b.width()==300,"actual vertical300nm gate channel length")
+   boxes.append(b)
+  boxes.sort(key=lambda b:b.bottom)
+  need(len({(b.left,b.right)for b in boxes})==1,"aligned actual poly stem")
+  gx=(boxes[0].left+boxes[0].right)//2
+  c=contact.bbox().center();need(c.x==gx,"original aligned top contact")
+  intervals=[(b.bottom,b.top)for b in boxes]
+  gaps=[(a.top+b.bottom)//2 for a,b in zip(boxes,boxes[1:])]
+  need(all(b.bottom-a.top==500 for a,b in zip(boxes,boxes[1:])),"actual500nm unit gaps")
+  cuts=pya.Region()
+  for y in gaps:cuts.insert(pya.Box(gx-80,y-80,gx+80,y+80))
+  need((cuts.sized(70)-poly).is_empty(),"complete70nm existing poly enclosure")
+  need((cuts.sized(110)&active).is_empty(),"actual110nm contact active clearance")
+  need((cuts.sized(180)&before[(6,0)]).is_empty(),"existing contact clearance")
+  allowed=before[(8,0)].interacting(contact)
+  need(not allowed.is_empty(),"actual original metal gate attachment")
+  foreign_m1=(before[(8,0)]-allowed)+added[(8,0)]
+  blocked_m1=foreign_m1.sized(180)
+  blocked_m2=(before[(10,0)]+added[(10,0)]).sized(210)
+  blocked_v1=(before[(19,0)]+added[(19,0)]).sized(220)
+  ys=sorted(gaps+[c.y]);attempts=[];chosen=None
+  for distance in range(800,10001,50):
+   for sign in(-1,1):
+    busx=gx+sign*distance
+    m1=pya.Region();vias=pya.Region()
+    for y in ys:
+     m1.insert(pya.Box(min(gx,busx)-130,y-80,max(gx,busx)+130,y+80))
+     m1.insert(pya.Box(busx-145,y-145,busx+145,y+145))
+     vias.insert(pya.Box(busx-95,y-95,busx+95,y+95))
+    m2=pya.Region(pya.Box(busx-160,min(ys)-160,busx+160,max(ys)+160))
+    m1.merge();vias.merge()
+    clashes=dict(m1_area=(m1&blocked_m1).area(),m2_area=(m2&blocked_m2).area(),via1_area=(vias&blocked_v1).area(),
+      outside_macro_area=((m1+m2)-pya.Region(bounds)).area())
+    attempts.append(dict(bus_x_dbu=busx,**clashes))
+    if not any(clashes.values()):chosen=(m1,m2,vias,busx);break
+   if chosen:break
+  rec.update(attempts=attempts,planned_contacts=len(gaps),old_max_gate_to_contact_um=.001*max_uncontacted(intervals,[c.y]),
+    new_max_gate_to_contact_um=.001*max_uncontacted(intervals,ys))
+  if chosen is None:
+   rec["disposition"]="NO_CLEAR_M1_STUB_M2_BUS";plans.append(rec)
+   save("geometry-plan-failure.json",dict(groups=plans,**FLAGS))
+   raise ValueError("No conservative clear gate bus for actual devices "+str(ids))
+  m1,m2,vias,busx=chosen
+  need((cuts-m1).is_empty()and(vias.sized(50)-m1).is_empty()and(vias.sized(50)-m2).is_empty(),"all native cut enclosures")
+  for k,v in [((6,0),cuts),((8,0),m1),((10,0),m2),((19,0),vias)]:added[k]+=v;added[k].merge()
+  rec.update(disposition="ADDED_LOCAL_CONTACTS_M1_STUBS_M2_BUS",bus_x_dbu=busx,via1_count=vias.count())
+  plans.append(rec)
+ need(sum(r.get("planned_contacts",0)for r in plans)==150 and len([r for r in plans if r["disposition"].startswith("ADDED")])==42,"all multi-unit groups repaired")
+ for key,region in added.items():
+  for pg in region.each():
+   need(all(p.x%5==0 and p.y%5==0 for p in pg.each_point_hull()),"all new geometry5nm grid")
+  top.shapes(g.layer(*key)).insert(region)
+ after=layer_regions(g,top,pya)
+ for key,old in before.items():
+  expected=(old+added.get(key,pya.Region())).merged()
+  need((after[key]^expected).is_empty(),"only declared material additions "+str(key))
+ need(structure(g)==hierarchy and texts(g)==annotations,"unchanged complete hierarchy and text annotations")
+ layout=NATIVE/"layout";layout.mkdir()
+ target=layout/gds.name;opts=pya.SaveLayoutOptions();opts.write_context_info=False;g.write(str(target),opts)
+ restored=pya.Layout();restored.read(str(target));rt=restored.top_cell();readback=layer_regions(restored,rt,pya)
+ need(set(readback)==set(after)and restored.dbu==g.dbu and rt.bbox()==bounds,"full GDS material extent/grid roundtrip")
+ for key in after:need((after[key]^readback[key]).is_empty(),"all material serialization equality "+str(key))
+ need(structure(restored)==hierarchy and texts(restored)==annotations,"complete serialized hierarchy and labels")
+ ref=selected/"native/selected/layout/schematic.cir";shutil.copyfile(ref,layout/"schematic.cir")
+ parent=read(selected/"native/selected/layout/result.json")
+ metadata=dict(parent,status="GENERATED_GATE_METAL_CANDIDATE_REQUIRES_FULL_DRC_LVS",candidate=pin(target),
+  gate_metal_repair=dict(groups=plans,added_contacts=150,added_via1=sum(r.get("via1_count",0)for r in plans),
+   physical_drc_lvs_qualified=False,RC_or_electrical_accepted=False))
+ (layout/"result.json").write_bytes(enc(metadata))
+ save("geometry-plan.json",dict(groups=plans,original_candidate=pin(gds),candidate=pin(target),independent_reference=pin(ref),
+  added_contact_count=150,added_metal_bus_count=42,unchanged_single_unit_groups=8,
+  all_layers_roundtrip_equal=True,all_original_geometry_retained=True,
+  geometry_guards_are_not_full_DRC=True,**FLAGS))
+ return pin(target)
+
+def main():
+ ctx=gate()
+ if sys.argv[1:]==["--publish"]:publish();return
+ OUT.mkdir();NATIVE.mkdir();DERIVED.mkdir()
+ try:
+  cfg=read(ROOT/CFG)
+  if sys.argv[1:]==["--controls"]:
+   need(cfg["view"]["run"]==41690238100,"current complete physical view")
+   save("source-controls.json",dict(context=ctx,source_files_verified=True,**FLAGS));return
+  need(sys.argv[1:]==["--extract"],"explicit cloud generation")
+  candidate=generate(cfg);gate()
+  save("result.json",dict(status="GENERATED_ACTUAL650_GATE_METAL_CANDIDATE_REQUIRES_INDEPENDENT_DRC_LVS",context=ctx,candidate=candidate,**FLAGS))
+ except BaseException as e:
+  save("failure.json",dict(error_type=type(e).__name__,error=str(e),traceback=traceback.format_exc(),**FLAGS));raise
+if __name__=="__main__":main()
