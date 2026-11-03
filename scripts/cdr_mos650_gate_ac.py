@@ -74,9 +74,14 @@ def publish():
  archive=dest/"native-gate-ac.tar.gz"
  with tarfile.open(archive,"w:gz",compresslevel=1)as tar:
   for n in rows:tar.add(OUT/n,arcname="mos650-gate-ac/"+n,recursive=False)
- for p in(index,archive):subprocess.run(["gh","release","upload",tag,str(p),"--repo",REPO],check=True,timeout=1200)
+ from cdr_mos650_archive_transport import partition
+ parts,transport=partition(archive)
+ outputs=[index,*parts]
+ if transport is not None:
+  manifest=dest/"archive-parts.json";manifest.write_bytes(enc(dict(context=ctx,transport=transport,**FLAGS)));outputs.append(manifest)
+ for p in outputs:subprocess.run(["gh","release","upload",tag,str(p),"--repo",REPO],check=True,timeout=1200)
  assets=api("releases/"+str(rel["id"]))["assets"]
- for p in(index,archive):
+ for p in outputs:
   a=next(a for a in assets if a["name"]==p.name);need(a["size"]==p.stat().st_size and a["digest"]=="sha256:"+pin(p)["sha256"],"exact published output")
  save("publication.json",dict(release=rel["id"],assets=assets,**FLAGS))
 
@@ -342,6 +347,8 @@ def main():
   cfg=read(ROOT/CFG)
   if sys.argv[1:]==["--controls"]:
    need(cfg["runtime"]["producer"]["run_id"]==39029337682,"exact frozen model runtime")
+   from cdr_mos650_archive_transport import controls
+   save("archive-transport-controls.json",controls())
    data=read(ROOT/"docs/evidence/mos650-current-gate-model-cases.json")
    need(len(data["devices"])==200 and len({r["native_id"]for r in data["devices"]})==200,"all current native gates")
    need(cfg["current_wire"]["run"]==41712243960 and data["source_members"]==cfg["current_wire"]["selected"],"actual current source binding")
