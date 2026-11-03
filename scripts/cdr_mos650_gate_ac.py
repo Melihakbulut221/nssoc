@@ -338,9 +338,13 @@ def characterize(models):
   save(label+"-readbacks.json",dict(instances=actual,models=readback,**FLAGS))
   save(label+"-measurements.json",dict(cases=observations,deck=pin(ac/"bench.cir"),native_measurements=pin(ac/"impedance.txt"),physical_gate_network_present=False,compact_model_overlap_resolved=False,**FLAGS))
   return observations
- canonical=sweep("canonical-ngcon2",models,basecases,False)
+ canonical=[]
+ for case in basecases:canonical.extend(sweep("canonical-"+case["label"],models,[case],False))
+ save("canonical-ngcon2-measurements.json",dict(cases=canonical,one_instance_per_native_deck=True,**FLAGS))
  before_variant={str(p):pin(p)for p in variant.rglob("*")if p.is_file()}
- measured=sweep("explicit-ngcon12",variant,cases,True)
+ measured=[]
+ for case in cases:measured.extend(sweep("explicit-"+case["label"],variant,[case],True))
+ save("explicit-ngcon12-measurements.json",dict(cases=measured,one_instance_per_native_deck=True,**FLAGS))
  matches=[]
  for baseline in canonical:
   actual=next(row for row in measured if row["label"]==baseline["label"])
@@ -354,7 +358,7 @@ def characterize(models):
  save("gate-contact-ac-comparison.json",dict(current_physical_run=41710162510,current_wire_run=41712243960,
   current_candidate=fixture["candidate"],actual_intrinsic_gates=200,one_ended=50,two_ended=150,
   original_ngcon2_reproduced_cases=matches,canonical_cases=canonical,contact_cases=measured,
-  native_ngcon_readback_verified=True,complete_original_model_files_unchanged=True,
+  native_ngcon_readback_verified=True,one_instance_per_native_deck=True,complete_original_model_files_unchanged=True,
   equivalent_physical_gate_resistance_extracted=False,physical_gate_network_present=False,compact_model_overlap_resolved=False,**FLAGS))
  return len(geometries)
 
