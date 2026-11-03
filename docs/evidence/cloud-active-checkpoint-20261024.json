@@ -21,7 +21,7 @@
           "status": "in_progress"
         }
       ],
-      "observed_at": "2026-11-03T22:52:50.528447+00:00",
+      "observed_at": "2026-11-03T23:02:29.148075+00:00",
       "run": 41699812301,
       "source": "9430a57873e78d3c283b531da8e8e74da416f297",
       "status": "in_progress",
@@ -48,7 +48,7 @@
           "status": "in_progress"
         }
       ],
-      "observed_at": "2026-11-03T22:52:50.528447+00:00",
+      "observed_at": "2026-11-03T23:02:29.148075+00:00",
       "run": 41733225660,
       "source": "9bba58288772dd2bee9dab142e391d0616737973",
       "status": "in_progress",
@@ -75,7 +75,7 @@
           "status": "in_progress"
         }
       ],
-      "observed_at": "2026-11-03T22:52:50.528447+00:00",
+      "observed_at": "2026-11-03T23:02:29.148075+00:00",
       "run": 41734419971,
       "source": "81555c8ba8357f2874fab2c5bb0c3378305e3501",
       "status": "in_progress",
@@ -376,7 +376,12 @@
     "physical_acceptance": false,
     "timing_accepted": false
   },
-  "checkpoint_version": 358,
+  "cdr_pll_v359": {
+    "full_phy_accepted": false,
+    "note": "## Current CDR/PLL boundary and restored native divider map\n\nThree existing cloud jobs remain independently monitored. No new simulation or physical repair is claimed by this source audit. The exact first-divider15-HBT/four-load terminal map referenced by the old root diagnosis was missing in the root continuation branch. Its exact original bytes are restored from a4bf51c1219fe521f34bb477035cdfc2a5012335, SHA256d405e7125ae9b838dc258d65ccfc91c03d0f3e9e03ccaed59a741dfb75058df5.\n\nRead docs/pcie-cdr-pll-connection-audit-20261104.md and its source-bound JSON before designing the actual PLL/CDR parent. The current five topology sources match the existing first-latch diagnosis. The physical first-stage four collector loads areW8/L2.8um, despiteL2.12um in the generic sampler schematic. The RHI120-C8 capture and earlier PLL845 capture are distinct; neither acquisition is accepted. Recorded first-divider voltage evidence does not supply individual HBT branch currents.\n\nThe full current650 N1/N2 waveforms and original full64 mainchip route remain active requirements; continue their exact handles. Full serialGen3x4, final serial-integrated chip and setuphold remain unproven.\n\nExact RHI120 final window: 104.152221297MHz feedback, 5.002708790ns phase span; acquisition rejected. The older110.440674MHz figure belongs to the earlier PLL845 capture, not this first-latch diagnosis source.",
+    "runs": []
+  },
+  "checkpoint_version": 359,
   "clock_access_v332": {
     "candidate_sha256": "28eebb9f880648935a6368ada78a5e5666694ba98e073fbbac3f2e0c986339d6",
     "deep_flat_lvs_passed": true,
@@ -30766,7 +30771,7 @@
           "status": "in_progress"
         }
       ],
-      "observed_at": "2026-11-03T22:52:50.528447+00:00",
+      "observed_at": "2026-11-03T23:02:29.148075+00:00",
       "run": 41699812301,
       "source": "9430a57873e78d3c283b531da8e8e74da416f297",
       "status": "in_progress",
@@ -31443,7 +31448,7 @@
           "status": "in_progress"
         }
       ],
-      "observed_at": "2026-11-03T22:52:50.528447+00:00",
+      "observed_at": "2026-11-03T23:02:29.148075+00:00",
       "run": 41733225660,
       "source": "9bba58288772dd2bee9dab142e391d0616737973",
       "status": "in_progress",
@@ -31470,7 +31475,7 @@
           "status": "in_progress"
         }
       ],
-      "observed_at": "2026-11-03T22:52:50.528447+00:00",
+      "observed_at": "2026-11-03T23:02:29.148075+00:00",
       "run": 41734419971,
       "source": "81555c8ba8357f2874fab2c5bb0c3378305e3501",
       "status": "in_progress",
@@ -122079,7 +122084,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 358,
+    "inventory_version": 359,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -122820,12 +122825,12 @@
     }
   ],
   "next_actions": [
-    "Poll N1 41733225660/job126255793850/release433297951 and N2 41734419971/release433304261 independently. Never restart either on observation timeout. Exact N2 source81555c8ba8357f2874fab2c5bb0c3378305e3501 on codex/cdr-mos650-full-composition-n2.",
-    "Read complete derived-early and final measurements. The first original KLU run41732402949 remains FAILURE despite all5 assemblies and native returncode0. Sparse/startup changes have not yet proved a successful transient or root cause.",
-    "After native results, compare actual physical output waveforms, phase margins, real aggregate current responses and all device gates between N1 and N2; continue N4/N8/N16 and original10cases/PVT/faults. Do not declare convergence from two green workflow badges.",
-    "If N2 publishes archive-parts.json, acquire every part in its manifest order in a cloud job, verify each size/hash and the complete joined archive size/hash, then authenticate every indexed tar member. Do not download native payloads locally. If unsplit N1 publication exceeds release size, recover its cloud-native fallback without changing electrical outcome.",
-    "Poll original full64 mainchip41699812301/job126140534081/release433106055. Inspect actual restored geometry/DRC/antenna/PG/LVS/freshRC/Liberty/allcornerSTA when native artifacts exist. Current chip is still packet-boundary; complete PHY requires actual serial owner/PMA/clock integration and a fresh final chip implementation.",
-    "Preserve all local-empty/cloud-only constraints and monitor automatic_native_dispatch=false. Keep goal active until actual full serialPHY, final mainchip route and original-clock setuphold are proven."
+    "Poll exact N1 41733225660/job126255793850/release433297951 and N2 41734419971/job126259886378/release433304261; inspect derived-early and full native measurements. No duplicate dispatch on observation timeout.",
+    "Read restored docs/evidence/pll-first-divider15-terminal-column-map-20261024.json and docs/pcie-cdr-pll-connection-audit-20261104.md for the next actual loaded PLL first-conditioner/master-slave experiment. Preserve actual parentW8/L2.8 first loads, not genericL2.12 defaults. Include upstream VCO and real downstream loads, and save true HBT currents absent from the old capture.",
+    "Do not use the older PLL845110.44MHz result as the RHI120-C8 first-latch source. The new audit pins the exact current rejection capture and original final acquisition window. Neither PLL acquisition nor recovered-clock CDR is accepted.",
+    "Compare full native N1/N2 outputs and physical current sums after results, then continue finer partitions and all original cases/PVT/faults with unchanged thresholds. Full PHY additionally needs real clock and serial ownership and physical integration.",
+    "Poll same mainchip41699812301/job126140534081/release433106055. After actual route completion inspect restored geometry, DRC/antenna/PG/LVS/freshRC/qualifiedLiberty/allcornerSTA; its packet-boundary top cannot close final serial integration.",
+    "Native payloads stay cloud-only. Keep workspace empty, preserve failed results, and preserve monitor automatic_native_dispatch=false. N2 multipart native publication requires exact ordered part and whole-archive hash validation in cloud."
   ],
   "physical_path_diagnostics_v255": {
     "all_readbacks_verified": true,
@@ -164560,7 +164565,7 @@
     "timing_accepted": false,
     "timing_limits_unchanged": true
   },
-  "root_source_before_receipt": "ec9f2c5331844e0d16180f9b605ee74efe018dda",
+  "root_source_before_receipt": "3c82b96d25c5971ff5ade987018fa64ff1aa4fcf",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -164847,7 +164852,7 @@
       "run": 41349316524
     }
   ],
-  "updated_at": "2026-11-03T22:52:50.528447+00:00",
+  "updated_at": "2026-11-03T23:02:29.148075+00:00",
   "width8_wave_diagnosis_v250": {
     "proof": {
       "bytes": 5806735,
