@@ -1,0 +1,251 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "source_API_derived_text_RAM_only": true,
+    "workspace_entries": 0
+  },
+  "final_timing_complete": false,
+  "full_mainchip_routing_accepted": false,
+  "full_phy_accepted": false,
+  "note": "## Current continuation: actual650 terminal identity passes; guide region memory repair in cloud build\n\nMainchip41552715162/source5ba879c94ed74747d7e30ae341dee1d045765150 is TERMINAL FAILURE, not active. The single-worker route ran4560.291882265 seconds and crossed the unchanged11534336 KiB process-group RSS guard at11793076 KiB; host available3367476 KiB, SIGTERM return-15, OOMKilled=false. It remained in20th guide iteration after90 percent, partial82 markers. Partial markers are not final DRC, and restoration/RC/STA were not reached. The complete82-member derived failure and release432114633 metadata are preserved in docs/evidence/mainchip-single-worker-41552715162-complete-failure.json. Do not rerun the identical candidate.\n\nPinned upstream guideTilesFlow merges intersecting same-direction guide boxes without a region-size cap. New candidate6cae8ce19c56bb597b9edab02c7d21b14b099eb2 on codex/mainchip-guide-tiled-engine partitions each merged worker rectangle into windows bounded by args.size times native GCell dimensions, with one-GCell overlap and exact full-union preservation. Original guide geometry, full64 strategy, search costs, single-worker limit, physical constraints and acceptance gates remain unchanged. Worker decomposition changes routing behavior and is not claimed equivalent. Exact failing-box size was not observed in the old log; new split telemetry makes this measurable.\n\nEngine run41688147573/release433034713 passed source-controls126099301471: actual C++ partition helper255 coverage/boundary/integer-limit cases,6 invalid-bound refusals,4 independently detected coverage faults; original9 lifetime cases, engine7 positive45 refusal25 lifecycle and observer4 positive29 refusal controls retained. Follow SAME engine-build126099852433; no restart merely because observation times out. Full native compile status is in the current snapshot below. A successful build alone requires actual-chip qualification before one full64 routing attempt, followed by original restoration/full DRC/antenna/PG/LVS/fresh RC-Liberty/all-corner STA.\n\nPHY identity41687582642/source d059ce861f55ee6c526a2e6f4f7beab7041fc562 on codex/cdr-mos650-identity SUCCEEDED. Both actual deep and flat LVS databases from physically qualified650 candidate41556278428 bind all650 devices,2046 actual terminal owners/geometries and25 public ports to the independent original schematic and explicit200-MOS plan. All15 corrupt-identity controls reject per mode. Complete physical650 parameters and explicit source/drain terminal permutations are retained. Release433031196 permanently contains the actual complete identity/native input evidence; docs/evidence/mos650-identity-41687582642-receipt.json binds every derived member and full release index.\n\nNEXT PHY: use these actual650 native IDs/semantic mappings to implement complete physical geometry paths and conductor partitions, then fresh650 wire RC with explicit intrinsic-device parasitic coverage. Existing500-layout canonical compare assumes unchanged500 devices and cannot be qualified by changing counts. Do not reuse old500 RC or double-expand200 actual MOS. New electrical qualification must retain original loaded gates and failure history (61/62 headroom, phase/current/sampling), then full closed-loop serial Gen3x4 qualification and integration. Identity success is not fresh RC or electrical/PHY acceptance.\n\nAll native CAD/SPICE/GDS/ODB/ELF/raw/archive payloads remain GitHub-only. Local workspace remains empty. Existing8hour monitor remains read-only, automatic_native_dispatch=false. Full objective remains active; no fullPHY, routed-mainchip or finalsetup/hold acceptance.\n\nObserved 2026-11-03T17:54:12.571556+00:00:\n- 41505377046: completed/failure\n- 41507901483: completed/failure\n- 41552715162: completed/failure\n- 41556278428: completed/success\n- 41687582642: completed/success\n- 41688147573: in_progress/None\n",
+  "observed_at": "2026-11-03T17:54:12.571556+00:00",
+  "runs": [
+    {
+      "branch": "codex/mainchip-guide-engine-roundtrip",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125497841260,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125497841711,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125497841795,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125497841909,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 125497841982,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125497842258,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125497842278,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125497843518,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T17:54:12.571556+00:00",
+      "run": 41505377046,
+      "source": "64a21283a014b802329e295d1136ae1ec645fee0",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41505377046"
+    },
+    {
+      "branch": "codex/cdr-slave-drive-stage-timing",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125497786979,
+          "name": "memory-parity",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125497787400,
+          "name": "formal-sweep (soc)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125497787411,
+          "name": "formal-sweep (pilot)",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125497787414,
+          "name": "python-quality",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125497787467,
+          "name": "formal-and-boot",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125497787596,
+          "name": "rtl",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "cancelled",
+          "id": 125497787898,
+          "name": "checks",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125497789493,
+          "name": "native-boot",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T17:54:12.571556+00:00",
+      "run": 41507901483,
+      "source": "e6c78d53d05c724c2b4adc83f86aebd47d44d9f7",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41507901483"
+    },
+    {
+      "branch": "codex/mainchip-guide-single-full64",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125644018582,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125644268460,
+          "name": "native-routing",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T17:54:12.571556+00:00",
+      "run": 41552715162,
+      "source": "5ba879c94ed74747d7e30ae341dee1d045765150",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41552715162"
+    },
+    {
+      "branch": "codex/cdr-mos650-physical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125655838665,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125655954347,
+          "name": "native-physical",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T17:54:12.571556+00:00",
+      "run": 41556278428,
+      "source": "852e610cd4873d7cfcd3b09d85f03c62b5151969",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41556278428"
+    },
+    {
+      "branch": "codex/cdr-mos650-identity",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126097325605,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126097529682,
+          "name": "native-identity",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T17:54:12.571556+00:00",
+      "run": 41687582642,
+      "source": "d059ce861f55ee6c526a2e6f4f7beab7041fc562",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41687582642"
+    },
+    {
+      "branch": "codex/mainchip-guide-tiled-engine",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126099301471,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Build complete pinned engine under owned cgroup"
+          ],
+          "conclusion": null,
+          "id": 126099852433,
+          "name": "engine-build",
+          "status": "in_progress"
+        }
+      ],
+      "observed_at": "2026-11-03T17:54:12.571556+00:00",
+      "run": 41688147573,
+      "source": "6cae8ce19c56bb597b9edab02c7d21b14b099eb2",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41688147573"
+    }
+  ],
+  "version": 343
+}
