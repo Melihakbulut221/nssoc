@@ -1,0 +1,88 @@
+{
+  "final_timing_complete": false,
+  "full_phy_accepted": false,
+  "local_workspace_entries": 0,
+  "note": "## Native contact-count and actual gate resistance measured\n\nRun41716341181/source44efb7eae677d57988386398073f7c83f6145c7d on codex/cdr-mos650-gate-contact-ac SUCCEEDED, release433203305. Complete current wire producer41712243960 was authenticated in the cloud. All200 current native MOS IDs, actual W/L/AS/AD/PS/PD,50 one-ended and150 two-ended electrodes were rebuilt and matched to the fixture. The8.885um geometry has only two-ended electrodes, so there are14 actual dimension/contact/QS-RF cases plus8 canonical reference cases.\n\nAll22 separate one-transistor native executions completed with no diagnostics. Every requested NGCON and actual RG/XGW/NF/W/L was read back from the frozen native simulator. The eight explicit NGCON2 cases reproduce the untouched original models with the ORIGINAL relative1e-9/absolute1e-7 complex-impedance tolerance and identical native resistance/geometry readbacks. Original model files remain unchanged; only a separate wrapper copy exposes the six formerly fixed NGCON arguments. All stdout/stderr, readbacks, decks and complete native archives are preserved.\n\nMeasured RF RG atW8um is73.09375ohm one-ended vs52.59375ohm two-ended; atW8.89um75.51709786276714 vs52.79209786276715; atW9um75.82407407407408 vs52.824074074074076. QS RG remains4.824074074074075 to5.427083333333333ohm despite RGO/RSHG0, because native RINT is1.3025e-11. RF RGO40/RSHG3, RVPOLY0, DLSIL0, SWGEO1 and nativeXGW100nm are recorded. Complete input impedance is not the gate resistor; atW8um/two-ended/RF/1GHz its real part is74.08834477288276ohm while actualRG is52.59375ohm.\n\nFirst run41715622293/sourcee5b3fd44493da81faa269798b5b43667b6d74330/release433199094 FAILED the strict equivalence gate despite zero native diagnostics and correct NGCON readbacks. Its canonical8-device and explicit14-device decks differed in matrix size; seven real-impedance samples exceeded tolerance, max4.311324346417678e-6ohm. Successor controls this numerical confound with one device per native deck; the exact original comparison tolerance is unchanged. The first complete failure and measurements remain preserved. Source-only intermediate27409f8771edc1dd82ba63fa55ca726dd010c882 was not dispatched; native RG instrumentation is in44efb7.\n\nThis resolves a model diagnostic, not physical gate/poly/contact network composition. No full PEX, complete electrical, fullserialPHY or finaltiming acceptance is claimed. Current accepted metalRC remains41713023974:28619R/18469C,1428 distinct anchors and13raw corruption controls. Actual mainchip full64 routing41699812301 is polled independently; no duplicate route was started.\n\n\n## Observed native contact-model outcomes\n[\n  {\n    \"conclusion\": \"failure\",\n    \"result\": {\n      \"bytes\": 1043,\n      \"record\": {\n        \"electrical_accepted\": false,\n        \"error\": \"explicit NGCON2 reproduces unchanged original model real_impedance_ohm\",\n        \"error_type\": \"ValueError\",\n        \"final_timing_complete\": false,\n        \"full_pex_qualified\": false,\n        \"full_phy_accepted\": false,\n        \"gate_poly_RC_extracted\": false,\n        \"mim_intrinsic_composition_qualified\": false,\n        \"substrate_r_modeled\": false,\n        \"traceback\": \"Traceback (most recent call last):\\n  File \\\"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_gate_ac.py\\\", line 384, in main\\n    count=characterize(models)\\n          ^^^^^^^^^^^^^^^^^^^^\\n  File \\\"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_gate_ac.py\\\", line 350, in characterize\\n    need(math.isclose(a[key],b[key],rel_tol=1e-9,abs_tol=1e-7),\\\"explicit NGCON2 reproduces unchanged original model \\\"+key)\\n  File \\\"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_gate_ac.py\\\", line 12, in need\\n    if not ok:raise ValueError(msg)\\n              ^^^^^^^^^^^^^^^^^^^^^\\nValueError: explicit NGCON2 reproduces unchanged original model real_impedance_ohm\\n\"\n      },\n      \"sha256\": \"e9393838234a0c7fb4aaed7e84d2ebe0b1d1475891f37ffd65794c4bfa974af5\"\n    },\n    \"run\": 41715622293\n  },\n  {\n    \"conclusion\": \"success\",\n    \"result\": {\n      \"bytes\": 560,\n      \"record\": {\n        \"actual_mos_units\": 200,\n        \"context\": {\n          \"attempt\": 1,\n          \"run\": 41716341181,\n          \"source\": \"44efb7eae677d57988386398073f7c83f6145c7d\"\n        },\n        \"electrical_accepted\": false,\n        \"final_timing_complete\": false,\n        \"full_pex_qualified\": false,\n        \"full_phy_accepted\": false,\n        \"gate_poly_RC_extracted\": false,\n        \"gate_resistance_qualified\": false,\n        \"mim_intrinsic_composition_qualified\": false,\n        \"status\": \"MEASURED_CURRENT_GATE_CONTACT_COUNT_EFFECT_REQUIRES_PHYSICAL_NETWORK_COMPOSITION\",\n        \"substrate_r_modeled\": false,\n        \"unique_physical_dimensions\": 4\n      },\n      \"sha256\": \"0f1408cfe21173f5167d98bbafb39f01bcf2903e172463da9a30c1397cdd433a\"\n    },\n    \"run\": 41716341181\n  }\n]\n\n\nObserved 2026-11-03T20:54:34.467932+00:00:\n- 41699812301: in_progress/None\n- 41715622293: completed/failure\n- 41716341181: completed/success\n",
+  "observed_at": "2026-11-03T20:54:34.467932+00:00",
+  "physical_acceptance": false,
+  "runs": [
+    {
+      "branch": "codex/mainchip-guide-tiled-full64",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126139836003,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate actual chip qualification then execute original full64 route and audits"
+          ],
+          "conclusion": null,
+          "id": 126140534081,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "observed_at": "2026-11-03T20:54:34.467932+00:00",
+      "run": 41699812301,
+      "source": "9430a57873e78d3c283b531da8e8e74da416f297",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41699812301"
+    },
+    {
+      "branch": "codex/cdr-mos650-gate-contact-ac",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126194732144,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 126195031255,
+          "name": "native-gate-ac",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T20:54:34.467932+00:00",
+      "run": 41715622293,
+      "source": "e5b3fd44493da81faa269798b5b43667b6d74330",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41715622293"
+    },
+    {
+      "branch": "codex/cdr-mos650-gate-contact-ac",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126197226532,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126197335395,
+          "name": "native-gate-ac",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T20:54:34.467932+00:00",
+      "run": 41716341181,
+      "source": "44efb7eae677d57988386398073f7c83f6145c7d",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41716341181"
+    }
+  ],
+  "version": 351
+}
