@@ -1,0 +1,140 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "observed_at": "2026-11-03T01:02:04.189543+00:00",
+    "source_API_derived_text_RAM_only": true,
+    "workspace_entries": 0
+  },
+  "full650_physical_accepted": true,
+  "note": "## Current continuation: actual MOS650 gap repair physically tested; full native evidence preserved\n\nFirst actual650candidate41554289328 produced a valid all34layer-roundtripped GDS but fullDRC41554860331 rejected oneLU.b marker. Independent diagnostic41555538547 then proved deep+flat650device LVS and12LVS fault rejections; offgrid was deliberately not qualified while baselineDRC failed. Exact marker: nssoc_model_range_123,polygon(0,-5;0,-3.33;0.98,-3.33;0.98,-5)um. All evidence preserved, no rule waiver.\n\nActualgaprepair324d50d9f2c4ba3cde823ff1c8602e95c0c25a82 oncodex/cdr-mos650-geometry shortened unit spacing1um->0.5um, reducing worst extension5um->2.5um while retaining totalW,all200MOS and450other devices,originaltopaccess and independent reference. Generation41555879992/release432130268 SUCCEEDED. NewGDS1019324bytes/SHA17bcc6f9e98f5346e92f7c770f4212a012ab1718ba78432fd609e280ff5e0541; all34layer roundtrip and original preservation guards passed. Independent reference remains35500bytes/SHA21d730545b983930eacf733ba77a7593df52e253987991724de9594fe136bbfb.\n\nNewfullphysical41556278428/source852e610cd4873d7cfcd3b09d85f03c62b5151969 oncodex/cdr-mos650-physical/release432132372 was run on exact new GDS. Native checker30c4586b86167ad775af14b5568152820a802037150bdfd282e7ba0843a1555f retains every original phase body and all13fault intents, collects independent DRC/deepLVS/flatLVS failures, refuses acceptance for any failed/unqualified phase. No native count/rule/mismatch criterion was weakened.\n\nACTUAL TERMINAL RESULT: success; PASS_NATIVE_PDK_CDR_PD650_DRC_LVS_AND_FAULT_CONTROLS; full650physical macro accepted=True.\nAll phase statuses: {\"drc\": \"PASS\", \"gain_gate_disconnected\": \"REJECTED_EXPECTED_FAULT\", \"gain_tail_width\": \"REJECTED_EXPECTED_FAULT\", \"lvs\": \"PASS\", \"lvs_flat\": \"PASS\", \"missing_gain_hbt\": \"REJECTED_EXPECTED_FAULT\", \"missing_hbt\": \"REJECTED_EXPECTED_FAULT\", \"offgrid\": \"REJECTED_EXPECTED_FAULT\", \"old_data_header_length\": \"REJECTED_EXPECTED_FAULT\", \"old_retime_width\": \"REJECTED_EXPECTED_FAULT\", \"old_sampler_input_width\": \"REJECTED_EXPECTED_FAULT\", \"q_open\": \"REJECTED_EXPECTED_FAULT\", \"rail_short\": \"REJECTED_EXPECTED_FAULT\", \"v59_old_length\": \"REJECTED_EXPECTED_FAULT\", \"wrong_finger_count\": \"REJECTED_EXPECTED_FAULT\", \"wrong_follower_polarity\": \"REJECTED_EXPECTED_FAULT\"}.\nAll560DRCcategories ZERO markers; deep andflat650transistorLVS match, no extractiondiagnostics;200MOS/124HBT/98rppd/7MIM/221tap; all13actualfaults rejected. This closes the physical650 macro DRC/LVS gate for this exact candidate, not fullPHY or productionapproval.\n\nNEXT PHY: follow docs/cdr-mos650-fresh-rc-continuation.md. Build actual650native identity/fullterminal/wirepartition view and fresh650RC, with explicit50->200unit mapping and450nonMOS invariants. Existingcanonical logic assumes500unchanged primitives and cannot just change constants. Expected2046terminals/1428anchors require actual extraction; never inject expected counts as observations. Existing500layoutRC26344R/16878C and rejectedfull650wave41549033741 cannot qualify this newgeometry. Avoid double-expansion ofalready200physicalMOS. Then original34.25ns/full650electricalgates including61/62headroom,phase/current/sampling; fullserialGen3x4/closedloopCDRPLL remains open.\n\nMAINCHIP: follow SAME fullroute41552715162/source5ba879c94ed74747d7e30ae341dee1d045765150, native-routing125644268460, release432114633. Qualifiedsingle-workerengine41548861169 andindependentcontrols41552510648 passed. No duplicate/restart on observationtimeout. Fullroute restoration/fullDRC/antenna/PG/LVS/qualifiedRC-Liberty/allcornerSTA remain required. Fullmainchiprouting andfinalsetuphold not accepted.\n\nNative CAD/SPICE/GDS/ODB/ELF/raw/archive payloads stay GitHub-only; localworkspaceempty. Existing8hourmonitor read-only,automatic_native_dispatch=false. Full product goal remains active.\n\nObserved 2026-11-03T01:02:04.189543+00:00:\n- 41552715162: in_progress/None\n- 41554860331: completed/failure\n- 41555538547: completed/failure\n- 41555879992: completed/success\n- 41556278428: completed/success\n",
+  "runs": [
+    {
+      "branch": "codex/mainchip-guide-single-full64",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125644018582,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate actual chip qualification then execute original full64 route and audits"
+          ],
+          "conclusion": null,
+          "id": 125644268460,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "observed_at": "2026-11-03T01:02:04.189543+00:00",
+      "run": 41552715162,
+      "source": "5ba879c94ed74747d7e30ae341dee1d045765150",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41552715162"
+    },
+    {
+      "branch": "codex/cdr-mos650-physical",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125651165241,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125651286909,
+          "name": "native-physical",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T01:02:04.189543+00:00",
+      "run": 41554860331,
+      "source": "45c8b61e1d41bc9016b0fc387b092b84366b9d81",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41554860331"
+    },
+    {
+      "branch": "codex/cdr-mos650-physical",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125653417456,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125653564229,
+          "name": "native-physical",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T01:02:04.189543+00:00",
+      "run": 41555538547,
+      "source": "68d4763a6730bd53fb19097a505f55d75fb317c6",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41555538547"
+    },
+    {
+      "branch": "codex/cdr-mos650-geometry",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125654530747,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125654612045,
+          "name": "native-geometry",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T01:02:04.189543+00:00",
+      "run": 41555879992,
+      "source": "324d50d9f2c4ba3cde823ff1c8602e95c0c25a82",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41555879992"
+    },
+    {
+      "branch": "codex/cdr-mos650-physical",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125655838665,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125655954347,
+          "name": "native-physical",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T01:02:04.189543+00:00",
+      "run": 41556278428,
+      "source": "852e610cd4873d7cfcd3b09d85f03c62b5151969",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41556278428"
+    }
+  ],
+  "version": 342
+}
