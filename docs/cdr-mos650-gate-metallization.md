@@ -134,3 +134,15 @@ LVS must still prove the complete650 reference equivalence; no connectivity
 acceptance follows merely from the geometric inference. Earlier560-category
 DRC passes remain historical measurements and are not proof that this extra
 whole-via coverage predicate was checked.
+
+
+## Full DRC feedback from run41707025516
+Deep and flat LVS passed, but full DRC rejected392 markers: M1.a8,
+M1.b8, M1.e8 and M2.b368. The failure is preserved, not accepted.
+The next generator retains original via landing metal until the proven
+gate corridor trim, avoiding needless subtraction outside that corridor.
+It also closes sub210nm M2 notches only within each actual source/drain
+physical net near the added landings, while checking foreign-net spacing.
+The M1.e wide-line spacing issue is still explicitly unresolved; exact
+original and candidate material windows are exported around its markers.
+No generation or source check substitutes for the frozen full DRC/LVS.

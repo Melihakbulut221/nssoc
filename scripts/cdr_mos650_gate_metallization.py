@@ -224,7 +224,7 @@ def generate(cfg):
    old_cuts+=ov;new_cuts+=nv;old_pads+=op;new_pads+=np
   if original_vias:
    need((old_cuts&removed_v1).is_empty(),"no physical via is moved twice")
-   future_m1=(metal[(8,0)]-old_pads)+new_pads
+   future_m1=metal[(8,0)]+new_pads
    future_v1=(metal[(19,0)]-old_cuts)+new_cuts
    future_m2=metal[(10,0)]+new_pads
    need((before[(6,0)]-future_m1).is_empty(),"every original contact remains completely covered")
@@ -243,7 +243,7 @@ def generate(cfg):
     relocations.append(recmove)
     extra_m1.setdefault(netid,pya.Region());extra_m1[netid]+=np
     extra_m2.setdefault(netid,pya.Region());extra_m2[netid]+=np
-   removed_m1+=old_pads;removed_v1+=old_cuts
+   removed_v1+=old_cuts
    metal[(8,0)]=future_m1.merged();metal[(19,0)]=future_v1.merged();metal[(10,0)]=future_m2.merged()
   corridor=pya.Region(pya.Box(gx-260,min(ys)-310,gx+260,max(ys)+310))
   own_gate_now=(own_m1-removed_m1)+extra_m1.get(wn.cluster_id,pya.Region())
@@ -321,6 +321,20 @@ def generate(cfg):
   save("geometry-plan-failure.json",dict(groups=plans,failed_groups=len(failed),source_drain_via_relocations=relocations,**FLAGS))
   raise ValueError("No clear160nm M1 gate strap for "+str(len(failed))+" actual groups")
  need(sum(r.get("planned_contacts",0)for r in plans)==150 and len([r for r in plans if r["disposition"].startswith("ADDED")])==42,"all multi-unit groups repaired")
+
+ # Fill only narrow concavities belonging to an already proven physical net.
+ # Different-net spacing is independently checked; no global metal closing.
+ notch_repairs=[]
+ for netid,extension in extra_m2.items():
+  wn=next(n for n in physical_wires.netlist().top_circuit().each_net()if n.cluster_id==netid)
+  own2=(physical_wires.shapes_of_net(wn,wire_m2,True)+extension).merged()
+  fill=(own2.sized(105).sized(-105)-own2)&extension.sized(210)
+  foreign=metal[(10,0)]-own2
+  need((fill&foreign.sized(210)).is_empty(),"same-net M2 notch fill preserves foreign-net spacing")
+  metal[(10,0)]=(metal[(10,0)]+fill).merged()
+  extra_m2[netid]+=fill
+  notch_repairs.append(dict(wire_component=netid,area_dbu2=fill.area(),polygons=[str(pg)for pg in fill.each()]))
+ save("m2-notch-repairs.json",dict(nets=notch_repairs,full_DRC_required=True,**FLAGS))
  for key,region in added.items():
   for pg in region.each():
    need(all(p.x%5==0 and p.y%5==0 for p in pg.each_point_hull()),"all new geometry5nm grid")
@@ -336,6 +350,19 @@ def generate(cfg):
   top.shapes(li).insert(desired)
  top.shapes(g.layer(6,0)).insert(added[(6,0)])
  after=layer_regions(g,top,pya)
+ # Exact failing edge coordinates retained as derived data, then inspect the
+ # candidate material around them. These windows are diagnostics, not waivers.
+ fixture=read(ROOT/"docs/evidence/mos650-gate-metal-41707025516-drc-markers.json")
+ windows=[]
+ for row in fixture["markers"]:
+  if row["category"] not in ("'M1.a'","'M1.e'"):continue
+  coords=[tuple(int(round(float(t)*1000))for t in pair)for pair in re.findall(r"([0-9.]+),([0-9.]+)",row["value"])]
+  roi=pya.Region(pya.Box(min(x for x,y in coords)-700,min(y for x,y in coords)-700,max(x for x,y in coords)+700,max(y for x,y in coords)+700))
+  windows.append(dict(marker=row,roi=str(roi.bbox()),
+   original={str(k):[str(pg)for pg in(v&roi).each()]for k,v in before.items()if k in((1,0),(5,0),(6,0),(8,0),(10,0),(19,0))},
+   candidate={str(k):[str(pg)for pg in(v&roi).each()]for k,v in after.items()if k in((1,0),(5,0),(6,0),(8,0),(10,0),(19,0))}))
+ save("previous-drc-windows.json",dict(windows=windows,**FLAGS))
+
  for key,old in before.items():
   expected=(metal[key]+added.get(key,pya.Region())).merged()
   need((after[key]^expected).is_empty(),"only declared material changes "+str(key))
