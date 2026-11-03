@@ -86,7 +86,7 @@ def check_capture(text,anchors,binding):
     for x in X:
         assert all(n in graph.parent for n in x[1:3]);p=dict(v.split('=')for v in x[4:]);assert set(p)=={'w','l'}
         key=(owners[graph.find(x[1])],owners[graph.find(x[2])],parser.number(p['w'])/Decimal('1e-6'),parser.number(p['l'])/Decimal('1e-6'))
-        assert key in expected and key not in found,'Wrong/duplicate native MIM geometry or terminal ownership';found[key]=x[0]
+        assert key in expected and key not in found,('Wrong/duplicate native MIM geometry or terminal ownership',key,list(expected),list(found));found[key]=x[0]
         devices.append(dict(native_id=expected[key],export=x,plus_component=key[0],minus_component=key[1]))
     assert set(found)==set(expected)
     return dict(status='PASS_CAPTURE_COMPONENTS_AND_SEVEN_INTRINSIC_MIM_IDENTITIES_REQUIRES_RAW_RC_AUDIT',R=len(R),C=len(C),native_mim_devices=devices,physical_components=113,physical_points=1428,raw_point_capacitance_audited=False,qualified_pex=False)
@@ -171,6 +171,42 @@ def records(path):
   assert row[0].startswith(("R","C","X"))
   key=tuple(row)if row[0][0]in("R","X")else("C",*sorted(row[1:3]),Decimal(row[3]))
   result[key]+=1
+
+def current_binding(flat):
+ import re
+ assert len(flat["pairs"])==650 and flat["terminal_count"]==2046
+ devices=[];dimensions=[]
+ for pair in flat["pairs"]:
+  device=pair["layout"];p={k:str(v)for k,v in device["parameters"].items()}
+  if device["model"]=="cap_cmim":
+   boxes=[]
+   for terminal in("MIM_TOP","MIM_BTM"):
+    layers=device["terminals"][terminal]["native_layers"];assert len(layers)==1
+    layer=layers[0];points=[tuple(map(int,t))for t in re.findall(r"(-?\d+),(-?\d+)",layer["polygons"][0])]
+    assert len(layer["polygons"])==1 and len(points)==len(set(points))==4
+    xs=[x for x,y in points];ys=[y for x,y in points]
+    box=(min(xs),min(ys),max(xs),max(ys))
+    assert set(points)=={(x,y)for x in(box[0],box[2])for y in(box[1],box[3])}
+    parsed=re.fullmatch(r"\((-?\d+),(-?\d+);(-?\d+),(-?\d+)\)",layer["bbox_dbu"]);assert parsed
+    assert tuple(map(int,parsed.groups()))==box
+    assert layer["area_dbu2"]==(box[2]-box[0])*(box[3]-box[1])
+    boxes.append(box)
+   assert boxes[0]==boxes[1]
+   box=boxes[0];w=Decimal(box[2]-box[0])/1000;l=Decimal(box[3]-box[1])/1000
+   exact=dict(w=w,l=l,A=w*l,P=2*(w+l))
+   assert device["parameters"]["m"]==1 and w>0 and l>0
+   corrections=[]
+   for key,value in exact.items():
+    observed=Decimal(p[key])
+    if observed!=value:
+     assert (p[key],str(value))in{("4.800000000000001","4.8"),("19.200000000000003","19.2")},("unrecognized native geometry discrepancy",key,p[key],str(value))
+     corrections.append(dict(parameter=key,raw=p[key],exact_from_integer_polygons=str(value)))
+    p[key]=str(value)
+   dimensions.append(dict(native_id=device["id"],bbox_dbu=box,raw_parameters=device["parameters"],exact_parameters=p,known_serialization_artifacts=corrections))
+  devices.append(dict(native_id=device["id"],model=device["model"],native_parameters=p))
+ assert len(dimensions)==7
+ return dict(devices=devices),dimensions
+
 if __name__=="__main__":
  import sys
  if sys.argv[1:]==["--geometry"]:generate()

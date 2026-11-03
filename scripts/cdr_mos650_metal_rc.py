@@ -204,7 +204,8 @@ def mim_extract(cfg,physical):
  runtime=NATIVE/"runtime-parent";source=physical/"native/view"
  flat=read(physical/"derived/lvs_flat-identity.json")
  need(len(flat["pairs"])==650 and flat["terminal_count"]==2046,"all current native650 identities")
- binding=dict(devices=[dict(native_id=p["layout"]["id"],model=p["layout"]["model"],native_parameters={k:str(v)for k,v in p["layout"]["parameters"].items()})for p in flat["pairs"]])
+ binding,dimensions=support.current_binding(flat)
+ save("mim-native-integer-dimensions.json",dict(devices=dimensions,all_parameters_derived_from_exact_native_plate_polygons=True,**FLAGS))
  need(sum(d["model"]=="cap_cmim"for d in binding["devices"])==7,"seven actual native MIMs")
  methods0,derivation=methods();results={}
  execute([sys.executable,"-B",ROOT/"scripts/tx_reverse_native_cap_order.py","--controls"],"reverse-order-controls")
