@@ -1,4 +1,4 @@
-name: Bind actual650 dual LVS terminals for fresh RC
+name: Extract actual650 full wire topology and gate access geometry
 on:
   workflow_dispatch:
     inputs:
@@ -12,7 +12,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: cdr-mos650-identity-${{ github.ref }}
+  group: cdr-mos650-wires-${{ github.ref }}
   cancel-in-progress: false
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -28,13 +28,13 @@ jobs:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/cdr-mos650-identity-pins.json
+          sparse-checkout: /scripts/cdr-mos650-wires-pins.json
       - name: Materialize exact source closure
         run: |
           python3 -B - <<'PY'
           import json,subprocess
           from pathlib import Path
-          m='scripts/cdr-mos650-identity-pins.json'
+          m='scripts/cdr-mos650-wires-pins.json'
           names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
@@ -43,15 +43,15 @@ jobs:
         with:
           python-version: '3.12'
       - name: Verify complete independent200-unit plus450-device reference
-        run: python3 -B scripts/cdr_mos650_identity.py --controls
+        run: python3 -B scripts/cdr_mos650_wires.py --controls
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: mos650-controls-${{ github.run_id }}
-          path: mos650-identity/derived
+          path: mos650-wires/derived
           if-no-files-found: error
           retention-days: 90
-  native-identity:
+  native-wires:
     if: ${{ inputs.execute }}
     needs: source-controls
     runs-on: ubuntu-24.04
@@ -68,13 +68,13 @@ jobs:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/cdr-mos650-identity-pins.json
+          sparse-checkout: /scripts/cdr-mos650-wires-pins.json
       - name: Materialize exact source closure
         run: |
           python3 -B - <<'PY'
           import json,subprocess
           from pathlib import Path
-          m='scripts/cdr-mos650-identity-pins.json'
+          m='scripts/cdr-mos650-wires-pins.json'
           names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
           assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
@@ -82,25 +82,25 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Install pinned native LVS database reader
-        run: python3 -m pip install --disable-pip-version-check --no-cache-dir klayout==0.30.4.post1
-      - name: Bind all650 devices2046 terminals25 ports from both actual LVS databases
+      - name: Install pinned native LVS and geometry libraries
+        run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 klayout==0.30.4.post1
+      - name: Extract every actual conductor component and intrinsic terminal anchor
         id: native
-        run: python3 -B scripts/cdr_mos650_identity.py --extract
+        run: python3 -B scripts/cdr_mos650_wires.py --extract
       - name: Preserve every actual native success or failure
         if: always()
-        run: python3 -B scripts/cdr_mos650_identity.py --publish
+        run: python3 -B scripts/cdr_mos650_wires.py --publish
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: mos650-derived-${{ github.run_id }}
-          path: mos650-identity/derived
+          path: mos650-wires/derived
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: mos650-native-fallback-${{ github.run_id }}
-          path: mos650-identity
+          path: mos650-wires
           if-no-files-found: warn
           retention-days: 90
