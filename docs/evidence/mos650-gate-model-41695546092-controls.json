@@ -1,0 +1,4110 @@
+{
+  "electrical_accepted": false,
+  "files": {
+    "circuit.cir": {
+      "controls": [],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 2,
+          "line": 2,
+          "text": ".lib \"/home/runner/work/nssoc/nssoc/cloud-pll-snapshot/models/models/cornerHBT.lib\" hbt_typ"
+        },
+        {
+          "end_line": 3,
+          "line": 3,
+          "text": ".lib \"/home/runner/work/nssoc/nssoc/cloud-pll-snapshot/models/models/cornerRES.lib\" res_typ"
+        },
+        {
+          "end_line": 4,
+          "line": 4,
+          "text": ".lib \"/home/runner/work/nssoc/nssoc/cloud-pll-snapshot/models/models/cornerCAP.lib\" cap_typ"
+        },
+        {
+          "end_line": 5,
+          "line": 5,
+          "text": ".lib \"/home/runner/work/nssoc/nssoc/cloud-pll-snapshot/models/models/cornerMOShv.lib\" mos_tt"
+        },
+        {
+          "end_line": 6,
+          "line": 6,
+          "text": ".lib \"/home/runner/work/nssoc/nssoc/cloud-pll-snapshot/models/models/cornerMOSlv.lib\" mos_tt"
+        },
+        {
+          "end_line": 7,
+          "line": 7,
+          "text": ".include \"parent865.spice\""
+        }
+      ],
+      "source": {
+        "bytes": 20359,
+        "sha256": "52c36ccba2c918cede49457eb3befc67141c1a9f65c4656bac3687a9aeff8085"
+      },
+      "text_encoding": "utf-8"
+    },
+    "frontend/psp103.osdi": {
+      "controls": [],
+      "includes_and_subcircuits": [],
+      "kind": "compiled_osdi_model",
+      "source": {
+        "bytes": 680864,
+        "sha256": "e4a50ec48e3fab3aa7af76f1d0816863c8aa06223e0efcded362ddadb49681a8"
+      }
+    },
+    "frontend/psp103_nqs.osdi": {
+      "controls": [],
+      "includes_and_subcircuits": [],
+      "kind": "compiled_osdi_model",
+      "source": {
+        "bytes": 1001816,
+        "sha256": "523382d47f1f747c991a938b2f93cc6d9bab27ebf44f708c4e995820dc0bee88"
+      }
+    },
+    "models/models/capacitors_mod.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 26,
+          "line": 26,
+          "text": ".subckt cparasitic PLUS MINUS"
+        },
+        {
+          "end_line": 51,
+          "line": 51,
+          "text": ".subckt cap_cmim PLUS MINUS"
+        },
+        {
+          "end_line": 75,
+          "line": 75,
+          "text": ".subckt cap_rfcmim PLUS MINUS bn"
+        }
+      ],
+      "source": {
+        "bytes": 4562,
+        "sha256": "94b569e695fd8a223a5a49a5b5a6b0d8a62408820bf0c2ed9dbcb0a8ab7d957e"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/capacitors_mod_mismatch.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 26,
+          "line": 26,
+          "text": ".subckt cparasitic PLUS MINUS"
+        },
+        {
+          "end_line": 51,
+          "line": 51,
+          "text": ".subckt cap_cmim PLUS MINUS"
+        },
+        {
+          "end_line": 76,
+          "line": 76,
+          "text": ".subckt cap_rfcmim PLUS MINUS bn"
+        }
+      ],
+      "source": {
+        "bytes": 4790,
+        "sha256": "8ebc8369966951cfec0e91d603685f1975fbf9ceff2eef493a25357ce9ae5492"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/capacitors_stat.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [],
+      "source": {
+        "bytes": 1048,
+        "sha256": "68d2ef41174bcfae5997b355c4fd3dbe4f2b8ec4be30ff79d474052b3be1715a"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/cornerCAP.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 21,
+          "line": 21,
+          "text": ".LIB cap_typ"
+        },
+        {
+          "end_line": 25,
+          "line": 25,
+          "text": ".include capacitors_mod.lib"
+        },
+        {
+          "end_line": 29,
+          "line": 29,
+          "text": ".LIB cap_typ_mismatch"
+        },
+        {
+          "end_line": 33,
+          "line": 33,
+          "text": ".include capacitors_mod_mismatch.lib"
+        },
+        {
+          "end_line": 37,
+          "line": 37,
+          "text": ".LIB cap_typ_stat"
+        },
+        {
+          "end_line": 41,
+          "line": 41,
+          "text": ".include capacitors_stat.lib"
+        },
+        {
+          "end_line": 42,
+          "line": 42,
+          "text": ".include capacitors_mod.lib"
+        },
+        {
+          "end_line": 46,
+          "line": 46,
+          "text": ".LIB cap_bcs"
+        },
+        {
+          "end_line": 50,
+          "line": 50,
+          "text": ".include capacitors_mod.lib"
+        },
+        {
+          "end_line": 54,
+          "line": 54,
+          "text": ".LIB cap_bcs_mismatch"
+        },
+        {
+          "end_line": 58,
+          "line": 58,
+          "text": ".include capacitors_mod_mismatch.lib"
+        },
+        {
+          "end_line": 62,
+          "line": 62,
+          "text": ".LIB cap_wcs"
+        },
+        {
+          "end_line": 66,
+          "line": 66,
+          "text": ".include capacitors_mod.lib"
+        },
+        {
+          "end_line": 70,
+          "line": 70,
+          "text": ".LIB cap_wcs_mismatch"
+        },
+        {
+          "end_line": 74,
+          "line": 74,
+          "text": ".include capacitors_mod_mismatch.lib"
+        }
+      ],
+      "source": {
+        "bytes": 1949,
+        "sha256": "4fc4a0f17ca2aef66ca38c2d2e7cead3307b69508d304ed073129565ec1c3e56"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/cornerDIO.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 39,
+          "line": 39,
+          "text": ".LIB dio_tt"
+        },
+        {
+          "end_line": 43,
+          "line": 43,
+          "text": ".include \"diodes.lib\""
+        },
+        {
+          "end_line": 44,
+          "line": 44,
+          "text": ".include \"sg13g2_esd.lib\""
+        },
+        {
+          "end_line": 45,
+          "line": 45,
+          "text": ".include \"sg13g2_dschottky_nbl1_mod.lib\""
+        },
+        {
+          "end_line": 49,
+          "line": 49,
+          "text": ".LIB dio_tt_stat"
+        },
+        {
+          "end_line": 53,
+          "line": 53,
+          "text": ".include \"diodes.lib\""
+        },
+        {
+          "end_line": 54,
+          "line": 54,
+          "text": ".include \"sg13g2_esd.lib\""
+        },
+        {
+          "end_line": 55,
+          "line": 55,
+          "text": ".include \"sg13g2_dschottky_nbl1_stat.lib\""
+        },
+        {
+          "end_line": 56,
+          "line": 56,
+          "text": ".include \"sg13g2_dschottky_nbl1_mod.lib\""
+        },
+        {
+          "end_line": 61,
+          "line": 61,
+          "text": ".LIB dio_ss"
+        },
+        {
+          "end_line": 66,
+          "line": 66,
+          "text": ".include \"diodes.lib\""
+        },
+        {
+          "end_line": 67,
+          "line": 67,
+          "text": ".include \"sg13g2_esd.lib\""
+        },
+        {
+          "end_line": 68,
+          "line": 68,
+          "text": ".include \"sg13g2_dschottky_nbl1_mod.lib\""
+        },
+        {
+          "end_line": 73,
+          "line": 73,
+          "text": ".LIB dio_ff"
+        },
+        {
+          "end_line": 78,
+          "line": 78,
+          "text": ".include \"diodes.lib\""
+        },
+        {
+          "end_line": 79,
+          "line": 79,
+          "text": ".include \"sg13g2_esd.lib\""
+        },
+        {
+          "end_line": 80,
+          "line": 80,
+          "text": ".include \"sg13g2_dschottky_nbl1_mod.lib\""
+        }
+      ],
+      "source": {
+        "bytes": 2584,
+        "sha256": "28e747e8f7437a3f539c5cc36f50c9d17c57c03ed463a4c9ee8f0a93a823fe0b"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/cornerHBT.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 19,
+          "line": 19,
+          "text": ".LIB hbt_typ"
+        },
+        {
+          "end_line": 38,
+          "line": 38,
+          "text": ".include sg13g2_hbt_mod.lib"
+        },
+        {
+          "end_line": 41,
+          "line": 41,
+          "text": ".LIB hbt_typ_mismatch"
+        },
+        {
+          "end_line": 60,
+          "line": 60,
+          "text": ".include sg13g2_hbt_mod_mismatch.lib"
+        },
+        {
+          "end_line": 63,
+          "line": 63,
+          "text": ".LIB hbt_typ_stat"
+        },
+        {
+          "end_line": 82,
+          "line": 82,
+          "text": ".include sg13g2_hbt_stat.lib"
+        },
+        {
+          "end_line": 83,
+          "line": 83,
+          "text": ".include sg13g2_hbt_mod.lib"
+        },
+        {
+          "end_line": 86,
+          "line": 86,
+          "text": ".LIB hbt_bcs"
+        },
+        {
+          "end_line": 105,
+          "line": 105,
+          "text": ".include sg13g2_hbt_mod.lib"
+        },
+        {
+          "end_line": 108,
+          "line": 108,
+          "text": ".LIB hbt_bcs_mismatch"
+        },
+        {
+          "end_line": 127,
+          "line": 127,
+          "text": ".include sg13g2_hbt_mod_mismatch.lib"
+        },
+        {
+          "end_line": 130,
+          "line": 130,
+          "text": ".LIB hbt_wcs"
+        },
+        {
+          "end_line": 149,
+          "line": 149,
+          "text": ".include sg13g2_hbt_mod.lib"
+        },
+        {
+          "end_line": 152,
+          "line": 152,
+          "text": ".LIB hbt_wcs_mismatch"
+        },
+        {
+          "end_line": 171,
+          "line": 171,
+          "text": ".include sg13g2_hbt_mod_mismatch.lib"
+        }
+      ],
+      "source": {
+        "bytes": 3975,
+        "sha256": "bae3d705445de8d6b8de4aa798a0e3e5e7cab617d6495d9c56473bc5377de462"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/cornerMOShv.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 75,
+          "line": 75,
+          "text": ".LIB mos_tt"
+        },
+        {
+          "end_line": 120,
+          "line": 120,
+          "text": ".include sg13g2_moshv_mod.lib"
+        },
+        {
+          "end_line": 121,
+          "line": 121,
+          "text": ".include sg13g2_svaricaphv_mod.lib"
+        },
+        {
+          "end_line": 125,
+          "line": 125,
+          "text": ".LIB mos_tt_mismatch"
+        },
+        {
+          "end_line": 170,
+          "line": 170,
+          "text": ".include sg13g2_moshv_mismatch.lib"
+        },
+        {
+          "end_line": 171,
+          "line": 171,
+          "text": ".include sg13g2_moshv_mod_mismatch.lib"
+        },
+        {
+          "end_line": 172,
+          "line": 172,
+          "text": ".include sg13g2_svaricaphv_mod_mismatch.lib"
+        },
+        {
+          "end_line": 176,
+          "line": 176,
+          "text": ".LIB mos_tt_stat"
+        },
+        {
+          "end_line": 221,
+          "line": 221,
+          "text": ".include sg13g2_moshv_stat.lib"
+        },
+        {
+          "end_line": 222,
+          "line": 222,
+          "text": ".include sg13g2_moshv_mod.lib"
+        },
+        {
+          "end_line": 223,
+          "line": 223,
+          "text": ".include sg13g2_svaricaphv_mod.lib"
+        },
+        {
+          "end_line": 228,
+          "line": 228,
+          "text": ".LIB mos_ss"
+        },
+        {
+          "end_line": 273,
+          "line": 273,
+          "text": ".include sg13g2_moshv_mod.lib"
+        },
+        {
+          "end_line": 274,
+          "line": 274,
+          "text": ".include sg13g2_svaricaphv_mod.lib"
+        },
+        {
+          "end_line": 278,
+          "line": 278,
+          "text": ".LIB mos_ss_mismatch"
+        },
+        {
+          "end_line": 323,
+          "line": 323,
+          "text": ".include sg13g2_moshv_mismatch.lib"
+        },
+        {
+          "end_line": 324,
+          "line": 324,
+          "text": ".include sg13g2_moshv_mod_mismatch.lib"
+        },
+        {
+          "end_line": 325,
+          "line": 325,
+          "text": ".include sg13g2_svaricaphv_mod_mismatch.lib"
+        },
+        {
+          "end_line": 330,
+          "line": 330,
+          "text": ".LIB mos_ff"
+        },
+        {
+          "end_line": 375,
+          "line": 375,
+          "text": ".include sg13g2_moshv_mod.lib"
+        },
+        {
+          "end_line": 376,
+          "line": 376,
+          "text": ".include sg13g2_svaricaphv_mod.lib"
+        },
+        {
+          "end_line": 380,
+          "line": 380,
+          "text": ".LIB mos_ff_mismatch"
+        },
+        {
+          "end_line": 425,
+          "line": 425,
+          "text": ".include sg13g2_moshv_mismatch.lib"
+        },
+        {
+          "end_line": 426,
+          "line": 426,
+          "text": ".include sg13g2_moshv_mod_mismatch.lib"
+        },
+        {
+          "end_line": 427,
+          "line": 427,
+          "text": ".include sg13g2_svaricaphv_mod_mismatch.lib"
+        },
+        {
+          "end_line": 432,
+          "line": 432,
+          "text": ".LIB mos_sf"
+        },
+        {
+          "end_line": 477,
+          "line": 477,
+          "text": ".include sg13g2_moshv_mod.lib"
+        },
+        {
+          "end_line": 478,
+          "line": 478,
+          "text": ".include sg13g2_svaricaphv_mod.lib"
+        },
+        {
+          "end_line": 482,
+          "line": 482,
+          "text": ".LIB mos_sf_mismatch"
+        },
+        {
+          "end_line": 527,
+          "line": 527,
+          "text": ".include sg13g2_moshv_mismatch.lib"
+        },
+        {
+          "end_line": 528,
+          "line": 528,
+          "text": ".include sg13g2_moshv_mod_mismatch.lib"
+        },
+        {
+          "end_line": 529,
+          "line": 529,
+          "text": ".include sg13g2_svaricaphv_mod_mismatch.lib"
+        },
+        {
+          "end_line": 534,
+          "line": 534,
+          "text": ".LIB mos_fs"
+        },
+        {
+          "end_line": 579,
+          "line": 579,
+          "text": ".include sg13g2_moshv_mod.lib"
+        },
+        {
+          "end_line": 580,
+          "line": 580,
+          "text": ".include sg13g2_svaricaphv_mod.lib"
+        },
+        {
+          "end_line": 584,
+          "line": 584,
+          "text": ".LIB mos_fs_mismatch"
+        },
+        {
+          "end_line": 629,
+          "line": 629,
+          "text": ".include sg13g2_moshv_mismatch.lib"
+        },
+        {
+          "end_line": 630,
+          "line": 630,
+          "text": ".include sg13g2_moshv_mod_mismatch.lib"
+        },
+        {
+          "end_line": 631,
+          "line": 631,
+          "text": ".include sg13g2_svaricaphv_mod_mismatch.lib"
+        }
+      ],
+      "source": {
+        "bytes": 24384,
+        "sha256": "5a1f862dc304fdfe2fb9758b15d54809a688d83c3ce981dad2e8473b3e93481a"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/cornerMOSlv.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 74,
+          "line": 74,
+          "text": ".LIB mos_tt"
+        },
+        {
+          "end_line": 114,
+          "line": 114,
+          "text": ".include sg13g2_moslv_mod.lib"
+        },
+        {
+          "end_line": 118,
+          "line": 118,
+          "text": ".LIB mos_tt_mismatch"
+        },
+        {
+          "end_line": 158,
+          "line": 158,
+          "text": ".include sg13g2_moslv_mismatch.lib"
+        },
+        {
+          "end_line": 159,
+          "line": 159,
+          "text": ".include sg13g2_moslv_mod_mismatch.lib"
+        },
+        {
+          "end_line": 163,
+          "line": 163,
+          "text": ".LIB mos_tt_stat"
+        },
+        {
+          "end_line": 203,
+          "line": 203,
+          "text": ".include sg13g2_moslv_stat.lib"
+        },
+        {
+          "end_line": 204,
+          "line": 204,
+          "text": ".include sg13g2_moslv_mod.lib"
+        },
+        {
+          "end_line": 209,
+          "line": 209,
+          "text": ".LIB mos_ss"
+        },
+        {
+          "end_line": 249,
+          "line": 249,
+          "text": ".include sg13g2_moslv_mod.lib"
+        },
+        {
+          "end_line": 253,
+          "line": 253,
+          "text": ".LIB mos_ss_mismatch"
+        },
+        {
+          "end_line": 293,
+          "line": 293,
+          "text": ".include sg13g2_moslv_mismatch.lib"
+        },
+        {
+          "end_line": 294,
+          "line": 294,
+          "text": ".include sg13g2_moslv_mod_mismatch.lib"
+        },
+        {
+          "end_line": 299,
+          "line": 299,
+          "text": ".LIB mos_ff"
+        },
+        {
+          "end_line": 339,
+          "line": 339,
+          "text": ".include sg13g2_moslv_mod.lib"
+        },
+        {
+          "end_line": 343,
+          "line": 343,
+          "text": ".LIB mos_ff_mismatch"
+        },
+        {
+          "end_line": 383,
+          "line": 383,
+          "text": ".include sg13g2_moslv_mismatch.lib"
+        },
+        {
+          "end_line": 384,
+          "line": 384,
+          "text": ".include sg13g2_moslv_mod_mismatch.lib"
+        },
+        {
+          "end_line": 389,
+          "line": 389,
+          "text": ".LIB mos_sf"
+        },
+        {
+          "end_line": 429,
+          "line": 429,
+          "text": ".include sg13g2_moslv_mod.lib"
+        },
+        {
+          "end_line": 433,
+          "line": 433,
+          "text": ".LIB mos_sf_mismatch"
+        },
+        {
+          "end_line": 473,
+          "line": 473,
+          "text": ".include sg13g2_moslv_mismatch.lib"
+        },
+        {
+          "end_line": 474,
+          "line": 474,
+          "text": ".include sg13g2_moslv_mod_mismatch.lib"
+        },
+        {
+          "end_line": 479,
+          "line": 479,
+          "text": ".LIB mos_fs"
+        },
+        {
+          "end_line": 519,
+          "line": 519,
+          "text": ".include sg13g2_moslv_mod.lib"
+        },
+        {
+          "end_line": 523,
+          "line": 523,
+          "text": ".LIB mos_fs_mismatch"
+        },
+        {
+          "end_line": 563,
+          "line": 563,
+          "text": ".include sg13g2_moslv_mismatch.lib"
+        },
+        {
+          "end_line": 564,
+          "line": 564,
+          "text": ".include sg13g2_moslv_mod_mismatch.lib"
+        }
+      ],
+      "source": {
+        "bytes": 21645,
+        "sha256": "03d505847c880d233b341be115a1e5460edf4d8e9b3e8a7df791a52fa4455d67"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/cornerRES.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 19,
+          "line": 19,
+          "text": ".LIB res_typ"
+        },
+        {
+          "end_line": 26,
+          "line": 26,
+          "text": ".include resistors_mod.lib"
+        },
+        {
+          "end_line": 30,
+          "line": 30,
+          "text": ".LIB res_typ_mismatch"
+        },
+        {
+          "end_line": 37,
+          "line": 37,
+          "text": ".include resistors_mod_mismatch.lib"
+        },
+        {
+          "end_line": 41,
+          "line": 41,
+          "text": ".LIB res_typ_stat"
+        },
+        {
+          "end_line": 48,
+          "line": 48,
+          "text": ".include resistors_stat.lib"
+        },
+        {
+          "end_line": 49,
+          "line": 49,
+          "text": ".include resistors_mod.lib"
+        },
+        {
+          "end_line": 53,
+          "line": 53,
+          "text": ".LIB res_bcs"
+        },
+        {
+          "end_line": 60,
+          "line": 60,
+          "text": ".include resistors_mod.lib"
+        },
+        {
+          "end_line": 64,
+          "line": 64,
+          "text": ".LIB res_bcs_mismatch"
+        },
+        {
+          "end_line": 71,
+          "line": 71,
+          "text": ".include resistors_mod_mismatch.lib"
+        },
+        {
+          "end_line": 75,
+          "line": 75,
+          "text": ".LIB res_wcs"
+        },
+        {
+          "end_line": 82,
+          "line": 82,
+          "text": ".include resistors_mod.lib"
+        },
+        {
+          "end_line": 86,
+          "line": 86,
+          "text": ".LIB res_wcs_mismatch"
+        },
+        {
+          "end_line": 93,
+          "line": 93,
+          "text": ".include resistors_mod_mismatch.lib"
+        }
+      ],
+      "source": {
+        "bytes": 2330,
+        "sha256": "2c18502104146804444a567abfe7d00520752bf75426809f9d79f40198fe9c1e"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/diodes.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 49,
+          "line": 49,
+          "text": ".subckt dantenna 1 2"
+        },
+        {
+          "end_line": 80,
+          "line": 80,
+          "text": ".subckt dpantenna 1 2"
+        },
+        {
+          "end_line": 112,
+          "line": 112,
+          "text": ".subckt isolbox isosub NWell bn"
+        },
+        {
+          "end_line": 152,
+          "line": 152,
+          "text": ".subckt dpwdnw isosub NWell"
+        },
+        {
+          "end_line": 225,
+          "line": 225,
+          "text": ".subckt ddnwpsub NWell bn"
+        }
+      ],
+      "source": {
+        "bytes": 7971,
+        "sha256": "66fa37819fa8a5c8af4dbb85f11208c3e38faa49c117de55c35a1538786715e8"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/resistors_mod.lib": {
+      "controls": [
+        {
+          "end_line": 75,
+          "line": 66,
+          "text": "NR1 1 bn 2 dt rmod_rsil L=leff W=weff m=m a1=a a2=a p1=p p2=p c1=1 c2=1 trise=trise sw_et=sw_et sw_mman=1 nsmm_rsh=1 ; number of standard deviations for rsh nsmm_w=1   ; number of standard deviations for w nsmm_l=1   ; number of standard deviations for l"
+        },
+        {
+          "end_line": 103,
+          "kind": "model",
+          "line": 77,
+          "model_type": "r3_cmc",
+          "name": "rmod_rsil",
+          "parameters": [
+            {
+              "name": "rsh",
+              "value": "rsh_rsil"
+            }
+          ]
+        },
+        {
+          "end_line": 137,
+          "line": 128,
+          "text": "NR1 1 bn 2 dt rmod_rhigh L=leff W=weff m=m a1=a a2=a p1=p p2=p c1=1 c2=1 trise=trise sw_et=sw_et sw_mman=1 nsmm_rsh=1 ; number of standard deviations for rsh nsmm_w=1   ; number of standard deviations for w nsmm_l=1   ; number of standard deviations for l"
+        },
+        {
+          "end_line": 165,
+          "kind": "model",
+          "line": 139,
+          "model_type": "r3_cmc",
+          "name": "rmod_rhigh",
+          "parameters": [
+            {
+              "name": "rsh",
+              "value": "rsh_rhigh"
+            }
+          ]
+        },
+        {
+          "end_line": 197,
+          "line": 188,
+          "text": "NR1 1 bn 2 dt res_rppd L=leff W=weff m=m a1=a a2=a p1=p p2=p c1=1 c2=1 trise=trise sw_et=sw_et sw_mman=1 nsmm_rsh=1 ; number of standard deviations for rsh nsmm_w=1   ; number of standard deviations for w nsmm_l=1   ; number of standard deviations for l"
+        },
+        {
+          "end_line": 224,
+          "kind": "model",
+          "line": 199,
+          "model_type": "r3_cmc",
+          "name": "res_rppd",
+          "parameters": [
+            {
+              "name": "rsh",
+              "value": "rsh_rppd"
+            }
+          ]
+        }
+      ],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 23,
+          "line": 23,
+          "text": ".subckt ptap1 1 2"
+        },
+        {
+          "end_line": 32,
+          "line": 32,
+          "text": ".subckt ntap1 1 2"
+        },
+        {
+          "end_line": 40,
+          "line": 40,
+          "text": ".subckt Rparasitic 1 2"
+        },
+        {
+          "end_line": 45,
+          "line": 45,
+          "text": ".subckt rsil 1 2 bn"
+        },
+        {
+          "end_line": 107,
+          "line": 107,
+          "text": ".subckt rhigh 1 2 bn"
+        },
+        {
+          "end_line": 169,
+          "line": 169,
+          "text": ".subckt rppd 1 2 bn"
+        }
+      ],
+      "source": {
+        "bytes": 4936,
+        "sha256": "98fa5436f6df86dc1dd35e9f16383c4eba4c36d478d7eec203a0295dc1259e51"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/resistors_mod_mismatch.lib": {
+      "controls": [
+        {
+          "end_line": 75,
+          "line": 66,
+          "text": "NR1 1 bn 2 dt rmod_rsil L=leff W=weff m=m a1=a a2=a p1=p p2=p c1=1 c2=1 trise=trise sw_et=sw_et sw_mman=1 nsmm_rsh='gauss(1, 1, (mm_ok != 1 ? 0 : 1))' ; number of standard deviations for rsh nsmm_w='gauss(1, 1, (mm_ok != 1 ? 0 : 1))'   ; number of standard deviations for w nsmm_l='gauss(1, 1, (mm_ok != 1 ? 0 : 1))'   ; number of standard deviations for l"
+        },
+        {
+          "end_line": 103,
+          "kind": "model",
+          "line": 77,
+          "model_type": "r3_cmc",
+          "name": "rmod_rsil",
+          "parameters": [
+            {
+              "name": "rsh",
+              "value": "rsh_rsil"
+            }
+          ]
+        },
+        {
+          "end_line": 137,
+          "line": 128,
+          "text": "NR1 1 bn 2 dt rmod_rhigh L=leff W=weff m=m a1=a a2=a p1=p p2=p c1=1 c2=1 trise=trise sw_et=sw_et sw_mman=1 nsmm_rsh='gauss(1, 1, (mm_ok != 1 ? 0 : 1))' ; number of standard deviations for rsh nsmm_w='gauss(1, 1, (mm_ok != 1 ? 0 : 1))'   ; number of standard deviations for w nsmm_l='gauss(1, 1, (mm_ok != 1 ? 0 : 1))'   ; number of standard deviations for l"
+        },
+        {
+          "end_line": 165,
+          "kind": "model",
+          "line": 139,
+          "model_type": "r3_cmc",
+          "name": "rmod_rhigh",
+          "parameters": [
+            {
+              "name": "rsh",
+              "value": "rsh_rhigh"
+            }
+          ]
+        },
+        {
+          "end_line": 197,
+          "line": 188,
+          "text": "NR1 1 bn 2 dt res_rppd L=leff W=weff m=m a1=a a2=a p1=p p2=p c1=1 c2=1 trise=trise sw_et=sw_et sw_mman=1 nsmm_rsh='gauss(1, 1, (mm_ok != 1 ? 0 : 1))' ; number of standard deviations for rsh nsmm_w='gauss(1, 1, (mm_ok != 1 ? 0 : 1))'   ; number of standard deviations for w nsmm_l='gauss(1, 1, (mm_ok != 1 ? 0 : 1))'   ; number of standard deviations for l"
+        },
+        {
+          "end_line": 224,
+          "kind": "model",
+          "line": 199,
+          "model_type": "r3_cmc",
+          "name": "res_rppd",
+          "parameters": [
+            {
+              "name": "rsh",
+              "value": "rsh_rppd"
+            }
+          ]
+        }
+      ],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 23,
+          "line": 23,
+          "text": ".subckt ptap1 1 2"
+        },
+        {
+          "end_line": 32,
+          "line": 32,
+          "text": ".subckt ntap1 1 2"
+        },
+        {
+          "end_line": 40,
+          "line": 40,
+          "text": ".subckt Rparasitic 1 2"
+        },
+        {
+          "end_line": 45,
+          "line": 45,
+          "text": ".subckt rsil 1 2 bn"
+        },
+        {
+          "end_line": 107,
+          "line": 107,
+          "text": ".subckt rhigh 1 2 bn"
+        },
+        {
+          "end_line": 169,
+          "line": 169,
+          "text": ".subckt rppd 1 2 bn"
+        }
+      ],
+      "source": {
+        "bytes": 5241,
+        "sha256": "f0aa7d90b6489112ed256aaf4cb0a11b9ab17ebe0c3ce092f4f8c5ecb1fd1e15"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/resistors_stat.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [],
+      "source": {
+        "bytes": 1342,
+        "sha256": "183eb9192bf711db991b8df87e031bab2ca5e559c73393edc756fa02a2720d40"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_bondpad.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 21,
+          "line": 21,
+          "text": ".subckt bondpad PAD"
+        }
+      ],
+      "source": {
+        "bytes": 919,
+        "sha256": "19b3edd62d507bfaf03633b3dc3e89b4ab4d43187a309e8fc665cc5af28a0a4f"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_dschottky_nbl1_mod.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 34,
+          "line": 34,
+          "text": ".subckt schottky_nbl1 A C S"
+        }
+      ],
+      "source": {
+        "bytes": 2532,
+        "sha256": "a5b4771593fdc6942eee9f74c58c42dd7dc777cf18a56814ad51c670c47ba351"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_dschottky_nbl1_stat.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [],
+      "source": {
+        "bytes": 1108,
+        "sha256": "730c857bbaabb0c7876eb21b9b60a6882955db388956d082615763559c61d262"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_esd.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 29,
+          "line": 29,
+          "text": ".subckt diodevdd_2kv VDD PAD VSS"
+        },
+        {
+          "end_line": 38,
+          "line": 38,
+          "text": ".subckt diodevdd_4kv VDD PAD VSS"
+        },
+        {
+          "end_line": 47,
+          "line": 47,
+          "text": ".subckt diodevss_2kv VDD PAD VSS"
+        },
+        {
+          "end_line": 55,
+          "line": 55,
+          "text": ".subckt diodevss_4kv VDD PAD VSS"
+        }
+      ],
+      "source": {
+        "bytes": 3460,
+        "sha256": "4a4fb26a87f64bc6ed807f161cc7b3afaeb8d5ca7230b08ebba728e805caa925"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_hbt_mod.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 41,
+          "line": 41,
+          "text": ".subckt npn13G2 c b e bn"
+        },
+        {
+          "end_line": 149,
+          "line": 149,
+          "text": ".subckt npn13G2_5t c b e bn t"
+        },
+        {
+          "end_line": 277,
+          "line": 277,
+          "text": ".subckt npn13G2l c b e bn"
+        },
+        {
+          "end_line": 383,
+          "line": 383,
+          "text": ".subckt npn13G2l_5t c b e bn t"
+        },
+        {
+          "end_line": 512,
+          "line": 512,
+          "text": ".subckt npn13G2v c b e bn"
+        },
+        {
+          "end_line": 618,
+          "line": 618,
+          "text": ".subckt npn13G2v_5t c b e bn t"
+        },
+        {
+          "end_line": 741,
+          "line": 741,
+          "text": ".subckt pnpMPA c b e"
+        }
+      ],
+      "source": {
+        "bytes": 20057,
+        "sha256": "ae9288f885dd30fab24b07ed1e7e02e69eac9154022a0a6da576985183b0bd79"
+      },
+      "text_encoding": "latin-1"
+    },
+    "models/models/sg13g2_hbt_mod_mismatch.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 41,
+          "line": 41,
+          "text": ".subckt npn13G2 c b e bn"
+        },
+        {
+          "end_line": 151,
+          "line": 151,
+          "text": ".subckt npn13G2_5t c b e bn t"
+        },
+        {
+          "end_line": 281,
+          "line": 281,
+          "text": ".subckt npn13G2l c b e bn"
+        },
+        {
+          "end_line": 389,
+          "line": 389,
+          "text": ".subckt npn13G2l_5t c b e bn t"
+        },
+        {
+          "end_line": 520,
+          "line": 520,
+          "text": ".subckt npn13G2v c b e bn"
+        },
+        {
+          "end_line": 628,
+          "line": 628,
+          "text": ".subckt npn13G2v_5t c b e bn t"
+        },
+        {
+          "end_line": 753,
+          "line": 753,
+          "text": ".subckt pnpMPA c b e"
+        }
+      ],
+      "source": {
+        "bytes": 20486,
+        "sha256": "1e493f25150b25b64985acd3f1e7ed2eb2e6ca4b712adf45b2de2ce2ba1a0eb2"
+      },
+      "text_encoding": "latin-1"
+    },
+    "models/models/sg13g2_hbt_stat.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [],
+      "source": {
+        "bytes": 2463,
+        "sha256": "80d1893eb06a3417d05400335d8e58c8309b9c80061ca96ceff8f8fd68c9a7db"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_moshv_mismatch.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [],
+      "source": {
+        "bytes": 1167,
+        "sha256": "2e9612bdb8252c281f422511039dc9b3ea983892aec89f8ef3361592e68fed09"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_moshv_mod.lib": {
+      "controls": [
+        {
+          "end_line": 67,
+          "line": 66,
+          "text": ".subckt sg13_hv_nmos d g s b w=0.35u l=0.34u ng=1 m=1 mm_ok=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.34e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 74,
+          "line": 74,
+          "text": ".if (rfmode == 0)"
+        },
+        {
+          "end_line": 76,
+          "line": 76,
+          "text": ".if (floor(floor(ng/2+0.501)*2+0.001) != ng)"
+        },
+        {
+          "end_line": 88,
+          "line": 77,
+          "text": "Nsg13_hv_nmos d g s b sg13g2_hv_nmos_psp w=w l=l nf='ng' mult='m' as='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ad='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ps='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' pd='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 101,
+          "line": 90,
+          "text": "Nsg13_hv_nmos d g s b sg13g2_hv_nmos_psp w=w l=l nf='ng' mult='m' as='max(w/ng,wmin)*(2*z1+max(0,(ng-2)/2)*z2)' ad='max(w/ng,wmin)*z2/2*ng' ps='2*(max(w/ng,wmin)*(2+max(ng-2,0)/2)+2*z1+max(ng-2,0)/2*z2)' pd='(max(w/ng,wmin)+z2)*ng' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 111,
+          "line": 104,
+          "text": "Nsg13_hv_nmos d g s b sg13g2_hv_nmos_psp w=w l=l as='as' ad='ad' pd='pd' ps='ps' nf='ng' mult='m' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 115,
+          "line": 115,
+          "text": ".if (floor(floor(ng/2+0.501)*2+0.001) != ng)"
+        },
+        {
+          "end_line": 127,
+          "line": 116,
+          "text": "Nsg13_hv_nmos d g s b sg13g2_hv_nmos_psp_rf w=w l=l nf='ng' mult='m' as='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ad='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ps='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' pd='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 140,
+          "line": 129,
+          "text": "Nsg13_hv_nmos d g s b sg13g2_hv_nmos_psp_rf w=w l=l nf='ng' mult='m' as='max(w/ng,wmin)*(2*z1+max(0,(ng-2)/2)*z2)' ad='max(w/ng,wmin)*z2/2*ng' ps='2*(max(w/ng,wmin)*(2+max(ng-2,0)/2)+2*z1+max(ng-2,0)/2*z2)' pd='(max(w/ng,wmin)+z2)*ng' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 150,
+          "line": 143,
+          "text": "Nsg13_hv_nmos d g s b sg13g2_hv_nmos_psp_rf w=w l=l as='as' ad='ad' pd='pd' ps='ps' nf='ng' mult='m' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 156,
+          "line": 155,
+          "text": ".subckt sg13_hv_pmos d g s b w=0.35u l=0.28u ng=1 m=1 mm_ok=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.34e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 160,
+          "line": 160,
+          "text": ".if (rfmode == 0)"
+        },
+        {
+          "end_line": 162,
+          "line": 162,
+          "text": ".if (floor(floor(ng/2+0.501)*2+0.001) != ng)"
+        },
+        {
+          "end_line": 174,
+          "line": 163,
+          "text": "Nsg13_hv_pmos d g s b sg13g2_hv_pmos_psp w=w l=l nf='ng' mult='m' as='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ad='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ps='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' pd='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 187,
+          "line": 176,
+          "text": "Nsg13_hv_pmos d g s b sg13g2_hv_pmos_psp w=w l=l nf='ng' mult='m' as='max(w/ng,wmin)*(2*z1+max(0,(ng-2)/2)*z2)' ad='max(w/ng,wmin)*z2/2*ng' ps='2*(max(w/ng,wmin)*(2+max(ng-2,0)/2)+2*z1+max(ng-2,0)/2*z2)' pd='(max(w/ng,wmin)+z2)*ng' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 197,
+          "line": 190,
+          "text": "Nsg13_hv_pmos d g s b sg13g2_hv_pmos_psp w=w l=l as='as' ad='ad' pd='pd' ps='ps' nf='ng' mult='m' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 201,
+          "line": 201,
+          "text": ".if (floor(floor(ng/2+0.501)*2+0.001) != ng)"
+        },
+        {
+          "end_line": 213,
+          "line": 202,
+          "text": "Nsg13_hv_pmos d g s b sg13g2_hv_pmos_psp_rf w=w l=l nf='ng' mult='m' as='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ad='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ps='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' pd='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 226,
+          "line": 215,
+          "text": "Nsg13_hv_pmos d g s b sg13g2_hv_pmos_psp_rf w=w l=l nf='ng' mult='m' as='max(w/ng,wmin)*(2*z1+max(0,(ng-2)/2)*z2)' ad='max(w/ng,wmin)*z2/2*ng' ps='2*(max(w/ng,wmin)*(2+max(ng-2,0)/2)+2*z1+max(ng-2,0)/2*z2)' pd='(max(w/ng,wmin)+z2)*ng' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 236,
+          "line": 229,
+          "text": "Nsg13_hv_pmos d g s b sg13g2_hv_pmos_psp_rf w=w l=l as='as' ad='ad' pd='pd' ps='ps' nf='ng' mult='m' dta=trise ngcon=2 delvto=0 factuo=1"
+        }
+      ],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 67,
+          "line": 66,
+          "text": ".subckt sg13_hv_nmos d g s b w=0.35u l=0.34u ng=1 m=1 mm_ok=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.34e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 72,
+          "line": 72,
+          "text": ".include sg13g2_moshv_parm.lib"
+        },
+        {
+          "end_line": 156,
+          "line": 155,
+          "text": ".subckt sg13_hv_pmos d g s b w=0.35u l=0.28u ng=1 m=1 mm_ok=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.34e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 158,
+          "line": 158,
+          "text": ".include sg13g2_moshv_parm.lib"
+        }
+      ],
+      "source": {
+        "bytes": 9279,
+        "sha256": "d4b348b494998d7057bdde6fb111c60153d8b86175fafcfc6de461737e7a644b"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_moshv_mod_mismatch.lib": {
+      "controls": [
+        {
+          "end_line": 67,
+          "line": 66,
+          "text": ".subckt sg13_hv_nmos d g s b w=0.35u l=0.34u ng=1 m=1 mm_ok=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.34e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 74,
+          "line": 74,
+          "text": ".if (rfmode == 0)"
+        },
+        {
+          "end_line": 76,
+          "line": 76,
+          "text": ".if (floor(floor(ng/2+0.501)*2+0.001) != ng)"
+        },
+        {
+          "end_line": 88,
+          "line": 77,
+          "text": "Nsg13_hv_nmos d g s b sg13g2_hv_nmos_psp w='agauss(w, sg13g2_hv_nmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_hv_nmos_dl_mm, (mm_ok != 1 ? 0 : 1))' nf='ng' mult='m' as='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ad='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ps='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' pd='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' dta=trise ngcon=2 delvto='agauss(0, sg13g2_hv_nmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_hv_nmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 101,
+          "line": 90,
+          "text": "Nsg13_hv_nmos d g s b sg13g2_hv_nmos_psp w='agauss(w, sg13g2_hv_nmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_hv_nmos_dl_mm, (mm_ok != 1 ? 0 : 1))' nf='ng' mult='m' as='max(w/ng,wmin)*(2*z1+max(0,(ng-2)/2)*z2)' ad='max(w/ng,wmin)*z2/2*ng' ps='2*(max(w/ng,wmin)*(2+max(ng-2,0)/2)+2*z1+max(ng-2,0)/2*z2)' pd='(max(w/ng,wmin)+z2)*ng' dta=trise ngcon=2 delvto='agauss(0, sg13g2_hv_nmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_hv_nmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 111,
+          "line": 104,
+          "text": "Nsg13_hv_nmos d g s b sg13g2_hv_nmos_psp w='agauss(w, sg13g2_hv_nmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_hv_nmos_dl_mm, (mm_ok != 1 ? 0 : 1))' as='as' ad='ad' pd='pd' ps='ps' nf='ng' mult='m' dta=trise ngcon=2 delvto='agauss(0, sg13g2_hv_nmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_hv_nmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 115,
+          "line": 115,
+          "text": ".if (floor(floor(ng/2+0.501)*2+0.001) != ng)"
+        },
+        {
+          "end_line": 127,
+          "line": 116,
+          "text": "Nsg13_hv_nmos d g s b sg13g2_hv_nmos_psp_rf w='agauss(w, sg13g2_hv_nmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_hv_nmos_dl_mm, (mm_ok != 1 ? 0 : 1))' nf='ng' mult='m' as='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ad='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ps='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' pd='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' dta=trise ngcon=2 delvto='agauss(0, sg13g2_hv_nmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_hv_nmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 140,
+          "line": 129,
+          "text": "Nsg13_hv_nmos d g s b sg13g2_hv_nmos_psp_rf w='agauss(w, sg13g2_hv_nmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_hv_nmos_dl_mm, (mm_ok != 1 ? 0 : 1))' nf='ng' mult='m' as='max(w/ng,wmin)*(2*z1+max(0,(ng-2)/2)*z2)' ad='max(w/ng,wmin)*z2/2*ng' ps='2*(max(w/ng,wmin)*(2+max(ng-2,0)/2)+2*z1+max(ng-2,0)/2*z2)' pd='(max(w/ng,wmin)+z2)*ng' dta=trise ngcon=2 delvto='agauss(0, sg13g2_hv_nmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_hv_nmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 150,
+          "line": 143,
+          "text": "Nsg13_hv_nmos d g s b sg13g2_hv_nmos_psp_rf w='agauss(w, sg13g2_hv_nmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_hv_nmos_dl_mm, (mm_ok != 1 ? 0 : 1))' as='as' ad='ad' pd='pd' ps='ps' nf='ng' mult='m' dta=trise ngcon=2 delvto='agauss(0, sg13g2_hv_nmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_hv_nmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 156,
+          "line": 155,
+          "text": ".subckt sg13_hv_pmos d g s b w=0.35u l=0.28u ng=1 m=1 mm_ok=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.34e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 160,
+          "line": 160,
+          "text": ".if (rfmode == 0)"
+        },
+        {
+          "end_line": 162,
+          "line": 162,
+          "text": ".if (floor(floor(ng/2+0.501)*2+0.001) != ng)"
+        },
+        {
+          "end_line": 174,
+          "line": 163,
+          "text": "Nsg13_hv_pmos d g s b sg13g2_hv_pmos_psp w='agauss(w, sg13g2_hv_pmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_hv_pmos_dl_mm, (mm_ok != 1 ? 0 : 1))' nf='ng' mult='m' as='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ad='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ps='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' pd='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' dta=trise ngcon=2 delvto='agauss(0, sg13g2_hv_pmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_hv_pmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 187,
+          "line": 176,
+          "text": "Nsg13_hv_pmos d g s b sg13g2_hv_pmos_psp w='agauss(w, sg13g2_hv_pmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_hv_pmos_dl_mm, (mm_ok != 1 ? 0 : 1))' nf='ng' mult='m' as='max(w/ng,wmin)*(2*z1+max(0,(ng-2)/2)*z2)' ad='max(w/ng,wmin)*z2/2*ng' ps='2*(max(w/ng,wmin)*(2+max(ng-2,0)/2)+2*z1+max(ng-2,0)/2*z2)' pd='(max(w/ng,wmin)+z2)*ng' dta=trise ngcon=2 delvto='agauss(0, sg13g2_hv_pmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_hv_pmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 197,
+          "line": 190,
+          "text": "Nsg13_hv_pmos d g s b sg13g2_hv_pmos_psp w='agauss(w, sg13g2_hv_pmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_hv_pmos_dl_mm, (mm_ok != 1 ? 0 : 1))' as='as' ad='ad' pd='pd' ps='ps' nf='ng' mult='m' dta=trise ngcon=2 delvto='agauss(0, sg13g2_hv_pmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_hv_pmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 201,
+          "line": 201,
+          "text": ".if (floor(floor(ng/2+0.501)*2+0.001) != ng)"
+        },
+        {
+          "end_line": 213,
+          "line": 202,
+          "text": "Nsg13_hv_pmos d g s b sg13g2_hv_pmos_psp_rf w='agauss(w, sg13g2_hv_pmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_hv_pmos_dl_mm, (mm_ok != 1 ? 0 : 1))' nf='ng' mult='m' as='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ad='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ps='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' pd='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' dta=trise ngcon=2 delvto='agauss(0, sg13g2_hv_pmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_hv_pmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 226,
+          "line": 215,
+          "text": "Nsg13_hv_pmos d g s b sg13g2_hv_pmos_psp_rf w='agauss(w, sg13g2_hv_pmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_hv_pmos_dl_mm, (mm_ok != 1 ? 0 : 1))' nf='ng' mult='m' as='max(w/ng,wmin)*(2*z1+max(0,(ng-2)/2)*z2)' ad='max(w/ng,wmin)*z2/2*ng' ps='2*(max(w/ng,wmin)*(2+max(ng-2,0)/2)+2*z1+max(ng-2,0)/2*z2)' pd='(max(w/ng,wmin)+z2)*ng' dta=trise ngcon=2 delvto='agauss(0, sg13g2_hv_pmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_hv_pmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 236,
+          "line": 229,
+          "text": "Nsg13_hv_pmos d g s b sg13g2_hv_pmos_psp_rf w='agauss(w, sg13g2_hv_pmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_hv_pmos_dl_mm, (mm_ok != 1 ? 0 : 1))' as='as' ad='ad' pd='pd' ps='ps' nf='ng' mult='m' dta=trise ngcon=2 delvto='agauss(0, sg13g2_hv_pmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_hv_pmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        }
+      ],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 67,
+          "line": 66,
+          "text": ".subckt sg13_hv_nmos d g s b w=0.35u l=0.34u ng=1 m=1 mm_ok=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.34e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 72,
+          "line": 72,
+          "text": ".include sg13g2_moshv_parm.lib"
+        },
+        {
+          "end_line": 156,
+          "line": 155,
+          "text": ".subckt sg13_hv_pmos d g s b w=0.35u l=0.28u ng=1 m=1 mm_ok=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.34e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 158,
+          "line": 158,
+          "text": ".include sg13g2_moshv_parm.lib"
+        }
+      ],
+      "source": {
+        "bytes": 12375,
+        "sha256": "be170c9619bed19215f7f7b55141e0869344874e3fcf7f30b2d2aa37659b1a0e"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_moshv_parm.lib": {
+      "controls": [
+        {
+          "end_line": 191,
+          "kind": "model",
+          "line": 62,
+          "model_type": "psp103va",
+          "name": "sg13g2_hv_nmos_psp",
+          "parameters": [
+            {
+              "name": "rsh",
+              "value": "0.0"
+            },
+            {
+              "name": "rshg",
+              "value": "'20.0'"
+            },
+            {
+              "name": "rgo",
+              "value": "'35.0'"
+            }
+          ]
+        },
+        {
+          "end_line": 323,
+          "kind": "model",
+          "line": 193,
+          "model_type": "pspnqs103va",
+          "name": "sg13g2_hv_nmos_psp_rf",
+          "parameters": [
+            {
+              "name": "rsh",
+              "value": "0.0"
+            },
+            {
+              "name": "swnqs",
+              "value": "'rfmode * 5.0'"
+            },
+            {
+              "name": "rshg",
+              "value": "'rfmode * 20.0'"
+            },
+            {
+              "name": "rgo",
+              "value": "'rfmode * 35.0'"
+            }
+          ]
+        },
+        {
+          "end_line": 474,
+          "kind": "model",
+          "line": 345,
+          "model_type": "psp103va",
+          "name": "sg13g2_hv_pmos_psp",
+          "parameters": [
+            {
+              "name": "rsh",
+              "value": "0.0"
+            },
+            {
+              "name": "rshg",
+              "value": "'40.0'"
+            },
+            {
+              "name": "rgo",
+              "value": "'15.0'"
+            }
+          ]
+        },
+        {
+          "end_line": 606,
+          "kind": "model",
+          "line": 476,
+          "model_type": "pspnqs103va",
+          "name": "sg13g2_hv_pmos_psp_rf",
+          "parameters": [
+            {
+              "name": "rsh",
+              "value": "0.0"
+            },
+            {
+              "name": "swnqs",
+              "value": "'rfmode * 5.0'"
+            },
+            {
+              "name": "rshg",
+              "value": "'rfmode * 40.0'"
+            },
+            {
+              "name": "rgo",
+              "value": "'rfmode * 15.0'"
+            }
+          ]
+        }
+      ],
+      "includes_and_subcircuits": [],
+      "source": {
+        "bytes": 64329,
+        "sha256": "eea5bbed39184cb1e2654ae29425a9ed6ee2f2341d6cb76c472591c75237bd35"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_moshv_stat.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [],
+      "source": {
+        "bytes": 7399,
+        "sha256": "cd30f22637e41fdbbaba506ebe0f17746b8438027e4651a7a87b241a39d68903"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_moslv_mismatch.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [],
+      "source": {
+        "bytes": 1088,
+        "sha256": "2d3251e2d42eadb0f8af152a4915fdc60a68bceb95a2d17a52f90cfb34b7e63e"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_moslv_mod.lib": {
+      "controls": [
+        {
+          "end_line": 67,
+          "line": 66,
+          "text": ".subckt sg13_lv_nmos d g s b w=0.35u l=0.34u ng=1 m=1 mm_ok=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.34e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 74,
+          "line": 74,
+          "text": ".if (rfmode == 0)"
+        },
+        {
+          "end_line": 76,
+          "line": 76,
+          "text": ".if (floor(floor(ng/2+0.501)*2+0.001) != ng)"
+        },
+        {
+          "end_line": 88,
+          "line": 77,
+          "text": "Nsg13_lv_nmos d g s b sg13g2_lv_nmos_psp w=w l=l nf='ng' mult='m' as='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ad='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ps='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' pd='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 101,
+          "line": 90,
+          "text": "Nsg13_lv_nmos d g s b sg13g2_lv_nmos_psp w=w l=l nf='ng' mult='m' as='max(w/ng,wmin)*(2*z1+max(0,(ng-2)/2)*z2)' ad='max(w/ng,wmin)*z2/2*ng' ps='2*(max(w/ng,wmin)*(2+max(ng-2,0)/2)+2*z1+max(ng-2,0)/2*z2)' pd='(max(w/ng,wmin)+z2)*ng' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 111,
+          "line": 104,
+          "text": "Nsg13_lv_nmos d g s b sg13g2_lv_nmos_psp w=w l=l as='as' ad='ad' pd='pd' ps='ps' nf='ng' mult='m' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 115,
+          "line": 115,
+          "text": ".if (floor(floor(ng/2+0.501)*2+0.001) != ng)"
+        },
+        {
+          "end_line": 127,
+          "line": 116,
+          "text": "Nsg13_lv_nmos d g s b sg13g2_lv_nmos_psp_rf w=w l=l nf='ng' mult='m' as='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ad='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ps='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' pd='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 140,
+          "line": 129,
+          "text": "Nsg13_lv_nmos d g s b sg13g2_lv_nmos_psp_rf w=w l=l nf='ng' mult='m' as='max(w/ng,wmin)*(2*z1+max(0,(ng-2)/2)*z2)' ad='max(w/ng,wmin)*z2/2*ng' ps='2*(max(w/ng,wmin)*(2+max(ng-2,0)/2)+2*z1+max(ng-2,0)/2*z2)' pd='(max(w/ng,wmin)+z2)*ng' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 150,
+          "line": 143,
+          "text": "Nsg13_lv_nmos d g s b sg13g2_lv_nmos_psp_rf w=w l=l as='as' ad='ad' pd='pd' ps='ps' nf='ng' mult='m' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 156,
+          "line": 155,
+          "text": ".subckt sg13_lv_pmos d g s b w=0.35u l=0.28u ng=1 m=1 mm_ok=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.34e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 160,
+          "line": 160,
+          "text": ".if (rfmode == 0)"
+        },
+        {
+          "end_line": 162,
+          "line": 162,
+          "text": ".if (floor(floor(ng/2+0.501)*2+0.001) != ng)"
+        },
+        {
+          "end_line": 174,
+          "line": 163,
+          "text": "Nsg13_lv_pmos d g s b sg13g2_lv_pmos_psp w=w l=l nf='ng' mult='m' as='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ad='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ps='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' pd='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 187,
+          "line": 176,
+          "text": "Nsg13_lv_pmos d g s b sg13g2_lv_pmos_psp w=w l=l nf='ng' mult='m' as='max(w/ng,wmin)*(2*z1+max(0,(ng-2)/2)*z2)' ad='max(w/ng,wmin)*z2/2*ng' ps='2*(max(w/ng,wmin)*(2+max(ng-2,0)/2)+2*z1+max(ng-2,0)/2*z2)' pd='(max(w/ng,wmin)+z2)*ng' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 197,
+          "line": 190,
+          "text": "Nsg13_lv_pmos d g s b sg13g2_lv_pmos_psp w=w l=l as='as' ad='ad' pd='pd' ps='ps' nf='ng' mult='m' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 201,
+          "line": 201,
+          "text": ".if (floor(floor(ng/2+0.501)*2+0.001) != ng)"
+        },
+        {
+          "end_line": 213,
+          "line": 202,
+          "text": "Nsg13_lv_pmos d g s b sg13g2_lv_pmos_psp_rf w=w l=l nf='ng' mult='m' as='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ad='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ps='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' pd='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 226,
+          "line": 215,
+          "text": "Nsg13_lv_pmos d g s b sg13g2_lv_pmos_psp_rf w=w l=l nf='ng' mult='m' as='max(w/ng,wmin)*(2*z1+max(0,(ng-2)/2)*z2)' ad='max(w/ng,wmin)*z2/2*ng' ps='2*(max(w/ng,wmin)*(2+max(ng-2,0)/2)+2*z1+max(ng-2,0)/2*z2)' pd='(max(w/ng,wmin)+z2)*ng' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 236,
+          "line": 229,
+          "text": "Nsg13_lv_pmos d g s b sg13g2_lv_pmos_psp_rf w=w l=l as='as' ad='ad' pd='pd' ps='ps' nf='ng' mult='m' dta=trise ngcon=2 delvto=0 factuo=1"
+        },
+        {
+          "end_line": 244,
+          "line": 243,
+          "text": ".subckt nmoscl_2  VDD VSS l=0.36u w=168u m=1 ng=1 trise=0  as = 58e-12  ad = 58e-12 pd = 336u ps = 336u rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 248,
+          "line": 248,
+          "text": ".if (rfmode == 0)"
+        },
+        {
+          "end_line": 249,
+          "line": 249,
+          "text": "Nsg13_lv_pmos VDD VSS VSS VSS nmoscl_psp w='w' l='l' nf='ng' as='as' ad='ad' pd='pd' ps='ps' mult='m'  dta=trise ngcon=2"
+        },
+        {
+          "end_line": 251,
+          "line": 251,
+          "text": "Nsg13_lv_pmos VDD VSS VSS VSS nmoscl_psp_rf w='w' l='l' nf='ng' as='as' ad='ad' pd='pd' ps='ps' mult='m'  dta=trise ngcon=2"
+        },
+        {
+          "end_line": 256,
+          "line": 255,
+          "text": ".subckt nmoscl_4  VDD VSS l=0.36u w=168u m=1 ng=1 trise=0 as = 114e-12  ad = 114e-12 pd = 672u ps = 672u rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 259,
+          "line": 259,
+          "text": ".if (rfmode == 0)"
+        },
+        {
+          "end_line": 260,
+          "line": 260,
+          "text": "Nsg13_lv_pmos VDD VSS VSS VSS nmoscl_psp w='w' l='l' nf='ng' as='as' ad='ad' pd='pd' ps='ps' mult='m'  dta=trise ngcon=2"
+        },
+        {
+          "end_line": 262,
+          "line": 262,
+          "text": "Nsg13_lv_pmos VDD VSS VSS VSS nmoscl_psp_rf w='w' l='l' nf='ng' as='as' ad='ad' pd='pd' ps='ps' mult='m'  dta=trise ngcon=2"
+        }
+      ],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 67,
+          "line": 66,
+          "text": ".subckt sg13_lv_nmos d g s b w=0.35u l=0.34u ng=1 m=1 mm_ok=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.34e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 72,
+          "line": 72,
+          "text": ".include sg13g2_moslv_parm.lib"
+        },
+        {
+          "end_line": 156,
+          "line": 155,
+          "text": ".subckt sg13_lv_pmos d g s b w=0.35u l=0.28u ng=1 m=1 mm_ok=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.34e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 158,
+          "line": 158,
+          "text": ".include sg13g2_moslv_parm.lib"
+        },
+        {
+          "end_line": 244,
+          "line": 243,
+          "text": ".subckt nmoscl_2  VDD VSS l=0.36u w=168u m=1 ng=1 trise=0  as = 58e-12  ad = 58e-12 pd = 336u ps = 336u rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 246,
+          "line": 246,
+          "text": ".include sg13g2_moslv_parm.lib"
+        },
+        {
+          "end_line": 256,
+          "line": 255,
+          "text": ".subckt nmoscl_4  VDD VSS l=0.36u w=168u m=1 ng=1 trise=0 as = 114e-12  ad = 114e-12 pd = 672u ps = 672u rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 257,
+          "line": 257,
+          "text": ".include sg13g2_moslv_parm.lib"
+        }
+      ],
+      "source": {
+        "bytes": 10452,
+        "sha256": "124c48af28aee8f4788170b50dbb4d798e7d830c6bb37516f749e16f676fa9db"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_moslv_mod_mismatch.lib": {
+      "controls": [
+        {
+          "end_line": 67,
+          "line": 66,
+          "text": ".subckt sg13_lv_nmos d g s b w=0.35u l=0.34u ng=1 m=1 mm_ok=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.34e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 74,
+          "line": 74,
+          "text": ".if (rfmode == 0)"
+        },
+        {
+          "end_line": 76,
+          "line": 76,
+          "text": ".if (floor(floor(ng/2+0.501)*2+0.001) != ng)"
+        },
+        {
+          "end_line": 88,
+          "line": 77,
+          "text": "Nsg13_lv_nmos d g s b sg13g2_lv_nmos_psp w='agauss(w, sg13g2_lv_nmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_lv_nmos_dl_mm, (mm_ok != 1 ? 0 : 1))' nf='ng' mult='m' as='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ad='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ps='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' pd='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' dta=trise ngcon=2 delvto='agauss(0, sg13g2_lv_nmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_lv_nmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 101,
+          "line": 90,
+          "text": "Nsg13_lv_nmos d g s b sg13g2_lv_nmos_psp w='agauss(w, sg13g2_lv_nmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_lv_nmos_dl_mm, (mm_ok != 1 ? 0 : 1))' nf='ng' mult='m' as='max(w/ng,wmin)*(2*z1+max(0,(ng-2)/2)*z2)' ad='max(w/ng,wmin)*z2/2*ng' ps='2*(max(w/ng,wmin)*(2+max(ng-2,0)/2)+2*z1+max(ng-2,0)/2*z2)' pd='(max(w/ng,wmin)+z2)*ng' dta=trise ngcon=2 delvto='agauss(0, sg13g2_lv_nmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_lv_nmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 111,
+          "line": 104,
+          "text": "Nsg13_lv_nmos d g s b sg13g2_lv_nmos_psp w='agauss(w, sg13g2_lv_nmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_lv_nmos_dl_mm, (mm_ok != 1 ? 0 : 1))' as='as' ad='ad' pd='pd' ps='ps' nf='ng' mult='m' dta=trise ngcon=2 delvto='agauss(0, sg13g2_lv_nmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_lv_nmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 115,
+          "line": 115,
+          "text": ".if (floor(floor(ng/2+0.501)*2+0.001) != ng)"
+        },
+        {
+          "end_line": 127,
+          "line": 116,
+          "text": "Nsg13_lv_nmos d g s b sg13g2_lv_nmos_psp_rf w='agauss(w, sg13g2_lv_nmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_lv_nmos_dl_mm, (mm_ok != 1 ? 0 : 1))' nf='ng' mult='m' as='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ad='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ps='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' pd='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' dta=trise ngcon=2 delvto='agauss(0, sg13g2_lv_nmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_lv_nmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 140,
+          "line": 129,
+          "text": "Nsg13_lv_nmos d g s b sg13g2_lv_nmos_psp_rf w='agauss(w, sg13g2_lv_nmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_lv_nmos_dl_mm, (mm_ok != 1 ? 0 : 1))' nf='ng' mult='m' as='max(w/ng,wmin)*(2*z1+max(0,(ng-2)/2)*z2)' ad='max(w/ng,wmin)*z2/2*ng' ps='2*(max(w/ng,wmin)*(2+max(ng-2,0)/2)+2*z1+max(ng-2,0)/2*z2)' pd='(max(w/ng,wmin)+z2)*ng' dta=trise ngcon=2 delvto='agauss(0, sg13g2_lv_nmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_lv_nmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 150,
+          "line": 143,
+          "text": "Nsg13_lv_nmos d g s b sg13g2_lv_nmos_psp_rf w='agauss(w, sg13g2_lv_nmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_lv_nmos_dl_mm, (mm_ok != 1 ? 0 : 1))' as='as' ad='ad' pd='pd' ps='ps' nf='ng' mult='m' dta=trise ngcon=2 delvto='agauss(0, sg13g2_lv_nmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_lv_nmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 156,
+          "line": 155,
+          "text": ".subckt sg13_lv_pmos d g s b w=0.35u l=0.28u ng=1 m=1 mm_ok=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.34e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 160,
+          "line": 160,
+          "text": ".if (rfmode == 0)"
+        },
+        {
+          "end_line": 162,
+          "line": 162,
+          "text": ".if (floor(floor(ng/2+0.501)*2+0.001) != ng)"
+        },
+        {
+          "end_line": 174,
+          "line": 163,
+          "text": "Nsg13_lv_pmos d g s b sg13g2_lv_pmos_psp w='agauss(w, sg13g2_lv_pmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_lv_pmos_dl_mm, (mm_ok != 1 ? 0 : 1))' nf='ng' mult='m' as='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ad='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ps='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' pd='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' dta=trise ngcon=2 delvto='agauss(0, sg13g2_lv_pmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_lv_pmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 187,
+          "line": 176,
+          "text": "Nsg13_lv_pmos d g s b sg13g2_lv_pmos_psp w='agauss(w, sg13g2_lv_pmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_lv_pmos_dl_mm, (mm_ok != 1 ? 0 : 1))' nf='ng' mult='m' as='max(w/ng,wmin)*(2*z1+max(0,(ng-2)/2)*z2)' ad='max(w/ng,wmin)*z2/2*ng' ps='2*(max(w/ng,wmin)*(2+max(ng-2,0)/2)+2*z1+max(ng-2,0)/2*z2)' pd='(max(w/ng,wmin)+z2)*ng' dta=trise ngcon=2 delvto='agauss(0, sg13g2_lv_pmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_lv_pmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 197,
+          "line": 190,
+          "text": "Nsg13_lv_pmos d g s b sg13g2_lv_pmos_psp w='agauss(w, sg13g2_lv_pmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_lv_pmos_dl_mm, (mm_ok != 1 ? 0 : 1))' as='as' ad='ad' pd='pd' ps='ps' nf='ng' mult='m' dta=trise ngcon=2 delvto='agauss(0, sg13g2_lv_pmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_lv_pmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 201,
+          "line": 201,
+          "text": ".if (floor(floor(ng/2+0.501)*2+0.001) != ng)"
+        },
+        {
+          "end_line": 213,
+          "line": 202,
+          "text": "Nsg13_lv_pmos d g s b sg13g2_lv_pmos_psp_rf w='agauss(w, sg13g2_lv_pmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_lv_pmos_dl_mm, (mm_ok != 1 ? 0 : 1))' nf='ng' mult='m' as='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ad='max(w/ng,wmin)*(z1+((ng-1)/2)*z2)' ps='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' pd='2*(max(w/ng,wmin)*((ng-1)/2+1)+z1+(ng-1)/2*z2)' dta=trise ngcon=2 delvto='agauss(0, sg13g2_lv_pmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_lv_pmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 226,
+          "line": 215,
+          "text": "Nsg13_lv_pmos d g s b sg13g2_lv_pmos_psp_rf w='agauss(w, sg13g2_lv_pmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_lv_pmos_dl_mm, (mm_ok != 1 ? 0 : 1))' nf='ng' mult='m' as='max(w/ng,wmin)*(2*z1+max(0,(ng-2)/2)*z2)' ad='max(w/ng,wmin)*z2/2*ng' ps='2*(max(w/ng,wmin)*(2+max(ng-2,0)/2)+2*z1+max(ng-2,0)/2*z2)' pd='(max(w/ng,wmin)+z2)*ng' dta=trise ngcon=2 delvto='agauss(0, sg13g2_lv_pmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_lv_pmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 236,
+          "line": 229,
+          "text": "Nsg13_lv_pmos d g s b sg13g2_lv_pmos_psp_rf w='agauss(w, sg13g2_lv_pmos_dw_mm, (mm_ok != 1 ? 0 : 1))' l='agauss(l, sg13g2_lv_pmos_dl_mm, (mm_ok != 1 ? 0 : 1))' as='as' ad='ad' pd='pd' ps='ps' nf='ng' mult='m' dta=trise ngcon=2 delvto='agauss(0, sg13g2_lv_pmos_delvto_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))' factuo='agauss(1, sg13g2_lv_pmos_factuo_mm/sqrt(m*l*w*1e12), (mm_ok != 1 ? 0 : 1))'"
+        },
+        {
+          "end_line": 244,
+          "line": 243,
+          "text": ".subckt nmoscl_2  VDD VSS l=0.36u w=168u m=1 ng=1 trise=0  as = 58e-12  ad = 58e-12 pd = 336u ps = 336u rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 248,
+          "line": 248,
+          "text": ".if (rfmode == 0)"
+        },
+        {
+          "end_line": 249,
+          "line": 249,
+          "text": "Nsg13_lv_pmos VDD VSS VSS VSS nmoscl_psp w='w' l='l' nf='ng' as='as' ad='ad' pd='pd' ps='ps' mult='m'  dta=trise ngcon=2"
+        },
+        {
+          "end_line": 251,
+          "line": 251,
+          "text": "Nsg13_lv_pmos VDD VSS VSS VSS nmoscl_psp_rf w='w' l='l' nf='ng' as='as' ad='ad' pd='pd' ps='ps' mult='m'  dta=trise ngcon=2"
+        },
+        {
+          "end_line": 256,
+          "line": 255,
+          "text": ".subckt nmoscl_4  VDD VSS l=0.36u w=168u m=1 ng=1 trise=0 as = 114e-12  ad = 114e-12 pd = 672u ps = 672u rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 259,
+          "line": 259,
+          "text": ".if (rfmode == 0)"
+        },
+        {
+          "end_line": 260,
+          "line": 260,
+          "text": "Nsg13_lv_pmos VDD VSS VSS VSS nmoscl_psp w='w' l='l' nf='ng' as='as' ad='ad' pd='pd' ps='ps' mult='m'  dta=trise ngcon=2"
+        },
+        {
+          "end_line": 262,
+          "line": 262,
+          "text": "Nsg13_lv_pmos VDD VSS VSS VSS nmoscl_psp_rf w='w' l='l' nf='ng' as='as' ad='ad' pd='pd' ps='ps' mult='m'  dta=trise ngcon=2"
+        }
+      ],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 67,
+          "line": 66,
+          "text": ".subckt sg13_lv_nmos d g s b w=0.35u l=0.34u ng=1 m=1 mm_ok=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.34e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 72,
+          "line": 72,
+          "text": ".include sg13g2_moslv_parm.lib"
+        },
+        {
+          "end_line": 156,
+          "line": 155,
+          "text": ".subckt sg13_lv_pmos d g s b w=0.35u l=0.28u ng=1 m=1 mm_ok=1 as=0 ad=0 pd=0 ps=0 trise=0 z1=0.34e-6 z2=0.38e-6 wmin=0.15e-6 rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 158,
+          "line": 158,
+          "text": ".include sg13g2_moslv_parm.lib"
+        },
+        {
+          "end_line": 244,
+          "line": 243,
+          "text": ".subckt nmoscl_2  VDD VSS l=0.36u w=168u m=1 ng=1 trise=0  as = 58e-12  ad = 58e-12 pd = 336u ps = 336u rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 246,
+          "line": 246,
+          "text": ".include sg13g2_moslv_parm.lib"
+        },
+        {
+          "end_line": 256,
+          "line": 255,
+          "text": ".subckt nmoscl_4  VDD VSS l=0.36u w=168u m=1 ng=1 trise=0 as = 114e-12  ad = 114e-12 pd = 672u ps = 672u rfmode=0 pre_layout=1"
+        },
+        {
+          "end_line": 257,
+          "line": 257,
+          "text": ".include sg13g2_moslv_parm.lib"
+        }
+      ],
+      "source": {
+        "bytes": 13455,
+        "sha256": "67672ffa1f224294a90270f687d11b804a24dbf268071c5cd98923ab1b3e2f84"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_moslv_parm.lib": {
+      "controls": [
+        {
+          "end_line": 187,
+          "kind": "model",
+          "line": 61,
+          "model_type": "psp103va",
+          "name": "sg13g2_lv_nmos_psp",
+          "parameters": [
+            {
+              "name": "rsh",
+              "value": "0.0"
+            }
+          ]
+        },
+        {
+          "end_line": 319,
+          "kind": "model",
+          "line": 189,
+          "model_type": "pspnqs103va",
+          "name": "sg13g2_lv_nmos_psp_rf",
+          "parameters": [
+            {
+              "name": "rsh",
+              "value": "0.0"
+            },
+            {
+              "name": "swnqs",
+              "value": "'rfmode * 5.0'"
+            },
+            {
+              "name": "rshg",
+              "value": "'rfmode * 3.0'"
+            },
+            {
+              "name": "rgo",
+              "value": "'rfmode * 40.0'"
+            }
+          ]
+        },
+        {
+          "end_line": 468,
+          "kind": "model",
+          "line": 342,
+          "model_type": "psp103va",
+          "name": "sg13g2_lv_pmos_psp",
+          "parameters": [
+            {
+              "name": "rsh",
+              "value": "0.0"
+            }
+          ]
+        },
+        {
+          "end_line": 601,
+          "kind": "model",
+          "line": 471,
+          "model_type": "pspnqs103va",
+          "name": "sg13g2_lv_pmos_psp_rf",
+          "parameters": [
+            {
+              "name": "rsh",
+              "value": "0.0"
+            },
+            {
+              "name": "swnqs",
+              "value": "'rfmode * 5.0'"
+            },
+            {
+              "name": "rshg",
+              "value": "'rfmode * 20.0'"
+            },
+            {
+              "name": "rgo",
+              "value": "'rfmode * 22.0'"
+            }
+          ]
+        },
+        {
+          "end_line": 729,
+          "kind": "model",
+          "line": 603,
+          "model_type": "psp103va",
+          "name": "nmoscl_psp",
+          "parameters": [
+            {
+              "name": "rsh",
+              "value": "0.0"
+            }
+          ]
+        },
+        {
+          "end_line": 861,
+          "kind": "model",
+          "line": 731,
+          "model_type": "pspnqs103va",
+          "name": "nmoscl_psp_rf",
+          "parameters": [
+            {
+              "name": "rsh",
+              "value": "0.0"
+            },
+            {
+              "name": "swnqs",
+              "value": "'rfmode * 5.0'"
+            },
+            {
+              "name": "rshg",
+              "value": "'rfmode * 3.0'"
+            },
+            {
+              "name": "rgo",
+              "value": "'rfmode * 40.0'"
+            }
+          ]
+        }
+      ],
+      "includes_and_subcircuits": [],
+      "source": {
+        "bytes": 94408,
+        "sha256": "cbf10b8453a18bb70b8ad0d6e40faa0937338e699b5460947a94900db6c92a6e"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_moslv_stat.lib": {
+      "controls": [],
+      "includes_and_subcircuits": [],
+      "source": {
+        "bytes": 6077,
+        "sha256": "7f4cf8df714e327348ba3975a2630e9d7dd7ae1a7a88817df4890e82745f0f52"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_svaricaphv_mod.lib": {
+      "controls": [
+        {
+          "end_line": 147,
+          "kind": "model",
+          "line": 88,
+          "model_type": "mosvar",
+          "name": "sg13_hv_svaricap",
+          "parameters": [
+            {
+              "name": "rshg",
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 27,
+          "line": 27,
+          "text": ".subckt sg13_hv_svaricap G1 W G2 bn"
+        }
+      ],
+      "source": {
+        "bytes": 5176,
+        "sha256": "1462f67e80da7f5fa6f6b51efb0eb0e4dc7ef2da28d8bfde95a19ce2a780580a"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/models/sg13g2_svaricaphv_mod_mismatch.lib": {
+      "controls": [
+        {
+          "end_line": 151,
+          "kind": "model",
+          "line": 92,
+          "model_type": "mosvar",
+          "name": "sg13_hv_svaricap",
+          "parameters": [
+            {
+              "name": "rshg",
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 27,
+          "line": 27,
+          "text": ".subckt sg13_hv_svaricap G1 W G2 bn"
+        }
+      ],
+      "source": {
+        "bytes": 5404,
+        "sha256": "16da7669ee7e963645a604f64770d2f8d871fa8483c34e3dddaa9fcf01c51f50"
+      },
+      "text_encoding": "utf-8"
+    },
+    "models/r3_cmc.osdi": {
+      "controls": [],
+      "includes_and_subcircuits": [],
+      "kind": "compiled_osdi_model",
+      "source": {
+        "bytes": 113080,
+        "sha256": "9b41facf3c49d2266e542406547ed00677304f09c1dd281f3bf90414ee053828"
+      }
+    },
+    "parent865.spice": {
+      "controls": [
+        {
+          "end_line": 4,
+          "line": 4,
+          "text": "X_xvco_xd0002 xvco.w_t0004 xvco.w_t0003 xvco.w_t0002 xvco.body_well_2 sg13_hv_pmos l=0.45u w=8.0u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0.0 ng=1 m=1"
+        },
+        {
+          "end_line": 5,
+          "line": 5,
+          "text": "X_xvco_xd0003 xvco.w_t0008 xvco.w_t0007 xvco.w_t0006 xvco.body_well_2 sg13_hv_pmos l=0.45u w=8.0u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0.0 ng=1 m=1"
+        },
+        {
+          "end_line": 6,
+          "line": 6,
+          "text": "X_xvco_xd0004 xvco.w_t0012 xvco.w_t0011 xvco.w_t0010 xvco.body_well_2 sg13_hv_pmos l=0.45u w=8.0u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0.0 ng=1 m=1"
+        },
+        {
+          "end_line": 7,
+          "line": 7,
+          "text": "X_xvco_xd0005 xvco.w_t0016 xvco.w_t0015 xvco.w_t0014 xvco.body_well_2 sg13_hv_pmos l=0.45u w=8.0u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0.0 ng=1 m=1"
+        },
+        {
+          "end_line": 83,
+          "line": 83,
+          "text": "X_xrx_xd0001 xrx.t001_d xrx.t001_g xrx.t001_s a_count_vss sg13_lv_nmos l=0.13u w=5.735u as=1.9499p ad=1.9499p ps=12.15u pd=12.15u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 87,
+          "line": 87,
+          "text": "X_xrx_xd0005 xrx.t005_d xrx.t005_g xrx.t005_s a_count_vss sg13_lv_nmos l=0.13u w=2.22u as=0.7548p ad=0.7548p ps=5.12u pd=5.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 93,
+          "line": 93,
+          "text": "X_xrx_xd0011 xrx.t011_d xrx.t011_g xrx.t011_s xrx.n_17 sg13_lv_pmos l=0.13u w=4.48u as=1.5232p ad=1.5232p ps=9.64u pd=9.64u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 94,
+          "line": 94,
+          "text": "X_xrx_xd0012 xrx.t012_d xrx.t012_g xrx.t012_s xrx.n_18 sg13_lv_pmos l=0.13u w=4.48u as=1.5232p ad=1.5232p ps=9.64u pd=9.64u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 95,
+          "line": 95,
+          "text": "X_xrx_xd0013 xrx.t013_d xrx.t013_g xrx.t013_s a_count_vss sg13_lv_nmos l=0.13u w=5.92u as=2.0128p ad=2.0128p ps=12.52u pd=12.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 96,
+          "line": 96,
+          "text": "X_xrx_xd0014 xrx.t014_d xrx.t014_g xrx.t014_s a_count_vss sg13_lv_nmos l=0.13u w=5.92u as=2.0128p ad=2.0128p ps=12.52u pd=12.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 97,
+          "line": 97,
+          "text": "X_xrx_xd0015 xrx.t015_d xrx.t015_g xrx.t015_s a_count_vss sg13_lv_nmos l=0.13u w=5.92u as=2.0128p ad=2.0128p ps=12.52u pd=12.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 98,
+          "line": 98,
+          "text": "X_xrx_xd0016 xrx.t016_d xrx.t016_g xrx.t016_s a_count_vss sg13_lv_nmos l=0.13u w=5.92u as=2.0128p ad=2.0128p ps=12.52u pd=12.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 99,
+          "line": 99,
+          "text": "X_xrx_xd0017 xrx.t017_d xrx.t017_g xrx.t017_s a_count_vss sg13_lv_nmos l=0.13u w=8.88u as=3.0192p ad=3.0192p ps=18.44u pd=18.44u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 123,
+          "line": 123,
+          "text": "X_xrx_xd0041 xrx.t041_d xrx.t041_g xrx.t041_s xrx.n_69 sg13_lv_pmos l=0.13u w=8.96u as=3.0464p ad=3.0464p ps=18.6u pd=18.6u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 124,
+          "line": 124,
+          "text": "X_xrx_xd0042 xrx.t042_d xrx.t042_g xrx.t042_s xrx.n_73 sg13_lv_pmos l=0.13u w=8.96u as=3.0464p ad=3.0464p ps=18.6u pd=18.6u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 125,
+          "line": 125,
+          "text": "X_xrx_xd0043 xrx.t043_d xrx.t043_g xrx.t043_s xrx.n_71 sg13_lv_pmos l=0.13u w=8.96u as=3.0464p ad=3.0464p ps=18.6u pd=18.6u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 126,
+          "line": 126,
+          "text": "X_xcount_xd0001 xcount.n_36 xcount.t001_g xcount.t001_s a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1428p ad=0.0609p ps=1.52u pd=0.71u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 127,
+          "line": 127,
+          "text": "X_xcount_xd0002 xcount.t002_d xcount.t002_g xcount.n_36 a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.0609p ad=0.1626p ps=0.71u pd=1.415u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 128,
+          "line": 128,
+          "text": "X_xcount_xd0003 xcount.t003_d xcount.t003_g xcount.t002_d a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1626p ad=0.2516p ps=1.415u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 129,
+          "line": 129,
+          "text": "X_xcount_xd0004 xcount.t004_d xcount.t004_g xcount.t004_s a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1428p ad=0.0798p ps=1.52u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 130,
+          "line": 130,
+          "text": "X_xcount_xd0005 xcount.n_42 xcount.t005_g xcount.t004_d a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.0798p ad=0.0378p ps=0.8u pd=0.6u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 131,
+          "line": 131,
+          "text": "X_xcount_xd0006 xcount.t006_d xcount.t006_g xcount.n_42 a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.0378p ad=0.1428p ps=0.6u pd=1.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 132,
+          "line": 132,
+          "text": "X_xcount_xd0007 xcount.t007_d xcount.t006_g xcount.t007_s a_count_vss sg13_lv_nmos l=0.13u w=0.64u as=0.2176p ad=0.2176p ps=1.96u pd=1.96u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 133,
+          "line": 133,
+          "text": "X_xcount_xd0008 xcount.q0 xcount.t008_g xcount.t008_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.14245p ps=2.16u pd=1.125u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 134,
+          "line": 134,
+          "text": "X_xcount_xd0009 xcount.t009_d xcount.t008_g xcount.q0 a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.14245p ad=0.2516p ps=1.125u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 135,
+          "line": 135,
+          "text": "X_xcount_xd0010 xcount.n_44 xcount.t010_g xcount.t010_s a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1428p ad=0.0609p ps=1.52u pd=0.71u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 136,
+          "line": 136,
+          "text": "X_xcount_xd0011 xcount.t011_d xcount.t011_g xcount.n_44 a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.0609p ad=0.1626p ps=0.71u pd=1.415u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 137,
+          "line": 137,
+          "text": "X_xcount_xd0012 xcount.t012_d xcount.t012_g xcount.t011_d a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1626p ad=0.2516p ps=1.415u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 138,
+          "line": 138,
+          "text": "X_xcount_xd0013 xcount.t013_d xcount.t013_g xcount.t013_s a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1428p ad=0.0798p ps=1.52u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 139,
+          "line": 139,
+          "text": "X_xcount_xd0014 xcount.n_49 xcount.t014_g xcount.t013_d a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.0798p ad=0.0378p ps=0.8u pd=0.6u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 140,
+          "line": 140,
+          "text": "X_xcount_xd0015 xcount.t015_d xcount.t015_g xcount.n_49 a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.0378p ad=0.1428p ps=0.6u pd=1.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 141,
+          "line": 141,
+          "text": "X_xcount_xd0016 xcount.t016_d xcount.t015_g xcount.t016_s a_count_vss sg13_lv_nmos l=0.13u w=0.64u as=0.2176p ad=0.2176p ps=1.96u pd=1.96u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 142,
+          "line": 142,
+          "text": "X_xcount_xd0017 xcount.q1 xcount.t017_g xcount.t017_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.14245p ps=2.16u pd=1.125u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 143,
+          "line": 143,
+          "text": "X_xcount_xd0018 xcount.t018_d xcount.t017_g xcount.q1 a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.14245p ad=0.2516p ps=1.125u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 144,
+          "line": 144,
+          "text": "X_xcount_xd0019 xcount.n_50 xcount.t019_g xcount.t019_s a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1428p ad=0.0609p ps=1.52u pd=0.71u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 145,
+          "line": 145,
+          "text": "X_xcount_xd0020 xcount.t020_d xcount.t020_g xcount.n_50 a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.0609p ad=0.1626p ps=0.71u pd=1.415u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 146,
+          "line": 146,
+          "text": "X_xcount_xd0021 xcount.t021_d xcount.t021_g xcount.t020_d a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1626p ad=0.2516p ps=1.415u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 147,
+          "line": 147,
+          "text": "X_xcount_xd0022 xcount.t022_d xcount.t022_g xcount.t022_s a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1428p ad=0.0798p ps=1.52u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 148,
+          "line": 148,
+          "text": "X_xcount_xd0023 xcount.n_52 xcount.t023_g xcount.t022_d a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.0798p ad=0.0378p ps=0.8u pd=0.6u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 149,
+          "line": 149,
+          "text": "X_xcount_xd0024 xcount.t024_d xcount.t024_g xcount.n_52 a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.0378p ad=0.1428p ps=0.6u pd=1.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 150,
+          "line": 150,
+          "text": "X_xcount_xd0025 xcount.t025_d xcount.t024_g xcount.t025_s a_count_vss sg13_lv_nmos l=0.13u w=0.64u as=0.2176p ad=0.2176p ps=1.96u pd=1.96u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 151,
+          "line": 151,
+          "text": "X_xcount_xd0026 xcount.t026_d xcount.t026_g xcount.t026_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.14245p ps=2.16u pd=1.125u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 152,
+          "line": 152,
+          "text": "X_xcount_xd0027 xcount.t027_d xcount.t026_g xcount.t026_d a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.14245p ad=0.2516p ps=1.125u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 153,
+          "line": 153,
+          "text": "X_xcount_xd0028 xcount.n_37 xcount.t002_g xcount.t028_s a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1701p ad=0.03885p ps=1.65u pd=0.605u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 154,
+          "line": 154,
+          "text": "X_xcount_xd0029 xcount.t029_d xcount.t029_g xcount.n_37 a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.03885p ad=0.1596p ps=0.605u pd=1.6u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 155,
+          "line": 155,
+          "text": "X_xcount_xd0030 xcount.t030_d xcount.t030_g xcount.t030_s a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.12665p ad=0.1428p ps=1.145u pd=1.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 156,
+          "line": 156,
+          "text": "X_xcount_xd0031 xcount.t030_s xcount.t031_g xcount.t031_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.3473p ad=0.12665p ps=2.71u pd=1.145u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 157,
+          "line": 157,
+          "text": "X_xcount_xd0032 xcount.n_46 xcount.t011_g xcount.t032_s a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1701p ad=0.03885p ps=1.65u pd=0.605u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 158,
+          "line": 158,
+          "text": "X_xcount_xd0033 xcount.t033_d xcount.t033_g xcount.n_46 a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.03885p ad=0.1596p ps=0.605u pd=1.6u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 159,
+          "line": 159,
+          "text": "X_xcount_xd0034 xcount.t034_d xcount.t034_g xcount.t034_s a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.12665p ad=0.1428p ps=1.145u pd=1.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 160,
+          "line": 160,
+          "text": "X_xcount_xd0035 xcount.t034_s xcount.t035_g xcount.t035_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.3473p ad=0.12665p ps=2.71u pd=1.145u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 161,
+          "line": 161,
+          "text": "X_xcount_xd0036 xcount.n_51 xcount.t020_g xcount.t036_s a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1701p ad=0.03885p ps=1.65u pd=0.605u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 162,
+          "line": 162,
+          "text": "X_xcount_xd0037 xcount.t037_d xcount.t037_g xcount.n_51 a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.03885p ad=0.1596p ps=0.605u pd=1.6u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 163,
+          "line": 163,
+          "text": "X_xcount_xd0038 xcount.t038_d xcount.t038_g xcount.t038_s a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.12665p ad=0.1428p ps=1.145u pd=1.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 164,
+          "line": 164,
+          "text": "X_xcount_xd0039 xcount.t038_s xcount.t039_g xcount.t039_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.3473p ad=0.12665p ps=2.71u pd=1.145u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 165,
+          "line": 165,
+          "text": "X_xcount_xd0040 xcount.t040_d xcount.t040_g xcount.t040_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.2516p ps=2.16u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 166,
+          "line": 166,
+          "text": "X_xcount_xd0041 xcount.t041_d xcount.t041_g xcount.t041_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.1406p ps=2.16u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 167,
+          "line": 167,
+          "text": "X_xcount_xd0042 xcount.t042_d xcount.t042_g xcount.t041_d a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.1406p ps=1.12u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 168,
+          "line": 168,
+          "text": "X_xcount_xd0043 xcount.t043_d xcount.t043_g xcount.t042_d a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.1406p ps=1.12u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 169,
+          "line": 169,
+          "text": "X_xcount_xd0044 xcount.t044_d xcount.t043_g xcount.t043_d a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.2516p ps=1.12u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 170,
+          "line": 170,
+          "text": "X_xcount_xd0045 xcount.n_48 xcount.t045_g xcount.t045_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.1406p ps=2.16u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 171,
+          "line": 171,
+          "text": "X_xcount_xd0046 xcount.t046_d xcount.t046_g xcount.n_48 a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.2516p ps=1.12u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 172,
+          "line": 172,
+          "text": "X_xcount_xd0047 xcount.t047_d xcount.t047_g xcount.t047_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.2516p ps=2.16u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 173,
+          "line": 173,
+          "text": "X_xcount_xd0048 xcount.n_47 xcount.t048_g xcount.t048_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.1406p ps=2.16u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 174,
+          "line": 174,
+          "text": "X_xcount_xd0049 xcount.t049_d xcount.t049_g xcount.n_47 a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.2516p ps=1.12u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 175,
+          "line": 175,
+          "text": "X_xcount_xd0050 xcount.n_45 xcount.t050_g xcount.t050_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.1406p ps=2.16u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 176,
+          "line": 176,
+          "text": "X_xcount_xd0051 xcount.t051_d xcount.t051_g xcount.n_45 a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.2516p ps=1.12u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 177,
+          "line": 177,
+          "text": "X_xcount_xd0052 xcount.n_43 xcount.t052_g xcount.t052_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.1406p ps=2.16u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 178,
+          "line": 178,
+          "text": "X_xcount_xd0053 xcount.t053_d xcount.t053_g xcount.n_43 a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.2516p ps=1.12u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 179,
+          "line": 179,
+          "text": "X_xcount_xd0054 xcount.n_41 xcount.t054_g xcount.t054_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.1406p ps=2.16u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 180,
+          "line": 180,
+          "text": "X_xcount_xd0055 xcount.t055_d xcount.t055_g xcount.n_41 a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.2516p ps=1.12u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 181,
+          "line": 181,
+          "text": "X_xcount_xd0056 xcount.n_40 xcount.t056_g xcount.t056_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.1406p ps=2.16u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 182,
+          "line": 182,
+          "text": "X_xcount_xd0057 xcount.t057_d xcount.t057_g xcount.n_40 a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.2516p ps=1.12u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 183,
+          "line": 183,
+          "text": "X_xcount_xd0058 xcount.t058_d xcount.t058_g xcount.t058_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.2516p ps=2.16u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 184,
+          "line": 184,
+          "text": "X_xcount_xd0059 xcount.n_38 xcount.t059_g xcount.t059_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2886p ad=0.1406p ps=2.26u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 185,
+          "line": 185,
+          "text": "X_xcount_xd0060 xcount.n_39 xcount.t060_g xcount.n_38 a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.1406p ps=1.12u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 186,
+          "line": 186,
+          "text": "X_xcount_xd0061 xcount.t061_d xcount.t061_g xcount.n_39 a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.2516p ps=1.12u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 187,
+          "line": 187,
+          "text": "X_xcount_xd0062 xcount.t062_d xcount.t062_g xcount.t062_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.2516p ps=2.16u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 188,
+          "line": 188,
+          "text": "X_xcount_xd0063 xcount.t063_d xcount.t063_g xcount.t063_s a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1296p ad=0.081p ps=1.52u pd=0.81u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 189,
+          "line": 189,
+          "text": "X_xcount_xd0064 xcount.t064_d xcount.t064_g xcount.t063_d a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.081p ad=0.2163p ps=0.81u pd=1.87u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 190,
+          "line": 190,
+          "text": "X_xcount_xd0065 xcount.t065_d xcount.t063_g xcount.t065_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.43315p ad=0.2516p ps=2.205u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 191,
+          "line": 191,
+          "text": "X_xcount_xd0066 xcount.t066_d xcount.t066_g xcount.t065_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.43315p ad=0.2516p ps=2.205u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 192,
+          "line": 192,
+          "text": "X_xcount_xd0067 xcount.t067_d xcount.t067_g xcount.t067_s a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1296p ad=0.081p ps=1.52u pd=0.81u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 193,
+          "line": 193,
+          "text": "X_xcount_xd0068 xcount.t068_d xcount.t068_g xcount.t067_d a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.081p ad=0.2163p ps=0.81u pd=1.87u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 194,
+          "line": 194,
+          "text": "X_xcount_xd0069 xcount.t069_d xcount.t067_g xcount.t069_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.43315p ad=0.2516p ps=2.205u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 195,
+          "line": 195,
+          "text": "X_xcount_xd0070 xcount.t070_d xcount.t070_g xcount.t069_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.43315p ad=0.2516p ps=2.205u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 196,
+          "line": 196,
+          "text": "X_xcount_xd0071 xcount.t071_d xcount.t071_g xcount.t071_s a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1296p ad=0.081p ps=1.52u pd=0.81u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 197,
+          "line": 197,
+          "text": "X_xcount_xd0072 xcount.t072_d xcount.t072_g xcount.t071_d a_count_vss sg13_lv_nmos l=0.13u w=0.42u as=0.081p ad=0.2163p ps=0.81u pd=1.87u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 198,
+          "line": 198,
+          "text": "X_xcount_xd0073 xcount.t073_d xcount.t071_g xcount.t073_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.43315p ad=0.2516p ps=2.205u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 199,
+          "line": 199,
+          "text": "X_xcount_xd0074 xcount.t074_d xcount.t074_g xcount.t073_s a_count_vss sg13_lv_nmos l=0.13u w=0.74u as=0.43315p ad=0.2516p ps=2.205u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 200,
+          "line": 200,
+          "text": "X_xcount_xd0075 xcount.t075_d xcount.t063_g xcount.t075_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3864p ad=0.431025p ps=2.93u pd=2.145u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 201,
+          "line": 201,
+          "text": "X_xcount_xd0076 xcount.t076_d xcount.t066_g xcount.t075_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.431025p ad=0.3808p ps=2.145u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 202,
+          "line": 202,
+          "text": "X_xcount_xd0077 xcount.t077_d xcount.t067_g xcount.t077_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3864p ad=0.431025p ps=2.93u pd=2.145u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 203,
+          "line": 203,
+          "text": "X_xcount_xd0078 xcount.t078_d xcount.t070_g xcount.t077_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.431025p ad=0.3808p ps=2.145u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 204,
+          "line": 204,
+          "text": "X_xcount_xd0079 xcount.t079_d xcount.t071_g xcount.t079_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3864p ad=0.431025p ps=2.93u pd=2.145u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 205,
+          "line": 205,
+          "text": "X_xcount_xd0080 xcount.t080_d xcount.t074_g xcount.t079_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.431025p ad=0.3808p ps=2.145u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 206,
+          "line": 206,
+          "text": "X_xcount_xd0081 xcount.t081_d xcount.t008_g xcount.t081_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.2156p ps=2.92u pd=1.505u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 207,
+          "line": 207,
+          "text": "X_xcount_xd0082 xcount.t082_d xcount.t008_g xcount.t081_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2156p ad=0.3808p ps=1.505u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 208,
+          "line": 208,
+          "text": "X_xcount_xd0083 xcount.t083_d xcount.t017_g xcount.t083_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.2156p ps=2.92u pd=1.505u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 209,
+          "line": 209,
+          "text": "X_xcount_xd0084 xcount.t084_d xcount.t017_g xcount.t083_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2156p ad=0.3808p ps=1.505u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 210,
+          "line": 210,
+          "text": "X_xcount_xd0085 xcount.t085_d xcount.t026_g xcount.t085_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.2156p ps=2.92u pd=1.505u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 211,
+          "line": 211,
+          "text": "X_xcount_xd0086 xcount.t086_d xcount.t026_g xcount.t085_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2156p ad=0.3808p ps=1.505u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 212,
+          "line": 212,
+          "text": "X_xcount_xd0087 xcount.t087_d xcount.t041_g xcount.t087_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.2128p ps=2.92u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 213,
+          "line": 213,
+          "text": "X_xcount_xd0088 xcount.t088_d xcount.t042_g xcount.t087_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.2128p ps=1.5u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 214,
+          "line": 214,
+          "text": "X_xcount_xd0089 xcount.t089_d xcount.t043_g xcount.t088_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.2128p ps=1.5u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 215,
+          "line": 215,
+          "text": "X_xcount_xd0090 xcount.t090_d xcount.t043_g xcount.t089_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.3808p ps=1.5u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 216,
+          "line": 216,
+          "text": "X_xcount_xd0091 xcount.t091_d xcount.t045_g xcount.t091_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.2128p ps=2.92u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 217,
+          "line": 217,
+          "text": "X_xcount_xd0092 xcount.t092_d xcount.t046_g xcount.t091_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.3808p ps=1.5u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 218,
+          "line": 218,
+          "text": "X_xcount_xd0093 xcount.t093_d xcount.t048_g xcount.t093_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.2128p ps=2.92u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 219,
+          "line": 219,
+          "text": "X_xcount_xd0094 xcount.t094_d xcount.t049_g xcount.t093_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.3808p ps=1.5u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 220,
+          "line": 220,
+          "text": "X_xcount_xd0095 xcount.t095_d xcount.t050_g xcount.t095_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.2128p ps=2.92u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 221,
+          "line": 221,
+          "text": "X_xcount_xd0096 xcount.t096_d xcount.t051_g xcount.t095_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.3808p ps=1.5u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 222,
+          "line": 222,
+          "text": "X_xcount_xd0097 xcount.t097_d xcount.t052_g xcount.t097_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.2128p ps=2.92u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 223,
+          "line": 223,
+          "text": "X_xcount_xd0098 xcount.t098_d xcount.t053_g xcount.t097_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.3808p ps=1.5u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 224,
+          "line": 224,
+          "text": "X_xcount_xd0099 xcount.t099_d xcount.t054_g xcount.t099_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.2128p ps=2.92u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 225,
+          "line": 225,
+          "text": "X_xcount_xd0100 xcount.t100_d xcount.t055_g xcount.t099_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.3808p ps=1.5u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 226,
+          "line": 226,
+          "text": "X_xcount_xd0101 xcount.t101_d xcount.t056_g xcount.t101_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.2128p ps=2.92u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 227,
+          "line": 227,
+          "text": "X_xcount_xd0102 xcount.t102_d xcount.t057_g xcount.t101_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.3808p ps=1.5u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 228,
+          "line": 228,
+          "text": "X_xcount_xd0103 xcount.t103_d xcount.t001_g xcount.t103_s a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.1428p ad=0.0798p ps=1.52u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 229,
+          "line": 229,
+          "text": "X_xcount_xd0104 xcount.t103_d xcount.t002_g xcount.t104_s a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.3623875p ad=0.0798p ps=2.605u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 230,
+          "line": 230,
+          "text": "X_xcount_xd0105 xcount.t105_d xcount.t003_g xcount.t104_s a_count_vdd sg13_lv_pmos l=0.13u w=1u as=0.3623875p ad=0.34p ps=2.605u pd=2.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 231,
+          "line": 231,
+          "text": "X_xcount_xd0106 xcount.n_68 xcount.t031_g xcount.t106_s a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.19115p ad=0.0525p ps=1.565u pd=0.67u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 232,
+          "line": 232,
+          "text": "X_xcount_xd0107 xcount.t107_d xcount.t004_g xcount.n_68 a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.0525p ad=0.25605p ps=0.67u pd=1.935u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 233,
+          "line": 233,
+          "text": "X_xcount_xd0108 xcount.t108_d xcount.t005_g xcount.t107_d a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.25605p ad=0.0798p ps=1.935u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 234,
+          "line": 234,
+          "text": "X_xcount_xd0109 xcount.t109_d xcount.t006_g xcount.t108_d a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.0798p ad=0.26795p ps=0.8u pd=1.895u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 235,
+          "line": 235,
+          "text": "X_xcount_xd0110 xcount.t106_s xcount.t030_g xcount.t110_s a_count_vdd sg13_lv_pmos l=0.13u w=1u as=0.34p ad=0.19115p ps=2.68u pd=1.565u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 236,
+          "line": 236,
+          "text": "X_xcount_xd0111 xcount.t111_d xcount.t006_g xcount.t109_d a_count_vdd sg13_lv_pmos l=0.13u w=1u as=0.26795p ad=0.34p ps=1.895u pd=2.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 237,
+          "line": 237,
+          "text": "X_xcount_xd0112 xcount.t112_d xcount.t010_g xcount.t112_s a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.1428p ad=0.0798p ps=1.52u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 238,
+          "line": 238,
+          "text": "X_xcount_xd0113 xcount.t112_d xcount.t011_g xcount.t113_s a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.3623875p ad=0.0798p ps=2.605u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 239,
+          "line": 239,
+          "text": "X_xcount_xd0114 xcount.t114_d xcount.t012_g xcount.t113_s a_count_vdd sg13_lv_pmos l=0.13u w=1u as=0.3623875p ad=0.34p ps=2.605u pd=2.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 240,
+          "line": 240,
+          "text": "X_xcount_xd0115 xcount.n_70 xcount.t035_g xcount.t115_s a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.19115p ad=0.0525p ps=1.565u pd=0.67u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 241,
+          "line": 241,
+          "text": "X_xcount_xd0116 xcount.t116_d xcount.t013_g xcount.n_70 a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.0525p ad=0.25605p ps=0.67u pd=1.935u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 242,
+          "line": 242,
+          "text": "X_xcount_xd0117 xcount.t117_d xcount.t014_g xcount.t116_d a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.25605p ad=0.0798p ps=1.935u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 243,
+          "line": 243,
+          "text": "X_xcount_xd0118 xcount.t118_d xcount.t015_g xcount.t117_d a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.0798p ad=0.26795p ps=0.8u pd=1.895u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 244,
+          "line": 244,
+          "text": "X_xcount_xd0119 xcount.t115_s xcount.t034_g xcount.t119_s a_count_vdd sg13_lv_pmos l=0.13u w=1u as=0.34p ad=0.19115p ps=2.68u pd=1.565u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 245,
+          "line": 245,
+          "text": "X_xcount_xd0120 xcount.t120_d xcount.t015_g xcount.t118_d a_count_vdd sg13_lv_pmos l=0.13u w=1u as=0.26795p ad=0.34p ps=1.895u pd=2.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 246,
+          "line": 246,
+          "text": "X_xcount_xd0121 xcount.t121_d xcount.t019_g xcount.t121_s a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.1428p ad=0.0798p ps=1.52u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 247,
+          "line": 247,
+          "text": "X_xcount_xd0122 xcount.t121_d xcount.t020_g xcount.t122_s a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.3623875p ad=0.0798p ps=2.605u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 248,
+          "line": 248,
+          "text": "X_xcount_xd0123 xcount.t123_d xcount.t021_g xcount.t122_s a_count_vdd sg13_lv_pmos l=0.13u w=1u as=0.3623875p ad=0.34p ps=2.605u pd=2.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 249,
+          "line": 249,
+          "text": "X_xcount_xd0124 xcount.n_72 xcount.t039_g xcount.t124_s a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.19115p ad=0.0525p ps=1.565u pd=0.67u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 250,
+          "line": 250,
+          "text": "X_xcount_xd0125 xcount.t125_d xcount.t022_g xcount.n_72 a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.0525p ad=0.25605p ps=0.67u pd=1.935u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 251,
+          "line": 251,
+          "text": "X_xcount_xd0126 xcount.t126_d xcount.t023_g xcount.t125_d a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.25605p ad=0.0798p ps=1.935u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 252,
+          "line": 252,
+          "text": "X_xcount_xd0127 xcount.t127_d xcount.t024_g xcount.t126_d a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.0798p ad=0.26795p ps=0.8u pd=1.895u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 253,
+          "line": 253,
+          "text": "X_xcount_xd0128 xcount.t124_s xcount.t038_g xcount.t128_s a_count_vdd sg13_lv_pmos l=0.13u w=1u as=0.34p ad=0.19115p ps=2.68u pd=1.565u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 254,
+          "line": 254,
+          "text": "X_xcount_xd0129 xcount.t129_d xcount.t024_g xcount.t127_d a_count_vdd sg13_lv_pmos l=0.13u w=1u as=0.26795p ad=0.34p ps=1.895u pd=2.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 255,
+          "line": 255,
+          "text": "X_xcount_xd0130 xcount.t130_d xcount.t040_g xcount.t130_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.3808p ps=2.92u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 256,
+          "line": 256,
+          "text": "X_xcount_xd0131 xcount.t131_d xcount.t047_g xcount.t131_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.3808p ps=2.92u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 257,
+          "line": 257,
+          "text": "X_xcount_xd0132 xcount.t132_d xcount.t058_g xcount.t132_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.3808p ps=2.92u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 258,
+          "line": 258,
+          "text": "X_xcount_xd0133 xcount.t133_d xcount.t059_g xcount.t133_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.2128p ps=2.92u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 259,
+          "line": 259,
+          "text": "X_xcount_xd0134 xcount.t134_d xcount.t060_g xcount.t133_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.2128p ps=1.5u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 260,
+          "line": 260,
+          "text": "X_xcount_xd0135 xcount.t135_d xcount.t061_g xcount.t134_d a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.3808p ps=1.5u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 261,
+          "line": 261,
+          "text": "X_xcount_xd0136 xcount.t136_d xcount.t062_g xcount.t136_s a_count_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.3808p ps=2.92u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 262,
+          "line": 262,
+          "text": "X_xcount_xd0137 xcount.t137_d xcount.t002_g xcount.t137_s a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.147p ad=0.1563p ps=1.54u pd=1.22u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 263,
+          "line": 263,
+          "text": "X_xcount_xd0138 xcount.n_67 xcount.t029_g xcount.t137_d a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.1563p ad=0.0546p ps=1.22u pd=0.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 264,
+          "line": 264,
+          "text": "X_xcount_xd0139 xcount.t139_d xcount.t063_g xcount.n_67 a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.0546p ad=0.0798p ps=0.68u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 265,
+          "line": 265,
+          "text": "X_xcount_xd0140 xcount.t140_d xcount.t064_g xcount.t139_d a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.0798p ad=0.1428p ps=0.8u pd=1.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 266,
+          "line": 266,
+          "text": "X_xcount_xd0141 xcount.t141_d xcount.t011_g xcount.t141_s a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.147p ad=0.1563p ps=1.54u pd=1.22u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 267,
+          "line": 267,
+          "text": "X_xcount_xd0142 xcount.n_69 xcount.t033_g xcount.t141_d a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.1563p ad=0.0546p ps=1.22u pd=0.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 268,
+          "line": 268,
+          "text": "X_xcount_xd0143 xcount.t143_d xcount.t067_g xcount.n_69 a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.0546p ad=0.0798p ps=0.68u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 269,
+          "line": 269,
+          "text": "X_xcount_xd0144 xcount.t144_d xcount.t068_g xcount.t143_d a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.0798p ad=0.1428p ps=0.8u pd=1.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 270,
+          "line": 270,
+          "text": "X_xcount_xd0145 xcount.t145_d xcount.t020_g xcount.t145_s a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.147p ad=0.1563p ps=1.54u pd=1.22u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 271,
+          "line": 271,
+          "text": "X_xcount_xd0146 xcount.n_71 xcount.t037_g xcount.t145_d a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.1563p ad=0.0546p ps=1.22u pd=0.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 272,
+          "line": 272,
+          "text": "X_xcount_xd0147 xcount.t147_d xcount.t071_g xcount.n_71 a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.0546p ad=0.0798p ps=0.68u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 273,
+          "line": 273,
+          "text": "X_xcount_xd0148 xcount.t148_d xcount.t072_g xcount.t147_d a_count_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.0798p ad=0.1428p ps=0.8u pd=1.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 456,
+          "line": 456,
+          "text": "X_xrelease_xd0001 xrelease.n_24 xrelease.t001_g xrelease.t001_s a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1428p ad=0.0609p ps=1.52u pd=0.71u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 457,
+          "line": 457,
+          "text": "X_xrelease_xd0002 xrelease.t002_d xrelease.t002_g xrelease.n_24 a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.0609p ad=0.1626p ps=0.71u pd=1.415u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 458,
+          "line": 458,
+          "text": "X_xrelease_xd0003 xrelease.t003_d xrelease.t003_g xrelease.t002_d a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1626p ad=0.2516p ps=1.415u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 459,
+          "line": 459,
+          "text": "X_xrelease_xd0004 xrelease.t004_d xrelease.t004_g xrelease.t004_s a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1428p ad=0.0798p ps=1.52u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 460,
+          "line": 460,
+          "text": "X_xrelease_xd0005 xrelease.n_26 xrelease.t005_g xrelease.t004_d a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.0798p ad=0.0378p ps=0.8u pd=0.6u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 461,
+          "line": 461,
+          "text": "X_xrelease_xd0006 xrelease.t006_d xrelease.t006_g xrelease.n_26 a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.0378p ad=0.1428p ps=0.6u pd=1.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 462,
+          "line": 462,
+          "text": "X_xrelease_xd0007 xrelease.t007_d xrelease.t006_g xrelease.t007_s a_release_vss sg13_lv_nmos l=0.13u w=0.64u as=0.2176p ad=0.2176p ps=1.96u pd=1.96u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 463,
+          "line": 463,
+          "text": "X_xrelease_xd0008 xrelease.t008_d xrelease.t008_g xrelease.t008_s a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.14245p ps=2.16u pd=1.125u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 464,
+          "line": 464,
+          "text": "X_xrelease_xd0009 xrelease.t009_d xrelease.t008_g xrelease.t008_d a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.14245p ad=0.2516p ps=1.125u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 465,
+          "line": 465,
+          "text": "X_xrelease_xd0010 xrelease.n_27 xrelease.t010_g xrelease.t010_s a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1428p ad=0.0609p ps=1.52u pd=0.71u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 466,
+          "line": 466,
+          "text": "X_xrelease_xd0011 xrelease.t011_d xrelease.t011_g xrelease.n_27 a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.0609p ad=0.1626p ps=0.71u pd=1.415u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 467,
+          "line": 467,
+          "text": "X_xrelease_xd0012 xrelease.t012_d xrelease.t012_g xrelease.t011_d a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1626p ad=0.2516p ps=1.415u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 468,
+          "line": 468,
+          "text": "X_xrelease_xd0013 xrelease.t013_d xrelease.t013_g xrelease.t013_s a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1428p ad=0.0798p ps=1.52u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 469,
+          "line": 469,
+          "text": "X_xrelease_xd0014 xrelease.n_29 xrelease.t014_g xrelease.t013_d a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.0798p ad=0.0378p ps=0.8u pd=0.6u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 470,
+          "line": 470,
+          "text": "X_xrelease_xd0015 xrelease.t015_d xrelease.t015_g xrelease.n_29 a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.0378p ad=0.1428p ps=0.6u pd=1.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 471,
+          "line": 471,
+          "text": "X_xrelease_xd0016 xrelease.t016_d xrelease.t015_g xrelease.t016_s a_release_vss sg13_lv_nmos l=0.13u w=0.64u as=0.2176p ad=0.2176p ps=1.96u pd=1.96u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 472,
+          "line": 472,
+          "text": "X_xrelease_xd0017 xrelease.t017_d xrelease.t017_g xrelease.t017_s a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.14245p ps=2.16u pd=1.125u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 473,
+          "line": 473,
+          "text": "X_xrelease_xd0018 xrelease.t018_d xrelease.t017_g xrelease.t017_d a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.14245p ad=0.2516p ps=1.125u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 474,
+          "line": 474,
+          "text": "X_xrelease_xd0019 xrelease.t019_d xrelease.t019_g xrelease.t019_s a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.2516p ps=2.16u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 475,
+          "line": 475,
+          "text": "X_xrelease_xd0020 xrelease.n_25 xrelease.t002_g xrelease.t020_s a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1701p ad=0.03885p ps=1.65u pd=0.605u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 476,
+          "line": 476,
+          "text": "X_xrelease_xd0021 xrelease.t021_d xrelease.t021_g xrelease.n_25 a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.03885p ad=0.1596p ps=0.605u pd=1.6u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 477,
+          "line": 477,
+          "text": "X_xrelease_xd0022 xrelease.t022_d xrelease.t022_g xrelease.t022_s a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.12665p ad=0.1428p ps=1.145u pd=1.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 478,
+          "line": 478,
+          "text": "X_xrelease_xd0023 xrelease.t022_s xrelease.t023_g xrelease.t023_s a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.3473p ad=0.12665p ps=2.71u pd=1.145u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 479,
+          "line": 479,
+          "text": "X_xrelease_xd0024 xrelease.n_28 xrelease.t011_g xrelease.t024_s a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.1701p ad=0.03885p ps=1.65u pd=0.605u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 480,
+          "line": 480,
+          "text": "X_xrelease_xd0025 xrelease.t025_d xrelease.t025_g xrelease.n_28 a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.03885p ad=0.1596p ps=0.605u pd=1.6u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 481,
+          "line": 481,
+          "text": "X_xrelease_xd0026 xrelease.t026_d xrelease.t026_g xrelease.t026_s a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.12665p ad=0.1428p ps=1.145u pd=1.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 482,
+          "line": 482,
+          "text": "X_xrelease_xd0027 xrelease.t026_s xrelease.t027_g xrelease.t027_s a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.3473p ad=0.12665p ps=2.71u pd=1.145u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 483,
+          "line": 483,
+          "text": "X_xrelease_xd0028 xrelease.t028_d xrelease.t028_g xrelease.t028_s a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.1406p ps=2.16u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 484,
+          "line": 484,
+          "text": "X_xrelease_xd0029 xrelease.t029_d xrelease.t029_g xrelease.t028_d a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.1406p ps=1.12u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 485,
+          "line": 485,
+          "text": "X_xrelease_xd0030 xrelease.t030_d xrelease.t030_g xrelease.t029_d a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.1406p ps=1.12u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 486,
+          "line": 486,
+          "text": "X_xrelease_xd0031 xrelease.t031_d xrelease.t030_g xrelease.t030_d a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.2516p ps=1.12u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 487,
+          "line": 487,
+          "text": "X_xrelease_xd0032 xrelease.t032_d xrelease.t032_g xrelease.t032_s a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.1406p ps=2.16u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 488,
+          "line": 488,
+          "text": "X_xrelease_xd0033 xrelease.t033_d xrelease.t033_g xrelease.t032_d a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.1406p ps=1.12u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 489,
+          "line": 489,
+          "text": "X_xrelease_xd0034 xrelease.t034_d xrelease.t034_g xrelease.t033_d a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.1406p ps=1.12u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 490,
+          "line": 490,
+          "text": "X_xrelease_xd0035 xrelease.t035_d xrelease.t034_g xrelease.t034_d a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.2516p ps=1.12u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 491,
+          "line": 491,
+          "text": "X_xrelease_xd0036 xrelease.t036_d xrelease.t036_g xrelease.t036_s a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.2516p ad=0.1406p ps=2.16u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 492,
+          "line": 492,
+          "text": "X_xrelease_xd0037 xrelease.t037_d xrelease.t037_g xrelease.t036_d a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.1406p ps=1.12u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 493,
+          "line": 493,
+          "text": "X_xrelease_xd0038 xrelease.t038_d xrelease.t038_g xrelease.t037_d a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.1406p ps=1.12u pd=1.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 494,
+          "line": 494,
+          "text": "X_xrelease_xd0039 xrelease.t039_d xrelease.t038_g xrelease.t038_d a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.1406p ad=0.2516p ps=1.12u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 495,
+          "line": 495,
+          "text": "X_xrelease_xd0040 xrelease.t040_d xrelease.t040_g xrelease.t040_s a_release_vss sg13_lv_nmos l=0.13u w=0.72u as=0.27p ad=0.1368p ps=2.19u pd=1.1u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 496,
+          "line": 496,
+          "text": "X_xrelease_xd0041 xrelease.t041_d xrelease.t040_g xrelease.t040_d a_release_vss sg13_lv_nmos l=0.13u w=0.72u as=0.1368p ad=0.1404p ps=1.1u pd=1.11u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 497,
+          "line": 497,
+          "text": "X_xrelease_xd0042 xrelease.t042_d xrelease.t042_g xrelease.t041_d a_release_vss sg13_lv_nmos l=0.13u w=0.72u as=0.1404p ad=0.1368p ps=1.11u pd=1.1u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 498,
+          "line": 498,
+          "text": "X_xrelease_xd0043 xrelease.t043_d xrelease.t042_g xrelease.t042_d a_release_vss sg13_lv_nmos l=0.13u w=0.72u as=0.1368p ad=0.2448p ps=1.1u pd=2.12u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 499,
+          "line": 499,
+          "text": "X_xrelease_xd0044 xrelease.t044_d xrelease.t044_g xrelease.t044_s a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.3816p ad=0.081p ps=2.72u pd=0.81u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 500,
+          "line": 500,
+          "text": "X_xrelease_xd0045 xrelease.t045_d xrelease.t045_g xrelease.t044_d a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.081p ad=0.2163p ps=0.81u pd=1.87u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 501,
+          "line": 501,
+          "text": "X_xrelease_xd0046 xrelease.t046_d xrelease.t044_g xrelease.t046_s a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.43315p ad=0.2516p ps=2.205u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 502,
+          "line": 502,
+          "text": "X_xrelease_xd0047 xrelease.t047_d xrelease.t047_g xrelease.t046_s a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.43315p ad=0.2516p ps=2.205u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 503,
+          "line": 503,
+          "text": "X_xrelease_xd0048 xrelease.t048_d xrelease.t048_g xrelease.t048_s a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.3816p ad=0.081p ps=2.72u pd=0.81u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 504,
+          "line": 504,
+          "text": "X_xrelease_xd0049 xrelease.t049_d xrelease.t049_g xrelease.t048_d a_release_vss sg13_lv_nmos l=0.13u w=0.42u as=0.081p ad=0.2163p ps=0.81u pd=1.87u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 505,
+          "line": 505,
+          "text": "X_xrelease_xd0050 xrelease.t050_d xrelease.t048_g xrelease.t050_s a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.43315p ad=0.2516p ps=2.205u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 506,
+          "line": 506,
+          "text": "X_xrelease_xd0051 xrelease.t051_d xrelease.t051_g xrelease.t050_s a_release_vss sg13_lv_nmos l=0.13u w=0.74u as=0.43315p ad=0.2516p ps=2.205u pd=2.16u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 507,
+          "line": 507,
+          "text": "X_xrelease_xd0052 xrelease.t052_d xrelease.t044_g xrelease.t052_s a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3864p ad=0.431025p ps=2.93u pd=2.145u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 508,
+          "line": 508,
+          "text": "X_xrelease_xd0053 xrelease.t053_d xrelease.t047_g xrelease.t052_d a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.431025p ad=0.3808p ps=2.145u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 509,
+          "line": 509,
+          "text": "X_xrelease_xd0054 xrelease.t054_d xrelease.t048_g xrelease.t054_s a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3864p ad=0.431025p ps=2.93u pd=2.145u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 510,
+          "line": 510,
+          "text": "X_xrelease_xd0055 xrelease.t055_d xrelease.t051_g xrelease.t054_d a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.431025p ad=0.3808p ps=2.145u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 511,
+          "line": 511,
+          "text": "X_xrelease_xd0056 xrelease.t056_d xrelease.t008_g xrelease.t056_s a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.2156p ps=2.92u pd=1.505u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 512,
+          "line": 512,
+          "text": "X_xrelease_xd0057 xrelease.t057_d xrelease.t008_g xrelease.t056_d a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2156p ad=0.3808p ps=1.505u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 513,
+          "line": 513,
+          "text": "X_xrelease_xd0058 xrelease.t058_d xrelease.t017_g xrelease.t058_s a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.2156p ps=2.92u pd=1.505u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 514,
+          "line": 514,
+          "text": "X_xrelease_xd0059 xrelease.t059_d xrelease.t017_g xrelease.t058_d a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2156p ad=0.3808p ps=1.505u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 515,
+          "line": 515,
+          "text": "X_xrelease_xd0060 xrelease.t060_d xrelease.t028_g xrelease.t060_s a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.2128p ps=2.92u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 516,
+          "line": 516,
+          "text": "X_xrelease_xd0061 xrelease.t061_d xrelease.t029_g xrelease.t060_d a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.2128p ps=1.5u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 517,
+          "line": 517,
+          "text": "X_xrelease_xd0062 xrelease.t062_d xrelease.t030_g xrelease.t061_d a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.2128p ps=1.5u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 518,
+          "line": 518,
+          "text": "X_xrelease_xd0063 xrelease.t063_d xrelease.t030_g xrelease.t062_d a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.3808p ps=1.5u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 519,
+          "line": 519,
+          "text": "X_xrelease_xd0064 xrelease.t064_d xrelease.t032_g xrelease.t064_s a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.2128p ps=2.92u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 520,
+          "line": 520,
+          "text": "X_xrelease_xd0065 xrelease.t065_d xrelease.t033_g xrelease.t064_d a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.2128p ps=1.5u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 521,
+          "line": 521,
+          "text": "X_xrelease_xd0066 xrelease.t066_d xrelease.t034_g xrelease.t065_d a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.2128p ps=1.5u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 522,
+          "line": 522,
+          "text": "X_xrelease_xd0067 xrelease.t067_d xrelease.t034_g xrelease.t066_d a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.3808p ps=1.5u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 523,
+          "line": 523,
+          "text": "X_xrelease_xd0068 xrelease.t068_d xrelease.t036_g xrelease.t068_s a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.2128p ps=2.92u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 524,
+          "line": 524,
+          "text": "X_xrelease_xd0069 xrelease.t069_d xrelease.t037_g xrelease.t068_d a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.2128p ps=1.5u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 525,
+          "line": 525,
+          "text": "X_xrelease_xd0070 xrelease.t070_d xrelease.t038_g xrelease.t069_d a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.2128p ps=1.5u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 526,
+          "line": 526,
+          "text": "X_xrelease_xd0071 xrelease.t071_d xrelease.t038_g xrelease.t070_d a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.3808p ps=1.5u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 527,
+          "line": 527,
+          "text": "X_xrelease_xd0072 xrelease.t072_d xrelease.t040_g xrelease.t072_s a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.4032p ad=0.2128p ps=2.96u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 528,
+          "line": 528,
+          "text": "X_xrelease_xd0073 xrelease.t073_d xrelease.t040_g xrelease.t072_d a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.2184p ps=1.5u pd=1.51u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 529,
+          "line": 529,
+          "text": "X_xrelease_xd0074 xrelease.t074_d xrelease.t042_g xrelease.t073_d a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2184p ad=0.2128p ps=1.51u pd=1.5u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 530,
+          "line": 530,
+          "text": "X_xrelease_xd0075 xrelease.t075_d xrelease.t042_g xrelease.t074_d a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.2128p ad=0.392p ps=1.5u pd=2.94u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 531,
+          "line": 531,
+          "text": "X_xrelease_xd0076 xrelease.t076_d xrelease.t019_g xrelease.t076_s a_release_vdd sg13_lv_pmos l=0.13u w=1.12u as=0.3808p ad=0.3808p ps=2.92u pd=2.92u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 532,
+          "line": 532,
+          "text": "X_xrelease_xd0077 xrelease.t077_d xrelease.t001_g xrelease.t077_s a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.1428p ad=0.0798p ps=1.52u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 533,
+          "line": 533,
+          "text": "X_xrelease_xd0078 xrelease.t077_d xrelease.t002_g xrelease.t078_s a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.3623875p ad=0.0798p ps=2.605u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 534,
+          "line": 534,
+          "text": "X_xrelease_xd0079 xrelease.t079_d xrelease.t003_g xrelease.t078_s a_release_vdd sg13_lv_pmos l=0.13u w=1u as=0.3623875p ad=0.34p ps=2.605u pd=2.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 535,
+          "line": 535,
+          "text": "X_xrelease_xd0080 xrelease.t080_d xrelease.t002_g xrelease.t080_s a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.147p ad=0.1563p ps=1.54u pd=1.22u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 536,
+          "line": 536,
+          "text": "X_xrelease_xd0081 xrelease.t081_d xrelease.t021_g xrelease.t080_d a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.1563p ad=0.1806p ps=1.22u pd=1.28u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 537,
+          "line": 537,
+          "text": "X_xrelease_xd0082 xrelease.t082_d xrelease.t044_g xrelease.t081_d a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.1806p ad=0.0798p ps=1.28u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 538,
+          "line": 538,
+          "text": "X_xrelease_xd0083 xrelease.t083_d xrelease.t045_g xrelease.t082_d a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.0798p ad=0.1428p ps=0.8u pd=1.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 539,
+          "line": 539,
+          "text": "X_xrelease_xd0084 xrelease.t084_d xrelease.t023_g xrelease.t084_s a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.19115p ad=0.1785p ps=1.565u pd=1.27u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 540,
+          "line": 540,
+          "text": "X_xrelease_xd0085 xrelease.t085_d xrelease.t004_g xrelease.t084_d a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.1785p ad=0.25605p ps=1.27u pd=1.935u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 541,
+          "line": 541,
+          "text": "X_xrelease_xd0086 xrelease.t086_d xrelease.t005_g xrelease.t085_d a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.25605p ad=0.0798p ps=1.935u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 542,
+          "line": 542,
+          "text": "X_xrelease_xd0087 xrelease.t087_d xrelease.t006_g xrelease.t086_d a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.0798p ad=0.26795p ps=0.8u pd=1.895u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 543,
+          "line": 543,
+          "text": "X_xrelease_xd0088 xrelease.t084_s xrelease.t022_g xrelease.t088_s a_release_vdd sg13_lv_pmos l=0.13u w=1u as=0.34p ad=0.19115p ps=2.68u pd=1.565u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 544,
+          "line": 544,
+          "text": "X_xrelease_xd0089 xrelease.t089_d xrelease.t006_g xrelease.t087_d a_release_vdd sg13_lv_pmos l=0.13u w=1u as=0.26795p ad=0.34p ps=1.895u pd=2.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 545,
+          "line": 545,
+          "text": "X_xrelease_xd0090 xrelease.t090_d xrelease.t010_g xrelease.t090_s a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.1428p ad=0.0798p ps=1.52u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 546,
+          "line": 546,
+          "text": "X_xrelease_xd0091 xrelease.t090_d xrelease.t011_g xrelease.t091_s a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.3623875p ad=0.0798p ps=2.605u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 547,
+          "line": 547,
+          "text": "X_xrelease_xd0092 xrelease.t092_d xrelease.t012_g xrelease.t091_s a_release_vdd sg13_lv_pmos l=0.13u w=1u as=0.3623875p ad=0.34p ps=2.605u pd=2.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 548,
+          "line": 548,
+          "text": "X_xrelease_xd0093 xrelease.t093_d xrelease.t011_g xrelease.t093_s a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.147p ad=0.1563p ps=1.54u pd=1.22u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 549,
+          "line": 549,
+          "text": "X_xrelease_xd0094 xrelease.t094_d xrelease.t025_g xrelease.t093_d a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.1563p ad=0.1806p ps=1.22u pd=1.28u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 550,
+          "line": 550,
+          "text": "X_xrelease_xd0095 xrelease.t095_d xrelease.t048_g xrelease.t094_d a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.1806p ad=0.0798p ps=1.28u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 551,
+          "line": 551,
+          "text": "X_xrelease_xd0096 xrelease.t096_d xrelease.t049_g xrelease.t095_d a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.0798p ad=0.1428p ps=0.8u pd=1.52u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 552,
+          "line": 552,
+          "text": "X_xrelease_xd0097 xrelease.t097_d xrelease.t027_g xrelease.t097_s a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.19115p ad=0.1785p ps=1.565u pd=1.27u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 553,
+          "line": 553,
+          "text": "X_xrelease_xd0098 xrelease.t098_d xrelease.t013_g xrelease.t097_d a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.1785p ad=0.25605p ps=1.27u pd=1.935u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 554,
+          "line": 554,
+          "text": "X_xrelease_xd0099 xrelease.t099_d xrelease.t014_g xrelease.t098_d a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.25605p ad=0.0798p ps=1.935u pd=0.8u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 555,
+          "line": 555,
+          "text": "X_xrelease_xd0100 xrelease.t100_d xrelease.t015_g xrelease.t099_d a_release_vdd sg13_lv_pmos l=0.13u w=0.42u as=0.0798p ad=0.26795p ps=0.8u pd=1.895u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 556,
+          "line": 556,
+          "text": "X_xrelease_xd0101 xrelease.t097_s xrelease.t026_g xrelease.t101_s a_release_vdd sg13_lv_pmos l=0.13u w=1u as=0.34p ad=0.19115p ps=2.68u pd=1.565u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 557,
+          "line": 557,
+          "text": "X_xrelease_xd0102 xrelease.t102_d xrelease.t015_g xrelease.t100_d a_release_vdd sg13_lv_pmos l=0.13u w=1u as=0.26795p ad=0.34p ps=1.895u pd=2.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 566,
+          "line": 566,
+          "text": "X_xpump_xd0003 xpump.t003_d xpump.t003_g xpump.t003_s a_count_vss sg13_hv_nmos l=0.45u w=2u as=0.68p ad=0.68p ps=4.68u pd=4.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 567,
+          "line": 567,
+          "text": "X_xpump_xd0004 xpump.t004_d xpump.t004_g xpump.t004_s xpump.n_13 sg13_hv_pmos l=0.45u w=4u as=1.36p ad=1.36p ps=8.68u pd=8.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 568,
+          "line": 568,
+          "text": "X_xpump_xd0005 xpump.t005_d xpump.t005_g xpump.t005_s xpump.n_12 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 569,
+          "line": 569,
+          "text": "X_xpump_xd0006 xpump.t006_d xpump.t006_g xpump.t006_s xpump.n_11 sg13_hv_pmos l=2u w=6.4u as=2.176p ad=2.176p ps=13.48u pd=13.48u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 570,
+          "line": 570,
+          "text": "X_xpump_xd0007 xpump.t007_d xpump.t007_g xpump.t007_s xpump.n_10 sg13_hv_pmos l=2u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 571,
+          "line": 571,
+          "text": "X_xpump_xd0008 xpump.t008_d xpump.t008_g xpump.t008_s a_count_vss sg13_hv_nmos l=2u w=2u as=0.68p ad=0.68p ps=4.68u pd=4.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 572,
+          "line": 572,
+          "text": "X_xpump_xd0009 xpump.t009_d xpump.t009_g xpump.t009_s a_count_vss sg13_hv_nmos l=2u w=2u as=0.68p ad=0.68p ps=4.68u pd=4.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 573,
+          "line": 573,
+          "text": "X_xpump_xd0010 xpump.t010_d xpump.t010_g xpump.t010_s a_count_vss sg13_hv_nmos l=2u w=2u as=0.68p ad=0.68p ps=4.68u pd=4.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 575,
+          "line": 575,
+          "text": "X_xpump_xd0012 xpump.t012_d xpump.t012_g xpump.t012_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 594,
+          "line": 594,
+          "text": "X_xlevel_xd0001 xlevel.t001_d xlevel.t001_g xlevel.t001_s a_count_vss sg13_hv_nmos l=0.45u w=4.0u as=1.36p ad=1.36p ps=8.68u pd=8.68u rfmode=0.0 ng=1 m=1"
+        },
+        {
+          "end_line": 595,
+          "line": 595,
+          "text": "X_xlevel_xd0002 xlevel.t002_d xlevel.t002_g xlevel.t002_s xlevel.n_7 sg13_hv_pmos l=0.45u w=10.0u as=3.4000000000000004p ad=3.4000000000000004p ps=20.68u pd=20.68u rfmode=0.0 ng=1 m=1"
+        },
+        {
+          "end_line": 599,
+          "line": 599,
+          "text": "X_xlevel_xd0006 xlevel.t006_d xlevel.t006_g xlevel.t006_s xlevel.n_6 sg13_hv_pmos l=0.45u w=2.0u as=0.68p ad=0.68p ps=4.68u pd=4.68u rfmode=0.0 ng=1 m=1"
+        },
+        {
+          "end_line": 600,
+          "line": 600,
+          "text": "X_xlevel_xd0007 xlevel.t007_d xlevel.t007_g xlevel.t007_s xlevel.n_5 sg13_hv_pmos l=0.45u w=2.0u as=0.68p ad=0.68p ps=4.68u pd=4.68u rfmode=0.0 ng=1 m=1"
+        },
+        {
+          "end_line": 609,
+          "line": 609,
+          "text": "X_xlevel_xd0016 xlevel.t016_d xlevel.t016_g xlevel.t016_s a_count_vss sg13_hv_nmos l=0.45u w=8.0u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0.0 ng=1 m=1"
+        },
+        {
+          "end_line": 610,
+          "line": 610,
+          "text": "X_xlevel_xd0017 xlevel.t017_d xlevel.t017_g xlevel.t017_s a_count_vss sg13_hv_nmos l=0.45u w=8.0u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0.0 ng=1 m=1"
+        },
+        {
+          "end_line": 611,
+          "line": 611,
+          "text": "X_xlevel_xd0018 xlevel.t018_d xlevel.t018_g xlevel.t018_s a_count_vss sg13_hv_nmos l=0.45u w=8.0u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0.0 ng=1 m=1"
+        },
+        {
+          "end_line": 612,
+          "line": 612,
+          "text": "X_xlevel_xd0019 xlevel.t019_d xlevel.t019_g xlevel.t019_s a_count_vss sg13_hv_nmos l=0.45u w=8.0u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0.0 ng=1 m=1"
+        },
+        {
+          "end_line": 7029,
+          "line": 7029,
+          "text": "X_xpfd_xd0001 xpfd.t001_d xpfd.t001_g xpfd.t001_s a_count_vss sg13_hv_nmos l=0.45u w=4u as=1.36p ad=1.36p ps=8.68u pd=8.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7030,
+          "line": 7030,
+          "text": "X_xpfd_xd0002 xpfd.t002_d xpfd.t002_g xpfd.t002_s a_count_vss sg13_hv_nmos l=0.45u w=4u as=1.36p ad=1.36p ps=8.68u pd=8.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7031,
+          "line": 7031,
+          "text": "X_xpfd_xd0003 xpfd.t003_d xpfd.t003_g xpfd.t003_s a_count_vss sg13_hv_nmos l=0.45u w=4u as=1.36p ad=1.36p ps=8.68u pd=8.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7032,
+          "line": 7032,
+          "text": "X_xpfd_xd0004 xpfd.t004_d xpfd.t004_g xpfd.t004_s a_count_vss sg13_hv_nmos l=0.45u w=4u as=1.36p ad=1.36p ps=8.68u pd=8.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7033,
+          "line": 7033,
+          "text": "X_xpfd_xd0005 xpfd.t005_d xpfd.t005_g xpfd.t005_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7034,
+          "line": 7034,
+          "text": "X_xpfd_xd0006 xpfd.t006_d xpfd.t006_g xpfd.t006_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7035,
+          "line": 7035,
+          "text": "X_xpfd_xd0007 xpfd.t007_d xpfd.t007_g xpfd.t007_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7036,
+          "line": 7036,
+          "text": "X_xpfd_xd0008 xpfd.t008_d xpfd.t008_g xpfd.t008_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7037,
+          "line": 7037,
+          "text": "X_xpfd_xd0009 xpfd.t009_d xpfd.t009_g xpfd.t009_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7038,
+          "line": 7038,
+          "text": "X_xpfd_xd0010 xpfd.t010_d xpfd.t010_g xpfd.t010_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7039,
+          "line": 7039,
+          "text": "X_xpfd_xd0011 xpfd.t011_d xpfd.t011_g xpfd.t011_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7040,
+          "line": 7040,
+          "text": "X_xpfd_xd0012 xpfd.t012_d xpfd.t012_g xpfd.t012_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7041,
+          "line": 7041,
+          "text": "X_xpfd_xd0013 xpfd.t013_d xpfd.t013_g xpfd.t013_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7042,
+          "line": 7042,
+          "text": "X_xpfd_xd0014 xpfd.t014_d xpfd.t014_g xpfd.t014_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7043,
+          "line": 7043,
+          "text": "X_xpfd_xd0015 xpfd.t015_d xpfd.t015_g xpfd.t015_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7044,
+          "line": 7044,
+          "text": "X_xpfd_xd0016 xpfd.t016_d xpfd.t016_g xpfd.t016_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7045,
+          "line": 7045,
+          "text": "X_xpfd_xd0017 xpfd.t017_d xpfd.t017_g xpfd.t017_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7046,
+          "line": 7046,
+          "text": "X_xpfd_xd0018 xpfd.t018_d xpfd.t018_g xpfd.t018_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7047,
+          "line": 7047,
+          "text": "X_xpfd_xd0019 xpfd.t019_d xpfd.t019_g xpfd.t019_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7048,
+          "line": 7048,
+          "text": "X_xpfd_xd0020 xpfd.t020_d xpfd.t020_g xpfd.t020_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7049,
+          "line": 7049,
+          "text": "X_xpfd_xd0021 xpfd.t021_d xpfd.t021_g xpfd.t021_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7050,
+          "line": 7050,
+          "text": "X_xpfd_xd0022 xpfd.t022_d xpfd.t022_g xpfd.t022_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7051,
+          "line": 7051,
+          "text": "X_xpfd_xd0023 xpfd.t023_d xpfd.t023_g xpfd.t023_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7052,
+          "line": 7052,
+          "text": "X_xpfd_xd0024 xpfd.t024_d xpfd.t024_g xpfd.t024_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7053,
+          "line": 7053,
+          "text": "X_xpfd_xd0025 xpfd.t025_d xpfd.t025_g xpfd.t025_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7054,
+          "line": 7054,
+          "text": "X_xpfd_xd0026 xpfd.t026_d xpfd.t026_g xpfd.t026_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7055,
+          "line": 7055,
+          "text": "X_xpfd_xd0027 xpfd.t027_d xpfd.t027_g xpfd.t027_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7056,
+          "line": 7056,
+          "text": "X_xpfd_xd0028 xpfd.t028_d xpfd.t028_g xpfd.t028_s a_count_vss sg13_hv_nmos l=0.45u w=12u as=4.08p ad=4.08p ps=24.68u pd=24.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7057,
+          "line": 7057,
+          "text": "X_xpfd_xd0029 xpfd.t029_d xpfd.t029_g xpfd.t029_s xpfd.n_918 sg13_hv_pmos l=0.45u w=32u as=10.88p ad=10.88p ps=64.68u pd=64.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7058,
+          "line": 7058,
+          "text": "X_xpfd_xd0030 xpfd.t030_d xpfd.t030_g xpfd.t030_s xpfd.n_917 sg13_hv_pmos l=0.45u w=32u as=10.88p ad=10.88p ps=64.68u pd=64.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7059,
+          "line": 7059,
+          "text": "X_xpfd_xd0031 xpfd.t031_d xpfd.t031_g xpfd.t031_s xpfd.n_916 sg13_hv_pmos l=0.45u w=32u as=10.88p ad=10.88p ps=64.68u pd=64.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7060,
+          "line": 7060,
+          "text": "X_xpfd_xd0032 xpfd.t032_d xpfd.t032_g xpfd.t032_s a_count_vss sg13_hv_nmos l=0.45u w=16u as=5.44p ad=5.44p ps=32.68u pd=32.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7061,
+          "line": 7061,
+          "text": "X_xpfd_xd0033 xpfd.t033_d xpfd.t033_g xpfd.t033_s a_count_vss sg13_hv_nmos l=0.45u w=16u as=5.44p ad=5.44p ps=32.68u pd=32.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7109,
+          "line": 7109,
+          "text": "X_xpfd_xd0081 xpfd.t081_d xpfd.t081_g xpfd.t081_s xpfd.n_13 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7110,
+          "line": 7110,
+          "text": "X_xpfd_xd0082 xpfd.t082_d xpfd.t082_g xpfd.t082_s xpfd.n_151 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7111,
+          "line": 7111,
+          "text": "X_xpfd_xd0083 xpfd.t083_d xpfd.t083_g xpfd.t083_s xpfd.n_913 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7112,
+          "line": 7112,
+          "text": "X_xpfd_xd0084 xpfd.t084_d xpfd.t084_g xpfd.t084_s xpfd.n_292 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7113,
+          "line": 7113,
+          "text": "X_xpfd_xd0085 xpfd.t085_d xpfd.t085_g xpfd.t085_s xpfd.n_341 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7114,
+          "line": 7114,
+          "text": "X_xpfd_xd0086 xpfd.t086_d xpfd.t086_g xpfd.t086_s xpfd.n_148 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7115,
+          "line": 7115,
+          "text": "X_xpfd_xd0087 xpfd.t087_d xpfd.t087_g xpfd.t087_s xpfd.n_862 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7116,
+          "line": 7116,
+          "text": "X_xpfd_xd0088 xpfd.t088_d xpfd.t088_g xpfd.t088_s xpfd.n_12 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7117,
+          "line": 7117,
+          "text": "X_xpfd_xd0089 xpfd.t089_d xpfd.t089_g xpfd.t089_s xpfd.n_340 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7118,
+          "line": 7118,
+          "text": "X_xpfd_xd0090 xpfd.t090_d xpfd.t090_g xpfd.t090_s xpfd.n_290 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7119,
+          "line": 7119,
+          "text": "X_xpfd_xd0091 xpfd.t091_d xpfd.t091_g xpfd.t091_s xpfd.n_863 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7120,
+          "line": 7120,
+          "text": "X_xpfd_xd0092 xpfd.t092_d xpfd.t092_g xpfd.t092_s xpfd.n_291 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7121,
+          "line": 7121,
+          "text": "X_xpfd_xd0093 xpfd.t093_d xpfd.t093_g xpfd.t093_s xpfd.n_147 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7122,
+          "line": 7122,
+          "text": "X_xpfd_xd0094 xpfd.t094_d xpfd.t094_g xpfd.t094_s xpfd.n_11 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7123,
+          "line": 7123,
+          "text": "X_xpfd_xd0095 xpfd.t095_d xpfd.t095_g xpfd.t095_s xpfd.n_864 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7124,
+          "line": 7124,
+          "text": "X_xpfd_xd0096 xpfd.t096_d xpfd.t096_g xpfd.t096_s xpfd.n_582 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7125,
+          "line": 7125,
+          "text": "X_xpfd_xd0097 xpfd.t097_d xpfd.t097_g xpfd.t097_s xpfd.n_296 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7126,
+          "line": 7126,
+          "text": "X_xpfd_xd0098 xpfd.t098_d xpfd.t098_g xpfd.t098_s xpfd.n_579 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7127,
+          "line": 7127,
+          "text": "X_xpfd_xd0099 xpfd.t099_d xpfd.t099_g xpfd.t099_s xpfd.n_719 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7128,
+          "line": 7128,
+          "text": "X_xpfd_xd0100 xpfd.t100_d xpfd.t100_g xpfd.t100_s xpfd.n_578 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7129,
+          "line": 7129,
+          "text": "X_xpfd_xd0101 xpfd.t101_d xpfd.t101_g xpfd.t101_s xpfd.n_580 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7130,
+          "line": 7130,
+          "text": "X_xpfd_xd0102 xpfd.t102_d xpfd.t102_g xpfd.t102_s xpfd.n_149 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7131,
+          "line": 7131,
+          "text": "X_xpfd_xd0103 xpfd.t103_d xpfd.t103_g xpfd.t103_s xpfd.n_10 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7132,
+          "line": 7132,
+          "text": "X_xpfd_xd0104 xpfd.t104_d xpfd.t104_g xpfd.t104_s xpfd.n_293 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7133,
+          "line": 7133,
+          "text": "X_xpfd_xd0105 xpfd.t105_d xpfd.t105_g xpfd.t105_s xpfd.n_295 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7134,
+          "line": 7134,
+          "text": "X_xpfd_xd0106 xpfd.t106_d xpfd.t106_g xpfd.t106_s xpfd.n_294 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7135,
+          "line": 7135,
+          "text": "X_xpfd_xd0107 xpfd.t107_d xpfd.t107_g xpfd.t107_s xpfd.n_15 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7136,
+          "line": 7136,
+          "text": "X_xpfd_xd0108 xpfd.t108_d xpfd.t108_g xpfd.t108_s xpfd.n_14 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7137,
+          "line": 7137,
+          "text": "X_xpfd_xd0109 xpfd.t109_d xpfd.t109_g xpfd.t109_s xpfd.n_867 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7138,
+          "line": 7138,
+          "text": "X_xpfd_xd0110 xpfd.t110_d xpfd.t110_g xpfd.t110_s xpfd.n_576 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7139,
+          "line": 7139,
+          "text": "X_xpfd_xd0111 xpfd.t111_d xpfd.t111_g xpfd.t111_s xpfd.n_347 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7140,
+          "line": 7140,
+          "text": "X_xpfd_xd0112 xpfd.t112_d xpfd.t112_g xpfd.t112_s xpfd.n_723 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7141,
+          "line": 7141,
+          "text": "X_xpfd_xd0113 xpfd.t113_d xpfd.t113_g xpfd.t113_s xpfd.n_577 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7142,
+          "line": 7142,
+          "text": "X_xpfd_xd0114 xpfd.t114_d xpfd.t114_g xpfd.t114_s xpfd.n_720 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7143,
+          "line": 7143,
+          "text": "X_xpfd_xd0115 xpfd.t115_d xpfd.t115_g xpfd.t115_s xpfd.n_722 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7144,
+          "line": 7144,
+          "text": "X_xpfd_xd0116 xpfd.t116_d xpfd.t116_g xpfd.t116_s xpfd.n_346 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7145,
+          "line": 7145,
+          "text": "X_xpfd_xd0117 xpfd.t117_d xpfd.t117_g xpfd.t117_s xpfd.n_866 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7146,
+          "line": 7146,
+          "text": "X_xpfd_xd0118 xpfd.t118_d xpfd.t118_g xpfd.t118_s xpfd.n_724 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7147,
+          "line": 7147,
+          "text": "X_xpfd_xd0119 xpfd.t119_d xpfd.t119_g xpfd.t119_s xpfd.n_150 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7148,
+          "line": 7148,
+          "text": "X_xpfd_xd0120 xpfd.t120_d xpfd.t120_g xpfd.t120_s xpfd.n_865 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7149,
+          "line": 7149,
+          "text": "X_xpfd_xd0121 xpfd.t121_d xpfd.t121_g xpfd.t121_s xpfd.n_721 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7150,
+          "line": 7150,
+          "text": "X_xpfd_xd0122 xpfd.t122_d xpfd.t122_g xpfd.t122_s xpfd.n_581 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7151,
+          "line": 7151,
+          "text": "X_xpfd_xd0123 xpfd.t123_d xpfd.t123_g xpfd.t123_s xpfd.n_343 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7152,
+          "line": 7152,
+          "text": "X_xpfd_xd0124 xpfd.t124_d xpfd.t124_g xpfd.t124_s xpfd.n_9 sg13_hv_pmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7247,
+          "line": 7247,
+          "text": "X_xpfd_xd0219 xpfd.t219_d xpfd.t219_g xpfd.t219_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7248,
+          "line": 7248,
+          "text": "X_xpfd_xd0220 xpfd.t220_d xpfd.t220_g xpfd.t220_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7249,
+          "line": 7249,
+          "text": "X_xpfd_xd0221 xpfd.t221_d xpfd.t221_g xpfd.t221_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7250,
+          "line": 7250,
+          "text": "X_xpfd_xd0222 xpfd.t222_d xpfd.t222_g xpfd.t222_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7251,
+          "line": 7251,
+          "text": "X_xpfd_xd0223 xpfd.t223_d xpfd.t223_g xpfd.t223_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7252,
+          "line": 7252,
+          "text": "X_xpfd_xd0224 xpfd.t224_d xpfd.t224_g xpfd.t224_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7253,
+          "line": 7253,
+          "text": "X_xpfd_xd0225 xpfd.t225_d xpfd.t225_g xpfd.t225_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7254,
+          "line": 7254,
+          "text": "X_xpfd_xd0226 xpfd.t226_d xpfd.t226_g xpfd.t226_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7255,
+          "line": 7255,
+          "text": "X_xpfd_xd0227 xpfd.t227_d xpfd.t227_g xpfd.t227_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7256,
+          "line": 7256,
+          "text": "X_xpfd_xd0228 xpfd.t228_d xpfd.t228_g xpfd.t228_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7257,
+          "line": 7257,
+          "text": "X_xpfd_xd0229 xpfd.t229_d xpfd.t229_g xpfd.t229_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7258,
+          "line": 7258,
+          "text": "X_xpfd_xd0230 xpfd.t230_d xpfd.t230_g xpfd.t230_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7259,
+          "line": 7259,
+          "text": "X_xpfd_xd0231 xpfd.t231_d xpfd.t231_g xpfd.t231_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7260,
+          "line": 7260,
+          "text": "X_xpfd_xd0232 xpfd.t232_d xpfd.t232_g xpfd.t232_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7261,
+          "line": 7261,
+          "text": "X_xpfd_xd0233 xpfd.t233_d xpfd.t233_g xpfd.t233_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7262,
+          "line": 7262,
+          "text": "X_xpfd_xd0234 xpfd.t234_d xpfd.t234_g xpfd.t234_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        },
+        {
+          "end_line": 7263,
+          "line": 7263,
+          "text": "X_xpfd_xd0235 xpfd.t235_d xpfd.t235_g xpfd.t235_s a_count_vss sg13_hv_nmos l=0.45u w=8u as=2.72p ad=2.72p ps=16.68u pd=16.68u rfmode=0 ng=1 m=1"
+        }
+      ],
+      "includes_and_subcircuits": [
+        {
+          "end_line": 2,
+          "line": 2,
+          "text": ".subckt nssoc_parent845_wire_v1 avss clearb clkn clkp core_vdd div_avdd down fb fbbar qn qp ref reset sub up vco_avdd vctrl wire_cref"
+        }
+      ],
+      "source": {
+        "bytes": 594331,
+        "sha256": "91364a351fad4d376e6d168d85af6f63ff4076bfecd5af83192492bc514073fc"
+      },
+      "text_encoding": "utf-8"
+    }
+  },
+  "final_timing_complete": false,
+  "full_pex_qualified": false,
+  "full_phy_accepted": false,
+  "gate_poly_RC_extracted": false,
+  "interpretation_pending": true,
+  "mim_intrinsic_composition_qualified": false,
+  "substrate_r_modeled": false
+}

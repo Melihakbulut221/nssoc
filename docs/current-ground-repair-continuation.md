@@ -1,3 +1,28 @@
+## Current continuation: fresh650 metal/via RC passes; new bounded-region engine compiled and in actual-chip qualification
+
+Actual650 fresh metal/via RC41693055344/sourcef4f7723f935b80fcd5ade5b7f159e82e7845d7ae on codex/cdr-mos650-metal-rc SUCCEEDED. It measured28449 resistors and18299 capacitors, retains1428 logical/1278 physical anchors, and passed all13 original raw native corruption controls. Complete raw topology/values/attachments were audited. Release433064135 preserves all native evidence. This closes metal/via extraction for this exact candidate, not gate-poly RC, MIM composition, electrical acceptance or full PEX.
+
+Bounded-region engine build41688147573/source6cae8ce19c56bb597b9edab02c7d21b14b099eb2 SUCCEEDED. Actual full compile1803.211s; Tcl/Python interface checks passed; no terminal errors or OOM. New ELF108948904 bytes SHA256e12b1c70296c119c31ed5b1a7f739904d06b3c86cd703eebee25dbcc9c357431, all104 runtime dependencies unchanged. This is NOT a measured routing memory improvement.
+
+Independent actual-chip qualification source controls41694933685 PASSED on source5518d9fa75b505848e2c6a5c7d1b4a0ca9c011af, branchcodex/mainchip-guide-tiled-roundtrip. Actual qualification41695305770/release433078096 dispatched on SAME exact source, retaining full143820nets/154480instances/1691protected clock records and original complete DRT/antenna comparison. Follow its authoritative snapshot below; no duplicate. If successful, bind its actual new ELF/qualification evidence into the original full64 routing workflow, run independent source controls and then one full route. Prior41552715162 remains a preserved11GiB guard failure; never relabel92referenceDRT or21antenna nets27violations as signoff.
+
+Gate-model diagnostic41695546092/source12f87169a29887cbae7edb1def1dc91ddeb92819/release433079603 SUCCEEDED. Frozen ordinary MOS model is PSP103, RF alternative PSPNQS103 with explicit RF gate parameters; actual physical200MOS use rfmode0 and50 shared contact groups. One top contact feeding a long poly stem is not represented by current metal RC. Full actual model declarations and technology report preserved. Binary-decoding41694626851 and Latin1 annotation41695152558 failures remain failures in immutable releases and root logs.
+
+NEXT PHY: inspect native gate AC characterization on codex/cdr-mos650-gate-ac (exact handle in snapshot/monitor), including each actual W/L/AS/AD/PS/PD tuple, both QS/RF modes, explicitpre_layout0, native model readback and complex impedance over1MHz-10GHz. This only informs physical distributed poly/contact composition; it does not accept full PHY. Resolve compact-model overlap, derive actual physical gate network, complete650 MIM/intrinsic composition and preserve original loaded headroom/phase/current/sampling gates.
+
+All native data remains GitHub-only; local workspace empty. Existing8hour monitor remains read-only, automatic_native_dispatch=false. FullserialGen3x4, mainchip fullroute and finalsetup/hold remain unaccepted.
+
+Observed 2026-11-03T18:46:19.681320+00:00:
+- 41688147573: completed/success
+- 41693055344: completed/success
+- 41694626851: completed/failure
+- 41694933685: completed/success
+- 41695152558: completed/failure
+- 41695305770: in_progress/None
+- 41695546092: completed/success
+- 41696724132: in_progress/None
+
+
 ## Current continuation: complete actual650 wire topology passes; retain physical identity under LVS permutations
 
 Actual650 wire extraction41690238100/source9986cd07106b20805a74656ac5292e9a70b760e5 on codex/cdr-mos650-wires SUCCEEDED. Native-wires126106937185 generated113 geometrically connected metal/via components,114 electrical partitions, all650 unique physical device instances,2046 terminals and25 ports. All13 complete conductor/via layer unions match the input GDS after serialization; every anchor probes to its actual native LVS owner and wire component. There are1428 logical anchors,1278 exact distinct geometric points after deduplication; do not substitute historical500-layout counts. All5 actual corrupted-binding controls rejected.
