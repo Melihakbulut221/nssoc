@@ -169,14 +169,26 @@ def geometry(plan,mapping,pdkroot):
   old_leaves.add(cell.cell_index());targets.append((p,row,parent,ordinal,cell,inst))
   if len(p["units"])>1:by_parent.setdefault(parent.cell_index(),{})[ordinal]=cell.name
  # Reject any PDK/runtime drift before changing actual parent instances.
- units={};old_shapes={};old_proof=[]
+ units={};old_shapes={};old_proof=[];reconstruction_differences=[]
  for p,row,parent,ordinal,cell,instance in targets:
   key=(p["original_parameters"]["w"],p["original_parameters"]["l"])
   if key not in units:
    native=layout.create_cell("nmos","SG13_dev",dict(w=key[0],l=key[1],ng=1))
    need(native is not None and native.cell_index()not in old_leaves,"fresh original PCell");units[key]=native
-  a=all_shapes(cell);compare(a,all_shapes(units[key]),"pinned PDK regenerates original MOS exactly");old_shapes[cell.cell_index()]=a
-  old_proof.append(dict(native_id=p["native_id"],original_cell=cell.name,original_parameters=p["original_parameters"],native_PCell_geometry_equal=True))
+  a=all_shapes(cell);b=all_shapes(units[key]);old_shapes[cell.cell_index()]=a
+  differences=[]
+  for layer in sorted(set(a)|set(b)):
+   ar=a.get(layer,pya.Region());br=b.get(layer,pya.Region());delta=(ar^br).merged()
+   if not delta.is_empty():
+    describe=lambda r:dict(area_dbu2=r.area(),bbox_dbu=str(r.bbox()),polygons=r.count())
+    differences.append(dict(layer=layer,original=describe(ar),regenerated=describe(br),symmetric_difference=describe(delta),
+      original_polygons=[str(p)for p in ar.each()],regenerated_polygons=[str(p)for p in br.each()]))
+  if differences:reconstruction_differences.append(dict(native_id=p["native_id"],original_cell=cell.name,
+      original_parameters=p["original_parameters"],differences=differences))
+  old_proof.append(dict(native_id=p["native_id"],original_cell=cell.name,original_parameters=p["original_parameters"],native_PCell_geometry_equal=not differences))
+ save("pcell-reconstruction.json",dict(devices=50,full_layer_differences=reconstruction_differences,
+  candidate_modified=False,pdk_receipt=read(ROOT/CFG)["runtime_receipt"],**FLAGS))
+ need(not reconstruction_differences,"all original PCell layers must match; inspect complete differences before changing admission")
  def pin_boxes(cell,layer):
   return sorted([x.bbox()for x in cell.each_shape(layout.layer(layer,2))if not x.is_text()],key=lambda b:(b.left,b.bottom))
  cache={};modifications=[];replaced={};reference_names={}
