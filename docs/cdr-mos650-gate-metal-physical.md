@@ -18,3 +18,6 @@ relocation and same-net M2 landing extensions. The complete actual GDS is indepe
 the generator's geometric guards do not substitute for DRC or LVS. All
 native outcomes, including rejections, remain in cloud releases. Full RC,
 electrical qualification, full serialPHY and final mainchip timing remain open.
+
+## Successor candidate from run41709759119
+Source 087721d42112ed108543d2da053ee6d0e2f20a9c; exact candidate {'bytes': 1624572, 'sha256': 'c335182048dc1696821ab875fb34447e5b5a9ba0f1a24d5d16d572680906c16c'}. Prior failed physical runs remain failures. Checker, all560 categories, deep/flat650 LVS,13fault controls and independent Via1 coverage are unchanged. No electrical acceptance implied.
