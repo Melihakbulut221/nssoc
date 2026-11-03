@@ -13,3 +13,5 @@ The [ngspice manual](https://ngspice.sourceforge.io/docs/ngspice-manual.pdf) doc
 Predeclared tolerances: DC1e-7 relative+1e-12V, complex AC1e-7+1e-8ohm, noise2e-6+1e-28V2/Hz, branch power1e-7+1e-18W. Sparse residual<1e-9; reciprocity/factor errors<1e-10; minimum eigenvalue>maximum*1e-12. These test numerical reduction, not physical parameter accuracy or the original complete loaded circuit acceptance gates.
 
 Nominal material values and one temperature remain unqualified for signoff. Full nonlinear intrinsic/metal integration, extrinsic poly capacitance, MIM/substrate scope, loaded transient/noise, full serial x4 and final chip timing are still required. Mainchip route41699812301 remains independent.
+
+Before reduction, compare every original native SPICE Rgp branch against the authenticated mesh JSON: exact ordered names, endpoints and float-roundtripped resistance values. All238068 branches must match; the reduction may not rely on a graph report that differs from the native circuit previously solved.

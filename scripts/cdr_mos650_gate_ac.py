@@ -272,6 +272,12 @@ def characterize(models):
  units={u["native_id"]:u for u in fixture["devices"]}
  need(len(units)==200 and len(mesh["groups"])==50 and len(mesh["contacts"])==200 and len(mesh["coupling"])==200,"complete current physical field scope")
  source_mesh=pin(meshdir/"native/mesh-75/mesh.json")
+ physical_fragment=meshdir/"native/mesh-75/gate-poly-resistors.cir"
+ raw_branches=[line.split()for line in physical_fragment.read_text().splitlines()if line.strip()and not line.lstrip().startswith("*")]
+ need(len(raw_branches)==len(mesh["edges"]),"complete native resistor fragment census")
+ for i,(row,edge)in enumerate(zip(raw_branches,mesh["edges"])):
+  need(len(row)==4 and row[0]=="Rgp"+str(i)and row[1:3]==[edge["a"],edge["b"]]and float(row[3])==edge["ohm"],"every original native resistor endpoint and value matches")
+ save("native-field-fragment-binding.json",dict(source_mesh=source_mesh,source_fragment=pin(physical_fragment),branches=len(raw_branches),exact_order_endpoints_and_values=True,**FLAGS))
  dep=Path("/tmp/nssoc-gate-reduce-packages.json")
  need(dep.is_file()and np.__version__=="2.3.3"and scipy.__version__=="1.16.2","exact numerical dependency versions")
  save("numeric-dependencies.json",dict(numpy=np.__version__,scipy=scipy.__version__,installation=read(dep),**FLAGS))
