@@ -1,25 +1,24 @@
-# Cloud continuation — checkpoint v356
+# Cloud continuation — checkpoint v357
 
-Updated: 2026-11-03T22:38:12.416292+00:00
+Updated: 2026-11-03T22:43:52.850617+00:00
 
-## Actual650 whole nonlinear composition dispatched
+## All five actual650 circuits assembled; first loaded startup failed
 
-Run41732402949/sourceb3768d5f3201cf661b15bc85f431ba46be3eee48 on codex/cdr-mos650-full-composition, release433293515, is the first current650 whole-circuit assembly and original256bit loaded waveform attempt. Source-controls passed. Native job126252933008 was confirmed live; do not redispatch while its handle is live. No passing transient or successful assembly is claimed at this checkpoint.
+Run41732402949/sourceb3768d5f3201cf661b15bc85f431ba46be3eee48 completed with FAILURE. All N1/2/4/8/16 actual650 nonlinear compositions and their native source/terminal/probe bindings completed. The full N1 nominal_late simulation ran12.0759s and failed at3.125fs with only two waveform rows. Native returncode0 did not mean success: diagnostics rejected a missing spinit warning, temperature NaN, five singular matrix warnings and timestep collapse. Full electrical thresholds were not reached or passed. All outputs remain in release433293515; see the failure receipt.
 
-Source now composes all650 actual devices with the qualified physical gate ports and all28634R/18476C plus seven native MIM devices at original exported nodes. It prepares N1/2/4/8/16 intrinsic partitions and runs the explicitly selected N1 nominal_late case with the original full256bit stimulus, loads and electrical thresholds. Actual source identity independently confirms192 physical tail units descended from42 source families. Every unit voltage/current remains observed, with original16 stage current sums.
+Successor run41733225660/source9bba58288772dd2bee9dab142e391d0616737973 on codex/cdr-mos650-full-composition, release433297951, restores the original bench-local spinit/SPICE_SCRIPTS startup environment omitted by the first adapter, and tests the same full circuit with Sparse1.3 instead of KLU. Both changes are recorded; they are not a proven root cause or repair. It retains original models,256bits,34.25ns stop,0.3125ps maxstep,loads and all diagnostics/electrical gates. New derived-early artifact allows diagnostics to be read before large native publication finishes. Do not claim passing assembly implies transient, closed-loop or PHY acceptance.
 
-Original helpers and acceptance expressions are retained; only actual device census and status naming are adapted. Full waveforms, failed measurements and native diagnostics remain cloud artifacts. A selected success would still require refinement, all original cases/PVT/faults, extrinsic gate capacitance/substrate/material qualification and recovered-clock operation. Neither complete Gen3x4 nor mainchip final timing is closed.
+Mainchip41699812301/source9430a57873e78d3c283b531da8e8e74da416f297 remains the independently monitored original full64 routing attempt. Full serialGen3x4, final routed mainchip and setup/hold remain open.
 
-Mainchip41699812301/source9430a57873e78d3c283b531da8e8e74da416f297 remains a separately monitored original full64 routing job.
-
-Observed 2026-11-03T22:38:12.416292+00:00:
+Observed 2026-11-03T22:43:52.850617+00:00:
 - 41699812301: in_progress/None
-- 41732402949: in_progress/None
+- 41732402949: completed/failure
+- 41733225660: in_progress/None
 
 
 ## History and execution
 Previous actual route and failure handoff:
-https://github.com/Melihakbulut221/nssoc/blob/bf9f6ac10c00d553c29fb9ff38425a017c373c72/CLOUD_RESUME.md
+https://github.com/Melihakbulut221/nssoc/blob/1e61227646a982c88d5bcfd72a4b25ba05087485/CLOUD_RESUME.md
 All earlier sources, complete reports and failed runs remain preserved.
 All native CAD/geometry/runtime/electrical payloads stay cloud-only. The local
 workspace is empty; source and derived-text API coordination uses RAM.

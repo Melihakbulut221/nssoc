@@ -1,0 +1,90 @@
+{
+  "final_timing_complete": false,
+  "full_phy_accepted": false,
+  "local_workspace_entries": 0,
+  "note": "## All five actual650 circuits assembled; first loaded startup failed\n\nRun41732402949/sourceb3768d5f3201cf661b15bc85f431ba46be3eee48 completed with FAILURE. All N1/2/4/8/16 actual650 nonlinear compositions and their native source/terminal/probe bindings completed. The full N1 nominal_late simulation ran12.0759s and failed at3.125fs with only two waveform rows. Native returncode0 did not mean success: diagnostics rejected a missing spinit warning, temperature NaN, five singular matrix warnings and timestep collapse. Full electrical thresholds were not reached or passed. All outputs remain in release433293515; see the failure receipt.\n\nSuccessor run41733225660/source9bba58288772dd2bee9dab142e391d0616737973 on codex/cdr-mos650-full-composition, release433297951, restores the original bench-local spinit/SPICE_SCRIPTS startup environment omitted by the first adapter, and tests the same full circuit with Sparse1.3 instead of KLU. Both changes are recorded; they are not a proven root cause or repair. It retains original models,256bits,34.25ns stop,0.3125ps maxstep,loads and all diagnostics/electrical gates. New derived-early artifact allows diagnostics to be read before large native publication finishes. Do not claim passing assembly implies transient, closed-loop or PHY acceptance.\n\nMainchip41699812301/source9430a57873e78d3c283b531da8e8e74da416f297 remains the independently monitored original full64 routing attempt. Full serialGen3x4, final routed mainchip and setup/hold remain open.\n\nObserved 2026-11-03T22:43:52.850617+00:00:\n- 41699812301: in_progress/None\n- 41732402949: completed/failure\n- 41733225660: in_progress/None\n",
+  "observed_at": "2026-11-03T22:43:52.850617+00:00",
+  "physical_acceptance": false,
+  "runs": [
+    {
+      "branch": "codex/mainchip-guide-tiled-full64",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126139836003,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate actual chip qualification then execute original full64 route and audits"
+          ],
+          "conclusion": null,
+          "id": 126140534081,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "observed_at": "2026-11-03T22:43:52.850617+00:00",
+      "run": 41699812301,
+      "source": "9430a57873e78d3c283b531da8e8e74da416f297",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41699812301"
+    },
+    {
+      "branch": "codex/cdr-mos650-full-composition",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126252852530,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 126252933008,
+          "name": "native-gate-ac",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T22:43:52.850617+00:00",
+      "run": 41732402949,
+      "source": "b3768d5f3201cf661b15bc85f431ba46be3eee48",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41732402949"
+    },
+    {
+      "branch": "codex/cdr-mos650-full-composition",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126255679468,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Assemble all actual650 partitions and execute selected full256bit loaded transient"
+          ],
+          "conclusion": null,
+          "id": 126255793850,
+          "name": "native-gate-ac",
+          "status": "in_progress"
+        }
+      ],
+      "observed_at": "2026-11-03T22:43:52.850617+00:00",
+      "run": 41733225660,
+      "source": "9bba58288772dd2bee9dab142e391d0616737973",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41733225660"
+    }
+  ],
+  "version": 357
+}
