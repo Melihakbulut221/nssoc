@@ -322,6 +322,40 @@ def generate(cfg):
   raise ValueError("No clear160nm M1 gate strap for "+str(len(failed))+" actual groups")
  need(sum(r.get("planned_contacts",0)for r in plans)==150 and len([r for r in plans if r["disposition"].startswith("ADDED")])==42,"all multi-unit groups repaired")
 
+
+ # Eight measured wide M1 junctions face the new gate strap at180nm.
+ # Keep the contact rail160nm wide and both160nm bridge necks, separating
+ # the broad side plate with a220nm slot. Preserve all cuts and net ownership.
+ fixture=read(ROOT/"docs/evidence/mos650-gate-metal-41707025516-drc-markers.json")
+ slots=[]
+ for row in fixture["markers"]:
+  if row["category"]!="'M1.e'":continue
+  points=[tuple(int(round(float(t)*1000))for t in pair)for pair in re.findall(r"([0-9.]+),([0-9.]+)",row["value"])]
+  need(len(points)==4,"complete native M1.e edge pair")
+  (gate_x,a),(gate_x2,b),(edge_x,hi),(edge_x2,lo)=points
+  need(gate_x==gate_x2 and edge_x==edge_x2 and gate_x-edge_x==180 and hi-lo==4000,"actual wide-junction geometry")
+  slot=pya.Region(pya.Box(edge_x-380,lo+160,edge_x-160,hi-160))
+  plate=pya.Region(pya.Box(edge_x-380,lo,edge_x,hi))
+  need((plate-metal[(8,0)]).is_empty(),"complete existing junction and retained160nm rail/bridge necks")
+  center=slot.bbox().center()
+  owner=native_lvs.probe_net(native_m1,center)
+  wire_owner=physical_wires.probe_net(wire_m1,center)
+  need(owner is not None and wire_owner is not None,"actual junction ownership")
+  group=next(r for r in grouped.values()if any(polygon(t,pya).bbox().left==gate_x-70 for t in r[0]["terminal_polygons"]))
+  sd={dev.net_for_terminal(td.id()).cluster_id for r in group for dev in [native_devices[r["device"]]] for td in dev.device_class().terminal_definitions()if td.name in("S","D")}
+  need(owner.cluster_id in sd,"junction belongs to actual same-group source/drain")
+  own=physical_wires.shapes_of_net(wire_owner,wire_m1,True)
+  need((slot-own).is_empty(),"entire slot is same physical conductor")
+  need((slot&(before[(6,0)]+added[(6,0)]+metal[(19,0)])).is_empty(),"slot never removes contact or via coverage")
+  candidate=(metal[(8,0)]-slot).merged()
+  necks=pya.Region(pya.Box(edge_x-380,lo,edge_x,lo+160))+pya.Region(pya.Box(edge_x-380,hi-160,edge_x,hi))
+  rail=pya.Region(pya.Box(edge_x-160,lo,edge_x,hi))
+  need(((necks+rail)-candidate).is_empty(),"both160nm necks and complete160nm contact rail retained")
+  metal[(8,0)]=candidate;removed_m1+=slot
+  slots.append(dict(marker=row,slot=[str(pg)for pg in slot.each()],native_owner=owner.cluster_id,wire_component=wire_owner.cluster_id,slot_width_dbu=220,neck_width_dbu=160,rail_width_dbu=160))
+ need(len(slots)==8,"all eight measured wide junctions addressed")
+ need((before[(6,0)]-metal[(8,0)]).is_empty()and(metal[(19,0)]-metal[(8,0)]).is_empty(),"global original cuts remain covered after slots")
+ save("m1-wide-junction-slots.json",dict(junctions=slots,full_DRC_LVS_required=True,**FLAGS))
  # Fill only narrow concavities belonging to an already proven physical net.
  # Different-net spacing is independently checked; no global metal closing.
  notch_repairs=[]

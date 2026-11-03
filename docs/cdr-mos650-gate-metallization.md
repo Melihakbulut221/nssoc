@@ -146,3 +146,17 @@ physical net near the added landings, while checking foreign-net spacing.
 The M1.e wide-line spacing issue is still explicitly unresolved; exact
 original and candidate material windows are exported around its markers.
 No generation or source check substitutes for the frozen full DRC/LVS.
+
+
+## Wide-junction repair from actual material windows
+Generation41709100324 retained original M1 outside the gate corridor and
+filled owned M2 notches. Its exact material windows identify eight original
+4um-tall wide S/D junction plates, whose inner edge is180nm from the gate
+strap. M1.e requires220nm when a line is wider than300nm with >1um run.
+The successor cuts a220nm slot into each proven same-net plate, preserving
+the complete160nm contact rail and160nm connecting necks at BOTH ends.
+Every original Cont and current Via1 remains covered; native group S/D
+ownership and full retained rail/neck geometry are mandatory. This changes
+the actual conductor geometry; it does not waive or alter M1.e. The
+unchanged independent full DRC/LVS must establish the result. Slot-induced
+resistance remains part of the required fresh extraction.
