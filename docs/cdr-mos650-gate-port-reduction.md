@@ -1,0 +1,17 @@
+# Actual gate field port reduction with native electrical and noise evidence
+
+Input is the complete authenticated75nm actual-GDS mesh41721107217, with131310 cells and238068 positive sheet/contact resistors. All50 physical groups,200 gate electrodes and200 real metal contacts are retained. For N1/2/4/8/16 equal-area gate strips, exact rational cell-overlap weights sum to1. The eventual intrinsic device multiplicity is1/N with original dimensions; no intrinsic transistor is instantiated in this reduction test.
+
+Choose one real contact per group as a reference coordinate, exported as an actual circuit port. It is not tied to global ground in the generated subcircuits. Stamp the original physical resistor Laplacian L, and the balanced physical/contact plus area-weighted gate injection matrix T. Solve L*U=T using [SciPy sparse LU](https://docs.scipy.org/doc/scipy-1.16.2/reference/generated/scipy.sparse.linalg.splu.html), then form Z=T^T*U. Bound solve residual and reciprocity error, require positive eigenvalues, and do not clip or remove eigenmodes.
+
+The full-field reference uses weighted voltage sensing and reciprocal current return, preserving the power pairing. The compact realization factors Y=inverse(Z)=A^T*A. Each branch senses A*v and returns A^T*i through reciprocal controlled sources, with a positive1ohm physical resistor. This preserves terminal power and produces correlated thermal current noise4*k*T*Y. A noiseless conductance-only replacement is explicitly rejected.
+
+All250 group/partition models require two actual native simulator runs: original full field and compact positive-resistor realization. Each compares a deterministic mixed DC port excitation, a complete output transfer column over1MHz..10GHz, selected single/differential port noise spectra and compact internal resistor power. Full matrices and exact port identities are saved, as are all raw decks/stdout/stderr/results. This is503 planned native executions including one thermal calibration and two deliberate faults. A noiseless substitution must preserve DC/AC and fail noise; doubled resistor values must fail DC/AC/noise.
+
+The [ngspice manual](https://ngspice.sourceforge.io/docs/ngspice-manual.pdf) documents squared noise output and separate spectral/integrated plots. Noise measurements use squared output spectra, explicit27C and a nonzero input-reference gain. A70ohm native resistor measures the frozen engine's thermal prefactor; its inferred Boltzmann value must be within5e-5 relative of SI to allow a legacy engine constant, while equivalence tolerances remain separately fixed.
+
+Predeclared tolerances: DC1e-7 relative+1e-12V, complex AC1e-7+1e-8ohm, noise2e-6+1e-28V2/Hz, branch power1e-7+1e-18W. Sparse residual<1e-9; reciprocity/factor errors<1e-10; minimum eigenvalue>maximum*1e-12. These test numerical reduction, not physical parameter accuracy or the original complete loaded circuit acceptance gates.
+
+Nominal material values and one temperature remain unqualified for signoff. Full nonlinear intrinsic/metal integration, extrinsic poly capacitance, MIM/substrate scope, loaded transient/noise, full serial x4 and final chip timing are still required. Mainchip route41699812301 remains independent.
+
+Before reduction, compare every original native SPICE Rgp branch against the authenticated mesh JSON: exact ordered names, endpoints and float-roundtripped resistance values. All238068 branches must match; the reduction may not rely on a graph report that differs from the native circuit previously solved.
