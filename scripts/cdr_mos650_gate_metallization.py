@@ -100,7 +100,8 @@ def max_uncontacted(intervals,contacts):
 
 def generate(cfg):
  import klayout.db as pya
- need(pya.__version__=="0.30.4","pinned native geometry runtime")
+ from importlib.metadata import version
+ need(version("klayout")=="0.30.4.post1","pinned native geometry package")
  selected=NATIVE/"current";selected.mkdir()
  acquire(cfg["view"],selected,lambda n:n.startswith("native/selected/layout/")or n=="derived/gate-poly-access.json")
  gds=selected/"native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds"
