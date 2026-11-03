@@ -1,0 +1,69 @@
+{
+  "cleanup": {
+    "native_payloads_cloud_only": true,
+    "source_API_derived_text_RAM_only": true,
+    "workspace_entries": 0
+  },
+  "final_timing_complete": false,
+  "full_mainchip_routing_accepted": false,
+  "full_phy_accepted": false,
+  "gate_poly_RC_extracted": false,
+  "note": "## Current continuation: complete actual650 wire topology passes; retain physical identity under LVS permutations\n\nActual650 wire extraction41690238100/source9986cd07106b20805a74656ac5292e9a70b760e5 on codex/cdr-mos650-wires SUCCEEDED. Native-wires126106937185 generated113 geometrically connected metal/via components,114 electrical partitions, all650 unique physical device instances,2046 terminals and25 ports. All13 complete conductor/via layer unions match the input GDS after serialization; every anchor probes to its actual native LVS owner and wire component. There are1428 logical anchors,1278 exact distinct geometric points after deduplication; do not substitute historical500-layout counts. All5 actual corrupted-binding controls rejected.\n\nThe exact new GDS and both650 LVS databases were authenticated and rebound to the independent full200-MOS/450-other-device reference. Non-MOS source pins were recovered by exact drawing signatures from qualified prior source-pin records; actual new MOS units were regenerated with the pinned IHP PCell runtime and matched by complete primitive drawing before recovering annotations. Old500 wire RC was not reused. Current source, all native results and failures stay in release433047733, native-wires.tar.gz70422645 bytes SHA25625ea88486294dff3236a52fd41db2a57e6410c410d7a999c45e6f6b22e3d16e8. Receipt: docs/evidence/mos650-wires-41690238100-receipt.json.\n\nActual200 gate terminal/access-poly/contact geometries are retained, forming50 physical contact groups:8 groups of1 unit,34 of4,4 of6 and4 of8. This is not gate-poly RC. Shared metal contact anchors do not model resistance along the connecting poly. Fresh extraction must address this explicitly and establish compact-model overlap before electrical qualification.\n\nNEW BINDING FINDING: the naive assertion that every physical gate group has one original schematic MOS ID was rejected.40 of50 groups contain multiple old schematic IDs even though their terminal owners are identical: the LVS matcher permutes electrically equivalent parallel units. Actual physical wrapper paths and unit ordinals are complete. Do NOT use old loaded_instance or schematic expanded names as unique physical wrapper identity. Bind new RC devices using CURRENT FLAT LVS native IDs, unique current physical paths and actual terminal/anchor geometry; keep schematic names only as semantic aliases. Full200-unit group evidence and the rejected assumption are preserved in docs/evidence/mos650-wires-41690238100-physical-gate-groups.json. This finding does not reject LVS equivalence or the physical650 candidate.\n\nNEXT PHY: use release433047733 current view/native05 wires.gds,wires.l2n,graph,locations,anchors03/anchors08 and flat-native identity to derive complete fresh metal/via RC. Extend the model with actual gate-poly access resistance and avoid double-counting compact intrinsic parasitics. Preserve exact physical anchor aliases and current650 device order; do not rerun the old500->200 expansion. Full MIM/intrinsic composition, source-order controls and unchanged loaded electrical gates remain required. Substrate resistance/full foundry PEX are still unqualified; full serial Gen3x4 PLL/CDR/SERDES/PCS/LTSSM and mainchip integration remain open.\n\nMAINCHIP: follow SAME engine41688147573/source6cae8ce19c56bb597b9edab02c7d21b14b099eb2, job126099852433, release433034713. Its source partition controls passed255 cases; complete build remains subject to the live snapshot below. Do not dispatch a duplicate or restart on observation timeout. Once the actual full build succeeds, qualify its new ELF/runtime on the complete chip and execute the original full64 routing and downstream physical/RC/all-corner setup/hold gates. The old single-worker route41552715162 remains a preserved memory failure; no identical rerun.\n\nNative payloads remain cloud-only, local workspace empty,8hour monitor read-only with automatic_native_dispatch=false. FullPHY, fullchiprouting and finalsetup/hold are not accepted.\n\nObserved 2026-11-03T18:10:41.417238+00:00:\n- 41688147573: in_progress/None\n- 41690238100: completed/success\n",
+  "observed_at": "2026-11-03T18:10:41.417238+00:00",
+  "runs": [
+    {
+      "branch": "codex/mainchip-guide-tiled-engine",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126099301471,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Build complete pinned engine under owned cgroup"
+          ],
+          "conclusion": null,
+          "id": 126099852433,
+          "name": "engine-build",
+          "status": "in_progress"
+        }
+      ],
+      "observed_at": "2026-11-03T18:10:41.417238+00:00",
+      "run": 41688147573,
+      "source": "6cae8ce19c56bb597b9edab02c7d21b14b099eb2",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41688147573"
+    },
+    {
+      "branch": "codex/cdr-mos650-wires",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126106605521,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126106937185,
+          "name": "native-wires",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T18:10:41.417238+00:00",
+      "run": 41690238100,
+      "source": "9986cd07106b20805a74656ac5292e9a70b760e5",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41690238100"
+    }
+  ],
+  "version": 344,
+  "wire_rc_extracted": false
+}
