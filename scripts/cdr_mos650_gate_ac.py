@@ -5,7 +5,7 @@ from pathlib import Path,PurePosixPath
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"mos650-gate-ac";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-gate-ac-inputs.json";PINS="scripts/cdr-mos650-gate-ac-pins.json"
-REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr-mos650-gate-ac"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr-mos650-gate-contact-ac"
 FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
  full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 def need(ok,msg):
@@ -230,58 +230,134 @@ def execute(argv,label,seconds=1200):
    error=None if error is None else repr(error),stdout=pin(so)if so.exists()else None,stderr=pin(se)if se.exists()else None,**FLAGS))
  if error is not None:raise error
 
+def current_cases(identity,access):
+ def box(polygons):
+  need(len(polygons)==1,"single actual rectangular gate/contact")
+  pairs=[tuple(map(int,p))for p in re.findall(r"(-?\d+),(-?\d+)",polygons[0])]
+  need(len(pairs)==4 and len(set(pairs))==4,"four actual rectangle corners")
+  xs=[p[0]for p in pairs];ys=[p[1]for p in pairs]
+  b=[min(xs),min(ys),max(xs),max(ys)]
+  need(set(pairs)=={(x,y)for x in(b[0],b[2])for y in(b[1],b[3])},"axis-aligned actual rectangle")
+  return b
+ mos={p["layout"]["id"]:p["layout"]for p in identity["pairs"]if p["layout"]["model"]=="sg13_lv_nmos"}
+ need(len(mos)==200 and len(access["gates"])==200,"current physical MOS count")
+ rows=[]
+ for g in access["gates"]:
+  m=mos[g["device"]];p=m["parameters"];b=box(g["terminal_polygons"])
+  need(m["terminals"]["G"]["cluster"]==g["native_cluster"],"same native gate owner")
+  need(abs((b[2]-b[0])*.001-p["L"])<1e-9 and abs((b[3]-b[1])*.001-p["W"])<1e-9,"actual gate dimensions")
+  contacts=[box([poly])for poly in g["contact_polygons"]]
+  need(all(c[0]>=b[0]and c[2]<=b[2]for c in contacts),"all contacts on same narrow gate axis")
+  below=[c[3]for c in contacts if c[3]<=b[1]]
+  above=[c[1]for c in contacts if c[1]>=b[3]]
+  need(len(below)+len(above)==len(contacts),"no contact inside intrinsic channel")
+  rows.append(dict(native_id=g["device"],parameters=p,contacted_ends=int(bool(below))+int(bool(above)),
+   gate_group=g["gate_group"],native_cluster=g["native_cluster"],terminal_bbox_dbu=b,
+   nearest_below_edge_dbu=max(below)if below else None,nearest_above_edge_dbu=min(above)if above else None))
+ need(len({r["native_id"]for r in rows})==200 and sum(r["contacted_ends"]==1 for r in rows)==50 and sum(r["contacted_ends"]==2 for r in rows)==150,"complete current physical contacted ends")
+ return sorted(rows,key=lambda r:r["native_id"])
+
 def characterize(models):
- groups=read(ROOT/"docs/evidence/mos650-physical-gate-groups-for-ac.json")["groups"]
- units=[u for g in groups for u in g["units"]];need(len(units)==200,"complete physical MOS census")
+ import shutil
+ fixture=read(ROOT/"docs/evidence/mos650-current-gate-model-cases.json")
+ units=fixture["devices"]
+ need(len(units)==200 and len({u["native_id"]for u in units})==200,"complete actual current intrinsic gates")
+ need({str(n):sum(u["contacted_ends"]==n for u in units)for n in(1,2)}=={"1":50,"2":150},"actual one/two-ended geometry")
  geometries={}
  for u in units:
-  p=u["parameters"];need(p["rfmode"]==0,"actual non-RF physical MOS")
-  key=tuple(p[k]for k in("W","L","AS","AD","PS","PD"))
-  geometries.setdefault(key,[]).append(u["native_id"])
- ac=NATIVE/"ac";ac.mkdir()
+  p=u["parameters"];key=tuple(p[k]for k in("W","L","AS","AD","PS","PD"))
+  geometries.setdefault(key,{}).setdefault(u["contacted_ends"],[]).append(u["native_id"])
+ need(len(geometries)==4,"all four current physical dimensions")
+ original_files={str(p):pin(p)for p in models.rglob("*")if p.is_file()}
+ variant=NATIVE/"ngcon-models";shutil.copytree(models/"models",variant/"models")
+ mod=variant/"models/models/sg13g2_moslv_mod.lib";raw=mod.read_bytes();text=raw.decode("latin-1")
+ match=re.search(r"(?ims)^\.subckt[ \t]+sg13_lv_nmos[ \t].*?^\.ends[^\r\n]*",text)
+ need(match is not None,"exact original lv NMOS wrapper")
+ block=match.group();need(block.count("ngcon=2")==6 and "gate_ngcon"not in block,"six original hardcoded contact counts")
+ lines=block.splitlines(keepends=True);head=lines[0];ending="\r\n"if head.endswith("\r\n")else"\n"
+ need(head.endswith(ending),"original header newline")
+ lines[0]=head[:-len(ending)]+" gate_ngcon=2"+ending
+ updated="".join(lines).replace("ngcon=2","ngcon='gate_ngcon'")
+ # The inserted gate_ngcon=2 must retain its default; replace only instance tokens.
+ updated=updated.replace("gate_ngcon='gate_ngcon'","gate_ngcon=2")
+ need(updated.count("ngcon='gate_ngcon'")==6 and updated.count("gate_ngcon=2")==1,"only six instance arguments and one default")
+ new=text[:match.start()]+updated+text[match.end():];mod.write_bytes(new.encode("latin-1"))
+ need(text[:match.start()]==new[:match.start()]and new.endswith(text[match.end():]),"all outside-wrapper text unchanged")
+ derivation=dict(source_file="models/models/sg13g2_moslv_mod.lib",original=dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()),
+  variant=pin(mod),original_block_sha256=hashlib.sha256(block.encode("latin-1")).hexdigest(),variant_block_sha256=hashlib.sha256(updated.encode("latin-1")).hexdigest(),
+  original_instance_ngcon=2,variant_default=2,instance_replacements=6,all_resistance_model_parameters_unchanged=True,full_model_qualification=False)
+ save("ngcon-wrapper-derivation.json",dict(derivation,**FLAGS))
  engine=NATIVE/"models/source/runtime/patched-ngspice";engine.chmod(0o755)
- deck=["* Frozen native MOS gate impedance comparison at explicit physical dimensions",
-  f'.lib "{models}/models/models/cornerMOSlv.lib" mos_tt',"Vd d 0 0.6"]
- cases=[]
- for i,(dimensions,ids)in enumerate(sorted(geometries.items())):
+ basecases=[];cases=[]
+ for i,(dimensions,ends)in enumerate(sorted(geometries.items())):
   W,L,AS,AD,PS,PD=dimensions
-  for rf in (0,1):
-   label=f"g{i}r{rf}"
-   deck += [f"V{label} {label} 0 DC 0.8 AC 1",
-    f"X{label} d {label} 0 0 sg13_lv_nmos w={W:.12g}u l={L:.12g}u as={AS*1e-12:.12g} ad={AD*1e-12:.12g} ps={PS:.12g}u pd={PD:.12g}u ng=1 m=1 rfmode={rf} pre_layout=0"]
-   cases.append(dict(label=label,rfmode=rf,physical_native_ids=ids,W_um=W,L_um=L,AS_um2=AS,AD_um2=AD,PS_um=PS,PD_um=PD,drain_bias_V=.6,gate_bias_V=.8))
- deck+=[".control",f"pre_osdi {models}/frontend/psp103.osdi",f"pre_osdi {models}/frontend/psp103_nqs.osdi",
-  "set num_threads=1","set numdgt=16","set wr_singlescale","set wr_vecnames","op",
-  "echo NSSOC_GATE_MODEL_READBACK_BEGIN","showmod","echo NSSOC_GATE_MODEL_READBACK_END","ac dec 4 1meg 10g"]
- columns=[]
- for case in cases:
-  n=case["label"]
-  deck += [f"let z{n} = -1 / v{n}#branch",f"let r{n} = real(z{n})",f"let x{n} = imag(z{n})"]
-  columns += [f"r{n}",f"x{n}"]
- deck += [f"wrdata {ac}/impedance.txt "+" ".join(columns),"quit",".endc",".end"]
- (ac/"bench.cir").write_text("\n".join(deck)+"\n")
- (ac/"spinit").write_text("set num_threads=1\n")
- before={str(p):pin(p)for p in models.rglob("*")if p.is_file()}
- os.environ["SPICE_SCRIPTS"]=str(ac);os.environ["OMP_NUM_THREADS"]="1"
- execute([engine,"-n","-b",ac/"bench.cir"],"native-gate-ac",180)
- log=(NATIVE/"native-gate-ac.stdout").read_text()+(NATIVE/"native-gate-ac.stderr").read_text()
- need("NSSOC_GATE_MODEL_READBACK_BEGIN"in log and"NSSOC_GATE_MODEL_READBACK_END"in log,"actual native model readback")
- bad=[s for s in log.splitlines()if re.search(r"error|warning|no such vector|not found|unknown parameter|singular matrix|timestep too small",s,re.I)]
- save("native-diagnostics.json",dict(lines=bad,**FLAGS))
- need(not bad,"native diagnostics require investigation")
- rows=(ac/"impedance.txt").read_text().splitlines();header=rows[0].split()
- need(header==["frequency"]+columns,"exact real/imaginary physical case columns")
- data=[[float(v)for v in row.split()]for row in rows[1:]]
- need(len(data)==17 and all(len(r)==len(header)and all(math.isfinite(v)for v in r)for r in data),"complete native frequency sweep")
- need(abs(data[0][0]-1e6)<1 and abs(data[-1][0]-1e10)<1,"complete 1MHz to10GHz sweep")
- observations=[]
- for i,case in enumerate(cases):
-  observations.append(dict(**case,points=[dict(frequency_Hz=r[0],real_impedance_ohm=r[1+2*i],imag_impedance_ohm=r[2+2*i])for r in data]))
- need(before=={str(p):pin(p)for p in models.rglob("*")if p.is_file()},"complete model files unchanged")
- save("gate-ac-measurements.json",dict(cases=observations,unique_physical_dimensions=len(geometries),actual_native_MOS=200,
-  measured_gate_impedance=True,physical_gate_network_present=False,compact_model_overlap_resolved=False,
-  deck=pin(ac/"bench.cir"),native_measurements=pin(ac/"impedance.txt"),**FLAGS))
+  for rf in(0,1):
+   common=dict(rfmode=rf,W_um=W,L_um=L,AS_um2=AS,AD_um2=AD,PS_um=PS,PD_um=PD,drain_bias_V=.6,gate_bias_V=.8)
+   basecases.append(dict(common,label=f"g{i}n2r{rf}",ngcon=2,physical_native_ids=sorted(d for ids in ends.values()for d in ids),canonical_default_reference=True))
+   for ngcon,ids in sorted(ends.items()):
+    cases.append(dict(common,label=f"g{i}n{ngcon}r{rf}",ngcon=ngcon,physical_native_ids=sorted(ids),canonical_default_reference=False))
+ need(len(basecases)==8 and len(cases)==14,"complete dimension/contact/QS-RF cases")
+ def sweep(label,lib,cases,override):
+  ac=NATIVE/label;ac.mkdir()
+  deck=["* Current explicit physical MOS dimensions and contact-count diagnostic",f'.lib "{lib}/models/models/cornerMOSlv.lib" mos_tt',"Vd d 0 0.6"]
+  for case in cases:
+   n=case["label"];W,L,AS,AD,PS,PD=[case[k]for k in("W_um","L_um","AS_um2","AD_um2","PS_um","PD_um")]
+   extra=f' gate_ngcon={case["ngcon"]}'if override else""
+   deck += [f"V{n} {n} 0 DC 0.8 AC 1",
+    f'X{n} d {n} 0 0 sg13_lv_nmos w={W:.12g}u l={L:.12g}u as={AS*1e-12:.12g} ad={AD*1e-12:.12g} ps={PS:.12g}u pd={PD:.12g}u ng=1 m=1 rfmode={case["rfmode"]} pre_layout=0'+extra]
+  deck += [".control",f"pre_osdi {models}/frontend/psp103.osdi",f"pre_osdi {models}/frontend/psp103_nqs.osdi",
+   "set num_threads=1","set numdgt=16","set wr_singlescale","set wr_vecnames","op","show all",
+   "echo NSSOC_GATE_INSTANCE_READBACK_BEGIN"]
+  for case in cases:deck.append(f'print @n.x{case["label"]}.nsg13_lv_nmos[ngcon]')
+  deck+=["echo NSSOC_GATE_INSTANCE_READBACK_END","echo NSSOC_GATE_MODEL_READBACK_BEGIN","showmod","echo NSSOC_GATE_MODEL_READBACK_END","ac dec 4 1meg 10g"]
+  columns=[]
+  for case in cases:
+   n=case["label"];deck += [f"let z{n} = -1 / v{n}#branch",f"let r{n} = real(z{n})",f"let x{n} = imag(z{n})"];columns += [f"r{n}",f"x{n}"]
+  deck += [f"wrdata {ac}/impedance.txt "+" ".join(columns),"quit",".endc",".end"]
+  (ac/"bench.cir").write_text("\n".join(deck)+"\n");(ac/"spinit").write_text("set num_threads=1\n")
+  os.environ["SPICE_SCRIPTS"]=str(ac);os.environ["OMP_NUM_THREADS"]="1"
+  execute([engine,"-n","-b",ac/"bench.cir"],label,180)
+  log=(NATIVE/(label+".stdout")).read_text()+(NATIVE/(label+".stderr")).read_text()
+  bad=[line for line in log.splitlines()if re.search(r"error|warning|no such vector|not found|unknown parameter|singular matrix|timestep too small",line,re.I)]
+  save(label+"-diagnostics.json",dict(lines=bad,**FLAGS));need(not bad,"all native diagnostics require investigation")
+  need(log.count("NSSOC_GATE_INSTANCE_READBACK_BEGIN")==1 and log.count("NSSOC_GATE_INSTANCE_READBACK_END")==1,"actual instance readback markers")
+  actual=[]
+  for case in cases:
+   key=f'@n.x{case["label"]}.nsg13_lv_nmos[ngcon]'
+   values=re.findall(re.escape(key)+r"\s*=\s*([0-9.eE+-]+)",log,re.I)
+   need(len(values)==1 and float(values[0])==case["ngcon"],"actual native instance NGCON "+key)
+   actual.append(dict(instance=key,ngcon=float(values[0]),expected=case["ngcon"]))
+  readback=[dict(line=i,text=line)for i,line in enumerate(log.splitlines(),1)if re.search(r"^\s*(model|swgeo|rgo|rshg|rint|rvpoly|dlsil|xgw|swnqs)\s",line,re.I)]
+  need(all(any(re.match(r"\s*"+key+r"\s",row["text"],re.I)for row in readback)for key in("swgeo","rgo","rshg","rint","rvpoly","dlsil","swnqs")),"all compact-model resistance/mode readbacks present")
+  rows=(ac/"impedance.txt").read_text().splitlines();header=rows[0].split()
+  need(header==["frequency"]+columns,"complete physical case columns")
+  data=[[float(v)for v in row.split()]for row in rows[1:]]
+  need(len(data)==17 and all(len(row)==len(header)and all(math.isfinite(v)for v in row)for row in data),"complete finite actual frequency sweep")
+  need(abs(data[0][0]-1e6)<1 and abs(data[-1][0]-1e10)<1,"full frequency endpoints")
+  observations=[dict(case,points=[dict(frequency_Hz=row[0],real_impedance_ohm=row[1+2*i],imag_impedance_ohm=row[2+2*i])for row in data])for i,case in enumerate(cases)]
+  save(label+"-readbacks.json",dict(instances=actual,models=readback,**FLAGS))
+  save(label+"-measurements.json",dict(cases=observations,deck=pin(ac/"bench.cir"),native_measurements=pin(ac/"impedance.txt"),physical_gate_network_present=False,compact_model_overlap_resolved=False,**FLAGS))
+  return observations
+ canonical=sweep("canonical-ngcon2",models,basecases,False)
+ before_variant={str(p):pin(p)for p in variant.rglob("*")if p.is_file()}
+ measured=sweep("explicit-ngcon12",variant,cases,True)
+ matches=[]
+ for baseline in canonical:
+  actual=next(row for row in measured if row["label"]==baseline["label"])
+  for a,b in zip(actual["points"],baseline["points"]):
+   need(a["frequency_Hz"]==b["frequency_Hz"],"canonical frequency identity")
+   for key in("real_impedance_ohm","imag_impedance_ohm"):
+    need(math.isclose(a[key],b[key],rel_tol=1e-9,abs_tol=1e-7),"explicit NGCON2 reproduces unchanged original model "+key)
+  matches.append(baseline["label"])
+ need(original_files=={str(p):pin(p)for p in models.rglob("*")if p.is_file()},"all original model files unchanged")
+ need(before_variant=={str(p):pin(p)for p in variant.rglob("*")if p.is_file()},"explicit model variant unchanged during native runs")
+ save("gate-contact-ac-comparison.json",dict(current_physical_run=41710162510,current_wire_run=41712243960,
+  current_candidate=fixture["candidate"],actual_intrinsic_gates=200,one_ended=50,two_ended=150,
+  original_ngcon2_reproduced_cases=matches,canonical_cases=canonical,contact_cases=measured,
+  native_ngcon_readback_verified=True,complete_original_model_files_unchanged=True,
+  equivalent_physical_gate_resistance_extracted=False,physical_gate_network_present=False,compact_model_overlap_resolved=False,**FLAGS))
  return len(geometries)
+
 
 def main():
  ctx=gate()
@@ -291,16 +367,22 @@ def main():
   cfg=read(ROOT/CFG)
   if sys.argv[1:]==["--controls"]:
    need(cfg["runtime"]["producer"]["run_id"]==39029337682,"exact frozen model runtime")
-   data=read(ROOT/"docs/evidence/mos650-physical-gate-groups-for-ac.json")
-   need(sum(len(g["units"])for g in data["groups"])==200,"actual complete physical MOS groups")
+   data=read(ROOT/"docs/evidence/mos650-current-gate-model-cases.json")
+   need(len(data["devices"])==200 and len({r["native_id"]for r in data["devices"]})==200,"all current native gates")
+   need(cfg["current_wire"]["run"]==41712243960 and data["source_members"]==cfg["current_wire"]["selected"],"actual current source binding")
    save("source-controls.json",dict(context=ctx,source_files_verified=True,**FLAGS));return
   need(sys.argv[1:]==["--extract"],"explicit cloud characterization")
+  current=NATIVE/"current-wire";current.mkdir()
+  acquire(cfg["current_wire"],current,lambda n:n in cfg["current_wire"]["selected"])
+  observed=current_cases(read(current/"derived/lvs_flat-identity.json"),read(current/"derived/gate-poly-access.json"))
+  need(observed==read(ROOT/"docs/evidence/mos650-current-gate-model-cases.json")["devices"],"complete native current fixture readback")
+  save("current-physical-cases.json",dict(devices=observed,source=cfg["current_wire"],**FLAGS))
   models=acquire_models(cfg["runtime"]);model_report(models)
   magic=NATIVE/"magic";magic.mkdir()
   acquire(cfg["magic"],magic,lambda n:n.startswith("wire-stage/magic-cloud/"))
   tech_report(magic/"wire-stage/magic-cloud/tech")
   count=characterize(models)
-  gate();save("result.json",dict(status="MEASURED_FROZEN_MOS_GATE_IMPEDANCE_REQUIRES_PHYSICAL_NETWORK_COMPOSITION",context=ctx,
+  gate();save("result.json",dict(status="MEASURED_CURRENT_GATE_CONTACT_COUNT_EFFECT_REQUIRES_PHYSICAL_NETWORK_COMPOSITION",context=ctx,
    unique_physical_dimensions=count,actual_mos_units=200,gate_resistance_qualified=False,**FLAGS))
  except BaseException as e:
   save("failure.json",dict(error_type=type(e).__name__,error=str(e),traceback=traceback.format_exc(),**FLAGS));raise

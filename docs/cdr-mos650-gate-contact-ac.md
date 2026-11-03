@@ -1,0 +1,7 @@
+# Current gate-contact model diagnostic
+
+This run consumes the exact current650 physical wire producer41712243960, tied to DRC/LVS-passing GDS c335182048dc1696821ab875fb34447e5b5a9ba0f1a24d5d16d572680906c16c. It reauthenticates the complete producer archive in the hosted runner and rebuilds all200 native gate IDs, full physical dimensions and contact-end geometry. There are50 one-ended and150 two-ended electrodes. The 8.885um geometry has only two-ended electrodes, so actual cases are14 QS/RF combinations, not16.
+
+The original frozen models remain immutable. A separate copy exposes the six hardcoded lv NMOS instance NGCON values as one wrapper argument, default2; all resistance and NQS parameters remain unchanged. Eight fresh canonical NGCON2 cases must reproduce the explicit-NGCON2 variants over17 frequency points within relative1e-9/absolute1e-7. All native instance NGCON values are read back; full device/model readbacks, stdout, stderr, decks, measurements and failures are preserved. Existing0.8V gate/0.6V drain biases, physical AS/AD/PS/PD, pre_layout0 and1MHz to10GHz remain fixed.
+
+A changed input impedance is not an extracted physical gate resistor. No external poly network has yet been composed with the compact models. Gate contact geometry alone does not qualify the model, resolve distributed electrode coupling, or validate a full PHY. Complete loaded electrical, serial and all-corner timing requirements remain open.
