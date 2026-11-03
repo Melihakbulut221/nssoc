@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Inspect exact compact-model gate controls and actual gate access geometry in cloud."""
+"""Add local gate contacts and upper-metal buses to actual qualified650 geometry."""
 import hashlib,json,os,re,subprocess,sys,tarfile,traceback,shutil
 from pathlib import Path,PurePosixPath
 ROOT=Path(__file__).resolve().parents[1]
@@ -80,6 +80,26 @@ def publish():
  save("publication.json",dict(release=rel["id"],assets=assets,**FLAGS))
 
 
+def reserve():
+ ctx=gate();tag="cloud-results-"+str(ctx["run"])+"-1-cdr-mos650-gate-metallization"
+ def call(path,data):
+  raw=subprocess.check_output(["gh","api","repos/"+REPO+"/"+path,"--method","POST","--input","-"],input=enc(data),timeout=180)
+  return json.loads(raw)
+ existing=subprocess.run(["gh","api","repos/"+REPO+"/releases/tags/"+tag],capture_output=True,text=True,timeout=180)
+ if existing.returncode:
+  need("HTTP 404"in existing.stderr,"release lookup must definitively be absent")
+  ref=subprocess.run(["gh","api","repos/"+REPO+"/git/ref/tags/"+tag],capture_output=True,text=True,timeout=180)
+  if ref.returncode:
+   need("HTTP 404"in ref.stderr,"tag lookup must definitively be absent")
+   call("git/refs",dict(ref="refs/tags/"+tag,sha=ctx["source"]))
+  else:need(json.loads(ref.stdout)["object"]["sha"]==ctx["source"],"existing tag exact source")
+  rel=call("releases",dict(tag_name=tag,target_commitish=ctx["source"],name=tag,
+    body="Exact-source cloud-only physical candidate evidence. Generation is not full DRC/LVS or electrical acceptance.",
+    prerelease=True,draft=False))
+ else:rel=json.loads(existing.stdout)
+ need(rel["target_commitish"]==ctx["source"]and not rel["assets"]and api("git/ref/tags/"+tag)["object"]["sha"]==ctx["source"],"exact empty release before any native work")
+ print(json.dumps(dict(release=rel["id"],tag=tag,context=ctx)),flush=True)
+
 def polygon(text,pya):
  raw=text.split(" props=")[0]
  need(raw.startswith("(")and raw.endswith(")"),"exact native polygon encoding")
@@ -152,15 +172,25 @@ def generate(cfg):
   need(not allowed.is_empty(),"actual original metal gate attachment")
   foreign_m1=(before[(8,0)]-allowed)+added[(8,0)]
   blocked_m1=foreign_m1.sized(180)
-  blocked_m2=(before[(10,0)]+added[(10,0)]).sized(210)
+  # Admit only original M2 physically attached to this gate M1 through a fully enclosed Via1.
+  own_vias=pya.Region()
+  for via in before[(19,0)].each():
+   vr=pya.Region(via)
+   if (vr-allowed).is_empty():own_vias.insert(via)
+  own_m2=before[(10,0)].interacting(own_vias)
+  rec["existing_gate_m1_component_area_dbu2"]=allowed.area()
+  rec["existing_gate_via1_count"]=own_vias.count()
+  rec["existing_gate_m2_component_area_dbu2"]=own_m2.area()
+  blocked_m2=((before[(10,0)]-own_m2)+added[(10,0)]).sized(210)
   blocked_v1=(before[(19,0)]+added[(19,0)]).sized(220)
   ys=sorted(gaps+[c.y]);attempts=[];chosen=None
-  for distance in range(800,10001,50):
-   for sign in(-1,1):
+  for distance in range(0,10001,50):
+   for sign in((1,)if distance==0 else(-1,1)):
     busx=gx+sign*distance
     m1=pya.Region();vias=pya.Region()
     for y in ys:
      m1.insert(pya.Box(min(gx,busx)-130,y-80,max(gx,busx)+130,y+80))
+     m1.insert(pya.Box(gx-130,y-130,gx+130,y+130))
      m1.insert(pya.Box(busx-145,y-145,busx+145,y+145))
      vias.insert(pya.Box(busx-95,y-95,busx+95,y+95))
     m2=pya.Region(pya.Box(busx-160,min(ys)-160,busx+160,max(ys)+160))
@@ -174,13 +204,20 @@ def generate(cfg):
     new_max_gate_to_contact_um=.001*max_uncontacted(intervals,ys))
   if chosen is None:
    rec["disposition"]="NO_CLEAR_M1_STUB_M2_BUS";plans.append(rec)
-   save("geometry-plan-failure.json",dict(groups=plans,**FLAGS))
-   raise ValueError("No conservative clear gate bus for actual devices "+str(ids))
+   # Derived clipped outlines expose actual obstacles without exporting a native layout.
+   roi=pya.Region(pya.Box(gx-1200,boxes[0].top-500,gx+1200,boxes[1].bottom+500))
+   rec["first_gap_obstacles"]={str(k):[str(pg)for pg in (v&roi).each()]for k,v in before.items()if k in((1,0),(5,0),(6,0),(8,0),(10,0),(19,0))}
+   rec["first_gap_gate_x_dbu"]=gx;rec["first_gap_y_dbu"]=gaps[0]
+   continue
   m1,m2,vias,busx=chosen
-  need((cuts-m1).is_empty()and(vias.sized(50)-m1).is_empty()and(vias.sized(50)-m2).is_empty(),"all native cut enclosures")
+  need((cuts.sized(50)-m1).is_empty()and(vias.sized(50)-m1).is_empty()and(vias.sized(50)-m2).is_empty(),"all native cut enclosures")
   for k,v in [((6,0),cuts),((8,0),m1),((10,0),m2),((19,0),vias)]:added[k]+=v;added[k].merge()
   rec.update(disposition="ADDED_LOCAL_CONTACTS_M1_STUBS_M2_BUS",bus_x_dbu=busx,via1_count=vias.count())
   plans.append(rec)
+ failed=[r for r in plans if r["disposition"]=="NO_CLEAR_M1_STUB_M2_BUS"]
+ if failed:
+  save("geometry-plan-failure.json",dict(groups=plans,failed_groups=len(failed),**FLAGS))
+  raise ValueError("No conservative clear gate bus for "+str(len(failed))+" actual groups")
  need(sum(r.get("planned_contacts",0)for r in plans)==150 and len([r for r in plans if r["disposition"].startswith("ADDED")])==42,"all multi-unit groups repaired")
  for key,region in added.items():
   for pg in region.each():
@@ -211,6 +248,7 @@ def generate(cfg):
 
 def main():
  ctx=gate()
+ if sys.argv[1:]==["--reserve"]:reserve();return
  if sys.argv[1:]==["--publish"]:publish();return
  OUT.mkdir();NATIVE.mkdir();DERIVED.mkdir()
  try:

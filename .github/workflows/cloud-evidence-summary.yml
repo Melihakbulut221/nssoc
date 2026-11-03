@@ -82,6 +82,8 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
+      - name: Reserve exact-source permanent evidence before native execution
+        run: python3 -B scripts/cdr_mos650_gate_metallization.py --reserve
       - name: Install pinned native geometry library
         run: python3 -m pip install --disable-pip-version-check --no-cache-dir klayout==0.30.4.post1
       - name: Generate actual gate contacts and conservative clear metal buses
