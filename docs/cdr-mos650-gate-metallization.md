@@ -60,3 +60,30 @@ All foreign-net clearance values remain unchanged. If still rejected, save
 full-path intersection, actual foreignM1, ownM1 and contact outlines to
 identify the necessary physical reroute from actual whole-path geometry.
 The first-gap corridor is not evidence that the full strap fits.
+
+
+## Actual obstruction and source/drain Via1 relocation
+Whole-path native ownership run41703662218 confirmed all42 strap obstructions
+are foreign source/drain metal, not misclassified same-gate connections.
+The full native M1 component increased correctly, but collision area did not
+change. Existing290nm-wide source/drain Via1 landings protrude65nm into
+the otherwise valid160nm gate corridor. Representative left/right protrusions
+overlap in Y, so a lateral160nm gate jog cannot solve the constriction.
+
+The successor moves only source/drain Via1 cuts on the measured x=gate+/-340nm
+columns65nm outward, together with their290nm M1 landing squares. Add same-net
+M2 landing extensions while retaining every original M2 polygon. Every cut
+must be an actual190nm Via1, have the observed50nm M1 enclosure, and be probed
+in both the original flat native LVS and physical wire database as a source
+or drain owner of the group's actual MOS devices. No schematic-name inference.
+The full relocation list records original/new geometry and both owners.
+
+Remove the original cut and landing, add the shifted geometry, and preserve
+complete coverage of every existing Cont. Check50nm new via enclosures,
+220nm via spacing, foreign M1/M2 spacing, same-physical-net overlaps and5nm
+grid. Then add the150 local gate contacts and42 M1 straps. Full actual
+conductor layer unions are serialized/reloaded; only Cont/M1/M2/Via1 may
+change. Original transistor/nonconductor shapes, hierarchy and text/pin
+annotations remain identical. The earlier all-original-material invariant
+is explicitly superseded by documented conductor relocation, not silently
+waived. No physical acceptance until the unchanged full DRC/LVS/fault checker.

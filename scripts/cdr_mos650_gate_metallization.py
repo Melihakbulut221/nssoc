@@ -138,6 +138,10 @@ def generate(cfg):
   grouped.setdefault(key,[]).append(row)
  need(len(grouped)==50 and sum(map(len,grouped.values()))==200,"all physical gate groups")
  added={k:pya.Region()for k in((6,0),(8,0))}
+ metal=dict(before);removed_m1=pya.Region();removed_v1=pya.Region()
+ extra_m1={};extra_m2={};relocations=[]
+ native_devices={d.id():d for d in native_lvs.netlist().top_circuit().each_device()}
+ wire_m2=physical_wires.layer_by_name("gds_10")
  plans=[]
  for rows in grouped.values():
   ids=[r["device"]for r in rows];need(len({r["native_cluster"]for r in rows})==1,"same native gate owner per actual poly group")
@@ -179,12 +183,57 @@ def generate(cfg):
   own_m1=physical_wires.shapes_of_net(wn,wire_m1,True).merged()
   need((own_m1-before[(8,0)]).is_empty()and(allowed-own_m1).is_empty(),"complete own physical M1 lies in exact GDS and contains original contact component")
   rec.update(actual_wire_component=wn.cluster_id,original_contact_m1_area_dbu2=allowed.area(),complete_same_gate_m1_area_dbu2=own_m1.area())
-  foreign_m1=(before[(8,0)]-own_m1)+added[(8,0)]
-  blocked_m1=foreign_m1.sized(180)
   ys=sorted(gaps+[c.y])
-  # Actual source/drain M1 inner edges are +/-260nm from the gate axis.
-  # A160nm strap leaves180nm spacing; Via1 landing pads cannot fit here.
   m1=pya.Region(pya.Box(gx-80,min(ys)-130,gx+80,max(ys)+130))
+  ds_owners=set()
+  for row in rows:
+   dev=native_devices[row["device"]]
+   for td in dev.device_class().terminal_definitions():
+    if td.name in("S","D"):ds_owners.add(dev.net_for_terminal(td.id()).cluster_id)
+  original_vias=[]
+  for vp in before[(19,0)].interacting(m1.sized(400)).each():
+   vb=vp.bbox();vc=vb.center()
+   if abs(vc.x-gx)!=340:continue
+   pad=pya.Region(pya.Box(vb.left-50,vb.bottom-50,vb.right+50,vb.top+50))
+   if (pad&m1.sized(180)).is_empty():continue
+   need(vb.width()==190 and vb.height()==190 and(pya.Region(vp)^pya.Region(vb)).is_empty(),"actual standard source/drain Via1")
+   need((pad-before[(8,0)]).is_empty(),"actual source/drain50nm M1 via enclosure")
+   owner=native_lvs.probe_net(native_m1,vc);wire_owner=physical_wires.probe_net(wire_m1,vc)
+   need(owner is not None and wire_owner is not None and owner.cluster_id in ds_owners,"actual original source/drain ownership")
+   dx=-65 if vc.x<gx else 65
+   nb=pya.Box(vb.left+dx,vb.bottom,vb.right+dx,vb.top)
+   npad=pya.Region(pya.Box(nb.left-50,nb.bottom-50,nb.right+50,nb.top+50))
+   original_vias.append((pya.Region(vp),pya.Region(nb),pad,npad,wire_owner,owner.cluster_id,dx))
+  old_cuts=pya.Region();new_cuts=pya.Region();old_pads=pya.Region();new_pads=pya.Region()
+  for ov,nv,op,np,wo,no,dx in original_vias:
+   old_cuts+=ov;new_cuts+=nv;old_pads+=op;new_pads+=np
+  if original_vias:
+   need((old_cuts&removed_v1).is_empty(),"no physical via is moved twice")
+   future_m1=(metal[(8,0)]-old_pads)+new_pads
+   future_v1=(metal[(19,0)]-old_cuts)+new_cuts
+   future_m2=metal[(10,0)]+new_pads
+   need((before[(6,0)]-future_m1).is_empty(),"every original contact remains completely covered")
+   need((new_cuts.sized(50)-future_m1).is_empty()and(new_cuts.sized(50)-future_m2).is_empty(),"relocated via enclosures")
+   need((new_cuts&(metal[(19,0)]-old_cuts).sized(220)).is_empty(),"relocated vias preserve spacing to every remaining via")
+   for ov,nv,op,np,wo,no,dx in original_vias:
+    netid=wo.cluster_id
+    own1=(physical_wires.shapes_of_net(wo,wire_m1,True)-removed_m1)+extra_m1.get(netid,pya.Region())
+    own2=physical_wires.shapes_of_net(wo,wire_m2,True)+extra_m2.get(netid,pya.Region())
+    need((np&(metal[(8,0)]-own1).sized(180)).is_empty(),"new source/drain M1 landing foreign-net spacing")
+    need((np&(metal[(10,0)]-own2).sized(210)).is_empty(),"new source/drain M2 landing foreign-net spacing")
+    need(not(np&own1).is_empty()and not(np&own2).is_empty(),"relocated landing overlaps same physical source/drain net on both layers")
+    recmove=dict(gate_devices=ids,source_drain_native_owner=no,wire_component=netid,dx_dbu=dx,
+      old_via=[str(p)for p in ov.each()],new_via=[str(p)for p in nv.each()],
+      old_m1_landing=[str(p)for p in op.each()],new_m1_m2_landing=[str(p)for p in np.each()])
+    relocations.append(recmove)
+    extra_m1.setdefault(netid,pya.Region());extra_m1[netid]+=np
+    extra_m2.setdefault(netid,pya.Region());extra_m2[netid]+=np
+   removed_m1+=old_pads;removed_v1+=old_cuts
+   metal[(8,0)]=future_m1.merged();metal[(19,0)]=future_v1.merged();metal[(10,0)]=future_m2.merged()
+  own_gate=(own_m1-removed_m1)+extra_m1.get(wn.cluster_id,pya.Region())
+  foreign_m1=(metal[(8,0)]-own_gate)+added[(8,0)]
+  blocked_m1=foreign_m1.sized(180)
+  rec["relocated_source_drain_vias"]=len(original_vias)
   clashes=dict(m1_area=(m1&blocked_m1).area(),outside_macro_area=(m1-pya.Region(bounds)).area())
   attempts=[dict(bus_x_dbu=gx,strap_width_dbu=160,**clashes)]
   chosen=None if any(clashes.values())else m1
@@ -214,17 +263,31 @@ def generate(cfg):
   plans.append(rec)
  failed=[r for r in plans if r["disposition"]=="NO_CLEAR_M1_GATE_STRAP"]
  if failed:
-  save("geometry-plan-failure.json",dict(groups=plans,failed_groups=len(failed),**FLAGS))
+  save("geometry-plan-failure.json",dict(groups=plans,failed_groups=len(failed),source_drain_via_relocations=relocations,**FLAGS))
   raise ValueError("No clear160nm M1 gate strap for "+str(len(failed))+" actual groups")
  need(sum(r.get("planned_contacts",0)for r in plans)==150 and len([r for r in plans if r["disposition"].startswith("ADDED")])==42,"all multi-unit groups repaired")
  for key,region in added.items():
   for pg in region.each():
    need(all(p.x%5==0 and p.y%5==0 for p in pg.each_point_hull()),"all new geometry5nm grid")
-  top.shapes(g.layer(*key)).insert(region)
+ for key in((8,0),(10,0),(19,0)):
+  li=g.layer(*key)
+  for cell in g.each_cell():
+   shapes=cell.shapes(li)
+   for shape in list(shapes.each()):
+    if not shape.is_text():shapes.erase(shape)
+  desired=(metal[key]+added.get(key,pya.Region())).merged()
+  for pg in desired.each():
+   need(all(p.x%5==0 and p.y%5==0 for p in pg.each_point_hull()),"all relocated conductor geometry5nm grid")
+  top.shapes(li).insert(desired)
+ top.shapes(g.layer(6,0)).insert(added[(6,0)])
  after=layer_regions(g,top,pya)
  for key,old in before.items():
-  expected=(old+added.get(key,pya.Region())).merged()
-  need((after[key]^expected).is_empty(),"only declared material additions "+str(key))
+  expected=(metal[key]+added.get(key,pya.Region())).merged()
+  need((after[key]^expected).is_empty(),"only declared material changes "+str(key))
+ deltas={str(k):dict(added_area_dbu2=(after[k]-old).area(),removed_area_dbu2=(old-after[k]).area())for k,old in before.items()}
+ need(all(v["added_area_dbu2"]==0 and v["removed_area_dbu2"]==0 for k,v in deltas.items()if k not in("(6, 0)","(8, 0)","(10, 0)","(19, 0)")),"all original nonconductor and transistor geometry unchanged")
+ save("source-drain-via-relocation.json",dict(relocations=relocations,count=len(relocations),material_deltas=deltas,
+  all_original_contacts_covered=True,all_original_device_geometry_retained=True,requires_full_DRC_LVS=True,**FLAGS))
  need(structure(g)==hierarchy and texts(g)==annotations,"unchanged complete hierarchy and text annotations")
  layout=NATIVE/"layout";layout.mkdir()
  target=layout/gds.name;opts=pya.SaveLayoutOptions();opts.write_context_info=False;g.write(str(target),opts)
@@ -240,7 +303,7 @@ def generate(cfg):
  (layout/"result.json").write_bytes(enc(metadata))
  save("geometry-plan.json",dict(groups=plans,original_candidate=pin(gds),candidate=pin(target),independent_reference=pin(ref),
   added_contact_count=150,added_metal_bus_count=42,unchanged_single_unit_groups=8,
-  all_layers_roundtrip_equal=True,all_original_geometry_retained=True,
+  all_layers_roundtrip_equal=True,all_original_geometry_retained=False,all_original_device_geometry_retained=True,source_drain_via_relocations=len(relocations),
   geometry_guards_are_not_full_DRC=True,**FLAGS))
  return pin(target)
 
