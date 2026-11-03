@@ -30,3 +30,15 @@ artifacts remain failed; no identical rerun is used.
 
 Primary layout rules:
 https://ihp-open-pdk-docs.readthedocs.io/en/latest/verification/drc/02_main_rules.html
+
+
+### Reservation transport correction
+
+Run41701260499 did NOT execute native geometry. Its own GITHUB_TOKEN could
+not create the exact-source tag (HTTP403). Preserve that failure distinctly
+from the earlier measured geometry rejection. Do not widen token privileges
+or label this as a circuit result. The authorized dispatcher now creates
+the run-specific tag/release immediately after discovering its exact-source
+run ID. Before any native work, the job verifies that binding and may wait
+up to120seconds for it. This explicitly retains the external reservation
+dependency; it does not claim the denied cloud self-reservation works.

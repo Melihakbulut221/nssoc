@@ -81,24 +81,20 @@ def publish():
 
 
 def reserve():
+ # GitHub's workflow token cannot create a new tag on this workflow-changing
+ # source. The authorized dispatcher reserves it; this job only verifies it.
+ import time
  ctx=gate();tag="cloud-results-"+str(ctx["run"])+"-1-cdr-mos650-gate-metallization"
- def call(path,data):
-  raw=subprocess.check_output(["gh","api","repos/"+REPO+"/"+path,"--method","POST","--input","-"],input=enc(data),timeout=180)
-  return json.loads(raw)
- existing=subprocess.run(["gh","api","repos/"+REPO+"/releases/tags/"+tag],capture_output=True,text=True,timeout=180)
- if existing.returncode:
-  need("HTTP 404"in existing.stderr,"release lookup must definitively be absent")
-  ref=subprocess.run(["gh","api","repos/"+REPO+"/git/ref/tags/"+tag],capture_output=True,text=True,timeout=180)
-  if ref.returncode:
-   need("HTTP 404"in ref.stderr,"tag lookup must definitively be absent")
-   call("git/refs",dict(ref="refs/tags/"+tag,sha=ctx["source"]))
-  else:need(json.loads(ref.stdout)["object"]["sha"]==ctx["source"],"existing tag exact source")
-  rel=call("releases",dict(tag_name=tag,target_commitish=ctx["source"],name=tag,
-    body="Exact-source cloud-only physical candidate evidence. Generation is not full DRC/LVS or electrical acceptance.",
-    prerelease=True,draft=False))
- else:rel=json.loads(existing.stdout)
- need(rel["target_commitish"]==ctx["source"]and not rel["assets"]and api("git/ref/tags/"+tag)["object"]["sha"]==ctx["source"],"exact empty release before any native work")
- print(json.dumps(dict(release=rel["id"],tag=tag,context=ctx)),flush=True)
+ for attempt in range(31):
+  query=subprocess.run(["gh","api","repos/"+REPO+"/releases/tags/"+tag],capture_output=True,text=True,timeout=60)
+  if query.returncode==0:
+   rel=json.loads(query.stdout)
+   need(rel["target_commitish"]==ctx["source"]and not rel["assets"]and api("git/ref/tags/"+tag)["object"]["sha"]==ctx["source"],"exact empty release before native work")
+   print(json.dumps(dict(release=rel["id"],tag=tag,context=ctx,external_reservation_verified=True)),flush=True)
+   return
+  need("HTTP 404"in query.stderr,"definitive release lookup")
+  if attempt<30:time.sleep(4)
+ raise ValueError("No exact-source release reservation arrived; native geometry not started")
 
 def polygon(text,pya):
  raw=text.split(" props=")[0]
