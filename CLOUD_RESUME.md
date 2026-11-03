@@ -1,111 +1,102 @@
-# Cloud continuation — checkpoint v349
+# Cloud continuation — checkpoint v350
 
-Updated: 2026-11-03T20:17:25.926481+00:00
+Updated: 2026-11-03T20:34:15.901817+00:00
 
-## Actual gate-metal repair driven by full DRC failure
+## Current gate-contact topology and fresh metal/via RC passed
 
-Physical run41707025516/sourceadbb69b069592dc87400988cc6ea995032c9a086 FAILED. Both deep and flat650-device LVS passed. All560 DRC categories executed, with392 markers: M1.a8, M1.b8, M1.e8, M2.b368. Full failure, every derived log/report and immutable native release433147774 are preserved. No failure was waived.
+Wire41712243960/sourcef3aece4ae3b048df220cb51277d74fcd026940ed on codex/cdr-mos650-gate-wires SUCCEEDED, release433179003. It consumes the exact GDS from full physical41710162510 (560DRCcategories0markers, deep/flat650 LVS and13physical faults), GDS SHA256c335182048dc1696821ab875fb34447e5b5a9ba0f1a24d5d16d572680906c16c.
 
-Generation41709100324/source101974bb123d67efb713785ca1c7088939d0c2b2 SUCCEEDED (release433160175). Original M1 landing geometry is retained outside the proven gate corridor instead of deleting entire old via pads, which had produced narrow edge fragments. New M2 landing notches are closed only within each proven physical wire net near the actual additions, with foreign-net spacing guards. Actual before/after material around all M1.a/M1.e markers was exported.
+The actual current native LVS IDs and physical paths were rebuilt for all650devices/2046terminals/25ports. All15 identity corruptions per mode and10 current binding corruptions were rejected. Complete13 conductor/via layer unions and every anchor were read back against native layout and wire ownership. Source pins were rebound by authenticating prior650 full drawings, proving all current nonrelocated primitive material, hierarchy, pin annotations and labels, then current physical conductor probes. No semantic alias substituted for physical identity.
 
-Those material windows exposed eight original4um-tall wide S/D junction plates facing the160nm gate strap at180nm. M1.e requires220nm spacing when metal width exceeds300nm and parallel run exceeds1um. Generation41709759119/source087721d42112ed108543d2da053ee6d0e2f20a9c SUCCEEDED (release433163953) after cutting220nm slots inside those exact same-net plates. The complete160nm contact rail and BOTH160nm bridge necks remain. Entire slot ownership is probed against actual native S/D and physical wire net; all original Cont and current Via1 remain covered. This alters actual material, not the rule. New slot resistance must be included in freshRC.
+The old gate-to-metal ideal reference was removed. There are1203 ordinary intrinsic metal terminal references,643 intrinsic body references, and200 separate intrinsic gate electrodes explicitly requiring poly RC. All200 actual gate contacts across50 actual poly groups are independent metal anchors. Including25 public ports there are1428 logical AND1428 distinct physical points,113 conductor components and114 electrical partitions. Every group's complete real contact polygon set matches its declared anchors. Complete published polygon analysis finds50 electrodes contacted from one end and150 from both ends; this is geometry evidence, not an accepted NGCON model assignment.
 
-Actual new GDS:1624572bytes/SHA256c335182048dc1696821ab875fb34447e5b5a9ba0f1a24d5d16d572680906c16c. All original device/nonconductor geometry,650-device independent reference, hierarchy and annotations remain preserved. Independent full physical41710162510/sourceb3d9d1d284b1e8464d5359e7e21991aef21a787c/release433166461 consumes this exact candidate. The checker SHA30c4586b86167ad775af14b5568152820a802037150bdfd282e7ba0843a1555f is unchanged:560 categories, deep/flat LVS and13 intentional controls, plus independent current Via1 coverage. Consult its actual snapshot and complete report below, never infer physical acceptance from generation.
+Fresh metalRC41713023974/source0e5b89ef37bd0664835ebe331af087946a9ab882 on codex/cdr-mos650-gate-metal-rc SUCCEEDED, release433183824. Actual new metal/via extraction produced28619resistors and18469capacitors. All113 R components are connected;0disconnected probes, exact native/export R multiset, per-point groundC and each mutual attachment/value preserved, complete collapsed C matrix conserved. All13 original raw corruption controls passed. The native Magic ELF/technology and numerical Tcl are unchanged;4GiB address-space/1GiB scratch guards remain. New M1 slots, straps, M2 notch fills and relocated vias are in this actual geometry. This is NOT full PEX or electrical acceptance.
 
-Mainchip full64 route41699812301/source9430a57873e78d3c283b531da8e8e74da416f297 remains the same authoritative trial. Full route and final setup/hold are not yet proven. Full serialPHY is also unclosed: regenerate bindings and freshRC on the accepted current material, model all gate/poly/contact resistance and compact-model overlap, then run the original complete loaded electrical and serial link qualification. No source or sub-block test substitutes for these product requirements.
+Its predecessor41712770691/source50665139672588f4a9a12ab9b84c7873b5173764 failed before source controls/native work because the concurrency-name change also renamed the sparse-checkout pins path. The exact complete logs are preserved. The successor fixes all4 path references, retaining the separate concurrency group and checks source-only method derivation before dispatch. This workflow failure is not described as a circuit result.
 
-All computation and native payloads remain in GitHub; local workspace remains empty. Read-only8-hour monitor is preserved.
-
-
-## Confirmed new physical acceptance, limited to this exact650-device macro
-Run41710162510 completed its native physical verification successfully. Full report status PASS_NATIVE_PDK_CDR_PD650_DRC_LVS_AND_FAULT_CONTROLS; all560 DRC categories, zero markers; deep and flat650 LVS both PASS; all13 original intentional faults rejected. Actual DRC report SHA25665323bd352a208ac709ce75e782faf3b6dd9291cce44ddb14ee15e01d5e919b0. Derived artifact13267549262 contains the complete report. This closes the392-marker local gate-metal DRC issue with real geometry and unchanged checker. It does NOT close full serialPHY, freshRC, mainchip routing or final timing.
+Mainchip full64 route41699812301 remains the same live trial; no final layout/timing result is claimed. Next work is actual gate/poly/contact resistance with compact-model overlap resolved, full MIM/coupling/substrate scope and original loaded electrical/serial qualification. The200 intrinsic gates remain deliberately unconnected to a metal point until that physically valid network is supplied. FullserialPHY, mainchip route completion and finalsetup/hold remain open. All native computation and archives stay cloud-only; local workspace is empty.
 
 
-## Observed complete physical results
+## Observed complete wire/RC outcomes
 [
   {
-    "conclusion": "failure",
-    "drc": {
-      "categories": {
-        "'M1.a'": 8,
-        "'M1.b'": 8,
-        "'M1.e'": 8,
-        "'M2.b'": 368
+    "conclusion": "success",
+    "result": {
+      "bytes": 709,
+      "record": {
+        "anchors": 1428,
+        "components": 113,
+        "context": {
+          "attempt": 1,
+          "run": 41712243960,
+          "source": "f3aece4ae3b048df220cb51277d74fcd026940ed"
+        },
+        "devices": 650,
+        "electrical_accepted": false,
+        "electrical_nets": 114,
+        "final_timing_complete": false,
+        "full_pex_qualified": false,
+        "full_phy_accepted": false,
+        "gate_poly_RC_extracted": false,
+        "gate_poly_paths": 200,
+        "intrinsic_gate_metal_shortcuts": false,
+        "physical_gate_contacts": 200,
+        "physical_ports": 25,
+        "physical_run": 41710162510,
+        "status": "PASS_CURRENT650_WIRES_200_GATE_CONTACTS_AND_SEPARATE_INTRINSIC_ELECTRODES_REQUIRES_RC",
+        "substrate_r_modeled": false,
+        "terminals": 2046,
+        "wire_rc_extracted": false
       },
-      "category_count": 560,
-      "log_sha256": "21df57caa6cc5c81a0c81da1a5437f960d1e45059ebbf0a050d9ecda4eca809d",
-      "markers": 392,
-      "process_returncode": 0,
-      "report_sha256": "d64633d3f64220a215d350042d3867f3cff8da70c841d8c8ec21fabc3619ecb0",
-      "status": "FAIL"
+      "sha256": "b7b4cd0939c8d8621c37caa905612db93725f1cf78bfcffcc7a7eca6a6d56184"
     },
-    "phases": {
-      "drc": "FAIL",
-      "gain_gate_disconnected": "REJECTED_EXPECTED_FAULT",
-      "gain_tail_width": "REJECTED_EXPECTED_FAULT",
-      "lvs": "PASS",
-      "lvs_flat": "PASS",
-      "missing_gain_hbt": "REJECTED_EXPECTED_FAULT",
-      "missing_hbt": "REJECTED_EXPECTED_FAULT",
-      "offgrid": "NOT_RUN_FAILED_PREREQUISITE",
-      "old_data_header_length": "REJECTED_EXPECTED_FAULT",
-      "old_retime_width": "REJECTED_EXPECTED_FAULT",
-      "old_sampler_input_width": "REJECTED_EXPECTED_FAULT",
-      "q_open": "REJECTED_EXPECTED_FAULT",
-      "rail_short": "REJECTED_EXPECTED_FAULT",
-      "v59_old_length": "REJECTED_EXPECTED_FAULT",
-      "wrong_finger_count": "REJECTED_EXPECTED_FAULT",
-      "wrong_follower_polarity": "REJECTED_EXPECTED_FAULT"
-    },
-    "run": 41707025516,
-    "status": "FAIL"
+    "run": 41712243960
   },
   {
     "conclusion": "success",
-    "drc": {
-      "categories": {},
-      "category_count": 560,
-      "log_sha256": "3d2ee5d840eeb362bd626e7e3407724d61d9e33c630ea68b5d738c764daa1214",
-      "markers": 0,
-      "process_returncode": 0,
-      "report_sha256": "65323bd352a208ac709ce75e782faf3b6dd9291cce44ddb14ee15e01d5e919b0",
-      "status": "PASS"
+    "result": {
+      "bytes": 756,
+      "record": {
+        "actual_capacitors": 18469,
+        "actual_resistors": 28619,
+        "context": {
+          "attempt": 1,
+          "run": 41713023974,
+          "source": "0e5b89ef37bd0664835ebe331af087946a9ab882"
+        },
+        "electrical_accepted": false,
+        "final_timing_complete": false,
+        "full_pex_qualified": false,
+        "full_phy_accepted": false,
+        "gate_poly_RC_extracted": false,
+        "intrinsic_gate_metal_shortcuts": false,
+        "logical_anchors": 1428,
+        "metal_via_RC_extracted": true,
+        "mim_intrinsic_composition_qualified": false,
+        "native_fault_controls": 13,
+        "physical_anchors": 1428,
+        "physical_gate_contacts": 200,
+        "physical_source_run": 41712243960,
+        "status": "PASS_ACTUAL650_FRESH_METAL_VIA_RC_REQUIRES_GATE_POLY_MIM_AND_ELECTRICAL_COMPOSITION",
+        "substrate_r_modeled": false
+      },
+      "sha256": "712c505b752bbb04f9c62f9b69408edf763d1d47e8f6f1729cc5e2d0ad0ab146"
     },
-    "phases": {
-      "drc": "PASS",
-      "gain_gate_disconnected": "REJECTED_EXPECTED_FAULT",
-      "gain_tail_width": "REJECTED_EXPECTED_FAULT",
-      "lvs": "PASS",
-      "lvs_flat": "PASS",
-      "missing_gain_hbt": "REJECTED_EXPECTED_FAULT",
-      "missing_hbt": "REJECTED_EXPECTED_FAULT",
-      "offgrid": "REJECTED_EXPECTED_FAULT",
-      "old_data_header_length": "REJECTED_EXPECTED_FAULT",
-      "old_retime_width": "REJECTED_EXPECTED_FAULT",
-      "old_sampler_input_width": "REJECTED_EXPECTED_FAULT",
-      "q_open": "REJECTED_EXPECTED_FAULT",
-      "rail_short": "REJECTED_EXPECTED_FAULT",
-      "v59_old_length": "REJECTED_EXPECTED_FAULT",
-      "wrong_finger_count": "REJECTED_EXPECTED_FAULT",
-      "wrong_follower_polarity": "REJECTED_EXPECTED_FAULT"
-    },
-    "run": 41710162510,
-    "status": "PASS_NATIVE_PDK_CDR_PD650_DRC_LVS_AND_FAULT_CONTROLS"
+    "run": 41713023974
   }
 ]
 
 
-Observed 2026-11-03T20:17:25.926481+00:00:
+Observed 2026-11-03T20:34:15.901817+00:00:
 - 41699812301: in_progress/None
-- 41707025516: completed/failure
-- 41709100324: completed/success
-- 41709759119: completed/success
-- 41710162510: completed/success
+- 41712243960: completed/success
+- 41712770691: completed/failure
+- 41713023974: completed/success
 
 
 ## History and execution
 Previous actual route and failure handoff:
-https://github.com/Melihakbulut221/nssoc/blob/08d1adbe5ce0e56d9847e6ab10da93e7b84305da/CLOUD_RESUME.md
+https://github.com/Melihakbulut221/nssoc/blob/42924467623e17b681c89aabeab69b59c27bef56/CLOUD_RESUME.md
 All earlier sources, complete reports and failed runs remain preserved.
 All native CAD/geometry/runtime/electrical payloads stay cloud-only. The local
 workspace is empty; source and derived-text API coordination uses RAM.
