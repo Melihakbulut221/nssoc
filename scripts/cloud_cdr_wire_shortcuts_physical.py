@@ -124,6 +124,9 @@ def validate_mos_candidate(target,cfg,proof):
     import klayout.db as db
     expected=cfg["derived"]
     for n,p in expected.items():
+        if n=="publication.json":
+            need("derived/"+n not in cfg["index"]["files"],"publication receipt is created after sealing native archive")
+            continue
         need(json.loads((target/"derived"/n).read_bytes())==p,"all independently pinned generation evidence "+n)
     need(proof["status"]=="GENERATED_EXPLICIT_MODEL_RANGE_MOS650_REQUIRES_FULL_PHYSICAL_AND_FRESH_RC"and proof["candidate"]==cfg["candidate"],"exact explicitMOS candidate")
     g=expected["geometry-proposal.json"];r=expected["reference-provenance.json"];serial=expected["serialization.json"]
