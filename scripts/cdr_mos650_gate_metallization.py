@@ -143,6 +143,7 @@ def generate(cfg):
  native_devices={d.id():d for d in native_lvs.netlist().top_circuit().each_device()}
  wire_m2=physical_wires.layer_by_name("gds_10")
  plans=[]
+ globals()["relocation_progress"]=dict(groups=plans,relocations=relocations)
  for rows in grouped.values():
   ids=[r["device"]for r in rows];need(len({r["native_cluster"]for r in rows})==1,"same native gate owner per actual poly group")
   path=pya.Region()
@@ -193,14 +194,15 @@ def generate(cfg):
   original_vias=[]
   for vp in before[(19,0)].interacting(m1.sized(400)).each():
    vb=vp.bbox();vc=vb.center()
-   if abs(vc.x-gx)!=340:continue
+   if vc.x==gx:continue
    pad=pya.Region(pya.Box(vb.left-50,vb.bottom-50,vb.right+50,vb.top+50))
    if (pad&m1.sized(180)).is_empty():continue
    need(vb.width()==190 and vb.height()==190 and(pya.Region(vp)^pya.Region(vb)).is_empty(),"actual standard source/drain Via1")
    need((pad-before[(8,0)]).is_empty(),"actual source/drain50nm M1 via enclosure")
    owner=native_lvs.probe_net(native_m1,vc);wire_owner=physical_wires.probe_net(wire_m1,vc)
    need(owner is not None and wire_owner is not None and owner.cluster_id in ds_owners,"actual original source/drain ownership")
-   dx=-65 if vc.x<gx else 65
+   dx=min(0,gx-310-vb.right)if vc.x<gx else max(0,gx+310-vb.left)
+   need(dx!=0 and abs(dx)<=500 and dx%5==0,"bounded actual source/drain cut displacement")
    nb=pya.Box(vb.left+dx,vb.bottom,vb.right+dx,vb.top)
    npad=pya.Region(pya.Box(nb.left-50,nb.bottom-50,nb.right+50,nb.top+50))
    original_vias.append((pya.Region(vp),pya.Region(nb),pad,npad,wire_owner,owner.cluster_id,dx))
@@ -230,6 +232,31 @@ def generate(cfg):
     extra_m2.setdefault(netid,pya.Region());extra_m2[netid]+=np
    removed_m1+=old_pads;removed_v1+=old_cuts
    metal[(8,0)]=future_m1.merged();metal[(19,0)]=future_v1.merged();metal[(10,0)]=future_m2.merged()
+  corridor=pya.Region(pya.Box(gx-260,min(ys)-310,gx+260,max(ys)+310))
+  own_gate_now=(own_m1-removed_m1)+extra_m1.get(wn.cluster_id,pya.Region())
+  protrusions=(metal[(8,0)]-own_gate_now)&corridor
+  if not protrusions.is_empty():
+   # Prove every remaining metal sliver is one of this group's original S/D nets.
+   original_part=protrusions&before[(8,0)]
+   need((protrusions-original_part).is_empty(),"only original S/D bar protrusions trimmed")
+   owners=[]
+   for pg in original_part.each():
+    points=[]
+    for edge in pg.each_edge():
+     q=edge.p1;r=edge.p2
+     mx=(q.x+r.x)//2;my=(q.y+r.y)//2
+     points.extend([pya.Point(mx+1,my),pya.Point(mx-1,my),pya.Point(mx,my+1),pya.Point(mx,my-1)])
+    pt=next((pt for pt in points if pg.inside(pt)),None)
+    need(pt is not None,"strict interior ownership sample")
+    actual=native_lvs.probe_net(native_m1,pt)
+    need(actual is not None and actual.cluster_id in ds_owners,"every trimmed conductor belongs to actual S/D")
+    owners.append(actual.cluster_id)
+   trimmed=metal[(8,0)]-protrusions
+   need((before[(6,0)]-trimmed).is_empty(),"bar trimming retains every original Cont")
+   need((metal[(19,0)]-trimmed).is_empty(),"bar trimming retains every actual Via1 cut")
+   metal[(8,0)]=trimmed.merged();removed_m1+=protrusions
+   rec["trimmed_source_drain_bar_protrusions"]=[str(pg)for pg in protrusions.each()]
+   rec["trimmed_source_drain_native_owners"]=owners
   own_gate=(own_m1-removed_m1)+extra_m1.get(wn.cluster_id,pya.Region())
   foreign_m1=(metal[(8,0)]-own_gate)+added[(8,0)]
   blocked_m1=foreign_m1.sized(180)
@@ -321,5 +348,6 @@ def main():
   candidate=generate(cfg);gate()
   save("result.json",dict(status="GENERATED_ACTUAL650_GATE_METAL_CANDIDATE_REQUIRES_INDEPENDENT_DRC_LVS",context=ctx,candidate=candidate,**FLAGS))
  except BaseException as e:
+  if "relocation_progress"in globals():save("relocation-progress-failure.json",dict(globals()["relocation_progress"],**FLAGS))
   save("failure.json",dict(error_type=type(e).__name__,error=str(e),traceback=traceback.format_exc(),**FLAGS));raise
 if __name__=="__main__":main()

@@ -87,3 +87,20 @@ change. Original transistor/nonconductor shapes, hierarchy and text/pin
 annotations remain identical. The earlier all-original-material invariant
 is explicitly superseded by documented conductor relocation, not silently
 waived. No physical acceptance until the unchanged full DRC/LVS/fault checker.
+
+
+## Complete source/drain bar correction
+Run41704706891 moved934 actual source/drain vias and cleared6 of42 groups.
+The other36 still failed: moving only each via's290nm square leaves the
+continuous original M1 bar protruding between cuts. Some actual via columns
+also differ from the initially assumed+/-340nm axis offsets. The full
+foreign-metal outlines and all934 movements are preserved, not accepted.
+
+The successor computes each cut's outward shift from its actual edge and
+the required gate corridor; it no longer assumes a single column position.
+It then removes the full residual M1 protrusion inside that corridor.
+Every removed polygon is independently probed in the original native LVS
+and must belong to an actual source or drain of that gate group. It may
+remove only original M1 material, and every original Cont and every retained
+or relocated Via1 must remain covered. No signal is joined by name. All
+foreign spacing guards and the independent full DRC/LVS requirement remain.
