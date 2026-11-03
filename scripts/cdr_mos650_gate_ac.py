@@ -308,7 +308,8 @@ def characterize(models):
   deck += [".control",f"pre_osdi {models}/frontend/psp103.osdi",f"pre_osdi {models}/frontend/psp103_nqs.osdi",
    "set num_threads=1","set numdgt=16","set wr_singlescale","set wr_vecnames","op","show all",
    "echo NSSOC_GATE_INSTANCE_READBACK_BEGIN"]
-  for case in cases:deck.append(f'print @n.x{case["label"]}.nsg13_lv_nmos[ngcon]')
+  for case in cases:
+   for parameter in("ngcon","rg","xgw","nf","w","l"):deck.append(f'print @n.x{case["label"]}.nsg13_lv_nmos[{parameter}]')
   deck+=["echo NSSOC_GATE_INSTANCE_READBACK_END","echo NSSOC_GATE_MODEL_READBACK_BEGIN","showmod","echo NSSOC_GATE_MODEL_READBACK_END","ac dec 4 1meg 10g"]
   columns=[]
   for case in cases:
@@ -326,15 +327,24 @@ def characterize(models):
    key=f'@n.x{case["label"]}.nsg13_lv_nmos[ngcon]'
    values=re.findall(re.escape(key)+r"\s*=\s*([0-9.eE+-]+)",log,re.I)
    need(len(values)==1 and float(values[0])==case["ngcon"],"actual native instance NGCON "+key)
-   actual.append(dict(instance=key,ngcon=float(values[0]),expected=case["ngcon"]))
+   native={}
+   for parameter in("rg","xgw","nf","w","l"):
+    query=f'@n.x{case["label"]}.nsg13_lv_nmos[{parameter}]'
+    found=re.findall(re.escape(query)+r"\s*=\s*([0-9.eE+-]+)",log,re.I)
+    need(len(found)==1 and math.isfinite(float(found[0])),"actual instance parameter "+query)
+    native[parameter]=float(found[0])
+   need(native["rg"]>0 and native["nf"]==1 and native["xgw"]>=0,"actual positive intrinsic gate resistance and geometry")
+   need(math.isclose(native["w"],case["W_um"]*1e-6,rel_tol=1e-12)and math.isclose(native["l"],case["L_um"]*1e-6,rel_tol=1e-12),"actual native instance dimensions")
+   actual.append(dict(instance=key,ngcon=float(values[0]),expected=case["ngcon"],native_parameters=native))
+   case=dict(case)
   readback=[dict(line=i,text=line)for i,line in enumerate(log.splitlines(),1)if re.search(r"^\s*(model|swgeo|rgo|rshg|rint|rvpoly|dlsil|xgw|swnqs)\s",line,re.I)]
-  need(all(any(re.match(r"\s*"+key+r"\s",row["text"],re.I)for row in readback)for key in("swgeo","rgo","rshg","rint","rvpoly","dlsil","swnqs")),"all compact-model resistance/mode readbacks present")
+  need(all(any(re.match(r"\s*"+key+r"\s",row["text"],re.I)for row in readback)for key in(("swgeo","rgo","rshg","rint","rvpoly","dlsil")+(("swnqs",)if any(c["rfmode"]for c in cases)else()))),"all compact-model resistance/mode readbacks present")
   rows=(ac/"impedance.txt").read_text().splitlines();header=rows[0].split()
   need(header==["frequency"]+columns,"complete physical case columns")
   data=[[float(v)for v in row.split()]for row in rows[1:]]
   need(len(data)==17 and all(len(row)==len(header)and all(math.isfinite(v)for v in row)for row in data),"complete finite actual frequency sweep")
   need(abs(data[0][0]-1e6)<1 and abs(data[-1][0]-1e10)<1,"full frequency endpoints")
-  observations=[dict(case,points=[dict(frequency_Hz=row[0],real_impedance_ohm=row[1+2*i],imag_impedance_ohm=row[2+2*i])for row in data])for i,case in enumerate(cases)]
+  observations=[dict(case,native_parameters=actual[i]["native_parameters"],points=[dict(frequency_Hz=row[0],real_impedance_ohm=row[1+2*i],imag_impedance_ohm=row[2+2*i])for row in data])for i,case in enumerate(cases)]
   save(label+"-readbacks.json",dict(instances=actual,models=readback,**FLAGS))
   save(label+"-measurements.json",dict(cases=observations,deck=pin(ac/"bench.cir"),native_measurements=pin(ac/"impedance.txt"),physical_gate_network_present=False,compact_model_overlap_resolved=False,**FLAGS))
   return observations
@@ -348,6 +358,7 @@ def characterize(models):
  matches=[]
  for baseline in canonical:
   actual=next(row for row in measured if row["label"]==baseline["label"])
+  need(actual["native_parameters"]==baseline["native_parameters"],"same original native resistance and geometry at NGCON2")
   for a,b in zip(actual["points"],baseline["points"]):
    need(a["frequency_Hz"]==b["frequency_Hz"],"canonical frequency identity")
    for key in("real_impedance_ohm","imag_impedance_ohm"):
