@@ -139,7 +139,10 @@ def model_report(lib):
    report[str(p.relative_to(lib))]=dict(source=pin(p),kind="compiled_osdi_model",controls=[],includes_and_subcircuits=[])
    continue
   need(p.suffix in(".cir",".spice",".lib"),"declared textual model format")
-  text=raw.decode("utf-8");lines=logical_lines(text)
+  try:text=raw.decode("utf-8");encoding="utf-8"
+  except UnicodeDecodeError:text=raw.decode("latin-1");encoding="latin-1"
+  need(text.encode(encoding)==raw,"lossless model report decoding")
+  lines=logical_lines(text)
   hits=[r for r in lines if pattern.search(r["text"])and not r["text"].lstrip().startswith("*")]
   # .model statements can be very long: retain model type and individual
   # relevant assignments, never disguise the complete model deck as a report.
@@ -152,7 +155,7 @@ def model_report(lib):
       parameters=[dict(name=k,value=v)for k,v in assignments if pattern.fullmatch(k)]))
    else:rows.append(r)
   includes=[r for r in lines if r["text"].lower().startswith((".include ",".lib ",".subckt "))]
-  report[str(p.relative_to(lib))]=dict(source=pin(p),controls=rows,includes_and_subcircuits=includes)
+  report[str(p.relative_to(lib))]=dict(source=pin(p),text_encoding=encoding,controls=rows,includes_and_subcircuits=includes)
  need(any(v["controls"]for v in report.values()),"actual MOS model control evidence")
  save("compact-model-gate-controls.json",dict(files=report,interpretation_pending=True,**FLAGS))
 
