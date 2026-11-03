@@ -148,77 +148,32 @@
       "status": "in_progress",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41507901483"
     },
-    "41548861169": {
-      "branch": "codex/mainchip-guide-single-roundtrip",
+    "41552715162": {
+      "branch": "codex/mainchip-guide-single-full64",
       "conclusion": null,
       "jobs": [
         {
           "active_steps": [],
           "conclusion": "success",
-          "id": 125631097276,
+          "id": 125644018582,
           "name": "source-controls",
           "status": "completed"
         },
         {
           "active_steps": [
-            "Authenticate new engine, roundtrip actual chip, compare full DRT and antenna"
+            "Authenticate actual chip qualification then execute original full64 route and audits"
           ],
           "conclusion": null,
-          "id": 125631431607,
+          "id": 125644268460,
           "name": "native-routing",
           "status": "in_progress"
         }
       ],
-      "observed_at": "2026-11-02T23:57:54.743022+00:00",
-      "run": 41548861169,
-      "source": "17d1961a0847f8045449e4bc6b7f42e5aa31e310",
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "run": 41552715162,
+      "source": "5ba879c94ed74747d7e30ae341dee1d045765150",
       "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41548861169"
-    },
-    "41549033741": {
-      "branch": "codex/cdr-clock-metal-domain-loaded",
-      "conclusion": null,
-      "jobs": [
-        {
-          "active_steps": [],
-          "conclusion": "success",
-          "id": 125631652426,
-          "name": "source-controls",
-          "status": "completed"
-        },
-        {
-          "active_steps": [
-            "Authenticate direct clock metal RC and simulate all200 explicit model-range MOS units"
-          ],
-          "conclusion": null,
-          "id": 125631947060,
-          "name": "loaded-wave",
-          "status": "in_progress"
-        }
-      ],
-      "observed_at": "2026-11-02T23:57:54.743022+00:00",
-      "run": 41549033741,
-      "source": "6194e2fc2108f7b38c378d387761cf7e79771edf",
-      "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41549033741"
-    },
-    "41549188690": {
-      "branch": "codex/cdr-clock-metal-resistance",
-      "conclusion": null,
-      "jobs": [
-        {
-          "active_steps": [],
-          "conclusion": null,
-          "id": 125632169332,
-          "name": "compare",
-          "status": "queued"
-        }
-      ],
-      "observed_at": "2026-11-02T23:57:54.743022+00:00",
-      "run": 41549188690,
-      "source": "7bab158ff9fe67647e98fee5bc1d3c42b34f4732",
-      "status": "queued",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41549188690"
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41552715162"
     }
   },
   "bounded_guide_engine_build": {
@@ -515,7 +470,7 @@
     "physical_acceptance": false,
     "timing_accepted": false
   },
-  "checkpoint_version": 339,
+  "checkpoint_version": 340,
   "clock_access_v332": {
     "candidate_sha256": "28eebb9f880648935a6368ada78a5e5666694ba98e073fbbac3f2e0c986339d6",
     "deep_flat_lvs_passed": true,
@@ -2172,6 +2127,169 @@
     "loaded_source": "6194e2fc2108f7b38c378d387761cf7e79771edf",
     "physical_run": 41545635890,
     "resistance_run": 41549188690
+  },
+  "clock_metal_v340": {
+    "comparison": {
+      "comparators": {
+        "x": {
+          "new": {
+            "below_100mv_samples": 746,
+            "maximum_clock_to_valid_s": 1.189062500003487e-10,
+            "minimum_signed_margin_v": -0.11825253018403711,
+            "passed": false,
+            "samples": 765,
+            "wrong_sign_samples": 387
+          },
+          "old": {
+            "below_100mv_samples": 746,
+            "maximum_clock_to_valid_s": 1.189062500003487e-10,
+            "minimum_signed_margin_v": -0.11823626833495557,
+            "passed": false,
+            "samples": 765,
+            "wrong_sign_samples": 387
+          }
+        },
+        "y": {
+          "new": {
+            "below_100mv_samples": 687,
+            "maximum_clock_to_valid_s": 1.189062500003487e-10,
+            "minimum_signed_margin_v": -0.005998296201165915,
+            "passed": false,
+            "samples": 765,
+            "wrong_sign_samples": 44
+          },
+          "old": {
+            "below_100mv_samples": 687,
+            "maximum_clock_to_valid_s": 1.189062500003487e-10,
+            "minimum_signed_margin_v": -0.006047117666440976,
+            "passed": false,
+            "samples": 765,
+            "wrong_sign_samples": 44
+          }
+        }
+      },
+      "critical": {
+        "xpd.xd0061": {
+          "new": 0.3773409555332875,
+          "old": 0.35454785975539566
+        },
+        "xpd.xd0062": {
+          "new": 0.37571192818508636,
+          "old": 0.35195616132776286
+        },
+        "xpd.xd0115": {
+          "new": 0.41161217651952847,
+          "old": 0.3811308015531237
+        },
+        "xpd.xd0116": {
+          "new": 0.40977225446857846,
+          "old": 0.3798059077399597
+        }
+      },
+      "diagnostics": [],
+      "electrical_accepted": false,
+      "full_phy_accepted": false,
+      "new_run": 41549033741,
+      "old_run": 41540256258,
+      "phase": {
+        "gate": {
+          "constant_maximum_abs_v": 0.01,
+          "minimum_signed_v": 0.03,
+          "window_s": [
+            3.0000000000000004e-09,
+            3.3875e-08
+          ]
+        },
+        "new": 0.01318712530296383,
+        "old": 0.013179724361457165
+      },
+      "sampler": {
+        "a": {
+          "new": {
+            "below_100mv_samples": 129,
+            "maximum_clock_to_valid_s": 4.7031249999990936e-11,
+            "minimum_signed_margin_v": 0.014223226368578312,
+            "passed": false,
+            "samples": 765,
+            "wrong_sign_samples": 0
+          },
+          "old": {
+            "below_100mv_samples": 129,
+            "maximum_clock_to_valid_s": 4.7031249999990936e-11,
+            "minimum_signed_margin_v": 0.014220415169343803,
+            "passed": false,
+            "samples": 765,
+            "wrong_sign_samples": 0
+          }
+        },
+        "b": {
+          "new": {
+            "below_100mv_samples": 128,
+            "maximum_clock_to_valid_s": 4.2656250000020716e-11,
+            "minimum_signed_margin_v": 0.04355880981158558,
+            "passed": false,
+            "samples": 765,
+            "wrong_sign_samples": 0
+          },
+          "old": {
+            "below_100mv_samples": 128,
+            "maximum_clock_to_valid_s": 4.265625000002237e-11,
+            "minimum_signed_margin_v": 0.043407322590589416,
+            "passed": false,
+            "samples": 765,
+            "wrong_sign_samples": 0
+          }
+        },
+        "c": {
+          "new": {
+            "below_100mv_samples": 129,
+            "maximum_clock_to_valid_s": 1.189062500000592e-10,
+            "minimum_signed_margin_v": -0.00047963683781875933,
+            "passed": false,
+            "samples": 765,
+            "wrong_sign_samples": 2
+          },
+          "old": {
+            "below_100mv_samples": 129,
+            "maximum_clock_to_valid_s": 1.189062500003487e-10,
+            "minimum_signed_margin_v": -0.0011016526376558561,
+            "passed": false,
+            "samples": 765,
+            "wrong_sign_samples": 3
+          }
+        },
+        "d": {
+          "new": {
+            "below_100mv_samples": 128,
+            "maximum_clock_to_valid_s": 9.890624999999393e-11,
+            "minimum_signed_margin_v": -0.014119962536145203,
+            "passed": false,
+            "samples": 765,
+            "wrong_sign_samples": 34
+          },
+          "old": {
+            "below_100mv_samples": 128,
+            "maximum_clock_to_valid_s": 9.984374999999375e-11,
+            "minimum_signed_margin_v": -0.016917925309872767,
+            "passed": false,
+            "samples": 765,
+            "wrong_sign_samples": 34
+          }
+        }
+      },
+      "vi": {
+        "gate": 5e-05,
+        "new": 4.044847419757081e-05,
+        "old": 4.0422928501272925e-05
+      }
+    },
+    "electrical_accepted": false,
+    "full_phy_accepted": false,
+    "loaded_run": 41549033741,
+    "loaded_status": "REJECTED",
+    "matching650_geometry": false,
+    "resistance_run": 41549188690,
+    "resistance_status": "SUCCESS"
   },
   "cloud_results_release_reservations": {
     "mainchip_artifact_recovery": {
@@ -4170,6 +4288,7 @@
   "continuation_note_v337": "## Current continuation:16Via2 full650 wave rejected; one-worker routing engine building\nActual full650wave41540256258/source15feb7375e24de69d10377f1e52e8e07e3ef02c0 completed34.25ns with simulatorreturn0 after1175.928051441s. MeasurementREJECTED_WHOLE_MIM_PD650_LOADED is a real electrical rejection, not process/infrastructure failure.113475rows,1301vectors+time,124HBT currents,200MOS currents,977Vnodes,11savecommands retained. Raw1182001399bytes/SHA4d543b24922e80a186c5073092f4033ff9b8eccf0534120b6dd6f359d5a8041a remains in cloud. Actual13binding+2equivalent-unit+12expansion controls passed; source13admission/24partition/4projection/6identity controls passed. No native warnings in diagnostics; zero-sourceOP maximum0.\nPhase13.179724361mV still below30mV (old13.179521608mV); VI40.422928501uA still below50uA (old40.422021823uA). All A/B/C/D maximum clock-to-valid times remain exactly47.03125/42.65625/118.90625/99.84375ps vs37.5ps gate. Wrong-sign samples remain0/0/3/34; below100mV129/128/129/128 of765. ComparatorX/Y wrong-sign counts remain387/44; this was also present in the previous wave, not a new regression.\nMinimum activeVce61=.3545478598V,62=.3519561613V,115=.3811308016V,116=.3798059077V. Improvements are only.67056/.70965/1.58834/1.58760mV. Remaining deficits against.4V are45.452/48.044/18.869/20.194mV. Source/sink resistance measurement41541318521 found1.62-1.94percent improvement, consistent with limited headroom benefit; this repair does not close any failed electrical gate.\nRetain rejected baseline41528163238 and new rejection. Full native release432050827 has4parts plusindex/parts; all raw/source/case outputs remain there. Authenticated derivedartifact13188180017,2016185bytes,SHA84ed30b96d741bd51133c1b93b7f5e4662bfe7b9944eb95815c7c195b864fc5b. Selected complete measurement/preparation/control/derivation/release reports and full per-stage baseline comparison preserved in docs/evidence/cloud-v337-domain-wave-41540256258/. Scope remains proposed650MOS partition over actual500device wireRC, not matching650physical geometry.\nNEXT PHY ACTION: implement actual low-resistance metal/access repair; further identical via-only work is not sufficient. Use native fullgraph/coordinates in clock-access-resistance-41541318521/result.json. Investigate direct upper-metal same-net paths between E54/E56 and C61/C62, and translated E106/E108 to C115/C116, with realvia-stack landings and foreign-net keepouts on everylayer. This metalcandidate is NOT implemented yet. Require560DRC/deep+flatLVS13,completecanonicalidentity,freshRC and unchanged loaded gates. Also preserve independent phase/current/sampling failures; solving4HBT headroom alone cannot prove fullPHY.\nMainchipfull64 run41513663302 is terminalRSSfailure: route6800.616s,11832844KiB>11534336KiBguard,return-15, noOOM. Actualcompute ended22:28UTC; jobcontinueduploading. Partialiteration20/90percent82markers is NOTfinalDRC. Nativefailurecapsule431900029 stayscloud.\nSingle-guide-worker complete engine build41542996185/source62e6ac38e32493023dcda04bbb4cf5476e9d50f2, branchcodex/mainchip-guide-single-engine, release432065531. Ownsourcecontrols passed; actualengine-buildjob125612193523 active atlastdirectpoll. Only C++liveworkerlimit2->1 changed; strengthenednine-casefixture,7positive/45refusal/25lifecyclecontrols retained. Authenticate resultingnewELF/runtime, then repeat actualchip ODB/DEF/net/clock/DRC/antenna qualification before full64 route. Never reuse oldELF qualification fornewbinary. Same12GiBcgroup/11GiBRSSguard/2GiBavailablefloor; no scope reduction.\nActual650layout,closedloopCDRPLL,fullserialGen3x4PHY and finalmainchipsetup/hold remainopen. Cloud-only work; localworkspaceempty.8hourread-onlymonitor/automatic_native_dispatch=false unchanged.\n\nObserved 2026-11-02T23:14:00.210773+00:00:\n- 41540256258: completed/failure\n- 41542996185: in_progress/None\n- 41513663302: completed/failure\n",
   "continuation_note_v338": "## Current continuation: actual direct clock metal candidate generated; full physical qualification and routing engine build active\nThe failed via-only650wave41540256258 remains rejected. No electrical gate closed from its1.62-1.94percent resistance reduction. Full previous measurement and comparison remain under docs/evidence/cloud-v337-domain-wave-41540256258/.\nA real upper-metal repair is now implemented, not merely proposed. Run41545373835/source85b5462fa5155ba3b790d0e3552ac4c4a26d8e81 on codex/cdr-clock-direct-metal generated actual GDS1090004bytes/SHA0209d91c15d490631937f31aa12d2bbe68153f88a62e7be596fbc4eaae295dfa. Eight original HBT terminals form two distinct same-net connected TopMetal1 networks,4um route width,48Via3+48Via4+32TopVia1. M3 landings are completely inside original same-net metal; all other layers/devices retained. Both sets of tree-link lengths are110.605/470.745/310.245um; shared trunk metal is merged.10actual geometry controls and original resistance controls pass.\nFirst generation41545004371/source97305d1bda256b06821d2121ee6c17274d9c7a36 rejected the entire candidate: all eight landings passed, but two collector links could not route around clipped obstacles. All evidence preserved. Revision uses complete obstacle polygons and admissible spanning links, with a regression for obstacles beyond the former100um window. No clearance or electrical limits loosened.\nNative generation release432077856, tagcloud-results-41545373835-1-cdr-clock-direct-metal; complete-output-index703536532 SHA19a29ad02fb27636c5cd2e93d7862afdc51f905cbeb08ce4c0d4c3069aaf35ea; nativearchive703536439,61325990bytes SHA67d10a9c7fa82d9ebd0fb7f9092f0df73b2f16277855a86ebad0925dbf172352. Native payload stays cloud-only. Derivedartifact13189280736,272700bytes SHAe6b29dab098f380843b210c2f6f81f1397f6c9086e691d289e3a816f4ce612d8.\nFull physical qualification41545635890/source014e51092c1de1521e17d1963e8095d5e8c6322a on codex/cdr-clock-metal-physical, release432079295/tagcloud-results-41545635890-1-cdr-wire-shortcuts-physical. Source-controls125620438847 passed. Nativephysical125620632632 last observed acquiring unchanged native tool. Independent validation reconstructs all declared geometry, checks every actual terminal/cut/enclosure, both native owners, every-layer foreign clearance and exact serialized delta. Then unchanged560DRC/deep-flat500deviceLVS13 must pass. Do not claim physical or electrical acceptance until actual results.\nNEXT PHY: follow SAME physical run; preserve failures. If physical pass, update canonical producer to this GDS and actual prior16Via2 freshRC41537723922/sourcebd1fc5b2deed8a0ea153db91a362c983e6379254/release432038108 as reference. Verify all500devices/1446terminals/25ports/978anchors and every113partition x13layer union with declared metal additions, not old via-only assertions. Then fresh distributedRC and unchanged full650loaded-wave gates. Never reuse old RC or infer performance from geometry controls. Actual650matching layout, closedloopCDRPLL and fullserialGen3x4 still open.\nMainchip single-guide-worker engine41542996185/source62e6ac38e32493023dcda04bbb4cf5476e9d50f2/release432065531 remains building at last live poll; source-controls passed. Follow same build125612193523. New ELF/runtime must receive actualchip qualification before a new full64 route. Previousfull64 run41513663302 failed11GiBRSSguard after6800.616s; partial82internal markers is not finalDRC. Preserve original scope/limits; finalsetup/hold has not passed.\nAll native work is GitHub-hosted; localworkspaceempty.8hour read-only monitor automatic_native_dispatch=false unchanged. Full objective remains active.\n\nObserved 2026-11-02T23:29:55.762757+00:00:\n- 41545004371: completed/failure [('native-geometry', [])]\n- 41545373835: completed/success [('native-geometry', [])]\n- 41545635890: in_progress/None [('source-controls', []), ('native-physical', ['Verify actual new GDS with full native DRC deep flat LVS and faults'])]\n- 41542996185: in_progress/None [('source-controls', []), ('engine-build', ['Build complete pinned engine under owned cgroup'])]\n",
   "continuation_note_v339": "## Current continuation: direct metal physical/canonical/RC passed; identical full650 wave and single-worker actual-chip qualification active\n\nThe actual upper-metal repair GDS0209d91c15d490631937f31aa12d2bbe68153f88a62e7be596fbc4eaae295dfa (1090004bytes) passed physical41545635890: all560 DRC categories,zero markers,deep/flat500-device transistor LVS and all13 physical fault controls. Canonical41546548106 passed143 source controls and full500 devices/1446 terminals/25 ports/978 anchors plus113x13=1469 layer-partition comparisons. Physical/canonical proof is preserved here; this is not fullPHY acceptance.\n\nFreshRC41547492718/sourcef1248c7a3709d8112da98d25b9c3d67bf39c83fe succeeded with26344R/16878C/500devices and all11 numerical phase receipts. Model2125138bytes/SHA1988b375a1b290c1921c0a3cfd2cd5c82e54c2425103506e3995474c8c3ae89d; composition1018813bytes/SHA50c1ecc64299770eda8250a422f470031077ce69cf05e5a75e24136ac3fd5768. Actual port order returns toiry,yp,yn,irvx; never reuse previous RC or old positional ordering. Derivedartifact13190470112 SHA364f21f082b1043bac1672203836dd516394d88d52e5f84b724ba07440d8a614 authenticated. Native release432088543 archive703588571 stayscloud; completeindex703588573 SHA064e9866374789beed3d2a3f756a121348e0f8614a3dfc21ff470bd0fbc262bd.\n\nActual electrical comparison41549033741/source6194e2fc2108f7b38c378d387761cf7e79771edf oncodex/cdr-clock-metal-domain-loaded/release432096193 is dispatched. Ownsourcecontrols passed. Follow SAME loaded-wave125631947060 and preserve actual fullwave result. New correspondence transport changes73 terminal labels using both complete independent canonical identities and prior16Via2 LVS map; all six identity faults and original13 admission/24partition/4projection source controls retained. Original34.25ns full650 test/runtime/stimuli/preparation/measurement/limits unchanged. Actual13binding+2unit-spelling+12expansion checks still required in native preparation. Matching650geometry,closedloopCDRPLL,fullserialGen3x4 and electrical acceptance remain open. Compare every actual result against rejected41540256258, not a synthetic baseline.\n\nActual eight-path network comparison41549188690/source7bab158ff9fe67647e98fee5bc1d3c42b34f4732 oncodex/cdr-clock-metal-resistance/release432096898 is dispatched. Authenticate all current native archive members/all26344R and978 anchors, retain2.5ohm/reciprocity/KCL/energy/four refusals, measure eight upper-emitter/clock-collector Reff vs actual16Via2 network41541318521. Follow same job; diagnostics alone cannot close electrical gates.\n\nMainchip complete single-guide-worker engine build41542996185 succeeded: ELF108936520bytes/SHAc9fa3fc955888a75801f77bee022b79748d884d32dde0d99645f0ca4c21ce6c1,all3671 compile commands and all8 native smoke/build commands successful,104 runtime dependencies unchanged. Only liveguideworker limit2->1; memory reduction not measured yet. Source-controls41547846319 failed on two nested stale workflow pins before native execution; fullfailure preserved. Fix17d1961a0847f8045449e4bc6b7f42e5aa31e310 updates allthree manifest levels bottom-up, checks all entries and retains every original checker. New independent controls41548705055 succeeded.\n\nActualchip qualification41548861169/source17d1961a0847f8045449e4bc6b7f42e5aa31e310 oncodex/mainchip-guide-single-roundtrip/release432095403 is active at last check. Follow native-routing125631431607; despite job name this is roundtrip/final-check/measure only, not routing. Must preserve whole143820net/154480instance/1691clock scope,ODB/DEF snapshot identity,92DRT markers/21 antenna nets/27 violations and104runtime fingerprints. These are reference-equivalence checks, not signoff.\n\nNEXT MAINCHIP: only after actual qualification success, bind actualnew reports/fixture/ELF/producer in a new full64 branch based302f9c30a847acd659a8c451bdce83707fce5d70. Retain all22 qualification fault controls,all11 original phase bodies,full original scope and guards; update nested manifests bottom-up. Obtain independent same-source controls before native route. Do not reuse two-worker qualification or restart the failed two-worker run41513663302. Route failed11GiBRSS after6800.616s and partial82markers were not finalDRC. After actual returned route require restoration/fullDRC/antenna/PG/LVS/qualifiedRC-Liberty/allcornerSTA. Finalsetup/hold has not passed.\n\nNative work/payloads remain GitHub-only; local workspace empty. Existing8hour monitor remains read-only,automatic_native_dispatch=false. Product objective remains active; none of these stage successes proves fullserialPHY or finaltiming.\n\nObserved 2026-11-02T23:57:54.743022+00:00:\n- 41542996185: completed/success [('source-controls', []), ('engine-build', [])]\n- 41545635890: completed/success [('source-controls', []), ('native-physical', [])]\n- 41546548106: completed/success [('source-controls', []), ('native-canonical', [])]\n- 41547492718: completed/success [('source-controls', []), ('native-rc', [])]\n- 41547846319: completed/failure [('source-controls', []), ('native-routing', [])]\n- 41548705055: completed/success [('source-controls', []), ('native-routing', [])]\n- 41548861169: in_progress/None [('source-controls', []), ('native-routing', ['Authenticate new engine, roundtrip actual chip, compare full DRT and antenna'])]\n- 41549033741: in_progress/None [('source-controls', []), ('loaded-wave', ['Authenticate direct clock metal RC and simulate all200 explicit model-range MOS units'])]\n- 41549188690: queued/None [('compare', [])]\n",
+  "continuation_note_v340": "## Current continuation: single-worker actual chip qualified and full route active; real PHY wave rejected, two specific headroom gates improved\n\nActual chip qualification41548861169/source17d1961a0847f8045449e4bc6b7f42e5aa31e310 SUCCEEDED. Full143820nets/154480instances/1691clocks preserved, all104 runtime dependencies match, ODB/DEF identities unchanged; all3roundtrip/final-check/measure phases complete. Original92DRT markers,21antenna nets/27violations remain reference checks, NOT signoff. Native elapsed670.66695428s; ELF108936520bytes/SHA c9fa3fc955888a75801f77bee022b79748d884d32dde0d99645f0ca4c21ce6c1.\n\nFull64 source5ba879c94ed74747d7e30ae341dee1d045765150 oncodex/mainchip-guide-single-full64 binds actual new qualification, fixture, producer, assets, ELF and all104dependencies. All22qualification fault controls,11original phase bodies,full original scope/resourceguards retained; all3nested manifests updated bottom-up. Independent sourcecontrols41552510648 SUCCEEDED. Actual fullroute41552715162/release432114633 is active: follow SAME native-routing125644268460, do not duplicate/restart on observation timeout. Sourcecontrols125644018582 already passed. Memory reduction and completed routing NOT yet proved. After returnedroute require fullDRC/antenna/PG/LVS/qualifiedRC-Liberty/allcornerSTA; no finalsetup/hold success yet.\n\nActual full650 loaded wave41549033741/source6194e2fc2108f7b38c378d387761cf7e79771edf completed native simulator return0 in638.233571068s and REJECTED electrical acceptance. Full34.25ns unchanged case produced113475rows/1302columns; raw1182001399bytes SHA6f37a25d4ba0d6c9e064b272c7c79a387836c72692234424acdef9dab773736d remains cloudonly. Original13binding+2equivalentunit+12expansion native checks and13admission/24partition/4projection/6identity source checks retained. Actual diagnostics empty and zero-sourceOPmaximum zero.\n\nCompared with actual rejected16Via2 run41540256258, directmetal repair reduced all8 measured source-sink Reff by42.28-45.27percent (measurement41549188690 SUCCEEDED, all26344R and978anchors authenticated). Two SPECIFIC HBT minimum-active-Vce gates now pass0.4V: xd0115=.4116121765V,xd0116=.4097722545V. xd0061=.3773409555V andxd0062=.3757119282V still fail. Phase13.1871253mV<30mV, signedVI40.4484742uA<50uA; sampler timing/decision margins still fail. Do NOT translate two headroom conditions into device/fullPHY acceptance. Complete derived wave rejection and all network measurement assets preserved here.\n\nMatching650 physical geometry remains OPEN: current freshRC26344R/16878C derives from500device layout, while loaded model expands50MOS to200units. Newactualgenerator oncodex/cdr-mos650-geometry replaces42wide MOS with192native model-range units plus8unchanged originals, preserving450other devices/25ports/macroextent. Independent reference comes from original schematic; no newextracted netlist used as reference. First41552100346 rejected original PCell reconstruction before candidate mutation. Complete50-device diagnostic41552637236 proves ONLY Metal1.pin(8/2) internal annotation differences: original absent/regenerated2rectangles; every fabrication polygon and other annotation matches. Both failures preserved.\n\nCorrectedsource39a079e0bc3d84b5c05628200d39c9bfc2e9fba4 (all5changed files readback verified) pins the exact full50 observed marker-only differences; any extra drift still rejects. Independent regenerated terminal markers must lie inside actual originalM1; only newlycreated internal annotations removed, alloriginal publicM1annotations/fabrication/hierarchy guards preserved. Actualgeneration41553480865/release432118222 dispatched. Follow SAME run. Candidate generation alone cannot close matching650geometry: require all560DRC,deep+flat650transistorLVS,meaningfulfaults,canonicalidentity,newactual650RC,newloadedbinding/fullwave.\n\nAllnativeCAD/SPICE/GDS/ODB/raw/ELF and archives remain GitHub-only. Localworkspaceempty; onlysource/derivedtext APIs in RAM. Existing8hour monitor stays read-only with automatic_native_dispatch=false. Goal remains active; fullserialGen3x4,mainchipfinalrouting andfinalsetup/hold unclosed.\n\nObserved 2026-11-03T00:33:06.129437+00:00:\n- 41548861169: completed/success\n- 41549033741: completed/failure\n- 41549188690: completed/success\n- 41552100346: completed/failure\n- 41552510648: completed/success\n- 41552637236: completed/failure\n- 41552715162: in_progress/None\n- 41553480865: completed/failure\n",
   "current_domain_geometry_v330": {
     "branch": "codex/cdr-current-domain-geometry",
     "conclusion": "success",
@@ -30116,7 +30235,7 @@
     },
     {
       "branch": "codex/mainchip-guide-single-roundtrip",
-      "conclusion": null,
+      "conclusion": "success",
       "jobs": [
         {
           "active_steps": [],
@@ -30126,24 +30245,22 @@
           "status": "completed"
         },
         {
-          "active_steps": [
-            "Authenticate new engine, roundtrip actual chip, compare full DRT and antenna"
-          ],
-          "conclusion": null,
+          "active_steps": [],
+          "conclusion": "success",
           "id": 125631431607,
           "name": "native-routing",
-          "status": "in_progress"
+          "status": "completed"
         }
       ],
-      "observed_at": "2026-11-02T23:57:54.743022+00:00",
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
       "run": 41548861169,
       "source": "17d1961a0847f8045449e4bc6b7f42e5aa31e310",
-      "status": "in_progress",
+      "status": "completed",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41548861169"
     },
     {
       "branch": "codex/cdr-clock-metal-domain-loaded",
-      "conclusion": null,
+      "conclusion": "failure",
       "jobs": [
         {
           "active_steps": [],
@@ -30153,38 +30270,163 @@
           "status": "completed"
         },
         {
-          "active_steps": [
-            "Authenticate direct clock metal RC and simulate all200 explicit model-range MOS units"
-          ],
-          "conclusion": null,
+          "active_steps": [],
+          "conclusion": "failure",
           "id": 125631947060,
           "name": "loaded-wave",
-          "status": "in_progress"
+          "status": "completed"
         }
       ],
-      "observed_at": "2026-11-02T23:57:54.743022+00:00",
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
       "run": 41549033741,
       "source": "6194e2fc2108f7b38c378d387761cf7e79771edf",
-      "status": "in_progress",
+      "status": "completed",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41549033741"
     },
     {
       "branch": "codex/cdr-clock-metal-resistance",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125632169332,
+          "name": "compare",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "run": 41549188690,
+      "source": "7bab158ff9fe67647e98fee5bc1d3c42b34f4732",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41549188690"
+    },
+    {
+      "branch": "codex/cdr-mos650-geometry",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125641971958,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125642036389,
+          "name": "native-geometry",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "run": 41552100346,
+      "source": "b6f17b689b2741216483ff28fe14655123268d09",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41552100346"
+    },
+    {
+      "branch": "codex/mainchip-guide-single-full64",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125643339814,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125643590470,
+          "name": "native-routing",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "run": 41552510648,
+      "source": "5ba879c94ed74747d7e30ae341dee1d045765150",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41552510648"
+    },
+    {
+      "branch": "codex/cdr-mos650-geometry",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125643764112,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125643822188,
+          "name": "native-geometry",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "run": 41552637236,
+      "source": "4817cc2b1e993b2488d2351358db5472812458d5",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41552637236"
+    },
+    {
+      "branch": "codex/mainchip-guide-single-full64",
       "conclusion": null,
       "jobs": [
         {
           "active_steps": [],
+          "conclusion": "success",
+          "id": 125644018582,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate actual chip qualification then execute original full64 route and audits"
+          ],
           "conclusion": null,
-          "id": 125632169332,
-          "name": "compare",
-          "status": "queued"
+          "id": 125644268460,
+          "name": "native-routing",
+          "status": "in_progress"
         }
       ],
-      "observed_at": "2026-11-02T23:57:54.743022+00:00",
-      "run": 41549188690,
-      "source": "7bab158ff9fe67647e98fee5bc1d3c42b34f4732",
-      "status": "queued",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41549188690"
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "run": 41552715162,
+      "source": "5ba879c94ed74747d7e30ae341dee1d045765150",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41552715162"
+    },
+    {
+      "branch": "codex/cdr-mos650-geometry",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125646565291,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125646649956,
+          "name": "native-geometry",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "run": 41553480865,
+      "source": "39a079e0bc3d84b5c05628200d39c9bfc2e9fba4",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41553480865"
     }
   ],
   "divider_width4_terminal_v246": {
@@ -119346,6 +119588,203 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41549188690"
     }
   ],
+  "latest_observed_runs_v340": [
+    {
+      "branch": "codex/mainchip-guide-single-roundtrip",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125631097276,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125631431607,
+          "name": "native-routing",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "run": 41548861169,
+      "source": "17d1961a0847f8045449e4bc6b7f42e5aa31e310",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41548861169"
+    },
+    {
+      "branch": "codex/cdr-clock-metal-domain-loaded",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125631652426,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125631947060,
+          "name": "loaded-wave",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "run": 41549033741,
+      "source": "6194e2fc2108f7b38c378d387761cf7e79771edf",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41549033741"
+    },
+    {
+      "branch": "codex/cdr-clock-metal-resistance",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125632169332,
+          "name": "compare",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "run": 41549188690,
+      "source": "7bab158ff9fe67647e98fee5bc1d3c42b34f4732",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41549188690"
+    },
+    {
+      "branch": "codex/cdr-mos650-geometry",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125641971958,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125642036389,
+          "name": "native-geometry",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "run": 41552100346,
+      "source": "b6f17b689b2741216483ff28fe14655123268d09",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41552100346"
+    },
+    {
+      "branch": "codex/mainchip-guide-single-full64",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125643339814,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 125643590470,
+          "name": "native-routing",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "run": 41552510648,
+      "source": "5ba879c94ed74747d7e30ae341dee1d045765150",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41552510648"
+    },
+    {
+      "branch": "codex/cdr-mos650-geometry",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125643764112,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125643822188,
+          "name": "native-geometry",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "run": 41552637236,
+      "source": "4817cc2b1e993b2488d2351358db5472812458d5",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41552637236"
+    },
+    {
+      "branch": "codex/mainchip-guide-single-full64",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125644018582,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate actual chip qualification then execute original full64 route and audits"
+          ],
+          "conclusion": null,
+          "id": 125644268460,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "run": 41552715162,
+      "source": "5ba879c94ed74747d7e30ae341dee1d045765150",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41552715162"
+    },
+    {
+      "branch": "codex/cdr-mos650-geometry",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125646565291,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125646649956,
+          "name": "native-geometry",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "run": 41553480865,
+      "source": "39a079e0bc3d84b5c05628200d39c9bfc2e9fba4",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41553480865"
+    }
+  ],
   "latest_terminal_runs": {
     "cdr_actual_terminal_current_ledger": 40171679250,
     "cdr_current_ledger_controls": 40171508329,
@@ -120111,11 +120550,11 @@
   },
   "local_cleanup_verification": {
     "native_payloads_cloud_only": true,
-    "observed_at": "2026-11-02T23:57:54.743022+00:00",
+    "observed_at": "2026-11-03T00:33:06.129437+00:00",
     "source_API_derived_text_RAM_only": true,
     "workspace_entries": 0
   },
-  "local_workspace_verified_empty_at": "2026-11-02T23:57:54.743022+00:00",
+  "local_workspace_verified_empty_at": "2026-11-03T00:33:06.129437+00:00",
   "mainchip_v336": {
     "final_DRC_accepted": false,
     "last_partial_iteration": 20,
@@ -120173,7 +120612,7 @@
     },
     "candidate_qualification_run": 41108174342,
     "code_deployed_head": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a",
-    "configured_inventory_rows": 869,
+    "configured_inventory_rows": 874,
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33",
     "every_hours": 8,
     "historical_scheduled_error": {
@@ -120186,7 +120625,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 339,
+    "inventory_version": 340,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -120307,6 +120746,16 @@
     "root_parent": "d1b008046626ec6e452a446a2ae8edf0f6ad706a",
     "run_count": 835
   },
+  "mos650_v340": {
+    "matching650_geometry_verified": false,
+    "previous_failures": [
+      41552100346,
+      41552637236
+    ],
+    "release": 432118222,
+    "run": 41553480865,
+    "source": "39a079e0bc3d84b5c05628200d39c9bfc2e9fba4"
+  },
   "native_mixed_and_snapshot_proofs_v267": [
     {
       "prefix": "docs/evidence/cloud-run-41348276461",
@@ -120366,8 +120815,8 @@
     }
   ],
   "next_actions": [
-    "Follow SAME actual-chip single-worker qualification41548861169. Only actual terminal success may qualify ELF c9fa3fc9 for new full64 route based302f9c30. Bind new real fixture/producer/assets, preserve22refusals/11phasebodies/allresourceguards,update nestedpins bottom-up,independent sourcecontrols before native route. No finalDRC or STA claim from partial markers.",
-    "Follow SAME full650wave41549033741 and actualeightpathnetwork41549188690 using directmetal freshRC41547492718 (26344R/16878C,yp/yn). Compare all electricalgates to rejected41540256258. Preserve actualfailure and nativepayloads. Matching650geometry,closedloopCDRPLL,fullserialPHY and mainchipfinaltiming remain open.",
+    "Follow SAME full64route41552715162/source5ba879c9/native-routing125644268460. Actual qualification41548861169 and independent controls41552510648 PASSED. Preserve all scope/guards; after returnedroute require fullDRC/antenna/PG/LVS/qualifiedRC-Liberty/allcornerSTA. No partialmarker or equivalence claims as finalsignoff.",
+    "Follow SAME actualMOS650geometry41553480865/source39a079e0. Preserve complete originalmarkerdiagnostic and onlydocumented normalization. Then full560DRC/deep-flat650LVS/faults/canonical/new650RC/fullwave. Actual500layout/full650wave41549033741 REJECTED: twoVce gates improved but61/62Vce,phase/current/sampling fail. Complete failure/network receipts preserved.",
     "After actual pin-metal correspondence and connectivity qualification, run remaining2702diode PG-contact audit, all1691original clock/fixed-net preservation, all1351diode pin attachments, final DRC/antenna and exact current candidate audits. Saved8-pass router397violations is not final physical acceptance.",
     "Export and authenticate current diode-inclusive154480instance netlist from current native ODB, generate fresh nominal SPEF and run original threecorners/20-4-8-8ns/5percent-derate STA only after physical admission. Do not reuse153130instance route12netlist or stale SPEF.",
     "FullserialPLL/CDR/SERDES/training/LTSSM/replay/credit/lane/TX/serialsoc_top and completeDRC/LVS/ESD/production approval remain open. No packet-interface route or diagnostic pass constitutes fullPHY acceptance.",
@@ -162106,7 +162555,7 @@
     "timing_accepted": false,
     "timing_limits_unchanged": true
   },
-  "root_source_before_receipt": "28c50deb39feffad694836526c98b5d5bc86c3fc",
+  "root_source_before_receipt": "8886d3f34dcf48ded711fda172b947bc03576d00",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -162153,6 +162602,16 @@
     "qualification_release": 432095403,
     "qualification_run": 41548861169,
     "qualification_source": "17d1961a0847f8045449e4bc6b7f42e5aa31e310",
+    "timing_accepted": false
+  },
+  "single_worker_v340": {
+    "controls_run": 41552510648,
+    "memory_reduction_measured": false,
+    "qualification_run": 41548861169,
+    "qualification_status": "SUCCESS",
+    "route_release": 432114633,
+    "route_run": 41552715162,
+    "route_source": "5ba879c94ed74747d7e30ae341dee1d045765150",
     "timing_accepted": false
   },
   "slave_current_only_physical_handoff_v325": {
@@ -162383,7 +162842,7 @@
       "run": 41349316524
     }
   ],
-  "updated_at": "2026-11-02T23:57:54.743022+00:00",
+  "updated_at": "2026-11-03T00:33:06.129437+00:00",
   "width8_wave_diagnosis_v250": {
     "proof": {
       "bytes": 5806735,
