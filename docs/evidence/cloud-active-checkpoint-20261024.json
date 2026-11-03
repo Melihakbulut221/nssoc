@@ -169,11 +169,38 @@
           "status": "in_progress"
         }
       ],
-      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "observed_at": "2026-11-03T00:44:36.074387+00:00",
       "run": 41552715162,
       "source": "5ba879c94ed74747d7e30ae341dee1d045765150",
       "status": "in_progress",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41552715162"
+    },
+    "41554860331": {
+      "branch": "codex/cdr-mos650-physical",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125651165241,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Verify actual new GDS with full native DRC deep flat LVS and faults"
+          ],
+          "conclusion": null,
+          "id": 125651286909,
+          "name": "native-physical",
+          "status": "in_progress"
+        }
+      ],
+      "observed_at": "2026-11-03T00:44:36.074387+00:00",
+      "run": 41554860331,
+      "source": "45c8b61e1d41bc9016b0fc387b092b84366b9d81",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41554860331"
     }
   },
   "bounded_guide_engine_build": {
@@ -470,7 +497,7 @@
     "physical_acceptance": false,
     "timing_accepted": false
   },
-  "checkpoint_version": 340,
+  "checkpoint_version": 341,
   "clock_access_v332": {
     "candidate_sha256": "28eebb9f880648935a6368ada78a5e5666694ba98e073fbbac3f2e0c986339d6",
     "deep_flat_lvs_passed": true,
@@ -4289,6 +4316,7 @@
   "continuation_note_v338": "## Current continuation: actual direct clock metal candidate generated; full physical qualification and routing engine build active\nThe failed via-only650wave41540256258 remains rejected. No electrical gate closed from its1.62-1.94percent resistance reduction. Full previous measurement and comparison remain under docs/evidence/cloud-v337-domain-wave-41540256258/.\nA real upper-metal repair is now implemented, not merely proposed. Run41545373835/source85b5462fa5155ba3b790d0e3552ac4c4a26d8e81 on codex/cdr-clock-direct-metal generated actual GDS1090004bytes/SHA0209d91c15d490631937f31aa12d2bbe68153f88a62e7be596fbc4eaae295dfa. Eight original HBT terminals form two distinct same-net connected TopMetal1 networks,4um route width,48Via3+48Via4+32TopVia1. M3 landings are completely inside original same-net metal; all other layers/devices retained. Both sets of tree-link lengths are110.605/470.745/310.245um; shared trunk metal is merged.10actual geometry controls and original resistance controls pass.\nFirst generation41545004371/source97305d1bda256b06821d2121ee6c17274d9c7a36 rejected the entire candidate: all eight landings passed, but two collector links could not route around clipped obstacles. All evidence preserved. Revision uses complete obstacle polygons and admissible spanning links, with a regression for obstacles beyond the former100um window. No clearance or electrical limits loosened.\nNative generation release432077856, tagcloud-results-41545373835-1-cdr-clock-direct-metal; complete-output-index703536532 SHA19a29ad02fb27636c5cd2e93d7862afdc51f905cbeb08ce4c0d4c3069aaf35ea; nativearchive703536439,61325990bytes SHA67d10a9c7fa82d9ebd0fb7f9092f0df73b2f16277855a86ebad0925dbf172352. Native payload stays cloud-only. Derivedartifact13189280736,272700bytes SHAe6b29dab098f380843b210c2f6f81f1397f6c9086e691d289e3a816f4ce612d8.\nFull physical qualification41545635890/source014e51092c1de1521e17d1963e8095d5e8c6322a on codex/cdr-clock-metal-physical, release432079295/tagcloud-results-41545635890-1-cdr-wire-shortcuts-physical. Source-controls125620438847 passed. Nativephysical125620632632 last observed acquiring unchanged native tool. Independent validation reconstructs all declared geometry, checks every actual terminal/cut/enclosure, both native owners, every-layer foreign clearance and exact serialized delta. Then unchanged560DRC/deep-flat500deviceLVS13 must pass. Do not claim physical or electrical acceptance until actual results.\nNEXT PHY: follow SAME physical run; preserve failures. If physical pass, update canonical producer to this GDS and actual prior16Via2 freshRC41537723922/sourcebd1fc5b2deed8a0ea153db91a362c983e6379254/release432038108 as reference. Verify all500devices/1446terminals/25ports/978anchors and every113partition x13layer union with declared metal additions, not old via-only assertions. Then fresh distributedRC and unchanged full650loaded-wave gates. Never reuse old RC or infer performance from geometry controls. Actual650matching layout, closedloopCDRPLL and fullserialGen3x4 still open.\nMainchip single-guide-worker engine41542996185/source62e6ac38e32493023dcda04bbb4cf5476e9d50f2/release432065531 remains building at last live poll; source-controls passed. Follow same build125612193523. New ELF/runtime must receive actualchip qualification before a new full64 route. Previousfull64 run41513663302 failed11GiBRSSguard after6800.616s; partial82internal markers is not finalDRC. Preserve original scope/limits; finalsetup/hold has not passed.\nAll native work is GitHub-hosted; localworkspaceempty.8hour read-only monitor automatic_native_dispatch=false unchanged. Full objective remains active.\n\nObserved 2026-11-02T23:29:55.762757+00:00:\n- 41545004371: completed/failure [('native-geometry', [])]\n- 41545373835: completed/success [('native-geometry', [])]\n- 41545635890: in_progress/None [('source-controls', []), ('native-physical', ['Verify actual new GDS with full native DRC deep flat LVS and faults'])]\n- 41542996185: in_progress/None [('source-controls', []), ('engine-build', ['Build complete pinned engine under owned cgroup'])]\n",
   "continuation_note_v339": "## Current continuation: direct metal physical/canonical/RC passed; identical full650 wave and single-worker actual-chip qualification active\n\nThe actual upper-metal repair GDS0209d91c15d490631937f31aa12d2bbe68153f88a62e7be596fbc4eaae295dfa (1090004bytes) passed physical41545635890: all560 DRC categories,zero markers,deep/flat500-device transistor LVS and all13 physical fault controls. Canonical41546548106 passed143 source controls and full500 devices/1446 terminals/25 ports/978 anchors plus113x13=1469 layer-partition comparisons. Physical/canonical proof is preserved here; this is not fullPHY acceptance.\n\nFreshRC41547492718/sourcef1248c7a3709d8112da98d25b9c3d67bf39c83fe succeeded with26344R/16878C/500devices and all11 numerical phase receipts. Model2125138bytes/SHA1988b375a1b290c1921c0a3cfd2cd5c82e54c2425103506e3995474c8c3ae89d; composition1018813bytes/SHA50c1ecc64299770eda8250a422f470031077ce69cf05e5a75e24136ac3fd5768. Actual port order returns toiry,yp,yn,irvx; never reuse previous RC or old positional ordering. Derivedartifact13190470112 SHA364f21f082b1043bac1672203836dd516394d88d52e5f84b724ba07440d8a614 authenticated. Native release432088543 archive703588571 stayscloud; completeindex703588573 SHA064e9866374789beed3d2a3f756a121348e0f8614a3dfc21ff470bd0fbc262bd.\n\nActual electrical comparison41549033741/source6194e2fc2108f7b38c378d387761cf7e79771edf oncodex/cdr-clock-metal-domain-loaded/release432096193 is dispatched. Ownsourcecontrols passed. Follow SAME loaded-wave125631947060 and preserve actual fullwave result. New correspondence transport changes73 terminal labels using both complete independent canonical identities and prior16Via2 LVS map; all six identity faults and original13 admission/24partition/4projection source controls retained. Original34.25ns full650 test/runtime/stimuli/preparation/measurement/limits unchanged. Actual13binding+2unit-spelling+12expansion checks still required in native preparation. Matching650geometry,closedloopCDRPLL,fullserialGen3x4 and electrical acceptance remain open. Compare every actual result against rejected41540256258, not a synthetic baseline.\n\nActual eight-path network comparison41549188690/source7bab158ff9fe67647e98fee5bc1d3c42b34f4732 oncodex/cdr-clock-metal-resistance/release432096898 is dispatched. Authenticate all current native archive members/all26344R and978 anchors, retain2.5ohm/reciprocity/KCL/energy/four refusals, measure eight upper-emitter/clock-collector Reff vs actual16Via2 network41541318521. Follow same job; diagnostics alone cannot close electrical gates.\n\nMainchip complete single-guide-worker engine build41542996185 succeeded: ELF108936520bytes/SHAc9fa3fc955888a75801f77bee022b79748d884d32dde0d99645f0ca4c21ce6c1,all3671 compile commands and all8 native smoke/build commands successful,104 runtime dependencies unchanged. Only liveguideworker limit2->1; memory reduction not measured yet. Source-controls41547846319 failed on two nested stale workflow pins before native execution; fullfailure preserved. Fix17d1961a0847f8045449e4bc6b7f42e5aa31e310 updates allthree manifest levels bottom-up, checks all entries and retains every original checker. New independent controls41548705055 succeeded.\n\nActualchip qualification41548861169/source17d1961a0847f8045449e4bc6b7f42e5aa31e310 oncodex/mainchip-guide-single-roundtrip/release432095403 is active at last check. Follow native-routing125631431607; despite job name this is roundtrip/final-check/measure only, not routing. Must preserve whole143820net/154480instance/1691clock scope,ODB/DEF snapshot identity,92DRT markers/21 antenna nets/27 violations and104runtime fingerprints. These are reference-equivalence checks, not signoff.\n\nNEXT MAINCHIP: only after actual qualification success, bind actualnew reports/fixture/ELF/producer in a new full64 branch based302f9c30a847acd659a8c451bdce83707fce5d70. Retain all22 qualification fault controls,all11 original phase bodies,full original scope and guards; update nested manifests bottom-up. Obtain independent same-source controls before native route. Do not reuse two-worker qualification or restart the failed two-worker run41513663302. Route failed11GiBRSS after6800.616s and partial82markers were not finalDRC. After actual returned route require restoration/fullDRC/antenna/PG/LVS/qualifiedRC-Liberty/allcornerSTA. Finalsetup/hold has not passed.\n\nNative work/payloads remain GitHub-only; local workspace empty. Existing8hour monitor remains read-only,automatic_native_dispatch=false. Product objective remains active; none of these stage successes proves fullserialPHY or finaltiming.\n\nObserved 2026-11-02T23:57:54.743022+00:00:\n- 41542996185: completed/success [('source-controls', []), ('engine-build', [])]\n- 41545635890: completed/success [('source-controls', []), ('native-physical', [])]\n- 41546548106: completed/success [('source-controls', []), ('native-canonical', [])]\n- 41547492718: completed/success [('source-controls', []), ('native-rc', [])]\n- 41547846319: completed/failure [('source-controls', []), ('native-routing', [])]\n- 41548705055: completed/success [('source-controls', []), ('native-routing', [])]\n- 41548861169: in_progress/None [('source-controls', []), ('native-routing', ['Authenticate new engine, roundtrip actual chip, compare full DRT and antenna'])]\n- 41549033741: in_progress/None [('source-controls', []), ('loaded-wave', ['Authenticate direct clock metal RC and simulate all200 explicit model-range MOS units'])]\n- 41549188690: queued/None [('compare', [])]\n",
   "continuation_note_v340": "## Current continuation: single-worker actual chip qualified and full route active; real PHY wave rejected, two specific headroom gates improved\n\nActual chip qualification41548861169/source17d1961a0847f8045449e4bc6b7f42e5aa31e310 SUCCEEDED. Full143820nets/154480instances/1691clocks preserved, all104 runtime dependencies match, ODB/DEF identities unchanged; all3roundtrip/final-check/measure phases complete. Original92DRT markers,21antenna nets/27violations remain reference checks, NOT signoff. Native elapsed670.66695428s; ELF108936520bytes/SHA c9fa3fc955888a75801f77bee022b79748d884d32dde0d99645f0ca4c21ce6c1.\n\nFull64 source5ba879c94ed74747d7e30ae341dee1d045765150 oncodex/mainchip-guide-single-full64 binds actual new qualification, fixture, producer, assets, ELF and all104dependencies. All22qualification fault controls,11original phase bodies,full original scope/resourceguards retained; all3nested manifests updated bottom-up. Independent sourcecontrols41552510648 SUCCEEDED. Actual fullroute41552715162/release432114633 is active: follow SAME native-routing125644268460, do not duplicate/restart on observation timeout. Sourcecontrols125644018582 already passed. Memory reduction and completed routing NOT yet proved. After returnedroute require fullDRC/antenna/PG/LVS/qualifiedRC-Liberty/allcornerSTA; no finalsetup/hold success yet.\n\nActual full650 loaded wave41549033741/source6194e2fc2108f7b38c378d387761cf7e79771edf completed native simulator return0 in638.233571068s and REJECTED electrical acceptance. Full34.25ns unchanged case produced113475rows/1302columns; raw1182001399bytes SHA6f37a25d4ba0d6c9e064b272c7c79a387836c72692234424acdef9dab773736d remains cloudonly. Original13binding+2equivalentunit+12expansion native checks and13admission/24partition/4projection/6identity source checks retained. Actual diagnostics empty and zero-sourceOPmaximum zero.\n\nCompared with actual rejected16Via2 run41540256258, directmetal repair reduced all8 measured source-sink Reff by42.28-45.27percent (measurement41549188690 SUCCEEDED, all26344R and978anchors authenticated). Two SPECIFIC HBT minimum-active-Vce gates now pass0.4V: xd0115=.4116121765V,xd0116=.4097722545V. xd0061=.3773409555V andxd0062=.3757119282V still fail. Phase13.1871253mV<30mV, signedVI40.4484742uA<50uA; sampler timing/decision margins still fail. Do NOT translate two headroom conditions into device/fullPHY acceptance. Complete derived wave rejection and all network measurement assets preserved here.\n\nMatching650 physical geometry remains OPEN: current freshRC26344R/16878C derives from500device layout, while loaded model expands50MOS to200units. Newactualgenerator oncodex/cdr-mos650-geometry replaces42wide MOS with192native model-range units plus8unchanged originals, preserving450other devices/25ports/macroextent. Independent reference comes from original schematic; no newextracted netlist used as reference. First41552100346 rejected original PCell reconstruction before candidate mutation. Complete50-device diagnostic41552637236 proves ONLY Metal1.pin(8/2) internal annotation differences: original absent/regenerated2rectangles; every fabrication polygon and other annotation matches. Both failures preserved.\n\nCorrectedsource39a079e0bc3d84b5c05628200d39c9bfc2e9fba4 (all5changed files readback verified) pins the exact full50 observed marker-only differences; any extra drift still rejects. Independent regenerated terminal markers must lie inside actual originalM1; only newlycreated internal annotations removed, alloriginal publicM1annotations/fabrication/hierarchy guards preserved. Actualgeneration41553480865/release432118222 dispatched. Follow SAME run. Candidate generation alone cannot close matching650geometry: require all560DRC,deep+flat650transistorLVS,meaningfulfaults,canonicalidentity,newactual650RC,newloadedbinding/fullwave.\n\nAllnativeCAD/SPICE/GDS/ODB/raw/ELF and archives remain GitHub-only. Localworkspaceempty; onlysource/derivedtext APIs in RAM. Existing8hour monitor stays read-only with automatic_native_dispatch=false. Goal remains active; fullserialGen3x4,mainchipfinalrouting andfinalsetup/hold unclosed.\n\nObserved 2026-11-03T00:33:06.129437+00:00:\n- 41548861169: completed/success\n- 41549033741: completed/failure\n- 41549188690: completed/success\n- 41552100346: completed/failure\n- 41552510648: completed/success\n- 41552637236: completed/failure\n- 41552715162: in_progress/None\n- 41553480865: completed/failure\n",
+  "continuation_note_v341": "## Current continuation: actual MOS650 physical GDS generated; independent650 DRC/LVS dispatched; same full-chip route active\n\nGeneration41554289328/source0ff42781cc19177fd3c12d54eb005814d54b3373 SUCCEEDED oncodex/cdr-mos650-geometry/release432122255. Actual physical GDS1019324bytes/SHAaca57588cfd38a563bca6fbe1376622c276ec8db54a67bc39e06d40718e012a3. All42wide MOS replaced by192native model-range units plus8unchanged narrow originals;450other devices retained. Alloriginal shape/hierarchy/public annotation guards and macroextent passed. All34actual layer unions are exactly equal after native GDS write/re-read; no executable PCell/library context remains. This is real geometry generation, NOT native transistor extraction or physical acceptance.\n\nIndependent reference35500bytes/SHA21d730545b983930eacf733ba77a7593df52e253987991724de9594fe136bbfb derives from original schematic correspondence41435641296 and original200-unit electrical plan, not new candidate extraction. Expected census200MOS/124HBT/98rppd/7MIM/221tap =650. Derivedartifact13192844306 SHA032dc9512f6f615f748ccfaf77f5a1cef8187f330d4617cbbf282f0e37c658ee preserved completely with native archive index/release metadata; nativeGDS/reference/archive stay cloud-only.\n\nTwo real implementation failures preserved:41553480865 rejected optional layer display-name drift(Metal1.pin8/2 versus8/2); fixed by numeric GDS layer/datatype identity, no polygon waiver.41553925669 passed physical replacement/preservation guards but rejected GDS roundtrip8/2 because default PCell context regenerated internal annotations. Export now uses write_context_info=False and preserves complete all34layer roundtrip evidence, rather than suppressing mismatch. Alloriginal50PCell exact checks and documented marker-only differences retained.\n\nFull physical verification source45c8b61e1d41bc9016b0fc387b092b84366b9d81 oncodex/cdr-mos650-physical, run41554860331/release432125037 DISPATCHED. Follow SAME run. It authenticates all actual generation archive members, reference provenance and physical GDS; full560-category DRC, deep andflat no-simplify650transistorLVS and all13original fault intents required. Complete derived checker SHA f8882ff123bf308d8273b40ff3dc06351abb010a3420878d8c226f2e894b787b. Exact adaptation changes expected MOS count50->200/total500->650 and original schematic case/unit names, with SC_GT0 firstunit8.890u; no DRC rule, mismatch criterion or fault removed. Actual650 independent reference is used to exercise all10schematic fault hooks in sourcecontrols. Three geometryfaults remain native. Post-publication receipt is outside sealedarchive and compared through independent asset metadata; every actual indexed file remains authenticated.\n\nNEXT PHY: inspect actual41554860331 source/native outcomes, preserve any failure, fix actual rule or LVS causes. Only actual full physical success may qualify matching650geometry. Then derive complete650canonical terminal identity/new650RC and full650loadedwave from that exactcandidate. Never reuse old500layout RC to claim650physical correctness. Prior directmetal500layout/full650wave41549033741 REJECTED: only two specific HBT headroom gates passed;61/62headroom,phase/current/sampling remain failures. FullserialGen3x4/closedloopCDRPLL and mainchip integration unclosed.\n\nMAINCHIP: follow SAME fullroute41552715162/source5ba879c94ed74747d7e30ae341dee1d045765150 oncodex/mainchip-guide-single-full64/release432114633, native-routing125644268460. Actual new single-worker engine qualified41548861169; independent full64controls41552510648 passed. Memory reduction and completed routing still unproved; no restart on observation timeout. Require actual fullroute restoration,fullDRC/antenna/PG/LVS/qualifiedRC-Liberty/allcornerSTA. No finalsetup/hold acceptance.\n\nNative payloads/work remain GitHub-only, localworkspaceempty. Existing8hour monitor read-only, automatic_native_dispatch=false. Goal remains active and full scope unchanged.\n\nObserved 2026-11-03T00:44:36.074387+00:00:\n- 41552715162: in_progress/None\n- 41553480865: completed/failure\n- 41553925669: completed/failure\n- 41554289328: completed/success\n- 41554860331: in_progress/None\n",
   "current_domain_geometry_v330": {
     "branch": "codex/cdr-current-domain-geometry",
     "conclusion": "success",
@@ -30397,7 +30425,7 @@
           "status": "in_progress"
         }
       ],
-      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "observed_at": "2026-11-03T00:44:36.074387+00:00",
       "run": 41552715162,
       "source": "5ba879c94ed74747d7e30ae341dee1d045765150",
       "status": "in_progress",
@@ -30422,11 +30450,88 @@
           "status": "completed"
         }
       ],
-      "observed_at": "2026-11-03T00:33:06.129437+00:00",
+      "observed_at": "2026-11-03T00:44:36.074387+00:00",
       "run": 41553480865,
       "source": "39a079e0bc3d84b5c05628200d39c9bfc2e9fba4",
       "status": "completed",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41553480865"
+    },
+    {
+      "branch": "codex/cdr-mos650-geometry",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125648042389,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125648100281,
+          "name": "native-geometry",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:44:36.074387+00:00",
+      "run": 41553925669,
+      "source": "d23135ab81ed620080e325f18c50d04592859db6",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41553925669"
+    },
+    {
+      "branch": "codex/cdr-mos650-geometry",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125649257969,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125649328645,
+          "name": "native-geometry",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:44:36.074387+00:00",
+      "run": 41554289328,
+      "source": "0ff42781cc19177fd3c12d54eb005814d54b3373",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41554289328"
+    },
+    {
+      "branch": "codex/cdr-mos650-physical",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125651165241,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Verify actual new GDS with full native DRC deep flat LVS and faults"
+          ],
+          "conclusion": null,
+          "id": 125651286909,
+          "name": "native-physical",
+          "status": "in_progress"
+        }
+      ],
+      "observed_at": "2026-11-03T00:44:36.074387+00:00",
+      "run": 41554860331,
+      "source": "45c8b61e1d41bc9016b0fc387b092b84366b9d81",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41554860331"
     }
   ],
   "divider_width4_terminal_v246": {
@@ -119785,6 +119890,137 @@
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41553480865"
     }
   ],
+  "latest_observed_runs_v341": [
+    {
+      "branch": "codex/mainchip-guide-single-full64",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125644018582,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate actual chip qualification then execute original full64 route and audits"
+          ],
+          "conclusion": null,
+          "id": 125644268460,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "observed_at": "2026-11-03T00:44:36.074387+00:00",
+      "run": 41552715162,
+      "source": "5ba879c94ed74747d7e30ae341dee1d045765150",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41552715162"
+    },
+    {
+      "branch": "codex/cdr-mos650-geometry",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125646565291,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125646649956,
+          "name": "native-geometry",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:44:36.074387+00:00",
+      "run": 41553480865,
+      "source": "39a079e0bc3d84b5c05628200d39c9bfc2e9fba4",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41553480865"
+    },
+    {
+      "branch": "codex/cdr-mos650-geometry",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125648042389,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "failure",
+          "id": 125648100281,
+          "name": "native-geometry",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:44:36.074387+00:00",
+      "run": 41553925669,
+      "source": "d23135ab81ed620080e325f18c50d04592859db6",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41553925669"
+    },
+    {
+      "branch": "codex/cdr-mos650-geometry",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125649257969,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125649328645,
+          "name": "native-geometry",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T00:44:36.074387+00:00",
+      "run": 41554289328,
+      "source": "0ff42781cc19177fd3c12d54eb005814d54b3373",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41554289328"
+    },
+    {
+      "branch": "codex/cdr-mos650-physical",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 125651165241,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Verify actual new GDS with full native DRC deep flat LVS and faults"
+          ],
+          "conclusion": null,
+          "id": 125651286909,
+          "name": "native-physical",
+          "status": "in_progress"
+        }
+      ],
+      "observed_at": "2026-11-03T00:44:36.074387+00:00",
+      "run": 41554860331,
+      "source": "45c8b61e1d41bc9016b0fc387b092b84366b9d81",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41554860331"
+    }
+  ],
   "latest_terminal_runs": {
     "cdr_actual_terminal_current_ledger": 40171679250,
     "cdr_current_ledger_controls": 40171508329,
@@ -120550,11 +120786,11 @@
   },
   "local_cleanup_verification": {
     "native_payloads_cloud_only": true,
-    "observed_at": "2026-11-03T00:33:06.129437+00:00",
+    "observed_at": "2026-11-03T00:44:36.074387+00:00",
     "source_API_derived_text_RAM_only": true,
     "workspace_entries": 0
   },
-  "local_workspace_verified_empty_at": "2026-11-03T00:33:06.129437+00:00",
+  "local_workspace_verified_empty_at": "2026-11-03T00:44:36.074387+00:00",
   "mainchip_v336": {
     "final_DRC_accepted": false,
     "last_partial_iteration": 20,
@@ -120612,7 +120848,7 @@
     },
     "candidate_qualification_run": 41108174342,
     "code_deployed_head": "2b79be1ad7e6279a82b9b18bd7cb19482f1a673a",
-    "configured_inventory_rows": 874,
+    "configured_inventory_rows": 877,
     "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33",
     "every_hours": 8,
     "historical_scheduled_error": {
@@ -120625,7 +120861,7 @@
     "hosted_controls_passed": 87,
     "hosted_controls_scope": "Candidate GET retry controls only; latest observed live snapshot failed.",
     "inventory_schema": 2,
-    "inventory_version": 340,
+    "inventory_version": 341,
     "last_successful_inventory_rows": 390,
     "last_successful_inventory_version": 141,
     "last_successful_observation_run": 41011360597,
@@ -120756,6 +120992,22 @@
     "run": 41553480865,
     "source": "39a079e0bc3d84b5c05628200d39c9bfc2e9fba4"
   },
+  "mos650_v341": {
+    "all34_layer_roundtrip": true,
+    "candidate": {
+      "bytes": 1019324,
+      "sha256": "aca57588cfd38a563bca6fbe1376622c276ec8db54a67bc39e06d40718e012a3"
+    },
+    "electrical_accepted": false,
+    "generation_run": 41554289328,
+    "generation_source": "0ff42781cc19177fd3c12d54eb005814d54b3373",
+    "generation_status": "SUCCESS",
+    "matching650_geometry_verified": false,
+    "physical_release": 432125037,
+    "physical_run": 41554860331,
+    "physical_source": "45c8b61e1d41bc9016b0fc387b092b84366b9d81",
+    "qualified650_RC": false
+  },
   "native_mixed_and_snapshot_proofs_v267": [
     {
       "prefix": "docs/evidence/cloud-run-41348276461",
@@ -120815,8 +121067,8 @@
     }
   ],
   "next_actions": [
-    "Follow SAME full64route41552715162/source5ba879c9/native-routing125644268460. Actual qualification41548861169 and independent controls41552510648 PASSED. Preserve all scope/guards; after returnedroute require fullDRC/antenna/PG/LVS/qualifiedRC-Liberty/allcornerSTA. No partialmarker or equivalence claims as finalsignoff.",
-    "Follow SAME actualMOS650geometry41553480865/source39a079e0. Preserve complete originalmarkerdiagnostic and onlydocumented normalization. Then full560DRC/deep-flat650LVS/faults/canonical/new650RC/fullwave. Actual500layout/full650wave41549033741 REJECTED: twoVce gates improved but61/62Vce,phase/current/sampling fail. Complete failure/network receipts preserved.",
+    "Follow SAME full64route41552715162/source5ba879c9/native-routing125644268460. No duplicate/restart. Actual route restoration/fullDRC/antenna/PG/LVS/qualifiedRC-Liberty/allcornerSTA required; full routing/finalsetuphold unclosed.",
+    "Follow SAME actual650physical41554860331/source45c8b61e. Actual generation41554289328 passed all34layer GDS roundtrip; candidateSHAaca57588. Require full560DRC/deep-flat650LVS/13faults before matching650claim. Preserve actualfailures. Then complete650canonical/new650RC/full650wave; previous500layout wave41549033741 remains REJECTED.",
     "After actual pin-metal correspondence and connectivity qualification, run remaining2702diode PG-contact audit, all1691original clock/fixed-net preservation, all1351diode pin attachments, final DRC/antenna and exact current candidate audits. Saved8-pass router397violations is not final physical acceptance.",
     "Export and authenticate current diode-inclusive154480instance netlist from current native ODB, generate fresh nominal SPEF and run original threecorners/20-4-8-8ns/5percent-derate STA only after physical admission. Do not reuse153130instance route12netlist or stale SPEF.",
     "FullserialPLL/CDR/SERDES/training/LTSSM/replay/credit/lane/TX/serialsoc_top and completeDRC/LVS/ESD/production approval remain open. No packet-interface route or diagnostic pass constitutes fullPHY acceptance.",
@@ -162555,7 +162807,7 @@
     "timing_accepted": false,
     "timing_limits_unchanged": true
   },
-  "root_source_before_receipt": "8886d3f34dcf48ded711fda172b947bc03576d00",
+  "root_source_before_receipt": "ddf230d5ab650582c3176be88336ea92c37396e8",
   "routing_guide_research_v159": {
     "bytes": 26784,
     "path": "docs/evidence/cloud-collector-recipes-20261029/mainchip-diode-route-guide-research-v159.json",
@@ -162842,7 +163094,7 @@
       "run": 41349316524
     }
   ],
-  "updated_at": "2026-11-03T00:33:06.129437+00:00",
+  "updated_at": "2026-11-03T00:44:36.074387+00:00",
   "width8_wave_diagnosis_v250": {
     "proof": {
       "bytes": 5806735,
