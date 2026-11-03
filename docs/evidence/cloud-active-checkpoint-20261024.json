@@ -21,38 +21,11 @@
           "status": "in_progress"
         }
       ],
-      "observed_at": "2026-11-03T18:46:19.681320+00:00",
+      "observed_at": "2026-11-03T18:49:51.081996+00:00",
       "run": 41695305770,
       "source": "5518d9fa75b505848e2c6a5c7d1b4a0ca9c011af",
       "status": "in_progress",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41695305770"
-    },
-    "41696724132": {
-      "branch": "codex/cdr-mos650-gate-ac",
-      "conclusion": null,
-      "jobs": [
-        {
-          "active_steps": [],
-          "conclusion": "success",
-          "id": 126129120469,
-          "name": "source-controls",
-          "status": "completed"
-        },
-        {
-          "active_steps": [
-            "Preserve every actual native success or failure"
-          ],
-          "conclusion": null,
-          "id": 126129606254,
-          "name": "native-gate-ac",
-          "status": "in_progress"
-        }
-      ],
-      "observed_at": "2026-11-03T18:46:19.681320+00:00",
-      "run": 41696724132,
-      "source": "a78102915a5a1ead89ff23331c26a149eebcaf0d",
-      "status": "in_progress",
-      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41696724132"
     }
   },
   "bounded_guide_engine_build": {
@@ -349,7 +322,7 @@
     "physical_acceptance": false,
     "timing_accepted": false
   },
-  "checkpoint_version": 345,
+  "checkpoint_version": 346,
   "clock_access_v332": {
     "candidate_sha256": "28eebb9f880648935a6368ada78a5e5666694ba98e073fbbac3f2e0c986339d6",
     "deep_flat_lvs_passed": true,
@@ -30639,7 +30612,7 @@
           "status": "in_progress"
         }
       ],
-      "observed_at": "2026-11-03T18:46:19.681320+00:00",
+      "observed_at": "2026-11-03T18:49:51.081996+00:00",
       "run": 41695305770,
       "source": "5518d9fa75b505848e2c6a5c7d1b4a0ca9c011af",
       "status": "in_progress",
@@ -30672,7 +30645,7 @@
     },
     {
       "branch": "codex/cdr-mos650-gate-ac",
-      "conclusion": null,
+      "conclusion": "success",
       "jobs": [
         {
           "active_steps": [],
@@ -30682,19 +30655,17 @@
           "status": "completed"
         },
         {
-          "active_steps": [
-            "Preserve every actual native success or failure"
-          ],
-          "conclusion": null,
+          "active_steps": [],
+          "conclusion": "success",
           "id": 126129606254,
           "name": "native-gate-ac",
-          "status": "in_progress"
+          "status": "completed"
         }
       ],
-      "observed_at": "2026-11-03T18:46:19.681320+00:00",
+      "observed_at": "2026-11-03T18:49:51.081996+00:00",
       "run": 41696724132,
       "source": "a78102915a5a1ead89ff23331c26a149eebcaf0d",
-      "status": "in_progress",
+      "status": "completed",
       "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41696724132"
     }
   ],
@@ -31117,9 +31088,23 @@
   "full_serial_phy_accepted": false,
   "gate_ac_v345": {
     "branch": "codex/cdr-mos650-gate-ac",
+    "native_model_gate_R_observed": {
+      "QS": {
+        "rgo": 0,
+        "rshg": 0
+      },
+      "RF": {
+        "rgo": 40,
+        "rshg": 3,
+        "swnqs": 5
+      }
+    },
+    "receipt": "docs/evidence/mos650-gate-ac-41696724132-receipt.json",
+    "release": 433087144,
     "run": 41696724132,
     "scope": "Native compact-model gate impedance diagnosis, not physical gate network or full PHY acceptance",
-    "source": "a78102915a5a1ead89ff23331c26a149eebcaf0d"
+    "source": "a78102915a5a1ead89ff23331c26a149eebcaf0d",
+    "status": "MEASURED_FROZEN_MOS_GATE_IMPEDANCE_REQUIRES_PHYSICAL_NETWORK_COMPOSITION"
   },
   "guarded_pcie_root_v326": {
     "branch": "codex/pcie-guarded-root-regression",
@@ -121920,7 +121905,7 @@
   ],
   "next_actions": [
     "Follow SAME actual-chip engine qualification41695305770/release433078096/source5518d9fa75b505848e2c6a5c7d1b4a0ca9c011af. No restart on observation timeout. If successful derive new full64 branch from prior5ba879c94ed74747d7e30ae341dee1d045765150 with actual new engine and qualification captures, preserve22 refusal controls and original11 phases, then route once.",
-    "Inspect actual native gate AC job in snapshot. Preserve any native diagnostic failure, interpret full model readback and technology sheet/contact variants. QS/RF comparison does not itself qualify a physical poly network or isolate NQS effects.",
+    "Gate AC41696724132 PASSED. Read docs/cdr-mos650-gate-ac.md. ActualQS gateRterms0; currentMagic normalpoly sheetR missing. Establish geometry/material sheetR; build distributed physical gate/contact model with explicit compact overlap and NQS treatment; preserve full intrinsic/poly coupling and MIM coverage before original loaded circuit gates.",
     "Fresh current650 metal/via RC41693055344 passed28449R18299C13faults. Complete explicit physical gate-poly/contact model and MIM/intrinsic composition with actual650 native IDs and1278 physical anchors. Never reuse old500 RC or double-expand200 actualMOS.",
     "Run original complete loaded electrical gates after new model composition; retain existing phase/current/sampling/headroom rejections. FullserialGen3x4/fullmainchip integration remain in scope.",
     "Require completed fullroute, restoration, DRC/antenna/PG/LVS/freshRC/qualifiedLiberty/allcornersetuphold before acceptance. Build/interface/reference equivalence checks are not signoff.",
@@ -163946,7 +163931,7 @@
       "run": 41349316524
     }
   ],
-  "updated_at": "2026-11-03T18:46:19.681320+00:00",
+  "updated_at": "2026-11-03T18:49:51.081996+00:00",
   "width8_wave_diagnosis_v250": {
     "proof": {
       "bytes": 5806735,

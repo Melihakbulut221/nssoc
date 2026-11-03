@@ -1,3 +1,20 @@
+## Current continuation: actual native gate AC measured; missing poly resistance identified
+
+Native gate characterization41696724132/sourcea78102915a5a1ead89ff23331c26a149eebcaf0d/release433087144 SUCCEEDED: all4 actual unit geometries covering200MOS, bothQS/RF modes,17points per case1MHz-10GHz, nativecode0 and no diagnostics. Actual showmod confirms QS rgo/rshg0, RF swnqs5/rgo40/rshg3. Complete native gate input impedance is NOT equivalent to physical series gate resistance. At1GHz QSReZ4.83798-5.44274ohm, RFReZ71.76934-74.08834ohm at declared0.8Vgate/.6Vdrain; differences includeNQS.
+
+The current Magic tech has pc contact entries but NO ordinary poly/allpoly sheet resistance. Recognized Rsil nres resistance is not an existing calibrated gate extraction rule. Current50single-contact physical gate groups contain long shared stems, while native RF wrapper fixesngcon2. Therefore neither ordinary QS plus metal-only RC nor blindly enablingRF mode represents the complete physical gate network. See docs/cdr-mos650-gate-ac.md and complete receipt/native readback/measurements.
+
+NEXT PHY: establish physical poly/contact sheet model with applicability evidence; model actual distributed stem and gate paths, preserve currentflat native IDs and deduplicated geometric anchors, resolve compact overlap (including an RF/NQS zero-rgo/rshg readback experiment if used), check discretization and intrinsic/MIM/poly-coupling coverage, then original complete loaded electrical gates. No numerical threshold is relaxed and no fullPHY acceptance is implied.
+
+MAINCHIP: follow SAME qualification41695305770/source5518d9fa75b505848e2c6a5c7d1b4a0ca9c011af/release433078096. New bounded-region engine is built; actual full-chip qualification status below determines the next action. If it succeeds, bind actual native capture/ELF/runtime into full64 execution, preserve22refusal controls and original11phases, then route once. Do not restart on observation timeout. Full routing and finalsetup/hold remain open.
+
+All native payloads remain GitHub-only, localworkspaceempty, read-only8hour monitor unchanged.
+
+Observed 2026-11-03T18:49:51.081996+00:00:
+- 41695305770: in_progress/None
+- 41696724132: completed/success
+
+
 ## Current continuation: fresh650 metal/via RC passes; new bounded-region engine compiled and in actual-chip qualification
 
 Actual650 fresh metal/via RC41693055344/sourcef4f7723f935b80fcd5ade5b7f159e82e7845d7ae on codex/cdr-mos650-metal-rc SUCCEEDED. It measured28449 resistors and18299 capacitors, retains1428 logical/1278 physical anchors, and passed all13 original raw native corruption controls. Complete raw topology/values/attachments were audited. Release433064135 preserves all native evidence. This closes metal/via extraction for this exact candidate, not gate-poly RC, MIM composition, electrical acceptance or full PEX.
