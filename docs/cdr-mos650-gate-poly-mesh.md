@@ -9,3 +9,9 @@ Nominal values7ohm/square and15ohm/contact come from the [IHP process control ta
 For each mesh pitch, an independent native SPICE rectangular-sheet test must reproduce the analytic70ohm resistance of a10um by1um sheet, including half-cell boundary distances. The actual gate network is then run in the original frozen native simulator. Diagnostic-only zero-volt sources terminate the real M1 contact ports; uniform total1nA is injected over each actual intrinsic electrode. All200 weighted electrode potentials must be finite/positive, and contact currents must sum to200nA. Refinement changes are reported without claiming general convergence.
 
 Equal-potential intrinsic partition41717942914 passed160 native tests and13696 DC/full-terminal AC comparisons with original W/L/AS/AD/PS/PD retained. This mesh generation does not yet connect those nonlinear models or the actual metal network. It also does not include gate extrinsic capacitance, full MIM/substrate composition or complete loaded/serial qualification. All such acceptance flags remain false. No model gate is silently shorted to a contact.
+
+## Preserve geometry-library numeric type failure
+
+First native run41719493627 verifies every actual gate material/contact relationship and passes the600nm-grid native analytic70ohm sheet reference. Mesh generation then fails because KLayout exposes an integral DBU-squared area as a Python float, while Fraction(numerator,denominator) requires Rational inputs.
+
+The successor checks that each area is finite, exactly integral and below2**53 before conversion to int. It never rounds a fractional area. Geometry, mesh boundaries, material values, source GDS, native circuit checks and current-conservation thresholds are unchanged. The full original failure remains preserved.

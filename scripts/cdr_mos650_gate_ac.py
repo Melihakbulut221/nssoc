@@ -273,6 +273,10 @@ def characterize(models):
   out=db.Region()
   for text in strings:out.insert(db.Polygon.from_s(text.split(" props=")[0]))
   return out.merged()
+ def exact_area(shape):
+  value=shape.area()
+  need(math.isfinite(value)and value==int(value)and abs(value)<2**53,"exact representable integer DBU squared area")
+  return int(value)
  def same(a,b):return (a^b).is_empty()
  gates={g["device"]:g for g in access["gates"]}
  gate_anchors={a["label"]:a for a in anchors["anchors"]if "gate_contact"in a["detail"]}
@@ -289,7 +293,7 @@ def characterize(models):
   for label in group["contact_anchors"]:
    a=gate_anchors[label];cut=region([a["detail"]["contact_polygon"]])
    need(a["detail"]["gate_group"]==group["group"]and a["native_cluster"]==group["native_cluster"],"same real contact ownership")
-   need(cut.count()==1 and cut.area()==160*160 and (cut-poly).is_empty()and(cut-metal).is_empty(),"real contact cut and M1 enclosure")
+   need(cut.count()==1 and exact_area(cut)==160*160 and (cut-poly).is_empty()and(cut-metal).is_empty(),"real contact cut and M1 enclosure")
    center=cut.bbox().center();need(a["point_dbu"]==[center.x,center.y],"same actual metal anchor point")
    contact[label]=cut
   union=db.Region()
@@ -321,8 +325,8 @@ def characterize(models):
     box=db.Box(x0,y0,x1,y1);r=db.Region(box);overlap=r&poly
     if overlap.is_empty():continue
     need(same(overlap,r),"no partial finite-volume cell")
-    name=f"{prefix}_{ix}_{iy}";cells[(ix,iy)]=dict(node=name,box=box,area=box.area());union.insert(box)
-  need(same(union,poly)and sum(c["area"]for c in cells.values())==poly.area(),"exact native poly material coverage without gaps or double counting")
+    name=f"{prefix}_{ix}_{iy}";cells[(ix,iy)]=dict(node=name,box=box,area=exact_area(box));union.insert(box)
+  need(same(union,poly)and sum(c["area"]for c in cells.values())==exact_area(poly),"exact native poly material coverage without gaps or double counting")
   edges=[]
   for (ix,iy),c in cells.items():
    for dx,dy in ((1,0),(0,1)):
@@ -378,23 +382,23 @@ def characterize(models):
     for c in cells.values():
      overlap=db.Region(c["box"])&cut
      if overlap.is_empty():continue
-     need(overlap.area()==c["area"],"contact cut on exact mesh boundaries")
-     area+=c["area"];ohm=15.0*cut.area()/c["area"]
+     need(exact_area(overlap)==c["area"],"contact cut on exact mesh boundaries")
+     area+=c["area"];ohm=15.0*exact_area(cut)/c["area"]
      edges.append(dict(a="gm_"+label.lower(),b=c["node"],ohm=ohm,kind="contact",contact=label,area_dbu2=c["area"]))
      pieces.append(dict(node=c["node"],area_dbu2=c["area"],ohm=ohm))
-    need(area==cut.area()and math.isclose(sum(1/x["ohm"]for x in pieces),1/15,rel_tol=1e-12),"whole real contact area and total conductance conserved")
+    need(area==exact_area(cut)and math.isclose(sum(1/x["ohm"]for x in pieces),1/15,rel_tol=1e-12),"whole real contact area and total conductance conserved")
     contacts.append(dict(label=label,node="gm_"+label.lower(),physical_anchor=gate_anchors[label],patches=pieces))
    for device,terminal in p["terms"].items():
-    patches=[];total=terminal.area()
+    patches=[];total=exact_area(terminal)
     for c in cells.values():
      overlap=db.Region(c["box"])&terminal
      if overlap.is_empty():continue
-     need(overlap.area()==c["area"],"intrinsic electrode on exact mesh boundaries")
+     need(exact_area(overlap)==c["area"],"intrinsic electrode on exact mesh boundaries")
      patches.append(dict(node=c["node"],area_dbu2=c["area"],weight_numerator=c["area"],weight_denominator=total))
     need(sum(x["area_dbu2"]for x in patches)==total and sum(Fraction(x["weight_numerator"],x["weight_denominator"])for x in patches)==1,"full intrinsic gate area and exact total weight")
     coupling.append(dict(device=device,gate_group=p["id"],area_dbu2=total,patches=patches,nonuniform_intrinsic_composition_qualified=False))
    all_edges+=edges;all_cells += [dict(node=c["node"],bbox_dbu=[c["box"].left,c["box"].bottom,c["box"].right,c["box"].top],area_dbu2=c["area"])for c in cells.values()]
-   group_rows.append(dict(group=p["id"],cells=len(cells),edges=len(edges),poly_area_dbu2=p["poly"].area(),contacts=len(p["contacts"]),gates=len(p["terms"])))
+   group_rows.append(dict(group=p["id"],cells=len(cells),edges=len(edges),poly_area_dbu2=exact_area(p["poly"]),contacts=len(p["contacts"]),gates=len(p["terms"])))
   need(len(contacts)==200 and len({c["label"]for c in contacts})==200 and len(coupling)==200 and len({c["device"]for c in coupling})==200,"all current contacts and intrinsic gates")
   need(all(math.isfinite(e["ohm"])and e["ohm"]>0 and e["a"]!=e["b"]for e in all_edges),"positive finite physical mesh resistors")
   native=NATIVE/f"mesh-{pitch}";native.mkdir()
