@@ -1,0 +1,144 @@
+{
+  "final_timing_complete": false,
+  "full_phy_accepted": false,
+  "local_workspace_entries": 0,
+  "note": "## Native route-class restoration and diode-inclusive netlist handoff\n\nNew source50f1ebf8d1c940abff985f971aeae670eeb4a9ec on codex/mainchip-postroute-handoff implements actual original full-chip class restoration, diode logical-supply audit, physical netlist export, fresh-library read/link and complete instance/pin/boundary incidence comparison. The old zero-diode route12 adapter and original timing gates remain unchanged. Source controls41738123187 passed, including six rejection cases; their1190-byte artifact13280920159 was authenticated in RAM.\n\nNative job41738314531/release433325391 is the first real execution. Its initial input is the existing completed route41440285882, which still has known physical violations. It is a qualification of the handoff implementation, not the new full64 result and not signoff. It invokes no new routing. The complete real netlist comparison must pass, then native diode/port mutations must be rejected. Native failure must be diagnosed without silently omitting diodes/physical cells.\n\nCurrent full64 route41699812301 and actual650 N1/N2 runs41733225660/41734419971 retain their exact handles. If the handoff implementation passes, acquire the completed full64 output with exact source/asset/member pins and apply it there before fresh RC/original-clock timing. Do not use the old zero-diode netlist. Original global class restoration and actual physical diode PG connectivity are distinct; the new logical supply check does not establish metal continuity or LVS.\n\nThe restored PLL terminal map and distinction between failed RHI120 and olderPLL845 captures remain documented in docs/pcie-cdr-pll-connection-audit-20261104.md. Current650 benches still use an external clock and do not prove a recovered-clock loop.\n\n\nObserved 2026-11-03T23:21:08.981491+00:00:\n- 41699812301: in_progress/None\n- 41733225660: in_progress/None\n- 41734419971: in_progress/None\n- 41738123187: completed/success\n- 41738314531: in_progress/None\n",
+  "observed_at": "2026-11-03T23:21:08.981491+00:00",
+  "physical_acceptance": false,
+  "runs": [
+    {
+      "branch": "codex/mainchip-guide-tiled-full64",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126139836003,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Authenticate actual chip qualification then execute original full64 route and audits"
+          ],
+          "conclusion": null,
+          "id": 126140534081,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "observed_at": "2026-11-03T23:21:08.981491+00:00",
+      "run": 41699812301,
+      "source": "9430a57873e78d3c283b531da8e8e74da416f297",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41699812301"
+    },
+    {
+      "branch": "codex/cdr-mos650-full-composition",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126255679468,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Assemble all actual650 partitions and execute selected full256bit loaded transient"
+          ],
+          "conclusion": null,
+          "id": 126255793850,
+          "name": "native-gate-ac",
+          "status": "in_progress"
+        }
+      ],
+      "observed_at": "2026-11-03T23:21:08.981491+00:00",
+      "run": 41733225660,
+      "source": "9bba58288772dd2bee9dab142e391d0616737973",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41733225660"
+    },
+    {
+      "branch": "codex/cdr-mos650-full-composition-n2",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126259808380,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Assemble all actual650 partitions and execute selected full256bit loaded transient"
+          ],
+          "conclusion": null,
+          "id": 126259886378,
+          "name": "native-gate-ac",
+          "status": "in_progress"
+        }
+      ],
+      "observed_at": "2026-11-03T23:21:08.981491+00:00",
+      "run": 41734419971,
+      "source": "81555c8ba8357f2874fab2c5bb0c3378305e3501",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41734419971"
+    },
+    {
+      "branch": "codex/mainchip-postroute-handoff",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126272506111,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [],
+          "conclusion": "skipped",
+          "id": 126272757056,
+          "name": "native-routing",
+          "status": "completed"
+        }
+      ],
+      "observed_at": "2026-11-03T23:21:08.981491+00:00",
+      "run": 41738123187,
+      "source": "50f1ebf8d1c940abff985f971aeae670eeb4a9ec",
+      "status": "completed",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41738123187"
+    },
+    {
+      "branch": "codex/mainchip-postroute-handoff",
+      "conclusion": null,
+      "jobs": [
+        {
+          "active_steps": [],
+          "conclusion": "success",
+          "id": 126273149144,
+          "name": "source-controls",
+          "status": "completed"
+        },
+        {
+          "active_steps": [
+            "Restore global classes, export actual netlist, relink and verify all native connections"
+          ],
+          "conclusion": null,
+          "id": 126273383246,
+          "name": "native-routing",
+          "status": "in_progress"
+        }
+      ],
+      "observed_at": "2026-11-03T23:21:08.981491+00:00",
+      "run": 41738314531,
+      "source": "50f1ebf8d1c940abff985f971aeae670eeb4a9ec",
+      "status": "in_progress",
+      "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/41738314531"
+    }
+  ],
+  "version": 360
+}
