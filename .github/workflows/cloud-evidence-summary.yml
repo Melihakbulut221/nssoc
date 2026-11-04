@@ -1,13 +1,17 @@
-name: Derived per-bit trace of preserved N1 actual650 waveform
+name: Divider what-if reruns of preserved N1 actual650 bench
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  n1-wave-trace:
+  divider-whatif:
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    timeout-minutes: 330
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [control, lowz4, compensated]
     env:
       GH_TOKEN: ${{ github.token }}
       ARTIFACT_ID: '13283214752'
@@ -18,33 +22,27 @@ jobs:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/cdr_n1_wave_trace.py
-      - name: Fetch and authenticate preserved native archive
+          sparse-checkout: |
+            /scripts/cdr_n1_divider_whatif.py
+            /scripts/cdr_mos650_full650_loaded.py
+      - name: Restore the preserved N1 native tree at its original absolute path
         run: |
           set -euo pipefail
-          df -h / /mnt || true
           W=/mnt/n1; sudo mkdir -p $W; sudo chown $USER $W
           gh api repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip > $W/n1.zip
           echo "$ARTIFACT_SHA256  $W/n1.zip" | sha256sum -c -
-          unzip -Z1 $W/n1.zip > $W/members.txt
-          member=$(grep -E '(^|/)loaded-n1-nominal_late/wave.raw$' $W/members.txt)
-          test "$(echo "$member" | wc -l)" = 1
-          unzip -p $W/n1.zip "$member" > $W/wave.raw
-          mkdir -p n1-wave-trace-inputs
-          for f in composition-n1/contract.json composition-n1/probes.json; do
-            m=$(grep -E "(^|/)native/$f\$" $W/members.txt); test "$(echo "$m" | wc -l)" = 1
-            unzip -p $W/n1.zip "$m" > n1-wave-trace-inputs/$(echo $f | tr / -)
-          done
+          mkdir -p mos650-gate-ac
+          unzip -q $W/n1.zip -d mos650-gate-ac -x '*/wave.raw' '*/producer-*' '*/composition-n2/*' '*/composition-n4/*' '*/composition-n8/*' '*/composition-n16/*'
           rm $W/n1.zip
-          ls -l $W/wave.raw
+          ls mos650-gate-ac mos650-gate-ac/native mos650-gate-ac/native/loaded-n1-nominal_late
+          grep -n "^\.lib\|^\.include\|pre_osdi" mos650-gate-ac/native/loaded-n1-nominal_late/bench.cir
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
-      - name: Sample every saved vector at 16 phases per bit
-        run: python3 -B scripts/cdr_n1_wave_trace.py /mnt/n1/wave.raw n1-wave-trace
+      - name: Rerun with ${{ matrix.variant }} divider values and the frozen gates
+        run: python3 -B scripts/cdr_n1_divider_whatif.py mos650-gate-ac ${{ matrix.variant }} whatif-${{ matrix.variant }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
         with:
-          name: n1-wave-trace-${{ github.run_id }}
-          path: |
-            n1-wave-trace
-            n1-wave-trace-inputs
-          if-no-files-found: error
+          name: divider-whatif-${{ matrix.variant }}-${{ github.run_id }}
+          path: whatif-${{ matrix.variant }}
+          if-no-files-found: warn
           retention-days: 90

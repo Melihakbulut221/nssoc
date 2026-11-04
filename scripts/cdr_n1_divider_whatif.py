@@ -1,0 +1,68 @@
+# SPDX-License-Identifier: Apache-2.0
+"""What-if rerun of the preserved N1 actual650 bench with only divider values changed.
+
+Every extracted wire R/C, device, source, load and solver option of run
+41733225660 is reused unchanged. Only the instance parameters of the twelve
+sampler-to-buffer divider resistors and six divider MIMs are rewritten, so
+wiring parasitics stay those of the current layout. The frozen measure_wave
+and its unchanged thresholds judge the result. A what-if is not a layout,
+DRC, LVS or extraction of a new candidate.
+"""
+import json,re,subprocess,sys,time
+from pathlib import Path
+import numpy as np
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+import cdr_mos650_full650_loaded as loaded
+RESISTORS=['XD0377','XD0378','XD0379','XD0380','XD0384','XD0385','XD0386','XD0387','XD0388','XD0389','XD0390','XD0391']
+AC_MIM=['XD0423','XD0424','XD0427','XD0428'];SELECT_MIM=['XD0425','XD0426']
+VARIANTS={
+ 'control':dict(),
+ 'lowz4':dict(rppd_w='4u',ac_mim='7.2u',select_mim='9.6u'),
+ 'compensated':dict(ac_mim='21.6u',select_mim='9.6u')}
+def patch(text,variant):
+    v=VARIANTS[variant];lines=text.split('\n');changed={}
+    def edit(name,key,value):
+        hits=[i for i,l in enumerate(lines)if l.split(maxsplit=1)[:1]==[name]]
+        if not hits:
+            # An exported MIM card may keep its native name; bind by its own terminal node.
+            node=('w_t'+name[3:]+'_mim_top').lower()
+            hits=[i for i,l in enumerate(lines)if node in l.lower().split()and 'cap_cmim'in l.lower()]
+        assert len(hits)==1,(name,len(hits))
+        old=lines[hits[0]];new,count=re.subn(r'(\s'+key+r'=)\S+',r'\g<1>'+value,old)
+        assert count==1,(name,key,old);lines[hits[0]]=new;changed.setdefault(name,[old]).append(new)
+    for n in RESISTORS:
+        if 'rppd_w'in v:edit(n,'w',v['rppd_w'])
+    for names,key in ((AC_MIM,'ac_mim'),(SELECT_MIM,'select_mim')):
+        for n in names:
+            if key in v:edit(n,'w',v[key]);edit(n,'l',v[key])
+    return '\n'.join(lines),changed
+def main(root,variant,out):
+    root=Path(root);native=root/'native';out=Path(out);out.mkdir(parents=True)
+    original=json.loads((root/'derived/loaded-n1-nominal_late.json').read_bytes())
+    model=native/'composition-n1/model.cir';text=model.read_text()
+    patched,changed=patch(text,variant);model.write_text(patched)
+    (out/'patch.json').write_text(json.dumps(dict(variant=variant,values=VARIANTS[variant],changed=changed),indent=1))
+    folder=native/'loaded-n1-nominal_late';assert not (folder/'wave.raw').exists()
+    engine=native/'models/source/runtime/patched-ngspice';engine.chmod(0o755)
+    began=time.monotonic()
+    with open(out/'ngspice.stdout','wb')as so,open(out/'ngspice.stderr','wb')as se:
+        rc=subprocess.run([str(engine),'-n','-b','bench.cir'],cwd=folder,stdout=so,stderr=se,timeout=17000).returncode
+    elapsed=time.monotonic()-began
+    t,d,info=loaded.read_streamed_wave(folder/'wave.raw',original['vectors'],loaded.STOP,loaded.STEP)
+    r={}
+    try:
+        loaded.measure_wave(original['binding'],t,d,original['source_bits'],original['data_offset_s'],{},r,False,False);passed=True
+    except AssertionError as e:passed=False;r['assertion']=str(e)
+    keep={k:r[k]for k in ('status','data_passed','devices_passed','phase_passed','phase_average_v','vi','sampler_checks','comparisons','minimum_active_stage_tail_current_a','interface_observations')if k in r}
+    for g in ('sampler_checks','comparisons'):
+        for x in keep.get(g,{}).values():x.pop('clock_to_valid_by_bit_s',None)
+    hbt=[n for n,x in r.get('device_checks',{}).items()if x['minimum_active_vce_v']<.4 or x['maximum_alltime_abs_vce_v']>1.6 or x['maximum_alltime_abs_vbe_v']>1 or x['maximum_alltime_abs_ic_per_emitter_a']>=.003]
+    keep.update(variant=variant,returncode=rc,elapsed_seconds=elapsed,passed=passed,failing_hbt=hbt,
+        failing_mos=[n for n,x in r.get('mos_checks',{}).items()if not x['passed']],raw=dict(points=info['header_rows'],sha256=info['raw_sha256']),
+        what_if_only=True,new_layout=False,electrical_acceptance=False)
+    grid=(loaded.START+np.arange(258)[:,None]*loaded.UI+np.arange(16)[None,:]*loaded.UI/16).ravel()
+    names=[n for n in original['vectors']if n.startswith('v(')]
+    np.savez_compressed(out/'bit-phase-samples.npz',samples=np.array([np.interp(grid,t,d[n])for n in names],dtype=np.float32),names=np.array(names),grid=grid)
+    (out/'result.json').write_text(json.dumps(keep,indent=1,sort_keys=True))
+    print(json.dumps({k:keep[k]for k in('variant','returncode','passed','data_passed','devices_passed','phase_passed','phase_average_v','failing_hbt')},sort_keys=True))
+if __name__=='__main__':main(*sys.argv[1:])
