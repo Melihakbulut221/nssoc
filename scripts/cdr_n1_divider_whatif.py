@@ -37,7 +37,7 @@ def patch(text,variant):
             if key in v:edit(n,'w',v[key]);edit(n,'l',v[key])
     return '\n'.join(lines),changed
 def main(root,variant,out):
-    root=Path(root);native=root/'native';out=Path(out);out.mkdir(parents=True)
+    root=Path(root).resolve();native=root/'native';out=Path(out);out.mkdir(parents=True)
     original=json.loads((root/'derived/loaded-n1-nominal_late.json').read_bytes())
     model=native/'composition-n1/model.cir';text=model.read_text()
     patched,changed=patch(text,variant);model.write_text(patched)
