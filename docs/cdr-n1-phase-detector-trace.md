@@ -40,8 +40,9 @@ Runs41775302761 and41786313115 rerun the same N1 bench. Every extracted wire R/C
 | lowz4 | 12 divider rppd 1 -> 4 um, divider MIM area x4 | **38.3 mV** | **104 uA / 30.3 mV** | 432 / 705 | 0 | 0 / 20 | xd0211, xd0212 |
 | compensated | A/C MIM 21.6 um, select MIM 9.6 um | **42.6 mV** | **125 uA / 37.0 mV** | 389 / 725 | 1 | 8 / 38 | xd0211, xd0212 |
 | fastbuf | lowz4 + buffer bias x2, buffer loads R/2 | **36.6 mV** | **108 uA / 31.8 mV** | 413 / 723 | 0 | 0 / 21 | xd0211/0212 + 8 XOR tail-pair HBTs |
+| fastbuf_xor3 | fastbuf + 24 XOR data HBTs nx4 -> nx3 | **37.8 mV** | **112 uA / 33.0 mV** | 401 / 723 | 0 | 0 / 21 | xd0211/0212 + 8 XOR tail-pair HBTs |
 
-`control` reproduces N1 exactly (phase, comparisons, VI and failing devices), so the harness is faithful. lowz4 is the cleanest change: phase and VI pass, Y becomes clean, sampler C/D improve, and no new device fails. The buffered A input arrives 0.31 UI after the sampler instead of 0.94 UI. compensated shortens the divider further but its large MIMs load the samplers (C 8, D 38 wrong). fastbuf trims the buffer delay from 0.75 to 0.56 UI, but it moves XOR tail-pair headroom below the 0.4 V gate.
+`control` reproduces N1 exactly (phase, comparisons, VI and failing devices), so the harness is faithful. lowz4 is the cleanest change: phase and VI pass, Y becomes clean, sampler C/D improve, and no new device fails. The buffered A input arrives 0.31 UI after the sampler instead of 0.94 UI. compensated shortens the divider further but its large MIMs load the samplers (C 8, D 38 wrong). fastbuf trims the buffer delay from 0.75 to 0.56 UI, but it moves XOR tail-pair headroom below the 0.4 V gate. Making the XOR data devices smaller (fastbuf_xor3) leaves the buffer delay at 0.56 UI, so the XOR input capacitance is not what limits the buffer.
 
 What still fails in every variant:
 
