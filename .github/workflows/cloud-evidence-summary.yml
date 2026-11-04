@@ -1,40 +1,58 @@
-name: Section difference of handoff before and restored snapshots
+name: DRC visibility of FIXED overlay versus restored classes for full64 run 41772302484
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  snapshot-diff:
+  drc-visibility:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 120
     env:
       GH_TOKEN: ${{ github.token }}
-      ARTIFACT_ID: '13300276627'
+      IMAGE: openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a
+      ENGINE_PART: '706643321'
+      ENGINE_PART_SHA: 69b0c127830daeefb6de5731e88ca858627814e407970dd8e176868110e1215c
+      ENGINE_SHA: e12b1c70296c119c31ed5b1a7f739904d06b3c86cd703eebee25dbcc9c357431
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          persist-credentials: false
-          filter: blob:none
-          sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/handoff_snapshot_diff.py
-      - name: Fetch handoff workspace of handoff run
+      - name: Acquire pinned engine, image and route capsule
         run: |
           set -euo pipefail
-          W=/mnt/h; sudo mkdir -p $W; sudo chown $USER $W
-          gh api repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip > $W/w.zip
-          sha256sum $W/w.zip
-          unzip -Z1 $W/w.zip > $W/members.txt; wc -l $W/members.txt
-          grep -E "handoff-topology-(before|after)\.json$" $W/members.txt
-          unzip -q $W/w.zip -d $W/x $(grep -E "handoff-topology-(before|after)\.json$" $W/members.txt)
-      - name: Diff every snapshot section except nets
+          W=/mnt/v; sudo mkdir -p $W/e $W/c $W/o; sudo chown -R $USER $W
+          docker pull -q "$IMAGE"
+          gh api repos/${{ github.repository }}/releases/assets/$ENGINE_PART -H "Accept: application/octet-stream" > $W/engine.tgz
+          echo "$ENGINE_PART_SHA  $W/engine.tgz" | sha256sum -c -
+          tar -xzf $W/engine.tgz -C $W/e
+          E=$(find $W/e -type f -name openroad -exec sha256sum {} + | awk -v s=$ENGINE_SHA '$1==s{print $2}' | head -1)
+          test -n "$E"; cp "$E" $W/openroad; chmod +x $W/openroad
+          gh api repos/${{ github.repository }}/releases/assets/708614943 -H "Accept: application/octet-stream" > $W/parts.json
+          cat $W/parts.json
+          for id in 708615066 708616238 708617161; do gh api repos/${{ github.repository }}/releases/assets/$id -H "Accept: application/octet-stream" >> $W/capsule.tgz; done
+          python3 -c "import json,hashlib,sys;p=json.load(open('$W/parts.json'));h=hashlib.sha256(open('$W/capsule.tgz','rb').read()).hexdigest();print(h);assert h==p['archive']['sha256']"
+          tar -tzf $W/capsule.tgz | grep -E "routed-fixed.odb|narrow47-restored.odb|narrow47-cleared.odb" | tee $W/members.txt
+          tar -xzf $W/capsule.tgz -C $W/c $(cat $W/members.txt)
+          rm $W/capsule.tgz
+          find $W/c -name "*.odb" -exec ls -l {} +
+      - name: Same engine check_drc and wire-class census on each database
         run: |
-          mkdir -p diff
-          python3 -B scripts/handoff_snapshot_diff.py /mnt/h/x diff/handoff-snapshot-diff.json
+          set -euo pipefail
+          W=/mnt/v
+          cat > $W/o/run.sh <<'SH'
+          set -e
+          for f in $(find /v/c -name "*.odb" | sort); do
+            b=$(basename $f .odb)
+            printf 'read_db %s\nset_thread_count 4\ndrt::check_drc -output_file /v/o/%s.rpt -marker_name CHK\nset fixed 0\nset routed 0\nforeach n [[ord::get_db_block] getNets] { set t [$n getWireType]; if {$t eq "FIXED"} {incr fixed} elseif {$t eq "ROUTED"} {incr routed} }\nputs "WIRETYPES %s fixed=$fixed routed=$routed"\n' $f $b $b > /v/o/$b.tcl
+            /v/openroad -no_init -exit /v/o/$b.tcl > /v/o/$b.log 2>&1 || echo "engine failed $b"
+            echo "$b markers=$(grep -c 'violation type' /v/o/$b.rpt || true)"; grep WIRETYPES /v/o/$b.log || true
+            grep -o "violation type: [A-Za-z ]*" /v/o/$b.rpt | sort | uniq -c || true
+          done
+          SH
+          docker run --rm -v $W:/v "$IMAGE" bash /v/o/run.sh | tee $W/o/summary.txt
+          mkdir -p drc-visibility && cp $W/o/*.txt $W/o/*.log $W/o/*.rpt drc-visibility/ 2>/dev/null || true
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: handoff-snapshot-diff-${{ github.run_id }}
-          path: diff
+          name: drc-visibility-${{ github.run_id }}
+          path: drc-visibility
           if-no-files-found: warn
           retention-days: 90
