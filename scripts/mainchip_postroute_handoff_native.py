@@ -5,7 +5,7 @@ sys.path.insert(0, "/work/tail-source/scripts")
 import odb
 import mainchip_bulk_postdrt_antenna_native as native
 from mainchip_bulk_postdrt_antenna_native import n,p,c
-from mainchip_postroute_handoff_contract import need, restoration, topology, pg
+from mainchip_postroute_handoff_contract import need, restoration, topology, pg, wire_class, wire_census
 WORK=Path("/work/out/work/bulk-postdrt-antenna")
 DATA=Path("/work/out/bulk-postdrt-antenna")
 CANDIDATE=Path("/work/route-candidate/work/bulk-postdrt-antenna/narrow47-restored.odb")
@@ -61,10 +61,15 @@ def prepare():
     records=c.parse_def(raw)["records"]
     original=c.parse_def((WORK/"handoff-baseline.def").read_bytes())["records"]
     need(set(records)==set(original),"exact full DEF net census")
+    census=dict(baseline=wire_census(c,original),candidate=wire_census(c,records))
+    save("handoff-wire-clause-census.json",census)
+    for label,row in census.items():
+        need(not row["multiple_clause"] and not row["unsupported_syntax"],
+             label+" DEF: %d multiple-clause and %d unsupported-syntax records, see handoff-wire-clause-census.json"%(len(row["multiple_clause"]),len(row["unsupported_syntax"])))
     changes={}
     for name,record in records.items():
-        target=c.classes(original[name])
-        current=c.classes(record)
+        target=wire_class(c,original[name])
+        current=wire_class(c,record)
         if target is None:
             need(current is None,"no new route on originally wireless net "+name)
         elif current!=target:

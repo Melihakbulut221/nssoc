@@ -1,4 +1,7 @@
 """Exact restored-route and exported netlist admission; never a timing/LVS verdict."""
+import re
+WIRE_SYNTAX = re.compile(rb'\+\s+(ROUTED|FIXED|COVER)\b')
+
 def need(ok, message):
     if not ok:
         raise ValueError(message)
@@ -54,3 +57,31 @@ def topology(before, after):
                 unused_nets_after=sorted(set(after["nets"]) - set(connected(after))),
                 all_instance_and_boundary_connections_equal=True,
                 full_LVS_accepted=False, timing_accepted=False, full_phy_accepted=False)
+
+def wire_class(c, record):
+    """Original class of one NETS record; None only for a record with no wire syntax at all.
+
+    Same rule as the frozen fixed_overlay: a record without a line-start route
+    clause is wireless only if no other ROUTED/FIXED/COVER syntax is present.
+    More than one clause still fails inside the frozen classes().
+    """
+    if not c.ROUTE.search(record):
+        need(not WIRE_SYNTAX.search(record), "unsupported wire syntax")
+        return None
+    return c.classes(record)
+
+def wire_census(c, records):
+    wireless, single, multiple, unsupported = [], 0, {}, []
+    for name, record in records.items():
+        count = len(c.ROUTE.findall(record))
+        if count == 1:
+            single += 1
+        elif count > 1:
+            multiple[name] = count
+        elif WIRE_SYNTAX.search(record):
+            unsupported.append(name)
+        else:
+            wireless.append(name)
+    return dict(records=len(records), single_clause=single, wireless=len(wireless),
+                wireless_names=sorted(wireless), multiple_clause=multiple,
+                unsupported_syntax=sorted(unsupported))
