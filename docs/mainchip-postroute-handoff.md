@@ -45,3 +45,14 @@ Run41781663791 at433c4ca passed prepare, restoration, the baseline all-clocks ga
 2. On the SRAM macros, bus bits are reversed (for example `B_BIST_BM[5]` and `[10]` exchange nets). The relink read a chipless library database, and OpenROAD registers libraries with the timing network only for a database with a chip, so `read_verilog` black-boxed every cell (58 ORD-2011 / 58 STA-0198 warnings) and guessed bus order.
 
 The relink now loads the restored database's own technology and library LEFs, written with the native LEF writers, through `read_lef`, so masters and bus ports are registered before `read_verilog`. `verilog_names()` reverses only the backslash doubling, refuses any normalization that would merge two names, and reports how many instance and net names it changed. The comparison after normalization is the unchanged complete topology check. Controls reject doubled names without normalization, a changed connection after normalization and a colliding normalization. Failed run/release433559041 remain preserved.
+
+## First complete native observation (run41784797558)
+At494890f every native phase completed (`COMPLETE_ACTUAL_POSTROUTE_RESTORATION_NETLIST_OBSERVATION`) on qualification candidate41440285882:
+
+- 142877 nets restored to their baseline route class, 146 unchanged, and 797 repair-rerouted nets with the baseline class.
+- All 1691 protected clock/fixed records and their attached geometry equal the baseline.
+- The diode-inclusive `write_verilog -include_pwr_gnd` netlist relinked through the restored LEFs. 154480 instances, 354 ports and 143817 connected nets have identical connections, after reversing escaped-name doubling for 1612 instance and 1224 net names. Three nets are declared but unused before export: `u_ibex.u_ibex_core.cs_registers_i.mstack_d[2]` and two PCIe `header_words[0]`.
+- All five native topology faults were rejected (missing diode, diode master, diode signal, diode supply, boundary).
+- Full native DRC: 92 markers (64 short, 28 metal spacing). Antenna: 27 cumulative-area violations. These are the known counts of this older candidate, not of the new full64 route.
+
+The host job still failed one bookkeeping check: `host-progress.json` exceeded its 16 MiB bound because every phase result embedded the complete native output, including all142877 restored names, twice. Phase results in progress now keep the native output fingerprint and a bounded summary (lists over 64 entries become count and digest). The complete outputs remain in the data directory and the permanent native capsule (release433577072). This stage still makes no claim of physical supply continuity, transistor LVS, extracted timing or the full serial PHY.

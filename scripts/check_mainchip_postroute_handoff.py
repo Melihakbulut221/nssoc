@@ -1,7 +1,7 @@
 """Offline source controls; actual complete netlist roundtrip runs in the native job."""
 import copy,json,sys
 from pathlib import Path
-from mainchip_postroute_handoff_contract import pg,topology,restoration,wire_class,wire_census,clock_gate,verilog_names
+from mainchip_postroute_handoff_contract import pg,topology,restoration,wire_class,wire_census,clock_gate,verilog_names,compact
 ROOT=Path(__file__).resolve().parents[1]
 def restoration_controls(rejected):
     def net(cls,wire,paths=1):return dict(identity=dict(name="n"),encoded=dict(wire_present=True,metadata=cls,paths=[cls]*paths),wire=dict(pin=wire))
@@ -103,6 +103,12 @@ def main():
     try:verilog_names(collide)
     except ValueError:rejected.append("escape_normalization_collision")
     else:raise AssertionError("collision admitted")
+    big=dict(restored_class_nets=["n%d"%i for i in range(142877)],status="S",nested=dict(names=list(range(70)),few=[1,2]))
+    small=compact(big)
+    assert small["restored_class_nets"]["count"]==142877 and small["nested"]["few"]==[1,2] and small["nested"]["names"]["count"]==70
+    assert len(json.dumps(small))<2000 and small["status"]=="S"
+    other=copy.deepcopy(big);other["restored_class_nets"][5]="changed"
+    assert compact(other)["restored_class_nets"]["sha256"]!=small["restored_class_nets"]["sha256"]
     restoration_controls(rejected)
     census=wire_controls(rejected)
     out=Path("postroute-handoff-controls");out.mkdir(exist_ok=False)

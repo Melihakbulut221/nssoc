@@ -6,6 +6,7 @@ import mainchip_bulk_postdrt_antenna_inner as base
 import mainchip_route47_memory as memory_policy
 from mainchip_bulk_postdrt_antenna_inner import c,p,OUT,WORK,DATA,INPUTS,ENGINE as ORIGINAL_ENGINE,fingerprint
 import mainchip_guide_route_qualification as qualification
+from mainchip_postroute_handoff_contract import compact
 ENGINE="/work/guide-engine/openroad"
 CONFIG=json.loads(Path("/work/tail-source/scripts/mainchip-guide-engine-built-inputs.json").read_bytes())
 QUALIFIED=json.loads(Path("/work/tail-source/scripts/mainchip-guide-engine-qualified-inputs.json").read_bytes())
@@ -17,7 +18,9 @@ def execute(label,report,runner):
     if label in native_outputs:
         os.environ['NSSOC_HANDOFF_PHASE']=label
         runner(report,'handoff-'+label,[ENGINE,'-no_init','-exit','-python',script],1200)
-        return c.decode((DATA/native_outputs[label]).read_bytes())
+        # The complete output stays in DATA and the native capsule; progress keeps a bounded copy.
+        path=DATA/native_outputs[label]
+        return dict(native_output=fingerprint(path),summary=compact(c.decode(path.read_bytes())))
     programs={'restore-import':'handoff-restore.tcl','export':'handoff-export.tcl',
               'relink':'handoff-relink.tcl','final-check':'final-check.tcl'}
     path=WORK/programs[label]

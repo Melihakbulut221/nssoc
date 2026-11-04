@@ -1,4 +1,5 @@
 """Exact restored-route and exported netlist admission; never a timing/LVS verdict."""
+import hashlib
 import json
 import re
 WIRE_SYNTAX = re.compile(rb'\+\s+(ROUTED|FIXED|COVER)\b')
@@ -145,3 +146,14 @@ def verilog_names(value):
                nets={nets[n]: dict(iterms=sorted([fix(i), p] for i, p in r["iterms"]), bterms=sorted(fix(b) for b in r["bterms"])) for n, r in value["nets"].items()})
     renamed = dict(instances=sum(a != b for a, b in inst.items()), nets=sum(a != b for a, b in nets.items()))
     return out, renamed
+
+def compact(value, limit=64):
+    """Bounded progress copy of a native output: long lists become count and digest."""
+    if isinstance(value, dict):
+        return {k: compact(v, limit) for k, v in value.items()}
+    if isinstance(value, list):
+        if len(value) <= limit:
+            return [compact(v, limit) for v in value]
+        raw = json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+        return dict(count=len(value), sha256=hashlib.sha256(raw).hexdigest(), first=[compact(v, limit) for v in value[:3]])
+    return value
