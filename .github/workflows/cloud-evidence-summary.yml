@@ -1,125 +1,43 @@
-name: Simulate actual650 whole nonlinear gate metal loaded circuit
+name: Derived per-bit trace of preserved N1 actual650 waveform
 on:
   workflow_dispatch:
-    inputs:
-      execute:
-        type: boolean
-        default: false
-      partition:
-        type: choice
-        options: ['1', '2', '4', '8', '16']
-        default: '1'
-      case:
-        type: choice
-        options: ['nominal_early', 'nominal_late', 'hot_early', 'hot_late', 'cold_early', 'cold_late', 'constant_zero', 'constant_one', 'clock_stopped', 'vi_bias_off']
-        default: nominal_late
-      approved_source:
-        type: string
-        required: true
 permissions:
   contents: read
   actions: read
-concurrency:
-  group: cdr-mos650-full-composition-${{ github.ref }}
-  cancel-in-progress: false
-env:
-  PYTHONDONTWRITEBYTECODE: '1'
-  OPENBLAS_NUM_THREADS: '1'
-  OMP_NUM_THREADS: '1'
-  GATE_PARTITION: ${{ inputs.partition }}
-  LOADED_CASE: ${{ inputs.case }}
-  APPROVED_SOURCE: ${{ inputs.approved_source }}
 jobs:
-  source-controls:
+  n1-wave-trace:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: false
-          filter: blob:none
-          sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/cdr-mos650-gate-ac-pins.json
-      - name: Materialize exact source closure
-        run: |
-          python3 -B - <<'PY'
-          import json,subprocess
-          from pathlib import Path
-          m='scripts/cdr-mos650-gate-ac-pins.json'
-          names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
-          assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
-          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
-          PY
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
-      - name: Verify frozen model and physical input sources
-        run: python3 -B scripts/cdr_mos650_gate_ac.py --controls
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: mos650-controls-${{ github.run_id }}
-          path: mos650-gate-ac/derived
-          if-no-files-found: error
-          retention-days: 90
-  native-gate-ac:
-    if: ${{ inputs.execute }}
-    needs: source-controls
-    runs-on: ubuntu-24.04
-    timeout-minutes: 360
-    permissions:
-      contents: write
-      actions: read
+    timeout-minutes: 90
     env:
       GH_TOKEN: ${{ github.token }}
+      ARTIFACT_ID: '13283214752'
+      ARTIFACT_SHA256: ac342f4945a262a4c0fb2440634aa600b8d3f07c6c257c9d3d6e648a319b2402
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: ${{ github.sha }}
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/cdr-mos650-gate-ac-pins.json
-      - name: Materialize exact source closure
+          sparse-checkout: /scripts/cdr_n1_wave_trace.py
+      - name: Fetch and authenticate preserved native archive
         run: |
-          python3 -B - <<'PY'
-          import json,subprocess
-          from pathlib import Path
-          m='scripts/cdr-mos650-gate-ac-pins.json'
-          names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
-          assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
-          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
-          PY
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
-      - name: Install pinned sparse linear algebra dependencies
-        run: python3 -m pip install --disable-pip-version-check --no-cache-dir --report /tmp/nssoc-gate-reduce-packages.json numpy==2.3.3 scipy==1.16.2
-      - name: Assemble all actual650 partitions and execute selected full256bit loaded transient
-        id: native
-        run: python3 -B scripts/cdr_mos650_gate_ac.py --extract
+          set -euo pipefail
+          df -h / /mnt || true
+          W=/mnt/n1; sudo mkdir -p $W; sudo chown $USER $W
+          gh api repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip > $W/n1.zip
+          echo "$ARTIFACT_SHA256  $W/n1.zip" | sha256sum -c -
+          unzip -l $W/n1.zip | grep -E "wave.raw|\.json$" | head -20
+          member=$(unzip -Z1 $W/n1.zip | grep -E '(^|/)loaded-n1-nominal_late/wave.raw$')
+          test "$(echo "$member" | wc -l)" = 1
+          unzip -p $W/n1.zip "$member" > $W/wave.raw
+          rm $W/n1.zip
+          ls -l $W/wave.raw
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
+      - name: Sample every saved vector at 16 phases per bit
+        run: python3 -B scripts/cdr_n1_wave_trace.py /mnt/n1/wave.raw n1-wave-trace
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
         with:
-          name: mos650-derived-early-${{ github.run_id }}
-          path: mos650-gate-ac/derived
+          name: n1-wave-trace-${{ github.run_id }}
+          path: n1-wave-trace
           if-no-files-found: error
-          retention-days: 90
-      - name: Preserve every actual native success or failure
-        if: always()
-        run: python3 -B scripts/cdr_mos650_gate_ac.py --publish
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: mos650-derived-${{ github.run_id }}
-          path: mos650-gate-ac/derived
-          if-no-files-found: error
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: mos650-native-fallback-${{ github.run_id }}
-          path: mos650-gate-ac
-          if-no-files-found: warn
           retention-days: 90
