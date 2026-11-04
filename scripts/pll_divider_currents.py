@@ -33,7 +33,11 @@ def crossings(t,x,level=0.0):
     i=np.flatnonzero((x[:-1]<level)&(x[1:]>=level));return t[i]+(level-x[i])*(t[i+1]-t[i])/(x[i+1]-x[i])
 def analyze(case,probes,out):
     m,names=read_raw(case/'probe.raw');idx={n.lower():i for i,n in enumerate(names)}
-    t=np.asarray(m[:,0]);col=lambda n:np.asarray(m[:,idx[n.lower()]])
+    out=Path(out);out.mkdir(parents=True,exist_ok=True);(out/'raw-names.json').write_text(json.dumps(names))
+    def col(n):
+        n=n.lower();key=n if n in idx else 'i('+n+')'
+        return np.asarray(m[:,idx[key]])
+    t=np.asarray(m[:,0])
     late=(t>=0.9e-6)&(t<=1.0e-6)
     fb=col('v(fb)')-col('v(fbbar)');ref=col('v(reference)')
     fe=crossings(t,fb);fe=fe[(fe>=0.9e-6)&(fe<=1.0e-6)];re_=crossings(t,ref,1.25);re_=re_[(re_>=0.9e-6-10e-9)&(re_<=1.0e-6)]
@@ -41,13 +45,13 @@ def analyze(case,probes,out):
     lag=[float(f-re_[re_<=f][-1])for f in fe if (re_<=f).any()]
     r=dict(points=len(t),end_s=float(t[-1]),feedback_frequency_hz=freq,feedback_edges=len(fe),phase_lag_s=[min(lag),max(lag)]if lag else None,
            phase_span_s=(max(lag)-min(lag))if lag else None,reference_original=dict(feedback_frequency_hz=104152221.297,phase_span_s=5.002708790e-9))
+    (out/'result.json').write_text(json.dumps(r,indent=1,sort_keys=True))
     p=json.load(open(probes));roles=p['roles'];dev={}
     for q in p['currents']:
         name=q.split('.')[2];kind=q[-3:-1]
         x=col(q)[late];dev.setdefault(name,dict(role=roles.get(name)))[kind]=dict(min=float(x.min()),max=float(x.max()),mean=float(x.mean()))
     r['late_window_currents_a']=dev
     clk=col('v(clkp)')-col('v(clkn)');ce=crossings(t[late],clk[late]);r['clock_frequency_hz']=float((len(ce)-1)/(ce[-1]-ce[0]))if len(ce)>1 else None
-    out=Path(out);out.mkdir(parents=True,exist_ok=True)
     tail=t>=0.98e-6
     np.savez_compressed(out/'late-window.npz',t=t[tail].astype(np.float64),names=np.array(names[1:]),
         samples=np.array([np.asarray(m[tail,i])for i in range(1,len(names))],dtype=np.float32))
