@@ -12,6 +12,9 @@ def json_normal(snapshot, label):
         if key != "nets":
             need(json.loads(json.dumps(value)) == value, label + " snapshot section " + key + " is not JSON-normal; compare saved snapshots")
 
+def route_classes(encoded):
+    return dict(wire_present=encoded["wire_present"], metadata=encoded["metadata"], paths=sorted(set(encoded["paths"])))
+
 def restoration(before, after, baseline, expected_def_pin):
     for label, value in (("before", before), ("after", after), ("baseline", baseline)):
         json_normal(value, label)
@@ -26,16 +29,21 @@ def restoration(before, after, baseline, expected_def_pin):
     restored_clocks = sorted(n for n, pin in before["clock_record_pins"].items() if pin != after["clock_record_pins"][n])
     need(after["def_pin"] == expected_def_pin, "complete expected restored DEF")
     need(set(before["nets"]) == set(after["nets"]) == set(baseline["nets"]), "complete net census")
-    changed = []
+    changed = []; rerouted = []
     for name, old in before["nets"].items():
-        new = after["nets"][name]
+        new = after["nets"][name]; base = baseline["nets"][name]["encoded"]
         need(old["identity"] == new["identity"], "all terminals and net attributes " + name)
-        need(new["encoded"] == baseline["nets"][name]["encoded"], "original route metadata/classes " + name)
+        # The class encoding is wire presence, net metadata and the set of path
+        # classes; the path count follows geometry, which the repair changed.
+        need(route_classes(new["encoded"]) == route_classes(base), "original route metadata/classes " + name)
+        if new["encoded"] != base:
+            rerouted.append(name)
         if old["encoded"] == new["encoded"]:
             need(old["wire"] == new["wire"], "unmodified wire opcode stream " + name)
         else:
             changed.append(name)
-    return dict(restored_class_nets=changed, restored_clock_records=restored_clocks, unchanged_instances=True,
+    return dict(restored_class_nets=changed, restored_clock_records=restored_clocks,
+                geometry_differs_from_baseline=sorted(rerouted), unchanged_instances=True,
                 exact_full_DEF=True, all_original_route_classes=True,
                 physical_acceptance=False, timing_accepted=False, full_phy_accepted=False)
 

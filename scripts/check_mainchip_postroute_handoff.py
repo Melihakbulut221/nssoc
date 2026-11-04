@@ -4,7 +4,7 @@ from pathlib import Path
 from mainchip_postroute_handoff_contract import pg,topology,restoration,wire_class,wire_census
 ROOT=Path(__file__).resolve().parents[1]
 def restoration_controls(rejected):
-    def net(cls,wire):return dict(identity=dict(name="n"),encoded=dict(metadata=cls),wire=dict(pin=wire))
+    def net(cls,wire,paths=1):return dict(identity=dict(name="n"),encoded=dict(wire_present=True,metadata=cls,paths=[cls]*paths),wire=dict(pin=wire))
     baseline=dict(instances={"u":1},protected=["clk"],clock_record_pins={"clk":"ROUTED"},def_pin="b",
         nets={"clk":net("ROUTED","w1"),"n":net("ROUTED","w2")})
     before=copy.deepcopy(baseline);before["clock_record_pins"]={"clk":"FIXED"};before["def_pin"]="c"
@@ -12,6 +12,13 @@ def restoration_controls(rejected):
     after=copy.deepcopy(baseline);after["def_pin"]="e"
     result=restoration(before,after,baseline,"e")
     assert result["restored_clock_records"]==["clk"]and result["restored_class_nets"]==["clk"],result
+    rerouted_before=copy.deepcopy(before);rerouted_before["nets"]["n"]=net("ROUTED","w3",3)
+    rerouted_after=copy.deepcopy(after);rerouted_after["nets"]["n"]=net("ROUTED","w3",3)
+    assert restoration(rerouted_before,rerouted_after,baseline,"e")["geometry_differs_from_baseline"]==["n"]
+    reclassed=copy.deepcopy(rerouted_after);reclassed["nets"]["n"]["encoded"]["paths"]=["ROUTED","FIXED","ROUTED"]
+    try:restoration(rerouted_before,reclassed,baseline,"e")
+    except ValueError:rejected.append("rerouted_net_class_changed")
+    else:raise AssertionError("class change admitted")
     tupled=copy.deepcopy(after);tupled["instances"]={"u":(1,)}
     try:restoration(before,tupled,baseline,"e")
     except ValueError as error:
