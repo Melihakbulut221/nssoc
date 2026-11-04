@@ -18,7 +18,7 @@ permissions:
 jobs:
   visible-neighbors:
     runs-on: ubuntu-24.04
-    timeout-minutes: 350
+    timeout-minutes: 355
     env:
       GH_TOKEN: ${{ github.token }}
       IMAGE: openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a
@@ -68,8 +68,8 @@ jobs:
           set -e
           cd /v/o
           PHASE=prepare SRC=/v/o/cleared.odb DST=/v/o/visible.odb CLASSES=/v/o/classes.json CENSUS=/v/o/census-before.json /v/openroad -no_init -exit -python /v/o/drt_visible_neighbors.py
-          /v/openroad -no_init -exit /v/o/route.tcl > /v/o/route.log 2>&1 || echo ROUTE_FAILED
-          grep -E "Number of violations|peak = " /v/o/route.log | tail -40
+          set -o pipefail
+          ( /v/openroad -no_init -exit /v/o/route.tcl 2>&1 || echo ROUTE_FAILED ) | tee /v/o/route.log | grep --line-buffered -E "Start .* iteration|Number of violations|peak = |ROUTE_FAILED|ERROR" || true
           /v/openroad -no_init -exit /v/o/check.tcl > /v/o/check.log 2>&1 || echo CHECK_FAILED
           echo "CHECK_DRC markers=$(grep -c 'violation type' /v/o/check.rpt || true)"
           grep -o "violation type: [A-Za-z ]*" /v/o/check.rpt | sort | uniq -c || true
