@@ -6,7 +6,7 @@ import odb
 import mainchip_bulk_postdrt_antenna_native as native
 import mainchip_snapshot_reload_native as reload
 import mainchip_saved_diode_routing_native as saved
-from mainchip_route47_contract import need,select,same_sections,wire_delta
+from mainchip_route47_contract import need,route_program,select,same_sections,wire_delta
 from mainchip_route47_import import import_program
 n,p,c=native.n,native.p,native.c
 ROOT=reload.ROOT;WORK=reload.WORK;DATA=reload.DATA;INPUT=reload.CANDIDATE
@@ -93,14 +93,7 @@ def reverse_and_clear():
     delta=wire_delta(fixed,after,selected,"clear",p.pin(p.encode(None)));save("narrow47-clear-delta.json",delta)
     del fixed,after;gc.collect()
     route=native.route_tcl(WORK,Path(os.environ["NSSOC_BULK_ENVIRONMENT"]),Path(os.environ["NSSOC_BULK_ORIGINAL_TCL"]))
-    old="read_db "+native.q(WORK/"fixed.odb")
-    need(route.count(old)==1 and route.count("detailed_route {*}$drt_args")==1,"single original router input and call")
-    changed=route.replace(old,"read_db "+native.q(target),1)
-    marker="puts NSSOC_FIXED_CLOCK_SIGNAL_REPAIR_BEGIN"
-    need(changed.count(marker)==1,"single native route stage")
-    debug="set_debug_level DRT snapshot 1\ndetailed_route_debug -snapshot_dir "+native.q(WORK)+"\n"
-    changed=changed.replace(marker,debug+marker,1)
-    need(changed.replace(debug,"",1).replace("read_db "+native.q(target),old,1)==route,"only input binding and output preservation differ from original route program")
+    changed=route_program(route,"read_db "+native.q(WORK/"fixed.odb"),"read_db "+native.q(target))
     (WORK/"route.tcl").write_text(changed);(DATA/"narrow47-route-original.tcl").write_text(route);(DATA/"narrow47-route-actual.tcl").write_text(changed)
     save("narrow47-seed.json",dict(status="PASS_NATIVE47_IDENTITY_REVERSIBLE_FIXED_AND_SCOPED_CLEAR",input=native.fp(INPUT),seed=native.fp(target),selected=47,protected_clocks=1691,route_tcl=native.fp(WORK/"route.tcl"),route_executed=False,**p.FLAGS))
 def route_restore():

@@ -1,6 +1,18 @@
 """Strict scope for the actual47-net repair; no physical/timing acceptance."""
 def need(value,message):
     if not value:raise ValueError(message)
+def route_program(route,old,new):
+    """Original route program with only its input binding changed.
+
+    No per-iteration DRT snapshot insertion: the original keeps DRT_SAVE_SNAPSHOTS=0.
+    """
+    need(route.count(old)==1 and route.count("detailed_route {*}$drt_args")==1,"single original router input and call")
+    need(route.count("puts NSSOC_FIXED_CLOCK_SIGNAL_REPAIR_BEGIN")==1,"single native route stage")
+    need(route.count('$::env(DRT_SAVE_SNAPSHOTS) ne "0"')==1,"original snapshot-free route setting")
+    need(new!=old and new not in route,"fresh input binding")
+    changed=route.replace(old,new,1)
+    need(changed.replace(new,old,1)==route,"only input binding differs from original route program")
+    return changed
 def select(plan,scope,before):
     owners=scope["routing_nets"];clocks=scope["protected_nets"]
     need(len(owners)==len(set(owners))and owners,"unique routing owners")

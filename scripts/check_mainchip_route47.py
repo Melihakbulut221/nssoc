@@ -1,7 +1,8 @@
 """Independent synthetic faults for scope boundaries before native routing."""
 import copy,json
 from pathlib import Path
-from mainchip_route47_contract import select,wire_delta
+from mainchip_route47_contract import route_program,select,wire_delta
+ROOT=Path(__file__).resolve().parents[1]
 def fixture():
     def net(n):
         return dict(identity=dict(name=n,sigtype="SIGNAL",terminals=[n+":A"]),encoded=dict(wire_present=True,metadata="ROUTED",paths=["ROUTED"]),wire=dict(pin={"sha256":"original"},opcode_count=2))
@@ -42,7 +43,21 @@ def main():
         try:wire_delta(a,b,owners,"clear",{"sha256":"null"})
         except ValueError:cases.append("refuse "+label)
         else:raise AssertionError(label)
-    assert len(cases)==20
+    route=(ROOT/"scripts/mainchip-bounded-route-baseline.tcl").read_text()
+    old="read_db {/work/out/work/bulk-postdrt-antenna/stale-wire-cleared.odb}";new="read_db {/work/out/work/bulk-postdrt-antenna/narrow47-cleared.odb}"
+    changed=route_program(route,old,new)
+    assert changed.count(new)==1 and old not in changed and changed.count("detailed_route_debug")==route.count("detailed_route_debug")==1
+    cases.append("original snapshot-free route program with only input rebound")
+    debug="set_debug_level DRT snapshot 1\ndetailed_route_debug -snapshot_dir {/work}\n"
+    marker="puts NSSOC_FIXED_CLOCK_SIGNAL_REPAIR_BEGIN"
+    for label,text,a,b in [("double-input",route+"\n"+old+"\n",old,new),("double-route",route+"\ndetailed_route {*}$drt_args\n",old,new),
+        ("missing-stage",route.replace(marker,"puts OTHER"),old,new),("snapshots-enabled",route.replace('DRT_SAVE_SNAPSHOTS) ne "0"','DRT_SAVE_SNAPSHOTS) ne "1"'),old,new),
+        ("binding-already-present",route+"\n#"+new+"\n",old,new),("unchanged-binding",route,old,old)]:
+        try:route_program(text,a,b)
+        except ValueError:cases.append("refuse "+label)
+        else:raise AssertionError(label)
+    assert debug+marker not in changed
+    assert len(cases)==27
     out=Path("route47-controls");out.mkdir()
-    (out/"result.json").write_text(json.dumps(dict(count=20,cases=cases,native_executed=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False),indent=2)+"\n")
+    (out/"result.json").write_text(json.dumps(dict(count=27,cases=cases,native_executed=False,physical_acceptance=False,timing_accepted=False,full_phy_accepted=False),indent=2)+"\n")
 if __name__=="__main__":main()
