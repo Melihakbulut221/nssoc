@@ -61,7 +61,7 @@ jobs:
           set -e
           cd /v/o
           PHASE=prepare SRC=/v/o/cleared.odb DST=/v/o/visible.odb CLASSES=/v/o/classes.json CENSUS=/v/o/census-before.json /v/openroad -no_init -exit -python /v/o/drt_visible_neighbors.py
-          /usr/bin/time -v /v/openroad -no_init -exit /v/o/route.tcl > /v/o/route.log 2>&1 || echo ROUTE_FAILED
+          /v/openroad -no_init -exit /v/o/route.tcl > /v/o/route.log 2>&1 || echo ROUTE_FAILED
           grep -E "Number of violations|elapsed time = .*peak|Start .* iteration" /v/o/route.log | tail -20
           /v/openroad -no_init -exit /v/o/check.tcl > /v/o/check.log 2>&1 || echo CHECK_FAILED
           echo "CHECK_DRC markers=$(grep -c 'violation type' /v/o/check.rpt || true)"
