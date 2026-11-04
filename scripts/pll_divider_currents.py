@@ -10,7 +10,17 @@ then report per-HBT terminal currents and divider transitions.
 import json,re,sys
 from pathlib import Path
 import numpy as np
-def prepare(case,probes):
+VARIANTS={'original':{},
+ 'cond_lowz4':{'XD0497':'16u','XD0498':'16u','XD0488':'4u','XD0489':'4u'},
+ 'cond_series4':{'XD0497':'16u','XD0498':'16u'}}
+def patch_parent(case,variant):
+    lines=(case/'parent865.spice').read_text().split('\n');changed={}
+    for name,w in VARIANTS[variant].items():
+        hits=[i for i,l in enumerate(lines)if l.split(maxsplit=1)[:1]==[name]];assert len(hits)==1,(name,len(hits))
+        old=lines[hits[0]];new,n=re.subn(r'(\sw=)\S+',r'\g<1>'+w,old);assert n==1,old;lines[hits[0]]=new;changed[name]=[old,new]
+    (case/'parent865.spice').write_text('\n'.join(lines));return changed
+def prepare(case,probes,variant='original'):
+    json.dump(patch_parent(case,variant),open(case/'variant-patch.json','w'),indent=1)
     p=json.load(open(probes));deck=(case/'candidate-circuit.cir').read_text().split('\n')
     hits=[i for i,l in enumerate(deck)if l.startswith('save ')];assert len(hits)==1,len(hits)
     deck[hits[0]]='save '+' '.join(p['voltages']+p['currents'])
@@ -52,10 +62,15 @@ def analyze(case,probes,out):
         x=col(q)[late];dev.setdefault(name,dict(role=roles.get(name)))[kind]=dict(min=float(x.min()),max=float(x.max()),mean=float(x.mean()))
     r['late_window_currents_a']=dev
     clk=col('v(clkp)')-col('v(clkn)');ce=crossings(t[late],clk[late]);r['clock_frequency_hz']=float((len(ce)-1)/(ce[-1]-ce[0]))if len(ce)>1 else None
+    sl=col('v(xloop.w_t494_rppd_2)')-col('v(xloop.w_t493_rppd_2)');tl=t[late];x=sl[late]-np.median(sl[late])
+    edges=tl[np.flatnonzero(np.sign(x[:-1])!=np.sign(x[1:]))];rises=crossings(tl,clk[late])
+    hist=np.histogram(edges,bins=rises)[0];r['divider_transitions_per_clock_period']={int(k):int(n)for k,n in zip(*np.unique(hist,return_counts=True))}
+    r['vco_over_feedback_ratio']=(r['clock_frequency_hz']/freq)if freq and r['clock_frequency_hz']else None
+    cb=col('v(xloop.w_t387_b)')-col('v(xloop.w_t388_b)');r['divider_clock_base_diff_v']=[float(cb[late].min()),float(cb[late].max())]
     tail=t>=0.98e-6
     np.savez_compressed(out/'late-window.npz',t=t[tail].astype(np.float64),names=np.array(names[1:]),
         samples=np.array([np.asarray(m[tail,i])for i in range(1,len(names))],dtype=np.float32))
     (out/'result.json').write_text(json.dumps(r,indent=1,sort_keys=True));print(json.dumps({k:r[k]for k in('feedback_frequency_hz','phase_span_s','clock_frequency_hz','end_s')}))
 if __name__=='__main__':
     stage,case,probes=sys.argv[1:4]
-    prepare(Path(case),probes) if stage=='prepare' else analyze(Path(case),probes,sys.argv[4])
+    prepare(Path(case),probes,*sys.argv[4:5]) if stage=='prepare' else analyze(Path(case),probes,sys.argv[4])
