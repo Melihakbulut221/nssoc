@@ -106,3 +106,20 @@ def wire_census(c, records):
     return dict(records=len(records), single_clause=single, wireless=len(wireless),
                 wireless_names=sorted(wireless), multiple_clause=multiple,
                 unsupported_syntax=sorted(unsupported))
+
+def clock_gate(after, baseline):
+    """Frozen all-clocks gate semantics against the exact baseline of this candidate.
+
+    Every protected CLOCK/FIXED/clock-pin/clkbuf net keeps its baseline DEF record
+    and every attached terminal with instance master, location, origin,
+    orientation and placement status. The route12 donor is a different
+    153130-instance design and is not a valid reference here.
+    """
+    names = baseline["protected"]
+    need(len(names) == len(set(names)) == 1691 and after["protected"] == names, "protected1691 census")
+    need("clknet_3_5_0_pcie_clk_i" in names, "pcie clock in protected scope")
+    for name in names:
+        need(after["clock_record_pins"][name] == baseline["clock_record_pins"][name], "protected record " + name)
+        need(after["nets"][name]["identity"] == baseline["nets"][name]["identity"], "protected terminals and attached geometry " + name)
+    return dict(status="PASS_ALL_PROTECTED_CLOCK_AND_FIXED_RECORDS_AND_ATTACHED_GEOMETRY_EQUAL_BASELINE",
+                clock_or_fixed_nets=len(names), reference="exact baseline snapshot (p.INPUT)", accepted=False)

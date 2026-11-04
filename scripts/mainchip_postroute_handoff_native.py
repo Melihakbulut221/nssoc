@@ -5,7 +5,7 @@ sys.path.insert(0, "/work/tail-source/scripts")
 import odb
 import mainchip_bulk_postdrt_antenna_native as native
 from mainchip_bulk_postdrt_antenna_native import n,p,c
-from mainchip_postroute_handoff_contract import need, restoration, topology, pg, wire_class, wire_census
+from mainchip_postroute_handoff_contract import need, restoration, topology, pg, wire_class, wire_census, clock_gate
 WORK=Path("/work/out/work/bulk-postdrt-antenna")
 DATA=Path("/work/out/bulk-postdrt-antenna")
 CANDIDATE=Path("/work/route-candidate/work/bulk-postdrt-antenna/narrow47-restored.odb")
@@ -96,7 +96,7 @@ def restored():
     need((WORK/"handoff-restored-observed.def").read_bytes()==(WORK/"handoff-expected.def").read_bytes(),"complete restored DEF byte equality")
     result=restoration(before,after,baseline,native.fp(WORK/"handoff-expected.def"))
     need(after["clock_record_pins"]==baseline["clock_record_pins"],"original complete1691 clock records")
-    result["original_clock_gate"]=n.original_gate(Path(os.environ["NSSOC_BULK_DONOR"]),WORK/"handoff-restored.odb",DATA,"handoff-original-clock")
+    result["original_clock_gate"]=clock_gate(after,baseline)
     save("handoff-restoration.json",result)
     del before,baseline,after;gc.collect()
     save("handoff-topology-before.json",capture(WORK/"handoff-restored.odb"))

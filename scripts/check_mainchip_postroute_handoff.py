@@ -1,7 +1,7 @@
 """Offline source controls; actual complete netlist roundtrip runs in the native job."""
 import copy,json,sys
 from pathlib import Path
-from mainchip_postroute_handoff_contract import pg,topology,restoration,wire_class,wire_census
+from mainchip_postroute_handoff_contract import pg,topology,restoration,wire_class,wire_census,clock_gate
 ROOT=Path(__file__).resolve().parents[1]
 def restoration_controls(rejected):
     def net(cls,wire,paths=1):return dict(identity=dict(name="n"),encoded=dict(wire_present=True,metadata=cls,paths=[cls]*paths),wire=dict(pin=wire))
@@ -24,6 +24,17 @@ def restoration_controls(rejected):
     except ValueError as error:
         assert "not JSON-normal" in str(error),error;rejected.append("unnormalized_in_memory_snapshot")
     else:raise AssertionError("tuple snapshot admitted")
+    names=["clk%d"%i for i in range(1690)]+["clknet_3_5_0_pcie_clk_i"]
+    term=lambda x:dict(name=x,terminals=[["u",x,"BUF",[0,0],"R0"]])
+    base=dict(protected=names,clock_record_pins={x:"rec" for x in names},nets={x:dict(identity=term(x))for x in names})
+    assert clock_gate(copy.deepcopy(base),base)["clock_or_fixed_nets"]==1691
+    for label,change in (("clock_attached_geometry",lambda a:a["nets"]["clk7"]["identity"]["terminals"][0].__setitem__(3,[5,0])),
+                         ("clock_record_changed",lambda a:a["clock_record_pins"].update(clk7="other")),
+                         ("clock_scope_changed",lambda a:a.update(protected=names[1:]))):
+        wrong=copy.deepcopy(base);change(wrong)
+        try:clock_gate(wrong,base)
+        except ValueError:rejected.append(label)
+        else:raise AssertionError(label)
     for label,change in (("clock_record_not_baseline",lambda a:a["clock_record_pins"].update(clk="OTHER")),
                          ("instance_section_changed",lambda a:a["instances"].update(u=2)),
                          ("clock_record_census",lambda a:a["clock_record_pins"].update(extra="ROUTED"))):
