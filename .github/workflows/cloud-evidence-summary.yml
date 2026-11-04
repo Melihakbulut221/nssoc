@@ -1,48 +1,40 @@
-name: Divider what-if reruns of preserved N1 actual650 bench
+name: Section difference of handoff before and restored snapshots
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  divider-whatif:
+  snapshot-diff:
     runs-on: ubuntu-24.04
-    timeout-minutes: 330
-    strategy:
-      fail-fast: false
-      matrix:
-        variant: [control, lowz4, compensated]
+    timeout-minutes: 60
     env:
       GH_TOKEN: ${{ github.token }}
-      ARTIFACT_ID: '13283214752'
-      ARTIFACT_SHA256: ac342f4945a262a4c0fb2440634aa600b8d3f07c6c257c9d3d6e648a319b2402
+      ARTIFACT_ID: '13296564135'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /scripts/cdr_n1_divider_whatif.py
-            /scripts/cdr_mos650_full650_loaded.py
-      - name: Restore the preserved N1 native tree at its original absolute path
+          sparse-checkout: /scripts/handoff_snapshot_diff.py
+      - name: Fetch handoff workspace of run 41774359214
         run: |
           set -euo pipefail
-          W=/mnt/n1; sudo mkdir -p $W; sudo chown $USER $W
-          gh api repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip > $W/n1.zip
-          echo "$ARTIFACT_SHA256  $W/n1.zip" | sha256sum -c -
-          mkdir -p mos650-gate-ac
-          unzip -q $W/n1.zip -d mos650-gate-ac -x '*/wave.raw' '*/producer-*' '*/composition-n2/*' '*/composition-n4/*' '*/composition-n8/*' '*/composition-n16/*'
-          rm $W/n1.zip
-          ls mos650-gate-ac mos650-gate-ac/native mos650-gate-ac/native/loaded-n1-nominal_late
-          grep -n "^\.lib\|^\.include\|pre_osdi" mos650-gate-ac/native/loaded-n1-nominal_late/bench.cir
-      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
-      - name: Rerun with ${{ matrix.variant }} divider values and the frozen gates
-        run: python3 -B scripts/cdr_n1_divider_whatif.py mos650-gate-ac ${{ matrix.variant }} whatif-${{ matrix.variant }}
+          W=/mnt/h; sudo mkdir -p $W; sudo chown $USER $W
+          gh api repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip > $W/w.zip
+          sha256sum $W/w.zip
+          unzip -Z1 $W/w.zip > $W/members.txt; wc -l $W/members.txt
+          grep -E "handoff-(before|baseline|restored-observed)\.json$" $W/members.txt
+          unzip -q $W/w.zip -d $W/x $(grep -E "handoff-(before|baseline|restored-observed)\.json$" $W/members.txt)
+      - name: Diff every snapshot section except nets
+        run: |
+          mkdir -p diff
+          python3 -B scripts/handoff_snapshot_diff.py /mnt/h/x diff/handoff-snapshot-diff.json
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: divider-whatif-${{ matrix.variant }}-${{ github.run_id }}
-          path: whatif-${{ matrix.variant }}
+          name: handoff-snapshot-diff-${{ github.run_id }}
+          path: diff
           if-no-files-found: warn
           retention-days: 90
