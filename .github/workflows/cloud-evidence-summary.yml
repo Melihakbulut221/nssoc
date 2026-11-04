@@ -5,19 +5,26 @@ on:
       iterations:
         type: string
         default: '4'
+      engine:
+        description: guide (bounded guide-tile build) or fixedguard (unbounded FIXED-guard build)
+        type: string
+        default: guide
+      threads:
+        type: string
+        default: '4'
 permissions:
   contents: read
   actions: read
 jobs:
   visible-neighbors:
     runs-on: ubuntu-24.04
-    timeout-minutes: 240
+    timeout-minutes: 350
     env:
       GH_TOKEN: ${{ github.token }}
       IMAGE: openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a
-      ENGINE_PART: '706643321'
-      ENGINE_PART_SHA: 69b0c127830daeefb6de5731e88ca858627814e407970dd8e176868110e1215c
-      ENGINE_SHA: e12b1c70296c119c31ed5b1a7f739904d06b3c86cd703eebee25dbcc9c357431
+      ENGINE_PART: ${{ inputs.engine == 'fixedguard' && '687863984' || '706643321' }}
+      ENGINE_PART_SHA: ${{ inputs.engine == 'fixedguard' && '5e38e0f86a07f3d2e7567d4b592051baeb66cf07fcc2c36db0138c372e31dd25' || '69b0c127830daeefb6de5731e88ca858627814e407970dd8e176868110e1215c' }}
+      ENGINE_SHA: ${{ inputs.engine == 'fixedguard' && '2a343c7491353a60e7b06aa134d4b67e3ef2e846a8341164dacffe88f5f7ec2f' || 'e12b1c70296c119c31ed5b1a7f739904d06b3c86cd703eebee25dbcc9c357431' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -52,7 +59,7 @@ jobs:
           cat > $W/o/route.tcl <<TCL
           read_db /v/o/visible.odb
           set_routing_layers -signal Metal2-TopMetal2 -clock Metal4-TopMetal2
-          set_thread_count 4
+          set_thread_count ${{ inputs.threads }}
           detailed_route -droute_end_iter $N -or_seed 42 -verbose 1 -output_drc /v/o/route.drc
           write_db /v/o/routed.odb
           TCL
@@ -62,7 +69,7 @@ jobs:
           cd /v/o
           PHASE=prepare SRC=/v/o/cleared.odb DST=/v/o/visible.odb CLASSES=/v/o/classes.json CENSUS=/v/o/census-before.json /v/openroad -no_init -exit -python /v/o/drt_visible_neighbors.py
           /v/openroad -no_init -exit /v/o/route.tcl > /v/o/route.log 2>&1 || echo ROUTE_FAILED
-          grep -E "Number of violations|elapsed time = .*peak|Start .* iteration" /v/o/route.log | tail -20
+          grep -E "Number of violations|peak = " /v/o/route.log | tail -40
           /v/openroad -no_init -exit /v/o/check.tcl > /v/o/check.log 2>&1 || echo CHECK_FAILED
           echo "CHECK_DRC markers=$(grep -c 'violation type' /v/o/check.rpt || true)"
           grep -o "violation type: [A-Za-z ]*" /v/o/check.rpt | sort | uniq -c || true
