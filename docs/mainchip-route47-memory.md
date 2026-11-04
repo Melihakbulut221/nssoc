@@ -27,3 +27,17 @@ The two exact route programs `bulk-postdrt-antenna/narrow47-route-original.tcl` 
 The original route program keeps `DRT_SAVE_SNAPSHOTS=0` and guards it. The route47 seed had inserted `set_debug_level DRT snapshot 1` and `detailed_route_debug -snapshot_dir`, so run41699812301 wrote 63 per-iteration ODBs of 214MB each (13.5GB of the 20.4GB capsule). Those writes held the cgroup at memory.max, and their compression and publication took most of the 83 minutes between the route stop and artifact upload. A completed route plus restore, audit, full DRC/antenna and the same publication would run past the 360-minute job limit.
 
 The route program is now the original program with only its `read_db` input rebound (`route_program()` in `mainchip_route47_contract.py`). It refuses a second input or router call, a missing route stage, an enabled snapshot setting, and an input binding that already appears. The iteration-62 checkpoint (5 violations) from run41699812301 stays in release433106055 as the restart point if this route does not return. Seven more hosted controls cover this (27 in total).
+
+## Run 41772302484 result: route completed, DRC not closed
+
+Run41772302484 at e64115d completed every phase (`COMPLETE_GUIDE_ENGINE_ACTUAL_FULL64_ROUTE_OBSERVATION`, host success). The snapshot-free original program routed all 64 iterations in 8582 s (previously stopped at iteration 63 after 11754 s). No snapshot-window retry was needed. The router's last iterations report 5 violations. The full native check after class restoration finds 263 DRC markers (234 Short, 12 Cut Short, 17 Metal Spacing) and 27 antenna violations on 21 nets. Every one of the 263 markers involves at least one of the 47 rerouted nets; 96 nets appear in total.
+
+Hosted run41792601886 ran the same engine's `drt::check_drc` on three databases from release433507733:
+
+| Database | FIXED nets | ROUTED nets | Markers |
+|---|---:|---:|---:|
+| narrow47-cleared (router input, 47 wires removed) | 143659 | 161 | 0 |
+| routed-fixed (router output, temporary FIXED overlay) | 143659 | 161 | 263 |
+| narrow47-restored (original classes) | 142878 | 942 | 263 |
+
+Class restoration does not change the result; the router itself created all 263 markers while reporting 5. Its in-loop count covers only the 161 ROUTED nets (47 selected plus 114 wireless). The routed wires of the 143659 temporarily FIXED regular nets did not act as conflicts for the router. Routing a subset under a temporary FIXED overlay therefore cannot close DRC with this engine, and its in-loop violation count is not a DRC measurement. The next routing attempt has to keep the neighbouring signal wires visible to the router (all signal nets ROUTED, with a protection mechanism the router honours for clocks), and must be judged by full `check_drc` on its output.
