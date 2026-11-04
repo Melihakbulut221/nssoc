@@ -12,6 +12,11 @@ def restoration_controls(rejected):
     after=copy.deepcopy(baseline);after["def_pin"]="e"
     result=restoration(before,after,baseline,"e")
     assert result["restored_clock_records"]==["clk"]and result["restored_class_nets"]==["clk"],result
+    tupled=copy.deepcopy(after);tupled["instances"]={"u":(1,)}
+    try:restoration(before,tupled,baseline,"e")
+    except ValueError as error:
+        assert "not JSON-normal" in str(error),error;rejected.append("unnormalized_in_memory_snapshot")
+    else:raise AssertionError("tuple snapshot admitted")
     for label,change in (("clock_record_not_baseline",lambda a:a["clock_record_pins"].update(clk="OTHER")),
                          ("instance_section_changed",lambda a:a["instances"].update(u=2)),
                          ("clock_record_census",lambda a:a["clock_record_pins"].update(extra="ROUTED"))):

@@ -22,8 +22,9 @@ def snap(path, stem):
         need(len(protected)==len(set(protected))==1691, "original protected1691 census")
     finally: odb.dbDatabase.destroy(db)
     value=native.snapshot(path, WORK/(stem+".def"), protected)
-    save(stem+".json",value)
-    return value
+    save(stem+".json",value);del value;gc.collect()
+    # Compare only JSON-normal values: native master pin boxes are tuples in memory.
+    return read(DATA/(stem+".json"))
 def capture(path):
     db, block=n.load(path)
     try:

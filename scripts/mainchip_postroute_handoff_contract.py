@@ -1,4 +1,5 @@
 """Exact restored-route and exported netlist admission; never a timing/LVS verdict."""
+import json
 import re
 WIRE_SYNTAX = re.compile(rb'\+\s+(ROUTED|FIXED|COVER)\b')
 
@@ -6,7 +7,14 @@ def need(ok, message):
     if not ok:
         raise ValueError(message)
 
+def json_normal(snapshot, label):
+    for key, value in snapshot.items():
+        if key != "nets":
+            need(json.loads(json.dumps(value)) == value, label + " snapshot section " + key + " is not JSON-normal; compare saved snapshots")
+
 def restoration(before, after, baseline, expected_def_pin):
+    for label, value in (("before", before), ("after", after), ("baseline", baseline)):
+        json_normal(value, label)
     need(set(before) == set(after), "complete snapshot schema")
     for key in before:
         if key not in ("nets", "def_pin", "clock_record_pins"):
