@@ -26,10 +26,15 @@ jobs:
           W=/mnt/n1; sudo mkdir -p $W; sudo chown $USER $W
           gh api repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip > $W/n1.zip
           echo "$ARTIFACT_SHA256  $W/n1.zip" | sha256sum -c -
-          unzip -l $W/n1.zip | grep -E "wave.raw|\.json$" | head -20
-          member=$(unzip -Z1 $W/n1.zip | grep -E '(^|/)loaded-n1-nominal_late/wave.raw$')
+          unzip -Z1 $W/n1.zip > $W/members.txt
+          member=$(grep -E '(^|/)loaded-n1-nominal_late/wave.raw$' $W/members.txt)
           test "$(echo "$member" | wc -l)" = 1
           unzip -p $W/n1.zip "$member" > $W/wave.raw
+          mkdir -p n1-wave-trace-inputs
+          for f in composition-n1/contract.json composition-n1/probes.json; do
+            m=$(grep -E "(^|/)native/$f\$" $W/members.txt); test "$(echo "$m" | wc -l)" = 1
+            unzip -p $W/n1.zip "$m" > n1-wave-trace-inputs/$(echo $f | tr / -)
+          done
           rm $W/n1.zip
           ls -l $W/wave.raw
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
@@ -38,6 +43,8 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: n1-wave-trace-${{ github.run_id }}
-          path: n1-wave-trace
+          path: |
+            n1-wave-trace
+            n1-wave-trace-inputs
           if-no-files-found: error
           retention-days: 90
