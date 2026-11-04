@@ -5,7 +5,7 @@ sys.path.insert(0, "/work/tail-source/scripts")
 import odb
 import mainchip_bulk_postdrt_antenna_native as native
 from mainchip_bulk_postdrt_antenna_native import n,p,c
-from mainchip_postroute_handoff_contract import need, restoration, topology, pg, wire_class, wire_census, clock_gate
+from mainchip_postroute_handoff_contract import need, restoration, topology, pg, wire_class, wire_census, clock_gate, verilog_names
 WORK=Path("/work/out/work/bulk-postdrt-antenna")
 DATA=Path("/work/out/bulk-postdrt-antenna")
 CANDIDATE=Path("/work/route-candidate/work/bulk-postdrt-antenna/narrow47-restored.odb")
@@ -101,23 +101,30 @@ def restored():
     del before,baseline,after;gc.collect()
     save("handoff-topology-before.json",capture(WORK/"handoff-restored.odb"))
     db, block=n.load(WORK/"handoff-restored.odb")
+    lefs=[]
     try:
         top=block.getName()
         need(top=="soc_top","exact admitted mainchip top")
-        odb.dbChip.destroy(db.getChip())
-        need(db.getChip() is None,"library-only fresh import database")
-        odb.write_db(db,str(WORK/"handoff-libraries.odb"))
+        # A chipless database registers no library with the timing network, so
+        # read_verilog would black-box every cell and lose macro bus order.
+        need(hasattr(odb,"write_tech_lef") and hasattr(odb,"write_lef"),"native LEF writers for the relink libraries")
+        odb.write_tech_lef(db.getTech(),str(WORK/"handoff-relink-tech.lef"))
+        for i,lib in enumerate(db.getLibs()):
+            path=WORK/("handoff-relink-lib%02d.lef"%i);odb.write_lef(lib,str(path));lefs.append(path)
+        need(lefs,"relink library LEFs")
     finally: odb.dbDatabase.destroy(db)
     q=native.q
     (WORK/"handoff-export.tcl").write_text("read_db "+q(WORK/"handoff-restored.odb")+"\nwrite_verilog -include_pwr_gnd "+q(WORK/"handoff-candidate.v")+"\nwrite_def "+q(WORK/"handoff-export-after.def")+"\n")
-    (WORK/"handoff-relink.tcl").write_text("read_db "+q(WORK/"handoff-libraries.odb")+"\nread_verilog "+q(WORK/"handoff-candidate.v")+"\nlink_design "+top+"\nwrite_db "+q(WORK/"handoff-relinked.odb")+"\n")
+    (WORK/"handoff-relink.tcl").write_text("read_lef -tech "+q(WORK/"handoff-relink-tech.lef")+"\n"+"".join("read_lef -library "+q(x)+"\n" for x in lefs)+"read_verilog "+q(WORK/"handoff-candidate.v")+"\nlink_design "+top+"\nwrite_db "+q(WORK/"handoff-relinked.odb")+"\n")
     (WORK/"final-check.tcl").write_text(native.check_tcl(WORK/"handoff-restored.odb","final",WORK))
 def relinked():
     need((WORK/"handoff-export-after.def").read_bytes()==(WORK/"handoff-restored-observed.def").read_bytes(),"read-only Verilog export")
     before=read(DATA/"handoff-topology-before.json")
-    after=capture(WORK/"handoff-relinked.odb")
-    save("handoff-topology-after.json",after)
+    raw=capture(WORK/"handoff-relinked.odb")
+    save("handoff-topology-after.json",raw)
+    after,renamed=verilog_names(raw)
     proof=topology(before,after)
+    proof["verilog_escape_normalized_names"]=renamed
     diode=read(DATA/"handoff-logical-diode-pg.json")["added_diodes"][0]
     faults=[]
     for label in ("missing_diode","diode_master","diode_signal","diode_supply","boundary"):

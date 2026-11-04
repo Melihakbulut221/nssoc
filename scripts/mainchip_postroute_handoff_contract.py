@@ -123,3 +123,25 @@ def clock_gate(after, baseline):
         need(after["nets"][name]["identity"] == baseline["nets"][name]["identity"], "protected terminals and attached geometry " + name)
     return dict(status="PASS_ALL_PROTECTED_CLOCK_AND_FIXED_RECORDS_AND_ATTACHED_GEOMETRY_EQUAL_BASELINE",
                 clock_or_fixed_nets=len(names), reference="exact baseline snapshot (p.INPUT)", accepted=False)
+
+def verilog_names(value):
+    """Undo the backslash doubling that the escaped-identifier Verilog round trip applies.
+
+    Only names change; masters, pin names, directions and incidence are kept,
+    and a renaming that would merge two names is refused.
+    """
+    fix = lambda name: None if name is None else name.replace("\\\\", "\\")
+    def mapped(names, kind):
+        result = {}
+        for name in names:
+            new = fix(name)
+            need(new not in result.values(), kind + " name collision after escape normalization " + name)
+            result[name] = new
+        return result
+    inst = mapped(value["instances"], "instance"); nets = mapped(value["nets"], "net")
+    out = dict(top=value["top"],
+               instances={inst[n]: dict(master=r["master"], pins={p: fix(x) for p, x in r["pins"].items()}) for n, r in value["instances"].items()},
+               ports={fix(n): dict(r, net=fix(r["net"])) for n, r in value["ports"].items()},
+               nets={nets[n]: dict(iterms=sorted([fix(i), p] for i, p in r["iterms"]), bterms=sorted(fix(b) for b in r["bterms"])) for n, r in value["nets"].items()})
+    renamed = dict(instances=sum(a != b for a, b in inst.items()), nets=sum(a != b for a, b in nets.items()))
+    return out, renamed

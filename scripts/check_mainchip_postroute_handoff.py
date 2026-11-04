@@ -1,7 +1,7 @@
 """Offline source controls; actual complete netlist roundtrip runs in the native job."""
 import copy,json,sys
 from pathlib import Path
-from mainchip_postroute_handoff_contract import pg,topology,restoration,wire_class,wire_census,clock_gate
+from mainchip_postroute_handoff_contract import pg,topology,restoration,wire_class,wire_census,clock_gate,verilog_names
 ROOT=Path(__file__).resolve().parents[1]
 def restoration_controls(rejected):
     def net(cls,wire,paths=1):return dict(identity=dict(name="n"),encoded=dict(wire_present=True,metadata=cls,paths=[cls]*paths),wire=dict(pin=wire))
@@ -87,6 +87,22 @@ def main():
     try:pg({"d":wrong},row,[])
     except ValueError:rejected.append("diode_supply_disconnected")
     else:raise AssertionError("unconnected PG admitted")
+    esc=dict(top="soc_top",instances={"$flatten\\u_a.r":dict(master="dff",pins={"D":"$x\\n","VSS":"g"})},
+        ports={"p":dict(net="$x\\n",io="INPUT")},nets={"$x\\n":dict(iterms=[["$flatten\\u_a.r","D"]],bterms=["p"]),"g":dict(iterms=[["$flatten\\u_a.r","VSS"]],bterms=[])})
+    doubled=json.loads(json.dumps(esc).replace("\\\\","\\\\\\\\"))
+    assert doubled!=esc
+    normal,renamed=verilog_names(doubled);topology(esc,normal);assert renamed==dict(instances=1,nets=1),renamed
+    try:topology(esc,doubled)
+    except ValueError:rejected.append("unnormalized_verilog_escape")
+    else:raise AssertionError("doubled escapes compared equal")
+    reversed_bus=copy.deepcopy(normal);reversed_bus["instances"]["$flatten\\u_a.r"]["pins"]["D"]="g"
+    try:topology(esc,reversed_bus)
+    except ValueError:rejected.append("normalized_name_wrong_connection")
+    else:raise AssertionError("connection change admitted after normalization")
+    collide=copy.deepcopy(doubled);collide["instances"]["$flatten\\u_a.r"]=collide["instances"]["$flatten\\\\u_a.r"]
+    try:verilog_names(collide)
+    except ValueError:rejected.append("escape_normalization_collision")
+    else:raise AssertionError("collision admitted")
     restoration_controls(rejected)
     census=wire_controls(rejected)
     out=Path("postroute-handoff-controls");out.mkdir(exist_ok=False)
