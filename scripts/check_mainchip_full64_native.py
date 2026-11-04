@@ -34,6 +34,20 @@ class Controls(unittest.TestCase):
    for n in fix.EXACT_TCL:self.put(out,r,n,b"SYNTHETIC TCL",True)
    self.assertTrue(fix.preserve_outputs(base,out,ev,r)["complete"])
    self.assertEqual(set(r["output_preservation"]["copied"]),fix.EXACT_TCL)
+ def test_run41699812301_route47_programs_preserved(self):
+  names=("bulk-postdrt-antenna/narrow47-route-actual.tcl","bulk-postdrt-antenna/narrow47-route-original.tcl")
+  with tempfile.TemporaryDirectory()as t:
+   out,ev,r=self.fixture(t)
+   for n in names:self.put(out,r,n,b"SYNTHETIC ROUTE47 TCL",True)
+   self.assertTrue(fix.preserve_outputs(base,out,ev,r)["complete"]);self.assertFalse(r["terminal_errors"])
+   self.assertEqual(set(r["output_preservation"]["copied"]),set(names))
+  with tempfile.TemporaryDirectory()as t:
+   out,ev,r=self.fixture(t)
+   for n in names:self.put(out,r,n,b"UNPUBLISHED ROUTE47 TCL")
+   self.assertFalse(fix.preserve_outputs(base,out,ev,r)["complete"]);self.assertEqual(len(r["terminal_errors"]),2)
+  with tempfile.TemporaryDirectory()as t:
+   out,ev,r=self.fixture(t);self.put(out,r,"bulk-postdrt-antenna/narrow47-route-other.tcl",b"UNEXPECTED",True)
+   self.assertFalse(fix.preserve_outputs(base,out,ev,r)["complete"])
  def test_changed_capsule_pin_refused(self):
   for n in list(fix.EXACT_DEF)+list(fix.EXACT_TCL):
    with tempfile.TemporaryDirectory()as t:

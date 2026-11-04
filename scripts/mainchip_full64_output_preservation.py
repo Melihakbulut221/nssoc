@@ -4,7 +4,8 @@ Original unexpected-file, symlink, capsule and output-byte refusals remain activ
 import json
 EXACT_TCL={
  "bulk-postdrt-antenna/full-route-before.tcl","bulk-postdrt-antenna/full-route-after.tcl",
- "bulk-postdrt-antenna/route-before-stale-wire-clear.tcl","bulk-postdrt-antenna/route-after-stale-wire-clear.tcl"}
+ "bulk-postdrt-antenna/route-before-stale-wire-clear.tcl","bulk-postdrt-antenna/route-after-stale-wire-clear.tcl",
+ "bulk-postdrt-antenna/narrow47-route-original.tcl","bulk-postdrt-antenna/narrow47-route-actual.tcl"}
 EXACT_DEF={"bulk-postdrt-antenna/original-clock-gate/before.def","bulk-postdrt-antenna/original-clock-gate/after.def"}
 MAX_HOST=16*1024**2
 def preserve_outputs(base,out,evidence,report):

@@ -11,3 +11,13 @@ The original supervisor source is untouched. The returned isolated module has on
 Same actual47-net seed, original64iterations/seed42/2threads, all1691clocks, untouched nonselected wire identities, reversible FIXED protection, snapshot preservation, final fullDRC/antenna and original class/PG/LVS/STA obligations remain. No electrical, DRC, LVS or timing threshold is loosened. All native output stays in GitHub; no local CAD work.
 
 A separate same-source controls-only run must PASS before production dispatch. Failed41393730481 and rejectedVia141412504017 remain preserved in root checkpointv290. This resource revision is not route/PHY/timing acceptance.
+
+## Snapshot window retry (after run 41699812301)
+
+Run41699812301 reached detailed-route iteration63 (5 violations after iteration62) and was stopped at11754.29 seconds by a single memory snapshot that overran its own100ms wall-clock window: `CounterError('Total memory snapshot bounded window exhausted')`. The last successful sample was RSS7018548KiB and host MemAvailable8176584KiB; no RSS or available-memory bound was crossed. Over the route the container cgroup sat at its12GiB memory.max with7690 max events and zero OOM/oom_kill, because each iteration wrote a214MB snapshot ODB into page cache, and52202 of127243 CPU periods were throttled. Direct reclaim or CPU throttling inside that cgroup can stall the sampler past100ms without any memory bound being violated.
+
+The supervisor now retakes only that exact overrun, as a complete fresh snapshot with the original100ms window and every original counter, identity and bound check, at most5 windows per sample and256 retries per supervisor. Each retry is a `memory_window_retry` event. Every other counter error (unreadable, malformed, missing VmRSS, identity change) still fails on first sight, and no stale or partial value is ever substituted. The12GiB/no-swap cgroup and the terminal OOM-counter check remain the hard memory backstop.
+
+The two exact route programs `bulk-postdrt-antenna/narrow47-route-original.tcl` and `narrow47-route-actual.tcl`, already published in the native capsule, are added to the exact preservation list; other unexpected outputs are still refused.
+
+25hosted controls now include the real exit-checked supervisor and sampler: one overrun retaken fresh, persistent overrun refused, unreadable and malformed counters refused without retry, spent retry budget refused, and a second adapter refused.
