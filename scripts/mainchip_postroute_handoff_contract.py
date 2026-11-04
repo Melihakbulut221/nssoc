@@ -9,8 +9,13 @@ def need(ok, message):
 def restoration(before, after, baseline, expected_def_pin):
     need(set(before) == set(after), "complete snapshot schema")
     for key in before:
-        if key not in ("nets", "def_pin"):
+        if key not in ("nets", "def_pin", "clock_record_pins"):
             need(before[key] == after[key], "unchanged native section " + key)
+    # Protected clock records carry the temporary FIXED class in the candidate,
+    # so restoring classes must change them, and only back to the baseline.
+    need(set(after["clock_record_pins"]) == set(baseline["clock_record_pins"]) == set(before["clock_record_pins"]), "protected clock record census")
+    need(after["clock_record_pins"] == baseline["clock_record_pins"], "original complete protected clock records")
+    restored_clocks = sorted(n for n, pin in before["clock_record_pins"].items() if pin != after["clock_record_pins"][n])
     need(after["def_pin"] == expected_def_pin, "complete expected restored DEF")
     need(set(before["nets"]) == set(after["nets"]) == set(baseline["nets"]), "complete net census")
     changed = []
@@ -22,7 +27,7 @@ def restoration(before, after, baseline, expected_def_pin):
             need(old["wire"] == new["wire"], "unmodified wire opcode stream " + name)
         else:
             changed.append(name)
-    return dict(restored_class_nets=changed, unchanged_instances=True,
+    return dict(restored_class_nets=changed, restored_clock_records=restored_clocks, unchanged_instances=True,
                 exact_full_DEF=True, all_original_route_classes=True,
                 physical_acceptance=False, timing_accepted=False, full_phy_accepted=False)
 

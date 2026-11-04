@@ -3,6 +3,22 @@ import copy,json,sys
 from pathlib import Path
 from mainchip_postroute_handoff_contract import pg,topology,restoration,wire_class,wire_census
 ROOT=Path(__file__).resolve().parents[1]
+def restoration_controls(rejected):
+    def net(cls,wire):return dict(identity=dict(name="n"),encoded=dict(metadata=cls),wire=dict(pin=wire))
+    baseline=dict(instances={"u":1},protected=["clk"],clock_record_pins={"clk":"ROUTED"},def_pin="b",
+        nets={"clk":net("ROUTED","w1"),"n":net("ROUTED","w2")})
+    before=copy.deepcopy(baseline);before["clock_record_pins"]={"clk":"FIXED"};before["def_pin"]="c"
+    before["nets"]["clk"]=net("FIXED","w1")
+    after=copy.deepcopy(baseline);after["def_pin"]="e"
+    result=restoration(before,after,baseline,"e")
+    assert result["restored_clock_records"]==["clk"]and result["restored_class_nets"]==["clk"],result
+    for label,change in (("clock_record_not_baseline",lambda a:a["clock_record_pins"].update(clk="OTHER")),
+                         ("instance_section_changed",lambda a:a["instances"].update(u=2)),
+                         ("clock_record_census",lambda a:a["clock_record_pins"].update(extra="ROUTED"))):
+        wrong=copy.deepcopy(after);change(wrong)
+        try:restoration(before,wrong,baseline,"e")
+        except ValueError:rejected.append(label)
+        else:raise AssertionError(label)
 def wire_controls(rejected):
     sys.path.insert(0,str(ROOT/"original/scripts"))
     import mainchip_original_clock_restoration as c
@@ -48,6 +64,7 @@ def main():
     try:pg({"d":wrong},row,[])
     except ValueError:rejected.append("diode_supply_disconnected")
     else:raise AssertionError("unconnected PG admitted")
+    restoration_controls(rejected)
     census=wire_controls(rejected)
     out=Path("postroute-handoff-controls");out.mkdir(exist_ok=False)
     (out/"result.json").write_text(json.dumps(dict(status="PASS_SOURCE_CONTROLS_ONLY",rejected=rejected,wire_census=census,
