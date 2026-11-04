@@ -1,93 +1,56 @@
-name: Visible-neighbour DRT experiment on the full64 47-net-cleared database
+name: First-divider current probes on the unchanged RHI120-C8 PLL deck
 on:
   workflow_dispatch:
-    inputs:
-      iterations:
-        type: string
-        default: '4'
-      engine:
-        description: guide (bounded guide-tile build) or fixedguard (unbounded FIXED-guard build)
-        type: string
-        default: guide
-      threads:
-        type: string
-        default: '4'
 permissions:
   contents: read
-  actions: read
 jobs:
-  visible-neighbors:
+  pll-divider-currents:
     runs-on: ubuntu-24.04
-    timeout-minutes: 350
+    timeout-minutes: 330
     env:
       GH_TOKEN: ${{ github.token }}
-      IMAGE: openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a
-      ENGINE_PART: ${{ inputs.engine == 'fixedguard' && '687863984' || '706643321' }}
-      ENGINE_PART_SHA: ${{ inputs.engine == 'fixedguard' && '5e38e0f86a07f3d2e7567d4b592051baeb66cf07fcc2c36db0138c372e31dd25' || '69b0c127830daeefb6de5731e88ca858627814e407970dd8e176868110e1215c' }}
-      ENGINE_SHA: ${{ inputs.engine == 'fixedguard' && '2a343c7491353a60e7b06aa134d4b67e3ef2e846a8341164dacffe88f5f7ec2f' || 'e12b1c70296c119c31ed5b1a7f739904d06b3c86cd703eebee25dbcc9c357431' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/drt_visible_neighbors.py
-      - name: Acquire pinned engine, image and full64 capsule members
+          sparse-checkout: |
+            /scripts/pll_divider_currents.py
+            /scripts/pll-divider-probes.json
+      - name: Restore preserved preparation deck, models and runtime
         run: |
           set -euo pipefail
-          W=/mnt/v; sudo mkdir -p $W/e $W/c $W/o; sudo chown -R $USER $W
-          cp scripts/drt_visible_neighbors.py $W/o/
-          docker pull -q "$IMAGE"
-          gh api repos/${{ github.repository }}/releases/assets/$ENGINE_PART -H "Accept: application/octet-stream" > $W/engine.tgz
-          echo "$ENGINE_PART_SHA  $W/engine.tgz" | sha256sum -c -
-          tar -xzf $W/engine.tgz -C $W/e
-          E=$(find $W/e -type f -name openroad -exec sha256sum {} + | awk -v s=$ENGINE_SHA '$1==s{print $2}' | head -1)
-          test -n "$E"; cp "$E" $W/openroad; chmod +x $W/openroad
-          gh api repos/${{ github.repository }}/releases/assets/708614943 -H "Accept: application/octet-stream" > $W/parts.json
-          for id in 708615066 708616238 708617161; do gh api repos/${{ github.repository }}/releases/assets/$id -H "Accept: application/octet-stream" >> $W/capsule.tgz; done
-          python3 -c "import json,hashlib;p=json.load(open('$W/parts.json'));h=hashlib.sha256(open('$W/capsule.tgz','rb').read()).hexdigest();assert h==p['archive']['sha256'],h"
-          tar -tzf $W/capsule.tgz | grep -E "/narrow47-cleared.odb$|narrow47-original-classes.json$|narrow47-native-selection.json$" > $W/members.txt
-          cat $W/members.txt
-          tar -xzf $W/capsule.tgz -C $W/c $(cat $W/members.txt); rm $W/capsule.tgz
-          cp $(find $W/c -name narrow47-cleared.odb) $W/o/cleared.odb
-          cp $(find $W/c -name narrow47-original-classes.json) $W/o/classes.json
-          cp $(find $W/c -name narrow47-native-selection.json) $W/o/selection.json
-      - name: Restore original classes, route with visible neighbours, measure
+          gh api repos/${{ github.repository }}/releases/assets/668392118 -H "Accept: application/octet-stream" > /tmp/prep.tgz
+          echo "a7b33b0742783e477c5c7472c8f3a984e1ffce7eeb9280d358b7a6c1ee026c41  /tmp/prep.tgz" | sha256sum -c -
+          mkdir -p /tmp/prep && tar -xzf /tmp/prep.tgz -C /tmp/prep
+          P=/tmp/prep/cloud-pll-rhi120-c8-preparation
+          mkdir -p cloud-pll-snapshot case
+          cp -r $P/model-sources/models $P/model-sources/frontend cloud-pll-snapshot/
+          cp $P/candidate-circuit.cir case/
+          cp $P/composition/pll845-mim-wire.spice case/parent865.spice
+          gh api repos/${{ github.repository }}/releases/assets/650315768 -H "Accept: application/octet-stream" > /tmp/runtime.tgz
+          echo "cd993e4d1eb02f900488450bb1ac3880c67a5e5c34fbac06565c7db85667a821  /tmp/runtime.tgz" | sha256sum -c -
+          mkdir -p /tmp/rt && tar -xzf /tmp/runtime.tgz -C /tmp/rt
+          E=$(find /tmp/rt -type f -name patched-ngspice | head -1); test -n "$E"; cp "$E" engine; chmod +x engine
+          echo "103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509  engine" | sha256sum -c -
+          grep -n "^\.lib\|^\.include\|pre_osdi" case/candidate-circuit.cir
+          ls cloud-pll-snapshot/models | head; pwd
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
+      - name: Rewrite only the save list and run the 1 us transient
         run: |
           set -euo pipefail
-          W=/mnt/v; N=${{ inputs.iterations }}
-          cat > $W/o/route.tcl <<TCL
-          read_db /v/o/visible.odb
-          set_routing_layers -signal Metal2-TopMetal2 -clock Metal4-TopMetal2
-          set_thread_count ${{ inputs.threads }}
-          detailed_route -droute_end_iter $N -or_seed 42 -verbose 1 -output_drc /v/o/route.drc
-          write_db /v/o/routed.odb
-          TCL
-          printf 'read_db /v/o/routed.odb\nset_thread_count 4\ndrt::check_drc -output_file /v/o/check.rpt -marker_name CHK\n' > $W/o/check.tcl
-          cat > $W/o/run.sh <<'SH'
-          set -e
-          cd /v/o
-          PHASE=prepare SRC=/v/o/cleared.odb DST=/v/o/visible.odb CLASSES=/v/o/classes.json CENSUS=/v/o/census-before.json /v/openroad -no_init -exit -python /v/o/drt_visible_neighbors.py
-          /v/openroad -no_init -exit /v/o/route.tcl > /v/o/route.log 2>&1 || echo ROUTE_FAILED
-          grep -E "Number of violations|peak = " /v/o/route.log | tail -40
-          /v/openroad -no_init -exit /v/o/check.tcl > /v/o/check.log 2>&1 || echo CHECK_FAILED
-          echo "CHECK_DRC markers=$(grep -c 'violation type' /v/o/check.rpt || true)"
-          grep -o "violation type: [A-Za-z ]*" /v/o/check.rpt | sort | uniq -c || true
-          PHASE=census SRC=/v/o/routed.odb DST=- CENSUS=/v/o/census-after.json /v/openroad -no_init -exit -python /v/o/drt_visible_neighbors.py
-          python3 - <<'PY'
-          import json
-          a=json.load(open('/v/o/census-before.json'));b=json.load(open('/v/o/census-after.json'));sel=set(json.load(open('/v/o/selection.json'))['selected'])
-          ch=[n for n in a if a[n][1]!=b[n][1]];cls=[n for n in a if a[n][0]!=b[n][0]]
-          print('WIRES_CHANGED',len(ch),'of',len(a),'selected_changed',len(set(ch)&sel),'fixed_changed',sum(1 for n in ch if a[n][0]=='FIXED'),'class_changed',len(cls))
-          json.dump(dict(changed=sorted(ch)[:5000],count=len(ch)),open('/v/o/changed.json','w'))
-          PY
-          SH
-          docker run --rm -v $W:/v "$IMAGE" bash /v/o/run.sh | tee $W/o/summary.txt
-          mkdir -p visible && cp $W/o/summary.txt $W/o/route.log $W/o/check.rpt $W/o/check.log $W/o/changed.json visible/ 2>/dev/null || true
+          python3 -B scripts/pll_divider_currents.py prepare case scripts/pll-divider-probes.json
+          cd case && SPICE_SCRIPTS=$PWD OMP_NUM_THREADS=1 timeout 18000 ../engine -n -b probe.cir > ngspice.log 2>&1 || { echo "ngspice rc=$?"; tail -40 ngspice.log; exit 1; }
+          tail -5 ngspice.log; ls -l probe.raw
+      - name: Reproduce the original acquisition metrics and report divider currents
+        run: python3 -B scripts/pll_divider_currents.py analyze case scripts/pll-divider-probes.json pll-divider
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: drt-visible-neighbors-${{ github.run_id }}
-          path: visible
+          name: pll-divider-currents-${{ github.run_id }}
+          path: |
+            pll-divider
+            case/ngspice.log
           if-no-files-found: warn
           retention-days: 90
