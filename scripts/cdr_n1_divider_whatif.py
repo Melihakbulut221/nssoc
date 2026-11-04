@@ -15,10 +15,17 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 import cdr_mos650_full650_loaded as loaded
 RESISTORS=['XD0377','XD0378','XD0379','XD0380','XD0384','XD0385','XD0386','XD0387','XD0388','XD0389','XD0390','XD0391']
 AC_MIM=['XD0423','XD0424','XD0427','XD0428'];SELECT_MIM=['XD0425','XD0426']
+BUFFER_R=['XD0381','XD0382','XD0383','XD0392','XD0393','XD0394','XD0395','XD0396','XD0397','XD0398','XD0407','XD0408','XD0409','XD0410']
+XOR_DATA=['XD0283','XD0284','XD0285','XD0286','XD0288','XD0290','XD0291','XD0294','XD0295','XD0296','XD0297','XD0298',
+ 'XD0301','XD0302','XD0303','XD0304','XD0306','XD0308','XD0309','XD0312','XD0313','XD0314','XD0315','XD0316']
+BUFFER_BIAS=['ibda','ibdc','ibs0','ibs1']
+LOWZ4=dict(rppd_w='4u',ac_mim='7.2u',select_mim='9.6u')
 VARIANTS={
  'control':dict(),
- 'lowz4':dict(rppd_w='4u',ac_mim='7.2u',select_mim='9.6u'),
- 'compensated':dict(ac_mim='21.6u',select_mim='9.6u')}
+ 'lowz4':LOWZ4,
+ 'compensated':dict(ac_mim='21.6u',select_mim='9.6u'),
+ 'fastbuf':dict(LOWZ4,buffer_w='16u',buffer_bias='.002'),
+ 'fastbuf_xor3':dict(LOWZ4,buffer_w='16u',buffer_bias='.002',xor_nx='3')}
 def patch(text,variant):
     v=VARIANTS[variant];lines=text.split('\n');changed={}
     def edit(name,key,value):
@@ -35,7 +42,18 @@ def patch(text,variant):
     for names,key in ((AC_MIM,'ac_mim'),(SELECT_MIM,'select_mim')):
         for n in names:
             if key in v:edit(n,'w',v[key]);edit(n,'l',v[key])
+    for n in BUFFER_R:
+        if 'buffer_w'in v:edit(n,'w',v['buffer_w'])
+    for n in XOR_DATA:
+        if 'xor_nx'in v:edit(n,'nx',v['xor_nx'])
     return '\n'.join(lines),changed
+def patch_bench(text,variant):
+    v=VARIANTS[variant];changed={}
+    if 'buffer_bias'in v:
+        for b in BUFFER_BIAS:
+            old=f'I_{b} avdd {b} PWL(0 0 500p .001)';assert text.count(old)==1,(b,text.count(old))
+            new=f'I_{b} avdd {b} PWL(0 0 500p {v["buffer_bias"]})';text=text.replace(old,new);changed[b]=[old,new]
+    return text,changed
 def main(root,variant,out):
     root=Path(root).resolve();native=root/'native';out=Path(out);out.mkdir(parents=True)
     original=json.loads((root/'derived/loaded-n1-nominal_late.json').read_bytes())
@@ -43,6 +61,8 @@ def main(root,variant,out):
     patched,changed=patch(text,variant);model.write_text(patched)
     (out/'patch.json').write_text(json.dumps(dict(variant=variant,values=VARIANTS[variant],changed=changed),indent=1))
     folder=native/'loaded-n1-nominal_late';assert not (folder/'wave.raw').exists()
+    bench,bias=patch_bench((folder/'bench.cir').read_text(),variant);(folder/'bench.cir').write_text(bench)
+    (out/'bench-patch.json').write_text(json.dumps(bias,indent=1))
     engine=native/'models/source/runtime/patched-ngspice';engine.chmod(0o755)
     began=time.monotonic()
     with open(out/'ngspice.stdout','wb')as so,open(out/'ngspice.stderr','wb')as se:
