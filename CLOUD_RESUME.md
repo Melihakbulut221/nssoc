@@ -1,3 +1,20 @@
+# Claude handoff — terminal status update, 2026-11-04
+
+Read [CLAUDE_HANDOFF.md](CLAUDE_HANDOFF.md) first for the detailed Turkish handover, exact sources, failures, measurements and next steps. Machine-readable selected evidence: [CLAUDE_HANDOFF_EVIDENCE.json](CLAUDE_HANDOFF_EVIDENCE.json).
+
+At 2026-11-04 02:07 UTC, runs 41699812301, 41733225660, 41734419971 and corrected handoff 41739641054 were all completed/failure. No queued/in-progress runs were returned by the API. The old v360 live-status text below is historical.
+
+- Route: supervisor memory-sample bounded-window failure; last successful RSS below limit. Route did not finish.
+- Actual650 N1/N2: native transients exited zero; data/device/phase electrical gates failed.
+- Handoff: original1691 scope correction passed its former failure point; DEF single-wire-clause parser now fails in prepare. Logical diode supplies passed; physical continuity unverified.
+- Full serial PHY, completed mainchip routing, final timing and production acceptance remain open.
+
+Documentation handoff only, not a new native experiment or v361 monitor rebuild. Native assets remain cloud-only. No CAD/simulation job dispatched for this handoff.
+
+---
+
+## Historical v360 checkpoint (preserved verbatim below)
+
 # Cloud continuation — checkpoint v360
 
 Updated: 2026-11-03T23:21:08.981491+00:00
