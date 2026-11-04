@@ -1,45 +1,30 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Section-by-section difference of handoff before/restored snapshots; derived only."""
-import json,sys
+"""Census of restored versus relinked netlist topology of one handoff run; derived only."""
+import collections,json,sys
 from pathlib import Path
 def find(root,name):
-    hits=[p for p in Path(root).rglob(name)];assert len(hits)==1,(name,hits);return hits[0]
-def diff(a,b,path='',out=None,limit=40):
-    out=[]if out is None else out
-    if len(out)>=limit:return out
-    if isinstance(a,dict)and isinstance(b,dict):
-        for k in sorted(set(a)|set(b)):
-            if k not in a or k not in b:out.append(dict(path=path+'/'+k,before=k in a,after=k in b))
-            elif a[k]!=b[k]:diff(a[k],b[k],path+'/'+k,out,limit)
-            if len(out)>=limit:break
-    elif a!=b:out.append(dict(path=path,before=a,after=b))
-    return out
+    hits=list(Path(root).rglob(name));assert len(hits)==1,(name,hits);return hits[0]
 def main(root,out):
-    before=json.loads(find(root,'handoff-before.json').read_bytes())
-    after=json.loads(find(root,'handoff-restored-observed.json').read_bytes())
-    baseline=json.loads(find(root,'handoff-baseline.json').read_bytes())
-    report={}
-    for key in sorted(set(before)|set(after)):
-        if key=='nets':continue
-        a,b=before.get(key),after.get(key)
-        report[key]=dict(equal=a==b,equal_to_baseline=b==baseline.get(key),first=diff(a,b) if a!=b else [])
-        if isinstance(a,dict)and isinstance(b,dict)and a!=b:
-            report[key]['changed_keys']=sum(1 for k in set(a)|set(b) if a.get(k)!=b.get(k))
-            report[key]['baseline_vs_before_changed_keys']=sum(1 for k in set(a)|set(baseline.get(key,{})) if a.get(k)!=baseline.get(key,{}).get(k))
-    import collections
-    kinds=collections.Counter();examples={}
-    for name,b in baseline['nets'].items():
-        x=before['nets'][name];y=after['nets'][name]
-        key=('after_eq_base' if y['encoded']==b['encoded'] else 'after_ne_base',
-             'before_eq_base' if x['encoded']==b['encoded'] else 'before_ne_base',
-             'wire_changed' if x['wire']!=y['wire'] else 'wire_same',
-             'id_same' if x['identity']==y['identity'] else 'id_changed')
-        kinds[key]+=1
-        if key[0]=='after_ne_base' and len(examples.setdefault(key,[]))<12:
-            examples[key].append(dict(name=name,baseline=b['encoded'],before=x['encoded'],after=y['encoded'],
-                wires=[b['wire'],x['wire'],y['wire']]))
-    report['nets']=dict(census={'|'.join(k):v for k,v in kinds.items()},examples={'|'.join(k):v for k,v in examples.items()})
-    Path(out).write_text(json.dumps(report,indent=1,sort_keys=True,default=str))
-    print(json.dumps(report['nets']['census'],sort_keys=True))
-    print(json.dumps({k:{x:v[x] for x in v if x!='first'} for k,v in report.items()},sort_keys=True))
+    a=json.loads(find(root,'handoff-topology-before.json').read_bytes())
+    b=json.loads(find(root,'handoff-topology-after.json').read_bytes())
+    r=dict(top=[a['top'],b['top']],instances=[len(a['instances']),len(b['instances'])],ports=[len(a['ports']),len(b['ports'])],nets=[len(a['nets']),len(b['nets'])])
+    ia,ib=a['instances'],b['instances']
+    missing=sorted(set(ia)-set(ib));extra=sorted(set(ib)-set(ia))
+    r['missing_after']=dict(count=len(missing),by_master=collections.Counter(ia[n]['master']for n in missing).most_common(30),examples=missing[:10])
+    r['extra_after']=dict(count=len(extra),examples=extra[:10],by_master=collections.Counter(ib[n]['master']for n in extra).most_common(10))
+    master=collections.Counter();pins=collections.Counter();ex=collections.defaultdict(list)
+    for n in set(ia)&set(ib):
+        x,y=ia[n],ib[n]
+        if x['master']!=y['master']:master[(x['master'],y['master'])]+=1;continue
+        for p in set(x['pins'])|set(y['pins']):
+            if x['pins'].get(p,'<absent>')!=y['pins'].get(p,'<absent>'):
+                key=(x['master'],p,'absent_after' if p not in y['pins'] else 'absent_before' if p not in x['pins'] else 'net_differs')
+                pins[key]+=1
+                if len(ex[key])<3:ex[key].append([n,x['pins'].get(p),y['pins'].get(p)])
+    r['master_changes']=[[list(k),v]for k,v in master.most_common(20)]
+    r['pin_differences']=[[list(k),v,ex[k]]for k,v in pins.most_common(40)]
+    pa,pb=a['ports'],b['ports']
+    r['port_differences']=[[k,pa.get(k),pb.get(k)]for k in sorted(set(pa)|set(pb))if pa.get(k)!=pb.get(k)][:20]
+    Path(out).write_text(json.dumps(r,indent=1,sort_keys=True))
+    print(json.dumps({k:r[k] for k in ('instances','ports','nets')},sort_keys=True))
 if __name__=='__main__':main(*sys.argv[1:])
