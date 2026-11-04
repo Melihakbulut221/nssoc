@@ -10,7 +10,7 @@ jobs:
     timeout-minutes: 60
     env:
       GH_TOKEN: ${{ github.token }}
-      ARTIFACT_ID: '13296564135'
+      ARTIFACT_ID: '13298670447'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -18,7 +18,7 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: /scripts/handoff_snapshot_diff.py
-      - name: Fetch handoff workspace of run 41774359214
+      - name: Fetch handoff workspace of handoff run
         run: |
           set -euo pipefail
           W=/mnt/h; sudo mkdir -p $W; sudo chown $USER $W
