@@ -17,6 +17,12 @@ PATHS={0,1,2,13}
 def raw(w):return[(w.getOpcode(i),w.getData(i))for i in range(w.length())]
 def reencode(net):
     w=net.getWire();before=raw(w);d=D();d.begin(w);ops=[]
+    # getRect has no Python output binding; a RECT is stored as kRect(14) with
+    # deltaX1 followed by three kOperand(11) ops, in decode order.
+    rects=[tuple(before[i+k][1]for k in range(4))for i,(o,_)in enumerate(before)
+           if o&0x1F==14 and all(before[i+k][0]&0x1F==11 for k in(1,2,3))]
+    if len(rects)!=sum(1 for o,_ in before if o&0x1F==14):raise SystemExit(f'unexpected RECT layout on {net.getName()}')
+    rects.reverse()
     while True:
         op=d.next()
         if op==D.END_DECODE:break
@@ -28,10 +34,7 @@ def reencode(net):
         elif op==D.POINT_EXT:x,y,e=d.getPoint_ext();ops.append(('point_ext',(x,y,e),d.getProperty(),d.getJunctionId()))
         elif op==D.VIA:ops.append(('via',d.getVia(),d.getJunctionId()))
         elif op==D.TECH_VIA:ops.append(('tech_via',d.getTechVia(),d.getJunctionId()))
-        elif op==D.RECT:
-            r=d.getRect()
-            if not(isinstance(r,(list,tuple))and len(r)==4 and all(isinstance(v,int)for v in r)):raise SystemExit(f'getRect binding returned {r!r}')
-            ops.append(('rect',tuple(r)))
+        elif op==D.RECT:ops.append(('rect',rects.pop()))
         elif op==D.ITERM:ops.append(('iterm',d.getITerm()))
         elif op==D.BTERM:ops.append(('bterm',d.getBTerm()))
         else:raise SystemExit(f'unsupported op {op} on {net.getName()}')
