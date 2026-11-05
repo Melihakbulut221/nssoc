@@ -64,7 +64,7 @@ def main(package,odb,out,stage):
         'puts "NSSOC_PROBE before wns=[sta::worst_slack -max] tns=[sta::total_negative_slack -max] hold=[sta::worst_slack -min]"',
         'puts "NSSOC_PROBE before slew=[sta::max_slew_violation_count] cap=[sta::max_capacitance_violation_count] fanout=[sta::max_fanout_violation_count]"',
         'report_checks -path_delay max -group_path_count 1 -digits 3 -format end',
-        'report_wire_length -net net37385 -global_route -detailed_route' if False else 'report_net net37385',
+        'report_net net37385',
         'repair_design -verbose',
         'estimate_parasitics -placement',
         'puts "NSSOC_PROBE after_design wns=[sta::worst_slack -max] tns=[sta::total_negative_slack -max] slew=[sta::max_slew_violation_count] cap=[sta::max_capacitance_violation_count] fanout=[sta::max_fanout_violation_count]"']

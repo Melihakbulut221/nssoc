@@ -36,3 +36,36 @@ The clock tree inserts 2.7 ns of latency through the Ibex clock gate, and that l
 In the typical and fast corners the worst paths are `pcie_clk_i` (4 ns) paths from top-level input ports (-5.39 ns typical, -2.62 ns fast) and `pcie_clk_i` register paths around -3.3 ns typical. The hold violations are a few `pcie_clk_i` flops, two reset-recovery (asynchronous) endpoints and two Ethernet MAC paths. All are below 0.5 ns.
 
 The slew and capacitance counts, together with the single-drive cells on the critical path, show that the post-CTS and post-GRT setup repair stopped well short of convergence. The interface flow caps those searches at 100 iterations, so cell sizing and buffering are the first lever. Whether sizing alone can reach 20 ns at the slow corner is the next measurement.
+
+## Sizing alone, with placement-estimated wires (run42051193750)
+
+The same database, slow-corner libraries, physical SDC and propagated clocks were used with `set_wire_rc` on Metal2/Metal3 (signal) and Metal4/Metal5 (clock) and `estimate_parasitics -placement`, in the routing engine's OpenROAD (dcf36133). The sequence was `repair_design`, then an unbounded `repair_timing -setup -repair_tns 100`:
+
+| Step | Setup WNS | Setup TNS | Max slew / cap / fanout |
+|---|---:|---:|---:|
+| before repair | -4.398 ns | -15091 ns | 0 / 0 / 1350 |
+| after `repair_design` | -5.098 ns | -16574 ns | 0 / 0 / 1150 |
+| after `repair_timing` (850 resized, 267 inserted, 33 removed, 246 pin swaps; "unable to repair all setup violations") | -4.270 ns | -12885 ns | - |
+
+With estimated wires the worst `clk_i` endpoint is -3.21 ns, against -14.04 ns with the extracted SPEF. The remaining worst path is `pcie_clk_i` to the output port `pcie_tx_data_o[0]`: about 35 logic levels from a flop to the port, arriving at 7.22 ns against 2.95 ns required (4 ns period, 0.8 ns output delay, 0.25 ns uncertainty). Sizing cannot close that path; the output needs a register stage at the boundary.
+
+## Routed wire length against pin half-perimeter (run42057290754)
+
+Read-only on the same database (`scripts/mainchip_wire_detour.py`). Over 143706 routed signal and clock nets, the routed length is 13.95 m against 11.88 m of pin half-perimeter (ratio 1.17; per-net median 1.06, 90th percentile 1.40, 99th percentile 2.19). Routing detour is therefore not the cause.
+
+The critical-path nets are long because of where their pins are placed:
+
+| Net | Routed | Half-perimeter | Pins |
+|---|---:|---:|---:|
+| `net37385` (the `buf_1` fanout output) | 1116 um | 801 um | 9 |
+| `$abc$1804206$new_n50559` (the `nand4_1` output) | 735 um | 734 um | 3 |
+| `net2903` | 783 um | 785 um | 2 |
+| `net2603` | 930 um | 848 um | 9 |
+
+The die is 3326 x 2476 um. The extracted wire capacitance averages 2713.5 pF / 13.95 m = 0.19 fF/um, coupling included, which is higher than the placement estimate assumes. The 10 ns gap between the estimate and extracted timing on `clk_i` is therefore wire capacitance on long, placement-determined nets in the Ibex datapath.
+
+Run42058017703 repeats the sizing probe with wire RC calibrated to that average (0.4 Ohm/um, 0.194 fF/um). The extracted results above would then point to the levers for a new implementation:
+
+- Timing-driven placement or region constraints for the Ibex datapath.
+- Registered PCIe boundary outputs.
+- Setup repair calibrated to extracted wire capacitance, without the 100-iteration caps.
