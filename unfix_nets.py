@@ -3,9 +3,11 @@
 
 The detailed router never rips up a net whose wire is FIXED. Every op of each
 named net is decoded and re-encoded with identical geometry and the ROUTED wire
-type. Afterwards the raw op stream is compared with the original: only the
-wire-type bits of path ops may differ. Any other difference, a clock, power or
-special net, or an op this copier does not handle stops the run before writing.
+type. The encoder may pack points differently, so the check is geometric:
+the multiset of wire shapes (layer or via, box), the connected terminals in
+order, the length and the bounding box must equal the original, and every
+path must read ROUTED. Any difference, a clock, power or special net, or an op
+this copier does not handle stops the run before writing.
 """
 import json,sys
 import odb
@@ -15,8 +17,26 @@ tech=Tech();design=Design(tech);design.readDb(src);block=design.getBlock()
 D=odb.dbWireDecoder
 PATHS={0,1,2,13}
 def raw(w):return[(w.getOpcode(i),w.getData(i))for i in range(w.length())]
+def shapes(w):
+    it=odb.dbWireShapeItr();it.begin(w);sh=odb.dbShape();out=[]
+    while it.next(sh):
+        b=sh.getBox()
+        name=sh.getTechVia().getName()if sh.getTechVia()else sh.getVia().getName()if sh.getVia()else sh.getTechLayer().getName()
+        out.append((name,b.xMin(),b.yMin(),b.xMax(),b.yMax()))
+    return sorted(out)
+def bbox(w):
+    b=w.getBBox()
+    return None if b is None else (b.xMin(),b.yMin(),b.xMax(),b.yMax())
+def terms(w):
+    d=D();d.begin(w);t=[];types=set()
+    while True:
+        op=d.next()
+        if op==D.END_DECODE:return t,types
+        if op in(D.PATH,D.SHORT,D.VWIRE):types.add(str(d.getWireType()))
+        if op==D.ITERM:t.append(('i',d.getITerm().getId()))
+        if op==D.BTERM:t.append(('b',d.getBTerm().getId()))
 def reencode(net):
-    w=net.getWire();before=raw(w);d=D();d.begin(w);ops=[]
+    w=net.getWire();before=raw(w);geo=(shapes(w),terms(w)[0],w.getLength(),bbox(w));d=D();d.begin(w);ops=[]
     # getRect has no Python output binding; a RECT is stored as kRect(14) with
     # deltaX1 followed by three kOperand(11) ops, in decode order.
     rects=[tuple(before[i+k][1]for k in range(4))for i,(o,_)in enumerate(before)
@@ -54,17 +74,10 @@ def reencode(net):
         elif k=='iterm':e.addITerm(o[1])
         elif k=='bterm':e.addBTerm(o[1])
     e.end()
-    after=raw(net.getWire())
-    if len(after)!=len(before):raise SystemExit(f'op count differs on {net.getName()}: {len(before)} -> {len(after)}')
-    changed=0
-    for (a,x),(b,y)in zip(before,after):
-        if (a&0x1F)in PATHS and (a&0x1F)==(b&0x1F) and x==y:
-            if (a&0xE0)!=(b&0xE0):
-                if (a&0xE0)!=0x40 or (b&0xE0)!=0x60:raise SystemExit(f'unexpected wire type change on {net.getName()}')
-                changed+=1
-            continue
-        if (a,x)!=(b,y):raise SystemExit(f'op differs on {net.getName()}: {(a,x)} -> {(b,y)}')
-    return dict(ops=len(before),path_type_changes=changed)
+    w=net.getWire();t,types=terms(w)
+    if (shapes(w),t,w.getLength(),bbox(w))!=geo:raise SystemExit(f'geometry or terminals differ on {net.getName()}')
+    if types!={'ROUTED'}:raise SystemExit(f'wire types {types} on {net.getName()}')
+    return dict(ops_before=len(before),ops_after=w.length(),shapes=len(geo[0]),terms=len(t))
 out={}
 for name in [l.strip()for l in open(names_file)if l.strip()]:
     net=block.findNet(name)
