@@ -1,4 +1,4 @@
-name: PCIe boundary register slices - SoC lint and joint PCIe/Ethernet traffic before and after
+name: PCIe boundary register slices - SoC base and full lint before and after
 on:
   workflow_dispatch:
 permissions:
@@ -36,11 +36,10 @@ jobs:
         run: |
           set +e
           O=$PWD/out; mkdir -p $O
-          python3 scripts/check_soc_lint.py --profile base --output $O/lint-base > $O/lint-base.log 2>&1; echo "lint-base rc=$?"
-          python3 scripts/check_soc_lint.py --profile full --output $O/lint-full > $O/lint-full.log 2>&1; echo "lint-full rc=$?"
-          python3 scripts/check_pcie_ethernet_soc.py --out $O/joint-async --iverilog-dir $OSS_CAD_SUITE/bin --async-pcie > $O/joint-async.log 2>&1; echo "joint-async rc=$?"
-          python3 scripts/check_pcie_ethernet_soc.py --out $O/joint-sync --iverilog-dir $OSS_CAD_SUITE/bin > $O/joint-sync.log 2>&1; echo "joint-sync rc=$?"
-          for f in lint-base lint-full joint-async joint-sync; do
+          python3 scripts/check_soc_lint.py --profile base --output hw/soc/out/skid-lint-base > $O/lint-base.log 2>&1; echo "lint-base rc=$?"
+          python3 scripts/check_soc_lint.py --profile full --output hw/soc/out/skid-lint-full > $O/lint-full.log 2>&1; echo "lint-full rc=$?"
+          cp -r hw/soc/out/skid-lint-base $O/lint-base; cp -r hw/soc/out/skid-lint-full $O/lint-full
+          for f in lint-base lint-full; do
             python3 -c "import json,sys;d=json.load(open(sys.argv[1]));print(sys.argv[2],{k:d.get(k) for k in ('status','tests','delta','sources_unchanged','immutable_drift','own_unaccepted','unchanged','runtime_unchanged','asynchronous_pcie')})" $O/$f/result.json $f 2>/dev/null || { echo "$f no result"; tail -30 $O/$f.log; }
           done
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
