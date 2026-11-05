@@ -46,3 +46,15 @@ This run is not an acceptance measurement. The maximum step was relaxed from 0.3
 - The vctrl oscillation repeats roughly every 100-150 ns, close to the 1/(feedback - reference) beat of about 118 ns. In 1.48-1.50 us UP is high 43% of the time and raises vctrl at about 40 V/us; DOWN is seen only while UP is also high.
 
 With the divider fixed, the next blocker is frequency acquisition in the PFD, charge pump and filter. Over each beat, vctrl's net movement is about zero, and it never leaves the 0.60-0.75 V band, although reaching 8 GHz needs vctrl near or above 1 V by the observed tuning slope. The next measurements are UP/DOWN pulse widths and overlap over full beat cycles, charge-pump output current against vctrl, and the reachable vctrl range.
+
+## Why the loop does not acquire (run41990447679)
+
+Same exploratory settings, cond_series4, with UP/DOWN occupancy per 50 ns window:
+
+- UP and DOWN are both high for 21-31% of every window. In the 1.48-1.50 us detail, each overlap pulse lasts about 2.58 ns of the 10 ns reference period, far longer than a PFD reset pulse should.
+- vctrl rises at +40.5 V/us while only UP is high and falls at -25.5 V/us while both are high. With equal integration capacitance, that means the DOWN sink is about 1.63 times the UP source.
+- Across the run UP-only (about 16%) exceeds DOWN-only (about 8%), so the PFD does ask for a higher vctrl (lower frequency). The net DOWN current during the long overlap cancels that request, so vctrl stays near 0.6-0.75 V.
+
+Charge-pump bias: the reference diode XD0185 (2/2 um NMOS) mirrors through XD0186 into the PMOS diode XD0374 (8/2 um). The UP source XD0375 is 6.4/2 um (0.8x), while the DOWN sink XD0188 is 2/2 um (1.0x). The design is therefore DOWN-heavy by 25% before any Vds effect; 1.63x is measured. The 2.58 ns overlap points to a slow PFD reset path.
+
+Run42015897890 what-ifs `series4_cp8` (XD0375 8 um, nominal 1:1) and `series4_cpmatch` (XD0375 10.4 um, measured ratio) test whether matched pump currents let the loop pull the VCO toward 8 GHz. The reset delay is the next item if they do not.
