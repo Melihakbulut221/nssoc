@@ -1,39 +1,95 @@
-# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
-# SPDX-License-Identifier: Apache-2.0
-name: cloud-evidence-summary
+name: Fresh nominal RC and original-clock three-corner STA on a routed main-chip database
 on:
   workflow_dispatch:
     inputs:
-      release:
-        description: Exact release containing the archive
-        default: cloud-migration-20261012-000
-        required: false
-      asset:
-        description: Exact archive asset name
-        default: routed-setup-cloud-38306421942-1.tar.gz
-        required: true
-      member:
-        description: Exact JSON or UTF-8 report member to read
-        default: cloud-routed-setup/result.json
-        required: true
+      routed_artifact: {description: 'artifact id holding routed.odb', type: string, default: '13423006669'}
+      engine: {type: string, default: fixedguard}
 permissions:
   contents: read
+  actions: read
 jobs:
-  summarize:
+  sta:
     runs-on: ubuntu-24.04
-    permissions:
-      contents: write
+    timeout-minutes: 300
+    env:
+      GH_TOKEN: ${{ github.token }}
+      IMAGE: openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a
+      ENGINE_PART: ${{ inputs.engine == 'fixedguard' && '687863984' || '706643321' }}
+      ENGINE_SHA: ${{ inputs.engine == 'fixedguard' && '2a343c7491353a60e7b06aa134d4b67e3ef2e846a8341164dacffe88f5f7ec2f' || 'e12b1c70296c119c31ed5b1a7f739904d06b3c86cd703eebee25dbcc9c357431' }}
+      APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
+      PACKAGE_SHA: 822dab7067d901fa79dabffffff784baf5c9965f0a5091eba67acdc48b9956f4
+      HANDOFF_NETLIST_SHA: 45dab53665d31bb73a41a5086078baee94018c08b5c0b071d45a2c190d74fa5e
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/mainchip_sta_measure.py
+            /hw/soc/pnr/interface_flow.py
+            /hw/soc/pnr/replay_onehot_routed_extraction_flow.py
+            /hw/soc/flow/audit_estimated_spef.py
+            /hw/soc/flow/check_timing_derate.tcl
+            /hw/soc/flow/prune_orphan_guides.tcl
+      - name: Acquire LibreLane 3.0.5, the verified input package and the routed database
+        run: |
+          set -euo pipefail
+          W=/mnt/s; sudo mkdir -p $W/e $W/o; sudo chown -R $USER $W
+          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2
+          curl -fsSL -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
+          echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c -; chmod +x $W/librelane.AppImage
+          gh api repos/${{ github.repository }}/releases/assets/663146895 -H "Accept: application/octet-stream" > $W/pkg.tgz
+          echo "$PACKAGE_SHA  $W/pkg.tgz" | sha256sum -c -
+          mkdir -p $W/pkg && tar -xzf $W/pkg.tgz -C $W/pkg && rm $W/pkg.tgz
+          P=$(dirname "$(find $W/pkg -name input-contract.json | head -1)"); echo "PKG=$P" >> $GITHUB_ENV; ls "$P" | head
+          gh api repos/${{ github.repository }}/actions/artifacts/${{ inputs.routed_artifact }}/zip > $W/in.zip
+          unzip -p $W/in.zip routed.odb > $W/o/routed.odb; rm $W/in.zip; sha256sum $W/o/routed.odb
+          gh api repos/${{ github.repository }}/actions/artifacts/13303946002/zip > $W/ho.zip
+          M=$(unzip -Z1 $W/ho.zip | grep 'handoff-candidate.v$' | head -1); echo "member $M"
+          unzip -p $W/ho.zip "$M" > $W/o/handoff-candidate.v; rm $W/ho.zip
+          echo "$HANDOFF_NETLIST_SHA  $W/o/handoff-candidate.v" | sha256sum -c -
+          docker pull -q "$IMAGE"
+          gh api repos/${{ github.repository }}/releases/assets/$ENGINE_PART -H "Accept: application/octet-stream" > $W/engine.tgz
+          tar -xzf $W/engine.tgz -C $W/e; rm $W/engine.tgz
+          E=$(find $W/e -type f -name openroad -exec sha256sum {} + | awk -v s=$ENGINE_SHA '$1==s{print $2}' | head -1); test -n "$E"
+          mkdir -p $W/b; cp "$E" $W/b/openroad; chmod +x $W/b/openroad; df -h /mnt /
+      - name: Export DEF and Verilog with the routing engine; bind the netlist to the qualified handoff export
+        run: |
+          set -euo pipefail
+          W=/mnt/s
+          cat > $W/o/export.tcl <<'TCL'
+          read_db /v/o/routed.odb
+          set b [ord::get_db_block]
+          puts "NSSOC_EXPORT insts=[llength [$b getInsts]] nets=[llength [$b getNets]] bterms=[llength [$b getBTerms]]"
+          write_def /v/o/routed.def
+          write_verilog /v/o/routed.v
+          write_verilog -include_pwr_gnd /v/o/routed-pg.v
+          TCL
+          docker run --rm -v $W:/v "$IMAGE" /v/b/openroad -no_init -exit /v/o/export.tcl | tee $W/o/export.log
+          sha256sum $W/o/routed-pg.v $W/o/handoff-candidate.v $W/o/routed.v $W/o/routed.def
+          if cmp -s $W/o/routed-pg.v $W/o/handoff-candidate.v; then echo "NETLIST_BINDING identical to qualified handoff export"; else echo "NETLIST_BINDING differs"; diff <(head -c 2000000 $W/o/routed-pg.v) <(head -c 2000000 $W/o/handoff-candidate.v) | head -40 || true; fi
+      - name: Fresh nominal RC and three-corner STA through AuditedRCX and AuditedRoutedSTA
+        run: |
+          set -euo pipefail
+          W=/mnt/s
+          python3 -B scripts/mainchip_sta_measure.py "$PKG" $W/o/routed.odb $W/o/routed.def $W/o/routed.v $W/librelane.AppImage $W/out
+      - name: Collect
+        if: always()
+        run: |
+          W=/mnt/s; mkdir -p out
+          cp $W/o/export.log out/ 2>/dev/null || true
+          cp $W/out/result.json $W/out/native.log $W/out/initial-state.json out/ 2>/dev/null || true
+          for c in nom_slow_1p08V_125C nom_typ_1p20V_25C nom_fast_1p32V_m40C; do
+            d=$(find $W/out/run -maxdepth 2 -type d -name $c | head -1); [ -n "$d" ] || continue
+            mkdir -p out/$c; for f in sta.log checks.rpt violator_list.rpt clock.rpt ws.max.rpt ws.min.rpt skew.max.rpt skew.min.rpt; do [ -f $d/$f ] && cp $d/$f out/$c/; done
+            [ -f $d/max.rpt ] && head -c 20000000 $d/max.rpt > out/$c/max.head.rpt; [ -f $d/min.rpt ] && head -c 20000000 $d/min.rpt > out/$c/min.head.rpt
+          done
+          find $W/out/run -name '*.log' -size -5M -path '*onehotroutercx*' -exec cp {} out/ \; 2>/dev/null || true
+          ls -la out
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
         with:
-          python-version: '3.12'
-      - name: Read exact report in cloud and publish source binding
-        env:
-          GH_TOKEN: ${{ github.token }}
-          ASSET: ${{ inputs.asset || 'routed-setup-cloud-38306421942-1.tar.gz' }}
-          MEMBER: ${{ inputs.member || 'cloud-routed-setup/result.json' }}
-          RELEASE: ${{ inputs.release || 'cloud-migration-20261012-000' }}
-        run: python3 scripts/summarize_cloud_evidence.py --asset "$ASSET" --member "$MEMBER" --release "$RELEASE"
+          name: mainchip-sta-${{ github.run_id }}
+          path: out
+          retention-days: 90
