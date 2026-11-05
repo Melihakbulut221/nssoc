@@ -58,3 +58,25 @@ Same exploratory settings, cond_series4, with UP/DOWN occupancy per 50 ns window
 Charge-pump bias: the reference diode XD0185 (2/2 um NMOS) mirrors through XD0186 into the PMOS diode XD0374 (8/2 um). The UP source XD0375 is 6.4/2 um (0.8x), while the DOWN sink XD0188 is 2/2 um (1.0x). The design is therefore DOWN-heavy by 25% before any Vds effect; 1.63x is measured. The 2.58 ns overlap points to a slow PFD reset path.
 
 Run42015897890 what-ifs `series4_cp8` (XD0375 8 um, nominal 1:1) and `series4_cpmatch` (XD0375 10.4 um, measured ratio) test whether matched pump currents let the loop pull the VCO toward 8 GHz. The reset delay is the next item if they do not.
+
+## Matched pump currents (run42015897890)
+
+Both variants keep the conditioner fix and change only the UP mirror XD0375. Settings are exploratory, as above (1.5 us, 1 ps maximum step).
+
+| Variant | XD0375 | Late VCO | Late feedback | VCO / feedback | Double transitions (late window) | vctrl band |
+|---|---:|---:|---:|---:|---:|---:|
+| series4_cp8 | 8 um | 8.39 GHz | about 100 MHz | 83.39 | 29 / 839 | 0.73-0.93 V |
+| series4_cpmatch | 10.4 um | 8.40 GHz | 100.3 MHz | 83.72 | 89 / 839 | 0.73-0.93 V |
+
+With the pump matched, the loop does move: vctrl now rises to 0.80-0.93 V, and the feedback averages the 100 MHz reference (phase span 2.41 ns, down from 5.0 ns). The VCO nevertheless stays at 8.4 GHz, because the divider again loses counts and the ratio is 83.7 instead of 80. The loop has pulled the feedback onto the reference by locking to the wrong ratio.
+
+## VCO swing collapses where 8 GHz is reached
+
+From the 1.48-1.50 us samples of series4_cpmatch, per VCO period:
+
+- The VCO is a three-stage CML ring with resistor loads (XD0480-0482, XD0490-0492) and MIM loading on every ring node (XD0572/0575/0576/0578/0584/0593). vctrl drives the gates of four PMOS sources (XD0320/0333/0334/0335). Their current feeds the diode XD0408 that biases the three ring tails XD0402/0404/0406. The ring is therefore tuned by tail current alone.
+- The VCO differential peak-to-peak correlates with vctrl at -0.80. It is 0.37-0.42 V at vctrl 0.73-0.79 V (period 114-118 ps, 8.5-8.8 GHz). It falls to 0.12-0.14 V at vctrl 0.88-0.93 V (period 121-131 ps, 7.6-8.3 GHz).
+- Every double transition in the window falls in a cycle with collapsed swing. In those cycles the mean clock peak is +0.070/-0.063 V, against +0.156/-0.147 V in normal cycles.
+- vctrl swings by about 0.2 V within one 10 ns reference period, because the control node has only the 8 x 8 um MIM XD0574 to avss, in parallel with the resistive bias divider XD0567 (1 x 120 um rppd from vco_avdd) and XD0568 (1 x 47 um rppd to avss), and no series-RC integrating branch. Each UP pulse therefore pushes the ring briefly into the low-swing region.
+
+The 8 GHz target therefore lies in the region where reducing tail current both lowers the frequency and removes the swing that the divider needs. Pump matching cannot fix this. The ring has to reach 8 GHz with full tail current, which is a VCO centre-frequency change. Run42044215569 tests this on the same deck by scaling only the six ring-node MIMs. `cpmatch_mim105` and `cp8_mim105` scale each side by 1.055 (+11% area), and `cpmatch_mim109` by 1.09 (+19%). Every extracted wire is kept, so these remain what-ifs rather than layouts.
