@@ -22,3 +22,17 @@ The handoff's observations (about +-88 mV conditioned clock, 38-49 mV effective 
 ## Next measurement-driven change
 
 Raise the clock drive at the divider clock pairs to well above +-100 mV of effective Vbe split (conditioner gain or load, or direct level-shifted VCO drive), or reduce the clock pairs' emitter-path resistance. Then rerun this deck to check for zero double transitions and an exact divide-by-80, before any closed-loop acceptance. The 8.59 GHz VCO frequency also has to be brought to 8 GHz by the loop once the divider counts correctly.
+
+## Conditioner what-if (run41946612555)
+
+The first-divider "conditioner" is a resistor network: a series rppd from the VCO output to each clock-pair base (XD0497/XD0498, 4 um x 3.6 um) and a pull-up from `div_avdd` (XD0488/XD0489, 1 um x 4 um). Each variant reruns the same deck to 0.6 us and is measured on the same 0.5-0.6 us window; only the listed resistor widths change, and every extracted wire is kept.
+
+| Variant | Change | VCO / feedback | Feedback | Double transitions | Clock-pair base swing | Off-side clock-pair Ic min |
+|---|---|---:|---:|---:|---:|---:|
+| original | none | **90.46** | 96.18 MHz | 16 / 869 periods | -91..+86 mV | 0.122 / 0.149 mA |
+| cond_series4 | XD0497/0498 4 -> 16 um | **79.86** | 108.14 MHz | 1 / 863 | -162..+157 mV | 0.013 / 0.018 mA |
+| cond_lowz4 | series 4 -> 16 um, pull-ups 1 -> 4 um | **80.01** | 109.15 MHz | 1 / 872 | -138..+135 mV | 0.028 / 0.037 mA |
+
+In the original, the divider loses so many counts that the feedback (96 MHz) reads below the 100 MHz reference while the VCO is already at 8.70 GHz, above its 8.0 GHz target. The loop therefore sees a frequency error of the wrong sign and keeps the VCO high, which explains the acquisition failure. With the series resistance cut to a quarter, the clock pairs steer fully, the divider counts by 80, and the feedback reads above the reference, so the loop now gets the correct error sign. Neither variant is locked at 0.6 us: the VCO is still at 8.64-8.73 GHz. The original 0.9-1.0 us acquisition gates (100 ppm, 50 ps) remain unevaluated for these variants. A 1 us variant run exceeds one hosted job (0.892 us in 5h40m), so it needs the existing continuation method or a larger runner.
+
+Recommended layout candidate: XD0497/XD0498 at 16 um width (cond_series4), with fresh DRC/LVS/RC and the full 1 us acquisition bench.
