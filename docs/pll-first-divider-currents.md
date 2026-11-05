@@ -80,3 +80,22 @@ From the 1.48-1.50 us samples of series4_cpmatch, per VCO period:
 - vctrl swings by about 0.2 V within one 10 ns reference period, because the control node has only the 8 x 8 um MIM XD0574 to avss, in parallel with the resistive bias divider XD0567 (1 x 120 um rppd from vco_avdd) and XD0568 (1 x 47 um rppd to avss), and no series-RC integrating branch. Each UP pulse therefore pushes the ring briefly into the low-swing region.
 
 The 8 GHz target therefore lies in the region where reducing tail current both lowers the frequency and removes the swing that the divider needs. Pump matching cannot fix this. The ring has to reach 8 GHz with full tail current, which is a VCO centre-frequency change. Run42044215569 tests this on the same deck by scaling only the six ring-node MIMs. `cpmatch_mim105` and `cp8_mim105` scale each side by 1.055 (+11% area), and `cpmatch_mim109` by 1.09 (+19%). Every extracted wire is kept, so these remain what-ifs rather than layouts.
+
+## Ring-node MIM scaling (run42044215569)
+
+| Variant | Change on top of the conditioner fix | VCO (late) | Feedback (late) | VCO / feedback | Double transitions | vctrl band |
+|---|---|---:|---:|---:|---:|---:|
+| cp8_mim105 | XD0375 8 um, six ring MIMs x1.055 per side (+11% area) | 8.50 GHz | 106.5 MHz | 79.80 | 16 / 849 | 0.65-0.76 V |
+| cpmatch_mim109 | XD0375 10.4 um, ring MIMs x1.09 per side (+19% area) | 8.68 GHz | 106.5 MHz | 81.50 | 19 / 762 | 0.60-0.71 V |
+| cpmatch_mim105 | XD0375 10.4 um, ring MIMs x1.055 | job failed after 78 min; its log is no longer retrievable (BlobNotFound) | | | | |
+
+The patch was applied as intended (`variant-patch.json`). The six ring-node MIMs therefore carry only a small share of the ring-node capacitance: +11% MIM area lowers the VCO by about 1-2% at the same vctrl. With the divider correct again (ratio 79.8), the feedback sits at about 106 MHz, above the 100 MHz reference. vctrl nonetheless stays in a narrow band around 0.7 V instead of rising to slow the VCO.
+
+That points to the loop filter. The control node has the resistive bias XD0567 (to vco_avdd) and XD0568 (to avss) and the 8 x 8 um MIM XD0574, with no integrating branch. The divider holds vctrl near its own level, and the charge pump can only move vctrl by its current times the parallel bias resistance. The loop therefore has finite DC gain and cannot pull a free-running VCO of about 8.5 GHz to 8 GHz.
+
+Run42075871975 tests that directly with an exploratory, non-layout what-if on top of `series4_cp8`:
+
+- The bias resistors are made ten times longer.
+- An ideal series RC is added from vctrl to avss: 2.1 kOhm + 30 pF (`cp8_int2k1`) or 1 kOhm + 60 pF (`cp8_int1k`).
+
+If the loop then acquires 8 GHz, the PLL needs a type-II loop filter in layout. Without one, no VCO or pump trim will make it acquire.
