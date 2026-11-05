@@ -62,7 +62,10 @@ def reencode(net):
         elif op==D.JUNCTION:ops.append(('junction',d.getJunctionValue(),None))
         elif op==D.SHORT:ops.append(('short',d.getJunctionValue(),d.getLayer()))
         elif op==D.VWIRE:ops.append(('vwire',d.getJunctionValue(),d.getLayer()))
-        elif op==D.POINT:x,y=d.getPoint();ops.append(('point',(x,y),d.getProperty(),d.getJunctionId()))
+        elif op==D.POINT:
+            x,y=d.getPoint();prop=d.getProperty()
+            if prop:raise SystemExit(f'nonzero point property {prop} on {net.getName()}')
+            ops.append(('point',(x,y),prop,d.getJunctionId()))
         elif op==D.POINT_EXT:x,y,e=d.getPoint_ext();ops.append(('point_ext',(x,y,e),d.getProperty(),d.getJunctionId()))
         elif op==D.VIA:ops.append(('via',d.getVia(),d.getJunctionId()))
         elif op==D.TECH_VIA:ops.append(('tech_via',d.getTechVia(),d.getJunctionId()))
@@ -78,8 +81,11 @@ def reencode(net):
         elif k=='junction':e.newPath(ids[o[1]],R)
         elif k=='short':e.newPathShort(ids[o[1]],o[2],R)
         elif k=='vwire':e.newPathVirtualWire(ids[o[1]],o[2],R)
-        elif k=='point':ids[o[3]]=e.addPoint(o[1][0],o[1][1],o[2])
-        elif k=='point_ext':ids[o[3]]=e.addPoint(o[1][0],o[1][1],o[1][2],o[2])
+        # In Python a third integer selects the extension overload, so plain
+        # points take two arguments. Point properties (kProperty, 0 here) carry
+        # no geometry and are not rewritten.
+        elif k=='point':ids[o[3]]=e.addPoint(o[1][0],o[1][1])
+        elif k=='point_ext':ids[o[3]]=e.addPoint(o[1][0],o[1][1],o[1][2])
         elif k=='via':ids[o[2]]=e.addVia(o[1])
         elif k=='tech_via':ids[o[2]]=e.addTechVia(o[1])
         elif k=='rect':e.addRect(*o[1])
