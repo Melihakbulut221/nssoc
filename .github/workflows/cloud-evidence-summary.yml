@@ -15,6 +15,7 @@ jobs:
           - {name: base_rtl_d40, rtl: baseline, overrides: '{}'}
           - {name: skid_rtl_d40, rtl: change, overrides: '{}'}
           - {name: skid_rtl_d60, rtl: change, overrides: '{"PL_TARGET_DENSITY_PCT": 60}'}
+          - {name: base_rtl_d60, rtl: baseline, overrides: '{"PL_TARGET_DENSITY_PCT": 60}'}
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -98,11 +99,18 @@ jobs:
             --skip Yosys.Synthesis --skip Checker.YosysUnmappedCells --skip Checker.YosysSynthChecks --skip Checker.NetlistAssignStatements \
             --with-initial-state $OUT/prepared/state.json $OUT/prepared/config.json > $OUT/run.log 2>&1 || { echo "FLOW_FAILED"; tail -80 $OUT/run.log; }
           python3 -B scripts/impl_probe.py collect $OUT/run $OUT/metrics.json
+      - name: Per-corner setup and hold on the post-global-route database
+        run: |
+          set -euo pipefail
+          OUT=$PWD/hw/soc/out/impl-probe; W=/mnt/s
+          python3 -B scripts/impl_probe.py sta_tcl $OUT/run $OUT/prepared $OUT/corner-sta.tcl
+          env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage openroad -exit $OUT/corner-sta.tcl > $OUT/corner-sta.log 2>&1 || echo "CORNER_STA_FAILED"
+          grep -a -E "NSSOC_CORNER|slack|Error|ERROR" $OUT/corner-sta.log | grep -av "^\s*$" | head -120 || true
       - name: Collect
         if: always()
         run: |
           OUT=hw/soc/out/impl-probe; mkdir -p out
-          cp $OUT/metrics.json $OUT/run.log $OUT/synthesis-driver.log $OUT/prepared/config.json out/ 2>/dev/null || true
+          cp $OUT/metrics.json $OUT/corner-sta.log $OUT/corner-sta.tcl $OUT/run.log $OUT/synthesis-driver.log $OUT/prepared/config.json out/ 2>/dev/null || true
           for d in $OUT/run/*stamidpnr* $OUT/run/*resizer*; do [ -d "$d" ] || continue; b=$(basename $d); mkdir -p out/$b; for c in nom_slow_1p08V_125C; do [ -f $d/$c/max.rpt ] && head -c 3000000 $d/$c/max.rpt > out/$b/$c.max.head.rpt; done; cp $d/*.log out/$b/ 2>/dev/null || true; done
           ls out | head -50
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

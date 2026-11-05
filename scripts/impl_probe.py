@@ -32,5 +32,46 @@ def collect(run,out):
         if 'sta' in r['step'].lower()or 'resizer' in r['step'].lower():
             ws={k.split('corner:')[-1]:round(v,3)for k,v in r['metrics'].items()if k.startswith('timing__setup__ws__corner')}
             print(r['step'],ws)
+def sta_tcl(run,prepared,out):
+    """Per-corner setup/hold on the post-global-route database (OpenROAD in LibreLane)."""
+    import fnmatch,glob
+    run,prepared=Path(run),Path(prepared)
+    cfg=json.loads((run/'resolved.json').read_text())
+    states=sorted(run.glob('*/state_out.json'))
+    odb=None
+    for s_ in states:
+        o=json.loads(s_.read_text()).get('odb')
+        if o:odb=o
+    corners=cfg['STA_CORNERS']
+    def libs(c):
+        out=[]
+        for k,v in cfg['LIB'].items():
+            if fnmatch.fnmatch(c,k):out+=v
+        for m in(cfg.get('MACROS')or{}).values():
+            for k,v in(m.get('lib')or{}).items():
+                if fnmatch.fnmatch(c,k):out+=v
+        return list(dict.fromkeys(out))
+    def val(v):
+        if isinstance(v,bool):return '1'if v else '0'
+        if isinstance(v,list):return ' '.join(map(str,v))
+        return str(v)
+    t=[f'set ::env({k}) {{{val(v)}}}'for k,v in cfg.items()if isinstance(v,(str,int,float,bool))or(isinstance(v,list)and all(isinstance(x,(str,int,float))for x in v))]
+    t+=['set ::env(OPENLANE_SDC_IDEAL_CLOCKS) 0',f'read_db {odb}','define_corners '+' '.join(corners)]
+    for c in corners:t+=[f'read_liberty -corner {c} {l}'for l in libs(c)]
+    t+=[f'read_sdc {prepared/"physical.sdc"}','set_propagated_clock [all_clocks]']
+    for layer,rc in cfg['LAYERS_RC']['*'].items():
+        t.append(f'set_layer_rc -layer {layer} -resistance {rc["res"]} -capacitance {rc["cap"]}')
+    for via,rc in((cfg.get('VIAS_RC')or{}).get('*')or{}).items():
+        t.append(f'set_layer_rc -via {via} -resistance {rc["res"]}')
+    t+=['set_routing_layers -signal Metal2-TopMetal2 -clock Metal4-TopMetal2',
+        f'global_route -congestion_iterations {cfg.get("GRT_OVERFLOW_ITERS",50)} -allow_congestion',
+        'estimate_parasitics -global_routing']
+    for c in corners:
+        t+=[f'puts "NSSOC_CORNER_BEGIN {c}"',
+            f'report_checks -corner {c} -path_delay max -group_path_count 3 -format end',
+            f'report_checks -corner {c} -path_delay min -group_path_count 3 -format end',
+            f'report_checks -corner {c} -path_delay max -group_path_count 1 -fields {{cap slew fanout}} -digits 3',
+            f'puts "NSSOC_CORNER_END {c}"']
+    Path(out).write_text('\n'.join(t)+'\n');print('odb',odb,'corners',corners)
 if __name__=='__main__':
-    {'prepare':prepare,'collect':collect}[sys.argv[1]](*sys.argv[2:])
+    {'prepare':prepare,'collect':collect,'sta_tcl':sta_tcl}[sys.argv[1]](*sys.argv[2:])
