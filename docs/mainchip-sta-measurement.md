@@ -69,3 +69,21 @@ Run42058017703 repeats the sizing probe with wire RC calibrated to that average 
 - Timing-driven placement or region constraints for the Ibex datapath.
 - Registered PCIe boundary outputs.
 - Setup repair calibrated to extracted wire capacitance, without the 100-iteration caps.
+
+## Sizing with wire capacitance calibrated to the extraction (run42058017703)
+
+This run repeats the same sizing probe with `set_wire_rc -resistance 0.0004 -capacitance 0.000194`. The capacitance, 0.194 fF/um, is the extracted average. The resistance, 0.4 Ohm/um, is lower than the PDK's LibreLane `LAYERS_RC` (Metal2 2.5, Metal3 1.5, Metal4/5 about 0.65 Ohm/um), so the wire delay here is optimistic. The `LAYERS_RC` capacitances (Metal2 0.169, Metal3 0.183, Metal4 0.166, Metal5 0.086 fF/um) agree with the extraction, so the flow's repair is not working from underestimated wire capacitance.
+
+The job reached the 350-minute limit during `repair_timing` and was cancelled; its streamed log is kept.
+
+| Step | Setup WNS | Setup TNS | Violating endpoints | Max slew / cap / fanout |
+|---|---:|---:|---:|---:|
+| before repair | -12.343 ns | -48494 ns | - | 1400 / 278 / 1350 |
+| after `repair_design` | -12.606 ns | -48030 ns | - | 2 / 0 / 1150 |
+| `repair_timing` iteration 130 (worst endpoint is a `clk_i` flop) | -9.258 ns | -41854 ns | 9467 | - |
+| iteration 530 (worst endpoint now `pcie_tx_data_o[4]`) | -6.536 ns | -37176 ns | 9467 | - |
+| iteration 2450, cancelled (worst `pcie_tx_data_o[2]`) | -6.311 ns | -31079 ns | 9467 | - |
+
+With calibrated capacitance the estimate reproduces most of the extracted -14.04 ns. Unbounded sizing then lifts every `clk_i` path above -6.3 ns within about 500 iterations. The worst remaining paths are the PCIe output-port paths, which the register slices on `timing/pcie-boundary-skid` remove.
+
+The 9467 violating endpoints and the slow TNS progress show that the remaining `clk_i` violations are spread out. Closing them takes a re-implementation with setup repair that is not capped at 100 iterations, plus placement that keeps the Ibex datapath local. This probe is not a candidate, and the cancelled run proves no closure.
