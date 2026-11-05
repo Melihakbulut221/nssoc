@@ -7,7 +7,7 @@ same op-then-run wrapper as the original capture.
 analyze: reproduce the original 0.9-1.0 us feedback frequency and phase span,
 then report per-HBT terminal currents and divider transitions.
 """
-import json,re,sys
+import json,os,re,sys
 from pathlib import Path
 import numpy as np
 VARIANTS={'original':{},
@@ -19,9 +19,12 @@ def patch_parent(case,variant):
         hits=[i for i,l in enumerate(lines)if l.split(maxsplit=1)[:1]==[name]];assert len(hits)==1,(name,len(hits))
         old=lines[hits[0]];new,n=re.subn(r'(\sw=)\S+',r'\g<1>'+w,old);assert n==1,old;lines[hits[0]]=new;changed[name]=[old,new]
     (case/'parent865.spice').write_text('\n'.join(lines));return changed
+STOP=os.environ.get('NSSOC_PLL_STOP','1e-06')
 def prepare(case,probes,variant='original'):
     json.dump(patch_parent(case,variant),open(case/'variant-patch.json','w'),indent=1)
     p=json.load(open(probes));deck=(case/'candidate-circuit.cir').read_text().split('\n')
+    tran=[i for i,l in enumerate(deck)if l.startswith('.tran ')];assert len(tran)==1 and deck[tran[0]]=='.tran 3.125e-13 1e-06 0 3.125e-13',deck[tran[0]]
+    deck[tran[0]]='.tran 3.125e-13 '+STOP+' 0 3.125e-13'
     hits=[i for i,l in enumerate(deck)if l.startswith('save ')];assert len(hits)==1,len(hits)
     deck[hits[0]]='save '+' '.join(p['voltages']+p['currents'])
     (case/'probe-circuit.cir').write_text('\n'.join(deck))
@@ -47,13 +50,13 @@ def analyze(case,probes,out):
     def col(n):
         n=n.lower();key=n if n in idx else 'i('+n+')'
         return np.asarray(m[:,idx[key]])
-    t=np.asarray(m[:,0])
-    late=(t>=0.9e-6)&(t<=1.0e-6)
+    t=np.asarray(m[:,0]);end=float(t[-1]);lo=end-0.1e-6
+    late=(t>=lo)&(t<=end)
     fb=col('v(fb)')-col('v(fbbar)');ref=col('v(reference)')
-    fe=crossings(t,fb);fe=fe[(fe>=0.9e-6)&(fe<=1.0e-6)];re_=crossings(t,ref,1.25);re_=re_[(re_>=0.9e-6-10e-9)&(re_<=1.0e-6)]
+    fe=crossings(t,fb);fe=fe[(fe>=lo)&(fe<=end)];re_=crossings(t,ref,1.25);re_=re_[(re_>=lo-10e-9)&(re_<=end)]
     freq=(len(fe)-1)/(fe[-1]-fe[0]) if len(fe)>1 else None
     lag=[float(f-re_[re_<=f][-1])for f in fe if (re_<=f).any()]
-    r=dict(points=len(t),end_s=float(t[-1]),feedback_frequency_hz=freq,feedback_edges=len(fe),phase_lag_s=[min(lag),max(lag)]if lag else None,
+    r=dict(points=len(t),end_s=end,window_s=[lo,end],feedback_frequency_hz=freq,feedback_edges=len(fe),phase_lag_s=[min(lag),max(lag)]if lag else None,
            phase_span_s=(max(lag)-min(lag))if lag else None,reference_original=dict(feedback_frequency_hz=104152221.297,phase_span_s=5.002708790e-9))
     (out/'result.json').write_text(json.dumps(r,indent=1,sort_keys=True))
     p=json.load(open(probes));roles=p['roles'];dev={}
@@ -67,7 +70,7 @@ def analyze(case,probes,out):
     hist=np.histogram(edges,bins=rises)[0];r['divider_transitions_per_clock_period']={int(k):int(n)for k,n in zip(*np.unique(hist,return_counts=True))}
     r['vco_over_feedback_ratio']=(r['clock_frequency_hz']/freq)if freq and r['clock_frequency_hz']else None
     cb=col('v(xloop.w_t387_b)')-col('v(xloop.w_t388_b)');r['divider_clock_base_diff_v']=[float(cb[late].min()),float(cb[late].max())]
-    tail=t>=0.98e-6
+    tail=t>=end-0.02e-6
     np.savez_compressed(out/'late-window.npz',t=t[tail].astype(np.float64),names=np.array(names[1:]),
         samples=np.array([np.asarray(m[tail,i])for i in range(1,len(names))],dtype=np.float32))
     (out/'result.json').write_text(json.dumps(r,indent=1,sort_keys=True));print(json.dumps({k:r[k]for k in('feedback_frequency_hz','phase_span_s','clock_frequency_hz','end_s')}))
