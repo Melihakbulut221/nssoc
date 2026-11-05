@@ -49,13 +49,22 @@ def main(package,odb,out,stage):
     # LibreLane's set_rc.tcl lives in its AppImage; use the configured wire-RC layers directly.
     def layers(key,default):
         v=cfg.get(key);return v if isinstance(v,list)and v else default
-    t+=['set_wire_rc -signal -layers {'+' '.join(layers('SIGNAL_WIRE_RC_LAYERS',['Metal2','Metal3']))+'}',
-        'set_wire_rc -clock -layers {'+' '.join(layers('CLOCK_WIRE_RC_LAYERS',['Metal4','Metal5']))+'}']
+    import os
+    calibrated=os.environ.get('PROBE_WIRE_RC','').split()
+    if calibrated:
+        # Per-micron R (kOhm) and C (pF) calibrated against the routed SPEF
+        # (total wire capacitance over total routed length), coupling included.
+        t+=[f'set_wire_rc -signal -resistance {calibrated[0]} -capacitance {calibrated[1]}',
+            f'set_wire_rc -clock -resistance {calibrated[0]} -capacitance {calibrated[1]}']
+    else:
+        t+=['set_wire_rc -signal -layers {'+' '.join(layers('SIGNAL_WIRE_RC_LAYERS',['Metal2','Metal3']))+'}',
+            'set_wire_rc -clock -layers {'+' '.join(layers('CLOCK_WIRE_RC_LAYERS',['Metal4','Metal5']))+'}']
     if dont:t.append('set_dont_use [get_lib_cells {'+' '.join(dont)+'}]')
     t+=['estimate_parasitics -placement',
         'puts "NSSOC_PROBE before wns=[sta::worst_slack -max] tns=[sta::total_negative_slack -max] hold=[sta::worst_slack -min]"',
         'puts "NSSOC_PROBE before slew=[sta::max_slew_violation_count] cap=[sta::max_capacitance_violation_count] fanout=[sta::max_fanout_violation_count]"',
         'report_checks -path_delay max -group_path_count 1 -digits 3 -format end',
+        'report_wire_length -net net37385 -global_route -detailed_route' if False else 'report_net net37385',
         'repair_design -verbose',
         'estimate_parasitics -placement',
         'puts "NSSOC_PROBE after_design wns=[sta::worst_slack -max] tns=[sta::total_negative_slack -max] slew=[sta::max_slew_violation_count] cap=[sta::max_capacitance_violation_count] fanout=[sta::max_fanout_violation_count]"']

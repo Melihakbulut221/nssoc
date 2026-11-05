@@ -5,6 +5,7 @@ on:
       routed_artifact: {description: 'artifact id holding routed.odb', type: string, default: '13423006669'}
       engine: {type: string, default: fixedguard}
       mode: {description: 'sta, probe_design, probe_timing or detour', type: string, default: sta}
+      wire_rc: {description: 'optional calibrated per-um R (kOhm) and C (pF) for the probe', type: string, default: ''}
 permissions:
   contents: read
   actions: read
@@ -68,7 +69,7 @@ jobs:
         run: |
           set -euo pipefail
           W=/mnt/s
-          python3 -B scripts/mainchip_sizing_probe.py "$PKG" $W/o/routed.odb $W/out ${{ inputs.mode == 'probe_timing' && 'timing' || 'design' }}
+          PROBE_WIRE_RC="${{ inputs.wire_rc }}" python3 -B scripts/mainchip_sizing_probe.py "$PKG" $W/o/routed.odb $W/out ${{ inputs.mode == 'probe_timing' && 'timing' || 'design' }}
           cat $W/out/probe-inputs.json; grep -v "^set ::env" $W/out/probe.tcl
           R=$GITHUB_WORKSPACE
           ( timeout 19000 docker run --rm -v $W:$W -v $R:$R -w $R "$IMAGE" $W/b/openroad -no_init -exit $W/out/probe.tcl 2>&1 || echo "PROBE_EXIT $?" ) | tee $W/out/probe.log | grep --line-buffered -E "NSSOC_PROBE|PROBE_EXIT|Error|ERROR|Iteration|WNS|^ +[0-9]+ +\||final|Inserted|Resized|slack" | head -3000 || true
