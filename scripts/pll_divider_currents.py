@@ -57,11 +57,16 @@ def analyze(case,probes,out):
     freq=(len(fe)-1)/(fe[-1]-fe[0]) if len(fe)>1 else None
     lag=[float(f-re_[re_<=f][-1])for f in fe if (re_<=f).any()]
     traj=[]
-    clk_all=col('v(clkp)')-col('v(clkn)')
+    clk_all=col('v(clkp)')-col('v(clkn)');up_all=col('v(up)');dn_all=col('v(down)');vc_all=col('v(vctrl)');re_all=crossings(t,col('v(reference)'),1.25)
     for a in np.arange(0.1e-6,end-1e-12,50e-9):
         w=(t>=a)&(t<a+50e-9);ce_=crossings(t[w],clk_all[w]);fw=fe_all[(fe_all>=a)&(fe_all<a+50e-9)]
+        tw=t[w];dtw=np.diff(tw);uh=(up_all[w]>1.25)[:-1];dh=(dn_all[w]>1.25)[:-1];vw=vc_all[w]
+        frac=lambda m:float(np.sum(dtw[m])/np.sum(dtw))
+        rw=re_all[(re_all>=a)&(re_all<a+50e-9)]
         traj.append(dict(start_s=float(a),vco_hz=float((len(ce_)-1)/(ce_[-1]-ce_[0]))if len(ce_)>1 else None,
-            feedback_hz=float((len(fw)-1)/(fw[-1]-fw[0]))if len(fw)>1 else None,vctrl_v=float(np.mean(col('v(vctrl)')[w]))))
+            feedback_hz=float((len(fw)-1)/(fw[-1]-fw[0]))if len(fw)>1 else None,vctrl_v=float(np.mean(vw)),
+            vctrl_start_v=float(vw[0]),vctrl_end_v=float(vw[-1]),up_only=frac(uh&~dh),down_only=frac(dh&~uh),both=frac(uh&dh),
+            reference_edges=len(rw),feedback_edges=len(fw)))
     r=dict(points=len(t),end_s=end,window_s=[lo,end],trajectory=traj,feedback_frequency_hz=freq,feedback_edges=len(fe),phase_lag_s=[min(lag),max(lag)]if lag else None,
            phase_span_s=(max(lag)-min(lag))if lag else None,reference_original=dict(feedback_frequency_hz=104152221.297,phase_span_s=5.002708790e-9))
     (out/'result.json').write_text(json.dumps(r,indent=1,sort_keys=True))
