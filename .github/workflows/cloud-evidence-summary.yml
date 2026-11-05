@@ -4,7 +4,7 @@ on:
     inputs:
       routed_artifact: {description: 'artifact id holding routed.odb', type: string, default: '13423006669'}
       engine: {type: string, default: fixedguard}
-      mode: {description: 'sta, probe_design or probe_timing', type: string, default: sta}
+      mode: {description: 'sta, probe_design, probe_timing or detour', type: string, default: sta}
 permissions:
   contents: read
   actions: read
@@ -29,6 +29,7 @@ jobs:
           sparse-checkout: |
             /scripts/mainchip_sta_measure.py
             /scripts/mainchip_sizing_probe.py
+            /scripts/mainchip_wire_detour.py
             /hw/soc/pnr/interface_flow.py
             /hw/soc/pnr/replay_onehot_routed_extraction_flow.py
             /hw/soc/flow/audit_estimated_spef.py
@@ -56,8 +57,14 @@ jobs:
           tar -xzf $W/engine.tgz -C $W/e; rm $W/engine.tgz
           E=$(find $W/e -type f -name openroad -exec sha256sum {} + | awk -v s=$ENGINE_SHA '$1==s{print $2}' | head -1); test -n "$E"
           mkdir -p $W/b; cp "$E" $W/b/openroad; chmod +x $W/b/openroad; df -h /mnt /
+      - name: Routed wire detour against pin half-perimeter
+        if: inputs.mode == 'detour'
+        run: |
+          set -euo pipefail
+          W=/mnt/s; R=$GITHUB_WORKSPACE; mkdir -p $W/out
+          docker run --rm -v $W:$W -v $R:$R -w $R "$IMAGE" $W/b/openroad -no_init -exit -python $R/scripts/mainchip_wire_detour.py $W/o/routed.odb $W/out/detour.json 'net37385,u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops[11].rf_reg_q[24],$abc$1804206$new_n50559,$abc$1804206$new_n47694,$abc$1804206$new_n50547,net2903,net2603' 2>&1 | tail -80
       - name: Sizing feasibility probe with the routing engine
-        if: inputs.mode != 'sta'
+        if: startsWith(inputs.mode, 'probe')
         run: |
           set -euo pipefail
           W=/mnt/s
@@ -92,7 +99,7 @@ jobs:
         run: |
           W=/mnt/s; mkdir -p out
           cp $W/o/export.log out/ 2>/dev/null || true
-          cp $W/out/result.json $W/out/native.log $W/out/initial-state.json $W/out/probe.log $W/out/probe.tcl $W/out/probe-inputs.json out/ 2>/dev/null || true
+          cp $W/out/result.json $W/out/native.log $W/out/initial-state.json $W/out/probe.log $W/out/probe.tcl $W/out/probe-inputs.json $W/out/detour.json out/ 2>/dev/null || true
           for c in nom_slow_1p08V_125C nom_typ_1p20V_25C nom_fast_1p32V_m40C; do
             d=$(find $W/out/run -maxdepth 2 -type d -name $c | head -1); [ -n "$d" ] || continue
             mkdir -p out/$c; for f in sta.log checks.rpt violator_list.rpt clock.rpt ws.max.rpt ws.min.rpt skew.max.rpt skew.min.rpt; do [ -f $d/$f ] && cp $d/$f out/$c/; done
