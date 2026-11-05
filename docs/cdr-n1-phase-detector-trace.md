@@ -52,3 +52,28 @@ What still fails in every variant:
 - xd0211/xd0212, the clock-steering pair of the D master latch, with minimum Vce 0.38 V against 0.4 V. Their collector node follows the retimed-B input common mode set by the B-to-D divider.
 
 Recommended next candidate: lowz4 in layout (twelve divider resistors at 4 um width, six divider MIMs at twice the side length), followed by fresh DRC, LVS and extraction and the same full650 bench. The XOR window and sampler timing remain open design work.
+
+## D master-latch headroom (run42048922994, branch `analysis/cdr-dlatch-headroom`)
+
+`scripts/cdr_netlist_neighbourhood.py` traced the extracted N1 deck (run42047500044). XD0211/XD0212 are the clock-steering pair of the D master latch:
+
+- Their base `w_t233_b` is the shared clock line of the sampler latches.
+- Their emitters go to the NMOS tail `w_t215_e`.
+- Their collector `w_t211_c` is the common emitter of the data pair XD0204/XD0206, with a 1 x 38.4 um rppd bleed (XD0329) to ground.
+- The data-pair bases `w_t334`/`w_t335` sit on the B-to-D level divider: pull-ups XD0332/XD0333 (8 x 1.8 um rppd from avdd) and pull-downs XD0334/XD0335 (4 x 5 um rppd).
+
+The clock-pair collector therefore sits one Vbe below the divider level. That explains the 0.38 V minimum Vce.
+
+On top of lowz4, the what-ifs widen only the two pull-ups (lower resistance, higher divider level). Every extracted wire, device and source is otherwise unchanged, and the frozen gates judge the result.
+
+| Variant | Pull-ups XD0332/0333 | Phase avg | VI current / output | Sampler D wrong sign | Failing HBT |
+|---|---:|---:|---:|---:|---|
+| lowz4 (run41775302761) | 8 um | 38.3 mV | 104 uA / 30.3 mV | 20 | xd0211, xd0212 |
+| lowz4_bd10 | 10 um | **38.0 mV** | **103 uA / 30.1 mV** | 16 | **none** |
+| lowz4_bd12 | 12 um | 37.8 mV | 103 uA / 30.0 mV | 16 | xd0209, xd0210 |
+
+lowz4_bd10 removes the last device-headroom failure: all HBT Vce, Vbe and Ic checks pass, with phase and VI still passing. At 12 um the level rises far enough that the upstream B-latch pair XD0209/XD0210 loses headroom instead, so 10 um is the setting within this window.
+
+The samplers still have about 128-134 samples each below 100 mV at 0.3 UI, sampler D has 16 wrong-sign samples, and XOR-X has 432 wrong-sign samples. The XOR per-bit window remains the open, topology-limited gate described above.
+
+Recommended layout candidate: lowz4 plus XD0332/XD0333 at 10 um width, with fresh DRC, LVS and extraction and the same full650 bench.
