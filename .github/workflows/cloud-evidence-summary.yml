@@ -43,7 +43,8 @@ jobs:
       - name: Prepare digital inputs, firmware and the native synthesis (same settings as the boot candidate)
         run: |
           set -euo pipefail
-          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          export OSS_CAD_SUITE="$(dirname "$(dirname "$(command -v yosys)")")"
+          echo "OSS_CAD_SUITE=$OSS_CAD_SUITE" >> "$GITHUB_ENV"
           python3 -m pip install -q -r sw/requirements.txt
           make soc-prepare > /tmp/soc-prepare.log 2>&1 || { tail -60 /tmp/soc-prepare.log; exit 1; }
           OUT=$PWD/hw/soc/out/impl-probe; mkdir -p $OUT
