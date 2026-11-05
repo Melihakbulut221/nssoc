@@ -99,3 +99,18 @@ Run42075871975 tests that directly with an exploratory, non-layout what-if on to
 - An ideal series RC is added from vctrl to avss: 2.1 kOhm + 30 pF (`cp8_int2k1`) or 1 kOhm + 60 pF (`cp8_int1k`).
 
 If the loop then acquires 8 GHz, the PLL needs a type-II loop filter in layout. Without one, no VCO or pump trim will make it acquire.
+
+## Integrating loop filter (run42075871975, exploratory)
+
+Both variants start from `series4_cp8`. The bias resistors XD0567/XD0568 are ten times longer, and an ideal series RC runs from vctrl to avss.
+
+| Variant | VCO/feedback (late) | Double transitions | vctrl over 0.1-1.5 us | VCO over 0.1-1.5 us |
+|---|---:|---:|---|---|
+| cp8_int2k1 (2.1 kOhm + 30 pF) | 80.03 | 1 / 884 | 0.12 -> 0.61 V, rising steadily | 8.98 -> 9.32 -> 8.86 GHz, falling |
+| cp8_int1k (1 kOhm + 60 pF) | 80.00 | 1 / 917 | 0.07 -> 0.44 V, rising steadily | 8.82 -> 9.33 -> 9.19 GHz, falling |
+
+With an integrating branch, the loop pulls in the right direction and keeps doing so. vctrl climbs at about 0.35-0.4 V/us, and the VCO falls toward the target while the divider counts exactly by 80. The loop was not acquiring before because the resistive-bias filter had finite DC gain.
+
+These runs start with the integrating capacitor at 0 V, so vctrl begins far from the operating point. Within the exploratory 1.5 us window the VCO reaches 8.86 GHz, not 8 GHz.
+
+Run`cp8_int2k1_ic080` / `cp8_int2k1_ic088` start the same filter with the integrating node and vctrl at 0.80 / 0.88 V. Those runs test lock at 8 GHz, and whether the VCO swing collapse seen near vctrl 0.9 V (series4_cpmatch) then breaks the divider.

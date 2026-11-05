@@ -28,9 +28,14 @@ VARIANTS['cp8_mim105']={**VARIANTS['series4_cp8'],**mims(1.055)}
 WEAK_BIAS={'XD0567':dict(l='1200u'),'XD0568':dict(l='470u')}
 VARIANTS['cp8_int2k1']={**VARIANTS['series4_cp8'],**WEAK_BIAS,'__extra__':['Rnssoc_int vctrl nssoc_int 2100','Cnssoc_int nssoc_int avss 30p']}
 VARIANTS['cp8_int1k']={**VARIANTS['series4_cp8'],**WEAK_BIAS,'__extra__':['Rnssoc_int vctrl nssoc_int 1000','Cnssoc_int nssoc_int avss 60p']}
+# Same integrating branch, started near the operating point: the integrating
+# capacitor and vctrl are initialised so the 1.5 us window covers lock, not slew.
+VARIANTS['cp8_int2k1_ic080']={**VARIANTS['cp8_int2k1'],'__ic__':'.ic v(xloop.nssoc_int)=0.80 v(vctrl)=0.80'}
+VARIANTS['cp8_int2k1_ic088']={**VARIANTS['cp8_int2k1'],'__ic__':'.ic v(xloop.nssoc_int)=0.88 v(vctrl)=0.88'}
 def patch_parent(case,variant):
     lines=(case/'parent865.spice').read_text().split('\n');changed={}
     for name,w in VARIANTS[variant].items():
+        if name=='__ic__':changed[name]=w;continue
         if name=='__extra__':
             ends=[i for i,l in enumerate(lines)if l.strip().lower().startswith('.ends')];assert len(ends)==1,len(ends)
             lines[ends[0]:ends[0]]=w;changed[name]=w;continue
@@ -45,6 +50,8 @@ def prepare(case,probes,variant='original'):
     p=json.load(open(probes));deck=(case/'candidate-circuit.cir').read_text().split('\n')
     tran=[i for i,l in enumerate(deck)if l.startswith('.tran ')];assert len(tran)==1 and deck[tran[0]]=='.tran 3.125e-13 1e-06 0 3.125e-13',deck[tran[0]]
     step=os.environ.get('NSSOC_PLL_MAXSTEP','3.125e-13');deck[tran[0]]='.tran 3.125e-13 '+STOP+' 0 '+step
+    ic=VARIANTS[variant].get('__ic__')
+    if ic:deck.insert(tran[0]+1,ic)
     hits=[i for i,l in enumerate(deck)if l.startswith('save ')];assert len(hits)==1,len(hits)
     deck[hits[0]]='save '+' '.join(p['voltages']+p['currents'])
     (case/'probe-circuit.cir').write_text('\n'.join(deck))
