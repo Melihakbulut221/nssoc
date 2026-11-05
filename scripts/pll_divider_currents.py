@@ -22,9 +22,18 @@ def mims(scale):return{k:dict(w=f'{w*scale:.3f}u',l=f'{l*scale:.3f}u')for k,(w,l
 VARIANTS['cpmatch_mim105']={**VARIANTS['series4_cpmatch'],**mims(1.055)}
 VARIANTS['cpmatch_mim109']={**VARIANTS['series4_cpmatch'],**mims(1.09)}
 VARIANTS['cp8_mim105']={**VARIANTS['series4_cp8'],**mims(1.055)}
+# Exploratory, not a layout: the control node's resistive bias (XD0567 to vco_avdd,
+# XD0568 to avss) weakened tenfold, plus an ideal series-RC integrating branch
+# from vctrl to avss. Tests whether an integrating loop filter acquires 8 GHz.
+WEAK_BIAS={'XD0567':dict(l='1200u'),'XD0568':dict(l='470u')}
+VARIANTS['cp8_int2k1']={**VARIANTS['series4_cp8'],**WEAK_BIAS,'__extra__':['Rnssoc_int vctrl nssoc_int 2100','Cnssoc_int nssoc_int avss 30p']}
+VARIANTS['cp8_int1k']={**VARIANTS['series4_cp8'],**WEAK_BIAS,'__extra__':['Rnssoc_int vctrl nssoc_int 1000','Cnssoc_int nssoc_int avss 60p']}
 def patch_parent(case,variant):
     lines=(case/'parent865.spice').read_text().split('\n');changed={}
     for name,w in VARIANTS[variant].items():
+        if name=='__extra__':
+            ends=[i for i,l in enumerate(lines)if l.strip().lower().startswith('.ends')];assert len(ends)==1,len(ends)
+            lines[ends[0]:ends[0]]=w;changed[name]=w;continue
         hits=[i for i,l in enumerate(lines)if l.split(maxsplit=1)[:1]==[name]];assert len(hits)==1,(name,len(hits))
         old=new=lines[hits[0]]
         for k,v in(w.items()if isinstance(w,dict)else[('w',w)]):new,n=re.subn(r'(\s'+k+r'=)\S+',r'\g<1>'+v,new);assert n==1,(old,k)
