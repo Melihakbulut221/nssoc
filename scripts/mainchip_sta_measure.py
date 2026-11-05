@@ -37,6 +37,18 @@ def worst_paths(report,limit=4000):
 def module(name,depth=2):
     parts=re.split(r'[./]',name.replace('\\',''))
     return '.'.join(parts[:depth])if len(parts)>1 else '<top-port>'
+def restore(package):
+    contract=json.loads((package/'input-contract.json').read_text())
+    assert contract['clocks_ns']==[20,4,8,8]and contract['derating_percent']==5
+    assert contract['original_pdk_revision']=='c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c'
+    assert contract['original_root']==str(ROOT),(contract['original_root'],str(ROOT))
+    restored=0
+    for name,row in contract['input_files'].items():
+        rel=Path(name);assert not rel.is_absolute()and '..'not in rel.parts
+        src=package/'files'/rel;dst=ROOT/rel;assert sha(src)==row['sha256']
+        if dst.exists():assert sha(dst)==row['sha256'],('existing input differs',name)
+        else:dst.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(src,dst);restored+=1
+    return contract,restored
 def main(package,odb,deffile,netlist,app,out):
     package,out=Path(package),Path(out);out.mkdir(parents=True,exist_ok=True)
     r=dict(status='RUNNING',accepted=False,scope=__doc__.strip().split('\n\n')[1].replace('\n',' '))

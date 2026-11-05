@@ -4,13 +4,14 @@ on:
     inputs:
       routed_artifact: {description: 'artifact id holding routed.odb', type: string, default: '13423006669'}
       engine: {type: string, default: fixedguard}
+      mode: {description: 'sta, probe_design or probe_timing', type: string, default: sta}
 permissions:
   contents: read
   actions: read
 jobs:
   sta:
     runs-on: ubuntu-22.04
-    timeout-minutes: 300
+    timeout-minutes: 350
     env:
       GH_TOKEN: ${{ github.token }}
       IMAGE: openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a
@@ -27,6 +28,7 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /scripts/mainchip_sta_measure.py
+            /scripts/mainchip_sizing_probe.py
             /hw/soc/pnr/interface_flow.py
             /hw/soc/pnr/replay_onehot_routed_extraction_flow.py
             /hw/soc/flow/audit_estimated_spef.py
@@ -54,7 +56,17 @@ jobs:
           tar -xzf $W/engine.tgz -C $W/e; rm $W/engine.tgz
           E=$(find $W/e -type f -name openroad -exec sha256sum {} + | awk -v s=$ENGINE_SHA '$1==s{print $2}' | head -1); test -n "$E"
           mkdir -p $W/b; cp "$E" $W/b/openroad; chmod +x $W/b/openroad; df -h /mnt /
+      - name: Sizing feasibility probe with the routing engine
+        if: inputs.mode != 'sta'
+        run: |
+          set -euo pipefail
+          W=/mnt/s
+          python3 -B scripts/mainchip_sizing_probe.py "$PKG" $W/o/routed.odb $W/out ${{ inputs.mode == 'probe_timing' && 'timing' || 'design' }}
+          cat $W/out/probe-inputs.json; grep -v "^set ::env" $W/out/probe.tcl
+          R=$GITHUB_WORKSPACE
+          ( timeout 19000 docker run --rm -v $W:$W -v $R:$R -w $R "$IMAGE" $W/b/openroad -no_init -exit $W/out/probe.tcl 2>&1 || echo "PROBE_EXIT $?" ) | tee $W/out/probe.log | grep --line-buffered -E "NSSOC_PROBE|PROBE_EXIT|Error|ERROR|Iteration|WNS|^ +[0-9]+ +\||final|Inserted|Resized|slack" | head -3000 || true
       - name: Export DEF and Verilog with the routing engine; bind the netlist to the qualified handoff export
+        if: inputs.mode == 'sta'
         run: |
           set -euo pipefail
           W=/mnt/s
@@ -70,6 +82,7 @@ jobs:
           sha256sum $W/o/routed-pg.v $W/o/handoff-candidate.v $W/o/routed.v $W/o/routed.def
           if cmp -s $W/o/routed-pg.v $W/o/handoff-candidate.v; then echo "NETLIST_BINDING identical to qualified handoff export"; else echo "NETLIST_BINDING differs"; diff <(head -c 2000000 $W/o/routed-pg.v) <(head -c 2000000 $W/o/handoff-candidate.v) | head -40 || true; fi
       - name: Fresh nominal RC and three-corner STA through AuditedRCX and AuditedRoutedSTA
+        if: inputs.mode == 'sta'
         run: |
           set -euo pipefail
           W=/mnt/s
@@ -79,7 +92,7 @@ jobs:
         run: |
           W=/mnt/s; mkdir -p out
           cp $W/o/export.log out/ 2>/dev/null || true
-          cp $W/out/result.json $W/out/native.log $W/out/initial-state.json out/ 2>/dev/null || true
+          cp $W/out/result.json $W/out/native.log $W/out/initial-state.json $W/out/probe.log $W/out/probe.tcl $W/out/probe-inputs.json out/ 2>/dev/null || true
           for c in nom_slow_1p08V_125C nom_typ_1p20V_25C nom_fast_1p32V_m40C; do
             d=$(find $W/out/run -maxdepth 2 -type d -name $c | head -1); [ -n "$d" ] || continue
             mkdir -p out/$c; for f in sta.log checks.rpt violator_list.rpt clock.rpt ws.max.rpt ws.min.rpt skew.max.rpt skew.min.rpt; do [ -f $d/$f ] && cp $d/$f out/$c/; done
