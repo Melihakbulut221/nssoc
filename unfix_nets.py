@@ -87,7 +87,14 @@ def reencode(net):
         elif k=='bterm':e.addBTerm(o[1])
     e.end()
     w=net.getWire();t,types=terms(w)
-    if (shapes(w,rawrects(raw(w))),t,w.getLength())!=geo:raise SystemExit(f'geometry or terminals differ on {net.getName()}')
+    now=(shapes(w,rawrects(raw(w))),t,w.getLength())
+    if now!=geo:
+        import collections
+        a=collections.Counter(map(repr,geo[0]));b=collections.Counter(map(repr,now[0]))
+        print('ORIGINAL_ONLY',list((a-b).elements())[:30]);print('NEW_ONLY',list((b-a).elements())[:30])
+        print('TERMS',geo[1]==now[1],len(geo[1]),len(now[1]),'LENGTH',geo[2],now[2])
+        print('RAW_BEFORE',before[:60])
+        raise SystemExit(f'geometry or terminals differ on {net.getName()}')
     if types!={'ROUTED'}:raise SystemExit(f'wire types {types} on {net.getName()}')
     return dict(ops_before=len(before),ops_after=w.length(),shapes=len(geo[0]),terms=len(t))
 out={}
