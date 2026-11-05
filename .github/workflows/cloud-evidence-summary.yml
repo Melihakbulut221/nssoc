@@ -18,7 +18,7 @@ jobs:
           for spec in "706643321 e12b1c70296c119c31ed5b1a7f739904d06b3c86cd703eebee25dbcc9c357431 guide" "687863984 2a343c7491353a60e7b06aa134d4b67e3ef2e846a8341164dacffe88f5f7ec2f fixedguard"; do
             set -- $spec; mkdir -p /tmp/$3; gh api repos/${{ github.repository }}/releases/assets/$1 -H "Accept: application/octet-stream" > /tmp/$3/e.tgz
             tar -xzf /tmp/$3/e.tgz -C /tmp/$3
-            E=$(find /tmp/$3 -type f -name openroad -exec sha256sum {} + | awk -v s=$2 '$1==s{print $2}' | head -1); cp "$E" /tmp/$3/openroad; chmod +x /tmp/$3/openroad
+            E=$(find /tmp/$3 -type f -name openroad -exec sha256sum {} + | awk -v s=$2 '$1==s{print $2}' | head -1); mkdir -p /tmp/$3/b; cp "$E" /tmp/$3/b/openroad; chmod +x /tmp/$3/b/openroad
             printf 'help detailed_route\nhelp detailed_route_debug\nputs [info commands drt::*]\n' > /tmp/$3/h.tcl
-            echo "===== $3"; docker run --rm -v /tmp/$3:/v "$IMAGE" /v/openroad -no_init -exit /v/h.tcl 2>&1 | tail -60
+            echo "===== $3"; docker run --rm -v /tmp/$3:/v "$IMAGE" /v/b/openroad -no_init -exit /v/h.tcl 2>&1 | tail -60
           done
