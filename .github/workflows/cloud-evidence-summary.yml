@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        variant: [original, cond_lowz4, cond_series4]
+        variant: [cond_lowz4, cond_series4]
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -44,8 +44,8 @@ jobs:
       - name: Rewrite only the save list and run the 1 us transient
         run: |
           set -euo pipefail
-          NSSOC_PLL_STOP=6e-07 python3 -B scripts/pll_divider_currents.py prepare case scripts/pll-divider-probes.json ${{ matrix.variant }}; cat case/variant-patch.json
-          cd case && NSSOC_PLL_STOP=6e-07 SPICE_SCRIPTS=$PWD OMP_NUM_THREADS=1 timeout 20400 ../engine -n -b probe.cir > ngspice.log 2>&1 || { echo "ngspice rc=$?"; tail -40 ngspice.log; exit 1; }
+          NSSOC_PLL_STOP=1.5e-06 NSSOC_PLL_MAXSTEP=1e-12 python3 -B scripts/pll_divider_currents.py prepare case scripts/pll-divider-probes.json ${{ matrix.variant }}; cat case/variant-patch.json
+          cd case && SPICE_SCRIPTS=$PWD OMP_NUM_THREADS=1 timeout 20400 ../engine -n -b probe.cir > ngspice.log 2>&1 || { echo "ngspice rc=$?"; tail -40 ngspice.log; exit 1; }
           tail -5 ngspice.log; ls -l probe.raw
       - name: Reproduce the original acquisition metrics and report divider currents
         run: python3 -B scripts/pll_divider_currents.py analyze case scripts/pll-divider-probes.json pll-divider

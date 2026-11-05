@@ -24,7 +24,7 @@ def prepare(case,probes,variant='original'):
     json.dump(patch_parent(case,variant),open(case/'variant-patch.json','w'),indent=1)
     p=json.load(open(probes));deck=(case/'candidate-circuit.cir').read_text().split('\n')
     tran=[i for i,l in enumerate(deck)if l.startswith('.tran ')];assert len(tran)==1 and deck[tran[0]]=='.tran 3.125e-13 1e-06 0 3.125e-13',deck[tran[0]]
-    deck[tran[0]]='.tran 3.125e-13 '+STOP+' 0 3.125e-13'
+    step=os.environ.get('NSSOC_PLL_MAXSTEP','3.125e-13');deck[tran[0]]='.tran 3.125e-13 '+STOP+' 0 '+step
     hits=[i for i,l in enumerate(deck)if l.startswith('save ')];assert len(hits)==1,len(hits)
     deck[hits[0]]='save '+' '.join(p['voltages']+p['currents'])
     (case/'probe-circuit.cir').write_text('\n'.join(deck))
@@ -53,10 +53,16 @@ def analyze(case,probes,out):
     t=np.asarray(m[:,0]);end=float(t[-1]);lo=end-0.1e-6
     late=(t>=lo)&(t<=end)
     fb=col('v(fb)')-col('v(fbbar)');ref=col('v(reference)')
-    fe=crossings(t,fb);fe=fe[(fe>=lo)&(fe<=end)];re_=crossings(t,ref,1.25);re_=re_[(re_>=lo-10e-9)&(re_<=end)]
+    fe_all=crossings(t,fb);fe=fe_all[(fe_all>=lo)&(fe_all<=end)];re_=crossings(t,ref,1.25);re_=re_[(re_>=lo-10e-9)&(re_<=end)]
     freq=(len(fe)-1)/(fe[-1]-fe[0]) if len(fe)>1 else None
     lag=[float(f-re_[re_<=f][-1])for f in fe if (re_<=f).any()]
-    r=dict(points=len(t),end_s=end,window_s=[lo,end],feedback_frequency_hz=freq,feedback_edges=len(fe),phase_lag_s=[min(lag),max(lag)]if lag else None,
+    traj=[]
+    clk_all=col('v(clkp)')-col('v(clkn)')
+    for a in np.arange(0.1e-6,end-1e-12,50e-9):
+        w=(t>=a)&(t<a+50e-9);ce_=crossings(t[w],clk_all[w]);fw=fe_all[(fe_all>=a)&(fe_all<a+50e-9)]
+        traj.append(dict(start_s=float(a),vco_hz=float((len(ce_)-1)/(ce_[-1]-ce_[0]))if len(ce_)>1 else None,
+            feedback_hz=float((len(fw)-1)/(fw[-1]-fw[0]))if len(fw)>1 else None,vctrl_v=float(np.mean(col('v(vctrl)')[w]))))
+    r=dict(points=len(t),end_s=end,window_s=[lo,end],trajectory=traj,feedback_frequency_hz=freq,feedback_edges=len(fe),phase_lag_s=[min(lag),max(lag)]if lag else None,
            phase_span_s=(max(lag)-min(lag))if lag else None,reference_original=dict(feedback_frequency_hz=104152221.297,phase_span_s=5.002708790e-9))
     (out/'result.json').write_text(json.dumps(r,indent=1,sort_keys=True))
     p=json.load(open(probes));roles=p['roles'];dev={}
