@@ -19,13 +19,18 @@ BUFFER_R=['XD0381','XD0382','XD0383','XD0392','XD0393','XD0394','XD0395','XD0396
 XOR_DATA=['XD0283','XD0284','XD0285','XD0286','XD0288','XD0290','XD0291','XD0294','XD0295','XD0296','XD0297','XD0298',
  'XD0301','XD0302','XD0303','XD0304','XD0306','XD0308','XD0309','XD0312','XD0313','XD0314','XD0315','XD0316']
 BUFFER_BIAS=['ibda','ibdc','ibs0','ibs1']
+# Pull-ups of the B-to-D divider that sets the D master-latch data-pair base level;
+# the clock pair XD0211/XD0212 collectors sit one Vbe below it.
+BD_UP=['XD0332','XD0333']
 LOWZ4=dict(rppd_w='4u',ac_mim='7.2u',select_mim='9.6u')
 VARIANTS={
  'control':dict(),
  'lowz4':LOWZ4,
  'compensated':dict(ac_mim='21.6u',select_mim='9.6u'),
  'fastbuf':dict(LOWZ4,buffer_w='16u',buffer_bias='.002'),
- 'fastbuf_xor3':dict(LOWZ4,buffer_w='16u',buffer_bias='.002',xor_nx='3')}
+ 'fastbuf_xor3':dict(LOWZ4,buffer_w='16u',buffer_bias='.002',xor_nx='3'),
+ 'lowz4_bd10':dict(LOWZ4,bd_up_w='10u'),
+ 'lowz4_bd12':dict(LOWZ4,bd_up_w='12u')}
 def patch(text,variant):
     v=VARIANTS[variant];lines=text.split('\n');changed={}
     def edit(name,key,value):
@@ -44,6 +49,8 @@ def patch(text,variant):
             if key in v:edit(n,'w',v[key]);edit(n,'l',v[key])
     for n in BUFFER_R:
         if 'buffer_w'in v:edit(n,'w',v['buffer_w'])
+    for n in BD_UP:
+        if 'bd_up_w'in v:edit(n,'w',v['bd_up_w'])
     for n in XOR_DATA:
         if 'xor_nx'in v:edit(n,'nx',v['xor_nx'])
     return '\n'.join(lines),changed
