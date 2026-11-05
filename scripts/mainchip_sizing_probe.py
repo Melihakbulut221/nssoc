@@ -49,8 +49,8 @@ def main(package,odb,out,stage):
     # LibreLane's set_rc.tcl lives in its AppImage; use the configured wire-RC layers directly.
     def layers(key,default):
         v=cfg.get(key);return v if isinstance(v,list)and v else default
-    t+=['set_wire_rc -signal -layers {'+' '.join(layers('SIGNAL_WIRE_RC_LAYERS',['Metal3']))+'}',
-        'set_wire_rc -clock -layers {'+' '.join(layers('CLOCK_WIRE_RC_LAYERS',['Metal5']))+'}']
+    t+=['set_wire_rc -signal -layers {'+' '.join(layers('SIGNAL_WIRE_RC_LAYERS',['Metal2','Metal3']))+'}',
+        'set_wire_rc -clock -layers {'+' '.join(layers('CLOCK_WIRE_RC_LAYERS',['Metal4','Metal5']))+'}']
     if dont:t.append('set_dont_use [get_lib_cells {'+' '.join(dont)+'}]')
     t+=['estimate_parasitics -placement',
         'puts "NSSOC_PROBE before wns=[sta::worst_slack -max] tns=[sta::total_negative_slack -max] hold=[sta::worst_slack -min]"',
@@ -67,5 +67,6 @@ def main(package,odb,out,stage):
     t+=['puts "NSSOC_PROBE insts=[llength [[ord::get_db_block] getInsts]]"']
     (out/'probe.tcl').write_text('\n'.join(t)+'\n')
     (out/'probe-inputs.json').write_text(json.dumps(dict(libs=libs,extra=extra,macros=macros,sdc=sdc,dont_use=dont,signal_rc=cfg.get('SIGNAL_WIRE_RC_LAYERS'),clock_rc=cfg.get('CLOCK_WIRE_RC_LAYERS')),indent=1))
+    print({k:v for k,v in cfg.items()if any(x in k for x in('RC','DONT','LAYER','DRIV','MAX_','FANOUT','TRANSITION'))and len(str(v))<300})
     print(json.dumps(dict(libs=len(libs),extra=len(extra),macros=len(macros),sdc=sdc,dont_use=len(dont),scripts_dir=cfg.get('SCRIPTS_DIR'))))
 if __name__=='__main__':main(*sys.argv[1:5])
