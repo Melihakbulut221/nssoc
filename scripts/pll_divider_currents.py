@@ -12,7 +12,9 @@ from pathlib import Path
 import numpy as np
 VARIANTS={'original':{},
  'cond_lowz4':{'XD0497':'16u','XD0498':'16u','XD0488':'4u','XD0489':'4u'},
- 'cond_series4':{'XD0497':'16u','XD0498':'16u'}}
+ 'cond_series4':{'XD0497':'16u','XD0498':'16u'},
+ 'series4_cp8':{'XD0497':'16u','XD0498':'16u','XD0375':'8u'},
+ 'series4_cpmatch':{'XD0497':'16u','XD0498':'16u','XD0375':'10.4u'}}
 def patch_parent(case,variant):
     lines=(case/'parent865.spice').read_text().split('\n');changed={}
     for name,w in VARIANTS[variant].items():
