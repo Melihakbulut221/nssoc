@@ -67,9 +67,9 @@ jobs:
             lassign $line row size offset maze drc marker fixed decay mode
             if {$mode == 1} {set mode 3} else {set size [expr {$size + $::env(CLIP_ADD)}]}
             puts "NSSOC_STEP row=$row size=$size offset=$offset mode=$mode"
-            step_dr $size $offset $maze $drc $marker $fixed $decay $mode 0
-            puts "NSSOC_STEP_DONE row=$row drvs=[detailed_route_num_drvs] elapsed=[expr {[clock seconds]-$t0}]"
-            if {[detailed_route_num_drvs] == 0 || [clock seconds]-$t0 > $::env(BUDGET_S)} break
+            drt::step_dr $size $offset $maze $drc $marker $fixed $decay $mode 0
+            puts "NSSOC_STEP_DONE row=$row drvs=[drt::detailed_route_num_drvs] elapsed=[expr {[clock seconds]-$t0}]"
+            if {[drt::detailed_route_num_drvs] == 0 || [clock seconds]-$t0 > $::env(BUDGET_S)} break
           }
           close $f
           drt::step_end
