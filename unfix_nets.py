@@ -17,13 +17,28 @@ tech=Tech();design=Design(tech);design.readDb(src);block=design.getBlock()
 D=odb.dbWireDecoder
 PATHS={0,1,2,13}
 def raw(w):return[(w.getOpcode(i),w.getData(i))for i in range(w.length())]
-def shapes(w):
-    it=odb.dbWireShapeItr();it.begin(w);sh=odb.dbShape();out=[]
-    while it.next(sh):
-        b=sh.getBox()
-        name=sh.getTechVia().getName()if sh.getTechVia()else sh.getVia().getName()if sh.getVia()else sh.getTechLayer().getName()
-        out.append((name,b.xMin(),b.yMin(),b.xMax(),b.yMax()))
-    return sorted(out)
+def shapes(w,rects):
+    """Encoding-independent geometry: segments, vias and patch rectangles."""
+    d=D();d.begin(w);out=[];at={};layer=None;last=None;rects=list(reversed(rects))
+    while True:
+        op=d.next()
+        if op==D.END_DECODE:return sorted(out,key=repr)
+        if op==D.PATH:layer=d.getLayer().getName();last=None
+        elif op in(D.JUNCTION,D.SHORT,D.VWIRE):
+            layer=d.getLayer().getName()if d.getLayer()else layer;last=at[d.getJunctionValue()]
+            if op!=D.JUNCTION:out.append(('jump',op,layer,last))
+        elif op in(D.POINT,D.POINT_EXT):
+            pt=tuple(d.getPoint())if op==D.POINT else tuple(d.getPoint_ext())
+            xy=pt[:2]
+            if last is not None and last!=xy:out.append(('seg',layer,tuple(sorted([last,xy]))))
+            if op==D.POINT_EXT:out.append(('ext',layer,pt))
+            last=xy;at[d.getJunctionId()]=xy
+        elif op in(D.VIA,D.TECH_VIA):
+            v=d.getVia()if op==D.VIA else d.getTechVia();out.append(('via',v.getName(),last))
+            layer=d.getLayer().getName();at[d.getJunctionId()]=last
+        elif op==D.RECT:out.append(('rect',layer,last,rects.pop()))
+def rawrects(r):
+    return[tuple(r[i+k][1]for k in range(4))for i,(o,_)in enumerate(r)if o&0x1F==14]
 def bbox(w):
     b=w.getBBox()
     return None if b is None else (b.xMin(),b.yMin(),b.xMax(),b.yMax())
@@ -36,7 +51,7 @@ def terms(w):
         if op==D.ITERM:t.append(('i',d.getITerm().getId()))
         if op==D.BTERM:t.append(('b',d.getBTerm().getId()))
 def reencode(net):
-    w=net.getWire();before=raw(w);geo=(shapes(w),terms(w)[0],w.getLength(),bbox(w));d=D();d.begin(w);ops=[]
+    w=net.getWire();before=raw(w);geo=(shapes(w,rawrects(before)),terms(w)[0],w.getLength(),bbox(w));d=D();d.begin(w);ops=[]
     # getRect has no Python output binding; a RECT is stored as kRect(14) with
     # deltaX1 followed by three kOperand(11) ops, in decode order.
     rects=[tuple(before[i+k][1]for k in range(4))for i,(o,_)in enumerate(before)
@@ -75,7 +90,7 @@ def reencode(net):
         elif k=='bterm':e.addBTerm(o[1])
     e.end()
     w=net.getWire();t,types=terms(w)
-    if (shapes(w),t,w.getLength(),bbox(w))!=geo:raise SystemExit(f'geometry or terminals differ on {net.getName()}')
+    if (shapes(w,rawrects(raw(w))),t,w.getLength(),bbox(w))!=geo:raise SystemExit(f'geometry or terminals differ on {net.getName()}')
     if types!={'ROUTED'}:raise SystemExit(f'wire types {types} on {net.getName()}')
     return dict(ops_before=len(before),ops_after=w.length(),shapes=len(geo[0]),terms=len(t))
 out={}
