@@ -1,4 +1,4 @@
-name: Resume detailed routing from a preserved full64 iteration snapshot
+name: Resume detailed routing from a preserved full64 iteration snapshot with the original late-iteration schedule
 on:
   workflow_dispatch:
     inputs:
@@ -6,6 +6,9 @@ on:
       iterations: {type: string, default: '3'}
       threads: {type: string, default: '4'}
       engine: {type: string, default: fixedguard}
+      mode: {description: 'end_iter (restart schedule) or steps (original rows 20-48 via step_dr)', type: string, default: steps}
+      clip_add: {type: string, default: '6'}
+      budget_s: {type: string, default: '15000'}
       input_artifact: {description: 'optional artifact id of a previous routed.odb (overrides snapshot)', type: string, default: ''}
 permissions:
   contents: read
@@ -20,6 +23,12 @@ jobs:
       ENGINE_PART: ${{ inputs.engine == 'fixedguard' && '687863984' || '706643321' }}
       ENGINE_SHA: ${{ inputs.engine == 'fixedguard' && '2a343c7491353a60e7b06aa134d4b67e3ef2e846a8341164dacffe88f5f7ec2f' || 'e12b1c70296c119c31ed5b1a7f739904d06b3c86cd703eebee25dbcc9c357431' }}
     steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: /step-schedule.txt
       - name: Acquire engine and the starting database
         run: |
           set -euo pipefail
@@ -45,18 +54,41 @@ jobs:
           set -euo pipefail
           W=/mnt/r
           printf 'read_db /v/o/start.odb\nset_thread_count 4\ndrt::check_drc -output_file /v/o/start.rpt -marker_name CHK\n' > $W/o/check0.tcl
-          printf 'read_db /v/o/start.odb\nset_routing_layers -signal Metal2-TopMetal2 -clock Metal4-TopMetal2\nset_thread_count ${{ inputs.threads }}\ndetailed_route -droute_end_iter ${{ inputs.iterations }} -or_seed 42 -verbose 1 -output_drc /v/o/route.drc\nwrite_db /v/o/routed.odb\n' > $W/o/route.tcl
+          if [ "${{ inputs.mode }}" = steps ]; then
+            cp step-schedule.txt $W/o/
+            cat > $W/o/route.tcl <<'TCL'
+          read_db /v/o/start.odb
+          set_routing_layers -signal Metal2-TopMetal2 -clock Metal4-TopMetal2
+          set_thread_count $::env(THREADS)
+          detailed_route -single_step_dr -droute_end_iter 64 -or_seed 42 -verbose 1
+          set t0 [clock seconds]
+          set f [open /v/o/step-schedule.txt]
+          while {[gets $f line] >= 0} {
+            lassign $line row size offset maze drc marker fixed decay mode
+            if {$mode == 1} {set mode 3} else {set size [expr {$size + $::env(CLIP_ADD)}]}
+            puts "NSSOC_STEP row=$row size=$size offset=$offset mode=$mode"
+            step_dr $size $offset $maze $drc $marker $fixed $decay $mode 0
+            puts "NSSOC_STEP_DONE row=$row drvs=[detailed_route_num_drvs] elapsed=[expr {[clock seconds]-$t0}]"
+            if {[detailed_route_num_drvs] == 0 || [clock seconds]-$t0 > $::env(BUDGET_S)} break
+          }
+          close $f
+          drt::step_end
+          write_db /v/o/routed.odb
+          TCL
+          else
+            printf 'read_db /v/o/start.odb\nset_routing_layers -signal Metal2-TopMetal2 -clock Metal4-TopMetal2\nset_thread_count ${{ inputs.threads }}\ndetailed_route -droute_end_iter ${{ inputs.iterations }} -or_seed 42 -verbose 1 -output_drc /v/o/route.drc\nwrite_db /v/o/routed.odb\n' > $W/o/route.tcl
+          fi
           printf 'read_db /v/o/routed.odb\nset_thread_count 4\ndrt::check_drc -output_file /v/o/end.rpt -marker_name CHK\n' > $W/o/check1.tcl
           cat > $W/o/run.sh <<'SH'
           set -e
           /v/b/openroad -no_init -exit /v/o/check0.tcl > /v/o/check0.log 2>&1 || echo CHECK0_FAILED
           echo "START_CHECK_DRC markers=$(grep -c 'violation type' /v/o/start.rpt || true)"
-          ( /v/b/openroad -no_init -exit /v/o/route.tcl 2>&1 || echo ROUTE_FAILED ) | tee /v/o/route.log | grep --line-buffered -E "Start .* iteration|Number of violations|peak = |ROUTE_FAILED|ERROR" || true
+          ( /v/b/openroad -no_init -exit /v/o/route.tcl 2>&1 || echo ROUTE_FAILED ) | tee /v/o/route.log | grep --line-buffered -E "Start .* iteration|Number of violations|peak = |NSSOC_STEP|ROUTE_FAILED|ERROR" || true
           /v/b/openroad -no_init -exit /v/o/check1.tcl > /v/o/check1.log 2>&1 || echo CHECK1_FAILED
           echo "END_CHECK_DRC markers=$(grep -c 'violation type' /v/o/end.rpt || true)"
           grep -o "violation type: [A-Za-z ]*" /v/o/end.rpt | sort | uniq -c || true
           SH
-          docker run --rm -v $W:/v "$IMAGE" bash /v/o/run.sh
+          docker run --rm -e THREADS=${{ inputs.threads }} -e CLIP_ADD=${{ inputs.clip_add }} -e BUDGET_S=${{ inputs.budget_s }} -v $W:/v "$IMAGE" bash /v/o/run.sh
           mkdir -p out && cp $W/o/routed.odb $W/o/*.log $W/o/*.rpt out/ 2>/dev/null || true
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
