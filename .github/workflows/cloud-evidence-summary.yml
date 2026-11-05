@@ -27,7 +27,9 @@ jobs:
           gh api repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip > $W/n1.zip
           echo "$ARTIFACT_SHA256  $W/n1.zip" | sha256sum -c -
           mkdir -p out n1
-          unzip -q $W/n1.zip -d n1 '*/composition-n1/model.cir' '*/loaded-n1-nominal_late/bench.cir' '*/derived/loaded-n1-nominal_late.json'
+          unzip -Z1 $W/n1.zip | grep -v '/$' | grep -v 'composition-n[0-9]*/' | head -400 > out/zip-members.txt || true
+          unzip -q $W/n1.zip -d n1 '*/composition-n1/model.cir' '*/loaded-n1-nominal_late/bench.cir'
+          unzip -q $W/n1.zip -d n1 '*loaded-n1-nominal_late.json' || true
           rm $W/n1.zip
           find n1 -type f | tee out/files.txt
       - name: Trace xd0211/xd0212 and their nets
