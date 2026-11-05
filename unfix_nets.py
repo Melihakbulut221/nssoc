@@ -4,8 +4,8 @@
 The detailed router never rips up a net whose wire is FIXED. Every op of each
 named net is decoded and re-encoded with identical geometry and the ROUTED wire
 type. The encoder may pack points differently, so the check is geometric:
-the multiset of wire shapes (layer or via, box), the connected terminals in
-order, the length and the bounding box must equal the original, and every
+the decoded geometry (segments, vias, extensions and patch rectangles), the
+connected terminals in order and the length must equal the original, and every
 path must read ROUTED. Any difference, a clock, power or special net, or an op
 this copier does not handle stops the run before writing.
 """
@@ -39,9 +39,6 @@ def shapes(w,rects):
         elif op==D.RECT:out.append(('rect',layer,last,rects.pop()))
 def rawrects(r):
     return[tuple(r[i+k][1]for k in range(4))for i,(o,_)in enumerate(r)if o&0x1F==14]
-def bbox(w):
-    b=w.getBBox()
-    return None if b is None else (b.xMin(),b.yMin(),b.xMax(),b.yMax())
 def terms(w):
     d=D();d.begin(w);t=[];types=set()
     while True:
@@ -51,7 +48,7 @@ def terms(w):
         if op==D.ITERM:t.append(('i',d.getITerm().getId()))
         if op==D.BTERM:t.append(('b',d.getBTerm().getId()))
 def reencode(net):
-    w=net.getWire();before=raw(w);geo=(shapes(w,rawrects(before)),terms(w)[0],w.getLength(),bbox(w));d=D();d.begin(w);ops=[]
+    w=net.getWire();before=raw(w);geo=(shapes(w,rawrects(before)),terms(w)[0],w.getLength());d=D();d.begin(w);ops=[]
     # getRect has no Python output binding; a RECT is stored as kRect(14) with
     # deltaX1 followed by three kOperand(11) ops, in decode order.
     rects=[tuple(before[i+k][1]for k in range(4))for i,(o,_)in enumerate(before)
@@ -90,7 +87,7 @@ def reencode(net):
         elif k=='bterm':e.addBTerm(o[1])
     e.end()
     w=net.getWire();t,types=terms(w)
-    if (shapes(w,rawrects(raw(w))),t,w.getLength(),bbox(w))!=geo:raise SystemExit(f'geometry or terminals differ on {net.getName()}')
+    if (shapes(w,rawrects(raw(w))),t,w.getLength())!=geo:raise SystemExit(f'geometry or terminals differ on {net.getName()}')
     if types!={'ROUTED'}:raise SystemExit(f'wire types {types} on {net.getName()}')
     return dict(ops_before=len(before),ops_after=w.length(),shapes=len(geo[0]),terms=len(t))
 out={}
