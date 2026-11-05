@@ -11,6 +11,7 @@ on:
       from_row: {type: string, default: '20'}
       budget_s: {type: string, default: '15000'}
       input_artifact: {description: 'optional artifact id of a previous routed.odb (overrides snapshot)', type: string, default: ''}
+      unfix: {description: 'true: re-encode the nets in unfix-nets.txt from FIXED to ROUTED before routing', type: string, default: 'false'}
 permissions:
   contents: read
   actions: read
@@ -29,7 +30,10 @@ jobs:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /step-schedule.txt
+          sparse-checkout: |
+            /step-schedule.txt
+            /unfix_nets.py
+            /unfix-nets.txt
       - name: Acquire engine and the starting database
         run: |
           set -euo pipefail
@@ -54,6 +58,11 @@ jobs:
         run: |
           set -euo pipefail
           W=/mnt/r
+          if [ "${{ inputs.unfix }}" = true ]; then
+            cp unfix_nets.py unfix-nets.txt $W/o/
+            docker run --rm -v $W:/v "$IMAGE" /v/b/openroad -no_init -exit -python /v/o/unfix_nets.py /v/o/start.odb /v/o/unfix-nets.txt /v/o/start-unfixed.odb /v/o/unfix-report.json 2>&1 | tail -20
+            test -s $W/o/start-unfixed.odb; mv $W/o/start-unfixed.odb $W/o/start.odb
+          fi
           printf 'read_db /v/o/start.odb\nset_thread_count 4\ndrt::check_drc -output_file /v/o/start.rpt -marker_name CHK\n' > $W/o/check0.tcl
           if [ "${{ inputs.mode }}" = steps ]; then
             cp step-schedule.txt $W/o/
@@ -91,7 +100,7 @@ jobs:
           grep -o "violation type: [A-Za-z ]*" /v/o/end.rpt | sort | uniq -c || true
           SH
           docker run --rm -e THREADS=${{ inputs.threads }} -e CLIP_ADD=${{ inputs.clip_add }} -e FROM_ROW=${{ inputs.from_row }} -e BUDGET_S=${{ inputs.budget_s }} -v $W:/v "$IMAGE" bash /v/o/run.sh
-          mkdir -p out && cp $W/o/routed.odb $W/o/*.log $W/o/*.rpt out/ 2>/dev/null || true
+          mkdir -p out && cp $W/o/routed.odb $W/o/*.log $W/o/*.rpt $W/o/*.json out/ 2>/dev/null || true
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
