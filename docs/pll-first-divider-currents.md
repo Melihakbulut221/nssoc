@@ -36,3 +36,13 @@ The first-divider "conditioner" is a resistor network: a series rppd from the VC
 In the original, the divider loses so many counts that the feedback (96 MHz) reads below the 100 MHz reference while the VCO is already at 8.70 GHz, above its 8.0 GHz target. The loop therefore sees a frequency error of the wrong sign and keeps the VCO high, which explains the acquisition failure. With the series resistance cut to a quarter, the clock pairs steer fully, the divider counts by 80, and the feedback reads above the reference, so the loop now gets the correct error sign. Neither variant is locked at 0.6 us: the VCO is still at 8.64-8.73 GHz. The original 0.9-1.0 us acquisition gates (100 ppm, 50 ps) remain unevaluated for these variants. A 1 us variant run exceeds one hosted job (0.892 us in 5h40m), so it needs the existing continuation method or a larger runner.
 
 Recommended layout candidate: XD0497/XD0498 at 16 um width (cond_series4), with fresh DRC/LVS/RC and the full 1 us acquisition bench.
+
+## Exploratory lock trend (run41973451788)
+
+This run is not an acceptance measurement. The maximum step was relaxed from 0.3125 ps to 1 ps (about 116 points per 8.6 GHz period) so that 1.5 us fits in one hosted job. Both conditioner variants keep the corrected divider for the whole run (ratio 79.72 / 79.82; one double transition in about 870 periods in 1.4-1.5 us). The loop still does not acquire:
+
+- cond_series4: in 50 ns windows from 0.1 to 1.5 us the VCO wanders between 8.52 and 8.85 GHz, the feedback stays at 106-111 MHz (always above the 100 MHz reference), and vctrl moves between 0.60 and 0.75 V. Lower vctrl corresponds to higher frequency (8.85 GHz at 0.60 V, 8.52 GHz at 0.75 V).
+- cond_lowz4: VCO 8.57-8.88 GHz, vctrl 0.60-0.74 V, no trend toward 8 GHz.
+- The vctrl oscillation repeats roughly every 100-150 ns, close to the 1/(feedback - reference) beat of about 118 ns. In 1.48-1.50 us UP is high 43% of the time and raises vctrl at about 40 V/us; DOWN is seen only while UP is also high.
+
+With the divider fixed, the next blocker is frequency acquisition in the PFD, charge pump and filter. Over each beat, vctrl's net movement is about zero, and it never leaves the 0.60-0.75 V band, although reaching 8 GHz needs vctrl near or above 1 V by the observed tuning slope. The next measurements are UP/DOWN pulse widths and overlap over full beat cycles, charge-pump output current against vctrl, and the reachable vctrl range.
