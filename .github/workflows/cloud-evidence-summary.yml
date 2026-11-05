@@ -69,7 +69,7 @@ jobs:
             puts "NSSOC_STEP row=$row size=$size offset=$offset mode=$mode"
             drt::step_dr $size $offset $maze $drc $marker $fixed $decay $mode 0
             puts "NSSOC_STEP_DONE row=$row drvs=[drt::detailed_route_num_drvs] elapsed=[expr {[clock seconds]-$t0}]"
-            if {[drt::detailed_route_num_drvs] == 0 || [clock seconds]-$t0 > $::env(BUDGET_S)} break
+            if {($row > 0 && [drt::detailed_route_num_drvs] == 0) || [clock seconds]-$t0 > $::env(BUDGET_S)} break
           }
           close $f
           drt::step_end
