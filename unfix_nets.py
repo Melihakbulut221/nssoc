@@ -31,7 +31,8 @@ def reencode(net):
         elif op==D.ITERM:ops.append(('iterm',d.getITerm()))
         elif op==D.BTERM:ops.append(('bterm',d.getBTerm()))
         else:raise SystemExit(f'unsupported op {op} on {net.getName()}')
-    R=odb.dbWireType('ROUTED');odb.dbWire.destroy(w);w=odb.dbWire.create(net);e=odb.dbWireEncoder();e.begin(w);ids={}
+    # The Python binding maps dbWireType to and from its name.
+    R='ROUTED';odb.dbWire.destroy(w);w=odb.dbWire.create(net);e=odb.dbWireEncoder();e.begin(w);ids={}
     for o in ops:
         k=o[0]
         if k=='path':e.newPath(o[1],R)
@@ -63,7 +64,8 @@ for name in [l.strip()for l in open(names_file)if l.strip()]:
     if net.isSpecial()or net.getSigType()in('POWER','GROUND','CLOCK')or 'clk' in name:raise SystemExit(f'refusing {name}')
     if net.getWire()is None:out[name]='no wire';continue
     d=D();d.begin(net.getWire());d.next()
-    if d.getWireType().getString()!='FIXED':out[name]='already '+d.getWireType().getString();continue
+    wt=str(d.getWireType())
+    if wt!='FIXED':out[name]='already '+wt;continue
     out[name]=reencode(net)
 json.dump(out,open(report,'w'),indent=1)
 print('NSSOC_UNFIX',sum(1 for v in out.values()if isinstance(v,dict)),'re-encoded of',len(out))
