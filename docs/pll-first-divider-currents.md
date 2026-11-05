@@ -114,3 +114,21 @@ With an integrating branch, the loop pulls in the right direction and keeps doin
 These runs start with the integrating capacitor at 0 V, so vctrl begins far from the operating point. Within the exploratory 1.5 us window the VCO reaches 8.86 GHz, not 8 GHz.
 
 Run42106436994 (`cp8_int2k1_ic080`, `cp8_int2k1_ic088`) starts the same filter with the integrating node and vctrl at 0.80 / 0.88 V. Those runs test lock at 8 GHz, and whether the VCO swing collapse seen near vctrl 0.9 V (series4_cpmatch) then breaks the divider.
+
+### Started near the operating point (run42106436994)
+
+| Variant | Initial vctrl and integrator | Settled vctrl | Feedback (late) | VCO (late) | VCO / feedback | Double transitions |
+|---|---:|---:|---:|---:|---:|---:|
+| cp8_int2k1_ic080 | 0.80 V | 0.84-0.88 V | 100.6 MHz | 8.33 GHz | 82.86 | 61 / 832 |
+| cp8_int2k1_ic088 | 0.88 V | 0.84-0.88 V | 98.3 MHz | 8.30 GHz | 84.38 | 38 / 829 |
+
+The integrating loop settles quickly. vctrl stays within 0.84-0.88 V from 0.1 us onward, and the feedback averages the 100 MHz reference with a phase span of 3.0 ns in the 0.80 V case.
+
+The VCO then sits at 8.30 GHz, not 8.0 GHz. At that vctrl the current-tuned ring's swing has collapsed (see "VCO swing collapses where 8 GHz is reached"). The first divider double-counts in 5-7% of periods, the ratio is 82.9-84.4, and the loop locks the feedback to the reference at the wrong VCO frequency.
+
+The two PLL defects are therefore independent, and both are now demonstrated:
+
+1. **Loop filter.** The resistive-bias control node has finite DC gain. An integrating (type-II) filter is needed, shown by `cp8_int2k1`/`cp8_int1k` pulling steadily in the right direction.
+2. **VCO tuning.** The ring is tuned only by tail current, so it cannot reach 8 GHz with the swing the first divider needs. The VCO needs a tuning mechanism that keeps its swing near 8 GHz, such as load or varactor tuning or a lower free-running centre with a fixed tail current. Alternatively, the first divider must count correctly at the reduced swing.
+
+Neither can be reached by resizing devices in the extracted deck. Both are schematic and layout changes, followed by fresh DRC, LVS and extraction and the full 1 us acquisition bench.
