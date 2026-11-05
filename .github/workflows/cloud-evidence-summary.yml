@@ -12,17 +12,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {name: base_rtl_d40, rtl: baseline, overrides: '{}'}
-          - {name: skid_rtl_d40, rtl: change, overrides: '{}'}
-          - {name: skid_rtl_d60, rtl: change, overrides: '{"PL_TARGET_DENSITY_PCT": 60}'}
-          - {name: base_rtl_d60, rtl: baseline, overrides: '{"PL_TARGET_DENSITY_PCT": 60}'}
+          - {name: skid_d60_wb, rtl: change, overrides: '{"PL_TARGET_DENSITY_PCT": 60}', core_req: '0', core_wb: '1'}
+          - {name: skid_d60_wb_req, rtl: change, overrides: '{"PL_TARGET_DENSITY_PCT": 60}', core_req: '1', core_wb: '1'}
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
       PACKAGE_SHA: 822dab7067d901fa79dabffffff784baf5c9965f0a5091eba67acdc48b9956f4
       SOC_INTERFACE_PROFILE: full
-      SOC_CORE_REQ_REG: '0'
-      SOC_CORE_WB_STAGE: '0'
+      SOC_CORE_REQ_REG: ${{ matrix.core_req || '0' }}
+      SOC_CORE_WB_STAGE: ${{ matrix.core_wb || '0' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
