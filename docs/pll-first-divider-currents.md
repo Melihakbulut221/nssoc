@@ -113,4 +113,4 @@ With an integrating branch, the loop pulls in the right direction and keeps doin
 
 These runs start with the integrating capacitor at 0 V, so vctrl begins far from the operating point. Within the exploratory 1.5 us window the VCO reaches 8.86 GHz, not 8 GHz.
 
-Run`cp8_int2k1_ic080` / `cp8_int2k1_ic088` start the same filter with the integrating node and vctrl at 0.80 / 0.88 V. Those runs test lock at 8 GHz, and whether the VCO swing collapse seen near vctrl 0.9 V (series4_cpmatch) then breaks the divider.
+Run42106436994 (`cp8_int2k1_ic080`, `cp8_int2k1_ic088`) starts the same filter with the integrating node and vctrl at 0.80 / 0.88 V. Those runs test lock at 8 GHz, and whether the VCO swing collapse seen near vctrl 0.9 V (series4_cpmatch) then breaks the divider.
