@@ -1,39 +1,57 @@
-# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
-# SPDX-License-Identifier: Apache-2.0
-name: cloud-evidence-summary
+name: PCIe boundary register slices - unit regressions before and after
 on:
   workflow_dispatch:
     inputs:
-      release:
-        description: Exact release containing the archive
-        default: cloud-migration-20261012-000
-        required: false
-      asset:
-        description: Exact archive asset name
-        default: routed-setup-cloud-38306421942-1.tar.gz
-        required: true
-      member:
-        description: Exact JSON or UTF-8 report member to read
-        default: cloud-routed-setup/result.json
-        required: true
+      tests: {type: string, default: 'soc_pcie_replay_tx soc_pcie_flow_packets soc_pcie_buffered_flow_packets soc_pcie_reliable_packets'}
 permissions:
   contents: read
 jobs:
-  summarize:
+  unit:
     runs-on: ubuntu-24.04
-    permissions:
-      contents: write
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        side: [baseline, change]
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+          ref: ${{ matrix.side == 'baseline' && 'codex/complete-open-work' || github.ref }}
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /hw/soc/rtl/
+            /hw/soc/tb/cocotb/
+            /hw/requirements.txt
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
         with:
-          python-version: '3.12'
-      - name: Read exact report in cloud and publish source binding
-        env:
-          GH_TOKEN: ${{ github.token }}
-          ASSET: ${{ inputs.asset || 'routed-setup-cloud-38306421942-1.tar.gz' }}
-          MEMBER: ${{ inputs.member || 'cloud-routed-setup/result.json' }}
-          RELEASE: ${{ inputs.release || 'cloud-migration-20261012-000' }}
-        run: python3 scripts/summarize_cloud_evidence.py --asset "$ASSET" --member "$MEMBER" --release "$RELEASE"
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Python test environment
+        run: |
+          python3 -m venv hw/.venv && hw/.venv/bin/pip install -q -r hw/requirements.txt
+          git log --oneline -1; iverilog -V 2>&1 | head -1
+      - name: Unit regressions
+        run: |
+          set -uo pipefail
+          mkdir -p out; fail=0
+          for t in ${{ inputs.tests }}; do
+            mk=hw/soc/tb/cocotb/Makefile.$t
+            if [ ! -f $mk ]; then echo "MISSING $t"; continue; fi
+            ( cd hw/soc/tb/cocotb && PATH="$PWD/../../../.venv/bin:$PATH" timeout 3000 make -f Makefile.$t SIM_BUILD=/tmp/sb_$t COCOTB_RESULTS_FILE=$GITHUB_WORKSPACE/out/results_$t.xml > $GITHUB_WORKSPACE/out/$t.log 2>&1 ); rc=$?
+            pass=$(grep -c 'PASS' out/$t.log || true); bad=$(grep -E -c '\bFAIL\b' out/$t.log || true)
+            echo "TEST $t rc=$rc pass_lines=$pass fail_lines=$bad"; grep -E "TESTS=|PASS=|FAIL=|SKIP=" out/$t.log | tail -2
+            [ $rc -eq 0 ] || { fail=1; tail -40 out/$t.log; }
+          done
+          echo "OVERALL fail=$fail"
+      - name: Lint the changed modules
+        run: |
+          R=hw/soc/rtl/pcie
+          verilator --lint-only -Wall -Wno-DECLFILENAME -Wno-UNUSEDSIGNAL -Wno-UNUSEDPARAM -Wno-PINCONNECTEMPTY --top-module soc_pcie_buffered_flow_packets $R/*.v 2>&1 | grep -E "%(Error|Warning)" | grep -E "replay_tx|buffered_flow|stream_skid" | head -40 | tee out/lint.txt || true
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pcie-skid-unit-${{ matrix.side }}-${{ github.run_id }}
+          path: out
+          retention-days: 30

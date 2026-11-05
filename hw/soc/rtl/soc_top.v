@@ -984,9 +984,16 @@ module soc_top #(
   assign packet_pslverr=ep_bad_strobe || ep_pslverr;
   assign packet_prdata=ep_prdata;
 `endif
+  // Link status enters the packet domain through one flop each, so the
+  // boundary inputs do not fan out combinationally into every reset cone.
+  // All three move together and keep their relative timing.
+  reg pcie_link_up_q,pcie_training_q,pcie_retrain_done_q;
+  always @(posedge packet_clk or negedge packet_rst_n)
+    if(!packet_rst_n) {pcie_link_up_q,pcie_training_q,pcie_retrain_done_q}<=3'b0;
+    else {pcie_link_up_q,pcie_training_q,pcie_retrain_done_q}<={pcie_link_up_i,pcie_training_i,pcie_retrain_done_i};
   soc_pcie_buffered_flow_packets #(.APB_TIMEOUT(APB_TIMEOUT)) u_pcie (
-      .clk_i(packet_clk),.rst_ni(packet_rst_n),.link_up_i(pcie_link_up_i),
-      .training_i(pcie_training_i),.retrain_done_i(pcie_retrain_done_i),
+      .clk_i(packet_clk),.rst_ni(packet_rst_n),.link_up_i(pcie_link_up_q),
+      .training_i(pcie_training_q),.retrain_done_i(pcie_retrain_done_q),
       .function_id_i(pcie_function_id_i),.rx_data_i(pcie_rx_data_i),
       .rx_sop_i(pcie_rx_sop_i),.rx_eop_i(pcie_rx_eop_i),
       .rx_error_i(pcie_rx_error_i),.rx_valid_i(pcie_rx_valid_i),

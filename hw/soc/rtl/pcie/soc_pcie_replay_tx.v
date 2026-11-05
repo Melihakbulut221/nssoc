@@ -5,6 +5,32 @@
 // retained until a cumulative ACK in the fully transmitted window frees them.
 // Base2.1 section3.5.2.1 ordering; timer is configurable local clock cycles,
 // not a claimed line-rate REPLAY_TIMER limit. Recovery handshake is external.
+// Two-entry valid/ready register slice. Every output and the upstream ready
+// come from flops, so no combinational path crosses it in either direction.
+// Accepted beats leave in order and an offered beat is never retracted.
+module soc_pcie_stream_skid #(parameter integer W=8) (
+    input wire clk_i,rst_ni,clear_i,
+    input wire [W-1:0] s_data_i,
+    input wire s_valid_i,
+    output wire s_ready_o,
+    output wire [W-1:0] m_data_o,
+    output wire m_valid_o,
+    input wire m_ready_i
+);
+    reg [W-1:0] main_data,spare_data;
+    reg main_valid,spare_valid;
+    assign s_ready_o=!spare_valid;
+    assign m_data_o=main_data;
+    assign m_valid_o=main_valid;
+    always @(posedge clk_i or negedge rst_ni) begin
+        if(!rst_ni) begin main_valid<=0;spare_valid<=0;main_data<=0;spare_data<=0;end
+        else if(clear_i) begin main_valid<=0;spare_valid<=0;end
+        else if(m_ready_i || !main_valid) begin
+            if(spare_valid) begin main_data<=spare_data;main_valid<=1;spare_valid<=0;end
+            else begin main_valid<=s_valid_i;if(s_valid_i) main_data<=s_data_i;end
+        end else if(s_valid_i && !spare_valid) begin spare_data<=s_data_i;spare_valid<=1;end
+    end
+endmodule
 module soc_pcie_replay_tx #(
     parameter integer DEPTH=4,MAX_BYTES=38,
     parameter integer TIMEOUT_CYCLES=1024,MAX_REPLAYS=3
@@ -92,7 +118,10 @@ module soc_pcie_replay_tx #(
     assign in_ready_o=rst_ni && link_up_i && !halt &&
         (capturing || (!replay_active && !replay_pending && !ack_valid_i && count<DEPTH));
     assign ack_ready_o=rst_ni && link_up_i && !sending && !capturing && !replay_active;
-    assign tx_valid_o=rst_ni && link_up_i && sending;
+    // The transmit stream leaves through a register slice, so the replay
+    // read path ends at a flop instead of continuing into the link layer.
+    wire core_valid=rst_ni && link_up_i && sending;
+    wire core_ready;
     // A registered one-hot cursor removes binary-address decoding from
     // the memory-to-transmit path. Include cross-bank addresses exactly as
     // the flat reference does; unaddressable array reads remain undefined.
@@ -111,10 +140,13 @@ module soc_pcie_replay_tx #(
             assign replay_bank_byte[replay_bank][replay_bit]=(read_pos<(DEPTH-replay_bank)*MAX_BYTES) ? |selected : 1'bx;
         end
     end endgenerate
-    assign tx_data_o=replay_bank_byte[send_slot];
-    assign tx_sop_o=read_pos==0;
-    assign tx_eop_o=read_pos==lengths[send_slot]-1'b1;
-    assign tx_replay_o=sending_replay;
+    wire [7:0] core_data=replay_bank_byte[send_slot];
+    wire core_sop=read_pos==0;
+    wire core_eop=read_pos==lengths[send_slot]-1'b1;
+    soc_pcie_stream_skid #(.W(11)) transmit_slice(
+        .clk_i(clk_i),.rst_ni(rst_ni),.clear_i(!link_up_i),
+        .s_data_i({core_data,core_sop,core_eop,sending_replay}),.s_valid_i(core_valid),.s_ready_o(core_ready),
+        .m_data_o({tx_data_o,tx_sop_o,tx_eop_o,tx_replay_o}),.m_valid_o(tx_valid_o),.m_ready_i(tx_ready_i));
     assign buffered_o=count;
     assign outstanding_o=sent_count;
     assign retrain_request_o=halt;
@@ -202,8 +234,8 @@ module soc_pcie_replay_tx #(
                     sending<=1;sending_replay<=0;send_slot<=new_slot;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};
                 end
             end
-            if(tx_valid_o && tx_ready_i) begin
-                if(tx_eop_o) begin
+            if(core_valid && core_ready) begin
+                if(core_eop) begin
                     sending<=0;
                     if(sending_replay) begin
                         if(replay_first) begin timer<=0;timer_running<=1;replay_first<=0;end

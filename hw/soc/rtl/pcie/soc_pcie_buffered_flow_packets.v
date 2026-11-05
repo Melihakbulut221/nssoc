@@ -89,18 +89,25 @@ module soc_pcie_buffered_flow_packets #(
     // stalls, and remains locked through accepted EOP and any inter-byte bubbles.
     reg owner,locked,prefer_flow;
     wire chosen=locked ? owner : (flow_valid && (!advert_valid || prefer_flow));
-    assign tx_data_o=chosen ? flow_data : advert_data;
-    assign tx_sop_o=chosen ? flow_sop : advert_sop;
-    assign tx_eop_o=chosen ? flow_eop : advert_eop;
-    assign tx_valid_o=local_reset && (chosen ? flow_valid : advert_valid);
-    assign tx_dllp_o=chosen ? flow_dllp : 1'b1;
-    assign tx_replay_o=chosen && flow_replay;
-    assign flow_ready=local_reset && chosen && tx_ready_i;
-    assign advert_ready=local_reset && !chosen && tx_ready_i;
+    // The arbitrated stream reaches the boundary through a register slice:
+    // the outputs and the ready seen by the arbiter are flops.
+    wire [7:0] arb_data=chosen ? flow_data : advert_data;
+    wire arb_sop=chosen ? flow_sop : advert_sop;
+    wire arb_eop=chosen ? flow_eop : advert_eop;
+    wire arb_valid=local_reset && (chosen ? flow_valid : advert_valid);
+    wire arb_dllp=chosen ? flow_dllp : 1'b1;
+    wire arb_replay=chosen && flow_replay;
+    wire arb_ready;
+    soc_pcie_stream_skid #(.W(12)) boundary_slice(
+        .clk_i(clk_i),.rst_ni(local_reset),.clear_i(1'b0),
+        .s_data_i({arb_data,arb_sop,arb_eop,arb_dllp,arb_replay}),.s_valid_i(arb_valid),.s_ready_o(arb_ready),
+        .m_data_o({tx_data_o,tx_sop_o,tx_eop_o,tx_dllp_o,tx_replay_o}),.m_valid_o(tx_valid_o),.m_ready_i(tx_ready_i));
+    assign flow_ready=local_reset && chosen && arb_ready;
+    assign advert_ready=local_reset && !chosen && arb_ready;
     always @(posedge clk_i or negedge local_reset) begin
         if(!local_reset) begin owner<=0;locked<=0;prefer_flow<=0;end
-        else if(tx_valid_o) begin
-            if(tx_ready_i && tx_eop_o) begin locked<=0;prefer_flow<=!chosen;end
+        else if(arb_valid) begin
+            if(arb_ready && arb_eop) begin locked<=0;prefer_flow<=!chosen;end
             else begin owner<=chosen;locked<=1;end
         end
     end
