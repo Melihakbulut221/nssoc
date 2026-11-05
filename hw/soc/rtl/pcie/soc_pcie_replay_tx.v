@@ -143,10 +143,13 @@ module soc_pcie_replay_tx #(
     wire [7:0] core_data=replay_bank_byte[send_slot];
     wire core_sop=read_pos==0;
     wire core_eop=read_pos==lengths[send_slot]-1'b1;
-    soc_pcie_stream_skid #(.W(11)) transmit_slice(
+    // The replay timer still starts when the last byte leaves on the wire:
+    // the first-replayed-frame mark travels with the bytes.
+    wire tx_first;
+    soc_pcie_stream_skid #(.W(12)) transmit_slice(
         .clk_i(clk_i),.rst_ni(rst_ni),.clear_i(!link_up_i),
-        .s_data_i({core_data,core_sop,core_eop,sending_replay}),.s_valid_i(core_valid),.s_ready_o(core_ready),
-        .m_data_o({tx_data_o,tx_sop_o,tx_eop_o,tx_replay_o}),.m_valid_o(tx_valid_o),.m_ready_i(tx_ready_i));
+        .s_data_i({core_data,core_sop,core_eop,sending_replay,sending_replay && replay_first}),.s_valid_i(core_valid),.s_ready_o(core_ready),
+        .m_data_o({tx_data_o,tx_sop_o,tx_eop_o,tx_replay_o,tx_first}),.m_valid_o(tx_valid_o),.m_ready_i(tx_ready_i));
     assign buffered_o=count;
     assign outstanding_o=sent_count;
     assign retrain_request_o=halt;
@@ -238,14 +241,16 @@ module soc_pcie_replay_tx #(
                 if(core_eop) begin
                     sending<=0;
                     if(sending_replay) begin
-                        if(replay_first) begin timer<=0;timer_running<=1;replay_first<=0;end
+                        if(replay_first) replay_first<=0;
                         if(replay_left==1) replay_active<=0;
                         else begin replay_left<=replay_left-1'b1;replay_slot<=advance(replay_slot,1);end
                     end else begin
                         sent_count<=sent_count+1'b1;new_slot<=advance(new_slot,1);
-                        if(!timer_running) begin timer<=0;timer_running<=1;end
                     end
                 end else begin read_pos<=read_pos+1'b1;replay_read_onehot<={replay_read_onehot[READ_CHOICES-2:0],replay_read_onehot[READ_CHOICES-1]};end
+            end
+            if(tx_valid_o && tx_ready_i && tx_eop_o && (tx_replay_o ? tx_first : !timer_running)) begin
+                timer<=0;timer_running<=1;
             end
         end
     end

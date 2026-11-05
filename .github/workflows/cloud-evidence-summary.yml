@@ -33,6 +33,7 @@ jobs:
           python3 -m venv hw/.venv && hw/.venv/bin/pip install -q -r hw/requirements.txt
           git log --oneline -1; iverilog -V 2>&1 | head -1
       - name: Unit regressions
+        shell: bash
         run: |
           set -uo pipefail
           mkdir -p out; fail=0
@@ -44,7 +45,7 @@ jobs:
             echo "TEST $t rc=$rc pass_lines=$pass fail_lines=$bad"; grep -E "TESTS=|PASS=|FAIL=|SKIP=" out/$t.log | tail -2
             [ $rc -eq 0 ] || { fail=1; tail -40 out/$t.log; }
           done
-          echo "OVERALL fail=$fail"
+          echo "OVERALL fail=$fail"; exit $fail
       - name: Lint the changed modules
         run: |
           R=hw/soc/rtl/pcie
