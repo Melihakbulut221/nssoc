@@ -8,6 +8,7 @@ on:
       engine: {type: string, default: fixedguard}
       mode: {description: 'end_iter (restart schedule) or steps (original rows 20-48 via step_dr)', type: string, default: steps}
       clip_add: {type: string, default: '6'}
+      from_row: {type: string, default: '20'}
       budget_s: {type: string, default: '15000'}
       input_artifact: {description: 'optional artifact id of a previous routed.odb (overrides snapshot)', type: string, default: ''}
 permissions:
@@ -65,6 +66,7 @@ jobs:
           set f [open /v/o/step-schedule.txt]
           while {[gets $f line] >= 0} {
             lassign $line row size offset maze drc marker fixed decay mode
+            if {$row > 0 && $row < $::env(FROM_ROW)} continue
             if {$mode == 1} {set mode 3} else {set size [expr {$size + $::env(CLIP_ADD)}]}
             puts "NSSOC_STEP row=$row size=$size offset=$offset mode=$mode"
             drt::step_dr $size $offset $maze $drc $marker $fixed $decay $mode 0
@@ -88,7 +90,7 @@ jobs:
           echo "END_CHECK_DRC markers=$(grep -c 'violation type' /v/o/end.rpt || true)"
           grep -o "violation type: [A-Za-z ]*" /v/o/end.rpt | sort | uniq -c || true
           SH
-          docker run --rm -e THREADS=${{ inputs.threads }} -e CLIP_ADD=${{ inputs.clip_add }} -e BUDGET_S=${{ inputs.budget_s }} -v $W:/v "$IMAGE" bash /v/o/run.sh
+          docker run --rm -e THREADS=${{ inputs.threads }} -e CLIP_ADD=${{ inputs.clip_add }} -e FROM_ROW=${{ inputs.from_row }} -e BUDGET_S=${{ inputs.budget_s }} -v $W:/v "$IMAGE" bash /v/o/run.sh
           mkdir -p out && cp $W/o/routed.odb $W/o/*.log $W/o/*.rpt out/ 2>/dev/null || true
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
