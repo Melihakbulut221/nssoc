@@ -1,14 +1,12 @@
-name: PCIe boundary register slices - unit regressions before and after
+name: PCIe boundary register slices - SoC lint and joint PCIe/Ethernet traffic before and after
 on:
   workflow_dispatch:
-    inputs:
-      tests: {type: string, default: 'soc_pcie_replay_tx soc_pcie_flow_packets soc_pcie_buffered_flow_packets soc_pcie_reliable_packets'}
 permissions:
   contents: read
 jobs:
-  unit:
+  soc:
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 300
     strategy:
       fail-fast: false
       matrix:
@@ -18,41 +16,38 @@ jobs:
         with:
           persist-credentials: false
           ref: ${{ matrix.side == 'baseline' && 'codex/complete-open-work' || github.ref }}
-          filter: blob:none
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /hw/soc/rtl/
-            /hw/soc/tb/cocotb/
-            /hw/requirements.txt
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Python test environment
+      - name: Prepare the pinned CPU and interface RTL
         run: |
-          python3 -m venv hw/.venv && hw/.venv/bin/pip install -q -r hw/requirements.txt
-          git log --oneline -1; iverilog -V 2>&1 | head -1
-      - name: Unit regressions
-        shell: bash
+          git log --oneline -1
+          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          python3 -m pip install -q -r sw/requirements.txt
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -q -r hw/requirements.txt
+          make soc-rtl-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
+          make soc-interfaces-prepare SOC_INTERFACE_PROFILE=full INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
+      - name: Base and full lint, joint PCIe/Ethernet traffic (asynchronous and synchronous packet clock)
         run: |
-          set +e -uo pipefail
-          mkdir -p out; fail=0
-          for t in ${{ inputs.tests }}; do
-            mk=hw/soc/tb/cocotb/Makefile.$t
-            if [ ! -f $mk ]; then echo "MISSING $t"; continue; fi
-            ( cd hw/soc/tb/cocotb && PATH="$PWD/../../../.venv/bin:$PATH" timeout 3000 make -f Makefile.$t SIM_BUILD=/tmp/sb_$t COCOTB_RESULTS_FILE=$GITHUB_WORKSPACE/out/results_$t.xml > $GITHUB_WORKSPACE/out/$t.log 2>&1 ); rc=$?
-            pass=$(grep -c 'PASS' out/$t.log || true); bad=$(grep -E -c '\bFAIL\b' out/$t.log || true)
-            echo "TEST $t rc=$rc pass_lines=$pass fail_lines=$bad"; grep -E "TESTS=|PASS=|FAIL=|SKIP=" out/$t.log | tail -2
-            [ $rc -eq 0 ] || { fail=1; tail -40 out/$t.log; }
+          set +e
+          O=$PWD/out; mkdir -p $O
+          python3 scripts/check_soc_lint.py --profile base --output $O/lint-base > $O/lint-base.log 2>&1; echo "lint-base rc=$?"
+          python3 scripts/check_soc_lint.py --profile full --output $O/lint-full > $O/lint-full.log 2>&1; echo "lint-full rc=$?"
+          python3 scripts/check_pcie_ethernet_soc.py --out $O/joint-async --iverilog-dir $OSS_CAD_SUITE/bin --async-pcie > $O/joint-async.log 2>&1; echo "joint-async rc=$?"
+          python3 scripts/check_pcie_ethernet_soc.py --out $O/joint-sync --iverilog-dir $OSS_CAD_SUITE/bin > $O/joint-sync.log 2>&1; echo "joint-sync rc=$?"
+          for f in lint-base lint-full joint-async joint-sync; do
+            python3 -c "import json,sys;d=json.load(open(sys.argv[1]));print(sys.argv[2],{k:d.get(k) for k in ('status','tests','delta','sources_unchanged','immutable_drift','own_unaccepted','unchanged','runtime_unchanged','asynchronous_pcie')})" $O/$f/result.json $f 2>/dev/null || { echo "$f no result"; tail -30 $O/$f.log; }
           done
-          echo "OVERALL fail=$fail"; exit $fail
-      - name: Lint the changed modules
-        run: |
-          R=hw/soc/rtl/pcie
-          verilator --lint-only -Wall -Wno-DECLFILENAME -Wno-UNUSEDSIGNAL -Wno-UNUSEDPARAM -Wno-PINCONNECTEMPTY --top-module soc_pcie_buffered_flow_packets $R/*.v 2>&1 | grep -E "%(Error|Warning)" | grep -E "replay_tx|buffered_flow|stream_skid" | head -40 | tee out/lint.txt || true
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pcie-skid-unit-${{ matrix.side }}-${{ github.run_id }}
-          path: out
+          name: pcie-skid-soc-${{ matrix.side }}-${{ github.run_id }}
+          path: |
+            out/*.log
+            out/*/result.json
           retention-days: 30
