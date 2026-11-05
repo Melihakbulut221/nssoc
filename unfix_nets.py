@@ -28,6 +28,10 @@ def reencode(net):
         elif op==D.POINT_EXT:x,y,e=d.getPoint_ext();ops.append(('point_ext',(x,y,e),d.getProperty(),d.getJunctionId()))
         elif op==D.VIA:ops.append(('via',d.getVia(),d.getJunctionId()))
         elif op==D.TECH_VIA:ops.append(('tech_via',d.getTechVia(),d.getJunctionId()))
+        elif op==D.RECT:
+            r=d.getRect()
+            if not(isinstance(r,(list,tuple))and len(r)==4 and all(isinstance(v,int)for v in r)):raise SystemExit(f'getRect binding returned {r!r}')
+            ops.append(('rect',tuple(r)))
         elif op==D.ITERM:ops.append(('iterm',d.getITerm()))
         elif op==D.BTERM:ops.append(('bterm',d.getBTerm()))
         else:raise SystemExit(f'unsupported op {op} on {net.getName()}')
@@ -43,6 +47,7 @@ def reencode(net):
         elif k=='point_ext':ids[o[3]]=e.addPoint(o[1][0],o[1][1],o[1][2],o[2])
         elif k=='via':ids[o[2]]=e.addVia(o[1])
         elif k=='tech_via':ids[o[2]]=e.addTechVia(o[1])
+        elif k=='rect':e.addRect(*o[1])
         elif k=='iterm':e.addITerm(o[1])
         elif k=='bterm':e.addBTerm(o[1])
     e.end()
