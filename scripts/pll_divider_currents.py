@@ -15,11 +15,20 @@ VARIANTS={'original':{},
  'cond_series4':{'XD0497':'16u','XD0498':'16u'},
  'series4_cp8':{'XD0497':'16u','XD0498':'16u','XD0375':'8u'},
  'series4_cpmatch':{'XD0497':'16u','XD0498':'16u','XD0375':'10.4u'}}
+# VCO ring-node MIMs (XD0572/0575/0578/0584/0593 at 11x11 um, XD0576 at 11.2x11 um) scaled up so that
+# 8 GHz falls where the current-tuned ring still has full swing.
+RING_MIMS={'XD0572':(11,11),'XD0575':(11,11),'XD0576':(11.2,11),'XD0578':(11,11),'XD0584':(11,11),'XD0593':(11,11)}
+def mims(scale):return{k:dict(w=f'{w*scale:.3f}u',l=f'{l*scale:.3f}u')for k,(w,l)in RING_MIMS.items()}
+VARIANTS['cpmatch_mim105']={**VARIANTS['series4_cpmatch'],**mims(1.055)}
+VARIANTS['cpmatch_mim109']={**VARIANTS['series4_cpmatch'],**mims(1.09)}
+VARIANTS['cp8_mim105']={**VARIANTS['series4_cp8'],**mims(1.055)}
 def patch_parent(case,variant):
     lines=(case/'parent865.spice').read_text().split('\n');changed={}
     for name,w in VARIANTS[variant].items():
         hits=[i for i,l in enumerate(lines)if l.split(maxsplit=1)[:1]==[name]];assert len(hits)==1,(name,len(hits))
-        old=lines[hits[0]];new,n=re.subn(r'(\sw=)\S+',r'\g<1>'+w,old);assert n==1,old;lines[hits[0]]=new;changed[name]=[old,new]
+        old=new=lines[hits[0]]
+        for k,v in(w.items()if isinstance(w,dict)else[('w',w)]):new,n=re.subn(r'(\s'+k+r'=)\S+',r'\g<1>'+v,new);assert n==1,(old,k)
+        lines[hits[0]]=new;changed[name]=[old,new]
     (case/'parent865.spice').write_text('\n'.join(lines));return changed
 STOP=os.environ.get('NSSOC_PLL_STOP','1e-06')
 def prepare(case,probes,variant='original'):
