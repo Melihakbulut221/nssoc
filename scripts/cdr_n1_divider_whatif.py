@@ -22,6 +22,8 @@ BUFFER_BIAS=['ibda','ibdc','ibs0','ibs1']
 # Pull-ups of the B-to-D divider that sets the D master-latch data-pair base level;
 # the clock pair XD0211/XD0212 collectors sit one Vbe below it.
 BD_UP=['XD0332','XD0333']
+# Bench reference currents of the four sampler latches (A, B, C, D).
+SAMPLER_BIAS=['ira','irb','irc','ird']
 LOWZ4=dict(rppd_w='4u',ac_mim='7.2u',select_mim='9.6u')
 VARIANTS={
  'control':dict(),
@@ -30,7 +32,9 @@ VARIANTS={
  'fastbuf':dict(LOWZ4,buffer_w='16u',buffer_bias='.002'),
  'fastbuf_xor3':dict(LOWZ4,buffer_w='16u',buffer_bias='.002',xor_nx='3'),
  'lowz4_bd10':dict(LOWZ4,bd_up_w='10u'),
- 'lowz4_bd12':dict(LOWZ4,bd_up_w='12u')}
+ 'lowz4_bd12':dict(LOWZ4,bd_up_w='12u'),
+ 'bd10_smp075':dict(LOWZ4,bd_up_w='10u',sampler_bias='.00075'),
+ 'bd10_smp100':dict(LOWZ4,bd_up_w='10u',sampler_bias='.001')}
 def patch(text,variant):
     v=VARIANTS[variant];lines=text.split('\n');changed={}
     def edit(name,key,value):
@@ -56,6 +60,10 @@ def patch(text,variant):
     return '\n'.join(lines),changed
 def patch_bench(text,variant):
     v=VARIANTS[variant];changed={}
+    if 'sampler_bias'in v:
+        for b in SAMPLER_BIAS:
+            old=f'I_{b} avdd {b} PWL(0 0 500p .0005)';assert text.count(old)==1,(b,text.count(old))
+            new=f'I_{b} avdd {b} PWL(0 0 500p {v["sampler_bias"]})';text=text.replace(old,new);changed[b]=[old,new]
     if 'buffer_bias'in v:
         for b in BUFFER_BIAS:
             old=f'I_{b} avdd {b} PWL(0 0 500p .001)';assert text.count(old)==1,(b,text.count(old))
