@@ -77,3 +77,15 @@ lowz4_bd10 removes the last device-headroom failure: all HBT Vce, Vbe and Ic che
 The samplers still have about 128-134 samples each below 100 mV at 0.3 UI, sampler D has 16 wrong-sign samples, and XOR-X has 432 wrong-sign samples. The XOR per-bit window remains the open, topology-limited gate described above.
 
 Recommended layout candidate: lowz4 plus XD0332/XD0333 at 10 um width, with fresh DRC, LVS and extraction and the same full650 bench.
+
+## Sampler reference current (run42066653153)
+
+These runs start from lowz4_bd10 and raise only the four sampler reference sources (`I_ira` to `I_ird`, 0.5 mA in the bench).
+
+| Variant | Sampler reference | Phase avg | Samples below 100 mV (A/B/C/D) | Sampler D wrong sign | Failing HBT |
+|---|---:|---:|---:|---:|---|
+| lowz4_bd10 | 0.5 mA | 38.0 mV | 129 / 128 / 134 / 128 | 16 | none |
+| bd10_smp075 | 0.75 mA | 41.5 mV | 129 / 128 / 128 / 128 | 15 | xd0209, xd0210, xd0262 |
+| bd10_smp100 | 1.0 mA | 42.9 mV | 129 / 127 / 128 / 128 | 14 | xd0209, xd0210, xd0221, xd0261, xd0262, xd0265, xd0266 |
+
+The count of sampler samples below 100 mV does not move with sampler current. It stays at about 128 per sampler, which matches samples taken at the 0.3 UI phase of transition bits that have not yet settled. The limit is the latch's resolution time, not its swing. More current costs headroom elsewhere. The sampler 0.3 UI amplitude gate is therefore, like the XOR window, a speed limit of this sampler topology rather than a bias setting, and lowz4_bd10 remains the recommended candidate.
