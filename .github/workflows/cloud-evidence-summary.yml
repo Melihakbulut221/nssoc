@@ -35,7 +35,7 @@ jobs:
       - name: Unit regressions
         shell: bash
         run: |
-          set -uo pipefail
+          set +e -uo pipefail
           mkdir -p out; fail=0
           for t in ${{ inputs.tests }}; do
             mk=hw/soc/tb/cocotb/Makefile.$t
