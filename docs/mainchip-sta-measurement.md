@@ -121,3 +121,15 @@ Closing it at the frozen slow corner needs one of these:
 - a shorter execute path, such as a register file without inline SECDED on the read-to-execute path;
 - a deeper core pipeline than these two selectors provide;
 - a change to the frozen 20 ns slow-corner budget, which is not this project's call to make.
+
+## The DRC-clean route (run42200403392)
+
+The same measurement ran on artifact 13493489102 (full `check_drc` 0; 154524 instances, 44 more antenna diodes than the handoff export, so the PG netlist no longer matches `handoff-candidate.v` byte for byte):
+
+| Corner | Setup WNS | Setup violations | Hold WNS | Hold violations | Max cap | Max slew | Max fanout |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| nom_slow_1p08V_125C | -14.040 ns | 9647 | -0.487 ns | 5 | 583 | 1842 | 1356 |
+| nom_typ_1p20V_25C | -5.392 ns | 6179 | -0.405 ns | 12 | 593 | 48 | 1356 |
+| nom_fast_1p32V_m40C | -2.625 ns | 2021 | -0.343 ns | 18 | 605 | 22 | 1356 |
+
+The route clean-up leaves timing where it was. The open timing gates belong to placement and architecture, as described above.
