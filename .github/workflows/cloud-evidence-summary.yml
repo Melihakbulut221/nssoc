@@ -76,6 +76,8 @@ jobs:
             /hw/soc/flow/prepare_ihp_drc.py
             /hw/soc/pnr/ihp-lvs.lock.json
             /hw/soc/pnr/ihp-drc.lock.json
+            /hw/soc/flow/check_ihp_drc.py
+            /hw/soc/flow/check_ihp_drc_partitioned.py
       - name: Tools, PDK views and the routed database
         run: |
           set -euo pipefail
@@ -139,6 +141,7 @@ jobs:
             -w $S1/gds/RM_IHPSG13_1P_2048x64_c2_bm_bist.gds -w $S1/gds/RM_IHPSG13_2P_256x16_c2_bm_bist.gds 2>&1 | tail -20
           ls -la $W/o/soc_top.gds
       - name: Transistor schematic and the pinned IHP LVS deck
+        if: startsWith(matrix.variant, 'drc') == false
         run: |
           set -euo pipefail
           W=/mnt/l; P=$W/pdk/ihp-sg13g2/libs.ref; S1=$P/sg13g2_sram
@@ -163,6 +166,7 @@ jobs:
           fi
           echo "DECK=$D/sg13g2.lvs" >> $GITHUB_ENV
       - name: KLayout LVS (deep mode)
+        if: startsWith(matrix.variant, 'drc') == false
         run: |
           set +e
           W=/mnt/l; APP="env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage"
@@ -174,10 +178,26 @@ jobs:
           tail -30 $W/o/deck.log
           $APP python hw/soc/flow/audit_klayout_lvs.py $W/o/soc_top.lvsdb --top soc_top --deck-log $W/o/deck.log --output $W/o/audit.json; echo "AUDIT_RC=$?"
           python3 -c "import json;d=json.load(open('$W/o/audit.json'));print(json.dumps({k:v for k,v in d.items() if not isinstance(v,(list,dict)) or len(json.dumps(v))<2000},indent=1)[:6000])" || true
+      - name: KLayout DRC with the pinned IHP deck (no cell or region excluded)
+        if: startsWith(matrix.variant, 'drc')
+        run: |
+          set +e
+          W=/mnt/l
+          printf '#!/bin/sh\nexec env -u GH_TOKEN -u GITHUB_TOKEN %s klayout "$@"\n' $W/librelane.AppImage | sudo tee /usr/local/bin/klayout > /dev/null; sudo chmod +x /usr/local/bin/klayout
+          klayout -v
+          start=$(date +%s)
+          if [ "${{ matrix.variant }}" = drc_main ]; then
+            timeout 19000 python3 hw/soc/flow/check_ihp_drc_partitioned.py $W/o/soc_top.gds --top soc_top --tag mainchip-drc-main --threads 4 --timeout-seconds 9000 > $W/o/drc.log 2>&1
+          else
+            timeout 19000 python3 hw/soc/flow/check_ihp_drc.py $W/o/soc_top.gds --top soc_top --tag mainchip-drc-antenna --deck antenna --threads 4 > $W/o/drc.log 2>&1
+          fi
+          echo "DRC_RC=$? elapsed=$(( $(date +%s)-start ))"; tail -30 $W/o/drc.log
+          for f in hw/soc/out/mainchip-drc-*/result.json; do echo "== $f"; python3 -c "import json,sys;d=json.load(open(sys.argv[1]));print(json.dumps({k:v for k,v in d.items() if len(json.dumps(v))<3000},indent=1)[:8000])" $f; done
+          mkdir -p out && cp -r hw/soc/out/mainchip-drc-* out/ 2>/dev/null; find out -name '*.lyrdb' -size +50M -delete
       - name: Collect
         if: always()
         run: |
-          W=/mnt/l; mkdir -p out; cp $W/o/deck.log $W/o/klayout.log $W/o/audit.json out/ 2>/dev/null || true
+          W=/mnt/l; mkdir -p out; cp $W/o/drc.log out/ 2>/dev/null || true; cp $W/o/deck.log $W/o/klayout.log $W/o/audit.json out/ 2>/dev/null || true
           ls -la $W/o/sch 2>/dev/null | head; cp $W/o/sch/*.json out/ 2>/dev/null || true
           [ -f $W/o/soc_top.lvsdb ] && gzip -c $W/o/soc_top.lvsdb | head -c 900000000 > out/soc_top.lvsdb.gz || true
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
