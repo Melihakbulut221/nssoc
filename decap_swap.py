@@ -11,7 +11,7 @@ instance and every wire is left as it is.
 import collections,json,sys
 from openroad import Design,Tech
 src,dst,report=sys.argv[1:4]
-t=Tech();d=Design(t);d.readDb(src);b=d.getBlock();db=b.getDb()
+t=Tech();d=Design(t);d.readDb(src);b=d.getBlock();db=t.getDB()
 master=lambda n:next((m for lib in db.getLibs() for m in lib.getMasters() if m.getName()==n),None)
 pairs={}
 for w in('4','8'):
