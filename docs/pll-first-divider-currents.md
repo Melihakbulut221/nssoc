@@ -150,7 +150,7 @@ This is the first PLL configuration in this work that acquires 8 GHz. It is stil
 - an ideal R and C in the filter;
 - an initial condition on the filter.
 
-Run42171648030 removes the initial condition (cold start). One variant weakens the bias divider threefold, so it still precharges the integrator. The other uses the tenfold-weaker divider.
+Run42180076257 removes the initial condition (cold start). One variant weakens the bias divider threefold, so it still precharges the integrator. The other uses the tenfold-weaker divider.
 
 Candidate design change for layout:
 
