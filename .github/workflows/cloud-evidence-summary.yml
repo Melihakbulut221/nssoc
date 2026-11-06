@@ -4,7 +4,7 @@ on:
     inputs:
       routed_artifact: {description: 'artifact id holding routed.odb', type: string, default: '13423006669'}
       engine: {type: string, default: fixedguard}
-      mode: {description: 'sta, probe_design, probe_timing or detour', type: string, default: sta}
+      mode: {description: 'sta, probe_design, probe_timing, detour or names', type: string, default: sta}
       wire_rc: {description: 'optional calibrated per-um R (kOhm) and C (pF) for the probe', type: string, default: ''}
 permissions:
   contents: read
@@ -31,6 +31,8 @@ jobs:
             /scripts/mainchip_sta_measure.py
             /scripts/mainchip_sizing_probe.py
             /scripts/mainchip_wire_detour.py
+            /scripts/mainchip_flop_names.py
+            /scripts/flop-names.txt
             /hw/soc/pnr/interface_flow.py
             /hw/soc/pnr/replay_onehot_routed_extraction_flow.py
             /hw/soc/flow/audit_estimated_spef.py
@@ -58,6 +60,12 @@ jobs:
           tar -xzf $W/engine.tgz -C $W/e; rm $W/engine.tgz
           E=$(find $W/e -type f -name openroad -exec sha256sum {} + | awk -v s=$ENGINE_SHA '$1==s{print $2}' | head -1); test -n "$E"
           mkdir -p $W/b; cp "$E" $W/b/openroad; chmod +x $W/b/openroad; df -h /mnt /
+      - name: RTL names of the flops on the worst paths
+        if: inputs.mode == 'names'
+        run: |
+          set -euo pipefail
+          W=/mnt/s; R=$GITHUB_WORKSPACE; mkdir -p $W/out
+          docker run --rm -v $W:$W -v $R:$R -w $R "$IMAGE" $W/b/openroad -no_init -exit -python $R/scripts/mainchip_flop_names.py $W/o/routed.odb $R/scripts/flop-names.txt $W/out/flop-names.json 2>&1 | tail -5
       - name: Routed wire detour against pin half-perimeter
         if: inputs.mode == 'detour'
         run: |
@@ -100,7 +108,7 @@ jobs:
         run: |
           W=/mnt/s; mkdir -p out
           cp $W/o/export.log out/ 2>/dev/null || true
-          cp $W/out/result.json $W/out/native.log $W/out/initial-state.json $W/out/probe.log $W/out/probe.tcl $W/out/probe-inputs.json $W/out/detour.json out/ 2>/dev/null || true
+          cp $W/out/result.json $W/out/native.log $W/out/initial-state.json $W/out/probe.log $W/out/probe.tcl $W/out/probe-inputs.json $W/out/detour.json $W/out/flop-names.json out/ 2>/dev/null || true
           for c in nom_slow_1p08V_125C nom_typ_1p20V_25C nom_fast_1p32V_m40C; do
             d=$(find $W/out/run -maxdepth 2 -type d -name $c | head -1); [ -n "$d" ] || continue
             mkdir -p out/$c; for f in sta.log checks.rpt violator_list.rpt clock.rpt ws.max.rpt ws.min.rpt skew.max.rpt skew.min.rpt; do [ -f $d/$f ] && cp $d/$f out/$c/; done
