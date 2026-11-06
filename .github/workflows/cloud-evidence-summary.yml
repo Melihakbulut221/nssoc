@@ -78,6 +78,9 @@ jobs:
             /hw/soc/pnr/ihp-drc.lock.json
             /hw/soc/flow/check_ihp_drc.py
             /hw/soc/flow/check_ihp_drc_partitioned.py
+            /hw/soc/flow/check_ihp_density_coverage.py
+            /hw/soc/flow/fill_chip_windows.py
+            /hw/soc/flow/audit_fill_preservation.py
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
@@ -144,7 +147,7 @@ jobs:
             -w $S1/gds/RM_IHPSG13_1P_2048x64_c2_bm_bist.gds -w $S1/gds/RM_IHPSG13_2P_256x16_c2_bm_bist.gds 2>&1 | tail -20
           ls -la $W/o/soc_top.gds
       - name: Transistor schematic and the pinned IHP LVS deck
-        if: startsWith(matrix.variant, 'drc') == false
+        if: startsWith(matrix.variant, 'drc') == false && startsWith(matrix.variant, 'fill') == false
         run: |
           set -euo pipefail
           W=/mnt/l; P=$W/pdk/ihp-sg13g2/libs.ref; S1=$P/sg13g2_sram
@@ -169,7 +172,7 @@ jobs:
           fi
           echo "DECK=$D/sg13g2.lvs" >> $GITHUB_ENV
       - name: KLayout LVS (deep mode)
-        if: startsWith(matrix.variant, 'drc') == false
+        if: startsWith(matrix.variant, 'drc') == false && startsWith(matrix.variant, 'fill') == false
         run: |
           set +e
           W=/mnt/l; APP="env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage"
@@ -181,8 +184,28 @@ jobs:
           tail -30 $W/o/deck.log
           $APP python hw/soc/flow/audit_klayout_lvs.py $W/o/soc_top.lvsdb --top soc_top --deck-log $W/o/deck.log --output $W/o/audit.json; echo "AUDIT_RC=$?"
           python3 -c "import json;d=json.load(open('$W/o/audit.json'));print(json.dumps({k:v for k,v in d.items() if not isinstance(v,(list,dict)) or len(json.dumps(v))<2000},indent=1)[:6000])" || true
+      - name: Metal fill with the pinned generator (tiled gdsfill, chip bundle config)
+        if: startsWith(matrix.variant, 'fill')
+        run: |
+          set -euo pipefail
+          W=/mnt/l; APP="env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage"
+          gh api repos/${{ github.repository }}/releases/assets/597158300 -H "Accept: application/octet-stream" > $W/fill.tar.xz
+          echo "1b456a580d1f4d7f6c5105b41a588e73dd74ef23aed66624284e1280f296166e  $W/fill.tar.xz" | sha256sum -c -
+          mkdir -p $W/fb && tar -xJf $W/fill.tar.xz -C $W/fb && rm $W/fill.tar.xz
+          TOOL=$(find $W/fb -type f -path '*tool/gdsfill' | head -1); CFG=$(find $W/fb -maxdepth 3 -type f -name config.yaml | head -1)
+          test -n "$TOOL" && test -n "$CFG"; chmod +x $TOOL; sha256sum $TOOL $CFG; cat $CFG
+          # The density deck normalises by prBoundary when present, else by the layout extent.
+          NB=$($APP python -c "import klayout.db as d,sys;l=d.Layout();l.read(sys.argv[1]);t=l.top_cell();print(d.Region(t.begin_shapes_rec(l.layer(189,0))).count(), d.Region(t.begin_shapes_rec(l.layer(39,4))).count(), t.dbbox())" $W/o/soc_top.gds | tail -1)
+          echo "prBoundary/EdgeSeal/bbox: $NB"
+          EXT=""; [ "$(echo $NB | cut -d' ' -f1)" = 0 ] && EXT=--allow-layout-extent
+          start=$(date +%s)
+          $APP python hw/soc/flow/fill_chip_windows.py $W/o/soc_top.gds $W/o/fill --tool $TOOL --config $CFG \
+            --audit hw/soc/flow/audit_fill_preservation.py --tile-size 500 $EXT > $W/o/fill.log 2>&1 || { tail -40 $W/o/fill.log; exit 1; }
+          echo "fill elapsed=$(( $(date +%s)-start ))"; tail -5 $W/o/fill.log
+          python3 -c "import json;p=json.load(open('$W/o/fill/progress.json'));g=json.load(open('$W/o/fill/final-geometry.json'));print(p['status'],p['expected_tiles'],len(p['completed_tiles']),g['status'],g['errors'][:5])"
+          cp $W/o/fill/checkpoint.gds $W/o/soc_top.filled.gds; ls -la $W/o/soc_top.filled.gds
       - name: KLayout DRC with the pinned IHP deck (no cell or region excluded)
-        if: startsWith(matrix.variant, 'drc')
+        if: startsWith(matrix.variant, 'drc') || startsWith(matrix.variant, 'fill')
         run: |
           set +e
           W=/mnt/l
@@ -192,19 +215,26 @@ jobs:
           klayout -v
           start=$(date +%s)
           ( while true; do echo "MEM $(date +%H:%M:%S) $(free -m | awk '/Mem:/{m=$3"/"$2} /Swap:/{s=$3} END{print m" MB used, swap "s" MB"}') $(ps -eo rss,comm --sort=-rss | head -2 | tail -1)"; sleep 120; done ) &
-          if [ "${{ matrix.variant }}" = drc_main ]; then
+          if [ "${{ matrix.variant }}" = drc_density ] || [ "${{ matrix.variant }}" = fill_density ]; then
+            G=$W/o/soc_top.gds; [ "${{ matrix.variant }}" = fill_density ] && G=$W/o/soc_top.filled.gds
+            timeout 19000 python3 hw/soc/flow/check_ihp_drc.py $G --top soc_top --tag mainchip-${{ matrix.variant }} --deck density --threads 1 > $W/o/drc.log 2>&1
+            RC=$?; echo "density rc=$RC"
+            (cd hw/soc/flow && python3 -c "import json,sys;from check_ihp_density_coverage import validate_density_coverage as v;o='../out/mainchip-${{ matrix.variant }}';r=v(o+'/drc.lyrdb',o+'/run.log','soc_top',0);print(json.dumps({k:r[k] for k in ('status','markers','executed_rule_count','categories')},indent=1))") || echo "coverage check failed"
+          elif [ "${{ matrix.variant }}" = drc_main ]; then
             timeout 19000 python3 hw/soc/flow/check_ihp_drc_partitioned.py $W/o/soc_top.gds --top soc_top --tag mainchip-drc-main --threads 1 --timeout-seconds 9000 > $W/o/drc.log 2>&1
           else
             timeout 19000 python3 hw/soc/flow/check_ihp_drc.py $W/o/soc_top.gds --top soc_top --tag mainchip-drc-antenna --deck antenna --threads 4 > $W/o/drc.log 2>&1
           fi
           echo "DRC_RC=$? elapsed=$(( $(date +%s)-start ))"; tail -30 $W/o/drc.log
-          for f in hw/soc/out/mainchip-drc-*/result.json; do echo "== $f"; python3 -c "import json,sys;d=json.load(open(sys.argv[1]));print(json.dumps({k:v for k,v in d.items() if len(json.dumps(v))<3000},indent=1)[:8000])" $f; done
-          mkdir -p out && cp -r hw/soc/out/mainchip-drc-* out/ 2>/dev/null; find out -name '*.lyrdb' -size +50M -delete
+          for f in hw/soc/out/mainchip-*/result.json; do echo "== $f"; python3 -c "import json,sys;d=json.load(open(sys.argv[1]));print(json.dumps({k:v for k,v in d.items() if len(json.dumps(v))<3000},indent=1)[:8000])" $f; done
+          mkdir -p out && cp -r hw/soc/out/mainchip-* out/ 2>/dev/null; find out -name '*.lyrdb' -size +50M -delete
       - name: Collect
         if: always()
         run: |
           W=/mnt/l; mkdir -p out; cp $W/o/drc.log out/ 2>/dev/null || true; cp $W/o/deck.log $W/o/klayout.log $W/o/audit.json out/ 2>/dev/null || true
           ls -la $W/o/sch 2>/dev/null | head; cp $W/o/sch/*.json out/ 2>/dev/null || true
+          cp $W/o/fill.log $W/o/fill/*.json out/ 2>/dev/null || true
+          [ -f $W/o/soc_top.filled.gds ] && gzip -c $W/o/soc_top.filled.gds > out/soc_top.filled.gds.gz || true
           [ -f $W/o/soc_top.lvsdb ] && gzip -c $W/o/soc_top.lvsdb | head -c 900000000 > out/soc_top.lvsdb.gz || true
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
