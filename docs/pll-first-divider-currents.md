@@ -194,3 +194,13 @@ The original acquisition window (0.9-1.0 us) shows:
 - one double transition in 802 periods.
 
 The PLL therefore acquires within the original 1 us window from cold start, with the four changes listed above. The type-II filter here is still an ideal R and C.
+
+### The deck's own 0.3125 ps step (run42209082095)
+
+Same configuration and window as the 0.5 ps run. The original 0.3125 ps maximum step gives 3201410 points, the same count as the original capture.
+
+- VCO 8.0328 GHz, feedback 100.378 MHz, ratio 80.03.
+- Phase span 0.390 ns in 0.9-1.0 us, against 5.003 ns for the original circuit.
+- One double transition in 802 periods.
+
+The 0.5 ps run agrees to four digits. With the four changes, the PLL acquires 8 GHz from cold start within the original 1 us acceptance window, at the deck's own resolution. The remaining gap to acceptance is physical: the type-II filter (2.1 kOhm series rppd plus 30 pF MIM, about 140 x 140 um at the IHP MIM density) and the resized devices must be laid out, then pass fresh DRC, LVS and extraction, and this bench rerun on the extracted layout.
