@@ -69,3 +69,12 @@ Three OpenROAD Python binding limits shape `unfix_nets.py`:
 - `getWireType` returns a string.
 - `getRect`, `getBBox` and `dbWireShapeItr` are not usable from Python; rectangles are read from the raw `kRect`/`kOperand` ops.
 - `addPoint(x, y, 0)` selects the extension overload, so plain points are written with two arguments.
+
+Run42140204970 is the second round: 4 of the 17 named nets were still FIXED, followed by rows 20-64 and a second pass. Full `check_drc` went from 14 to **9** (all Short; artifact 13481445511). Seven of the nine are between a FIXED clock net and a signal net, on the signal net's Metal2 pin access or a Metal5 crossing:
+
+- `clknet_leaf_9_clk_i_regs`
+- `clknet_leaf_283_clk_i_regs`
+- `clknet_leaf_219_pcie_clk_i`
+- `clknet_5_29__leaf_u_ibex.clk`
+
+The router cannot move the clock wire, and the signal pin has no other access. Run42171492719 also re-encodes those four clock nets, named explicitly through `NSSOC_UNFIX_CLOCKS`; power and special nets stay refused. This changes routed clock geometry on four leaf nets, so the post-route handoff's protected-clock comparison will report them. That difference is recorded with the result rather than hidden.
