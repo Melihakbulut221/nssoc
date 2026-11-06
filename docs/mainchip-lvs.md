@@ -43,3 +43,16 @@ What this does not cover:
 - foundry signoff.
 
 The logical PG binding of the 44 new diodes is part of the exported netlist.
+
+## Final route (antenna 0, DRC 0): run42214541985
+
+The routed database is artifact 13499508759. It has 154530 instances, full OpenROAD `check_drc` 0 and `check_antennas` 0, with no unrouted multi-terminal nets (run42214527471). All diode PG terminals are bound in the database, so the export binds 0 terminals.
+
+The vendor SRAMs are blanked. The deck reports **"Congratulations! Netlists match."** in 1569 s at a 4.43 GB peak. The audit gives **PASS within comparison scope**.
+
+Foundry-deck KLayout DRC on the same GDS runs as run42218554075:
+
+- the main rule tables, with recommended rules, through `check_ihp_drc_partitioned.py`;
+- the antenna deck, through `check_ihp_drc.py`.
+
+Density is a separate deck and needs metal fill first.
