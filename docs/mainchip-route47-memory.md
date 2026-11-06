@@ -100,3 +100,17 @@ Run42189463974 re-encoded the 35 signal nets of those 46 markers and replayed ro
 The DRT chain from the iteration-20 snapshot: 84, 44, 42, 14, 9, 1, then antenna repair (46), then **0**.
 
 Run42200345446 re-checks antenna and unrouted nets on this database. Run42200403392 runs fresh RC and three-corner STA. The single Short left on the pre-antenna database was not resolved by clip +2 or +12 replays (runs42182453319, 42182433951); it is gone in the post-antenna route.
+
+## Antenna rounds to zero
+
+Each antenna round inserts diodes and runs an incremental route. A FIXED-to-ROUTED clean-up round then follows if the new diodes created markers. The logical PG binding of new diodes (`global_connect` to VPWR/VGND) is part of the antenna mode from round two onward.
+
+| Round | Run | Antenna nets before / after | New diodes | Full `check_drc` after repair / after clean-up |
+|---|---|---:|---:|---:|
+| 1 | 42185170771, clean-up 42189463974 | 22 / 5 | 44 | 46 / **0** |
+| 2 | 42201504042, clean-up 42206910495 | 5 / 2 (1 at the check of run42211096957) | 5 | 2 / **0** |
+| 3 | 42211893830 | 1 / **0** | 1 | **0** (no clean-up needed) |
+
+The final database is artifact 13499508759: full OpenROAD `check_drc` **0**, `check_antennas` **0 nets / 0 pins**.
+
+On the round-1 database, the earlier check (run42211096957) found 0 unrouted multi-terminal nets. The final database is re-checked by run42214527471. Full-chip LVS with SRAM black boxes runs as run42214541985, and fresh RC/STA as run42214558201.
