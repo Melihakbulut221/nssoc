@@ -12,6 +12,7 @@ on:
       budget_s: {type: string, default: '15000'}
       input_artifact: {description: 'optional artifact id of a previous routed.odb (overrides snapshot)', type: string, default: ''}
       unfix: {description: 'true: re-encode the nets in unfix-nets.txt from FIXED to ROUTED before routing', type: string, default: 'false'}
+      unfix_clocks: {description: 'space-separated clock nets also allowed to be re-encoded', type: string, default: ''}
 permissions:
   contents: read
   actions: read
@@ -60,7 +61,7 @@ jobs:
           W=/mnt/r
           if [ "${{ inputs.unfix }}" = true ]; then
             cp unfix_nets.py unfix-nets.txt $W/o/
-            docker run --rm -v $W:/v "$IMAGE" /v/b/openroad -no_init -exit -python /v/o/unfix_nets.py /v/o/start.odb /v/o/unfix-nets.txt /v/o/start-unfixed.odb /v/o/unfix-report.json 2>&1 | tail -20
+            docker run --rm -e NSSOC_UNFIX_CLOCKS="${{ inputs.unfix_clocks }}" -v $W:/v "$IMAGE" /v/b/openroad -no_init -exit -python /v/o/unfix_nets.py /v/o/start.odb /v/o/unfix-nets.txt /v/o/start-unfixed.odb /v/o/unfix-report.json 2>&1 | tail -20
             test -s $W/o/start-unfixed.odb; mv $W/o/start-unfixed.odb $W/o/start.odb
           fi
           printf 'read_db /v/o/start.odb\nset_thread_count 4\ndrt::check_drc -output_file /v/o/start.rpt -marker_name CHK\n' > $W/o/check0.tcl

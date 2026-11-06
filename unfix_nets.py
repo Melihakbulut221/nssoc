@@ -16,6 +16,8 @@ src,names_file,dst,report=sys.argv[1:5]
 tech=Tech();design=Design(tech);design.readDb(src);block=design.getBlock()
 D=odb.dbWireDecoder
 PATHS={0,1,2,13}
+import os
+ALLOWED_CLOCKS=set(os.environ.get('NSSOC_UNFIX_CLOCKS','').split())
 def raw(w):return[(w.getOpcode(i),w.getData(i))for i in range(w.length())]
 def shapes(w,rects):
     """Encoding-independent geometry: segments, vias and patch rectangles."""
@@ -107,7 +109,10 @@ out={}
 for name in [l.strip()for l in open(names_file)if l.strip()]:
     net=block.findNet(name)
     if net is None:out[name]='missing';continue
-    if net.isSpecial()or net.getSigType()in('POWER','GROUND','CLOCK')or 'clk' in name:raise SystemExit(f'refusing {name}')
+    clock=net.getSigType()=='CLOCK'or name.startswith('clknet_')
+    # Clock nets are refused unless they are listed in NSSOC_UNFIX_CLOCKS; the
+    # post-route handoff compares protected clock geometry against its baseline.
+    if net.isSpecial()or net.getSigType()in('POWER','GROUND')or(clock and name not in ALLOWED_CLOCKS):raise SystemExit(f'refusing {name}')
     if net.getWire()is None:out[name]='no wire';continue
     d=D();d.begin(net.getWire());d.next()
     wt=str(d.getWireType())
