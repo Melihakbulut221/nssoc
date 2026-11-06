@@ -173,3 +173,24 @@ These runs use the same configuration as `int2k1_rl112` but with no initial cond
 From power-up, `rl112_cold_w3` follows 8.10, 8.58 (peak at 0.3 us), 8.23 (0.8 us), 7.93 (1.0 us) and 7.85 GHz, then settles at 7.97 GHz. It acquires in about 1.0-1.3 us with one overshoot, and its divider counts exactly. The tenfold-weaker divider precharges the integrator more slowly and is still converging at 1.5 us (8.12 GHz).
 
 Run42209082095 repeats `rl112_cold_w3` for the acceptance window of 1 us. One job uses the deck's own 0.3125 ps maximum step; a second uses 0.5 ps, in case the first exceeds the hosted job limit.
+
+### 1 us acquisition window, 0.5 ps maximum step (run42209082095)
+
+Configuration `rl112_cold_w3`, cold start, `.tran` to 1 us at a 0.5 ps maximum step (2001411 points). The deck itself uses 0.3125 ps; that job is still running.
+
+| Window | VCO | Feedback | vctrl |
+|---|---:|---:|---:|
+| 0.10-0.15 us | 8.10 GHz | 101.2 MHz | 0.13 -> 0.18 V |
+| 0.30-0.35 us | 8.58 GHz | 107.3 MHz | 0.31 -> 0.36 V |
+| 0.60-0.65 us | 8.31 GHz | 103.9 MHz | 0.45 -> 0.49 V |
+| 0.85-0.90 us | 8.15 GHz | 101.9 MHz | 0.53 -> 0.60 V |
+| 0.95-1.00 us | 8.00 GHz | 99.9 MHz | 0.62 -> 0.65 V |
+
+The original acquisition window (0.9-1.0 us) shows:
+
+- VCO 8.033 GHz and feedback 100.38 MHz;
+- VCO / feedback 80.03;
+- phase span 0.39 ns, against 5.00 ns for the original circuit in the same window;
+- one double transition in 802 periods.
+
+The PLL therefore acquires within the original 1 us window from cold start, with the four changes listed above. The type-II filter here is still an ideal R and C.
