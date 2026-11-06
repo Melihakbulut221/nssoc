@@ -6,7 +6,7 @@ on:
       iterations: {type: string, default: '3'}
       threads: {type: string, default: '4'}
       engine: {type: string, default: fixedguard}
-      mode: {description: 'end_iter (restart schedule), steps (original late rows via step_dr), check (DRC and antenna only) antenna (diode repair then incremental route) decap (fill_4/8 to decap_4/8, checks only), or relayer (TopMetal2 guides of listed nets to Metal5, then incremental route)', type: string, default: steps}
+      mode: {description: 'end_iter (restart schedule), steps (original late rows via step_dr), check (DRC and antenna only) antenna (diode repair then incremental route) decap (decap and filler cells into empty sites, checks only), or relayer (TopMetal2 guides of listed nets to Metal5, then incremental route)', type: string, default: steps}
       clip_add: {type: string, default: '6'}
       from_row: {type: string, default: '20'}
       budget_s: {type: string, default: '15000'}
@@ -81,10 +81,28 @@ jobs:
             exit 0
           fi
           if [ "${{ inputs.mode }}" = decap ]; then
-            # Filler-to-decap swap only; no routing. check_drc and the antenna
-            # check run on the swapped database, which is uploaded as routed.odb.
-            cp decap_swap.py $W/o/
-            docker run --rm -v $W:/v "$IMAGE" /v/b/openroad -no_init -exit -python /v/o/decap_swap.py /v/o/start.odb /v/o/routed.odb /v/o/decap-report.json 2>&1 | grep -E "NSSOC|Error|Traceback|assert" | head
+            # The routed database has no filler cells: empty row sites carry no
+            # Activ, GatPoly or Metal1. Insert decap cells first, then fillers,
+            # into empty sites only; signal routing starts at Metal2, so no wire
+            # changes. check_drc and the antenna check run on the result.
+            cat > $W/o/filler.tcl <<'TCL'
+          read_db /v/o/start.odb
+          set b [ord::get_db_block]
+          proc census {b tag} {
+            array set c {}
+            foreach i [$b getInsts] {set m [[$i getMaster] getName]; if {[string match *decap* $m] || [string match *fill* $m]} {incr c($m)}}
+            puts "NSSOC_FILLER_$tag [array get c] insts=[llength [$b getInsts]]"
+          }
+          census $b BEFORE
+          filler_placement {sg13g2_decap_8 sg13g2_decap_4 sg13g2_fill_2 sg13g2_fill_1}
+          census $b AFTER
+          add_global_connection -net VPWR -inst_pattern .* -pin_pattern {^VDD$} -power
+          add_global_connection -net VGND -inst_pattern .* -pin_pattern {^VSS$} -ground
+          global_connect
+          check_placement -verbose
+          write_db /v/o/routed.odb
+          TCL
+            docker run --rm -v $W:/v "$IMAGE" /v/b/openroad -no_init -exit /v/o/filler.tcl 2>&1 | tee $W/o/filler.log | grep -E "NSSOC|DPL|ERROR|Error" | head -20
             test -s $W/o/routed.odb
             printf 'read_db /v/o/routed.odb\nset_thread_count 4\ndrt::check_drc -output_file /v/o/end.rpt -marker_name CHK\ncheck_antennas -report_file /v/o/antenna.rpt\nputs "NSSOC_ANTENNA nets=[ant::antenna_violation_count]"\n' > $W/o/check1.tcl
             docker run --rm -v $W:/v "$IMAGE" bash -c "/v/b/openroad -no_init -exit /v/o/check0.tcl > /v/o/check0.log 2>&1; echo START_CHECK_DRC markers=\$(grep -c 'violation type' /v/o/start.rpt || true); /v/b/openroad -no_init -exit /v/o/check1.tcl 2>&1 | tee /v/o/check1.log | grep -E 'NSSOC_ANTENNA|ERROR' ; echo END_CHECK_DRC markers=\$(grep -c 'violation type' /v/o/end.rpt || true); grep -o 'violation type: [A-Za-z ]*' /v/o/end.rpt | sort | uniq -c"
