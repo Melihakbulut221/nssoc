@@ -204,3 +204,18 @@ Same configuration and window as the 0.5 ps run. The original 0.3125 ps maximum 
 - One double transition in 802 periods.
 
 The 0.5 ps run agrees to four digits. With the four changes, the PLL acquires 8 GHz from cold start within the original 1 us acceptance window, at the deck's own resolution. The remaining gap to acceptance is physical: the type-II filter (2.1 kOhm series rppd plus 30 pF MIM, about 140 x 140 um at the IHP MIM density) and the resized devices must be laid out, then pass fresh DRC, LVS and extraction, and this bench rerun on the extracted layout.
+
+## Correction: the frozen acquisition gate is not met
+
+The two "acquires within 1 us" statements above overstate the result. They come from `pll_divider_currents.py analyze`, which is descriptive only: last-100-ns frequency and phase span. The project's frozen acceptance gate is `independent_analysis` in `scripts/review_pcie_pll_acquisition_v1.py`, applied for the RHI120 runs by `cloud_pll_rhi120_c8_delta_adapter.py --review`. It evaluates rolling 100 ns windows every 10 ns from 100 to 1000 ns. Each window needs:
+
+- feedback within **100 ppm** of 100 MHz;
+- phase span **<= 50 ps**;
+- no slip;
+- vctrl within 0.4-1.5 V.
+
+The 800-900 and 900-1000 ns windows must pass, and every window from some start no later than 800 ns must pass.
+
+`rl112_cold_w3` ends at 100.38 MHz (about 3800 ppm) with a 0.39 ns phase span. **It would be rejected.** The loop is converging, so the what-ifs establish the direction (type-II filter, ring loads, matched pump, conditioner): the loop now pulls toward lock and the divider counts correctly. They do not establish acceptance.
+
+Settling must be faster and better damped. The next what-ifs vary the integrator and the bias precharge, and are judged by the frozen gate itself.
