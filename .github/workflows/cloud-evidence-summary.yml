@@ -3,6 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       routed_artifact: {description: 'artifact id holding routed.odb', type: string, default: '13493489102'}
+      variants: {description: 'JSON list of variants', type: string, default: '["full", "sram_blackbox"]'}
 permissions:
   contents: read
   actions: read
@@ -13,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        variant: [full, sram_blackbox]
+        variant: ${{ fromJSON(inputs.variants) }}
     env:
       GH_TOKEN: ${{ github.token }}
       IMAGE: openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a
