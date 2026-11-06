@@ -160,3 +160,16 @@ Candidate design change for layout:
 - a type-II loop filter with series R and C to replace the bias-only control node, in silicon as an rppd plus MIM.
 
 That is followed by fresh DRC, LVS and extraction and the 1 us acquisition bench.
+
+### Cold start (run42180076257)
+
+These runs use the same configuration as `int2k1_rl112` but with no initial condition. Every node starts from the deck's supply ramp.
+
+| Variant | Bias divider | VCO (1.4-1.5 us) | Feedback | VCO / feedback | Phase span (late) | Double transitions |
+|---|---|---:|---:|---:|---:|---:|
+| rl112_cold_w3 | three times weaker | **7.97 GHz** | **99.62 MHz** | **80.02** | **0.35 ns** | 1 / 796 |
+| rl112_cold_w10 | ten times weaker | 8.08 GHz | 101.08 MHz | 79.98 | 1.07 ns | 1 / 807 |
+
+From power-up, `rl112_cold_w3` follows 8.10, 8.58 (peak at 0.3 us), 8.23 (0.8 us), 7.93 (1.0 us) and 7.85 GHz, then settles at 7.97 GHz. It acquires in about 1.0-1.3 us with one overshoot, and its divider counts exactly. The tenfold-weaker divider precharges the integrator more slowly and is still converging at 1.5 us (8.12 GHz).
+
+Run42213318093 repeats `rl112_cold_w3` for the acceptance window of 1 us. One job uses the deck's own 0.3125 ps maximum step; a second uses 0.5 ps, in case the first exceeds the hosted job limit.

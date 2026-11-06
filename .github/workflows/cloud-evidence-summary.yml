@@ -10,7 +10,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        variant: [rl112_cold_w3, rl112_cold_w10]
+        include:
+          - {variant: rl112_cold_w3, stop: '1e-06', step: '3.125e-13'}
+          - {variant: rl112_cold_w3, stop: '1e-06', step: '5e-13'}
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -44,15 +46,15 @@ jobs:
       - name: Rewrite only the save list and run the 1 us transient
         run: |
           set -euo pipefail
-          NSSOC_PLL_STOP=1.5e-06 NSSOC_PLL_MAXSTEP=1e-12 python3 -B scripts/pll_divider_currents.py prepare case scripts/pll-divider-probes.json ${{ matrix.variant }}; cat case/variant-patch.json
-          cd case && SPICE_SCRIPTS=$PWD OMP_NUM_THREADS=1 timeout 20400 ../engine -n -b probe.cir > ngspice.log 2>&1 || { echo "ngspice rc=$?"; tail -40 ngspice.log; exit 1; }
+          NSSOC_PLL_STOP=${{ matrix.stop }} NSSOC_PLL_MAXSTEP=${{ matrix.step }} python3 -B scripts/pll_divider_currents.py prepare case scripts/pll-divider-probes.json ${{ matrix.variant }}; cat case/variant-patch.json
+          cd case && SPICE_SCRIPTS=$PWD OMP_NUM_THREADS=1 timeout 20700 ../engine -n -b probe.cir > ngspice.log 2>&1 || { echo "ngspice rc=$?"; tail -40 ngspice.log; exit 1; }
           tail -5 ngspice.log; ls -l probe.raw
       - name: Reproduce the original acquisition metrics and report divider currents
         run: python3 -B scripts/pll_divider_currents.py analyze case scripts/pll-divider-probes.json pll-divider
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pll-divider-currents-${{ matrix.variant }}-${{ github.run_id }}
+          name: pll-divider-currents-${{ matrix.variant }}-${{ matrix.step }}-${{ github.run_id }}
           path: |
             pll-divider
             case/ngspice.log
