@@ -87,3 +87,37 @@ The job reached the 350-minute limit during `repair_timing` and was cancelled; i
 With calibrated capacitance the estimate reproduces most of the extracted -14.04 ns. Unbounded sizing then lifts every `clk_i` path above -6.3 ns within about 500 iterations. The worst remaining paths are the PCIe output-port paths, which the register slices on `timing/pcie-boundary-skid` remove.
 
 The 9467 violating endpoints and the slow TNS progress show that the remaining `clk_i` violations are spread out. Closing them takes a re-implementation with setup repair that is not capped at 100 iterations, plus placement that keeps the Ibex datapath local. This probe is not a candidate, and the cancelled run proves no closure.
+
+## RTL names of the slow-corner critical paths (run42156866205)
+
+`scripts/mainchip_flop_names.py` maps the 401 anonymous flip-flops on the first 20 MB of slow-corner violating paths (run42047826928) to the nets on their outputs. All 401 map.
+
+- **Start.** All 737 worst `clk_i` paths start at the Ibex register file, `u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops[11].rf_reg_q[*]`.
+- **End.** The endpoints, ranked by number of violating paths:
+
+| Endpoint register | Paths |
+|---|---:|
+| `crash_dump[*]` | 59 |
+| `cs_registers_i.mhpmcounter[2][*]` | 48 |
+| `cs_registers_i.mcycle_counter_i.counter[*]` | 31 |
+| `if_stage_i...prefetch_buffer_i.fifo_i.rdata_q[*]` | 23 |
+| `s_addr[*]` (bus address) | 21 |
+| `if_stage_i...prefetch_buffer_i.stored_addr_q[*]` | 20 |
+| `cs_registers_i.csr_mtvec_o[*]` | 18 |
+| `cs_registers_i.csr_pmp_addr_o[*]` | 14 |
+| `mie_q`, `s_wdata`, `mscratch_q`, `dscratch1_q`, `csr_depc_o` | 8-10 each |
+| `register_file_i...g_rf_flops[n].g_chk.rf_chk_q[*]` (check bits written back) | 3-5 per register |
+
+This is the single-cycle Ibex execute path. A register-file read with SECDED correction (CORRPRE precomputes the correction) feeds the ALU adder and result multiplexer. The result then goes to a CSR or counter write, to the next fetch or bus address, or to the written-back word and its new check bits.
+
+At the slow corner this path needs about 30 ns against the 20 ns period. Across the placement probes it stayed between -8.6 and -12.4 ns after global route, with every synthesis and placement variant tried:
+
+- density 40-70%;
+- the Kogge-Stone carry choice;
+- the writeback stage and request register.
+
+Closing it at the frozen slow corner needs one of these:
+
+- a shorter execute path, such as a register file without inline SECDED on the read-to-execute path;
+- a deeper core pipeline than these two selectors provide;
+- a change to the frozen 20 ns slow-corner budget, which is not this project's call to make.
