@@ -84,3 +84,19 @@ Run42171492719 is the third round. It re-encoded five nets: the four listed cloc
 The one remaining Short is on Metal2 at (834.14, 1680.53) between `u_ibex...g_rf_flops[5].rf_reg_q[28]` and `net5933`, both ROUTED. Runs42182433951 (clip +12) and42182453319 (clip +2) replay rows 20-64 with other worker window sizes. Run42182501302 runs jumper-only antenna repair (`repair_antennas -jumper_only`, then a five-iteration incremental `detailed_route`) on the same database.
 
 The DRT chain from the iteration-20 snapshot now stands at 84, 44, 42, 14, 9, 1.
+
+## Antenna repair and full-chip DRC 0
+
+Before repair the 1-marker database had 22 antenna nets and 24 pins, plus 112 one-terminal stub nets without wires and no unrouted multi-terminal nets (run42183767899). OpenROAD's `repair_antennas` needed three workarounds on this database (branch `analysis/drt-resume`, `antenna` mode):
+
+- **Fixed net-level wire type.** The antenna wire builder treats a net whose net-level wire type is FIXED as unrouted, tries to rebuild its existing wire and fails (ANT-0016). This affects both jumper-only and diode-only repair. During repair only, every such net is marked ROUTED, then restored to FIXED before `write_db`.
+- **Diode name collisions.** New diodes are named `ANTENNA_0..n` in each session, which collides with the 9143 `ANTENNA_*` diodes already present, so `dbInst::create` returns NULL and `setDiodeLoc` crashes. Existing names are parked, and the new diodes are renumbered above the highest index (9145) before the old names are restored.
+- **Fixed violating nets.** The 22 violating nets are re-encoded FIXED to ROUTED first, so the router can connect their new diodes.
+
+Run42185170771 inserted 44 diodes and ran a five-iteration incremental route. Antenna went from 22 nets to 5. Full `check_drc` rose to 46 (34 Short, 12 Metal Spacing) around the new diodes.
+
+Run42189463974 re-encoded the 35 signal nets of those 46 markers and replayed rows 20-64. The in-loop count reached 0 at row 60, and **full `check_drc` on the written database is 0** (artifact 13493489102).
+
+The DRT chain from the iteration-20 snapshot: 84, 44, 42, 14, 9, 1, then antenna repair (46), then **0**.
+
+Run42200345446 re-checks antenna and unrouted nets on this database. Run42200403392 runs fresh RC and three-corner STA. The single Short left on the pre-antenna database was not resolved by clip +2 or +12 replays (runs42182453319, 42182433951); it is gone in the post-antenna route.
