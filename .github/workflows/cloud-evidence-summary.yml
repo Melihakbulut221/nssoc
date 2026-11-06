@@ -118,6 +118,11 @@ jobs:
             }
           }
           foreach p $parked { [lindex $p 0] rename [lindex $p 1] }
+          # New diodes come without PG terminals bound; bind them logically (row rails
+          # supply them physically) so the powered netlist and LVS see them.
+          add_global_connection -net VPWR -inst_pattern {^ANTENNA_.*} -pin_pattern {^VDD$} -power
+          add_global_connection -net VGND -inst_pattern {^ANTENNA_.*} -pin_pattern {^VSS$} -ground
+          global_connect
           puts "NSSOC_ANTENNA_NEW_DIODES $added"
           if {$inserted} {
             detailed_route -droute_end_iter $::env(ITERS) -or_seed 42 -verbose 1
