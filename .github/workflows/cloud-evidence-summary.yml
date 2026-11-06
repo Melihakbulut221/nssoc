@@ -92,8 +92,33 @@ jobs:
             }
           }
           puts "NSSOC_ANTENNA_MARKED [llength $marked]"
+          # repair_antennas names new diodes ANTENNA_0, ANTENNA_1, ... per session,
+          # which collides with the diodes already in this database (dbInst::create
+          # returns NULL and setDiodeLoc crashes). Park existing names, repair, move
+          # the new diodes above the highest existing index, then restore the old names.
+          set block [ord::get_db_block]
+          set parked {}
+          set top -1
+          foreach inst [$block getInsts] {
+            set n [$inst getName]
+            if {[regexp {^ANTENNA_([0-9]+)$} $n -> k]} {
+              lappend parked [list $inst $n]
+              if {$k > $top} {set top $k}
+              $inst rename "NSSOC_PARKED_$k"
+            }
+          }
+          puts "NSSOC_ANTENNA_PARKED [llength $parked] top=$top"
           set inserted [repair_antennas $::env(ANTENNA_MODE)]
           puts "NSSOC_ANTENNA_REPAIR inserted=$inserted"
+          set added 0
+          foreach inst [$block getInsts] {
+            if {[regexp {^ANTENNA_([0-9]+)$} [$inst getName] -> k]} {
+              $inst rename "ANTENNA_[expr {$top + 1 + $k}]"
+              incr added
+            }
+          }
+          foreach p $parked { [lindex $p 0] rename [lindex $p 1] }
+          puts "NSSOC_ANTENNA_NEW_DIODES $added"
           if {$inserted} {
             detailed_route -droute_end_iter $::env(ITERS) -or_seed 42 -verbose 1
           }
