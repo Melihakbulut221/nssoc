@@ -114,3 +114,13 @@ Each antenna round inserts diodes and runs an incremental route. A FIXED-to-ROUT
 The final database is artifact 13499508759: full OpenROAD `check_drc` **0**, `check_antennas` **0 nets / 0 pins**.
 
 On the round-1 database, the earlier check (run42211096957) found 0 unrouted multi-terminal nets. The final database is re-checked by run42214527471. Full-chip LVS with SRAM black boxes runs as run42214541985, and fresh RC/STA as run42214558201.
+
+## Foundry antenna deck
+
+The pinned IHP KLayout antenna deck runs on the streamed-out GDS (branch `analysis/mainchip-lvs`, variant `drc_antenna`). On the OpenROAD-clean database (artifact 13499508759) it reported 2 markers, both `Ant.e_TopMetal2` (run42219007553). They are the two fingers of one gate: the `A` input of `fanout37210` (sg13g2_buf_1). Its net, `u_ram.g_ram_2048x64_ecc.mbist_aborted`, had 2189 um of TopMetal2, a cumulative ratio of 24380 against Ant_e = 20000. The LEF antenna model accepts this net, and `repair_antennas` cannot see it.
+
+- First relayer attempt (run42229758683): only `net37210`, only its TopMetal2 guides moved to Metal5. It was the wrong net, and the markers were unchanged (run42233748407).
+- Second attempt (run42241995998, `relayer_nets.py`): `mbist_aborted` and `net37210`. All TopMetal guides moved to the same-direction lower layer (TopMetal2 to Metal5, TopMetal1 to Metal4), then the wires were dropped and rerouted incrementally. Results:
+  - `mbist_aborted` TopMetal2 went from 2189 to 1375 um;
+  - full `check_drc` 0, LEF antenna 0, no unrouted multi-terminal nets (run42247409883);
+  - **foundry antenna deck PASS, 0 markers** (run42247427878, artifact 13518226848).
