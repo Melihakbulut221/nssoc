@@ -78,3 +78,9 @@ Run42140204970 is the second round: 4 of the 17 named nets were still FIXED, fol
 - `clknet_5_29__leaf_u_ibex.clk`
 
 The router cannot move the clock wire, and the signal pin has no other access. Run42171492719 also re-encodes those four clock nets, named explicitly through `NSSOC_UNFIX_CLOCKS`; power and special nets stay refused. This changes routed clock geometry on four leaf nets, so the post-route handoff's protected-clock comparison will report them. That difference is recorded with the result rather than hidden.
+
+Run42171492719 is the third round. It re-encoded five nets: the four listed clock nets plus `$abc$1804206$new_n95183`. Each passed the geometry check with identical op counts, so the clock geometry is unchanged at the start of routing; the other seven named nets were already ROUTED. Rows 20-64 and the second pass followed. Full `check_drc` went from 9 to **1** (artifact 13486051106).
+
+The one remaining Short is on Metal2 at (834.14, 1680.53) between `u_ibex...g_rf_flops[5].rf_reg_q[28]` and `net5933`, both ROUTED. Runs42182433951 (clip +12) and42182453319 (clip +2) replay rows 20-64 with other worker window sizes. Run42182501302 runs jumper-only antenna repair (`repair_antennas -jumper_only`, then a five-iteration incremental `detailed_route`) on the same database.
+
+The DRT chain from the iteration-20 snapshot now stands at 84, 44, 42, 14, 9, 1.
