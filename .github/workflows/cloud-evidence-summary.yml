@@ -6,7 +6,7 @@ on:
       iterations: {type: string, default: '3'}
       threads: {type: string, default: '4'}
       engine: {type: string, default: fixedguard}
-      mode: {description: 'end_iter (restart schedule), steps (original late rows via step_dr), check (DRC and antenna only) or antenna (jumper repair then incremental route)', type: string, default: steps}
+      mode: {description: 'end_iter (restart schedule), steps (original late rows via step_dr), check (DRC and antenna only) antenna (diode repair then incremental route) or relayer (TopMetal2 guides of listed nets to Metal5, then incremental route)', type: string, default: steps}
       clip_add: {type: string, default: '6'}
       from_row: {type: string, default: '20'}
       budget_s: {type: string, default: '15000'}
@@ -38,6 +38,8 @@ jobs:
             /unfix-nets.txt
             /net_wires.py
             /at_point.py
+            /relayer_nets.py
+            /relayer-nets.txt
       - name: Acquire engine and the starting database
         run: |
           set -euo pipefail
@@ -78,6 +80,19 @@ jobs:
             docker run --rm -v $W:/v "$IMAGE" /v/b/openroad -no_init -exit -python /v/o/net_wires.py /v/o/start.odb /v/o/net-wires.json 2>&1 | grep -E "NSSOC_|Error" | head -30
             mkdir -p out && cp $W/o/*.log $W/o/*.rpt $W/o/*.json out/ 2>/dev/null || true
             exit 0
+          fi
+          if [ "${{ inputs.mode }}" = relayer ]; then
+            cp relayer_nets.py relayer-nets.txt $W/o/
+            docker run --rm -v $W:/v "$IMAGE" /v/b/openroad -no_init -exit -python /v/o/relayer_nets.py /v/o/start.odb /v/o/relayer-nets.txt /v/o/start-relayer.odb /v/o/relayer-report.json 2>&1 | grep -E "NSSOC|Error|refusing" | head
+            test -s $W/o/start-relayer.odb; mv $W/o/start-relayer.odb $W/o/start.odb
+            cat > $W/o/route.tcl <<'TCL'
+          read_db /v/o/start.odb
+          set_routing_layers -signal Metal2-TopMetal2 -clock Metal4-TopMetal2
+          set_thread_count $::env(THREADS)
+          detailed_route -droute_end_iter $::env(ITERS) -or_seed 42 -verbose 1
+          write_db /v/o/routed.odb
+          check_antennas -report_file /v/o/antenna-after.rpt -verbose
+          TCL
           fi
           if [ "${{ inputs.mode }}" = antenna ]; then
             cat > $W/o/route.tcl <<'TCL'
