@@ -4,11 +4,52 @@ on:
     inputs:
       routed_artifact: {description: 'artifact id holding routed.odb', type: string, default: '13493489102'}
       variants: {description: 'JSON list of variants', type: string, default: '["full", "sram_blackbox"]'}
+      audit_artifact: {description: 'audit-only: artifact id holding soc_top.lvsdb.gz and deck.log', type: string, default: ''}
 permissions:
   contents: read
   actions: read
 jobs:
+  audit:
+    if: inputs.audit_artifact != ''
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    env:
+      GH_TOKEN: ${{ github.token }}
+      APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: /hw/soc/flow/audit_klayout_lvs.py
+      - name: Audit a preserved LVS database
+        run: |
+          set +e
+          W=/mnt/l; sudo mkdir -p $W/o; sudo chown -R $USER $W
+          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2
+          curl -fsSL -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
+          echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c - || exit 1; chmod +x $W/librelane.AppImage
+          APP="env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage"
+          gh api repos/${{ github.repository }}/actions/artifacts/${{ inputs.audit_artifact }}/zip > $W/a.zip
+          cd $W/o && unzip -q -o ../a.zip && gunzip -f soc_top.lvsdb.gz && cd -
+          $APP python hw/soc/flow/audit_klayout_lvs.py $W/o/soc_top.lvsdb --top soc_top --deck-log $W/o/deck.log --output $W/o/audit.json; echo "AUDIT_RC=$?"
+          python3 - $W/o/audit.json <<'PY'
+          import json,sys
+          d=json.load(open(sys.argv[1]))
+          for k,v in d.items():
+              s=json.dumps(v)
+              print(k,':',s[:3000])
+          PY
+          mkdir -p out && cp $W/o/audit.json out/
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: mainchip-lvs-audit-${{ github.run_id }}
+          path: out
+          retention-days: 30
   lvs:
+    if: inputs.audit_artifact == ''
     runs-on: ubuntu-22.04
     timeout-minutes: 355
     strategy:
@@ -131,7 +172,7 @@ jobs:
             -rd report=$W/o/soc_top.lvsdb -rd log=$W/o/deck.log -rd target_netlist=$W/o/extracted.cir > $W/o/klayout.log 2>&1
           echo "KLAYOUT_RC=$? elapsed=$(( $(date +%s)-start ))"
           tail -30 $W/o/deck.log
-          python3 hw/soc/flow/audit_klayout_lvs.py $W/o/soc_top.lvsdb --top soc_top --deck-log $W/o/deck.log --output $W/o/audit.json; echo "AUDIT_RC=$?"
+          $APP python hw/soc/flow/audit_klayout_lvs.py $W/o/soc_top.lvsdb --top soc_top --deck-log $W/o/deck.log --output $W/o/audit.json; echo "AUDIT_RC=$?"
           python3 -c "import json;d=json.load(open('$W/o/audit.json'));print(json.dumps({k:v for k,v in d.items() if not isinstance(v,(list,dict)) or len(json.dumps(v))<2000},indent=1)[:6000])" || true
       - name: Collect
         if: always()
