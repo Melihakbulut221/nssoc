@@ -12,8 +12,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {name: skid_d60_ks, rtl: change, overrides: '{"PL_TARGET_DENSITY_PCT": 60}', prefix: '1'}
-          - {name: skid_d70_ks, rtl: change, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1'}
+          - {name: rfup_d70_ks, rtl: change, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', regfile: upstream}
+          - {name: rfup_d60_ks, rtl: change, overrides: '{"PL_TARGET_DENSITY_PCT": 60}', prefix: '1', regfile: upstream}
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -60,8 +60,11 @@ jobs:
           timeout 1800 bash hw/soc/flow/sim_soc.sh "$OUT/rtl" > "$OUT/rtl-driver.log" 2>&1 || { tail -40 "$OUT/rtl-driver.log"; exit 1; }
           export SOC_BOOT_ROM_IMAGE="$OUT/rtl/test_soc.bin" SOC_MEM=sram
           export IBEX_RF_SYNPRE=0 IBEX_RF_CORRPRE=1 SOC_ETH_SRAM=1 SOC_PCIE_PROFILE=packet-async
+          # Measurement only: regfile=upstream drops the register file's inline
+          # SECDED (the fault port is tied to zero by ibex_fault_port.py).
+          if [ "${{ matrix.regfile || 'secded' }}" = upstream ]; then export IBEX_REGFILE=upstream IBEX_RF_CORRPRE=0; fi
           timeout 3600 bash hw/soc/flow/syn_soc_top.sh 20 "$OUT/synthesis" > "$OUT/synthesis-driver.log" 2>&1 || { tail -40 "$OUT/synthesis-driver.log"; exit 1; }
-          grep -F 'Parameter \CORRPRE = 1' "$OUT/synthesis/syn.log" | head -1
+          grep -E 'regfile=|Parameter .CORRPRE = 1' "$OUT/synthesis/syn.log" "$OUT/synthesis-driver.log" | head -3 || true
           sha256sum $OUT/synthesis/soc_top.netlist.v $OUT/rtl/test_soc.bin
           grep -iE "Number of cells|Chip area" $OUT/synthesis/syn.log | tail -3 || true
       - name: LibreLane AppImage and the verified PDK from the post-route input package
