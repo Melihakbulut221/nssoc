@@ -45,6 +45,28 @@ VARIANTS['int2k1_rl125']={**VARIANTS['cp8_int2k1'],**loads('5.5u'),'__ic__':'.ic
 VARIANTS['rl112_cold_w3']={**VARIANTS['series4_cp8'],'XD0567':dict(l='360u'),'XD0568':dict(l='141u'),**loads('4.93u'),
     '__extra__':['Rnssoc_int vctrl nssoc_int 2100','Cnssoc_int nssoc_int avss 30p']}
 VARIANTS['rl112_cold_w10']={**VARIANTS['cp8_int2k1'],**loads('4.93u')}
+# Cold start with the original bias divider (XD0567/XD0568 unchanged, Thevenin
+# target about 0.70 V, next to the 0.65 V lock point found by rl112_cold_w3) so
+# vctrl precharges near lock, and a type-II integrator sized for damping about
+# 0.57 with Icp about 55 uA and Kvco about -2.3 GHz/V. Judged by the frozen gate.
+for name,r,c in(('fast_c10','3600','10p'),('fast_c15','3000','15p'),('fast_c30','2100','30p')):
+    VARIANTS[name]={**VARIANTS['series4_cp8'],**loads('4.93u'),'__extra__':[f'Rnssoc_int vctrl nssoc_int {r}',f'Cnssoc_int nssoc_int avss {c}']}
+FROZEN_REVIEW_SHA='168a1563ed1847e752c67e3058b823200bfe2b3f4e2b345046a0ed13318530db'
+def gate(case,frozen,out):
+    """Apply the project's frozen acquisition gate (independent_analysis) unchanged."""
+    import hashlib
+    src=Path(frozen)/'review_pcie_pll_acquisition_v1.py'
+    assert hashlib.sha256(src.read_bytes()).hexdigest()==FROZEN_REVIEW_SHA
+    sys.path.insert(0,str(Path(frozen)));import review_pcie_pll_acquisition_v1 as review
+    m,names=read_raw(case/'probe.raw');idx={n.lower():i for i,n in enumerate(names)}
+    data={k:np.ascontiguousarray(m[:,idx[k]],dtype=np.float64)for k in('v(reference)','v(fb)','v(vctrl)')}
+    data['time']=np.ascontiguousarray(m[:,0],dtype=np.float64)
+    r=review.independent_analysis(data);out=Path(out);out.mkdir(parents=True,exist_ok=True)
+    (out/'frozen-gate.json').write_text(json.dumps(r,indent=1))
+    for w in r['rolling_windows'][::5]+[r['rolling_windows'][-1]]:
+        f=w['frequency_hz'];print('%4.0f ns fb %s ppm %s span %s vctrl %.3f-%.3f %s'%(w['interval_s'][0]*1e9,f and '%.4f MHz'%(f/1e6),f and '%+.0f'%((f/1e8-1)*1e6),
+            w['phase_span_s'] and '%.1f ps'%(w['phase_span_s']*1e12),*w['control_range_v'],'PASS' if w['passed'] else [k for k,v in w['checks'].items()if not v]))
+    print(json.dumps({'passed':r['passed'],'sustained_window_start_s':r['sustained_window_start_s'],'final_two_windows_no_slip':r['final_two_windows_no_slip']}))
 def patch_parent(case,variant):
     lines=(case/'parent865.spice').read_text().split('\n');changed={}
     for name,w in VARIANTS[variant].items():
@@ -127,4 +149,6 @@ def analyze(case,probes,out):
     (out/'result.json').write_text(json.dumps(r,indent=1,sort_keys=True));print(json.dumps({k:r[k]for k in('feedback_frequency_hz','phase_span_s','clock_frequency_hz','end_s')}))
 if __name__=='__main__':
     stage,case,probes=sys.argv[1:4]
-    prepare(Path(case),probes,*sys.argv[4:5]) if stage=='prepare' else analyze(Path(case),probes,sys.argv[4])
+    if stage=='gate':gate(Path(case),probes,sys.argv[4])
+    elif stage=='prepare':prepare(Path(case),probes,*sys.argv[4:5])
+    else:analyze(Path(case),probes,sys.argv[4])

@@ -11,8 +11,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {variant: rl112_cold_w3, stop: '1e-06', step: '3.125e-13'}
-          - {variant: rl112_cold_w3, stop: '1e-06', step: '5e-13'}
+          - {variant: fast_c10, stop: '1e-06', step: '3.125e-13'}
+          - {variant: fast_c15, stop: '1e-06', step: '3.125e-13'}
+          - {variant: fast_c30, stop: '1e-06', step: '3.125e-13'}
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -42,6 +43,15 @@ jobs:
           echo "103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509  engine" | sha256sum -c -
           grep -n "^\.lib\|^\.include\|pre_osdi" case/candidate-circuit.cir
           ls cloud-pll-snapshot/models | head; pwd
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: codex/complete-open-work
+          path: frozen
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/*.py
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
       - name: Rewrite only the save list and run the 1 us transient
         run: |
@@ -51,6 +61,9 @@ jobs:
           tail -5 ngspice.log; ls -l probe.raw
       - name: Reproduce the original acquisition metrics and report divider currents
         run: python3 -B scripts/pll_divider_currents.py analyze case scripts/pll-divider-probes.json pll-divider
+      - name: Apply the frozen acquisition gate (independent_analysis, unchanged)
+        if: always()
+        run: python3 -B scripts/pll_divider_currents.py gate case frozen/scripts pll-divider
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
