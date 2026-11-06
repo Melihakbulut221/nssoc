@@ -72,7 +72,9 @@ jobs:
             printf 'read_db /v/o/start.odb\nset_thread_count 4\ncheck_antennas -report_file /v/o/antenna.rpt -verbose\nputs "NSSOC_ANTENNA nets=[ant::antenna_violation_count]"\n' > $W/o/ant.tcl
             docker run --rm -v $W:/v "$IMAGE" bash -c "/v/b/openroad -no_init -exit /v/o/check0.tcl > /v/o/check0.log 2>&1; echo START_CHECK_DRC markers=\$(grep -c 'violation type' /v/o/start.rpt || true); /v/b/openroad -no_init -exit /v/o/ant.tcl 2>&1 | tee /v/o/ant.log | grep -E 'NSSOC_ANTENNA|Found|violat|ERROR' | tail -20"
             cp net_wires.py at_point.py $W/o/
-            docker run --rm -v $W:/v "$IMAGE" /v/b/openroad -no_init -exit -python /v/o/at_point.py /v/o/start.odb 91.32 130.5 2>&1 | grep NSSOC_ | head -60
+            printf 'read_db /v/o/start.odb\ncheck_antennas -net net37210 -verbose -report_file /v/o/net37210-antenna.rpt\n' > $W/o/one.tcl
+            docker run --rm -v $W:/v "$IMAGE" /v/b/openroad -no_init -exit /v/o/one.tcl 2>&1 | tail -3
+            grep -A12 "TopMetal2" $W/o/net37210-antenna.rpt | head -40 || true
             docker run --rm -v $W:/v "$IMAGE" /v/b/openroad -no_init -exit -python /v/o/net_wires.py /v/o/start.odb /v/o/net-wires.json 2>&1 | grep -E "NSSOC_|Error" | head -30
             mkdir -p out && cp $W/o/*.log $W/o/*.rpt $W/o/*.json out/ 2>/dev/null || true
             exit 0
