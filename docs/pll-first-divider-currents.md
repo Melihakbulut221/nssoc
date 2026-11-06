@@ -132,3 +132,31 @@ The two PLL defects are therefore independent, and both are now demonstrated:
 2. **VCO tuning.** The ring is tuned only by tail current, so it cannot reach 8 GHz with the swing the first divider needs. The VCO needs a tuning mechanism that keeps its swing near 8 GHz, such as load or varactor tuning or a lower free-running centre with a fixed tail current. Alternatively, the first divider must count correctly at the reduced swing.
 
 Neither can be reached by resizing devices in the extracted deck. Both are schematic and layout changes, followed by fresh DRC, LVS and extraction and the full 1 us acquisition bench.
+
+## Ring loads with the integrating filter: lock at 8 GHz (run42160789512, exploratory)
+
+These runs build on `cp8_int2k1` (conditioner fix, XD0375 8 um, bias tenfold weaker, ideal 2.1 kOhm + 30 pF integrator). The six ring load resistors XD0480-0482 and XD0490-0492 (8 um wide rppd) are lengthened. The integrator and vctrl start at 0.70 V.
+
+| Variant | Ring load length | VCO (1.4-1.5 us) | Feedback | VCO / feedback | Phase span (late) | Double transitions | vctrl (late) |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| int2k1_rl112 | 4.93 um (x1.12) | **7.97 GHz** | **99.68 MHz** | **79.97** | **0.29 ns** | 1 / 797 | 0.61-0.65 V |
+| int2k1_rl125 | 5.5 um (x1.25) | 7.28 GHz | 91.07 MHz | 79.91 | 8.98 ns | 1 / 727 | 0.61-0.74 V |
+
+With x1.12 loads the loop locks. The VCO settles from 7.7 GHz through an 8.12 GHz overshoot to 7.97-8.05 GHz, and the feedback converges to the 100 MHz reference with a residual phase span of 0.29 ns. The divider counts exactly by 80 because 8 GHz is now reached at vctrl about 0.62 V, where the ring keeps its full swing. With x1.25 loads the ring is too slow (7.3 GHz) for the available range.
+
+This is the first PLL configuration in this work that acquires 8 GHz. It is still exploratory:
+
+- the 1 ps maximum step, not the acceptance 0.3125 ps;
+- an ideal R and C in the filter;
+- an initial condition on the filter.
+
+Run42171648030 removes the initial condition (cold start). One variant weakens the bias divider threefold, so it still precharges the integrator. The other uses the tenfold-weaker divider.
+
+Candidate design change for layout:
+
+- XD0497/XD0498 at 16 um;
+- XD0375 at 8 um;
+- ring loads at 4.93 um length;
+- a type-II loop filter with series R and C to replace the bias-only control node, in silicon as an rppd plus MIM.
+
+That is followed by fresh DRC, LVS and extraction and the 1 us acquisition bench.

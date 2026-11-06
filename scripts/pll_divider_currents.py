@@ -40,6 +40,11 @@ RING_LOADS=['XD0480','XD0481','XD0482','XD0490','XD0491','XD0492']
 def loads(l):return{k:dict(l=l)for k in RING_LOADS}
 VARIANTS['int2k1_rl112']={**VARIANTS['cp8_int2k1'],**loads('4.93u'),'__ic__':'.ic v(xloop.nssoc_int)=0.70 v(vctrl)=0.70'}
 VARIANTS['int2k1_rl125']={**VARIANTS['cp8_int2k1'],**loads('5.5u'),'__ic__':'.ic v(xloop.nssoc_int)=0.70 v(vctrl)=0.70'}
+# Cold start: no initial condition. The bias divider is weakened only threefold,
+# so it still precharges the integrating capacitor toward its level at power-up.
+VARIANTS['rl112_cold_w3']={**VARIANTS['series4_cp8'],'XD0567':dict(l='360u'),'XD0568':dict(l='141u'),**loads('4.93u'),
+    '__extra__':['Rnssoc_int vctrl nssoc_int 2100','Cnssoc_int nssoc_int avss 30p']}
+VARIANTS['rl112_cold_w10']={**VARIANTS['cp8_int2k1'],**loads('4.93u')}
 def patch_parent(case,variant):
     lines=(case/'parent865.spice').read_text().split('\n');changed={}
     for name,w in VARIANTS[variant].items():
