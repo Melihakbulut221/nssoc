@@ -53,3 +53,37 @@ Every variant below uses the register-slice RTL. Slow-corner setup worst slack a
 
 - Neither core pipeline selector helps. `SOC_SYNTH_PREFIX_ADDER` is a new opt-in knob in `syn_soc_top.sh`; at 0 the script is unchanged. Kogge-Stone carry mapping alone is neutral, presumably because ABC already restructures the carry logic. Density 70% gives the best slow corner so far.
 - Run-to-run spread from placement looks like about 1-2 ns. The critical path itself is the Ibex execute path from the register file read (see `docs/mainchip-sta-measurement.md` on `analysis/mainchip-sta`). It remains about 8.5 ns over the 20 ns budget at the slow corner.
+
+## Register file without inline SECDED (run42257277688)
+
+This is a measurement for the architecture decision, not a design change. `IBEX_REGFILE=upstream` drops the register file's SECDED codec; `ibex_fault_port.py` ties the fault port to zero, and `CORRPRE` is off. Everything else matches the Kogge-Stone reference rows above: register-slice RTL and `SOC_SYNTH_PREFIX_ADDER=1`. The synthesised `soc_top` area is 1483614 um^2.
+
+Setup worst slack after global route, in ns:
+
+| Variant | Corner | clk_i | pcie_clk_i | asynchronous | eth_rx_clk_i | eth_tx_clk_i |
+|---|---|---:|---:|---:|---:|---:|
+| upstream register file, density 60% | slow | -7.74 | -8.65 | -6.01 | -2.76 | -2.10 |
+| | typical | 2.62 | -4.00 | -2.39 | 1.00 | 1.66 |
+| | fast | 8.70 | -1.43 | -0.21 | 3.14 | 3.79 |
+| upstream register file, density 70% | slow | **-6.55** | -8.74 | -7.71 | -1.42 | -1.30 |
+| | typical | 3.48 | -4.11 | -3.44 | 1.71 | 2.16 |
+| | fast | 8.77 | -1.46 | -0.97 | 2.86 | 4.10 |
+
+Compared with the SECDED register file, slow-corner `clk_i` moves as follows:
+
+- At 70%: -8.57 to -6.55 ns.
+- At 60%: -9.89 to -7.74 ns.
+
+Removing the codec is worth about 2 ns, so it does not close the slow corner by itself.
+
+The worst slow-corner `clk_i` path at 70% still arrives at 28.3 ns against 21.8 ns required, through about 50 cells. Most of the delay sits on single-drive cells driving 6-8 loads:
+
+- `buf_1` fanout trees take 0.6-0.7 ns per stage.
+- A `nand2_1` takes 1.16 ns, an `xnor2_1` 1.15 ns, an `inv_1` 1.37 ns, a `nor4_1` 2.02 ns and a `nand4_1` 1.34 ns.
+
+The capped post-GRT repair leaves these cells unsized. Two levers apply to either register file:
+
+- Uncapped setup repair, which `docs/mainchip-sta-measurement.md` measured at about 3-6 ns.
+- A shorter execute path.
+
+`pcie_clk_i` (4 ns) and the asynchronous group are unchanged by the register file.
