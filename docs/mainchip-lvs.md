@@ -56,3 +56,12 @@ Foundry-deck KLayout DRC on the same GDS runs as run42218554075:
 - the antenna deck, through `check_ihp_drc.py`.
 
 Density is a separate deck and needs metal fill first.
+
+## Route after the foundry-antenna relayer (run42247427878)
+
+The routed database is artifact 13518226848. Two nets (`u_ram.g_ram_2048x64_ecc.mbist_aborted`, `net37210`) had their TopMetal guides moved down and were rerouted for the foundry `Ant.e_TopMetal2` rule. Results:
+
+- **Foundry antenna deck:** PASS, 0 markers.
+- **LVS with the vendor SRAMs blanked:** "Congratulations! Netlists match." The audit gives PASS within comparison scope.
+
+This candidate therefore has OpenROAD `check_drc` 0, LEF antenna 0, foundry antenna 0, no unrouted multi-terminal nets, and LVS matching outside the SRAM interiors. The foundry main deck (run42242071796, with swap) is still open.
