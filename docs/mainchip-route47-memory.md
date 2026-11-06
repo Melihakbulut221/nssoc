@@ -59,3 +59,13 @@ Run42043211157 continued from that database with rows 44-64 and a second pass, w
 Most of the 42 remaining markers are between two nets whose wires keep the original route's FIXED type. OpenROAD dcf36133 `io.cpp` marks a net fixed when its first wire path is FIXED (`netIn->setFixed(true)`), and `updateDbConn` skips fixed nets, so no rip-up mode can move either net. The 42 markers name 63 nets: 58 signal nets, four clock nets (`clknet_*`) and VPWR. Six markers involve a clock net and one involves VPWR; the rest are signal-to-signal.
 
 `unfix_nets.py` (branch `analysis/drt-resume`) re-encodes only the 58 signal nets from FIXED to ROUTED with identical geometry. It decodes every op, re-encodes with the ROUTED type, then compares the raw op streams; only path wire-type bits may differ, and clock, power and special nets are refused. The router can then rip those nets up at their markers. Run42089497499 applies this to the run42043211157 database and replays rows 20-64.
+
+Run42091664267 re-encoded 30 of the 58 named signal nets from FIXED to ROUTED; the other 28 were already ROUTED. The geometry check compares decoded segments, vias, extensions, patch rectangles, terminals and length. The run then replayed rows 20-64 within the 15000 s budget. Full `check_drc` went from 42 to **14** (13 Short, 1 Metal Spacing; routed database artifact 13467202439). The in-loop count fell 42, 29, 28, 26, 25, 20, 17, 15, 14.
+
+Of the 14 remaining markers, seven pair a clock net (`clknet_*`) with a signal net. Clock wires stay FIXED because the post-route handoff compares protected clock geometry with the baseline. Run42140204970 repeats the step with the 17 signal nets of the 14 markers.
+
+Three OpenROAD Python binding limits shape `unfix_nets.py`:
+
+- `getWireType` returns a string.
+- `getRect`, `getBBox` and `dbWireShapeItr` are not usable from Python; rectangles are read from the raw `kRect`/`kOperand` ops.
+- `addPoint(x, y, 0)` selects the extension overload, so plain points are written with two arguments.
