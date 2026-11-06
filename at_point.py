@@ -23,13 +23,9 @@ def tm2_length(net):
 for i in b.getInsts():
     bb=i.getBBox()
     if not(bb.xMin()-u<=X<=bb.xMax()+u and bb.yMin()-u<=Y<=bb.yMax()+u):continue
-    tx=i.getTransform()
     for it in i.getITerms():
         n=it.getNet()
         if n is None or n.getSigType()in('POWER','GROUND'):continue
-        hit=False
-        for mp in it.getMTerm().getMPins():
-            for g in mp.getGeometry():
-                r=odb.Rect(g.xMin(),g.yMin(),g.xMax(),g.yMax());tx.apply(r)
-                if r.xMin()-u//2<=X<=r.xMax()+u//2 and r.yMin()-u//2<=Y<=r.yMax()+u//2:hit=True
+        r=it.getBBox()
+        hit=r.xMin()-u//2<=X<=r.xMax()+u//2 and r.yMin()-u//2<=Y<=r.yMax()+u//2
         print('NSSOC_TERM',i.getName(),i.getMaster().getName(),it.getMTerm().getName(),n.getName(),'near' if hit else 'cell','tm2_um=%.1f'%tm2_length(n))
