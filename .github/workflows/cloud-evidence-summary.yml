@@ -115,7 +115,7 @@ jobs:
           set -e
           /v/b/openroad -no_init -exit /v/o/check0.tcl > /v/o/check0.log 2>&1 || echo CHECK0_FAILED
           echo "START_CHECK_DRC markers=$(grep -c 'violation type' /v/o/start.rpt || true)"
-          ( /v/b/openroad -no_init -exit /v/o/route.tcl 2>&1 || echo ROUTE_FAILED ) | tee /v/o/route.log | grep --line-buffered -E "Start .* iteration|Number of violations|peak = |NSSOC_STEP|ROUTE_FAILED|ERROR" || true
+          ( /v/b/openroad -no_init -exit /v/o/route.tcl 2>&1 || echo ROUTE_FAILED ) | tee /v/o/route.log | grep --line-buffered -E "Start .* iteration|Number of violations|peak = |NSSOC_STEP|NSSOC_ANTENNA|ANT-000|ROUTE_FAILED|ERROR" || true
           /v/b/openroad -no_init -exit /v/o/check1.tcl > /v/o/check1.log 2>&1 || echo CHECK1_FAILED
           echo "END_CHECK_DRC markers=$(grep -c 'violation type' /v/o/end.rpt || true)"
           grep -o "violation type: [A-Za-z ]*" /v/o/end.rpt | sort | uniq -c || true
