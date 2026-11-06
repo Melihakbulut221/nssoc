@@ -12,8 +12,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {name: skid_d60_wb, rtl: change, overrides: '{"PL_TARGET_DENSITY_PCT": 60}', core_req: '0', core_wb: '1'}
-          - {name: skid_d60_wb_req, rtl: change, overrides: '{"PL_TARGET_DENSITY_PCT": 60}', core_req: '1', core_wb: '1'}
+          - {name: skid_d60_ks, rtl: change, overrides: '{"PL_TARGET_DENSITY_PCT": 60}', prefix: '1'}
+          - {name: skid_d70_ks, rtl: change, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1'}
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -21,6 +21,7 @@ jobs:
       SOC_INTERFACE_PROFILE: full
       SOC_CORE_REQ_REG: ${{ matrix.core_req || '0' }}
       SOC_CORE_WB_STAGE: ${{ matrix.core_wb || '0' }}
+      SOC_SYNTH_PREFIX_ADDER: ${{ matrix.prefix || '0' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
