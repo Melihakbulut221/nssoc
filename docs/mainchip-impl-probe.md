@@ -38,3 +38,18 @@ Post-CTS-repair attribution from run42066000930 (LibreLane's one-corner report; 
   - deeper pipelining of the PCIe link layer, or a lower PCIe logic clock;
   - reset-tree work for the asynchronous group.
 - Run42120851358 probes the first lever at 60% density: `SOC_CORE_WB_STAGE=1`, with and without `SOC_CORE_REQ_REG=1`. A pipeline change alters the core's cycle behaviour, so any adoption needs the native boot gate-level run as well.
+
+## Core pipeline and carry mapping (runs42120851358 and42140031564)
+
+Every variant below uses the register-slice RTL. Slow-corner setup worst slack after global route, in ns:
+
+| Variant | Density | clk_i | pcie_clk_i | asynchronous | typical clk_i |
+|---|---:|---:|---:|---:|---:|
+| reference | 60% | -9.69 | -9.32 | -7.53 | 1.41 |
+| `SOC_CORE_WB_STAGE=1` | 60% | -12.40 | -9.37 | -7.11 | -0.42 |
+| `SOC_CORE_WB_STAGE=1`, `SOC_CORE_REQ_REG=1` | 60% | -12.41 | -12.21 | -8.23 | -0.30 |
+| `SOC_SYNTH_PREFIX_ADDER=1` (Kogge-Stone `$lcu`) | 60% | -9.89 | -9.07 | -8.35 | 1.12 |
+| `SOC_SYNTH_PREFIX_ADDER=1` | 70% | **-8.57** | **-8.34** | -7.39 | **2.07** |
+
+- Neither core pipeline selector helps. `SOC_SYNTH_PREFIX_ADDER` is a new opt-in knob in `syn_soc_top.sh`; at 0 the script is unchanged. Kogge-Stone carry mapping alone is neutral, presumably because ABC already restructures the carry logic. Density 70% gives the best slow corner so far.
+- Run-to-run spread from placement looks like about 1-2 ns. The critical path itself is the Ibex execute path from the register file read (see `docs/mainchip-sta-measurement.md` on `analysis/mainchip-sta`). It remains about 8.5 ns over the 20 ns budget at the slow corner.
