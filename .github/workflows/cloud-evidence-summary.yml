@@ -1,39 +1,127 @@
-# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
-# SPDX-License-Identifier: Apache-2.0
-name: cloud-evidence-summary
+name: Full-chip KLayout LVS of a routed main-chip database
 on:
   workflow_dispatch:
     inputs:
-      release:
-        description: Exact release containing the archive
-        default: cloud-migration-20261012-000
-        required: false
-      asset:
-        description: Exact archive asset name
-        default: routed-setup-cloud-38306421942-1.tar.gz
-        required: true
-      member:
-        description: Exact JSON or UTF-8 report member to read
-        default: cloud-routed-setup/result.json
-        required: true
+      routed_artifact: {description: 'artifact id holding routed.odb', type: string, default: '13493489102'}
 permissions:
   contents: read
+  actions: read
 jobs:
-  summarize:
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: write
+  lvs:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [full, sram_blackbox]
+    env:
+      GH_TOKEN: ${{ github.token }}
+      IMAGE: openroad/ubuntu24.04-dev@sha256:468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a
+      ENGINE_PART: '687863984'
+      ENGINE_SHA: 2a343c7491353a60e7b06aa134d4b67e3ef2e846a8341164dacffe88f5f7ec2f
+      APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
+      PDK_COMMIT: c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /hw/soc/flow/transistor_schematic.py
+            /hw/soc/flow/audit_klayout_lvs.py
+            /hw/soc/flow/prepare_ihp_lvs.py
+            /hw/soc/flow/prepare_ihp_drc.py
+            /hw/soc/pnr/ihp-lvs.lock.json
+            /hw/soc/pnr/ihp-drc.lock.json
+      - name: Tools, PDK views and the routed database
+        run: |
+          set -euo pipefail
+          W=/mnt/l; sudo mkdir -p $W/e $W/o $W/b; sudo chown -R $USER $W
+          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2
+          curl -fsSL -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
+          echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c -; chmod +x $W/librelane.AppImage
+          gh api repos/${{ github.repository }}/actions/artifacts/${{ inputs.routed_artifact }}/zip > $W/in.zip
+          unzip -p $W/in.zip routed.odb > $W/o/routed.odb; rm $W/in.zip; sha256sum $W/o/routed.odb
+          docker pull -q "$IMAGE"
+          gh api repos/${{ github.repository }}/releases/assets/$ENGINE_PART -H "Accept: application/octet-stream" > $W/engine.tgz
+          tar -xzf $W/engine.tgz -C $W/e; rm $W/engine.tgz
+          E=$(find $W/e -type f -name openroad -exec sha256sum {} + | awk -v s=$ENGINE_SHA '$1==s{print $2}' | head -1); test -n "$E"; cp "$E" $W/b/openroad; chmod +x $W/b/openroad
+          git clone -q --filter=blob:none --no-checkout https://github.com/IHP-GmbH/IHP-Open-PDK.git $W/pdk
+          cd $W/pdk && git sparse-checkout set --no-cone \
+            /ihp-sg13g2/libs.ref/sg13g2_stdcell/cdl/ /ihp-sg13g2/libs.ref/sg13g2_stdcell/gds/ /ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/ /ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/ \
+            '/ihp-sg13g2/libs.ref/sg13g2_sram/cdl/RM_IHPSG13_1P_2048x64*' '/ihp-sg13g2/libs.ref/sg13g2_sram/cdl/RM_IHPSG13_2P_256x16*' \
+            '/ihp-sg13g2/libs.ref/sg13g2_sram/gds/RM_IHPSG13_1P_2048x64*' '/ihp-sg13g2/libs.ref/sg13g2_sram/gds/RM_IHPSG13_2P_256x16*' \
+            '/ihp-sg13g2/libs.ref/sg13g2_sram/lef/RM_IHPSG13_1P_2048x64*' '/ihp-sg13g2/libs.ref/sg13g2_sram/lef/RM_IHPSG13_2P_256x16*' \
+            /ihp-sg13g2/libs.tech/klayout/tech/
+          git checkout -q $PDK_COMMIT; git log --oneline -1
+          find $W/pdk/ihp-sg13g2/libs.ref -type f | sed "s|$W/pdk/||" | sort | head -40; du -sh $W/pdk/ihp-sg13g2
+      - name: Export DEF and powered Verilog with the routing engine
+        run: |
+          set -euo pipefail
+          W=/mnt/l
+          printf 'read_db /v/o/routed.odb\nset b [ord::get_db_block]\nputs "NSSOC_EXPORT insts=[llength [$b getInsts]] nets=[llength [$b getNets]]"\nwrite_def /v/o/soc_top.def\nwrite_verilog -include_pwr_gnd /v/o/soc_top.pwr.v\n' > $W/o/export.tcl
+          docker run --rm -v $W:/v "$IMAGE" /v/b/openroad -no_init -exit /v/o/export.tcl | tail -3
+          ls -la $W/o
+      - name: Stream out GDS (LibreLane KLayout stream_out)
+        run: |
+          set -euo pipefail
+          W=/mnt/l; P=$W/pdk/ihp-sg13g2/libs.ref; T=$W/pdk/ihp-sg13g2/libs.tech/klayout/tech
+          APP="env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage"
+          LL=$($APP python -c 'import librelane,os;print(os.path.dirname(librelane.__file__))' | tail -1); echo "LL=$LL"
+          S1=$P/sg13g2_sram; ls $S1/*/
+          $APP python $LL/scripts/klayout/stream_out.py $W/o/soc_top.def -o $W/o/soc_top.gds -t soc_top \
+            -T $T/sg13g2.lyt -P $T/sg13g2.lyp -M $T/sg13g2.map \
+            -l $P/sg13g2_stdcell/lef/sg13g2_tech.lef -l $P/sg13g2_stdcell/lef/sg13g2_stdcell.lef \
+            -l $S1/lef/RM_IHPSG13_1P_2048x64_c2_bm_bist.lef -l $S1/lef/RM_IHPSG13_2P_256x16_c2_bm_bist.lef \
+            -w $P/sg13g2_stdcell/gds/sg13g2_stdcell.gds \
+            -w $S1/gds/RM_IHPSG13_1P_2048x64_c2_bm_bist.gds -w $S1/gds/RM_IHPSG13_2P_256x16_c2_bm_bist.gds 2>&1 | tail -20
+          ls -la $W/o/soc_top.gds
+      - name: Transistor schematic and the pinned IHP LVS deck
+        run: |
+          set -euo pipefail
+          W=/mnt/l; P=$W/pdk/ihp-sg13g2/libs.ref; S1=$P/sg13g2_sram
+          APP="env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage"
+          $APP python hw/soc/flow/transistor_schematic.py $W/o/soc_top.pwr.v --top soc_top \
+            --cdl $P/sg13g2_stdcell/cdl/sg13g2_stdcell.cdl --cdl $S1/cdl/RM_IHPSG13_1P_2048x64_c2_bm_bist.cdl --cdl $S1/cdl/RM_IHPSG13_2P_256x16_c2_bm_bist.cdl \
+            --standard-cell-verilog $P/sg13g2_stdcell/verilog/sg13g2_stdcell.v --output $W/o/sch 2>&1 | tail -15
+          ls -la $W/o/sch
+          python3 hw/soc/flow/prepare_ihp_lvs.py | tail -2
+          D=hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs
+          if [ "${{ matrix.variant }}" = sram_blackbox ]; then
+            # Vendor SRAM CDL does not match its own GDS (IHP issue #239). Blank the
+            # macros on both sides so the top-level connectivity gets a verdict.
+            python3 - "$D/sg13g2.lvs" <<'PY'
+          import re,sys
+          p=sys.argv[1];s=open(p).read()
+          m=re.search(r'^\s*compare\b',s,re.M)
+          assert m, 'compare not found'
+          s=s[:m.start()]+'blank_circuit("RM_IHPSG13_*")\n'+s[m.start():]
+          open(p,'w').write(s);print('blank_circuit inserted before compare at offset',m.start())
+          PY
+          fi
+          echo "DECK=$D/sg13g2.lvs" >> $GITHUB_ENV
+      - name: KLayout LVS (deep mode)
+        run: |
+          set +e
+          W=/mnt/l; APP="env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage"
+          SCH=$(ls $W/o/sch/*.cir | head -1); echo "schematic $SCH"
+          start=$(date +%s)
+          timeout 17000 $APP klayout -b -zz -r $DECK -rd input=$W/o/soc_top.gds -rd schematic=$SCH -rd topcell=soc_top -rd run_mode=deep \
+            -rd report=$W/o/soc_top.lvsdb -rd log=$W/o/deck.log -rd target_netlist=$W/o/extracted.cir > $W/o/klayout.log 2>&1
+          echo "KLAYOUT_RC=$? elapsed=$(( $(date +%s)-start ))"
+          tail -30 $W/o/deck.log
+          python3 hw/soc/flow/audit_klayout_lvs.py $W/o/soc_top.lvsdb --top soc_top --deck-log $W/o/deck.log --output $W/o/audit.json; echo "AUDIT_RC=$?"
+          python3 -c "import json;d=json.load(open('$W/o/audit.json'));print(json.dumps({k:v for k,v in d.items() if not isinstance(v,(list,dict)) or len(json.dumps(v))<2000},indent=1)[:6000])" || true
+      - name: Collect
+        if: always()
+        run: |
+          W=/mnt/l; mkdir -p out; cp $W/o/deck.log $W/o/klayout.log $W/o/audit.json out/ 2>/dev/null || true
+          ls -la $W/o/sch 2>/dev/null | head; cp $W/o/sch/*.json out/ 2>/dev/null || true
+          [ -f $W/o/soc_top.lvsdb ] && gzip -c $W/o/soc_top.lvsdb | head -c 900000000 > out/soc_top.lvsdb.gz || true
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
         with:
-          python-version: '3.12'
-      - name: Read exact report in cloud and publish source binding
-        env:
-          GH_TOKEN: ${{ github.token }}
-          ASSET: ${{ inputs.asset || 'routed-setup-cloud-38306421942-1.tar.gz' }}
-          MEMBER: ${{ inputs.member || 'cloud-routed-setup/result.json' }}
-          RELEASE: ${{ inputs.release || 'cloud-migration-20261012-000' }}
-        run: python3 scripts/summarize_cloud_evidence.py --asset "$ASSET" --member "$MEMBER" --release "$RELEASE"
+          name: mainchip-lvs-${{ matrix.variant }}-${{ github.run_id }}
+          path: out
+          retention-days: 30
