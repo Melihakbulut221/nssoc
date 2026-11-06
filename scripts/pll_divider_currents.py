@@ -32,6 +32,14 @@ VARIANTS['cp8_int1k']={**VARIANTS['series4_cp8'],**WEAK_BIAS,'__extra__':['Rnsso
 # capacitor and vctrl are initialised so the 1.5 us window covers lock, not slew.
 VARIANTS['cp8_int2k1_ic080']={**VARIANTS['cp8_int2k1'],'__ic__':'.ic v(xloop.nssoc_int)=0.80 v(vctrl)=0.80'}
 VARIANTS['cp8_int2k1_ic088']={**VARIANTS['cp8_int2k1'],'__ic__':'.ic v(xloop.nssoc_int)=0.88 v(vctrl)=0.88'}
+# Ring load resistors (XD0480-0482, XD0490-0492, 8 x 4.4 um rppd) lengthened:
+# a larger RC lowers the ring frequency at full tail current while I*R raises
+# the swing, so 8 GHz can fall where the divider still counts. Integrating
+# filter as above, started at 0.70 V where the swing is still full.
+RING_LOADS=['XD0480','XD0481','XD0482','XD0490','XD0491','XD0492']
+def loads(l):return{k:dict(l=l)for k in RING_LOADS}
+VARIANTS['int2k1_rl112']={**VARIANTS['cp8_int2k1'],**loads('4.93u'),'__ic__':'.ic v(xloop.nssoc_int)=0.70 v(vctrl)=0.70'}
+VARIANTS['int2k1_rl125']={**VARIANTS['cp8_int2k1'],**loads('5.5u'),'__ic__':'.ic v(xloop.nssoc_int)=0.70 v(vctrl)=0.70'}
 def patch_parent(case,variant):
     lines=(case/'parent865.spice').read_text().split('\n');changed={}
     for name,w in VARIANTS[variant].items():
