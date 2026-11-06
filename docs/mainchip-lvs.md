@@ -23,3 +23,23 @@ The layout is the routed database of run42189463974 (artifact 13493489102): full
 This is the same picture as the 2026-09-23 full-chip run (`docs/evidence/full-chip-transistor-lvs-20260923.json`). The vendor SRAM CDL does not match its own GDS (IHP-Open-PDK issue #239). The fix belongs to the SRAM views, not to this layout.
 
 Run42207147048 adds `blank_circuit("RM_IHPSG13_*")` before the deck's alignment step. It blanks both macros on both sides, so `soc_top` connectivity into the macro pins gets its own verdict.
+
+## Result with the vendor SRAMs blanked (run42207147048, audit run42211661510)
+
+The deck reports **"Congratulations! Netlists match."** The run took 1873 s at a 4.43 GB peak.
+
+The independent audit gives **PASS within comparison scope**: 59 of 59 circuits Match, no reasons, no extraction diagnostics. This covers:
+
+- all std-cell types;
+- `soc_top`;
+- both SRAM macros as blanked circuits (0 devices on each side).
+
+So the full-chip layout of the DRC-clean route is transistor-level equivalent to its powered netlist. That includes all std-cell devices, the 154524 instances and every net into the SRAM macro pins.
+
+What this does not cover:
+
+- the SRAM macro interiors, because the vendor CDL does not match its own GDS;
+- physical supply continuity beyond extracted connectivity;
+- foundry signoff.
+
+The logical PG binding of the 44 new diodes is part of the exported netlist.
