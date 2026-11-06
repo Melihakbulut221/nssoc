@@ -13,6 +13,7 @@ on:
       input_artifact: {description: 'optional artifact id of a previous routed.odb (overrides snapshot)', type: string, default: ''}
       unfix: {description: 'true: re-encode the nets in unfix-nets.txt from FIXED to ROUTED before routing', type: string, default: 'false'}
       unfix_clocks: {description: 'space-separated clock nets also allowed to be re-encoded', type: string, default: ''}
+      antenna_mode: {description: 'repair_antennas flag: -jumper_only or -diode_only', type: string, default: '-diode_only'}
 permissions:
   contents: read
   actions: read
@@ -77,7 +78,7 @@ jobs:
           set_routing_layers -signal Metal2-TopMetal2 -clock Metal4-TopMetal2
           set_thread_count $::env(THREADS)
           check_antennas -report_file /v/o/antenna-before.rpt
-          set inserted [repair_antennas -jumper_only]
+          set inserted [repair_antennas $::env(ANTENNA_MODE)]
           puts "NSSOC_ANTENNA_REPAIR inserted=$inserted"
           if {$inserted} {
             detailed_route -droute_end_iter $::env(ITERS) -or_seed 42 -verbose 1
@@ -121,7 +122,7 @@ jobs:
           echo "END_CHECK_DRC markers=$(grep -c 'violation type' /v/o/end.rpt || true)"
           grep -o "violation type: [A-Za-z ]*" /v/o/end.rpt | sort | uniq -c || true
           SH
-          docker run --rm -e ITERS=${{ inputs.iterations }} -e THREADS=${{ inputs.threads }} -e CLIP_ADD=${{ inputs.clip_add }} -e FROM_ROW=${{ inputs.from_row }} -e BUDGET_S=${{ inputs.budget_s }} -v $W:/v "$IMAGE" bash /v/o/run.sh
+          docker run --rm -e ANTENNA_MODE=${{ inputs.antenna_mode }} -e ITERS=${{ inputs.iterations }} -e THREADS=${{ inputs.threads }} -e CLIP_ADD=${{ inputs.clip_add }} -e FROM_ROW=${{ inputs.from_row }} -e BUDGET_S=${{ inputs.budget_s }} -v $W:/v "$IMAGE" bash /v/o/run.sh
           mkdir -p out && cp $W/o/routed.odb $W/o/*.log $W/o/*.rpt $W/o/*.json out/ 2>/dev/null || true
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
