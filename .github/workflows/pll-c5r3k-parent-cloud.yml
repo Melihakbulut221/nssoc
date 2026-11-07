@@ -50,29 +50,30 @@ jobs:
           PINS
       - name: Integrate c5r3k macros and require native parent DRC, deep and flat LVS at 849 devices and faults
         run: python3 scripts/cloud_pll_c5r3k_parent.py --children "$RUNNER_TEMP/children"
-      - name: Publish physical success or failure evidence
+      - name: Chunk evidence and publish it as a release when the token allows
         if: always()
         id: publish
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           root=hw/soc/out/cloud-pll-c5r3k-parent
-          mkdir -p "$root"
+          mkdir -p "$root" release
           if [ ! -f "$root/result.json" ]; then
             printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > "$root/result.json"
           fi
           stem="pll-c5r3k-parent-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
-          cp "$root/result.json" "$stem.summary.json"
-          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
-          python3 - "$stem" <<'PYCODE'
+          cp "$root/result.json" "release/$stem.summary.json"
+          (cd release && python3 ../scripts/cloud_chunked_results.py --directory "../$root" --stem "$stem")
+          cd release && python3 - "$stem" <<'PYCODE'
           import json,subprocess,sys
           stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
-          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','pll-c5r3k-parent',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          subprocess.run([sys.executable,'../scripts/publish_cloud_results.py','--group','pll-c5r3k-parent',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
           PYCODE
-      - name: Retain evidence after publication failure
-        if: always() && steps.publish.outcome == 'failure'
+      - name: Retain the chunked release files
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: pll-c5r3k-parent-${{ github.run_id }}
+          name: pll-c5r3k-parent-release-${{ github.run_id }}-${{ github.run_attempt }}
           retention-days: 30
-          path: hw/soc/out/cloud-pll-c5r3k-parent/
+          path: release/
