@@ -282,3 +282,15 @@ The same run's other two variants:
 | c7p5_r3k (3 kOhm, 7.5 pF) | -164 ppm, 14.8 ps | - | fail |
 
 At 5 pF the gate passes with both 3 and 6 kOhm, so the resistor has margin, while 7.5 pF is already too slow. Run42387988574 checks c5_r3k at the deck's own step, and a second run checks c5_r6k.
+
+### c5_r3k confirmed at the deck's own step (run42387988574)
+
+At the deck's 0.3125 ps maximum step the frozen gate again returns **`passed: true`**. The sustained window starts at 660 ns and the slip-free final windows match the 0.5 ps run to within 1 ppm:
+
+| Window | Result |
+|---|---|
+| 700-800 ns | +16 ppm, 2.2 ps |
+| 800-900 ns | -43 ppm, 3.9 ps |
+| 900-1000 ns | -22 ppm, 2.0 ps |
+
+The schematic what-if therefore passes the acquisition gate. The layout version of these changes is on `analysis/pll-layout-c5r3k` (`docs/pll-layout-c5r3k.md`).
