@@ -143,3 +143,27 @@ The two main-deck partitions run as parallel jobs on artifact 13557301203. They 
 All 9499 `NW.b` markers came from the empty row sites, and filler insertion clears them. The main deck therefore passes on this candidate with no cell or region excluded.
 
 The foundry antenna deck also passes on this database: 0 markers in 2105 s (run42356845718).
+
+## Metal2 power straps close the density deck (run42387899733)
+
+Raising the fill target alone cannot close `M2.j`. Instead, `scripts/m2_pg_straps.py` (KLayout) adds Metal2 power straps after the fill. Each strap sits on one standard-cell Metal1 row rail and has a single Via1 at its centre inside that rail. It touches no other conductor, so it carries the rail's own net and cannot short anything.
+
+The straps fill every free interval along each rail. They are 0.28-5.0 um wide and 3.4 um tall, with these clearances:
+
+- 0.25 um to drawn Metal2 and between straps (Mn.b 0.21, Mn.e 0.24);
+- 0.42 um to Metal2 fill (MFil.c);
+- 0.22 um to other Via1 (V1.b);
+- 0.05 um Metal1 enclosure of the Via1;
+- 2 um from the vendor SRAMs.
+
+Obstacles are expanded with rectangular corners. The script checks its own result: no two straps touch, they are at least 0.25 um apart, their width is in range, and no strap overlaps the clearance of existing Metal2 or fill.
+
+On the filled GDS of artifact 13557301203 the run places 93621 straps. They add 258924 um^2 of Metal2, which is 3.14% of the die. The density deck then gives **PASS, 0 markers**, with all 37 rules executed and the coverage check accepting the run.
+
+The resulting GDS (fill plus straps, artifact 13581294638) is the one checked next. Run42391759014 runs on it:
+
+- the foundry main deck, both partitions;
+- the foundry antenna deck;
+- LVS with the SRAMs blanked.
+
+The straps exist only in the GDS, like the fill. The OpenROAD database and the timing netlist do not contain them.
