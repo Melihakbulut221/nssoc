@@ -1,0 +1,84 @@
+{
+  "source_head": "79a7dd03827acad03f3df299cbd027c07ce9cd20",
+  "methods": [
+    {
+      "baseline_path": "scripts/cloud_pll_rhi120_c8_geometry.py",
+      "candidate_path": "scripts/cloud_pll_c5r3k_geometry.py",
+      "baseline_sha256": "2cc79f65c4a87e8925d32865756e7c30cd7bc19a4d07a198d4480f10391e5baf",
+      "candidate_sha256": "e0de11b5d8a7728ae868c8fccea3a929cb7125c779c6a6c6f837bc3e831c1ebe",
+      "edits": [
+        {
+          "before": "cloud-pll-rhi120-c8-geometry",
+          "after": "cloud-pll-c5r3k-geometry",
+          "count": 1
+        },
+        {
+          "before": "TOP='nssoc_pll845_divider3p2_rhi120_c8_development'",
+          "after": "TOP='nssoc_pll849_divider3p2_c5r3k_development'",
+          "count": 1
+        },
+        {
+          "before": "GDS_SHA='7e60ca3b1dd37f8f245e07ad80a29e4a311fc14301c1ab1339c485a59060d3f3'",
+          "after": "GDS_SHA='c0d51d9e4d5d5af802a59472603bea856ed446ec837ffa96412abafb9bcc0bea'",
+          "count": 1
+        },
+        {
+          "before": "len(list(c.each_device()))==845",
+          "after": "len(list(c.each_device()))==849",
+          "count": 1
+        },
+        {
+          "before": "assert len(caps)==26 and len(terminal_inventory)==845",
+          "after": "assert len(caps)==27 and len(terminal_inventory)==849",
+          "count": 1
+        },
+        {
+          "before": "masks.count()==26",
+          "after": "masks.count()==27",
+          "count": 1
+        },
+        {
+          "before": "mask_region.count()==26",
+          "after": "mask_region.count()==27",
+          "count": 1
+        },
+        {
+          "before": "assert len(used)==26",
+          "after": "assert len(used)==27",
+          "count": 1
+        },
+        {
+          "before": "assert len(rows)==26 and",
+          "after": "assert len(rows)==27 and",
+          "count": 1
+        },
+        {
+          "before": "native_devices=845,native_mim_devices=26",
+          "after": "native_devices=849,native_mim_devices=27",
+          "count": 1
+        },
+        {
+          "before": "docs/evidence/pll-rhi120-c8-parent-pass-20261023.json",
+          "after": "docs/evidence/pll-c5r3k-parent-pass-20261107.json",
+          "count": 1
+        },
+        {
+          "before": "reports.restore_report('pll-rhi120-c8-parent'",
+          "after": "reports.restore_report('pll-c5r3k-parent'",
+          "count": 1
+        },
+        {
+          "before": "=='PASS_ACTUAL845_FILTER_PARENT_NATIVE_DRC_LVS_AND_FAULTS_NOT_RC'",
+          "after": "=='PASS_C5R3K_PARENT849_NATIVE_DRC_LVS_AND_FAULTS_NOT_RC'",
+          "count": 1
+        },
+        {
+          "before": "sum(classes.values())==845 and classes['cap_cmim']==26",
+          "after": "sum(classes.values())==849 and classes['cap_cmim']==27",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "scope": "c5r3k parent binding only: TOP, parent pin/group/status, GDS hash, 845->849 devices and 26->27 MIM counts. Every geometry check and the five fault controls are unchanged; status labels are inherited."
+}
