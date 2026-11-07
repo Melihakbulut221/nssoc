@@ -64,6 +64,11 @@ for r in('6000','9000','12000'):
 def divider(scale=1):return{'XD0567':dict(l=f'{126.3*scale:.1f}u'),'XD0568':dict(l=f'{40.7*scale:.1f}u')}
 for name,scale,r in(('div061_r3k',1,'3000'),('div061_r6k',1,'6000'),('div061x2_r3k',2,'3000')):
     VARIANTS[name]={**VARIANTS['series4_cp8'],**divider(scale),**loads('4.93u'),'__extra__':[f'Rnssoc_int vctrl nssoc_int {r}','Cnssoc_int nssoc_int avss 15p']}
+# Retargeting the divider (run42350284105) leaves the 7000 ppm undershoot, and
+# the recovery is slower for a larger R: the loop is overdamped and its slow
+# pole sits near 1/(RC). Smaller integrating capacitors, original divider.
+for c,r in(('5','3000'),('7.5','3000'),('5','6000')):
+    VARIANTS[f"c{c.replace('.','p')}_r{int(r)//1000}k"]={**VARIANTS['series4_cp8'],**loads('4.93u'),'__extra__':[f'Rnssoc_int vctrl nssoc_int {r}',f'Cnssoc_int nssoc_int avss {c}p']}
 FROZEN_REVIEW_SHA='168a1563ed1847e752c67e3058b823200bfe2b3f4e2b345046a0ed13318530db'
 def gate(case,frozen,out):
     """Apply the project's frozen acquisition gate (independent_analysis) unchanged."""
