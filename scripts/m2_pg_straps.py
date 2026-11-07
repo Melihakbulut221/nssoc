@@ -27,10 +27,12 @@ for p in R(189,4).each():
 print('loaded %.0fs rows %d macros %d'%(time.time()-t0,len(rows),macros.count()),flush=True)
 # Feasible strap centres: Minkowski-expand every obstacle by the strap half size plus its clearance.
 hx,hy=um(W/2),um(H/2)
-obst=m2.sized(um(SP_M2)+hx,um(SP_M2)+hy)+fill.sized(um(SP_FILL)+hx,um(SP_FILL)+hy)+macros.sized(hx,hy)
-obst+=v1.sized(um(SP_V1+VIA/2))
+# Mode 5 keeps full rectangular corners; the default mode cuts them and would
+# miss diagonal clearances.
+obst=m2.sized(um(SP_M2)+hx,um(SP_M2)+hy,5)+fill.sized(um(SP_FILL)+hx,um(SP_FILL)+hy,5)+macros.sized(hx,hy,5)
+obst+=v1.sized(um(SP_V1+VIA/2),um(SP_V1+VIA/2),5)
 obst.merge()
-viaok=m1.sized(-um(ENC+VIA/2));viaok.merge()
+viaok=m1.sized(-um(ENC+VIA/2),-um(ENC+VIA/2),5);viaok.merge()
 print('obstacles %.0fs'%(time.time()-t0),flush=True)
 bb=top.bbox();straps=[];vias=[]
 for y in sorted(rows):
@@ -50,7 +52,8 @@ check=db.Region()
 for b in straps:check.insert(b)
 assert check.merged().count()==len(straps),'straps touch'
 assert check.space_check(um(SP_M2)).is_empty(),'straps closer than the Metal2 clearance'
-assert (check&(m2+fill)).is_empty(),'strap overlaps existing Metal2'
+bad=check.interacting(m2.sized(um(SP_M2),um(SP_M2),5)+fill.sized(um(SP_FILL),um(SP_FILL),5))
+assert bad.is_empty(),f'{bad.count()} straps within clearance of existing Metal2'
 die=bb.width()*bb.height()*u*u;add=len(straps)*W*H
 r=dict(straps=len(straps),added_m2_um2=add,die_um2=die,added_percent=add/die*100,
        m2_before_percent=(m2+fill).merged().area()*u*u/die*100,seconds=time.time()-t0)
