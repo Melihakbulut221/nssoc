@@ -239,8 +239,8 @@ jobs:
           klayout -v
           start=$(date +%s)
           ( while true; do echo "MEM $(date +%H:%M:%S) $(free -m | awk '/Mem:/{m=$3"/"$2} /Swap:/{s=$3} END{print m" MB used, swap "s" MB"}') $(ps -eo rss,comm --sort=-rss | head -2 | tail -1)"; sleep 120; done ) &
-          if [ "${{ matrix.variant }}" = drc_density ] || [[ "${{ matrix.variant }}" == fill_density* ]]; then
-            G=$W/o/soc_top.gds; [[ "${{ matrix.variant }}" == fill_density* ]] && G=$W/o/soc_top.filled.gds
+          if [ "${{ matrix.variant }}" = drc_density ] || [[ "${{ matrix.variant }}" == fill_* ]]; then
+            G=$W/o/soc_top.gds; [[ "${{ matrix.variant }}" == fill_* ]] && G=$W/o/soc_top.filled.gds
             timeout 19000 python3 hw/soc/flow/check_ihp_drc.py $G --top soc_top --tag mainchip-${{ matrix.variant }} --deck density --threads 1 > $W/o/drc.log 2>&1
             RC=$?; echo "density rc=$RC"
             (cd hw/soc/flow && python3 -c "import json,sys;from check_ihp_density_coverage import validate_density_coverage as v;o='../out/mainchip-${{ matrix.variant }}';r=v(o+'/drc.lyrdb',o+'/run.log','soc_top',0);print(json.dumps({k:r[k] for k in ('status','markers','executed_rule_count','categories')},indent=1))") || echo "coverage check failed"
