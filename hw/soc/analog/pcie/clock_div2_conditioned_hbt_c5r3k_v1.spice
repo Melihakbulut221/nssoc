@@ -1,0 +1,16 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* c5r3k candidate for the FIRST PLL divider instance only (parent div1).
+* Only the two series conditioner rppd XSP/XSN change width 4u to 16u
+* (L3.6 unchanged). Source: schematic what-if c5_r3k on the extracted PLL deck
+* (XD0497 = div1 XFIRST.XSN, XD0498 = div1 XFIRST.XSP). The second divider
+* instance (div2; XD0540/XD0541) keeps clock_div2_conditioned_hbt_v3.spice.
+* The subcircuit name is kept so flattened device identities match v3; the
+* frozen v3 file is untouched. Native validation required; not adopted.
+.subckt nssoc_clock_div2_conditioned_hbt_v3 clkp clkn qp qn avdd avss sub
+XSP clkp ckp sub rppd w=16u l=3.6u b=0 sw_et=1
+XSN clkn ckn sub rppd w=16u l=3.6u b=0 sw_et=1
+XUP avdd ckp sub rppd w=1u l=4u b=0 sw_et=1
+XUN avdd ckn sub rppd w=1u l=4u b=0 sw_et=1
+XCORE ckp ckn qp qn avdd avss sub nssoc_clock_div2_hbt
+.ends nssoc_clock_div2_conditioned_hbt_v3

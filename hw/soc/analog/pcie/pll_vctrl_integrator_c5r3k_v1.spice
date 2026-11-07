@@ -1,0 +1,15 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* c5r3k candidate: new series RC integrator from the PLL control node to AVSS.
+* Source: schematic what-if c5_r3k (ideal 3 kOhm in series with 5 pF from
+* vctrl to avss; c5_r6k with 6 kOhm also passes). Native devices only:
+* XRINT rppd W2 L23: 260 ohm/sq * 23/(2+0.006) + 2 * 35 ohm*um / 2um
+*   = 2981 + 35 = 3016 ohm typical (rsh corners 234/286 ohm/sq: 2.72k/3.31k).
+* XCINT cmim 57.7 x 57.7 um: 1.5 fF/um2 * 3329.3 um2 + 0.04 fF/um * 230.8 um
+*   = 4993.9 + 9.2 = 5003 fF typical.
+* The MIM bottom plate (MINUS, Metal5) is on AVSS; the top plate is the
+* internal node. The bias divider XRHI/XRLO is unchanged. Not adopted.
+.subckt nssoc_pll_vctrl_integrator_c5r3k_v1 vctrl avss sub
+XRINT vctrl mid sub rppd w=2u l=23u b=0 sw_et=1
+XCINT mid avss cap_cmim w=57.7u l=57.7u
+.ends nssoc_pll_vctrl_integrator_c5r3k_v1

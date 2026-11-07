@@ -1,0 +1,29 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* c5r3k candidate: RHI120/C8 pump/filter with only XPSOURCE width 6.4u to 8u.
+* Source: schematic what-if c5_r3k on the extracted PLL deck (XD0375 = XPSOURCE).
+* RHI, RLO, the 8 um filter MIM and every other pump device are unchanged.
+* The charge pump is a separately named copy so the frozen
+* nssoc_pll_charge_pump_hv_v1 stays untouched; nested XDET/XCP instance paths
+* keep the exact source identities. Native validation required; not adopted.
+.subckt nssoc_pll_charge_pump_hv_c5r3k_v1 up down out vdd vss sub
+XRBIAS vdd nb sub rppd w=1u l=80u b=0 sw_et=1
+XNREF nb nb vss sub sg13_hv_nmos w=2u l=2u ng=1 m=1
+XNBIAS pb nb vss sub sg13_hv_nmos w=2u l=2u ng=1 m=1
+XPREF pb pb vdd vdd sg13_hv_pmos w=8u l=2u ng=1 m=1
+* c5r3k: mirrored UP source current raised by widening only this PMOS.
+XPSOURCE source pb vdd vdd sg13_hv_pmos w=8u l=2u ng=1 m=1
+XPENABLE out upb source vdd sg13_hv_pmos w=8u l=0.45u ng=1 m=1
+XNENABLE out down sink sub sg13_hv_nmos w=8u l=0.45u ng=1 m=1
+XNSINK sink nb vss sub sg13_hv_nmos w=2u l=2u ng=1 m=1
+XUB up upb vdd vss sub nssoc_pll_inv_hv_v1
+.ends nssoc_pll_charge_pump_hv_c5r3k_v1
+.subckt nssoc_tail115_pump13_detector_slice_v1 up down cp avdd avss sub
+XCP up down cp avdd avss sub nssoc_pll_charge_pump_hv_c5r3k_v1
+.ends nssoc_tail115_pump13_detector_slice_v1
+.subckt nssoc_tail115_pump_filter13_v1 up down vctrl vco_avdd div_avdd avss sub
+XDET up down vctrl div_avdd avss sub nssoc_tail115_pump13_detector_slice_v1
+XRHI vco_avdd vctrl sub rppd w=1u l=120u b=0 sw_et=1
+XRLO vctrl avss sub rppd w=1u l=47u b=0 sw_et=1
+XC vctrl avss cap_cmim w=8u l=8u
+.ends nssoc_tail115_pump_filter13_v1
