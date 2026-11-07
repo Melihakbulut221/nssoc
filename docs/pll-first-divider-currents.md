@@ -219,3 +219,20 @@ The 800-900 and 900-1000 ns windows must pass, and every window from some start 
 `rl112_cold_w3` ends at 100.38 MHz (about 3800 ppm) with a 0.39 ns phase span. **It would be rejected.** The loop is converging, so the what-ifs establish the direction (type-II filter, ring loads, matched pump, conditioner): the loop now pulls toward lock and the divider counts correctly. They do not establish acceptance.
 
 Settling must be faster and better damped. The next what-ifs vary the integrator and the bias precharge, and are judged by the frozen gate itself.
+
+## Judged by the frozen gate (runs42256917058 and42326267865)
+
+`pll_divider_currents.py gate` imports `independent_analysis` unchanged from `codex/complete-open-work`, after checking its SHA-256 (168a1563...). It applies the gate to the full 1 us capture. Every variant below starts cold and keeps the earlier fixes: XD0375 at 8 um, the conditioner series rppd at 16 um, and the ring loads at 4.93 um. Each adds a series-RC integrator from vctrl to avss.
+
+| Variant | Bias divider | Integrator | Last window (900-1000 ns) | Gate |
+|---|---|---|---|---|
+| fast_c15 | original (target about 0.70 V) | 3 kOhm, 15 pF | +505 ppm, 45 ps | fail |
+| c15_r6k | original | 6 kOhm, 15 pF | -366 ppm, 33 ps | fail |
+| c15_r9k | original | 9 kOhm, 15 pF | -1503 ppm, 136 ps | fail |
+| fast_c10, fast_c30 | original | 3.6 kOhm/10 pF, 2.1 kOhm/30 pF | not reached (0.92 and 0.89 us within the 5.75 h limit) | - |
+
+`fast_c15` passes the 850-950 ns window (-55 ppm, 16 ps). It is the first window of any variant to meet the gate.
+
+In every completed variant the loop reaches 100 MHz at 380-450 ns. The frequency then undershoots by 5000-6800 ppm and recovers with a time constant of about 155 ns, and the recovery is slower for a larger series resistor.
+
+During the undershoot, vctrl rises to about 0.73 V and then returns to about 0.61 V, the lock point. The bias divider XD0567/XD0568 targets about 0.70 V, so at lock it drives roughly 10 uA into the filter, and that leak sets the tail. Run42350284105 therefore retargets the divider to 0.61 V, keeping the same 167 um total, and repeats the test with 3 and 6 kOhm. A third variant doubles both divider lengths.
