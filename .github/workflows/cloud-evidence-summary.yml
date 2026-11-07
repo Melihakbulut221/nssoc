@@ -5,6 +5,7 @@ on:
       routed_artifact: {description: 'artifact id holding routed.odb', type: string, default: '13493489102'}
       variants: {description: 'JSON list of variants', type: string, default: '["full", "sram_blackbox"]'}
       audit_artifact: {description: 'audit-only: artifact id holding soc_top.lvsdb.gz and deck.log', type: string, default: ''}
+      gds_artifact: {description: 'optional: artifact id holding soc_top.final.gds.gz; it replaces the streamed GDS for DRC/LVS', type: string, default: ''}
 permissions:
   contents: read
   actions: read
@@ -81,6 +82,7 @@ jobs:
             /hw/soc/flow/check_ihp_density_coverage.py
             /hw/soc/flow/fill_chip_windows.py
             /hw/soc/flow/audit_fill_preservation.py
+            /scripts/m2_pg_straps.py
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
@@ -146,6 +148,13 @@ jobs:
             -w $P/sg13g2_stdcell/gds/sg13g2_stdcell.gds \
             -w $S1/gds/RM_IHPSG13_1P_2048x64_c2_bm_bist.gds -w $S1/gds/RM_IHPSG13_2P_256x16_c2_bm_bist.gds 2>&1 | tail -20
           ls -la $W/o/soc_top.gds
+          if [ -n "${{ inputs.gds_artifact }}" ]; then
+            # The final GDS (metal fill and Metal2 power straps) replaces the
+            # streamed one; DEF and the powered netlist still come from the database.
+            gh api repos/${{ github.repository }}/actions/artifacts/${{ inputs.gds_artifact }}/zip > $W/g.zip
+            unzip -p $W/g.zip soc_top.final.gds.gz | gunzip > $W/o/soc_top.gds; rm $W/g.zip
+            sha256sum $W/o/soc_top.gds; ls -la $W/o/soc_top.gds
+          fi
       - name: Transistor schematic and the pinned IHP LVS deck
         if: startsWith(matrix.variant, 'drc') == false && startsWith(matrix.variant, 'fill') == false
         run: |
@@ -215,6 +224,10 @@ jobs:
           echo "fill elapsed=$(( $(date +%s)-start ))"; tail -5 $W/o/fill.log
           python3 -c "import json;p=json.load(open('$W/o/fill/progress.json'));g=json.load(open('$W/o/fill/final-geometry.json'));print(p['status'],p['expected_tiles'],len(p['completed_tiles']),g['status'],g['errors'][:5])"
           cp $W/o/fill/checkpoint.gds $W/o/soc_top.filled.gds; ls -la $W/o/soc_top.filled.gds
+          if [ "${{ matrix.variant }}" = fill_straps_density ]; then
+            $APP python scripts/m2_pg_straps.py $W/o/soc_top.filled.gds $W/o/soc_top.final.gds $W/o/straps.json 2>&1 | tail -5
+            cp $W/o/soc_top.final.gds $W/o/soc_top.filled.gds
+          fi
       - name: KLayout DRC with the pinned IHP deck (no cell or region excluded)
         if: startsWith(matrix.variant, 'drc') || startsWith(matrix.variant, 'fill')
         run: |
@@ -263,7 +276,8 @@ jobs:
           W=/mnt/l; mkdir -p out; cp $W/o/drc.log out/ 2>/dev/null || true; cp $W/o/deck.log $W/o/klayout.log $W/o/audit.json out/ 2>/dev/null || true
           ls -la $W/o/sch 2>/dev/null | head; cp $W/o/sch/*.json out/ 2>/dev/null || true
           cp $W/o/fill.log $W/o/fill/*.json out/ 2>/dev/null || true
-          [ -f $W/o/soc_top.filled.gds ] && gzip -c $W/o/soc_top.filled.gds > out/soc_top.filled.gds.gz || true
+          [ -f $W/o/soc_top.final.gds ] && gzip -c $W/o/soc_top.final.gds > out/soc_top.final.gds.gz && cp $W/o/straps.json out/ || true
+          [ -f $W/o/soc_top.filled.gds ] && [ ! -f $W/o/soc_top.final.gds ] && gzip -c $W/o/soc_top.filled.gds > out/soc_top.filled.gds.gz || true
           [ -f $W/o/soc_top.lvsdb ] && gzip -c $W/o/soc_top.lvsdb | head -c 900000000 > out/soc_top.lvsdb.gz || true
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
