@@ -7,7 +7,7 @@ Same native decks, options and verdict rules as check_pcie_pump_filter13_v1.py.
 Positive: main DRC (560 categories), deep and flat LVS with exactly four
 devices (rppd, cmim, two ptap) and the three ports. Negative: a reference with
 the wrong resistor length, a reference with the wrong capacitor size, an open
-vctrl port bus, an avss/sub short, and an off-grid shape.
+vctrl port bus, an avss/sub short, and an off-grid Metal3 shape.
 """
 
 import argparse
@@ -37,7 +37,19 @@ def reference_fault(text, name):
     return text.replace(old, new)
 
 
+OFFGRID = """import pya
+layout=pya.Layout();layout.read({gds!r});top=layout.cell({top!r});assert top is not None
+# This macro has no top-level Metal1 shape (the pump's gate pads); shift the
+# first top-level Metal3 escape instead.
+shapes=[s for s in top.each_shape(layout.layer(30,0))if s.is_box()];assert shapes
+shapes[0].transform(pya.Trans(1,0))
+layout.write({target!r})
+"""
+
+
 def geometry_script(gds, target, fault):
+    if fault == "offgrid":
+        return OFFGRID.format(gds=str(gds), top=TOP, target=str(target))
     # The pump checker's mutations address the left-edge M5 port buses and
     # labels, which this macro shares by construction.
     saved = pumpcheck.TOP
@@ -143,7 +155,7 @@ def run(layout, out, app):
                 if result["status"] != expected or result["category_count"] != 560:
                     raise ValueError("DRC verdict or rule coverage differs")
                 if name == "offgrid" and not any(
-                    "metal1_drw_Offgrid" in c for c in result["categories"]
+                    "metal3" in c.lower() and "offgrid" in c.lower() for c in result["categories"]
                 ):
                     raise ValueError("Offgrid fault rejected for wrong reason")
             else:
