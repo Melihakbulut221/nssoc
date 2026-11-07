@@ -56,6 +56,14 @@ for name,r,c in(('fast_c10','3600','10p'),('fast_c15','3000','15p'),('fast_c30',
 # damping at 3 kOhm is only about 0.16. Same 15 pF, larger series resistor.
 for r in('6000','9000','12000'):
     VARIANTS[f'c15_r{int(r)//1000}k']={**VARIANTS['series4_cp8'],**loads('4.93u'),'__extra__':[f'Rnssoc_int vctrl nssoc_int {r}','Cnssoc_int nssoc_int avss 15p']}
+# c15_r6k/r9k (run42326267865): the frequency undershoots after the crossing
+# and recovers with about 155 ns, slower for a larger R. The bias divider
+# XD0567/XD0568 targets about 0.70 V while lock sits at about 0.61 V, so it
+# drives about 10 uA into the filter. Retarget it to 0.61 V (same 167 um total;
+# x2 doubles both lengths) so the divider precharges to lock and leaks nothing there.
+def divider(scale=1):return{'XD0567':dict(l=f'{126.3*scale:.1f}u'),'XD0568':dict(l=f'{40.7*scale:.1f}u')}
+for name,scale,r in(('div061_r3k',1,'3000'),('div061_r6k',1,'6000'),('div061x2_r3k',2,'3000')):
+    VARIANTS[name]={**VARIANTS['series4_cp8'],**divider(scale),**loads('4.93u'),'__extra__':[f'Rnssoc_int vctrl nssoc_int {r}','Cnssoc_int nssoc_int avss 15p']}
 FROZEN_REVIEW_SHA='168a1563ed1847e752c67e3058b823200bfe2b3f4e2b345046a0ed13318530db'
 def gate(case,frozen,out):
     """Apply the project's frozen acquisition gate (independent_analysis) unchanged."""
