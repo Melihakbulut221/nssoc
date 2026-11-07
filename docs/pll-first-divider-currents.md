@@ -236,3 +236,22 @@ Settling must be faster and better damped. The next what-ifs vary the integrator
 In every completed variant the loop reaches 100 MHz at 380-450 ns. The frequency then undershoots by 5000-6800 ppm and recovers with a time constant of about 155 ns, and the recovery is slower for a larger series resistor.
 
 During the undershoot, vctrl rises to about 0.73 V and then returns to about 0.61 V, the lock point. The bias divider XD0567/XD0568 targets about 0.70 V, so at lock it drives roughly 10 uA into the filter, and that leak sets the tail. Run42350284105 therefore retargets the divider to 0.61 V, keeping the same 167 um total, and repeats the test with 3 and 6 kOhm. A third variant doubles both divider lengths.
+
+### Divider retargeted to the lock point (run42350284105)
+
+| Variant | Last window (900-1000 ns) | Peak undershoot | Gate |
+|---|---|---|---|
+| div061_r6k (divider 126.3/40.7 um, 6 kOhm, 15 pF) | -922 ppm, 83 ps | -7806 ppm at 550 ns | fail |
+| div061x2_r3k (divider lengths doubled, 3 kOhm) | -8512 ppm, 773 ps | -8750 ppm at 850 ns (the crossing comes later, at 700 ns) | fail |
+| div061_r3k | not reached (5.75 h ngspice limit) | - | - |
+
+Retargeting the divider leaves the undershoot in place, so the divider leak was not its cause.
+
+Two observations together point to an overdamped type-II loop:
+
+- the recovery after the crossing is slower for a larger series resistor (3 kOhm fastest, 9 kOhm slowest);
+- the undershoot magnitude barely depends on R.
+
+In such a loop the slow closed-loop pole sits near 1/(RC). The undershoot itself is the phase error accumulated during cycle-slipping acquisition being unwound.
+
+Run42374911771 therefore tests smaller integrating capacitors (5 and 7.5 pF) with the original divider. It uses a 0.5 ps maximum step so that the run fits the job limit; an earlier comparison gave the same result at this step as at the deck's 0.3125 ps. Any passing variant will be confirmed at the deck step.
