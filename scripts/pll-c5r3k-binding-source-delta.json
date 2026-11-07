@@ -1,0 +1,69 @@
+{
+  "source_head": "f35d5653ce2f905c2e0c9f892db65748dda98be0",
+  "methods": [
+    {
+      "baseline_path": "scripts/cloud_pll_rhi120_c8_binding.py",
+      "candidate_path": "scripts/cloud_pll_c5r3k_binding.py",
+      "baseline_sha256": "0379c0849c53fec99e1a1e9909e875265ac185d370fe4d110a4bc3f6fb3363c9",
+      "candidate_sha256": "02cf9f5f8b47f34da2e26988fe91baf2b4df3ff3eb06e27bc3161374f6374675",
+      "edits": [
+        {
+          "before": "cloud-pll-rhi120-c8-binding",
+          "after": "cloud-pll-c5r3k-binding",
+          "count": 1
+        },
+        {
+          "before": "TOP='nssoc_pll845_divider3p2_rhi120_c8_development'",
+          "after": "TOP='nssoc_pll849_divider3p2_c5r3k_development'",
+          "count": 1
+        },
+        {
+          "before": "rppd=89,cap_cmim=26,ntap1=60,ptap1=191",
+          "after": "rppd=90,cap_cmim=27,ntap1=60,ptap1=193",
+          "count": 1
+        },
+        {
+          "before": "sum(len(d['terminals'])for d in devices)==2737",
+          "after": "sum(len(d['terminals'])for d in devices)==2746",
+          "count": 1
+        },
+        {
+          "before": "assert len(native)==845 and",
+          "after": "assert len(native)==849 and",
+          "count": 1
+        },
+        {
+          "before": "assert len(tap_proofs)==251 and sum(len(d['native_nodes'])for d in bindings)==2737",
+          "after": "assert len(tap_proofs)==253 and sum(len(d['native_nodes'])for d in bindings)==2746",
+          "count": 1
+        },
+        {
+          "before": "native_terminal_count=2737,",
+          "after": "native_terminal_count=2746,",
+          "count": 1
+        },
+        {
+          "before": "reports.restore_report('pll-rhi120-c8-terminals',39915871064,",
+          "after": "reports.restore_report('pll-c5r3k-terminals',42400729999,",
+          "count": 1
+        },
+        {
+          "before": "558a1d37cb69163ed67d4641b91d56467a8fb998f378e9d2dec6e6370beebe0a",
+          "after": "a84c8bd1a293470747d67993738e4ba8bd0f166caede039b086751b8c95f93a7",
+          "count": 1
+        },
+        {
+          "before": "29844ac319e058685a56248eff381a224b14686d83327b85e3a0099129a4ea74",
+          "after": "385c97636d21094a515c49ca0e984ed09d7134eeda80f687ded50989515b1e15",
+          "count": 1
+        },
+        {
+          "before": "'8098380e227c959c39403c33cd309bc1702eb551'",
+          "after": "'f35d5653ce2f905c2e0c9f892db65748dda98be0'",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "scope": "c5r3k bindings only: TOP, terminals pin (run 42400729999), census 849 (rppd 90, cap_cmim 27, ptap1 193), 2746 native terminals, 253 tap proofs (60 ntap1 + 193 ptap1). The 35 controls and every model/parameter/tap check are unchanged; status labels are inherited."
+}
