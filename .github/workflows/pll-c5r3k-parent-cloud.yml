@@ -1,0 +1,78 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+# c5r3k parent with release publication, so the extraction chain can pin it.
+# The child macros come from prerelease pll-c5r3k-layout-20261107 (copies of
+# the run 42397775128 artifacts), checked by SHA-256 before use.
+name: pll-c5r3k-parent-cloud
+on:
+  push:
+    branches: [analysis/pll-layout-c5r3k]
+    paths: [.github/workflows/pll-c5r3k-parent-cloud.yml]
+permissions:
+  contents: read
+concurrency:
+  group: pll-c5r3k-parent-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  c5r3k-parent849:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore exact native CAD runtime and the pinned child macros
+        run: |
+          python3 -m py_compile scripts/integrate_pll_c5r3k_parent.py scripts/cloud_pll_c5r3k_parent.py
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+          base=https://github.com/Melihakbulut221/nssoc/releases/download/pll-c5r3k-layout-20261107
+          mkdir -p "$RUNNER_TEMP/children"
+          while read -r digest macro; do
+            curl --fail --location --retry 4 "$base/pll-c5r3k-$macro-42397775128-1.tar.gz" -o "$RUNNER_TEMP/$macro.tar.gz"
+            echo "$digest  $RUNNER_TEMP/$macro.tar.gz" | sha256sum --check
+            tar -xzf "$RUNNER_TEMP/$macro.tar.gz" -C "$RUNNER_TEMP/children"
+            mv "$RUNNER_TEMP/children/pll-c5r3k-$macro-42397775128-1" "$RUNNER_TEMP/children/$macro"
+          done <<'PINS'
+          5db92ffad2daa4f9c97ee27fc4513aab04e5ee1bf9e8250a9d3d4a273fd2ba2a pump
+          de6a66f2ecbfb041cc20764163a28f89a5e71e7a9aac3db809189be784f7fe1e vco
+          7d1a5eeb7b46405732cdf58c000da676d566441821ee8fbda535df5b1562db64 div1
+          b1a550a2612ed851f698fb2c4ae589a928dd51b355f55148121be8713dbdc385 integrator
+          PINS
+      - name: Integrate c5r3k macros and require native parent DRC, deep and flat LVS at 849 devices and faults
+        run: python3 scripts/cloud_pll_c5r3k_parent.py --children "$RUNNER_TEMP/children"
+      - name: Publish physical success or failure evidence
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          root=hw/soc/out/cloud-pll-c5r3k-parent
+          mkdir -p "$root"
+          if [ ! -f "$root/result.json" ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > "$root/result.json"
+          fi
+          stem="pll-c5r3k-parent-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','pll-c5r3k-parent',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain evidence after publication failure
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pll-c5r3k-parent-${{ github.run_id }}
+          retention-days: 30
+          path: hw/soc/out/cloud-pll-c5r3k-parent/
