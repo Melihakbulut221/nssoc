@@ -52,7 +52,8 @@ check=db.Region()
 for b in straps:check.insert(b)
 assert check.merged().count()==len(straps),'straps touch'
 assert check.space_check(um(SP_M2)).is_empty(),'straps closer than the Metal2 clearance'
-bad=check.interacting(m2.sized(um(SP_M2),um(SP_M2),5)+fill.sized(um(SP_FILL),um(SP_FILL),5))
+# One database unit inside the clearance: a strap exactly at the clearance only touches.
+bad=check.overlapping(m2.sized(um(SP_M2)-1,um(SP_M2)-1,5)+fill.sized(um(SP_FILL)-1,um(SP_FILL)-1,5))
 assert bad.is_empty(),f'{bad.count()} straps within clearance of existing Metal2'
 die=bb.width()*bb.height()*u*u;add=len(straps)*W*H
 r=dict(straps=len(straps),added_m2_um2=add,die_um2=die,added_percent=add/die*100,
