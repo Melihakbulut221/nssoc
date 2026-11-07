@@ -167,3 +167,26 @@ The resulting GDS (fill plus straps, artifact 13581294638) is the one checked ne
 - LVS with the SRAMs blanked.
 
 The straps exist only in the GDS, like the fill. The OpenROAD database and the timing netlist do not contain them.
+
+### Grid fix and the complete foundry check set on the final GDS (runs42404887162 and42410792687)
+
+The first strap GDS failed the feol partition with 109836 `via1_drw_Offgrid`, all on the new Via1. A centre computed as `(left + right) // 2` was not on the 5 nm grid. The strap script now snaps every strap edge and Via1 centre to the 5 nm grid, keeps each Via1 centre inside its feasible interval, and asserts that no shape is off grid. The strap count and area are unchanged: 93621 straps, 258924 um^2.
+
+On the earlier strap GDS the beol partition was already PASS with 0 markers (run42391759014). That partition covers Metal2 spacing, Via1 and Metal2 filler rules. LVS on that GDS also matched.
+
+The final GDS is artifact 13588974063, SHA-256 433d319f...: the filler database 13557301203 streamed out, tiled metal fill, then the grid-snapped Metal2 power straps. Every check runs on this one file.
+
+| Check | Result | Run |
+|---|---|---|
+| Density deck, all 37 rules executed, coverage accepted | **PASS, 0 markers** | 42404887162 |
+| Foundry main deck, feol_and_geometry, recommended on, no exclusions | **PASS, 0** (10249 s) | 42410792687 |
+| Foundry main deck, beol | **PASS, 0** (8672 s) | 42410792687 |
+| Foundry antenna deck | **PASS, 0** (1940 s) | 42410792687 |
+| LVS, vendor SRAMs blanked | **Netlists match**, audit PASS within comparison scope (8681 s) | 42410792687 |
+
+The database behind the GDS has OpenROAD `check_drc` 0, `check_antennas` 0 and no unrouted multi-terminal nets. Physical signoff of the main chip is therefore complete within these limits:
+
+- LVS excludes the vendor SRAM interiors, whose CDL does not match their own GDS (IHP issue #239).
+- Timing is not closed (see `docs/mainchip-sta-measurement.md` on `analysis/mainchip-sta`).
+- The chip has no padframe or ESD.
+- This is not a manufacturing release.
