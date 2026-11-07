@@ -194,6 +194,17 @@ jobs:
           mkdir -p $W/fb && tar -xJf $W/fill.tar.xz -C $W/fb && rm $W/fill.tar.xz
           TOOL=$(find $W/fb -type f -path '*tool/gdsfill' | head -1); CFG=$(find $W/fb -maxdepth 3 -type f -name config.yaml | head -1)
           test -n "$TOOL" && test -n "$CFG"; chmod +x $TOOL; sha256sum $TOOL $CFG; cat $CFG
+          if [ "${{ matrix.variant }}" = fill_density_m2 ]; then
+            # Only the Metal2 fill target changes (58 +/- 2 instead of 50 +/- 10),
+            # inside the deck's 60% global maximum; every other layer is the bundle's.
+            python3 - "$CFG" $W/o/config-m2.yaml <<'PY'
+          import re,sys
+          s=open(sys.argv[1]).read()
+          new,n=re.subn(r'(  Metal2:\n    density: )50(\n    deviation: )10',r'\g<1>58\g<2>2',s)
+          assert n==1,n;open(sys.argv[2],'w').write(new);print(new)
+          PY
+            CFG=$W/o/config-m2.yaml
+          fi
           # The density deck normalises by prBoundary when present, else by the layout extent.
           NB=$($APP python -c "import klayout.db as d,sys;l=d.Layout();l.read(sys.argv[1]);t=l.top_cell();print(d.Region(t.begin_shapes_rec(l.layer(189,0))).count(), d.Region(t.begin_shapes_rec(l.layer(39,4))).count(), t.dbbox())" $W/o/soc_top.gds | tail -1)
           echo "prBoundary/EdgeSeal/bbox: $NB"
@@ -215,8 +226,8 @@ jobs:
           klayout -v
           start=$(date +%s)
           ( while true; do echo "MEM $(date +%H:%M:%S) $(free -m | awk '/Mem:/{m=$3"/"$2} /Swap:/{s=$3} END{print m" MB used, swap "s" MB"}') $(ps -eo rss,comm --sort=-rss | head -2 | tail -1)"; sleep 120; done ) &
-          if [ "${{ matrix.variant }}" = drc_density ] || [ "${{ matrix.variant }}" = fill_density ]; then
-            G=$W/o/soc_top.gds; [ "${{ matrix.variant }}" = fill_density ] && G=$W/o/soc_top.filled.gds
+          if [ "${{ matrix.variant }}" = drc_density ] || [[ "${{ matrix.variant }}" == fill_density* ]]; then
+            G=$W/o/soc_top.gds; [[ "${{ matrix.variant }}" == fill_density* ]] && G=$W/o/soc_top.filled.gds
             timeout 19000 python3 hw/soc/flow/check_ihp_drc.py $G --top soc_top --tag mainchip-${{ matrix.variant }} --deck density --threads 1 > $W/o/drc.log 2>&1
             RC=$?; echo "density rc=$RC"
             (cd hw/soc/flow && python3 -c "import json,sys;from check_ihp_density_coverage import validate_density_coverage as v;o='../out/mainchip-${{ matrix.variant }}';r=v(o+'/drc.lyrdb',o+'/run.log','soc_top',0);print(json.dumps({k:r[k] for k in ('status','markers','executed_rule_count','categories')},indent=1))") || echo "coverage check failed"
