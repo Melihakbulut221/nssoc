@@ -35,7 +35,8 @@ obst+=v1.sized(um(SP_V1+VIA/2),um(SP_V1+VIA/2),5)
 obst.merge()
 viaok=m1.sized(-um(ENC+VIA/2),-um(ENC+VIA/2),5);viaok.merge()
 print('obstacles %.0fs'%(time.time()-t0),flush=True)
-bb=top.bbox();straps=[];vias=[]
+bb=top.bbox();straps=[];vias=[];G=um(0.005);h=um(VIA/2)
+assert all(y%G==0 for y in rows),'row boundary off the 5 nm grid'
 for y in sorted(rows):
     line=db.Region(db.Box(bb.left,y-1,bb.right,y+1))
     ok=(line&viaok)-obst
@@ -47,11 +48,18 @@ for y in sorted(rows):
     for b in sorted((p.bbox() for p in ok.merged().each()),key=lambda b:b.left):
         left=b.left-hx if last is None else max(b.left-hx,last+um(GAP))
         right=b.right+hx
+        left=-(-left//G)*G;right=right//G*G
         while right-left>=um(W):
             r=min(right,left+um(WMAX))
             if right-r<um(W)+um(GAP) and r<right:r=right if right-left<=um(WMAX) else right-um(W)-um(GAP)
-            straps.append(db.Box(left,y-hy,r,y+hy));x=(left+r)//2;h=um(VIA/2)
-            vias.append(db.Box(x-h,y-h,x+h,y+h));last=r;left=r+um(GAP)
+            r=r//G*G
+            # Via centre on the manufacturing grid, inside the strap and inside
+            # the feasible-centre interval [b.left, b.right].
+            x=(left+r)//(2*G)*G;lo=-(-max(b.left,left+h)//G)*G;hi=min(b.right,r-h)//G*G
+            x=min(max(x,lo),hi)
+            if lo<=hi and r-left>=um(W):
+                straps.append(db.Box(left,y-hy,r,y+hy));vias.append(db.Box(x-h,y-h,x+h,y+h));last=r
+            left=-(-(r+um(GAP))//G)*G
 cell=l.create_cell('NS_M2_PG_STRAPS')
 for b in straps:cell.shapes(l.layer(10,0)).insert(b)
 for b in vias:cell.shapes(l.layer(19,0)).insert(b)
@@ -59,6 +67,7 @@ top.insert(db.CellInstArray(cell.cell_index(),db.Trans()))
 check=db.Region()
 for b in straps:check.insert(b)
 assert check.merged().count()==len(straps),'straps touch'
+assert all(v%G==0 for b in straps+vias for v in(b.left,b.right,b.bottom,b.top)),'shape off the 5 nm grid'
 assert check.space_check(um(SP_M2)).is_empty(),'straps closer than the Metal2 clearance'
 assert check.width_check(um(W)).is_empty() and all(b.width()<=um(WMAX) for b in straps),'strap width out of range'
 # One database unit inside the clearance: a strap exactly at the clearance only touches.
