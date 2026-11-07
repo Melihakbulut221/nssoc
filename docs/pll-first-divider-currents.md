@@ -294,3 +294,5 @@ At the deck's 0.3125 ps maximum step the frozen gate again returns **`passed: tr
 | 900-1000 ns | -22 ppm, 2.0 ps |
 
 The schematic what-if therefore passes the acquisition gate. The layout version of these changes is on `analysis/pll-layout-c5r3k` (`docs/pll-layout-c5r3k.md`).
+
+c5_r6k (6 kOhm, 5 pF) also passes at the deck step (run42395590645). The gate returns `passed: true` with the sustained window from 730 ns; the last window is -28 ppm and 2.5 ps. The resistor value therefore has margin at least from 3 to 6 kOhm.
