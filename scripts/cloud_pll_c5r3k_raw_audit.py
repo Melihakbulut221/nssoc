@@ -63,7 +63,7 @@ def main():
   text=tokenize.untokenize(tokens);edits.append(dict(numeric_census_changes=dict(counts),mapping=number_map))
   replace("==['18']","==['237']");replace("==['17']","==['236']")
   replace("anchors['dispositions']","anchors['counts']['dispositions']")
-  replace("dict(ACTUAL_TERMINAL_METAL_POINT_REFERENCE=1860,RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE=819)",
+  replace("dict(ACTUAL_TERMINAL_METAL_POINT_REFERENCE=1866,RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE=822)",
    "dict(ACTUAL_TERMINAL_METAL_POINT_REFERENCE=1866,RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_SPREADING=822,RETAINED_SHARED_INTRINSIC_DIFFUSION_NO_METAL_OR_DIFFUSION_R=58)")
   replace('logical=f"T{r[\'device\']:03d}_{r[\'terminal\']}"',"logical=r['reference_label']")
   replace('shared_diffusion_terminals=0','shared_diffusion_terminals=58')
