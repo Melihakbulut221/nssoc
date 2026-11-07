@@ -51,6 +51,11 @@ VARIANTS['rl112_cold_w10']={**VARIANTS['cp8_int2k1'],**loads('4.93u')}
 # 0.57 with Icp about 55 uA and Kvco about -2.3 GHz/V. Judged by the frozen gate.
 for name,r,c in(('fast_c10','3600','10p'),('fast_c15','3000','15p'),('fast_c30','2100','30p')):
     VARIANTS[name]={**VARIANTS['series4_cp8'],**loads('4.93u'),'__extra__':[f'Rnssoc_int vctrl nssoc_int {r}',f'Cnssoc_int nssoc_int avss {c}']}
+# fast_c15 (run42256917058) crosses 100 MHz at 400 ns and passes the 850-950 ns
+# window, but rings: the measured natural frequency is about 7e6 rad/s, so
+# damping at 3 kOhm is only about 0.16. Same 15 pF, larger series resistor.
+for r in('6000','9000','12000'):
+    VARIANTS[f'c15_r{int(r)//1000}k']={**VARIANTS['series4_cp8'],**loads('4.93u'),'__extra__':[f'Rnssoc_int vctrl nssoc_int {r}','Cnssoc_int nssoc_int avss 15p']}
 FROZEN_REVIEW_SHA='168a1563ed1847e752c67e3058b823200bfe2b3f4e2b345046a0ed13318530db'
 def gate(case,frozen,out):
     """Apply the project's frozen acquisition gate (independent_analysis) unchanged."""
@@ -91,7 +96,7 @@ def prepare(case,probes,variant='original'):
     deck[hits[0]]='save '+' '.join(p['voltages']+p['currents'])
     (case/'probe-circuit.cir').write_text('\n'.join(deck))
     (case/'probe.cir').write_text('NSSOC first-divider current probes\n.include "probe-circuit.cir"\n.control\nop\nwrite op.raw all\nrun probe.raw\nquit\n.endc\n.end\n')
-    (case/'spinit').write_text('set num_threads=1\n')
+    (case/'spinit').write_text('set num_threads=%s\n'%os.environ.get('NSSOC_PLL_THREADS','1'))
 def read_raw(path):
     with open(path,'rb')as s:
         parts=[]

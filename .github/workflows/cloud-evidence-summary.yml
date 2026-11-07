@@ -11,9 +11,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {variant: fast_c10, stop: '1e-06', step: '3.125e-13'}
-          - {variant: fast_c15, stop: '1e-06', step: '3.125e-13'}
-          - {variant: fast_c30, stop: '1e-06', step: '3.125e-13'}
+          - {variant: c15_r6k, stop: '1e-06', step: '3.125e-13'}
+          - {variant: c15_r9k, stop: '1e-06', step: '3.125e-13'}
+          - {variant: c15_r12k, stop: '1e-06', step: '3.125e-13'}
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -56,8 +56,8 @@ jobs:
       - name: Rewrite only the save list and run the 1 us transient
         run: |
           set -euo pipefail
-          NSSOC_PLL_STOP=${{ matrix.stop }} NSSOC_PLL_MAXSTEP=${{ matrix.step }} python3 -B scripts/pll_divider_currents.py prepare case scripts/pll-divider-probes.json ${{ matrix.variant }}; cat case/variant-patch.json
-          cd case && SPICE_SCRIPTS=$PWD OMP_NUM_THREADS=1 timeout 20700 ../engine -n -b probe.cir > ngspice.log 2>&1 || { echo "ngspice rc=$?"; tail -40 ngspice.log; exit 1; }
+          NSSOC_PLL_THREADS=4 NSSOC_PLL_STOP=${{ matrix.stop }} NSSOC_PLL_MAXSTEP=${{ matrix.step }} python3 -B scripts/pll_divider_currents.py prepare case scripts/pll-divider-probes.json ${{ matrix.variant }}; cat case/variant-patch.json
+          cd case && SPICE_SCRIPTS=$PWD OMP_NUM_THREADS=4 timeout 20700 ../engine -n -b probe.cir > ngspice.log 2>&1 || { echo "ngspice rc=$?"; tail -40 ngspice.log; exit 1; }
           tail -5 ngspice.log; ls -l probe.raw
       - name: Reproduce the original acquisition metrics and report divider currents
         run: python3 -B scripts/pll_divider_currents.py analyze case scripts/pll-divider-probes.json pll-divider
