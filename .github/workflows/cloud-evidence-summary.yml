@@ -96,6 +96,33 @@ jobs:
           census $b BEFORE
           filler_placement {sg13g2_decap_8 sg13g2_decap_4 sg13g2_fill_2 sg13g2_fill_1}
           census $b AFTER
+          # A decap's internal Metal1 can touch a router Metal1 patch left in an
+          # empty site. Remove every decap whose box meets a check_drc marker and
+          # refill that gap with rail-only filler cells.
+          set_thread_count 4
+          drt::check_drc -output_file /v/o/filler-pass1.rpt -marker_name FPASS
+          set dbu [$b getDbUnitsPerMicron]; set boxes {}
+          set f [open /v/o/filler-pass1.rpt]
+          while {[gets $f line] >= 0} {
+            if {[regexp {bbox = \(([-0-9.]+), ([-0-9.]+)\) - \(([-0-9.]+), ([-0-9.]+)\)} $line -> x0 y0 x1 y1]} {
+              lappend boxes [list [expr {round($x0*$dbu)}] [expr {round($y0*$dbu)}] [expr {round($x1*$dbu)}] [expr {round($y1*$dbu)}]]
+            }
+          }
+          close $f
+          puts "NSSOC_FILLER_PASS1_MARKERS [llength $boxes]"
+          set removed 0
+          foreach i [$b getInsts] {
+            if {![string match *decap* [[$i getMaster] getName]]} continue
+            set bb [$i getBBox]
+            set ix0 [$bb xMin]; set iy0 [$bb yMin]; set ix1 [$bb xMax]; set iy1 [$bb yMax]
+            foreach m $boxes {
+              lassign $m mx0 my0 mx1 my1
+              if {$ix0 <= $mx1 && $mx0 <= $ix1 && $iy0 <= $my1 && $my0 <= $iy1} {odb::dbInst_destroy $i; incr removed; break}
+            }
+          }
+          puts "NSSOC_FILLER_REMOVED_DECAPS $removed"
+          filler_placement {sg13g2_fill_8 sg13g2_fill_4 sg13g2_fill_2 sg13g2_fill_1}
+          census $b FINAL
           add_global_connection -net VPWR -inst_pattern .* -pin_pattern {^VDD$} -power
           add_global_connection -net VGND -inst_pattern .* -pin_pattern {^VSS$} -ground
           global_connect
