@@ -130,3 +130,14 @@ The fill generator is not what limits Metal2. Raising only the Metal2 target fro
 A 400 um map of the filled GDS shows where the deficit is. The standard-cell core holds 26-31% Metal2: about 18% routed wire and 8-13% fill. A further 12% of the core is free space at least 0.3 um wide, but narrower than the 1.0 um minimum filler width. The deck itself checks only `MFil.a2` and `MFil.c`, but the generator keeps the rule book's minimum filler width, and so does this flow. Narrower floating shapes would be fill under another name, so they are not used.
 
 Closing `M2.j` therefore needs more drawn Metal2 in the core, for example Metal2 power straps over the rows or a denser placement. That is an implementation change and is left open.
+
+### Foundry main deck on the filler database (run42342082873)
+
+The two main-deck partitions run as parallel jobs on artifact 13557301203. They use the same command, tables and catalog check as `check_ihp_drc_partitioned.py`, with recommended rules on. In the earlier single-job run (run42330567274) the filler database's first partition exceeded the 9000 s per-partition limit. That run reported ERROR and carries no measurement.
+
+| Partition | Markers | Elapsed |
+|---|---:|---:|
+| feol_and_geometry | **0** (was 9499 `NW.b` before filler insertion) | 10836 s |
+| beol | **0** | 12285 s |
+
+All 9499 `NW.b` markers came from the empty row sites, and filler insertion clears them. The main deck therefore passes on this candidate with no cell or region excluded.
