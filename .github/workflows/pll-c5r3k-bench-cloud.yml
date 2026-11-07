@@ -1,0 +1,87 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+# c5r3k 1 us acquisition bench on the extracted c5r3k PLL849 deck. Same steps
+# as the analysis/pll-divider-currents bench (variant original: no deck patch),
+# with the deck taken from the c5r3k preparation release (run 42403338623)
+# instead of asset 668392118. The frozen gate is independent_analysis from
+# codex/complete-open-work after its SHA-256 check. 3.125e-13 is the deck's own
+# step; 5e-13 runs alongside as an earlier, coarser cross-check.
+name: pll-c5r3k-bench-cloud
+on:
+  push:
+    branches: [analysis/pll-layout-c5r3k]
+    paths: [.github/workflows/pll-c5r3k-bench-cloud.yml]
+permissions:
+  contents: read
+jobs:
+  pll-c5r3k-bench:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {variant: original, stop: '1e-06', step: '3.125e-13'}
+          - {variant: original, stop: '1e-06', step: '5e-13'}
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/pll_c5r3k_bench.py
+            /scripts/pll-c5r3k-bench-probes.json
+      - name: Restore the c5r3k preparation deck, models and runtime
+        run: |
+          set -euo pipefail
+          base=https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-42403338623-1-pll-c5r3k-preparation
+          curl --fail --location --retry 4 "$base/pll-c5r3k-preparation-42403338623-1.tar.gz.part0000" -o /tmp/prep.tgz
+          echo "9624f52ea28ce3aa92c2232b135c7162912756f565913079d8c09863adbf0dde  /tmp/prep.tgz" | sha256sum -c -
+          mkdir -p /tmp/prep && tar -xzf /tmp/prep.tgz -C /tmp/prep
+          P=/tmp/prep/cloud-pll-c5r3k-preparation
+          grep -q '"status": "PASS_WHOLE_PLL_LOADED_DECK_AND2737_TERMINAL_INSTRUMENTATION_REQUIRES_NATIVE_EXECUTION"' $P/result.json
+          mkdir -p cloud-pll-snapshot case
+          cp -r $P/model-sources/models $P/model-sources/frontend cloud-pll-snapshot/
+          cp $P/candidate-circuit.cir case/
+          cp $P/composition/pll845-mim-wire.spice case/parent865.spice
+          sha256sum case/candidate-circuit.cir case/parent865.spice
+          gh api repos/${{ github.repository }}/releases/assets/650315768 -H "Accept: application/octet-stream" > /tmp/runtime.tgz
+          echo "cd993e4d1eb02f900488450bb1ac3880c67a5e5c34fbac06565c7db85667a821  /tmp/runtime.tgz" | sha256sum -c -
+          mkdir -p /tmp/rt && tar -xzf /tmp/runtime.tgz -C /tmp/rt
+          E=$(find /tmp/rt -type f -name patched-ngspice | head -1); test -n "$E"; cp "$E" engine; chmod +x engine
+          echo "103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509  engine" | sha256sum -c -
+          grep -n "^\.lib\|^\.include\|pre_osdi" case/candidate-circuit.cir
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: codex/complete-open-work
+          path: frozen
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/*.py
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
+      - name: Rewrite only the save list and run the 1 us transient
+        run: |
+          set -euo pipefail
+          NSSOC_PLL_THREADS=4 NSSOC_PLL_STOP=${{ matrix.stop }} NSSOC_PLL_MAXSTEP=${{ matrix.step }} python3 -B scripts/pll_c5r3k_bench.py prepare case scripts/pll-c5r3k-bench-probes.json ${{ matrix.variant }}; cat case/variant-patch.json
+          cd case && SPICE_SCRIPTS=$PWD OMP_NUM_THREADS=4 timeout 20700 ../engine -n -b probe.cir > ngspice.log 2>&1 || { echo "ngspice rc=$?"; tail -40 ngspice.log; exit 1; }
+          tail -5 ngspice.log; ls -l probe.raw
+      - name: Reproduce the acquisition metrics
+        run: python3 -B scripts/pll_c5r3k_bench.py analyze case scripts/pll-c5r3k-bench-probes.json pll-c5r3k-bench
+      - name: Apply the frozen acquisition gate (independent_analysis, unchanged)
+        if: always()
+        run: python3 -B scripts/pll_c5r3k_bench.py gate case frozen/scripts pll-c5r3k-bench
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pll-c5r3k-bench-${{ matrix.variant }}-${{ matrix.step }}-${{ github.run_id }}
+          path: |
+            pll-c5r3k-bench
+            case/ngspice.log
+            case/variant-patch.json
+          if-no-files-found: warn
+          retention-days: 90

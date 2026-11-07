@@ -1,0 +1,26 @@
+{
+  "baseline_branch": "analysis/pll-divider-currents",
+  "baseline_commit": "25a39175b176def025d9d1dbc1571480a5d5cf72",
+  "baseline_path": "scripts/pll_divider_currents.py",
+  "baseline_sha256": "1400829bb5759f09c737ae432b4fd00c5b6d075dddb299b7bd9c435807789bc0",
+  "candidate_path": "scripts/pll_c5r3k_bench.py",
+  "candidate_sha256": "ca6c38a81e63a3ce7c1f8d4482fe14cbd616a1059f13d853eeb5c77bfc7f5dbe",
+  "edits": [
+    {
+      "before": "\"\"\"First-divider current probes on the unchanged RHI120-C8 PLL deck; diagnosis only.\n",
+      "after": "\"\"\"c5r3k 1 us acquisition bench on the extracted c5r3k PLL849 deck.\n\nCopy of scripts/pll_divider_currents.py from branch analysis/pll-divider-currents\n(commit 25a39175, sha256 1400829bb5759f09c737ae432b4fd00c5b6d075dddb299b7bd9c435807789bc0). Only variant 'original' is used: the\nc5r3k changes are now in layout, so no deck patch is applied. The two\nfirst-divider internal diagnostics in analyze() address RHI120 extracted node\nnames and are skipped when those nodes are not saved; prepare() and gate()\nare unchanged, and gate() still applies independent_analysis from\ncodex/complete-open-work after its SHA-256 check.\n\nOriginal description:\nFirst-divider current probes on the unchanged RHI120-C8 PLL deck; diagnosis only.\n",
+      "count": 1
+    },
+    {
+      "before": "    sl=col('v(xloop.w_t494_rppd_2)')-col('v(xloop.w_t493_rppd_2)');tl=t[late];x=sl[late]-np.median(sl[late])\n    edges=tl[np.flatnonzero(np.sign(x[:-1])!=np.sign(x[1:]))];rises=crossings(tl,clk[late])\n    hist=np.histogram(edges,bins=rises)[0];r['divider_transitions_per_clock_period']={int(k):int(n)for k,n in zip(*np.unique(hist,return_counts=True))}\n",
+      "after": "    if all(k in idx for k in ('v(xloop.w_t494_rppd_2)','v(xloop.w_t493_rppd_2)')):\n        sl=col('v(xloop.w_t494_rppd_2)')-col('v(xloop.w_t493_rppd_2)');tl=t[late];x=sl[late]-np.median(sl[late])\n        edges=tl[np.flatnonzero(np.sign(x[:-1])!=np.sign(x[1:]))];rises=crossings(tl,clk[late])\n        hist=np.histogram(edges,bins=rises)[0];r['divider_transitions_per_clock_period']={int(k):int(n)for k,n in zip(*np.unique(hist,return_counts=True))}\n",
+      "count": 1
+    },
+    {
+      "before": "    cb=col('v(xloop.w_t387_b)')-col('v(xloop.w_t388_b)');r['divider_clock_base_diff_v']=[float(cb[late].min()),float(cb[late].max())]\n",
+      "after": "    if all(k in idx for k in ('v(xloop.w_t387_b)','v(xloop.w_t388_b)')):\n        cb=col('v(xloop.w_t387_b)')-col('v(xloop.w_t388_b)');r['divider_clock_base_diff_v']=[float(cb[late].min()),float(cb[late].max())]\n",
+      "count": 1
+    }
+  ],
+  "frozen_review_sha256": "168a1563ed1847e752c67e3058b823200bfe2b3f4e2b345046a0ed13318530db"
+}
