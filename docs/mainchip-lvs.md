@@ -65,3 +65,47 @@ The routed database is artifact 13518226848. Two nets (`u_ram.g_ram_2048x64_ecc.
 - **LVS with the vendor SRAMs blanked:** "Congratulations! Netlists match." The audit gives PASS within comparison scope.
 
 This candidate therefore has OpenROAD `check_drc` 0, LEF antenna 0, foundry antenna 0, no unrouted multi-terminal nets, and LVS matching outside the SRAM interiors. The foundry main deck (run42242071796, with swap) is still open.
+
+## Foundry main deck: every marker is NW.b (runs42242071796 and42255827123)
+
+The main deck was run through `check_ihp_drc_partitioned.py` with recommended rules, a 32 GB swap and one thread, on two GDS files:
+
+- artifact 13499508759, in 13199 s;
+- artifact 13518226848, in 13672 s.
+
+Both give the same result: **9499 markers, all `NW.b`** (N-well spacing). The other partition passes with 0.
+
+The cause is that the routed database has no filler cells; `decap_swap.py` found no `fill` or `decap` instance at all. Empty row sites therefore break the N-well between standard cells, and every short gap becomes an `NW.b` violation.
+
+## Density deck and metal fill (run42263877748)
+
+The unmodified IHP `density.drc` (5e6d592, `density_sanity=True`) runs on the GDS of artifact 13518226848. All 37 rules execute, and `check_ihp_density_coverage.validate_density_coverage` accepts both runs.
+
+- **Without fill:** 158 markers.
+- **With fill:** 14 markers. Fill is the pinned gdsfill bundle (release asset 597158300, chip config) through `fill_chip_windows.py`: 35 tiles of 500 um, layout extent as the boundary, geometry preservation PASS, 1822 s.
+
+The 14 remaining markers are all in the standard-cell core:
+
+| Rule | Measured | Limit |
+|---|---:|---:|
+| `AFil.g` global Activ | 29.90% | 35% min |
+| `AFil.g2` Activ, 6 windows of 800 um | 20.8-24.6% | 25% min |
+| `M1.j` global Metal1 | 31.27% | 35% min |
+| `M1Fil.h` Metal1, 5 windows of 800 um | 21.2-24.2% | 25% min |
+| `M2.j` global Metal2 | 33.41% | 35% min |
+
+GatPoly, Metal3-5 and TopMetal1/2 meet their limits. The empty row sites hold no Activ, GatPoly or Metal1, and gdsfill keeps out of the rows. That is the same missing-filler cause as `NW.b`.
+
+## Decap and filler insertion (run42326849862)
+
+On artifact 13518226848, the routing engine (OpenROAD dcf36133) runs `filler_placement {sg13g2_decap_8 sg13g2_decap_4 sg13g2_fill_2 sg13g2_fill_1}` on the empty sites only. Signal routing starts at Metal2, so no wire changes.
+
+It places 142909 `decap_8`, 30412 `decap_4`, 38203 `fill_2` and 41007 `fill_1`. A `check_drc` pass then finds one `decap_8` whose internal Metal1 touches a router Metal1 patch of `$abc$1804206$new_n41321` at (100.5, 505.6) um. That decap is replaced by `fill_4 + fill_2 + fill_1` in its own footprint.
+
+The result is artifact 13557301203, with 407063 instances:
+
+- `check_placement` passes;
+- full `check_drc` is **0**;
+- `check_antennas` is **0**.
+
+Run42330567274 measures LVS with the SRAMs blanked, fill plus the density deck, and the foundry main deck on it.
