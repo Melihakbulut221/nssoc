@@ -255,3 +255,21 @@ Two observations together point to an overdamped type-II loop:
 In such a loop the slow closed-loop pole sits near 1/(RC). The undershoot itself is the phase error accumulated during cycle-slipping acquisition being unwound.
 
 Run42374911771 therefore tests smaller integrating capacitors (5 and 7.5 pF) with the original divider. It uses a 0.5 ps maximum step so that the run fits the job limit; an earlier comparison gave the same result at this step as at the deck's 0.3125 ps. Any passing variant will be confirmed at the deck step.
+
+### c5_r3k passes the frozen gate (run42374911771, 0.5 ps maximum step)
+
+The variant has a 3 kOhm, 5 pF series integrator from vctrl to avss and the original bias divider. It keeps the earlier fixes: XD0375 at 8 um, the conditioner series rppd at 16 um, and ring loads at 4.93 um. The run starts cold.
+
+`independent_analysis` returns **`passed: true`**, with the sustained window starting at 660 ns.
+
+| Window | Feedback | Phase span | vctrl |
+|---|---|---|---|
+| 100-200 ns | 99.61 MHz (-3944 ppm) | 561 ps | 0.56-0.75 V |
+| 400-500 ns | 100.025 MHz (+251 ppm) | 33 ps | 0.61-0.69 V |
+| 700-800 ns | 100.0016 MHz (+16 ppm) | 2.2 ps | PASS |
+| 800-900 ns | 99.9957 MHz (-43 ppm) | 3.8 ps | PASS |
+| 900-1000 ns | 99.9978 MHz (-22 ppm) | 2.0 ps | PASS |
+
+In the last 100 ns the VCO runs at 8.00002 GHz, and both final windows are slip-free. The smaller capacitor moves the overdamped slow pole up, which matches the 1/(RC) reading above.
+
+This run used a 0.5 ps maximum step. Run42387988574 repeats the variant at the deck's own 0.3125 ps step. It remains a what-if on the extracted deck: the filter is an ideal R and C, and none of these changes are in layout yet.
