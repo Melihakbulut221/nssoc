@@ -273,3 +273,12 @@ The variant has a 3 kOhm, 5 pF series integrator from vctrl to avss and the orig
 In the last 100 ns the VCO runs at 8.00002 GHz, and both final windows are slip-free. The smaller capacitor moves the overdamped slow pole up, which matches the 1/(RC) reading above.
 
 This run used a 0.5 ps maximum step. Run42387988574 repeats the variant at the deck's own 0.3125 ps step. It remains a what-if on the extracted deck: the filter is an ideal R and C, and none of these changes are in layout yet.
+
+The same run's other two variants:
+
+| Variant | Last window | Sustained from | Gate |
+|---|---|---|---|
+| c5_r6k (6 kOhm, 5 pF) | -28 ppm, 2.5 ps | 730 ns | **pass** |
+| c7p5_r3k (3 kOhm, 7.5 pF) | -164 ppm, 14.8 ps | - | fail |
+
+At 5 pF the gate passes with both 3 and 6 kOhm, so the resistor has margin, while 7.5 pF is already too slow. Run42387988574 checks c5_r3k at the deck's own step, and a second run checks c5_r6k.
