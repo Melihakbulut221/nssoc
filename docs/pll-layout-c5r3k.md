@@ -216,3 +216,100 @@ thresholds stay the same.
   gate must be re-run on the extracted deck.
 - The routing of the integrator in the parent is a proposal from the route
   summary. It must be checked against the actual parent GDS in step 1.
+
+## Parent integration and parent DRC/LVS
+
+Scripts: `scripts/integrate_pll_c5r3k_parent.py` (generation and native
+checks) and `scripts/cloud_pll_c5r3k_parent.py` (cloud driver). The entry
+point is `cloud-evidence-summary.yml` with `step=parent`.
+
+### Inputs
+
+- **Parent:** the passing RHI120/C8 PLL845 parent, restored through
+  `docs/evidence/pll-rhi120-c8-parent-pass-20261023.json` (run 39914855175).
+- **Children:** the four child artifacts of run 42397775128. Each is pinned
+  by the SHA-256 of its `result.json`, and that file pins every generated
+  view.
+
+### Placement, checked against the actual parent GDS
+
+The placement was checked in two ways:
+
+- a local read-only pass over the 0.84 MB parent GDS with a small pure-Python
+  GDSII reader;
+- the same check repeated by `generate()` in KLayout, before insertion.
+
+Parent shapes around the free area:
+
+| Net | Layer | Position (um) |
+|---|---|---|
+| fb | TopMetal1 bus | y 1489.18-1490.82, x 155-2543 |
+| vctrl | TopMetal1 bus | y 1764.18-1765.82 |
+| sub | TopMetal2 strap | x 808-848 |
+| div_avdd | TopMetal2 strap | x 854-934 |
+| avss | TopMetal2 strap | x 940-1020 |
+| vco_avdd | TopMetal2 strap | x 2164-2204 |
+
+Between them, no layer has any shape in x 1022-2162, y 1491-1764.
+
+Integrator origin **(1100, 1550) um**. The macro occupies up to
+(1264.3, 1668.63), and its 2 um margin is free on every layer.
+
+| Net | Route |
+|---|---|
+| avss | M5 stub, existing TopVia1 cell, 4 um TopMetal1 strip from x 978 to 1097 at y 1650.03, existing 8-cut TopVia2 cell at the avss strap lane x 980 |
+| sub | Same pattern at y 1656.03 to lane x 828 on the sub strap. It crosses the div_avdd and avss straps only on TopMetal1. |
+| vctrl | M5 stub, TopVia1 cell, TopMetal1 to lane x 1040 at y 1662.03, a 2 um TopMetal2 riser to y 1766, and a TopVia2 cell onto the vctrl bus at y 1765 |
+
+The routes reuse the parent's own via cells (`via_stack`, `via_stack$1`,
+`$2`, `$3`, with their layer census asserted) and the pump port pattern.
+Every new shape is clear of foreign parent shapes by at least 0.5 um on
+Metal5 and 2 um on TopMetal1/TopMetal2, and lands on its own net's strap or
+bus.
+
+The swapped pump, vco and div1 instances keep their transform, bbox and all
+port boxes. div2 keeps `nssoc_clock_div4_load3p2_v2_layout`. The reference
+subcircuits differ only by the declared cards:
+
+- pump: one card;
+- VCO: six cards;
+- div1: two cards.
+
+The top cell is `nssoc_pll849_divider3p2_c5r3k_development`.
+
+### Results (run 42398896802, commit be0fbe06)
+
+- **Status:** `PASS_C5R3K_PARENT849_NATIVE_DRC_LVS_AND_FAULTS_NOT_RC` on the
+  first attempt.
+- **Main DRC (deep):** PASS, 0 markers, 560 categories.
+- **LVS:**
+  - deep: PASS within comparison scope, 11 circuits Match, 849/849 devices;
+  - flat: PASS, Match, 849/849 devices, 17 ports.
+- **Faults**, each FAIL / NoMatch as expected:
+  - `wrong_integrator`: reference XRINT L46;
+  - `div1_reverted`: Xdiv1 bound to the v2 macro;
+  - `integrator_open`: new vctrl riser removed, flat.
+
+Artifact: `pll-c5r3k-parent-42398896802-1`.
+
+### Extraction chain: scripts that need c5r3k copies
+
+Each script pins constants for its own step. A c5r3k copy changes these
+constants and its input pins. The acceptance logic stays the same.
+
+| Script | Constants to change |
+|---|---|
+| `cloud_pll_rhi120_c8_geometry.py` | `TOP`; 845 -> 849 (eight uses); `cap_cmim==26` -> 27; parent pin (`pll-rhi120-c8-parent-pass-20261023.json` -> the c5r3k parent run) |
+| `cloud_pll_rhi120_c8_terminals.py`, `pll_rhi120_c8_terminals_native.py` | geometry run 39915412640 / geometry pass pin; `TOP`; 845 -> 849; class census `npn13G2=102, rppd=89 -> 90, ptap1=191 -> 193, cap_cmim 26 -> 27` |
+| `cloud_pll_rhi120_c8_binding.py` | `TOP`; 845 -> 849; same class census; terminals run 39915871064 |
+| `cloud_pll_rhi120_c8_rc.py`, `pll_rhi120_c8_rc_inputs_native.py` | `TOP`; 845; `==26`; terminals pin and run 39915871064 |
+| `cloud_pll_rhi120_c8_rc_review.py`, `pll845_whole_rc_inputs_native.py` (its `TOP` is still the C8 v2 name) | 845; `==26`; RC run 39916625651 |
+| `cloud_pll_rhi120_c8_raw_audit.py`, `audit_pll_rhi120_c8_mim_intrinsic.py` | 845; `==26`; runs 39917135843 and 39916625651 |
+| `cloud_pll_rhi120_c8_body_access.py`, `_body_rc.py`, `_body_audit.py` | `TOP`; 845; `==26`; binding, raw-audit and terminals pins and runs |
+| `cloud_pll_rhi120_c8_composition.py`, `compose_pll845_body_rc.py` | 845; `==26`; existing `849` literal, to be re-derived (see below); runs 39919694972, 39918715172, 39916625647, 39915871064 |
+| `cloud_pll_rhi120_c8_preparation.py` | 845; existing `849`; runs 39920160596 and 39359917098 |
+
+`check_pll845_whole_rc_capture.py` also asserts `==26` MIMs.
+
+The composition and preparation scripts already contain an `849` literal
+with a different meaning. It must be re-derived, not replaced blindly.
