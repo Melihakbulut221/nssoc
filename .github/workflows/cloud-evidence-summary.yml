@@ -111,17 +111,34 @@ jobs:
           close $f
           puts "NSSOC_FILLER_PASS1_MARKERS [llength $boxes]"
           set removed 0
+          set db [ord::get_db]
+          set f4 [$db findMaster sg13g2_fill_4]; set f2 [$db findMaster sg13g2_fill_2]; set f1 [$db findMaster sg13g2_fill_1]
+          set site [expr {[$f1 getWidth]}]
           foreach i [$b getInsts] {
-            if {![string match *decap* [[$i getMaster] getName]]} continue
+            set m [[$i getMaster] getName]
+            if {![string match *decap* $m]} continue
             set bb [$i getBBox]
             set ix0 [$bb xMin]; set iy0 [$bb yMin]; set ix1 [$bb xMax]; set iy1 [$bb yMax]
-            foreach m $boxes {
-              lassign $m mx0 my0 mx1 my1
-              if {$ix0 <= $mx1 && $mx0 <= $ix1 && $iy0 <= $my1 && $my0 <= $iy1} {odb::dbInst_destroy $i; incr removed; break}
+            foreach mk $boxes {
+              lassign $mk mx0 my0 mx1 my1
+              if {$ix0 <= $mx1 && $mx0 <= $ix1 && $iy0 <= $my1 && $my0 <= $iy1} {
+                set orient [$i getOrient]; set name [$i getName]; set sites [expr {($ix1-$ix0)/$site}]
+                odb::dbInst_destroy $i; incr removed
+                # Rail-only fillers of the same total width, left to right.
+                set x $ix0; set k 0
+                foreach cell [list $f4 $f2 $f1] {
+                  set w [expr {[$cell getWidth]/$site}]
+                  while {$sites >= $w} {
+                    set n [odb::dbInst_create $b $cell "${name}_RF$k"]; incr k
+                    $n setOrient $orient; $n setLocation $x $iy0; $n setPlacementStatus PLACED
+                    incr x [$cell getWidth]; set sites [expr {$sites-$w}]
+                  }
+                }
+                break
+              }
             }
           }
           puts "NSSOC_FILLER_REMOVED_DECAPS $removed"
-          filler_placement {sg13g2_fill_8 sg13g2_fill_4 sg13g2_fill_2 sg13g2_fill_1}
           census $b FINAL
           add_global_connection -net VPWR -inst_pattern .* -pin_pattern {^VDD$} -power
           add_global_connection -net VGND -inst_pattern .* -pin_pattern {^VSS$} -ground
