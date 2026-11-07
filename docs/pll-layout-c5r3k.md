@@ -320,3 +320,97 @@ For c5r3k:
 - the expected total becomes 853, if the auxiliary contacts stay at 4;
 - R and C are extraction-derived counts and must be re-measured from the
   fresh RC, not edited.
+
+## Extraction chain on the c5r3k parent
+
+### Method
+
+Each stage script is a c5r3k copy of the corresponding RHI120/C8 stage. It is
+derived by counted, exact text replacements, and each delta is recorded in
+`scripts/pll-c5r3k-<stage>-source-delta.json` (baseline path and SHA-256,
+every edit, candidate SHA-256). Each workflow re-checks its delta before it
+runs.
+
+Only three kinds of value change:
+
+- the top cell name and GDS hash;
+- the pinned upstream runs and their hashes;
+- device, class, MIM, terminal, point and conductor counts.
+
+Where a stage asserts a hardcoded R/C total, the expected value was replaced
+only after the fresh c5r3k extraction had measured it. Every acceptance
+check, tolerance and fault control is unchanged. Status labels (for example
+`PASS_ALL2737_...`) are inherited verbatim as check identities, so they still
+carry the RHI120/C8 counts.
+
+The workflow token cannot create releases from this branch (HTTP 403). Each
+job therefore:
+
+1. chunks its evidence in the cloud, in the standard format;
+2. tries the normal publication;
+3. always keeps the chunked files as an artifact.
+
+Those exact files are then attached unchanged to
+`cloud-results-<run>-1-pll-c5r3k-<stage>`, and the evidence pin
+`docs/evidence/pll-c5r3k-<stage>-pass-20261107.json` records their hashes.
+
+Prerelease `pll-c5r3k-layout-20261107` holds the child and first parent
+artifacts (runs 42397775128 and 42398896802) with a SHA256SUMS list.
+
+### Stage results
+
+| Stage | Run | Result |
+|---|---|---|
+| parent (published) | 42400054672 | Same checks as 42398896802, all pass; GDS `c0d51d9e...` |
+| geometry | 42400458807 | PASS; 849 devices, 27 MIM masks bound, 2746 native terminals, 236 wire components, 5 faults rejected |
+| terminals | 42400729999 | PASS; 2746 terminals: 1866 metal references, 822 bodies, 58 shared diffusion; 1883 anchors, 236/236 conductors covered, 30 salicide references, 11 faults rejected, none unresolved |
+| binding | 42401324808 | PASS; 849 native devices bound, 253 tap geometries, 35 controls rejected |
+| RC capture | 42401324845 | PASS; 1610 physical points, 236 conductors, 27 MIM, 3390 R, 5119 C, 8 capture controls |
+| RC review | 42401647498 | PASS; 10 control families, both dimension controls over 27 MIM |
+| raw RC audit | 42401850430 | Stopped before auditing: a template text not yet rebound to the new census (fixed in the delta, no check changed) |
+| raw RC audit | 42402020467 | PASS; 3390 R, 5119 C exported, 27 intrinsic MIM, 13 wire and 9 intrinsic controls |
+| body access | 42402230513 | PASS; 125 LV PMOS bodies on cluster 203, 4 n-well islands and taps, 2 new body points, 5 controls |
+| body RC | 42402512874 | PASS; 1612 points, 3391 R, 5120 C, 10 control families |
+| body audit | 42402931505 | PASS; 25 controls; same-geometry C matrix against the raw audit unchanged within the frozen tolerances (max 0.0015 aF) |
+| composition | 42403151834 | PASS; devices 849, auxiliary contacts 4, 853 model instances, R 3391, C 5120, MIM 27, no uncontacted body group, 62 controls |
+| preparation | 42403338623 | PASS; unchanged 1 us stimuli, 102 HBT OFF flags, 2746 terminal probes, 1700 vectors |
+
+### Changed expected values
+
+| Quantity | RHI120/C8 | c5r3k | Source |
+|---|---|---|---|
+| devices | 845 | 849 | rppd, cmim and 2 ptap added |
+| MIM | 26 | 27 | integrator cmim |
+| rppd / ptap1 | 89 / 191 | 90 / 193 | integrator macro |
+| native terminals | 2737 | 2746 | +3 rppd, +2 cmim, +4 ptap |
+| retained bodies | 819 | 822 | +1 rppd_sub, +2 ptap |
+| metal references | 1860 | 1866 | measured (terminals) |
+| conductors | 235 | 236 | measured (geometry); +1 integrator internal node |
+| logical / physical points | 1877 / 1604 | 1883 / 1610 | measured (terminals, RC) |
+| with body contacts | 1879 / 1606 | 1885 / 1612 | measured (body access, body RC) |
+| capture R / C | 3380 / 5104 | 3390 / 5119 | measured (RC capture, 42401324845) |
+| body capture R / C | 3381 / 5105 | 3391 / 5120 | measured (body RC, 42402512874) |
+| model instances | 849 | 853 | 849 devices + 4 auxiliary contacts |
+
+The regular n-well body identities are the same in the c5r3k binding, so they
+were not edited:
+
+- body cluster 203;
+- native ids 195-319;
+- wire component 95.
+
+### Acquisition bench
+
+- Workflow: `.github/workflows/pll-c5r3k-bench-cloud.yml`.
+- Script: `scripts/pll_c5r3k_bench.py`, a copy of the
+  `analysis/pll-divider-currents` script; its delta is in
+  `scripts/pll-c5r3k-bench-source-delta.json`.
+
+The bench uses variant `original`, so no deck patch is applied: the changes
+are in layout now. It runs with four solver threads and saves only public
+nets. The deck comes from the c5r3k preparation release. The frozen
+`independent_analysis` gate is imported from `codex/complete-open-work`
+after its SHA-256 check.
+
+Run 42403662141 runs the deck's own 0.3125 ps maximum step, and a 0.5 ps
+cross-check alongside it.
