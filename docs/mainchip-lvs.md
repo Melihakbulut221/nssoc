@@ -109,3 +109,24 @@ The result is artifact 13557301203, with 407063 instances:
 - `check_antennas` is **0**.
 
 Run42330567274 measures LVS with the SRAMs blanked, fill plus the density deck, and the foundry main deck on it.
+
+### Results on the filler database (runs42330567274 and42335832230)
+
+- **LVS, vendor SRAMs blanked:** "Congratulations! Netlists match." All 407063 instances are in the comparison, including the 173320 decaps; 0 PG terminals are unbound. The audit gives PASS within comparison scope. The deck takes 7093 s at a 4.98 GB peak.
+- **Fill plus density deck:** 35 of 35 tiles are generated and geometry preservation passes. All 37 rules execute and the coverage check accepts the run. Only **1 marker** remains, `M2.j`.
+
+| Layer | Global density | Limit |
+|---|---:|---:|
+| Activ | 38.69% | 35-55% |
+| GatPoly | 25.01% | >= 15% |
+| Metal1 | 38.36% | 35-60% |
+| **Metal2** | **33.41%** | 35-60% |
+| Metal3 | 38.26% | 35-60% |
+| Metal4 / Metal5 | 45.77% / 45.81% | 35-60% |
+| TopMetal1 / TopMetal2 | 38.36% / 38.50% | 25-70% |
+
+The fill generator is not what limits Metal2. Raising only the Metal2 target from 50 +/- 10 to 58 +/- 2 percent (`fill_density_m2`) moves the global value only from 33.41% to 33.74%. The vendor SRAMs carry 39.1% (2048x64) and 39.5% (256x16) Metal2 of their own.
+
+A 400 um map of the filled GDS shows where the deficit is. The standard-cell core holds 26-31% Metal2: about 18% routed wire and 8-13% fill. A further 12% of the core is free space at least 0.3 um wide, but narrower than the 1.0 um minimum filler width. The deck itself checks only `MFil.a2` and `MFil.c`, but the generator keeps the rule book's minimum filler width, and so does this flow. Narrower floating shapes would be fill under another name, so they are not used.
+
+Closing `M2.j` therefore needs more drawn Metal2 in the core, for example Metal2 power straps over the rows or a denser placement. That is an implementation change and is left open.
