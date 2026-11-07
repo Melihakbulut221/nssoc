@@ -141,3 +141,5 @@ The two main-deck partitions run as parallel jobs on artifact 13557301203. They 
 | beol | **0** | 12285 s |
 
 All 9499 `NW.b` markers came from the empty row sites, and filler insertion clears them. The main deck therefore passes on this candidate with no cell or region excluded.
+
+The foundry antenna deck also passes on this database: 0 markers in 2105 s (run42356845718).
