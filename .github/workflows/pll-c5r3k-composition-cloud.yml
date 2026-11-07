@@ -1,0 +1,80 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+# c5r3k copy of pll-rhi120-c8-composition-cloud.yml: pinned to the c5r3k body audit, binding, terminals and body access; publication falls back to retained chunked files.
+name: pll-c5r3k-composition-cloud
+on:
+  push:
+    branches: [analysis/pll-layout-c5r3k]
+    paths: [.github/workflows/pll-c5r3k-composition-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pll-c5r3k-composition-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-planes:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Compile whole849 exact native RC composition
+        run: |
+          python3 -m py_compile scripts/cloud_pll_c5r3k_composition.py scripts/compose_pll_c5r3k_body_rc.py
+          python3 - <<'PYCODE'
+          import hashlib,json,pathlib
+          spec=json.loads(pathlib.Path('scripts/pll-c5r3k-composition-source-delta.json').read_text())
+          for m in spec['methods']:
+              s=pathlib.Path(m['baseline_path']).read_text()
+              assert hashlib.sha256(s.encode()).hexdigest()==m['baseline_sha256'],m['baseline_path']
+              for e in m['edits']:
+                  assert s.count(e['before'])==e['count'],(m['candidate_path'],e['before'][:80])
+                  s=s.replace(e['before'],e['after'])
+              actual=pathlib.Path(m['candidate_path']).read_text()
+              assert s==actual and hashlib.sha256(actual.encode()).hexdigest()==m['candidate_sha256'],m['candidate_path']
+          PYCODE
+      - name: Compose849 native devices and actual MIM terminal planes with3391R and5120C
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_pll_c5r3k_composition.py
+      - name: Chunk evidence and publish it as a release when the token allows
+        if: always()
+        id: publish
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          root=hw/soc/out/cloud-pll-c5r3k-composition
+          mkdir -p "$root" release
+          if [ ! -f "$root/result.json" ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > "$root/result.json"
+          fi
+          stem="pll-c5r3k-composition-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "release/$stem.summary.json"
+          (cd release && python3 ../scripts/cloud_chunked_results.py --directory "../$root" --stem "$stem")
+          cd release && python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'../scripts/publish_cloud_results.py','--group','pll-c5r3k-composition',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain the chunked release files
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pll-c5r3k-composition-release-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 30
+          path: release/
+      - name: Retain the raw output directory
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pll-c5r3k-composition-out-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 30
+          path: hw/soc/out/cloud-pll-c5r3k-composition/
