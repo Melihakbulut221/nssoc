@@ -312,4 +312,11 @@ constants and its input pins. The acceptance logic stays the same.
 `check_pll845_whole_rc_capture.py` also asserts `==26` MIMs.
 
 The composition and preparation scripts already contain an `849` literal
-with a different meaning. It must be re-derived, not replaced blindly.
+with a different meaning. The count contract there is `devices=845,
+auxiliary_contacts=4, total_model_instances=849, R=3381, C=5105, MIM=26`.
+For c5r3k:
+
+- devices become 849 and MIM becomes 27;
+- the expected total becomes 853, if the auxiliary contacts stay at 4;
+- R and C are extraction-derived counts and must be re-measured from the
+  fresh RC, not edited.
