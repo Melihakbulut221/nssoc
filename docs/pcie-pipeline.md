@@ -82,7 +82,7 @@ Reasons the added cycles are safe:
   - an offered slot is never rewritten;
   - no stored byte is read within a cycle of its write.
 
-## Verification (no test expectations changed)
+## Verification of the first round (no test expectations changed)
 
 No test needed an updated expectation. Every check passed on the final RTL (`3b102cca0`, run 42464911092, unit) and on `145488b95` (run 42463965609, unit, SoC lint and traffic). The only difference between those two commits is the port-equivalent parity-tree LCRC fold.
 
@@ -99,7 +99,7 @@ No test needed an updated expectation. Every check passed on the final RTL (`3b1
 
 The simulated time of `soc_pcie_buffered_flow_packets` grows from 41,790 ns to 41,940 ns. That is the added latency over its five tests.
 
-## Measured timing (screen above; baseline run 42463873679, final run 42464911092)
+## Measured timing of the first round (baseline run 42463873679, first-round head run 42464911092)
 
 Packet-domain register-to-register setup, ns:
 
@@ -133,17 +133,146 @@ Logic depth, `sized` stage:
 | TLP register backend (`soc_pcie_tlp_regs` decode) | not among the worst 1500 | -3.60 (12) | -0.85 |
 | FC advertiser (`soc_pcie_fc_tx`) | not among the worst 1500 | -3.33 (9) | -0.68 |
 
+## Second round: one more stage per remaining deep block
+
+The first round left the credit loop at 17-22 logic cells and several blocks at 11-16. The second round adds one register stage to each, aiming at no more than about 12 logic cells per `pcie_clk_i` stage at the slow corner in the block screen. The credit change alters `soc_pcie_credit_tx` port timing by design, and its unit oracle was revised for it (next section). No other test was changed.
+
+| Commit | Module | Change | Port latency |
+|---|---|---|---|
+| `def7be2f5`, `ac0a5f90c` | `soc_pcie_credit_tx` | Registered verdict: a request is judged against the current credit and initialization, and granted in the next cycle only if it is unchanged and nothing was consumed in between. UpdateFC is registered with its new-limit-minus-consumed balances (with and without that cycle's debit, carry-save form) and applied one cycle after it is presented, after that cycle's own debit | A new request is granted 1 cycle after it appears; no grant in the cycle after a consume; UpdateFC effect +1 cycle |
+| `ceb3e0533` | `soc_pcie_lcrc_tx` | Words stored in transmission byte order; a cursor register names the position of the byte after the current one, so loading the next byte is a register-addressed select and advancing the cursor is separate | none; same ports cycle for cycle (random co-simulation against the first-round module, 6,928 frames) |
+| `ceb3e0533`, `2fd0a2c70` | `soc_pcie_rx_credit` | One-hot read cursor and one-hot head slot (two AND-OR levels instead of binary multiplexers); head length, class and units in registers; both candidate next heads resolved from registers before the removal selects one | none (random co-simulation against the previous module, 300,000 cycles) |
+| `ceb3e0533` | `soc_pcie_replay_tx` | An ACK/NAK is retired from the sequence distance and classification registered at its first presentation; every slot's header decoded in parallel, the next slot only selects | ACK/NAK retirement +1 cycle |
+| `ceb3e0533` | `soc_pcie_buffered_flow_packets` | Register slice on the FC advertiser's stream | FC DLLPs to the wire +1 cycle |
+| `ceb3e0533`, `ac0a5f90c` | `soc_pcie_buffered_flow_packets`, `soc_pcie_flow_packets`, `soc_pcie_reliable_packets` | Registered link/reset copies per consumer block: receive queue, FC advertiser, arbiter and slices, credit logic, packet path, replay store, link layer. Each is cleared asynchronously with the combined reset, so link loss and retraining reach every block at once, and is released one clock later; each block uses its copy as both its reset and its link status. The copies have different but equivalent D inputs, because synthesis merges identical flops even with `keep` | Release after reset, link up or retraining: +1 cycle (queue, advertiser, arbiter), +2 (credit logic, DLLP receiver), +3 (replay store, link layer) |
+
+`soc_pcie_tlp_regs`: a decode-then-act stage (`7bf63b3b8`) was reverted (`68ee22d4b`). It moves the APB setup phase one cycle later, and `apb_wait_states_and_completion_backpressure` checks that phase cycle by cycle; that test may not change. Its decode stays in the descriptor handshake cycle.
+
+### `test_soc_pcie_credit_tx.py` oracle changes
+
+| Where | Old expectation | New expectation | Why it is protocol-safe |
+|---|---|---|---|
+| `Driver.tick`, grant | `reserve_ready_o` = initialized and affordable in the same cycle | `reserve_ready_o` = not in reset, link up, and the same request in the previous cycle, initialized and affordable then, with no consume in that cycle | Once initialized, credit falls only by a consume, which blocks the next grant, and rises only by UpdateFC. A registered grant is therefore never one the current state would refuse. There is no early consume, and every debit is still taken exactly once at the grant. |
+| `Driver.tick`, UpdateFC | Checked and applied at the end of the cycle it is presented, after that cycle's debit; `protocol_error_o` after that cycle | Checked and applied one cycle later, after that later cycle's debit; `protocol_error_o` one cycle later; an UpdateFC presented in a reset or link-down cycle is dropped as before | An UpdateFC taking effect one cycle later only delays credit. The half-range and non-negative checks still use the post-debit balance of the cycle in which it is applied, so a simultaneous debit is never returned. |
+| `Driver.grant` (new helper) | - | Presents a request with valid low for one cycle, then with valid high, and returns the grant | Exercises a request the way the replay store presents it: request lines settled before valid rises |
+| `initialization_and_finite_atomic_reservations` | Each request size presented for one cycle | Each request size presented through `grant`; one more cycle of the 1-DWORD request after the UpdateFC; the 5-DWORD and illegal requests through `grant` | Without the hold, no request would be granted and the test would check nothing. The debit sizes and pools checked are unchanged. |
+| `infinite_pools_replay_and_link_reset` | `(2,4)` request for one cycle; TLP confirmation directly after the third InitFC1 | `(2,4)` through `grant`; one idle cycle before the TLP, so the delayed third InitFC1 is applied before the TLP confirms InitFC2 | Same events in the same order |
+| `modulo_counters_random_credit_return_and_stalls` | 12,000 cycles, a new random request each cycle | 24,000 cycles, each random request held for two cycles (12,000 requests, same random sequence) | Same request stream. The progress assertion (more than 256 headers and 4096 data credits per class) still holds. |
+| `corrupt_credit_events_never_grant_or_reset_limits` | Requests for one cycle; grant in the cycle after the restoring UpdateFC | Requests through `grant`; one idle cycle after the restoring UpdateFC | The corrupt events still neither grant nor change limits. |
+| `same_cycle_update_debit_exhausts_exactly_once` | UpdateFC and debit presented in the same cycle; back-to-back grants | UpdateFC presented one cycle before the debit, so that it is applied in the debit's cycle; the cycle after each consume is asserted not ready; exhaustion asserted after it; the restoring update is followed by one idle cycle; the idle-bus check waits one more cycle before inspecting limits | Every original assertion is kept: one returned credit is granted exactly once, an update to another class does not overwrite a debit, the half-range check uses the post-debit balance, data and header exhaustion are separate, and an idle-bus request cannot rescue an invalid UpdateFC. |
+
+The per-cycle comparison of `header_limit_o`, `header_consumed_o`, `data_limit_o`, `data_consumed_o` and `infinite_o` against unbounded counters is unchanged. It checks that no credit is lost or duplicated.
+
+### Added latency, both rounds together
+
+| Path | Added cycles | Limit it must stay within |
+|---|---|---|
+| Received TLP to its ACK/NAK on the wire | +3 (receive slice, receive commit, transmit slice) | AckNak latency; the peer's replay timer |
+| Received ACK/NAK to retirement in the replay store | +2 (receive slice, registered retirement) | This design's replay timer, 1024 packet clocks |
+| Received UpdateFC to credit, and to a reservation grant | +2 to credit (receive slice, delayed update); a grant needs one more cycle | Credit only arrives later (conservative) |
+| New TLP reservation | +1 (registered verdict, when the request has just changed) | none; flow control only delays |
+| Locally generated completion to the wire | +1 (transmit slice) | none |
+| FC DLLP advertisement to the wire | +1 (advertiser slice) | FC update timer: microseconds |
+| Release after reset, link up or retraining | +1 to +3 by block; link loss and retraining assert at once | Link training takes microseconds |
+
+All of these are a few 4 ns cycles. The replay timer is 1024 packet clocks (4 us), and the AckNak and UpdateFC limits are hundreds of symbol times. Replay ordering and the replay timer start at the wire-side end of frame are unchanged.
+
+### Verification of the final head
+
+On `19418ffa9` (RTL as of `2fd0a2c70`), run 42474676706:
+
+- unit tests 64/64:
+  - `replay_tx` 7, `flow_packets` 3, `buffered_flow_packets` 5, `reliable_packets` 4, `credit_tx` 5 (revised oracle), `rx_credit` 5, `fc_tx` 3, `fc_tx_eop` 1, `lcrc_tx` 2;
+  - `packet_endpoint` 6, `link_packets` 3, `tlp_regs` 6, `tlp_stream` 6, `tlp_integrity` 6, `gpio` 2;
+- joint SoC PCIe + Ethernet traffic PASS 2/2 with an asynchronous packet clock and PASS 2/2 with a synchronous one;
+- `check_soc_lint.py` base and full PASS with no new or stale warnings.
+
+The workflow now retries transient release-download failures (`19418ffa9`). This run still met HTTP 504s and passed after retries.
+
+### Block screen, before and after both rounds
+
+Packet-domain register-to-register setup in the screen described above, ns:
+
+- baseline: `eb088ef4c`, run 42463873679;
+- first round: `3b102cca0`, run 42464911092;
+- final: run 42474676706.
+
+"Core" leaves out the link status, reset release and registered link/reset copy flops as startpoints.
+
+| Stage | Corner | View | Baseline WNS / TNS | First round WNS / TNS | Final WNS / TNS |
+|---|---|---|---:|---:|---:|
+| repaired | typical | all | -1.19 / -2205 | -0.92 / -118 | **-0.22 / -3.4** (88 endpoints) |
+| repaired | typical | core | -1.17 / -2107 | -0.92 / -61 | **-0.22 / -0.65** (5 endpoints) |
+| repaired | slow | all | -4.07 / -13049 | -3.72 / -6425 | **-2.60 / -4537** |
+| repaired | slow | core | -4.06 / -12577 | -3.72 / -4126 | **-2.60 / -2912** |
+| sized | typical | all | -2.45 / -4280 | -1.48 / -1648 | -2.10 / -1221 |
+| sized | typical | core | -2.44 / -4200 | -1.48 / -412 | -1.62 / -561 |
+| sized | slow | all | -6.00 / -16497 | -4.56 / -10593 | -5.45 / -8797 |
+| sized | slow | core | -5.98 / -16091 | -4.56 / -5386 | -4.73 / -4889 |
+
+In the final sized "all" view, the worst paths start at the registered link/reset copies. Each copy still drives a whole block's resets and enables, and this standalone placement's sizing-only stage builds deep buffer trees for them. Repair removes most of that.
+
+The final design has more flops, and the TNS figures cover the worst 5000 endpoints only.
+
+Logic cells (non-buffer, non-inverter) of the worst path per block, sized slow, with the deepest reported path of the block in parentheses:
+
+| Block | Baseline | First round | Final |
+|---|---:|---:|---:|
+| Replay store capture | 19 (20) | 8 (9) | 10 (11) |
+| Replay send setup and reservation | 18 (19) | 15 (19) | 9 (12) |
+| Credit reservation and UpdateFC | 21 (21) | 17 (17) | 17 (17) |
+| LCRC framer | - | 16 (18) | 13 (13) |
+| Receive slice and consumers | 19 (21) | 13 (14) | 8 (11) |
+| Receive queue | 13 (13) | 11 (20) | 11 (17) |
+| FC advertiser | - | 9 (14) | 8 (9) |
+| TLP register backend | - | 12 (13) | 10 (12) |
+
+The deepest worst-endpoint path is 21 logic cells (30 cells) in the baseline. It is 17 (22 cells) after the final round.
+
+### Physical probe
+
+The main-chip implementation probe ran on this branch's RTL (`19418ffa9`), run 42474676706, with the configuration of the reference rows:
+
+- density 70%;
+- Kogge-Stone carry mapping;
+- upstream register file;
+- LibreLane `PacketInterfaces` up to and including global route, antenna repair and the capped post-GRT repair;
+- three-corner OpenROAD STA with propagated clocks and global-route parasitics.
+
+Setup worst slack per clock group, ns:
+
+| Corner | `pcie_clk_i` this branch | `pcie_clk_i` reference before extra repair (run 42257277688) | asynchronous | `clk_i` | `eth_rx_clk_i` | `eth_tx_clk_i` |
+|---|---:|---:|---:|---:|---:|---:|
+| slow | **-3.55** | -8.74 | -3.42 | -4.58 | -1.51 | -1.91 |
+| typical | **-0.84** | -4.11 | -0.84 | 4.33 | 1.97 | 1.78 |
+| fast | 0.28 | -1.46 | 0.62 | 9.69 | 3.44 | 3.85 |
+
+Notes on these numbers:
+
+- The worst slow-corner `pcie_clk_i` path arrives at 8.35 ns over about 24 cells, against 10.65 ns over about 47 cells in run 42436769600. The worst typical-corner path ends at the `pcie_rx_ready_o` output port.
+- Before any extra repair, the slow corner is now better than the reference after its uncapped repair (-5.76 ns).
+- The asynchronous group also improves, from -7.71 ns to -3.42 ns at slow. The link/reset copies take the combined reset off the large recovery fanout.
+- `clk_i` and Ethernet are not changed here; their differences reflect placement.
+
+The uncapped setup repair ran on the same database in the same run (deep variant). It used `repair_design` and `repair_timing -setup -setup_margin 0 -repair_tns 100 -max_iterations 1000000`. It finished in 24 minutes with RSZ-0062, after 655 resizes, 272 buffers and 135 pin swaps.
+
+| Corner | `pcie_clk_i` this branch | `pcie_clk_i` reference after uncapped repair (run 42436769600) | asynchronous | `clk_i` |
+|---|---:|---:|---:|---:|
+| slow | **-2.61** | -5.76 | -2.16 | -2.52 |
+| typical | **-0.26** | -2.31 | 0.06 | 5.68 |
+| fast | 0.55 | -0.34 | 1.34 | 9.87 |
+
+The capped stage of this deep job reproduced the -3.55/-0.84/0.28 ns of the capped job. After repair, the worst `pcie_clk_i` path arrives at 7.41 ns at slow over 32 cells. It is mostly a chain of alternating `o21ai`/`a21oi` cells, which is the shape of a ripple carry or long priority chain. Its registers are unnamed (`$auto$ff.cc`) in the probe netlist.
+
 ## What remains
 
-- **The credit loop is now the deepest cone**, at about 17 logic cells at sized and 20-22 at repaired. Two chains run through `soc_pcie_credit_tx`:
-  - the reservation verdict, then the consume, then the same-cycle UpdateFC debit selection, into `dl`, `hl`, `ah`, `ad` and `confirmed`;
-  - the UpdateFC check with two chained 12-bit subtractions (`fc - consumed - required`).
+- **Two cones are still at 17 logic cells** in the final screen, above the target of about 12.
+  - **`soc_pcie_credit_tx`, second stage of the UpdateFC.** The debit variant's sign (`d_idle + (-required)`, one 12-bit adder from registers) is selected by that cycle's consume, then gates the limit and balance writes. Requiring a request to be unchanged for two cycles would make the required credit a stable register. All four balance variants (with and without either cycle's debit) could then be formed in the first stage as one-adder carry-save sums, and the second stage would be pure selection. That costs one more grant cycle after a request changes, and another revision of the same oracle.
+  - **`soc_pcie_rx_credit` receive gate.** The FC initialization state (`all_seen` and `local_init2_sent`) reaches the queue's `rx_ready_o` and the staging write enables in the same cycle. Registering `initialized_i` in `soc_pcie_buffered_flow_packets` would open the receive gate one cycle after initialization, with no test change.
+- **TLP register backend.** The decode stays in the descriptor handshake cycle, at 10-12 logic cells. A decode-then-act stage needs `test_soc_pcie_tlp_regs.py` to accept APB setup one cycle later.
+- **Registered link/reset copies.** Each copy still drives a whole block's reset and enables. One more level of replication inside the replay store and the receive queue would shorten the remaining buffer trees.
+- **The slow corner.** After global route and uncapped repair, `pcie_clk_i` is 2.61 ns short at slow and 0.26 ns short at typical, against 5.76 and 2.31 before this branch. Typical is within reach. Next steps there:
+  - the two 17-cell cones above;
+  - the carry-chain-shaped worst path. Likely candidates are the FC advertiser's 32-bit refresh counter and compare, and the 12-bit credit adders. Name its registers with the `scripts/pcie_timing` renaming, then split or narrow it.
 
-  Both are cycle-exact at the module ports, and `test_soc_pcie_credit_tx.py` checks them per cycle, including `same_cycle_update_debit_exhausts_exactly_once`. Splitting them needs a visible change: register the verdict and process UpdateFC one cycle later. That is conservative for flow control, but it needs a reviewed change of that test's oracle, and it was not made here.
-- **Other blocks at 11-16 logic cells:**
-  - the LCRC framer's next-byte select;
-  - the receive-queue read multiplexer, where a one-hot read index or a prefetched byte would help;
-  - the `soc_pcie_tlp_regs` request decode;
-  - the replay send setup from the reservation handshake.
-- **The physical result is still pending.** The implementation-probe pattern (density 70%, Kogge-Stone, upstream register file) was dispatched on this branch in runs 42463784926, 42465173872 and 42466232301 (two attempts). Every attempt failed on GitHub release download errors (HTTP 504 for the OSS CAD Suite, LibreLane and `sv2v` archives) before synthesis or flow, so no number comes from them. To rerun it: `gh workflow run cloud-evidence-summary.yml --ref timing/pcie-pipeline -f timing_sides='[]' -f probe=true`. The comparison points are -8.74 ns slow and -4.11 ns typical before the extra repair (run 42257277688), and -5.76 ns and -2.31 ns after the uncapped repair (run 42436769600).
-- **Reachability at 4 ns.** In this screen, typical is within about 1 ns after repair. The slow corner is still 3.7-4.6 ns short. At about 0.2 ns per cell at 1.08 V/125 C, a 4 ns stage holds about 14 cells including clock-to-Q, setup, uncertainty and buffering. Every block above is past that. The byte-wide packet path therefore needs about one more register stage per block at the slow corner, or a wider datapath at a lower `pcie_clk_i`. This change alone does not close 4 ns at the frozen slow corner.
+  At slow, about 0.2 ns per cell leaves about 14 cells per 4 ns stage, including clock-to-Q, setup, uncertainty and buffering. The packet path is now at 8-17 logic cells plus buffering. Closing the frozen slow corner at 4 ns therefore still needs about 2.6 ns more. That means several more stages across most blocks, or a wider datapath at a lower `pcie_clk_i`.
