@@ -76,6 +76,8 @@ The expression gives the same integer parameter value as before at 0 and the sam
 
 The first attempt of the two-cycle native boot hit the gate simulator's 18000 s wall-clock limit (rc 124). At that point it was at cycle 1.55 M with MBIST done, application checks passing so far, and no SEC/DED or alert. The job rerun at the same commit passed: 28 checks, fail mask 0, PCIe idle and MBIST pass, 1,637,138 cycles in 9413 s. The branch-target-ALU boot took 11023 s, so the limit is close to the hosted runners' speed spread.
 
+Push CI (`checks`, run42518837210 on 6ad46f934): whole-SoC lint (`formal-and-boot`), python-quality and memory-parity pass. The `rtl` job fails on the base branch and on `analysis/impl-probe` alike, with the same historical source pin of `soc_top.v` and 1203 cocotb tests passed, 0 failed. Commit 6ad46f934 changes only the form of the `BranchTargetALU` expression, not its values, so the functional and timing runs above, made at 192aad232/640310063, apply unchanged.
+
 ## 5. Timing (density 70%, `SOC_SYNTH_PREFIX_ADDER=1`, global-route parasitics)
 
 `clk_i` setup worst slack, in ns:
