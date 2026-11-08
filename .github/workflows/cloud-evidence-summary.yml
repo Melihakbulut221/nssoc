@@ -12,8 +12,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {name: rfup_d70_ks, rtl: change, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', regfile: upstream}
-          - {name: rfup_d60_ks, rtl: change, overrides: '{"PL_TARGET_DENSITY_PCT": 60}', prefix: '1', regfile: upstream}
+          - {name: deep_d70_ks, rtl: change, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1'}
+          - {name: deep_rfup_d70_ks, rtl: change, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', regfile: upstream, deep: '1'}
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -108,10 +108,30 @@ jobs:
           python3 -B scripts/impl_probe.py sta_tcl $OUT/run $OUT/prepared $OUT/corner-sta.tcl
           env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage openroad -exit $OUT/corner-sta.tcl > $OUT/corner-sta.log 2>&1 || echo "CORNER_STA_FAILED"
           grep -a -E "NSSOC_CORNER|slack|Error|ERROR" $OUT/corner-sta.log | grep -av "^\s*$" | head -120 || true
+      - name: Uncapped setup repair on the post-global-route database (measurement)
+        if: matrix.deep == '1'
+        run: |
+          set +e
+          OUT=$PWD/hw/soc/out/impl-probe; W=/mnt/s
+          # The flow's repair_timing runs with -max_iterations 100 and stops with
+          # RSZ-0062. Here the same database, libraries, SDC, LAYERS_RC and
+          # global-route parasitics get repair_design and an uncapped setup
+          # repair (wall-clock bound only), then the same per-corner reports.
+          python3 - $OUT/corner-sta.tcl $OUT/deep-repair.tcl <<'PY'
+          import sys
+          s=open(sys.argv[1]).read();i=s.index('puts "NSSOC_CORNER_BEGIN')
+          rep=('repair_design -verbose\nestimate_parasitics -global_routing\n'
+               'repair_timing -verbose -setup -setup_margin 0 -repair_tns 100 -max_iterations 1000000 -max_buffer_percent 50\n'
+               'estimate_parasitics -global_routing\nputs "NSSOC_DEEP_REPAIR_DONE"\n')
+          open(sys.argv[2],'w').write(s[:i]+rep+s[i:].replace('NSSOC_CORNER_','NSSOC_DEEP_CORNER_'))
+          PY
+          timeout 12600 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage openroad -exit $OUT/deep-repair.tcl > $OUT/deep-repair.log 2>&1; echo "DEEP_RC=$?"
+          grep -a -E "NSSOC_DEEP|slack \(|RSZ-00(4|5|6)|^ +[0-9]+ +\|.*\| *-?[0-9.]+ *\|" $OUT/deep-repair.log | tail -60
       - name: Collect
         if: always()
         run: |
           OUT=hw/soc/out/impl-probe; mkdir -p out
+          cp $OUT/deep-repair.log $OUT/deep-repair.tcl out/ 2>/dev/null || true
           cp $OUT/metrics.json $OUT/corner-sta.log $OUT/corner-sta.tcl $OUT/run.log $OUT/synthesis-driver.log $OUT/prepared/config.json out/ 2>/dev/null || true
           for d in $OUT/run/*stamidpnr* $OUT/run/*resizer*; do [ -d "$d" ] || continue; b=$(basename $d); mkdir -p out/$b; for c in nom_slow_1p08V_125C; do [ -f $d/$c/max.rpt ] && head -c 3000000 $d/$c/max.rpt > out/$b/$c.max.head.rpt; done; cp $d/*.log out/$b/ 2>/dev/null || true; done
           ls out | head -50
