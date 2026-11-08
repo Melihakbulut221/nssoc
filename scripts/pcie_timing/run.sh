@@ -65,8 +65,8 @@ create_clock -name clk_i -period 20.0 [get_ports clk_i]
 set_clock_groups -asynchronous -group [get_clocks pcie_clk_i] -group [get_clocks clk_i]
 set_clock_uncertainty 0.25 [all_clocks]
 set_clock_transition 0.15 [all_clocks]
-set pcie_in [get_ports {pcie_link_up_i pcie_training_i pcie_retrain_done_i pcie_function_id_i* pcie_rx_* pcie_tx_ready_i}]
-set pcie_out [get_ports {pcie_rx_ready_o pcie_tx_* pcie_initialized_o pcie_error_o pcie_retrain_request_o}]
+set pcie_in [get_ports {pcie_link_up_i pcie_training_i pcie_retrain_done_i pcie_function_id_i* pcie_rx_data_i* pcie_rx_sop_i pcie_rx_eop_i pcie_rx_error_i pcie_rx_valid_i pcie_rx_dllp_i pcie_tx_ready_i}]
+set pcie_out [get_ports {pcie_rx_ready_o pcie_tx_data_o* pcie_tx_sop_o pcie_tx_eop_o pcie_tx_valid_o pcie_tx_dllp_o pcie_tx_replay_o pcie_initialized_o pcie_error_o pcie_retrain_request_o}]
 set_input_delay -clock pcie_clk_i -max 0.8 $pcie_in
 set_input_delay -clock pcie_clk_i -min 0.2 $pcie_in
 set_output_delay -clock pcie_clk_i -max 0.8 $pcie_out
@@ -110,7 +110,7 @@ proc reports {stage} {
 reports synth
 initialize_floorplan -utilization 40 -aspect_ratio 1 -core_space 10 -site CoreSite
 make_tracks
-place_pins -random -hor_layers Metal3 -ver_layers Metal2
+place_pins -hor_layers Metal3 -ver_layers Metal2
 foreach {l r c} {Metal2 2.53519E-03 1.69121E-04 Metal3 1.54329E-03 1.82832E-04 Metal4 6.31424E-04 1.66454E-04 Metal5 6.84051E-04 8.57431E-05} {
   set_layer_rc -layer \$l -resistance \$r -capacitance \$c
 }
