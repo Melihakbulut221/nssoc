@@ -87,3 +87,31 @@ The capped post-GRT repair leaves these cells unsized. Two levers apply to eithe
 - A shorter execute path.
 
 `pcie_clk_i` (4 ns) and the asynchronous group are unchanged by the register file.
+
+## Uncapped setup repair after global route (run42436769600)
+
+The flow's `repair_timing` runs with `-max_iterations 100` and stops with RSZ-0062. This step takes the same post-global-route database, libraries, SDC, `LAYERS_RC` and global-route parasitics, then runs:
+
+- `set_wire_rc` on Metal3 for signals and Metal4 for clocks;
+- `repair_design`;
+- `repair_timing -setup -setup_margin 0 -repair_tns 100 -max_iterations 1000000`, bounded only by a 3.5 h wall clock;
+- the same per-corner reports as before.
+
+Setup worst slack, in ns:
+
+| Variant (register-slice RTL, Kogge-Stone, density 70%) | Corner | clk_i | pcie_clk_i | asynchronous |
+|---|---|---:|---:|---:|
+| SECDED register file, before the extra repair | slow | -8.58 | -8.34 | -7.39 |
+| SECDED register file, uncapped repair (3.5 h limit reached) | slow | **-6.54** (WNS over all groups) | - | - |
+| upstream register file, uncapped repair (repair_timing finished) | slow | **-5.69** | **-5.76** | -2.51 |
+| | typical | 4.03 | -2.31 | -0.27 |
+| | fast | 8.77 | -0.34 | 1.07 |
+
+With the upstream register file, `repair_timing` resizes 1142 instances, inserts 454 buffers, and then stops with "Unable to repair all setup violations". With the SECDED register file, the worst slack stays at -6.543 ns from iteration 1100 to 1170, with 8943 violating endpoints, until the time limit.
+
+Unbounded sizing and buffering therefore recover only 2-3 ns. That leaves:
+
+- the slow-corner Ibex execute path at about 25.7 ns against 20 ns;
+- the PCIe link logic at about 9.8 ns against its 4 ns period.
+
+The remaining gap is logic depth, not cell drive. At the frozen corners and clocks, closure needs a shallower Ibex execute path and a PCIe datapath pipelined to roughly 2.5 times fewer levels per stage.
