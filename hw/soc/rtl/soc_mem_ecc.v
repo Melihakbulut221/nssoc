@@ -253,6 +253,23 @@ module soc_mem_ecc #(
   // port last read is decoded every cycle, and the response logic and
   // the scrubber each take the result in the cycle that is theirs.
   wire [31:0] rd_word;        // corrected (HARDEN) or raw
+  // RDREG = 2 (docs/ibex-execute-timing.md): the row is registered as it
+  // leaves the macro (after the bank select) and decoded from that
+  // register, so the SRAM read arc no longer shares a cycle with the
+  // correction. Every consumer of the decoded row -- the response, its
+  // reports and the scrubber -- then takes it one cycle later.
+  wire [RW-1:0] dec_row;
+  generate
+  if (RDREG >= 2) begin : g_rawreg
+    reg [RW-1:0] raw_q;
+    always @(posedge clk_i or negedge rst_ni)
+      if (!rst_ni) raw_q <= {RW{1'b0}};
+      else         raw_q <= row_dout_i;
+    assign dec_row = raw_q;
+  end else begin : g_rawdir
+    assign dec_row = row_dout_i;
+  end
+  endgenerate
   wire [3:0]  sec;            // per lane; [0] only for the word code
   wire [3:0]  ded;
 
@@ -281,7 +298,7 @@ module soc_mem_ecc #(
         wire [7:0]  syn;
         wire        sec_dec_unused, ded_dec_unused;
         secded_dec u_dec (
-            .code_in  ({row_dout_i[32+8*l +: 8], 56'h0, row_dout_i[8*l +: 8]}),
+            .code_in  ({dec_row[32+8*l +: 8], 56'h0, dec_row[8*l +: 8]}),
             .data_out (d64_unused),
             .syndrome (syn),
             .sec      (sec_dec_unused),
@@ -295,7 +312,7 @@ module soc_mem_ecc #(
         wire onehot  = syn_nz && ((syn & (syn - 8'd1)) == 8'd0);
         assign sec[l] = (|mask) || onehot;
         assign ded[l] = syn_nz && !sec[l];
-        assign rd_word[8*l +: 8] = row_dout_i[8*l +: 8] ^ mask;
+        assign rd_word[8*l +: 8] = dec_row[8*l +: 8] ^ mask;
       end
     end
     if ((HARDEN != 0) && !ECC_BYTE) begin : g_dec_word
@@ -303,7 +320,7 @@ module soc_mem_ecc #(
       wire [7:0]  syn;
       wire        sec_dec_unused, ded_dec_unused;
       secded_dec u_dec (
-          .code_in  ({1'b0, row_dout_i[38:32], 32'h0, row_dout_i[31:0]}),
+          .code_in  ({1'b0, dec_row[38:32], 32'h0, dec_row[31:0]}),
           .data_out (d64_unused),
           .syndrome (syn),
           .sec      (sec_dec_unused),
@@ -320,10 +337,10 @@ module soc_mem_ecc #(
       assign ded[0]   = syn_nz && !sec[0];
       assign sec[3:1] = 3'b000;
       assign ded[3:1] = 3'b000;
-      assign rd_word  = row_dout_i[31:0] ^ mask;
+      assign rd_word  = dec_row[31:0] ^ mask;
     end
     if (HARDEN == 0) begin : g_dec_plain
-      assign rd_word = row_dout_i[31:0];
+      assign rd_word = dec_row[31:0];
       assign sec     = 4'b0000;
       assign ded     = 4'b0000;
     end
@@ -354,15 +371,37 @@ module soc_mem_ecc #(
     end
   end
 
-  wire rsp_rd = rv0 && rd0;
+  // The response as the decoders see it: the same cycle at RDREG < 2,
+  // one cycle later behind the raw-row register at RDREG = 2.
+  wire          rv_d, er_d, rd_d;
+  wire [AW-1:0] row_d;
+  generate
+  if (RDREG >= 2) begin : g_rsp_d
+    reg          rv_q, er_q, rd_q;
+    reg [AW-1:0] row_qq;
+    always @(posedge clk_i or negedge rst_ni)
+      if (!rst_ni) begin
+        rv_q <= 1'b0; er_q <= 1'b0; rd_q <= 1'b0; row_qq <= {AW{1'b0}};
+      end else begin
+        rv_q <= rv0; er_q <= er0; rd_q <= rd0; row_qq <= row_q;
+      end
+    assign rv_d = rv_q;  assign er_d = er_q;
+    assign rd_d = rd_q;  assign row_d = row_qq;
+  end else begin : g_rsp_now
+    assign rv_d = rv0;   assign er_d = er0;
+    assign rd_d = rd0;   assign row_d = row_q;
+  end
+  endgenerate
+
+  wire rsp_rd = rv_d && rd_d;
   // An uncorrectable word is a bus error. The fabric carries err in the
   // response cycle and Ibex takes an access fault: the word is never
   // consumed.
-  wire err0 = er0 || (rsp_rd && ded_any);
+  wire err0 = er_d || (rsp_rd && ded_any);
 
   generate
   if (!RDREG) begin : g_rd1
-    assign rvalid_o = rv0;
+    assign rvalid_o = rv_d;
     assign rdata_o  = rd_word;
     assign err_o    = err0;
   end
@@ -373,9 +412,9 @@ module soc_mem_ecc #(
       if (!rst_ni) begin
         rv1 <= 1'b0; rd1 <= 32'h0; er1 <= 1'b0;
       end else begin
-        rv1 <= rv0;
+        rv1 <= rv_d;
         er1 <= err0;
-        if (rv0) rd1 <= rd_word;
+        if (rv_d) rd1 <= rd_word;
       end
     end
     assign rvalid_o = rv1;
@@ -398,8 +437,24 @@ module soc_mem_ecc #(
       reg          srd_q;
 
       wire s_due = scrub_en_i && (stick == 16'd0);
-      assign s_go   = s_due && idle && !srd_q;
-      assign s_hit  = srd_q && idle;
+      // srd_hit: the scrub read whose row the decoders see in this cycle.
+      // At RDREG = 2 that is two cycles after the read, and the port must
+      // have stayed idle in between: a bus write to the row in that cycle
+      // would otherwise be overwritten by the stale corrected word.
+      wire srd_hit, srd_busy;
+      if (RDREG >= 2) begin : g_srd2
+        reg srd_q2;
+        always @(posedge clk_i or negedge rst_ni)
+          if (!rst_ni) srd_q2 <= 1'b0;
+          else         srd_q2 <= srd_q && idle;
+        assign srd_hit  = srd_q2;
+        assign srd_busy = srd_q || srd_q2;
+      end else begin : g_srd1
+        assign srd_hit  = srd_q;
+        assign srd_busy = srd_q;
+      end
+      assign s_go   = s_due && idle && !srd_busy;
+      assign s_hit  = srd_hit && idle;
       assign s_wb   = s_hit && sec_any;
       assign sptr_w = sptr;
 
@@ -489,7 +544,11 @@ module soc_mem_ecc #(
   assign sec_o      = s_wb;
   assign rd_o       = rsp_rd && sec_any;
   assign ded_o      = (rsp_rd || s_hit) && ded_any;
-  assign evt_addr_o = {{(32-AW-2){1'b0}}, (s_hit ? sptr_w : row_q), 2'b00};
+  assign evt_addr_o = {{(32-AW-2){1'b0}}, (s_hit ? sptr_w : row_d), 2'b00};
+
+  generate if (RDREG > 2) begin : g_bad_rdreg
+    ERROR_soc_mem_ecc_RDREG_is_0_1_or_2 guard ();
+  end endgenerate
 
 `ifdef FORMAL
 `include "soc_mem_ecc_int_props.v"

@@ -202,6 +202,33 @@ if [ "$IBEX_RF_CORRPRE" = 1 ]; then
   RF_CHPARAM="$RF_CHPARAM
 chparam -set CORRPRE 1 ibex_register_file_ff"
 fi
+# Register-file execute-path knobs, docs/ibex-execute-timing.md, all
+# default 0 and emitting nothing at 0. CHKDEFER defers the check-bit
+# encoding by one cycle; PREDECODE reads with an address predecoded at the
+# IF/ID register (a flow patch, flow/ibex_rf_predecode.py, plus RDPRE);
+# RDRAW is a MEASUREMENT of a read without inline correction.
+IBEX_RF_CHKDEFER=${IBEX_RF_CHKDEFER:-0}
+IBEX_RF_PREDECODE=${IBEX_RF_PREDECODE:-0}
+IBEX_RF_RDRAW=${IBEX_RF_RDRAW:-0}
+for v in "$IBEX_RF_CHKDEFER" "$IBEX_RF_PREDECODE" "$IBEX_RF_RDRAW"; do
+  case "$v" in 0|1) ;; *) echo 'IBEX_RF_CHKDEFER, IBEX_RF_PREDECODE and IBEX_RF_RDRAW must be 0 or 1' >&2; exit 2 ;; esac
+done
+if [ "$IBEX_RF_CHKDEFER$IBEX_RF_PREDECODE$IBEX_RF_RDRAW" != 000 ] && [ "$IBEX_REGFILE" != secded ]; then
+  echo 'The register-file execute-path knobs need IBEX_REGFILE=secded' >&2; exit 2
+fi
+if [ "$IBEX_RF_RDRAW" = 1 ] && { [ "$IBEX_RF_CORRPRE" != 0 ] || [ "$IBEX_RF_SYNPRE" != 0 ]; }; then
+  echo 'IBEX_RF_RDRAW replaces the correction: CORRPRE and SYNPRE must be 0' >&2; exit 2
+fi
+if [ "$IBEX_RF_PREDECODE" = 1 ] && [ "$IBEX_RF_CORRPRE$IBEX_RF_RDRAW" = 00 ]; then
+  echo 'IBEX_RF_PREDECODE needs IBEX_RF_CORRPRE=1 or IBEX_RF_RDRAW=1' >&2; exit 2
+fi
+[ "$IBEX_RF_CHKDEFER" = 0 ] || RF_CHPARAM="$RF_CHPARAM
+chparam -set CHKDEFER 1 ibex_register_file_ff"
+[ "$IBEX_RF_PREDECODE" = 0 ] || RF_CHPARAM="$RF_CHPARAM
+chparam -set RDPRE 1 ibex_register_file_ff"
+[ "$IBEX_RF_RDRAW" = 0 ] || RF_CHPARAM="$RF_CHPARAM
+chparam -set RDRAW 1 ibex_register_file_ff"
+export IBEX_RF_PREDECODE
 
 # docs/50's knob, on soc_top's own parameter. See the header.
 SOC_MEM_RDREG=${SOC_MEM_RDREG:-0}
@@ -800,7 +827,7 @@ awk -v top=soc_top -v ge=7.2576 '
   }
 ' "$OUT/$AREA_SUMMARY"
 
-echo "  mem=$SOC_MEM  regfile=$IBEX_REGFILE  fault_port=$IBEX_FAULT_PORT  synpre=$IBEX_RF_SYNPRE  corrpre=$IBEX_RF_CORRPRE"
+echo "  mem=$SOC_MEM  regfile=$IBEX_REGFILE  fault_port=$IBEX_FAULT_PORT  synpre=$IBEX_RF_SYNPRE  corrpre=$IBEX_RF_CORRPRE  chkdefer=$IBEX_RF_CHKDEFER  predecode=$IBEX_RF_PREDECODE  rdraw=$IBEX_RF_RDRAW"
 echo "  core_req_reg=$SOC_CORE_REQ_REG  core_wb_stage=$SOC_CORE_WB_STAGE  core_bt_alu=$SOC_CORE_BT_ALU  branch_2cycle=$IBEX_BRANCH_2CYCLE  prefix_adder=${SOC_SYNTH_PREFIX_ADDER:-0}"
 echo "  mem_rdreg=$SOC_MEM_RDREG  mem_harden=$SOC_MEM_HARDEN  rom_harden=$SOC_ROM_HARDEN  boot_harden=$SOC_BOOT_HARDEN  clkgate=$SOC_CLKGATE  wake_gnt=$SOC_WAKE_GNT  req_reg=$SOC_REQ_REG  abc -D $ABC_D"
 echo "  report: $OUT/$AREA_SUMMARY  per-module: $OUT/area_hier.rpt"

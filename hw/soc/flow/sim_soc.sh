@@ -116,6 +116,25 @@ case "$SOC_RF_CORRPRE" in 0|1) ;; *) echo 'SOC_RF_CORRPRE must be 0 or 1' >&2; e
 if [ "$SOC_RF_CORRPRE" = 1 ] && { [ "${IBEX_REGFILE:-secded}" != secded ] || [ "$SOC_RF_SYNPRE" != 0 ]; }; then
   echo 'CORRPRE requires the SECDED register file and SYNPRE=0' >&2; exit 2
 fi
+# Register-file execute-path knobs, docs/ibex-execute-timing.md, with the
+# rules of hw/soc/flow/syn_soc_top.sh (there IBEX_RF_*). PREDECODE also
+# selects the IF/ID patch through flow/ibex_sources.sh.
+SOC_RF_CHKDEFER=${SOC_RF_CHKDEFER:-0}
+SOC_RF_PREDECODE=${SOC_RF_PREDECODE:-0}
+SOC_RF_RDRAW=${SOC_RF_RDRAW:-0}
+for v in "$SOC_RF_CHKDEFER" "$SOC_RF_PREDECODE" "$SOC_RF_RDRAW"; do
+  case "$v" in 0|1) ;; *) echo 'SOC_RF_CHKDEFER, SOC_RF_PREDECODE and SOC_RF_RDRAW must be 0 or 1' >&2; exit 2 ;; esac
+done
+if [ "$SOC_RF_CHKDEFER$SOC_RF_PREDECODE$SOC_RF_RDRAW" != 000 ] && [ "${IBEX_REGFILE:-secded}" != secded ]; then
+  echo 'The register-file execute-path knobs need IBEX_REGFILE=secded' >&2; exit 2
+fi
+if [ "$SOC_RF_RDRAW" = 1 ] && { [ "$SOC_RF_CORRPRE" != 0 ] || [ "$SOC_RF_SYNPRE" != 0 ]; }; then
+  echo 'SOC_RF_RDRAW replaces the correction: CORRPRE and SYNPRE must be 0' >&2; exit 2
+fi
+if [ "$SOC_RF_PREDECODE" = 1 ] && [ "$SOC_RF_CORRPRE$SOC_RF_RDRAW" = 00 ]; then
+  echo 'SOC_RF_PREDECODE needs SOC_RF_CORRPRE=1 or SOC_RF_RDRAW=1' >&2; exit 2
+fi
+export IBEX_RF_PREDECODE=$SOC_RF_PREDECODE
 
 # SOC_MEM_RDREG=1 is docs/50's knob and it reaches soc_top's own
 # parameter by the same mechanism and for the same reason: a second
@@ -200,6 +219,12 @@ if [ "$SOC_RF_CORRPRE" = 1 ]; then
   DEFPARAMS="$DEFPARAMS
   defparam tb_soc.dut.u_ibex.gen_regfile_ff.register_file_i.CORRPRE = 1;"
 fi
+for kv in CHKDEFER:$SOC_RF_CHKDEFER RDPRE:$SOC_RF_PREDECODE RDRAW:$SOC_RF_RDRAW; do
+  if [ "${kv#*:}" != 0 ]; then
+    DEFPARAMS="$DEFPARAMS
+  defparam tb_soc.dut.u_ibex.gen_regfile_ff.register_file_i.${kv%%:*} = 1;"
+  fi
+done
 if [ "$SOC_RF_SYNPRE" != 0 ] && [ "${IBEX_REGFILE:-secded}" = secded ]; then
   DEFPARAMS="$DEFPARAMS
   defparam tb_soc.dut.u_ibex.gen_regfile_ff.register_file_i.SYNPRE
@@ -468,6 +493,20 @@ if [ "${IBEX_REGFILE:-secded}" = secded ]; then
   fi
 fi
 check_arm SOC_MEM_HARDEN "$SOC_MEM_HARDEN" g_ecc g_plain "memory codec"
+if [ "${IBEX_REGFILE:-secded}" = secded ]; then
+  check_arm SOC_RF_CHKDEFER "$SOC_RF_CHKDEFER" g_chkdefer g_chknow "register file check bits"
+  check_arm SOC_RF_PREDECODE "$SOC_RF_PREDECODE" g_rdpre g_rdbin "register file read address"
+  if [ "$SOC_RF_RDRAW" = 1 ]; then
+    grep -qa '"g_rdraw"' "$OUT/tb_soc.vvp" || {
+      echo "== SOC_RF_RDRAW=1 but the raw read is not elaborated" >&2; exit 1; }
+    echo "== register file read: RAW, NO CORRECTION (measurement, SOC_RF_RDRAW=1)"
+  fi
+fi
+if [ "${SOC_MEM_RDREG:-0}" = 2 ]; then
+  grep -qa '"g_rawreg"' "$OUT/tb_soc.vvp" || {
+    echo "== SOC_MEM_RDREG=2 but no raw-row register is elaborated" >&2; exit 1; }
+  echo "== memory read return: raw row registered before the decoder (SOC_MEM_RDREG=2)"
+fi
 if [ "$IBEX_BRANCH_2CYCLE" = 1 ]; then
   grep -qa '"g_branch_two_cycle"' "$OUT/tb_soc.vvp" || {
     echo "== IBEX_BRANCH_2CYCLE=1 but the patched ID stage is not elaborated" >&2; exit 1; }

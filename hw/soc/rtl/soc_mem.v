@@ -395,6 +395,12 @@ module soc_mem #(
   end
   endgenerate
 
+  // RDREG = 2 (docs/ibex-execute-timing.md) is the raw-row register of
+  // soc_mem_ecc.v and exists only behind the codec.
+  generate if ((RDREG > 2) || (RDREG == 2 && HARDEN == 0)) begin : g_bad_rdreg
+    ERROR_soc_mem_RDREG_2_needs_the_codec guard ();
+  end endgenerate
+
 endmodule
 
 `default_nettype wire

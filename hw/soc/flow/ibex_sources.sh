@@ -95,6 +95,16 @@
 #      BranchTargetALU = 0; the flows that know the core parameters
 #      refuse the other combination.
 #   0  (default) the unmodified file.
+#
+# IBEX_RF_PREDECODE selects, a third patch of the same kind:
+#
+#   1  hw/soc/genp/<tree>-pre/ibex_if_stage.v and ibex_core.v, written by
+#      flow/ibex_rf_predecode.py: the register-file read address,
+#      predecoded and registered beside the IF/ID instruction register,
+#      carried to the register file on the unused capability write data.
+#      The two generated files are EXCLUDED. Used with the register
+#      file's RDPRE = 1, which the flows set together with this.
+#   0  (default) the unmodified files.
 
 ibex_sources () {
   local soc_dir=$1
@@ -102,6 +112,7 @@ ibex_sources () {
   local port=${IBEX_FAULT_PORT:-0}
   local gendir=${IBEX_GEN:-gen}
   local br2=${IBEX_BRANCH_2CYCLE:-0}
+  local pre=${IBEX_RF_PREDECODE:-0}
   local f
 
   case "$mode" in
@@ -117,6 +128,11 @@ ibex_sources () {
   case "$gendir" in
     gen|genrvfi) ;;
     *) echo "IBEX_GEN must be 'gen' or 'genrvfi', got '$gendir'" >&2
+       return 2 ;;
+  esac
+  case "$pre" in
+    0|1) ;;
+    *) echo "IBEX_RF_PREDECODE must be 0 or 1, got '$pre'" >&2
        return 2 ;;
   esac
   case "$br2" in
@@ -137,6 +153,10 @@ ibex_sources () {
     python3 "$soc_dir/flow/ibex_fault_port.py" \
             "$soc_dir/gen" "$soc_dir/genp" "$mode" >&2 || return 2
   fi
+  if [ "$pre" = 1 ]; then
+    python3 "$soc_dir/flow/ibex_rf_predecode.py" \
+            "$soc_dir/$gendir" "$soc_dir/genp/$gendir-pre" >&2 || return 2
+  fi
   if [ "$br2" = 1 ]; then
     python3 "$soc_dir/flow/ibex_branch_2cycle.py" \
             "$soc_dir/$gendir" "$soc_dir/genp/$gendir-br2" >&2 || return 2
@@ -153,6 +173,10 @@ ibex_sources () {
     if [ "$br2" = 1 ] && [ "$(basename "$f")" = "ibex_id_stage.v" ]; then
       continue
     fi
+    if [ "$pre" = 1 ] && { [ "$(basename "$f")" = "ibex_if_stage.v" ] ||
+                           [ "$(basename "$f")" = "ibex_core.v" ]; }; then
+      continue
+    fi
     echo "$f"
   done
 
@@ -161,6 +185,10 @@ ibex_sources () {
   fi
   if [ "$br2" = 1 ]; then
     echo "$soc_dir/genp/$gendir-br2/ibex_id_stage.v"
+  fi
+  if [ "$pre" = 1 ]; then
+    echo "$soc_dir/genp/$gendir-pre/ibex_if_stage.v"
+    echo "$soc_dir/genp/$gendir-pre/ibex_core.v"
   fi
 
   if [ "$mode" = "secded" ]; then

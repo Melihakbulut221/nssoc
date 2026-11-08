@@ -73,8 +73,9 @@ RO = int(os.environ.get("SOC_MEM_RO", "0"))
 ECC_BYTE = int(os.environ.get("SOC_MEM_ECC_BYTE", "1"))
 
 # soc_mem.v's header: RDREG = 0 answers one cycle after the grant, RDREG =
-# 1 answers two cycles after it.
-EXPECTED_LATENCY = 2 if RDREG_REQUESTED else 1
+# 1 answers two cycles after it. RDREG = 2 (docs/ibex-execute-timing.md)
+# adds the raw-row register in front of the decoder: three cycles.
+EXPECTED_LATENCY = RDREG_REQUESTED + 1
 
 # Filled in by the first test and used by every later one.
 LATENCY = None
@@ -903,8 +904,14 @@ async def test_the_interval_paces_the_scrubber(dut):
     cycle is examined in the next, so the shortest period is two and
     intervals 0 and 1 are the same rate. Counted on the row port (a
     bench observation of the array's enable) over a long idle stretch,
-    so the number is a rate and not a coincidence."""
-    for ivl, want in ((0, 0.5), (1, 0.5), (3, 0.25), (7, 0.125)):
+    so the number is a rate and not a coincidence.
+
+    At RDREG = 2 the row read in one cycle reaches the decoder two
+    cycles later, so the shortest period is three and intervals 0 to 2
+    share it. The SoC resets the interval to 255, far above either."""
+    floor = 3 if RDREG_REQUESTED >= 2 else 2
+    for ivl in (0, 1, 3, 7):
+        want = 1.0 / max(floor, ivl + 1)
         await start_h(dut, scrub_en=1, ivl=ivl)
         await idle(dut, 4)
         n = 0
