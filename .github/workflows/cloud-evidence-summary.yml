@@ -1,21 +1,135 @@
-name: PCIe boundary register slices - SoC base and full lint before and after
+name: PCIe pipeline - packet-domain timing screen, unit regressions, SoC lint and traffic
 on:
   workflow_dispatch:
+    inputs:
+      timing_sides: {type: string, default: '["baseline","change"]'}
+      unit: {type: boolean, default: false}
+      soc: {type: boolean, default: false}
+      tests: {type: string, default: 'soc_pcie_replay_tx soc_pcie_flow_packets soc_pcie_buffered_flow_packets soc_pcie_reliable_packets'}
 permissions:
   contents: read
+env:
+  BASELINE_REF: timing/pcie-boundary-skid
 jobs:
-  soc:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 300
+  timing:
+    if: inputs.timing_sides != '[]'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:
-        side: [baseline, change]
+        side: ${{ fromJSON(inputs.timing_sides) }}
+    env:
+      APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
+      PDK_RAW: https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-          ref: ${{ matrix.side == 'baseline' && 'codex/complete-open-work' || github.ref }}
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /hw/soc/rtl/pcie/
+            /scripts/pcie_timing/
+      - name: Select RTL
+        run: |
+          if [ "${{ matrix.side }}" = baseline ]; then
+            git fetch -q --filter=blob:none https://github.com/${{ github.repository }}.git $BASELINE_REF
+            git checkout FETCH_HEAD -- hw/soc/rtl/pcie
+          fi
+          git log --oneline -1; sha256sum hw/soc/rtl/pcie/soc_pcie_*.v | sha256sum
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Liberty, LEF and OpenROAD
+        run: |
+          set -euo pipefail
+          W=/mnt/s; sudo mkdir -p $W; sudo chown $USER $W
+          curl -fsSL -o $W/typ.lib $PDK_RAW/lib/sg13g2_stdcell_typ_1p20V_25C.lib
+          curl -fsSL -o $W/slow.lib $PDK_RAW/lib/sg13g2_stdcell_slow_1p08V_125C.lib
+          curl -fsSL -o $W/tech.lef $PDK_RAW/lef/sg13g2_tech.lef
+          curl -fsSL -o $W/cells.lef $PDK_RAW/lef/sg13g2_stdcell.lef
+          sha256sum -c - <<EOF
+          968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4  $W/typ.lib
+          ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d  $W/slow.lib
+          e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6  $W/tech.lef
+          c7575039af0b124e1834c407bfb9ac7a2db576d1e3533d98474dad3fbc2af589  $W/cells.lef
+          EOF
+          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2
+          curl -fsSL -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
+          echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c -; chmod +x $W/librelane.AppImage
+      - name: Synthesis and two-corner STA of the packet domain
+        run: |
+          set -euo pipefail
+          W=/mnt/s
+          LEFS="$W/tech.lef $W/cells.lef" timeout 5400 bash scripts/pcie_timing/run.sh $W/typ.lib $W/slow.lib $PWD/out \
+            env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage openroad -exit
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pcie-timing-${{ matrix.side }}-${{ github.run_id }}
+          path: |
+            out/*.rpt
+            out/*.txt
+            out/*.log
+            out/*.ys
+            out/*.sdc
+            out/*.tcl
+          retention-days: 30
+  unit:
+    if: inputs.unit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /hw/soc/rtl/
+            /hw/soc/tb/cocotb/
+            /hw/requirements.txt
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Python test environment
+        run: |
+          python3 -m venv hw/.venv && hw/.venv/bin/pip install -q -r hw/requirements.txt
+          git log --oneline -1; iverilog -V 2>&1 | head -1
+      - name: Unit regressions
+        shell: bash
+        run: |
+          set +e -uo pipefail
+          mkdir -p out; fail=0
+          for t in ${{ inputs.tests }}; do
+            mk=hw/soc/tb/cocotb/Makefile.$t
+            if [ ! -f $mk ]; then echo "MISSING $t"; fail=1; continue; fi
+            ( cd hw/soc/tb/cocotb && PATH="$PWD/../../../.venv/bin:$PATH" timeout 3000 make -f Makefile.$t SIM_BUILD=/tmp/sb_$t COCOTB_RESULTS_FILE=$GITHUB_WORKSPACE/out/results_$t.xml > $GITHUB_WORKSPACE/out/$t.log 2>&1 ); rc=$?
+            echo "TEST $t rc=$rc"; grep -E "TESTS=|PASS=|FAIL=|SKIP=" out/$t.log | tail -2
+            [ $rc -eq 0 ] || { fail=1; tail -60 out/$t.log; }
+          done
+          echo "OVERALL fail=$fail"; exit $fail
+      - name: Lint the PCIe packet subsystem
+        run: |
+          R=hw/soc/rtl/pcie
+          verilator --lint-only -Wall -Wno-DECLFILENAME -Wno-UNUSEDSIGNAL -Wno-UNUSEDPARAM -Wno-PINCONNECTEMPTY --top-module soc_pcie_buffered_flow_packets $R/*.v 2>&1 | grep -E "%(Error|Warning)" | grep -E "replay_tx|buffered_flow|stream_skid|credit_tx|reliable_packets|flow_packets" | head -60 | tee out/lint.txt || true
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pcie-pipeline-unit-${{ github.run_id }}
+          path: out
+          retention-days: 30
+  soc:
+    if: inputs.soc
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
@@ -36,16 +150,18 @@ jobs:
         run: |
           set +e
           O=$PWD/out; mkdir -p $O
-          python3 scripts/check_soc_lint.py --profile base --output hw/soc/out/skid-lint-base > $O/lint-base.log 2>&1; echo "lint-base rc=$?"
-          python3 scripts/check_soc_lint.py --profile full --output hw/soc/out/skid-lint-full > $O/lint-full.log 2>&1; echo "lint-full rc=$?"
-          cp -r hw/soc/out/skid-lint-base $O/lint-base; cp -r hw/soc/out/skid-lint-full $O/lint-full
-          for f in lint-base lint-full; do
+          python3 scripts/check_soc_lint.py --profile base --output hw/soc/out/pipe-lint-base > $O/lint-base.log 2>&1; echo "lint-base rc=$?"
+          python3 scripts/check_soc_lint.py --profile full --output hw/soc/out/pipe-lint-full > $O/lint-full.log 2>&1; echo "lint-full rc=$?"
+          cp -r hw/soc/out/pipe-lint-base $O/lint-base; cp -r hw/soc/out/pipe-lint-full $O/lint-full
+          python3 scripts/check_pcie_ethernet_soc.py --out $O/joint-async --iverilog-dir $OSS_CAD_SUITE/bin --async-pcie > $O/joint-async.log 2>&1; echo "joint-async rc=$?"
+          python3 scripts/check_pcie_ethernet_soc.py --out $O/joint-sync --iverilog-dir $OSS_CAD_SUITE/bin > $O/joint-sync.log 2>&1; echo "joint-sync rc=$?"
+          for f in lint-base lint-full joint-async joint-sync; do
             python3 -c "import json,sys;d=json.load(open(sys.argv[1]));print(sys.argv[2],{k:d.get(k) for k in ('status','tests','delta','sources_unchanged','immutable_drift','own_unaccepted','unchanged','runtime_unchanged','asynchronous_pcie')})" $O/$f/result.json $f 2>/dev/null || { echo "$f no result"; tail -30 $O/$f.log; }
           done
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pcie-skid-soc-${{ matrix.side }}-${{ github.run_id }}
+          name: pcie-pipeline-soc-${{ github.run_id }}
           path: |
             out/*.log
             out/*/result.json
