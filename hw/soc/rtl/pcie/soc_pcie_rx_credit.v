@@ -97,18 +97,26 @@ module soc_pcie_rx_credit #(
     // next-state values of qread and of the order entry a commit writes.
     // It may differ only while the queue is empty, when no TLP is read.
     reg [SW-1:0] head_slot;
-    wire [SW-1:0] next_qread=remove ? (qread==SLOTS-1 ? 0 : qread+1'b1) : qread;
-    wire [SW-1:0] next_head_slot=(commit && qwrite==next_qread) ? stage_slot : order[next_qread];
+    wire [SW-1:0] qread_plus=qread==SLOTS-1 ? 0 : qread+1'b1;
+    wire [SW-1:0] next_qread=remove ? qread_plus : qread;
     // The head slot's last read index, class and credit units are kept in
     // registers from the same next-state head and the commit's writes, so
-    // the frame end and the credit release start at registers.
+    // the frame end and the credit release start at registers. Both
+    // possible next heads (queue position kept or advanced by a removal)
+    // are resolved from registers; the removal only selects one.
     reg [CW-1:0] head_last;
     reg [1:0] head_class;
     reg [11:0] head_units;
     reg [SLOTS-1:0] head_onehot;
-    wire next_head_commit=commit_slot[next_head_slot];
-    wire [CW-1:0] next_head_last=(next_head_commit ? stage_length : lengths[next_head_slot])-1'b1;
-    wire [11:0] next_head_units=next_head_commit ? stage_units : units[next_head_slot];
+    wire [SW-1:0] stay_slot=(commit && qwrite==qread) ? stage_slot : order[qread];
+    wire [SW-1:0] advance_slot=(commit && qwrite==qread_plus) ? stage_slot : order[qread_plus];
+    wire [CW-1:0] stay_last=(commit_slot[stay_slot] ? stage_length : lengths[stay_slot])-1'b1;
+    wire [CW-1:0] advance_last=(commit_slot[advance_slot] ? stage_length : lengths[advance_slot])-1'b1;
+    wire [11:0] stay_units=commit_slot[stay_slot] ? stage_units : units[stay_slot];
+    wire [11:0] advance_units=commit_slot[advance_slot] ? stage_units : units[advance_slot];
+    wire [SW-1:0] next_head_slot=remove ? advance_slot : stay_slot;
+    wire [CW-1:0] next_head_last=remove ? advance_last : stay_last;
+    wire [11:0] next_head_units=remove ? advance_units : stay_units;
     wire select_dllp=output_active ? output_dllp : dllp_pending;
     wire tlp_available=qcount!=0 && !waiting && initialized_i;
     // The frozen consumer's ready depends on frame kind, not valid. Qualifying
