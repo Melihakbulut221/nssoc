@@ -174,7 +174,11 @@ module soc_pcie_replay_tx #(
     end endgenerate
     wire [7:0] core_data=replay_bank_byte[send_slot];
     wire core_sop=read_pos==0;
-    assign core_eop=read_pos==lengths[send_slot]-1'b1;
+    // The last read position of the frame being sent is registered when the
+    // send starts; a slot's length is written at its commit, before any
+    // send of that slot, so this equals lengths[send_slot]-1 throughout.
+    reg [BW-1:0] send_last;
+    assign core_eop=read_pos==send_last;
     // The replay timer still starts when the last byte leaves on the wire:
     // the first-replayed-frame mark travels with the bytes.
     wire tx_first;
@@ -191,7 +195,7 @@ module soc_pcie_replay_tx #(
     end
     always @(posedge clk_i or negedge rst_ni) begin
         if(!rst_ni) begin
-            head<=0;tail<=0;new_slot<=0;send_slot<=0;replay_slot<=0;count<=0;sent_count<=0;replay_left<=0;
+            head<=0;tail<=0;new_slot<=0;send_slot<=0;send_last<=0;replay_slot<=0;count<=0;sent_count<=0;replay_left<=0;
             write_pos<=0;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};capturing<=0;sending<=0;sending_replay<=0;
             replay_active<=0;replay_pending<=0;replay_first<=0;halt<=0;
             next_store_sequence<=0;input_crc<=32'hffffffff;timer<=0;timer_running<=0;retries<=0;
@@ -264,9 +268,9 @@ module soc_pcie_replay_tx #(
                         end
                     end
                 end else if(replay_active) begin
-                    sending<=1;sending_replay<=1;send_slot<=replay_slot;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};
+                    sending<=1;sending_replay<=1;send_slot<=replay_slot;send_last<=lengths[replay_slot]-1'b1;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};
                 end else if(reserve_valid_o && reserve_ready_i) begin
-                    sending<=1;sending_replay<=0;send_slot<=new_slot;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};
+                    sending<=1;sending_replay<=0;send_slot<=new_slot;send_last<=lengths[new_slot]-1'b1;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};
                 end
             end
             if(core_valid && core_ready) begin

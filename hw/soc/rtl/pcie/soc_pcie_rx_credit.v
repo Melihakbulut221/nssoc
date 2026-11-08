@@ -93,7 +93,12 @@ module soc_pcie_rx_credit #(
     wire stage_drop=stage_pending && stage_checked && !stage_shape_ok;
     integer b;
     wire remove=waiting && (packet_accepted_i || packet_duplicate_i || packet_rejected_i);
-    wire [SW-1:0] head_slot=order[qread];
+    // The queue head slot is a register that tracks order[qread] from the
+    // next-state values of qread and of the order entry a commit writes.
+    // It may differ only while the queue is empty, when no TLP is read.
+    reg [SW-1:0] head_slot;
+    wire [SW-1:0] next_qread=remove ? (qread==SLOTS-1 ? 0 : qread+1'b1) : qread;
+    wire [SW-1:0] next_head_slot=(commit && qwrite==next_qread) ? stage_slot : order[next_qread];
     wire select_dllp=output_active ? output_dllp : dllp_pending;
     wire tlp_available=qcount!=0 && !waiting && initialized_i;
     // The frozen consumer's ready depends on frame kind, not valid. Qualifying
@@ -119,7 +124,7 @@ module soc_pcie_rx_credit #(
     assign queued_o=qcount;
     always @(posedge clk_i or negedge rst_ni) begin
         if(!rst_ni) begin
-            used<=0;qread<=0;qwrite<=0;qcount<=0;
+            used<=0;qread<=0;qwrite<=0;qcount<=0;head_slot<=0;
             input_active<=0;input_dllp<=0;input_bad<=0;input_count<=0;
             stage_pending<=0;stage_length<=0;stage_bad<=0;
             stage_checked<=0;stage_shape_ok<=0;stage_slot<=0;stage_units<=0;commit_slot<=0;
@@ -130,14 +135,14 @@ module soc_pcie_rx_credit #(
             released_o<=0;released_class_o<=0;released_data_o<=0;
             dropped_o<=0;protocol_error_o<=0;recovery_request_o<=0;
         end else if(!link_up_i) begin
-            used<=0;qread<=0;qwrite<=0;qcount<=0;input_active<=0;input_count<=0;
+            used<=0;qread<=0;qwrite<=0;qcount<=0;head_slot<=0;input_active<=0;input_count<=0;
             stage_pending<=0;dllp_pending<=0;output_active<=0;output_index<=0;waiting<=0;
             stage_checked<=0;commit_slot<=0;
             header_limit_o<={COMPLETER_ONLY ? 8'b0 : H_INIT,H_INIT,H_INIT};
             data_limit_o<={COMPLETER_ONLY ? 12'b0 : D_INIT,D_INIT,D_INIT};
             released_o<=0;dropped_o<=0;protocol_error_o<=0;recovery_request_o<=0;
         end else begin
-            released_o<=0;dropped_o<=0;
+            released_o<=0;dropped_o<=0;head_slot<=next_head_slot;
             stage_checked<=stage_pending && !commit && !stage_drop;
             stage_shape_ok<=shape_ok;
             stage_slot<=free_slot;stage_units<=(payload_dw+3)/4;
