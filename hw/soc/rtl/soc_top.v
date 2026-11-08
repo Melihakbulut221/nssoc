@@ -239,6 +239,11 @@ module soc_top #(
     // in writeback. tb_ibex_branch_stall retains that failing counterexample.
     parameter integer CORE_REQ_REG = 0,
     parameter integer CORE_WB_STAGE = 0,
+    // The dedicated branch-target ALU on its own, without the writeback
+    // stage. A conditional branch then no longer stalls ID/EX on its own
+    // comparison result: the decision drives the fetch redirect instead
+    // of the core-wide stall. docs/ibex-execute-timing.md measures it.
+    parameter integer CORE_BT_ALU = 0,
     // 256 ACCESS cycles = 5.12 us at 50 MHz. Normal register slaves,
     // including the CAN Wishbone bridge, respond in a few cycles.
     // Zero reproduces the historical unbounded bridge configuration.
@@ -605,7 +610,7 @@ module soc_top #(
       .RV32B           (0),
       .RV32ZC          (0),
       .RegFile         (0),
-      .BranchTargetALU (CORE_WB_STAGE),
+      .BranchTargetALU (CORE_WB_STAGE | CORE_BT_ALU),
       .WritebackStage  (CORE_WB_STAGE),
       .ICache          (0),
       .ICacheECC       (0),

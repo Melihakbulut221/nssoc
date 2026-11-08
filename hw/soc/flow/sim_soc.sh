@@ -266,6 +266,25 @@ esac
 DEFPARAMS="$DEFPARAMS
   defparam tb_soc.dut.CORE_REQ_REG = $SOC_CORE_REQ_REG;
   defparam tb_soc.dut.CORE_WB_STAGE = $SOC_CORE_WB_STAGE;"
+# Execute-path timing knobs, docs/ibex-execute-timing.md, with the same
+# rules as hw/soc/flow/syn_soc_top.sh. SOC_CORE_BT_ALU is soc_top's
+# CORE_BT_ALU; IBEX_BRANCH_2CYCLE is a source selector read by
+# flow/ibex_sources.sh and checked after elaboration below.
+SOC_CORE_BT_ALU=${SOC_CORE_BT_ALU:-0}
+IBEX_BRANCH_2CYCLE=${IBEX_BRANCH_2CYCLE:-0}
+case "$SOC_CORE_BT_ALU:$IBEX_BRANCH_2CYCLE" in
+  0:0|1:0|0:1) ;;
+  1:1) echo 'IBEX_BRANCH_2CYCLE applies only without the branch-target ALU' >&2; exit 2;;
+  *) echo 'SOC_CORE_BT_ALU and IBEX_BRANCH_2CYCLE must be zero or one' >&2; exit 2;;
+esac
+if [ "$IBEX_BRANCH_2CYCLE" = 1 ] && [ "$SOC_CORE_WB_STAGE" != 0 ]; then
+  echo 'IBEX_BRANCH_2CYCLE applies only without the writeback stage' >&2; exit 2
+fi
+export IBEX_BRANCH_2CYCLE
+if [ "$SOC_CORE_BT_ALU" != 0 ]; then
+  DEFPARAMS="$DEFPARAMS
+  defparam tb_soc.dut.CORE_BT_ALU = $SOC_CORE_BT_ALU;"
+fi
 if [ -n "$DEFPARAMS" ]; then
   RF_ROOT=(-s soc_param_override)
   RF_SRC=("$OUT/soc_param_override.v")
@@ -449,6 +468,18 @@ if [ "${IBEX_REGFILE:-secded}" = secded ]; then
   fi
 fi
 check_arm SOC_MEM_HARDEN "$SOC_MEM_HARDEN" g_ecc g_plain "memory codec"
+if [ "$IBEX_BRANCH_2CYCLE" = 1 ]; then
+  grep -qa '"g_branch_two_cycle"' "$OUT/tb_soc.vvp" || {
+    echo "== IBEX_BRANCH_2CYCLE=1 but the patched ID stage is not elaborated" >&2; exit 1; }
+  echo "== conditional branches: two cycles (IBEX_BRANCH_2CYCLE=1)"
+elif grep -qa '"g_branch_two_cycle"' "$OUT/tb_soc.vvp"; then
+  echo "== the two-cycle branch patch is elaborated at IBEX_BRANCH_2CYCLE=0" >&2; exit 1
+fi
+if [ "$SOC_CORE_BT_ALU" != 0 ]; then
+  grep -qa '"g_branch_target_alu"' "$OUT/tb_soc.vvp" || {
+    echo "== SOC_CORE_BT_ALU=1 but no branch-target ALU is elaborated" >&2; exit 1; }
+  echo "== branch-target ALU without writeback stage (SOC_CORE_BT_ALU=1)"
+fi
 if [ "$SOC_RAM_RDREG" = "$SOC_ROM_RDREG" ]; then
   check_arm SOC_MEM_RDREG "$SOC_MEM_RDREG" g_rd2 g_rd1 "memory read return"
 else

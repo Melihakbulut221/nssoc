@@ -25,6 +25,10 @@ case "$SOC_CORE_REQ_REG:$SOC_CORE_WB_STAGE" in
   0:0|0:1|1:0|1:1) ;;
   *) echo 'Native boot core selectors must be 0 or 1' >&2; exit 2 ;;
 esac
+# Execute-path timing knobs (docs/ibex-execute-timing.md); sim_soc.sh and
+# syn_soc_top.sh read them from the environment and refuse bad values.
+export SOC_CORE_BT_ALU=${SOC_CORE_BT_ALU:-0}
+export IBEX_BRANCH_2CYCLE=${IBEX_BRANCH_2CYCLE:-0}
 mkdir -p "$OUT"
 python3 - "$OUT/core-configuration.json" <<'PY'
 import json
@@ -42,7 +46,9 @@ Path(sys.argv[1]).write_text(json.dumps({
     'experimental_candidate_not_mainchip_acceptance': True,
     'CORE_REQ_REG': int(os.environ['SOC_CORE_REQ_REG']),
     'CORE_WB_STAGE': int(os.environ['SOC_CORE_WB_STAGE']),
-    'CORE_BRANCH_TARGET_ALU': int(os.environ['SOC_CORE_WB_STAGE']),
+    'CORE_BRANCH_TARGET_ALU': int(os.environ['SOC_CORE_WB_STAGE']) | int(os.environ['SOC_CORE_BT_ALU']),
+    'CORE_BT_ALU': int(os.environ['SOC_CORE_BT_ALU']),
+    'IBEX_BRANCH_2CYCLE': int(os.environ['IBEX_BRANCH_2CYCLE']),
     'interface_profile': os.environ.get('SOC_INTERFACE_PROFILE', 'base'),
     'status': 'requested configuration; consult RTL, synthesis and gate results',
 }, indent=2) + '\n')

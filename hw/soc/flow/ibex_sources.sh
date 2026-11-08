@@ -82,11 +82,26 @@
 # checked it against an RVFI one, so the combination is an error here
 # rather than a wrong netlist somewhere downstream.
 
+# IBEX_BRANCH_2CYCLE selects, and it is a patch to Ibex like the fault
+# port above:
+#
+#   1  hw/soc/genp/<tree>-br2/ibex_id_stage.v, written by
+#      flow/ibex_branch_2cycle.py from the sv2v output of the selected
+#      tree, in which every conditional branch takes two cycles whatever
+#      its outcome. <tree>/ibex_id_stage.v is EXCLUDED. The comparison
+#      result then reaches only the flopped branch-set request, not the
+#      ID/EX stall that every architectural register enable depends on.
+#      docs/ibex-execute-timing.md. Meaningful only at
+#      BranchTargetALU = 0; the flows that know the core parameters
+#      refuse the other combination.
+#   0  (default) the unmodified file.
+
 ibex_sources () {
   local soc_dir=$1
   local mode=${IBEX_REGFILE:-secded}
   local port=${IBEX_FAULT_PORT:-0}
   local gendir=${IBEX_GEN:-gen}
+  local br2=${IBEX_BRANCH_2CYCLE:-0}
   local f
 
   case "$mode" in
@@ -104,6 +119,11 @@ ibex_sources () {
     *) echo "IBEX_GEN must be 'gen' or 'genrvfi', got '$gendir'" >&2
        return 2 ;;
   esac
+  case "$br2" in
+    0|1) ;;
+    *) echo "IBEX_BRANCH_2CYCLE must be 0 or 1, got '$br2'" >&2
+       return 2 ;;
+  esac
   if [ "$port" = 1 ] && [ "$gendir" != gen ]; then
     echo "IBEX_FAULT_PORT=1 is only defined for IBEX_GEN=gen" >&2
     return 2
@@ -117,6 +137,10 @@ ibex_sources () {
     python3 "$soc_dir/flow/ibex_fault_port.py" \
             "$soc_dir/gen" "$soc_dir/genp" "$mode" >&2 || return 2
   fi
+  if [ "$br2" = 1 ]; then
+    python3 "$soc_dir/flow/ibex_branch_2cycle.py" \
+            "$soc_dir/$gendir" "$soc_dir/genp/$gendir-br2" >&2 || return 2
+  fi
 
   for f in "$soc_dir"/$gendir/*.v; do
     if [ "$mode" = "secded" ] && \
@@ -126,11 +150,17 @@ ibex_sources () {
     if [ "$port" = 1 ] && [ "$(basename "$f")" = "ibex_top.v" ]; then
       continue
     fi
+    if [ "$br2" = 1 ] && [ "$(basename "$f")" = "ibex_id_stage.v" ]; then
+      continue
+    fi
     echo "$f"
   done
 
   if [ "$port" = 1 ]; then
     echo "$soc_dir/genp/ibex_top.v"
+  fi
+  if [ "$br2" = 1 ]; then
+    echo "$soc_dir/genp/$gendir-br2/ibex_id_stage.v"
   fi
 
   if [ "$mode" = "secded" ]; then

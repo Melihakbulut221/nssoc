@@ -287,6 +287,29 @@ esac
 TOP_CHPARAM="$TOP_CHPARAM
 chparam -set CORE_REQ_REG $SOC_CORE_REQ_REG soc_top
 chparam -set CORE_WB_STAGE $SOC_CORE_WB_STAGE soc_top"
+# Execute-path timing knobs, docs/ibex-execute-timing.md. Both default to
+# 0, and at 0 nothing is emitted, so the default netlist is unchanged.
+#   SOC_CORE_BT_ALU=1     Ibex's dedicated branch-target ALU without the
+#                         writeback stage (soc_top's CORE_BT_ALU).
+#   IBEX_BRANCH_2CYCLE=1  every conditional branch takes two cycles, so
+#                         the comparison result no longer reaches the
+#                         ID/EX stall. A source selector read by
+#                         flow/ibex_sources.sh (flow/ibex_branch_2cycle.py).
+SOC_CORE_BT_ALU=${SOC_CORE_BT_ALU:-0}
+IBEX_BRANCH_2CYCLE=${IBEX_BRANCH_2CYCLE:-0}
+case "$SOC_CORE_BT_ALU:$IBEX_BRANCH_2CYCLE" in
+  0:0|1:0|0:1) ;;
+  1:1) echo 'IBEX_BRANCH_2CYCLE applies only without the branch-target ALU' >&2; exit 2;;
+  *) echo 'SOC_CORE_BT_ALU and IBEX_BRANCH_2CYCLE must be zero or one' >&2; exit 2;;
+esac
+if [ "$IBEX_BRANCH_2CYCLE" = 1 ] && [ "$SOC_CORE_WB_STAGE" != 0 ]; then
+  echo 'IBEX_BRANCH_2CYCLE applies only without the writeback stage' >&2; exit 2
+fi
+export IBEX_BRANCH_2CYCLE
+if [ "$SOC_CORE_BT_ALU" != 0 ]; then
+  TOP_CHPARAM="$TOP_CHPARAM
+chparam -set CORE_BT_ALU $SOC_CORE_BT_ALU soc_top"
+fi
 # shellcheck source=hw/soc/flow/ibex_sources.sh
 . "$SOC_DIR/flow/ibex_sources.sh"
 
@@ -778,6 +801,7 @@ awk -v top=soc_top -v ge=7.2576 '
 ' "$OUT/$AREA_SUMMARY"
 
 echo "  mem=$SOC_MEM  regfile=$IBEX_REGFILE  fault_port=$IBEX_FAULT_PORT  synpre=$IBEX_RF_SYNPRE  corrpre=$IBEX_RF_CORRPRE"
+echo "  core_req_reg=$SOC_CORE_REQ_REG  core_wb_stage=$SOC_CORE_WB_STAGE  core_bt_alu=$SOC_CORE_BT_ALU  branch_2cycle=$IBEX_BRANCH_2CYCLE  prefix_adder=${SOC_SYNTH_PREFIX_ADDER:-0}"
 echo "  mem_rdreg=$SOC_MEM_RDREG  mem_harden=$SOC_MEM_HARDEN  rom_harden=$SOC_ROM_HARDEN  boot_harden=$SOC_BOOT_HARDEN  clkgate=$SOC_CLKGATE  wake_gnt=$SOC_WAKE_GNT  req_reg=$SOC_REQ_REG  abc -D $ABC_D"
 echo "  report: $OUT/$AREA_SUMMARY  per-module: $OUT/area_hier.rpt"
 echo "  netlist: $OUT/soc_top.netlist.v  sta: $OUT/soc_top.sta.v  log: $OUT/syn.log"
