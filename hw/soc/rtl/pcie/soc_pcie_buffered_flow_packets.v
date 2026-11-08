@@ -69,6 +69,16 @@ module soc_pcie_buffered_flow_packets #(
         if(!local_reset) begin up_rx<=0;up_fc<=0;up_flow<=0;up_arb<=0;end
         else begin up_rx<=1'b1;up_fc<=link_up_i;up_flow<=rst_ni;up_arb<=!retrain_done_i;end
     end
+    // The receive queue's FC-initialization gate is registered: it only rises
+    // once per link epoch, so the queue starts accepting TLPs one cycle after
+    // FC initialization instead of in the same cycle, and the credit logic's
+    // initialization state no longer reaches the queue's ready and staging
+    // write enables combinationally.
+    reg rx_initialized;
+    always @(posedge clk_i or negedge up_rx) begin
+        if(!up_rx) rx_initialized<=0;
+        else rx_initialized<=peer_init1_done_o && local_init2_sent_o;
+    end
     assign requester_admission_o=1'b0;
     assign outstanding_requests_o=8'b0;
     wire [7:0] q_data,flow_data,advert_data;
@@ -81,7 +91,7 @@ module soc_pcie_buffered_flow_packets #(
     soc_pcie_rx_credit #(.MAX_TLP_DWORDS(MAX_TLP_DWORDS),.SLOTS_PER_CLASS(RX_SLOTS_PER_CLASS),
         .COMPLETER_ONLY(1)) receive_ownership(
         .clk_i(clk_i),.rst_ni(up_rx),.link_up_i(up_rx),.training_i(training_i),
-        .initialized_i(peer_init1_done_o && local_init2_sent_o),.rx_data_i(rx_data_i),.rx_sop_i(rx_sop_i),
+        .initialized_i(rx_initialized),.rx_data_i(rx_data_i),.rx_sop_i(rx_sop_i),
         .rx_eop_i(rx_eop_i),.rx_valid_i(rx_valid_i),.rx_dllp_i(rx_dllp_i),.rx_error_i(rx_error_i),
         .rx_ready_o(rx_ready_o),.out_data_o(q_data),.out_sop_o(q_sop),.out_eop_o(q_eop),
         .out_valid_o(q_valid),.out_dllp_o(q_dllp),.out_error_o(q_error),.out_ready_i(q_ready),

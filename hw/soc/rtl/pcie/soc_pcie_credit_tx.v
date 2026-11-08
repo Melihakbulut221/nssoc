@@ -52,9 +52,11 @@ module soc_pcie_credit_tx (
     // unchanged and nothing was consumed in between. After initialization
     // credit only decreases by a consume (excluded here) and an UpdateFC can
     // only raise it, so a registered grant is never one the current state
-    // would refuse. A request is granted one cycle after it first appears,
-    // and the cycle after a consume never grants.
-    reg verdict,consumed;
+    // would refuse. A request is granted only once it has been presented
+    // unchanged for two cycles (so the required credit of any debit that
+    // meets an UpdateFC in either of its cycles is one registered value), and
+    // the cycle after a consume never grants.
+    reg verdict,consumed,request_stable;
     reg [1:0] request_class;
     reg [10:0] request_dw;
     reg request_replay;
@@ -64,14 +66,17 @@ module soc_pcie_credit_tx (
         reserve_replay_i==request_replay;
     // Initialization is part of the registered verdict; it only rises until
     // link loss or reset, which gate the grant directly.
-    assign reserve_ready_o=rst_ni && link_up_i && verdict && same_request && !consumed;
+    assign reserve_ready_o=rst_ni && link_up_i && verdict && same_request && request_stable && !consumed;
     wire consume=reserve_valid_i && reserve_ready_o && !reserve_replay_i;
     // UpdateFC is processed one cycle after it is presented. The first cycle
-    // registers the event with its new-limit-minus-consumed differences,
-    // with and without that cycle's debit; carry-save form keeps the debit
-    // variant one adder deep. The second cycle selects the variant for the
-    // debit that actually happened, subtracts a debit of its own cycle (two
-    // consumes are never adjacent) and applies the update.
+    // registers the event with its new-limit-minus-consumed balance without
+    // a debit and with one debit (carry-save form, one adder deep), and the
+    // sign of its limit advance against the current limit and against the
+    // limit the UpdateFC applied in that cycle writes. The second cycle only
+    // selects: two consumes are never adjacent, and the required credit of a
+    // debit in either cycle is the same registered value, so "one debit"
+    // covers a debit in the first cycle or in the second; the advance sign
+    // follows whether the first cycle overwrote that limit.
     wire debit_now=consume && request_class==fc_class_i;
     wire [11:0] fc_dc=dc[fc_class_i];
     wire [11:0] csa_b=~fc_dc;
@@ -81,38 +86,56 @@ module soc_pcie_credit_tx (
     reg [1:0] update_phase,update_class;
     reg [7:0] update_header,update_h_idle,update_h_debit;
     reg [11:0] update_data,update_d_idle,update_d_debit;
+    reg update_h_back_now,update_h_back_written,update_d_back_now,update_d_back_written;
+    reg update_h_overwritten,update_d_overwritten;
+    wire [7:0] h_advance_now=fc_header_i-hl[fc_class_i];
+    wire [7:0] h_advance_written=fc_header_i-update_header;
+    wire [11:0] d_advance_now=fc_data_i-dl[fc_class_i];
+    wire [11:0] d_advance_written=fc_data_i-update_data;
     wire [7:0] h_idle_remaining=update_h_debited ? update_h_debit : update_h_idle;
     wire [11:0] d_idle_remaining=update_d_debited ? update_d_debit : update_d_idle;
     wire credit_debit=consume && request_class==update_class;
-    wire [7:0] h_step=update_header-hl[update_class];
-    wire [11:0] d_step=update_data-dl[update_class];
-    wire [7:0] h_debit_remaining=h_idle_remaining-8'd1;
-    wire [11:0] d_debit_remaining=d_idle_remaining+request_data_negated;
+    wire h_step_back=update_h_overwritten ? update_h_back_written : update_h_back_now;
+    wire d_step_back=update_d_overwritten ? update_d_back_written : update_d_back_now;
+    wire [7:0] h_debit_remaining=update_h_debit;
+    wire [11:0] d_debit_remaining=update_d_debit;
     wire h_update_ok=hi[update_class] ? update_header==0 :
-        (!h_step[7] && !(credit_debit ? h_debit_remaining[7] : h_idle_remaining[7]));
+        (!h_step_back && !(credit_debit ? h_debit_remaining[7] : h_idle_remaining[7]));
     wire d_update_ok=di[update_class] ? update_data==0 :
-        (!d_step[11] && !(credit_debit ? d_debit_remaining[11] : d_idle_remaining[11]));
+        (!d_step_back && !(credit_debit ? d_debit_remaining[11] : d_idle_remaining[11]));
+    // Limit writes of the UpdateFC applied in this cycle, for the next one.
+    wire update_rejected=update_class==3 || update_phase==3;
+    wire init_write=update_valid && !update_rejected && !all_seen &&
+        !(update_phase==2 || update_header[7] || update_data[11]);
+    wire apply_update=update_valid && !update_rejected && all_seen && update_phase==2 &&
+        h_update_ok && d_update_ok;
+    wire hl_written=init_write || (apply_update && !hi[update_class]);
+    wire dl_written=init_write || (apply_update && !di[update_class]);
     always @(posedge clk_i or negedge rst_ni) begin
         if (!rst_ni) begin
             seen<=0;hi<=0;di<=0;confirmed<=0;protocol_error_o<=0;
             for(i=0;i<3;i=i+1) begin hl[i]<=0;hc[i]<=0;dl[i]<=0;dc[i]<=0;ah[i]<=0;ad[i]<=0;end
-            verdict<=0;consumed<=0;request_class<=0;request_dw<=0;request_replay<=0;
+            verdict<=0;consumed<=0;request_stable<=0;request_class<=0;request_dw<=0;request_replay<=0;
             request_data<=0;request_data_negated<=0;update_valid<=0;
         end else if (!link_up_i) begin
             seen<=0;hi<=0;di<=0;confirmed<=0;protocol_error_o<=0;
             for(i=0;i<3;i=i+1) begin hl[i]<=0;hc[i]<=0;dl[i]<=0;dc[i]<=0;ah[i]<=0;ad[i]<=0;end
-            verdict<=0;consumed<=0;update_valid<=0;
+            verdict<=0;consumed<=0;request_stable<=0;update_valid<=0;
         end else begin
             protocol_error_o<=0;
             verdict<=all_seen && confirmed && local_init_done_i && request_legal &&
                 (reserve_replay_i || (header_ok && data_ok));
-            consumed<=consume;
+            consumed<=consume;request_stable<=same_request;
             request_class<=reserve_class_i;request_dw<=reserve_payload_dw_i;request_replay<=reserve_replay_i;
             request_data<=required_data;request_data_negated<=-{2'b0,required_data};
             update_valid<=fc_valid_i;update_phase<=fc_phase_i;update_class<=fc_class_i;
             update_header<=fc_header_i;update_data<=fc_data_i;
             update_h_idle<=fc_header_i-hc[fc_class_i];update_h_debit<=fc_header_i+~hc[fc_class_i];
             update_d_idle<=fc_data_i-fc_dc;update_d_debit<=csa_sum+{csa_carry[10:0],1'b1};
+            update_h_back_now<=h_advance_now[7];update_h_back_written<=h_advance_written[7];
+            update_d_back_now<=d_advance_now[11];update_d_back_written<=d_advance_written[11];
+            update_h_overwritten<=hl_written && update_class==fc_class_i;
+            update_d_overwritten<=dl_written && update_class==fc_class_i;
             update_h_debited<=debit_now && !hi[request_class];
             update_d_debited<=debit_now && !di[request_class];
             if (consume) begin

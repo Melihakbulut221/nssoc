@@ -4,9 +4,11 @@
 
 The module grants from a registered verdict and applies an UpdateFC one
 cycle after it is presented. The oracle models both: a request is granted
-only if it was presented unchanged in the previous cycle, was affordable
-and initialized then, and nothing was consumed in that cycle; an UpdateFC presented in one
-cycle is checked and applied in the next, after that cycle's debit.
+only if it was presented unchanged in the two previous cycles, was
+affordable and initialized in the previous one, and nothing was consumed in
+that cycle; an UpdateFC presented in one cycle is checked and applied in the
+next, after that cycle's debit. The request registers are modelled as the
+module keeps them: cleared by reset, held across link loss.
 """
 import random
 
@@ -29,6 +31,7 @@ class Driver:
         self.verdict = False
         self.last_request = None
         self.consumed = False
+        self.stable = False
 
     async def tick(self, fc=None, request=None, reset=False, link=True, local=True, tlp=False, idle_request=None):
         d = self.dut
@@ -52,7 +55,7 @@ class Driver:
         # Registered verdict: the same request in the previous cycle, affordable
         # then, and no consume in that cycle.
         ready = (not reset and link and self.verdict and key == self.last_request
-                 and not self.consumed)
+                 and self.stable and not self.consumed)
         # This cycle's verdict, against this cycle's credit and initialization,
         # grants next cycle.
         verdict = initialized and legal and (replay or all(
@@ -62,7 +65,9 @@ class Driver:
         assert int(d.reserve_ready_o.value) == ready
         error = False
         if reset or not link:
+            held = self.last_request
             self.clear()
+            self.last_request = (0, 0, False) if reset else held
         else:
             all_seen_before = len(self.seen) == 3
             consumed = request is not None and ready and not replay
@@ -75,6 +80,7 @@ class Driver:
             # The UpdateFC presented last cycle is checked and applied now,
             # after this cycle's debit; this cycle's one waits a cycle.
             pending, self.pending = self.pending, fc
+            self.stable = key == self.last_request
             self.verdict, self.last_request, self.consumed = verdict, key, consumed
             if pending is not None:
                 phase, c, h, data = pending
@@ -124,11 +130,11 @@ class Driver:
         await self.tick(local=True)
 
     async def grant(self, request):
-        """Present a request with valid low for a cycle, then with valid high.
+        """Present a request with valid low for two cycles, then with valid high.
 
-        The registered verdict grants a request one cycle after it first
-        appears; the first cycle is the one in which its affordability is
-        judged."""
+        A request is granted once it has been presented unchanged for two
+        cycles; the second is the one in which its affordability is judged."""
+        await self.tick(idle_request=request)
         await self.tick(idle_request=request)
         return await self.tick(request=request)
 
@@ -181,11 +187,12 @@ async def modulo_counters_random_credit_return_and_stalls(dut):
     driver = Driver(dut)
     await driver.init(((8, 32), (8, 32), (8, 32)))
     rng = random.Random(0xc4ed17)
-    # Each request is held for two cycles: one to judge it, one to grant it.
-    for index in range(24000):
-        cls = (index // 2) % 3
-        if index % 2 == 0:
-            request = (cls, rng.choice((0, 1, 4, 5, 8, 16, 31)), (index // 2) % 19 == 0)
+    # Each request is held for three cycles: two to settle and judge it, one
+    # to grant it.
+    for index in range(36000):
+        cls = (index // 3) % 3
+        if index % 3 == 0:
+            request = (cls, rng.choice((0, 1, 4, 5, 8, 16, 31)), (index // 3) % 19 == 0)
         fc = None
         if index % 4 != 0:
             # Return only actually consumed buffers, plus a bounded new window.
@@ -221,7 +228,8 @@ async def same_cycle_update_debit_exhausts_exactly_once(dut):
         await driver.init(((4, 1), (4, 1), (4, 1)))
         # Returning one data credit while consuming one leaves precisely one.
         # The update is presented a cycle before the debit, so that it is
-        # applied in the debit's cycle.
+        # applied in the debit's cycle; the request has settled before.
+        await driver.tick(idle_request=(cls, 4, False))
         await driver.tick(fc=(2, cls, 5, 2), idle_request=(cls, 4, False))
         assert await driver.tick(request=(cls, 4, False))
         assert not await driver.tick(request=(cls, 4, False))  # cycle after a consume
@@ -230,6 +238,7 @@ async def same_cycle_update_debit_exhausts_exactly_once(dut):
         assert not await driver.tick(request=(cls, 4, False))  # exhausted
         # Updates to another class must not overwrite this class's debit.
         other = (cls + 1) % 3
+        await driver.tick(idle_request=(other, 4, False))
         await driver.tick(fc=(2, cls, 6, 3), idle_request=(other, 4, False))
         assert await driver.tick(request=(other, 4, False))
         assert not await driver.tick(request=(other, 4, False))
@@ -241,6 +250,7 @@ async def same_cycle_update_debit_exhausts_exactly_once(dut):
     # are legal, even though their pre-debit sign bits are both set.
     for cls in range(3):
         await driver.init(((4, 1), (4, 1), (4, 1)))
+        await driver.tick(idle_request=(cls, 4, False))
         await driver.tick(fc=(2, cls, 128, 2048), idle_request=(cls, 4, False))
         assert await driver.tick(request=(cls, 4, False))
         # Without another debit, advancing those balances to the half-range
