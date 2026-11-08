@@ -44,6 +44,15 @@ module soc_pcie_reliable_packets #(
     output wire [31:0] bar0_o
 );
     wire local_reset=rst_ni && link_up_i;
+    // Registered link/reset copies for the replay store and the link layer,
+    // cleared asynchronously with local_reset and released one clock later;
+    // the DLLP receiver, slices and arbiter use local_reset itself. The D
+    // inputs differ only so synthesis keeps two flops.
+    reg up_retry,up_link;
+    always @(posedge clk_i or negedge local_reset) begin
+        if(!local_reset) begin up_retry<=0;up_link<=0;end
+        else begin up_retry<=1'b1;up_link<=link_up_i;end
+    end
     // Receive register slice. Queue beats reach the DLLP and TLP consumers
     // one cycle later, from flops, so the queue read and the consumers' end
     // of frame checks are separate stages. A TLP frame still starts only when
@@ -91,7 +100,7 @@ module soc_pcie_reliable_packets #(
     wire link_sop,link_eop,link_valid,link_dllp,link_ready,store_ready;
     wire packet_sop,packet_eop,packet_valid,packet_dllp,packet_ready;
     soc_pcie_link_packets #(.VENDOR_ID(VENDOR_ID),.DEVICE_ID(DEVICE_ID),.APB_TIMEOUT(APB_TIMEOUT),
-        .MAX_TLP_DWORDS(MAX_TLP_DWORDS)) endpoint(.clk_i(clk_i),.rst_ni(local_reset),.function_id_i(function_id_i),
+        .MAX_TLP_DWORDS(MAX_TLP_DWORDS)) endpoint(.clk_i(clk_i),.rst_ni(up_link),.function_id_i(function_id_i),
         .rx_data_i(slice_data),.rx_sop_i(slice_sop),.rx_eop_i(slice_eop),.rx_error_i(slice_error || kind_error),
         .rx_valid_i(slice_valid && !selected_kind),.rx_ready_o(tlp_ready),
         .rx_expected_sequence_o(rx_expected_sequence_o),.tx_next_sequence_o(tx_next_sequence_o),
@@ -114,7 +123,7 @@ module soc_pcie_reliable_packets #(
     wire retry_sop,retry_eop,retry_valid,retry_ready,retry_kind;
     soc_pcie_replay_tx #(.DEPTH(REPLAY_DEPTH),.MAX_BYTES(MAX_TLP_DWORDS*4+6),
         .TIMEOUT_CYCLES(REPLAY_TIMEOUT_CYCLES),.MAX_REPLAYS(MAX_REPLAYS)) retry(
-        .clk_i(clk_i),.rst_ni(rst_ni),.link_up_i(link_up_i),.training_i(training_i),.retrain_done_i(retrain_done_i),
+        .clk_i(clk_i),.rst_ni(up_retry),.link_up_i(up_retry),.training_i(training_i),.retrain_done_i(retrain_done_i),
         .in_data_i(link_data),.in_sop_i(link_sop),.in_eop_i(link_eop),.in_valid_i(link_valid && !link_dllp),.in_ready_o(store_ready),
         .ack_valid_i(ack_valid),.ack_nak_i(ack_nak),.ack_sequence_i(ack_sequence),.ack_ready_o(ack_ready),
         .reserve_valid_o(reserve_valid_o),.reserve_ready_i(reserve_ready_i),.reserve_class_o(reserve_class_o),

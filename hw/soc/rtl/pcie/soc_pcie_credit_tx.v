@@ -62,7 +62,9 @@ module soc_pcie_credit_tx (
     reg [11:0] request_data_negated;
     wire same_request=reserve_class_i==request_class && reserve_payload_dw_i==request_dw &&
         reserve_replay_i==request_replay;
-    assign reserve_ready_o=initialized_o && verdict && same_request && !consumed;
+    // Initialization is part of the registered verdict; it only rises until
+    // link loss or reset, which gate the grant directly.
+    assign reserve_ready_o=rst_ni && link_up_i && verdict && same_request && !consumed;
     wire consume=reserve_valid_i && reserve_ready_o && !reserve_replay_i;
     // UpdateFC is processed one cycle after it is presented. The first cycle
     // registers the event with its new-limit-minus-consumed differences,
@@ -102,7 +104,8 @@ module soc_pcie_credit_tx (
             verdict<=0;consumed<=0;update_valid<=0;
         end else begin
             protocol_error_o<=0;
-            verdict<=request_legal && (reserve_replay_i || (header_ok && data_ok));
+            verdict<=all_seen && confirmed && local_init_done_i && request_legal &&
+                (reserve_replay_i || (header_ok && data_ok));
             consumed<=consume;
             request_class<=reserve_class_i;request_dw<=reserve_payload_dw_i;request_replay<=reserve_replay_i;
             request_data<=required_data;request_data_negated<=-{2'b0,required_data};

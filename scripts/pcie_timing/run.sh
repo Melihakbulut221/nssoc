@@ -104,7 +104,7 @@ proc reports {stage} {
   # release as startpoints, so the logic behind their fanout trees shows.
   set core_ck {}
   foreach pin \$regs_ck {
-    if {![regexp {^(pcie_link_up_q|pcie_training_q|pcie_retrain_done_q|packet_reset_release|packet_rst_n)} [get_full_name \$pin]]} {
+    if {![regexp {^(pcie_link_up_q|pcie_training_q|pcie_retrain_done_q|packet_reset_release|packet_rst_n|u_pcie\.up_|u_pcie\.flow\.up_|u_pcie\.flow\.packets\.up_)} [get_full_name \$pin]]} {
       lappend core_ck \$pin
     }
   }

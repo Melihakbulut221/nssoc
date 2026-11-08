@@ -5,7 +5,7 @@
 The module grants from a registered verdict and applies an UpdateFC one
 cycle after it is presented. The oracle models both: a request is granted
 only if it was presented unchanged in the previous cycle, was affordable
-then, and nothing was consumed in that cycle; an UpdateFC presented in one
+and initialized then, and nothing was consumed in that cycle; an UpdateFC presented in one
 cycle is checked and applied in the next, after that cycle's debit.
 """
 import random
@@ -51,10 +51,11 @@ class Driver:
         key = (cls, dw, replay)
         # Registered verdict: the same request in the previous cycle, affordable
         # then, and no consume in that cycle.
-        ready = (initialized and self.verdict and key == self.last_request
+        ready = (not reset and link and self.verdict and key == self.last_request
                  and not self.consumed)
-        # This cycle's verdict, against this cycle's credit, grants next cycle.
-        verdict = legal and (replay or all(
+        # This cycle's verdict, against this cycle's credit and initialization,
+        # grants next cycle.
+        verdict = initialized and legal and (replay or all(
             self.inf[cls][k] or self.limit[cls][k] - self.used[cls][k] >= fee[k]
             for k in range(2)))
         assert int(d.initialized_o.value) == initialized
