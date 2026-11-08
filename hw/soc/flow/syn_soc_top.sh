@@ -667,6 +667,19 @@ select -assert-count 16 t:RM_IHPSG13_2P_256x16_c2_bm_bist"
   *) echo 'SOC_SRAM_MBIST must be 0 or 1' >&2; exit 2 ;;
 esac
 
+# Opt-in parallel-prefix carry mapping. Yosys maps $alu carry logic as a
+# ripple chain by default; the measured slow-corner Ibex paths run through
+# those chains. SOC_SYNTH_PREFIX_ADDER=1 maps every $lcu with Yosys's
+# Kogge-Stone choice before the fine stage. Default netlists are unchanged.
+if [ "${SOC_SYNTH_PREFIX_ADDER:-0}" != 0 ]; then
+  first=${SYNTH_COMMAND%%$'\n'*}
+  [ "$first" = "synth -flatten -top soc_top" ] || {
+    echo 'SOC_SYNTH_PREFIX_ADDER needs the plain flattening synth command' >&2; exit 2; }
+  SYNTH_COMMAND="synth -flatten -top soc_top -run begin:fine
+techmap -map +/techmap.v -map +/choices/kogge-stone.v
+synth -top soc_top -run fine${SYNTH_COMMAND#"$first"}"
+fi
+
 cat > "$OUT/soc_top_syn.ys" <<EOF
 read_liberty -lib $SG13G2_TYP
 $ETH_LIB_READ
