@@ -76,6 +76,7 @@ set_output_delay -clock clk_i 4.0 [get_ports {ep_psel ep_penable ep_pwrite ep_pa
 set_false_path -from [get_ports rst_sys_n]
 set_driving_cell -lib_cell sg13g2_buf_4 -pin X [all_inputs]
 set_load 0.006 [all_outputs]
+set_max_fanout 10 [current_design]
 set_timing_derate -early 0.95
 set_timing_derate -late 1.05
 SDC
@@ -91,14 +92,24 @@ read_verilog $OUT/pcie.sta.v
 link_design pcie_timing_top
 read_sdc $OUT/pcie.sdc
 # OpenSTA renamed the path-count flags; accept either spelling.
-if {[catch {report_checks -group_count 1 -endpoint_count 1 -format end > /dev/null}]} {
-  set G -group_path_count; set E -endpoint_path_count
-} else { set G -group_count; set E -endpoint_count }
+if {[catch {report_checks -group_path_count 1 -endpoint_path_count 1 -format end > /dev/null}]} {
+  set G -group_count; set E -endpoint_count
+} else { set G -group_path_count; set E -endpoint_path_count }
 proc reports {stage} {
   global G E
   set regs_ck [all_registers -clock pcie_clk_i -clock_pins]
   set regs_d [all_registers -clock pcie_clk_i -data_pins]
+  # The same paths without the three link status flops and the packet reset
+  # release as startpoints, so the logic behind their fanout trees shows.
+  set core_ck {}
+  foreach pin \$regs_ck {
+    if {![regexp {^(pcie_link_up_q|pcie_training_q|pcie_retrain_done_q|packet_reset_release)} [get_full_name \$pin]]} {
+      lappend core_ck \$pin
+    }
+  }
   foreach c {typ slow} {
+    report_checks -corner \$c -path_delay max -from \$core_ck -to \$regs_d \$G 5000 \$E 1 -format end > $OUT/\${stage}_core_end_\$c.rpt
+    report_checks -corner \$c -path_delay max -from \$core_ck -to \$regs_d \$G 1500 \$E 1 -fields {net} -digits 3 > $OUT/\${stage}_core_full_\$c.rpt
     puts "NSSOC_PCIE_REPORT \$stage \$c"
     report_checks -corner \$c -path_delay max -from \$regs_ck -to \$regs_d \$G 5000 \$E 1 -format end > $OUT/\${stage}_r2r_end_\$c.rpt
     report_checks -corner \$c -path_delay max -from \$regs_ck -to \$regs_d \$G 40 \$E 1 -fields {net} -digits 3 > $OUT/\${stage}_r2r_full_\$c.rpt

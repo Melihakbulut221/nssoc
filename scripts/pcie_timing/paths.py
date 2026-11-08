@@ -20,6 +20,7 @@ END = re.compile(r"^(\S+)\s+\((\S+)\)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)")
 
 def register(pin):
     name = pin.rsplit("/", 1)[0].replace("\\", "")
+    name = re.sub(r"^.*/hw/soc/rtl/pcie/", "", name)
     name = re.sub(r"_reg$", "", name)
     return name
 
@@ -29,18 +30,22 @@ def group(name):
     return re.sub(r"\s*\[\d+\]", "", name).strip()
 
 
-def ends(path):
-    rows = []
+def ends(path, want="pcie_clk_i"):
+    """Endpoint slacks of one path group (recovery checks are "asynchronous")."""
+    rows, current = [], None
     if not path.exists():
         return rows
     for line in path.read_text().splitlines():
+        if " group " in line and line.startswith(("max_delay", "min_delay")):
+            current = line.split()[-1]
+            continue
         m = END.match(line.strip())
-        if m:
+        if m and current == want:
             rows.append((register(m.group(1)), float(m.group(5))))
     return rows
 
 
-def full(path):
+def full(path, want="pcie_clk_i"):
     paths, cur = [], None
     if not path.exists():
         return paths
@@ -52,6 +57,8 @@ def full(path):
             continue
         elif line.startswith("Endpoint:"):
             cur["end"] = line.split()[1]
+        elif line.startswith("Path Group:"):
+            cur["group"] = line.split()[-1]
         elif "data arrival time" in line and cur["arrival"] is None:
             cur["arrival"] = float(line.split()[0])
         elif "slack" in line and "(" in line:
@@ -68,7 +75,7 @@ def full(path):
                 nm = group(n.group(1).replace("\\", ""))
                 if nm not in cur["nets"]:
                     cur["nets"].append(nm)
-    return paths
+    return [p for p in paths if p.get("group") == want]
 
 
 def logic_levels(cells):
@@ -101,8 +108,27 @@ def main(out):
             print("violating register-to-register endpoints by register (worst, count):")
             for g, s in sorted(groups.items(), key=lambda kv: min(kv[1]))[:30]:
                 print(f"  {min(s):8.3f} {len(s):5d}  {g}")
+            core = full(out / f"{stage}_core_full_{corner}.rpt")
+            if core:
+                crow = ends(out / f"{stage}_core_end_{corner}.rpt")
+                neg = [s for _, s in crow if s < 0]
+                print(f"without link status startpoints: worst {min(s for _, s in crow):.3f} ns, "
+                      f"TNS {sum(neg):.2f} ns, violating endpoints {len(neg)}")
+                print("  worst path per endpoint register (slack, cells, logic cells, start -> end):")
+                seen = set()
+                for p in core:
+                    g = group(register(p.get("end", "?")))
+                    if g in seen:
+                        continue
+                    seen.add(g)
+                    n, m = logic_levels(p["cells"])
+                    print(f"  {p['slack']:8.3f} {n:3d} {m:3d}  {register(p['start'])} -> {register(p.get('end', '?'))}")
+                    if len(seen) >= 40:
+                        break
+                depth = sorted((logic_levels(p["cells"]) for p in core), reverse=True)[:1]
+                print(f"  deepest of {len(core)} worst-endpoint paths: cells, logic cells {depth}")
             print("worst register-to-register paths (slack, arrival, cells, logic cells, start -> end):")
-            for p in full(out / f"{stage}_r2r_full_{corner}.rpt")[:20]:
+            for p in full(out / f"{stage}_r2r_full_{corner}.rpt")[:6]:
                 n, m = logic_levels(p["cells"])
                 nets = [x for x in p["nets"] if x != group(register(p["start"]))][:10]
                 print(f"  {p['slack']:8.3f} {p['arrival']:7.3f} {n:3d} {m:3d}  "
@@ -114,6 +140,10 @@ def main(out):
             hold = ends(out / f"{stage}_hold_end_{corner}.rpt")
             if hold:
                 print(f"hold worst {min(s for _, s in hold):.3f} ns")
+            rec = ends(out / f"{stage}_all_end_{corner}.rpt", "asynchronous")
+            if rec:
+                print(f"recovery (asynchronous group) worst {min(s for _, s in rec):.3f} ns, "
+                      f"violating {sum(1 for _, s in rec if s < 0)}")
 
 
 if __name__ == "__main__":
