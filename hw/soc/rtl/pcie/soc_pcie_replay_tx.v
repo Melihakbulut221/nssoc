@@ -78,6 +78,21 @@ module soc_pcie_replay_tx #(
         else if(!link_up_i) next_store_sequence_plus_one<=12'd1;
         else next_store_sequence_plus_one<=next_store_sequence+12'd1;
     end
+    // Captured bytes are written one cycle after they are accepted, from
+    // registers. No byte is read within a cycle of its write: header and
+    // sequence bytes are read at least eleven cycles later, and a slot is
+    // read for transmission only after its commit, at least one cycle after
+    // its last byte was accepted. The accept decision therefore no longer
+    // drives the write enables of the whole store.
+    localparam integer AW=$clog2(DEPTH*MAX_BYTES);
+    reg write_valid;
+    reg [AW-1:0] write_address;
+    reg [7:0] write_data;
+    wire [AW-1:0] capture_address=tail*MAX_BYTES+(in_sop_i ? {BW{1'b0}} : write_pos);
+    always @(posedge clk_i) begin
+        write_address<=capture_address;write_data<=in_data_i;
+        if(write_valid) bytes[write_address]<=write_data;
+    end
     reg [31:0] input_crc;
     reg [TW-1:0] timer;
     reg timer_running;
@@ -104,32 +119,29 @@ module soc_pcie_replay_tx #(
     wire current_ack_allowed=ack_delta==0 || (ack_delta<=sent_count && ack_delta!=0);
     wire ack_allowed=ack_observed ? ack_was_allowed : current_ack_allowed;
     wire ack_stale=ack_observed ? ack_was_stale : ack_delta>12'd2048;
-    // Reservation metadata, one register set per slot, decoded from that
-    // slot's stored header bytes every cycle. A slot is offered for
-    // reservation only after its accepted EOP, which follows the writes of
-    // header bytes 2, 4 and 5 by at least twelve cycles, and an offered slot
-    // is never rewritten (only the tail slot is captured, and the tail equals
-    // an offered slot only when the store is full). The registered decode
-    // therefore always equals the decode of the bytes it replaces, and the
-    // reservation request no longer starts with a byte multiplexer.
-    wire [1:0] slot_class [0:DEPTH-1];
-    wire [10:0] slot_payload_dw [0:DEPTH-1];
-    genvar meta_slot;
-    generate for(meta_slot=0;meta_slot<DEPTH;meta_slot=meta_slot+1) begin: reserve_meta
-        wire [7:0] header=bytes[meta_slot*MAX_BYTES+2];
-        wire [9:0] length={bytes[meta_slot*MAX_BYTES+4][1:0],bytes[meta_slot*MAX_BYTES+5]};
-        reg [1:0] decoded_class;
-        reg [10:0] decoded_payload_dw;
-        always @(posedge clk_i) begin
-            decoded_class<=(header[4:0]==5'b01010 || header[4:0]==5'b01011) ? 2'd2 :
-                ((header[4:0]==0 && header[6]) || header[4:3]==2'b10) ? 2'd0 : 2'd1;
-            decoded_payload_dw<=!header[6] ? 11'd0 : length==0 ? 11'd1024 : {1'b0,length};
-        end
-        assign slot_class[meta_slot]=decoded_class;
-        assign slot_payload_dw[meta_slot]=decoded_payload_dw;
-    end endgenerate
-    assign reserve_class_o=slot_class[new_slot];
-    assign reserve_payload_dw_o=slot_payload_dw[new_slot];
+    // Reservation metadata in registers, decoded one cycle ahead from the
+    // header bytes of the slot new_slot will hold in the next cycle. A slot
+    // is offered for reservation only after its accepted EOP, which follows
+    // the writes of header bytes 2, 4 and 5 by at least eleven cycles, and an
+    // offered slot is never rewritten (only the tail slot is captured, and
+    // the tail equals an offered slot only when the store is full). While a
+    // reservation is offered the registers therefore equal the decode of the
+    // current slot's bytes, and the request no longer starts with a byte
+    // multiplexer and header decode.
+    wire core_valid,core_ready,core_eop;
+    wire [PW-1:0] next_new_slot=!link_up_i ? {PW{1'b0}} :
+        (core_valid && core_ready && core_eop && !sending_replay) ? advance(new_slot,1) : new_slot;
+    wire [7:0] next_header=bytes[next_new_slot*MAX_BYTES+2];
+    wire [9:0] next_length={bytes[next_new_slot*MAX_BYTES+4][1:0],bytes[next_new_slot*MAX_BYTES+5]};
+    reg [1:0] reserve_class_q;
+    reg [10:0] reserve_payload_dw_q;
+    always @(posedge clk_i) begin
+        reserve_class_q<=(next_header[4:0]==5'b01010 || next_header[4:0]==5'b01011) ? 2'd2 :
+            ((next_header[4:0]==0 && next_header[6]) || next_header[4:3]==2'b10) ? 2'd0 : 2'd1;
+        reserve_payload_dw_q<=!next_header[6] ? 11'd0 : next_length==0 ? 11'd1024 : {1'b0,next_length};
+    end
+    assign reserve_class_o=reserve_class_q;
+    assign reserve_payload_dw_o=reserve_payload_dw_q;
     // Reservation is a cancellable request until handshake. A replay bypasses
     // it entirely: its receiver credit was reserved on original transmission.
     assign reserve_replay_o=0;
@@ -141,8 +153,7 @@ module soc_pcie_replay_tx #(
     assign ack_ready_o=rst_ni && link_up_i && !sending && !capturing && !replay_active;
     // The transmit stream leaves through a register slice, so the replay
     // read path ends at a flop instead of continuing into the link layer.
-    wire core_valid=rst_ni && link_up_i && sending;
-    wire core_ready;
+    assign core_valid=rst_ni && link_up_i && sending;
     // A registered one-hot cursor removes binary-address decoding from
     // the memory-to-transmit path. Include cross-bank addresses exactly as
     // the flat reference does; unaddressable array reads remain undefined.
@@ -163,7 +174,7 @@ module soc_pcie_replay_tx #(
     end endgenerate
     wire [7:0] core_data=replay_bank_byte[send_slot];
     wire core_sop=read_pos==0;
-    wire core_eop=read_pos==lengths[send_slot]-1'b1;
+    assign core_eop=read_pos==lengths[send_slot]-1'b1;
     // The replay timer still starts when the last byte leaves on the wire:
     // the first-replayed-frame mark travels with the bytes.
     wire tx_first;
@@ -184,17 +195,17 @@ module soc_pcie_replay_tx #(
             write_pos<=0;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};capturing<=0;sending<=0;sending_replay<=0;
             replay_active<=0;replay_pending<=0;replay_first<=0;halt<=0;
             next_store_sequence<=0;input_crc<=32'hffffffff;timer<=0;timer_running<=0;retries<=0;
-            ack_observed<=0;ack_was_allowed<=0;ack_was_stale<=0;
+            ack_observed<=0;ack_was_allowed<=0;ack_was_stale<=0;write_valid<=0;
             acknowledged_sequence_o<=12'hfff;replay_started_o<=0;timeout_o<=0;
             protocol_error_o<=0;retry_exhausted_o<=0;source_error_o<=0;
         end else if(!link_up_i) begin
-            head<=0;tail<=0;new_slot<=0;count<=0;sent_count<=0;capturing<=0;sending<=0;
+            head<=0;tail<=0;new_slot<=0;count<=0;sent_count<=0;capturing<=0;sending<=0;write_valid<=0;
             replay_active<=0;replay_pending<=0;halt<=0;next_store_sequence<=0;
             ack_observed<=0;ack_was_allowed<=0;ack_was_stale<=0;
             timer<=0;timer_running<=0;retries<=0;acknowledged_sequence_o<=12'hfff;
             replay_started_o<=0;timeout_o<=0;protocol_error_o<=0;retry_exhausted_o<=0;source_error_o<=0;
         end else begin
-            replay_started_o<=0;timeout_o<=0;protocol_error_o<=0;
+            replay_started_o<=0;timeout_o<=0;protocol_error_o<=0;write_valid<=0;
             if(ack_valid_i && !ack_observed) begin
                 ack_observed<=1;ack_was_allowed<=current_ack_allowed;ack_was_stale<=ack_delta>12'd2048;
             end
@@ -212,11 +223,11 @@ module soc_pcie_replay_tx #(
                 if(in_sop_i) begin
                     if(capturing || in_eop_i || in_data_i[7:4]!=0) begin
                         source_error_o<=1;halt<=1;capturing<=0;
-                    end else begin bytes[tail*MAX_BYTES]<=in_data_i;write_pos<=1;capturing<=1;end
+                    end else begin write_valid<=1;write_pos<=1;capturing<=1;end
                 end else if(!capturing || write_pos>=MAX_BYTES) begin
                     source_error_o<=1;halt<=1;capturing<=0;
                 end else begin
-                    bytes[tail*MAX_BYTES+write_pos]<=in_data_i;write_pos<=write_pos+1'b1;
+                    write_valid<=1;write_pos<=write_pos+1'b1;
                     if(in_eop_i) begin
                         capturing<=0;
                         if(write_pos<17 || !replay_crc_residue_ok ||

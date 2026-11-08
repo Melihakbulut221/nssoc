@@ -23,13 +23,38 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
     reg [CW-1:0] count,length,index;
     reg [1:0] byte_index;
     reg [31:0] words [0:MAX_TLP_DWORDS-1];
+    // The LCRC is accumulated while the TLP is collected, one DWORD per
+    // accepted word, in transmission byte order: the two sequence prefix
+    // bytes first (folded in at SOP), header DWORDs MSB-first, data DWORDs
+    // LSB-first. Every collected DWORD is transmitted, so at the CRC state
+    // the register holds exactly the state the byte-serial update reached
+    // before. The transmit byte select no longer feeds a CRC step.
     reg [31:0] crc;
-    wire [31:0] crc_next;
+    function [31:0] crc_byte;
+        input [31:0] crc_state;
+        input [7:0] data;
+        integer bit_index;
+        begin
+            crc_byte=crc_state;
+            for (bit_index=0;bit_index<8;bit_index=bit_index+1)
+                crc_byte=(crc_byte>>1)^({32{crc_byte[0]^data[bit_index]}} & 32'hedb88320);
+        end
+    endfunction
+    function [31:0] crc_word;
+        input [31:0] crc_state;
+        input [31:0] word;
+        input msb_first;
+        begin
+            crc_word=msb_first ?
+                crc_byte(crc_byte(crc_byte(crc_byte(crc_state,word[31:24]),word[23:16]),word[15:8]),word[7:0]) :
+                crc_byte(crc_byte(crc_byte(crc_byte(crc_state,word[7:0]),word[15:8]),word[23:16]),word[31:24]);
+        end
+    endfunction
+    wire [31:0] prefix_crc=crc_byte(crc_byte(32'hffffffff,{4'b0,next_sequence_o[11:8]}),next_sequence_o[7:0]);
     assign tlp_ready_o=rst_ni && (state==IDLE || state==COLLECT || state==DROP);
     assign tx_valid_o=rst_ni && state>=PREFIX0;
     assign tx_sop_o=state==PREFIX0;
     assign tx_eop_o=state==CRC && byte_index==3;
-    soc_pcie_crc32_byte crc_step(.state_i(crc),.data_i(tx_data_o),.state_o(crc_next));
     // Resolve byte order and byte selection independently in each word.
     // index then selects an eight-bit result, avoiding a word mux followed
     // by a variable shifter on the index-to-CRC path. No state or latency changes.
@@ -60,7 +85,6 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
         end else begin
             packet_sent_o<=0;packet_bad_o<=0;
             if (tx_valid_o && tx_ready_i) begin
-                if (state!=CRC) crc<=crc_next;
                 case(state)
                     PREFIX0:state<=PREFIX1;
                     PREFIX1:begin state<=DATA;index<=0;byte_index<=0;end
@@ -83,6 +107,7 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
                 if (tlp_sop_i) begin
                     if (state==COLLECT) packet_bad_o<=1;
                     words[0]<=tlp_data_i;count<=1;header_words<=tlp_data_i[29] ? 4 : 3;
+                    crc<=crc_word(prefix_crc,tlp_data_i,1'b1);
                     if (tlp_eop_i || tlp_error_i) begin
                         packet_bad_o<=1;state<=tlp_eop_i ? IDLE : DROP;
                     end else state<=COLLECT;
@@ -94,9 +119,10 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
                     packet_bad_o<=1;state<=tlp_eop_i ? IDLE : DROP;
                 end else begin
                     words[count]<=tlp_data_i;count<=count+1'b1;
+                    crc<=crc_word(crc,tlp_data_i,count<header_words);
                     if (tlp_eop_i) begin
                         if (count+1>=header_words) begin
-                            length<=count+1'b1;state<=PREFIX0;crc<=32'hffffffff;byte_index<=0;
+                            length<=count+1'b1;state<=PREFIX0;byte_index<=0;
                         end else begin packet_bad_o<=1;state<=IDLE;end
                     end
                 end

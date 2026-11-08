@@ -82,12 +82,16 @@ module soc_pcie_rx_credit #(
     // search no longer drive the write enables of every queue byte. The
     // staging bytes cannot change while a TLP is staged, and between the
     // check and the commit only a removal can change ownership, which frees
-    // slots and never takes the chosen one.
-    reg stage_checked,stage_shape_ok,stage_room;
+    // slots and never takes the chosen one, and lowers the queue count.
+    // The commit itself is a register per slot, set by the check cycle,
+    // so each slot's byte write enable is a flop output.
+    reg stage_checked,stage_shape_ok;
     reg [SW-1:0] stage_slot;
     reg [11:0] stage_units;
-    wire commit=stage_pending && stage_checked && stage_shape_ok && stage_room;
+    reg [SLOTS-1:0] commit_slot;
+    wire commit=|commit_slot;
     wire stage_drop=stage_pending && stage_checked && !stage_shape_ok;
+    integer b;
     wire remove=waiting && (packet_accepted_i || packet_duplicate_i || packet_rejected_i);
     wire [SW-1:0] head_slot=order[qread];
     wire select_dllp=output_active ? output_dllp : dllp_pending;
@@ -118,7 +122,7 @@ module soc_pcie_rx_credit #(
             used<=0;qread<=0;qwrite<=0;qcount<=0;
             input_active<=0;input_dllp<=0;input_bad<=0;input_count<=0;
             stage_pending<=0;stage_length<=0;stage_bad<=0;
-            stage_checked<=0;stage_shape_ok<=0;stage_room<=0;stage_slot<=0;stage_units<=0;
+            stage_checked<=0;stage_shape_ok<=0;stage_slot<=0;stage_units<=0;commit_slot<=0;
             dllp_pending<=0;dllp_bad<=0;dllp_length<=0;
             output_active<=0;output_dllp<=0;output_index<=0;waiting<=0;
             header_limit_o<={COMPLETER_ONLY ? 8'b0 : H_INIT,H_INIT,H_INIT};
@@ -128,22 +132,27 @@ module soc_pcie_rx_credit #(
         end else if(!link_up_i) begin
             used<=0;qread<=0;qwrite<=0;qcount<=0;input_active<=0;input_count<=0;
             stage_pending<=0;dllp_pending<=0;output_active<=0;output_index<=0;waiting<=0;
-            stage_checked<=0;
+            stage_checked<=0;commit_slot<=0;
             header_limit_o<={COMPLETER_ONLY ? 8'b0 : H_INIT,H_INIT,H_INIT};
             data_limit_o<={COMPLETER_ONLY ? 12'b0 : D_INIT,D_INIT,D_INIT};
             released_o<=0;dropped_o<=0;protocol_error_o<=0;recovery_request_o<=0;
         end else begin
             released_o<=0;dropped_o<=0;
             stage_checked<=stage_pending && !commit && !stage_drop;
-            stage_shape_ok<=shape_ok;stage_room<=free_slot>=0 && qcount<SLOTS;
+            stage_shape_ok<=shape_ok;
             stage_slot<=free_slot;stage_units<=(payload_dw+3)/4;
+            for(b=0;b<SLOTS;b=b+1)
+                commit_slot[b]<=stage_pending && !commit && !stage_drop && shape_ok &&
+                    free_slot==b && qcount<SLOTS;
             if(stage_drop) begin
                 stage_pending<=0;dropped_o<=1;protocol_error_o<=1;recovery_request_o<=1;
             end
             if(commit) begin
-                for(k=0;k<CAP;k=k+1) packets[stage_slot*CAP+k]<=staging[k];
-                lengths[stage_slot]<=stage_length;units[stage_slot]<=stage_units;
-                errors[stage_slot]<=stage_bad;used[stage_slot]<=1;
+                for(b=0;b<SLOTS;b=b+1) if(commit_slot[b]) begin
+                    for(k=0;k<CAP;k=k+1) packets[b*CAP+k]<=staging[k];
+                    lengths[b]<=stage_length;units[b]<=stage_units;
+                    errors[b]<=stage_bad;used[b]<=1;
+                end
                 order[qwrite]<=stage_slot;qwrite<=qwrite==SLOTS-1 ? 0 : qwrite+1'b1;
                 stage_pending<=0;
             end

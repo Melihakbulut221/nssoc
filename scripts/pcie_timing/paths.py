@@ -86,7 +86,7 @@ def logic_levels(cells):
 
 def main(out):
     out = Path(out)
-    for stage in ("synth", "placed", "repaired"):
+    for stage in ("synth", "placed", "sized", "repaired"):
         for corner in ("typ", "slow"):
             if not (out / f"{stage}_r2r_end_{corner}.rpt").exists():
                 continue

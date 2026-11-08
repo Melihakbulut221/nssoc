@@ -18,7 +18,8 @@
 # OpenROAD then places the netlist alone (40% utilisation, random pins),
 # runs repair_design (buffering of high-fanout nets such as the packet
 # reset and link status) and reports both corners ("placed"), then runs an
-# unbounded repair_timing and reports again ("repaired"). Clocks are ideal
+# sizing-only repair_timing ("sized"), then an unbounded repair_timing,
+# and reports again ("repaired"). Clocks are ideal
 # and parasitics are placement estimates with the PDK's LAYERS_RC: an
 # estimate for comparing RTL variants, not a sign-off number.
 set -euo pipefail
@@ -133,6 +134,14 @@ repair_design
 detailed_placement
 estimate_parasitics -placement
 reports placed
+# Sizing and pin swapping only: buffering in this unrouted context builds
+# long buf_1 chains that say more about the estimator than the logic.
+if {[catch {repair_timing -setup -setup_margin 0 -skip_buffering} err]} {
+  puts "NSSOC_PCIE_SIZED_SKIPPED \$err"
+} else {
+  estimate_parasitics -placement
+  reports sized
+}
 puts "NSSOC_PCIE_REPAIR_BEGIN"
 repair_timing -setup -setup_margin 0
 detailed_placement
