@@ -1,6 +1,15 @@
 name: Ibex execute-path knobs - functional regressions and RTL-to-global-route timing probe
 on:
   workflow_dispatch:
+    inputs:
+      probe_only:
+        description: Run only the timing probe (skip the functional jobs)
+        type: boolean
+        default: false
+      repair_iterations:
+        description: repair_timing -max_iterations in the uncapped-repair step
+        type: string
+        default: '1000000'
 permissions:
   contents: read
   actions: read
@@ -40,6 +49,7 @@ jobs:
           retention-days: 30
 
   regress:
+    if: ${{ !inputs.probe_only }}
     needs: unit
     runs-on: ubuntu-24.04
     timeout-minutes: 300
@@ -97,6 +107,7 @@ jobs:
           retention-days: 30
 
   native-boot:
+    if: ${{ !inputs.probe_only }}
     needs: unit
     runs-on: ubuntu-24.04
     timeout-minutes: 360
@@ -156,6 +167,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - {name: deep_base_d70_ks, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1'}
           - {name: deep_br2_d70_ks, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', br2: '1', deep: '1'}
           - {name: deep_btalu_d70_ks, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', btalu: '1', deep: '1'}
           - {name: deep_br2_rfup_d70_ks, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', br2: '1', regfile: upstream, deep: '1'}
@@ -258,12 +270,13 @@ jobs:
           # RSZ-0062. Here the same database, libraries, SDC, LAYERS_RC and
           # global-route parasitics get repair_design and an uncapped setup
           # repair (wall-clock bound only), then the same per-corner reports.
+          echo "repair_timing -max_iterations ${{ inputs.repair_iterations || '1000000' }}"
           python3 - $OUT/corner-sta.tcl $OUT/deep-repair.tcl <<'PY'
           import sys
           s=open(sys.argv[1]).read();i=s.index('puts "NSSOC_CORNER_BEGIN')
           rep=('set_wire_rc -signal -layer Metal3\nset_wire_rc -clock -layer Metal4\n'
                'repair_design -verbose\nestimate_parasitics -global_routing\n'
-               'repair_timing -verbose -setup -setup_margin 0 -repair_tns 100 -max_iterations 1000000 -max_buffer_percent 50\n'
+               'repair_timing -verbose -setup -setup_margin 0 -repair_tns 100 -max_iterations ${{ inputs.repair_iterations || '1000000' }} -max_buffer_percent 50\n'
                'estimate_parasitics -global_routing\nputs "NSSOC_DEEP_REPAIR_DONE"\n')
           open(sys.argv[2],'w').write(s[:i]+rep+s[i:].replace('NSSOC_CORNER_','NSSOC_DEEP_CORNER_'))
           PY
