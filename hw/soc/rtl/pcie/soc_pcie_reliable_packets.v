@@ -44,38 +44,71 @@ module soc_pcie_reliable_packets #(
     output wire [31:0] bar0_o
 );
     wire local_reset=rst_ni && link_up_i;
-    reg rx_active,rx_kind;
-    wire selected_kind=rx_sop_i ? rx_dllp_i : rx_kind;
-    wire kind_error=rx_active && !rx_sop_i && rx_kind!=rx_dllp_i;
+    // Receive register slice. Queue beats reach the DLLP and TLP consumers
+    // one cycle later, from flops, so the queue read and the consumers' end
+    // of frame checks are separate stages. A TLP frame still starts only when
+    // the TLP consumer can take its first beat: with the slice empty, nothing
+    // is in flight and that consumer's ready cannot fall before the beat
+    // arrives. A TLP the consumer cannot start therefore stays in the queue,
+    // and DLLPs (ACKs that free the replay store) are never held behind it.
+    wire [7:0] slice_data;
+    wire slice_sop,slice_eop,slice_error,slice_dllp,slice_valid,slice_ready,slice_room;
+    reg rx_input_active;
+    wire tlp_first=!rx_dllp_i && (rx_sop_i || !rx_input_active);
     wire tlp_ready,dllp_ready;
-    assign rx_ready_o=selected_kind ? dllp_ready : tlp_ready;
+    assign rx_ready_o=local_reset && slice_room && (!tlp_first || (!slice_valid && tlp_ready));
+    always @(posedge clk_i or negedge local_reset) begin
+        if(!local_reset) rx_input_active<=0;
+        else if(rx_valid_i && rx_ready_o) begin
+            if(rx_sop_i) rx_input_active<=1;
+            if(rx_eop_i) rx_input_active<=0;
+        end
+    end
+    soc_pcie_stream_skid #(.W(12)) receive_slice(
+        .clk_i(clk_i),.rst_ni(local_reset),.clear_i(1'b0),
+        .s_data_i({rx_data_i,rx_sop_i,rx_eop_i,rx_error_i,rx_dllp_i}),.s_valid_i(rx_valid_i && rx_ready_o),.s_ready_o(slice_room),
+        .m_data_o({slice_data,slice_sop,slice_eop,slice_error,slice_dllp}),.m_valid_o(slice_valid),.m_ready_i(slice_ready));
+    reg rx_active,rx_kind;
+    wire selected_kind=slice_sop ? slice_dllp : rx_kind;
+    wire kind_error=rx_active && !slice_sop && rx_kind!=slice_dllp;
+    assign slice_ready=selected_kind ? dllp_ready : tlp_ready;
     always @(posedge clk_i or negedge local_reset) begin
         if(!local_reset) begin rx_active<=0;rx_kind<=0;end
-        else if(rx_valid_i && rx_ready_o) begin
-            if(rx_sop_i) begin rx_kind<=rx_dllp_i;rx_active<=1;end
-            if(rx_eop_i) rx_active<=0;
+        else if(slice_valid && slice_ready) begin
+            if(slice_sop) begin rx_kind<=slice_dllp;rx_active<=1;end
+            if(slice_eop) rx_active<=0;
         end
     end
     wire ack_valid,ack_nak,ack_ready;
     wire [11:0] ack_sequence;
     soc_pcie_dllp_rx receiver(.clk_i(clk_i),.rst_ni(local_reset),
-        .rx_data_i(rx_data_i),.rx_sop_i(rx_sop_i),.rx_eop_i(rx_eop_i),
-        .rx_error_i(rx_error_i || kind_error),.rx_valid_i(rx_valid_i && selected_kind),.rx_ready_o(dllp_ready),
+        .rx_data_i(slice_data),.rx_sop_i(slice_sop),.rx_eop_i(slice_eop),
+        .rx_error_i(slice_error || kind_error),.rx_valid_i(slice_valid && selected_kind),.rx_ready_o(dllp_ready),
         .ack_valid_o(ack_valid),.ack_nak_o(ack_nak),.ack_sequence_o(ack_sequence),.ack_ready_i(ack_ready),
         .fc_valid_o(fc_valid_o),.fc_phase_o(fc_phase_o),.fc_class_o(fc_class_o),
         .fc_header_o(fc_header_o),.fc_data_o(fc_data_o),.bad_dllp_o(bad_dllp_o),.unsupported_dllp_o(unsupported_dllp_o));
-    wire [7:0] link_data;
+    wire [7:0] link_data,packet_data;
     wire link_sop,link_eop,link_valid,link_dllp,link_ready,store_ready;
+    wire packet_sop,packet_eop,packet_valid,packet_dllp,packet_ready;
     soc_pcie_link_packets #(.VENDOR_ID(VENDOR_ID),.DEVICE_ID(DEVICE_ID),.APB_TIMEOUT(APB_TIMEOUT),
         .MAX_TLP_DWORDS(MAX_TLP_DWORDS)) endpoint(.clk_i(clk_i),.rst_ni(local_reset),.function_id_i(function_id_i),
-        .rx_data_i(rx_data_i),.rx_sop_i(rx_sop_i),.rx_eop_i(rx_eop_i),.rx_error_i(rx_error_i || kind_error),
-        .rx_valid_i(rx_valid_i && !selected_kind),.rx_ready_o(tlp_ready),
+        .rx_data_i(slice_data),.rx_sop_i(slice_sop),.rx_eop_i(slice_eop),.rx_error_i(slice_error || kind_error),
+        .rx_valid_i(slice_valid && !selected_kind),.rx_ready_o(tlp_ready),
         .rx_expected_sequence_o(rx_expected_sequence_o),.tx_next_sequence_o(tx_next_sequence_o),
         .packet_accepted_o(packet_accepted_o),.packet_duplicate_o(packet_duplicate_o),.packet_rejected_o(packet_rejected_o),
-        .tx_data_o(link_data),.tx_sop_o(link_sop),.tx_eop_o(link_eop),.tx_valid_o(link_valid),
-        .tx_dllp_o(link_dllp),.tx_ready_i(link_ready),.psel_o(psel_o),.penable_o(penable_o),.paddr_o(paddr_o),
+        .tx_data_o(packet_data),.tx_sop_o(packet_sop),.tx_eop_o(packet_eop),.tx_valid_o(packet_valid),
+        .tx_dllp_o(packet_dllp),.tx_ready_i(packet_ready),.psel_o(psel_o),.penable_o(penable_o),.paddr_o(paddr_o),
         .pwrite_o(pwrite_o),.pstrb_o(pstrb_o),.pwdata_o(pwdata_o),.pready_i(pready_i),.pslverr_i(pslverr_i),
         .prdata_i(prdata_i),.error_o(error_o),.memory_enable_o(memory_enable_o),.bar0_o(bar0_o));
+    // Transmit register slice between the link layer and the replay store /
+    // DLLP arbiter. The LCRC framer's byte select no longer feeds the replay
+    // store's capture checks in the same cycle, and the store's ready no
+    // longer reaches back into the framer. TLPs and generated ACK/NAK DLLPs
+    // both leave the link layer one cycle later, in order.
+    soc_pcie_stream_skid #(.W(11)) transmit_slice(
+        .clk_i(clk_i),.rst_ni(local_reset),.clear_i(1'b0),
+        .s_data_i({packet_data,packet_sop,packet_eop,packet_dllp}),.s_valid_i(packet_valid),.s_ready_o(packet_ready),
+        .m_data_o({link_data,link_sop,link_eop,link_dllp}),.m_valid_o(link_valid),.m_ready_i(link_ready));
     assign rx_tlp_seen_o=packet_accepted_o || packet_duplicate_o;
     wire [7:0] retry_data;
     wire retry_sop,retry_eop,retry_valid,retry_ready,retry_kind;

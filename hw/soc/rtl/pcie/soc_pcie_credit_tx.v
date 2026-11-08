@@ -37,18 +37,20 @@ module soc_pcie_credit_tx (
     wire request_legal=reserve_class_i<3 && reserve_payload_dw_i<=1024;
     wire [11:0] rounded_dw={1'b0,reserve_payload_dw_i}+12'd3;
     wire [9:0] required_data=rounded_dw[11:2];
-    // Compute per-class differences before the late replay class selects one.
-    wire [7:0] class_h [0:2];
-    wire [11:0] class_d [0:2];
-    genvar credit_class;
-    generate for(credit_class=0;credit_class<3;credit_class=credit_class+1) begin: class_available
-        assign class_h[credit_class]=hl[credit_class]-hc[credit_class];
-        assign class_d[credit_class]=dl[credit_class]-dc[credit_class];
-    end endgenerate
-    wire [7:0] available_h=class_h[reserve_class_i];
-    wire [11:0] available_d=class_d[reserve_class_i];
+    // Available credit per class, kept in registers that always equal
+    // limit minus consumed (ah == hl-hc, ad == dl-dc, modulo 256/4096): every
+    // branch below that writes a limit or a consumed count writes the
+    // matching difference from the same operands. The reservation verdict
+    // then starts at a register instead of a subtractor. For the data check,
+    // ceil(dw/4) <= available is the same as dw <= 4*available, so the
+    // rounding adder is off the verdict path as well.
+    reg [7:0] ah[0:2];
+    reg [11:0] ad[0:2];
+    wire [7:0] available_h=ah[reserve_class_i];
+    wire [11:0] available_d=ad[reserve_class_i];
     wire header_ok=hi[reserve_class_i] || (available_h!=0 && !available_h[7]);
-    wire data_ok=di[reserve_class_i] || (!available_d[11] && available_d>={2'b0,required_data});
+    wire data_ok=di[reserve_class_i] ||
+        (!available_d[11] && {available_d,2'b00}>={3'b0,reserve_payload_dw_i});
     assign reserve_ready_o=initialized_o && request_legal &&
         (reserve_replay_i || (header_ok && data_ok));
     wire consume=reserve_valid_i && reserve_ready_o && !reserve_replay_i;
@@ -69,15 +71,21 @@ module soc_pcie_credit_tx (
     always @(posedge clk_i or negedge rst_ni) begin
         if (!rst_ni) begin
             seen<=0;hi<=0;di<=0;confirmed<=0;protocol_error_o<=0;
-            for(i=0;i<3;i=i+1) begin hl[i]<=0;hc[i]<=0;dl[i]<=0;dc[i]<=0;end
+            for(i=0;i<3;i=i+1) begin hl[i]<=0;hc[i]<=0;dl[i]<=0;dc[i]<=0;ah[i]<=0;ad[i]<=0;end
         end else if (!link_up_i) begin
             seen<=0;hi<=0;di<=0;confirmed<=0;protocol_error_o<=0;
-            for(i=0;i<3;i=i+1) begin hl[i]<=0;hc[i]<=0;dl[i]<=0;dc[i]<=0;end
+            for(i=0;i<3;i=i+1) begin hl[i]<=0;hc[i]<=0;dl[i]<=0;dc[i]<=0;ah[i]<=0;ad[i]<=0;end
         end else begin
             protocol_error_o<=0;
             if (consume) begin
-                if (!hi[reserve_class_i]) hc[reserve_class_i]<=hc[reserve_class_i]+8'd1;
-                if (!di[reserve_class_i]) dc[reserve_class_i]<=dc[reserve_class_i]+{2'b0,required_data};
+                if (!hi[reserve_class_i]) begin
+                    hc[reserve_class_i]<=hc[reserve_class_i]+8'd1;
+                    ah[reserve_class_i]<=available_h-8'd1;
+                end
+                if (!di[reserve_class_i]) begin
+                    dc[reserve_class_i]<=dc[reserve_class_i]+{2'b0,required_data};
+                    ad[reserve_class_i]<=available_d-{2'b0,required_data};
+                end
             end
             if (all_seen && rx_tlp_seen_i) confirmed<=1;
             if (fc_valid_i) begin
@@ -86,6 +94,7 @@ module soc_pcie_credit_tx (
                     if (fc_phase_i==2 || fc_header_i[7] || fc_data_i[11]) protocol_error_o<=1;
                     else begin
                         hl[fc_class_i]<=fc_header_i;dl[fc_class_i]<=fc_data_i;
+                        ah[fc_class_i]<=h_idle_remaining;ad[fc_class_i]<=d_idle_remaining;
                         hi[fc_class_i]<=fc_header_i==0;di[fc_class_i]<=fc_data_i==0;
                         seen[fc_class_i]<=1;
                     end
@@ -93,8 +102,14 @@ module soc_pcie_credit_tx (
                     if (fc_phase_i==1) confirmed<=1;
                     if (fc_phase_i==2) begin
                         if (h_update_ok && d_update_ok) begin
-                            if (!hi[fc_class_i]) hl[fc_class_i]<=fc_header_i;
-                            if (!di[fc_class_i]) dl[fc_class_i]<=fc_data_i;
+                            if (!hi[fc_class_i]) begin
+                                hl[fc_class_i]<=fc_header_i;
+                                ah[fc_class_i]<=credit_debit ? h_debit_remaining : h_idle_remaining;
+                            end
+                            if (!di[fc_class_i]) begin
+                                dl[fc_class_i]<=fc_data_i;
+                                ad[fc_class_i]<=credit_debit ? d_debit_remaining : d_idle_remaining;
+                            end
                             confirmed<=1;
                         end else protocol_error_o<=1;
                     end

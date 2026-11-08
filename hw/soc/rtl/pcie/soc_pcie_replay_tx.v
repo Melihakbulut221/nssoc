@@ -104,11 +104,32 @@ module soc_pcie_replay_tx #(
     wire current_ack_allowed=ack_delta==0 || (ack_delta<=sent_count && ack_delta!=0);
     wire ack_allowed=ack_observed ? ack_was_allowed : current_ack_allowed;
     wire ack_stale=ack_observed ? ack_was_stale : ack_delta>12'd2048;
-    wire [7:0] first_header=bytes[new_slot*MAX_BYTES+2];
-    wire [9:0] payload_length={bytes[new_slot*MAX_BYTES+4][1:0],bytes[new_slot*MAX_BYTES+5]};
-    assign reserve_class_o=(first_header[4:0]==5'b01010 || first_header[4:0]==5'b01011) ? 2 :
-        ((first_header[4:0]==0 && first_header[6]) || first_header[4:3]==2'b10) ? 0 : 1;
-    assign reserve_payload_dw_o=!first_header[6] ? 0 : payload_length==0 ? 11'd1024 : {1'b0,payload_length};
+    // Reservation metadata, one register set per slot, decoded from that
+    // slot's stored header bytes every cycle. A slot is offered for
+    // reservation only after its accepted EOP, which follows the writes of
+    // header bytes 2, 4 and 5 by at least twelve cycles, and an offered slot
+    // is never rewritten (only the tail slot is captured, and the tail equals
+    // an offered slot only when the store is full). The registered decode
+    // therefore always equals the decode of the bytes it replaces, and the
+    // reservation request no longer starts with a byte multiplexer.
+    wire [1:0] slot_class [0:DEPTH-1];
+    wire [10:0] slot_payload_dw [0:DEPTH-1];
+    genvar meta_slot;
+    generate for(meta_slot=0;meta_slot<DEPTH;meta_slot=meta_slot+1) begin: reserve_meta
+        wire [7:0] header=bytes[meta_slot*MAX_BYTES+2];
+        wire [9:0] length={bytes[meta_slot*MAX_BYTES+4][1:0],bytes[meta_slot*MAX_BYTES+5]};
+        reg [1:0] decoded_class;
+        reg [10:0] decoded_payload_dw;
+        always @(posedge clk_i) begin
+            decoded_class<=(header[4:0]==5'b01010 || header[4:0]==5'b01011) ? 2'd2 :
+                ((header[4:0]==0 && header[6]) || header[4:3]==2'b10) ? 2'd0 : 2'd1;
+            decoded_payload_dw<=!header[6] ? 11'd0 : length==0 ? 11'd1024 : {1'b0,length};
+        end
+        assign slot_class[meta_slot]=decoded_class;
+        assign slot_payload_dw[meta_slot]=decoded_payload_dw;
+    end endgenerate
+    assign reserve_class_o=slot_class[new_slot];
+    assign reserve_payload_dw_o=slot_payload_dw[new_slot];
     // Reservation is a cancellable request until handshake. A replay bypasses
     // it entirely: its receiver credit was reserved on original transmission.
     assign reserve_replay_o=0;
