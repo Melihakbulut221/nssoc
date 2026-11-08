@@ -10,10 +10,17 @@
 # the PCIe subsystem) with the soc_top recipe used by the main-chip
 # implementation probe: the same 21 PCIe sources, typical-corner mapping,
 # Kogge-Stone carry mapping, abc.constr and `abc -D 20`. Flip-flops are then
-# renamed after the register they drive, so every path report names RTL
-# registers. OpenSTA (inside OpenROAD) times the netlist at the typical and
-# slow corners with ideal clocks and no wire load: an estimate for comparing
-# RTL variants, not a sign-off number.
+# renamed after the register they drive (or, without a public output net,
+# after their RTL source line), so every path report names RTL registers.
+# The netlist-naming steps drop the recipe's `-purge` so register names
+# survive; that changes names only, not logic.
+#
+# OpenROAD then places the netlist alone (40% utilisation, random pins),
+# runs repair_design (buffering of high-fanout nets such as the packet
+# reset and link status) and reports both corners ("placed"), then runs an
+# unbounded repair_timing and reports again ("repaired"). Clocks are ideal
+# and parasitics are placement estimates with the PDK's LAYERS_RC: an
+# estimate for comparing RTL variants, not a sign-off number.
 set -euo pipefail
 TYP=$1; SLOW=$2; OUT=$3; shift 3
 HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
@@ -36,16 +43,17 @@ hierarchy -check -top pcie_timing_top
 synth -flatten -top pcie_timing_top -run begin:fine
 techmap -map +/techmap.v -map +/choices/kogge-stone.v
 synth -top pcie_timing_top -run fine
-opt -purge
+opt
 dfflibmap -liberty $TYP
 opt
 abc -liberty $TYP -constr $OUT/abc.constr -D 20
 setundef -zero
-opt_clean -purge
+opt_clean
 hilomap -singleton -hicell sg13g2_tiehi L_HI -locell sg13g2_tielo L_LO
 splitnets
 clean
 rename -wire -suffix _reg t:sg13g2_df* t:sg13g2_sdf* t:sg13g2_dl*
+rename -src t:sg13g2_df* t:sg13g2_sdf* t:sg13g2_dl*
 write_verilog -norename -noattr -noexpr -nohex -nodec $OUT/pcie.sta.v
 tee -o $OUT/area.rpt stat -liberty $TYP
 YS
@@ -86,17 +94,42 @@ read_sdc $OUT/pcie.sdc
 if {[catch {report_checks -group_count 1 -endpoint_count 1 -format end > /dev/null}]} {
   set G -group_path_count; set E -endpoint_path_count
 } else { set G -group_count; set E -endpoint_count }
-set regs_ck [all_registers -clock pcie_clk_i -clock_pins]
-set regs_d [all_registers -clock pcie_clk_i -data_pins]
-foreach c {typ slow} {
-  puts "NSSOC_PCIE_CORNER \$c"
-  report_checks -corner \$c -path_delay max -from \$regs_ck -to \$regs_d \$G 3000 \$E 1 -format end > $OUT/r2r_end_\$c.rpt
-  report_checks -corner \$c -path_delay max -from \$regs_ck -to \$regs_d \$G 40 \$E 1 -fields {net} -digits 3 > $OUT/r2r_full_\$c.rpt
-  report_checks -corner \$c -path_delay max -from [get_clocks pcie_clk_i] -to [get_clocks pcie_clk_i] \$G 3000 \$E 1 -format end > $OUT/all_end_\$c.rpt
-  report_checks -corner \$c -path_delay max -from [get_clocks pcie_clk_i] -to [get_clocks pcie_clk_i] \$G 10 \$E 1 -fields {net} -digits 3 > $OUT/all_full_\$c.rpt
-  report_checks -corner \$c -path_delay min -from [get_clocks pcie_clk_i] -to [get_clocks pcie_clk_i] \$G 3 -format end > $OUT/hold_end_\$c.rpt
+proc reports {stage} {
+  global G E
+  set regs_ck [all_registers -clock pcie_clk_i -clock_pins]
+  set regs_d [all_registers -clock pcie_clk_i -data_pins]
+  foreach c {typ slow} {
+    puts "NSSOC_PCIE_REPORT \$stage \$c"
+    report_checks -corner \$c -path_delay max -from \$regs_ck -to \$regs_d \$G 5000 \$E 1 -format end > $OUT/\${stage}_r2r_end_\$c.rpt
+    report_checks -corner \$c -path_delay max -from \$regs_ck -to \$regs_d \$G 40 \$E 1 -fields {net} -digits 3 > $OUT/\${stage}_r2r_full_\$c.rpt
+    report_checks -corner \$c -path_delay max -from [get_clocks pcie_clk_i] -to [get_clocks pcie_clk_i] \$G 5000 \$E 1 -format end > $OUT/\${stage}_all_end_\$c.rpt
+    report_checks -corner \$c -path_delay max -from [get_clocks pcie_clk_i] -to [get_clocks pcie_clk_i] \$G 10 \$E 1 -fields {net} -digits 3 > $OUT/\${stage}_all_full_\$c.rpt
+    report_checks -corner \$c -path_delay min -from [get_clocks pcie_clk_i] -to [get_clocks pcie_clk_i] \$G 3 -format end > $OUT/\${stage}_hold_end_\$c.rpt
+  }
 }
+reports synth
+initialize_floorplan -utilization 40 -aspect_ratio 1 -core_space 10 -site CoreSite
+make_tracks
+place_pins -random -hor_layers Metal3 -ver_layers Metal2
+foreach {l r c} {Metal2 2.53519E-03 1.69121E-04 Metal3 1.54329E-03 1.82832E-04 Metal4 6.31424E-04 1.66454E-04 Metal5 6.84051E-04 8.57431E-05} {
+  set_layer_rc -layer \$l -resistance \$r -capacitance \$c
+}
+set_wire_rc -signal -layer Metal3
+set_wire_rc -clock -layer Metal4
+global_placement -density 0.6
+estimate_parasitics -placement
+repair_design
+detailed_placement
+estimate_parasitics -placement
+reports placed
+puts "NSSOC_PCIE_REPAIR_BEGIN"
+repair_timing -setup -setup_margin 0
+detailed_placement
+estimate_parasitics -placement
+reports repaired
+puts "NSSOC_PCIE_REPAIR_DONE"
 TCL
-"$@" "$OUT/sta.tcl" > "$OUT/sta.log" 2>&1 || { tail -40 "$OUT/sta.log"; exit 1; }
+timeout ${STA_TIMEOUT:-5400} "$@" "$OUT/sta.tcl" > "$OUT/sta.log" 2>&1 || { echo "STA_EXIT=$?"; tail -40 "$OUT/sta.log"; }
+grep -E "NSSOC_PCIE|RSZ-00|GPL-0002|DPL-" "$OUT/sta.log" | head -40 || true
 grep -iE "error|warning" "$OUT/sta.log" | sort | uniq -c | head -20 || true
 python3 -B "$HERE/paths.py" "$OUT" | tee "$OUT/summary.txt"

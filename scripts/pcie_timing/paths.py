@@ -71,38 +71,49 @@ def full(path):
     return paths
 
 
+def logic_levels(cells):
+    """Cells after the launch flop, and the same without buffers/inverters."""
+    rest = cells[1:]
+    return len(rest), sum(1 for c in rest if not re.match(r"sg13g2_(buf|inv|dlygate)", c))
+
+
 def main(out):
     out = Path(out)
-    for corner in ("typ", "slow"):
-        print(f"== corner {corner}")
-        for kind, label in (("r2r", "register to register"), ("all", "all pcie_clk_i paths")):
-            rows = ends(out / f"{kind}_end_{corner}.rpt")
-            if not rows:
-                print(f"{label}: no report")
+    for stage in ("synth", "placed", "repaired"):
+        for corner in ("typ", "slow"):
+            if not (out / f"{stage}_r2r_end_{corner}.rpt").exists():
                 continue
-            neg = [s for _, s in rows if s < 0]
-            print(f"{label}: worst {min(s for _, s in rows):.3f} ns, "
-                  f"TNS {sum(neg):.2f} ns, violating endpoints {len(neg)} of {len(rows)} reported")
-        groups = defaultdict(list)
-        for name, slack in ends(out / f"r2r_end_{corner}.rpt"):
-            if slack < 0:
-                groups[group(name)].append(slack)
-        print("violating register-to-register endpoints by register (worst, count):")
-        for g, s in sorted(groups.items(), key=lambda kv: min(kv[1]))[:30]:
-            print(f"  {min(s):8.3f} {len(s):5d}  {g}")
-        print("worst register-to-register paths (slack, arrival, levels, start -> end, named nets):")
-        for p in full(out / f"r2r_full_{corner}.rpt")[:25]:
-            levels = max(len(p["cells"]) - 1, 0)
-            nets = [n for n in p["nets"] if n != group(register(p["start"]))][:8]
-            print(f"  {p['slack']:8.3f} {p['arrival']:7.3f} {levels:3d}  "
-                  f"{register(p['start'])} -> {register(p.get('end', '?'))}")
-            print(f"           via {', '.join(nets)}")
-        for p in full(out / f"all_full_{corner}.rpt")[:3]:
-            levels = max(len(p["cells"]) - 1, 0)
-            print(f"  any-path {p['slack']:8.3f} {levels:3d}  {register(p['start'])} -> {register(p.get('end', '?'))}")
-        hold = ends(out / f"hold_end_{corner}.rpt")
-        if hold:
-            print(f"hold worst {min(s for _, s in hold):.3f} ns")
+            print(f"== stage {stage} corner {corner}")
+            for kind, label in (("r2r", "register to register"), ("all", "all pcie_clk_i paths")):
+                rows = ends(out / f"{stage}_{kind}_end_{corner}.rpt")
+                if not rows:
+                    print(f"{label}: no paths")
+                    continue
+                neg = [s for _, s in rows if s < 0]
+                print(f"{label}: worst {min(s for _, s in rows):.3f} ns, "
+                      f"TNS {sum(neg):.2f} ns, violating endpoints {len(neg)} of {len(rows)} reported")
+            if stage == "synth":
+                continue
+            groups = defaultdict(list)
+            for name, slack in ends(out / f"{stage}_r2r_end_{corner}.rpt"):
+                if slack < 0:
+                    groups[group(name)].append(slack)
+            print("violating register-to-register endpoints by register (worst, count):")
+            for g, s in sorted(groups.items(), key=lambda kv: min(kv[1]))[:30]:
+                print(f"  {min(s):8.3f} {len(s):5d}  {g}")
+            print("worst register-to-register paths (slack, arrival, cells, logic cells, start -> end):")
+            for p in full(out / f"{stage}_r2r_full_{corner}.rpt")[:20]:
+                n, m = logic_levels(p["cells"])
+                nets = [x for x in p["nets"] if x != group(register(p["start"]))][:10]
+                print(f"  {p['slack']:8.3f} {p['arrival']:7.3f} {n:3d} {m:3d}  "
+                      f"{register(p['start'])} -> {register(p.get('end', '?'))}")
+                print(f"           via {', '.join(nets)}")
+            for p in full(out / f"{stage}_all_full_{corner}.rpt")[:3]:
+                n, m = logic_levels(p["cells"])
+                print(f"  any-path {p['slack']:8.3f} {n:3d} {m:3d}  {register(p['start'])} -> {register(p.get('end', '?'))}")
+            hold = ends(out / f"{stage}_hold_end_{corner}.rpt")
+            if hold:
+                print(f"hold worst {min(s for _, s in hold):.3f} ns")
 
 
 if __name__ == "__main__":
