@@ -120,7 +120,8 @@ jobs:
           python3 - $OUT/corner-sta.tcl $OUT/deep-repair.tcl <<'PY'
           import sys
           s=open(sys.argv[1]).read();i=s.index('puts "NSSOC_CORNER_BEGIN')
-          rep=('repair_design -verbose\nestimate_parasitics -global_routing\n'
+          rep=('set_wire_rc -signal -layer Metal3\nset_wire_rc -clock -layer Metal4\n'
+               'repair_design -verbose\nestimate_parasitics -global_routing\n'
                'repair_timing -verbose -setup -setup_margin 0 -repair_tns 100 -max_iterations 1000000 -max_buffer_percent 50\n'
                'estimate_parasitics -global_routing\nputs "NSSOC_DEEP_REPAIR_DONE"\n')
           open(sys.argv[2],'w').write(s[:i]+rep+s[i:].replace('NSSOC_CORNER_','NSSOC_DEEP_CORNER_'))
