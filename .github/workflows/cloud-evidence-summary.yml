@@ -40,7 +40,27 @@ jobs:
             git checkout FETCH_HEAD -- hw/soc/rtl/pcie
           fi
           git log --oneline -1; sha256sum hw/soc/rtl/pcie/soc_pcie_*.v | sha256sum
+      - name: Retry transient download failures
+        run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad1
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure'
+        run: sleep 180
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad2
+        if: steps.cad1.outcome == 'failure'
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
+        run: sleep 300
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -93,7 +113,27 @@ jobs:
             /hw/soc/rtl/
             /hw/soc/tb/cocotb/
             /hw/requirements.txt
+      - name: Retry transient download failures
+        run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad1
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure'
+        run: sleep 180
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad2
+        if: steps.cad1.outcome == 'failure'
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
+        run: sleep 300
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -135,7 +175,27 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
+      - name: Retry transient download failures
+        run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad1
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure'
+        run: sleep 180
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad2
+        if: steps.cad1.outcome == 'failure'
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
+        run: sleep 300
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -198,7 +258,27 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
+      - name: Retry transient download failures
+        run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad1
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure'
+        run: sleep 180
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad2
+        if: steps.cad1.outcome == 'failure'
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
+        run: sleep 300
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -236,7 +316,10 @@ jobs:
           W=/mnt/s; sudo mkdir -p $W; sudo chown $USER $W
           curl -fsSL -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
           echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c -; chmod +x $W/librelane.AppImage
-          gh api repos/${{ github.repository }}/releases/assets/663146895 -H "Accept: application/octet-stream" > $W/pkg.tgz
+          for attempt in 1 2 3 4 5 6; do
+            gh api repos/${{ github.repository }}/releases/assets/663146895 -H "Accept: application/octet-stream" > $W/pkg.tgz && echo "$PACKAGE_SHA  $W/pkg.tgz" | sha256sum -c - && break
+            sleep 60
+          done
           echo "$PACKAGE_SHA  $W/pkg.tgz" | sha256sum -c -
           mkdir -p $W/pkg && tar -xzf $W/pkg.tgz -C $W/pkg && rm $W/pkg.tgz
           P=$(dirname "$(find $W/pkg -name input-contract.json | head -1)")
