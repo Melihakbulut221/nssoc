@@ -414,3 +414,44 @@ after its SHA-256 check.
 
 Run 42403662141 runs the deck's own 0.3125 ps maximum step, and a 0.5 ps
 cross-check alongside it.
+
+### Acquisition result (run 42403662141)
+
+On the extracted c5r3k deck, `independent_analysis` returns **`passed: true`**
+at the deck's own 0.3125 ps maximum step. The run took 5 h 14 min.
+
+- The sustained window starts at 670 ns.
+- The final two windows are free of cycle slips.
+
+| Window start | Feedback | Phase span | vctrl | Gate window |
+|---|---|---|---|---|
+| 100 ns | 99.5748 MHz (-4252 ppm) | 577.9 ps | 0.568-0.757 V | fail |
+| 150 ns | 98.6296 MHz (-13704 ppm) | 1250.5 ps | 0.641-0.757 V | fail |
+| 400 ns | 100.0263 MHz (+263 ppm) | 34.6 ps | 0.614-0.690 V | fail (frequency) |
+| 500 ns | 100.0829 MHz (+829 ppm) | 74.6 ps | 0.614-0.686 V | fail |
+| 650 ns | 100.0144 MHz (+144 ppm) | 13.0 ps | 0.616-0.688 V | fail (frequency) |
+| 700 ns | 100.0021 MHz (+21 ppm) | 2.7 ps | 0.616-0.689 V | pass |
+| 800 ns | 99.9951 MHz (-49 ppm) | 4.4 ps | 0.617-0.689 V | pass |
+| 900 ns | 99.9974 MHz (-26 ppm) | 2.3 ps | 0.617-0.689 V | pass |
+
+The last 100 ns shows:
+
+- feedback at 99.99740 MHz;
+- a phase span of 2.34 ps;
+- the VCO at 7.99999 GHz.
+
+The 0.5 ps cross-check in the same run passes as well, with the same
+sustained start (670 ns) and windows within 1 ppm and 0.6 ps. It took 4 h 3
+min.
+
+Compared with the ideal-R/C what-if on the RHI120 deck (c5_r3k,
+run 42374911771, sustained from 660 ns), the extracted layout locks about
+10 ns later and reaches the same final accuracy.
+
+### Remaining
+
+- Device safety review on the full capture.
+- PVT corners and qualified parasitics.
+- The bench artifacts (`pll-c5r3k-bench-original-*-42403662141`) are
+  retained for 90 days and are not attached to a release.
+- The status labels inherited by the chain still name the RHI120/C8 counts.
