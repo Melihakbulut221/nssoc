@@ -1,21 +1,17 @@
-name: PCIe boundary register slices - SoC base and full lint before and after
+name: Ibex execute-path knobs - functional regressions and RTL-to-global-route timing probe
 on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
-  soc:
+  unit:
     runs-on: ubuntu-24.04
-    timeout-minutes: 300
-    strategy:
-      fail-fast: false
-      matrix:
-        side: [baseline, change]
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-          ref: ${{ matrix.side == 'baseline' && 'codex/complete-open-work' || github.ref }}
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
@@ -23,30 +19,267 @@ jobs:
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Prepare the pinned CPU and interface RTL
+      - name: Prepare the pinned CPU RTL and apply the two-cycle branch patch
         run: |
-          git log --oneline -1
-          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          set -euo pipefail
           python3 -m pip install -q -r sw/requirements.txt
-          python3 -m venv hw/.venv
-          hw/.venv/bin/pip install -q -r hw/requirements.txt
-          make soc-rtl-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
-          make soc-interfaces-prepare SOC_INTERFACE_PROFILE=full INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
-      - name: Base and full lint, joint PCIe/Ethernet traffic (asynchronous and synchronous packet clock)
-        run: |
-          set +e
-          O=$PWD/out; mkdir -p $O
-          python3 scripts/check_soc_lint.py --profile base --output hw/soc/out/skid-lint-base > $O/lint-base.log 2>&1; echo "lint-base rc=$?"
-          python3 scripts/check_soc_lint.py --profile full --output hw/soc/out/skid-lint-full > $O/lint-full.log 2>&1; echo "lint-full rc=$?"
-          cp -r hw/soc/out/skid-lint-base $O/lint-base; cp -r hw/soc/out/skid-lint-full $O/lint-full
-          for f in lint-base lint-full; do
-            python3 -c "import json,sys;d=json.load(open(sys.argv[1]));print(sys.argv[2],{k:d.get(k) for k in ('status','tests','delta','sources_unchanged','immutable_drift','own_unaccepted','unchanged','runtime_unchanged','asynchronous_pcie')})" $O/$f/result.json $f 2>/dev/null || { echo "$f no result"; tail -30 $O/$f.log; }
-          done
+          python3 -m venv hw/.venv && hw/.venv/bin/pip install -q -r hw/requirements.txt
+          make soc-rtl-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python" > /tmp/prep.log 2>&1 || { tail -60 /tmp/prep.log; exit 1; }
+          mkdir -p out
+          python3 hw/soc/flow/ibex_branch_2cycle.py hw/soc/gen out/br2
+          diff -u hw/soc/gen/ibex_id_stage.v out/br2/ibex_id_stage.v > out/ibex_id_stage.br2.diff || true
+          cat out/ibex_id_stage.br2.diff
+          grep -n "branch_decision_i" hw/soc/gen/ibex_id_stage.v > out/branch_decision_uses.txt; cat out/branch_decision_uses.txt
+      - name: Core-level branch tests (writeback hazard, branch-target ALU alone, two-cycle branches)
+        run: python3 -m pytest -q sw/tests/test_ibex_branch_stall.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pcie-skid-soc-${{ matrix.side }}-${{ github.run_id }}
+          name: ibex-execute-unit-${{ github.run_id }}
+          path: out
+          retention-days: 30
+
+  regress:
+    needs: unit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {name: base}
+          - {name: br2, br2: '1'}
+          - {name: btalu, btalu: '1'}
+    env:
+      SOC_INTERFACE_PROFILE: base
+      SOC_CORE_BT_ALU: ${{ matrix.btalu || '0' }}
+      IBEX_BRANCH_2CYCLE: ${{ matrix.br2 || '0' }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare processor, interfaces and firmware tools
+        run: |
+          set -euo pipefail
+          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          python3 -m pip install -q -r sw/requirements.txt
+          python3 -m venv hw/.venv && hw/.venv/bin/pip install -q -r hw/requirements.txt
+          make soc-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python" > /tmp/prep.log 2>&1 || { tail -60 /tmp/prep.log; exit 1; }
+      - name: Whole-SoC RTL boot, default configuration (make soc-sim)
+        run: |
+          set -o pipefail
+          make soc-sim > soc-sim.log 2>&1; rc=$?; grep -E "^== |checks run|\[TB\]|cycles" soc-sim.log | tail -30; exit $rc
+      - name: Boot regression, normal boot and both geometry fallbacks (make soc-boot-regression)
+        run: make soc-boot-regression
+      - name: Double fault, crash dump, reset and APB retention (make soc-crash-cocotb)
+        run: make soc-crash-cocotb
+      - name: Collect
+        if: always()
+        run: |
+          mkdir -p out
+          cp soc-sim.log out/ 2>/dev/null || true
+          cp -r hw/soc/out/boot-regression out/ 2>/dev/null || true
+          for d in hw/soc/out/crash-cocotb hw/soc/out/sim-soc; do
+            [ -d "$d" ] || continue; mkdir -p out/$(basename $d); cp $d/*.log $d/*.xml $d/soc_param_override.v out/$(basename $d)/ 2>/dev/null || true; done
+          find out -name '*.vvp' -delete
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: ibex-execute-regress-${{ matrix.name }}-${{ github.run_id }}
+          path: out
+          retention-days: 30
+
+  native-boot:
+    needs: unit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {name: br2, br2: '1'}
+          - {name: btalu, btalu: '1'}
+    env:
+      SOC_INTERFACE_PROFILE: full
+      SOC_CORE_REQ_REG: '0'
+      SOC_CORE_WB_STAGE: '0'
+      SOC_CORE_BT_ALU: ${{ matrix.btalu || '0' }}
+      IBEX_BRANCH_2CYCLE: ${{ matrix.br2 || '0' }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare exact digital inputs
+        run: |
+          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          python3 -m pip install -q -r sw/requirements.txt
+          make soc-prepare > /tmp/prep.log 2>&1 || { tail -60 /tmp/prep.log; exit 1; }
+      - name: Native CORRPRE, PCIe, system MBIST and Ethernet MBIST gate-level boot
+        run: bash scripts/check_soc_corrpre_pcie_mbist_native_boot.sh
+      - name: Show the selected core and the gate-level verdict
+        if: always()
+        run: |
+          O=hw/soc/out/corrpre-pcie-mbist-native-boot
+          cat $O/core-configuration.json || true
+          grep -E "core_bt_alu|branch_2cycle|genp/gen-br2" $O/synthesis-driver.log $O/synthesis/syn.log | head -5 || true
+          grep -E "^== |checks run|\[TB\]" $O/rtl-driver.log | tail -10 || true
+          tail -30 $O/gates-driver.log || true
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: ibex-execute-native-boot-${{ matrix.name }}-${{ github.run_id }}
           path: |
-            out/*.log
-            out/*/result.json
+            hw/soc/out/corrpre-pcie-mbist-native-boot/**/*.log
+            hw/soc/out/corrpre-pcie-mbist-native-boot/**/*.json
+            hw/soc/out/corrpre-pcie-mbist-native-boot/rtl/soc_param_override.v
+          retention-days: 30
+
+  probe:
+    needs: unit
+    runs-on: ubuntu-22.04
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {name: deep_br2_d70_ks, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', br2: '1', deep: '1'}
+          - {name: deep_btalu_d70_ks, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', btalu: '1', deep: '1'}
+          - {name: deep_br2_rfup_d70_ks, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', br2: '1', regfile: upstream, deep: '1'}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
+      PACKAGE_SHA: 822dab7067d901fa79dabffffff784baf5c9965f0a5091eba67acdc48b9956f4
+      SOC_INTERFACE_PROFILE: full
+      SOC_CORE_REQ_REG: '0'
+      SOC_CORE_WB_STAGE: '0'
+      SOC_SYNTH_PREFIX_ADDER: ${{ matrix.prefix || '0' }}
+      SOC_CORE_BT_ALU: ${{ matrix.btalu || '0' }}
+      IBEX_BRANCH_2CYCLE: ${{ matrix.br2 || '0' }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare digital inputs, firmware and the native synthesis (same settings as the boot candidate)
+        run: |
+          set -euo pipefail
+          export OSS_CAD_SUITE="$(dirname "$(dirname "$(command -v yosys)")")"
+          echo "OSS_CAD_SUITE=$OSS_CAD_SUITE" >> "$GITHUB_ENV"
+          python3 -m pip install -q -r sw/requirements.txt
+          make soc-prepare > /tmp/soc-prepare.log 2>&1 || { tail -60 /tmp/soc-prepare.log; exit 1; }
+          OUT=$PWD/hw/soc/out/impl-probe; mkdir -p $OUT
+          export SOC_SRAM_MBIST=1
+          python3 hw/soc/flow/prepare_ihp_native_boot.py > $OUT/prepare-models.log
+          export PDK_ROOT="$PWD/hw/soc/tools/ihp-native-boot-c4b8b4e"
+          eval "$(make --no-print-directory -f hw/soc/tools.soc.mk printvars)"
+          unset BOOT_CORRUPT SW_DEFINES SOC_VVP_ARGS SOC_BOOT_ROM_DIR SOC_BOOT_ROM_IMAGE
+          unset SOC_RAM_RDREG SOC_ROM_RDREG SOC_SCRUB_IVL SOC_DED_WORD SOC_STRAP SOC_TIMEOUT_CYCLES
+          export UART_SCALER=0 SOC_PROBE=0 SOC_RAM_RANDOM=1 SOC_CLKGATE=1 SOC_APB_TIMEOUT=256
+          export IBEX_REGFILE=secded IBEX_FAULT_PORT=1 SOC_MEM_HARDEN=1 SOC_ROM_HARDEN=1
+          export SOC_BOOT_ROM=logic SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=0 SOC_RF_CORRPRE=1 SOC_WAKE_GNT=1
+          timeout 1800 bash hw/soc/flow/sim_soc.sh "$OUT/rtl" > "$OUT/rtl-driver.log" 2>&1 || { tail -40 "$OUT/rtl-driver.log"; exit 1; }
+          grep -E "^== |checks run|\[TB\] PASS" "$OUT/rtl-driver.log" | tail -12
+          export SOC_BOOT_ROM_IMAGE="$OUT/rtl/test_soc.bin" SOC_MEM=sram
+          export IBEX_RF_SYNPRE=0 IBEX_RF_CORRPRE=1 SOC_ETH_SRAM=1 SOC_PCIE_PROFILE=packet-async
+          # Measurement only: regfile=upstream drops the register file's inline
+          # SECDED (the fault port is tied to zero by ibex_fault_port.py).
+          if [ "${{ matrix.regfile || 'secded' }}" = upstream ]; then export IBEX_REGFILE=upstream IBEX_RF_CORRPRE=0; fi
+          timeout 3600 bash hw/soc/flow/syn_soc_top.sh 20 "$OUT/synthesis" > "$OUT/synthesis-driver.log" 2>&1 || { tail -40 "$OUT/synthesis-driver.log"; exit 1; }
+          grep -E 'regfile=|core_req_reg=|Parameter .CORRPRE = 1|Parameter .CORE_BT_ALU|genp/gen-br2' "$OUT/synthesis/syn.log" "$OUT/synthesis-driver.log" | head -6 || true
+          sha256sum $OUT/synthesis/soc_top.netlist.v $OUT/rtl/test_soc.bin
+          grep -iE "Number of cells|Chip area" $OUT/synthesis/syn.log | tail -3 || true
+      - name: LibreLane AppImage and the verified PDK from the post-route input package
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2
+          W=/mnt/s; sudo mkdir -p $W; sudo chown $USER $W
+          curl -fsSL -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
+          echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c -; chmod +x $W/librelane.AppImage
+          gh api repos/${{ github.repository }}/releases/assets/663146895 -H "Accept: application/octet-stream" > $W/pkg.tgz
+          echo "$PACKAGE_SHA  $W/pkg.tgz" | sha256sum -c -
+          mkdir -p $W/pkg && tar -xzf $W/pkg.tgz -C $W/pkg && rm $W/pkg.tgz
+          P=$(dirname "$(find $W/pkg -name input-contract.json | head -1)")
+          python3 - "$P" <<'PY'
+          import hashlib,json,shutil,sys
+          from pathlib import Path
+          p=Path(sys.argv[1]);c=json.loads((p/'input-contract.json').read_text());n=0
+          for name,row in c['input_files'].items():
+              if not name.startswith('hw/soc/tools/ciel-corrpre/'):continue
+              src=p/'files'/name;dst=Path(name)
+              assert hashlib.sha256(src.read_bytes()).hexdigest()==row['sha256']
+              if not dst.exists():dst.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(src,dst);n+=1
+          print('restored PDK files',n)
+          PY
+      - name: Floorplan to antenna repair (no detailed routing), configuration overrides ${{ matrix.overrides }}
+        run: |
+          set -euo pipefail
+          OUT=$PWD/hw/soc/out/impl-probe; W=/mnt/s
+          python3 -B scripts/impl_probe.py prepare $OUT/synthesis/soc_top.mapped.json $OUT/synthesis/soc_top.netlist.v $OUT/prepared '${{ matrix.overrides }}'
+          mkdir -p $OUT/run
+          env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage python hw/soc/pnr/pcie_interface_flow.py --flow PacketInterfaces \
+            --pdk-root $PWD/hw/soc/tools/ciel-corrpre --pdk ihp-sg13g2 --scl sg13g2_stdcell --force-run-dir $OUT/run \
+            --from Yosys.JsonHeader --to OpenROAD.DetailedRouting --skip OpenROAD.DetailedRouting \
+            --skip Yosys.Synthesis --skip Checker.YosysUnmappedCells --skip Checker.YosysSynthChecks --skip Checker.NetlistAssignStatements \
+            --with-initial-state $OUT/prepared/state.json $OUT/prepared/config.json > $OUT/run.log 2>&1 || { echo "FLOW_FAILED"; tail -80 $OUT/run.log; }
+          python3 -B scripts/impl_probe.py collect $OUT/run $OUT/metrics.json
+      - name: Per-corner setup and hold on the post-global-route database
+        run: |
+          set -euo pipefail
+          OUT=$PWD/hw/soc/out/impl-probe; W=/mnt/s
+          python3 -B scripts/impl_probe.py sta_tcl $OUT/run $OUT/prepared $OUT/corner-sta.tcl
+          env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage openroad -exit $OUT/corner-sta.tcl > $OUT/corner-sta.log 2>&1 || echo "CORNER_STA_FAILED"
+          grep -a -E "NSSOC_CORNER|slack|Error|ERROR" $OUT/corner-sta.log | grep -av "^\s*$" | head -120 || true
+      - name: Uncapped setup repair on the post-global-route database (measurement)
+        if: matrix.deep == '1'
+        run: |
+          set +e
+          OUT=$PWD/hw/soc/out/impl-probe; W=/mnt/s
+          # The flow's repair_timing runs with -max_iterations 100 and stops with
+          # RSZ-0062. Here the same database, libraries, SDC, LAYERS_RC and
+          # global-route parasitics get repair_design and an uncapped setup
+          # repair (wall-clock bound only), then the same per-corner reports.
+          python3 - $OUT/corner-sta.tcl $OUT/deep-repair.tcl <<'PY'
+          import sys
+          s=open(sys.argv[1]).read();i=s.index('puts "NSSOC_CORNER_BEGIN')
+          rep=('set_wire_rc -signal -layer Metal3\nset_wire_rc -clock -layer Metal4\n'
+               'repair_design -verbose\nestimate_parasitics -global_routing\n'
+               'repair_timing -verbose -setup -setup_margin 0 -repair_tns 100 -max_iterations 1000000 -max_buffer_percent 50\n'
+               'estimate_parasitics -global_routing\nputs "NSSOC_DEEP_REPAIR_DONE"\n')
+          open(sys.argv[2],'w').write(s[:i]+rep+s[i:].replace('NSSOC_CORNER_','NSSOC_DEEP_CORNER_'))
+          PY
+          timeout 12600 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage openroad -exit $OUT/deep-repair.tcl > $OUT/deep-repair.log 2>&1; echo "DEEP_RC=$?"
+          grep -a -E "NSSOC_DEEP|slack \(|RSZ-00(4|5|6)|^ +[0-9]+ +\|.*\| *-?[0-9.]+ *\|" $OUT/deep-repair.log | tail -60
+      - name: Collect
+        if: always()
+        run: |
+          OUT=hw/soc/out/impl-probe; mkdir -p out
+          cp $OUT/deep-repair.log $OUT/deep-repair.tcl out/ 2>/dev/null || true
+          cp $OUT/metrics.json $OUT/corner-sta.log $OUT/corner-sta.tcl $OUT/run.log $OUT/synthesis-driver.log $OUT/rtl-driver.log $OUT/prepared/config.json out/ 2>/dev/null || true
+          for d in $OUT/run/*stamidpnr* $OUT/run/*resizer*; do [ -d "$d" ] || continue; b=$(basename $d); mkdir -p out/$b; for c in nom_slow_1p08V_125C; do [ -f $d/$c/max.rpt ] && head -c 3000000 $d/$c/max.rpt > out/$b/$c.max.head.rpt; done; cp $d/*.log out/$b/ 2>/dev/null || true; done
+          ls out | head -50
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: impl-probe-${{ matrix.name }}-${{ github.run_id }}
+          path: out
           retention-days: 30
