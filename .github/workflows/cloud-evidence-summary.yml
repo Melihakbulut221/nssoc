@@ -46,6 +46,24 @@ jobs:
           mkdir -p out/gen && cp hw/soc/gen/ibex_if_stage.v hw/soc/gen/ibex_core.v hw/soc/gen/ibex_top.v hw/soc/gen/ibex_id_stage.v hw/soc/gen/ibex_decoder.v out/gen/ && cp hw/soc/genp/ibex_top.v out/gen/ibex_top.genp.v
       - name: Core-level branch tests (writeback hazard, branch-target ALU alone, two-cycle branches)
         run: python3 -m pytest -q sw/tests/test_ibex_branch_stall.py
+      - name: Register-file and memory knob tests (golden model, hazards, injected upsets, existing suites with the knobs)
+        run: |
+          set -euo pipefail
+          python3 -m pytest -q sw/tests/test_regfile_execute_knobs.py
+          python3 hw/soc/flow/ibex_rf_predecode.py hw/soc/gen out/pre
+          for f in ibex_if_stage ibex_core; do diff -u hw/soc/gen/$f.v out/pre/$f.v > out/$f.pre.diff || true; done
+          cat out/ibex_if_stage.pre.diff out/ibex_core.pre.diff
+          O=$PWD/out; cd hw/soc/tb/cocotb
+          export PYTHONPATH=$GITHUB_WORKSPACE/sw:$GITHUB_WORKSPACE
+          P=ibex_register_file_ff
+          for cfg in "base:" "chkdefer:-P$P.CHKDEFER=1" "corrpre_chkdefer:-P$P.CORRPRE=1 -P$P.CHKDEFER=1"; do
+            n=${cfg%%:*}; make -f Makefile.ibex_regfile_secded SIM_BUILD=sb_rf_$n COCOTB_RESULTS_FILE=$O/regfile_$n.xml EXTRA_COMPILE_ARGS="${cfg#*:}" > $O/regfile_$n.log 2>&1 || { tail -40 $O/regfile_$n.log; exit 1; }
+            echo "regfile suite $n: $(grep -oE 'TESTS=[0-9]+ PASS=[0-9]+ FAIL=[0-9]+' $O/regfile_$n.log | tail -1)"
+          done
+          for r in 0 1 2; do for c in "byte:ECC_BYTE=1 RO=0" "word:ECC_BYTE=0 RO=1"; do
+            n=${c%%:*}; make -f Makefile.soc_mem RDREG=$r ${c#*:} SIM_BUILD=sb_mem_${r}_$n COCOTB_RESULTS_FILE=$O/mem_${r}_$n.xml > $O/mem_${r}_$n.log 2>&1 || { tail -40 $O/mem_${r}_$n.log; exit 1; }
+            echo "soc_mem suite RDREG=$r $n: $(grep -oE 'TESTS=[0-9]+ PASS=[0-9]+ FAIL=[0-9]+ SKIP=[0-9]+' $O/mem_${r}_$n.log | tail -1)"
+          done; done
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -63,12 +81,17 @@ jobs:
       matrix:
         include:
           - {name: base}
-          - {name: br2, br2: '1'}
-          - {name: btalu, btalu: '1'}
+          - {name: exec, rf: '1', memreg: '2'}
     env:
       SOC_INTERFACE_PROFILE: base
       SOC_CORE_BT_ALU: ${{ matrix.btalu || '0' }}
       IBEX_BRANCH_2CYCLE: ${{ matrix.br2 || '0' }}
+      # exec: deferred check bits, predecoded read address (with the
+      # pre-mux correction it needs) and the raw-row memory register.
+      SOC_RF_CHKDEFER: ${{ matrix.rf || '0' }}
+      SOC_RF_PREDECODE: ${{ matrix.rf || '0' }}
+      SOC_RF_CORRPRE: ${{ matrix.rf || '0' }}
+      SOC_MEM_RDREG: ${{ matrix.memreg || '0' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -94,7 +117,13 @@ jobs:
       - name: Boot regression, normal boot and both geometry fallbacks (make soc-boot-regression)
         run: make soc-boot-regression
       - name: Double fault, crash dump, reset and APB retention (make soc-crash-cocotb)
-        run: make soc-crash-cocotb
+        run: |
+          if [ "${{ matrix.name }}" = base ]; then make soc-crash-cocotb; exit; fi
+          # The make target pins SOC_MEM_RDREG=1 SOC_RF_SYNPRE=1; the knobs
+          # need SYNPRE=0. Same recipe, the knob's settings.
+          B=$PWD/hw/soc/out/crash-cocotb
+          SOC_REQ_REG=1 SW_DEFINES=-DCRASH_DUMP_DEMO SOC_VVP_ARGS=+allow_double_fault bash hw/soc/flow/sim_soc.sh $B
+          bash scripts/check_soc_crash_cocotb.sh $B
       - name: Collect
         if: always()
         run: |
@@ -120,14 +149,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {name: br2, br2: '1'}
-          - {name: btalu, btalu: '1'}
+          - {name: exec, rf: '1', memreg: '2'}
     env:
       SOC_INTERFACE_PROFILE: full
       SOC_CORE_REQ_REG: '0'
       SOC_CORE_WB_STAGE: '0'
       SOC_CORE_BT_ALU: ${{ matrix.btalu || '0' }}
       IBEX_BRANCH_2CYCLE: ${{ matrix.br2 || '0' }}
+      NATIVE_RF_CHKDEFER: ${{ matrix.rf || '0' }}
+      NATIVE_RF_PREDECODE: ${{ matrix.rf || '0' }}
+      NATIVE_MEM_RDREG: ${{ matrix.memreg || '1' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -151,7 +182,7 @@ jobs:
         run: |
           O=hw/soc/out/corrpre-pcie-mbist-native-boot
           cat $O/core-configuration.json || true
-          grep -E "core_bt_alu|branch_2cycle|genp/gen-br2" $O/synthesis-driver.log $O/synthesis/syn.log | head -5 || true
+          grep -E "core_bt_alu|branch_2cycle|chkdefer=|genp/gen-br2|genp/gen-pre|Parameter .(CHKDEFER|RDPRE|MEM_RDREG)" $O/synthesis-driver.log $O/synthesis/syn.log | head -8 || true
           grep -E "^== |checks run|\[TB\]" $O/rtl-driver.log | tail -10 || true
           tail -30 $O/gates-driver.log || true
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -173,10 +204,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {name: deep_base_d70_ks, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1'}
-          - {name: deep_br2_d70_ks, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', br2: '1', deep: '1'}
-          - {name: deep_btalu_d70_ks, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', btalu: '1', deep: '1'}
-          - {name: deep_br2_rfup_d70_ks, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', br2: '1', regfile: upstream, deep: '1'}
+          - {name: r3_base, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1'}
+          - {name: r3_chkdefer, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', chkdefer: '1'}
+          - {name: r3_memreg2, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', memreg: '2'}
+          - {name: r3_exec, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', chkdefer: '1', memreg: '2', predecode: '1'}
+          - {name: r3_exec_br2, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', chkdefer: '1', memreg: '2', predecode: '1', br2: '1'}
+          - {name: r3_rawbound_br2, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', chkdefer: '1', memreg: '2', predecode: '1', br2: '1', rdraw: '1'}
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -187,6 +220,10 @@ jobs:
       SOC_SYNTH_PREFIX_ADDER: ${{ matrix.prefix || '0' }}
       SOC_CORE_BT_ALU: ${{ matrix.btalu || '0' }}
       IBEX_BRANCH_2CYCLE: ${{ matrix.br2 || '0' }}
+      KNOB_CHKDEFER: ${{ matrix.chkdefer || '0' }}
+      KNOB_PREDECODE: ${{ matrix.predecode || '0' }}
+      KNOB_RDRAW: ${{ matrix.rdraw || '0' }}
+      KNOB_MEMREG: ${{ matrix.memreg || '1' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -215,15 +252,19 @@ jobs:
           export UART_SCALER=0 SOC_PROBE=0 SOC_RAM_RANDOM=1 SOC_CLKGATE=1 SOC_APB_TIMEOUT=256
           export IBEX_REGFILE=secded IBEX_FAULT_PORT=1 SOC_MEM_HARDEN=1 SOC_ROM_HARDEN=1
           export SOC_BOOT_ROM=logic SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=0 SOC_RF_CORRPRE=1 SOC_WAKE_GNT=1
+          # docs/ibex-execute-timing.md knobs. RDRAW (measurement) replaces CORRPRE.
+          CORR=1; [ "$KNOB_RDRAW" = 1 ] && CORR=0
+          export SOC_MEM_RDREG=$KNOB_MEMREG SOC_RF_CORRPRE=$CORR SOC_RF_CHKDEFER=$KNOB_CHKDEFER SOC_RF_PREDECODE=$KNOB_PREDECODE SOC_RF_RDRAW=$KNOB_RDRAW
           timeout 1800 bash hw/soc/flow/sim_soc.sh "$OUT/rtl" > "$OUT/rtl-driver.log" 2>&1 || { tail -40 "$OUT/rtl-driver.log"; exit 1; }
           grep -E "^== |checks run|\[TB\] PASS" "$OUT/rtl-driver.log" | tail -12
           export SOC_BOOT_ROM_IMAGE="$OUT/rtl/test_soc.bin" SOC_MEM=sram
           export IBEX_RF_SYNPRE=0 IBEX_RF_CORRPRE=1 SOC_ETH_SRAM=1 SOC_PCIE_PROFILE=packet-async
+          export IBEX_RF_CORRPRE=$CORR IBEX_RF_CHKDEFER=$KNOB_CHKDEFER IBEX_RF_PREDECODE=$KNOB_PREDECODE IBEX_RF_RDRAW=$KNOB_RDRAW
           # Measurement only: regfile=upstream drops the register file's inline
           # SECDED (the fault port is tied to zero by ibex_fault_port.py).
           if [ "${{ matrix.regfile || 'secded' }}" = upstream ]; then export IBEX_REGFILE=upstream IBEX_RF_CORRPRE=0; fi
           timeout 3600 bash hw/soc/flow/syn_soc_top.sh 20 "$OUT/synthesis" > "$OUT/synthesis-driver.log" 2>&1 || { tail -40 "$OUT/synthesis-driver.log"; exit 1; }
-          grep -E 'regfile=|core_req_reg=|Parameter .CORRPRE = 1|Parameter .CORE_BT_ALU|genp/gen-br2' "$OUT/synthesis/syn.log" "$OUT/synthesis-driver.log" | head -6 || true
+          grep -E 'regfile=|core_req_reg=|Parameter .(CORRPRE|CHKDEFER|RDPRE|RDRAW|MEM_RDREG|CORE_BT_ALU) =|genp/gen-(br2|pre)' "$OUT/synthesis/syn.log" "$OUT/synthesis-driver.log" | sort -u | head -12 || true
           sha256sum $OUT/synthesis/soc_top.netlist.v $OUT/rtl/test_soc.bin
           grep -iE "Number of cells|Chip area" $OUT/synthesis/syn.log | tail -3 || true
       - name: LibreLane AppImage and the verified PDK from the post-route input package
