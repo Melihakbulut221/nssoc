@@ -55,8 +55,10 @@ A and B were implemented because they are the cheapest cuts of the class that do
 Both knobs default to 0. At 0, the synthesis script and the simulation take exactly the path they took before.
 
 - **`IBEX_BRANCH_2CYCLE=1`.** `hw/soc/flow/ibex_branch_2cycle.py` reads the sv2v output `ibex_id_stage.v` and writes `hw/soc/genp/<tree>-br2/ibex_id_stage.v`; it never writes to its input. In the first-cycle `id_fsm_d` and `stall_branch` expressions of a conditional branch, `branch_decision_i` is replaced by `1'b1`. After the patch the decision reaches only `branch_set_raw_d`, which is flopped at `BranchTargetALU = 0`. Each anchor must match exactly once. A generate block `g_branch_two_cycle` is the elaboration witness, and `sim_soc.sh` asserts it. `flow/ibex_sources.sh` substitutes the file. `syn_soc_top.sh` and `sim_soc.sh` refuse the knob together with `SOC_CORE_BT_ALU` or `SOC_CORE_WB_STAGE`, where it would be a no-op.
-- **`SOC_CORE_BT_ALU=1`.** This sets the new `soc_top` parameter `CORE_BT_ALU`, and `.BranchTargetALU (CORE_WB_STAGE | CORE_BT_ALU)`. Synthesis applies it as `chparam` and simulation as `defparam`. `sim_soc.sh` asserts `g_branch_target_alu`.
+- **`SOC_CORE_BT_ALU=1`.** This sets the new `soc_top` parameter `CORE_BT_ALU`, and `.BranchTargetALU (CORE_BT_ALU != 0 ? 1 : CORE_WB_STAGE)`. Synthesis applies it as `chparam` and simulation as `defparam`. `sim_soc.sh` asserts `g_branch_target_alu`.
 - The Kogge-Stone knob and `scripts/impl_probe.py` were carried over unchanged from `analysis/impl-probe`. `.github/workflows/cloud-evidence-summary.yml` runs the unit tests, the regressions, the native boot and the probe.
+
+The expression gives the same integer parameter value as before at 0 and the same value as the measured `CORE_WB_STAGE | CORE_BT_ALU` form at 1. It is written so that Verilator reports no new width diagnostic and `soc_top.v` keeps its line count, so the recorded lint diagnostics in `hw/soc/lint-policy.json` still apply.
 
 `scripts/run_core_ack_protocol.py` still pins the old `.BranchTargetALU (CORE_WB_STAGE)` text. Its C10 source pin of `soc_top.v` already differed on the base branch.
 

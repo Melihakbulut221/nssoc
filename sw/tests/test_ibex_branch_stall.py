@@ -14,7 +14,7 @@ SOC = ROOT / 'hw/soc'
 
 def test_soc_writeback_selects_dedicated_branch_alu():
     source = (SOC / 'rtl/soc_top.v').read_text()
-    assert re.search(r'\.BranchTargetALU\s*\(CORE_WB_STAGE \| CORE_BT_ALU\)', source)
+    assert re.search(r'\.BranchTargetALU\s*\(CORE_BT_ALU != 0 \? 1 : CORE_WB_STAGE\)', source)
     assert re.search(r'\.WritebackStage\s*\(CORE_WB_STAGE\)', source)
 
 
