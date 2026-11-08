@@ -6,6 +6,10 @@ on:
         description: Run only the timing probe (skip the functional jobs)
         type: boolean
         default: false
+      unit_only:
+        description: Run only the unit job
+        type: boolean
+        default: false
       repair_iterations:
         description: repair_timing -max_iterations in the uncapped-repair step
         type: string
@@ -39,6 +43,7 @@ jobs:
           diff -u hw/soc/gen/ibex_id_stage.v out/br2/ibex_id_stage.v > out/ibex_id_stage.br2.diff || true
           cat out/ibex_id_stage.br2.diff
           grep -n "branch_decision_i" hw/soc/gen/ibex_id_stage.v > out/branch_decision_uses.txt; cat out/branch_decision_uses.txt
+          mkdir -p out/gen && cp hw/soc/gen/ibex_if_stage.v hw/soc/gen/ibex_core.v hw/soc/gen/ibex_top.v hw/soc/gen/ibex_id_stage.v hw/soc/gen/ibex_decoder.v out/gen/ && cp hw/soc/genp/ibex_top.v out/gen/ibex_top.genp.v
       - name: Core-level branch tests (writeback hazard, branch-target ALU alone, two-cycle branches)
         run: python3 -m pytest -q sw/tests/test_ibex_branch_stall.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -49,7 +54,7 @@ jobs:
           retention-days: 30
 
   regress:
-    if: ${{ !inputs.probe_only }}
+    if: ${{ !inputs.probe_only && !inputs.unit_only }}
     needs: unit
     runs-on: ubuntu-24.04
     timeout-minutes: 300
@@ -107,7 +112,7 @@ jobs:
           retention-days: 30
 
   native-boot:
-    if: ${{ !inputs.probe_only }}
+    if: ${{ !inputs.probe_only && !inputs.unit_only }}
     needs: unit
     runs-on: ubuntu-24.04
     timeout-minutes: 360
@@ -161,6 +166,7 @@ jobs:
 
   probe:
     needs: unit
+    if: ${{ !inputs.unit_only }}
     runs-on: ubuntu-22.04
     timeout-minutes: 355
     strategy:
