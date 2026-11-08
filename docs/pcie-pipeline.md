@@ -118,7 +118,7 @@ Reading the table:
 
 Logic depth, `sized` stage:
 
-- the deepest worst-endpoint path drops from 21 to 17 logic cells, and from 30 to 27 cells;
+- the largest logic depth among the worst paths per endpoint drops from 21 to 20 logic cells, and the number of such paths over 12 logic cells from 1318 to 210 (corrected; an earlier version of this table reported the path with the most cells instead);
 - the per-block worst moves as follows.
 
 | Block | Baseline slow (logic cells) | Final slow (logic cells) | Final typical |
@@ -227,7 +227,13 @@ Logic cells (non-buffer, non-inverter) of the worst path per block, sized slow, 
 | FC advertiser | - | 9 (14) | 8 (9) |
 | TLP register backend | - | 12 (13) | 10 (12) |
 
-The deepest worst-endpoint path is 21 logic cells (30 cells) in the baseline. It is 17 (22 cells) after the final round.
+The largest logic depth among the worst paths per endpoint (sized slow) is:
+
+- baseline: 21 logic cells, with 1318 paths over 12;
+- first round: 20, with 210 over 12;
+- second round: 17, with 138 over 12.
+
+An earlier version of this sentence used a summary line that picked the path with the most cells; `paths.py` now reports the path with the most logic cells.
 
 ### Physical probe
 
@@ -264,15 +270,107 @@ The uncapped setup repair ran on the same database in the same run (deep variant
 
 The capped stage of this deep job reproduced the -3.55/-0.84/0.28 ns of the capped job. After repair, the worst `pcie_clk_i` path arrives at 7.41 ns at slow over 32 cells. It is mostly a chain of alternating `o21ai`/`a21oi` cells, which is the shape of a ripple carry or long priority chain. Its registers are unnamed (`$auto$ff.cc`) in the probe netlist.
 
+## Third round: the routed worst path, the receive gate and the asynchronous group
+
+### Changes (`4077a84cb`)
+
+**`soc_pcie_credit_tx`, the routed worst path.** After uncapped repair the worst routed `pcie_clk_i` path (run 42474676706) was:
+
+- 32 cells, starting at a mux2, then XNOR, then 12 alternating `o21ai`/`a21oi`/`a21o` carry cells, then the sign, then `nand4`/`or4`, then a fanout tree, then the register.
+
+That is the second UpdateFC stage: `d_idle_remaining` (a mux of `update_d_debit`/`update_d_idle`) plus `request_data_negated`, whose sign gates `d_update_ok` and therefore every limit and balance write. In the block screen it is `credits.update_d_debited` -> `credits.ad`/`dl`/`hl`/`confirmed`. The second stage also ran the limit-advance subtractions `update_data - dl` and `update_header - hl`.
+
+The second stage is now pure selection:
+
+- **Two-cycle request hold.** A request is granted only after it has been presented unchanged for two cycles (new `request_stable` register). A debit that meets an UpdateFC in either of the UpdateFC's two cycles therefore uses the same registered required credit, and two consumes are never adjacent. The first stage's "one debit" balance (`update_d_debit`, `update_h_debit`) is then exact for a debit in either cycle.
+- **Advance signs in the first stage.** The first stage registers the limit-advance sign twice: against the current limit, and against the limit the UpdateFC applied in that same cycle writes. It also registers whether that write hits the same class. The second stage selects, which is exact for back-to-back UpdateFCs of one class.
+
+This is protocol-safe for the producer in this SoC. `soc_pcie_replay_tx` presents the class and payload of the offered slot from registers that stay fixed for the whole offer, so the hold only costs one more cycle when the offered slot changes. The request is still cancellable until the handshake.
+
+**`soc_pcie_buffered_flow_packets`.** The receive queue's FC-initialization gate (`peer_init1_done && local_init2_sent`) is a register. Initialization only rises once per link epoch. TLPs are accepted one cycle after FC initialization. No test changed.
+
+**FC refresh counter.** The 32-bit `soc_pcie_fc_tx` refresh counter was a suspect, but it is not on the worst paths: the FC advertiser's worst is at most 9-11 logic cells. It was left unchanged.
+
+### `test_soc_pcie_credit_tx.py` changes in this round
+
+| Where | Second-round expectation | Third-round expectation | Why it is protocol-safe |
+|---|---|---|---|
+| `Driver.tick`, grant | Same request in the previous cycle | Same request in each of the two previous cycles (`stable`), affordable and initialized in the previous one, no consume in it. The request registers are modelled as the module keeps them: cleared by reset, held across link loss | A grant waits longer, never earlier. Every debit still happens exactly once at the grant. |
+| `Driver.grant` | One cycle with valid low, then valid | Two cycles with valid low, then valid | As above |
+| `modulo_counters_random_credit_return_and_stalls` | 24,000 cycles, each request held two cycles | 36,000 cycles, each request held three cycles (12,000 requests, same random sequence) | Same request stream. The progress assertion still holds. |
+| `same_cycle_update_debit_exhausts_exactly_once` | Request first presented together with the UpdateFC | One settling cycle with the request before the UpdateFC cycle, in the three blocks that present an UpdateFC just before a debit | Every assertion is unchanged |
+
+All original assertions remain: exactly-once debit, exhaustion, class isolation, the post-debit half-range check, data vs header exhaustion, and the idle-bus check. The per-cycle comparison of limits and consumed counts against unbounded counters is unchanged.
+
+### Added latency in this round
+
+- New reservation after the offered slot changes: +1 more cycle, 2 in total.
+- Receive queue opening after FC initialization: +1 cycle, once per link epoch.
+
+Neither path is bounded by the replay timer or the AckNak limits.
+
+### Asynchronous group
+
+The worst asynchronous paths in the probe (run 42474676706) launch in the core clock domain. The startpoint is a `clk_i` flop driving the synchronized system reset `rst_sys_n`, which feeds a 4-6 stage buffer tree. The endpoints are the `RESET_B` pins of two `pcie_clk_i` flop pairs, both reset-synchronizer first stages:
+
+- `soc_top`'s `packet_reset_release[1:0]`, reset directly by `rst_sys_n`: -2.16 ns slow after uncapped repair;
+- `u_pcie_cdc`'s `source_release[1:0]`, reset through the `nor3` of `rst_sys_n && pcie_link_up_i && !pcie_retrain_done_i`: -3.42 ns before repair.
+
+These are recovery checks of a core-domain reset on synchronizer inputs. Per the round's rule they are reported here and not changed. Possible remedies, outside the packet RTL:
+
+- give the PCIe synchronizers their own leaf of the `rst_sys_n` tree;
+- or constrain the asynchronous-assertion inputs of the two synchronizers.
+
+Inside the packet domain, the per-block link/reset copies of the second round already give every block its own registered, synchronously released reset that asserts asynchronously. In the block screen the packet-internal recovery is met at both corners: +0.15 ns slow and +1.47 ns typical after repair, with 0 violating endpoints.
+
+### Verification of the final head (`4077a84cb`)
+
+- unit tests 64/64 (run 42522225587), with `credit_tx` 5/5 under the revised oracle;
+- joint SoC PCIe + Ethernet traffic PASS 2/2 asynchronous and PASS 2/2 synchronous (run 42522972371);
+- `check_soc_lint.py` base and full PASS with no new or stale warnings (run 42522972371).
+
+### Block screen (run 42522225587), ns, worst slack / TNS
+
+| Stage | Corner | Second round | Third round |
+|---|---|---:|---:|
+| repaired | typical | -0.22 / -3.4 | **+0.15 / 0** (0 violating) |
+| repaired | slow | -2.60 / -4537 | **-2.07 / -3281** |
+| sized | typical | -2.10 / -1221 | -1.10 / -299 |
+| sized | slow | -5.45 / -8797 | -3.98 / -5906 |
+
+The largest logic depth among the worst paths per endpoint stays at 17 logic cells: 148 paths are over 12, against 138 in the second round. The second UpdateFC stage is no longer among them. The 17-cell cones now are:
+
+- the UpdateFC first stage, `receiver.fc_class_o` -> `credits.update_d_debit`: the class mux of the consumed count, the carry-save step and one 12-bit adder into a register;
+- the consume, `credits.request_class` -> `credits.dc`.
+
+### Physical probe (run 42522972371)
+
+Same configuration as before, on `4077a84cb`. Setup worst slack, ns:
+
+| Corner | `pcie_clk_i` capped (second round) | `pcie_clk_i` after uncapped repair (second round) | asynchronous capped (second round) | asynchronous after uncapped repair (second round) |
+|---|---:|---:|---:|---:|
+| slow | -3.60 (-3.55) | **-1.75** (-2.61) | -3.32 (-3.42) | **-1.65** (-2.16) |
+| typical | -1.30 (-0.84) | **-0.08** (-0.26) | -0.78 (-0.84) | **+0.21** (+0.06) |
+| fast | -0.17 (+0.28) | +0.86 (+0.55) | +0.64 (+0.62) | +1.26 (+1.34) |
+
+The uncapped repair stopped with RSZ-0062 after 689 resizes, 227 buffers and 120 pin swaps. After it, `pcie_clk_i` is 1.75 ns short at slow and 0.08 ns at typical, against 5.76 and 2.31 before this branch.
+
+Before the extra repair, the worst `pcie_clk_i` paths at both corners are now RX boundary paths, not internal ones:
+
+- input port `pcie_rx_dllp_i`, through a `dlygate4sd3` hold-fix cell, into `soc_pcie_rx_credit`'s kind-dependent `rx_ready_o` and its staging write enables (-3.60 ns slow);
+- the same logic to output port `pcie_rx_ready_o` (-1.30 ns typical).
+
+Both carry the 0.8 ns input and output delays of the SDC. The capped numbers therefore did not improve in this round, but the uncapped repair removes these paths.
+
+After the uncapped repair, the worst internal path (slow, 6.67 ns arrival, 24 cells) is again carry-shaped: about 10 `o21ai`/`a21oi` cells. In the block screen the candidates are the UpdateFC first stage (`fc_class_o` -> `update_d_debit`) and the consume adder into `dc`, both 17 logic cells.
+
+The asynchronous worst is unchanged in kind. It is the core-domain `rst_sys_n` (`clk_i` flop) into the `u_pcie_cdc` release synchronizer through the `nor3`, reported above.
+
 ## What remains
 
-- **Two cones are still at 17 logic cells** in the final screen, above the target of about 12.
-  - **`soc_pcie_credit_tx`, second stage of the UpdateFC.** The debit variant's sign (`d_idle + (-required)`, one 12-bit adder from registers) is selected by that cycle's consume, then gates the limit and balance writes. Requiring a request to be unchanged for two cycles would make the required credit a stable register. All four balance variants (with and without either cycle's debit) could then be formed in the first stage as one-adder carry-save sums, and the second stage would be pure selection. That costs one more grant cycle after a request changes, and another revision of the same oracle.
-  - **`soc_pcie_rx_credit` receive gate.** The FC initialization state (`all_seen` and `local_init2_sent`) reaches the queue's `rx_ready_o` and the staging write enables in the same cycle. Registering `initialized_i` in `soc_pcie_buffered_flow_packets` would open the receive gate one cycle after initialization, with no test change.
-- **TLP register backend.** The decode stays in the descriptor handshake cycle, at 10-12 logic cells. A decode-then-act stage needs `test_soc_pcie_tlp_regs.py` to accept APB setup one cycle later.
-- **Registered link/reset copies.** Each copy still drives a whole block's reset and enables. One more level of replication inside the replay store and the receive queue would shorten the remaining buffer trees.
-- **The slow corner.** After global route and uncapped repair, `pcie_clk_i` is 2.61 ns short at slow and 0.26 ns short at typical, against 5.76 and 2.31 before this branch. Typical is within reach. Next steps there:
-  - the two 17-cell cones above;
-  - the carry-chain-shaped worst path. Likely candidates are the FC advertiser's 32-bit refresh counter and compare, and the 12-bit credit adders. Name its registers with the `scripts/pcie_timing` renaming, then split or narrow it.
-
-  At slow, about 0.2 ns per cell leaves about 14 cells per 4 ns stage, including clock-to-Q, setup, uncertainty and buffering. The packet path is now at 8-17 logic cells plus buffering. Closing the frozen slow corner at 4 ns therefore still needs about 2.6 ns more. That means several more stages across most blocks, or a wider datapath at a lower `pcie_clk_i`.
+- **RX boundary.** The capped worst paths start at the input ports: `pcie_rx_dllp_i` reaches `rx_ready_o` and the staging enables combinationally, and hold repair puts a delay cell on that input. An input register slice before the receive queue would make `pcie_rx_ready_o` a flop output and start the queue's paths at registers. It costs one cycle, and stream order and frame-start blocking are unchanged, since the PHY stream is in order.
+- **Two 17-logic-cell cones in `soc_pcie_credit_tx`.**
+  - The UpdateFC first stage (a class mux of the consumed count, carry-save, one 12-bit adder): registering the per-class "limit minus consumed" balance of the incoming class one cycle ahead would split it.
+  - The consume into `dc`: the grant feeds a 12-bit add-and-select; selecting a precomputed `dc + required` would remove the adder from behind the grant.
+- **Asynchronous group (core domain).** `rst_sys_n` from the `clk_i` reset synchronizer reaches the PCIe-domain synchronizer inputs through the core reset buffer tree. It needs its own reset leaf, or constraints for asynchronous-assertion inputs. This is outside the packet RTL and was not changed here.
+- **Closure.** After uncapped repair, typical is within 0.08 ns. Slow `pcie_clk_i` still needs about 1.75 ns, and the asynchronous group about 1.65 ns.

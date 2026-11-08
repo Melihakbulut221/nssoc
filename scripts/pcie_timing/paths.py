@@ -125,8 +125,12 @@ def main(out):
                     print(f"  {p['slack']:8.3f} {n:3d} {m:3d}  {register(p['start'])} -> {register(p.get('end', '?'))}")
                     if len(seen) >= 40:
                         break
-                depth = sorted((logic_levels(p["cells"]) for p in core), reverse=True)[:1]
-                print(f"  deepest of {len(core)} worst-endpoint paths: cells, logic cells {depth}")
+                deep = max(core, key=lambda p: logic_levels(p["cells"])[1])
+                n, m = logic_levels(deep["cells"])
+                over = sum(1 for p in core if logic_levels(p["cells"])[1] > 12)
+                print(f"  most logic cells of {len(core)} worst-endpoint paths: {m} ({n} cells), "
+                      f"{register(deep['start'])} -> {register(deep.get('end', '?'))}; "
+                      f"{over} paths over 12 logic cells")
             print("worst register-to-register paths (slack, arrival, cells, logic cells, start -> end):")
             for p in full(out / f"{stage}_r2r_full_{corner}.rpt")[:6]:
                 n, m = logic_levels(p["cells"])
