@@ -956,9 +956,18 @@ module soc_top #(
   wire [3:0] packet_pstrb;
 `ifdef SOC_PCIE_ASYNC
   wire packet_clk=pcie_clk_i;
+  // Dedicated leaf of the system reset for the packet-domain reset
+  // synchronizers below. It asserts with rst_raw_n, together with
+  // rst_sys_n, and releases one clk_i cycle after it. It drives only those
+  // synchronizers' reset pins, so their recovery path starts at this flop
+  // instead of the end of the CPU's rst_sys_n tree.
+  reg pcie_sys_rst_n;
+  always @(posedge clk_i or negedge rst_raw_n)
+    if (!rst_raw_n) pcie_sys_rst_n <= 1'b0;
+    else            pcie_sys_rst_n <= rst_sys_n;
   (* ASYNC_REG="TRUE" *) reg [1:0] packet_reset_release;
-  always @(posedge pcie_clk_i or negedge rst_sys_n)
-    if(!rst_sys_n) packet_reset_release<=0;
+  always @(posedge pcie_clk_i or negedge pcie_sys_rst_n)
+    if(!pcie_sys_rst_n) packet_reset_release<=0;
     else packet_reset_release<={packet_reset_release[0],1'b1};
   // The local release flop also clears with a stopped packet clock.
   // Avoid feeding the raw CPU reset into packet-domain data/output cones.
@@ -967,7 +976,7 @@ module soc_top #(
   // are deliberately unaffected. A write already accepted by APB remains.
   soc_pcie_apb_cdc u_pcie_cdc (
     .source_clk_i(pcie_clk_i),.destination_clk_i(clk_i),
-    .reset_ni(rst_sys_n && pcie_link_up_i && !pcie_retrain_done_i),
+    .reset_ni(pcie_sys_rst_n && pcie_link_up_i && !pcie_retrain_done_i),
     .s_psel_i(packet_psel),.s_penable_i(packet_penable),.s_pwrite_i(packet_pwrite),
     .s_paddr_i(packet_paddr),.s_pwdata_i(packet_pwdata),.s_pstrb_i(packet_pstrb),
     .s_pready_o(packet_pready),.s_pslverr_o(packet_pslverr),.s_prdata_o(packet_prdata),

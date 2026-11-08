@@ -87,13 +87,27 @@ module soc_pcie_buffered_flow_packets #(
     wire advert_sop,advert_eop,advert_valid,advert_ready;
     wire [7:0] fc_data;
     wire fc_sop,fc_eop,fc_valid,fc_ready;
+    wire [7:0] in_data;
+    wire in_sop,in_eop,in_error,in_dllp,in_valid,in_ready,in_room;
     wire flow_error,flow_protocol,flow_retrain,rx_protocol;
+    // Receive input register slice. pcie_rx_ready_o is the slice's room
+    // (a flop) qualified by this block's registered reset copy, and the
+    // receive queue's paths start at registers instead of the input ports.
+    // Beats keep their order and are never retracted; the queue's
+    // kind-dependent ready now applies at the slice output, so a beat the
+    // queue cannot take waits in the slice exactly as it waited at the PHY,
+    // with everything behind it. Received beats arrive one cycle later.
+    assign rx_ready_o=up_rx && in_room;
+    soc_pcie_stream_skid #(.W(12)) receive_input_slice(
+        .clk_i(clk_i),.rst_ni(up_rx),.clear_i(1'b0),
+        .s_data_i({rx_data_i,rx_sop_i,rx_eop_i,rx_error_i,rx_dllp_i}),.s_valid_i(rx_valid_i && rx_ready_o),.s_ready_o(in_room),
+        .m_data_o({in_data,in_sop,in_eop,in_error,in_dllp}),.m_valid_o(in_valid),.m_ready_i(in_ready));
     soc_pcie_rx_credit #(.MAX_TLP_DWORDS(MAX_TLP_DWORDS),.SLOTS_PER_CLASS(RX_SLOTS_PER_CLASS),
         .COMPLETER_ONLY(1)) receive_ownership(
         .clk_i(clk_i),.rst_ni(up_rx),.link_up_i(up_rx),.training_i(training_i),
-        .initialized_i(rx_initialized),.rx_data_i(rx_data_i),.rx_sop_i(rx_sop_i),
-        .rx_eop_i(rx_eop_i),.rx_valid_i(rx_valid_i),.rx_dllp_i(rx_dllp_i),.rx_error_i(rx_error_i),
-        .rx_ready_o(rx_ready_o),.out_data_o(q_data),.out_sop_o(q_sop),.out_eop_o(q_eop),
+        .initialized_i(rx_initialized),.rx_data_i(in_data),.rx_sop_i(in_sop),
+        .rx_eop_i(in_eop),.rx_valid_i(in_valid),.rx_dllp_i(in_dllp),.rx_error_i(in_error),
+        .rx_ready_o(in_ready),.out_data_o(q_data),.out_sop_o(q_sop),.out_eop_o(q_eop),
         .out_valid_o(q_valid),.out_dllp_o(q_dllp),.out_error_o(q_error),.out_ready_i(q_ready),
         .packet_accepted_i(packet_accepted_o),.packet_duplicate_i(packet_duplicate_o),
         .packet_rejected_i(packet_rejected_o),.header_limit_o(rx_header_limit_o),
