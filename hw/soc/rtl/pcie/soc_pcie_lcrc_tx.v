@@ -63,7 +63,28 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
         prefix_crc<=crc_byte(crc_byte(32'hffffffff,{4'b0,next_sequence_o[11:8]}),next_sequence_o[7:0]);
     reg fold_valid,fold_first,fold_msb_first;
     reg [31:0] fold_word;
-    always @(posedge clk_i) if (fold_valid) crc<=crc_word(fold_first ? prefix_crc : crc,fold_word,fold_msb_first);
+    // The DWORD update is linear in the CRC state and the word, so each next
+    // state bit is the parity of the state and word bits selected by
+    // constant masks (columns of crc_word applied to unit vectors). Written
+    // this way each bit is one balanced parity tree instead of 32 serial
+    // shift-and-XOR steps.
+    wire [31:0] fold_state=fold_first ? prefix_crc : crc;
+    wire [31:0] fold_next;
+    genvar fold_bit,fold_input;
+    generate for(fold_bit=0;fold_bit<32;fold_bit=fold_bit+1) begin: fold_parity
+        wire [31:0] state_mask,msb_mask,lsb_mask;
+        for(fold_input=0;fold_input<32;fold_input=fold_input+1) begin: fold_mask
+            wire [31:0] state_column=crc_word(32'd1<<fold_input,32'd0,1'b1);
+            wire [31:0] msb_column=crc_word(32'd0,32'd1<<fold_input,1'b1);
+            wire [31:0] lsb_column=crc_word(32'd0,32'd1<<fold_input,1'b0);
+            assign state_mask[fold_input]=state_column[fold_bit];
+            assign msb_mask[fold_input]=msb_column[fold_bit];
+            assign lsb_mask[fold_input]=lsb_column[fold_bit];
+        end
+        assign fold_next[fold_bit]=(^(fold_state & state_mask)) ^
+            (fold_msb_first ? ^(fold_word & msb_mask) : ^(fold_word & lsb_mask));
+    end endgenerate
+    always @(posedge clk_i) if (fold_valid) crc<=fold_next;
     assign tlp_ready_o=rst_ni && (state==IDLE || state==COLLECT || state==DROP);
     assign tx_valid_o=rst_ni && state>=PREFIX0;
     assign tx_sop_o=state==PREFIX0;
