@@ -99,6 +99,16 @@ module soc_pcie_rx_credit #(
     reg [SW-1:0] head_slot;
     wire [SW-1:0] next_qread=remove ? (qread==SLOTS-1 ? 0 : qread+1'b1) : qread;
     wire [SW-1:0] next_head_slot=(commit && qwrite==next_qread) ? stage_slot : order[next_qread];
+    // The head slot's last read index, class and credit units are kept in
+    // registers from the same next-state head and the commit's writes, so
+    // the frame end and the credit release start at registers.
+    reg [CW-1:0] head_last;
+    reg [1:0] head_class;
+    reg [11:0] head_units;
+    reg [SLOTS-1:0] head_onehot;
+    wire next_head_commit=commit_slot[next_head_slot];
+    wire [CW-1:0] next_head_last=(next_head_commit ? stage_length : lengths[next_head_slot])-1'b1;
+    wire [11:0] next_head_units=next_head_commit ? stage_units : units[next_head_slot];
     wire select_dllp=output_active ? output_dllp : dllp_pending;
     wire tlp_available=qcount!=0 && !waiting && initialized_i;
     // The frozen consumer's ready depends on frame kind, not valid. Qualifying
@@ -111,20 +121,42 @@ module soc_pcie_rx_credit #(
     // an already-read byte instead of driving a multiply/add and a flat mux.
     // Keep the flat array bounds (including reads across a bank boundary) so
     // this is cycle-exact even outside the valid output-index range.
+    // A one-hot read cursor (equal to output_index, updated at the same
+    // points) and the one-hot head slot select the byte as two AND-OR
+    // levels instead of binary multiplexer trees. Cross-bank addresses of
+    // the flat array are included; addresses past its end read as zero.
+    localparam integer READ_CHOICES=1<<CW;
+    reg [READ_CHOICES-1:0] read_onehot;
     wire [7:0] bank_byte [0:SLOTS-1];
-    genvar bank;
+    genvar bank,read_bit,read_offset;
     generate for(bank=0;bank<SLOTS;bank=bank+1) begin: read_bank
-        assign bank_byte[bank]=packets[bank*CAP+output_index];
+        for(read_bit=0;read_bit<8;read_bit=read_bit+1) begin: read_bit_lane
+            wire [READ_CHOICES-1:0] selected;
+            for(read_offset=0;read_offset<READ_CHOICES;read_offset=read_offset+1) begin: read_byte
+                if(bank*CAP+read_offset<SLOTS*CAP) begin: present
+                    assign selected[read_offset]=read_onehot[read_offset] & packets[bank*CAP+read_offset][read_bit];
+                end else begin: absent
+                    assign selected[read_offset]=1'b0;
+                end
+            end
+            assign bank_byte[bank][read_bit]=head_onehot[bank] & |selected;
+        end
     end endgenerate
-    assign out_data_o=select_dllp ? dllp[output_index] : bank_byte[head_slot];
+    reg [7:0] tlp_byte;
+    integer h;
+    always @* begin
+        tlp_byte=0;
+        for(h=0;h<SLOTS;h=h+1) tlp_byte=tlp_byte|bank_byte[h];
+    end
+    assign out_data_o=select_dllp ? dllp[output_index] : tlp_byte;
     assign out_sop_o=output_index==0;
-    assign out_eop_o=select_dllp ? output_index+1'b1==dllp_length :
-                                  output_index+1'b1==lengths[head_slot];
+    assign out_eop_o=select_dllp ? output_index+1'b1==dllp_length : output_index==head_last;
     assign out_error_o=select_dllp ? dllp_bad : errors[head_slot];
     assign queued_o=qcount;
     always @(posedge clk_i or negedge rst_ni) begin
         if(!rst_ni) begin
             used<=0;qread<=0;qwrite<=0;qcount<=0;head_slot<=0;
+            head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;read_onehot<=1;
             input_active<=0;input_dllp<=0;input_bad<=0;input_count<=0;
             stage_pending<=0;stage_length<=0;stage_bad<=0;
             stage_checked<=0;stage_shape_ok<=0;stage_slot<=0;stage_units<=0;commit_slot<=0;
@@ -136,6 +168,7 @@ module soc_pcie_rx_credit #(
             dropped_o<=0;protocol_error_o<=0;recovery_request_o<=0;
         end else if(!link_up_i) begin
             used<=0;qread<=0;qwrite<=0;qcount<=0;head_slot<=0;input_active<=0;input_count<=0;
+            head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;read_onehot<=1;
             stage_pending<=0;dllp_pending<=0;output_active<=0;output_index<=0;waiting<=0;
             stage_checked<=0;commit_slot<=0;
             header_limit_o<={COMPLETER_ONLY ? 8'b0 : H_INIT,H_INIT,H_INIT};
@@ -143,6 +176,8 @@ module soc_pcie_rx_credit #(
             released_o<=0;dropped_o<=0;protocol_error_o<=0;recovery_request_o<=0;
         end else begin
             released_o<=0;dropped_o<=0;head_slot<=next_head_slot;
+            head_last<=next_head_last;head_class<=next_head_slot/SLOTS_PER_CLASS;head_units<=next_head_units;
+            head_onehot<={{(SLOTS-1){1'b0}},1'b1}<<next_head_slot;
             stage_checked<=stage_pending && !commit && !stage_drop;
             stage_shape_ok<=shape_ok;
             stage_slot<=free_slot;stage_units<=(payload_dw+3)/4;
@@ -164,12 +199,10 @@ module soc_pcie_rx_credit #(
             if(remove) begin
                 used[head_slot]<=0;waiting<=0;qread<=qread==SLOTS-1 ? 0 : qread+1'b1;
                 if(packet_accepted_i) begin
-                    released_o<=1;released_class_o<=head_slot/SLOTS_PER_CLASS;
-                    released_data_o<=units[head_slot];
-                    header_limit_o[(head_slot/SLOTS_PER_CLASS)*8 +: 8]<=
-                        header_limit_o[(head_slot/SLOTS_PER_CLASS)*8 +: 8]+1'b1;
-                    data_limit_o[(head_slot/SLOTS_PER_CLASS)*12 +: 12]<=
-                        data_limit_o[(head_slot/SLOTS_PER_CLASS)*12 +: 12]+units[head_slot];
+                    released_o<=1;released_class_o<=head_class;
+                    released_data_o<=head_units;
+                    header_limit_o[head_class*8 +: 8]<=header_limit_o[head_class*8 +: 8]+1'b1;
+                    data_limit_o[head_class*12 +: 12]<=data_limit_o[head_class*12 +: 12]+head_units;
                 end
             end
             case({commit,remove})
@@ -206,10 +239,11 @@ module soc_pcie_rx_credit #(
             end
             if(out_valid_o && out_ready_i) begin
                 if(out_eop_o) begin
-                    output_active<=0;output_index<=0;
+                    output_active<=0;output_index<=0;read_onehot<=1;
                     if(select_dllp) dllp_pending<=0; else waiting<=1;
                 end else begin
                     output_active<=1;output_dllp<=select_dllp;output_index<=output_index+1'b1;
+                    read_onehot<={read_onehot[READ_CHOICES-2:0],read_onehot[READ_CHOICES-1]};
                 end
             end
         end

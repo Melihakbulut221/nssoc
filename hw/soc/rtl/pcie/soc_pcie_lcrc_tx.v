@@ -33,6 +33,12 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
     // update reached before. The transmit byte select no longer feeds a
     // CRC step, and the collected word no longer feeds the CRC tree.
     reg [31:0] crc;
+    // Header DWORDs are sent MSB-first, data DWORDs LSB-first.
+    function [31:0] transmit_order;
+        input [31:0] word;
+        input msb_first;
+        begin transmit_order=msb_first ? {word[7:0],word[15:8],word[23:16],word[31:24]} : word; end
+    endfunction
     function [31:0] crc_byte;
         input [31:0] crc_state;
         input [7:0] data;
@@ -94,40 +100,55 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
     // on each accepted byte the following prefix, data or LCRC byte. Words,
     // header size, length, sequence and the folded LCRC do not change while
     // a frame is sent, so the register always equals the byte the state,
-    // index and byte index select, and the word multiplexer sits before the
-    // register instead of in front of the merge and transmit slice.
-    // Byte b (transmission order) of collected word w.
-    function [7:0] word_byte;
-        input [31:0] word;
-        input msb_first;
-        input [1:0] b;
-        begin word_byte=msb_first ? word >> (8*(3-b)) : word >> (8*b); end
-    endfunction
-    wire [7:0] selected_word_byte [0:MAX_TLP_DWORDS-1];
-    wire last_byte=byte_index==3;
-    wire [CW-1:0] next_index=(state==PREFIX1) ? {CW{1'b0}} : last_byte ? index+1'b1 : index;
-    wire [1:0] next_byte_index=(state==PREFIX1) ? 2'd0 : byte_index+1'b1;
-    genvar tx_word;
-    generate for(tx_word=0;tx_word<MAX_TLP_DWORDS;tx_word=tx_word+1) begin: read_tx_word
-        assign selected_word_byte[tx_word]=word_byte(words[tx_word],tx_word<header_words,next_byte_index);
-    end endgenerate
+    // index and byte index select.
+    // Collected words are stored in transmission byte order (byte b at bits
+    // 8b+7:8b), and a cursor register names the position of the byte after
+    // the current one. Loading the next byte is then a word and byte select
+    // by registers; advancing the cursor, which needs the increment and the
+    // last-word compare, is a separate stage.
+    localparam [1:0] NEXT_PREFIX1=0,NEXT_DATA=1,NEXT_CRC=2,NEXT_END=3;
+    reg [1:0] cursor_kind,cursor_byte;
+    reg [CW-1:0] cursor_word;
+    reg cursor_last_word;
+    wire [7:0] cursor_data_byte=words[cursor_word] >> (8*cursor_byte);
+    wire [7:0] cursor_crc_byte=(~crc) >> (8*cursor_byte);
     reg [7:0] tx_byte;
     wire tx_shown=state>=PREFIX0;
     always @* tx_data_o=tx_shown ? tx_byte : 8'd0;
-    wire [7:0] crc_next_byte=(~crc) >> (8*(state==CRC ? byte_index+2'd1 : 2'd0));
+    wire enter_prefix=state==COLLECT && tlp_valid_i && tlp_ready_o && !tlp_sop_i && !tlp_error_i &&
+                      count!=MAX_TLP_DWORDS && tlp_eop_i && count+1>=header_words;
     always @(posedge clk_i or negedge rst_ni) begin
-        if (!rst_ni) tx_byte<=0;
-        else if (tx_valid_o && tx_ready_i) begin
-            case (state)
-                PREFIX0:tx_byte<=next_sequence_o[7:0];
-                PREFIX1:tx_byte<=selected_word_byte[0];
-                DATA:tx_byte<=(last_byte && index==length-1'b1) ? crc_next_byte : selected_word_byte[next_index];
-                CRC:tx_byte<=last_byte ? 8'd0 : crc_next_byte;
+        if (!rst_ni) begin
+            tx_byte<=0;cursor_kind<=NEXT_END;cursor_word<=0;cursor_byte<=0;cursor_last_word<=0;
+        end else if (tx_valid_o && tx_ready_i) begin
+            case (cursor_kind)
+                NEXT_PREFIX1:tx_byte<=next_sequence_o[7:0];
+                NEXT_DATA:tx_byte<=cursor_data_byte;
+                NEXT_CRC:tx_byte<=cursor_crc_byte;
                 default:tx_byte<=0;
             endcase
-        end else if (state==COLLECT && tlp_valid_i && tlp_ready_o && !tlp_sop_i && !tlp_error_i &&
-                     count!=MAX_TLP_DWORDS && tlp_eop_i && count+1>=header_words)
-            tx_byte<={4'b0,next_sequence_o[11:8]};
+            case (cursor_kind)
+                NEXT_PREFIX1:begin
+                    cursor_kind<=NEXT_DATA;cursor_word<=0;cursor_byte<=0;cursor_last_word<=length==1;
+                end
+                NEXT_DATA:begin
+                    cursor_byte<=cursor_byte+1'b1;
+                    if (cursor_byte==3) begin
+                        if (cursor_last_word) cursor_kind<=NEXT_CRC;
+                        else begin
+                            cursor_word<=cursor_word+1'b1;cursor_last_word<=cursor_word+2'd2==length;
+                        end
+                    end
+                end
+                NEXT_CRC:begin
+                    cursor_byte<=cursor_byte+1'b1;
+                    if (cursor_byte==3) cursor_kind<=NEXT_END;
+                end
+                default:cursor_kind<=NEXT_END;
+            endcase
+        end else if (enter_prefix) begin
+            tx_byte<={4'b0,next_sequence_o[11:8]};cursor_kind<=NEXT_PREFIX1;
+        end
     end
     generate if (MAX_TLP_DWORDS<4 || MAX_TLP_DWORDS>1028) begin: invalid_capacity
         initial $error("MAX_TLP_DWORDS must be 4..1028");
@@ -161,7 +182,7 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
             end else if (tlp_valid_i && tlp_ready_o) begin
                 if (tlp_sop_i) begin
                     if (state==COLLECT) packet_bad_o<=1;
-                    words[0]<=tlp_data_i;count<=1;header_words<=tlp_data_i[29] ? 4 : 3;
+                    words[0]<=transmit_order(tlp_data_i,1'b1);count<=1;header_words<=tlp_data_i[29] ? 4 : 3;
                     fold_valid<=1;fold_first<=1;fold_word<=tlp_data_i;fold_msb_first<=1;
                     if (tlp_eop_i || tlp_error_i) begin
                         packet_bad_o<=1;state<=tlp_eop_i ? IDLE : DROP;
@@ -173,7 +194,7 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
                 end else if (tlp_error_i || count==MAX_TLP_DWORDS) begin
                     packet_bad_o<=1;state<=tlp_eop_i ? IDLE : DROP;
                 end else begin
-                    words[count]<=tlp_data_i;count<=count+1'b1;
+                    words[count]<=transmit_order(tlp_data_i,count<header_words);count<=count+1'b1;
                     fold_valid<=1;fold_first<=0;fold_word<=tlp_data_i;fold_msb_first<=count<header_words;
                     if (tlp_eop_i) begin
                         if (count+1>=header_words) begin
