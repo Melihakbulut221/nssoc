@@ -41,7 +41,7 @@ module soc_pcie_tlp_regs #(
     output wire memory_enable_o,
     output wire [31:0] bar0_o
 );
-    localparam [2:0] IDLE=0, SETUP=1, ACCESS=2, RESPONSE=3;
+    localparam [2:0] IDLE=0, SETUP=1, ACCESS=2, RESPONSE=3, DECIDE=4;
     localparam integer TW = APB_TIMEOUT > 1 ? $clog2(APB_TIMEOUT) : 1;
     localparam [TW-1:0] TIMEOUT_LAST = TW'(APB_TIMEOUT-1);
     reg [2:0] state;
@@ -117,50 +117,87 @@ module soc_pcie_tlp_regs #(
         end
     endtask
 
+    // The descriptor is decoded when it is accepted in IDLE and acted on in
+    // DECIDE, one cycle later, from registered decode results. The header
+    // field checks and the decision chain that drives the completion, APB
+    // and configuration registers are two stages instead of one. BAR0 and
+    // Memory Space Enable change only in DECIDE, so the decode in IDLE sees
+    // the values the action would.
+    reg d_simple_ok, d_no_response, d_unsupported, d_posted, d_config, d_config_bad;
+    reg d_has_data, d_config_enable, d_config_bar, d_memory_ok, d_zero_be;
+    reg [31:0] d_config_read, d_bar0_write;
+    reg [15:0] d_requester;
+    reg [7:0] d_tag;
+    reg [6:0] d_lower_zero, d_lower;
+    reg [11:0] d_paddr, d_count;
+    reg [3:0] d_first_be;
+    reg [31:0] d_data;
     always @(posedge clk_i or negedge rst_ni) begin
         if (!rst_ni) begin
             state<=IDLE; timer<=0; memory_enable<=0; bar0<=0;
             requester<=0; completer<=0; tag<=0; lower_address<=0; byte_count<=0;
             tx_hdr_o<=0; tx_data_o<=0; tx_has_data_o<=0; tx_valid_o<=0;
             paddr_o<=0; pwrite_o<=0; pstrb_o<=0; pwdata_o<=0; error_o<=0;
+            {d_simple_ok,d_no_response,d_unsupported,d_posted,d_config,d_config_bad}<=0;
+            {d_has_data,d_config_enable,d_config_bar,d_memory_ok,d_zero_be}<=0;
+            d_config_read<=0; d_bar0_write<=0; d_requester<=0; d_tag<=0; d_lower_zero<=0;
+            d_lower<=0; d_paddr<=0; d_count<=0; d_first_be<=0; d_data<=0;
         end else begin
             error_o<=0;
             case (state)
                 IDLE: if (rx_valid_i) begin
-                    if (!simple_header || !payload_ok) begin
+                    d_simple_ok<=simple_header && payload_ok;
+                    d_no_response<=is_completion || fmt>3 || typ[4];
+                    d_unsupported<=!one_dw || (!is_memory && !is_config);
+                    d_posted<=is_posted; d_config<=is_config;
+                    d_config_bad<=dw2[31:16]!=function_id_i || dw2[15:12]!=0 || dw2[1:0]!=0;
+                    d_has_data<=has_data;
+                    d_config_enable<=dw2[11:2]==1 && first_be[0];
+                    d_config_bar<=dw2[11:2]==4;
+                    d_config_read<=cfg_data & be_mask;
+                    d_bar0_write<=((bar0 & ~be_mask) | (rx_data_i & be_mask)) & 32'hfffff000;
+                    d_memory_ok<=memory_enable && target_ok;
+                    d_zero_be<=first_be==0;
+                    d_requester<=dw1[31:16]; d_tag<=dw1[15:8];
+                    d_lower_zero<=addr[6:0]; d_lower<={addr[6:2],first_byte};
+                    d_paddr<=addr[11:0]; d_count<=count_bytes; d_first_be<=first_be; d_data<=rx_data_i;
+                    state<=DECIDE;
+                end
+                DECIDE: begin
+                    state<=IDLE;
+                    if (!d_simple_ok) begin
                         error_o<=1;
-                    end else if (is_completion || fmt>3 || typ[4]) begin
+                    end else if (d_no_response) begin
                         error_o<=1; // No response to completions or messages.
-                    end else if (!one_dw || (!is_memory && !is_config)) begin
+                    end else if (d_unsupported) begin
                         error_o<=1;
-                        if (!is_posted)
-                            complete(3'd1,0,0,function_id_i,dw1[31:16],dw1[15:8],0,0);
-                    end else if (is_config) begin
-                        if (dw2[31:16]!=function_id_i || dw2[15:12]!=0 || dw2[1:0]!=0) begin
+                        if (!d_posted)
+                            complete(3'd1,0,0,function_id_i,d_requester,d_tag,0,0);
+                    end else if (d_config) begin
+                        if (d_config_bad) begin
                             error_o<=1;
-                            complete(3'd1,0,0,function_id_i,dw1[31:16],dw1[15:8],0,0);
-                        end else if (has_data) begin
-                            if (dw2[11:2]==1 && first_be[0]) memory_enable<=rx_data_i[1];
-                            if (dw2[11:2]==4)
-                                bar0<=((bar0 & ~be_mask) | (rx_data_i & be_mask)) & 32'hfffff000;
-                            complete(0,0,0,function_id_i,dw1[31:16],dw1[15:8],4,0);
+                            complete(3'd1,0,0,function_id_i,d_requester,d_tag,0,0);
+                        end else if (d_has_data) begin
+                            if (d_config_enable) memory_enable<=d_data[1];
+                            if (d_config_bar) bar0<=d_bar0_write;
+                            complete(0,0,0,function_id_i,d_requester,d_tag,4,0);
                         end else begin
-                            complete(0,1,cfg_data & be_mask,function_id_i,dw1[31:16],dw1[15:8],4,0);
+                            complete(0,1,d_config_read,function_id_i,d_requester,d_tag,4,0);
                         end
-                    end else if (!memory_enable || !target_ok) begin
+                    end else if (!d_memory_ok) begin
                         error_o<=1;
-                        if (!has_data)
-                            complete(3'd1,0,0,function_id_i,dw1[31:16],dw1[15:8],0,0);
-                    end else if (first_be==0) begin
+                        if (!d_has_data)
+                            complete(3'd1,0,0,function_id_i,d_requester,d_tag,0,0);
+                    end else if (d_zero_be) begin
                         // PCIe zero-length memory writes have no side effects;
                         // reads complete with an unspecified single DWORD.
-                        if (!has_data)
-                            complete(0,1,0,function_id_i,dw1[31:16],dw1[15:8],1,addr[6:0]);
+                        if (!d_has_data)
+                            complete(0,1,0,function_id_i,d_requester,d_tag,1,d_lower_zero);
                     end else begin
-                        requester<=dw1[31:16]; tag<=dw1[15:8]; completer<=function_id_i;
-                        lower_address<={addr[6:2],first_byte}; byte_count<=count_bytes;
-                        paddr_o<=addr[11:0]; pwrite_o<=has_data;
-                        pstrb_o<=has_data ? first_be : 4'b0; pwdata_o<=rx_data_i; timer<=0; state<=SETUP;
+                        requester<=d_requester; tag<=d_tag; completer<=function_id_i;
+                        lower_address<=d_lower; byte_count<=d_count;
+                        paddr_o<=d_paddr; pwrite_o<=d_has_data;
+                        pstrb_o<=d_has_data ? d_first_be : 4'b0; pwdata_o<=d_data; timer<=0; state<=SETUP;
                     end
                 end
                 SETUP: state<=ACCESS;
