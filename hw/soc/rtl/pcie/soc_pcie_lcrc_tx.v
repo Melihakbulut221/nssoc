@@ -53,7 +53,14 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
                 crc_byte(crc_byte(crc_byte(crc_byte(crc_state,word[7:0]),word[15:8]),word[23:16]),word[31:24]);
         end
     endfunction
-    wire [31:0] prefix_crc=crc_byte(crc_byte(32'hffffffff,{4'b0,next_sequence_o[11:8]}),next_sequence_o[7:0]);
+    // The LCRC state after the two prefix bytes depends on the sequence
+    // number only. It is registered every cycle: the sequence advances at the
+    // last LCRC byte, a new SOP is accepted at the earliest in the following
+    // cycle and folded one cycle after that, so the fold reads the register
+    // of the current sequence number.
+    reg [31:0] prefix_crc;
+    always @(posedge clk_i)
+        prefix_crc<=crc_byte(crc_byte(32'hffffffff,{4'b0,next_sequence_o[11:8]}),next_sequence_o[7:0]);
     reg fold_valid,fold_first,fold_msb_first;
     reg [31:0] fold_word;
     always @(posedge clk_i) if (fold_valid) crc<=crc_word(fold_first ? prefix_crc : crc,fold_word,fold_msb_first);
