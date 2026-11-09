@@ -18,6 +18,10 @@ on:
         description: repair_timing -max_iterations in the uncapped-repair step
         type: string
         default: '1000000'
+      path_nets:
+        description: After the repair, also report the ten worst paths per group at the slow corner with net names
+        type: boolean
+        default: false
       rvformal_only:
         description: Run only the riscv-formal comparison (skip everything else)
         type: boolean
@@ -453,7 +457,12 @@ jobs:
                'repair_design -verbose\nestimate_parasitics -global_routing\n'
                'repair_timing -verbose -setup -setup_margin 0 -repair_tns 100 -max_iterations ${{ inputs.repair_iterations || '1000000' }} -max_buffer_percent 50\n'
                'estimate_parasitics -global_routing\nputs "NSSOC_DEEP_REPAIR_DONE"\n')
-          open(sys.argv[2],'w').write(s[:i]+rep+s[i:].replace('NSSOC_CORNER_','NSSOC_DEEP_CORNER_'))
+          tail=s[i:].replace('NSSOC_CORNER_','NSSOC_DEEP_CORNER_')
+          if '${{ inputs.path_nets }}' == 'true':
+              tail+=('puts "NSSOC_NETS_BEGIN"\n'
+                     'report_checks -corner nom_slow_1p08V_125C -path_delay max -group_path_count 10 -fields {net fanout} -digits 3\n'
+                     'puts "NSSOC_NETS_END"\n')
+          open(sys.argv[2],'w').write(s[:i]+rep+tail)
           PY
           timeout 12600 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage openroad -exit $OUT/deep-repair.tcl > $OUT/deep-repair.log 2>&1; echo "DEEP_RC=$?"
           grep -a -E "NSSOC_DEEP|slack \(|RSZ-00(4|5|6)|^ +[0-9]+ +\|.*\| *-?[0-9.]+ *\|" $OUT/deep-repair.log | tail -60
