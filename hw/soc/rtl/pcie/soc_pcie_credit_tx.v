@@ -63,7 +63,11 @@ module soc_pcie_credit_tx (
     // unchanged for two cycles (so the required credit of any debit that
     // meets an UpdateFC in either of its cycles is one registered value), and
     // the cycle after a consume never grants.
-    reg verdict,consumed,request_stable;
+    // The cycle after an FC event's application never grants either: a
+    // consume's available-data debit is finished from a low half registered
+    // in the cycle before, which must see the same available credit, and
+    // only an application or a consume changes it.
+    reg verdict,consumed,request_stable,applied;
     reg [1:0] request_class;
     reg [10:0] request_dw;
     reg request_replay;
@@ -73,7 +77,7 @@ module soc_pcie_credit_tx (
         reserve_replay_i==request_replay;
     // Initialization is part of the registered verdict; it only rises until
     // link loss or reset, which gate the grant directly.
-    assign reserve_ready_o=rst_ni && link_up_i && verdict && same_request && request_stable && !consumed;
+    assign reserve_ready_o=rst_ni && link_up_i && verdict && same_request && request_stable && !consumed && !applied;
     wire consume=reserve_valid_i && reserve_ready_o && !reserve_replay_i;
     // UpdateFC takes three cycles from presentation to its effect.
     //  A: the event is registered.
@@ -186,12 +190,18 @@ module soc_pcie_credit_tx (
     // a consume, and only a consume changes a consumed count; the two-cycle
     // request hold keeps request_data from that cycle. So in a consume's
     // cycle these equal hc+1 and dc+required.
+    // The available data after a debit, ad-required, is split the same way:
+    // a consume is never in the cycle after an FC event's application or
+    // after a consume, so ad is also unchanged since the cycle before.
     reg [7:0] hc_plus [0:2];
     reg [6:0] dc_plus_lo [0:2];
+    reg [6:0] ad_minus_lo [0:2];
     wire [11:0] dc_plus [0:2];
+    wire [11:0] ad_minus [0:2];
     genvar dpc;
     generate for(dpc=0;dpc<3;dpc=dpc+1) begin: consumed_plus
         assign dc_plus[dpc]={dc[dpc][11:6]+{2'b0,request_data[9:6]}+dc_plus_lo[dpc][6],dc_plus_lo[dpc][5:0]};
+        assign ad_minus[dpc]={ad[dpc][11:6]+request_data_negated[11:6]+ad_minus_lo[dpc][6],ad_minus_lo[dpc][5:0]};
     end endgenerate
     // Every register's next value is computed twice, for "the request is
     // consumed in this cycle" (variant 1) and "it is not" (variant 0), from
@@ -218,7 +228,7 @@ module soc_pcie_credit_tx (
                     if (!hi[c]) begin hc_n[c*8+:8]=hc_plus[c];ah_n[c*8+:8]=ah[c]-8'd1; end
                     if (!di[c]) begin
                         dc_n[c*12+:12]=dc_plus[c];
-                        ad_n[c*12+:12]=ad[c]+request_data_negated;
+                        ad_n[c*12+:12]=ad_minus[c];
                     end
                 end
             end
@@ -263,15 +273,15 @@ module soc_pcie_credit_tx (
             seen<=0;hi<=0;di<=0;confirmed<=0;protocol_error_o<=0;
             for(i=0;i<3;i=i+1) begin hl[i]<=0;hc[i]<=0;dl[i]<=0;dc[i]<=0;ah[i]<=0;ad[i]<=0;end
             verdict<=0;consumed<=0;request_stable<=0;request_class<=0;request_dw<=0;request_replay<=0;
-            request_data<=0;request_data_negated<=0;update_valid<=0;a_valid<=0;
+            request_data<=0;request_data_negated<=0;update_valid<=0;a_valid<=0;applied<=0;
         end else if (!link_up_i) begin
             seen<=0;hi<=0;di<=0;confirmed<=0;protocol_error_o<=0;
             for(i=0;i<3;i=i+1) begin hl[i]<=0;hc[i]<=0;dl[i]<=0;dc[i]<=0;ah[i]<=0;ad[i]<=0;end
-            verdict<=0;consumed<=0;request_stable<=0;update_valid<=0;a_valid<=0;
+            verdict<=0;consumed<=0;request_stable<=0;update_valid<=0;a_valid<=0;applied<=0;
         end else begin
             verdict<=all_seen && confirmed && local_init_done_i && request_legal &&
                 (reserve_replay_i || (header_ok && data_ok));
-            consumed<=consume;request_stable<=same_request;
+            consumed<=consume;request_stable<=same_request;applied<=update_valid;
             request_class<=reserve_class_i;request_dw<=reserve_payload_dw_i;request_replay<=reserve_replay_i;
             request_data<=required_data;request_data_negated<=-{2'b0,required_data};
             a_valid<=fc_valid_i;a_phase<=fc_phase_i;a_class<=fc_class_i;
@@ -288,6 +298,7 @@ module soc_pcie_credit_tx (
             update_d_debited<=debit_now && !di[request_class];
             for(i=0;i<3;i=i+1) begin
                 hc_plus[i]<=hc[i]+8'd1;dc_plus_lo[i]<={1'b0,dc[i][5:0]}+{1'b0,request_data[5:0]};
+                ad_minus_lo[i]<={1'b0,ad[i][5:0]}+{1'b0,request_data_negated[5:0]};
                 hl[i]<=consume ? next[1].hl_n[i*8+:8] : next[0].hl_n[i*8+:8];
                 hc[i]<=consume ? next[1].hc_n[i*8+:8] : next[0].hc_n[i*8+:8];
                 ah[i]<=consume ? next[1].ah_n[i*8+:8] : next[0].ah_n[i*8+:8];

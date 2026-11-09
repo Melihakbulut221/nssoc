@@ -355,8 +355,26 @@ jobs:
           set -euo pipefail
           OUT=$PWD/hw/soc/out/impl-probe; W=/mnt/s
           python3 -B scripts/impl_probe.py sta_tcl $OUT/run $OUT/prepared $OUT/corner-sta.tcl
+          # Path tracing: the 300 worst slow-corner pcie_clk_i endpoints with
+          # full paths, after the per-corner reports (the deep repair's script
+          # is derived from this one and repeats it after its repair).
+          printf '%s\n' 'puts "NSSOC_CORNER_TRACE_BEGIN"' \
+            'report_checks -corner nom_slow_1p08V_125C -path_delay max -path_group pcie_clk_i -group_path_count 300 -endpoint_path_count 1 -fields {cap slew fanout} -digits 3' \
+            'puts "NSSOC_CORNER_TRACE_END"' >> $OUT/corner-sta.tcl
           env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage openroad -exit $OUT/corner-sta.tcl > $OUT/corner-sta.log 2>&1 || echo "CORNER_STA_FAILED"
           grep -a -E "NSSOC_CORNER|slack|Error|ERROR" $OUT/corner-sta.log | grep -av "^\s*$" | head -120 || true
+      - name: Tie the capped slow-corner pcie_clk_i paths to RTL registers
+        run: |
+          OUT=$PWD/hw/soc/out/impl-probe
+          sed -n '/^NSSOC_CORNER_TRACE_BEGIN/,/^NSSOC_CORNER_TRACE_END/p' $OUT/corner-sta.log > $OUT/capped-pcie-slow.rpt
+          python3 -B scripts/pcie_timing/trace_paths.py $OUT/synthesis/soc_top.mapped.json $OUT/capped-pcie-slow.rpt $OUT/capped-trace 10 $OUT/flop-map.tsv || echo "TRACE_FAILED"
+          mkdir -p capped; cp $OUT/capped-trace.* $OUT/capped-pcie-slow.rpt $OUT/corner-sta.log capped/ 2>/dev/null || true
+          gzip -c $OUT/flop-map.tsv > capped/flop-map.tsv.gz 2>/dev/null || true
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pcie-pipeline-impl-probe-capped-${{ matrix.name }}-${{ github.run_id }}
+          path: capped
+          retention-days: 30
       - name: Uncapped setup repair on the post-global-route database (measurement)
         if: matrix.deep == '1'
         run: |
@@ -377,11 +395,16 @@ jobs:
           PY
           timeout 12600 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage openroad -exit $OUT/deep-repair.tcl > $OUT/deep-repair.log 2>&1; echo "DEEP_RC=$?"
           grep -a -E "NSSOC_DEEP|slack \(|RSZ-00(4|5|6)|^ +[0-9]+ +\|.*\| *-?[0-9.]+ *\|" $OUT/deep-repair.log | tail -60
+          sed -n '/^NSSOC_DEEP_CORNER_TRACE_BEGIN/,/^NSSOC_DEEP_CORNER_TRACE_END/p' $OUT/deep-repair.log > $OUT/deep-pcie-slow.rpt
+          python3 -B scripts/pcie_timing/trace_paths.py $OUT/synthesis/soc_top.mapped.json $OUT/deep-pcie-slow.rpt $OUT/deep-trace 10 || echo "TRACE_FAILED"
       - name: Collect
         if: always()
         run: |
           OUT=hw/soc/out/impl-probe; mkdir -p out
           cp $OUT/deep-repair.log $OUT/deep-repair.tcl out/ 2>/dev/null || true
+          cp $OUT/capped-trace.* $OUT/deep-trace.* $OUT/capped-pcie-slow.rpt $OUT/deep-pcie-slow.rpt out/ 2>/dev/null || true
+          gzip -c $OUT/flop-map.tsv > out/flop-map.tsv.gz 2>/dev/null || true
+          gzip -c $OUT/synthesis/soc_top.netlist.v > out/soc_top.netlist.v.gz 2>/dev/null || true
           cp $OUT/metrics.json $OUT/corner-sta.log $OUT/corner-sta.tcl $OUT/run.log $OUT/synthesis-driver.log $OUT/prepared/config.json out/ 2>/dev/null || true
           for d in $OUT/run/*stamidpnr* $OUT/run/*resizer*; do [ -d "$d" ] || continue; b=$(basename $d); mkdir -p out/$b; for c in nom_slow_1p08V_125C; do [ -f $d/$c/max.rpt ] && head -c 3000000 $d/$c/max.rpt > out/$b/$c.max.head.rpt; done; cp $d/*.log out/$b/ 2>/dev/null || true; done
           ls out | head -50

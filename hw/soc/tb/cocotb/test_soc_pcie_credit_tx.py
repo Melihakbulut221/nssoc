@@ -6,8 +6,9 @@ The module grants from a registered verdict and applies an UpdateFC one
 cycle after it is presented. The oracle models both: a request is granted
 only if it was presented unchanged in the two previous cycles, was
 affordable and initialized in the previous one, and nothing was consumed in
-that cycle; an UpdateFC presented in one cycle is checked and applied two
-cycles later, after that later cycle's debit. The request registers are modelled as the
+that cycle, and no FC event was applied in that cycle; an UpdateFC
+presented in one cycle is checked and applied two cycles later, after that
+later cycle's debit. The request registers are modelled as the
 module keeps them: cleared by reset, held across link loss.
 """
 import random
@@ -32,6 +33,7 @@ class Driver:
         self.last_request = None
         self.consumed = False
         self.stable = False
+        self.applied = False
 
     async def tick(self, fc=None, request=None, reset=False, link=True, local=True, tlp=False, idle_request=None):
         d = self.dut
@@ -53,9 +55,9 @@ class Driver:
         fee = [1, (dw + 3) // 4]
         key = (cls, dw, replay)
         # Registered verdict: the same request in the previous cycle, affordable
-        # then, and no consume in that cycle.
+        # then, and no consume and no FC event application in that cycle.
         ready = (not reset and link and self.verdict and key == self.last_request
-                 and self.stable and not self.consumed)
+                 and self.stable and not self.consumed and not self.applied)
         # This cycle's verdict, against this cycle's credit and initialization,
         # grants next cycle.
         verdict = initialized and legal and (replay or all(
@@ -81,6 +83,7 @@ class Driver:
             # now, after this cycle's debit; this cycle's one waits two.
             pending = self.pending.pop(0)
             self.pending.append(fc)
+            self.applied = pending is not None
             self.stable = key == self.last_request
             self.verdict, self.last_request, self.consumed = verdict, key, consumed
             if pending is not None:
@@ -191,8 +194,11 @@ async def modulo_counters_random_credit_return_and_stalls(dut):
     await driver.init(((8, 32), (8, 32), (8, 32)))
     rng = random.Random(0xc4ed17)
     # Each request is held for three cycles: two to settle and judge it, one
-    # to grant it.
-    for index in range(36000):
+    # to grant it. With an FC event in three of every four cycles, the cycle
+    # after an event's application refuses the grant in three of every four
+    # windows, so the run is four times longer than the original 36000
+    # cycles to keep the same number of grants (and counter wraps).
+    for index in range(4 * 36000):
         cls = (index // 3) % 3
         if index % 3 == 0:
             request = (cls, rng.choice((0, 1, 4, 5, 8, 16, 31)), (index // 3) % 19 == 0)
