@@ -461,7 +461,11 @@ jobs:
           if '${{ inputs.path_nets }}' == 'true':
               tail+=('puts "NSSOC_NETS_BEGIN"\n'
                      'report_checks -corner nom_slow_1p08V_125C -path_delay max -group_path_count 10 -fields {net fanout} -digits 3\n'
-                     'puts "NSSOC_NETS_END"\n')
+                     'puts "NSSOC_NETS_END"\n'
+                     # Flip-flop instance -> output net, to name the $auto endpoints.
+                     'set err {}\n'
+                     'catch { foreach c [get_cells -filter {ref_name =~ sg13g2_df*}] { foreach p [get_pins -quiet -of_objects $c -filter {direction == output}] { set n [get_nets -quiet -of_objects $p]; if {[llength $n]} { puts "NSSOC_FF [get_full_name $c] [get_full_name $n]" } } } } err\n'
+                     'puts "NSSOC_FFMAP_END $err"\n')
           open(sys.argv[2],'w').write(s[:i]+rep+tail)
           PY
           timeout 12600 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage openroad -exit $OUT/deep-repair.tcl > $OUT/deep-repair.log 2>&1; echo "DEEP_RC=$?"
