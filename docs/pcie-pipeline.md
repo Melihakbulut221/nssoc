@@ -428,13 +428,98 @@ The capped worst `pcie_clk_i` path is internal again; the receive input slice re
 
 The asynchronous worst path now starts at the new `clk_i` leaf flop and reaches the mailbox release flop's `RESET_B` through only `nor4`/`nand2`/`buf` (the `reset_ni` combination). The remaining -0.58 ns is the cross-clock recovery requirement itself: launch on `clk_i` and capture on `pcie_clk_i`, with the clocks' insertion-delay difference. That is not logic depth. The right fix is a constraint on the asynchronous-assertion input of these synchronizers (for example a false path or max delay to their `RESET_B`), not more RTL. No such exception exists today, and none was added.
 
+## Fifth round: credit and receive-path additions across register stages
+
+### Changes (`bfa1bc32a`)
+
+- **`soc_pcie_credit_tx`: UpdateFC in three stages.**
+  - Stage A registers the event.
+  - Stage B forms, from this cycle's consumed counts, limits and registered required credit:
+    - the balances without a debit and with one debit (carry-save form);
+    - the limit-advance sums against the current limit and against the limit written by the event applied in B's cycle.
+
+    Each is built in 4-bit blocks: the low block, and the middle and high blocks for both carries in. Each class is computed from its own registers and the event's class selects.
+  - Stage C chains two carry selects and applies the update.
+
+  A debit in A's cycle is already in B's consumed counts. Debits in B's and C's cycles are never adjacent, and the two-cycle request hold makes B's required credit the one for either debit. A two-debit variant is therefore not needed.
+- **`soc_pcie_credit_tx`: consumed count after a debit.** The low half of `dc + required` and its carry are registered a cycle ahead, and the high half is finished in the consume's cycle. This is exact: there are no adjacent consumes, and the request hold keeps the required credit.
+- **`soc_pcie_rx_credit`.** The low half of the released data credit (`data_limit + units` of the head's class) is registered a cycle ahead and finished at the removal. A removal never follows a removal, and the head is fixed while a verdict is awaited. Slots now store their last index instead of their length, so the frame end needs no decrement. Ports are unchanged (random co-simulation: 300,000 cycles, 0 mismatches).
+- **`soc_pcie_sequence_rx`.** `expected - received`, `expected + 1` and `expected - 1` are registered a cycle ahead. `expected` changes at most once per received packet, and `received` is fixed from the packet's second byte until its verdict. Ports are unchanged.
+
+`soc_pcie_credit_tx` equals the fourth-round module with its UpdateFC inputs delayed by one register, cleared in reset and link-down (Icarus random co-simulation: four seeds, about 71,000 grants each, 0 mismatches).
+
+### `test_soc_pcie_credit_tx.py` changes in this round
+
+| Where | Fourth-round expectation | Fifth-round expectation | Why it is protocol-safe |
+|---|---|---|---|
+| `Driver.tick`, UpdateFC | Applied one cycle after it is presented | Applied two cycles after it is presented (two-entry pending queue, emptied by reset and link loss), after that cycle's debit | Credit only arrives later. The post-debit balance checks are unchanged. |
+| `Driver.init` | Ends one cycle after the InitFC2-confirming event | Ends two cycles after it | The confirming event takes effect before the tests start, as before |
+| `infinite_pools_replay_and_link_reset` | One idle cycle before the confirming TLP | Two idle cycles | The third InitFC1 is applied before the TLP, as before |
+| `same_cycle_update_debit_exhausts_exactly_once` | UpdateFC presented one cycle before the debit; one cycle after an invalid update; one idle-bus cycle | One more settling cycle in each, so the update is still applied in the debit's cycle, and the idle-bus check still looks after the update is applied | Every assertion is unchanged |
+
+All original assertions remain, along with the per-cycle comparison of limits and consumed counts against unbounded counters.
+
+### Added latency in this round
+
+UpdateFC to its effect: +1 cycle. Against the baseline, a received UpdateFC now takes effect four cycles later: the input slice, the receive slice, and two added UpdateFC stages. Credit only arrives later; nothing else moved.
+
+### What constraint the asynchronous group needs
+
+The worst asynchronous paths (run 42533689396, -0.58 ns slow after repair) start at `soc_top`'s `pcie_sys_rst_n` flop (`clk_i`). They end at the `RESET_B` pins of:
+
+- `packet_reset_release[0]` and `packet_reset_release[1]` (`pcie_clk_i`);
+- `u_pcie_cdc.source_release[0]` and `[1]` (`pcie_clk_i`), through the `reset_ni` combination with `pcie_link_up_i` and `pcie_retrain_done_i`.
+
+Both pairs are two-flop reset synchronizers with asynchronous assertion and synchronous release in `pcie_clk_i`. The release edge launched in `clk_i` is asynchronous to `pcie_clk_i` by design, and the second stage resolves its metastability. A recovery/removal check across the two clocks therefore does not describe a real requirement. The remaining -0.58 ns is the cross-clock window plus the clock insertion-delay difference, not logic.
+
+The correct exception, written as the existing `pcie_soc_constraints.py` binds the mailbox CDC (from the mapped netlist's net names, since the flops themselves are `$auto` cells), would be:
+
+- `set_false_path -from [get_clocks clk_i] -to <RESET_B of packet_reset_release[1:0] and u_pcie_cdc.source_release[1:0]>`, for recovery and removal. A false path is the right kind because neither the assertion (asynchronous) nor the release (resynchronized) needs `clk_i`-to-`pcie_clk_i` timing.
+- Optionally, if the owner wants the two stages of each synchronizer to receive the reset within one `pcie_clk_i` cycle of each other: `set_max_delay -ignore_clock_latency 4.0 -from <pcie_sys_rst_n flop/CLK> -to <the same RESET_B pins>` together with `set_false_path -hold` on the same paths. This follows the 8.0 ns `-ignore_clock_latency` max-delay style the SDC already uses for its CDC groups, and bounds skew without inventing a clock relationship.
+- The `u_pcie_cdc.destination_release` flops are clocked by `clk_i` like their source, so their checks stay as they are.
+
+No such exception exists in the SoC SDC today; the standalone mailbox constraints only false-path their `reset_ni` port. The SDC was left unchanged.
+
+### Verification of the final head (`bfa1bc32a`)
+
+- unit tests 64/64 (run 42545552350), `credit_tx` 5/5 under the revised oracle;
+- SoC lint and joint traffic: run 42545773596 (see below).
+
+### Block screen (run 42545552350), ns, worst slack / TNS
+
+| Stage | Corner | Fourth round | Fifth round |
+|---|---|---:|---:|
+| repaired | typical | +0.90 / 0 | +0.88 / 0 |
+| repaired | slow | -0.77 / -832 | -0.78 / -1687 |
+| sized | typical | -0.33 / -7 | **0.00 / 0** |
+| sized | slow | -2.62 / -4267 | **-2.19 / -5911** |
+
+The largest logic depth among the worst paths per endpoint goes from 16 to 14 logic cells. The UpdateFC first stage is no longer among the deepest. The deepest are now the replay transmit slice (`main_valid` -> `spare_data`) and `credit_tx`'s consume value for `ad` (`ad + (-required)`, a full 12-bit addition behind the grant). After repair, the screen's slow corner is unchanged within the run-to-run spread.
+
+### Physical probe (run 42545773596)
+
+Run 42545773596 on `bfa1bc32a`. SoC lint (base and full: no new or stale warnings) and joint traffic (asynchronous and synchronous: PASS 2/2 each) pass in the same run. Setup worst slack, ns:
+
+| Corner | `pcie_clk_i` capped (fourth round) | `pcie_clk_i` after uncapped repair (fourth round) | asynchronous capped (fourth round) | asynchronous after uncapped repair (fourth round) |
+|---|---:|---:|---:|---:|
+| slow | -3.95 (-3.21) | **-2.42** (-1.44) | -0.51 (-1.50) | **-0.51** (-0.58) |
+| typical | -1.01 (-0.68) | **-0.49** (+0.29) | +0.85 (+0.42) | **+0.85** (+1.01) |
+| fast | +0.50 (+0.56) | +0.58 (+1.08) | +1.59 (+1.37) | +1.59 (+1.73) |
+
+**`pcie_clk_i` regressed in this run.** The credit cones are no longer on the worst path. The new worst slow path (7.55 ns arrival, 4.80 ns required after the 0.19 ns launch/capture clock skew) has only 10 logic cells; its delay is in weak cells driving long nets:
+
+- an `a22oi_1` driving 0.126 pF (1.26 ns);
+- a `nand4_1` (1.29 ns);
+- a `nor4_2` (0.92 ns).
+
+They follow a high-fanout flop through `buf_16` stages. That is the shape of a wide one-hot AND-OR select, most likely `soc_pcie_rx_credit`'s 228-byte read into the receive slice, whose logic has not changed since the second round. The uncapped repair (814 resizes, 235 buffers) stopped with RSZ-0062 without upsizing these cells. The third-worst endpoint is the `pcie_error_o` output port (-2.34 ns), an OR of error pulses with a 0.8 ns output delay.
+
+This round's changes shorten logic only, and the paths they touch are not among the worst. Run-to-run placement spread in this probe has been about 1 ns. The regression is therefore attributed to placement of the receive-queue read, not to the split additions, but that is unconfirmed. A rerun of the fourth-round head with the same seed would separate the two.
+
 ## What remains
 
-- **`pcie_clk_i` at slow: 1.44 ns.** The worst paths are 12-bit additions in `soc_pcie_credit_tx`, which this library and recipe maps to 12-16 logic cells even between registers:
-  - the UpdateFC first stage, `fc - consumed` and its debit variant;
-  - `fc - limit`;
-  - the registered `dc + required`.
-
-  Splitting each addition into two registered halves would add one more UpdateFC cycle. It also widens the debit window to three cycles, so the balances would need a two-debit variant.
-- **Asynchronous group at slow: 0.58 ns.** This is a cross-clock recovery check on the reset-synchronizer input, which a constraint should express. A constraint change is outside this branch's rules.
-- **Reset leaf scope.** `pcie_sys_rst_n` is used only in the packet-async build. The synchronous packet build still resets the packet logic from `rst_sys_n` directly.
+- **Receive-queue read.** This 228-byte one-hot AND-OR select spans the queue's storage. The physical probe now limits on it, through weak cells driving long wires. Registering it per bank needs a prefetch of the next byte, because the read index advances on every handshake. That is the next structural change, together with a placement region for `soc_pcie_rx_credit`'s storage.
+- **`pcie_error_o`.** It is a combinational OR of error pulses straight to the port. Registering it adds one cycle to an error report and changes the cycle at which the unit tests count errors. That needs a check of those tests.
+- **`soc_pcie_credit_tx`.** The consume value for `ad` (`ad + (-required)`) is still a full 12-bit addition behind the grant (14 logic cells in the block screen). Splitting it needs `ad` to be unchanged in the cycle before a consume, which an UpdateFC application can break. Blocking a grant in the cycle after an UpdateFC is applied would allow it, as one more oracle revision.
+- **Asynchronous group.** It needs the constraint described above, not RTL.
+- **Placement spread.** Rerun the fourth-round and fifth-round heads with the same placement settings before comparing small differences.
