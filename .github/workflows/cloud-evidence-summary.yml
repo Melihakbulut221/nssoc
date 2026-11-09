@@ -10,6 +10,10 @@ on:
         description: Run only the unit job
         type: boolean
         default: false
+      probe_variant:
+        description: Run only this probe matrix entry (empty for all)
+        type: string
+        default: ''
       repair_iterations:
         description: repair_timing -max_iterations in the uncapped-repair step
         type: string
@@ -226,16 +230,20 @@ jobs:
       KNOB_MEMREG: ${{ matrix.memreg || '1' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) }}
         with:
           persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) }}
         with:
           python-version: '3.12'
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) }}
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Prepare digital inputs, firmware and the native synthesis (same settings as the boot candidate)
+        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) }}
         run: |
           set -euo pipefail
           export OSS_CAD_SUITE="$(dirname "$(dirname "$(command -v yosys)")")"
@@ -268,6 +276,7 @@ jobs:
           sha256sum $OUT/synthesis/soc_top.netlist.v $OUT/rtl/test_soc.bin
           grep -iE "Number of cells|Chip area" $OUT/synthesis/syn.log | tail -3 || true
       - name: LibreLane AppImage and the verified PDK from the post-route input package
+        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) }}
         run: |
           set -euo pipefail
           sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2
@@ -290,6 +299,7 @@ jobs:
           print('restored PDK files',n)
           PY
       - name: Floorplan to antenna repair (no detailed routing), configuration overrides ${{ matrix.overrides }}
+        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) }}
         run: |
           set -euo pipefail
           OUT=$PWD/hw/soc/out/impl-probe; W=/mnt/s
@@ -302,6 +312,7 @@ jobs:
             --with-initial-state $OUT/prepared/state.json $OUT/prepared/config.json > $OUT/run.log 2>&1 || { echo "FLOW_FAILED"; tail -80 $OUT/run.log; }
           python3 -B scripts/impl_probe.py collect $OUT/run $OUT/metrics.json
       - name: Per-corner setup and hold on the post-global-route database
+        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) }}
         run: |
           set -euo pipefail
           OUT=$PWD/hw/soc/out/impl-probe; W=/mnt/s
@@ -309,7 +320,7 @@ jobs:
           env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage openroad -exit $OUT/corner-sta.tcl > $OUT/corner-sta.log 2>&1 || echo "CORNER_STA_FAILED"
           grep -a -E "NSSOC_CORNER|slack|Error|ERROR" $OUT/corner-sta.log | grep -av "^\s*$" | head -120 || true
       - name: Uncapped setup repair on the post-global-route database (measurement)
-        if: matrix.deep == '1'
+        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) && (matrix.deep == '1') }}
         run: |
           set +e
           OUT=$PWD/hw/soc/out/impl-probe; W=/mnt/s
@@ -330,7 +341,7 @@ jobs:
           timeout 12600 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage openroad -exit $OUT/deep-repair.tcl > $OUT/deep-repair.log 2>&1; echo "DEEP_RC=$?"
           grep -a -E "NSSOC_DEEP|slack \(|RSZ-00(4|5|6)|^ +[0-9]+ +\|.*\| *-?[0-9.]+ *\|" $OUT/deep-repair.log | tail -60
       - name: Collect
-        if: always()
+        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) && (always()) }}
         run: |
           OUT=hw/soc/out/impl-probe; mkdir -p out
           cp $OUT/deep-repair.log $OUT/deep-repair.tcl out/ 2>/dev/null || true
@@ -338,7 +349,7 @@ jobs:
           for d in $OUT/run/*stamidpnr* $OUT/run/*resizer*; do [ -d "$d" ] || continue; b=$(basename $d); mkdir -p out/$b; for c in nom_slow_1p08V_125C; do [ -f $d/$c/max.rpt ] && head -c 3000000 $d/$c/max.rpt > out/$b/$c.max.head.rpt; done; cp $d/*.log out/$b/ 2>/dev/null || true; done
           ls out | head -50
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
+        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) && (always()) }}
         with:
           name: impl-probe-${{ matrix.name }}-${{ github.run_id }}
           path: out

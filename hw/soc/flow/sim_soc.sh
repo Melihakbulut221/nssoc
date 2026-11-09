@@ -488,8 +488,16 @@ if [ "${IBEX_REGFILE:-secded}" = secded ]; then
     if grep -qa '"g_corrpre"' "$OUT/tb_soc.vvp"; then
       echo 'Unexpected CORRPRE elaboration at default zero' >&2; exit 1
     fi
+    if [ "${SOC_RF_RDRAW:-0}" = 1 ]; then
+      # The raw read replaces the whole correction, SYNPRE arms included;
+      # its own witness is checked below.
+      if grep -qa '"g_synpre"\|"g_synpost"' "$OUT/tb_soc.vvp"; then
+        echo '== SOC_RF_RDRAW=1 but a correcting read path is elaborated' >&2; exit 1
+      fi
+    else
     check_arm SOC_RF_SYNPRE "$SOC_RF_SYNPRE" g_synpre g_synpost \
               "register file read path"
+    fi
   fi
 fi
 check_arm SOC_MEM_HARDEN "$SOC_MEM_HARDEN" g_ecc g_plain "memory codec"
