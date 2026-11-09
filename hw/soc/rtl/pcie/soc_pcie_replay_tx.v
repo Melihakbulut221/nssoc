@@ -94,6 +94,14 @@ module soc_pcie_replay_tx #(
         if(write_valid) bytes[write_address]<=write_data;
     end
     reg [31:0] input_crc;
+    // The frame-end checks start at registers. The upper 24 bits of the
+    // residue comparison are tracked with the CRC state itself; the stored
+    // sequence bytes 0 and 1 and the expected sequence are compared every
+    // cycle, a cycle ahead (both are fixed for the last sixteen bytes or
+    // more of any frame that passes the length check).
+    reg crc_upper_match,sequence_mismatch;
+    always @(posedge clk_i)
+        sequence_mismatch<={bytes[tail*MAX_BYTES][3:0],bytes[tail*MAX_BYTES+1]}!=next_store_sequence;
     reg [TW-1:0] timer;
     reg timer_running;
     reg [2:0] retries;
@@ -105,8 +113,8 @@ module soc_pcie_replay_tx #(
     // when an ACK is consumed, so the registered distance is exact.
     reg [11:0] ack_delta_q;
     wire [31:0] next_crc;
-    wire replay_crc_residue_ok=((in_sop_i ? 32'hffffffff : input_crc) ^
-                              {24'b0,in_data_i})==32'h00be26ed;
+    // At a frame end in_sop_i is low (an SOP there is an error anyway).
+    wire replay_crc_residue_ok=crc_upper_match && (input_crc[7:0]^in_data_i)==8'hed;
     soc_pcie_crc32_byte input_crc_byte(.state_i(in_sop_i ? 32'hffffffff : input_crc),
         .data_i(in_data_i),.state_o(next_crc));
     function [PW-1:0] advance;
@@ -171,23 +179,37 @@ module soc_pcie_replay_tx #(
     // The transmit stream leaves through a register slice, so the replay
     // read path ends at a flop instead of continuing into the link layer.
     assign core_valid=rst_ni && link_up_i && sending;
-    // A registered one-hot cursor removes binary-address decoding from
-    // the memory-to-transmit path. Include cross-bank addresses exactly as
-    // the flat reference does; unaddressable array reads remain undefined.
+    // Each bank's byte at the read position is a register, so the store
+    // read ends at a flop and the transmit slice takes a bank select of
+    // registers. While no frame is being sent every bank register is loaded
+    // with its byte 0; when a byte is taken mid-frame it is loaded with the
+    // byte at the next position, selected as an AND-OR by the rotated
+    // one-hot cursor. A sent slot is committed (its bytes written) before
+    // its send starts, and only the free tail slot is written while a frame
+    // is sent, so the register always equals the store's byte at read_pos
+    // for the slot being sent. Cross-bank addresses are included as before;
+    // addresses past the end of the store read as zero.
+    wire [READ_CHOICES-1:0] replay_next_onehot={replay_read_onehot[READ_CHOICES-2:0],replay_read_onehot[READ_CHOICES-1]};
+    wire core_taken=core_valid && core_ready && !core_eop;
     wire [7:0] replay_bank_byte [0:DEPTH-1];
     genvar replay_bank,replay_bit,replay_offset;
     generate for(replay_bank=0;replay_bank<DEPTH;replay_bank=replay_bank+1) begin: read_replay_bank
+        wire [7:0] following;
+        reg [7:0] registered;
         for(replay_bit=0;replay_bit<8;replay_bit=replay_bit+1) begin: read_bit
             wire [READ_CHOICES-1:0] selected;
             for(replay_offset=0;replay_offset<READ_CHOICES;replay_offset=replay_offset+1) begin: read_byte
                 if(replay_bank*MAX_BYTES+replay_offset<DEPTH*MAX_BYTES) begin: present
-                    assign selected[replay_offset]=replay_read_onehot[replay_offset] & bytes[replay_bank*MAX_BYTES+replay_offset][replay_bit];
+                    assign selected[replay_offset]=replay_next_onehot[replay_offset] & bytes[replay_bank*MAX_BYTES+replay_offset][replay_bit];
                 end else begin: absent
                     assign selected[replay_offset]=1'b0;
                 end
             end
-            assign replay_bank_byte[replay_bank][replay_bit]=(read_pos<(DEPTH-replay_bank)*MAX_BYTES) ? |selected : 1'bx;
+            assign following[replay_bit]=|selected;
         end
+        always @(posedge clk_i)
+            registered<=!sending ? bytes[replay_bank*MAX_BYTES] : core_taken ? following : registered;
+        assign replay_bank_byte[replay_bank]=registered;
     end endgenerate
     wire [7:0] core_data=replay_bank_byte[send_slot];
     wire core_sop=read_pos==0;
@@ -215,7 +237,7 @@ module soc_pcie_replay_tx #(
             head<=0;tail<=0;new_slot<=0;send_slot<=0;send_last<=0;replay_slot<=0;count<=0;sent_count<=0;replay_left<=0;
             write_pos<=0;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};capturing<=0;sending<=0;sending_replay<=0;
             replay_active<=0;replay_pending<=0;replay_first<=0;halt<=0;
-            next_store_sequence<=0;input_crc<=32'hffffffff;timer<=0;timer_running<=0;retries<=0;
+            next_store_sequence<=0;input_crc<=32'hffffffff;crc_upper_match<=0;timer<=0;timer_running<=0;retries<=0;
             ack_observed<=0;ack_was_allowed<=0;ack_was_stale<=0;ack_delta_q<=0;write_valid<=0;
             acknowledged_sequence_o<=12'hfff;replay_started_o<=0;timeout_o<=0;
             protocol_error_o<=0;retry_exhausted_o<=0;source_error_o<=0;
@@ -241,7 +263,7 @@ module soc_pcie_replay_tx #(
                 halt<=0;retry_exhausted_o<=0;retries<=0;replay_pending<=sent_count!=0;
             end
             if(in_valid_i && in_ready_o) begin
-                input_crc<=next_crc;
+                input_crc<=next_crc;crc_upper_match<=next_crc[31:8]==24'h00be26;
                 if(in_sop_i) begin
                     if(capturing || in_eop_i || in_data_i[7:4]!=0) begin
                         source_error_o<=1;halt<=1;capturing<=0;
@@ -253,7 +275,7 @@ module soc_pcie_replay_tx #(
                     if(in_eop_i) begin
                         capturing<=0;
                         if(write_pos<17 || !replay_crc_residue_ok ||
-                           {bytes[tail*MAX_BYTES][3:0],bytes[tail*MAX_BYTES+1]}!=next_store_sequence) begin
+                           sequence_mismatch) begin
                             source_error_o<=1;halt<=1;
                         end else begin
                             lengths[tail]<=write_pos+1'b1;count<=count+1'b1;

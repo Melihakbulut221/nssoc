@@ -44,7 +44,33 @@ module soc_pcie_lcrc_rx #(
                          {24'b0,rx_data_i})==32'h00be26ed;
     assign rx_ready_o=rst_ni && state!=EMIT;
     assign tlp_valid_o=rst_ni && state==EMIT;
-    assign tlp_data_o=bytes[index];
+    // Byte store ports. Bytes are written one cycle after acceptance from a
+    // registered one-hot select and a registered byte; a stored TLP byte is
+    // read no earlier than the cycle after the accepted EOP, which follows
+    // its last data byte by four LCRC bytes. The output byte is a register
+    // holding bytes[index]: loaded with byte 0 while not emitting, and with
+    // the next byte (selected by a one-hot cursor of index+1) when a byte
+    // is taken mid-frame. Nothing is written while emitting.
+    reg [CAP-1:0] write_at,cursor;
+    reg [7:0] write_data,out_byte;
+    wire [CAP-1:0] cursor_next={cursor[CAP-2:0],1'b0};
+    reg [7:0] following;
+    integer f,w,wi;
+    always @* begin
+        following=0;
+        for(f=0;f<CAP;f=f+1) if(cursor_next[f]) following=following|bytes[f];
+    end
+    wire taken=state==EMIT && tlp_ready_i;
+    always @(posedge clk_i) begin
+        write_data<=rx_data_i;
+        for(w=0;w<CAP;w=w+1) if(write_at[w]) bytes[w]<=write_data;
+        out_byte<=state!=EMIT ? bytes[0] : (taken && !tlp_eop_o) ? following : out_byte;
+    end
+    always @(posedge clk_i or negedge rst_ni)
+        if(!rst_ni) cursor<={{(CAP-1){1'b0}},1'b1};
+        else if(state!=EMIT || (taken && tlp_eop_o)) cursor<={{(CAP-1){1'b0}},1'b1};
+        else if(taken) cursor<=cursor_next;
+    assign tlp_data_o=out_byte;
     assign tlp_sop_o=state==EMIT && index==0;
     assign tlp_eop_o=state==EMIT && index==length-1'b1;
     generate if (MAX_TLP_DWORDS<3 || MAX_TLP_DWORDS>1028) begin: invalid_capacity
@@ -53,9 +79,9 @@ module soc_pcie_lcrc_rx #(
     always @(posedge clk_i or negedge rst_ni) begin
         if (!rst_ni) begin
             state<=IDLE;received<=0;length<=0;index<=0;crc<=32'hffffffff;
-            sequence_o<=0;reserved_o<=0;packet_good_o<=0;packet_bad_o<=0;
+            sequence_o<=0;reserved_o<=0;packet_good_o<=0;packet_bad_o<=0;write_at<=0;
         end else begin
-            packet_good_o<=0;packet_bad_o<=0;
+            packet_good_o<=0;packet_bad_o<=0;write_at<=0;
             if (state==EMIT) begin
                 if (tlp_ready_i) begin
                     if (tlp_eop_o) begin state<=IDLE;index<=0;end
@@ -78,7 +104,7 @@ module soc_pcie_lcrc_rx #(
                 end else begin
                     crc<=crc_next;received<=received+1'b1;
                     if (received==1) sequence_o[7:0]<=rx_data_i;
-                    if (received>=2 && received<CAP+2) bytes[received-2]<=rx_data_i;
+                    for(wi=0;wi<CAP;wi=wi+1) if(received==CW'(wi+2)) write_at[wi]<=1;
                     if (rx_eop_i) begin
                         if (received>=17 && received[1:0]==1 && crc_residue_ok) begin
                             length<=received-5;state<=EMIT;index<=0;packet_good_o<=1;

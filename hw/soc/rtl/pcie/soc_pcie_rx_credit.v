@@ -161,11 +161,12 @@ module soc_pcie_rx_credit #(
     // A committed bank cannot be read mid-frame (it was free), and it is
     // first read at index 0, so every byte that leaves equals the array's.
     // The output then needs only the one-hot head select of six registers.
-    // Cross-bank addresses of the flat array are included; addresses past
-    // its end read as zero.
-    localparam integer READ_CHOICES=1<<CW;
-    reg [READ_CHOICES-1:0] read_onehot;
-    wire [READ_CHOICES-1:0] next_onehot={read_onehot[READ_CHOICES-2:0],read_onehot[READ_CHOICES-1]};
+    // Each bank keeps its own copy of the one-hot read cursor (equal to
+    // output_index, updated at the same points), so a cursor bit drives
+    // only its own bank's eight selects. The cursor covers the bank's CAP
+    // bytes: the read index stays below CAP while bytes are read (a TLP
+    // ends at its last byte, at most CAP-1, and a DLLP at byte 5), so the
+    // flat array's cross-bank addresses are never read with valid data.
     wire [7:0] bank_byte [0:SLOTS-1];
     wire handshake=out_valid_o && out_ready_i;
     // A bank's register is reloaded with byte 0 at an end of frame (a
@@ -177,14 +178,16 @@ module soc_pcie_rx_credit #(
     generate for(bank=0;bank<SLOTS;bank=bank+1) begin: read_bank
         wire [7:0] following;
         reg [7:0] registered;
+        reg [CAP-1:0] cursor;
+        wire [CAP-1:0] next_onehot={cursor[CAP-2:0],cursor[CAP-1]};
+        always @(posedge clk_i or negedge rst_ni)
+            if(!rst_ni) cursor<={{(CAP-1){1'b0}},1'b1};
+            else if(!link_up_i || restart) cursor<={{(CAP-1){1'b0}},1'b1};
+            else if(handshake) cursor<=next_onehot;
         for(read_bit=0;read_bit<8;read_bit=read_bit+1) begin: read_bit_lane
-            wire [READ_CHOICES-1:0] selected;
-            for(read_offset=0;read_offset<READ_CHOICES;read_offset=read_offset+1) begin: read_byte
-                if(bank*CAP+read_offset<SLOTS*CAP) begin: present
-                    assign selected[read_offset]=next_onehot[read_offset] & packets[bank*CAP+read_offset][read_bit];
-                end else begin: absent
-                    assign selected[read_offset]=1'b0;
-                end
+            wire [CAP-1:0] selected;
+            for(read_offset=0;read_offset<CAP;read_offset=read_offset+1) begin: read_byte
+                assign selected[read_offset]=next_onehot[read_offset] & packets[bank*CAP+read_offset][read_bit];
             end
             assign following[read_bit]=|selected;
         end
@@ -228,7 +231,7 @@ module soc_pcie_rx_credit #(
     always @(posedge clk_i or negedge rst_ni) begin
         if(!rst_ni) begin
             used<=0;qread<=0;qwrite<=0;qcount<=0;head_slot<=0;
-            head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;read_onehot<=1;
+            head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;
             input_active<=0;input_dllp<=0;input_bad<=0;input_count<=0;
             stage_pending<=0;stage_length<=0;stage_last<=0;stage_bad<=0;release_lo<=0;
             stage_checked<=0;stage_shape_ok<=0;stage_slot<=0;stage_units<=0;commit_slot<=0;
@@ -240,7 +243,7 @@ module soc_pcie_rx_credit #(
             dropped_o<=0;protocol_error_o<=0;recovery_request_o<=0;
         end else if(!link_up_i) begin
             used<=0;qread<=0;qwrite<=0;qcount<=0;head_slot<=0;input_active<=0;input_count<=0;
-            head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;read_onehot<=1;
+            head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;
             stage_pending<=0;dllp_pending<=0;output_active<=0;output_index<=0;waiting<=0;
             stage_checked<=0;commit_slot<=0;stage_write_at<=0;
             header_limit_o<={COMPLETER_ONLY ? 8'b0 : H_INIT,H_INIT,H_INIT};
@@ -311,11 +314,10 @@ module soc_pcie_rx_credit #(
             end
             if(out_valid_o && out_ready_i) begin
                 if(out_eop_o) begin
-                    output_active<=0;output_index<=0;read_onehot<=1;
+                    output_active<=0;output_index<=0;
                     if(select_dllp) dllp_pending<=0; else waiting<=1;
                 end else begin
                     output_active<=1;output_dllp<=select_dllp;output_index<=output_index+1'b1;
-                    read_onehot<={read_onehot[READ_CHOICES-2:0],read_onehot[READ_CHOICES-1]};
                 end
             end
         end

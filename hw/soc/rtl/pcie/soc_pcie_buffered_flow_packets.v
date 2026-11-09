@@ -112,10 +112,23 @@ module soc_pcie_buffered_flow_packets #(
     // kind-dependent ready now applies at the slice output, so a beat the
     // queue cannot take waits in the slice exactly as it waited at the PHY,
     // with everything behind it. Received beats arrive one cycle later.
-    assign rx_ready_o=up_in && in_room;
+    // Boundary register in front of the slice. An accepted beat is held in
+    // a register (the port inputs reach only its D multiplexer) until the
+    // slice takes it; the port is ready when that register is empty or the
+    // slice has room, so ready still comes from flops and beats still flow
+    // one per cycle. Received beats arrive one cycle later again.
+    reg [11:0] port_beat;
+    reg port_valid;
+    wire port_ready=!port_valid || in_room;
+    assign rx_ready_o=up_in && port_ready;
+    always @(posedge clk_i or negedge up_in)
+        if(!up_in) port_valid<=1'b0;
+        else if(port_ready) port_valid<=rx_valid_i;
+    always @(posedge clk_i)
+        if(port_ready) port_beat<={rx_data_i,rx_sop_i,rx_eop_i,rx_error_i,rx_dllp_i};
     soc_pcie_stream_skid #(.W(12)) receive_input_slice(
         .clk_i(clk_i),.rst_ni(up_rx),.clear_i(1'b0),
-        .s_data_i({rx_data_i,rx_sop_i,rx_eop_i,rx_error_i,rx_dllp_i}),.s_valid_i(rx_valid_i && rx_ready_o),.s_ready_o(in_room),
+        .s_data_i(port_beat),.s_valid_i(port_valid),.s_ready_o(in_room),
         .m_data_o({in_data,in_sop,in_eop,in_error,in_dllp}),.m_valid_o(in_valid),.m_ready_i(in_ready));
     soc_pcie_rx_credit #(.MAX_TLP_DWORDS(MAX_TLP_DWORDS),.SLOTS_PER_CLASS(RX_SLOTS_PER_CLASS),
         .COMPLETER_ONLY(1)) receive_ownership(

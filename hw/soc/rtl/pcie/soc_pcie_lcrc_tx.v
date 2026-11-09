@@ -150,6 +150,13 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
             tx_byte<={4'b0,next_sequence_o[11:8]};cursor_kind<=NEXT_PREFIX1;
         end
     end
+    // The next sequence number plus one is kept in a register. The sequence
+    // changes only at the last LCRC byte of a frame, and the next frame's
+    // last byte follows at least eighteen cycles later.
+    reg [11:0] next_sequence_plus;
+    always @(posedge clk_i or negedge rst_ni)
+        if (!rst_ni) next_sequence_plus<=12'd1;
+        else next_sequence_plus<=next_sequence_o+1'b1;
     generate if (MAX_TLP_DWORDS<4 || MAX_TLP_DWORDS>1028) begin: invalid_capacity
         initial $error("MAX_TLP_DWORDS must be 4..1028");
     end endgenerate
@@ -174,7 +181,7 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
                     CRC:begin
                         byte_index<=byte_index+1'b1;
                         if (byte_index==3) begin
-                            state<=IDLE;next_sequence_o<=next_sequence_o+1'b1;packet_sent_o<=1;
+                            state<=IDLE;next_sequence_o<=next_sequence_plus;packet_sent_o<=1;
                         end
                     end
                     default:state<=IDLE;

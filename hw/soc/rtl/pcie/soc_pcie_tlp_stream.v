@@ -62,11 +62,15 @@ module soc_pcie_tlp_stream #(
         endcase
     end
 
+    // A collected descriptor is presented to the register backend from the
+    // second SUBMIT cycle on (armed), so it is stable for a cycle before it
+    // is presented and the backend decodes it from registers (PREDECODE).
+    reg armed;
     soc_pcie_tlp_regs #(.VENDOR_ID(VENDOR_ID), .DEVICE_ID(DEVICE_ID),
-                        .APB_TIMEOUT(APB_TIMEOUT)) regs (
+                        .APB_TIMEOUT(APB_TIMEOUT), .PREDECODE(1)) regs (
         .clk_i(clk_i), .rst_ni(rst_ni), .function_id_i(function_id_i),
         .rx_hdr_i(header), .rx_data_i(payload), .rx_payload_dw_i(payload_count),
-        .rx_valid_i(state==SUBMIT && rst_ni), .rx_ready_o(descriptor_ready),
+        .rx_valid_i(state==SUBMIT && armed && rst_ni), .rx_ready_o(descriptor_ready),
         .tx_hdr_o({completion_header,unused_completion_reserved}), .tx_data_o(completion_data),
         .tx_has_data_o(completion_has_data), .tx_valid_o(completion_valid),
         .tx_ready_i(!tx_busy), .psel_o(psel_o), .penable_o(penable_o),
@@ -81,9 +85,10 @@ module soc_pcie_tlp_stream #(
             state<=IDLE; header<=0; payload<=0; payload_count<=0;
             header_count<=0; header_size<=0; framing_error<=0;
             tx_busy<=0; tx_payload<=0; tx_index<=0;
-            tx_header<=0; tx_payload_data<=0;
+            tx_header<=0; tx_payload_data<=0; armed<=0;
         end else begin
             framing_error<=0;
+            armed<=state==SUBMIT && !(armed && descriptor_ready);
             if (!tx_busy && completion_valid) begin
                 tx_busy<=1; tx_index<=0; tx_header<=completion_header;
                 tx_payload_data<=completion_data; tx_payload<=completion_has_data;
@@ -92,7 +97,7 @@ module soc_pcie_tlp_stream #(
                 else tx_index<=tx_index+1'b1;
             end
             if (state==SUBMIT) begin
-                if (descriptor_ready) state<=IDLE;
+                if (armed && descriptor_ready) state<=IDLE;
             end else if (rx_valid_i) begin
                 if (rx_sop_i) begin
                     // A fresh SOP also resynchronizes an abandoned packet.
