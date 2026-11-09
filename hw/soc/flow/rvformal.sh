@@ -38,6 +38,10 @@
 #                 instruction after a given one can be a 37-cycle
 #                 divide and closing that costs a deeper unrolling than
 #                 the rest of the set put together.
+#   RVF_HANG_DEPTH
+#                 check cycle for the `hang` check. Default 30, as in
+#                 docs/63. docs/ibex-ex-stage.md needs a deeper one for
+#                 the core with the separate execute stage.
 #
 # WHY A WORK TREE AND NOT A DIRECTORY IN THE CHECKOUT
 #
@@ -93,6 +97,7 @@ RVF_JOBS=${RVF_JOBS:-$(nproc)}
 # The one check depth that is a decision rather than a constant, and
 # checks.cfg.in says why. 50 is what docs/63 section 8 reports.
 RVF_LIVENESS_DEPTH=${RVF_LIVENESS_DEPTH:-50}
+RVF_HANG_DEPTH=${RVF_HANG_DEPTH:-30}
 # Whether to substitute hw/soc/rvformal/insns/ for the two upstream
 # instruction models docs/63 section 7.5 found a signedness defect in.
 # DEFAULT 0 -- upstream's specification, unmodified, which is what the
@@ -135,7 +140,7 @@ put_sby_on_path () {
 cmd_setup () {
   need_checkout
   echo "== riscv-formal = $RVF_DIR @ $(git -C "$RVF_DIR" rev-parse HEAD)"
-  echo "== RVF_INSN_FIX=$RVF_INSN_FIX  RVF_LIVENESS_DEPTH=$RVF_LIVENESS_DEPTH  RVF_SOLVER=$RVF_SOLVER"
+  echo "== RVF_INSN_FIX=$RVF_INSN_FIX  RVF_LIVENESS_DEPTH=$RVF_LIVENESS_DEPTH  RVF_HANG_DEPTH=$RVF_HANG_DEPTH  RVF_SOLVER=$RVF_SOLVER"
   echo "== ibex sources = $SOC_DIR/$IBEX_GEN, register file: $IBEX_REGFILE"
 
   rm -rf "$RVF_OUT"
@@ -200,7 +205,7 @@ $SOC_DIR/rvformal/prim_clock_gating_formal.v"
   # Python and not sed: the file list is multi-line and a sed `r`
   # against a here-string is the kind of construction that works until
   # a path contains the delimiter.
-  RVF_SRCS="$srcs" RVF_LIVENESS_DEPTH="$RVF_LIVENESS_DEPTH" \
+  RVF_SRCS="$srcs" RVF_LIVENESS_DEPTH="$RVF_LIVENESS_DEPTH" RVF_HANG_DEPTH="$RVF_HANG_DEPTH" \
   RVF_SOLVER="$RVF_SOLVER" \
   python3 - "$SOC_DIR/rvformal/checks.cfg.in" \
                              "$RVF_OUT/cores/$CORE" <<'CFGPY'
@@ -213,6 +218,7 @@ for mode, name in (("bmc", "checks"), ("cover", "cover")):
     out = (tmpl.replace("@MODE@", mode)
                 .replace("@IBEX_FILES@", files)
                 .replace("@LIVENESS_DEPTH@", os.environ["RVF_LIVENESS_DEPTH"])
+                .replace("@HANG_DEPTH@", os.environ["RVF_HANG_DEPTH"])
                 .replace("@SOLVER@", os.environ["RVF_SOLVER"]))
     with open(os.path.join(sys.argv[2], name + ".cfg"), "w") as f:
         f.write(out)

@@ -22,6 +22,10 @@ on:
         description: Run only the riscv-formal comparison (skip everything else)
         type: boolean
         default: false
+      rvformal_hang_only:
+        description: In the riscv-formal job, run only the hang check at several bounds
+        type: boolean
+        default: false
 permissions:
   contents: read
   actions: read
@@ -535,6 +539,7 @@ jobs:
             grep -c exs_pc_next out/ibex_core.rvfi-ex.diff
           fi
       - name: Bounded checks and cover jobs
+        if: ${{ !inputs.rvformal_hang_only }}
         run: |
           set +e
           R=hw/soc/out/rvformal-upstream/cores/ibex
@@ -545,6 +550,17 @@ jobs:
               xargs -P "$(nproc)" -I{} timeout 2400 sby -f {}.sby > ../$set-run.log 2>&1 )
           done
           bash hw/soc/flow/rvformal.sh report | tee out/report.txt
+      - name: hang at deeper bounds (the extra stage adds a cycle to every redirect before the first retirement)
+        run: |
+          set +e
+          export PATH="$(dirname "$(command -v sby)"):$PATH"
+          for d in 26 28 30 32 34 36 38 40; do
+            RVF_OUT=$PWD/hw/soc/out/rvformal-hang$d RVF_HANG_DEPTH=$d bash hw/soc/flow/rvformal.sh setup > out/setup-hang$d.log 2>&1
+            for set in checks cover; do
+              ( cd hw/soc/out/rvformal-hang$d/cores/ibex/$set && timeout 2400 sby -f hang.sby > /dev/null 2>&1 )
+              echo "hang depth $d $set: $(cat hw/soc/out/rvformal-hang$d/cores/ibex/$set/hang/status 2>/dev/null || echo 'NO STATUS')"
+            done
+          done | tee out/hang-depths.txt
       - name: Collect
         if: always()
         run: |

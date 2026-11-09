@@ -77,6 +77,11 @@ solver @SOLVER@
 # because closing it costs a deeper unrolling than every other check in
 # the set put together and the cost has to be a decision rather than a
 # constant. The default is what docs/63 section 8 reports.
+#
+# `hang` (some instruction retires at all) is the second, RVF_HANG_DEPTH,
+# default 30 as in docs/63. Its bound is latency from reset through
+# arbitrary interrupts and bus delays, and a deeper pipeline adds a cycle
+# to every redirect on the way (docs/ibex-ex-stage.md).
 # ---------------------------------------------------------------------
 [depth]
 insn            20
@@ -92,7 +97,7 @@ liveness  1  12 @LIVENESS_DEPTH@
 unique    1  10 30
 causal    10    30
 cover     1     20
-hang      1     30
+hang      1     @HANG_DEPTH@
 ill             20
 
 [sort]
