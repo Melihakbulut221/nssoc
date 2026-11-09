@@ -733,21 +733,27 @@ fi
 # docs/ibex-execute-timing.md: the register-file and memory knobs' logic
 # is compiled only under these defines (see the files), so a default build
 # reads the files exactly as before and its netlist does not move.
-RF_EXEC_DEFINE=""
+# One global define per knob family, set before any source is read, so no
+# individual read can miss it. Nothing is emitted when no knob is on.
+EXEC_DEFINES="# no execute-path knob defines"
+EXEC_DEF=""
 if [ "$IBEX_RF_CHKDEFER$IBEX_RF_PREDECODE$IBEX_RF_RDRAW" != 000 ]; then
-  RF_EXEC_DEFINE="-DSOC_RF_EXEC"
+  EXEC_DEF="$EXEC_DEF -DSOC_RF_EXEC"
 fi
 if [ "$SOC_MEM_RDREG" = 2 ]; then
-  MEM_READ="${MEM_READ//read_verilog -I/read_verilog -DSOC_MEM_RAWREG -I}"
-  BOOT_ROM_READ="${BOOT_ROM_READ//read_verilog -defer/read_verilog -DSOC_MEM_RAWREG -defer}"
+  EXEC_DEF="$EXEC_DEF -DSOC_MEM_RAWREG"
+fi
+if [ -n "$EXEC_DEF" ]; then
+  EXEC_DEFINES="verilog_defines$EXEC_DEF"
 fi
 
 cat > "$OUT/soc_top_syn.ys" <<EOF
 read_liberty -lib $SG13G2_TYP
+$EXEC_DEFINES
 $ETH_LIB_READ
 
 read_verilog -defer $RTL/prim_clock_gating.v
-read_verilog $RF_EXEC_DEFINE -defer $IBEX_SRCS
+read_verilog -defer $IBEX_SRCS
 read_verilog -sv $IF_DEFINE $MBIST_DEFINE -I$RTL -defer $SOC_SRCS
 read_verilog -I$RTL -I$PILOT_RTL -defer $NPU_SRCS
 $MBIST_READ
