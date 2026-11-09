@@ -18,11 +18,16 @@ on:
         description: repair_timing -max_iterations in the uncapped-repair step
         type: string
         default: '1000000'
+      rvformal_only:
+        description: Run only the riscv-formal comparison (skip everything else)
+        type: boolean
+        default: false
 permissions:
   contents: read
   actions: read
 jobs:
   unit:
+    if: ${{ !inputs.rvformal_only }}
     runs-on: ubuntu-24.04
     timeout-minutes: 150
     steps:
@@ -286,7 +291,7 @@ jobs:
 
   probe:
     needs: unit
-    if: ${{ !inputs.unit_only }}
+    if: ${{ !inputs.unit_only && !inputs.rvformal_only }}
     runs-on: ubuntu-22.04
     timeout-minutes: 355
     strategy:
@@ -460,5 +465,99 @@ jobs:
         if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) && (always()) }}
         with:
           name: impl-probe-${{ matrix.name }}-${{ github.run_id }}
+          path: out
+          retention-days: 30
+
+  # riscv-formal (docs/63) on the RVFI build of the core, unpatched and with
+  # the execute stage, upstream register file (docs/63 phase 1). The eight
+  # M-extension instruction checks and liveness are left out: docs/63
+  # section 8 found no verdict for the first six within 40 minutes each,
+  # div/rem fail against riscv-formal's own unsigned model, and liveness is
+  # bound by the 37-cycle divider at depth 50.
+  rvformal:
+    if: ${{ !inputs.probe_only && !inputs.unit_only }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {name: base, ex: '0'}
+          - {name: ex, ex: '1'}
+    env:
+      IBEX_EX_STAGE: ${{ matrix.ex }}
+      IBEX_REGFILE: upstream
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Retry transient download failures
+        run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad1
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: sleep 180
+        if: ${{ (steps.cad1.outcome == 'failure') }}
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad2
+        if: ${{ (steps.cad1.outcome == 'failure') }}
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: sleep 300
+        if: ${{ (steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure') }}
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        if: ${{ (steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure') }}
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Pinned CPU RTL, its RVFI conversion and riscv-formal
+        run: |
+          set -euo pipefail
+          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          export OSS_CAD_SUITE="$(dirname "$(dirname "$(command -v yosys)")")"
+          python3 -m pip install -q -r sw/requirements.txt
+          python3 -m venv hw/.venv && hw/.venv/bin/pip install -q -r hw/requirements.txt
+          for a in 1 2 3 4; do make soc-rtl-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python" > /tmp/prep.log 2>&1 && break; tail -30 /tmp/prep.log; [ $a = 4 ] && exit 1; echo "prepare attempt $a failed; retrying"; sleep 60; done
+          bash hw/soc/flow/sv2v_ibex.sh hw/soc/ext/ibex hw/soc/genrvfi hw/soc/tools/sv2v-Linux/sv2v RVFI
+          make -f hw/soc/tools.soc.mk fetch-riscv-formal
+          mkdir -p out
+          bash hw/soc/flow/rvformal.sh setup 2>&1 | tee out/setup.log
+          if [ "$IBEX_EX_STAGE" = 1 ]; then
+            diff -u hw/soc/genrvfi/ibex_core.v hw/soc/genp/genrvfi-ex/ibex_core.v > out/ibex_core.rvfi-ex.diff || true
+            grep -c exs_pc_next out/ibex_core.rvfi-ex.diff
+          fi
+      - name: Bounded checks and cover jobs
+        run: |
+          set +e
+          R=hw/soc/out/rvformal-upstream/cores/ibex
+          SKIP='^(insn_(mul|mulh|mulhsu|mulhu|div|divu|rem|remu)_ch0|liveness_ch0)$'
+          export PATH="$(dirname "$(command -v sby)"):$PATH"
+          for set in checks cover; do
+            ( cd $R/$set && ls *.sby | sed 's/\.sby$//' | grep -v -E "$SKIP" |
+              xargs -P "$(nproc)" -I{} timeout 2400 sby -f {}.sby > ../$set-run.log 2>&1 )
+          done
+          bash hw/soc/flow/rvformal.sh report | tee out/report.txt
+      - name: Collect
+        if: always()
+        run: |
+          R=hw/soc/out/rvformal-upstream/cores/ibex
+          mkdir -p out
+          for set in checks cover; do
+            for d in $R/$set/*/; do n=$(basename $d); [ -f $d/status ] && echo "$set $n $(cat $d/status)"; done
+          done > out/status.txt 2>/dev/null || true
+          for d in $R/checks/*/; do [ -f $d/status ] && grep -q FAIL $d/status && { mkdir -p out/fail/$(basename $d); cp $d/logfile.txt $d/engine_*/trace*.vcd out/fail/$(basename $d)/ 2>/dev/null; }; done || true
+          cp $R/*.cfg out/ 2>/dev/null || true
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: ibex-ex-stage-rvformal-${{ matrix.name }}-${{ github.run_id }}
           path: out
           retention-days: 30

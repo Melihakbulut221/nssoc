@@ -70,10 +70,20 @@ HAZARDS
     in ID, so the CSR file's pc_if input is the ID-stage PC when the ID
     stage is valid and pc_if otherwise. The ID-stage instruction is then
     flushed by the same pc_set, and it is the first one fetched after
-    mret/dret. crash_dump_o's next-PC field uses the same value.
-  * WFI and pipeline-flushing CSR writes halt IF without pc_set. The
-    instruction in ID stays there, like an instruction in the prefetch
-    buffer, and enters EX when the controller resumes.
+    mret/dret. crash_dump_o's next-PC field uses the same value, and so
+    does the RVFI next PC (rvfi_pc_wdata) in the RVFI build.
+  * CSR writes. The pinned core flushes its pipeline after CSR writes so
+    that the next instruction enters ID/EX, where the IF stage's PMP
+    check of it happens, only after the write. Here that check happens
+    when the instruction enters the ID stage, so IF hands no instruction
+    to the ID stage while a SYSTEM-opcode instruction (CSR access, ecall,
+    ebreak, mret, dret, wfi) moves into or executes in EX. The next
+    instruction is fetched into ID after the CSR write, and checked
+    against the new PMP configuration. CSR reads and writes themselves
+    execute in EX in program order, as before.
+  * WFI and pipeline-flushing CSR writes halt IF without pc_set. An
+    instruction already in ID stays there, like an instruction in the
+    prefetch buffer, and enters EX when the controller resumes.
   * x0: a write with rf_waddr_wb = 0 is never forwarded.
 
 The IF stage keeps its own interface. Its id_in_ready_i becomes "the ID
@@ -99,10 +109,13 @@ the assumption that lets the ID stage read without decoding.
 Every anchor must occur exactly once.
 """
 import pathlib
+import re
 import sys
 
 FILE = "ibex_core.v"
 MARK = "g_ex_stage"
+RVFI_PC_WDATA = re.compile(
+    r"(rvfi_stage_pc_wdata\[[^\]]+\]\s*<=\s*\(?\s*pc_set\s*\?\s*branch_target_ex\s*:\s*)pc_if\b")
 
 # IF/ID outputs of ibex_if_stage that the ID/EX register re-times:
 # (port, core wire, width, reset value). instr_valid_id and instr_new_id
@@ -193,6 +206,14 @@ def patch(text):
                  "the CSR file's IF PC")
     text = _swap(text, "\tassign crash_dump_o[127-:32] = pc_if;\n",
                  "\tassign crash_dump_o[127-:32] = exs_pc_next;\n", "the crash dump next PC")
+    # The RVFI build (IBEX_GEN=genrvfi, riscv-formal): an instruction's
+    # next PC is the same value when it does not redirect the fetch.
+    if "rvfi_stage_pc_wdata" in text:
+        n = len(RVFI_PC_WDATA.findall(text))
+        if n != 1:
+            raise SystemExit("ibex_ex_stage.py: the RVFI next-PC assignment occurs %d "
+                             "times, expected once" % n)
+        text = RVFI_PC_WDATA.sub(r"\1exs_pc_next", text)
 
     # 5. Declarations before the IF stage, logic at the end of the module.
     decl = ["\t// hw/soc/flow/ibex_ex_stage.py: ID-stage (IF/ID register) outputs",
@@ -225,12 +246,21 @@ def patch(text):
 %(regs)s
 			wire exs_fwd_a;
 			wire exs_fwd_b;
+			wire exs_id_sys;
+			wire exs_ex_sys;
 			assign exs_id_raddr_a = exs_id_instr_rdata_id[19:15];
 			assign exs_id_raddr_b = exs_id_instr_rdata_id[24:20];
 			// The ID-stage instruction moves into EX when EX accepts one and
 			// the fetch is not being redirected (pinned IF/ID rule).
 			assign exs_ex_we = (exs_id_instr_valid_id & id_in_ready) & ~pc_set;
-			assign exs_id_ready = ~exs_id_instr_valid_id | exs_ex_we;
+			// IF hands over no instruction while a SYSTEM instruction (CSR
+			// access, ecall, ebreak, mret, dret, wfi) moves into or is in
+			// EX: the IF stage's PMP check of the next instruction must see
+			// the CSR state after it, as the pinned core's pipeline flush
+			// guarantees for its IF/ID register.
+			assign exs_id_sys = exs_id_instr_rdata_id[6:0] == 7'b1110011;
+			assign exs_ex_sys = instr_valid_id & (instr_rdata_id[6:0] == 7'b1110011);
+			assign exs_id_ready = ((~exs_id_instr_valid_id | exs_ex_we) & ~(exs_ex_we & exs_id_sys)) & ~exs_ex_sys;
 			assign exs_id_clear = exs_ex_we | pc_set;
 			assign exs_pc_next = (exs_id_instr_valid_id ? exs_id_pc_id : pc_if);
 			assign exs_fwd_a = (rf_we_wb & (rf_waddr_wb == exs_id_raddr_a)) & (exs_id_raddr_a != 5'd0);

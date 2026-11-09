@@ -113,8 +113,9 @@
 #      by flow/ibex_ex_stage.py: a separate execute stage. The register
 #      file is read from the IF/ID register and the operands are
 #      registered with the instruction into a new ID/EX register, with
-#      the write port forwarded. Only defined for IBEX_GEN=gen; the flows
-#      refuse it with the writeback stage and the branch-target ALU.
+#      the write port forwarded. With IBEX_GEN=genrvfi the RVFI next PC
+#      is patched as well (riscv-formal). The flows refuse it with the
+#      writeback stage and the branch-target ALU.
 #   0  (default) the unmodified file.
 
 ibex_sources () {
@@ -158,10 +159,6 @@ ibex_sources () {
     *) echo "IBEX_EX_STAGE must be 0 or 1, got '$exs'" >&2
        return 2 ;;
   esac
-  if [ "$exs" = 1 ] && [ "$gendir" != gen ]; then
-    echo "IBEX_EX_STAGE=1 is only defined for IBEX_GEN=gen" >&2
-    return 2
-  fi
   if [ "$port" = 1 ] && [ "$gendir" != gen ]; then
     echo "IBEX_FAULT_PORT=1 is only defined for IBEX_GEN=gen" >&2
     return 2

@@ -36,14 +36,16 @@ module tb_ibex_ex_stage;
   localparam integer MEM_WORDS = 4096;
   reg clk = 1'b0;
   always #5 clk = ~clk;
-  reg rst_n = 1'b0;
+  // Starts high so that the first trial's reset is a real falling edge in
+  // every simulator (the core's flip-flops reset asynchronously).
+  reg rst_n = 1'b1;
 
   reg [31:0] mem   [0:MEM_WORDS-1];
   reg [31:0] image [0:MEM_WORDS-1];
 
   integer trials, trial, seed, ilat, dlat, irq_at0, irq_step, irq_period;
   integer dbg_at0, dbg_step, dbg_period, steps, max_cycles;
-  integer cycle, irq_next, dbg_next, i;
+  integer cycle, irq_next, dbg_next, i, verbose;
   reg [1023:0] prog;
 
   // ---------------- instruction port ----------------
@@ -191,6 +193,13 @@ module tb_ibex_ex_stage;
   defparam dut.gen_regfile_ff.register_file_i.CORRPRE = 1;
   defparam dut.gen_regfile_ff.register_file_i.CHKDEFER = 1;
   defparam dut.gen_regfile_ff.register_file_i.RDPRE = 1;
+`ifdef VERILATOR
+  // Two-state start-up. The IF/ID registers have no reset at ResetAll = 0;
+  // instr_rdata_id starts at zero here, so its predecode must start at the
+  // predecode of zero, or the register file's RDPRE check fires before the
+  // first fetch. (Icarus starts both unknown and the check skips them.)
+  initial dut.u_ibex_core.if_stage_i.rf_raddr_pre_id_o = 24'h011011;
+`endif
 `endif
 
   // ---------------- main-program trace ----------------
@@ -226,16 +235,28 @@ module tb_ibex_ex_stage;
       mix(data_wdata & {{8{data_be[3]}}, {8{data_be[2]}}, {8{data_be[1]}}, {8{data_be[0]}}});
       n_stores = n_stores + 1;
     end
-    if (dut.u_ibex_core.csr_save_cause) begin
-      if (dut.u_ibex_core.debug_csr_save) n_dbg = n_dbg + 1;
-      else if (dut.u_ibex_core.exc_cause[6]) n_irq = n_irq + 1;
-      else n_exc = n_exc + 1;
+    // Handler entries, counted at the first handler instruction.
+    if (dut.u_ibex_core.instr_id_done) begin
+      if (pc_ex == 32'h400) n_irq = n_irq + 1;
+      if (pc_ex == 32'h810) n_dbg = n_dbg + 1;
+      if (pc_ex == 32'h500) n_exc = n_exc + 1;
     end
     if (dut.alert_major_internal_o || dut.alert_major_bus_o || dut.double_fault_seen_o)
       n_alert = n_alert + 1;
   end
 
   always @(posedge clk) cycle <= rst_n ? cycle + 1 : 0;
+
+  // +verbose=1: one line per retired instruction and per request edge.
+  always @(posedge clk) if (rst_n && verbose != 0) begin
+    if (dut.u_ibex_core.instr_id_done)
+      $display("%0d retire pc=%h irq=%b dbg=%b dmode=%b", cycle, pc_ex, irq_ext, dbg_req,
+               dut.u_ibex_core.debug_mode);
+    if (dut.u_ibex_core.csr_save_cause)
+      $display("%0d trap cause=%h save_if=%b save_id=%b mepc_in_if=%h pc_id=%h dbg=%b", cycle,
+               dut.u_ibex_core.exc_cause, dut.u_ibex_core.csr_save_if, dut.u_ibex_core.csr_save_id,
+               dut.u_ibex_core.cs_registers_i.pc_if_i, pc_ex, dut.u_ibex_core.debug_csr_save);
+  end
 
   integer irq_at, dbg_at;
   initial begin
@@ -252,9 +273,10 @@ module tb_ibex_ex_stage;
     if (!$value$plusargs("dbg_period=%d", dbg_period)) dbg_period = 0;
     if (!$value$plusargs("steps=%d", steps)) steps = 0;
     if (!$value$plusargs("max_cycles=%d", max_cycles)) max_cycles = 200000;
+    if (!$value$plusargs("verbose=%d", verbose)) verbose = 0;
     $readmemh(prog, image);
     for (trial = 0; trial < trials; trial = trial + 1) begin
-      rst_n = 1'b0;
+      #1 rst_n = 1'b0;
       for (i = 0; i < MEM_WORDS; i = i + 1) mem[i] = image[i];
       mem[32'h3f00 >> 2] = steps;
       hash = 32'h811c9dc5;

@@ -586,9 +586,36 @@ WFI = """
     bne x1, x7, fail
 """
 
+# A locked PMP entry that removes execute permission from the instruction
+# right after the pmpcfg0 write. The pinned core's pipeline flush makes the
+# fetch check of that instruction see the new entry, so it must fault
+# (instruction access fault, mepc = pmp_target); the handler resumes at x24.
+PMP = """
+    la x1, pmp_target
+    srli x1, x1, 2
+    csrw pmpaddr0, x1
+    li x2, 0x93
+    la x24, pmp_after
+    li x3, 0
+    csrw pmpcfg0, x2
+pmp_target:
+    addi x3, x0, 1
+    j fail
+pmp_after:
+    bnez x3, fail
+    li x4, 0x3100
+    lw x5, 0(x4)
+    li x6, 1
+    bne x5, x6, fail
+    lw x7, 4(x4)
+    la x8, pmp_target
+    bne x7, x8, fail
+    addi x9, x0, 9
+"""
+
 DIRECTED = {"alu": ALU, "load": LOAD, "muldiv": MULDIV, "csr": CSR,
             "counters": COUNTERS, "branch": BRANCH, "except": EXCEPT,
-            "fence": FENCE, "wfi": WFI}
+            "fence": FENCE, "wfi": WFI, "pmp": PMP}
 
 
 def random_body(seed, n=220):
