@@ -569,9 +569,136 @@ Block screen (run 42556623897), worst slack / TNS in ns, against the fifth round
 | repaired | slow | -0.78 / -1687 | -1.29 / -1782 |
 | repaired | typical | +0.88 / 0 | +0.59 / 0 |
 
+## Seventh round: paths tied to RTL registers, and the cuts they asked for
+
+### Path tracing in the implementation probe
+
+The probe now reports the 300 worst slow-corner `pcie_clk_i` endpoints with full paths, twice: after the capped post-GRT repair and after the uncapped repair. `scripts/pcie_timing/trace_paths.py` looks up every instance on these paths in the synthesized netlist (the Yosys JSON that enters placement, where instance names survive placement and repair; only inserted buffers are new). It names each flip-flop by the public net on its Q pin, which carries the RTL register name and bit, and by its `src` attribute. Two cases need care when reading the names:
+- a flop whose register name was purged keeps the name of a port it drives, for example `u_pcie.flow.credits.link_up_i` for the credit logic's link copy in `soc_pcie_flow_packets`;
+- a one-hot cursor bit can show as its rotated alias, for example `next_onehot[k]` for `read_onehot[k-1]`.
+
+The `src` attribute settles both. The artifact also has every flop of the netlist mapped this way (`flop-map.tsv.gz`), the netlist itself, and the traced reports (`capped-trace.txt`, `deep-trace.txt` and the JSON with every cell).
+
+### Where the traced head was slow (`76c259aca`, run 42569863473, after the uncapped repair)
+
+That head is the sixth round plus the `ad` split below. At 70% target density the ten worst register pairs at the slow corner were (slack in ns; endpoint count among the 300 reported):
+
+| # | Slack | Start register (block) | End register (block) | Endpoints | This round |
+|---:|---:|---|---|---:|---|
+| 1 | -1.36 | `commit_slot` (rx_credit) | `head_units` (rx_credit) | 5 | next head without a slot-indexed commit lookup |
+| 2 | -1.35 | `replay_read_onehot` (replay_tx) | `transmit_slice` data (replay_tx) | 8 | not cut |
+| 3 | -1.35 | `send_last` (replay_tx) | `reserve_class_q` (replay_tx) | 2 | not cut |
+| 4 | -1.35 | `read_onehot` (rx_credit) | `read_bank.registered` (rx_credit) | 10 | reload terms removed; cursor not replicated |
+| 5 | -1.34 | `up_credits` (flow_packets) | `dl` (credit_tx) | 24 | own link copy; grant without link term |
+| 6 | -1.34 | `reserve_payload_dw_q` (replay_tx) | `verdict` (credit_tx) | 1 | not cut |
+| 7 | -1.34 | `owner` (reliable_packets) | the slice register driving `link_sop` (reliable_packets) | 1 | not cut |
+| 8 | -1.33 | `up_credits` (flow_packets) | `hl` (credit_tx) | 13 | as 5 |
+| 9 | -1.33 | port `pcie_rx_valid_i` | `receive_input_slice` (buffered) | 1 | not cut (input port) |
+| 10 | -1.32 | `header` (tlp_stream) | `pstrb` (tlp_regs) | 4 | not cut |
+
+At 68% the worst pairs were close:
+- the next queue head (`qread` to `head_units`, -1.17);
+- the receive-queue read (`read_onehot` to `bank_byte`, -1.17);
+- the lcrc_rx quarantine index to the endpoint's header words (-1.17);
+- the replay read position to the reservation registers (-1.16);
+- the staging write (`input_count` to `staging`, -1.16).
+
+Behind those came the packet path's link copy into the DLLP receiver's registers (ten endpoints near -1.10) and the receive queue's reset copy into its storage write enables (146 endpoints near -1.13).
+
+Two findings shape what can be gained:
+- **The distribution after the uncapped repair is a wall.** The 300 reported endpoints lie within 0.19 ns (70%) and 0.10 ns (68%) of the worst. Cutting a few paths moves the worst slack only as far as the next ones, so this round cut every structural cause in the list that has an exact fix.
+- **The reset copies were the biggest single cause.** Before the uncapped repair (and across 146 or more endpoints after it), the per-block reset copies used as the blocks' link status (`up_rx`, `up_fc`, `up_credits`, `up_packets`, `up_link`) drove asynchronous reset pins and logic from one net. Their buffer trees, up to six `buf_16` deep, ran through the link term of a grant into hundreds of next-state selects. The "fanout-8 reset flop" of the sixth round was not one of these, though: it was the receive queue's read cursor (`read_onehot`) into the per-bank AND-OR select.
+
+### Changes (`76c259aca` for the `ad` split and the tracing, `fc4cec6f4` for the cuts)
+
+- **`soc_pcie_credit_tx`: `ad` consume split.** `ad-required` is finished from a low half (`ad[5:0]+(-required)[5:0]` with its carry) registered in the cycle before. For that low half to see the same `ad`, a grant is now refused in the cycle after an FC event's application (`applied`, set by every event that reaches the update stage). A consume is already never in the cycle after a consume, and apart from reset and link loss (which clear the verdict) only those two change `ad`. Random co-simulation against the sixth-round module, whose reserve input is gated by the new ready:
+  - four seeds × 500,000 cycles, 0 mismatches;
+  - the new ready equals the old one with `!applied` in every cycle;
+  - about 57,000 grants per seed, and about 19,200 grants refused by `applied`. The stimulus has an FC event in one of four cycles; real UpdateFC DLLPs are far rarer.
+- **`soc_pcie_credit_tx`: grant without reset and link in the next state.** The consume that selects every register's next state uses the grant without the `rst_ni`/`link_up_i` terms: under reset or link loss the registers are cleared regardless. `reserve_ready_o` keeps both terms.
+- **Separate link copies (`soc_pcie_buffered_flow_packets`, `soc_pcie_flow_packets`, `soc_pcie_reliable_packets`).**
+  - The receive queue, the FC advertiser and the credit logic take `link_up_i` from a copy of their own (`up_rx_link`, `up_fc_link`, `up_credits_link`), so their asynchronous reset nets feed no logic.
+  - The PHY-side `rx_ready_o` has its own copy (`up_in`).
+  - The DLLP receiver has its own reset copy (`up_dllp`) instead of the combinational `local_reset`. Every copy is cleared asynchronously with its block's reset and is equal to the others at all times.
+  - The DLLP receiver's copy is released one cycle after `local_reset`, the earliest cycle its first beat can come from the receive slice.
+  - The D inputs differ only so synthesis keeps the flops; a local synthesis confirmed every copy is a separate net.
+- **`soc_pcie_rx_credit`: storage writes.**
+  - A commit copies the staged TLP into its bank from an `always` block outside the reset/link block, enabled by the slot's commit register alone. The only difference is a commit register still set in the first cycle of a link loss: that bank is free afterwards and is rewritten whole before it is read.
+  - Staging bytes are written one cycle after acceptance, from a registered one-hot byte select and a registered byte. A staged TLP is committed two cycles after its last byte at the earliest, and its header bytes, which the check reads, are at least twelve bytes earlier.
+- **`soc_pcie_rx_credit`: read registers and next head.**
+  - A bank's read register is reloaded with byte 0 only at an end of frame, not at reset or link loss, after which every bank is reloaded by its next commit.
+  - The next head is formed without a slot-indexed commit lookup. Without a removal the head stays (its registers) unless an empty queue takes the staged TLP. With a removal it is the staged TLP if one TLP was queued (a commit never meets a full queue), and else the next queued slot, which is occupied and so not the one being committed.
+  - Random co-simulation against the sixth-round module, comparing every output in every cycle and data while valid, with link loss every 32 to 8192 cycles and random resets: four seeds × 300,000 cycles, 52,000-163,000 output beats, 0 mismatches.
+- **`soc_pcie_fc_tx`.** Each class's limits are compared with its sent values directly, and the class index selects a finished comparison. While idle, the frame's credit fields and CRC seed are loaded every cycle: they are read only while a frame is active, and a frame starts with its start cycle's values as before. Co-simulation against the sixth-round module, comparing every output in every cycle including `tx_data_o`: four seeds × 400,000 cycles, about 38,000 frames each, 0 mismatches.
+- **`soc_pcie_buffered_flow_packets`: registered function identity.** The static `function_id_i` strap is registered at the boundary. It was the worst capped path at 68%: the input port, four hold buffers, then the configuration target check into `completion_data` (-3.68). A change now takes effect one cycle later. Every test drives it as a constant.
+
+### `test_soc_pcie_credit_tx.py` changes in this round
+
+| Where | Sixth-round expectation | Seventh-round expectation | Why it is protocol-safe |
+|---|---|---|---|
+| `Driver.tick`, ready | Granted if presented unchanged for two cycles, affordable and initialized in the previous one, and no consume in it | The same, and no FC event applied in the previous cycle (`applied`, cleared by reset and link loss) | A grant is only delayed by one cycle; credit checks are unchanged |
+| `modulo_counters_random_credit_return_and_stalls` | 36,000 cycles | 4 × 36,000 cycles, because with an FC event in three of four cycles the refusal removes three of four grant windows | The same number of grants as before: header consumption 3,790 per class against 3,789 with the old module and old length. The wrap assertion is unchanged |
+
+All original assertions remain.
+
+### Added latency in this round
+
+- A grant is refused in the cycle after an FC event's application.
+- The DLLP receiver leaves reset one cycle after its block. No beat can reach it earlier.
+- A change of `function_id_i` takes effect one cycle later.
+
+Nothing else moved at any port.
+
+### Verification of the final head (`fc4cec6f4`)
+
+- unit tests 64/64 (run 42582592672), `credit_tx` 5/5 under the revised oracle. The changed blocks' own tests, including `dllp_rx`, also pass locally;
+- `check_soc_lint.py` base and full PASS with no new or stale warnings, and joint SoC PCIe + Ethernet traffic PASS 2/2 asynchronous and 2/2 synchronous (run 42584110146). The SoC job of run 42582592672 failed before any check: the OSS CAD Suite download returned HTTP 504 three times.
+
+Block screen (run 42582592672), worst slack / TNS in ns:
+
+| Stage | Corner | Sixth round | Seventh round |
+|---|---|---:|---:|
+| sized | slow | -1.89 / -2753 | -1.34 / -2605 |
+| sized | typical | +0.17 / 0 | +0.55 / 0 |
+| repaired | slow | -1.29 / -1782 | -0.71 / -866 |
+| repaired | typical | +0.59 / 0 | +0.95 / 0 |
+
+### Physical probe (run 42582592672, same settings as the sixth round)
+
+Worst slack in ns, as in the sixth round ("capped" after the capped post-GRT repair, "deep" after the uncapped repair).
+
+| Head | Density | Capped pcie_clk_i slow / typ | Deep pcie_clk_i slow / typ | Deep asynchronous slow / typ |
+|---|---:|---:|---:|---:|
+| sixth round `b9dd20e38` (run 42556633463) | 70% | -3.01 / -0.65 | -1.47 / +0.24 | -0.78 / +0.70 |
+| sixth round `b9dd20e38` (run 42556633463) | 68% | -2.98 / -0.73 | -1.30 / +0.25 | -0.01 / +1.17 |
+| traced `76c259aca` (run 42569863473) | 70% | -4.32 / -1.35 | -1.36 / +0.16 | -1.08 / +0.60 |
+| traced `76c259aca` (run 42569863473) | 68% | -3.68 / -1.11 | -1.17 / +0.23 | -1.12 / +0.47 |
+| seventh round `fc4cec6f4` | 70% | -3.05 / -0.46 | -1.03 / +0.36 | -0.90 / +0.77 |
+| seventh round `fc4cec6f4` | 68% | -3.36 / -0.68 | -1.40 / +0.23 | -1.06 / +0.54 |
+
+- **Deep slow slack.** The final head is the best of all heads at 70% (-1.03) but worse than the traced head at 68% (-1.40 against -1.17). Its worst-of-two (-1.40) and mean (-1.21) are slightly better than the sixth round's (-1.47, -1.39). These differences are within the placement sensitivity measured in the sixth round. Typical slack is positive at both densities.
+- **The reset-copy paths are gone from the top of the list.** At 70% the final head's worst pairs are:
+  - the input port `pcie_rx_valid_i` into the receive input slice (-1.03);
+  - the FC advertiser's byte `index` into its registers (-1.02);
+  - the `tlp_stream` header into the `tlp_regs` completion fields (32 endpoints, -1.01);
+  - the replay store's write address into its bytes, and its read select into the transmit slice (-1.00).
+
+  At 68% they are:
+  - `link_sop` into the replay store's `lengths` and `next_store_sequence` (26 endpoints, -1.40);
+  - the receive-queue read select (-1.39);
+  - the quarantine index into the endpoint header words (-1.39).
+
+  The wall is unchanged: 300 endpoints within 0.13 ns (70%) and 0.17 ns (68%) of the worst.
+- **Capped state.** It improved at both densities against the traced head, by 1.27 ns at 70% and 0.32 ns at 68%.
+- **Asynchronous group.** It stays placement-dependent (-1.12 to -0.01 across the six heads and densities) and still needs the constraint described in the fifth round.
+
 ## What remains
 
-- **Worst-path attribution.** Keep the synthesized netlist with source names in the probe artifact, so that the remaining wide AND-OR path can be tied to a register before it is pipelined.
-- **`soc_pcie_credit_tx`.** The consume value for `ad` (`ad + (-required)`) is still a full 12-bit addition behind the grant (14 logic cells in the block screen). Splitting it needs `ad` to be unchanged in the cycle before a consume, which an UpdateFC application can break. Blocking a grant in the cycle after an UpdateFC is applied would allow it, as one more oracle revision.
+- **The wall after the uncapped repair.** Hundreds of endpoints sit within about 0.2 ns of the worst slow-corner slack. Their paths are four to eight logic cells, with clock-to-Q (0.5-0.8 ns), setup with a slow input slew (up to 0.4 ns) and skew, and they are limited by wire load and placement spread rather than depth. The remaining structural candidates from the traced lists:
+  - the replay store's read select into its transmit slice (the per-bank registered read of `rx_credit`, with prefetch, applies), and its capture path from `link_sop`;
+  - the `tlp_stream` header into the `tlp_regs` completion fields;
+  - the quarantine index into the endpoint's header words;
+  - the receive-queue read cursor's fanout across banks (replicating it per bank also multiplies the handshake fanout, so it needs measuring);
+  - the input port `pcie_rx_valid_i` into the receive input slice (an input-delay budget question).
 - **Asynchronous group.** It needs the constraint described above, not RTL.
-- **Comparisons.** Differences between heads below about 0.9 ns at the slow corner are within the placement sensitivity measured in the sixth round. Compare heads at two densities.
+- **Comparisons.** Compare heads at two densities: differences below about 0.9 ns at the slow corner are within the placement sensitivity measured in the sixth round.
