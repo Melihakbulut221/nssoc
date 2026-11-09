@@ -692,13 +692,113 @@ Worst slack in ns, as in the sixth round ("capped" after the capped post-GRT rep
 - **Capped state.** It improved at both densities against the traced head, by 1.27 ns at 70% and 0.32 ns at 68%.
 - **Asynchronous group.** It stays placement-dependent (-1.12 to -0.01 across the six heads and densities) and still needs the constraint described in the fifth round.
 
+## Eighth round: one more register stage across the remaining deep blocks
+
+### Changes (`f6179a44a`, `ce66157da`, final `d32d3a1f1`)
+
+- **`soc_pcie_replay_tx`, store read.** Each bank's byte at the read position is a register, so the transmit slice now takes a bank select of four registers.
+  - While no frame is sent, every bank register is loaded with its byte 0.
+  - When a byte is taken mid-frame, it is loaded with the next byte, selected as an AND-OR by the rotated one-hot cursor.
+  - A slot is committed before its send starts, and only the free tail slot is written while a frame is sent.
+- **`soc_pcie_replay_tx`, capture.** The frame-end checks now start at registers:
+  - the upper 24 bits of the LCRC residue comparison are tracked with the CRC state;
+  - the stored sequence bytes are compared with the expected sequence a cycle ahead (both are fixed for the last sixteen or more bytes of any frame that passes the length check);
+  - the reservation metadata selects between the decodes of both candidate slots.
+- **`soc_pcie_lcrc_rx` (quarantine).**
+  - The byte store is written through a registered one-hot port one cycle after acceptance. A stored data byte is read no earlier than the cycle after the EOP, which follows it by four LCRC bytes.
+  - The output byte is a register: byte 0 while idle, then the next byte through a one-hot cursor. The binary index no longer drives a 32:1 multiplexer into the endpoint.
+- **`soc_pcie_lcrc_tx`.**
+  - Words are written through a registered port. The first word is read at the PREFIX1 byte, two cycles after the EOP at the earliest.
+  - The next sequence number plus one is kept in a register.
+- **`soc_pcie_rx_credit`.**
+  - The released data limit has both high halves registered a cycle ahead.
+  - A copy of the read cursor per bank (CAP bits each) was tried in `f6179a44a`/`ce66157da` and measured. At 68% the read select was no longer the worst path. At 70% the copies were placed far from their banks: 0.41 pF on a cursor bit, -7.58 ns capped and -2.64 ns after the uncapped repair on that path. The final head returns to one cursor.
+- **`soc_pcie_tlp_stream` / `soc_pcie_tlp_regs`.** `soc_pcie_tlp_regs` has a new parameter `PREDECODE`, default 0, under which its standalone APB cycle-exact test runs unchanged.
+  - With `PREDECODE=1`, every decision and field of the descriptor decode is taken from a register loaded in the previous cycle. This covers the shape and target checks, the configuration read data and BAR write value, the completion fields, and the APB address, strobes and data.
+  - `soc_pcie_tlp_stream` sets `PREDECODE=1` and presents a collected descriptor from its second SUBMIT cycle on (`armed`), so the descriptor is stable for a cycle before it is presented.
+  - `bar0` and `memory_enable` change only while a descriptor is processed, and the next one is processed two cycles later at the earliest.
+- **`soc_pcie_buffered_flow_packets`, receive port.** A boundary register sits in front of the receive input slice. An accepted beat is held there until the slice takes it; the port is ready when the register is empty or the slice has room. Ready still comes from flops, and beats still flow one per cycle.
+- **`soc_pcie_credit_tx`.** The update stage takes the event's class infinite flags and zero tests from stage B registers. Only an InitFC applied in stage C writes those flags, so the registered flag takes that write when the two events have the same class.
+
+No test was changed.
+
+### Equivalence
+
+Each changed block was compared by random co-simulation against its seventh-round version, with resets, link loss and backpressure. Every output was compared in every cycle, and data while valid. 0 mismatches:
+
+- `lcrc_tx` with `lcrc_rx`: the transmitter's output feeds both receivers, with corrupted bytes and errors. 4 seeds × 300,000 cycles, about 2,800 good packets each.
+- `replay_tx`: fed with real encoded frames by an `lcrc_tx`, with random ACK/NAK, reservation, transmit stalls, training and retraining. 4 seeds × 400,000 cycles, about 8,100 transmitted frames each.
+- `rx_credit` (with and without the per-bank cursor): 4 seeds × 300,000 cycles, link loss every 32 to 8,192 cycles.
+- `credit_tx`: 4 seeds × 500,000 cycles, about 57,000 grants each.
+- `tlp_regs` with `PREDECODE=0`: its own cycle-exact unit test. With `PREDECODE=1`: the `tlp_stream`, `tlp_integrity`, `packet_endpoint` and `link_packets` tests.
+- The receive boundary register is covered by the buffered and SoC tests.
+
+### Added latency in this round
+
+| Path | Added | Bound it must stay inside |
+|---|---|---|
+| PHY receive beat to the receive queue (boundary register) | +1 cycle | Received ACK/NAK and UpdateFC DLLPs reach the replay store and credit logic one cycle later. The replay timer is 1,024 cycles. The ACK for a received TLP is sent one cycle later. |
+| Collected TLP to the register backend (APB setup, completion) | +1 cycle | The APB timeout (256 cycles) counts from SETUP and is unchanged. The completion leaves one cycle later. |
+| Replay store read and frame-end checks, LCRC receiver and transmitter stores, released limit, credit update, reservation metadata | 0 | |
+
+### Verification of the final head (`d32d3a1f1`)
+
+- unit tests 64/64 (run 42690727661; also 64/64 on `ce66157da`, run 42659849705, and on `f6179a44a`, run 42653400180);
+- `check_soc_lint.py` base and full PASS with no new or stale warnings, and joint SoC PCIe + Ethernet traffic PASS 2/2 asynchronous and 2/2 synchronous (run 42690727661, and on both earlier heads).
+
+Block screen, slow corner, worst slack / TNS in ns; the last column counts paths over 12 logic cells among the 1,500 worst-endpoint paths:
+
+| Head | Sized | Repaired | Paths over 12 logic cells (sized / repaired) |
+|---|---:|---:|---:|
+| seventh round `fc4cec6f4` | -1.34 / -2605 | -0.71 / -866 | 52 / 73 |
+| `f6179a44a` | -1.79 / -1642 | -0.26 / -20 | 2 / 7 |
+| `ce66157da` | -1.56 / -2072 | -0.88 / -71 | 7 / 35 |
+| final `d32d3a1f1` | -2.51 / -2562 | -0.97 / -1055 | 17 / 17 |
+
+The ten-logic-cell target is not met everywhere. The deepest paths left in the block screen are 11 to 13 logic cells:
+- the credit update's stage C into `ad`/`ah`/`dl`;
+- the ACK distance compare into `ack_was_stale`/`ack_was_allowed`;
+- the replay transmit slice's ready into its spare register;
+- the DLLP link slice into the boundary slice;
+- the released-limit precompute (the depth moved into its register).
+
+The block screen's own placement spread (about ±0.5 ns, more in TNS) is larger than the differences between these heads. The count of paths over 12 logic cells is the steadier measure, and it fell from 52 to between 2 and 17 at the sized stage.
+
+### Physical probe
+
+Worst slack in ns, same settings as the sixth and seventh rounds. The probe of `f6179a44a` was cancelled to free runners for `ce66157da`.
+
+| Head | Density | Capped pcie_clk_i slow / typ | Deep pcie_clk_i slow / typ | Deep asynchronous slow / typ |
+|---|---:|---:|---:|---:|
+| seventh round `fc4cec6f4` (run 42582592672) | 70% | -3.05 / -0.46 | -1.03 / +0.36 | -0.90 / +0.77 |
+| seventh round `fc4cec6f4` (run 42582592672) | 68% | -3.36 / -0.68 | -1.40 / +0.23 | -1.06 / +0.54 |
+| per-bank cursor `ce66157da` (run 42659849705) | 70% | -7.58 / -3.66 | -2.64 / -0.42 | -1.91 / +0.02 |
+| per-bank cursor `ce66157da` (run 42659849705) | 68% | -3.00 / -0.51 | -1.16 / +0.47 | -0.70 / +0.96 |
+| final `d32d3a1f1` (run 42690727661) | 70% | -3.20 / -0.58 | -1.33 / +0.14 | -1.09 / +0.61 |
+| final `d32d3a1f1` (run 42690727661) | 68% | -3.10 / -0.58 | -1.52 / +0.01 | -1.09 / +0.63 |
+
+- **The extra stage did not move the probe's worst slack.** The final head is 0.30 ns (70%) and 0.12 ns (68%) behind the seventh round, inside the placement sensitivity, and typical slack stays positive.
+  - The capped state improved at 68% (-3.10 against -3.36) and is a little worse at 70% (-3.20 against -3.05).
+  - The 300 reported endpoints still lie within 0.29 ns (70%) and 0.38 ns (68%) of the worst.
+- **New worst paths.** The final head's worst paths are new kinds:
+  - the combinational `pcie_initialized_o` output from the credit logic (-1.33 at 70%, -1.52 at 68%; an output-delay budget);
+  - the LCRC transmitter's word fold into its CRC;
+  - the LCRC receiver's received count;
+  - the registered replay and receive-queue bank reads (their AND-OR into the register);
+  - the replay capture from `link_data`.
+- **Per-bank cursor.** It measured better at 68% (-1.16) but placed badly at 70% (-2.64), so it was not kept.
+
 ## What remains
 
-- **The wall after the uncapped repair.** Hundreds of endpoints sit within about 0.2 ns of the worst slow-corner slack. Their paths are four to eight logic cells, with clock-to-Q (0.5-0.8 ns), setup with a slow input slew (up to 0.4 ns) and skew, and they are limited by wire load and placement spread rather than depth. The remaining structural candidates from the traced lists:
-  - the replay store's read select into its transmit slice (the per-bank registered read of `rx_credit`, with prefetch, applies), and its capture path from `link_sop`;
-  - the `tlp_stream` header into the `tlp_regs` completion fields;
-  - the quarantine index into the endpoint's header words;
-  - the receive-queue read cursor's fanout across banks (replicating it per bank also multiplies the handshake fanout, so it needs measuring);
-  - the input port `pcie_rx_valid_i` into the receive input slice (an input-delay budget question).
-- **Asynchronous group.** It needs the constraint described above, not RTL.
+- **The wall after the uncapped repair.** Two rounds of cuts (the seventh's structural ones and the eighth's extra register stage) left the probe's worst slow-corner slack between -1.0 and -1.5 ns, with the 300 worst endpoints within 0.3-0.4 ns of each other. Their paths are now mostly four to eight logic cells; the remaining delay is clock-to-Q, setup with slow input slews, skew, and wire load from placement spread. Further RTL cuts move the worst slack less than the placement sensitivity, so the next gains should come from the physical side. Options, none of which change the RTL:
+  - timing-driven global placement (`PL_TIMING_DRIVEN` is 0 in this flow);
+  - a placement region for the PCIe packet block;
+  - more repair effort.
+- **Remaining logic-depth outliers** (11-13 logic cells in the block screen):
+  - the credit update's stage C;
+  - the ACK distance compare;
+  - the replay transmit slice's ready;
+  - the LCRC transmitter's state into its word index;
+  - the combinational `pcie_initialized_o` output.
+- **Asynchronous group.** It needs the constraint described in the fifth round, not RTL.
 - **Comparisons.** Compare heads at two densities: differences below about 0.9 ns at the slow corner are within the placement sensitivity measured in the sixth round.
