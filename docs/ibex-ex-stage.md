@@ -221,3 +221,9 @@ The LSU is not modified. It still receives the same combinational verdict (`data
 
 `test_mutated_pmp_req_reg_is_caught` requires that two mutations are detected: a refused request issued anyway, and the register letting go of a request before its grant. `test_pmp_req_reg_patch_applies_to_every_core_tree` applies the patch to all four core trees and checks that it refuses its own output, and `test_patch_refuses_unsupported_configurations` covers the writeback stage. The workflow adds the knob to the unit job's patch diffs, a regression entry (`ex_exec_pmpreg`), a native gate-level boot entry (`ex_exec_pmpreg`, the same gate as `ex_exec`) and a probe entry (`r4_ex_exec_pmpreg`, density 70, Kogge-Stone, 1100-iteration repair). None of these has been run yet.
 
+
+## 8. Combined with the PCIe pipeline (`timing/combined`)
+
+`timing/combined` is this branch merged with `timing/pcie-pipeline` (`docs/pcie-pipeline.md`), so that the core cuts and the PCIe packet-domain pipelining can be measured on one netlist; section 6 ranks `pcie_clk_i` as the worst group once the core cuts are in. The two branches touch different regions of `soc_top.v` (the Ibex parameters, and the packet-domain reset leaf `pcie_sys_rst_n`). The workflow keeps every job and knob of this branch and adds the PCIe jobs as `pcie-timing`, `pcie-unit` and `pcie-soc`, run on request (`pcie_jobs`, for example `timing unit soc`; `only` skips the Ibex jobs). The PCIe probe is part of the probe job (`pcie_rfup_d70_ks`, `pcie_deep_rfup_d70_ks`, with its `pcie_clk_i` path trace; `pcie_rtl_ref` takes `hw/soc/rtl/pcie` from another ref).
+
+Two probe entries combine the best core knobs (execute stage, `CHKDEFER`, predecode, `MEM_RDREG=2`, `IBEX_PMP_REQ_REG`) with the pipelined PCIe RTL, Kogge-Stone and the 1100-iteration repair, at densities 70 and 68: `c_ex_exec_pmpreg_d70` and `c_ex_exec_pmpreg_d68`. They also run the PCIe path trace. Not run yet.

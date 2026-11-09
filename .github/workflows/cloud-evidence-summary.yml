@@ -336,6 +336,11 @@ jobs:
           - {name: r4_ex_exec, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1'}
           - {name: r4_ex_exec_br2, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', br2: '1'}
           - {name: r4_ex_exec_pmpreg, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1'}
+          # timing/combined: the best Ibex knobs (execute stage, CHKDEFER,
+          # predecode, MEM_RDREG = 2, the data request register) with this
+          # branch's pipelined PCIe RTL, at two densities, with the PCIe path trace.
+          - {name: c_ex_exec_pmpreg_d70, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1'}
+          - {name: c_ex_exec_pmpreg_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1'}
           # timing/pcie-pipeline's probe (its default probe_matrix): upstream
           # register file, no Ibex knobs, the PCIe path trace. pcie_rtl_ref
           # (optional) takes hw/soc/rtl/pcie from another ref instead.
