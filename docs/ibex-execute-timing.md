@@ -119,3 +119,78 @@ Corrections and observations:
 Separately, `pcie_clk_i` (-5.9 to -6.0 ns after repair) and the asynchronous group (-5.8 to -6.2 ns) also miss at the slow corner; they are outside this branch.
 
 Recommendation: keep both knobs off. A costs +1.1% cycles and B gains 5.0% cycles, and neither gains slack. B is a free performance option if the slow corner is ever relaxed. The next measurements worth making are C plus D in the project-owned register file, which needs no Ibex change, and a registered memory ECC. Both are needed before a core pipeline change can show whether 20 ns is in reach.
+
+## 7. Second round: register-file and memory cuts
+
+This round implements the project-owned options from section 2 (C, E, and a bound for D) and moves the RAM read return behind a register. Every knob defaults to 0.
+
+### 7.1 What was implemented
+
+| Knob (synthesis / simulation) | Where | What it does |
+|---|---|---|
+| `IBEX_RF_CHKDEFER` / `SOC_RF_CHKDEFER` | `ibex_regfile_secded.v` `CHKDEFER` | The check bits of a write are encoded and stored one cycle after the data, from a one-entry pending register holding the address and data. For that one cycle the register is pending:<br>- a read of it returns the pending copy;<br>- its read-port SEC/DED reports are masked, because the stored check bits belong to the previous value;<br>- the scrub skips it.<br>The encoder leaves the write path. An upset in the data flip-flops during the pending cycle is still corrected later, because the check bits are computed from the copy. The copy itself is in-flight data, like the ALU result. |
+| `IBEX_RF_PREDECODE` / `SOC_RF_PREDECODE` | `flow/ibex_rf_predecode.py` + `RDPRE` | The read address is predecoded (4 + 8 one-hot lines per port) from the instruction about to enter the IF/ID register and registered with it. It travels on the core's unused capability write data (`rf_wcap_ecc_wb_o` → `wcap_a_i`), so no port is added to `ibex_top` or to the register file. The register file selects words with an AND-OR. Simulation asserts every cycle that the predecode equals the decode of `raddr`. It needs `CORRPRE=1` (or `RDRAW`). |
+| `IBEX_RF_RDRAW` / `SOC_RF_RDRAW` | `RDRAW`, **measurement only** | Read without inline correction: the timing bound of option D. Guarded so that no build sets it. |
+| `SOC_MEM_RDREG=2` | `soc_mem_ecc.v` `RDREG = 2` | Extends `RDREG`. The row is registered as it leaves the macro and bank select, then decoded from that register, and the existing response register follows. This applies to every hardened memory: SRAM RAM and ROM, the logic boot ROM and the behavioural model. **Load and fetch latency go from 2 to 3 cycles.** The scrubber's fastest rate goes from one row per 2 idle cycles to one per 3; the SoC's interval is 255. A bus write in the cycle between a scrub read and its write-back cancels that write-back. |
+
+**The default netlist is unchanged.** All knob logic is compiled only under `SOC_RF_EXEC` / `SOC_MEM_RAWREG`, which the flows set exactly when a knob is on (`verilog_defines` in synthesis, `-D` in simulation). A first version left constant-folded logic in the default arms. Its default `soc_top` netlist moved (hash `90f7045f` → `6476c145`) and its control timing moved with it (-5.84 → -5.47 ns), because Yosys numbers objects in elaboration order. With the defines:
+
+- the standalone default, CORRPRE, SYNPRE and RDREG=1 netlists of both files are byte-identical to the old files';
+- the probe control is again `90f7045f`, with exactly -5.84 / 3.90 / 8.03 ns.
+
+A knob set without its define stops elaboration. The two runs of logically identical default netlists also give the placement-and-repair noise: about 0.4 ns.
+
+Lint: no new diagnostic. Three recorded diagnostics moved line and were moved with it in `hw/soc/lint-policy.json`, and `formal-and-boot` passes (run42578554876). The `rtl` job's only failures are the base branch's `soc_top.v` source pin, with 1203 cocotb tests passing and 0 failing. Release downloads in these jobs are now retried as on `timing/pcie-pipeline`.
+
+### 7.2 Tests
+
+- `hw/soc/tb/tb_regfile_exec.v` (`sw/tests/test_regfile_execute_knobs.py`, 15 cases) checks nine knob combinations against a golden model, with no failures in 20,000 cycles each. Per combination:
+  - 1016 single and 134 double upsets injected into data and check flip-flops, the pending register included;
+  - 7920 back-to-back write-then-read hazards;
+  - data, no false SEC/DED, required SEC and DED, and a clean, correct scrubbed final sweep are all checked.
+
+  Negative controls:
+  - a corrupted predecode stops the run;
+  - each knob without its define fails to elaborate;
+  - mutations removing the bypass, the report mask or the scrub skip are each caught.
+- The existing register-file cocotb suite (6 tests) passes with `CHKDEFER` and with `CORRPRE+CHKDEFER`.
+- The `soc_mem` suite (16 tests, including correction, double upset as a bus error, scrub repair and bus priority) passes at `RDREG` 0/1/2 for both codes. Its latency expectation is `RDREG + 1`, and its scrub-pacing expectation records the three-cycle floor.
+- With `SOC_RF_CHKDEFER=1 SOC_RF_PREDECODE=1 SOC_RF_CORRPRE=1 SOC_MEM_RDREG=2` (run42619488611, final code), these pass: `make soc-sim` (28 checks), `make soc-boot-regression` (3 cases) and the `soc-crash-cocotb` recipe.
+- Native gate-level boot: **pass** with all three knobs (`scripts/check_soc_corrpre_pcie_native_boot.sh`, run42619488611): 28 checks, fail mask 0, PCIe idle pass, 765,457 cycles in 10,536 s. The MBIST variant of the same gate (run42578553461) twice reached its 18000 s simulator wall clock at 1.55 M of about 1.85 M cycles. MBIST was complete and all application checks reached so far had passed, with no SEC/DED and no alert. At this runner speed that boot does not fit a hosted job once every fetch is one cycle longer.
+
+**Cycle cost** (RTL boot in the native-boot configuration, core asleep):
+
+| Configuration | Cycles | Change |
+|---|---:|---:|
+| control (`MEM_RDREG=1`) | 647,591 | |
+| `CHKDEFER` | 647,591 | 0 |
+| `MEM_RDREG=2` | 763,279 | **+17.9%** (one more cycle on every fetch and load from RAM and ROM) |
+| `CHKDEFER` + predecode + `MEM_RDREG=2` | 763,279 | 0 over `MEM_RDREG=2` alone |
+| the same + two-cycle branches | 763,441 | +162 |
+
+### 7.3 Timing
+
+Runs 42550465001, 42596661825, 42596676753, 42596689118 and 42596700970; all at density 70%, Kogge-Stone, with `repair_timing` bounded at 1100 iterations. `clk_i` setup worst slack in ns, slow / typ / fast:
+
+| Variant | Capped repair (slow) | After 1100-iteration repair |
+|---|---:|---|
+| control | -8.57 | **-5.84** / 3.90 / 8.03 |
+| `CHKDEFER` | -8.00 | -5.56 / 3.93 / 8.66 |
+| `MEM_RDREG=2` | -9.54 | -5.59 / 3.73 / 9.14 |
+| `CHKDEFER` + predecode + `MEM_RDREG=2` | -9.90 | -5.45 / 4.01 / 9.52 |
+| the same + two-cycle branches | -10.30 | **-4.90** / 4.39 / 8.74 |
+| the same with `RDRAW` (measurement bound for detect-only) | -7.27 | -4.79 / 4.38 / 8.92 |
+
+- Each cut on its own sits inside the 0.4 ns noise: +0.28, +0.25 and +0.39 ns. They only add up once the stall cone is also cut. The full combination with two-cycle branches gains **+0.94 ns**, the largest so far.
+- **Detect-only with replay is not worth building.** Removing the inline correction entirely buys 0.11 ns on top of the best variant, well inside the noise. A correct replay in the non-writeback Ibex would also have to cover load write-backs and multi-cycle operands, which use the register file after the first cycle. It was therefore not implemented.
+- The worst remaining slow-corner path (-4.90 ns) is still register file → execute: 57 cells, 26.9 ns arrival against about 22.0 ns required. The predecoded word select is now the fanout point (about 3 ns of buffers into the AND-OR read), followed by the operand path, the ALU and the result fanout.
+- `pcie_clk_i` (-5.6 ns) and the asynchronous group (-5.3 ns) are now as bad as `clk_i` in that variant.
+
+### 7.4 Remaining gap
+
+With every project-owned cut and the two-cycle branches, slow-corner `clk_i` is about -4.9 ns. That is roughly 24.9 ns of a 20 ns period, so about 5 ns (20%) is still missing. That is more than any further local cut has bought so far. Closing it needs:
+
+- a split execute stage, i.e. a deeper core pipeline (option G);
+- the separate PCIe and reset-tree work.
+
+A relaxed slow-corner period is not this branch's call. Typical (+4.4 ns) and fast (+8.7 ns) close with margin in every variant.
