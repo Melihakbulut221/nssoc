@@ -140,31 +140,47 @@ module soc_pcie_rx_credit #(
     // Keep the flat array bounds (including reads across a bank boundary) so
     // this is cycle-exact even outside the valid output-index range.
     // A one-hot read cursor (equal to output_index, updated at the same
-    // points) and the one-hot head slot select the byte as two AND-OR
-    // levels instead of binary multiplexer trees. Cross-bank addresses of
-    // the flat array are included; addresses past its end read as zero.
+    // points) selects each bank's byte as an AND-OR. That byte is registered
+    // per bank: bank_byte[b] holds packets[b*CAP+output_index] for the index
+    // of the current cycle. It is loaded with the byte at the next index
+    // (index+1 on a mid-frame handshake, 0 at an end of frame, link loss or
+    // reset, otherwise held), and with staging[0] when the bank is committed.
+    // A committed bank cannot be read mid-frame (it was free), and it is
+    // first read at index 0, so every byte that leaves equals the array's.
+    // The output then needs only the one-hot head select of six registers.
+    // Cross-bank addresses of the flat array are included; addresses past
+    // its end read as zero.
     localparam integer READ_CHOICES=1<<CW;
     reg [READ_CHOICES-1:0] read_onehot;
+    wire [READ_CHOICES-1:0] next_onehot={read_onehot[READ_CHOICES-2:0],read_onehot[READ_CHOICES-1]};
     wire [7:0] bank_byte [0:SLOTS-1];
+    wire handshake=out_valid_o && out_ready_i;
+    wire restart=!rst_ni || !link_up_i || (handshake && out_eop_o);
     genvar bank,read_bit,read_offset;
     generate for(bank=0;bank<SLOTS;bank=bank+1) begin: read_bank
+        wire [7:0] following;
+        reg [7:0] registered;
         for(read_bit=0;read_bit<8;read_bit=read_bit+1) begin: read_bit_lane
             wire [READ_CHOICES-1:0] selected;
             for(read_offset=0;read_offset<READ_CHOICES;read_offset=read_offset+1) begin: read_byte
                 if(bank*CAP+read_offset<SLOTS*CAP) begin: present
-                    assign selected[read_offset]=read_onehot[read_offset] & packets[bank*CAP+read_offset][read_bit];
+                    assign selected[read_offset]=next_onehot[read_offset] & packets[bank*CAP+read_offset][read_bit];
                 end else begin: absent
                     assign selected[read_offset]=1'b0;
                 end
             end
-            assign bank_byte[bank][read_bit]=head_onehot[bank] & |selected;
+            assign following[read_bit]=|selected;
         end
+        always @(posedge clk_i)
+            registered<=commit_slot[bank] ? staging[0] :
+                restart ? packets[bank*CAP] : handshake ? following : registered;
+        assign bank_byte[bank]=registered;
     end endgenerate
     reg [7:0] tlp_byte;
     integer h;
     always @* begin
         tlp_byte=0;
-        for(h=0;h<SLOTS;h=h+1) tlp_byte=tlp_byte|bank_byte[h];
+        for(h=0;h<SLOTS;h=h+1) if(head_onehot[h]) tlp_byte=tlp_byte|bank_byte[h];
     end
     assign out_data_o=select_dllp ? dllp[output_index] : tlp_byte;
     assign out_sop_o=output_index==0;

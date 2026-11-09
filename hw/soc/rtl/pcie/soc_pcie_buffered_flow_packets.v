@@ -157,7 +157,13 @@ module soc_pcie_buffered_flow_packets #(
             else begin owner<=chosen;locked<=1;end
         end
     end
-    assign error_o=flow_error || rx_protocol;
+    // The error report leaves from a flop: the same one-cycle pulses, one
+    // cycle later, so the port does not sit behind the error logic.
+    reg error_q;
+    always @(posedge clk_i or negedge up_arb)
+        if(!up_arb) error_q<=1'b0;
+        else error_q<=flow_error || rx_protocol;
+    assign error_o=error_q;
     assign protocol_error_o=flow_protocol || rx_protocol;
     assign retrain_request_o=flow_retrain || rx_recovery_o;
     soc_pcie_flow_packets #(.VENDOR_ID(VENDOR_ID),.DEVICE_ID(DEVICE_ID),.APB_TIMEOUT(APB_TIMEOUT),
