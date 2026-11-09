@@ -730,12 +730,24 @@ techmap -map +/techmap.v -map +/choices/kogge-stone.v
 synth -top soc_top -run fine${SYNTH_COMMAND#"$first"}"
 fi
 
+# docs/ibex-execute-timing.md: the register-file and memory knobs' logic
+# is compiled only under these defines (see the files), so a default build
+# reads the files exactly as before and its netlist does not move.
+RF_EXEC_DEFINE=""
+if [ "$IBEX_RF_CHKDEFER$IBEX_RF_PREDECODE$IBEX_RF_RDRAW" != 000 ]; then
+  RF_EXEC_DEFINE="-DSOC_RF_EXEC"
+fi
+if [ "$SOC_MEM_RDREG" = 2 ]; then
+  MEM_READ="${MEM_READ//read_verilog -I/read_verilog -DSOC_MEM_RAWREG -I}"
+  BOOT_ROM_READ="${BOOT_ROM_READ//read_verilog -defer/read_verilog -DSOC_MEM_RAWREG -defer}"
+fi
+
 cat > "$OUT/soc_top_syn.ys" <<EOF
 read_liberty -lib $SG13G2_TYP
 $ETH_LIB_READ
 
 read_verilog -defer $RTL/prim_clock_gating.v
-read_verilog -defer $IBEX_SRCS
+read_verilog $RF_EXEC_DEFINE -defer $IBEX_SRCS
 read_verilog -sv $IF_DEFINE $MBIST_DEFINE -I$RTL -defer $SOC_SRCS
 read_verilog -I$RTL -I$PILOT_RTL -defer $NPU_SRCS
 $MBIST_READ

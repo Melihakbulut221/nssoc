@@ -60,12 +60,12 @@ jobs:
           O=$PWD/out; cd hw/soc/tb/cocotb
           export PYTHONPATH=$GITHUB_WORKSPACE/sw:$GITHUB_WORKSPACE
           P=ibex_register_file_ff
-          for cfg in "base:" "chkdefer:-P$P.CHKDEFER=1" "corrpre_chkdefer:-P$P.CORRPRE=1 -P$P.CHKDEFER=1"; do
+          for cfg in "base:" "chkdefer:-DSOC_RF_EXEC -P$P.CHKDEFER=1" "corrpre_chkdefer:-DSOC_RF_EXEC -P$P.CORRPRE=1 -P$P.CHKDEFER=1"; do
             n=${cfg%%:*}; make -f Makefile.ibex_regfile_secded SIM_BUILD=sb_rf_$n COCOTB_RESULTS_FILE=$O/regfile_$n.xml EXTRA_COMPILE_ARGS="${cfg#*:}" > $O/regfile_$n.log 2>&1 || { tail -40 $O/regfile_$n.log; exit 1; }
             echo "regfile suite $n: $(grep -oE 'TESTS=[0-9]+ PASS=[0-9]+ FAIL=[0-9]+' $O/regfile_$n.log | tail -1)"
           done
           for r in 0 1 2; do for c in "byte:ECC_BYTE=1 RO=0" "word:ECC_BYTE=0 RO=1"; do
-            n=${c%%:*}; make -f Makefile.soc_mem RDREG=$r ${c#*:} SIM_BUILD=sb_mem_${r}_$n COCOTB_RESULTS_FILE=$O/mem_${r}_$n.xml > $O/mem_${r}_$n.log 2>&1 || { tail -40 $O/mem_${r}_$n.log; exit 1; }
+            n=${c%%:*}; X=; [ $r = 2 ] && X=-DSOC_MEM_RAWREG; make -f Makefile.soc_mem RDREG=$r ${c#*:} EXTRA_COMPILE_ARGS="$X" SIM_BUILD=sb_mem_${r}_$n COCOTB_RESULTS_FILE=$O/mem_${r}_$n.xml > $O/mem_${r}_$n.log 2>&1 || { tail -40 $O/mem_${r}_$n.log; exit 1; }
             echo "soc_mem suite RDREG=$r $n: $(grep -oE 'TESTS=[0-9]+ PASS=[0-9]+ FAIL=[0-9]+ SKIP=[0-9]+' $O/mem_${r}_$n.log | tail -1)"
           done; done
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

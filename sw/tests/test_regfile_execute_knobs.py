@@ -31,16 +31,19 @@ CONFIGS = {
 }
 
 
-def run(tmp_path, params):
+def run(tmp_path, params, define=True):
     iverilog, vvp = shutil.which('iverilog'), shutil.which('vvp')
     if not iverilog or not vvp:
         pytest.skip('Icarus is required')
     binary = tmp_path / 'tb.vvp'
     command = [iverilog, '-g2005', '-s', 'tb_regfile_exec', '-o', str(binary)]
+    if define:
+        command.append('-DSOC_RF_EXEC')
     command += ['-Ptb_regfile_exec.%s=%d' % kv for kv in params.items()]
     command += list(map(str, SOURCES))
     compiled = subprocess.run(command, capture_output=True, text=True, timeout=120)
-    assert compiled.returncode == 0, compiled.stdout + compiled.stderr
+    if compiled.returncode != 0:
+        return compiled.returncode, compiled.stdout + compiled.stderr
     result = subprocess.run([vvp, '-n', str(binary)], capture_output=True, text=True,
                             timeout=600)
     return result.returncode, result.stdout + result.stderr
@@ -51,6 +54,21 @@ def test_golden_model_hazards_and_injected_upsets(tmp_path, name):
     code, output = run(tmp_path, CONFIGS[name])
     assert code == 0 and '\nPASS' in output, output[-3000:]
     assert 'failures=0' in output, output[-3000:]
+
+
+def test_the_default_build_is_the_file_without_the_define(tmp_path):
+    """Without SOC_RF_EXEC the file is the one every default build reads,
+    and the shipped configurations run clean against the same model..."""
+    for params in ({}, {'CORRPRE': 1}, {'SCRUB': 0}):
+        code, output = run(tmp_path, params, define=False)
+        assert code == 0 and '\nPASS' in output, output[-2000:]
+
+
+@pytest.mark.parametrize('knob', ['CHKDEFER', 'RDPRE', 'RDRAW'])
+def test_a_knob_without_its_define_stops_elaboration(tmp_path, knob):
+    """...and a knob without it is refused rather than silently ignored."""
+    code, output = run(tmp_path, {knob: 1}, define=False)
+    assert code != 0 and 'SOC_RF_EXEC' in output, output[-2000:]
 
 
 def test_a_wrong_predecode_stops_the_run(tmp_path):

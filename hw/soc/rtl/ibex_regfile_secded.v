@@ -397,7 +397,12 @@ module ibex_register_file_ff (
   // precedence over FASTCORR and cannot be combined with SYNPRE.
   parameter integer CORRPRE = 0;
   // Execute-path timing knobs, docs/ibex-execute-timing.md. All default
-  // to 0, and at 0 every one of them elaborates to the file as it was.
+  // to 0. THEIR LOGIC IS COMPILED ONLY UNDER `define SOC_RF_EXEC`, which
+  // the flows set exactly when one of them is on: Yosys numbers every cell
+  // it creates in elaboration order, so even logic that a default build
+  // would optimise away renames everything after it and changes the
+  // default netlist. Without the define this file elaborates to the file
+  // as it was, and setting a knob without it stops the build.
   //
   // CHKDEFER = 1: the check bits of a write are encoded and stored one
   // cycle AFTER the data, from a one-entry pending register (address,
@@ -445,7 +450,9 @@ module ibex_register_file_ff (
 
   genvar gi;
   genvar gj;
+`ifdef SOC_RF_EXEC
   genvar gb;
+`endif
 
   // Elaboration guards, aer_fifo house style: a configuration this file
   // does not implement references a module that deliberately does not
@@ -456,6 +463,7 @@ module ibex_register_file_ff (
         (CORRPRE != 0 && (HARDEN == 0 || SYNPRE != 0))) begin : g_bad_corrpre
       ERROR_ibex_regfile_CORRPRE_requires_hardening_and_SYNPRE_zero guard ();
     end
+`ifdef SOC_RF_EXEC
     if ((CHKDEFER != 0 && CHKDEFER != 1) || (CHKDEFER != 0 && HARDEN == 0))
     begin : g_bad_chkdefer
       ERROR_ibex_regfile_CHKDEFER_requires_hardening guard ();
@@ -472,6 +480,11 @@ module ibex_register_file_ff (
     begin : g_bad_rdraw
       ERROR_ibex_regfile_RDRAW_requires_hardening_without_CORRPRE_or_SYNPRE guard ();
     end
+`else
+    if (CHKDEFER != 0 || RDPRE != 0 || RDRAW != 0) begin : g_no_exec
+      ERROR_ibex_regfile_execute_knobs_need_define_SOC_RF_EXEC guard ();
+    end
+`endif
     if (BaseIsa != 32'sd0) begin : g_no_cheriot
       ERROR_ibex_regfile_secded_does_not_implement_the_CHERIoT_file guard ();
     end
@@ -570,6 +583,7 @@ module ibex_register_file_ff (
               : {NUM_WORDS{1'b0}};
     wire unused_strobe;
     assign unused_strobe = we_a_dec[0];
+`ifdef SOC_RF_EXEC
 
     // ---- CHKDEFER: the pending write ----------------------------------
     // x0 is never pending: it has no storage and must read zero.
@@ -608,6 +622,7 @@ module ibex_register_file_ff (
       assign pend_d   = 32'h0;
       assign pend_chk = {CHK_W{1'b0}};
     end
+`endif
 
     // ---- the storage ----------------------------------------------
     // 40 bits per register: upstream's 32 in `rf_reg_q`, at upstream's
@@ -630,19 +645,16 @@ module ibex_register_file_ff (
 
       if (HARDEN != 0) begin : g_chk
         reg [CHK_W-1:0] rf_chk_q;
-        if (CHKDEFER == 0) begin : g_now
-          always @(posedge clk_i or negedge rst_ni)
-            if (!rst_ni)
-              rf_chk_q <= rst_chk;
-            else if (we_a_dec[gi])
-              rf_chk_q <= wr_chk;
-        end else begin : g_defer
-          always @(posedge clk_i or negedge rst_ni)
-            if (!rst_ni)
-              rf_chk_q <= rst_chk;
-            else if (pend_v && (pend_a == gi))
-              rf_chk_q <= pend_chk;
-        end
+        always @(posedge clk_i or negedge rst_ni)
+          if (!rst_ni)
+            rf_chk_q <= rst_chk;
+`ifdef SOC_RF_EXEC
+          else if (CHKDEFER == 0 ? we_a_dec[gi] : (pend_v && (pend_a == gi)))
+            rf_chk_q <= (CHKDEFER == 0) ? wr_chk : pend_chk;
+`else
+          else if (we_a_dec[gi])
+            rf_chk_q <= wr_chk;
+`endif
         assign rf_chk[gi] = rf_chk_q;
       end else begin : g_no_chk
         assign rf_chk[gi] = rst_chk;
@@ -660,10 +672,10 @@ module ibex_register_file_ff (
     wire [31:0]      raw_b = rf_data[raddr_b_i];
     wire [CHK_W-1:0] chk_b = rf_chk[raddr_b_i];
 
+`ifdef SOC_RF_EXEC
     // CHKDEFER: is a read port reading the pending register?
     wire hit_a = pend_v && (raddr_a_i == pend_a);
     wire hit_b = pend_v && (raddr_b_i == pend_a);
-    // Read only by the CHKDEFER arms; collected so lint stays quiet at 0.
     wire unused_pend;
     assign unused_pend = ^{hit_a, hit_b, pend_d, pend_chk};
 
@@ -697,6 +709,7 @@ module ibex_register_file_ff (
       wire unused_sel;
       assign unused_sel = ^{sel_a, sel_b};
     end
+`endif
 
     if (HARDEN != 0) begin : g_secded
 
@@ -733,16 +746,21 @@ module ibex_register_file_ff (
               .code_in ({rf_chk[gj], 32'h0, rf_data[gj]}),
               .data_out (corrected), .syndrome (unused_syn),
               .sec (unused_sec), .ded (unused_ded));
+`ifdef SOC_RF_EXEC
           if (CHKDEFER != 0) begin : g_byp
             assign rf_corrected[gj] = (pend_v && (pend_a == gj)) ? pend_d
                                                                  : corrected[31:0];
           end else begin : g_nobyp
             assign rf_corrected[gj] = corrected[31:0];
           end
+`else
+          assign rf_corrected[gj] = corrected[31:0];
+`endif
           wire unused_correction;
           assign unused_correction = ^{corrected[63:32], unused_syn,
                                        unused_sec, unused_ded};
         end
+`ifdef SOC_RF_EXEC
         if (RDPRE != 0) begin : g_pre_mux
           for (gb = 0; gb < 32; gb = gb + 1) begin : g_bit
             wire [NUM_WORDS-1:0] col;
@@ -780,6 +798,11 @@ module ibex_register_file_ff (
           assign rdata_b_o = rf_rd[raddr_b_i];
         end
       end else if (FASTCORR != 0) begin : g_fast
+`else
+        assign rdata_a_o = rf_corrected[raddr_a_i];
+        assign rdata_b_o = rf_corrected[raddr_b_i];
+      end else if (FASTCORR != 0) begin : g_fast
+`endif
         wire [CHK_W-1:0] h_col [0:31];
         wire [31:0]      mask_a, mask_b;
 
@@ -816,30 +839,32 @@ module ibex_register_file_ff (
           assign mask_b[gj] = (use_syn_b == h_col[gj]);
         end
 
-        if (CHKDEFER != 0) begin : g_byp
-          assign rdata_a_o = hit_a ? pend_d : (raw_a ^ mask_a);
-          assign rdata_b_o = hit_b ? pend_d : (raw_b ^ mask_b);
-        end else begin : g_nobyp
-          assign rdata_a_o = raw_a ^ mask_a;
-          assign rdata_b_o = raw_b ^ mask_b;
-        end
+`ifdef SOC_RF_EXEC
+        assign rdata_a_o = hit_a ? pend_d : (raw_a ^ mask_a);
+        assign rdata_b_o = hit_b ? pend_d : (raw_b ^ mask_b);
+`else
+        assign rdata_a_o = raw_a ^ mask_a;
+        assign rdata_b_o = raw_b ^ mask_b;
+`endif
       end else begin : g_dec_out
         // docs/43's read path, kept so the recovery is measured against
         // the same file rather than against a previous document's
         // number.
-        if (CHKDEFER != 0) begin : g_byp
-          assign rdata_a_o = hit_a ? pend_d : out_a[31:0];
-          assign rdata_b_o = hit_b ? pend_d : out_b[31:0];
-        end else begin : g_nobyp
-          assign rdata_a_o = out_a[31:0];
-          assign rdata_b_o = out_b[31:0];
-        end
+`ifdef SOC_RF_EXEC
+        assign rdata_a_o = hit_a ? pend_d : out_a[31:0];
+        assign rdata_b_o = hit_b ? pend_d : out_b[31:0];
+`else
+        assign rdata_a_o = out_a[31:0];
+        assign rdata_b_o = out_b[31:0];
+`endif
       end
 
       // ---- the scrub ----------------------------------------------
+`ifdef SOC_RF_EXEC
       wire s_on_pend;   // CHKDEFER: the pointer names the pending register
       wire unused_s_on_pend;
       assign unused_s_on_pend = s_on_pend;
+`endif
       if (SCRUB != 0) begin : g_scrub
         reg [4:0] ptr_q;
         wire [31:0]      raw_s = rf_data[ptr_q];
@@ -853,14 +878,14 @@ module ibex_register_file_ff (
         // The core owns the write port. The scrub takes the cycles the
         // core leaves, and the pointer HOLDS when it cannot write, so
         // the walk skips nothing.
+`ifdef SOC_RF_EXEC
+        // A pending register's stored check bits are its previous
+        // value's; decoding them would "correct" the new value.
         assign s_on_pend = pend_v && (pend_a == ptr_q);
-        if (CHKDEFER != 0) begin : g_go_defer
-          // A pending register's stored check bits are its previous
-          // value's; decoding them would "correct" the new value.
-          assign scrub_go = !we_a_i && !s_on_pend;
-        end else begin : g_go
-          assign scrub_go = !we_a_i;
-        end
+        assign scrub_go  = !we_a_i && !s_on_pend;
+`else
+        assign scrub_go   = !we_a_i;
+`endif
         assign scrub_ptr  = ptr_q;
         assign scrub_data = out_s[31:0];
 
@@ -869,7 +894,9 @@ module ibex_register_file_ff (
           else if (scrub_go)    ptr_q <= (ptr_q == 5'd31) ? 5'd1
                                                           : ptr_q + 5'd1;
       end else begin : g_no_scrub
+`ifdef SOC_RF_EXEC
         assign s_on_pend  = 1'b0;
+`endif
         assign scrub_go   = 1'b0;
         assign scrub_ptr  = 5'd0;
         assign scrub_data = 32'h0;
@@ -895,33 +922,34 @@ module ibex_register_file_ff (
       // is also the cycle after which the upset is gone.
       wire sec_scrub_ev = sec_s & scrub_go;
       wire ded_scrub_ev = ded_s & scrub_go;
-      wire sec_any;
-      wire ded_any;
-      if (CHKDEFER != 0) begin : g_rep_defer
-        // A read of the pending register decodes the new data against
-        // the previous value's check bits, which is not an upset.
-        wire sec_a_r = sec_a && !hit_a;
-        wire sec_b_r = sec_b && !hit_b;
-        wire ded_a_r = ded_a && !hit_a;
-        wire ded_b_r = ded_b && !hit_b;
-        assign rf_ecc_err_o = {ded_a_r | ded_b_r | ded_scrub_ev,
-                               sec_a_r | sec_b_r,
-                               sec_scrub_ev};
-        assign sec_any = sec_a_r | sec_b_r | (sec_s && !s_on_pend);
-        assign ded_any = ded_a_r | ded_b_r | (ded_s && !s_on_pend);
-      end else begin : g_rep
+`ifdef SOC_RF_EXEC
+      // A read of the pending register decodes the new data against the
+      // previous value's check bits, which is not an upset.
+      wire sec_a_r = sec_a && !hit_a;
+      wire sec_b_r = sec_b && !hit_b;
+      wire ded_a_r = ded_a && !hit_a;
+      wire ded_b_r = ded_b && !hit_b;
+      assign rf_ecc_err_o = {ded_a_r | ded_b_r | ded_scrub_ev,
+                             sec_a_r | sec_b_r,
+                             sec_scrub_ev};
+`else
       assign rf_ecc_err_o = {ded_a | ded_b | ded_scrub_ev,
                              sec_a | sec_b,
                              sec_scrub_ev};
+`endif
       //
       // `sec_cycles` counts CYCLES IN WHICH A CORRECTION HAPPENED and
       // not corrections: a cycle in which both read ports and the scrub
       // all correct the same corrupted register counts once. The name
       // says so because a counter whose unit is ambiguous is a number
       // that gets quoted wrongly.
-      assign sec_any = sec_a | sec_b | sec_s;
-      assign ded_any = ded_a | ded_b | ded_s;
-      end
+`ifdef SOC_RF_EXEC
+      wire sec_any = sec_a_r | sec_b_r | (sec_s && !s_on_pend);
+      wire ded_any = ded_a_r | ded_b_r | (ded_s && !s_on_pend);
+`else
+      wire sec_any = sec_a | sec_b | sec_s;
+      wire ded_any = ded_a | ded_b | ded_s;
+`endif
 
       reg        sec_seen;
       reg        ded_seen;

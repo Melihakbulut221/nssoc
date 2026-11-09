@@ -328,6 +328,15 @@ mkdir -p "$OUT"
 # that does not resolve is an elaboration error, so the block is behind
 # a define and the define follows SOC_MEM_HARDEN rather than being set
 # by hand.
+# docs/ibex-execute-timing.md: the knobs' logic is compiled only under
+# these defines, so a default build elaborates the files as they were.
+EXEC_DEFS=
+if [ "$SOC_RF_CHKDEFER$SOC_RF_PREDECODE$SOC_RF_RDRAW" != 000 ]; then
+  EXEC_DEFS="$EXEC_DEFS -DSOC_RF_EXEC"
+fi
+if [ "${SOC_MEM_RDREG:-0}" = 2 ] || [ "${SOC_RAM_RDREG:-0}" = 2 ] || [ "${SOC_ROM_RDREG:-0}" = 2 ]; then
+  EXEC_DEFS="$EXEC_DEFS -DSOC_MEM_RAWREG"
+fi
 if [ "$SOC_MEM_HARDEN" != 0 ]; then
   RAM_POWERUP_DEF=-DRAM_POWERUP_ECC
 else
@@ -405,6 +414,7 @@ fi
   -DROM_HEX="\"$OUT/test_soc.hex\"" \
   ${TIMEOUT_DEF} \
   ${RAM_POWERUP_DEF} \
+  ${EXEC_DEFS} \
   -DUART_BIT_CYCLES="$UART_BIT_CYCLES" \
   -DEXIT_CODE_ADDR="$(sym exit_code)" \
   -DEXIT_MAGIC_ADDR="$(sym exit_magic)" \
@@ -502,8 +512,18 @@ if [ "${IBEX_REGFILE:-secded}" = secded ]; then
 fi
 check_arm SOC_MEM_HARDEN "$SOC_MEM_HARDEN" g_ecc g_plain "memory codec"
 if [ "${IBEX_REGFILE:-secded}" = secded ]; then
-  check_arm SOC_RF_CHKDEFER "$SOC_RF_CHKDEFER" g_chkdefer g_chknow "register file check bits"
-  check_arm SOC_RF_PREDECODE "$SOC_RF_PREDECODE" g_rdpre g_rdbin "register file read address"
+  # Their off arms exist only under SOC_RF_EXEC, so the witness is the on
+  # arm: present when asked for, absent otherwise.
+  for kv in SOC_RF_CHKDEFER:$SOC_RF_CHKDEFER:g_chkdefer SOC_RF_PREDECODE:$SOC_RF_PREDECODE:g_rdpre; do
+    knob=${kv%%:*}; rest=${kv#*:}; val=${rest%%:*}; arm=${rest#*:}
+    if [ "$val" != 0 ]; then
+      grep -qa "\"$arm\"" "$OUT/tb_soc.vvp" || {
+        echo "== the $knob override did not take: $arm absent" >&2; exit 1; }
+      echo "== register file: $arm ($knob=$val)"
+    elif grep -qa "\"$arm\"" "$OUT/tb_soc.vvp"; then
+      echo "== $arm elaborated at $knob=0" >&2; exit 1
+    fi
+  done
   if [ "$SOC_RF_RDRAW" = 1 ]; then
     grep -qa '"g_rdraw"' "$OUT/tb_soc.vvp" || {
       echo "== SOC_RF_RDRAW=1 but the raw read is not elaborated" >&2; exit 1; }
