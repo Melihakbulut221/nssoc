@@ -338,7 +338,7 @@ jobs:
               if not dst.exists():dst.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(src,dst);n+=1
           print('restored PDK files',n)
           PY
-      - name: Floorplan to antenna repair (no detailed routing), configuration overrides {"PL_TARGET_DENSITY_PCT": ${{ matrix.density }}}
+      - name: Floorplan to antenna repair (no detailed routing), target density ${{ matrix.density }} percent
         run: |
           set -euo pipefail
           OUT=$PWD/hw/soc/out/impl-probe; W=/mnt/s
