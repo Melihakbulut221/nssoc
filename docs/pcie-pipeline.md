@@ -366,11 +366,75 @@ After the uncapped repair, the worst internal path (slow, 6.67 ns arrival, 24 ce
 
 The asynchronous worst is unchanged in kind. It is the core-domain `rst_sys_n` (`clk_i` flop) into the `u_pcie_cdc` release synchronizer through the `nor3`, reported above.
 
+## Fourth round: receive input slice, credit next state, packet reset leaf
+
+### Changes (`02792dcdb`)
+
+- **Receive input register slice** (`soc_pcie_buffered_flow_packets`). A `soc_pcie_stream_skid` now sits in front of the receive queue. `pcie_rx_ready_o` is the slice's room (a flop) ANDed with the block's registered reset copy, so it stays low in reset. The receive queue's paths start at registers instead of the input ports. Beats keep their order and are never retracted. The queue's kind-dependent ready applies at the slice output, so a beat the queue cannot take waits in the slice, as it waited at the PHY before, with everything behind it. Received beats arrive one cycle later.
+- **`soc_pcie_credit_tx` next state** (ports unchanged cycle for cycle; random co-simulation against the third-round module: four seeds, about 71,000 grants each, 0 mismatches):
+  - the verdict, and the UpdateFC first stage's balances and advance signs, are computed per class from that class's registers; the request or event class selects a finished result;
+  - every register's next value is computed twice, for "consumed in this cycle" and "not consumed", from registers only, and the consume is the last select;
+  - the consumed counts after a debit (`hc+1`, `dc+required`) are registered one cycle ahead. This is exact: a consume never follows a consume, only a consume changes a consumed count, and the two-cycle request hold keeps `request_data` across the cycle.
+- **Packet reset leaf** (`soc_top.v`, packet-async build only). A dedicated `clk_i` flop, `pcie_sys_rst_n`, asserts with `rst_raw_n` (together with `rst_sys_n`) and releases one `clk_i` cycle after `rst_sys_n`. It resets only the packet-domain reset synchronizer `packet_reset_release` and the APB mailbox release flops (through the existing `reset_ni` combination). Their recovery path now starts at this flop instead of the end of the CPU's `rst_sys_n` tree. Asynchronous assertion, synchronous release and the CDC structure are unchanged. No SDC exception covers these paths, and none was added. All recorded `soc_top.v` lint warnings are before line 716, so the lint ledger is unaffected.
+
+### Added latency in this round
+
+- Received beats: +1 cycle (input slice). Received TLP to its ACK/NAK on the wire is now +4 cycles in total, and ACK/NAK or UpdateFC to its effect +3, all far inside the 1024-cycle replay timer and the AckNak limits.
+- Packet-domain release after a system reset: +1 `clk_i` cycle.
+
+### Logic depth in `soc_pcie_credit_tx`
+
+A bare registered 12-bit adder maps to 12-13 logic cells with this library and the `abc -D 20` recipe, with or without Kogge-Stone carries, and a hand-written carry-select version maps the same. The remaining `credit_tx` cones of 13-16 logic cells are such additions, now with only a register or a final select around them:
+
+- the UpdateFC first stage: `fc - consumed` and its carry-save debit variant, `fc - limit`;
+- the registered `dc + required`;
+- `ad`'s consume value.
+
+Going below 12 would need each addition split across another register stage.
+
+### Verification of the final head (`02792dcdb`, run 42533689396)
+
+- unit tests 64/64 with no test changed in this round;
+- joint SoC PCIe + Ethernet traffic PASS 2/2 asynchronous and PASS 2/2 synchronous;
+- `check_soc_lint.py` base and full PASS with no new or stale warnings.
+
+### Block screen (run 42533689396), ns, worst slack / TNS
+
+| Stage | Corner | Third round | Fourth round |
+|---|---|---:|---:|
+| repaired | typical | +0.15 / 0 | **+0.90 / 0** |
+| repaired | slow | -2.07 / -3281 | **-0.77 / -832** |
+| sized | typical | -1.10 / -299 | -0.33 / -7 |
+| sized | slow | -3.98 / -5906 | -2.62 / -4267 |
+
+The largest logic depth among the worst paths per endpoint (sized slow) is 16 logic cells, in the UpdateFC first stage. 97 paths are over 12, against 148. Packet-internal recovery is met (+0.10 ns sized, +0.38 ns repaired, slow).
+
+### Physical probe
+
+Run 42533689396 on `02792dcdb`, same configuration as before. Setup worst slack, ns:
+
+| Corner | `pcie_clk_i` capped (third round) | `pcie_clk_i` after uncapped repair (third round) | asynchronous capped (third round) | asynchronous after uncapped repair (third round) |
+|---|---:|---:|---:|---:|
+| slow | -3.21 (-3.60) | **-1.44** (-1.75) | -1.50 (-3.32) | **-0.58** (-1.65) |
+| typical | -0.68 (-1.30) | **+0.29** (-0.08) | +0.42 (-0.78) | **+1.01** (+0.21) |
+| fast | +0.56 (-0.17) | +1.08 (+0.86) | +1.37 (+0.64) | +1.73 (+1.26) |
+
+The uncapped repair stopped with RSZ-0062 after 1498 resizes, 614 buffers and 376 pin swaps. Against the reference at the start of this branch (-5.76 slow, -2.31 typical after uncapped repair):
+
+- `pcie_clk_i` is now met at typical and 1.44 ns short at slow;
+- the asynchronous group is met at typical and 0.58 ns short at slow.
+
+The capped worst `pcie_clk_i` path is internal again; the receive input slice removed the boundary paths. After repair, the worst slow path (6.44 ns arrival, 24 cells) has the shape of the UpdateFC first stage: XNOR/XOR carry-save cells followed by a 15-cell `o21ai`/`a21o` carry chain into a register. That is `fc - consumed - required`, which this mapping builds as a ripple carry.
+
+The asynchronous worst path now starts at the new `clk_i` leaf flop and reaches the mailbox release flop's `RESET_B` through only `nor4`/`nand2`/`buf` (the `reset_ni` combination). The remaining -0.58 ns is the cross-clock recovery requirement itself: launch on `clk_i` and capture on `pcie_clk_i`, with the clocks' insertion-delay difference. That is not logic depth. The right fix is a constraint on the asynchronous-assertion input of these synchronizers (for example a false path or max delay to their `RESET_B`), not more RTL. No such exception exists today, and none was added.
+
 ## What remains
 
-- **RX boundary.** The capped worst paths start at the input ports: `pcie_rx_dllp_i` reaches `rx_ready_o` and the staging enables combinationally, and hold repair puts a delay cell on that input. An input register slice before the receive queue would make `pcie_rx_ready_o` a flop output and start the queue's paths at registers. It costs one cycle, and stream order and frame-start blocking are unchanged, since the PHY stream is in order.
-- **Two 17-logic-cell cones in `soc_pcie_credit_tx`.**
-  - The UpdateFC first stage (a class mux of the consumed count, carry-save, one 12-bit adder): registering the per-class "limit minus consumed" balance of the incoming class one cycle ahead would split it.
-  - The consume into `dc`: the grant feeds a 12-bit add-and-select; selecting a precomputed `dc + required` would remove the adder from behind the grant.
-- **Asynchronous group (core domain).** `rst_sys_n` from the `clk_i` reset synchronizer reaches the PCIe-domain synchronizer inputs through the core reset buffer tree. It needs its own reset leaf, or constraints for asynchronous-assertion inputs. This is outside the packet RTL and was not changed here.
-- **Closure.** After uncapped repair, typical is within 0.08 ns. Slow `pcie_clk_i` still needs about 1.75 ns, and the asynchronous group about 1.65 ns.
+- **`pcie_clk_i` at slow: 1.44 ns.** The worst paths are 12-bit additions in `soc_pcie_credit_tx`, which this library and recipe maps to 12-16 logic cells even between registers:
+  - the UpdateFC first stage, `fc - consumed` and its debit variant;
+  - `fc - limit`;
+  - the registered `dc + required`.
+
+  Splitting each addition into two registered halves would add one more UpdateFC cycle. It also widens the debit window to three cycles, so the balances would need a two-debit variant.
+- **Asynchronous group at slow: 0.58 ns.** This is a cross-clock recovery check on the reset-synchronizer input, which a constraint should express. A constraint change is outside this branch's rules.
+- **Reset leaf scope.** `pcie_sys_rst_n` is used only in the packet-async build. The synchronous packet build still resets the packet logic from `rst_sys_n` directly.
