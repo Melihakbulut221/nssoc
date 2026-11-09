@@ -306,6 +306,18 @@ if [ "$IBEX_BRANCH_2CYCLE" = 1 ] && [ "$SOC_CORE_WB_STAGE" != 0 ]; then
   echo 'IBEX_BRANCH_2CYCLE applies only without the writeback stage' >&2; exit 2
 fi
 export IBEX_BRANCH_2CYCLE
+# IBEX_EX_STAGE=1: a separate execute stage, docs/ibex-ex-stage.md. A
+# source selector read by flow/ibex_sources.sh (flow/ibex_ex_stage.py),
+# defined only without the writeback stage and the branch-target ALU.
+IBEX_EX_STAGE=${IBEX_EX_STAGE:-0}
+case "$IBEX_EX_STAGE" in
+  0|1) ;;
+  *) echo 'IBEX_EX_STAGE must be zero or one' >&2; exit 2;;
+esac
+if [ "$IBEX_EX_STAGE" = 1 ] && [ "$SOC_CORE_WB_STAGE$SOC_CORE_BT_ALU" != 00 ]; then
+  echo 'IBEX_EX_STAGE applies only without the writeback stage and the branch-target ALU' >&2; exit 2
+fi
+export IBEX_EX_STAGE
 if [ "$SOC_CORE_BT_ALU" != 0 ]; then
   DEFPARAMS="$DEFPARAMS
   defparam tb_soc.dut.CORE_BT_ALU = $SOC_CORE_BT_ALU;"
@@ -541,6 +553,13 @@ if [ "$IBEX_BRANCH_2CYCLE" = 1 ]; then
   echo "== conditional branches: two cycles (IBEX_BRANCH_2CYCLE=1)"
 elif grep -qa '"g_branch_two_cycle"' "$OUT/tb_soc.vvp"; then
   echo "== the two-cycle branch patch is elaborated at IBEX_BRANCH_2CYCLE=0" >&2; exit 1
+fi
+if [ "$IBEX_EX_STAGE" = 1 ]; then
+  grep -qa '"g_ex_stage"' "$OUT/tb_soc.vvp" || {
+    echo "== IBEX_EX_STAGE=1 but the separate execute stage is not elaborated" >&2; exit 1; }
+  echo "== separate execute stage: register file read in ID, operands registered (IBEX_EX_STAGE=1)"
+elif grep -qa '"g_ex_stage"' "$OUT/tb_soc.vvp"; then
+  echo "== the execute-stage patch is elaborated at IBEX_EX_STAGE=0" >&2; exit 1
 fi
 if [ "$SOC_CORE_BT_ALU" != 0 ]; then
   grep -qa '"g_branch_target_alu"' "$OUT/tb_soc.vvp" || {

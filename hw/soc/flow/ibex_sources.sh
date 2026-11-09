@@ -105,6 +105,17 @@
 #      The two generated files are EXCLUDED. Used with the register
 #      file's RDPRE = 1, which the flows set together with this.
 #   0  (default) the unmodified files.
+#
+# IBEX_EX_STAGE selects a fourth patch, docs/ibex-ex-stage.md:
+#
+#   1  hw/soc/genp/<tree>-ex/ibex_core.v (or <tree>-pre-ex when
+#      IBEX_RF_PREDECODE=1 as well, patched on top of that output), written
+#      by flow/ibex_ex_stage.py: a separate execute stage. The register
+#      file is read from the IF/ID register and the operands are
+#      registered with the instruction into a new ID/EX register, with
+#      the write port forwarded. Only defined for IBEX_GEN=gen; the flows
+#      refuse it with the writeback stage and the branch-target ALU.
+#   0  (default) the unmodified file.
 
 ibex_sources () {
   local soc_dir=$1
@@ -113,6 +124,8 @@ ibex_sources () {
   local gendir=${IBEX_GEN:-gen}
   local br2=${IBEX_BRANCH_2CYCLE:-0}
   local pre=${IBEX_RF_PREDECODE:-0}
+  local exs=${IBEX_EX_STAGE:-0}
+  local exs_in exs_out
   local f
 
   case "$mode" in
@@ -140,6 +153,15 @@ ibex_sources () {
     *) echo "IBEX_BRANCH_2CYCLE must be 0 or 1, got '$br2'" >&2
        return 2 ;;
   esac
+  case "$exs" in
+    0|1) ;;
+    *) echo "IBEX_EX_STAGE must be 0 or 1, got '$exs'" >&2
+       return 2 ;;
+  esac
+  if [ "$exs" = 1 ] && [ "$gendir" != gen ]; then
+    echo "IBEX_EX_STAGE=1 is only defined for IBEX_GEN=gen" >&2
+    return 2
+  fi
   if [ "$port" = 1 ] && [ "$gendir" != gen ]; then
     echo "IBEX_FAULT_PORT=1 is only defined for IBEX_GEN=gen" >&2
     return 2
@@ -161,6 +183,14 @@ ibex_sources () {
     python3 "$soc_dir/flow/ibex_branch_2cycle.py" \
             "$soc_dir/$gendir" "$soc_dir/genp/$gendir-br2" >&2 || return 2
   fi
+  if [ "$exs" = 1 ]; then
+    if [ "$pre" = 1 ]; then
+      exs_in="$soc_dir/genp/$gendir-pre"; exs_out="$soc_dir/genp/$gendir-pre-ex"
+    else
+      exs_in="$soc_dir/$gendir"; exs_out="$soc_dir/genp/$gendir-ex"
+    fi
+    python3 "$soc_dir/flow/ibex_ex_stage.py" "$exs_in" "$exs_out" >&2 || return 2
+  fi
 
   for f in "$soc_dir"/$gendir/*.v; do
     if [ "$mode" = "secded" ] && \
@@ -177,6 +207,9 @@ ibex_sources () {
                            [ "$(basename "$f")" = "ibex_core.v" ]; }; then
       continue
     fi
+    if [ "$exs" = 1 ] && [ "$(basename "$f")" = "ibex_core.v" ]; then
+      continue
+    fi
     echo "$f"
   done
 
@@ -188,7 +221,10 @@ ibex_sources () {
   fi
   if [ "$pre" = 1 ]; then
     echo "$soc_dir/genp/$gendir-pre/ibex_if_stage.v"
-    echo "$soc_dir/genp/$gendir-pre/ibex_core.v"
+    [ "$exs" = 1 ] || echo "$soc_dir/genp/$gendir-pre/ibex_core.v"
+  fi
+  if [ "$exs" = 1 ]; then
+    echo "$exs_out/ibex_core.v"
   fi
 
   if [ "$mode" = "secded" ]; then
