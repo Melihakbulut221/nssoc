@@ -1218,7 +1218,18 @@ int main(void) {
     ok &= (spun < 20000);
 
     /* Stop it and clear the pending bit, so nothing left running here
-       can disturb a later test. IP is write-one-to-clear. */
+       can disturb a later test. IP is write-one-to-clear.
+
+       Two writes, not one. soc_gptimer.v lets a wrap in the cycle of a
+       control write win over the IP clear, and the write's own EN = 0
+       only takes effect after that cycle. A single "stop and clear"
+       write that lands on a wrap of the still running timer therefore
+       leaves IP set, and whether it does depends only on the timer's
+       phase at the write: one cycle in every 164 here, and which one
+       moves with the core's and the memory's latency. The first write
+       stops the timer and clears nothing; from the next cycle on there
+       is no wrap, so the clear that follows cannot coincide with one. */
+    *(volatile uint32_t *)GPT_CTRL(1) = 0u;
     *(volatile uint32_t *)GPT_CTRL(1) = GPT_IP;
     ok &= ((*(volatile uint32_t *)GPT_CTRL(1) & GPT_IP) == 0u);
     if (!ok) { puts_("  gptimer cfg="); puthex(cfg);
