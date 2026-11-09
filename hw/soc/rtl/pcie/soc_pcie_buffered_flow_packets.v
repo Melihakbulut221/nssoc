@@ -56,19 +56,86 @@ module soc_pcie_buffered_flow_packets #(
     // A link retraining completion restarts the local FC/sequence/replay epoch.
     // No fabric, PHY, receive-credit requester or outstanding NP request exists.
     wire local_reset=rst_ni && link_up_i && !retrain_done_i;
+    // One registered link/reset copy per consumer block: receive queue, FC
+    // advertiser, flow/packet path, and this module's arbiter and slices.
+    // Each is cleared asynchronously with local_reset, so link loss and
+    // retraining reach every block at once, and released one clock later.
+    // Each block uses its copy as both its reset and its link status, so
+    // neither the boundary inputs nor the combined reset fan out into the
+    // blocks' logic. The D inputs differ only so synthesis keeps four flops:
+    // every one of them is 1 whenever local_reset is high.
+    // The function identity is a static strap. It is registered at this
+    // boundary, so the configuration target check and the completion
+    // header fields start at a flop instead of at the input port. A change
+    // takes effect one cycle later.
+    reg [15:0] function_id_q;
+    always @(posedge clk_i) function_id_q<=function_id_i;
+    // The receive queue and the FC advertiser get a second copy for their
+    // link input, so their asynchronous resets (rst_ni) and their link
+    // clears and link-qualified logic (link_up_i) are separate nets, and
+    // the PHY-side ready has a copy of its own. All copies are equal at all
+    // times. (These three D inputs are 1 whenever local_reset is high too.)
+    reg up_rx,up_fc,up_flow,up_arb,up_rx_link,up_fc_link,up_in;
+    always @(posedge clk_i or negedge local_reset) begin
+        if(!local_reset) begin up_rx<=0;up_fc<=0;up_flow<=0;up_arb<=0;up_rx_link<=0;up_fc_link<=0;up_in<=0;end
+        else begin
+            up_rx<=1'b1;up_fc<=link_up_i;up_flow<=rst_ni;up_arb<=!retrain_done_i;
+            up_rx_link<=rst_ni || training_i;up_fc_link<=link_up_i || training_i;
+            up_in<=!retrain_done_i || training_i;
+        end
+    end
+    // The receive queue's FC-initialization gate is registered: it only rises
+    // once per link epoch, so the queue starts accepting TLPs one cycle after
+    // FC initialization instead of in the same cycle, and the credit logic's
+    // initialization state no longer reaches the queue's ready and staging
+    // write enables combinationally.
+    reg rx_initialized;
+    always @(posedge clk_i or negedge up_rx) begin
+        if(!up_rx) rx_initialized<=0;
+        else rx_initialized<=peer_init1_done_o && local_init2_sent_o;
+    end
     assign requester_admission_o=1'b0;
     assign outstanding_requests_o=8'b0;
     wire [7:0] q_data,flow_data,advert_data;
     wire q_sop,q_eop,q_valid,q_dllp,q_error,q_ready;
     wire flow_sop,flow_eop,flow_valid,flow_dllp,flow_replay,flow_ready;
     wire advert_sop,advert_eop,advert_valid,advert_ready;
+    wire [7:0] fc_data;
+    wire fc_sop,fc_eop,fc_valid,fc_ready;
+    wire [7:0] in_data;
+    wire in_sop,in_eop,in_error,in_dllp,in_valid,in_ready,in_room;
     wire flow_error,flow_protocol,flow_retrain,rx_protocol;
+    // Receive input register slice. pcie_rx_ready_o is the slice's room
+    // (a flop) qualified by this block's registered reset copy, and the
+    // receive queue's paths start at registers instead of the input ports.
+    // Beats keep their order and are never retracted; the queue's
+    // kind-dependent ready now applies at the slice output, so a beat the
+    // queue cannot take waits in the slice exactly as it waited at the PHY,
+    // with everything behind it. Received beats arrive one cycle later.
+    // Boundary register in front of the slice. An accepted beat is held in
+    // a register (the port inputs reach only its D multiplexer) until the
+    // slice takes it; the port is ready when that register is empty or the
+    // slice has room, so ready still comes from flops and beats still flow
+    // one per cycle. Received beats arrive one cycle later again.
+    reg [11:0] port_beat;
+    reg port_valid;
+    wire port_ready=!port_valid || in_room;
+    assign rx_ready_o=up_in && port_ready;
+    always @(posedge clk_i or negedge up_in)
+        if(!up_in) port_valid<=1'b0;
+        else if(port_ready) port_valid<=rx_valid_i;
+    always @(posedge clk_i)
+        if(port_ready) port_beat<={rx_data_i,rx_sop_i,rx_eop_i,rx_error_i,rx_dllp_i};
+    soc_pcie_stream_skid #(.W(12)) receive_input_slice(
+        .clk_i(clk_i),.rst_ni(up_rx),.clear_i(1'b0),
+        .s_data_i(port_beat),.s_valid_i(port_valid),.s_ready_o(in_room),
+        .m_data_o({in_data,in_sop,in_eop,in_error,in_dllp}),.m_valid_o(in_valid),.m_ready_i(in_ready));
     soc_pcie_rx_credit #(.MAX_TLP_DWORDS(MAX_TLP_DWORDS),.SLOTS_PER_CLASS(RX_SLOTS_PER_CLASS),
         .COMPLETER_ONLY(1)) receive_ownership(
-        .clk_i(clk_i),.rst_ni(local_reset),.link_up_i(link_up_i),.training_i(training_i),
-        .initialized_i(peer_init1_done_o && local_init2_sent_o),.rx_data_i(rx_data_i),.rx_sop_i(rx_sop_i),
-        .rx_eop_i(rx_eop_i),.rx_valid_i(rx_valid_i),.rx_dllp_i(rx_dllp_i),.rx_error_i(rx_error_i),
-        .rx_ready_o(rx_ready_o),.out_data_o(q_data),.out_sop_o(q_sop),.out_eop_o(q_eop),
+        .clk_i(clk_i),.rst_ni(up_rx),.link_up_i(up_rx_link),.training_i(training_i),
+        .initialized_i(rx_initialized),.rx_data_i(in_data),.rx_sop_i(in_sop),
+        .rx_eop_i(in_eop),.rx_valid_i(in_valid),.rx_dllp_i(in_dllp),.rx_error_i(in_error),
+        .rx_ready_o(in_ready),.out_data_o(q_data),.out_sop_o(q_sop),.out_eop_o(q_eop),
         .out_valid_o(q_valid),.out_dllp_o(q_dllp),.out_error_o(q_error),.out_ready_i(q_ready),
         .packet_accepted_i(packet_accepted_o),.packet_duplicate_i(packet_duplicate_o),
         .packet_rejected_i(packet_rejected_o),.header_limit_o(rx_header_limit_o),
@@ -77,14 +144,21 @@ module soc_pcie_buffered_flow_packets #(
         .released_data_o(rx_released_data_o),.dropped_o(rx_dropped_o),
         .protocol_error_o(rx_protocol),.recovery_request_o(rx_recovery_o));
     soc_pcie_fc_tx #(.REFRESH_CYCLES(FC_REFRESH_CYCLES)) advertiser(
-        .clk_i(clk_i),.rst_ni(local_reset),.link_up_i(link_up_i),.training_i(training_i),
+        .clk_i(clk_i),.rst_ni(up_fc),.link_up_i(up_fc_link),.training_i(training_i),
         .peer_init1_done_i(peer_init1_done_o),.peer_init2_seen_i(peer_init2_seen_o),
         .header_limit_i(rx_header_limit_o),.data_limit_i(rx_data_limit_o),
         .local_init_done_o(local_init_done_o),.local_init2_sent_o(local_init2_sent_o),.sent_header_o(fc_sent_header_o),
         .sent_data_o(fc_sent_data_o),.sent_valid_o(fc_sent_o),
         .sent_phase_o(fc_sent_phase_o),.sent_class_o(fc_sent_class_o),
-        .tx_data_o(advert_data),.tx_sop_o(advert_sop),.tx_eop_o(advert_eop),
-        .tx_valid_o(advert_valid),.tx_ready_i(advert_ready));
+        .tx_data_o(fc_data),.tx_sop_o(fc_sop),.tx_eop_o(fc_eop),
+        .tx_valid_o(fc_valid),.tx_ready_i(fc_ready));
+    // Register slice on the advertiser's stream: its frame state no longer
+    // waits on the arbiter's choice, which depends on the packet path's
+    // valid. FC DLLPs reach the arbiter one cycle later, in order.
+    soc_pcie_stream_skid #(.W(10)) advertiser_slice(
+        .clk_i(clk_i),.rst_ni(up_arb),.clear_i(1'b0),
+        .s_data_i({fc_data,fc_sop,fc_eop}),.s_valid_i(fc_valid),.s_ready_o(fc_ready),
+        .m_data_o({advert_data,advert_sop,advert_eop}),.m_valid_o(advert_valid),.m_ready_i(advert_ready));
     // Packet-level round robin. Ownership locks on offered first byte, including
     // stalls, and remains locked through accepted EOP and any inter-byte bubbles.
     reg owner,locked,prefer_flow;
@@ -94,32 +168,38 @@ module soc_pcie_buffered_flow_packets #(
     wire [7:0] arb_data=chosen ? flow_data : advert_data;
     wire arb_sop=chosen ? flow_sop : advert_sop;
     wire arb_eop=chosen ? flow_eop : advert_eop;
-    wire arb_valid=local_reset && (chosen ? flow_valid : advert_valid);
+    wire arb_valid=up_arb && (chosen ? flow_valid : advert_valid);
     wire arb_dllp=chosen ? flow_dllp : 1'b1;
     wire arb_replay=chosen && flow_replay;
     wire arb_ready;
     soc_pcie_stream_skid #(.W(12)) boundary_slice(
-        .clk_i(clk_i),.rst_ni(local_reset),.clear_i(1'b0),
+        .clk_i(clk_i),.rst_ni(up_arb),.clear_i(1'b0),
         .s_data_i({arb_data,arb_sop,arb_eop,arb_dllp,arb_replay}),.s_valid_i(arb_valid),.s_ready_o(arb_ready),
         .m_data_o({tx_data_o,tx_sop_o,tx_eop_o,tx_dllp_o,tx_replay_o}),.m_valid_o(tx_valid_o),.m_ready_i(tx_ready_i));
-    assign flow_ready=local_reset && chosen && arb_ready;
-    assign advert_ready=local_reset && !chosen && arb_ready;
-    always @(posedge clk_i or negedge local_reset) begin
-        if(!local_reset) begin owner<=0;locked<=0;prefer_flow<=0;end
+    assign flow_ready=up_arb && chosen && arb_ready;
+    assign advert_ready=up_arb && !chosen && arb_ready;
+    always @(posedge clk_i or negedge up_arb) begin
+        if(!up_arb) begin owner<=0;locked<=0;prefer_flow<=0;end
         else if(arb_valid) begin
             if(arb_ready && arb_eop) begin locked<=0;prefer_flow<=!chosen;end
             else begin owner<=chosen;locked<=1;end
         end
     end
-    assign error_o=flow_error || rx_protocol;
+    // The error report leaves from a flop: the same one-cycle pulses, one
+    // cycle later, so the port does not sit behind the error logic.
+    reg error_q;
+    always @(posedge clk_i or negedge up_arb)
+        if(!up_arb) error_q<=1'b0;
+        else error_q<=flow_error || rx_protocol;
+    assign error_o=error_q;
     assign protocol_error_o=flow_protocol || rx_protocol;
     assign retrain_request_o=flow_retrain || rx_recovery_o;
     soc_pcie_flow_packets #(.VENDOR_ID(VENDOR_ID),.DEVICE_ID(DEVICE_ID),.APB_TIMEOUT(APB_TIMEOUT),
         .MAX_TLP_DWORDS(MAX_TLP_DWORDS),.REPLAY_DEPTH(REPLAY_DEPTH),
         .REPLAY_TIMEOUT_CYCLES(REPLAY_TIMEOUT_CYCLES),.MAX_REPLAYS(MAX_REPLAYS)) flow(
         .clk_i(clk_i),
-        .rst_ni(local_reset),
-        .link_up_i(link_up_i),
+        .rst_ni(up_flow),
+        .link_up_i(up_flow),
         .training_i(training_i),
         .retrain_done_i(retrain_done_i),
         .initialized_o(initialized_o),
@@ -131,7 +211,7 @@ module soc_pcie_buffered_flow_packets #(
         .credit_data_limit_o(credit_data_limit_o),
         .credit_data_consumed_o(credit_data_consumed_o),
         .credit_infinite_o(credit_infinite_o),
-        .function_id_i(function_id_i),
+        .function_id_i(function_id_q),
         .rx_data_i(q_data),
         .rx_sop_i(q_sop),
         .rx_eop_i(q_eop),

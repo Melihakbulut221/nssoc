@@ -31,8 +31,15 @@ module soc_pcie_fc_tx #(
     reg first_triplet,second_triplet;
     wire [7:0] current_header=header_limit_i[class_index*8 +: 8];
     wire [11:0] current_data=data_limit_i[class_index*12 +: 12];
-    wire dirty=current_header!=sent_header_o[class_index*8 +: 8] ||
-               current_data!=sent_data_o[class_index*12 +: 12];
+    // Each class's limits are compared with its sent values directly; the
+    // class index only selects a finished comparison.
+    wire [2:0] class_dirty;
+    genvar dc;
+    generate for(dc=0;dc<3;dc=dc+1) begin: compare
+        assign class_dirty[dc]=header_limit_i[dc*8 +: 8]!=sent_header_o[dc*8 +: 8] ||
+            data_limit_i[dc*12 +: 12]!=sent_data_o[dc*12 +: 12];
+    end endgenerate
+    wire dirty=class_dirty[class_index];
     reg [7:0] octet;
     wire [15:0] next_crc;
     soc_pcie_crc16_byte step(.state_i(crc),.data_i(octet),.state_o(next_crc));
@@ -65,15 +72,19 @@ module soc_pcie_fc_tx #(
         end else begin
             sent_valid_o<=0;
             if(!training_i && refresh<REFRESH_CYCLES) refresh<=refresh+1;
+            // While idle the frame's credit fields and CRC seed are loaded
+            // every cycle; they are read only while a frame is active, and a
+            // frame starts with the values of its start cycle as before. Only
+            // the frame's phase and class wait for the start decision.
+            if(!active) begin crc<=16'hffff;header<=current_header;data_credit<=current_data;end
             if(!active && !training_i) begin
                 if(phase==0 && first_triplet && peer_init1_done_i) begin
                     phase<=1;class_index<=0;
                 end else if(phase==1 && second_triplet && peer_init2_seen_i) begin
                     phase<=2;class_index<=0;local_init_done_o<=1;refresh<=REFRESH_CYCLES;
                 end else if(phase!=2 || dirty || refresh>=REFRESH_CYCLES) begin
-                    active<=1;index<=0;crc<=16'hffff;
+                    active<=1;
                     frame_phase<=phase;frame_class<=class_index;
-                    header<=current_header;data_credit<=current_data;
                 end else class_index<=class_index==2 ? 0 : class_index+1'b1;
             end
             if(tx_valid_o && tx_ready_i) begin

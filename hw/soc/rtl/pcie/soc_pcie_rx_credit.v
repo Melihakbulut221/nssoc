@@ -36,14 +36,16 @@ module soc_pcie_rx_credit #(
     reg [7:0] staging[0:CAP-1];
     reg [7:0] dllp[0:5];
     reg [7:0] packets[0:SLOTS*CAP-1];
-    reg [CW-1:0] lengths[0:SLOTS-1];
+    // Each slot keeps the index of its last byte (length minus one), set from
+    // the staged length at commit, so the frame end needs no decrement.
+    reg [CW-1:0] lasts[0:SLOTS-1];
     reg [11:0] units[0:SLOTS-1];
     reg errors[0:SLOTS-1];
     reg [SW-1:0] order[0:SLOTS-1];
     reg [SLOTS-1:0] used;
     reg [SW-1:0] qread,qwrite,qcount;
     reg input_active,input_dllp,input_bad,stage_pending,dllp_pending,dllp_bad;
-    reg [CW-1:0] input_count,stage_length;
+    reg [CW-1:0] input_count,stage_length,stage_last;
     reg stage_bad;
     reg [2:0] dllp_length;
     reg output_active,output_dllp,waiting;
@@ -76,9 +78,71 @@ module soc_pcie_rx_credit #(
             if(used[j]) occupied_o[(j/SLOTS_PER_CLASS)*8 +: 8]=
                 occupied_o[(j/SLOTS_PER_CLASS)*8 +: 8]+1'b1;
     end
-    wire commit=stage_pending && shape_ok && free_slot>=0 && qcount<SLOTS;
+    // The staged TLP is checked in one cycle and committed in the next. The
+    // shape verdict, the chosen free slot and the credit units are taken
+    // from registers, so the header decode, length arithmetic and free-slot
+    // search no longer drive the write enables of every queue byte. The
+    // staging bytes cannot change while a TLP is staged, and between the
+    // check and the commit only a removal can change ownership, which frees
+    // slots and never takes the chosen one, and lowers the queue count.
+    // The commit itself is a register per slot, set by the check cycle,
+    // so each slot's byte write enable is a flop output.
+    reg stage_checked,stage_shape_ok;
+    reg [SW-1:0] stage_slot;
+    reg [11:0] stage_units;
+    reg [SLOTS-1:0] commit_slot;
+    wire commit=|commit_slot;
+    wire stage_drop=stage_pending && stage_checked && !stage_shape_ok;
+    integer b;
     wire remove=waiting && (packet_accepted_i || packet_duplicate_i || packet_rejected_i);
-    wire [SW-1:0] head_slot=order[qread];
+    // The queue head slot is a register that tracks order[qread] from the
+    // next-state values of qread and of the order entry a commit writes.
+    // It may differ only while the queue is empty, when no TLP is read.
+    reg [SW-1:0] head_slot;
+    wire [SW-1:0] qread_plus=qread==SLOTS-1 ? 0 : qread+1'b1;
+    wire [SW-1:0] next_qread=remove ? qread_plus : qread;
+    // The head slot's last read index, class and credit units are kept in
+    // registers from the same next-state head and the commit's writes, so
+    // the frame end and the credit release start at registers. Both
+    // possible next heads (queue position kept or advanced by a removal)
+    // are resolved from registers; the removal only selects one.
+    reg [CW-1:0] head_last;
+    reg [1:0] head_class;
+    reg [11:0] head_units;
+    reg [SLOTS-1:0] head_onehot;
+    // Both candidates are formed without a slot-indexed lookup of the
+    // commit. A commit never coincides with a full queue, so a commit
+    // writes the read position only into an empty queue, and the position
+    // after it only when one TLP is queued. Without a removal the head
+    // stays (its registers already hold it) unless an empty queue takes the
+    // staged TLP. With a removal the next head is the staged TLP if one TLP
+    // was queued (the queue is empty otherwise, and the head is then
+    // unused), and else the next queued slot, which is occupied and so not
+    // the one being committed.
+    wire queue_empty=qcount==0;
+    wire queue_one=qcount==1;
+    wire stay_staged=commit && queue_empty;
+    wire [SW-1:0] second_slot=order[qread_plus];
+    wire [SW-1:0] stay_slot=stay_staged ? stage_slot : head_slot;
+    wire [SW-1:0] advance_slot=queue_one ? stage_slot : second_slot;
+    wire [CW-1:0] stay_last=stay_staged ? stage_last : head_last;
+    wire [CW-1:0] advance_last=queue_one ? stage_last : lasts[second_slot];
+    // Data credit released by the next acceptance: the low half of
+    // data_limit+units for the head's class is registered a cycle ahead and
+    // the high half finished at the removal. A removal never follows a
+    // removal, and while a verdict is awaited the head (its class and units)
+    // is fixed, so the registered half is the current one at any removal.
+    // The high half is registered the same way, for both carries in, so the
+    // removal only selects between registers.
+    reg [6:0] release_lo;
+    reg [5:0] release_hi,release_hi_carry;
+    wire [11:0] head_data_limit=data_limit_o[head_class*12 +: 12];
+    wire [11:0] released_limit={release_lo[6] ? release_hi_carry : release_hi,release_lo[5:0]};
+    wire [11:0] stay_units=stay_staged ? stage_units : head_units;
+    wire [11:0] advance_units=queue_one ? stage_units : units[second_slot];
+    wire [SW-1:0] next_head_slot=remove ? advance_slot : stay_slot;
+    wire [CW-1:0] next_head_last=remove ? advance_last : stay_last;
+    wire [11:0] next_head_units=remove ? advance_units : stay_units;
     wire select_dllp=output_active ? output_dllp : dllp_pending;
     wire tlp_available=qcount!=0 && !waiting && initialized_i;
     // The frozen consumer's ready depends on frame kind, not valid. Qualifying
@@ -91,55 +155,133 @@ module soc_pcie_rx_credit #(
     // an already-read byte instead of driving a multiply/add and a flat mux.
     // Keep the flat array bounds (including reads across a bank boundary) so
     // this is cycle-exact even outside the valid output-index range.
+    // A one-hot read cursor (equal to output_index, updated at the same
+    // points) selects each bank's byte as an AND-OR. That byte is registered
+    // per bank: bank_byte[b] holds packets[b*CAP+output_index] for the index
+    // of the current cycle. It is loaded with the byte at the next index
+    // (index+1 on a mid-frame handshake, 0 at an end of frame, link loss or
+    // reset, otherwise held), and with staging[0] when the bank is committed.
+    // A committed bank cannot be read mid-frame (it was free), and it is
+    // first read at index 0, so every byte that leaves equals the array's.
+    // The output then needs only the one-hot head select of six registers.
+    // Cross-bank addresses of the flat array are included; addresses past
+    // its end read as zero. (A copy of the cursor per bank was measured in
+    // the eighth round and placed worse at 70% target density.)
+    localparam integer READ_CHOICES=1<<CW;
+    reg [READ_CHOICES-1:0] read_onehot;
+    wire [READ_CHOICES-1:0] next_onehot={read_onehot[READ_CHOICES-2:0],read_onehot[READ_CHOICES-1]};
     wire [7:0] bank_byte [0:SLOTS-1];
-    genvar bank;
+    wire handshake=out_valid_o && out_ready_i;
+    // A bank's register is reloaded with byte 0 at an end of frame (a
+    // DLLP's included, which also moves the cursor). Reset and link loss
+    // need no reload: every bank is free afterwards, and its next commit
+    // loads it.
+    wire restart=handshake && out_eop_o;
+    genvar bank,read_bit,read_offset;
     generate for(bank=0;bank<SLOTS;bank=bank+1) begin: read_bank
-        assign bank_byte[bank]=packets[bank*CAP+output_index];
+        wire [7:0] following;
+        reg [7:0] registered;
+        for(read_bit=0;read_bit<8;read_bit=read_bit+1) begin: read_bit_lane
+            wire [READ_CHOICES-1:0] selected;
+            for(read_offset=0;read_offset<READ_CHOICES;read_offset=read_offset+1) begin: read_byte
+                if(bank*CAP+read_offset<SLOTS*CAP) begin: present
+                    assign selected[read_offset]=next_onehot[read_offset] & packets[bank*CAP+read_offset][read_bit];
+                end else begin: absent
+                    assign selected[read_offset]=1'b0;
+                end
+            end
+            assign following[read_bit]=|selected;
+        end
+        always @(posedge clk_i)
+            registered<=commit_slot[bank] ? staging[0] :
+                restart ? packets[bank*CAP] : handshake ? following : registered;
+        assign bank_byte[bank]=registered;
     end endgenerate
-    assign out_data_o=select_dllp ? dllp[output_index] : bank_byte[head_slot];
+    // Queue and staging storage. A commit copies the staged TLP into its
+    // slot's bank; its write enable is the slot's commit register alone
+    // (cleared by reset and link loss), not the link and reset state. The
+    // only difference from writing inside the reset/link block is a commit
+    // register still set in the first cycle of a link loss: that bank is
+    // free afterwards and is rewritten whole by its next commit before it
+    // is read, so no byte that leaves differs.
+    // Staging bytes are written one cycle after they are accepted, from a
+    // registered one-hot byte select and a registered byte. A staged TLP is
+    // committed two cycles after its last byte at the earliest, and its
+    // header bytes (needed by the check one cycle after the last byte) are
+    // at least twelve bytes earlier, so every read sees the same bytes.
+    reg [CAP-1:0] stage_write_at;
+    reg [7:0] stage_write_data;
+    integer w,wb;
+    always @(posedge clk_i) begin
+        stage_write_data<=rx_data_i;
+        for(w=0;w<CAP;w=w+1) if(stage_write_at[w]) staging[w]<=stage_write_data;
+        for(wb=0;wb<SLOTS;wb=wb+1) if(commit_slot[wb])
+            for(w=0;w<CAP;w=w+1) packets[wb*CAP+w]<=staging[w];
+    end
+    reg [7:0] tlp_byte;
+    integer h;
+    always @* begin
+        tlp_byte=0;
+        for(h=0;h<SLOTS;h=h+1) if(head_onehot[h]) tlp_byte=tlp_byte|bank_byte[h];
+    end
+    assign out_data_o=select_dllp ? dllp[output_index] : tlp_byte;
     assign out_sop_o=output_index==0;
-    assign out_eop_o=select_dllp ? output_index+1'b1==dllp_length :
-                                  output_index+1'b1==lengths[head_slot];
+    assign out_eop_o=select_dllp ? output_index+1'b1==dllp_length : output_index==head_last;
     assign out_error_o=select_dllp ? dllp_bad : errors[head_slot];
     assign queued_o=qcount;
     always @(posedge clk_i or negedge rst_ni) begin
         if(!rst_ni) begin
-            used<=0;qread<=0;qwrite<=0;qcount<=0;
+            used<=0;qread<=0;qwrite<=0;qcount<=0;head_slot<=0;
+            head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;read_onehot<=1;
             input_active<=0;input_dllp<=0;input_bad<=0;input_count<=0;
-            stage_pending<=0;stage_length<=0;stage_bad<=0;
-            dllp_pending<=0;dllp_bad<=0;dllp_length<=0;
+            stage_pending<=0;stage_length<=0;stage_last<=0;stage_bad<=0;release_lo<=0;
+            release_hi<=0;release_hi_carry<=0;
+            stage_checked<=0;stage_shape_ok<=0;stage_slot<=0;stage_units<=0;commit_slot<=0;
+            stage_write_at<=0;dllp_pending<=0;dllp_bad<=0;dllp_length<=0;
             output_active<=0;output_dllp<=0;output_index<=0;waiting<=0;
             header_limit_o<={COMPLETER_ONLY ? 8'b0 : H_INIT,H_INIT,H_INIT};
             data_limit_o<={COMPLETER_ONLY ? 12'b0 : D_INIT,D_INIT,D_INIT};
             released_o<=0;released_class_o<=0;released_data_o<=0;
             dropped_o<=0;protocol_error_o<=0;recovery_request_o<=0;
         end else if(!link_up_i) begin
-            used<=0;qread<=0;qwrite<=0;qcount<=0;input_active<=0;input_count<=0;
+            used<=0;qread<=0;qwrite<=0;qcount<=0;head_slot<=0;input_active<=0;input_count<=0;
+            head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;read_onehot<=1;
             stage_pending<=0;dllp_pending<=0;output_active<=0;output_index<=0;waiting<=0;
+            stage_checked<=0;commit_slot<=0;stage_write_at<=0;
             header_limit_o<={COMPLETER_ONLY ? 8'b0 : H_INIT,H_INIT,H_INIT};
             data_limit_o<={COMPLETER_ONLY ? 12'b0 : D_INIT,D_INIT,D_INIT};
             released_o<=0;dropped_o<=0;protocol_error_o<=0;recovery_request_o<=0;
         end else begin
-            released_o<=0;dropped_o<=0;
-            if(stage_pending && !shape_ok) begin
+            released_o<=0;dropped_o<=0;head_slot<=next_head_slot;stage_write_at<=0;
+            head_last<=next_head_last;head_class<=next_head_slot/SLOTS_PER_CLASS;head_units<=next_head_units;
+            release_lo<={1'b0,head_data_limit[5:0]}+{1'b0,head_units[5:0]};
+            release_hi<=head_data_limit[11:6]+head_units[11:6];
+            release_hi_carry<=head_data_limit[11:6]+head_units[11:6]+6'd1;
+            head_onehot<={{(SLOTS-1){1'b0}},1'b1}<<next_head_slot;
+            stage_checked<=stage_pending && !commit && !stage_drop;
+            stage_shape_ok<=shape_ok;
+            stage_slot<=free_slot;stage_units<=(payload_dw+3)/4;
+            for(b=0;b<SLOTS;b=b+1)
+                commit_slot[b]<=stage_pending && !commit && !stage_drop && shape_ok &&
+                    free_slot==b && qcount<SLOTS;
+            if(stage_drop) begin
                 stage_pending<=0;dropped_o<=1;protocol_error_o<=1;recovery_request_o<=1;
             end
             if(commit) begin
-                for(k=0;k<CAP;k=k+1) packets[free_slot*CAP+k]<=staging[k];
-                lengths[free_slot]<=stage_length;units[free_slot]<=(payload_dw+3)/4;
-                errors[free_slot]<=stage_bad;used[free_slot]<=1;
-                order[qwrite]<=free_slot;qwrite<=qwrite==SLOTS-1 ? 0 : qwrite+1'b1;
+                for(b=0;b<SLOTS;b=b+1) if(commit_slot[b]) begin
+                    lasts[b]<=stage_last;units[b]<=stage_units;
+                    errors[b]<=stage_bad;used[b]<=1;
+                end
+                order[qwrite]<=stage_slot;qwrite<=qwrite==SLOTS-1 ? 0 : qwrite+1'b1;
                 stage_pending<=0;
             end
             if(remove) begin
                 used[head_slot]<=0;waiting<=0;qread<=qread==SLOTS-1 ? 0 : qread+1'b1;
                 if(packet_accepted_i) begin
-                    released_o<=1;released_class_o<=head_slot/SLOTS_PER_CLASS;
-                    released_data_o<=units[head_slot];
-                    header_limit_o[(head_slot/SLOTS_PER_CLASS)*8 +: 8]<=
-                        header_limit_o[(head_slot/SLOTS_PER_CLASS)*8 +: 8]+1'b1;
-                    data_limit_o[(head_slot/SLOTS_PER_CLASS)*12 +: 12]<=
-                        data_limit_o[(head_slot/SLOTS_PER_CLASS)*12 +: 12]+units[head_slot];
+                    released_o<=1;released_class_o<=head_class;
+                    released_data_o<=head_units;
+                    header_limit_o[head_class*8 +: 8]<=header_limit_o[head_class*8 +: 8]+1'b1;
+                    data_limit_o[head_class*12 +: 12]<=released_limit;
                 end
             end
             case({commit,remove})
@@ -151,16 +293,16 @@ module soc_pcie_rx_credit #(
                 if(!input_active) begin
                     input_dllp<=rx_dllp_i;input_bad<=rx_error_i || !rx_sop_i;
                     input_count<=1;input_active<=!rx_eop_i;
-                    if(rx_dllp_i) dllp[0]<=rx_data_i; else staging[0]<=rx_data_i;
+                    if(rx_dllp_i) dllp[0]<=rx_data_i; else stage_write_at[0]<=1;
                     if(rx_eop_i) begin
                         if(rx_dllp_i) begin dllp_pending<=1;dllp_length<=1;dllp_bad<=1;end
-                        else begin stage_pending<=1;stage_length<=1;stage_bad<=1;end
+                        else begin stage_pending<=1;stage_length<=1;stage_last<=0;stage_bad<=1;end
                     end
                 end else begin
                     input_bad<=input_bad || rx_error_i || rx_sop_i || rx_dllp_i!=input_dllp;
                     if(input_dllp) begin
                         if(input_count<6) dllp[input_count]<=rx_data_i;
-                    end else if(input_count<CAP) staging[input_count]<=rx_data_i;
+                    end else for(k=0;k<CAP;k=k+1) if(input_count==k) stage_write_at[k]<=1;
                     if(input_count<CAP+1) input_count<=input_count+1'b1;
                     if(rx_eop_i) begin
                         input_active<=0;
@@ -168,7 +310,7 @@ module soc_pcie_rx_credit #(
                             dllp_pending<=1;dllp_length<=input_count>=6 ? 6 : input_count+1'b1;
                             dllp_bad<=input_bad || rx_error_i || rx_sop_i || !rx_dllp_i || input_count!=5;
                         end else begin
-                            stage_pending<=1;stage_length<=input_count+1'b1;
+                            stage_pending<=1;stage_length<=input_count+1'b1;stage_last<=input_count;
                             stage_bad<=input_bad || rx_error_i || rx_sop_i || rx_dllp_i;
                         end
                     end
@@ -176,10 +318,11 @@ module soc_pcie_rx_credit #(
             end
             if(out_valid_o && out_ready_i) begin
                 if(out_eop_o) begin
-                    output_active<=0;output_index<=0;
+                    output_active<=0;output_index<=0;read_onehot<=1;
                     if(select_dllp) dllp_pending<=0; else waiting<=1;
                 end else begin
                     output_active<=1;output_dllp<=select_dllp;output_index<=output_index+1'b1;
+                    read_onehot<={read_onehot[READ_CHOICES-2:0],read_onehot[READ_CHOICES-1]};
                 end
             end
         end

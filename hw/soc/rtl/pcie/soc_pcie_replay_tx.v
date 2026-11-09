@@ -78,14 +78,43 @@ module soc_pcie_replay_tx #(
         else if(!link_up_i) next_store_sequence_plus_one<=12'd1;
         else next_store_sequence_plus_one<=next_store_sequence+12'd1;
     end
+    // Captured bytes are written one cycle after they are accepted, from
+    // registers. No byte is read within a cycle of its write: header and
+    // sequence bytes are read at least eleven cycles later, and a slot is
+    // read for transmission only after its commit, at least one cycle after
+    // its last byte was accepted. The accept decision therefore no longer
+    // drives the write enables of the whole store.
+    localparam integer AW=$clog2(DEPTH*MAX_BYTES);
+    reg write_valid;
+    reg [AW-1:0] write_address;
+    reg [7:0] write_data;
+    wire [AW-1:0] capture_address=tail*MAX_BYTES+(in_sop_i ? {BW{1'b0}} : write_pos);
+    always @(posedge clk_i) begin
+        write_address<=capture_address;write_data<=in_data_i;
+        if(write_valid) bytes[write_address]<=write_data;
+    end
     reg [31:0] input_crc;
+    // The frame-end checks start at registers. The upper 24 bits of the
+    // residue comparison are tracked with the CRC state itself; the stored
+    // sequence bytes 0 and 1 and the expected sequence are compared every
+    // cycle, a cycle ahead (both are fixed for the last sixteen bytes or
+    // more of any frame that passes the length check).
+    reg crc_upper_match,sequence_mismatch;
+    always @(posedge clk_i)
+        sequence_mismatch<={bytes[tail*MAX_BYTES][3:0],bytes[tail*MAX_BYTES+1]}!=next_store_sequence;
     reg [TW-1:0] timer;
     reg timer_running;
     reg [2:0] retries;
     reg ack_observed,ack_was_allowed,ack_was_stale;
+    // The sequence distance of the presented ACK is registered with its
+    // classification at the first presentation, and an ACK is consumed only
+    // once it is classified, one cycle or more after it appears. The ACK
+    // stays fixed until consumed, and the acknowledged sequence changes only
+    // when an ACK is consumed, so the registered distance is exact.
+    reg [11:0] ack_delta_q;
     wire [31:0] next_crc;
-    wire replay_crc_residue_ok=((in_sop_i ? 32'hffffffff : input_crc) ^
-                              {24'b0,in_data_i})==32'h00be26ed;
+    // At a frame end in_sop_i is low (an SOP there is an error anyway).
+    wire replay_crc_residue_ok=crc_upper_match && (input_crc[7:0]^in_data_i)==8'hed;
     soc_pcie_crc32_byte input_crc_byte(.state_i(in_sop_i ? 32'hffffffff : input_crc),
         .data_i(in_data_i),.state_o(next_crc));
     function [PW-1:0] advance;
@@ -102,13 +131,45 @@ module soc_pcie_replay_tx #(
     // Classify at the first validated ACK presentation, even if frame atomicity
     // delays consumption. Backpressure cannot turn an early future ACK valid.
     wire current_ack_allowed=ack_delta==0 || (ack_delta<=sent_count && ack_delta!=0);
-    wire ack_allowed=ack_observed ? ack_was_allowed : current_ack_allowed;
-    wire ack_stale=ack_observed ? ack_was_stale : ack_delta>12'd2048;
-    wire [7:0] first_header=bytes[new_slot*MAX_BYTES+2];
-    wire [9:0] payload_length={bytes[new_slot*MAX_BYTES+4][1:0],bytes[new_slot*MAX_BYTES+5]};
-    assign reserve_class_o=(first_header[4:0]==5'b01010 || first_header[4:0]==5'b01011) ? 2 :
-        ((first_header[4:0]==0 && first_header[6]) || first_header[4:3]==2'b10) ? 0 : 1;
-    assign reserve_payload_dw_o=!first_header[6] ? 0 : payload_length==0 ? 11'd1024 : {1'b0,payload_length};
+    wire ack_allowed=ack_was_allowed;
+    wire ack_stale=ack_was_stale;
+    // Reservation metadata in registers, decoded one cycle ahead from the
+    // header bytes of the slot new_slot will hold in the next cycle. A slot
+    // is offered for reservation only after its accepted EOP, which follows
+    // the writes of header bytes 2, 4 and 5 by at least eleven cycles, and an
+    // offered slot is never rewritten (only the tail slot is captured, and
+    // the tail equals an offered slot only when the store is full). While a
+    // reservation is offered the registers therefore equal the decode of the
+    // current slot's bytes, and the request no longer starts with a byte
+    // multiplexer and header decode.
+    wire core_valid,core_ready,core_eop;
+    // Every slot's header is decoded in parallel from its own bytes; the
+    // next slot only selects a decoded result, so the frame-end condition
+    // that picks the slot no longer runs through a byte multiplexer and the
+    // decode.
+    wire [1:0] slot_class [0:DEPTH-1];
+    wire [10:0] slot_payload_dw [0:DEPTH-1];
+    genvar meta_slot;
+    generate for(meta_slot=0;meta_slot<DEPTH;meta_slot=meta_slot+1) begin: reserve_meta
+        wire [7:0] header=bytes[meta_slot*MAX_BYTES+2];
+        wire [9:0] length={bytes[meta_slot*MAX_BYTES+4][1:0],bytes[meta_slot*MAX_BYTES+5]};
+        assign slot_class[meta_slot]=(header[4:0]==5'b01010 || header[4:0]==5'b01011) ? 2'd2 :
+            ((header[4:0]==0 && header[6]) || header[4:3]==2'b10) ? 2'd0 : 2'd1;
+        assign slot_payload_dw[meta_slot]=!header[6] ? 11'd0 : length==0 ? 11'd1024 : {1'b0,length};
+    end endgenerate
+    // Both candidate slots' decodes are selected from registers; whether
+    // new_slot moves selects one of them as the last step.
+    wire new_slot_moves=core_valid && core_ready && core_eop && !sending_replay;
+    wire [PW-1:0] kept_slot=!link_up_i ? {PW{1'b0}} : new_slot;
+    wire [PW-1:0] moved_slot=!link_up_i ? {PW{1'b0}} : advance(new_slot,1);
+    reg [1:0] reserve_class_q;
+    reg [10:0] reserve_payload_dw_q;
+    always @(posedge clk_i) begin
+        reserve_class_q<=new_slot_moves ? slot_class[moved_slot] : slot_class[kept_slot];
+        reserve_payload_dw_q<=new_slot_moves ? slot_payload_dw[moved_slot] : slot_payload_dw[kept_slot];
+    end
+    assign reserve_class_o=reserve_class_q;
+    assign reserve_payload_dw_o=reserve_payload_dw_q;
     // Reservation is a cancellable request until handshake. A replay bypasses
     // it entirely: its receiver credit was reserved on original transmission.
     assign reserve_replay_o=0;
@@ -117,32 +178,49 @@ module soc_pcie_replay_tx #(
         !capturing && !timer_expiring && !replay_active && !replay_pending && !ack_valid_i && count>sent_count;
     assign in_ready_o=rst_ni && link_up_i && !halt &&
         (capturing || (!replay_active && !replay_pending && !ack_valid_i && count<DEPTH));
-    assign ack_ready_o=rst_ni && link_up_i && !sending && !capturing && !replay_active;
+    assign ack_ready_o=rst_ni && link_up_i && ack_observed && !sending && !capturing && !replay_active;
     // The transmit stream leaves through a register slice, so the replay
     // read path ends at a flop instead of continuing into the link layer.
-    wire core_valid=rst_ni && link_up_i && sending;
-    wire core_ready;
-    // A registered one-hot cursor removes binary-address decoding from
-    // the memory-to-transmit path. Include cross-bank addresses exactly as
-    // the flat reference does; unaddressable array reads remain undefined.
+    assign core_valid=rst_ni && link_up_i && sending;
+    // Each bank's byte at the read position is a register, so the store
+    // read ends at a flop and the transmit slice takes a bank select of
+    // registers. While no frame is being sent every bank register is loaded
+    // with its byte 0; when a byte is taken mid-frame it is loaded with the
+    // byte at the next position, selected as an AND-OR by the rotated
+    // one-hot cursor. A sent slot is committed (its bytes written) before
+    // its send starts, and only the free tail slot is written while a frame
+    // is sent, so the register always equals the store's byte at read_pos
+    // for the slot being sent. Cross-bank addresses are included as before;
+    // addresses past the end of the store read as zero.
+    wire [READ_CHOICES-1:0] replay_next_onehot={replay_read_onehot[READ_CHOICES-2:0],replay_read_onehot[READ_CHOICES-1]};
+    wire core_taken=core_valid && core_ready && !core_eop;
     wire [7:0] replay_bank_byte [0:DEPTH-1];
     genvar replay_bank,replay_bit,replay_offset;
     generate for(replay_bank=0;replay_bank<DEPTH;replay_bank=replay_bank+1) begin: read_replay_bank
+        wire [7:0] following;
+        reg [7:0] registered;
         for(replay_bit=0;replay_bit<8;replay_bit=replay_bit+1) begin: read_bit
             wire [READ_CHOICES-1:0] selected;
             for(replay_offset=0;replay_offset<READ_CHOICES;replay_offset=replay_offset+1) begin: read_byte
                 if(replay_bank*MAX_BYTES+replay_offset<DEPTH*MAX_BYTES) begin: present
-                    assign selected[replay_offset]=replay_read_onehot[replay_offset] & bytes[replay_bank*MAX_BYTES+replay_offset][replay_bit];
+                    assign selected[replay_offset]=replay_next_onehot[replay_offset] & bytes[replay_bank*MAX_BYTES+replay_offset][replay_bit];
                 end else begin: absent
                     assign selected[replay_offset]=1'b0;
                 end
             end
-            assign replay_bank_byte[replay_bank][replay_bit]=(read_pos<(DEPTH-replay_bank)*MAX_BYTES) ? |selected : 1'bx;
+            assign following[replay_bit]=|selected;
         end
+        always @(posedge clk_i)
+            registered<=!sending ? bytes[replay_bank*MAX_BYTES] : core_taken ? following : registered;
+        assign replay_bank_byte[replay_bank]=registered;
     end endgenerate
     wire [7:0] core_data=replay_bank_byte[send_slot];
     wire core_sop=read_pos==0;
-    wire core_eop=read_pos==lengths[send_slot]-1'b1;
+    // The last read position of the frame being sent is registered when the
+    // send starts; a slot's length is written at its commit, before any
+    // send of that slot, so this equals lengths[send_slot]-1 throughout.
+    reg [BW-1:0] send_last;
+    assign core_eop=read_pos==send_last;
     // The replay timer still starts when the last byte leaves on the wire:
     // the first-replayed-frame mark travels with the bytes.
     wire tx_first;
@@ -159,23 +237,24 @@ module soc_pcie_replay_tx #(
     end
     always @(posedge clk_i or negedge rst_ni) begin
         if(!rst_ni) begin
-            head<=0;tail<=0;new_slot<=0;send_slot<=0;replay_slot<=0;count<=0;sent_count<=0;replay_left<=0;
+            head<=0;tail<=0;new_slot<=0;send_slot<=0;send_last<=0;replay_slot<=0;count<=0;sent_count<=0;replay_left<=0;
             write_pos<=0;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};capturing<=0;sending<=0;sending_replay<=0;
             replay_active<=0;replay_pending<=0;replay_first<=0;halt<=0;
-            next_store_sequence<=0;input_crc<=32'hffffffff;timer<=0;timer_running<=0;retries<=0;
-            ack_observed<=0;ack_was_allowed<=0;ack_was_stale<=0;
+            next_store_sequence<=0;input_crc<=32'hffffffff;crc_upper_match<=0;timer<=0;timer_running<=0;retries<=0;
+            ack_observed<=0;ack_was_allowed<=0;ack_was_stale<=0;ack_delta_q<=0;write_valid<=0;
             acknowledged_sequence_o<=12'hfff;replay_started_o<=0;timeout_o<=0;
             protocol_error_o<=0;retry_exhausted_o<=0;source_error_o<=0;
         end else if(!link_up_i) begin
-            head<=0;tail<=0;new_slot<=0;count<=0;sent_count<=0;capturing<=0;sending<=0;
+            head<=0;tail<=0;new_slot<=0;count<=0;sent_count<=0;capturing<=0;sending<=0;write_valid<=0;
             replay_active<=0;replay_pending<=0;halt<=0;next_store_sequence<=0;
             ack_observed<=0;ack_was_allowed<=0;ack_was_stale<=0;
             timer<=0;timer_running<=0;retries<=0;acknowledged_sequence_o<=12'hfff;
             replay_started_o<=0;timeout_o<=0;protocol_error_o<=0;retry_exhausted_o<=0;source_error_o<=0;
         end else begin
-            replay_started_o<=0;timeout_o<=0;protocol_error_o<=0;
+            replay_started_o<=0;timeout_o<=0;protocol_error_o<=0;write_valid<=0;
             if(ack_valid_i && !ack_observed) begin
                 ack_observed<=1;ack_was_allowed<=current_ack_allowed;ack_was_stale<=ack_delta>12'd2048;
+                ack_delta_q<=ack_delta;
             end
             if(ack_valid_i && ack_ready_o) ack_observed<=0;
             if(timer_running && !training_i && !halt) begin
@@ -187,19 +266,19 @@ module soc_pcie_replay_tx #(
                 halt<=0;retry_exhausted_o<=0;retries<=0;replay_pending<=sent_count!=0;
             end
             if(in_valid_i && in_ready_o) begin
-                input_crc<=next_crc;
+                input_crc<=next_crc;crc_upper_match<=next_crc[31:8]==24'h00be26;
                 if(in_sop_i) begin
                     if(capturing || in_eop_i || in_data_i[7:4]!=0) begin
                         source_error_o<=1;halt<=1;capturing<=0;
-                    end else begin bytes[tail*MAX_BYTES]<=in_data_i;write_pos<=1;capturing<=1;end
+                    end else begin write_valid<=1;write_pos<=1;capturing<=1;end
                 end else if(!capturing || write_pos>=MAX_BYTES) begin
                     source_error_o<=1;halt<=1;capturing<=0;
                 end else begin
-                    bytes[tail*MAX_BYTES+write_pos]<=in_data_i;write_pos<=write_pos+1'b1;
+                    write_valid<=1;write_pos<=write_pos+1'b1;
                     if(in_eop_i) begin
                         capturing<=0;
                         if(write_pos<17 || !replay_crc_residue_ok ||
-                           {bytes[tail*MAX_BYTES][3:0],bytes[tail*MAX_BYTES+1]}!=next_store_sequence) begin
+                           sequence_mismatch) begin
                             source_error_o<=1;halt<=1;
                         end else begin
                             lengths[tail]<=write_pos+1'b1;count<=count+1'b1;
@@ -210,14 +289,14 @@ module soc_pcie_replay_tx #(
             end
             if(ack_valid_i && ack_ready_o) begin
                 if(ack_allowed) begin
-                    if(ack_delta!=0) begin
-                        head<=advance(head,ack_delta[CW:0]);count<=count-ack_delta;
-                        sent_count<=sent_count-ack_delta;acknowledged_sequence_o<=ack_sequence_i;
-                        retries<=0;timer<=0;timer_running<=sent_count!=ack_delta;
+                    if(ack_delta_q!=0) begin
+                        head<=advance(head,ack_delta_q[CW:0]);count<=count-ack_delta_q;
+                        sent_count<=sent_count-ack_delta_q;acknowledged_sequence_o<=ack_sequence_i;
+                        retries<=0;timer<=0;timer_running<=sent_count!=ack_delta_q;
                         replay_pending<=0;
                     end
                     if(ack_nak_i) begin
-                        replay_pending<=sent_count!=ack_delta;timer_running<=0;timer<=0;
+                        replay_pending<=sent_count!=ack_delta_q;timer_running<=0;timer<=0;
                     end
                 end else if(!ack_stale) protocol_error_o<=1;
                 // Older acknowledgments outside our small forward window are stale.
@@ -232,9 +311,9 @@ module soc_pcie_replay_tx #(
                         end
                     end
                 end else if(replay_active) begin
-                    sending<=1;sending_replay<=1;send_slot<=replay_slot;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};
+                    sending<=1;sending_replay<=1;send_slot<=replay_slot;send_last<=lengths[replay_slot]-1'b1;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};
                 end else if(reserve_valid_o && reserve_ready_i) begin
-                    sending<=1;sending_replay<=0;send_slot<=new_slot;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};
+                    sending<=1;sending_replay<=0;send_slot<=new_slot;send_last<=lengths[new_slot]-1'b1;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};
                 end
             end
             if(core_valid && core_ready) begin

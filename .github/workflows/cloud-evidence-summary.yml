@@ -1,4 +1,4 @@
-name: Ibex separate execute stage - core tests, regressions, native boot and RTL-to-global-route timing probe
+name: Ibex execute path and PCIe pipeline combined - core tests, regressions, native boot, PCIe timing screen and RTL-to-global-route probes
 on:
   workflow_dispatch:
     inputs:
@@ -11,7 +11,7 @@ on:
         type: boolean
         default: false
       probe_variant:
-        description: Run only this probe matrix entry (empty for all)
+        description: Run only these probe matrix entries (space-separated names; empty for all, none for no probe)
         type: string
         default: ''
       repair_iterations:
@@ -30,12 +30,27 @@ on:
         description: In the riscv-formal job, run only the hang check at several bounds
         type: boolean
         default: false
+      pcie_jobs:
+        description: PCIe pipeline jobs to run, space-separated from timing, unit and soc; add only to skip every Ibex job
+        type: string
+        default: ''
+      pcie_timing_sides:
+        description: Sides of the PCIe packet-domain timing screen (JSON list of baseline and change)
+        type: string
+        default: '["baseline","change"]'
+      pcie_tests:
+        description: cocotb suites of the PCIe unit job
+        type: string
+        default: 'soc_pcie_replay_tx soc_pcie_flow_packets soc_pcie_buffered_flow_packets soc_pcie_reliable_packets'
 permissions:
   contents: read
   actions: read
+env:
+  # The PCIe timing screen's baseline side (timing/pcie-pipeline).
+  BASELINE_REF: timing/pcie-boundary-skid
 jobs:
   unit:
-    if: ${{ !inputs.rvformal_only }}
+    if: ${{ !inputs.rvformal_only && !contains(inputs.pcie_jobs, 'only') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 150
     steps:
@@ -125,7 +140,7 @@ jobs:
           retention-days: 30
 
   regress:
-    if: ${{ !inputs.probe_only && !inputs.unit_only }}
+    if: ${{ !inputs.probe_only && !inputs.unit_only && !contains(inputs.pcie_jobs, 'only') }}
     needs: unit
     runs-on: ubuntu-24.04
     timeout-minutes: 300
@@ -219,7 +234,7 @@ jobs:
           retention-days: 30
 
   native-boot:
-    if: ${{ !inputs.probe_only && !inputs.unit_only }}
+    if: ${{ !inputs.probe_only && !inputs.unit_only && !contains(inputs.pcie_jobs, 'only') }}
     needs: unit
     runs-on: ubuntu-24.04
     timeout-minutes: 360
@@ -309,7 +324,7 @@ jobs:
 
   probe:
     needs: unit
-    if: ${{ !inputs.unit_only && !inputs.rvformal_only }}
+    if: ${{ !inputs.unit_only && !inputs.rvformal_only && !contains(inputs.pcie_jobs, 'only') }}
     runs-on: ubuntu-22.04
     timeout-minutes: 355
     strategy:
@@ -321,6 +336,11 @@ jobs:
           - {name: r4_ex_exec, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1'}
           - {name: r4_ex_exec_br2, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', br2: '1'}
           - {name: r4_ex_exec_pmpreg, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1'}
+          # timing/pcie-pipeline's probe (its default probe_matrix): upstream
+          # register file, no Ibex knobs, the PCIe path trace. pcie_rtl_ref
+          # (optional) takes hw/soc/rtl/pcie from another ref instead.
+          - {name: pcie_rfup_d70_ks, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', regfile: upstream, pcie_trace: '1'}
+          - {name: pcie_deep_rfup_d70_ks, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', regfile: upstream, deep: '1', pcie_trace: '1'}
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -339,41 +359,47 @@ jobs:
       IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) }}
+        if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) }}
         with:
           persist-credentials: false
+      - name: PCIe RTL from another ref (matrix pcie_rtl_ref; this branch's pipelined PCIe RTL otherwise)
+        if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) && matrix.pcie_rtl_ref }}
+        run: |
+          git fetch -q https://github.com/${{ github.repository }}.git ${{ matrix.pcie_rtl_ref }}
+          git checkout FETCH_HEAD -- hw/soc/rtl/pcie
+          echo "PCIe RTL from ${{ matrix.pcie_rtl_ref }}"; sha256sum hw/soc/rtl/pcie/soc_pcie_*.v | sha256sum
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) }}
+        if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) }}
         with:
           python-version: '3.12'
       - name: Retry transient download failures
-        if: ${{ ((inputs.probe_variant == '' || inputs.probe_variant == matrix.name)) }}
+        if: ${{ ((inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name)))) }}
         run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
         id: cad1
-        if: ${{ ((inputs.probe_variant == '' || inputs.probe_variant == matrix.name)) }}
+        if: ${{ ((inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name)))) }}
         continue-on-error: true
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: sleep 180
-        if: ${{ ((inputs.probe_variant == '' || inputs.probe_variant == matrix.name)) && (steps.cad1.outcome == 'failure') }}
+        if: ${{ ((inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name)))) && (steps.cad1.outcome == 'failure') }}
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
         id: cad2
-        if: ${{ ((inputs.probe_variant == '' || inputs.probe_variant == matrix.name)) && (steps.cad1.outcome == 'failure') }}
+        if: ${{ ((inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name)))) && (steps.cad1.outcome == 'failure') }}
         continue-on-error: true
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: sleep 300
-        if: ${{ ((inputs.probe_variant == '' || inputs.probe_variant == matrix.name)) && (steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure') }}
+        if: ${{ ((inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name)))) && (steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure') }}
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
-        if: ${{ ((inputs.probe_variant == '' || inputs.probe_variant == matrix.name)) && (steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure') }}
+        if: ${{ ((inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name)))) && (steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure') }}
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Prepare digital inputs, firmware and the native synthesis (same settings as the boot candidate)
-        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) }}
+        if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) }}
         run: |
           set -euo pipefail
           export OSS_CAD_SUITE="$(dirname "$(dirname "$(command -v yosys)")")"
@@ -406,7 +432,7 @@ jobs:
           sha256sum $OUT/synthesis/soc_top.netlist.v $OUT/rtl/test_soc.bin
           grep -iE "Number of cells|Chip area" $OUT/synthesis/syn.log | tail -3 || true
       - name: LibreLane AppImage and the verified PDK from the post-route input package
-        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) }}
+        if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) }}
         run: |
           set -euo pipefail
           sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2
@@ -432,7 +458,7 @@ jobs:
           print('restored PDK files',n)
           PY
       - name: Floorplan to antenna repair (no detailed routing), configuration overrides ${{ matrix.overrides }}
-        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) }}
+        if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) }}
         run: |
           set -euo pipefail
           OUT=$PWD/hw/soc/out/impl-probe; W=/mnt/s
@@ -445,15 +471,37 @@ jobs:
             --with-initial-state $OUT/prepared/state.json $OUT/prepared/config.json > $OUT/run.log 2>&1 || { echo "FLOW_FAILED"; tail -80 $OUT/run.log; }
           python3 -B scripts/impl_probe.py collect $OUT/run $OUT/metrics.json
       - name: Per-corner setup and hold on the post-global-route database
-        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) }}
+        if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) }}
         run: |
           set -euo pipefail
           OUT=$PWD/hw/soc/out/impl-probe; W=/mnt/s
           python3 -B scripts/impl_probe.py sta_tcl $OUT/run $OUT/prepared $OUT/corner-sta.tcl
+          if [ "${{ matrix.pcie_trace || '0' }}" = 1 ]; then
+            # Path tracing (timing/pcie-pipeline): the 300 worst slow-corner
+            # pcie_clk_i endpoints with full paths, after the per-corner reports
+            # (the deep repair's script is derived from this one and repeats it).
+            printf '%s\n' 'puts "NSSOC_CORNER_TRACE_BEGIN"' \
+              'report_checks -corner nom_slow_1p08V_125C -path_delay max -path_group pcie_clk_i -group_path_count 300 -endpoint_path_count 1 -fields {cap slew fanout} -digits 3' \
+              'puts "NSSOC_CORNER_TRACE_END"' >> $OUT/corner-sta.tcl
+          fi
           env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage openroad -exit $OUT/corner-sta.tcl > $OUT/corner-sta.log 2>&1 || echo "CORNER_STA_FAILED"
           grep -a -E "NSSOC_CORNER|slack|Error|ERROR" $OUT/corner-sta.log | grep -av "^\s*$" | head -120 || true
+      - name: Tie the capped slow-corner pcie_clk_i paths to RTL registers
+        if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) && (matrix.pcie_trace == '1') }}
+        run: |
+          OUT=$PWD/hw/soc/out/impl-probe
+          sed -n '/^NSSOC_CORNER_TRACE_BEGIN/,/^NSSOC_CORNER_TRACE_END/p' $OUT/corner-sta.log > $OUT/capped-pcie-slow.rpt
+          python3 -B scripts/pcie_timing/trace_paths.py $OUT/synthesis/soc_top.mapped.json $OUT/capped-pcie-slow.rpt $OUT/capped-trace 10 $OUT/flop-map.tsv || echo "TRACE_FAILED"
+          mkdir -p capped; cp $OUT/capped-trace.* $OUT/capped-pcie-slow.rpt $OUT/corner-sta.log capped/ 2>/dev/null || true
+          gzip -c $OUT/flop-map.tsv > capped/flop-map.tsv.gz 2>/dev/null || true
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) && (matrix.pcie_trace == '1') }}
+        with:
+          name: impl-probe-capped-${{ matrix.name }}-${{ github.run_id }}
+          path: capped
+          retention-days: 30
       - name: Uncapped setup repair on the post-global-route database (measurement)
-        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) && (matrix.deep == '1') }}
+        if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) && (matrix.deep == '1') }}
         run: |
           set +e
           OUT=$PWD/hw/soc/out/impl-probe; W=/mnt/s
@@ -482,16 +530,21 @@ jobs:
           PY
           timeout 12600 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage openroad -exit $OUT/deep-repair.tcl > $OUT/deep-repair.log 2>&1; echo "DEEP_RC=$?"
           grep -a -E "NSSOC_DEEP|slack \(|RSZ-00(4|5|6)|^ +[0-9]+ +\|.*\| *-?[0-9.]+ *\|" $OUT/deep-repair.log | tail -60
+          if [ "${{ matrix.pcie_trace || '0' }}" = 1 ]; then
+            sed -n '/^NSSOC_DEEP_CORNER_TRACE_BEGIN/,/^NSSOC_DEEP_CORNER_TRACE_END/p' $OUT/deep-repair.log > $OUT/deep-pcie-slow.rpt
+            python3 -B scripts/pcie_timing/trace_paths.py $OUT/synthesis/soc_top.mapped.json $OUT/deep-pcie-slow.rpt $OUT/deep-trace 10 || echo "TRACE_FAILED"
+          fi
       - name: Collect
-        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) && (always()) }}
+        if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) && (always()) }}
         run: |
           OUT=hw/soc/out/impl-probe; mkdir -p out
           cp $OUT/deep-repair.log $OUT/deep-repair.tcl out/ 2>/dev/null || true
+          cp $OUT/capped-trace.* $OUT/deep-trace.* $OUT/capped-pcie-slow.rpt $OUT/deep-pcie-slow.rpt out/ 2>/dev/null || true
           cp $OUT/metrics.json $OUT/corner-sta.log $OUT/corner-sta.tcl $OUT/run.log $OUT/synthesis-driver.log $OUT/rtl-driver.log $OUT/prepared/config.json out/ 2>/dev/null || true
           for d in $OUT/run/*stamidpnr* $OUT/run/*resizer*; do [ -d "$d" ] || continue; b=$(basename $d); mkdir -p out/$b; for c in nom_slow_1p08V_125C; do [ -f $d/$c/max.rpt ] && head -c 3000000 $d/$c/max.rpt > out/$b/$c.max.head.rpt; done; cp $d/*.log out/$b/ 2>/dev/null || true; done
           ls out | head -50
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) && (always()) }}
+        if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) && (always()) }}
         with:
           name: impl-probe-${{ matrix.name }}-${{ github.run_id }}
           path: out
@@ -504,7 +557,7 @@ jobs:
   # div/rem fail against riscv-formal's own unsigned model, and liveness is
   # bound by the 37-cycle divider at depth 50.
   rvformal:
-    if: ${{ !inputs.probe_only && !inputs.unit_only }}
+    if: ${{ !inputs.probe_only && !inputs.unit_only && !contains(inputs.pcie_jobs, 'only') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 355
     strategy:
@@ -601,4 +654,224 @@ jobs:
         with:
           name: ibex-ex-stage-rvformal-${{ matrix.name }}-${{ github.run_id }}
           path: out
+          retention-days: 30
+
+  # ---- timing/pcie-pipeline: packet-domain timing screen, PCIe unit
+  # regressions, SoC lint and joint PCIe/Ethernet traffic. Run on request
+  # (inputs.pcie_jobs). Its implementation probe is the probe job above
+  # (entries pcie_*; pcie_rtl_ref selects other PCIe RTL).
+  pcie-timing:
+    if: ${{ contains(inputs.pcie_jobs, 'timing') }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        side: ${{ fromJSON(inputs.pcie_timing_sides) }}
+    env:
+      APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
+      PDK_RAW: https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /hw/soc/rtl/pcie/
+            /scripts/pcie_timing/
+      - name: Select RTL
+        run: |
+          if [ "${{ matrix.side }}" = baseline ]; then
+            git fetch -q --filter=blob:none https://github.com/${{ github.repository }}.git $BASELINE_REF
+            git checkout FETCH_HEAD -- hw/soc/rtl/pcie
+          fi
+          git log --oneline -1; sha256sum hw/soc/rtl/pcie/soc_pcie_*.v | sha256sum
+      - name: Retry transient download failures
+        run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad1
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure'
+        run: sleep 180
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad2
+        if: steps.cad1.outcome == 'failure'
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
+        run: sleep 300
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Liberty, LEF and OpenROAD
+        run: |
+          set -euo pipefail
+          W=/mnt/s; sudo mkdir -p $W; sudo chown $USER $W
+          curl -fsSL -o $W/typ.lib $PDK_RAW/lib/sg13g2_stdcell_typ_1p20V_25C.lib
+          curl -fsSL -o $W/slow.lib $PDK_RAW/lib/sg13g2_stdcell_slow_1p08V_125C.lib
+          curl -fsSL -o $W/tech.lef $PDK_RAW/lef/sg13g2_tech.lef
+          curl -fsSL -o $W/cells.lef $PDK_RAW/lef/sg13g2_stdcell.lef
+          sha256sum -c - <<EOF
+          968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4  $W/typ.lib
+          ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d  $W/slow.lib
+          e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6  $W/tech.lef
+          c7575039af0b124e1834c407bfb9ac7a2db576d1e3533d98474dad3fbc2af589  $W/cells.lef
+          EOF
+          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2
+          curl -fsSL -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
+          echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c -; chmod +x $W/librelane.AppImage
+      - name: Synthesis and two-corner STA of the packet domain
+        run: |
+          set -euo pipefail
+          W=/mnt/s
+          LEFS="$W/tech.lef $W/cells.lef" STA_TIMEOUT=6000 timeout 6600 bash scripts/pcie_timing/run.sh $W/typ.lib $W/slow.lib $PWD/out \
+            env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage openroad -exit
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pcie-timing-${{ matrix.side }}-${{ github.run_id }}
+          path: |
+            out/*.rpt
+            out/*.txt
+            out/*.log
+            out/*.ys
+            out/*.sdc
+            out/*.tcl
+          retention-days: 30
+  pcie-unit:
+    if: ${{ contains(inputs.pcie_jobs, 'unit') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /hw/soc/rtl/
+            /hw/soc/tb/cocotb/
+            /hw/requirements.txt
+      - name: Retry transient download failures
+        run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad1
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure'
+        run: sleep 180
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad2
+        if: steps.cad1.outcome == 'failure'
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
+        run: sleep 300
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Python test environment
+        run: |
+          python3 -m venv hw/.venv && hw/.venv/bin/pip install -q -r hw/requirements.txt
+          git log --oneline -1; iverilog -V 2>&1 | head -1
+      - name: Unit regressions
+        shell: bash
+        run: |
+          set +e -uo pipefail
+          mkdir -p out; fail=0
+          for t in ${{ inputs.pcie_tests }}; do
+            mk=hw/soc/tb/cocotb/Makefile.$t
+            if [ ! -f $mk ]; then echo "MISSING $t"; fail=1; continue; fi
+            ( cd hw/soc/tb/cocotb && PATH="$PWD/../../../.venv/bin:$PATH" timeout 3000 make -f Makefile.$t SIM_BUILD=/tmp/sb_$t COCOTB_RESULTS_FILE=$GITHUB_WORKSPACE/out/results_$t.xml > $GITHUB_WORKSPACE/out/$t.log 2>&1 ); rc=$?
+            echo "TEST $t rc=$rc"; grep -E "TESTS=|PASS=|FAIL=|SKIP=" out/$t.log | tail -2
+            [ $rc -eq 0 ] || { fail=1; tail -60 out/$t.log; }
+          done
+          echo "OVERALL fail=$fail"; exit $fail
+      - name: Lint the PCIe packet subsystem
+        run: |
+          R=hw/soc/rtl/pcie
+          verilator --lint-only -Wall -Wno-DECLFILENAME -Wno-UNUSEDSIGNAL -Wno-UNUSEDPARAM -Wno-PINCONNECTEMPTY --top-module soc_pcie_buffered_flow_packets $R/*.v 2>&1 | grep -E "%(Error|Warning)" | grep -E "replay_tx|buffered_flow|stream_skid|credit_tx|reliable_packets|flow_packets" | head -60 | tee out/lint.txt || true
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pcie-pipeline-unit-${{ github.run_id }}
+          path: out
+          retention-days: 30
+  pcie-soc:
+    if: ${{ contains(inputs.pcie_jobs, 'soc') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Retry transient download failures
+        run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad1
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure'
+        run: sleep 180
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad2
+        if: steps.cad1.outcome == 'failure'
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
+        run: sleep 300
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare the pinned CPU and interface RTL
+        run: |
+          git log --oneline -1
+          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          python3 -m pip install -q -r sw/requirements.txt
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -q -r hw/requirements.txt
+          make soc-rtl-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
+          make soc-interfaces-prepare SOC_INTERFACE_PROFILE=full INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
+      - name: Base and full lint, joint PCIe/Ethernet traffic (asynchronous and synchronous packet clock)
+        run: |
+          set +e
+          O=$PWD/out; mkdir -p $O
+          python3 scripts/check_soc_lint.py --profile base --output hw/soc/out/pipe-lint-base > $O/lint-base.log 2>&1; echo "lint-base rc=$?"
+          python3 scripts/check_soc_lint.py --profile full --output hw/soc/out/pipe-lint-full > $O/lint-full.log 2>&1; echo "lint-full rc=$?"
+          cp -r hw/soc/out/pipe-lint-base $O/lint-base; cp -r hw/soc/out/pipe-lint-full $O/lint-full
+          python3 scripts/check_pcie_ethernet_soc.py --out $O/joint-async --iverilog-dir $OSS_CAD_SUITE/bin --async-pcie > $O/joint-async.log 2>&1; echo "joint-async rc=$?"
+          python3 scripts/check_pcie_ethernet_soc.py --out $O/joint-sync --iverilog-dir $OSS_CAD_SUITE/bin > $O/joint-sync.log 2>&1; echo "joint-sync rc=$?"
+          for f in lint-base lint-full joint-async joint-sync; do
+            python3 -c "import json,sys;d=json.load(open(sys.argv[1]));print(sys.argv[2],{k:d.get(k) for k in ('status','tests','delta','sources_unchanged','immutable_drift','own_unaccepted','unchanged','runtime_unchanged','asynchronous_pcie')})" $O/$f/result.json $f 2>/dev/null || { echo "$f no result"; tail -30 $O/$f.log; }
+          done
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pcie-pipeline-soc-${{ github.run_id }}
+          path: |
+            out/*.log
+            out/*/result.json
           retention-days: 30
