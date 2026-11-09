@@ -51,6 +51,7 @@ The writeback stage, the branch-target ALU and the register-file ECC of `SecureI
 - `hw/soc/tb/tb_ibex_ex_stage.v`, `sw/tests/rv32_mini_asm.py`, `sw/tests/ibex_ex_programs.py`, `sw/tests/test_ibex_ex_stage.py`: the core-level tests; `sw/tests/test_ibex_branch_stall.py`: execute-stage cases.
 - `hw/soc/rvformal/params.sh`, `checks.cfg.in`, `hw/soc/flow/rvformal.sh`: the parameter guard fix and `RVF_HANG_DEPTH`.
 - `.github/workflows/cloud-evidence-summary.yml`: core tests, regressions, native boots, probes (with an optional slow-corner report with net names and a flip-flop-to-net map), riscv-formal.
+- `hw/soc/flow/ibex_pmp_req_reg.py`: the data request register of section 7 (`IBEX_PMP_REQ_REG`), threaded through the same scripts.
 
 ### 2.3 The default build is unchanged
 
@@ -174,7 +175,49 @@ Density 70%, Kogge-Stone (`SOC_SYNTH_PREFIX_ADDER=1`), global-route parasitics, 
 With the execute stage and the earlier knobs, slow-corner `clk_i` is -4.40 ns, i.e. about 24.4 ns of a 20 ns period. What is left, in the order the measurements rank it:
 
 1. **`pcie_clk_i` (-5.9 ns) and the asynchronous group (-5.5 to -5.8 ns)** are now worse than `clk_i`. They are outside the core and outside this branch.
-2. **LSU address to the fabric request register** (`clk_i`, -4.40 ns): EX-stage control, address adder, PMP check, PMP-gated request, arbitration select, request-register multiplexers. Cutting it needs the data request to leave the core from a register: either the PMP check one cycle later (option F of `docs/ibex-execute-timing.md`, +1 cycle on every load and store), or an arbitration in `soc_bus` that does not select on the PMP-gated request in the same cycle.
+2. **LSU address to the fabric request register** (`clk_i`, -4.40 ns): EX-stage control, address adder, PMP check, PMP-gated request, arbitration select, request-register multiplexers. Cutting it needs the data request to leave the core from a register: either the PMP check one cycle later (option F of `docs/ibex-execute-timing.md`, +1 cycle on every load and store), or an arbitration in `soc_bus` that does not select on the PMP-gated request in the same cycle. Section 7 implements the first as an opt-in knob.
 3. **The NPU synapse-memory update** (`clk_i`, -3.8 ns), independent of the core.
 
 The core's own loops (operand register, ALU, result, forwarding multiplexer, operand register; and ALU, result, write to the register file) are not among the ten worst `clk_i` paths of the best variant, so a deeper core pipeline is not the next step. A relaxed slow-corner period is not this branch's call.
+
+## 7. The data request register (`IBEX_PMP_REQ_REG`)
+
+The worst `clk_i` path of the best variant (section 5) is EX-stage control, LSU request and operand select (7.8 ns), address adder (15.7 ns), the data-side PMP check of that address and the PMP-gated request `data_req_o = data_req_out & ~pmp_req_err[PMP_D]` (21.7 ns), then `soc_bus`'s arbitration select `d_wins`, which depends on that request, fanning out to the 70 multiplexers of the request register (`s_addr`, `s_be`, `s_we`, `s_wdata`, 26.5 ns against 22.1 ns). Nothing outside the core can cut it: the request the fabric selects on is already PMP-gated when it leaves the core, and `soc_req_pipe` (`CORE_REQ_REG`) grants combinationally on that request, so the PMP verdict still reaches the core's grant and the pipe's 69-bit capture enable in the same cycle.
+
+### 7.1 Design
+
+`IBEX_PMP_REQ_REG=1` (default 0) selects `hw/soc/flow/ibex_pmp_req_reg.py`, a patch to `ibex_core.v` in the style of `ibex_ex_stage.py`, applied on top of whichever `ibex_core.v` the other selectors produce (`gen`, `gen-pre`, `gen-ex`, `gen-pre-ex`; output `genp/<tree>-pmp/`). It inserts a one-entry data request register between the load/store unit and the core's data port, in a generate block `g_pmp_req_reg`:
+
+| | Before | With the register |
+|---|---|---|
+| request at the port | `data_req_out & ~pmp_err`, combinational from the adder and the PMP | `valid_q`, a flip-flop |
+| address, byte enables, write enable, write data, tag | the LSU's outputs | registered with the request |
+| LSU grant | the fabric's grant, after arbitration on the gated request | `data_req_out & ~valid_q`: the LSU's own request and one flip-flop |
+| PMP verdict | gates the request in the same cycle | stored in the accepting cycle: `valid_q <= ~pmp_req_err[PMP_D]`; a refused request is dropped and never reaches the port |
+| responses | to the LSU | to the LSU, unchanged |
+
+The LSU is not modified. It still receives the same combinational verdict (`data_pmp_err_i`) in the cycle its request is granted and latches it into `pmp_err_q` as before. What it sees differently is only legal bus behaviour: a grant whenever the register is empty, a response at least one cycle after the register forwards the request, and a grant for a PMP-refused request where the fabric gave none. Every access starts in IDLE with the register empty and is granted at once; the second half of a misaligned access waits only while the first half is still in the register, and the first response cannot arrive before the register has passed that half on, so the LSU never enters its waiting-for-grant states (WAIT_GNT, WAIT_GNT_MIS). In the states it does use, the pinned LSU takes the verdict of each half into `pmp_err_q` (IDLE and WAIT_RVALID_MIS with the grant, WAIT_RVALID_MIS_GNTS_DONE for a second half granted before the first response) and answers a refused access from `pmp_err_q` without waiting for the bus, so a granted refused request is answered like an ungranted one, one cycle earlier.
+
+**Precise exceptions are preserved.** A refused access is dropped before the port: a refused store writes nothing, and a refused load reaches no slave, so a read with side effects (a UART receive register, a FIFO pop) does not happen. The fault is reported through the LSU's `load_err`/`store_err` as before, on the same instruction, with the same `mcause` (5 or 7) and the same `mtval` (`addr_last`). Misaligned accesses keep the pinned core's behaviour half by half: each half is accepted, checked and dropped or issued on its own, and the LSU decides which halves it issues exactly as before (a misaligned store whose second half is refused still writes the first half, as in the pinned core).
+
+**Latency.** Every load and store, and each half of a misaligned one, reaches the bus one cycle later; the register holds one request and accepts the next once the fabric has taken it, which only overlaps for the second half of a misaligned access. The boot-cycle cost has not been measured yet; the native-boot and regression entries below record it.
+
+**Area.** About 71 flip-flops (address 32, write data 32, byte enables 4, write enable, tag, valid), reset like the LSU's own registers.
+
+**What is left on the path.** The adder and the PMP check still run in the request cycle: they now end at `valid_q` and at the LSU's existing `pmp_err_q`, a flip-flop the pinned core already loads from the same verdict (about 21.7 ns of arrival against about 22.1 ns required in the section 5 path). The arbitration select, its fanout and the request-register multiplexers (the last 4.8 ns) are off the path, and the core's grant no longer depends on the adder, the PMP or the fabric. If the adder-to-PMP endpoint turns out to be the next limit, the next step is to run the PMP check from the registered address and report a refusal through the response path; that changes how the LSU learns of the fault (as a bus error) and the `mtval` of a misaligned access whose second half is refused, so it is not done here.
+
+**Unsupported configurations.** The writeback stage (the next access may then be issued before the previous response, which the argument above excludes) and the CHERIoT base ISA instantiate an undeclared module, `ibex_pmp_req_reg_unsupported_configuration`, so elaboration stops; `sim_soc.sh` and `syn_soc_top.sh` refuse the knob with `SOC_CORE_WB_STAGE`. The patch also refuses to run if any part of the core other than the new block reads the data port, which keeps it off the RVFI tree until that tree has been checked.
+
+**The default build is unchanged by construction.** At `IBEX_PMP_REQ_REG=0` (or unset) `ibex_sources` lists exactly the files it listed before for every combination of the other selectors (checked for all 16 combinations of the fault port, two-cycle branches, predecode and the execute stage, and by `test_default_sources_are_unpatched`), and `soc_top.v`, `soc_bus.v` and every other RTL file are untouched, so the default netlist cannot move.
+
+### 7.2 Tests (to be run in the cloud)
+
+`sw/tests/test_ibex_ex_stage.py` gains two configurations, `base_pmpreg` (the register on the pinned core) and `ex_knobs_pmpreg` (on the execute stage with `CHKDEFER`, predecode and `CORRPRE`), which run every test of section 3.1: the same trace as the unpatched core with fixed and random latencies, in Verilator and Icarus, under interrupts and debug requests at every cycle offset, periodic interrupts and single step. A new directed program, `pmpdata`, locks two NAPOT entries (0x2c00-0x2cff no access, 0x2d00-0x2dff read-only) and checks:
+
+- refused loads (word, half, compressed `c.lw`) leave the destination unchanged, with `mcause` 5 and `mtval` = the address;
+- refused stores (word, byte) give `mcause` 7 and leave memory unchanged, read back through the allowed read;
+- a refused store right after a refused load, and an allowed load right after a refused one;
+- misaligned loads and stores straddling both boundaries in both orders (first half refused and second allowed, and the reverse); what the pinned core does with the allowed half is in the trace, which hashes every store at the bus and every register written from the read-back.
+
+`test_mutated_pmp_req_reg_is_caught` requires that two mutations are detected: a refused request issued anyway, and the register letting go of a request before its grant. `test_pmp_req_reg_patch_applies_to_every_core_tree` applies the patch to all four core trees and checks that it refuses its own output, and `test_patch_refuses_unsupported_configurations` covers the writeback stage. The workflow adds the knob to the unit job's patch diffs, a regression entry (`ex_exec_pmpreg`), a native gate-level boot entry (`ex_exec_pmpreg`, the same gate as `ex_exec`) and a probe entry (`r4_ex_exec_pmpreg`, density 70, Kogge-Stone, 1100-iteration repair). None of these has been run yet.
+

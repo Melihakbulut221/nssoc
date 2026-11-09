@@ -86,6 +86,10 @@ jobs:
           python3 hw/soc/flow/ibex_rf_predecode.py hw/soc/gen out/pre-only
           python3 hw/soc/flow/ibex_ex_stage.py out/pre-only out/pre-ex
           diff -u out/pre-only/ibex_core.v out/pre-ex/ibex_core.v > out/ibex_core.pre-ex.diff || true
+          python3 hw/soc/flow/ibex_pmp_req_reg.py hw/soc/gen out/pmp
+          diff -u hw/soc/gen/ibex_core.v out/pmp/ibex_core.v > out/ibex_core.pmp.diff || true
+          python3 hw/soc/flow/ibex_pmp_req_reg.py out/pre-ex out/pre-ex-pmp
+          diff -u out/pre-ex/ibex_core.v out/pre-ex-pmp/ibex_core.v > out/ibex_core.pre-ex-pmp.diff || true
           wc -l out/*.diff
       - name: Execute-stage core tests (hazard classes, interrupt/debug sweeps, single step, mutations)
         run: |
@@ -133,9 +137,11 @@ jobs:
           - {name: ex, ex: '1'}
           - {name: ex_exec, ex: '1', rf: '1', memreg: '2'}
           - {name: ex_exec_br2, ex: '1', rf: '1', memreg: '2', br2: '1'}
+          - {name: ex_exec_pmpreg, ex: '1', rf: '1', memreg: '2', pmpreg: '1'}
     env:
       SOC_INTERFACE_PROFILE: base
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
+      IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
       SOC_CORE_BT_ALU: ${{ matrix.btalu || '0' }}
       IBEX_BRANCH_2CYCLE: ${{ matrix.br2 || '0' }}
       # exec: deferred check bits, predecoded read address (with the
@@ -226,6 +232,9 @@ jobs:
           # the hosted job's wall clock; the same boot without MBIST does.
           - {name: ex_exec, ex: '1', rf: '1', memreg: '2', gate: corrpre-pcie}
           - {name: ex_exec_br2, ex: '1', rf: '1', memreg: '2', br2: '1', gate: corrpre-pcie}
+          # The data request register with its PMP verdict (docs/ibex-ex-stage.md
+          # section 7) on the best execute-path combination.
+          - {name: ex_exec_pmpreg, ex: '1', rf: '1', memreg: '2', pmpreg: '1', gate: corrpre-pcie}
           # The execute stage alone keeps one-cycle memory reads, so the
           # MBIST boot may fit the wall clock (1.64 M cycles took 9413 s with
           # two-cycle branches).
@@ -233,6 +242,7 @@ jobs:
     env:
       SOC_INTERFACE_PROFILE: full
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
+      IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
       GATE: ${{ matrix.gate || 'corrpre-pcie-mbist' }}
       SOC_CORE_REQ_REG: '0'
       SOC_CORE_WB_STAGE: '0'
@@ -284,7 +294,7 @@ jobs:
         run: |
           O=hw/soc/out/$GATE-native-boot
           cat $O/core-configuration.json || true
-          grep -E "core_bt_alu|branch_2cycle|ex_stage=|chkdefer=|genp/gen-br2|genp/gen-pre|genp/gen-ex|Parameter .(CHKDEFER|RDPRE|MEM_RDREG)" $O/synthesis-driver.log $O/synthesis/syn.log | head -8 || true
+          grep -E "core_bt_alu|branch_2cycle|ex_stage=|pmp_req_reg=|chkdefer=|genp/gen-br2|genp/gen-pre|genp/gen-ex|genp/gen-pmp|Parameter .(CHKDEFER|RDPRE|MEM_RDREG)" $O/synthesis-driver.log $O/synthesis/syn.log | head -10 || true
           grep -E "^== |checks run|\[TB\]" $O/rtl-driver.log | tail -10 || true
           tail -30 $O/gates-driver.log || true
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -310,6 +320,7 @@ jobs:
           - {name: r4_ex, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', ex: '1'}
           - {name: r4_ex_exec, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1'}
           - {name: r4_ex_exec_br2, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', br2: '1'}
+          - {name: r4_ex_exec_pmpreg, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1'}
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -325,6 +336,7 @@ jobs:
       KNOB_RDRAW: ${{ matrix.rdraw || '0' }}
       KNOB_MEMREG: ${{ matrix.memreg || '1' }}
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
+      IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) }}
@@ -390,7 +402,7 @@ jobs:
           # SECDED (the fault port is tied to zero by ibex_fault_port.py).
           if [ "${{ matrix.regfile || 'secded' }}" = upstream ]; then export IBEX_REGFILE=upstream IBEX_RF_CORRPRE=0; fi
           timeout 3600 bash hw/soc/flow/syn_soc_top.sh 20 "$OUT/synthesis" > "$OUT/synthesis-driver.log" 2>&1 || { tail -40 "$OUT/synthesis-driver.log"; exit 1; }
-          grep -E 'regfile=|core_req_reg=|Parameter .(CORRPRE|CHKDEFER|RDPRE|RDRAW|MEM_RDREG|CORE_BT_ALU) =|genp/gen-(br2|pre|ex|pre-ex)' "$OUT/synthesis/syn.log" "$OUT/synthesis-driver.log" | sort -u | head -12 || true
+          grep -E 'regfile=|core_req_reg=|Parameter .(CORRPRE|CHKDEFER|RDPRE|RDRAW|MEM_RDREG|CORE_BT_ALU) =|pmp_req_reg=|genp/gen-(br2|pre|ex|pre-ex|pmp|ex-pmp|pre-pmp|pre-ex-pmp)/' "$OUT/synthesis/syn.log" "$OUT/synthesis-driver.log" | sort -u | head -12 || true
           sha256sum $OUT/synthesis/soc_top.netlist.v $OUT/rtl/test_soc.bin
           grep -iE "Number of cells|Chip area" $OUT/synthesis/syn.log | tail -3 || true
       - name: LibreLane AppImage and the verified PDK from the post-route input package

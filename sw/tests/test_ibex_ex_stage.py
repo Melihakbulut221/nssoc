@@ -15,6 +15,13 @@ stores) into a hash. The tests require, for every program:
     instruction and the flushed ID-stage instruction is re-executed once;
   * mutated patches (no forwarding, no flush, raw pc_if) are caught.
 
+The same harness checks the data request register of
+flow/ibex_pmp_req_reg.py (IBEX_PMP_REQ_REG, docs/ibex-ex-stage.md section
+7) on the unpatched core and on top of the execute stage with the
+register-file knobs: the same traces, including the data-side PMP program
+`pmpdata`, and mutations of that patch (a refused request issued, a request
+released before its grant) are caught.
+
 IBEX_EX_TEST_SCALE (default 1) multiplies the sweep lengths.
 """
 import functools
@@ -35,14 +42,17 @@ FLOW = SOC / "flow"
 SCALE = int(os.environ.get("IBEX_EX_TEST_SCALE", "1"))
 
 CONFIGS = {
-    # name: (ex stage, project register file with the RF knobs, two-cycle branches)
-    "base": (False, False, False),
-    "ex": (True, False, False),
-    "base_knobs_br2": (False, True, True),
-    "ex_knobs": (True, True, False),
-    "ex_knobs_br2": (True, True, True),
+    # name: (ex stage, project register file with the RF knobs, two-cycle branches,
+    #        data request register with the PMP verdict)
+    "base": (False, False, False, False),
+    "ex": (True, False, False, False),
+    "base_knobs_br2": (False, True, True, False),
+    "ex_knobs": (True, True, False, False),
+    "ex_knobs_br2": (True, True, True, False),
+    "base_pmpreg": (False, False, False, True),
+    "ex_knobs_pmpreg": (True, True, False, True),
 }
-PATCHED = [c for c in CONFIGS if CONFIGS[c][0]]
+PATCHED = [c for c in CONFIGS if CONFIGS[c][0] or CONFIGS[c][3]]
 
 TRIAL = re.compile(r"TRIAL (\d+) irq_at=(-?\d+) dbg_at=(-?\d+) seed=(-?\d+) halted=(\d) "
                    r"exit=([0-9a-fx]+) cycles=(\d+) hash=([0-9a-fx]+) retired=(\d+) writes=(\d+) "
@@ -57,7 +67,8 @@ def _tools():
 
 
 def _sources(work, config, mutate=None):
-    ex, knobs, br2 = CONFIGS[config]
+    """The file list of one configuration; `mutate` edits the final ibex_core.v."""
+    ex, knobs, br2, pmpreg = CONFIGS[config]
     gen = SOC / "gen"
     files = {p.name: p for p in sorted(gen.glob("*.v"))}
     if knobs:
@@ -73,13 +84,19 @@ def _sources(work, config, mutate=None):
         src = work / "pre" if knobs else gen
         subprocess.run(["python3", str(FLOW / "ibex_ex_stage.py"), str(src), str(work / "ex")],
                        check=True, capture_output=True)
-        core = work / "ex/ibex_core.v"
-        if mutate:
-            text = core.read_text()
-            old, new = mutate
-            assert text.count(old) == 1, old
-            core.write_text(text.replace(old, new))
-        files["ibex_core.v"] = core
+        files["ibex_core.v"] = work / "ex/ibex_core.v"
+    if pmpreg:
+        src = Path(files["ibex_core.v"]).parent
+        subprocess.run(["python3", str(FLOW / "ibex_pmp_req_reg.py"), str(src), str(work / "pmp")],
+                       check=True, capture_output=True)
+        files["ibex_core.v"] = work / "pmp/ibex_core.v"
+    if mutate:
+        core = Path(files["ibex_core.v"])
+        assert core.parent != gen, "a mutation needs a patched core"
+        text = core.read_text()
+        old, new = mutate
+        assert text.count(old) == 1, old
+        core.write_text(text.replace(old, new))
     extra = []
     if knobs:
         del files["ibex_register_file_ff.v"]
@@ -115,8 +132,10 @@ def build(work, config, mutate=None, sim="verilator"):
         cmd += ["-D" + d for d in defines] + [str(f) for f in srcs]
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
         assert r.returncode == 0, r.stdout + r.stderr
-        if CONFIGS[config][0]:
-            assert '"g_ex_stage"' in binary.read_bytes().decode("latin-1"), "patch not elaborated"
+        elab = binary.read_bytes().decode("latin-1")
+        for on, mark in ((CONFIGS[config][0], '"g_ex_stage"'),
+                         (CONFIGS[config][3], '"g_pmp_req_reg"')):
+            assert (mark in elab) == on, "%s elaborated: %s, expected %s" % (mark, mark in elab, on)
         return binary
     verilator = _verilator()
     mdir = work / "vl"
@@ -192,7 +211,8 @@ def reference(prog):
 
 
 RANDOM = ["rand%d" % i for i in range(1, 1 + 12 * SCALE)]
-SWEPT = ["alu", "load", "muldiv", "csr", "branch", "except", "fence", "pmp", "rand1", "rand2"]
+SWEPT = ["alu", "load", "muldiv", "csr", "branch", "except", "fence", "pmp", "pmpdata", "rand1",
+         "rand2"]
 ALL = sorted(set(SWEPT + RANDOM)) + ["counters"]
 
 
@@ -207,7 +227,7 @@ def test_same_trace_fixed_and_random_latency(config, prog):
 
 @pytest.mark.parametrize("config", list(CONFIGS))
 @pytest.mark.parametrize("prog", ["alu", "load", "muldiv", "csr", "counters", "branch", "except",
-                                  "fence", "pmp", "rand1"])
+                                  "fence", "pmp", "pmpdata", "rand1"])
 def test_same_trace_four_state(config, prog):
     """The same comparison in Icarus, which propagates unknown values."""
     ref = reference(prog)
@@ -302,11 +322,13 @@ def test_mutated_patch_is_caught(tmp_path, mutation):
     assert caught, "mutation %s was not detected by any program" % mutation
 
 
-def test_patch_refuses_unsupported_configurations(tmp_path):
+@pytest.mark.parametrize("config,marker", [("ex", "ibex_ex_stage_unsupported_configuration"),
+                                           ("base_pmpreg", "ibex_pmp_req_reg_unsupported_configuration")])
+def test_patch_refuses_unsupported_configurations(tmp_path, config, marker):
     iverilog, _ = _tools()
     work = tmp_path / "wb"
     work.mkdir(parents=True)
-    srcs = _sources(work, "ex")
+    srcs = _sources(work, config)
     tb = (SOC / "tb/tb_ibex_ex_stage.v").read_text().replace(
         ".WritebackStage(0)", ".WritebackStage(1)").replace(".BranchTargetALU(0)",
                                                             ".BranchTargetALU(1)")
@@ -315,7 +337,7 @@ def test_patch_refuses_unsupported_configurations(tmp_path):
                         "tb_ibex_ex_stage", "-o", str(work / "x.vvp"), str(work / "tb.v"),
                         str(SOC / "rtl/prim_clock_gating.v"), *map(str, srcs)],
                        capture_output=True, text=True, timeout=300)
-    assert r.returncode != 0 and "ibex_ex_stage_unsupported_configuration" in r.stdout + r.stderr
+    assert r.returncode != 0 and marker in r.stdout + r.stderr
 
 
 def test_default_sources_are_unpatched(tmp_path):
@@ -335,3 +357,70 @@ def test_default_sources_are_unpatched(tmp_path):
     assert str(SOC / "genp/gen-pre-ex/ibex_core.v") in both
     assert str(SOC / "genp/gen-pre/ibex_core.v") not in both
     assert str(SOC / "genp/gen-pre/ibex_if_stage.v") in both
+    # The data request register: off is the old list, on replaces whichever
+    # ibex_core.v the other selectors chose, and nothing else.
+    for env in ({}, {"IBEX_EX_STAGE": "1"}, {"IBEX_RF_PREDECODE": "1"},
+                {"IBEX_EX_STAGE": "1", "IBEX_RF_PREDECODE": "1"}):
+        assert listing(env) == listing({**env, "IBEX_PMP_REQ_REG": "0"})
+    for env, tree in (({}, "gen-pmp"), ({"IBEX_EX_STAGE": "1"}, "gen-ex-pmp"),
+                      ({"IBEX_RF_PREDECODE": "1"}, "gen-pre-pmp"),
+                      ({"IBEX_EX_STAGE": "1", "IBEX_RF_PREDECODE": "1"}, "gen-pre-ex-pmp")):
+        off, on = listing(env), listing({**env, "IBEX_PMP_REQ_REG": "1"})
+        cores = [f for f in on if f.endswith("/ibex_core.v")]
+        assert cores == [str(SOC / "genp" / tree / "ibex_core.v")], cores
+        assert [f for f in off if not f.endswith("/ibex_core.v")] == \
+            [f for f in on if not f.endswith("/ibex_core.v")]
+
+
+# Negative controls for the data request register: a request the PMP refuses
+# is issued anyway, or the register lets go of a request before its grant.
+PMP_MUTATIONS = {
+    "refused_request_issued": ("pmq_valid_q <= ~pmp_req_err[ibex_pkg_PMP_D];",
+                               "pmq_valid_q <= 1'b1;"),
+    "released_before_grant": ("else if (pmq_valid_q & data_gnt_i)", "else if (pmq_valid_q)"),
+}
+
+
+@pytest.mark.parametrize("mutation", list(PMP_MUTATIONS))
+def test_mutated_pmp_req_reg_is_caught(tmp_path, mutation):
+    binary = build(tmp_path / mutation, "base_pmpreg", PMP_MUTATIONS[mutation])
+    caught = []
+    for prog in ["pmpdata", "load", "rand1"]:
+        ref = reference(prog)
+        limit = 20 * ref["cycles"] + 2000
+        try:
+            rows = run(binary, prog, max_cycles=limit)
+            rows += run(binary, prog, max_cycles=limit, trials=10, seed=9, ilat=3, dlat=3)
+        except AssertionError:
+            caught.append(prog)
+            break
+        if any(r["hash"] != ref["hash"] for r in rows):
+            caught.append(prog)
+            break
+    assert caught, "mutation %s was not detected by any program" % mutation
+
+
+def test_pmp_req_reg_patch_applies_to_every_core_tree(tmp_path):
+    """The patch applies on the sv2v output and on each earlier patch's output, and
+    refuses its own output."""
+    gen = SOC / "gen"
+    if not (gen / "ibex_core.v").is_file():
+        pytest.skip("the pinned converted Ibex sources are required")
+    def patch(src, dst):
+        return subprocess.run(["python3", str(FLOW / "ibex_pmp_req_reg.py"), str(src), str(dst)],
+                              capture_output=True, text=True)
+    subprocess.run(["python3", str(FLOW / "ibex_rf_predecode.py"), str(gen), str(tmp_path / "pre")],
+                   check=True, capture_output=True)
+    subprocess.run(["python3", str(FLOW / "ibex_ex_stage.py"), str(gen), str(tmp_path / "ex")],
+                   check=True, capture_output=True)
+    subprocess.run(["python3", str(FLOW / "ibex_ex_stage.py"), str(tmp_path / "pre"),
+                    str(tmp_path / "pre-ex")], check=True, capture_output=True)
+    for name, src in (("gen", gen), ("pre", tmp_path / "pre"), ("ex", tmp_path / "ex"),
+                      ("pre-ex", tmp_path / "pre-ex")):
+        r = patch(src, tmp_path / (name + "-pmp"))
+        assert r.returncode == 0, r.stdout + r.stderr
+        text = (tmp_path / (name + "-pmp/ibex_core.v")).read_text()
+        assert text.count("begin : g_pmp_req_reg\n") == 1
+        assert "data_req_out & ~pmp_req_err" not in text
+    r = patch(tmp_path / "gen-pmp", tmp_path / "again")
+    assert r.returncode != 0 and "already patched" in r.stdout + r.stderr

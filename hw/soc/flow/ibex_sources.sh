@@ -117,6 +117,17 @@
 #      is patched as well (riscv-formal). The flows refuse it with the
 #      writeback stage and the branch-target ALU.
 #   0  (default) the unmodified file.
+#
+# IBEX_PMP_REQ_REG selects a fifth patch, docs/ibex-ex-stage.md section 7:
+#
+#   1  hw/soc/genp/<core tree>-pmp/ibex_core.v, written by
+#      flow/ibex_pmp_req_reg.py on top of whichever ibex_core.v the
+#      selectors above produce (gen, gen-pre, gen-ex or gen-pre-ex): a
+#      one-entry data request register at the core boundary. The LSU's
+#      request is accepted ungated and stored with its PMP verdict; a
+#      refused request is dropped there, an allowed one reaches the port
+#      one cycle later. The flows refuse it with the writeback stage.
+#   0  (default) the unmodified file.
 
 ibex_sources () {
   local soc_dir=$1
@@ -126,7 +137,8 @@ ibex_sources () {
   local br2=${IBEX_BRANCH_2CYCLE:-0}
   local pre=${IBEX_RF_PREDECODE:-0}
   local exs=${IBEX_EX_STAGE:-0}
-  local exs_in exs_out
+  local pmp=${IBEX_PMP_REQ_REG:-0}
+  local exs_in exs_out core_in core_out
   local f
 
   case "$mode" in
@@ -159,6 +171,11 @@ ibex_sources () {
     *) echo "IBEX_EX_STAGE must be 0 or 1, got '$exs'" >&2
        return 2 ;;
   esac
+  case "$pmp" in
+    0|1) ;;
+    *) echo "IBEX_PMP_REQ_REG must be 0 or 1, got '$pmp'" >&2
+       return 2 ;;
+  esac
   if [ "$port" = 1 ] && [ "$gendir" != gen ]; then
     echo "IBEX_FAULT_PORT=1 is only defined for IBEX_GEN=gen" >&2
     return 2
@@ -188,6 +205,23 @@ ibex_sources () {
     fi
     python3 "$soc_dir/flow/ibex_ex_stage.py" "$exs_in" "$exs_out" >&2 || return 2
   fi
+  # The ibex_core.v the selectors above produce, and the request register
+  # on top of it.
+  if [ "$exs" = 1 ]; then
+    core_in=$exs_out
+  elif [ "$pre" = 1 ]; then
+    core_in="$soc_dir/genp/$gendir-pre"
+  else
+    core_in="$soc_dir/$gendir"
+  fi
+  if [ "$pmp" = 1 ]; then
+    if [ "$core_in" = "$soc_dir/$gendir" ]; then
+      core_out="$soc_dir/genp/$gendir-pmp"
+    else
+      core_out="$core_in-pmp"
+    fi
+    python3 "$soc_dir/flow/ibex_pmp_req_reg.py" "$core_in" "$core_out" >&2 || return 2
+  fi
 
   for f in "$soc_dir"/$gendir/*.v; do
     if [ "$mode" = "secded" ] && \
@@ -207,6 +241,9 @@ ibex_sources () {
     if [ "$exs" = 1 ] && [ "$(basename "$f")" = "ibex_core.v" ]; then
       continue
     fi
+    if [ "$pmp" = 1 ] && [ "$(basename "$f")" = "ibex_core.v" ]; then
+      continue
+    fi
     echo "$f"
   done
 
@@ -218,10 +255,11 @@ ibex_sources () {
   fi
   if [ "$pre" = 1 ]; then
     echo "$soc_dir/genp/$gendir-pre/ibex_if_stage.v"
-    [ "$exs" = 1 ] || echo "$soc_dir/genp/$gendir-pre/ibex_core.v"
   fi
-  if [ "$exs" = 1 ]; then
-    echo "$exs_out/ibex_core.v"
+  if [ "$pmp" = 1 ]; then
+    echo "$core_out/ibex_core.v"
+  elif [ "$core_in" != "$soc_dir/$gendir" ]; then
+    echo "$core_in/ibex_core.v"
   fi
 
   if [ "$mode" = "secded" ]; then

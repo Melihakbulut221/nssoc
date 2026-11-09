@@ -345,6 +345,19 @@ if [ "$IBEX_EX_STAGE" = 1 ] && [ "$SOC_CORE_WB_STAGE$SOC_CORE_BT_ALU" != 00 ]; t
   echo 'IBEX_EX_STAGE applies only without the writeback stage and the branch-target ALU' >&2; exit 2
 fi
 export IBEX_EX_STAGE
+# IBEX_PMP_REQ_REG=1: the data request leaves the core from a register that
+# holds the PMP verdict, docs/ibex-ex-stage.md section 7. A source selector
+# read by flow/ibex_sources.sh (flow/ibex_pmp_req_reg.py), defined only
+# without the writeback stage.
+IBEX_PMP_REQ_REG=${IBEX_PMP_REQ_REG:-0}
+case "$IBEX_PMP_REQ_REG" in
+  0|1) ;;
+  *) echo 'IBEX_PMP_REQ_REG must be zero or one' >&2; exit 2;;
+esac
+if [ "$IBEX_PMP_REQ_REG" = 1 ] && [ "$SOC_CORE_WB_STAGE" != 0 ]; then
+  echo 'IBEX_PMP_REQ_REG applies only without the writeback stage' >&2; exit 2
+fi
+export IBEX_PMP_REQ_REG
 if [ "$SOC_CORE_BT_ALU" != 0 ]; then
   TOP_CHPARAM="$TOP_CHPARAM
 chparam -set CORE_BT_ALU $SOC_CORE_BT_ALU soc_top"
@@ -858,7 +871,7 @@ awk -v top=soc_top -v ge=7.2576 '
 ' "$OUT/$AREA_SUMMARY"
 
 echo "  mem=$SOC_MEM  regfile=$IBEX_REGFILE  fault_port=$IBEX_FAULT_PORT  synpre=$IBEX_RF_SYNPRE  corrpre=$IBEX_RF_CORRPRE  chkdefer=$IBEX_RF_CHKDEFER  predecode=$IBEX_RF_PREDECODE  rdraw=$IBEX_RF_RDRAW"
-echo "  core_req_reg=$SOC_CORE_REQ_REG  core_wb_stage=$SOC_CORE_WB_STAGE  core_bt_alu=$SOC_CORE_BT_ALU  branch_2cycle=$IBEX_BRANCH_2CYCLE  ex_stage=$IBEX_EX_STAGE  prefix_adder=${SOC_SYNTH_PREFIX_ADDER:-0}"
+echo "  core_req_reg=$SOC_CORE_REQ_REG  core_wb_stage=$SOC_CORE_WB_STAGE  core_bt_alu=$SOC_CORE_BT_ALU  branch_2cycle=$IBEX_BRANCH_2CYCLE  ex_stage=$IBEX_EX_STAGE  pmp_req_reg=$IBEX_PMP_REQ_REG  prefix_adder=${SOC_SYNTH_PREFIX_ADDER:-0}"
 echo "  mem_rdreg=$SOC_MEM_RDREG  mem_harden=$SOC_MEM_HARDEN  rom_harden=$SOC_ROM_HARDEN  boot_harden=$SOC_BOOT_HARDEN  clkgate=$SOC_CLKGATE  wake_gnt=$SOC_WAKE_GNT  req_reg=$SOC_REQ_REG  abc -D $ABC_D"
 echo "  report: $OUT/$AREA_SUMMARY  per-module: $OUT/area_hier.rpt"
 echo "  netlist: $OUT/soc_top.netlist.v  sta: $OUT/soc_top.sta.v  log: $OUT/syn.log"

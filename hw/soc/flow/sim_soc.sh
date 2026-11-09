@@ -318,6 +318,19 @@ if [ "$IBEX_EX_STAGE" = 1 ] && [ "$SOC_CORE_WB_STAGE$SOC_CORE_BT_ALU" != 00 ]; t
   echo 'IBEX_EX_STAGE applies only without the writeback stage and the branch-target ALU' >&2; exit 2
 fi
 export IBEX_EX_STAGE
+# IBEX_PMP_REQ_REG=1: the data request leaves the core from a register that
+# holds the PMP verdict, docs/ibex-ex-stage.md section 7. A source selector
+# read by flow/ibex_sources.sh (flow/ibex_pmp_req_reg.py), defined only
+# without the writeback stage.
+IBEX_PMP_REQ_REG=${IBEX_PMP_REQ_REG:-0}
+case "$IBEX_PMP_REQ_REG" in
+  0|1) ;;
+  *) echo 'IBEX_PMP_REQ_REG must be zero or one' >&2; exit 2;;
+esac
+if [ "$IBEX_PMP_REQ_REG" = 1 ] && [ "$SOC_CORE_WB_STAGE" != 0 ]; then
+  echo 'IBEX_PMP_REQ_REG applies only without the writeback stage' >&2; exit 2
+fi
+export IBEX_PMP_REQ_REG
 if [ "$SOC_CORE_BT_ALU" != 0 ]; then
   DEFPARAMS="$DEFPARAMS
   defparam tb_soc.dut.CORE_BT_ALU = $SOC_CORE_BT_ALU;"
@@ -560,6 +573,13 @@ if [ "$IBEX_EX_STAGE" = 1 ]; then
   echo "== separate execute stage: register file read in ID, operands registered (IBEX_EX_STAGE=1)"
 elif grep -qa '"g_ex_stage"' "$OUT/tb_soc.vvp"; then
   echo "== the execute-stage patch is elaborated at IBEX_EX_STAGE=0" >&2; exit 1
+fi
+if [ "$IBEX_PMP_REQ_REG" = 1 ]; then
+  grep -qa '"g_pmp_req_reg"' "$OUT/tb_soc.vvp" || {
+    echo "== IBEX_PMP_REQ_REG=1 but the data request register is not elaborated" >&2; exit 1; }
+  echo "== data request: registered with its PMP verdict, one cycle later (IBEX_PMP_REQ_REG=1)"
+elif grep -qa '"g_pmp_req_reg"' "$OUT/tb_soc.vvp"; then
+  echo "== the data request register is elaborated at IBEX_PMP_REQ_REG=0" >&2; exit 1
 fi
 if [ "$SOC_CORE_BT_ALU" != 0 ]; then
   grep -qa '"g_branch_target_alu"' "$OUT/tb_soc.vvp" || {

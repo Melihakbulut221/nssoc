@@ -613,9 +613,104 @@ pmp_after:
     addi x9, x0, 9
 """
 
+# Data-side PMP faults (flow/ibex_pmp_req_reg.py). Two locked NAPOT entries:
+# 0x2c00-0x2cff no access, 0x2d00-0x2dff read-only; everything else is
+# allowed to M-mode. A refused load leaves its destination unchanged, a
+# refused store writes nothing (read back through the allowed read), and
+# mcause/mtval are checked or logged. Misaligned accesses straddle both
+# boundaries in both orders (first half refused, second allowed and the
+# reverse); whatever the pinned core does with the allowed half is in the
+# trace (stores are hashed at the bus) and in the registers read back.
+PMPDATA = """
+    li x1, 0x2c00
+    li x2, 0x2d00
+    li x3, 0x13572468
+    sw x3, 0(x2)
+    sw x3, 252(x2)
+    li x4, 0x0badf00d
+    sw x4, -4(x1)
+    sw x4, 0(x1)
+    sw x0, 256(x2)
+    li x5, 0xb1f
+    csrw pmpaddr0, x5
+    li x5, 0xb5f
+    csrw pmpaddr1, x5
+    li x5, 0x9998
+    csrw pmpcfg0, x5
+    li x8, 0x3100
+    li x6, 77
+    lw x6, 0(x1)
+    li x7, 77
+    bne x6, x7, fail
+    lw x9, 0(x8)
+    li x10, 5
+    bne x9, x10, fail
+    lw x11, 8(x8)
+    bne x11, x1, fail
+    sw x3, 16(x1)
+    lw x9, 0(x8)
+    li x10, 7
+    bne x9, x10, fail
+    li x12, 0x55aa55aa
+    sw x12, 0(x2)
+    lw x9, 0(x8)
+    bne x9, x10, fail
+    lw x13, 0(x2)
+    bne x13, x3, fail
+    sb x12, 3(x2)
+    lw x9, 0(x8)
+    bne x9, x10, fail
+    lhu x14, 2(x2)
+    li x15, 0x1357
+    bne x14, x15, fail
+    li x16, 5
+    lw x16, 4(x1)
+    lw x17, 0(x2)
+    add x17, x17, x16
+    sw x17, 0(x2)
+    lw x17, 0(x2)
+    bne x17, x13, fail
+    li x18, 99
+    lw x18, -2(x1)
+    li x19, 99
+    bne x18, x19, fail
+    lw x9, 0(x8)
+    li x10, 5
+    bne x9, x10, fail
+    lw x20, 8(x8)
+    li x21, 99
+    lw x21, 254(x1)
+    bne x21, x19, fail
+    lw x9, 0(x8)
+    bne x9, x10, fail
+    lw x22, 8(x8)
+    sw x12, -2(x1)
+    lw x9, 0(x8)
+    li x10, 7
+    bne x9, x10, fail
+    lw x23, -4(x1)
+    sw x12, 254(x2)
+    lw x9, 0(x8)
+    bne x9, x10, fail
+    lw x5, 256(x2)
+    lw x6, 252(x2)
+    bne x6, x3, fail
+    lw x7, 254(x2)
+    mv x15, x1
+    li x14, 33
+    c.lw x14, 4(x15)
+    li x13, 33
+    bne x14, x13, fail
+    lw x9, 0(x8)
+    li x10, 5
+    bne x9, x10, fail
+    li x11, 0x2b00
+    lw x11, 0(x11)
+"""
+
 DIRECTED = {"alu": ALU, "load": LOAD, "muldiv": MULDIV, "csr": CSR,
             "counters": COUNTERS, "branch": BRANCH, "except": EXCEPT,
-            "fence": FENCE, "wfi": WFI, "pmp": PMP}
+            "fence": FENCE, "wfi": WFI, "pmp": PMP, "pmpdata": PMPDATA}
 
 
 def random_body(seed, n=220):
