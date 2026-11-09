@@ -132,9 +132,12 @@ module soc_pcie_rx_credit #(
     // the high half finished at the removal. A removal never follows a
     // removal, and while a verdict is awaited the head (its class and units)
     // is fixed, so the registered half is the current one at any removal.
+    // The high half is registered the same way, for both carries in, so the
+    // removal only selects between registers.
     reg [6:0] release_lo;
+    reg [5:0] release_hi,release_hi_carry;
     wire [11:0] head_data_limit=data_limit_o[head_class*12 +: 12];
-    wire [11:0] released_limit={head_data_limit[11:6]+head_units[11:6]+release_lo[6],release_lo[5:0]};
+    wire [11:0] released_limit={release_lo[6] ? release_hi_carry : release_hi,release_lo[5:0]};
     wire [11:0] stay_units=stay_staged ? stage_units : head_units;
     wire [11:0] advance_units=queue_one ? stage_units : units[second_slot];
     wire [SW-1:0] next_head_slot=remove ? advance_slot : stay_slot;
@@ -234,6 +237,7 @@ module soc_pcie_rx_credit #(
             head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;
             input_active<=0;input_dllp<=0;input_bad<=0;input_count<=0;
             stage_pending<=0;stage_length<=0;stage_last<=0;stage_bad<=0;release_lo<=0;
+            release_hi<=0;release_hi_carry<=0;
             stage_checked<=0;stage_shape_ok<=0;stage_slot<=0;stage_units<=0;commit_slot<=0;
             stage_write_at<=0;dllp_pending<=0;dllp_bad<=0;dllp_length<=0;
             output_active<=0;output_dllp<=0;output_index<=0;waiting<=0;
@@ -253,6 +257,8 @@ module soc_pcie_rx_credit #(
             released_o<=0;dropped_o<=0;head_slot<=next_head_slot;stage_write_at<=0;
             head_last<=next_head_last;head_class<=next_head_slot/SLOTS_PER_CLASS;head_units<=next_head_units;
             release_lo<={1'b0,head_data_limit[5:0]}+{1'b0,head_units[5:0]};
+            release_hi<=head_data_limit[11:6]+head_units[11:6];
+            release_hi_carry<=head_data_limit[11:6]+head_units[11:6]+6'd1;
             head_onehot<={{(SLOTS-1){1'b0}},1'b1}<<next_head_slot;
             stage_checked<=stage_pending && !commit && !stage_drop;
             stage_shape_ok<=shape_ok;

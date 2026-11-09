@@ -187,6 +187,13 @@ module soc_pcie_credit_tx (
     wire [7:0] h_debit_remaining=update_h_debit;
     wire [11:0] d_debit_remaining=update_d_debit;
     wire update_rejected=update_class==3 || update_phase==3;
+    // The event's class's infinite flags and its zero tests are registered
+    // with the event in stage B. Only an InitFC applied in stage C writes
+    // those flags, so the registered flag takes that write when the two
+    // events have the same class.
+    reg update_h_infinite,update_d_infinite,update_header_zero,update_data_zero;
+    wire init_applied=update_valid && !update_rejected && !all_seen &&
+        !(update_phase==2 || update_header[7] || update_data[11]);
     // Consumed counts after a debit: hc+1 and the low half of dc+required
     // (with its carry) are registered one cycle ahead, and the high half is
     // finished in the consume's cycle. A consume is never in the cycle after
@@ -237,9 +244,9 @@ module soc_pcie_credit_tx (
             end
             if (all_seen && rx_tlp_seen_i) confirmed_n=1;
             debit=variant && request_class==update_class;
-            h_ok=hi[update_class] ? update_header==0 :
+            h_ok=update_h_infinite ? update_header_zero :
                 (!h_step_back && !(debit ? h_debit_remaining[7] : h_idle_remaining[7]));
-            d_ok=di[update_class] ? update_data==0 :
+            d_ok=update_d_infinite ? update_data_zero :
                 (!d_step_back && !(debit ? d_debit_remaining[11] : d_idle_remaining[11]));
             if (update_valid) begin
                 if (update_rejected) error_n=1;
@@ -248,18 +255,18 @@ module soc_pcie_credit_tx (
                     else begin
                         hl_n[update_class*8+:8]=update_header;dl_n[update_class*12+:12]=update_data;
                         ah_n[update_class*8+:8]=h_idle_remaining;ad_n[update_class*12+:12]=d_idle_remaining;
-                        hi_n[update_class]=update_header==0;di_n[update_class]=update_data==0;
+                        hi_n[update_class]=update_header_zero;di_n[update_class]=update_data_zero;
                         seen_n[update_class]=1;hl_written=1;dl_written=1;
                     end
                 end else begin
                     if (update_phase==1) confirmed_n=1;
                     if (update_phase==2) begin
                         if (h_ok && d_ok) begin
-                            if (!hi[update_class]) begin
+                            if (!update_h_infinite) begin
                                 hl_n[update_class*8+:8]=update_header;hl_written=1;
                                 ah_n[update_class*8+:8]=debit ? h_debit_remaining : h_idle_remaining;
                             end
-                            if (!di[update_class]) begin
+                            if (!update_d_infinite) begin
                                 dl_n[update_class*12+:12]=update_data;dl_written=1;
                                 ad_n[update_class*12+:12]=debit ? d_debit_remaining : d_idle_remaining;
                             end
@@ -291,6 +298,9 @@ module soc_pcie_credit_tx (
             a_header<=fc_header_i;a_data<=fc_data_i;
             update_valid<=a_valid;update_phase<=a_phase;update_class<=a_class;
             update_header<=a_header;update_data<=a_data;
+            update_header_zero<=a_header==0;update_data_zero<=a_data==0;
+            update_h_infinite<=(init_applied && update_class==a_class) ? update_header_zero : hi[a_class];
+            update_d_infinite<=(init_applied && update_class==a_class) ? update_data_zero : di[a_class];
             b_hi<=class_hi[a_class];b_hd<=class_hd[a_class];b_ha<=class_ha[a_class];
             b_hw<=part8(a_header,~update_header,1'b1);
             b_di<=class_di[a_class];b_dd<=class_dd[a_class];b_da<=class_da[a_class];

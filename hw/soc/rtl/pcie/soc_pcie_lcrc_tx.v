@@ -154,6 +154,15 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
     // changes only at the last LCRC byte of a frame, and the next frame's
     // last byte follows at least eighteen cycles later.
     reg [11:0] next_sequence_plus;
+    // Collected words are written one cycle after acceptance, from a
+    // registered one-hot word select and a registered word. The first word
+    // is read at the PREFIX1 byte, two cycles after the accepted EOP at the
+    // earliest, and nothing is written while a frame is sent.
+    reg [MAX_TLP_DWORDS-1:0] write_at;
+    reg [31:0] write_word;
+    integer wk,wj;
+    always @(posedge clk_i)
+        for(wk=0;wk<MAX_TLP_DWORDS;wk=wk+1) if(write_at[wk]) words[wk]<=write_word;
     always @(posedge clk_i or negedge rst_ni)
         if (!rst_ni) next_sequence_plus<=12'd1;
         else next_sequence_plus<=next_sequence_o+1'b1;
@@ -163,10 +172,10 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
     always @(posedge clk_i or negedge rst_ni) begin
         if (!rst_ni) begin
             state<=IDLE;count<=0;length<=0;index<=0;byte_index<=0;
-            header_words<=3;next_sequence_o<=0;fold_valid<=0;
+            header_words<=3;next_sequence_o<=0;fold_valid<=0;write_at<=0;write_word<=0;
             packet_sent_o<=0;packet_bad_o<=0;
         end else begin
-            packet_sent_o<=0;packet_bad_o<=0;fold_valid<=0;
+            packet_sent_o<=0;packet_bad_o<=0;fold_valid<=0;write_at<=0;
             if (tx_valid_o && tx_ready_i) begin
                 case(state)
                     PREFIX0:state<=PREFIX1;
@@ -189,7 +198,7 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
             end else if (tlp_valid_i && tlp_ready_o) begin
                 if (tlp_sop_i) begin
                     if (state==COLLECT) packet_bad_o<=1;
-                    words[0]<=transmit_order(tlp_data_i,1'b1);count<=1;header_words<=tlp_data_i[29] ? 4 : 3;
+                    write_word<=transmit_order(tlp_data_i,1'b1);write_at<={{(MAX_TLP_DWORDS-1){1'b0}},1'b1};count<=1;header_words<=tlp_data_i[29] ? 4 : 3;
                     fold_valid<=1;fold_first<=1;fold_word<=tlp_data_i;fold_msb_first<=1;
                     if (tlp_eop_i || tlp_error_i) begin
                         packet_bad_o<=1;state<=tlp_eop_i ? IDLE : DROP;
@@ -201,7 +210,8 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
                 end else if (tlp_error_i || count==MAX_TLP_DWORDS) begin
                     packet_bad_o<=1;state<=tlp_eop_i ? IDLE : DROP;
                 end else begin
-                    words[count]<=transmit_order(tlp_data_i,count<header_words);count<=count+1'b1;
+                    write_word<=transmit_order(tlp_data_i,count<header_words);count<=count+1'b1;
+                    for(wj=0;wj<MAX_TLP_DWORDS;wj=wj+1) if(count==CW'(wj)) write_at[wj]<=1;
                     fold_valid<=1;fold_first<=0;fold_word<=tlp_data_i;fold_msb_first<=count<header_words;
                     if (tlp_eop_i) begin
                         if (count+1>=header_words) begin

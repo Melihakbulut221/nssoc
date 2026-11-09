@@ -143,8 +143,6 @@ module soc_pcie_replay_tx #(
     // current slot's bytes, and the request no longer starts with a byte
     // multiplexer and header decode.
     wire core_valid,core_ready,core_eop;
-    wire [PW-1:0] next_new_slot=!link_up_i ? {PW{1'b0}} :
-        (core_valid && core_ready && core_eop && !sending_replay) ? advance(new_slot,1) : new_slot;
     // Every slot's header is decoded in parallel from its own bytes; the
     // next slot only selects a decoded result, so the frame-end condition
     // that picks the slot no longer runs through a byte multiplexer and the
@@ -159,11 +157,16 @@ module soc_pcie_replay_tx #(
             ((header[4:0]==0 && header[6]) || header[4:3]==2'b10) ? 2'd0 : 2'd1;
         assign slot_payload_dw[meta_slot]=!header[6] ? 11'd0 : length==0 ? 11'd1024 : {1'b0,length};
     end endgenerate
+    // Both candidate slots' decodes are selected from registers; whether
+    // new_slot moves selects one of them as the last step.
+    wire new_slot_moves=core_valid && core_ready && core_eop && !sending_replay;
+    wire [PW-1:0] kept_slot=!link_up_i ? {PW{1'b0}} : new_slot;
+    wire [PW-1:0] moved_slot=!link_up_i ? {PW{1'b0}} : advance(new_slot,1);
     reg [1:0] reserve_class_q;
     reg [10:0] reserve_payload_dw_q;
     always @(posedge clk_i) begin
-        reserve_class_q<=slot_class[next_new_slot];
-        reserve_payload_dw_q<=slot_payload_dw[next_new_slot];
+        reserve_class_q<=new_slot_moves ? slot_class[moved_slot] : slot_class[kept_slot];
+        reserve_payload_dw_q<=new_slot_moves ? slot_payload_dw[moved_slot] : slot_payload_dw[kept_slot];
     end
     assign reserve_class_o=reserve_class_q;
     assign reserve_payload_dw_o=reserve_payload_dw_q;
