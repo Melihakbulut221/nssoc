@@ -75,45 +75,104 @@ module soc_pcie_credit_tx (
     // link loss or reset, which gate the grant directly.
     assign reserve_ready_o=rst_ni && link_up_i && verdict && same_request && request_stable && !consumed;
     wire consume=reserve_valid_i && reserve_ready_o && !reserve_replay_i;
-    // UpdateFC is processed one cycle after it is presented. The first cycle
-    // registers the event with its new-limit-minus-consumed balance without
-    // a debit and with one debit (carry-save form, one adder deep), and the
-    // sign of its limit advance against the current limit and against the
-    // limit the UpdateFC applied in that cycle writes. The second cycle only
-    // selects: two consumes are never adjacent, and the required credit of a
-    // debit in either cycle is the same registered value, so "one debit"
-    // covers a debit in the first cycle or in the second; the advance sign
-    // follows whether the first cycle overwrote that limit. The first-cycle
-    // arithmetic runs once per class from that class's registers, and the
-    // event's class selects the results.
-    wire debit_now=consume && request_class==fc_class_i;
-    wire [7:0] class_h_idle [0:2];
-    wire [7:0] class_h_debit [0:2];
-    wire [11:0] class_d_idle [0:2];
-    wire [11:0] class_d_debit [0:2];
-    wire [2:0] class_h_back,class_d_back;
+    // UpdateFC takes three cycles from presentation to its effect.
+    //  A: the event is registered.
+    //  B: from the registered event and this cycle's consumed counts and
+    //     limits, the new-limit-minus-consumed balance without a debit and
+    //     with one debit (carry-save form), and the limit-advance borrow
+    //     against the current limit and against the limit the event being
+    //     applied in this cycle writes, are formed up to their low halves;
+    //     the low halves, their carries and the high-half operands are
+    //     registered. Each class is computed from its own registers and the
+    //     event's class selects the results.
+    //  C: the high halves are completed and the update is applied.
+    // A debit in A's cycle is already in B's consumed counts. Debits in B's
+    // and C's cycles are never adjacent, so "one debit" covers either, and
+    // the two-cycle request hold makes B's registered required credit the
+    // one of a debit in either cycle. The advance borrow follows whether
+    // the event applied in B's cycle overwrote that limit.
+    reg a_valid;
+    reg [1:0] a_phase,a_class;
+    reg [7:0] a_header;
+    reg [11:0] a_data;
+    wire debit_now=consume && request_class==a_class;
+    // Stage B forms each sum in 4-bit blocks: the low block, and the middle
+    // and high blocks for both carries in (with their carries out). Stage C
+    // finishes it with two selects.
+    function [22:0] part12;
+        input [11:0] a,b;
+        input cin;
+        reg [4:0] lo,m0,m1;
+        reg [3:0] h0,h1;
+        begin
+            lo={1'b0,a[3:0]}+{1'b0,b[3:0]}+{4'b0,cin};
+            m0={1'b0,a[7:4]}+{1'b0,b[7:4]};m1={1'b0,a[7:4]}+{1'b0,b[7:4]}+5'd1;
+            h0=a[11:8]+b[11:8];h1=a[11:8]+b[11:8]+4'd1;
+            part12={h1,h0,m1,m0,lo};
+        end
+    endfunction
+    function [11:0] sum12;
+        input [22:0] p;
+        reg cm;
+        begin
+            cm=p[4] ? p[14] : p[9];
+            sum12={cm ? p[22:19] : p[18:15],p[4] ? p[13:10] : p[8:5],p[3:0]};
+        end
+    endfunction
+    function [12:0] part8;
+        input [7:0] a,b;
+        input cin;
+        reg [4:0] lo;
+        reg [3:0] h0,h1;
+        begin
+            lo={1'b0,a[3:0]}+{1'b0,b[3:0]}+{4'b0,cin};
+            h0=a[7:4]+b[7:4];h1=a[7:4]+b[7:4]+4'd1;
+            part8={h1,h0,lo};
+        end
+    endfunction
+    function [7:0] sum8;
+        input [12:0] p;
+        begin sum8={p[4] ? p[12:9] : p[8:5],p[3:0]}; end
+    endfunction
+    wire [12:0] class_hi [0:2];
+    wire [12:0] class_hd [0:2];
+    wire [12:0] class_ha [0:2];
+    wire [22:0] class_di [0:2];
+    wire [22:0] class_dd [0:2];
+    wire [22:0] class_da [0:2];
     genvar fcc;
     generate for(fcc=0;fcc<3;fcc=fcc+1) begin: class_update
         wire [11:0] csa_b=~dc[fcc];
-        wire [11:0] csa_sum=fc_data_i^csa_b^request_data_negated;
-        wire [11:0] csa_carry=(fc_data_i&csa_b)|(fc_data_i&request_data_negated)|(csa_b&request_data_negated);
-        wire [7:0] h_advance=fc_header_i-hl[fcc];
-        wire [11:0] d_advance=fc_data_i-dl[fcc];
-        assign class_h_idle[fcc]=fc_header_i-hc[fcc];
-        assign class_h_debit[fcc]=fc_header_i+~hc[fcc];
-        assign class_d_idle[fcc]=fc_data_i-dc[fcc];
-        assign class_d_debit[fcc]=csa_sum+{csa_carry[10:0],1'b1};
-        assign class_h_back[fcc]=h_advance[7];
-        assign class_d_back[fcc]=d_advance[11];
+        wire [11:0] csa_sum=a_data^csa_b^request_data_negated;
+        wire [11:0] csa_carry=(a_data&csa_b)|(a_data&request_data_negated)|(csa_b&request_data_negated);
+        // a-b = a+~b+1; header debit variant a-b-1 = a+~b.
+        assign class_hi[fcc]=part8(a_header,~hc[fcc],1'b1);
+        assign class_hd[fcc]=part8(a_header,~hc[fcc],1'b0);
+        assign class_ha[fcc]=part8(a_header,~hl[fcc],1'b1);
+        assign class_di[fcc]=part12(a_data,csa_b,1'b1);
+        assign class_dd[fcc]=part12(csa_sum,{csa_carry[10:0],1'b0},1'b1);
+        assign class_da[fcc]=part12(a_data,~dl[fcc],1'b1);
     end endgenerate
+    // Stage B registers (the event as seen by stage C).
     reg update_valid,update_h_debited,update_d_debited;
     reg [1:0] update_phase,update_class;
-    reg [7:0] update_header,update_h_idle,update_h_debit;
-    reg [11:0] update_data,update_d_idle,update_d_debit;
-    reg update_h_back_now,update_h_back_written,update_d_back_now,update_d_back_written;
+    reg [7:0] update_header;
+    reg [11:0] update_data;
     reg update_h_overwritten,update_d_overwritten;
-    wire [7:0] h_advance_written=fc_header_i-update_header;
-    wire [11:0] d_advance_written=fc_data_i-update_data;
+    reg [12:0] b_hi,b_hd,b_ha,b_hw;
+    reg [22:0] b_di,b_dd,b_da,b_dw;
+    wire [7:0] update_h_idle=sum8(b_hi);
+    wire [7:0] update_h_debit=sum8(b_hd);
+    wire [11:0] update_d_idle=sum12(b_di);
+    wire [11:0] update_d_debit=sum12(b_dd);
+    wire [7:0] h_advance_now=sum8(b_ha);
+    wire [7:0] h_advance_written=sum8(b_hw);
+    wire [11:0] d_advance_now=sum12(b_da);
+    wire [11:0] d_advance_written=sum12(b_dw);
+    wire update_h_back_now=h_advance_now[7];
+    wire update_h_back_written=h_advance_written[7];
+    wire update_d_back_now=d_advance_now[11];
+    wire update_d_back_written=d_advance_written[11];
     wire [7:0] h_idle_remaining=update_h_debited ? update_h_debit : update_h_idle;
     wire [11:0] d_idle_remaining=update_d_debited ? update_d_debit : update_d_idle;
     wire h_step_back=update_h_overwritten ? update_h_back_written : update_h_back_now;
@@ -121,12 +180,19 @@ module soc_pcie_credit_tx (
     wire [7:0] h_debit_remaining=update_h_debit;
     wire [11:0] d_debit_remaining=update_d_debit;
     wire update_rejected=update_class==3 || update_phase==3;
-    // Consumed counts after a debit, registered one cycle ahead. A consume
-    // is never in the cycle after a consume, and only a consume changes a
-    // consumed count; the two-cycle request hold keeps request_data from
-    // that cycle. So in a consume's cycle these equal hc+1 and dc+required.
+    // Consumed counts after a debit: hc+1 and the low half of dc+required
+    // (with its carry) are registered one cycle ahead, and the high half is
+    // finished in the consume's cycle. A consume is never in the cycle after
+    // a consume, and only a consume changes a consumed count; the two-cycle
+    // request hold keeps request_data from that cycle. So in a consume's
+    // cycle these equal hc+1 and dc+required.
     reg [7:0] hc_plus [0:2];
-    reg [11:0] dc_plus [0:2];
+    reg [6:0] dc_plus_lo [0:2];
+    wire [11:0] dc_plus [0:2];
+    genvar dpc;
+    generate for(dpc=0;dpc<3;dpc=dpc+1) begin: consumed_plus
+        assign dc_plus[dpc]={dc[dpc][11:6]+{2'b0,request_data[9:6]}+dc_plus_lo[dpc][6],dc_plus_lo[dpc][5:0]};
+    end endgenerate
     // Every register's next value is computed twice, for "the request is
     // consumed in this cycle" (variant 1) and "it is not" (variant 0), from
     // registers only; the consume selects between them as the last step.
@@ -197,29 +263,31 @@ module soc_pcie_credit_tx (
             seen<=0;hi<=0;di<=0;confirmed<=0;protocol_error_o<=0;
             for(i=0;i<3;i=i+1) begin hl[i]<=0;hc[i]<=0;dl[i]<=0;dc[i]<=0;ah[i]<=0;ad[i]<=0;end
             verdict<=0;consumed<=0;request_stable<=0;request_class<=0;request_dw<=0;request_replay<=0;
-            request_data<=0;request_data_negated<=0;update_valid<=0;
+            request_data<=0;request_data_negated<=0;update_valid<=0;a_valid<=0;
         end else if (!link_up_i) begin
             seen<=0;hi<=0;di<=0;confirmed<=0;protocol_error_o<=0;
             for(i=0;i<3;i=i+1) begin hl[i]<=0;hc[i]<=0;dl[i]<=0;dc[i]<=0;ah[i]<=0;ad[i]<=0;end
-            verdict<=0;consumed<=0;request_stable<=0;update_valid<=0;
+            verdict<=0;consumed<=0;request_stable<=0;update_valid<=0;a_valid<=0;
         end else begin
             verdict<=all_seen && confirmed && local_init_done_i && request_legal &&
                 (reserve_replay_i || (header_ok && data_ok));
             consumed<=consume;request_stable<=same_request;
             request_class<=reserve_class_i;request_dw<=reserve_payload_dw_i;request_replay<=reserve_replay_i;
             request_data<=required_data;request_data_negated<=-{2'b0,required_data};
-            update_valid<=fc_valid_i;update_phase<=fc_phase_i;update_class<=fc_class_i;
-            update_header<=fc_header_i;update_data<=fc_data_i;
-            update_h_idle<=class_h_idle[fc_class_i];update_h_debit<=class_h_debit[fc_class_i];
-            update_d_idle<=class_d_idle[fc_class_i];update_d_debit<=class_d_debit[fc_class_i];
-            update_h_back_now<=class_h_back[fc_class_i];update_h_back_written<=h_advance_written[7];
-            update_d_back_now<=class_d_back[fc_class_i];update_d_back_written<=d_advance_written[11];
-            update_h_overwritten<=(consume ? next[1].hl_written : next[0].hl_written) && update_class==fc_class_i;
-            update_d_overwritten<=(consume ? next[1].dl_written : next[0].dl_written) && update_class==fc_class_i;
+            a_valid<=fc_valid_i;a_phase<=fc_phase_i;a_class<=fc_class_i;
+            a_header<=fc_header_i;a_data<=fc_data_i;
+            update_valid<=a_valid;update_phase<=a_phase;update_class<=a_class;
+            update_header<=a_header;update_data<=a_data;
+            b_hi<=class_hi[a_class];b_hd<=class_hd[a_class];b_ha<=class_ha[a_class];
+            b_hw<=part8(a_header,~update_header,1'b1);
+            b_di<=class_di[a_class];b_dd<=class_dd[a_class];b_da<=class_da[a_class];
+            b_dw<=part12(a_data,~update_data,1'b1);
+            update_h_overwritten<=(consume ? next[1].hl_written : next[0].hl_written) && update_class==a_class;
+            update_d_overwritten<=(consume ? next[1].dl_written : next[0].dl_written) && update_class==a_class;
             update_h_debited<=debit_now && !hi[request_class];
             update_d_debited<=debit_now && !di[request_class];
             for(i=0;i<3;i=i+1) begin
-                hc_plus[i]<=hc[i]+8'd1;dc_plus[i]<=dc[i]+{2'b0,request_data};
+                hc_plus[i]<=hc[i]+8'd1;dc_plus_lo[i]<={1'b0,dc[i][5:0]}+{1'b0,request_data[5:0]};
                 hl[i]<=consume ? next[1].hl_n[i*8+:8] : next[0].hl_n[i*8+:8];
                 hc[i]<=consume ? next[1].hc_n[i*8+:8] : next[0].hc_n[i*8+:8];
                 ah[i]<=consume ? next[1].ah_n[i*8+:8] : next[0].ah_n[i*8+:8];

@@ -36,14 +36,16 @@ module soc_pcie_rx_credit #(
     reg [7:0] staging[0:CAP-1];
     reg [7:0] dllp[0:5];
     reg [7:0] packets[0:SLOTS*CAP-1];
-    reg [CW-1:0] lengths[0:SLOTS-1];
+    // Each slot keeps the index of its last byte (length minus one), set from
+    // the staged length at commit, so the frame end needs no decrement.
+    reg [CW-1:0] lasts[0:SLOTS-1];
     reg [11:0] units[0:SLOTS-1];
     reg errors[0:SLOTS-1];
     reg [SW-1:0] order[0:SLOTS-1];
     reg [SLOTS-1:0] used;
     reg [SW-1:0] qread,qwrite,qcount;
     reg input_active,input_dllp,input_bad,stage_pending,dllp_pending,dllp_bad;
-    reg [CW-1:0] input_count,stage_length;
+    reg [CW-1:0] input_count,stage_length,stage_last;
     reg stage_bad;
     reg [2:0] dllp_length;
     reg output_active,output_dllp,waiting;
@@ -110,8 +112,16 @@ module soc_pcie_rx_credit #(
     reg [SLOTS-1:0] head_onehot;
     wire [SW-1:0] stay_slot=(commit && qwrite==qread) ? stage_slot : order[qread];
     wire [SW-1:0] advance_slot=(commit && qwrite==qread_plus) ? stage_slot : order[qread_plus];
-    wire [CW-1:0] stay_last=(commit_slot[stay_slot] ? stage_length : lengths[stay_slot])-1'b1;
-    wire [CW-1:0] advance_last=(commit_slot[advance_slot] ? stage_length : lengths[advance_slot])-1'b1;
+    wire [CW-1:0] stay_last=commit_slot[stay_slot] ? stage_last : lasts[stay_slot];
+    wire [CW-1:0] advance_last=commit_slot[advance_slot] ? stage_last : lasts[advance_slot];
+    // Data credit released by the next acceptance: the low half of
+    // data_limit+units for the head's class is registered a cycle ahead and
+    // the high half finished at the removal. A removal never follows a
+    // removal, and while a verdict is awaited the head (its class and units)
+    // is fixed, so the registered half is the current one at any removal.
+    reg [6:0] release_lo;
+    wire [11:0] head_data_limit=data_limit_o[head_class*12 +: 12];
+    wire [11:0] released_limit={head_data_limit[11:6]+head_units[11:6]+release_lo[6],release_lo[5:0]};
     wire [11:0] stay_units=commit_slot[stay_slot] ? stage_units : units[stay_slot];
     wire [11:0] advance_units=commit_slot[advance_slot] ? stage_units : units[advance_slot];
     wire [SW-1:0] next_head_slot=remove ? advance_slot : stay_slot;
@@ -166,7 +176,7 @@ module soc_pcie_rx_credit #(
             used<=0;qread<=0;qwrite<=0;qcount<=0;head_slot<=0;
             head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;read_onehot<=1;
             input_active<=0;input_dllp<=0;input_bad<=0;input_count<=0;
-            stage_pending<=0;stage_length<=0;stage_bad<=0;
+            stage_pending<=0;stage_length<=0;stage_last<=0;stage_bad<=0;release_lo<=0;
             stage_checked<=0;stage_shape_ok<=0;stage_slot<=0;stage_units<=0;commit_slot<=0;
             dllp_pending<=0;dllp_bad<=0;dllp_length<=0;
             output_active<=0;output_dllp<=0;output_index<=0;waiting<=0;
@@ -185,6 +195,7 @@ module soc_pcie_rx_credit #(
         end else begin
             released_o<=0;dropped_o<=0;head_slot<=next_head_slot;
             head_last<=next_head_last;head_class<=next_head_slot/SLOTS_PER_CLASS;head_units<=next_head_units;
+            release_lo<={1'b0,head_data_limit[5:0]}+{1'b0,head_units[5:0]};
             head_onehot<={{(SLOTS-1){1'b0}},1'b1}<<next_head_slot;
             stage_checked<=stage_pending && !commit && !stage_drop;
             stage_shape_ok<=shape_ok;
@@ -198,7 +209,7 @@ module soc_pcie_rx_credit #(
             if(commit) begin
                 for(b=0;b<SLOTS;b=b+1) if(commit_slot[b]) begin
                     for(k=0;k<CAP;k=k+1) packets[b*CAP+k]<=staging[k];
-                    lengths[b]<=stage_length;units[b]<=stage_units;
+                    lasts[b]<=stage_last;units[b]<=stage_units;
                     errors[b]<=stage_bad;used[b]<=1;
                 end
                 order[qwrite]<=stage_slot;qwrite<=qwrite==SLOTS-1 ? 0 : qwrite+1'b1;
@@ -210,7 +221,7 @@ module soc_pcie_rx_credit #(
                     released_o<=1;released_class_o<=head_class;
                     released_data_o<=head_units;
                     header_limit_o[head_class*8 +: 8]<=header_limit_o[head_class*8 +: 8]+1'b1;
-                    data_limit_o[head_class*12 +: 12]<=data_limit_o[head_class*12 +: 12]+head_units;
+                    data_limit_o[head_class*12 +: 12]<=released_limit;
                 end
             end
             case({commit,remove})
@@ -225,7 +236,7 @@ module soc_pcie_rx_credit #(
                     if(rx_dllp_i) dllp[0]<=rx_data_i; else staging[0]<=rx_data_i;
                     if(rx_eop_i) begin
                         if(rx_dllp_i) begin dllp_pending<=1;dllp_length<=1;dllp_bad<=1;end
-                        else begin stage_pending<=1;stage_length<=1;stage_bad<=1;end
+                        else begin stage_pending<=1;stage_length<=1;stage_last<=0;stage_bad<=1;end
                     end
                 end else begin
                     input_bad<=input_bad || rx_error_i || rx_sop_i || rx_dllp_i!=input_dllp;
@@ -239,7 +250,7 @@ module soc_pcie_rx_credit #(
                             dllp_pending<=1;dllp_length<=input_count>=6 ? 6 : input_count+1'b1;
                             dllp_bad<=input_bad || rx_error_i || rx_sop_i || !rx_dllp_i || input_count!=5;
                         end else begin
-                            stage_pending<=1;stage_length<=input_count+1'b1;
+                            stage_pending<=1;stage_length<=input_count+1'b1;stage_last<=input_count;
                             stage_bad<=input_bad || rx_error_i || rx_sop_i || rx_dllp_i;
                         end
                     end

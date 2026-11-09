@@ -24,7 +24,17 @@ module soc_pcie_sequence_rx #(parameter integer MAX_TLP_DWORDS=8) (
     wire good,bad,raw_valid,raw_sop,raw_eop,raw_ready;
     reg decided,forward_packet,nak_scheduled;
     wire allow_input=!ack_valid_o && !good && !bad;
-    wire [11:0] behind=expected_sequence_o-received_sequence;
+    // expected_sequence_o changes only when a packet is accepted, at most
+    // once per received packet, and received_sequence is fixed from the
+    // packet's second byte until its verdict. So the distance and the
+    // sequence numbers one above and below are registered a cycle ahead and
+    // equal their combinational values whenever a verdict is taken.
+    reg [11:0] behind,expected_plus,expected_minus;
+    always @(posedge clk_i) begin
+        behind<=expected_sequence_o-received_sequence;
+        expected_plus<=expected_sequence_o+1'b1;
+        expected_minus<=expected_sequence_o-1'b1;
+    end
     wire expected=received_sequence==expected_sequence_o;
     wire duplicate=!expected && behind<=12'd2048;
     assign rx_ready_o=raw_ready && allow_input;
@@ -51,23 +61,23 @@ module soc_pcie_sequence_rx #(parameter integer MAX_TLP_DWORDS=8) (
             if (good) begin
                 decided<=1;forward_packet<=expected;
                 if (expected) begin
-                    packet_accepted_o<=1;expected_sequence_o<=expected_sequence_o+1'b1;
+                    packet_accepted_o<=1;expected_sequence_o<=expected_plus;
                     nak_scheduled<=0;ack_valid_o<=1;ack_nak_o<=0;
                     ack_sequence_o<=received_sequence;
                 end else if (duplicate) begin
                     packet_duplicate_o<=1;ack_valid_o<=1;ack_nak_o<=0;
-                    ack_sequence_o<=expected_sequence_o-1'b1;
+                    ack_sequence_o<=expected_minus;
                 end else begin
                     packet_rejected_o<=1;
                     if (!nak_scheduled) begin
-                        ack_valid_o<=1;ack_nak_o<=1;ack_sequence_o<=expected_sequence_o-1'b1;
+                        ack_valid_o<=1;ack_nak_o<=1;ack_sequence_o<=expected_minus;
                         nak_scheduled<=1;
                     end
                 end
             end else if (bad) begin
                 packet_rejected_o<=1;
                 if (!nak_scheduled) begin
-                    ack_valid_o<=1;ack_nak_o<=1;ack_sequence_o<=expected_sequence_o-1'b1;
+                    ack_valid_o<=1;ack_nak_o<=1;ack_sequence_o<=expected_minus;
                     nak_scheduled<=1;
                 end
             end
