@@ -41,7 +41,16 @@ def test_two_cycle_branches(tmp_path, delay):
     run_cpu(tmp_path, delay, 0, 0, expect_pass=True, two_cycle=True)
 
 
-def run_cpu(tmp_path, delay, writeback, branch_alu, *, expect_pass, two_cycle=False):
+# docs/ibex-ex-stage.md: the separate execute stage, alone and with the
+# two-cycle branches.
+@pytest.mark.parametrize('delay', [1, 2, 3, 5, 8])
+@pytest.mark.parametrize('two_cycle', [False, True])
+def test_execute_stage(tmp_path, delay, two_cycle):
+    run_cpu(tmp_path, delay, 0, 0, expect_pass=True, two_cycle=two_cycle, ex_stage=True)
+
+
+def run_cpu(tmp_path, delay, writeback, branch_alu, *, expect_pass, two_cycle=False,
+            ex_stage=False):
     iverilog, vvp = shutil.which('iverilog'), shutil.which('vvp')
     generated = sorted((SOC / 'gen').glob('*.v'))
     if not iverilog or not vvp or not (SOC / 'gen/ibex_top.v').is_file():
@@ -51,6 +60,12 @@ def run_cpu(tmp_path, delay, writeback, branch_alu, *, expect_pass, two_cycle=Fa
         subprocess.run(['python3', str(SOC / 'flow/ibex_branch_2cycle.py'),
                         str(SOC / 'gen'), str(patched)], check=True)
         generated = [patched / 'ibex_id_stage.v' if g.name == 'ibex_id_stage.v' else g
+                     for g in generated]
+    if ex_stage:
+        patched = tmp_path / 'ex'
+        subprocess.run(['python3', str(SOC / 'flow/ibex_ex_stage.py'),
+                        str(SOC / 'gen'), str(patched)], check=True)
+        generated = [patched / 'ibex_core.v' if g.name == 'ibex_core.v' else g
                      for g in generated]
     binary = tmp_path / 'branch.vvp'
     command = [iverilog, '-g2005-sv', '-DSG13G2_ICG_BEHAVIOURAL',

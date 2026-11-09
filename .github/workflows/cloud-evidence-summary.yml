@@ -1,4 +1,4 @@
-name: Ibex execute-path knobs - functional regressions and RTL-to-global-route timing probe
+name: Ibex separate execute stage - core tests, regressions, native boot and RTL-to-global-route timing probe
 on:
   workflow_dispatch:
     inputs:
@@ -24,7 +24,7 @@ permissions:
 jobs:
   unit:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 150
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -56,7 +56,7 @@ jobs:
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Prepare the pinned CPU RTL and apply the two-cycle branch patch
+      - name: Prepare the pinned CPU RTL and apply the branch and execute-stage patches
         run: |
           set -euo pipefail
           python3 -m pip install -q -r sw/requirements.txt
@@ -67,10 +67,22 @@ jobs:
           diff -u hw/soc/gen/ibex_id_stage.v out/br2/ibex_id_stage.v > out/ibex_id_stage.br2.diff || true
           cat out/ibex_id_stage.br2.diff
           grep -n "branch_decision_i" hw/soc/gen/ibex_id_stage.v > out/branch_decision_uses.txt; cat out/branch_decision_uses.txt
-          mkdir -p out/gen && cp hw/soc/gen/ibex_if_stage.v hw/soc/gen/ibex_core.v hw/soc/gen/ibex_top.v hw/soc/gen/ibex_id_stage.v hw/soc/gen/ibex_decoder.v out/gen/ && cp hw/soc/genp/ibex_top.v out/gen/ibex_top.genp.v
-      - name: Core-level branch tests (writeback hazard, branch-target ALU alone, two-cycle branches)
-        run: python3 -m pytest -q sw/tests/test_ibex_branch_stall.py
+          mkdir -p out/gen && cp hw/soc/gen/*.v out/gen/ && cp hw/soc/genp/ibex_top.v out/gen/ibex_top.genp.v
+          python3 hw/soc/flow/ibex_ex_stage.py hw/soc/gen out/ex
+          diff -u hw/soc/gen/ibex_core.v out/ex/ibex_core.v > out/ibex_core.ex.diff || true
+          python3 hw/soc/flow/ibex_rf_predecode.py hw/soc/gen out/pre-only
+          python3 hw/soc/flow/ibex_ex_stage.py out/pre-only out/pre-ex
+          diff -u out/pre-only/ibex_core.v out/pre-ex/ibex_core.v > out/ibex_core.pre-ex.diff || true
+          wc -l out/*.diff
+      - name: Execute-stage core tests (hazard classes, interrupt/debug sweeps, single step, mutations)
+        run: |
+          set -o pipefail
+          python3 -m pytest -q -rA --durations=15 sw/tests/test_ibex_ex_stage.py 2>&1 | tee out/test_ibex_ex_stage.log
+      - name: Core-level branch tests (writeback hazard, branch-target ALU alone, two-cycle branches, execute stage)
+        if: always()
+        run: python3 -m pytest -q -rA sw/tests/test_ibex_branch_stall.py
       - name: Register-file and memory knob tests (golden model, hazards, injected upsets, existing suites with the knobs)
+        if: always()
         run: |
           set -euo pipefail
           python3 -m pytest -q sw/tests/test_regfile_execute_knobs.py
@@ -91,7 +103,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ibex-execute-unit-${{ github.run_id }}
+          name: ibex-ex-stage-unit-${{ github.run_id }}
           path: out
           retention-days: 30
 
@@ -105,9 +117,12 @@ jobs:
       matrix:
         include:
           - {name: base}
-          - {name: exec, rf: '1', memreg: '2'}
+          - {name: ex, ex: '1'}
+          - {name: ex_exec, ex: '1', rf: '1', memreg: '2'}
+          - {name: ex_exec_br2, ex: '1', rf: '1', memreg: '2', br2: '1'}
     env:
       SOC_INTERFACE_PROFILE: base
+      IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
       SOC_CORE_BT_ALU: ${{ matrix.btalu || '0' }}
       IBEX_BRANCH_2CYCLE: ${{ matrix.br2 || '0' }}
       # exec: deferred check bits, predecoded read address (with the
@@ -162,7 +177,7 @@ jobs:
         run: make soc-boot-regression
       - name: Double fault, crash dump, reset and APB retention (make soc-crash-cocotb)
         run: |
-          if [ "${{ matrix.name }}" = base ]; then make soc-crash-cocotb; exit; fi
+          if [ "${{ matrix.name }}" = base ] || [ "${{ matrix.name }}" = ex ]; then make soc-crash-cocotb; exit; fi
           # The make target pins SOC_MEM_RDREG=1 SOC_RF_SYNPRE=1; the knobs
           # need SYNPRE=0. Same recipe, the knob's settings.
           B=$PWD/hw/soc/out/crash-cocotb
@@ -180,7 +195,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ibex-execute-regress-${{ matrix.name }}-${{ github.run_id }}
+          name: ibex-ex-stage-regress-${{ matrix.name }}-${{ github.run_id }}
           path: out
           retention-days: 30
 
@@ -196,9 +211,15 @@ jobs:
           # The MBIST boot (983,040 MBIST cycles before the firmware) needs
           # about 1.85 M gate-level cycles at MEM_RDREG = 2 and does not fit
           # the hosted job's wall clock; the same boot without MBIST does.
-          - {name: exec, rf: '1', memreg: '2', gate: corrpre-pcie}
+          - {name: ex_exec, ex: '1', rf: '1', memreg: '2', gate: corrpre-pcie}
+          - {name: ex_exec_br2, ex: '1', rf: '1', memreg: '2', br2: '1', gate: corrpre-pcie}
+          # The execute stage alone keeps one-cycle memory reads, so the
+          # MBIST boot may fit the wall clock (1.64 M cycles took 9413 s with
+          # two-cycle branches).
+          - {name: ex_mbist, ex: '1'}
     env:
       SOC_INTERFACE_PROFILE: full
+      IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
       GATE: ${{ matrix.gate || 'corrpre-pcie-mbist' }}
       SOC_CORE_REQ_REG: '0'
       SOC_CORE_WB_STAGE: '0'
@@ -250,13 +271,13 @@ jobs:
         run: |
           O=hw/soc/out/$GATE-native-boot
           cat $O/core-configuration.json || true
-          grep -E "core_bt_alu|branch_2cycle|chkdefer=|genp/gen-br2|genp/gen-pre|Parameter .(CHKDEFER|RDPRE|MEM_RDREG)" $O/synthesis-driver.log $O/synthesis/syn.log | head -8 || true
+          grep -E "core_bt_alu|branch_2cycle|ex_stage=|chkdefer=|genp/gen-br2|genp/gen-pre|genp/gen-ex|Parameter .(CHKDEFER|RDPRE|MEM_RDREG)" $O/synthesis-driver.log $O/synthesis/syn.log | head -8 || true
           grep -E "^== |checks run|\[TB\]" $O/rtl-driver.log | tail -10 || true
           tail -30 $O/gates-driver.log || true
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ibex-execute-native-boot-${{ matrix.name }}-${{ github.run_id }}
+          name: ibex-ex-stage-native-boot-${{ matrix.name }}-${{ github.run_id }}
           path: |
             hw/soc/out/*-native-boot/**/*.log
             hw/soc/out/*-native-boot/**/*.json
@@ -272,12 +293,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {name: r3_base, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1'}
-          - {name: r3_chkdefer, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', chkdefer: '1'}
-          - {name: r3_memreg2, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', memreg: '2'}
-          - {name: r3_exec, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', chkdefer: '1', memreg: '2', predecode: '1'}
-          - {name: r3_exec_br2, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', chkdefer: '1', memreg: '2', predecode: '1', br2: '1'}
-          - {name: r3_rawbound_br2, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', chkdefer: '1', memreg: '2', predecode: '1', br2: '1', rdraw: '1'}
+          - {name: r4_base, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1'}
+          - {name: r4_ex, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', ex: '1'}
+          - {name: r4_ex_exec, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1'}
+          - {name: r4_ex_exec_br2, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', br2: '1'}
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -292,6 +311,7 @@ jobs:
       KNOB_PREDECODE: ${{ matrix.predecode || '0' }}
       KNOB_RDRAW: ${{ matrix.rdraw || '0' }}
       KNOB_MEMREG: ${{ matrix.memreg || '1' }}
+      IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         if: ${{ (inputs.probe_variant == '' || inputs.probe_variant == matrix.name) }}
@@ -357,7 +377,7 @@ jobs:
           # SECDED (the fault port is tied to zero by ibex_fault_port.py).
           if [ "${{ matrix.regfile || 'secded' }}" = upstream ]; then export IBEX_REGFILE=upstream IBEX_RF_CORRPRE=0; fi
           timeout 3600 bash hw/soc/flow/syn_soc_top.sh 20 "$OUT/synthesis" > "$OUT/synthesis-driver.log" 2>&1 || { tail -40 "$OUT/synthesis-driver.log"; exit 1; }
-          grep -E 'regfile=|core_req_reg=|Parameter .(CORRPRE|CHKDEFER|RDPRE|RDRAW|MEM_RDREG|CORE_BT_ALU) =|genp/gen-(br2|pre)' "$OUT/synthesis/syn.log" "$OUT/synthesis-driver.log" | sort -u | head -12 || true
+          grep -E 'regfile=|core_req_reg=|Parameter .(CORRPRE|CHKDEFER|RDPRE|RDRAW|MEM_RDREG|CORE_BT_ALU) =|genp/gen-(br2|pre|ex|pre-ex)' "$OUT/synthesis/syn.log" "$OUT/synthesis-driver.log" | sort -u | head -12 || true
           sha256sum $OUT/synthesis/soc_top.netlist.v $OUT/rtl/test_soc.bin
           grep -iE "Number of cells|Chip area" $OUT/synthesis/syn.log | tail -3 || true
       - name: LibreLane AppImage and the verified PDK from the post-route input package
