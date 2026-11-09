@@ -46,12 +46,33 @@ ICacheScramble"
 # soc_top.v: the instantiation block only -- `ibex_top #(` up to the
 # closing `)` of the parameter list. Reading the whole file would match
 # a parameter name in a comment.
+#
+# Since docs/ibex-execute-timing.md two of the values are expressions of
+# soc_top's own parameters, `.BranchTargetALU (CORE_BT_ALU != 0 ? 1 :
+# CORE_WB_STAGE)` and `.WritebackStage (CORE_WB_STAGE)`. They are
+# evaluated at soc_top's declared defaults, which is the core soc_top.v
+# instantiates unless a flow overrides them; the knob configurations are
+# separate builds and not what checks.cfg.in describes. A value that is
+# neither a literal nor such an expression is left out, and the count
+# check below then fails, as it did for a literal-only reader.
 extract_rtl () {
   awk '/ibex_top *#\(/ {inblk=1} inblk {print} inblk && /^[[:space:]]*\) *u_ibex/ {exit}' "$1" |
   sed -e 's://.*::' |
-  grep -oE '\.[A-Za-z0-9_]+ *\( *[0-9]+ *\)' |
-  sed -e 's/[ ().]//g' -e 's/\([A-Za-z0-9_]*[A-Za-z]\)\([0-9]*\)$/\1 \2/' |
-  awk '{print $1, $2}' | sort
+  python3 -c '
+import re, sys
+blk = sys.stdin.read()
+top = open(sys.argv[1]).read()
+defaults = {m.group(1): m.group(2) for m in
+            re.finditer(r"parameter\s+(?:integer\s+)?([A-Za-z_]\w*)\s*=\s*([0-9]+)\b", top)}
+for m in re.finditer(r"\.([A-Za-z0-9_]+)\s*\(([^()]*)\)", blk):
+    name, expr = m.group(1), m.group(2).strip()
+    expr = re.sub(r"[A-Za-z_]\w*", lambda k: defaults.get(k.group(0), k.group(0)), expr)
+    t = re.fullmatch(r"(.+?)\?(.+?):(.+)", expr)
+    if t:
+        expr = "(%s) if (%s) else (%s)" % (t.group(2), t.group(1), t.group(3))
+    if re.fullmatch(r"[0-9 ()!=<>&|?:ifelse]+", expr):
+        print(name, int(eval(expr, {"__builtins__": {}})))
+' "$1" | sort
 }
 
 # checks.cfg.in: the `-G NAME=VALUE` tokens on the read_slang line only.
