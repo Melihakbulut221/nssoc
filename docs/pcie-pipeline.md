@@ -516,10 +516,62 @@ They follow a high-fanout flop through `buf_16` stages. That is the shape of a w
 
 This round's changes shorten logic only, and the paths they touch are not among the worst. Run-to-run placement spread in this probe has been about 1 ns. The regression is therefore attributed to placement of the receive-queue read, not to the split additions, but that is unconfirmed. A rerun of the fourth-round head with the same seed would separate the two.
 
+## Sixth round: noise measurement, registered receive-queue read, registered error report
+
+### Changes (`b9dd20e38`; `9b6e3da7d` only fixes the workflow file)
+
+- **`soc_pcie_rx_credit`: registered read per bank.** Each bank's byte at the current read index is a register. It is loaded with:
+  - the byte at the next index on a mid-frame handshake (the AND-OR select now uses the next one-hot cursor);
+  - byte 0 at an end of frame, link loss or reset;
+  - `staging[0]` when the bank is committed;
+  - otherwise its own value.
+
+  A committed bank is free, so it is never read mid-frame, and it is first read at index 0. Every byte that leaves therefore equals the array's. The output needs only the one-hot head select of six registers. Ports and ordering are unchanged (random co-simulation against the fifth-round module: four seeds, 300,000 cycles each, 163,065-163,405 output beats, 0 mismatches).
+- **`soc_pcie_buffered_flow_packets`: registered `error_o`.** The same one-cycle error pulses leave from a flop, one cycle later. The only consumer is `soc_top`'s `pcie_error_o`. The only test that reads it, `test_soc_pcie_ethernet.py`, adds it into an error count and requires the count to be zero, so no test change is needed. The buffered tests do not read `error_o`.
+- **No placement region was added.** The LibreLane 3.0.5 flow used here has no configuration variable for a standard-cell region or group. One would need a custom floorplan script that also constrains the placement around the other blocks, which this round was not to touch.
+- **Workflow.** The implementation-probe matrix is an input, with an optional RTL commit per entry, so older heads can be probed with the current scripts.
+
+### Probe noise
+
+LibreLane 3.0.5 has no placement seed, and its global placement is deterministic. Rerunning the fourth- and fifth-round heads at the reference settings reproduced every reported slack line of their original probes (runs 42533689396 and 42545773596) exactly. A fixed netlist therefore has no run-to-run noise; the variation between heads is the placement's sensitivity to small changes in its input. To measure that sensitivity, each head was probed at the reference target density (70%) and at a perturbed one (68%), with otherwise identical settings (run 42556633463, uncapped repair for every entry; "capped" is the post-GRT state before it).
+
+Worst slack in ns. "Capped" is the post-GRT state, "deep" the state after the uncapped repair. The asynchronous group is not changed by the uncapped repair except in the first row.
+
+| Head | Density | Capped pcie_clk_i slow / typ | Deep pcie_clk_i slow / typ | Deep asynchronous slow / typ |
+|---|---:|---:|---:|---:|
+| fourth round `02792dcdb` | 70% | -3.21 / -0.68 | -1.44 / +0.29 | -0.58 / +1.01 |
+| fourth round `02792dcdb` | 68% | -3.43 / -0.76 | -1.69 / +0.07 | -1.20 / +0.52 |
+| fifth round `bfa1bc32a` | 70% | -3.95 / -1.01 | -2.42 / -0.49 | -0.51 / +0.85 |
+| fifth round `bfa1bc32a` | 68% | -4.53 / -1.37 | -1.54 / +0.14 | -0.99 / +0.55 |
+| sixth round `b9dd20e38` | 70% | -3.01 / -0.65 | -1.47 / +0.24 | -0.78 / +0.70 |
+| sixth round `b9dd20e38` | 68% | -2.98 / -0.73 | -1.30 / +0.25 | -0.01 / +1.17 |
+
+Findings:
+
+- A 2% density change moves the deep slow `pcie_clk_i` slack by 0.25 ns (fourth round), 0.88 ns (fifth round) and 0.17 ns (sixth round). The fifth-round regression at 70% (-0.98 ns against the fourth round) is the same size as this sensitivity: at 68% the fifth round beats the fourth round. The fifth-round RTL was not worse; its 70% placement was unlucky.
+- The sixth round has the best worst-of-two slow slack (-1.47, against -1.69 and -2.42) and the smallest spread. Its typical slack is positive at both densities, and its capped slack is the best of the three heads at both densities.
+- `pcie_error_o` is no longer among the violating `pcie_clk_i` endpoints (fifth round: -2.34 ns slow).
+- The worst sixth-round path (70%) is a wide AND-OR: a reset flop with fanout 8, two buffers, then `a22oi`, `nand4`, `nor4`, `and3` and `o21ai`. The slow four-input cells and the buffered fanout take most of the delay, not the logic depth. The artifact's flop names are anonymous, so the path could not be tied to a source register.
+- The asynchronous group spans -1.50 to -0.01 ns across the twelve placed states. It depends on placement alone, which supports the constraint recommendation above over further RTL work.
+
+### Verification of the final head (`9b6e3da7d`)
+
+- unit tests 64/64 (run 42556623897);
+- joint SoC PCIe + Ethernet traffic PASS 2/2 asynchronous and PASS 2/2 synchronous (run 42556623897);
+- `check_soc_lint.py` base and full PASS with no new or stale warnings (run 42556623897).
+
+Block screen (run 42556623897), worst slack / TNS in ns, against the fifth round:
+
+| Stage | Corner | Fifth round | Sixth round |
+|---|---|---:|---:|
+| sized | slow | -2.19 / -5911 | -1.89 / -2753 |
+| sized | typical | 0.00 / 0 | +0.17 / 0 |
+| repaired | slow | -0.78 / -1687 | -1.29 / -1782 |
+| repaired | typical | +0.88 / 0 | +0.59 / 0 |
+
 ## What remains
 
-- **Receive-queue read.** This 228-byte one-hot AND-OR select spans the queue's storage. The physical probe now limits on it, through weak cells driving long wires. Registering it per bank needs a prefetch of the next byte, because the read index advances on every handshake. That is the next structural change, together with a placement region for `soc_pcie_rx_credit`'s storage.
-- **`pcie_error_o`.** It is a combinational OR of error pulses straight to the port. Registering it adds one cycle to an error report and changes the cycle at which the unit tests count errors. That needs a check of those tests.
+- **Worst-path attribution.** Keep the synthesized netlist with source names in the probe artifact, so that the remaining wide AND-OR path can be tied to a register before it is pipelined.
 - **`soc_pcie_credit_tx`.** The consume value for `ad` (`ad + (-required)`) is still a full 12-bit addition behind the grant (14 logic cells in the block screen). Splitting it needs `ad` to be unchanged in the cycle before a consume, which an UpdateFC application can break. Blocking a grant in the cycle after an UpdateFC is applied would allow it, as one more oracle revision.
 - **Asynchronous group.** It needs the constraint described above, not RTL.
-- **Placement spread.** Rerun the fourth-round and fifth-round heads with the same placement settings before comparing small differences.
+- **Comparisons.** Differences between heads below about 0.9 ns at the slow corner are within the placement sensitivity measured in the sixth round. Compare heads at two densities.
