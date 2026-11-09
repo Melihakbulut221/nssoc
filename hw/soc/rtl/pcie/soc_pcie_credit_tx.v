@@ -77,8 +77,11 @@ module soc_pcie_credit_tx (
         reserve_replay_i==request_replay;
     // Initialization is part of the registered verdict; it only rises until
     // link loss or reset, which gate the grant directly.
-    assign reserve_ready_o=rst_ni && link_up_i && verdict && same_request && request_stable && !consumed && !applied;
-    wire consume=reserve_valid_i && reserve_ready_o && !reserve_replay_i;
+    // The next-state select uses the grant without its reset and link
+    // terms: under reset or link loss the registers are cleared regardless.
+    wire grant=verdict && same_request && request_stable && !consumed && !applied;
+    assign reserve_ready_o=rst_ni && link_up_i && grant;
+    wire consume=reserve_valid_i && grant && !reserve_replay_i;
     // UpdateFC takes three cycles from presentation to its effect.
     //  A: the event is registered.
     //  B: from the registered event and this cycle's consumed counts and

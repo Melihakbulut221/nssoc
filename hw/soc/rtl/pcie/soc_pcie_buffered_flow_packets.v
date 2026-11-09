@@ -64,10 +64,25 @@ module soc_pcie_buffered_flow_packets #(
     // neither the boundary inputs nor the combined reset fan out into the
     // blocks' logic. The D inputs differ only so synthesis keeps four flops:
     // every one of them is 1 whenever local_reset is high.
-    reg up_rx,up_fc,up_flow,up_arb;
+    // The function identity is a static strap. It is registered at this
+    // boundary, so the configuration target check and the completion
+    // header fields start at a flop instead of at the input port. A change
+    // takes effect one cycle later.
+    reg [15:0] function_id_q;
+    always @(posedge clk_i) function_id_q<=function_id_i;
+    // The receive queue and the FC advertiser get a second copy for their
+    // link input, so their asynchronous resets (rst_ni) and their link
+    // clears and link-qualified logic (link_up_i) are separate nets, and
+    // the PHY-side ready has a copy of its own. All copies are equal at all
+    // times. (These three D inputs are 1 whenever local_reset is high too.)
+    reg up_rx,up_fc,up_flow,up_arb,up_rx_link,up_fc_link,up_in;
     always @(posedge clk_i or negedge local_reset) begin
-        if(!local_reset) begin up_rx<=0;up_fc<=0;up_flow<=0;up_arb<=0;end
-        else begin up_rx<=1'b1;up_fc<=link_up_i;up_flow<=rst_ni;up_arb<=!retrain_done_i;end
+        if(!local_reset) begin up_rx<=0;up_fc<=0;up_flow<=0;up_arb<=0;up_rx_link<=0;up_fc_link<=0;up_in<=0;end
+        else begin
+            up_rx<=1'b1;up_fc<=link_up_i;up_flow<=rst_ni;up_arb<=!retrain_done_i;
+            up_rx_link<=rst_ni || training_i;up_fc_link<=link_up_i || training_i;
+            up_in<=!retrain_done_i || training_i;
+        end
     end
     // The receive queue's FC-initialization gate is registered: it only rises
     // once per link epoch, so the queue starts accepting TLPs one cycle after
@@ -97,14 +112,14 @@ module soc_pcie_buffered_flow_packets #(
     // kind-dependent ready now applies at the slice output, so a beat the
     // queue cannot take waits in the slice exactly as it waited at the PHY,
     // with everything behind it. Received beats arrive one cycle later.
-    assign rx_ready_o=up_rx && in_room;
+    assign rx_ready_o=up_in && in_room;
     soc_pcie_stream_skid #(.W(12)) receive_input_slice(
         .clk_i(clk_i),.rst_ni(up_rx),.clear_i(1'b0),
         .s_data_i({rx_data_i,rx_sop_i,rx_eop_i,rx_error_i,rx_dllp_i}),.s_valid_i(rx_valid_i && rx_ready_o),.s_ready_o(in_room),
         .m_data_o({in_data,in_sop,in_eop,in_error,in_dllp}),.m_valid_o(in_valid),.m_ready_i(in_ready));
     soc_pcie_rx_credit #(.MAX_TLP_DWORDS(MAX_TLP_DWORDS),.SLOTS_PER_CLASS(RX_SLOTS_PER_CLASS),
         .COMPLETER_ONLY(1)) receive_ownership(
-        .clk_i(clk_i),.rst_ni(up_rx),.link_up_i(up_rx),.training_i(training_i),
+        .clk_i(clk_i),.rst_ni(up_rx),.link_up_i(up_rx_link),.training_i(training_i),
         .initialized_i(rx_initialized),.rx_data_i(in_data),.rx_sop_i(in_sop),
         .rx_eop_i(in_eop),.rx_valid_i(in_valid),.rx_dllp_i(in_dllp),.rx_error_i(in_error),
         .rx_ready_o(in_ready),.out_data_o(q_data),.out_sop_o(q_sop),.out_eop_o(q_eop),
@@ -116,7 +131,7 @@ module soc_pcie_buffered_flow_packets #(
         .released_data_o(rx_released_data_o),.dropped_o(rx_dropped_o),
         .protocol_error_o(rx_protocol),.recovery_request_o(rx_recovery_o));
     soc_pcie_fc_tx #(.REFRESH_CYCLES(FC_REFRESH_CYCLES)) advertiser(
-        .clk_i(clk_i),.rst_ni(up_fc),.link_up_i(up_fc),.training_i(training_i),
+        .clk_i(clk_i),.rst_ni(up_fc),.link_up_i(up_fc_link),.training_i(training_i),
         .peer_init1_done_i(peer_init1_done_o),.peer_init2_seen_i(peer_init2_seen_o),
         .header_limit_i(rx_header_limit_o),.data_limit_i(rx_data_limit_o),
         .local_init_done_o(local_init_done_o),.local_init2_sent_o(local_init2_sent_o),.sent_header_o(fc_sent_header_o),
@@ -183,7 +198,7 @@ module soc_pcie_buffered_flow_packets #(
         .credit_data_limit_o(credit_data_limit_o),
         .credit_data_consumed_o(credit_data_consumed_o),
         .credit_infinite_o(credit_infinite_o),
-        .function_id_i(function_id_i),
+        .function_id_i(function_id_q),
         .rx_data_i(q_data),
         .rx_sop_i(q_sop),
         .rx_eop_i(q_eop),

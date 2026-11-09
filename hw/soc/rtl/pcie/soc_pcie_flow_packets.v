@@ -52,10 +52,13 @@ module soc_pcie_flow_packets #(
     // clock later; each block uses it as both its reset and link status.
     // The D inputs differ only so synthesis keeps two flops.
     wire flow_reset=rst_ni && link_up_i;
-    reg up_packets,up_credits;
+    // The credit logic's link input has its own copy (equal at all times),
+    // so its asynchronous reset and its link clear and grant are separate
+    // nets.
+    reg up_packets,up_credits,up_credits_link;
     always @(posedge clk_i or negedge flow_reset) begin
-        if(!flow_reset) begin up_packets<=0;up_credits<=0;end
-        else begin up_packets<=1'b1;up_credits<=link_up_i;end
+        if(!flow_reset) begin up_packets<=0;up_credits<=0;up_credits_link<=0;end
+        else begin up_packets<=1'b1;up_credits<=link_up_i;up_credits_link<=rst_ni || training_i;end
     end
     soc_pcie_reliable_packets #(.VENDOR_ID(VENDOR_ID),.DEVICE_ID(DEVICE_ID),
         .APB_TIMEOUT(APB_TIMEOUT),.MAX_TLP_DWORDS(MAX_TLP_DWORDS),
@@ -121,7 +124,7 @@ module soc_pcie_flow_packets #(
         .memory_enable_o(memory_enable_o),
         .bar0_o(bar0_o));
     soc_pcie_credit_tx credits(
-        .clk_i(clk_i),.rst_ni(up_credits),.link_up_i(up_credits),
+        .clk_i(clk_i),.rst_ni(up_credits),.link_up_i(up_credits_link),
         .local_init_done_i(local_init_done_i),.rx_tlp_seen_i(rx_tlp_seen_o),
         .fc_valid_i(fc_valid_o),.fc_phase_i(fc_phase_o),.fc_class_i(fc_class_o),
         .fc_header_i(fc_header_o),.fc_data_i(fc_data_o),

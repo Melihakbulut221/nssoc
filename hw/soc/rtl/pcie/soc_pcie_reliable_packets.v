@@ -46,12 +46,16 @@ module soc_pcie_reliable_packets #(
     wire local_reset=rst_ni && link_up_i;
     // Registered link/reset copies for the replay store and the link layer,
     // cleared asynchronously with local_reset and released one clock later;
-    // the DLLP receiver, slices and arbiter use local_reset itself. The D
+    // the slices and arbiter use local_reset itself. The D
     // inputs differ only so synthesis keeps two flops.
-    reg up_retry,up_link;
+    // The DLLP receiver has its own copy, so its ready and registers start
+    // at a flop with only its own loads. Its first beat can come from the
+    // receive slice no earlier than the cycle after local_reset rises, when
+    // this copy is released.
+    reg up_retry,up_link,up_dllp;
     always @(posedge clk_i or negedge local_reset) begin
-        if(!local_reset) begin up_retry<=0;up_link<=0;end
-        else begin up_retry<=1'b1;up_link<=link_up_i;end
+        if(!local_reset) begin up_retry<=0;up_link<=0;up_dllp<=0;end
+        else begin up_retry<=1'b1;up_link<=link_up_i;up_dllp<=rst_ni || training_i;end
     end
     // Receive register slice. Queue beats reach the DLLP and TLP consumers
     // one cycle later, from flops, so the queue read and the consumers' end
@@ -90,7 +94,7 @@ module soc_pcie_reliable_packets #(
     end
     wire ack_valid,ack_nak,ack_ready;
     wire [11:0] ack_sequence;
-    soc_pcie_dllp_rx receiver(.clk_i(clk_i),.rst_ni(local_reset),
+    soc_pcie_dllp_rx receiver(.clk_i(clk_i),.rst_ni(up_dllp),
         .rx_data_i(slice_data),.rx_sop_i(slice_sop),.rx_eop_i(slice_eop),
         .rx_error_i(slice_error || kind_error),.rx_valid_i(slice_valid && selected_kind),.rx_ready_o(dllp_ready),
         .ack_valid_o(ack_valid),.ack_nak_o(ack_nak),.ack_sequence_o(ack_sequence),.ack_ready_i(ack_ready),

@@ -110,10 +110,23 @@ module soc_pcie_rx_credit #(
     reg [1:0] head_class;
     reg [11:0] head_units;
     reg [SLOTS-1:0] head_onehot;
-    wire [SW-1:0] stay_slot=(commit && qwrite==qread) ? stage_slot : order[qread];
-    wire [SW-1:0] advance_slot=(commit && qwrite==qread_plus) ? stage_slot : order[qread_plus];
-    wire [CW-1:0] stay_last=commit_slot[stay_slot] ? stage_last : lasts[stay_slot];
-    wire [CW-1:0] advance_last=commit_slot[advance_slot] ? stage_last : lasts[advance_slot];
+    // Both candidates are formed without a slot-indexed lookup of the
+    // commit. A commit never coincides with a full queue, so a commit
+    // writes the read position only into an empty queue, and the position
+    // after it only when one TLP is queued. Without a removal the head
+    // stays (its registers already hold it) unless an empty queue takes the
+    // staged TLP. With a removal the next head is the staged TLP if one TLP
+    // was queued (the queue is empty otherwise, and the head is then
+    // unused), and else the next queued slot, which is occupied and so not
+    // the one being committed.
+    wire queue_empty=qcount==0;
+    wire queue_one=qcount==1;
+    wire stay_staged=commit && queue_empty;
+    wire [SW-1:0] second_slot=order[qread_plus];
+    wire [SW-1:0] stay_slot=stay_staged ? stage_slot : head_slot;
+    wire [SW-1:0] advance_slot=queue_one ? stage_slot : second_slot;
+    wire [CW-1:0] stay_last=stay_staged ? stage_last : head_last;
+    wire [CW-1:0] advance_last=queue_one ? stage_last : lasts[second_slot];
     // Data credit released by the next acceptance: the low half of
     // data_limit+units for the head's class is registered a cycle ahead and
     // the high half finished at the removal. A removal never follows a
@@ -122,8 +135,8 @@ module soc_pcie_rx_credit #(
     reg [6:0] release_lo;
     wire [11:0] head_data_limit=data_limit_o[head_class*12 +: 12];
     wire [11:0] released_limit={head_data_limit[11:6]+head_units[11:6]+release_lo[6],release_lo[5:0]};
-    wire [11:0] stay_units=commit_slot[stay_slot] ? stage_units : units[stay_slot];
-    wire [11:0] advance_units=commit_slot[advance_slot] ? stage_units : units[advance_slot];
+    wire [11:0] stay_units=stay_staged ? stage_units : head_units;
+    wire [11:0] advance_units=queue_one ? stage_units : units[second_slot];
     wire [SW-1:0] next_head_slot=remove ? advance_slot : stay_slot;
     wire [CW-1:0] next_head_last=remove ? advance_last : stay_last;
     wire [11:0] next_head_units=remove ? advance_units : stay_units;
@@ -155,7 +168,11 @@ module soc_pcie_rx_credit #(
     wire [READ_CHOICES-1:0] next_onehot={read_onehot[READ_CHOICES-2:0],read_onehot[READ_CHOICES-1]};
     wire [7:0] bank_byte [0:SLOTS-1];
     wire handshake=out_valid_o && out_ready_i;
-    wire restart=!rst_ni || !link_up_i || (handshake && out_eop_o);
+    // A bank's register is reloaded with byte 0 at an end of frame (a
+    // DLLP's included, which also moves the cursor). Reset and link loss
+    // need no reload: every bank is free afterwards, and its next commit
+    // loads it.
+    wire restart=handshake && out_eop_o;
     genvar bank,read_bit,read_offset;
     generate for(bank=0;bank<SLOTS;bank=bank+1) begin: read_bank
         wire [7:0] following;
@@ -176,6 +193,27 @@ module soc_pcie_rx_credit #(
                 restart ? packets[bank*CAP] : handshake ? following : registered;
         assign bank_byte[bank]=registered;
     end endgenerate
+    // Queue and staging storage. A commit copies the staged TLP into its
+    // slot's bank; its write enable is the slot's commit register alone
+    // (cleared by reset and link loss), not the link and reset state. The
+    // only difference from writing inside the reset/link block is a commit
+    // register still set in the first cycle of a link loss: that bank is
+    // free afterwards and is rewritten whole by its next commit before it
+    // is read, so no byte that leaves differs.
+    // Staging bytes are written one cycle after they are accepted, from a
+    // registered one-hot byte select and a registered byte. A staged TLP is
+    // committed two cycles after its last byte at the earliest, and its
+    // header bytes (needed by the check one cycle after the last byte) are
+    // at least twelve bytes earlier, so every read sees the same bytes.
+    reg [CAP-1:0] stage_write_at;
+    reg [7:0] stage_write_data;
+    integer w,wb;
+    always @(posedge clk_i) begin
+        stage_write_data<=rx_data_i;
+        for(w=0;w<CAP;w=w+1) if(stage_write_at[w]) staging[w]<=stage_write_data;
+        for(wb=0;wb<SLOTS;wb=wb+1) if(commit_slot[wb])
+            for(w=0;w<CAP;w=w+1) packets[wb*CAP+w]<=staging[w];
+    end
     reg [7:0] tlp_byte;
     integer h;
     always @* begin
@@ -194,7 +232,7 @@ module soc_pcie_rx_credit #(
             input_active<=0;input_dllp<=0;input_bad<=0;input_count<=0;
             stage_pending<=0;stage_length<=0;stage_last<=0;stage_bad<=0;release_lo<=0;
             stage_checked<=0;stage_shape_ok<=0;stage_slot<=0;stage_units<=0;commit_slot<=0;
-            dllp_pending<=0;dllp_bad<=0;dllp_length<=0;
+            stage_write_at<=0;dllp_pending<=0;dllp_bad<=0;dllp_length<=0;
             output_active<=0;output_dllp<=0;output_index<=0;waiting<=0;
             header_limit_o<={COMPLETER_ONLY ? 8'b0 : H_INIT,H_INIT,H_INIT};
             data_limit_o<={COMPLETER_ONLY ? 12'b0 : D_INIT,D_INIT,D_INIT};
@@ -204,12 +242,12 @@ module soc_pcie_rx_credit #(
             used<=0;qread<=0;qwrite<=0;qcount<=0;head_slot<=0;input_active<=0;input_count<=0;
             head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;read_onehot<=1;
             stage_pending<=0;dllp_pending<=0;output_active<=0;output_index<=0;waiting<=0;
-            stage_checked<=0;commit_slot<=0;
+            stage_checked<=0;commit_slot<=0;stage_write_at<=0;
             header_limit_o<={COMPLETER_ONLY ? 8'b0 : H_INIT,H_INIT,H_INIT};
             data_limit_o<={COMPLETER_ONLY ? 12'b0 : D_INIT,D_INIT,D_INIT};
             released_o<=0;dropped_o<=0;protocol_error_o<=0;recovery_request_o<=0;
         end else begin
-            released_o<=0;dropped_o<=0;head_slot<=next_head_slot;
+            released_o<=0;dropped_o<=0;head_slot<=next_head_slot;stage_write_at<=0;
             head_last<=next_head_last;head_class<=next_head_slot/SLOTS_PER_CLASS;head_units<=next_head_units;
             release_lo<={1'b0,head_data_limit[5:0]}+{1'b0,head_units[5:0]};
             head_onehot<={{(SLOTS-1){1'b0}},1'b1}<<next_head_slot;
@@ -224,7 +262,6 @@ module soc_pcie_rx_credit #(
             end
             if(commit) begin
                 for(b=0;b<SLOTS;b=b+1) if(commit_slot[b]) begin
-                    for(k=0;k<CAP;k=k+1) packets[b*CAP+k]<=staging[k];
                     lasts[b]<=stage_last;units[b]<=stage_units;
                     errors[b]<=stage_bad;used[b]<=1;
                 end
@@ -249,7 +286,7 @@ module soc_pcie_rx_credit #(
                 if(!input_active) begin
                     input_dllp<=rx_dllp_i;input_bad<=rx_error_i || !rx_sop_i;
                     input_count<=1;input_active<=!rx_eop_i;
-                    if(rx_dllp_i) dllp[0]<=rx_data_i; else staging[0]<=rx_data_i;
+                    if(rx_dllp_i) dllp[0]<=rx_data_i; else stage_write_at[0]<=1;
                     if(rx_eop_i) begin
                         if(rx_dllp_i) begin dllp_pending<=1;dllp_length<=1;dllp_bad<=1;end
                         else begin stage_pending<=1;stage_length<=1;stage_last<=0;stage_bad<=1;end
@@ -258,7 +295,7 @@ module soc_pcie_rx_credit #(
                     input_bad<=input_bad || rx_error_i || rx_sop_i || rx_dllp_i!=input_dllp;
                     if(input_dllp) begin
                         if(input_count<6) dllp[input_count]<=rx_data_i;
-                    end else if(input_count<CAP) staging[input_count]<=rx_data_i;
+                    end else for(k=0;k<CAP;k=k+1) if(input_count==k) stage_write_at[k]<=1;
                     if(input_count<CAP+1) input_count<=input_count+1'b1;
                     if(rx_eop_i) begin
                         input_active<=0;
