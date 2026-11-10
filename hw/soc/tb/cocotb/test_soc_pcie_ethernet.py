@@ -207,7 +207,13 @@ class JointBench(Bench):
         # March clocks per port, plus 6144 registered cross-read clocks per port.
         # 50 MHz + 125 MHz sequential phases take 7.053312 ms, excluding
         # synchronizer/start cycles; 7.2 ms admits those explicitly.
-        for _ in range(360000 * 10 // self.half_ns):
+        # SOC_ETH_FIFO_RDREG (docs/combined-timing.md) registers the read
+        # port, so every read waits one more clock: 2048 * 6 * (1 + 4*5 + 4)
+        # = 307200 March and 8192 cross-read clocks per port, 8.830976 ms;
+        # 9.0 ms keeps the same allowance for synchronizer/start cycles.
+        rdreg = "-DSOC_ETH_FIFO_RDREG" in os.environ.get("JOINT_DEFINES", "").split()
+        bound_ns = 9000000 if rdreg else 7200000
+        for _ in range(bound_ns // (2 * self.half_ns)):
             if self.v("eth_mbist_done_o") == 3:
                 break
             await self.tick()
