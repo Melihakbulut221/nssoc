@@ -1044,7 +1044,7 @@ jobs:
           P=${{ matrix.part }}
           for n in ${P#eth-gl-}; do
             start=$(date +%s)
-            SOC_ETH_MBIST=1 SOC_ETH_FIFO_RDREG=$n timeout 19000 bash hw/soc/flow/test_eth_sram.sh hw/soc/out/eth-sram-gl-$n > out/eth-sram-gl-$n.log 2>&1 || { fail=1; tail -30 out/eth-sram-gl-$n.log; tail -40 hw/soc/out/eth-sram-gl-$n/test.log 2>/dev/null; }
+            SOC_ETH_MBIST=1 SOC_ETH_FIFO_RDREG=$n timeout 19000 env -u PYTHONHOME bash hw/soc/flow/test_eth_sram.sh hw/soc/out/eth-sram-gl-$n > out/eth-sram-gl-$n.log 2>&1 || { fail=1; tail -30 out/eth-sram-gl-$n.log; tail -40 hw/soc/out/eth-sram-gl-$n/test.log 2>/dev/null; }
             tail -1 out/eth-sram-gl-$n.log; echo "  in $(( $(date +%s) - start )) s"
             grep -E "RM_IHPSG13_2P|Number of cells|Chip area|sg13g2_df" hw/soc/out/eth-sram-gl-$n/synth.log | tail -6 || true
             cp hw/soc/out/eth-sram-gl-$n/evidence.json out/eth-sram-gl-$n.json 2>/dev/null || true
