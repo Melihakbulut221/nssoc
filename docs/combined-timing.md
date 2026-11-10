@@ -115,24 +115,30 @@ The knobs are threaded through `syn_soc_top.sh` and `sim_soc.sh` (one global def
 
 **Default build unchanged.** All new logic is under the two defines. The adaptation adds only `ifdef` arms to the generated interface bundles, so `hw/soc/lint-policy.json` gets their new hashes (regenerated with `prepare_interfaces.py` at the pinned commits; the old hashes were reproduced first) and 42 recorded diagnostics moved to their new line numbers with their unchanged source lines.
 
-**Status.** The two commits are local: the push to `timing/combined` was refused by the permission system on this machine, so none of the runs above has been dispatched and nothing in this section has run yet. To run them after pushing:
+**Status.** Runs 42760405570 (probes, regress, native boot) and 42764629921/42769681544 (eth-knobs). Passed: unit, regress `ex_exec_pmpreg_cut`, BUSSTAT cocotb and formal off/on, the 37-case wrapper suite off/on, the MAC cocotb suite 6/6 in all four configurations (the job was marked failed by a simulator crash at exit under the OSS CAD Suite cocotb build), joint traffic `knobs-async`, `knobs-sync` and `sram-off-async`. `sram-knobs-async` failed on the self-test release bound of section 2.3, fixed in the bench; the gate-level runs failed to start the cocotb embed under the OSS CAD Suite vvp wrapper, fixed by the launcher of `scripts/cocotb_icarus_runtime.py`. Those two fixes are not run yet. To rerun the Ethernet jobs:
 
 ```
 gh workflow run cloud-evidence-summary.yml --ref timing/combined \
-  -f probe_variant='c_cut_d70 c_cut_d68 c_cut_td_d70 c_cut_td_d68' \
-  -f variant=ex_exec_pmpreg_cut -f repair_iterations=1100 -f path_nets=true -f pcie_jobs='soc eth'
+  -f probe_variant=none -f variant=none -f pcie_jobs=eth
 ```
 
 ## 6. Results
 
-To be filled in from the runs of section 5.
+Run 42760405570 (both knobs, otherwise the configuration of section 1), worst setup slack in ns after the 1100-iteration repair, slow corner; the last column is typical `pcie_clk_i`, the only typical group that failed before. The probe log confirms `global_placement ... -timing_driven -routability_driven` for the `td` entries.
 
-| Probe | Density | Placement | `clk_i` | `pcie_clk_i` | `eth_rx_clk_i` | `eth_tx_clk_i` | asynchronous |
-|---|---:|---|---:|---:|---:|---:|---:|
-| `c_ex_exec_pmpreg_d70` (run 42719414702) | 70 | routability | -2.11 | -2.16 | -2.17 | -2.14 | -0.79 |
-| `c_ex_exec_pmpreg_d68` (run 42719414702) | 68 | routability | -1.72 | -2.30 | -1.62 | -1.64 | -0.66 |
-| `c_cut_d70`, `c_cut_d68` | 70, 68 | routability | not run | | | | |
-| `c_cut_td_d70`, `c_cut_td_d68` | 70, 68 | timing + routability | not run | | | | |
+| Probe | `clk_i` | `pcie_clk_i` | `eth_rx_clk_i` | `eth_tx_clk_i` | asynchronous | typ `pcie_clk_i` |
+|---|---:|---:|---:|---:|---:|---:|
+| `c_ex_exec_pmpreg_d70` (before, run 42719414702) | -2.11 | -2.16 | -2.17 | -2.14 | -0.79 | -0.43 |
+| `c_ex_exec_pmpreg_d68` (before) | -1.72 | -2.30 | -1.62 | -1.64 | -0.66 | -0.48 |
+| `c_cut_d70` | -1.43 | -1.47 | -1.33 | -1.35 | -1.13 | -0.02 |
+| `c_cut_d68` | -1.05 | -1.07 | -0.84 | -0.91 | -0.68 | +0.32 |
+| `c_cut_td_d70` | **-0.47** | **-0.81** | **+0.84** | **-0.23** | -0.75 | +0.57 |
+| `c_cut_td_d68` | -0.93 | -0.92 | **+0.36** | **+0.34** | -0.89 | +0.31 |
+
+- **Ethernet.** No macro output is followed by logic on any reported path any more; the macro-to-register paths have +0.7 to +1.2 ns. Without timing-driven placement the worst paths are the wrapper's ownership multiplexers in front of the macros (`axfail`, `rp[1]`, `sel_a_q` into the macro address and enables, -0.8 to -1.3 ns), the class of section 2.5; with it both Ethernet clocks close at d68, and at d70 only the registered bank multiplexer into `u_b.response_q`/`m_axis_pipe_reg[2]` is left (-0.23).
+- **`clk_i`.** BUSSTAT is gone from the reported paths. What is left is placement-dependent: the frozen NPU synapse update (-1.43 / -1.05 without timing-driven placement), the core's EX loop into the register file (-0.93, `td_d68`) and the EX-stage load/store address into the fabric request register `s_addr` (-0.47, `td_d70`).
+- **`pcie_clk_i`** (RTL unchanged) improves by about 1.1 ns on the new netlists without timing-driven placement, more than the 0.9 ns placement noise, and by about 1.4 ns with it; typical closes in five of six probes and in every `td` probe.
+- **asynchronous** (PCIe link-status into `u_pcie_cdc` resets) stays at -0.7 to -1.1 ns; the max-delay group closes in all four (+0.2 to +1.8).
 
 ## 7. The d70 probe of run 42719414702
 
