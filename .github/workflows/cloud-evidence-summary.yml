@@ -1018,7 +1018,7 @@ jobs:
           for cfg in "mem_off||" "mem_rdreg||-DSOC_ETH_FIFO_RDREG" "sram_off|$SRAM|-DSOC_ETH_MBIST -DFUNCTIONAL" "sram_rdreg|$SRAM|-DSOC_ETH_MBIST -DFUNCTIONAL -DSOC_ETH_FIFO_RDREG"; do
             IFS='|' read -r n src args <<< "$cfg"
             start=$(date +%s)
-            ( cd hw/soc/tb/cocotb && timeout 9000 make -f Makefile.soc_eth SIM_BUILD=/tmp/sb_eth_$n COCOTB_RESULTS_FILE=$O/eth_$n.xml ETH_EXTRA_SOURCES="$src" EXTRA_COMPILE_ARGS="$args" > $O/eth_$n.log 2>&1 ) || fail=1
+            ( cd hw/soc/tb/cocotb && timeout 9000 env -u PYTHONHOME PATH="$GITHUB_WORKSPACE/hw/.venv/bin:$PATH" make -f Makefile.soc_eth SIM_BUILD=/tmp/sb_eth_$n COCOTB_RESULTS_FILE=$O/eth_$n.xml ETH_EXTRA_SOURCES="$src" EXTRA_COMPILE_ARGS="$args" > $O/eth_$n.log 2>&1 ) || fail=1
             echo "soc_eth cocotb $n: $(grep -oE 'TESTS=[0-9]+ PASS=[0-9]+ FAIL=[0-9]+' $O/eth_$n.log | tail -1) in $(( $(date +%s) - start )) s"
           done
           exit $fail
