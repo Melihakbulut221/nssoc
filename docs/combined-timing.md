@@ -165,3 +165,18 @@ Before these cuts the slow corner misses by 2.16-2.30 ns (`pcie_clk_i`, 4 ns per
 2. `clk_i`: the frozen NPU synapse update (-2.1 ns at d70, better than -0.65 ns at d68) and the core's EX loop (CSR and operands, ALU, result, register-file write; about -0.7 ns at d68). The first needs either a change to the frozen pilot RTL or placement that keeps the synapse memory together.
 3. `eth_rx_clk_i`, about -0.9 ns: the FIFO write request (section 2.5), and the transmit FIFO's read request on the other side.
 4. The boot protection voter's max-delay paths (-0.96 ns) and the PCIe receive reset (asynchronous, -0.66 ns), outside this change.
+
+## 9. Routed measurement (set up, not run yet)
+
+Global-route parasitics have been 1-2 ns optimistic against extracted RC on this design, so the best configuration gets a routed measurement. The probe entries `r_cut_td_d70` and `r_cut_td_d68` are `c_cut_td_*` (both knobs, timing-driven placement, the 1100-iteration post-global-route repair) and write the repaired database. Two further hosted jobs continue from it, each within the 6 h limit:
+
+- `route`: the interface flow's own steps, `hw/soc/pnr/routed_measure_flow.py` (`RoutedMeasureRoute`): detailed placement (legalizes the repair's buffers), global routing with the flow's settings, detailed routing with orphan-guide cleanup bounded by `DRT_OPT_ITERS` (input `drt_iters`, default 15), removal of the routing obstructions. DRC markers left by the bounded routing are reported (`route__drc_errors` and the per-iteration violation counts), not waived.
+- `routed-sta`: `ReplayOnehotRoutedExtraction` of `hw/soc/pnr/replay_onehot_routed_extraction_flow.py`, the recipe of `analysis/mainchip-sta` (`scripts/mainchip_sta_measure.py`): `AuditedRCX` (nominal OpenRCX with the pinned rules, SPEF audit) and `AuditedRoutedSTA` (standalone OpenSTA, derate guard, original clocks 20/4/8/8 ns, every clock propagated) in the three corners. `scripts/routed_sta_summary.py` prints the gate metrics per corner, the worst setup and hold slack per path group and corner, and each group's worst slow-corner path by RTL register.
+
+`scripts/routed_handoff.py` carries the LibreLane state and every file it names between the jobs. Dispatch:
+
+```
+gh workflow run cloud-evidence-summary.yml --ref timing/combined \
+  -f probe_variant='r_cut_td_d70 r_cut_td_d68' -f variant=none \
+  -f repair_iterations=1100 -f path_nets=true -f drt_iters=15
+```
