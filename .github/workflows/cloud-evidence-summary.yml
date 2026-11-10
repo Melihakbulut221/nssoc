@@ -695,7 +695,9 @@ jobs:
           python3 - $OUT/prepared/config.json $OUT/prepared/config-routed.json <<'PY'
           import json,sys
           c=json.load(open(sys.argv[1]))
-          c.update(DRT_OPT_ITERS=int('${{ inputs.drt_iters || '15' }}'), STA_THREADS=1)
+          # Timing measurement only: no antenna-diode repair inside detailed routing
+          # (it re-routes and its diode legalization failed with DPL-0036).
+          c.update(DRT_OPT_ITERS=int('${{ inputs.drt_iters || '15' }}'), STA_THREADS=1, DRT_ANTENNA_REPAIR_ITERS=0)
           open(sys.argv[2],'w').write(json.dumps(c,indent=2)+'\n')
           PY
           set +e
