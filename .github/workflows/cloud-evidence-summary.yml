@@ -34,6 +34,10 @@ on:
         description: Run only these regress and native-boot matrix entries (space-separated names; empty for all); non-empty also skips riscv-formal
         type: string
         default: ''
+      drt_iters:
+        description: Detailed-routing optimisation iterations (DRT_OPT_ITERS) of the routed measurement (probe entries r_*)
+        type: string
+        default: '15'
       pcie_jobs:
         description: Jobs to run, space-separated from timing, unit, soc (PCIe pipeline) and eth (Ethernet FIFO and BUSSTAT knobs); add only to skip every Ibex job
         type: string
@@ -380,6 +384,11 @@ jobs:
           - {name: c_cut_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1'}
           - {name: c_cut_td_d70, overrides: '{"PL_TARGET_DENSITY_PCT": 70, "PL_TIMING_DRIVEN": true}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1'}
           - {name: c_cut_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1'}
+          # Routed measurement (docs/combined-timing.md section 9): the same
+          # as c_cut_td_*, and the repaired database continues in the jobs
+          # route (detailed routing) and routed-sta (OpenRCX, OpenSTA).
+          - {name: r_cut_td_d70, overrides: '{"PL_TARGET_DENSITY_PCT": 70, "PL_TIMING_DRIVEN": true}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', route: '1'}
+          - {name: r_cut_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', route: '1'}
           # timing/pcie-pipeline's probe (its default probe_matrix): upstream
           # register file, no Ibex knobs, the PCIe path trace. pcie_rtl_ref
           # (optional) takes hw/soc/rtl/pcie from another ref instead.
@@ -565,6 +574,9 @@ jobs:
                'repair_design -verbose\nestimate_parasitics -global_routing\n'
                'repair_timing -verbose -setup -setup_margin 0 -repair_tns 100 -max_iterations ${{ inputs.repair_iterations || '1000000' }} -max_buffer_percent 50\n'
                'estimate_parasitics -global_routing\nputs "NSSOC_DEEP_REPAIR_DONE"\n')
+          if '${{ matrix.route || '0' }}' == '1':
+              # The routed measurement continues from the repaired database.
+              rep+='write_db '+sys.argv[2].rsplit('/',1)[0]+'/deep-repaired.odb\nputs "NSSOC_DEEP_DB_WRITTEN"\n'
           tail=s[i:].replace('NSSOC_CORNER_','NSSOC_DEEP_CORNER_')
           if '${{ inputs.path_nets }}' == 'true':
               tail+=('puts "NSSOC_NETS_BEGIN"\n'
@@ -587,6 +599,22 @@ jobs:
             python3 -B scripts/name_slow_paths.py $OUT/deep-repair.log $OUT/flop-map.tsv > $OUT/deep-named-paths.txt || echo "NAMING_FAILED"
             cat $OUT/deep-named-paths.txt || true
           fi
+      - name: Hand the repaired database to the routing job
+        if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) && matrix.route == '1' }}
+        run: |
+          set -euo pipefail
+          OUT=$PWD/hw/soc/out/impl-probe; mkdir -p handoff
+          grep -a "NSSOC_DEEP_DB_WRITTEN" $OUT/deep-repair.log
+          X=; [ -f $OUT/flop-map.tsv ] && X=$OUT/flop-map.tsv
+          python3 -B scripts/routed_handoff.py pack $OUT/run $OUT/route-initial.json handoff/handoff.tgz --odb $OUT/deep-repaired.odb \
+            $OUT/prepared $OUT/synthesis/soc_top.netlist.v $OUT/run/resolved.json $X | tail -8
+          ls -la handoff
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) && matrix.route == '1' }}
+        with:
+          name: route-handoff-${{ matrix.name }}-${{ github.run_id }}
+          path: handoff
+          retention-days: 7
       - name: Collect
         if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) && (always()) }}
         run: |
@@ -601,6 +629,194 @@ jobs:
         if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) && (always()) }}
         with:
           name: impl-probe-${{ matrix.name }}-${{ github.run_id }}
+          path: out
+          retention-days: 30
+
+  # ---- Routed measurement (docs/combined-timing.md section 9). The probe
+  # entry r_* hands its repaired post-global-route database to `route`
+  # (legalize, global route, detailed route bounded by DRT_OPT_ITERS), which
+  # hands the routed database to `routed-sta` (AuditedRCX and
+  # AuditedRoutedSTA of hw/soc/pnr/replay_onehot_routed_extraction_flow.py:
+  # nominal OpenRCX, standalone OpenSTA in three corners, derate guard,
+  # original clocks, all propagated). Each is its own hosted job.
+  route:
+    needs: probe
+    if: ${{ always() && !inputs.unit_only && !inputs.rvformal_only && !contains(inputs.pcie_jobs, 'only') }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [r_cut_td_d70, r_cut_td_d68]
+    env:
+      GH_TOKEN: ${{ github.token }}
+      APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
+      PACKAGE_SHA: 822dab7067d901fa79dabffffff784baf5c9965f0a5091eba67acdc48b9956f4
+      RUN: ${{ inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name)) }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        if: env.RUN == 'true'
+        with:
+          persist-credentials: false
+      - name: LibreLane AppImage, the verified PDK and the repaired database
+        if: env.RUN == 'true'
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2
+          W=/mnt/s; sudo mkdir -p $W; sudo chown $USER $W
+          curl -fsSL --retry 5 -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
+          echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c -; chmod +x $W/librelane.AppImage
+          for attempt in 1 2 3 4 5 6; do
+            gh api repos/${{ github.repository }}/releases/assets/663146895 -H "Accept: application/octet-stream" > $W/pkg.tgz && echo "$PACKAGE_SHA  $W/pkg.tgz" | sha256sum -c - && break
+            sleep 60
+          done
+          echo "$PACKAGE_SHA  $W/pkg.tgz" | sha256sum -c -
+          mkdir -p $W/pkg && tar -xzf $W/pkg.tgz -C $W/pkg && rm $W/pkg.tgz
+          P=$(dirname "$(find $W/pkg -name input-contract.json | head -1)")
+          python3 - "$P" <<'PY'
+          import hashlib,json,shutil,sys
+          from pathlib import Path
+          p=Path(sys.argv[1]);c=json.loads((p/'input-contract.json').read_text());n=0
+          for name,row in c['input_files'].items():
+              if not name.startswith('hw/soc/tools/'):continue
+              src=p/'files'/name;dst=Path(name)
+              assert hashlib.sha256(src.read_bytes()).hexdigest()==row['sha256']
+              if not dst.exists():dst.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(src,dst);n+=1
+          print('restored PDK and tool files',n)
+          PY
+          rm -rf $W/pkg
+      - name: Detailed routing of the repaired database (DRT_OPT_ITERS ${{ inputs.drt_iters || '15' }})
+        if: env.RUN == 'true'
+        run: |
+          set -euo pipefail
+          W=/mnt/s; OUT=$PWD/hw/soc/out/impl-probe
+          gh run download ${{ github.run_id }} -n route-handoff-${{ matrix.name }}-${{ github.run_id }} -D $W/h
+          tar -xzf $W/h/handoff.tgz -C /; rm -rf $W/h
+          python3 - $OUT/prepared/config.json $OUT/prepared/config-routed.json <<'PY'
+          import json,sys
+          c=json.load(open(sys.argv[1]))
+          c.update(DRT_OPT_ITERS=int('${{ inputs.drt_iters || '15' }}'), STA_THREADS=1)
+          open(sys.argv[2],'w').write(json.dumps(c,indent=2)+'\n')
+          PY
+          set +e
+          timeout 19200 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage python hw/soc/pnr/routed_measure_flow.py --flow RoutedMeasureRoute \
+            --pdk-root $PWD/hw/soc/tools/ciel-corrpre --pdk ihp-sg13g2 --scl sg13g2_stdcell --force-run-dir $OUT/route \
+            --with-initial-state $OUT/route-initial.json $OUT/prepared/config-routed.json > $OUT/route.log 2>&1; rc=$?
+          set -e
+          echo "ROUTE_RC=$rc"; tail -40 $OUT/route.log
+          grep -a -E "Number of violations|DRT-0199|DRT-0198|Completing|elapsed" $OUT/route/*detailedrouting*/*.log | tail -40 || true
+          [ $rc = 0 ]
+          mkdir -p routed
+          X=; [ -f $OUT/flop-map.tsv ] && X=$OUT/flop-map.tsv
+          python3 -B scripts/routed_handoff.py pack $OUT/route $OUT/routed-state.json routed/routed.tgz \
+            $OUT/prepared $OUT/synthesis/soc_top.netlist.v $X | tail -8
+          ls -la routed
+      - name: Collect
+        if: always() && env.RUN == 'true'
+        run: |
+          OUT=hw/soc/out/impl-probe; mkdir -p out
+          cp $OUT/route.log $OUT/routed-state.json out/ 2>/dev/null || true
+          for d in $OUT/route/*; do [ -d "$d" ] || continue; b=$(basename $d); mkdir -p out/$b; cp $d/*.log $d/state_out.json $d/*.rpt out/$b/ 2>/dev/null || true; done
+          find $OUT/route -name '*.drc' -size -50M -exec cp {} out/ \; 2>/dev/null || true
+          ls -la out | head -40
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && env.RUN == 'true'
+        with:
+          name: route-${{ matrix.name }}-${{ github.run_id }}
+          path: out
+          retention-days: 30
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: env.RUN == 'true'
+        with:
+          name: routed-db-${{ matrix.name }}-${{ github.run_id }}
+          path: routed
+          retention-days: 14
+
+  routed-sta:
+    needs: route
+    if: ${{ always() && !inputs.unit_only && !inputs.rvformal_only && !contains(inputs.pcie_jobs, 'only') }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [r_cut_td_d70, r_cut_td_d68]
+    env:
+      GH_TOKEN: ${{ github.token }}
+      APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
+      PACKAGE_SHA: 822dab7067d901fa79dabffffff784baf5c9965f0a5091eba67acdc48b9956f4
+      RUN: ${{ inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name)) }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        if: env.RUN == 'true'
+        with:
+          persist-credentials: false
+      - name: LibreLane AppImage, the verified PDK and the routed database
+        if: env.RUN == 'true'
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2
+          W=/mnt/s; sudo mkdir -p $W; sudo chown $USER $W
+          curl -fsSL --retry 5 -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
+          echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c -; chmod +x $W/librelane.AppImage
+          for attempt in 1 2 3 4 5 6; do
+            gh api repos/${{ github.repository }}/releases/assets/663146895 -H "Accept: application/octet-stream" > $W/pkg.tgz && echo "$PACKAGE_SHA  $W/pkg.tgz" | sha256sum -c - && break
+            sleep 60
+          done
+          echo "$PACKAGE_SHA  $W/pkg.tgz" | sha256sum -c -
+          mkdir -p $W/pkg && tar -xzf $W/pkg.tgz -C $W/pkg && rm $W/pkg.tgz
+          P=$(dirname "$(find $W/pkg -name input-contract.json | head -1)")
+          python3 - "$P" <<'PY'
+          import hashlib,json,shutil,sys
+          from pathlib import Path
+          p=Path(sys.argv[1]);c=json.loads((p/'input-contract.json').read_text());n=0
+          for name,row in c['input_files'].items():
+              if not name.startswith('hw/soc/tools/'):continue
+              src=p/'files'/name;dst=Path(name)
+              assert hashlib.sha256(src.read_bytes()).hexdigest()==row['sha256']
+              if not dst.exists():dst.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(src,dst);n+=1
+          print('restored PDK and tool files',n)
+          PY
+          rm -rf $W/pkg
+      - name: Nominal OpenRCX and three-corner standalone OpenSTA (AuditedRCX, AuditedRoutedSTA)
+        if: env.RUN == 'true'
+        run: |
+          set -euo pipefail
+          W=/mnt/s; OUT=$PWD/hw/soc/out/impl-probe
+          gh run download ${{ github.run_id }} -n routed-db-${{ matrix.name }}-${{ github.run_id }} -D $W/h
+          tar -xzf $W/h/routed.tgz -C /; rm -rf $W/h
+          python3 - $OUT/prepared/config-routed.json $OUT/routed-state.json <<'PY'
+          import json,sys
+          c=json.load(open(sys.argv[1]));s=json.load(open(sys.argv[2]))
+          print({k:c.get(k) for k in ('STA_CORNERS','STA_THREADS','RCX_RULESETS','DRT_OPT_ITERS')})
+          print({k:v for k,v in s.items() if k!='metrics'})
+          print({k:v for k,v in s['metrics'].items() if k.startswith('route__')})
+          PY
+          set +e
+          timeout 19800 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage python hw/soc/pnr/replay_onehot_routed_extraction_flow.py --flow ReplayOnehotRoutedExtraction \
+            --pdk-root $PWD/hw/soc/tools/ciel-corrpre --pdk ihp-sg13g2 --scl sg13g2_stdcell --force-run-dir $OUT/rcx \
+            --with-initial-state $OUT/routed-state.json $OUT/prepared/config-routed.json > $OUT/rcx.log 2>&1; rc=$?
+          set -e
+          echo "RCX_STA_RC=$rc"; tail -40 $OUT/rcx.log
+          [ $rc = 0 ]
+          X=$OUT/flop-map.tsv; [ -f $X ] || X=none
+          python3 -B scripts/routed_sta_summary.py $OUT/rcx $OUT/routed-state.json $X $OUT/routed-summary.json | tee $OUT/routed-summary.txt
+      - name: Collect
+        if: always() && env.RUN == 'true'
+        run: |
+          OUT=hw/soc/out/impl-probe; mkdir -p out
+          cp $OUT/rcx.log $OUT/routed-summary.json $OUT/routed-summary.txt $OUT/routed-state.json out/ 2>/dev/null || true
+          for c in nom_slow_1p08V_125C nom_typ_1p20V_25C nom_fast_1p32V_m40C; do
+            d=$(find $OUT/rcx -maxdepth 2 -type d -name $c | head -1); [ -n "$d" ] || continue
+            mkdir -p out/$c; for f in sta.log checks.rpt violator_list.rpt clock.rpt ws.max.rpt ws.min.rpt skew.max.rpt skew.min.rpt unpropagated.rpt; do [ -f $d/$f ] && cp $d/$f out/$c/; done
+            [ -f $d/max.rpt ] && head -c 20000000 $d/max.rpt > out/$c/max.head.rpt; [ -f $d/min.rpt ] && head -c 20000000 $d/min.rpt > out/$c/min.head.rpt
+          done
+          for d in $OUT/rcx/*; do [ -d "$d" ] || continue; b=$(basename $d); mkdir -p out/$b; cp $d/*.log $d/*.json out/$b/ 2>/dev/null || true; done
+          ls -la out | head -40
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && env.RUN == 'true'
+        with:
+          name: routed-sta-${{ matrix.name }}-${{ github.run_id }}
           path: out
           retention-days: 30
 
