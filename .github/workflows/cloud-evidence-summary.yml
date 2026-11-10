@@ -699,6 +699,7 @@ jobs:
           open(sys.argv[2],'w').write(json.dumps(c,indent=2)+'\n')
           PY
           set +e
+          mkdir -p $OUT/route
           timeout 19200 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage python hw/soc/pnr/routed_measure_flow.py --flow RoutedMeasureRoute \
             --pdk-root $PWD/hw/soc/tools/ciel-corrpre --pdk ihp-sg13g2 --scl sg13g2_stdcell --force-run-dir $OUT/route \
             --with-initial-state $OUT/route-initial.json $OUT/prepared/config-routed.json > $OUT/route.log 2>&1; rc=$?
@@ -793,6 +794,7 @@ jobs:
           print({k:v for k,v in s['metrics'].items() if k.startswith('route__')})
           PY
           set +e
+          mkdir -p $OUT/rcx
           timeout 19800 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage python hw/soc/pnr/replay_onehot_routed_extraction_flow.py --flow ReplayOnehotRoutedExtraction \
             --pdk-root $PWD/hw/soc/tools/ciel-corrpre --pdk ihp-sg13g2 --scl sg13g2_stdcell --force-run-dir $OUT/rcx \
             --with-initial-state $OUT/routed-state.json $OUT/prepared/config-routed.json > $OUT/rcx.log 2>&1; rc=$?
