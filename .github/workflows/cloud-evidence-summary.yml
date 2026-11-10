@@ -1024,6 +1024,7 @@ jobs:
       - name: Ethernet SRAM wrapper self-test, faults and cross-port data (scripts/check_eth_mbist.py), knob off and on
         if: matrix.part == 'eth-mbist'
         run: |
+          mkdir -p out
           set -uo pipefail
           fail=0
           for n in off rdreg; do
@@ -1035,6 +1036,7 @@ jobs:
       - name: Gate-level Ethernet MAC with the mapped SRAM wrapper (hw/soc/flow/test_eth_sram.sh, SOC_ETH_MBIST=1), knob ${{ matrix.part }}
         if: startsWith(matrix.part, 'eth-gl-')
         run: |
+          mkdir -p out
           set -uo pipefail
           fail=0
           export PDK_ROOT=$PWD/hw/soc/tools/ihp-native-boot-c4b8b4e GL_IVERILOG=$OSS_CAD_SUITE/bin/iverilog
@@ -1051,6 +1053,7 @@ jobs:
       - name: Joint PCIe and Ethernet SoC traffic with both knobs (actual Ibex; inferred and vendor-SRAM FIFOs)
         if: matrix.part == 'joint'
         run: |
+          mkdir -p out
           set -uo pipefail
           O=$PWD/out; fail=0
           make soc-rtl-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python" > /tmp/rtl-prep.log 2>&1 || { tail -30 /tmp/rtl-prep.log; exit 1; }
