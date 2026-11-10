@@ -976,7 +976,8 @@ jobs:
       - name: Interface bundles and the locked native SRAM models
         run: |
           set -euo pipefail
-          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          export OSS_CAD_SUITE="$(dirname "$(dirname "$(command -v yosys)")")"
+          echo "OSS_CAD_SUITE=$OSS_CAD_SUITE" >> "$GITHUB_ENV"
           python3 -m pip install -q -r sw/requirements.txt
           # The cocotb embed needs a venv on a real CPython, not the OSS CAD Suite wrapper.
           "$pythonLocation/bin/python3" -m venv hw/.venv && hw/.venv/bin/pip install -q -r hw/requirements.txt
