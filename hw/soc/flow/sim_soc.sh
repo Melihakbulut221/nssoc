@@ -362,6 +362,24 @@ fi
 if [ "${SOC_MEM_RDREG:-0}" = 2 ] || [ "${SOC_RAM_RDREG:-0}" = 2 ] || [ "${SOC_ROM_RDREG:-0}" = 2 ]; then
   EXEC_DEFS="$EXEC_DEFS -DSOC_MEM_RAWREG"
 fi
+# docs/combined-timing.md: SOC_ETH_FIFO_RDREG=1 registers every Ethernet
+# FIFO SRAM bank's read port (one more FIFO RAM pipeline stage; in the
+# self-test wrapper of SOC_ETH_SRAM + SOC_SRAM_MBIST the stage is a register
+# behind each macro). SOC_BUSSTAT_EVPEND=1 adds BUSSTAT's events one cycle
+# late behind a pending register, cycle-identical at the block's ports.
+# Same define pattern: nothing is emitted when both are 0.
+SOC_ETH_FIFO_RDREG=${SOC_ETH_FIFO_RDREG:-0}
+SOC_BUSSTAT_EVPEND=${SOC_BUSSTAT_EVPEND:-0}
+case "$SOC_ETH_FIFO_RDREG:$SOC_BUSSTAT_EVPEND" in
+  [01]:[01]) ;;
+  *) echo 'SOC_ETH_FIFO_RDREG and SOC_BUSSTAT_EVPEND must be zero or one' >&2; exit 2;;
+esac
+if [ "$SOC_ETH_FIFO_RDREG" = 1 ]; then
+  EXEC_DEFS="$EXEC_DEFS -DSOC_ETH_FIFO_RDREG"
+fi
+if [ "$SOC_BUSSTAT_EVPEND" = 1 ]; then
+  EXEC_DEFS="$EXEC_DEFS -DSOC_BUSSTAT_EVPEND"
+fi
 if [ "$SOC_MEM_HARDEN" != 0 ]; then
   RAM_POWERUP_DEF=-DRAM_POWERUP_ECC
 else
@@ -581,6 +599,12 @@ if [ "$IBEX_PMP_REQ_REG" = 1 ]; then
 elif grep -qa '"g_pmp_req_reg"' "$OUT/tb_soc.vvp"; then
   echo "== the data request register is elaborated at IBEX_PMP_REQ_REG=0" >&2; exit 1
 fi
+if [ "$SOC_BUSSTAT_EVPEND" = 1 ]; then
+  grep -qa 'ev_pend_q' "$OUT/tb_soc.vvp" || {
+    echo "== SOC_BUSSTAT_EVPEND=1 but no pending-event register is elaborated" >&2; exit 1; }
+  echo "== BUSSTAT events added one cycle late behind ev_pend_q, same counts (SOC_BUSSTAT_EVPEND=1)"
+fi
+[ "$SOC_ETH_FIFO_RDREG" = 1 ] && echo "== Ethernet FIFOs with two RAM pipeline stages (SOC_ETH_FIFO_RDREG=1)"
 if [ "$SOC_CORE_BT_ALU" != 0 ]; then
   grep -qa '"g_branch_target_alu"' "$OUT/tb_soc.vvp" || {
     echo "== SOC_CORE_BT_ALU=1 but no branch-target ALU is elaborated" >&2; exit 1; }

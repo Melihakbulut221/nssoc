@@ -26,12 +26,16 @@ def main():
     parser.add_argument('--pdk', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
     parser.add_argument('--replacement-model', type=Path)
+    parser.add_argument('--tools', type=Path, default=ROOT/'hw/soc/tools/oss-cad-suite/bin',
+                        help='Directory holding iverilog and vvp')
+    parser.add_argument('--fifo-rdreg', action='store_true',
+                        help='Registered read ports (SOC_ETH_FIFO_RDREG, docs/combined-timing.md)')
     args = parser.parse_args()
     out = args.output.resolve()
     if not out.is_relative_to(ROOT/'hw/soc/out'):
         parser.error('Output must be inside hw/soc/out')
     out.mkdir(parents=True, exist_ok=False)
-    tool = ROOT/'hw/soc/tools/oss-cad-suite/bin'
+    tool = args.tools.resolve()
     files = [ROOT/'hw/soc/rtl/dft'/name for name in
              ('soc_eth_fifo_sram.v', 'soc_sram_mbist.v', 'soc_sram_zero_check.v')]
     files.append(ROOT/'hw/soc/tb/tb_eth_fifo_mbist.v')
@@ -44,11 +48,13 @@ def main():
                   'RM_IHPSG13_2P_core_behavioral_ideal.v')]
     pins = {str(p): sha(p) for p in [*files, Path(__file__), tool/'iverilog', tool/'vvp']}
     result = dict(passed=False, scope=__doc__, replacement=bool(args.replacement_model),
+                  fifo_rdreg=args.fifo_rdreg,
                   input_sha256=pins, cases=[])
     def save():
         (out/'result.json').write_text(json.dumps(result, indent=2)+'\n')
     try:
-        command = [str(tool/'iverilog'), '-g2012', '-DFUNCTIONAL', '-s',
+        command = [str(tool/'iverilog'), '-g2012', '-DFUNCTIONAL',
+                   *(['-DSOC_ETH_FIFO_RDREG'] if args.fifo_rdreg else []), '-s',
                    'tb_eth_fifo_mbist', '-o', str(out/'sim.vvp'), *map(str, files)]
         result['compile_command'] = command
         save()

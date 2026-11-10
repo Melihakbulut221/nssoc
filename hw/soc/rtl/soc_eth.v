@@ -134,6 +134,11 @@ always @* begin
 end
 eth_mac_1g_fifo #(
     .AXIS_DATA_WIDTH(8), .AXIS_KEEP_ENABLE(0),
+`ifdef SOC_ETH_FIFO_RDREG
+    // docs/combined-timing.md: one more RAM pipeline stage per FIFO, which
+    // the SRAM wrapper implements as a register behind each macro.
+    .TX_FIFO_RAM_PIPELINE(2), .RX_FIFO_RAM_PIPELINE(2),
+`endif
     .TX_FIFO_DEPTH(FIFO_DEPTH), .RX_FIFO_DEPTH(FIFO_DEPTH),
     .TX_FRAME_FIFO(1), .RX_FRAME_FIFO(1), .ENABLE_PADDING(1),
     .MIN_FRAME_LENGTH(64), .RX_DROP_BAD_FRAME(1), .RX_DROP_WHEN_FULL(1)

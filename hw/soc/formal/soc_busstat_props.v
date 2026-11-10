@@ -199,4 +199,25 @@
     cover (f_past_valid && rst_por_ni && !rst_ni && sticky[S_RFSEC]);
   end
 
+`ifdef SOC_BUSSTAT_EVPEND
+  // ---- B8. The pending-event register is invisible -----------------
+  // docs/combined-timing.md. A reference counter with the update of the
+  // block without SOC_BUSSTAT_EVPEND runs beside every source; the count
+  // the bus, the interrupt and B1-B7 see equals it in every cycle. The
+  // statement is inductive by itself (the visible count's next value is
+  // a function of the visible count and the inputs), so `prove` closes it
+  // for every state, not only the reachable ones.
+  genvar ri;
+  generate
+    for (ri = 0; ri < NSRC; ri = ri + 1) begin : g_ref
+      reg [CNT_W-1:0] ref_q;
+      always @(posedge clk_i or negedge rst_por_ni)
+        if (!rst_por_ni)  ref_q <= {CNT_W{1'b0}};
+        else if (clr[ri]) ref_q <= ev[ri] ? {{(CNT_W-1){1'b0}}, 1'b1} : {CNT_W{1'b0}};
+        else if (ev[ri] && ~&ref_q) ref_q <= ref_q + {{(CNT_W-1){1'b0}}, 1'b1};
+      always @(*) assert (cnt[ri] == ref_q);
+    end
+  endgenerate
+`endif
+
 `endif

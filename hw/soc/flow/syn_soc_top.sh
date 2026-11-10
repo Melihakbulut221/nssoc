@@ -768,6 +768,24 @@ fi
 if [ "$SOC_MEM_RDREG" = 2 ]; then
   EXEC_DEF="$EXEC_DEF -DSOC_MEM_RAWREG"
 fi
+# docs/combined-timing.md: SOC_ETH_FIFO_RDREG=1 registers every Ethernet
+# FIFO SRAM bank's read port (one more FIFO RAM pipeline stage; in the
+# self-test wrapper of SOC_ETH_SRAM + SOC_SRAM_MBIST the stage is a register
+# behind each macro). SOC_BUSSTAT_EVPEND=1 adds BUSSTAT's events one cycle
+# late behind a pending register, cycle-identical at the block's ports.
+# Same define pattern: nothing is emitted when both are 0.
+SOC_ETH_FIFO_RDREG=${SOC_ETH_FIFO_RDREG:-0}
+SOC_BUSSTAT_EVPEND=${SOC_BUSSTAT_EVPEND:-0}
+case "$SOC_ETH_FIFO_RDREG:$SOC_BUSSTAT_EVPEND" in
+  [01]:[01]) ;;
+  *) echo 'SOC_ETH_FIFO_RDREG and SOC_BUSSTAT_EVPEND must be zero or one' >&2; exit 2;;
+esac
+if [ "$SOC_ETH_FIFO_RDREG" = 1 ]; then
+  EXEC_DEF="$EXEC_DEF -DSOC_ETH_FIFO_RDREG"
+fi
+if [ "$SOC_BUSSTAT_EVPEND" = 1 ]; then
+  EXEC_DEF="$EXEC_DEF -DSOC_BUSSTAT_EVPEND"
+fi
 if [ -n "$EXEC_DEF" ]; then
   EXEC_DEFINES="verilog_defines$EXEC_DEF"
 fi
@@ -872,6 +890,7 @@ awk -v top=soc_top -v ge=7.2576 '
 
 echo "  mem=$SOC_MEM  regfile=$IBEX_REGFILE  fault_port=$IBEX_FAULT_PORT  synpre=$IBEX_RF_SYNPRE  corrpre=$IBEX_RF_CORRPRE  chkdefer=$IBEX_RF_CHKDEFER  predecode=$IBEX_RF_PREDECODE  rdraw=$IBEX_RF_RDRAW"
 echo "  core_req_reg=$SOC_CORE_REQ_REG  core_wb_stage=$SOC_CORE_WB_STAGE  core_bt_alu=$SOC_CORE_BT_ALU  branch_2cycle=$IBEX_BRANCH_2CYCLE  ex_stage=$IBEX_EX_STAGE  pmp_req_reg=$IBEX_PMP_REQ_REG  prefix_adder=${SOC_SYNTH_PREFIX_ADDER:-0}"
+echo "  eth_fifo_rdreg=$SOC_ETH_FIFO_RDREG  busstat_evpend=$SOC_BUSSTAT_EVPEND"
 echo "  mem_rdreg=$SOC_MEM_RDREG  mem_harden=$SOC_MEM_HARDEN  rom_harden=$SOC_ROM_HARDEN  boot_harden=$SOC_BOOT_HARDEN  clkgate=$SOC_CLKGATE  wake_gnt=$SOC_WAKE_GNT  req_reg=$SOC_REQ_REG  abc -D $ABC_D"
 echo "  report: $OUT/$AREA_SUMMARY  per-module: $OUT/area_hier.rpt"
 echo "  netlist: $OUT/soc_top.netlist.v  sta: $OUT/soc_top.sta.v  log: $OUT/syn.log"

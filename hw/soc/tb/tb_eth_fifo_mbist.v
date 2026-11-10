@@ -1,6 +1,11 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 `timescale 1ns/1ps
+`ifdef SOC_ETH_FIFO_RDREG
+`define RDWAIT @(posedge rc);
+`else
+`define RDWAIT
+`endif
 module tb_eth_fifo_mbist;
     reg wc=0, rc=0, por=0, wrst=1, rrst=1, run_r=1;
     always #10 wc=~wc;
@@ -13,6 +18,11 @@ module tb_eth_fifo_mbist;
     integer mode=0, fault_bank=0, i, counta=0, countb=0, xa=0, xb=0;
     soc_eth_fifo_sram dut(.wclk_i(wc),.rclk_i(rc),.por_ni(por),
         .wreset_i(wrst),.rreset_i(rrst),.wen_i(wen),.ren_i(ren),
+`ifdef SOC_ETH_FIFO_RDREG
+        // Registered read port: always load, so a read's word appears
+        // one edge later and holds while no read is issued.
+        .rnext_i(1'b1),
+`endif
         .waddr_i(wa),.raddr_i(ra),.wdata_i(wd),.rdata_o(rd),.done_o(done),.failed_o(failed));
     always @(posedge wc) if (por) begin
         if (dut.areq) counta=counta+1;
@@ -68,7 +78,7 @@ module tb_eth_fifo_mbist;
             wrst=0; rrst=0;
             for(i=0;i<2048;i=i+1) begin
                 @(negedge rc); ren=1; ra=11'(i);
-                @(posedge rc); #1; if(rd!==0) $fatal(1,"Nonzero initial row %0d",i);
+                @(posedge rc); `RDWAIT #1; if(rd!==0) $fatal(1,"Nonzero initial row %0d",i);
             end
             @(negedge rc); ren=0;
             for(i=0;i<2048;i=i+1) begin
@@ -77,7 +87,7 @@ module tb_eth_fifo_mbist;
             @(negedge wc); wen=0;
             for(i=0;i<2048;i=i+1) begin
                 @(negedge rc); ren=1; ra=11'(i);
-                @(posedge rc); #1;
+                @(posedge rc); `RDWAIT #1;
                 if(rd!==(16'(i)^16'ha5c3)) $fatal(1,"Cross-port data mismatch row %0d got %h",i,rd);
             end
             @(negedge rc); ren=0; ra=171;

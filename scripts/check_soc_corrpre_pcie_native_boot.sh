@@ -30,6 +30,9 @@ export SOC_CORE_BT_ALU=${SOC_CORE_BT_ALU:-0}
 export IBEX_BRANCH_2CYCLE=${IBEX_BRANCH_2CYCLE:-0}
 export IBEX_EX_STAGE=${IBEX_EX_STAGE:-0}
 export IBEX_PMP_REQ_REG=${IBEX_PMP_REQ_REG:-0}
+# docs/combined-timing.md knobs, read by sim_soc.sh and syn_soc_top.sh.
+export SOC_ETH_FIFO_RDREG=${SOC_ETH_FIFO_RDREG:-0}
+export SOC_BUSSTAT_EVPEND=${SOC_BUSSTAT_EVPEND:-0}
 # Register-file and memory knobs (same document). One variable each, set
 # for both the RTL run (SOC_*) and the synthesis (IBEX_RF_*) below.
 NATIVE_RF_CHKDEFER=${NATIVE_RF_CHKDEFER:-0}
@@ -60,6 +63,8 @@ Path(sys.argv[1]).write_text(json.dumps({
     'IBEX_BRANCH_2CYCLE': int(os.environ['IBEX_BRANCH_2CYCLE']),
     'IBEX_EX_STAGE': int(os.environ['IBEX_EX_STAGE']),
     'IBEX_PMP_REQ_REG': int(os.environ['IBEX_PMP_REQ_REG']),
+    'ETH_FIFO_RDREG': int(os.environ['SOC_ETH_FIFO_RDREG']),
+    'BUSSTAT_EVPEND': int(os.environ['SOC_BUSSTAT_EVPEND']),
     'RF_CHKDEFER': int(os.environ['SOC_RF_CHKDEFER']),
     'RF_PREDECODE': int(os.environ['SOC_RF_PREDECODE']),
     'MEM_RDREG': int(os.environ['NATIVE_MEM_RDREG']),

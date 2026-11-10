@@ -11,7 +11,10 @@ $(GOALS):
 	@PATH="$(VENV_BIN):$$PATH" $(MAKE) -f $(THIS_MK) --no-print-directory $@
 else
 RTL = $(PWD)/../../rtl
-VERILOG_SOURCES = $(RTL)/soc_eth.v $(RTL)/../gen/interfaces.bundle.vh
+VERILOG_SOURCES = $(RTL)/soc_eth.v $(RTL)/../gen/interfaces.bundle.vh $(ETH_EXTRA_SOURCES)
+# Optional: the SRAM wrapper and macro models (ETH_EXTRA_SOURCES) with
+# -DSOC_ETH_MBIST -DFUNCTIONAL, and the timing knobs of docs/combined-timing.md.
+COMPILE_ARGS += $(EXTRA_COMPILE_ARGS)
 TOPLEVEL = soc_eth
 MODULE = test_soc_eth
 SIM_BUILD ?= sim_build_soc_eth

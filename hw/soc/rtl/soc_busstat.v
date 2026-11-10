@@ -361,6 +361,50 @@ module soc_busstat #(
       // address was still X. docs/44 section 10 lists it. The saturation
       // guard is `~&cnt_q`, the same idiom soc_wdog.v uses for TMRCNT
       // and ibex_regfile_secded.v for its own counters.
+`ifdef SOC_BUSSTAT_EVPEND
+      // docs/combined-timing.md (SOC_BUSSTAT_EVPEND): the event is not
+      // added in the cycle it arrives. It is held in ev_pend_q and added one
+      // cycle later, and the counter the bus, the properties and the
+      // interrupt see is cnt_q + ev_pend_q, saturating. That is the value
+      // the counter without ev_pend_q holds in every cycle, so the block is
+      // cycle-identical at its ports. The late events (the register
+      // file's read-port syndromes, from the ID-stage read) then end at
+      // one flip-flop instead of running through the increment and the
+      // saturate and clear multiplexers. ev_pend_q is loaded by a branch on
+      // the event, never from it, for the X reason above.
+      reg ev_pend_q;
+      wire [CNT_W-1:0] cnt_vis = (ev_pend_q && ~&cnt_q)
+                               ? cnt_q + {{(CNT_W-1){1'b0}}, 1'b1} : cnt_q;
+      always @(posedge clk_i or negedge rst_por_ni) begin
+        if (!rst_por_ni) begin
+          cnt_q    <= {CNT_W{1'b0}};
+          ev_pend_q <= 1'b0;
+          sticky_q <= 1'b0;
+        end else if (clr[gi]) begin
+          // A clear drops what is counted and pending; an event in the
+          // clearing cycle becomes the pending one and counts as one.
+          cnt_q <= {CNT_W{1'b0}};
+          if (ev[gi]) begin
+            ev_pend_q <= 1'b1;
+            sticky_q <= 1'b1;
+          end else begin
+            ev_pend_q <= 1'b0;
+            sticky_q <= 1'b0;
+          end
+        end else begin
+          cnt_q <= cnt_vis;
+          if (ev[gi]) begin
+            ev_pend_q <= 1'b1;
+            sticky_q <= 1'b1;
+          end else begin
+            ev_pend_q <= 1'b0;
+          end
+        end
+      end
+
+      assign cnt[gi]    = cnt_vis;
+      assign sticky[gi] = sticky_q;
+`else
       always @(posedge clk_i or negedge rst_por_ni) begin
         if (!rst_por_ni) begin
           cnt_q    <= {CNT_W{1'b0}};
@@ -382,6 +426,7 @@ module soc_busstat #(
 
       assign cnt[gi]    = cnt_q;
       assign sticky[gi] = sticky_q;
+`endif
     end
   endgenerate
 

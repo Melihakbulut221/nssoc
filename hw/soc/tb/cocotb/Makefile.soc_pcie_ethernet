@@ -19,5 +19,7 @@ endif
 ifeq ($(JOINT_PCIE_ASYNC),1)
 COMPILE_ARGS += -DSOC_PCIE_ASYNC
 endif
+# Opt-in timing knobs (docs/combined-timing.md), from check_pcie_ethernet_soc.py --define.
+COMPILE_ARGS += $(JOINT_DEFINES)
 export COCOTB_RESULTS_FILE
 include $(shell cocotb-config --makefiles)/Makefile.sim

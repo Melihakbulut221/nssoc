@@ -5,6 +5,9 @@
 Only the 2048-word, <=16-bit FRAME_FIFO profile is admitted with SOC_ETH_MBIST.
 The SRAM read replaces pipeline stage zero, preserving its one-edge latency.
 The legacy preprocessor branch remains exactly the inferred-memory design.
+With SOC_ETH_FIFO_RDREG (docs/combined-timing.md) the FIFO runs with two RAM
+pipeline stages and the wrapper's registered read port is stage one; its load
+enable is the pinned pipeline's own stage-one enable.
 """
 
 def replace(text, old, new, count=1):
@@ -41,19 +44,40 @@ wire [15:0] mbist_rdata;
 wire mbist_wr = s_axis_tready && s_axis_tvalid &&
     !((full && DROP_WHEN_FULL) || (full_wr && DROP_OVERSIZE_FRAME) || drop_frame_reg);
 wire mbist_rd = m_axis_tready_pipe || |(~m_axis_tvalid_pipe_reg);
+`ifdef SOC_ETH_FIFO_RDREG
+// Stage one loads when the pinned loop loads it: output ready, or a bubble
+// at stage one or above.
+wire mbist_rd1 = m_axis_tready_pipe || |(~m_axis_tvalid_pipe_reg[RAM_PIPELINE:1]);
+if (ADDR_WIDTH != 11 || WIDTH > 16 || !FRAME_FIFO || RAM_PIPELINE < 2) begin
+    SOC_ETH_FIFO_RDREG_requires_2048x16_frame_fifo_with_two_ram_stages invalid_mbist_fifo();
+end
+`else
 if (ADDR_WIDTH != 11 || WIDTH > 16 || !FRAME_FIFO || RAM_PIPELINE < 1) begin
     SOC_ETH_MBIST_requires_2048x16_frame_fifo invalid_mbist_fifo();
 end
+`endif
 soc_eth_fifo_sram u_sram (
     .wclk_i(s_clk), .rclk_i(m_clk), .por_ni(mbist_por_ni),
     .wreset_i(s_rst), .rreset_i(m_rst), .wen_i(mbist_wr), .ren_i(mbist_rd),
+`ifdef SOC_ETH_FIFO_RDREG
+    .rnext_i(mbist_rd1),
+`endif
     .waddr_i(wr_ptr_reg[10:0]), .raddr_i(rd_ptr_reg[10:0]),
     .wdata_i({{(16-WIDTH){1'b0}},s_axis}), .rdata_o(mbist_rdata),
     .done_o(mbist_done_o), .failed_o(mbist_failed_o));
+`ifdef SOC_ETH_FIFO_RDREG
+// Stage zero is the macro itself; stage one is the wrapper's register.
+assign m_axis_pipe_reg[0] = mbist_rdata[WIDTH-1:0];
+assign m_axis_pipe_reg[1] = mbist_rdata[WIDTH-1:0];
+for (genvar mbp=2; mbp<=RAM_PIPELINE; mbp=mbp+1) begin: g_mbist_pipe
+    assign m_axis_pipe_reg[mbp] = mbist_pipe_reg[mbp];
+end
+`else
 assign m_axis_pipe_reg[0] = mbist_rdata[WIDTH-1:0];
 for (genvar mbp=1; mbp<=RAM_PIPELINE; mbp=mbp+1) begin: g_mbist_pipe
     assign m_axis_pipe_reg[mbp] = mbist_pipe_reg[mbp];
 end
+`endif
 `else
 '''+decl+'\n`endif')
         assignment = 'mem[wr_ptr_reg[ADDR_WIDTH-1:0]] <= s_axis;'

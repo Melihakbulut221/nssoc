@@ -29,7 +29,15 @@ case "${SOC_ETH_MBIST:-0}" in
     ;;
   *) echo 'SOC_ETH_MBIST must be 0 or 1' >&2; exit 2 ;;
 esac
+# docs/combined-timing.md: registered FIFO SRAM read ports, as one global define.
+KNOB_DEFINES="# no timing knob defines"
+case "${SOC_ETH_FIFO_RDREG:-0}" in
+  0) ;;
+  1) KNOB_DEFINES="verilog_defines -DSOC_ETH_FIFO_RDREG" ;;
+  *) echo 'SOC_ETH_FIFO_RDREG must be 0 or 1' >&2; exit 2 ;;
+esac
 cat > "$OUT/synth.ys" <<EOF
+$KNOB_DEFINES
 read_liberty -lib $SG13G2_TYP
 read_liberty -lib $LIB
 $MBIST_READ
@@ -72,6 +80,7 @@ paths = [soc/'rtl/dft/soc_sram_mbist.v', soc/'rtl/dft/soc_sram_zero_check.v',
          soc/'techmap/eth_ram.lib', soc/'techmap/eth_ram_map.v',
          soc/'tb/cocotb/test_soc_eth.py', out/'eth.netlist.v', *libraries]
 record = {'tests': [c.attrib['name'] for c in cases], 'passed': len(cases),
+          'synth_script': (out/'synth.ys').read_text(),
           'sha256': {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths}}
 (out/'evidence.json').write_text(json.dumps(record, indent=2)+'\n')
 print(f'Native SRAM gate-level Ethernet: {len(cases)} passed, no failures or skips')

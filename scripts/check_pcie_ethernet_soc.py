@@ -73,6 +73,13 @@ def main():
         action="store_true",
         help="Separate 250 MHz packet/controller and 50 MHz CPU clocks",
     )
+    p.add_argument(
+        "--define",
+        action="append",
+        default=[],
+        choices=("SOC_ETH_FIFO_RDREG", "SOC_BUSSTAT_EVPEND"),
+        help="Opt-in timing knob of docs/combined-timing.md (repeatable)",
+    )
     a = p.parse_args()
     out = a.out.resolve()
     if out.exists():
@@ -184,6 +191,7 @@ def main():
         PCIE_ROM=str(rom),
         JOINT_PCIE_ASYNC="1" if a.async_pcie else "0",
         JOINT_ETH_MBIST="1" if a.eth_mbist_pdk else "0",
+        JOINT_DEFINES=" ".join("-D" + d for d in a.define),
         PATH=str(python_dir)
         + os.pathsep
         + str(selected_tools)
@@ -224,6 +232,7 @@ def main():
         scope="Actual Ibex CPU, PCIe packet/GPIO and GMII Ethernet concurrent traffic. Base interface bundle; external loopback over independent 125 MHz clocks and 50 MHz APB. Optional 16 vendor functional FIFO SRAM instances with POR MBIST. No PCIe serial PHY, LTSSM, Ethernet PHY, full system SRAM mapping, layout, RC or timing qualification.",
         ethernet_vendor_sram=bool(a.eth_mbist_pdk),
         asynchronous_pcie=bool(a.async_pcie),
+        defines=a.define,
     )
     result = out / "result.json"
 

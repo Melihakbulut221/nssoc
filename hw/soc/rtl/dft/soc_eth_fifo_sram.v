@@ -6,10 +6,20 @@
 // A reads B's zeros -> release. Sticky completion/failure crosses via 2 FFs.
 // Missing either clock prevents release. Functional reset/flush does not rerun
 // the destructive test. All 16 physical bits are tested (including unused bits).
+// SOC_ETH_FIFO_RDREG (docs/combined-timing.md): every bank's output is
+// registered next to its macro and the bank multiplexer follows that
+// register, so no logic follows a macro output in the cycle of the read.
+// Reads then take two edges; the FIFO runs with one more RAM pipeline
+// stage and the self-test engines with READ_LATENCY 2.
 module soc_eth_fifo_sram (
     input wire wclk_i, rclk_i, por_ni,
     input wire wreset_i, rreset_i,
     input wire wen_i, ren_i,
+`ifdef SOC_ETH_FIFO_RDREG
+    // Load enable of the registered read stage (read clock): the FIFO's
+    // pipeline stage-1 enable. Ignored while the self-test owns port B.
+    input wire rnext_i,
+`endif
     input wire [10:0] waddr_i, raddr_i,
     input wire [15:0] wdata_i,
     output wire [15:0] rdata_o,
@@ -52,20 +62,36 @@ module soc_eth_fifo_sram (
     wire [15:0] awd, bwd;
     wire [15:0] aq, bq;
     // Separate the slow SRAM + bank mux response from March state updates.
+`ifdef SOC_ETH_FIFO_RDREG
+    soc_sram_mbist #(.WIDTH(16), .DEPTH(2048), .ADDR_WIDTH(11), .READ_LATENCY(2), .PIPELINE_COMPARE(1)) u_a (
+`else
     soc_sram_mbist #(.WIDTH(16), .DEPTH(2048), .ADDR_WIDTH(11), .PIPELINE_COMPARE(1)) u_a (
+`endif
         .clk_i(wclk_i), .rst_ni(wp[1]), .start_i(1'b1), .abort_i(1'b0),
         .rdata_i(aq), .req_o(areq), .we_o(awe), .addr_o(aa), .wdata_o(awd),
         .busy_o(), .done_o(adone), .failed_o(afail), .aborted_o(aabort),
         .fail_addr_o(), .fail_expected_o(), .fail_actual_o(), .fail_phase_o(), .fail_background_o());
+`ifdef SOC_ETH_FIFO_RDREG
+    soc_sram_zero_check #(.PIPELINE_COMPARE(1), .READ_LATENCY(2)) u_b_cross (
+`else
     soc_sram_zero_check #(.PIPELINE_COMPARE(1)) u_b_cross (
+`endif
         .clk_i(rclk_i), .rst_ni(rp[1]), .start_i(a_done_r[1] && !a_fail_r[1]),
         .rdata_i(bq), .req_o(bxreq), .addr_o(bxa), .done_o(bxdone), .failed_o(bxfail));
+`ifdef SOC_ETH_FIFO_RDREG
+    soc_sram_mbist #(.WIDTH(16), .DEPTH(2048), .ADDR_WIDTH(11), .READ_LATENCY(2), .PIPELINE_COMPARE(1)) u_b (
+`else
     soc_sram_mbist #(.WIDTH(16), .DEPTH(2048), .ADDR_WIDTH(11), .PIPELINE_COMPARE(1)) u_b (
+`endif
         .clk_i(rclk_i), .rst_ni(rp[1]), .start_i(bxdone && !bxfail), .abort_i(1'b0),
         .rdata_i(bq), .req_o(breq), .we_o(bwe), .addr_o(ba), .wdata_o(bwd),
         .busy_o(), .done_o(bdone), .failed_o(bfail), .aborted_o(babort),
         .fail_addr_o(), .fail_expected_o(), .fail_actual_o(), .fail_phase_o(), .fail_background_o());
+`ifdef SOC_ETH_FIFO_RDREG
+    soc_sram_zero_check #(.PIPELINE_COMPARE(1), .READ_LATENCY(2)) u_a_cross (
+`else
     soc_sram_zero_check #(.PIPELINE_COMPARE(1)) u_a_cross (
+`endif
         .clk_i(wclk_i), .rst_ni(wp[1]), .start_i(b_done_w[1] && !b_fail_w[1]),
         .rdata_i(aq), .req_o(axreq), .addr_o(axa), .done_o(axdone), .failed_o(axfail));
     wire am = areq || axreq || (a_functional && wen_i);
@@ -83,8 +109,36 @@ module soc_eth_fifo_sram (
         if (!por_ni) sel_a<=0; else if (am && !aw) sel_a<=addr_a[10:8];
     always @(posedge rclk_i or negedge por_ni)
         if (!por_ni) sel_b<=0; else if (bm && !bw) sel_b<=addr_b[10:8];
+`ifdef SOC_ETH_FIFO_RDREG
+    // The macro holds its output between reads, so a register that loads
+    // in every cycle after a read holds the word the read returned. Port A
+    // is read only by the self-test and loads every cycle. Port B is the
+    // FIFO's stage 1 in functional mode (it loads with the FIFO's stage-1
+    // enable, together with the bank select of the word) and loads every
+    // cycle under the self-test. Data flops have no reset: nothing reads
+    // them before a read has loaded them.
+    wire [15:0] bank_a_q [0:7];
+    wire [15:0] bank_b_q [0:7];
+    reg [2:0] sel_a_q, sel_b_q;
+    wire b_load = !b_functional || rnext_i;
+    always @(posedge wclk_i or negedge por_ni)
+        if (!por_ni) sel_a_q<=0; else sel_a_q<=sel_a;
+    always @(posedge rclk_i or negedge por_ni)
+        if (!por_ni) sel_b_q<=0; else if (b_load) sel_b_q<=sel_b;
+    genvar rbank;
+    generate for (rbank=0; rbank<8; rbank=rbank+1) begin: g_rdreg
+        reg [15:0] qa, qb;
+        always @(posedge wclk_i) qa <= bank_a[rbank];
+        always @(posedge rclk_i) if (b_load) qb <= bank_b[rbank];
+        assign bank_a_q[rbank] = qa;
+        assign bank_b_q[rbank] = qb;
+    end endgenerate
+    assign aq = bank_a_q[sel_a_q];
+    assign bq = bank_b_q[sel_b_q];
+`else
     assign aq = bank_a[sel_a];
     assign bq = bank_b[sel_b];
+`endif
     assign rdata_o = bq;
     genvar bank;
     generate for (bank=0; bank<8; bank=bank+1) begin: g_bank
