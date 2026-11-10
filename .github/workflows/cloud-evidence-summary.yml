@@ -978,7 +978,8 @@ jobs:
           set -euo pipefail
           echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
           python3 -m pip install -q -r sw/requirements.txt
-          python3 -m venv hw/.venv && hw/.venv/bin/pip install -q -r hw/requirements.txt
+          # The cocotb embed needs a venv on a real CPython, not the OSS CAD Suite wrapper.
+          "$pythonLocation/bin/python3" -m venv hw/.venv && hw/.venv/bin/pip install -q -r hw/requirements.txt
           for a in 1 2 3 4; do make soc-interfaces-prepare SOC_INTERFACE_PROFILE=full INTERFACE_PYTHON="$PWD/hw/.venv/bin/python" > /tmp/prep.log 2>&1 && break; tail -30 /tmp/prep.log; [ $a = 4 ] && exit 1; echo "prepare attempt $a failed; retrying"; sleep 60; done
           for a in 1 2 3; do python3 hw/soc/flow/prepare_ihp_native_boot.py > /tmp/pdk.log 2>&1 && break; tail -5 /tmp/pdk.log; [ $a = 3 ] && exit 1; sleep 60; done; tail -2 /tmp/pdk.log
           iverilog -V 2>&1 | head -1; sha256sum hw/soc/gen/interfaces*.bundle.vh
