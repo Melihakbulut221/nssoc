@@ -983,6 +983,10 @@ jobs:
           for a in 1 2 3 4; do make soc-interfaces-prepare SOC_INTERFACE_PROFILE=full INTERFACE_PYTHON="$PWD/hw/.venv/bin/python" > /tmp/prep.log 2>&1 && break; tail -30 /tmp/prep.log; [ $a = 4 ] && exit 1; echo "prepare attempt $a failed; retrying"; sleep 60; done
           for a in 1 2 3; do python3 hw/soc/flow/prepare_ihp_native_boot.py > /tmp/pdk.log 2>&1 && break; tail -5 /tmp/pdk.log; [ $a = 3 ] && exit 1; sleep 60; done; tail -2 /tmp/pdk.log
           iverilog -V 2>&1 | head -1; sha256sum hw/soc/gen/interfaces*.bundle.vh
+          # OSS CAD Suite's vvp wrapper forces its bundled Python into the
+          # cocotb embed; launch the native vvp as check_pcie_ethernet_soc.py does.
+          python3 -c "import sys; sys.path.insert(0, 'scripts'); from cocotb_icarus_runtime import prepare_runtime; print(prepare_runtime(sys.argv[1], sys.argv[2])[0])" "$OSS_CAD_SUITE/bin" /tmp/icarus-rt > /tmp/icarus-rt.txt
+          echo "ICARUS_RT=$(cat /tmp/icarus-rt.txt)" >> "$GITHUB_ENV"; cat /tmp/icarus-rt.txt
       - name: BUSSTAT cocotb suite and formal (B1-B7, and B8 the reference-counter equivalence with the knob)
         if: matrix.part == 'busstat'
         run: |
@@ -1018,7 +1022,7 @@ jobs:
           for cfg in "mem_off||" "mem_rdreg||-DSOC_ETH_FIFO_RDREG" "sram_off|$SRAM|-DSOC_ETH_MBIST -DFUNCTIONAL" "sram_rdreg|$SRAM|-DSOC_ETH_MBIST -DFUNCTIONAL -DSOC_ETH_FIFO_RDREG"; do
             IFS='|' read -r n src args <<< "$cfg"
             start=$(date +%s)
-            ( cd hw/soc/tb/cocotb && timeout 9000 env -u PYTHONHOME PATH="$GITHUB_WORKSPACE/hw/.venv/bin:$PATH" make -f Makefile.soc_eth SIM_BUILD=/tmp/sb_eth_$n COCOTB_RESULTS_FILE=$O/eth_$n.xml ETH_EXTRA_SOURCES="$src" EXTRA_COMPILE_ARGS="$args" > $O/eth_$n.log 2>&1 ) || fail=1
+            ( cd hw/soc/tb/cocotb && timeout 9000 env -u PYTHONHOME -u PYTHONEXECUTABLE PATH="$GITHUB_WORKSPACE/hw/.venv/bin:$PATH" make -f Makefile.soc_eth ICARUS_BIN_DIR=$ICARUS_RT PYTHON_BIN=$GITHUB_WORKSPACE/hw/.venv/bin/python3 SIM_BUILD=/tmp/sb_eth_$n COCOTB_RESULTS_FILE=$O/eth_$n.xml ETH_EXTRA_SOURCES="$src" EXTRA_COMPILE_ARGS="$args" > $O/eth_$n.log 2>&1 ) || fail=1
             echo "soc_eth cocotb $n: $(grep -oE 'TESTS=[0-9]+ PASS=[0-9]+ FAIL=[0-9]+' $O/eth_$n.log | tail -1) in $(( $(date +%s) - start )) s"
           done
           exit $fail
@@ -1040,11 +1044,11 @@ jobs:
           mkdir -p out
           set -uo pipefail
           fail=0
-          export PDK_ROOT=$PWD/hw/soc/tools/ihp-native-boot-c4b8b4e GL_IVERILOG=$OSS_CAD_SUITE/bin/iverilog
+          export PDK_ROOT=$PWD/hw/soc/tools/ihp-native-boot-c4b8b4e GL_IVERILOG=$ICARUS_RT/iverilog
           P=${{ matrix.part }}
           for n in ${P#eth-gl-}; do
             start=$(date +%s)
-            SOC_ETH_MBIST=1 SOC_ETH_FIFO_RDREG=$n timeout 19000 env -u PYTHONHOME bash hw/soc/flow/test_eth_sram.sh hw/soc/out/eth-sram-gl-$n > out/eth-sram-gl-$n.log 2>&1 || { fail=1; tail -30 out/eth-sram-gl-$n.log; tail -40 hw/soc/out/eth-sram-gl-$n/test.log 2>/dev/null; }
+            SOC_ETH_MBIST=1 SOC_ETH_FIFO_RDREG=$n timeout 19000 env -u PYTHONHOME -u PYTHONEXECUTABLE bash hw/soc/flow/test_eth_sram.sh hw/soc/out/eth-sram-gl-$n > out/eth-sram-gl-$n.log 2>&1 || { fail=1; tail -30 out/eth-sram-gl-$n.log; tail -40 hw/soc/out/eth-sram-gl-$n/test.log 2>/dev/null; }
             tail -1 out/eth-sram-gl-$n.log; echo "  in $(( $(date +%s) - start )) s"
             grep -E "RM_IHPSG13_2P|Number of cells|Chip area|sg13g2_df" hw/soc/out/eth-sram-gl-$n/synth.log | tail -6 || true
             cp hw/soc/out/eth-sram-gl-$n/evidence.json out/eth-sram-gl-$n.json 2>/dev/null || true
