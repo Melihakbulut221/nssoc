@@ -30,8 +30,12 @@ on:
         description: In the riscv-formal job, run only the hang check at several bounds
         type: boolean
         default: false
+      variant:
+        description: Run only these regress and native-boot matrix entries (space-separated names; empty for all); non-empty also skips riscv-formal
+        type: string
+        default: ''
       pcie_jobs:
-        description: PCIe pipeline jobs to run, space-separated from timing, unit and soc; add only to skip every Ibex job
+        description: Jobs to run, space-separated from timing, unit, soc (PCIe pipeline) and eth (Ethernet FIFO and BUSSTAT knobs); add only to skip every Ibex job
         type: string
         default: ''
       pcie_timing_sides:
@@ -153,7 +157,13 @@ jobs:
           - {name: ex_exec, ex: '1', rf: '1', memreg: '2'}
           - {name: ex_exec_br2, ex: '1', rf: '1', memreg: '2', br2: '1'}
           - {name: ex_exec_pmpreg, ex: '1', rf: '1', memreg: '2', pmpreg: '1'}
+          # docs/combined-timing.md: the same with the Ethernet FIFO read
+          # register and the BUSSTAT pending-event register.
+          - {name: ex_exec_pmpreg_cut, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1'}
     env:
+      RUN: ${{ inputs.variant == '' || contains(format(' {0} ', inputs.variant), format(' {0} ', matrix.name)) }}
+      SOC_ETH_FIFO_RDREG: ${{ matrix.ethrd || '0' }}
+      SOC_BUSSTAT_EVPEND: ${{ matrix.evpend || '0' }}
       SOC_INTERFACE_PROFILE: base
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
       IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
@@ -167,36 +177,41 @@ jobs:
       SOC_MEM_RDREG: ${{ matrix.memreg || '0' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        if: ${{ env.RUN == 'true' }}
         with:
           persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        if: ${{ env.RUN == 'true' }}
         with:
           python-version: '3.12'
       - name: Retry transient download failures
+        if: ${{ env.RUN == 'true' }}
         run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        if: ${{ env.RUN == 'true' }}
         id: cad1
         continue-on-error: true
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: sleep 180
-        if: ${{ (steps.cad1.outcome == 'failure') }}
+        if: ${{ env.RUN == 'true' && ((steps.cad1.outcome == 'failure')) }}
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
         id: cad2
-        if: ${{ (steps.cad1.outcome == 'failure') }}
+        if: ${{ env.RUN == 'true' && ((steps.cad1.outcome == 'failure')) }}
         continue-on-error: true
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: sleep 300
-        if: ${{ (steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure') }}
+        if: ${{ env.RUN == 'true' && ((steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure')) }}
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
-        if: ${{ (steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure') }}
+        if: ${{ env.RUN == 'true' && ((steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure')) }}
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Prepare processor, interfaces and firmware tools
+        if: ${{ env.RUN == 'true' }}
         run: |
           set -euo pipefail
           echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
@@ -204,12 +219,15 @@ jobs:
           python3 -m venv hw/.venv && hw/.venv/bin/pip install -q -r hw/requirements.txt
           for a in 1 2 3 4; do make soc-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python" > /tmp/prep.log 2>&1 && break; tail -30 /tmp/prep.log; [ $a = 4 ] && exit 1; echo "prepare attempt $a failed; retrying"; sleep 60; done
       - name: Whole-SoC RTL boot, default configuration (make soc-sim)
+        if: ${{ env.RUN == 'true' }}
         run: |
           set -o pipefail
           make soc-sim > soc-sim.log 2>&1; rc=$?; grep -E "^== |checks run|\[TB\]|cycles" soc-sim.log | tail -30; exit $rc
       - name: Boot regression, normal boot and both geometry fallbacks (make soc-boot-regression)
+        if: ${{ env.RUN == 'true' }}
         run: make soc-boot-regression
       - name: Double fault, crash dump, reset and APB retention (make soc-crash-cocotb)
+        if: ${{ env.RUN == 'true' }}
         run: |
           if [ "${{ matrix.name }}" = base ] || [ "${{ matrix.name }}" = ex ]; then make soc-crash-cocotb; exit; fi
           # The make target pins SOC_MEM_RDREG=1 SOC_RF_SYNPRE=1; the knobs
@@ -218,7 +236,7 @@ jobs:
           SOC_REQ_REG=1 SW_DEFINES=-DCRASH_DUMP_DEMO SOC_VVP_ARGS=+allow_double_fault bash hw/soc/flow/sim_soc.sh $B
           bash scripts/check_soc_crash_cocotb.sh $B
       - name: Collect
-        if: always()
+        if: ${{ env.RUN == 'true' && (always()) }}
         run: |
           mkdir -p out
           cp soc-sim.log out/ 2>/dev/null || true
@@ -227,7 +245,7 @@ jobs:
             [ -d "$d" ] || continue; mkdir -p out/$(basename $d); cp $d/*.log $d/*.xml $d/soc_param_override.v out/$(basename $d)/ 2>/dev/null || true; done
           find out -name '*.vvp' -delete
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
+        if: ${{ env.RUN == 'true' && (always()) }}
         with:
           name: ibex-ex-stage-regress-${{ matrix.name }}-${{ github.run_id }}
           path: out
@@ -250,11 +268,17 @@ jobs:
           # The data request register with its PMP verdict (docs/ibex-ex-stage.md
           # section 7) on the best execute-path combination.
           - {name: ex_exec_pmpreg, ex: '1', rf: '1', memreg: '2', pmpreg: '1', gate: corrpre-pcie}
+          # docs/combined-timing.md: the same with the Ethernet FIFO read
+          # register and the BUSSTAT pending-event register.
+          - {name: ex_exec_pmpreg_cut, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', gate: corrpre-pcie}
           # The execute stage alone keeps one-cycle memory reads, so the
           # MBIST boot may fit the wall clock (1.64 M cycles took 9413 s with
           # two-cycle branches).
           - {name: ex_mbist, ex: '1'}
     env:
+      RUN: ${{ inputs.variant == '' || contains(format(' {0} ', inputs.variant), format(' {0} ', matrix.name)) }}
+      SOC_ETH_FIFO_RDREG: ${{ matrix.ethrd || '0' }}
+      SOC_BUSSTAT_EVPEND: ${{ matrix.evpend || '0' }}
       SOC_INTERFACE_PROFILE: full
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
       IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
@@ -268,44 +292,50 @@ jobs:
       NATIVE_MEM_RDREG: ${{ matrix.memreg || '1' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        if: ${{ env.RUN == 'true' }}
         with:
           persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        if: ${{ env.RUN == 'true' }}
         with:
           python-version: '3.12'
       - name: Retry transient download failures
+        if: ${{ env.RUN == 'true' }}
         run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        if: ${{ env.RUN == 'true' }}
         id: cad1
         continue-on-error: true
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: sleep 180
-        if: ${{ (steps.cad1.outcome == 'failure') }}
+        if: ${{ env.RUN == 'true' && ((steps.cad1.outcome == 'failure')) }}
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
         id: cad2
-        if: ${{ (steps.cad1.outcome == 'failure') }}
+        if: ${{ env.RUN == 'true' && ((steps.cad1.outcome == 'failure')) }}
         continue-on-error: true
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: sleep 300
-        if: ${{ (steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure') }}
+        if: ${{ env.RUN == 'true' && ((steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure')) }}
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
-        if: ${{ (steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure') }}
+        if: ${{ env.RUN == 'true' && ((steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure')) }}
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Prepare exact digital inputs
+        if: ${{ env.RUN == 'true' }}
         run: |
           echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
           python3 -m pip install -q -r sw/requirements.txt
           for a in 1 2 3 4; do make soc-prepare > /tmp/prep.log 2>&1 && break; tail -30 /tmp/prep.log; [ $a = 4 ] && exit 1; echo "prepare attempt $a failed; retrying"; sleep 60; done
       - name: Native CORRPRE, PCIe, system MBIST and Ethernet MBIST gate-level boot
+        if: ${{ env.RUN == 'true' }}
         run: bash scripts/check_soc_${GATE//-/_}_native_boot.sh
       - name: Show the selected core and the gate-level verdict
-        if: always()
+        if: ${{ env.RUN == 'true' && (always()) }}
         run: |
           O=hw/soc/out/$GATE-native-boot
           cat $O/core-configuration.json || true
@@ -313,7 +343,7 @@ jobs:
           grep -E "^== |checks run|\[TB\]" $O/rtl-driver.log | tail -10 || true
           tail -30 $O/gates-driver.log || true
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
+        if: ${{ env.RUN == 'true' && (always()) }}
         with:
           name: ibex-ex-stage-native-boot-${{ matrix.name }}-${{ github.run_id }}
           path: |
@@ -341,6 +371,15 @@ jobs:
           # branch's pipelined PCIe RTL, at two densities, with the PCIe path trace.
           - {name: c_ex_exec_pmpreg_d70, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1'}
           - {name: c_ex_exec_pmpreg_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1'}
+          # docs/combined-timing.md: the same plus the Ethernet FIFO read
+          # register (SOC_ETH_FIFO_RDREG) and the BUSSTAT pending-event
+          # register (SOC_BUSSTAT_EVPEND); then the same netlist with
+          # timing-driven global placement (routability-driven is already
+          # the flow's default). Everything else is identical.
+          - {name: c_cut_d70, overrides: '{"PL_TARGET_DENSITY_PCT": 70}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1'}
+          - {name: c_cut_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1'}
+          - {name: c_cut_td_d70, overrides: '{"PL_TARGET_DENSITY_PCT": 70, "PL_TIMING_DRIVEN": true}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1'}
+          - {name: c_cut_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1'}
           # timing/pcie-pipeline's probe (its default probe_matrix): upstream
           # register file, no Ibex knobs, the PCIe path trace. pcie_rtl_ref
           # (optional) takes hw/soc/rtl/pcie from another ref instead.
@@ -362,6 +401,8 @@ jobs:
       KNOB_MEMREG: ${{ matrix.memreg || '1' }}
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
       IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
+      SOC_ETH_FIFO_RDREG: ${{ matrix.ethrd || '0' }}
+      SOC_BUSSTAT_EVPEND: ${{ matrix.evpend || '0' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) }}
@@ -433,7 +474,7 @@ jobs:
           # SECDED (the fault port is tied to zero by ibex_fault_port.py).
           if [ "${{ matrix.regfile || 'secded' }}" = upstream ]; then export IBEX_REGFILE=upstream IBEX_RF_CORRPRE=0; fi
           timeout 3600 bash hw/soc/flow/syn_soc_top.sh 20 "$OUT/synthesis" > "$OUT/synthesis-driver.log" 2>&1 || { tail -40 "$OUT/synthesis-driver.log"; exit 1; }
-          grep -E 'regfile=|core_req_reg=|Parameter .(CORRPRE|CHKDEFER|RDPRE|RDRAW|MEM_RDREG|CORE_BT_ALU) =|pmp_req_reg=|genp/gen-(br2|pre|ex|pre-ex|pmp|ex-pmp|pre-pmp|pre-ex-pmp)/' "$OUT/synthesis/syn.log" "$OUT/synthesis-driver.log" | sort -u | head -12 || true
+          grep -E 'regfile=|core_req_reg=|eth_fifo_rdreg=|Parameter .(CORRPRE|CHKDEFER|RDPRE|RDRAW|MEM_RDREG|CORE_BT_ALU|RAM_PIPELINE) =|pmp_req_reg=|genp/gen-(br2|pre|ex|pre-ex|pmp|ex-pmp|pre-pmp|pre-ex-pmp)/' "$OUT/synthesis/syn.log" "$OUT/synthesis-driver.log" | sort -u | head -12 || true
           sha256sum $OUT/synthesis/soc_top.netlist.v $OUT/rtl/test_soc.bin
           grep -iE "Number of cells|Chip area" $OUT/synthesis/syn.log | tail -3 || true
       - name: LibreLane AppImage and the verified PDK from the post-route input package
@@ -475,6 +516,8 @@ jobs:
             --skip Yosys.Synthesis --skip Checker.YosysUnmappedCells --skip Checker.YosysSynthChecks --skip Checker.NetlistAssignStatements \
             --with-initial-state $OUT/prepared/state.json $OUT/prepared/config.json > $OUT/run.log 2>&1 || { echo "FLOW_FAILED"; tail -80 $OUT/run.log; }
           python3 -B scripts/impl_probe.py collect $OUT/run $OUT/metrics.json
+          # The placement commands actually run (timing- and routability-driven flags).
+          grep -a -E "^\+ global_placement" $OUT/run.log | sed 's/  */ /g' | head -4 || true
       - name: Per-corner setup and hold on the post-global-route database
         if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) }}
         run: |
@@ -539,12 +582,18 @@ jobs:
             sed -n '/^NSSOC_DEEP_CORNER_TRACE_BEGIN/,/^NSSOC_DEEP_CORNER_TRACE_END/p' $OUT/deep-repair.log > $OUT/deep-pcie-slow.rpt
             python3 -B scripts/pcie_timing/trace_paths.py $OUT/synthesis/soc_top.mapped.json $OUT/deep-pcie-slow.rpt $OUT/deep-trace 10 || echo "TRACE_FAILED"
           fi
+          if [ -f $OUT/flop-map.tsv ] && grep -q NSSOC_NETS_BEGIN $OUT/deep-repair.log; then
+            # The worst paths of every group after the repair, named by RTL register.
+            python3 -B scripts/name_slow_paths.py $OUT/deep-repair.log $OUT/flop-map.tsv > $OUT/deep-named-paths.txt || echo "NAMING_FAILED"
+            cat $OUT/deep-named-paths.txt || true
+          fi
       - name: Collect
         if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) && (always()) }}
         run: |
           OUT=hw/soc/out/impl-probe; mkdir -p out
           cp $OUT/deep-repair.log $OUT/deep-repair.tcl out/ 2>/dev/null || true
-          cp $OUT/capped-trace.* $OUT/deep-trace.* $OUT/capped-pcie-slow.rpt $OUT/deep-pcie-slow.rpt out/ 2>/dev/null || true
+          cp $OUT/capped-trace.* $OUT/deep-trace.* $OUT/capped-pcie-slow.rpt $OUT/deep-pcie-slow.rpt $OUT/deep-named-paths.txt out/ 2>/dev/null || true
+          gzip -c $OUT/flop-map.tsv > out/flop-map.tsv.gz 2>/dev/null || true
           cp $OUT/metrics.json $OUT/corner-sta.log $OUT/corner-sta.tcl $OUT/run.log $OUT/synthesis-driver.log $OUT/rtl-driver.log $OUT/prepared/config.json out/ 2>/dev/null || true
           for d in $OUT/run/*stamidpnr* $OUT/run/*resizer*; do [ -d "$d" ] || continue; b=$(basename $d); mkdir -p out/$b; for c in nom_slow_1p08V_125C; do [ -f $d/$c/max.rpt ] && head -c 3000000 $d/$c/max.rpt > out/$b/$c.max.head.rpt; done; cp $d/*.log out/$b/ 2>/dev/null || true; done
           ls out | head -50
@@ -562,7 +611,7 @@ jobs:
   # div/rem fail against riscv-formal's own unsigned model, and liveness is
   # bound by the 37-cycle divider at depth 50.
   rvformal:
-    if: ${{ !inputs.probe_only && !inputs.unit_only && !contains(inputs.pcie_jobs, 'only') }}
+    if: ${{ !inputs.probe_only && !inputs.unit_only && !contains(inputs.pcie_jobs, 'only') && inputs.variant == '' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 355
     strategy:
@@ -879,4 +928,151 @@ jobs:
           path: |
             out/*.log
             out/*/result.json
+          retention-days: 30
+
+  # ---- docs/combined-timing.md: the Ethernet FIFO read register
+  # (SOC_ETH_FIFO_RDREG) and the BUSSTAT pending-event register
+  # (SOC_BUSSTAT_EVPEND), each with the knob off (the reference) and on.
+  # Run on request (inputs.pcie_jobs contains eth).
+  eth-knobs:
+    if: ${{ contains(inputs.pcie_jobs, 'eth') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        part: [busstat, eth-rtl, eth-mbist, eth-gl-0, eth-gl-1, joint]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Retry transient download failures
+        run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad1
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure'
+        run: sleep 180
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad2
+        if: steps.cad1.outcome == 'failure'
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
+        run: sleep 300
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Interface bundles and the locked native SRAM models
+        run: |
+          set -euo pipefail
+          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          python3 -m pip install -q -r sw/requirements.txt
+          python3 -m venv hw/.venv && hw/.venv/bin/pip install -q -r hw/requirements.txt
+          for a in 1 2 3 4; do make soc-interfaces-prepare SOC_INTERFACE_PROFILE=full INTERFACE_PYTHON="$PWD/hw/.venv/bin/python" > /tmp/prep.log 2>&1 && break; tail -30 /tmp/prep.log; [ $a = 4 ] && exit 1; echo "prepare attempt $a failed; retrying"; sleep 60; done
+          for a in 1 2 3; do python3 hw/soc/flow/prepare_ihp_native_boot.py > /tmp/pdk.log 2>&1 && break; tail -5 /tmp/pdk.log; [ $a = 3 ] && exit 1; sleep 60; done; tail -2 /tmp/pdk.log
+          iverilog -V 2>&1 | head -1; sha256sum hw/soc/gen/interfaces*.bundle.vh
+      - name: BUSSTAT cocotb suite and formal (B1-B7, and B8 the reference-counter equivalence with the knob)
+        if: matrix.part == 'busstat'
+        run: |
+          set -uo pipefail
+          O=$PWD/out; mkdir -p $O; fail=0
+          export PYTHONPATH=$GITHUB_WORKSPACE/sw:$GITHUB_WORKSPACE
+          for cfg in "off:" "evpend:-DSOC_BUSSTAT_EVPEND"; do
+            n=${cfg%%:*}
+            ( cd hw/soc/tb/cocotb && make -f Makefile.soc_busstat SIM_BUILD=/tmp/sb_bs_$n COCOTB_RESULTS_FILE=$O/busstat_$n.xml EXTRA_COMPILE_ARGS="${cfg#*:}" > $O/busstat_$n.log 2>&1 ) || fail=1
+            echo "busstat cocotb $n: $(grep -oE 'TESTS=[0-9]+ PASS=[0-9]+ FAIL=[0-9]+' $O/busstat_$n.log | tail -1)"
+          done
+          F=$O/formal; mkdir -p $F
+          for n in off evpend; do
+            mkdir -p $F/$n; cp hw/soc/rtl/soc_busstat.v hw/soc/formal/soc_busstat_props.v $F/$n/
+            sed 's#\.\./rtl/soc_busstat\.v#soc_busstat.v#' hw/soc/formal/soc_busstat.sby > $F/$n/soc_busstat.sby
+            [ $n = evpend ] && sed -i 's/^read_verilog -formal soc_busstat.v/read_verilog -formal -DSOC_BUSSTAT_EVPEND soc_busstat.v/' $F/$n/soc_busstat.sby
+            grep -n '^read_verilog' $F/$n/soc_busstat.sby
+            for t in bmc prove prove_w16 cover prove_to prove_to_w16; do
+              ( cd $F/$n && timeout 1800 sby -f soc_busstat.sby $t > $t.log 2>&1 ); rc=$?
+              echo "busstat formal $n $t: rc=$rc $(cat $F/$n/soc_busstat_$t/status 2>/dev/null)"; [ $rc = 0 ] || fail=1
+            done
+          done
+          exit $fail
+      - name: Ethernet MAC cocotb suite, inferred FIFO memory and the SRAM wrapper with vendor models, knob off and on
+        if: matrix.part == 'eth-rtl'
+        run: |
+          set -uo pipefail
+          O=$PWD/out; mkdir -p $O; fail=0
+          export PYTHONPATH=$GITHUB_WORKSPACE/sw:$GITHUB_WORKSPACE
+          M=$PWD/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog
+          D=$PWD/hw/soc/rtl/dft
+          SRAM="$D/soc_eth_fifo_sram.v $D/soc_sram_mbist.v $D/soc_sram_zero_check.v $M/RM_IHPSG13_2P_256x16_c2_bm_bist.v $M/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v $M/RM_IHPSG13_2P_core_behavioral_ideal.v"
+          for cfg in "mem_off||" "mem_rdreg||-DSOC_ETH_FIFO_RDREG" "sram_off|$SRAM|-DSOC_ETH_MBIST -DFUNCTIONAL" "sram_rdreg|$SRAM|-DSOC_ETH_MBIST -DFUNCTIONAL -DSOC_ETH_FIFO_RDREG"; do
+            IFS='|' read -r n src args <<< "$cfg"
+            start=$(date +%s)
+            ( cd hw/soc/tb/cocotb && timeout 9000 make -f Makefile.soc_eth SIM_BUILD=/tmp/sb_eth_$n COCOTB_RESULTS_FILE=$O/eth_$n.xml ETH_EXTRA_SOURCES="$src" EXTRA_COMPILE_ARGS="$args" > $O/eth_$n.log 2>&1 ) || fail=1
+            echo "soc_eth cocotb $n: $(grep -oE 'TESTS=[0-9]+ PASS=[0-9]+ FAIL=[0-9]+' $O/eth_$n.log | tail -1) in $(( $(date +%s) - start )) s"
+          done
+          exit $fail
+      - name: Ethernet SRAM wrapper self-test, faults and cross-port data (scripts/check_eth_mbist.py), knob off and on
+        if: matrix.part == 'eth-mbist'
+        run: |
+          set -uo pipefail
+          fail=0
+          for n in off rdreg; do
+            X=; [ $n = rdreg ] && X=--fifo-rdreg
+            python3 scripts/check_eth_mbist.py --pdk hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2 --tools "$OSS_CAD_SUITE/bin" --output hw/soc/out/eth-mbist-$n $X > out/eth-mbist-$n.log 2>&1 || fail=1
+            tail -1 out/eth-mbist-$n.log; cp hw/soc/out/eth-mbist-$n/result.json out/eth-mbist-$n.json 2>/dev/null || true
+          done
+          exit $fail
+      - name: Gate-level Ethernet MAC with the mapped SRAM wrapper (hw/soc/flow/test_eth_sram.sh, SOC_ETH_MBIST=1), knob ${{ matrix.part }}
+        if: startsWith(matrix.part, 'eth-gl-')
+        run: |
+          set -uo pipefail
+          fail=0
+          export PDK_ROOT=$PWD/hw/soc/tools/ihp-native-boot-c4b8b4e GL_IVERILOG=$OSS_CAD_SUITE/bin/iverilog
+          P=${{ matrix.part }}
+          for n in ${P#eth-gl-}; do
+            start=$(date +%s)
+            SOC_ETH_MBIST=1 SOC_ETH_FIFO_RDREG=$n timeout 19000 bash hw/soc/flow/test_eth_sram.sh hw/soc/out/eth-sram-gl-$n > out/eth-sram-gl-$n.log 2>&1 || { fail=1; tail -30 out/eth-sram-gl-$n.log; tail -40 hw/soc/out/eth-sram-gl-$n/test.log 2>/dev/null; }
+            tail -1 out/eth-sram-gl-$n.log; echo "  in $(( $(date +%s) - start )) s"
+            grep -E "RM_IHPSG13_2P|Number of cells|Chip area|sg13g2_df" hw/soc/out/eth-sram-gl-$n/synth.log | tail -6 || true
+            cp hw/soc/out/eth-sram-gl-$n/evidence.json out/eth-sram-gl-$n.json 2>/dev/null || true
+            cp hw/soc/out/eth-sram-gl-$n/test.log out/eth-sram-gl-$n.test.log 2>/dev/null || true
+          done
+          exit $fail
+      - name: Joint PCIe and Ethernet SoC traffic with both knobs (actual Ibex; inferred and vendor-SRAM FIFOs)
+        if: matrix.part == 'joint'
+        run: |
+          set -uo pipefail
+          O=$PWD/out; fail=0
+          make soc-rtl-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python" > /tmp/rtl-prep.log 2>&1 || { tail -30 /tmp/rtl-prep.log; exit 1; }
+          K="--define SOC_ETH_FIFO_RDREG --define SOC_BUSSTAT_EVPEND"
+          P=hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2
+          for cfg in "knobs-async|--async-pcie $K" "knobs-sync|$K" "sram-off-async|--async-pcie --eth-mbist-pdk $P" "sram-knobs-async|--async-pcie --eth-mbist-pdk $P $K"; do
+            IFS='|' read -r n args <<< "$cfg"
+            start=$(date +%s)
+            # shellcheck disable=SC2086
+            python3 scripts/check_pcie_ethernet_soc.py --out $O/joint-$n --iverilog-dir $OSS_CAD_SUITE/bin $args > $O/joint-$n.log 2>&1 || fail=1
+            python3 -c "import json,sys;d=json.load(open(sys.argv[1]));print(sys.argv[2],{k:d.get(k) for k in ('status','tests','defines','ethernet_vendor_sram','asynchronous_pcie')})" $O/joint-$n/result.json $n 2>/dev/null || { echo "$n no result"; tail -30 $O/joint-$n.log; }
+            echo "  in $(( $(date +%s) - start )) s"
+          done
+          exit $fail
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: eth-knobs-${{ matrix.part }}-${{ github.run_id }}
+          path: |
+            out/*.log
+            out/*.xml
+            out/*.json
+            out/formal/*/*.log
+            out/joint-*/result.json
           retention-days: 30
