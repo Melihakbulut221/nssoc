@@ -228,3 +228,61 @@ What the worst paths consist of:
 The common pattern of the remaining routed failures (the PCIe input ports, `pcie_link_up_i`, `bxdone`, `qwrite`) is hold padding on paths with little logic: the flow's hold repair runs with `PL_RESIZER_HOLD_SLACK_MARGIN` 0.1 ns and `GRT_RESIZER_HOLD_SLACK_MARGIN` 0.05 ns at the fast corner and inserts buffers on segments the setup paths share. Those margins are flow settings, not SDC, but changing them is a sign-off decision and is not done here.
 
 Runs: probes `r_cut3_td_d68` (all knobs) and `r_cut3n_td_d68` (all but the staged commit) with routing and extracted STA; the functional entries of section 10.3 (`ex_exec_pmpreg_cut2`, `ex_mbist_cut2`, the receive-queue suites with the staged commit, joint traffic and the SoC MBIST bench) cover the changed knobs.
+
+## 12. Fourth routed round: post-route hold repair, the receive-queue read and the fabric write data
+
+Runs 42987022661 (route) and 43052000192 (extracted STA), d68, DRC 0. Worst slow-corner setup slack in ns, and hold:
+
+| Probe | `pcie_clk_i` | `clk_i` | asynchronous | Ethernet | hold |
+|---|---:|---:|---:|---|---|
+| `r_cut3n_td_d68` (all knobs but the staged commit) | -1.87 | -0.63 | -0.44 | met | fast -0.02 (1 endpoint) |
+| `r_cut3h_td_d68` (same, `PL_`/`GRT_RESIZER_HOLD_SLACK_MARGIN` 0) | -1.37 | -0.61 | -0.20 | met | slow -0.012 (1), typ -0.003 (1), fast -0.07 (92) |
+
+Typical setup is met in both. The staged receive commit (`r_cut3_td_d68`) is worse and stays off.
+
+### 12.1 Post-route hold repair (flow, measurement only)
+
+Without the extra hold margin, placement and global-route repair pad fewer paths, which is what moved `pcie_clk_i` by 0.5 ns and the asynchronous group by 0.24 ns, but hold is then short by up to 0.07 ns on the extracted wires. LibreLane 3.0.5 has no resizer step after detailed routing, so `hw/soc/pnr/routed_measure_flow.py` gets one, `PostRouteHold` (`hw/soc/pnr/post_route_hold.tcl`), and the flow `RoutedHoldRepair` = `PostRouteHold`, then detailed routing (`CleanOrphanGuides`, the same step and `DRT_OPT_ITERS` as the route job, no in-route antenna repair):
+
+- the routed database with the flow's libraries, SDC (the same derate) and propagated clocks; the four clock periods are checked;
+- global routing in memory (the flow's settings), so the resizer can re-estimate the nets it changes and the later incremental route has a starting point;
+- OpenRCX of the routed wires with the nominal rules AuditedRCX uses (`RCX_RULESETS`, `-lef_res`), the SPEF read into every STA corner; every net the repair does not touch keeps these parasitics;
+- `repair_timing -hold -setup_margin 0 -hold_margin 0.01 -max_buffer_percent 10` in all three corners (`NSSOC_POST_ROUTE_HOLD_MARGIN`, `NSSOC_POST_ROUTE_HOLD_MAX_BUFFER_PCT`). The hold margin is a repair target against the small change rerouting brings, not an acceptance threshold. Setup is protected: no buffer may take a path below zero setup slack, and setup violations are not allowed;
+- legalization with every original placed instance held FIRM, so only new or resized cells move (if that fails, the flow's ordinary legalization runs), between `global_route -start_incremental` and `-end_incremental`;
+- the step prints worst slack and violating-endpoint counts per corner before (extracted) and after (estimated) and the inserted cell count (`NSSOC_HOLD_*`).
+
+Then the routed-sta job extracts and times the result again, like every routed variant. New workflow job `route-hold` (between `route` and `routed-sta`), its own 6 h budget. Matrix: `r_cut4h_td_d68` (below) and `r_cut3hh_td_d68`, which is the routed `r_cut3h_td_d68` database with the repair alone. With `route_run` and `sta_variant`, `route-hold` takes the routed database of the earlier run, so `r_cut3hh_td_d68` needs no new probe or route. Its databases are the artifacts `routed-hold-db-*`.
+
+Risks: the repair only adds hold buffers; setup paths that are themselves short of setup keep their hold violations (the setup protection forbids buffering them). Incremental detailed routing of a routed database is the mechanism LibreLane's own post-route antenna loop uses; a changed net whose wires move may leave DRC markers, which are reported (`route__drc_errors`), not waived.
+
+### 12.2 `pcie_clk_i`: the receive-queue bank read (`SOC_PCIE_RX_READ_AHEAD=1`, default 0)
+
+The worst path in both probes ends at a bank register: `receive_ownership.packets[24][3]` -> `bank_byte[0][3]` (-1.87), `packets[80][1]` -> `bank_byte[1][1]` (-1.37). Each bank register loads, at a mid-frame handshake, the byte at the next read index: per bit an AND-OR of 64 queue bytes (the bank's 38 and, for the flat array's bounds, 26 of the next bank's) with the one-hot cursor, and the handshake multiplexer. `soc_pcie_rx_credit.v` under the define:
+
+- the bank's 38 bytes are taken in five groups of eight lanes. Each group keeps a read-ahead register `ahead[g] = packets[bank*CAP + 8g + (index+1)%8]`, so the byte the bank register loads at a handshake is `ahead[(index+1)/8]`: an AND-OR of five registers selected by a one-hot register (`ahead_group`);
+- `ahead[g]` loads, at a mid-frame handshake, the AND-OR of its eight bytes selected by the lane after that (`ahead_lane` rotated, a register); lane 1 at an end of frame; otherwise it holds, because neither the bytes nor the cursor change. A commit rewrites the bank from staging in that cycle, so a committed bank's read-ahead registers load the same selection from staging (one shared selection; the bank's commit register picks it). Reset and link loss free every bank, and its next commit loads them before any byte of it is read;
+- the reads across a bank boundary are left out. They are never loaded: the cursor passes a TLP's last index (at most CAP-1 = 37, the shape check) or a DLLP's (at most 5) only at an end of frame, which reloads byte 0. The bench checks that bound in every cycle.
+
+So the longest path into a bank register is five registers and the handshake multiplexer, and into a read-ahead register eight local bytes and two multiplexers. The handshake now selects 288 registers instead of 48 (it already selected the cursor and the bank registers); that buffer tree is the new risk. Cost: 240 read-ahead and 13 cursor flip-flops, against 48 x 64-input AND-ORs replaced by 48 x 5 and 240 x 8. Not combinable with `SOC_PCIE_RX_STAGED_COMMIT` (the staged commit writes the bank after the read-ahead registers have read it): an undeclared module stops elaboration, and `syn_soc_top.sh`/`sim_soc.sh` refuse both at 1.
+
+Equivalence: `hw/soc/tb/tb_pcie_rx_credit_read_ahead.v` with `scripts/check_pcie_rx_read_ahead.sh` compiles the file twice (the reference renamed, without the define; the candidate with it) and compares every output in every cycle, data and error while valid. Stimulus: legal TLPs of every class, malformed ones (length, traffic class, digest, oversize, undersize, missing start, error beats), good and bad DLLPs, gaps, back-pressure, random verdicts, link loss, training, FC-initialization gaps and resets. Eight runs of 300,000 cycles: four seeds at the SoC's parameters (8 DW, 2 slots per class, completer-only), two with requester traffic, two at 4 DW and one slot per class. A run passes only with no mismatch, the cursor below CAP, more than 1,000 frames and more than 100 commits during a frame. The queue's cocotb suites (`soc_pcie_rx_credit`, `soc_pcie_buffered_flow_packets`) run with the define too.
+
+The cocotb makefiles of those two suites applied `EXTRA_COMPILE_ARGS` only with `PCIE_NATIVE=1`, so the section 10 runs "with `SOC_PCIE_RX_STAGED_COMMIT`" compiled the default build. The knob arguments now apply to RTL runs as well.
+
+### 12.3 `clk_i`: the fabric request register's write data (`SOC_BUS_WDATA_OWN=1`, default 0)
+
+`cs_registers_i.csr_addr[7]` -> `s_wdata[18]`/`[13]` (-0.63/-0.61) ends at `u_bus.g_req_reg.r_wdata`. With `IBEX_PMP_REQ_REG` the data port's write data is a flip-flop, so the path is not the store data: it is the instruction port. A CSR instruction in the execute stage decodes its address (illegal CSR, side effects), the controller sets the PC, the prefetch buffer raises `instr_req_o` with the new address, and in `soc_bus` that request (`can_issue_i`, through the address decode and the same-slave lock compare) decides `d_wins`, which selects `win_wdata = d_wins ? md_wdata_i : 0` into the 32 `r_wdata` flip-flops. The round's `ls_fsm_cs[0]` -> `s_wdata` paths of section 10.2 are the same mechanism from the load/store unit's state.
+
+Under the define the data port's write data has its own register, `r_wdata_d`, loaded when the data port can be accepted (`cap_ok && can_issue_d`, which implies an accept), and `s_wdata_o = r_own ? r_wdata_d : 0`. It equals `r_wdata` in every cycle: after an accept won by the data port both hold `md_wdata_i` and `r_own` is 1; after one won by the instruction port `r_own` is 0 and `r_wdata` is 0; without an accept neither the registers nor `r_own` change; reset gives 0. So the ports are cycle-identical; it is compiled only with the define. Nothing from the instruction port reaches the write-data flip-flops; the slaves see one AND gate after them. `s_addr` (`win_addr`) has the same select and is not changed: its data input is the instruction address itself, so a split register would move a 32-bit multiplexer onto the slave side, into the grant paths.
+
+### 12.4 Asynchronous group
+
+- `pcie_link_up_i` -> `u_pcie_cdc.source_release[0]` (-0.20, `r_cut3h`) and `pcie_sys_rst_n` -> `source_reset_n` are the hold-padding pattern of section 10.1: the reset synchronizer's clear from an input port, padded for the minimum input delay against the capture clock's insertion latency. The post-route repair only adds buffers and does not remove these; with the hold margins at 0 the padding is already smaller (-0.73 to -0.20 between rounds). What is left needs a physical decision (the synchronizer placed at the port, or a smaller clock insertion latency at it), not RTL.
+- `receive_input_slice.rst_ni` -> `receive_ownership.stage_write_at[21]` (-0.44, `r_cut3n`) is not padding: it is the recovery check of the receive queue's asynchronous reset, from the registered reset copy `up_rx` through its tree to every reset flip-flop of the queue and the input slice. Proposed, not done: a second registered copy for the queue (as `up_rx_link` is for its link input), so the slice and the queue have separate trees, or a separate copy for `stage_write_at` and the other wide reset vectors. Both are cycle-identical (all copies are equal at all times).
+
+### 12.5 Runs
+
+- Probe `r_cut4h_td_d68` (`r_cut3h_td_d68` plus `SOC_PCIE_RX_READ_AHEAD` and `SOC_BUS_WDATA_OWN`), then `route`, `route-hold`, `routed-sta`.
+- `r_cut3hh_td_d68`: the hold repair alone, from the routed `r_cut3h_td_d68` of run 42987022661.
+- `regress` and `native-boot` entry `ex_exec_pmpreg_cut4` (the `cut2` knobs without the staged commit, plus both new ones).
+- `pcie-unit`: the queue suites with each queue knob, and the co-simulation. `eth-knobs` part `joint-cut4`: joint PCIe/Ethernet traffic with the new knobs, asynchronous and synchronous packet clock, inferred and vendor-SRAM FIFOs.

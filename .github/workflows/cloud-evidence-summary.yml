@@ -175,12 +175,17 @@ jobs:
           # docs/combined-timing.md section 10: plus the RAM self-test compare
           # register and the staged receive-queue commit.
           - {name: ex_exec_pmpreg_cut2, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '1'}
+          # Section 12: the receive queue's read-ahead registers and the fabric's
+          # own write-data register instead of the staged commit.
+          - {name: ex_exec_pmpreg_cut4, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxahead: '1', wdataown: '1'}
     env:
       RUN: ${{ inputs.variant == '' || contains(format(' {0} ', inputs.variant), format(' {0} ', matrix.name)) }}
       SOC_ETH_FIFO_RDREG: ${{ matrix.ethrd || '0' }}
       SOC_BUSSTAT_EVPEND: ${{ matrix.evpend || '0' }}
       SOC_SRAM_MBIST_PIPE: ${{ matrix.mbistpipe || '0' }}
       SOC_PCIE_RX_STAGED_COMMIT: ${{ matrix.rxstaged || '0' }}
+      SOC_PCIE_RX_READ_AHEAD: ${{ matrix.rxahead || '0' }}
+      SOC_BUS_WDATA_OWN: ${{ matrix.wdataown || '0' }}
       SOC_INTERFACE_PROFILE: base
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
       IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
@@ -289,6 +294,7 @@ jobs:
           # register and the BUSSTAT pending-event register.
           - {name: ex_exec_pmpreg_cut, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', gate: corrpre-pcie}
           - {name: ex_exec_pmpreg_cut2, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '1', gate: corrpre-pcie}
+          - {name: ex_exec_pmpreg_cut4, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxahead: '1', wdataown: '1', gate: corrpre-pcie}
           # The system and Ethernet MBIST gate-level boot with every knob of
           # docs/combined-timing.md on the execute stage alone (one-cycle
           # memory reads, the configuration whose MBIST boot fits the job).
@@ -306,6 +312,8 @@ jobs:
       SOC_SRAM_MBIST_PIPE: ${{ matrix.mbistpipe || '0' }}
       NATIVE_BOOT_CYCLES: ${{ matrix.cycles || '2000000' }}
       SOC_PCIE_RX_STAGED_COMMIT: ${{ matrix.rxstaged || '0' }}
+      SOC_PCIE_RX_READ_AHEAD: ${{ matrix.rxahead || '0' }}
+      SOC_BUS_WDATA_OWN: ${{ matrix.wdataown || '0' }}
       SOC_INTERFACE_PROFILE: full
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
       IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
@@ -424,6 +432,10 @@ jobs:
           # Same as r_cut3n_td_d68 with no extra hold-repair margin during placement and global route
           # (flow setting; post-route hold is still reported on the extracted parasitics).
           - {name: r_cut3h_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true, "PL_RESIZER_HOLD_SLACK_MARGIN": 0.0, "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', route: '1'}
+          # Section 12: r_cut3h_td_d68 plus the receive queue's read-ahead registers
+          # and the fabric's own write-data register; after routing, the job
+          # route-hold repairs hold on the extracted routed wires and routes again.
+          - {name: r_cut4h_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true, "PL_RESIZER_HOLD_SLACK_MARGIN": 0.0, "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', rxahead: '1', wdataown: '1', route: '1'}
           # timing/pcie-pipeline's probe (its default probe_matrix): upstream
           # register file, no Ibex knobs, the PCIe path trace. pcie_rtl_ref
           # (optional) takes hw/soc/rtl/pcie from another ref instead.
@@ -449,6 +461,8 @@ jobs:
       SOC_BUSSTAT_EVPEND: ${{ matrix.evpend || '0' }}
       SOC_SRAM_MBIST_PIPE: ${{ matrix.mbistpipe || '0' }}
       SOC_PCIE_RX_STAGED_COMMIT: ${{ matrix.rxstaged || '0' }}
+      SOC_PCIE_RX_READ_AHEAD: ${{ matrix.rxahead || '0' }}
+      SOC_BUS_WDATA_OWN: ${{ matrix.wdataown || '0' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) }}
@@ -684,7 +698,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68, r_cut3h_td_d68]
+        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68, r_cut3h_td_d68, r_cut4h_td_d68]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -772,7 +786,16 @@ jobs:
           path: routed
           retention-days: 14
 
-  routed-sta:
+  # ---- Post-route hold repair (docs/combined-timing.md section 12). A
+  # routed database (from this run's route job, or from route_run's with
+  # sta_variant naming the entry) gets PostRouteHold of
+  # hw/soc/pnr/routed_measure_flow.py (RoutedHoldRepair: extraction of the
+  # routed wires, setup-protected hold repair in every corner, legalization
+  # of the new buffers with the original instances held, incremental global
+  # route) and detailed routing again. routed-sta extracts and times the
+  # result like every other routed variant. r_cut3hh_td_d68 is the routed
+  # r_cut3h_td_d68 database with the repair alone.
+  route-hold:
     needs: route
     if: ${{ always() && !inputs.unit_only && !inputs.rvformal_only && !contains(inputs.pcie_jobs, 'only') }}
     runs-on: ubuntu-22.04
@@ -780,7 +803,106 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68, r_cut3h_td_d68]
+        include:
+          - {name: r_cut4h_td_d68, src: r_cut4h_td_d68}
+          - {name: r_cut3hh_td_d68, src: r_cut3h_td_d68}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
+      PACKAGE_SHA: 822dab7067d901fa79dabffffff784baf5c9965f0a5091eba67acdc48b9956f4
+      RUN: ${{ (inputs.route_run == '' && (inputs.probe_variant == '' || (contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name)) && contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.src))))) || (inputs.route_run != '' && contains(format(' {0} ', inputs.sta_variant), format(' {0} ', matrix.name))) }}
+      APPIMAGE_EXTRACT_AND_RUN: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        if: env.RUN == 'true'
+        with:
+          persist-credentials: false
+      - name: LibreLane AppImage, the verified PDK and the routed database
+        if: env.RUN == 'true'
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2 || echo "libfuse2 unavailable; the AppImage extracts and runs without FUSE"
+          W=/mnt/s; sudo mkdir -p $W; sudo chown $USER $W
+          curl -fsSL --retry 5 -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
+          echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c -; chmod +x $W/librelane.AppImage
+          for attempt in 1 2 3 4 5 6; do
+            gh api repos/${{ github.repository }}/releases/assets/663146895 -H "Accept: application/octet-stream" > $W/pkg.tgz && echo "$PACKAGE_SHA  $W/pkg.tgz" | sha256sum -c - && break
+            sleep 60
+          done
+          echo "$PACKAGE_SHA  $W/pkg.tgz" | sha256sum -c -
+          mkdir -p $W/pkg && tar -xzf $W/pkg.tgz -C $W/pkg && rm $W/pkg.tgz
+          P=$(dirname "$(find $W/pkg -name input-contract.json | head -1)")
+          python3 - "$P" <<'PY'
+          import hashlib,json,shutil,sys
+          from pathlib import Path
+          p=Path(sys.argv[1]);c=json.loads((p/'input-contract.json').read_text());n=0
+          for name,row in c['input_files'].items():
+              if not name.startswith('hw/soc/tools/'):continue
+              src=p/'files'/name;dst=Path(name)
+              assert hashlib.sha256(src.read_bytes()).hexdigest()==row['sha256']
+              if not dst.exists():dst.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(src,dst);n+=1
+          print('restored PDK and tool files',n)
+          PY
+          rm -rf $W/pkg
+      - name: Post-route hold repair on the extracted routed wires, then detailed routing of the changed nets
+        if: env.RUN == 'true'
+        run: |
+          set -euo pipefail
+          W=/mnt/s; OUT=$PWD/hw/soc/out/impl-probe
+          R=${{ inputs.route_run || github.run_id }}
+          gh run download $R -n routed-db-${{ matrix.src }}-$R -D $W/h
+          tar -xzf $W/h/routed.tgz -C /; rm -rf $W/h
+          python3 - $OUT/routed-state.json <<'PY'
+          import json,sys
+          s=json.load(open(sys.argv[1]))
+          print({k:v for k,v in s['metrics'].items() if k.startswith('route__drc') or k.startswith('timing__hold__ws')})
+          PY
+          set +e
+          mkdir -p $OUT/hold
+          timeout 19200 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage python hw/soc/pnr/routed_measure_flow.py --flow RoutedHoldRepair \
+            --pdk-root $PWD/hw/soc/tools/ciel-corrpre --pdk ihp-sg13g2 --scl sg13g2_stdcell --force-run-dir $OUT/hold \
+            --with-initial-state $OUT/routed-state.json $OUT/prepared/config-routed.json > $OUT/hold.log 2>&1; rc=$?
+          set -e
+          echo "HOLD_RC=$rc"; tail -40 $OUT/hold.log
+          grep -a -h -E "NSSOC_HOLD|^(worst slack|wns|tns)|RSZ-00|Inserted [0-9]+ hold|Placement Analysis|total displacement" $OUT/hold/*postroutehold*/*.log | head -120 || true
+          grep -a -h -E "Number of violations|DRT-0199|DRT-0198|Completing|elapsed" $OUT/hold/*detailedrouting*/*.log | tail -30 || true
+          [ $rc = 0 ]
+          mkdir -p routed
+          X=; [ -f $OUT/flop-map.tsv ] && X=$OUT/flop-map.tsv
+          python3 -B scripts/routed_handoff.py pack $OUT/hold $OUT/routed-state.json routed/routed.tgz \
+            $OUT/prepared $OUT/synthesis/soc_top.netlist.v $X | tail -8
+          ls -la routed
+      - name: Collect
+        if: always() && env.RUN == 'true'
+        run: |
+          OUT=hw/soc/out/impl-probe; mkdir -p out
+          cp $OUT/hold.log $OUT/routed-state.json out/ 2>/dev/null || true
+          for d in $OUT/hold/*; do [ -d "$d" ] || continue; b=$(basename $d); mkdir -p out/$b; cp $d/*.log $d/state_out.json $d/*.rpt out/$b/ 2>/dev/null || true; done
+          find $OUT/hold -name '*.drc' -size -50M -exec cp {} out/ \; 2>/dev/null || true
+          ls -la out | head -40
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && env.RUN == 'true'
+        with:
+          name: route-hold-${{ matrix.name }}-${{ github.run_id }}
+          path: out
+          retention-days: 30
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: env.RUN == 'true'
+        with:
+          name: routed-hold-db-${{ matrix.name }}-${{ github.run_id }}
+          path: routed
+          retention-days: 14
+
+  routed-sta:
+    needs: [route, route-hold]
+    if: ${{ always() && !inputs.unit_only && !inputs.rvformal_only && !contains(inputs.pcie_jobs, 'only') }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        # r_cut4h_td_d68 and r_cut3hh_td_d68 are the route-hold job's databases.
+        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68, r_cut3h_td_d68, r_cut4h_td_d68, r_cut3hh_td_d68]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -825,8 +947,12 @@ jobs:
         run: |
           set -euo pipefail
           W=/mnt/s; OUT=$PWD/hw/soc/out/impl-probe
-          R=${{ inputs.route_run || github.run_id }}
-          gh run download $R -n routed-db-${{ matrix.name }}-$R -D $W/h
+          # The post-route hold variants come from this run's route-hold job.
+          case "${{ matrix.name }}" in
+            r_cut4h_td_d68|r_cut3hh_td_d68) A=routed-hold-db; R=${{ github.run_id }} ;;
+            *) A=routed-db; R=${{ inputs.route_run || github.run_id }} ;;
+          esac
+          gh run download $R -n $A-${{ matrix.name }}-$R -D $W/h
           tar -xzf $W/h/routed.tgz -C /; rm -rf $W/h
           python3 - $OUT/prepared/config-routed.json $OUT/routed-state.json <<'PY'
           import json,sys
@@ -1073,6 +1199,8 @@ jobs:
           sparse-checkout: |
             /hw/soc/rtl/
             /hw/soc/tb/cocotb/
+            /hw/soc/tb/tb_pcie_rx_credit_read_ahead.v
+            /scripts/check_pcie_rx_read_ahead.sh
             /hw/requirements.txt
       - name: Retry transient download failures
         run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
@@ -1114,13 +1242,21 @@ jobs:
             echo "TEST $t rc=$rc"; grep -E "TESTS=|PASS=|FAIL=|SKIP=" out/$t.log | tail -2
             [ $rc -eq 0 ] || { fail=1; tail -60 out/$t.log; }
           done
-          # docs/combined-timing.md: the receive queue's staged commit is
-          # cycle-identical at its ports; the same suites must pass with it.
-          for t in soc_pcie_rx_credit soc_pcie_buffered_flow_packets; do
-            ( cd hw/soc/tb/cocotb && PATH="$PWD/../../../.venv/bin:$PATH" timeout 3000 make -f Makefile.$t SIM_BUILD=/tmp/sb_staged_$t COCOTB_RESULTS_FILE=$GITHUB_WORKSPACE/out/results_staged_$t.xml EXTRA_COMPILE_ARGS=-DSOC_PCIE_RX_STAGED_COMMIT > $GITHUB_WORKSPACE/out/staged_$t.log 2>&1 ); rc=$?
-            echo "TEST $t with SOC_PCIE_RX_STAGED_COMMIT rc=$rc"; grep -E "TESTS=|PASS=|FAIL=|SKIP=" out/staged_$t.log | tail -2
-            [ $rc -eq 0 ] || { fail=1; tail -60 out/staged_$t.log; }
+          # docs/combined-timing.md: the receive queue's staged commit (section
+          # 10) and its read-ahead registers (section 12) are cycle-identical
+          # at its ports; the same suites must pass with each.
+          for k in staged:SOC_PCIE_RX_STAGED_COMMIT ahead:SOC_PCIE_RX_READ_AHEAD; do
+            n=${k%%:*}; d=${k#*:}
+            for t in soc_pcie_rx_credit soc_pcie_buffered_flow_packets; do
+              ( cd hw/soc/tb/cocotb && PATH="$PWD/../../../.venv/bin:$PATH" timeout 3000 make -f Makefile.$t SIM_BUILD=/tmp/sb_${n}_$t COCOTB_RESULTS_FILE=$GITHUB_WORKSPACE/out/results_${n}_$t.xml EXTRA_COMPILE_ARGS=-D$d > $GITHUB_WORKSPACE/out/${n}_$t.log 2>&1 ); rc=$?
+              echo "TEST $t with $d rc=$rc"; grep -E "TESTS=|PASS=|FAIL=|SKIP=" out/${n}_$t.log | tail -2
+              grep -q -- "-D$d" out/${n}_$t.log || echo "NOTE: -D$d not seen in the $t build log"
+              [ $rc -eq 0 ] || { fail=1; tail -60 out/${n}_$t.log; }
+            done
           done
+          # Random co-simulation of the read-ahead build against the default.
+          bash scripts/check_pcie_rx_read_ahead.sh $GITHUB_WORKSPACE/out/read-ahead-cosim 300000 > out/read-ahead-cosim.log 2>&1; rc=$?
+          cat out/read-ahead-cosim.log; [ $rc -eq 0 ] || fail=1
           echo "OVERALL fail=$fail"; exit $fail
       - name: Lint the PCIe packet subsystem
         run: |
@@ -1208,7 +1344,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        part: [busstat, eth-rtl, eth-mbist, eth-gl-0, eth-gl-1, joint, soc-mbist]
+        part: [busstat, eth-rtl, eth-mbist, eth-gl-0, eth-gl-1, joint, joint-cut4, soc-mbist]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -1324,7 +1460,7 @@ jobs:
           done
           exit $fail
       - name: Joint PCIe and Ethernet SoC traffic with both knobs (actual Ibex; inferred and vendor-SRAM FIFOs)
-        if: matrix.part == 'joint'
+        if: matrix.part == 'joint' || matrix.part == 'joint-cut4'
         run: |
           mkdir -p out
           set -uo pipefail
@@ -1333,7 +1469,11 @@ jobs:
           K="--define SOC_ETH_FIFO_RDREG --define SOC_BUSSTAT_EVPEND"
           P=hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2
           K2="$K --define SOC_PCIE_RX_STAGED_COMMIT --define SOC_SRAM_MBIST_PIPE"
-          for cfg in "knobs-async|--async-pcie $K" "knobs-sync|$K" "sram-off-async|--async-pcie --eth-mbist-pdk $P" "sram-knobs-async|--async-pcie --eth-mbist-pdk $P $K" "cut2-async|--async-pcie $K2" "cut2-sync|$K2" "sram-cut2-async|--async-pcie --eth-mbist-pdk $P $K2"; do
+          CFGS=("knobs-async|--async-pcie $K" "knobs-sync|$K" "sram-off-async|--async-pcie --eth-mbist-pdk $P" "sram-knobs-async|--async-pcie --eth-mbist-pdk $P $K" "cut2-async|--async-pcie $K2" "cut2-sync|$K2" "sram-cut2-async|--async-pcie --eth-mbist-pdk $P $K2")
+          # Section 12: the read-ahead receive queue and the fabric's own write-data register.
+          K4="$K --define SOC_SRAM_MBIST_PIPE --define SOC_PCIE_RX_READ_AHEAD --define SOC_BUS_WDATA_OWN"
+          [ "${{ matrix.part }}" = joint-cut4 ] && CFGS=("cut4-async|--async-pcie $K4" "cut4-sync|$K4" "sram-cut4-async|--async-pcie --eth-mbist-pdk $P $K4")
+          for cfg in "${CFGS[@]}"; do
             IFS='|' read -r n args <<< "$cfg"
             start=$(date +%s)
             # shellcheck disable=SC2086
