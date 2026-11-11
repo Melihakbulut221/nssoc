@@ -46,6 +46,14 @@ on:
         description: Sides of the PCIe packet-domain timing screen (JSON list of baseline and change)
         type: string
         default: '["baseline","change"]'
+      route_run:
+        description: Run id holding routed-db artifacts; when set, routed-sta extracts those and the route job is skipped
+        type: string
+        default: ''
+      sta_variant:
+        description: With route_run, the routed variants to extract (space separated)
+        type: string
+        default: ''
       pcie_tests:
         description: cocotb suites of the PCIe unit job
         type: string
@@ -670,7 +678,7 @@ jobs:
   # original clocks, all propagated). Each is its own hosted job.
   route:
     needs: probe
-    if: ${{ always() && !inputs.unit_only && !inputs.rvformal_only && !contains(inputs.pcie_jobs, 'only') }}
+    if: ${{ always() && inputs.route_run == '' && !inputs.unit_only && !inputs.rvformal_only && !contains(inputs.pcie_jobs, 'only') }}
     runs-on: ubuntu-22.04
     timeout-minutes: 355
     strategy:
@@ -777,7 +785,9 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
       PACKAGE_SHA: 822dab7067d901fa79dabffffff784baf5c9965f0a5091eba67acdc48b9956f4
-      RUN: ${{ inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name)) }}
+      RUN: ${{ (inputs.route_run == '' && (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name)))) || (inputs.route_run != '' && contains(format(' {0} ', inputs.sta_variant), format(' {0} ', matrix.name))) }}
+      # The AppImage runs without FUSE, so a mirror outage cannot block extraction.
+      APPIMAGE_EXTRACT_AND_RUN: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         if: env.RUN == 'true'
@@ -787,7 +797,7 @@ jobs:
         if: env.RUN == 'true'
         run: |
           set -euo pipefail
-          for a in 1 2 3 4 5 6; do sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2 && break; [ $a = 6 ] && exit 1; echo "apt attempt $a failed; retrying"; sleep 90; done
+          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2 || echo "libfuse2 unavailable; the AppImage extracts and runs without FUSE"
           W=/mnt/s; sudo mkdir -p $W; sudo chown $USER $W
           curl -fsSL --retry 5 -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
           echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c -; chmod +x $W/librelane.AppImage
@@ -815,7 +825,8 @@ jobs:
         run: |
           set -euo pipefail
           W=/mnt/s; OUT=$PWD/hw/soc/out/impl-probe
-          gh run download ${{ github.run_id }} -n routed-db-${{ matrix.name }}-${{ github.run_id }} -D $W/h
+          R=${{ inputs.route_run || github.run_id }}
+          gh run download $R -n routed-db-${{ matrix.name }}-$R -D $W/h
           tar -xzf $W/h/routed.tgz -C /; rm -rf $W/h
           python3 - $OUT/prepared/config-routed.json $OUT/routed-state.json <<'PY'
           import json,sys
