@@ -180,3 +180,36 @@ gh workflow run cloud-evidence-summary.yml --ref timing/combined \
   -f probe_variant='r_cut_td_d70 r_cut_td_d68' -f variant=none \
   -f repair_iterations=1100 -f path_nets=true -f drt_iters=15
 ```
+
+## 10. Routed result and the next cuts
+
+Run 42873725806 (`r_cut_td_d68` and `r_cut_td_d70`; detailed routing at `DRT_OPT_ITERS=12` without the in-route antenna repair, then AuditedRCX and AuditedRoutedSTA). Worst slack in ns, setup slow / typ / fast | hold slow / typ / fast:
+
+| Group | d68 | d70 |
+|---|---|---|
+| `clk_i` | -1.63 / 6.67 / 10.21 \| 0.19 / 0.12 / 0.03 | -2.74 / 5.90 / 9.42 \| 0.24 / 0.11 / -0.04 |
+| `pcie_clk_i` | -1.03 / 0.71 / 1.35 \| 0.34 / 0.13 / 0.01 | -1.30 / 0.38 / 1.16 \| 0.27 / 0.07 / -0.06 |
+| `eth_rx_clk_i` | -0.15 / 2.35 / 3.22 \| 0.57 / 0.25 / 0.06 | 0.48 / 2.89 / 3.58 \| 0.40 / 0.13 / -0.01 |
+| `eth_tx_clk_i` | 0.50 / 3.20 / 4.79 \| 0.49 / 0.29 / 0.09 | 0.05 / 2.95 / 4.59 \| 0.54 / 0.23 / 0.07 |
+| asynchronous | -0.73 / 0.70 / 1.52 \| 0.43 / 0.17 / 0.02 | -0.55 / 0.96 / 1.72 \| 0.47 / 0.16 / -0.01 |
+| path delay | 1.85 / 2.36 / 2.64 \| - | 1.20 / 1.95 / 2.36 \| - |
+
+Detailed routing ends with 0 DRC markers and 0 antenna violations at d68 (98,979 markers after the first iteration, 0 after the eighth). Against the global-route estimate of the same configuration (`c_cut_td_*`, section 6) the routed `clk_i` is 0.7 ns (d68) and 2.3 ns (d70) worse, `pcie_clk_i` 0.1-0.5 ns worse and the Ethernet groups 0.2-0.5 ns worse; the worst `clk_i` class is new (below).
+
+### 10.1 What the routed reports name, and the cuts
+
+- **`clk_i`: the system RAM self-test compare** (147 of the 192 violating d68 endpoints; all of the worst at d70). `soc_sram_test_port` runs `soc_sram_mbist` without `PIPELINE_COMPARE`, so the RAM macro (9.5 ns clock to output at the slow corner), its bank multiplexer, the 64-bit comparison and the enables of every failure-record register (`mbist_fail_*_o`, background, address) fall in one cycle. The record registers are already flip-flops, so registering the ports would not help; `SOC_SRAM_MBIST_PIPE=1` (new, default 0) registers the read word before the comparison (`PIPELINE_COMPARE=1`, the setting the Ethernet wrapper already uses). Requests, addresses and records are unchanged; every read takes one more clock, 327,680 more cycles for the 8192 x 64 March (the accesses stay 655,360).
+- **`pcie_clk_i`: the receive queue commit** (`commit_slot[b]` into the 304 byte flip-flops of its bank, 51 of the worst 100 d70 endpoints). `SOC_PCIE_RX_STAGED_COMMIT=1` (new, default 0, `soc_pcie_rx_credit.v`) copies the bank in groups of eight bytes, group g g cycles after the commit, each from its own register (a shift of `commit_slot`), so no enable drives more than 64 flip-flops. Byte w is first read w output handshakes after the commit and its group is written before that; staging bytes are not overwritten before the end of cycle commit+2+w. Cycle-identical at the block's ports.
+- **`pcie_rx_valid_i` -> `port_valid` (d70) and `pcie_link_up_i` -> `u_pcie_cdc.destination_release` (asynchronous)**: both already end at the first flip-flop behind the port (`port_valid` is the boundary register; `destination_release` is the reset synchronizer). The setup failures are hold-repair buffers: four to five `dlygate4sd3` cells (3.9-5.0 ns) inserted for the min input delay against a capture clock with about 2.5 ns of insertion latency. No RTL register can be placed in front of them, and the reset synchronizer must keep asserting with its clock stopped, so it cannot take a registered copy. These two need a physical or constraint decision (input-flop clock latency, hold margin on the port paths), outside this branch's rules.
+- **`eth_rx_clk_i`: the registered bank select** (`sel_a_q` -> `u_a.response_q`, -0.15 at d68). With `SOC_ETH_FIFO_RDREG` the select of the registered word is now kept one-hot and the output is an AND-OR of the eight bank registers (inside the existing knob; the knob-off netlist does not move).
+
+### 10.2 The next five slow-corner setup paths per failing group (d68), after those cuts
+
+- `clk_i`: `load_store_unit_i.ls_fsm_cs[0]` -> fabric request `s_wdata[20]`, `[22]`, `[9]` (-0.66 to -0.63); EX-stage instruction `exs_ex_instr_rdata_alu_id_q[1]` -> register file `rf_reg_q[30]` of x15, x2 (-0.49, -0.48).
+- `pcie_clk_i`: receive read cursor `next_onehot[27]` -> `bank_byte[3]` (-0.85); `flow.packet_rejected_o` -> `receive_ownership.head_last[3]`, `head_units` (-0.76); `quarantine.cursor[26]` -> `endpoint.byte_data[2]` (-0.74); `retry.replay_read_onehot[10]` -> `read_replay_bank[0].registered` (-0.68); `quarantine.index[1]` -> `endpoint.word_index[3]` (-0.66). At d70 also `flow.credits.b_dd` -> `credit_data_limit_o`/`credit_header_limit_o`, `advertiser.link_up_i` -> `sent_data_o`, `retry.write_address` -> `retry.bytes`.
+- asynchronous: `receive_input_slice.rst_ni` -> `receive_ownership.next_onehot[*]` (-0.46, 24 endpoints, the cursor's reset tree); `pcie_sys_rst_n` -> `u_pcie_cdc.source_reset_n`/`source_release` (-0.30, the same hold-buffer pattern as `pcie_link_up_i`).
+- `eth_rx_clk_i`: nothing else violates.
+
+### 10.3 Tests and runs
+
+`regress` and `native-boot` entries `ex_exec_pmpreg_cut2`, native-boot `ex_mbist_cut2` (system and Ethernet MBIST gate-level boot, execute stage alone, every knob), probes `r_cut2_td_d68`/`r_cut2_td_d70` with `route` and `routed-sta`, the PCIe unit suites of the receive queue with `-DSOC_PCIE_RX_STAGED_COMMIT`, joint PCIe/Ethernet traffic with all knobs (`cut2-*`), and the SoC MBIST integration bench (`scripts/check_soc_mbist_integration.py --define ...`, eth-knobs part `soc-mbist`), knobs off and on. The MBIST gate-level boot was already at 16,273 s of its 18,000 s simulator limit; 327,680 more MBIST cycles may not fit, in which case the RTL integration bench is the MBIST evidence.

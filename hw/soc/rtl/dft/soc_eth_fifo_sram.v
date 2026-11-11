@@ -117,24 +117,28 @@ module soc_eth_fifo_sram (
     // enable, together with the bank select of the word) and loads every
     // cycle under the self-test. Data flops have no reset: nothing reads
     // them before a read has loaded them.
-    wire [15:0] bank_a_q [0:7];
-    wire [15:0] bank_b_q [0:7];
-    reg [2:0] sel_a_q, sel_b_q;
+    // The bank select of the registered word is kept one-hot, so the
+    // output is an AND-OR of eight registers with registered selects.
+    reg [7:0] sel_a_oh_q, sel_b_oh_q;
     wire b_load = !b_functional || rnext_i;
     always @(posedge wclk_i or negedge por_ni)
-        if (!por_ni) sel_a_q<=0; else sel_a_q<=sel_a;
+        if (!por_ni) sel_a_oh_q<=8'd1; else sel_a_oh_q<=8'd1<<sel_a;
     always @(posedge rclk_i or negedge por_ni)
-        if (!por_ni) sel_b_q<=0; else if (b_load) sel_b_q<=sel_b;
+        if (!por_ni) sel_b_oh_q<=8'd1; else if (b_load) sel_b_oh_q<=8'd1<<sel_b;
+    wire [15:0] or_a [0:8];
+    wire [15:0] or_b [0:8];
+    assign or_a[0] = 16'h0;
+    assign or_b[0] = 16'h0;
     genvar rbank;
     generate for (rbank=0; rbank<8; rbank=rbank+1) begin: g_rdreg
         reg [15:0] qa, qb;
         always @(posedge wclk_i) qa <= bank_a[rbank];
         always @(posedge rclk_i) if (b_load) qb <= bank_b[rbank];
-        assign bank_a_q[rbank] = qa;
-        assign bank_b_q[rbank] = qb;
+        assign or_a[rbank+1] = or_a[rbank] | (qa & {16{sel_a_oh_q[rbank]}});
+        assign or_b[rbank+1] = or_b[rbank] | (qb & {16{sel_b_oh_q[rbank]}});
     end endgenerate
-    assign aq = bank_a_q[sel_a_q];
-    assign bq = bank_b_q[sel_b_q];
+    assign aq = or_a[8];
+    assign bq = or_b[8];
 `else
     assign aq = bank_a[sel_a];
     assign bq = bank_b[sel_b];

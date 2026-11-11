@@ -21,6 +21,8 @@ COCOTB_TEST_MODULES = test_soc_pcie_rx_credit
 COMPILE_ARGS += -g2012
 ifeq ($(PCIE_NATIVE),1)
 COMPILE_ARGS += -gspecify
+# Opt-in timing knobs (docs/combined-timing.md), e.g. -DSOC_PCIE_RX_STAGED_COMMIT.
+COMPILE_ARGS += $(EXTRA_COMPILE_ARGS)
 endif
 SIM_BUILD ?= sim_build_soc_pcie_rx_credit
 COCOTB_RESULTS_FILE ?= results_soc_pcie_rx_credit.xml

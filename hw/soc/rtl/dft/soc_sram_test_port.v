@@ -31,8 +31,18 @@ module soc_sram_test_port #(
     wire bist_req, bist_we;
     wire [ADDR_WIDTH-1:0] bist_addr;
     wire [WIDTH-1:0] bist_data;
+`ifdef SOC_SRAM_MBIST_PIPE
+    // docs/combined-timing.md: the read word is registered before the
+    // 64-bit comparison and the failure-record enables (PIPELINE_COMPARE),
+    // so the macro output and its bank multiplexer end at a register.
+    // Requests, addresses and failure records are unchanged; every read
+    // takes one more clock.
+    soc_sram_mbist #(.WIDTH(WIDTH), .DEPTH(DEPTH), .ADDR_WIDTH(ADDR_WIDTH),
+                    .READ_LATENCY(READ_LATENCY), .PIPELINE_COMPARE(1)) u_mbist (
+`else
     soc_sram_mbist #(.WIDTH(WIDTH), .DEPTH(DEPTH), .ADDR_WIDTH(ADDR_WIDTH),
                     .READ_LATENCY(READ_LATENCY)) u_mbist (
+`endif
         .clk_i(clk_i), .rst_ni(rst_ni), .start_i(start_i && test_mode_i),
         .abort_i(abort_i || !test_mode_i), .rdata_i(mem_rdata_i),
         .req_o(bist_req), .we_o(bist_we), .addr_o(bist_addr), .wdata_o(bist_data),

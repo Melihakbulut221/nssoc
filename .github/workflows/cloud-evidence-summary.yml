@@ -164,10 +164,15 @@ jobs:
           # docs/combined-timing.md: the same with the Ethernet FIFO read
           # register and the BUSSTAT pending-event register.
           - {name: ex_exec_pmpreg_cut, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1'}
+          # docs/combined-timing.md section 10: plus the RAM self-test compare
+          # register and the staged receive-queue commit.
+          - {name: ex_exec_pmpreg_cut2, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '1'}
     env:
       RUN: ${{ inputs.variant == '' || contains(format(' {0} ', inputs.variant), format(' {0} ', matrix.name)) }}
       SOC_ETH_FIFO_RDREG: ${{ matrix.ethrd || '0' }}
       SOC_BUSSTAT_EVPEND: ${{ matrix.evpend || '0' }}
+      SOC_SRAM_MBIST_PIPE: ${{ matrix.mbistpipe || '0' }}
+      SOC_PCIE_RX_STAGED_COMMIT: ${{ matrix.rxstaged || '0' }}
       SOC_INTERFACE_PROFILE: base
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
       IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
@@ -275,6 +280,11 @@ jobs:
           # docs/combined-timing.md: the same with the Ethernet FIFO read
           # register and the BUSSTAT pending-event register.
           - {name: ex_exec_pmpreg_cut, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', gate: corrpre-pcie}
+          - {name: ex_exec_pmpreg_cut2, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '1', gate: corrpre-pcie}
+          # The system and Ethernet MBIST gate-level boot with every knob of
+          # docs/combined-timing.md on the execute stage alone (one-cycle
+          # memory reads, the configuration whose MBIST boot fits the job).
+          - {name: ex_mbist_cut2, ex: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '1'}
           # The execute stage alone keeps one-cycle memory reads, so the
           # MBIST boot may fit the wall clock (1.64 M cycles took 9413 s with
           # two-cycle branches).
@@ -283,6 +293,8 @@ jobs:
       RUN: ${{ inputs.variant == '' || contains(format(' {0} ', inputs.variant), format(' {0} ', matrix.name)) }}
       SOC_ETH_FIFO_RDREG: ${{ matrix.ethrd || '0' }}
       SOC_BUSSTAT_EVPEND: ${{ matrix.evpend || '0' }}
+      SOC_SRAM_MBIST_PIPE: ${{ matrix.mbistpipe || '0' }}
+      SOC_PCIE_RX_STAGED_COMMIT: ${{ matrix.rxstaged || '0' }}
       SOC_INTERFACE_PROFILE: full
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
       IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
@@ -389,6 +401,10 @@ jobs:
           # route (detailed routing) and routed-sta (OpenRCX, OpenSTA).
           - {name: r_cut_td_d70, overrides: '{"PL_TARGET_DENSITY_PCT": 70, "PL_TIMING_DRIVEN": true}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', route: '1'}
           - {name: r_cut_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', route: '1'}
+          # Section 10: the routed configuration plus the RAM self-test compare
+          # register and the staged receive-queue commit.
+          - {name: r_cut2_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '1', route: '1'}
+          - {name: r_cut2_td_d70, overrides: '{"PL_TARGET_DENSITY_PCT": 70, "PL_TIMING_DRIVEN": true}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '1', route: '1'}
           # timing/pcie-pipeline's probe (its default probe_matrix): upstream
           # register file, no Ibex knobs, the PCIe path trace. pcie_rtl_ref
           # (optional) takes hw/soc/rtl/pcie from another ref instead.
@@ -412,6 +428,8 @@ jobs:
       IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
       SOC_ETH_FIFO_RDREG: ${{ matrix.ethrd || '0' }}
       SOC_BUSSTAT_EVPEND: ${{ matrix.evpend || '0' }}
+      SOC_SRAM_MBIST_PIPE: ${{ matrix.mbistpipe || '0' }}
+      SOC_PCIE_RX_STAGED_COMMIT: ${{ matrix.rxstaged || '0' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) }}
@@ -647,7 +665,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [r_cut_td_d70, r_cut_td_d68]
+        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -743,7 +761,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [r_cut_td_d70, r_cut_td_d68]
+        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -1074,6 +1092,13 @@ jobs:
             echo "TEST $t rc=$rc"; grep -E "TESTS=|PASS=|FAIL=|SKIP=" out/$t.log | tail -2
             [ $rc -eq 0 ] || { fail=1; tail -60 out/$t.log; }
           done
+          # docs/combined-timing.md: the receive queue's staged commit is
+          # cycle-identical at its ports; the same suites must pass with it.
+          for t in soc_pcie_rx_credit soc_pcie_buffered_flow_packets; do
+            ( cd hw/soc/tb/cocotb && PATH="$PWD/../../../.venv/bin:$PATH" timeout 3000 make -f Makefile.$t SIM_BUILD=/tmp/sb_staged_$t COCOTB_RESULTS_FILE=$GITHUB_WORKSPACE/out/results_staged_$t.xml EXTRA_COMPILE_ARGS=-DSOC_PCIE_RX_STAGED_COMMIT > $GITHUB_WORKSPACE/out/staged_$t.log 2>&1 ); rc=$?
+            echo "TEST $t with SOC_PCIE_RX_STAGED_COMMIT rc=$rc"; grep -E "TESTS=|PASS=|FAIL=|SKIP=" out/staged_$t.log | tail -2
+            [ $rc -eq 0 ] || { fail=1; tail -60 out/staged_$t.log; }
+          done
           echo "OVERALL fail=$fail"; exit $fail
       - name: Lint the PCIe packet subsystem
         run: |
@@ -1161,7 +1186,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        part: [busstat, eth-rtl, eth-mbist, eth-gl-0, eth-gl-1, joint]
+        part: [busstat, eth-rtl, eth-mbist, eth-gl-0, eth-gl-1, joint, soc-mbist]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -1285,13 +1310,33 @@ jobs:
           make soc-rtl-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python" > /tmp/rtl-prep.log 2>&1 || { tail -30 /tmp/rtl-prep.log; exit 1; }
           K="--define SOC_ETH_FIFO_RDREG --define SOC_BUSSTAT_EVPEND"
           P=hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2
-          for cfg in "knobs-async|--async-pcie $K" "knobs-sync|$K" "sram-off-async|--async-pcie --eth-mbist-pdk $P" "sram-knobs-async|--async-pcie --eth-mbist-pdk $P $K"; do
+          K2="$K --define SOC_PCIE_RX_STAGED_COMMIT --define SOC_SRAM_MBIST_PIPE"
+          for cfg in "knobs-async|--async-pcie $K" "knobs-sync|$K" "sram-off-async|--async-pcie --eth-mbist-pdk $P" "sram-knobs-async|--async-pcie --eth-mbist-pdk $P $K" "cut2-async|--async-pcie $K2" "cut2-sync|$K2" "sram-cut2-async|--async-pcie --eth-mbist-pdk $P $K2"; do
             IFS='|' read -r n args <<< "$cfg"
             start=$(date +%s)
             # shellcheck disable=SC2086
             python3 scripts/check_pcie_ethernet_soc.py --out $O/joint-$n --iverilog-dir $OSS_CAD_SUITE/bin $args > $O/joint-$n.log 2>&1 || fail=1
             python3 -c "import json,sys;d=json.load(open(sys.argv[1]));print(sys.argv[2],{k:d.get(k) for k in ('status','tests','defines','ethernet_vendor_sram','asynchronous_pcie')})" $O/joint-$n/result.json $n 2>/dev/null || { echo "$n no result"; tail -30 $O/joint-$n.log; }
             echo "  in $(( $(date +%s) - start )) s"
+          done
+          exit $fail
+      - name: SoC system and Ethernet MBIST integration (scripts/check_soc_mbist_integration.py), knobs off and on
+        if: matrix.part == 'soc-mbist'
+        run: |
+          mkdir -p out
+          set -uo pipefail
+          fail=0
+          for a in 1 2 3 4; do make soc-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python" > /tmp/soc-prep.log 2>&1 && break; tail -30 /tmp/soc-prep.log; [ $a = 4 ] && exit 1; sleep 60; done
+          P=hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2
+          K="--define SOC_SRAM_MBIST_PIPE --define SOC_ETH_FIFO_RDREG --define SOC_BUSSTAT_EVPEND"
+          for cfg in "off|" "knobs|$K"; do
+            IFS='|' read -r n args <<< "$cfg"
+            start=$(date +%s)
+            # shellcheck disable=SC2086
+            python3 scripts/check_soc_mbist_integration.py --pdk $P --output hw/soc/out/soc-mbist-$n --iverilog $OSS_CAD_SUITE/bin/iverilog --vvp $OSS_CAD_SUITE/bin/vvp --eth-mbist $args > out/soc-mbist-$n.log 2>&1 || fail=1
+            tail -3 out/soc-mbist-$n.log; echo "  in $(( $(date +%s) - start )) s"
+            cp hw/soc/out/soc-mbist-$n/result.json out/soc-mbist-$n.json 2>/dev/null || true
+            grep -h "MBIST completed" hw/soc/out/soc-mbist-$n/*.log 2>/dev/null | head -3 || true
           done
           exit $fail
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

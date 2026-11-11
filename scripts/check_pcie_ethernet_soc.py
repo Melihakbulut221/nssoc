@@ -77,7 +77,7 @@ def main():
         "--define",
         action="append",
         default=[],
-        choices=("SOC_ETH_FIFO_RDREG", "SOC_BUSSTAT_EVPEND"),
+        choices=("SOC_ETH_FIFO_RDREG", "SOC_BUSSTAT_EVPEND", "SOC_PCIE_RX_STAGED_COMMIT", "SOC_SRAM_MBIST_PIPE"),
         help="Opt-in timing knob of docs/combined-timing.md (repeatable)",
     )
     a = p.parse_args()

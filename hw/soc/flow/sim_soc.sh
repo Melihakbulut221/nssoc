@@ -380,6 +380,17 @@ fi
 if [ "$SOC_BUSSTAT_EVPEND" = 1 ]; then
   EXEC_DEFS="$EXEC_DEFS -DSOC_BUSSTAT_EVPEND"
 fi
+# docs/combined-timing.md, routed round: SOC_SRAM_MBIST_PIPE=1 registers the
+# system RAM self-test's read word before its comparison; SOC_PCIE_RX_STAGED_COMMIT=1
+# copies a committed receive TLP into its queue bank in byte groups over
+# consecutive cycles, each group enabled by its own register.
+for knob in SOC_SRAM_MBIST_PIPE SOC_PCIE_RX_STAGED_COMMIT; do
+  case "${!knob:-0}" in
+    0) ;;
+    1) EXEC_DEFS="$EXEC_DEFS -D$knob" ;;
+    *) echo "$knob must be zero or one" >&2; exit 2;;
+  esac
+done
 if [ "$SOC_MEM_HARDEN" != 0 ]; then
   RAM_POWERUP_DEF=-DRAM_POWERUP_ECC
 else

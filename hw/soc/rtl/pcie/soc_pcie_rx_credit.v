@@ -212,12 +212,46 @@ module soc_pcie_rx_credit #(
     reg [CAP-1:0] stage_write_at;
     reg [7:0] stage_write_data;
     integer w,wb;
+`ifdef SOC_PCIE_RX_STAGED_COMMIT
+    // docs/combined-timing.md: the copy into the bank is spread over
+    // consecutive cycles in groups of eight bytes, group g written g cycles
+    // after the commit by its own register (a shift of commit_slot[bank]),
+    // so no enable drives more than 64 flip-flops.
+    // Byte w is first read w cycles after the commit (one byte per output
+    // handshake from index 0; byte 0 by the commit itself and at an end of
+    // frame), and group g = w/8 is written at the end of commit cycle +g,
+    // before any read of it. Its staging bytes are unchanged until then:
+    // a new TLP's byte w is written at the end of cycle commit+2+w at the
+    // earliest. A bank is reused only after its TLP has been read out and
+    // removed, many cycles after its last group. Reset and link loss clear
+    // the shift with commit_slot; the bank is free afterwards and its next
+    // commit rewrites it whole.
+    // Group g (1..GROUPS-1) of bank b is enabled by
+    // commit_later[(g-1)*SLOTS+b]. CAP > 8 for every supported size.
+    localparam integer GROUPS=(CAP+7)/8;
+    reg [(GROUPS-1)*SLOTS-1:0] commit_later;
+    wire [GROUPS*SLOTS-1:0] commit_shift={commit_later,commit_slot};
+    always @(posedge clk_i or negedge rst_ni)
+        if(!rst_ni) commit_later<=0;
+        else if(!link_up_i) commit_later<=0;
+        else commit_later<=commit_shift[(GROUPS-1)*SLOTS-1:0];
+    integer cw;
+    always @(posedge clk_i) begin
+        stage_write_data<=rx_data_i;
+        for(w=0;w<CAP;w=w+1) if(stage_write_at[w]) staging[w]<=stage_write_data;
+        for(wb=0;wb<SLOTS;wb=wb+1)
+            for(cw=0;cw<GROUPS;cw=cw+1)
+                if(commit_shift[cw*SLOTS+wb])
+                    for(w=8*cw;w<8*cw+8 && w<CAP;w=w+1) packets[wb*CAP+w]<=staging[w];
+    end
+`else
     always @(posedge clk_i) begin
         stage_write_data<=rx_data_i;
         for(w=0;w<CAP;w=w+1) if(stage_write_at[w]) staging[w]<=stage_write_data;
         for(wb=0;wb<SLOTS;wb=wb+1) if(commit_slot[wb])
             for(w=0;w<CAP;w=w+1) packets[wb*CAP+w]<=staging[w];
     end
+`endif
     reg [7:0] tlp_byte;
     integer h;
     always @* begin
