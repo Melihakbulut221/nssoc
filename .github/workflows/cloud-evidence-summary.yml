@@ -284,7 +284,9 @@ jobs:
           # The system and Ethernet MBIST gate-level boot with every knob of
           # docs/combined-timing.md on the execute stage alone (one-cycle
           # memory reads, the configuration whose MBIST boot fits the job).
-          - {name: ex_mbist_cut2, ex: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '1'}
+          # The registered RAM self-test compare adds 327,680 self-test cycles and the
+          # execute stage about 8%; the 2,000,000-cycle default ended at check 24 of 28.
+          - {name: ex_mbist_cut2, ex: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '1', cycles: '2600000'}
           # The execute stage alone keeps one-cycle memory reads, so the
           # MBIST boot may fit the wall clock (1.64 M cycles took 9413 s with
           # two-cycle branches).
@@ -294,6 +296,7 @@ jobs:
       SOC_ETH_FIFO_RDREG: ${{ matrix.ethrd || '0' }}
       SOC_BUSSTAT_EVPEND: ${{ matrix.evpend || '0' }}
       SOC_SRAM_MBIST_PIPE: ${{ matrix.mbistpipe || '0' }}
+      NATIVE_BOOT_CYCLES: ${{ matrix.cycles || '2000000' }}
       SOC_PCIE_RX_STAGED_COMMIT: ${{ matrix.rxstaged || '0' }}
       SOC_INTERFACE_PROFILE: full
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
