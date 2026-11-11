@@ -202,8 +202,18 @@ foreach name [array names rip] {
     }
 }
 puts "NSSOC_HOLD_REROUTE nets=[array size rip] wires_removed=$wires originals_moved=$moved"
+# The next step (NSSOC.RemoveNonOrthogonalWires) removes any wire these
+# nets carry in the written database, and any wire with a non-orthogonal
+# segment on any net, before detailed routing.
+set f [open [file join [file dirname $::env(STEP_DIR)] post-route-hold-nets.txt] w]
+foreach name [lsort [array names rip]] {puts $f $name}
+close $f
 
 nssoc_hold_report estimated-after
-puts "NSSOC_HOLD_DONE"
+set still 0
+foreach name [array names rip] {
+    if {[$rip($name) getWire] ne "NULL"} {incr still}
+}
+puts "NSSOC_HOLD_DONE changed_nets_with_wires=$still"
 
 write_views

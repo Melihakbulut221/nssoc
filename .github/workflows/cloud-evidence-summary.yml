@@ -865,7 +865,8 @@ jobs:
           set -e
           echo "HOLD_RC=$rc"; tail -40 $OUT/hold.log
           grep -a -h -E "NSSOC_HOLD|^(worst slack|wns|tns)|RSZ-00|Inserted [0-9]+ hold|Placement Analysis|total displacement" $OUT/hold/*postroutehold*/*.log | head -120 || true
-          grep -a -h -E "Number of violations|DRT-0199|DRT-0198|Completing|elapsed" $OUT/hold/*detailedrouting*/*.log | tail -30 || true
+          grep -a -h -E "NSSOC_WIRE|NSSOC_NONORTHOGONAL" $OUT/hold/*removenonorthogonalwires*/*.log | head -50 || true
+          grep -a -h -E "Number of violations|DRT-0199|DRT-0198|DRT-1010|Completing|elapsed" $OUT/hold/*detailedrouting*/*.log | tail -30 || true
           [ $rc = 0 ]
           mkdir -p routed
           X=; [ -f $OUT/flop-map.tsv ] && X=$OUT/flop-map.tsv

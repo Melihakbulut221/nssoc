@@ -14,8 +14,10 @@ only: DRC markers left by the bounded routing are reported, not waived.
 RoutedHoldRepair (section 12) continues from a routed database instead:
 PostRouteHold (hw/soc/pnr/post_route_hold.tcl: extraction of the routed
 wires, setup-protected hold repair in every corner, legalization of the new
-buffers with the original instances held, incremental global route), then
-detailed routing again, which reconnects the changed nets. The result is
+buffers with the original instances held, incremental global route),
+RemoveNonOrthogonalWires (hw/soc/pnr/remove_nonorthogonal_wires.py: the
+changed nets and any net with a diagonal wire segment lose their wires),
+then detailed routing again, which routes those nets. The result is
 extracted and timed by the same ReplayOnehotRoutedExtraction.
 """
 from decimal import Decimal
@@ -25,6 +27,7 @@ from interface_flow import Interfaces, CleanOrphanGuides
 from librelane.config import Variable
 from librelane.flows import Flow
 from librelane.steps import OpenROAD, Odb
+from librelane.steps.odb import OdbpyStep
 
 
 @Flow.factory.register()
@@ -84,10 +87,26 @@ class PostRouteHold(OpenROAD.ResizerStep):
         )
 
 
+class RemoveNonOrthogonalWires(OdbpyStep):
+    """Remove the wires of the changed nets and of any net with a diagonal segment."""
+
+    id = "NSSOC.RemoveNonOrthogonalWires"
+    name = "Remove wires detailed routing cannot take back"
+    config_vars = []
+
+    def get_script_path(self):
+        return str(Path(__file__).resolve().parent / "remove_nonorthogonal_wires.py")
+
+    def get_command(self):
+        nets = Path(self.step_dir).parent / "post-route-hold-nets.txt"
+        return super().get_command() + ["--nets-file", str(nets)]
+
+
 @Flow.factory.register()
 class RoutedHoldRepair(Interfaces):
     Steps = [
         PostRouteHold,
+        RemoveNonOrthogonalWires,
         CleanOrphanGuides,
     ]
 
