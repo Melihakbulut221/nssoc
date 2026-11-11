@@ -78,32 +78,15 @@ proc nssoc_hold_report {tag} {
     }
 }
 
-# Hold-violating endpoints (worst over the corners) by the setup slack the
-# setup-protected repair can spend there: negative setup (no buffer can be
-# added), setup slack smaller than the hold deficit, or room.
+# Hold-violating endpoint count only. The per-path breakdown by setup slack
+# used get_property on path ends, which crashes this OpenROAD build (signal 11
+# in sta::Properties::getProperty(PathEnd*)), so it is not computed here.
 proc nssoc_hold_census {tag} {
     if {[catch {find_timing_paths -path_delay min -group_path_count 100000 -endpoint_path_count 1 -slack_max 0} ends]} {
         puts "NSSOC_HOLD_CENSUS_FAILED $tag: $ends"
         return
     }
-    set negative 0; set short 0; set room 0; set unknown 0
-    foreach path $ends {
-        if {[catch {
-            set hold [get_property $path slack]
-            set setup [get_property [get_property $path endpoint] slack_max]
-        }]} {
-            incr unknown
-            continue
-        }
-        if {$setup < 0} {
-            incr negative
-        } elseif {$setup < -$hold} {
-            incr short
-        } else {
-            incr room
-        }
-    }
-    puts "NSSOC_HOLD_CENSUS $tag hold_violating=[llength $ends] setup_negative=$negative setup_below_hold_deficit=$short setup_room=$room unknown=$unknown"
+    puts "NSSOC_HOLD_CENSUS $tag hold_violating=[llength $ends]"
 }
 
 set block [ord::get_db_block]
