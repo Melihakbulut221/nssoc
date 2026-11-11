@@ -177,10 +177,112 @@ module soc_pcie_rx_credit #(
     // need no reload: every bank is free afterwards, and its next commit
     // loads it.
     wire restart=handshake && out_eop_o;
+`ifdef SOC_PCIE_RX_READ_AHEAD
+`ifdef SOC_PCIE_RX_STAGED_COMMIT
+    // The read-ahead registers below are loaded from a committed bank's
+    // staging bytes in the commit cycle; the staged commit writes the bank
+    // later, so the two knobs cannot be combined.
+    soc_pcie_rx_read_ahead_excludes_staged_commit unsupported_knob_combination();
+`endif
+    // docs/combined-timing.md section 12 (SOC_PCIE_RX_READ_AHEAD). The read
+    // mux of each bank is split in two levels with a register between them.
+    // The bank's bytes are taken in groups of LANES (byte g*LANES+l is lane
+    // l of group g), and each group keeps a read-ahead register,
+    //     ahead[g] = packets[bank*CAP + g*LANES + (output_index+1)%LANES],
+    // so the byte the bank register loads at a mid-frame handshake,
+    // packets[bank*CAP+output_index+1], is ahead[(output_index+1)/LANES]:
+    // an AND-OR of AHEAD_GROUPS registers selected by a one-hot register.
+    // ahead[g] itself is an AND-OR of the LANES bytes of its group, selected
+    // by the lane after that, (output_index+2)%LANES, at a mid-frame
+    // handshake; with lane 1 at an end of frame (the cursor returns to 0);
+    // and is held otherwise, because the bank's bytes and the cursor do not
+    // change. A commit rewrites the whole bank from staging in that cycle,
+    // so a committed bank's ahead registers load the same selection from
+    // staging (one shared selection, the bank's commit register picks it).
+    // Reset and link loss do not reload them: every bank is free afterwards
+    // and its next commit loads them before any of its bytes is read.
+    // Only the bank's own CAP bytes are read. The flat array's reads across
+    // a bank boundary (index+1 >= CAP) are never loaded: the cursor passes
+    // a TLP's last index (at most CAP-1, the shape check) or a DLLP's (at
+    // most 5) only at an end of frame, which reloads byte 0. So every byte
+    // that leaves equals the default build's (random co-simulation against
+    // it, hw/soc/tb/tb_pcie_rx_credit_read_ahead.v).
+    localparam integer LANES=8;
+    localparam integer AHEAD_GROUPS=(CAP+LANES-1)/LANES;
+    // One-hot (output_index+1)%LANES and (output_index+1)/LANES.
+    reg [LANES-1:0] ahead_lane;
+    reg [AHEAD_GROUPS-1:0] ahead_group;
+    wire [LANES-1:0] ahead_lane_next={ahead_lane[LANES-2:0],ahead_lane[LANES-1]};
+    wire [AHEAD_GROUPS-1:0] ahead_group_next=ahead_lane_next[0] ?
+        {ahead_group[AHEAD_GROUPS-2:0],ahead_group[AHEAD_GROUPS-1]} : ahead_group;
+    wire advance=handshake && !out_eop_o;
+    wire [8*AHEAD_GROUPS-1:0] staged_ahead;
+    genvar ahead_index,ahead_bit,ahead_offset;
+    generate for(ahead_index=0;ahead_index<AHEAD_GROUPS;ahead_index=ahead_index+1) begin: staged_group
+        wire [7:0] at_next,at_same,at_first;
+        for(ahead_bit=0;ahead_bit<8;ahead_bit=ahead_bit+1) begin: staged_bit
+            wire [LANES-1:0] next_pick,same_pick;
+            for(ahead_offset=0;ahead_offset<LANES;ahead_offset=ahead_offset+1) begin: staged_lane
+                if(ahead_index*LANES+ahead_offset<CAP) begin: present
+                    assign next_pick[ahead_offset]=ahead_lane_next[ahead_offset] &
+                        staging[ahead_index*LANES+ahead_offset][ahead_bit];
+                    assign same_pick[ahead_offset]=ahead_lane[ahead_offset] &
+                        staging[ahead_index*LANES+ahead_offset][ahead_bit];
+                end else begin: absent
+                    assign next_pick[ahead_offset]=1'b0;
+                    assign same_pick[ahead_offset]=1'b0;
+                end
+            end
+            assign at_next[ahead_bit]=|next_pick;
+            assign at_same[ahead_bit]=|same_pick;
+        end
+        if(ahead_index*LANES+1<CAP) begin: first_present
+            assign at_first=staging[ahead_index*LANES+1];
+        end else begin: first_absent
+            assign at_first=8'b0;
+        end
+        assign staged_ahead[ahead_index*8 +: 8]=advance ? at_next : restart ? at_first : at_same;
+    end endgenerate
+`endif
     genvar bank,read_bit,read_offset;
     generate for(bank=0;bank<SLOTS;bank=bank+1) begin: read_bank
         wire [7:0] following;
         reg [7:0] registered;
+`ifdef SOC_PCIE_RX_READ_AHEAD
+        wire [8*AHEAD_GROUPS-1:0] ahead_bytes;
+        for(read_offset=0;read_offset<AHEAD_GROUPS;read_offset=read_offset+1) begin: ahead_slot
+            wire [7:0] stored_next,stored_first;
+            reg [7:0] ahead;
+            for(read_bit=0;read_bit<8;read_bit=read_bit+1) begin: ahead_bit_lane
+                wire [LANES-1:0] pick;
+                for(ahead_offset=0;ahead_offset<LANES;ahead_offset=ahead_offset+1) begin: ahead_byte
+                    if(read_offset*LANES+ahead_offset<CAP) begin: present
+                        assign pick[ahead_offset]=ahead_lane_next[ahead_offset] &
+                            packets[bank*CAP+read_offset*LANES+ahead_offset][read_bit];
+                    end else begin: absent
+                        assign pick[ahead_offset]=1'b0;
+                    end
+                end
+                assign stored_next[read_bit]=|pick;
+            end
+            if(read_offset*LANES+1<CAP) begin: first_present
+                assign stored_first=packets[bank*CAP+read_offset*LANES+1];
+            end else begin: first_absent
+                assign stored_first=8'b0;
+            end
+            always @(posedge clk_i)
+                ahead<=commit_slot[bank] ? staged_ahead[read_offset*8 +: 8] :
+                    advance ? stored_next : restart ? stored_first : ahead;
+            assign ahead_bytes[read_offset*8 +: 8]=ahead;
+        end
+        for(read_bit=0;read_bit<8;read_bit=read_bit+1) begin: read_bit_lane
+            wire [AHEAD_GROUPS-1:0] selected;
+            for(read_offset=0;read_offset<AHEAD_GROUPS;read_offset=read_offset+1) begin: read_byte
+                assign selected[read_offset]=ahead_group[read_offset] & ahead_bytes[read_offset*8+read_bit];
+            end
+            assign following[read_bit]=|selected;
+        end
+`else
         for(read_bit=0;read_bit<8;read_bit=read_bit+1) begin: read_bit_lane
             wire [READ_CHOICES-1:0] selected;
             for(read_offset=0;read_offset<READ_CHOICES;read_offset=read_offset+1) begin: read_byte
@@ -192,6 +294,7 @@ module soc_pcie_rx_credit #(
             end
             assign following[read_bit]=|selected;
         end
+`endif
         always @(posedge clk_i)
             registered<=commit_slot[bank] ? staging[0] :
                 restart ? packets[bank*CAP] : handshake ? following : registered;
@@ -277,6 +380,9 @@ module soc_pcie_rx_credit #(
             qwrite_oh<=1;
 `endif
             head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;read_onehot<=1;
+`ifdef SOC_PCIE_RX_READ_AHEAD
+            ahead_lane<=2;ahead_group<=1;
+`endif
             input_active<=0;input_dllp<=0;input_bad<=0;input_count<=0;
             stage_pending<=0;stage_length<=0;stage_last<=0;stage_bad<=0;release_lo<=0;
             release_hi<=0;release_hi_carry<=0;
@@ -293,6 +399,9 @@ module soc_pcie_rx_credit #(
             qwrite_oh<=1;
 `endif
             head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;read_onehot<=1;
+`ifdef SOC_PCIE_RX_READ_AHEAD
+            ahead_lane<=2;ahead_group<=1;
+`endif
             stage_pending<=0;dllp_pending<=0;output_active<=0;output_index<=0;waiting<=0;
             stage_checked<=0;commit_slot<=0;stage_write_at<=0;
             header_limit_o<={COMPLETER_ONLY ? 8'b0 : H_INIT,H_INIT,H_INIT};
@@ -372,10 +481,16 @@ module soc_pcie_rx_credit #(
             if(out_valid_o && out_ready_i) begin
                 if(out_eop_o) begin
                     output_active<=0;output_index<=0;read_onehot<=1;
+`ifdef SOC_PCIE_RX_READ_AHEAD
+                    ahead_lane<=2;ahead_group<=1;
+`endif
                     if(select_dllp) dllp_pending<=0; else waiting<=1;
                 end else begin
                     output_active<=1;output_dllp<=select_dllp;output_index<=output_index+1'b1;
                     read_onehot<={read_onehot[READ_CHOICES-2:0],read_onehot[READ_CHOICES-1]};
+`ifdef SOC_PCIE_RX_READ_AHEAD
+                    ahead_lane<=ahead_lane_next;ahead_group<=ahead_group_next;
+`endif
                 end
             end
         end

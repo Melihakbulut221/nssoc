@@ -597,7 +597,27 @@ module soc_bus #(
     assign s_addr_o  = r_addr;
     assign s_we_o    = r_we;
     assign s_be_o    = r_be;
+`ifdef SOC_BUS_WDATA_OWN
+    // docs/combined-timing.md section 12 (SOC_BUS_WDATA_OWN). r_wdata
+    // takes win_wdata, which depends on d_wins and so on the instruction
+    // port's request and address (can_issue_i); with the execute stage
+    // those come combinationally from the core's PC-set path. Here the
+    // data port's write data has a register of its own, loaded whenever
+    // the data port could be accepted (cap_ok && can_issue_d, which
+    // implies accepted), and the broadcast is r_own ? r_wdata_d : 0.
+    // The same value as r_wdata in every cycle: after an accept won by
+    // the data port both hold md_wdata_i and r_own is 1; after one won by
+    // the instruction port r_own is 0 and r_wdata is 0; without an accept
+    // neither register nor r_own changes. Reset gives 0 in both.
+    reg [31:0] r_wdata_d;
+    always @(posedge clk_i or negedge rst_ni) begin
+      if (!rst_ni)                     r_wdata_d <= 32'h0;
+      else if (cap_ok && can_issue_d)  r_wdata_d <= md_wdata_i;
+    end
+    assign s_wdata_o = r_own ? r_wdata_d : 32'h0;
+`else
     assign s_wdata_o = r_wdata;
+`endif
 
     assign s_req_o[0] = r_val && (r_tgt == 3'd0);
     assign s_req_o[1] = r_val && (r_tgt == 3'd1);
