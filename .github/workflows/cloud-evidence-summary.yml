@@ -519,7 +519,7 @@ jobs:
         if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) }}
         run: |
           set -euo pipefail
-          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2
+          for a in 1 2 3 4 5 6; do sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2 && break; [ $a = 6 ] && exit 1; echo "apt attempt $a failed; retrying"; sleep 90; done
           W=/mnt/s; sudo mkdir -p $W; sudo chown $USER $W
           curl -fsSL -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
           echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c -; chmod +x $W/librelane.AppImage
@@ -691,7 +691,7 @@ jobs:
         if: env.RUN == 'true'
         run: |
           set -euo pipefail
-          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2
+          for a in 1 2 3 4 5 6; do sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2 && break; [ $a = 6 ] && exit 1; echo "apt attempt $a failed; retrying"; sleep 90; done
           W=/mnt/s; sudo mkdir -p $W; sudo chown $USER $W
           curl -fsSL --retry 5 -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
           echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c -; chmod +x $W/librelane.AppImage
@@ -787,7 +787,7 @@ jobs:
         if: env.RUN == 'true'
         run: |
           set -euo pipefail
-          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2
+          for a in 1 2 3 4 5 6; do sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2 && break; [ $a = 6 ] && exit 1; echo "apt attempt $a failed; retrying"; sleep 90; done
           W=/mnt/s; sudo mkdir -p $W; sudo chown $USER $W
           curl -fsSL --retry 5 -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
           echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c -; chmod +x $W/librelane.AppImage
@@ -1028,7 +1028,7 @@ jobs:
           e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6  $W/tech.lef
           c7575039af0b124e1834c407bfb9ac7a2db576d1e3533d98474dad3fbc2af589  $W/cells.lef
           EOF
-          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2
+          for a in 1 2 3 4 5 6; do sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2 && break; [ $a = 6 ] && exit 1; echo "apt attempt $a failed; retrying"; sleep 90; done
           curl -fsSL -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
           echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c -; chmod +x $W/librelane.AppImage
       - name: Synthesis and two-corner STA of the packet domain
