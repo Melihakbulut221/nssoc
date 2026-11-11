@@ -6,13 +6,18 @@
 #
 # On the detail-routed database: the routed wires are extracted with the
 # flow's nominal OpenRCX rules (the rules AuditedRCX uses) and annotated in
-# every corner, the resizer repairs hold with setup protected
-# (-setup_margin 0, no setup violations allowed), the new buffers are
-# legalized with every original instance kept in place, and the global
-# routes of the changed nets are updated incrementally, so the detailed
-# routing step that follows reconnects only what changed. The resizer
-# re-estimates the nets it changes from the global routes it keeps in
-# memory; every other net keeps its extracted parasitics. Clocks, SDC,
+# every corner, and the resizer inserts hold buffers with setup protected
+# (-setup_margin 0: a buffer may use positive setup slack only). Existing
+# instances keep their master, place and orientation: every library cell
+# but the hold buffer cells is dont_use, any original instance whose
+# master changed anyway is swapped back, and the originals are FIRM while
+# the new buffers are legalized. Exactly the nets connected to a new
+# buffer (or to an original instance that moved, if the held legalization
+# fails) lose their wires, and the detailed routing step that follows
+# routes them; no existing pin moves, so every other wire stays valid.
+# The resizer re-estimates the nets it changes from global routes kept in
+# memory (a fresh global_route, needed for its incremental mode); every
+# other net keeps its extracted parasitics. Clocks, SDC,
 # corners and derates are the flow's own; nothing here is acceptance: the
 # routed database is extracted and timed again afterwards (AuditedRCX,
 # AuditedRoutedSTA).
@@ -57,11 +62,12 @@ foreach corner [lln::get_corner_names] {
 catch {est::set_parasitics_src "detailed_routing"}
 
 proc nssoc_hold_report {tag} {
+    # report_checks -corner is the form the probe's corner STA uses.
     foreach corner [lln::get_corner_names] {
         foreach kind {min max} {
             puts "NSSOC_HOLD_REPORT $tag $corner $kind"
-            if {[catch {report_worst_slack -$kind -corner $corner -digits 3} err]} {
-                puts "NSSOC_HOLD_REPORT_FAILED $err"
+            if {[catch {report_checks -corner $corner -path_delay $kind -group_path_count 1 -format end -digits 3} err]} {
+                puts "NSSOC_HOLD_REPORT_FAILED $tag $corner $kind: $err"
             }
         }
     }
@@ -72,13 +78,57 @@ proc nssoc_hold_report {tag} {
     }
 }
 
+# Hold-violating endpoints (worst over the corners) by the setup slack the
+# setup-protected repair can spend there: negative setup (no buffer can be
+# added), setup slack smaller than the hold deficit, or room.
+proc nssoc_hold_census {tag} {
+    if {[catch {find_timing_paths -path_delay min -group_path_count 100000 -endpoint_path_count 1 -slack_max 0} ends]} {
+        puts "NSSOC_HOLD_CENSUS_FAILED $tag: $ends"
+        return
+    }
+    set negative 0; set short 0; set room 0; set unknown 0
+    foreach path $ends {
+        if {[catch {
+            set hold [get_property $path slack]
+            set setup [get_property [get_property $path endpoint] slack_max]
+        }]} {
+            incr unknown
+            continue
+        }
+        if {$setup < 0} {
+            incr negative
+        } elseif {$setup < -$hold} {
+            incr short
+        } else {
+            incr room
+        }
+    }
+    puts "NSSOC_HOLD_CENSUS $tag hold_violating=[llength $ends] setup_negative=$negative setup_below_hold_deficit=$short setup_room=$room unknown=$unknown"
+}
+
 set block [ord::get_db_block]
+set db [ord::get_db]
 array set before_master {}
+array set before_place {}
 foreach inst [$block getInsts] {
-    set before_master([$inst getName]) [[$inst getMaster] getName]
+    set n [$inst getName]
+    set before_master($n) [[$inst getMaster] getName]
+    set before_place($n) [list [$inst getLocation] [$inst getOrient]]
 }
 set before_count [llength [$block getInsts]]
 nssoc_hold_report extracted-before
+nssoc_hold_census extracted-before
+
+# Only hold buffer cells may be chosen, so no existing instance can be
+# resized to another master (the first measurement resized 371).
+set hold_cells {sg13g2_dlygate4sd1_1 sg13g2_dlygate4sd2_1 sg13g2_dlygate4sd3_1 sg13g2_buf_1 sg13g2_buf_2}
+set_dont_use [get_lib_cells */*]
+foreach cell $hold_cells {
+    set lib_cells [get_lib_cells -quiet */$cell]
+    if {[llength $lib_cells] == 0} {error "Missing hold buffer cell $cell"}
+    unset_dont_use $lib_cells
+}
+puts "NSSOC_HOLD_CELLS $hold_cells"
 
 set hold_args [list]
 lappend hold_args -verbose
@@ -86,29 +136,37 @@ lappend hold_args -hold
 lappend hold_args -setup_margin 0
 lappend hold_args -hold_margin $::env(NSSOC_POST_ROUTE_HOLD_MARGIN)
 lappend hold_args -max_buffer_percent $::env(NSSOC_POST_ROUTE_HOLD_MAX_BUFFER_PCT)
+lappend hold_args -skip_pin_swap -skip_gate_cloning -skip_size_down -skip_buffer_removal
 log_cmd repair_timing {*}$hold_args
 
-set after_count [llength [$block getInsts]]
-set changed 0
+# Any original instance whose master changed regardless is swapped back.
+set new_insts [list]
+set reverted 0
 foreach inst [$block getInsts] {
     set n [$inst getName]
-    if {![info exists before_master($n)] || $before_master($n) ne [[$inst getMaster] getName]} {
-        incr changed
+    if {![info exists before_master($n)]} {
+        lappend new_insts $inst
+    } elseif {$before_master($n) ne [[$inst getMaster] getName]} {
+        set master [$db findMaster $before_master($n)]
+        if {$master eq "NULL" || ![$inst swapMaster $master]} {
+            error "Cannot restore the master of $n ($before_master($n))"
+        }
+        incr reverted
     }
 }
-puts "NSSOC_HOLD_INSTANCES before=$before_count after=$after_count new_or_resized=$changed"
+set new_masters [dict create]
+foreach inst $new_insts {dict incr new_masters [[$inst getMaster] getName]}
+puts "NSSOC_HOLD_INSTANCES before=$before_count after=[llength [$block getInsts]] new=[llength $new_insts] masters_restored=$reverted new_masters=$new_masters"
+nssoc_hold_census after-repair
 
-# Legalize. Only new and resized instances may move: every other placed
-# instance is held FIRM, so its routed wires stay valid. If that cannot be
-# legalized, the flow's ordinary legalization runs instead (any moved
-# instance is rerouted by the incremental global and detailed routing).
+# Legalize the new buffers with every original placed instance FIRM. If
+# that cannot be legalized, the flow's ordinary legalization runs instead,
+# and the nets of every original instance that moved are rerouted too.
 global_route -start_incremental
 source $::env(SCRIPTS_DIR)/openroad/common/dpl_cell_pad.tcl
 set held [list]
 foreach inst [$block getInsts] {
-    set n [$inst getName]
-    if {[$inst getPlacementStatus] eq "PLACED" && [info exists before_master($n)]
-        && $before_master($n) eq [[$inst getMaster] getName]} {
+    if {[$inst getPlacementStatus] eq "PLACED" && [info exists before_master([$inst getName])]} {
         $inst setPlacementStatus FIRM
         lappend held $inst
     }
@@ -130,11 +188,39 @@ append_if_flag arg_list GRT_ALLOW_CONGESTION -allow_congestion
 log_cmd global_route -end_incremental {*}$arg_list
 unset_dont_touch_objects
 
-nssoc_hold_report estimated-after
-foreach corner [lln::get_corner_names] {
-    puts "NSSOC_HOLD_WORST_HOLD_PATHS $corner"
-    catch {report_checks -corner $corner -path_delay min -group_path_count 5 -format end -digits 3}
+# Remove the wires of exactly the nets the repair changed: every signal net
+# on a new buffer, and every signal net on an original instance that moved.
+set touched [list]
+foreach inst $new_insts {lappend touched $inst}
+set moved 0
+foreach inst [$block getInsts] {
+    set n [$inst getName]
+    if {[info exists before_place($n)]
+        && $before_place($n) ne [list [$inst getLocation] [$inst getOrient]]} {
+        lappend touched $inst
+        incr moved
+    }
 }
+array set rip {}
+foreach inst $touched {
+    foreach iterm [$inst getITerms] {
+        set net [$iterm getNet]
+        if {$net eq "NULL"} {continue}
+        if {[$net getSigType] in {POWER GROUND}} {continue}
+        set rip([$net getName]) $net
+    }
+}
+set wires 0
+foreach name [array names rip] {
+    set wire [$rip($name) getWire]
+    if {$wire ne "NULL"} {
+        odb::dbWire_destroy $wire
+        incr wires
+    }
+}
+puts "NSSOC_HOLD_REROUTE nets=[array size rip] wires_removed=$wires originals_moved=$moved"
+
+nssoc_hold_report estimated-after
 puts "NSSOC_HOLD_DONE"
 
 write_views
