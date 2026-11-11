@@ -408,6 +408,11 @@ jobs:
           # register and the staged receive-queue commit.
           - {name: r_cut2_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '1', route: '1'}
           - {name: r_cut2_td_d70, overrides: '{"PL_TARGET_DENSITY_PCT": 70, "PL_TIMING_DRIVEN": true}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '1', route: '1'}
+          # Section 11: the same knobs at d68 after the round-three changes
+          # (registered expected word, one-hot queue write position), with
+          # and without the staged receive-queue commit.
+          - {name: r_cut3_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '1', route: '1'}
+          - {name: r_cut3n_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', route: '1'}
           # timing/pcie-pipeline's probe (its default probe_matrix): upstream
           # register file, no Ibex knobs, the PCIe path trace. pcie_rtl_ref
           # (optional) takes hw/soc/rtl/pcie from another ref instead.
@@ -668,7 +673,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70]
+        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -764,7 +769,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70]
+        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466

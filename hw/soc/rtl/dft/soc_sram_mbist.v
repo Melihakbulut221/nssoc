@@ -61,6 +61,18 @@ module soc_sram_mbist #(
                 background[bit_index] = ((bit_index >> (background_q - 1)) & 1) != 0;
     end
     wire [WIDTH-1:0] expected = (phase_q == 2 || phase_q == 4) ? ~background : background;
+`ifdef SOC_SRAM_MBIST_PIPE
+    // docs/combined-timing.md: with PIPELINE_COMPARE the comparison runs in
+    // COMPARE, whose previous cycle is always READ. phase_q and background_q
+    // change only when a word advances (ISSUE of a write, the comparison
+    // itself, or the start in IDLE), never in READ, so the expected word
+    // registered in READ is the current one in COMPARE. The background
+    // generation then ends at expected_q instead of reaching the comparison
+    // and the failure-record enables in the same cycle.
+    reg [WIDTH-1:0] expected_q;
+    always @(posedge clk_i) expected_q <= expected;
+    wire [WIDTH-1:0] check_expected = PIPELINE_COMPARE ? expected_q : expected;
+`endif
     assign busy_o = (state_q != IDLE);
     assign req_o = rst_ni && !abort_i && (state_q == ISSUE);
     assign we_o = req_o && (phase_q == 0 || write_q);
@@ -97,13 +109,21 @@ module soc_sram_mbist #(
     task check_response;
         input [WIDTH-1:0] actual;
         begin
+`ifdef SOC_SRAM_MBIST_PIPE
+            if (actual !== check_expected) begin
+`else
             if (actual !== expected) begin
+`endif
                 // Case inequality rejects X/Z in RTL simulation as well.
                 failed_o <= 1;
                 done_o <= 1;
                 state_q <= IDLE;
                 fail_addr_o <= address_q;
+`ifdef SOC_SRAM_MBIST_PIPE
+                fail_expected_o <= check_expected;
+`else
                 fail_expected_o <= expected;
+`endif
                 fail_actual_o <= actual;
                 fail_phase_o <= phase_q;
                 fail_background_o <= 8'(background_q);

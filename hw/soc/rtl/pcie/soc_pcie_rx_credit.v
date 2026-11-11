@@ -252,6 +252,13 @@ module soc_pcie_rx_credit #(
             for(w=0;w<CAP;w=w+1) packets[wb*CAP+w]<=staging[w];
     end
 `endif
+`ifdef SOC_PCIE_RX_STAGED_COMMIT
+    // The queue write position is also kept one-hot (qwrite_oh has its bit
+    // at qwrite), so each order entry's write enable is the commit and one
+    // register bit instead of a decode of qwrite.
+    reg [SLOTS-1:0] qwrite_oh;
+    integer qo;
+`endif
     reg [7:0] tlp_byte;
     integer h;
     always @* begin
@@ -266,6 +273,9 @@ module soc_pcie_rx_credit #(
     always @(posedge clk_i or negedge rst_ni) begin
         if(!rst_ni) begin
             used<=0;qread<=0;qwrite<=0;qcount<=0;head_slot<=0;
+`ifdef SOC_PCIE_RX_STAGED_COMMIT
+            qwrite_oh<=1;
+`endif
             head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;read_onehot<=1;
             input_active<=0;input_dllp<=0;input_bad<=0;input_count<=0;
             stage_pending<=0;stage_length<=0;stage_last<=0;stage_bad<=0;release_lo<=0;
@@ -279,6 +289,9 @@ module soc_pcie_rx_credit #(
             dropped_o<=0;protocol_error_o<=0;recovery_request_o<=0;
         end else if(!link_up_i) begin
             used<=0;qread<=0;qwrite<=0;qcount<=0;head_slot<=0;input_active<=0;input_count<=0;
+`ifdef SOC_PCIE_RX_STAGED_COMMIT
+            qwrite_oh<=1;
+`endif
             head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;read_onehot<=1;
             stage_pending<=0;dllp_pending<=0;output_active<=0;output_index<=0;waiting<=0;
             stage_checked<=0;commit_slot<=0;stage_write_at<=0;
@@ -306,7 +319,13 @@ module soc_pcie_rx_credit #(
                     lasts[b]<=stage_last;units[b]<=stage_units;
                     errors[b]<=stage_bad;used[b]<=1;
                 end
+`ifdef SOC_PCIE_RX_STAGED_COMMIT
+                for(qo=0;qo<SLOTS;qo=qo+1) if(qwrite_oh[qo]) order[qo]<=stage_slot;
+                qwrite_oh<={qwrite_oh[SLOTS-2:0],qwrite_oh[SLOTS-1]};
+                qwrite<=qwrite==SLOTS-1 ? 0 : qwrite+1'b1;
+`else
                 order[qwrite]<=stage_slot;qwrite<=qwrite==SLOTS-1 ? 0 : qwrite+1'b1;
+`endif
                 stage_pending<=0;
             end
             if(remove) begin

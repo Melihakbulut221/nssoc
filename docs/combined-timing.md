@@ -213,3 +213,18 @@ Detailed routing ends with 0 DRC markers and 0 antenna violations at d68 (98,979
 ### 10.3 Tests and runs
 
 `regress` and `native-boot` entries `ex_exec_pmpreg_cut2`, native-boot `ex_mbist_cut2` (system and Ethernet MBIST gate-level boot, execute stage alone, every knob), probes `r_cut2_td_d68`/`r_cut2_td_d70` with `route` and `routed-sta`, the PCIe unit suites of the receive queue with `-DSOC_PCIE_RX_STAGED_COMMIT`, joint PCIe/Ethernet traffic with all knobs (`cut2-*`), and the SoC MBIST integration bench (`scripts/check_soc_mbist_integration.py --define ...`, eth-knobs part `soc-mbist`), knobs off and on. The MBIST gate-level boot was already at 16,273 s of its 18,000 s simulator limit; 327,680 more MBIST cycles may not fit, in which case the RTL integration bench is the MBIST evidence.
+
+## 11. Third routed round
+
+Run 42939627387, `r_cut2_td_d68` (DRC 0), setup slow / typ / fast | hold slow / typ / fast: `clk_i` -0.68 / 6.51 / 9.56 | 0.36 / 0.13 / -0.00; `pcie_clk_i` -2.34 / -0.04 / 1.28 | 0.30 / 0.09 / -0.03; asynchronous -0.42 / 0.88 / 1.56; `eth_rx_clk_i` +0.38; `eth_tx_clk_i` -0.53 / 2.58 / 4.30; path delay +1.52; fast hold -0.027 (3 endpoints). `r_cut2_td_d70` (DRC 4) is worse in every group; d70 is dropped from the routed probes.
+
+What the worst paths consist of:
+
+- **`pcie_clk_i`, `receive_ownership.qwrite[0]` -> `order[3][0]` (-2.34).** Five logic cells (the write-position decode and the order entry's multiplexer) and three hold buffers (`dlygate4sd3_1`, 2.33 ns, one of them at the D pin). The logic of this path is not changed by the staged commit; the hold buffers make it critical. Under `SOC_PCIE_RX_STAGED_COMMIT` the queue write position is now also kept one-hot (`qwrite_oh`), so an order entry's write enable is the commit and one register bit. Probe `r_cut3n_td_d68` measures every other cut without the staged commit.
+- **`clk_i`, `u_mbist.phase_q[2]` -> `mbist_fail_actual_o[32]` (-0.68).** The expected word (background from `background_q`, inverted by phase) is generated in the comparison cycle, through under-sized gates with 1.9-4.9 ns slews, then the 64-bit comparison and the record enables. Under `SOC_SRAM_MBIST_PIPE` the expected word is registered in READ (`expected_q`): with `PIPELINE_COMPARE` the comparison is always in COMPARE, whose previous cycle is READ, and `phase_q`/`background_q` never change in READ, so the registered word is the current one. Records and timing of the test are unchanged.
+- **`eth_tx_clk_i`, `u_sram.bxdone` -> `g_bank[1].u_mem` (-0.53).** `bxdone` is already a flip-flop; the path to the macro's address and enable pins is five logic cells and eight hold buffers (5.73 ns of the 8.9 ns arrival), inserted for the macro pins' hold requirement. A register in front of the macro would carry the same hold padding, so this is not changed in RTL.
+- **asynchronous, `quarantine.rst_ni` -> `quarantine.cursor[15]` (-0.42)**, a reset-copy tree into the quarantine cursor.
+
+The common pattern of the remaining routed failures (the PCIe input ports, `pcie_link_up_i`, `bxdone`, `qwrite`) is hold padding on paths with little logic: the flow's hold repair runs with `PL_RESIZER_HOLD_SLACK_MARGIN` 0.1 ns and `GRT_RESIZER_HOLD_SLACK_MARGIN` 0.05 ns at the fast corner and inserts buffers on segments the setup paths share. Those margins are flow settings, not SDC, but changing them is a sign-off decision and is not done here.
+
+Runs: probes `r_cut3_td_d68` (all knobs) and `r_cut3n_td_d68` (all but the staged commit) with routing and extracted STA; the functional entries of section 10.3 (`ex_exec_pmpreg_cut2`, `ex_mbist_cut2`, the receive-queue suites with the staged commit, joint traffic and the SoC MBIST bench) cover the changed knobs.
