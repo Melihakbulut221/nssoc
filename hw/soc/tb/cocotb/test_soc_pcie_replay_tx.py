@@ -17,6 +17,12 @@ def packet(seq, kind=0, payload=b""):
 class Bench:
     def __init__(self, d):
         self.d = d
+        # SOC_PCIE_RESET_COPIES (docs/combined-timing.md section 14) adds
+        # rst_copy_ni, a copy of rst_ni that the parent keeps equal to it.
+        try:
+            self.rst_copy = getattr(d, "rst_copy_ni")
+        except AttributeError:
+            self.rst_copy = None
         self.frames = []
         self.current = []
         self.held = None
@@ -32,6 +38,8 @@ class Bench:
         self.d.clk_i.value = 0
         for n, v in signals.items():
             getattr(self.d, n).value = v
+        if self.rst_copy is not None and "rst_ni" in signals:
+            self.rst_copy.value = signals["rst_ni"]
         await Timer(5, unit="ns")
         accepted = self.v("in_valid_i") and self.v("in_ready_o")
         acked = self.v("ack_valid_i") and self.v("ack_ready_o")

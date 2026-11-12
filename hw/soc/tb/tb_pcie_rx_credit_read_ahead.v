@@ -47,6 +47,10 @@ module tb_pcie_rx_credit_read_ahead;
     soc_pcie_rx_credit #(.MAX_TLP_DWORDS(MAX_TLP_DWORDS),.SLOTS_PER_CLASS(SLOTS_PER_CLASS),
         .COMPLETER_ONLY(COMPLETER_ONLY)) candidate(
         .clk_i(clk),.rst_ni(rst_ni),.link_up_i(link_up_i),.training_i(training_i),.initialized_i(initialized_i),
+`ifdef COSIM_RESET_COPIES
+        // SOC_PCIE_RESET_COPIES: the reset copy is equal to rst_ni at all times.
+        .rst_copy_ni(rst_ni),
+`endif
         .rx_data_i(rx_data_i),.rx_sop_i(rx_sop_i),.rx_eop_i(rx_eop_i),.rx_valid_i(rx_valid_i),
         .rx_dllp_i(rx_dllp_i),.rx_error_i(rx_error_i),.rx_ready_o(c_ready),
         .out_data_o(c_data),.out_sop_o(c_sop),.out_eop_o(c_eop),.out_valid_o(c_valid),

@@ -24,6 +24,9 @@ COMPILE_ARGS += -g2012
 ifeq ($(PCIE_NATIVE),1)
 COMPILE_ARGS += -gspecify
 endif
+# Opt-in timing knobs (docs/combined-timing.md), e.g. -DSOC_PCIE_RESET_COPIES,
+# for the RTL and the native runs alike.
+COMPILE_ARGS += $(EXTRA_COMPILE_ARGS)
 SIM_BUILD ?= sim_build_soc_pcie_reliable_packets
 COCOTB_RESULTS_FILE ?= results_soc_pcie_reliable_packets.xml
 export COCOTB_RESULTS_FILE

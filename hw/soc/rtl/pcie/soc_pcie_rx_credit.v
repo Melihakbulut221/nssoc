@@ -11,6 +11,15 @@ module soc_pcie_rx_credit #(
     parameter integer MAX_TLP_DWORDS=8,SLOTS_PER_CLASS=2,COMPLETER_ONLY=0
 )(
     input wire clk_i,rst_ni,link_up_i,training_i,initialized_i,
+`ifdef SOC_PCIE_RESET_COPIES
+    // docs/combined-timing.md section 14: a second registered copy of
+    // rst_ni, equal to it at all times (the parent releases both from the
+    // same reset in the same cycle). It is the asynchronous reset of the
+    // read cursor (and the two-stage read's cursor and pick registers) and
+    // of the staging write select, so those wide vectors have a reset tree
+    // of their own.
+    input wire rst_copy_ni,
+`endif
     input wire [7:0] rx_data_i,
     input wire rx_sop_i,rx_eop_i,rx_valid_i,rx_dllp_i,rx_error_i,
     output wire rx_ready_o,
@@ -299,7 +308,11 @@ module soc_pcie_rx_credit #(
     wire [R2_GROUPS-1:0] r2_group_next={r2_group[R2_GROUPS-2:0],r2_group[R2_GROUPS-1]};
     wire [R2_GROUPS-1:0] r2_group_near=r2_lane[R2_LANES-1] ? r2_group_next : r2_group;
     wire [R2_GROUPS-1:0] r2_group_far=(r2_lane[R2_LANES-1] | r2_lane[R2_LANES-2]) ? r2_group_next : r2_group;
+`ifdef SOC_PCIE_RESET_COPIES
+    wire r2_rst_n=rst_copy_ni;
+`else
     wire r2_rst_n=rst_ni;
+`endif
     // Cursor and pick registers, updated at the same points as read_onehot.
     always @(posedge clk_i or negedge r2_rst_n) begin
         if(!r2_rst_n) begin
@@ -516,7 +529,11 @@ module soc_pcie_rx_credit #(
 `ifdef SOC_PCIE_RX_STAGED_COMMIT
             qwrite_oh<=1;
 `endif
+`ifndef SOC_PCIE_RESET_COPIES
             head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;read_onehot<=1;
+`else
+            head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;
+`endif
 `ifdef SOC_PCIE_RX_READ_AHEAD
             ahead_lane<=2;ahead_group<=1;
 `endif
@@ -524,7 +541,11 @@ module soc_pcie_rx_credit #(
             stage_pending<=0;stage_length<=0;stage_last<=0;stage_bad<=0;release_lo<=0;
             release_hi<=0;release_hi_carry<=0;
             stage_checked<=0;stage_shape_ok<=0;stage_slot<=0;stage_units<=0;commit_slot<=0;
+`ifndef SOC_PCIE_RESET_COPIES
             stage_write_at<=0;dllp_pending<=0;dllp_bad<=0;dllp_length<=0;
+`else
+            dllp_pending<=0;dllp_bad<=0;dllp_length<=0;
+`endif
             output_active<=0;output_dllp<=0;output_index<=0;waiting<=0;
             header_limit_o<={COMPLETER_ONLY ? 8'b0 : H_INIT,H_INIT,H_INIT};
             data_limit_o<={COMPLETER_ONLY ? 12'b0 : D_INIT,D_INIT,D_INIT};
@@ -535,17 +556,29 @@ module soc_pcie_rx_credit #(
 `ifdef SOC_PCIE_RX_STAGED_COMMIT
             qwrite_oh<=1;
 `endif
+`ifndef SOC_PCIE_RESET_COPIES
             head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;read_onehot<=1;
+`else
+            head_last<=0;head_class<=0;head_units<=0;head_onehot<=1;
+`endif
 `ifdef SOC_PCIE_RX_READ_AHEAD
             ahead_lane<=2;ahead_group<=1;
 `endif
             stage_pending<=0;dllp_pending<=0;output_active<=0;output_index<=0;waiting<=0;
+`ifndef SOC_PCIE_RESET_COPIES
             stage_checked<=0;commit_slot<=0;stage_write_at<=0;
+`else
+            stage_checked<=0;commit_slot<=0;
+`endif
             header_limit_o<={COMPLETER_ONLY ? 8'b0 : H_INIT,H_INIT,H_INIT};
             data_limit_o<={COMPLETER_ONLY ? 12'b0 : D_INIT,D_INIT,D_INIT};
             released_o<=0;dropped_o<=0;protocol_error_o<=0;recovery_request_o<=0;
         end else begin
+`ifndef SOC_PCIE_RESET_COPIES
             released_o<=0;dropped_o<=0;head_slot<=next_head_slot;stage_write_at<=0;
+`else
+            released_o<=0;dropped_o<=0;head_slot<=next_head_slot;
+`endif
             head_last<=next_head_last;head_class<=next_head_slot/SLOTS_PER_CLASS;head_units<=next_head_units;
             release_lo<={1'b0,head_data_limit[5:0]}+{1'b0,head_units[5:0]};
             release_hi<=head_data_limit[11:6]+head_units[11:6];
@@ -592,7 +625,11 @@ module soc_pcie_rx_credit #(
                 if(!input_active) begin
                     input_dllp<=rx_dllp_i;input_bad<=rx_error_i || !rx_sop_i;
                     input_count<=1;input_active<=!rx_eop_i;
+`ifndef SOC_PCIE_RESET_COPIES
                     if(rx_dllp_i) dllp[0]<=rx_data_i; else stage_write_at[0]<=1;
+`else
+                    if(rx_dllp_i) dllp[0]<=rx_data_i;
+`endif
                     if(rx_eop_i) begin
                         if(rx_dllp_i) begin dllp_pending<=1;dllp_length<=1;dllp_bad<=1;end
                         else begin stage_pending<=1;stage_length<=1;stage_last<=0;stage_bad<=1;end
@@ -601,7 +638,11 @@ module soc_pcie_rx_credit #(
                     input_bad<=input_bad || rx_error_i || rx_sop_i || rx_dllp_i!=input_dllp;
                     if(input_dllp) begin
                         if(input_count<6) dllp[input_count]<=rx_data_i;
+`ifndef SOC_PCIE_RESET_COPIES
                     end else for(k=0;k<CAP;k=k+1) if(input_count==k) stage_write_at[k]<=1;
+`else
+                    end
+`endif
                     if(input_count<CAP+1) input_count<=input_count+1'b1;
                     if(rx_eop_i) begin
                         input_active<=0;
@@ -617,14 +658,20 @@ module soc_pcie_rx_credit #(
             end
             if(out_valid_o && out_ready_i) begin
                 if(out_eop_o) begin
+`ifndef SOC_PCIE_RESET_COPIES
                     output_active<=0;output_index<=0;read_onehot<=1;
+`else
+                    output_active<=0;output_index<=0;
+`endif
 `ifdef SOC_PCIE_RX_READ_AHEAD
                     ahead_lane<=2;ahead_group<=1;
 `endif
                     if(select_dllp) dllp_pending<=0; else waiting<=1;
                 end else begin
                     output_active<=1;output_dllp<=select_dllp;output_index<=output_index+1'b1;
+`ifndef SOC_PCIE_RESET_COPIES
                     read_onehot<={read_onehot[READ_CHOICES-2:0],read_onehot[READ_CHOICES-1]};
+`endif
 `ifdef SOC_PCIE_RX_READ_AHEAD
                     ahead_lane<=ahead_lane_next;ahead_group<=ahead_group_next;
 `endif
@@ -632,5 +679,32 @@ module soc_pcie_rx_credit #(
             end
         end
     end
+`ifdef SOC_PCIE_RESET_COPIES
+    // The read cursor and the staging write select on rst_copy_ni: the same
+    // next-state functions as in the block above (reset, link loss, an
+    // output handshake for the cursor; an accepted TLP byte for the write
+    // select, cleared every other cycle).
+    integer kc;
+    always @(posedge clk_i or negedge rst_copy_ni) begin
+        if(!rst_copy_ni) begin
+            read_onehot<=1;stage_write_at<=0;
+        end else if(!link_up_i) begin
+            read_onehot<=1;stage_write_at<=0;
+        end else begin
+            stage_write_at<=0;
+            if(rx_valid_i && rx_ready_o) begin
+                if(!input_active) begin
+                    if(!rx_dllp_i) stage_write_at[0]<=1;
+                end else if(!input_dllp) begin
+                    for(kc=0;kc<CAP;kc=kc+1) if(input_count==kc) stage_write_at[kc]<=1;
+                end
+            end
+            if(out_valid_o && out_ready_i) begin
+                if(out_eop_o) read_onehot<=1;
+                else read_onehot<={read_onehot[READ_CHOICES-2:0],read_onehot[READ_CHOICES-1]};
+            end
+        end
+    end
+`endif
 endmodule
 `default_nettype wire

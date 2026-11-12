@@ -36,6 +36,14 @@ module soc_pcie_replay_tx #(
     parameter integer TIMEOUT_CYCLES=1024,MAX_REPLAYS=3
 ) (
     input wire clk_i,rst_ni,link_up_i,training_i,retrain_done_i,
+`ifdef SOC_PCIE_RESET_COPIES
+    // docs/combined-timing.md section 14: a second registered copy of
+    // rst_ni, equal to it at all times (the parent releases both from the
+    // same reset in the same cycle). It is the asynchronous reset of the
+    // replay read cursor and of the transmit slice, so they have a reset
+    // tree of their own.
+    input wire rst_copy_ni,
+`endif
     input wire [7:0] in_data_i,
     input wire in_sop_i,in_eop_i,in_valid_i,
     output wire in_ready_o,
@@ -225,7 +233,11 @@ module soc_pcie_replay_tx #(
     // the first-replayed-frame mark travels with the bytes.
     wire tx_first;
     soc_pcie_stream_skid #(.W(12)) transmit_slice(
+`ifdef SOC_PCIE_RESET_COPIES
+        .clk_i(clk_i),.rst_ni(rst_copy_ni),.clear_i(!link_up_i),
+`else
         .clk_i(clk_i),.rst_ni(rst_ni),.clear_i(!link_up_i),
+`endif
         .s_data_i({core_data,core_sop,core_eop,sending_replay,sending_replay && replay_first}),.s_valid_i(core_valid),.s_ready_o(core_ready),
         .m_data_o({tx_data_o,tx_sop_o,tx_eop_o,tx_replay_o,tx_first}),.m_valid_o(tx_valid_o),.m_ready_i(tx_ready_i));
     assign buffered_o=count;
@@ -238,7 +250,11 @@ module soc_pcie_replay_tx #(
     always @(posedge clk_i or negedge rst_ni) begin
         if(!rst_ni) begin
             head<=0;tail<=0;new_slot<=0;send_slot<=0;send_last<=0;replay_slot<=0;count<=0;sent_count<=0;replay_left<=0;
+`ifndef SOC_PCIE_RESET_COPIES
             write_pos<=0;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};capturing<=0;sending<=0;sending_replay<=0;
+`else
+            write_pos<=0;read_pos<=0;capturing<=0;sending<=0;sending_replay<=0;
+`endif
             replay_active<=0;replay_pending<=0;replay_first<=0;halt<=0;
             next_store_sequence<=0;input_crc<=32'hffffffff;crc_upper_match<=0;timer<=0;timer_running<=0;retries<=0;
             ack_observed<=0;ack_was_allowed<=0;ack_was_stale<=0;ack_delta_q<=0;write_valid<=0;
@@ -311,9 +327,17 @@ module soc_pcie_replay_tx #(
                         end
                     end
                 end else if(replay_active) begin
+`ifndef SOC_PCIE_RESET_COPIES
                     sending<=1;sending_replay<=1;send_slot<=replay_slot;send_last<=lengths[replay_slot]-1'b1;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};
+`else
+                    sending<=1;sending_replay<=1;send_slot<=replay_slot;send_last<=lengths[replay_slot]-1'b1;read_pos<=0;
+`endif
                 end else if(reserve_valid_o && reserve_ready_i) begin
+`ifndef SOC_PCIE_RESET_COPIES
                     sending<=1;sending_replay<=0;send_slot<=new_slot;send_last<=lengths[new_slot]-1'b1;read_pos<=0;replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};
+`else
+                    sending<=1;sending_replay<=0;send_slot<=new_slot;send_last<=lengths[new_slot]-1'b1;read_pos<=0;
+`endif
                 end
             end
             if(core_valid && core_ready) begin
@@ -326,12 +350,35 @@ module soc_pcie_replay_tx #(
                     end else begin
                         sent_count<=sent_count+1'b1;new_slot<=advance(new_slot,1);
                     end
+`ifndef SOC_PCIE_RESET_COPIES
                 end else begin read_pos<=read_pos+1'b1;replay_read_onehot<={replay_read_onehot[READ_CHOICES-2:0],replay_read_onehot[READ_CHOICES-1]};end
+`else
+                end else read_pos<=read_pos+1'b1;
+`endif
             end
             if(tx_valid_o && tx_ready_i && tx_eop_o && (tx_replay_o ? tx_first : !timer_running)) begin
                 timer<=0;timer_running<=1;
             end
         end
     end
+`ifdef SOC_PCIE_RESET_COPIES
+    // The replay read cursor on rst_copy_ni, with the next-state function
+    // of the block above: back to position 0 when a send starts (no ACK
+    // consumed, not sending or capturing, not training or halted, no
+    // replay being started, and a replay in progress or a reservation
+    // handshake), rotated when a byte is taken mid-frame. Link loss leaves
+    // it unchanged there as well.
+    wire replay_send_start=!(ack_valid_i && ack_ready_o) && !sending && !capturing &&
+        !training_i && !halt && !(replay_pending && !replay_active) &&
+        (replay_active || (reserve_valid_o && reserve_ready_i));
+    always @(posedge clk_i or negedge rst_copy_ni) begin
+        if(!rst_copy_ni) replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};
+        else if(link_up_i) begin
+            if(replay_send_start) replay_read_onehot<={{(READ_CHOICES-1){1'b0}},1'b1};
+            if(core_valid && core_ready && !core_eop)
+                replay_read_onehot<={replay_read_onehot[READ_CHOICES-2:0],replay_read_onehot[READ_CHOICES-1]};
+        end
+    end
+`endif
 endmodule
 `default_nettype wire

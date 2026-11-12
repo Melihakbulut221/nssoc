@@ -57,6 +57,20 @@ module soc_pcie_reliable_packets #(
         if(!local_reset) begin up_retry<=0;up_link<=0;up_dllp<=0;end
         else begin up_retry<=1'b1;up_link<=link_up_i;up_dllp<=rst_ni || training_i;end
     end
+`ifdef SOC_PCIE_RESET_COPIES
+    // docs/combined-timing.md section 14: two more copies for the replay
+    // store, equal to up_retry at all times (cleared with local_reset,
+    // released one clock later; both D inputs are 1 whenever local_reset
+    // is high and differ only so synthesis keeps the flops). up_retry_link
+    // is the store's link input, so its link clears and link-qualified
+    // logic no longer share a net with its asynchronous reset, and
+    // up_retry_copy resets its read cursor and transmit slice.
+    reg up_retry_link,up_retry_copy;
+    always @(posedge clk_i or negedge local_reset) begin
+        if(!local_reset) begin up_retry_link<=0;up_retry_copy<=0;end
+        else begin up_retry_link<=link_up_i || training_i;up_retry_copy<=rst_ni || retrain_done_i;end
+    end
+`endif
     // Receive register slice. Queue beats reach the DLLP and TLP consumers
     // one cycle later, from flops, so the queue read and the consumers' end
     // of frame checks are separate stages. A TLP frame still starts only when
@@ -127,7 +141,12 @@ module soc_pcie_reliable_packets #(
     wire retry_sop,retry_eop,retry_valid,retry_ready,retry_kind;
     soc_pcie_replay_tx #(.DEPTH(REPLAY_DEPTH),.MAX_BYTES(MAX_TLP_DWORDS*4+6),
         .TIMEOUT_CYCLES(REPLAY_TIMEOUT_CYCLES),.MAX_REPLAYS(MAX_REPLAYS)) retry(
+`ifdef SOC_PCIE_RESET_COPIES
+        .clk_i(clk_i),.rst_ni(up_retry),.link_up_i(up_retry_link),.rst_copy_ni(up_retry_copy),
+        .training_i(training_i),.retrain_done_i(retrain_done_i),
+`else
         .clk_i(clk_i),.rst_ni(up_retry),.link_up_i(up_retry),.training_i(training_i),.retrain_done_i(retrain_done_i),
+`endif
         .in_data_i(link_data),.in_sop_i(link_sop),.in_eop_i(link_eop),.in_valid_i(link_valid && !link_dllp),.in_ready_o(store_ready),
         .ack_valid_i(ack_valid),.ack_nak_i(ack_nak),.ack_sequence_i(ack_sequence),.ack_ready_o(ack_ready),
         .reserve_valid_o(reserve_valid_o),.reserve_ready_i(reserve_ready_i),.reserve_class_o(reserve_class_o),

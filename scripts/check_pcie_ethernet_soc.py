@@ -79,7 +79,7 @@ def main():
         default=[],
         choices=("SOC_ETH_FIFO_RDREG", "SOC_BUSSTAT_EVPEND", "SOC_PCIE_RX_STAGED_COMMIT", "SOC_SRAM_MBIST_PIPE",
                  "SOC_PCIE_RX_READ_AHEAD", "SOC_BUS_WDATA_OWN", "SOC_PCIE_RX_READ2",
-                 "SOC_BUS_IREQ_REG"),
+                 "SOC_BUS_IREQ_REG", "SOC_PCIE_RESET_COPIES"),
         help="Opt-in timing knob of docs/combined-timing.md (repeatable)",
     )
     a = p.parse_args()

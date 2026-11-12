@@ -84,14 +84,33 @@ module soc_pcie_buffered_flow_packets #(
             up_in<=!retrain_done_i || training_i;
         end
     end
+`ifdef SOC_PCIE_RESET_COPIES
+    // docs/combined-timing.md section 14: two more copies for the receive
+    // side, equal to up_rx at all times (both D inputs are 1 whenever
+    // local_reset is high and differ only so synthesis keeps the flops).
+    // up_rx_slice resets the receive input slice and the FC-initialization
+    // gate; up_rx_copy resets the queue's read cursor and staging write
+    // select (soc_pcie_rx_credit rst_copy_ni). up_rx then resets only the
+    // rest of the queue.
+    reg up_rx_slice,up_rx_copy;
+    always @(posedge clk_i or negedge local_reset) begin
+        if(!local_reset) begin up_rx_slice<=0;up_rx_copy<=0;end
+        else begin up_rx_slice<=rst_ni && link_up_i;up_rx_copy<=link_up_i && !retrain_done_i;end
+    end
+`endif
     // The receive queue's FC-initialization gate is registered: it only rises
     // once per link epoch, so the queue starts accepting TLPs one cycle after
     // FC initialization instead of in the same cycle, and the credit logic's
     // initialization state no longer reaches the queue's ready and staging
     // write enables combinationally.
     reg rx_initialized;
+`ifdef SOC_PCIE_RESET_COPIES
+    always @(posedge clk_i or negedge up_rx_slice) begin
+        if(!up_rx_slice) rx_initialized<=0;
+`else
     always @(posedge clk_i or negedge up_rx) begin
         if(!up_rx) rx_initialized<=0;
+`endif
         else rx_initialized<=peer_init1_done_o && local_init2_sent_o;
     end
     assign requester_admission_o=1'b0;
@@ -127,12 +146,20 @@ module soc_pcie_buffered_flow_packets #(
     always @(posedge clk_i)
         if(port_ready) port_beat<={rx_data_i,rx_sop_i,rx_eop_i,rx_error_i,rx_dllp_i};
     soc_pcie_stream_skid #(.W(12)) receive_input_slice(
+`ifdef SOC_PCIE_RESET_COPIES
+        .clk_i(clk_i),.rst_ni(up_rx_slice),.clear_i(1'b0),
+`else
         .clk_i(clk_i),.rst_ni(up_rx),.clear_i(1'b0),
+`endif
         .s_data_i(port_beat),.s_valid_i(port_valid),.s_ready_o(in_room),
         .m_data_o({in_data,in_sop,in_eop,in_error,in_dllp}),.m_valid_o(in_valid),.m_ready_i(in_ready));
     soc_pcie_rx_credit #(.MAX_TLP_DWORDS(MAX_TLP_DWORDS),.SLOTS_PER_CLASS(RX_SLOTS_PER_CLASS),
         .COMPLETER_ONLY(1)) receive_ownership(
+`ifdef SOC_PCIE_RESET_COPIES
+        .clk_i(clk_i),.rst_ni(up_rx),.link_up_i(up_rx_link),.rst_copy_ni(up_rx_copy),.training_i(training_i),
+`else
         .clk_i(clk_i),.rst_ni(up_rx),.link_up_i(up_rx_link),.training_i(training_i),
+`endif
         .initialized_i(rx_initialized),.rx_data_i(in_data),.rx_sop_i(in_sop),
         .rx_eop_i(in_eop),.rx_valid_i(in_valid),.rx_dllp_i(in_dllp),.rx_error_i(in_error),
         .rx_ready_o(in_ready),.out_data_o(q_data),.out_sop_o(q_sop),.out_eop_o(q_eop),

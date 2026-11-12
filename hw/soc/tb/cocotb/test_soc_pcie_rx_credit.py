@@ -10,6 +10,12 @@ from pcie_rx_flow_common import frame_bytes, tlp_bytes, request, fc_frame
 class Bench:
     def __init__(self, d):
         self.d = d
+        # SOC_PCIE_RESET_COPIES (docs/combined-timing.md section 14) adds
+        # rst_copy_ni, a copy of rst_ni that the parent keeps equal to it.
+        try:
+            self.rst_copy = getattr(d, "rst_copy_ni")
+        except AttributeError:
+            self.rst_copy = None
         self.frames = []
         self.current = []
         self.releases = []
@@ -22,6 +28,8 @@ class Bench:
         self.d.clk_i.value = 0
         for n, v in kw.items():
             getattr(self.d, n).value = v
+        if self.rst_copy is not None and "rst_ni" in kw:
+            self.rst_copy.value = kw["rst_ni"]
         await Timer(5, unit="ns")
         accepted = self.v("rx_valid_i") and self.v("rx_ready_o")
         if self.v("rst_ni") and self.v("link_up_i"):
