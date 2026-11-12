@@ -385,3 +385,36 @@ The path is inside the frozen `hw/rtl/lif_core.v`, so only a physical constraint
 ### 15.4 Runs
 
 Probes `r_cut6a_td_d68` (PL 0 / GRT 0.05) and `r_cut6z_td_d68` (PL 0 / GRT 0), both with `SOC_PCIE_RX_READ2` (now with the copies), `SOC_BUS_IREQ_REG`, `SOC_PCIE_RESET_COPIES` and `SOC_ETH_FIFO_WRREG`, with route and routed-sta. Functional entries: `regress`/`native-boot` `ex_exec_pmpreg_cut6`; `pcie-unit` (the READ2 co-simulations now check the copies); `eth-knobs` parts `eth-rtl` (`sram_wrreg`), `eth-mbist` (`wrreg`), `eth-gl-w`, `joint-cut6` and `soc-mbist` (`wrreg`).
+
+## 16. Seventh round: the joint-traffic failure, the commit publication, the next cuts
+
+Run 43213297194. Functional jobs pass except `eth-knobs` `joint-cut6`, configuration `sram-cut6-sync` (vendor-SRAM FIFOs, synchronous packet clock, all knobs): `pcie_link_loss_does_not_reset_ethernet` failed with "No actual CPU Ethernet / PCIe APB contention" (`joint_contentions` 0). Routed, extracted, d68:
+
+| Probe | `clk_i` | `pcie_clk_i` | asynchronous | `eth_tx_clk_i` | `eth_rx_clk_i` | DRC | worst fast hold |
+|---|---:|---:|---:|---:|---:|---:|---|
+| `r_cut6z_td_d68` (PL 0 / GRT 0) | -0.17 | -0.89 | -0.23 | -0.44 | +0.97 | 1 | -0.079 (103) |
+| `r_cut6a_td_d68` (PL 0 / GRT 0.05) | -0.20 | -0.89 | -0.26 | -0.80 | +0.74 (hold -0.41 slow) | 2 | |
+
+### 16.1 The joint-traffic failure
+
+Every data assertion of the failing test passed: the transmitted frames, the 180 transmit writes and the 180 receive reads with their expected words, the ordering checks and the PCIe GPIO effects. Only the coverage assertion in `verify()` failed: no PCIe APB access coincided with a CPU Ethernet APB access. The first test of the same configuration saw 6. With a synchronous packet clock the PCIe and CPU accesses keep a fixed phase. The link-loss test issues only eight reads before the link loss, and they all fall after the vendor-SRAM self-test, whose length shifts the firmware's start. No earlier round ran vendor SRAM with a synchronous clock: the `sram-*` configurations were all asynchronous. So the failure is the test's stimulus missing an overlap, not corrupted FIFO data. The test now continues those reads, up to the asynchronous test's forty, until one has met a CPU Ethernet access, and logs `JOINT_LINK_LOSS reads=... contentions_before_loss=...`; every assertion is unchanged. `joint-cut7` runs the failing configuration again, the same without `SOC_ETH_FIFO_WRREG` (`sram-cut5-sync`) and the round-seven knobs.
+
+### 16.2 `SOC_ETH_FIFO_WRREG`: ratio-independent commit publication
+
+Section 15.2's argument needed three read-clock periods to exceed one write-clock period. Under the define, `adapt_eth_mbist.py` now gives the frame FIFO's read domain a registered copy of the commit toggle (`mbist_update_published`), which changes at the edge that writes the frame's last word into the SRAM. The read side therefore sees a commit only after the data under it is written, at any clock ratio. The read path and the write side's handshake check are unchanged; the acknowledge returns one write-clock cycle later.
+
+### 16.3 Worst paths of `r_cut6z_td_d68` and their cuts
+
+- `pcie_clk_i` -0.89: `receive_ownership.r2_pick_far[1]` -> stage 2 of a bank. The pick register (a `dfrbpq_1`) drives 0.28 pF of buffer tree, 1.47 ns from clock to output, toward 48 gates in six banks. Under `SOC_PCIE_RX_READ2` each bank now has its own copy of the seven pick registers (`soc_pcie_rx_pick_copy`, `keep_hierarchy`), loaded with their next value and reset like the master, so each bit drives 8 gates. The co-simulation checks them with the lane copies.
+- `pcie_clk_i` -0.84 / -0.79 / -0.70: `retry.replay_read_onehot[61]`, `[8]`, `[52]` -> `read_replay_bank[*].registered`. Positions 38 to 63 exist only for cross-bank reads of the flat replay store. `SOC_PCIE_REPLAY_INBANK=1` (new, default 0, `soc_pcie_replay_tx.v`) reads each bank register from its own MAX_BYTES bytes only. A byte is taken mid-frame only below `send_last` <= MAX_BYTES-1 (the capture bound), and every bank register reloads byte 0 before a send starts, so every byte that leaves is the default build's. The ports are cycle-identical. Evidence: the replay, reliable, flow and buffered suites with the define, alone and with the other PCIe knobs.
+- `eth_tx_clk_i` -0.44: `tx_fifo.u_sram.u_b.rst_ni` (`rp[1]`) -> `b_functional` -> port B's address multiplexer and enables -> `g_bank[4].u_mem/B_MEN`, through a `nand3_1` (1.08 ns) and an `o21ai_1` driving 0.17 pF (2.38 ns). Under `SOC_ETH_FIFO_WRREG` port B's owner (self-test or FIFO) is now selected by a register one read edge behind `b_functional`. `b_functional` rises once, about two read edges after the self-test's completion reaches the read domain. The FIFO's first committed word is written at least one write edge after release and read at least three read edges after its commit, so no read of data is lost. A read in the edge after a functional read-side reset reads, and changes, nothing. The wrapper bench, which reads row 0 right after releasing its resets, waits that edge.
+- asynchronous -0.23: `endpoint.receive_packet.quarantine.rst_ni` -> its cursor reset tree (33 cells, no hold buffers). Not changed in this round.
+- `pcie_clk_i` -0.64 `flow.packet_accepted_o` -> ... and -0.58 `flow.credits.reserve_payload_dw_i[5]` -> ...: next in line, not changed.
+
+### 16.4 Hold at the SRAM pins with the write register (`r_cut6a`)
+
+`r_cut6a` (GRT hold margin 0.05) shows `eth_rx_clk_i` hold -0.41 / -0.33 / -0.30 ns (slow / typical / fast) at the receive FIFO's SRAM pins. It is the new write register next to the macros against the macros' hold requirement. `r_cut6z` (no hold margin at all) has -0.00 / -0.02 / -0.06 there. This is left to hold repair, as before, and not changed in the RTL.
+
+### 16.5 Runs
+
+`DRT_OPT_ITERS` default 16 (from 15), so the routed probes end at 0 DRC markers. Probes `r_cut7z_td_d68` (PL 0 / GRT 0) and `r_cut7a_td_d68` (PL 0 / GRT 0.02) with every knob of sections 14 to 16, with route and routed-sta. Functional entries: `regress`/`native-boot` `ex_exec_pmpreg_cut7`; `pcie-unit` (`inbank`, and `cut7` = `SOC_PCIE_RX_READ2` + `SOC_PCIE_RESET_COPIES` + `SOC_PCIE_REPLAY_INBANK` on all five suites; the READ2 co-simulations check the lane and pick copies); `eth-knobs` `eth-rtl` `sram_wrreg`, `eth-mbist` `wrreg`, `eth-gl-w`, `soc-mbist` `wrreg` (all now with the commit publication and the port-B select) and `joint-cut7`.
