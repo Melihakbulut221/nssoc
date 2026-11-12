@@ -355,3 +355,33 @@ Probes with routing and extracted STA, all r_cut3n settings plus the three knobs
 `r_cut5n` measures the knobs at the flow's margins (against `r_cut3n`); `r_cut5a` and `r_cut5b` against it show which stage's margin costs the setup slack. These are flow settings of the measurement probes, not the SDC or an acceptance threshold. Functional entries: `regress` and `native-boot` `ex_exec_pmpreg_cut5` (the cut2 knobs without the staged commit, plus the three new ones), `pcie-unit` (the suites and the co-simulations above) and `eth-knobs` part `joint-cut5` (asynchronous and synchronous packet clock, inferred and vendor-SRAM FIFOs).
 
 Risks: the stage-1 registers add about 300 flip-flops to the packet domain at d68 (the read-ahead registers' area moved other groups in `r_cut4m`); each bit of the cursor lane register drives about 340 stage-1 gates (both rotations, six banks and the staged selection) through a buffer tree; the instruction request register costs fetch bandwidth after every redirect; the reset copies help only if the placer gives each tree its own region.
+
+## 15. Sixth round: lane-register copies, the FIFO SRAM write port, the NPU path
+
+Run 43167242459 (all functional jobs pass; routed, extracted, d68, DRC 0). Slow-corner setup in ns:
+
+| Probe | `pcie_clk_i` | `clk_i` | asynchronous | `eth_rx_clk_i` | hold |
+|---|---:|---:|---:|---:|---|
+| `r_cut5a_td_d68` (PL 0 / GRT 0.05) | -0.88 | -1.18 | -0.20 | -0.67 | typ -0.017 (1), fast -0.13 (79) |
+| `r_cut5n_td_d68` (0.1 / 0.05) | -5.98 | -1.50 | | -0.85 | |
+| `r_cut5b_td_d68` (0.1 / 0) | -5.09 | -2.62 | | -1.22 | |
+
+`r_cut5a` has the best `pcie_clk_i` so far (worst `retry.replay_read_onehot[9]` -> `read_replay_bank[3].registered[7]`) and typical setup met everywhere. In `r_cut5n` and `r_cut5b` the worst path is `receive_ownership.r2_lane[7]` -> `read_bank[1].far_bytes[12]`: the single lane register of section 14.1 drives about 340 gates per bit and is placement-fragile.
+
+### 15.1 Lane-register copies (inside `SOC_PCIE_RX_READ2`)
+
+Every stage-1 group of every bank and of the staged selection has its own copy of the lane register (`soc_pcie_rx_lane_copy`, 21 copies of 13 bits at the SoC's parameters), loaded every cycle with the master's next value `r2_lane_d` and rotated locally for the lanes of c+1 and c+2; each copy bit drives 16 gates. The copies are identical, so they are kept apart through synthesis the way `soc_tmr_bank` is: the copy module carries `keep_hierarchy` (`opt_merge` does not merge instances of a user module), and the flow's final flatten removes the boundary after mapping. They have no reset: `r2_lane_d` is 1 throughout a reset, so a copy differs from the master only between an asynchronous reset assertion and the next clock edge, while the queue is held in reset. The master stays for the group and pick logic. The co-simulation now also checks, whenever `rst_ni` is high, that every copy equals the master (`r2_copy_differs`, simulation only), and a run fails on any difference.
+
+### 15.2 `SOC_ETH_FIFO_WRREG=1` (default 0): registered SRAM write port
+
+`r_cut5a` `eth_rx_clk_i` (-0.67): `rx_fifo.wr_ptr_reg[5]` -> the frame FIFO's full and drop compare -> `mbist_wr` -> the wrapper's `aw`, which drives `A_WEN` and `A_REN` of all eight macros through about 3.7 ns of buffers, ending at `g_bank[0].u_mem/A_REN` at 9.11 ns. `soc_eth_fifo_sram.v` under the define takes the functional write into registers in its cycle (one-hot bank enable, row, data) and writes it at the next write-clock edge, so `A_MEN`, `A_WEN`, `A_REN`, `A_ADDR` and `A_DIN` start at flip-flops (or at the self-test, which owns port A only before release and never again until power-on reset). The FIFO's interface and the self-test's accesses are unchanged; a functional write reaches the macro one write-clock cycle later.
+
+Why no read can precede its word's write: a word is read only after its frame is committed. The frame FIFO publishes the commit in the cycle of the frame's last write, through a toggle and three read-clock flip-flops (`wr_ptr_update_sync1..3`, `wr_ptr_commit_sync_reg` loads at the third), and the read of a committed word is at the read-clock edge after that: at least three read-clock periods after the publishing edge. That is 24 ns for the transmit FIFO (read at 125 MHz, written at 50 MHz: the write is delayed by 20 ns) and 60 ns for the receive FIFO (read at 50 MHz, written at 125 MHz: 8 ns). The knob therefore requires three read-clock periods to exceed one write-clock period, which both FIFOs meet at the frozen clocks. A write in the last functional cycle before a functional reset lands one edge into the reset; the pointers are reset and the word is not read. Evidence: the Ethernet cocotb suite with the vendor SRAM models (`sram_wrreg`), the wrapper's self-test, fault and cross-port bench (`check_eth_mbist.py --fifo-rdreg --fifo-wrreg`), the gate-level MAC (`eth-gl-w`), the MBIST integration bench and joint traffic with vendor-SRAM FIFOs (`joint-cut6`).
+
+### 15.3 `clk_i`, `u_npu.u_node0.u_lif.jj[1]` -> `u_lif.smem[31]`: no change
+
+The path is inside the frozen `hw/rtl/lif_core.v`, so only a physical constraint could act on it. It was not added. `docs/73` measured the two placement constraints this flow supports on the CLINT. A `dbRegion`/`dbGroup` fence (`hw/soc/pnr/clint_region.py`) gave +32.5 % global-route wire, 420 overflow and `GRT-0116`, and did not route. `MANUAL_GLOBAL_PLACEMENTS` routed but cost about 7 ns of WNS and moved the worst path to the edge of the constrained set. `docs/79` restates both results. A fence also keeps every cell outside the group, including the buffers the resizer later inserts on the group's own nets, out of the region. LibreLane 3.0.5 has no per-instance density key. The NPU path is also new in this round: it appears in `r_cut5a`/`r_cut5b` but not in `r_cut3n`/`r_cut3h`, whose worst `clk_i` paths were -0.6 ns elsewhere. That points to placement variation rather than a structural limit, so the probes of this round measure it again without a constraint.
+
+### 15.4 Runs
+
+Probes `r_cut6a_td_d68` (PL 0 / GRT 0.05) and `r_cut6z_td_d68` (PL 0 / GRT 0), both with `SOC_PCIE_RX_READ2` (now with the copies), `SOC_BUS_IREQ_REG`, `SOC_PCIE_RESET_COPIES` and `SOC_ETH_FIFO_WRREG`, with route and routed-sta. Functional entries: `regress`/`native-boot` `ex_exec_pmpreg_cut6`; `pcie-unit` (the READ2 co-simulations now check the copies); `eth-knobs` parts `eth-rtl` (`sram_wrreg`), `eth-mbist` (`wrreg`), `eth-gl-w`, `joint-cut6` and `soc-mbist` (`wrreg`).
