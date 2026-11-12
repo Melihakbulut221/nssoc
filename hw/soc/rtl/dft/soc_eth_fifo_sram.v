@@ -126,6 +126,31 @@ module soc_eth_fifo_sram (
         wq_data <= wdata_i;
     end
     wire wq_val = |wq_men;
+    // Section 17: each bank's port-A owner select (registered write or
+    // self-test) comes from its own register, wq_sel[bank], loaded with the
+    // condition that makes wq_men non-zero, so wq_sel[bank] == |wq_men in
+    // every cycle (both are cleared by por_ni). The select of a bank's
+    // address and data multiplexers and of its write/read enables is then
+    // a flip-flop that can sit at that macro, instead of the OR of the
+    // eight enables fanned out over the eight macros, and the hold padding
+    // of a bank's A_MEN (on wq_men) is no longer on the select's path.
+    // The copies are kept apart through synthesis by keep_hierarchy, as
+    // soc_pcie_rx_lane_copy is.
+    wire wq_set = a_functional && wen_i;
+    wire [7:0] wq_sel;
+    genvar wsel;
+    generate for (wsel=0; wsel<8; wsel=wsel+1) begin: g_wsel
+        soc_eth_fifo_wsel_copy u_copy (.clk_i(wclk_i), .por_ni(por_ni), .d_i(wq_set), .q_o(wq_sel[wsel]));
+    end endgenerate
+`ifndef SYNTHESIS
+    // Simulation only: set while a copy differs from the OR of the enables.
+    wire wq_sel_differs = (wq_sel !== {8{wq_val}});
+    always @(negedge wclk_i)
+        if (por_ni === 1'b1 && wq_sel_differs) begin
+            $display("ETH_FIFO_WSEL_MISMATCH t=%0t wq_sel=%b wq_men=%b", $time, wq_sel, wq_men);
+            $fatal(1, "write select copy differs from the registered write enables");
+        end
+`endif
     // Section 16: port B's owner (FIFO or self-test) is selected by a
     // register one read-clock edge behind b_functional, so the release and
     // functional-reset logic no longer drives port B's address multiplexer
@@ -145,7 +170,7 @@ module soc_eth_fifo_sram (
     wire bw = bwe;
     wire [10:0] addr_a = adone ? axa : aa;
     wire [10:0] addr_b = b_func_q ? raddr_i : (bxdone ? ba : bxa);
-    wire [15:0] data_a = wq_val ? wq_data : awd;
+    // Port A's data multiplexer is per bank (wq_sel), at the macro pins.
 `else
     wire am = areq || axreq || (a_functional && wen_i);
     wire bm = breq || bxreq || (b_functional && ren_i);
@@ -209,7 +234,8 @@ module soc_eth_fifo_sram (
         RM_IHPSG13_2P_256x16_c2_bm_bist u_mem (
 `ifdef SOC_ETH_FIFO_WRREG
             .A_CLK(wclk_i), .A_MEN(((areq || axreq) && addr_a[10:8]==3'(bank)) || wq_men[bank]),
-            .A_WEN(aw), .A_REN(!aw), .A_ADDR(wq_val ? wq_row : addr_a[7:0]), .A_DIN(data_a),
+            .A_WEN(awe || wq_sel[bank]), .A_REN(!(awe || wq_sel[bank])),
+            .A_ADDR(wq_sel[bank] ? wq_row : addr_a[7:0]), .A_DIN(wq_sel[bank] ? wq_data : awd),
 `else
             .A_CLK(wclk_i), .A_MEN(am && addr_a[10:8]==3'(bank)),
             .A_WEN(aw), .A_REN(!aw), .A_ADDR(addr_a[7:0]), .A_DIN(data_a),
@@ -224,4 +250,18 @@ module soc_eth_fifo_sram (
             .B_BIST_REN(1'b0), .B_BIST_ADDR(8'b0), .B_BIST_DIN(16'b0), .B_BIST_BM(16'b0));
     end endgenerate
 endmodule
+`ifdef SOC_ETH_FIFO_WRREG
+// Section 17: one bank's copy of the registered write's owner select.
+// keep_hierarchy keeps the eight identical copies apart through synthesis
+// (opt_merge does not merge instances of a user module); the SoC flow's
+// final flatten removes the boundary after mapping.
+(* keep_hierarchy *)
+module soc_eth_fifo_wsel_copy (
+    input wire clk_i, por_ni, d_i,
+    output reg q_o
+);
+    always @(posedge clk_i or negedge por_ni)
+        if (!por_ni) q_o <= 1'b0; else q_o <= d_i;
+endmodule
+`endif
 `default_nettype wire
