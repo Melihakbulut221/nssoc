@@ -244,11 +244,148 @@ module soc_pcie_rx_credit #(
         assign staged_ahead[ahead_index*8 +: 8]=advance ? at_next : restart ? at_first : at_same;
     end endgenerate
 `endif
+`ifdef SOC_PCIE_RX_READ2
+`ifdef SOC_PCIE_RX_READ_AHEAD
+    soc_pcie_rx_read2_excludes_read_ahead unsupported_knob_combination_read2();
+`endif
+`ifdef SOC_PCIE_RX_STAGED_COMMIT
+    // Stage 1 below is loaded from a committed bank's staging bytes in the
+    // commit cycle; the staged commit writes the bank later.
+    soc_pcie_rx_read2_excludes_staged_commit unsupported_knob_combination_read2();
+`endif
+    // docs/combined-timing.md section 14 (SOC_PCIE_RX_READ2). The bank read
+    // is a two-stage registered multiplexer without a handshake in stage 1.
+    // A bank's CAP bytes are taken in R2_GROUPS groups of R2_LANES (byte
+    // g*R2_LANES+l is lane l of group g). The cursor c (output_index) moves
+    // by at most one per cycle, so the byte a bank register can load at the
+    // end of the next cycle is at c+1 (no handshake now), c+2 (a mid-frame
+    // handshake now) or 1 (an end of frame, link loss or reset now: c
+    // becomes 0). Stage 1 therefore loads, every cycle and per group, the
+    // lane of c+1 ("near") and the lane of c+2 ("far"), each an AND-OR of
+    // R2_LANES bytes selected by a rotation of a registered one-hot lane
+    // (c mod R2_LANES); no enable. Stage 2 is the bank register's next
+    // byte: an AND-OR of the 2*R2_GROUPS stage-1 registers and byte 1,
+    // selected by one-hot pick registers set from this cycle's handshake:
+    //   no handshake       near of the group of c+1,
+    //   mid-frame          far of the group of c+2,
+    //   end of frame/reset byte 1 (read directly, a fixed byte).
+    // So in the next cycle the stage-2 value is packets[bank*CAP+c'+1] for
+    // the cursor c' of that cycle, the byte the default build's 64-input
+    // AND-OR selects. A commit rewrites the bank from staging at the end of
+    // its cycle; a committed bank's stage-1 registers load the same lanes
+    // from staging in that cycle (one shared selection, picked by the
+    // bank's commit register), so stage 1 always matches the bank's
+    // contents of the cycle it is read in. Byte 1 is read from the bank
+    // itself. Only the bank's own CAP bytes are read: a mid-frame handshake
+    // happens only below a frame's last index (at most CAP-1, the shape
+    // check; at most 5 for a DLLP), so c+1 <= CAP-1 whenever the stage-2
+    // byte is loaded, and the cross-bank reads of the flat array are never
+    // loaded (as for SOC_PCIE_RX_READ_AHEAD). Every bank register therefore
+    // equals the default build's in every cycle, and the module's ports
+    // are cycle-identical (random co-simulation against the default build,
+    // hw/soc/tb/tb_pcie_rx_credit_read_ahead.v). The handshake reaches only
+    // the 2*R2_GROUPS+1 pick registers, the cursor registers and the bank
+    // registers' multiplexer, as before. Cost: SLOTS*R2_GROUPS*16 stage-1
+    // flip-flops (288 at the SoC's 8 DW and 2 slots per class) and
+    // R2_LANES+R2_GROUPS*3+1 cursor and pick flip-flops.
+    localparam integer R2_GROUPS=3;
+    localparam integer R2_LANES=(CAP+R2_GROUPS-1)/R2_GROUPS;
+    reg [R2_LANES-1:0] r2_lane;
+    reg [R2_GROUPS-1:0] r2_group,r2_pick_near,r2_pick_far;
+    reg r2_pick_first;
+    // One-hot lanes of c+1 and c+2, and the groups of c+1 and c+2.
+    wire [R2_LANES-1:0] r2_lane_near={r2_lane[R2_LANES-2:0],r2_lane[R2_LANES-1]};
+    wire [R2_LANES-1:0] r2_lane_far={r2_lane[R2_LANES-3:0],r2_lane[R2_LANES-1:R2_LANES-2]};
+    wire [R2_GROUPS-1:0] r2_group_next={r2_group[R2_GROUPS-2:0],r2_group[R2_GROUPS-1]};
+    wire [R2_GROUPS-1:0] r2_group_near=r2_lane[R2_LANES-1] ? r2_group_next : r2_group;
+    wire [R2_GROUPS-1:0] r2_group_far=(r2_lane[R2_LANES-1] | r2_lane[R2_LANES-2]) ? r2_group_next : r2_group;
+    wire r2_rst_n=rst_ni;
+    // Cursor and pick registers, updated at the same points as read_onehot.
+    always @(posedge clk_i or negedge r2_rst_n) begin
+        if(!r2_rst_n) begin
+            r2_lane<=1;r2_group<=1;r2_pick_near<=0;r2_pick_far<=0;r2_pick_first<=1;
+        end else if(!link_up_i) begin
+            r2_lane<=1;r2_group<=1;r2_pick_near<=0;r2_pick_far<=0;r2_pick_first<=1;
+        end else if(handshake) begin
+            if(out_eop_o) begin
+                r2_lane<=1;r2_group<=1;r2_pick_near<=0;r2_pick_far<=0;r2_pick_first<=1;
+            end else begin
+                r2_lane<=r2_lane_near;
+                if(r2_lane[R2_LANES-1]) r2_group<=r2_group_next;
+                r2_pick_near<=0;r2_pick_far<=r2_group_far;r2_pick_first<=0;
+            end
+        end else begin
+            r2_pick_near<=r2_group_near;r2_pick_far<=0;r2_pick_first<=0;
+        end
+    end
+    // The staged TLP's stage-1 selection, shared by every bank; a bank's
+    // commit register picks it in the commit cycle.
+    wire [8*R2_GROUPS-1:0] r2_staged_near,r2_staged_far;
+    genvar r2_index,r2_bit,r2_offset;
+    generate for(r2_index=0;r2_index<R2_GROUPS;r2_index=r2_index+1) begin: r2_staged_group
+        for(r2_bit=0;r2_bit<8;r2_bit=r2_bit+1) begin: r2_staged_bit
+            wire [R2_LANES-1:0] near_pick,far_pick;
+            for(r2_offset=0;r2_offset<R2_LANES;r2_offset=r2_offset+1) begin: r2_staged_lane
+                if(r2_index*R2_LANES+r2_offset<CAP) begin: present
+                    assign near_pick[r2_offset]=r2_lane_near[r2_offset] &
+                        staging[r2_index*R2_LANES+r2_offset][r2_bit];
+                    assign far_pick[r2_offset]=r2_lane_far[r2_offset] &
+                        staging[r2_index*R2_LANES+r2_offset][r2_bit];
+                end else begin: absent
+                    assign near_pick[r2_offset]=1'b0;
+                    assign far_pick[r2_offset]=1'b0;
+                end
+            end
+            assign r2_staged_near[r2_index*8+r2_bit]=|near_pick;
+            assign r2_staged_far[r2_index*8+r2_bit]=|far_pick;
+        end
+    end endgenerate
+`endif
     genvar bank,read_bit,read_offset;
     generate for(bank=0;bank<SLOTS;bank=bank+1) begin: read_bank
         wire [7:0] following;
         reg [7:0] registered;
-`ifdef SOC_PCIE_RX_READ_AHEAD
+`ifdef SOC_PCIE_RX_READ2
+        // Stage 1: per group, the lanes of c+1 (near) and c+2 (far) of this
+        // bank, or of the staged TLP when this bank is committed.
+        wire [8*R2_GROUPS-1:0] near_bytes,far_bytes;
+        for(read_offset=0;read_offset<R2_GROUPS;read_offset=read_offset+1) begin: r2_slot
+            wire [7:0] near_d,far_d;
+            reg [7:0] near_q,far_q;
+            for(read_bit=0;read_bit<8;read_bit=read_bit+1) begin: r2_bit_lane
+                wire [R2_LANES-1:0] near_pick,far_pick;
+                for(r2_offset=0;r2_offset<R2_LANES;r2_offset=r2_offset+1) begin: r2_byte
+                    if(read_offset*R2_LANES+r2_offset<CAP) begin: present
+                        assign near_pick[r2_offset]=r2_lane_near[r2_offset] &
+                            packets[bank*CAP+read_offset*R2_LANES+r2_offset][read_bit];
+                        assign far_pick[r2_offset]=r2_lane_far[r2_offset] &
+                            packets[bank*CAP+read_offset*R2_LANES+r2_offset][read_bit];
+                    end else begin: absent
+                        assign near_pick[r2_offset]=1'b0;
+                        assign far_pick[r2_offset]=1'b0;
+                    end
+                end
+                assign near_d[read_bit]=|near_pick;
+                assign far_d[read_bit]=|far_pick;
+            end
+            always @(posedge clk_i) begin
+                near_q<=commit_slot[bank] ? r2_staged_near[read_offset*8 +: 8] : near_d;
+                far_q<=commit_slot[bank] ? r2_staged_far[read_offset*8 +: 8] : far_d;
+            end
+            assign near_bytes[read_offset*8 +: 8]=near_q;
+            assign far_bytes[read_offset*8 +: 8]=far_q;
+        end
+        // Stage 2: the byte at the next index, from registers only.
+        for(read_bit=0;read_bit<8;read_bit=read_bit+1) begin: read_bit_lane
+            wire [R2_GROUPS-1:0] near_selected,far_selected;
+            for(read_offset=0;read_offset<R2_GROUPS;read_offset=read_offset+1) begin: read_byte
+                assign near_selected[read_offset]=r2_pick_near[read_offset] & near_bytes[read_offset*8+read_bit];
+                assign far_selected[read_offset]=r2_pick_far[read_offset] & far_bytes[read_offset*8+read_bit];
+            end
+            assign following[read_bit]=(|near_selected) | (|far_selected) |
+                (r2_pick_first & packets[bank*CAP+1][read_bit]);
+        end
+`elsif SOC_PCIE_RX_READ_AHEAD
         wire [8*AHEAD_GROUPS-1:0] ahead_bytes;
         for(read_offset=0;read_offset<AHEAD_GROUPS;read_offset=read_offset+1) begin: ahead_slot
             wire [7:0] stored_next,stored_first;

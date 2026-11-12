@@ -1,9 +1,10 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
-// Random co-simulation of soc_pcie_rx_credit with SOC_PCIE_RX_READ_AHEAD
-// (module soc_pcie_rx_credit) against the default build of the same file
-// (module soc_pcie_rx_credit_ref); scripts/check_pcie_rx_read_ahead.sh
-// prepares both. docs/combined-timing.md section 12.
+// Random co-simulation of soc_pcie_rx_credit with opt-in timing knobs
+// (module soc_pcie_rx_credit: SOC_PCIE_RX_READ_AHEAD, SOC_PCIE_RX_READ2,
+// optionally with SOC_PCIE_RESET_COPIES) against the default build of the
+// same file (module soc_pcie_rx_credit_ref); scripts/check_pcie_rx_read_ahead.sh
+// prepares both. docs/combined-timing.md sections 12 and 14.
 //
 // Every output is compared in every cycle, and out_data_o/out_error_o
 // while out_valid_o. The stimulus mixes legal TLPs of every class (posted,
@@ -11,8 +12,8 @@
 // class, digest, oversize, undersize, missing start, error beats), good
 // and bad DLLPs, input gaps, output back-pressure, random verdicts, link
 // loss, training, FC initialization gaps and resets. It also checks the
-// claim the read-ahead registers rely on: the read cursor never passes
-// CAP-1.
+// claim the read-ahead and two-stage read registers rely on: the read
+// cursor never passes CAP-1.
 `timescale 1ns/1ps
 `default_nettype none
 module tb_pcie_rx_credit_read_ahead;

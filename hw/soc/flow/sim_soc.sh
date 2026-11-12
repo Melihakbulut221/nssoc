@@ -388,7 +388,10 @@ fi
 # multiplexer with a read-ahead register per byte group (not combinable with
 # the staged commit); SOC_BUS_WDATA_OWN=1 gives the fabric request register's
 # write data a register of its own, loaded without the arbitration.
-for knob in SOC_SRAM_MBIST_PIPE SOC_PCIE_RX_STAGED_COMMIT SOC_PCIE_RX_READ_AHEAD SOC_BUS_WDATA_OWN; do
+# Section 14: SOC_PCIE_RX_READ2=1 makes the receive queue's bank read a
+# two-stage registered multiplexer (not combinable with the read-ahead
+# registers or the staged commit).
+for knob in SOC_SRAM_MBIST_PIPE SOC_PCIE_RX_STAGED_COMMIT SOC_PCIE_RX_READ_AHEAD SOC_BUS_WDATA_OWN SOC_PCIE_RX_READ2; do
   case "${!knob:-0}" in
     0) ;;
     1) EXEC_DEFS="$EXEC_DEFS -D$knob" ;;
@@ -397,6 +400,9 @@ for knob in SOC_SRAM_MBIST_PIPE SOC_PCIE_RX_STAGED_COMMIT SOC_PCIE_RX_READ_AHEAD
 done
 if [ "${SOC_PCIE_RX_READ_AHEAD:-0}" = 1 ] && [ "${SOC_PCIE_RX_STAGED_COMMIT:-0}" = 1 ]; then
   echo 'SOC_PCIE_RX_READ_AHEAD and SOC_PCIE_RX_STAGED_COMMIT cannot both be one' >&2; exit 2
+fi
+if [ "${SOC_PCIE_RX_READ2:-0}" = 1 ] && { [ "${SOC_PCIE_RX_READ_AHEAD:-0}" = 1 ] || [ "${SOC_PCIE_RX_STAGED_COMMIT:-0}" = 1 ]; }; then
+  echo 'SOC_PCIE_RX_READ2 cannot be combined with SOC_PCIE_RX_READ_AHEAD or SOC_PCIE_RX_STAGED_COMMIT' >&2; exit 2
 fi
 if [ "$SOC_MEM_HARDEN" != 0 ]; then
   RAM_POWERUP_DEF=-DRAM_POWERUP_ECC
