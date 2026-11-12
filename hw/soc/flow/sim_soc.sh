@@ -390,8 +390,10 @@ fi
 # write data a register of its own, loaded without the arbitration.
 # Section 14: SOC_PCIE_RX_READ2=1 makes the receive queue's bank read a
 # two-stage registered multiplexer (not combinable with the read-ahead
-# registers or the staged commit).
-for knob in SOC_SRAM_MBIST_PIPE SOC_PCIE_RX_STAGED_COMMIT SOC_PCIE_RX_READ_AHEAD SOC_BUS_WDATA_OWN SOC_PCIE_RX_READ2; do
+# registers or the staged commit). SOC_BUS_IREQ_REG=1 takes the
+# instruction port's request into a register before the fabric's
+# arbitration (one more cycle per instruction fetch).
+for knob in SOC_SRAM_MBIST_PIPE SOC_PCIE_RX_STAGED_COMMIT SOC_PCIE_RX_READ_AHEAD SOC_BUS_WDATA_OWN SOC_PCIE_RX_READ2 SOC_BUS_IREQ_REG; do
   case "${!knob:-0}" in
     0) ;;
     1) EXEC_DEFS="$EXEC_DEFS -D$knob" ;;

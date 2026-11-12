@@ -413,7 +413,27 @@ module soc_bus #(
     end
   endfunction
 
+`ifdef SOC_BUS_IREQ_REG
+  // docs/combined-timing.md section 14 (SOC_BUS_IREQ_REG). The
+  // instruction port's request is taken into a one-entry register before
+  // the arbitration, and the arbitration, the same-slave check, the
+  // request register's multiplexers and the outstanding accounting read
+  // that register instead of the port. ir_val/ir_addr hold a request the
+  // core was granted and the fabric has not yet issued; i_take is the
+  // fabric's grant of it (the old mi_gnt_o). The core is granted whenever
+  // the register is empty or is being issued in the same cycle, so the
+  // instruction port still takes one request per cycle, and its grant no
+  // longer depends on its own address decode or on the arbitration with
+  // the data port. Every instruction request reaches its slave one cycle
+  // later. The core must hold req and addr until gnt (protocol rule 1),
+  // which Ibex's prefetch buffer does.
+  reg        ir_val;
+  reg [31:0] ir_addr;
+  wire       i_take;
+  wire [2:0] tgt_i = decode(ir_addr);
+`else
   wire [2:0] tgt_i = decode(mi_addr_i);
+`endif
   wire [2:0] tgt_d = decode(md_addr_i);
 
   // -------------------------------------------------------------------
@@ -460,7 +480,11 @@ module soc_bus #(
     if (!rst_ni) issue_en <= 1'b0;
     else         issue_en <= 1'b1;
 
+`ifdef SOC_BUS_IREQ_REG
+  wire can_issue_i = issue_en && ir_val &&
+`else
   wire can_issue_i = issue_en && mi_req_i &&
+`endif
                      ((cnt_i == 2'd0) ||
                       ((lock_i == tgt_i) && (cnt_i < MAX_OUT[1:0])));
   wire can_issue_d = issue_en && md_req_i &&
@@ -481,7 +505,11 @@ module soc_bus #(
   // written into the four broadcast assignments, because at REQ_REG = 1
   // it is what the request register captures and at REQ_REG = 0 it is
   // what the broadcast is.
+`ifdef SOC_BUS_IREQ_REG
+  wire [31:0] win_addr  = d_wins ? md_addr_i  : ir_addr;
+`else
   wire [31:0] win_addr  = d_wins ? md_addr_i  : mi_addr_i;
+`endif
   wire        win_we    = d_wins ? md_we_i    : 1'b0;
   wire [3:0]  win_be    = d_wins ? md_be_i    : 4'hF;
   wire [31:0] win_wdata = d_wins ? md_wdata_i : 32'h0;
@@ -519,7 +547,11 @@ module soc_bus #(
     wire target_ready = (tgt == ERRSLV[2:0]) ? 1'b1 : s_gnt_i[tgt];
     assign accepted   = any_win && target_ready;
 
+`ifdef SOC_BUS_IREQ_REG
+    assign i_take   = i_wins && target_ready;
+`else
     assign mi_gnt_o = i_wins && target_ready;
+`endif
     assign md_gnt_o = d_wins && target_ready;
 
     // Broadcast request payload (S2).
@@ -564,7 +596,11 @@ module soc_bus #(
     wire cap_ok = !r_val || r_xfer;
 
     assign accepted = any_win && cap_ok;
+`ifdef SOC_BUS_IREQ_REG
+    assign i_take   = i_wins && cap_ok;
+`else
     assign mi_gnt_o = i_wins && cap_ok;
+`endif
     assign md_gnt_o = d_wins && cap_ok;
 
     // Capture beats clear: a grant in the cycle the register drains
@@ -636,6 +672,24 @@ module soc_bus #(
   always @(posedge clk_i or negedge rst_ni)
     if (!rst_ni)      last_was_d <= 1'b0;
     else if (accepted) last_was_d <= d_wins;
+
+`ifdef SOC_BUS_IREQ_REG
+  // The instruction request register. A request granted to the core is
+  // held until the fabric issues it (i_take); the core may present the
+  // next one in the cycle after its grant. Gated by issue_en as the
+  // arbitration is, so nothing is accepted during or right after reset.
+  assign mi_gnt_o = issue_en && mi_req_i && (!ir_val || i_take);
+  always @(posedge clk_i or negedge rst_ni)
+    if (!rst_ni) begin
+      ir_val  <= 1'b0;
+      ir_addr <= 32'h0;
+    end else if (mi_gnt_o) begin
+      ir_val  <= 1'b1;
+      ir_addr <= mi_addr_i;
+    end else if (i_take) begin
+      ir_val  <= 1'b0;
+    end
+`endif
 
   // -------------------------------------------------------------------
   // The error slave: fixed one-cycle latency, always ready, err high.
@@ -797,7 +851,12 @@ module soc_bus #(
       lock_i <= 3'd0;
       lock_d <= 3'd0;
     end else begin
+`ifdef SOC_BUS_IREQ_REG
+      // The fabric-side count: requests issued from the register.
+      case ({i_take, mi_rvalid_o})
+`else
       case ({mi_gnt_o, mi_rvalid_o})
+`endif
         2'b10:   cnt_i <= cnt_i + 2'd1;
         2'b01:   cnt_i <= cnt_i - 2'd1;
         default: ;
@@ -807,7 +866,11 @@ module soc_bus #(
         2'b01:   cnt_d <= cnt_d - 2'd1;
         default: ;
       endcase
+`ifdef SOC_BUS_IREQ_REG
+      if (i_take) lock_i <= tgt_i;
+`else
       if (mi_gnt_o) lock_i <= tgt_i;
+`endif
       if (md_gnt_o) lock_d <= tgt_d;
     end
   end
@@ -846,8 +909,15 @@ module soc_bus #(
   // "outstanding" term would hold the clock on for the 172 cycles of an
   // NPU register access and buy nothing -- F10 is what says so, because
   // the enable it proves complete does not contain one.
+`ifdef SOC_BUS_IREQ_REG
+  // One more reason to clock: a held instruction request can be issued in
+  // a cycle with no request at either port (G6 for that register).
+  assign clk_en_o = !issue_en || mi_req_i || md_req_i
+                 || (|s_rvalid_i) || err_rvalid || req_busy || ir_val;
+`else
   assign clk_en_o = !issue_en || mi_req_i || md_req_i
                  || (|s_rvalid_i) || err_rvalid || req_busy;
+`endif
 
 `ifdef FORMAL
 `include "soc_bus_props.v"
