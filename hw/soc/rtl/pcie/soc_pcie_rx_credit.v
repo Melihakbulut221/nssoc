@@ -320,10 +320,19 @@ module soc_pcie_rx_credit #(
     // r2_lane's next value (the always block below), for the copies.
     wire [R2_LANES-1:0] r2_lane_d=(!link_up_i || (handshake && out_eop_o)) ? {{(R2_LANES-1){1'b0}},1'b1} :
         handshake ? r2_lane_near : r2_lane;
+    // Section 16: the pick registers' next value, for one copy per bank
+    // (soc_pcie_rx_pick_copy, reset like the master), so each pick bit
+    // drives the 8 stage-2 gates of one bank instead of 48 through a tree.
+    // Order {first, far, near}, as the always block below assigns them.
+    wire [R2_GROUPS-1:0] r2_pick_near_d=(!link_up_i || handshake) ? {R2_GROUPS{1'b0}} : r2_group_near;
+    wire [R2_GROUPS-1:0] r2_pick_far_d=(!link_up_i || !handshake || out_eop_o) ? {R2_GROUPS{1'b0}} : r2_group_far;
+    wire r2_pick_first_d=!link_up_i || (handshake && out_eop_o);
+    wire [2*R2_GROUPS:0] r2_pick_d={r2_pick_first_d,r2_pick_far_d,r2_pick_near_d};
 `ifndef SYNTHESIS
-    // Simulation only: one bit per copy, set while it differs from r2_lane
-    // (the co-simulation checks that this is zero whenever rst_ni is high).
-    wire [(SLOTS+1)*R2_GROUPS-1:0] r2_copy_differs;
+    // Simulation only: one bit per copy, set while it differs from its
+    // master: the lane copies first, then one pick copy per bank (the
+    // co-simulation checks that this is zero whenever rst_ni is high).
+    wire [(SLOTS+1)*R2_GROUPS+SLOTS-1:0] r2_copy_differs;
 `endif
 `ifdef SOC_PCIE_RESET_COPIES
     wire r2_rst_n=rst_copy_ni;
@@ -420,15 +429,23 @@ module soc_pcie_rx_credit #(
             assign near_bytes[read_offset*8 +: 8]=near_q;
             assign far_bytes[read_offset*8 +: 8]=far_q;
         end
-        // Stage 2: the byte at the next index, from registers only.
+        // Stage 2: the byte at the next index, from registers only, with
+        // this bank's own copy of the pick registers (section 16).
+        wire [2*R2_GROUPS:0] pick_q;
+        soc_pcie_rx_pick_copy #(.W(2*R2_GROUPS+1),.RST(1<<(2*R2_GROUPS))) pick_copy(
+            .clk_i(clk_i),.rst_ni(r2_rst_n),.d_i(r2_pick_d),.q_o(pick_q));
+`ifndef SYNTHESIS
+        assign r2_copy_differs[(SLOTS+1)*R2_GROUPS+bank]=
+            pick_q!=={r2_pick_first,r2_pick_far,r2_pick_near};
+`endif
         for(read_bit=0;read_bit<8;read_bit=read_bit+1) begin: read_bit_lane
             wire [R2_GROUPS-1:0] near_selected,far_selected;
             for(read_offset=0;read_offset<R2_GROUPS;read_offset=read_offset+1) begin: read_byte
-                assign near_selected[read_offset]=r2_pick_near[read_offset] & near_bytes[read_offset*8+read_bit];
-                assign far_selected[read_offset]=r2_pick_far[read_offset] & far_bytes[read_offset*8+read_bit];
+                assign near_selected[read_offset]=pick_q[read_offset] & near_bytes[read_offset*8+read_bit];
+                assign far_selected[read_offset]=pick_q[R2_GROUPS+read_offset] & far_bytes[read_offset*8+read_bit];
             end
             assign following[read_bit]=(|near_selected) | (|far_selected) |
-                (r2_pick_first & packets[bank*CAP+1][read_bit]);
+                (pick_q[2*R2_GROUPS] & packets[bank*CAP+1][read_bit]);
         end
 `elsif SOC_PCIE_RX_READ_AHEAD
         wire [8*AHEAD_GROUPS-1:0] ahead_bytes;
@@ -754,6 +771,22 @@ module soc_pcie_rx_lane_copy #(
     output reg [W-1:0] q_o
 );
     always @(posedge clk_i) q_o<=d_i;
+endmodule
+// Section 16: one copy of the two-stage read's pick registers, with the
+// master's asynchronous reset and reset value, so it equals the master in
+// every cycle. keep_hierarchy as for soc_pcie_rx_lane_copy.
+(* keep_hierarchy *)
+module soc_pcie_rx_pick_copy #(
+    parameter integer W=7,
+    parameter integer RST=0
+)(
+    input wire clk_i,rst_ni,
+    input wire [W-1:0] d_i,
+    output reg [W-1:0] q_o
+);
+    always @(posedge clk_i or negedge rst_ni)
+        if(!rst_ni) q_o<=RST;
+        else q_o<=d_i;
 endmodule
 `endif
 `default_nettype wire
