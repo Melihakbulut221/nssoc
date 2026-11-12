@@ -312,3 +312,46 @@ Runs: 42987022661 (routes), 43052000192 (extraction of those routes), 4311935054
   - `pcie_clk_i`: the 96-entry receive-queue read multiplexer `receive_ownership.packets[] -> bank_byte[]`.
   - `clk_i`: CSR address decode into fetch and bus address (`csr_addr -> stored_addr_q` / `s_addr`).
   - asynchronous: the link-up reset into the replay state.
+
+## 14. Fifth round: two-stage receive read, instruction request register, reset copies, hold-margin split
+
+Starting point: the routed `r_cut3h_td_d68` and `r_cut3n_td_d68` of run 43052000192 (section 13). What their slow-corner reports show in the cells:
+
+- `pcie_clk_i`, `receive_ownership.packets[80][1]` -> `bank_byte[1][1]` (-1.37): the 64-input AND-OR of bank 1 reads byte 80, which is byte 4 of bank 2 (a cross-bank read of the flat array). Its first gate, an `a22oi_1`, drives 0.12 pF of wire (1.43 ns, 1.59 ns slew); the next ones are a `nand4_1` and a `nor4_2`. The other worst paths start at the cursor (`next_onehot[14]`, `[20]`) and look the same. The path is wire-bound: the AND-OR gathers bytes from two banks' placement regions.
+- `clk_i`, `cs_registers_i.csr_addr[7]` -> `r_wdata` (-0.61): `csr_addr` is `instr[31:20]` of the execute-stage instruction register (ibex_decoder), so the start point is that register, not a CSR. About 14.3 ns go to the redirect (`pc_set`/branch target, an `or3` with a fanout of about 30 through four `buf_1`), then the prefetch buffer's address multiplexer (`branch_i ? addr_i : ...`), the fabric's address decode of the instruction port, the same-slave compare, `can_issue_i`, `d_wins`, and the select of the request register; `stored_addr_q` is reached through the grant (`stored_addr_en` uses `instr_gnt_i`).
+- asynchronous, `retry.link_up_i` -> retry reset pins (-0.41, `r_cut3n`) and `receive_input_slice.rst_ni` -> queue reset pins (-0.44): both are the net of one registered copy (`up_retry`, `up_rx`) feeding every reset pin of its block through a chain of eight `buf_1`/`buf_2` levels (5.3 ns arrival), with one or two hold buffers on the receive side. `up_retry` is also the replay store's `link_up_i`.
+
+### 14.1 `SOC_PCIE_RX_READ2=1` (default 0): two-stage registered bank read
+
+`soc_pcie_rx_credit.v`. The bank's CAP bytes are split into three groups (13 lanes each at 8 DW). The cursor moves by at most one per cycle, so the byte a bank register may load at the end of the next cycle is at c+1 (no handshake now), c+2 (a mid-frame handshake now) or 1 (end of frame, link loss or reset now). Stage 1 loads every cycle, per bank and group, the lane of c+1 and the lane of c+2 (a 13-input AND-OR selected by rotations of a registered one-hot lane, c mod 13), from staging instead of the bank in a commit cycle; it has no enable and no handshake. Stage 2, the bank register's next byte, is an AND-OR of the six stage-1 registers and byte 1, selected by seven one-hot pick registers that the handshake sets (no handshake: the group of c+1; mid-frame: the group of c+2; end of frame, link loss, reset: byte 1). So the pick registers, not the stage-1 registers, absorb the extra cycle, and no read latency is added: in every cycle the stage-2 value is the byte the default build's AND-OR selects for the in-bank indices. Cross-bank reads are left out, as in section 12.2: a mid-frame handshake happens only below a frame's last index, so c+1 <= CAP-1 whenever a bank register loads it, and the bank registers equal the default build's in every cycle. The module's ports are cycle-identical, so no unit-test expectation changes. Cost: 288 stage-1 flip-flops (6 banks x 3 groups x 2 x 8) and 23 cursor and pick flip-flops; the handshake reaches only the pick and cursor registers and the bank registers' multiplexer, as in the default build. Not combinable with `SOC_PCIE_RX_READ_AHEAD` or `SOC_PCIE_RX_STAGED_COMMIT`: an undeclared module stops elaboration, and the flow scripts refuse the combinations.
+
+Evidence: `scripts/check_pcie_rx_read_ahead.sh OUT CYCLES SOC_PCIE_RX_READ2` (the script now takes the defines; with none it tests the read-ahead build as before), the random co-simulation of section 12.2 against the default build: eight configurations of 300,000 cycles, every output compared in every cycle, the cursor below CAP, more than 1,000 frames and more than 100 commits during a frame. The queue suites (`soc_pcie_rx_credit`, `soc_pcie_buffered_flow_packets`) run with the define.
+
+### 14.2 `SOC_BUS_IREQ_REG=1` (default 0): instruction request register in the fabric
+
+`soc_bus.v`. The core's instruction request is granted into a one-entry register (`ir_val`, `ir_addr`) whenever it is empty or being issued in the same cycle; the arbitration, the address decode `tgt_i`, the same-slave check, the request register's multiplexers (`win_addr`), the outstanding count and lock (`cnt_i`, `lock_i`, now on the fabric's grant `i_take`) read the register. The core's grant is `issue_en && mi_req_i && (!ir_val || i_take)`: no address decode and no arbitration with the data port. The execute-stage redirect still reaches the prefetch buffer's request and address and the register's D inputs, but no longer the select of `r_addr`/`r_wdata`/`r_be`/`r_we`/`r_tgt`/`r_own` or the grant-dependent `stored_addr_q` enable. The clock-gate enable gains `ir_val` (a held request can be issued with no request at either port). It works with `REQ_REG` 0 and 1.
+
+This is not cycle-identical: every instruction fetch reaches its slave one cycle later. Ibex holds `req` and `addr` until `gnt` (protocol rule 1; the prefetch buffer's `stored_addr_q`), takes one grant per cycle as before, and the same-slave rule and in-order responses are unchanged, so the core sees only a longer fetch latency. The fabric's formal properties (`hw/soc/formal/soc_bus_props.v`) are stated for the default build and are not re-run with the knob. Evidence: the regressions and the native gate-level boot without MBIST (`ex_exec_pmpreg_cut5`), and the joint SoC traffic (`joint-cut5`). The cycle budget of the native boot (2,000,000) is unchanged; a fetch-latency-bound boot may need more.
+
+The data port's write-data register (`SOC_BUS_WDATA_OWN`, section 12.3) is not needed with this knob, since `d_wins` no longer depends on the instruction port, and stays off.
+
+### 14.3 `SOC_PCIE_RESET_COPIES=1` (default 0): more registered reset/link copies
+
+- `soc_pcie_buffered_flow_packets.v`: `up_rx_slice` (receive input slice and FC-initialization gate) and `up_rx_copy` (new port `rst_copy_ni` of `soc_pcie_rx_credit`: the read cursor `read_onehot`, the staging write select `stage_write_at` and, with `SOC_PCIE_RX_READ2`, its cursor and pick registers). `up_rx` keeps the rest of the queue.
+- `soc_pcie_reliable_packets.v`: `up_retry_link` (the replay store's `link_up_i`, so its link clears and link-qualified logic no longer share the net of its asynchronous reset) and `up_retry_copy` (new port `rst_copy_ni` of `soc_pcie_replay_tx`: the replay read cursor and the transmit slice).
+
+Every copy is cleared asynchronously by the same `local_reset` as the existing copy and set one clock later (the D inputs are 1 whenever `local_reset` is high and differ only so synthesis keeps the flip-flops), so assertion stays asynchronous, release stays synchronous, and all copies are equal at all times. Inside the two modules the moved registers are in their own always block with the same next-state function. The new ports exist only with the define; the `soc_pcie_rx_credit` and `soc_pcie_replay_tx` benches and the co-simulation drive them with `rst_ni`. The input-port paths of section 12.4 (`pcie_link_up_i` -> `u_pcie_cdc.reset_ni`, `pcie_sys_rst_n` -> `source_reset_n`) are not changed by this knob. Evidence: the receive-queue, replay, reliable, flow and buffered suites with the define, and the co-simulation with `SOC_PCIE_RX_READ2 SOC_PCIE_RESET_COPIES`.
+
+### 14.4 Which hold margin costs the setup
+
+Probes with routing and extracted STA, all r_cut3n settings plus the three knobs:
+
+| Probe | `PL_RESIZER_HOLD_SLACK_MARGIN` | `GRT_RESIZER_HOLD_SLACK_MARGIN` |
+|---|---:|---:|
+| `r_cut5n_td_d68` | 0.1 (flow default) | 0.05 (flow default) |
+| `r_cut5a_td_d68` | 0.0 | 0.05 |
+| `r_cut5b_td_d68` | 0.1 | 0.0 |
+
+`r_cut5n` measures the knobs at the flow's margins (against `r_cut3n`); `r_cut5a` and `r_cut5b` against it show which stage's margin costs the setup slack. These are flow settings of the measurement probes, not the SDC or an acceptance threshold. Functional entries: `regress` and `native-boot` `ex_exec_pmpreg_cut5` (the cut2 knobs without the staged commit, plus the three new ones), `pcie-unit` (the suites and the co-simulations above) and `eth-knobs` part `joint-cut5` (asynchronous and synchronous packet clock, inferred and vendor-SRAM FIFOs).
+
+Risks: the stage-1 registers add about 300 flip-flops to the packet domain at d68 (the read-ahead registers' area moved other groups in `r_cut4m`); each bit of the cursor lane register drives about 340 stage-1 gates (both rotations, six banks and the staged selection) through a buffer tree; the instruction request register costs fetch bandwidth after every redirect; the reset copies help only if the placer gives each tree its own region.
