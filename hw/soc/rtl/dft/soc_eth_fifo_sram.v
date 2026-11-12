@@ -11,6 +11,10 @@
 // register, so no logic follows a macro output in the cycle of the read.
 // Reads then take two edges; the FIFO runs with one more RAM pipeline
 // stage and the self-test engines with READ_LATENCY 2.
+// SOC_ETH_FIFO_WRREG (docs/combined-timing.md section 15): the functional
+// write (per-bank enable, address, data) is registered next to the macros
+// and reaches port A one write-clock edge later. See the block below for
+// why the frame FIFO cannot read a word before its delayed write.
 module soc_eth_fifo_sram (
     input wire wclk_i, rclk_i, por_ni,
     input wire wreset_i, rreset_i,
@@ -94,6 +98,44 @@ module soc_eth_fifo_sram (
 `endif
         .clk_i(wclk_i), .rst_ni(wp[1]), .start_i(b_done_w[1] && !b_fail_w[1]),
         .rdata_i(aq), .req_o(axreq), .addr_o(axa), .done_o(axdone), .failed_o(axfail));
+`ifdef SOC_ETH_FIFO_WRREG
+    // The functional write is taken into registers in its cycle (one-hot
+    // bank enable, row, data) and written at the next write-clock edge, so
+    // the FIFO's full/drop logic ends at these flip-flops instead of at the
+    // write and read enables of all eight macros. The self-test owns port
+    // A only before release (done_o) and never again until power-on reset,
+    // which also clears the enables, so its accesses are unchanged and are
+    // never mixed with a registered write.
+    // A word is read only after its frame is committed. The frame FIFO
+    // publishes the commit in the cycle of the frame's last write, through
+    // a toggle and three read-clock flip-flops, and reads a committed word
+    // at the read-clock edge after that, at least three read-clock periods
+    // later: 24 ns at 125 MHz (transmit FIFO, written at 50 MHz, one write
+    // period 20 ns) and 60 ns at 50 MHz (receive FIFO, written at 125 MHz,
+    // 8 ns). So every read still follows the write of its word. This needs
+    // three read-clock periods to exceed one write-clock period. A write
+    // in the last functional cycle before a functional reset lands one
+    // edge into the reset; the FIFO's pointers are reset and the word is
+    // not read.
+    reg [7:0] wq_men;
+    reg [7:0] wq_row;
+    reg [15:0] wq_data;
+    always @(posedge wclk_i or negedge por_ni)
+        if (!por_ni) wq_men <= 8'd0;
+        else wq_men <= (a_functional && wen_i) ? (8'd1 << waddr_i[10:8]) : 8'd0;
+    always @(posedge wclk_i) begin
+        wq_row <= waddr_i[7:0];
+        wq_data <= wdata_i;
+    end
+    wire wq_val = |wq_men;
+    wire am = areq || axreq || wq_val;
+    wire bm = breq || bxreq || (b_functional && ren_i);
+    wire aw = awe || wq_val;
+    wire bw = bwe;
+    wire [10:0] addr_a = adone ? axa : aa;
+    wire [10:0] addr_b = b_functional ? raddr_i : (bxdone ? ba : bxa);
+    wire [15:0] data_a = wq_val ? wq_data : awd;
+`else
     wire am = areq || axreq || (a_functional && wen_i);
     wire bm = breq || bxreq || (b_functional && ren_i);
     wire aw = awe || (a_functional && wen_i);
@@ -101,10 +143,13 @@ module soc_eth_fifo_sram (
     wire [10:0] addr_a = a_functional ? waddr_i : (adone ? axa : aa);
     wire [10:0] addr_b = b_functional ? raddr_i : (bxdone ? ba : bxa);
     wire [15:0] data_a = a_functional ? wdata_i : awd;
+`endif
     wire [15:0] bank_a [0:7];
     wire [15:0] bank_b [0:7];
     reg [2:0] sel_a, sel_b;
     // Select only on read; preserve macro output-hold behavior between requests.
+    // (With SOC_ETH_FIFO_WRREG, am && !aw is a self-test read, whose
+    // address is addr_a.)
     always @(posedge wclk_i or negedge por_ni)
         if (!por_ni) sel_a<=0; else if (am && !aw) sel_a<=addr_a[10:8];
     always @(posedge rclk_i or negedge por_ni)
@@ -147,8 +192,13 @@ module soc_eth_fifo_sram (
     genvar bank;
     generate for (bank=0; bank<8; bank=bank+1) begin: g_bank
         RM_IHPSG13_2P_256x16_c2_bm_bist u_mem (
+`ifdef SOC_ETH_FIFO_WRREG
+            .A_CLK(wclk_i), .A_MEN(((areq || axreq) && addr_a[10:8]==3'(bank)) || wq_men[bank]),
+            .A_WEN(aw), .A_REN(!aw), .A_ADDR(wq_val ? wq_row : addr_a[7:0]), .A_DIN(data_a),
+`else
             .A_CLK(wclk_i), .A_MEN(am && addr_a[10:8]==3'(bank)),
             .A_WEN(aw), .A_REN(!aw), .A_ADDR(addr_a[7:0]), .A_DIN(data_a),
+`endif
             .A_BM(16'hffff), .A_DLY(1'b0), .A_DOUT(bank_a[bank]),
             .A_BIST_CLK(1'b0), .A_BIST_EN(1'b0), .A_BIST_MEN(1'b0), .A_BIST_WEN(1'b0),
             .A_BIST_REN(1'b0), .A_BIST_ADDR(8'b0), .A_BIST_DIN(16'b0), .A_BIST_BM(16'b0),

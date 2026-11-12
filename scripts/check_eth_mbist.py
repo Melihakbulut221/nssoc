@@ -30,6 +30,8 @@ def main():
                         help='Directory holding iverilog and vvp')
     parser.add_argument('--fifo-rdreg', action='store_true',
                         help='Registered read ports (SOC_ETH_FIFO_RDREG, docs/combined-timing.md)')
+    parser.add_argument('--fifo-wrreg', action='store_true',
+                        help='Registered write port (SOC_ETH_FIFO_WRREG, docs/combined-timing.md)')
     args = parser.parse_args()
     out = args.output.resolve()
     if not out.is_relative_to(ROOT/'hw/soc/out'):
@@ -48,13 +50,14 @@ def main():
                   'RM_IHPSG13_2P_core_behavioral_ideal.v')]
     pins = {str(p): sha(p) for p in [*files, Path(__file__), tool/'iverilog', tool/'vvp']}
     result = dict(passed=False, scope=__doc__, replacement=bool(args.replacement_model),
-                  fifo_rdreg=args.fifo_rdreg,
+                  fifo_rdreg=args.fifo_rdreg, fifo_wrreg=args.fifo_wrreg,
                   input_sha256=pins, cases=[])
     def save():
         (out/'result.json').write_text(json.dumps(result, indent=2)+'\n')
     try:
         command = [str(tool/'iverilog'), '-g2012', '-DFUNCTIONAL',
-                   *(['-DSOC_ETH_FIFO_RDREG'] if args.fifo_rdreg else []), '-s',
+                   *(['-DSOC_ETH_FIFO_RDREG'] if args.fifo_rdreg else []),
+                   *(['-DSOC_ETH_FIFO_WRREG'] if args.fifo_wrreg else []), '-s',
                    'tb_eth_fifo_mbist', '-o', str(out/'sim.vvp'), *map(str, files)]
         result['compile_command'] = command
         save()

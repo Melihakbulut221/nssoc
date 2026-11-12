@@ -76,7 +76,7 @@ def main():
     parser.add_argument("--rf-synpre", type=int, choices=(0, 1), default=1,
                         help="Match the physical SYNPRE=1 profile; 0 is a separate control")
     parser.add_argument("--define", action="append", default=[],
-                        choices=("SOC_SRAM_MBIST_PIPE", "SOC_ETH_FIFO_RDREG", "SOC_BUSSTAT_EVPEND"),
+                        choices=("SOC_SRAM_MBIST_PIPE", "SOC_ETH_FIFO_RDREG", "SOC_BUSSTAT_EVPEND", "SOC_ETH_FIFO_WRREG"),
                         help="Opt-in timing knob of docs/combined-timing.md (repeatable)")
     args = parser.parse_args()
     out = args.output.resolve()

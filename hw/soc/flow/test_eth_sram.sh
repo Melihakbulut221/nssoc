@@ -36,6 +36,13 @@ case "${SOC_ETH_FIFO_RDREG:-0}" in
   1) KNOB_DEFINES="verilog_defines -DSOC_ETH_FIFO_RDREG" ;;
   *) echo 'SOC_ETH_FIFO_RDREG must be 0 or 1' >&2; exit 2 ;;
 esac
+# Section 15: the registered write port of the FIFO SRAM wrapper.
+case "${SOC_ETH_FIFO_WRREG:-0}" in
+  0) ;;
+  1) if [ "${SOC_ETH_FIFO_RDREG:-0}" = 1 ]; then KNOB_DEFINES="verilog_defines -DSOC_ETH_FIFO_RDREG -DSOC_ETH_FIFO_WRREG"
+     else KNOB_DEFINES="verilog_defines -DSOC_ETH_FIFO_WRREG"; fi ;;
+  *) echo 'SOC_ETH_FIFO_WRREG must be 0 or 1' >&2; exit 2 ;;
+esac
 cat > "$OUT/synth.ys" <<EOF
 $KNOB_DEFINES
 read_liberty -lib $SG13G2_TYP
