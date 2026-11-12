@@ -49,10 +49,51 @@ module soc_pcie_tlp_stream #(
 
     assign rx_ready_o = rst_ni && state!=SUBMIT;
     assign tx_valid_o = rst_ni && tx_busy;
+`ifdef SOC_PCIE_TX_WORD_REG
+    // docs/combined-timing.md section 17 (default off): the transmitted
+    // word and its SOP/EOP markers come from registers (block below)
+    // instead of the tx_index multiplexer and compares.
+    reg [31:0] tx_word_q;
+    reg tx_sop_q, tx_eop_q;
+    assign tx_sop_o = tx_sop_q;
+    assign tx_eop_o = tx_eop_q;
+`else
     assign tx_sop_o = tx_busy && tx_index==0;
     assign tx_eop_o = tx_busy && tx_index==(tx_payload ? 3 : 2);
+`endif
     assign error_o = framing_error | backend_error;
 
+`ifdef SOC_PCIE_TX_WORD_REG
+    always @* tx_data_o=tx_word_q;
+    // The registers load, at a completion load and at each accepted beat
+    // that is not the last, what the next tx_index selects, under the same
+    // conditions as tx_busy and tx_index below. tx_header, tx_payload_data
+    // and tx_payload change only at a load, where tx_index becomes 0, and
+    // tx_index changes only at a load or an accepted beat, so in every
+    // cycle the registers equal the default build's multiplexer and
+    // compares (reset: all 0, as tx_header is 0 and tx_busy is 0). The
+    // word select then no longer precedes the wire to the LCRC
+    // transmitter's write register.
+    always @(posedge clk_i or negedge rst_ni) begin
+        if (!rst_ni) begin
+            tx_word_q<=0; tx_sop_q<=0; tx_eop_q<=0;
+        end else if (!tx_busy && completion_valid) begin
+            tx_word_q<=completion_header[95:64]; tx_sop_q<=1; tx_eop_q<=0;
+        end else if (tx_busy && tx_ready_i) begin
+            tx_sop_q<=0;
+            if (tx_eop_o) tx_eop_q<=0;
+            else begin
+                case (tx_index)
+                    0: tx_word_q<=tx_header[63:32];
+                    1: tx_word_q<=tx_header[31:0];
+                    2: tx_word_q<=tx_payload_data;
+                    default: tx_word_q<=tx_header[95:64];
+                endcase
+                tx_eop_q<=tx_index+1'b1==(tx_payload ? 2'd3 : 2'd2);
+            end
+        end
+    end
+`else
     always @* begin
         case (tx_index)
             0: tx_data_o=tx_header[95:64];
@@ -61,6 +102,7 @@ module soc_pcie_tlp_stream #(
             default: tx_data_o=tx_payload_data;
         endcase
     end
+`endif
 
     // A collected descriptor is presented to the register backend from the
     // second SUBMIT cycle on (armed), so it is stable for a cycle before it

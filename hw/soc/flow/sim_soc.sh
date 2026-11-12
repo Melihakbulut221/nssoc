@@ -396,8 +396,9 @@ fi
 # gives the receive and replay blocks more registered reset/link copies.
 # Section 15: SOC_ETH_FIFO_WRREG=1 registers the Ethernet FIFO SRAM
 # wrapper's write port next to the macros. Section 16: SOC_PCIE_REPLAY_INBANK=1
-# reads each replay bank register from its own bank only.
-for knob in SOC_SRAM_MBIST_PIPE SOC_PCIE_RX_STAGED_COMMIT SOC_PCIE_RX_READ_AHEAD SOC_BUS_WDATA_OWN SOC_PCIE_RX_READ2 SOC_BUS_IREQ_REG SOC_PCIE_RESET_COPIES SOC_ETH_FIFO_WRREG SOC_PCIE_REPLAY_INBANK; do
+# reads each replay bank register from its own bank only. Section 17:
+# SOC_PCIE_TX_WORD_REG=1 registers the transaction stream's transmit word.
+for knob in SOC_SRAM_MBIST_PIPE SOC_PCIE_RX_STAGED_COMMIT SOC_PCIE_RX_READ_AHEAD SOC_BUS_WDATA_OWN SOC_PCIE_RX_READ2 SOC_BUS_IREQ_REG SOC_PCIE_RESET_COPIES SOC_ETH_FIFO_WRREG SOC_PCIE_REPLAY_INBANK SOC_PCIE_TX_WORD_REG; do
   case "${!knob:-0}" in
     0) ;;
     1) EXEC_DEFS="$EXEC_DEFS -D$knob" ;;

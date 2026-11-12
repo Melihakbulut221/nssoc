@@ -40,6 +40,7 @@ export SOC_BUS_IREQ_REG=${SOC_BUS_IREQ_REG:-0}
 export SOC_PCIE_RESET_COPIES=${SOC_PCIE_RESET_COPIES:-0}
 export SOC_ETH_FIFO_WRREG=${SOC_ETH_FIFO_WRREG:-0}
 export SOC_PCIE_REPLAY_INBANK=${SOC_PCIE_REPLAY_INBANK:-0}
+export SOC_PCIE_TX_WORD_REG=${SOC_PCIE_TX_WORD_REG:-0}
 # Register-file and memory knobs (same document). One variable each, set
 # for both the RTL run (SOC_*) and the synthesis (IBEX_RF_*) below.
 NATIVE_RF_CHKDEFER=${NATIVE_RF_CHKDEFER:-0}
@@ -79,6 +80,7 @@ Path(sys.argv[1]).write_text(json.dumps({
     'PCIE_RESET_COPIES': int(os.environ['SOC_PCIE_RESET_COPIES']),
     'ETH_FIFO_WRREG': int(os.environ['SOC_ETH_FIFO_WRREG']),
     'PCIE_REPLAY_INBANK': int(os.environ['SOC_PCIE_REPLAY_INBANK']),
+    'PCIE_TX_WORD_REG': int(os.environ['SOC_PCIE_TX_WORD_REG']),
     'RF_CHKDEFER': int(os.environ['SOC_RF_CHKDEFER']),
     'RF_PREDECODE': int(os.environ['SOC_RF_PREDECODE']),
     'MEM_RDREG': int(os.environ['NATIVE_MEM_RDREG']),
