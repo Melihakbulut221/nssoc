@@ -210,7 +210,18 @@ module soc_pcie_replay_tx #(
         for(replay_bit=0;replay_bit<8;replay_bit=replay_bit+1) begin: read_bit
             wire [READ_CHOICES-1:0] selected;
             for(replay_offset=0;replay_offset<READ_CHOICES;replay_offset=replay_offset+1) begin: read_byte
+`ifdef SOC_PCIE_REPLAY_INBANK
+                // docs/combined-timing.md section 16: only the bank's own
+                // MAX_BYTES bytes. A byte is taken mid-frame only below the
+                // frame's last position (send_last = length-1 <= MAX_BYTES-1,
+                // the capture bound), so the next position is inside the
+                // bank whenever the bank being sent loads it; the other
+                // banks' registers are reloaded with byte 0 before any send
+                // starts. Every byte that leaves is the default build's.
+                if(replay_offset<MAX_BYTES) begin: present
+`else
                 if(replay_bank*MAX_BYTES+replay_offset<DEPTH*MAX_BYTES) begin: present
+`endif
                     assign selected[replay_offset]=replay_next_onehot[replay_offset] & bytes[replay_bank*MAX_BYTES+replay_offset][replay_bit];
                 end else begin: absent
                     assign selected[replay_offset]=1'b0;
