@@ -182,6 +182,9 @@ jobs:
           # request register and the PCIe reset/link copies (no read-ahead, no
           # staged commit, no write-data register).
           - {name: ex_exec_pmpreg_cut5, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxread2: '1', ireqreg: '1', rstcopy: '1'}
+          # Section 15: plus the Ethernet FIFO SRAM wrapper's registered write port
+          # (and the two-stage read's lane-register copies, inside SOC_PCIE_RX_READ2).
+          - {name: ex_exec_pmpreg_cut6, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1'}
     env:
       RUN: ${{ inputs.variant == '' || contains(format(' {0} ', inputs.variant), format(' {0} ', matrix.name)) }}
       SOC_ETH_FIFO_RDREG: ${{ matrix.ethrd || '0' }}
@@ -193,6 +196,7 @@ jobs:
       SOC_PCIE_RX_READ2: ${{ matrix.rxread2 || '0' }}
       SOC_BUS_IREQ_REG: ${{ matrix.ireqreg || '0' }}
       SOC_PCIE_RESET_COPIES: ${{ matrix.rstcopy || '0' }}
+      SOC_ETH_FIFO_WRREG: ${{ matrix.ethwr || '0' }}
       SOC_INTERFACE_PROFILE: base
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
       IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
@@ -303,6 +307,7 @@ jobs:
           - {name: ex_exec_pmpreg_cut2, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '1', gate: corrpre-pcie}
           - {name: ex_exec_pmpreg_cut4, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxahead: '1', wdataown: '1', gate: corrpre-pcie}
           - {name: ex_exec_pmpreg_cut5, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxread2: '1', ireqreg: '1', rstcopy: '1', gate: corrpre-pcie}
+          - {name: ex_exec_pmpreg_cut6, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', gate: corrpre-pcie}
           # The system and Ethernet MBIST gate-level boot with every knob of
           # docs/combined-timing.md on the execute stage alone (one-cycle
           # memory reads, the configuration whose MBIST boot fits the job).
@@ -325,6 +330,7 @@ jobs:
       SOC_PCIE_RX_READ2: ${{ matrix.rxread2 || '0' }}
       SOC_BUS_IREQ_REG: ${{ matrix.ireqreg || '0' }}
       SOC_PCIE_RESET_COPIES: ${{ matrix.rstcopy || '0' }}
+      SOC_ETH_FIFO_WRREG: ${{ matrix.ethwr || '0' }}
       SOC_INTERFACE_PROFILE: full
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
       IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
@@ -457,6 +463,11 @@ jobs:
           - {name: r_cut5n_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', rxread2: '1', ireqreg: '1', rstcopy: '1', route: '1'}
           - {name: r_cut5a_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true, "PL_RESIZER_HOLD_SLACK_MARGIN": 0.0, "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.05}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', rxread2: '1', ireqreg: '1', rstcopy: '1', route: '1'}
           - {name: r_cut5b_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true, "PL_RESIZER_HOLD_SLACK_MARGIN": 0.1, "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', rxread2: '1', ireqreg: '1', rstcopy: '1', route: '1'}
+          # Section 15: the r_cut5a margins (PL 0 / GRT 0.05) and no hold margin at
+          # all (PL 0 / GRT 0), with the round-five knobs, the lane-register copies
+          # and the Ethernet FIFO SRAM wrapper's registered write port.
+          - {name: r_cut6a_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true, "PL_RESIZER_HOLD_SLACK_MARGIN": 0.0, "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.05}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', route: '1'}
+          - {name: r_cut6z_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true, "PL_RESIZER_HOLD_SLACK_MARGIN": 0.0, "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', route: '1'}
           # timing/pcie-pipeline's probe (its default probe_matrix): upstream
           # register file, no Ibex knobs, the PCIe path trace. pcie_rtl_ref
           # (optional) takes hw/soc/rtl/pcie from another ref instead.
@@ -487,6 +498,7 @@ jobs:
       SOC_PCIE_RX_READ2: ${{ matrix.rxread2 || '0' }}
       SOC_BUS_IREQ_REG: ${{ matrix.ireqreg || '0' }}
       SOC_PCIE_RESET_COPIES: ${{ matrix.rstcopy || '0' }}
+      SOC_ETH_FIFO_WRREG: ${{ matrix.ethwr || '0' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) }}
@@ -722,7 +734,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68, r_cut3h_td_d68, r_cut4h_td_d68, r_cut3m_td_d68, r_cut4m_td_d68, r_cut5n_td_d68, r_cut5a_td_d68, r_cut5b_td_d68]
+        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68, r_cut3h_td_d68, r_cut4h_td_d68, r_cut3m_td_d68, r_cut4m_td_d68, r_cut5n_td_d68, r_cut5a_td_d68, r_cut5b_td_d68, r_cut6a_td_d68, r_cut6z_td_d68]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -927,7 +939,7 @@ jobs:
       fail-fast: false
       matrix:
         # r_cut4h_td_d68 and r_cut3hh_td_d68 are the route-hold job's databases.
-        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68, r_cut3h_td_d68, r_cut4h_td_d68, r_cut3hh_td_d68, r_cut3m_td_d68, r_cut4m_td_d68, r_cut5n_td_d68, r_cut5a_td_d68, r_cut5b_td_d68]
+        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68, r_cut3h_td_d68, r_cut4h_td_d68, r_cut3hh_td_d68, r_cut3m_td_d68, r_cut4m_td_d68, r_cut5n_td_d68, r_cut5a_td_d68, r_cut5b_td_d68, r_cut6a_td_d68, r_cut6z_td_d68]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -1377,7 +1389,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        part: [busstat, eth-rtl, eth-mbist, eth-gl-0, eth-gl-1, joint, joint-cut4, joint-cut5, soc-mbist]
+        part: [busstat, eth-rtl, eth-mbist, eth-gl-0, eth-gl-1, eth-gl-w, joint, joint-cut4, joint-cut5, joint-cut6, soc-mbist]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -1456,7 +1468,7 @@ jobs:
           M=$PWD/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog
           D=$PWD/hw/soc/rtl/dft
           SRAM="$D/soc_eth_fifo_sram.v $D/soc_sram_mbist.v $D/soc_sram_zero_check.v $M/RM_IHPSG13_2P_256x16_c2_bm_bist.v $M/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v $M/RM_IHPSG13_2P_core_behavioral_ideal.v"
-          for cfg in "mem_off||" "mem_rdreg||-DSOC_ETH_FIFO_RDREG" "sram_off|$SRAM|-DSOC_ETH_MBIST -DFUNCTIONAL" "sram_rdreg|$SRAM|-DSOC_ETH_MBIST -DFUNCTIONAL -DSOC_ETH_FIFO_RDREG"; do
+          for cfg in "mem_off||" "mem_rdreg||-DSOC_ETH_FIFO_RDREG" "sram_off|$SRAM|-DSOC_ETH_MBIST -DFUNCTIONAL" "sram_rdreg|$SRAM|-DSOC_ETH_MBIST -DFUNCTIONAL -DSOC_ETH_FIFO_RDREG" "sram_wrreg|$SRAM|-DSOC_ETH_MBIST -DFUNCTIONAL -DSOC_ETH_FIFO_RDREG -DSOC_ETH_FIFO_WRREG"; do
             IFS='|' read -r n src args <<< "$cfg"
             start=$(date +%s)
             ( cd hw/soc/tb/cocotb && timeout 9000 env -u PYTHONHOME -u PYTHONEXECUTABLE PATH="$GITHUB_WORKSPACE/hw/.venv/bin:$PATH" make -f Makefile.soc_eth ICARUS_BIN_DIR=$ICARUS_RT PYTHON_BIN=$GITHUB_WORKSPACE/hw/.venv/bin/python3 SIM_BUILD=/tmp/sb_eth_$n COCOTB_RESULTS_FILE=$O/eth_$n.xml ETH_EXTRA_SOURCES="$src" EXTRA_COMPILE_ARGS="$args" > $O/eth_$n.log 2>&1 ) || fail=1
@@ -1469,8 +1481,9 @@ jobs:
           mkdir -p out
           set -uo pipefail
           fail=0
-          for n in off rdreg; do
+          for n in off rdreg wrreg; do
             X=; [ $n = rdreg ] && X=--fifo-rdreg
+            [ $n = wrreg ] && X="--fifo-rdreg --fifo-wrreg"
             python3 scripts/check_eth_mbist.py --pdk hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2 --tools "$OSS_CAD_SUITE/bin" --output hw/soc/out/eth-mbist-$n $X > out/eth-mbist-$n.log 2>&1 || fail=1
             tail -1 out/eth-mbist-$n.log; cp hw/soc/out/eth-mbist-$n/result.json out/eth-mbist-$n.json 2>/dev/null || true
           done
@@ -1485,7 +1498,9 @@ jobs:
           P=${{ matrix.part }}
           for n in ${P#eth-gl-}; do
             start=$(date +%s)
-            SOC_ETH_MBIST=1 SOC_ETH_FIFO_RDREG=$n timeout 19000 env -u PYTHONHOME -u PYTHONEXECUTABLE bash hw/soc/flow/test_eth_sram.sh hw/soc/out/eth-sram-gl-$n > out/eth-sram-gl-$n.log 2>&1 || { fail=1; tail -30 out/eth-sram-gl-$n.log; tail -40 hw/soc/out/eth-sram-gl-$n/test.log 2>/dev/null; }
+            # eth-gl-w: the registered read ports and the registered write port.
+            RD=$n; WR=0; [ $n = w ] && { RD=1; WR=1; }
+            SOC_ETH_MBIST=1 SOC_ETH_FIFO_RDREG=$RD SOC_ETH_FIFO_WRREG=$WR timeout 19000 env -u PYTHONHOME -u PYTHONEXECUTABLE bash hw/soc/flow/test_eth_sram.sh hw/soc/out/eth-sram-gl-$n > out/eth-sram-gl-$n.log 2>&1 || { fail=1; tail -30 out/eth-sram-gl-$n.log; tail -40 hw/soc/out/eth-sram-gl-$n/test.log 2>/dev/null; }
             tail -1 out/eth-sram-gl-$n.log; echo "  in $(( $(date +%s) - start )) s"
             grep -E "RM_IHPSG13_2P|Number of cells|Chip area|sg13g2_df" hw/soc/out/eth-sram-gl-$n/synth.log | tail -6 || true
             cp hw/soc/out/eth-sram-gl-$n/evidence.json out/eth-sram-gl-$n.json 2>/dev/null || true
@@ -1493,7 +1508,7 @@ jobs:
           done
           exit $fail
       - name: Joint PCIe and Ethernet SoC traffic with both knobs (actual Ibex; inferred and vendor-SRAM FIFOs)
-        if: matrix.part == 'joint' || matrix.part == 'joint-cut4' || matrix.part == 'joint-cut5'
+        if: matrix.part == 'joint' || matrix.part == 'joint-cut4' || matrix.part == 'joint-cut5' || matrix.part == 'joint-cut6'
         run: |
           mkdir -p out
           set -uo pipefail
@@ -1510,6 +1525,10 @@ jobs:
           # register and the PCIe reset/link copies.
           K5="$K --define SOC_SRAM_MBIST_PIPE --define SOC_PCIE_RX_READ2 --define SOC_BUS_IREQ_REG --define SOC_PCIE_RESET_COPIES"
           [ "${{ matrix.part }}" = joint-cut5 ] && CFGS=("cut5-async|--async-pcie $K5" "cut5-sync|$K5" "sram-cut5-async|--async-pcie --eth-mbist-pdk $P $K5")
+          # Section 15: plus the FIFO SRAM wrapper's registered write port (it acts
+          # with the vendor SRAM FIFOs, so both packet-clock settings use them).
+          K6="$K5 --define SOC_ETH_FIFO_WRREG"
+          [ "${{ matrix.part }}" = joint-cut6 ] && CFGS=("sram-cut6-async|--async-pcie --eth-mbist-pdk $P $K6" "sram-cut6-sync|--eth-mbist-pdk $P $K6" "cut6-async|--async-pcie $K6")
           for cfg in "${CFGS[@]}"; do
             IFS='|' read -r n args <<< "$cfg"
             start=$(date +%s)
@@ -1528,7 +1547,7 @@ jobs:
           for a in 1 2 3 4; do make soc-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python" > /tmp/soc-prep.log 2>&1 && break; tail -30 /tmp/soc-prep.log; [ $a = 4 ] && exit 1; sleep 60; done
           P=hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2
           K="--define SOC_SRAM_MBIST_PIPE --define SOC_ETH_FIFO_RDREG --define SOC_BUSSTAT_EVPEND"
-          for cfg in "off|" "knobs|$K"; do
+          for cfg in "off|" "knobs|$K" "wrreg|$K --define SOC_ETH_FIFO_WRREG"; do
             IFS='|' read -r n args <<< "$cfg"
             start=$(date +%s)
             # shellcheck disable=SC2086
