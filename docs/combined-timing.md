@@ -291,3 +291,24 @@ Under the define the data port's write data has its own register, `r_wdata_d`, l
 - `r_cut3hh_td_d68`: the hold repair alone, from the routed `r_cut3h_td_d68` of run 42987022661.
 - `regress` and `native-boot` entry `ex_exec_pmpreg_cut4` (the `cut2` knobs without the staged commit, plus both new ones).
 - `pcie-unit`: the queue suites with each queue knob, and the co-simulation. `eth-knobs` part `joint-cut4`: joint PCIe/Ethernet traffic with the new knobs, asynchronous and synchronous packet clock, inferred and vendor-SRAM FIFOs.
+
+## 13. Routed results, rounds 3 and 4 (extracted RCX, three-corner STA, density 68%)
+
+All variants route with 0 detailed-routing markers and 0 antenna violations. Setup slack is listed as slow / typical / fast, in ns:
+
+| Variant | pcie_clk_i setup | clk_i setup (slow) | asynchronous setup (slow) | Ethernet (slow) | Hold |
+|---|---|---|---|---|---|
+| r_cut3n (receive staged commit off) | -1.87 / +0.26 / +1.33 | -0.63 | -0.44 | met | fast -0.02 (1 endpoint) |
+| r_cut3h (as r_cut3n, pre-route hold margins 0 / 0) | -1.37 / +0.58 / +1.33 | -0.61 | -0.20 | met | slow -0.012, typ -0.003, fast -0.07 (92) |
+| r_cut3m (as r_cut3n, margins 0.05 / 0.03) | -1.97 / +0.20 / +1.37 | -0.66 | -0.40 | met | fast -0.04 (12) |
+| r_cut4m (r_cut3m plus `SOC_PCIE_RX_READ_AHEAD`, `SOC_BUS_WDATA_OWN`) | -2.83 / -0.35 / +1.09 | -0.82 | -0.60 | eth_rx -1.91 | fast -0.15 (23) |
+
+Runs: 42987022661 (routes), 43052000192 (extraction of those routes), 43119350543 (r_cut3m and r_cut4m).
+
+- **Staged receive commit and receive read-ahead** both make `pcie_clk_i` worse. The read-ahead's handshake fanout tree becomes the new worst path (`read_bank[2].ahead_bytes`). Both knobs stay off.
+- **Pre-route hold margins.** Zero margins buy about 0.5 ns of `pcie_clk_i` setup, at the cost of small post-route hold violations. The intermediate margins keep neither the setup gain nor clean hold. Run-to-run placement noise is about ±0.5 ns at this level.
+- **Post-route hold repair on the routed database** (`route-hold`, `post_route_hold.tcl`) inserts 371 hold buffers without moving any original instance, and estimated hold then has 0 violators. The following incremental detailed routing still fails with DRT-1010, "unsupported non-orthogonal wire". It fails on nets the repair did not touch as well, so re-routing a re-read routed database is not usable in this tool chain yet.
+- **Remaining slow-corner limits:**
+  - `pcie_clk_i`: the 96-entry receive-queue read multiplexer `receive_ownership.packets[] -> bank_byte[]`.
+  - `clk_i`: CSR address decode into fetch and bus address (`csr_addr -> stored_addr_q` / `s_addr`).
+  - asynchronous: the link-up reset into the replay state.
