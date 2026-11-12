@@ -297,17 +297,34 @@ module soc_pcie_rx_credit #(
     // registers' multiplexer, as before. Cost: SLOTS*R2_GROUPS*16 stage-1
     // flip-flops (288 at the SoC's 8 DW and 2 slots per class) and
     // R2_LANES+R2_GROUPS*3+1 cursor and pick flip-flops.
+    // Section 15: the lane register r2_lane drove every stage-1 AND gate
+    // (about 340 per bit) and was placement-fragile. Each stage-1 group,
+    // of every bank and of the staged selection, now has its own copy of
+    // it (soc_pcie_rx_lane_copy, (SLOTS+1)*R2_GROUPS copies), loaded every
+    // cycle with r2_lane's next value r2_lane_d, so each copy bit drives 16
+    // gates. A copy equals r2_lane in every cycle except between an
+    // asynchronous reset assertion and the next clock edge, while the
+    // queue is held in reset (r2_lane_d is 1 throughout a reset). The
+    // master register stays for the group and pick logic.
     localparam integer R2_GROUPS=3;
     localparam integer R2_LANES=(CAP+R2_GROUPS-1)/R2_GROUPS;
     reg [R2_LANES-1:0] r2_lane;
     reg [R2_GROUPS-1:0] r2_group,r2_pick_near,r2_pick_far;
     reg r2_pick_first;
-    // One-hot lanes of c+1 and c+2, and the groups of c+1 and c+2.
+    // The one-hot lane of c+1 (the copies rotate their own value for the
+    // lanes of c+1 and c+2), and the groups of c+1 and c+2.
     wire [R2_LANES-1:0] r2_lane_near={r2_lane[R2_LANES-2:0],r2_lane[R2_LANES-1]};
-    wire [R2_LANES-1:0] r2_lane_far={r2_lane[R2_LANES-3:0],r2_lane[R2_LANES-1:R2_LANES-2]};
     wire [R2_GROUPS-1:0] r2_group_next={r2_group[R2_GROUPS-2:0],r2_group[R2_GROUPS-1]};
     wire [R2_GROUPS-1:0] r2_group_near=r2_lane[R2_LANES-1] ? r2_group_next : r2_group;
     wire [R2_GROUPS-1:0] r2_group_far=(r2_lane[R2_LANES-1] | r2_lane[R2_LANES-2]) ? r2_group_next : r2_group;
+    // r2_lane's next value (the always block below), for the copies.
+    wire [R2_LANES-1:0] r2_lane_d=(!link_up_i || (handshake && out_eop_o)) ? {{(R2_LANES-1){1'b0}},1'b1} :
+        handshake ? r2_lane_near : r2_lane;
+`ifndef SYNTHESIS
+    // Simulation only: one bit per copy, set while it differs from r2_lane
+    // (the co-simulation checks that this is zero whenever rst_ni is high).
+    wire [(SLOTS+1)*R2_GROUPS-1:0] r2_copy_differs;
+`endif
 `ifdef SOC_PCIE_RESET_COPIES
     wire r2_rst_n=rst_copy_ni;
 `else
@@ -336,13 +353,20 @@ module soc_pcie_rx_credit #(
     wire [8*R2_GROUPS-1:0] r2_staged_near,r2_staged_far;
     genvar r2_index,r2_bit,r2_offset;
     generate for(r2_index=0;r2_index<R2_GROUPS;r2_index=r2_index+1) begin: r2_staged_group
+        wire [R2_LANES-1:0] lane_q;
+        soc_pcie_rx_lane_copy #(.W(R2_LANES)) lane_copy(.clk_i(clk_i),.d_i(r2_lane_d),.q_o(lane_q));
+        wire [R2_LANES-1:0] lane_near={lane_q[R2_LANES-2:0],lane_q[R2_LANES-1]};
+        wire [R2_LANES-1:0] lane_far={lane_q[R2_LANES-3:0],lane_q[R2_LANES-1:R2_LANES-2]};
+`ifndef SYNTHESIS
+        assign r2_copy_differs[SLOTS*R2_GROUPS+r2_index]=lane_q!==r2_lane;
+`endif
         for(r2_bit=0;r2_bit<8;r2_bit=r2_bit+1) begin: r2_staged_bit
             wire [R2_LANES-1:0] near_pick,far_pick;
             for(r2_offset=0;r2_offset<R2_LANES;r2_offset=r2_offset+1) begin: r2_staged_lane
                 if(r2_index*R2_LANES+r2_offset<CAP) begin: present
-                    assign near_pick[r2_offset]=r2_lane_near[r2_offset] &
+                    assign near_pick[r2_offset]=lane_near[r2_offset] &
                         staging[r2_index*R2_LANES+r2_offset][r2_bit];
-                    assign far_pick[r2_offset]=r2_lane_far[r2_offset] &
+                    assign far_pick[r2_offset]=lane_far[r2_offset] &
                         staging[r2_index*R2_LANES+r2_offset][r2_bit];
                 end else begin: absent
                     assign near_pick[r2_offset]=1'b0;
@@ -365,13 +389,21 @@ module soc_pcie_rx_credit #(
         for(read_offset=0;read_offset<R2_GROUPS;read_offset=read_offset+1) begin: r2_slot
             wire [7:0] near_d,far_d;
             reg [7:0] near_q,far_q;
+            // This group's own copy of the lane register (section 15).
+            wire [R2_LANES-1:0] lane_q;
+            soc_pcie_rx_lane_copy #(.W(R2_LANES)) lane_copy(.clk_i(clk_i),.d_i(r2_lane_d),.q_o(lane_q));
+            wire [R2_LANES-1:0] lane_near={lane_q[R2_LANES-2:0],lane_q[R2_LANES-1]};
+            wire [R2_LANES-1:0] lane_far={lane_q[R2_LANES-3:0],lane_q[R2_LANES-1:R2_LANES-2]};
+`ifndef SYNTHESIS
+            assign r2_copy_differs[bank*R2_GROUPS+read_offset]=lane_q!==r2_lane;
+`endif
             for(read_bit=0;read_bit<8;read_bit=read_bit+1) begin: r2_bit_lane
                 wire [R2_LANES-1:0] near_pick,far_pick;
                 for(r2_offset=0;r2_offset<R2_LANES;r2_offset=r2_offset+1) begin: r2_byte
                     if(read_offset*R2_LANES+r2_offset<CAP) begin: present
-                        assign near_pick[r2_offset]=r2_lane_near[r2_offset] &
+                        assign near_pick[r2_offset]=lane_near[r2_offset] &
                             packets[bank*CAP+read_offset*R2_LANES+r2_offset][read_bit];
-                        assign far_pick[r2_offset]=r2_lane_far[r2_offset] &
+                        assign far_pick[r2_offset]=lane_far[r2_offset] &
                             packets[bank*CAP+read_offset*R2_LANES+r2_offset][read_bit];
                     end else begin: absent
                         assign near_pick[r2_offset]=1'b0;
@@ -707,4 +739,21 @@ module soc_pcie_rx_credit #(
     end
 `endif
 endmodule
+`ifdef SOC_PCIE_RX_READ2
+// docs/combined-timing.md section 15: one copy of the two-stage read's lane
+// register, loaded every cycle. keep_hierarchy keeps the identical copies
+// apart through synthesis (opt_merge does not merge instances of a user
+// module, as for soc_tmr_bank); the flow's final flatten, after mapping,
+// removes the boundary. No reset: the D input is 1 throughout a reset.
+(* keep_hierarchy *)
+module soc_pcie_rx_lane_copy #(
+    parameter integer W=8
+)(
+    input wire clk_i,
+    input wire [W-1:0] d_i,
+    output reg [W-1:0] q_o
+);
+    always @(posedge clk_i) q_o<=d_i;
+endmodule
+`endif
 `default_nettype wire

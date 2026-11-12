@@ -20,6 +20,7 @@ module tb_pcie_rx_credit_read_ahead;
     parameter integer MAX_TLP_DWORDS=8,SLOTS_PER_CLASS=2,COMPLETER_ONLY=1;
     localparam integer CAP=MAX_TLP_DWORDS*4+6;
     integer seed,cycles,cycle,mismatches,beats,frames,commits,commit_mid,commit_shake,max_index;
+    integer copy_mismatches;
     reg clk=1'b0;
     always #2 clk=!clk;
     reg rst_ni=1'b0,link_up_i=1'b0,training_i=1'b0,initialized_i=1'b0;
@@ -126,11 +127,12 @@ module tb_pcie_rx_credit_read_ahead;
         if(!$value$plusargs("cycles=%d",cycles)) cycles=300000;
         seed0=seed;
         mismatches=0;beats=0;frames=0;commits=0;commit_mid=0;commit_shake=0;max_index=0;
+        copy_mismatches=0;
         frame_length=0;frame_position=0;stall=0;link_timer=200;idle=0;
         for(cycle=0;cycle<cycles;cycle=cycle+1) @(posedge clk);
-        $display("SUMMARY seed=%0d cycles=%0d beats=%0d frames=%0d commits=%0d commits_mid_frame=%0d commits_with_handshake=%0d max_index=%0d mismatches=%0d",
-            seed0,cycles,beats,frames,commits,commit_mid,commit_shake,max_index,mismatches);
-        if(mismatches==0 && max_index<CAP && frames>1000 && commit_mid>100) $display("RESULT PASS");
+        $display("SUMMARY seed=%0d cycles=%0d beats=%0d frames=%0d commits=%0d commits_mid_frame=%0d commits_with_handshake=%0d max_index=%0d mismatches=%0d copy_mismatches=%0d",
+            seed0,cycles,beats,frames,commits,commit_mid,commit_shake,max_index,mismatches,copy_mismatches);
+        if(mismatches==0 && copy_mismatches==0 && max_index<CAP && frames>1000 && commit_mid>100) $display("RESULT PASS");
         else $display("RESULT FAIL");
         $finish;
     end
@@ -200,6 +202,15 @@ module tb_pcie_rx_credit_read_ahead;
         end
     end
 
+`ifdef COSIM_READ2
+    // SOC_PCIE_RX_READ2: every copy of the lane register equals the master
+    // whenever the queue is out of reset (docs/combined-timing.md section 15).
+    always @(negedge clk) if(rst_ni && (|candidate.r2_copy_differs)) begin
+        copy_mismatches=copy_mismatches+1;
+        if(copy_mismatches<=10)
+            $display("COPY MISMATCH t=%0t differs=%b lane=%b",$time,candidate.r2_copy_differs,candidate.r2_lane);
+    end
+`endif
     always @(negedge clk) begin
         if(r_ready!==c_ready || r_valid!==c_valid || r_sop!==c_sop || r_eop!==c_eop ||
            r_dllp!==c_dllp || (r_valid && (r_data!==c_data || r_err!==c_err)) ||
