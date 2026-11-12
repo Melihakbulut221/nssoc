@@ -76,6 +76,11 @@ module tb_eth_fifo_mbist;
                 $fatal(1,"Coverage fail a=%0d b=%0d xa=%0d xb=%0d",counta,countb,xa,xb);
             repeat(5) @(negedge wc);
             wrst=0; rrst=0;
+`ifdef SOC_ETH_FIFO_WRREG
+            // Port B's owner select is registered (docs/combined-timing.md
+            // section 16): the first functional read is one read edge later.
+            @(posedge rc);
+`endif
             for(i=0;i<2048;i=i+1) begin
                 @(negedge rc); ren=1; ra=11'(i);
                 @(posedge rc); `RDWAIT #1; if(rd!==0) $fatal(1,"Nonzero initial row %0d",i);

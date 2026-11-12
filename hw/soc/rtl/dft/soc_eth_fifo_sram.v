@@ -126,12 +126,25 @@ module soc_eth_fifo_sram (
         wq_data <= wdata_i;
     end
     wire wq_val = |wq_men;
+    // Section 16: port B's owner (FIFO or self-test) is selected by a
+    // register one read-clock edge behind b_functional, so the release and
+    // functional-reset logic no longer drives port B's address multiplexer
+    // and enables. b_functional rises once, two read-clock edges after the
+    // self-test's completion reaches the read domain; the FIFO's first
+    // committed word is written at least one write-clock edge after
+    // release and read at least three read-clock edges after its commit,
+    // so no functional read of data is lost to the edge of delay. The
+    // FIFO's read pointers are reset with rreset_i; a read in the edge after
+    // it reads, and changes, nothing.
+    reg b_func_q;
+    always @(posedge rclk_i or negedge por_ni)
+        if (!por_ni) b_func_q <= 1'b0; else b_func_q <= b_functional;
     wire am = areq || axreq || wq_val;
-    wire bm = breq || bxreq || (b_functional && ren_i);
+    wire bm = breq || bxreq || (b_func_q && ren_i);
     wire aw = awe || wq_val;
     wire bw = bwe;
     wire [10:0] addr_a = adone ? axa : aa;
-    wire [10:0] addr_b = b_functional ? raddr_i : (bxdone ? ba : bxa);
+    wire [10:0] addr_b = b_func_q ? raddr_i : (bxdone ? ba : bxa);
     wire [15:0] data_a = wq_val ? wq_data : awd;
 `else
     wire am = areq || axreq || (a_functional && wen_i);
@@ -163,7 +176,11 @@ module soc_eth_fifo_sram (
     // The bank select of the registered word is kept one-hot, so the
     // output is an AND-OR of eight registers with registered selects.
     reg [7:0] sel_a_oh_q, sel_b_oh_q;
+`ifdef SOC_ETH_FIFO_WRREG
+    wire b_load = !b_func_q || rnext_i;
+`else
     wire b_load = !b_functional || rnext_i;
+`endif
     always @(posedge wclk_i or negedge por_ni)
         if (!por_ni) sel_a_oh_q<=8'd1; else sel_a_oh_q<=8'd1<<sel_a;
     always @(posedge rclk_i or negedge por_ni)
