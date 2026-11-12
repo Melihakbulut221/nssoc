@@ -48,16 +48,24 @@ module soc_pcie_tlp_stream #(
     reg [31:0] tx_payload_data;
 
     assign rx_ready_o = rst_ni && state!=SUBMIT;
-    assign tx_valid_o = rst_ni && tx_busy;
 `ifdef SOC_PCIE_TX_WORD_REG
     // docs/combined-timing.md section 17 (default off): the transmitted
     // word and its SOP/EOP markers come from registers (block below)
-    // instead of the tx_index multiplexer and compares.
+    // instead of the tx_index multiplexer and compares, and tx_valid_o
+    // from a copy of tx_busy that drives only the transmit interface
+    // (loaded with tx_busy's next value, cleared by the same reset, so it
+    // equals tx_busy in every cycle; keep_hierarchy keeps it apart).
     reg [31:0] tx_word_q;
     reg tx_sop_q, tx_eop_q;
+    wire tx_busy_copy;
+    wire tx_busy_d = (!tx_busy && completion_valid) ? 1'b1 :
+                     (tx_busy && tx_ready_i && tx_eop_o) ? 1'b0 : tx_busy;
+    soc_pcie_tlp_stream_flag_copy busy_copy (.clk_i(clk_i), .rst_ni(rst_ni), .d_i(tx_busy_d), .q_o(tx_busy_copy));
+    assign tx_valid_o = rst_ni && tx_busy_copy;
     assign tx_sop_o = tx_sop_q;
     assign tx_eop_o = tx_eop_q;
 `else
+    assign tx_valid_o = rst_ni && tx_busy;
     assign tx_sop_o = tx_busy && tx_index==0;
     assign tx_eop_o = tx_busy && tx_index==(tx_payload ? 3 : 2);
 `endif
@@ -179,4 +187,17 @@ module soc_pcie_tlp_stream #(
         end
     end
 endmodule
+`ifdef SOC_PCIE_TX_WORD_REG
+// Section 17: a copy of one control flag, kept apart from its master by
+// keep_hierarchy (opt_merge does not merge instances of a user module);
+// the SoC flow's final flatten removes the boundary after mapping.
+(* keep_hierarchy *)
+module soc_pcie_tlp_stream_flag_copy (
+    input wire clk_i, rst_ni, d_i,
+    output reg q_o
+);
+    always @(posedge clk_i or negedge rst_ni)
+        if (!rst_ni) q_o <= 1'b0; else q_o <= d_i;
+endmodule
+`endif
 `default_nettype wire
