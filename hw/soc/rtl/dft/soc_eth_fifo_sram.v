@@ -106,17 +106,15 @@ module soc_eth_fifo_sram (
     // A only before release (done_o) and never again until power-on reset,
     // which also clears the enables, so its accesses are unchanged and are
     // never mixed with a registered write.
-    // A word is read only after its frame is committed. The frame FIFO
-    // publishes the commit in the cycle of the frame's last write, through
-    // a toggle and three read-clock flip-flops, and reads a committed word
-    // at the read-clock edge after that, at least three read-clock periods
-    // later: 24 ns at 125 MHz (transmit FIFO, written at 50 MHz, one write
-    // period 20 ns) and 60 ns at 50 MHz (receive FIFO, written at 125 MHz,
-    // 8 ns). So every read still follows the write of its word. This needs
-    // three read-clock periods to exceed one write-clock period. A write
-    // in the last functional cycle before a functional reset lands one
-    // edge into the reset; the FIFO's pointers are reset and the word is
-    // not read.
+    // A word is read only after its frame is committed. With this define
+    // the adapted frame FIFO (hw/soc/flow/adapt_eth_mbist.py) publishes the
+    // commit to the read domain one write-clock edge later too: the read
+    // side samples a registered copy of the commit toggle, which changes at
+    // the edge that writes the frame's last word here. The read domain then
+    // sees a commit only after the data under it is written, at any clock
+    // ratio. A write in the last functional cycle before a functional
+    // reset lands one edge into the reset; the FIFO's pointers are reset
+    // and the word is not read.
     reg [7:0] wq_men;
     reg [7:0] wq_row;
     reg [15:0] wq_data;

@@ -87,6 +87,34 @@ end
         assignment = 'm_axis_pipe_reg[0] <= mem[rd_ptr_reg[ADDR_WIDTH-1:0]];'
         text = replace(text, assignment, '`ifndef SOC_ETH_MBIST\n'+assignment+'\n`endif')
     if name == 'axis_async_fifo.v':
+        # SOC_ETH_FIFO_WRREG (docs/combined-timing.md section 16): the SRAM
+        # wrapper writes a word one write-clock edge after the pinned loop's
+        # write, so the frame commit is published to the read side one edge
+        # later as well: the read domain samples a registered copy of the
+        # commit toggle, which changes at the edge that writes the frame's
+        # last word. The read domain can then never see a commit before the
+        # data under it is written, at any clock ratio. The toggle itself and
+        # the write side's handshake check are unchanged; the acknowledge
+        # returns one write-clock cycle later.
+        text = replace(text, '\n// pointer synchronization\n', '''
+`ifdef SOC_ETH_MBIST
+`ifdef SOC_ETH_FIFO_WRREG
+reg mbist_update_published = 1'b0;
+always @(posedge s_clk) begin
+    mbist_update_published <= wr_ptr_update_reg;
+    if (s_rst) begin
+        mbist_update_published <= 1'b0;
+    end
+end
+`endif
+`endif
+
+// pointer synchronization
+''')
+        assignment = '    wr_ptr_update_sync1_reg <= wr_ptr_update_reg;\n'
+        text = replace(text, assignment, '`ifdef SOC_ETH_MBIST\n`ifdef SOC_ETH_FIFO_WRREG\n'
+                       '    wr_ptr_update_sync1_reg <= mbist_update_published;\n`else\n'+assignment+
+                       '`endif\n`else\n'+assignment+'`endif\n')
         # Icarus with default_nettype none requires declarations before use.
         start = text.index('// Same write predicate')
         end = text.index('`else\nreg [WIDTH-1:0] m_axis_pipe_reg', start)
