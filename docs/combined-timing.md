@@ -418,3 +418,43 @@ Section 15.2's argument needed three read-clock periods to exceed one write-cloc
 ### 16.5 Runs
 
 `DRT_OPT_ITERS` default 16 (from 15), so the routed probes end at 0 DRC markers. Probes `r_cut7z_td_d68` (PL 0 / GRT 0) and `r_cut7a_td_d68` (PL 0 / GRT 0.02) with every knob of sections 14 to 16, with route and routed-sta. Functional entries: `regress`/`native-boot` `ex_exec_pmpreg_cut7`; `pcie-unit` (`inbank`, and `cut7` = `SOC_PCIE_RX_READ2` + `SOC_PCIE_RESET_COPIES` + `SOC_PCIE_REPLAY_INBANK` on all five suites; the READ2 co-simulations check the lane and pick copies); `eth-knobs` `eth-rtl` `sram_wrreg`, `eth-mbist` `wrreg`, `eth-gl-w`, `soc-mbist` `wrreg` (all now with the commit publication and the port-B select) and `joint-cut7`.
+
+## 17. Eighth round: the SRAM macro pins, the transmit word, placement sensitivity
+
+Run 43275092312 (all functional jobs pass; routed, extracted, d68, DRC 0). Slow-corner setup in ns:
+
+| Probe | `pcie_clk_i` | `eth_rx_clk_i` | `clk_i` | asynchronous | `eth_tx_clk_i` | fast hold |
+|---|---:|---:|---:|---:|---:|---|
+| `r_cut7z_td_d68` (PL 0 / GRT 0) | -1.48 | -1.12 | -0.44 | -0.37 | +1.09 | about -0.18 (89 endpoints) |
+| `r_cut7a_td_d68` (PL 0 / GRT 0.02) | -1.53 | -1.14 | -0.09 | -0.40 | +1.08 | |
+
+Typical setup is met everywhere. Against `r_cut6z` (pcie -0.89, eth_rx +0.97, eth_tx -0.44, clk_i -0.17) the groups move by up to 2 ns between rounds with small netlist changes, so the d66 probe below measures placement sensitivity directly.
+
+### 17.1 The SRAM macro pins
+
+Liberty of `RM_IHPSG13_2P_256x16` (slow / typ / fast; range over the tables): address setup -1.27..-0.20 / -0.82..+0.06 / -0.54..+0.12 ns and hold +0.17..+1.38 / +0.04..+0.93 / -0.01..+0.64 ns; `A_MEN`/`A_WEN` setup up to +0.97 / +0.69 / +0.51 and hold up to +0.94 / +0.68 / +0.49; data hold +0.23..+0.98 (slow); `A_DOUT` clock to output 4.97-5.39 / 2.92-3.18 / 1.82-1.98 ns. `RM_IHPSG13_1P_2048x64`: the same control arcs, data hold +0.41..+1.21 (slow), clock to output 8.88-9.29 / 5.33-5.60 / 3.29-3.45 ns. The hold requirement grows with the clock pin's transition (the tables' first index) and the setup requirement falls by the same amount: a slower `A_CLK` edge shifts the window later.
+
+What the routed reports show for every path into or out of a FIFO macro (`r_cut7z`):
+
+- **Clock skew is small.** CTS builds the macro sinks as their own tree (`clknet_*_eth_rx_clk_i`, three `delaybuf` cells in front) and balances it against the register tree (`eth_rx_clk_i_regs`). Slow corner: the launching flop's clock arrives at 1.30 ns, `A_CLK` at 1.20-1.28 ns; fast corner: 0.60-0.64 ns against 0.64-0.72 ns, i.e. the macro clock is up to 0.12 ns later, which costs hold. `A_CLK` has a 0.36 / 0.25 ns (slow / fast) transition (one `buf_8` drives four macros). The 0.25 ns hold uncertainty of the SDC is the largest single term of the fast hold check.
+- **The worst `eth_rx_clk_i` paths are one structure.** All eight failing or near-failing endpoints start at `wq_men[2]` and end at the eight macros' `A_ADDR`: `wq_men[2]` -> two `dlygate4sd3` (1.28 ns, the hold padding of bank 2's `A_MEN`, which `wq_men[2]` drives directly) -> `|wq_men` (`nor4_1`, 1.50 ns, 1.78 ns slew) -> a `buf_1` tree to all eight macros (the banks span 2.04 mm) -> the bank's address multiplexer -> two more `dlygate4sd3` (1.40 ns, the hold padding of `A_ADDR`). Hold padding is 2.68 ns of the 8.94 ns arrival. The macro read paths (`A_DOUT` -> `qa`/`qb`) have no padding and +0.96 ns or more.
+- **CTS settings.** The macro tree is already within 0.1 ns of the register tree, so balancing does not help. Removing the macro tree's delay buffers would move `A_CLK` about 0.49 ns (slow) / 0.23 ns (fast) earlier: every register-to-macro path loses 0.49 ns of setup and gains 0.23 ns of fast hold, worth about one `dlygate4sd3` (0.6-0.8 ns slow) only where padding exists. In LibreLane 3.0.5 the only knob for it, `CTS_DELAY_BUFFER_DERATE_PCT`, is passed as `expr $pct / 100` (integer division, so every value below 100 becomes 0). Not changed.
+- **A placement step for the registers.** With one select register for eight macros 2 mm apart there is no adjacent location. A forced move next to a macro also moves the wire onto the register's D side, which is the FIFO's full/drop logic (the -0.67 ns path of `r_cut5a`, section 15.2). Not added; the RTL change below gives each macro its own register, and the timing-driven placer can put it next to its only load.
+
+`SOC_ETH_FIFO_WRREG` now gives each bank its own select register, `g_wsel[bank].u_copy` (`soc_eth_fifo_wsel_copy`, `keep_hierarchy`), loaded with `a_functional && wen_i`, the condition that makes `wq_men` non-zero, and cleared by `por_ni` like `wq_men`, so it equals `|wq_men` in every cycle. It selects that bank's `A_ADDR` and `A_DIN` multiplexers and drives its `A_WEN`/`A_REN`; `A_MEN` keeps `wq_men[bank]`, so its hold padding is no longer on the select path. A simulation-only check stops the run if a copy differs. Cost: 16 flip-flops (two FIFOs).
+
+### 17.2 `pcie_clk_i`: the transmit word (`SOC_PCIE_TX_WORD_REG=1`, default 0)
+
+The ten worst `r_cut7z` paths (-1.48 to -0.82) start at `transaction_stream.tx_index` and end at `transmit_packet.write_word`: the stream's word multiplexer (an `a221oi_1` driving 0.18 pF across the two blocks, 2.82 ns with a 3.47 ns slew), then the LCRC transmitter's byte-order multiplexer. `r_cut7a`'s worst (-1.53) is `tx_busy` -> `transmit_packet.state` (2.12 ns on a `nand4_1` behind the same boundary). Under the define `soc_pcie_tlp_stream` drives `tx_data_o`, `tx_sop_o` and `tx_eop_o` from registers that load, at a completion load and at each accepted beat that is not the last, what the next `tx_index` selects; the header, payload and payload flag change only at a load, where `tx_index` becomes 0, so the registers equal the default multiplexer and compares in every cycle. `tx_valid_o` comes from a copy of `tx_busy` (`soc_pcie_tlp_stream_flag_copy`, `keep_hierarchy`) loaded with its next value. Ports cycle-identical; 35 flip-flops.
+
+Evidence: `scripts/check_pcie_tlp_stream_word_reg.sh` (bench `hw/soc/tb/tb_pcie_tlp_stream_word_reg.v`): the same source compiled twice (reference renamed, without the define), every output compared in every cycle, four seeds of 300,000 cycles: configuration reads and writes (including BAR0 and the memory enable), 32- and 64-bit memory reads and writes, random kinds, wrong payload counts, oversize, integrity errors, missing starts, abandoned packets, random framing, transmit back-pressure, APB stalls, errors and timeouts, resets. A run passes only with no difference and more than 1,000 completions (300 with and 300 without data), 1,000 stalled cycles, 300 APB accesses and two resets. The `soc_pcie_tlp_stream` and `soc_pcie_packet_endpoint` cocotb makefiles now take `EXTRA_COMPILE_ARGS`.
+
+### 17.3 `clk_i`: execute stage into the register file, not changed
+
+The eight violating `clk_i` endpoints of `r_cut7z` (-0.44 to -0.41) all start at `g_ex_stage.exs_ex_instr_rdata_alu_id_q[1]` and end at `rf_reg_q[30]` of eight registers through about 65 cells (decode, operand select, adder, result multiplexer, the register file's write multiplexer); the next endpoint has +0.09 ns, and in `r_cut7a` the same path has -0.09 ns. A registered write would be a writeback stage: the ID-stage read of `flow/ibex_ex_stage.py` would then need a second forwarding source, and the existing forward of `rf_wdata_wb` into the ID/EX operand register would still carry the same execute-result cone, so the cut moves the endpoint without removing the logic. It does not fit the patch's structure for about 0.5 ns on eight placement-dependent endpoints and is not made.
+
+### 17.4 Runs
+
+Probes `r_cut8z_td_d68` and `r_cut8z_td_d66` (PL 0 / GRT 0, density 68 and 66; every round-seven knob plus `SOC_PCIE_TX_WORD_REG`), with route and routed-sta (`DRT_OPT_ITERS` 16). Functional: `regress`/`native-boot` `ex_exec_pmpreg_cut8`; `pcie-unit` `txword` (stream, endpoint, reliable, flow and buffered suites) and `cut8` (all PCIe knobs) plus the transmit-word co-simulation; `eth-knobs` `joint-cut8` (vendor-SRAM FIFOs with synchronous and asynchronous packet clock, inferred FIFOs), and `eth-rtl`/`eth-mbist`/`eth-gl-w`/`soc-mbist` with the write select copies inside `SOC_ETH_FIFO_WRREG`.
+
+Risks: each copy register only helps if the placer puts it next to its macro; the eight select copies add one more 2 mm net (`a_functional && wen_i`) on the D side, the same reach `wq_men` already has; the d66 probe changes area and wire length everywhere, not only the measured paths.
