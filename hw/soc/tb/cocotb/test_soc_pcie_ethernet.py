@@ -264,8 +264,18 @@ async def simultaneous_cpu_ethernet_and_pcie(d):
 async def pcie_link_loss_does_not_reset_ethernet(d):
     b = JointBench(d)
     await b.ready()
-    for _ in range(40 if b.async_pcie else 8):
+    # docs/combined-timing.md section 16: with a synchronous packet clock the
+    # PCIe and CPU APB accesses keep a fixed phase, so eight reads can miss
+    # every CPU Ethernet access (seen with the vendor-SRAM FIFOs, whose
+    # self-test shifts the firmware's start). The reads then continue, up to
+    # the asynchronous run's forty, until one has met a CPU Ethernet access;
+    # the contention assertion in verify() is unchanged.
+    reads = 40 if b.async_pcie else 8
+    done = 0
+    while done < reads or (b.joint_contentions == 0 and done < 40):
         await b.transact(request(0, BAR + 0x1C), response(data=0x1010F, lower=0x1C))
+        done += 1
+    d._log.info("JOINT_LINK_LOSS reads=%d contentions_before_loss=%d", done, b.joint_contentions)
     before = b.eth_rx_reads
     payload = frame_bytes(tlp_bytes(request(0x40, BAR + 0x54, [0x200])), b.seq)
     for i, value in enumerate(payload[:9]):
