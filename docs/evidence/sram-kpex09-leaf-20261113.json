@@ -1,0 +1,51 @@
+{
+  "extraction_run": 43487978461,
+  "extraction_source": "3774be9871a9b9abfc78fc536410431d180b36af",
+  "audit_run": 43488742366,
+  "audit_source": "797fcc31032446bc2b005943b3dc0e29eb2557aa",
+  "audit_artifact": 14068152783,
+  "audit_artifact_sha256": "1e689b01bbfacf571c68bf1ae306bc8281a34cebeca0662848238e84aa57458a",
+  "native_artifact": 14067369661,
+  "native_artifact_sha256": "35be261afbc97cb1b555e2678090caf4624424a47127aba3695e5411e8093b33",
+  "result": {
+    "mos": 8,
+    "rc_resistors": 68,
+    "cc_capacitors": 61,
+    "rc_capacitors": 288,
+    "reference_pairs": 61,
+    "projected_pairs": 61,
+    "missing_pairs": 0,
+    "extra_pairs": 0,
+    "changed_pairs": 0,
+    "reference_sum_f": 4.499533902000001e-15,
+    "projected_sum_f": 4.4995350620000005e-15,
+    "collapsed_intraconductor_capacitors": 0,
+    "max_pair_difference_f": 4.999999999839351e-22,
+    "status": "PASS_SCOPED_COLLAPSED_RC_CHECKS",
+    "source_artifact": 14067369661,
+    "netlist_sha256": {
+      "CC": "cbc7dca6e387a67db742336a5f232184ea30e044c18c33c0c5fd77b516c0d57d",
+      "RC": "77b35e72ed46865efaaf440cecfad07c78e4468fc1dad193cc94f19651c94dde"
+    },
+    "controls": {
+      "removed_capacitor": {
+        "instance": "cext_272",
+        "rejected": true
+      },
+      "disconnected_resistor": {
+        "instance": "rext_1",
+        "rejected": true,
+        "reason": "reference net split across resistance components"
+      },
+      "changed_mos_model": {
+        "rejected": true
+      }
+    },
+    "qualified_pex": false,
+    "manufacturing_approval": false,
+    "scope": "Eight-device leaf only; same-engine CC versus resistor-collapsed RC with exact MOS identities/parameters and terminal anchors. No independent schematic LVS, spatial C proof, calibrated physical model, full well/body RC or full-macro qualification."
+  },
+  "retained_limitation": "NWell sheet resistance absent in technology data; PMOS bulk terminals remain ideally connected. No full body/well RC qualification.",
+  "full_macro_campaign_branch": "codex/sram-kpex09-macro-screen",
+  "full_macro_campaign_status": "dispatched; no result yet"
+}
