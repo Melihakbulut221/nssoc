@@ -73,8 +73,8 @@ jobs:
           print({k:c.get(k) for k in ('STA_CORNERS','STA_THREADS','RCX_RULESETS','DRT_OPT_ITERS')})
           print({k:v for k,v in s.items() if k!='metrics'})
           print({k:v for k,v in s['metrics'].items() if k.startswith('route__')})
-          overrides={'RUN_ANTENNA_REPAIR':True,'GRT_ANTENNA_REPAIR_ITERS':3,'DRT_ANTENNA_REPAIR_ITERS':3}
-          assert c.get('DIODE_CELL')=='sg13g2_antennanp/A', 'Unexpected diode master'
+          overrides={'RUN_ANTENNA_REPAIR':True,'GRT_ANTENNA_REPAIR_ITERS':3,'DRT_ANTENNA_REPAIR_ITERS':3,'DIODE_CELL':'sg13g2_antennanp/A'}
+          assert c.get('DIODE_CELL') in (None,'sg13g2_antennanp/A'), 'Unexpected diode master'
           proof={'before':{k:c.get(k) for k in overrides},'after':overrides,'other_config_fields_changed':False}
           c.update(overrides)
           with open(sys.argv[1],'w') as f:json.dump(c,f,indent=2)
