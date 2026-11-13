@@ -1,4 +1,4 @@
-name: SRAM extracted leaf versus independent schematic
+name: Independent SRAM macro body connection context
 on:
   workflow_dispatch:
 permissions:
@@ -21,14 +21,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          gh api repos/${{ github.repository }}/actions/artifacts/14067369661/zip > native.zip
           gh api repos/${{ github.repository }}/actions/artifacts/14069436539/zip > reference.zip
       - name: Check topology and every collapsed capacitance pair with fault injection
-        run: python3 -u scripts/audit_sram_kpex09_independent_leaf.py
+        run: python3 -u scripts/audit_sram_reference_body_context.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: sram-independent-leaf-${{ github.run_id }}
+          name: sram-reference-body-${{ github.run_id }}
           path: out
           if-no-files-found: error
           retention-days: 90
