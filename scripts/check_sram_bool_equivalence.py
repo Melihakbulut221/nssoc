@@ -25,7 +25,8 @@ for top in ['soc_sram_mbist','soc_sram_zero_check']:
  (out/(top+'_bad.v')).write_text(bad)
 def design(path,top,name,params,defines):
  flags=' -D SYNTHESIS '+' '.join('-D '+d for d in defines)
- param=' '.join('-set '+k+' '+str(v) for k,v in params.items())
+ # Parameters are declared 32-bit integer; encode negative values as exact bits.
+ param=' '.join('-set '+k+' '+(str(v) if v>=0 else "32'h"+format(v & 0xffffffff,'08x')) for k,v in params.items())
  lines=[f'read_verilog -sv {flags} {path}']
  if param:lines.append(f'chparam {param} {top}')
  lines += [f'hierarchy -check -top {top}','proc','opt -keepdc','async2sync','opt -keepdc',f'rename {top} {name}',f'design -stash {name}']
