@@ -79,8 +79,18 @@
     "hw/soc/rtl/pcie/soc_pcie_tlp_integrity.v": "18c38c3d924d648165405dbd75a4465afb60c4fa88a7d6357e4bd7d485b37f75"
   },
   "equivalence": {
-    "run": 43478936631,
-    "status": "pending; not a pass claim"
+    "run": 43485878467,
+    "source": "cc658ec3572fc28abdffe9b731b53ccd35c0fc90",
+    "status": "in_progress; not a pass claim",
+    "prior_attempt": {
+      "run": 43478936631,
+      "cut10_job": 132070074779,
+      "cut10_conclusion": "failure",
+      "artifact": 14065749817,
+      "artifact_sha256": "0b1d23fb2b32453aef60c81ebfafc558f12fd8e35d942f191fbf01677ca0861f",
+      "diagnosis": "All seven cut10 module logs stop at a Yosys command syntax error: design -stash gold;read_verilog. Equivalence was not reached. No counterexample or equivalence conclusion follows.",
+      "repair": "Emit one Yosys command per line and execute the generated script with yosys -s. RTL is unchanged."
+    }
   },
   "scope": "Functional and lint verification of explicit width changes, including joint PCIe packet/GPIO and GMII Ethernet traffic on the integrated source. No serial PHY, LTSSM, Ethernet PHY, new routed layout, timing, LVS or production acceptance.",
   "integrated_verification": {
