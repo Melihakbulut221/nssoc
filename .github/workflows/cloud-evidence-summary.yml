@@ -1,94 +1,101 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
-# Branch analysis/pll-layout-c5r3k reuses this dispatchable workflow name for
-# the c5r3k layout steps. step=children: native generation and strict DRC/LVS
-# of the four changed PLL child macros (scripts/cloud_pll_c5r3k_children.py).
-# step=parent: integration into the RHI120/C8 parent and native parent DRC and
-# LVS (scripts/cloud_pll_c5r3k_parent.py). Results are kept as workflow
-# artifacts; nothing is published as a release.
-name: cloud-evidence-summary
+# c5r3k 1 us acquisition bench on the extracted c5r3k PLL849 deck. Same steps
+# as the analysis/pll-divider-currents bench (variant original: no deck patch),
+# with the deck taken from the c5r3k preparation release (run 42403338623)
+# instead of asset 668392118. The frozen gate is independent_analysis from
+# codex/complete-open-work after its SHA-256 check. 3.125e-13 is the deck's own
+# step; 5e-13 runs alongside as an earlier, coarser cross-check.
+name: Extracted PLL temperature-only acquisition screen
 on:
   workflow_dispatch:
-    inputs:
-      step:
-        description: c5r3k step to run
-        type: choice
-        options: [children, parent]
-        default: children
 permissions:
   contents: read
 jobs:
-  c5r3k-child-physical:
-    if: inputs.step == 'children'
+  temperature-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: /scripts/pll_c5r3k_temperature_screen.py
+      - run: python3 scripts/pll_c5r3k_temperature_screen.py selftest
+  pll-c5r3k-bench:
+    needs: temperature-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 355
     strategy:
       fail-fast: false
       matrix:
-        macro: [pump, vco, div1, integrator]
-    runs-on: ubuntu-22.04
-    timeout-minutes: 120
+        include:
+          - {variant: original, stop: '1e-06', step: '3.125e-13', temperature: -40}
+          - {variant: original, stop: '1e-06', step: '3.125e-13', temperature: 125}
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
-      - name: Restore exact native CAD runtime
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/pll_c5r3k_bench.py
+            /scripts/pll-c5r3k-bench-probes.json
+            /scripts/pll_c5r3k_temperature_screen.py
+      - name: Restore the c5r3k preparation deck, models and runtime
         run: |
-          python3 -m py_compile scripts/cloud_pll_c5r3k_children.py hw/soc/flow/make_pcie_pump_filter13_c5r3k_v1.py hw/soc/flow/make_pcie_clock_vco_v6_c5r3k_v1.py hw/soc/flow/make_pcie_clock_div4_load3p2_c5r3k_v1.py hw/soc/flow/make_pcie_pll_integrator_c5r3k_v1.py hw/soc/flow/check_pcie_pll_integrator_c5r3k_v1.py
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6 tk8.6
-          python3 -m pip install networkx==3.4.2 numpy==2.1.3
-          PYTHONPATH=scripts python3 -c "import pcie_pll_native_fixture_v1"
-          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
-          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
-          chmod +x "$RUNNER_TEMP/librelane.AppImage"
-          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
-      - name: Generate the c5r3k macro and require native DRC, deep and flat LVS and fault controls
-        run: python3 scripts/cloud_pll_c5r3k_children.py --macro ${{ matrix.macro }}
-      - name: Keep every report, log and generated view
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+          set -euo pipefail
+          base=https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-42403338623-1-pll-c5r3k-preparation
+          curl --fail --location --retry 4 "$base/pll-c5r3k-preparation-42403338623-1.tar.gz.part0000" -o /tmp/prep.tgz
+          echo "9624f52ea28ce3aa92c2232b135c7162912756f565913079d8c09863adbf0dde  /tmp/prep.tgz" | sha256sum -c -
+          mkdir -p /tmp/prep && tar -xzf /tmp/prep.tgz -C /tmp/prep
+          P=/tmp/prep/cloud-pll-c5r3k-preparation
+          grep -q '"status": "PASS_WHOLE_PLL_LOADED_DECK_AND2737_TERMINAL_INSTRUMENTATION_REQUIRES_NATIVE_EXECUTION"' $P/result.json
+          mkdir -p cloud-pll-snapshot case
+          cp -r $P/model-sources/models $P/model-sources/frontend cloud-pll-snapshot/
+          cp $P/candidate-circuit.cir case/
+          cp $P/composition/pll845-mim-wire.spice case/parent865.spice
+          sha256sum case/candidate-circuit.cir case/parent865.spice
+          gh api repos/${{ github.repository }}/releases/assets/650315768 -H "Accept: application/octet-stream" > /tmp/runtime.tgz
+          echo "cd993e4d1eb02f900488450bb1ac3880c67a5e5c34fbac06565c7db85667a821  /tmp/runtime.tgz" | sha256sum -c -
+          mkdir -p /tmp/rt && tar -xzf /tmp/runtime.tgz -C /tmp/rt
+          E=$(find /tmp/rt -type f -name patched-ngspice | head -1); test -n "$E"; cp "$E" engine; chmod +x engine
+          echo "103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509  engine" | sha256sum -c -
+          grep -n "^\.lib\|^\.include\|pre_osdi" case/candidate-circuit.cir
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          name: pll-c5r3k-${{ matrix.macro }}-${{ github.run_id }}-${{ github.run_attempt }}
-          retention-days: 30
-          if-no-files-found: warn
-          path: hw/soc/out/cloud-pll-c5r3k-children/
-  c5r3k-parent-physical:
-    if: inputs.step == 'parent'
-    runs-on: ubuntu-22.04
-    timeout-minutes: 180
-    permissions:
-      contents: read
-      actions: read
-    steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-        with:
+          ref: 415db81024b44298c0d3fbf1a6b90be3a08e923f
+          path: frozen
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
-      - name: Restore exact native CAD runtime and the verified child macros
-        env:
-          GH_TOKEN: ${{ github.token }}
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/*.py
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
+      - name: Run the temperature-only screen at the original duration and step
         run: |
-          python3 -m py_compile scripts/integrate_pll_c5r3k_parent.py scripts/cloud_pll_c5r3k_parent.py
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6
-          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
-          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
-          chmod +x "$RUNNER_TEMP/librelane.AppImage"
-          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
-          for m in pump vco div1 integrator; do
-            gh run download 42397775128 -R "$GITHUB_REPOSITORY" -n "pll-c5r3k-$m-42397775128-1" -D "$RUNNER_TEMP/children/$m"
-          done
-      - name: Integrate c5r3k macros and require native parent DRC, deep and flat LVS at 849 devices and faults
-        run: python3 scripts/cloud_pll_c5r3k_parent.py --children "$RUNNER_TEMP/children"
-      - name: Keep every report, log and generated view
+          set -euo pipefail
+          NSSOC_PLL_THREADS=4 NSSOC_PLL_STOP=${{ matrix.stop }} NSSOC_PLL_MAXSTEP=${{ matrix.step }} python3 -B scripts/pll_c5r3k_bench.py prepare case scripts/pll-c5r3k-bench-probes.json ${{ matrix.variant }}; cat case/variant-patch.json
+          python3 scripts/pll_c5r3k_temperature_screen.py prepare case/probe-circuit.cir ${{ matrix.temperature }} pll-c5r3k-bench/temperature-change.json
+          cd case && SPICE_SCRIPTS=$PWD OMP_NUM_THREADS=4 timeout 20700 ../engine -n -b probe.cir > ngspice.log 2>&1 || { echo "ngspice rc=$?"; tail -40 ngspice.log; exit 1; }
+          tail -5 ngspice.log; ls -l probe.raw
+          cd ..
+          python3 scripts/pll_c5r3k_temperature_screen.py verify case/ngspice.log ${{ matrix.temperature }} pll-c5r3k-bench/temperature-readback.json
+      - name: Reproduce the acquisition metrics
+        run: python3 -B scripts/pll_c5r3k_bench.py analyze case scripts/pll-c5r3k-bench-probes.json pll-c5r3k-bench
+      - name: Apply the frozen acquisition gate (independent_analysis, unchanged)
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        run: python3 -B scripts/pll_c5r3k_bench.py gate case frozen/scripts pll-c5r3k-bench
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
         with:
-          name: pll-c5r3k-parent-${{ github.run_id }}-${{ github.run_attempt }}
-          retention-days: 30
-          if-no-files-found: warn
-          path: hw/soc/out/cloud-pll-c5r3k-parent/
+          name: pll-c5r3k-temperature-${{ matrix.temperature }}-${{ github.run_id }}
+          path: |
+            pll-c5r3k-bench
+            case/ngspice.log
+            case/variant-patch.json
+          if-no-files-found: error
+          retention-days: 90
