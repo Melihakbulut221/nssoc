@@ -39,6 +39,32 @@ on:
         type: string
         default: '16'
       pcie_jobs:
+        description: Jobs to run, space-separated from timing, unit, soc (PCIe pipeline) and eth (Ethernet FIFO and BUSSTAT knobs); add only to skip every Ibex job
+        type: string
+        default: ''
+      pcie_timing_sides:
+        description: Sides of the PCIe packet-domain timing screen (JSON list of baseline and change)
+        type: string
+        default: '["baseline","change"]'
+      route_run:
+        description: Run id holding routed-db artifacts; when set, routed-sta extracts those and the route job is skipped
+        type: string
+        default: ''
+      sta_variant:
+        description: With route_run, the routed variants to extract (space separated)
+        type: string
+        default: ''
+      pcie_tests:
+        description: cocotb suites of the PCIe unit job
+        type: string
+        default: 'soc_pcie_replay_tx soc_pcie_flow_packets soc_pcie_buffered_flow_packets soc_pcie_reliable_packets'
+permissions:
+  contents: read
+  actions: read
+env:
+  # The PCIe timing screen's baseline side (timing/pcie-pipeline).
+  BASELINE_REF: timing/pcie-boundary-skid
+jobs:
   native-boot:
     runs-on: ubuntu-24.04
     timeout-minutes: 360
