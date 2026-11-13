@@ -1,0 +1,218 @@
+{
+  "recovery_run": 43516375113,
+  "recovery_source": "21f97e18737c05f0d31a403742c02fdad5e2c1e7",
+  "artifact_id": 14081455253,
+  "artifact_sha256": "d40043b816d84d2a64c74f3ee2b001b356cef8b0568911827b297939eda5d23e",
+  "result": {
+    "status": "PASS_SCOPED_NATIVE_PCIE_IDLE_BOOT",
+    "full_chip_acceptance": false,
+    "manufacturing_approval": false,
+    "source_run": 43475775445,
+    "source_commit": "ba32f20d93f3256c9cab5bbea2211ff057b1723a",
+    "scope": "Re-evaluation of the preserved zero-delay native Icarus gate-level CPU/Ethernet firmware boot with PCIe held link-down. No PCIe traffic, MBIST execution, SDF, analog PHY or fault coverage.",
+    "archive_sha256": "60a63237c80f62200b6ff960cb9d0320e6ca896c94a48ff10bf6c20d6a36acc7",
+    "member_hashes": {
+      "gates/inputs.json": "d73e504efa9add2f5f08c458acb3e8d2914219fff5b40691a8b27fc6a9c28e67",
+      "gates/result.json": "3254659f7fdc88ea43a3ef3a61e35ae9528895126de99476e66f3498e347c8e9",
+      "gates/run-0.log": "b7923d3e0d76147a45b0a54b437cd37b4c0fbb31e2c5063d42a093d5ad6cb905",
+      "core-configuration.json": "190217b43d9ca4cf0e87d39941440cd4e1dcddedce61d70abac528ed2a1fc11a",
+      "synthesis/soc_top.netlist.v": "4cccd26605a30025a6e61389865f54b242c4ed805401954346a51f899413677b"
+    },
+    "corrected_checks": {
+      "pass_banner": true,
+      "pcie_profile": "packet-async",
+      "mbist_profile": "off",
+      "pcie_idle_boot_passed": true,
+      "mbist_boot_passed": null,
+      "pcie_idle_boot_status": "passed",
+      "mbist_boot_status": "not_requested",
+      "passed": true
+    },
+    "original_checks": {
+      "command": [
+        "/home/runner/work/_temp/oss-cad-suite/bin/vvp",
+        "-i",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-native-boot/gates/sim.vvp",
+        "+flash0=/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-native-boot/rtl/flash0.hex"
+      ],
+      "returncode": 0,
+      "elapsed_s": 14298.693389938999,
+      "pass_banner": true,
+      "pcie_idle_boot_passed": true,
+      "mbist_boot_passed": true
+    },
+    "original_report_mbist_claim_invalid": true,
+    "configuration": {
+      "RF_CORRPRE": 1,
+      "SOC_PCIE_PROFILE": "packet-async",
+      "pcie_traffic_tested": false,
+      "RF_SYNPRE": 0,
+      "experimental_candidate_not_mainchip_acceptance": true,
+      "CORE_REQ_REG": 0,
+      "CORE_WB_STAGE": 0,
+      "CORE_BRANCH_TARGET_ALU": 0,
+      "CORE_BT_ALU": 0,
+      "IBEX_BRANCH_2CYCLE": 0,
+      "IBEX_EX_STAGE": 1,
+      "IBEX_PMP_REQ_REG": 1,
+      "ETH_FIFO_RDREG": 1,
+      "BUSSTAT_EVPEND": 1,
+      "PCIE_RX_READ_AHEAD": 0,
+      "BUS_WDATA_OWN": 0,
+      "PCIE_RX_READ2": 1,
+      "BUS_IREQ_REG": 1,
+      "PCIE_RESET_COPIES": 1,
+      "ETH_FIFO_WRREG": 1,
+      "PCIE_REPLAY_INBANK": 1,
+      "PCIE_TX_WORD_REG": 1,
+      "PCIE_REPLAY_AHEAD": 1,
+      "PCIE_CREDIT_PICK": 1,
+      "PCIE_SEQ_RX_REG": 1,
+      "PCIE_RX_COMMIT_COPIES": 1,
+      "RF_CHKDEFER": 1,
+      "RF_PREDECODE": 1,
+      "MEM_RDREG": 2,
+      "interface_profile": "full",
+      "status": "requested configuration; consult RTL, synthesis and gate results"
+    },
+    "pcie": {
+      "profile": "packet-async",
+      "ports": {
+        "pcie_clk_i": [
+          "input",
+          1
+        ],
+        "pcie_link_up_i": [
+          "input",
+          1
+        ],
+        "pcie_training_i": [
+          "input",
+          1
+        ],
+        "pcie_retrain_done_i": [
+          "input",
+          1
+        ],
+        "pcie_function_id_i": [
+          "input",
+          16
+        ],
+        "pcie_rx_data_i": [
+          "input",
+          8
+        ],
+        "pcie_rx_sop_i": [
+          "input",
+          1
+        ],
+        "pcie_rx_eop_i": [
+          "input",
+          1
+        ],
+        "pcie_rx_error_i": [
+          "input",
+          1
+        ],
+        "pcie_rx_valid_i": [
+          "input",
+          1
+        ],
+        "pcie_rx_dllp_i": [
+          "input",
+          1
+        ],
+        "pcie_tx_ready_i": [
+          "input",
+          1
+        ],
+        "pcie_rx_ready_o": [
+          "output",
+          1
+        ],
+        "pcie_tx_data_o": [
+          "output",
+          8
+        ],
+        "pcie_tx_sop_o": [
+          "output",
+          1
+        ],
+        "pcie_tx_eop_o": [
+          "output",
+          1
+        ],
+        "pcie_tx_valid_o": [
+          "output",
+          1
+        ],
+        "pcie_tx_dllp_o": [
+          "output",
+          1
+        ],
+        "pcie_tx_replay_o": [
+          "output",
+          1
+        ],
+        "pcie_initialized_o": [
+          "output",
+          1
+        ],
+        "pcie_error_o": [
+          "output",
+          1
+        ],
+        "pcie_retrain_request_o": [
+          "output",
+          1
+        ]
+      },
+      "traffic_tested": false,
+      "scope": "Packet interface held link-down during real CPU/Ethernet firmware boot; no packet traffic, SDF or serial PHY qualification."
+    },
+    "mbist": {
+      "profile": "off",
+      "ports": {},
+      "fault_coverage_qualified": false,
+      "scope": "Observe actual mapped system and Ethernet MBIST busy-to-done handover during boot; no complete memory fault or physical qualification."
+    },
+    "compile": {
+      "command": [
+        "/home/runner/work/_temp/oss-cad-suite/bin/iverilog",
+        "-g2005-sv",
+        "-s",
+        "tb_logicrom_gl",
+        "-o",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-native-boot/gates/sim.vvp",
+        "-DFUNCTIONAL",
+        "-DTIMEOUT_CYCLES=2000000",
+        "-DEXIT_CODE_ADDR=32'h00001f94",
+        "-DEXIT_MAGIC_ADDR=32'h00001f98",
+        "-DCHECKS_ADDR=32'h00001fcc",
+        "-DFAILS_ADDR=32'h00001fd0",
+        "-DNSSOC_GL_PCIE",
+        "-DNSSOC_GL_PCIE_ASYNC",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/tb_soc_logic_boot_gl.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-native-boot/synthesis/soc_top.netlist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/flash_w25q128jv.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v"
+      ],
+      "returncode": 0,
+      "elapsed_s": 7.386745714999961
+    },
+    "simulator": "iverilog",
+    "version": "Icarus Verilog version 14.0 (devel) (s20260301-337-ge39348712-dirty)\n\nCopyright (c) 2000-2026 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\nIcarus Verilog Preprocessor version 14.0 (devel) (s20260301-337-ge39348712-dirty)\n\nCopyright (c) 1999-2026 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\nIcarus Verilog Parser/Elaborator version 14.0 (devel) (s20260301-337-ge39348712-dirty)\n\nCopyright (c) 1998-2026 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n FLAGS DLL vvp.tgt\nvvp.tgt: Icarus Verilog VVP Code Generator 14.0 (devel) (s20260301-337-ge39348712-dirty)\n\nCopyright (c) 2001-2026 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n",
+    "cycle_bound": 2000000,
+    "run_timeout_s": 18000,
+    "banners": [
+      "PCIE_IDLE_BOOT PASS samples=2391993",
+      "LOGICROM_GL PASS checks=28"
+    ],
+    "netlist_sha256": "4cccd26605a30025a6e61389865f54b242c4ed805401954346a51f899413677b"
+  }
+}
