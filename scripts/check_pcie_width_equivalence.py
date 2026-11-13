@@ -22,11 +22,14 @@ results=[]
 for top in MODULES:
     ys=design(gold,top,'gold')+design('hw/soc/rtl/pcie',top,'gate')
     ys+='design -copy-from gold -as gold gold; design -copy-from gate -as gate gate; equiv_make gold gate equiv; hierarchy -top equiv; equiv_simple; equiv_induct -seq 4; equiv_status -assert;'
-    (out/(top+'.ys')).write_text(ys)
+    # Separate every command explicitly; adjacent fragments are not Yosys tokens.
+    ys = chr(10).join(cmd.strip() for cmd in ys.split(';') if cmd.strip()) + chr(10)
+    script = out/(top+'.ys')
+    script.write_text(ys)
     began=time.monotonic()
     with (out/(top+'.log')).open('w') as log:
         try:
-            rc=subprocess.run(['yosys','-p',ys],stdout=log,stderr=subprocess.STDOUT,timeout=600).returncode
+            rc=subprocess.run(['yosys','-s',str(script)],stdout=log,stderr=subprocess.STDOUT,timeout=600).returncode
         except subprocess.TimeoutExpired:rc=124
     text=(out/(top+'.log')).read_text()
     passed=rc==0 and 'Equivalence successfully proven!' in text
