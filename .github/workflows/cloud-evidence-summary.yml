@@ -194,6 +194,10 @@ jobs:
           # Section 18: plus the replay store read one cycle ahead (and, inside
           # SOC_PCIE_TX_WORD_REG, the word registers' own tx_busy copy).
           - {name: ex_exec_pmpreg_cut9, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', rpahead: '1'}
+          # Section 19: plus the credit consume select, the registered receive ready and
+          # sequence compare, the commit copies (and, inside SOC_PCIE_TX_WORD_REG, the
+          # registered receive header select).
+          - {name: ex_exec_pmpreg_cut10, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', rpahead: '1', creditpick: '1', seqrx: '1', rxcommit: '1'}
     env:
       RUN: ${{ inputs.variant == '' || contains(format(' {0} ', inputs.variant), format(' {0} ', matrix.name)) }}
       SOC_ETH_FIFO_RDREG: ${{ matrix.ethrd || '0' }}
@@ -209,6 +213,9 @@ jobs:
       SOC_PCIE_REPLAY_INBANK: ${{ matrix.rpinbank || '0' }}
       SOC_PCIE_TX_WORD_REG: ${{ matrix.txword || '0' }}
       SOC_PCIE_REPLAY_AHEAD: ${{ matrix.rpahead || '0' }}
+      SOC_PCIE_CREDIT_PICK: ${{ matrix.creditpick || '0' }}
+      SOC_PCIE_SEQ_RX_REG: ${{ matrix.seqrx || '0' }}
+      SOC_PCIE_RX_COMMIT_COPIES: ${{ matrix.rxcommit || '0' }}
       SOC_INTERFACE_PROFILE: base
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
       IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
@@ -323,6 +330,7 @@ jobs:
           - {name: ex_exec_pmpreg_cut7, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', gate: corrpre-pcie}
           - {name: ex_exec_pmpreg_cut8, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', gate: corrpre-pcie}
           - {name: ex_exec_pmpreg_cut9, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', rpahead: '1', gate: corrpre-pcie}
+          - {name: ex_exec_pmpreg_cut10, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', rpahead: '1', creditpick: '1', seqrx: '1', rxcommit: '1', gate: corrpre-pcie}
           # The system and Ethernet MBIST gate-level boot with every knob of
           # docs/combined-timing.md on the execute stage alone (one-cycle
           # memory reads, the configuration whose MBIST boot fits the job).
@@ -349,6 +357,9 @@ jobs:
       SOC_PCIE_REPLAY_INBANK: ${{ matrix.rpinbank || '0' }}
       SOC_PCIE_TX_WORD_REG: ${{ matrix.txword || '0' }}
       SOC_PCIE_REPLAY_AHEAD: ${{ matrix.rpahead || '0' }}
+      SOC_PCIE_CREDIT_PICK: ${{ matrix.creditpick || '0' }}
+      SOC_PCIE_SEQ_RX_REG: ${{ matrix.seqrx || '0' }}
+      SOC_PCIE_RX_COMMIT_COPIES: ${{ matrix.rxcommit || '0' }}
       SOC_INTERFACE_PROFILE: full
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
       IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
@@ -502,6 +513,11 @@ jobs:
           - {name: r_cut9z_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true, "PL_RESIZER_HOLD_SLACK_MARGIN": 0.0, "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', rpahead: '1', route: '1'}
           - {name: r_cut9h_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true, "PL_RESIZER_HOLD_SLACK_MARGIN": 0.0, "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', rpahead: '1', route: '1', deephold: '0.05', deephold_setup: '0.1'}
           - {name: r_cut9z_td_d70, overrides: '{"PL_TARGET_DENSITY_PCT": 70, "PL_TIMING_DRIVEN": true, "PL_RESIZER_HOLD_SLACK_MARGIN": 0.0, "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', rpahead: '1', route: '1'}
+          # Section 19: every knob plus the round-ten cuts, d68, PL 0 / GRT 0, with the
+          # hold-only pass: r_cut10h at round nine's 0.05 / 0.1 (measures the cuts),
+          # r_cut10j at 0.1 / 0.1 with 3000 iterations (deephold_iters).
+          - {name: r_cut10h_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true, "PL_RESIZER_HOLD_SLACK_MARGIN": 0.0, "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', rpahead: '1', creditpick: '1', seqrx: '1', rxcommit: '1', route: '1', deephold: '0.05', deephold_setup: '0.1'}
+          - {name: r_cut10j_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true, "PL_RESIZER_HOLD_SLACK_MARGIN": 0.0, "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', rpahead: '1', creditpick: '1', seqrx: '1', rxcommit: '1', route: '1', deephold: '0.1', deephold_setup: '0.1', deephold_iters: '3000'}
           # timing/pcie-pipeline's probe (its default probe_matrix): upstream
           # register file, no Ibex knobs, the PCIe path trace. pcie_rtl_ref
           # (optional) takes hw/soc/rtl/pcie from another ref instead.
@@ -536,6 +552,9 @@ jobs:
       SOC_PCIE_REPLAY_INBANK: ${{ matrix.rpinbank || '0' }}
       SOC_PCIE_TX_WORD_REG: ${{ matrix.txword || '0' }}
       SOC_PCIE_REPLAY_AHEAD: ${{ matrix.rpahead || '0' }}
+      SOC_PCIE_CREDIT_PICK: ${{ matrix.creditpick || '0' }}
+      SOC_PCIE_SEQ_RX_REG: ${{ matrix.seqrx || '0' }}
+      SOC_PCIE_RX_COMMIT_COPIES: ${{ matrix.rxcommit || '0' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) }}
@@ -703,7 +722,7 @@ jobs:
               # last resizer pass before routing and runs after the flow's own
               # hold repair. Setup-protected (-setup_margin; setup violations are
               # not allowed), every corner, then the parasitics again.
-              rep+=('repair_timing -verbose -hold -setup_margin ${{ matrix.deephold_setup || '0.1' }} -hold_margin ${{ matrix.deephold }} -max_iterations 1000 -max_buffer_percent 10\n'
+              rep+=('repair_timing -verbose -hold -setup_margin ${{ matrix.deephold_setup || '0.1' }} -hold_margin ${{ matrix.deephold }} -max_iterations ${{ matrix.deephold_iters || '1000' }} -max_buffer_percent 10\n'
                     'estimate_parasitics -global_routing\nputs "NSSOC_DEEP_HOLD_DONE"\n')
           rep+='puts "NSSOC_DEEP_REPAIR_DONE"\n'
           if '${{ matrix.route || '0' }}' == '1':
@@ -779,7 +798,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68, r_cut3h_td_d68, r_cut4h_td_d68, r_cut3m_td_d68, r_cut4m_td_d68, r_cut5n_td_d68, r_cut5a_td_d68, r_cut5b_td_d68, r_cut6a_td_d68, r_cut6z_td_d68, r_cut7z_td_d68, r_cut7a_td_d68, r_cut8z_td_d68, r_cut8z_td_d66, r_cut9z_td_d68, r_cut9h_td_d68, r_cut9z_td_d70]
+        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68, r_cut3h_td_d68, r_cut4h_td_d68, r_cut3m_td_d68, r_cut4m_td_d68, r_cut5n_td_d68, r_cut5a_td_d68, r_cut5b_td_d68, r_cut6a_td_d68, r_cut6z_td_d68, r_cut7z_td_d68, r_cut7a_td_d68, r_cut8z_td_d68, r_cut8z_td_d66, r_cut9z_td_d68, r_cut9h_td_d68, r_cut9z_td_d70, r_cut10h_td_d68, r_cut10j_td_d68]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -984,7 +1003,7 @@ jobs:
       fail-fast: false
       matrix:
         # r_cut4h_td_d68 and r_cut3hh_td_d68 are the route-hold job's databases.
-        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68, r_cut3h_td_d68, r_cut4h_td_d68, r_cut3hh_td_d68, r_cut3m_td_d68, r_cut4m_td_d68, r_cut5n_td_d68, r_cut5a_td_d68, r_cut5b_td_d68, r_cut6a_td_d68, r_cut6z_td_d68, r_cut7z_td_d68, r_cut7a_td_d68, r_cut8z_td_d68, r_cut8z_td_d66, r_cut9z_td_d68, r_cut9h_td_d68, r_cut9z_td_d70]
+        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68, r_cut3h_td_d68, r_cut4h_td_d68, r_cut3hh_td_d68, r_cut3m_td_d68, r_cut4m_td_d68, r_cut5n_td_d68, r_cut5a_td_d68, r_cut5b_td_d68, r_cut6a_td_d68, r_cut6z_td_d68, r_cut7z_td_d68, r_cut7a_td_d68, r_cut8z_td_d68, r_cut8z_td_d66, r_cut9z_td_d68, r_cut9h_td_d68, r_cut9z_td_d70, r_cut10h_td_d68, r_cut10j_td_d68]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -1287,6 +1306,8 @@ jobs:
             /scripts/check_pcie_tlp_stream_word_reg.sh
             /hw/soc/tb/tb_pcie_replay_ahead.v
             /scripts/check_pcie_replay_ahead.sh
+            /hw/soc/tb/tb_pcie_credit_pick.v
+            /scripts/check_pcie_credit_pick.sh
             /hw/requirements.txt
       - name: Retry transient download failures
         run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
@@ -1338,12 +1359,21 @@ jobs:
           # Section 17: the transaction stream's registered transmit word, on every
           # suite that contains the stream and takes the knob arguments.
           RT="soc_pcie_tlp_stream soc_pcie_packet_endpoint soc_pcie_reliable_packets soc_pcie_flow_packets soc_pcie_buffered_flow_packets"
+          # Section 19: the credit transmitter's consume select (every suite that
+          # contains it), the sequence receiver's registered ready and compare
+          # (every suite that contains the receiver; its own checks stop a run on
+          # any difference) and the commit copies (receive-queue suites, above).
+          RK="soc_pcie_credit_tx soc_pcie_flow_packets soc_pcie_buffered_flow_packets"
+          RS="soc_pcie_packet_endpoint soc_pcie_link_packets soc_pcie_reliable_packets soc_pcie_flow_packets soc_pcie_buffered_flow_packets"
           for k in "staged|-DSOC_PCIE_RX_STAGED_COMMIT|$RQ" "ahead|-DSOC_PCIE_RX_READ_AHEAD|$RQ" "read2|-DSOC_PCIE_RX_READ2|$RQ" \
                    "rstcopy|-DSOC_PCIE_RESET_COPIES|$RC" "read2rst|-DSOC_PCIE_RX_READ2 -DSOC_PCIE_RESET_COPIES|$RQ" \
                    "inbank|-DSOC_PCIE_REPLAY_INBANK|$RP" "cut7|-DSOC_PCIE_RX_READ2 -DSOC_PCIE_RESET_COPIES -DSOC_PCIE_REPLAY_INBANK|$RC" \
                    "txword|-DSOC_PCIE_TX_WORD_REG|$RT" "cut8|-DSOC_PCIE_RX_READ2 -DSOC_PCIE_RESET_COPIES -DSOC_PCIE_REPLAY_INBANK -DSOC_PCIE_TX_WORD_REG|$RC soc_pcie_packet_endpoint" \
                    "rpahead|-DSOC_PCIE_REPLAY_AHEAD|$RP" \
-                   "cut9|-DSOC_PCIE_RX_READ2 -DSOC_PCIE_RESET_COPIES -DSOC_PCIE_REPLAY_INBANK -DSOC_PCIE_TX_WORD_REG -DSOC_PCIE_REPLAY_AHEAD|$RC soc_pcie_tlp_stream soc_pcie_packet_endpoint"; do
+                   "cut9|-DSOC_PCIE_RX_READ2 -DSOC_PCIE_RESET_COPIES -DSOC_PCIE_REPLAY_INBANK -DSOC_PCIE_TX_WORD_REG -DSOC_PCIE_REPLAY_AHEAD|$RC soc_pcie_tlp_stream soc_pcie_packet_endpoint" \
+                   "credpick|-DSOC_PCIE_CREDIT_PICK|$RK" "seqrx|-DSOC_PCIE_SEQ_RX_REG|$RS" "rxcommit|-DSOC_PCIE_RX_COMMIT_COPIES|$RQ" \
+                   "rxcommit2|-DSOC_PCIE_RX_READ2 -DSOC_PCIE_RX_COMMIT_COPIES|$RQ" \
+                   "cut10|-DSOC_PCIE_RX_READ2 -DSOC_PCIE_RESET_COPIES -DSOC_PCIE_REPLAY_INBANK -DSOC_PCIE_TX_WORD_REG -DSOC_PCIE_REPLAY_AHEAD -DSOC_PCIE_CREDIT_PICK -DSOC_PCIE_SEQ_RX_REG -DSOC_PCIE_RX_COMMIT_COPIES|$RC soc_pcie_tlp_stream soc_pcie_packet_endpoint soc_pcie_link_packets soc_pcie_credit_tx"; do
             IFS='|' read -r n d ts <<< "$k"
             for t in $ts; do
               ( cd hw/soc/tb/cocotb && PATH="$PWD/../../../.venv/bin:$PATH" timeout 3000 make -f Makefile.$t SIM_BUILD=/tmp/sb_${n}_$t COCOTB_RESULTS_FILE=$GITHUB_WORKSPACE/out/results_${n}_$t.xml EXTRA_COMPILE_ARGS="$d" > $GITHUB_WORKSPACE/out/${n}_$t.log 2>&1 ); rc=$?
@@ -1367,6 +1397,14 @@ jobs:
           cat out/replay-ahead-cosim.log; [ $rc -eq 0 ] || fail=1
           bash scripts/check_pcie_replay_ahead.sh $GITHUB_WORKSPACE/out/replay-ahead-cut9-cosim 300000 SOC_PCIE_REPLAY_AHEAD SOC_PCIE_REPLAY_INBANK SOC_PCIE_RESET_COPIES > out/replay-ahead-cut9-cosim.log 2>&1; rc=$?
           cat out/replay-ahead-cut9-cosim.log; [ $rc -eq 0 ] || fail=1
+          # Section 19: the credit consume select, and the receive queue with the
+          # commit copies, alone and with the two-stage read and reset copies.
+          bash scripts/check_pcie_credit_pick.sh $GITHUB_WORKSPACE/out/credit-pick-cosim 300000 > out/credit-pick-cosim.log 2>&1; rc=$?
+          cat out/credit-pick-cosim.log; [ $rc -eq 0 ] || fail=1
+          bash scripts/check_pcie_rx_read_ahead.sh $GITHUB_WORKSPACE/out/rx-commit-cosim 300000 SOC_PCIE_RX_COMMIT_COPIES > out/rx-commit-cosim.log 2>&1; rc=$?
+          cat out/rx-commit-cosim.log; [ $rc -eq 0 ] || fail=1
+          bash scripts/check_pcie_rx_read_ahead.sh $GITHUB_WORKSPACE/out/rx-commit-cut10-cosim 300000 SOC_PCIE_RX_READ2 SOC_PCIE_RESET_COPIES SOC_PCIE_RX_COMMIT_COPIES > out/rx-commit-cut10-cosim.log 2>&1; rc=$?
+          cat out/rx-commit-cut10-cosim.log; [ $rc -eq 0 ] || fail=1
           echo "OVERALL fail=$fail"; exit $fail
       - name: Lint the PCIe packet subsystem
         run: |
@@ -1454,7 +1492,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        part: [busstat, eth-rtl, eth-mbist, eth-gl-0, eth-gl-1, eth-gl-w, joint, joint-cut4, joint-cut5, joint-cut6, joint-cut7, joint-cut8, joint-cut9, soc-mbist]
+        part: [busstat, eth-rtl, eth-mbist, eth-gl-0, eth-gl-1, eth-gl-w, joint, joint-cut4, joint-cut5, joint-cut6, joint-cut7, joint-cut8, joint-cut9, joint-cut10, soc-mbist]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -1573,7 +1611,7 @@ jobs:
           done
           exit $fail
       - name: Joint PCIe and Ethernet SoC traffic with both knobs (actual Ibex; inferred and vendor-SRAM FIFOs)
-        if: matrix.part == 'joint' || matrix.part == 'joint-cut4' || matrix.part == 'joint-cut5' || matrix.part == 'joint-cut6' || matrix.part == 'joint-cut7' || matrix.part == 'joint-cut8' || matrix.part == 'joint-cut9'
+        if: matrix.part == 'joint' || matrix.part == 'joint-cut4' || matrix.part == 'joint-cut5' || matrix.part == 'joint-cut6' || matrix.part == 'joint-cut7' || matrix.part == 'joint-cut8' || matrix.part == 'joint-cut9' || matrix.part == 'joint-cut10'
         run: |
           mkdir -p out
           set -uo pipefail
@@ -1605,6 +1643,10 @@ jobs:
           # Section 18: plus the replay store read one cycle ahead.
           K9="$K8 --define SOC_PCIE_REPLAY_AHEAD"
           [ "${{ matrix.part }}" = joint-cut9 ] && CFGS=("sram-cut9-sync|--eth-mbist-pdk $P $K9" "sram-cut9-async|--async-pcie --eth-mbist-pdk $P $K9" "cut9-async|--async-pcie $K9")
+          # Section 19: plus the credit consume select, the registered receive ready
+          # and sequence compare, and the commit copies.
+          K10="$K9 --define SOC_PCIE_CREDIT_PICK --define SOC_PCIE_SEQ_RX_REG --define SOC_PCIE_RX_COMMIT_COPIES"
+          [ "${{ matrix.part }}" = joint-cut10 ] && CFGS=("sram-cut10-sync|--eth-mbist-pdk $P $K10" "sram-cut10-async|--async-pcie --eth-mbist-pdk $P $K10" "cut10-async|--async-pcie $K10")
           [ "${{ matrix.part }}" = joint-cut7 ] && CFGS=("sram-cut6-sync|--eth-mbist-pdk $P $K6" "sram-cut5-sync|--eth-mbist-pdk $P $K5" "sram-cut7-sync|--eth-mbist-pdk $P $K7" "sram-cut7-async|--async-pcie --eth-mbist-pdk $P $K7" "cut7-sync|$K7")
           for cfg in "${CFGS[@]}"; do
             IFS='|' read -r n args <<< "$cfg"
