@@ -1,0 +1,57 @@
+{
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/43496545665",
+  "tested_source_sha": "3b4eba2a5f615ba03e8ec8133a0296b58fc73851",
+  "derived_artifact_id": 14072445532,
+  "derived_artifact_sha256": "4b03626c0f5bc8a4a14d748e05713b509144df84806539e8fc57b837d884f407",
+  "result": {
+    "status": "FAIL_OR_INCONCLUSIVE_INDEPENDENT_MOS_GRAPH",
+    "full_macro_lvs": false,
+    "qualified_pex": false,
+    "manufacturing_approval": false,
+    "reference_spice_sha256": "64d041383d0ebee7b54dab0bc10d651d31262a2a41ccd15a9c0727dac06e0dd9",
+    "extracted_netlist_sha256": "cbc7dca6e387a67db742336a5f232184ea30e044c18c33c0c5fd77b516c0d57d",
+    "ports": {
+      "reference": [
+        "vss",
+        "substrate",
+        "vdd",
+        "nwell",
+        "wl1",
+        "wl2",
+        "bl1",
+        "bl1_n",
+        "bl2",
+        "bl2_n"
+      ],
+      "extracted": [
+        "bl1",
+        "bl1_n",
+        "bl2",
+        "bl2_n",
+        "sub!",
+        "vdd",
+        "vss",
+        "wl1",
+        "wl2"
+      ]
+    },
+    "models": {
+      "reference": {
+        "sg13_lv_pmos": 2,
+        "sg13_lv_nmos": 6
+      },
+      "extracted": {
+        "sg13_lv_nmos": 6,
+        "sg13_lv_pmos": 2
+      }
+    },
+    "counts": {
+      "reference": 8,
+      "extracted": 8
+    },
+    "scope": "Independent schematic vs extracted MOS projection. Every named port, model, W/L, gate and bulk preserved. Only D/S interchange allowed. No aliases/body ties. RC accuracy and full macro excluded.",
+    "error": "ValueError: Graph/pin inventory differs"
+  },
+  "next_action": "Resolve actual parent-level substrate/nwell connectivity using independently recovered full-macro reference and native full-macro extraction from run 43489103689. No aliases, shorts, omitted ports or black boxes may be invented to obtain a pass. Leaf CC/RC self-consistency remains a separate narrower result.",
+  "manufacturing_approval": false
+}
