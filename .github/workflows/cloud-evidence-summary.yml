@@ -1712,3 +1712,68 @@ jobs:
       - run: python3 -m pip install PyYAML==6.0.2
       - name: Reject failing tools and absent, malformed or failed reports
         run: python3 sw/tests/test_combined_ci_failure_propagation.py
+
+  width-lint:
+    if: ${{ contains(inputs.pcie_jobs, 'width-lint') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /hw/soc/rtl/
+            /hw/soc/tb/cocotb/
+            /hw/soc/tb/tb_pcie_rx_credit_read_ahead.v
+            /scripts/check_pcie_rx_read_ahead.sh
+            /hw/soc/tb/tb_pcie_tlp_stream_word_reg.v
+            /scripts/check_pcie_tlp_stream_word_reg.sh
+            /hw/soc/tb/tb_pcie_replay_ahead.v
+            /scripts/check_pcie_replay_ahead.sh
+            /hw/soc/tb/tb_pcie_credit_pick.v
+            /scripts/check_pcie_credit_pick.sh
+            /hw/requirements.txt
+      - name: Retry transient download failures
+        run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad1
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure'
+        run: sleep 180
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad2
+        if: steps.cad1.outcome == 'failure'
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
+        run: sleep 300
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Strict packet lint with default and round-ten knobs
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          R=hw/soc/rtl/pcie
+          for cfg in default cut10; do
+            flags=()
+            if [ "$cfg" = cut10 ]; then
+              flags=(-DSOC_PCIE_RX_READ2 -DSOC_PCIE_RESET_COPIES -DSOC_PCIE_REPLAY_INBANK -DSOC_PCIE_TX_WORD_REG -DSOC_PCIE_REPLAY_AHEAD -DSOC_PCIE_CREDIT_PICK -DSOC_PCIE_SEQ_RX_REG -DSOC_PCIE_RX_COMMIT_COPIES)
+            fi
+            verilator --lint-only -Wall -Wno-DECLFILENAME -Wno-UNUSEDSIGNAL -Wno-UNUSEDPARAM -Wno-PINCONNECTEMPTY "${flags[@]}" --top-module soc_pcie_buffered_flow_packets $R/*.v > out/lint-$cfg.txt 2>&1 || { cat out/lint-$cfg.txt; exit 1; }
+          done
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pcie-width-lint-${{ github.run_id }}
+          path: out
+          retention-days: 30
