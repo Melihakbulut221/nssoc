@@ -16,7 +16,8 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: /scripts/inspect_current_sram_analog_references.py
-      - run: gh api repos/${{ github.repository }}/releases/assets/663146895 -H 'Accept: application/octet-stream' > pkg.tgz
+      - run: |
+          gh api repos/${{ github.repository }}/releases/assets/663146895 -H 'Accept: application/octet-stream' > pkg.tgz
       - run: python3 scripts/inspect_current_sram_analog_references.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
