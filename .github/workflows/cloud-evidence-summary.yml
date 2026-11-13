@@ -21,6 +21,8 @@ jobs:
           sparse-checkout: |
             /scripts/cdr_netlist_neighbourhood.py
             /scripts/cdr_stage_topology.py
+      - name: Compile the diagnostic before native download
+        run: python3 -m py_compile scripts/cdr_stage_topology.py scripts/cdr_netlist_neighbourhood.py
       - name: Restore the preserved N1 native tree at its original absolute path
         run: |
           set -euo pipefail

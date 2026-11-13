@@ -29,6 +29,5 @@ report = dict(schema=1, source_run=41733225660,
     scope="Topology only. Wire resistors collapsed solely to identify connectivity; no simulation, no parasitic removal from any circuit, no acceptance claim.",
     native_source_unchanged=True, primitive_counts=dict(counts), devices=rows,
     binding=original["binding"])
-(out / "topology.json").write_text(json.dumps(report, indent=2)+"
-")
+(out / "topology.json").write_text(json.dumps(report, indent=2)+chr(10))
 print(json.dumps(dict(model_sha256=before, primitive_counts=dict(counts))))
