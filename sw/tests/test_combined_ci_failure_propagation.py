@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Exercise the actual workflow shell with failing tool stubs, without CAD."""
 import json
 import os
