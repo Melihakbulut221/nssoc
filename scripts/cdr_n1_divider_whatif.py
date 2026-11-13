@@ -35,7 +35,8 @@ VARIANTS={
  'lowz4_bd12':dict(LOWZ4,bd_up_w='12u'),
  'bd10_smp075':dict(LOWZ4,bd_up_w='10u',sampler_bias='.00075'),
  'bd10_smp100':dict(LOWZ4,bd_up_w='10u',sampler_bias='.001'),
- 'bd10_slave_parallel2':dict(LOWZ4,bd_up_w='10u',slave_parallel='2')}
+ 'bd10_slave_parallel2':dict(LOWZ4,bd_up_w='10u',slave_parallel='2'),
+ 'bd10_slave_parallel2_lowz8':dict(LOWZ4,bd_up_w='10u',slave_parallel='2',rppd_w='8u')}
 def patch(text,variant):
     v=VARIANTS[variant];lines=text.split('\n');changed={}
     def edit(name,key,value):
@@ -117,10 +118,10 @@ def main(root,variant,out):
     np.savez_compressed(out/'bit-phase-samples.npz',samples=np.array([np.interp(grid,t,d[n])for n in names],dtype=np.float32),names=np.array(names),grid=grid)
     (out/'result.json').write_text(json.dumps(keep,indent=1,sort_keys=True))
     # Multiplicity changes are a circuit screen, never an actual650 layout claim.
-    if variant=='bd10_slave_parallel2':
+    if 'slave_parallel' in VARIANTS[variant]:
         keep['experiment_scope']='64 slave-tail MOS and 8 collector resistors use m=2; effective primitive multiplicity increases by 72. Existing interconnect RC is retained only as a what-if. No new extracted layout.'
         keep['source_topology_run']=43472881982
-        keep['reference_variant']='lowz4_bd10'
+        keep['reference_variant']='bd10_slave_parallel2' if variant=='bd10_slave_parallel2_lowz8' else 'lowz4_bd10'
         (out/'result.json').write_text(json.dumps(keep,indent=1,sort_keys=True))
     print(json.dumps({k:keep[k]for k in('variant','returncode','passed','data_passed','devices_passed','phase_passed','phase_average_v','failing_hbt')},sort_keys=True))
 if __name__=='__main__':main(*sys.argv[1:])
