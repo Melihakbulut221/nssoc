@@ -1,0 +1,42 @@
+{
+  "status": "REJECTED_TIMING_VIOLATIONS",
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/43492086181",
+  "analysis_head_sha": "c0547bd42487de9b5f84b997e40e04aefd90d16e",
+  "routed_design_source_sha": "ecef9ad7cc9cd38c40b37b2109c2c976c53d1e4b",
+  "routed_native_artifact_id": 14068260482,
+  "derived_artifact": {
+    "id": 14071325282,
+    "name": "routed-sta-r_cut10j_td_d68-43492086181",
+    "size_in_bytes": 31135112,
+    "digest": "sha256:b3c4435e6ac3b39991e4e30b6b76b78f2e88c393caff4013100d384c686c7b4f",
+    "expired": false
+  },
+  "corners": {
+    "nom_slow_1p08V_125C": {
+      "timing__setup__ws": -2.1342661575479793,
+      "timing__hold__ws": -0.06013434365111729,
+      "timing__setup_vio__count": 1233,
+      "timing__hold_vio__count": 1
+    },
+    "nom_typ_1p20V_25C": {
+      "timing__setup__ws": 0.7272593844101812,
+      "timing__hold__ws": -0.05931477699116007,
+      "timing__setup_vio__count": 0,
+      "timing__hold_vio__count": 2
+    },
+    "nom_fast_1p32V_m40C": {
+      "timing__setup__ws": 1.3798890198828737,
+      "timing__hold__ws": -0.18499469146845762,
+      "timing__setup_vio__count": 0,
+      "timing__hold_vio__count": 94
+    }
+  },
+  "scope": "cut10j routed core, fresh routed STA; workflow success only confirms analysis execution. No full padframe or serial PHY qualification. Source predates latest PCIe width and SRAM Boolean fixes; not signoff of current branch.",
+  "timing_closed": false,
+  "manufacturing_approval": false,
+  "next_actions": [
+    "Inspect expanded slow-corner CLINT/CPU, Ethernet SRAM and PCIe paths before changing RTL or physical optimization.",
+    "Compare independently running cut10h candidate; do not infer its result from cut10j.",
+    "Retain original clock targets, corners and derates."
+  ]
+}
