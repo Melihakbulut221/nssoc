@@ -162,3 +162,36 @@ def test_mbist_verdict_requires_one_observed_successful_handover():
                 good.replace('eth_done=3', 'eth_done=1'),
                 good.replace('done_cycle=983043', 'done_cycle=1'), good + 'FATAL: memory failure\n']:
         assert not gl.mbist_boot_passed(bad, 'system-ethernet')
+
+
+@pytest.mark.parametrize('pcie', ['off', 'packet', 'packet-async'])
+@pytest.mark.parametrize('mbist', ['off', 'system-ethernet'])
+def test_boot_scope_reports_only_executed_checks(pcie, mbist):
+    boot = 'LOGICROM_GL PASS checks=28'+chr(10)
+    packet = 'PCIE_IDLE_BOOT PASS samples=123'+chr(10)
+    memory = 'MBIST_BOOT PASS busy_cycles=983010 done_cycle=983043 eth_done=3'+chr(10)
+    text = boot + (packet if pcie != 'off' else '') + (memory if mbist != 'off' else '')
+    actual = gl.boot_checks(text, 0, pcie, mbist)
+    assert actual['passed']
+    assert actual['pcie_idle_boot_passed'] is (None if pcie == 'off' else True)
+    assert actual['mbist_boot_passed'] is (None if mbist == 'off' else True)
+    assert actual['pcie_idle_boot_status'] == ('not_requested' if pcie == 'off' else 'passed')
+    assert actual['mbist_boot_status'] == ('not_requested' if mbist == 'off' else 'passed')
+    for code in (1, 124):
+        assert not gl.boot_checks(text, code, pcie, mbist)['passed']
+    assert not gl.boot_checks(text.replace(boot, ''), 0, pcie, mbist)['passed']
+    assert not gl.boot_checks(text+'FATAL: late failure', 0, pcie, mbist)['passed']
+    if pcie != 'off':
+        assert not gl.boot_checks(text.replace(packet, ''), 0, pcie, mbist)['passed']
+    if mbist != 'off':
+        for bad in (text.replace(memory, ''), text+memory,
+                    text.replace('eth_done=3', 'eth_done=1')):
+            assert not gl.boot_checks(bad, 0, pcie, mbist)['passed']
+
+
+def test_disabled_mbist_is_not_a_success_claim():
+    assert gl.mbist_boot_passed('', 'off') is None
+    with pytest.raises(ValueError):
+        gl.boot_checks('', 0, 'invalid', 'off')
+    with pytest.raises(ValueError):
+        gl.boot_checks('', 0, 'off', 'invalid')
