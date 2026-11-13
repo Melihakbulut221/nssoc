@@ -23,13 +23,13 @@ jobs:
           z=zipfile.ZipFile('source.zip');out=pathlib.Path('out');out.mkdir()
           records=[]
           for info in z.infolist():
-              if not info.filename.endswith('.json'):continue
+              if pathlib.PurePosixPath(info.filename).name != 'result.json':continue
               parts=pathlib.PurePosixPath(info.filename)
               assert not parts.is_absolute() and '..' not in parts.parts
               data=z.read(info);json.loads(data)
               p=out/parts;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(data)
               records.append(dict(path=info.filename,size=len(data),sha256=hashlib.sha256(data).hexdigest()))
-          assert records
+          assert len(records)==1
           (out/'recovery-index.json').write_text(json.dumps(dict(source_run=43482979273,source_artifact=14072710633,source_sha256=digest,json_files=records,native_downloaded_to_user_machine=False),indent=2))
           print(json.dumps(records))
           PYCODE
