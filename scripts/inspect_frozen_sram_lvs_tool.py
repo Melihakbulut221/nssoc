@@ -8,7 +8,7 @@ with tarfile.open('pkg.tgz','r:gz') as t:
  for name,info in c['input_files'].items():
   if '/libs.tech/klayout/' not in name or not any(k in name.lower() for k in ['lvs','extract']):continue
   rows.append({'path':name,'sha256':info['sha256']})
-  if name.endswith('/run_lvs.py') or name.endswith('/sg13g2_lvs.lylvs'):
+  if name.endswith('/run_lvs.py') or name.endswith('/sg13g2.lvs'):
    data=t.extractfile(prefix+name).read();assert hashlib.sha256(data).hexdigest()==info['sha256']
    # Tool source only; no circuit/layout files exported.
    (out/pathlib.PurePosixPath(name).name).write_bytes(data)
