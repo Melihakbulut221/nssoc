@@ -1,0 +1,97 @@
+{
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/43498179183",
+  "job_id": 132136707760,
+  "derived_artifact_id": 14074090121,
+  "derived_artifact_sha256": "f097ef6d03c48ce006eb9f72064d9d048c2af944c78424b1b61eae4cf457c678",
+  "result": {
+    "base": "e6e887d858f30730da11fbe575c4b07550225257",
+    "head": "29d77d1529ceebb8edefc625253a1ad0294ae20e",
+    "configuration": "cut10",
+    "results": [
+      {
+        "module": "soc_pcie_lcrc_rx",
+        "configuration": "cut10",
+        "returncode": 0,
+        "passed": true,
+        "seconds": 4.9793736709999905,
+        "last_pass": "EQUIV_STATUS",
+        "equivalence_make_reached": true,
+        "equivalence_status_reached": true
+      },
+      {
+        "module": "soc_pcie_packet_endpoint",
+        "configuration": "cut10",
+        "returncode": 1,
+        "passed": false,
+        "seconds": 227.04073290499997,
+        "last_pass": "EQUIV_INDUCT",
+        "equivalence_make_reached": true,
+        "equivalence_status_reached": false
+      },
+      {
+        "module": "soc_pcie_credit_tx",
+        "configuration": "cut10",
+        "returncode": 1,
+        "passed": false,
+        "seconds": 5.533797983999989,
+        "last_pass": "EQUIV_INDUCT",
+        "equivalence_make_reached": true,
+        "equivalence_status_reached": false
+      },
+      {
+        "module": "soc_pcie_lcrc_tx",
+        "configuration": "cut10",
+        "returncode": 1,
+        "passed": false,
+        "seconds": 225.00985952700006,
+        "last_pass": "EQUIV_STATUS",
+        "equivalence_make_reached": true,
+        "equivalence_status_reached": true
+      },
+      {
+        "module": "soc_pcie_replay_tx",
+        "configuration": "cut10",
+        "returncode": 0,
+        "passed": true,
+        "seconds": 14.063335320999954,
+        "last_pass": "EQUIV_STATUS",
+        "equivalence_make_reached": true,
+        "equivalence_status_reached": true
+      },
+      {
+        "module": "soc_pcie_rx_credit",
+        "configuration": "cut10",
+        "returncode": 1,
+        "passed": false,
+        "seconds": 13.022487081999998,
+        "last_pass": "EQUIV_INDUCT",
+        "equivalence_make_reached": true,
+        "equivalence_status_reached": false
+      },
+      {
+        "module": "soc_pcie_tlp_integrity",
+        "configuration": "cut10",
+        "returncode": 1,
+        "passed": false,
+        "seconds": 6.285360368999932,
+        "last_pass": "EQUIV_INDUCT",
+        "equivalence_make_reached": true,
+        "equivalence_status_reached": false
+      }
+    ],
+    "passed": false
+  },
+  "terminal_errors": {
+    "soc_pcie_credit_tx.log": "ERROR: No SAT model available for cell pick_gate ($paramod\\soc_pcie_credit_pick\\W=s32'00000000000000000000000011000001).",
+    "soc_pcie_lcrc_tx.log": "ERROR: Found 8 unproven $equiv cells in 'equiv_status -assert'.",
+    "soc_pcie_packet_endpoint.log": "ERROR: No SAT model available for cell transaction_stream.busy_copy_gate (soc_pcie_tlp_stream_flag_copy).",
+    "soc_pcie_rx_credit.log": "ERROR: No SAT model available for cell read_bank[5].pick_copy_gate ($paramod$b181ad66023c6280fd9e44f3f67e6033620683df\\soc_pcie_rx_pick_copy).",
+    "soc_pcie_tlp_integrity.log": "ERROR: No SAT model available for cell transaction_stream.busy_word_copy_gate (soc_pcie_tlp_stream_flag_copy)."
+  },
+  "interpretation": "Deferred elaboration reaches actual equivalence. Cut10 LCRC RX and replay TX pass; four other checks encounter preserved hierarchy cells without SAT models; LCRC TX retains eight unproven cursor_data_byte internal bits. Unproven is not a demonstrated RTL counterexample. No full equivalence acceptance.",
+  "followup_run": "https://github.com/Melihakbulut221/nssoc/actions/runs/43500625611",
+  "followup_source": "6f8f8d5d6883570bbdec4dcfbc9170c8f574b47e",
+  "followup_scope": "Remove only formal keep_hierarchy attributes, flatten logic, then require both forward and reverse explicit-undefined equivalence. Source-derived selector controls must pass mutual undef checks, known-fault rejection and 32768 binary/X/Z index simulations before full proofs. No RTL, clock or gate changes.",
+  "formal_equivalence_proven": false,
+  "manufacturing_approval": false
+}
