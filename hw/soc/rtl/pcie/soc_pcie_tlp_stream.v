@@ -61,6 +61,12 @@ module soc_pcie_tlp_stream #(
     wire tx_busy_d = (!tx_busy && completion_valid) ? 1'b1 :
                      (tx_busy && tx_ready_i && tx_eop_o) ? 1'b0 : tx_busy;
     soc_pcie_tlp_stream_flag_copy busy_copy (.clk_i(clk_i), .rst_ni(rst_ni), .d_i(tx_busy_d), .q_o(tx_busy_copy));
+    // Section 18: a second copy for the word and marker registers' load
+    // and advance selects only (r_cut8z: tx_busy -> tx_word_q, -0.57 ns,
+    // 0.80 ns from clock to output on the master's fanout). It equals
+    // tx_busy in every cycle like busy_copy.
+    wire tx_busy_word;
+    soc_pcie_tlp_stream_flag_copy busy_word_copy (.clk_i(clk_i), .rst_ni(rst_ni), .d_i(tx_busy_d), .q_o(tx_busy_word));
     assign tx_valid_o = rst_ni && tx_busy_copy;
     assign tx_sop_o = tx_sop_q;
     assign tx_eop_o = tx_eop_q;
@@ -85,9 +91,9 @@ module soc_pcie_tlp_stream #(
     always @(posedge clk_i or negedge rst_ni) begin
         if (!rst_ni) begin
             tx_word_q<=0; tx_sop_q<=0; tx_eop_q<=0;
-        end else if (!tx_busy && completion_valid) begin
+        end else if (!tx_busy_word && completion_valid) begin
             tx_word_q<=completion_header[95:64]; tx_sop_q<=1; tx_eop_q<=0;
-        end else if (tx_busy && tx_ready_i) begin
+        end else if (tx_busy_word && tx_ready_i) begin
             tx_sop_q<=0;
             if (tx_eop_o) tx_eop_q<=0;
             else begin
