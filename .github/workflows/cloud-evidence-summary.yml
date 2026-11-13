@@ -191,6 +191,9 @@ jobs:
           # Section 17: plus the registered transmit word of the transaction stream
           # (and, inside SOC_ETH_FIFO_WRREG, the per-bank write select copies).
           - {name: ex_exec_pmpreg_cut8, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1'}
+          # Section 18: plus the replay store read one cycle ahead (and, inside
+          # SOC_PCIE_TX_WORD_REG, the word registers' own tx_busy copy).
+          - {name: ex_exec_pmpreg_cut9, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', rpahead: '1'}
     env:
       RUN: ${{ inputs.variant == '' || contains(format(' {0} ', inputs.variant), format(' {0} ', matrix.name)) }}
       SOC_ETH_FIFO_RDREG: ${{ matrix.ethrd || '0' }}
@@ -205,6 +208,7 @@ jobs:
       SOC_ETH_FIFO_WRREG: ${{ matrix.ethwr || '0' }}
       SOC_PCIE_REPLAY_INBANK: ${{ matrix.rpinbank || '0' }}
       SOC_PCIE_TX_WORD_REG: ${{ matrix.txword || '0' }}
+      SOC_PCIE_REPLAY_AHEAD: ${{ matrix.rpahead || '0' }}
       SOC_INTERFACE_PROFILE: base
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
       IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
@@ -318,6 +322,7 @@ jobs:
           - {name: ex_exec_pmpreg_cut6, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', gate: corrpre-pcie}
           - {name: ex_exec_pmpreg_cut7, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', gate: corrpre-pcie}
           - {name: ex_exec_pmpreg_cut8, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', gate: corrpre-pcie}
+          - {name: ex_exec_pmpreg_cut9, ex: '1', rf: '1', memreg: '2', pmpreg: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', rpahead: '1', gate: corrpre-pcie}
           # The system and Ethernet MBIST gate-level boot with every knob of
           # docs/combined-timing.md on the execute stage alone (one-cycle
           # memory reads, the configuration whose MBIST boot fits the job).
@@ -343,6 +348,7 @@ jobs:
       SOC_ETH_FIFO_WRREG: ${{ matrix.ethwr || '0' }}
       SOC_PCIE_REPLAY_INBANK: ${{ matrix.rpinbank || '0' }}
       SOC_PCIE_TX_WORD_REG: ${{ matrix.txword || '0' }}
+      SOC_PCIE_REPLAY_AHEAD: ${{ matrix.rpahead || '0' }}
       SOC_INTERFACE_PROFILE: full
       IBEX_EX_STAGE: ${{ matrix.ex || '0' }}
       IBEX_PMP_REQ_REG: ${{ matrix.pmpreg || '0' }}
@@ -489,6 +495,13 @@ jobs:
           # density 68 and 66 (the second measures placement sensitivity).
           - {name: r_cut8z_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true, "PL_RESIZER_HOLD_SLACK_MARGIN": 0.0, "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', route: '1'}
           - {name: r_cut8z_td_d66, overrides: '{"PL_TARGET_DENSITY_PCT": 66, "PL_TIMING_DRIVEN": true, "PL_RESIZER_HOLD_SLACK_MARGIN": 0.0, "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', route: '1'}
+          # Section 18: every knob plus the replay store read one cycle ahead (and the
+          # word registers' tx_busy copy inside SOC_PCIE_TX_WORD_REG), no hold margin,
+          # at density 68 and 70; r_cut9h adds the hold-only pass after the uncapped
+          # setup repair (deephold: its -hold_margin; deephold_setup: its -setup_margin).
+          - {name: r_cut9z_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true, "PL_RESIZER_HOLD_SLACK_MARGIN": 0.0, "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', rpahead: '1', route: '1'}
+          - {name: r_cut9h_td_d68, overrides: '{"PL_TARGET_DENSITY_PCT": 68, "PL_TIMING_DRIVEN": true, "PL_RESIZER_HOLD_SLACK_MARGIN": 0.0, "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', rpahead: '1', route: '1', deephold: '0.05', deephold_setup: '0.1'}
+          - {name: r_cut9z_td_d70, overrides: '{"PL_TARGET_DENSITY_PCT": 70, "PL_TIMING_DRIVEN": true, "PL_RESIZER_HOLD_SLACK_MARGIN": 0.0, "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.0}', prefix: '1', deep: '1', ex: '1', chkdefer: '1', memreg: '2', predecode: '1', pmpreg: '1', pcie_trace: '1', ethrd: '1', evpend: '1', mbistpipe: '1', rxstaged: '0', rxread2: '1', ireqreg: '1', rstcopy: '1', ethwr: '1', rpinbank: '1', txword: '1', rpahead: '1', route: '1'}
           # timing/pcie-pipeline's probe (its default probe_matrix): upstream
           # register file, no Ibex knobs, the PCIe path trace. pcie_rtl_ref
           # (optional) takes hw/soc/rtl/pcie from another ref instead.
@@ -522,6 +535,7 @@ jobs:
       SOC_ETH_FIFO_WRREG: ${{ matrix.ethwr || '0' }}
       SOC_PCIE_REPLAY_INBANK: ${{ matrix.rpinbank || '0' }}
       SOC_PCIE_TX_WORD_REG: ${{ matrix.txword || '0' }}
+      SOC_PCIE_REPLAY_AHEAD: ${{ matrix.rpahead || '0' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         if: ${{ (inputs.probe_variant == '' || contains(format(' {0} ', inputs.probe_variant), format(' {0} ', matrix.name))) }}
@@ -683,7 +697,15 @@ jobs:
           rep=('set_wire_rc -signal -layer Metal3\nset_wire_rc -clock -layer Metal4\n'
                'repair_design -verbose\nestimate_parasitics -global_routing\n'
                'repair_timing -verbose -setup -setup_margin 0 -repair_tns 100 -max_iterations ${{ inputs.repair_iterations || '1000000' }} -max_buffer_percent 50\n'
-               'estimate_parasitics -global_routing\nputs "NSSOC_DEEP_REPAIR_DONE"\n')
+               'estimate_parasitics -global_routing\n')
+          if '${{ matrix.deephold || '' }}':
+              # Section 18: a hold-only pass after the setup repair, which is the
+              # last resizer pass before routing and runs after the flow's own
+              # hold repair. Setup-protected (-setup_margin; setup violations are
+              # not allowed), every corner, then the parasitics again.
+              rep+=('repair_timing -verbose -hold -setup_margin ${{ matrix.deephold_setup || '0.1' }} -hold_margin ${{ matrix.deephold }} -max_iterations 1000 -max_buffer_percent 10\n'
+                    'estimate_parasitics -global_routing\nputs "NSSOC_DEEP_HOLD_DONE"\n')
+          rep+='puts "NSSOC_DEEP_REPAIR_DONE"\n'
           if '${{ matrix.route || '0' }}' == '1':
               # The routed measurement continues from the repaired database.
               rep+='write_db '+sys.argv[2].rsplit('/',1)[0]+'/deep-repaired.odb\nputs "NSSOC_DEEP_DB_WRITTEN"\n'
@@ -699,7 +721,7 @@ jobs:
           open(sys.argv[2],'w').write(s[:i]+rep+tail)
           PY
           timeout 12600 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage openroad -exit $OUT/deep-repair.tcl > $OUT/deep-repair.log 2>&1; echo "DEEP_RC=$?"
-          grep -a -E "NSSOC_DEEP|slack \(|RSZ-00(4|5|6)|^ +[0-9]+ +\|.*\| *-?[0-9.]+ *\|" $OUT/deep-repair.log | tail -60
+          grep -a -E "NSSOC_DEEP|slack \(|RSZ-00(4|5|6)|RSZ-0032|^ +[0-9]+ +\|.*\| *-?[0-9.]+ *\|" $OUT/deep-repair.log | tail -60
           if [ "${{ matrix.pcie_trace || '0' }}" = 1 ]; then
             sed -n '/^NSSOC_DEEP_CORNER_TRACE_BEGIN/,/^NSSOC_DEEP_CORNER_TRACE_END/p' $OUT/deep-repair.log > $OUT/deep-pcie-slow.rpt
             python3 -B scripts/pcie_timing/trace_paths.py $OUT/synthesis/soc_top.mapped.json $OUT/deep-pcie-slow.rpt $OUT/deep-trace 10 || echo "TRACE_FAILED"
@@ -757,7 +779,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68, r_cut3h_td_d68, r_cut4h_td_d68, r_cut3m_td_d68, r_cut4m_td_d68, r_cut5n_td_d68, r_cut5a_td_d68, r_cut5b_td_d68, r_cut6a_td_d68, r_cut6z_td_d68, r_cut7z_td_d68, r_cut7a_td_d68, r_cut8z_td_d68, r_cut8z_td_d66]
+        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68, r_cut3h_td_d68, r_cut4h_td_d68, r_cut3m_td_d68, r_cut4m_td_d68, r_cut5n_td_d68, r_cut5a_td_d68, r_cut5b_td_d68, r_cut6a_td_d68, r_cut6z_td_d68, r_cut7z_td_d68, r_cut7a_td_d68, r_cut8z_td_d68, r_cut8z_td_d66, r_cut9z_td_d68, r_cut9h_td_d68, r_cut9z_td_d70]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -962,7 +984,7 @@ jobs:
       fail-fast: false
       matrix:
         # r_cut4h_td_d68 and r_cut3hh_td_d68 are the route-hold job's databases.
-        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68, r_cut3h_td_d68, r_cut4h_td_d68, r_cut3hh_td_d68, r_cut3m_td_d68, r_cut4m_td_d68, r_cut5n_td_d68, r_cut5a_td_d68, r_cut5b_td_d68, r_cut6a_td_d68, r_cut6z_td_d68, r_cut7z_td_d68, r_cut7a_td_d68, r_cut8z_td_d68, r_cut8z_td_d66]
+        name: [r_cut_td_d70, r_cut_td_d68, r_cut2_td_d68, r_cut2_td_d70, r_cut3_td_d68, r_cut3n_td_d68, r_cut3h_td_d68, r_cut4h_td_d68, r_cut3hh_td_d68, r_cut3m_td_d68, r_cut4m_td_d68, r_cut5n_td_d68, r_cut5a_td_d68, r_cut5b_td_d68, r_cut6a_td_d68, r_cut6z_td_d68, r_cut7z_td_d68, r_cut7a_td_d68, r_cut8z_td_d68, r_cut8z_td_d66, r_cut9z_td_d68, r_cut9h_td_d68, r_cut9z_td_d70]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -1263,6 +1285,8 @@ jobs:
             /scripts/check_pcie_rx_read_ahead.sh
             /hw/soc/tb/tb_pcie_tlp_stream_word_reg.v
             /scripts/check_pcie_tlp_stream_word_reg.sh
+            /hw/soc/tb/tb_pcie_replay_ahead.v
+            /scripts/check_pcie_replay_ahead.sh
             /hw/requirements.txt
       - name: Retry transient download failures
         run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
@@ -1317,7 +1341,9 @@ jobs:
           for k in "staged|-DSOC_PCIE_RX_STAGED_COMMIT|$RQ" "ahead|-DSOC_PCIE_RX_READ_AHEAD|$RQ" "read2|-DSOC_PCIE_RX_READ2|$RQ" \
                    "rstcopy|-DSOC_PCIE_RESET_COPIES|$RC" "read2rst|-DSOC_PCIE_RX_READ2 -DSOC_PCIE_RESET_COPIES|$RQ" \
                    "inbank|-DSOC_PCIE_REPLAY_INBANK|$RP" "cut7|-DSOC_PCIE_RX_READ2 -DSOC_PCIE_RESET_COPIES -DSOC_PCIE_REPLAY_INBANK|$RC" \
-                   "txword|-DSOC_PCIE_TX_WORD_REG|$RT" "cut8|-DSOC_PCIE_RX_READ2 -DSOC_PCIE_RESET_COPIES -DSOC_PCIE_REPLAY_INBANK -DSOC_PCIE_TX_WORD_REG|$RC soc_pcie_packet_endpoint"; do
+                   "txword|-DSOC_PCIE_TX_WORD_REG|$RT" "cut8|-DSOC_PCIE_RX_READ2 -DSOC_PCIE_RESET_COPIES -DSOC_PCIE_REPLAY_INBANK -DSOC_PCIE_TX_WORD_REG|$RC soc_pcie_packet_endpoint" \
+                   "rpahead|-DSOC_PCIE_REPLAY_AHEAD|$RP" \
+                   "cut9|-DSOC_PCIE_RX_READ2 -DSOC_PCIE_RESET_COPIES -DSOC_PCIE_REPLAY_INBANK -DSOC_PCIE_TX_WORD_REG -DSOC_PCIE_REPLAY_AHEAD|$RC soc_pcie_tlp_stream soc_pcie_packet_endpoint"; do
             IFS='|' read -r n d ts <<< "$k"
             for t in $ts; do
               ( cd hw/soc/tb/cocotb && PATH="$PWD/../../../.venv/bin:$PATH" timeout 3000 make -f Makefile.$t SIM_BUILD=/tmp/sb_${n}_$t COCOTB_RESULTS_FILE=$GITHUB_WORKSPACE/out/results_${n}_$t.xml EXTRA_COMPILE_ARGS="$d" > $GITHUB_WORKSPACE/out/${n}_$t.log 2>&1 ); rc=$?
@@ -1335,6 +1361,12 @@ jobs:
           cat out/read2-rstcopy-cosim.log; [ $rc -eq 0 ] || fail=1
           bash scripts/check_pcie_tlp_stream_word_reg.sh $GITHUB_WORKSPACE/out/tx-word-cosim 300000 > out/tx-word-cosim.log 2>&1; rc=$?
           cat out/tx-word-cosim.log; [ $rc -eq 0 ] || fail=1
+          # Section 18: the replay store read one cycle ahead, alone and with the
+          # in-bank read and the reset copies (the SoC's combination).
+          bash scripts/check_pcie_replay_ahead.sh $GITHUB_WORKSPACE/out/replay-ahead-cosim 300000 SOC_PCIE_REPLAY_AHEAD > out/replay-ahead-cosim.log 2>&1; rc=$?
+          cat out/replay-ahead-cosim.log; [ $rc -eq 0 ] || fail=1
+          bash scripts/check_pcie_replay_ahead.sh $GITHUB_WORKSPACE/out/replay-ahead-cut9-cosim 300000 SOC_PCIE_REPLAY_AHEAD SOC_PCIE_REPLAY_INBANK SOC_PCIE_RESET_COPIES > out/replay-ahead-cut9-cosim.log 2>&1; rc=$?
+          cat out/replay-ahead-cut9-cosim.log; [ $rc -eq 0 ] || fail=1
           echo "OVERALL fail=$fail"; exit $fail
       - name: Lint the PCIe packet subsystem
         run: |
@@ -1422,7 +1454,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        part: [busstat, eth-rtl, eth-mbist, eth-gl-0, eth-gl-1, eth-gl-w, joint, joint-cut4, joint-cut5, joint-cut6, joint-cut7, joint-cut8, soc-mbist]
+        part: [busstat, eth-rtl, eth-mbist, eth-gl-0, eth-gl-1, eth-gl-w, joint, joint-cut4, joint-cut5, joint-cut6, joint-cut7, joint-cut8, joint-cut9, soc-mbist]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -1541,7 +1573,7 @@ jobs:
           done
           exit $fail
       - name: Joint PCIe and Ethernet SoC traffic with both knobs (actual Ibex; inferred and vendor-SRAM FIFOs)
-        if: matrix.part == 'joint' || matrix.part == 'joint-cut4' || matrix.part == 'joint-cut5' || matrix.part == 'joint-cut6' || matrix.part == 'joint-cut7' || matrix.part == 'joint-cut8'
+        if: matrix.part == 'joint' || matrix.part == 'joint-cut4' || matrix.part == 'joint-cut5' || matrix.part == 'joint-cut6' || matrix.part == 'joint-cut7' || matrix.part == 'joint-cut8' || matrix.part == 'joint-cut9'
         run: |
           mkdir -p out
           set -uo pipefail
@@ -1570,6 +1602,9 @@ jobs:
           # copies act with the vendor SRAM FIFOs).
           K8="$K7 --define SOC_PCIE_TX_WORD_REG"
           [ "${{ matrix.part }}" = joint-cut8 ] && CFGS=("sram-cut8-sync|--eth-mbist-pdk $P $K8" "sram-cut8-async|--async-pcie --eth-mbist-pdk $P $K8" "cut8-async|--async-pcie $K8")
+          # Section 18: plus the replay store read one cycle ahead.
+          K9="$K8 --define SOC_PCIE_REPLAY_AHEAD"
+          [ "${{ matrix.part }}" = joint-cut9 ] && CFGS=("sram-cut9-sync|--eth-mbist-pdk $P $K9" "sram-cut9-async|--async-pcie --eth-mbist-pdk $P $K9" "cut9-async|--async-pcie $K9")
           [ "${{ matrix.part }}" = joint-cut7 ] && CFGS=("sram-cut6-sync|--eth-mbist-pdk $P $K6" "sram-cut5-sync|--eth-mbist-pdk $P $K5" "sram-cut7-sync|--eth-mbist-pdk $P $K7" "sram-cut7-async|--async-pcie --eth-mbist-pdk $P $K7" "cut7-sync|$K7")
           for cfg in "${CFGS[@]}"; do
             IFS='|' read -r n args <<< "$cfg"
