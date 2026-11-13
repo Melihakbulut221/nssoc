@@ -1,0 +1,145 @@
+{
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/43501885869",
+  "source_sha": "abcb20ba78568b724b668a0ad65a23844b0c11a7",
+  "derived_artifact_id": 14074856085,
+  "derived_artifact_sha256": "39135e9187139dec385707e5f584f6bcfd61b697d4e2cd0ee960dfa0f1a59a7e",
+  "diagnostic": {
+    "status": "DIAGNOSTIC_COMPLETE_NOT_FULL_EQUIVALENCE",
+    "source_base": "e6e887d858f30730da11fbe575c4b07550225257",
+    "selector_controls": {
+      "passed": false,
+      "formal_controls": [
+        {
+          "direction": "forward",
+          "fault": false,
+          "accepted": false,
+          "expected_rejection": true
+        },
+        {
+          "direction": "forward",
+          "fault": true,
+          "accepted": false,
+          "expected_rejection": true
+        },
+        {
+          "direction": "reverse",
+          "fault": false,
+          "accepted": true,
+          "expected_rejection": false
+        },
+        {
+          "direction": "reverse",
+          "fault": true,
+          "accepted": false,
+          "expected_rejection": true
+        }
+      ],
+      "four_state_cases": 32768,
+      "simulation_fault_rejected": true,
+      "scope": "Actual old/new cursor_data_byte expressions at MAX_TLP_DWORDS=8. Mutual undef formal comparison covers arbitrary binary data/control; Icarus sweeps all binary/X/Z index combinations with eight representative data patterns. Not a full-module or all-parameter proof."
+    },
+    "queries": [
+      {
+        "cursor_word": null,
+        "all_binary_inputs_equivalent": false,
+        "counterexample_found": true
+      },
+      {
+        "cursor_word": 0,
+        "all_binary_inputs_equivalent": true,
+        "counterexample_found": false
+      },
+      {
+        "cursor_word": 1,
+        "all_binary_inputs_equivalent": true,
+        "counterexample_found": false
+      },
+      {
+        "cursor_word": 2,
+        "all_binary_inputs_equivalent": true,
+        "counterexample_found": false
+      },
+      {
+        "cursor_word": 3,
+        "all_binary_inputs_equivalent": true,
+        "counterexample_found": false
+      },
+      {
+        "cursor_word": 4,
+        "all_binary_inputs_equivalent": true,
+        "counterexample_found": false
+      },
+      {
+        "cursor_word": 5,
+        "all_binary_inputs_equivalent": true,
+        "counterexample_found": false
+      },
+      {
+        "cursor_word": 6,
+        "all_binary_inputs_equivalent": true,
+        "counterexample_found": false
+      },
+      {
+        "cursor_word": 7,
+        "all_binary_inputs_equivalent": true,
+        "counterexample_found": false
+      },
+      {
+        "cursor_word": 8,
+        "all_binary_inputs_equivalent": false,
+        "counterexample_found": true
+      },
+      {
+        "cursor_word": 9,
+        "all_binary_inputs_equivalent": false,
+        "counterexample_found": true
+      },
+      {
+        "cursor_word": 10,
+        "all_binary_inputs_equivalent": false,
+        "counterexample_found": true
+      },
+      {
+        "cursor_word": 11,
+        "all_binary_inputs_equivalent": false,
+        "counterexample_found": true
+      },
+      {
+        "cursor_word": 12,
+        "all_binary_inputs_equivalent": false,
+        "counterexample_found": true
+      },
+      {
+        "cursor_word": 13,
+        "all_binary_inputs_equivalent": false,
+        "counterexample_found": true
+      },
+      {
+        "cursor_word": 14,
+        "all_binary_inputs_equivalent": false,
+        "counterexample_found": true
+      },
+      {
+        "cursor_word": 15,
+        "all_binary_inputs_equivalent": false,
+        "counterexample_found": true
+      }
+    ],
+    "scope": "Direct synthesized four-state-equality miter with binary-defined input data and indices. Per-index queries localize a counterexample; they do not waive invalid-address behavior or constitute full-module equivalence.",
+    "formal_equivalence_proven": false,
+    "manufacturing_approval": false
+  },
+  "observed_counterexample": {
+    "cursor_word": 8,
+    "cursor_byte": 0,
+    "data": 0,
+    "synthesized_original_value": "00000000",
+    "synthesized_candidate_value": "xxxxxxxx"
+  },
+  "interpretation": "The unrestricted synthesized miter differs only on indices 8..15; all binary data and byte selections prove equal at each valid index 0..7. Four-state RTL simulation matches original and candidate over 32768 source-bound index/data-pattern cases. Yosys concretizes the original out-of-range read, while the explicit candidate bound preserves X. This does not establish full-module equivalence or authorize dropping invalid-address checks.",
+  "followup_source_sha": "d44a6790c4543d378fcb140359b7dff4a6e4635d",
+  "followup_branch": "codex/pcie-width-reference-x",
+  "followup": "Express implicit out-of-range X in the proof reference at two source-locked memory reads only. Product RTL unchanged. Require raw/normalized/candidate four-state checks plus mutation controls before mutual full-module proof. Preserve per-file normalization hashes and all original valid data behavior.",
+  "formal_equivalence_proven": false,
+  "manufacturing_approval": false
+}
