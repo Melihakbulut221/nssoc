@@ -1,0 +1,1004 @@
+{
+  "status": "PASS_DECLARED_ACTUAL_PARAMETER_EQUIVALENCE",
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/43509954039",
+  "source_sha": "70b10b84b41282e22cb29fa56ebb1d3284656c58",
+  "current_head_checked": "8f386498014877f1c4b392d9fb35496679f6f7b5",
+  "records": [
+    {
+      "artifact_id": 14078246468,
+      "artifact_sha256": "011f68eb7c71380ad688299d4b0ea8934c2d7cca99ff304d4d702f80ba837360",
+      "artifact_name": "cut10-actual-pcie-equivalence-default-reverse-43509954039",
+      "result": {
+        "base": "e6e887d858f30730da11fbe575c4b07550225257",
+        "head": "70b10b84b41282e22cb29fa56ebb1d3284656c58",
+        "configuration": "default",
+        "direction": "reverse",
+        "explicit_undef": true,
+        "requires_both_directions": true,
+        "reference_normalization": [
+          {
+            "file": "soc_pcie_lcrc_tx.v",
+            "raw_sha256": "d14a074ca1d8e1697b76a0994d35d09904c253e07180b9463c7b9ca91a519844",
+            "normalized_sha256": "d73a1c4f86201477c0cd20143c098ab26603e26e33596258db99729ffdca79d8"
+          },
+          {
+            "file": "soc_pcie_rx_credit.v",
+            "raw_sha256": "c1b2466bc6e8ca9647e3ac35265672aa25f35099ccb8b5a24126fe0993ca6bb8",
+            "normalized_sha256": "affde7d7673f2ed0fd13e7b5effce4777ca9699611f5e47991cf9bff890f6573"
+          }
+        ],
+        "results": [
+          {
+            "module": "soc_pcie_rx_credit",
+            "parameters": {
+              "COMPLETER_ONLY": 1
+            },
+            "configuration": "default",
+            "direction": "reverse",
+            "explicit_undef": true,
+            "returncode": 0,
+            "passed": true,
+            "seconds": 105.10465212400001,
+            "last_pass": "EQUIV_STATUS",
+            "equivalence_make_reached": true,
+            "equivalence_status_reached": true
+          }
+        ],
+        "passed": true
+      },
+      "selector_controls": {
+        "passed": true,
+        "checks": [
+          {
+            "kind": "lcrc",
+            "passed": true,
+            "formal_controls": [
+              {
+                "direction": "forward",
+                "fault": false,
+                "accepted": true,
+                "expected_rejection": false
+              },
+              {
+                "direction": "forward",
+                "fault": true,
+                "accepted": false,
+                "expected_rejection": true
+              },
+              {
+                "direction": "reverse",
+                "fault": false,
+                "accepted": true,
+                "expected_rejection": false
+              },
+              {
+                "direction": "reverse",
+                "fault": true,
+                "accepted": false,
+                "expected_rejection": true
+              }
+            ],
+            "source_four_state_cases": 32768,
+            "simulation_passed": true,
+            "simulation_fault_rejected": true
+          },
+          {
+            "kind": "dllp",
+            "passed": true,
+            "formal_controls": [
+              {
+                "direction": "forward",
+                "fault": false,
+                "accepted": true,
+                "expected_rejection": false
+              },
+              {
+                "direction": "forward",
+                "fault": true,
+                "accepted": false,
+                "expected_rejection": true
+              },
+              {
+                "direction": "reverse",
+                "fault": false,
+                "accepted": true,
+                "expected_rejection": false
+              },
+              {
+                "direction": "reverse",
+                "fault": true,
+                "accepted": false,
+                "expected_rejection": true
+              }
+            ],
+            "source_four_state_cases": 131072,
+            "simulation_passed": true,
+            "simulation_fault_rejected": true
+          }
+        ],
+        "scope": "Raw, explicit-out-of-range-X normalized reference, and candidate expressions. Exhaustive binary/X/Z indices and selector controls with eight data patterns; mutual undef SAT compares normalized reference and candidate. This is reference preparation evidence, not full-module acceptance."
+      },
+      "reference_normalization": {
+        "base": "e6e887d858f30730da11fbe575c4b07550225257",
+        "rules": "Explicit out-of-range X only; no address assumptions",
+        "changes": [
+          {
+            "file": "soc_pcie_lcrc_tx.v",
+            "raw_sha256": "d14a074ca1d8e1697b76a0994d35d09904c253e07180b9463c7b9ca91a519844",
+            "normalized_sha256": "d73a1c4f86201477c0cd20143c098ab26603e26e33596258db99729ffdca79d8"
+          },
+          {
+            "file": "soc_pcie_rx_credit.v",
+            "raw_sha256": "c1b2466bc6e8ca9647e3ac35265672aa25f35099ccb8b5a24126fe0993ca6bb8",
+            "normalized_sha256": "affde7d7673f2ed0fd13e7b5effce4777ca9699611f5e47991cf9bff890f6573"
+          }
+        ]
+      }
+    },
+    {
+      "artifact_id": 14078241228,
+      "artifact_sha256": "1b7d7ed6f43d4846b1fee4aadf9e913f6ee8d4f1630058dd658f20f42998ba32",
+      "artifact_name": "cut10-actual-pcie-equivalence-default-forward-43509954039",
+      "result": {
+        "base": "e6e887d858f30730da11fbe575c4b07550225257",
+        "head": "70b10b84b41282e22cb29fa56ebb1d3284656c58",
+        "configuration": "default",
+        "direction": "forward",
+        "explicit_undef": true,
+        "requires_both_directions": true,
+        "reference_normalization": [
+          {
+            "file": "soc_pcie_lcrc_tx.v",
+            "raw_sha256": "d14a074ca1d8e1697b76a0994d35d09904c253e07180b9463c7b9ca91a519844",
+            "normalized_sha256": "d73a1c4f86201477c0cd20143c098ab26603e26e33596258db99729ffdca79d8"
+          },
+          {
+            "file": "soc_pcie_rx_credit.v",
+            "raw_sha256": "c1b2466bc6e8ca9647e3ac35265672aa25f35099ccb8b5a24126fe0993ca6bb8",
+            "normalized_sha256": "affde7d7673f2ed0fd13e7b5effce4777ca9699611f5e47991cf9bff890f6573"
+          }
+        ],
+        "results": [
+          {
+            "module": "soc_pcie_rx_credit",
+            "parameters": {
+              "COMPLETER_ONLY": 1
+            },
+            "configuration": "default",
+            "direction": "forward",
+            "explicit_undef": true,
+            "returncode": 0,
+            "passed": true,
+            "seconds": 67.631407511,
+            "last_pass": "EQUIV_STATUS",
+            "equivalence_make_reached": true,
+            "equivalence_status_reached": true
+          }
+        ],
+        "passed": true
+      },
+      "selector_controls": {
+        "passed": true,
+        "checks": [
+          {
+            "kind": "lcrc",
+            "passed": true,
+            "formal_controls": [
+              {
+                "direction": "forward",
+                "fault": false,
+                "accepted": true,
+                "expected_rejection": false
+              },
+              {
+                "direction": "forward",
+                "fault": true,
+                "accepted": false,
+                "expected_rejection": true
+              },
+              {
+                "direction": "reverse",
+                "fault": false,
+                "accepted": true,
+                "expected_rejection": false
+              },
+              {
+                "direction": "reverse",
+                "fault": true,
+                "accepted": false,
+                "expected_rejection": true
+              }
+            ],
+            "source_four_state_cases": 32768,
+            "simulation_passed": true,
+            "simulation_fault_rejected": true
+          },
+          {
+            "kind": "dllp",
+            "passed": true,
+            "formal_controls": [
+              {
+                "direction": "forward",
+                "fault": false,
+                "accepted": true,
+                "expected_rejection": false
+              },
+              {
+                "direction": "forward",
+                "fault": true,
+                "accepted": false,
+                "expected_rejection": true
+              },
+              {
+                "direction": "reverse",
+                "fault": false,
+                "accepted": true,
+                "expected_rejection": false
+              },
+              {
+                "direction": "reverse",
+                "fault": true,
+                "accepted": false,
+                "expected_rejection": true
+              }
+            ],
+            "source_four_state_cases": 131072,
+            "simulation_passed": true,
+            "simulation_fault_rejected": true
+          }
+        ],
+        "scope": "Raw, explicit-out-of-range-X normalized reference, and candidate expressions. Exhaustive binary/X/Z indices and selector controls with eight data patterns; mutual undef SAT compares normalized reference and candidate. This is reference preparation evidence, not full-module acceptance."
+      },
+      "reference_normalization": {
+        "base": "e6e887d858f30730da11fbe575c4b07550225257",
+        "rules": "Explicit out-of-range X only; no address assumptions",
+        "changes": [
+          {
+            "file": "soc_pcie_lcrc_tx.v",
+            "raw_sha256": "d14a074ca1d8e1697b76a0994d35d09904c253e07180b9463c7b9ca91a519844",
+            "normalized_sha256": "d73a1c4f86201477c0cd20143c098ab26603e26e33596258db99729ffdca79d8"
+          },
+          {
+            "file": "soc_pcie_rx_credit.v",
+            "raw_sha256": "c1b2466bc6e8ca9647e3ac35265672aa25f35099ccb8b5a24126fe0993ca6bb8",
+            "normalized_sha256": "affde7d7673f2ed0fd13e7b5effce4777ca9699611f5e47991cf9bff890f6573"
+          }
+        ]
+      }
+    },
+    {
+      "artifact_id": 14078186902,
+      "artifact_sha256": "e8326467f438e980d99cd27ee63fde9974a5364f0e42fbc713cf098ed899c7b0",
+      "artifact_name": "cut10-actual-sram-equivalence-43509954039",
+      "result": {
+        "base": "ecef9ad7cc9cd38c40b37b2109c2c976c53d1e4b",
+        "head": "70b10b84b41282e22cb29fa56ebb1d3284656c58",
+        "yosys": "Yosys 0.33 (git sha1 2584903a060)",
+        "sources": {
+          "soc_sram_mbist": {
+            "old_sha256": "1ba0384f1e20372ab4dfb2b4bb6582215e211ad8975fcbceff86db04b873b0b5",
+            "new_sha256": "36c67882d8cd1f1ee805ea9ce748dc32a3ebc73833ec4e625683ae1f6bdbf8d9"
+          },
+          "soc_sram_zero_check": {
+            "old_sha256": "8ad8b974bd375e2e4d30bc2b52870c5fc4c6e56f67e573af931fee8a90f2286d",
+            "new_sha256": "f63496ed6bf4b706bbd2423331a4bf06fbb1b41456e685daa32ebb349b68ef51"
+          }
+        },
+        "results": [
+          {
+            "profile": "mbist_default",
+            "module": "soc_sram_mbist",
+            "parameters": {},
+            "defines": [],
+            "direction": "forward",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 0.865574488
+          },
+          {
+            "profile": "mbist_default",
+            "module": "soc_sram_mbist",
+            "parameters": {},
+            "defines": [],
+            "direction": "forward",
+            "fault": true,
+            "returncode": 1,
+            "passed": false,
+            "expected_fault_rejected": true,
+            "check_ok": true,
+            "seconds": 0.5157508539999967
+          },
+          {
+            "profile": "mbist_default",
+            "module": "soc_sram_mbist",
+            "parameters": {},
+            "defines": [],
+            "direction": "reverse",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 0.8163078150000018
+          },
+          {
+            "profile": "mbist_default",
+            "module": "soc_sram_mbist",
+            "parameters": {},
+            "defines": [],
+            "direction": "reverse",
+            "fault": true,
+            "returncode": 1,
+            "passed": false,
+            "expected_fault_rejected": true,
+            "check_ok": true,
+            "seconds": 0.5657133979999998
+          },
+          {
+            "profile": "mbist_eth_unregistered",
+            "module": "soc_sram_mbist",
+            "parameters": {
+              "WIDTH": 16,
+              "DEPTH": 2048,
+              "ADDR_WIDTH": 11,
+              "READ_LATENCY": 1,
+              "PIPELINE_COMPARE": 1
+            },
+            "defines": [],
+            "direction": "forward",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 0.8660272700000036
+          },
+          {
+            "profile": "mbist_eth_unregistered",
+            "module": "soc_sram_mbist",
+            "parameters": {
+              "WIDTH": 16,
+              "DEPTH": 2048,
+              "ADDR_WIDTH": 11,
+              "READ_LATENCY": 1,
+              "PIPELINE_COMPARE": 1
+            },
+            "defines": [],
+            "direction": "reverse",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 0.8661051150000034
+          },
+          {
+            "profile": "mbist_eth_registered",
+            "module": "soc_sram_mbist",
+            "parameters": {
+              "WIDTH": 16,
+              "DEPTH": 2048,
+              "ADDR_WIDTH": 11,
+              "READ_LATENCY": 2,
+              "PIPELINE_COMPARE": 1
+            },
+            "defines": [
+              "SOC_SRAM_MBIST_PIPE"
+            ],
+            "direction": "forward",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 0.8666924730000005
+          },
+          {
+            "profile": "mbist_eth_registered",
+            "module": "soc_sram_mbist",
+            "parameters": {
+              "WIDTH": 16,
+              "DEPTH": 2048,
+              "ADDR_WIDTH": 11,
+              "READ_LATENCY": 2,
+              "PIPELINE_COMPARE": 1
+            },
+            "defines": [
+              "SOC_SRAM_MBIST_PIPE"
+            ],
+            "direction": "reverse",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 0.8665725910000006
+          },
+          {
+            "profile": "mbist_actual_system",
+            "module": "soc_sram_mbist",
+            "parameters": {
+              "WIDTH": 64,
+              "DEPTH": 8192,
+              "ADDR_WIDTH": 13,
+              "READ_LATENCY": 1,
+              "PIPELINE_COMPARE": 1
+            },
+            "defines": [
+              "SOC_SRAM_MBIST_PIPE"
+            ],
+            "direction": "forward",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 3.0228109880000034
+          },
+          {
+            "profile": "mbist_actual_system",
+            "module": "soc_sram_mbist",
+            "parameters": {
+              "WIDTH": 64,
+              "DEPTH": 8192,
+              "ADDR_WIDTH": 13,
+              "READ_LATENCY": 1,
+              "PIPELINE_COMPARE": 1
+            },
+            "defines": [
+              "SOC_SRAM_MBIST_PIPE"
+            ],
+            "direction": "reverse",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 3.0214453239999983
+          },
+          {
+            "profile": "mbist_system_screen",
+            "module": "soc_sram_mbist",
+            "parameters": {
+              "WIDTH": 64,
+              "DEPTH": 1024,
+              "ADDR_WIDTH": 10,
+              "READ_LATENCY": 3,
+              "PIPELINE_COMPARE": 1
+            },
+            "defines": [
+              "SOC_SRAM_MBIST_PIPE"
+            ],
+            "direction": "forward",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 2.971342799999995
+          },
+          {
+            "profile": "mbist_system_screen",
+            "module": "soc_sram_mbist",
+            "parameters": {
+              "WIDTH": 64,
+              "DEPTH": 1024,
+              "ADDR_WIDTH": 10,
+              "READ_LATENCY": 3,
+              "PIPELINE_COMPARE": 1
+            },
+            "defines": [
+              "SOC_SRAM_MBIST_PIPE"
+            ],
+            "direction": "reverse",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 3.0707432519999998
+          },
+          {
+            "profile": "mbist_nonbinary_parameter",
+            "module": "soc_sram_mbist",
+            "parameters": {
+              "PIPELINE_COMPARE": 2
+            },
+            "defines": [
+              "SOC_SRAM_MBIST_PIPE"
+            ],
+            "direction": "forward",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 0.8664261449999984
+          },
+          {
+            "profile": "mbist_nonbinary_parameter",
+            "module": "soc_sram_mbist",
+            "parameters": {
+              "PIPELINE_COMPARE": 2
+            },
+            "defines": [
+              "SOC_SRAM_MBIST_PIPE"
+            ],
+            "direction": "reverse",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 0.8164532320000006
+          },
+          {
+            "profile": "zero_default",
+            "module": "soc_sram_zero_check",
+            "parameters": {},
+            "defines": [],
+            "direction": "forward",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 0.11437117799999896
+          },
+          {
+            "profile": "zero_default",
+            "module": "soc_sram_zero_check",
+            "parameters": {},
+            "defines": [],
+            "direction": "forward",
+            "fault": true,
+            "returncode": 1,
+            "passed": false,
+            "expected_fault_rejected": true,
+            "check_ok": true,
+            "seconds": 0.0641722559999991
+          },
+          {
+            "profile": "zero_default",
+            "module": "soc_sram_zero_check",
+            "parameters": {},
+            "defines": [],
+            "direction": "reverse",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 0.11437791000000175
+          },
+          {
+            "profile": "zero_default",
+            "module": "soc_sram_zero_check",
+            "parameters": {},
+            "defines": [],
+            "direction": "reverse",
+            "fault": true,
+            "returncode": 1,
+            "passed": false,
+            "expected_fault_rejected": true,
+            "check_ok": true,
+            "seconds": 0.06417968899999948
+          },
+          {
+            "profile": "zero_eth_unregistered",
+            "module": "soc_sram_zero_check",
+            "parameters": {
+              "PIPELINE_COMPARE": 1
+            },
+            "defines": [],
+            "direction": "forward",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 0.11428992199999755
+          },
+          {
+            "profile": "zero_eth_unregistered",
+            "module": "soc_sram_zero_check",
+            "parameters": {
+              "PIPELINE_COMPARE": 1
+            },
+            "defines": [],
+            "direction": "reverse",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 0.1141600439999948
+          },
+          {
+            "profile": "zero_eth_registered",
+            "module": "soc_sram_zero_check",
+            "parameters": {
+              "PIPELINE_COMPARE": 1,
+              "READ_LATENCY": 2
+            },
+            "defines": [
+              "SOC_ETH_FIFO_RDREG"
+            ],
+            "direction": "forward",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 0.11430577200000158
+          },
+          {
+            "profile": "zero_eth_registered",
+            "module": "soc_sram_zero_check",
+            "parameters": {
+              "PIPELINE_COMPARE": 1,
+              "READ_LATENCY": 2
+            },
+            "defines": [
+              "SOC_ETH_FIFO_RDREG"
+            ],
+            "direction": "reverse",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 0.11433652700000607
+          },
+          {
+            "profile": "zero_nonbinary_parameter",
+            "module": "soc_sram_zero_check",
+            "parameters": {
+              "PIPELINE_COMPARE": -1
+            },
+            "defines": [],
+            "direction": "forward",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 0.1144672920000005
+          },
+          {
+            "profile": "zero_nonbinary_parameter",
+            "module": "soc_sram_zero_check",
+            "parameters": {
+              "PIPELINE_COMPARE": -1
+            },
+            "defines": [],
+            "direction": "reverse",
+            "fault": false,
+            "returncode": 0,
+            "passed": true,
+            "expected_fault_rejected": null,
+            "check_ok": true,
+            "seconds": 0.11428269700000016
+          }
+        ],
+        "passed": true,
+        "scope": "Ten declared parameter/define profiles, mutual Yosys sequential equivalence under async2sync and explicit undef semantics, plus four inverted-request negative controls. No full-chip equivalence, four-state event simulation, all-parameter proof, SRAM analog qualification, physical timing or LVS approval."
+      }
+    },
+    {
+      "artifact_id": 14077917914,
+      "artifact_sha256": "9d89a59dfd86a8b8522698336046262b42af3f215d5ad78ec98d5e1bbe2a0afe",
+      "artifact_name": "cut10-actual-pcie-equivalence-cut10-forward-43509954039",
+      "result": {
+        "base": "e6e887d858f30730da11fbe575c4b07550225257",
+        "head": "70b10b84b41282e22cb29fa56ebb1d3284656c58",
+        "configuration": "cut10",
+        "direction": "forward",
+        "explicit_undef": true,
+        "requires_both_directions": true,
+        "reference_normalization": [
+          {
+            "file": "soc_pcie_lcrc_tx.v",
+            "raw_sha256": "d14a074ca1d8e1697b76a0994d35d09904c253e07180b9463c7b9ca91a519844",
+            "normalized_sha256": "d73a1c4f86201477c0cd20143c098ab26603e26e33596258db99729ffdca79d8"
+          },
+          {
+            "file": "soc_pcie_rx_credit.v",
+            "raw_sha256": "c1b2466bc6e8ca9647e3ac35265672aa25f35099ccb8b5a24126fe0993ca6bb8",
+            "normalized_sha256": "affde7d7673f2ed0fd13e7b5effce4777ca9699611f5e47991cf9bff890f6573"
+          }
+        ],
+        "results": [
+          {
+            "module": "soc_pcie_rx_credit",
+            "parameters": {
+              "COMPLETER_ONLY": 1
+            },
+            "configuration": "cut10",
+            "direction": "forward",
+            "explicit_undef": true,
+            "returncode": 0,
+            "passed": true,
+            "seconds": 123.33709627000002,
+            "last_pass": "EQUIV_STATUS",
+            "equivalence_make_reached": true,
+            "equivalence_status_reached": true
+          }
+        ],
+        "passed": true
+      },
+      "selector_controls": {
+        "passed": true,
+        "checks": [
+          {
+            "kind": "lcrc",
+            "passed": true,
+            "formal_controls": [
+              {
+                "direction": "forward",
+                "fault": false,
+                "accepted": true,
+                "expected_rejection": false
+              },
+              {
+                "direction": "forward",
+                "fault": true,
+                "accepted": false,
+                "expected_rejection": true
+              },
+              {
+                "direction": "reverse",
+                "fault": false,
+                "accepted": true,
+                "expected_rejection": false
+              },
+              {
+                "direction": "reverse",
+                "fault": true,
+                "accepted": false,
+                "expected_rejection": true
+              }
+            ],
+            "source_four_state_cases": 32768,
+            "simulation_passed": true,
+            "simulation_fault_rejected": true
+          },
+          {
+            "kind": "dllp",
+            "passed": true,
+            "formal_controls": [
+              {
+                "direction": "forward",
+                "fault": false,
+                "accepted": true,
+                "expected_rejection": false
+              },
+              {
+                "direction": "forward",
+                "fault": true,
+                "accepted": false,
+                "expected_rejection": true
+              },
+              {
+                "direction": "reverse",
+                "fault": false,
+                "accepted": true,
+                "expected_rejection": false
+              },
+              {
+                "direction": "reverse",
+                "fault": true,
+                "accepted": false,
+                "expected_rejection": true
+              }
+            ],
+            "source_four_state_cases": 131072,
+            "simulation_passed": true,
+            "simulation_fault_rejected": true
+          }
+        ],
+        "scope": "Raw, explicit-out-of-range-X normalized reference, and candidate expressions. Exhaustive binary/X/Z indices and selector controls with eight data patterns; mutual undef SAT compares normalized reference and candidate. This is reference preparation evidence, not full-module acceptance."
+      },
+      "reference_normalization": {
+        "base": "e6e887d858f30730da11fbe575c4b07550225257",
+        "rules": "Explicit out-of-range X only; no address assumptions",
+        "changes": [
+          {
+            "file": "soc_pcie_lcrc_tx.v",
+            "raw_sha256": "d14a074ca1d8e1697b76a0994d35d09904c253e07180b9463c7b9ca91a519844",
+            "normalized_sha256": "d73a1c4f86201477c0cd20143c098ab26603e26e33596258db99729ffdca79d8"
+          },
+          {
+            "file": "soc_pcie_rx_credit.v",
+            "raw_sha256": "c1b2466bc6e8ca9647e3ac35265672aa25f35099ccb8b5a24126fe0993ca6bb8",
+            "normalized_sha256": "affde7d7673f2ed0fd13e7b5effce4777ca9699611f5e47991cf9bff890f6573"
+          }
+        ]
+      }
+    },
+    {
+      "artifact_id": 14077189504,
+      "artifact_sha256": "36160731f909488a0bb7732de300fa4a586a3dc4961a606a9e31e04d38bddef2",
+      "artifact_name": "cut10-actual-pcie-equivalence-cut10-reverse-43509954039",
+      "result": {
+        "base": "e6e887d858f30730da11fbe575c4b07550225257",
+        "head": "70b10b84b41282e22cb29fa56ebb1d3284656c58",
+        "configuration": "cut10",
+        "direction": "reverse",
+        "explicit_undef": true,
+        "requires_both_directions": true,
+        "reference_normalization": [
+          {
+            "file": "soc_pcie_lcrc_tx.v",
+            "raw_sha256": "d14a074ca1d8e1697b76a0994d35d09904c253e07180b9463c7b9ca91a519844",
+            "normalized_sha256": "d73a1c4f86201477c0cd20143c098ab26603e26e33596258db99729ffdca79d8"
+          },
+          {
+            "file": "soc_pcie_rx_credit.v",
+            "raw_sha256": "c1b2466bc6e8ca9647e3ac35265672aa25f35099ccb8b5a24126fe0993ca6bb8",
+            "normalized_sha256": "affde7d7673f2ed0fd13e7b5effce4777ca9699611f5e47991cf9bff890f6573"
+          }
+        ],
+        "results": [
+          {
+            "module": "soc_pcie_rx_credit",
+            "parameters": {
+              "COMPLETER_ONLY": 1
+            },
+            "configuration": "cut10",
+            "direction": "reverse",
+            "explicit_undef": true,
+            "returncode": 0,
+            "passed": true,
+            "seconds": 79.23681911899999,
+            "last_pass": "EQUIV_STATUS",
+            "equivalence_make_reached": true,
+            "equivalence_status_reached": true
+          }
+        ],
+        "passed": true
+      },
+      "selector_controls": {
+        "passed": true,
+        "checks": [
+          {
+            "kind": "lcrc",
+            "passed": true,
+            "formal_controls": [
+              {
+                "direction": "forward",
+                "fault": false,
+                "accepted": true,
+                "expected_rejection": false
+              },
+              {
+                "direction": "forward",
+                "fault": true,
+                "accepted": false,
+                "expected_rejection": true
+              },
+              {
+                "direction": "reverse",
+                "fault": false,
+                "accepted": true,
+                "expected_rejection": false
+              },
+              {
+                "direction": "reverse",
+                "fault": true,
+                "accepted": false,
+                "expected_rejection": true
+              }
+            ],
+            "source_four_state_cases": 32768,
+            "simulation_passed": true,
+            "simulation_fault_rejected": true
+          },
+          {
+            "kind": "dllp",
+            "passed": true,
+            "formal_controls": [
+              {
+                "direction": "forward",
+                "fault": false,
+                "accepted": true,
+                "expected_rejection": false
+              },
+              {
+                "direction": "forward",
+                "fault": true,
+                "accepted": false,
+                "expected_rejection": true
+              },
+              {
+                "direction": "reverse",
+                "fault": false,
+                "accepted": true,
+                "expected_rejection": false
+              },
+              {
+                "direction": "reverse",
+                "fault": true,
+                "accepted": false,
+                "expected_rejection": true
+              }
+            ],
+            "source_four_state_cases": 131072,
+            "simulation_passed": true,
+            "simulation_fault_rejected": true
+          }
+        ],
+        "scope": "Raw, explicit-out-of-range-X normalized reference, and candidate expressions. Exhaustive binary/X/Z indices and selector controls with eight data patterns; mutual undef SAT compares normalized reference and candidate. This is reference preparation evidence, not full-module acceptance."
+      },
+      "reference_normalization": {
+        "base": "e6e887d858f30730da11fbe575c4b07550225257",
+        "rules": "Explicit out-of-range X only; no address assumptions",
+        "changes": [
+          {
+            "file": "soc_pcie_lcrc_tx.v",
+            "raw_sha256": "d14a074ca1d8e1697b76a0994d35d09904c253e07180b9463c7b9ca91a519844",
+            "normalized_sha256": "d73a1c4f86201477c0cd20143c098ab26603e26e33596258db99729ffdca79d8"
+          },
+          {
+            "file": "soc_pcie_rx_credit.v",
+            "raw_sha256": "c1b2466bc6e8ca9647e3ac35265672aa25f35099ccb8b5a24126fe0993ca6bb8",
+            "normalized_sha256": "affde7d7673f2ed0fd13e7b5effce4777ca9699611f5e47991cf9bff890f6573"
+          }
+        ]
+      }
+    }
+  ],
+  "actual_parameter_binding": {
+    "source": "ecef9ad7cc9cd38c40b37b2109c2c976c53d1e4b",
+    "source_blobs": {
+      "hw/soc/rtl/soc_mem_sram.v": "10ea6d0c5f62cde6bc9c0523a764a02a29d15435",
+      "hw/soc/rtl/dft/soc_sram_test_port.v": "71ba954f502c5b9b6745b1d8ac4542e9d5d1224f",
+      "hw/soc/rtl/dft/soc_eth_fifo_sram.v": "9309776fafc7baec540110cee85bfe7cb518e0df",
+      "hw/soc/rtl/soc_top.v": "4ac7bed053c933038ca13a07dd53b74011eb9dd1",
+      "hw/soc/rtl/pcie/soc_pcie_buffered_flow_packets.v": "8d304e781afcb73957babf9c4df7b587ff757b07",
+      "hw/soc/flow/syn_soc_top.sh": "5dc7a47e453bb447d4cd34b695f3bef2d2b431a5"
+    },
+    "system_mbist": {
+      "WIDTH": 64,
+      "DEPTH": 8192,
+      "ADDR_WIDTH": 13,
+      "READ_LATENCY": 1,
+      "PIPELINE_COMPARE": 1
+    },
+    "rx_credit": {
+      "MAX_TLP_DWORDS": 8,
+      "SLOTS_PER_CLASS": 2,
+      "COMPLETER_ONLY": 1
+    },
+    "source_reason": "soc_mem_sram instantiates soc_sram_test_port WIDTH64 DEPTH8192, retaining READ_LATENCY1 default. SOC_SRAM_MBIST_PIPE selects PIPELINE_COMPARE1. Top instantiates buffered_flow_packets with default MAX_TLP_DWORDS8/RX_SLOTS_PER_CLASS2; receive_ownership explicitly sets COMPLETER_ONLY1."
+  },
+  "physical_source_binding": {
+    "probe_job": 131904194982,
+    "probe_log_sha256": "10e4e135a140c84cbeca66f3289faac62d6f3b14db1a158d13faa92f4e54bf75",
+    "synthesis_driver_artifact_id": 14052855357,
+    "synthesis_driver_artifact_sha256": "15ed23eea72332cd9b811c0c0e8f06af34ea5ea1939b37d165500ffe2b6c524e",
+    "synthesis_driver_log_sha256": "0c79bb552164ac24dfa288a01ae4f4e54d1ed44b3e759da88e1b93bbce0b3a1a",
+    "synthesis_netlist_sha256": "750507682ff3491c67d9238f2cbe4d57f3b92708fc7e522daa1c4f10e81c0d40",
+    "same_synthesis_hash_in_probe_log_and_routed_archive": true,
+    "pcie_compile_flags": [
+      "SOC_PCIE_RX_READ2",
+      "SOC_PCIE_RESET_COPIES",
+      "SOC_PCIE_REPLAY_INBANK",
+      "SOC_PCIE_TX_WORD_REG",
+      "SOC_PCIE_REPLAY_AHEAD",
+      "SOC_PCIE_CREDIT_PICK",
+      "SOC_PCIE_SEQ_RX_REG",
+      "SOC_PCIE_RX_COMMIT_COPIES"
+    ],
+    "disabled_pcie_flags": [
+      "SOC_PCIE_RX_STAGED_COMMIT",
+      "SOC_PCIE_RX_READ_AHEAD"
+    ]
+  },
+  "scope": "Closes the identified module-parameter gaps in prior width/boolean proofs. Yosys sequential semantics, async2sync, explicit undef and normalized reference restrictions still apply. Does not prove full-chip synthesized/routed equivalence, serial PHY, timing, independent full-chip LVS or foundry approval.",
+  "full_chip_equivalence": false,
+  "manufacturing_approval": false
+}
