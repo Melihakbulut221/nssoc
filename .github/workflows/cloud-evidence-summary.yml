@@ -6,7 +6,7 @@
 # instead of asset 668392118. The frozen gate is independent_analysis from
 # codex/complete-open-work after its SHA-256 check. 3.125e-13 is the deck's own
 # step; 5e-13 runs alongside as an earlier, coarser cross-check.
-name: Extracted PLL temperature-only acquisition screen
+name: Full cold PLL acquisition after same-runner throughput admission
 on:
   workflow_dispatch:
 permissions:
@@ -32,7 +32,6 @@ jobs:
       matrix:
         include:
           - {variant: original, stop: '1e-06', step: '3.125e-13', temperature: -40}
-          - {variant: original, stop: '1e-06', step: '3.125e-13', temperature: 125}
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -42,6 +41,7 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
+            /scripts/measure_pll_thread_throughput.py
             /scripts/pll_c5r3k_bench.py
             /scripts/pll-c5r3k-bench-probes.json
             /scripts/pll_c5r3k_temperature_screen.py
@@ -75,12 +75,35 @@ jobs:
           sparse-checkout: |
             /scripts/*.py
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
+      - name: Measure same-runner throughput before committing full duration
+        timeout-minutes: 20
+        run: |
+          set -euo pipefail
+          NSSOC_PLL_THREADS=4 NSSOC_PLL_STOP=5e-08 NSSOC_PLL_MAXSTEP=3.125e-13 python3 -B scripts/pll_c5r3k_bench.py prepare case scripts/pll-c5r3k-bench-probes.json original
+          python3 scripts/pll_c5r3k_temperature_screen.py prepare case/probe-circuit.cir -40 case/admission-temperature.json
+          python3 scripts/measure_pll_thread_throughput.py -40 4
+          grep -q 'Using KLU as Direct Linear Solver' case/ngspice.log
+          python3 - <<'PYADMIT'
+          import json
+          r=json.load(open('performance/throughput.json'))
+          assert r['status']=='COMPLETE_THROUGHPUT_SAMPLE_ONLY' and r['elapsed_s']<=900, 'Host too slow for planned full-duration budget; no acquisition claim'
+          PYADMIT
+          mkdir admission-native
+          cp case/probe-circuit.cir case/ngspice.log case/admission-temperature.json admission-native/
+          mv case/probe.raw case/op.raw admission-native/
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pll-cold-admission-derived-${{ github.run_id }}
+          path: performance/*.json
+          if-no-files-found: error
+          retention-days: 90
       - name: Run the temperature-only screen at the original duration and step
         run: |
           set -euo pipefail
           NSSOC_PLL_THREADS=4 NSSOC_PLL_STOP=${{ matrix.stop }} NSSOC_PLL_MAXSTEP=${{ matrix.step }} python3 -B scripts/pll_c5r3k_bench.py prepare case scripts/pll-c5r3k-bench-probes.json ${{ matrix.variant }}; cat case/variant-patch.json
           python3 scripts/pll_c5r3k_temperature_screen.py prepare case/probe-circuit.cir ${{ matrix.temperature }} pll-c5r3k-bench/temperature-change.json
-          cd case && SPICE_SCRIPTS=$PWD OMP_NUM_THREADS=4 timeout 20700 ../engine -n -b probe.cir > ngspice.log 2>&1 || { echo "ngspice rc=$?"; tail -40 ngspice.log; exit 1; }
+          cd case && SPICE_SCRIPTS=$PWD OMP_NUM_THREADS=4 timeout 19500 ../engine -n -b probe.cir > ngspice.log 2>&1 || { echo "ngspice rc=$?"; tail -40 ngspice.log; exit 1; }
           tail -5 ngspice.log; ls -l probe.raw
           cd ..
           python3 scripts/pll_c5r3k_temperature_screen.py verify case/ngspice.log ${{ matrix.temperature }} pll-c5r3k-bench/temperature-readback.json
@@ -88,7 +111,17 @@ jobs:
         run: python3 -B scripts/pll_c5r3k_bench.py analyze case scripts/pll-c5r3k-bench-probes.json pll-c5r3k-bench
       - name: Apply the frozen acquisition gate (independent_analysis, unchanged)
         if: always()
-        run: python3 -B scripts/pll_c5r3k_bench.py gate case frozen/scripts pll-c5r3k-bench
+        run: |
+          python3 -B scripts/pll_c5r3k_bench.py gate case frozen/scripts pll-c5r3k-bench
+          PYTHONPATH=scripts python3 - <<'PYVERIFY'
+          import json
+          from pathlib import Path
+          from pll_c5r3k_bench import read_raw
+          data,names=read_raw(Path('case/probe.raw'))
+          assert abs(float(data[-1,0])-1e-6)<=3.125e-13, 'Incomplete full acquisition interval'
+          r=json.load(open('pll-c5r3k-bench/frozen-gate.json'))
+          assert r['passed'] is True, 'Frozen acquisition gate rejected waveform'
+          PYVERIFY
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -99,3 +132,19 @@ jobs:
             case/variant-patch.json
           if-no-files-found: error
           retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pll-cold-full-gate-derived-${{ github.run_id }}
+          path: pll-c5r3k-bench/frozen-gate.json
+          if-no-files-found: warn
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pll-cold-full-native-${{ github.run_id }}
+          path: |
+            case
+            admission-native
+          if-no-files-found: error
+          retention-days: 30
