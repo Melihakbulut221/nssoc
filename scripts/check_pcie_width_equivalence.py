@@ -20,7 +20,7 @@ def design(folder,top,name):
     flags=' -D SYNTHESIS '+(' '.join('-D '+x for x in FLAGS) if cfg=='cut10' else '')
     # Parse all definitions, elaborate only the selected top and dependencies.
     # Eager elaboration previously spent the entire budget on unrelated variants.
-    return f'read_verilog -defer -sv {flags} {folder}/*.v; hierarchy -check -top {top}; proc; setattr -mod -unset keep_hierarchy; setattr -unset keep_hierarchy; flatten; opt; memory_map; opt; async2sync; opt; rename {top} {name}; design -stash {name};'
+    return f'read_verilog -defer -sv {flags} {folder}/*.v; hierarchy -check -top {top}; proc; setattr -mod -unset keep_hierarchy; setattr -unset keep_hierarchy; flatten; opt -keepdc; memory_map; opt -keepdc; async2sync; opt -keepdc; rename {top} {name}; design -stash {name};'
 subprocess.run([sys.executable,'scripts/check_pcie_selector_semantics.py',str(gold/'soc_pcie_lcrc_tx.v'),'hw/soc/rtl/pcie/soc_pcie_lcrc_tx.v'],check=True)
 results=[]
 for top in MODULES:
