@@ -278,6 +278,34 @@ module soc_pcie_credit_tx (
             end
         end
     end endgenerate
+`ifdef SOC_PCIE_CREDIT_PICK
+    // docs/combined-timing.md section 19 (default off): the consume select
+    // between the two variants' next values is one multiplexer per bit in a
+    // module of its own (keep_hierarchy keeps the boundary through
+    // synthesis; the flow's final flatten removes it after mapping). In the
+    // default build synthesis merges the consume into each variant's update
+    // checks (h_ok, d_ok and the limit write enables), so the grant's
+    // request compare and the reservation handshake reach the limit,
+    // consumed and available registers through about ten more gates. Here
+    // consume is the last select before each register, as the comment on
+    // the variants describes. The function is the same expression.
+    localparam integer PICK_W=3*8*3+3*12*3+3*3+2+2;
+    wire [PICK_W-1:0] picked;
+    soc_pcie_credit_pick #(.W(PICK_W)) pick(.sel_i(consume),
+        .one_i({next[1].hl_n,next[1].hc_n,next[1].ah_n,next[1].dl_n,next[1].dc_n,next[1].ad_n,
+                next[1].seen_n,next[1].hi_n,next[1].di_n,next[1].confirmed_n,next[1].error_n,
+                next[1].hl_written,next[1].dl_written}),
+        .zero_i({next[0].hl_n,next[0].hc_n,next[0].ah_n,next[0].dl_n,next[0].dc_n,next[0].ad_n,
+                 next[0].seen_n,next[0].hi_n,next[0].di_n,next[0].confirmed_n,next[0].error_n,
+                 next[0].hl_written,next[0].dl_written}),
+        .y_o(picked));
+    wire [23:0] picked_hl,picked_hc,picked_ah;
+    wire [35:0] picked_dl,picked_dc,picked_ad;
+    wire [2:0] picked_seen,picked_hi,picked_di;
+    wire picked_confirmed,picked_error,picked_hl_written,picked_dl_written;
+    assign {picked_hl,picked_hc,picked_ah,picked_dl,picked_dc,picked_ad,picked_seen,picked_hi,picked_di,
+            picked_confirmed,picked_error,picked_hl_written,picked_dl_written}=picked;
+`endif
     always @(posedge clk_i or negedge rst_ni) begin
         if (!rst_ni) begin
             seen<=0;hi<=0;di<=0;confirmed<=0;protocol_error_o<=0;
@@ -305,13 +333,25 @@ module soc_pcie_credit_tx (
             b_hw<=part8(a_header,~update_header,1'b1);
             b_di<=class_di[a_class];b_dd<=class_dd[a_class];b_da<=class_da[a_class];
             b_dw<=part12(a_data,~update_data,1'b1);
+`ifdef SOC_PCIE_CREDIT_PICK
+            update_h_overwritten<=picked_hl_written && update_class==a_class;
+            update_d_overwritten<=picked_dl_written && update_class==a_class;
+`else
             update_h_overwritten<=(consume ? next[1].hl_written : next[0].hl_written) && update_class==a_class;
             update_d_overwritten<=(consume ? next[1].dl_written : next[0].dl_written) && update_class==a_class;
+`endif
             update_h_debited<=debit_now && !hi[request_class];
             update_d_debited<=debit_now && !di[request_class];
             for(i=0;i<3;i=i+1) begin
                 hc_plus[i]<=hc[i]+8'd1;dc_plus_lo[i]<={1'b0,dc[i][5:0]}+{1'b0,request_data[5:0]};
                 ad_minus_lo[i]<={1'b0,ad[i][5:0]}+{1'b0,request_data_negated[5:0]};
+`ifdef SOC_PCIE_CREDIT_PICK
+                hl[i]<=picked_hl[i*8+:8];hc[i]<=picked_hc[i*8+:8];ah[i]<=picked_ah[i*8+:8];
+                dl[i]<=picked_dl[i*12+:12];dc[i]<=picked_dc[i*12+:12];ad[i]<=picked_ad[i*12+:12];
+            end
+            seen<=picked_seen;hi<=picked_hi;di<=picked_di;
+            confirmed<=picked_confirmed;protocol_error_o<=picked_error;
+`else
                 hl[i]<=consume ? next[1].hl_n[i*8+:8] : next[0].hl_n[i*8+:8];
                 hc[i]<=consume ? next[1].hc_n[i*8+:8] : next[0].hc_n[i*8+:8];
                 ah[i]<=consume ? next[1].ah_n[i*8+:8] : next[0].ah_n[i*8+:8];
@@ -324,7 +364,20 @@ module soc_pcie_credit_tx (
             di<=consume ? next[1].di_n : next[0].di_n;
             confirmed<=consume ? next[1].confirmed_n : next[0].confirmed_n;
             protocol_error_o<=consume ? next[1].error_n : next[0].error_n;
+`endif
         end
     end
 endmodule
+`ifdef SOC_PCIE_CREDIT_PICK
+// Section 19: a W-bit two-input multiplexer, kept as a module through
+// synthesis so the select stays the last gate of every bit.
+(* keep_hierarchy *)
+module soc_pcie_credit_pick #(parameter integer W=1) (
+    input wire sel_i,
+    input wire [W-1:0] one_i,zero_i,
+    output wire [W-1:0] y_o
+);
+    assign y_o=sel_i ? one_i : zero_i;
+endmodule
+`endif
 `default_nettype wire

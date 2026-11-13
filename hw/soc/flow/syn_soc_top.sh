@@ -805,7 +805,8 @@ fi
 # reads each replay bank register from its own bank only. Section 17:
 # SOC_PCIE_TX_WORD_REG=1 registers the transaction stream's transmit word.
 # Section 18: SOC_PCIE_REPLAY_AHEAD=1 reads the replay store one cycle ahead.
-for knob in SOC_SRAM_MBIST_PIPE SOC_PCIE_RX_STAGED_COMMIT SOC_PCIE_RX_READ_AHEAD SOC_BUS_WDATA_OWN SOC_PCIE_RX_READ2 SOC_BUS_IREQ_REG SOC_PCIE_RESET_COPIES SOC_ETH_FIFO_WRREG SOC_PCIE_REPLAY_INBANK SOC_PCIE_TX_WORD_REG SOC_PCIE_REPLAY_AHEAD; do
+# Section 19: SOC_PCIE_CREDIT_PICK=1 makes the credit consume the last select of each credit register.
+for knob in SOC_SRAM_MBIST_PIPE SOC_PCIE_RX_STAGED_COMMIT SOC_PCIE_RX_READ_AHEAD SOC_BUS_WDATA_OWN SOC_PCIE_RX_READ2 SOC_BUS_IREQ_REG SOC_PCIE_RESET_COPIES SOC_ETH_FIFO_WRREG SOC_PCIE_REPLAY_INBANK SOC_PCIE_TX_WORD_REG SOC_PCIE_REPLAY_AHEAD SOC_PCIE_CREDIT_PICK; do
   case "${!knob:-0}" in
     0) ;;
     1) EXEC_DEF="$EXEC_DEF -D$knob" ;;
@@ -922,7 +923,7 @@ awk -v top=soc_top -v ge=7.2576 '
 
 echo "  mem=$SOC_MEM  regfile=$IBEX_REGFILE  fault_port=$IBEX_FAULT_PORT  synpre=$IBEX_RF_SYNPRE  corrpre=$IBEX_RF_CORRPRE  chkdefer=$IBEX_RF_CHKDEFER  predecode=$IBEX_RF_PREDECODE  rdraw=$IBEX_RF_RDRAW"
 echo "  core_req_reg=$SOC_CORE_REQ_REG  core_wb_stage=$SOC_CORE_WB_STAGE  core_bt_alu=$SOC_CORE_BT_ALU  branch_2cycle=$IBEX_BRANCH_2CYCLE  ex_stage=$IBEX_EX_STAGE  pmp_req_reg=$IBEX_PMP_REQ_REG  prefix_adder=${SOC_SYNTH_PREFIX_ADDER:-0}"
-echo "  eth_fifo_rdreg=$SOC_ETH_FIFO_RDREG  busstat_evpend=$SOC_BUSSTAT_EVPEND  sram_mbist_pipe=${SOC_SRAM_MBIST_PIPE:-0}  pcie_rx_staged_commit=${SOC_PCIE_RX_STAGED_COMMIT:-0}  pcie_rx_read_ahead=${SOC_PCIE_RX_READ_AHEAD:-0}  bus_wdata_own=${SOC_BUS_WDATA_OWN:-0}  pcie_rx_read2=${SOC_PCIE_RX_READ2:-0}  bus_ireq_reg=${SOC_BUS_IREQ_REG:-0}  pcie_reset_copies=${SOC_PCIE_RESET_COPIES:-0}  eth_fifo_wrreg=${SOC_ETH_FIFO_WRREG:-0}  pcie_replay_inbank=${SOC_PCIE_REPLAY_INBANK:-0}  pcie_tx_word_reg=${SOC_PCIE_TX_WORD_REG:-0}  pcie_replay_ahead=${SOC_PCIE_REPLAY_AHEAD:-0}"
+echo "  eth_fifo_rdreg=$SOC_ETH_FIFO_RDREG  busstat_evpend=$SOC_BUSSTAT_EVPEND  sram_mbist_pipe=${SOC_SRAM_MBIST_PIPE:-0}  pcie_rx_staged_commit=${SOC_PCIE_RX_STAGED_COMMIT:-0}  pcie_rx_read_ahead=${SOC_PCIE_RX_READ_AHEAD:-0}  bus_wdata_own=${SOC_BUS_WDATA_OWN:-0}  pcie_rx_read2=${SOC_PCIE_RX_READ2:-0}  bus_ireq_reg=${SOC_BUS_IREQ_REG:-0}  pcie_reset_copies=${SOC_PCIE_RESET_COPIES:-0}  eth_fifo_wrreg=${SOC_ETH_FIFO_WRREG:-0}  pcie_replay_inbank=${SOC_PCIE_REPLAY_INBANK:-0}  pcie_tx_word_reg=${SOC_PCIE_TX_WORD_REG:-0}  pcie_replay_ahead=${SOC_PCIE_REPLAY_AHEAD:-0}  pcie_credit_pick=${SOC_PCIE_CREDIT_PICK:-0}"
 echo "  mem_rdreg=$SOC_MEM_RDREG  mem_harden=$SOC_MEM_HARDEN  rom_harden=$SOC_ROM_HARDEN  boot_harden=$SOC_BOOT_HARDEN  clkgate=$SOC_CLKGATE  wake_gnt=$SOC_WAKE_GNT  req_reg=$SOC_REQ_REG  abc -D $ABC_D"
 echo "  report: $OUT/$AREA_SUMMARY  per-module: $OUT/area_hier.rpt"
 echo "  netlist: $OUT/soc_top.netlist.v  sta: $OUT/soc_top.sta.v  log: $OUT/syn.log"
