@@ -1,4 +1,4 @@
-name: Current DP SRAM LVS with standalone pinned KLayout
+name: Current DP SRAM topology normalization and hierarchy diagnosis
 on:
   workflow_dispatch:
 permissions:
@@ -9,6 +9,7 @@ jobs:
       fail-fast: false
       matrix:
         macro: [dp]
+        mode: [deep, flat]
     runs-on: ubuntu-24.04
     timeout-minutes: 350
     env:
@@ -23,6 +24,7 @@ jobs:
           sparse-checkout: |
             /scripts/run_current_vendor_sram_lvs.py
             /scripts/bootstrap_flow.py
+            /scripts/check_sram_native_mos_merge.py
             /hw/soc/flow/audit_klayout_lvs.py
       - name: Restore pinned input package and tool runtime
         run: |
@@ -33,13 +35,17 @@ jobs:
           sudo apt-get install -y /tmp/klayout.deb
           python3 -m pip install klayout==0.30.13
           klayout -b -v
+      - name: Verify independent MOS merge and nonmerge controls
+        run: python3 scripts/check_sram_native_mos_merge.py
       - name: Compare exact current macro and independently audit database
-        run: python3 scripts/run_current_vendor_sram_lvs.py ${{ matrix.macro }}
+        run: python3 scripts/run_current_vendor_sram_lvs.py ${{ matrix.macro }} ${{ matrix.mode }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: current-sram-lvs-derived-${{ matrix.macro }}-${{ github.run_id }}
-          path: out/derived/*.json
+          name: current-sram-normalized-derived-${{ matrix.macro }}-${{ matrix.mode }}-${{ github.run_id }}
+          path: |
+            out/derived/*.json
+            out/normalization-controls.json
           if-no-files-found: error
           retention-days: 90
       - name: Preserve native evidence in cloud
@@ -49,7 +55,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: current-sram-lvs-native-${{ matrix.macro }}-${{ github.run_id }}
+          name: current-sram-normalized-native-${{ matrix.macro }}-${{ matrix.mode }}-${{ github.run_id }}
           path: native-*.tgz
           if-no-files-found: error
           retention-days: 30
