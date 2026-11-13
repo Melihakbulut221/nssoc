@@ -7,11 +7,22 @@ P=pathlib.Path
 out=P('solver-performance');out.mkdir();r={'status':'INCOMPLETE','temperature_c':int(sys.argv[1]),'acquisition_accepted':False,'production_accepted':False,'scope':'Paired 50 ns startup; no relaxation of full 1 us acquisition gates','cases':{}}
 try:
  original=(P('case')/'probe.cir').read_text()
- assert not re.search(r'(?im)^\s*(?:\.option\w*|set)\b[^\n]*\bklu\b',original+'\n'+(P('case')/'probe-circuit.cir').read_text()),'Unexpected preexisting KLU setting'
+ original_deck=(P('case')/'probe-circuit.cir').read_text()
+ lines=original_deck.splitlines(keepends=True);hits=[]
+ for i,line in enumerate(lines):
+  if re.search(r'(?i)^\s*\.options?\b[^\n]*\bklu\b',line):hits.append(i)
+ assert len(hits)==1,'Expected exactly one original .option(s) KLU control'
+ i=hits[0];assert re.search(r'(?i)\bklu\s*=',lines[i]) is None,'Unsupported valued KLU option'
+ lines[i],n=re.subn(r'(?i)\bklu\b','',lines[i]);assert n==1
+ if re.fullmatch(r'\s*\.options?\s*',lines[i],re.I):lines[i]='* Original KLU selector omitted for SPARSE control\n'
+ sparse_deck=''.join(lines)
+ assert re.search(r'(?im)^\s*(?:\.options?|set)\b[^\n]*\bklu\b',sparse_deck) is None
+ (P('case')/'probe-circuit.cir').write_text(sparse_deck)
+ r['original_solver']='KLU';r['solver_control_lines_changed']=1
  for solver in ['default','klu']:
   if solver=='klu':
    shutil.copytree('case-default','case',ignore=shutil.ignore_patterns('*.raw','ngspice.log'))
-   (P('case')/'probe.cir').write_text(original.replace('\n.include ', '\n.option klu\n.include ',1))
+   (P('case')/'probe-circuit.cir').write_text(original_deck)
   p=subprocess.run([sys.executable,'scripts/measure_pll_thread_throughput.py',sys.argv[1],'4'],check=False)
   result=json.loads(P('performance/throughput.json').read_text());r['cases'][solver]=result
   log=P('case/ngspice.log').read_text(errors='replace')
@@ -19,7 +30,9 @@ try:
   assert expected in log,'Requested solver not confirmed in runtime log'
   assert p.returncode==0 and result['status']=='COMPLETE_THROUGHPUT_SAMPLE_ONLY','Incomplete startup'
   P('case').rename('case-'+solver);shutil.rmtree('performance')
- for p in ['probe-circuit.cir','parent865.spice','spinit']:
+ assert (P('case-default')/'probe-circuit.cir').read_text()==sparse_deck
+ assert (P('case-klu')/'probe-circuit.cir').read_text()==original_deck
+ for p in ['probe.cir','parent865.spice','spinit']:
   assert (P('case-default')/p).read_bytes()==(P('case-klu')/p).read_bytes(),'Circuit or initialization changed'
  a,an=read_raw(P('case-default/probe.raw'));b,bn=read_raw(P('case-klu/probe.raw'));assert an==bn
  ta=np.asarray(a[:,0]);tb=np.asarray(b[:,0]);assert ta[0]>=tb[0] and ta[-1]<=tb[-1]
