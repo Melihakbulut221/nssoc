@@ -15,7 +15,22 @@ try:
   if not row or row.startswith('*'):continue
   if row.startswith('+'):assert lines;lines[-1]+=' '+row[1:]
   else:lines.append(row)
- subckts=[l.split()[1] for l in lines if l.lower().startswith('.subckt ')];assert len(subckts)==1,('multiple subcircuits need scoped nets',subckts)
+ blocks={};active=None
+ for row in lines:
+  tokens=row.lower().split()
+  if tokens[0]=='.subckt':
+   assert active is None and len(tokens)>=2, 'nested or invalid subcircuit'
+   active=tokens[1];assert active not in blocks, 'duplicate subcircuit'
+   blocks[active]=[]
+  elif tokens[0]=='.ends':
+   assert active is not None, 'unmatched ends'
+   assert len(tokens)==1 or tokens[1]==active, 'mismatched ends'
+   active=None
+  elif active is not None:blocks[active].append(row)
+ assert active is None, 'unterminated subcircuit'
+ top='nssoc_cdr650_gate_n1';assert top in blocks, 'expected top missing'
+ subckts=[top];lines=blocks[top]
+ r['subcircuits_excluded_from_top_scope']=len(blocks)-1
  parent={};rank={}
  def find(n):
   n=n.lower();parent.setdefault(n,n);rank.setdefault(n,0);root=n
