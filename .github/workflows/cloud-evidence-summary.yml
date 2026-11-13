@@ -1,45 +1,42 @@
-name: CDR sampler and phase-detector topology diagnosis
+name: Recover CDR interface operating points from completed what-if captures
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  divider-whatif:
+  interface-points:
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
-    env:
-      GH_TOKEN: ${{ github.token }}
-      ARTIFACT_ID: '13283214752'
-      ARTIFACT_SHA256: ac342f4945a262a4c0fb2440634aa600b8d3f07c6c257c9d3d6e648a319b2402
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          persist-credentials: false
-          filter: blob:none
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /scripts/cdr_netlist_neighbourhood.py
-            /scripts/cdr_stage_topology.py
-      - name: Compile the diagnostic before native download
-        run: python3 -m py_compile scripts/cdr_stage_topology.py scripts/cdr_netlist_neighbourhood.py
-      - name: Restore the preserved N1 native tree at its original absolute path
+      - name: Authenticate preserved captures and publish their JSON measurements
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          set -euo pipefail
-          W=/mnt/n1; sudo mkdir -p $W; sudo chown $USER $W
-          gh api repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip > $W/n1.zip
-          echo "$ARTIFACT_SHA256  $W/n1.zip" | sha256sum -c -
-          mkdir -p mos650-gate-ac
-          unzip -q $W/n1.zip -d mos650-gate-ac -x '*/wave.raw' '*/producer-*' '*/composition-n2/*' '*/composition-n4/*' '*/composition-n8/*' '*/composition-n16/*'
-          rm $W/n1.zip
-          ls mos650-gate-ac mos650-gate-ac/native mos650-gate-ac/native/loaded-n1-nominal_late
-          grep -n "^\.lib\|^\.include\|pre_osdi" mos650-gate-ac/native/loaded-n1-nominal_late/bench.cir
-      - name: Derive primitive connectivity and original measurement binding
-        run: python3 -B scripts/cdr_stage_topology.py mos650-gate-ac out
+          python3 - <<'PY'
+          import hashlib, io, json, pathlib, subprocess, zipfile
+          out=pathlib.Path("out"); out.mkdir()
+          artifacts={
+              13434202071: ("lowz4_bd10","5237c8a58189f40dec5e51a82474caca030238a67e4e18e480589566c3289652"),
+              13432938340: ("lowz4_bd12","236a634d02fae1e6174e94f8bdf55dbe24ef9084c1d9406eeda8a2bd535613eb")}
+          for ident,(variant,digest) in artifacts.items():
+              raw=subprocess.check_output(["gh","api",f"repos/Melihakbulut221/nssoc/actions/artifacts/{ident}/zip"])
+              assert hashlib.sha256(raw).hexdigest()==digest
+              archive=zipfile.ZipFile(io.BytesIO(raw))
+              matches=[n for n in archive.namelist() if n=="result.json" or n.endswith("/result.json")]
+              assert len(matches)==1, matches
+              record=json.loads(archive.read(matches[0]))
+              assert record["variant"]==variant and record["what_if_only"] and not record["electrical_acceptance"]
+              assert record["returncode"]==0 and record["interface_observations"]
+              report={"source_artifact":ident,"source_artifact_sha256":digest,
+                      "source_run":42048922994,"scope":"Recovered measurements only; no new simulation or acceptance", "result":record}
+              (out/(variant+".json")).write_text(json.dumps(report,indent=2)+chr(10))
+              print(variant,record["passed"],record["interface_observations"])
+          PY
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: cdr-stage-topology-${{ github.run_id }}
+          name: cdr-interface-points-${{ github.run_id }}
           path: out/*.json
           if-no-files-found: error
           retention-days: 90
