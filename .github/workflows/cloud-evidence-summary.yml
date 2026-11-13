@@ -1,4 +1,4 @@
-name: Lower divider impedance with slave co-scaling - frozen CDR gates
+name: CDR isolated feedforward capacitor experiments - frozen gates
 on:
   workflow_dispatch:
 permissions:
@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        variant: [bd10_slave_parallel2_lowz8]
+        variant: [bd10_lowz8_acff4, bd10_lowz8_selectff4]
     env:
       GH_TOKEN: ${{ github.token }}
       ARTIFACT_ID: '13283214752'
@@ -53,5 +53,12 @@ jobs:
           path: |
             mos650-gate-ac/native
             mos650-gate-ac/derived/loaded-n1-nominal_late.json
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: cdr-feedforward-result-only-${{ matrix.variant }}-${{ github.run_id }}
+          path: whatif-${{ matrix.variant }}/result.json
           if-no-files-found: error
           retention-days: 90
