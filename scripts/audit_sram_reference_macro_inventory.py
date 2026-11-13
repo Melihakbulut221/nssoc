@@ -15,7 +15,7 @@ try:
  path=pathlib.Path('reference.spice');path.write_bytes(native)
  import klayout.db as db
  n=db.Netlist();n.read(str(path),db.NetlistSpiceReader())
- tops=list(n.each_top_circuit())
+ tops=list(n.top_circuits())
  assert len(tops)==1 and tops[0].name.lower()=='dp8tsramdp256x16','wrong or ambiguous top'
  g=load_mos_netlist(path)
  models=collections.Counter(d['model'] for d in g['devices'])
