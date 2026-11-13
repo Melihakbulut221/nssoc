@@ -15,6 +15,8 @@ jobs:
           sparse-checkout: |
             scripts
             hw/soc/tb
+            hw/soc/flow
+            hw/soc/pnr
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
         with:
           version: '2026-08-04'
@@ -34,6 +36,11 @@ jobs:
           # Source licence stays with the ephemeral build. No CVC binaries are redistributed.
       - name: Compare finite four-state probes with pinned Icarus
         run: python3 scripts/check_four_state_simulator_probe.py
+      - name: Verify pinned native IHP cell and negative control
+        run: |
+          set -euo pipefail
+          python3 hw/soc/flow/prepare_ihp_native_boot.py > out/native-prepare.log 2>&1
+          python3 scripts/check_cvc_native_cell_probe.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -41,5 +48,5 @@ jobs:
           path: |
             out/*.log
             out/*/*.log
-            out/result.json
+            out/*.json
           retention-days: 30
