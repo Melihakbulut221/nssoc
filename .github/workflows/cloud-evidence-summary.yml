@@ -1,4 +1,4 @@
-name: PCIe width-change sequential equivalence
+name: PCIe width-change mutual definedness equivalence
 on:
   workflow_dispatch:
 permissions:
@@ -11,6 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         configuration: [default, cut10]
+        direction: [forward, reverse]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -44,14 +45,15 @@ jobs:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Prove width-only changes against the preceding RTL
-        run: python3 -u scripts/check_pcie_width_equivalence.py "${{ matrix.configuration }}"
+        run: python3 -u scripts/check_pcie_width_equivalence.py "${{ matrix.configuration }}" "${{ matrix.direction }}"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pcie-width-equivalence-${{ matrix.configuration }}-${{ github.run_id }}
+          name: pcie-width-mutual-${{ matrix.configuration }}-${{ matrix.direction }}-${{ github.run_id }}
           path: |
             out/*.log
             out/*.ys
             out/result.json
+            out/selector-controls.json
           if-no-files-found: error
           retention-days: 90
