@@ -1,12 +1,16 @@
-name: Archived SRAM leaf nominal coupled RC screen with KPEX 0.9
+name: Full DP256x16 nominal coupled RC screen with KPEX 0.9
 on:
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  cell-extraction:
+  macro-extraction:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [CC, RC]
     env:
       QT_QPA_PLATFORM: offscreen
     steps:
@@ -20,6 +24,7 @@ jobs:
           set -euo pipefail
           mkdir -p out native
           curl -fL --retry 5 https://www.klayout.org/downloads/Ubuntu-24/klayout_0.30.13-1_amd64.deb -o /tmp/klayout.deb
+          echo '0bb6b913fd6a32581d50b08be744b522a2a477baa1ed7e253c97cc18ce248a24  /tmp/klayout.deb' | sha256sum -c -
           sha256sum /tmp/klayout.deb > out/klayout-deb.sha256.log
           sudo apt-get update -qq
           sudo apt-get install -y /tmp/klayout.deb
@@ -32,19 +37,19 @@ jobs:
           set -euo pipefail
           curl -fL --retry 5 https://raw.githubusercontent.com/Melihakbulut221/nssoc/e62d81aecf7f8e1c6af1e2c6c7c6ed4c0aa6065f/docs/evidence/sram-repaired-core-physical-20260926.tar.xz -o native/physical.tar.xz
           echo '3fd7b918f112b88146b92c861d0146b4ae7404682ceab27186d4a0f95a72a275  native/physical.tar.xz' | sha256sum -c -
-      - name: Extract the actual bit cell with coupled capacitance and RC
-        run: python3 -u scripts/screen_sram_kpex09_cell.py
+      - name: Extract the full macro with the selected coupled-capacitance mode
+        run: python3 -u scripts/screen_sram_kpex09_macro.py "${{ matrix.mode }}"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: sram-kpex09-derived-${{ github.run_id }}
+          name: sram-kpex09-macro-derived-${{ matrix.mode }}-${{ github.run_id }}
           path: out
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: sram-kpex09-native-${{ github.run_id }}
+          name: sram-kpex09-macro-native-${{ matrix.mode }}-${{ github.run_id }}
           path: |
             native/CC
             native/RC
