@@ -56,6 +56,11 @@ case "$NATIVE_RF_CHKDEFER:$NATIVE_RF_PREDECODE:$NATIVE_MEM_RDREG" in
 esac
 export NATIVE_MEM_RDREG SOC_RF_CHKDEFER=$NATIVE_RF_CHKDEFER IBEX_RF_CHKDEFER=$NATIVE_RF_CHKDEFER
 export SOC_RF_PREDECODE=$NATIVE_RF_PREDECODE IBEX_RF_PREDECODE=$NATIVE_RF_PREDECODE
+NATIVE_BOOT_SECONDS=${NATIVE_BOOT_SECONDS:-14400}
+NATIVE_BOOT_CYCLES=${NATIVE_BOOT_CYCLES:-1000000}
+if [[ ! "$NATIVE_BOOT_SECONDS" =~ ^[1-9][0-9]*$ || ! "$NATIVE_BOOT_CYCLES" =~ ^[1-9][0-9]*$ ]]; then
+  echo 'Native boot seconds and cycles must be positive integers' >&2; exit 2
+fi
 mkdir -p "$OUT"
 python3 - "$OUT/core-configuration.json" <<'PY'
 import json
@@ -140,6 +145,7 @@ timeout 3600 bash hw/soc/flow/syn_soc_top.sh 20 "$OUT/synthesis" > "$OUT/synthes
 grep -F 'Parameter \CORRPRE = 1' "$OUT/synthesis/syn.log" > "$OUT/synthesis-corrpre-selection.log"
 python3 hw/soc/flow/sim_logic_boot_gl.py \
   --pcie-profile packet-async \
+  --timeout "$NATIVE_BOOT_SECONDS" --cycles "$NATIVE_BOOT_CYCLES" \
   --synthesis "$OUT/synthesis" --firmware "$OUT/rtl" \
   --pdk "$PDK_ROOT/ihp-sg13g2" --tool "$IVERILOG" \
   --output "$OUT/gates" | tee "$OUT/gates-driver.log"
