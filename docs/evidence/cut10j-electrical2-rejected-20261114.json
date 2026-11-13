@@ -1,0 +1,55 @@
+{
+  "run_id": 43495118377,
+  "job_id": 132126099843,
+  "source_sha": "126537b41b3f8f780f96bfb8b9c0b559c1bd3a8a",
+  "derived_artifact_id": 14085777129,
+  "derived_artifact_sha256": "98212358c5c1e9908c7805f720b82cd4e7d9d328040fbbad23f7e41b4e254b40",
+  "status": "REJECTED_TIMING_AND_ANTENNA",
+  "changes": {
+    "place28029": [
+      "sg13g2_buf_2",
+      "sg13g2_buf_16"
+    ],
+    "fanout67050": [
+      "sg13g2_buf_1",
+      "sg13g2_buf_16"
+    ]
+  },
+  "corners": {
+    "slow": {
+      "setup_count": 1273,
+      "setup_wns_ns": -2.037044368621144,
+      "setup_tns_ns": -412.3318265756091,
+      "hold_count": 2,
+      "hold_wns_ns": -0.39427817682278365,
+      "slew_count": 715,
+      "cap_count": 91
+    },
+    "typ": {
+      "setup_count": 0,
+      "setup_ws_ns": 0.19081758935269444,
+      "hold_count": 5,
+      "hold_wns_ns": -0.2530628001002309,
+      "slew_count": 256,
+      "cap_count": 96
+    },
+    "fast": {
+      "setup_count": 0,
+      "setup_ws_ns": 1.3773346186755728,
+      "hold_count": 113,
+      "hold_wns_ns": -0.27848346639171623,
+      "slew_count": 134,
+      "cap_count": 100
+    }
+  },
+  "router_drc_count": 0,
+  "antenna_violating_nets": 578,
+  "antenna_violating_pins": 665,
+  "nominal_spef_sha256": "98aa011bd0010b622bcdbd87134473ee0ce719e521e989375775222e300278d8",
+  "spef_cap_conservation_passed": true,
+  "qualified_rc_minmax": false,
+  "decision": "Do not promote. Slow setup count and TNS worsened from original cut10j (1233, -365.482ns); fast hold worsened from 94 to 113. Zero router DRC does not offset 578 antenna nets or prove full-chip DRC.",
+  "flow_finding": "Steps omit OpenROAD.RepairAntennas between global and detailed routing. Official pinned LibreLane 3.0.5 provides this stage; inspect detailed-route antenna settings before correction.",
+  "next_action": "Compare pending four-driver result; restore explicit antenna repair and address measured setup/hold causes with fresh extraction. Avoid accepting candidate solely on workflow success.",
+  "manufacturing_approval": false
+}
