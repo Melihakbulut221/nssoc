@@ -82,7 +82,8 @@ def main():
                  "SOC_BUS_IREQ_REG", "SOC_PCIE_RESET_COPIES",
                  "SOC_ETH_FIFO_WRREG", "SOC_PCIE_REPLAY_INBANK",
                  "SOC_PCIE_TX_WORD_REG", "SOC_PCIE_REPLAY_AHEAD",
-                 "SOC_PCIE_CREDIT_PICK"),
+                 "SOC_PCIE_CREDIT_PICK",
+                 "SOC_PCIE_SEQ_RX_REG"),
         help="Opt-in timing knob of docs/combined-timing.md (repeatable)",
     )
     a = p.parse_args()

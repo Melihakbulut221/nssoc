@@ -26,6 +26,11 @@ module soc_pcie_lcrc_rx #(
     output reg [11:0] sequence_o,
     output reg [3:0] reserved_o,
     output reg packet_good_o,packet_bad_o
+`ifdef SOC_PCIE_SEQ_RX_REG
+    // docs/combined-timing.md section 19: the next-cycle value of
+    // state!=EMIT && !packet_bad_o (packet_good_o rises only with EMIT).
+    ,output reg open_next_o
+`endif
 );
     localparam integer CAP=MAX_TLP_DWORDS*4;
     localparam integer CW=$clog2(CAP+7);
@@ -73,6 +78,21 @@ module soc_pcie_lcrc_rx #(
     assign tlp_data_o=out_byte;
     assign tlp_sop_o=state==EMIT && index==0;
     assign tlp_eop_o=state==EMIT && index==length-1'b1;
+`ifdef SOC_PCIE_SEQ_RX_REG
+    // The control branches of the block below, for state and packet_bad_o
+    // only: 1 where the edge leaves state!=EMIT and packet_bad_o low.
+    always @* begin
+        open_next_o=1'b1;
+        if (state==EMIT) open_next_o=tlp_ready_i && tlp_eop_o;
+        else if (rx_valid_i) begin
+            if (rx_sop_i) open_next_o=!(state==COLLECT || rx_error_i || rx_eop_i);
+            else if (state==IDLE) open_next_o=1'b0;
+            else if (state==DROP) open_next_o=1'b1;
+            else if (rx_error_i || received==CAP+6) open_next_o=1'b0;
+            else open_next_o=!rx_eop_i;
+        end
+    end
+`endif
     generate if (MAX_TLP_DWORDS<3 || MAX_TLP_DWORDS>1028) begin: invalid_capacity
         initial $error("MAX_TLP_DWORDS must be 3..1028");
     end endgenerate
