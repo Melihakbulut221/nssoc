@@ -234,7 +234,7 @@ module soc_pcie_credit_tx (
             seen_n=seen;hi_n=hi;di_n=di;confirmed_n=confirmed;error_n=0;
             hl_written=0;dl_written=0;
             if (variant) begin
-                for(c=0;c<3;c=c+1) if (request_class==c) begin
+                for(c=0;c<3;c=c+1) if (32'(request_class)==c) begin
                     if (!hi[c]) begin hc_n[c*8+:8]=hc_plus[c];ah_n[c*8+:8]=ah[c]-8'd1; end
                     if (!di[c]) begin
                         dc_n[c*12+:12]=dc_plus[c];

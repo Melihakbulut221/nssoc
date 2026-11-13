@@ -96,7 +96,7 @@ module soc_pcie_replay_tx #(
     reg write_valid;
     reg [AW-1:0] write_address;
     reg [7:0] write_data;
-    wire [AW-1:0] capture_address=tail*MAX_BYTES+(in_sop_i ? {BW{1'b0}} : write_pos);
+    wire [AW-1:0] capture_address=AW'(tail*MAX_BYTES+(in_sop_i ? 32'd0 : 32'(write_pos)));
     always @(posedge clk_i) begin
         write_address<=capture_address;write_data<=in_data_i;
         if(write_valid) bytes[write_address]<=write_data;
@@ -129,7 +129,7 @@ module soc_pcie_replay_tx #(
         input [PW-1:0] pointer;
         input [CW:0] amount;
         reg [CW+1:0] sum;
-        begin sum=pointer+amount;advance=(sum>=DEPTH) ? sum-DEPTH : sum;end
+        begin sum=(CW+2)'(pointer)+(CW+2)'(amount);advance=PW'((32'(sum)>=DEPTH) ? 32'(sum)-DEPTH : 32'(sum));end
     endfunction
     // ACK retirement moves head forward and sent_count backward equally.
     // Only an original transmitted EOP advances their modulo sum. Keep that
@@ -138,7 +138,7 @@ module soc_pcie_replay_tx #(
     wire [11:0] ack_delta=ack_sequence_i-acknowledged_sequence_o;
     // Classify at the first validated ACK presentation, even if frame atomicity
     // delays consumption. Backpressure cannot turn an early future ACK valid.
-    wire current_ack_allowed=ack_delta==0 || (ack_delta<=sent_count && ack_delta!=0);
+    wire current_ack_allowed=ack_delta==0 || (ack_delta<=12'(sent_count) && ack_delta!=0);
     wire ack_allowed=ack_was_allowed;
     wire ack_stale=ack_was_stale;
     // Reservation metadata in registers, decoded one cycle ahead from the
@@ -181,11 +181,11 @@ module soc_pcie_replay_tx #(
     // Reservation is a cancellable request until handshake. A replay bypasses
     // it entirely: its receiver credit was reserved on original transmission.
     assign reserve_replay_o=0;
-    wire timer_expiring=timer_running && !training_i && timer==TIMEOUT_CYCLES-1;
+    wire timer_expiring=timer_running && !training_i && 32'(timer)==TIMEOUT_CYCLES-1;
     assign reserve_valid_o=rst_ni && link_up_i && !training_i && !halt && !sending &&
         !capturing && !timer_expiring && !replay_active && !replay_pending && !ack_valid_i && count>sent_count;
     assign in_ready_o=rst_ni && link_up_i && !halt &&
-        (capturing || (!replay_active && !replay_pending && !ack_valid_i && count<DEPTH));
+        (capturing || (!replay_active && !replay_pending && !ack_valid_i && 32'(count)<DEPTH));
     assign ack_ready_o=rst_ni && link_up_i && ack_observed && !sending && !capturing && !replay_active;
     // The transmit stream leaves through a register slice, so the replay
     // read path ends at a flop instead of continuing into the link layer.
@@ -293,8 +293,8 @@ module soc_pcie_replay_tx #(
 `endif
         .s_data_i({core_data,core_sop,core_eop,sending_replay,sending_replay && replay_first}),.s_valid_i(core_valid),.s_ready_o(core_ready),
         .m_data_o({tx_data_o,tx_sop_o,tx_eop_o,tx_replay_o,tx_first}),.m_valid_o(tx_valid_o),.m_ready_i(tx_ready_i));
-    assign buffered_o=count;
-    assign outstanding_o=sent_count;
+    assign buffered_o=5'(count);
+    assign outstanding_o=5'(sent_count);
     assign retrain_request_o=halt;
     initial begin
         if(DEPTH<2 || DEPTH>16 || MAX_BYTES<18 || MAX_BYTES>2048 ||
@@ -327,7 +327,7 @@ module soc_pcie_replay_tx #(
             end
             if(ack_valid_i && ack_ready_o) ack_observed<=0;
             if(timer_running && !training_i && !halt) begin
-                if(timer==TIMEOUT_CYCLES-1) begin
+                if(32'(timer)==TIMEOUT_CYCLES-1) begin
                     timer_running<=0;timer<=0;replay_pending<=1;timeout_o<=1;
                 end else timer<=timer+1'b1;
             end
@@ -340,7 +340,7 @@ module soc_pcie_replay_tx #(
                     if(capturing || in_eop_i || in_data_i[7:4]!=0) begin
                         source_error_o<=1;halt<=1;capturing<=0;
                     end else begin write_valid<=1;write_pos<=1;capturing<=1;end
-                end else if(!capturing || write_pos>=MAX_BYTES) begin
+                end else if(!capturing || 32'(write_pos)>=MAX_BYTES) begin
                     source_error_o<=1;halt<=1;capturing<=0;
                 end else begin
                     write_valid<=1;write_pos<=write_pos+1'b1;
@@ -359,13 +359,13 @@ module soc_pcie_replay_tx #(
             if(ack_valid_i && ack_ready_o) begin
                 if(ack_allowed) begin
                     if(ack_delta_q!=0) begin
-                        head<=advance(head,ack_delta_q[CW:0]);count<=count-ack_delta_q;
-                        sent_count<=sent_count-ack_delta_q;acknowledged_sequence_o<=ack_sequence_i;
-                        retries<=0;timer<=0;timer_running<=sent_count!=ack_delta_q;
+                        head<=advance(head,ack_delta_q[CW:0]);count<=CW'(12'(count)-ack_delta_q);
+                        sent_count<=CW'(12'(sent_count)-ack_delta_q);acknowledged_sequence_o<=ack_sequence_i;
+                        retries<=0;timer<=0;timer_running<=12'(sent_count)!=ack_delta_q;
                         replay_pending<=0;
                     end
                     if(ack_nak_i) begin
-                        replay_pending<=sent_count!=ack_delta_q;timer_running<=0;timer<=0;
+                        replay_pending<=12'(sent_count)!=ack_delta_q;timer_running<=0;timer<=0;
                     end
                 end else if(!ack_stale) protocol_error_o<=1;
                 // Older acknowledgments outside our small forward window are stale.
@@ -373,7 +373,7 @@ module soc_pcie_replay_tx #(
                 if(replay_pending && !replay_active) begin
                     replay_pending<=0;
                     if(sent_count!=0) begin
-                        if(retries==MAX_REPLAYS) begin halt<=1;retry_exhausted_o<=1;timer_running<=0;end
+                        if(32'(retries)==MAX_REPLAYS) begin halt<=1;retry_exhausted_o<=1;timer_running<=0;end
                         else begin
                             replay_active<=1;replay_slot<=head;replay_left<=sent_count;
                             replay_first<=1;retries<=retries+1'b1;replay_started_o<=1;

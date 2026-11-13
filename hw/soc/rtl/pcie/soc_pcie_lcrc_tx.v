@@ -110,13 +110,13 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
     reg [1:0] cursor_kind,cursor_byte;
     reg [CW-1:0] cursor_word;
     reg cursor_last_word;
-    wire [7:0] cursor_data_byte=words[cursor_word] >> (8*cursor_byte);
-    wire [7:0] cursor_crc_byte=(~crc) >> (8*cursor_byte);
+    wire [7:0] cursor_data_byte=(32'(cursor_word)<MAX_TLP_DWORDS ? words[$clog2(MAX_TLP_DWORDS)'(cursor_word)][8*cursor_byte +: 8] : 8'hxx);
+    wire [7:0] cursor_crc_byte=~crc[8*cursor_byte +: 8];
     reg [7:0] tx_byte;
     wire tx_shown=state>=PREFIX0;
     always @* tx_data_o=tx_shown ? tx_byte : 8'd0;
     wire enter_prefix=state==COLLECT && tlp_valid_i && tlp_ready_o && !tlp_sop_i && !tlp_error_i &&
-                      count!=MAX_TLP_DWORDS && tlp_eop_i && count+1>=header_words;
+                      32'(count)!=MAX_TLP_DWORDS && tlp_eop_i && count+1>=header_words;
     always @(posedge clk_i or negedge rst_ni) begin
         if (!rst_ni) begin
             tx_byte<=0;cursor_kind<=NEXT_END;cursor_word<=0;cursor_byte<=0;cursor_last_word<=0;
@@ -136,7 +136,7 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
                     if (cursor_byte==3) begin
                         if (cursor_last_word) cursor_kind<=NEXT_CRC;
                         else begin
-                            cursor_word<=cursor_word+1'b1;cursor_last_word<=cursor_word+2'd2==length;
+                            cursor_word<=cursor_word+1'b1;cursor_last_word<=cursor_word+CW'(2)==length;
                         end
                     end
                 end
@@ -207,12 +207,12 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
                     packet_bad_o<=1;state<=tlp_eop_i ? IDLE : DROP;
                 end else if (state==DROP) begin
                     if (tlp_eop_i) state<=IDLE;
-                end else if (tlp_error_i || count==MAX_TLP_DWORDS) begin
+                end else if (tlp_error_i || 32'(count)==MAX_TLP_DWORDS) begin
                     packet_bad_o<=1;state<=tlp_eop_i ? IDLE : DROP;
                 end else begin
-                    write_word<=transmit_order(tlp_data_i,count<header_words);count<=count+1'b1;
+                    write_word<=transmit_order(tlp_data_i,32'(count)<32'(header_words));count<=count+1'b1;
                     for(wj=0;wj<MAX_TLP_DWORDS;wj=wj+1) if(count==CW'(wj)) write_at[wj]<=1;
-                    fold_valid<=1;fold_first<=0;fold_word<=tlp_data_i;fold_msb_first<=count<header_words;
+                    fold_valid<=1;fold_first<=0;fold_word<=tlp_data_i;fold_msb_first<=32'(count)<32'(header_words);
                     if (tlp_eop_i) begin
                         if (count+1>=header_words) begin
                             length<=count+1'b1;state<=PREFIX0;byte_index<=0;

@@ -88,7 +88,7 @@ module soc_pcie_lcrc_rx #(
             if (rx_sop_i) open_next_o=!(state==COLLECT || rx_error_i || rx_eop_i);
             else if (state==IDLE) open_next_o=1'b0;
             else if (state==DROP) open_next_o=1'b1;
-            else if (rx_error_i || received==CAP+6) open_next_o=1'b0;
+            else if (rx_error_i || 32'(received)==CAP+6) open_next_o=1'b0;
             else open_next_o=!rx_eop_i;
         end
     end
@@ -119,7 +119,7 @@ module soc_pcie_lcrc_rx #(
                     packet_bad_o<=1;state<=rx_eop_i ? IDLE : DROP;
                 end else if (state==DROP) begin
                     if (rx_eop_i) state<=IDLE;
-                end else if (rx_error_i || received==CAP+6) begin
+                end else if (rx_error_i || 32'(received)==CAP+6) begin
                     packet_bad_o<=1;state<=rx_eop_i ? IDLE : DROP;
                 end else begin
                     crc<=crc_next;received<=received+1'b1;

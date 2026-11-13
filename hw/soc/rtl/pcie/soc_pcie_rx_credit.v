@@ -40,8 +40,8 @@ module soc_pcie_rx_credit #(
     localparam integer SLOTS=3*SLOTS_PER_CLASS;
     localparam integer CW=$clog2(CAP+2),SW=$clog2(SLOTS+1);
     localparam integer DATA_PER_SLOT=(MAX_TLP_DWORDS-3+3)/4;
-    localparam [7:0] H_INIT=SLOTS_PER_CLASS;
-    localparam [11:0] D_INIT=SLOTS_PER_CLASS*DATA_PER_SLOT;
+    localparam [7:0] H_INIT=8'(SLOTS_PER_CLASS);
+    localparam [11:0] D_INIT=12'(SLOTS_PER_CLASS*DATA_PER_SLOT);
     reg [7:0] staging[0:CAP-1];
     reg [7:0] dllp[0:5];
     reg [7:0] packets[0:SLOTS*CAP-1];
@@ -72,13 +72,13 @@ module soc_pcie_rx_credit #(
                 staging[2][4:0]==5'h04 || staging[2][4:0]==5'h05) classification=1;
         else if(staging[2][4:0]==5'h0a || staging[2][4:0]==5'h0b) classification=2;
         else if(staging[2][4:3]==2'b10) classification=0;
-        payload_dw=staging[2][6] ? {staging[4][1:0],staging[5]} : 0;
+        payload_dw=staging[2][6] ? {22'd0,staging[4][1:0],staging[5]} : 0;
         if(staging[2][6] && payload_dw==0) payload_dw=1024;
         expected_length=2+(staging[2][5] ? 16 : 12)+payload_dw*4+4;
         // TD/ECRC, TLP prefixes and non-VC0 traffic are outside this endpoint.
-        shape_ok=stage_length>=18 && stage_length<=CAP && classification>=0 &&
+        shape_ok=stage_length>=18 && 32'(stage_length)<=CAP && classification>=0 &&
                  !staging[2][7] && staging[3][6:4]==0 && !staging[4][7] &&
-                 stage_length==expected_length && !(COMPLETER_ONLY && classification==2);
+                 32'(stage_length)==32'(expected_length) && !((COMPLETER_ONLY!=0) && classification==2);
         free_slot=-1;
         for(i=SLOTS-1;i>=0;i=i-1)
             if(!used[i] && i/SLOTS_PER_CLASS==classification) free_slot=i;
@@ -120,7 +120,7 @@ module soc_pcie_rx_credit #(
     genvar cbank,cgroup;
     generate for(cbank=0;cbank<SLOTS;cbank=cbank+1) begin: commit_copies
         wire commit_d=link_up_i && stage_pending && !commit && !stage_drop && shape_ok &&
-            free_slot==cbank && qcount<SLOTS;
+            free_slot==cbank && 32'(qcount)<SLOTS;
         for(cgroup=0;cgroup<COMMIT_GROUPS;cgroup=cgroup+1) begin: write_copy
             soc_pcie_rx_commit_copy copy(.clk_i(clk_i),.rst_ni(rst_ni),.d_i(commit_d),
                 .q_o(commit_write[cbank*COMMIT_GROUPS+cgroup]));
@@ -151,7 +151,7 @@ module soc_pcie_rx_credit #(
     // next-state values of qread and of the order entry a commit writes.
     // It may differ only while the queue is empty, when no TLP is read.
     reg [SW-1:0] head_slot;
-    wire [SW-1:0] qread_plus=qread==SLOTS-1 ? 0 : qread+1'b1;
+    wire [SW-1:0] qread_plus=32'(qread)==SLOTS-1 ? 0 : qread+1'b1;
     wire [SW-1:0] next_qread=remove ? qread_plus : qread;
     // The head slot's last read index, class and credit units are kept in
     // registers from the same next-state head and the commit's writes, so
@@ -622,11 +622,11 @@ module soc_pcie_rx_credit #(
         tlp_byte=0;
         for(h=0;h<SLOTS;h=h+1) if(head_onehot[h]) tlp_byte=tlp_byte|bank_byte[h];
     end
-    assign out_data_o=select_dllp ? dllp[output_index] : tlp_byte;
+    assign out_data_o=select_dllp ? (32'(output_index)<6 ? dllp[3'(output_index)] : 8'hxx) : tlp_byte;
     assign out_sop_o=output_index==0;
-    assign out_eop_o=select_dllp ? output_index+1'b1==dllp_length : output_index==head_last;
+    assign out_eop_o=select_dllp ? output_index+1'b1==CW'(dllp_length) : output_index==head_last;
     assign out_error_o=select_dllp ? dllp_bad : errors[head_slot];
-    assign queued_o=qcount;
+    assign queued_o=8'(qcount);
     always @(posedge clk_i or negedge rst_ni) begin
         if(!rst_ni) begin
             used<=0;qread<=0;qwrite<=0;qcount<=0;head_slot<=0;
@@ -651,8 +651,8 @@ module soc_pcie_rx_credit #(
             dllp_pending<=0;dllp_bad<=0;dllp_length<=0;
 `endif
             output_active<=0;output_dllp<=0;output_index<=0;waiting<=0;
-            header_limit_o<={COMPLETER_ONLY ? 8'b0 : H_INIT,H_INIT,H_INIT};
-            data_limit_o<={COMPLETER_ONLY ? 12'b0 : D_INIT,D_INIT,D_INIT};
+            header_limit_o<={(COMPLETER_ONLY!=0) ? 8'b0 : H_INIT,H_INIT,H_INIT};
+            data_limit_o<={(COMPLETER_ONLY!=0) ? 12'b0 : D_INIT,D_INIT,D_INIT};
             released_o<=0;released_class_o<=0;released_data_o<=0;
             dropped_o<=0;protocol_error_o<=0;recovery_request_o<=0;
         end else if(!link_up_i) begin
@@ -674,8 +674,8 @@ module soc_pcie_rx_credit #(
 `else
             stage_checked<=0;commit_slot<=0;
 `endif
-            header_limit_o<={COMPLETER_ONLY ? 8'b0 : H_INIT,H_INIT,H_INIT};
-            data_limit_o<={COMPLETER_ONLY ? 12'b0 : D_INIT,D_INIT,D_INIT};
+            header_limit_o<={(COMPLETER_ONLY!=0) ? 8'b0 : H_INIT,H_INIT,H_INIT};
+            data_limit_o<={(COMPLETER_ONLY!=0) ? 12'b0 : D_INIT,D_INIT,D_INIT};
             released_o<=0;dropped_o<=0;protocol_error_o<=0;recovery_request_o<=0;
         end else begin
 `ifndef SOC_PCIE_RESET_COPIES
@@ -683,17 +683,17 @@ module soc_pcie_rx_credit #(
 `else
             released_o<=0;dropped_o<=0;head_slot<=next_head_slot;
 `endif
-            head_last<=next_head_last;head_class<=next_head_slot/SLOTS_PER_CLASS;head_units<=next_head_units;
+            head_last<=next_head_last;head_class<=2'(32'(next_head_slot)/SLOTS_PER_CLASS);head_units<=next_head_units;
             release_lo<={1'b0,head_data_limit[5:0]}+{1'b0,head_units[5:0]};
             release_hi<=head_data_limit[11:6]+head_units[11:6];
             release_hi_carry<=head_data_limit[11:6]+head_units[11:6]+6'd1;
             head_onehot<={{(SLOTS-1){1'b0}},1'b1}<<next_head_slot;
             stage_checked<=stage_pending && !commit && !stage_drop;
             stage_shape_ok<=shape_ok;
-            stage_slot<=free_slot;stage_units<=(payload_dw+3)/4;
+            stage_slot<=SW'(free_slot);stage_units<=12'((payload_dw+3)/4);
             for(b=0;b<SLOTS;b=b+1)
                 commit_slot[b]<=stage_pending && !commit && !stage_drop && shape_ok &&
-                    free_slot==b && qcount<SLOTS;
+                    free_slot==b && 32'(qcount)<SLOTS;
             if(stage_drop) begin
                 stage_pending<=0;dropped_o<=1;protocol_error_o<=1;recovery_request_o<=1;
             end
@@ -705,14 +705,14 @@ module soc_pcie_rx_credit #(
 `ifdef SOC_PCIE_RX_STAGED_COMMIT
                 for(qo=0;qo<SLOTS;qo=qo+1) if(qwrite_oh[qo]) order[qo]<=stage_slot;
                 qwrite_oh<={qwrite_oh[SLOTS-2:0],qwrite_oh[SLOTS-1]};
-                qwrite<=qwrite==SLOTS-1 ? 0 : qwrite+1'b1;
+                qwrite<=32'(qwrite)==SLOTS-1 ? 0 : qwrite+1'b1;
 `else
-                order[qwrite]<=stage_slot;qwrite<=qwrite==SLOTS-1 ? 0 : qwrite+1'b1;
+                order[qwrite]<=stage_slot;qwrite<=32'(qwrite)==SLOTS-1 ? 0 : qwrite+1'b1;
 `endif
                 stage_pending<=0;
             end
             if(remove) begin
-                used[head_slot]<=0;waiting<=0;qread<=qread==SLOTS-1 ? 0 : qread+1'b1;
+                used[head_slot]<=0;waiting<=0;qread<=32'(qread)==SLOTS-1 ? 0 : qread+1'b1;
                 if(packet_accepted_i) begin
                     released_o<=1;released_class_o<=head_class;
                     released_data_o<=head_units;
@@ -741,17 +741,17 @@ module soc_pcie_rx_credit #(
                 end else begin
                     input_bad<=input_bad || rx_error_i || rx_sop_i || rx_dllp_i!=input_dllp;
                     if(input_dllp) begin
-                        if(input_count<6) dllp[input_count]<=rx_data_i;
+                        if(input_count<6) dllp[3'(input_count)]<=rx_data_i;
 `ifndef SOC_PCIE_RESET_COPIES
-                    end else for(k=0;k<CAP;k=k+1) if(input_count==k) stage_write_at[k]<=1;
+                    end else for(k=0;k<CAP;k=k+1) if(32'(input_count)==k) stage_write_at[k]<=1;
 `else
                     end
 `endif
-                    if(input_count<CAP+1) input_count<=input_count+1'b1;
+                    if(32'(input_count)<CAP+1) input_count<=input_count+1'b1;
                     if(rx_eop_i) begin
                         input_active<=0;
                         if(input_dllp) begin
-                            dllp_pending<=1;dllp_length<=input_count>=6 ? 6 : input_count+1'b1;
+                            dllp_pending<=1;dllp_length<=input_count>=6 ? 3'd6 : 3'(input_count+1'b1);
                             dllp_bad<=input_bad || rx_error_i || rx_sop_i || !rx_dllp_i || input_count!=5;
                         end else begin
                             stage_pending<=1;stage_length<=input_count+1'b1;stage_last<=input_count;
@@ -800,7 +800,7 @@ module soc_pcie_rx_credit #(
                 if(!input_active) begin
                     if(!rx_dllp_i) stage_write_at[0]<=1;
                 end else if(!input_dllp) begin
-                    for(kc=0;kc<CAP;kc=kc+1) if(input_count==kc) stage_write_at[kc]<=1;
+                    for(kc=0;kc<CAP;kc=kc+1) if(32'(input_count)==kc) stage_write_at[kc]<=1;
                 end
             end
             if(out_valid_o && out_ready_i) begin
@@ -853,7 +853,7 @@ module soc_pcie_rx_pick_copy #(
     output reg [W-1:0] q_o
 );
     always @(posedge clk_i or negedge rst_ni)
-        if(!rst_ni) q_o<=RST;
+        if(!rst_ni) q_o<=W'(RST);
         else q_o<=d_i;
 endmodule
 `endif

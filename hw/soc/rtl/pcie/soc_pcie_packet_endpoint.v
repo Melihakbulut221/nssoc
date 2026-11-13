@@ -76,7 +76,7 @@ module soc_pcie_packet_endpoint #(
                     word_index<=0;header_words<=byte_data[5] ? 4 : 3;
                     word_data<={byte_data,24'b0};byte_index<=1;
                 end else begin
-                    if (word_index<header_words) begin
+                    if (32'(word_index)<32'(header_words)) begin
                         case (byte_index)
                             0:word_data[31:24]<=byte_data;
                             1:word_data[23:16]<=byte_data;
