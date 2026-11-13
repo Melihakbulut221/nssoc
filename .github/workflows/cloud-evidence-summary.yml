@@ -1,4 +1,4 @@
-name: Cut10j two measured Ethernet drivers - physical repair and routed STA
+name: Cut10j four measured Ethernet and CLINT drivers - physical repair and routed STA
 on:
   workflow_dispatch:
 permissions:
@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         # r_cut4h_td_d68 and r_cut3hh_td_d68 are the route-hold job's databases.
-        name: [r_cut10j_electrical2]
+        name: [r_cut10j_electrical4]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -52,7 +52,7 @@ jobs:
           print('restored PDK and tool files',n)
           PY
           rm -rf $W/pkg
-      - name: Two-driver resize, fresh global/detailed routing and audited routed STA
+      - name: Four-driver resize, fresh global/detailed routing and audited routed STA
         if: env.RUN == 'true'
         run: |
           set -euo pipefail
@@ -76,7 +76,7 @@ jobs:
           PY
           set +e
           mkdir -p $OUT/rcx
-          timeout 19800 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage python hw/soc/pnr/cut10j_electrical_reroute_flow.py --flow Cut10jElectricalReroute \
+          timeout 19800 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage python hw/soc/pnr/cut10j_electrical4_reroute_flow.py --flow Cut10jElectrical4Reroute \
             --pdk-root $PWD/hw/soc/tools/ciel-corrpre --pdk ihp-sg13g2 --scl sg13g2_stdcell --force-run-dir $OUT/rcx \
             --with-initial-state $OUT/routed-state.json $OUT/prepared/config-routed.json > $OUT/rcx.log 2>&1; rc=$?
           set -e
@@ -113,6 +113,6 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: cut10j-electrical2-native-${{ github.run_id }}
+          name: cut10j-electrical4-native-${{ github.run_id }}
           path: /mnt/s/native
           retention-days: 30
