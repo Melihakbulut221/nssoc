@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-import hashlib,json,pathlib,zipfile
+import hashlib,json,pathlib,zipfile,re
 import klayout.db as db
 from audit_sram_independent_extraction import run,digest
 out=pathlib.Path('out');out.mkdir(exist_ok=True)
@@ -8,16 +8,10 @@ assert digest('reference.zip')=='124f6a92fa56346b1c471efb84750878180ef0c8056b2c9
 with zipfile.ZipFile('reference.zip') as z:
  names=[n for n in z.namelist() if n.endswith('reference.spice')];assert len(names)==1
  raw=z.read(names[0]);assert hashlib.sha256(raw).hexdigest()=='64d041383d0ebee7b54dab0bc10d651d31262a2a41ccd15a9c0727dac06e0dd9'
-pathlib.Path('reference.spice').write_bytes(raw)
-n=db.Netlist();n.read('reference.spice',db.NetlistSpiceReader())
-candidates=[c for c in n.each_circuit() if c.name.lower()=='dp8tcell'];assert len(candidates)==1
-# Duplicate only the independent leaf into a standalone netlist using SPICE writer
-# circuit selection by pruning all parents (no terminal aliases or extracted-derived reference).
-leaf=candidates[0]
-for c in list(n.each_circuit()):
- if c.name!=leaf.name:n.remove(c)
-n.write('leaf-reference.spice',db.NetlistSpiceWriter())
-raw=pathlib.Path('leaf-reference.spice').read_bytes()
+# Preserve original named terminals directly; a SPICE writer may renumber pins.
+matches=re.findall(r'^\s*\.subckt\s+DP8TCell\b.*?^\s*\.ends[^\n]*',raw.decode(),re.I|re.M|re.S)
+assert len(matches)==1, 'leaf selection ambiguous'
+raw=(matches[0]+'\n').encode()
 with zipfile.ZipFile('leaf-reference.zip','w') as z:z.writestr('leaf-reference.spice',raw)
 config={'expected_mos':8,'source_geometry_sha256':'c6a1be71d0439e88e2c08729345eb8d8001f773266cb7a8b939446e54999ff45'}
 with zipfile.ZipFile('leaf.zip') as z:
@@ -30,5 +24,7 @@ assert r['status']=='FAIL_OR_INCONCLUSIVE',r
 assert r['stages']['cc_rc_conservation']['passed'],r
 assert r['stages']['independent_mos_topology']=={'passed':False,'error':'ValueError: Graph/pin inventory differs'},r
 assert r['independent_inventory']['reference_mos']==r['independent_inventory']['extracted_mos']==8
+assert set(r['independent_inventory']['reference_ports'])=={'vss','substrate','vdd','nwell','wl1','wl2','bl1','bl1_n','bl2','bl2_n'}
+assert set(r['independent_inventory']['extracted_ports'])=={'vss','sub!','vdd','wl1','wl2','bl1','bl1_n','bl2','bl2_n'}
 (out/'boundary-regression.json').write_text(json.dumps({'status':'PASS_EXPECTED_INDEPENDENT_BODY_BOUNDARY_REJECTION','leaf_lvs':False,'macro_lvs':False,'manufacturing_approval':False},indent=2))
 print('PASS_EXPECTED_INDEPENDENT_BODY_BOUNDARY_REJECTION')

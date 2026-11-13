@@ -1,8 +1,8 @@
 {
-  "run": 43515079085,
-  "source": "e8129a1b0d32ba988123c88c8fddd5341205edef",
-  "artifact_id": 14079189364,
-  "artifact_sha256": "cc022f540b67654543b60b8ad893be920ac1ac116cf65196560ddd1309f0f863",
+  "run": 43515267420,
+  "source": "ebfc5890dca6ec83c14dfa26485a6506616aee77",
+  "artifact_id": 14079663369,
+  "artifact_sha256": "f5efa120a7e20cf94bbc1ce8e9c489149074b9b4bae098f69e129b142ae949b9",
   "results": {
     "actual-leaf-audit.json": {
       "status": "FAIL_OR_INCONCLUSIVE",
@@ -51,9 +51,9 @@
         },
         "reference": {
           "archive": "leaf-reference.zip",
-          "archive_sha256": "ae2311af3a2c16a40d4aec8918f66e4425ec096eb79ea79d18f0a3b38b822a6e",
+          "archive_sha256": "ee8e67fd2673aaf76d227344a83ff339d74fd6bf31306b1b750aea9ce4f33ed9",
           "member": "leaf-reference.spice",
-          "member_sha256": "8027a11e5d9674f1006c51ffc7015c30a1e025e5e7a036964adfb0b113a169b2"
+          "member_sha256": "ec9cb12bafa8e5b5c7e7fdcdb3480aafdcbed5aabcbcdf3eb573d8920c6d7dc9"
         }
       },
       "independent_inventory": {
@@ -62,16 +62,16 @@
         "reference_nets": 12,
         "extracted_nets": 12,
         "reference_ports": [
-          "1",
-          "10",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
-          "9"
+          "bl1",
+          "bl1_n",
+          "bl2",
+          "bl2_n",
+          "nwell",
+          "substrate",
+          "vdd",
+          "vss",
+          "wl1",
+          "wl2"
         ],
         "extracted_ports": [
           "bl1",
@@ -92,6 +92,10 @@
       "macro_lvs": false,
       "manufacturing_approval": false
     }
+  },
+  "supersedes": {
+    "run": 43515079085,
+    "reason": "KLayout SPICE rewrite renumbered reference pins; previous rejection was not a valid named-port regression. This run retains original SPICE leaf and asserts exact port inventories."
   },
   "full_macro_lvs": false,
   "manufacturing_approval": false
