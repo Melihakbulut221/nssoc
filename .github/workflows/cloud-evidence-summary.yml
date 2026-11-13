@@ -1,4 +1,4 @@
-name: Cut10j completed-route extraction and three-corner timing
+name: Cut10j two measured Ethernet drivers - physical repair and routed STA
 on:
   workflow_dispatch:
 permissions:
@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         # r_cut4h_td_d68 and r_cut3hh_td_d68 are the route-hold job's databases.
-        name: [r_cut10j_td_d68]
+        name: [r_cut10j_electrical2]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -52,7 +52,7 @@ jobs:
           print('restored PDK and tool files',n)
           PY
           rm -rf $W/pkg
-      - name: Nominal OpenRCX and three-corner standalone OpenSTA (AuditedRCX, AuditedRoutedSTA)
+      - name: Two-driver resize, fresh global/detailed routing and audited routed STA
         if: env.RUN == 'true'
         run: |
           set -euo pipefail
@@ -76,14 +76,16 @@ jobs:
           PY
           set +e
           mkdir -p $OUT/rcx
-          timeout 19800 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage python hw/soc/pnr/replay_onehot_routed_extraction_flow.py --flow ReplayOnehotRoutedExtraction \
+          timeout 19800 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage python hw/soc/pnr/cut10j_electrical_reroute_flow.py --flow Cut10jElectricalReroute \
             --pdk-root $PWD/hw/soc/tools/ciel-corrpre --pdk ihp-sg13g2 --scl sg13g2_stdcell --force-run-dir $OUT/rcx \
             --with-initial-state $OUT/routed-state.json $OUT/prepared/config-routed.json > $OUT/rcx.log 2>&1; rc=$?
           set -e
           echo "RCX_STA_RC=$rc"; tail -40 $OUT/rcx.log
           [ $rc = 0 ]
           X=$OUT/flop-map.tsv; [ -f $X ] || X=none
-          python3 -B scripts/routed_sta_summary.py $OUT/rcx $OUT/routed-state.json $X $OUT/routed-summary.json | tee $OUT/routed-summary.txt
+          FINAL=$(find $OUT/rcx -path '*nssoc-onehotroutedsta/state_out.json' | head -1)
+          [ -n "$FINAL" ]; cp "$FINAL" $OUT/candidate-state.json
+          python3 -B scripts/routed_sta_summary.py $OUT/rcx $OUT/candidate-state.json $X $OUT/routed-summary.json | tee $OUT/routed-summary.txt
       - name: Collect
         if: always() && env.RUN == 'true'
         run: |
@@ -94,11 +96,23 @@ jobs:
             mkdir -p out/$c; for f in sta.log checks.rpt violator_list.rpt clock.rpt ws.max.rpt ws.min.rpt skew.max.rpt skew.min.rpt unpropagated.rpt; do [ -f $d/$f ] && cp $d/$f out/$c/; done
             [ -f $d/max.rpt ] && head -c 20000000 $d/max.rpt > out/$c/max.head.rpt; [ -f $d/min.rpt ] && head -c 20000000 $d/min.rpt > out/$c/min.head.rpt
           done
-          for d in $OUT/rcx/*; do [ -d "$d" ] || continue; b=$(basename $d); mkdir -p out/$b; cp $d/*.log $d/*.json out/$b/ 2>/dev/null || true; done
+          for d in $OUT/rcx/*; do [ -d "$d" ] || continue; b=$(basename $d); mkdir -p out/$b; cp $d/*.log $d/*.json $d/*.tsv out/$b/ 2>/dev/null || true; done
           ls -la out | head -40
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always() && env.RUN == 'true'
         with:
           name: routed-sta-${{ matrix.name }}-${{ github.run_id }}
           path: out
+          retention-days: 30
+      - name: Preserve native candidate in cloud only
+        if: always()
+        run: |
+          mkdir -p /mnt/s/native
+          tar -czf /mnt/s/native/candidate.tgz hw/soc/out/impl-probe/rcx hw/soc/out/impl-probe/prepared hw/soc/out/impl-probe/routed-state.json
+          sha256sum /mnt/s/native/candidate.tgz > /mnt/s/native/SHA256SUMS
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: cut10j-electrical2-native-${{ github.run_id }}
+          path: /mnt/s/native
           retention-days: 30
