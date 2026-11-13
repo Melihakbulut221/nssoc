@@ -93,7 +93,7 @@ def test_illegal_state_fails_closed(compiled, pipeline, illegal_state):
 
 @pytest.mark.parametrize("mutation,parameters", [
     (("if (compare_data !== {WIDTH{1'b0}})", "if (1'b0)"), dict(fault=1)),
-    (("PIPELINE_COMPARE ? read_data_q : rdata_i", "rdata_i"), dict(perturb=1)),
+    (("(PIPELINE_COMPARE != 0) ? read_data_q : rdata_i", "rdata_i"), dict(perturb=1)),
     (("else if (&addr_o)", "else if (addr_o == 1)"), {}),
     (("addr_o <= addr_o + 1'b1", "addr_o <= addr_o + 2'd2"), {}),
 ])

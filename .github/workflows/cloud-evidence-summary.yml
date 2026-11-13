@@ -1487,6 +1487,7 @@ jobs:
           path: |
             out/*.log
             out/*/result.json
+            out/mbist-functional.xml
           retention-days: 30
 
   # ---- docs/combined-timing.md: the Ethernet FIFO read register
@@ -1761,6 +1762,15 @@ jobs:
           hw/.venv/bin/pip install -q -r hw/requirements.txt
           make soc-rtl-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
           make soc-interfaces-prepare SOC_INTERFACE_PROFILE=full INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
+      - name: Verify MBIST RTL, injected faults and synthesized replay
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          command -v iverilog
+          command -v vvp
+          command -v yosys
+          python3 -m pytest -q sw/tests/test_soc_sram_mbist.py sw/tests/test_soc_sram_zero_check.py sw/tests/test_soc_mbist_integration.py --junitxml=out/mbist-functional.xml
+          python3 -c "import xml.etree.ElementTree as E; rows=list(E.parse('out/mbist-functional.xml').iter('testsuite')); assert rows and sum(int(x.get('tests',0)) for x in rows)>0; assert all(int(x.get(k,0))==0 for x in rows for k in ('failures','errors','skipped'))"
       - name: Compile the real loader and check all SRAM lint profiles
         run: |
           set -euo pipefail
@@ -1789,4 +1799,5 @@ jobs:
           path: |
             out/*.log
             out/*/result.json
+            out/mbist-functional.xml
           retention-days: 30
