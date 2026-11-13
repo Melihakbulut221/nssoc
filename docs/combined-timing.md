@@ -458,3 +458,72 @@ The eight violating `clk_i` endpoints of `r_cut7z` (-0.44 to -0.41) all start at
 Probes `r_cut8z_td_d68` and `r_cut8z_td_d66` (PL 0 / GRT 0, density 68 and 66; every round-seven knob plus `SOC_PCIE_TX_WORD_REG`), with route and routed-sta (`DRT_OPT_ITERS` 16). Functional: `regress`/`native-boot` `ex_exec_pmpreg_cut8`; `pcie-unit` `txword` (stream, endpoint, reliable, flow and buffered suites) and `cut8` (all PCIe knobs) plus the transmit-word co-simulation; `eth-knobs` `joint-cut8` (vendor-SRAM FIFOs with synchronous and asynchronous packet clock, inferred FIFOs), and `eth-rtl`/`eth-mbist`/`eth-gl-w`/`soc-mbist` with the write select copies inside `SOC_ETH_FIFO_WRREG`.
 
 Risks: each copy register only helps if the placer puts it next to its macro; the eight select copies add one more 2 mm net (`a_functional && wen_i`) on the D side, the same reach `wq_men` already has; the d66 probe changes area and wire length everywhere, not only the measured paths.
+
+## 18. Ninth round: what the last 475 setup and 132 hold endpoints are, the replay read, a hold pass after the setup repair
+
+Run 43333530552 (all 112 jobs pass, including the transmit-word co-simulation and the per-bank write select). Routed, extracted, DRC 0, antenna 0. Worst slack in ns, setup slow / typ / fast | hold slow / typ / fast:
+
+| Group | `r_cut8z_td_d68` |
+|---|---|
+| asynchronous | -0.01 / 1.21 / 1.81 \| 0.41 / 0.15 / 0.00 |
+| `clk_i` | -0.02 / 6.39 / 9.55 \| 0.10 / -0.00 / -0.06 |
+| `eth_gtx` | 2.32 / 3.44 / 4.05 \| 1.36 / 0.56 / 0.14 |
+| `eth_rx_clk_i` | 1.17 / 3.16 / 3.77 \| -0.05 / -0.13 / -0.20 |
+| `eth_tx_clk_i` | 0.84 / 3.62 / 5.12 \| 0.33 / 0.12 / 0.00 |
+| `pcie_clk_i` | -0.57 / 0.89 / 1.52 \| 0.19 / 0.03 / -0.09 |
+
+Violating endpoints: slow setup 475; hold slow 4, typical 12, fast 132. `r_cut8z_td_d66` is worse (`pcie_clk_i` -0.92, `clk_i` -1.56, `eth_tx_clk_i` -1.23), so a lower density does not help; this round measures d70 instead.
+
+### 18.1 The 475 slow-corner setup endpoints
+
+Grouped by RTL start and end register (bit indices removed) they are 54 structures. 457 endpoints are `pcie_clk_i`, 4 `clk_i` (`cs_registers_i.csr_addr[5]` -> `rf_reg_q[28]`, -0.019, 46 cells) and 14 asynchronous (`flow.credits.rst_ni` -> `credit_data_limit_o`/`credit_header_limit_o`, -0.014). Fifteen structures (250 endpoints; the two `regs.timer` ones share a row) are at -0.2 ns or worse, all `pcie_clk_i`, 6 to 20 cells deep, arrival 5.2-5.6 ns (about 1.5 ns of it clock insertion) against a 4 ns period; the output port is the exception:
+
+| Endpoints | Worst | Start -> end | Hold buffers on the path |
+|---:|---:|---|---|
+| 21 | -0.573 | `retry.replay_read_onehot` -> `read_replay_bank[].registered` | 0.65 ns at D |
+| 14 | -0.571 | `transaction_stream.tx_busy` -> transmit word (`tx_word_q`) | none |
+| 1 | -0.424 | `receive_ownership.dllp_pending` -> `in_data` | 0.64 ns at Q |
+| 42 | -0.350 | `regs.timer` -> `completion_header` / `completion_data` | 0.65 ns at D |
+| 45 | -0.314 | `receive_ownership.commit_slot` -> `packets` | 0.64 ns at D |
+| 7 | -0.280 | `retry.write_pos` -> `next_store_sequence` | 0.60 ns at D |
+| 1 | -0.273 | `dllp_pending` -> `stage_last` | 1.26 ns |
+| 3 | -0.264 | `flow.credits.request_class` -> `credit_data_consumed_o` | 0.63 ns at D |
+| 2 | -0.247 | `ack_encoder.index` -> transmitter | 1.27 ns |
+| 13 | -0.232 | `transaction_stream.header_count` -> `header` | 0.64 ns at D |
+| 3 | -0.231 | `advertiser.refresh` -> itself | none |
+| 21 | -0.217 | `flow.credits.b_di` -> `ah` | none |
+| 1 | -0.211 | `flow.credits.seen` -> `pcie_initialized_o` (output port) | none |
+| 76 | -0.203 | `retry.write_valid` -> `bytes` (the store's write enable) | none |
+
+The common term is hold padding, not logic: 184 of the 475 endpoints have one or two `dlygate4sd3_1` (0.60-0.65 ns each at the slow corner) on the path, 150 of them directly at the D pin, and every one of the 184 meets setup without that delay. The pads come from the flow's hold repairs: the post-CTS one inserts 1,034 buffers (14,345 endpoints are short of hold before it) and the post-GRT one 48 more. They sit at the D pin because the register's D cone joins a long path (an enable or a select tree) and a short one (a data bit straight from another register: `staging` -> `packets`, `lower_address` -> `completion_header`, byte 0 -> `registered`) at its last gate, and the resizer buffers the hold-violating endpoint's last driver. The fix is in the RTL: a long path must not share its last gate with a hold-limited short path, or must not exist (section 18.3).
+
+### 18.2 The hold endpoints
+
+No hold violator starts at an input port or ends at an output port; none is a reset synchronizer (one registered reset copy, `packet_rst_n` -> `receive_input_slice.rst_ni`, -0.001 fast). By kind:
+
+- **Receive FIFO SRAM pins** (`eth_rx_clk_i`): all 4 slow, 11 of 12 typical, 19 of 132 fast endpoints. `g_wsel[bank].u_copy` (the per-bank write select of section 17) -> `A_ADDR`, `A_WEN`, `A_REN`, `A_DIN` (worst -0.05 / -0.13 / -0.20), and `aa` -> `A_ADDR` (-0.05 / -0.05 / -0.08): three or four cells from the register to the macro pin, against the macro's hold requirement (section 17.1).
+- **Flip-flop to flip-flop, fast corner only**: 69 `pcie_clk_i` (worst -0.088: `receive_ownership.packets` and the lane copies -> `read_bank[].near_bytes`/`far_bytes`, `staging` -> `packets`, credit and cursor registers onto themselves), 34 `clk_i` (worst -0.062, `s_be` -> `u_clint` `code_in`), 10 `eth_rx_clk_i` (-0.048); 7 of these are below -0.05. Typical adds one `clk_i` endpoint at -0.005.
+
+Why repair left them: the flow's post-GRT hold repair (`GRT_RESIZER_HOLD_SLACK_MARGIN` 0, `GRT_RESIZER_SETUP_SLACK_MARGIN` 0.025, `GRT_RESIZER_ALLOW_SETUP_VIOS` 0) ends at 0.000 in every corner, but it is not the last resizer pass. The probe's uncapped setup repair (`repair_design`, then `repair_timing -setup -setup_margin 0`, 1,100 iterations: 414 cells sized up, 206 buffers inserted, 19 removed) runs after it and never repairs hold. Its own report on the estimated parasitics already shows the SRAM pins at -0.48 / -0.35 / -0.34 (fast / typical / slow) and `pcie_clk_i` at -0.05 fast. Routing and extraction move those by -0.04 (flip-flop paths) to +0.28 (SRAM pins). A non-zero `GRT_RESIZER_HOLD_SLACK_MARGIN` acts before that setup repair, which explains rounds 5 to 7: it costs setup (`r_cut6a`, `r_cut7a`) and the setup repair spends it again (`r_cut6a` `eth_rx_clk_i` hold -0.41).
+
+### 18.3 Changes
+
+- **`SOC_PCIE_REPLAY_AHEAD=1` (new, default 0, `soc_pcie_replay_tx.v`).** Each bank gets `ahead`, loaded in every cycle with the byte two positions past the cursor (the existing AND-OR, selected by the cursor rotated by two, with no enable and no handshake), and `kept`, the byte one position past it; the bank register takes `replay_took ? ahead : kept`, where `replay_took` is `core_taken` one cycle earlier. In every sending cycle that is the default build's byte at cursor+1. The first sending cycle starts at cursor 0, with `kept` = byte 1 (loaded while not sending) and `replay_took` 0. After that the cursor moves by at most one per cycle, and exactly when `replay_took` is 1. The sent slot's bytes are fixed from the first sending cycle on: its last byte is written at the latest at the edge that starts the send, and only the free tail slot is written while a frame is sent. The cursor stays below `MAX_BYTES`, so cursor+2 never wraps. The other banks' registers may differ while a frame is sent; they are not read, and all of them reload byte 0 before the next send. Ports are cycle-identical. Cost: 65 flip-flops. The AND-OR now ends at `ahead`, which has no short path, and the D cone of the bank register is two multiplexers from registers, so a hold pad there no longer sits on a long path.
+- **Transmit word select (inside `SOC_PCIE_TX_WORD_REG`).** The word and marker registers' load and advance conditions use a second `soc_pcie_tlp_stream_flag_copy` of `tx_busy`, which equals `tx_busy` in every cycle. The master drives the header, payload, index and the backend's ready (0.80 ns from clock to output).
+- **A hold-only pass after the setup repair (workflow, matrix `deephold`).** The deep-repair script appends `repair_timing -hold -setup_margin <deephold_setup> -hold_margin <deephold> -max_iterations 1000 -max_buffer_percent 10` in every corner and re-estimates the parasitics before it writes the database for routing. The route job's `DetailedPlacement` legalizes the new buffers as it does the setup repair's. This is before detailed routing, so it is not the post-route ECO of section 12 (DRT-1010). `-setup_margin` is 0.1 ns, not 0: a buffer may only use setup slack above 0.1 ns on the estimate, against the estimate-to-extracted spread above. `-hold_margin` is 0.05 ns, which covers the -0.04 ns that routing took from the flip-flop paths. Entries without `deephold` produce the same script as before. Only the measurement flow changes; the clocks, SDC, corners, derates and thresholds do not.
+
+Not changed in this round, with the reason: `regs.timer` -> `completion_header`, `commit_slot` -> `packets`, `write_pos` -> `next_store_sequence`, `request_class` -> `credit_data_consumed_o` and `header_count` -> `header` (+0.30 to +0.41 ns without their D-pin pad). Each needs its short data path kept off the enable's last gate, one RTL change per structure. `retry.write_valid`/`write_address` -> `bytes` (-0.20/-0.18, the 152-byte write enable, no pads), `flow.credits.b_di` -> `ah` (-0.22) and `advertiser.refresh` (-0.23) are logic- and fanout-bound and come next. `clk_i` (-0.02) and the asynchronous group (-0.01) are within placement noise (±0.5 ns between rounds, section 13).
+
+### 18.4 Round-nine runs
+
+| Probe | Knobs | Density | Hold settings |
+|---|---|---:|---|
+| `r_cut9z_td_d68` | round 8 + `SOC_PCIE_REPLAY_AHEAD` (+ the `tx_busy` word copy) | 68 | PL 0 / GRT 0 |
+| `r_cut9h_td_d68` | same | 68 | PL 0 / GRT 0, then the hold-only pass (0.05 hold / 0.1 setup margin) |
+| `r_cut9z_td_d70` | same | 70 | PL 0 / GRT 0 |
+
+All three have route and routed-sta entries; routing uses `DRT_OPT_ITERS` 16. `r_cut9z` against `r_cut8z` measures the two RTL changes. `r_cut9h` against `r_cut9z` measures the hold pass: whether it clears the SRAM-pin and fast flip-flop violators, and what it costs in setup. `r_cut9z_td_d70` measures density 70 with the same netlist.
+
+Functional entries: `regress` and `native-boot` `ex_exec_pmpreg_cut9`; `pcie-unit` `rpahead` (replay, reliable, flow, buffered suites with the define) and `cut9` (every PCIe knob, plus the stream and endpoint suites), the replay read-ahead co-simulation (`scripts/check_pcie_replay_ahead.sh`) alone and with `SOC_PCIE_REPLAY_INBANK` and `SOC_PCIE_RESET_COPIES`, and the transmit-word co-simulation again; `eth-knobs` `joint-cut9` (vendor-SRAM FIFOs with synchronous and asynchronous packet clock, inferred FIFOs).
+
+Risks: the hold pass can only buffer paths with setup slack above its margin, so a path that is short of both setup and hold keeps its hold violation (the setup protection forbids buffering it), and buffers that pass on the estimate may still cost setup after routing; `ahead` replaces the bank's AND-OR instead of adding one, so the cursor's fanout is unchanged, and the new select `replay_took` drives 32 multiplexers; the d70 probe changes area and wire length everywhere.
