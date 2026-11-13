@@ -1,0 +1,56 @@
+{
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/43495585547",
+  "tested_source_sha": "751d5ba6a742dcbb19541d2a8f7b3ae0461b855e",
+  "artifact_id": 14071327099,
+  "artifact_sha256": "c069f365e187ad9ac15b53f2bd1045fff7534b50d8724c0c9ca32321f328cebd",
+  "controls": {
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": true,
+    "scope": "Synthetic adversarial checks of flat topology and capacitor conservation; actual leaf replay is a separate workflow step. No full-macro or manufacturing acceptance."
+  },
+  "real_leaf_replay": {
+    "mos": 8,
+    "rc_resistors": 68,
+    "cc_capacitors": 61,
+    "rc_capacitors": 288,
+    "reference_pairs": 61,
+    "projected_pairs": 61,
+    "missing_pairs": 0,
+    "extra_pairs": 0,
+    "changed_pairs": 0,
+    "reference_sum_f": 4.499533902000001e-15,
+    "projected_sum_f": 4.4995350620000005e-15,
+    "collapsed_intraconductor_capacitors": 0,
+    "max_pair_difference_f": 4.999999999839351e-22,
+    "status": "PASS_SCOPED_COLLAPSED_RC_CHECKS",
+    "source_artifact": 14067369661,
+    "netlist_sha256": {
+      "CC": "cbc7dca6e387a67db742336a5f232184ea30e044c18c33c0c5fd77b516c0d57d",
+      "RC": "77b35e72ed46865efaaf440cecfad07c78e4468fc1dad193cc94f19651c94dde"
+    },
+    "controls": {
+      "removed_capacitor": {
+        "instance": "cext_272",
+        "rejected": true
+      },
+      "disconnected_resistor": {
+        "instance": "rext_1",
+        "rejected": true,
+        "reason": "reference net split across resistance components"
+      },
+      "changed_mos_model": {
+        "rejected": true
+      }
+    },
+    "qualified_pex": false,
+    "manufacturing_approval": false,
+    "scope": "Eight-device leaf only; same-engine CC versus resistor-collapsed RC with exact MOS identities/parameters and terminal anchors. No independent schematic LVS, spatial C proof, calibrated physical model, full well/body RC or full-macro qualification."
+  },
+  "full_macro_validated": false,
+  "qualified_pex": false,
+  "manufacturing_approval": false,
+  "next": "Use explicit independently established macro MOS count and hash-locked CC/RC outputs when run 43489103689 completes. Compare independently recovered schematic separately; no full-macro acceptance from leaf tests."
+}
