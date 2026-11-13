@@ -22,5 +22,39 @@
     "Serial PHY closure",
     "Unblanked SRAM LVS",
     "Foundry qualification"
-  ]
+  ],
+  "integrated_verification": {
+    "source": "2fac9c11d3547484c229901f04b6748860bad115",
+    "run": 43477312591,
+    "artifact": 14064740633,
+    "artifact_sha256": "f4993240122295c53421fb2458ae87643b0e319d5a69f15f39c878b04f328a9d",
+    "functional_tests": {
+      "tests": 128,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "suites": [
+        "sw/tests/test_soc_sram_mbist.py",
+        "sw/tests/test_soc_sram_zero_check.py",
+        "sw/tests/test_soc_mbist_integration.py"
+      ],
+      "scope": "RTL March sequences, fault injection, ownership, zero-check, synthesized replay and integration/configuration guards; not a full-chip native-cell boot"
+    },
+    "physical_lint": {
+      "profiles": [
+        "base-sram",
+        "base-mbist",
+        "base-ethernet",
+        "full-sram",
+        "full-mbist",
+        "full-ethernet"
+      ],
+      "status": "PASS_WITH_RECORDED_WARNINGS",
+      "immutable_drift": [],
+      "own_unaccepted": [],
+      "new_or_stale_warnings": false
+    },
+    "failure_controls_job": 132064406764,
+    "full_cut10_native_mbist_qualified": false
+  }
 }
