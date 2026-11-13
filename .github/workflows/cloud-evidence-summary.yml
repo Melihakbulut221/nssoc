@@ -1,57 +1,19 @@
-name: Slave latch load and sink co-scaling circuit screen
+name: CDR screen process verdict controls
 on:
   workflow_dispatch:
 permissions:
   contents: read
-  actions: read
 jobs:
-  divider-whatif:
+  controls:
     runs-on: ubuntu-24.04
-    timeout-minutes: 330
-    strategy:
-      fail-fast: false
-      matrix:
-        variant: [bd10_slave_parallel2]
-    env:
-      GH_TOKEN: ${{ github.token }}
-      ARTIFACT_ID: '13283214752'
-      ARTIFACT_SHA256: ac342f4945a262a4c0fb2440634aa600b8d3f07c6c257c9d3d6e648a319b2402
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
           filter: blob:none
-          sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/cdr_n1_divider_whatif.py
-            /scripts/cdr_mos650_full650_loaded.py
-      - name: Restore the preserved N1 native tree at its original absolute path
-        run: |
-          set -euo pipefail
-          W=/mnt/n1; sudo mkdir -p $W; sudo chown $USER $W
-          gh api repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip > $W/n1.zip
-          echo "$ARTIFACT_SHA256  $W/n1.zip" | sha256sum -c -
-          mkdir -p mos650-gate-ac
-          unzip -q $W/n1.zip -d mos650-gate-ac -x '*/wave.raw' '*/producer-*' '*/composition-n2/*' '*/composition-n4/*' '*/composition-n8/*' '*/composition-n16/*'
-          rm $W/n1.zip
-          ls mos650-gate-ac mos650-gate-ac/native mos650-gate-ac/native/loaded-n1-nominal_late
-          grep -n "^\.lib\|^\.include\|pre_osdi" mos650-gate-ac/native/loaded-n1-nominal_late/bench.cir
-      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
-      - name: Rerun with ${{ matrix.variant }} slave-stage values and the frozen gates
-        run: python3 -B scripts/cdr_n1_divider_whatif.py mos650-gate-ac ${{ matrix.variant }} whatif-${{ matrix.variant }}
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: divider-whatif-${{ matrix.variant }}-${{ github.run_id }}
-          path: whatif-${{ matrix.variant }}
-          if-no-files-found: warn
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: slave-parallel-native-${{ matrix.variant }}-${{ github.run_id }}
-          path: |
-            mos650-gate-ac/native
-            mos650-gate-ac/derived/loaded-n1-nominal_late.json
-          if-no-files-found: error
-          retention-days: 90
+            scripts
+            sw/tests
+      - run: python3 -m pip install --disable-pip-version-check numpy==2.3.3
+      - run: python3 sw/tests/test_cdr_screen_process_verdict.py
