@@ -28,7 +28,7 @@ module soc_sram_zero_check #(
 `endif
     reg [2:0] state_q;
     reg [WIDTH-1:0] read_data_q;
-    wire [WIDTH-1:0] compare_data = PIPELINE_COMPARE ? read_data_q : rdata_i;
+    wire [WIDTH-1:0] compare_data = (PIPELINE_COMPARE != 0) ? read_data_q : rdata_i;
     assign req_o = rst_ni && state_q == ISSUE;
     always @(posedge clk_i or negedge rst_ni) begin
         if (!rst_ni) begin
@@ -40,10 +40,10 @@ module soc_sram_zero_check #(
         end else case (state_q)
             IDLE: if (start_i) state_q <= ISSUE;
 `ifdef SOC_ETH_FIFO_RDREG
-            ISSUE: state_q <= (READ_LATENCY > 1) ? WAIT : PIPELINE_COMPARE ? CAPTURE : CHECK;
-            WAIT: state_q <= PIPELINE_COMPARE ? CAPTURE : CHECK;
+            ISSUE: state_q <= (READ_LATENCY > 1) ? WAIT : (PIPELINE_COMPARE != 0) ? CAPTURE : CHECK;
+            WAIT: state_q <= (PIPELINE_COMPARE != 0) ? CAPTURE : CHECK;
 `else
-            ISSUE: state_q <= PIPELINE_COMPARE ? CAPTURE : CHECK;
+            ISSUE: state_q <= (PIPELINE_COMPARE != 0) ? CAPTURE : CHECK;
 `endif
             CAPTURE: begin
                 read_data_q <= rdata_i;
