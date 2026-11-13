@@ -1,57 +1,41 @@
-name: Slave latch load and sink co-scaling circuit screen
+name: CDR slave co-scaling derived JSON recovery
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  divider-whatif:
+  recover:
     runs-on: ubuntu-24.04
-    timeout-minutes: 330
-    strategy:
-      fail-fast: false
-      matrix:
-        variant: [bd10_slave_parallel2]
-    env:
-      GH_TOKEN: ${{ github.token }}
-      ARTIFACT_ID: '13283214752'
-      ARTIFACT_SHA256: ac342f4945a262a4c0fb2440634aa600b8d3f07c6c257c9d3d6e648a319b2402
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          persist-credentials: false
-          filter: blob:none
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /scripts/cdr_n1_divider_whatif.py
-            /scripts/cdr_mos650_full650_loaded.py
-      - name: Restore the preserved N1 native tree at its original absolute path
+      - name: Recover derived reports in cloud; preserve native archive there
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          W=/mnt/n1; sudo mkdir -p $W; sudo chown $USER $W
-          gh api repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip > $W/n1.zip
-          echo "$ARTIFACT_SHA256  $W/n1.zip" | sha256sum -c -
-          mkdir -p mos650-gate-ac
-          unzip -q $W/n1.zip -d mos650-gate-ac -x '*/wave.raw' '*/producer-*' '*/composition-n2/*' '*/composition-n4/*' '*/composition-n8/*' '*/composition-n16/*'
-          rm $W/n1.zip
-          ls mos650-gate-ac mos650-gate-ac/native mos650-gate-ac/native/loaded-n1-nominal_late
-          grep -n "^\.lib\|^\.include\|pre_osdi" mos650-gate-ac/native/loaded-n1-nominal_late/bench.cir
-      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
-      - name: Rerun with ${{ matrix.variant }} slave-stage values and the frozen gates
-        run: python3 -B scripts/cdr_n1_divider_whatif.py mos650-gate-ac ${{ matrix.variant }} whatif-${{ matrix.variant }}
+          gh api repos/${{ github.repository }}/actions/artifacts/14072710633/zip > source.zip
+          python3 - <<'PYCODE'
+          import hashlib,json,pathlib,zipfile
+          raw=pathlib.Path('source.zip').read_bytes()
+          digest=hashlib.sha256(raw).hexdigest()
+          assert digest=='bfbb7f6254d3cfea538955c0afc895eed9f814796401b07137fb2f0351b3b4f7'
+          z=zipfile.ZipFile('source.zip');out=pathlib.Path('out');out.mkdir()
+          records=[]
+          for info in z.infolist():
+              if not info.filename.endswith('.json'):continue
+              parts=pathlib.PurePosixPath(info.filename)
+              assert not parts.is_absolute() and '..' not in parts.parts
+              data=z.read(info);json.loads(data)
+              p=out/parts;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(data)
+              records.append(dict(path=info.filename,size=len(data),sha256=hashlib.sha256(data).hexdigest()))
+          assert records
+          (out/'recovery-index.json').write_text(json.dumps(dict(source_run=43482979273,source_artifact=14072710633,source_sha256=digest,json_files=records,native_downloaded_to_user_machine=False),indent=2))
+          print(json.dumps(records))
+          PYCODE
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
         with:
-          name: divider-whatif-${{ matrix.variant }}-${{ github.run_id }}
-          path: whatif-${{ matrix.variant }}
-          if-no-files-found: warn
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: slave-parallel-native-${{ matrix.variant }}-${{ github.run_id }}
-          path: |
-            mos650-gate-ac/native
-            mos650-gate-ac/derived/loaded-n1-nominal_late.json
+          name: cdr-slave-parallel-json-${{ github.run_id }}
+          path: out
           if-no-files-found: error
           retention-days: 90
