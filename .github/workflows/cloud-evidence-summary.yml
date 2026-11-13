@@ -1,53 +1,29 @@
-name: Archived SRAM leaf nominal coupled RC screen with KPEX 0.9
+name: SRAM leaf independent collapsed RC and coupling audit
 on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
-  cell-extraction:
+  audit:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
-    env:
-      QT_QPA_PLATFORM: offscreen
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
           filter: blob:none
           sparse-checkout: scripts
-      - name: Install the declared extractor and KLayout versions
-        run: |
-          set -euo pipefail
-          mkdir -p out native
-          curl -fL --retry 5 https://www.klayout.org/downloads/Ubuntu-24/klayout_0.30.13-1_amd64.deb -o /tmp/klayout.deb
-          sha256sum /tmp/klayout.deb > out/klayout-deb.sha256.log
-          sudo apt-get update -qq
-          sudo apt-get install -y /tmp/klayout.deb
-          python3 -m pip install --report out/pip-install.json klayout-pex==0.9.0 klayout==0.30.13
-          python3 -m pip freeze > out/python-packages.log
-          klayout -v > out/klayout-version.log
-          kpex extract --help > out/kpex-help.log
-      - name: Restore hash-locked SRAM geometry only in the cloud
-        run: |
-          set -euo pipefail
-          curl -fL --retry 5 https://raw.githubusercontent.com/Melihakbulut221/nssoc/e62d81aecf7f8e1c6af1e2c6c7c6ed4c0aa6065f/docs/evidence/sram-repaired-core-physical-20260926.tar.xz -o native/physical.tar.xz
-          echo '3fd7b918f112b88146b92c861d0146b4ae7404682ceab27186d4a0f95a72a275  native/physical.tar.xz' | sha256sum -c -
-      - name: Extract the actual bit cell with coupled capacitance and RC
-        run: python3 -u scripts/screen_sram_kpex09_cell.py
+      - name: Restore the exact extracted circuits in the cloud
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api repos/${{ github.repository }}/actions/artifacts/14067369661/zip > native.zip
+      - name: Check topology and every collapsed capacitance pair with fault injection
+        run: python3 -u scripts/audit_sram_kpex09_cell.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: sram-kpex09-derived-${{ github.run_id }}
+          name: sram-kpex09-audit-${{ github.run_id }}
           path: out
           if-no-files-found: error
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: sram-kpex09-native-${{ github.run_id }}
-          path: |
-            native/CC
-            native/RC
-            native/DP8TSRAMDP256x16.gds
-          if-no-files-found: warn
           retention-days: 90
