@@ -106,7 +106,10 @@ def main(root,variant,out):
     for g in ('sampler_checks','comparisons'):
         for x in keep.get(g,{}).values():x.pop('clock_to_valid_by_bit_s',None)
     hbt=[n for n,x in r.get('device_checks',{}).items()if x['minimum_active_vce_v']<.4 or x['maximum_alltime_abs_vce_v']>1.6 or x['maximum_alltime_abs_vbe_v']>1 or x['maximum_alltime_abs_ic_per_emitter_a']>=.003]
-    keep.update(variant=variant,returncode=rc,elapsed_seconds=elapsed,passed=passed,failing_hbt=hbt,
+    waveform_passed=passed
+    passed=waveform_passed and rc==0
+    keep.update(variant=variant,returncode=rc,elapsed_seconds=elapsed,passed=passed,
+        waveform_passed=waveform_passed,simulator_passed=(rc==0),failing_hbt=hbt,
         failing_mos=[n for n,x in r.get('mos_checks',{}).items()if not x['passed']],raw=dict(points=info['header_rows'],sha256=info['raw_sha256']),
         what_if_only=True,new_layout=False,electrical_acceptance=False)
     grid=(loaded.START+np.arange(258)[:,None]*loaded.UI+np.arange(16)[None,:]*loaded.UI/16).ravel()
