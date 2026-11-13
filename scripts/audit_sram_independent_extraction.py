@@ -28,10 +28,17 @@ def run(config):
  r=dict(status='FAIL_OR_INCONCLUSIVE',qualified_pex=False,full_chip_lvs=False,manufacturing_approval=False,
         scope='Named archived macro only. CC/RC conservation and independent MOS topology, excluding junction parasitics, PVT/RC calibration, current routed-chip binding and foundry signoff.',stages={})
  try:
-  require(set(config)=={'expected_mos','source_geometry_sha256','cc','rc','reference'},'incomplete manifest')
+  require(set(config)=={'expected_mos','source_geometry_sha256','geometry','cc','rc','reference'},'incomplete manifest')
   require(type(config['expected_mos']) is int and config['expected_mos']>0,'invalid expected count')
   geometry=config['source_geometry_sha256'];require(len(geometry)==64 and all(c in '0123456789abcdef' for c in geometry),'invalid geometry identity')
   r['bindings']=config
+  require(set(config['geometry'])=={'cc','rc'},'need geometry from both extraction archives')
+  for mode in ['cc','rc']:
+   g=config['geometry'][mode];net=config[mode]
+   require(g['archive']==net['archive'] and g['archive_sha256']==net['archive_sha256'],'geometry and netlist archives differ')
+   require(g['member_sha256']==geometry,'declared geometry differs')
+   member(g)
+  r['geometry_verified_in_both_archives']=True
   payload={key:member(config[key]) for key in ['cc','rc','reference']}
   # Compare reference to CC even if the RC audit fails, preserving both findings.
   cc,rc=parse(payload['cc'].decode()),parse(payload['rc'].decode())
