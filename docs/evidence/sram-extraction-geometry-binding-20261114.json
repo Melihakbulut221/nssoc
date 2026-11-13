@@ -1,0 +1,134 @@
+{
+  "run": 43515891042,
+  "source": "cf7be7b5ff22280e566fca5ee147188503f0ea32",
+  "artifact_id": 14080961498,
+  "artifact_sha256": "84a1c6c24d8e0a3f73154a4d617bda49497e41a79416b79935a730b0ab2ad757",
+  "results": {
+    "boundary-regression.json": {
+      "status": "PASS_EXPECTED_INDEPENDENT_BODY_BOUNDARY_REJECTION",
+      "leaf_lvs": false,
+      "macro_lvs": false,
+      "manufacturing_approval": false
+    },
+    "actual-leaf-audit.json": {
+      "status": "FAIL_OR_INCONCLUSIVE",
+      "qualified_pex": false,
+      "full_chip_lvs": false,
+      "manufacturing_approval": false,
+      "scope": "Named archived macro only. CC/RC conservation and independent MOS topology, excluding junction parasitics, PVT/RC calibration, current routed-chip binding and foundry signoff.",
+      "stages": {
+        "cc_rc_conservation": {
+          "passed": true,
+          "measurements": {
+            "mos": 8,
+            "rc_resistors": 68,
+            "cc_capacitors": 61,
+            "rc_capacitors": 288,
+            "reference_pairs": 61,
+            "projected_pairs": 61,
+            "missing_pairs": 0,
+            "extra_pairs": 0,
+            "changed_pairs": 0,
+            "reference_sum_f": 4.499533902000001e-15,
+            "projected_sum_f": 4.4995350620000005e-15,
+            "collapsed_intraconductor_capacitors": 0,
+            "max_pair_difference_f": 4.999999999839351e-22
+          }
+        },
+        "independent_mos_topology": {
+          "passed": false,
+          "error": "ValueError: Graph/pin inventory differs"
+        }
+      },
+      "bindings": {
+        "expected_mos": 8,
+        "source_geometry_sha256": "c6a1be71d0439e88e2c08729345eb8d8001f773266cb7a8b939446e54999ff45",
+        "cc": {
+          "archive": "leaf.zip",
+          "archive_sha256": "35be261afbc97cb1b555e2678090caf4624424a47127aba3695e5411e8093b33",
+          "member": "CC/DP8TSRAMDP256x16__DP8TCell/DP8TCell_k25d_pex_netlist.spice",
+          "member_sha256": "cbc7dca6e387a67db742336a5f232184ea30e044c18c33c0c5fd77b516c0d57d"
+        },
+        "rc": {
+          "archive": "leaf.zip",
+          "archive_sha256": "35be261afbc97cb1b555e2678090caf4624424a47127aba3695e5411e8093b33",
+          "member": "RC/DP8TSRAMDP256x16__DP8TCell/DP8TCell_k25d_pex_netlist.spice",
+          "member_sha256": "77b35e72ed46865efaaf440cecfad07c78e4468fc1dad193cc94f19651c94dde"
+        },
+        "reference": {
+          "archive": "leaf-reference.zip",
+          "archive_sha256": "f4fd45bfef06f16e3f7d944534f67b1fe9d4cb0ae8a1000ca1788801a7f2dfaa",
+          "member": "leaf-reference.spice",
+          "member_sha256": "ec9cb12bafa8e5b5c7e7fdcdb3480aafdcbed5aabcbcdf3eb573d8920c6d7dc9"
+        },
+        "geometry": {
+          "cc": {
+            "archive": "leaf.zip",
+            "archive_sha256": "35be261afbc97cb1b555e2678090caf4624424a47127aba3695e5411e8093b33",
+            "member": "DP8TSRAMDP256x16.gds",
+            "member_sha256": "c6a1be71d0439e88e2c08729345eb8d8001f773266cb7a8b939446e54999ff45"
+          },
+          "rc": {
+            "archive": "leaf.zip",
+            "archive_sha256": "35be261afbc97cb1b555e2678090caf4624424a47127aba3695e5411e8093b33",
+            "member": "DP8TSRAMDP256x16.gds",
+            "member_sha256": "c6a1be71d0439e88e2c08729345eb8d8001f773266cb7a8b939446e54999ff45"
+          }
+        }
+      },
+      "geometry_verified_in_both_archives": true,
+      "independent_inventory": {
+        "reference_mos": 8,
+        "extracted_mos": 8,
+        "reference_nets": 12,
+        "extracted_nets": 12,
+        "reference_ports": [
+          "bl1",
+          "bl1_n",
+          "bl2",
+          "bl2_n",
+          "nwell",
+          "substrate",
+          "vdd",
+          "vss",
+          "wl1",
+          "wl2"
+        ],
+        "extracted_ports": [
+          "bl1",
+          "bl1_n",
+          "bl2",
+          "bl2_n",
+          "sub!",
+          "vdd",
+          "vss",
+          "wl1",
+          "wl2"
+        ]
+      }
+    },
+    "geometry-binding-controls.json": {
+      "controls": [
+        {
+          "mutation": "wrong_declared_geometry",
+          "rejected_before_topology": true,
+          "error": "Rejected: declared geometry differs"
+        },
+        {
+          "mutation": "wrong_geometry_digest",
+          "rejected_before_topology": true,
+          "error": "Rejected: member digest differs"
+        },
+        {
+          "mutation": "different_archive",
+          "rejected_before_topology": true,
+          "error": "Rejected: geometry and netlist archives differ"
+        }
+      ],
+      "geometry_verified_in_both_archives": true
+    }
+  },
+  "full_macro_lvs": false,
+  "manufacturing_approval": false,
+  "scope": "Hash-locked archived leaf test and three fail-closed provenance controls. Both archives contain the expected GDS; no assertion of current routed-chip geometry equality."
+}

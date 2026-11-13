@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-import hashlib,json,pathlib,zipfile,re
+import hashlib,json,pathlib,zipfile,re,copy
 import klayout.db as db
 from audit_sram_independent_extraction import run,digest
 out=pathlib.Path('out');out.mkdir(exist_ok=True)
@@ -19,6 +19,9 @@ with zipfile.ZipFile('leaf.zip') as z:
   names=[p for p in z.namelist() if p.startswith(mode+'/') and p.endswith('/DP8TCell_k25d_pex_netlist.spice')];assert len(names)==1
   config[mode.lower()]={'archive':'leaf.zip','archive_sha256':digest('leaf.zip'),'member':names[0],'member_sha256':sha}
 config['reference']={'archive':'leaf-reference.zip','archive_sha256':digest('leaf-reference.zip'),'member':'leaf-reference.spice','member_sha256':hashlib.sha256(raw).hexdigest()}
+with zipfile.ZipFile('leaf.zip') as z:
+ names=[n for n in z.namelist() if n.endswith('DP8TSRAMDP256x16.gds')];assert len(names)==1
+config['geometry']={mode:{'archive':'leaf.zip','archive_sha256':digest('leaf.zip'),'member':names[0],'member_sha256':config['source_geometry_sha256']} for mode in ['cc','rc']}
 r=run(config);(out/'actual-leaf-audit.json').write_text(json.dumps(r,indent=2))
 assert r['status']=='FAIL_OR_INCONCLUSIVE',r
 assert r['stages']['cc_rc_conservation']['passed'],r
@@ -26,5 +29,20 @@ assert r['stages']['independent_mos_topology']=={'passed':False,'error':'ValueEr
 assert r['independent_inventory']['reference_mos']==r['independent_inventory']['extracted_mos']==8
 assert set(r['independent_inventory']['reference_ports'])=={'vss','substrate','vdd','nwell','wl1','wl2','bl1','bl1_n','bl2','bl2_n'}
 assert set(r['independent_inventory']['extracted_ports'])=={'vss','sub!','vdd','wl1','wl2','bl1','bl1_n','bl2','bl2_n'}
+assert r['geometry_verified_in_both_archives'] is True
+controls=[]
+for label in ['wrong_declared_geometry','wrong_geometry_digest','different_archive']:
+ bad=copy.deepcopy(config)
+ if label=='wrong_declared_geometry':bad['source_geometry_sha256']='0'*64
+ elif label=='wrong_geometry_digest':
+  bad['source_geometry_sha256']='0'*64
+  for mode in ['cc','rc']:bad['geometry'][mode]['member_sha256']='0'*64
+ else:bad['geometry']['rc']['archive']='unrelated.zip'
+ rejected=run(bad)
+ expected={'wrong_declared_geometry':'declared geometry differs','wrong_geometry_digest':'member digest differs','different_archive':'geometry and netlist archives differ'}[label]
+ assert rejected.get('error')=='Rejected: '+expected,rejected
+ assert rejected['status']=='FAIL_OR_INCONCLUSIVE' and not rejected['stages'],rejected
+ controls.append({'mutation':label,'rejected_before_topology':True,'error':rejected['error']})
+(out/'geometry-binding-controls.json').write_text(json.dumps({'controls':controls,'geometry_verified_in_both_archives':True},indent=2))
 (out/'boundary-regression.json').write_text(json.dumps({'status':'PASS_EXPECTED_INDEPENDENT_BODY_BOUNDARY_REJECTION','leaf_lvs':False,'macro_lvs':False,'manufacturing_approval':False},indent=2))
 print('PASS_EXPECTED_INDEPENDENT_BODY_BOUNDARY_REJECTION')
