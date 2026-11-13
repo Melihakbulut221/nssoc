@@ -2,6 +2,8 @@
 """Inspect failed frozen SRAM comparison; export only derived device summaries."""
 import hashlib,zipfile,tarfile,io,pathlib,json,collections
 import klayout.db as db
+def field(obj,name):
+ value=getattr(obj,name);return value() if callable(value) else value
 P=pathlib.Path
 b=P('native.zip').read_bytes();assert hashlib.sha256(b).hexdigest()=='99bf37da6cd409e5df0834b88d7972add8dac7ebd67cdd720e91b70d25c0a870'
 z=zipfile.ZipFile(io.BytesIO(b));names=[n for n in z.namelist() if n.endswith('.tgz')];assert len(names)==1
@@ -17,7 +19,7 @@ for pair in lvs.xref().each_circuit_pair():
   counts=collections.Counter();params=collections.Counter()
   for d in c.each_device():
    cls=d.device_class();counts[cls.name]+=1
-   values=tuple((p.name,d.parameter(p.id)) for p in cls.parameter_definitions())
+   values=tuple((field(p,'name'),d.parameter(field(p,'id'))) for p in cls.parameter_definitions())
    params[(cls.name,values)]+=1
   row[side]={'name':c.name,'direct_device_classes':dict(counts),'parameter_groups':[{'class':k[0],'parameters':dict(k[1]),'count':v} for k,v in params.most_common(60)],'unique_parameter_groups':len(params),'subcircuits':dict(collections.Counter(s.circuit_ref().name for s in c.each_subcircuit()))}
  rows.append(row)
