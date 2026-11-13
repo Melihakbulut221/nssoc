@@ -1,0 +1,39 @@
+{
+  "status": "ORIGINAL_PLL_ALREADY_USES_KLU_CONTROL_CORRECTED",
+  "superseded_run_id": 43525420752,
+  "superseded_source_sha": "1eb5e548f015a6b94c1f4d3ee964ea98b878e316",
+  "results": [
+    {
+      "artifact_id": 14085325313,
+      "sha256": "0f4862a9e8eaf42b4550f42d6a439b4ec8875d4b13e4f259f38032164282a951",
+      "result": {
+        "status": "INCOMPLETE",
+        "temperature_c": 125,
+        "acquisition_accepted": false,
+        "production_accepted": false,
+        "scope": "Paired 50 ns startup; no relaxation of full 1 us acquisition gates",
+        "cases": {},
+        "error": "AssertionError: Unexpected preexisting KLU setting"
+      }
+    },
+    {
+      "artifact_id": 14083349970,
+      "sha256": "50017c153e4c122a49753ca983c70d260b4337f3b8780754a2953b94af6364c2",
+      "result": {
+        "status": "INCOMPLETE",
+        "temperature_c": -40,
+        "acquisition_accepted": false,
+        "production_accepted": false,
+        "scope": "Paired 50 ns startup; no relaxation of full 1 us acquisition gates",
+        "cases": {},
+        "error": "AssertionError: Unexpected preexisting KLU setting"
+      }
+    }
+  ],
+  "finding": "Both temperature experiments stopped before simulation because the actual frozen PLL circuit already selects KLU. Small synthetic capability probe default SPARSE must not be generalized to actual PLL default. Enabling KLU is not a new optimization.",
+  "next_run_id": 43525638216,
+  "next_source_sha": "b23b2141d93f0123f5de052ce780dae670040d30",
+  "next_method": "Remove exactly one standalone KLU token from a single .option(s) line for SPARSE control; restore original deck for KLU. All other circuit lines, parent netlist, initialization and wrapper unchanged. Require actual logged solver name. Compare full saved signal vectors on same time domain; no numerical equivalence approval inferred from completion.",
+  "full_acquisition_accepted": false,
+  "manufacturing_approval": false
+}
