@@ -1,4 +1,4 @@
-name: Recover CDR interface operating points from completed what-if captures
+name: Derive CDR stage voltages from preserved cloud captures
 on:
   workflow_dispatch:
 permissions:
@@ -9,12 +9,17 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install numpy==2.2.6
       - name: Authenticate preserved captures and publish their JSON measurements
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           python3 - <<'PY'
           import hashlib, io, json, pathlib, subprocess, zipfile
+          import numpy as np
           out=pathlib.Path("out"); out.mkdir()
           artifacts={
               13434202071: ("lowz4_bd10","5237c8a58189f40dec5e51a82474caca030238a67e4e18e480589566c3289652"),
@@ -28,6 +33,27 @@ jobs:
               record=json.loads(archive.read(matches[0]))
               assert record["variant"]==variant and record["what_if_only"] and not record["electrical_acceptance"]
               assert record["returncode"]==0 and record["interface_observations"]
+              captures=[n for n in archive.namelist() if n.endswith('bit-phase-samples.npz')]
+              assert len(captures)==1
+              data=np.load(io.BytesIO(archive.read(captures[0])),allow_pickle=False)
+              names=[str(x).lower() for x in data['names']]
+              samples=data['samples'].astype(float);grid=data['grid']
+              assert samples.shape==(len(names),258*16) and grid.shape==(258*16,)
+              assert np.isfinite(samples).all() and np.all(np.diff(grid)>0)
+              def vector(node):
+                  ids=[i for i,n in enumerate(names) if n.startswith('v(') and n.endswith(node.lower()+')')]
+                  assert len(ids)==1,(node,len(ids))
+                  return samples[ids[0]],names[ids[0]]
+              def stats(v):
+                  return dict(min=float(v.min()),max=float(v.max()),median=float(np.median(v)),p05=float(np.quantile(v,.05)),p95=float(np.quantile(v,.95)))
+              pairs={'sampler_a':('239_c','241_c'),'sampler_b':('223_c','225_c'),'sampler_c':('255_c','257_c'),'sampler_d':('203_c','205_c'),'buffer_a_input':('273_b','275_b'),'buffer_c_input':('278_b','280_b'),'buffer_a_output':('275_c','273_c'),'buffer_c_output':('280_c','278_c'),'select0_input':('281_b','282_b'),'select1_input':('299_b','300_b'),'select0_output':('282_c','281_c'),'select1_output':('300_c','299_c')}
+              stages={}
+              for name,(p,n) in pairs.items():
+                  vp,pn=vector('xpd.w_t'+p);vn,nn=vector('xpd.w_t'+n)
+                  cm=(vp+vn)/2;diff=vp-vn
+                  stages[name]=dict(nodes=[pn,nn],common_mode_v=stats(cm),differential_v=stats(diff),phase_common_mode_v=[stats(cm.reshape(258,16)[:,k]) for k in range(16)],phase_abs_differential_v=[stats(abs(diff.reshape(258,16)[:,k])) for k in range(16)])
+              record['sampled_stage_voltage']=stages
+              record['sampled_stage_scope']='16 samples/UI; sampled ranges only, not continuous extrema, new simulation or acceptance'
               report={"source_artifact":ident,"source_artifact_sha256":digest,
                       "source_run":42048922994,"scope":"Recovered measurements only; no new simulation or acceptance", "result":record}
               (out/(variant+".json")).write_text(json.dumps(report,indent=2)+chr(10))
@@ -36,7 +62,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: cdr-interface-points-${{ github.run_id }}
+          name: cdr-stage-voltage-${{ github.run_id }}
           path: out/*.json
           if-no-files-found: error
           retention-days: 90
