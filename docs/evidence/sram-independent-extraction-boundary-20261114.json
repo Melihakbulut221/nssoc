@@ -1,0 +1,98 @@
+{
+  "run": 43515079085,
+  "source": "e8129a1b0d32ba988123c88c8fddd5341205edef",
+  "artifact_id": 14079189364,
+  "artifact_sha256": "cc022f540b67654543b60b8ad893be920ac1ac116cf65196560ddd1309f0f863",
+  "results": {
+    "actual-leaf-audit.json": {
+      "status": "FAIL_OR_INCONCLUSIVE",
+      "qualified_pex": false,
+      "full_chip_lvs": false,
+      "manufacturing_approval": false,
+      "scope": "Named archived macro only. CC/RC conservation and independent MOS topology, excluding junction parasitics, PVT/RC calibration, current routed-chip binding and foundry signoff.",
+      "stages": {
+        "cc_rc_conservation": {
+          "passed": true,
+          "measurements": {
+            "mos": 8,
+            "rc_resistors": 68,
+            "cc_capacitors": 61,
+            "rc_capacitors": 288,
+            "reference_pairs": 61,
+            "projected_pairs": 61,
+            "missing_pairs": 0,
+            "extra_pairs": 0,
+            "changed_pairs": 0,
+            "reference_sum_f": 4.499533902000001e-15,
+            "projected_sum_f": 4.4995350620000005e-15,
+            "collapsed_intraconductor_capacitors": 0,
+            "max_pair_difference_f": 4.999999999839351e-22
+          }
+        },
+        "independent_mos_topology": {
+          "passed": false,
+          "error": "ValueError: Graph/pin inventory differs"
+        }
+      },
+      "bindings": {
+        "expected_mos": 8,
+        "source_geometry_sha256": "c6a1be71d0439e88e2c08729345eb8d8001f773266cb7a8b939446e54999ff45",
+        "cc": {
+          "archive": "leaf.zip",
+          "archive_sha256": "35be261afbc97cb1b555e2678090caf4624424a47127aba3695e5411e8093b33",
+          "member": "CC/DP8TSRAMDP256x16__DP8TCell/DP8TCell_k25d_pex_netlist.spice",
+          "member_sha256": "cbc7dca6e387a67db742336a5f232184ea30e044c18c33c0c5fd77b516c0d57d"
+        },
+        "rc": {
+          "archive": "leaf.zip",
+          "archive_sha256": "35be261afbc97cb1b555e2678090caf4624424a47127aba3695e5411e8093b33",
+          "member": "RC/DP8TSRAMDP256x16__DP8TCell/DP8TCell_k25d_pex_netlist.spice",
+          "member_sha256": "77b35e72ed46865efaaf440cecfad07c78e4468fc1dad193cc94f19651c94dde"
+        },
+        "reference": {
+          "archive": "leaf-reference.zip",
+          "archive_sha256": "ae2311af3a2c16a40d4aec8918f66e4425ec096eb79ea79d18f0a3b38b822a6e",
+          "member": "leaf-reference.spice",
+          "member_sha256": "8027a11e5d9674f1006c51ffc7015c30a1e025e5e7a036964adfb0b113a169b2"
+        }
+      },
+      "independent_inventory": {
+        "reference_mos": 8,
+        "extracted_mos": 8,
+        "reference_nets": 12,
+        "extracted_nets": 12,
+        "reference_ports": [
+          "1",
+          "10",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9"
+        ],
+        "extracted_ports": [
+          "bl1",
+          "bl1_n",
+          "bl2",
+          "bl2_n",
+          "sub!",
+          "vdd",
+          "vss",
+          "wl1",
+          "wl2"
+        ]
+      }
+    },
+    "boundary-regression.json": {
+      "status": "PASS_EXPECTED_INDEPENDENT_BODY_BOUNDARY_REJECTION",
+      "leaf_lvs": false,
+      "macro_lvs": false,
+      "manufacturing_approval": false
+    }
+  },
+  "full_macro_lvs": false,
+  "manufacturing_approval": false
+}
