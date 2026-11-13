@@ -21,12 +21,12 @@ for direction,pair in [('forward','gold gate'),('reverse','gate gold')]:
  for fault in [False,True]:
   path=out/('selector-fault.v' if fault else 'selector.v')
   if fault:path.write_text(module('gold',expr[0])+module('gate','~('+expr[1]+')'))
-  ys=f'read_verilog -sv {path}; proc; memory_map; opt; equiv_make {pair} equiv; hierarchy -top equiv; equiv_simple -undef; equiv_status -assert;'
+  ys=f'read_verilog -sv {path}; proc; memory_map; opt -keepdc; equiv_make {pair} equiv; hierarchy -top equiv; equiv_simple -undef; equiv_induct -undef -seq 4; equiv_status -assert;'
   run=subprocess.run(['yosys','-p',ys],capture_output=True,text=True,timeout=90)
   log=run.stdout+run.stderr;(out/f'selector-{direction}-{fault}.log').write_text(log)
   accepted=run.returncode==0 and 'Equivalence successfully proven!' in log
-  assert accepted is not fault,(direction,fault,run.returncode)
-  results.append(dict(direction=direction,fault=fault,accepted=accepted))
+  expected_rejection=(run.returncode!=0 and 'unproven $equiv cells' in log and 'ERROR: Found' in log)
+  results.append(dict(direction=direction,fault=fault,accepted=accepted,expected_rejection=expected_rejection))
 tb="""
 module tb;
 reg [255:0] data; reg [3:0] cursor_word; reg [1:0] cursor_byte;
@@ -70,5 +70,8 @@ x=subprocess.run(['vvp',str(out/'selector.vvp')],capture_output=True,text=True,t
 subprocess.run(['iverilog','-g2012','-s','tb','-o',str(out/'selector-fault.vvp'),str(out/'selector-fault.v'),str(out/'selector-tb.v')],check=True,timeout=90)
 bad=subprocess.run(['vvp',str(out/'selector-fault.vvp')],capture_output=True,text=True,timeout=90)
 (out/'selector-simulation-fault.log').write_text(bad.stdout+bad.stderr);assert bad.returncode!=0 and 'selector mismatch' in bad.stdout
-record=dict(passed=True,formal_controls=results,four_state_cases=32768,simulation_fault_rejected=True,scope='Actual old/new cursor_data_byte expressions at MAX_TLP_DWORDS=8. Mutual undef formal comparison covers arbitrary binary data/control; Icarus sweeps all binary/X/Z index combinations with eight representative data patterns. Not a full-module or all-parameter proof.')
+controls_ok=all((x['expected_rejection'] and not x['accepted']) if x['fault'] else x['accepted'] for x in results)
+record=dict(passed=controls_ok,formal_controls=results,four_state_cases=32768,simulation_fault_rejected=True,scope='Actual old/new cursor_data_byte expressions at MAX_TLP_DWORDS=8. Mutual undef formal comparison covers arbitrary binary data/control; Icarus sweeps all binary/X/Z index combinations with eight representative data patterns. Not a full-module or all-parameter proof.')
 (out/'selector-controls.json').write_text(json.dumps(record,indent=2));print(json.dumps(record),flush=True)
+
+assert controls_ok, 'Mutual selector equivalence or explicit fault rejection remains unproven'
