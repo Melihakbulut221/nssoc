@@ -136,10 +136,33 @@ module soc_pcie_tlp_stream #(
         .memory_enable_o(memory_enable_o), .bar0_o(bar0_o)
     );
 
+`ifdef SOC_PCIE_TX_WORD_REG
+    // docs/combined-timing.md section 19 (inside SOC_PCIE_TX_WORD_REG):
+    // the receive header's word select as a register. header_sel[k-1] is
+    // header_count==k && header_count<header_size: set to word 1 at a
+    // start, moved with header_count at each header word, cleared by
+    // reset. header_count<header_size implies header_count is 1, 2 or 3
+    // (both are 0 until a start, which sets 1 and 3 or 4, and the count
+    // only steps by one up to the size), so |header_sel equals that
+    // compare and the case's default is never taken. The header bytes'
+    // load enables then no longer start with the count compare.
+    reg [2:0] header_sel;
+`ifndef SYNTHESIS
+    always @(posedge clk_i) if (rst_ni===1'b1 &&
+        header_sel!=={header_count==3 && 3<header_size, header_count==2 && 2<header_size,
+                      header_count==1 && 1<header_size}) begin
+        $display("TLP_STREAM_HEADER_SEL_MISMATCH t=%0t sel=%b count=%0d size=%0d", $time, header_sel, header_count, header_size);
+        $fatal(1, "registered header select differs");
+    end
+`endif
+`endif
     always @(posedge clk_i or negedge rst_ni) begin
         if (!rst_ni) begin
             state<=IDLE; header<=0; payload<=0; payload_count<=0;
             header_count<=0; header_size<=0; framing_error<=0;
+`ifdef SOC_PCIE_TX_WORD_REG
+            header_sel<=0;
+`endif
             tx_busy<=0; tx_payload<=0; tx_index<=0;
             tx_header<=0; tx_payload_data<=0; armed<=0;
         end else begin
@@ -160,6 +183,9 @@ module soc_pcie_tlp_stream #(
                     if (state==COLLECT) framing_error<=1;
                     header<={rx_data_i,96'b0}; payload<=0; payload_count<=0;
                     header_count<=1; header_size<=rx_data_i[29] ? 4 : 3;
+`ifdef SOC_PCIE_TX_WORD_REG
+                    header_sel<=3'b001;
+`endif
                     if (rx_error_i || rx_eop_i || rx_data_i[31:29]>3) begin
                         framing_error<=1; state<=rx_eop_i ? IDLE : DROP;
                     end else state<=COLLECT;
@@ -169,6 +195,13 @@ module soc_pcie_tlp_stream #(
                     if (rx_eop_i) state<=IDLE;
                 end else if (rx_error_i) begin
                     framing_error<=1; state<=rx_eop_i ? IDLE : DROP;
+`ifdef SOC_PCIE_TX_WORD_REG
+                end else if (|header_sel) begin
+                    if (header_sel[0]) header[95:64]<=rx_data_i;
+                    if (header_sel[1]) header[63:32]<=rx_data_i;
+                    if (header_sel[2]) header[31:0]<=rx_data_i;
+                    header_sel<={header_count==2 && header_size==4, header_count==1, 1'b0};
+`else
                 end else if (header_count<header_size) begin
                     case (header_count)
                         1: header[95:64]<=rx_data_i;
@@ -176,6 +209,7 @@ module soc_pcie_tlp_stream #(
                         3: header[31:0]<=rx_data_i;
                         default: header<=0;
                     endcase
+`endif
                     header_count<=header_count+1'b1;
                     if (rx_eop_i) begin
                         if (header_count+1'b1==header_size) state<=SUBMIT;

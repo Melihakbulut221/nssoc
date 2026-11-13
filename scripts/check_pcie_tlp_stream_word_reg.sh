@@ -24,7 +24,7 @@ iverilog -g2012 -o "$OUT/cosim.vvp" "$RTL/soc_pcie_tlp_regs.v" "$OUT/reference.v
   "$ROOT/hw/soc/tb/tb_pcie_tlp_stream_word_reg.v"
 for seed in 1 2 3 4; do
   vvp -n "$OUT/cosim.vvp" +seed=$seed +cycles=$CYCLES > "$OUT/seed$seed.log" 2>&1 || true
-  grep -E "^(SUMMARY|RESULT|MISMATCH)" "$OUT/seed$seed.log" | head -12 | sed "s/^/seed$seed: /"
+  grep -E "^(SUMMARY|RESULT|MISMATCH|TLP_STREAM_HEADER_SEL_MISMATCH)" "$OUT/seed$seed.log" | head -12 | sed "s/^/seed$seed: /"
   grep -q "^RESULT PASS" "$OUT/seed$seed.log" || fail=1
 done
 rm -f "$OUT/cosim.vvp"
