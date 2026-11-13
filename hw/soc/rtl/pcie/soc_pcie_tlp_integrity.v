@@ -50,6 +50,9 @@ module soc_pcie_tlp_integrity #(
         .rx_eop_i(rx_eop_i),.rx_error_i(rx_error_i),.rx_valid_i(rx_valid_i),.rx_ready_o(rx_ready_o),
         .tlp_data_o(byte_data),.tlp_sop_o(byte_sop),.tlp_eop_o(byte_eop),.tlp_valid_o(byte_valid),
         .tlp_ready_i(!word_valid),.sequence_o(rx_sequence_o),.reserved_o(rx_reserved_o),
+`ifdef SOC_PCIE_SEQ_RX_REG
+        .open_next_o(),
+`endif
         .packet_good_o(packet_good_o),.packet_bad_o(packet_bad_o));
     soc_pcie_tlp_stream #(.VENDOR_ID(VENDOR_ID),.DEVICE_ID(DEVICE_ID),.APB_TIMEOUT(APB_TIMEOUT)) transaction_stream(
         .clk_i(clk_i),.rst_ni(rst_ni),.function_id_i(function_id_i),.rx_data_i(word_data),

@@ -1759,7 +1759,9 @@ jobs:
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Strict packet lint with default and round-ten knobs
+      # The cut10 hardware plane excludes simulation-only clocked assertions.
+      # The full unit job keeps these enabled and executes them for every knob.
+      - name: Strict default RTL and round-ten synthesized-hardware lint
         run: |
           set -euo pipefail
           mkdir -p out
@@ -1767,7 +1769,7 @@ jobs:
           for cfg in default cut10; do
             flags=()
             if [ "$cfg" = cut10 ]; then
-              flags=(-DSOC_PCIE_RX_READ2 -DSOC_PCIE_RESET_COPIES -DSOC_PCIE_REPLAY_INBANK -DSOC_PCIE_TX_WORD_REG -DSOC_PCIE_REPLAY_AHEAD -DSOC_PCIE_CREDIT_PICK -DSOC_PCIE_SEQ_RX_REG -DSOC_PCIE_RX_COMMIT_COPIES)
+              flags=(-DSYNTHESIS -DSOC_PCIE_RX_READ2 -DSOC_PCIE_RESET_COPIES -DSOC_PCIE_REPLAY_INBANK -DSOC_PCIE_TX_WORD_REG -DSOC_PCIE_REPLAY_AHEAD -DSOC_PCIE_CREDIT_PICK -DSOC_PCIE_SEQ_RX_REG -DSOC_PCIE_RX_COMMIT_COPIES)
             fi
             verilator --lint-only -Wall -Wno-DECLFILENAME -Wno-UNUSEDSIGNAL -Wno-UNUSEDPARAM -Wno-PINCONNECTEMPTY "${flags[@]}" --top-module soc_pcie_buffered_flow_packets $R/*.v > out/lint-$cfg.txt 2>&1 || { cat out/lint-$cfg.txt; exit 1; }
           done

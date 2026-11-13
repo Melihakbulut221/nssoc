@@ -853,7 +853,7 @@ module soc_pcie_rx_pick_copy #(
     output reg [W-1:0] q_o
 );
     always @(posedge clk_i or negedge rst_ni)
-        if(!rst_ni) q_o<=RST;
+        if(!rst_ni) q_o<=W'(RST);
         else q_o<=d_i;
 endmodule
 `endif
