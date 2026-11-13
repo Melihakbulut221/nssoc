@@ -9,6 +9,7 @@ profiles=[
  ('mbist_default','soc_sram_mbist',{},[]),
  ('mbist_eth_unregistered','soc_sram_mbist',{'WIDTH':16,'DEPTH':2048,'ADDR_WIDTH':11,'READ_LATENCY':1,'PIPELINE_COMPARE':1},[]),
  ('mbist_eth_registered','soc_sram_mbist',{'WIDTH':16,'DEPTH':2048,'ADDR_WIDTH':11,'READ_LATENCY':2,'PIPELINE_COMPARE':1},['SOC_SRAM_MBIST_PIPE']),
+ ('mbist_actual_system','soc_sram_mbist',{'WIDTH':64,'DEPTH':8192,'ADDR_WIDTH':13,'READ_LATENCY':1,'PIPELINE_COMPARE':1},['SOC_SRAM_MBIST_PIPE']),
  ('mbist_system_screen','soc_sram_mbist',{'WIDTH':64,'DEPTH':1024,'ADDR_WIDTH':10,'READ_LATENCY':3,'PIPELINE_COMPARE':1},['SOC_SRAM_MBIST_PIPE']),
  ('mbist_nonbinary_parameter','soc_sram_mbist',{'PIPELINE_COMPARE':2},['SOC_SRAM_MBIST_PIPE']),
  ('zero_default','soc_sram_zero_check',{},[]),
@@ -48,5 +49,5 @@ for label,top,params,defines in profiles:
    rejected=rc!=0 and bool(re.search(r'ERROR: Found \d+ unproven \$equiv cells',log))
    ok=rejected if fault else passed
    rows.append(dict(profile=label,module=top,parameters=params,defines=defines,direction=direction,fault=fault,returncode=rc,passed=passed,expected_fault_rejected=rejected if fault else None,check_ok=ok,seconds=time.monotonic()-began));print(json.dumps(rows[-1]),flush=True)
-result=dict(base=BASE,head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),yosys=version,sources=sources,results=rows,passed=len(rows)==22 and all(x['check_ok'] for x in rows),scope='Nine declared parameter/define profiles, mutual Yosys sequential equivalence under async2sync and explicit undef semantics, plus four inverted-request negative controls. No full-chip equivalence, four-state event simulation, all-parameter proof, SRAM analog qualification, physical timing or LVS approval.')
+result=dict(base=BASE,head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),yosys=version,sources=sources,results=rows,passed=len(rows)==24 and all(x['check_ok'] for x in rows),scope='Ten declared parameter/define profiles, mutual Yosys sequential equivalence under async2sync and explicit undef semantics, plus four inverted-request negative controls. No full-chip equivalence, four-state event simulation, all-parameter proof, SRAM analog qualification, physical timing or LVS approval.')
 (out/'result.json').write_text(json.dumps(result,indent=2));print(json.dumps({'passed':result['passed'],'checks':len(rows)}));raise SystemExit(0 if result['passed'] else 1)
