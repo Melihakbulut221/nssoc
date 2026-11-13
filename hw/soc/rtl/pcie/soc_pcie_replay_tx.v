@@ -202,6 +202,33 @@ module soc_pcie_replay_tx #(
     // addresses past the end of the store read as zero.
     wire [READ_CHOICES-1:0] replay_next_onehot={replay_read_onehot[READ_CHOICES-2:0],replay_read_onehot[READ_CHOICES-1]};
     wire core_taken=core_valid && core_ready && !core_eop;
+`ifdef SOC_PCIE_REPLAY_AHEAD
+    // docs/combined-timing.md section 18 (default off): the store read is
+    // one cycle ahead. Per bank, `ahead` loads in every cycle the byte two
+    // positions past the cursor (the AND-OR below, selected by the cursor
+    // rotated by two, with no enable and no handshake), `kept` holds the
+    // byte one position past it, and the byte a bank register takes is
+    // replay_took ? ahead : kept, from registers. replay_took is
+    // core_taken one cycle earlier. Proof that replay_took ? ahead : kept
+    // equals the default build's `following` (the byte at cursor+1) in
+    // every sending cycle: in the first sending cycle the cursor is 0,
+    // replay_took is 0 (core_taken needs sending) and kept holds byte 1,
+    // loaded while not sending. Later, if a byte was taken in the previous
+    // cycle the cursor moved by one and `ahead` holds the byte at the new
+    // cursor+1; otherwise the cursor did not move and kept holds the
+    // previous cycle's value. The sent slot's bytes do not change from the
+    // first sending cycle on (its last byte is written at the latest at
+    // the edge that starts the send; only the free tail slot is written
+    // while a frame is sent), so the one-cycle-old reads are current. The
+    // cursor stays at or below MAX_BYTES-1, so cursor+2 does not wrap.
+    // The other banks' registers may differ from the default build's while
+    // a frame is sent; they are not read, and every bank register reloads
+    // byte 0 before the next send starts. The transmit interface and every
+    // other output are cycle-identical.
+    wire [READ_CHOICES-1:0] replay_ahead_onehot={replay_read_onehot[READ_CHOICES-3:0],replay_read_onehot[READ_CHOICES-1:READ_CHOICES-2]};
+    reg replay_took;
+    always @(posedge clk_i) replay_took<=core_taken;
+`endif
     wire [7:0] replay_bank_byte [0:DEPTH-1];
     genvar replay_bank,replay_bit,replay_offset;
     generate for(replay_bank=0;replay_bank<DEPTH;replay_bank=replay_bank+1) begin: read_replay_bank
@@ -222,15 +249,30 @@ module soc_pcie_replay_tx #(
 `else
                 if(replay_bank*MAX_BYTES+replay_offset<DEPTH*MAX_BYTES) begin: present
 `endif
+`ifdef SOC_PCIE_REPLAY_AHEAD
+                    assign selected[replay_offset]=replay_ahead_onehot[replay_offset] & bytes[replay_bank*MAX_BYTES+replay_offset][replay_bit];
+`else
                     assign selected[replay_offset]=replay_next_onehot[replay_offset] & bytes[replay_bank*MAX_BYTES+replay_offset][replay_bit];
+`endif
                 end else begin: absent
                     assign selected[replay_offset]=1'b0;
                 end
             end
             assign following[replay_bit]=|selected;
         end
+`ifdef SOC_PCIE_REPLAY_AHEAD
+        // `following` is the byte at cursor+2 here (see replay_took above).
+        reg [7:0] ahead,kept;
+        wire [7:0] next_byte=replay_took ? ahead : kept;
+        always @(posedge clk_i) begin
+            ahead<=following;
+            kept<=!sending ? bytes[replay_bank*MAX_BYTES+1] : next_byte;
+            registered<=!sending ? bytes[replay_bank*MAX_BYTES] : core_taken ? next_byte : registered;
+        end
+`else
         always @(posedge clk_i)
             registered<=!sending ? bytes[replay_bank*MAX_BYTES] : core_taken ? following : registered;
+`endif
         assign replay_bank_byte[replay_bank]=registered;
     end endgenerate
     wire [7:0] core_data=replay_bank_byte[send_slot];
