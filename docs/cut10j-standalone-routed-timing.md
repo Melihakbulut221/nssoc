@@ -1,0 +1,5 @@
+# Cut10j timing without the route-matrix barrier
+
+Route job 131978276968 in run 43429557872 completed cut10j at source `ecef9ad7cc9cd38c40b37b2109c2c976c53d1e4b`, with zero router DRC markers. The original routed-sta job waits for the complete route matrix, including still-running cut10h. This standalone workflow reuses the exact original AuditedRCX/AuditedRoutedSTA job and its pinned PDK/package/tool hashes, removes only matrix dependencies, selects cut10j, and binds the routed artifact by ID and SHA-256.
+
+No clocks, margins, parasitic rules or acceptance conditions are relaxed. The original route and analog jobs continue. A possible later original-run repeat is independent evidence, not a reason to count results twice. This is nominal OpenRCX plus three Liberty corners; full RC-corner calibration, complete SRAM characterization, whole-chip LVS/DRC, pads/serial PHY and production acceptance remain separate. The route source predates the later explicit-width and MBIST Boolean repairs; no current integrated-source signoff is implied.
