@@ -1,4 +1,4 @@
-name: Derive CDR stage voltages from preserved cloud captures
+name: Compare baseline and slave parallel CDR stage voltage and lag
 on:
   workflow_dispatch:
 permissions:
@@ -23,7 +23,7 @@ jobs:
           out=pathlib.Path("out"); out.mkdir()
           artifacts={
               13434202071: ("lowz4_bd10","5237c8a58189f40dec5e51a82474caca030238a67e4e18e480589566c3289652"),
-              13432938340: ("lowz4_bd12","236a634d02fae1e6174e94f8bdf55dbe24ef9084c1d9406eeda8a2bd535613eb")}
+              14072710633: ("bd10_slave_parallel2","bfbb7f6254d3cfea538955c0afc895eed9f814796401b07137fb2f0351b3b4f7")}
           for ident,(variant,digest) in artifacts.items():
               raw=subprocess.check_output(["gh","api",f"repos/Melihakbulut221/nssoc/actions/artifacts/{ident}/zip"])
               assert hashlib.sha256(raw).hexdigest()==digest
@@ -52,10 +52,25 @@ jobs:
                   vp,pn=vector('xpd.w_t'+p);vn,nn=vector('xpd.w_t'+n)
                   cm=(vp+vn)/2;diff=vp-vn
                   stages[name]=dict(nodes=[pn,nn],common_mode_v=stats(cm),differential_v=stats(diff),phase_common_mode_v=[stats(cm.reshape(258,16)[:,k]) for k in range(16)],phase_abs_differential_v=[stats(abs(diff.reshape(258,16)[:,k])) for k in range(16)])
+              lag_records={}
+              def differential(stage):
+                  p,n=pairs[stage]
+                  return vector('xpd.w_t'+p)[0]-vector('xpd.w_t'+n)[0]
+              for source,target in [('sampler_a','buffer_a_input'),('buffer_a_input','buffer_a_output'),('sampler_c','buffer_c_input'),('buffer_c_input','buffer_c_output'),('sampler_d','select0_input'),('select0_input','select0_output'),('select1_input','select1_output')]:
+                  source_v=differential(source);target_v=differential(target)
+                  rows=[]
+                  for lag in range(65):
+                      x=source_v[64:len(source_v)-64];y=target_v[64+lag:len(target_v)-64+lag]
+                      corr=float(np.corrcoef(x,y)[0,1])
+                      assert np.isfinite(corr)
+                      rows.append(dict(lag_samples=lag,lag_ui=lag/16,correlation=corr,wrong_sign_samples=int(np.count_nonzero(x*y<0)),samples=len(x)))
+                  lag_records[source+'->'+target]=dict(best_positive_correlation=max(rows,key=lambda row:row['correlation']),all_lags=rows)
+              record['sampled_stage_lag']=lag_records
+              record['sampled_stage_lag_scope']='Diagnostic positive-polarity waveform correlation at 16 samples/UI over 0..4 UI, excluding edge windows. Correlation is not causal propagation delay or an acceptance criterion; aliases must be inspected.'
               record['sampled_stage_voltage']=stages
               record['sampled_stage_scope']='16 samples/UI; sampled ranges only, not continuous extrema, new simulation or acceptance'
               report={"source_artifact":ident,"source_artifact_sha256":digest,
-                      "source_run":42048922994,"scope":"Recovered measurements only; no new simulation or acceptance", "result":record}
+                      "source_run":43482979273 if variant=="bd10_slave_parallel2" else 42048922994,"scope":"Recovered measurements only; no new simulation or acceptance", "result":record}
               (out/(variant+".json")).write_text(json.dumps(report,indent=2)+chr(10))
               print(variant,record["passed"],record["interface_observations"])
           PY
