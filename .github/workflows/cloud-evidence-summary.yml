@@ -1,4 +1,4 @@
-name: PCIe width-change mutual definedness equivalence
+name: PCIe source-semantics-preserving mutual equivalence
 on:
   workflow_dispatch:
 permissions:
@@ -49,11 +49,12 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pcie-width-mutual-${{ matrix.configuration }}-${{ matrix.direction }}-${{ github.run_id }}
+          name: pcie-width-reference-x-${{ matrix.configuration }}-${{ matrix.direction }}-${{ github.run_id }}
           path: |
             out/*.log
             out/*.ys
             out/result.json
             out/selector-controls.json
+            out/reference-normalization.json
           if-no-files-found: error
           retention-days: 90
