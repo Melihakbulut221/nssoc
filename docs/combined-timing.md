@@ -527,3 +527,79 @@ All three have route and routed-sta entries; routing uses `DRT_OPT_ITERS` 16. `r
 Functional entries: `regress` and `native-boot` `ex_exec_pmpreg_cut9`; `pcie-unit` `rpahead` (replay, reliable, flow, buffered suites with the define) and `cut9` (every PCIe knob, plus the stream and endpoint suites), the replay read-ahead co-simulation (`scripts/check_pcie_replay_ahead.sh`) alone and with `SOC_PCIE_REPLAY_INBANK` and `SOC_PCIE_RESET_COPIES`, and the transmit-word co-simulation again; `eth-knobs` `joint-cut9` (vendor-SRAM FIFOs with synchronous and asynchronous packet clock, inferred FIFOs).
 
 Risks: the hold pass can only buffer paths with setup slack above its margin, so a path that is short of both setup and hold keeps its hold violation (the setup protection forbids buffering it), and buffers that pass on the estimate may still cost setup after routing; `ahead` replaces the bank's AND-OR instead of adding one, so the cursor's fanout is unchanged, and the new select `replay_took` drives 32 multiplexers; the d70 probe changes area and wire length everywhere.
+
+## 19. Tenth round: the new slow-corner structures, the receive ready, the credit select, what the hold pass left
+
+Run 43378054360 (all 124 jobs pass). Routed, extracted, d68. Worst slack in ns, setup slow / typ / fast | hold slow / typ / fast:
+
+| Group | `r_cut9h_td_d68` (hold-only pass 0.05 / 0.1), DRC 0 |
+|---|---|
+| asynchronous | -0.01 / 1.25 / 1.86 \| 0.47 / 0.20 / 0.04 |
+| `clk_i` | 0.00 / 7.09 / 9.93 \| 0.29 / 0.10 / -0.03 |
+| `eth_gtx` | 1.81 / .. / .. \| met |
+| `eth_rx_clk_i` | 0.58 / 3.00 / 3.64 \| 0.10 / 0.07 / -0.04 |
+| `eth_tx_clk_i` | 0.39 / 3.13 / 4.65 \| 0.41 / 0.16 / 0.02 |
+| `pcie_clk_i` | -0.46 / 0.77 / 1.46 \| 0.19 / 0.02 / -0.08 |
+
+Violating endpoints: slow setup 749 (741 `pcie_clk_i`, 8 asynchronous); hold slow 0, typical 0, fast 60. Without the pass (`r_cut9z_td_d68`): `pcie_clk_i` -0.42, `eth_rx_clk_i` -0.92, fast hold -0.19 (157 endpoints). `r_cut9z_td_d70`: `pcie_clk_i` -0.53, asynchronous -0.24, `eth_tx_clk_i` -0.18, final DRC 2. The pass closes slow and typical hold and costs no setup in this run; density 70 does not help.
+
+### 19.1 The 749 slow-corner setup endpoints
+
+Grouped by RTL start and end register (the routed database's flop map, bit indices removed) they are 91 structures. Every round-nine structure of section 18.1 (`regs.timer`, `retry.write_pos`, `tx_busy`, `write_valid`, `b_di`, `dllp_pending`, `ack_encoder`) is now better than +0.11 (outside the report's 1,000 worst `pcie_clk_i` paths). The structures worse than -0.05, by family ("pad": `dlygate4sd3_1` hold buffers on the worst path, 0.6-0.7 ns each at the slow corner):
+
+| Endpoints | Worst | Start -> end | Depth (cells) | Pad | Round 10 |
+|---:|---:|---|---|---|---|
+| 312 | -0.424 | `receive_packet.bad` -> the receive queue's read (lane and pick copies, bank and staged registers, output index, receive slice, quarantine inputs) | 18-22 | none | 19.3 |
+| 156 | -0.459 | `flow.credits.request_class` (and `reserve_payload_dw_i`, `b_dd`) -> `credit_header_limit_o`, `credit_data_limit_o`, `ah`, `ad`, consumed counts, overwritten flags | 18-27 | none | 19.3 |
+| 45 | -0.181 | `request_class` -> `retry.replay_read_onehot`, `retry.read_pos` (via the reservation handshake) | 22-23 | none | no |
+| 80 | -0.311 | `receive_ownership.commit_slot` -> `packets`, `far_bytes`, `near_bytes` | 13-17 | 0.63 at D on 5 | 19.3 |
+| 7 | -0.344 | `receive_packet.expected_sequence_o` -> itself, `expected_minus` | 17-18 | 1.28 (two) at D | 19.3 |
+| 23 | -0.165 | `transaction_stream.header_count` -> `header` | 18 | 0.64 at D on all | 19.3 |
+| 5 | -0.379 | `retry.replay_read_onehot` -> `read_replay_bank[].ahead` | 13-15 | 0.66 at D on 4 | no |
+| 25 | -0.40 | output and input ports: `pcie_tx_data_o` (-0.40, register to port, 7 cells), `pcie_rx_ready_o` (-0.37), `pcie_initialized_o` (-0.24), `pcie_tx_ready_i` -> `boundary_slice.spare_data` and ports (-0.23 to -0.09, 2.1-2.2 ns of input hold buffers) | 7-10 | at the input | no (I/O budget) |
+| 15 | -0.310 | `quarantine.rx_sop_i` / `rx_data_i` (the receive slice's register) -> sequence, index, `fc_data_o`, `fc_header_o`, DLLP receiver | 17-20 | 0.63-0.69 on all | no |
+| 11 | -0.286 | `receive_ownership.qread`, `link_up_i`, `head_slot` -> `head_last`, `head_units`, `lasts`, `units`, `header_limit_i` | 13-18 | 0.62-0.64 at D | no |
+| 6 | -0.283 | `transmit_packet.cursor_word` / `count` -> `tx_byte`, `write_word`, `byte_index` | 18-19 | 0.62-1.33 at D | no |
+| 3 | -0.254 | `retry` -> `ack_stale`, `ack_delta_q`, `ack_allowed` | 23-25 | none | no |
+| 9 | -0.238 | `advertiser.header_limit_i` / `refresh` / `packet_accepted_o` -> class index, frame class and phase, `refresh`, `data_limit_i` | 16-20 | 0.65 | no |
+| 13 | -0.199 | `retry.sending` / `retry.rst_ni` -> `read_replay_bank[].kept`, `.registered` | 16-18 | 0.62-1.30 at D | no |
+| 3 | -0.133 | `flow.credits.update_class` -> `credit_infinite_o` | 15 | 0.63 at D | no |
+| 8 | -0.064 to -0.055 | transmit slice data, `advert_data`, `stage_last`, `output_dllp` | 19-21 | 0.62-0.64 | no |
+
+The remaining 28 endpoints are between -0.05 and 0, among them the asynchronous `quarantine.rst_ni` -> `transaction_stream.completion_data` recovery (8, -0.013, a 33-buffer reset tree) and `clk_i` 0.000.
+
+Unlike round nine, the two largest families carry no hold padding: they are logic. The receive family is one ready chain: the endpoint's `rx_ready` is `rst_ni && state!=EMIT && !ack_valid_o && !good && !bad` (all registers; or2, nor2, nand3_1 driving a buf_8, 0.96 ns), the link layer ANDs it into its receive ready, and the receive queue's output handshake then selects every read register. The credit family is `consume`: the request compare (1.15 ns), the replay store's reservation handshake, then synthesis merged `consume` into the variants' update checks, ten more gates to the limit registers.
+
+### 19.2 The 60 fast-corner hold endpoints
+
+| Endpoints | Worst | Kind | Why the pass left it |
+|---:|---:|---|---|
+| 45 | -0.081 | `receive_ownership.packets` / lane copies -> `read_bank[].near_bytes`, `far_bytes` (stage 1 of the two-stage read), 9-11 cells | routing: the pass's estimate had `pcie_clk_i` at -0.01 worst after it ran, so these met its 0.05 margin there; routing and extraction took up to 0.13 ns. Their D-pin multiplexer is also the end of `commit_slot` (setup -0.194 on one of them), so a pad there competes with setup |
+| 5 | -0.008 | `in_data` -> `receive_ownership.dllp` | left at -0.01 on the estimate (iterations, below) |
+| 6 | -0.054 to -0.006 | single flip-flop paths: `local_init2_sent_o` -> `initialized_i`, `replay_left` -> `replay_active`, quarantine state -> `bad`, `completion_data` -> `write_word`, `head_slot` -> `used`, `packet_paddr` | routing, as the first row |
+| 1 | -0.010 | `clk_i`: CAN `bit_cnt` -> `write_data_to_tmp_fifo` | routing |
+| 3 | -0.044 | SRAM pins: receive FIFO `wq_data` -> `A_DIN` (-0.044), transmit FIFO `wq_men` and `g_wsel` -> the macro (-0.030, -0.004; two pads already) | the macro's hold requirement (section 17.1) |
+
+None is setup-limited by sign-off (every one has slow setup slack above +0.11 except the one `commit_slot` endpoint). The pass itself (`deep-repair.log`): 1,176 endpoints within the margin, worst -0.290 (SRAM `A_ADDR`); from its 20th iteration to the end it sat at -0.076 ns, TNS -0.299, on receive FIFO `A_DIN` pins, inserted 619 buffers and stopped at its iteration limit ("Unable to repair all hold checks within margin"). So the limit, not the setup protection, ended it, and the margin of 0.05 is smaller than the routing spread of the stage-1 registers.
+
+### 19.3 Changes
+
+- **`SOC_PCIE_SEQ_RX_REG=1` (new, default 0; `soc_pcie_sequence_rx.v`, `soc_pcie_lcrc_rx.v`).** The receiver keeps its input ready in a register, `input_open`, loaded with the next value of `state!=EMIT && !good && !bad && !ack_valid_o` (`soc_pcie_lcrc_rx` gets an output `open_next_o`, the control branches of its block for the state and `packet_bad_o`; `packet_good_o` rises only with EMIT). `rx_ready_o` is `rst_ni && input_open`. Second, the 12-bit sequence compare is registered a cycle ahead (`expected_q`, like `behind`): it is used only at a verdict, and in the cycle before a verdict neither operand changes. Ports cycle-identical; 2 flip-flops. Simulation-only checks stop the run if `input_open` differs from the expression in any cycle, or `expected_q` from the compare at a verdict.
+- **`SOC_PCIE_CREDIT_PICK=1` (new, default 0; `soc_pcie_credit_tx.v`).** The consume select between `next[1]` and `next[0]` (193 bits) is one multiplexer per bit in `soc_pcie_credit_pick` (`keep_hierarchy`), so `consume` is the last gate before every credit register. Same expression; evidence `scripts/check_pcie_credit_pick.sh` (bench `hw/soc/tb/tb_pcie_credit_pick.v`, four seeds of 300,000 cycles, every output compared in every cycle; initialization with finite and infinite credit, updates, malformed and backward events, held and changing reservations, replays, link losses, resets, with coverage thresholds).
+- **`SOC_PCIE_RX_COMMIT_COPIES=1` (new, default 0; `soc_pcie_rx_credit.v`).** Each bank gets one copy of its commit register per group of eight bytes for the write and one for its read registers (`soc_pcie_rx_commit_copy`, `keep_hierarchy`), loaded with `commit_slot`'s next value and cleared by the same reset; 36 flip-flops. A simulation-only check stops the run if a copy differs; `scripts/check_pcie_rx_read_ahead.sh` accepts the define.
+- **Receive header select (inside `SOC_PCIE_TX_WORD_REG`, `soc_pcie_tlp_stream.v`).** `header_sel[k-1] = header_count==k && header_count<header_size` is a register (set at a start, moved with the count, cleared by reset); the compare implies a count of 1 to 3, so the case's default is never taken. 3 flip-flops, a simulation-only check, and the transmit-word co-simulation runs with the define.
+
+Not changed: the quarantine reset copy (the endpoint's reset net reaches `soc_pcie_tlp_stream` through `soc_pcie_link_packets` and `soc_pcie_packet_endpoint`, whose benches drive only `rst_ni`, so a copy needs a port through both; -0.013, within noise); `request_class` -> `replay_read_onehot` (the request compare against the replay store's registered request, which needs a new port between the two blocks); the I/O-port paths (the SDC's budget); the padded slice-to-consumer paths (`quarantine.rx_sop_i`, `qread`, transmitter counters), next in line.
+
+### 19.4 Round-ten runs
+
+| Probe | Knobs | Hold settings |
+|---|---|---|
+| `r_cut10h_td_d68` | round 9 + `SOC_PCIE_CREDIT_PICK`, `SOC_PCIE_SEQ_RX_REG`, `SOC_PCIE_RX_COMMIT_COPIES` (+ the header select) | PL 0 / GRT 0, hold-only pass 0.05 / 0.1, 1000 iterations |
+| `r_cut10j_td_d68` | same | PL 0 / GRT 0, hold-only pass 0.1 / 0.1, 3000 iterations (`deephold_iters`) |
+
+Both d68 with route and routed-sta (`DRT_OPT_ITERS` 16). `r_cut10h` against `r_cut9h` measures the cuts; `r_cut10j` against `r_cut10h` measures a margin that covers the stage-1 registers' routing spread and enough iterations to get past the SRAM pins. Functional: `regress`/`native-boot` `ex_exec_pmpreg_cut10`; `pcie-unit` `credpick`, `seqrx`, `rxcommit`, `rxcommit2`, `cut10`, the credit co-simulation, the receive-queue co-simulation with the commit copies (alone and with the two-stage read and reset copies) and the transmit-word co-simulation; `eth-knobs` `joint-cut10`.
+
+Expected: the receive family gains about 0.8 ns (the ready from a register through one AND instead of 0.96 ns of gates), the credit family about 1.1 ns (`consume` to the registers through its buffer tree and one multiplexer instead of 1.73 ns); `commit_slot` and `header_count` lose their buffer chain and compare. The next `pcie_clk_i` limit would then be the reservation handshake into the replay store (-0.18), `replay_read_onehot` -> `ahead` (-0.38 with a pad) and the I/O ports.
+
+Risks: `input_open` adds `consume`, `ack_ready_i` and the quarantine's EOP check to one register's D cone (the same cone `ack_valid_o` and `packet_good_o` already end); the credit multiplexer forces 193 selects on `consume`, whose buffer tree is now on the path; a larger hold margin can take setup slack after routing, and 3000 iterations may add several hundred more buffers around the SRAM pins without fixing them.
