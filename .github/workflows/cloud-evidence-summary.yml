@@ -1466,6 +1466,7 @@ jobs:
           make soc-interfaces-prepare SOC_INTERFACE_PROFILE=full INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
       - name: Base and full lint, joint PCIe/Ethernet traffic (asynchronous and synchronous packet clock)
         run: |
+          set +e
           set -uo pipefail
           fail=0
           O=$PWD/out; mkdir -p $O
