@@ -102,6 +102,49 @@ module soc_pcie_rx_credit #(
     reg [SLOTS-1:0] commit_slot;
     wire commit=|commit_slot;
     wire stage_drop=stage_pending && stage_checked && !stage_shape_ok;
+    // commit_bank[b] is the commit register of bank b as the bank's read
+    // registers see it.
+    wire [SLOTS-1:0] commit_bank;
+`ifdef SOC_PCIE_RX_COMMIT_COPIES
+    // docs/combined-timing.md section 19 (default off): copies of the
+    // commit registers. Each commit_slot bit selected staging into all
+    // CAP*8 byte flops of its bank (the multiplexers' select through a
+    // five-level buffer chain) and the bank's read registers. Each bank now
+    // has one copy per group of eight bytes for the write (commit_write,
+    // bank-major) and one for its read registers (commit_bank), loaded
+    // with commit_slot's next value and cleared by the same reset, so every
+    // copy equals commit_slot of its bank in every cycle. keep_hierarchy
+    // keeps the identical copies apart through synthesis.
+    localparam integer COMMIT_GROUPS=(CAP+7)/8;
+    wire [SLOTS*COMMIT_GROUPS-1:0] commit_write;
+    genvar cbank,cgroup;
+    generate for(cbank=0;cbank<SLOTS;cbank=cbank+1) begin: commit_copies
+        wire commit_d=link_up_i && stage_pending && !commit && !stage_drop && shape_ok &&
+            free_slot==cbank && qcount<SLOTS;
+        for(cgroup=0;cgroup<COMMIT_GROUPS;cgroup=cgroup+1) begin: write_copy
+            soc_pcie_rx_commit_copy copy(.clk_i(clk_i),.rst_ni(rst_ni),.d_i(commit_d),
+                .q_o(commit_write[cbank*COMMIT_GROUPS+cgroup]));
+        end
+        soc_pcie_rx_commit_copy read_copy(.clk_i(clk_i),.rst_ni(rst_ni),.d_i(commit_d),.q_o(commit_bank[cbank]));
+    end endgenerate
+`ifndef SYNTHESIS
+    // Simulation only: stop if a copy differs from its master.
+    integer cchk;
+    always @(posedge clk_i) if (rst_ni===1'b1) begin
+        for(cchk=0;cchk<SLOTS*COMMIT_GROUPS;cchk=cchk+1)
+            if (commit_write[cchk]!==commit_slot[cchk/COMMIT_GROUPS]) begin
+                $display("RX_COMMIT_COPY_MISMATCH t=%0t copy=%0d", $time, cchk);
+                $fatal(1, "commit register copy differs");
+            end
+        if (commit_bank!==commit_slot) begin
+            $display("RX_COMMIT_COPY_MISMATCH t=%0t read copies=%b commit=%b", $time, commit_bank, commit_slot);
+            $fatal(1, "commit register copy differs");
+        end
+    end
+`endif
+`else
+    assign commit_bank=commit_slot;
+`endif
     integer b;
     wire remove=waiting && (packet_accepted_i || packet_duplicate_i || packet_rejected_i);
     // The queue head slot is a register that tracks order[qread] from the
@@ -423,8 +466,8 @@ module soc_pcie_rx_credit #(
                 assign far_d[read_bit]=|far_pick;
             end
             always @(posedge clk_i) begin
-                near_q<=commit_slot[bank] ? r2_staged_near[read_offset*8 +: 8] : near_d;
-                far_q<=commit_slot[bank] ? r2_staged_far[read_offset*8 +: 8] : far_d;
+                near_q<=commit_bank[bank] ? r2_staged_near[read_offset*8 +: 8] : near_d;
+                far_q<=commit_bank[bank] ? r2_staged_far[read_offset*8 +: 8] : far_d;
             end
             assign near_bytes[read_offset*8 +: 8]=near_q;
             assign far_bytes[read_offset*8 +: 8]=far_q;
@@ -470,7 +513,7 @@ module soc_pcie_rx_credit #(
                 assign stored_first=8'b0;
             end
             always @(posedge clk_i)
-                ahead<=commit_slot[bank] ? staged_ahead[read_offset*8 +: 8] :
+                ahead<=commit_bank[bank] ? staged_ahead[read_offset*8 +: 8] :
                     advance ? stored_next : restart ? stored_first : ahead;
             assign ahead_bytes[read_offset*8 +: 8]=ahead;
         end
@@ -495,7 +538,7 @@ module soc_pcie_rx_credit #(
         end
 `endif
         always @(posedge clk_i)
-            registered<=commit_slot[bank] ? staging[0] :
+            registered<=commit_bank[bank] ? staging[0] :
                 restart ? packets[bank*CAP] : handshake ? following : registered;
         assign bank_byte[bank]=registered;
     end endgenerate
@@ -545,6 +588,18 @@ module soc_pcie_rx_credit #(
             for(cw=0;cw<GROUPS;cw=cw+1)
                 if(commit_shift[cw*SLOTS+wb])
                     for(w=8*cw;w<8*cw+8 && w<CAP;w=w+1) packets[wb*CAP+w]<=staging[w];
+    end
+`elsif SOC_PCIE_RX_COMMIT_COPIES
+    // Section 19: each group of eight bytes of a bank is written under its
+    // own copy of the bank's commit register.
+    integer cwg;
+    always @(posedge clk_i) begin
+        stage_write_data<=rx_data_i;
+        for(w=0;w<CAP;w=w+1) if(stage_write_at[w]) staging[w]<=stage_write_data;
+        for(wb=0;wb<SLOTS;wb=wb+1)
+            for(cwg=0;cwg<COMMIT_GROUPS;cwg=cwg+1)
+                if(commit_write[wb*COMMIT_GROUPS+cwg])
+                    for(w=8*cwg;w<8*cwg+8 && w<CAP;w=w+1) packets[wb*CAP+w]<=staging[w];
     end
 `else
     always @(posedge clk_i) begin
@@ -756,6 +811,19 @@ module soc_pcie_rx_credit #(
     end
 `endif
 endmodule
+`ifdef SOC_PCIE_RX_COMMIT_COPIES
+// Section 19: one copy of a commit register, with the master's reset.
+// keep_hierarchy keeps the identical copies apart through synthesis.
+(* keep_hierarchy *)
+module soc_pcie_rx_commit_copy (
+    input wire clk_i,rst_ni,d_i,
+    output reg q_o
+);
+    always @(posedge clk_i or negedge rst_ni)
+        if(!rst_ni) q_o<=1'b0;
+        else q_o<=d_i;
+endmodule
+`endif
 `ifdef SOC_PCIE_RX_READ2
 // docs/combined-timing.md section 15: one copy of the two-stage read's lane
 // register, loaded every cycle. keep_hierarchy keeps the identical copies

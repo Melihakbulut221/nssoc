@@ -5,7 +5,8 @@
 # against its default build (docs/combined-timing.md sections 12 and 14).
 #   scripts/check_pcie_rx_read_ahead.sh OUT [CYCLES] [DEFINE...]
 # DEFINE defaults to SOC_PCIE_RX_READ_AHEAD; e.g. SOC_PCIE_RX_READ2, or
-# SOC_PCIE_RX_READ2 SOC_PCIE_RESET_COPIES. Both modules come from the same
+# SOC_PCIE_RX_READ2 SOC_PCIE_RESET_COPIES, or with SOC_PCIE_RX_COMMIT_COPIES
+# (section 19). Both modules come from the same
 # hw/soc/rtl/pcie/soc_pcie_rx_credit.v: the reference is renamed and
 # compiled without any define, the candidate with them. Four seeds at the
 # SoC's parameters (completer-only), two with requester traffic, two at a
@@ -25,6 +26,8 @@ BENCH_ARGS=()
   for d in "${DEFINES[@]}"; do
     case "$d" in
       SOC_PCIE_RX_READ_AHEAD|SOC_PCIE_RX_STAGED_COMMIT) ;;
+      # Section 19: the commit copies stop the run themselves if one differs.
+      SOC_PCIE_RX_COMMIT_COPIES) ;;
       # The bench also checks the two-stage read's lane-register copies.
       SOC_PCIE_RX_READ2) BENCH_ARGS+=(-DCOSIM_READ2) ;;
       # The candidate has the reset-copy port; the bench drives it with rst_ni.
@@ -45,7 +48,7 @@ for cfg in "8 2 1 1" "8 2 1 2" "8 2 1 3" "8 2 1 4" "8 2 0 5" "8 2 0 6" "4 1 0 7"
     -Ptb_pcie_rx_credit_read_ahead.SLOTS_PER_CLASS=$slots -Ptb_pcie_rx_credit_read_ahead.COMPLETER_ONLY=$co \
     "$OUT/reference.v" "$OUT/candidate.v" "$ROOT/hw/soc/tb/tb_pcie_rx_credit_read_ahead.v"
   vvp -n "$OUT/$name.vvp" +seed=$seed +cycles=$CYCLES > "$OUT/$name.log" 2>&1 || true
-  grep -E "^(SUMMARY|RESULT|MISMATCH|COPY MISMATCH)" "$OUT/$name.log" | head -12 | sed "s/^/$name: /"
+  grep -E "^(SUMMARY|RESULT|MISMATCH|COPY MISMATCH|RX_COMMIT_COPY_MISMATCH)" "$OUT/$name.log" | head -12 | sed "s/^/$name: /"
   grep -q "^RESULT PASS" "$OUT/$name.log" || fail=1
   rm -f "$OUT/$name.vvp"
 done
