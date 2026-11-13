@@ -82,5 +82,119 @@
     "run": 43478936631,
     "status": "pending; not a pass claim"
   },
-  "scope": "Functional and lint verification of explicit width changes only. New integrated-source joint test is dispatched separately. No serial PHY, new routed layout, timing, LVS or production acceptance."
+  "scope": "Functional and lint verification of explicit width changes, including joint PCIe packet/GPIO and GMII Ethernet traffic on the integrated source. No serial PHY, LTSSM, Ethernet PHY, new routed layout, timing, LVS or production acceptance.",
+  "integrated_verification": {
+    "source": "173c7ea8900cc39eb19089b14e07eb5b039b7b56",
+    "run": 43483966048,
+    "conclusion": "success",
+    "artifacts": [
+      {
+        "id": 14065754172,
+        "sha256": "4f63dfc2f28edc66f95f673ec10d427297468fea921d92c2e7298206ae3503f4"
+      },
+      {
+        "id": 14065604040,
+        "sha256": "4b71faba6d13ff766b68209e9881d9f435ec575f68251ab0161a9dc380548e7d"
+      }
+    ],
+    "results": {
+      "joint-sync/result.json": {
+        "status": "PASS",
+        "tests": {
+          "passed": 2,
+          "failed": 0,
+          "skipped": 0
+        },
+        "scope": "Actual Ibex CPU, PCIe packet/GPIO and GMII Ethernet concurrent traffic. Base interface bundle; external loopback over independent 125 MHz clocks and 50 MHz APB. Optional 16 vendor functional FIFO SRAM instances with POR MBIST. No PCIe serial PHY, LTSSM, Ethernet PHY, full system SRAM mapping, layout, RC or timing qualification.",
+        "unchanged": true,
+        "runtime_unchanged": true,
+        "ethernet_vendor_sram": false,
+        "asynchronous_pcie": false
+      },
+      "joint-async/result.json": {
+        "status": "PASS",
+        "tests": {
+          "passed": 2,
+          "failed": 0,
+          "skipped": 0
+        },
+        "scope": "Actual Ibex CPU, PCIe packet/GPIO and GMII Ethernet concurrent traffic. Base interface bundle; external loopback over independent 125 MHz clocks and 50 MHz APB. Optional 16 vendor functional FIFO SRAM instances with POR MBIST. No PCIe serial PHY, LTSSM, Ethernet PHY, full system SRAM mapping, layout, RC or timing qualification.",
+        "unchanged": true,
+        "runtime_unchanged": true,
+        "ethernet_vendor_sram": false,
+        "asynchronous_pcie": true
+      },
+      "lint-base/result.json": {
+        "status": "PASS_WITH_RECORDED_WARNINGS",
+        "scope": "soc_top RTL lint, MEM_RDREG=1, REQ_REG=1; array uses SYNPRE=0/WAKE_GNT=0; sram-logic uses SYNPRE=1/WAKE_GNT=1, SRAM blackboxes, generated fixed ROM; no mapped-netlist or physical/CDC signoff",
+        "counts": {
+          "WIDTHTRUNC": 51,
+          "WIDTHEXPAND": 150,
+          "PROCASSINIT": 136,
+          "BLKSEQ": 9,
+          "SYNCASYNCNET": 5,
+          "LATCH": 3,
+          "TIMESCALEMOD": 33,
+          "PINCONNECTEMPTY": 106,
+          "UNUSEDSIGNAL": 81,
+          "CASEINCOMPLETE": 5,
+          "VARHIDDEN": 4,
+          "SELRANGE": 3,
+          "GENUNNAMED": 15,
+          "DECLFILENAME": 9,
+          "PINMISSING": 86,
+          "UNUSEDPARAM": 289,
+          "ASCRANGE": 2
+        },
+        "delta": {
+          "new": {},
+          "stale": {}
+        },
+        "immutable_drift": [],
+        "own_unaccepted": [],
+        "sources_unchanged": true
+      },
+      "lint-full/result.json": {
+        "status": "PASS_WITH_RECORDED_WARNINGS",
+        "scope": "soc_top RTL lint, MEM_RDREG=1, REQ_REG=1; array uses SYNPRE=0/WAKE_GNT=0; sram-logic uses SYNPRE=1/WAKE_GNT=1, SRAM blackboxes, generated fixed ROM; no mapped-netlist or physical/CDC signoff",
+        "counts": {
+          "CASEINCOMPLETE": 5,
+          "UNUSEDPARAM": 289,
+          "PROCASSINIT": 136,
+          "SELRANGE": 3,
+          "PINMISSING": 86,
+          "WIDTHTRUNC": 57,
+          "SYNCASYNCNET": 6,
+          "TIMESCALEMOD": 33,
+          "BLKSEQ": 9,
+          "ASCRANGE": 2,
+          "UNUSEDSIGNAL": 89,
+          "IMPLICIT": 1,
+          "CASEX": 1,
+          "VARHIDDEN": 4,
+          "DECLFILENAME": 9,
+          "LATCH": 3,
+          "WIDTHEXPAND": 159,
+          "GENUNNAMED": 15,
+          "CMPCONST": 1,
+          "PINCONNECTEMPTY": 107
+        },
+        "delta": {
+          "new": {},
+          "stale": {}
+        },
+        "immutable_drift": [],
+        "own_unaccepted": [],
+        "sources_unchanged": true
+      },
+      "lint-cut10.txt": {
+        "status": "PASS",
+        "sha256": "0d23c2ccc12b81a9c06df9d32836e977de4d67f02e620d99bf767b8a66bcf9f2"
+      },
+      "lint-default.txt": {
+        "status": "PASS",
+        "sha256": "73cec327bf28db2d4c408b8b3f22c5a5ef8065e940cd0620d88328057dfca897"
+      }
+    }
+  }
 }
