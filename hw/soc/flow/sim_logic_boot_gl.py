@@ -132,12 +132,30 @@ def validate_mbist_profile(text, profile):
 
 def mbist_boot_passed(text, profile):
     if profile == 'off':
-        return True
+        return None
     if profile != 'system-ethernet':
         raise ValueError('Unknown mapped MBIST profile')
     banners = re.findall(r'(?m)^MBIST_BOOT PASS busy_cycles=([1-9][0-9]*) done_cycle=([1-9][0-9]*) eth_done=3$', text)
     return (len(banners) == 1 and int(banners[0][1]) > int(banners[0][0])
             and re.search(r'(?im)(?:FATAL:|ERROR:|%Fatal|%Error)', text) is None)
+
+def boot_checks(text, returncode, pcie_profile, mbist_profile):
+    if pcie_profile not in ('off', 'packet', 'packet-async'):
+        raise ValueError('Unknown mapped PCIe profile')
+    mbist_ok = mbist_boot_passed(text, mbist_profile)
+    pcie_ok = (None if pcie_profile == 'off' else
+               bool(re.search(r'PCIE_IDLE_BOOT PASS samples=[1-9][0-9]*', text)))
+    banner = 'LOGICROM_GL PASS checks=28' in text
+    no_fatal = re.search(r'(?im)(?:FATAL:|ERROR:|%Fatal|%Error)', text) is None
+    def state(value):
+        return 'not_requested' if value is None else 'passed' if value else 'failed'
+    return dict(pass_banner=banner, pcie_profile=pcie_profile, mbist_profile=mbist_profile,
+                pcie_idle_boot_passed=pcie_ok, mbist_boot_passed=mbist_ok,
+                pcie_idle_boot_status=state(pcie_ok), mbist_boot_status=state(mbist_ok),
+                passed=(returncode == 0 and banner and no_fatal
+                        and (pcie_profile == 'off' or pcie_ok is True)
+                        and (mbist_profile == 'off' or mbist_ok is True)))
+
 
 def read_symbols(nm, elf):
     output = subprocess.check_output([nm, str(elf)], text=True)
@@ -297,15 +315,13 @@ def main(argv=None):
         for number, run in enumerate(runs):
             log = out / f'run-{number}.log'
             status = run_logged(run, log, args.timeout)
-            status['pass_banner'] = 'LOGICROM_GL PASS checks=28' in log.read_text()
-            status['pcie_idle_boot_passed'] = (args.pcie_profile == 'off' or bool(re.search(r'PCIE_IDLE_BOOT PASS samples=[1-9][0-9]*', log.read_text())))
-            status['mbist_boot_passed'] = mbist_boot_passed(log.read_text(), args.mbist_profile)
+            status.update(boot_checks(log.read_text(), status['returncode'], args.pcie_profile, args.mbist_profile))
             result['runs'].append(status)
             (out / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
     result['sources_unchanged'] = all(digest(p) == info['sha256'] for p, info in hashes.items())
     result['passed'] = (result['compile']['returncode'] == 0 and result['sources_unchanged']
                         and len(result['runs']) == len(runs)
-                        and all(r['returncode'] == 0 and r['pass_banner'] and r['pcie_idle_boot_passed'] and r['mbist_boot_passed'] for r in result['runs']))
+                        and all(r['passed'] for r in result['runs']))
     (out / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
     print(json.dumps(result, indent=2))
     return 0 if result['passed'] else 1

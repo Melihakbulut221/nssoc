@@ -71,7 +71,7 @@ module soc_sram_mbist #(
     // and the failure-record enables in the same cycle.
     reg [WIDTH-1:0] expected_q;
     always @(posedge clk_i) expected_q <= expected;
-    wire [WIDTH-1:0] check_expected = PIPELINE_COMPARE ? expected_q : expected;
+    wire [WIDTH-1:0] check_expected = (PIPELINE_COMPARE != 0) ? expected_q : expected;
 `endif
     assign busy_o = (state_q != IDLE);
     assign req_o = rst_ni && !abort_i && (state_q == ISSUE);
@@ -181,12 +181,12 @@ module soc_sram_mbist #(
                            wait_q <= WAIT_WIDTH'(READ_LATENCY-1);
                        end
                 READ: if (wait_q != 0) wait_q <= wait_q - 1'b1;
-                      else if (PIPELINE_COMPARE) begin
+                      else if (PIPELINE_COMPARE != 0) begin
                           response_q <= rdata_i;
                           state_q <= COMPARE;
                       end
                       else check_response(rdata_i);
-                COMPARE: if (PIPELINE_COMPARE) check_response(response_q);
+                COMPARE: if (PIPELINE_COMPARE != 0) check_response(response_q);
                          else begin
                              state_q <= IDLE;
                              done_o <= 1;

@@ -1712,3 +1712,81 @@ jobs:
       - run: python3 -m pip install PyYAML==6.0.2
       - name: Reject failing tools and absent, malformed or failed reports
         run: python3 sw/tests/test_combined_ci_failure_propagation.py
+      - name: Validate native boot scope verdicts
+        run: |
+          python3 -m pip install -r sw/requirements.txt
+          python3 -m pytest -q sw/tests/test_logic_boot_gl.py
+
+  physical-lint:
+    if: ${{ contains(inputs.pcie_jobs, 'physical-lint') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Retry transient download failures
+        run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad1
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure'
+        run: sleep 180
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        id: cad2
+        if: steps.cad1.outcome == 'failure'
+        continue-on-error: true
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
+        run: sleep 300
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare the pinned CPU and interface RTL
+        run: |
+          git log --oneline -1
+          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          python3 -m pip install -q -r sw/requirements.txt
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -q -r hw/requirements.txt
+          make soc-rtl-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
+          make soc-interfaces-prepare SOC_INTERFACE_PROFILE=full INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
+      - name: Compile the real loader and check all SRAM lint profiles
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          make -f hw/soc/tools.soc.mk fetch-rvgcc
+          bash hw/soc/flow/build_sw_soc.sh hw/soc/out/physical-lint-firmware > out/firmware.log 2>&1
+          fail=0
+          for profile in base full; do
+            for mode in sram mbist ethernet; do
+              extra=()
+              [ "$mode" = mbist ] && extra=(--mbist)
+              [ "$mode" = ethernet ] && extra=(--mbist --eth-mbist)
+              name="$profile-$mode"
+              python3 scripts/check_soc_lint.py --profile "$profile" --memory sram-logic --rom-image hw/soc/out/physical-lint-firmware/test_soc.bin "${extra[@]}" --output "hw/soc/out/physical-lint-$name" > "out/$name.log" 2>&1 || fail=1
+              mkdir -p "out/$name"
+              cp "hw/soc/out/physical-lint-$name/result.json" "out/$name/result.json" || fail=1
+              tail -3 "out/$name.log"
+              python3 -c "import json,sys; d=json.load(open(sys.argv[1])); assert d['status']=='PASS_WITH_RECORDED_WARNINGS'; assert not d['immutable_drift'] and not d['own_unaccepted'] and not any(d['delta'].values()); print(d['profile'], d['status'])" "out/$name/result.json" || fail=1
+            done
+          done
+          exit "$fail"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: combined-physical-lint-${{ github.run_id }}
+          path: |
+            out/*.log
+            out/*/result.json
+          retention-days: 30
