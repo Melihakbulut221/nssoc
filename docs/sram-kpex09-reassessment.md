@@ -11,3 +11,7 @@ Upstream references: [0.9.0 release](https://github.com/iic-jku/klayout-pex/rele
 ## Completed leaf checkpoint
 
 Runs 43487978461 and 43488742366 complete nominal extraction and independent collapsed-network checks: eight MOS identities/parameters and port/device connectivity preserved; 68 resistors, 288 distributed capacitors, all 61 reference capacitor pairs conserved within the fixed 1e-23 F absolute plus 1e-5 relative tolerance. Removed capacitance, disconnected resistance and changed MOS model controls are rejected. The NWell resistance warning remains. This is not independent schematic LVS or full-macro qualification. Exact references are in [the receipt](evidence/sram-kpex09-leaf-20261113.json). Full DP256x16 CC and RC extraction is dispatched separately.
+
+## N-well resistance source check
+
+The maintained IHP extraction deck at `e73adb4045731ddec21634146d536380057f6a26` explicitly marks nwell/dnwell resistance values as TBD (line 75). Its following pwell/digisub value is a different material and must not be substituted. [Pinned primary source](https://github.com/IHP-GmbH/IHP-Open-PDK/blob/e73adb4045731ddec21634146d536380057f6a26/ihp-sg13g2/libs.tech/magic/ihp-sg13g2-extract.tech#L75). This source check explains why the new analytical RC warning cannot be closed by copying a nearby resistance constant. It does not prove that no proprietary or other qualified process data exists. A source-backed well/contact model and appropriate geometry/terminal checks remain required for a complete body network. No value or acceptance threshold was changed.
