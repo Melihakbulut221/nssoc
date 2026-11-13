@@ -117,7 +117,7 @@ grep -F 'Parameter \CORRPRE = 1' "$OUT/synthesis/syn.log" > "$OUT/synthesis-corr
 # Preserve the original one-million-cycle firmware allowance and all28checks.
 python3 hw/soc/flow/sim_logic_boot_gl.py \
   --pcie-profile packet-async --mbist-profile system-ethernet \
-  --cycles "${NATIVE_BOOT_CYCLES:-2000000}" --timeout 18000 \
+  --cycles "${NATIVE_BOOT_CYCLES:-2000000}" --timeout "${NATIVE_BOOT_SECONDS:-18000}" \
   --synthesis "$OUT/synthesis" --firmware "$OUT/rtl" \
   --pdk "$PDK_ROOT/ihp-sg13g2" --tool "$IVERILOG" \
   --output "$OUT/gates" | tee "$OUT/gates-driver.log"
