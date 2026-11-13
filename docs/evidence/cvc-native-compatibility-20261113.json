@@ -1,0 +1,30 @@
+{
+  "status": "REJECTED_FOR_UNTOUCHED_IHP_NATIVE_BOOT",
+  "cvc_source": "1c5e043ec33ef6f1fdbf38565501c944893a83cf",
+  "generic_probe": {
+    "run": 43480250256,
+    "artifact": 14064398264,
+    "checks_per_engine": 21,
+    "passed": true
+  },
+  "native_probe": {
+    "run": 43480752697,
+    "artifact": 14065641489,
+    "library_commit": "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+    "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+    "library_unchanged": true,
+    "icarus_positive": true,
+    "icarus_negative_detected": true,
+    "cvc_positive": false,
+    "cvc_returncode": 0,
+    "cvc_pass_banner": false,
+    "failure": "Native reset assertion failed at 45 ns",
+    "compiler_diagnostic": "WARN [3155] $setuphold optional delayed reference/data variable unsupported - ignored",
+    "source_cause": "sg13g2_dfrbpq_1 UDP logic consumes delayed_CLK, delayed_D and delayed_RESET_B from $setuphold/$recrem. No FUNCTIONAL conditional alternative exists in the pinned model.",
+    "additional_warning": "Ordinary-source library loading creates extra root-cell specify warnings. This does not remove explicit delayed-variable unsupported diagnostics."
+  },
+  "production_simulator_changed": false,
+  "speedup_qualified": false,
+  "full_chip_compatible": false,
+  "next_gate": "A simulator repair must pass untouched native-model positive and negative controls before full-netlist benchmarking. Do not edit vendor models or relax thresholds."
+}
