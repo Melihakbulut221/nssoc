@@ -34,7 +34,8 @@ VARIANTS={
  'lowz4_bd10':dict(LOWZ4,bd_up_w='10u'),
  'lowz4_bd12':dict(LOWZ4,bd_up_w='12u'),
  'bd10_smp075':dict(LOWZ4,bd_up_w='10u',sampler_bias='.00075'),
- 'bd10_smp100':dict(LOWZ4,bd_up_w='10u',sampler_bias='.001')}
+ 'bd10_smp100':dict(LOWZ4,bd_up_w='10u',sampler_bias='.001'),
+ 'bd10_slave_parallel2':dict(LOWZ4,bd_up_w='10u',slave_parallel='2')}
 def patch(text,variant):
     v=VARIANTS[variant];lines=text.split('\n');changed={}
     def edit(name,key,value):
@@ -57,6 +58,19 @@ def patch(text,variant):
         if 'bd_up_w'in v:edit(n,'w',v['bd_up_w'])
     for n in XOR_DATA:
         if 'xor_nx'in v:edit(n,'nx',v['xor_nx'])
+    if 'slave_parallel' in v:
+        # Authenticated native topology: four slave latch sink banks, not masters.
+        banks=[list(range(83,87))+list(range(91,95))+list(range(104,112)),
+               list(range(50,54))+list(range(58,62))+list(range(71,79)),
+               list(range(128,132))+list(range(136,140))+list(range(149,157)),
+               list(range(17,21))+list(range(25,29))+list(range(38,46))]
+        sinks=[f'XD{i:04d}_s0' for bank in banks for i in bank]
+        loads=[f'XD{i:04d}' for i in (325,326,341,344,352,355,362,364)]
+        assert len(sinks)==len(set(sinks))==64 and len(loads)==8
+        for n in sinks+loads:
+            original=[line for line in lines if line.split(maxsplit=1)[:1]==[n]]
+            assert len(original)==1 and re.search(r'\sm=1(?:\s|$)',original[0]),(n,original)
+            edit(n,'m',v['slave_parallel'])
     return '\n'.join(lines),changed
 def patch_bench(text,variant):
     v=VARIANTS[variant];changed={}
@@ -99,5 +113,11 @@ def main(root,variant,out):
     names=[n for n in original['vectors']if n.startswith('v(')]
     np.savez_compressed(out/'bit-phase-samples.npz',samples=np.array([np.interp(grid,t,d[n])for n in names],dtype=np.float32),names=np.array(names),grid=grid)
     (out/'result.json').write_text(json.dumps(keep,indent=1,sort_keys=True))
+    # Multiplicity changes are a circuit screen, never an actual650 layout claim.
+    if variant=='bd10_slave_parallel2':
+        keep['experiment_scope']='64 slave-tail MOS and 8 collector resistors use m=2; effective primitive multiplicity increases by 72. Existing interconnect RC is retained only as a what-if. No new extracted layout.'
+        keep['source_topology_run']=43472881982
+        keep['reference_variant']='lowz4_bd10'
+        (out/'result.json').write_text(json.dumps(keep,indent=1,sort_keys=True))
     print(json.dumps({k:keep[k]for k in('variant','returncode','passed','data_passed','devices_passed','phase_passed','phase_average_v','failing_hbt')},sort_keys=True))
 if __name__=='__main__':main(*sys.argv[1:])
