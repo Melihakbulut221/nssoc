@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 """Bound vendor SRAM LVS diagnostic. Native data remains on cloud runner."""
-import hashlib,json,os,pathlib,subprocess,sys,tarfile,time
+import hashlib,json,os,pathlib,subprocess,sys,tarfile,time,shutil
 P=pathlib.Path
 case=sys.argv[1];assert case in ('sp','dp')
 top={'sp':'RM_IHPSG13_1P_2048x64_c2_bm_bist','dp':'RM_IHPSG13_2P_256x16_c2_bm_bist'}[case]
@@ -26,18 +26,21 @@ try:
   paths=[native/'inputs'/n for n in restored if n.endswith(suffix)];assert len(paths)==1;return paths[0].resolve()
  gds=unique('/'+top+'.gds');cdl=unique('/'+top+'.cdl');deck=unique('/lvs/sg13g2.lvs')
  assert (sha(gds),sha(cdl))==pins
- app=P('librelane.AppImage').resolve();assert sha(app)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
+ assert sha(P('/tmp/klayout.deb'))=='0bb6b913fd6a32581d50b08be744b522a2a477baa1ed7e253c97cc18ce248a24'
+ app=P(shutil.which('klayout')).resolve()
+ version=subprocess.check_output([str(app),'-b','-v'],text=True).strip();assert version=='KLayout 0.30.13',version
+ r['klayout_version']=version;r['runtime_package_sha256']=sha(P('/tmp/klayout.deb'))
  r.update(gds_sha256=sha(gds),cdl_sha256=sha(cdl),deck_sha256=sha(deck),restored_inputs_sha256=sha(native/'restored-inputs.json'),runtime_sha256=sha(app))
  env=dict(os.environ);env.pop('GH_TOKEN',None);env.pop('GITHUB_TOKEN',None);env['APPIMAGE_EXTRACT_AND_RUN']='1';env['QT_QPA_PLATFORM']='offscreen'
  switches=dict(input=gds,schematic=cdl,topcell=top,report=(native/'lvs.lvsdb').resolve(),log=(native/'deck.log').resolve(),target_netlist=(native/'extracted.cir').resolve(),run_mode='deep',no_simplify='true',no_series_res='true',no_parallel_res='true',combine_devices='false',allow_unmatched_ports='false',purge='false',purge_nets='false',top_lvl_pins='false',net_only='false',verbose='false')
- r['switches']={k:str(v) for k,v in switches.items()};cmd=[str(app),'klayout','-b','-zz','-r',str(deck)]
+ r['switches']={k:str(v) for k,v in switches.items()};cmd=[str(app),'-b','-zz','-r',str(deck)]
  for k,v in switches.items():cmd+=['-rd',f'{k}={v}']
  (native/'command.json').write_text(json.dumps(cmd));start=time.monotonic()
  with (native/'run.log').open('w') as f:
   p=subprocess.run(cmd,env=env,stdout=f,stderr=subprocess.STDOUT,timeout=18000)
  r['extraction_returncode']=p.returncode;r['elapsed_seconds']=time.monotonic()-start
  if p.returncode!=0:raise RuntimeError('KLayout execution failed; native log retained in cloud')
- audit=[str(app),'python','hw/soc/flow/audit_klayout_lvs.py',str(native/'lvs.lvsdb'),'--top',top,'--deck-log',str(native/'deck.log'),'--output',str(derived/'audit.json')]
+ audit=[sys.executable,'hw/soc/flow/audit_klayout_lvs.py',str(native/'lvs.lvsdb'),'--top',top,'--deck-log',str(native/'deck.log'),'--output',str(derived/'audit.json')]
  with (native/'audit.log').open('w') as f:a=subprocess.run(audit,env=env,stdout=f,stderr=subprocess.STDOUT,timeout=900)
  r['audit_returncode']=a.returncode
  if not (derived/'audit.json').exists():raise RuntimeError('Independent result audit failed to produce report')
