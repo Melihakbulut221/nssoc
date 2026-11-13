@@ -1,4 +1,4 @@
-name: Divider what-if reruns of preserved N1 actual650 bench
+name: CDR sampler and phase-detector topology diagnosis
 on:
   workflow_dispatch:
 permissions:
@@ -7,11 +7,7 @@ permissions:
 jobs:
   divider-whatif:
     runs-on: ubuntu-24.04
-    timeout-minutes: 330
-    strategy:
-      fail-fast: false
-      matrix:
-        variant: [bd10_smp075, bd10_smp100]
+    timeout-minutes: 45
     env:
       GH_TOKEN: ${{ github.token }}
       ARTIFACT_ID: '13283214752'
@@ -23,8 +19,8 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/cdr_n1_divider_whatif.py
-            /scripts/cdr_mos650_full650_loaded.py
+            /scripts/cdr_netlist_neighbourhood.py
+            /scripts/cdr_stage_topology.py
       - name: Restore the preserved N1 native tree at its original absolute path
         run: |
           set -euo pipefail
@@ -36,13 +32,12 @@ jobs:
           rm $W/n1.zip
           ls mos650-gate-ac mos650-gate-ac/native mos650-gate-ac/native/loaded-n1-nominal_late
           grep -n "^\.lib\|^\.include\|pre_osdi" mos650-gate-ac/native/loaded-n1-nominal_late/bench.cir
-      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
-      - name: Rerun with ${{ matrix.variant }} divider values and the frozen gates
-        run: python3 -B scripts/cdr_n1_divider_whatif.py mos650-gate-ac ${{ matrix.variant }} whatif-${{ matrix.variant }}
+      - name: Derive primitive connectivity and original measurement binding
+        run: python3 -B scripts/cdr_stage_topology.py mos650-gate-ac out
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: divider-whatif-${{ matrix.variant }}-${{ github.run_id }}
-          path: whatif-${{ matrix.variant }}
-          if-no-files-found: warn
+          name: cdr-stage-topology-${{ github.run_id }}
+          path: out/*.json
+          if-no-files-found: error
           retention-days: 90
