@@ -1,4 +1,4 @@
-name: PCIe width-change mutual definedness equivalence
+name: PCIe selector exact mismatch diagnosis
 on:
   workflow_dispatch:
 permissions:
@@ -10,8 +10,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        configuration: [default, cut10]
-        direction: [forward, reverse]
+        configuration: [default]
+        direction: [forward]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -45,11 +45,11 @@ jobs:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Prove width-only changes against the preceding RTL
-        run: python3 -u scripts/check_pcie_width_equivalence.py "${{ matrix.configuration }}" "${{ matrix.direction }}"
+        run: python3 -u scripts/diagnose_pcie_selector_formal.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pcie-width-mutual-${{ matrix.configuration }}-${{ matrix.direction }}-${{ github.run_id }}
+          name: pcie-selector-diagnosis-${{ github.run_id }}
           path: |
             out/*.log
             out/*.ys
