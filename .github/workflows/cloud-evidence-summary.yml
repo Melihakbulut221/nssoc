@@ -1,4 +1,4 @@
-name: Extract exact paired650 native identities and fresh metal graph
+name: Extract exact packed650 native identities and fresh metal graph
 on:
   workflow_dispatch:
 permissions:
@@ -33,14 +33,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: paired650-wire-derived-${{ github.run_id }}
+          name: packed650-wire-derived-${{ github.run_id }}
           path: paired-wire-graph/derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: paired650-wire-native-${{ github.run_id }}
+          name: packed650-wire-native-${{ github.run_id }}
           path: paired-wire-graph/native/
           if-no-files-found: warn
           retention-days: 90
