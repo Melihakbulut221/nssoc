@@ -1,4 +1,4 @@
-name: Inspect packed650 comparator input transfer and transistor headroom
+name: Bind packed650 comparator current steering to actual native topology
 on:
   workflow_dispatch:
 permissions:
@@ -33,7 +33,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: packed650-input-transfer-${{ github.run_id }}
+          name: packed650-current-topology-${{ github.run_id }}
           path: out/
           if-no-files-found: error
           retention-days: 90

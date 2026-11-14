@@ -103,5 +103,31 @@ for phase in [.3,.6,.75,.9]:
  result['transfer_bins'][str(phase)]=row
 result['transfer_scope']='Relations and all candidate comparator input pair bins, without inferred topology, input polarity swaps, retiming, expected-vector replacement or acceptance waiver. Missing combinations stay explicitly n=0.'
 
+# Bind current observations to every actual native device, not inferred aliases.
+cn=[name for name in z.namelist()if name.endswith('/composition-n1/contract.json')]
+assert len(cn)==1
+cb=z.read(cn[0]);assert hashlib.sha256(cb).hexdigest()=='ef839c27e19bf819aa6894f2b99774b2202f6d7694c434f39a64ea9798cd8b86'
+contract=json.loads(cb);assert len(contract['devices'])==650
+result['physical_device_bindings']=contract['devices']
+result['current_diagnosis']={}
+def numeric(x,unit):
+ return {'count':int(len(x)),'unit':unit,'min':float(np.min(x)),'max':float(np.max(x)),'mean':float(np.mean(x))}
+active=t>=START
+for name,device in bound['groups']['npn13g2'].items():
+ current=d['@q.'+name+'.qnpn13g2[ic]'];c,b,e,_=device['nodes']
+ entry={'native_id':device['native_id'],'nx':device['nx'],'active_collector_current':numeric(current[active],'A'),'phases':{}}
+ for phase in [.3,.6,.75,.9]:
+  times=edges+phase*UI
+  row={'collector_current':numeric(np.interp(times,t,current),'A')}
+  for label,values in [('vc',v(c)),('vb',v(b)),('ve',v(e)),('vce',v(c)-v(e)),('vbe',v(b)-v(e))]:row[label]=numeric(np.interp(times,t,values),'V')
+  entry['phases'][str(phase)]=row
+ result['current_diagnosis'][name]=entry
+result['stage_tail_currents']={}
+for group,names in bound['mos_tail_groups'].items():
+ current=sum((d['@n.'+name+'.nsg13_lv_nmos[ids]']for name in names),np.zeros(len(t)))
+ result['stage_tail_currents'][group]={'instances':names,'active_current':numeric(current[active],'A'),'phases':{str(phase):numeric(np.interp(edges+phase*UI,t,current),'A')for phase in [.3,.6,.75,.9]}}
+assert len(result['current_diagnosis'])==124 and len(result['stage_tail_currents'])==16
+result['current_scope']='Actual failed waveform and physical bindings. Diagnose driver loading, parallel collector branches and tail-current steering. No stimulus, device sizing, reference vector, sampling acceptance or signoff changed.'
+
 (out/'wave-diagnosis.json').write_text(json.dumps(result,indent=2))
 
