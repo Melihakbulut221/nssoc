@@ -1,0 +1,47 @@
+{
+  "status": "REJECTED_PHYSICAL_CANDIDATE",
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/43505737740",
+  "source": "d2e1878c77996f1b296a3c95dcfcd83d5f0ada48",
+  "derived_artifact_id": 14089073072,
+  "derived_sha256": "cb79f308624a57c7650cd69a83bbe6dabb6803b5317d5a46d25755d0f07062dd",
+  "native_artifact_id": 14088684253,
+  "corners": {
+    "slow": {
+      "setup_count": 1094,
+      "setup_wns_ns": -2.074743102711509,
+      "setup_tns_ns": -344.04508660239435,
+      "hold_count": 4,
+      "hold_wns_ns": -0.2547608862644203,
+      "slew_count": 679,
+      "cap_count": 111
+    },
+    "typ": {
+      "setup_count": 0,
+      "setup_ws_ns": 0.0774598185296006,
+      "hold_count": 19,
+      "hold_wns_ns": -0.3483748943483984,
+      "slew_count": 268,
+      "cap_count": 116
+    },
+    "fast": {
+      "setup_count": 0,
+      "setup_ws_ns": 1.3899265465323905,
+      "hold_count": 126,
+      "hold_wns_ns": -0.4273846952865147,
+      "slew_count": 142,
+      "cap_count": 120
+    }
+  },
+  "route": {
+    "router_drc": 0,
+    "antenna_nets": 565,
+    "antenna_pins": 659
+  },
+  "fanout_count_each_corner": 1361,
+  "worst_slow_setup": "PCIe transmit_packet.fold_word[0] to transmit_packet.crc[0]",
+  "worst_fast_hold": "Ethernet RX SRAM bank6 select-copy to macro",
+  "baseline_comparison": "Original cut10j slow setup 1233 and fast hold 94; now 1094 and 126. Partial setup improvement with hold degradation and antenna violations. Not accepted.",
+  "scope": "Core-only, nominal extracted RC with three library corners; not qualified RC min/max or full padframe signoff. Existing clocks and constraints unchanged.",
+  "next": "Await explicit antenna repair run 43528773096; diagnose CRC selection stage and fast RX hold before a new physical candidate.",
+  "production_accepted": false
+}
