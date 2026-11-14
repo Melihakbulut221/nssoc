@@ -10,7 +10,8 @@ OUT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-physical"
 MANIFEST="scripts/cdr-wire-shortcuts-physical-pins.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
 CANDIDATE="scripts/cdr-wire-physical-candidate.json"
-BRANCH="codex/cdr-mos650-gate-metal-physical"
+BRANCH="codex/cdr650-paired-native-physical"
+PAIRED="scripts/cdr650-paired-physical-input.json"
 APP_SHA="d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
 CHECKER_SHA='30c4586b86167ad775af14b5568152820a802037150bdfd282e7ba0843a1555f'
 TOP="nssoc_cdr_pd500_resistor_v59"
@@ -50,10 +51,10 @@ def checker_text():
     return text,changes+extra
 def metadata(parent,gds,schematic,lef,inputs):
     need(isinstance(parent["ports"],dict)and len(parent["ports"])==25,"original public ports")
-    need(pin(gds)==json.loads((ROOT/CANDIDATE).read_bytes())["candidate"],"exact actual new GDS")
+    need(sha(gds)==json.loads((ROOT/PAIRED).read_bytes())["candidate_sha256"],"exact actual paired GDS")
     need(gds.name==TOP+".gds"and schematic.name=="schematic.cir","checker file names")
     return dict(status="GENERATED_MOS650_CANDIDATE_REQUIRES_FULL_VERIFICATION",
-      source_head=os.environ["GITHUB_SHA"],generation_producer=json.loads((ROOT/CANDIDATE).read_bytes())["run"],top=TOP,
+      source_head=os.environ["GITHUB_SHA"],generation_producer=json.loads((ROOT/PAIRED).read_bytes())["run"],top=TOP,
       ports=parent["ports"],inputs={str(p.resolve()):sha(p)for p in inputs},
       outputs={p.name:sha(p)for p in(gds,schematic,lef)},
       original_450_nonmos_devices_unchanged=True,reference_from_original_schematic=True,explicit_mos_units=200,physical_acceptance=False,
@@ -153,7 +154,7 @@ def validate_mos_candidate(target,cfg,proof):
     need(all(proof[k]is False for k in("full_pex_qualified","electrical_accepted","full_phy_accepted","final_timing_complete")),"no prior acceptance")
     return dict(all_generation_evidence_bound=True,reference_independently_rebuilt=True,physical_acceptance=False)
 
-def candidate():
+def baseline_candidate():
     import klayout.db as db
     cfg=json.loads((ROOT/CANDIDATE).read_bytes());api=acquire.api
     run=api("actions/runs/"+str(cfg["run"]))
@@ -180,6 +181,41 @@ def candidate():
     verified=validate_mos_candidate(target,cfg,proof)
     save("candidate-acquisition.json",dict(run=run,release=rel,authenticated_members=seen,independent_generation_binding=verified,original_nonmos_geometry_unchanged=True))
     return target
+def candidate():
+    import zipfile
+    baseline=baseline_candidate()
+    cfg=json.loads((ROOT/PAIRED).read_bytes())
+    run=acquire.api("actions/runs/"+str(cfg["run"]))
+    need(run["head_sha"]==cfg["source"] and run["status"]=="completed" and run["conclusion"]=="success" and run["run_attempt"]==1,"exact paired producer")
+    target=ROOT/"paired-candidate-cache";target.mkdir()
+    archives={}
+    for name,record in cfg["artifacts"].items():
+        info=acquire.api("actions/artifacts/"+str(record["id"]))
+        need(not info["expired"] and info["workflow_run"]["id"]==cfg["run"] and info["workflow_run"]["head_sha"]==cfg["source"] and info["digest"]=="sha256:"+record["sha256"],"exact paired artifact metadata")
+        path=target/(name+".zip")
+        with path.open("xb")as stream:subprocess.run(["gh","api","repos/Melihakbulut221/nssoc/actions/artifacts/"+str(record["id"])+"/zip"],stdout=stream,check=True)
+        need(sha(path)==record["sha256"],"whole paired archive digest")
+        archives[name]=path
+    with zipfile.ZipFile(archives["native"])as z:
+        need(set(z.namelist())=={"candidate.gds","source.gds"} and len(z.namelist())==2,"exact regular native inventory")
+        source=z.read("source.gds");candidate_bytes=z.read("candidate.gds")
+    need(source==(baseline/"native/layout"/(TOP+".gds")).read_bytes(),"source is independently authenticated current650 baseline")
+    need(hashlib.sha256(candidate_bytes).hexdigest()==cfg["candidate_sha256"],"new candidate digest")
+    with zipfile.ZipFile(archives["proof"])as z:
+        need(z.namelist().count("paired-layout-proof.json")==1,"unique complete proof")
+        proof=json.loads(z.read("paired-layout-proof.json"))
+    need(proof["source_gds_sha256"]==sha(baseline/"native/layout"/(TOP+".gds")) and proof["candidate_gds_sha256"]==cfg["candidate_sha256"],"generation source binding")
+    need(proof["serialized_geometry_checked"] and proof["local_overlays_conserved"] and proof["primitive_child_instances"]==16,"preserved actual primitives and local material")
+    need(len(proof["trunks"])==37 and all(t["via_incidence_conserved"] for t in proof["trunks"]),"all37 actual global trunks")
+    need(proof["accepted"] is False and proof["full_phy_accepted"] is False and proof["main_chip_integrated"] is False,"no inherited acceptance")
+    layout=target/"native/layout";layout.mkdir(parents=True)
+    (layout/(TOP+".gds")).write_bytes(candidate_bytes)
+    shutil.copyfile(baseline/"native/layout/schematic.cir",layout/"schematic.cir")
+    need(pin(layout/"schematic.cir")==json.loads((ROOT/CANDIDATE).read_bytes())["reference"],"unchanged independent650 schematic")
+    (target/"derived").mkdir();(target/"derived/result.json").write_bytes(encode(proof))
+    save("paired-candidate-acquisition.json",dict(run=cfg["run"],source=cfg["source"],artifacts=cfg["artifacts"],gds=pin(layout/(TOP+".gds")),reference=pin(layout/"schematic.cir"),accepted=False))
+    return target
+
 def restore_runtime():
     cfg=json.loads((ROOT/"docs/evidence/pcie-tx-layout-cloud-input-20261013.json").read_bytes())["receipt"]
     packed=OUT/"frozen-runtime.tar.gz";fetch_asset(cfg,packed)
@@ -203,12 +239,40 @@ def prepare_layout(parent_base,new_base,checker):
     for n in("schematic.cir",TOP+".lef","result.json",TOP+".gds"):
         need(pin(old/n)==cfg["complete_members"]["binding/inputs/parent/layout/"+n],"original parent "+n)
     shutil.copyfile(new_base/("native/layout/"+TOP+".gds"),layout/(TOP+".gds"))
-    shutil.copyfile(old/(TOP+".lef"),layout/(TOP+".lef"));need(pin(old/(TOP+".lef"))==pin(layout/(TOP+".lef")),"unchanged actual macro interface")
+    # Read moved pins from actual serialized candidate geometry, never old coordinates.
+    import klayout.db as db
+    import re
+    l=db.Layout();l.read(str(layout/(TOP+".gds")));t=l.top_cell()
+    need(l.dbu==.001 and t.name==TOP,"exact paired top/grid")
+    pin_shapes=[shape.box for shape in t.each_shape(l.layer(134,2)) if shape.is_box()]
+    labels=[shape.text for shape in t.each_shape(l.layer(134,25)) if shape.is_text()]
+    need(len(pin_shapes)==len(labels)==25,"actual25 pins and labels")
+    physical_ports={}
+    for label in labels:
+        hits=[b for b in pin_shapes if b.contains(db.Point(label.x,label.y))]
+        need(len(hits)==1 and label.string not in physical_ports,"unique physical pin ownership")
+        physical_ports[label.string]=hits[0].to_dtype(l.dbu)
+    original=json.loads((old/"result.json").read_bytes())
+    need(set(physical_ports)==set(original["ports"]),"unchanged full port names")
+    proof=json.loads((new_base/"derived/result.json").read_bytes())
+    need({v["name"]:v["new_xy_dbu"] for v in proof["ports"]}=={v.string:[v.x,v.y] for v in labels},"pin proof matches actual stream")
+    original_lef=(old/(TOP+".lef")).read_text()
+    directions={}
+    for name in physical_ports:
+        match=re.search(r"(?ms)^  PIN "+re.escape(name)+r"\n(.*?)^  END "+re.escape(name)+r"$",original_lef)
+        need(match is not None,"original LEF pin")
+        directions[name]=(re.search(r"USE (\w+) ;",match[1])[1],re.search(r"DIRECTION (\w+) ;",match[1])[1])
+    writer=types.SimpleNamespace(TOP=TOP,PORTS=list(original["ports"]))
+    emit=pick_function(ROOT/"hw/soc/flow/make_pcie_clock_vco_v6_local_v1.py","lef",dict(TOP=TOP,PORTS=writer.PORTS,use_direction=lambda name:directions[name]))
+    need(t.dbbox().left==0 and t.dbbox().bottom==0,"LEF origin is zero")
+    lef=emit(db,l.dbu,t.dbbox(),{name:("TopMetal2",box) for name,box in physical_ports.items()})
+    (layout/(TOP+".lef")).write_text(lef)
+    save("paired-pin-interface.json",dict(ports={n:str(b)for n,b in physical_ports.items()},directions=directions,bbox_um=str(t.dbbox()),geometry_source=pin(layout/(TOP+".gds")),accepted=False))
     shutil.copyfile(new_base/"native/layout/schematic.cir",layout/"schematic.cir")
     need(pin(layout/"schematic.cir")==json.loads((ROOT/CANDIDATE).read_bytes())["reference"],"exact independent650 reference")
-    p=json.loads((old/"result.json").read_bytes())
+    p=json.loads((old/"result.json").read_bytes());p["ports"]={n:str(b) for n,b in physical_ports.items()}
     inputs=[old/n for n in("result.json","schematic.cir",TOP+".lef",TOP+".gds")]
-    inputs.extend([new_base/"derived/result.json",new_base/("native/layout/"+TOP+".gds"),ROOT/CANDIDATE,ROOT/PARENT,checker,ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
+    inputs.extend([new_base/"derived/result.json",new_base/("native/layout/"+TOP+".gds"),ROOT/CANDIDATE,ROOT/PAIRED,ROOT/PARENT,checker,ROOT/"hw/soc/flow/make_pcie_clock_vco_v6_local_v1.py",ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
     record=metadata(p,layout/(TOP+".gds"),layout/"schematic.cir",layout/(TOP+".lef"),inputs)
     (layout/"result.json").write_bytes(encode(record));save("candidate-layout-binding.json",record)
     return layout
@@ -261,9 +325,9 @@ def verify():
         for n in("lvs","lvs_flat"):
             need(record["steps"][n]["native_primitive_census"]==dict(npn13g2=124,sg13_lv_nmos=200,rppd=98,cap_cmim=7,ptap1=221),"650 transistor-level primitives")
         for p,h in record["inputs"].items():need(sha(Path(p))==h,"actual final physical input "+p)
-        need(record["inputs"][str(layout/(TOP+".gds"))]==json.loads((ROOT/CANDIDATE).read_bytes())["candidate"]["sha256"],"actual new candidate verified")
+        need(record["inputs"][str(layout/(TOP+".gds"))]==json.loads((ROOT/PAIRED).read_bytes())["candidate_sha256"],"actual paired candidate verified")
         gate()
-        save("physical-qualification.json",dict(status="PASS_GATE_METALLIZED_MOS650_GDS_FULL560_DRC_DEEP_FLAT_LVS13",gds=pin(layout/(TOP+".gds")),record=pin(OUT/"physical/result.json"),new_RC_executed=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False))
+        save("physical-qualification.json",dict(status="PASS_PAIRED_MOS650_GDS_FULL560_DRC_DEEP_FLAT_LVS13",gds=pin(layout/(TOP+".gds")),record=pin(OUT/"physical/result.json"),new_RC_executed=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False))
     except BaseException as exc:error=exc
     finally:
         try:cleanup.append(dict(process_group=sup.stop_process(sup.ACTIVE)))

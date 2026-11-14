@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 180
     permissions:
-      contents: write
+      contents: read
       actions: read
     env:
       GH_TOKEN: ${{ github.token }}
@@ -76,23 +76,6 @@ jobs:
           PY
       - name: Install pinned control libraries
         run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1
-      - name: Require independent empty exact-source release reservation
-        id: reserve
-        run: |
-          python3 -B - <<'PY'
-          import json,os,subprocess,time
-          e=os.environ;tag='cloud-results-'+e['GITHUB_RUN_ID']+'-1-cdr-wire-shortcuts-physical'
-          for i in range(120):
-              p=subprocess.run(['gh','api','repos/Melihakbulut221/nssoc/releases/tags/'+tag],capture_output=True,text=True)
-              if p.returncode==0:
-                  r=json.loads(p.stdout);break
-              assert 'HTTP 404'in p.stderr,p.stderr
-              time.sleep(2)
-          else:raise RuntimeError('missing independent reservation')
-          assert r['target_commitish']==e['GITHUB_SHA']and not r['assets']
-          ref=json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/git/ref/tags/'+tag]))
-          assert ref['object']['sha']==e['GITHUB_SHA']
-          PY
       - name: Acquire and verify unchanged native physical validation tool
         run: |
           sudo apt-get update
@@ -112,7 +95,7 @@ jobs:
           from pathlib import Path
           e=os.environ
           assert e['GITHUB_ACTIONS']=='true' and e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
-          assert e['GITHUB_REF']=='refs/heads/codex/cdr-mos650-gate-metal-physical' and e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr650-paired-native-physical' and e['GITHUB_RUN_ATTEMPT']=='1'
           assert re.fullmatch('[1-9][0-9]*',e['GITHUB_RUN_ID']) and re.fullmatch('[0-9a-f]{40}',e['GITHUB_SHA'])
           app=Path(e['RUNNER_TEMP'])/'current-tail-physical.AppImage'
           assert app==Path('/home/runner/work/_temp/current-tail-physical.AppImage') and app.is_file() and not app.is_symlink()
@@ -141,16 +124,13 @@ jobs:
           PY
       - name: Verify actual new GDS with full native DRC deep flat LVS and faults
         run: python3 -B scripts/cloud_cdr_wire_shortcuts_physical.py --verify
-      - name: Permanently preserve complete physical success or failure
-        if: always() && steps.reserve.outcome == 'success'
-        run: python3 -B scripts/cloud_cdr_wire_shortcuts_physical.py --publish
       - name: Select derived text only
         if: always()
         run: python3 -B scripts/cloud_cdr_wire_shortcuts_physical.py --derived
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: wire-physical-derived-${{ github.run_id }}
+          name: paired650-physical-derived-${{ github.run_id }}
           path: wire-physical-derived
           include-hidden-files: true
           if-no-files-found: error
@@ -158,12 +138,13 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: wire-physical-native-fallback-${{ github.run_id }}
+          name: paired650-physical-native-${{ github.run_id }}
           path: |
             hw/soc/out/cloud-cdr-wire-shortcuts-physical
             wire-physical-publication
             wire-physical-candidate-cache
             wire-native-cache
+            paired-candidate-cache
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 90
