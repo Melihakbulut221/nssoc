@@ -18,7 +18,8 @@ for p in root.rglob('*'):
  if not re.search(pat,s):continue
  c=body(s,pat);x=body(c,r'\bpin\s*\(\s*"?X"?\s*\)\s*\{')
  f=re.findall(r'\bfunction\s*:\s*"([^"]+)"\s*;',x);assert len(f)==1 and re.sub(r'[\s()]','',f[0])=='A',(p,f)
- assert re.search(r'\bdirection\s*:\s*output\s*;',x)
+ directions=re.findall(r'\bdirection\s*:\s*([^;]+);',x)
+ assert len(directions)==1 and directions[0].strip().strip(chr(34))=='output',(p,directions)
  assert not re.search(r'\b(?:ff|latch|statetable)\s*\(',c),(p,'unexpected state')
  rows.append({'path':str(p),'sha256':hashlib.sha256(raw).hexdigest(),'cell':'sg13g2_dlygate4sd3_1','function':f[0]})
 assert rows,'No frozen delay Liberty models found'
