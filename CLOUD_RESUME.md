@@ -1,3 +1,15 @@
+## 2026-11-14 — paired setup/hold repair completed, residual violations retained
+
+Run43630824750/source8161dd822bd24533d78825f3f176d3ef26116c2a PASSED nativeexecution and48requiredreports (24/candidate), NOTtimingacceptance. Holdbufferbudget40 permittedbothcases tofinish. Baseline1291holdbuffers/cache1299 (+15.8/+15.9percentarea duringholdstage); alloriginalconstraints unchanged. Freshafterlegalization:
+
+- Baseline setup-only slow-1.220659ns; afterhold slowsetup-1.305586,fasthold-.009951ns.
+- Cache setup-only slow-1.054706ns; afterhold slowsetup-1.123962,fasthold-.017249ns. Typicalsetup+.684403,hold+.095383; fastsetup+1.771932; slowhold+.284414.
+- Both stillviolate original4ns/5percentderated ideal-clock blockscreen. Holdrepair addsdelayandworsensslowsetup. Noallow_setup_violations; nofalsepath changes. These are NOT routed/mainchip metrics.
+
+Fullsourceboundreceipt docs/evidence/eop-cache-setup100-hold40-20261114.json. Safe14127978185 SHA f7414f5e30a18140ce712ba46f35b9f2e4021c8689c380b36ac488f18e423de6; native14128008179 SHA0f8f92b95ad8deeac73f86bc4687f739ec90b29b86c35fa6c5a8cf36158bac66 stayscloudonly.
+
+Native logs showsetupstoppedat100iterationswhileimproving, notconverged: baseline86resizes14buffers/378violatingendpoints,cache96resizes6buffers/381violatingendpoints. Nextcodex/eop-cache-setup600 extendsONLYsmallisolatedpaired setupsearch to600, keepshold1000/40percent andeveryoriginalconstraint. Fullchipsearchlimitsunchanged. Discovercurrentrun frombranch; neverrerunlivehandle. Mainchip43630345267 remainsrunning separately; noacceptednewsource yet. FullPHY/productiongoalstillopen.
+
 ## 2026-11-14 — isolated native hold repair hit buffer budget; same constraints continuation dispatched
 
 43630531400/sourceacb583e43098fc4f1b58aa7422f67a6c5493ef0c FAILED during baseline hold repair, beforecachecandidate. Native baseline setup resized86cells, inserted14buffers, swapped8pins andimprovedreportedWNS around-2.882->-1.219ns beforelegalization. Exact6corner/mode postlegalization reports are recorded in docs/evidence/eop-cache-repair-buffer-budget-20261114.json. Hold inserted1267buffers (+15.5percentarea) and stoppedRSZ-0060 Max buffer count reached. This is NOT successfulholdclosure orcompletepairedcomparison. Native14128102442 andsafe14127483579 retainpartialstage; no outputs discarded locally becauseeverythinghosted.
