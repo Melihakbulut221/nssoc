@@ -15,8 +15,8 @@ new=archive(14133434311,'b08e5099e538625c4cf30f58e231f62618c58aa6c962cf99f87417d
 safe=archive(14134275067,'b84f9d66b6b988be6e0b8857ce4037c97752eaa39af00e0556085ed99c95517c',43644585495,'dea0de872cdbf0fa716d68b597033ac2ab23534f')
 original=json.loads(prior.read('result.json'));candidate=json.loads(safe.read('result.json'));assert candidate['input_setup_hold_margin_50ps_passed'] and candidate['source_unchanged']
 assert len(new.namelist())==len(set(new.namelist()))
-odb=[n for n in new.namelist()if n.endswith('.odb')];assert len(odb)==1,odb
-assert hashlib.sha256(new.read(odb[0])).hexdigest()==candidate['candidate_odb_sha256']
+odb=[n for n in new.namelist()if n.endswith('.odb')];assert set(odb)=={'1-nssoc-trainingholdeco/soc_top.odb','final/odb/soc_top.odb'},odb
+assert all(hashlib.sha256(new.read(n)).hexdigest()==candidate['candidate_odb_sha256'] for n in odb)
 rows={};regressions=[]
 for label,corner in [('slow','nom_slow_1p08V_125C'),('typical','nom_typ_1p20V_25C'),('fast','nom_fast_1p32V_m40C')]:
  names=[n for n in new.namelist()if n.endswith('-nssoc-input'+label+'/state_out.json')];assert len(names)==1
