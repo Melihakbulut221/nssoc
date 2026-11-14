@@ -30,6 +30,12 @@ if case=='inspect':
   info[side]={'top_subcircuits':len(subs),'top_devices':len(devs),'top_pins':[value(p,'name') for p in c.each_pin()],'subcircuits_first':[{'name':x.name,'type':x.circuit_ref().name,'pins':[value(p,'name') for p in x.circuit_ref().each_pin()]} for x in subs[:3]],'devices_first':[{'name':d.name,'class':d.device_class().name} for d in devs[:3]],'classes':[{'name':dc.name,'python_type':str(type(dc)),'parameters':[{'name':value(p,'name'),'id':value(p,'id')} for p in dc.parameter_definitions()]} for dc in classes]}
  (derived/'inventory.json').write_text(json.dumps(info,indent=2));sys.exit(0)
 
+port_inventory={}
+for side,nl in [('layout',layout),('reference',reference)]:
+ c=next(c for c in nl.each_circuit() if c.name.lower()=='soc_top')
+ port_inventory[side]={'case_sensitive':nl.is_case_sensitive(),'ports':[{'pin':value(pin,'name'),'net':c.net_for_pin(pin.id()).name if c.net_for_pin(pin.id()) else None} for pin in c.each_pin()]}
+port_inventory['original_flag_missing_ports']=lvs.flag_missing_ports(top)
+(derived/'port-inventory.json').write_text(json.dumps(port_inventory,indent=2))
 mutation=None
 if case=='signal_open':
  for sub in top.each_subcircuit():
