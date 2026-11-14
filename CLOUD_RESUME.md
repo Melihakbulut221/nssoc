@@ -1,3 +1,11 @@
+# CRC continuation handoff archive-name error fixed
+
+43579396178 failed BEFORE native CAD: base archive SHA passed, but tar expected routed.tgz whereas actual freshCRCbase14100640319 contains handoff.tgz. Verified original parent workflowb1626c18095a9a9c7a06b3cb1bd508a4a0ba7f19 uses handoff.tgz. No repair result or changed design. Stop polling thisfailedrun.
+
+Replacement43579643337 source288a68db7bd32fd3218eec5486165a2b4adeb48e, samebranchcodex/crc-jumper-checkpoint-resume, queued at latest dispatch check. Changed only base archive member name and failure archive preservation of recovered-route (so NL/PNL/input checkpoint references survive). ExactSHA/ODB/SDC/565antenna check, jumper-only method,5iterations, freshfinalCheckAntennas and dependent3cornerSTA unchanged. Await actual checkpoint restoration and native repair result. Native archive/content remainscloudonly. Other live43566292104,43562021054,43573697024. Fullgoalopen.
+
+---
+
 # Exact CRC DRT checkpoint recovered; jumper-only repair continuation active
 
 Inventory43579197875 completed/success; safe14106639162 SHA2d74ec95899508f1e5ce5580c13e6c4c18570d9cc556552260675e1be608b651. Savedroute/3-openroad-detailedrouting/drt-run-0/soc_top.odb218660715bytes SHA9adefc224ed62b8e661cdf4c2ae009f4e9910e5e2c5b848156464eb0fdfca40c; SDCroute/1-openroad-detailedplacement/soc_top.sdc SHA1fab1c6a3d4777bca6c00e4008ea6546ef403b100a3bc480683172a0ba682511. State_in NL/PNL fromdetailedplacement. This is completed initialroute before failed diodeinsertion; no newroute pass claimed.
