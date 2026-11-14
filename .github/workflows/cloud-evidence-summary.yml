@@ -32,7 +32,8 @@ jobs:
           gh api repos/${{ github.repository }}/releases/assets/663146895 -H 'Accept: application/octet-stream' > /mnt/s/pkg.tgz
           gh api repos/${{ github.repository }}/actions/artifacts/14111958544/zip > routed.zip
           gh api repos/${{ github.repository }}/actions/artifacts/14114456981/zip > library.zip
-          python3 scripts/prepare_namespaced_chip_streamout.py
+          env -u GH_TOKEN -u GITHUB_TOKEN /mnt/s/librelane.AppImage python scripts/prepare_namespaced_chip_streamout.py
+          rm /mnt/s/pkg.tgz /mnt/s/routed.tgz routed.zip library.zip
       - name: Stream routed main chip without rerouting or netlist changes
         run: |
           set -euo pipefail
