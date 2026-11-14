@@ -1,3 +1,9 @@
+## 2026-11-14 — exact three-corner buffer Boolean equivalence PASSED
+
+Run43611046213/source19ac096b9594e6854399ff2c2554e97b59224715 PASSED all3positiveSATproofs and3actualinversioncounterexamples. Models hash-match frozenimplementationpackage822dab... inputcontract: fast547c5fb3ef0eabe0362de7fb361ff736f6791987996b4b1af39b70deb569a72e; slowed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d; typ968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4. RealYosysread_liberty/flatten/check/SAT, no-libblackboxes. Safe14119783596 SHA260c7f413529e9acc3eb84dedcaedae3eef2f788689b9d4cf555df00278395d9. Allsixloghashes/verdictsrechecked. Tested scripts/qualify_retry_buffer_liberty.py retainedbyteidentically, experimentworkflowexcluded. Receipt docs/evidence/retry-buffer-liberty-equivalence-20261114.json.
+
+Together with nativeplacement/connectivityproof43610473965, selectedbuf1->buf4candidate preserves Boolean behavior and existingconnections. It is NOT a timingpass: livebuf4reroute43610680141 must regeneratewireRC and measureallcorners/hold/electrical/antenna. Originalbaseline43591198141 and PHY43603972722 stillinprogress atlatestpoll. Noadditionalcandidate launched; followcurrenthandles.
+
 ## 2026-11-14 — exact buffer Liberty SAT qualification live
 
 Follow43611046213/source19ac096b9594e6854399ff2c2554e97b59224715 oncodex/retry-buffer-liberty-equivalence. scripts/qualify_retry_buffer_liberty.py verifies originalimplementationpackage822dab.../releaseasset663146895, readsinputcontractwithoutrestoringnativefileslocally, fetchespublicIHPc4b8...Gitblobs forstandardfast/slow/typLiberty and requires eachSHA256 equal everymatchingfrozenpackageinput. Typical additionally968b0cfd... . RuntimeAppImaged6a349.../ubuntu22samepinned.
