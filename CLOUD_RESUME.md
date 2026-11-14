@@ -1,3 +1,11 @@
+# Strict native resistor negative controls passed
+
+**43562168662 completed/success**, source`425b317cbd0dc7c5e82fd31a3806febdcaaf087a`, safe14100796355 SHA256`4fa2c9ca950e00f7c564f7d27ca7c92884c1b03a2e370fa5c8927259440f41aa`. All10native verdicts checked: both metal2/metal3 positive graphs match; wrong layer/W/L/open each rejected. Native returncode0, exact fixed RES2 class SHA256`1f9d1328eb1af5a534ff68a5cbc263513e305ece27bb87b75ef4b9454f45236f`. Scope is comparator policy only, not full deck-reader/candidate-macro/signoff qualification. Script now on integration; receipt:`docs/evidence/sram-reference-resistor-controls-result-20261114.json`.
+
+Fresh route43561900502 and engineering-reference macro43562021054 remain the active next tasks below; poll exact handles. Do not rerun comparator controls unchanged or infer full LVS closure.
+
+---
+
 # Fresh routed candidate and SRAM engineering reference now running
 
 **43561900502**, source`b1626c18095a9a9c7a06b3cb1bd508a4a0ba7f19`, branch`codex/crc-order-fresh-antenna-route`: exact fresh CRC handoff14100640319 pinned, now native route stage. Legalize/global/detailed route with antenna repair5/5 and unchanged ratios, DRT16; dependent nominal extracted RC and standalone three-corner STA; strict zero timing/electrical/DRC/antenna gate. No old instance ECOs. Native data retained cloud-only.
