@@ -1,4 +1,4 @@
-name: Replay EOP cache actual RTL equivalence
+name: Replay CRC select actual RTL equivalence and semantic mutation rejection
 on:
   workflow_dispatch:
 permissions:
@@ -6,7 +6,7 @@ permissions:
 jobs:
   prove:
     runs-on: ubuntu-22.04
-    timeout-minutes: 45
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -21,11 +21,11 @@ jobs:
       - name: Record supported Yosys runtime
         run: yosys -V
       - name: Prove real replay state and outputs without blackboxes
-        run: python3 scripts/prove_replay_eop_cache.py
+        run: python3 scripts/prove_replay_crc_select.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: replay-eop-cache-equivalence-${{ github.run_id }}
+          name: replay-crc-select-equivalence-${{ github.run_id }}
           path: |
             out/*.log
             out/*.ys
