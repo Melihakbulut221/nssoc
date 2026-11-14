@@ -1,4 +1,4 @@
-"""Ten Ethernet output pairs of native delay cells after exact RX input ECO."""
+"""Twenty-nine PCIe input delay pairs on exact Ethernet-repaired placement."""
 import os,json,subprocess,zipfile,hashlib,stat,re
 from pathlib import Path
 import cloud_predecode_postcts as prior
@@ -27,11 +27,11 @@ for i in native.infolist():
  q=SOURCE/p;q.parent.mkdir(parents=True,exist_ok=True);q.write_bytes(b)
 state=json.loads((SOURCE/report['repaired_state']).read_text());odb=Path(state['odb']);assert prior.sha(odb)==report['repaired_odb_sha256'];state['metrics']={}
 # Continue from the exact successful RX training ECO, not the older placement.
-eco_run=api('actions/runs/43646555578');assert eco_run['status']=='completed'and eco_run['conclusion']=='success'and eco_run['head_sha']=='6a87c130412d272c700214201820da450f693fad'
-m=api('actions/artifacts/14134159392');h='92d72fe95c41b068bc255e7f9f7a3b0e7abaa415990ec57e948ccc246e7b2e26'
-assert not m['expired']and m['workflow_run']['id']==43646555578 and m['workflow_run']['head_sha']==eco_run['head_sha']and m['digest']=='sha256:'+h
+eco_run=api('actions/runs/43648005592');assert eco_run['status']=='completed'and eco_run['conclusion']=='success'and eco_run['head_sha']=='f58d9ada2b6441b33ea8c27ff693e7a1e6c525f6'
+m=api('actions/artifacts/14134996872');h='e6893782d2385474b989299f52807ea4e4c11f4ffc06a6a366310fe3484d5832'
+assert not m['expired']and m['workflow_run']['id']==43648005592 and m['workflow_run']['head_sha']==eco_run['head_sha']and m['digest']=='sha256:'+h
 p=OUT/'baseline.zip'
-with p.open('xb')as f:subprocess.run(['gh','api','repos/Melihakbulut221/nssoc/actions/artifacts/14134159392/zip'],stdout=f,check=True)
+with p.open('xb')as f:subprocess.run(['gh','api','repos/Melihakbulut221/nssoc/actions/artifacts/14134996872/zip'],stdout=f,check=True)
 assert prior.sha(p)==h;z=zipfile.ZipFile(p);assert len(z.namelist())==len(set(z.namelist()))
 baseline=OUT/'baseline-eco'
 for i in z.infolist():
@@ -46,7 +46,7 @@ def relocate(v):
  if isinstance(v,list):return [relocate(x)for x in v]
  return v
 state=relocate(state);state['metrics']={};odb=Path(state['odb'])
-assert prior.sha(odb)=='dce675ce9aab6a7833fcb55ded416540b392affb065521ef53e3ce9d33d1d54c'
+assert prior.sha(odb)=='635f0e623eb202d845bde5a1f29f65466cf82f639dc2f7044aaabcac1451c203'
 initial=OUT/'initial.json';initial.write_text(json.dumps(state))
 config=SOURCE/'trial-config.json';cfg=json.loads(config.read_text());assert cfg['CLOCK_PERIOD']==20 and cfg['TIME_DERATING_CONSTRAINT']==5.0
 app=Path(os.environ['CLOUD_APPIMAGE']);prior.verify(app,'x86_64')
@@ -67,9 +67,9 @@ rows={}
 for p in (OUT/'run').glob('*/io-*.rpt'):
  text=p.read_text();v=re.findall(r'([-+]?[0-9]+\.[0-9]+)\s+slack\s+\((?:MET|VIOLATED)\)',text);assert v
  rows[str(p.relative_to(OUT))]={'worst_slack_ns':min(map(float,v)),'reported_paths':len(v),'sha256':prior.sha(p)}
-assert len(rows)==60
+assert len(rows)==240
 states=list((OUT/'run').glob('*-nssoc-trainingholdeco/state_out.json'));assert len(states)==1
 eco_state=json.loads(states[0].read_text());eco_odb=Path(eco_state['odb']);assert eco_odb.is_file()
-assert len(rows)==60
+assert len(rows)==240
 input_closed=all(v['worst_slack_ns']>=0.05 for v in rows.values())
-(OUT/'result.json').write_text(json.dumps({'source_run':eco_run['id'],'source_head':eco_run['head_sha'],'source_odb_sha256':prior.sha(odb),'source_unchanged':True,'twenty_delay_cells_inserted':True,'native_delay_is_identity_buffer':True,'ethernet_setup_hold_margin_50ps_passed':input_closed,'candidate_odb_sha256':prior.sha(eco_odb),'reports':rows,'accepted':False,'scope':'Ten Ethernet outputs, two native delay cells each; after RX training ECO; original incidence protected, fresh placement RC, no routed or full-chip signoff.'},indent=2))
+(OUT/'result.json').write_text(json.dumps({'source_run':eco_run['id'],'source_head':eco_run['head_sha'],'source_odb_sha256':prior.sha(odb),'source_unchanged':True,'fifty_eight_delay_cells_inserted':True,'native_delay_is_identity_buffer':True,'all_io_setup_hold_margin_50ps_passed':input_closed,'candidate_odb_sha256':prior.sha(eco_odb),'reports':rows,'accepted':False,'scope':'Twenty-nine PCIe inputs with two delays each, after training and Ethernet ECOs; all40IOs remeasured; original incidence protected, fresh placement RC, no routed or full-chip signoff.'},indent=2))
