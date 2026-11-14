@@ -1,3 +1,9 @@
+## 2026-11-14 — RX formal harness flattening repaired; traffic unchanged
+
+First candidate run43637085427/sourcec5becaa11a0274839f798a47890dd021fb78d0cf formal job failed with "No SAT model available for cell r2_staged_group[0].lane_copy_gate". It was a hierarchy-lowering error, not semantic acceptance or rejection. Initial helper keep_hierarchy clearing happened before parameter elaboration, leaving opaque derived modules. Safe formal artifact14130815318 SHA256287a6c568d7aad7f7c39f063210ee2c6ebed77e24e7d318cef6427af8f194e55 preserves failure.
+
+Formal-only correction source2eed5ba2ffa16553d9bdaa79856eceb4e3519139 on same codex/rx-cursor-reset-local branch, run43637249034: prep/elaborate first, clear both module and instance keep_hierarchy, flatten, explicitly assert no soc_pcie helper cells remain, then memory mapping and equivalence. RTL bytes unchanged. Original traffic job43637085427 continues, not rerun. New formal result pending; do not count first run as semantic mutation rejection. CRC fullchip43635824821 remains in actual firmware RTL/synthesis. No physical closure claim or source/layout substitution.
+
 ## 2026-11-14 — RX reset distribution candidate dispatched after exact critical-path mapping
 
 Critical-path extraction43636364178/source48341d59fa054aae5edb5264267903f050b2367a completedSUCCESS. Safe14130253110 SHA256bc1198c8973dc6f1e8400253546f0239eb9816c54c585c3de7e6259941691f38. Receipt docs/evidence/eop-chip-critical-paths-20261114.json records exact original mapped aliases and reported group metrics. Slow PCIe worst -3.316962ns starts at parent up_rx reset copy (soc_pcie_buffered_flow_packets.v:79-86), passes six serial fanout buffers and handshake logic, ends at receive_ownership.r2_lane_d[9] copy. This is not a CPU data path despite the mapped constant's dcsr_q alias. Slow CPU worst +.837359ns in this EOP-only postCTS state; fast CPU hold still negative. Group counts capped1000, not total violations. No false-path waiver.
