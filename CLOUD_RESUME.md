@@ -1,3 +1,9 @@
+## Bitcell pairing rejected; parent 32-cell block test live
+
+43589771694/source ef4dcd378344f01360ae663e53ca5ee2bdd2450e completed diagnosis in16.74s, native15/15 controls pass, strict LVSFAIL:25Match, bitcellNoMatch, topSkipped. Physical leaf6devices vs reference14; top recursive70110each unchanged. Explicit name mapping alone is insufficient. NativeDB14f60640f6a1a6fd60c75e265b2b360722ab294737a60fa45ab1fc0424d7b88b. Safe14111783729 SHA2cca92bd0da453cb30d8ae7639e03364e521ab0a4536f7a9dc837e8440ace385; native14112185339 stayscloud. No acceptance.
+
+Current run43589897545/source ea8eef24283b7af4bd4e627330b104fc395af579, branch codex/dp-sram-explicit-block-pair, pairs only physical RM_IHPSG13_2P_BITKIT_16x2_SRAM to reference RM_IHPSG13_256x16_c2_2P_BITKIT_16x2_SRAM BEFORE align, to test parent boundary. Original GDS/CDL,strict checks,16 complexity bound and15 native controls unchanged. Not also pairing defective leaf. Safe dp-sram-block-paired-derived-*; nativecloudonly. See docs/evidence/dp-sram-bitcell-pair-rejected-20261114.json. Other live PHY43584735530,antenna43579643337,SP43566292104,MBIST43588310054.
+
 ## DP bitcell name mismatch verified; strict correspondence experiment live
 
 Original GDS and engineered CDL hierarchy inventory43589227835 succeeded, safe14111637882 SHA320189ddd96027c6a03d6a848036f12410178b5f9cdd82ff4252b6d26769b3a4. Physical RM_IHPSG13_2P_BITKIT_CELL differs from reference RM_IHPSG13_256x16_c2_2P_BITKIT_CELL. Similar names alone do not prove equivalence. Pinned KLayout align flattens unmatched circuit names.
