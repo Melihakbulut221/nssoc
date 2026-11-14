@@ -1,19 +1,12 @@
-name: Boot exact predecode chip with system and Ethernet MBIST
+name: Diagnose unchanged native standard cell compatibility
 on:
   workflow_dispatch:
 permissions:
   contents: read
-  actions: read
 jobs:
-  boot:
+  diagnose:
     runs-on: ubuntu-24.04
-    timeout-minutes: 355
-    strategy:
-      fail-fast: false
-      matrix:
-        simulator: [iverilog, verilator]
-    env:
-      GH_TOKEN: ${{ github.token }}
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -25,31 +18,12 @@ jobs:
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Restore exact mapped chip and firmware only on runner
-        run: |
-          set -euo pipefail
-          gh api repos/${{ github.repository }}/actions/artifacts/14123718652/zip > source.zip
-          gh api repos/${{ github.repository }}/actions/artifacts/14123429089/zip > mapping.zip
-          python3 scripts/restore_predecode_chip_boot.py
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends binutils-riscv64-linux-gnu
-          python3 hw/soc/flow/prepare_ihp_native_boot.py
-      - name: Native boot with complete memory self tests and all firmware checks
-        run: |
-          set -euo pipefail
-          python3 hw/soc/flow/sim_logic_boot_gl.py             --pcie-profile packet-async --mbist-profile system-ethernet             --cycles 2000000 --timeout 19000             --synthesis hw/soc/out/corrpre-pcie-mbist-native-boot/synthesis             --firmware hw/soc/out/corrpre-pcie-mbist-native-boot/rtl             --pdk hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2             --simulator ${{ matrix.simulator }} --tool "$(command -v ${{ matrix.simulator }})"             --nm /usr/bin/riscv64-linux-gnu-nm             --output hw/soc/out/predecode-gates | tee out/boot-driver.log
-      - name: Preserve native diagnostics without changing source evidence
-        if: always()
-        run: |
-          mkdir -p out
-          if [ -d hw/soc/out/predecode-gates ]; then
-            cp hw/soc/out/predecode-gates/*.json out/ || true
-            cp hw/soc/out/predecode-gates/*.log out/ || true
-          fi
+      - run: python3 hw/soc/flow/prepare_ihp_native_boot.py
+      - run: python3 scripts/diagnose_predecode_native_cells.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: predecode-chip-boot-${{ matrix.simulator }}-${{ github.run_id }}
+          name: native-cell-diagnostics-${{ github.run_id }}
           path: out/
           if-no-files-found: error
           retention-days: 90
