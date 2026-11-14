@@ -50,3 +50,26 @@ for label,corner in [('slow','nom_slow_1p08V_125C'),('typical','nom_typ_1p20V_25
  rows[corner]={'before':before,'after':after,'differences':differences,'state_sha256':hashlib.sha256(new.read(names[0])).hexdigest()}
 Path('out').mkdir();Path('out/comparison.json').write_text(json.dumps({'status':'MEASURED_WHOLE_CHIP_METRICS_NOT_SIGNOFF','producer_run':run,'producer_head':head,'producer_artifacts':arts,'candidate_odb_sha256':candidate['candidate_odb_sha256'],'all_targeted_checks_passed':candidate['all_io_and_feedback_setup_hold_margin_50ps_passed'],'corners':rows,'regressions':regressions,'accepted':False,'scope':'Fresh existing native all-path metrics around feedback internal hold ECO, placement RC only. Explicitly preserve remaining failures.'},indent=2))
 print(json.dumps({'regressions':regressions,'candidate_odb_sha256':candidate['candidate_odb_sha256']}))
+
+# Compare actual reported endpoint paths; missing capped paths remain missing.
+def paths(archive,corner,kind):
+ names=[n for n in archive.namelist()if n.endswith('-nssoc-input'+corner+'/'+kind+'.rpt')];assert len(names)==1
+ raw=archive.read(names[0]);entries={}
+ for part in re.split(r'(?=Startpoint:)',raw.decode()):
+  if not part.startswith('Startpoint:'):continue
+  start=re.search(r'^Startpoint: (\S+)',part,re.M);end=re.search(r'^Endpoint: (\S+)',part,re.M)
+  slack=re.findall(r'([-+]?[0-9]+\.[0-9]+)\s+slack\s+\((?:MET|VIOLATED)\)',part)
+  assert start and end and len(slack)==1 and 'Path Type: '+kind in part
+  row={'start':start[1],'end':end[1],'slack_ns':float(slack[0]),'path_text':part}
+  if end[1]not in entries or row['slack_ns']<entries[end[1]]['slack_ns']:entries[end[1]]=row
+ return entries,{'file':names[0],'sha256':hashlib.sha256(raw).hexdigest()}
+diagnosis={'producer_run':run,'producer_head':head,'candidate_odb_sha256':candidate['candidate_odb_sha256'],'accepted':False,'scope':'Existing native endpoint reports, potentially capped. Missing paths are not a pass; no new STA or changed acceptance.','setup_changes':{},'remaining_hold':{}}
+for corner in ['slow','typical','fast']:
+ a,ha=paths(prior,corner,'max');b,hb=paths(new,corner,'max')
+ rows=[]
+ for endpoint in sorted(a.keys()&b.keys()):
+  delta=b[endpoint]['slack_ns']-a[endpoint]['slack_ns']
+  if abs(delta)>1e-6:rows.append({'endpoint':endpoint,'delta_ns':delta,'before':a[endpoint],'after':b[endpoint]})
+ diagnosis['setup_changes'][corner]={'report_before':ha,'report_after':hb,'before_count':len(a),'after_count':len(b),'missing_from_before':sorted(b.keys()-a.keys()),'missing_from_after':sorted(a.keys()-b.keys()),'changed':sorted(rows,key=lambda x:x['delta_ns'])}
+ h,hh=paths(new,corner,'min');diagnosis['remaining_hold'][corner]={'report':hh,'negative':[v for v in h.values()if v['slack_ns']<0]}
+Path('out/path-diagnosis.json').write_text(json.dumps(diagnosis,indent=2))
