@@ -15,6 +15,29 @@ with zipfile.ZipFile(archive) as z:
   (native/n).write_bytes(z.read(n))
 assert sha(native/'baseline.v')=='94d9fdf2d76a62596c71a62683133d35cac34d33baa7616fd4251957646c55e7'
 assert sha(native/'predecode.v')=='16a2ac7af7af967acd65dab9b1e09247c061fb2de4de5e0c8dd2c554bc0d2e3d'
+# OpenSTA rejects the `wire signed` declaration of Yosys's retained
+# positive constant loop index. Normalize ONLY proven nonnegative constant
+# metadata wires; reject every signed state/data wire. Preserve source files.
+normalizations={}
+for label in ['baseline','predecode']:
+ original=(native/(label+'.v')).read_text()
+ module=json.loads((native/(label+'.json')).read_text())['modules']['soc_pcie_replay_tx']
+ rows=[]
+ def normalize(match):
+  name=match[2].strip();name=name[1:] if name.startswith('\\') else name
+  bits=module['netnames'][name]['bits']
+  assert bits and all(b in ('0','1') for b in bits) and bits[-1]=='0',(label,name,bits)
+  rows.append({'name':name,'width':len(bits),'constant_nonnegative':True,'old':match[0]})
+  return match[0].replace('wire signed','wire',1)
+ normalized=re.sub(r'(?m)^  wire signed (\[[0-9]+:[0-9]+\] )([^;]+);$',normalize,original)
+ assert rows and 'wire signed ' not in normalized
+ restored=normalized
+ for row in rows:
+  after=row['old'].replace('wire signed','wire',1);assert restored.count(after)==1
+  restored=restored.replace(after,row['old'],1)
+ assert restored==original
+ path=native/(label+'-opensta.v');path.write_text(normalized)
+ normalizations[label]={'source_sha256':sha(native/(label+'.v')),'normalized_sha256':sha(path),'constant_metadata':rows,'other_bytes_unchanged':True}
 specs=[('tech.lef','0b3558d0277a80e6ca91bd8fd6b82e610f416aa9',None),('cells.lef','4dd096a420edb5c52575e46f63bb1d2354feae49',None),('slow.lib','6dd075da1073a86a98d9804019842be3d2f13a9f','ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d'),('fast.lib','fd479d3fd11358bbacee450dc7352b46de8588cb','547c5fb3ef0eabe0362de7fb361ff736f6791987996b4b1af39b70deb569a72e')]
 bindings={}
 for name,blob,digest in specs:
@@ -25,7 +48,7 @@ for name,blob,digest in specs:
  bindings[name]={'git_blob':blob,'sha256':sha(path)}
 assert sha(native/'typ.lib')=='968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4'
 app=P('/mnt/s/librelane.AppImage');assert sha(app)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
-result=dict(status='RUNNING',scope='Isolated replay placement with identical 600x600um core, 4ns ideal clock, .25ns uncertainty, original 5% derates, frozen IHP libraries and identical estimated layer RC. No CTS, routed RC, full-chip hold, DRC/LVS or production acceptance.',native_mapping_artifact=14121339687,bindings=bindings,timing_accepted=False,cases={})
+result=dict(status='RUNNING',scope='Isolated replay placement with identical 600x600um core, 4ns ideal clock, .25ns uncertainty, original 5% derates, frozen IHP libraries and identical estimated layer RC. No CTS, routed RC, full-chip hold, DRC/LVS or production acceptance.',native_mapping_artifact=14121339687,bindings=bindings,normalizations=normalizations,timing_accepted=False,cases={})
 for label in ['baseline','predecode']:
  folder=out/label;folder.mkdir();nfolder=native/label;nfolder.mkdir()
  tcl=f"""if {{[ord::openroad_version] ne "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"}} {{error "Runtime drift"}}
@@ -34,7 +57,7 @@ read_lef {native}/tech.lef
 read_lef {native}/cells.lef
 define_corners slow typ fast
 foreach c {{slow typ fast}} {{read_liberty -corner $c {native}/$c.lib}}
-read_verilog {native}/{label}.v
+read_verilog {native}/{label}-opensta.v
 link_design soc_pcie_replay_tx
 create_clock -name pcie_clk_i -period 4.0 [get_ports clk_i]
 set_clock_uncertainty 0.25 [all_clocks]
