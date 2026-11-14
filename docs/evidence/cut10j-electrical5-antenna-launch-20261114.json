@@ -1,0 +1,25 @@
+{
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/43538031308",
+  "source": "6c5d8de09c0fd88b0daa57e669b3b6fc2bf67bbb",
+  "branch": "codex/cut10j-electrical5-antenna",
+  "status": "LAUNCHED_NOT_ACCEPTED",
+  "basis": "Exact original cut10j archive 14068260482, four established driver changes plus measured CRC driver",
+  "additional_instance": "$abc$730691$auto$blifparse.cc:397:parse_blif$771273",
+  "expected_master": "sg13g2_a21oi_1",
+  "replacement_policy": "Prefer existing sg13g2_a21oi_4, otherwise existing sg13g2_a21oi_2; fail if neither exists. Record exact selection in targeted-resize.tsv.",
+  "reason": "Rejected four-driver route shows 1.974214 ns cell delay at this loaded CRC driver.",
+  "guards": [
+    "Exact instance/master and MTerm signature",
+    "Pin/net connectivity unchanged before and after legalization",
+    "20/4/8/8 ns clocks unchanged",
+    "Clear obsolete signal/clock routes and guides; retain power",
+    "Explicit antenna repair, fresh detailed routing/RCX and three-corner STA",
+    "Reject any setup/hold/cap/slew/fanout/router-DRC/antenna violation"
+  ],
+  "limitations": [
+    "Same original RTL; experimental CRC input retiming not included.",
+    "Does not explicitly fix all hold paths.",
+    "Nominal RC and core-only scope do not establish full manufacturing qualification."
+  ],
+  "production_accepted": false
+}
