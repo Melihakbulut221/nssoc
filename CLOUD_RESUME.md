@@ -1,3 +1,9 @@
+## PHY widening generator correction; current cloud jobs — 2026-11-15
+
+Firstwidening43654034145/head77c6d895... FAILED at Existingmetalclippedcomponent75 beforewritingcandidate. Conservative.6umexclusion had clipped existing metal atoldspacing. Corrected sourcec765e2c7548d3e9a57c591b058a0b768208e2dff only appliesobstacleclearancetoNEWpatch and unionsunchangedoriginalmetal; doesnotwaivevia/netguards. Newpatch also clippedawayfrompreviousnewpatcheswithsame.6umspacing. Preservesexactoriginaltoplevelhierarchy/publictextlabels now (removedwrapper), recordsoriginalflattenedregionsbeforeinsertion andchecks serializeddifferenceonlyM3addition. New run43654184010 branchcodex/packed650-shared-widening. Awaitactualcandidate andthenfullphysicalverification; noacceptedlayoutyet.
+
+RXbank CTS43653859525: candidatejob132627989572 liveNativefloorplanplacementCTS; independentbootjob132627989732 liveNativebootcompleteMBIST/firmware atlastcheck. Exactnewnetlist116097cells/20SRAM. Combinedinternalhold43653684598 job132627464946 live freshnativeSTA; impact43653893556 waitsproducer. Do notduplicatejobs; no combinedsignoffyet.
+
 ## Fixed feedback nonregressive; combined repair and new RTL CTS launched — 2026-11-15
 
 Fixedfeedback43652982531/head11890797d11a032989772232d9308036a9388841 SUCCESS. All906reports authenticated/targeted>=50ps, originalcoords/orientationpreserved,statusesrestored. ODBf455e6f2ee80705a99f63edcfe539b58ff150c849fbe133030b97d7232d683a5; native14137301176 SHAa4092e336b653fa182f6f301fe9997f4a219de8896a04550ff0068598361161a; safe14136659596 SHA414ac92909c2c43eb221ca19df0fc76193c59b1e3f5761b67d7801198d410161. Impact43653022011/head9b8523bdad119cc8914d264c7870c79a67086f90 SUCCESS; safe14136923347 SHA538d7d40060224257a59afd333f9818ba411339e57959e37ea391bddde61fa4e. NOregressions. Fast hold230->112; slowTNS-3633.15->-3633.07,typ-195.907->-195.879ns. Receipts rx-feedback-fixed-hold-{eco,impact}-20261115.json.
