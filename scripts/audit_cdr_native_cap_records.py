@@ -22,12 +22,41 @@ with tarfile.open('metal.tgz','r|gz') as tar:
     counts[key]=counts.get(key,0)+1
     if any(t in line for t in targets):
      matches+=1
-     if len(rows)<100:rows.append(line.rstrip())
+     if len(rows)<300:rows.append(line.rstrip())
    out['records'][n]={'record_counts':counts,'matching_count':matches,'first_100_matching':rows}
   if n.endswith('anchors08.json'):
    raw=tar.extractfile(member).read();d=json.loads(raw)
    out['json_reports'][n]={'sha256':hashlib.sha256(raw).hexdigest(),'keys':list(d),'selected_anchors':[r for r in d['anchors'] if any(t in json.dumps(r) for t in targets)]}
+   selected=[r for r in d['anchors'] if r['label'] in targets];assert len(selected)==4
+   components={r['wire_component'] for r in selected};assert len(components)==4
+   conductor_anchors=[r for r in d['anchors'] if r['wire_component'] in components]
   if n.endswith('mim-audit.json'):
    raw=tar.extractfile(member).read();out['json_reports'][n]={'sha256':hashlib.sha256(raw).hexdigest(),'summary':small(json.loads(raw))}
 assert out['records'] and out['json_reports']
+# Independent exact-GDS DBU readback: no assumption about coordinate units.
+h=hashlib.sha256()
+with open('geometry.tgz','rb') as f:
+ for b in iter(lambda:f.read(1048576),b''):h.update(b)
+assert h.hexdigest()=='d8bd9f7463e7941e4f0319c5d01c47f217366cd213d83c68b9f6fdc6d256bc36'
+found=[]
+with tarfile.open('geometry.tgz','r|gz') as tar:
+ for m in tar:
+  if m.name.endswith('/native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds'):
+   raw=tar.extractfile(m).read();assert hashlib.sha256(raw).hexdigest()=='c335182048dc1696821ab875fb34447e5b5a9ba0f1a24d5d16d572680906c16c'
+   pathlib.Path('source.gds').write_bytes(raw);found.append(m.name)
+assert len(found)==1
+import klayout.db as kdb
+layout=kdb.Layout();layout.read('source.gds');assert layout.dbu>0
+out['geometry']={'sha256':'c335182048dc1696821ab875fb34447e5b5a9ba0f1a24d5d16d572680906c16c','dbu_um':layout.dbu,'top_cells':[{'name':c.name,'bbox_dbu':str(c.bbox())} for c in layout.top_cells()]}
+by_label={r['label']:r for r in conductor_anchors};assert len(by_label)==len(conductor_anchors)
+rows={}
+for root,driver in [('T382_rppd_2','T275_C'),('T383_rppd_2','T273_C'),('T397_rppd_2','T282_C'),('T398_rppd_2','T281_C')]:
+ group=[r for r in conductor_anchors if r['wire_component']==by_label[root]['wire_component']]
+ assert driver in by_label and by_label[driver]['wire_component']==by_label[root]['wire_component']
+ origin=by_label[driver]['point_dbu'];points=[]
+ for item in group:
+  xy=item['point_dbu'];points.append({'label':item['label'],'point_dbu':xy,'manhattan_distance_from_driver_um':sum(abs(a-b) for a,b in zip(origin,xy))*layout.dbu})
+ rows[root]={'driver':driver,'anchor_count':len(group),'span_x_um':(max(r['point_dbu'][0] for r in group)-min(r['point_dbu'][0] for r in group))*layout.dbu,'span_y_um':(max(r['point_dbu'][1] for r in group)-min(r['point_dbu'][1] for r in group))*layout.dbu,'anchors':points}
+out['conductor_geometry']=rows
+out['geometry_scope']='Exact native physical terminal anchors and GDS DBU. Manhattan distances are lower bounds, not measured routed lengths. No physical edits or acceptance.'
 pathlib.Path('out').mkdir();pathlib.Path('out/capacitor-native-records.json').write_text(json.dumps(out,indent=2))

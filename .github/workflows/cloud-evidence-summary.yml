@@ -1,4 +1,4 @@
-name: Trace dominant CDR capacitance to native Magic records
+name: Measure actual CDR buffer to XOR physical spans
 on:
   workflow_dispatch:
 permissions:
@@ -16,9 +16,11 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: /scripts/audit_cdr_native_cap_records.py
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir klayout==0.30.4.post1
       - run: |
           set -euo pipefail
           gh api repos/${{ github.repository }}/releases/assets/707281704 -H 'Accept: application/octet-stream' > metal.tgz
+          gh api repos/${{ github.repository }}/releases/assets/706980601 -H 'Accept: application/octet-stream' > geometry.tgz
           python3 scripts/audit_cdr_native_cap_records.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
