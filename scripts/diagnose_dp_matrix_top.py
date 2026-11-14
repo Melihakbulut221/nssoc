@@ -27,6 +27,11 @@ for side,nl in [('layout',lvs.netlist()),('reference',lvs.reference)]:
  pins=[{'name':value(p.name),'id':value(p.id)} for p in c.each_pin()]
  devices=collections.Counter(d.device_class().name for d in c.each_device())
  children=collections.Counter(s.circuit_ref().name for s in c.each_subcircuit())
- rows[side]={'name':c.name,'pins':pins,'direct_devices':dict(devices),'children':dict(children),'net_count':sum(1 for _ in c.each_net()),'named_nets':sorted(value(n.name) for n in c.each_net() if value(n.name))}
+ degrees=collections.Counter();empty_names=[]
+ for n in c.each_net():
+  degree=(value(n.terminal_count),value(n.subcircuit_pin_count),value(n.pin_count))
+  degrees[str(degree)]+=1
+  if sum(degree)==0:empty_names.append(value(n.name))
+ rows[side]={'name':c.name,'pins':pins,'direct_devices':dict(devices),'children':dict(children),'net_count':sum(1 for _ in c.each_net()),'net_degree_counts':dict(degrees),'empty_net_names':empty_names,'named_nets':sorted(value(n.name) for n in c.each_net() if value(n.name))}
 r={'status':'TOP_INVENTORY_ONLY','accepted':False,'source_run':43592362942,'database_sha256':'40bf9721db12569e03a51b411a211b8fb8c51fccad02f554578c127a0a8e346c','top':rows,'deck_port_context':deck_context,'search_limit_messages':dict(messages),'scope':'Saved netlist top pin names, direct device class counts and child type counts only. No detailed xref pair traversal, no graph changes, no acceptance.'}
 P('out').mkdir();P('out/top-inventory.json').write_text(json.dumps(r,indent=2))
