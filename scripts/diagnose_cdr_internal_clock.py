@@ -134,25 +134,27 @@ pairs=[];used=set()
 for pos in clock_devices['cp']:
  pd=bound['groups']['npn13g2'][pos];root=find(pd['nodes'][2])
  matches=[name for name in clock_devices['cn'] if find(bound['groups']['npn13g2'][name]['nodes'][2])==root]
- assert len(matches)==1,('Ambiguous/missing shared emitter clock pair',pos,matches)
- neg=matches[0];assert neg not in used;used.add(neg);nd=bound['groups']['npn13g2'][neg]
- tails=[]
- for label,names in bound['mos_tail_groups'].items():
-  match=[name for name in names if find(bound['groups']['sg13_lv_nmos'][name]['nodes'][0])==root]
-  if match:
-   assert len(match)==len(names),'Partial tail group connectivity'
-   tails.append(label)
- vp,vn=voltage(pd['nodes'][1]),voltage(nd['nodes'][1]);delta=vp-vn
- item={'positive_base_device':pos,'negative_base_device':neg,'verified_mos_tail_group_labels':tails,'active_base_differential_range_v':[float(delta[active].min()),float(delta[active].max())],'active_base_commonmode_range_v':[float(((vp+vn)/2)[active].min()),float(((vp+vn)/2)[active].max())]}
- for direction in ['rising','falling']:
-  hit=np.flatnonzero((delta[:-1]<0)&(delta[1:]>=0) if direction=='rising' else (delta[:-1]>0)&(delta[1:]<=0))
-  times=t[hit]+(-delta[hit])*(t[hit+1]-t[hit])/(delta[hit+1]-delta[hit]);times=times[(times>=loaded.START)&(times<=loaded.STOP)]
-  expected=np.array([loaded.START+(i+(.5 if direction=='rising' else 1))*loaded.UI for i in range(258)]);expected=expected[expected+2.5e-12<loaded.STOP]
-  error=times-expected if len(times)==len(expected) else None
-  item[direction]={'observed_edges':len(times),'expected_edges':len(expected),'source_relative_delay_ps':{'min':float(error.min()*1e12),'max':float(error.max()*1e12)} if error is not None else None}
- pairs.append(item)
-assert used==set(clock_devices['cn'])
-out['internal_clock_pairs']={'scope':'Shared-emitter differential HBT clock pairs, base connected to cp/cn through numeric wire R. Group labels bound through actual MOS drain connectivity. No clock alignment edits, timing waiver, output sampling pass or PLL recovery claim.','collapsed_wire_resistors_for_connectivity_only':wires,'pair_count':len(pairs),'pairs':pairs}
+ assert matches,('Missing opposite clock bank on shared emitter',pos)
+ for neg in matches:
+  assert (pos,neg) not in used;used.add((pos,neg));nd=bound['groups']['npn13g2'][neg]
+  tails=[]
+  for label,names in bound['mos_tail_groups'].items():
+   match=[name for name in names if find(bound['groups']['sg13_lv_nmos'][name]['nodes'][0])==root]
+   if match:
+    assert len(match)==len(names),'Partial tail group connectivity'
+    tails.append(label)
+  vp,vn=voltage(pd['nodes'][1]),voltage(nd['nodes'][1]);delta=vp-vn
+  item={'positive_base_device':pos,'negative_base_device':neg,'verified_mos_tail_group_labels':tails,'active_base_differential_range_v':[float(delta[active].min()),float(delta[active].max())],'active_base_commonmode_range_v':[float(((vp+vn)/2)[active].min()),float(((vp+vn)/2)[active].max())]}
+  for direction in ['rising','falling']:
+   hit=np.flatnonzero((delta[:-1]<0)&(delta[1:]>=0) if direction=='rising' else (delta[:-1]>0)&(delta[1:]<=0))
+   times=t[hit]+(-delta[hit])*(t[hit+1]-t[hit])/(delta[hit+1]-delta[hit]);times=times[(times>=loaded.START)&(times<=loaded.STOP)]
+   expected=np.array([loaded.START+(i+(.5 if direction=='rising' else 1))*loaded.UI for i in range(258)]);expected=expected[expected+2.5e-12<loaded.STOP]
+   error=times-expected if len(times)==len(expected) else None
+   item[direction]={'observed_edges':len(times),'expected_edges':len(expected),'source_relative_delay_ps':{'min':float(error.min()*1e12),'max':float(error.max()*1e12)} if error is not None else None}
+  pairs.append(item)
+assert {neg for pos,neg in used}==set(clock_devices['cn'])
+assert {pos for pos,neg in used}==set(clock_devices['cp'])
+out['internal_clock_pairs']={'scope':'All positive/negative clock branch combinations within each shared-emitter bank, including parallel devices. No arbitrary one-to-one physical pairing. Bases connected to cp/cn through numeric wire R. Group labels bound through actual MOS drain connectivity. No clock alignment edits, timing waiver, output sampling pass or PLL recovery claim.','collapsed_wire_resistors_for_connectivity_only':wires,'branch_combination_count':len(pairs),'positive_clock_devices':len(clock_devices['cp']),'negative_clock_devices':len(clock_devices['cn']),'pairs':pairs}
 
 out['physical_clock_observation']=clock
 P('out').mkdir();P('out/internal-clock-diagnosis.json').write_text(json.dumps(out,indent=2));print(out['status'])
