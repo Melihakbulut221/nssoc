@@ -39,7 +39,7 @@ try:
  hits=[i for i,l in enumerate(lines) if 'logger.info' in l and 'Starting SG13G2 LVS Comparison with flag_missing_ports' in l]
  assert len(hits)==1,hits
  i=hits[0];indent=lines[i][:len(lines[i])-len(lines[i].lstrip())]
- insertion=indent+'max_branch_complexity(512) # diagnostic search bound, no acceptance change\n'
+ insertion=indent+'max_branch_complexity(2048) # diagnostic search bound, no acceptance change\n'
  assert 'max_branch_complexity' not in text
  revised=''.join(lines[:i])+insertion+''.join(lines[i:]);assert revised.replace(insertion,'',1)==text
  import re
@@ -59,8 +59,8 @@ try:
  r['explicit_cell_pair']=['RM_IHPSG13_1P_BITKIT_16x2_SRAM','RM_IHPSG13_2048x64_c2_1P_BITKIT_16x2_SRAM']
  r['correspondence_scope']='Three hierarchy-name pairs before align only. Both cell contents still compared; no blanking, nil mapping, net or pin equivalence.'
 
- extra_ruby='nssoc_layout_top = netlist.circuit_by_name("RM_IHPSG13_1P_2048x64_c2_bm_bist")\nnssoc_reference_top = schematic.circuit_by_name("RM_IHPSG13_1P_2048x64_c2_bm_bist")\nnssoc_before = [nssoc_device_count(nssoc_layout_top), nssoc_device_count(nssoc_reference_top)]\nnssoc_extra_names = []\n[netlist, schematic].each do |nl|\n  nssoc_extra_names.each do |name|\n    cell = nl.circuit_by_name(name)\n    raise "Missing normalization circuit #{name}" unless cell\n    nl.flatten_circuit(cell)\n  end\nend\nnssoc_after = [nssoc_device_count(nssoc_layout_top), nssoc_device_count(nssoc_reference_top)]\nnssoc_lp = nssoc_layout_top.each_pin.map { |pin| pin.name }\nnssoc_rp = nssoc_reference_top.each_pin.map { |pin| pin.name }\nFile.write("out/derived/top-port-and-extra-flatten.json", JSON.pretty_generate({\'before\'=>nssoc_before,\'after\'=>nssoc_after,\'flattened_cells_both_sides\'=>nssoc_extra_names,\'layout_pins\'=>nssoc_lp,\'reference_pins\'=>nssoc_rp,\'accepted\'=>false}))\nraise "Primitive conservation failed" unless nssoc_before == [1211120,1211120] && nssoc_after == nssoc_before\nraise "Top port contract differs" unless nssoc_lp.size == 355 && nssoc_rp.size == 355 && nssoc_lp.map(&:upcase).sort == nssoc_rp.map(&:upcase).sort\n'
- compare_anchor=indent+'max_branch_complexity(512) # diagnostic search bound, no acceptance change\n'
+ extra_ruby='nssoc_layout_top = netlist.circuit_by_name("RM_IHPSG13_1P_2048x64_c2_bm_bist")\nnssoc_reference_top = schematic.circuit_by_name("RM_IHPSG13_1P_2048x64_c2_bm_bist")\nnssoc_before = [nssoc_device_count(nssoc_layout_top), nssoc_device_count(nssoc_reference_top)]\nnssoc_extra_names = ["RSC_IHPSG13_INVX2", "RSC_IHPSG13_NAND2X2", "RSC_IHPSG13_CINVX4"]\n[netlist, schematic].each do |nl|\n  nssoc_extra_names.each do |name|\n    cell = nl.circuit_by_name(name)\n    raise "Missing normalization circuit #{name}" unless cell\n    nl.flatten_circuit(cell)\n  end\nend\nnssoc_after = [nssoc_device_count(nssoc_layout_top), nssoc_device_count(nssoc_reference_top)]\nnssoc_lp = nssoc_layout_top.each_pin.map { |pin| pin.name }\nnssoc_rp = nssoc_reference_top.each_pin.map { |pin| pin.name }\nFile.write("out/derived/top-port-and-extra-flatten.json", JSON.pretty_generate({\'before\'=>nssoc_before,\'after\'=>nssoc_after,\'flattened_cells_both_sides\'=>nssoc_extra_names,\'layout_pins\'=>nssoc_lp,\'reference_pins\'=>nssoc_rp,\'accepted\'=>false}))\nraise "Primitive conservation failed" unless nssoc_before == [1211120,1211120] && nssoc_after == nssoc_before\nraise "Top port contract differs" unless nssoc_lp.size == 355 && nssoc_rp.size == 355 && nssoc_lp.map(&:upcase).sort == nssoc_rp.map(&:upcase).sort\n'
+ compare_anchor=indent+'max_branch_complexity(2048) # diagnostic search bound, no acceptance change\n'
  assert revised.count(compare_anchor)==1
  extra_block='\n'.join(indent+line for line in extra_ruby.splitlines())+'\n'
  revised=revised.replace(compare_anchor,extra_block+compare_anchor,1)
@@ -74,7 +74,7 @@ try:
  r['top_port_construction_stage']='Before align; native named-net creation unchanged, avoiding promotion of child internal labels to external pins.'
  deck.write_text(revised)
  r['deck_before_sha256']=hashlib.sha256(text.encode()).hexdigest();r['deck_after_sha256']=sha(deck)
- r['comparison_settings']={'max_branch_complexity':512,'max_depth':'unchanged default','native_timeout_seconds':1800}
+ r['comparison_settings']={'max_branch_complexity':2048,'max_depth':'unchanged default','native_timeout_seconds':1800}
  env=dict(os.environ);env.pop('GH_TOKEN',None);env.pop('GITHUB_TOKEN',None);env['QT_QPA_PLATFORM']='offscreen'
  start=time.monotonic()
  try:

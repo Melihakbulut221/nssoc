@@ -14,7 +14,7 @@ cases={'identity'=>[base,true], 'wrong_width'=>[base.sub('W=0.95','W=1.9'),false
  'extra_device'=>[base.sub('end;','device NMOS4 EXTRA(S=VSS,G=IN,D=OUT,B=VSS)(L=0.25,W=0.95);
 end;'),false]}
 rows=[]
-[nil,512].each do |limit|
+[nil,2048].each do |limit|
   cases.each do |label,(candidate,expected)|
     comparer=RBA::NetlistComparer.new
     comparer.max_branch_complexity=limit if limit
@@ -27,12 +27,12 @@ cases.each do |label,(candidate,expected)|
   a=build(base.sub('circuit INV(', 'circuit PHYSICAL('))
   b=build(candidate.sub('circuit INV(', 'circuit REFERENCE('))
   comparer=RBA::NetlistComparer.new
-  comparer.max_branch_complexity=512
+  comparer.max_branch_complexity=2048
   raise 'Expected initially unmatched name' unless comparer.unmatched_circuits_a(a,b).any? { |c| c.name=='PHYSICAL' }
   comparer.same_circuits(a.circuit_by_name('PHYSICAL'),b.circuit_by_name('REFERENCE'))
   raise 'Mapped cell must survive alignment' unless comparer.unmatched_circuits_a(a,b).empty? && comparer.unmatched_circuits_b(a,b).empty?
   actual=comparer.compare(a,b)
-  rows << {'limit'=>512,'label'=>'explicit_pair_'+label,'expected'=>expected,'actual'=>actual}
+  rows << {'limit'=>2048,'label'=>'explicit_pair_'+label,'expected'=>expected,'actual'=>actual}
   raise "Mapped control failed #{label}" unless actual==expected
 end
 Dir.mkdir('out') unless Dir.exist?('out')
