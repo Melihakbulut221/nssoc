@@ -96,8 +96,11 @@ try:
  r['child_subreaper']=True;r['completed_boot']=False;r['checkpoint_saved']=False
  r['parent_checkpoint']={'run':43558722004,'native_artifact':14104748996,'result_artifact':14105022987,'tgz_sha256':dump['checkpoint_tgz_sha256']}
  initial_cycle=last_cycle((root/'resumed.log').read_bytes());assert initial_cycle==1260000
- run(['sudo','criu','restore','-D',str(root/dump['image_directory']),'--shell-job','--cpu-cap=all','--restore-detached','--pidfile',str(root/'restored.pid'),'-o','restore-long.log','-v4'])
- pid=int(run(['sudo','cat',str(root/'restored.pid')]).stdout)
+ restored_pidfile=root/('restored-'+os.environ['GITHUB_RUN_ID']+'.pid')
+ assert not restored_pidfile.exists(),'New restore PID destination already exists'
+ r['restore_pidfile']=restored_pidfile.name
+ run(['sudo','criu','restore','-D',str(root/dump['image_directory']),'--shell-job','--cpu-cap=all','--restore-detached','--pidfile',str(restored_pidfile),'-o','restore-long.log','-v4'])
+ pid=int(run(['sudo','cat',str(restored_pidfile)]).stdout)
  parent=int(next(line.split()[1] for line in P('/proc/'+str(pid)+'/status').read_text().splitlines() if line.startswith('PPid:')))
  assert parent==os.getpid(),'Restored process not adopted'
  start=time.monotonic();next_report=start;code=None
