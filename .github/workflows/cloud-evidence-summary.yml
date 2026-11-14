@@ -1,4 +1,4 @@
-name: Inspect actual packed650 interface drivers and native metal RC
+name: Diagnose comparator shared emitter and collector metal networks
 on:
   workflow_dispatch:
 permissions:
@@ -33,7 +33,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: packed650-drive-rc-${{ github.run_id }}
+          name: packed650-shared-net-rc-${{ github.run_id }}
           path: out/
           if-no-files-found: error
           retention-days: 90

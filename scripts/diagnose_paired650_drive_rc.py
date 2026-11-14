@@ -29,11 +29,21 @@ for u,v,value in rs:
  assert value>0;adj[u].append((v,value));adj[v].append((u,value))
 records=contract['devices'];assert len(records)==650
 nets=['aqp','aqn','bqp','bqn','cqp','cqn','dqp','dqn','adp','adn','cdp','cdn','s0p','s0n','s1p','s1n']
+nets += [prefix+'_n_'+suffix for prefix in ['x','y']for suffix in ['40','51','62','42','46']]
 result={'source_run':r['id'],'source_head':r['head_sha'],'native_artifact':a['id'],'native_archive_sha256':digest,'model_sha256':'dd2922e9bfecfbf085ff093099c43568c399df7e3c199063333aa7f7db1c4fbb','contract_sha256':'ef839c27e19bf819aa6894f2b99774b2202f6d7694c434f39a64ea9798cd8b86','accepted':False,'scope':'Actual source identity, component topology, metal resistor effective R and metal external-coupling first moment with all other conductors clamped. Excludes intrinsic device/MIM loading and finite driver resistance. Not qualified PEX, bandwidth, a new transient, or changed acceptance.','nets':{}}
 for net in nets:
  devices=[d for d in records if net in d['logical_terminals'].values()]
  drivers=[d for d in devices if d['model']=='npn13g2'and d['logical_terminals']['C']==net and d['logical_terminals']['B']!=net[:-1]+('n'if net.endswith('p')else'p')]
- assert len(drivers)==1,(net,len(drivers));driver=drivers[0]['instances'][0]['nodes'][0].lower();assert driver in adj
+ reference_terminal='C';reference_role='unique_data_driver_collector'
+ if net.startswith(('x_n_','y_n_')):
+  reference_role='canonical_shared_net_reference_not_unique_driver'
+  drivers=[q for q in devices if q['model']=='npn13g2'and q['logical_terminals']['C']==net]
+  if not drivers:
+   reference_terminal='E';drivers=[q for q in devices if q['model']=='npn13g2'and q['logical_terminals']['E']==net]
+  assert drivers
+  drivers=[min(drivers,key=lambda q:q['native_id'])]
+ assert len(drivers)==1,(net,len(drivers))
+ driver=drivers[0]['instances'][0]['nodes'][0 if reference_terminal=='C'else 2].lower();assert driver in adj
  seen={driver};queue=[driver]
  while queue:
   u=queue.pop()
@@ -68,5 +78,7 @@ for net in nets:
      drive=np.zeros(n);drive[index[node]]=1;solved=lu.solve(drive);assert np.linalg.norm(matrix@solved-drive,np.inf)<1e-6
      resistance=float(solved[index[node]]);moment=float(moments[index[node]])
     terms.append({'native_id':d['native_id'],'terminal':t,'node':node,'effective_metal_resistance_from_driver_ohm':resistance,'metal_external_clamped_first_moment_s':moment})
- result['nets'][net]={'driver_native_id':drivers[0]['native_id'],'driver_node':driver,'metal_nodes':len(seen),'external_metal_c_f':external_c,'internal_metal_c_f':internal_c,'maximum_metal_external_clamped_first_moment_s':float(moments.max()),'hbt_terminal_connections':terms,'physical_devices_on_logical_net':touch}
+ result['nets'][net]={'reference_role':reference_role,'reference_terminal':reference_terminal,'driver_native_id':drivers[0]['native_id'],'driver_node':driver,'metal_nodes':len(seen),'external_metal_c_f':external_c,'internal_metal_c_f':internal_c,'maximum_metal_external_clamped_first_moment_s':float(moments.max()),'hbt_terminal_connections':terms,'physical_devices_on_logical_net':touch}
+result['scope'] += ' Shared comparator nets use an explicitly labeled canonical terminal reference, not a unique driver. Effective R and clamped-metal first moments do not include nonlinear loading or imply full settling/signoff.'
+assert len(result['nets'])==26
 (out/'drive-rc.json').write_text(json.dumps(result,indent=2))
