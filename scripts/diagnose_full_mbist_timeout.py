@@ -15,4 +15,7 @@ for n in z.namelist():
    summary={k:d[k] for k in allowed if k in d}
    # Keep only bounded top-level scalar outcomes; nested native metadata stays cloud.
    r['json_summaries'][n]={'keys':list(d),'scalars':{k:v for k,v in summary.items() if isinstance(v,(str,int,float,bool)) or v is None}}
+r['gate_run_log']=z.read('corrpre-pcie-mbist-native-boot/gates/run-0.log').decode(errors='replace')
+assert len(r['gate_run_log'])<25000
+r['gate_result']=json.loads(z.read('corrpre-pcie-mbist-native-boot/gates/result.json'))
 pathlib.Path('out').mkdir();pathlib.Path('out/boot-diagnostic.json').write_text(json.dumps(r,indent=2));print('Filtered derived summaries only; no acceptance')
