@@ -1,3 +1,13 @@
+## CRC jumper-only route finished but antenna repair failed; diode failure capture live
+
+Run43579643337 route job132401417086 completed execution; fresh final check still565antenna nets/656pins, unchanged across5iterations. Routing DRC0 is not foundry DRC or antenna closure. Safe14111439322 SHA1e8a33fd24778a4212ad496f8a96a675d8cf28067e698d51ef4a5163997e2d85; native14111958544 SHA0c61942e79e1c94aceedd757e5d4cc298af6cbbe90480612c72bfed2fcbf18b0 cloudonly. DependentSTA job132432238364 is running; retain results for timing diagnosis but antenna gate already fails.
+
+Source diagnosis: LibreLane3.0.5 pins OpenROADdcf36133...; GlobalRouter::repairAntennas calls jumperInsertion only if !haveDetailedRoutes, while jumper_only inhibits diode insertion. Explains ineffective post-DRT jumper-only loop; do not repeat. drt.tcl exact SHA matches runtime proof. Native version still to verify.
+
+New diode diagnostic43590389460/source9003dfcb3e85be38688357e0d9b823f46cd4d2f8, branch codex/crc-diode-placement-diagnostic. Exact original checkpoint, no initial or subsequent detailed route. Capture repair_antennas -diode_only error, native DB and pre/post placement statuses; print runtime version. Intentionally non-accepting failure even on successful insertion; native archivecloudonly, safe route-crc_diode_diagnostic-*. Inspect actual failure before changing placement. Receipt docs/evidence/crc-jumper-ineffective-and-diode-diagnostic-20261114.json.
+
+Still live: DP32cell43589897545,SP43566292104,PHY43584735530,MBIST43588310054. Earlier results below.
+
 ## Bitcell pairing rejected; parent 32-cell block test live
 
 43589771694/source ef4dcd378344f01360ae663e53ca5ee2bdd2450e completed diagnosis in16.74s, native15/15 controls pass, strict LVSFAIL:25Match, bitcellNoMatch, topSkipped. Physical leaf6devices vs reference14; top recursive70110each unchanged. Explicit name mapping alone is insufficient. NativeDB14f60640f6a1a6fd60c75e265b2b360722ab294737a60fa45ab1fc0424d7b88b. Safe14111783729 SHA2cca92bd0da453cb30d8ae7639e03364e521ab0a4536f7a9dc837e8440ace385; native14112185339 stayscloud. No acceptance.
