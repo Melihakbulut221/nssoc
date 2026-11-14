@@ -34,6 +34,23 @@ for kind,(archive_hash,reference_hash) in configs.items():
 common=sorted(libs['sp'].keys()&libs['dp'].keys());identical=[];different=[]
 for name in common:
  (identical if libs['sp'][name]==libs['dp'][name] else different).append(name)
-r={'status':'REFERENCE_LIBRARY_COLLISION_PREFLIGHT','accepted':False,'full_chip_lvs_passed':False,'manufacturing_approval':False,'libraries':evidence,'identical_shared_cells':identical,'different_shared_cells':different,'scope':'Exact case/whitespace/continuation-normalized subcircuit records only; differing definitions cannot be merged by name. No geometry or circuit edits, no electrical equivalence claim.'}
+reachability={}
+for kind,cells in libs.items():
+ top={'dp':'RM_IHPSG13_2P_256X16_C2_BM_BIST','sp':'RM_IHPSG13_1P_2048X64_C2_BM_BIST'}[kind]
+ assert top in cells
+ edges={};unknown={}
+ for name,records in cells.items():
+  edges[name]=[];unknown[name]=[]
+  for tokens in records[1:]:
+   if not tokens[0].startswith('X'):continue
+   refs=[tok for tok in tokens[1:] if tok in cells]
+   assert len(refs)<=1,(kind,name,tokens[0],refs)
+   if refs:edges[name].append(refs[0])
+   else:unknown[name].append(tokens[0])
+ reached=set();frontier={top}
+ while frontier:
+  reached.update(frontier);frontier={target for name in frontier for target in edges[name]}-reached
+ reachability[kind]={'top':top,'reachable_cells':sorted(reached),'unreachable_cells':sorted(cells.keys()-reached),'conflicting_cells_reachable':sorted(set(different)&reached),'unresolved_reachable_X_instances':{name:unknown[name] for name in reached if unknown[name]},'direct_reference_counts':{target:sum(edges[name].count(target) for name in reached) for target in different}}
+r={'status':'REFERENCE_LIBRARY_COLLISION_PREFLIGHT','accepted':False,'full_chip_lvs_passed':False,'manufacturing_approval':False,'libraries':evidence,'reachability':reachability,'identical_shared_cells':identical,'different_shared_cells':different,'scope':'Exact case/whitespace/continuation-normalized subcircuit records only; differing definitions cannot be merged by name. No geometry or circuit edits, no electrical equivalence claim.'}
 P('out').mkdir();P('out/reference-library-preflight.json').write_text(json.dumps(r,indent=2))
 print(json.dumps({'common':len(common),'identical':len(identical),'different':different}))
