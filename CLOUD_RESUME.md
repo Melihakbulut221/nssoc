@@ -1,3 +1,13 @@
+# Reader qualification and CDR settling diagnostics launched
+
+**43562548073**, source`5ce444217f111bad822c9cf44a17e0645b7cc1c9`, branch`codex/sram-reference-reader-controls`: actual CDL through exact candidate CustomReader, then native independent graph comparison. Ten positive/layer/W/L/open controls. When finished, bind reader_candidate_sha256 to engineering macro reader hash; do not treat isolated policy tests as whole-macro signoff. At observation native runtime install stage live.
+
+**43562679420**, source`10eba9d8c228d5146df70ba37e78b2fc5ccda8dd`, branch`codex/cdr-buffer-settling-diagnosis`: frozen failed XOR2/3 native samples remain cloud-only; exactUI/16 phase grid quantifies A/C sampler-to-buffer settling by bit transition. No new simulation/layout/polarity/gate changes. Metric is stable signed100mV through last sampled phase, not continuous-time/PHY acceptance. Use to select concrete next circuit experiment; do not repeat blind XOR size sweeps.
+
+Receipt:`docs/evidence/reader-cdr-settling-launch-20261114.json`. Five long runs43561900502,43562021054,43558722004,43541234973,43538031308 verified live this turn; continue exact polling. Full production objective remains open.
+
+---
+
 # Strict native resistor negative controls passed
 
 **43562168662 completed/success**, source`425b317cbd0dc7c5e82fd31a3806febdcaaf087a`, safe14100796355 SHA256`4fa2c9ca950e00f7c564f7d27ca7c92884c1b03a2e370fa5c8927259440f41aa`. All10native verdicts checked: both metal2/metal3 positive graphs match; wrong layer/W/L/open each rejected. Native returncode0, exact fixed RES2 class SHA256`1f9d1328eb1af5a534ff68a5cbc263513e305ece27bb87b75ef4b9454f45236f`. Scope is comparator policy only, not full deck-reader/candidate-macro/signoff qualification. Script now on integration; receipt:`docs/evidence/sram-reference-resistor-controls-result-20261114.json`.
