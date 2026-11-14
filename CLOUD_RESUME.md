@@ -1,3 +1,15 @@
+## Resumed: source guards fixed, selective feedback repair launched — 2026-11-15
+
+Previous SRAM43650954563 FAILED before ECO (Wrong SRAM target). New source a77bed0723b12a73e8481c61b1214fa10edb41e2, run43651534065, resolves escaped OpenDB instance names with exact unique canonical-name and master guards. No pass claimed; inspect result and global impact. Physical baseline remains exact combinedIO ODBde8647caef5c3d38121edeb9d102f53e5406f77371ca161d254459aad58075ca.
+
+Previous mainchip43646859306 passed qualification/replay but FAILED mapping verification because checker retained OLD RX RTL SHA c16d14... . New source790a01e745ffa2a6b4b6db8e23a569749ddf06f5/run43651528850 binds checker to actual formally qualified6e873669... and cross-checks qualification receipt. Fresh complete workflow dispatched; no new mapping/physical success claimed.
+
+Feedback measurement43650299177 SUCCESS; safe14136175946 SHA0ace6b564979b7a796caa25ebc172ad4f6566ec90e7d6709620b7233d5d42af3. All678report hashes verified. All113 branches have negative fast hold (worst-.060047414ns). Slowsetup index4=-.476986915,index13=+.318118870ns; exclude BOTH. Remaining111 have >=2.363167048ns slowsetup. Selective candidate run43651662225/headf389138917f81319a765ae1c0a59f4beda1a9f86, branchcodex/rx-feedback-hold-eco inserts222identitydelaycells only on these111first feedback sink branches. Exact sourceQ and original pin incidence checked;40original IOs +111through-pins remeasured at3corners906reports. Uses SAME combinedIO baseline, not pending SRAM candidate. Do NOT treat independent ECO results as merged. Selection manifest hw/soc/pnr/rx-feedback-eco-selection.json on candidate branch. Need native targeted and wholechip metrics before acceptance.
+
+Wholechip impact workflows being dispatched on codex/rx-sram-men-hold-impact and codex/rx-feedback-hold-impact, each bound to exact producer and combinedIO baseline. Inspect producer failure if impact fails; never weaken assertions or count upload success as timing success. Native data stays cloud-only.
+
+PHY: packed650 loaded failure and transfer/headroom evidence unchanged; no new circuit correction accepted. Full PHY, routed mainchip, final allcorner timing and production qualification remain OPEN.
+
 ## All endpoint measurements complete; SRAM-enable ECO launched — 2026-11-15
 
 EndpointSTA43650042619/head17e8f11d049bc4e4820d36304dad94980d9d6598 SUCCESS. Safe14136086263 SHAb0953c2d6bcaed5f74ecfdd64c3c6ec89263eca394aba719e7021a140b7eb965; native14135754127 SHA4a1e045fa6386b8f46c2173096d7a25790e17db2e84a2e0370710c8d58f90e87. All1380actual pin reports authenticated.221of230pins have NEGATIVE slowsetup; only3have>.8ns. Thus do NOT blanketdelay FF/D. ExactSRAMA_MEN slowsetup bank1+15.578088760,bank2+15.878623009,bank3+15.958136559ns (earlier instance-level worstsetup1.8ns was another macro pin). Receipt docs/evidence/rx-internal-endpoint-timing-20261115.json.
