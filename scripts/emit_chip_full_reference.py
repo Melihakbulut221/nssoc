@@ -99,11 +99,14 @@ def primitives(name,stack=()):
    assert '/' not in nodes and child in headers and len(nodes)==len(headers[child]),(name,child,len(nodes),len(headers.get(child,[])))
    total+=primitives(child,stack+(name,))
   else:assert t[0][0].upper() in 'MRCDQ';total+=1
- assert total>0,('empty reference cell',name)
  memo[name]=total;return total
 count=sum(primitives(typ) for nodes,typ in expected.values())
+assert all(primitives(typ)>0 for nodes,typ in expected.values()),'Empty instantiated logical cell'
+macro_counts={name:primitives(name) for name in inv['cell_type_counts'] if not name.startswith('SG13G2_')}
+assert sorted(macro_counts.values())==[70110,1211120],macro_counts
+empty_library_cells={name:headers[name] for name,value in memo.items() if value==0}
 full='\n'.join(libs.values())+'\n'+toptext
 path=native/'soc_top-full-transistor.cdl';path.write_text(full)
 (native/'reference-instance-map.json').write_text(json.dumps(instance_map))
-r=dict(pre,status='FULL_TRANSISTOR_REFERENCE_EMITTED',source_netlist_sha256=inv['source_netlist_sha256'],cdl_hashes=inv['cdl_hashes'],output_sha256=digest(path),top_port_count=len(ports),logical_cell_count=len(expected),isolated_open_outputs=opens,reachable_library_definitions=len(memo),recursive_primitive_count=count,roundtrip_pin_order_passed=True,full_chip_lvs_passed=False,manufacturing_approval=False,scope='Independent full hierarchical transistor reference emitted. SRAM engineering CDL preserved exactly; no blackboxes. Electrical layout comparison remains pending.')
+r=dict(pre,status='FULL_TRANSISTOR_REFERENCE_EMITTED',source_netlist_sha256=inv['source_netlist_sha256'],cdl_hashes=inv['cdl_hashes'],output_sha256=digest(path),top_port_count=len(ports),logical_cell_count=len(expected),isolated_open_outputs=opens,reachable_library_definitions=len(memo),recursive_primitive_count=count,macro_recursive_primitive_counts=macro_counts,empty_library_cells=empty_library_cells,roundtrip_pin_order_passed=True,full_chip_lvs_passed=False,manufacturing_approval=False,scope='Independent full hierarchical transistor reference emitted. SRAM engineering CDL preserved exactly; no blackboxes. Electrical layout comparison remains pending.')
 (out/'full-reference-result.json').write_text(json.dumps(r,indent=2));print(json.dumps(r))
