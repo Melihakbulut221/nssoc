@@ -75,4 +75,28 @@ out['top_macro_instances']=macro_rows
 assert hashlib.sha256(pathlib.Path('source.gds').read_bytes()).hexdigest()==out['geometry']['sha256']
 
 out['geometry_scope']='Exact native physical terminal anchors and GDS DBU. Manhattan distances are lower bounds, not measured routed lengths. No physical edits or acceptance.'
+# Qualify whether current local physical bands can be moved intact using
+# the existing band-reorder strategy, before modifying any GDS.
+T=layout.top_cell();children=[i for i in T.each_inst() if i.cell.name.startswith('pd_child_')];assert len(children)==16
+ordered=sorted(children,key=lambda i:i.bbox().bottom)
+edges=[224000]+[i.bbox().bottom-48000 for i in ordered[1:]]+[T.bbox().top]
+assert all(edges[i]<=ordered[i].bbox().bottom and ordered[i].bbox().top<=edges[i+1] for i in range(16))
+parent={};full={};child={}
+for li in layout.layer_indexes():
+ key=str(layout.get_info(li));full[key]=kdb.Region(T.begin_shapes_rec(li)).merged();r=kdb.Region()
+ for inst in children:r+=kdb.Region(inst.cell.begin_shapes_rec(li)).transformed(inst.trans)
+ child[key]=r.merged();parent[key]=(full[key]-child[key]).merged()
+li=layout.layer(126,0);trunks=kdb.Region();records=[]
+for shape in T.each_shape(li):
+ if not shape.is_box():continue
+ b=shape.box
+ if b.right<953600 and b.width() in (3200,64000,256000) and b.height()>b.width():trunks.insert(b);records.append(str(b))
+assert records and (trunks-parent['126/0']).is_empty()
+parent['126/0']=(parent['126/0']-trunks).merged()
+violations=[]
+for layer,region in parent.items():
+ for polygon in region.each():
+  b=polygon.bbox();hits=[y for y in edges[:-1] if b.bottom<y<b.top]
+  if hits:violations.append({'layer':layer,'bbox_dbu':str(b),'crossed_edges_dbu':hits})
+out['physical_band_feasibility']={'edges_dbu':edges,'candidate_vertical_trunks':records,'trunks_removed_only_for_analysis':True,'crossing_conductors':violations,'whole_band_move_without_further_routing_changes_supported':not violations,'scope':'Conservative geometric feasibility, not electrical net ownership or DRC/LVS. Only known-width tall TM1 rectangles left of macros classified as possible global trunks; remaining boundary crossings retained as blockers. No GDS edits.'}
 pathlib.Path('out').mkdir();pathlib.Path('out/capacitor-native-records.json').write_text(json.dumps(out,indent=2))
