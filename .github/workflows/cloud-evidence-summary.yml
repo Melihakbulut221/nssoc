@@ -20,6 +20,7 @@ jobs:
           sparse-checkout: |
             /scripts/prepare_namespaced_chip_streamout.py
             /scripts/inventory_chip_cdl_pinmap.py
+            /scripts/qualify_chip_open_outputs.py
             /hw/soc/pnr/namespaced_sram_streamout_flow.py
             /hw/soc/pnr/interface_flow.py
       - name: Restore frozen native inputs only on cloud runner
@@ -37,12 +38,14 @@ jobs:
           rm /mnt/s/pkg.tgz /mnt/s/routed.tgz routed.zip library.zip
       - name: Inventory full-cell interfaces from independent logical Verilog
         run: env -u GH_TOKEN -u GITHUB_TOKEN /mnt/s/librelane.AppImage python scripts/inventory_chip_cdl_pinmap.py
+      - name: Qualify omitted outputs against pinned Liberty
+        run: env -u GH_TOKEN -u GITHUB_TOKEN /mnt/s/librelane.AppImage python scripts/qualify_chip_open_outputs.py
       - name: Collect reviewable results and preserve native layout separately
         if: always()
         run: |
           mkdir -p derived native
           OUT=hw/soc/out/namespaced-streamout
-          cp $OUT/preflight.json $OUT/pinmap-inventory.json $OUT/pinmap-native/yosys.log derived/ 2>/dev/null || true
+          cp $OUT/preflight.json $OUT/open-output-qualification.json $OUT/pinmap-inventory.json $OUT/pinmap-native/yosys.log derived/ 2>/dev/null || true
           if [ -d "$OUT" ]; then tar -czf native/streamout-native.tgz "$OUT" hw/soc/out/namespaced-sram-library; fi
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
