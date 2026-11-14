@@ -1,3 +1,11 @@
+## Combined I/O repair PASS; slow/typical hold zero — 2026-11-15
+
+Producer43648980039/head95929ee677c79d9bab52f47c28f684eedb91795a completed SUCCESS. CandidateODBde8647caef5c3d38121edeb9d102f53e5406f77371ca161d254459aad58075ca; native14135173417 SHA31bfe99bd985d6edfd9246d21c511edf2d17f17371d091158bf9299c909f824b. Safe14135452833 SHA1748d71661772a2e02b2d0c10a0b0db0e85b871bdf8f8291b9fc4c2448979939. All240targeted reports authenticated, all40IOsetup/holdchecks >=50ps. Worst setup slow/typ/fast +.725850523/+1.675288439/+2.164728642ns; worst hold +.666230619/+.278011858/+.089237399ns.
+
+Wholechip43649093686/head50a0bede8a6cfcf6cefbf5efef2e2971da05fb2f SUCCESS, safe14134844911 SHAb46a915fba9927d5174b07515b5c686168d1cae4f062fab1cb46312a53c7b8e4. No detected regressions against Ethernet-repaired baseline. HOLD COUNTS slow0/typ0/fast230, worst+.122274/+.0124991/-.163726ns. Setup unchanged2631/635/0, WS-3.11156/-.703858/+.46195ns. Receipts docs/evidence/rx-pcie-hold-eco-20261115.json and rx-pcie-hold-impact-20261115.json. This remains placementRC, NOT routed or production signoff.
+
+Next residual internal hold census run 43649796906, source2cf06c24822c96d805c9c6a7bd1a4229b043404d, branch codex/rx-internal-hold-census. Authenticates exact combined candidate native/ODB; derives min/max endpoint pairing and full negative minpath text cloud-side. Inspect230remaining internal cones and missing setup margins before new repair. Separate RXbankRTLmainchip43646859306 and packedPHY43642783223 remain live at prior check.
+
 ## Combined PCIe ECO whole-chip audit queued — 2026-11-15
 
 Run 43649093686, source50a0bede8a6cfcf6cefbf5efef2e2971da05fb2f, branch codex/rx-pcie-hold-impact. Waits for exact combined producer43648980039/head95929ee677c79d9bab52f47c28f684eedb91795a. Baseline authenticated native14134996872/e6893782d2385474b989299f52807ea4e4c11f4ffc06a6a366310fe3484d5832, ODB635f0e623eb202d845bde5a1f29f65466cf82f639dc2f7044aaabcac1451c203. All original allcorner metrics must remain present; checks propagated clocks and exact candidateODB duplicates. Records setup/hold count/slack/TNS regressions and40IOtargeted240check result separately. accepted staysfalse; production/routing still open. No fresh result yet.
