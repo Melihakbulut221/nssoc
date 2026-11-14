@@ -1,3 +1,13 @@
+# Independent SP engineering reference fullmacro comparison running
+
+43564996899 source`867aa31021be8d6fec40ebb5afe2d7bcdc85a354`, branch`codex/sp-sram-engineering-reference-v1`. Five explicitly reversible R statement edits only: bitcellR0/R1metal2,R2metal3 W0.2/L0.6; standaloneMET2RES/MET3RES eachW0.26 unchanged, only layer-model identity explicit. Original GDS/CDL immutable, terminal tokens unchanged. Strict reader, metal1 controls, ports/bodies unchanged. Full recursive original/candidate CDL inventory must agree before native run. Original SP hierarchy retained, NO DP six-cell flatten or70110 count assumption. Native18000s/workflow350min.
+
+Safe result prefix`sp-sram-engineering-reference-v1-derived-sp-deep-43564996899`; native counterpart remains cloud-only. Bind actual candidate reader to tested87a75b402b35d7306153a66089c0f0105b4e50c4816c7c553d97219af6c41519 when result arrives. Successful engineering comparison is not vendor qualification or full-chip acceptance. Receipt:`docs/evidence/sp-sram-engineering-reference-launch-20261114.json`.
+
+Continue DP43562021054, route43561900502, CDR43562981217, MBIST43558722004, oldroutes43541234973/43538031308. Goal active; full production not achieved.
+
+---
+
 # SP direct-pin recovery passed; original SRAM LVS remains failed
 
 43564703460 completed/success source`daf24ca240958f2ed85099b48f72bb0b44904487`; safe14101134348 SHA256`9ef327edaad1aaa5c6d605e127c36c8fb658d464a9da3836cf6f47b5503314e2`. Native saved DB reused, no extraction rerun. One duplicate expanded net name confirmed in original layout; direct Net.each_pin avoids merging conductors by label. All three R have unique two-external-endpoint correspondence: R0/R1 -> res_metal2, R2 -> res_metal3; each W0.2/L0.6um versus original genericW0.26. Isolated body ports still absent in layout vs NW/PW reference; NEVER alias those. Tested script now on integration.
