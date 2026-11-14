@@ -9,6 +9,14 @@ assert hashlib.sha256(b).hexdigest()=='80ae85f5200fbae123f8c6ce849832b88f4d320fc
 z=zipfile.ZipFile(io.BytesIO(b));members=[n for n in z.namelist() if n.endswith('.tgz')];assert len(members)==1
 with tarfile.open(fileobj=io.BytesIO(z.read(members[0])),mode='r:gz') as t:
  raw=t.extractfile('native/lvs.lvsdb').read()
+ # Export only whitelisted PDK program source, never circuit/netlist contents.
+ deck_sources={}
+ for filename in ['res_extraction.lvs','custom_reader.lvs','sg13g2.lvs']:
+  matches=[m for m in t.getmembers() if m.isfile() and '/inputs/' in m.name and m.name.endswith('/'+filename)]
+  assert len(matches)==1,(filename,len(matches))
+  source=t.extractfile(matches[0]).read();assert len(source)<150000
+  deck_sources[filename]={'archive_member':matches[0].name,'sha256':hashlib.sha256(source).hexdigest(),'source':source.decode()}
+
 assert hashlib.sha256(raw).hexdigest()=='a78400289638bf4e47f51c7984c08750b41df989de4854d60c4681b596df77fb'
 pathlib.Path('exact.lvsdb').write_bytes(raw)
 lvs=db.LayoutVsSchematic();lvs.read('exact.lvsdb');xref=lvs.xref()
@@ -75,5 +83,6 @@ for cp in xref.each_circuit_pair():
  left=expanded_inventory(cp.first(),{},set());right=expanded_inventory(cp.second(),{},set())
  if left!=right:
   r['cell_pair_inventory_differences'].append({'layout_cell':field(cp.first(),'name'),'reference_cell':field(cp.second(),'name'),'status':str(cp.status()),'layout_only':rows(left-right),'reference_only':rows(right-left)})
+r['deck_source_evidence']=deck_sources
 pathlib.Path('out').mkdir();pathlib.Path('out/top-mismatch.json').write_text(json.dumps(r,indent=2))
 print(json.dumps({k:v['status_counts'] for k,v in r.items() if isinstance(v,dict) and 'status_counts' in v}))
