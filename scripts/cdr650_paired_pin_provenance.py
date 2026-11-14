@@ -9,7 +9,7 @@ def prove_band_relocation(g,prior,hierarchy,annotations,signature):
  need(hierarchy(baseline)==hierarchy(prior),'original baseline hierarchy matches qualified source pins')
  need(annotations(baseline)==annotations(prior),'original baseline annotations match qualified source pins')
  proof=json.loads((NATIVE/'paired-layout-proof.json').read_text())
- need(pin(NATIVE/'selected/layout'/(TOP+'.gds'))['sha256']==proof['candidate_gds_sha256']=='285760f3930a1cc142b45a3c43866202f1ea4694f468fb1603f286cb546cd514','exact new physical candidate')
+ need(pin(NATIVE/'selected/layout'/(TOP+'.gds'))['sha256']==proof['candidate_gds_sha256']=='ecae8ae8e49beea391b1d2575da6f5ac9ea01180550ae65fc786ddc6fd9ee193','exact new physical candidate')
  before=list(baseline.cell(TOP).each_inst());after=list(g.cell(TOP).each_inst())
  need(len(before)==40 and len(after)==16,'explicit top via flattening and16 retained macros')
  macros={n:i for n,i in enumerate(before) if i.cell.name.startswith('pd_child_')}
