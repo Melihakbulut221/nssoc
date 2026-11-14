@@ -10,8 +10,9 @@ s=rtl.read_text()
 rows=[]
 for depth,size in [(2,22),(4,38)]:
     commands=[]
+    common='-D SOC_PCIE_REPLAY_AHEAD -D SOC_PCIE_REPLAY_INBANK -D SOC_PCIE_RESET_COPIES'
     for name,flags in [('gold',''),('gate','-D SOC_PCIE_REPLAY_WRITE_PREDECODE')]:
-        commands += [f'read_verilog -sv {flags} hw/soc/rtl/pcie/soc_pcie_crc32_byte.v {rtl}',
+        commands += [f'read_verilog -sv {common} {flags} hw/soc/rtl/pcie/soc_pcie_crc32_byte.v {rtl}',
           f'chparam -set DEPTH {depth} -set MAX_BYTES {size} soc_pcie_replay_tx',
           'prep -top soc_pcie_replay_tx -flatten', 'memory_map', 'opt', 'async2sync', 'opt',
           f'rename soc_pcie_replay_tx {name}',f'design -stash {name}']
@@ -22,6 +23,6 @@ for depth,size in [(2,22),(4,38)]:
     with log.open('w') as stream:
         result=subprocess.run(['yosys','-Q','-T','-s',str(script)],stdout=stream,stderr=subprocess.STDOUT,timeout=1200)
     text=log.read_text()
-    rows.append(dict(depth=depth,max_bytes=size,returncode=result.returncode,log_sha256=hashlib.sha256(log.read_bytes()).hexdigest(),passed=result.returncode==0 and 'Equivalence successfully proven!' in text))
+    rows.append(dict(depth=depth,max_bytes=size,common_defines=common,returncode=result.returncode,log_sha256=hashlib.sha256(log.read_bytes()).hexdigest(),passed=result.returncode==0 and 'Equivalence successfully proven!' in text))
     (out/'equivalence.json').write_text(json.dumps(dict(rtl_sha256=hashlib.sha256(s.encode()).hexdigest(),cases=rows),indent=2)+'\n')
     assert rows[-1]['passed'], text[-5000:]
