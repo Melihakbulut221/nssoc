@@ -99,4 +99,39 @@ for layer,region in parent.items():
   b=polygon.bbox();hits=[y for y in edges[:-1] if b.bottom<y<b.top]
   if hits:violations.append({'layer':layer,'bbox_dbu':str(b),'crossed_edges_dbu':hits})
 out['physical_band_feasibility']={'edges_dbu':edges,'candidate_vertical_trunks':records,'trunks_removed_only_for_analysis':True,'crossing_conductors':violations,'whole_band_move_without_further_routing_changes_supported':not violations,'scope':'Conservative geometric feasibility, not electrical net ownership or DRC/LVS. Only known-width tall TM1 rectangles left of macros classified as possible global trunks; remaining boundary crossings retained as blockers. No GDS edits.'}
+# Actual intersection audit for ALL candidate trunks, including four late
+# shortcuts beyond the earlier conservative x bound. No geometry edited.
+all_trunks=kdb.Region(); boxes=[]
+for shape in T.each_shape(layout.layer(126,0)):
+ if not shape.is_box():continue
+ b=shape.box
+ if b.right<993600 and b.width() in (3200,64000,256000) and b.height()>b.width():
+  all_trunks.insert(b);boxes.append(b)
+assert (all_trunks-(full['126/0']-child['126/0'])).is_empty()
+remaining={key:(reg-child[key]).merged() for key,reg in full.items()}
+remaining['126/0']=(remaining['126/0']-all_trunks).merged()
+residual=[]
+for layer,region in remaining.items():
+ for polygon in region.each():
+  b=polygon.bbox();hits=[y for y in edges[:-1] if b.bottom<y<b.top]
+  if hits:residual.append({'layer':layer,'bbox_dbu':str(b),'edges_dbu':hits})
+def band(y):
+ if y<edges[0]:return -1
+ for n in range(16):
+  if edges[n]<=y<=edges[n+1]:return n
+ raise ValueError('Contact outside top boundary')
+rows=[]
+for b in boxes:
+ reg=kdb.Region(b);contacts={}
+ # Via4 (M5-TM1), TopVia2 (TM1-TM2), and same-layer local tails.
+ for layer in ['125/0','133/0','126/0']:
+  material=remaining[layer] if layer=='126/0' else full[layer]
+  hit=(material & reg.sized(1)).merged()
+  contacts[layer]=[{'bbox_dbu':str(poly.bbox()),'band':band(poly.bbox().center().y)} for poly in hit.each()]
+ # Metal rectangle may be crossed by unconnected metal on another layer;
+ # report actual via intersections only, do not infer a net from proximity.
+ rows.append({'bbox_dbu':str(b),'contact_geometry':contacts,'contact_bands':sorted({x['band'] for v in contacts.values() for x in v})})
+out['all_trunk_connectivity_geometry']={'candidate_count':len(boxes),'trunks':rows,'remaining_crossings':residual,'scope':'Actual geometric via/same-metal intersections only. Electrical net identity, connectivity equivalence, DRC and new RC still required. Source GDS unchanged.'}
+assert hashlib.sha256(pathlib.Path('source.gds').read_bytes()).hexdigest()==out['geometry']['sha256']
+
 pathlib.Path('out').mkdir();pathlib.Path('out/capacitor-native-records.json').write_text(json.dumps(out,indent=2))
