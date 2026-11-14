@@ -1,3 +1,13 @@
+## Assembled SRAM geometry readback passed
+
+Run **43600253157**, source `09ac3feea2471ed393055fdf55d84be9dca5b3f5`, verified all **311 SRAM library cells** in the actual assembled main-chip GDS. No missing or different cells; grid, shapes, labels and internal instance transforms/arrays match. The main-chip top contains exactly **16 DP and4 SP macro instances** as required. Safe artifact14116495410, SHA256 `28d31064048873cd2a8e3bb6676f1ff5938773b01642287ddf07a7e46819752c`.
+
+This closes the namespaced SRAM geometry-transfer check for the prior CRC route, **not full-chip electrical LVS, DRC, timing or manufacturing acceptance**. The GDS direct-top instance count1,388,337 is structural and must not be equated to the powered-Verilog logical count158,681 without classifying helper/via/physical-only cells.
+
+Next substantive task: qualify the1140 omitted clock-load outputs using authoritative cell directions, resolve top-port/constant/bus mapping, then build the independent full transistor schematic and compare it to this frozen GDS. Use the pinmap and streamout artifacts listed immediately below. Keep original gate failures visible and repeat final verification on the newer route once it completes.
+
+Evidence: `docs/evidence/assembled-sram-geometry-passed-20261114.json`. Tested readback helper retained in integration.
+
 ## Main-chip GDS produced; independent powered-netlist interface inventory completed
 
 ### Verified streamout
