@@ -84,5 +84,32 @@ for cp in xref.each_circuit_pair():
  if left!=right:
   r['cell_pair_inventory_differences'].append({'layout_cell':field(cp.first(),'name'),'reference_cell':field(cp.second(),'name'),'status':str(cp.status()),'layout_only':rows(left-right),'reference_only':rows(right-left)})
 r['deck_source_evidence']=deck_sources
+# Independently count original polygon intersections instead of trusting LVS W/L.
+with tarfile.open(fileobj=io.BytesIO(z.read(members[0])),mode='r:gz') as t:
+ targets=[m for m in t.getmembers() if m.isfile() and m.name.endswith('/RM_IHPSG13_2P_256x16_c2_bm_bist.gds')]
+ assert len(targets)==1
+ geometry=t.extractfile(targets[0]).read()
+assert hashlib.sha256(geometry).hexdigest()=='420b5223d14e2f873a2464849e3decbbec2b5b16b3c6a0f8cd2bb21b0d52365b'
+pathlib.Path('original.gds').write_bytes(geometry)
+layout=db.Layout();layout.read('original.gds');top=layout.cell('RM_IHPSG13_2P_256x16_c2_bm_bist');assert top is not None
+geom={'gds_sha256':hashlib.sha256(geometry).hexdigest(),'dbu_um':layout.dbu,'scope':'Independent bounding-dimension inventory from original merged metal drawing/filler minus slit intersect resistor marker. No coordinates, netlist or geometry exported; no acceptance waiver.','layers':{}}
+for number,name in [(10,'res_metal2'),(30,'res_metal3')]:
+ def region(datatype):
+  idx=layout.find_layer(number,datatype)
+  return db.Region(top.begin_shapes_rec(idx)) if idx is not None else db.Region()
+ metal=region(0)+region(22);metal-=region(24)
+ resistors=(metal & region(29)).merged()
+ histogram=collections.Counter();nonrectangular=0
+ for poly in resistors.each():
+  box=poly.bbox()
+  if poly.area()!=box.area():nonrectangular+=1
+  dimensions=tuple(sorted([round(box.width()*layout.dbu,12),round(box.height()*layout.dbu,12)]))
+  histogram[dimensions]+=1
+ expected=collections.Counter()
+ for row in r['hierarchy_expanded_inventories']['layout']['classes_dimensions']:
+  if row['class']==name:expected[tuple(sorted([row['L'],row['W']]))]+=row['count']
+ geom['layers'][name]={'polygon_count':sum(histogram.values()),'nonrectangular_count':nonrectangular,'dimensions_um':[{'short':k[0],'long':k[1],'count':v} for k,v in sorted(histogram.items())],'equals_extracted_dimension_inventory':nonrectangular==0 and histogram==expected}
+r['independent_original_geometry']=geom
+assert all(v['equals_extracted_dimension_inventory'] for v in geom['layers'].values()),geom
 pathlib.Path('out').mkdir();pathlib.Path('out/top-mismatch.json').write_text(json.dumps(r,indent=2))
 print(json.dumps({k:v['status_counts'] for k,v in r.items() if isinstance(v,dict) and 'status_counts' in v}))
