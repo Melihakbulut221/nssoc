@@ -1,58 +1,57 @@
-name: PCIe CRC byte-order input retiming mutual equivalence
+name: CRC byte-order candidate packet simulation and bad-seed control
 on:
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  equivalence:
+  packet-simulation:
     runs-on: ubuntu-24.04
-    timeout-minutes: 100
-    strategy:
-      fail-fast: false
-      matrix:
-        capacity: [8, 32]
-        direction: [forward, reverse]
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
           filter: blob:none
           sparse-checkout: |
-            hw/soc/rtl/pcie
             scripts
-      - name: Retry transient download failures
-        run: printf 'retry = 10\nretry-delay = 30\nretry-all-errors\nfail\n' > ~/.curlrc
-      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
-        id: cad1
-        continue-on-error: true
-        with:
-          version: '2026-08-04'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.cad1.outcome == 'failure'
-        run: sleep 180
-      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
-        id: cad2
-        if: steps.cad1.outcome == 'failure'
-        continue-on-error: true
-        with:
-          version: '2026-08-04'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
-        run: sleep 300
-      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
-        if: steps.cad1.outcome == 'failure' && steps.cad2.outcome == 'failure'
-        with:
-          version: '2026-08-04'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Prove CRC byte-order retiming against exact current RTL
-        run: python3 -u scripts/check_pcie_crc_order_equivalence.py "${{ matrix.capacity }}" "${{ matrix.direction }}"
+            hw/soc/rtl/pcie
+            hw/soc/tb/cocotb
+            hw/requirements.txt
+      - name: Install simulation runtime
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends iverilog
+          python3 -m venv .venv
+          .venv/bin/pip install -r hw/requirements.txt
+      - name: Replay standalone transmitter and complete packet ports
+        run: |
+          set -euo pipefail
+          .venv/bin/python scripts/check_pcie_packet.py --unit-tx --out out/tx
+          .venv/bin/python scripts/check_pcie_packet.py --out out/endpoint
+          .venv/bin/python scripts/check_pcie_flow_packets.py --out out/flow
+      - name: Reject corrupted CRC seed with the actual endpoint bench
+        run: |
+          .venv/bin/python - <<'PYCONTROL'
+          import pathlib,shutil,subprocess,json
+          rtl=pathlib.Path('mutant');shutil.copytree('hw/soc/rtl/pcie',rtl)
+          p=rtl/'soc_pcie_lcrc_tx.v';s=p.read_text()
+          old="prefix_crc<=crc_byte(crc_byte(32'hffffffff,"
+          assert s.count(old)==1
+          p.write_text(s.replace(old,"prefix_crc<=crc_byte(crc_byte(32'hfffffffe,"))
+          r=subprocess.run(['.venv/bin/python','scripts/check_pcie_packet.py','--rtl-dir',str(rtl),'--out','out/bad-seed'])
+          d=json.loads(pathlib.Path('out/bad-seed/result.json').read_text())
+          assert r.returncode!=0 and d['returncode']!=0 and d['tests']['failed']>0 and d['tests']['skipped']==0
+          assert sum(d['tests'].values())==d['expected_tests']
+          pathlib.Path('out/negative-control.json').write_text(json.dumps({'status':'PASS_BAD_CRC_SEED_REJECTED','result':d,'production_accepted':False},indent=2))
+          PYCONTROL
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pcie-crc-order-${{ matrix.capacity }}-${{ matrix.direction }}-${{ github.run_id }}
+          name: crc-order-packet-simulation-${{ github.run_id }}
           path: |
-            out/*.log
-            out/*.ys
-            out/result.json
+            out/**/*.json
+            out/**/*.xml
+            out/**/*.log
           if-no-files-found: error
           retention-days: 90
