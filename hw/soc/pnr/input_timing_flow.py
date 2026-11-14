@@ -55,8 +55,17 @@ set old_nets [llength [$block getNets]]
 set changed {}
 foreach bank {1 2 3} {
  set instname [format {u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[%d].u_mem} $bank]
- set memory [$block findInst $instname]
- if {$memory eq "NULL" || [[$memory getMaster] getName] ne "RM_IHPSG13_2P_256x16_c2_bm_bist"} {error "Wrong SRAM target"}
+ set matches {}
+ foreach candidate [$block getInsts] {
+  set rawname [$candidate getName]
+  set canonical [string map [list "\\" ""] $rawname]
+  if {$canonical eq $instname} {lappend matches $candidate}
+ }
+ if {[llength $matches]!=1} {error "Expected one exact SRAM instance $instname, found [llength $matches]"}
+ set memory [lindex $matches 0]
+ set actual_master [[$memory getMaster] getName]
+ if {$actual_master ne "RM_IHPSG13_2P_256x16_c2_bm_bist"} {error "Wrong SRAM master $actual_master for $instname"}
+ puts "NSSOC_SRAM_TARGET [$memory getName] $actual_master"
  set sink [$memory findITerm A_MEN]
  if {$sink eq "NULL" || [[$sink getMTerm] getIoType] ne "INPUT"} {error "Missing SRAM enable pin"}
  set net [$sink getNet]
