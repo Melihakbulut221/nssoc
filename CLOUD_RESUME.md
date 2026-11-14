@@ -1,3 +1,13 @@
+## 2026-11-14 — stored full-chip identity replay PASSED; full fault suite live
+
+Identity43607296971/source1c3f8363705a03c0e9d254a44b47d85ef5f4bcc7 PASSED:108Match, native comparetrue, flag_missing_portstrue, original DB SHAunchanged,97.73s comparison. Restoring original SPICE reference.case_sensitive=False also makes original saved-xref port check pass (beforefalse/aftertrue), confirming serialization-semantics cause. Safe14119285571 SHAdb1e0fdcaaf6c86fae0ef605d0e5e4fbe4d7d60b0cf94f362dd233c38266de9c. Receipt docs/evidence/full-chip-stored-identity-20261114.json. No port waiver or source/netlist edits.
+
+Follow complete fault suite43607561776/source0af445ae8447e48a7fbd1252f1693df19acc3bfb, branchcodex/full-chip-native-fault-controls. Single cloud job reruns identity FIRST, then signal_open, sram_mos_width, port_name sequentially. Each restores same original DB independently. Identity requires108Match and strict ports; signal/MOS require native comparefalse; port-name mutation requires comparetrue but strict portsfalse. Aggregate requires allfour exact cases and sameoriginalhash; no generic command failure counts. Safe artifact full-chip-native-fault-suite-43607561776 contains aggregate.json plus per-case result/port-inventory JSON. Native DB remainsrunneronly. Tested suite helper not yet merged; do not merge experimentalworkflow.
+
+Once suite passes retain helper/evidence and move to new-route results. Route43591198141 and PHY43603972722 still live at snapshot. Full serial PHY/newroute allcorner timing/coherent newroute LVS/production approval remain open.
+
+Snapshot: {"43591198141": {"status": "in_progress", "conclusion": null, "head_sha": "2bb475a2d0a9c51cfa985a50d0239799deaddc45"}, "43603972722": {"status": "in_progress", "conclusion": null, "head_sha": "389d8b4f2e5782521d5bd779807dce3bb5029a10"}, "43607561776": {"status": "in_progress", "conclusion": null, "head_sha": "0af445ae8447e48a7fbd1252f1693df19acc3bfb"}}
+
 ## 2026-11-14 — saved LVS replay loses SPICE case semantics; restoration under test
 
 Diagnosis43606966719/sourceb90cfd743752d1cf92cfe74a296dc4a105e59970 completed: graph compare TRUE/108Match; port check FALSE even on original saved cross-reference before replay. Safe14119210172 port-inventory.json proves both deserialized netlists case_sensitive=True; 354pins each, only2exact-case matches (supplies) but all354match case-folded with no collisions. Layout ports lower-case, SPICE reference uppercase. This is not evidence of electrical mismatch in original accepted extraction.
