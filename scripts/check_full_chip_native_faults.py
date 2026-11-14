@@ -36,6 +36,17 @@ for side,nl in [('layout',layout),('reference',reference)]:
  port_inventory[side]={'case_sensitive':nl.is_case_sensitive(),'ports':[{'pin':value(pin,'name'),'net':c.net_for_pin(pin.id()).name if c.net_for_pin(pin.id()) else None} for pin in c.each_pin()]}
 port_inventory['original_flag_missing_ports']=lvs.flag_missing_ports(top)
 (derived/'port-inventory.json').write_text(json.dumps(port_inventory,indent=2))
+# KLayout v0.30.13 dbNetlistSpiceReader.cc explicitly sets this false.
+# The persisted LVS reader did not retain it. Restore SPICE name semantics,
+# without renaming ports, aliasing nets, or dropping the missing-port check.
+for side in ['layout','reference']:
+ names=[p['pin'].lower() for p in port_inventory[side]['ports']]
+ assert len(names)==354 and len(set(names))==354
+assert {p['pin'].lower() for p in port_inventory['layout']['ports']}=={p['pin'].lower() for p in port_inventory['reference']['ports']}
+reference.case_sensitive=False
+port_inventory['restored_reference_case_sensitive']=reference.is_case_sensitive()
+port_inventory['restored_original_flag_missing_ports']=lvs.flag_missing_ports(top)
+(derived/'port-inventory.json').write_text(json.dumps(port_inventory,indent=2))
 mutation=None
 if case=='signal_open':
  for sub in top.each_subcircuit():
@@ -73,5 +84,5 @@ lvs.xref().clear()
 start=time.monotonic();matched=lvs.compare(comparer);ports=lvs.flag_missing_ports(top) if matched else False
 rows=[{'layout':p.first().name if p.first() is not None else None,'reference':p.second().name if p.second() is not None else None,'status':str(p.status())} for p in lvs.xref().each_circuit_pair()]
 actual=bool(matched and ports);expected=case=='identity'
-result={'case':case,'explicit_model_pairs':class_pairs,'native_comparison_completed':True,'compare_returned':matched,'missing_ports_check_passed':ports,'accepted':actual,'expected_acceptance':expected,'control_passed':actual==expected,'mutation':mutation,'circuit_status_counts':dict(collections.Counter(x['status'] for x in rows)),'nonmatching':[x for x in rows if x['status']!='Match'],'elapsed_seconds':time.monotonic()-start,'original_database_sha256':digest,'original_database_unchanged':sha(report)==digest,'scope':'Full stored transistor graphs, original circuit-name correspondence only. No original net/pin matching reused, no blackboxes or device removal. Controlled reference mutation in memory; original extracted database unchanged. Not new layout or manufacturing acceptance.'}
+result={'case':case,'reference_spice_case_sensitive':reference.is_case_sensitive(),'explicit_model_pairs':class_pairs,'native_comparison_completed':True,'compare_returned':matched,'missing_ports_check_passed':ports,'accepted':actual,'expected_acceptance':expected,'control_passed':actual==expected,'mutation':mutation,'circuit_status_counts':dict(collections.Counter(x['status'] for x in rows)),'nonmatching':[x for x in rows if x['status']!='Match'],'elapsed_seconds':time.monotonic()-start,'original_database_sha256':digest,'original_database_unchanged':sha(report)==digest,'scope':'Full stored transistor graphs, original circuit-name correspondence only. No original net/pin matching reused, no blackboxes or device removal. Controlled reference mutation in memory; original extracted database unchanged. Not new layout or manufacturing acceptance.'}
 (derived/'result.json').write_text(json.dumps(result,indent=2));print(json.dumps(result));assert result['control_passed'] and result['original_database_unchanged']
