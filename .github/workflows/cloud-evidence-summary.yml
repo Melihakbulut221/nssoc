@@ -1,4 +1,4 @@
-name: Resume saved RX6 hold antenna pass then separate extracted STA
+name: Resume CRC checkpoint with jumper antenna repair and extracted STA
 on:
   workflow_dispatch:
 permissions:
@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [cut10j_rx6_ant_resume]
+        name: [crc_jumper_resume]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -56,16 +56,17 @@ jobs:
           set -euo pipefail
           W=/mnt/s; OUT=$PWD/hw/soc/out/impl-probe
           mkdir -p $W/h
-          gh api repos/${{ github.repository }}/actions/artifacts/14068260482/zip > $W/h/base.zip
-          echo 'cf6a83685c33cdf4083786f0ab136ef1ea2666b44476521228aed5eed73d0855  /mnt/s/h/base.zip' | sha256sum -c -
+          gh api repos/${{ github.repository }}/actions/artifacts/14100640319/zip > $W/h/base.zip
+          echo 'f724a289dc08812190d1aac64bfd1b4fafceeaca71c734ed578ca41d96a62f7c  /mnt/s/h/base.zip' | sha256sum -c -
           unzip -q $W/h/base.zip -d $W/h
           tar -xzf $W/h/routed.tgz -C /
           rm -rf $W/h; mkdir -p $W/h
-          gh api repos/${{ github.repository }}/actions/artifacts/14103417683/zip > $W/h/candidate.zip
-          echo '361ca0f3c8fad45e6c8a8a4b49e828804cb48df8835651acb49932222f6e1c31  /mnt/s/h/candidate.zip' | sha256sum -c -
+          gh api repos/${{ github.repository }}/actions/artifacts/14107653261/zip > $W/h/candidate.zip
+          echo 'a401c73f139405396cf8afdb0e24e718c1334c09d8c49c3e4774d78e3440f64c  /mnt/s/h/candidate.zip' | sha256sum -c -
           unzip -q $W/h/candidate.zip -d $W/h
-          tar -xzf $W/h/candidate.tgz -C "$PWD"
+          tar -xzf $W/h/route-incomplete.tgz -C "$PWD"
           rm -rf $W/h
+          mv $OUT/route $OUT/recovered-route
           python3 scripts/prepare_antenna_resume.py
           set +e
           mkdir -p $OUT/route
@@ -120,7 +121,7 @@ jobs:
       fail-fast: false
       matrix:
         # r_cut4h_td_d68 and r_cut3hh_td_d68 are the route-hold job's databases.
-        name: [cut10j_rx6_ant_resume]
+        name: [crc_jumper_resume]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
