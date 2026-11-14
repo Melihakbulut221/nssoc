@@ -1,4 +1,4 @@
-"""Read-only all-path setup/hold through113specific feedback branch pins."""
+"""Read-only all-path setup/hold through109specific residual branch pins."""
 import os,json,subprocess,zipfile,hashlib,stat,re
 from pathlib import Path
 import cloud_predecode_postcts as prior
@@ -27,11 +27,11 @@ for i in native.infolist():
  q=SOURCE/p;q.parent.mkdir(parents=True,exist_ok=True);q.write_bytes(b)
 state=json.loads((SOURCE/report['repaired_state']).read_text());odb=Path(state['odb']);assert prior.sha(odb)==report['repaired_odb_sha256'];state['metrics']={}
 # Continue from the exact successful RX training ECO, not the older placement.
-eco_run=api('actions/runs/43648980039');assert eco_run['status']=='completed'and eco_run['conclusion']=='success'and eco_run['head_sha']=='95929ee677c79d9bab52f47c28f684eedb91795a'
-m=api('actions/artifacts/14135173417');h='31bfe99bd985d6edfd9246d21c511edf2d17f17371d091158bf9299c909f824b'
-assert not m['expired']and m['workflow_run']['id']==43648980039 and m['workflow_run']['head_sha']==eco_run['head_sha']and m['digest']=='sha256:'+h
+eco_run=api('actions/runs/43653684598');assert eco_run['status']=='completed'and eco_run['conclusion']=='success'and eco_run['head_sha']=='49d8a9aa95863bc35fb87a448583b8c77f6b4896'
+m=api('actions/artifacts/14137831182');h='1d8aa6f46257d545a933e33c0e764207a5ab26f42c00db75bcfc7e76dd38186a'
+assert not m['expired']and m['workflow_run']['id']==43653684598 and m['workflow_run']['head_sha']==eco_run['head_sha']and m['digest']=='sha256:'+h
 p=OUT/'baseline.zip'
-with p.open('xb')as f:subprocess.run(['gh','api','repos/Melihakbulut221/nssoc/actions/artifacts/14135173417/zip'],stdout=f,check=True)
+with p.open('xb')as f:subprocess.run(['gh','api','repos/Melihakbulut221/nssoc/actions/artifacts/14137831182/zip'],stdout=f,check=True)
 assert prior.sha(p)==h;z=zipfile.ZipFile(p);assert len(z.namelist())==len(set(z.namelist()))
 baseline=OUT/'baseline-eco'
 for i in z.infolist():
@@ -46,7 +46,7 @@ def relocate(v):
  if isinstance(v,list):return [relocate(x)for x in v]
  return v
 state=relocate(state);state['metrics']={};odb=Path(state['odb'])
-assert prior.sha(odb)=='de8647caef5c3d38121edeb9d102f53e5406f77371ca161d254459aad58075ca'
+assert prior.sha(odb)=='4f937eac00ff3936e6f6ed874db0af68cd92bd15ce9c31500a19c3b89db215d1'
 initial=OUT/'initial.json';initial.write_text(json.dumps(state))
 config=SOURCE/'trial-config.json';cfg=json.loads(config.read_text());assert cfg['CLOCK_PERIOD']==20 and cfg['TIME_DERATING_CONSTRAINT']==5.0
 app=Path(os.environ['CLOUD_APPIMAGE']);prior.verify(app,'x86_64')
@@ -67,6 +67,6 @@ rows={}
 for p in (OUT/'run').glob('*/io-*.rpt'):
  text=p.read_text();v=re.findall(r'([-+]?[0-9]+\.[0-9]+)\s+slack\s+\((?:MET|VIOLATED)\)',text);assert v
  rows[str(p.relative_to(OUT))]={'worst_slack_ns':min(map(float,v)),'reported_paths':len(v),'sha256':prior.sha(p)}
-assert len(rows)==678
-assert len(rows)==678
-(OUT/'result.json').write_text(json.dumps({'source_run':eco_run['id'],'source_head':eco_run['head_sha'],'source_odb_sha256':prior.sha(odb),'source_unchanged':True,'reports':rows,'accepted':False,'scope':'Read-only exact combined IO ECO: all113self-feedback first branch pins in three corners, max/min each; no layout change or routed signoff.'},indent=2))
+assert len(rows)==654
+assert len(rows)==654
+(OUT/'result.json').write_text(json.dumps({'source_run':eco_run['id'],'source_head':eco_run['head_sha'],'source_odb_sha256':prior.sha(odb),'source_unchanged':True,'reports':rows,'accepted':False,'scope':'Read-only exact combined IO ECO: all109remaining short-path first branch pins in three corners, max/min each; no layout change or routed signoff.'},indent=2))
