@@ -1,8 +1,9 @@
-name: Controlled SRAM metal1 resistor mapping and full DP comparison
+name: Strict current SRAM LVS with tested resistor merge switches
 on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
   lvs:
     strategy:
@@ -35,6 +36,7 @@ jobs:
           sudo apt-get install -y /tmp/klayout.deb
           python3 -m pip install klayout==0.30.13
           klayout -b -v
+          gh api repos/${{ github.repository }}/actions/artifacts/14096828657/zip > merge-controls.zip
       - name: Verify independent MOS merge and nonmerge controls
         run: python3 scripts/check_sram_native_mos_merge.py
       - name: Compare exact current macro and independently audit database
@@ -42,7 +44,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: current-sram-normalized-derived-${{ matrix.macro }}-${{ matrix.mode }}-${{ github.run_id }}
+          name: current-sram-strict-merge-derived-${{ matrix.macro }}-${{ matrix.mode }}-${{ github.run_id }}
           path: |
             out/derived/*.json
             out/normalization-controls.json
@@ -55,7 +57,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: current-sram-normalized-native-${{ matrix.macro }}-${{ matrix.mode }}-${{ github.run_id }}
+          name: current-sram-strict-merge-native-${{ matrix.macro }}-${{ matrix.mode }}-${{ github.run_id }}
           path: native-*.tgz
           if-no-files-found: error
           retention-days: 30

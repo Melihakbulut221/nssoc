@@ -38,6 +38,21 @@ try:
  r['switches']={k:str(v) for k,v in switches.items()};cmd=[str(app),'-b','-zz','-r',str(deck)]
  for k,v in switches.items():cmd+=['-rd',f'{k}={v}']
 
+ # Apply only the exact two-line RES2 switch fix proven by native Ruby controls.
+ import zipfile,io
+ control_blob=P('merge-controls.zip').read_bytes()
+ assert hashlib.sha256(control_blob).hexdigest()=='b58b9142d77cb2f5b429ea23df5854b5e65f5bb19158561d635f9be9872214da'
+ control=json.loads(zipfile.ZipFile(io.BytesIO(control_blob)).read('merge-switch-controls.json'))
+ assert control['status']=='PASS_ISOLATED_MERGE_SWITCH_CONTROLS' and len(control['cases'])==16
+ assert control['source_sha']=='e8c09d6041199f1b57b2f7122621909ac9a5ec58'
+ devices=deck.parent/'rule_decks/custom_devices.lvs'
+ assert sha(devices)==control['original_custom_devices_sha256']
+ before_source=devices.read_text();old_class=control['original_RES2_source'];new_class=control['candidate_RES2_source']
+ assert before_source.count(old_class)==1
+ assert new_class==old_class.replace('    super\n','    super\n    self.supports_serial_combination = SERIES_RES\n    self.supports_parallel_combination = PARALLEL_RES\n')
+ devices.write_text(before_source.replace(old_class,new_class))
+ r['resistor_merge_switch_fix']={'control_run':43553545114,'control_artifact_sha256':hashlib.sha256(control_blob).hexdigest(),'before_sha256':hashlib.sha256(before_source.encode()).hexdigest(),'after_sha256':sha(devices),'scope':'Honor requested serial/parallel disable switches during native combine_devices; MOS combination unchanged; no SRAM geometry/CDL/tolerance changes.'}
+
  # Scoped metal1 model interpretation controls; original geometry/CDL stay unchanged.
  import re
  cell='RSC_IHPSG13_CDLYX1_DUMMY'
@@ -106,10 +121,10 @@ try:
  deck_before=deck.read_text()
  anchor='\n# PURGE\nnetlist.purge if PURGE\n'
  assert deck_before.count(anchor)==1
- flatten_ruby='\n# Experimental representation normalization only: preserve every primitive.\nrequire \'json\'\ndef nssoc_device_count(circuit, cache = {}, active = [])\n  raise \'Missing circuit\' unless circuit\n  name = circuit.name\n  raise \'Recursive hierarchy\' if active.include?(name)\n  return cache[name] if cache.key?(name)\n  total = circuit.each_device.to_a.size\n  circuit.each_subcircuit { |sub| total += nssoc_device_count(sub.circuit_ref, cache, active + [name]) }\n  cache[name] = total\nend\nnssoc_names = %w[RSC_IHPSG13_CINVX2 RSC_IHPSG13_CINVX8 RSC_IHPSG13_DFPQD_MSAFFX2P RSC_IHPSG13_FILLCAP4 RSC_IHPSG13_FILLCAP8 RSC_IHPSG13_WLDRVX8]\nnssoc_rows = []\n[[\'layout\', netlist], [\'reference\', schematic]].each do |label, nl|\n  tops = nl.each_circuit.select { |c| c.name.downcase == $topcell.downcase }\n  raise \'Top identity mismatch\' unless tops.size == 1\n  top_circuit = tops[0]\n  before = nssoc_device_count(top_circuit)\n  raise \'Unexpected frozen DP primitive count\' unless before == 62046\n  selected = nssoc_names.map do |name|\n    matches = nl.each_circuit.select { |c| c.name.downcase == name.downcase }\n    raise "Missing/ambiguous flatten target #{name}" unless matches.size == 1\n    matches[0]\n  end\n  nl.flatten_circuits(selected)\n  after = nssoc_device_count(top_circuit)\n  raise \'Flattening changed recursive primitive count\' unless before == after\n  nssoc_rows << {\'side\'=>label,\'before\'=>before,\'after\'=>after,\'flattened_circuits\'=>nssoc_names}\nend\nFile.write($nssoc_flatten_report, JSON.pretty_generate({\'scope\'=>\'Selective hierarchy normalization only; no primitive exclusion, circuit edits or acceptance waiver\',\'rows\'=>nssoc_rows,\'production_accepted\'=>false}))\n'
+ flatten_ruby='\n# Experimental representation normalization only: preserve every primitive.\nrequire \'json\'\ndef nssoc_device_count(circuit, cache = {}, active = [])\n  raise \'Missing circuit\' unless circuit\n  name = circuit.name\n  raise \'Recursive hierarchy\' if active.include?(name)\n  return cache[name] if cache.key?(name)\n  total = circuit.each_device.to_a.size\n  circuit.each_subcircuit { |sub| total += nssoc_device_count(sub.circuit_ref, cache, active + [name]) }\n  cache[name] = total\nend\nnssoc_names = %w[RSC_IHPSG13_CINVX2 RSC_IHPSG13_CINVX8 RSC_IHPSG13_DFPQD_MSAFFX2P RSC_IHPSG13_FILLCAP4 RSC_IHPSG13_FILLCAP8 RSC_IHPSG13_WLDRVX8]\nnssoc_rows = []\n[[\'layout\', netlist], [\'reference\', schematic]].each do |label, nl|\n  tops = nl.each_circuit.select { |c| c.name.downcase == $topcell.downcase }\n  raise \'Top identity mismatch\' unless tops.size == 1\n  top_circuit = tops[0]\n  before = nssoc_device_count(top_circuit)\n  raise \'Unexpected frozen DP primitive count\' unless before == 70110\n  selected = nssoc_names.map do |name|\n    matches = nl.each_circuit.select { |c| c.name.downcase == name.downcase }\n    raise "Missing/ambiguous flatten target #{name}" unless matches.size == 1\n    matches[0]\n  end\n  nl.flatten_circuits(selected)\n  after = nssoc_device_count(top_circuit)\n  raise \'Flattening changed recursive primitive count\' unless before == after\n  nssoc_rows << {\'side\'=>label,\'before\'=>before,\'after\'=>after,\'flattened_circuits\'=>nssoc_names}\nend\nFile.write($nssoc_flatten_report, JSON.pretty_generate({\'scope\'=>\'Selective hierarchy normalization only; no primitive exclusion, circuit edits or acceptance waiver\',\'rows\'=>nssoc_rows,\'production_accepted\'=>false}))\n'
  deck.write_text(deck_before.replace(anchor,flatten_ruby+anchor))
  r['selective_flatten_deck_sha256']=sha(deck)
- r['selective_flatten_scope']='Six named remaining cells, both sides; recursive primitive counts must remain 62046. No geometry, CDL, primitive, net alias, dimensional tolerance or final port acceptance changes.'
+ r['selective_flatten_scope']='Six named remaining cells, both sides; recursive primitive counts must remain 70110. No geometry, CDL, primitive, net alias, dimensional tolerance or final port acceptance changes.'
  cmd+=['-rd','nssoc_flatten_report='+str((derived/'selective-flatten.json').resolve())]
 
  (native/'command.json').write_text(json.dumps(cmd));start=time.monotonic()
