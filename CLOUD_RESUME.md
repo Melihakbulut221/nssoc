@@ -1,3 +1,13 @@
+# Both original-bias collector-load CDR screens fail data; saved-sample diagnosis live
+
+acload16 result from43571075470 verified: simulatorRC0/devicePASS/phasePASS/dataFAIL. X381wrong717below100mV, Y2wrong596below,765samples each. A/C/D lowmargin65/139/96 exactly same counts as acload12;Bpass. Lower collector resistance alone does not fix the data path. No new layout or closed-loop proof. Safe14107393490 SHAd335866dcf7c30ea6e7100f2ba2041b71d64692ee36bc3b3d197a5fa4896ae2e. Native14107159021 SHA5dbfa37bb7560c8b363f6edf179e098c4e2469281b797aba3d0486ebcc389dcc; mixed14106994265 SHAf8b37b573de8ec7608b800a71089896805462a387bd2c3f97cc371f1953ab17e, bothcloudonly. Raw8fb118e2e91346887be64ba06ebd3c9d31bd1b992fbb5adb2d8f8ec97d1a654a,113490points. Receipt docs/evidence/cdr-acload16-rejected-20261114.json.
+
+Next43579024949 sourceb562486df6d8c15994b355b877bfc80a648d77ac, branchcodex/cdr-acload-settling, verified live. Same tested exactUI/16 conditional settling diagnostic adapted to baseline+xor2acload12/acload16 pinned mixed archives. No waveform realignment, threshold edits, new simulation/layout. Script scripts/diagnose_cdr_acload_settling.py onexperiment, safeartifactcdr-acload-settling-43579024949. Goal: distinguish unchanged sampler-margin from buffer-settling effects before another circuit candidate. Native/mixed archives staycloud. Await result before integrating script.
+
+Other live43566292104(SP),43562021054(DP),43561900502(freshCRCroute),43573697024(MBIST). Fullgoalopen; RX6finalantenna0/0 independentlyproven but extractedSTA rejected as recorded below.
+
+---
+
 # RX6 final antenna independently0/0; routed timing rejected; CDR load12 data fails
 
 43577454990 source7e10978a522ae51d0ccc3d251e1f04e7c089884a completed/success. Fresh read-only native antenna check0nets/0pins,0warnings/errors. ODBSHA3eaa76b381138c637770590f5e19bdedebedc9e658c854fe9b4bf109d31c03cd,SDCSHA5c65218b6106315c71d45c19eb61af09781607f0f438f2c7f99c4427884d24a4 unchanged. Old1/2was pre-finalrepair: do not repair this now-clean antenna candidate. Safe14107441301 SHA25849f1b1bffc545a7984b6e20aca9ec633dd49ca36023d35a795d616b77590d. Tested source copied to main. Receipt rx6-final-antenna-zero-20261114.json. Future routing must check antennas unconditionally after final repair; no report-only freshness assumption.
