@@ -91,11 +91,11 @@ for row in all_anchors:
  if owner is None:unowned.append(row)
  netpoints[row['wire_component']].append((owner,p[0],p[1],row['label']))
  coverage.append({'label':row['label'],'macro':owner,'component':row['wire_component']})
-railnets={n for n,pts in netpoints.items() if any(label.lower() in ('avdd','avss','sub') for _,_,_,label in pts)}
+railnets={r['wire_component'] for r in all_anchors if r['detail'].get('public_port','').lower() in ('avdd','avss','sub')}
 assert len(railnets)==3,railnets
 # Missing device ownership rejects a plan, rather than silently optimizing a
 # partial cone. The source top has exactly25 physical public ports.
-assert len(unowned)==25 and all(not r['label'].startswith(('T','GC_')) for r in unowned),unowned
+assert len(unowned)==25 and all('public_port' in r['detail'] for r in unowned),unowned
 critical={by_label[t]['wire_component'] for t in targets}
 original_y=[i.trans.disp.y for i in macros];origin=min(original_y)
 heights=[i.cell.bbox().height() for i in macros]
@@ -124,4 +124,12 @@ for weight in [1,4]:
  assert all((kdb.Region(newboxes[i])&kdb.Region(newboxes[j])).is_empty() for i in range(16) for j in range(i))
  plans.append({'critical_weight':weight,'order':best,'positions_y_dbu':ys,'objective_before':objective(baseline,weight),'objective_after':bestcost,'macro_bbox_nonoverlap':True,'net_changes':[{'component':n,'labels':[v[3] for v in netpoints[n]],'supply':n in railnets,'critical':n in critical,'before_hpwl_um':baseline[n],'after_hpwl_um':changed[n],'delta_um':changed[n]-baseline[n]} for n in sorted(netpoints)]})
 out['placement_plans']={'status':'PROPOSED_MACRO_ORDERS_REQUIRES_ROUTING_REBUILD','geometry_changed':False,'coverage':coverage,'unowned_public_ports':unowned,'rail_components':sorted(railnets),'critical_components':sorted(critical),'plans':plans,'scope':'Complete physical anchor graph; fixed external pins; constant X; reordered native macros with80um gaps. HPWL is a placement proxy, not routed wirelength or timing. All signal changes including clocks and upstream sampler paths retained. No LVS/DRC or electrical acceptance.'}
+out['top_shape_inventory']={}
+for li in layout.layer_indexes():
+ counts=collections.Counter();bounds=[]
+ for shape in layout.top_cell().each_shape(li):
+  kind='box' if shape.is_box() else 'polygon' if shape.is_polygon() else 'path' if shape.is_path() else 'text' if shape.is_text() else 'other'
+  counts[kind]+=1
+  if len(bounds)<10:bounds.append({'kind':kind,'bbox_dbu':str(shape.bbox())})
+ if counts:out['top_shape_inventory'][str(layout.get_info(li))]={'counts':dict(counts),'first_ten_bounds':bounds}
 pathlib.Path('out').mkdir();pathlib.Path('out/capacitor-native-records.json').write_text(json.dumps(out,indent=2))
