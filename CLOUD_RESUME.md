@@ -1,3 +1,13 @@
+## 2026-11-14 — guarded block repair measured: hold improved, input setup still open
+
+Run 43633349306 / source 470ff1618470f9c2875aa6b021db85591e1e8c0c completed successfully as an execution, not timing acceptance. Both original DB readbacks matched. Positive optimization margins (setup 50 ps, hold 25 ps) left the original 4 ns clock, I/O budgets, libraries, derates and zero-slack acceptance unchanged.
+
+Cache all-constrained-path final setup: slow -0.022251979 ns, typical +1.089151502 ns, fast +1.733969331 ns. Final hold: slow +0.178296044 ns, typical +0.087623879 ns, fast +0.025209585 ns. Register-only slow setup is +0.050769 ns, which does NOT close the input path. Baseline all-path slow setup remains -0.190607980 ns, fast hold +0.020921515 ns. These are ideal-clock isolated-block estimates, not routed chip signoff.
+
+Authenticated safe artifact 14129230698 SHA256 9772aa9f3b23a62bbaa900a028fec6417812e3890dffef89968d8a419b8bf3b9; native artifact 14129275553 SHA256 b9b6166a75a2889ee88f952abaf8b9e00f2fb151f4654d4dd9a0ceab290551c4 remains cloud-only. Full receipt: docs/evidence/eop-block-guarded-repair-20261114.json.
+
+Next: inspect remaining input path and native optimization log before choosing another ECO. Full-chip EOP postCTS run 43633451595 remains live, exact source 2c515a0bfb946ef244cc9e94e2f6af8a7e22e2fe. New full-chip boot job 132560946622 remains live. Old buf4 run 43610680141 has completed routing and advanced to nominal OpenRCX / three-corner STA; do not transfer its result to new EOP RTL. Paired650 full transient 43626358999 and old predecode boot 43620739672 also remain live. No duplicate runs or acceptance relaxation.
+
 ## 2026-11-14 — fresh EOP mainchip CTS completed; postCTS repair dispatched; independent block audit found input violation
 
 Mainphysicaljob132560946246 ofrun43632152541/sourcea763617997b618370792779deb37ab711e79774a COMPLETEDSUCCESS (664.236s). IndependentIcarusbootjob132560946622 stilllive, sooverallruninprogress. Actual20macroplacement/CTS, protectedsourcesunchanged. CTSODB55a060b56ff638d3d859c78f514cb949f8b5a573bbe0e32dd82cf80b68d66ec4 at run/27-openroad-cts/state_out.json. Safe14128368896 SHAcb4b0de4d03e1d7d071ea36950c466708bc20a31f99828529244533c5a07c1af; native14129335105 SHA1b13027b0c4d4d3c5c8c5c30fc7dd106e0be90e163ca6fdaa8b38ac7fbecbd06,302421624bytes cloudonly,356hash-boundfiles. Fullreceipt docs/evidence/eop-chip-placement-cts-20261114.json. InheritedCTSmetrics areNOTfreshpostCTSSTA.
