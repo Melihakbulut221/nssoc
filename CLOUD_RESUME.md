@@ -1,3 +1,13 @@
+## 2026-11-15 — packed native conductor graph passed; terminal/contact extraction live
+
+Run **43640446032**, source **4a72ade2fe5f938f1a1438c08c35b6f9c38c2f95**, completed SUCCESS. Fresh native identities and actual metal/via graph have650 devices,2046 terminals,25 external ports and113 conductor components. Actual geometry was not changed and no component was merged merely by net label. Exact GDS remains `ecae8ae8e49beea391b1d2575da6f5ac9ea01180550ae65fc786ddc6fd9ee193`. This is connectivity extraction, not numeric RC or electrical acceptance.
+
+Safe artifact14132415076 SHA256 `4969908bb9422d864bb5ff3d17a2e61928a6f3f2a3f267904819a160f1159c59`; native14131638321 SHA256 `2b3fb4f7f941846e2a2f69953e5be309129e8e5f1870252b3ce822e3ffb62dad` (cloud only). Receipt `docs/evidence/packed650-wire-graph-20261115.json` preserves the report and hashes of exact graph/identity members.
+
+NEW terminal/contact run **43640767232**, source **b0ab692823d8aaf2c401674cac2f6c3c91f5db95**, branch `codex/packed650-terminal-anchors`. It authenticates the new conductor producer and its archives, the actual packed generation archives, exact GDS/LVS database, complete primitive material and annotations, and actual whole-band transforms. `cdr650_paired_pin_provenance.py` was explicitly rebound to the new GDS, rather than leaving its old hard-coded hash or bypassing source pin provenance. All original terminal-material probes and fault controls remain. No old numeric RC reuse. On completion require every2046 terminal,1428 physical point references and200 gate contacts before fresh metal RC extraction and electrical recomposition.
+
+CRC postCTS43639975405 and RX+CRC firmware/synthesis43638771489 remain live, with CRC gateboot43638590941 independent. Full goal remains open. All native source/CAD work stays in cloud.
+
 ## 2026-11-15 — complete packed PHY physical suite passed; fresh extraction started
 
 Corrected physical run **43640075616**, source **1d7d44c9907c071bf801dcb1347d46750cccd97e**, completed SUCCESS. All16 actual phases completed: full560-category native DRC has **zero markers**; deep and flat LVS each match **650 layout /650 schematic devices**; all13 native physical/schematic fault cases were rejected. This supersedes the partial interrupted run43639600962; no missing phase was waived. The seven memory-monitor controls also passed. This is physical verification of the standalone packed CDR/phase-detector candidate, NOT full PCIe PHY or whole-chip manufacturing approval.
