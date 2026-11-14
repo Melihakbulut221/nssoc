@@ -1,3 +1,11 @@
+## Full-chip integration preflight found a shared SRAM reference name conflict
+
+43595567300/source088ee293f07db0611dbd4c6dac103bd4f63c8f11 completed. Exact passed DP/SP engineering CDL libraries each145subcircuits,42sharednames:41identicalcanonicaldefinitions,1different RSC_IHPSG13_MET3RES. Do NOT concatenate/include both with a first/last-definition-wins merge. Individual macro LVS pass does not prove a merged library is equivalent.
+
+Physical shared-cell investigation run43595752035/source202afdd19f4ec20be6c6d02dcfe8e79b59b7fafa, branchcodex/sram-library-geometry-preflight. Restores both pinned passing native archives only on cloud, verifies originalGDS hashes, inventories direct GDS geometry of42sharedcellnames and exact differing reference records. Safe sram-library-geometry-preflight-*. Direct shape hashes include labels and are not electrical equivalence proof; inspect shape/type/parameter differences before choosing deterministic namespace separation and explicit LVS mappings. Full-chip LVS remains pending.
+
+All SP/DP fullmacro sensitivity controls passed; bootpassed; route43591198141stilllive; fullPHY and finaltiming stillopen. Receipt docs/evidence/sram-library-conflict-preflight-20261114.json. Native files remain cloud-only.
+
 ## SP full-macro fault controls all passed; A/B physical paths established
 
 43595161911/source da49561e5f322166feb371f7b5e6ee14d96da9fa completed SUCCESS all4controls. Identity25Match strictPASS. WidthR0.2u->.3u,layerR0metal2->metal3,andfirstMOSgateNT->NSSOC_INJECTED_OPEN_GATE each completed native compare and strictFAIL(24Match1NoMatch),as required. Not infrastructure rejection. Both SP and DP engineering macro comparisons now pass with full-macro fault sensitivity controls; original vendor references and full-chip/production qualification still not passed.
