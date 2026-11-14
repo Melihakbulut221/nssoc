@@ -1,0 +1,34 @@
+{
+  "run": 43540627209,
+  "source": "cc19a51b2e81bc8d7e80dbd49ca106759f2fb0cd",
+  "branch": "codex/cut10j-rx6-hold3-antenna",
+  "status_at_launch": "in_progress",
+  "scope": "Experimental endpoint-specific hold ECO plus existing five-driver resizing and antenna repair; not signoff",
+  "source_native_artifact": 14068260482,
+  "source_native_sha256": "cf6a83685c33cdf4083786f0ab136ef1ea2666b44476521228aed5eed73d0855",
+  "changes": [
+    "Three sg13g2_dlygate4sd3_1 delay cells only between wire66201/X and RX bank6 A_ADDR[6]",
+    "Existing five driver replacements from 6c5d8de09c0fd88b0daa57e669b3b6fc2bf67bbb",
+    "Fresh global routing, antenna repair, detailed routing, nominal OpenRCX, three-corner propagated STA"
+  ],
+  "guards": [
+    "Exact source net net66201, driver wire66201 sg13g2_buf_4, exactly two original pins and no BTerms",
+    "Liberty function X=A required in every restored matching standard-cell model and slow/typ/fast models required",
+    "Delay cell signature A INPUT, X OUTPUT and two power/ground pins verified",
+    "Every new power pin connected to the corresponding valid existing delay-cell supply",
+    "Exact original connectivity recovered by contracting only the three identity cells; all other original pins and nets unchanged",
+    "Post-legalization connectivity must equal post-ECO snapshot",
+    "Original 20/4/8/8ns clocks, uncertainty, derates and corner configuration retained",
+    "Strict final zero setup, hold, slew, cap, fanout, router DRC and antenna violations required"
+  ],
+  "timing_basis": {
+    "report_run": 43505737740,
+    "derived_artifact": 14090509769,
+    "slow_setup_margin_ns": 5.23103,
+    "fast_hold_slack_ns": -0.427385,
+    "limitation": "These path budgets are from the four-driver candidate, not a guarantee for the new five-driver/antenna/ECO geometry."
+  },
+  "production_accepted": false,
+  "full_phy_accepted": false,
+  "qualified_rc_minmax": false
+}
