@@ -1,3 +1,7 @@
+## Combined PCIe ECO whole-chip audit queued — 2026-11-15
+
+Run 43649093686, source50a0bede8a6cfcf6cefbf5efef2e2971da05fb2f, branch codex/rx-pcie-hold-impact. Waits for exact combined producer43648980039/head95929ee677c79d9bab52f47c28f684eedb91795a. Baseline authenticated native14134996872/e6893782d2385474b989299f52807ea4e4c11f4ffc06a6a366310fe3484d5832, ODB635f0e623eb202d845bde5a1f29f65466cf82f639dc2f7044aaabcac1451c203. All original allcorner metrics must remain present; checks propagated clocks and exact candidateODB duplicates. Records setup/hold count/slack/TNS regressions and40IOtargeted240check result separately. accepted staysfalse; production/routing still open. No fresh result yet.
+
 ## PCIe margins measured and combined I/O ECO launched — 2026-11-15
 
 Measurement43648146822/head2a700b3a0965336cf1b09c224d98b3c2ba3a0b01 completed SUCCESS. All174native targeted report hashes verified from safe14135141187 SHAcd5e5e588cca03ddaef8d87d60d033cba2c0704fc5919272ba5cde9764e5b85d. All29inputs have positive allcorner setup, minimum2.073814869ns (function_id[3],slow); fastest hold worst-.194897100ns DLLP. Receipt docs/evidence/rx-pcie-input-timing-20261115.json. Exact measured baseline was training-only ODBdce675..., distinct from Ethernet ECO.
