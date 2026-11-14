@@ -1,4 +1,4 @@
-name: CDR isolated select buffer bias - frozen gates
+name: CDR isolated XOR input load nx2 to nx1 - frozen gates
 on:
   workflow_dispatch:
 permissions:
@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        variant: [bd10_lowz8_xor2_cdata3_sel15]
+        variant: [bd10_lowz8_xor1_cdata3_sel15]
     env:
       GH_TOKEN: ${{ github.token }}
       ARTIFACT_ID: '13283214752'
@@ -51,7 +51,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: select-bias-native-${{ matrix.variant }}-${{ github.run_id }}
+          name: xor-load1-native-${{ matrix.variant }}-${{ github.run_id }}
           path: |
             mos650-gate-ac/native
             mos650-gate-ac/derived/loaded-n1-nominal_late.json
@@ -60,9 +60,10 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: cdr-select-bias-result-only-${{ matrix.variant }}-${{ github.run_id }}
+          name: cdr-xor-load1-result-only-${{ matrix.variant }}-${{ github.run_id }}
           path: |
             whatif-${{ matrix.variant }}/result.json
+            whatif-${{ matrix.variant }}/isolated-xor-load-change.json
             whatif-${{ matrix.variant }}/isolated-c-sampler-change.json
             whatif-${{ matrix.variant }}/isolated-select-bias-change.json
             whatif-${{ matrix.variant }}/candidate-current-density-binding.json

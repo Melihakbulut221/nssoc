@@ -28,6 +28,9 @@ LOWZ4=dict(rppd_w='4u',ac_mim='7.2u',select_mim='9.6u')
 C_SLAVE_DATA=['XD0255','XD0257']
 C_SLAVE_ALL=['XD0253','XD0254','XD0255','XD0257']
 VARIANTS={
+ 'bd10_lowz8_xor1':dict(LOWZ4,bd_up_w='10u',slave_parallel='2',rppd_w='8u',xor_nx='1'),
+ 'bd10_lowz8_xor1_cdata3':dict(LOWZ4,bd_up_w='10u',slave_parallel='2',rppd_w='8u',xor_nx='1',c_devices=C_SLAVE_DATA,c_nx='3'),
+ 'bd10_lowz8_xor1_cdata3_sel15':dict(LOWZ4,bd_up_w='10u',slave_parallel='2',rppd_w='8u',xor_nx='1',c_devices=C_SLAVE_DATA,c_nx='3',buffer_select_bias='.0015'),
  'bd10_lowz8_xor2_cdata3_sel15':dict(LOWZ4,bd_up_w='10u',slave_parallel='2',rppd_w='8u',xor_nx='2',c_devices=C_SLAVE_DATA,c_nx='3',buffer_select_bias='.0015'),
  'bd10_lowz8_xor2_cdata3':dict(LOWZ4,bd_up_w='10u',slave_parallel='2',rppd_w='8u',xor_nx='2',c_devices=C_SLAVE_DATA,c_nx='3'),
  'bd10_lowz8_xor2_cslave3':dict(LOWZ4,bd_up_w='10u',slave_parallel='2',rppd_w='8u',xor_nx='2',c_devices=C_SLAVE_ALL,c_nx='3'),
@@ -153,7 +156,7 @@ def main(root,variant,out):
         for native_id in VARIANTS[variant]['c_devices']:
             found=[d for d in rows if d['name']=='xpd.'+native_id.lower()]
             assert len(found)==1 and found[0]['nx']==4 and found[0]['collector_backtrace_depth']==0
-        baseline,_=patch(text,'bd10_lowz8_xor2')
+        baseline,_=patch(text,'bd10_lowz8_xor1' if variant=='bd10_lowz8_xor1_cdata3_sel15' else 'bd10_lowz8_xor2')
         def verify_isolated(candidate):
             left,right=baseline.splitlines(),candidate.splitlines();assert len(left)==len(right)
             diffs=[(x,y) for x,y in zip(left,right) if x!=y]
@@ -207,12 +210,36 @@ def main(root,variant,out):
                 assert restored_bench.count(new_line)==1
                 restored_bench=restored_bench.replace(new_line,old_line,1)
             assert restored_bench==bench_before,'Unrelated bench data/clock/load/solver changed'
-            baseline_cdata,_=patch(text,'bd10_lowz8_xor2_cdata3')
+            baseline_cdata,_=patch(text,'bd10_lowz8_xor1_cdata3' if variant=='bd10_lowz8_xor1_cdata3_sel15' else 'bd10_lowz8_xor2_cdata3')
             assert patched==baseline_cdata,'Only select bias may differ from measured cdata3 model'
             (out/'isolated-select-bias-change.json').write_text(json.dumps({'reference_variant':'bd10_lowz8_xor2_cdata3','reference_run':43584735530,'connectivity_evidence_run':43595197025,'changed_bias_sources':bias_changes,'all_model_records_byte_identical_to_reference_variant':True,'all_other_bench_lines_byte_identical':True,'frozen_gate_thresholds_unchanged':True,'original_wire_rc_retained':True,'new_layout':False,'old_current_a':.001,'new_current_a':.0015},indent=2))
         else:
             assert bench_after==bench_before and bias_changes=={},'Bench sources must remain byte-identical' 
     (out/'candidate-current-density-binding.json').write_text(json.dumps({'changes':binding_changes,'original_binding_sha256':hashlib.sha256(json.dumps(original['binding'],sort_keys=True).encode()).hexdigest(),'candidate_binding_sha256':hashlib.sha256(json.dumps(bound,sort_keys=True).encode()).hexdigest(),'current_limit_a_per_emitter':.003,'original_metadata_unchanged':True},indent=2))
+    if variant=='bd10_lowz8_xor1_cdata3_sel15':
+        reference,_=patch(text,'bd10_lowz8_xor2_cdata3_sel15')
+        reference_bench,_=patch_bench(bench_before,'bd10_lowz8_xor2_cdata3_sel15')
+        assert bench_after==reference_bench,'Bench differs from measured select-bias candidate'
+        def verify_xor_delta(candidate):
+            left,right=reference.splitlines(),candidate.splitlines();assert len(left)==len(right)
+            changes=[(a,b) for a,b in zip(left,right) if a!=b]
+            assert len(changes)==24 and {a.split()[0] for a,b in changes}==set(XOR_DATA)
+            for a,b in changes:
+                revised,n=re.subn(r'(\snx=)2(?=\s|$)',lambda m:m[1]+'1',a)
+                assert n==1 and revised==b and 'npn13g2' in a
+            return changes
+        changes=verify_xor_delta(patched)
+        for wrong in [reference,patched.replace(changes[0][1],changes[0][0],1),patched.replace(changes[0][1],changes[0][1].replace('nx=1','nx=3'),1)]:
+            try:verify_xor_delta(wrong)
+            except AssertionError:pass
+            else:raise AssertionError('XOR isolation verifier accepted mutation')
+        assert sum(1 for change in binding_changes.values() if change['new_nx']==1)==24
+        proof={'reference_variant':'bd10_lowz8_xor2_cdata3_sel15','reference_run':43596398222,'physical_diagnosis_run':43603543533,'only_changed_devices':XOR_DATA,'old_nx':2,'new_nx':1,'negative_controls_rejected':3,'all_bench_lines_identical_to_measured_reference':True,'all_other_model_lines_identical':True,'old_extracted_rc_retained':True,'new_layout':False,'current_limit_a_per_emitter':.003,'data_phase_device_gates_unchanged':True}
+        (out/'isolated-xor-load-change.json').write_text(json.dumps(proof,indent=2))
+        # Label intermediate guard receipts accurately: their xor1 baselines are constructed, not simulated.
+        for filename,baseline in [('isolated-c-sampler-change.json','bd10_lowz8_xor1'),('isolated-select-bias-change.json','bd10_lowz8_xor1_cdata3')]:
+            f=out/filename;item=json.loads(f.read_text());item['reference_variant']=baseline;item['reference']=baseline;item['reference_run']=None;item['scope']='Intermediate source-delta guard against constructed unsimulated xor1 baseline. Overall experimental delta is documented in isolated-xor-load-change.json.';f.write_text(json.dumps(item,indent=2))
+
     model.write_text(patched)
     (out/'patch.json').write_text(json.dumps(dict(variant=variant,values=VARIANTS[variant],changed=changed),indent=1))
     folder=native/'loaded-n1-nominal_late';assert not (folder/'wave.raw').exists()
@@ -266,6 +293,10 @@ def main(root,variant,out):
     if 'buffer_select_bias' in VARIANTS[variant]:
         keep['reference_variant']='bd10_lowz8_xor2_cdata3'
         keep['experiment_scope']='Only ibs0 and ibs1 bias sources 1mA->1.5mA relative to measured cdata3. Native model identical, all other bench lines identical. Frozen device/data/phase/current limits unchanged. Nominal externally clocked circuit what-if, not extracted new layout or complete PHY.'
+        (out/'result.json').write_text(json.dumps(keep,indent=1,sort_keys=True))
+    if variant=='bd10_lowz8_xor1_cdata3_sel15':
+        keep['reference_variant']='bd10_lowz8_xor2_cdata3_sel15'
+        keep['experiment_scope']='Only 24 XOR input HBT nx2->1 relative measured select-bias trial43596398222. All bench lines and other model records identical. Actual candidate emitter binding and all frozen limits retained. Old wire RC; circuit what-if only, no new layout or full PHY acceptance.'
         (out/'result.json').write_text(json.dumps(keep,indent=1,sort_keys=True))
     print(json.dumps({k:keep[k]for k in('variant','returncode','passed','data_passed','devices_passed','phase_passed','phase_average_v','failing_hbt')},sort_keys=True))
 if __name__=='__main__':main(*sys.argv[1:])
