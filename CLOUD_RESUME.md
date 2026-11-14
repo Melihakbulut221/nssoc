@@ -1,3 +1,11 @@
+## 2026-11-15 — fresh packed numeric RC passed both orders and all fault controls
+
+Corrected run **43641595711**, source **a82ae4f177962c6eeca9a1a678d7423274ddb313**, completed SUCCESS. Actual new packed geometry produces28634 resistors and18488 capacitors,650 devices/2046 terminals,1428 point references/200 gate contacts. Both native orders agree exactly, including1022 coupling records. Each order rejects13 wire and9 MIM faults. Seven intrinsic MIM cards remain separated from wire C. This establishes this extraction stage only: full qualified PEX, electrical acceptance and full PHY remain FALSE.
+
+Safe14131868918 SHA256 `8d3141a5cee58b57df009381dfd5b141ed465a698f3d0c22ec6db8542492fc14`; native14132266869 SHA256 `2c1771da6336f13c20583b40c1e602287ec63c60046b0c4daf1b2240c52e85f0` (cloud only). Receipt `docs/evidence/packed650-fresh-metal-rc-20261115.json`.
+
+NEXT: rebuild gate-contact network binding/reduction/composition against these exact new source artifacts, then unchanged loaded256-bit transient. Old paired pipeline reference runs43625413974 (gate mesh),43625754764 (503 DC/AC/power/noise checks) and43626358999 (failed loaded transient) are methodology only, not reusable new geometry acceptance. Keep all original windows/expected bits/loads/device SOA gates. RX+CRC exact placement/CTS+boot43641707777 and CRC-only postCTS43639975405 are independent live handles; inspect completed jobs before source-specific successor stages. No native data local, no experimental workflow merge.
+
 ## 2026-11-15 — RX mainchip mapped; exact CTS/boot live; packed RC identity fixed
 
 RX+CRC build **43638771489**, source **e92350d314fd8c04c9c06f2aa7d198f02b000cd1**, completed SUCCESS. 115390 cells, twenty SRAMs,26 replay predecode bits, one source-derived EOP FF; RX local-reset and CRC-select flags confirmed. Exact formal/traffic qualification gate passed. Mapping safe14131928219 SHA716388bae108cddc07099c7dc0de28e058a9c0f888f6cb2b04c5a0fd75baa334; native14132027737 SHA5b92b8ded91a9d8b2d0042457d09f8473dd99064cb7a509644c08d47fe6f1586. Receipt `docs/evidence/rx-cursor-mainchip-mapping-20261115.json` contains full mapping and qualification. This is not gate-level boot or physical acceptance.
