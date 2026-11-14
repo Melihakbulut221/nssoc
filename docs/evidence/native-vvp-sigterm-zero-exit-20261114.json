@@ -1,0 +1,15 @@
+{
+  "observed_utc": "2026-11-14T04:47:30.937959+00:00",
+  "failed_control_run": 43558139164,
+  "failed_control_source": "241ecd5640abc2a2f4e83f139faf76924ff858f9",
+  "artifact": {
+    "id": 14099185767,
+    "sha256": "6985e162d1562918fbeb5da4db5bc29d57f876287f188c9fe67e3a8ce499a26d"
+  },
+  "observation": "Native VVP SIGTERM returned exit0. Subreaper adoption and native waitpid worked; the test expectation of -15 was wrong. The control failed closed. Normal counterpart may still be running.",
+  "correction": "Require exit0 AND completion marker AND byte-identical full baseline for simulation acceptance. SIGTERM and SIGKILL must lack completion and be rejected; SIGKILL must also yield -9. Original full boot_checks already requires its native completion banners and remains unchanged.",
+  "replacement_run": 43558336660,
+  "replacement_source": "292a3313f7c0fca20c3fa65cc5de910003083162",
+  "chip_acceptance": false,
+  "full_chip_prefix_run": 43557919707
+}
