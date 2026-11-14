@@ -1,3 +1,11 @@
+## SRAM block, column and matrix now Match; top remains NoMatch
+
+43591517998/source1acd3c5a4d647495111b274178c29f0440f49a68 terminalsuccessDIAGNOSIS, strictLVSFAIL. 28Match/1topNoMatch. Full448-device32cellblock,1792-devicecolumn,28928-devicematrix eachMatchwithallcontentscompared;top70110eachunchanged. 15nativecontrolspass. Native67.066s vs925.965s block-only; no looseningoflimitsoracceptance. Safe14113030357 SHA1e4a50e936c708c72ac10be5854b762084c12593dddc1e9809e4373c0b6e3bb7; native14113100183 SHA9bac7b5cb401e8b8fc28442197e3dba1cf3c2ce30cba523eae779d315c0c7848 cloudonly. Receipt docs/evidence/dp-sram-matrix-match-top-open-20261114.json.
+
+Nextinspectremainingtopports/peripheralcounts/searchmessagesfromsavedDB; avoidpreviouscrashingfullxrefreader. Additionalcellnamepairs requireinputhierarchyevidenceandstrictcontentschecks; no waiver. Do notpoll43591517998aslive orrerununchanged. OriginalvendorCDLqualificationstillopen.
+
+Live legalizeddiodefullrouting43591198141,PHYcdata3job132416701841 in43584735530(cslave3terminalFAIL),MBIST43588310054. SPtimeout43566292104terminal. Allnativeworkcloudonly.
+
 ## PHY cslave3 completed and rejected; cdata3 still live
 
 43584735530/source842ab2012fae1904251fd1503024e5670de6ad8f job132416702005 terminalFAIL at frozen waveform/device acceptance gate. SimulatorRC0,devicesPASS,phasePASS,VIpass;data/waveformFAIL. Cbelow100mV120samples(min56.63mV),A65,D96;Xwrong386/below717,Ywrong1/below585. cslave3notintegrated;noPHYclosure. Safe14112233130 SHAce095c2ced48cd5b78a7f036e538f0737fae994ffa925c51ff89c76a0cb47d5e;native14112317745 SHAe75dfba4fbd10c671f23764bd580bb5225f2fd848357e0914fb316981c5a6ab2 cloudonly; mixed14112686651 includesNPZ,donotdownloadlocally. Receipt docs/evidence/cdr-cslave3-rejected-20261114.json. Same run'scdata3job132416701841 stilllive;waititsownresultbeforecandidatecomparison.
