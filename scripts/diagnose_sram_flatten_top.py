@@ -11,7 +11,7 @@ with tarfile.open(fileobj=io.BytesIO(z.read(members[0])),mode='r:gz') as t:
  raw=t.extractfile('native/lvs.lvsdb').read()
  # Export only whitelisted PDK program source, never circuit/netlist contents.
  deck_sources={}
- for filename in ['res_extraction.lvs','custom_reader.lvs','sg13g2.lvs']:
+ for filename in ['res_extraction.lvs','custom_reader.lvs','sg13g2.lvs','custom_classes.lvs','res_derivations.lvs','layers_definitions.lvs']:
   matches=[m for m in t.getmembers() if m.isfile() and '/inputs/' in m.name and m.name.endswith('/'+filename)]
   assert len(matches)==1,(filename,len(matches))
   source=t.extractfile(matches[0]).read();assert len(source)<150000
