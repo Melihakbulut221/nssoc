@@ -1,4 +1,4 @@
-name: Fresh paired650 physical gate mesh and native current conservation
+name: Fresh packed650 physical gate mesh and native current conservation
 on:
   workflow_dispatch:
 permissions:
@@ -39,14 +39,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: paired650-gate-mesh-derived-${{ github.run_id }}
+          name: packed650-gate-mesh-derived-${{ github.run_id }}
           path: paired650-gate-mesh/derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: paired650-gate-mesh-native-${{ github.run_id }}
+          name: packed650-gate-mesh-native-${{ github.run_id }}
           path: paired650-gate-mesh/
           if-no-files-found: warn
           retention-days: 90
