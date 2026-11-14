@@ -1,4 +1,4 @@
-name: Survey Ethernet hold and setup report coverage
+name: Extract full Ethernet SRAM endpoint setup and hold paths
 on:
   workflow_dispatch:
 permissions:
@@ -7,7 +7,7 @@ permissions:
 jobs:
   diagnostics:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 30
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -19,12 +19,12 @@ jobs:
           sparse-checkout: /scripts/diagnose_cut10j_electrical4_paths.py
       - run: |
           set -euo pipefail
-          gh api repos/${{ github.repository }}/actions/artifacts/14089073072/zip > reports.zip
+          gh api repos/${{ github.repository }}/actions/artifacts/14088684253/zip > reports.zip
           python3 scripts/diagnose_cut10j_electrical4_paths.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ethernet-hold-setup-coverage-${{ github.run_id }}
+          name: ethernet-full-path-budget-${{ github.run_id }}
           path: out/*.json
           if-no-files-found: error
           retention-days: 90
