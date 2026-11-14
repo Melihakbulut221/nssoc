@@ -28,6 +28,7 @@ LOWZ4=dict(rppd_w='4u',ac_mim='7.2u',select_mim='9.6u')
 C_SLAVE_DATA=['XD0255','XD0257']
 C_SLAVE_ALL=['XD0253','XD0254','XD0255','XD0257']
 VARIANTS={
+ 'bd10_lowz8_xor2_cdata3_sel15':dict(LOWZ4,bd_up_w='10u',slave_parallel='2',rppd_w='8u',xor_nx='2',c_devices=C_SLAVE_DATA,c_nx='3',buffer_select_bias='.0015'),
  'bd10_lowz8_xor2_cdata3':dict(LOWZ4,bd_up_w='10u',slave_parallel='2',rppd_w='8u',xor_nx='2',c_devices=C_SLAVE_DATA,c_nx='3'),
  'bd10_lowz8_xor2_cslave3':dict(LOWZ4,bd_up_w='10u',slave_parallel='2',rppd_w='8u',xor_nx='2',c_devices=C_SLAVE_ALL,c_nx='3'),
  'control':dict(),
@@ -102,6 +103,10 @@ def patch_bench(text,variant):
         for b in ['ibda','ibdc']:
             old=f'I_{b} avdd {b} PWL(0 0 500p .001)';assert text.count(old)==1
             new=f'I_{b} avdd {b} PWL(0 0 500p {v["buffer_ac_bias"]})';text=text.replace(old,new);changed[b]=[old,new]
+    if 'buffer_select_bias' in v:
+        for b in ['ibs0','ibs1']:
+            old=f'I_{b} avdd {b} PWL(0 0 500p .001)';assert text.count(old)==1
+            new=f'I_{b} avdd {b} PWL(0 0 500p {v["buffer_select_bias"]})';text=text.replace(old,new);changed[b]=[old,new]
     return text,changed
 def main(root,variant,out):
     root=Path(root).resolve();native=root/'native';out=Path(out);out.mkdir(parents=True)
@@ -195,7 +200,18 @@ def main(root,variant,out):
         assert restored==original['binding']
         bench_before=(native/'loaded-n1-nominal_late/bench.cir').read_text()
         bench_after,bias_changes=patch_bench(bench_before,variant)
-        assert bench_after==bench_before and bias_changes=={},'Bench sources must remain byte-identical'
+        if 'buffer_select_bias' in VARIANTS[variant]:
+            assert set(bias_changes)=={'ibs0','ibs1'}
+            restored_bench=bench_after
+            for old_line,new_line in bias_changes.values():
+                assert restored_bench.count(new_line)==1
+                restored_bench=restored_bench.replace(new_line,old_line,1)
+            assert restored_bench==bench_before,'Unrelated bench data/clock/load/solver changed'
+            baseline_cdata,_=patch(text,'bd10_lowz8_xor2_cdata3')
+            assert patched==baseline_cdata,'Only select bias may differ from measured cdata3 model'
+            (out/'isolated-select-bias-change.json').write_text(json.dumps({'reference_variant':'bd10_lowz8_xor2_cdata3','reference_run':43584735530,'connectivity_evidence_run':43595197025,'changed_bias_sources':bias_changes,'all_model_records_byte_identical_to_reference_variant':True,'all_other_bench_lines_byte_identical':True,'frozen_gate_thresholds_unchanged':True,'original_wire_rc_retained':True,'new_layout':False,'old_current_a':.001,'new_current_a':.0015},indent=2))
+        else:
+            assert bench_after==bench_before and bias_changes=={},'Bench sources must remain byte-identical' 
     (out/'candidate-current-density-binding.json').write_text(json.dumps({'changes':binding_changes,'original_binding_sha256':hashlib.sha256(json.dumps(original['binding'],sort_keys=True).encode()).hexdigest(),'candidate_binding_sha256':hashlib.sha256(json.dumps(bound,sort_keys=True).encode()).hexdigest(),'current_limit_a_per_emitter':.003,'original_metadata_unchanged':True},indent=2))
     model.write_text(patched)
     (out/'patch.json').write_text(json.dumps(dict(variant=variant,values=VARIANTS[variant],changed=changed),indent=1))
@@ -246,6 +262,10 @@ def main(root,variant,out):
     if 'c_devices' in VARIANTS[variant]:
         keep['reference_variant']='bd10_lowz8_xor2'
         keep['experiment_scope']='Only C slave data pair nx=4->3, plus feedback pair in cslave3 variant, relative to xor2 baseline. Original sources, solver, data/device gates and old wiring RC retained. Circuit what-if only; no new layout, extracted RC, closed-loop PHY or manufacturing acceptance.'
+        (out/'result.json').write_text(json.dumps(keep,indent=1,sort_keys=True))
+    if 'buffer_select_bias' in VARIANTS[variant]:
+        keep['reference_variant']='bd10_lowz8_xor2_cdata3'
+        keep['experiment_scope']='Only ibs0 and ibs1 bias sources 1mA->1.5mA relative to measured cdata3. Native model identical, all other bench lines identical. Frozen device/data/phase/current limits unchanged. Nominal externally clocked circuit what-if, not extracted new layout or complete PHY.'
         (out/'result.json').write_text(json.dumps(keep,indent=1,sort_keys=True))
     print(json.dumps({k:keep[k]for k in('variant','returncode','passed','data_passed','devices_passed','phase_passed','phase_average_v','failing_hbt')},sort_keys=True))
 if __name__=='__main__':main(*sys.argv[1:])
