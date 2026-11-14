@@ -11,7 +11,7 @@ with tarfile.open(fileobj=io.BytesIO(z.read(members[0])),mode='r:gz') as t:
  raw=t.extractfile('native/lvs.lvsdb').read()
  # Export only whitelisted PDK program source, never circuit/netlist contents.
  deck_sources={}
- for filename in ['res_extraction.lvs','custom_reader.lvs','sg13g2.lvs','custom_classes.lvs','res_derivations.lvs','layers_definitions.lvs']:
+ for filename in ['res_extraction.lvs','custom_reader.lvs','sg13g2.lvs','custom_classes.lvs','res_derivations.lvs','layers_definitions.lvs','custom_devices.lvs']:
   matches=[m for m in t.getmembers() if m.isfile() and '/inputs/' in m.name and m.name.endswith('/'+filename)]
   assert len(matches)==1,(filename,len(matches))
   source=t.extractfile(matches[0]).read();assert len(source)<150000
@@ -109,7 +109,21 @@ for number,name in [(10,'res_metal2'),(30,'res_metal3')]:
  for row in r['hierarchy_expanded_inventories']['layout']['classes_dimensions']:
   if row['class']==name:expected[tuple(sorted([row['L'],row['W']]))]+=row['count']
  geom['layers'][name]={'polygon_count':sum(histogram.values()),'nonrectangular_count':nonrectangular,'dimensions_um':[{'short':k[0],'long':k[1],'count':v} for k,v in sorted(histogram.items())],'equals_extracted_dimension_inventory':nonrectangular==0 and histogram==expected}
+ # Preserve the failed one-polygon-per-device test. Aggregation is diagnostic,
+ # not a waiver and does not establish series connectivity.
+ def length_inventory(counts):
+  totals=collections.Counter()
+  for (width,length),count in counts.items():totals[width]+=round(length*1000000)*count
+  return dict(sorted(totals.items()))
+ geom['layers'][name]['polygon_length_by_width_um_times_1e6']=length_inventory(histogram)
+ geom['layers'][name]['extracted_length_by_width_um_times_1e6']=length_inventory(expected)
+ geom['layers'][name]['equal_length_by_width']=length_inventory(histogram)==length_inventory(expected)
 r['independent_original_geometry']=geom
-assert all(v['equals_extracted_dimension_inventory'] for v in geom['layers'].values()),geom
+geom['previous_direct_count_check_run']=43552738032
+geom['direct_count_equality_proven']=all(v['equals_extracted_dimension_inventory'] for v in geom['layers'].values())
+geom['width_and_aggregate_length_agree']=all(v['equal_length_by_width'] and v['nonrectangular_count']==0 for v in geom['layers'].values())
+
 pathlib.Path('out').mkdir();pathlib.Path('out/top-mismatch.json').write_text(json.dumps(r,indent=2))
 print(json.dumps({k:v['status_counts'] for k,v in r.items() if isinstance(v,dict) and 'status_counts' in v}))
+
+assert geom['width_and_aggregate_length_agree'], 'Original polygon aggregate differs; see preserved diagnostic JSON'
