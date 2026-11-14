@@ -14,10 +14,13 @@ report=json.loads(safe.read('result.json'));assert report['sources_unchanged'] a
 out=pathlib.Path('out');out.mkdir();selected={};all_names=native.namelist();assert len(set(all_names))==len(all_names)
 for name in all_names:
  path=pathlib.PurePosixPath(name)
- if not name.startswith('run/27-openroad-cts/') or path.suffix not in ('.rpt','.log','.json'):continue
+ if not name.startswith('run/') or path.name not in ('state_in.json','state_out.json','or_metrics_out.json','summary.rpt','max.rpt','min.rpt','wns.max.rpt','wns.min.rpt','clock.rpt','checks.rpt','skew.max.rpt','skew.min.rpt'):continue
  assert not path.is_absolute() and '..' not in path.parts
  raw=native.read(name);assert hashlib.sha256(raw).hexdigest()==report['outputs'][name]
- raw.decode('utf-8');dest=out/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(raw)
- selected[name]={'sha256':hashlib.sha256(raw).hexdigest(),'bytes':len(raw)}
+ text=raw.decode('utf-8');dest=out/name;dest.parent.mkdir(parents=True,exist_ok=True)
+ if path.suffix=='.rpt':
+  text='\n'.join(text.splitlines()[:240])+'\n';dest.write_text(text)
+ else:dest.write_bytes(raw)
+ selected[name]={'sha256':hashlib.sha256(raw).hexdigest(),'bytes':len(raw),'derived_excerpt':path.suffix=='.rpt','saved_sha256':hashlib.sha256(dest.read_bytes()).hexdigest()}
 assert selected and any(n.endswith('.rpt')for n in selected)
-(out/'index.json').write_text(json.dumps({'source_run':43622573415,'cts_odb_sha256':report['cts_odb_sha256'],'files':selected,'archive_members':all_names,'accepted':False,'scope':'Exact CTS text reports only; no new native run or acceptance'},indent=2))
+(out/'index.json').write_text(json.dumps({'source_run':43622573415,'cts_odb_sha256':report['cts_odb_sha256'],'files':selected,'archive_members':all_names,'accepted':False,'scope':'Authenticated stage metrics and first 240 lines of timing reports; source and excerpt hashes separate. No new native run or acceptance'},indent=2))
