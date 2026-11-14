@@ -1,36 +1,19 @@
-name: Build new predecode main-chip mapped source
+name: Boot exact predecode chip with system and Ethernet MBIST
 on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
-  build:
+  boot:
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      matrix:
+        simulator: [iverilog, verilator]
     env:
-      SOC_ETH_FIFO_RDREG: '1'
-      SOC_BUSSTAT_EVPEND: '1'
-      SOC_SRAM_MBIST_PIPE: '1'
-      SOC_PCIE_RX_READ2: '1'
-      SOC_BUS_IREQ_REG: '1'
-      SOC_PCIE_RESET_COPIES: '1'
-      SOC_ETH_FIFO_WRREG: '1'
-      SOC_PCIE_REPLAY_INBANK: '1'
-      SOC_PCIE_TX_WORD_REG: '1'
-      SOC_PCIE_REPLAY_AHEAD: '1'
-      SOC_PCIE_CREDIT_PICK: '1'
-      SOC_PCIE_SEQ_RX_REG: '1'
-      SOC_PCIE_RX_COMMIT_COPIES: '1'
-      SOC_PCIE_REPLAY_WRITE_PREDECODE: '1'
-      SOC_SYNTH_PREFIX_ADDER: '1'
-      IBEX_EX_STAGE: '1'
-      IBEX_PMP_REQ_REG: '1'
-      NATIVE_RF_CHKDEFER: '1'
-      NATIVE_RF_PREDECODE: '1'
-      SOC_INTERFACE_PROFILE: 'full'
-      NATIVE_MEM_RDREG: '2'
-      SOC_CORE_REQ_REG: '0'
-      SOC_CORE_WB_STAGE: '0'
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -42,34 +25,31 @@ jobs:
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Prepare pinned source and tool inputs
+      - name: Restore exact mapped chip and firmware only on runner
         run: |
           set -euo pipefail
-          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
-          python3 -m pip install -r sw/requirements.txt
-          make soc-prepare
-          bash -n scripts/prepare_predecode_mainchip.sh hw/soc/flow/syn_soc_top.sh hw/soc/flow/sim_soc.sh
-          python3 -m pytest -q sw/tests/test_logic_boot_gl.py sw/tests/test_native_boot_preparation.py
-      - name: Fresh firmware RTL boot and complete chip synthesis with twenty SRAMs
-        run: bash scripts/prepare_predecode_mainchip.sh
-      - name: Preserve native source even on failed measurement
+          gh api repos/${{ github.repository }}/actions/artifacts/14123718652/zip > source.zip
+          gh api repos/${{ github.repository }}/actions/artifacts/14123429089/zip > mapping.zip
+          python3 scripts/restore_predecode_chip_boot.py
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends binutils-riscv64-linux-gnu
+          python3 hw/soc/flow/prepare_ihp_native_boot.py
+      - name: Native boot with complete memory self tests and all firmware checks
+        run: |
+          set -euo pipefail
+          python3 hw/soc/flow/sim_logic_boot_gl.py             --pcie-profile packet-async --mbist-profile system-ethernet             --cycles 2000000 --timeout 19000             --synthesis hw/soc/out/corrpre-pcie-mbist-native-boot/synthesis             --firmware hw/soc/out/corrpre-pcie-mbist-native-boot/rtl             --pdk hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2             --simulator ${{ matrix.simulator }} --tool "$(command -v ${{ matrix.simulator }})"             --nm /usr/bin/riscv64-linux-gnu-nm             --output hw/soc/out/predecode-gates | tee out/boot-driver.log
+      - name: Preserve native diagnostics without changing source evidence
         if: always()
         run: |
-          mkdir -p native out
-          if [ -d hw/soc/out/corrpre-pcie-mbist-native-boot ]; then
-            tar -czf native/build.tgz hw/soc/out/corrpre-pcie-mbist-native-boot
+          mkdir -p out
+          if [ -d hw/soc/out/predecode-gates ]; then
+            cp hw/soc/out/predecode-gates/*.json out/ || true
+            cp hw/soc/out/predecode-gates/*.log out/ || true
           fi
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: predecode-mainchip-source-native-${{ github.run_id }}
-          path: native/build.tgz
-          if-no-files-found: error
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: predecode-mainchip-mapping-${{ github.run_id }}
-          path: out/mapping.json
+          name: predecode-chip-boot-${{ matrix.simulator }}-${{ github.run_id }}
+          path: out/
           if-no-files-found: error
           retention-days: 90
