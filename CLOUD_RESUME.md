@@ -1,3 +1,13 @@
+# Saved antenna checkpoint continuation launched with separate RCX/STA budget
+
+43567570194 source`0b0afcacd36d6223e0fba6ce1ddbf18312c955e8`, branch`codex/resume-pinned-antenna-pass`, active. Restore original base14068260482 then nativecandidate14102387358. Exact drt-run-1ODB SHA6613e8102b7a4076f1748b75447ece150ccf86818c06dc89b50ca42cb2b92b7e, candidateSDC SHA5c65218b6106315c71d45c19eb61af09781607f0f438f2c7f99c4427884d24a4. Initial state onlyODB/SDC/NL/PNL, all stale metrics removed; config unchanged.
+
+Flow`hw/soc/pnr/resume_pinned_antenna_flow.py`: exact runtimeDRTscript SHA`d389d9e6d75bbb82552321f689d92a2e0392684142c11ffabe59c757ece59461` guard. Omit initial full drt_run ONLY; fresh check_antennas must reproduce28net violations before continuing original3-passrepairloop. Native restore behavior still needs result, no pass claim. Route19200s then routed_handoff; dependent separateRCX/STA19800s,355min each. Strict3cornertiming/electrical+DRC+antenna gates unchanged. Native failure archives retained. Safe route report excludesDRCgeometry files. Artifacts:`route-cut10j_ant_resume-RUN`,`routed-db-cut10j_ant_resume-RUN`,`routed-sta-cut10j_ant_resume-RUN`; failednative`antenna-resume-incomplete-native-RUN`cloudonly.
+
+Receipt:`docs/evidence/antenna-checkpoint-resume-launch-20261114.json`. StillactiveSP43566292104,DP43562021054,freshCRCroute43561900502,CDR43562981217,MBIST43558722004,oldholdroute43541234973. Prior43538031308 terminalfailure, do notpollaslive. Fullgoalopen.
+
+---
+
 # Route recovery checkpoint located; implement resumed antenna pass next
 
 Inventory43567101492 completed/success. Safe14103305888SHA`9e8ece69660c7d0b8cb99aa997cbad3a143766c7843db23e7d8876a0a31da3e1`. Saved checkpoint `hw/soc/out/impl-probe/rcx/4-openroad-detailedrouting/drt-run-1/soc_top.odb`,221619313bytes,SHA`6613e8102b7a4076f1748b75447ece150ccf86818c06dc89b50ca42cb2b92b7e`, after first antenna pass (28nets/31pins remain; intermediateDRC0). Native archive14102387358SHA`3f7e4ca94925a33d730cfe47b1f4487434c05b76e4c6e10e847f04317d3898e6`. Presence/hash verified, native restore still untested.
