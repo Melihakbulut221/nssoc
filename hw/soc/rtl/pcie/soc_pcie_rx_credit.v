@@ -551,9 +551,19 @@ module soc_pcie_rx_credit #(
             assign following[read_bit]=|selected;
         end
 `endif
+        // Under READ2 the local handshake is cycle-identical under the
+        // existing equal-reset-copy contract. Use the same local reset tree
+        // for both the cursor and the bank byte update, without extra state.
+`ifdef SOC_PCIE_RX_READ2
+        wire bank_handshake=r2_handshake;
+        wire bank_restart=r2_handshake && out_eop_o;
+`else
+        wire bank_handshake=handshake;
+        wire bank_restart=restart;
+`endif
         always @(posedge clk_i)
             registered<=commit_bank[bank] ? staging[0] :
-                restart ? packets[bank*CAP] : handshake ? following : registered;
+                bank_restart ? packets[bank*CAP] : bank_handshake ? following : registered;
         assign bank_byte[bank]=registered;
     end endgenerate
     // Queue and staging storage. A commit copies the staged TLP into its
