@@ -1,3 +1,22 @@
+## 2026-11-14 — CRC-select block has positive all-path margins; mainchip build dispatched; loaded PHY diagnosis retained
+
+CRC physical run43635053634/source6a2065c74105bfc60d4d500cf42f34cb4aeb7c5e completed successfully. Equal-area, identical constraints and optimization budget comparison: EOP-only baseline all-path slow setup -0.047070794 ns / fast hold -0.012820662 ns; EOP+CRC_SELECT candidate +0.018597124 ns / +0.001171230 ns. Candidate typical setup+1.111926794, fast setup+1.739200354; slow hold+.086899199, typical hold+.032137737 ns. 1675 paths per report, 24reports/candidate. Candidate mapped cells5940 vs5870 (+70). The worst candidate slow path moved to ack_sequence_i[1] -> _10129_/D. This is useful isolated ideal-clock/estimated-RC evidence, not robust routed/chip closure; it does not reach requested +50ps/+25ps optimization margins. Receipt docs/evidence/replay-crc-select-placement-20261114.json. Native14129877036 SHAb11a7273499ec4f192ed47086b16251c88191a2b34544993585448d838af1195 remains cloudonly.
+
+NEWmainchip run43635824821/source9339dd6eeda8cf65383c7dc606e0cc752c1d6432 on codex/crc-select-mainchip: begins with six-seed 300000cycle positive regressions for CRCalone and allphysicaloptions plus six-seed semantic CRC-bit mutations for each. Source is restored in finally and wholechip synthesis is gated by all expected results. Then original complete firmware RTL boot and20SRAM mapping. EOP source origin checker now derives the unique $adff source from actual lowered candidate RTL and requires exact matching unique mapped PCIe-clocked flop, not obsolete hard-coded line spans. Exact CRC source hash and synthesis flags, all26writepredecodebits, all20macros remain required. New validated default-off flag wired into bothsim/syn drivers; configuration report recordsallthree replay knobs. Experiment code/workflow not yet integrated into timing/combined; mainchip boot/layout must be rerun for this source if mapping succeeds.
+
+EOP-only postCTS43633451595/source2c515a0bfb946ef244cc9e94e2f6af8a7e22e2fe is now COMPLETE SUCCESS (execution only). Safe14129917895 SHA2f7429aa34519372129c4a272e381799bfee5a37aefc5b07495b9901e493110b,31MB; native14130177227 SHA62b0a8fcfb281c3a6abc3fcf140b66fc75a017e1c7f7d30cb931ed88bc8ecd93,433MB. Cloud slim extraction handles:
+[
+  {
+    "id": 43636062884,
+    "head_sha": "659c666e8997e3d7fdd0fbe6b8a1da9424efc02c",
+    "status": "completed",
+    "conclusion": "success"
+  }
+]
+Read the fresh before/after metrics before deciding the next physical continuation. Do not transfer them to CRC_SELECT source.
+
+Loaded PHY waveform diagnosis43635472153/source9a814be2f84742f020e7c38ffd6e9a128c3e2daa completedSUCCESS. Exact original1.59GB/113490x1752 waveform and original reader hashes checked, original sampler/comparator acceptance counts reproduced. At0.6UI allA/B/C/D samples have >100mV correct margins, but the REQUIRED0.3UI gate fails and C has one weak sample at0.9UI. X/Y remain badly degraded across0.6–0.9UI; forX, both expectedbitclasses have negative average differential (roughly -29to-36mV), so this is not resolved by merely examining a later sampler point. This does NOT authorize changing observation windows. Next analog diagnosis should inspect actual comparator input transfer/alignment and operating points on this exact waveform before a new geometry/bias trial. Safe14129158800 SHAacc3de7c8d6b4cb8f8800f11f383b72a85b0a27c278ea6d70f135b9b84de3caf; receipt docs/evidence/paired650-wave-diagnosis-20261114.json. Prior full loaded case remainsREJECTED; no fullPHYclaim.
+
 ## 2026-11-14 — paired650 actual loaded transient finished and rejected; diagnose preserved waveform
 
 Run 43626358999/source73b781d77b169a4c270bb635197540d3c8f96a9c is now terminal FAILURE, not live. Native ngspice returned 0 after 5497.373 s, with zero collected diagnostics and unchanged protected sources. The original electrical/data gates rejected the actual 256-bit nominal_late, partition1 case. Five partition bases were assembled, but only n1 nominal_late was simulated; no PVT/refinement/full-PHY closure.
