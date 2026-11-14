@@ -1,4 +1,4 @@
-name: Replay EOP cache actual RTL equivalence
+name: Replay EOP cache actual protocol simulation and mutation controls
 on:
   workflow_dispatch:
 permissions:
@@ -14,6 +14,7 @@ jobs:
           sparse-checkout: |
             scripts
             hw/soc/rtl/pcie
+            hw/soc/tb
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
         with:
           version: '2026-08-04'
@@ -21,13 +22,13 @@ jobs:
       - name: Record supported Yosys runtime
         run: yosys -V
       - name: Prove real replay state and outputs without blackboxes
-        run: python3 scripts/prove_replay_eop_cache.py
+        run: python3 scripts/qualify_replay_eop_cache.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: replay-eop-cache-equivalence-${{ github.run_id }}
+          name: replay-eop-cache-simulation-${{ github.run_id }}
           path: |
-            out/*.log
-            out/*.ys
+            out/**/*.log
+            out/**/*.ys
             out/*.json
           retention-days: 30

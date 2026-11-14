@@ -28,7 +28,7 @@ BENCH_ARGS=()
 {
   for d in "${DEFINES[@]}"; do
     case "$d" in
-      SOC_PCIE_REPLAY_AHEAD|SOC_PCIE_REPLAY_INBANK) ;;
+      SOC_PCIE_REPLAY_AHEAD|SOC_PCIE_REPLAY_INBANK|SOC_PCIE_REPLAY_EOP_CACHE) ;;
       SOC_PCIE_REPLAY_WRITE_PREDECODE) BENCH_ARGS+=(-DCOSIM_WRITE_PREDECODE) ;;
       # The candidate has the reset-copy port; the bench drives it with rst_ni.
       SOC_PCIE_RESET_COPIES) BENCH_ARGS+=(-DCOSIM_RESET_COPIES) ;;
@@ -47,7 +47,7 @@ for cfg in "4 38 256 1" "4 38 256 2" "4 38 1024 3" "4 38 256 4" "2 22 128 5" "2 
   iverilog -g2012 -o "$OUT/$name.vvp" ${BENCH_ARGS[@]+"${BENCH_ARGS[@]}"} -Ptb_pcie_replay_ahead.DEPTH=$depth \
     -Ptb_pcie_replay_ahead.MAX_BYTES=$bytes -Ptb_pcie_replay_ahead.TIMEOUT_CYCLES=$timeout \
     "$RTL/soc_pcie_crc32_byte.v" "$OUT/reference.v" "$OUT/candidate.v" "$ROOT/hw/soc/tb/tb_pcie_replay_ahead.v"
-  vvp -n "$OUT/$name.vvp" +seed=$seed +cycles=$CYCLES > "$OUT/$name.log" 2>&1 || true
+  vvp -n "$OUT/$name.vvp" +seed=$seed +cycles=$CYCLES > "$OUT/$name.log" 2>&1 || fail=1
   grep -E "^(SUMMARY|RESULT|MISMATCH)" "$OUT/$name.log" | head -12 | sed "s/^/$name: /"
   grep -q "^RESULT PASS" "$OUT/$name.log" || fail=1
   rm -f "$OUT/$name.vvp"
