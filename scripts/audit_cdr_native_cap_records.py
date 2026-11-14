@@ -135,3 +135,82 @@ out['all_trunk_connectivity_geometry']={'candidate_count':len(boxes),'trunks':ro
 assert hashlib.sha256(pathlib.Path('source.gds').read_bytes()).hexdigest()==out['geometry']['sha256']
 
 pathlib.Path('out').mkdir();pathlib.Path('out/capacitor-native-records.json').write_text(json.dumps(out,indent=2))
+
+
+# Generate a physical candidate, retaining all original primitive hierarchy
+# and later local metal/contact overlays. NOT a qualified layout.
+assert not residual and len(boxes)==37
+original_instances=list(T.each_inst());assert len(original_instances)==40
+macro_by_id={n:i for n,i in enumerate(original_instances) if i.cell.name.startswith('pd_child_')}
+assert set(macro_by_id)==set(range(16))
+old_order=sorted(macro_by_id,key=lambda n:macro_by_id[n].bbox().bottom)
+new_order=[3,0,1,2,4,5,8,6,7,12,11,9,10,13,14,15]
+assert old_order[:6]==new_order[:6]
+old_band={ordinal:index for index,ordinal in enumerate(old_order)}
+delta={-1:0};cursor=edges[0]
+for ordinal in new_order:
+ b=old_band[ordinal];delta[b]=cursor-edges[b];cursor+=edges[b+1]-edges[b]
+assert cursor==edges[-1]
+assert all(delta[old_band[n]]==0 for n in new_order[:6])
+bounds=T.bbox()
+windows=[kdb.Region(kdb.Box(bounds.left-1,edges[n],bounds.right+1,edges[n+1])) for n in range(16)]
+fixed=kdb.Region(kdb.Box(bounds.left-1,bounds.bottom-1,bounds.right+1,edges[0]))
+def relocate(region):
+ conserved=(region&fixed).merged();result=conserved
+ for n,window in enumerate(windows):
+  piece=(region&window).merged();conserved=(conserved+piece).merged()
+  result=(result+piece.transformed(kdb.Trans(0,delta[n]))).merged()
+ assert (conserved^region).is_empty()
+ return result
+moved={key:relocate(region) for key,region in remaining.items()}
+new_trunks=kdb.Region();trunk_proof=[];new_boxes=[]
+for b in boxes:
+ reg=kdb.Region(b);contacts={key:(full[key]&reg).merged() for key in ['125/0','133/0']}
+ assert contacts['125/0'].is_empty() and not contacts['133/0'].is_empty()
+ # No unaccounted same-layer local tails were observed in the source.
+ assert (remaining['126/0']&reg.sized(1)).is_empty()
+ old_contact_box=contacts['133/0'].bbox();low=old_contact_box.bottom-b.bottom;high=b.top-old_contact_box.top
+ assert low>=0 and high>=0
+ intended={key:relocate(value) for key,value in contacts.items()}
+ cb=intended['133/0'].bbox();nb=kdb.Box(b.left,cb.bottom-low,b.right,cb.top+high)
+ # Supplies keep their original outside border endpoints; all supply contact
+ # extrema remain covered by the same or conservatively rebuilt trunk.
+ if b.width()!=3200:
+  nb=kdb.Box(b.left,min(b.bottom,nb.bottom),b.right,max(b.top,nb.top))
+ assert (kdb.Region(nb)&new_trunks).is_empty(),'Candidate shorts distinct global trunks'
+ for key in ['125/0','133/0']:
+  assert ((moved[key]&kdb.Region(nb))^intended[key]).is_empty(),('Changed actual via incidence',str(b),key)
+ assert (moved['126/0']&kdb.Region(nb).sized(1)).is_empty(),'New unaccounted same-layer contact'
+ new_trunks+=kdb.Region(nb);new_boxes.append(nb)
+ trunk_proof.append({'old_bbox_dbu':str(b),'new_bbox_dbu':str(nb),'old_length_um':b.height()*layout.dbu,'new_length_um':nb.height()*layout.dbu,'via_incidence_conserved':True})
+moved['126/0']=(moved['126/0']+new_trunks).merged()
+old_name=T.name;T.name=old_name+'_baseline';candidate=layout.create_cell(old_name)
+expected=dict(moved)
+for n,inst in macro_by_id.items():
+ assert not inst.is_regular_array() and inst.cplx_trans.mag==1 and inst.cplx_trans.angle==0 and not inst.cplx_trans.is_mirror()
+ tr=kdb.Trans(inst.trans);tr.disp=kdb.Vector(tr.disp.x,tr.disp.y+delta[old_band[n]])
+ candidate.insert(kdb.CellInstArray(inst.cell_index,tr))
+ for li in layout.layer_indexes():
+  key=str(layout.get_info(li));r=kdb.Region(inst.cell.begin_shapes_rec(li)).transformed(tr)
+  expected[key]=(expected.get(key,kdb.Region())+r).merged()
+for key,r in moved.items():
+ layer,datatype=map(int,key.split('/'));candidate.shapes(layout.layer(layer,datatype)).insert(r)
+pins=[]
+for li in layout.layer_indexes():
+ for shape in T.each_shape(li):
+  if not shape.is_text():continue
+  text=shape.text;dy=delta[band(text.y)];copy=text.transformed(kdb.Trans(0,dy));candidate.shapes(li).insert(copy)
+  pins.append({'name':text.string,'layer':str(layout.get_info(li)),'old_xy_dbu':[text.x,text.y],'new_xy_dbu':[copy.x,copy.y]})
+assert len(pins)==25
+native=pathlib.Path('native');native.mkdir();opts=kdb.SaveLayoutOptions();opts.select_cell(candidate.cell_index());layout.write(str(native/'candidate.gds'),opts)
+check=kdb.Layout();check.read(str(native/'candidate.gds'));actual={str(check.get_info(li)):kdb.Region(check.top_cell().begin_shapes_rec(li)).merged() for li in check.layer_indexes()}
+keys=set(expected)|set(actual)
+def equal(got):return all((got.get(key,kdb.Region())^expected.get(key,kdb.Region())).is_empty() for key in keys)
+assert equal(actual)
+controls=[]
+bad=dict(actual);bad['126/0']=bad['126/0']-kdb.Region(new_boxes[0]);assert not equal(bad);controls.append('delete_real_trunk')
+bad=dict(actual);assert not bad['6/0'].is_empty();bad['6/0']=kdb.Region();assert not equal(bad);controls.append('delete_native_contacts')
+proof={'status':'GENERATED_REQUIRES_NATIVE_DRC_LVS_FRESH_RC_AND_FROZEN_ELECTRICAL_TESTS','accepted':False,'full_phy_accepted':False,'main_chip_integrated':False,'source_gds_sha256':out['geometry']['sha256'],'candidate_gds_sha256':hashlib.sha256((native/'candidate.gds').read_bytes()).hexdigest(),'old_order':old_order,'candidate_order':new_order,'band_translations_y_dbu':delta,'primitive_child_instances':16,'local_overlays_conserved':True,'serialized_geometry_checked':True,'trunks':trunk_proof,'ports':pins,'controls':controls,'scope':'Complete current650 child geometry and local overlays preserved; 37 real global TM1 trunks rebuilt using exact via incidence. Public pins move with physical bands, so earlier fixed-pin proxy is NOT the new electrical result. Native DRC/LVS and fresh extraction still mandatory.'}
+pathlib.Path('out/paired-layout-proof.json').write_text(json.dumps(proof,indent=2))
+# Keep source and candidate native geometry exclusively in cloud artifact.
+(native/'source.gds').write_bytes(pathlib.Path('source.gds').read_bytes())

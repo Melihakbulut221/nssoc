@@ -1,4 +1,4 @@
-name: Audit actual CDR global trunk and via intersections
+name: Generate current650 paired-band physical candidate
 on:
   workflow_dispatch:
 permissions:
@@ -24,7 +24,13 @@ jobs:
           python3 scripts/audit_cdr_native_cap_records.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: cdr-native-cap-records-${{ github.run_id }}
-          path: out/capacitor-native-records.json
+          name: cdr650-paired-layout-proof-${{ github.run_id }}
+          path: out/
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr650-paired-layout-native-${{ github.run_id }}
+          path: native/
           if-no-files-found: error
           retention-days: 90
