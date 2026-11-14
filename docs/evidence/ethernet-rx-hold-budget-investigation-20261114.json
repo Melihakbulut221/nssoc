@@ -1,0 +1,26 @@
+{
+  "scope": "Ethernet RX bank6 hold-delay budget investigation, not a timing repair acceptance",
+  "source_run": 43505737740,
+  "report_survey": {
+    "run": 43540032499,
+    "source": "1564e01d443b42ed3be8a059fc99f16482c880af",
+    "artifact": 14091306696,
+    "sha256": "53586ecde0f94e0b00155a22e89ccb86569b74224882883c2e8fa8805692a703",
+    "findings": [
+      "Fast hold path to RX SRAM bank6 A_ADDR6 has -0.427385 ns slack.",
+      "Slow max.head report does not contain a matching bank6 path; missing coverage is not evidence of positive setup margin.",
+      "Typical/fast setup matches terminate at the launching register, not at the failing SRAM endpoint, and cannot justify added hold delay."
+    ],
+    "supersedes_initial_survey_run": 43539856966,
+    "reason": "Initial parser also admitted mixed checks.rpt sections; corrected parser restricts input to max/min head reports and ignores truncated path tails."
+  },
+  "full_native_followup": {
+    "run": 43540122378,
+    "source": "4a5f43a4bbb724a8036fdf6b5d30bbb79d0696fd",
+    "branch": "codex/ethernet-full-path-delay-budget",
+    "native_artifact": 14088684253,
+    "archive_sha256": "809a2a994149ddf95ca42d0deaa5f89a8a4692c47df9186cb0bd1a2ef2d714f2",
+    "goal": "Extract full all-corner max/min reports for exact RX bank6 A_ADDR6 SRAM endpoint in cloud; never download native implementation locally."
+  },
+  "production_accepted": false
+}
