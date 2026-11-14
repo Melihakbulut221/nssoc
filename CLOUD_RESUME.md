@@ -1,3 +1,15 @@
+## 2026-11-14 — fresh actual paired650 gate resistance mesh PASSED
+
+Run43625413974/sourcebc78aa9667a0915c7dc31b244b714a1d2166a362 completed successfully on new actual GDS285760...:50groups,200intrinsicgate areas,200realcontacts, four600/300/150/75nm grids,4native analytic70ohm checks and4fullmesh current-return checks passed. Actual metal/poly/contact enclosure and SalBlock/pSD exclusion reread; original numerical mesh method unchanged.150to75nm maximum uniform-injection average change0.004297672003824132 (0.4298percent), NOT full nonlinear convergence or PVT qualification.
+
+Safe14124829951 SHA15c92cb7f9ca584c69e116dfa957abd2612f25f8efc5cc3cfea933538ccd88fc; native14125203854 SHA0485478594d39baa2bec3e3b769b4cf3b33ad1c19a95bce5bd50b6ed2e9ccba8,87016922bytes,CLOUD ONLY. Native root native/mesh-75/{mesh.json,gate-poly-resistors.cir}. Receipt docs/evidence/cdr650-paired-gate-mesh-20261114.json preserves all four nativecheck/mesh reports. This generates nominal gateR only; polyC, calibrated material corners, fullintrinsic/metalcomposition and fullPHY remain false.
+
+Next noise-preserving reduction is dispatched on branchcodex/cdr650-paired-gate-reduction. Original reduction characterize() body unchanged except authenticated NEWmesh acquisition and NEWnative200device fixture. All50groups × five partitions1/2/4/8/16,503nativeDC/AC/power/noise executions including2faultcontrols remain mandatory; no cuts to original tolerances. Follow handle below, do not reuse old reduction matrices. Outputs expected paired650-gate-reduction-derived-RUN/native-RUN. Original header --controls mode still refers historicalfixture; workflow invokes --extract with new actual readback and sourceclosure checks.
+
+[{"id": 43625754764, "head_sha": "0308a08571969e629fb567c811414edb925a0dbc", "status": "in_progress", "conclusion": null}]
+
+PostCTS repair43625119515 remains running separately. Fullmanufacturinggoal incomplete; no originalroute/boot restart.
+
 ## 2026-11-14 — fresh postCTS repair running; new physical gate-mesh extraction dispatched
 
 **PostCTS:** first43624906428/sourcea425eb5b862feeda83ed86f455b621d2f140fb4f failed before CAD because scripts/restore_predecode_chip_boot.py was absent from integration base. Added exact tested helper from placementa3a79275..., verified all4original mapped-source input hashes against candidate branch before dispatch. Current source63a2a8fbed52f0765a46cd5f5cbacff5cf773623/run43625119515: exact mapped-source restoration and pinned runtime preparation passed; native three-corner before/after STA plus electrical/setup/hold repair confirmed in_progress. Continue this handle, not43624906428. Original clocks/derating unchanged, boot/equivalence/routedRCX remain separate.
