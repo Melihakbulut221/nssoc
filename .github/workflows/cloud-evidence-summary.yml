@@ -1,4 +1,4 @@
-name: Measure connectivity-identified internal CDR clock pairs
+name: Diagnose C sampler transistor path at original bias
 on:
   workflow_dispatch:
 permissions:
@@ -12,10 +12,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - variant: bd10_lowz8_xor2_acbuf15
-            native: '14103992091'
-            result: '14103877257'
-            digest: f9e9332b631252c132227b877b48b7593d95af88317ae3ac7b482d4a0c5cd466
+          - variant: bd10_lowz8_xor2_acload12
+            native: '14107240670'
+            result: '14107175734'
+            digest: c7afa62bbf62281ed8aad8aff94c97bc16af769ceaedd21cff1815c422ca7501
+          - variant: bd10_lowz8_xor2_acload16
+            native: '14107159021'
+            result: '14107393490'
+            digest: d335866dcf7c30ea6e7100f2ba2041b71d64692ee36bc3b3d197a5fa4896ae2e
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -25,7 +29,7 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/diagnose_cdr_internal_clock.py
+            /scripts/diagnose_cdr_sampler_c_path.py
             /scripts/cdr_mos650_full650_loaded.py
             /scripts/cdr_n1_divider_whatif.py
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
@@ -36,11 +40,11 @@ jobs:
           gh api repos/${{ github.repository }}/actions/artifacts/${{ matrix.result }}/zip > result.zip
           echo '${{ matrix.digest }}  result.zip' | sha256sum -c -
           unzip -q result.zip result.json
-      - run: python3 scripts/diagnose_cdr_internal_clock.py ${{ matrix.variant }}
+      - run: python3 scripts/diagnose_cdr_sampler_c_path.py ${{ matrix.variant }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: cdr-internal-clock-derived-${{ matrix.variant }}-${{ github.run_id }}
+          name: cdr-sampler-c-path-derived-${{ matrix.variant }}-${{ github.run_id }}
           path: out/*.json
           if-no-files-found: error
           retention-days: 90
