@@ -1,3 +1,13 @@
+## 2026-11-14 — actual wire-load comparison PASSED, mixed physical tradeoffs measured
+
+Diagnostic43627389964/sourced4569fbeb75818b37d41b7ba8fcacbe84eab5acb completed. Safe14126747208 SHAc874d25604a057d33f796e44d3cacd56ac97aa0a8259e6aee49d5edf93f13976. Full source-bound results (12semanticnets,allHBTterminalbindings,allDCpairs) in docs/evidence/cdr650-paired-wire-load-comparison-20261114.json. Whole native files remain cloudonly. Sparse DCresidual/reciprocity and3analytic controls passed.
+
+**Measured groundC fF old->new:** adp246.379->148.995;adn248.238->150.811;cdp207.690->153.798;cdn213.092->159.162. BoundarycouplingC remains substantial:adp320.142->318.3037;adn347.0928->345.3431;cdp237.2183->227.3175;cdn257.7002->247.8894. Max driverC-to-receiverB wire-onlyDC R ohm:adp130.6389->124.7297;adn138.6359->132.7267;cdp126.7609->123.5025;cdn134.7579->131.4995.
+
+**Regressions must remain visible:** aqpground181.100->196.196;aqn206.264->221.361; cqp314.273->367.941;cqn286.199->339.873fF; theircouplingalsoincreases. s0p/s0n ground+4.92/+4.83fF, s1p/s1nunchanged. Thus actualpairingreducesA/Cdata-bufferwireload butincreasessampleroutputload. Do notadoptongeometryorcaponly. Pendingfull65043626358999 mustcheckA/CsamplerwaveformsaswellasX/YandoriginalSOA. Ifnewwavefails, usethesequantitative tradeoffs in nextlayout/circuit decision. NevergroundallcouplingC andcalliteffectiveload; theseareseparateboundaryentries, notdynamicdelay orfullRFPEX.
+
+Newfull65043626358999 andpostCTS43625119515 were stillin_progress atpriorcheck. No duplicate launched; no acceptanceflags changed.
+
 ## 2026-11-14 — targeted native wire-load comparison dispatched during full650 transient
 
 Actual full650 composition/loaded run43626358999/source73b781d77b169a4c270bb635197540d3c8f96a9c and postCTS repair43625119515/source63a2a8fbed52f0765a46cd5f5cbacff5cf773623 still live; original boot43620739672/routes43614100441/43610680141 also live. Do not restart them. GitHub REST job-log endpoint returns404 while live; BrowserOS neo is logged out and cannot reveal live logs. Browser task tab was closed. No browser auth is needed for existing API/finished artifact workflow.
