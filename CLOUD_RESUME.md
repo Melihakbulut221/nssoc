@@ -1,3 +1,9 @@
+## 2026-11-14 — native graph identity matches; port replay still unresolved
+
+Identity replay43606609559/sourcecceb261dfd98ace5aa3e741df1d3d83d4d05005a completed native compare TRUE with108Match in79.95s after clearing stale xref and explicit model correspondence. However flag_missing_ports returnedfalse: control remains FAILED, no negative-controls acceptance. Safe artifact14118413876 containsresult.json. Original DB hashunchanged.
+
+Follow port-inventory diagnosis43606966719/sourceb90cfd743752d1cf92cfe74a296dc4a105e59970 oncodex/full-chip-native-fault-controls. It records original flag_missing_ports before recompilation, both netlists is_case_sensitive, and top pin/net names; then repeats same identity. Use derived port-inventory.json to diagnose serialization/case or actual port correspondence. Do not weaken port gate or claim full controls passed. Original native extraction engineering LVS acceptance is separate and unchanged. Routing43591198141 and PHY43603972722 were still active at latest check. All CAD/native work remains cloud-only.
+
 ## 2026-11-14 — full-chip fault-control replay diagnosis; identity retry live
 
 Original engineering chip LVS pass remains scoped to its exact old GDS/reference. Additional full-chip stored-graph fault controls are NOT accepted yet: first replay43605811862 failed identity and reported duplicate circuit pairs; its negative-width rejection is not independent detection evidence. Signal-open selector also used Pin.name as a field; corrected callable accessors.
