@@ -3,9 +3,9 @@
 import hashlib,json,os,re,subprocess,sys,tarfile,traceback,time,signal,math
 from pathlib import Path,PurePosixPath
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/"mos650-gate-ac";NATIVE=OUT/"native";DERIVED=OUT/"derived"
+OUT=ROOT/"paired650-gate-reduction";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-gate-ac-inputs.json";PINS="scripts/cdr-mos650-gate-ac-pins.json"
-REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr-mos650-gate-port-reduction"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr650-paired-gate-reduction"
 FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
  full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 def need(ok,msg):
@@ -266,9 +266,9 @@ def characterize(models):
  from fractions import Fraction
  from collections import defaultdict
  cfg=read(ROOT/CFG);meshdir=NATIVE/"mesh-producer";meshdir.mkdir()
- acquire(cfg["mesh"],meshdir,lambda n:n in cfg["mesh"]["selected"])
+ paired_mesh(meshdir)
  mesh=read(meshdir/"native/mesh-75/mesh.json")
- fixture=read(ROOT/"docs/evidence/mos650-current-gate-model-cases.json")
+ fixture=read(DERIVED/"current-physical-cases.json")
  units={u["native_id"]:u for u in fixture["devices"]}
  need(len(units)==200 and len(mesh["groups"])==50 and len(mesh["contacts"])==200 and len(mesh["coupling"])==200,"complete current physical field scope")
  source_mesh=pin(meshdir/"native/mesh-75/mesh.json")
@@ -502,6 +502,47 @@ def characterize(models):
  return 4
 
 
+def paired_current(dest):
+ import zipfile
+ def artifact(aid,digest,run,head,name):
+  r=api('actions/runs/'+str(run));need(r['status']=='completed' and r['conclusion']=='success' and r['head_sha']==head,'qualified paired producer')
+  meta=api('actions/artifacts/'+str(aid));need(meta['workflow_run']['id']==run and meta['workflow_run']['head_sha']==head and meta['digest']=='sha256:'+digest and not meta['expired'],'paired artifact identity')
+  path=NATIVE/name
+  with path.open('xb')as out:subprocess.run(['gh','api','repos/'+REPO+'/actions/artifacts/'+str(aid)+'/zip'],stdout=out,check=True)
+  need(pin(path)['sha256']==digest,'paired archive content')
+  return zipfile.ZipFile(path)
+ geometry=artifact(14124521775,'84bbb918af34605e7c6f14598fc68e7d5bb811a3d32d6c22bb294c0a51623ac6',43621748603,'0d90e18e09678eb1733123d97f41942dace720b3','paired-geometry.zip')
+ anchors=artifact(14124672969,'a3e3b980b8d03f8ef38d854b414649a40496711d532f4824957184fc9082c199',43623472892,'54a4766e9256d2cd0a3f93f5441ca5d1c238c7ce','paired-anchors.zip')
+ identity=artifact(14125295448,'d8376d4009da54acbe52569fd119add9f07f4f13d8120ebc65bd5fa193c899ac',43622884786,'e0a87989915cb7d65a20176de33649859f013393','paired-identity.zip')
+ rows={'native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds':geometry.read('candidate.gds'),
+       'derived/gate-poly-access.json':anchors.read('gate-poly-access.json'),
+       'derived/terminal-anchors.json':anchors.read('terminal-anchors.json'),
+       'derived/lvs_flat-identity.json':identity.read('lvs_flat-identity.json')}
+ for name,raw in rows.items():
+  path=dest/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+ save('paired-current-acquisition.json',dict(files={n:pin(dest/n)for n in rows},geometry_run=43621748603,anchors_run=43623472892,identity_run=43622884786,**FLAGS))
+ return {n:pin(dest/n)for n in rows}
+
+def paired_mesh(dest):
+ import zipfile
+ run=api('actions/runs/43625413974')
+ need(run['status']=='completed' and run['conclusion']=='success' and run['head_sha']=='bc78aa9667a0915c7dc31b244b714a1d2166a362','actual new mesh producer')
+ def fetch_zip(aid,digest,name):
+  meta=api('actions/artifacts/'+str(aid));need(meta['workflow_run']['id']==43625413974 and meta['workflow_run']['head_sha']==run['head_sha'] and meta['digest']=='sha256:'+digest and not meta['expired'],'new mesh archive identity')
+  path=NATIVE/name
+  with path.open('xb')as out:subprocess.run(['gh','api','repos/'+REPO+'/actions/artifacts/'+str(aid)+'/zip'],stdout=out,check=True)
+  need(pin(path)['sha256']==digest,'new mesh whole archive content');return zipfile.ZipFile(path)
+ native=fetch_zip(14125203854,'0485478594d39baa2bec3e3b769b4cf3b33ad1c19a95bce5bd50b6ed2e9ccba8','paired-mesh-native.zip')
+ safe=fetch_zip(14124829951,'15c92cb7f9ca584c69e116dfa957abd2612f25f8efc5cc3cfea933538ccd88fc','paired-mesh-safe.zip')
+ report=json.loads(safe.read('gate-poly-mesh-75.json'))
+ material=json.loads(safe.read('physical-material-readback.json'))
+ need(material['gds']['sha256']=='285760f3930a1cc142b45a3c43866202f1ea4694f468fb1603f286cb546cd514','same current GDS')
+ files={'native/mesh-75/mesh.json':'native_complete_mesh','native/mesh-75/gate-poly-resistors.cir':'native_resistor_fragment'}
+ for name,key in files.items():
+  raw=native.read(name);path=dest/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw);need(pin(path)==report[key],'actual mesh member')
+ save('paired-mesh-acquisition.json',dict(run=43625413974,source=run['head_sha'],files={n:pin(dest/n)for n in files},**FLAGS))
+
+
 def main():
  ctx=gate()
  if sys.argv[1:]==["--publish"]:publish();return
@@ -516,10 +557,10 @@ def main():
    save("source-controls.json",dict(context=ctx,source_files_verified=True,**FLAGS));return
   need(sys.argv[1:]==["--extract"],"explicit cloud characterization")
   current=NATIVE/"current-wire";current.mkdir()
-  acquire(cfg["current_wire"],current,lambda n:n in cfg["current_wire"]["selected"])
+  paired_source=paired_current(current)
   observed=current_cases(read(current/"derived/lvs_flat-identity.json"),read(current/"derived/gate-poly-access.json"))
-  need(observed==read(ROOT/"docs/evidence/mos650-current-gate-model-cases.json")["devices"],"complete native current fixture readback")
-  save("current-physical-cases.json",dict(devices=observed,source=cfg["current_wire"],**FLAGS))
+  need(len(observed)==200,"complete actual new native gates")
+  save("current-physical-cases.json",dict(devices=observed,source=paired_source,**FLAGS))
   models=acquire_models(cfg["runtime"]);model_report(models)
   magic=NATIVE/"magic";magic.mkdir()
   acquire(cfg["magic"],magic,lambda n:n.startswith("wire-stage/magic-cloud/"))

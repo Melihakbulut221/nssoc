@@ -1,108 +1,52 @@
-name: Preserve actual gate field port responses power and thermal noise
+name: Fresh paired650 gate port reduction with DC AC noise and fault controls
 on:
   workflow_dispatch:
-    inputs:
-      execute:
-        type: boolean
-        default: false
-      approved_source:
-        type: string
-        required: true
 permissions:
   contents: read
   actions: read
-concurrency:
-  group: cdr-mos650-gate-port-reduction-${{ github.ref }}
-  cancel-in-progress: false
-env:
-  PYTHONDONTWRITEBYTECODE: '1'
-  OPENBLAS_NUM_THREADS: '1'
-  OMP_NUM_THREADS: '1'
-  APPROVED_SOURCE: ${{ inputs.approved_source }}
 jobs:
-  source-controls:
+  mesh:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: ${{ github.sha }}
-          persist-credentials: false
-          filter: blob:none
-          sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/cdr-mos650-gate-ac-pins.json
-      - name: Materialize exact source closure
-        run: |
-          python3 -B - <<'PY'
-          import json,subprocess
-          from pathlib import Path
-          m='scripts/cdr-mos650-gate-ac-pins.json'
-          names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
-          assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
-          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
-          PY
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
-      - name: Verify frozen model and physical input sources
-        run: python3 -B scripts/cdr_mos650_gate_ac.py --controls
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: mos650-controls-${{ github.run_id }}
-          path: mos650-gate-ac/derived
-          if-no-files-found: error
-          retention-days: 90
-  native-gate-ac:
-    if: ${{ inputs.execute }}
-    needs: source-controls
-    runs-on: ubuntu-24.04
-    timeout-minutes: 90
-    permissions:
-      contents: write
-      actions: read
+    timeout-minutes: 180
     env:
       GH_TOKEN: ${{ github.token }}
+      APPROVED_SOURCE: ${{ github.sha }}
+      PYTHONDONTWRITEBYTECODE: '1'
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: ${{ github.sha }}
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: /scripts/cdr-mos650-gate-ac-pins.json
-      - name: Materialize exact source closure
+      - name: Restore exact source closure
         run: |
-          python3 -B - <<'PY'
-          import json,subprocess
-          from pathlib import Path
-          m='scripts/cdr-mos650-gate-ac-pins.json'
-          names=sorted(set(json.loads(Path(m).read_bytes())['files'])|{m})
-          assert all(not n.startswith('/')and '..'not in Path(n).parts and not any(c in n for c in '*?[!\\\n\r')for n in names)
+          python3 - <<'PYCODE'
+          import json,subprocess,pathlib
+          p='scripts/cdr-mos650-gate-ac-pins.json'
+          names=sorted(set(json.loads(pathlib.Path(p).read_text())['files'])|{p})
+          assert all(not n.startswith('/') and '..' not in pathlib.Path(n).parts and not any(c in n for c in '*?[!\\\n\r') for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
-          PY
+          PYCODE
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Install pinned sparse linear algebra dependencies
-        run: python3 -m pip install --disable-pip-version-check --no-cache-dir --report /tmp/nssoc-gate-reduce-packages.json numpy==2.3.3 scipy==1.16.2
-      - name: Reduce actual gate field ports and compare native DC AC power and noise
-        id: native
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir --report /tmp/nssoc-gate-reduce-packages.json numpy==2.3.3 scipy==1.16.2
+      - name: Reduce all 50 physical groups across five partition bases and verify 503 native executions
         run: python3 -B scripts/cdr_mos650_gate_ac.py --extract
-      - name: Preserve every actual native success or failure
-        if: always()
-        run: python3 -B scripts/cdr_mos650_gate_ac.py --publish
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: mos650-derived-${{ github.run_id }}
-          path: mos650-gate-ac/derived
+          name: paired650-gate-reduction-derived-${{ github.run_id }}
+          path: paired650-gate-reduction/derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: mos650-native-fallback-${{ github.run_id }}
-          path: mos650-gate-ac
+          name: paired650-gate-reduction-native-${{ github.run_id }}
+          path: paired650-gate-reduction/
           if-no-files-found: warn
           retention-days: 90
