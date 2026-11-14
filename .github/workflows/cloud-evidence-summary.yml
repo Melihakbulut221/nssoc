@@ -1,4 +1,4 @@
-name: Identify residual internal hold cones after combined IO repairs
+name: Identify residual109 hold endpoints after combined SRAM and feedback repair
 on:
   workflow_dispatch:
 permissions:
@@ -20,7 +20,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-internal-hold-census-${{ github.run_id }}
+          name: rx-combined-residual-hold-census-${{ github.run_id }}
           path: out/
           if-no-files-found: error
           retention-days: 90
