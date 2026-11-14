@@ -1,4 +1,4 @@
-name: Read authenticated postCTS and routed jumper measurements
+name: Read authenticated new EOP chip postCTS measurements
 on:
   workflow_dispatch:
 permissions:
@@ -24,7 +24,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: postcts-jumper-slim-${{ github.run_id }}
+          name: eop-chip-postcts-slim-${{ github.run_id }}
           path: out/
           if-no-files-found: error
           retention-days: 90
