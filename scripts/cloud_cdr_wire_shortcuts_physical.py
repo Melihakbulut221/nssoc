@@ -10,7 +10,7 @@ OUT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-physical"
 MANIFEST="scripts/cdr-wire-shortcuts-physical-pins.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
 CANDIDATE="scripts/cdr-wire-physical-candidate.json"
-BRANCH="codex/cdr650-paired-native-physical"
+BRANCH="codex/paired650-packed-physical"
 PAIRED="scripts/cdr650-paired-physical-input.json"
 APP_SHA="d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
 CHECKER_SHA='30c4586b86167ad775af14b5568152820a802037150bdfd282e7ba0843a1555f'
@@ -208,6 +208,10 @@ def candidate():
     need(proof["serialized_geometry_checked"] and proof["local_overlays_conserved"] and proof["primitive_child_instances"]==16,"preserved actual primitives and local material")
     need(len(proof["trunks"])==37 and all(t["via_incidence_conserved"] for t in proof["trunks"]),"all37 actual global trunks")
     need(proof["accepted"] is False and proof["full_phy_accepted"] is False and proof["main_chip_integrated"] is False,"no inherited acceptance")
+    need(proof["reference_paired_gds_sha256"]=="285760f3930a1cc142b45a3c43866202f1ea4694f468fb1603f286cb546cd514","actual paired predecessor")
+    need(proof["unchanged_first_six_bands"] and proof["packing_gap_um"]==16.0,"exact packed candidate contract")
+    need(proof["packed_signal_length_sum_um"]<proof["paired_signal_length_sum_um"],"actual total signal length reduction")
+    need(all(t["packed_length_um"]<=t["paired_length_um"] for t in proof["signal_trunk_comparison"]),"no individual signal trunk length regression")
     layout=target/"native/layout";layout.mkdir(parents=True)
     (layout/(TOP+".gds")).write_bytes(candidate_bytes)
     shutil.copyfile(baseline/"native/layout/schematic.cir",layout/"schematic.cir")
