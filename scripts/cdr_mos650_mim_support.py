@@ -14,7 +14,7 @@ def require(ok,message):
 def generate():
     import klayout.db as pya
     P=ROOT/'paired-terminal-anchors/native/view';G=P/'parent/layout'/(TOP+'.gds');D=P/'parent/physical/lvs_flat/result.lvsdb'
-    assert sha(G)=='c335182048dc1696821ab875fb34447e5b5a9ba0f1a24d5d16d572680906c16c'
+    assert sha(G)=='285760f3930a1cc142b45a3c43866202f1ea4694f468fb1603f286cb546cd514'
     L=pya.Layout();L.read(str(G));T=L.cell(TOP);assert L.dbu==.001 and T is not None
     native=pya.LayoutVsSchematic();native.read(str(D));assert native.netlist().top_circuit().name==TOP
     original=json.loads((P/'wire/anchors08.json').read_text());a=copy.deepcopy(original);geo=json.loads((P/'wire/native05/result.json').read_text());devices=json.loads((P/'wire/device-locations01.json').read_text())['devices']
