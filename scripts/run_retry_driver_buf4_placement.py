@@ -4,7 +4,10 @@ import os,pathlib,hashlib,zipfile,tarfile,subprocess,json,time,shutil
 assert os.environ.get('GITHUB_ACTIONS')=='true'
 P=pathlib.Path;out=P('out');native=out/'native';derived=out/'derived';native.mkdir(parents=True);derived.mkdir()
 def sha(p):
- with P(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ digest=hashlib.sha256()
+ with P(p).open('rb') as f:
+  for block in iter(lambda:f.read(1024*1024),b''):digest.update(block)
+ return digest.hexdigest()
 r={'status':'RUNNING','accepted':False,'final_timing_complete':False,'manufacturing_approval':False,'source_artifact':14112212387,'target':'place31551','old_master':'sg13g2_buf_1','new_master':'sg13g2_buf_4','scope':'One positive buffer upsize and legal placement only. All other cell geometry/status, every pin connection and top port remain invariant. Old routing invalid after master/pin changes; new routing, RC, all-corner STA, DRC, antenna and LVS are mandatory.'}
 code=2
 try:
