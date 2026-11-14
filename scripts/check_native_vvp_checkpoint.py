@@ -67,7 +67,7 @@ endmodule
   end=time.monotonic()+300
   while 'CHECKPOINT_CONTROL_FINISHED' not in (root/'resumed.log').read_text():
    assert time.monotonic()<end,'Restored simulator did not finish';time.sleep(.2)
-  pid=int((root/'restored.pid').read_text());limit=time.monotonic()+15
+  pid=int(run(['sudo','cat',str(root/'restored.pid')]).stdout);limit=time.monotonic()+15
   while P('/proc/'+str(pid)+'/stat').exists():
    stat=P('/proc/'+str(pid)+'/stat').read_text()
    if stat.split(') ',1)[1].startswith('Z'):break
@@ -80,5 +80,11 @@ except Exception as e:
  if isinstance(e,subprocess.CalledProcessError):r['native_error']={'stdout':e.stdout[-6000:],'stderr':e.stderr[-6000:]}
  raise
 finally:
- r['criu_logs']={p.name:p.read_text(errors='replace')[-10000:] for p in (root/'images').glob('*.log')} if (root/'images').exists() else {}
+ # Persist the native verdict before attempting privileged diagnostic reads.
+ (out/(stage+'-result.json')).write_text(json.dumps(r,indent=2))
+ r['criu_logs']={}
+ for log in (root/'images').glob('*.log'):
+  capture=subprocess.run(['sudo','tail','-c','10000',str(log)],capture_output=True,text=True,timeout=15)
+  r['criu_logs'][log.name]={'returncode':capture.returncode,'text':capture.stdout,'stderr':capture.stderr}
+
  (out/(stage+'-result.json')).write_text(json.dumps(r,indent=2));print(json.dumps({k:v for k,v in r.items() if k in ['stage','passed','error','native_error']}))
