@@ -103,8 +103,8 @@ try:
   assert r['original_inputs_sha256']==dump['original_inputs_sha256']
   assert digest('checkpoint.tgz')==dump['checkpoint_tgz_sha256']
   assert r['runtime']==dump['runtime_manifest'], 'Runtime/kernel/library identity changed; no compatibility bypass'
-  assert all(P(p).is_file() and digest(p)==sha for p,sha in dump['mapped_file_hashes'].items()),'Mapped runtime files differ'
   run(['sudo','tar','-xzf','checkpoint.tgz','-C','/tmp'])
+  assert all(P(p).is_file() and digest(p)==sha for p,sha in dump['mapped_file_hashes'].items()),'Mapped runtime files differ'
   assert digest(root/'resumed.log')==dump['checkpoint_prefix_sha256']
   run(['sudo','criu','restore','-D',str(root/'images'),'--shell-job','--cpu-cap=all','--restore-detached','--pidfile',str(root/'restored.pid'),'-o','restore.log','-v4'])
   pid=int(run(['sudo','cat',str(root/'restored.pid')]).stdout)
