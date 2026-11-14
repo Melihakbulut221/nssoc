@@ -1,3 +1,13 @@
+## SRAM search ambiguity confirmed independently; hierarchy inventory live
+
+Run43588998602/source `ff22dfcd50ea2e51222dba28d98c08e16610138b` succeeded without loading CAD objects. Reads exact serialized DB SHA341e7da... only on cloud. Safe14111003774 SHA `abc6554fb3974ede597897234ff08275820dc7ef6102f3d3132a7ae068437a02`. 5752 exact embedded complexity-limit messages: most need32, some128/256, four need8192. Therefore bounded topNoMatch cannot alone distinguish structural defects from search exhaustion. Do not classify all mismatches as design errors.
+
+Detailed native reader ALSO crashes in Ruby during DeepShapeStore destruction; not Python-only. Latest43588791834/source `dcee94349586376e569598b03de41f158d61bb56` staysFAIL, nativeRC6. Partial report preserved safe14111896618 SHA `52c360b1f7b6db6eb9ba63caded65ef3b85bfca3bfad2783e1b03eab04d2e7b2`; **not trustworthy acceptance evidence**, requires independent validation. Previous observer runs43587894664(API),43588102578/43588371410(Python GC),43588535934(Ruby) terminalfailure; do not poll/relaunch them. Report and failures in `docs/evidence/dp-sram-search-ambiguity-and-reader-failure-20261114.json`.
+
+Live hierarchy inventory43589227835/source `e6682d1a15931a7c79a44423686f8a7f05eb1981`, branch `codex/dp-sram-prealign-hierarchy`. Reads original GDS cell names/instance counts and engineered CDL cell definitions in cloud; no LVS replay or correspondence assumption. Compare unmatched leaf names before considering explicit same_circuits; any mapping must retain full primitive and port checks, not blackbox/exclude cells.
+
+Other live work: full native boot43588310054 from1.90Mcycles; PHY43584735530; CRC antenna43579643337; SP LVS43566292104. Earlier records below.
+
 ## Full native boot advanced to 1.90M cycles; next checkpoint continuation live
 
 Parent43573697024/source `27c496c5649c284e5cc1494792ef103c7fd427c7` completed CHECKPOINT infrastructure successfully, **not boot acceptance**. Lastcycle1900000, UART450 bytes, flash6frames; firmware entered, tests1..5 print ok. completed_boot=false,passed=false, checkpoint_saved=true. Safe14110894168 SHA256 `93d10bd767f486fdc5718cec80d4de1cdd2c1fd453c805bda68e31874bdaf79d`. Native14111635745 SHA256 `4118593a84fc58be234b22d1fe177626dba8a2a6f973ff10e5effca36b9472a9`; tgzSHA `06e96554e91fd1b956b3c948419a02f7de81c8ba43f75df69e5d6014453d5875`, images-43573697024, logprefix16449bytes SHA `6fc8354e52debce6a7854615f17ef0cce200158d95a819638f58fa6535e85793`.
