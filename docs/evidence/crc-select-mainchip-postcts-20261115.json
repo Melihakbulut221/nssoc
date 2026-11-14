@@ -1,0 +1,211 @@
+{
+  "run": 43639975405,
+  "source_head": "b6dfa2a1429d837d7f4d5e479897cf95dac06f87",
+  "derived_artifact": 14132078627,
+  "derived_sha256": "0ed233f5323f5cd384752bb90205d8ecfe989da42d936701151ea37183815c01",
+  "native_artifact": 14131978922,
+  "native_sha256": "f6dff8733fb34fdc4d9e5bb58a73a61390c8341ecaf7edbd0980a0cbdb4a8021",
+  "result": {
+    "status": "COMPLETE_PREDECODE_POSTCTS_REQUIRES_BOOT_EQUIVALENCE_ROUTING_EXTRACTED_STA",
+    "source_head": "b6dfa2a1429d837d7f4d5e479897cf95dac06f87",
+    "accepted": false,
+    "functional_boot_accepted": false,
+    "final_timing_complete": false,
+    "full_phy_accepted": false,
+    "qualified_pex": false,
+    "scope": "NEW CRC-select EOP-cache candidate; boot validation remains independent and pending. Exact CTS DB, three separate propagated-clock placement-estimate STA processes before/after native electrical/setup/hold repair. Not routed, extracted timing, logic equivalence or full PHY acceptance.",
+    "placement_source": {
+      "run": 43638590941,
+      "head": "85356cc286bea6cd6f53492a17c3182b037ec795",
+      "native_artifact": 14131641568,
+      "native_sha256": "8db0f7647c3fa75371fa3741ece0a4334775ddeb8998d8b7fa069b9239787c03",
+      "authenticated_files": 356,
+      "functional_boot_accepted": false
+    },
+    "discarded_inherited_metric_count": 131,
+    "protected_inputs": {
+      "/home/runner/work/nssoc/nssoc/scripts/cloud_predecode_postcts.py": "9bbc5157412aed36a4c5b39ac8b34a8512f325892ecec4b526d05e6b81ad7f69",
+      "/home/runner/work/nssoc/nssoc/hw/soc/pnr/corrpre_banked_flow.py": "21569b02539f8599007d918fbb2c83fa6c4d2a61c454f6ba49319b7e4dd27f07",
+      "/home/runner/work/nssoc/nssoc/hw/soc/pnr/interface_flow.py": "f131aac5fc797b0abd69ce11dab59e1a807e41b5f2b67f5bae92b3b40653b289",
+      "/home/runner/work/nssoc/nssoc/hw/soc/pnr/corrpre_postcts_flow.py": "49c75275800d4a2fa19b9215954a5d021fe0691ff574bef74fd90f28ca68171a",
+      "/home/runner/work/nssoc/nssoc/hw/soc/flow/check_timing_derate.tcl": "4514aed16b2b328166be7a32a4af4be83ce640f0a69ac1aef3117bd1f286592f",
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-predecode-chip-placement/prepared/config.json": "cd010b6d13efde1fb6c7ed6af081fe47490ca85d41811a6d8833013832c9e88b",
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-predecode-chip-placement/prepared/physical.sdc": "2076e8a2cd4be4ddc52fa8db7778513ffa865e675c732b7874a5307def3aec3d",
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-predecode-chip-placement/run/27-openroad-cts/soc_top.odb": "6deaba84600e5bd9ef0a59028a6fce1b00fea8e9f87f968a997487220c14dcaa",
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-predecode-postcts/trial-config.json": "3c4baac6700ffb9cc429a82964f97c73aba832f4019b8c864be68a1ac57f3c47",
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-predecode-postcts/initial-state.json": "df9d1c1414c3c538e8f3a8d8caa078900197a4c8c226a7b09b3888f28de80c52"
+    },
+    "config_changes": {
+      "DESIGN_REPAIR_REMOVE_BUFFERS": false,
+      "DESIGN_REPAIR_BUFFER_INPUT_PORTS": false,
+      "DESIGN_REPAIR_BUFFER_OUTPUT_PORTS": false,
+      "DESIGN_REPAIR_TIE_FANOUT": false
+    },
+    "command": [
+      "/home/runner/work/nssoc/nssoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+      "python",
+      "/home/runner/work/nssoc/nssoc/hw/soc/pnr/corrpre_banked_flow.py",
+      "--flow",
+      "CorrpreBankedPostCTS",
+      "--pdk-root",
+      "/home/runner/work/nssoc/nssoc/hw/soc/tools/ciel-corrpre",
+      "--pdk",
+      "ihp-sg13g2",
+      "--scl",
+      "sg13g2_stdcell",
+      "--force-run-dir",
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-predecode-postcts/run",
+      "--with-initial-state",
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-predecode-postcts/initial-state.json",
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-predecode-postcts/trial-config.json"
+    ],
+    "returncode": 0,
+    "elapsed_s": 1199.212838516,
+    "measurements": {
+      "before": {
+        "nom_slow_1p08V_125C": {
+          "metrics": {
+            "design__max_slew_violation__count__corner:nom_slow_1p08V_125C": 136,
+            "design__max_fanout_violation__count__corner:nom_slow_1p08V_125C": 1377,
+            "design__max_cap_violation__count__corner:nom_slow_1p08V_125C": 0,
+            "clock__skew__worst_hold__corner:nom_slow_1p08V_125C": -0.939653,
+            "clock__skew__worst_setup__corner:nom_slow_1p08V_125C": 1.41135,
+            "timing__hold__ws__corner:nom_slow_1p08V_125C": -1.52052,
+            "timing__setup__ws__corner:nom_slow_1p08V_125C": -9.63625,
+            "timing__hold__tns__corner:nom_slow_1p08V_125C": -183.997,
+            "timing__setup__tns__corner:nom_slow_1p08V_125C": -6377.28,
+            "timing__hold__wns__corner:nom_slow_1p08V_125C": -1.52052,
+            "timing__setup__wns__corner:nom_slow_1p08V_125C": -9.63625,
+            "timing__hold_vio__count__corner:nom_slow_1p08V_125C": 504,
+            "timing__hold_r2r__ws__corner:nom_slow_1p08V_125C": -0.910536,
+            "timing__hold_r2r_vio__count__corner:nom_slow_1p08V_125C": 416,
+            "timing__setup_vio__count__corner:nom_slow_1p08V_125C": 2488,
+            "timing__setup_r2r__ws__corner:nom_slow_1p08V_125C": -9.63625,
+            "timing__setup_r2r_vio__count__corner:nom_slow_1p08V_125C": 2485
+          },
+          "directory": "run/1-nssoc-corrprebankedbeforeslow"
+        },
+        "nom_typ_1p20V_25C": {
+          "metrics": {
+            "design__max_slew_violation__count__corner:nom_typ_1p20V_25C": 7,
+            "design__max_fanout_violation__count__corner:nom_typ_1p20V_25C": 1377,
+            "design__max_cap_violation__count__corner:nom_typ_1p20V_25C": 0,
+            "clock__skew__worst_hold__corner:nom_typ_1p20V_25C": -0.769471,
+            "clock__skew__worst_setup__corner:nom_typ_1p20V_25C": 1.01591,
+            "timing__hold__ws__corner:nom_typ_1p20V_25C": -1.0658,
+            "timing__setup__ws__corner:nom_typ_1p20V_25C": -4.63016,
+            "timing__hold__tns__corner:nom_typ_1p20V_25C": -195.156,
+            "timing__setup__tns__corner:nom_typ_1p20V_25C": -1504.5,
+            "timing__hold__wns__corner:nom_typ_1p20V_25C": -1.0658,
+            "timing__setup__wns__corner:nom_typ_1p20V_25C": -4.63016,
+            "timing__hold_vio__count__corner:nom_typ_1p20V_25C": 1007,
+            "timing__hold_r2r__ws__corner:nom_typ_1p20V_25C": -0.652523,
+            "timing__hold_r2r_vio__count__corner:nom_typ_1p20V_25C": 919,
+            "timing__setup_vio__count__corner:nom_typ_1p20V_25C": 962,
+            "timing__setup_r2r__ws__corner:nom_typ_1p20V_25C": -4.63016,
+            "timing__setup_r2r_vio__count__corner:nom_typ_1p20V_25C": 961
+          },
+          "directory": "run/2-nssoc-corrprebankedbeforetypical"
+        },
+        "nom_fast_1p32V_m40C": {
+          "metrics": {
+            "design__max_slew_violation__count__corner:nom_fast_1p32V_m40C": 0,
+            "design__max_fanout_violation__count__corner:nom_fast_1p32V_m40C": 1377,
+            "design__max_cap_violation__count__corner:nom_fast_1p32V_m40C": 0,
+            "clock__skew__worst_hold__corner:nom_fast_1p32V_m40C": -0.670622,
+            "clock__skew__worst_setup__corner:nom_fast_1p32V_m40C": 0.79479,
+            "timing__hold__ws__corner:nom_fast_1p32V_m40C": -0.798933,
+            "timing__setup__ws__corner:nom_fast_1p32V_m40C": -1.58604,
+            "timing__hold__tns__corner:nom_fast_1p32V_m40C": -870.175,
+            "timing__setup__tns__corner:nom_fast_1p32V_m40C": -284.276,
+            "timing__hold__wns__corner:nom_fast_1p32V_m40C": -0.798933,
+            "timing__setup__wns__corner:nom_fast_1p32V_m40C": -1.58604,
+            "timing__hold_vio__count__corner:nom_fast_1p32V_m40C": 14191,
+            "timing__hold_r2r__ws__corner:nom_fast_1p32V_m40C": -0.618136,
+            "timing__hold_r2r_vio__count__corner:nom_fast_1p32V_m40C": 14108,
+            "timing__setup_vio__count__corner:nom_fast_1p32V_m40C": 361,
+            "timing__setup_r2r__ws__corner:nom_fast_1p32V_m40C": -1.58604,
+            "timing__setup_r2r_vio__count__corner:nom_fast_1p32V_m40C": 361
+          },
+          "directory": "run/3-nssoc-corrprebankedbeforefast"
+        }
+      },
+      "after": {
+        "nom_slow_1p08V_125C": {
+          "metrics": {
+            "design__max_slew_violation__count__corner:nom_slow_1p08V_125C": 13,
+            "design__max_fanout_violation__count__corner:nom_slow_1p08V_125C": 1377,
+            "design__max_cap_violation__count__corner:nom_slow_1p08V_125C": 0,
+            "clock__skew__worst_hold__corner:nom_slow_1p08V_125C": -0.939653,
+            "clock__skew__worst_setup__corner:nom_slow_1p08V_125C": 1.41135,
+            "timing__hold__ws__corner:nom_slow_1p08V_125C": -0.389349,
+            "timing__setup__ws__corner:nom_slow_1p08V_125C": -3.3349,
+            "timing__hold__tns__corner:nom_slow_1p08V_125C": -0.389349,
+            "timing__setup__tns__corner:nom_slow_1p08V_125C": -3878.11,
+            "timing__hold__wns__corner:nom_slow_1p08V_125C": -0.389349,
+            "timing__setup__wns__corner:nom_slow_1p08V_125C": -3.3349,
+            "timing__hold_vio__count__corner:nom_slow_1p08V_125C": 1,
+            "timing__hold_r2r__ws__corner:nom_slow_1p08V_125C": 0.198007,
+            "timing__hold_r2r_vio__count__corner:nom_slow_1p08V_125C": 0,
+            "timing__setup_vio__count__corner:nom_slow_1p08V_125C": 2548,
+            "timing__setup_r2r__ws__corner:nom_slow_1p08V_125C": -3.3349,
+            "timing__setup_r2r_vio__count__corner:nom_slow_1p08V_125C": 2543
+          },
+          "directory": "run/6-nssoc-corrprebankedafterslow"
+        },
+        "nom_typ_1p20V_25C": {
+          "metrics": {
+            "design__max_slew_violation__count__corner:nom_typ_1p20V_25C": 7,
+            "design__max_fanout_violation__count__corner:nom_typ_1p20V_25C": 1377,
+            "design__max_cap_violation__count__corner:nom_typ_1p20V_25C": 0,
+            "clock__skew__worst_hold__corner:nom_typ_1p20V_25C": -0.769471,
+            "clock__skew__worst_setup__corner:nom_typ_1p20V_25C": 1.01591,
+            "timing__hold__ws__corner:nom_typ_1p20V_25C": -0.360047,
+            "timing__setup__ws__corner:nom_typ_1p20V_25C": -0.775369,
+            "timing__hold__tns__corner:nom_typ_1p20V_25C": -1.36612,
+            "timing__setup__tns__corner:nom_typ_1p20V_25C": -185.247,
+            "timing__hold__wns__corner:nom_typ_1p20V_25C": -0.360047,
+            "timing__setup__wns__corner:nom_typ_1p20V_25C": -0.775369,
+            "timing__hold_vio__count__corner:nom_typ_1p20V_25C": 17,
+            "timing__hold_r2r__ws__corner:nom_typ_1p20V_25C": 0.032301,
+            "timing__hold_r2r_vio__count__corner:nom_typ_1p20V_25C": 0,
+            "timing__setup_vio__count__corner:nom_typ_1p20V_25C": 602,
+            "timing__setup_r2r__ws__corner:nom_typ_1p20V_25C": -0.742072,
+            "timing__setup_r2r_vio__count__corner:nom_typ_1p20V_25C": 601
+          },
+          "directory": "run/7-nssoc-corrprebankedaftertypical"
+        },
+        "nom_fast_1p32V_m40C": {
+          "metrics": {
+            "design__max_slew_violation__count__corner:nom_fast_1p32V_m40C": 0,
+            "design__max_fanout_violation__count__corner:nom_fast_1p32V_m40C": 1377,
+            "design__max_cap_violation__count__corner:nom_fast_1p32V_m40C": 0,
+            "clock__skew__worst_hold__corner:nom_fast_1p32V_m40C": -0.670542,
+            "clock__skew__worst_setup__corner:nom_fast_1p32V_m40C": 0.79479,
+            "timing__hold__ws__corner:nom_fast_1p32V_m40C": -0.325918,
+            "timing__setup__ws__corner:nom_fast_1p32V_m40C": 0.471704,
+            "timing__hold__tns__corner:nom_fast_1p32V_m40C": -11.6747,
+            "timing__setup__tns__corner:nom_fast_1p32V_m40C": 0,
+            "timing__hold__wns__corner:nom_fast_1p32V_m40C": -0.325918,
+            "timing__setup__wns__corner:nom_fast_1p32V_m40C": 0,
+            "timing__hold_vio__count__corner:nom_fast_1p32V_m40C": 221,
+            "timing__hold_r2r__ws__corner:nom_fast_1p32V_m40C": -0.09802,
+            "timing__hold_r2r_vio__count__corner:nom_fast_1p32V_m40C": 194,
+            "timing__setup_vio__count__corner:nom_fast_1p32V_m40C": 0,
+            "timing__setup_r2r__ws__corner:nom_fast_1p32V_m40C": 0.811922,
+            "timing__setup_r2r_vio__count__corner:nom_fast_1p32V_m40C": 0
+          },
+          "directory": "run/8-nssoc-corrprebankedafterfast"
+        }
+      }
+    },
+    "repaired_state": "run/5-openroad-resizertimingpostcts/state_out.json",
+    "repaired_odb_sha256": "568dfa2f110b6813d316087b6249340bedd4c831b95bf13d6224014b49c6afb1",
+    "sources_unchanged": true
+  },
+  "worst_paths": {
+    "run/6-nssoc-corrprebankedafterslow/max.rpt": "Startpoint: $auto$ff.cc:337:slice$343453\n            (rising edge-triggered flip-flop clocked by pcie_clk_i)\nEndpoint: $flatten\\\\u_pcie.receive_ownership.r2_staged_group[1].lane_copy.$auto$ff.cc:337:slice$551876\n          (rising edge-triggered flip-flop clocked by pcie_clk_i)\nPath Group: pcie_clk_i\nPath Type: max\n\nFanout         Cap        Slew       Delay        Time   Description\n---------------------------------------------------------------------------------------------\n                                  0.000000    0.000000   clock pcie_clk_i (rise edge)\n                                  0.000000    0.000000   clock source latency\n     1    0.213652    0.304861    0.379416    0.379416 ^ pcie_clk_i (in)\n                                                         pcie_clk_i (net)\n                      0.471458    0.000000    0.379416 ^ clkbuf_0_pcie_clk_i/A (sg13g2_buf_16)\n     2    0.104990    0.077524    0.286647    0.666063 ^ clkbuf_0_pcie_clk_i/X (sg13g2_buf_16)\n                                                         clknet_0_pcie_clk_i (net)\n                      0.082606    0.016409    0.682472 ^ clkbuf_1_1_0_pcie_clk_i/A (sg13g2_buf_8)\n     4    0.127028    0.117391    0.197837    0.880309 ^ clkbuf_1_1_0_pcie_clk_i/X (sg13g2_buf_8)\n                                                         clknet_1_1_0_pcie_clk_i (net)\n                      0.119530    0.013114    0.893423 ^ clkbuf_3_4_0_pcie_clk_i/A (sg13g2_buf_8)\n     4    0.092320    0.091888    0.192475    1.085899 ^ clkbuf_3_4_0_pcie_clk_i/X (sg13g2_buf_8)\n                                                         clknet_3_4_0_pcie_clk_i (net)\n                      0.092575    0.006497    1.092396 ^ clkbuf_5_19_0_pcie_clk_i/A (sg13g2_buf_8)\n     4    0.104495    0.099589    0.194571    1.286966 ^ clkbuf_5_19_0_pcie_clk_i/X (sg13g2_buf_8)\n                                                         clknet_5_19_0_pcie_clk_i (net)\n                      0.101047    0.010049    1.297015 ^ clkbuf_7_77__f_pcie_clk_i/A (sg13g2_buf_16)\n     5    0.060380    0.045970    0.154337    1.451352 ^ clkbuf_7_77__f_pcie_clk_i/X (sg13g2_buf_16)\n                                                         clknet_7_77__leaf_pcie_clk_i (net)\n                      0.045988    0.001476    1.452829 ^ clkbuf_leaf_446_pcie_clk_i/A (sg13g2_buf_8)\n    16    0.063558    0.067486    0.143620    1.596449 ^ clkbuf_leaf_446_pcie_clk_i/X (sg13g2_buf_8)\n                                                         clknet_leaf_446_pcie_clk_i (net)\n                      0.067486    0.000319    1.596768 ^ $auto$ff.cc:337:slice$343453/CLK (sg13g2_dfrbpq_2)\n     4    0.090232    0.291348    0.503948    2.100717 ^ $auto$ff.cc:337:slice$343453/Q (sg13g2_dfrbpq_2)\n                                                         u_pcie.flow.packets.endpoint.endpoint.receive_packet.quarantine.rst_ni (net)\n                      0.291348    0.000294    2.101011 ^ fanout9603/A (sg13g2_buf_4)\n     4    0.092012    0.175449    0.361326    2.462337 ^ fanout9603/X (sg13g2_buf_4)\n                                                         net9603 (net)\n                      0.175450    0.000288    2.462625 ^ fanout9602/A (sg13g2_buf_2)\n     5    0.088051    0.287331    0.368266    2.830891 ^ fanout9602/X (sg13g2_buf_2)\n                                                         net9602 (net)\n                      0.288315    0.014602    2.845493 ^ fanout9586/A (sg13g2_buf_1)\n     5    0.038466    0.251683    0.363848    3.209341 ^ fanout9586/X (sg13g2_buf_1)\n                                                         net9586 (net)\n                      0.251813    0.002693    3.212034 ^ fanout9581/A (sg13g2_buf_1)\n     5    0.031338    0.207387    0.320402    3.532437 ^ fanout9581/X (sg13g2_buf_1)\n                                                         net9581 (net)\n                      0.207392    0.001436    3.533872 ^ fanout9578/A (sg13g2_buf_2)\n     8    0.052826    0.177185    0.311961    3.845833 ^ fanout9578/X (sg13g2_buf_2)\n                                                         net9578 (net)\n                      0.177187    0.001020    3.846853 ^ $abc$734702$auto$blifparse.cc:397:parse_blif$735723/A (sg13g2_inv_4)\n     7    0.121121    0.181417    0.240525    4.087379 v $abc$734702$auto$blifparse.cc:397:parse_blif$735723/Y (sg13g2_inv_4)\n                                                         $abc$734702$new_n39020 (net)\n                      0.181478    0.002985    4.090364 v $abc$734702$auto$blifparse.cc:397:parse_blif$747413/B (sg13g2_nor2_2)\n     1    0.008557    0.103835    0.142070    4.232433 ^ $abc$734702$auto$blifparse.cc:397:parse_blif$747413/Y (sg13g2_nor2_2)\n                                                         $abc$734702$new_n50710 (net)\n                      0.103835    0.000068    4.232501 ^ rebuffer23688/A (sg13g2_buf_8)\n     2    0.122934    0.104395    0.195643    4.428144 ^ rebuffer23688/X (sg13g2_buf_8)\n                                                         net23688 (net)\n                      0.155131    0.060175    4.488319 ^ $abc$734702$auto$blifparse.cc:397:parse_blif$747417/B1 (sg13g2_a221oi_1)\n     2    0.011001    0.221406    0.214328    4.702648 v $abc$734702$auto$blifparse.cc:397:parse_blif$747417/Y (sg13g2_a221oi_1)\n                                                         $abc$734702$new_n50714 (net)\n                      0.221406    0.000322    4.702969 v $abc$734702$auto$blifparse.cc:397:parse_blif$747422/C (sg13g2_nor4_2)\n     2    0.016206    0.308646    0.365327    5.068296 ^ $abc$734702$auto$blifparse.cc:397:parse_blif$747422/Y (sg13g2_nor4_2)\n                                                         $abc$734702$new_n50719 (net)\n                      0.308646    0.000639    5.068936 ^ fanout5076/A (sg13g2_buf_8)\n     8    0.132537    0.131509    0.282695    5.351631 ^ fanout5076/X (sg13g2_buf_8)\n                                                         net5076 (net)\n                      0.144643    0.032967    5.384598 ^ $abc$734702$auto$blifparse.cc:397:parse_blif$747458/A (sg13g2_buf_2)\n     3    0.060476    0.200656    0.299927    5.684525 ^ $abc$734702$auto$blifparse.cc:397:parse_blif$747458/X (sg13g2_buf_2)\n                                                         $abc$734702$new_n50755 (net)\n                      0.200657    0.000487    5.685012 ^ fanout4424/A (sg13g2_buf_2)\n     8    0.080828    0.264842    0.363739    6.048751 ^ fanout4424/X (sg13g2_buf_2)\n                                                         net4424 (net)\n                      0.267241    0.021323    6.070075 ^ $abc$734702$auto$blifparse.cc:397:parse_blif$747459/A (sg13g2_buf_4)\n     3    0.088271    0.165610    0.350815    6.420889 ^ $abc$734702$auto$blifparse.cc:397:parse_blif$747459/X (sg13g2_buf_4)\n                                                         $abc$734702$new_n50756 (net)\n                      0.165613    0.000648    6.421538 ^ fanout3860/A (sg13g2_buf_1)\n     8    0.034952    0.229051    0.309011    6.730549 ^ fanout3860/X (sg13g2_buf_1)\n                                                         net3860 (net)\n                      0.229053    0.001183    6.731732 ^ $abc$734702$auto$blifparse.cc:397:parse_blif$747488/B (sg13g2_nand2_1)\n     2    0.010518    0.134542    0.208218    6.939950 v $abc$734702$auto$blifparse.cc:397:parse_blif$747488/Y (sg13g2_nand2_1)\n                                                         $abc$734702$new_n50785 (net)\n                      0.134542    0.000111    6.940061 v $abc$734702$auto$blifparse.cc:397:parse_blif$747489/A2 (sg13g2_a21oi_2)\n     2    0.051773    0.360975    0.376764    7.316825 ^ $abc$734702$auto$blifparse.cc:397:parse_blif$747489/Y (sg13g2_a21oi_2)\n                                                         u_pcie.receive_ownership.r2_lane_d[7] (net)\n                      0.360979    0.001093    7.317919 ^ fanout2360/A (sg13g2_buf_4)\n     8    0.137787    0.233912    0.424365    7.742284 ^ fanout2360/X (sg13g2_buf_4)\n                                                         net2360 (net)\n                      0.260705    0.063312    7.805596 ^ fanout2358/A (sg13g2_buf_2)\n     8    0.106098    0.344313    0.438320    8.243916 ^ fanout2358/X (sg13g2_buf_2)\n                                                         net2358 (net)\n                      0.346998    0.025908    8.269824 ^ $flatten\\\\u_pcie.receive_ownership.r2_staged_group[1].lane_copy.$auto$ff.cc:337:slice$551876/D (sg13g2_dfrbpq_1)\n                                              8.269824   data arrival time\n\n                                  4.000000    4.000000   clock pcie_clk_i (rise edge)\n                                  0.000000    4.000000   clock source latency\n     1    0.213652    0.304861    0.343281    4.343281 ^ pcie_clk_i (in)\n                                                         pcie_clk_i (net)\n                      0.471458    0.000000    4.343281 ^ clkbuf_0_pcie_clk_i/A (sg13g2_buf_16)\n     2    0.104990    0.077524    0.259347    4.602629 ^ clkbuf_0_pcie_clk_i/X (sg13g2_buf_16)\n                                                         clknet_0_pcie_clk_i (net)\n                      0.084824    0.018208    4.620836 ^ clkbuf_1_0_0_pcie_clk_i/A (sg13g2_buf_8)\n     4    0.131966    0.121536    0.182341    4.803177 ^ clkbuf_1_0_0_pcie_clk_i/X (sg13g2_buf_8)\n                                                         clknet_1_0_0_pcie_clk_i (net)\n                      0.127192    0.019418    4.822595 ^ clkbuf_3_2_0_pcie_clk_i/A (sg13g2_buf_8)\n     4    0.084294    0.085556    0.178583    5.001178 ^ clkbuf_3_2_0_pcie_clk_i/X (sg13g2_buf_8)\n                                                         clknet_3_2_0_pcie_clk_i (net)\n                      0.087612    0.009913    5.011092 ^ clkbuf_5_10_0_pcie_clk_i/A (sg13g2_buf_8)\n     4    0.089929    0.088339    0.166346    5.177438 ^ clkbuf_5_10_0_pcie_clk_i/X (sg13g2_buf_8)\n                                                         clknet_5_10_0_pcie_clk_i (net)\n                      0.088518    0.002536    5.179974 ^ clkbuf_7_41__f_pcie_clk_i/A (sg13g2_buf_16)\n     5    0.064697    0.046864    0.134264    5.314237 ^ clkbuf_7_41__f_pcie_clk_i/X (sg13g2_buf_16)\n                                                         clknet_7_41__leaf_pcie_clk_i (net)\n                      0.047160    0.003827    5.318064 ^ clkbuf_leaf_77_pcie_clk_i/A (sg13g2_buf_8)\n    13    0.047735    0.056014    0.121493    5.439557 ^ clkbuf_leaf_77_pcie_clk_i/X (sg13g2_buf_8)\n                                                         clknet_leaf_77_pcie_clk_i (net)\n                      0.056016    0.000380    5.439937 ^ $flatten\\\\u_pcie.receive_ownership.r2_staged_group[1].lane_copy.$auto$ff.cc:337:slice$551876/CLK (sg13g2_dfrbpq_1)\n                                 -0.250000    5.189937   clock uncertainty\n                                  0.063434    5.253371   clock reconvergence pessimism\n                                 -0.318447    4.934924   library setup time\n                                              4.934924   data required time\n---------------------------------------------------------------------------------------------\n                                              4.934924   data required time\n                                             -8.269824   data arrival time\n---------------------------------------------------------------------------------------------\n                                             -3.334900   slack (VIOLATED)\n\n\n",
+    "run/8-nssoc-corrprebankedafterfast/min.rpt": "Startpoint: pcie_training_i (input port clocked by pcie_clk_i)\nEndpoint: $auto$ff.cc:337:slice$183526\n          (rising edge-triggered flip-flop clocked by pcie_clk_i)\nPath Group: pcie_clk_i\nPath Type: min\n\nFanout         Cap        Slew       Delay        Time   Description\n---------------------------------------------------------------------------------------------\n                                  0.000000    0.000000   clock pcie_clk_i (rise edge)\n                                  0.000000    0.000000   clock network delay (propagated)\n                                  0.200000    0.200000 v input external delay\n     1    0.008465    0.013714    0.003967    0.203967 v pcie_training_i (in)\n                                                         pcie_training_i (net)\n                      0.013715    0.000000    0.203967 v hold23699/A (sg13g2_dlygate4sd3_1)\n     1    0.003012    0.025676    0.233982    0.437948 v hold23699/X (sg13g2_dlygate4sd3_1)\n                                                         net23699 (net)\n                      0.025676    0.000023    0.437971 v input63/A (sg13g2_buf_1)\n     1    0.003621    0.014822    0.041444    0.479415 v input63/X (sg13g2_buf_1)\n                                                         net63 (net)\n                      0.014822    0.000053    0.479467 v hold23700/A (sg13g2_dlygate4sd3_1)\n     1    0.003821    0.027216    0.236324    0.715791 v hold23700/X (sg13g2_dlygate4sd3_1)\n                                                         net23700 (net)\n                      0.027216    0.000060    0.715850 v $auto$ff.cc:337:slice$183526/D (sg13g2_dfrbpq_1)\n                                              0.715850   data arrival time\n\n                                  0.000000    0.000000   clock pcie_clk_i (rise edge)\n                                  0.000000    0.000000   clock source latency\n     1    0.216048    0.097213    0.239871    0.239871 ^ pcie_clk_i (in)\n                                                         pcie_clk_i (net)\n                      0.344927    0.000000    0.239871 ^ clkbuf_0_pcie_clk_i/A (sg13g2_buf_16)\n     2    0.107389    0.037396    0.133046    0.372917 ^ clkbuf_0_pcie_clk_i/X (sg13g2_buf_16)\n                                                         clknet_0_pcie_clk_i (net)\n                      0.046767    0.016025    0.388943 ^ clkbuf_1_1_0_pcie_clk_i/A (sg13g2_buf_8)\n     4    0.131825    0.050375    0.080808    0.469751 ^ clkbuf_1_1_0_pcie_clk_i/X (sg13g2_buf_8)\n                                                         clknet_1_1_0_pcie_clk_i (net)\n                      0.064998    0.021734    0.491485 ^ clkbuf_3_7_0_pcie_clk_i/A (sg13g2_buf_8)\n     4    0.090584    0.035895    0.075323    0.566808 ^ clkbuf_3_7_0_pcie_clk_i/X (sg13g2_buf_8)\n                                                         clknet_3_7_0_pcie_clk_i (net)\n                      0.052084    0.018681    0.585488 ^ clkbuf_5_29_0_pcie_clk_i/A (sg13g2_buf_8)\n     4    0.127686    0.050066    0.083308    0.668796 ^ clkbuf_5_29_0_pcie_clk_i/X (sg13g2_buf_8)\n                                                         clknet_5_29_0_pcie_clk_i (net)\n                      0.060798    0.018584    0.687381 ^ clkbuf_7_118__f_pcie_clk_i/A (sg13g2_buf_16)\n     5    0.059164    0.020917    0.067346    0.754727 ^ clkbuf_7_118__f_pcie_clk_i/X (sg13g2_buf_16)\n                                                         clknet_7_118__leaf_pcie_clk_i (net)\n                      0.020919    0.000596    0.755323 ^ clkbuf_leaf_373_pcie_clk_i/A (sg13g2_buf_8)\n    12    0.056533    0.026589    0.058360    0.813683 ^ clkbuf_leaf_373_pcie_clk_i/X (sg13g2_buf_8)\n                                                         clknet_leaf_373_pcie_clk_i (net)\n                      0.026619    0.000810    0.814492 ^ $auto$ff.cc:337:slice$183526/CLK (sg13g2_dfrbpq_1)\n                                  0.250000    1.064492   clock uncertainty\n                                  0.000000    1.064492   clock reconvergence pessimism\n                                 -0.022724    1.041768   library hold time\n                                              1.041768   data required time\n---------------------------------------------------------------------------------------------\n                                              1.041768   data required time\n                                             -0.715850   data arrival time\n---------------------------------------------------------------------------------------------\n                                             -0.325918   slack (VIOLATED)\n\n\n",
+    "run/7-nssoc-corrprebankedaftertypical/min.rpt": "Startpoint: pcie_training_i (input port clocked by pcie_clk_i)\nEndpoint: $auto$ff.cc:337:slice$183526\n          (rising edge-triggered flip-flop clocked by pcie_clk_i)\nPath Group: pcie_clk_i\nPath Type: min\n\nFanout         Cap        Slew       Delay        Time   Description\n---------------------------------------------------------------------------------------------\n                                  0.000000    0.000000   clock pcie_clk_i (rise edge)\n                                  0.000000    0.000000   clock network delay (propagated)\n                                  0.200000    0.200000 v input external delay\n     1    0.008369    0.020889    0.005730    0.205730 v pcie_training_i (in)\n                                                         pcie_training_i (net)\n                      0.020890    0.000000    0.205730 v hold23699/A (sg13g2_dlygate4sd3_1)\n     1    0.002821    0.036467    0.348217    0.553948 v hold23699/X (sg13g2_dlygate4sd3_1)\n                                                         net23699 (net)\n                      0.036467    0.000021    0.553969 v input63/A (sg13g2_buf_1)\n     1    0.003525    0.021663    0.063131    0.617100 v input63/X (sg13g2_buf_1)\n                                                         net63 (net)\n                      0.021667    0.000051    0.617151 v hold23700/A (sg13g2_dlygate4sd3_1)\n     1    0.003727    0.038935    0.351619    0.968770 v hold23700/X (sg13g2_dlygate4sd3_1)\n                                                         net23700 (net)\n                      0.038935    0.000058    0.968827 v $auto$ff.cc:337:slice$183526/D (sg13g2_dfrbpq_1)\n                                              0.968827   data arrival time\n\n                                  0.000000    0.000000   clock pcie_clk_i (rise edge)\n                                  0.000000    0.000000   clock source latency\n     1    0.214752    0.172538    0.291480    0.291480 ^ pcie_clk_i (in)\n                                                         pcie_clk_i (net)\n                      0.387107    0.000000    0.291480 ^ clkbuf_0_pcie_clk_i/A (sg13g2_buf_16)\n     2    0.106087    0.052573    0.190120    0.481600 ^ clkbuf_0_pcie_clk_i/X (sg13g2_buf_16)\n                                                         clknet_0_pcie_clk_i (net)\n                      0.059712    0.016287    0.497887 ^ clkbuf_1_1_0_pcie_clk_i/A (sg13g2_buf_8)\n     4    0.129222    0.076927    0.123933    0.621820 ^ clkbuf_1_1_0_pcie_clk_i/X (sg13g2_buf_8)\n                                                         clknet_1_1_0_pcie_clk_i (net)\n                      0.086695    0.021955    0.643775 ^ clkbuf_3_7_0_pcie_clk_i/A (sg13g2_buf_8)\n     4    0.087980    0.056558    0.118690    0.762465 ^ clkbuf_3_7_0_pcie_clk_i/X (sg13g2_buf_8)\n                                                         clknet_3_7_0_pcie_clk_i (net)\n                      0.067142    0.018820    0.781286 ^ clkbuf_5_29_0_pcie_clk_i/A (sg13g2_buf_8)\n     4    0.122502    0.074164    0.126807    0.908093 ^ clkbuf_5_29_0_pcie_clk_i/X (sg13g2_buf_8)\n                                                         clknet_5_29_0_pcie_clk_i (net)\n                      0.081234    0.018510    0.926603 ^ clkbuf_7_118__f_pcie_clk_i/A (sg13g2_buf_16)\n     5    0.055910    0.029776    0.101750    1.028354 ^ clkbuf_7_118__f_pcie_clk_i/X (sg13g2_buf_16)\n                                                         clknet_7_118__leaf_pcie_clk_i (net)\n                      0.029776    0.000562    1.028915 ^ clkbuf_leaf_373_pcie_clk_i/A (sg13g2_buf_8)\n    12    0.053450    0.038709    0.085677    1.114592 ^ clkbuf_leaf_373_pcie_clk_i/X (sg13g2_buf_8)\n                                                         clknet_leaf_373_pcie_clk_i (net)\n                      0.038726    0.000767    1.115360 ^ $auto$ff.cc:337:slice$183526/CLK (sg13g2_dfrbpq_1)\n                                  0.250000    1.365360   clock uncertainty\n                                  0.000000    1.365360   clock reconvergence pessimism\n                                 -0.036486    1.328874   library hold time\n                                              1.328874   data required time\n---------------------------------------------------------------------------------------------\n                                              1.328874   data required time\n                                             -0.968827   data arrival time\n---------------------------------------------------------------------------------------------\n                                             -0.360047   slack (VIOLATED)\n\n\n"
+  }
+}
