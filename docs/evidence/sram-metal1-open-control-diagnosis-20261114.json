@@ -1,0 +1,19 @@
+{
+  "rejected_run": 43539075435,
+  "source": "c4fe74ae4949ee8daf3a66081ae88100c566edd8",
+  "derived_artifact": 14091307645,
+  "derived_sha256": "8ea24e1a00742f3fb144b6d6ecc6c8c752fc79767e4509218380335ebb75c6ed",
+  "result": "Rejected because resistor open negative control matched device graph; full macro comparison not run. Full leaf LVS remains failed for both positive and negative controls.",
+  "diagnostic_run": 43541172355,
+  "diagnostic_source": "303c7e41901a79c155ef3f8f406959f92d8f3b64",
+  "diagnostic_artifact": 14091736987,
+  "diagnostic_sha256": "60f0ea7a4ee1f00d4c3eb15718bcbf375d734cad0c72cd1984e9163c03634715",
+  "finding": "Original resistor connects Z and A, each used by one device. Open mutation replaces Z with NSSOC_FAULT_OPEN, leaving port Z isolated. Comparator maps layout Z to NSSOC_FAULT_OPEN and leaves reference Z unmatched while reporting circuit graph Match.",
+  "followup": {
+    "run": 43541320172,
+    "source": "dbaa674cb55ad71e9ec740a5bdc94bcb0cac3961",
+    "branch": "codex/sram-metal1-signal-port-controls",
+    "requirement": "Both graph match and unique exact A->A and Z->Z Match net correspondences required in leaf model controls. Layout/reference pin sets also asserted. Wrong W, wrong L, unmapped model and port-open must fail. Full leaf supply-port failure remains explicitly unaccepted; full macro original strict audit unchanged."
+  },
+  "production_accepted": false
+}

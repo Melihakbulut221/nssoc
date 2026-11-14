@@ -1,6 +1,6 @@
 {
-  "run": 43540888035,
-  "source": "65f0b49ccc402e524fefcabcbb717529dbb63427",
+  "run": 43541234973,
+  "source": "f83a2f29afc00626688942b2ce663a4b844eeb3c",
   "branch": "codex/cut10j-rx6-hold3-antenna",
   "status_at_launch": "in_progress",
   "scope": "Experimental endpoint-specific hold ECO plus existing five-driver resizing and antenna repair; not signoff",
@@ -36,5 +36,10 @@
     "source": "cc19a51b2e81bc8d7e80dbd49ca106759f2fb0cd",
     "status": "Failed in Liberty output-direction parser before placement mutation; X=A function assertion reached and passed for first model; all-corner check incomplete."
   },
-  "recovery": "Parse quoted or unquoted output direction; retain exact output and X=A requirements. No physical ECO or acceptance criterion change."
+  "recovery": "Resolve backslash-escaped ODB hierarchy by exact canonical name, require exactly one match and frozen DP SRAM master. Other ECO guards and timing requirements unchanged.",
+  "second_attempt": {
+    "run": 43540888035,
+    "source": "65f0b49ccc402e524fefcabcbb717529dbb63427",
+    "status": "Liberty Boolean identity step passed. Physical step stopped at missing exact ODB SRAM name before delay insertion."
+  }
 }
