@@ -1,76 +1,26 @@
-name: Build new EOP-cache main-chip mapped source
+name: Inspect preserved EOP-cache whole-chip mapping without resynthesis
 on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
-  build:
+  inspect:
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 15
     env:
-      SOC_ETH_FIFO_RDREG: '1'
-      SOC_BUSSTAT_EVPEND: '1'
-      SOC_SRAM_MBIST_PIPE: '1'
-      SOC_PCIE_RX_READ2: '1'
-      SOC_BUS_IREQ_REG: '1'
-      SOC_PCIE_RESET_COPIES: '1'
-      SOC_ETH_FIFO_WRREG: '1'
-      SOC_PCIE_REPLAY_INBANK: '1'
-      SOC_PCIE_TX_WORD_REG: '1'
-      SOC_PCIE_REPLAY_AHEAD: '1'
-      SOC_PCIE_CREDIT_PICK: '1'
-      SOC_PCIE_SEQ_RX_REG: '1'
-      SOC_PCIE_RX_COMMIT_COPIES: '1'
-      SOC_PCIE_REPLAY_WRITE_PREDECODE: '1'
-      SOC_PCIE_REPLAY_EOP_CACHE: '1'
-      SOC_SYNTH_PREFIX_ADDER: '1'
-      IBEX_EX_STAGE: '1'
-      IBEX_PMP_REQ_REG: '1'
-      NATIVE_RF_CHKDEFER: '1'
-      NATIVE_RF_PREDECODE: '1'
-      SOC_INTERFACE_PROFILE: 'full'
-      NATIVE_MEM_RDREG: '2'
-      SOC_CORE_REQ_REG: '0'
-      SOC_CORE_WB_STAGE: '0'
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
-      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
-        with:
-          version: '2026-08-04'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Prepare pinned source and tool inputs
-        run: |
-          set -euo pipefail
-          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
-          python3 -m pip install -r sw/requirements.txt
-          make soc-prepare
-          bash -n scripts/prepare_predecode_mainchip.sh hw/soc/flow/syn_soc_top.sh hw/soc/flow/sim_soc.sh
-          python3 -m pytest -q sw/tests/test_logic_boot_gl.py sw/tests/test_native_boot_preparation.py
-      - name: Fresh firmware RTL boot and complete chip synthesis with twenty SRAMs
-        run: bash scripts/prepare_predecode_mainchip.sh
-      - name: Preserve native source even on failed measurement
-        if: always()
-        run: |
-          mkdir -p native out
-          if [ -d hw/soc/out/corrpre-pcie-mbist-native-boot ]; then
-            tar -czf native/build.tgz hw/soc/out/corrpre-pcie-mbist-native-boot
-          fi
+          sparse-checkout-cone-mode: false
+          sparse-checkout: /scripts/diagnose_eop_mainchip_mapping.py
+      - run: python3 scripts/diagnose_eop_mainchip_mapping.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-cache-mainchip-source-native-${{ github.run_id }}
-          path: native/build.tgz
-          if-no-files-found: error
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: eop-cache-mainchip-mapping-${{ github.run_id }}
-          path: out/mapping.json
+          name: eop-mainchip-mapping-diagnosis-${{ github.run_id }}
+          path: out/
           if-no-files-found: error
           retention-days: 90
