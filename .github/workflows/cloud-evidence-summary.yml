@@ -1,4 +1,4 @@
-name: DP SRAM explicit bitcell correspondence with strict contents comparison
+name: DP SRAM explicit 32-cell block correspondence with strict contents comparison
 on:
   workflow_dispatch:
 permissions:
@@ -37,7 +37,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: dp-sram-bitcell-paired-derived-${{ github.run_id }}
+          name: dp-sram-block-paired-derived-${{ github.run_id }}
           path: |
             out/derived/*.json
             out/comparison-controls.json
@@ -50,7 +50,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: dp-sram-bitcell-paired-native-${{ github.run_id }}
+          name: dp-sram-block-paired-native-${{ github.run_id }}
           path: bounded-native.tgz
           if-no-files-found: warn
           retention-days: 30

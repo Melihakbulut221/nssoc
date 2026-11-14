@@ -6,7 +6,7 @@ out=P('out');out.mkdir(exist_ok=True);derived=out/'derived';derived.mkdir(exist_
 native=out/'native'
 def sha(p):
  with P(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
-r={'source_run':43562021054,'accepted':False,'manufacturing_approval':False,'full_chip_lvs_passed':False,'scope':'Explicit bitcell correspondence and resource-bounded comparison diagnosis. All native devices, connections, dimensions and strict port checks retained. Limit exhaustion is failure, never a match waiver.'}
+r={'source_run':43562021054,'accepted':False,'manufacturing_approval':False,'full_chip_lvs_passed':False,'scope':'Explicit 32cell_block correspondence and resource-bounded comparison diagnosis. All native devices, connections, dimensions and strict port checks retained. Limit exhaustion is failure, never a match waiver.'}
 rc=2
 try:
  controls=json.loads((out/'comparison-controls.json').read_text());assert controls['status']=='PASS' and len(controls['cases'])==15
@@ -42,12 +42,12 @@ try:
  matches=list(re.finditer(r'(?m)^(\s*)align\s*$',revised))
  assert len(matches)==1,[(m.start(),m.group()) for m in matches]
  m=matches[0];indent2=m.group(1)
- mapping='same_circuits("RM_IHPSG13_2P_BITKIT_CELL", "RM_IHPSG13_256x16_c2_2P_BITKIT_CELL")'
- guard='raise "Missing physical bitcell" unless netlist.circuit_by_name("RM_IHPSG13_2P_BITKIT_CELL")\nraise "Missing reference bitcell" unless schematic.circuit_by_name("RM_IHPSG13_256x16_c2_2P_BITKIT_CELL")'
+ mapping='same_circuits("RM_IHPSG13_2P_BITKIT_16x2_SRAM", "RM_IHPSG13_256x16_c2_2P_BITKIT_16x2_SRAM")'
+ guard='raise "Missing physical 32cell_block" unless netlist.circuit_by_name("RM_IHPSG13_2P_BITKIT_16x2_SRAM")\nraise "Missing reference 32cell_block" unless schematic.circuit_by_name("RM_IHPSG13_256x16_c2_2P_BITKIT_16x2_SRAM")'
  addition='\n'.join(indent2+l for l in (guard+'\n'+mapping).splitlines())+'\n'
  revised=revised[:m.start()]+addition+revised[m.start():]
  assert revised.replace(addition,'',1).replace(insertion,'',1)==text
- r['explicit_cell_pair']=['RM_IHPSG13_2P_BITKIT_CELL','RM_IHPSG13_256x16_c2_2P_BITKIT_CELL']
+ r['explicit_cell_pair']=['RM_IHPSG13_2P_BITKIT_16x2_SRAM','RM_IHPSG13_256x16_c2_2P_BITKIT_16x2_SRAM']
  r['correspondence_scope']='Name pairing before align only. Both cell contents still compared; no blanking, nil mapping, net or pin equivalence.'
 
  deck.write_text(revised)
