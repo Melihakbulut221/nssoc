@@ -69,6 +69,18 @@ for name,total in sorted(expanded.items()):
 r={'scope':'Original hierarchical cell resistor ownership and dimensions only. No netlist, geometry coordinates or connections exported. Not a reference correction, connectivity proof or LVS acceptance.',
  'source_run':43553707234,'gds_sha256':hashlib.sha256(gds).hexdigest(),'cdl_sha256':hashlib.sha256(cdl).hexdigest(),
  'expanded_reference_resistor_count':sum(expanded.values()),'unresolved_child_types':dict(missing),'owners':owners,'top_geometry':geometry(byname[topname.casefold()]),'production_accepted':False}
+# Original GDS hierarchy does not necessarily retain CDL subcircuit names.
+# Export only ownership/count metadata to locate the physical owners first.
+r['layout_cell_names']=sorted(c.name for c in layout.each_cell())
+r['layout_marker_owners']=[]
+for cell in layout.each_cell():
+ local={}
+ for number,metal in [(8,'metal1'),(10,'metal2'),(30,'metal3')]:
+  idx=layout.find_layer(number,29)
+  if idx is not None:
+   count=sum(1 for shape in cell.shapes(idx).each() if shape.is_box() or shape.is_polygon() or shape.is_path())
+   if count:local[metal]=count
+ if local:r['layout_marker_owners'].append({'cell':cell.name,'local_marker_shapes':local,'recursive_geometry':geometry(cell)})
 P('out').mkdir();P('out/resistor-owners.json').write_text(json.dumps(r,indent=2))
 assert not missing,'Unresolved reference child circuits'
 assert sum(expanded.values())==24822,'Original CDL hierarchy resistor count differs'
