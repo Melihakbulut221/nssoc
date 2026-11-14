@@ -1,3 +1,24 @@
+## 2026-11-14 — paired650 actual loaded transient finished and rejected; diagnose preserved waveform
+
+Run 43626358999/source73b781d77b169a4c270bb635197540d3c8f96a9c is now terminal FAILURE, not live. Native ngspice returned 0 after 5497.373 s, with zero collected diagnostics and unchanged protected sources. The original electrical/data gates rejected the actual 256-bit nominal_late, partition1 case. Five partition bases were assembled, but only n1 nominal_late was simulated; no PVT/refinement/full-PHY closure.
+
+A/B/C/D samplers respectively have 129/128/129/128 samples below 100 mV; wrong-sign samples 0/0/24/31. X has 385 wrong-sign and 742 weak samples; Y has 60 wrong-sign and 676 weak samples. Phase mean +0.01508648 V fails the unchanged +0.03 V minimum. Actual VI current +45.082 uA fails the +50 uA gate despite VI voltage +12.912 mV passing its +5 mV gate. HBT xpd.xd0211 and xd0212 have minimum active VCE .383943/.382336 V, below .4 V; 200 MOS terminal checks pass and minimum stage tail current is 1.51348 mA. Do not change expected bits, observation windows, margins or SOA gates to force a pass.
+
+Safe artifact14129935844 SHA2561120b7b95099d7bd4c966b4a5f2bc39b663f18d1ec9ddcc11a3fa29a87ab5f1d; native14129601477 SHA2560c2aad0a0e0c78ec3dab1be1f9b4e96a57ff9ab41da2df54bba053818c01eee9,2195843371bytes cloudonly. Complete raw waveform 1590734653bytes,113490rows,1752columns, SHA256eb082c14050301a3e7daff0d0f8e284e4d9a0b2b69683a68b078680c3a25e55a. Summary, command, failure and source member hashes: docs/evidence/paired650-full-loaded-rejection-20261114.json.
+
+New codex/paired650-loaded-diagnosis reads the existing native archive ONLY in cloud, extracts/hash-verifies the one raw waveform, uses the original source-hash-verified strict reader, reproduces all original sampler/comparator weak/wrong/minimum metrics, and emits diagnostic phase and expected-bit bins. No resimulation or acceptance-window change. This will distinguish slow settling from a comparator polarity/amplitude issue before another layout/device trial. Current diagnostic handles:
+
+[
+  {
+    "id": 43635472153,
+    "head_sha": "9a814be2f84742f020e7c38ffd6e9a128c3e2daa",
+    "status": "in_progress",
+    "conclusion": null
+  }
+]
+
+CRC-select physical comparison43635053634 and EOP-only mainchip postCTS43633451595 / actualboot43632152541 remain separate live jobs. Full goal open.
+
 ## 2026-11-14 — CRC input-select RTL candidate proven; physical comparison live
 
 Following rejected OR4 resize, new optional SOC_PCIE_REPLAY_CRC_SELECT moves SOP selection after separate initial/continuing CRC networks and separately computed upper-residue comparisons. Original input CRC state, accepted-byte enable, reset, polynomial, residue, latency and packet decisions stay unchanged. This targets the SOP-to-CRC-comparison input cone rather than blindly increasing drive strength. Source candidate 90b31c2acdbd1170b4b4aa0e74f26e9bcaff789e on codex/replay-crc-select; RTL SHA256 a5891101ff12672cf6da0fa5da09c638e44fc7a5d4fc94b445535e7b00834d45. Default OFF, not integrated into timing/combined or running EOP mainchip.
