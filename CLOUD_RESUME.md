@@ -1,3 +1,13 @@
+## 2026-11-14 — full-chip fault-control replay diagnosis; identity retry live
+
+Original engineering chip LVS pass remains scoped to its exact old GDS/reference. Additional full-chip stored-graph fault controls are NOT accepted yet: first replay43605811862 failed identity and reported duplicate circuit pairs; its negative-width rejection is not independent detection evidence. Signal-open selector also used Pin.name as a field; corrected callable accessors.
+
+Structure inventory43606135790/source69394957314082bcecab05fc1d9e13afe214dc3e PASSED, safe artifact14118323405. Both tops158681subcircuits,0directdevices; layout model names lower-case and reference upper-case. Official KLayout0.30.13 source confirms LayoutVsSchematic.compare appends to existing cross-reference, and xref.clear is exposed. New helper clears only old comparison results and explicitly maps each reference model to its unique same-name case-insensitive layout class after exact Python class/parameter schema checks. No model exclusions, net/pin equivalences, or threshold changes.
+
+Follow identity-only run43606609559/sourcecceb261dfd98ace5aa3e741df1d3d83d4d05005a, branchcodex/full-chip-native-fault-controls. Do not accept negative controls until unchanged identity succeeds. Original DB/artifact hashes remain frozen; native stays cloud only. Experimental helper/workflow NOT merged into integration. After identity success run signal_open and sram_mos_width, require aggregate identity plus both genuine rejections, then retain tested helper and evidence without experiment workflow.
+
+Route43591198141 remains IN_PROGRESS in rebuild-routing step; PHY43603972722 remains IN_PROGRESS in frozen-gate simulation step. Preserve live handles, do not restart. Full PHY, new routed-chip LVS/timing and production approval remain open.
+
 ## 2026-11-14 — full chip engineering transistor LVS PASSED
 
 Original run43602758557 completed native compare &&flag_missing_ports TRUE:108Match,zero extraction diagnostics,354topports,7456816recursive primitives on both sides. Both SRAM interiors included (DP70110/SP1211120). Original strict auditor rejected only our changed success wording ("INFO : Netlists match." instead of "INFO : Congratulations! Netlists match."). No electrical mismatch was reported.
