@@ -1,3 +1,11 @@
+## 2026-11-14 — every native reference pin connection verified
+
+Run43603138368 PASSED (source b278e7a3281e2c6eb4031af5f51ab8aeb0d92a02). Actual frozen KLayout reader graph compared against independent powered-Verilog JSON and qualified CDL pin mapping: all158681native instances and816244pin connections match, zero mismatches. Wrong-signal-net and missing-pin controls rejected. Previous354top-pins/7456816primitive/DP70110/SP1211120counts also pass. No physical-layout LVS acceptance implied. Artifact14116878522 SHA cf4412a58b54b5693149db8f1519bc837796cb66e4e10d14924111f4c44248c1. Receipt docs/evidence/chip-native-reference-connectivity-20261114.json. Updated tested native reader helpers retained.
+
+Next priority: follow live fullchip LVS43602758557, route43591198141 and PHY43596398222; do not restart live jobs. Inspect actual native/audit failures if they finish. Fullchip LVS extraction/comparison still active at latest poll. No new native archives downloaded locally; expected connectivity JSON generated and consumed only in cloud.
+
+Job snapshot: {"43591198141": {"status": "in_progress", "conclusion": null}, "43596398222": {"status": "completed", "conclusion": "failure"}, "43602758557": {"status": "in_progress", "conclusion": null}}
+
 ## 2026-11-14 — full transistor chip LVS now live
 
 Run43602758557/job132470857034, branche codex/chip-full-transistor-lvs, source e8f1b7d0782132fcb991182b4fde3c1aa147fa57. Frozen inputs restored and native comparer fault controls PASSED. Full chip extraction/comparison/strict audit step is IN_PROGRESS; do not restart due to observation timeout. Native timeout18000s/job355min. Check terminal result, then derived full-chip-transistor-lvs-derived-43602758557. Native DB/extracted circuit stay cloud only in full-chip-transistor-lvs-native-43602758557.
