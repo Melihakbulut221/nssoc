@@ -1,3 +1,13 @@
+# RX6 final antenna metric freshness unresolved; independent read-only audit launched
+
+New evidence: pinned LibreLane3.0.5 drt.tcl loop is `while {$i <= $::env(DRT_ANTENNA_REPAIR_ITERS) && [log_cmd check_antennas]}`; it increments i after each repair/reroute, then writes views WITHOUT an unconditional final check. RX6 consumed all3iterations, so saved1net/2pins may describe the pre-final-repair database. Previous receipt accurately preserves stored metrics, but they DO NOT prove final remaining violations. Do not assert final antenna closure or final1/2 until fresh audit.
+
+43576971725 source94ed5de217b4d811cc735db425c74fe49f6abf21, branchcodex/rx6-final-antenna-audit, verified in_progress. Uses exact final native14105679819 SHA623d7be7b8438522b6b0f81fdec45801006997892ec07953b4687ed88b53d85a; all native stays cloud. Clears old metrics, runs original OpenROAD.CheckAntennas only; no route/repair/threshold edits. ODB/SDC before-after hash invariance and no replacement views required, native antenna metrics required. Derived artifactrx6-final-antenna-derived-43576971725 contains reports/JSON/log only. Sourcehw/soc/pnr/final_rx6_antenna_audit_flow.py is on experiment until tested. First local source-validation attempt failed an enum-text formatting assertion before any mutation; final flow uses only verified ODB/SDC enums. No native local work.
+
+RX6 routedSTA43569629324 remains independent/inprogress. FreshCRC43561900502,CDR43571075470,SRAMLVS43566292104/43562021054,MBIST43573697024 still require results. Fullgoalopen.
+
+---
+
 # RX6 hold candidate routed: router DRC0 but antenna1net/2pins remain; STA started
 
 43569629324 source12101bb1da5f82420b08b363ef707d2d08e55933: routejob132370971009 completed/success. Exact final routed-state reports router DRC0, antenna1net/2pins (NOT antenna closure). Initial39 reproduced by NSSOC_RESUMED_PINNED_DRT_ANTENNA_39. 159731instances,20SRAM,1134antenna cells,0padcells. Ten unsupported LEF58_ENCLOSURE/noCUTCLASS warnings remain; router DRC0 is not foundry signoff.
