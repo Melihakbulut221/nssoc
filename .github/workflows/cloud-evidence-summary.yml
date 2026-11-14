@@ -1,13 +1,13 @@
-name: Replay predecode identical-area native placement screen
+name: Read exact replay write paths from saved native placement
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  place:
+  read:
     runs-on: ubuntu-22.04
-    timeout-minutes: 95
+    timeout-minutes: 30
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_EXTRACT_AND_RUN: '1'
@@ -16,7 +16,7 @@ jobs:
         with:
           persist-credentials: false
           sparse-checkout: scripts
-      - name: Restore pinned runtime and exact mapped candidates only in cloud
+      - name: Restore exact cloud-native ODB and runtime
         run: |
           set -euo pipefail
           sudo mkdir -p /mnt/s
@@ -24,23 +24,18 @@ jobs:
           curl -fsSL --retry 5 -o /mnt/s/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
           echo 'd6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  /mnt/s/librelane.AppImage' | sha256sum -c -
           chmod +x /mnt/s/librelane.AppImage
-          gh api repos/${{ github.repository }}/actions/artifacts/14121339687/zip > mapping-native.zip
-      - name: Place both candidates with identical boundaries and report all corners
-        run: python3 scripts/place_replay_write_predecode.py
+          gh api repos/${{ github.repository }}/actions/artifacts/14122337899/zip > placement-native.zip
+      - run: python3 scripts/read_replay_write_paths.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: replay-predecode-placement-${{ github.run_id }}
+          name: replay-write-paths-${{ github.run_id }}
           path: |
             out/*.json
-            out/baseline/*.log
-            out/baseline/*.rpt
-            out/predecode/*.log
-            out/predecode/*.rpt
-          retention-days: 30
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: replay-predecode-placement-native-${{ github.run_id }}
-          path: out/native
+            out/baseline-*/*.rpt
+            out/baseline-*/*.log
+            out/baseline-*/*.tsv
+            out/predecode-*/*.rpt
+            out/predecode-*/*.log
+            out/predecode-*/*.tsv
           retention-days: 30
