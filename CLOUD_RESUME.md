@@ -1,3 +1,15 @@
+## SRAM namespace fix in native LVS; isolated PHY select-bias trial launched
+
+Reference reachability43595961882 succeeded: both macro tops reach62CDLdefinitions,0unresolvedXinstances. ConflictingMET3RES is genuinely reachable:12DP and6SP direct definition references, widths.24/.26um. It cannot be discarded as unused.
+
+Namespace candidate branchcodex/sram-namespaced-lvs uses NSDP_/NSSP_ prefixes for every internal GDS cell and CDL subcircuit, preserving actual macro top names/ports. Proves reversible complete CDL record substitution, rejects injected resistor-width change, and checks physical shapes/hierarchical instance transforms/arrays before rename and afterGDSwrite/read roundtrip. Every originalinputhash still checked before mutation. No values,nets,ports,models or acceptance thresholds changed. Both same macro strict LVS runs then compare renamed artifacts with original recursive counts and native port contracts.
+
+Firstrun43596245592/source0fc26be6cd80b8a8a99a32a1ce1feee20d9ecaed: preservation proofs passed onboth, native compare stopped because Ruby %w flatten-cell lists retained old names. NOT LVS pass. Fixed exact %w[]/()/{} list mapping plus quoted operands and regression examples in5a68106d6043c9ad3f8f644bb4eff6492b281b1e. Retry43596487748 running, safe namespaced-{dp,sp}-derived-*; native namespaced-{dp,sp}-native-* cloudonly. Requireactualstrictpassboth before building common library/chip reference. Experimentalhelpers stay onbranchuntilnativeverification.
+
+PHY43596398222/source2520c0d8ef6d0c3537d28e5a989048b39a8edfe6, branchcodex/cdr-select-bias-isolated. Singlevariantbd10_lowz8_xor2_cdata3_sel15. Relativemeasuredcdata3: ONLY ibs0,ibs1 references1mA->1.5mA; allphysicalmodelrecordsbyteidentical, allotherbenchlines(data,clock,load,solver)identical, fullfrozendevice/current/data/phasegates unchanged. Motivation verified B/D-to-select physicalpaths and weakselectswing; thisisacircuitwhat-if, NOTnewlayout/RC/completePHY. Safe cdr-select-bias-result-only-*; rawwave/nativecloudonly. Do notrestartwhilelive.
+
+Legalizeddiodefullroute43591198141stillrunning; nativebootpassed; SP/DPengineeringmacroandfaultcontrols passed before namespace. Productionapproval/fullPHY/finaltiming/fullchipLVSremainopen. Receipt docs/evidence/sram-namespace-and-phy-select-launch-20261114.json.
+
 ## Shared SRAM geometry inspected; trace actual reference usage next
 
 Geometry preflight43595848957/source13bfe72c6a5e26d81515d130a02dee3f59f08d05 completed. OriginalGDS hashes verified. Conflicting CDL RSC_IHPSG13_MET3RES hasDP width.24um vsSP.26um,length.6um; this named cell is absent from both originalGDS hierarchies. Many unused CDL library cells also absent; corrected observer after43595752035 failed on unusedAND2X4. Do not treat absent unused library definitions as extraction failure or infer electrical corruption from direct shape hash differences. Thirty shared present cell names have differing raw shape hashes (including labels/instance text); this is NOT an equivalence verdict.
