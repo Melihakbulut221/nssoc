@@ -1,3 +1,11 @@
+## SRAM hold repair verified; remaining227 internal PCIe paths — 2026-11-15
+
+Producer43651534065/heada77bed0723b12a73e8481c61b1214fa10edb41e2 SUCCESS. All258targeted report hashes independently verified; all40IOs+3SRAMA_MEN max/min3corners >=50ps. CandidateODB24b20bf3db1652ce562a1acebe43305ce79939d97e79a8cf3cafa2af302f0314; native14136452503 SHA41788e3ae61a6140c1bf8eba55e51c7c867c974777fee6965915a00e274de0ea. Derived14136238268 SHAd16716b02db5bb7eeaa9f3ebf30c1648e494486bd44c0c7e03ece7eeffebfe43.
+
+Impact43651726319/head96cc07e4a22acdeb389304cd1516ca53b4c99f9f SUCCESS; safe14135684713 SHAa53116870ef5a1397b7aaf0aeac32bb730cb77142726f8911de9a2c42dcffff3. No metric regressions. Fast hold230->227,WS-.163726->-.0600474ns; typicalWS+.0124991->+.0345766ns; slowWS+.122274ns unchanged. Setup unchanged slow-3.11156/typ-.703858/fast+.46195ns. Receipts rx-sram-men-hold-{eco,impact}-20261115.json. This remains placementRC; no routed/signoff claim.
+
+Independent feedback candidate43651662225/headf389138917f81319a765ae1c0a59f4beda1a9f86 and impact43651746400/head75dde1fefe21c2366166429e6dd4da68dac1054f still pending at last check. Baseline for feedback excludes newSRAMECO; merge only after candidate+global evidence then rerun combined. Mainchip790a01e... run43651528850 continues separately. Feedback measurement receipt docs/evidence/rx-feedback-branch-timing-20261115.json now published and all678report hashes verified. PHY unresolved scope unchanged below.
+
 ## Resumed: source guards fixed, selective feedback repair launched — 2026-11-15
 
 Previous SRAM43650954563 FAILED before ECO (Wrong SRAM target). New source a77bed0723b12a73e8481c61b1214fa10edb41e2, run43651534065, resolves escaped OpenDB instance names with exact unique canonical-name and master guards. No pass claimed; inspect result and global impact. Physical baseline remains exact combinedIO ODBde8647caef5c3d38121edeb9d102f53e5406f77371ca161d254459aad58075ca.
