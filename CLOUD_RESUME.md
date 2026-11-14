@@ -1,3 +1,11 @@
+## 2026-11-14 — native sizing callback fix; next integration must regenerate netlists
+
+Retry43609730238 reachedOpenROAD but swapMaster on STA-attachedODB withoutLiberty crashed (signal11 sta::ConcreteCell::portCount/equivCellsArcs/dbStaCbk). Derived14119308393 proves nativefailure; no successfulplacement. The chosen geometry mutation has not yet been validated.
+
+Follow43609939062/sourcef8b704e002e5ccff680059459fba0ec4cf21c429 oncodex/retry-driver-buf4-placement. New scripts/prepare_retry_driver_buf4.py creates independent odb.dbDatabase, validates exacttarget/net/pin schema and allinstance signatures, swaps onlymaster1->4 and writesbuf4-unplaced.odb. Then pinnedOpenROAD Tcl reads thatcandidate, locksother159933cells, legalizesselectedtarget, restoresstatuses, check_placement. FinalindependentPython compares allinstances/allnets/ports to originalsource. This avoids STAcallbacks for geometry-only step; it does NOT substitute for actual Liberty timing.
+
+If successful, next route adaptation must preserve coherent nl/pnl/ODB: existing prepare_antenna_resume.py takes pre-sizing recoveredroute nl/pnl, which cannot silently accompany changedmasterODB. Generate fresh logical+poweredVerilog from resizedODB (or require nativeGRT returns matchingupdatedviews) and verify targetmaster/net connectivity before reusing full-reference generation. The known routeflow resets signals only and retains powerspecialwires; bind itsODBhash to actualnewartifact, regenerate routing+RC, preserve originalSDC1fab1c6a... andallcorners. Do not reuse oldtransistorreference or claim frozenRC timingacceptance. Baseline43591198141 and PHY43603972722 stilllive; unchanged.
+
 ## 2026-11-14 — retry driver screen infrastructure fix
 
 Firstplacement43609541720 failed BEFORE nativeCAD: Ubuntu24 AppRun cannotwriteuid_map(Operationnotpermitted), returncode127. SourceODBhash verified unchanged; no placement/electrical outcome. Safe14119618668; native14119434428cloudonly. Do not interpret as designfailure.
