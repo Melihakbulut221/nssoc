@@ -1,3 +1,15 @@
+## 2026-11-14 — isolated XOR loading candidate launched
+
+Run43603972722/job132474510071 (source389d8b4f2e5782521d5bd779807dce3bb5029a10, branchcodex/cdr-isolated-xor-load1) dispatched and restoring frozen native input. Variantbd10_lowz8_xor1_cdata3_sel15. Compared to completed43596398222, ONLY24XOR_DATA HBT nx2->1. Same C-pairnx3,selectbias1.5mA, all bench sources/solver, original extracted wires/RC unchanged. This is a nominal externally clocked circuit hypothesis, NOT new layout/RC or full PHY.
+
+Exact reversible24-record source delta plus3negative controls run before simulation. C-pair and selectbias intermediate guards retained using constructed xor1 baselines; receipts explicitly label these baselines unsimulated. Actual candidate current-density binding includes24nx1 HBTs+2Cnx3 HBTs; original3mA/emitter and all data/device/phase thresholds unchanged. No integration helper merge until executed/validated.
+
+Follow the same run to completion (17000s simulator timeout,330minjob). Safe result artifact cdr-xor-load1-result-only-bd10_lowz8_xor1_cdata3_sel15-43603972722 includes result,isolated-xor-load-change,candidate-current-density-binding and intermediate proofJSON. Native xor-load1-native-* stayscloudonly. Mixeddivider-whatif-* containswaveformNPZ: do notdownload locally. Priorphysicaldiag43603543533 has frozen gates reproduced and supports testing reduced input loading; it does not predict acceptance.
+
+Full chip LVS43602758557 and diode-legalized routing43591198141 still live; preserve handles. Goal remains production-ready fullscope, not achieved.
+
+Job snapshot: {"43603972722": {"status": "in_progress", "conclusion": null}, "43602758557": {"status": "in_progress", "conclusion": null}, "43591198141": {"status": "in_progress", "conclusion": null}}
+
 ## 2026-11-14 — PHY post-bias physical diagnosis passed
 
 Diagnosis43603543533/source09ff87119d427d932731ccb8a78b706c358ebccd PASSED, actual gates exactly reproduced. Safe14116909437 SHA035d187ec392926c4d111594b96b2e5d7c84b0072b621ca8ae2702fbac25163b. Original43603401088 failed only absent import dependencies; exact proven cdr_mos650_full650_loaded.py and cdr_n1_divider_whatif.py were restored from d22e49cab14ddc4ed70a46492c9ea83d0509ac55 on experiment branch, without gate changes.
