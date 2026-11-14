@@ -1,3 +1,11 @@
+## 2026-11-14 — isolated native hold repair hit buffer budget; same constraints continuation dispatched
+
+43630531400/sourceacb583e43098fc4f1b58aa7422f67a6c5493ef0c FAILED during baseline hold repair, beforecachecandidate. Native baseline setup resized86cells, inserted14buffers, swapped8pins andimprovedreportedWNS around-2.882->-1.219ns beforelegalization. Exact6corner/mode postlegalization reports are recorded in docs/evidence/eop-cache-repair-buffer-budget-20261114.json. Hold inserted1267buffers (+15.5percentarea) and stoppedRSZ-0060 Max buffer count reached. This is NOT successfulholdclosure orcompletepairedcomparison. Native14128102442 andsafe14127483579 retainpartialstage; no outputs discarded locally becauseeverythinghosted.
+
+Currentcontinuation43630824750/source8161dd822bd24533d78825f3f176d3ef26116c2a, samecodex/eop-cache-timing-repair branch. Uses -max_buffer_percent40 forhold instead ofdefault20; setup100/hold1000iterations unchanged. OpenROADprimary README explicitlydefines this as maximuminsertedbufferpercentage, notslackthreshold. Same4ns/5percentderates/inputoutput/area/libraryconstraintsforbothcandidates. No allow_setup_violations switch. Nativeplacement/legalization/all3corner measurementsrequiredafterrepair. Flagsaccepted=false persist; morebuffersmayregresssetup/area/routing andmustbemeasured.
+
+Fresh mainchip43630345267 confirmedliveatthischeckpoint in firmwareRTL+fullsynthesisstep; no newboot/placement startedbeforeexactsourceavailable. ExistingloadedPHY43626358999, oldpredecodegateboot43620739672 andoldbuf4route43610680141 were lastconfirmedlive; continue originalhandles, no duplicate. Goalactive/incomplete.
+
 ## 2026-11-14 — EOP-cache behavioral qualification PASSED; paired physical gain measured
 
 Simulation43629411055/source00113c97cc04fc41551e45e1efa9c0499aa2bc17 PASSED12positive300k-cycle runs (cachealone6/allphysicaloptions6), original output/storage/coverage checks intact; all12compiledwrong+2increment controls rejected. Exact source e478d785... unchanged/restored. Formal43629312391 already passed2physical-option sizes. Full receipts now in docs/evidence/replay-eop-cache-qualification-20261114.json.
