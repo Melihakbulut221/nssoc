@@ -1,3 +1,30 @@
+## 2026-11-14 — fresh EOP mainchip CTS completed; postCTS repair dispatched; independent block audit found input violation
+
+Mainphysicaljob132560946246 ofrun43632152541/sourcea763617997b618370792779deb37ab711e79774a COMPLETEDSUCCESS (664.236s). IndependentIcarusbootjob132560946622 stilllive, sooverallruninprogress. Actual20macroplacement/CTS, protectedsourcesunchanged. CTSODB55a060b56ff638d3d859c78f514cb949f8b5a573bbe0e32dd82cf80b68d66ec4 at run/27-openroad-cts/state_out.json. Safe14128368896 SHAcb4b0de4d03e1d7d071ea36950c466708bc20a31f99828529244533c5a07c1af; native14129335105 SHA1b13027b0c4d4d3c5c8c5c30fc7dd106e0be90e163ca6fdaa8b38ac7fbecbd06,302421624bytes cloudonly,356hash-boundfiles. Fullreceipt docs/evidence/eop-chip-placement-cts-20261114.json. InheritedCTSmetrics areNOTfreshpostCTSSTA.
+
+FreshpostCTS branchcodex/eop-chip-postcts usesauthenticatedcompletedphysicalJOB (notoverallrunconclusion,becausebootindependent), exactproducerhead/attempt1 andnative/safepins. Restoresoriginal60mappedfiles viaqualifiedreport14128104943 andsamefourprotectedsourcehashes. Discardsinheritedmetrics. Separatesbefore/after slow/typ/fastSTA, propagatedclocks, original20/4/8/8nsand5percentderating, existingelectrical/setup100/hold1000repair. Nochangingcheckerlimits, nooldbootproof. KeepfullPHY/finaltimingfalse. Experimentalworkflownotmerge.
+
+Independentblockall-path audit43633057865/source1609e8efff5523fdb3b19cc717437d8ddee7c61b PASSEDexecution butFOUNDtimingviolation. SameexactrepairedODB, nooptimization, regmeasurementsmatch. Cacheall-constrained slowsetup-.037968963ns,typ+1.088527799,fast+1.719216108; minslow+.089274243,typ+.032396004,fast+.000090150. Worstslow startsin_sop_i andends_09986_/D. Baselineinputslow-.198555619ns. ThuspreviouspositiveREG-ONLYresultisNOTblockclosure. Safe14128722987 SHA9a2f4224ab32af7665c16e1ca8f6a5cfcf69e16369e067323e280b9524579611; receipt eop-block-all-path-audit-20261114.json. Unconstrainedresetpaths/electrical/CTS/routedqualificationstillopen.
+
+Nextblockbranchcodex/eop-block-guarded-repair/source470ff1618470f9c2875aa6b021db85591e1e8c0c usesexactcontinued_holdODB andaddspositiveoptimizationguards: setupmargin .05ns; holdmargin .025ns withsetupmargin .05ns; setup600/hold1000/maxbuffer40. Originalclock/IObudgets andacceptance0unchanged. Independentallpathreports afterlegalization, 24reports/candidate, before-regmeasurementsmustmatch. PinnedOpenROADdcf361... Resizer.tcl primarysource confirmsmarginoptions; doesNOTsupportnewer -path_group so thatoptionNOTused. No falsepaths/allow_setup_violations. Needinspectreportedallpaths, notgreenworkflowalone.
+
+Newrun handles:
+
+[
+  {
+    "id": 43633349306,
+    "head_sha": "470ff1618470f9c2875aa6b021db85591e1e8c0c",
+    "status": "in_progress",
+    "conclusion": null
+  },
+  {
+    "id": 43633451595,
+    "head_sha": "2c515a0bfb946ef244cc9e94e2f6af8a7e22e2fe",
+    "status": "in_progress",
+    "conclusion": null
+  }
+]
+
 ## 2026-11-14 — resumed block register timing positive for cache; independent I/O audit dispatched
 
 Run43632711029/source871de823044485fbe7cb7484d930016550c23a94 PASSEDactualsavedDB continuation. Bothresumed six-corner/mode register-path measurements exactlyreproducepreviousstagewithin2fs beforeoptimization. No synthesis/globalplacement restart. Additionalsetup600thenhold1000/40percent, original4nsidealclock+5percentderates/libraries/layerRC unchanged.

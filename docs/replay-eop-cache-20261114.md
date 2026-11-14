@@ -47,7 +47,7 @@ Both still fail timing. The native setup log reaches its 100-iteration search li
 
 ## Required full-chip gates
 
-[Fresh chip mapping](https://github.com/Melihakbulut221/nssoc/actions/runs/43630345267) is running with the same system/Ethernet SRAM configuration and physical RTL options plus the cache. Simulation and synthesis both validate and forward the new switch. Its checker requires the exact new RTL, the cached sequential cell, all 26 write-predecode bits and all 20 SRAM macros.
+[Fresh chip mapping](https://github.com/Melihakbulut221/nssoc/actions/runs/43630345267) completed synthesis with the same system/Ethernet SRAM configuration and physical RTL options plus the cache; its preserved output subsequently passed the separate revalidation described below. Simulation and synthesis both validate and forward the new switch. Its checker requires the exact new RTL, the cached sequential cell, all 26 write-predecode bits and all 20 SRAM macros.
 
 These isolated results do not qualify CTS, routed parasitics, full-chip input/output timing, DRC, LVS or antenna behavior. A new netlist requires its own gate boot, placement/CTS, routing, extraction and verification. The older chip's boot and LVS results cannot be transferred. Full serial Gen3 x4 PHY and production approval remain separate incomplete requirements. Native layout, netlist and simulator files remain in the cloud; receipts bind their exact sources and hashes.
 
@@ -62,3 +62,9 @@ Exact-source placement/CTS and independent Icarus gate boot with full system/Eth
 [Continuation43632711029](https://github.com/Melihakbulut221/nssoc/actions/runs/43632711029) restored the exact repaired databases and reproduced their prior register-path measurements before further optimization. No synthesis or global placement was repeated. After setup and hold repair, the cache candidate's reported register-to-register slow setup is +0.001099 ns and fast hold is +0.000090 ns; the baseline remains at -0.009184 ns slow setup. These extremely thin positive margins do not establish robust closure.
 
 Those reports explicitly filter for register endpoints. An independent audit of constrained input/output as well as register paths is pending on `codex/eop-block-all-paths`. Unconstrained paths, real clock trees, routed RC, electrical limits and full-chip signoff remain separate. The [source-bound receipt](evidence/eop-block-resumed-repair-20261114.json) retains the precise scope and all measurements.
+
+## Independent input/output audit and new chip CTS
+
+[All constrained path classes](https://github.com/Melihakbulut221/nssoc/actions/runs/43633057865) reveal an input setup violation that the register-only reports excluded: `in_sop_i` to a register has -0.037968963 ns slow-corner slack for the cache candidate. The baseline has -0.198555619 ns. The cache's worst constrained fast hold is +0.000090150 ns. Therefore the block is **not timing-closed**. A repair using positive 50 ps setup and 25 ps hold optimization margins is running without changing interface timing constraints or acceptance thresholds.
+
+The physical job in [43632152541](https://github.com/Melihakbulut221/nssoc/actions/runs/43632152541) completed full-chip placement and CTS with all 20 SRAM macros and unchanged protected sources. Independent gate boot is still running. Fresh three-corner post-CTS measurements and repair have been dispatched for this exact new database; inherited pre-placement metrics are not a post-CTS timing result.
