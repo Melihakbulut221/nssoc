@@ -75,7 +75,16 @@ def namespace_macro(gds,reference,top,prefix,output):
  P(output).write_text(json.dumps(proof,indent=2));return proof
 
 def namespace_deck(text,renames):
- # Only exact quoted cell-name operands; layers, models, pins and global nets unchanged.
+ # Exact cell names in quoted operands and Ruby %w lists only.
  def replace(m):
   quote=m.group(1);name=m.group(2);return quote+renames.get(name.upper(),name)+quote
- return re.sub(r"(['\"])([^'\"\n]+)\1",replace,text)
+ text=re.sub(r"(['\"])([^'\"\n]+)\1",replace,text)
+ def words(m):
+  body=re.sub(r'\S+',lambda word:renames.get(word.group().upper(),word.group()),m.group(2))
+  return '%w'+m.group(1)+body+m.group(3)
+ for pattern in [r'%w(\[)([^\]]*)(\])',r'%w(\()([^)]*)(\))',r'%w(\{)([^}]*)(\})']:
+  text=re.sub(pattern,words,text)
+ return text
+
+assert namespace_deck('same_circuits("CELL", "CELL")\nx=%w[CELL OTHER]\ny=%w(CELL OTHER)\nz=%w{CELL OTHER}',{'CELL':'NS_CELL'})=='same_circuits("NS_CELL", "NS_CELL")\nx=%w[NS_CELL OTHER]\ny=%w(NS_CELL OTHER)\nz=%w{NS_CELL OTHER}'
+assert namespace_deck('model="sg13_lv_nmos"; layer="Metal3"; pin="A"',{'CELL':'NS_CELL'})=='model="sg13_lv_nmos"; layer="Metal3"; pin="A"'
