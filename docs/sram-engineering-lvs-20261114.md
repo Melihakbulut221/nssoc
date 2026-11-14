@@ -43,3 +43,8 @@ Mühendislik CDL adayı sekiz direnç kaydında özgün üretici CDL'sinden fark
 ## SP macro and full reference-fault controls
 
 Run43594788773:25Match,0extraction diagnostics,355ports and1211120recursive primitives preserved. Engineering reference only; five resistor corrections differ from original vendor CDL. SP inventory justified both-side normalization of INVX2/NAND2X2/CINVX4; native search bound2048 preserved all acceptance rules. Run43595161911 independently repeated identity and rejected width,layer and MOS-gate faults in the complete macro. All four controls passed their expected verdicts. This does not establish full-chip LVS or foundry approval. See docs/evidence/sp-full-controls-and-phy-paths-20261114.json.
+
+
+## Collision-free integration library
+
+Original shared MET3RES reference names conflict (.24um DP versus .26um SP), and both are reachable from macro tops. Both physical internal cells and reference subcircuits now have per-macro namespaces, with original top names/ports retained. Native LVS run43596487748 passes DP26/26 andSP25/25 without exclusions. Bundle run43596855175 merges290CDLdefinitions and311GDScells; unique call resolution and complete shape/instance roundtrip checks pass. Nativeartifact14114456981 is cloud-only. This library still uses engineering resistor references and has not yet passed a complete main-chip LVS comparison. See docs/evidence/sram-namespaced-library-passed-20261114.json.

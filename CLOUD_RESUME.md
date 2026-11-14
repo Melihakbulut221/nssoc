@@ -1,3 +1,13 @@
+## Collision-free SRAM GDS/CDL library built from two strict native LVS passes
+
+43596487748/source5a68106d6043c9ad3f8f644bb4eff6492b281b1e: DP26Match andSP25Match strictPASS,0extractiondiagnostics,originaltopportcontracts and recursiveprimitivecounts preserved. Namespaced GDS/CDL reversible proofs andGDSroundtripgeometry/instance checks passed. No new device/value/port/net waiver. Tested scripts namespace_sram_macro.py and replay_{dp,sp}_sram_namespaced.py retained in integration.
+
+Bundle43596855175/source9b1da1411db02188f90c21dedcb51f36ca1db849 succeeded. 290uniqueCDLdefinitions,311uniqueGDS cells,allXcalls resolveuniquely within ownmacro library. Fullshape/instance/layout-grid equality before/aftermerge andGDSwrite/read,allreference-record equality. Tops unchanged RM_IHPSG13_2P_256x16_c2_bm_bist andRM_IHPSG13_1P_2048x64_c2_bm_bist. Safe14114083194 SHA79666c446a03f9c82b7a5357895439a71ee15f77642fd5352bbb8972c4e9df2a;native14114456981 SHA647008a959be8601aeb762f5ba238c7864ad0bcde0ef807f3e1dcae3324d8d25. Nativezip containsdp.gds,sp.gds,dp.cdl,sp.cdl,sram-namespaced.gds,sram-engineering.cdl,manifest.json. Keepcloudonly. MergedGDS SHAfb6925729c25f70eba48d6feb15daba92e586befe0bf12827e2cc2cc3f76b86a;mergedCDL SHA6a80a60991554f8f680249556192a24b4c3768bf843449927280c049b45eafd6.
+
+NEXT integrate namespaced macroGDS paths into coherent mainchip streamout config, preserving originalmacroLEF/Liberty/timing/topinterfaces. Sourceconfig must be tied to exact routedcheckpoint; finalroute43591198141stillrunning. Main-chip independent schematic conversion must include FULL standard-cell andnamespaced SRAMCDL with explicit originalpinorders/power/busmapping. Existing hw/soc/pnr/lvs/verilog_to_spice.py is explicitly legacy macro-BLACKBOX and must NOT be reported as full transistor LVS. Need an independently sourced logicalnetlist, not GDS-extractedreference. Both full-chip LVS and finaltiming remainopen; individualmacropasses andlosslessbundle are necessarybutinsufficient.
+
+PHY43596398222 isolatedselectbiasstillrunning; no newlayout/PHYacceptance. Nativebootpassed. Testedhelper build_namespaced_sram_library.py retained. Source-tree exploration: rootrecursiveGit tree isTRUNCATED; use subtreeSHAs for scripts,hw/soc/flow,pnr ratherthan assuming omitted filesabsent. Evidence docs/evidence/sram-namespaced-library-passed-20261114.json.
+
 ## SRAM namespace fix in native LVS; isolated PHY select-bias trial launched
 
 Reference reachability43595961882 succeeded: both macro tops reach62CDLdefinitions,0unresolvedXinstances. ConflictingMET3RES is genuinely reachable:12DP and6SP direct definition references, widths.24/.26um. It cannot be discarded as unused.
