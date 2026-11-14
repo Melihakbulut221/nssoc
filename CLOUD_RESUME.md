@@ -1,3 +1,23 @@
+## Main-chip GDS produced; independent powered-netlist interface inventory completed
+
+### Verified streamout
+
+Run **43599532225**, source `879fb01d6680375de93b18618705ebd38f58b97d`, completed successfully. The actual main-chip GDS with namespaced SRAM views is **138,694,064 bytes**, SHA256 `c6c7df7f7fe7d23c03847ffa49bb547423ff89b7dc9266a47effa495efea077d`. All LEF cells had corresponding GDS cells; original DEF/ODB/netlist/SDC hashes were unchanged. Safe artifact **14116226438**; native **14116226453**, SHA256 `bb1421b73653582fb56f11abedf90d66153e4d5919ef761a1d8a685b12d08d31`, contains `streamout-native.tgz`. Keep it in cloud.
+
+This is an integration qualification using the prior completed CRC route43579643337, which failed antenna/timing gates. It is NOT final layout acceptance. The separate legalized-diode route43591198141 is still running.
+
+Readback audit **43600253157**, source `09ac3feea2471ed393055fdf55d84be9dca5b3f5`, branch `codex/assembled-sram-geometry`, compares the actual assembled macro cells against all311 cells in the verified library, including shapes/labels/internal instance arrays/transforms and16DP+4SP multiplicities. Inspect the result before claiming lossless assembled geometry. Safe prefix `assembled-sram-geometry-derived-`.
+
+### Independent full-CDL pin inventory
+
+Run **43599635907**, source `c04f30d7696e1a3bb2550c5192ed65f125b351e1`, completed its diagnosis. It parsed the original **powered** logical netlist (`pnl`) into YosysJSON without synthesis/optimization, and checked **158,681 cell instances** against full standard-cell and namespaced SRAM CDL headers. **No unknown cell types** were found.
+
+All reported interface issues are omitted X/Y output connections on clock-load examples: BUF_8=342,INV_2=259,INV_4=128,INV_1=330,INV_8=73,INV_16=7,BUF_4=1 (total1140). The report does NOT accept these automatically. Next verify directions using the pinned cell-library interface definitions, check every affected instance (not just first-five examples), and represent intentionally open outputs with unique isolated nodes only after that proof. Missing inputs/power/width errors must remain failures. Add meaningful negative controls for omitted input/power and wrong width.
+
+Before emitting a full schematic, also verify top-port aliases/constants, source bus direction/index metadata, constant-net mapping and source pin ordering. Do not silently tie missing pins or use empty macro definitions. The old blackbox-only converter remains unsuitable. Native JSON is cloud-only in artifact **14115941190**, SHA256 `588c3deacaf4c5824500ba96da77cf85a486e0d122a770f62a94c6436e6a8fa3`; safe pinmap artifact **14115941182**. The streamout GDS contains physical-only cells as well; distinguish intentional physical cells from omissions when full transistor LVS is assembled.
+
+Tested preparation, guarded streamout flow and diagnostic pinmap scripts are now retained in integration. Evidence: `docs/evidence/mainchip-namespaced-streamout-and-pinmap-20261114.json`. PHY43596398222 remains live; complete PHY, full-chip LVS, final timing and manufacturing approval remain open.
+
 ## Current checkpoint: fast exact restore verified; main-chip integration advancing
 
 The previous turn made concrete progress. The archive bottleneck was measured and fixed; the coherent main-chip preparation now succeeds. Full-chip LVS and manufacturing approval remain **unproven**.
