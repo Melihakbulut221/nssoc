@@ -27,6 +27,8 @@ SAMPLER_BIAS=['ira','irb','irc','ird']
 LOWZ4=dict(rppd_w='4u',ac_mim='7.2u',select_mim='9.6u')
 VARIANTS={
  'control':dict(),
+ 'bd10_lowz8_xor2':dict(LOWZ4,bd_up_w='10u',slave_parallel='2',rppd_w='8u',xor_nx='2'),
+ 'bd10_lowz8_xor3':dict(LOWZ4,bd_up_w='10u',slave_parallel='2',rppd_w='8u',xor_nx='3'),
  'lowz4':LOWZ4,
  'compensated':dict(ac_mim='21.6u',select_mim='9.6u'),
  'fastbuf':dict(LOWZ4,buffer_w='16u',buffer_bias='.002'),
@@ -90,7 +92,19 @@ def main(root,variant,out):
     root=Path(root).resolve();native=root/'native';out=Path(out);out.mkdir(parents=True)
     original=json.loads((root/'derived/loaded-n1-nominal_late.json').read_bytes())
     model=native/'composition-n1/model.cir';text=model.read_text()
-    patched,changed=patch(text,variant);model.write_text(patched)
+    patched,changed=patch(text,variant)
+    if variant in ('bd10_lowz8_xor2','bd10_lowz8_xor3'):
+        baseline,_=patch(text,'bd10_slave_parallel2_lowz8')
+        a,b=baseline.splitlines(),patched.splitlines();assert len(a)==len(b)
+        differences=[(x,y) for x,y in zip(a,b) if x!=y]
+        assert len(differences)==len(XOR_DATA)==24
+        assert {x.split()[0] for x,y in differences}==set(XOR_DATA)
+        for old,new in differences:
+            assert 'npn13g2' in old and re.search(r'\snx=4(?:\s|$)',old)
+            expected,count=re.subn(r'(\snx=)4(?=\s|$)',r'\g<1>'+VARIANTS[variant]['xor_nx'],old)
+            assert count==1 and new==expected
+        (out/'isolated-load-change.json').write_text(json.dumps({'reference_variant':'bd10_slave_parallel2_lowz8','changed_devices':XOR_DATA,'only_nx_changed':True,'old_nx':4,'new_nx':int(VARIANTS[variant]['xor_nx']),'wiring_rc_unchanged_whatif_only':True},indent=2))
+    model.write_text(patched)
     (out/'patch.json').write_text(json.dumps(dict(variant=variant,values=VARIANTS[variant],changed=changed),indent=1))
     folder=native/'loaded-n1-nominal_late';assert not (folder/'wave.raw').exists()
     bench,bias=patch_bench((folder/'bench.cir').read_text(),variant);(folder/'bench.cir').write_text(bench)
@@ -123,7 +137,7 @@ def main(root,variant,out):
     if 'slave_parallel' in VARIANTS[variant]:
         keep['experiment_scope']='64 slave-tail MOS and 8 collector resistors use m=2; effective primitive multiplicity increases by 72. Existing interconnect RC is retained only as a what-if. No new extracted layout.'
         keep['source_topology_run']=43472881982
-        keep['reference_variant']=('bd10_slave_parallel2_lowz8' if variant in ('bd10_lowz8_acff4','bd10_lowz8_selectff4') else 'bd10_slave_parallel2' if variant=='bd10_slave_parallel2_lowz8' else 'lowz4_bd10')
+        keep['reference_variant']=('bd10_slave_parallel2_lowz8' if variant in ('bd10_lowz8_acff4','bd10_lowz8_selectff4','bd10_lowz8_xor2','bd10_lowz8_xor3') else 'bd10_slave_parallel2' if variant=='bd10_slave_parallel2_lowz8' else 'lowz4_bd10')
         (out/'result.json').write_text(json.dumps(keep,indent=1,sort_keys=True))
     print(json.dumps({k:keep[k]for k in('variant','returncode','passed','data_passed','devices_passed','phase_passed','phase_average_v','failing_hbt')},sort_keys=True))
 if __name__=='__main__':main(*sys.argv[1:])

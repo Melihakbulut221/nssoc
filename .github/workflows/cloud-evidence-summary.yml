@@ -1,4 +1,4 @@
-name: CDR isolated feedforward capacitor experiments - frozen gates
+name: CDR isolated XOR input load reduction - frozen gates
 on:
   workflow_dispatch:
 permissions:
@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        variant: [bd10_lowz8_acff4, bd10_lowz8_selectff4]
+        variant: [bd10_lowz8_xor2, bd10_lowz8_xor3]
     env:
       GH_TOKEN: ${{ github.token }}
       ARTIFACT_ID: '13283214752'
@@ -58,7 +58,15 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: cdr-feedforward-result-only-${{ matrix.variant }}-${{ github.run_id }}
+          name: cdr-xor-load-result-only-${{ matrix.variant }}-${{ github.run_id }}
           path: whatif-${{ matrix.variant }}/result.json
           if-no-files-found: error
           retention-days: 90
+      - name: Require unchanged waveform and device gates
+        run: |
+          python3 - <<'PYGATE'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('whatif-${{ matrix.variant }}/result.json').read_text())
+          assert d['returncode']==0 and d['passed'] and d['data_passed'] and d['devices_passed'] and d['phase_passed'], 'Rejected circuit-screen candidate; not layout acceptance'
+          PYGATE
