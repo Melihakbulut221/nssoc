@@ -1,3 +1,13 @@
+## 2026-11-14 — pre-DRT jumper screen live, not a final antenna result
+
+Follow43612029407/source408d751279f3ec57f9ee3a2b6601fd059aaa7b99 oncodex/pre-drt-jumper-screen. Basedbaseline2bb475... withunchangeddiodelegalizedODB/SDC/config. RunsONLYGlobalRouting, then native repair_antennas sg13g2_antennanp -jumper_only -iterations3 withoriginalratio_margin/congestionpolicy BEFORE detailedrouting. Explicitgrt::have_routestrue/have_detailed_routesfalse guards. Nativecheck_placement, before/afterODB+guides, independentwholechipinstance/master/location/orientation/status/pin/net/topport equality and canonicalper-netguidegeometry comparison. Requires actualGRT-0302 InsertedN jumpers (N>0) and changedguidenets; no-effectcasefails ratherthan launchinglongDRT. Noaddeddiodesallowed. 2400sflow/65minjob; noRCX/STA/detailedroute inthisscreen.
+
+OfficialexactOpenROADdcf36133 GlobalRouter.cpp repairAntennas only invokesjumperInsertion when !haveDetailedRoutes(nets_to_repair). LibreLane3.0.5 common/grt.tcl onlyglobal_route/write_guide (noantenna repair), so priorbaseline didnotapplythispreDRTstep. OldpostDRT-jumpercall wasno-op and isnotrepeated. This is a hypothesis to reduceactual377remainingnets, notguaranteedclosure.
+
+Artifacts: route-pre_drt_jumpers-43612029407 safelogs/JSON/proofs; guides-db-pre_drt_jumpers-43612029407 nativecloudonly, innerguides.tgz includes exactstate andentireGRTstep withbefore/afterODB/guides. Ifpassescontinue DRTfromthese EXACTmodifiedguides (doNOTregenerateGRTandlosejumpers), thencheckrealantenna/DRC andfreshRC/STA. FullchipLVS remainsownnewgeometryrequirement. Noexperimentworkflowmerged.
+
+Otherlive snapshot: {"43591198141": {"status": "in_progress", "conclusion": null}, "43610680141": {"status": "in_progress", "conclusion": null}, "43603972722": {"status": "in_progress", "conclusion": null}}. Baseline43591198141 nowRCX/STAafterDRC0but377antenna-netfailedroute; buf4trial43610680141 independentlyrouting; PHY43603972722 simulating.
+
 ## 2026-11-14 — baseline routed, antenna improved but FAILED; RCX/STA live
 
 Run43591198141 routejob132436088101 COMPLETEDSUCCESS. Routing3h56m26s, finalrouterDRC0 atiteration5, wirelength11001517. Strict antenna result377violatingnets/424pins (route__antenna_violation__count303); previousroute565nets/656pins. Improvement is NOTzeroacceptance. StandardunsupportedLEF58warnings remain; routerDRC0notfoundryDRC. Parentworkflowoverallnotterminal: RCX/STAjob132497306850 started. Follow samehandlefor3cornerresults; do notrerunrouting.
