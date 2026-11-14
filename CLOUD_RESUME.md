@@ -1,3 +1,11 @@
+## 2026-11-15 — training input setup headroom measured; physical hold ECO live
+
+Diagnostic43643718087/heade54adacc0ae714b27c1449930cabe9dd3d3708e9 completed SUCCESS. Exact CRC repaired ODB unchanged. Targeted pcie_training_i setup slack slow/typ/fast **+2.872979641/+2.994712114/+3.046618223ns**; hold **-0.389348686/-0.360046655/-0.325918019ns**. Each of6reports contains one actual path. Safe14132724018 SHA6488ef8e34e5031740b5b719bc8300c5d0b5eec8439a6f74cfee13f7b1c5d9c1. Receipt `docs/evidence/crc-training-input-timing-20261115.json`. This is source-specific placement RC, not routed signoff.
+
+NEW physical candidate **43644585495**, source **dea0de872cdbf0fa716d68b597033ac2ab23534f**, branch `codex/crc-training-hold-eco`. Adds two native sg13g2_dlygate4sd3_1 cells immediately before original hold23699/A, preserving original training port/net. Asserts original single-sink incidence, exact +2cell/+2net census and every original cell/master/pin connection except the one reconnected input. Native PDK model c4b8.../stdcell Verilog SHA28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4 verified: cell is buf(X,A), so no Boolean or cycle change. Then native legalization, updated placement RC and three fresh independent corner measurements. Require at least50ps input setup/hold margin; keep accepted=false for fullchip. Original clocks/uncertainty/input delays unchanged, no broad repair_design invocation. Native output retained for wholechip metrics/equivalence/route follow-up. Do not adopt candidate merely on native execution success or transfer it directly to newer RX source without own measurement.
+
+RX timing43643048434 and packed loaded43642783223 remain independent in-progress jobs. Goal remains open; all native work cloud-only.
+
 ## 2026-11-15 — input timing diagnostic CLI directory fixed
 
 Targeted diagnostic43643389576/sourcec8b49701b0800591dc951187b56ef5cb954d54ef failed before STA: LibreLane requires the --force-run-dir directory to exist. Actual CTS/postCTS source authentication and extraction had succeeded; CLI rejected missing input-timing/run. Added explicit mkdir before subprocess (same pattern as existing native repair driver). No physical design, input constraints or acceptance change.
