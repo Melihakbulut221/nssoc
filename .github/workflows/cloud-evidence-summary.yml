@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [retry_buf4]
+        name: [pre_drt_jumpers]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -50,25 +50,18 @@ jobs:
           print('restored PDK and tool files',n)
           PY
           rm -rf $W/pkg
-      - name: Rebuild routing from verified retry-driver sizing and legal placement
+      - name: Detailed route from exact accepted jumper guides without rerunning GRT
         if: env.RUN == 'true'
         run: |
           set -euo pipefail
           W=/mnt/s; OUT=$PWD/hw/soc/out/impl-probe
           mkdir -p $W/h
-          gh api repos/${{ github.repository }}/actions/artifacts/14100640319/zip > $W/h/base.zip
-          echo 'f724a289dc08812190d1aac64bfd1b4fafceeaca71c734ed578ca41d96a62f7c  /mnt/s/h/base.zip' | sha256sum -c -
-          unzip -q $W/h/base.zip -d $W/h
-          tar -xzf $W/h/handoff.tgz -C /
-          rm -rf $W/h; mkdir -p $W/h
-          gh api repos/${{ github.repository }}/actions/artifacts/14107653261/zip > $W/h/candidate.zip
-          echo 'a401c73f139405396cf8afdb0e24e718c1334c09d8c49c3e4774d78e3440f64c  /mnt/s/h/candidate.zip' | sha256sum -c -
-          unzip -q $W/h/candidate.zip -d $W/h
-          tar -xzf $W/h/route-incomplete.tgz -C "$PWD"
+          gh api repos/${{ github.repository }}/actions/artifacts/14120788686/zip > $W/h/guides.zip
+          echo '69172352eb82e92a998843405c2db5ade521c96654e85fd9ff1fe1785e93b510  /mnt/s/h/guides.zip' | sha256sum -c -
+          unzip -q $W/h/guides.zip -d $W/h
+          tar -xzf $W/h/guides.tgz -C /
           rm -rf $W/h
-          mv $OUT/route $OUT/recovered-route
-          gh api repos/${{ github.repository }}/actions/artifacts/14120090635/zip > legalized.zip
-          python3 scripts/prepare_antenna_resume.py
+          python3 scripts/prepare_exact_jumper_drt.py
           set +e
           mkdir -p $OUT/route
           timeout 19200 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage python hw/soc/pnr/resume_pinned_antenna_flow.py --flow ResumePinnedAntenna \
@@ -81,7 +74,7 @@ jobs:
           mkdir -p routed
           X=; [ -f $OUT/flop-map.tsv ] && X=$OUT/flop-map.tsv
           python3 -B scripts/routed_handoff.py pack $OUT/route $OUT/routed-state.json routed/routed.tgz \
-            $OUT/prepared $X | tail -8
+            $OUT/prepared $OUT/jumper-source $X | tail -8
           ls -la routed
       - name: Collect
         if: always() && env.RUN == 'true'
@@ -106,7 +99,7 @@ jobs:
         if: failure()
         run: |
           mkdir -p /mnt/s/native
-          tar -czf /mnt/s/native/route-incomplete.tgz hw/soc/out/impl-probe/route hw/soc/out/impl-probe/prepared hw/soc/out/impl-probe/route-initial.json hw/soc/out/impl-probe/recovered-route
+          tar -czf /mnt/s/native/route-incomplete.tgz hw/soc/out/impl-probe/route hw/soc/out/impl-probe/prepared hw/soc/out/impl-probe/route-initial.json hw/soc/out/impl-probe/jumper-source
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: failure()
         with:
@@ -122,7 +115,7 @@ jobs:
       fail-fast: false
       matrix:
         # r_cut4h_td_d68 and r_cut3hh_td_d68 are the route-hold job's databases.
-        name: [retry_buf4]
+        name: [pre_drt_jumpers]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -228,7 +221,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: retry-buf4-rcx-native-${{ github.run_id }}
+          name: pre-drt-jumpers-rcx-native-${{ github.run_id }}
           path: /mnt/s/rcx-native
           if-no-files-found: warn
           retention-days: 30
