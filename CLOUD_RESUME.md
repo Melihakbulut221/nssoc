@@ -1,3 +1,13 @@
+## 2026-11-14 — full transistor chip LVS now live
+
+Run43602758557/job132470857034, branche codex/chip-full-transistor-lvs, source e8f1b7d0782132fcb991182b4fde3c1aa147fa57. Frozen inputs restored and native comparer fault controls PASSED. Full chip extraction/comparison/strict audit step is IN_PROGRESS; do not restart due to observation timeout. Native timeout18000s/job355min. Check terminal result, then derived full-chip-transistor-lvs-derived-43602758557. Native DB/extracted circuit stay cloud only in full-chip-transistor-lvs-native-43602758557.
+
+This uses exact assembled namespaced GDS c6c7df7f... (prior timing-failed route43579643337) and independent full transistor reference523438b6... . Both passing macro deck extraction prefixes are byte-identical; assembled comparison contains all six explicit hierarchy name pairs and nine flatten targets per SRAM namespace, with exact macro device/pin counts and full-side primitive conservation. No blackboxing, nil mapping, net equivalences, or missing-port waiver. max_branch_complexity2048 (same tested SP bound); strict flag_missing_ports and audit retained. Full-chip main primitive totals are measured, not forced equal ahead of native comparison, since physical-only cells require genuine comparison. Still no full serial PHY/final-route/production acceptance.
+
+Reader/source collection run43602421955 PASSED, source67464a2464ffdb9cae864667a2070d073fce659d, derived artifact14116294182 SHAa5738706249770973fe0edb52578c5e04be8240c51c664b244a3f6c3a36eb8f5. Contains actual DP/SP deck source (safe text), native reader result. Main full LVS helpers remain experimental on run branch until execution validated; do not merge workflow.
+
+Latest job snapshot: {"43591198141": {"status": "in_progress", "conclusion": null}, "43596398222": {"status": "in_progress", "conclusion": null}, "43602758557": {"status": "in_progress", "conclusion": null}}
+
 ## 2026-11-14 — native full reference reader passed
 
 Run43602238038 (source017e930b9ffd9edd997a98b70e4a614dea3f3181) PASSED. Actual frozen KLayout0.30.13 and original passing DP macro reader read full independent reference: SOC_TOP 354pins,158681subcircuits,7456816recursive primitives, DP70110/SP1211120. No extraction/comparison was performed. Original full reference hash unchanged. Artifact14116517553 SHA71113a8ea0f126257e94d9c799e54ab621fdcaaab4064f9a5ff8d4186dd330b9. See docs/evidence/chip-native-reference-reader-20261114.json.
