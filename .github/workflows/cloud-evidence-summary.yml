@@ -21,8 +21,8 @@ jobs:
       - name: Restore exact newly mapped candidate without inherited boot acceptance
         run: |
           set -euo pipefail
-          gh api repos/${{ github.repository }}/actions/artifacts/14131535375/zip > source.zip
-          gh api repos/${{ github.repository }}/actions/artifacts/14130736810/zip > mapping.zip
+          gh api repos/${{ github.repository }}/actions/artifacts/14132027737/zip > source.zip
+          gh api repos/${{ github.repository }}/actions/artifacts/14131928219/zip > mapping.zip
           python3 scripts/restore_predecode_chip_boot.py
           python3 -m py_compile scripts/cloud_predecode_postcts.py
       - name: Prepare pinned native physical runtime
