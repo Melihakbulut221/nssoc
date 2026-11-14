@@ -1,3 +1,13 @@
+## SP normalization trial launched; PHY observer fixed, upstream trace incomplete
+
+SP inventory43594622132 verified exact direct-device and child differences: top layout has1824 additional NMOS and1824 additional PMOS; reference has768 additional INVX2,512 NAND2X2,32 CINVX4 instances, accounting exactly for the difference. Matrix both sides2048 NMOS+64columns,770pins; search messages require640/1024 above previous512 limit. No electrical equivalence inferred from inventory alone.
+
+Next SP run43594788773, sourcef2caf1977cdea6d514b51e2f7aa99c57839d388e, branchcodex/sp-normalized-bound2048: flatten those3 evidenced cell types on BOTH sides, preserve1211120recursive primitives and355native ports, search2048 with original maxdepth and1800s native timeout. Native fault controls also changed to2048. Strict audit required; green diagnosis execution is not acceptance. Safe artifact sp-sram-hierarchy-bound2048-normalized-derived-*. Do not restart while live.
+
+PHY observer43594550414/source4274eeb93e2a17c519cd189f0e754e01ce17437b succeeded after logical/native alias fix. Original gates reproduced. Paths reach terminal HBTs xd0275/xd0273 foradp/adn andxd0282/xd0281 fors0p/s0n; no sampler port reached in current four-level HBT-only trace. Therefore upstream buffer connectivity is still NOT established; extend traversal to actual device types/port mapping before sizing changes. Output/data margins remain failed, no full PHY acceptance. Tested observer source retained in integration; dependency scripts remain on experiment branch.
+
+Boot43588310054 completed/pass (details below). Legalized-diode route43591198141 remains live. Receipt docs/evidence/sp-inventory-and-phy-observer-20261114.json contains both derived reports. Native CAD/waveforms stay cloud-only.
+
 ## 2026-11-14: native MBIST/boot complete; SP mismatch narrowed; PHY observer repaired
 
 Boot run43588310054 completed with native_returncode=0, completed_boot=true, passed=true, sources_unchanged=true. Both system/Ethernet MBIST and packet-async PCIe idle boot profiles passed. Source1c0d103c64f040543106b2a3e9265fe580f4d289; original simulation3fd0fded2d874efa0109d8558a213380de1f36a7. No checkpoint continuation needed. This is not SDF timing, serial PCIe traffic or manufacturing acceptance.
