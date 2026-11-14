@@ -1,3 +1,15 @@
+# Extracted timing rejects older electrical candidate; misleading clock labels fixed separately
+
+43567570194 completed/failure. Exact finalroute DRC0/antenna0/0 but threecornerSTA fails: slow1390setup(-1.989753ns),2hold(-.356828ns);typ0setup,4hold(-.212935ns);fast0setup,98hold(-.251383ns). Cap105/109/113,slew708/272/144,fanout1416each(slow/typ/fast). SafeSTA14106081080SHA`04c1539e64b73d7e9d53f03d4aac401b43545b721d70c85672ede06c67842f0b`. NominalSPEFsha0a343a9739393cfe0b759e96b21a74241a1a4a7c4c6d7ae3ed3ea547d08d266e,capconservationpasses;RCminmaxunqualified. Receipt:docs/evidence/electrical-routed-timing-rejected-20261114.json.
+
+Worstsetup remainsPCIe fold_word27→crc7,CPUinstr→RF,asyncreset,EthTXb_func→bank1. WorstholdEthRXwq_data9→bank0, NOT earlierRX6address-only target. Prioritize freshCRC43561900502 and separateRX6candidate43569629324 results before any old-instanceECO. Do notcall this oldcandidate timingclosed or transfer its metrics to newRTL.
+
+Clock header contradiction resolved in upstream3.0.5corner.tcl: `if is_propagated` erroneously sets `is_virtual` printvariable, so report showedVirtualyes/Propagatedno. Fixed printassignment only in guarded source, no STA clock/SDC/SPEF/delay/limit edits. Cloud43575282471 sourceacb25e2ffa9c7ce0d65fd0e194bb54cc758074cd passed4truthstates+missing/duplicateanchor rejection; originalbug reproduced in2states. Safe14105737685SHAf0e730850a10485954b0d56837eb1f02ed85ca7dda766c8dbd3b928cf2c1f0ab. Integrated source/test; existingruns unaffected. Receipt:docs/evidence/routed-clock-report-label-controls-20261114.json.
+
+Sixlivehandles43571075470,43569629324,43566292104,43562021054,43561900502,43573697024. Stop polling43567570194 aslive. Fullgoalopen.
+
+---
+
 # Electrical candidate routed with zero router DRC/antenna; exact routed STA now running
 
 43567570194 source`0b0afcacd36d6223e0fba6ce1ddbf18312c955e8`: routejob132364639141 completed/success. Pinnedresume reproduced28antenna nets31pins, then2/2, then0/0. Fresh finalmetrics route__drc_errors=0,antenna__violating__nets=0,pins=0,flowerrors=0. Confirmed stale metrics removed/config unchanged. Final159612instances,20SRAMmacros,1018antennacells. Routepass elapsed~1h19m. Safe14105204176SHA`54cad8e84c4e919fc471203c4a43ef1000d52e53d628fc629f6394ba4dd453c8`; native14105074398SHA`7704bd4afb10dab17e6d15b1abc7290d80ca0663b55af6193a0802a4620f123f` stayscloud.

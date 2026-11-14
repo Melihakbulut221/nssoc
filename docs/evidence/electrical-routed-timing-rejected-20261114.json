@@ -1,0 +1,55 @@
+{
+  "run": 43567570194,
+  "source": "0b0afcacd36d6223e0fba6ce1ddbf18312c955e8",
+  "sta_job": 132384337030,
+  "conclusion": "failure",
+  "safe_artifact": 14106081080,
+  "safe_artifact_sha256": "04c1539e64b73d7e9d53f03d4aac401b43545b721d70c85672ede06c67842f0b",
+  "metrics": {
+    "nom_slow_1p08V_125C": {
+      "setup_count": 1390,
+      "setup_wns_ns": -1.9897528632375059,
+      "hold_count": 2,
+      "hold_wns_ns": -0.3568279106523571,
+      "cap_count": 105,
+      "slew_count": 708,
+      "fanout_count": 1416
+    },
+    "nom_typ_1p20V_25C": {
+      "setup_count": 0,
+      "setup_worst_slack_ns": 0.14497070620955527,
+      "hold_count": 4,
+      "hold_wns_ns": -0.2129346759186735,
+      "cap_count": 109,
+      "slew_count": 272,
+      "fanout_count": 1416
+    },
+    "nom_fast_1p32V_m40C": {
+      "setup_count": 0,
+      "setup_worst_slack_ns": 1.4194616994695022,
+      "hold_count": 98,
+      "hold_wns_ns": -0.2513825885272436,
+      "cap_count": 113,
+      "slew_count": 144,
+      "fanout_count": 1416
+    }
+  },
+  "route": {
+    "router_drc": 0,
+    "antenna_nets": 0,
+    "antenna_pins": 0
+  },
+  "spef_sha256": "0a343a9739393cfe0b759e96b21a74241a1a4a7c4c6d7ae3ed3ea547d08d266e",
+  "spef_cap_conservation_passed": true,
+  "qualified_rc_minmax": false,
+  "accepted": false,
+  "worst_slow_setup": {
+    "pcie": "fold_word[27] to crc[7], -1.989753ns",
+    "cpu": "exs_ex_instr_rdata_alu_id_q[1] to rf_reg_q[28], -1.391875ns",
+    "async": "pcie_retrain_done_i to u_pcie_cdc.source_reset_n, -0.585339ns",
+    "ethernet_tx": "b_func_q to SRAMbank1, -0.544312ns"
+  },
+  "worst_hold": "Ethernet RX wq_data[9] to SRAMbank0, distinct from RX6address hold candidate",
+  "clock_header_issue": "Upstream LibreLane3.0.5 prints is_propagated into is_virtual variable. Runtime is_propagated guard and real path clock latency unaffected. Verified independent truth-table correction; does not fix timing.",
+  "evidence_note": "SHA-verified artifact summary, metrics, SPEF audit and native-script proof inspected. Later repeated download attempts timed out; this receipt preserves already observed scalar results without inferring completion."
+}

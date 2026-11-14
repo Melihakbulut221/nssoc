@@ -23,7 +23,15 @@ foreach clock [all_clocks] {
 }
 puts "NSSOC_ROUTED_ORIGINAL_CLOCKS_PROPAGATED"
 """
+def correct_clock_report_labels(text):
+    # LibreLane3.0.5 typo: a propagated clock sets the virtual print variable.
+    # Patch only this reporting assignment; never change STA clock properties.
+    old='    if { [get_property $clock is_propagated] } {\n        set is_virtual "yes"\n    }'
+    new=old.replace('set is_virtual','set is_propagated')
+    assert text.count(old)==1, 'Expected unique LibreLane3.0.5 report typo'
+    return text.replace(old,new)
 def guarded_sta(text,derate):
+    text=correct_clock_report_labels(text)
     anchor='source $::env(SCRIPTS_DIR)/openroad/common/io.tcl\n'
     assert text.count(anchor)==1 and text.count('read_spefs\n')==1
     assert text.count('    read_timing_info\n')==1
@@ -63,7 +71,7 @@ class AuditedRoutedSTA(OpenROAD.STAPostPNR):
         original=Path(super().get_script_path());guard=ROOT/'hw/soc/flow/check_timing_derate.tcl'
         text=guarded_sta(original.read_text(),guard.read_text())
         target=Path(self.step_dir)/'routed_corner.tcl';target.write_text(text)
-        (Path(self.step_dir)/'native-sta-script-proof.json').write_text(json.dumps(dict(original=str(original),original_sha256=sha(original),guard_sha256=sha(guard),adapted_sha256=sha(target),only_added_derate_engine_and_clock_guards=True),indent=2)+'\n')
+        (Path(self.step_dir)/'native-sta-script-proof.json').write_text(json.dumps(dict(original=str(original),original_sha256=sha(original),guard_sha256=sha(guard),adapted_sha256=sha(target),only_added_derate_engine_and_clock_guards=False,report_label_assignment_corrected=True,no_timing_semantics_changed_by_report_fix=True),indent=2)+'\n')
         return str(target)
 @Flow.factory.register()
 class ReplayOnehotRoutedExtraction(Interfaces):
