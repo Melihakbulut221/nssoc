@@ -1,3 +1,11 @@
+# Final antenna audit run-directory failure fixed; replacement live
+
+43576971725 failed before any native antenna measurement: CLI --force-run-dir requires existing directory final-ant. Exact source/raw checkpoint unaffected. Job132393216711 confirms archive SHA passed; exit2 on missing run directory. Derived error artifact14106581453 SHAea306ba8840a83fef48235c6be98a926aee285e4f9cb7df743327b3cc8c805c7.
+
+Workflow now mkdir -p out "$OUT/final-ant" before CLI. Replacement43577172823 sourcef2a0307ed1b5c51a6d5422e72b8aeed1c4143f59, samebranchcodex/rx6-final-antenna-audit, job132393847343 verified live preparing pinned tools/PDK. No design/limit/helper change. Await derivedrx6-final-antenna-derived-43577172823, require actual fresh native metrics and ODB/SDC hash invariance. Stop polling failed43576971725. Existing main RX6 stored1/2 remains potentially pre-final-repair and not proven final. Fullgoalopen.
+
+---
+
 # RX6 final antenna metric freshness unresolved; independent read-only audit launched
 
 New evidence: pinned LibreLane3.0.5 drt.tcl loop is `while {$i <= $::env(DRT_ANTENNA_REPAIR_ITERS) && [log_cmd check_antennas]}`; it increments i after each repair/reroute, then writes views WITHOUT an unconditional final check. RX6 consumed all3iterations, so saved1net/2pins may describe the pre-final-repair database. Previous receipt accurately preserves stored metrics, but they DO NOT prove final remaining violations. Do not assert final antenna closure or final1/2 until fresh audit.
