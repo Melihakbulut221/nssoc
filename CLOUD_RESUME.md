@@ -1,3 +1,11 @@
+## 2026-11-15 — targeted training-input setup/hold diagnosis dispatched
+
+NEW read-only diagnostic **43643389576**, source **c8b49701b0800591dc951187b56ef5cb954d54ef**, branch `codex/crc-training-input-timing`. Restores authenticated CRC CTS and complete repaired postCTS43639975405 outputs, requires repaired ODB568dfa2f110b6813d316087b6249340bedd4c831b95bf13d6224014b49c6afb1, then runs three separate native corner STA processes with explicit `report_checks -from [get_ports pcie_training_i]` for max/min. Original clocks, derates, input delays and physical database remain unchanged; source hashes verified after execution. Each of six targeted reports must contain actual paths. This measures setup headroom before a possible hold delay ECO; it does not itself modify cells or fix timing. Do not infer setup headroom from missing paths in the truncated standard report.
+
+Flow `hw/soc/pnr/input_timing_flow.py` extends existing guarded SingleCornerSTA, appending reports after native corner.tcl write_libs (upstream LibreLane3.0.5 source checked). Worker `scripts/measure_crc_training_input.py`. Experimental workflow must not merge. If execution fails, diagnose exact stage; no acceptance waived. A successful diagnostic is only for exact CRC candidate, not automatic proof for newer RX source.
+
+RX corrected postCTS43643048434/job132594638172 and packed loaded43642783223/job132593819470 are independently live from current checks. Full goal remains open; cloud-only native work.
+
 ## 2026-11-15 — RX postCTS input-address mismatch corrected; fresh run live
 
 Initial RX postCTS43642916374/source219de71d65ac179920bd8eba0505dc9f00738032 FAILED before CAD execution. Its workflow still downloaded CRC source14131535375 and mapping14130736810 while the restore helper correctly required RX hashes. Source authentication rejected the mismatch. No timing result from that run exists. Corrected only the two artifact addresses to RX14132027737/14131928219; no identity check or timing gate removed. NEW run **43643048434**, source **db35595f13bc3eb63890086789b93e252fbb4cb6**, same `codex/rx-cursor-chip-postcts` branch, job132594638172. This supersedes the earlier live handle. It still consumes exact RX CTS43641707777/job132590504077 and retains all clocks/derates/repair settings.
