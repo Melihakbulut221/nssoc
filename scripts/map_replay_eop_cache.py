@@ -48,7 +48,23 @@ stat -liberty {lib}
     assert all(k.startswith('sg13g2_') for k in types),types
     selected={n:[fanout[b] for b in v['bits']] for n,v in d['netnames'].items() if n in ('write_valid','write_address','write_low','write_group','write_data')}
     assert 'write_group' in selected and 'write_low' in selected
-    if label=='cache':assert 'replay_eop_q' in d['netnames']
+    if label=='cache':
+        aliases={n:v['bits'] for n,v in d['netnames'].items() if 'eop' in n.lower()}
+        print('EOP aliases',json.dumps(aliases),flush=True)
+        candidates=[v['bits'][0] for n,v in d['netnames'].items() if n in ('replay_eop_q','core_eop')]
+        assert candidates,'Mapped EOP signal missing'
+        drivers={}
+        for cell in d['cells'].values():
+            for pin,bits in cell['connections'].items():
+                if cell['port_directions'][pin]=='output':
+                    for bit in bits:drivers[bit]=cell
+        def registered(bit,seen):
+            assert bit not in seen,'Driver loop'
+            cell=drivers[bit];kind=cell['type'];seen=seen|{bit}
+            if kind.startswith('sg13g2_df'):return kind
+            assert kind.startswith(('sg13g2_buf_','sg13g2_inv_')),kind
+            return registered(cell['connections']['A'][0],seen)
+        report['cached_eop_sequential_driver']=registered(candidates[0],set())
     report['cases'][label]=dict(nonphysical_zero_port_scopeinfo_records=metadata,cell_count=sum(types.values()),cell_types=dict(types),named_write_net_sink_pins=selected,netlist_sha256=hashlib.sha256((native/(label+'.v')).read_bytes()).hexdigest())
     (out/'mapping.json').write_text(json.dumps(report,indent=2)+'\n')
 report['status']='MAPPED_BOTH_CANDIDATES_NOT_PHYSICAL_TIMING';(out/'mapping.json').write_text(json.dumps(report,indent=2)+'\n')
