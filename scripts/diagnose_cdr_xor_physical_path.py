@@ -37,7 +37,7 @@ current=np.array(bits)[indices];previous=np.array(bits)[indices-1]
 rows=[]
 for tag,pa,na,pb,nb,po,no,first in [('x','xpd.adp','xpd.adn','xpd.s0p','xpd.s0n','xp','xn',current),('y','xpd.cdp','xpd.cdn','xpd.s1p','xpd.s1n','yp','yn',previous)]:
  second=previous
- for phase in [.6,.75,.9]:
+ for phase in [.1,.2,.3,.4,.49,.51,.6,.75,.9]:
   times=loaded.START+(indices+.5+phase)*loaded.UI
   av,bv,ov=[np.interp(times,t,signal) for signal in [diff(pa,na),diff(pb,nb),diff(po,no)]]
   for a in [0,1]:
@@ -106,7 +106,7 @@ for output in ['adp','adn','s0p','s0n']:
  paths[output]={'devices':selected,'sampler_ports_reached':[n for n in ['aqp','aqn','bqp','bqn'] if port_roots[n] in reach],'root_count':len(reach),'unresolved_frontier':sorted(frontier)}
 selected_names=sorted({n for row in paths.values() for n,dev in row['devices'].items() if dev['kind']=='npn13g2'})
 phase_groups=[]
-for phase in [.6,.75,.9]:
+for phase in [.1,.2,.3,.4,.49,.51,.6,.75,.9]:
  times=loaded.START+(indices+.5+phase)*loaded.UI
  for a in [0,1]:
   for b in [0,1]:
@@ -137,4 +137,19 @@ for name in result['failing_hbt']:
  failed[name]={'native_record':records[0],'nx':dev['nx'],'nodes':dev['nodes'],'checks':r['device_checks'][name],'extrema':extrema}
 assert set(failed)==set(result['failing_hbt'])
 out['failing_hbt_exact_criteria']=failed
+# Audit observation times independently of the frozen pass/fail oracle.
+# No expected-bit or electrical acceptance rule is modified here.
+clock_aliases={k:n for k,n in bound['aliases'].items() if any(token in k.lower() for token in ('clk','clock','ckp','ckn'))}
+clock_vectors={k:n for k,n in clock_aliases.items() if 'v('+n+')' in d}
+clock_rows=[]
+for phase in [0,.1,.4,.49,.51,.6,.75,.9]:
+ times=loaded.START+(indices+.5+phase)*loaded.UI
+ row={'phase_after_rising_ui':phase,'relative_to_next_falling_ui':phase-.5,'source_clock_levels_v':{},'sampler_b_sign_agreement':{}}
+ for alias,n in clock_vectors.items():
+  values=np.interp(times,t,d['v('+n+')']);row['source_clock_levels_v'][alias]={'minimum':float(values.min()),'median':float(np.median(values)),'maximum':float(values.max())}
+ bv=np.interp(times,t,diff('xpd.bqp','xpd.bqn'))
+ changed=current!=previous
+ row['sampler_b_sign_agreement']={'transition_samples':int(changed.sum()),'with_previous_bit':int(((bv>0)==previous)[changed].sum()),'with_current_bit':int(((bv>0)==current)[changed].sum()),'weak_under_100mv':int((abs(bv)<.1)[changed].sum())}
+ clock_rows.append(row)
+out['observation_schedule_audit']={'clock_generator_contract':'loaded.clock: rising START+(i+.5)*UI, falling START+(i+1)*UI, finite 5ps transition','unchanged_original_xor_sample_phases_ui':[.6,.75,.9],'clock_aliases':clock_aliases,'available_clock_vectors':clock_vectors,'rows':clock_rows,'model_subcircuit_headers':[line for line in logical if line.lower().startswith('.subckt ')],'acceptance_changed':False,'requires_physical_topology_interpretation':True}
 P('out').mkdir();P('out/xor-physical-path.json').write_text(json.dumps(out,indent=2))
