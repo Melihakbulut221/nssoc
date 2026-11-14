@@ -1,11 +1,11 @@
-name: Replay EOP cache guarded setup hold repair comparison
+name: Continue exact replay block repaired databases without resynthesis
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  place:
+  repair:
     runs-on: ubuntu-22.04
     timeout-minutes: 95
     env:
@@ -15,14 +15,12 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-          sparse-checkout: |
-            scripts
-            hw/soc/rtl/pcie
-      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+          sparse-checkout-cone-mode: false
+          sparse-checkout: /scripts/continue_eop_block_repair.py
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
-          version: '2026-08-04'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Restore pinned runtime and exact mapped candidates only in cloud
+          python-version: '3.12'
+      - name: Prepare pinned runtime
         run: |
           set -euo pipefail
           sudo mkdir -p /mnt/s
@@ -30,23 +28,24 @@ jobs:
           curl -fsSL --retry 5 -o /mnt/s/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
           echo 'd6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  /mnt/s/librelane.AppImage' | sha256sum -c -
           chmod +x /mnt/s/librelane.AppImage
-          python3 scripts/map_replay_eop_cache.py
-      - name: Place both candidates with identical boundaries and report all corners
-        run: python3 scripts/place_replay_eop_cache.py
+      - name: Continue authenticated repaired block databases and measure all corners
+        run: python3 scripts/continue_eop_block_repair.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: replay-eop-cache-timing-repair-${{ github.run_id }}
+          name: eop-block-continuation-derived-${{ github.run_id }}
           path: |
             out/*.json
             out/baseline/*.log
             out/baseline/*.rpt
             out/cache/*.log
             out/cache/*.rpt
-          retention-days: 30
+          if-no-files-found: error
+          retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: replay-eop-cache-timing-repair-native-${{ github.run_id }}
-          path: out/native
-          retention-days: 30
+          name: eop-block-continuation-native-${{ github.run_id }}
+          path: out/native/
+          if-no-files-found: error
+          retention-days: 90
