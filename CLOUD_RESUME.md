@@ -1,3 +1,24 @@
+## 2026-11-14 — fresh EOP mainchip postCTS measured; receive ownership is now worst, closure still open
+
+Actual source-bound postCTS43633451595 completed native electrical/setup100/hold1000 plus independent slow/typ/fast measurements in1490.496s. Old inherited metrics were discarded. Repaired ODB befeb52d35e17b1580296a09347ecee07783cd9a0dd503c5150ebddef718b174; state run/5-openroad-resizertimingpostcts/state_out.json. No timing acceptance: original20/4/8/8ns clocks and5%derates unchanged.
+
+Before -> after: slow setup WS -8.35744 -> -3.31696ns, count2440 ->2587; slow hold462 ->0, finalWS+.0453129ns. Typical setup1019 ->793, WS-.735139ns; hold949 ->1, WS-.0910532ns (register-onlyhold+.024274ns). Fast setup275 ->0, WS+.823744ns; hold14025 ->224, WS-.220928ns (r2rWS-.096726ns). Slow slew156 ->26; typical slew16 ->11; fastslew0; capacitance0 inallthreecorners. Improving worst slack does not mean every violation count improves.
+
+Worst finalslow start $auto$ff.cc:337:slice$365445 -> receive_ownership.r2_staged_group[1].lane_copy, worsttypical toreceive_ownership.read_bank[2].r2_slot[1].lane_copy. Fast worstholdeth_txd_o[2]; typical worstholdpcie_training_i. These are EOP-only source results, not the new CRC_SELECT candidate. Cloud detailed-path group/mapped-alias extraction handles:
+[
+  {
+    "id": 43636364178,
+    "head_sha": "48341d59fa054aae5edb5264267903f050b2367a",
+    "status": "in_progress",
+    "conclusion": null
+  }
+]
+It checks the original fullchip mappedJSON SHA1c03ec19a0f8afc2384d92f8974be6cce48ff189e7e1a06e138a69f8754dd8f9 from original failedproducer43630345267 plus independent successfulvalidation43631950511, and maps worst endpoints perclockgroup to exactRTL. OriginalmappedmastersmustnotbeconfusedwithpostECOsizedmasters. Inspect this before choosing another RTL/clock/data distribution repair.
+
+Safe postCTS14129917895 SHA2f7429aa34519372129c4a272e381799bfee5a37aefc5b07495b9901e493110b; native14130177227 SHA62b0a8fcfb281c3a6abc3fcf140b66fc75a017e1c7f7d30cb931ed88bc8ecd93 cloudonly. Slim43636062884 safe14130091813 SHA4087507dc7b282fd4d4f97981798dc293e51b9a74cea239076fed60292a8dea0. Receipt docs/evidence/eop-mainchip-postcts-20261114.json.
+
+CRC_SELECT fullchip build43635824821/source9339dd6eeda8cf65383c7dc606e0cc752c1d6432 is live in replay positive/mutation regressions. Do not restart. EOP-only actualboot43632152541 still independent; oldpredecodeboot43620739672 lastconfirmedlive. LoadedPHY43626358999 is terminalrejected, itswaveformdiagnosis43635472153 completed; nextactualanalogworkmustaddress samplerlatency and comparatortransfer, notrerun unchangedn1or relaxgates. Fullmanufacturinggoalremainsopen.
+
 ## 2026-11-14 — CRC-select block has positive all-path margins; mainchip build dispatched; loaded PHY diagnosis retained
 
 CRC physical run43635053634/source6a2065c74105bfc60d4d500cf42f34cb4aeb7c5e completed successfully. Equal-area, identical constraints and optimization budget comparison: EOP-only baseline all-path slow setup -0.047070794 ns / fast hold -0.012820662 ns; EOP+CRC_SELECT candidate +0.018597124 ns / +0.001171230 ns. Candidate typical setup+1.111926794, fast setup+1.739200354; slow hold+.086899199, typical hold+.032137737 ns. 1675 paths per report, 24reports/candidate. Candidate mapped cells5940 vs5870 (+70). The worst candidate slow path moved to ack_sequence_i[1] -> _10129_/D. This is useful isolated ideal-clock/estimated-RC evidence, not robust routed/chip closure; it does not reach requested +50ps/+25ps optimization margins. Receipt docs/evidence/replay-crc-select-placement-20261114.json. Native14129877036 SHAb11a7273499ec4f192ed47086b16251c88191a2b34544993585448d838af1195 remains cloudonly.
