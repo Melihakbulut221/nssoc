@@ -16,13 +16,13 @@ jobs:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/inventory_dp_sram_hierarchy.py
+          sparse-checkout: /scripts/inventory_sp_sram_hierarchy.py
       - run: python3 -m pip install klayout==0.30.13
-      - run: gh api repos/${{ github.repository }}/actions/artifacts/14110867794/zip > native.zip
-      - run: python3 scripts/inventory_dp_sram_hierarchy.py
+      - run: gh api repos/${{ github.repository }}/actions/artifacts/14111284849/zip > native.zip
+      - run: python3 scripts/inventory_sp_sram_hierarchy.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: dp-sram-hierarchy-derived-${{ github.run_id }}
+          name: sp-sram-hierarchy-derived-${{ github.run_id }}
           path: out/*.json
           if-no-files-found: error
           retention-days: 90
