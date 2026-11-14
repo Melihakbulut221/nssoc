@@ -31,6 +31,37 @@ try:
  assert options['allow_unmatched_ports']=='false' and options['no_simplify']=='true' and options['no_series_res']=='true' and options['no_parallel_res']=='true'
  assert sha(options['input'])=='420b5223d14e2f873a2464849e3decbbec2b5b16b3c6a0f8cd2bb21b0d52365b'
  assert not P(options['report']).exists()
+ import re
+ case=os.environ['NSSOC_MUTATION'];assert case in ['identity','resistor_width','resistor_layer','mos_gate_open']
+ reference=native/'engineering-reference-v1.cdl';original_reference=reference.read_text();changed_reference=original_reference
+ proof={'case':case,'accepted':False,'original_sha256':sha(reference),'scope':'Full-macro reference mutation control only. Original GDS unchanged; no acceptance changes.'}
+ if case!='identity':
+  block_re=r'(?ims)^[ \t]*\.subckt[ \t]+RM_IHPSG13_256x16_c2_2P_BITKIT_CELL\b.*?(?=^[ \t]*\.ends\b)'
+  hits=list(re.finditer(block_re,original_reference));assert len(hits)==1
+  block=hits[0];text_block=block.group()
+  record_re=r'(?im)^[ \t]*R0[ \t]+[^\n]*(?:\n[ \t]*\+[^\n]*)*' if case.startswith('resistor') else r'(?im)^[ \t]*M\S*[ \t]+[^\n]*(?:\n[ \t]*\+[^\n]*)*'
+  records=list(re.finditer(record_re,text_block));assert len(records)==(1 if case.startswith('resistor') else 8)
+  record=records[0];old=record.group();new=old
+  if case=='resistor_width':
+   hit=list(re.finditer(r'(?i)\bW[ \t]*=[ \t]*([^\s]+)',old));assert len(hit)==1
+   token=hit[0].group(1);scaled=token.lower();factor=1
+   if scaled[-1] in ['u','n','p']:factor={'u':1e-6,'n':1e-9,'p':1e-12}[scaled[-1]];scaled=scaled[:-1]
+   assert abs(float(scaled)*factor-2e-7)<1e-18
+   a,b=hit[0].span(1);new=old[:a]+'0.3u'+old[b:];proof['field_change']={'before':token,'after':'0.3u'}
+  elif case=='resistor_layer':
+   hit=list(re.finditer(r'(?i)\bres_metal2\b',old));assert len(hit)==1
+   a,b=hit[0].span();new=old[:a]+'res_metal3'+old[b:];proof['field_change']={'before':old[a:b],'after':'res_metal3'}
+  else:
+   tokens=list(re.finditer(r'\S+',old));assert len(tokens)>=6
+   a,b=tokens[2].span();new=old[:a]+'NSSOC_INJECTED_OPEN_GATE'+old[b:];proof['field_change']={'terminal':'G','before':old[a:b],'after':'NSSOC_INJECTED_OPEN_GATE'}
+  assert old!=new
+  mutated_block=text_block[:record.start()]+new+text_block[record.end():]
+  changed_reference=original_reference[:block.start()]+mutated_block+original_reference[block.end():]
+  assert changed_reference.replace(mutated_block,text_block,1)==original_reference
+  reference.write_text(changed_reference)
+ proof['candidate_sha256']=sha(reference)
+ (derived/'full-macro-mutation.json').write_text(json.dumps(proof,indent=2));r['mutation']=proof
+
  assert cmd.count('top_lvl_pins=false')==1
  cmd[cmd.index('top_lvl_pins=false')]='top_lvl_pins=true'
  (native/'effective-command.json').write_text(json.dumps(cmd))
