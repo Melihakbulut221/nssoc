@@ -1,3 +1,13 @@
+## SP full engineering macro LVS passed; full macro fault controls running
+
+Run43594788773 sourcef2caf1977cdea6d514b51e2f7aa99c57839d388e: strict audit PASS within comparison scope,25Match,0other,0extraction diagnostics,nativeRC0,auditRC0,124.616s. Both sides preserve1211120primitives and355nativeports before/after normalization. Evidence-backed INVX2/NAND2X2/CINVX4 flattening on both sides;2048 bounded search, original acceptance rules unchanged. Geometry unchanged. This is engineering reference with5resistor corrections, NOT original vendor reference/full chip/foundry approval.
+
+Full SP identity and width/layer/open-gate controls run43595161911, sourceda49561e5f322166feb371f7b5e6ee14d96da9fa, branchcodex/sp-full-macro-controls. Each uses exact native original inputs before one explicit reference mutation,355pins/1211120primitives and strict audit. Do not accept infrastructure failure as fault rejection. Inspect all4actual control results before claiming sensitivity verified. Helpers and native inputs pinned; live runs must not be restarted.
+
+PHY HBT+NMOS trace43594964200 completed but still reaches only final HBTS;98physical rppd devices were not traversed. Added labeled resistor reachability (without changing RC or measured waveforms) in source d22e49cab14ddc4ed70a46492c9ea83d0509ac55, run43595197025. Supply rails stop traversal. Inspect upstream routes before circuit changes. Frozen gates remain failed; no PHY acceptance.
+
+Legalized-diode full route43591198141 still live, native boot43588310054 complete/pass. DPengineering macro and negative controls pass (below). Next full-chip integration LVS must use a consistent routed design and explicit engineering-reference qualification. Receipt docs/evidence/sp-engineering-macro-pass-controls-launch-20261114.json; all native files cloud-only.
+
 ## SP normalization trial launched; PHY observer fixed, upstream trace incomplete
 
 SP inventory43594622132 verified exact direct-device and child differences: top layout has1824 additional NMOS and1824 additional PMOS; reference has768 additional INVX2,512 NAND2X2,32 CINVX4 instances, accounting exactly for the difference. Matrix both sides2048 NMOS+64columns,770pins; search messages require640/1024 above previous512 limit. No electrical equivalence inferred from inventory alone.
