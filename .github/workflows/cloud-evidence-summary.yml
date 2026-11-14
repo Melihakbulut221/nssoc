@@ -29,6 +29,29 @@ jobs:
           set -euo pipefail
           bash scripts/check_pcie_replay_ahead.sh out/cosim 300000 SOC_PCIE_REPLAY_WRITE_PREDECODE
           bash scripts/check_pcie_replay_ahead.sh out/cosim-knobs 300000 SOC_PCIE_REPLAY_WRITE_PREDECODE SOC_PCIE_REPLAY_AHEAD SOC_PCIE_REPLAY_INBANK SOC_PCIE_RESET_COPIES
+      - name: Reject an actual compiled wrong-byte-select RTL mutation
+        run: |
+          set -euo pipefail
+          RTL=hw/soc/rtl/pcie/soc_pcie_replay_tx.v
+          cp "$RTL" out/original-replay.v
+          trap 'cp out/original-replay.v "$RTL"' EXIT
+          python3 - <<'PYMUT'
+          from pathlib import Path
+          p=Path('hw/soc/rtl/pcie/soc_pcie_replay_tx.v');s=p.read_text()
+          old="write_low<=16'b1 << capture_address[3:0];"
+          new="write_low<=16'b1 << (capture_address[3:0] ^ 4'd1);"
+          assert s.count(old)==1;p.write_text(s.replace(old,new))
+          PYMUT
+          if bash scripts/check_pcie_replay_ahead.sh out/mutation 2000 SOC_PCIE_REPLAY_WRITE_PREDECODE; then
+            echo 'Wrong-byte RTL mutation was not rejected'; exit 1
+          fi
+          python3 - <<'PYMUT'
+          import pathlib,json
+          paths=list(pathlib.Path('out/mutation').glob('*.log'));assert len(paths)==6
+          for p in paths:
+              s=p.read_text();assert 'MISMATCH byte write strobe' in s and 'write strobe differs' in s,p
+          pathlib.Path('out/compiled-mutation.json').write_text(json.dumps({'status':'PASS','actual_compiled_wrong_select_detected_in_seeds':6}))
+          PYMUT
       - name: Existing independent replay and packet scoreboards
         run: |
           set -euo pipefail
@@ -55,4 +78,5 @@ jobs:
             out/*.xml
             out/cosim/*.log
             out/cosim-knobs/*.log
+            out/mutation/*.log
           retention-days: 30
