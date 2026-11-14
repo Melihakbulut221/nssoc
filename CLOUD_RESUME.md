@@ -1,3 +1,13 @@
+# SP original bitcell LVS failed; saved-database endpoint recovery running
+
+Run43563445727 completed/failure. Independent audit: one NoMatch,9primitives both sides,0extraction diagnostics. Three original generic R W0.26 vs extracted twoM2/oneM3 W0.2 (L0.6). Endpoint diagnosis stopped with AssertionError; expanded-name uniqueness assumption suspected. Duplicate VSS port labels observed; NEVER merge nets by those labels or alias body ports.
+
+Recovery43564703460 source`daf24ca240958f2ed85099b48f72bb0b44904487`, branch`codex/sp-sram-direct-pin-diagnosis`, reads saved native14101208963 only in cloud. Uses actual netlist Net.each_pin/NetPinRef.pin directly, preserving duplicate names; no repeated extraction or reference edit. Await derived `sp-bitcell-endpoint-diagnosis-43564703460`; require native process exit0 and inspect mapping before using it. Original failure receipt:`docs/evidence/sp-sram-bitcell-failure-recovery-20261114.json`.
+
+Other six live runs unchanged:43562021054,43561900502,43562981217,43558722004,43541234973,43538031308. Full PHY/timing/current full-chip production gates remain open.
+
+---
+
 # SP SRAM owner diagnosis passed; separate SP bitcell comparison running
 
 **43563284302 completed/success**, source`b7adb2000f01d80a24532e8dc91ea2057d07fd4e`, safe14100549566 SHA256`f63436b55538ad4ac67d374ea10d12cc9c355bf3ba05c96441f0cebcf890d6a6`. Original SP reference393670genericLVSRES:393216in131072bitcells(3each),64MET2RES,384MET3RES,6metal1dummy. All original W0.26/L0.6um. Physical marker leaves show bitcell-typeM2/M3W0.2 and standaloneM2/M3W0.26. **SP standalone metal3 is0.26, not DP0.24**; independent SP mapping required. No whole-macro polygon expansion/topology/LVS acceptance. Receipt:`docs/evidence/sp-sram-resistor-owners-result-20261114.json`.
