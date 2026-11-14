@@ -17,7 +17,8 @@ with tarfile.open(fileobj=io.BytesIO(z.read(tgzs[0])),mode='r:gz') as t:
 assert digest(data)=='c367b0565c64b00eedd2510d465d9c0d9cba64a7c2f79e4c04b5a9389bd49598'
 P('/tmp/original-bitcell.lvsdb').write_bytes(data)
 db=kdb.LayoutVsSchematic();db.read('/tmp/original-bitcell.lvsdb')
-pairs=[p for p in db.xref().each_circuit_pair() if p.first() and p.first().name=='RM_IHPSG13_2P_BITKIT_CELL'];assert len(pairs)==1
+xref=db.xref()
+pairs=[p for p in xref.each_circuit_pair() if p.first() and p.first().name=='RM_IHPSG13_2P_BITKIT_CELL'];assert len(pairs)==1
 pair=pairs[0]
 
 def inspect(c):
@@ -39,12 +40,13 @@ def inspect(c):
         else:
             bodies.extend({'model':name,'body_external_ports':anchors} for terminal,anchors in terminals if terminal.upper()=='B')
     assert len(resistors)==6
-    return {'ports':sorted(field(pin,'name') for pin in c.each_pin()),'resistors':resistors,'mos_body_port_sets':bodies}
-a=inspect(pair.first());b=inspect(pair.second());mapping=[]
+    return {'ports':sorted(field(pin,'name') for pin in c.each_pin()),'resistors':resistors,'mos_body_port_sets':bodies,'connected_port_count':sum(len(v) for v in pins.values()),'resistor_anchored_terminal_counts':[sum(bool(v) for v in r['signature']) for r in resistors]}
+layout_circuit=pair.first();reference_circuit=pair.second()
+a=inspect(layout_circuit);b=inspect(reference_circuit);mapping=[]
 for r in b['resistors']:
     hits=[x for x in a['resistors'] if x['signature']==r['signature'] and all(x['signature'])]
     mapping.append({'reference_name':r['name'],'reference_class':r['class'],'reference_L':r['L'],'reference_W':r['W'],'unique_external_endpoint_match':len(hits)==1,'candidate_layout_classes_and_dimensions':[{'class':x['class'],'L':x['L'],'W':x['W']} for x in hits]})
 # Never export connectivity/net names or native databases: derived correspondence only.
-result={'status':'DIAGNOSTIC_COMPLETE_NOT_LVS_ACCEPTANCE','source':os.environ['GITHUB_SHA'],'native_artifact':14099039829,'database_sha256':digest(data),'mapping':mapping,'all_six_uniquely_anchored':all(x['unique_external_endpoint_match'] for x in mapping),'ports':{'layout':a['ports'],'reference':b['ports']},'mos_body_port_sets':{'layout':a['mos_body_port_sets'],'reference':b['mos_body_port_sets']},'scope':'Original unmodified comparison database. No geometry, reference, class, width, or port aliases changed. Matching named external endpoints diagnoses correspondence only; not topology/signoff proof.'}
+result={'status':'DIAGNOSTIC_COMPLETE_NOT_LVS_ACCEPTANCE','source':os.environ['GITHUB_SHA'],'native_artifact':14099039829,'database_sha256':digest(data),'mapping':mapping,'anchor_counts':{label:{k:v[k] for k in ['connected_port_count','resistor_anchored_terminal_counts']} for label,v in [('layout',a),('reference',b)]},'all_six_uniquely_anchored':all(x['unique_external_endpoint_match'] for x in mapping),'ports':{'layout':a['ports'],'reference':b['ports']},'mos_body_port_sets':{'layout':a['mos_body_port_sets'],'reference':b['mos_body_port_sets']},'scope':'Original unmodified comparison database. No geometry, reference, class, width, or port aliases changed. Matching named external endpoints diagnoses correspondence only; not topology/signoff proof.'}
 P('out').mkdir(exist_ok=True);P('out/bitcell-endpoint-diagnosis.json').write_text(json.dumps(result,indent=2))
 print(json.dumps({'status':result['status'],'all_six_uniquely_anchored':result['all_six_uniquely_anchored']}))
