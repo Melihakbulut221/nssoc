@@ -33,7 +33,7 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir klayout==0.30.4.
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir klayout==0.30.4.post1
       - name: Reread actual new geometry and run four physical mesh resolutions
         run: python3 -B scripts/cdr_mos650_gate_ac.py --extract
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
