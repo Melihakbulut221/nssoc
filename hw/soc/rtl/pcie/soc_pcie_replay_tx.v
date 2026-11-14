@@ -97,10 +97,29 @@ module soc_pcie_replay_tx #(
     reg [AW-1:0] write_address;
     reg [7:0] write_data;
     wire [AW-1:0] capture_address=AW'(tail*MAX_BYTES+(in_sop_i ? 32'd0 : 32'(write_pos)));
+`ifdef SOC_PCIE_REPLAY_WRITE_PREDECODE
+    // The same capture decisions register a qualified high-address select.
+    // Low address decoding runs in parallel with write_data. Neither stage
+    // adds a cycle: every byte still commits one edge after acceptance.
+    localparam integer WRITE_GROUPS=(DEPTH*MAX_BYTES+15)/16;
+    reg [WRITE_GROUPS-1:0] write_group;
+    reg [15:0] write_low;
+    always @(posedge clk_i) begin
+        write_data<=in_data_i;
+        write_low<=16'b1 << capture_address[3:0];
+    end
+    genvar write_byte;
+    generate for(write_byte=0;write_byte<DEPTH*MAX_BYTES;write_byte=write_byte+1) begin: decoded_write
+        always @(posedge clk_i)
+            if(write_group[write_byte/16] && write_low[write_byte%16])
+                bytes[write_byte]<=write_data;
+    end endgenerate
+`else
     always @(posedge clk_i) begin
         write_address<=capture_address;write_data<=in_data_i;
         if(write_valid) bytes[write_address]<=write_data;
     end
+`endif
     reg [31:0] input_crc;
     // The frame-end checks start at registers. The upper 24 bits of the
     // residue comparison are tracked with the CRC state itself; the stored
@@ -311,16 +330,28 @@ module soc_pcie_replay_tx #(
             replay_active<=0;replay_pending<=0;replay_first<=0;halt<=0;
             next_store_sequence<=0;input_crc<=32'hffffffff;crc_upper_match<=0;timer<=0;timer_running<=0;retries<=0;
             ack_observed<=0;ack_was_allowed<=0;ack_was_stale<=0;ack_delta_q<=0;write_valid<=0;
+`ifdef SOC_PCIE_REPLAY_WRITE_PREDECODE
+            write_group<=0;
+`endif
+
             acknowledged_sequence_o<=12'hfff;replay_started_o<=0;timeout_o<=0;
             protocol_error_o<=0;retry_exhausted_o<=0;source_error_o<=0;
         end else if(!link_up_i) begin
             head<=0;tail<=0;new_slot<=0;count<=0;sent_count<=0;capturing<=0;sending<=0;write_valid<=0;
+`ifdef SOC_PCIE_REPLAY_WRITE_PREDECODE
+            write_group<=0;
+`endif
+
             replay_active<=0;replay_pending<=0;halt<=0;next_store_sequence<=0;
             ack_observed<=0;ack_was_allowed<=0;ack_was_stale<=0;
             timer<=0;timer_running<=0;retries<=0;acknowledged_sequence_o<=12'hfff;
             replay_started_o<=0;timeout_o<=0;protocol_error_o<=0;retry_exhausted_o<=0;source_error_o<=0;
         end else begin
             replay_started_o<=0;timeout_o<=0;protocol_error_o<=0;write_valid<=0;
+`ifdef SOC_PCIE_REPLAY_WRITE_PREDECODE
+            write_group<=0;
+`endif
+
             if(ack_valid_i && !ack_observed) begin
                 ack_observed<=1;ack_was_allowed<=current_ack_allowed;ack_was_stale<=ack_delta>12'd2048;
                 ack_delta_q<=ack_delta;
@@ -339,11 +370,19 @@ module soc_pcie_replay_tx #(
                 if(in_sop_i) begin
                     if(capturing || in_eop_i || in_data_i[7:4]!=0) begin
                         source_error_o<=1;halt<=1;capturing<=0;
-                    end else begin write_valid<=1;write_pos<=1;capturing<=1;end
+                    end else begin write_valid<=1;
+`ifdef SOC_PCIE_REPLAY_WRITE_PREDECODE
+            write_group<={{(WRITE_GROUPS-1){1'b0}},1'b1} << (capture_address >> 4);
+`endif
+write_pos<=1;capturing<=1;end
                 end else if(!capturing || 32'(write_pos)>=MAX_BYTES) begin
                     source_error_o<=1;halt<=1;capturing<=0;
                 end else begin
-                    write_valid<=1;write_pos<=write_pos+1'b1;
+                    write_valid<=1;
+`ifdef SOC_PCIE_REPLAY_WRITE_PREDECODE
+            write_group<={{(WRITE_GROUPS-1){1'b0}},1'b1} << (capture_address >> 4);
+`endif
+write_pos<=write_pos+1'b1;
                     if(in_eop_i) begin
                         capturing<=0;
                         if(write_pos<17 || !replay_crc_residue_ok ||
