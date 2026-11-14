@@ -1,3 +1,9 @@
+## Bounded DP comparison completed in 87.68s: 25 Match, 1 top NoMatch
+
+Run43587554414/source `d4a4f4f4468e56f354b87ce20748ca9945b2f1c9` completed DIAGNOSIS successfully, **LVS FAILED**. Native10/10 default/bounded identity and mutation controls passed. Exact70110 devices per side preserved; extraction diagnostics0. 25 child circuitsMatch, topNoMatch. Strict audit remainsFAIL. Safe14111580210 SHA256 `cc9d018c2ee7e6c3d4fff20edf534c8eaa2640a945f06c3eef1976cbcffcc9f0`. Native14111500413 SHA256 `31142082483dce4751f3abfe3af48cc1e76a48b4ce6f61ce9afbb6f29f5f3ced`; final DB SHA256 `341e7da0e6d9552c99f31d058d0250846321051badf48c099add4e60edebc2aa`. Native files stay cloud. Do not interpret green diagnostic job as LVS pass.
+
+Live mismatch diagnosis43587894664/source `8d7ec27a32169f50002cc2fb253e5007c5ecf2cc`, branch `codex/dp-sram-bounded-mismatch`: read saved DB only in cloud, aggregate top net/device/subcircuit statuses and parameter differences. Safe `dp-sram-top-mismatch-derived-*`. No new extraction or graph edits. Other live jobs: PHY43584735530, antenna43579643337, SP43566292104, MBIST43573697024.
+
 ## DP bounded-comparison diagnostic launched
 
 Run [43587554414](https://github.com/Melihakbulut221/nssoc/actions/runs/43587554414), source `d4a4f4f4468e56f354b87ce20748ca9945b2f1c9`, branch `codex/dp-sram-bounded-comparison`. Restores exact timeout archive only in cloud. Validates runtime/deck/reader/reference/input hashes. Only adds `max_branch_complexity(16)` in strict compare branch, leaving depth, device/port/dimension acceptance unchanged. Native default and bounded identity/fault controls run first. Bound exhaustion is failed_match in pinned KLayout source, not match. Native cap1800s for diagnosis; any unresolved graph remains failure. No full-chip/vendor/production claim. Safe `dp-sram-bounded-derived-*`; native artifacts cloud-only. Do not rerun old 43562021054.
