@@ -45,7 +45,7 @@ for name,blob,digest in specs:
  bindings[name]={'git_blob':blob,'sha256':sha(path)}
 assert sha(native/'typ.lib')=='968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4'
 app=P('/mnt/s/librelane.AppImage');assert sha(app)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
-result=dict(status='RUNNING',scope='Isolated replay placement with identical 600x600um core, 4ns ideal clock, .25ns uncertainty, original 5% derates, frozen IHP libraries and identical estimated layer RC. No CTS, routed RC, full-chip hold, DRC/LVS or production acceptance.',mapping_report_sha256=sha(out/"mapping.json"),bindings=bindings,normalizations=normalizations,timing_accepted=False,cases={})
+result=dict(status='RUNNING',scope='Isolated replay placement with identical 600x600um core, 4ns ideal clock, .25ns uncertainty, original 5% derates, frozen IHP libraries and identical estimated layer RC. No CTS, routed RC, full-chip hold, DRC/LVS or production acceptance.',mapping_report_sha256=sha(out/"mapping.json"),bindings=bindings,normalizations=normalizations,timing_accepted=False,hold_max_buffer_percent=40,setup_max_iterations=100,hold_max_iterations=1000,cases={})
 for label in ['baseline','cache']:
  folder=out/label;folder.mkdir();nfolder=native/label;nfolder.mkdir()
  tcl=f"""if {{[ord::openroad_version] ne "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"}} {{error "Runtime drift"}}
@@ -98,7 +98,7 @@ detailed_placement
 check_placement -verbose
 estimate_parasitics -placement
 reports setup_repair
-repair_timing -hold -max_iterations 1000
+repair_timing -hold -max_iterations 1000 -max_buffer_percent 40
 detailed_placement
 check_placement -verbose
 estimate_parasitics -placement
