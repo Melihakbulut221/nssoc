@@ -27,7 +27,7 @@ with zipfile.ZipFile(p) as z:
     count+=1;best.append({'startpoint':start[1],'endpoint':end[1],'slack_report_units':float(sl[1]),'path':block})
     best.sort(key=lambda x:x['slack_report_units']);best=best[:3]
    block=[]
-   for line in io.TextIOWrapper(tar.extractfile(member),encoding='utf-8'):
+   for line in (raw.decode('utf-8') for raw in tar.extractfile(member)):
     if line.startswith('Startpoint:'):
      consume(''.join(block));block=[]
     block.append(line)
