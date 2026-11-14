@@ -1,4 +1,7 @@
 # NSSOC — Claude için ayrıntılı teknik devir
+
+> **14 Kasım 2026 güncellemesi:** Bu belgenin aşağıdaki 4 Kasım durum dökümü tarihsel kayıttır. Güncel devam noktası ve çalışma numaraları için önce [CLOUD_RESUME.md](CLOUD_RESUME.md) dosyasının en üst kaydını okuyun ve GitHub'daki canlı durumu yeniden doğrulayın. Önceki paket arayüzlü çipin [SRAM içlerini kapsayan mühendislik transistor LVS'si geçti](docs/full-chip-engineering-lvs-20261114.md); [tam çip hata kontrolleri](docs/full-chip-native-fault-controls-20261114.md) de geçti. Bu sonuç yeni yönlendirmeye, tam seri PHY'ye, nihai zamanlamaya veya üretici onayına aktarılmaz. Aşağıdaki “aktif iş yok” ifadesini güncel durum olarak kullanmayın.
+
      
 Hazırlanma: 4 Kasım 2026. Canlı GitHub durum kontrolü: **2026-11-04 02:07 UTC / 05:07 Türkiye saati**.
 
