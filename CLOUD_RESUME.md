@@ -1,3 +1,9 @@
+## PHY cslave3 completed and rejected; cdata3 still live
+
+43584735530/source842ab2012fae1904251fd1503024e5670de6ad8f job132416702005 terminalFAIL at frozen waveform/device acceptance gate. SimulatorRC0,devicesPASS,phasePASS,VIpass;data/waveformFAIL. Cbelow100mV120samples(min56.63mV),A65,D96;Xwrong386/below717,Ywrong1/below585. cslave3notintegrated;noPHYclosure. Safe14112233130 SHAce095c2ced48cd5b78a7f036e538f0737fae994ffa925c51ff89c76a0cb47d5e;native14112317745 SHAe75dfba4fbd10c671f23764bd580bb5225f2fd848357e0914fb316981c5a6ab2 cloudonly; mixed14112686651 includesNPZ,donotdownloadlocally. Receipt docs/evidence/cdr-cslave3-rejected-20261114.json. Same run'scdata3job132416701841 stilllive;waititsownresultbeforecandidatecomparison.
+
+Otherlive: legalizeddiodefullrouting43591198141; DPmatrix/column43591517998; MBIST43588310054. Latest integration continues below.
+
 ## Remaining DP graph hits depth500; matrix/column correspondence trial live
 
 Serialization-only43591354767/source8baf59cd680f086eb64e33db9a41f510b1f089e3 successful. Safe14112816221 SHA6a9a9182c84264cf102443c1007eb0e334825e7b357ef338f2a6c29cf16d411d. SavedblockpairedDB contains15231search-limitmessages:11520depth500exhaustions plus3711complexity16exhaustions(needsmax272). Thus topNoMatchnotproofallstructuralfaults. Blockitself448vs448devicesMatch. No acceptance.
