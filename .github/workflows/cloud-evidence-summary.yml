@@ -1,4 +1,4 @@
-name: Resume CRC checkpoint with jumper antenna repair and extracted STA
+name: Diagnose CRC diode placement failure without repeating routing
 on:
   workflow_dispatch:
 permissions:
@@ -7,11 +7,11 @@ permissions:
 jobs:
   route:
     runs-on: ubuntu-22.04
-    timeout-minutes: 355
+    timeout-minutes: 65
     strategy:
       fail-fast: false
       matrix:
-        name: [crc_jumper_resume]
+        name: [crc_diode_diagnostic]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -50,7 +50,7 @@ jobs:
           print('restored PDK and tool files',n)
           PY
           rm -rf $W/pkg
-      - name: Resume pinned antenna pass without repeating initial full routing
+      - name: Capture exact diode insertion failure and preserve native state
         if: env.RUN == 'true'
         run: |
           set -euo pipefail
@@ -70,7 +70,7 @@ jobs:
           python3 scripts/prepare_antenna_resume.py
           set +e
           mkdir -p $OUT/route
-          timeout 19200 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage python hw/soc/pnr/resume_pinned_antenna_flow.py --flow ResumePinnedAntenna \
+          timeout 3000 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage python hw/soc/pnr/resume_pinned_antenna_flow.py --flow ResumePinnedAntenna \
             --pdk-root $PWD/hw/soc/tools/ciel-corrpre --pdk ihp-sg13g2 --scl sg13g2_stdcell --force-run-dir $OUT/route \
             --with-initial-state $OUT/route-initial.json $OUT/prepared/config-routed.json > $OUT/route.log 2>&1; rc=$?
           set -e
@@ -111,107 +111,4 @@ jobs:
         with:
           name: antenna-resume-incomplete-native-${{ github.run_id }}
           path: /mnt/s/native
-          retention-days: 30
-
-  routed-sta:
-    needs: route
-    runs-on: ubuntu-22.04
-    timeout-minutes: 355
-    strategy:
-      fail-fast: false
-      matrix:
-        # r_cut4h_td_d68 and r_cut3hh_td_d68 are the route-hold job's databases.
-        name: [crc_jumper_resume]
-    env:
-      GH_TOKEN: ${{ github.token }}
-      APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
-      PACKAGE_SHA: 822dab7067d901fa79dabffffff784baf5c9965f0a5091eba67acdc48b9956f4
-      RUN: 'true'
-      # The AppImage runs without FUSE, so a mirror outage cannot block extraction.
-      APPIMAGE_EXTRACT_AND_RUN: '1'
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        if: env.RUN == 'true'
-        with:
-          persist-credentials: false
-      - name: LibreLane AppImage, the verified PDK and the routed database
-        if: env.RUN == 'true'
-        run: |
-          set -euo pipefail
-          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2 || echo "libfuse2 unavailable; the AppImage extracts and runs without FUSE"
-          W=/mnt/s; sudo mkdir -p $W; sudo chown $USER $W
-          curl -fsSL --retry 5 -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
-          echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c -; chmod +x $W/librelane.AppImage
-          for attempt in 1 2 3 4 5 6; do
-            gh api repos/${{ github.repository }}/releases/assets/663146895 -H "Accept: application/octet-stream" > $W/pkg.tgz && echo "$PACKAGE_SHA  $W/pkg.tgz" | sha256sum -c - && break
-            sleep 60
-          done
-          echo "$PACKAGE_SHA  $W/pkg.tgz" | sha256sum -c -
-          mkdir -p $W/pkg && tar -xzf $W/pkg.tgz -C $W/pkg && rm $W/pkg.tgz
-          P=$(dirname "$(find $W/pkg -name input-contract.json | head -1)")
-          python3 - "$P" <<'PY'
-          import hashlib,json,shutil,sys
-          from pathlib import Path
-          p=Path(sys.argv[1]);c=json.loads((p/'input-contract.json').read_text());n=0
-          for name,row in c['input_files'].items():
-              if not name.startswith('hw/soc/tools/'):continue
-              src=p/'files'/name;dst=Path(name)
-              assert hashlib.sha256(src.read_bytes()).hexdigest()==row['sha256']
-              if not dst.exists():dst.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(src,dst);n+=1
-          print('restored PDK and tool files',n)
-          PY
-          rm -rf $W/pkg
-      - name: Nominal OpenRCX and three-corner standalone OpenSTA (AuditedRCX, AuditedRoutedSTA)
-        if: env.RUN == 'true'
-        run: |
-          set -euo pipefail
-          W=/mnt/s; OUT=$PWD/hw/soc/out/impl-probe
-          gh run download ${{ github.run_id }} -n routed-db-${{ matrix.name }}-${{ github.run_id }} -D $W/h
-          tar -xzf $W/h/routed.tgz -C /; rm -rf $W/h
-          python3 - $OUT/prepared/config-routed.json $OUT/routed-state.json <<'PY'
-          import json,sys
-          c=json.load(open(sys.argv[1]));s=json.load(open(sys.argv[2]))
-          print({k:c.get(k) for k in ('STA_CORNERS','STA_THREADS','RCX_RULESETS','DRT_OPT_ITERS')})
-          print({k:v for k,v in s.items() if k!='metrics'})
-          print({k:v for k,v in s['metrics'].items() if k.startswith('route__')})
-          PY
-          set +e
-          mkdir -p $OUT/rcx
-          timeout 19800 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage python hw/soc/pnr/replay_onehot_routed_extraction_flow.py --flow ReplayOnehotRoutedExtraction \
-            --pdk-root $PWD/hw/soc/tools/ciel-corrpre --pdk ihp-sg13g2 --scl sg13g2_stdcell --force-run-dir $OUT/rcx \
-            --with-initial-state $OUT/routed-state.json $OUT/prepared/config-routed.json > $OUT/rcx.log 2>&1; rc=$?
-          set -e
-          echo "RCX_STA_RC=$rc"; tail -40 $OUT/rcx.log
-          [ $rc = 0 ]
-          X=$OUT/flop-map.tsv; [ -f $X ] || X=none
-          python3 -B scripts/routed_sta_summary.py $OUT/rcx $OUT/routed-state.json $X $OUT/routed-summary.json | tee $OUT/routed-summary.txt
-      - name: Require zero reported timing electrical and antenna violations
-        run: |
-          python3 - <<'PYGATE'
-          import json
-          d=json.load(open('hw/soc/out/impl-probe/routed-summary.json'))
-          keys=['timing__setup_vio__count','timing__hold_vio__count','design__max_cap_violation__count','design__max_slew_violation__count','design__max_fanout_violation__count']
-          assert len(d['corners'])==3
-          bad={c:{k:v['metrics'][k] for k in keys if v['metrics'][k]!=0} for c,v in d['corners'].items()}
-          route={k:d['route'][k] for k in ['route__drc_errors','antenna__violating__nets','antenna__violating__pins']}
-          print({'corners':bad,'route':route,'manufacturing_approval':False})
-          assert not any(bad.values()) and not any(route.values()), 'Candidate still violates acceptance limits'
-          PYGATE
-      - name: Collect
-        if: always() && env.RUN == 'true'
-        run: |
-          OUT=hw/soc/out/impl-probe; mkdir -p out
-          cp $OUT/rcx.log $OUT/routed-summary.json $OUT/routed-summary.txt $OUT/routed-state.json out/ 2>/dev/null || true
-          for c in nom_slow_1p08V_125C nom_typ_1p20V_25C nom_fast_1p32V_m40C; do
-            d=$(find $OUT/rcx -maxdepth 2 -type d -name $c | head -1); [ -n "$d" ] || continue
-            mkdir -p out/$c; for f in sta.log checks.rpt violator_list.rpt clock.rpt ws.max.rpt ws.min.rpt skew.max.rpt skew.min.rpt unpropagated.rpt; do [ -f $d/$f ] && cp $d/$f out/$c/; done
-            [ -f $d/max.rpt ] && head -c 20000000 $d/max.rpt > out/$c/max.head.rpt; [ -f $d/min.rpt ] && head -c 20000000 $d/min.rpt > out/$c/min.head.rpt
-          done
-          for d in $OUT/rcx/*; do [ -d "$d" ] || continue; b=$(basename $d); mkdir -p out/$b; cp $d/*.log $d/*.json out/$b/ 2>/dev/null || true; done
-          ls -la out | head -40
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always() && env.RUN == 'true'
-        with:
-          name: routed-sta-${{ matrix.name }}-${{ github.run_id }}
-          path: out
           retention-days: 30

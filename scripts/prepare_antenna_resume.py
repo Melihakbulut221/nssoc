@@ -16,9 +16,9 @@ for k,v in state.items():
 p=root/'prepared/config-routed.json';c=json.loads(p.read_text());before=dict(c)
 assert c['DRT_OPT_ITERS']==16 and c['DRT_ANTENNA_REPAIR_ITERS']==5
 assert c['DIODE_CELL']=='sg13g2_antennanp/A'
-c['DRT_ANTENNA_REPAIR_JUMPER_ONLY']=True
-c['DRT_ANTENNA_REPAIR_DIODE_ONLY']=False
+c['DRT_ANTENNA_REPAIR_JUMPER_ONLY']=False
+c['DRT_ANTENNA_REPAIR_DIODE_ONLY']=True
 changed={k:{'before':before.get(k),'after':v} for k,v in c.items() if before.get(k)!=v}
 assert set(changed)<= {'DRT_ANTENNA_REPAIR_JUMPER_ONLY','DRT_ANTENNA_REPAIR_DIODE_ONLY'}
 p.write_text(json.dumps(c,indent=2));P('out').mkdir(exist_ok=True)
-P('out/recovery-input-proof.json').write_text(json.dumps({'parent_run':43561900502,'native_artifact':14107653261,'odb_sha256':sha(odb),'sdc_sha256':sha(sdc),'configuration_changes':changed,'stale_metrics_removed':True,'initial_route_skipped':True,'fresh_final_antenna_step':True,'manufacturing_approval':False},indent=2))
+P('out/recovery-input-proof.json').write_text(json.dumps({'parent_run':43561900502,'native_artifact':14107653261,'odb_sha256':sha(odb),'sdc_sha256':sha(sdc),'configuration_changes':changed,'stale_metrics_removed':True,'initial_route_skipped':True,'diagnostic_only_no_final_antenna_acceptance':True,'manufacturing_approval':False},indent=2))
