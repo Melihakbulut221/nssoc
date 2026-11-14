@@ -2,6 +2,8 @@
 """Actual full-chip native comparer identity/open/device-size controls, cloud only."""
 import pathlib,json,hashlib,tarfile,zipfile,io,sys,time,collections
 import klayout.db as db
+def value(obj,key):
+ v=getattr(obj,key);return v() if callable(v) else v
 P=pathlib.Path;case=sys.argv[1];assert case in ['identity','signal_open','sram_mos_width','inspect']
 out=P('out');out.mkdir();derived=out/'derived';derived.mkdir()
 def sha(p):
@@ -25,20 +27,20 @@ if case=='inspect':
  for side,nl in [('layout',layout),('reference',reference)]:
   tops=[c for c in nl.each_circuit() if c.name.lower()=='soc_top'];assert len(tops)==1;c=tops[0]
   subs=list(c.each_subcircuit());devs=list(c.each_device());classes=list(nl.each_device_class())
-  info[side]={'top_subcircuits':len(subs),'top_devices':len(devs),'top_pins':[p.name for p in c.each_pin()],'subcircuits_first':[{'name':x.name,'type':x.circuit_ref().name,'pins':[p.name for p in x.circuit_ref().each_pin()]} for x in subs[:3]],'devices_first':[{'name':d.name,'class':d.device_class().name} for d in devs[:3]],'classes':[{'name':dc.name,'python_type':str(type(dc)),'parameters':[{'name':p.name,'id':p.id} for p in dc.parameter_definitions()]} for dc in classes]}
+  info[side]={'top_subcircuits':len(subs),'top_devices':len(devs),'top_pins':[value(p,'name') for p in c.each_pin()],'subcircuits_first':[{'name':x.name,'type':x.circuit_ref().name,'pins':[value(p,'name') for p in x.circuit_ref().each_pin()]} for x in subs[:3]],'devices_first':[{'name':d.name,'class':d.device_class().name} for d in devs[:3]],'classes':[{'name':dc.name,'python_type':str(type(dc)),'parameters':[{'name':value(p,'name'),'id':value(p,'id')} for p in dc.parameter_definitions()]} for dc in classes]}
  (derived/'inventory.json').write_text(json.dumps(info,indent=2));sys.exit(0)
 
 mutation=None
 if case=='signal_open':
  for sub in top.each_subcircuit():
   if sub.circuit_ref().name.upper().startswith('SG13G2_'):
-   candidates=[p for p in sub.circuit_ref().each_pin() if p.name=='A']
+   candidates=[p for p in sub.circuit_ref().each_pin() if value(p,'name')=='A']
    if not candidates:continue
    pin=candidates[0];old=sub.net_for_pin(pin.id())
    if old is None or old.name.upper() in ['VPWR','VGND']:continue
    fresh=top.create_net('FAULT_CONTROL_OPEN_INPUT')
    sub.connect_pin(pin.id(),fresh)
-   mutation={'kind':'single_top_cell_input_disconnected','instance':sub.name,'cell':sub.circuit_ref().name,'pin':pin.name,'old_net':old.name,'new_net':fresh.name}
+   mutation={'kind':'single_top_cell_input_disconnected','instance':sub.name,'cell':sub.circuit_ref().name,'pin':value(pin,'name'),'old_net':old.name,'new_net':fresh.name}
    break
  assert mutation is not None
 elif case=='sram_mos_width':
