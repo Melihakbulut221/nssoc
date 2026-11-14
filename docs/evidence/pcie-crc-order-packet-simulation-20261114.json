@@ -1,0 +1,427 @@
+{
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/43536359920",
+  "source": "629ef5c2786a84daca3eb6045dde1b0a76dbed76",
+  "rtl_sha256": "51aff3ebbbf80d251b4a3ebaa3c8da744d1c0e67fb3189f2cb947af1d15219ce",
+  "rtl_git_blob": "578f59688dd8b0511d15a53b93865fcd42875720",
+  "derived_artifact_id": 14089269701,
+  "artifact_sha256": "5225ea777993f8528b903ffbbec5b67deaa9a8c287ffe371a4caafa6cd6d86f3",
+  "reports": {
+    "tx/result.json": {
+      "status": "PASS_PORT_ONLY_PCIE_PACKET_CONTROLS",
+      "top": "soc_pcie_lcrc_tx",
+      "mode": "rtl",
+      "inputs": {
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_crc32_byte.v": {
+          "bytes": 1070,
+          "sha256": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_lcrc_rx.v": {
+          "bytes": 6756,
+          "sha256": "49e86e1b378c1be98363d2816084679b0cc5406cb817fe1502fd9cb8183097a4"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_sequence_rx.v": {
+          "bytes": 6629,
+          "sha256": "77f9539729f2aeb18879008ae29cf4c1d866297ee56c7a24ed1c6c7548d38f80"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_lcrc_tx.v": {
+          "bytes": 11675,
+          "sha256": "51aff3ebbbf80d251b4a3ebaa3c8da744d1c0e67fb3189f2cb947af1d15219ce"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_packet_endpoint.v": {
+          "bytes": 5191,
+          "sha256": "48b98d2e840f70093308c0d03dc656a389a977d66a2c6a9f4d2e580552b36b85"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_tlp_stream.v": {
+          "bytes": 11181,
+          "sha256": "17612384552110291d3ab9949a8feb51925bc3bc88d1d11365edab3f6ce2d6c2"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_tlp_regs.v": {
+          "bytes": 10102,
+          "sha256": "6f520a666787806059d6bbbe84e12d94b84250dfdd5c7e655cfbf6055a893a84"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_lcrc_tx.py": {
+          "bytes": 4776,
+          "sha256": "61ca5474afbba034d2f08527f870b77b469be593862629de3de3949a81ccb7ba"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.soc_pcie_packet_endpoint": {
+          "bytes": 1580,
+          "sha256": "9fd708a4041bfb83e791db76c84db0c0bcba3d2420595b0d14eb1cda2636bae7"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_tlp_stream.py": {
+          "bytes": 9089,
+          "sha256": "0dac8e1e7df716cd9cd754fdfa2469330372e730e5e19ad7a410a2deba8f42e6"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_tlp_integrity.py": {
+          "bytes": 8904,
+          "sha256": "9984383e02c6a933dcc5f039c45c7b162a0322defe56e04bb12513874cf9dec9"
+        },
+        "/home/runner/work/nssoc/nssoc/scripts/check_pcie_packet.py": {
+          "bytes": 5040,
+          "sha256": "9db23b77c9866da5626f0abc6aeb9dd7185232407127effadfd0d48d8dd80716"
+        },
+        "/home/runner/work/nssoc/nssoc/scripts/cocotb_results.py": {
+          "bytes": 1383,
+          "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+        }
+      },
+      "expected_tests": 2,
+      "scope": "Classic sequence RX and prefix/LCRC TX around standalone transaction/APB boundary. No full DLL, PHY, link-up, SoC integration or timing/signoff claim.",
+      "command": [
+        "make",
+        "-f",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.soc_pcie_packet_endpoint",
+        "--no-print-directory",
+        "TOPLEVEL=soc_pcie_lcrc_tx",
+        "COCOTB_TEST_MODULES=test_soc_pcie_lcrc_tx",
+        "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_crc32_byte.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_lcrc_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_sequence_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_lcrc_tx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_packet_endpoint.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_tlp_stream.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_tlp_regs.v",
+        "SIM_BUILD=/home/runner/work/nssoc/nssoc/out/tx/sim",
+        "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/out/tx/results.xml",
+        "PCIE_NATIVE=0"
+      ],
+      "returncode": 0,
+      "tests": {
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      "xml": {
+        "bytes": 733,
+        "sha256": "840d76bdd59b2ea91cdcec881ff8e387ca8e8e8cfa93aa0930905764c9483705"
+      },
+      "log": {
+        "bytes": 4224,
+        "sha256": "8914a648e333a83cef74d468a518758ab1f241f26a45bd0439e94bc30a2dc71a"
+      },
+      "inputs_rechecked": true
+    },
+    "endpoint/result.json": {
+      "status": "PASS_PORT_ONLY_PCIE_PACKET_CONTROLS",
+      "top": "soc_pcie_packet_endpoint",
+      "mode": "rtl",
+      "inputs": {
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_crc32_byte.v": {
+          "bytes": 1070,
+          "sha256": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_lcrc_rx.v": {
+          "bytes": 6756,
+          "sha256": "49e86e1b378c1be98363d2816084679b0cc5406cb817fe1502fd9cb8183097a4"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_sequence_rx.v": {
+          "bytes": 6629,
+          "sha256": "77f9539729f2aeb18879008ae29cf4c1d866297ee56c7a24ed1c6c7548d38f80"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_lcrc_tx.v": {
+          "bytes": 11675,
+          "sha256": "51aff3ebbbf80d251b4a3ebaa3c8da744d1c0e67fb3189f2cb947af1d15219ce"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_packet_endpoint.v": {
+          "bytes": 5191,
+          "sha256": "48b98d2e840f70093308c0d03dc656a389a977d66a2c6a9f4d2e580552b36b85"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_tlp_stream.v": {
+          "bytes": 11181,
+          "sha256": "17612384552110291d3ab9949a8feb51925bc3bc88d1d11365edab3f6ce2d6c2"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_tlp_regs.v": {
+          "bytes": 10102,
+          "sha256": "6f520a666787806059d6bbbe84e12d94b84250dfdd5c7e655cfbf6055a893a84"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_packet_endpoint.py": {
+          "bytes": 10512,
+          "sha256": "0d74fe378f7d3eb14804e6262ebf588fa7a558c9799f8776b8e2ea503bbeca74"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.soc_pcie_packet_endpoint": {
+          "bytes": 1580,
+          "sha256": "9fd708a4041bfb83e791db76c84db0c0bcba3d2420595b0d14eb1cda2636bae7"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_tlp_stream.py": {
+          "bytes": 9089,
+          "sha256": "0dac8e1e7df716cd9cd754fdfa2469330372e730e5e19ad7a410a2deba8f42e6"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_tlp_integrity.py": {
+          "bytes": 8904,
+          "sha256": "9984383e02c6a933dcc5f039c45c7b162a0322defe56e04bb12513874cf9dec9"
+        },
+        "/home/runner/work/nssoc/nssoc/scripts/check_pcie_packet.py": {
+          "bytes": 5040,
+          "sha256": "9db23b77c9866da5626f0abc6aeb9dd7185232407127effadfd0d48d8dd80716"
+        },
+        "/home/runner/work/nssoc/nssoc/scripts/cocotb_results.py": {
+          "bytes": 1383,
+          "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+        }
+      },
+      "expected_tests": 6,
+      "scope": "Classic sequence RX and prefix/LCRC TX around standalone transaction/APB boundary. No full DLL, PHY, link-up, SoC integration or timing/signoff claim.",
+      "command": [
+        "make",
+        "-f",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.soc_pcie_packet_endpoint",
+        "--no-print-directory",
+        "TOPLEVEL=soc_pcie_packet_endpoint",
+        "COCOTB_TEST_MODULES=test_soc_pcie_packet_endpoint",
+        "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_crc32_byte.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_lcrc_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_sequence_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_lcrc_tx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_packet_endpoint.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_tlp_stream.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_tlp_regs.v",
+        "SIM_BUILD=/home/runner/work/nssoc/nssoc/out/endpoint/sim",
+        "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/out/endpoint/results.xml",
+        "PCIE_NATIVE=0"
+      ],
+      "returncode": 0,
+      "tests": {
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      "xml": {
+        "bytes": 2021,
+        "sha256": "b332fa76baaaf711cf8cab8c72bbf90c2ff4361030191e948d0638f63afcaf7e"
+      },
+      "log": {
+        "bytes": 6619,
+        "sha256": "8a7b0b6128faba76421fe7741a51e861009fe00754ff46bd078e6ba7f1e327bc"
+      },
+      "inputs_rechecked": true
+    },
+    "flow/result.json": {
+      "status": "PASS_PORT_ONLY_PCIE_CREDIT_REPLAY_INTEGRATION",
+      "top": "soc_pcie_flow_packets",
+      "inputs": {
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_crc16_byte.v": {
+          "bytes": 663,
+          "sha256": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_acknak_tx.v": {
+          "bytes": 1909,
+          "sha256": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_packet_tx.v": {
+          "bytes": 2202,
+          "sha256": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_crc32_byte.v": {
+          "bytes": 1070,
+          "sha256": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_lcrc_rx.v": {
+          "bytes": 6756,
+          "sha256": "49e86e1b378c1be98363d2816084679b0cc5406cb817fe1502fd9cb8183097a4"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_sequence_rx.v": {
+          "bytes": 6629,
+          "sha256": "77f9539729f2aeb18879008ae29cf4c1d866297ee56c7a24ed1c6c7548d38f80"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_lcrc_tx.v": {
+          "bytes": 11675,
+          "sha256": "51aff3ebbbf80d251b4a3ebaa3c8da744d1c0e67fb3189f2cb947af1d15219ce"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_packet_endpoint.v": {
+          "bytes": 5191,
+          "sha256": "48b98d2e840f70093308c0d03dc656a389a977d66a2c6a9f4d2e580552b36b85"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_tlp_stream.v": {
+          "bytes": 11181,
+          "sha256": "17612384552110291d3ab9949a8feb51925bc3bc88d1d11365edab3f6ce2d6c2"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_tlp_regs.v": {
+          "bytes": 10102,
+          "sha256": "6f520a666787806059d6bbbe84e12d94b84250dfdd5c7e655cfbf6055a893a84"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_link_packets.v": {
+          "bytes": 3068,
+          "sha256": "49e202b1d2afe10b6db29333bcd86aa8ec6be8054e991c7771d7be0652f17408"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_dllp_rx.v": {
+          "bytes": 3448,
+          "sha256": "d270840bc48c7392319a5125bef147f82e188916ea842768bc1c371039e32956"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_replay_tx.v": {
+          "bytes": 24631,
+          "sha256": "fff6a0d3abb6b3f3a468baef8312b357efb7b591d3733cd92f3dda3345c34c63"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_reliable_packets.v": {
+          "bytes": 10867,
+          "sha256": "f0a7654a2ad2a4bc8accbe5d6cc1f3781020b258add9c865fae475cf6f69cdf3"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_credit_tx.v": {
+          "bytes": 20629,
+          "sha256": "23614bc1e4b54cd2ac2441973bd88215abd07d2fe6f1d02fe6210a7676e18d89"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_flow_packets.v": {
+          "bytes": 6501,
+          "sha256": "af173556419e44de8fee561da6455180ee7881a53d8281dc7f530dda4467301a"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_flow_packets.py": {
+          "bytes": 7562,
+          "sha256": "53f24d109212a1e1aa9e0c97bfda72fab3c6a088a4e3b2325201755e70ccdb53"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.soc_pcie_flow_packets": {
+          "bytes": 1764,
+          "sha256": "c7c45e439de05a7376112ef20e3f087eb3f55569a3d0935f880cee5124eb5bf1"
+        },
+        "/home/runner/work/nssoc/nssoc/scripts/check_pcie_flow_packets.py": {
+          "bytes": 6558,
+          "sha256": "ec59e8ef8f6b2c1b2b68adff1c987761b9ee5b12e71c055bbd658fc71446084b"
+        },
+        "/home/runner/work/nssoc/nssoc/scripts/check_pcie_integrity.py": {
+          "bytes": 4628,
+          "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+        },
+        "/home/runner/work/nssoc/nssoc/scripts/check_pcie_integrity_native.py": {
+          "bytes": 6139,
+          "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+        },
+        "/home/runner/work/nssoc/nssoc/scripts/cocotb_results.py": {
+          "bytes": 1383,
+          "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_packet_tx.py": {
+          "bytes": 6497,
+          "sha256": "3c5b5c497df2591c745b5b74027fd64f293d4ff4edf73c7ec27d232e2598e276"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_tlp_stream.py": {
+          "bytes": 9089,
+          "sha256": "0dac8e1e7df716cd9cd754fdfa2469330372e730e5e19ad7a410a2deba8f42e6"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_tlp_integrity.py": {
+          "bytes": 8904,
+          "sha256": "9984383e02c6a933dcc5f039c45c7b162a0322defe56e04bb12513874cf9dec9"
+        }
+      },
+      "expected_tests": 3,
+      "mode": "rtl",
+      "commands": [
+        {
+          "argv": [
+            "make",
+            "-f",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.soc_pcie_flow_packets",
+            "--no-print-directory",
+            "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_crc16_byte.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_acknak_tx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_packet_tx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_crc32_byte.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_lcrc_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_sequence_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_lcrc_tx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_packet_endpoint.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_tlp_stream.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_tlp_regs.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_link_packets.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_dllp_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_replay_tx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_reliable_packets.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_credit_tx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_flow_packets.v",
+            "SIM_BUILD=/home/runner/work/nssoc/nssoc/out/flow/sim",
+            "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/out/flow/results.xml",
+            "PCIE_NATIVE=0"
+          ],
+          "returncode": 0,
+          "log": "simulation.log",
+          "log_pin": {
+            "bytes": 5430,
+            "sha256": "da586d0693dc0b8e64608b3e7b5e9fe89ce1370856fa44a051c0e9bee0c4d2d8"
+          }
+        }
+      ],
+      "scope": "Real DLLP decoding, VC0 transmit credit gating and byte-identical replay. External local FC completion; no RX credit advertiser/PHY/SDF/SoC integration.",
+      "tests": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      "outputs": {
+        "simulation.log": {
+          "bytes": 5430,
+          "sha256": "da586d0693dc0b8e64608b3e7b5e9fe89ce1370856fa44a051c0e9bee0c4d2d8"
+        },
+        "results.xml": {
+          "bytes": 1047,
+          "sha256": "0e79cf18603f4f59d0ba3f1e3d971980c0bb6bc42e451cc3924a85b3c82bc9f7"
+        }
+      }
+    },
+    "negative-control.json": {
+      "status": "PASS_BAD_CRC_SEED_REJECTED",
+      "result": {
+        "status": "FAIL",
+        "top": "soc_pcie_packet_endpoint",
+        "mode": "rtl",
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/mutant/soc_pcie_crc32_byte.v": {
+            "bytes": 1070,
+            "sha256": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129"
+          },
+          "/home/runner/work/nssoc/nssoc/mutant/soc_pcie_lcrc_rx.v": {
+            "bytes": 6756,
+            "sha256": "49e86e1b378c1be98363d2816084679b0cc5406cb817fe1502fd9cb8183097a4"
+          },
+          "/home/runner/work/nssoc/nssoc/mutant/soc_pcie_sequence_rx.v": {
+            "bytes": 6629,
+            "sha256": "77f9539729f2aeb18879008ae29cf4c1d866297ee56c7a24ed1c6c7548d38f80"
+          },
+          "/home/runner/work/nssoc/nssoc/mutant/soc_pcie_lcrc_tx.v": {
+            "bytes": 11675,
+            "sha256": "59669475f170d65b06d1a244ab891014c808c1ae21816e0cfce4c71298a748e1"
+          },
+          "/home/runner/work/nssoc/nssoc/mutant/soc_pcie_packet_endpoint.v": {
+            "bytes": 5191,
+            "sha256": "48b98d2e840f70093308c0d03dc656a389a977d66a2c6a9f4d2e580552b36b85"
+          },
+          "/home/runner/work/nssoc/nssoc/mutant/soc_pcie_tlp_stream.v": {
+            "bytes": 11181,
+            "sha256": "17612384552110291d3ab9949a8feb51925bc3bc88d1d11365edab3f6ce2d6c2"
+          },
+          "/home/runner/work/nssoc/nssoc/mutant/soc_pcie_tlp_regs.v": {
+            "bytes": 10102,
+            "sha256": "6f520a666787806059d6bbbe84e12d94b84250dfdd5c7e655cfbf6055a893a84"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_packet_endpoint.py": {
+            "bytes": 10512,
+            "sha256": "0d74fe378f7d3eb14804e6262ebf588fa7a558c9799f8776b8e2ea503bbeca74"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.soc_pcie_packet_endpoint": {
+            "bytes": 1580,
+            "sha256": "9fd708a4041bfb83e791db76c84db0c0bcba3d2420595b0d14eb1cda2636bae7"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_tlp_stream.py": {
+            "bytes": 9089,
+            "sha256": "0dac8e1e7df716cd9cd754fdfa2469330372e730e5e19ad7a410a2deba8f42e6"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_tlp_integrity.py": {
+            "bytes": 8904,
+            "sha256": "9984383e02c6a933dcc5f039c45c7b162a0322defe56e04bb12513874cf9dec9"
+          },
+          "/home/runner/work/nssoc/nssoc/scripts/check_pcie_packet.py": {
+            "bytes": 5040,
+            "sha256": "9db23b77c9866da5626f0abc6aeb9dd7185232407127effadfd0d48d8dd80716"
+          },
+          "/home/runner/work/nssoc/nssoc/scripts/cocotb_results.py": {
+            "bytes": 1383,
+            "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+          }
+        },
+        "expected_tests": 6,
+        "scope": "Classic sequence RX and prefix/LCRC TX around standalone transaction/APB boundary. No full DLL, PHY, link-up, SoC integration or timing/signoff claim.",
+        "command": [
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.soc_pcie_packet_endpoint",
+          "--no-print-directory",
+          "TOPLEVEL=soc_pcie_packet_endpoint",
+          "COCOTB_TEST_MODULES=test_soc_pcie_packet_endpoint",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/mutant/soc_pcie_crc32_byte.v /home/runner/work/nssoc/nssoc/mutant/soc_pcie_lcrc_rx.v /home/runner/work/nssoc/nssoc/mutant/soc_pcie_sequence_rx.v /home/runner/work/nssoc/nssoc/mutant/soc_pcie_lcrc_tx.v /home/runner/work/nssoc/nssoc/mutant/soc_pcie_packet_endpoint.v /home/runner/work/nssoc/nssoc/mutant/soc_pcie_tlp_stream.v /home/runner/work/nssoc/nssoc/mutant/soc_pcie_tlp_regs.v",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/out/bad-seed/sim",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/out/bad-seed/results.xml",
+          "PCIE_NATIVE=0"
+        ],
+        "returncode": 2,
+        "tests": {
+          "passed": 0,
+          "failed": 6,
+          "skipped": 0
+        },
+        "xml": {
+          "bytes": 4949,
+          "sha256": "033bfffd63499c6ca23b11dd0cd395cdf318949eeef02011954db4cd29a9e76c"
+        },
+        "log": {
+          "bytes": 23290,
+          "sha256": "0ddaf632bbfcdb59cb288b8b3793f80fde4ee22b55a0b47ec6e94926c7d90735"
+        }
+      },
+      "production_accepted": false
+    }
+  },
+  "positive_tests": 11,
+  "positive_skipped": 0,
+  "bad_seed_rejected_tests": 6,
+  "formal_run_pending": 43536206993,
+  "decision": "Candidate remains experimental until both-direction equivalence and fresh synthesis/routing/STA prove improvement. Port tests alone do not close timing or PHY.",
+  "production_accepted": false
+}
