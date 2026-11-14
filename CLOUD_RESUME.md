@@ -1,3 +1,15 @@
+# Exact CRC DRT checkpoint recovered; jumper-only repair continuation active
+
+Inventory43579197875 completed/success; safe14106639162 SHA2d74ec95899508f1e5ce5580c13e6c4c18570d9cc556552260675e1be608b651. Savedroute/3-openroad-detailedrouting/drt-run-0/soc_top.odb218660715bytes SHA9adefc224ed62b8e661cdf4c2ae009f4e9910e5e2c5b848156464eb0fdfca40c; SDCroute/1-openroad-detailedplacement/soc_top.sdc SHA1fab1c6a3d4777bca6c00e4008ea6546ef403b100a3bc480683172a0ba682511. State_in NL/PNL fromdetailedplacement. This is completed initialroute before failed diodeinsertion; no newroute pass claimed.
+
+Continuation43579396178 source94b5fab106b45e94460f9ab382cd6b80b2e5ed23, branchcodex/crc-jumper-checkpoint-resume, verified in_progress. Restores freshCRCbase14100640319 SHAf724a289dc08812190d1aac64bfd1b4fafceeaca71c734ed578ca41d96a62f7c then failednative14107653261 SHAa401c73f139405396cf8afdb0e24e718c1334c09d8c49c3e4774d78e3440f64c. Moves oldroute to recovered-route before new force-run-dir, keeps NL/PNL refs valid. Exact ODB/SDC guards, stale metrics cleared, requires fresh565antenna nets before skipping initialDRT. Config changes only DRT_ANTENNA_REPAIR_JUMPER_ONLY=True/DRT_ANTENNA_REPAIR_DIODE_ONLY=False; original5repairiterations,DRT16,ratio10/clocks preserved. Uses supported pinnedupstreamdrt script guardd389d9e6...; no relaxed thresholds. Adds OpenROAD.CheckAntennas afterrepair to prevent stale finalcounts, thenRemoveRoutingObstructions. Dependent extractedSTA retains strict3cornerzero gates. Route355min/19200s,STA355min/19800s. Actual repair result pending.
+
+Safe route-crc_jumper_resume-43579396178; native routed-db-crc_jumper_resume-43579396178 cloudonly; safeSTA routed-sta-crc_jumper_resume-43579396178. Failednative antenna-resume-incomplete-native-43579396178 cloudonly. Failure recovery may require original archive too, because recovered-route references are outside new route archive. Receipt docs/evidence/crc-jumper-recovery-launch-20261114.json. Source experiment only until tested. Stop pollinginventory43579197875 aslive.
+
+Otherlive43566292104(SP),43562021054(DP),43573697024(MBIST). PHYnext: actual Csampler gain/data path after load-only screens failed. Fullgoalopen.
+
+---
+
 # Fresh CRC route failed diode legalization, checkpoint inventory launched; CDR settling diagnosis complete
 
 43561900502 sourceb1626c18095a9a9c7a06b3cb1bd508a4a0ba7f19 terminal/failure, ROUTE_RC2 NOT timeout. Job132347238762 log: initial detailedrouting3h18m08s finishes DRC0; antenna565nets656pins; first repair_antennas fails DPL-0036 on ANTENNA_482,ANTENNA_1342,ANTENNA_457,ANTENNA_458. DependentSTA skipped. Native14107653261 SHAa401c73f139405396cf8afdb0e24e718c1334c09d8c49c3e4774d78e3440f64c stayscloud. Routeartifact14107820079 SHAd88db968c580a65be20a6f92f28f7f4511a23dfffb481103f8a6cf9f3c097a5a includesDRCgeometry, do notdownloadlocally.
