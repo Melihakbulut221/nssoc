@@ -1,3 +1,28 @@
+## 2026-11-14 — CRC mainchip mapping passed; new exact-source CTS and boot started
+
+CRC mainchip run **43635824821**, source **9339dd6eeda8cf65383c7dc606e0cc752c1d6432**, completed successfully. Four regression variants each contain six seeds: twelve positive tests and twelve semantic mutation rejections. Mapping has **115737 cells**, sixteen Ethernet SRAMs and four system SRAMs, all 26 replay write-predecode bits, and one source-matched EOP cache register at lines326–338. The checker derives that origin from actual lowered RTL. This proves mapping, not gate boot or physical timing. Receipt: `docs/evidence/crc-select-mainchip-mapping-20261114.json`.
+
+Exact new outputs:
+- Native artifact14131535375, SHA256 `b92718e6281f3c11a16b9154ba6de8fc661e60e9846c3001f61af1ec1308fac4` (cloud only).
+- Mapping artifact14130736810, SHA256 `bd7755567790c904749b467dcd72d3faa59756e24dcf360726d5188fc32382a9`.
+- Regression artifact14130731781, SHA256 `075259cf52cf499867e3898866074e6a3b16d65811be99628850e6c948217db5`.
+- Netlist SHA256 `2a10c2131d5089eb84171f759817f843d887026ed9e4fe882d84b17fb945672c`; mapped JSON `a06ddb567dd79109b083f2dce786ab9bf2f0aadf1983a57d1ff27e8a8a5a7082`.
+- Firmware SHA256 `ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801`; 63 output files authenticated.
+
+NEW physical/boot run **43638590941**, source **85356cc286bea6cd6f53492a17c3182b037ec795**, branch `codex/crc-select-chip-physical-boot`. It restores only the exact new artifacts, checks the successful source producer and every output/input hash, then runs placement/CTS and a separate actual native Icarus boot with all system/Ethernet MBIST and firmware gates. Original clocks, derates, models and constraints remain unchanged. Do not transfer older EOP timing/boot evidence. Old EOP boot43632152541 remains independent. Experiment workflow must not merge.
+
+RX cursor formal proof remains passed. Traffic job132576149016 inrun43637085427 is still live. The next RX fullchip source **e92350d314fd8c04c9c06f2aa7d198f02b000cd1** on `codex/rx-cursor-mainchip` is prepared but **not dispatched**: inspect all eight positive/eight mutation traffic results first. Its workflow independently enforces both formal and traffic artifacts before any synthesis. This RX candidate includes the CRC change but has no own mapped or physical result yet.
+
+## 2026-11-14 — actual PHY interface topology and metal loading measured
+
+Diagnostic run **43638218885**, source **373c6bc3ae24fc2a40d720ce199aedaeb1d87411**, completed successfully. Safe artifact14131037408, SHA256 `9bfe8a3a975523cccd7592ef23e2f29de3b63362f96a8dd1fa40cba2068e1546`; receipt `docs/evidence/paired650-drive-rc-20261114.json`. It reads the actual failed circuit's authenticated contract and model in cloud and solves its native metal resistor networks. It does not modify the circuit or claim qualified extraction.
+
+ADP/ADN external metal capacitance is **467/496fF**, with effective metal resistance from collector to the most distant HBT terminal **124.7/132.7ohm**. CDP/CDN:381/407fF,123.5/131.5ohm. S0P/S0N:241/231fF,119.4/105.4ohm; S1P/S1N:230/219fF,119.0/105.0ohm. Metal-only first moments with all other conductors clamped reach25.8/30.4ps for AD and19.7/23.2ps for CD. These omit intrinsic device/MIM capacitance and finite driver resistance; they are NOT measured full-path propagation delays or proof that the actual timing gate passes.
+
+Actual ADP driver is HBT275 (Nx2), base `uan`, collector `adp`, emitter `da_tail`. ADP drives six Nx4 XOR HBT bases and rppd386 (length1.8um,width8um, between `da_load` and `adp`). Actual S0P driver is HBT298 (Nx2), base `usn`, collector `s0p`, emitter `s0_tail`; it drives two Nx6 HBT bases and rppd398 with the same geometry. This provides concrete loading/topology for the next repair. Simply enlarging the driver without checking its fixed tail current will not necessarily improve speed. Next inspect upstream UAP/UAN/UCP/UCN/USP/USN transfer and dominant physical metal segments before choosing geometry/bias edits; preserve the full loaded acceptance and device SOA checks. Do not substitute a polarity inversion or a later observation window.
+
+Full serial PHY, routed all-corner chip timing and manufacturing acceptance remain open. All native CAD/source execution stays in cloud; local workspace remains empty.
+
 ## 2026-11-14 — qualification-gated RX wholechip source ready; actual driver/metal RC solve live
 
 Prepared but NOT DISPATCHED codex/rx-cursor-mainchip/sourcee92350d314fd8c04c9c06f2aa7d198f02b000cd1. Built from CRCmainchip9339... with exact formally proven RX RTL c16d14cb42d27d261ec7aca5a303f9c3b63e24da6ce651b1a504fe3e56f658ec. Adds validated default-off SOC_PCIE_RX_CURSOR_LOCAL_RESET to bothsim/syn drivers; rejects unlessREAD2andRESET_COPIESareenabled. Configuration recordsflag; mappingchecker requiresflagandexactRXhash inaddition to priorCRC/EOP/predecode/20SRAM checks. Noexistingnativeprooftransferred. New require_rx_cursor_qualification.py checks exact successfulformaljob43637249034 and exacttrafficjobqualify(traffic) in43637085427, hashesarchives, exactRTLhash, all2positive/2mutationformal and8positive/8mutationtrafficresults. Overalloldtrafficrunformalharnessfailureisnotignored as success: separatecorrectedformal proofrequired. WorkflowrunsfreshCRCregressions andwholechipfirmwareRTL/synthesis onlyAFTERgatespass. Thus dispatch this workflow only after trafficartifact isavailableandinspected. Do not merge experimentworkfloworclaimphysicalclosure.
