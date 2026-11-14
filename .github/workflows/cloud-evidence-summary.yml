@@ -1,9 +1,8 @@
-name: Audit exact CDR geometry and passive extraction provenance
+name: Trace dominant CDR capacitance to native Magic records
 on:
   workflow_dispatch:
 permissions:
   contents: read
-  actions: read
 jobs:
   audit:
     runs-on: ubuntu-24.04
@@ -16,15 +15,14 @@ jobs:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/audit_cdr_geometry_provenance.py
-      - name: Read archived native geometry provenance on runner only
-        run: |
+          sparse-checkout: /scripts/audit_cdr_native_cap_records.py
+      - run: |
           set -euo pipefail
-          gh api repos/${{ github.repository }}/actions/artifacts/14121577984/zip > native.zip
-          python3 scripts/audit_cdr_geometry_provenance.py
+          gh api repos/${{ github.repository }}/releases/assets/707281704 -H 'Accept: application/octet-stream' > metal.tgz
+          python3 scripts/audit_cdr_native_cap_records.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: cdr-geometry-provenance-${{ github.run_id }}
-          path: out/geometry-provenance.json
+          name: cdr-native-cap-records-${{ github.run_id }}
+          path: out/capacitor-native-records.json
           if-no-files-found: error
           retention-days: 90
