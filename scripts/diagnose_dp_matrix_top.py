@@ -12,11 +12,12 @@ P('/tmp/matrix.lvsdb').write_bytes(raw)
 messages=collections.Counter(re.findall(r'Maximum (?:complexity|depth) exhausted[^"\r\n]*',raw.decode()))
 lvs=db.LayoutVsSchematic();lvs.read('/tmp/matrix.lvsdb')
 top='RM_IHPSG13_2P_256x16_c2_bm_bist'
+def value(v):return v() if callable(v) else v
 rows={}
-for side,nl in [('layout',lvs.netlist()),('reference',lvs.reference())]:
+for side,nl in [('layout',lvs.netlist()),('reference',lvs.reference)]:
  hits=[c for c in nl.each_circuit() if c.name.casefold()==top.casefold()];assert len(hits)==1
  c=hits[0]
- pins=[{'name':p.name(),'id':p.id()} for p in c.each_pin()]
+ pins=[{'name':value(p.name),'id':value(p.id)} for p in c.each_pin()]
  devices=collections.Counter(d.device_class().name for d in c.each_device())
  children=collections.Counter(s.circuit_ref().name for s in c.each_subcircuit())
  rows[side]={'name':c.name,'pins':pins,'direct_devices':dict(devices),'children':dict(children),'net_count':sum(1 for _ in c.each_net())}
