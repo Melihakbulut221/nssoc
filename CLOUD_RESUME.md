@@ -1,3 +1,17 @@
+## 2026-11-14 — replay EOP-cache candidate implemented; full RTL equivalence PASSED
+
+Actual new mapped JSON diagnosis43629195905/source023bc757bd46e6130afa1092e0dc927137a0d76d proves worst slow setup goes retry.read_pos[1] -> replay_read_onehot[33], not byte storage. Exact source mapping532a165624564dcc0f1b1bd7904e697b244afcdadde7d289b2bd9fb07e01d59a. Fast hold endpoint slice365153 is functionID bit5, confirmed. Safe14126803650 SHA f75ba0cdd33c84f0879670b13e2e04ad378cd3ba2d1d4cb277073f8ac786e378. Do not infer endpoint names from nearby old candidates.
+
+Implemented default-off SOC_PCIE_REPLAY_EOP_CACHE on experimental branchcodex/replay-eop-cache/source3d813a0c4273f1f1864267d8c04c0b632b4bb004. Caches read_pos==send_last with same reset/send-start/cursor-update behavior; no extra stream latency. Reset bothoperands0 => cached1; linkloss holds; accepted nonlast increments BW-bitcursor; sendstart compares length==1. The aim is removing equality logic from high-fanout replay cursor control. Other critical paths may replace it; no timing benefit claimed yet.
+
+Full actual module/memory sequential equivalence43629312391 PASSED both2x22 and4x38, with write-predecode/AHEAD/INBANK/RESET_COPIES common. SourceRTL SHA e478d785013174a7a7ce63b6fcbd8aa609736e65e292748eb8c0311e453f69e8; safe14127810063 SHA00f02a7949b2659a356c56b617166b31ab7770bea85e6bdfd52b2861102f4519. Original OSS2026-08-04, async2sync/induction; not analogreset or physical timing proof. Receipt docs/evidence/replay-eop-cache-functional-20261114.json includes exact mapped aliases and both proofs.
+
+Actual simulation43629411055/source00113c97cc04fc41551e45e1efa9c0499aa2bc17 running: EOPcachealone and allphysicaloptions, six300k-cycle seeds each, with all original coverage/storage/output checks. Both configurations also compile wrong+2cursorincrement and require all6realMISMATCH verdicts; vvp failure no longer masked. Sources restored after mutation; no expected stream changed. Follow this handle before integration.
+
+Same-area native mapping/placement dispatched on codex/replay-eop-cache-placement (source/run discover branch). Uses same600x600um,4nsidealclock,5percentderating, identicalIHPcorners/RC; baseline includeswritepredecode and differs only cacheflag. All original reports remain; estimated/block timing cannot certify whole chip. Experimental workflows must not merge. Candidate RTL currently NOT integrated into timing/combined, pending simulation and physical evidence.
+
+Existing actual650loaded43626358999, wholechipboot43620739672 andoldbuf4route43610680141 confirmedlive this turn; not restarted. Fullproductiongoal active and incomplete.
+
 ## 2026-11-14 — full critical-path diagnosis completed
 
 Cloud extraction43628894510/source2fcec5a42f0e16aee066a9c0540fcf07b7e2e85b PASSED; safe14127227743 SHA f1458a2f1fd146a582b8a4b26cae978b71ec18a3d32f64b4467688903a6366f9. Full worst paths per group committed in docs/evidence/predecode-postcts-critical-groups-20261114.json. Report limited to1000paths/group: do NOT mistake reported violating count for full STA endpoint count.
