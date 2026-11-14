@@ -16,7 +16,11 @@ P('out/derived/native-delta.json').write_text(json.dumps({'accepted':False,'chan
 for name in before:
  a=dict(before[name]);b=dict(after[name])
  if name=='place31551':
-  del a['master'];del b['master'];del a['location'];del b['location']
+  # The saved legalizer selected an X reflection on the SAME row.
+  # Permit only this measured selected-cell transform, never other-cell moves.
+  assert a['orientation']=='R180' and b['orientation']=='MX'
+  assert a['location']==[2617440,1704780] and b['location']==[2615520,1704780]
+  del a['master'];del b['master'];del a['location'];del b['location'];del a['orientation'];del b['orientation']
  assert a==b,('Unexpected native change',name)
-r={'invariants_passed':True,'instances':len(before),'unchanged_other_instances':len(before)-1,'connectivity_sha256':bnet,'top_ports':len(bports),'before_target':before['place31551'],'after_target':after['place31551'],'route_validated':False,'timing_validated':False,'manufacturing_approval':False}
+r={'invariants_passed':True,'instances':len(before),'unchanged_other_instances':len(before)-1,'connectivity_sha256':bnet,'top_ports':len(bports),'before_target':before['place31551'],'after_target':after['place31551'],'selected_transform':'Measured same-row R180->MX and -1920 DBU X displacement; native check_placement rechecked separately','route_validated':False,'timing_validated':False,'manufacturing_approval':False}
 P('out/derived/native-proof.json').write_text(json.dumps(r,indent=2));print(json.dumps(r))

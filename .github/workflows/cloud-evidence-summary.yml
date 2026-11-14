@@ -23,6 +23,7 @@ jobs:
             /scripts/verify_retry_driver_buf4.py
             /scripts/prepare_retry_driver_buf4.py
             /scripts/restore_retry_driver_placement.py
+            /scripts/check_saved_retry_placement.tcl
       - name: Restore pinned runtime and native database in cloud
         run: |
           set -euo pipefail
@@ -35,6 +36,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/restore_retry_driver_placement.py
+          env -u GH_TOKEN -u GITHUB_TOKEN /mnt/s/librelane.AppImage openroad -exit scripts/check_saved_retry_placement.tcl
           env -u GH_TOKEN -u GITHUB_TOKEN /mnt/s/librelane.AppImage openroad -exit -python scripts/verify_retry_driver_buf4.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
