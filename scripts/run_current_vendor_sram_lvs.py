@@ -10,7 +10,7 @@ out=P('out');native=out/'native';derived=out/'derived'
 native.mkdir(parents=True);derived.mkdir()
 def sha(p):
  with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
-r={'status':'PREPARING','top':top,'run_id':os.environ.get('GITHUB_RUN_ID'),'source_sha':os.environ.get('GITHUB_SHA'),'current_vendor_macro_lvs_passed':False,'full_chip_lvs_passed':False,'manufacturing_approval':False,'scope':'Exact frozen current macro; original PDK deck with no added exclusions or tolerance changes. Existing deck ignores R above 1e9 and C below 1e-18; this is not complete parasitic/foundry qualification.'}
+r={'status':'PREPARING','top':top,'run_id':os.environ.get('GITHUB_RUN_ID'),'source_sha':os.environ.get('GITHUB_SHA'),'current_vendor_macro_lvs_passed':False,'full_chip_lvs_passed':False,'manufacturing_approval':False,'scope':'Experimental strict metal1/LVSRES class interpretation with native negative controls. Frozen geometry and CDL unchanged. Original PDK deck otherwise unchanged; not production qualification.'}
 rc=2
 try:
  assert sha(P('pkg.tgz'))=='822dab7067d901fa79dabffffff784baf5c9965f0a5091eba67acdc48b9956f4'
@@ -37,6 +37,56 @@ try:
  r['normalization']='Native combine_devices on both extracted and original reference; no simplify/purge, no parameter tolerances added, no reference or layout edits.'
  r['switches']={k:str(v) for k,v in switches.items()};cmd=[str(app),'-b','-zz','-r',str(deck)]
  for k,v in switches.items():cmd+=['-rd',f'{k}={v}']
+
+ # Scoped metal1 model interpretation controls; original geometry/CDL stay unchanged.
+ import re
+ cell='RSC_IHPSG13_CDLYX1_DUMMY'
+ blocks=re.findall(r'(?ims)^\.subckt\s+'+re.escape(cell)+r'\b.*?^\.ends[^\n]*',cdl.read_text())
+ assert len(blocks)==1
+ reference=blocks[0]+'\n'
+ resistor_lines=[line for line in reference.splitlines() if re.search(r'(?i)\blvsres\b',line)]
+ assert len(resistor_lines)==1
+ resistor=resistor_lines[0]
+ assert re.search(r'(?i)\bw\s*=\s*2\.6e-07\b',resistor)
+ assert re.search(r'(?i)\bl\s*=\s*6e-07\b',resistor)
+ reader=deck.parent/'rule_decks/custom_reader.lvs'
+ extraction=deck.parent/'rule_decks/res_extraction.lvs'
+ reader_before=reader.read_text();extraction_before=extraction.read_text()
+ reader_needle="    elsif num_nets == 2 && model.downcase.include?('tap')"
+ assert reader_before.count(reader_needle)==1
+ extraction_needle="resistor('res_metal1', 1.0, RES2)"
+ assert extraction_before.count(extraction_needle)==1
+ variants={'original':reference,
+  'wrong_width':reference.replace(resistor,re.sub(r'(?i)(\bw\s*=\s*)\S+',lambda m:m[1]+'2.8e-07',resistor)),
+  'wrong_length':reference.replace(resistor,re.sub(r'(?i)(\bl\s*=\s*)\S+',lambda m:m[1]+'7e-07',resistor))}
+ tokens=resistor.split();assert tokens[0][0].upper()=='R';tokens[1]='NSSOC_FAULT_OPEN'
+ variants['open']=reference.replace(resistor,' '.join(tokens))
+ controls=[]
+ def control(label,text,expected):
+  target=native/('control-'+label);target.mkdir()
+  reference_path=(target/'reference.cdl').resolve();reference_path.write_text(text)
+  overrides={'schematic':reference_path,'topcell':cell,'report':(target/'lvs.lvsdb').resolve(),'log':(target/'deck.log').resolve(),'target_netlist':(target/'extracted.cir').resolve()}
+  command=[str(app),'-b','-zz','-r',str(deck)]
+  for k,v in {**switches,**overrides}.items():command+=['-rd',f'{k}={v}']
+  with (target/'run.log').open('w') as f:proc=subprocess.run(command,env=env,stdout=f,stderr=subprocess.STDOUT,timeout=120)
+  assert proc.returncode==0, 'Control extraction failed: '+label
+  audit_path=target/'audit.json'
+  proc=subprocess.run([sys.executable,'hw/soc/flow/audit_klayout_lvs.py',str(target/'lvs.lvsdb'),'--top',cell,'--deck-log',str(target/'deck.log'),'--output',str(audit_path)],env=env,capture_output=True,text=True,timeout=120)
+  assert audit_path.exists(), 'Missing control comparison: '+label
+  report=json.loads(audit_path.read_text())
+  assert not report['extraction_diagnostics'], 'Control extraction diagnostics: '+label
+  assert len(report['circuits'])==1 and report['circuits'][0]['layout_devices_recursive']==3 and report['circuits'][0]['schematic_devices_recursive']==3
+  passed=proc.returncode==0 and not report['reasons']
+  controls.append({'label':label,'expected_pass':expected,'passed':passed,'audit':report,'reference_sha256':sha(reference_path)})
+  (derived/'metal1-mapping-controls.json').write_text(json.dumps({'scope':'Native frozen CDLYX1_DUMMY; no geometry changes; strict W/L and connectivity negative controls','controls':controls,'production_accepted':False},indent=2))
+  assert passed==expected, 'Unexpected control verdict: '+label
+ control('unmapped-original',reference,False)
+ reader.write_text(reader_before.replace(reader_needle,"    elsif num_nets == 2 && model.downcase == 'lvsres'\n      RES2.new\n"+reader_needle))
+ extraction.write_text(extraction_before.replace(extraction_needle,"resistor('lvsres', 1.0, RES2)"))
+ r['experimental_mapping']={'scope':'Only extracted metal1 class name mapped to lvsres; reference lvsres uses existing RES2 W/L comparison policy; no circuit or dimension edits; no net aliases','reader_before_sha256':hashlib.sha256(reader_before.encode()).hexdigest(),'reader_after_sha256':sha(reader),'extraction_before_sha256':hashlib.sha256(extraction_before.encode()).hexdigest(),'extraction_after_sha256':sha(extraction),'production_accepted':False}
+ for label,text in variants.items():control('mapped-'+label,text,label=='original')
+ r['metal1_mapping_controls_passed']=True
+
  (native/'command.json').write_text(json.dumps(cmd));start=time.monotonic()
  with (native/'run.log').open('w') as f:
   p=subprocess.run(cmd,env=env,stdout=f,stderr=subprocess.STDOUT,timeout=18000)
