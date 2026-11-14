@@ -1,4 +1,4 @@
-name: Extract rejected candidate critical path diagnostics in cloud
+name: Survey Ethernet hold and setup report coverage
 on:
   workflow_dispatch:
 permissions:
@@ -24,7 +24,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: cut10j-electrical4-critical-paths-${{ github.run_id }}
+          name: ethernet-hold-setup-coverage-${{ github.run_id }}
           path: out/*.json
           if-no-files-found: error
           retention-days: 90
