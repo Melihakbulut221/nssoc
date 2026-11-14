@@ -63,3 +63,10 @@ jobs:
           path: next-checkpoint.tgz
           if-no-files-found: error
           retention-days: 30
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && hashFiles('out-native/criu-restore.log') != ''
+        with:
+          name: full-native-criu-restore-log-${{ github.run_id }}
+          path: out-native/criu-restore.log
+          if-no-files-found: error
+          retention-days: 30

@@ -140,6 +140,20 @@ except Exception as e:
  if isinstance(e,subprocess.CalledProcessError):r['native_error']={'stdout':str(e.stdout)[-6000:],'stderr':str(e.stderr)[-6000:]}
  raise
 finally:
+ # CRIU writes detailed errors into its work directory, not stderr. Preserve
+ # classified diagnostics even when the restore itself fails.
+ if 'dump' in globals() and 'image_directory' in dump:
+  logpath=root/dump['image_directory']/'restore-long.log'
+  if logpath.is_file():
+   capture=subprocess.run(['sudo','cat',str(logpath)],capture_output=True,timeout=30)
+   if capture.returncode==0:
+    raw=capture.stdout;logtext=raw.decode(errors='replace')
+    for key in ('GH_TOKEN','GITHUB_TOKEN'):
+     if os.environ.get(key):logtext=logtext.replace(os.environ[key],'[REDACTED]')
+    nativeout=P('out-native');nativeout.mkdir(exist_ok=True)
+    (nativeout/'criu-restore.log').write_text(logtext)
+    errors=[line for line in logtext.splitlines() if re.search(r'\b(?:Error|Warn|Warning)\b',line)]
+    r['criu_restore_log']={'sha256':hashlib.sha256(raw).hexdigest(),'bytes':len(raw),'diagnostics':errors,'full_log_cloud_only':True}
  (out/'resume-result.json').write_text(json.dumps(r,indent=2))
  if (root/'resumed.log').exists():(out/'native-boot.log').write_bytes((root/'resumed.log').read_bytes())
  print(json.dumps({k:v for k,v in r.items() if k in ['passed','completed_boot','checkpoint_saved','stage_status','error']}),flush=True)
