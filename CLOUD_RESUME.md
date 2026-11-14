@@ -1,3 +1,13 @@
+# SP fullmacro mismatch localized; six-boundary comparison running
+
+43564996899 completed/failure, extractionRC0/auditRC1:24Match,6NoMatch,1Skipped top;0extraction diagnostics. Both sides1211120recursiveprimitives (817450MOS+393670R), unchanged original/candidate CDL inventory. Tested reader hash87a75b402b35d7306153a66089c0f0105b4e50c4816c7c553d97219af6c41519 bound to actual candidate. Safe14102840450 SHA256`8aba5c22b51a18a6f7942427d2cdba5e48a65a8981c9806d917d2fed89f68e29`; native14101844940SHA`48f06a811262a9ae15a99ce5fd53c9e31503f450e3f90eae69e3135fffd1f120` stays cloud-only. No LVS pass.
+
+43566292104 source`c226118b038f4180ce97452b9e469e873b37fd83`, branch`codex/sp-sram-engineering-six-boundaries`: sameSPreference, flatten exactly observedCBUFX8,CINVX2,CINVX8,FILLCAP4,FILLCAP8,WLDRVX8 on both sides. Count must remain1211120 before/after EACH side. No geometry/CDL/net/body/port edits. This tests hierarchy representation, not an acceptance waiver. Native18000s/workflow350min. Derived prefix`sp-sram-engineering-reference-normalized-derived-sp-deep-43566292104`; native counterpart cloud-only. Receipt:`docs/evidence/sp-sram-fullmacro-boundaries-20261114.json`.
+
+Other six runs remain active:DP43562021054,newroute43561900502,CDR43562981217,MBIST43558722004,oldroutes43541234973/43538031308. Full product goal remains active.
+
+---
+
 # Independent SP engineering reference fullmacro comparison running
 
 43564996899 source`867aa31021be8d6fec40ebb5afe2d7bcdc85a354`, branch`codex/sp-sram-engineering-reference-v1`. Five explicitly reversible R statement edits only: bitcellR0/R1metal2,R2metal3 W0.2/L0.6; standaloneMET2RES/MET3RES eachW0.26 unchanged, only layer-model identity explicit. Original GDS/CDL immutable, terminal tokens unchanged. Strict reader, metal1 controls, ports/bodies unchanged. Full recursive original/candidate CDL inventory must agree before native run. Original SP hierarchy retained, NO DP six-cell flatten or70110 count assumption. Native18000s/workflow350min.
