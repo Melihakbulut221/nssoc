@@ -1,3 +1,13 @@
+## 2026-11-14 — PHY post-bias physical diagnosis passed
+
+Diagnosis43603543533/source09ff87119d427d932731ccb8a78b706c358ebccd PASSED, actual gates exactly reproduced. Safe14116909437 SHA035d187ec392926c4d111594b96b2e5d7c84b0072b621ca8ae2702fbac25163b. Original43603401088 failed only absent import dependencies; exact proven cdr_mos650_full650_loaded.py and cdr_n1_divider_whatif.py were restored from d22e49cab14ddc4ed70a46492c9ea83d0509ac55 on experiment branch, without gate changes.
+
+At0.75UI X transition groups01/10 have zero samples with both inputs>=100mV. Their A-buffer median output+59mV/-17mV is still wrong sign although A-sampler medians-236mV/+217mV are correct. A-buffer HBT273/275 median collector currents already switch (.602mA/1.977mA for01,1.973mA/.649mA for10) while collectors lag. X has zero wrong-sign relative to simultaneous XOR for strong-input samples but many below100mV; do not mistake this for full data success. Selector-current-only increase did not solve loading/settling.
+
+Next justified candidate to consider: isolated XOR input HBT nx2->1 relative completed cdata3_sel15, all24 XOR_DATA devices only, no source/bias/load/solver/gate changes. This is a hypothesis from observed collector settling, not an accepted circuit. Check prior experiments before launch (known variant list includesxor2/xor3, notxor1). Current/emitter binding must reflectnx1, preserve3mA limit. Existing c_devices and selectbias isolation guards assume xor2 and must be updated with exact reversible24-record differences, not removed. Native waveform/RC stays cloud-only. Existing acbuf15/acbuf20 and collectorwidth12/16 variants already tried; do not blindly repeat.
+
+Full chip LVS43602758557 and route43591198141 still live at latest poll; continue following actual handles. Full PHY/final timing/production unresolved.
+
 ## 2026-11-14 — isolated PHY select-bias trial rejected; physical diagnosis live
 
 PHY43596398222 completed FAILURE of frozen data gates, simulatorRC0,4671.69s. Variantbd10_lowz8_xor2_cdata3_sel15: only ibs0/ibs1 bias1mA->1.5mA relativecdata3, model unchanged. Device/phase/VI gates pass but data fails. X385wrong-sign/717below100mV of765samples; Y0wrong-sign/580below100mV. SamplerA65,C148,D96 below100mV,Bpasses. No layout or PHY acceptance. Safe14116609449 SHA f02366f817e8128ef272a93accd09f6c1bc7968f538373969ffd2de8a32a3677. Native14116918270 SHA2f2dd3cffcadde6e7111065c3e5c79580ec245f5bffa14a54116cb66c6587868 (cloud only). Mixeddivider-whatif artifact containswaveform: do not download locally.
