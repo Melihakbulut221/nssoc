@@ -1,3 +1,11 @@
+## Four failed diodes legalized; full routing continuation live
+
+Run43590951082/sourcef0c5230da39e88f6b8a30994015b7e09c911a8d3 succeeded placement-only screen in29.27s. Fourdiodes ANTENNA_482/1342/457/458 movable;159930otherinstances fixed, allotherposition/orientation invariants passed,total159934unchanged. Originalplacementstatuses restored; native check_placement passed, no warnings/errors. No routing/antenna/timing claim. Safe14112471184 SHA3a29560701a518de1bd209909938697fb6f5989bfa5b4652fb125bd36e304122. Native14112212387 SHAbe3f5242a66dbbc81708b43f83d707c58ccc07d944bc8fe8fc3c11a745013228 cloudonly; verifiedfour-diode-legalized.odb SHAc9deaebb26a07bf0909c249547156b1a1cb96401c8ccfa3748acff818131d959. Testedhelpers now retained in scripts/diagnose_four_diode_legalization.py and.tcl.
+
+Current route43591198141/source2bb475a2d0a9c51cfa985a50d0239799deaddc45,branchcodex/crc-legalized-diode-route. Restores exactverifiedplacement and originalSDC; clears only signaldbWires, retaining supply/specialwires, rebuilds GRT+DRT thenfreshCheckAntennas. DRTautomaticrepairloops0 for first fullrouteof alreadyinserteddiodes; strict finalantenna-zero and3cornertiming/electrical gates unchanged. Nativeinput/version/script hashes pinned. Safe route-crc_diode_legalized-* androuted-sta-crc_diode_legalized-*;nativecloudonly. Do not restartwhilelive. Receipt docs/evidence/crc-four-diode-legalized-route-launch-20261114.json.
+
+Otherlive DPblock43589897545,SP43566292104,PHY43584735530,MBIST43588310054. PriorfailedCRCtimingandantennaevidencebelow remains valid for oldcandidateonly.
+
 ## CRC extracted STA rejected; captured diode failure now supports isolated legalization
 
 43579643337 is terminalFAIL at strict acceptance. SafeSTA14111793410 SHA2b25292fffb06b73ac4d3f119c3a7c886edeefcaf7888c4c0ea0c58c4ad3f276. Slow569setup WNS-.799542677ns,1hold-.095417454; typ0setup9hold-.069170227; fast0setup122hold-.135881976. Slowviolations PCIe551,CPU15,async2,EthTX1. Fast holdPCIe115,CPU3,EthRX4. Cap96/103/108,slew550/227/119,fanout1363. Antenna565nets656pins stillopen despiteDRC0. NominalRC only, no production claim.
