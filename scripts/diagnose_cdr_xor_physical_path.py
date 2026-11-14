@@ -77,11 +77,18 @@ for line in logical:
 assert seen==1 and wires>0
 ports=['aqp','aqn','bqp','bqn','adp','adn','s0p','s0n','xp','xn']
 port_roots={port:find(port) for port in ports}
+rail_roots={find(n) for n in ['avdd','avss','vdd','vss','0']}
 paths={}
 for output in ['adp','adn','s0p','s0n']:
  selected={};frontier={find(output)};reach=set(frontier)
  for depth in range(12):
   next_roots=set()
+  for name,dev in bound['groups']['rppd'].items():
+   # Trace both physical resistor terminals without shorting them in measurement.
+   ends=[find(n) for n in dev['nodes'][:2]]
+   if any(n in frontier for n in ends):
+    selected.setdefault(name,{'kind':'rppd','depth':depth,'nodes':dev['nodes']})
+    next_roots.update(ends)
   for kind,group in bound['groups'].items():
    if kind=='npn13g2':terminals=[('C',0),('E',2)];inputs=[1]
    elif kind=='sg13_lv_nmos':terminals=[('D',0),('S',2)];inputs=[1]
@@ -91,7 +98,7 @@ for output in ['adp','adn','s0p','s0n']:
     if hits:
      selected.setdefault(name,{'kind':kind,'depth':depth,'connected_output_terminals':hits,'nodes':dev['nodes'],'nx':dev.get('nx')})
      next_roots.update(find(dev['nodes'][i]) for i in inputs)
-  frontier=next_roots-reach;reach.update(next_roots)
+  frontier=next_roots-reach-rail_roots;reach.update(next_roots-rail_roots)
   if not frontier:break
  assert selected
  paths[output]={'devices':selected,'sampler_ports_reached':[n for n in ['aqp','aqn','bqp','bqn'] if port_roots[n] in reach],'root_count':len(reach),'unresolved_frontier':sorted(frontier)}
@@ -111,5 +118,5 @@ for phase in [.6,.75,.9]:
     dev=bound['groups']['npn13g2'][name];vc,vb,ve,_=map(v,dev['nodes'])
     devices[name]={'collector_v':stats(vc),'base_v':stats(vb),'emitter_v':stats(ve),'vce_v':stats(vc-ve),'ic_a':stats(d['@q.'+name+'.qnpn13g2[ic]'])}
    phase_groups.append({'phase_ui':phase,'expected_a_b':[a,b],'samples':int(mask.sum()),'differentials_v':signals,'devices':devices})
-out={'status':'FIXED_PHASE_PHYSICAL_BUFFER_TRACE','accepted':False,'variant':variant,'source_run':43584735530,'native_artifact':aid,'native_sha256':digest,'raw_sha256':info['raw_sha256'],'original_gates_reproduced':True,'wire_resistors_collapsed_for_connectivity_only':wires,'group_counts':{k:len(g) for k,g in bound['groups'].items()},'paths':paths,'phase_groups':phase_groups,'scope':'HBT C/E-to-base and NMOS D/S-to-gate backtrace includes feedback and shared bias branches; does not assume forward gain. All original frozen gates reproduced. Numeric wires collapsed only for reachability; measured physical-terminal waveforms retain all RC. Original phases/gates unchanged. No new simulation/layout/PHY acceptance.'}
+out={'status':'FIXED_PHASE_PHYSICAL_BUFFER_TRACE','accepted':False,'variant':variant,'source_run':43584735530,'native_artifact':aid,'native_sha256':digest,'raw_sha256':info['raw_sha256'],'original_gates_reproduced':True,'wire_resistors_collapsed_for_connectivity_only':wires,'group_counts':{k:len(g) for k,g in bound['groups'].items()},'paths':paths,'phase_groups':phase_groups,'scope':'HBT C/E-to-base, NMOS D/S-to-gate and two-terminal rppd resistor reachability, stopping at supply rails. Includes feedback and shared bias branches; does not assume forward gain. All original frozen gates reproduced. Numeric wires collapsed only for reachability; measured physical-terminal waveforms retain all RC. Original phases/gates unchanged. No new simulation/layout/PHY acceptance.'}
 P('out').mkdir();P('out/xor-physical-path.json').write_text(json.dumps(out,indent=2))
