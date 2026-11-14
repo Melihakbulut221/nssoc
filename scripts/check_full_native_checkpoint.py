@@ -38,7 +38,7 @@ def wait_prefix(path,cycle,proc=None):
  raise TimeoutError('Native workload observation exceeded 1200s')
 def prepare():
  # Recovery is downloaded only on the cloud runner, never the user computer.
- payload=run(['gh','api','repos/Melihakbulut221/nssoc/actions/artifacts/14097721346/zip'],encoding=None) if False else subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/actions/artifacts/14097721346/zip'],timeout=180)
+ payload=subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/actions/artifacts/14097721346/zip'],timeout=180)
  assert hashlib.sha256(payload).hexdigest()=='0c938debffdf355789437cd647020d460d3aa7ad6f7a45e0a6fcdf0fc509e676'
  z=zipfile.ZipFile(io.BytesIO(payload));names=[n for n in z.namelist() if n.endswith('gates/inputs.json')];assert len(names)==1
  pre=names[0][:-len('gates/inputs.json')]
