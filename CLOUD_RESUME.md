@@ -1,3 +1,11 @@
+## C sampler phase diagnosis completed; two isolated circuit candidates live
+
+New screen [43584735530](https://github.com/Melihakbulut221/nssoc/actions/runs/43584735530), source `842ab2012fae1904251fd1503024e5670de6ad8f`, branch `codex/cdr-c-slave-sizing`. Relative to `bd10_lowz8_xor2`, `cdata3` changes ONLY XD0255/XD0257 nx=4 to 3; `cslave3` additionally changes XD0253/XD0254. No bench, solver, acceptance, wiring-RC or layout changes. Candidate binding uses actual nx for current-density gates. Isolated-edit proof includes three negative controls. Do not integrate these circuit changes without results. Safe artifacts `cdr-c-sampler-result-only-*`; mixed NPZ and native artifacts stay cloud-only.
+
+Phase diagnostic 43584493730 passed unchanged-gate reproduction. Verified artifact 14110140623 SHA256 `87e4c31c3a91c3df65895773196fde014965e0ec93ed9e25e80f0a2fde019298`; full report in `docs/evidence/cdr-c-sampler-phase-result-20261114.json`. For history 010, median C output at phase .5UI is 203.2mV, falling to 88.25mV at .875UI (all 32 bits below 100mV there). History 011 retains 147.97mV at .875UI. Early transition acquisition also fails. Simultaneous differential samples and physical clock-bank currents support acquisition/retention investigation; no closed-loop PHY claim. Frozen original gates are unmodified.
+
+Other live work: CRC antenna 43579643337; SP LVS 43566292104; DP LVS 43562021054; MBIST 43573697024. Poll actual jobs, never restart on observation timeout. Prior records below.
+
 ## C sampler transistor diagnosis completed, PHY still rejected
 
 Run 43584141378: both jobs passed diagnosis, reproduced original failing gates. Ten physically connected HBTs traced from C output, including feedback. Safe results and original full reports in `docs/evidence/cdr-c-sampler-path-result-20261114.json`. Load12/load16 both show history 010 minimum about 51.92mV and median about 93.3mV at frozen samples, below 100mV requirement; load change does not fix sampler. Script now retained; experiment workflow not merged. Next: analyze phase-resolved C master/slave acquisition and feedback currents before a circuit candidate; pooled node percentiles do not prove instantaneous differential gain. No new simulation/layout/PHY pass. Four previous long jobs remain separate; check their actual terminal results.
