@@ -1,3 +1,13 @@
+## CRC extracted STA rejected; captured diode failure now supports isolated legalization
+
+43579643337 is terminalFAIL at strict acceptance. SafeSTA14111793410 SHA2b25292fffb06b73ac4d3f119c3a7c886edeefcaf7888c4c0ea0c58c4ad3f276. Slow569setup WNS-.799542677ns,1hold-.095417454; typ0setup9hold-.069170227; fast0setup122hold-.135881976. Slowviolations PCIe551,CPU15,async2,EthTX1. Fast holdPCIe115,CPU3,EthRX4. Cap96/103/108,slew550/227/119,fanout1363. Antenna565nets656pins stillopen despiteDRC0. NominalRC only, no production claim.
+
+Diode capture43590389460/source9003dfcb3e85be38688357e0d9b823f46cd4d2f8 terminalFAIL as intentionally preserved. Runtime exactdcf36133... confirmed. DPLfails on ANTENNA_482/1342/457/458; native failed-stateODB and before/after statuses saved. Safe14112725149 SHA2769b547134d9c9b21793b3467bd198a9910031bf95fbaad5cd5cc212477cc7c; native14112241785 SHA5a745c683ff7e1adec765b3ef73ffb13ad21900f6e7567f5d7e9cdc663144176 cloudonly. No repeated originalroute needed.
+
+Currentfour-diode trial43590951082/sourcef0c5230da39e88f6b8a30994015b7e09c911a8d3, branchcodex/crc-four-diode-legalization. Restore exactfailedDB, lock allothercells, only4diodes movable, detailed_placement-max_displacement1000x1000; allotherlocations/orientations mustunchanged, then restoreoriginalstatuses and requirecheck_placement. No subsequentroute yet; passingonlyplacementdoesnotcloseantenna/timing. Safe four-diode-derived-*;nativecloudonly. FullSTA+capture receipt docs/evidence/crc-routed-sta-and-four-diode-trial-20261114.json.
+
+Live DPblock43589897545,SP43566292104,PHY43584735530,MBIST43588310054 remain separate. Do not pollterminalCRC43579643337 ordiode43590389460 as running.
+
 ## CRC jumper-only route finished but antenna repair failed; diode failure capture live
 
 Run43579643337 route job132401417086 completed execution; fresh final check still565antenna nets/656pins, unchanged across5iterations. Routing DRC0 is not foundry DRC or antenna closure. Safe14111439322 SHA1e8a33fd24778a4212ad496f8a96a675d8cf28067e698d51ef4a5163997e2d85; native14111958544 SHA0c61942e79e1c94aceedd757e5d4cc298af6cbbe90480612c72bfed2fcbf18b0 cloudonly. DependentSTA job132432238364 is running; retain results for timing diagnosis but antenna gate already fails.
