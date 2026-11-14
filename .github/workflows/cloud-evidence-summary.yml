@@ -1,21 +1,13 @@
-name: Bind buffer inputs to raw or retimed sampler outputs
+name: Audit exact CDR geometry and passive extraction provenance
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  diagnose:
+  audit:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - variant: bd10_lowz8_xor1_cdata3_sel15
-            native: '14121577984'
-            result: '14121124635'
-            digest: d497b09e264004bba0c90f78ddb26c5853206a3d4855445549518344691e53dc
+    timeout-minutes: 20
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -24,23 +16,15 @@ jobs:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /scripts/diagnose_cdr_xor_physical_path.py
-            /scripts/cdr_mos650_full650_loaded.py
-            /scripts/cdr_n1_divider_whatif.py
-      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
-      - name: Restore native waveforms only on cloud runner
+          sparse-checkout: /scripts/audit_cdr_geometry_provenance.py
+      - name: Read archived native geometry provenance on runner only
         run: |
           set -euo pipefail
-          gh api repos/${{ github.repository }}/actions/artifacts/${{ matrix.native }}/zip > native.zip
-          gh api repos/${{ github.repository }}/actions/artifacts/${{ matrix.result }}/zip > result.zip
-          echo '${{ matrix.digest }}  result.zip' | sha256sum -c -
-          unzip -q result.zip result.json
-      - run: python3 scripts/diagnose_cdr_xor_physical_path.py ${{ matrix.variant }}
+          gh api repos/${{ github.repository }}/actions/artifacts/14121577984/zip > native.zip
+          python3 scripts/audit_cdr_geometry_provenance.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
         with:
-          name: cdr-xor-physical-path-derived-${{ matrix.variant }}-${{ github.run_id }}
-          path: out/*.json
+          name: cdr-geometry-provenance-${{ github.run_id }}
+          path: out/geometry-provenance.json
           if-no-files-found: error
           retention-days: 90
