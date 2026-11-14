@@ -13,6 +13,11 @@ assert 'if(write_group[write_byte/16] && write_low[write_byte%16])' in s
 # Every existing write_valid update must have exactly its corresponding
 # group update immediately following; neither condition nor latency changes.
 import re
+# Reversing only the opt-in block and its five adjacent updates must
+# recover the exact frozen baseline source, byte for byte.
+restored=re.sub(r'`ifdef SOC_PCIE_REPLAY_WRITE_PREDECODE\n.*?`else\n(.*?)\n`endif',r'\1',s,count=1,flags=re.S)
+restored=re.sub(r'(write_valid<=[01];)\n`ifdef SOC_PCIE_REPLAY_WRITE_PREDECODE\n            write_group<=[^;]+;\n`endif\n',r'\1',restored)
+assert hashlib.sha256(restored.encode()).hexdigest()=='fff6a0d3abb6b3f3a468baef8312b357efb7b591d3733cd92f3dda3345c34c63'
 updates=re.findall(r'write_valid<=([01]);\n`ifdef SOC_PCIE_REPLAY_WRITE_PREDECODE\n            write_group<=([^;]+);\n`endif',s)
 assert len(updates)==5 and len(re.findall(r'write_valid\s*<=',s))==5
 rows=[]
