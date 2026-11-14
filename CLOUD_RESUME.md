@@ -1,3 +1,15 @@
+# Exact reader controls passed; targeted A/C buffer circuit screens running
+
+**43562548073 completed/success**: all10actual-CDL CustomReader positive/layer/W/L/open controls passed, nativeRC0. Safe14100384146 SHA256`2d34f811c1557b044eaaec0436035555bf8466c21cfc6c2880436e01357ac62c`. Candidate reader SHA256`87a75b402b35d7306153a66089c0f0105b4e50c4816c7c553d97219af6c41519` must match actual engineering macro43562021054 result before binding. Receipt:`docs/evidence/sram-reference-reader-controls-result-20261114.json`.
+
+**43562679420 completed/success**, source`10eba9d8c228d5146df70ba37e78b2fc5ccda8dd`, safe14100379062 SHA256`86c5edf695e8a93a773bb441c6d238ab897e70ef2dad1e6e113a7b98facca056`. Exact-grid A sampler stable100mV at39..47ps on transitions; bufferA67/127(xor2),73/127(xor3) transitions still not stable by117.1875ps, those stable reach109..117ps. No clock vectors saved; selector clock remains unmeasured here. Some C sampler late margins also fail. Sampled settling is not continuous/native acceptance. Receipt:`docs/evidence/cdr-buffer-settling-result-20261114.json`.
+
+**43562981217**, source`27a6dc7c4ae918c7d8a3888701e5b2ae26e254f3`, branch`codex/cdr-ac-buffer-current-resistance`: two isolated screens on failedxor2 baseline. Only four A/C collector resistor widths8->12/16um and two ibda/ibdc reference bias1->1.5/2mA change. All other topology, actual multiplicity binding,3mA/emitter and original sampler/data/phase/device gates remain. NominalI*R preservation is a hypothesis. ExistingRC/externalclock retained forscreen only; no newlayout or closedloopclaim. Safe result-only artifact prefix`cdr-ac-buffer-result-only-`; mixed NPZ/native archives remain cloud-only. Receipt:`docs/evidence/cdr-ac-buffer-screen-launch-20261114.json`.
+
+Scripts for successful reader/settling diagnoses are now on integration. Continue live routes43561900502/43541234973/43538031308, fullmacro43562021054, MBIST43558722004. Full production objective remains open.
+
+---
+
 # Reader qualification and CDR settling diagnostics launched
 
 **43562548073**, source`5ce444217f111bad822c9cf44a17e0645b7cc1c9`, branch`codex/sram-reference-reader-controls`: actual CDL through exact candidate CustomReader, then native independent graph comparison. Ten positive/layer/W/L/open controls. When finished, bind reader_candidate_sha256 to engineering macro reader hash; do not treat isolated policy tests as whole-macro signoff. At observation native runtime install stage live.
