@@ -21,18 +21,18 @@ foreach {direction names} {from {pcie_rx_dllp_i pcie_rx_error_i pcie_rx_eop_i pc
   incr index
  }
 }
-foreach bank {1 2 3} {
- set name [format {u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[%d].u_mem/A_MEN} $bank]
+foreach name {{$abc$734844$auto$blifparse.cc:397:parse_blif$770181/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$770185/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$770194/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$770206/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$772210/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$772648/A1} {$abc$734844$auto$blifparse.cc:397:parse_blif$772649/A1} {$abc$734844$auto$blifparse.cc:397:parse_blif$772650/A1} {$abc$734844$auto$blifparse.cc:397:parse_blif$772652/A1} {$abc$734844$auto$blifparse.cc:397:parse_blif$772653/A1} {$abc$734844$auto$blifparse.cc:397:parse_blif$772756/A1} {$abc$734844$auto$blifparse.cc:397:parse_blif$772762/A1} {$abc$734844$auto$blifparse.cc:397:parse_blif$773765/A1} {$abc$734844$auto$blifparse.cc:397:parse_blif$774033/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$774496/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$778729/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$778732/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$778748/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$778749/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$778752/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$778753/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$778755/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$778757/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$778759/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$778760/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$778762/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$778763/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$778768/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$778769/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$778776/A1} {$abc$734844$auto$blifparse.cc:397:parse_blif$778849/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$778866/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$778880/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$778902/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$779053/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$779069/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$779137/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779140/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779143/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779144/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779146/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779154/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779155/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779156/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779157/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779160/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779162/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779163/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779165/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779166/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779167/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779170/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779171/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779172/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779173/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779174/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779175/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779177/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779178/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779179/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779181/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779182/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779183/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779184/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779185/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779186/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779187/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779188/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779189/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$779943/A1} {$abc$734844$auto$blifparse.cc:397:parse_blif$781072/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$781082/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$781084/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$781086/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$785333/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785334/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785336/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785337/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785338/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785339/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785340/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785342/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785343/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785344/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785345/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785346/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785347/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785350/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785354/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785356/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785358/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785364/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785365/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785366/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785367/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785370/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785371/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785372/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785373/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$785380/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$800578/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$800580/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$804752/A0} {$abc$734844$auto$blifparse.cc:397:parse_blif$805337/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$805033/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$805688/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$805043/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$736143/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$761569/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$761616/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$749749/A}} {
  set target [get_pins [list $name]]
- if {[llength $target]!=1} {error "Missing SRAM enable target $name"}
+ if {[llength $target]!=1} {error "Missing feedback pin $name"}
  foreach type {max min} {
   puts "%OL_CREATE_REPORT io-$index-$type.rpt"
-  puts "NSSOC_TARGET_PIN $name"
-  report_checks -to $target -corner $corner_name -path_delay $type -group_path_count 10000 -fields {slew cap input net fanout} -format full_clock_expanded -digits 9
+  puts "NSSOC_TARGET_BRANCH_PIN $name"
+  report_checks -through $target -corner $corner_name -path_delay $type -group_path_count 10000 -fields {slew cap input net fanout} -format full_clock_expanded -digits 9
   puts "%OL_END_REPORT"
  }
  incr index
 }
+
 """
 class InputSTA(SingleCornerSTA):
  def get_script_path(self):
@@ -53,30 +53,137 @@ foreach inst [$block getInsts] {
 set old_count [llength [$block getInsts]]
 set old_nets [llength [$block getNets]]
 set changed {}
-foreach bank {1 2 3} {
- set instname [format {u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[%d].u_mem} $bank]
- set matches {}
- foreach candidate [$block getInsts] {
-  set rawname [$candidate getName]
-  set canonical [string map [list "\\" ""] $rawname]
-  if {$canonical eq $instname} {lappend matches $candidate}
- }
- if {[llength $matches]!=1} {error "Expected one exact SRAM instance $instname, found [llength $matches]"}
- set memory [lindex $matches 0]
- set actual_master [[$memory getMaster] getName]
- if {$actual_master ne "RM_IHPSG13_2P_256x16_c2_bm_bist"} {error "Wrong SRAM master $actual_master for $instname"}
- puts "NSSOC_SRAM_TARGET [$memory getName] $actual_master"
- set sink [$memory findITerm A_MEN]
- if {$sink eq "NULL" || [[$sink getMTerm] getIoType] ne "INPUT"} {error "Missing SRAM enable pin"}
+set branch_index 0
+foreach pair { {{$abc$734844$auto$blifparse.cc:397:parse_blif$770181/A} {$auto$ff.cc:337:slice$159932/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$770185/A} {$auto$ff.cc:337:slice$159933/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$770194/A} {$auto$ff.cc:337:slice$159935/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$770206/A} {$auto$ff.cc:337:slice$159938/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$772210/A} {$auto$ff.cc:337:slice$160454/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$772648/A1} {$auto$ff.cc:337:slice$160640/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$772649/A1} {$auto$ff.cc:337:slice$160641/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$772650/A1} {$auto$ff.cc:337:slice$160642/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$772652/A1} {$auto$ff.cc:337:slice$160644/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$772653/A1} {$auto$ff.cc:337:slice$160645/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$772756/A1} {$auto$ff.cc:337:slice$160701/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$772762/A1} {$auto$ff.cc:337:slice$160703/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$773765/A1} {$auto$ff.cc:337:slice$161241/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$774033/A} {$auto$ff.cc:337:slice$161432/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$774496/A} {$auto$ff.cc:337:slice$161755/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778729/A0} {$auto$ff.cc:337:slice$162815/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778732/A0} {$auto$ff.cc:337:slice$162818/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778748/A0} {$auto$ff.cc:337:slice$162832/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778749/A0} {$auto$ff.cc:337:slice$162833/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778752/A0} {$auto$ff.cc:337:slice$162835/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778753/A0} {$auto$ff.cc:337:slice$162836/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778755/A0} {$auto$ff.cc:337:slice$162838/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778757/A0} {$auto$ff.cc:337:slice$162840/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778759/A0} {$auto$ff.cc:337:slice$162842/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778760/A0} {$auto$ff.cc:337:slice$162843/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778762/A0} {$auto$ff.cc:337:slice$162844/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778763/A0} {$auto$ff.cc:337:slice$162845/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778768/A0} {$auto$ff.cc:337:slice$162850/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778769/A0} {$auto$ff.cc:337:slice$162851/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778776/A1} {$auto$ff.cc:337:slice$162856/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778849/A} {$auto$ff.cc:337:slice$162887/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778866/A} {$auto$ff.cc:337:slice$162892/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778880/A} {$auto$ff.cc:337:slice$162896/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$778902/A} {$auto$ff.cc:337:slice$162903/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779053/A} {$auto$ff.cc:337:slice$163058/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779069/A} {$auto$ff.cc:337:slice$163071/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779137/A0} {$auto$ff.cc:337:slice$163237/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779140/A0} {$auto$ff.cc:337:slice$163240/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779143/A0} {$auto$ff.cc:337:slice$163243/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779144/A0} {$auto$ff.cc:337:slice$163244/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779146/A0} {$auto$ff.cc:337:slice$163246/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779154/A0} {$auto$ff.cc:337:slice$163253/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779155/A0} {$auto$ff.cc:337:slice$163254/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779156/A0} {$auto$ff.cc:337:slice$163255/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779157/A0} {$auto$ff.cc:337:slice$163256/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779160/A0} {$auto$ff.cc:337:slice$163258/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779162/A0} {$auto$ff.cc:337:slice$163260/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779163/A0} {$auto$ff.cc:337:slice$163261/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779165/A0} {$auto$ff.cc:337:slice$163263/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779166/A0} {$auto$ff.cc:337:slice$163264/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779167/A0} {$auto$ff.cc:337:slice$163265/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779170/A0} {$auto$ff.cc:337:slice$163267/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779171/A0} {$auto$ff.cc:337:slice$163268/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779172/A0} {$auto$ff.cc:337:slice$163269/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779173/A0} {$auto$ff.cc:337:slice$163270/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779174/A0} {$auto$ff.cc:337:slice$163271/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779175/A0} {$auto$ff.cc:337:slice$163272/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779177/A0} {$auto$ff.cc:337:slice$163274/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779178/A0} {$auto$ff.cc:337:slice$163275/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779179/A0} {$auto$ff.cc:337:slice$163276/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779181/A0} {$auto$ff.cc:337:slice$163277/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779182/A0} {$auto$ff.cc:337:slice$163278/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779183/A0} {$auto$ff.cc:337:slice$163279/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779184/A0} {$auto$ff.cc:337:slice$163280/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779185/A0} {$auto$ff.cc:337:slice$163281/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779186/A0} {$auto$ff.cc:337:slice$163282/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779187/A0} {$auto$ff.cc:337:slice$163300/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779188/A0} {$auto$ff.cc:337:slice$163301/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779189/A0} {$auto$ff.cc:337:slice$163302/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$779943/A1} {$auto$ff.cc:337:slice$163777/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$781072/A} {$auto$ff.cc:337:slice$164426/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$781082/A} {$auto$ff.cc:337:slice$164431/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$781084/A} {$auto$ff.cc:337:slice$164432/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$781086/A} {$auto$ff.cc:337:slice$164433/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785333/A0} {$auto$ff.cc:337:slice$166474/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785334/A0} {$auto$ff.cc:337:slice$166475/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785336/A0} {$auto$ff.cc:337:slice$166477/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785337/A0} {$auto$ff.cc:337:slice$166478/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785338/A0} {$auto$ff.cc:337:slice$166479/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785339/A0} {$auto$ff.cc:337:slice$166480/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785340/A0} {$auto$ff.cc:337:slice$166481/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785342/A0} {$auto$ff.cc:337:slice$166482/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785343/A0} {$auto$ff.cc:337:slice$166483/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785344/A0} {$auto$ff.cc:337:slice$166484/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785345/A0} {$auto$ff.cc:337:slice$166485/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785346/A0} {$auto$ff.cc:337:slice$166486/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785347/A0} {$auto$ff.cc:337:slice$166487/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785350/A0} {$auto$ff.cc:337:slice$166490/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785354/A0} {$auto$ff.cc:337:slice$166493/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785356/A0} {$auto$ff.cc:337:slice$166495/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785358/A0} {$auto$ff.cc:337:slice$166497/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785364/A0} {$auto$ff.cc:337:slice$166502/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785365/A0} {$auto$ff.cc:337:slice$166503/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785366/A0} {$auto$ff.cc:337:slice$166504/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785367/A0} {$auto$ff.cc:337:slice$166505/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785370/A0} {$auto$ff.cc:337:slice$166508/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785371/A0} {$auto$ff.cc:337:slice$166509/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785372/A0} {$auto$ff.cc:337:slice$166510/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785373/A0} {$auto$ff.cc:337:slice$166511/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$785380/A0} {$auto$ff.cc:337:slice$166517/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$800578/A0} {$auto$ff.cc:337:slice$173075/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$800580/A0} {$auto$ff.cc:337:slice$173077/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$804752/A0} {$auto$ff.cc:337:slice$175046/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$805337/A} {$auto$ff.cc:337:slice$175514/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$805033/A} {$auto$ff.cc:337:slice$175806/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$805688/A} {$auto$ff.cc:337:slice$175809/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$805043/A} {$auto$ff.cc:337:slice$175810/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$736143/A} {$auto$ff.cc:337:slice$180554/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$761569/A} {$auto$ff.cc:337:slice$181399/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$761616/A} {$auto$ff.cc:337:slice$181686/Q}}
+ {{$abc$734844$auto$blifparse.cc:397:parse_blif$749749/A} {$auto$ff.cc:337:slice$349960/Q}}} {
+ lassign $pair sinkname sourcename
+ set slash [string last / $sinkname]
+ set instname [string range $sinkname 0 [expr {$slash-1}]]
+ set pinname [string range $sinkname [expr {$slash+1}] end]
+ set target_inst [$block findInst $instname]
+ if {$target_inst eq "NULL"} {error "Missing feedback instance $instname"}
+ set sink [$target_inst findITerm $pinname]
+ if {$sink eq "NULL" || [[$sink getMTerm] getIoType] ne "INPUT"} {error "Missing feedback input $sinkname"}
  set net [$sink getNet]
  if {$net eq "NULL"} {error "Unconnected SRAM enable"}
  set drivers {}
  foreach pin [$net getITerms] {if {[[$pin getMTerm] getIoType] eq "OUTPUT"} {lappend drivers $pin}}
  if {[llength $drivers]!=1 || [llength [$net getBTerms]]!=0} {error "Unexpected SRAM enable source"}
  set driver [lindex $drivers 0]
+ set actual_source "[[$driver getInst] getName]/[[$driver getMTerm] getName]"
+ if {$actual_source ne $sourcename} {error "Feedback source mismatch $actual_source expected $sourcename"}
  set location [[$driver getInst] getLocation]
  set orientation [[$driver getInst] getOrient]
- set stem nssoc_sram_men_hold_${bank}
+ set stem nssoc_feedback_hold_${branch_index}
  foreach name [list ${stem}_0 ${stem}_1] {
   if {[$block findInst $name] ne "NULL" || [$block findNet ${name}_out] ne "NULL"} {error "ECO name collision"}
  }
@@ -94,8 +201,9 @@ foreach bank {1 2 3} {
  }
  $sink connect $last
  dict set changed $sink $last
+ incr branch_index
 }
-if {[dict size $changed]!=3 || [llength [$block getInsts]]!=$old_count+6 || [llength [$block getNets]]!=$old_nets+6} {error "Wrong ECO census"}
+if {[dict size $changed]!=111 || [llength [$block getInsts]]!=$old_count+222 || [llength [$block getNets]]!=$old_nets+222} {error "Wrong ECO census"}
 foreach inst [$block getInsts] {
  set name [$inst getName]
  if {![dict exists $before $name]} {continue}
@@ -107,11 +215,11 @@ foreach inst [$block getInsts] {
   if {[$pin getNet] ne $expected} {error "Original incidence changed"}
  }
 }
-puts "NSSOC_SIX_NATIVE_DELAY_CELLS_THREE_SRAM_ENABLE_PINS_ONLY"
+puts "NSSOC_222_NATIVE_DELAY_CELLS_111_FEEDBACK_BRANCHES_ONLY"
 """
 class TrainingHoldECO(ElectricalPostCTS):
  id='NSSOC.TrainingHoldECO'
- name='Two native delay cells on three SRAM enable pins'
+ name='Two native delay cells on111 qualified short feedback branches'
  def get_script_path(self):
   p=Path(super().get_script_path());s=p.read_text()
   a=s.index('# Buffer I/O');b=s.index('report_floating_nets -verbose',a)
