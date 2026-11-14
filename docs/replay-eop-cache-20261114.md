@@ -43,10 +43,16 @@ The setup improvement is accompanied by a hold regression. [Actual netlist alias
 | Fast hold | -0.009951 ns | -0.017249 ns |
 | Inserted hold buffers | 1,291 | 1,299 |
 
-Both still fail timing. The native setup log reaches its 100-iteration search limit while making changes. [A 600-iteration block comparison](https://github.com/Melihakbulut221/nssoc/actions/runs/43631139914) is running; this does not change the full-chip optimization budget. The [complete measurement receipt](evidence/eop-cache-setup100-hold40-20261114.json) preserves all 48 reports' values and hashes.
+Both still fail timing. The native setup log reaches its 100-iteration search limit while making changes. [A 600-iteration block comparison](https://github.com/Melihakbulut221/nssoc/actions/runs/43631139914) completed: after hold repair, slow setup is -0.216959 ns and fast hold is -0.017249 ns for the cache candidate; the baseline is -0.338381 ns and -0.009951 ns. Neither closes timing. This does not change the full-chip optimization budget. The [complete measurement receipt](evidence/eop-cache-setup100-hold40-20261114.json) preserves all 48 reports' values and hashes.
 
 ## Required full-chip gates
 
 [Fresh chip mapping](https://github.com/Melihakbulut221/nssoc/actions/runs/43630345267) is running with the same system/Ethernet SRAM configuration and physical RTL options plus the cache. Simulation and synthesis both validate and forward the new switch. Its checker requires the exact new RTL, the cached sequential cell, all 26 write-predecode bits and all 20 SRAM macros.
 
 These isolated results do not qualify CTS, routed parasitics, full-chip input/output timing, DRC, LVS or antenna behavior. A new netlist requires its own gate boot, placement/CTS, routing, extraction and verification. The older chip's boot and LVS results cannot be transferred. Full serial Gen3 x4 PHY and production approval remain separate incomplete requirements. Native layout, netlist and simulator files remain in the cloud; receipts bind their exact sources and hashes.
+
+## Preserved main-chip mapping revalidated
+
+The first main-chip run completed RTL firmware boot (28 checks, zero failure mask) and synthesis, then failed the checker because source locations were absolute paths. [Revalidation](https://github.com/Melihakbulut221/nssoc/actions/runs/43631950511) authenticated all 60 preserved files and verified the actual cache flip-flop and its PCIe clock, without resynthesizing. The new chip has 115,746 cells and 20 SRAM macros. The original run remains failed; its corrected validation has a separate source and receipt.
+
+Exact-source placement/CTS and independent Icarus gate boot with full system/Ethernet MBIST have now been dispatched on `codex/eop-chip-physical-boot`. Their results remain pending. RTL boot success is not gate boot or physical signoff.
