@@ -1,0 +1,45 @@
+{
+  "recorded_at": "2026-11-14T01:17:46.076402+00:00",
+  "scope": "CRC byte-order retiming candidate only; not merged to integration RTL and not production accepted",
+  "previous_run": 43536206993,
+  "previous_source": "44b51cbbdcd226dbb49d69e6cb0cd739eb9326ef",
+  "result": "All four proofs timed out at 1800 seconds with return code 124 during equiv_induct. No completed equivalence verdict; timeout is not a demonstrated functional counterexample.",
+  "candidate_sha256": "51aff3ebbbf80d251b4a3ebaa3c8da744d1c0e67fb3189f2cb947af1d15219ce",
+  "artifacts": [
+    {
+      "id": 14091380485,
+      "sha256": "b52e0dd31a90bdeb934edddbe0d30b12d2c08b6e9f43deb41fe4085e6fbd6c84"
+    },
+    {
+      "id": 14091042822,
+      "sha256": "f1afa805008f1e0dcbd84f021ee0eab2de92c916ca797ab6d31ff75769cc37f3"
+    },
+    {
+      "id": 14090978893,
+      "sha256": "10964f81e3aff90ba56e8099c56fd7511f14fcc48b380e807ae4dbab39223340"
+    },
+    {
+      "id": 14090159281,
+      "sha256": "3b345455f03bdf7e2054972fbb6997dea7fd6fc75d5e6f8f60bd0f36fab97d5e"
+    }
+  ],
+  "followup": {
+    "run": 43539650224,
+    "source": "b98a4369c149091162e7a9c93643bcab7a40b9c8",
+    "branch": "codex/pcie-crc-order-proof-cleanup",
+    "changes": [
+      "opt_clean -purge before equiv_make removes unused named wires",
+      "equiv_simple -undef -seq 2 instead of default one cycle",
+      "equiv_status diagnostics and opt_clean before induction"
+    ],
+    "unchanged": [
+      "candidate and baseline RTL",
+      "both capacities 8 and 32",
+      "both comparison directions",
+      "1800-second process timeout",
+      "all live equivalence cells required proven",
+      "no extra input assumptions or output masking"
+    ]
+  },
+  "production_accepted": false
+}
