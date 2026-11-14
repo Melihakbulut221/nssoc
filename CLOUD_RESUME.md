@@ -1,3 +1,13 @@
+## Combined internal repair verified:109 fast hold endpoints remain — 2026-11-15
+
+Combined43653684598/head49d8a9aa95863bc35fb87a448583b8c77f6b4896 SUCCESS; all924targetedreports hashesverified and >=50ps. Previous40IOs+3SRAMA_MEN+111feedbackthroughpins retained, originalplacement/statuses preserved. ODB4f937eac00ff3936e6f6ed874db0af68cd92bd15ce9c31500a19c3b89db215d1; native14137831182 SHA1d8aa6f46257d545a933e33c0e764207a5ab26f42c00db75bcfc7e76dd38186a; safe14137771426 SHA60413cb246884b9b0fea20d73f5ef51306611885adc97ca26af257fe65747f3f.
+
+Wholechip43653893556/head7017ab4224d6ec1cdc822d9d2b83722afd37dfe2 SUCCESS; safe14137641826 SHA42001e2588fc0ebc711ed7b5266c7fad425247941888e25af6f2312d272bbc8e. NOregressionsagainstSRAMbaseline. Fast hold227->109,WS-.0600474->-.0528166ns,TNS-7.4964->-3.11025ns. Slow/typicalholdremain0;typWS+.0476559ns. SetupWSunchanged-3.11156/-.703858/+.46195ns; TNSslow-3633.15->-3633.07,typ-195.907->-195.879ns. Receipts docs/evidence/rx-combined-internal-hold-{eco,impact}-20261115.json. PlacementRCscope only, notrouting/signoff.
+
+Newresidualcensus43654670959/head42af61d9fda658447f725cd349bbb3836ed329ff, branchcodex/rx-combined-residual-hold. Reads exactnewnative+ODB and extracts109remainingholdpaths andknownendpointsetup; missingcappedpathsremainunknown. Inspect beforetargetednextrepair. NewRTLbankCTS/independentboot43653859525 remainsdistinctsourceandliveatlastcheck.
+
+First widenedPHYphysical43654392314/head6784dbea... failedBEFOREnativeDRC inprepare_layout KeyErrorports. ActualnewGDSindependentgeometryand25textcomparisonpassed, but generationreceiptlackedconsumerportsfield. Correctedsource96e48b1938c13d6b875177e561e2499efd9338c6 retainsoldpackedproof portsONLYafterexacttop25labels/positions compareandrecordsprovenance. Sourcepins refreshed. Newphysical43654646137 branchcodex/packed650-shared-widening-physical live. GDSf93aa21d... unchanged. Do not classifyfirstfailureasactualDRCviolationorclaimphysicalpass. Frozen560DRC/deepflatLVS/faultgatesunchanged.
+
 ## Shared M3 physical candidate generated; full physical verification launched — 2026-11-15
 
 Generator43654184010/headc765e2c7548d3e9a57c591b058a0b768208e2dff SUCCESS. NewGDSf93aa21dc645e4396b8e230114ec36656399e35bed94a1095e58fc3b62e009fe; native14137186920 SHA343b6f236d8d61683488dba3590727bbe5220c6c973da8af49fc89b6161bfd29. Proof14137047543 SHAef9a8bd5eea68273acc104e4f2a301b72106e9b400edc9c7d0c1042b812f6291. Tencomponents75/76/78/80/81/100/101/102/103/104, onlyM3added, alloriginalgeometry/toplabels/hierarchy preserved; via2/3 incidence unchanged, serializedregionsanddeletedpatchcontrol passed. Receipt docs/evidence/packed650-shared-widening-20261115.json. NativephysicalandelectricalacceptanceFALSE.
