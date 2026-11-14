@@ -1,3 +1,11 @@
+## Full native boot advanced to 1.90M cycles; next checkpoint continuation live
+
+Parent43573697024/source `27c496c5649c284e5cc1494792ef103c7fd427c7` completed CHECKPOINT infrastructure successfully, **not boot acceptance**. Lastcycle1900000, UART450 bytes, flash6frames; firmware entered, tests1..5 print ok. completed_boot=false,passed=false, checkpoint_saved=true. Safe14110894168 SHA256 `93d10bd767f486fdc5718cec80d4de1cdd2c1fd453c805bda68e31874bdaf79d`. Native14111635745 SHA256 `4118593a84fc58be234b22d1fe177626dba8a2a6f973ff10e5effca36b9472a9`; tgzSHA `06e96554e91fd1b956b3c948419a02f7de81c8ba43f75df69e5d6014453d5875`, images-43573697024, logprefix16449bytes SHA `6fc8354e52debce6a7854615f17ef0cce200158d95a819638f58fa6535e85793`.
+
+Live continuation [43588310054](https://github.com/Melihakbulut221/nssoc/actions/runs/43588310054), source `1c0d103c64f040543106b2a3e9265fe580f4d289`, branch `codex/full-native-boot-continuation-three`. Exact 1.90M checkpoint/runtime/parent/input guards retained, original3M bound and28 final checks unchanged. Do not replay older1.26Mcheckpoint. All native work stays cloud.
+
+DP bounded mismatch diagnosis43587894664 failed on unavailable Net.id; corrected43588102578 hit native Python malloc abort (not an LVS result). Current instrumented diagnosis43588371410/source `4c3e36b2409301d094fd1ff57f2e776f22735405` reads saved DB only, with faulthandler/stage logging to locate binding abort; no new LVS extraction. Full bounded comparison result remains25Match/1topNoMatch. Other live PHY43584735530, antenna43579643337, SP43566292104.
+
 ## Bounded DP comparison completed in 87.68s: 25 Match, 1 top NoMatch
 
 Run43587554414/source `d4a4f4f4468e56f354b87ce20748ca9945b2f1c9` completed DIAGNOSIS successfully, **LVS FAILED**. Native10/10 default/bounded identity and mutation controls passed. Exact70110 devices per side preserved; extraction diagnostics0. 25 child circuitsMatch, topNoMatch. Strict audit remainsFAIL. Safe14111580210 SHA256 `cc9d018c2ee7e6c3d4fff20edf534c8eaa2640a945f06c3eef1976cbcffcc9f0`. Native14111500413 SHA256 `31142082483dce4751f3abfe3af48cc1e76a48b4ce6f61ce9afbb6f29f5f3ced`; final DB SHA256 `341e7da0e6d9552c99f31d058d0250846321051badf48c099add4e60edebc2aa`. Native files stay cloud. Do not interpret green diagnostic job as LVS pass.
