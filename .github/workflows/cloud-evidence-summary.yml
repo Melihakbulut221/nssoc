@@ -1,4 +1,4 @@
-name: Full DP256x16 RC extraction recovery with resource telemetry
+name: Full DP256x16 RC extraction with bounded extra swap
 on:
   workflow_dispatch:
 permissions:
@@ -37,6 +37,18 @@ jobs:
           set -euo pipefail
           curl -fL --retry 5 https://raw.githubusercontent.com/Melihakbulut221/nssoc/e62d81aecf7f8e1c6af1e2c6c7c6ed4c0aa6065f/docs/evidence/sram-repaired-core-physical-20260926.tar.xz -o native/physical.tar.xz
           echo '3fd7b918f112b88146b92c861d0146b4ae7404682ceab27186d4a0f95a72a275  native/physical.tar.xz' | sha256sum -c -
+      - name: Provision bounded extra swap for full RC extraction
+        run: |
+          set -euo pipefail
+          available=$(df -B1 --output=avail /mnt | tail -1 | tr -d ' ')
+          test "$available" -gt 64424509440
+          sudo fallocate -l 32G /mnt/nssoc-rc.swap
+          sudo chmod 600 /mnt/nssoc-rc.swap
+          sudo mkswap /mnt/nssoc-rc.swap
+          sudo swapon /mnt/nssoc-rc.swap
+          free -m | tee out/initial-memory.log
+          swapon --show | tee out/swap-config.log
+          df -m /mnt | tee out/initial-disk.log
       - name: Extract the full macro with the selected coupled-capacitance mode
         run: |
           set -euo pipefail
@@ -46,6 +58,7 @@ jobs:
             while kill -0 "$worker" 2>/dev/null; do
               date -u '+RESOURCE_SAMPLE %Y-%m-%dT%H:%M:%SZ'
               free -m
+              for f in /sys/fs/cgroup/memory.events /sys/fs/cgroup/memory.max /sys/fs/cgroup/memory.swap.max; do if [ -f "$f" ]; then echo "$f"; cat "$f"; fi; done
               df -m . /tmp
               ps -eo pid,ppid,rss,pcpu,comm --sort=-rss | head -12 || true
               if [ -f out/RC.log ]; then tail -8 out/RC.log; fi
