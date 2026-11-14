@@ -18,13 +18,13 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: /scripts/diagnose_dp_matrix_top.py
       - run: |
-          gh api repos/${{ github.repository }}/actions/artifacts/14113100183/zip > native.zip
+          gh api repos/${{ github.repository }}/actions/artifacts/14112394415/zip > native.zip
           python3 -m pip install klayout==0.30.13
       - run: python3 -X faulthandler scripts/diagnose_dp_matrix_top.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: success()
         with:
-          name: dp-matrix-top-derived-${{ github.run_id }}
+          name: dp-normalized-top-derived-${{ github.run_id }}
           path: out/*.json
           if-no-files-found: error
           retention-days: 90
