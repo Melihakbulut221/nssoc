@@ -1,61 +1,30 @@
-name: Controlled SRAM metal1 resistor mapping and full DP comparison
+name: Diagnose normalized current DP SRAM LVS all frozen LVS source mapping and supply rules
 on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
-  lvs:
-    strategy:
-      fail-fast: false
-      matrix:
-        macro: [dp]
-        mode: [deep]
+  diagnose:
     runs-on: ubuntu-24.04
-    timeout-minutes: 350
+    timeout-minutes: 20
     env:
       GH_TOKEN: ${{ github.token }}
-      APPIMAGE_EXTRACT_AND_RUN: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /scripts/run_current_vendor_sram_lvs.py
-            /scripts/bootstrap_flow.py
-            /scripts/check_sram_native_mos_merge.py
-            /hw/soc/flow/audit_klayout_lvs.py
-      - name: Restore pinned input package and tool runtime
-        run: |
-          gh api repos/${{ github.repository }}/releases/assets/663146895 -H 'Accept: application/octet-stream' > pkg.tgz
-          curl -fL --retry 5 https://www.klayout.org/downloads/Ubuntu-24/klayout_0.30.13-1_amd64.deb -o /tmp/klayout.deb
-          echo '0bb6b913fd6a32581d50b08be744b522a2a477baa1ed7e253c97cc18ce248a24  /tmp/klayout.deb' | sha256sum -c -
-          sudo apt-get update -qq
-          sudo apt-get install -y /tmp/klayout.deb
+          sparse-checkout: /scripts/diagnose_sram_control_verdict.py
+      - run: |
           python3 -m pip install klayout==0.30.13
-          klayout -b -v
-      - name: Verify independent MOS merge and nonmerge controls
-        run: python3 scripts/check_sram_native_mos_merge.py
-      - name: Compare exact current macro and independently audit database
-        run: python3 scripts/run_current_vendor_sram_lvs.py ${{ matrix.macro }} ${{ matrix.mode }}
+          gh api repos/${{ github.repository }}/actions/artifacts/14089906886/zip > native.zip
+          python3 scripts/diagnose_sram_control_verdict.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: current-sram-normalized-derived-${{ matrix.macro }}-${{ matrix.mode }}-${{ github.run_id }}
-          path: |
-            out/derived/*.json
-            out/normalization-controls.json
+          name: sram-control-verdict-${{ github.run_id }}
+          path: out/*.json
           if-no-files-found: error
           retention-days: 90
-      - name: Preserve native evidence in cloud
-        if: always()
-        run: |
-          if [ -d out/native ]; then tar -czf native-${{ matrix.macro }}.tgz -C out native; fi
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: current-sram-normalized-native-${{ matrix.macro }}-${{ matrix.mode }}-${{ github.run_id }}
-          path: native-*.tgz
-          if-no-files-found: error
-          retention-days: 30
