@@ -1,6 +1,6 @@
 {
-  "run": 43542698325,
-  "source": "7f99d8ab41e19951fb94bff78cfece7ec3c5172c",
+  "run": 43542889935,
+  "source": "225363749ed24b5b9e452ab39af757376f21db00",
   "branch": "codex/cdr-lowz8-xor-load-reduction",
   "variants": [
     "bd10_lowz8_xor2",
@@ -19,5 +19,12 @@
   "verification": "Frozen measure_wave checks data, phase and device limits; final workflow gate also requires simulator return zero. Reduced emitter area may fail current-density or timing limits and is not presumed safe.",
   "scope": "Circuit screen only with existing layout interconnect RC. A passing result is not a new extracted layout, DRC/LVS result, full serial PHY, PVT/jitter qualification or production approval.",
   "new_layout": false,
-  "production_accepted": false
+  "production_accepted": false,
+  "cancelled_attempt": {
+    "run": 43542698325,
+    "source": "7f99d8ab41e19951fb94bff78cfece7ec3c5172c",
+    "conclusion": "cancelled",
+    "reason": "Legacy helper passed archived original nx values to per-emitter current checks after changing model nx. No result from this attempt may qualify the candidate."
+  },
+  "current_density_fix": "Deep-copy original measurement binding. Resolve each of 24 XOR HBTs uniquely by base terminal identity, require old nx=4, set actual candidate nx. Restoring only those 24 fields must reproduce the entire original binding. Frozen measure_wave now uses candidate binding and unchanged 3mA/emitter bound. Save original/candidate binding hashes and all changes."
 }
