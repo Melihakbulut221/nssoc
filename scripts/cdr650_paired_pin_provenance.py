@@ -9,7 +9,7 @@ def prove_band_relocation(g,prior,hierarchy,annotations,signature):
  need(hierarchy(baseline)==hierarchy(prior),'original baseline hierarchy matches qualified source pins')
  need(annotations(baseline)==annotations(prior),'original baseline annotations match qualified source pins')
  proof=json.loads((NATIVE/'paired-layout-proof.json').read_text())
- need(pin(NATIVE/'selected/layout'/(TOP+'.gds'))['sha256']==proof['candidate_gds_sha256']=='ecae8ae8e49beea391b1d2575da6f5ac9ea01180550ae65fc786ddc6fd9ee193','exact new physical candidate')
+ need(pin(NATIVE/'packed-predecessor.gds')['sha256']==proof['candidate_gds_sha256']=='ecae8ae8e49beea391b1d2575da6f5ac9ea01180550ae65fc786ddc6fd9ee193','exact new physical candidate')
  before=list(baseline.cell(TOP).each_inst());after=list(g.cell(TOP).each_inst())
  need(len(before)==40 and len(after)==16,'explicit top via flattening and16 retained macros')
  macros={n:i for n,i in enumerate(before) if i.cell.name.startswith('pd_child_')}
@@ -83,7 +83,18 @@ def source_pins(cfg,flat,old):
      r=pya.Region(c.begin_shapes_rec(li)).merged()
      if not r.is_empty():rows.append((c.name,info.layer,info.datatype,sorted(p.to_s()for p in r.each())))
   return sorted(rows,key=lambda r:json.dumps(r,sort_keys=True))
- prove_band_relocation(g,prior,hierarchy,annotations,signature)
+ packed=pya.Layout();packed.read(str(NATIVE/'packed-predecessor.gds'))
+ prove_band_relocation(packed,prior,hierarchy,annotations,signature)
+ need(pin(NATIVE/'selected/layout'/(TOP+'.gds'))['sha256']=='f93aa21dc645e4396b8e230114ec36656399e35bed94a1095e58fc3b62e009fe','exact widened geometry')
+ need(g.dbu==packed.dbu and hierarchy(g)==hierarchy(packed),'widening retains hierarchy and transforms')
+ need(annotations(g)==annotations(packed),'widening retains all pin annotations')
+ need(signature(g,g.cell(TOP),((30,0),))==signature(packed,packed.cell(TOP),((30,0),)),'only M3 may change')
+ oldmetal=pya.Region(packed.cell(TOP).begin_shapes_rec(packed.layer(30,0))).merged()
+ newmetal=pya.Region(g.cell(TOP).begin_shapes_rec(g.layer(30,0))).merged()
+ need((oldmetal-newmetal).is_empty() and not(newmetal-oldmetal).is_empty(),'M3 addition only and nonempty')
+ for inst in g.cell(TOP).each_inst():
+  need(signature(g,inst.cell)==signature(packed,packed.cell(inst.cell.name)),'all retained child material unchanged')
+ save('widened-pin-provenance.json',dict(exact_widened_gds_verified=True,all_hierarchy_and_annotations_preserved=True,only_top_M3_added=True,primitive_geometry_unchanged=True,full_phy_accepted=False))
  need(old["status"]=="PASS_ACTUAL650_SOURCE_PINS_ON_IDENTICAL_PRIMITIVE_DRAWINGS","qualified original650 primitive pin provenance")
  reachable=set()
  def visit(c):

@@ -1,4 +1,4 @@
-name: Bind current packed650 device terminals and gate contacts
+name: Bind current widened650 device terminals and gate contacts
 on:
   workflow_dispatch:
 permissions:
@@ -33,14 +33,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: packed650-anchors-derived-${{ github.run_id }}
+          name: shared650-widened-anchors-derived-${{ github.run_id }}
           path: paired-terminal-anchors/derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: packed650-anchors-native-${{ github.run_id }}
+          name: shared650-widened-anchors-native-${{ github.run_id }}
           path: paired-terminal-anchors/native/
           if-no-files-found: warn
           retention-days: 90
