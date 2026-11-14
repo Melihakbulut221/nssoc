@@ -1,3 +1,13 @@
+## 2026-11-14 — full chip native fault suite PASSED
+
+Suite43607561776/source0af445ae8447e48a7fbd1252f1693df19acc3bfb PASSED allfour controls in one identity-gated cloud job. Identity108Match+strictportstrue; signal_open107Match/1NoMatch; SRAMMOSwidth107Match/1NoMatch; port_name108Match but strictportsfalse. Alloriginal DB hashes unchanged. Safe14118697093 SHA3ae02f4c345b809785f8a03bef78e0fc299ea13a477855e216ec0a7d9edb6917. See docs/evidence/full-chip-native-fault-controls-20261114.json and docs/full-chip-native-fault-controls-20261114.md. Tested helper copied byte-identically to integration; experiment workflow NOT merged.
+
+Signal fault disconnects NSCELL_0 SG13G2_NOR2_1.A fromNSNET_356. SRAM fault changes CELL<31>.N5 width0.30->0.45 in shared DPbitkit definition. Port fault changes CAN_RX_I netname only; topology stillmatches and portgate correctlyrejects. Stored SPICE case semantics restored per originalreader; no blackboxing/deviceexclusion/netequivalence/portwaiver.
+
+Next: follow route43591198141 and PHY43603972722. Route success must feed its OWN coherent GDS, poweredVerilog/fulltransistorreference and LVS; do not transplant old GDS pass. Existing prepare_namespaced_chip_streamout.py and run_full_chip_transistor_lvs.py pin prior artifact/hashes and must be rebound explicitly after newroute artifacts exist. Native outputs stay cloud-only. Full serial PHY, finaltiming/qualifiedRC and manufacturing approval remain open.
+
+Latest snapshot: {"43591198141": {"status": "in_progress", "conclusion": null, "head_sha": "2bb475a2d0a9c51cfa985a50d0239799deaddc45"}, "43603972722": {"status": "in_progress", "conclusion": null, "head_sha": "389d8b4f2e5782521d5bd779807dce3bb5029a10"}}
+
 ## 2026-11-14 — stored full-chip identity replay PASSED; full fault suite live
 
 Identity43607296971/source1c3f8363705a03c0e9d254a44b47d85ef5f4bcc7 PASSED:108Match, native comparetrue, flag_missing_portstrue, original DB SHAunchanged,97.73s comparison. Restoring original SPICE reference.case_sensitive=False also makes original saved-xref port check pass (beforefalse/aftertrue), confirming serialization-semantics cause. Safe14119285571 SHAdb1e0fdcaaf6c86fae0ef605d0e5e4fbe4d7d60b0cf94f362dd233c38266de9c. Receipt docs/evidence/full-chip-stored-identity-20261114.json. No port waiver or source/netlist edits.
