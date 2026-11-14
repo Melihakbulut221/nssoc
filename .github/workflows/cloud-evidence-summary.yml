@@ -1,4 +1,4 @@
-name: DP SRAM bounded ambiguity diagnosis with unchanged strict LVS
+name: Read SRAM search-limit diagnostics without native object loading
 on:
   workflow_dispatch:
 permissions:
@@ -7,50 +7,21 @@ permissions:
 jobs:
   diagnose:
     runs-on: ubuntu-24.04
-    timeout-minutes: 55
+    timeout-minutes: 10
     env:
       GH_TOKEN: ${{ github.token }}
-      QT_QPA_PLATFORM: offscreen
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /scripts/replay_dp_sram_bounded.py
-            /scripts/check_lvs_bounded_search.rb
-            /hw/soc/flow/audit_klayout_lvs.py
-      - name: Restore exact native archive and runtime in cloud
-        run: |
-          set -euo pipefail
-          gh api repos/${{ github.repository }}/actions/artifacts/14110867794/zip > native.zip
-          curl -fL --retry 5 https://www.klayout.org/downloads/Ubuntu-24/klayout_0.30.13-1_amd64.deb -o /tmp/klayout.deb
-          echo '0bb6b913fd6a32581d50b08be744b522a2a477baa1ed7e253c97cc18ce248a24  /tmp/klayout.deb' | sha256sum -c -
-          sudo apt-get update -qq
-          sudo apt-get install -y /tmp/klayout.deb
-          python3 -m pip install klayout==0.30.13
-      - name: Verify unchanged rejection of graph and parameter faults
-        run: klayout -b -zz -r scripts/check_lvs_bounded_search.rb
-      - name: Diagnose preserved full-macro comparison with bounded search
-        run: python3 scripts/replay_dp_sram_bounded.py
+          sparse-checkout: /scripts/diagnose_dp_search_messages.py
+      - run: gh api repos/${{ github.repository }}/actions/artifacts/14111500413/zip > native.zip
+      - run: python3 scripts/diagnose_dp_search_messages.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
         with:
-          name: dp-sram-bounded-derived-${{ github.run_id }}
-          path: |
-            out/derived/*.json
-            out/comparison-controls.json
+          name: dp-sram-search-messages-derived-${{ github.run_id }}
+          path: out/*.json
           if-no-files-found: error
           retention-days: 90
-      - name: Preserve native diagnostic evidence on cloud
-        if: always()
-        run: |
-          if [ -d out/native ]; then tar -czf bounded-native.tgz -C out native; fi
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: dp-sram-bounded-native-${{ github.run_id }}
-          path: bounded-native.tgz
-          if-no-files-found: warn
-          retention-days: 30
