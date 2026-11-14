@@ -8,7 +8,7 @@ wiring parasitics stay those of the current layout. The frozen measure_wave
 and its unchanged thresholds judge the result. A what-if is not a layout,
 DRC, LVS or extraction of a new candidate.
 """
-import json,re,subprocess,sys,time
+import json,re,subprocess,sys,time,copy,hashlib
 from pathlib import Path
 import numpy as np
 sys.path.insert(0,str(Path(__file__).resolve().parent))
@@ -104,6 +104,23 @@ def main(root,variant,out):
             expected,count=re.subn(r'(\snx=)4(?=\s|$)',r'\g<1>'+VARIANTS[variant]['xor_nx'],old)
             assert count==1 and new==expected
         (out/'isolated-load-change.json').write_text(json.dumps({'reference_variant':'bd10_slave_parallel2_lowz8','changed_devices':XOR_DATA,'only_nx_changed':True,'old_nx':4,'new_nx':int(VARIANTS[variant]['xor_nx']),'wiring_rc_unchanged_whatif_only':True},indent=2))
+    # Current per emitter must use the actual candidate nx, not the archived binding.
+    bound=copy.deepcopy(original['binding'])
+    binding_changes={}
+    if 'xor_nx' in VARIANTS[variant]:
+        devices=bound['groups']['npn13g2']
+        for native_id in XOR_DATA:
+            marker='w_t'+native_id[3:]+'_b'
+            hits=[name for name,dev in devices.items() if dev['nodes'][1].lower().rsplit('.',1)[-1]==marker]
+            assert len(hits)==1,(native_id,'ambiguous or missing bound HBT',hits)
+            name=hits[0];assert devices[name]['nx']==4,(name,devices[name]['nx'])
+            devices[name]['nx']=int(VARIANTS[variant]['xor_nx'])
+            binding_changes[name]={'native_id':native_id,'old_nx':4,'new_nx':devices[name]['nx']}
+        assert len(binding_changes)==24
+        restored=copy.deepcopy(bound)
+        for name in binding_changes:restored['groups']['npn13g2'][name]['nx']=4
+        assert restored==original['binding'],'Unrelated waveform binding changed'
+    (out/'candidate-current-density-binding.json').write_text(json.dumps({'changes':binding_changes,'original_binding_sha256':hashlib.sha256(json.dumps(original['binding'],sort_keys=True).encode()).hexdigest(),'candidate_binding_sha256':hashlib.sha256(json.dumps(bound,sort_keys=True).encode()).hexdigest(),'current_limit_a_per_emitter':.003,'original_metadata_unchanged':True},indent=2))
     model.write_text(patched)
     (out/'patch.json').write_text(json.dumps(dict(variant=variant,values=VARIANTS[variant],changed=changed),indent=1))
     folder=native/'loaded-n1-nominal_late';assert not (folder/'wave.raw').exists()
@@ -117,7 +134,7 @@ def main(root,variant,out):
     t,d,info=loaded.read_streamed_wave(folder/'wave.raw',original['vectors'],loaded.STOP,loaded.STEP)
     r={}
     try:
-        loaded.measure_wave(original['binding'],t,d,original['source_bits'],original['data_offset_s'],{},r,False,False);passed=True
+        loaded.measure_wave(bound,t,d,original['source_bits'],original['data_offset_s'],{},r,False,False);passed=True
     except AssertionError as e:passed=False;r['assertion']=str(e)
     keep={k:r[k]for k in ('status','data_passed','devices_passed','phase_passed','phase_average_v','vi','sampler_checks','comparisons','minimum_active_stage_tail_current_a','interface_observations')if k in r}
     for g in ('sampler_checks','comparisons'):
@@ -128,7 +145,7 @@ def main(root,variant,out):
     keep.update(variant=variant,returncode=rc,elapsed_seconds=elapsed,passed=passed,
         waveform_passed=waveform_passed,simulator_passed=(rc==0),failing_hbt=hbt,
         failing_mos=[n for n,x in r.get('mos_checks',{}).items()if not x['passed']],raw=dict(points=info['header_rows'],sha256=info['raw_sha256']),
-        what_if_only=True,new_layout=False,electrical_acceptance=False)
+        what_if_only=True,new_layout=False,electrical_acceptance=False,current_density_binding_changes=binding_changes)
     grid=(loaded.START+np.arange(258)[:,None]*loaded.UI+np.arange(16)[None,:]*loaded.UI/16).ravel()
     names=[n for n in original['vectors']if n.startswith('v(')]
     np.savez_compressed(out/'bit-phase-samples.npz',samples=np.array([np.interp(grid,t,d[n])for n in names],dtype=np.float32),names=np.array(names),grid=grid)
