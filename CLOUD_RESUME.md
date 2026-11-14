@@ -1,3 +1,15 @@
+# CDR A/C buffer current screens rejected; saved-waveform comparison running
+
+43562981217 completed/failure. Both acbuf15 and acbuf20 simulate successfully and pass phase, but fail data and device limits. X wrong-sign samples383/765 for BOTH; Y below100mV587/588 samples. Failing HBT counts8/14; sampler A/C/D remain failing. No PHY acceptance, no new layout. Do not repeat unchanged current increases.
+
+Safe result-only14103877257SHA`f9e9332b631252c132227b877b48b7593d95af88317ae3ac7b482d4a0c5cd466` and14103871330SHA`b39fb2fa31b2e955c00f7380e9a8b0d429f7b59847bbc63c5be589df5dbfee61` verified. Full results: docs/evidence/cdr-ac-buffer-rejected-result-20261114.json.
+
+Diagnostic43570390846 source`7b6db8cfb6c50edb9d6330aed231cc833976cd8a`, branch`codex/cdr-ac-buffer-settling-comparison`: exact UI/16 saved grid for original xor2 + acbuf15 + acbuf20. No threshold or sample alignment changes. Mixed NPZ archives remain cloud-only. Safe artifact`cdr-ac-buffer-settling-43570390846`. Inspect conditional transition settling before next circuit change; diagnostic success alone is not acceptance.
+
+Other six runs freshly verified in progress: RX6resume43569629324, electricalresume43567570194, SP43566292104, DP43562021054, freshCRCroute43561900502, nativeMBIST43558722004. No numerical timing/LVS improvement inferred from live job status. Full goal remains open.
+
+---
+
 # RX6 hold checkpoint verified and split continuation launched
 
 Inventory43569490025 completed/success. Safe14104151119SHA`0d974e1bec75005424ef7e0ac94b81bd52587b9234245dc5e07c2a989ae965bb`; candidate drt-run-1ODB221904411bytes,SHA`329e6ef42702320243b595ab56554d5fc3fd3c63e93ff452faad0a206df36c82`. SDCsame5c65218b6106315c71d45c19eb61af09781607f0f438f2c7f99c4427884d24a4 but path`rcx/1-nssoc-cut10jrx6holdthree/soc_top.sdc`. Native14103417683SHA`361ca0f3c8fad45e6c8a8a4b49e828804cb48df8835651acb49932222f6e1c31`cloudonly.
