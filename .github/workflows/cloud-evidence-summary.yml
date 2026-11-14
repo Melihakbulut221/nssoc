@@ -59,7 +59,7 @@ jobs:
           gh api repos/${{ github.repository }}/actions/artifacts/14100640319/zip > $W/h/base.zip
           echo 'f724a289dc08812190d1aac64bfd1b4fafceeaca71c734ed578ca41d96a62f7c  /mnt/s/h/base.zip' | sha256sum -c -
           unzip -q $W/h/base.zip -d $W/h
-          tar -xzf $W/h/routed.tgz -C /
+          tar -xzf $W/h/handoff.tgz -C /
           rm -rf $W/h; mkdir -p $W/h
           gh api repos/${{ github.repository }}/actions/artifacts/14107653261/zip > $W/h/candidate.zip
           echo 'a401c73f139405396cf8afdb0e24e718c1334c09d8c49c3e4774d78e3440f64c  /mnt/s/h/candidate.zip' | sha256sum -c -
@@ -105,7 +105,7 @@ jobs:
         if: failure()
         run: |
           mkdir -p /mnt/s/native
-          tar -czf /mnt/s/native/route-incomplete.tgz hw/soc/out/impl-probe/route hw/soc/out/impl-probe/prepared hw/soc/out/impl-probe/route-initial.json
+          tar -czf /mnt/s/native/route-incomplete.tgz hw/soc/out/impl-probe/route hw/soc/out/impl-probe/prepared hw/soc/out/impl-probe/route-initial.json hw/soc/out/impl-probe/recovered-route
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: failure()
         with:
