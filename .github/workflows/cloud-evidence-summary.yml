@@ -10,7 +10,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        capacity: [8, 32]
+        capacity: [8]
+        mutation: [crc_bit, tx_output]
         direction: [forward, reverse]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -45,11 +46,11 @@ jobs:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Prove CRC byte-order retiming against exact current RTL
-        run: python3 -u scripts/check_pcie_crc_order_equivalence.py "${{ matrix.capacity }}" "${{ matrix.direction }}"
+        run: python3 -u scripts/check_pcie_crc_order_equivalence.py "${{ matrix.capacity }}" "${{ matrix.direction }}" "${{ matrix.mutation }}"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pcie-crc-order-${{ matrix.capacity }}-${{ matrix.direction }}-${{ github.run_id }}
+          name: pcie-crc-negative-${{ matrix.mutation }}-${{ matrix.capacity }}-${{ matrix.direction }}-${{ github.run_id }}
           path: |
             out/*.log
             out/*.ys

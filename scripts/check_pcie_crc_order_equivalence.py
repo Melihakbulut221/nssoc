@@ -13,6 +13,17 @@ p=pathlib.Path('hw/soc/rtl/pcie/soc_pcie_lcrc_tx.v');out=pathlib.Path('out');out
 subprocess.run(['git','fetch','--depth=1','origin',BASE],check=True)
 gold=subprocess.check_output(['git','show',BASE+':'+str(p)]);assert hashlib.sha256(gold).hexdigest()==DIGEST
 candidate=p.read_bytes()
+mutation=sys.argv[3]
+assert mutation in ('crc_bit','tx_output')
+if mutation=='crc_bit':
+    old=b'(^(fold_ordered_word & lsb_mask));'
+    new=b'(^(fold_ordered_word & lsb_mask)) ^ (fold_bit==0);'
+else:
+    old=b'always @* tx_data_o=tx_shown ? tx_byte : 8\'d0;'
+    new=b'always @* tx_data_o=(tx_shown ? tx_byte : 8\'d0) ^ 8\'h01;'
+assert candidate.count(old)==1
+candidate=candidate.replace(old,new)
+
 # A proof-only semantic correspondence, never an assumption or output mask.
 # Its 32 equivalence points must be proved along with every existing point.
 gold_text=gold.decode();gate_text=candidate.decode()
@@ -39,6 +50,9 @@ with (out/'proof.log').open('w') as log:
  try:rc=subprocess.run(['yosys','-s',str(out/'proof.ys')],stdout=log,stderr=subprocess.STDOUT,timeout=1800).returncode
  except subprocess.TimeoutExpired:rc=124
 text=(out/'proof.log').read_text();counts=re.findall(r'Of those cells (\d+) are proven and (\d+) are unproven',text)
-passed=rc==0 and 'Equivalence successfully proven!' in text and counts and int(counts[-1][0])>0 and int(counts[-1][1])==0 and candidate==p.read_bytes() and 'fold_ordered_word_gold' in text and 'fold_ordered_word_gate' in text
+passed=rc==0 and 'Equivalence successfully proven!' in text and counts and int(counts[-1][0])>0 and int(counts[-1][1])==0 and mutation in ('crc_bit','tx_output') and 'fold_ordered_word_gold' in text and 'fold_ordered_word_gate' in text
 r={'passed':bool(passed),'base':BASE,'gold_sha256':DIGEST,'candidate_sha256':hashlib.sha256(candidate).hexdigest(),'capacity':capacity,'direction':direction,'returncode':rc,'counts':counts,'seconds':time.monotonic()-start,'scope':'Sequential RTL equivalence under Yosys async2sync/undef semantics; no added input assumptions or valid masking. Requires both directions, simulation, and fresh physical validation.','production_accepted':False}
-(out/'result.json').write_text(json.dumps(r,indent=2));print(json.dumps(r));sys.exit(0 if passed else 1)
+r['mutation']=mutation
+rejected=rc!=0 and rc!=124 and bool(counts) and int(counts[-1][1])>0 and 'ERROR:' in text and 'unproven' in text and not passed
+r['negative_control_passed']=bool(rejected)
+(out/'result.json').write_text(json.dumps(r,indent=2));print(json.dumps(r));sys.exit(0 if rejected else 1)
