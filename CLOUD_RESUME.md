@@ -1,3 +1,11 @@
+# Antenna audit format-key bug corrected; final-archive-bound check live
+
+43577172823 failed before OpenROAD measurement with KeyError:'SDC': deprecated DesignFormat.name returns lowercase format id, not enum identifier. Replacement uses explicit odb/sdc keys. Removed incorrect pre-route-SDC hash comparison: final views are bound to exact SHA-verified final routed archive14105679819; hash invariance of ODB/SDC before/after native check remains required. No layout/threshold changes; old SDC equality was not evaluated due KeyError, so no claim of measured hash mismatch.
+
+Replacement43577454990 source7e10978a522ae51d0ccc3d251e1f04e7c089884a, branchcodex/rx6-final-antenna-audit, verified in_progress. Safe artifactrx6-final-antenna-derived-43577454990. Require native antenna__violating__nets/pins, no view replacements, input hashes unchanged. Stop polling failed43577172823/43576971725. Actual final antenna status still unknown; recorded1/2 may precede last repair. Other livehandles remain43571075470,43569629324,43566292104,43562021054,43561900502,43573697024. Fullgoalopen.
+
+---
+
 # Final antenna audit run-directory failure fixed; replacement live
 
 43576971725 failed before any native antenna measurement: CLI --force-run-dir requires existing directory final-ant. Exact source/raw checkpoint unaffected. Job132393216711 confirms archive SHA passed; exit2 on missing run directory. Derived error artifact14106581453 SHAea306ba8840a83fef48235c6be98a926aee285e4f9cb7df743327b3cc8c805c7.
