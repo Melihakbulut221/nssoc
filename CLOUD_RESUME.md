@@ -1,3 +1,7 @@
+## Targeted PCIe input setup evidence launched — 2026-11-15
+
+Run 43648146822, source2a700b3a0965336cf1b09c224d98b3c2ba3a0b01, branch codex/rx-pcie-input-timing. Read-only restored RX training-ECO ODB dce675ce9aab6a7833fcb55ded416540b392affb065521ef53e3ce9d33d1d54c. No Ethernet or additional PCIe delay ECO in this run. Measures all29remaining PCIe input ports: dllp,error,eop,sop,data[0:7],valid,function_id[0:15], in that index order. Each receives explicit -from get_ports max/min at all3corners,174reports required; missing report/path fails. Report itself includes NSSOC_TARGET_PORT for reliable mapping. Original source/constraints protected. Derived artifact rx-pcie-input-timing-derived-* includes io-*.rpt; native output separate cloud-only. Await actual margins before repairing these inputs. Ethernet run43648005592 remains separate candidate from the same baseline; do not combine unverified results.
+
 ## Ethernet output hold ECO launched after full census — 2026-11-15
 
 Census43647795434/heada6ec1164d5d9a7d8b5f680a25945d5355a64e687 completed. Artifact14133908959 SHA23328da860436b88901e552f79f6b6d6b1d9e8953f2b8a8001bc6e343e36470f. 269 violating endpoint union, 39 I/O endpoints; 126 endpoints (including PCIe inputs) lack setup endpoint matches in capped native max reports. DO NOT assume missing setup is positive: use targeted STA before touching PCIe. Receipt docs/evidence/rx-eco-hold-census-20261115.json. Ethernet10outputs all have three-corner setup evidence, minimum3.420857ns (slowbit7). Fast hold worst-.227691ns.
