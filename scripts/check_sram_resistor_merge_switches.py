@@ -21,7 +21,10 @@ for variant,definition in [('original',original),('fixed',fixed)]:
    ruby += "def flag(d,n); d.send(d.respond_to?(n) ? n : n+'?'); end\n"
    ruby += "File.write('flags.json', JSON.generate({'serial'=>flag(d,'supports_serial_combination'),'parallel'=>flag(d,'supports_parallel_combination')}))\n"
    P('flags.rb').write_text(ruby)
-   subprocess.run(['klayout','-b','-zz','-r','flags.rb'],check=True,timeout=60,capture_output=True,text=True)
+   proc=subprocess.run(['klayout','-b','-zz','-r','flags.rb'],timeout=60,capture_output=True,text=True)
+   if proc.returncode:
+    failure={'variant':variant,'tag':tag,'returncode':proc.returncode,'stdout':proc.stdout,'stderr':proc.stderr,'production_accepted':False}
+    P('out/native-control-error.json').write_text(json.dumps(failure,indent=2));print(json.dumps(failure));proc.check_returncode()
    flags=json.loads(P('flags.json').read_text())
    expected={'serial':serial,'parallel':parallel} if variant=='fixed' else {'serial':True,'parallel':True}
    assert flags==expected,(tag,flags,expected)
