@@ -1,3 +1,13 @@
+## RX input diagnosis and bank harness correction — 2026-11-15
+
+Completed diagnostic run 43645678166, source 950a045c064f8b77b28f8cd4e89b6f7cb93af70e, artifact 14134236381 SHA256 21188dbe10d102293be8f744d404e9e9e76ee314caa1bc4055347dc01f6e6ade. Exact RX repaired ODB unchanged. Slow/typical/fast input setup margins +2.859017372/+3.015025139/+3.079114914 ns, hold -0.429313272/-0.417217821/-0.387760997 ns. Actual first sink hold23727/A, endpoint slice183541. These are placement RC, not routed signoff.
+
+Dispatched source-specific two-delay ECO run 43646555578, commit 6a87c130412d272c700214201820da450f693fad, branch codex/rx-training-hold-eco. Reuses protected two-native-delay-cell method on exact RX database with original sink hold23727, verifies all original incidences and masters and preserves constraints. No passing result yet; inspect targeted six margins AND whole-chip metrics before adoption.
+
+RX bank experiment 43646311455: formal job 132604800997 remains live. Traffic job failed BEFORE RTL simulation: inherited shell harness disallowed SOC_PCIE_RX_CURSOR_LOCAL_RESET. Corrected only allowlist (ef8d55353921691776a776a604de0ffab12a2975); workflow traffic-only head a5084f973055411c1891033fadf040b9055c9dfd, rerun 43646430563/job132605179099 live. RTL hash remains 6e8736695b6fe059716fd90b5b8d969ca80a326f6c3a4705325bb5b7ec8831c0. Bind future proof/traffic qualification to each exact job/head/hash, not overall first-run color. Do not promote before both pass including mutations.
+
+Packed PHY run 43642783223/job132593819470 remains in progress. No restart or new acceptance claim.
+
 ## RX bank local-handshake experiment — 2026-11-15 continuation
 
 Not signoff. The RX critical-cone diagnostic run 43645631518 identified the current worst slow setup endpoint as bank_byte[0][4], FF slice176645, from soc_pcie_rx_credit.v bank register update. Startpoint slice343468 is the reset-copy driver. Worst slack remains -3.111556 ns. Diagnostic safe artifact 14133831439 SHA256 91aa435f74fa67aa5d0a0d4f5335f25648de9d8e4edef8374edf186e9a8a931b.
