@@ -1,3 +1,15 @@
+# Fresh routed candidate and SRAM engineering reference now running
+
+**43561900502**, source`b1626c18095a9a9c7a06b3cb1bd508a4a0ba7f19`, branch`codex/crc-order-fresh-antenna-route`: exact fresh CRC handoff14100640319 pinned, now native route stage. Legalize/global/detailed route with antenna repair5/5 and unchanged ratios, DRT16; dependent nominal extracted RC and standalone three-corner STA; strict zero timing/electrical/DRC/antenna gate. No old instance ECOs. Native data retained cloud-only.
+
+**43562021054**, source`70ebe8dca3b28d91a259f49bfee6b5b57c219f6e`, branch`codex/sram-engineering-reference-v1`: strict full-DP-macro engineering-reference comparison. Script`scripts/run_sram_engineering_reference_v1.py`; eight R statements across three cells change only proven layer/W tokens, original CDL/GDS unchanged. Exact reversibility and unchanged terminal assertions; no body aliases, no ports/tolerance waiver. Candidate result explicitly separate from original vendor/current-chip acceptance. Original70110primitives preserved.
+
+**43562168662**, source`425b317cbd0dc7c5e82fd31a3806febdcaaf087a`, branch`codex/sram-reference-resistor-controls`: exact Ruby RES2 strict layer/width/length/open native rejection controls. Inspect all10verdicts, not just green workflow; not full macro/deck-reader/signoff proof.
+
+Receipt:`docs/evidence/fresh-route-sram-reference-launch-20261114.json`. New experimental workflows stay on experiment branches. Long MBIST43558722004 and old route candidates43541234973/43538031308 were verified live this turn. Poll exact handles; do not relaunch based on observation delays. Full serial PHY, current-chip LVS, final qualified timing/RC and manufacturing remain open.
+
+---
+
 # Fresh CRC deep repair completed: route the new pinned handoff next
 
 **43550440744 completed/success**, exact source`ecbcf43200413fc63844bbd20a7532f87af54216`. Both deep setup and hold repair completed; native handoff **14100640319**, SHA256`f724a289dc08812190d1aac64bfd1b4fafceeaca71c734ed578ca41d96a62f7c`, retained7days, cloud-only. Derived report14100400861 SHA256`d4b77f873736fe69c70c665478c465e32a645bb80cc57d3a9ca8cd62b7a893c9` inspected; contains logs/reports/TCL/config/flop map, not native DB/netlist.
