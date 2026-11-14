@@ -1,3 +1,11 @@
+## 2026-11-14 — targeted input-path OR4 ECO dispatched from guarded saved database
+
+Run 43634351297, branch codex/eop-input-or4-eco, source 4d5a209adcb35c83075e3df0cad9d6ab77367d4c. Native log of the preceding guarded repair explicitly said it could not repair all setup violations despite its final endpoint counter being zero. Cache remaining worst path is in_sop_i -> _09986_/D, slow setup -0.022251979 ns. Its _06640_/X sg13g2_or4_1 stage contributes 0.417097926 ns. Frozen IHP library includes sg13g2_or4_2.
+
+The experiment restores exact guarded_hold.odb from authenticated native artifact 14129275553 and compares untouched control against ONE equivalent master change (_06640_, or4_1 -> or4_2). All three frozen Liberty files must have identical pin directions and Boolean functions for these masters. It does not change RTL, constraints, clock, I/O loads, library timing tables or RC models. Both cases run native OpenROAD, legality check, fresh placement RC and all-constrained-path min/max STA in three corners. Control must reproduce previous six all-path slacks within 2 fs. Candidate legalizes after resizing. Electrical violation report and native final ODB/netlist are retained. Sources and databases remain in cloud; experiment workflow must not merge into integration.
+
+Inspect actual ECO result before accepting or extending it. All acceptance/full-chip/PHY claims remain false. Mainchip fresh postCTS 43633451595 and boot 43632152541 are independent live jobs; avoid duplicate launches. Evidence ledger for previous guarded result is docs/evidence/eop-block-guarded-repair-20261114.json.
+
 ## 2026-11-14 — guarded block repair measured: hold improved, input setup still open
 
 Run 43633349306 / source 470ff1618470f9c2875aa6b021db85591e1e8c0c completed successfully as an execution, not timing acceptance. Both original DB readbacks matched. Positive optimization margins (setup 50 ps, hold 25 ps) left the original 4 ns clock, I/O budgets, libraries, derates and zero-slack acceptance unchanged.
