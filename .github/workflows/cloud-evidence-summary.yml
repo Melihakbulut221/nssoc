@@ -1,13 +1,13 @@
-name: Check whole chip timing impact of two cell training hold ECO
+name: Derive remaining RX hold paths after physical ECO
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  compare:
+  extract:
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    timeout-minutes: 15
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -15,12 +15,12 @@ jobs:
         with:
           persist-credentials: false
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/compare_training_hold_eco.py
-      - run: python3 scripts/compare_training_hold_eco.py
+          sparse-checkout: /scripts/derive_rx_hold_paths.py
+      - run: python3 scripts/derive_rx_hold_paths.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: training-hold-eco-comparison-${{ github.run_id }}
+          name: rx-hold-paths-${{ github.run_id }}
           path: out/
           if-no-files-found: error
           retention-days: 90
