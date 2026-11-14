@@ -1,3 +1,9 @@
+## 2026-11-14 — all 1140 open clock-load outputs qualified
+
+Cloud run 43600938256 passed (source eb33eff08d22a924bec182547086dce9dafb187c). Frozen Liberty confirms all 1140 omitted scalar X/Y pins are outputs on exact clkload-number instances. Missing input/power, bus, width mismatch and unrelated-instance controls reject. Top ports have no constants or aliases. This is interface qualification, NOT full-chip LVS. See docs/evidence/chip-open-output-qualification-20261114.json.
+
+Next: emit independent full transistor CDL from powered logical netlist with exact formal order, explicit isolated nodes only for qualified open outputs, and verified internal constant/supply mapping. Raw config VDD_PIN=VPWR/GND_PIN=VGND, VDD_NETS/GND_NETS null; do not guess supply nets from configuration. Inspect logical connectivity and map to declared top supply ports. Use complete standard-cell CDL plus namespaced SRAM CDL; no macro blackboxing. Native JSON and artifacts stay cloud-only. Main routing 43591198141 and PHY isolated-bias 43596398222 remain in progress at last check; do not restart. Integration streamout uses the previous failed timing route and is not final physical acceptance.
+
 ## Assembled SRAM geometry readback passed
 
 Run **43600253157**, source `09ac3feea2471ed393055fdf55d84be9dca5b3f5`, verified all **311 SRAM library cells** in the actual assembled main-chip GDS. No missing or different cells; grid, shapes, labels and internal instance transforms/arrays match. The main-chip top contains exactly **16 DP and4 SP macro instances** as required. Safe artifact14116495410, SHA256 `28d31064048873cd2a8e3bb6676f1ff5938773b01642287ddf07a7e46819752c`.
