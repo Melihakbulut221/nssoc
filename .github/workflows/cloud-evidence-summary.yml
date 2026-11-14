@@ -1,4 +1,4 @@
-name: CDR A/C collector resistance only with original bias - frozen gates
+name: CDR C slave data and feedback sizing - frozen gates
 on:
   workflow_dispatch:
 permissions:
@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        variant: [bd10_lowz8_xor2_acload12, bd10_lowz8_xor2_acload16]
+        variant: [bd10_lowz8_xor2_cdata3, bd10_lowz8_xor2_cslave3]
     env:
       GH_TOKEN: ${{ github.token }}
       ARTIFACT_ID: '13283214752'
@@ -29,6 +29,7 @@ jobs:
         run: |
           set -euo pipefail
           gh api repos/${{ github.repository }}/actions/artifacts/14092472835/zip > buffer-topology.zip
+          gh api repos/${{ github.repository }}/actions/artifacts/14110140623/zip > sampler-phase.zip
           W=/mnt/n1; sudo mkdir -p $W; sudo chown $USER $W
           gh api repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip > $W/n1.zip
           echo "$ARTIFACT_SHA256  $W/n1.zip" | sha256sum -c -
@@ -59,8 +60,11 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: cdr-ac-load-result-only-${{ matrix.variant }}-${{ github.run_id }}
-          path: whatif-${{ matrix.variant }}/result.json
+          name: cdr-c-sampler-result-only-${{ matrix.variant }}-${{ github.run_id }}
+          path: |
+            whatif-${{ matrix.variant }}/result.json
+            whatif-${{ matrix.variant }}/isolated-c-sampler-change.json
+            whatif-${{ matrix.variant }}/candidate-current-density-binding.json
           if-no-files-found: error
           retention-days: 90
       - name: Require unchanged waveform and device gates

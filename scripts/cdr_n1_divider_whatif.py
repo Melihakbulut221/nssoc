@@ -25,7 +25,11 @@ BD_UP=['XD0332','XD0333']
 # Bench reference currents of the four sampler latches (A, B, C, D).
 SAMPLER_BIAS=['ira','irb','irc','ird']
 LOWZ4=dict(rppd_w='4u',ac_mim='7.2u',select_mim='9.6u')
+C_SLAVE_DATA=['XD0255','XD0257']
+C_SLAVE_ALL=['XD0253','XD0254','XD0255','XD0257']
 VARIANTS={
+ 'bd10_lowz8_xor2_cdata3':dict(LOWZ4,bd_up_w='10u',slave_parallel='2',rppd_w='8u',xor_nx='2',c_devices=C_SLAVE_DATA,c_nx='3'),
+ 'bd10_lowz8_xor2_cslave3':dict(LOWZ4,bd_up_w='10u',slave_parallel='2',rppd_w='8u',xor_nx='2',c_devices=C_SLAVE_ALL,c_nx='3'),
  'control':dict(),
   'bd10_lowz8_xor2_acload12':dict(LOWZ4,bd_up_w='10u',slave_parallel='2',rppd_w='8u',xor_nx='2',buffer_ac_w='12u'),
   'bd10_lowz8_xor2_acload16':dict(LOWZ4,bd_up_w='10u',slave_parallel='2',rppd_w='8u',xor_nx='2',buffer_ac_w='16u'),
@@ -82,6 +86,7 @@ def patch(text,variant):
             original=[line for line in lines if line.split(maxsplit=1)[:1]==[n]]
             assert len(original)==1 and re.search(r'\sm=1(?:\s|$)',original[0]),(n,original)
             edit(n,'m',v['slave_parallel'])
+    for n in v.get('c_devices',[]):edit(n,'nx',v['c_nx'])
     return '\n'.join(lines),changed
 def patch_bench(text,variant):
     v=VARIANTS[variant];changed={}
@@ -133,6 +138,33 @@ def main(root,variant,out):
             assert count==1 and revised==new
         proof={'baseline':'bd10_lowz8_xor2','only_four_ac_collector_widths_changed':True,'collector_devices':list(expected.values()),'old_width':'8u','new_width':VARIANTS[variant]['buffer_ac_w'],'only_bias_sources_changed':(['ibda','ibdc'] if 'buffer_ac_bias' in VARIANTS[variant] else []),'old_bias_a':.001,'new_bias_a':float(VARIANTS[variant].get('buffer_ac_bias','.001')),'topology_artifact':14092472835,'settling_diagnostic_run':43562679420,'current_density_limit_unchanged_a_per_emitter':.003,'nominal_current_times_resistance_preserved_heuristic_only':('buffer_ac_bias' in VARIANTS[variant]),'what_if_only':True,'new_layout':False}
         (out/'isolated-ac-buffer-change.json').write_text(json.dumps(proof,indent=2))
+    if 'c_devices' in VARIANTS[variant]:
+        import zipfile,io
+        blob=Path('sampler-phase.zip').read_bytes()
+        assert hashlib.sha256(blob).hexdigest()=='87e4c31c3a91c3df65895773196fde014965e0ec93ed9e25e80f0a2fde019298'
+        evidence=json.loads(zipfile.ZipFile(io.BytesIO(blob)).read('sampler-c-phase.json'))
+        assert evidence['original_gate_reproduction'] and not evidence['accepted']
+        rows=evidence['sampler_c_backtrace']['groups'][0]['devices']
+        for native_id in VARIANTS[variant]['c_devices']:
+            found=[d for d in rows if d['name']=='xpd.'+native_id.lower()]
+            assert len(found)==1 and found[0]['nx']==4 and found[0]['collector_backtrace_depth']==0
+        baseline,_=patch(text,'bd10_lowz8_xor2')
+        def verify_isolated(candidate):
+            left,right=baseline.splitlines(),candidate.splitlines();assert len(left)==len(right)
+            diffs=[(x,y) for x,y in zip(left,right) if x!=y]
+            assert len(diffs)==len(VARIANTS[variant]['c_devices'])
+            assert {x.split()[0] for x,y in diffs}==set(VARIANTS[variant]['c_devices'])
+            for old,new in diffs:
+                expected,n=re.subn(r'(\snx=)4(?=\s|$)',lambda m:m[1]+'3',old)
+                assert n==1 and expected==new and 'npn13g2' in old
+            return diffs
+        differences=verify_isolated(patched)
+        # Negative controls prove that an omitted edit or wrong nx is rejected.
+        for damaged in [baseline,patched.replace(differences[0][1],differences[0][0],1),patched.replace(differences[0][1],differences[0][1].replace('nx=3','nx=2'),1)]:
+            try:verify_isolated(damaged)
+            except AssertionError:pass
+            else:raise AssertionError('Isolated change verifier accepted mutation')
+        (out/'isolated-c-sampler-change.json').write_text(json.dumps({'reference':'bd10_lowz8_xor2','only_changed_native_ids':VARIANTS[variant]['c_devices'],'old_nx':4,'new_nx':3,'negative_controls_rejected':3,'evidence_run':43584493730,'evidence_artifact':14110140623,'new_layout':False,'unchanged_extracted_wire_rc_whatif_only':True},indent=2))
     # Current per emitter must use the actual candidate nx, not the archived binding.
     bound=copy.deepcopy(original['binding'])
     binding_changes={}
@@ -149,6 +181,21 @@ def main(root,variant,out):
         restored=copy.deepcopy(bound)
         for name in binding_changes:restored['groups']['npn13g2'][name]['nx']=4
         assert restored==original['binding'],'Unrelated waveform binding changed'
+    if 'c_devices' in VARIANTS[variant]:
+        for native_id in VARIANTS[variant]['c_devices']:
+            marker='w_t'+native_id[3:]+'_b'
+            hits=[name for name,dev in bound['groups']['npn13g2'].items() if dev['nodes'][1].lower().rsplit('.',1)[-1]==marker]
+            assert len(hits)==1
+            name=hits[0];assert name not in binding_changes and bound['groups']['npn13g2'][name]['nx']==4
+            bound['groups']['npn13g2'][name]['nx']=3
+            binding_changes[name]={'native_id':native_id,'old_nx':4,'new_nx':3}
+        assert len(binding_changes)==24+len(VARIANTS[variant]['c_devices'])
+        restored=copy.deepcopy(bound)
+        for name in binding_changes:restored['groups']['npn13g2'][name]['nx']=4
+        assert restored==original['binding']
+        bench_before=(native/'loaded-n1-nominal_late/bench.cir').read_text()
+        bench_after,bias_changes=patch_bench(bench_before,variant)
+        assert bench_after==bench_before and bias_changes=={},'Bench sources must remain byte-identical'
     (out/'candidate-current-density-binding.json').write_text(json.dumps({'changes':binding_changes,'original_binding_sha256':hashlib.sha256(json.dumps(original['binding'],sort_keys=True).encode()).hexdigest(),'candidate_binding_sha256':hashlib.sha256(json.dumps(bound,sort_keys=True).encode()).hexdigest(),'current_limit_a_per_emitter':.003,'original_metadata_unchanged':True},indent=2))
     model.write_text(patched)
     (out/'patch.json').write_text(json.dumps(dict(variant=variant,values=VARIANTS[variant],changed=changed),indent=1))
@@ -195,6 +242,10 @@ def main(root,variant,out):
         if 'buffer_ac_w' in VARIANTS[variant]:
             keep['reference_variant']='bd10_lowz8_xor2'
             keep['experiment_scope']+=' Relative to failed xor2 baseline four A/C buffer collector widths change. Bias changes only with explicit buffer_ac_bias; acload12/16 preserve all original bench sources. No layout or extracted-RC update; device and data gates unchanged.'
+        (out/'result.json').write_text(json.dumps(keep,indent=1,sort_keys=True))
+    if 'c_devices' in VARIANTS[variant]:
+        keep['reference_variant']='bd10_lowz8_xor2'
+        keep['experiment_scope']='Only C slave data pair nx=4->3, plus feedback pair in cslave3 variant, relative to xor2 baseline. Original sources, solver, data/device gates and old wiring RC retained. Circuit what-if only; no new layout, extracted RC, closed-loop PHY or manufacturing acceptance.'
         (out/'result.json').write_text(json.dumps(keep,indent=1,sort_keys=True))
     print(json.dumps({k:keep[k]for k in('variant','returncode','passed','data_passed','devices_passed','phase_passed','phase_average_v','failing_hbt')},sort_keys=True))
 if __name__=='__main__':main(*sys.argv[1:])
