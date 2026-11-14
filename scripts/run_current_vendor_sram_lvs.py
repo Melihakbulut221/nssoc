@@ -101,6 +101,17 @@ try:
  r['leaf_full_lvs_accepted']=False
  r['control_scope']='Model class interpretation and exact A/Z signal-port mapping only. Full leaf VDD/VSS failures remain recorded, not accepted. Full macro is audited with unchanged port/error acceptance rules.'
 
+
+ # Normalize only the six remaining hierarchy boundaries after all model controls.
+ deck_before=deck.read_text()
+ anchor='\n# PURGE\nnetlist.purge if PURGE\n'
+ assert deck_before.count(anchor)==1
+ flatten_ruby='\n# Experimental representation normalization only: preserve every primitive.\nrequire \'json\'\ndef nssoc_device_count(circuit, cache = {}, active = [])\n  raise \'Missing circuit\' unless circuit\n  name = circuit.name\n  raise \'Recursive hierarchy\' if active.include?(name)\n  return cache[name] if cache.key?(name)\n  total = circuit.each_device.to_a.size\n  circuit.each_subcircuit { |sub| total += nssoc_device_count(sub.circuit_ref, cache, active + [name]) }\n  cache[name] = total\nend\nnssoc_names = %w[RSC_IHPSG13_CINVX2 RSC_IHPSG13_CINVX8 RSC_IHPSG13_DFPQD_MSAFFX2P RSC_IHPSG13_FILLCAP4 RSC_IHPSG13_FILLCAP8 RSC_IHPSG13_WLDRVX8]\nnssoc_rows = []\n[[\'layout\', netlist], [\'reference\', schematic]].each do |label, nl|\n  tops = nl.each_circuit.select { |c| c.name.downcase == $topcell.downcase }\n  raise \'Top identity mismatch\' unless tops.size == 1\n  top_circuit = tops[0]\n  before = nssoc_device_count(top_circuit)\n  raise \'Unexpected frozen DP primitive count\' unless before == 62046\n  selected = nssoc_names.map do |name|\n    matches = nl.each_circuit.select { |c| c.name.downcase == name.downcase }\n    raise "Missing/ambiguous flatten target #{name}" unless matches.size == 1\n    matches[0]\n  end\n  nl.flatten_circuits(selected)\n  after = nssoc_device_count(top_circuit)\n  raise \'Flattening changed recursive primitive count\' unless before == after\n  nssoc_rows << {\'side\'=>label,\'before\'=>before,\'after\'=>after,\'flattened_circuits\'=>nssoc_names}\nend\nFile.write($nssoc_flatten_report, JSON.pretty_generate({\'scope\'=>\'Selective hierarchy normalization only; no primitive exclusion, circuit edits or acceptance waiver\',\'rows\'=>nssoc_rows,\'production_accepted\'=>false}))\n'
+ deck.write_text(deck_before.replace(anchor,flatten_ruby+anchor))
+ r['selective_flatten_deck_sha256']=sha(deck)
+ r['selective_flatten_scope']='Six named remaining cells, both sides; recursive primitive counts must remain 62046. No geometry, CDL, primitive, net alias, dimensional tolerance or final port acceptance changes.'
+ cmd+=['-rd','nssoc_flatten_report='+str((derived/'selective-flatten.json').resolve())]
+
  (native/'command.json').write_text(json.dumps(cmd));start=time.monotonic()
  with (native/'run.log').open('w') as f:
   p=subprocess.run(cmd,env=env,stdout=f,stderr=subprocess.STDOUT,timeout=18000)
