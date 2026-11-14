@@ -5,7 +5,7 @@ from pathlib import Path,PurePosixPath
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"paired650-gate-reduction";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-gate-ac-inputs.json";PINS="scripts/cdr-mos650-gate-ac-pins.json"
-REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr650-paired-gate-reduction"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/packed650-gate-reduction"
 FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
  full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 def need(ok,msg):
@@ -511,36 +511,36 @@ def paired_current(dest):
   with path.open('xb')as out:subprocess.run(['gh','api','repos/'+REPO+'/actions/artifacts/'+str(aid)+'/zip'],stdout=out,check=True)
   need(pin(path)['sha256']==digest,'paired archive content')
   return zipfile.ZipFile(path)
- geometry=artifact(14124521775,'84bbb918af34605e7c6f14598fc68e7d5bb811a3d32d6c22bb294c0a51623ac6',43621748603,'0d90e18e09678eb1733123d97f41942dace720b3','paired-geometry.zip')
- anchors=artifact(14124672969,'a3e3b980b8d03f8ef38d854b414649a40496711d532f4824957184fc9082c199',43623472892,'54a4766e9256d2cd0a3f93f5441ca5d1c238c7ce','paired-anchors.zip')
- identity=artifact(14125295448,'d8376d4009da54acbe52569fd119add9f07f4f13d8120ebc65bd5fa193c899ac',43622884786,'e0a87989915cb7d65a20176de33649859f013393','paired-identity.zip')
+ geometry=artifact(14131740193,'89585c334b2ae7f06b21e6851babe72ec11b5d1b4e0bee675c79090129193057',43639421390,'dbe212de5ae00036284f104d45742db443186f51','paired-geometry.zip')
+ anchors=artifact(14131807306,'e5a2c6cbe1134e92f812b6abfe5d77bed5e797a7f4d8a3cbe6af9cf7c6af0cf4',43640767232,'b0ab692823d8aaf2c401674cac2f6c3c91f5db95','paired-anchors.zip')
+ identity=artifact(14132415076,'4969908bb9422d864bb5ff3d17a2e61928a6f3f2a3f267904819a160f1159c59',43640446032,'4a72ade2fe5f938f1a1438c08c35b6f9c38c2f95','paired-identity.zip')
  rows={'native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds':geometry.read('candidate.gds'),
        'derived/gate-poly-access.json':anchors.read('gate-poly-access.json'),
        'derived/terminal-anchors.json':anchors.read('terminal-anchors.json'),
        'derived/lvs_flat-identity.json':identity.read('lvs_flat-identity.json')}
  for name,raw in rows.items():
   path=dest/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
- save('paired-current-acquisition.json',dict(files={n:pin(dest/n)for n in rows},geometry_run=43621748603,anchors_run=43623472892,identity_run=43622884786,**FLAGS))
+ save('paired-current-acquisition.json',dict(files={n:pin(dest/n)for n in rows},geometry_run=43639421390,anchors_run=43640767232,identity_run=43640446032,**FLAGS))
  return {n:pin(dest/n)for n in rows}
 
 def paired_mesh(dest):
  import zipfile
- run=api('actions/runs/43625413974')
- need(run['status']=='completed' and run['conclusion']=='success' and run['head_sha']=='bc78aa9667a0915c7dc31b244b714a1d2166a362','actual new mesh producer')
+ run=api('actions/runs/43642048336')
+ need(run['status']=='completed' and run['conclusion']=='success' and run['head_sha']=='05178c10479e149d76fddbfd00dff121999bce86','actual new mesh producer')
  def fetch_zip(aid,digest,name):
-  meta=api('actions/artifacts/'+str(aid));need(meta['workflow_run']['id']==43625413974 and meta['workflow_run']['head_sha']==run['head_sha'] and meta['digest']=='sha256:'+digest and not meta['expired'],'new mesh archive identity')
+  meta=api('actions/artifacts/'+str(aid));need(meta['workflow_run']['id']==43642048336 and meta['workflow_run']['head_sha']==run['head_sha'] and meta['digest']=='sha256:'+digest and not meta['expired'],'new mesh archive identity')
   path=NATIVE/name
   with path.open('xb')as out:subprocess.run(['gh','api','repos/'+REPO+'/actions/artifacts/'+str(aid)+'/zip'],stdout=out,check=True)
   need(pin(path)['sha256']==digest,'new mesh whole archive content');return zipfile.ZipFile(path)
- native=fetch_zip(14125203854,'0485478594d39baa2bec3e3b769b4cf3b33ad1c19a95bce5bd50b6ed2e9ccba8','paired-mesh-native.zip')
- safe=fetch_zip(14124829951,'15c92cb7f9ca584c69e116dfa957abd2612f25f8efc5cc3cfea933538ccd88fc','paired-mesh-safe.zip')
+ native=fetch_zip(14132771588,'95b16196dc6d95fbefe5f436c81bb3dd0bc39f8ca0c2e68d9fe3ad96b9a0377a','paired-mesh-native.zip')
+ safe=fetch_zip(14132687034,'82f1c0a49e6963af7b3064a7e2f7ee7ea3b45a9c4c168a353c51ccbd8ab5ca20','paired-mesh-safe.zip')
  report=json.loads(safe.read('gate-poly-mesh-75.json'))
  material=json.loads(safe.read('physical-material-readback.json'))
- need(material['gds']['sha256']=='285760f3930a1cc142b45a3c43866202f1ea4694f468fb1603f286cb546cd514','same current GDS')
+ need(material['gds']['sha256']=='ecae8ae8e49beea391b1d2575da6f5ac9ea01180550ae65fc786ddc6fd9ee193','same current GDS')
  files={'native/mesh-75/mesh.json':'native_complete_mesh','native/mesh-75/gate-poly-resistors.cir':'native_resistor_fragment'}
  for name,key in files.items():
   raw=native.read(name);path=dest/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw);need(pin(path)==report[key],'actual mesh member')
- save('paired-mesh-acquisition.json',dict(run=43625413974,source=run['head_sha'],files={n:pin(dest/n)for n in files},**FLAGS))
+ save('paired-mesh-acquisition.json',dict(run=43642048336,source=run['head_sha'],files={n:pin(dest/n)for n in files},**FLAGS))
 
 
 def main():
