@@ -77,18 +77,29 @@ try:
   assert not report['extraction_diagnostics'], 'Control extraction diagnostics: '+label
   assert len(report['circuits'])==1 and report['circuits'][0]['layout_devices_recursive']==3 and report['circuits'][0]['schematic_devices_recursive']==3
   full_leaf_lvs_passed=proc.returncode==0 and not report['reasons']
-  passed=report['circuits'][0]['status']=='Match'
-  controls.append({'label':label,'expected_device_graph_match':expected,'device_graph_match':passed,'full_leaf_lvs_passed':full_leaf_lvs_passed,'audit':report,'reference_sha256':sha(reference_path)})
-  (derived/'metal1-mapping-controls.json').write_text(json.dumps({'scope':'DEVICE-GRAPH CONTROLS ONLY: original leaf has A/Z ports while reference also declares VDD/VSS. Full leaf LVS verdict remains separately recorded and is not waived. No geometry, dimension, connection, or full-macro acceptance changes.','controls':controls,'production_accepted':False},indent=2))
+  import klayout.db as kdb
+  database=kdb.LayoutVsSchematic();database.read(str(target/'lvs.lvsdb'))
+  pairs=list(database.xref().each_circuit_pair());assert len(pairs)==1
+  pair=pairs[0]
+  def field(obj,name):
+   value=getattr(obj,name);return value() if callable(value) else value
+  assert {field(pin,'name') for pin in pair.first().each_pin()}=={'A','Z'}
+  assert {field(pin,'name') for pin in pair.second().each_pin()}=={'A','Z','VDD','VSS'}
+  net_pairs=[{'layout':field(n.first(),'name') if n.first() else None,'reference':field(n.second(),'name') if n.second() else None,'status':str(n.status())} for n in database.xref().each_net_pair(pair)]
+  signal_ports_match=all(sum(n['layout']==port and n['reference']==port and n['status']=='Match' for n in net_pairs)==1 for port in ('A','Z'))
+  graph_match=report['circuits'][0]['status']=='Match'
+  passed=graph_match and signal_ports_match
+  controls.append({'label':label,'expected_graph_and_signal_ports_match':expected,'device_graph_match':graph_match,'signal_ports_match':signal_ports_match,'graph_and_signal_ports_match':passed,'net_pairs':net_pairs,'full_leaf_lvs_passed':full_leaf_lvs_passed,'audit':report,'reference_sha256':sha(reference_path)})
+  (derived/'metal1-mapping-controls.json').write_text(json.dumps({'scope':'DEVICE GRAPH AND EXACT A/Z SIGNAL PORT CONTROLS ONLY: original leaf has A/Z ports while reference also declares VDD/VSS. Full leaf LVS verdict remains separately recorded and is not waived. No geometry, dimension, connection, or full-macro acceptance changes.','controls':controls,'production_accepted':False},indent=2))
   assert passed==expected, 'Unexpected control verdict: '+label
  control('unmapped-original',reference,False)
  reader.write_text(reader_before.replace(reader_needle,"    elsif num_nets == 2 && model.downcase == 'lvsres'\n      RES2.new\n"+reader_needle))
  extraction.write_text(extraction_before.replace(extraction_needle,"resistor('lvsres', 1.0, RES2)"))
  r['experimental_mapping']={'scope':'Only extracted metal1 class name mapped to lvsres; reference lvsres uses existing RES2 W/L comparison policy; no circuit or dimension edits; no net aliases','reader_before_sha256':hashlib.sha256(reader_before.encode()).hexdigest(),'reader_after_sha256':sha(reader),'extraction_before_sha256':hashlib.sha256(extraction_before.encode()).hexdigest(),'extraction_after_sha256':sha(extraction),'production_accepted':False}
  for label,text in variants.items():control('mapped-'+label,text,label=='original')
- r['metal1_device_graph_controls_passed']=True
+ r['metal1_device_graph_and_signal_port_controls_passed']=True
  r['leaf_full_lvs_accepted']=False
- r['control_scope']='Model class interpretation only; full macro is audited with unchanged port/error acceptance rules.'
+ r['control_scope']='Model class interpretation and exact A/Z signal-port mapping only. Full leaf VDD/VSS failures remain recorded, not accepted. Full macro is audited with unchanged port/error acceptance rules.'
 
  (native/'command.json').write_text(json.dumps(cmd));start=time.monotonic()
  with (native/'run.log').open('w') as f:
